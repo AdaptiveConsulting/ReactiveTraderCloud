@@ -27,10 +27,9 @@ class AnalyticsTile extends React.PureComponent<Props> {
       notional,
       updateNotional,
       executeTrade,
-      canExecute,
       children,
-      setInErrorStatus,
-      inError,
+      setDisabledTradingState,
+      disabled,
     } = this.props
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
@@ -48,15 +47,15 @@ class AnalyticsTile extends React.PureComponent<Props> {
                 notional={notional}
                 currencyPairSymbol={currencyPair.base}
                 updateNotional={updateNotional}
-                setInErrorStatus={setInErrorStatus}
-                inError={inError}
+                setDisabledTradingState={setDisabledTradingState}
+                disabled={disabled}
               />
             </GraphNotionalWrapper>
             <AnalyticsPriceControl
               executeTrade={executeTrade}
               priceData={price}
               currencyPair={currencyPair}
-              disabled={!canExecute || inError}
+              disabled={disabled}
             />
           </AnalyticsTileContent>
         </AnalyticsTileStyle>

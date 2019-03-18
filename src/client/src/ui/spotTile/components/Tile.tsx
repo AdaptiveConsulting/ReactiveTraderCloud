@@ -17,13 +17,13 @@ interface Props {
 
 interface State {
   notional: string
-  inError: boolean
+  disabled: boolean
 }
 
 class Tile extends React.PureComponent<Props, State> {
   state = {
     notional: DEFAULT_NOTIONAL_VALUE,
-    inError: false, // should probably be a list of errors at some point
+    disabled: false,
   }
 
   tileComponents = {
@@ -33,7 +33,7 @@ class Tile extends React.PureComponent<Props, State> {
 
   updateNotional = (notional: string) => this.setState({ notional })
 
-  setInErrorStatus = (inError: boolean) => this.setState({ inError })
+  setDisabledTradingState = (disabled: boolean) => this.setState({ disabled })
 
   executeTrade = (direction: Direction, rawSpotRate: number) => {
     const { currencyPair, executeTrade } = this.props
@@ -62,8 +62,9 @@ class Tile extends React.PureComponent<Props, State> {
 
   render() {
     const { currencyPair, spotTileData, executionStatus, tileView } = this.props
-    const { notional, inError } = this.state
+    const { notional, disabled } = this.state
     const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
+
     return (
       <TileViewComponent
         currencyPair={currencyPair}
@@ -72,9 +73,8 @@ class Tile extends React.PureComponent<Props, State> {
         executionStatus={executionStatus}
         notional={notional}
         updateNotional={this.updateNotional}
-        setInErrorStatus={this.setInErrorStatus}
-        canExecute={this.canExecute}
-        inError={inError}
+        setDisabledTradingState={this.setDisabledTradingState}
+        disabled={disabled || !this.canExecute}
       >
         {this.props.children}
       </TileViewComponent>

@@ -11,15 +11,15 @@ stories.add('Notional input', () => (
           notional="1,000,000"
           currencyPairSymbol="USD"
           updateNotional={action('Update notional')}
-          setInErrorStatus={action('setInErrorStatus')}
-          inError={false}
+          setDisabledTradingState={action('setDisabledTradingState')}
+          disabled={false}
         />
       </div>
     </Centered>
   </Story>
 ))
 
-stories.add('Notional input in error', () => (
+stories.add('Notional input with trading disabled', () => (
   <Story>
     <Centered>
       <div style={{ padding: '1.5rem' }}>
@@ -27,8 +27,8 @@ stories.add('Notional input in error', () => (
           notional="1,000,000"
           currencyPairSymbol="USD"
           updateNotional={action('Update notional')}
-          setInErrorStatus={action('setInErrorStatus')}
-          inError={true}
+          setDisabledTradingState={action('setDisabledTradingState')}
+          disabled={true}
         />
       </div>
     </Centered>

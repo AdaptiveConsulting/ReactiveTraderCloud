@@ -22,6 +22,7 @@ export const TradeButton = styled.button<{ direction: Direction }>`
       ? `
   cursor: initial;
   opacity: 0.3;
+  pointer-events: none;
     `
       : `
   .spot-tile:hover & {

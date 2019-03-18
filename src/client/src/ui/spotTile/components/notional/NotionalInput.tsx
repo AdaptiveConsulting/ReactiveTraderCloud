@@ -23,13 +23,13 @@ const CurrencyPairSymbol = styled('span')`
   padding-right: 0.375rem;
 `
 
-const ErrorMessagePlaceholder = styled.div`
+const MessagePlaceholder = styled.div`
   ${({ theme }) => `color: ${theme.template.red.normal}`};
   grid-area: Message;
   font-size: 0.6rem;
   line-height: normal;
   padding-top: 2px;
-  margin-bottom: -1rem; /* Prevents the layout to change in Tile when this ErrorMessagePlaceholder is rendered */
+  margin-bottom: -1rem; /* Prevents the layout to change in Tile when this MessagePlaceholder is rendered */
 `
 
 const InputWrapper = styled.div`
@@ -39,7 +39,7 @@ const InputWrapper = styled.div`
   grid-template-areas: 'Currency Input' '. Message';
 `
 
-export const Input = styled.input<{ inError: boolean }>`
+export const Input = styled.input<{ showMessage: boolean }>`
   grid-area: Input;
   background: none;
   text-align: center;
@@ -48,8 +48,8 @@ export const Input = styled.input<{ inError: boolean }>`
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-  ${({ inError, theme }) =>
-    !inError
+  ${({ showMessage, theme }) =>
+    !showMessage
       ? `
   .spot-tile:hover & {
     box-shadow: 0px 1px 0px ${theme.core.textColor};
@@ -69,16 +69,26 @@ interface Props {
   currencyPairSymbol: string
   notional: string
   updateNotional: (notional: string) => void
-  setInErrorStatus: (inError: boolean) => void
-  inError: boolean
+  setDisabledTradingState: (disableTrading: boolean) => void
+  disabled: boolean
 }
 
-export default class NotionalInput extends PureComponent<Props> {
+interface State {
+  showMessage: boolean
+}
+
+export default class NotionalInput extends PureComponent<Props, State> {
   private inputRef = React.createRef<HTMLInputElement>()
 
+  state = {
+    showMessage: false, // TODO Add support for other errors and warnings.
+  }
+
   render() {
-    const { currencyPairSymbol, notional, inError } = this.props
+    const { currencyPairSymbol, notional } = this.props
+    const { showMessage } = this.state
     const formattedSize = numeral(notional).format(NUMERAL_FORMAT)
+
     return (
       <InputWrapper>
         <CurrencyPairSymbol>{currencyPairSymbol}</CurrencyPairSymbol>
@@ -90,9 +100,9 @@ export default class NotionalInput extends PureComponent<Props> {
           onChange={this.handleInputChange}
           onBlur={this.handleUpdateCausedByEvent}
           onKeyPress={this.handleKeyPressNotionalInput}
-          inError={inError}
+          showMessage={showMessage}
         />
-        {inError && <ErrorMessagePlaceholder>Max exceeded</ErrorMessagePlaceholder>}
+        {showMessage && <MessagePlaceholder>Max exceeded</MessagePlaceholder>}
       </InputWrapper>
     )
   }
@@ -106,7 +116,8 @@ export default class NotionalInput extends PureComponent<Props> {
     if (event.key === ENTER) {
       this.handleUpdateCausedByEvent(event)
     } else if (charCode === CHAR_CODE_DOT) {
-      // only allow one dot unless the existing dot is in the text selection while replacing existing text.
+      // only allow one dot unless the existing dot is in the
+      // text selection while replacing existing text.
       const { value, selectionStart, selectionEnd } = currentTarget
       const textWithoutSelection = value.replace(value.substring(selectionStart, selectionEnd), '')
       if (textWithoutSelection.match(/\./g)) {
@@ -121,15 +132,8 @@ export default class NotionalInput extends PureComponent<Props> {
 
   handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value.trim()
-    const numericValue = convertNotionalShorthandToNumericValue(value)
-    if (numericValue >= MAX_NOTIONAL_VALUE) {
-      // if entered value bigger than max, show error.
-      this.setInErrorStatus(true)
-    } else if (this.props.inError) {
-      // if in error and value entered becomes smaller, remove error.
-      this.setInErrorStatus(false)
-    }
-    if (!isNaN(numericValue)) {
+    this.checkStatus(value)
+    if (!isNaN(convertNotionalShorthandToNumericValue(value))) {
       // user may be trying to enter decimals or
       // user may be deleting previous entry (empty string)
       // in those cases, format and update only when completed.
@@ -143,22 +147,49 @@ export default class NotionalInput extends PureComponent<Props> {
 
   handleUpdateCausedByEvent = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
-    const shouldReset = value === DOT || value === '0' || value === ''
-    this.formatAndUpdateValue(shouldReset ? RESET_NOTIONAL_VALUE : value)
+    const valueToFormatAndUpdate = this.isInvalidTradingValue(value) ? RESET_NOTIONAL_VALUE : value
+    const callback = (newValue: string) => this.checkStatus(newValue)
+    this.formatAndUpdateValue(valueToFormatAndUpdate, callback)
   }
 
-  formatAndUpdateValue = (inputValue: string) => {
+  isInvalidTradingValue = (value: string) => value === DOT || value === '0' || value === ''
+
+  formatAndUpdateValue = (inputValue: string, callback?: (newValue: string) => void) => {
     const { updateNotional } = this.props
     const stringNotional = numeral(inputValue).format(NUMERAL_FORMAT)
     updateNotional(stringNotional)
     if (this.inputRef.current) {
       this.inputRef.current.value = stringNotional
+      if (callback) {
+        callback(stringNotional)
+      }
     }
   }
 
-  setInErrorStatus = (inError: boolean) => {
-    const { setInErrorStatus } = this.props
-    setInErrorStatus(inError)
+  checkStatus = (value: string) => {
+    const { disabled } = this.props
+    const { showMessage } = this.state
+    const numericValue = convertNotionalShorthandToNumericValue(value)
+    if (this.isInvalidTradingValue(value)) {
+      // if entered value is invalid trading value, disable Buy/Sell buttons.
+      // not showing message error since the user could be in the process
+      // of entering a valid value
+      this.updateStatus(true, false)
+    } else if (numericValue >= MAX_NOTIONAL_VALUE) {
+      // if entered value bigger than max, show message error.
+      this.updateStatus(true, true)
+    } else if (showMessage || disabled) {
+      // all value checks have passed
+      // if Buy/Sell buttons are disabled and/or error message is shown from previous check
+      // enable buttons and remove message error.
+      this.updateStatus(false, false)
+    }
+  }
+
+  updateStatus = (disableTrading: boolean, showMessage: boolean) => {
+    const { setDisabledTradingState } = this.props
+    this.setState({ showMessage })
+    setDisabledTradingState(disableTrading)
   }
 
   inputIsAllowed = (charCode: number) => {
