@@ -60,7 +60,7 @@ export class OpenFinLimitChecker {
       fin.desktop.InterApplicationBus.addSubscribeListener(this.setLimitCheckSubscriber)
       fin.desktop.InterApplicationBus.addUnsubscribeListener(this.removeLimitCheckSubscriber)
       fin.desktop.InterApplicationBus.subscribe(LIMIT_CHECKER_UUID, null, LIMIT_CHECKER_STATUS_TOPIC, (m, u, n) => {
-        if (m == 'ALIVE') {
+        if (m === 'ALIVE') {
           this.setLimitCheckSubscriber(LIMIT_CHECKER_UUID, REQUEST_LIMIT_CHECK_TOPIC)
         }
       })
