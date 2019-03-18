@@ -43,7 +43,7 @@ export default class SpotTile extends PureComponent<Props> {
               currencyPairSymbol={currencyPair.base}
               updateNotional={updateNotional}
               setDisabledTradingState={setDisabledTradingState}
-              disabled={disabled}
+              isTradingDisabled={disabled}
             />
           </NotionalInputWrapper>
         </SpotTileStyle>

@@ -48,7 +48,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
                 currencyPairSymbol={currencyPair.base}
                 updateNotional={updateNotional}
                 setDisabledTradingState={setDisabledTradingState}
-                disabled={disabled}
+                isTradingDisabled={disabled}
               />
             </GraphNotionalWrapper>
             <AnalyticsPriceControl

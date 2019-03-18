@@ -69,7 +69,7 @@ interface Props {
   notional: string
   updateNotional: (notional: string) => void
   setDisabledTradingState: (disableTrading: boolean) => void
-  disabled: boolean
+  isTradingDisabled: boolean
 }
 
 interface State {
@@ -167,7 +167,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
   }
 
   checkStatus = (value: string) => {
-    const { disabled } = this.props
+    const { isTradingDisabled } = this.props
     const { showMessage } = this.state
     const numericValue = convertNotionalShorthandToNumericValue(value)
     if (this.isInvalidTradingValue(value)) {
@@ -178,9 +178,10 @@ export default class NotionalInput extends PureComponent<Props, State> {
     } else if (numericValue >= MAX_NOTIONAL_VALUE) {
       // if entered value bigger than max, show message error.
       this.updateStatus(true, true)
-    } else if (showMessage || disabled) {
+    } else if (showMessage || isTradingDisabled) {
       // all value checks have passed
-      // if Buy/Sell buttons are disabled and/or error message is shown from previous check
+      // if Buy/Sell buttons are disabled (isTradingDisabled)
+      // and/or error message is shown from previous check
       // enable buttons and remove message error.
       this.updateStatus(false, false)
     }

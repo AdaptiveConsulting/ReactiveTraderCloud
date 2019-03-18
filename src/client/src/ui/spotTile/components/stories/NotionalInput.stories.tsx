@@ -12,7 +12,7 @@ stories.add('Notional input', () => (
           currencyPairSymbol="USD"
           updateNotional={action('Update notional')}
           setDisabledTradingState={action('setDisabledTradingState')}
-          disabled={false}
+          isTradingDisabled={false}
         />
       </div>
     </Centered>
@@ -28,7 +28,7 @@ stories.add('Notional input with trading disabled', () => (
           currencyPairSymbol="USD"
           updateNotional={action('Update notional')}
           setDisabledTradingState={action('setDisabledTradingState')}
-          disabled={true}
+          isTradingDisabled={true}
         />
       </div>
     </Centered>
