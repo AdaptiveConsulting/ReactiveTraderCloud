@@ -6,11 +6,11 @@ import { convertNotionalShorthandToNumericValue } from './utils'
 const NUMERAL_FORMAT = '0,000,000[.]00'
 const DOT = '.'
 const ENTER = 'Enter'
-const CHAR_CODE_DOT = 46
-const CHAR_CODE_0 = 48
-const CHAR_CODE_9 = 57
-const CHAR_CODE_UNIT_SEP = 31
-const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]
+const CHAR_CODE_DOT = 46 // .
+const CHAR_CODE_0 = 48 // 0
+const CHAR_CODE_9 = 57 // 9
+const CHAR_CODE_UNIT_SEP = 31 // US (unit separator)
+const SHORTCUT_CHAR_CODES = [75, 77, 107, 109] // K, M, k, m
 const MAX_NOTIONAL_VALUE = 1000000000
 export const DEFAULT_NOTIONAL_VALUE = '1000000'
 const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
@@ -29,7 +29,7 @@ const MessagePlaceholder = styled.div`
   font-size: 0.6rem;
   line-height: normal;
   padding-top: 2px;
-  margin-bottom: -1rem; /* Prevents the layout to change in Tile when this MessagePlaceholder is rendered */
+  margin-bottom: -1rem; /* Prevents the layout from changing in Tile when this MessagePlaceholder is rendered */
 `
 
 const InputWrapper = styled.div`
@@ -116,7 +116,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
     if (event.key === ENTER) {
       this.handleUpdateCausedByEvent(event)
     } else if (charCode === CHAR_CODE_DOT) {
-      // only allow one dot unless the existing dot is in the
+      // only allow one dot unless the existing dot is in the current
       // text selection while replacing existing text.
       const { value, selectionStart, selectionEnd } = currentTarget
       const textWithoutSelection = value.replace(value.substring(selectionStart, selectionEnd), '')
@@ -152,7 +152,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
     this.formatAndUpdateValue(valueToFormatAndUpdate, callback)
   }
 
-  isInvalidTradingValue = (value: string) => value === DOT || value === '0' || value === ''
+  isInvalidTradingValue = (value: string) => value === DOT || value === '0' || value === '' || value === 'Infinity'
 
   formatAndUpdateValue = (inputValue: string, callback?: (newValue: string) => void) => {
     const { updateNotional } = this.props
