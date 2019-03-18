@@ -80,7 +80,8 @@ export default class NotionalInput extends PureComponent<Props, State> {
   private inputRef = React.createRef<HTMLInputElement>()
 
   state = {
-    showMessage: false, // TODO Add support for other errors and warnings.
+    // TODO Add support for other errors and warnings.
+    showMessage: convertNotionalShorthandToNumericValue(this.props.notional) >= MAX_NOTIONAL_VALUE,
   }
 
   render() {
