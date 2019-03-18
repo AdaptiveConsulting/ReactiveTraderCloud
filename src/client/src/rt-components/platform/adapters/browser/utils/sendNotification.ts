@@ -9,10 +9,10 @@ export interface NotificationMessage {
 }
 
 export const sendNotification = ({ tradeNotification }: NotificationMessage) => {
-  const direction = tradeNotification.direction === Direction.Buy ? 'Bought' : 'Sold'
-
-  const title = `${direction.toUpperCase()} ${tradeNotification.dealtCurrency} ${tradeNotification.notional}`
-  const body = `vs. ${tradeNotification.termsCurrency} \n\nRate ${tradeNotification.spotRate}    Trade ID ${
+  const direction = tradeNotification.direction === Direction.Buy ? 'Buy' : 'Sell'
+  const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
+  const title = `Trade ${status} ${direction} ${tradeNotification.dealtCurrency} ${tradeNotification.notional}`
+  const body = `vs. ${tradeNotification.termsCurrency} \nRate ${tradeNotification.spotRate}    Trade ID ${
     tradeNotification.tradeId
   }`
 
