@@ -22,11 +22,11 @@ export declare class ExcelApplication extends RpcDispatcher {
     subscribeToExcelMessages(): Promise<[void, void]>;
     unsubscribeToExcelMessages(): Promise<[void, void]>;
     monitorDisconnect(): Promise<{}>;
-    run(callback?: Function): Promise<any>;
+    run(callback?: Function): Promise<void>;
     getWorkbooks(callback?: Function): Promise<ExcelWorkbook[]>;
     getWorkbookByName(name: string): ExcelWorkbook;
     addWorkbook(callback?: Function): Promise<any>;
-    openWorkbook(path: string, callback?: Function): Promise<any>;
+    openWorkbook(path: string, callback?: Function): Promise<ExcelWorkbook>;
     getConnectionStatus(callback?: Function): Promise<boolean>;
     getCalculationMode(callback: Function): Promise<any>;
     calculateAll(callback: Function): Promise<any>;

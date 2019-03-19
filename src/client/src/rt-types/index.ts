@@ -3,6 +3,10 @@ export type CurrencyPair = CurrencyPair
 export type CurrencyPairMap = CurrencyPairMap
 import { CurrencyPairPosition } from './currencyPairPosition'
 export type CurrencyPairPosition = CurrencyPairPosition
+export type CurrencyPairPositionWithPrice = CurrencyPairPosition & {
+  latestAsk?: number
+  latestBid?: number
+}
 export { Direction } from './direction'
 import { ServiceStatus, ServiceConnectionStatus } from './serviceStatus'
 export { ServiceConnectionStatus }
