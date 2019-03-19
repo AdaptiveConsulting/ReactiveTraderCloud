@@ -4,7 +4,6 @@ import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { CurrencyPair, CurrencyPairMap, Trade, Trades, TradeStatus } from 'rt-types'
-import { InteropTopics } from 'rt-components'
 import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap } from 'rxjs/operators'
 
 import { ApplicationEpic } from 'StoreTypes'
@@ -44,16 +43,17 @@ export const publishBlotterToExcelEpic: ApplicationEpic = (action$, state$, { pl
 
   return action$.pipe(
     applicationConnected,
-    tap(() => platform.excel.init()),
     switchMapTo(
       interval(7500).pipe(
         takeUntil(action$.pipe(applicationDisconnected)),
         tap(() => {
-          const parsedData = parseBlotterData(
-            state$.value.blotterService.trades,
-            state$.value.currencyPairs,
-          )
-          platform.excel.publish(InteropTopics.Blotter, parsedData)
+          if (platform.excel.isOpen()) {
+            const parsedData = parseBlotterData(
+              state$.value.blotterService.trades,
+              state$.value.currencyPairs,
+            )
+            platform.excel.publishBlotter(parsedData)
+          }
         }),
         ignoreElements(),
       ),

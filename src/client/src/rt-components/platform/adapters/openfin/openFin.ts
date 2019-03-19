@@ -3,6 +3,7 @@ import { AppConfig, WindowConfig, InteropTopics } from '../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
+import { CurrencyPairPositionWithPrice } from 'rt-types';
 
 export const openFinNotifications: any[] = []
 
@@ -94,9 +95,10 @@ export default class OpenFin extends BasePlatformAdapter {
   }
 
   excel = {
-    init: () => excelAdapter.actions.init(),
-    open: () => excelAdapter.actions.openExcel(),
-    publish: <T = string | object>(topic: string, message: T) => excelAdapter.actions.publishToExcel(topic, message),
+    open: () => excelAdapter.openExcel(),
+    isOpen: () => excelAdapter.isSpreadsheetOpen(),
+    publishPositions: (positions: CurrencyPairPositionWithPrice[]) => excelAdapter.publishPositions(positions),
+    publishBlotter: <T extends any>(blotterData: T) => excelAdapter.publishBlotter(blotterData),
   }
 
   notification = {
