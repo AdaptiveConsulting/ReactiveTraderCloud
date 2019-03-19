@@ -6,8 +6,6 @@ export type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<
 
 export type Extends<T, U extends T> = U
 
-export type FunctionParams<T extends Function> = T extends (...args: infer R) => any ? R : never
-
 // Workaround to get intellisense on type unions of 'literals' | string. 
 // See https://github.com/Microsoft/TypeScript/issues/29729
 export type LiteralUnion<T extends U, U = string> = T | (U & {zz_IGNORE_ME?: never })

@@ -8,14 +8,13 @@ import { publishTradeExecutedEpic } from './tradeExecutedEpic'
 import { ApplicationDependencies } from 'applicationServices'
 
 export default ({ platform }: ApplicationDependencies) => {
-  const interopServices = platform.interopServices
   const epics = [spotTileEpic, pricingServiceEpic, pricingHistoryEpic]
 
-  if (interopServices.excel) {
+  if (platform.hasFeature('excel')) {
     epics.push(publishPriceUpdateEpic, publishTradeExecutedEpic, closePositionEpic)
   }
 
-  if (interopServices.chartIQ) {
+  if (platform.hasFeature('chartIQ')) {
     epics.push(displayCurrencyChartEpic)
   }
 

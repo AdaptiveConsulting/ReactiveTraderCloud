@@ -1,13 +1,12 @@
-import { PlatformAdapter } from '../platformAdapter'
-import { AppConfig, WindowConfig } from '../types'
+import { BasePlatformAdapter } from '../platformAdapter'
+import { AppConfig, WindowConfig, InteropTopics } from '../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
-import { FunctionParams } from 'rt-util';
 
 export const openFinNotifications: any[] = []
 
-declare const window: any
+declare const window: Window & { onNotificationMessage: any }
 
 export const setupGlobalOpenfinNotifications = () => {
   if (typeof fin !== 'undefined' && !window.onNotificationMessage) {
@@ -18,14 +17,17 @@ export const setupGlobalOpenfinNotifications = () => {
   }
 }
 
-type OpenFinWindowState = FunctionParams<FunctionParams<fin.OpenFinWindow['getState']>[0]>[0]
-export default class OpenFin implements PlatformAdapter {
-  name = 'openfin'
-  type = 'desktop'
-  interopServices = {
-    excel: true,
-    chartIQ: true,
-    notificationHighlight: true,
+type OpenFinWindowState = Parameters<Parameters<fin.OpenFinWindow['getState']>[0]>[0]
+export default class OpenFin extends BasePlatformAdapter {
+  readonly name = 'openfin'
+  readonly type = 'desktop'
+
+  notificationHighlight = {
+    init: () => this.interop.subscribe$(InteropTopics.HighlightBlotter)
+  }
+  
+  chartIQ = {
+    open: (id: string, config: AppConfig) => this.app.open(id, config)
   }
 
   window = {
@@ -89,12 +91,12 @@ export default class OpenFin implements PlatformAdapter {
       ),
 
     publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
+  }
 
-    excel: {
-      init: () => excelAdapter.actions.init(),
-      open: () => excelAdapter.actions.openExcel(),
-      publish: (topic: string, message: string | object) => excelAdapter.actions.publishToExcel(topic, message),
-    },
+  excel = {
+    init: () => excelAdapter.actions.init(),
+    open: () => excelAdapter.actions.openExcel(),
+    publish: <T = string | object>(topic: string, message: T) => excelAdapter.actions.publishToExcel(topic, message),
   }
 
   notification = {

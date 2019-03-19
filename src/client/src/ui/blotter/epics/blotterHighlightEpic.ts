@@ -5,7 +5,7 @@ import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 import { combineEpics, ofType } from 'redux-observable'
 import { Action } from 'redux'
 import { Trade } from 'rt-types'
-import { InteropTopics } from 'rt-components'
+import { EMPTY } from 'rxjs';
 
 const { highlightTradeAction, removeHighlightTradeAction } = BlotterActions
 const TRADE_HIGHLIGHT_TIME_IN_MS = 3000
@@ -18,7 +18,11 @@ const switchHighlight = (trade: Trade) => ({
 })
 
 const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  const interopObservable$ = platform.interop!.subscribe$(InteropTopics.HighlightBlotter)
+  if (!platform.hasFeature('notificationHighlight')) {
+    return EMPTY
+  }
+
+  const interopObservable$ = platform.notificationHighlight.init() 
 
   return action$.pipe(
     applicationConnected,

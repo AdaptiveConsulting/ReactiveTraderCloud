@@ -6,6 +6,7 @@ import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions } from '../actions'
 import { SpotTileData } from '../model/spotTileData'
 import { InteropTopics } from 'rt-components'
+import { EMPTY } from 'rxjs';
 
 interface Msg {
   amount: number
@@ -32,7 +33,11 @@ export function createTrade(msg: Msg, priceData: SpotTileData, currencyPair: Cur
 }
 
 export const closePositionEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  const interopSubscribe$ = platform.interop!.subscribe$(InteropTopics.ClosePosition)
+  if (!platform.hasFeature('interop')) {
+    return EMPTY
+  }
+
+  const interopSubscribe$ = platform.interop.subscribe$(InteropTopics.ClosePosition)
 
   return action$.pipe(
     applicationConnected,

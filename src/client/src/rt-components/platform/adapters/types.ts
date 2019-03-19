@@ -1,3 +1,8 @@
+import { Observable } from 'rxjs'
+
+export type PlatformName = 'browser' | 'openfin' | 'finsemble'
+export type PlatformType = 'browser' | 'desktop'
+
 export interface WindowConfig {
   name: string
   url: string
@@ -14,11 +19,32 @@ export interface AppConfig {
   topic?: string
 }
 
-export interface InteropServices {
-  excel: boolean
-  chartIQ: boolean
-  notificationHighlight: boolean
+export interface PlatformFeatures {
+  excel: ExcelInterop
+  chartIQ: ChartIQInterop
+  notificationHighlight: NotificationHighlightInterop
+  interop: PubSubInterop
 }
+
+interface PubSubInterop {
+  subscribe$: (topic: string) => Observable<any>
+  publish: (topic: string, message: any) => void
+}
+
+interface ExcelInterop {
+  init(): void
+  open(): void
+  publish<T = string | object>(topic: string, message: T): void
+}
+
+interface ChartIQInterop {
+  open: (id: string, config: AppConfig) => Promise<string>
+}
+
+interface NotificationHighlightInterop {
+  init: () => Observable<{}>
+}
+
 
 export enum InteropTopics {
   /* excel interop data feeds */
@@ -32,10 +58,4 @@ export enum InteropTopics {
   /* closing trades from Excel, currently 
   not in use */
   ClosePosition = 'close-position',
-}
-
-export interface ExcelInterop {
-  init: () => void
-  open: () => void
-  publish: (topic: string, message: string | object) => void
 }

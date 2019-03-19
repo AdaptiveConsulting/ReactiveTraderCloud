@@ -23,8 +23,8 @@ const ExcelButton = styled('button')`
 
 const ExcelLauncher: FC = () => {
   const platform = usePlatform()
-  return platform.name === 'openfin' ? (
-    <ExcelButton onClick={() => platform.interop!.excel!.open()}>
+  return platform.hasFeature('excel') ? (
+    <ExcelButton onClick={() => platform.excel.open()}>
       <ExcelIcon />
     </ExcelButton>
   ) : null

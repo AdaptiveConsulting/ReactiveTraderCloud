@@ -13,20 +13,14 @@ declare interface OpenFinWindowOptions extends fin.WindowOption {
 }
 
 declare namespace fin {
+
+  type ExcelWorksheet = import('./openfin-excel').ExcelWorksheet
+  type ExcelWorkbook = import('./openfin-excel').ExcelWorkbook
+  type ExcelService = import('./openfin-excel').ExcelService
+  type ExcelApplication = import('./openfin-excel').ExcelApplication
+
   interface OpenFinDesktop {
-    ExcelService: {
-      init(): Promise<void>
-    }
-    Excel: {
-      getWorksheets(callback: Function): Promise<any>
-      getWorksheetByName(name: string): ExcelWorksheet
-      close(): Promise<any>
-      openWorkbook(path: string, callback?: Function): Promise<any>
-      addWorkbook(callback?: Function): Promise<any>
-      getConnectionStatus(callback?: Function): Promise<any>
-      getWorkbooks(callback?: Function): Promise<any>
-      addEventListener(type: string, listener: (data?: any) => any): void
-      run(callback?: Function): Promise<any>
-    }
+    ExcelService: ExcelService
+    Excel: ExcelApplication
   }
 }

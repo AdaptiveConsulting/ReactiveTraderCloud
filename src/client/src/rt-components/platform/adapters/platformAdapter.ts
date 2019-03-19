@@ -1,10 +1,8 @@
-import { AppConfig, WindowConfig, InteropServices, ExcelInterop } from './types'
-import { Observable } from 'rxjs'
+import { WindowConfig, PlatformFeatures, PlatformName, PlatformType } from './types'
 
-export interface PlatformAdapter {
-  name: string
-  type: string
-  interopServices: InteropServices
+interface PlatformAdapterInterface {
+  readonly name: PlatformName
+  readonly type: PlatformType
 
   window: {
     open: (config: WindowConfig, onClose?: () => void) => Promise<Window | null>
@@ -14,18 +12,35 @@ export interface PlatformAdapter {
     resize?: () => void
   }
 
-  app?: {
-    exit?: () => void
-    open?: (id: string, config: AppConfig) => Promise<string>
+  notification: {
+    notify: (message: object) => void
   }
 
-  interop?: {
-    subscribe$: (topic: string) => Observable<any>
-    publish: (topic: string, message: any) => void
-    excel?: ExcelInterop
+}
+
+export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
+  abstract readonly name: PlatformName
+  abstract readonly type: PlatformType
+
+  /**
+   * Determines whether a platform has a given feature and performs a type guard for it
+   * @param feature name of the feature
+   */
+  hasFeature<FeatureName extends keyof PlatformFeatures>(
+    feature: FeatureName,
+  ): this is Pick<PlatformFeatures, FeatureName> {
+  // ): this is PlatformFeatures[FeatureName] {
+    return !!(this as any)[feature]
   }
 
-  notification?: {
+  abstract window: {
+    open: (config: WindowConfig, onClose?: () => void) => Promise<Window>
+    close?: () => void
+    maximize?: () => void
+    minimize?: () => void
+    resize?: () => void
+  }
+  abstract notification: {
     notify: (message: object) => void
   }
 }
