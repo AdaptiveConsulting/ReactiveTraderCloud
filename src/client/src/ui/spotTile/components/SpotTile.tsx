@@ -19,8 +19,9 @@ export default class SpotTile extends PureComponent<Props> {
       notional,
       updateNotional,
       executeTrade,
-      canExecute,
       children,
+      setDisabledTradingState,
+      disabled,
     } = this.props
 
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
@@ -34,10 +35,16 @@ export default class SpotTile extends PureComponent<Props> {
             executeTrade={executeTrade}
             priceData={price}
             currencyPair={currencyPair}
-            disabled={canExecute}
+            disabled={disabled}
           />
           <NotionalInputWrapper>
-            <NotionalInput notional={notional} currencyPairSymbol={currencyPair.base} updateNotional={updateNotional} />
+            <NotionalInput
+              notional={notional}
+              currencyPairSymbol={currencyPair.base}
+              updateNotional={updateNotional}
+              setDisabledTradingState={setDisabledTradingState}
+              isTradingDisabled={disabled}
+            />
           </NotionalInputWrapper>
         </SpotTileStyle>
         {children}

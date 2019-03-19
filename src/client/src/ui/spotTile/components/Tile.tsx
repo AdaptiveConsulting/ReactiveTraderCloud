@@ -5,6 +5,8 @@ import SpotTile from './SpotTile'
 import numeral from 'numeral'
 import { AnalyticsTile } from './analyticsTile'
 import { TileViews } from '../../workspace/workspaceHeader'
+import { DEFAULT_NOTIONAL_VALUE } from './notional/NotionalInput'
+
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
@@ -15,17 +17,23 @@ interface Props {
 
 interface State {
   notional: string
+  disabled: boolean
 }
 
 class Tile extends React.PureComponent<Props, State> {
   state = {
-    notional: '1000000',
+    notional: DEFAULT_NOTIONAL_VALUE,
+    disabled: false,
   }
+
   tileComponents = {
     [TileViews.Normal]: SpotTile,
     [TileViews.Analytics]: AnalyticsTile,
   }
+
   updateNotional = (notional: string) => this.setState({ notional })
+
+  setDisabledTradingState = (disabled: boolean) => this.setState({ disabled })
 
   executeTrade = (direction: Direction, rawSpotRate: number) => {
     const { currencyPair, executeTrade } = this.props
@@ -42,8 +50,9 @@ class Tile extends React.PureComponent<Props, State> {
 
   getNotional = () => numeral(this.state.notional).value() || DEFAULT_NOTIONAL
 
-  canExecute = () => {
+  get canExecute() {
     const { spotTileData, executionStatus } = this.props
+
     return Boolean(
       executionStatus === ServiceConnectionStatus.CONNECTED &&
         !spotTileData.isTradeExecutionInFlight &&
@@ -53,8 +62,9 @@ class Tile extends React.PureComponent<Props, State> {
 
   render() {
     const { currencyPair, spotTileData, executionStatus, tileView } = this.props
-    const { notional } = this.state
+    const { notional, disabled } = this.state
     const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
+
     return (
       <TileViewComponent
         currencyPair={currencyPair}
@@ -63,7 +73,8 @@ class Tile extends React.PureComponent<Props, State> {
         executionStatus={executionStatus}
         notional={notional}
         updateNotional={this.updateNotional}
-        canExecute={!this.canExecute()}
+        setDisabledTradingState={this.setDisabledTradingState}
+        disabled={disabled || !this.canExecute}
       >
         {this.props.children}
       </TileViewComponent>
