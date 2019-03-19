@@ -26,7 +26,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   state = {
     text: '',
     selectedFreeText: '',
-    selectedValueSet: { [ALL]: true }
+    selectedValueSet: { [ALL]: true },
   }
 
   componentDidMount() {
@@ -36,7 +36,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
         resultObj[value] = true
         return resultObj
       },
-      { [ALL]: true }
+      { [ALL]: true },
     )
 
     this.setState({ selectedValueSet: initialSelection })
@@ -57,7 +57,10 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
 
     // find if any options is unchecked
     const allOptionsSelected = selectedOptions.indexOf(false) === -1
-    return uniquOptions.length + 1 /*accounting for All option*/ !== selectedOptions.length || !allOptionsSelected
+    return (
+      uniquOptions.length + 1 /*accounting for All option*/ !== selectedOptions.length ||
+      !allOptionsSelected
+    )
   }
 
   doesFilterPass(params: ProcessRowParams) {
@@ -73,15 +76,16 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
             .indexOf(filterWord) >= 0
         )
       })
-
-    const doesOptionsFilterPass = !!this.state.selectedValueSet[value] || this.state.selectedValueSet[ALL] === true
+    const doesOptionsFilterPass =
+      !!this.state.selectedValueSet[value] || this.state.selectedValueSet[ALL] === true
 
     return doesTextFilterPass || doesOptionsFilterPass
   }
 
   getModel() {
     const filterText = this.state.text
-    const model = filterText !== undefined && filterText.trim().length === 0 ? undefined : filterText
+    const model =
+      filterText !== undefined && filterText.trim().length === 0 ? undefined : filterText
     return model
   }
 
@@ -116,19 +120,19 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
       }
     })
 
-    this.setState({ selectedFreeText: newValue, selectedValueSet: setFilterOptions }, () => this.updateFilter())
+    this.setState({ selectedFreeText: newValue, selectedValueSet: setFilterOptions }, () =>
+      this.updateFilter(),
+    )
   }
 
-  onOptionSelectChange = (event: React.FormEvent<HTMLInputElement>, value: string = ALL) => {
-    const target: HTMLInputElement = event.target as HTMLInputElement
+  onOptionSelectChange = (value: string = ALL) => {
     const updatedValueSet = { ...this.state.selectedValueSet }
-
     if (value === ALL) {
-      this.updateAllOptions(target.checked)
+      this.updateAllOptions(!updatedValueSet[value])
       return
     } else {
-      updatedValueSet[value] = target.checked
-      if (value !== ALL && target.checked === false) {
+      updatedValueSet[value] = !updatedValueSet[value]
+      if (value !== ALL && updatedValueSet[value] === false) {
         updatedValueSet[ALL] = false
       }
     }
@@ -148,11 +152,11 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     if (!this.isListSelectionModified()) {
       this.setState(
         {
-          text: ''
+          text: '',
         },
         () => {
           this.props.filterChangedCallback()
-        }
+        },
       )
       return
     }
@@ -168,11 +172,11 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     const newFilterText = newSelectedValueSet.join(' ')
     this.setState(
       {
-        text: newFilterText
+        text: newFilterText,
       },
       () => {
         this.props.filterChangedCallback()
-      }
+      },
     )
   }
 
@@ -198,21 +202,21 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
 
   createOptionItem = (value: string, label: string) => {
     return (
-      <div key={value} className="filter-container__checkbox-container">
+      <div
+        key={value}
+        className="filter-container__checkbox-container"
+        onClick={_ => this.onOptionSelectChange(value)}
+      >
         <input
           key={value}
           type="checkbox"
           className="filter-container__checkbox"
           checked={this.isOptionsChecked(value)}
-          onChange={event => this.onOptionSelectChange(event, value)}
+          onChange={_ => this.onOptionSelectChange(value)}
         />
         <label>{label || value}</label>
       </div>
     )
-  }
-
-  setupContainer = (el: Element) => {
-    //this.container = ReactDOM.findDOMNode(el) as Element
   }
 
   render() {
