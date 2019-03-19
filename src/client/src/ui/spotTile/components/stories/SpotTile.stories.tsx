@@ -7,7 +7,6 @@ import SpotTile from '../SpotTile'
 
 const executeTrade = action('executeTrade')
 const updateNotional = action('updateNotional')
-const setDisabledTradingState = action('setDisabledTradingState')
 
 stories.add('SpotTile', () => (
   <Story>
@@ -25,8 +24,8 @@ stories.add('SpotTile', () => (
           executionStatus={ServiceConnectionStatus.CONNECTED}
           notional="1,000,000"
           updateNotional={updateNotional}
-          setDisabledTradingState={setDisabledTradingState}
-          disabled={false}
+          tradingDisabled={false}
+          inputValidationMessage={null}
         />
       </div>
     </Centered>
@@ -49,8 +48,8 @@ stories.add('SpotTile in error', () => (
           executionStatus={ServiceConnectionStatus.CONNECTED}
           notional="1,000,000"
           updateNotional={updateNotional}
-          setDisabledTradingState={setDisabledTradingState}
-          disabled={true}
+          tradingDisabled={true}
+          inputValidationMessage={null}
         />
       </div>
     </Centered>

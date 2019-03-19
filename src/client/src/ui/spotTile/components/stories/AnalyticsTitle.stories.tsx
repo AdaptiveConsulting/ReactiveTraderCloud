@@ -7,7 +7,6 @@ import { AnalyticsTile } from '../analyticsTile'
 
 const updateNotional = action('updateNotional')
 const executeTrade = action('executeTrade')
-const setDisabledTradingState = action('setDisabledTradingState')
 
 stories.add('AnalyticsTile', () => (
   <Story>
@@ -25,8 +24,8 @@ stories.add('AnalyticsTile', () => (
           executionStatus={ServiceConnectionStatus.CONNECTED}
           notional="1,000,000"
           updateNotional={updateNotional}
-          setDisabledTradingState={setDisabledTradingState}
-          disabled={false}
+          tradingDisabled={false}
+          inputValidationMessage={null}
         />
       </div>
     </Centered>
@@ -49,8 +48,8 @@ stories.add('AnalyticsTile in error', () => (
           executionStatus={ServiceConnectionStatus.CONNECTED}
           notional="1,000,000"
           updateNotional={updateNotional}
-          setDisabledTradingState={setDisabledTradingState}
-          disabled={true}
+          tradingDisabled={true}
+          inputValidationMessage={null}
         />
       </div>
     </Centered>

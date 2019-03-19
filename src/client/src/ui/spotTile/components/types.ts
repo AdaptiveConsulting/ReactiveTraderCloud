@@ -1,5 +1,8 @@
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
 import { SpotTileData } from '../model'
+import { ValidationMessage } from './notional/NotionalInput'
+
+export type RfqState = 'none' | 'canRequest' | 'requested' | 'received' | 'expired'
 
 export interface Props {
   currencyPair: CurrencyPair
@@ -8,7 +11,7 @@ export interface Props {
   executeTrade: (direction: Direction, rawSpotRate: number) => void
   notional: string
   updateNotional: (notional: string) => void
-  setDisabledTradingState: (inError: boolean) => void
-  disabled: boolean
+  inputValidationMessage: ValidationMessage
+  tradingDisabled: boolean
   chartData?: []
 }

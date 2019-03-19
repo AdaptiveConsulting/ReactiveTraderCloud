@@ -23,22 +23,25 @@ const BookingPill = styled.div`
 `
 
 const BookingStatus = styled.span`
-  margin-left: 0.375rem;
+  /* margin-left: 0.375rem; */
   color: ${({ theme }) => theme.template.white.normal};
   font-size: 0.8125rem;
 `
 interface Props {
   show: boolean
+  showLoader?: boolean
 }
 
-const TileBooking: React.FC<Props> = ({ show }) => (
+const TileBooking: React.FC<Props> = ({ show, showLoader, children }) => (
   <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
     {show &&
       (styles => (
         <TileBookingStyle style={styles}>
           <BookingPill>
-            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
-            <BookingStatus>Executing</BookingStatus>
+            {showLoader && (
+              <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
+            )}
+            <BookingStatus>{children}</BookingStatus>
           </BookingPill>
         </TileBookingStyle>
       ))}
