@@ -15,7 +15,7 @@ const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 export const getDefaultNotionalValue = () => numeral(DEFAULT_NOTIONAL_VALUE).format(NUMERAL_FORMAT)
 export const getNumericNotional = (notional: string) =>
   numeral(notional).value() || DEFAULT_NOTIONAL_VALUE
-const invalidValuesRegex = /^(.|0|.0|0.|0.0|^$|Infinity|NaN)$/
+const invalidValuesRegex = /^(\.|0|.0|0.|0.0|^$|Infinity|NaN)$/
 const isInvalidTradingValue = (value: string) => value.match(invalidValuesRegex)
 
 // State management derived from props
@@ -58,6 +58,7 @@ export const getDerivedStateFromUserInput = (
       tradingDisabled: false,
     }
   } else if (isInvalidTradingValue(value)) {
+    console.log('really')
     // onChange if invalid trading value, update value
     // user is trying to enter decimals or deleting previous entry (empty string)
     // in those cases, disable trading, remove any message
