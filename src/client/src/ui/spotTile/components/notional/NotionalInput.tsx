@@ -1,9 +1,8 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
 import { styled } from 'rt-theme'
-import { isInvalidTradingValue } from '../Tile'
+import { NUMERAL_FORMAT } from '../TileBusinessLogic'
 
-const NUMERAL_FORMAT = '0,000,000[.]00'
 const DOT = '.'
 const ENTER = 'Enter'
 const CHAR_CODE_DOT = 46 // .
@@ -15,6 +14,11 @@ const SHORTCUT_CHAR_CODES = [75, 77, 107, 109] // K, M, k, m
 export type ValidationMessage = null | {
   type: 'warning' | 'error' | 'info'
   content: string
+}
+
+export interface NotionalUpdate {
+  value: string
+  type: string
 }
 
 const CurrencyPairSymbol = styled('span')`
@@ -71,7 +75,7 @@ export const Input = styled.input<{
 interface Props {
   currencyPairSymbol: string
   notional: string
-  updateNotional: (notional: string) => void
+  updateNotional: (notionalUpdate: NotionalUpdate) => void
   validationMessage: ValidationMessage
 }
 
@@ -106,37 +110,25 @@ export default class NotionalInput extends PureComponent<Props, State> {
   }
 
   handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value.trim()
-    this.formatAndUpdateValue(value)
-  }
-
-  handleChangeCausedByEvent = (event: React.FormEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget
-    const valueToFormatAndUpdate = isInvalidTradingValue(value) ? null : value
-    console.log('handleChangeCausedByEvent valueToFormatAndUpdate', valueToFormatAndUpdate)
-    // const callback = (newValue: string) => this.checkValue(newValue)
-    // this.formatAndUpdateValue(valueToFormatAndUpdate, callback)
-    this.formatAndUpdateValue(valueToFormatAndUpdate)
-  }
-
-  formatAndUpdateValue = (inputValue: string, callback?: (newValue: string) => void) => {
-    console.log('inputValue', inputValue)
     const { updateNotional } = this.props
-    const stringNotional = this.formatNotional(inputValue)
-    updateNotional(stringNotional)
+    const { currentTarget, type } = event
+    const inputValue = currentTarget.value.trim()
+    const value = this.formatNotional(inputValue)
+    updateNotional({ value, type })
   }
 
   formatNotional = (notional: string) => {
     // user may be trying to enter decimals or
     // user may be deleting previous entry (empty string)
     // in those cases, format and update only when completed.
+    if (notional === '.') {
+      return '0.'
+    }
+
     const lastTwoChars = notional.substr(-2)
-    const stringNotional =
-      notional !== '' && lastTwoChars.indexOf(DOT) === -1
-        ? numeral(notional).format(NUMERAL_FORMAT)
-        : notional
-    console.log('notional, stringNotional', notional, stringNotional)
-    return stringNotional
+    return notional !== '' && lastTwoChars.indexOf(DOT) === -1
+      ? numeral(notional).format(NUMERAL_FORMAT)
+      : notional
   }
 
   inputIsAllowed = (charCode: number) => {

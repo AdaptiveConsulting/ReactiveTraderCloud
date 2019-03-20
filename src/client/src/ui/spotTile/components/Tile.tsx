@@ -1,29 +1,19 @@
 import React from 'react'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import {
-  ExecuteTradeRequest,
-  SpotTileData,
-  createTradeRequest,
-  DEFAULT_NOTIONAL,
-  TradeRequest,
-} from '../model/index'
+import { ExecuteTradeRequest, SpotTileData, createTradeRequest, TradeRequest } from '../model/index'
 import SpotTile from './SpotTile'
-import numeral from 'numeral'
 import { AnalyticsTile } from './analyticsTile'
 import { TileViews } from '../../workspace/workspaceHeader'
 import { RfqState } from './types'
-import { convertNotionalShorthandToNumericValue } from './notional/utils'
-import { ValidationMessage } from './notional/NotionalInput'
+import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
+import {
+  getDefaultNotionalValue,
+  getStateFromBusinessLogic,
+  getNotional,
+  getDerivedStateFromBusinessLogic,
+} from './TileBusinessLogic'
 
-// These const are related to business logic.
-// Will pass them to NotionalInput component
-// as props if needed.
-const MAX_NOTIONAL_VALUE = 1000000000
-const MIN_RFQ_VALUE = 10000000
-const DEFAULT_NOTIONAL_VALUE = '1000000'
-export const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
-
-interface Props {
+export interface TileProps {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
@@ -32,28 +22,21 @@ interface Props {
   children: ({ rfqState }: { rfqState: RfqState }) => JSX.Element
 }
 
-interface State {
+export interface TileState {
   notional: string
   tradingDisabled: boolean
   rfqState: RfqState
   inputValidationMessage: ValidationMessage
+  canExecute: boolean
 }
 
-export const isInvalidTradingValue = (value: string) =>
-  value === '.' ||
-  value === '0' ||
-  value === '.0' ||
-  value === '0.' ||
-  value === '' ||
-  value === 'Infinity' ||
-  value === 'NaN'
-
-class Tile extends React.PureComponent<Props, State> {
-  state: State = {
-    notional: DEFAULT_NOTIONAL_VALUE,
+class Tile extends React.PureComponent<TileProps, TileState> {
+  state: TileState = {
+    notional: getDefaultNotionalValue(),
     tradingDisabled: false,
     rfqState: 'none',
     inputValidationMessage: null,
+    canExecute: true,
   }
 
   tileComponents = {
@@ -61,9 +44,14 @@ class Tile extends React.PureComponent<Props, State> {
     [TileViews.Analytics]: AnalyticsTile,
   }
 
+  static getDerivedStateFromProps(nextProps: TileProps, prevState: TileState) {
+    return getDerivedStateFromBusinessLogic(nextProps, prevState)
+  }
+
   executeTrade = (direction: Direction, rawSpotRate: number) => {
     const { currencyPair, executeTrade } = this.props
-    const notional = this.getNotional()
+    const { notional: notionalFromState } = this.state
+    const notional = getNotional(notionalFromState)
     const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: currencyPair.base,
@@ -74,70 +62,13 @@ class Tile extends React.PureComponent<Props, State> {
     executeTrade(createTradeRequest(tradeRequestObj))
   }
 
-  getNotional = () => numeral(this.state.notional).value() || DEFAULT_NOTIONAL
-
-  // TODO Business logic here
-  updateNotional = (value: string | null) => {
-    console.log('updateNotional', value)
-    const { inputValidationMessage, tradingDisabled } = this.state
-    const numericValue = convertNotionalShorthandToNumericValue(value)
-
-    if (value === null) {
-      this.setState({
-        notional: RESET_NOTIONAL_VALUE,
-        inputValidationMessage: null,
-        tradingDisabled: true,
-      })
-    } else if (isInvalidTradingValue(value)) {
-      this.setState({
-        notional: value,
-        inputValidationMessage: null,
-        tradingDisabled: true,
-      })
-    } else if (numericValue >= MIN_RFQ_VALUE && numericValue < MAX_NOTIONAL_VALUE) {
-      this.setState({
-        notional: value,
-        inputValidationMessage: null,
-        // rfqState: 'canRequest'
-        tradingDisabled: true,
-      })
-    } else if (numericValue >= MAX_NOTIONAL_VALUE) {
-      // if entered value bigger than max, show message error.
-      console.log('numericValue >= MAX_NOTIONAL_VALUE', numericValue >= MAX_NOTIONAL_VALUE)
-      this.setState({
-        notional: value,
-        inputValidationMessage: { type: 'error', content: 'Max exceeded' },
-        tradingDisabled: true,
-      })
-    } else if (inputValidationMessage || tradingDisabled) {
-      // all value checks have passed
-      // if Buy/Sell buttons are disabled (tradingDisabled)
-      // and/or error message is shown from previous check
-      // enable buttons and remove message error.
-      this.setState({
-        notional: value,
-        inputValidationMessage: null,
-        tradingDisabled: false,
-      })
-    }
-  }
-
-  get canExecute() {
-    const { spotTileData, executionStatus } = this.props
-    const { rfqState, tradingDisabled } = this.state
-
-    return Boolean(
-      !tradingDisabled &&
-        rfqState !== 'canRequest' &&
-        executionStatus === ServiceConnectionStatus.CONNECTED &&
-        !spotTileData.isTradeExecutionInFlight &&
-        spotTileData.price,
-    )
+  updateNotional = (notionalUpdate: NotionalUpdate) => {
+    this.setState(prevState => getStateFromBusinessLogic(prevState, notionalUpdate))
   }
 
   render() {
     const { children, currencyPair, spotTileData, executionStatus, tileView } = this.props
-    const { notional, rfqState, inputValidationMessage, tradingDisabled } = this.state
+    const { notional, rfqState, inputValidationMessage, canExecute } = this.state
     const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
 
     return (
@@ -149,7 +80,7 @@ class Tile extends React.PureComponent<Props, State> {
         notional={notional}
         updateNotional={this.updateNotional}
         inputValidationMessage={inputValidationMessage}
-        tradingDisabled={tradingDisabled}
+        tradingDisabled={!canExecute}
       >
         {children({ rfqState })}
       </TileViewComponent>
