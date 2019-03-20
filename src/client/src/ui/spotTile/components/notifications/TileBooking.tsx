@@ -10,12 +10,14 @@ const TileBookingStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none; /* allow clicks to go through div */
 `
 
 const BookingPill = styled.div`
   padding: 0.75rem 0.9375rem;
   border-radius: 17px;
   background: ${({ theme }) => theme.template.blue.normal};
+  pointer-events: auto; /* restore the click on this child */
 
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
