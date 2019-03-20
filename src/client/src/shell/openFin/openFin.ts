@@ -2,13 +2,16 @@ import { Observable } from 'rxjs'
 const LOG_NAME = 'OpenFin: '
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'
-
+const LIMIT_CHECKER_UUID = 'LIMIT-CHECKER'
+const LIMIT_CHECKER_STATUS_TOPIC = 'request-limit-check-status'
 export class OpenFinLimitChecker {
   private limitCheckSubscriber: string | null = null
   private limitCheckId: number = 1
 
   constructor() {
     if (typeof fin !== 'undefined') {
+      this.setLimitCheckSubscriber = this.setLimitCheckSubscriber.bind(this)
+      this.removeLimitCheckSubscriber = this.removeLimitCheckSubscriber.bind(this)
       this.initializeLimitChecker()
     }
   }
@@ -56,6 +59,12 @@ export class OpenFinLimitChecker {
     fin.desktop.main(() => {
       fin.desktop.InterApplicationBus.addSubscribeListener(this.setLimitCheckSubscriber)
       fin.desktop.InterApplicationBus.addUnsubscribeListener(this.removeLimitCheckSubscriber)
+      fin.desktop.InterApplicationBus.subscribe(LIMIT_CHECKER_UUID, null, LIMIT_CHECKER_STATUS_TOPIC, (message, _) => {
+        if (message === 'ALIVE') {
+          this.setLimitCheckSubscriber(LIMIT_CHECKER_UUID, REQUEST_LIMIT_CHECK_TOPIC)
+        }
+      })
+      fin.desktop.InterApplicationBus.send(LIMIT_CHECKER_UUID, LIMIT_CHECKER_STATUS_TOPIC, null)
     })
   }
 

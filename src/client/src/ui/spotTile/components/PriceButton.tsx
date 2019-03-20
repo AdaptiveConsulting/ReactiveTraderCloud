@@ -7,7 +7,7 @@ const hoverColors = {
   [Direction.Sell]: 'red',
 }
 
-export const TradeButton = styled('button')<{ direction: Direction }>`
+export const TradeButton = styled.button<{ direction: Direction }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
   transition: background-color 0.2s ease;
@@ -16,14 +16,23 @@ export const TradeButton = styled('button')<{ direction: Direction }>`
   outline: none;
   padding: 0.75rem 1.5rem;
   margin-bottom: 2px;
-  .spot-tile:hover & {
-    background-color: ${({ theme }) => theme.core.darkBackground};
-  }
 
-  .spot-tile:hover &:hover {
-    background-color: ${({ theme, direction }) => theme.template[hoverColors[direction]].normal};
-    color: ${({ theme }) => theme.template.white.normal};
+  ${({ theme, direction, disabled }) =>
+    disabled
+      ? `
+  cursor: initial;
+  opacity: 0.3;
+  pointer-events: none;
+    `
+      : `
+  .spot-tile:hover & {
+    background-color: ${theme.core.darkBackground};
   }
+  .spot-tile:hover &:hover {
+    background-color: ${theme.template[hoverColors[direction]].normal};
+    color: ${theme.template.white.normal};
+  }
+  `}
 `
 
 const Box = styled.div`
