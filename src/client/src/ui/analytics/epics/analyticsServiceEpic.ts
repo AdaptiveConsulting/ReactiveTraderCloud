@@ -4,7 +4,7 @@ import { ignoreElements, tap } from 'rxjs/operators'
 import { ApplicationEpic, GlobalState } from 'StoreTypes'
 import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
 import { EMPTY } from 'rxjs'
-import { CurrencyPairPosition } from 'rt-types'
+import { CurrencyPairPosition, CurrencyPairPositionWithPrice } from 'rt-types'
 
 const { fetchAnalytics } = AnalyticsActions
 type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
@@ -28,7 +28,7 @@ export const publishPositionUpdateEpic: ApplicationEpic = (action$, state$, { pl
   )
 }
 
-function combineWithLatestPrices(positions: CurrencyPairPosition[], globalState: GlobalState) {
+function combineWithLatestPrices(positions: CurrencyPairPosition[], globalState: GlobalState): CurrencyPairPositionWithPrice[] {
   return positions.map(position => {
     const tileData = globalState.spotTilesData[position.symbol]
     return {
