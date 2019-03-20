@@ -59,10 +59,8 @@ export const getDerivedStateFromUserInput = (
     }
   } else if (isInvalidTradingValue(value)) {
     // onChange if invalid trading value, update value
-    // user may be trying to enter decimals or
-    // user may be deleting previous entry (empty string)
-    // in those cases, format and update only when completed (by another case).
-    // remove any message, disable trading
+    // user is trying to enter decimals or deleting previous entry (empty string)
+    // in those cases, disable trading, remove any message
     return {
       ...prevState,
       notional: value,
