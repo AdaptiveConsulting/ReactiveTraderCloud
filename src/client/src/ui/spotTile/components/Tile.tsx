@@ -9,7 +9,7 @@ import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
 import {
   getDefaultNotionalValue,
   getStateFromBusinessLogic,
-  getNotional,
+  getNumericNotional,
   getDerivedStateFromBusinessLogic,
 } from './TileBusinessLogic'
 
@@ -51,7 +51,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   executeTrade = (direction: Direction, rawSpotRate: number) => {
     const { currencyPair, executeTrade } = this.props
     const { notional: notionalFromState } = this.state
-    const notional = getNotional(notionalFromState)
+    const notional = getNumericNotional(notionalFromState)
     const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: currencyPair.base,

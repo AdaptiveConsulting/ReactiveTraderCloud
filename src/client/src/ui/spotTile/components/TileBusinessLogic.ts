@@ -4,19 +4,21 @@ import { ServiceConnectionStatus } from 'rt-types'
 import { TileProps, TileState } from './Tile'
 import { NotionalUpdate } from './notional/NotionalInput'
 
+// Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'
 const DEFAULT_NOTIONAL_VALUE = 1000000
 const MAX_NOTIONAL_VALUE = 1000000000
 const MIN_RFQ_VALUE = 10000000
 const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 
+// Utils
 export const getDefaultNotionalValue = () => numeral(DEFAULT_NOTIONAL_VALUE).format(NUMERAL_FORMAT)
-
-export const getNotional = (notional: string) => numeral(notional).value() || DEFAULT_NOTIONAL_VALUE
-
+export const getNumericNotional = (notional: string) =>
+  numeral(notional).value() || DEFAULT_NOTIONAL_VALUE
 const invalidValuesRegex = /^(.|0|.0|0.|0.0|^$|Infinity|NaN)$/
 const isInvalidTradingValue = (value: string) => value.match(invalidValuesRegex)
 
+// State management
 export const getDerivedStateFromBusinessLogic = (nextProps: TileProps, prevState: TileState) => {
   const { spotTileData, executionStatus } = nextProps
   const { rfqState, tradingDisabled } = prevState
