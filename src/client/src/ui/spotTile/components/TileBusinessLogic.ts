@@ -14,15 +14,8 @@ export const getDefaultNotionalValue = () => numeral(DEFAULT_NOTIONAL_VALUE).for
 
 export const getNotional = (notional: string) => numeral(notional).value() || DEFAULT_NOTIONAL_VALUE
 
-export const isInvalidTradingValue = (value: string) =>
-  value === '.' ||
-  value === '0' ||
-  value === '.0' ||
-  value === '0.' ||
-  value === '0.0' ||
-  value === '' ||
-  value === 'Infinity' ||
-  value === 'NaN'
+const invalidValuesRegex = /^(.|0|.0|0.|0.0|^$|Infinity|NaN)$/
+const isInvalidTradingValue = (value: string) => value.match(invalidValuesRegex)
 
 export const getDerivedStateFromBusinessLogic = (nextProps: TileProps, prevState: TileState) => {
   const { spotTileData, executionStatus } = nextProps
@@ -48,7 +41,6 @@ export const getStateFromBusinessLogic = (
   const numericValue = convertNotionalShorthandToNumericValue(value)
 
   if (type === 'blur' && isInvalidTradingValue(value)) {
-    console.log('case 1')
     // onBlur if invalid trading value, reset value
     // remove any message, enable trading
     return {
@@ -59,11 +51,10 @@ export const getStateFromBusinessLogic = (
       tradingDisabled: false,
     }
   } else if (isInvalidTradingValue(value)) {
-    console.log('case 2')
     // onChange if invalid trading value, update value
     // user may be trying to enter decimals or
     // user may be deleting previous entry (empty string)
-    // in those cases, format and update only when completed (in other case).
+    // in those cases, format and update only when completed (by another case).
     // remove any message, disable trading
     return {
       ...prevState,
@@ -75,7 +66,6 @@ export const getStateFromBusinessLogic = (
   } else if (numericValue >= MIN_RFQ_VALUE && numericValue <= MAX_NOTIONAL_VALUE) {
     // if in RFQ range, set rfqState to 'canRequest' to trigger prompt
     // remove any message, disable trading
-    console.log('case 3')
     return {
       ...prevState,
       notional: value,
@@ -86,7 +76,6 @@ export const getStateFromBusinessLogic = (
   } else if (numericValue > MAX_NOTIONAL_VALUE) {
     // if value exceeds Max, show error message
     // update value, disable trading
-    console.log('case 4')
     return {
       ...prevState,
       notional: value,
@@ -100,7 +89,6 @@ export const getStateFromBusinessLogic = (
   } else if (numericValue < MIN_RFQ_VALUE) {
     // if under RFQ range, back to ESP (rfqState: 'none')
     // update value, remove message, enable trading
-    console.log('case 5')
     return {
       ...prevState,
       notional: value,
@@ -111,7 +99,6 @@ export const getStateFromBusinessLogic = (
   } else {
     // This case should not happen
     // Simply to prevent stuff from breaking
-    console.log('case 6')
     return {
       ...prevState,
       notional: value,
