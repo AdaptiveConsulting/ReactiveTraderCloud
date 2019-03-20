@@ -8,9 +8,9 @@ import { RfqState } from './types'
 import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
 import {
   getDefaultNotionalValue,
-  getStateFromBusinessLogic,
+  getDerivedStateFromProps,
   getNumericNotional,
-  getDerivedStateFromBusinessLogic,
+  getDerivedStateFromUserInput,
 } from './TileBusinessLogic'
 
 export interface TileProps {
@@ -45,7 +45,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   }
 
   static getDerivedStateFromProps(nextProps: TileProps, prevState: TileState) {
-    return getDerivedStateFromBusinessLogic(nextProps, prevState)
+    return getDerivedStateFromProps(nextProps, prevState)
   }
 
   executeTrade = (direction: Direction, rawSpotRate: number) => {
@@ -63,7 +63,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   }
 
   updateNotional = (notionalUpdate: NotionalUpdate) => {
-    this.setState(prevState => getStateFromBusinessLogic(prevState, notionalUpdate))
+    this.setState(prevState => getDerivedStateFromUserInput(prevState, notionalUpdate))
   }
 
   render() {

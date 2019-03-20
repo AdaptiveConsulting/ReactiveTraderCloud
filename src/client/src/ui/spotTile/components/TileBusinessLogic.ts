@@ -18,8 +18,8 @@ export const getNumericNotional = (notional: string) =>
 const invalidValuesRegex = /^(.|0|.0|0.|0.0|^$|Infinity|NaN)$/
 const isInvalidTradingValue = (value: string) => value.match(invalidValuesRegex)
 
-// State management
-export const getDerivedStateFromBusinessLogic = (nextProps: TileProps, prevState: TileState) => {
+// State management derived from props
+export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
   const { spotTileData, executionStatus } = nextProps
   const { rfqState, tradingDisabled } = prevState
   const canExecute = Boolean(
@@ -35,7 +35,8 @@ export const getDerivedStateFromBusinessLogic = (nextProps: TileProps, prevState
   }
 }
 
-export const getStateFromBusinessLogic = (
+// State management derived from user input
+export const getDerivedStateFromUserInput = (
   prevState: TileState,
   { value, type }: NotionalUpdate,
 ): TileState => {
