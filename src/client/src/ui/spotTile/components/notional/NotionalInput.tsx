@@ -55,6 +55,7 @@ export const Input = styled.input<{
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
+  ${({ disabled }) => disabled && 'opacity: 0.3;'}
   ${({ theme, validationMessage }) =>
     !validationMessage
       ? `
@@ -77,6 +78,7 @@ interface Props {
   notional: string
   updateNotional: (notionalUpdate: NotionalUpdate) => void
   validationMessage: ValidationMessage
+  disabled: boolean
 }
 
 interface State {
@@ -124,7 +126,6 @@ export default class NotionalInput extends PureComponent<Props, State> {
     if (notional === '.') {
       return '0.'
     }
-
     const lastTwoChars = notional.substr(-2)
     return notional !== '' && lastTwoChars.indexOf(DOT) === -1
       ? numeral(notional).format(NUMERAL_FORMAT)
@@ -148,7 +149,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
   }
 
   render() {
-    const { currencyPairSymbol, notional, validationMessage } = this.props
+    const { currencyPairSymbol, notional, validationMessage, disabled } = this.props
     const stringNotional = this.formatNotional(notional)
 
     return (
@@ -163,6 +164,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
           onBlur={this.handleChange}
           onKeyPress={this.handleKeyPressNotionalInput}
           validationMessage={validationMessage}
+          disabled={disabled}
         />
         {validationMessage && (
           <MessagePlaceholder validationMessageType={validationMessage.type}>

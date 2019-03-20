@@ -26,6 +26,7 @@ stories.add('SpotTile', () => (
           updateNotional={updateNotional}
           tradingDisabled={false}
           inputValidationMessage={null}
+          inputDisabled={false}
         />
       </div>
     </Centered>
@@ -50,6 +51,7 @@ stories.add('SpotTile in error', () => (
           updateNotional={updateNotional}
           tradingDisabled={true}
           inputValidationMessage={null}
+          inputDisabled={false}
         />
       </div>
     </Centered>

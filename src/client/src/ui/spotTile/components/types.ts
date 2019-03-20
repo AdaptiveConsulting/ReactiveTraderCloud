@@ -11,6 +11,7 @@ export interface Props {
   executeTrade: (direction: Direction, rawSpotRate: number) => void
   notional: string
   updateNotional: (notionalUpdate: NotionalUpdate) => void
+  inputDisabled: boolean
   inputValidationMessage: ValidationMessage
   tradingDisabled: boolean
   chartData?: []

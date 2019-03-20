@@ -29,6 +29,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
       executeTrade,
       children,
       tradingDisabled,
+      inputDisabled,
       inputValidationMessage,
     } = this.props
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
@@ -48,6 +49,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
                 currencyPairSymbol={currencyPair.base}
                 updateNotional={updateNotional}
                 validationMessage={inputValidationMessage}
+                disabled={inputDisabled}
               />
             </GraphNotionalWrapper>
             <AnalyticsPriceControl

@@ -21,6 +21,7 @@ export default class SpotTile extends PureComponent<Props> {
       executeTrade,
       children,
       tradingDisabled,
+      inputDisabled,
       inputValidationMessage,
     } = this.props
 
@@ -43,6 +44,7 @@ export default class SpotTile extends PureComponent<Props> {
               currencyPairSymbol={currencyPair.base}
               updateNotional={updateNotional}
               validationMessage={inputValidationMessage}
+              disabled={inputDisabled}
             />
           </NotionalInputWrapper>
         </SpotTileStyle>

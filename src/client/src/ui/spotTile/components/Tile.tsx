@@ -24,18 +24,20 @@ export interface TileProps {
 
 export interface TileState {
   notional: string
+  inputDisabled: boolean
+  inputValidationMessage: ValidationMessage
   tradingDisabled: boolean
   rfqState: RfqState
-  inputValidationMessage: ValidationMessage
   canExecute: boolean
 }
 
 class Tile extends React.PureComponent<TileProps, TileState> {
   state: TileState = {
     notional: getDefaultNotionalValue(),
+    inputValidationMessage: null,
+    inputDisabled: false,
     tradingDisabled: false,
     rfqState: 'none',
-    inputValidationMessage: null,
     canExecute: true,
   }
 
@@ -50,13 +52,12 @@ class Tile extends React.PureComponent<TileProps, TileState> {
 
   executeTrade = (direction: Direction, rawSpotRate: number) => {
     const { currencyPair, executeTrade } = this.props
-    const { notional: notionalFromState } = this.state
-    const notional = getNumericNotional(notionalFromState)
+    const { notional } = this.state
     const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: currencyPair.base,
       symbol: currencyPair.symbol,
-      notional,
+      notional: getNumericNotional(notional),
       rawSpotRate,
     }
     executeTrade(createTradeRequest(tradeRequestObj))
@@ -68,7 +69,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
 
   render() {
     const { children, currencyPair, spotTileData, executionStatus, tileView } = this.props
-    const { notional, rfqState, inputValidationMessage, canExecute } = this.state
+    const { notional, rfqState, inputDisabled, inputValidationMessage, canExecute } = this.state
     const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
 
     return (
@@ -79,6 +80,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         executionStatus={executionStatus}
         notional={notional}
         updateNotional={this.updateNotional}
+        inputDisabled={inputDisabled}
         inputValidationMessage={inputValidationMessage}
         tradingDisabled={!canExecute}
       >
