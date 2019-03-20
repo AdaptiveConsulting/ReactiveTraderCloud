@@ -4,13 +4,16 @@ import { ExecuteTradeRequest, SpotTileData, createTradeRequest, TradeRequest } f
 import SpotTile from './SpotTile'
 import { AnalyticsTile } from './analyticsTile'
 import { TileViews } from '../../workspace/workspaceHeader'
-import { RfqState } from './types'
+import { RfqState, RfqStateManagement } from './types'
 import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
 import {
   getDefaultNotionalValue,
   getDerivedStateFromProps,
   getNumericNotional,
   getDerivedStateFromUserInput,
+  rfqRequote,
+  rfqCancel,
+  rfqInitiate,
 } from './TileBusinessLogic'
 
 export interface TileProps {
@@ -19,7 +22,13 @@ export interface TileProps {
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
   tileView?: TileViews
-  children: ({ rfqState }: { rfqState: RfqState }) => JSX.Element
+  children: ({
+    canExecute,
+    rfqState,
+    rfqInitiate,
+    rfqCancel,
+    rfqRequote,
+  }: RfqStateManagement) => JSX.Element
 }
 
 export interface TileState {
@@ -63,6 +72,20 @@ class Tile extends React.PureComponent<TileProps, TileState> {
     executeTrade(createTradeRequest(tradeRequestObj))
   }
 
+  // TODO Maybe I don't need these in the class component
+  rfqInitiate = () => {
+    this.setState({ rfqState: 'requested' })
+    rfqInitiate()
+  }
+
+  rfqCancel = () => {
+    rfqCancel()
+  }
+
+  rfqRequote = () => {
+    rfqRequote()
+  }
+
   updateNotional = (notionalUpdate: NotionalUpdate) => {
     this.setState(prevState => getDerivedStateFromUserInput(prevState, notionalUpdate))
   }
@@ -83,8 +106,17 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         inputDisabled={inputDisabled}
         inputValidationMessage={inputValidationMessage}
         tradingDisabled={!canExecute}
+        rfqInitiate={this.rfqInitiate}
+        rfqCancel={this.rfqCancel}
+        rfqRequote={this.rfqRequote}
       >
-        {children({ rfqState })}
+        {children({
+          canExecute,
+          rfqState,
+          rfqInitiate: this.rfqInitiate,
+          rfqCancel: this.rfqCancel,
+          rfqRequote: this.rfqRequote,
+        })}
       </TileViewComponent>
     )
   }

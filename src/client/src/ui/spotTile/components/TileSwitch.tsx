@@ -7,7 +7,7 @@ import NotificationContainer from './notifications'
 import Tile from './Tile'
 import TileControls from './TileControls'
 import { TileViews } from '../../workspace/workspaceHeader'
-import { RfqState } from './types'
+import { RfqStateManagement } from './types'
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
@@ -38,17 +38,31 @@ const TileSwitch: React.FC<Props> = ({
     executionStatus={executionStatus}
     tileView={tileView}
   >
-    {({ rfqState }: { rfqState: RfqState }) => (
+    {({ canExecute, rfqState, rfqInitiate, rfqRequote, rfqCancel }: RfqStateManagement) => (
       <>
         <TileControls
           canPopout={canPopout}
           onPopoutClick={onPopoutClick}
           displayCurrencyChart={displayCurrencyChart}
         />
-        <TileBooking show={spotTileData.isTradeExecutionInFlight} showLoader>
+        <TileBooking
+          show={rfqState === 'none' && spotTileData.isTradeExecutionInFlight}
+          color="blue"
+          showLoader
+        >
           Executing
         </TileBooking>
-        <TileBooking show={rfqState === 'canRequest'}>Initiate RFQ</TileBooking>
+        <TileBooking
+          show={rfqState === 'canRequest'}
+          color="blue"
+          onBookingPillClick={rfqInitiate}
+          disabled={!canExecute}
+        >
+          Initiate RFQ
+        </TileBooking>
+        <TileBooking show={rfqState === 'requested'} color="red" onBookingPillClick={rfqCancel}>
+          Cancel RFQ
+        </TileBooking>
         <NotificationContainer
           isPriceStale={!spotTileData.lastTradeExecutionStatus && spotTileData.price.priceStale}
           lastTradeExecutionStatus={spotTileData.lastTradeExecutionStatus}

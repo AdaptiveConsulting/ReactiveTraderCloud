@@ -7,6 +7,9 @@ import SpotTile from '../SpotTile'
 
 const executeTrade = action('executeTrade')
 const updateNotional = action('updateNotional')
+const rfqInitiate = action('rfqInitiate')
+const rfqCancel = action('rfqCancel')
+const rfqRequote = action('rfqRequote')
 
 stories.add('SpotTile', () => (
   <Story>
@@ -27,6 +30,9 @@ stories.add('SpotTile', () => (
           tradingDisabled={false}
           inputValidationMessage={null}
           inputDisabled={false}
+          rfqInitiate={rfqInitiate}
+          rfqCancel={rfqCancel}
+          rfqRequote={rfqRequote}
         />
       </div>
     </Centered>
@@ -52,6 +58,9 @@ stories.add('SpotTile in error', () => (
           tradingDisabled={true}
           inputValidationMessage={null}
           inputDisabled={false}
+          rfqInitiate={rfqInitiate}
+          rfqCancel={rfqCancel}
+          rfqRequote={rfqRequote}
         />
       </div>
     </Centered>

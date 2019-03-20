@@ -21,7 +21,7 @@ const isInvalidTradingValue = (value: string) => value.match(invalidValuesRegex)
 // State management derived from props
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
   const { spotTileData, executionStatus } = nextProps
-  const { rfqState, tradingDisabled } = prevState
+  const { rfqState, tradingDisabled, inputValidationMessage } = prevState
 
   const isInTrade = !Boolean(
     executionStatus === ServiceConnectionStatus.CONNECTED &&
@@ -29,8 +29,10 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
       spotTileData.price,
   )
 
-  const canExecute = !tradingDisabled && rfqState !== 'canRequest' && !isInTrade
-  const inputDisabled = isInTrade
+  // TODO fix this logic is not good
+  const canExecute =
+    !tradingDisabled && rfqState !== 'canRequest' && !isInTrade && !inputValidationMessage
+  const inputDisabled = isInTrade || rfqState === 'requested'
 
   return {
     ...prevState,
@@ -58,7 +60,6 @@ export const getDerivedStateFromUserInput = (
       tradingDisabled: false,
     }
   } else if (isInvalidTradingValue(value)) {
-    console.log('really')
     // onChange if invalid trading value, update value
     // user is trying to enter decimals or deleting previous entry (empty string)
     // in those cases, disable trading, remove any message
@@ -112,4 +113,18 @@ export const getDerivedStateFromUserInput = (
       tradingDisabled: false,
     }
   }
+}
+
+// State management derived from other user interactions
+// TODO These should be actions, temporary
+export const rfqInitiate = () => {
+  console.log('rfqInitiate')
+}
+
+export const rfqCancel = () => {
+  console.log('rfqCancel')
+}
+
+export const rfqRequote = () => {
+  console.log('rfqRequote')
 }

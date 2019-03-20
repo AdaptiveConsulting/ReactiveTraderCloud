@@ -13,35 +13,67 @@ const TileBookingStyle = styled.div`
   pointer-events: none; /* allow clicks to go through div */
 `
 
-const BookingPill = styled.div`
+const BookingPill = styled.div<{ disabled: boolean }>`
   padding: 0.75rem 0.9375rem;
   border-radius: 17px;
-  background: ${({ theme }) => theme.template.blue.normal};
+  background: ${({ theme, color, disabled }) =>
+    theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
 
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
   }
+
+  ${({ onClick, disabled }) =>
+    onClick &&
+    !disabled &&
+    `
+  cursor: pointer;
+  `}
 `
 
 const BookingStatus = styled.span`
-  /* margin-left: 0.375rem; */
   color: ${({ theme }) => theme.template.white.normal};
   font-size: 0.8125rem;
 `
+
+const AdaptiveLoaderWrapper = styled.span`
+  padding-right: 0.375rem;
+`
+
 interface Props {
   show: boolean
   showLoader?: boolean
+  disabled?: boolean
+  color: string
+  onBookingPillClick?: () => void
 }
 
-const TileBooking: React.FC<Props> = ({ show, showLoader, children }) => (
+const TileBooking: React.FC<Props> = ({
+  show,
+  showLoader,
+  disabled,
+  color,
+  onBookingPillClick,
+  children,
+}) => (
   <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
     {show &&
       (styles => (
         <TileBookingStyle style={styles}>
-          <BookingPill>
+          <BookingPill
+            color={color}
+            onClick={e => {
+              if (!disabled) {
+                onBookingPillClick()
+              }
+            }}
+            disabled={disabled}
+          >
             {showLoader && (
-              <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
+              <AdaptiveLoaderWrapper>
+                <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
+              </AdaptiveLoaderWrapper>
             )}
             <BookingStatus>{children}</BookingStatus>
           </BookingPill>
