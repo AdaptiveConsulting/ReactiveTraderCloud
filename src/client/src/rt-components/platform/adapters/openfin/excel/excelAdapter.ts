@@ -27,39 +27,30 @@ class ExcelAdapter {
     return !!this.rtWorkbook && !!this.positionsSheet
   }
 
-  openExcel = () => {
+  /**
+   * Ensure the OpenFin Excel service is initialized and the spreadsheet loaded
+   */
+  openExcel = async () => {
     if (typeof fin.desktop.ExcelService === 'undefined' || !fin.desktop.ExcelService) {
       throw Error('fin.desktop.ExcelService not available! Make sure the library is loaded')
     }
-    return (
-      fin.desktop.ExcelService.init()
-        .then(() => {
-          return fin.desktop.Excel.run()
-        })
-        .then(() => {
-          return fin.desktop.Excel.openWorkbook(`${EXCEL_HOST_URL}/${EXCEL_FILE_NAME}`).catch(
-            err => {
-              return fin.desktop.Excel.getWorkbooks().then(wbs =>
-                wbs.find(wb => wb.name === EXCEL_FILE_NAME),
-              )
-            },
-          )
-        })
-        .then(rtWorkbook => {
-          this.rtWorkbook = rtWorkbook
-          return this.rtWorkbook.getWorksheets()
-        })
-        .then(worksheets => {
-          this.blotterSheet = worksheets.find(ws => ws.name === 'Blotter')
-          this.positionsSheet = worksheets.find(ws => ws.name === 'Positions')
-          fin.desktop.Excel.addEventListener('workbookClosed', this.onWorkbookClosed)
-          this.positionsSheet.addEventListener('sheetChanged', this.onPositionsSheetChanged)
-          this.positionsSheet.addEventListener(
-            'selectionChanged',
-            this.onPositionsSheetSelectionChanged,
-          )
-        })
-    )
+
+    await fin.desktop.ExcelService.init()
+    await fin.desktop.Excel.run()
+
+    try {
+      this.rtWorkbook = await fin.desktop.Excel.openWorkbook(`${EXCEL_HOST_URL}/${EXCEL_FILE_NAME}`)
+    } catch {
+      const wbs = await fin.desktop.Excel.getWorkbooks()
+      this.rtWorkbook = wbs.find(wb => wb.name === EXCEL_FILE_NAME)
+    }
+
+    const worksheets = await this.rtWorkbook.getWorksheets()
+    this.blotterSheet = worksheets.find(ws => ws.name === 'Blotter')
+    this.positionsSheet = worksheets.find(ws => ws.name === 'Positions')
+    fin.desktop.Excel.addEventListener('workbookClosed', this.onWorkbookClosed)
+    this.positionsSheet.addEventListener('sheetChanged', this.onPositionsSheetChanged)
+    this.positionsSheet.addEventListener('selectionChanged', this.onPositionsSheetSelectionChanged)
   }
 
   onWorkbookClosed = ({ workbook }: { workbook: fin.ExcelWorkbook }) => {
@@ -77,19 +68,10 @@ class ExcelAdapter {
     }
   }
 
-  onPositionsSheetChanged = ({ data }: fin.WorksheetChangedEventArgs) => {
-    if (!this.positionsSheet) {
-      return
-    }
-    if (
-      data.height === 1 &&
-      data.width === 1 &&
-      data.column === RTExcelConfig.ClosePositionPlaceholderColumn
-    ) {
-      console.log('Closing position from Excel button: ' + data.value)
-    }
-  }
-
+  /**
+   * Triggered when the user changes the selection of cell(s) in Excel
+   * We are simulating the 'Close position' buttons with plain cells so we detect clicks this way
+   */
   onPositionsSheetSelectionChanged = async ({ data }: fin.WorksheetSelectionChangedEventArgs) => {
     if (!this.positionsSheet || !platform.hasFeature('interop')) {
       return
@@ -128,16 +110,30 @@ class ExcelAdapter {
     }
   }
 
-  publishPositions = (positions: CurrencyPairPositionWithPrice[]) => {
+  /* 
+    Alternative approach: ActiveX button in excel to change the value of a particular cell via
+    VBA macros and pick up the change here. Currently the favoured approach is to detect the
+    selection of the "Close position" cell (styled as a button in Excel)
+  */
+  onPositionsSheetChanged = ({ data }: fin.WorksheetChangedEventArgs) => {
+    if (!this.positionsSheet) {
+      return
+    }
+    if (
+      data.height === 1 &&
+      data.width === 1 &&
+      data.column === RTExcelConfig.ClosePositionPlaceholderColumn
+    ) {
+    }
+  }
+
+  publishPositions = async (positions: CurrencyPairPositionWithPrice[]) => {
     if (!this.isSpreadsheetOpen() || !this.positionsSheet) {
       return
     }
 
-    this.positionsSheet
-      .setCells(formTable.positions(positions), RTExcelConfig.Positions)
-      .then(() => {
-        this.positionsSheet.setCells(formTable.ccy(positions), RTExcelConfig.CcyPairs)
-      })
+    await this.positionsSheet.setCells(formTable.positions(positions), RTExcelConfig.Positions)
+    await this.positionsSheet.setCells(formTable.ccy(positions), RTExcelConfig.CcyPairs)
   }
 
   publishBlotter = async (blotterData: any) => {
