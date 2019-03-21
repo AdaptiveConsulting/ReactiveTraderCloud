@@ -1,29 +1,30 @@
-const unzip = require('unzip')
 const https = require('https')
 const fs = require('fs')
-const fstream = require('fstream')
 
-const createinstaller = enviroment => {
+const createInstaller = (branch, enviroment) => {
   const fileName = `ReactiveTraderCloud-${enviroment}`
-  const appJSONUrl = `https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/src/client/public/config/openfin/${enviroment}.json`
+  const appJSONUrl = `https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/${branch}/src/client/public/config/openfin/${enviroment}.json`
+  const installerGeneratorUrl = `https://install.openfin.co/download/?unzipped=true&config=${appJSONUrl}&fileName=${fileName}`
 
-  const file = fs.createWriteStream(`install/ReactiveTraderCloud-${enviroment}.zip`)
-  const request = https.get(
-    `https://install.openfin.co/download/?config=${appJSONUrl}&fileName=${fileName}`,
-    response =>
-      response.pipe(file).on('finish', () => {
-        var readStream = fs.createReadStream(`install/ReactiveTraderCloud-${enviroment}.zip`)
-        var writeStream = fstream.Writer('install')
-        readStream.pipe(unzip.Parse()).pipe(writeStream)
+  console.log(`Generating installer: ${fileName}.exe`)
 
-        writeStream.on('close', () => {
-          fs.unlink(`install/ReactiveTraderCloud-${enviroment}.zip`)
-        })
-      }),
-  )
+  return new Promise(resolve => {
+    https.get(installerGeneratorUrl, response => {
+      const file = fs.createWriteStream(`install/${fileName}.exe`)
+      response.pipe(file)
+      resolve()
+    })
+  })
 }
 
-createinstaller('demo')
-createinstaller('dev')
-createinstaller('launcher-demo')
-createinstaller('launcher-dev')
+const createInstallers = (branch, environments) =>
+  environments.reduce(
+    (sequence, env) => sequence.then(() => createInstaller(branch, env)),
+    Promise.resolve(),
+  )
+
+// TODO: These could be exposed as arguments for greater flexibility
+const BRANCH = 'master'
+const INSTALLERS_TO_CREATE = ['demo', 'dev', 'launcher-demo', 'launcher-dev']
+
+createInstallers(BRANCH, INSTALLERS_TO_CREATE)
