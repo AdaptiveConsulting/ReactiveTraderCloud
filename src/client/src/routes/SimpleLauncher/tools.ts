@@ -13,7 +13,9 @@ export async function open(
 
   // open as url through openfin
   if (provider.platformName === 'browser') {
-    return new Promise((resolve, reject) => fin.desktop.System.openUrlWithBrowser(config.url, resolve, reject))
+    return new Promise((resolve, reject) =>
+      fin.desktop.System.openUrlWithBrowser(config.url, resolve, reject),
+    )
   }
 
   // open new openfin application
@@ -46,7 +48,7 @@ function createOpenFinApplication({
         name,
         url,
         uuid: name,
-        nonPersistent: false,
+        nonPersistent: true,
         mainWindowOptions: windowOptions,
       },
       () => resolve(app),

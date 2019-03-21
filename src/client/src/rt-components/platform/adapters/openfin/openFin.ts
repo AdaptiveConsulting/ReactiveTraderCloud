@@ -23,11 +23,11 @@ export default class OpenFin extends BasePlatformAdapter {
   readonly type = 'desktop'
 
   notificationHighlight = {
-    init: () => this.interop.subscribe$(InteropTopics.HighlightBlotter)
+    init: () => this.interop.subscribe$(InteropTopics.HighlightBlotter),
   }
-  
+
   chartIQ = {
-    open: (id: string, config: AppConfig) => this.app.open(id, config)
+    open: (id: string, config: AppConfig) => this.app.open(id, config),
   }
 
   window = {
@@ -86,17 +86,21 @@ export default class OpenFin extends BasePlatformAdapter {
   interop = {
     subscribe$: (topic: string) =>
       fromEventPattern(
-        (handler: Function) => fin.desktop.InterApplicationBus.subscribe('*', topic, handler as () => void),
-        (handler: Function) => fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void),
+        (handler: Function) =>
+          fin.desktop.InterApplicationBus.subscribe('*', topic, handler as () => void),
+        (handler: Function) =>
+          fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void),
       ),
 
-    publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
+    publish: (topic: string, message: string | object) =>
+      fin.desktop.InterApplicationBus.publish(topic, message),
   }
 
   excel = {
     init: () => excelAdapter.actions.init(),
     open: () => excelAdapter.actions.openExcel(),
-    publish: <T = string | object>(topic: string, message: T) => excelAdapter.actions.publishToExcel(topic, message),
+    publish: <T = string | object>(topic: string, message: T) =>
+      excelAdapter.actions.publishToExcel(topic, message),
   }
 
   notification = {
