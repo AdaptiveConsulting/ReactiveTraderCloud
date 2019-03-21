@@ -3,7 +3,7 @@ import { AppConfig, WindowConfig, InteropTopics } from '../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
-import { CurrencyPairPositionWithPrice } from 'rt-types';
+import { CurrencyPairPositionWithPrice } from 'rt-types'
 
 export const openFinNotifications: any[] = []
 
@@ -24,11 +24,11 @@ export default class OpenFin extends BasePlatformAdapter {
   readonly type = 'desktop'
 
   notificationHighlight = {
-    init: () => this.interop.subscribe$(InteropTopics.HighlightBlotter)
+    init: () => this.interop.subscribe$(InteropTopics.HighlightBlotter),
   }
-  
+
   chartIQ = {
-    open: (id: string, config: AppConfig) => this.app.open(id, config)
+    open: (id: string, config: AppConfig) => this.app.open(id, config),
   }
 
   window = {
@@ -41,12 +41,13 @@ export default class OpenFin extends BasePlatformAdapter {
       win.getState((state: OpenFinWindowState) => {
         switch (state) {
           case 'maximized':
-          case 'normal':
           case 'minimized':
             win.restore(() => win.bringToFront())
             break
+          case 'normal':
           default:
             win.maximize()
+            break
         }
       })
     },
@@ -87,17 +88,21 @@ export default class OpenFin extends BasePlatformAdapter {
   interop = {
     subscribe$: (topic: string) =>
       fromEventPattern(
-        (handler: Function) => fin.desktop.InterApplicationBus.subscribe('*', topic, handler as () => void),
-        (handler: Function) => fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void),
+        (handler: Function) =>
+          fin.desktop.InterApplicationBus.subscribe('*', topic, handler as () => void),
+        (handler: Function) =>
+          fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void),
       ),
 
-    publish: (topic: string, message: string | object) => fin.desktop.InterApplicationBus.publish(topic, message),
+    publish: (topic: string, message: string | object) =>
+      fin.desktop.InterApplicationBus.publish(topic, message),
   }
 
   excel = {
     open: () => excelAdapter.openExcel(),
     isOpen: () => excelAdapter.isSpreadsheetOpen(),
-    publishPositions: (positions: CurrencyPairPositionWithPrice[]) => excelAdapter.publishPositions(positions),
+    publishPositions: (positions: CurrencyPairPositionWithPrice[]) =>
+      excelAdapter.publishPositions(positions),
     publishBlotter: <T extends any>(blotterData: T) => excelAdapter.publishBlotter(blotterData),
   }
 
