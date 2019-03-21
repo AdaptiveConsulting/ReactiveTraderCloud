@@ -29,7 +29,6 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
   if (externalWindow) {
     const newUrl: string = `${externalWindow.location.origin}${config.url}`
     if (externalWindow.location.href !== newUrl) {
-      console.log(newUrl)
       externalWindow.location.replace(newUrl)
     }
   }
