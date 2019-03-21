@@ -1,12 +1,12 @@
 import { applicationConnected } from 'rt-actions'
 import { Direction } from 'rt-types'
 import { CurrencyPair } from 'rt-types'
-import { ignoreElements, map, switchMapTo, withLatestFrom } from 'rxjs/operators'
+import { map, switchMapTo, withLatestFrom } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions } from '../actions'
 import { SpotTileData } from '../model/spotTileData'
 import { InteropTopics } from 'rt-components'
-import { EMPTY } from 'rxjs';
+import { EMPTY } from 'rxjs'
 
 interface Msg {
   amount: number
@@ -45,13 +45,17 @@ export const closePositionEpic: ApplicationEpic = (action$, state$, { platform }
     withLatestFrom(state$),
     map(([message, state]) => {
       const [msg, uuid] = message as Message
-      const trade = createTrade(msg, state.spotTilesData[msg.symbol], state.currencyPairs[msg.symbol])
+      const trade = createTrade(
+        msg,
+        state.spotTilesData[msg.symbol],
+        state.currencyPairs[msg.symbol],
+      )
       return SpotTileActions.executeTrade(trade, {
         uuid,
         correlationId: msg.correlationId,
       })
     }),
 
-    ignoreElements(),
+    // ignoreElements(),
   )
 }

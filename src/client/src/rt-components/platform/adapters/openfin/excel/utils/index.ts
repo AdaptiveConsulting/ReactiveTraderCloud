@@ -1,34 +1,41 @@
-import { Trade } from 'rt-types'
-
-export interface CurrencyPairPosition {
-  symbol: string
-  basePnl: number
-  baseTradedAmount: number
-  basePnlName: 'basePnl'
-  baseTradedAmountName: 'baseTradedAmount'
-}
+import { Trade, CurrencyPairPosition, CurrencyPairPositionWithPrice } from 'rt-types'
 
 export const formTable = {
-  positions: (data: CurrencyPairPosition[], initialBid = 10000, initialOffer = 100000) =>
-    data.map((item: CurrencyPairPosition) => [
+  positions: (data: CurrencyPairPositionWithPrice[]) =>
+    data.map((item: CurrencyPairPositionWithPrice) => [
       item.symbol,
-      initialBid,
-      initialOffer,
+      item.latestBid,
+      item.latestAsk,
       item.baseTradedAmount,
       item.basePnl,
     ]),
-  ccy: (data: CurrencyPairPosition[]) =>
-    data.map((item: CurrencyPairPosition) => [item.symbol.slice(0, 3), item.baseTradedAmount]),
-  blotter: (data: Trade[]) =>
-    data.map((item: Trade) => [
-      item.tradeId,
-      item.tradeDate,
-      item.direction,
-      item.symbol,
-      item.notional,
-      item.spotRate,
-      item.status,
-      item.valueDate,
-      item.traderName,
-    ]),
+  ccy: (data: CurrencyPairPosition[]) => {
+    const positionsMap = data.reduce(
+      (acc, item) => {
+        const base = item.symbol.slice(0, 3)
+        const prevPosition = acc[base] || 0
+        return { ...acc, [base]: prevPosition + item.baseTradedAmount }
+      },
+      {} as { [ccy: string]: number },
+    )
+    return Object.keys(positionsMap).map(ccy => [ccy, positionsMap[ccy]] as [string, number])
+  },
+  blotter: (data: Array<Partial<Trade>>) => {
+    return data
+      .sort((a, b) => b.tradeId - a.tradeId) // Sort by most recent trades first
+      .map((item: Partial<Trade>) => [
+        item.tradeId,
+        item.tradeDate,
+        item.direction,
+        item.symbol,
+        item.notional,
+        item.dealtCurrency,
+        item.spotRate,
+        item.status,
+        item.valueDate,
+        item.traderName,
+      ])
+  },
 }
+
+export const delay = (ms: number) => new Promise(res => setTimeout(res, ms))

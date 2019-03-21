@@ -26,8 +26,7 @@ export async function open(
       case 'download':
         return downloadOrLaunchLimitChecker(config)
       case 'excel':
-        await excelAdapter.actions.init()
-        return excelAdapter.actions.openExcel()
+        return excelAdapter.openExcel()
       case 'application':
       default:
         const app = await createOpenFinApplication(config)
