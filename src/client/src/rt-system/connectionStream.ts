@@ -39,7 +39,7 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
           type: ConnectionEventType.CONNECTED,
           session,
           url: autobahn.getConnection().transport.info.url,
-          transportType: autobahn.getConnection().transport.info.type,
+          transportType: autobahn.getConnection().transport.info.type as ConnectionType,
         })
       }
     })

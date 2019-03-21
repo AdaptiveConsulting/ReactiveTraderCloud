@@ -13,7 +13,7 @@ export class ConnectionStatusService {
 
   constructor(connection: Observable<ConnectionEvent>) {
     this.connectionStatusStream$ = connection.pipe(
-      map(connectionUpdate => {
+      map<ConnectionEvent, ConnectionInfo>(connectionUpdate => {
         if (connectionUpdate.type === ConnectionEventType.CONNECTED) {
           return {
             status: ConnectionStatus.connected,
@@ -24,15 +24,15 @@ export class ConnectionStatusService {
           return {
             status: ConnectionStatus.disconnected,
             url: 'Disconnected',
-            transportType: ConnectionType.Unknown
+            transportType: 'unknown'
           }
         }
       }),
       publishBehavior({
         status: ConnectionStatus.init,
         url: 'Starting',
-        transportType: ConnectionType.Unknown
-      }),
+        transportType: 'unknown'
+      } as ConnectionInfo),
 
       refCount()
     )
