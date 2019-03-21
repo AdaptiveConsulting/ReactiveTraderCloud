@@ -4,7 +4,7 @@ import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
 
 export type RfqState = 'none' | 'canRequest' | 'requested' | 'received' | 'expired'
 export interface RfqStateManagement {
-  canExecute: boolean
+  userError: boolean
   rfqState: RfqState
   rfqInitiate: () => void
   rfqCancel: () => void

@@ -38,7 +38,7 @@ const TileSwitch: React.FC<Props> = ({
     executionStatus={executionStatus}
     tileView={tileView}
   >
-    {({ canExecute, rfqState, rfqInitiate, rfqRequote, rfqCancel }: RfqStateManagement) => (
+    {({ userError, rfqState, rfqInitiate, rfqRequote, rfqCancel }: RfqStateManagement) => (
       <>
         <TileControls
           canPopout={canPopout}
@@ -56,7 +56,7 @@ const TileSwitch: React.FC<Props> = ({
           show={rfqState === 'canRequest'}
           color="blue"
           onBookingPillClick={rfqInitiate}
-          disabled={!canExecute}
+          disabled={userError}
         >
           Initiate RFQ
         </TileBooking>

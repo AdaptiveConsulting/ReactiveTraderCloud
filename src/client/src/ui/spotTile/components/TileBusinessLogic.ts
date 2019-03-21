@@ -21,7 +21,7 @@ const isInvalidTradingValue = (value: string) => value.match(invalidValuesRegex)
 // State management derived from props
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
   const { spotTileData, executionStatus } = nextProps
-  const { rfqState, tradingDisabled, inputValidationMessage } = prevState
+  const { rfqState, inputValidationMessage } = prevState
 
   const isInTrade = !Boolean(
     executionStatus === ServiceConnectionStatus.CONNECTED &&
@@ -29,14 +29,12 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
       spotTileData.price,
   )
 
-  // TODO fix this logic is not good
-  const canExecute =
-    !tradingDisabled && rfqState !== 'canRequest' && !isInTrade && !inputValidationMessage
+  const canExecute = !isInTrade && rfqState !== 'canRequest' && !inputValidationMessage
   const inputDisabled = isInTrade || rfqState === 'requested'
 
   return {
     ...prevState,
-    inputDisabled, // TODO Check if I can avoid `inputDisabled` existing at all in the state
+    inputDisabled,
     canExecute,
   }
 }

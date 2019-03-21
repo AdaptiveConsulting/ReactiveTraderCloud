@@ -23,7 +23,7 @@ export interface TileProps {
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
   tileView?: TileViews
   children: ({
-    canExecute,
+    userError,
     rfqState,
     rfqInitiate,
     rfqCancel,
@@ -92,7 +92,14 @@ class Tile extends React.PureComponent<TileProps, TileState> {
 
   render() {
     const { children, currencyPair, spotTileData, executionStatus, tileView } = this.props
-    const { notional, rfqState, inputDisabled, inputValidationMessage, canExecute } = this.state
+    const {
+      notional,
+      rfqState,
+      inputDisabled,
+      inputValidationMessage,
+      tradingDisabled,
+      canExecute,
+    } = this.state
     const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
 
     return (
@@ -105,13 +112,13 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         updateNotional={this.updateNotional}
         inputDisabled={inputDisabled}
         inputValidationMessage={inputValidationMessage}
-        tradingDisabled={!canExecute}
+        tradingDisabled={tradingDisabled || !canExecute}
         rfqInitiate={this.rfqInitiate}
         rfqCancel={this.rfqCancel}
         rfqRequote={this.rfqRequote}
       >
         {children({
-          canExecute,
+          userError: Boolean(inputValidationMessage),
           rfqState,
           rfqInitiate: this.rfqInitiate,
           rfqCancel: this.rfqCancel,
