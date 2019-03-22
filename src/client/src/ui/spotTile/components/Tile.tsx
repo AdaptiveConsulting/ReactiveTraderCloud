@@ -84,9 +84,6 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       canExecute,
     } = this.state
     const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
-    if (spotTileData.rfqState) {
-      console.log('RENDER Tile', spotTileData.rfqState)
-    }
 
     return (
       <TileViewComponent

@@ -30,7 +30,11 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
       spotTileData.price,
   )
 
-  const canExecute = !isInTrade && spotTileData.rfqState !== 'canRequest' && !inputValidationMessage
+  const canExecute =
+    !isInTrade &&
+    spotTileData.rfqState !== 'canRequest' &&
+    spotTileData.rfqState !== 'requested' &&
+    !inputValidationMessage
   const inputDisabled = isInTrade || spotTileData.rfqState === 'requested'
 
   return {
@@ -57,7 +61,6 @@ export const getDerivedStateFromUserInput = ({
   actions,
 }: DerivedStateFromUserInput): TileState => {
   const { type, value } = notionalUpdate
-  console.warn('getDerivedStateFromUserInput spotTileData', spotTileData)
   const numericValue = convertNotionalShorthandToNumericValue(value)
   const { symbol } = spotTileData.price
 

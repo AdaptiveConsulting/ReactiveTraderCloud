@@ -5,6 +5,7 @@ import { SpotPriceTick } from '../model/spotPriceTick'
 import { getSpread, toRate } from '../model/spotTileUtils'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
+import { RfqState } from './types'
 
 const PriceControlsStyle = styled.div`
   display: flex;
@@ -17,12 +18,28 @@ interface Props {
   priceData: SpotPriceTick
   executeTrade: (direction: Direction, rawSpotRate: number) => void
   disabled: boolean
+  rfqState?: RfqState
 }
 
-const PriceControls: React.FC<Props> = ({ currencyPair, priceData, executeTrade, disabled }) => {
+const PriceControls: React.FC<Props> = ({
+  currencyPair,
+  priceData,
+  executeTrade,
+  rfqState,
+  disabled,
+}) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
-  const spread = getSpread(priceData.bid, priceData.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)
+  const spread = getSpread(
+    priceData.bid,
+    priceData.ask,
+    currencyPair.pipsPosition,
+    currencyPair.ratePrecision,
+  )
+  if (rfqState) {
+    console.warn(rfqState)
+    console.warn('disabled', disabled)
+  }
   return (
     <PriceControlsStyle>
       <PriceButton
@@ -32,9 +49,13 @@ const PriceControls: React.FC<Props> = ({ currencyPair, priceData, executeTrade,
         pip={bidRate.pips}
         tenth={bidRate.pipFraction}
         rawRate={bidRate.rawRate}
+        rfqState={rfqState}
         disabled={disabled}
       />
-      <PriceMovement priceMovementType={priceData.priceMovementType} spread={spread.formattedValue} />
+      <PriceMovement
+        priceMovementType={priceData.priceMovementType}
+        spread={spread.formattedValue}
+      />
       <PriceButton
         handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
         direction={Direction.Buy}
@@ -42,6 +63,7 @@ const PriceControls: React.FC<Props> = ({ currencyPair, priceData, executeTrade,
         pip={askRate.pips}
         tenth={askRate.pipFraction}
         rawRate={askRate.rawRate}
+        rfqState={rfqState}
         disabled={disabled}
       />
     </PriceControlsStyle>

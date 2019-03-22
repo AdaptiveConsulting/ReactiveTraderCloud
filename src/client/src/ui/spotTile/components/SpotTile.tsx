@@ -15,7 +15,7 @@ export default class SpotTile extends PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { price },
+      spotTileData: { price, rfqState },
       notional,
       updateNotional,
       executeTrade,
@@ -36,6 +36,7 @@ export default class SpotTile extends PureComponent<Props> {
             executeTrade={executeTrade}
             priceData={price}
             currencyPair={currencyPair}
+            rfqState={rfqState}
             disabled={tradingDisabled}
           />
           <NotionalInputWrapper>

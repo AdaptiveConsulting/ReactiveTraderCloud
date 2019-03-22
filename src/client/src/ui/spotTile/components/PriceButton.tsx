@@ -1,13 +1,29 @@
 import React from 'react'
 import { styled } from 'rt-theme'
 import { Direction } from 'rt-types'
+import { keyframes } from 'styled-components'
+import { RfqState } from './types'
 
 const hoverColors = {
   [Direction.Buy]: 'blue',
   [Direction.Sell]: 'red',
 }
 
-export const TradeButton = styled.button<{ direction: Direction }>`
+const backgroundEffect = (props: any) => {
+  return props.rfqState === 'received'
+    ? keyframes`
+    20% {
+      background-color: ${props.theme.template[hoverColors[props.direction]].normal};
+    }
+    100% {
+      background-color: ${props.theme.core.darkBackground};
+    }
+  `
+    : 'none'
+}
+
+// TODO Fix animation to make sure hover still works after
+export const TradeButton = styled.button<{ direction: Direction; rfqState: RfqState }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
   transition: background-color 0.2s ease;
@@ -16,9 +32,9 @@ export const TradeButton = styled.button<{ direction: Direction }>`
   outline: none;
   padding: 0.75rem 1.5rem;
   margin-bottom: 2px;
-
-  ${({ theme, direction, disabled }) =>
-    disabled
+  animation: ${(props: any) => backgroundEffect} 7s forwards;
+  ${({ theme, direction, disabled, rfqState }) =>
+    disabled && rfqState !== 'received'
       ? `
   cursor: initial;
   opacity: 0.3;
@@ -32,7 +48,7 @@ export const TradeButton = styled.button<{ direction: Direction }>`
     background-color: ${theme.template[hoverColors[direction]].normal};
     color: ${theme.template.white.normal};
   }
-  `}
+  `};
 `
 
 const Box = styled.div`
@@ -83,6 +99,7 @@ interface PriceButtonProps {
   rawRate?: number
   direction?: Direction
   handleClick?: () => void
+  rfqState?: RfqState
   disabled?: boolean
 }
 
@@ -99,11 +116,17 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
   rawRate = 0,
   direction = Direction.Buy,
   handleClick = () => {},
+  rfqState,
   disabled = false,
 }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
   return (
-    <TradeButton direction={direction} onClick={() => handleClick()} disabled={disabled}>
+    <TradeButton
+      direction={direction}
+      onClick={() => handleClick()}
+      rfqState={rfqState}
+      disabled={disabled}
+    >
       <Price>
         <BigWrapper>
           <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
