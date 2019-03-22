@@ -3,6 +3,7 @@ import { convertNotionalShorthandToNumericValue } from './notional/utils'
 import { ServiceConnectionStatus } from 'rt-types'
 import { TileProps, TileState } from './Tile'
 import { NotionalUpdate } from './notional/NotionalInput'
+import { SpotTileData } from '../model/spotTileData'
 
 // Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -21,7 +22,7 @@ const isInvalidTradingValue = (value: string) => value.match(invalidValuesRegex)
 // State management derived from props
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
   const { spotTileData, executionStatus } = nextProps
-  const { rfqState, inputValidationMessage } = prevState
+  const { inputValidationMessage } = prevState
 
   const isInTrade = !Boolean(
     executionStatus === ServiceConnectionStatus.CONNECTED &&
@@ -29,8 +30,8 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
       spotTileData.price,
   )
 
-  const canExecute = !isInTrade && rfqState !== 'canRequest' && !inputValidationMessage
-  const inputDisabled = isInTrade || rfqState === 'requested'
+  const canExecute = !isInTrade && spotTileData.rfqState !== 'canRequest' && !inputValidationMessage
+  const inputDisabled = isInTrade || spotTileData.rfqState === 'requested'
 
   return {
     ...prevState,
@@ -39,90 +40,77 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
   }
 }
 
+interface DerivedStateFromUserInput {
+  prevState: TileState
+  spotTileData: SpotTileData
+  notionalUpdate: NotionalUpdate
+  actions: {
+    setTradingMode: TileProps['setTradingMode']
+  }
+}
+
 // State management derived from user input
-export const getDerivedStateFromUserInput = (
-  prevState: TileState,
-  { value, type }: NotionalUpdate,
-): TileState => {
-  console.log(type, value)
+export const getDerivedStateFromUserInput = ({
+  prevState,
+  spotTileData,
+  notionalUpdate,
+  actions,
+}: DerivedStateFromUserInput): TileState => {
+  const { type, value } = notionalUpdate
+  console.warn('getDerivedStateFromUserInput spotTileData', spotTileData)
   const numericValue = convertNotionalShorthandToNumericValue(value)
+  const { symbol } = spotTileData.price
+
+  const defaultNextState: TileState = {
+    ...prevState,
+    notional: value,
+    inputValidationMessage: null,
+    tradingDisabled: false,
+  }
 
   if (type === 'blur' && isInvalidTradingValue(value)) {
     // onBlur if invalid trading value, reset value
     // remove any message, enable trading
+    actions.setTradingMode({ symbol, mode: 'esp' })
     return {
-      ...prevState,
+      ...defaultNextState,
       notional: numeral(RESET_NOTIONAL_VALUE).format(NUMERAL_FORMAT),
-      inputValidationMessage: null,
-      rfqState: 'none',
-      tradingDisabled: false,
     }
   } else if (isInvalidTradingValue(value)) {
     // onChange if invalid trading value, update value
     // user is trying to enter decimals or deleting previous entry (empty string)
     // in those cases, disable trading, remove any message
+    actions.setTradingMode({ symbol, mode: 'esp' })
     return {
-      ...prevState,
-      notional: value,
-      inputValidationMessage: null,
-      rfqState: 'none',
+      ...defaultNextState,
       tradingDisabled: true,
     }
   } else if (numericValue >= MIN_RFQ_VALUE && numericValue <= MAX_NOTIONAL_VALUE) {
-    // if in RFQ range, set rfqState to 'canRequest' to trigger prompt
+    // if in RFQ range, set tradingMode to 'rfq' to trigger prompt
     // remove any message, disable trading
+    actions.setTradingMode({ symbol, mode: 'rfq' })
     return {
-      ...prevState,
-      notional: value,
-      inputValidationMessage: null,
-      rfqState: 'canRequest',
+      ...defaultNextState,
       tradingDisabled: true,
     }
   } else if (numericValue > MAX_NOTIONAL_VALUE) {
     // if value exceeds Max, show error message
     // update value, disable trading
+    actions.setTradingMode({ symbol, mode: 'rfq' })
     return {
-      ...prevState,
-      notional: value,
+      ...defaultNextState,
       inputValidationMessage: {
         type: 'error',
         content: 'Max exceeded',
       },
-      rfqState: 'canRequest',
       tradingDisabled: true,
     }
-  } else if (numericValue < MIN_RFQ_VALUE) {
-    // if under RFQ range, back to ESP (rfqState: 'none')
-    // update value, remove message, enable trading
-    return {
-      ...prevState,
-      notional: value,
-      inputValidationMessage: null,
-      rfqState: 'none',
-      tradingDisabled: false,
-    }
   } else {
-    // This case should not happen
-    // Simply to prevent stuff from breaking
+    // if under RFQ range, back to ESP (tradingMode: 'esp')
+    // update value, remove message, enable trading
+    actions.setTradingMode({ symbol, mode: 'esp' })
     return {
-      ...prevState,
-      notional: value,
-      inputValidationMessage: null,
-      tradingDisabled: false,
+      ...defaultNextState,
     }
   }
-}
-
-// State management derived from other user interactions
-// TODO These should be actions, temporary
-export const rfqInitiate = () => {
-  console.log('rfqInitiate')
-}
-
-export const rfqCancel = () => {
-  console.log('rfqCancel')
-}
-
-export const rfqRequote = () => {
-  console.log('rfqRequote')
 }

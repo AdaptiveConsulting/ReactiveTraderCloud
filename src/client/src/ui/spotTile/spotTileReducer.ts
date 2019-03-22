@@ -34,8 +34,12 @@ const spotTileReducer = (
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
-      return { ...state, price: action.payload, historicPrices: [...state.historicPrices.slice(1), action.payload] }
-    case TILE_ACTION_TYPES.PRICE_HISTORY_RECIEVED:
+      return {
+        ...state,
+        price: action.payload,
+        historicPrices: [...state.historicPrices.slice(1), action.payload],
+      }
+    case TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED:
       return { ...state, historicPrices: action.payload }
     case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
       return { ...state, currencyChartIsOpening: true }
@@ -57,11 +61,50 @@ const spotTileReducer = (
   }
 }
 
+const rfqTileReducer = (
+  state: SpotTileData = { ...INITIAL_SPOT_TILE_STATE },
+  action: SpotTileActions,
+): SpotTileData => {
+  switch (action.type) {
+    case TILE_ACTION_TYPES.SET_TRADING_MODE:
+      return {
+        ...state,
+        rfqState: action.payload.mode === 'rfq' ? 'canRequest' : 'none',
+      }
+    case TILE_ACTION_TYPES.RFQ_REQUEST:
+      return {
+        ...state,
+        rfqState: 'requested',
+      }
+    case TILE_ACTION_TYPES.RFQ_RECEIVED:
+      return {
+        ...state,
+        rfqState: 'received',
+      }
+    default:
+      return state
+  }
+}
+
 export const spotTileDataReducer = (
   state: SpotTileState = INITIAL_STATE,
   action: SpotTileActions | DisconnectAction,
 ): SpotTileState => {
   switch (action.type) {
+    case TILE_ACTION_TYPES.SET_TRADING_MODE:
+      return {
+        ...state,
+        [action.payload.symbol]: rfqTileReducer(state[action.payload.symbol], action),
+      }
+    case TILE_ACTION_TYPES.RFQ_REQUEST:
+    case TILE_ACTION_TYPES.RFQ_RECEIVED:
+      return {
+        ...state,
+        [action.payload.currencyPair.symbol]: rfqTileReducer(
+          state[action.payload.currencyPair.symbol],
+          action,
+        ),
+      }
     case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
     case TILE_ACTION_TYPES.CURRENCY_CHART_OPENED:
     case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
@@ -78,7 +121,10 @@ export const spotTileDataReducer = (
     case TILE_ACTION_TYPES.TRADE_EXECUTED:
       return {
         ...state,
-        [action.payload.request.CurrencyPair]: spotTileReducer(state[action.payload.request.CurrencyPair], action),
+        [action.payload.request.CurrencyPair]: spotTileReducer(
+          state[action.payload.request.CurrencyPair],
+          action,
+        ),
       }
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
       return state[action.payload.symbol]
@@ -87,7 +133,7 @@ export const spotTileDataReducer = (
             [action.payload.symbol]: spotTileReducer(state[action.payload.symbol], action),
           }
         : state
-    case TILE_ACTION_TYPES.PRICE_HISTORY_RECIEVED:
+    case TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED:
       return {
         ...state,
         [action.meta]: spotTileReducer(state[action.meta], action),

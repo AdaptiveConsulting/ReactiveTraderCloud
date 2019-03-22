@@ -1,14 +1,25 @@
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
 import { SpotTileData } from '../model'
 import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
+import { RfqRequest } from '../model/rfqRequest'
+
+export interface TradingMode {
+  symbol: CurrencyPair['symbol']
+  mode: 'esp' | 'rfq'
+}
 
 export type RfqState = 'none' | 'canRequest' | 'requested' | 'received' | 'expired'
-export interface RfqStateManagement {
+
+export interface RfqActions {
+  request: (requestObj: RfqRequest) => void
+  cancel: () => void
+  requote: (requestObj: RfqRequest) => void
+}
+
+export interface TileSwitchChildrenProps {
+  notional: string
   userError: boolean
   rfqState: RfqState
-  rfqInitiate: () => void
-  rfqCancel: () => void
-  rfqRequote: () => void
 }
 
 export interface Props {
@@ -18,9 +29,6 @@ export interface Props {
   executeTrade: (direction: Direction, rawSpotRate: number) => void
   notional: string
   updateNotional: (notionalUpdate: NotionalUpdate) => void
-  rfqInitiate: () => void
-  rfqCancel: () => void
-  rfqRequote: () => void
   inputDisabled: boolean
   inputValidationMessage: ValidationMessage
   tradingDisabled: boolean

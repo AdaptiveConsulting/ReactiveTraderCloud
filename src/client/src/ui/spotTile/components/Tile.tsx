@@ -4,16 +4,13 @@ import { ExecuteTradeRequest, SpotTileData, createTradeRequest, TradeRequest } f
 import SpotTile from './SpotTile'
 import { AnalyticsTile } from './analyticsTile'
 import { TileViews } from '../../workspace/workspaceHeader'
-import { RfqState, RfqStateManagement } from './types'
+import { TileSwitchChildrenProps, TradingMode } from './types'
 import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
 import {
   getDefaultNotionalValue,
   getDerivedStateFromProps,
   getNumericNotional,
   getDerivedStateFromUserInput,
-  rfqRequote,
-  rfqCancel,
-  rfqInitiate,
 } from './TileBusinessLogic'
 
 export interface TileProps {
@@ -21,14 +18,9 @@ export interface TileProps {
   spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
+  setTradingMode: (tradindMode: TradingMode) => void
   tileView?: TileViews
-  children: ({
-    userError,
-    rfqState,
-    rfqInitiate,
-    rfqCancel,
-    rfqRequote,
-  }: RfqStateManagement) => JSX.Element
+  children: ({ notional, userError, rfqState }: TileSwitchChildrenProps) => JSX.Element
 }
 
 export interface TileState {
@@ -36,7 +28,6 @@ export interface TileState {
   inputDisabled: boolean
   inputValidationMessage: ValidationMessage
   tradingDisabled: boolean
-  rfqState: RfqState
   canExecute: boolean
 }
 
@@ -46,7 +37,6 @@ class Tile extends React.PureComponent<TileProps, TileState> {
     inputValidationMessage: null,
     inputDisabled: false,
     tradingDisabled: false,
-    rfqState: 'none',
     canExecute: true,
   }
 
@@ -72,35 +62,31 @@ class Tile extends React.PureComponent<TileProps, TileState> {
     executeTrade(createTradeRequest(tradeRequestObj))
   }
 
-  // TODO Maybe I don't need these in the class component
-  rfqInitiate = () => {
-    this.setState({ rfqState: 'requested' })
-    rfqInitiate()
-  }
-
-  rfqCancel = () => {
-    rfqCancel()
-  }
-
-  rfqRequote = () => {
-    rfqRequote()
-  }
-
   updateNotional = (notionalUpdate: NotionalUpdate) => {
-    this.setState(prevState => getDerivedStateFromUserInput(prevState, notionalUpdate))
+    const { setTradingMode, spotTileData } = this.props
+    this.setState(prevState =>
+      getDerivedStateFromUserInput({
+        prevState,
+        notionalUpdate,
+        spotTileData,
+        actions: { setTradingMode },
+      }),
+    )
   }
 
   render() {
     const { children, currencyPair, spotTileData, executionStatus, tileView } = this.props
     const {
       notional,
-      rfqState,
       inputDisabled,
       inputValidationMessage,
       tradingDisabled,
       canExecute,
     } = this.state
     const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
+    if (spotTileData.rfqState) {
+      console.log('RENDER Tile', spotTileData.rfqState)
+    }
 
     return (
       <TileViewComponent
@@ -113,16 +99,11 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         inputDisabled={inputDisabled}
         inputValidationMessage={inputValidationMessage}
         tradingDisabled={tradingDisabled || !canExecute}
-        rfqInitiate={this.rfqInitiate}
-        rfqCancel={this.rfqCancel}
-        rfqRequote={this.rfqRequote}
       >
         {children({
+          notional,
           userError: Boolean(inputValidationMessage),
-          rfqState,
-          rfqInitiate: this.rfqInitiate,
-          rfqCancel: this.rfqCancel,
-          rfqRequote: this.rfqRequote,
+          rfqState: spotTileData.rfqState,
         })}
       </TileViewComponent>
     )

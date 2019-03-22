@@ -6,9 +6,10 @@ import { publishPriceUpdateEpic } from './publishPrice'
 import { spotTileEpic } from './spotTileEpics'
 import { publishTradeExecutedEpic } from './tradeExecutedEpic'
 import { ApplicationDependencies } from 'applicationServices'
+import { rfqRequestEpic } from './rfqTileEpics'
 
 export default ({ platform }: ApplicationDependencies) => {
-  const epics = [spotTileEpic, pricingServiceEpic, pricingHistoryEpic]
+  const epics = [spotTileEpic, rfqRequestEpic, pricingServiceEpic, pricingHistoryEpic]
 
   if (platform.hasFeature('excel')) {
     epics.push(publishPriceUpdateEpic, publishTradeExecutedEpic, closePositionEpic)
