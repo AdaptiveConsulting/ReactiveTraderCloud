@@ -1,6 +1,7 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { usePlatform, WindowConfig } from 'rt-components'
 import { WindowCenterStatus } from './types'
+
 const defaultConfig: WindowConfig = {
   name: '',
   url: '',
@@ -24,17 +25,8 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
 }) => {
   const platform = usePlatform()
 
-  const [externalWindow, setWindow] = useState<Window>(null)
-
-  if (externalWindow) {
-    const newUrl: string = `${externalWindow.location.origin}${config.url}`
-    if (externalWindow.location.href !== newUrl) {
-      externalWindow.location.replace(newUrl)
-    }
-  }
-
   useEffect(() => {
-    let newWindow: Window
+    let externalWindow: Window
 
     const release = () => {
       if (externalWindow) {
@@ -46,10 +38,9 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
     }
 
     const getWindow = async () => {
-      newWindow = await platform.window.open(config, release)
-      if (newWindow) {
+      externalWindow = await platform.window.open(config, release)
+      if (externalWindow) {
         window.addEventListener('beforeunload', release)
-        setWindow(newWindow)
       }
     }
 
