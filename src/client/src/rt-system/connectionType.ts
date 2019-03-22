@@ -1,5 +1,3 @@
-export enum ConnectionType {
-  Unknown = '',
-  WebSocket = 'websocket',
-  LongPolling = 'longpoll'
-}
+import { DefaultTransportType } from 'autobahn'
+
+export type ConnectionType = DefaultTransportType | 'unknown'
