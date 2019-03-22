@@ -145,7 +145,6 @@ export default class NotionalInput extends PureComponent<Props, State> {
     }
   }
 
-  // This is used for toggle formatting on/off depending on value be entered
   isEditMode = (value: string) => value.match(/(?!.*(^0\.)).*^(,|$|0)/)
 
   handleUpdateCausedByEvent = (event: React.FormEvent<HTMLInputElement>) => {
@@ -155,7 +154,6 @@ export default class NotionalInput extends PureComponent<Props, State> {
     this.formatAndUpdateValue(valueToFormatAndUpdate, callback)
   }
 
-  // This is used for disabling trading (Buy/Sell buttons)
   isInvalidTradingValue = (value: string) => value.match(/(^(\.|0|.0|0.|0.0|$|Infinity|NaN)$)/)
 
   formatAndUpdateValue = (inputValue: string, callback?: (newValue: string) => void) => {
