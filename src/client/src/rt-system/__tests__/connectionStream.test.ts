@@ -1,5 +1,5 @@
 import { Observer } from 'rxjs'
-import { createConnection$, AutobahnConnection, ConnectionType, ConnectionEventType } from 'rt-system'
+import { createConnection$, AutobahnConnection, ConnectionEventType } from 'rt-system'
 import { Connection } from 'autobahn'
 
 beforeEach(() => jest.clearAllMocks())
@@ -69,7 +69,7 @@ describe('createConnection$', () => {
     expect(onNext).toHaveBeenCalledWith({
       type: ConnectionEventType.CONNECTED,
       url: 'FAKE',
-      transportType: ConnectionType.WebSocket,
+      transportType: 'websocket',
     })
   })
 
@@ -143,7 +143,7 @@ describe('createConnection$', () => {
     expect(mockObserver.next).toHaveBeenLastCalledWith({
       type: ConnectionEventType.CONNECTED,
       url: 'FAKE',
-      transportType: ConnectionType.WebSocket,
+      transportType: 'websocket',
     })
   })
 })
@@ -157,7 +157,9 @@ const MockAutobahnConnection = jest.fn<AutobahnConnection>((oncloseError, willRe
     onclose: jest.fn(cb => (oncloseCallback = cb)).mockName('onclose'),
     open: jest
       .fn(() => {
-        onopenCallback && onopenCallback(undefined)
+        if (onopenCallback) {
+          onopenCallback(undefined)
+        }
         return true
       })
       .mockName('open'),
@@ -177,7 +179,7 @@ const MockAutobahnConnection = jest.fn<AutobahnConnection>((oncloseError, willRe
     getConnection: jest.fn<Connection>(() => ({
       transport: {
         info: {
-          type: ConnectionType.WebSocket,
+          type: 'websocket',
           url: 'FAKE',
         },
       },

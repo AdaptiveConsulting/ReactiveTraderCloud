@@ -13,7 +13,9 @@ export async function open(
 
   // open as url through openfin
   if (provider.platformName === 'browser') {
-    return new Promise((resolve, reject) => fin.desktop.System.openUrlWithBrowser(config.url, resolve, reject))
+    return new Promise((resolve, reject) =>
+      fin.desktop.System.openUrlWithBrowser(config.url, resolve, reject),
+    )
   }
 
   // open new openfin application
@@ -24,8 +26,7 @@ export async function open(
       case 'download':
         return downloadOrLaunchLimitChecker(config)
       case 'excel':
-        await excelAdapter.actions.init()
-        return excelAdapter.actions.openExcel()
+        return excelAdapter.openExcel()
       case 'application':
       default:
         const app = await createOpenFinApplication(config)
@@ -46,7 +47,7 @@ function createOpenFinApplication({
         name,
         url,
         uuid: name,
-        nonPersistent: false,
+        nonPersistent: true,
         mainWindowOptions: windowOptions,
       },
       () => resolve(app),

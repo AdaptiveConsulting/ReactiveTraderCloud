@@ -3,7 +3,7 @@
         "name": "Reactive Trader Cloud (LOCAL)",
         "url": "http://localhost:3000/launcher",
         "uuid": "ReactiveLauncher",
-        "defaultWidth": 550,
+        "defaultWidth": 650,
         "defaultHeight": 52,
         "defaultTop": 160,
         "defaultLeft": 30,

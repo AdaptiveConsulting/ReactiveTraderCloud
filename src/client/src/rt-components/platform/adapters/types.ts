@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs'
+import { CurrencyPairPosition } from 'rt-types'
 
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
 export type PlatformType = 'browser' | 'desktop'
@@ -32,9 +33,10 @@ interface PubSubInterop {
 }
 
 interface ExcelInterop {
-  init(): void
   open(): void
-  publish<T = string | object>(topic: string, message: T): void
+  isOpen(): boolean
+  publishPositions: (positions: CurrencyPairPosition[]) => void
+  publishBlotter: <T extends any>(blotterData: T) => void
 }
 
 interface ChartIQInterop {

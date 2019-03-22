@@ -1,3 +1,9 @@
+/*
+!!!
+These declaration files were obtained from https://github.com/openfin/excel-api-example and amended for better typing
+!!!
+*/
+
 import { RpcDispatcher } from './RpcDispatcher';
 import { ExcelWorkbook } from './ExcelWorkbook';
 export declare class ExcelApplication extends RpcDispatcher {
@@ -16,12 +22,12 @@ export declare class ExcelApplication extends RpcDispatcher {
     subscribeToExcelMessages(): Promise<[void, void]>;
     unsubscribeToExcelMessages(): Promise<[void, void]>;
     monitorDisconnect(): Promise<{}>;
-    run(callback?: Function): Promise<any>;
-    getWorkbooks(callback?: Function): Promise<any>;
+    run(callback?: Function): Promise<void>;
+    getWorkbooks(callback?: Function): Promise<ExcelWorkbook[]>;
     getWorkbookByName(name: string): ExcelWorkbook;
     addWorkbook(callback?: Function): Promise<any>;
-    openWorkbook(path: string, callback?: Function): Promise<any>;
-    getConnectionStatus(callback?: Function): Promise<any>;
+    openWorkbook(path: string, callback?: Function): Promise<ExcelWorkbook>;
+    getConnectionStatus(callback?: Function): Promise<boolean>;
     getCalculationMode(callback: Function): Promise<any>;
     calculateAll(callback: Function): Promise<any>;
     toObject(): any;

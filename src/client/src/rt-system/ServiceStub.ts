@@ -1,7 +1,6 @@
 import { Error, ISubscription } from 'autobahn'
 import { NextObserver, Observable } from 'rxjs'
 import { filter, switchMap, take } from 'rxjs/operators'
-import './AutoBahnTypeExtensions'
 import { ConnectionEvent, ConnectionEventType, ConnectionOpenEvent } from './connectionStream'
 
 const LOG_NAME = 'Connection:'

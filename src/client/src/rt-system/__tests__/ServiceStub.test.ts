@@ -2,7 +2,6 @@ import {
   AutobahnSessionProxy,
   ConnectionEvent,
   ConnectionEventType,
-  ConnectionType,
   ConnectionOpenEvent,
 } from 'rt-system'
 import { MockScheduler } from 'rt-testing'
@@ -123,7 +122,7 @@ const createMockConnection: (session?: AutobahnSessionProxy) => ConnectionOpenEv
   type: ConnectionEventType.CONNECTED,
   session,
   url: 'FAKE',
-  transportType: ConnectionType.LongPolling,
+  transportType: 'longpoll',
 })
 
 const FAILURE_TOPIC = 'FAILURE_TOPIC'

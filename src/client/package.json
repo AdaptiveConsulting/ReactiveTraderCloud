@@ -96,7 +96,7 @@
     "@storybook/addon-notes": "^4.1.11",
     "@storybook/addons": "^4.1.11",
     "@storybook/react": "^4.1.9",
-    "@types/autobahn": "0.9.42",
+    "@types/autobahn": "18.10.0",
     "@types/d3-time-format": "^2.1.0",
     "@types/dom-mediacapture-record": "^1.0.1",
     "@types/enzyme": "^3.1.10",

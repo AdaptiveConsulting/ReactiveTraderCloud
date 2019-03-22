@@ -1,3 +1,9 @@
+/*
+!!!
+These declaration files were obtained from https://github.com/openfin/excel-api-example and amended for better typing
+!!!
+*/
+
 export declare abstract class RpcDispatcher implements EventTarget {
     protected static messageId: number;
     protected static promiseExecutors: {

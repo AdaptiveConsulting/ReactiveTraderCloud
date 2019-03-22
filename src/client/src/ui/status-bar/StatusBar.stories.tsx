@@ -20,7 +20,7 @@ stories.addDecorator(withKnobs)
 const generateConnectionStatus = (status: ConnectionStatus) => ({
   status,
   url: 'wss://web-demo.adaptivecluster.com:443/ws',
-  transportType: ConnectionType.WebSocket,
+  transportType: 'websocket' as ConnectionType,
 })
 
 const generateServiceStatuses = (status: ServiceConnectionStatus) =>
