@@ -8,7 +8,8 @@ const { rfqRequest, rfqReceived } = SpotTileActions
 
 type RfqRequest = ReturnType<typeof rfqRequest>
 
-export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
+// TODO listen to the price stream
+export const rfqRequestEpic: ApplicationEpic = action$ =>
   action$.pipe(
     ofType<Action, RfqRequest>(TILE_ACTION_TYPES.RFQ_REQUEST),
     delay(Math.random() * (10000 - 0)),

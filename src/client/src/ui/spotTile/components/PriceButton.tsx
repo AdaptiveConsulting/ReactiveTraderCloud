@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from 'rt-theme'
 import { Direction } from 'rt-types'
-import { keyframes } from 'styled-components'
+import { keyframes, css } from 'styled-components'
 import { RfqState } from './types'
 
 const hoverColors = {
@@ -9,18 +9,21 @@ const hoverColors = {
   [Direction.Sell]: 'red',
 }
 
-const backgroundEffect = (props: any) => {
-  return props.rfqState === 'received'
-    ? keyframes`
-    20% {
-      background-color: ${props.theme.template[hoverColors[props.direction]].normal};
-    }
-    100% {
-      background-color: ${props.theme.core.darkBackground};
-    }
-  `
-    : 'none'
-}
+const backgroundEffectKeyframes = (props: any) => keyframes`
+  5% {
+    background-color: ${props.theme.template[hoverColors[props.direction]].normal};
+  }
+  80% {
+    background-color: ${props.theme.template[hoverColors[props.direction]].normal};
+  }
+`
+
+const getCSSProperty = (props: any) => css`
+  animation: ${backgroundEffectKeyframes(props)} 5s;
+`
+
+const backgroundEffect = (props: any) =>
+  props.rfqState === 'received' ? getCSSProperty(props) : ''
 
 // TODO Fix animation to make sure hover still works after
 export const TradeButton = styled.button<{ direction: Direction; rfqState: RfqState }>`
@@ -32,7 +35,8 @@ export const TradeButton = styled.button<{ direction: Direction; rfqState: RfqSt
   outline: none;
   padding: 0.75rem 1.5rem;
   margin-bottom: 2px;
-  animation: ${(props: any) => backgroundEffect} 7s forwards;
+  ${backgroundEffect}
+
   ${({ theme, direction, disabled, rfqState }) =>
     disabled && rfqState !== 'received'
       ? `
