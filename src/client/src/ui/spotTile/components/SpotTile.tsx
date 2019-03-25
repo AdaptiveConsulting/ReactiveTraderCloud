@@ -6,6 +6,7 @@ import TileHeader from './TileHeader'
 import { NotionalInputWrapper, SpotTileWrapper, SpotTileStyle } from './styled'
 import { Props } from './types'
 import { usePlatform } from 'rt-components'
+import RfqTimer from './RfqTimer'
 
 const SpotTileWrapperWithPlatform: FC = props => {
   const platform = usePlatform()
@@ -48,6 +49,7 @@ export default class SpotTile extends PureComponent<Props> {
               disabled={inputDisabled}
             />
           </NotionalInputWrapper>
+          <RfqTimer rfqState={rfqState} />
         </SpotTileStyle>
         {children}
       </SpotTileWrapperWithPlatform>

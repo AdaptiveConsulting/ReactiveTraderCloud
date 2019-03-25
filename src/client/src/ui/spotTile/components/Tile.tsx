@@ -20,7 +20,7 @@ export interface TileProps {
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
   setTradingMode: (tradindMode: TradingMode) => void
   tileView?: TileViews
-  children: ({ notional, userError, rfqState }: TileSwitchChildrenProps) => JSX.Element
+  children: ({ notional, userError }: TileSwitchChildrenProps) => JSX.Element
 }
 
 export interface TileState {
@@ -100,7 +100,6 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         {children({
           notional,
           userError: Boolean(inputValidationMessage),
-          rfqState: spotTileData.rfqState,
         })}
       </TileViewComponent>
     )

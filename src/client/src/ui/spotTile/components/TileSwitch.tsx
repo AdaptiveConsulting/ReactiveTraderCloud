@@ -44,7 +44,7 @@ const TileSwitch: React.FC<Props> = ({
     tileView={tileView}
     setTradingMode={setTradingMode}
   >
-    {({ notional, userError, rfqState }: TileSwitchChildrenProps) => (
+    {({ notional, userError }: TileSwitchChildrenProps) => (
       <>
         <TileControls
           canPopout={canPopout}
@@ -69,14 +69,14 @@ const TileSwitch: React.FC<Props> = ({
           Initiate RFQ
         </TileBooking>
         <TileBooking
-          show={spotTileData.rfqState === 'requested' && rfqState === 'requested'}
+          show={spotTileData.rfqState === 'requested'}
           color="red"
           onBookingPillClick={() => rfq.cancel()}
         >
           Cancel RFQ
         </TileBooking>
         <TileBooking
-          show={spotTileData.rfqState === 'expired' && rfqState === 'expired'}
+          show={spotTileData.rfqState === 'expired'}
           color="blue"
           onBookingPillClick={() =>
             rfq.request({ notional: getNumericNotional(notional), currencyPair })

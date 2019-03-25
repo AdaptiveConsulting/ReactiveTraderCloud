@@ -19,7 +19,6 @@ export interface RfqActions {
 export interface TileSwitchChildrenProps {
   notional: string
   userError: boolean
-  rfqState: RfqState
 }
 
 export interface Props {
