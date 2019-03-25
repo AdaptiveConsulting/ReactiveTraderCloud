@@ -62,7 +62,10 @@ export const getDerivedStateFromUserInput = ({
 }: DerivedStateFromUserInput): TileState => {
   const { type, value } = notionalUpdate
   const numericValue = convertNotionalShorthandToNumericValue(value)
-  const { symbol } = spotTileData.price
+  const {
+    price: { symbol },
+    rfqState,
+  } = spotTileData
 
   const defaultNextState: TileState = {
     ...prevState,
@@ -74,7 +77,9 @@ export const getDerivedStateFromUserInput = ({
   if (type === 'blur' && isInvalidTradingValue(value)) {
     // onBlur if invalid trading value, reset value
     // remove any message, enable trading
-    actions.setTradingMode({ symbol, mode: 'esp' })
+    if (rfqState !== 'none') {
+      actions.setTradingMode({ symbol, mode: 'esp' })
+    }
     return {
       ...defaultNextState,
       notional: numeral(RESET_NOTIONAL_VALUE).format(NUMERAL_FORMAT),
@@ -83,7 +88,9 @@ export const getDerivedStateFromUserInput = ({
     // onChange if invalid trading value, update value
     // user is trying to enter decimals or deleting previous entry (empty string)
     // in those cases, disable trading, remove any message
-    actions.setTradingMode({ symbol, mode: 'esp' })
+    if (rfqState !== 'none') {
+      actions.setTradingMode({ symbol, mode: 'esp' })
+    }
     return {
       ...defaultNextState,
       tradingDisabled: true,
@@ -91,7 +98,9 @@ export const getDerivedStateFromUserInput = ({
   } else if (numericValue >= MIN_RFQ_VALUE && numericValue <= MAX_NOTIONAL_VALUE) {
     // if in RFQ range, set tradingMode to 'rfq' to trigger prompt
     // remove any message, disable trading
-    actions.setTradingMode({ symbol, mode: 'rfq' })
+    if (rfqState === 'none') {
+      actions.setTradingMode({ symbol, mode: 'rfq' })
+    }
     return {
       ...defaultNextState,
       tradingDisabled: true,
@@ -99,7 +108,9 @@ export const getDerivedStateFromUserInput = ({
   } else if (numericValue > MAX_NOTIONAL_VALUE) {
     // if value exceeds Max, show error message
     // update value, disable trading
-    actions.setTradingMode({ symbol, mode: 'rfq' })
+    if (rfqState === 'none') {
+      actions.setTradingMode({ symbol, mode: 'rfq' })
+    }
     return {
       ...defaultNextState,
       inputValidationMessage: {
@@ -109,9 +120,11 @@ export const getDerivedStateFromUserInput = ({
       tradingDisabled: true,
     }
   } else {
-    // if under RFQ range, back to ESP (tradingMode: 'esp')
+    // if under RFQ range, back to 'esp'
     // update value, remove message, enable trading
-    actions.setTradingMode({ symbol, mode: 'esp' })
+    if (rfqState !== 'none') {
+      actions.setTradingMode({ symbol, mode: 'esp' })
+    }
     return {
       ...defaultNextState,
     }
