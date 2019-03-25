@@ -138,12 +138,14 @@ export default class NotionalInput extends PureComponent<Props, State> {
       // user may be deleting previous entry (empty string)
       // in those cases, format and update only when completed.
       const lastTwoChars = value.substr(-2)
-      if (value !== '' && lastTwoChars.indexOf(DOT) === -1) {
+      if (!this.isEditMode(value) && lastTwoChars.indexOf(DOT) === -1) {
         // propagate change back
         this.formatAndUpdateValue(value)
       }
     }
   }
+
+  isEditMode = (value: string) => value.match(/(?!.*(^0\.)).*^(,|$|0)/)
 
   handleUpdateCausedByEvent = (event: React.FormEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
@@ -152,7 +154,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
     this.formatAndUpdateValue(valueToFormatAndUpdate, callback)
   }
 
-  isInvalidTradingValue = (value: string) => value === DOT || value === '0' || value === '' || value === 'Infinity'
+  isInvalidTradingValue = (value: string) => value.match(/(^(\.|0|.0|0.|0.0|$|Infinity|NaN)$)/)
 
   formatAndUpdateValue = (inputValue: string, callback?: (newValue: string) => void) => {
     const { updateNotional } = this.props
@@ -170,7 +172,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
     const { isTradingDisabled } = this.props
     const { showMessage } = this.state
     const numericValue = convertNotionalShorthandToNumericValue(value)
-    if (this.isInvalidTradingValue(value)) {
+    if (this.isInvalidTradingValue(value) || this.isEditMode(value)) {
       // if entered value is invalid trading value, disable Buy/Sell buttons.
       // not showing message error since the user could be in the process
       // of entering a valid value
