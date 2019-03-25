@@ -111,6 +111,7 @@ TileSwitch.defaultProps = {
     },
     currencyChartIsOpening: false,
     lastTradeExecutionStatus: null,
+    rfqState: 'none',
   },
   currencyPair: {
     symbol: '',

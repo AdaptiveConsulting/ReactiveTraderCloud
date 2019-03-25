@@ -16,5 +16,5 @@ export interface SpotTileData {
   price: SpotPriceTick
   historicPrices: SpotPriceTick[]
   lastTradeExecutionStatus?: LastTradeExecutionStatus | null
-  rfqState?: RfqState
+  rfqState: RfqState
 }

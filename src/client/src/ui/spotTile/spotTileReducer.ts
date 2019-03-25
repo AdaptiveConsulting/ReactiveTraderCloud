@@ -24,6 +24,7 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
     priceMovementType: PriceMovementTypes.None,
     priceStale: false,
   },
+  rfqState: 'none',
 }
 
 const spotTileReducer = (
