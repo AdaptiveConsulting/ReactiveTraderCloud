@@ -16,8 +16,8 @@ const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 export const getDefaultNotionalValue = () => numeral(DEFAULT_NOTIONAL_VALUE).format(NUMERAL_FORMAT)
 export const getNumericNotional = (notional: string) =>
   numeral(notional).value() || DEFAULT_NOTIONAL_VALUE
-const invalidValuesRegex = /^(\.|0|.0|0.|0.0|^$|Infinity|NaN)$/
-const isInvalidTradingValue = (value: string) => value.match(invalidValuesRegex)
+const invalidTradingValuesRegex = /^(\.|0|.0|0.|0.0|$|Infinity|NaN)$/
+const isInvalidTradingValue = (value: string) => value.match(invalidTradingValuesRegex)
 
 // State management derived from props
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
