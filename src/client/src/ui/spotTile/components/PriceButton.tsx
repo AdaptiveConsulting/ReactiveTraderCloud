@@ -18,12 +18,12 @@ const backgroundEffectKeyframes = (props: any) => keyframes`
   }
 `
 
-const getCSSProperty = (props: any) => css`
+const getAnimationCSSProperty = (props: any) => css`
   animation: ${backgroundEffectKeyframes(props)} 5s;
 `
 
 const backgroundEffect = (props: any) =>
-  props.rfqState === 'received' ? getCSSProperty(props) : ''
+  props.rfqState === 'received' ? getAnimationCSSProperty(props) : ''
 
 // TODO Fix animation to make sure hover still works after
 export const TradeButton = styled.button<{ direction: Direction; rfqState: RfqState }>`
