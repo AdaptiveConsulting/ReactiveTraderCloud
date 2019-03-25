@@ -36,10 +36,6 @@ const PriceControls: React.FC<Props> = ({
     currencyPair.pipsPosition,
     currencyPair.ratePrecision,
   )
-  if (rfqState) {
-    console.warn(rfqState)
-    console.warn('disabled', disabled)
-  }
   return (
     <PriceControlsStyle>
       <PriceButton
