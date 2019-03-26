@@ -21,6 +21,17 @@ interface Props {
   rfqState?: RfqState
 }
 
+const PriceButtonDisabledPlaceholder = styled.div`
+  border: 2px solid ${({ theme }) => theme.core.darkBackground};
+  border-radius: 3px;
+  font-size: 12px;
+  transition: background-color 0.2s ease;
+  padding: 1rem;
+  max-height: 58px;
+  opacity: 0.5;
+  text-transform: uppercase;
+`
+
 const PriceControls: React.FC<Props> = ({
   currencyPair,
   priceData,
@@ -38,30 +49,46 @@ const PriceControls: React.FC<Props> = ({
   )
   return (
     <PriceControlsStyle>
-      <PriceButton
-        handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
-        direction={Direction.Sell}
-        big={bidRate.bigFigure}
-        pip={bidRate.pips}
-        tenth={bidRate.pipFraction}
-        rawRate={bidRate.rawRate}
-        rfqState={rfqState}
-        disabled={disabled}
-      />
+      {(rfqState === 'none' || rfqState === 'received' || rfqState === 'expired') && (
+        <PriceButton
+          handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
+          direction={Direction.Sell}
+          big={bidRate.bigFigure}
+          pip={bidRate.pips}
+          tenth={bidRate.pipFraction}
+          rawRate={bidRate.rawRate}
+          rfqState={rfqState}
+          disabled={disabled}
+        />
+      )}
+      {rfqState === 'canRequest' && (
+        <PriceButtonDisabledPlaceholder>canRequest</PriceButtonDisabledPlaceholder>
+      )}
+      {rfqState === 'requested' && (
+        <PriceButtonDisabledPlaceholder>requested</PriceButtonDisabledPlaceholder>
+      )}
       <PriceMovement
         priceMovementType={priceData.priceMovementType}
         spread={spread.formattedValue}
       />
-      <PriceButton
-        handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
-        direction={Direction.Buy}
-        big={askRate.bigFigure}
-        pip={askRate.pips}
-        tenth={askRate.pipFraction}
-        rawRate={askRate.rawRate}
-        rfqState={rfqState}
-        disabled={disabled}
-      />
+      {(rfqState === 'none' || rfqState === 'received' || rfqState === 'expired') && (
+        <PriceButton
+          handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
+          direction={Direction.Buy}
+          big={askRate.bigFigure}
+          pip={askRate.pips}
+          tenth={askRate.pipFraction}
+          rawRate={askRate.rawRate}
+          rfqState={rfqState}
+          disabled={disabled}
+        />
+      )}
+      {rfqState === 'canRequest' && (
+        <PriceButtonDisabledPlaceholder>canRequest</PriceButtonDisabledPlaceholder>
+      )}
+      {rfqState === 'requested' && (
+        <PriceButtonDisabledPlaceholder>requested</PriceButtonDisabledPlaceholder>
+      )}
     </PriceControlsStyle>
   )
 }
