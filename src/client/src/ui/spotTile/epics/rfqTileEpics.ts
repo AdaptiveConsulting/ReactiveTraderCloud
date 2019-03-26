@@ -1,12 +1,13 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { delay, map } from 'rxjs/operators'
+import { delay, map, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { TILE_ACTION_TYPES, SpotTileActions } from '../actions'
 
-const { rfqRequest, rfqReceived } = SpotTileActions
+const { rfqRequest, rfqReceived, rfqCancel } = SpotTileActions
 
 type RfqRequest = ReturnType<typeof rfqRequest>
+type RfqCancel = ReturnType<typeof rfqCancel>
 
 // TODO listen to the price stream
 export const rfqRequestEpic: ApplicationEpic = action$ =>
@@ -19,4 +20,5 @@ export const rfqRequestEpic: ApplicationEpic = action$ =>
         price: Math.random() * (3 - 0),
       }),
     ),
+    takeUntil(action$.pipe(ofType<Action, RfqCancel>(TILE_ACTION_TYPES.RFQ_CANCEL))),
   )
