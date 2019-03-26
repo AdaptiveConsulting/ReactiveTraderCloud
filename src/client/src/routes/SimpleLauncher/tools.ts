@@ -24,7 +24,7 @@ export async function open(
       case 'window':
         return createOpenFinWindow(config)
       case 'download':
-        return downloadOrLaunchLimitChecker(config)
+        return launchLimitChecker(config)
       case 'excel':
         return excelAdapter.openExcel()
       case 'application':
@@ -74,33 +74,13 @@ function createOpenFinWindow({
   })
 }
 
-async function downloadOrLaunchLimitChecker(config: ApplicationConfig) {
-  let app = fin.desktop.Application.wrap(config.name)
-  //Get the environement variable
-  fin.desktop.System.getEnvironmentVariable('APPDATA', variable => {
-    const path = variable + '\\LimitChecker.application'
-    //launch the application
-    fin.desktop.System.launchExternalProcess(
-      {
-        path,
-        arguments: '',
-        listener: res => res,
-      },
-      res => {
-        console.log(res)
-      },
-      async error => {
-        //on error, download it
-        app.restart()
-        const config1: ApplicationConfig = {
-          ...config,
-          provider: { ...config.provider, applicationType: 'application' },
-        }
-        app = await createOpenFinApplication(config1)
-        await new Promise((resolve, reject) => app.run(resolve, reject))
-      },
-    )
+async function launchLimitChecker(config: ApplicationConfig) {
+  const app = fin.desktop.Application.wrap(config.name)
+  fin.desktop.System.launchExternalProcess({
+    alias: 'LimitChecker',
+    listener(result) {
+      console.log('the exit code', result.exitCode)
+    },
   })
-
   return app
 }
