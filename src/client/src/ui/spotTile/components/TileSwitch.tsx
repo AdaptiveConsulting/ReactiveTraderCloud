@@ -43,6 +43,7 @@ const TileSwitch: React.FC<Props> = ({
     executionStatus={executionStatus}
     tileView={tileView}
     setTradingMode={setTradingMode}
+    rfq={rfq}
   >
     {({ notional, userError }: TileSwitchChildrenProps) => (
       <>
@@ -71,7 +72,7 @@ const TileSwitch: React.FC<Props> = ({
         <TileBooking
           show={spotTileData.rfqState === 'requested'}
           color="red"
-          onBookingPillClick={() => rfq.cancel()}
+          onBookingPillClick={() => rfq.cancel({ currencyPair })}
         >
           Cancel RFQ
         </TileBooking>

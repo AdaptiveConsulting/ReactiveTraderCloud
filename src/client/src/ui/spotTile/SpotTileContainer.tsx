@@ -14,7 +14,7 @@ import {
   selectSpotTileData,
 } from './selectors'
 import { TileViews } from '../workspace/workspaceHeader'
-import { RfqRequest } from './model/rfqRequest'
+import { RfqRequest, RfqCancel, RfqRequote, RfqExpired } from './model/rfqRequest'
 import { TradingMode } from './components/types'
 
 export interface SpotTileContainerOwnProps {
@@ -64,9 +64,10 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
   setTradingMode: (tradingMode: TradingMode) =>
     dispatch(SpotTileActions.setTradingMode(tradingMode)),
   rfq: {
-    request: (requestObj: RfqRequest) => dispatch(SpotTileActions.rfqRequest(requestObj)),
-    cancel: () => dispatch(SpotTileActions.rfqCancel()),
-    requote: (requestObj: RfqRequest) => dispatch(SpotTileActions.rfqRequote(requestObj)),
+    request: (obj: RfqRequest) => dispatch(SpotTileActions.rfqRequest(obj)),
+    cancel: (obj: RfqCancel) => dispatch(SpotTileActions.rfqCancel(obj)),
+    requote: (obj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(obj)),
+    expired: (obj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(obj)),
   },
 })
 

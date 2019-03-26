@@ -1,7 +1,7 @@
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
 import { SpotTileData } from '../model'
 import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
-import { RfqRequest } from '../model/rfqRequest'
+import { RfqRequest, RfqCancel, RfqRequote, RfqExpired } from '../model/rfqRequest'
 
 export interface TradingMode {
   symbol: CurrencyPair['symbol']
@@ -11,9 +11,10 @@ export interface TradingMode {
 export type RfqState = 'none' | 'canRequest' | 'requested' | 'received' | 'expired'
 
 export interface RfqActions {
-  request: (requestObj: RfqRequest) => void
-  cancel: () => void
-  requote: (requestObj: RfqRequest) => void
+  request: (obj: RfqRequest) => void
+  cancel: (obj: RfqCancel) => void
+  requote: (obj: RfqRequote) => void
+  expired: (obj: RfqExpired) => void
 }
 
 export interface TileSwitchChildrenProps {
@@ -32,4 +33,5 @@ export interface Props {
   inputValidationMessage: ValidationMessage
   tradingDisabled: boolean
   chartData?: []
+  rfq: RfqActions
 }

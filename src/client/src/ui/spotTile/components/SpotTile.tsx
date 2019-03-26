@@ -24,11 +24,14 @@ export default class SpotTile extends PureComponent<Props> {
       tradingDisabled,
       inputDisabled,
       inputValidationMessage,
+      rfq,
     } = this.props
 
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
+    const handleRfqTimerExpiration = () => rfq.expired({ currencyPair })
+
     return (
       <SpotTileWrapperWithPlatform>
         <SpotTileStyle className="spot-tile">
@@ -49,7 +52,7 @@ export default class SpotTile extends PureComponent<Props> {
               disabled={inputDisabled}
             />
           </NotionalInputWrapper>
-          <RfqTimer rfqState={rfqState} />
+          {rfqState === 'received' && <RfqTimer onExpired={handleRfqTimerExpiration} />}
         </SpotTileStyle>
         {children}
       </SpotTileWrapperWithPlatform>

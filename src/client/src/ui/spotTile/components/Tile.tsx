@@ -4,7 +4,7 @@ import { ExecuteTradeRequest, SpotTileData, createTradeRequest, TradeRequest } f
 import SpotTile from './SpotTile'
 import { AnalyticsTile } from './analyticsTile'
 import { TileViews } from '../../workspace/workspaceHeader'
-import { TileSwitchChildrenProps, TradingMode } from './types'
+import { TileSwitchChildrenProps, TradingMode, RfqActions } from './types'
 import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
 import {
   getDefaultNotionalValue,
@@ -21,6 +21,7 @@ export interface TileProps {
   setTradingMode: (tradindMode: TradingMode) => void
   tileView?: TileViews
   children: ({ notional, userError }: TileSwitchChildrenProps) => JSX.Element
+  rfq: RfqActions
 }
 
 export interface TileState {
@@ -75,7 +76,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   }
 
   render() {
-    const { children, currencyPair, spotTileData, executionStatus, tileView } = this.props
+    const { children, currencyPair, spotTileData, executionStatus, tileView, rfq } = this.props
     const {
       notional,
       inputDisabled,
@@ -96,6 +97,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         inputDisabled={inputDisabled}
         inputValidationMessage={inputValidationMessage}
         tradingDisabled={tradingDisabled || !canExecute}
+        rfq={rfq}
       >
         {children({
           notional,

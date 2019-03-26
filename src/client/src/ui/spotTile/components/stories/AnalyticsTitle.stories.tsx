@@ -8,6 +8,13 @@ import { AnalyticsTile } from '../analyticsTile'
 const updateNotional = action('updateNotional')
 const executeTrade = action('executeTrade')
 
+const rfqActions = {
+  request: action('request'),
+  cancel: action('cancel'),
+  requote: action('requote'),
+  expired: action('expired'),
+}
+
 stories.add('AnalyticsTile', () => (
   <Story>
     <Centered>
@@ -27,6 +34,7 @@ stories.add('AnalyticsTile', () => (
           tradingDisabled={false}
           inputValidationMessage={null}
           inputDisabled={false}
+          rfq={rfqActions}
         />
       </div>
     </Centered>
@@ -52,6 +60,7 @@ stories.add('AnalyticsTile in error', () => (
           tradingDisabled={true}
           inputValidationMessage={null}
           inputDisabled={false}
+          rfq={rfqActions}
         />
       </div>
     </Centered>

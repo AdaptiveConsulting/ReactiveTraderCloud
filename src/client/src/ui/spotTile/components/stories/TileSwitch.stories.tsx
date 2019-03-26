@@ -17,11 +17,13 @@ const setTradingMode = action('setTradingMode')
 const request = action('request')
 const requote = action('requote')
 const cancel = action('cancel')
+const expired = action('expired')
 
 const rfq = {
   request,
   requote,
   cancel,
+  expired,
 }
 
 const options = {

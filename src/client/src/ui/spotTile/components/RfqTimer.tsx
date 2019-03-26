@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react'
-import { RfqState } from './types'
 import styled from 'styled-components'
 
 interface RfqTimerProps {
-  rfqState: RfqState
+  onExpired: () => void
   timeout: number
 }
 
@@ -12,7 +11,6 @@ interface RfqTimerState {
 }
 
 const TimeLeft = styled.div`
-  /* background-color: yellow; */
   font-size: 10px;
   opacity: 0.6;
 `
@@ -46,6 +44,7 @@ const TimerWrapper = styled.div`
   grid-template-areas: 'TimeLeft ProgressBar RejectQuoteButton';
 `
 
+// TODO Move the timer to the service.
 class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
   intervalId = 0
 
@@ -76,33 +75,33 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
           timeLeft: prevState.timeLeft - 1,
         }
       }
+      // TODO this should be handled by service.
+      const { onExpired } = this.props
+      if (onExpired) {
+        onExpired()
+      }
       clearInterval(this.intervalId)
       return prevState
     })
   }
 
   render() {
-    const { rfqState } = this.props
     const { timeLeft } = this.state
 
-    if (timeLeft === 0) {
-      console.log('timeLeft', timeLeft)
-    }
+    // if (timeLeft === 0) {
+    //   console.log('timeLeft', timeLeft)
+    // }
 
-    if (rfqState === 'received' && timeLeft > 0) {
-      const percentageLeft = (timeLeft * 100) / 60
-      return (
-        <TimerWrapper>
-          <TimeLeft>{timeLeft} secs</TimeLeft>
-          <ProgressBarWrapper>
-            <ProgressBar style={{ width: `${percentageLeft}%` }} />
-          </ProgressBarWrapper>
-          <RejectQuoteButton onClick={this.handleRejectQuote}>Reject</RejectQuoteButton>
-        </TimerWrapper>
-      )
-    }
-
-    return null
+    const percentageLeft = (timeLeft * 100) / 60
+    return (
+      <TimerWrapper>
+        <TimeLeft>{timeLeft} secs</TimeLeft>
+        <ProgressBarWrapper>
+          <ProgressBar style={{ width: `${percentageLeft}%` }} />
+        </ProgressBarWrapper>
+        <RejectQuoteButton onClick={this.handleRejectQuote}>Reject</RejectQuoteButton>
+      </TimerWrapper>
+    )
   }
 }
 
