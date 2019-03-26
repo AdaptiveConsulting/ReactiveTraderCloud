@@ -26,6 +26,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
       spotTileData: { price, historicPrices },
       notional,
       updateNotional,
+      resetNotional,
       executeTrade,
       children,
       tradingDisabled,
@@ -48,6 +49,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
                 notional={notional}
                 currencyPairSymbol={currencyPair.base}
                 updateNotional={updateNotional}
+                resetNotional={resetNotional}
                 validationMessage={inputValidationMessage}
                 disabled={inputDisabled}
               />

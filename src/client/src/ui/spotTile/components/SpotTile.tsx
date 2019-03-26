@@ -19,6 +19,7 @@ export default class SpotTile extends PureComponent<Props> {
       spotTileData: { price, rfqState },
       notional,
       updateNotional,
+      resetNotional,
       executeTrade,
       children,
       tradingDisabled,
@@ -31,6 +32,8 @@ export default class SpotTile extends PureComponent<Props> {
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     const handleRfqTimerExpiration = () => rfq.expired({ currencyPair })
+    const handleRfqRejected = () => rfq.reject({ currencyPair })
+    const showResetButton = rfqState === 'canRequest' || rfqState === 'expired'
 
     return (
       <SpotTileWrapperWithPlatform>
@@ -48,11 +51,15 @@ export default class SpotTile extends PureComponent<Props> {
               notional={notional}
               currencyPairSymbol={currencyPair.base}
               updateNotional={updateNotional}
+              resetNotional={resetNotional}
               validationMessage={inputValidationMessage}
+              showResetButton={showResetButton}
               disabled={inputDisabled}
             />
           </NotionalInputWrapper>
-          {rfqState === 'received' && <RfqTimer onExpired={handleRfqTimerExpiration} />}
+          {rfqState === 'received' && (
+            <RfqTimer onExpired={handleRfqTimerExpiration} onRejected={handleRfqRejected} />
+          )}
         </SpotTileStyle>
         {children}
       </SpotTileWrapperWithPlatform>

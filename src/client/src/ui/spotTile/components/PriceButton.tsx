@@ -12,9 +12,11 @@ const hoverColors = {
 const backgroundEffectKeyframes = (props: any) => keyframes`
   5% {
     background-color: ${props.theme.template[hoverColors[props.direction]].normal};
+    color: white;
   }
   80% {
     background-color: ${props.theme.template[hoverColors[props.direction]].normal};
+    color: white;
   }
 `
 
@@ -29,6 +31,8 @@ const backgroundEffect = (props: any) =>
 export const TradeButton = styled.button<{ direction: Direction; rfqState: RfqState }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
+  color: ${({ theme, rfqState, direction }) =>
+    rfqState === 'received' ? theme.template[hoverColors[direction]].normal : 'white'};
   transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;

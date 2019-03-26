@@ -11,6 +11,7 @@ import {
   getDerivedStateFromProps,
   getNumericNotional,
   getDerivedStateFromUserInput,
+  resetNotional,
 } from './TileBusinessLogic'
 
 export interface TileProps {
@@ -75,6 +76,17 @@ class Tile extends React.PureComponent<TileProps, TileState> {
     )
   }
 
+  resetNotional = () => {
+    const { setTradingMode, spotTileData } = this.props
+    this.setState(prevState =>
+      resetNotional({
+        prevState,
+        spotTileData,
+        actions: { setTradingMode },
+      }),
+    )
+  }
+
   render() {
     const { children, currencyPair, spotTileData, executionStatus, tileView, rfq } = this.props
     const {
@@ -98,6 +110,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         executionStatus={executionStatus}
         notional={notional}
         updateNotional={this.updateNotional}
+        resetNotional={this.resetNotional}
         inputDisabled={inputDisabled}
         inputValidationMessage={inputValidationMessage}
         tradingDisabled={tradingDisabled || !canExecute}

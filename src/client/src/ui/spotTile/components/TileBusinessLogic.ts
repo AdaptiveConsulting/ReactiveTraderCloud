@@ -54,6 +54,14 @@ interface DerivedStateFromUserInput {
   }
 }
 
+interface DerivedStateFromNotionalReset {
+  prevState: TileState
+  spotTileData: SpotTileData
+  actions: {
+    setTradingMode: TileProps['setTradingMode']
+  }
+}
+
 // State management derived from user input
 export const getDerivedStateFromUserInput = ({
   prevState,
@@ -129,5 +137,23 @@ export const getDerivedStateFromUserInput = ({
     return {
       ...defaultNextState,
     }
+  }
+}
+
+export const resetNotional = ({
+  prevState,
+  spotTileData: {
+    price: { symbol },
+    rfqState,
+  },
+  actions,
+}: DerivedStateFromNotionalReset) => {
+  if (rfqState !== 'none') {
+    actions.setTradingMode({ symbol, mode: 'esp' })
+  }
+  return {
+    ...prevState,
+    notional: getDefaultNotionalValue(),
+    tradingDisabled: false,
   }
 }

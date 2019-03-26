@@ -89,6 +89,7 @@ const rfqTileReducer = (
         rfqState: 'received',
       }
     case TILE_ACTION_TYPES.RFQ_EXPIRED:
+    case TILE_ACTION_TYPES.RFQ_REJECT:
       return {
         ...state,
         rfqState: 'expired',
@@ -113,6 +114,7 @@ export const spotTileDataReducer = (
     case TILE_ACTION_TYPES.RFQ_CANCEL:
     case TILE_ACTION_TYPES.RFQ_RECEIVED:
     case TILE_ACTION_TYPES.RFQ_EXPIRED:
+    case TILE_ACTION_TYPES.RFQ_REJECT:
       console.log('action!', action.type, action.payload.currencyPair.symbol)
       return {
         ...state,

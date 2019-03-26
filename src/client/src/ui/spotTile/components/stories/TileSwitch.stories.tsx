@@ -16,12 +16,14 @@ const onNotificationDismissedClick = action('Notification dismissed')
 const setTradingMode = action('setTradingMode')
 const request = action('request')
 const requote = action('requote')
+const reject = action('reject')
 const cancel = action('cancel')
 const expired = action('expired')
 
 const rfq = {
   request,
   requote,
+  reject,
   cancel,
   expired,
 }

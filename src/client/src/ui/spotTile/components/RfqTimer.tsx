@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 interface RfqTimerProps {
   onExpired: () => void
+  onRejected: () => void
   timeout: number
 }
 
@@ -66,7 +67,10 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
   }
 
   handleRejectQuote = () => {
-    console.log('Reject Quote!')
+    const { onRejected } = this.props
+    if (onRejected) {
+      onRejected()
+    }
   }
 
   updateTimeLeft = () => {
@@ -88,12 +92,8 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
 
   render() {
     const { timeLeft } = this.state
-
-    // if (timeLeft === 0) {
-    //   console.log('timeLeft', timeLeft)
-    // }
-
     const percentageLeft = (timeLeft * 100) / 60
+
     return (
       <TimerWrapper>
         <TimeLeft>{timeLeft} secs</TimeLeft>

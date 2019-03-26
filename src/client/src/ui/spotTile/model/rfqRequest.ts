@@ -9,6 +9,10 @@ export interface RfqRequote {
   currencyPair: CurrencyPair
 }
 
+export interface RfqReject {
+  currencyPair: CurrencyPair
+}
+
 export interface RfqCancel {
   currencyPair: CurrencyPair
 }

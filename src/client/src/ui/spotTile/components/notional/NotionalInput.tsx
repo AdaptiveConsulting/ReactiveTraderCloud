@@ -39,9 +39,10 @@ const MessagePlaceholder = styled.div<{ validationMessageType: ValidationMessage
 
 const InputWrapper = styled.div`
   display: grid;
-  grid-template-columns: 30px auto;
-  grid-template-rows: auto auto;
-  grid-template-areas: 'Currency Input' '. Message';
+  grid-template-columns: 30px auto 30px;
+  grid-template-rows: 23px auto;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  align-items: center;
 `
 
 export const Input = styled.input<{
@@ -73,11 +74,23 @@ export const Input = styled.input<{
   `};
 `
 
+const ResetInputValue = styled.button`
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  border: 2px solid ${({ theme }) => theme.core.darkBackground};
+  border-radius: 3px;
+  margin-left: 8px;
+  grid-area: ResetInputValue;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+`
+
 interface Props {
   currencyPairSymbol: string
   notional: string
   updateNotional: (notionalUpdate: NotionalUpdate) => void
+  resetNotional: () => void
   validationMessage: ValidationMessage
+  showResetButton?: boolean
   disabled: boolean
 }
 
@@ -119,6 +132,10 @@ export default class NotionalInput extends PureComponent<Props, State> {
     updateNotional({ value, type })
   }
 
+  handleResetNotional = () => {
+    this.props.resetNotional()
+  }
+
   formatNotional = (notional: string) => {
     // user may be trying to enter decimals or
     // user may be deleting previous entry (empty string)
@@ -149,7 +166,13 @@ export default class NotionalInput extends PureComponent<Props, State> {
   }
 
   render() {
-    const { currencyPairSymbol, notional, validationMessage, disabled } = this.props
+    const {
+      currencyPairSymbol,
+      notional,
+      validationMessage,
+      showResetButton,
+      disabled,
+    } = this.props
     const stringNotional = this.formatNotional(notional)
 
     return (
@@ -166,6 +189,11 @@ export default class NotionalInput extends PureComponent<Props, State> {
           validationMessage={validationMessage}
           disabled={disabled}
         />
+        {showResetButton && (
+          <ResetInputValue onClick={this.handleResetNotional}>
+            <i className="fas fa-redo fa-flip-horizontal" aria-hidden="true" />
+          </ResetInputValue>
+        )}
         {validationMessage && (
           <MessagePlaceholder validationMessageType={validationMessage.type}>
             {validationMessage.content}

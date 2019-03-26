@@ -4,6 +4,7 @@ import { stories, Story, Centered } from './Initialise.stories'
 import { action } from '@storybook/addon-actions'
 
 const updateNotional = action('updateNotional')
+const resetNotional = action('resetNotional')
 
 stories.add('Notional input', () => (
   <Story>
@@ -13,6 +14,7 @@ stories.add('Notional input', () => (
           notional="1,000,000"
           currencyPairSymbol="USD"
           updateNotional={updateNotional}
+          resetNotional={resetNotional}
           validationMessage={null}
           disabled={false}
         />
@@ -29,6 +31,7 @@ stories.add('Notional input with trading disabled', () => (
           notional="1,000,000"
           currencyPairSymbol="USD"
           updateNotional={updateNotional}
+          resetNotional={resetNotional}
           validationMessage={null}
           disabled={false}
         />
