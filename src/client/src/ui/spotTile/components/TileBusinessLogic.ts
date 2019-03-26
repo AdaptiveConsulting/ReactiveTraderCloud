@@ -35,7 +35,8 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
     spotTileData.rfqState !== 'canRequest' &&
     spotTileData.rfqState !== 'requested' &&
     !inputValidationMessage
-  const inputDisabled = isInTrade || spotTileData.rfqState === 'requested'
+  const inputDisabled =
+    isInTrade || spotTileData.rfqState === 'requested' || spotTileData.rfqState === 'received'
 
   return {
     ...prevState,

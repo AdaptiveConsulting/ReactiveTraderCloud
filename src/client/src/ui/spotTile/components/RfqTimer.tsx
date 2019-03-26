@@ -29,6 +29,7 @@ const ProgressBar = styled.div`
 `
 
 const RejectQuoteButton = styled.button`
+  background-color: ${({ theme }) => `${theme.core.lightBackground}`};
   border: ${({ theme }) => `2px solid ${theme.core.darkBackground}`};
   border-radius: 3px;
   font-size: 12px;

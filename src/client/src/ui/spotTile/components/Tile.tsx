@@ -84,7 +84,11 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       tradingDisabled,
       canExecute,
     } = this.state
-    const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
+    const { rfqState } = spotTileData
+    const TileViewComponent =
+      tileView && (rfqState === 'none' || rfqState === 'canRequest')
+        ? this.tileComponents[tileView]
+        : SpotTile
 
     return (
       <TileViewComponent
