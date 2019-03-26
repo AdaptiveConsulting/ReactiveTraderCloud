@@ -73,6 +73,7 @@ const rfqTileReducer = (
         rfqState: action.payload.mode === 'rfq' ? 'canRequest' : 'none',
       }
     case TILE_ACTION_TYPES.RFQ_REQUEST:
+    case TILE_ACTION_TYPES.RFQ_REQUOTE:
       return {
         ...state,
         rfqState: 'requested',
@@ -103,6 +104,7 @@ export const spotTileDataReducer = (
         [action.payload.symbol]: rfqTileReducer(state[action.payload.symbol], action),
       }
     case TILE_ACTION_TYPES.RFQ_REQUEST:
+    case TILE_ACTION_TYPES.RFQ_REQUOTE:
     case TILE_ACTION_TYPES.RFQ_RECEIVED:
     case TILE_ACTION_TYPES.RFQ_EXPIRED:
       console.log('action!', action.type, action.payload.currencyPair.symbol)
