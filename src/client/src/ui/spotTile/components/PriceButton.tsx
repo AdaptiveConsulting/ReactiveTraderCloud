@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import { styled, Theme } from 'rt-theme'
 import { Direction } from 'rt-types'
 import { keyframes, css } from 'styled-components'
 import { RfqState } from './types'
@@ -9,23 +9,31 @@ const hoverColors = {
   [Direction.Sell]: 'red',
 }
 
-const backgroundEffectKeyframes = (props: any) => keyframes`
+const backgroundEffectKeyframes = ({
+  direction,
+  theme,
+}: {
+  direction: Direction
+  theme: Theme
+}) => keyframes`
   5% {
-    background-color: ${props.theme.template[hoverColors[props.direction]].normal};
+    background-color: ${theme.template[hoverColors[direction]].normal};
     color: white;
   }
   80% {
-    background-color: ${props.theme.template[hoverColors[props.direction]].normal};
+    background-color: ${theme.template[hoverColors[direction]].normal};
     color: white;
   }
 `
 
-const getAnimationCSSProperty = (props: any) => css`
+const getAnimationCSSProperty = (props: { direction: Direction; theme: Theme }) => css`
   animation: ${backgroundEffectKeyframes(props)} 5s;
 `
 
-const backgroundEffect = (props: any) =>
-  props.rfqState === 'received' ? getAnimationCSSProperty(props) : ''
+const backgroundEffect = ({ rfqState, ...rest }: { rfqState: RfqState }) =>
+  rfqState === 'received'
+    ? getAnimationCSSProperty(rest as { direction: Direction; theme: Theme })
+    : ''
 
 // TODO Fix animation to make sure hover still works after
 export const TradeButton = styled.button<{ direction: Direction; rfqState: RfqState }>`

@@ -1,6 +1,6 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import { styled } from 'rt-theme'
+import { styled, Theme } from 'rt-theme'
 import { NUMERAL_FORMAT } from '../TileBusinessLogic'
 
 const DOT = '.'
@@ -28,18 +28,26 @@ const CurrencyPairSymbol = styled('span')`
   line-height: 1.2rem;
 `
 
+const getValidationMessageStyles = ({
+  theme,
+  validationMessageType,
+}: {
+  theme: Theme
+  validationMessageType: ValidationMessage['type']
+}) => {
+  switch (validationMessageType) {
+    case 'error':
+      return `color: ${theme.template.red.normal}`
+    case 'warning':
+      return `color: ${theme.template.yellow.normal}`
+    case 'info':
+    default:
+      return `color: ${theme.template.blue.normal}`
+  }
+}
+
 const MessagePlaceholder = styled.div<{ validationMessageType: ValidationMessage['type'] }>`
-  ${({ theme, validationMessageType }) => {
-    switch (validationMessageType) {
-      case 'error':
-        return `color: ${theme.template.red.normal}`
-      case 'warning':
-        return `color: ${theme.template.yellow.normal}`
-      case 'info':
-      default:
-        return `color: ${theme.template.blue.normal}`
-    }
-  }};
+  ${getValidationMessageStyles};
   grid-area: Message;
   font-size: 0.6rem;
   line-height: normal;
