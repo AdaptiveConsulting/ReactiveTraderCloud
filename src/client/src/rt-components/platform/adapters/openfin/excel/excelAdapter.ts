@@ -3,9 +3,8 @@ import { Trade, CurrencyPairPositionWithPrice } from 'rt-types'
 import { platform } from 'rt-components'
 import { InteropTopics } from '../../types'
 
-const EXCEL_HOST_URL = 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/excelv2'
+const EXCEL_HOST_URL = `${location.protocol}//${location.host}/static/excel`
 const EXCEL_FILE_NAME = 'RTExcel.xlsx'
-// const EXCEL_HOST_URL = 'http://localhost:3000/static/excel'
 // const EXCEL_FILE_NAME = 'RTExcel.xlsm' // xlsm contains VBA macros
 
 const RTExcelConfig = {
