@@ -1,71 +1,71 @@
 {
-  "startup_app": {
-    "name": "Reactive Trader Cloud (DEV)",
-    "url": "https://web-dev.adaptivecluster.com/launcher",
-    "uuid": "ReactiveLauncher",
-    "defaultWidth": 550,
-    "defaultHeight": 52,
-    "defaultTop": 160,
-    "defaultLeft": 30,
-    "cornerRounding": {
-      "width": 5,
-      "height": 5
+    "startup_app": {
+        "name": "Reactive Trader Cloud (DEV)",
+        "url": "https://web-dev.adaptivecluster.com/launcher",
+        "uuid": "ReactiveLauncher",
+        "defaultWidth": 550,
+        "defaultHeight": 52,
+        "defaultTop": 160,
+        "defaultLeft": 30,
+        "cornerRounding": {
+            "width": 5,
+            "height": 5
+        },
+        "autoShow": true,
+        "saveWindowState": false,
+        "resizable": false,
+        "shadow": true,
+        "frame": false,
+        "backgroundColor": "#444C5F",
+        "alwaysOnTop": true,
+        "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
+        "applicationIcon": "https://web-dev.adaptivecluster.com/static/media/adaptive-mark-large.png",
+        "contextMenu": true,
+        "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+        "preload": [
+            {
+                "url": "https://web-dev.adaptivecluster.com/plugin/service-loader.js"
+            },
+            {
+                "url": "https://web-dev.adaptivecluster.com/plugin/fin.desktop.Excel.js"
+            }
+        ],
+        "accelerator": {
+            "devtools": true,
+            "reload": true,
+            "reloadIgnoringCache": true,
+            "zoom": true
+        }
     },
-    "autoShow": true,
-    "saveWindowState": false,
-    "resizable": false,
-    "shadow": true,
-    "frame": false,
-    "backgroundColor": "#444C5F",
-    "alwaysOnTop": true,
-    "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
-    "applicationIcon": "https://web-dev.adaptivecluster.com/static/media/adaptive-mark-large.png",
-    "contextMenu": true,
-    "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
-    "preload": [
-      {
-        "url": "https://web-dev.adaptivecluster.com/plugin/service-loader.js"
-      },
-      {
-        "url": "https://web-dev.adaptivecluster.com/plugin/fin.desktop.Excel.js"
-      }
+    "runtime": {
+        "arguments": "--remote-debugging-port=9222",
+        "version": "9.61.34.22",
+        "futureVersion": "9.61.34.22",
+        "forceLatest": true
+    },
+    "shortcut": {
+        "company": "Adaptive Consulting",
+        "description": "Desktop Reactive Trader Cloud",
+        "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
+        "name": "Reactive Trader Cloud"
+    },
+    "services": [
+        {
+            "name": "layouts"
+        }
     ],
-    "accelerator": {
-      "devtools": true,
-      "reload": true,
-      "reloadIgnoringCache": true,
-      "zoom": true
-    }
-  },
-  "runtime": {
-    "arguments": "--remote-debugging-port=9222",
-    "version": "9.61.34.22",
-    "futureVersion": "9.61.34.22",
-    "forceLatest": true
-  },
-  "shortcut": {
-    "company": "Adaptive Consulting",
-    "description": "Desktop Reactive Trader Cloud",
-    "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
-    "name": "Reactive Trader Cloud"
-  },
-  "services": [
-    {
-      "name": "layouts"
-    }
-  ],
-  "appAssets": [
-    {
-      "src": "https://web-dev.adaptivecluster.com/plugin/add-in.zip",
-      "alias": "excel-api-addin",
-      "version": "2.0.0",
-      "forceDownload": true
-    },
-    {
-      "src": "https://web-dev.adaptivecluster.com/plugin/LimitChecker.zip",
-      "alias": "LimitChecker",
-      "version": "1.0.0",
-      "target": "LimitChecker.application"
-    }
-  ]
+    "appAssets": [
+        {
+            "src": "https://web-dev.adaptivecluster.com/plugin/add-in.zip",
+            "alias": "excel-api-addin",
+            "version": "2.0.0",
+            "forceDownload": true
+        },
+        {
+            "src": "https://web-dev.adaptivecluster.com/plugin/LimitChecker.zip",
+            "alias": "LimitChecker",
+            "version": "1.0.0",
+            "target": "LimitChecker.application"
+        }
+    ]
 }

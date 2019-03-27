@@ -7,6 +7,9 @@ import {
 } from './icons/index'
 import { PlatformName } from 'rt-components'
 
+// Safer than location.origin due to browser support
+const ORIGIN = `${location.protocol}//${location.host}`
+
 const defaultWindowOptions: OpenFinWindowOptions = {
   autoShow: true,
   defaultWidth: 1280,
@@ -18,7 +21,7 @@ const defaultWindowOptions: OpenFinWindowOptions = {
   defaultCentered: true,
   frame: false,
   shadow: true,
-  icon: 'http://localhost:3000/static/media/icon.ico',
+  icon: `${ORIGIN}/static/media/icon.ico`,
   accelerator:
     process.env.NODE_ENV !== 'development'
       ? {}
@@ -33,10 +36,10 @@ const defaultWindowOptions: OpenFinWindowOptions = {
 const excelPreloadScripts: fin.DownloadPreloadOption[] = [
   // OpenFin Excel API not included here (not included in standard package)
   {
-    url: `http://${location.host}/plugin/service-loader.js`,
+    url: `${ORIGIN}/plugin/service-loader.js`,
   },
   {
-    url: `http://${location.host}/plugin/fin.desktop.Excel.js`,
+    url: `${ORIGIN}/plugin/fin.desktop.Excel.js`,
   },
 ]
 
@@ -57,7 +60,7 @@ export interface ApplicationConfig {
 export const appConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Trader',
-    url: `http://${location.host}`,
+    url: `${ORIGIN}`,
     icon: reactiveTraderIcon,
     provider: {
       platformName: 'openfin',
@@ -65,7 +68,7 @@ export const appConfigs: ApplicationConfig[] = [
       windowOptions: {
         ...defaultWindowOptions,
         preloadScripts: excelPreloadScripts,
-        icon: `http://${location.host}/static/media/rt-icon.ico`,
+        icon: `${ORIGIN}/static/media/rt-icon.ico`,
       },
     },
   },
@@ -79,26 +82,26 @@ export const appConfigs: ApplicationConfig[] = [
       windowOptions: {
         ...defaultWindowOptions,
         frame: true,
-        icon: `http://${location.host}/static/media/ra-icon.ico`,
+        icon: `${ORIGIN}/static/media/ra-icon.ico`,
       },
     },
   },
   {
     name: 'Limit Checker',
-    url: `http://${location.host}/plugin/LimitChecker.zip`,
+    url: `${ORIGIN}/plugin/LimitChecker.zip`,
     icon: limitCheckerIcon,
     provider: {
       platformName: 'openfin',
       applicationType: 'download',
       windowOptions: {
         ...defaultWindowOptions,
-        icon: `http://${location.host}/static/media/limit-checker-icon.ico`,
+        icon: `${ORIGIN}/static/media/limit-checker-icon.ico`,
       },
     },
   },
   {
     name: 'GreenKey',
-    url: `http://${location.host}/order-ticket`,
+    url: `${ORIGIN}/order-ticket`,
     icon: greenKeyIcon,
     provider: {
       platformName: 'openfin',
@@ -113,7 +116,7 @@ export const appConfigs: ApplicationConfig[] = [
         maximizable: false,
         contextMenu: true,
         alwaysOnTop: false,
-        icon: `http://${location.host}/static/media/ic-mic_1.ico`,
+        icon: `${ORIGIN}/static/media/ic-mic_1.ico`,
         cornerRounding: {
           height: 10,
           width: 8,
@@ -129,7 +132,7 @@ export const appConfigs: ApplicationConfig[] = [
       applicationType: 'excel',
       windowOptions: {
         preloadScripts: excelPreloadScripts,
-        icon: `http://${location.host}/static/media/excel-icon.ico`,
+        icon: `${ORIGIN}/static/media/excel-icon.ico`,
       },
     },
   },
