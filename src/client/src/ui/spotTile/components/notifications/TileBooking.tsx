@@ -11,11 +11,12 @@ const TileBookingStyle = styled.div`
   align-items: center;
   justify-content: center;
   pointer-events: none; /* allow clicks to go through div */
+  text-align: center;
 `
 
-const BookingPill = styled.div<{ disabled: boolean }>`
+const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean }>`
   padding: 0.75rem 0.9375rem;
-  border-radius: 17px;
+  border-radius: ${({ altStyle }) => (altStyle ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
@@ -68,6 +69,7 @@ const TileBooking: React.FC<Props> = ({
                 onBookingPillClick()
               }
             }}
+            altStyle={showLoader}
             disabled={disabled}
           >
             {showLoader && (

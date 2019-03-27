@@ -67,14 +67,18 @@ const TileSwitch: React.FC<Props> = ({
           }
           disabled={userError}
         >
-          Initiate RFQ
+          Initiate
+          <br />
+          RFQ
         </TileBooking>
         <TileBooking
           show={spotTileData.rfqState === 'requested'}
           color="red"
           onBookingPillClick={() => rfq.cancel({ currencyPair })}
         >
-          Cancel RFQ
+          Cancel
+          <br />
+          RFQ
         </TileBooking>
         <TileBooking
           show={spotTileData.rfqState === 'expired'}
