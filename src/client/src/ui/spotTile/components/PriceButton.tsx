@@ -45,7 +45,6 @@ export const TradeButton = styled.button<{ direction: Direction; rfqState: RfqSt
     disabled && rfqState !== 'received'
       ? `
   cursor: initial;
-  opacity: 0.3;
   pointer-events: none;
     `
       : `
@@ -86,11 +85,13 @@ const Tenth = styled(Box)`
   align-self: flex-end;
 `
 
-const Price = styled.div`
+const Price = styled.div<{ disabled: boolean; rfqState: RfqState }>`
   height: 34px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  ${({ theme, disabled, rfqState }) => (disabled && rfqState !== 'received' ? 'opacity: 0.3' : '')}
 `
 
 const BigWrapper = styled.div`
@@ -109,6 +110,7 @@ interface PriceButtonProps {
   handleClick?: () => void
   rfqState?: RfqState
   disabled?: boolean
+  expired?: boolean
 }
 
 const renderPips = (pips: number) => (pips.toString().length === 1 ? `0${pips}` : pips)
@@ -116,6 +118,12 @@ const getBigFigureDisplay = (bigFigure: number, rawRate: number) =>
   bigFigure === Math.floor(rawRate) ? `${bigFigure}.` : bigFigure.toString()
 const renderBigFigureDisplay = (bigFigureDisplay: string) =>
   bigFigureDisplay.toString().length === 3 ? `${bigFigureDisplay}0` : bigFigureDisplay
+
+const ExpiredPrice = styled.div`
+  color: ${({ theme }) => theme.template.red.normal};
+  font-size: 10px;
+  text-transform: uppercase;
+`
 
 const PriceButtonComp: React.FC<PriceButtonProps> = ({
   big = 0,
@@ -126,6 +134,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
   handleClick = () => {},
   rfqState,
   disabled = false,
+  expired = false,
 }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
   return (
@@ -135,7 +144,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
       rfqState={rfqState}
       disabled={disabled}
     >
-      <Price>
+      <Price rfqState={rfqState} disabled={disabled}>
         <BigWrapper>
           <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
           <Big>{renderBigFigureDisplay(bigFigure)}</Big>
@@ -143,6 +152,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
         <Pip>{renderPips(pip)}</Pip>
         <Tenth>{tenth}</Tenth>
       </Price>
+      {expired && <ExpiredPrice>Expired</ExpiredPrice>}
     </TradeButton>
   )
 }

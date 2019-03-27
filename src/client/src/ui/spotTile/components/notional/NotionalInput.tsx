@@ -29,20 +29,37 @@ const CurrencyPairSymbol = styled('span')`
 `
 
 const MessagePlaceholder = styled.div<{ validationMessageType: ValidationMessage['type'] }>`
-  ${({ theme, validationMessageType }) => `color: ${theme.template.red.normal}`};
+  ${({ theme, validationMessageType }) => {
+    switch (validationMessageType) {
+      case 'error':
+        return `color: ${theme.template.red.normal}`
+      case 'warning':
+        return `color: ${theme.template.yellow.normal}`
+      case 'info':
+      default:
+        return `color: ${theme.template.blue.normal}`
+    }
+  }};
   grid-area: Message;
   font-size: 0.6rem;
   line-height: normal;
   padding-top: 2px;
-  margin-bottom: -1rem; /* Prevents the layout from changing in Tile when this MessagePlaceholder is rendered */
 `
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<{ altLayout: boolean }>`
   display: grid;
   grid-template-columns: 30px auto 30px;
-  grid-template-rows: 23px auto;
   grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
   align-items: center;
+  ${({ altLayout }) =>
+    altLayout
+      ? `
+  grid-template-rows: 23px 13px;
+  margin-bottom: -0.5rem;
+  `
+      : `
+  grid-template-rows: 23px 0;
+  `};
 `
 
 export const Input = styled.input<{
@@ -176,7 +193,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
     const stringNotional = this.formatNotional(notional)
 
     return (
-      <InputWrapper>
+      <InputWrapper altLayout={Boolean(validationMessage)}>
         <CurrencyPairSymbol>{currencyPairSymbol}</CurrencyPairSymbol>
         <Input
           type="text"
@@ -191,7 +208,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
         />
         {showResetButton && (
           <ResetInputValue onClick={this.handleResetNotional}>
-            <i className="fas fa-redo fa-flip-horizontal" aria-hidden="true" />
+            <i className="fas fa-redo fa-flip-horizontal" />
           </ResetInputValue>
         )}
         {validationMessage && (

@@ -147,13 +147,14 @@ export const resetNotional = ({
     rfqState,
   },
   actions,
-}: DerivedStateFromNotionalReset) => {
+}: DerivedStateFromNotionalReset): TileState => {
   if (rfqState !== 'none') {
     actions.setTradingMode({ symbol, mode: 'esp' })
   }
   return {
     ...prevState,
     notional: getDefaultNotionalValue(),
+    inputValidationMessage: null,
     tradingDisabled: false,
   }
 }

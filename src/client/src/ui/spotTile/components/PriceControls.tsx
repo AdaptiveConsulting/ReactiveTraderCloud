@@ -6,6 +6,7 @@ import { getSpread, toRate } from '../model/spotTileUtils'
 import PriceButton from './PriceButton'
 import PriceMovement from './PriceMovement'
 import { RfqState } from './types'
+import { AdaptiveLoader } from 'rt-components'
 
 const PriceControlsStyle = styled.div`
   display: flex;
@@ -22,14 +23,29 @@ interface Props {
 }
 
 const PriceButtonDisabledPlaceholder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
   border: 2px solid ${({ theme }) => theme.core.darkBackground};
   border-radius: 3px;
-  font-size: 12px;
+  font-size: 10px;
   transition: background-color 0.2s ease;
-  padding: 1rem;
-  max-height: 58px;
+  height: 58px;
+  line-height: normal;
+  min-width: 126.13px;
   opacity: 0.5;
+  text-align: center;
   text-transform: uppercase;
+`
+
+const Icon = styled.i`
+  font-size: 20px;
+  margin: 3px 0;
+`
+
+const AdaptiveLoaderWrapper = styled.div`
+  margin: -5px 0 3px;
 `
 
 const PriceControls: React.FC<Props> = ({
@@ -59,13 +75,22 @@ const PriceControls: React.FC<Props> = ({
           rawRate={bidRate.rawRate}
           rfqState={rfqState}
           disabled={disabled}
+          expired={rfqState === 'expired'}
         />
       )}
       {rfqState === 'canRequest' && (
-        <PriceButtonDisabledPlaceholder>canRequest</PriceButtonDisabledPlaceholder>
+        <PriceButtonDisabledPlaceholder>
+          <Icon className="fas fa-ban fa-flip-horizontal" />
+          Streaming price unavailable
+        </PriceButtonDisabledPlaceholder>
       )}
       {rfqState === 'requested' && (
-        <PriceButtonDisabledPlaceholder>requested</PriceButtonDisabledPlaceholder>
+        <PriceButtonDisabledPlaceholder>
+          <AdaptiveLoaderWrapper>
+            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
+          </AdaptiveLoaderWrapper>
+          Awaiting price
+        </PriceButtonDisabledPlaceholder>
       )}
       <PriceMovement
         priceMovementType={priceData.priceMovementType}
@@ -81,13 +106,22 @@ const PriceControls: React.FC<Props> = ({
           rawRate={askRate.rawRate}
           rfqState={rfqState}
           disabled={disabled}
+          expired={rfqState === 'expired'}
         />
       )}
       {rfqState === 'canRequest' && (
-        <PriceButtonDisabledPlaceholder>canRequest</PriceButtonDisabledPlaceholder>
+        <PriceButtonDisabledPlaceholder>
+          <Icon className="fas fa-ban fa-flip-horizontal" />
+          Streaming price unavailable
+        </PriceButtonDisabledPlaceholder>
       )}
       {rfqState === 'requested' && (
-        <PriceButtonDisabledPlaceholder>requested</PriceButtonDisabledPlaceholder>
+        <PriceButtonDisabledPlaceholder>
+          <AdaptiveLoaderWrapper>
+            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
+          </AdaptiveLoaderWrapper>
+          Awaiting price
+        </PriceButtonDisabledPlaceholder>
       )}
     </PriceControlsStyle>
   )

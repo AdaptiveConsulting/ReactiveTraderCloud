@@ -4,10 +4,9 @@ import { delay, map, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { TILE_ACTION_TYPES, SpotTileActions } from '../actions'
 
-const { rfqRequest, rfqReceived, /*rfqRequote, rfqExpired,*/ rfqCancel } = SpotTileActions
+const { rfqRequest, rfqReceived, rfqCancel } = SpotTileActions
 
 type RfqRequest = ReturnType<typeof rfqRequest>
-// type RfqRequote = ReturnType<typeof rfqRequote>
 type RfqCancel = ReturnType<typeof rfqCancel>
 
 // TODO listen to the price stream
@@ -26,14 +25,3 @@ export const rfqRequestEpic: ApplicationEpic = action$ => {
     takeUntil(action$.pipe(ofType<Action, RfqCancel>(TILE_ACTION_TYPES.RFQ_CANCEL))),
   )
 }
-
-// export const rfqRequoteEpic: ApplicationEpic = action$ =>
-//   action$.pipe(
-//     ofType<Action, RfqRequote>(TILE_ACTION_TYPES.RFQ_REQUOTE),
-//     delay(5000),
-//     map(action =>
-//       rfqExpired({
-//         ...action.payload,
-//       }),
-//     ),
-//   )

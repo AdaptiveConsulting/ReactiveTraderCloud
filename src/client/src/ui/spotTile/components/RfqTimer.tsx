@@ -44,6 +44,7 @@ const TimerWrapper = styled.div`
   grid-template-columns: 35px auto 55px;
   grid-template-rows: auto;
   grid-template-areas: 'TimeLeft ProgressBar RejectQuoteButton';
+  margin-bottom: -12px;
 `
 
 // TODO Move the timer to the service.
