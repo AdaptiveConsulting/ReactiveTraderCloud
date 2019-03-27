@@ -5,9 +5,7 @@ export interface RfqRequest {
   currencyPair: CurrencyPair
 }
 
-export interface RfqReceived {
-  notional: number
-  currencyPair: CurrencyPair
+export interface RfqReceived extends RfqRequest {
   price: number
 }
 
@@ -26,9 +24,4 @@ export interface RfqCancel {
 
 export interface RfqExpired {
   currencyPair: CurrencyPair
-}
-
-// Temp
-export interface RfqResponse extends RfqRequest {
-  price: any
 }
