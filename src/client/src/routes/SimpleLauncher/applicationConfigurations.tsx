@@ -1,5 +1,11 @@
-import { reactiveAnalyticsIcon, reactiveTraderIcon, limitCheckerIcon, greenKeyIcon, excelIcon } from './icons/index'
-import { PlatformName } from 'rt-components';
+import {
+  reactiveAnalyticsIcon,
+  reactiveTraderIcon,
+  limitCheckerIcon,
+  greenKeyIcon,
+  excelIcon,
+} from './icons/index'
+import { PlatformName } from 'rt-components'
 
 const defaultWindowOptions: OpenFinWindowOptions = {
   autoShow: true,
@@ -79,7 +85,7 @@ export const appConfigs: ApplicationConfig[] = [
   },
   {
     name: 'Limit Checker',
-    url: 'http://adaptiveconsulting.github.io/ReactiveTraderCloud/install/LimitChecker/LimitChecker.application',
+    url: `http://${location.host}/plugin/LimitChecker.zip`,
     icon: limitCheckerIcon,
     provider: {
       platformName: 'openfin',
