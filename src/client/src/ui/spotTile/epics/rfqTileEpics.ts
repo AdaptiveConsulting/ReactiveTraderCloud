@@ -1,27 +1,35 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { delay, map, takeUntil } from 'rxjs/operators'
+import { delay, map, takeUntil, mergeMap } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { TILE_ACTION_TYPES, SpotTileActions } from '../actions'
+import { of } from 'rxjs'
+import { RfqRequest } from '../model/rfqRequest'
 
-const { rfqRequest, rfqReceived, rfqCancel } = SpotTileActions
+const { rfqRequest, rfqCancel } = SpotTileActions
 
-type RfqRequest = ReturnType<typeof rfqRequest>
-type RfqCancel = ReturnType<typeof rfqCancel>
+type RfqRequestActionType = ReturnType<typeof rfqRequest>
+type RfqCancelActionType = ReturnType<typeof rfqCancel>
 
-// TODO listen to the price stream
-export const rfqRequestEpic: ApplicationEpic = action$ => {
-  console.log('rfqRequestEpic')
-  return action$.pipe(
-    ofType<Action, RfqRequest>(TILE_ACTION_TYPES.RFQ_REQUEST),
-    delay(Math.random() * (10000 - 0)),
-    map(action =>
-      rfqReceived({
-        ...action.payload,
-        price: Math.random() * (3 - 0),
-      }),
+const fakeAjax = (r: RfqRequest) =>
+  of({
+    notional: r.notional,
+    currencyPair: r.currencyPair,
+    price: Math.random() * (3 - 0),
+  }).pipe(delay(Math.random() * (10000 - 0)))
+
+const fetchUserFulfilled = (payload: RfqRequest) => ({
+  type: TILE_ACTION_TYPES.RFQ_RECEIVED,
+  payload,
+})
+
+export const rfqRequestEpic: ApplicationEpic = action$ =>
+  action$.pipe(
+    ofType<Action, RfqRequestActionType>(TILE_ACTION_TYPES.RFQ_REQUEST),
+    mergeMap(action =>
+      fakeAjax(action.payload).pipe(
+        map(response => fetchUserFulfilled(response)),
+        takeUntil(action$.pipe(ofType<Action, RfqCancelActionType>(TILE_ACTION_TYPES.RFQ_CANCEL))),
+      ),
     ),
-    // TODO fix this as it will prevent any following request
-    takeUntil(action$.pipe(ofType<Action, RfqCancel>(TILE_ACTION_TYPES.RFQ_CANCEL))),
   )
-}

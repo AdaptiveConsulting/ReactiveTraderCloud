@@ -4,6 +4,13 @@ export interface RfqRequest {
   notional: number
   currencyPair: CurrencyPair
 }
+
+export interface RfqReceived {
+  notional: number
+  currencyPair: CurrencyPair
+  price: number
+}
+
 export interface RfqRequote {
   notional: number
   currencyPair: CurrencyPair
