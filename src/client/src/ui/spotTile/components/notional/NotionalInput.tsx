@@ -1,7 +1,7 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
 import { styled, Theme } from 'rt-theme'
-import { NUMERAL_FORMAT } from '../TileBusinessLogic'
+import { NUMERAL_FORMAT, isEditMode } from '../TileBusinessLogic'
 
 const DOT = '.'
 const ENTER = 'Enter'
@@ -168,8 +168,9 @@ export default class NotionalInput extends PureComponent<Props, State> {
     if (notional === '.') {
       return '0.'
     }
+
     const lastTwoChars = notional.substr(-2)
-    return notional !== '' && lastTwoChars.indexOf(DOT) === -1
+    return !isEditMode(notional) && lastTwoChars.indexOf(DOT) === -1
       ? numeral(notional).format(NUMERAL_FORMAT)
       : notional
   }
@@ -198,7 +199,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
       showResetButton,
       disabled,
     } = this.props
-    const stringNotional = this.formatNotional(notional)
+    // const stringNotional = this.formatNotional(notional)
 
     return (
       <InputWrapper altLayout={Boolean(validationMessage)}>
@@ -206,7 +207,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
         <Input
           type="text"
           ref={this.inputRef}
-          value={stringNotional}
+          value={notional}
           onFocus={this.handleFocus}
           onChange={this.handleChange}
           onBlur={this.handleChange}

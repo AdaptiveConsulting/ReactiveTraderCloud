@@ -16,8 +16,10 @@ const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 export const getDefaultNotionalValue = () => numeral(DEFAULT_NOTIONAL_VALUE).format(NUMERAL_FORMAT)
 export const getNumericNotional = (notional: string) =>
   numeral(notional).value() || DEFAULT_NOTIONAL_VALUE
-const invalidTradingValuesRegex = /^(\.|0|.0|0.|0.0|$|Infinity|NaN)$/
+const invalidTradingValuesRegex = /^(\.|,|0|.0|0.|0.0|$|Infinity|NaN)$/
 const isInvalidTradingValue = (value: string) => value.match(invalidTradingValuesRegex)
+const editModeRegex = /(?!.*(0\.)).*^(,|$|0)/
+export const isEditMode = (value: string) => value.match(editModeRegex)
 
 // State management derived from props
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
@@ -83,7 +85,18 @@ export const getDerivedStateFromUserInput = ({
     tradingDisabled: false,
   }
 
-  if (type === 'blur' && isInvalidTradingValue(value)) {
+  if (type === 'change' && isEditMode(value)) {
+    // user is trying to enter decimals or modifying a number
+    // or deleting previous entry (empty string)
+    // disable trading, remove any message
+    if (rfqState !== 'none') {
+      actions.setTradingMode({ symbol, mode: 'esp' })
+    }
+    return {
+      ...defaultNextState,
+      tradingDisabled: true,
+    }
+  } else if (type === 'blur' && isInvalidTradingValue(value)) {
     // onBlur if invalid trading value, reset value
     // remove any message, enable trading
     if (rfqState !== 'none') {
@@ -93,10 +106,19 @@ export const getDerivedStateFromUserInput = ({
       ...defaultNextState,
       notional: numeral(RESET_NOTIONAL_VALUE).format(NUMERAL_FORMAT),
     }
+  } else if (type === 'blur' && isEditMode(value)) {
+    // onBlur if in editMore, format value
+    // remove any message, enable trading
+    if (rfqState !== 'none') {
+      actions.setTradingMode({ symbol, mode: 'esp' })
+    }
+    return {
+      ...defaultNextState,
+      notional: numeral(value).format(NUMERAL_FORMAT),
+    }
   } else if (isInvalidTradingValue(value)) {
     // onChange if invalid trading value, update value
-    // user is trying to enter decimals or deleting previous entry (empty string)
-    // in those cases, disable trading, remove any message
+    // disable trading, remove any message
     if (rfqState !== 'none') {
       actions.setTradingMode({ symbol, mode: 'esp' })
     }
