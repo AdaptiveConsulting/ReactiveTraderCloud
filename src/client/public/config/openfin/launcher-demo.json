@@ -51,6 +51,12 @@
       "alias": "excel-api-addin",
       "version": "2.0.0",
       "forceDownload": true
+    },
+    {
+      "src": "https://web-demo.adaptivecluster.com/plugin/LimitChecker.zip",
+      "alias": "LimitChecker",
+      "version": "1.0.0",
+      "target": "LimitChecker.application"
     }
   ]
 }
