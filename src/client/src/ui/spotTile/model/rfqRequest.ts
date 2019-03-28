@@ -7,6 +7,7 @@ export interface RfqRequest {
 
 export interface RfqReceived extends RfqRequest {
   price: number
+  timeout: number
 }
 
 export interface RfqRequote {
