@@ -43,10 +43,6 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
     mergeMap(action => {
       const cancel$ = action$.pipe(
         ofType<any>(TILE_ACTION_TYPES.RFQ_REJECT, TILE_ACTION_TYPES.RFQ_EXPIRED),
-        // filter(
-        //   (rejectAction: RfqExpiredActionType | RfqCancelActionType) =>
-        //     rejectAction.payload.currencyPair === action.payload.currencyPair,
-        // ),
       )
 
       return timer(action.payload.timeout).pipe(
