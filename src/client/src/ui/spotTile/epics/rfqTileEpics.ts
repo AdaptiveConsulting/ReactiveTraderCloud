@@ -6,11 +6,12 @@ import { TILE_ACTION_TYPES, SpotTileActions } from '../actions'
 import { of, timer } from 'rxjs'
 import { RfqRequest } from '../model/rfqRequest'
 
-const { rfqRequest, rfqReceived, rfqExpired, rfqCancel } = SpotTileActions
+const { rfqRequest, rfqReceived, rfqExpired, rfqReject, rfqCancel } = SpotTileActions
 
 type RfqRequestActionType = ReturnType<typeof rfqRequest>
 type RfqReceivedActionType = ReturnType<typeof rfqReceived>
-// type RfqExpiredActionType = ReturnType<typeof rfqExpired>
+type RfqRejectActionType = ReturnType<typeof rfqReject>
+type RfqExpiredActionType = ReturnType<typeof rfqExpired>
 type RfqCancelActionType = ReturnType<typeof rfqCancel>
 
 const fakeAjaxCall = (r: RfqRequest) =>
@@ -42,7 +43,10 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
     ofType<Action, RfqReceivedActionType>(TILE_ACTION_TYPES.RFQ_RECEIVED),
     mergeMap(action => {
       const cancel$ = action$.pipe(
-        ofType<any>(TILE_ACTION_TYPES.RFQ_REJECT, TILE_ACTION_TYPES.RFQ_EXPIRED),
+        ofType<Action, RfqRejectActionType | RfqExpiredActionType>(
+          TILE_ACTION_TYPES.RFQ_REJECT,
+          TILE_ACTION_TYPES.RFQ_EXPIRED,
+        ),
       )
 
       return timer(action.payload.timeout).pipe(
