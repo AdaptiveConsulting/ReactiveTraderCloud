@@ -35,8 +35,8 @@
     },
     "runtime": {
         "arguments": "--remote-debugging-port=9222",
-        "version": "9.61.34.22",
-        "futureVersion": "9.61.34.22",
+        "version": "10.66.39.43",
+        "futureVersion": "10.66.39.43",
         "forceLatest": true
     },
     "shortcut": {
