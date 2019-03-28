@@ -115,7 +115,6 @@ export const spotTileDataReducer = (
     case TILE_ACTION_TYPES.RFQ_RECEIVED:
     case TILE_ACTION_TYPES.RFQ_EXPIRED:
     case TILE_ACTION_TYPES.RFQ_REJECT:
-      console.log('action!', action.type, action.payload.currencyPair.symbol)
       return {
         ...state,
         [action.payload.currencyPair.symbol]: rfqTileReducer(
