@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 
 interface RfqTimerProps {
-  onExpired: () => void
   onRejected: () => void
   timeout: number
 }
@@ -52,11 +51,11 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
   intervalId = 0
 
   static defaultProps = {
-    timeout: 60, // This value must come from service
+    timeout: 60000,
   }
 
   state = {
-    timeLeft: this.props.timeout,
+    timeLeft: this.props.timeout / 1000,
   }
 
   componentDidMount() {
@@ -81,19 +80,15 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
           timeLeft: prevState.timeLeft - 1,
         }
       }
-      // TODO this should be handled by service.
-      const { onExpired } = this.props
-      if (onExpired) {
-        onExpired()
-      }
       clearInterval(this.intervalId)
       return prevState
     })
   }
 
   render() {
+    const { timeout } = this.props
     const { timeLeft } = this.state
-    const percentageLeft = (timeLeft * 100) / 60
+    const percentageLeft = (timeLeft * 100) / (timeout / 1000)
 
     return (
       <TimerWrapper>

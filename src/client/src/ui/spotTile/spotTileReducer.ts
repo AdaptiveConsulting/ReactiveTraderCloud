@@ -87,6 +87,8 @@ const rfqTileReducer = (
       return {
         ...state,
         rfqState: 'received',
+        rfqTimeout: action.payload.timeout,
+        rfqPrice: action.payload.price,
       }
     case TILE_ACTION_TYPES.RFQ_EXPIRED:
     case TILE_ACTION_TYPES.RFQ_REJECT:
