@@ -12,6 +12,7 @@ import {
   getNumericNotional,
   getDerivedStateFromUserInput,
   resetNotional,
+  isValueInRfqRange,
 } from './TileBusinessLogic'
 
 export interface TileProps {
@@ -47,8 +48,24 @@ class Tile extends React.PureComponent<TileProps, TileState> {
     [TileViews.Analytics]: AnalyticsTile,
   }
 
+  // State management derived from props
   static getDerivedStateFromProps(nextProps: TileProps, prevState: TileState) {
     return getDerivedStateFromProps(nextProps, prevState)
+  }
+
+  // We handle the case where the initial Notional value would
+  // be in the RFQ range.
+  componentDidMount() {
+    const {
+      spotTileData: { rfqState },
+      setTradingMode,
+      currencyPair: { symbol },
+    } = this.props
+    const { notional } = this.state
+
+    if (rfqState === 'none' && isValueInRfqRange(notional)) {
+      setTradingMode({ symbol, mode: 'rfq' })
+    }
   }
 
   executeTrade = (direction: Direction, rawSpotRate: number) => {
@@ -67,12 +84,15 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       rawSpotRate,
     }
     executeTrade(createTradeRequest(tradeRequestObj))
-    // If in RFQ, set to canRequest
+
+    // After executing the trade we need to
+    // reset our RFQ state if necessary.
     if (rfqState === 'received') {
       rfq.reset({ currencyPair })
     }
   }
 
+  // State management derived from user input
   updateNotional = (notionalUpdate: NotionalUpdate) => {
     const { setTradingMode, spotTileData } = this.props
     this.setState(prevState =>

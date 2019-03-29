@@ -16,6 +16,14 @@ const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 export const getDefaultNotionalValue = () => numeral(DEFAULT_NOTIONAL_VALUE).format(NUMERAL_FORMAT)
 export const getNumericNotional = (notional: string) =>
   numeral(notional).value() || DEFAULT_NOTIONAL_VALUE
+export const isValueInRfqRange = (notional: string) => {
+  const numericValue = convertNotionalShorthandToNumericValue(notional)
+  return numericValue >= MIN_RFQ_VALUE && numericValue <= MAX_NOTIONAL_VALUE
+}
+const isValueOverRftRange = (notional: string) => {
+  const numericValue = convertNotionalShorthandToNumericValue(notional)
+  return numericValue > MAX_NOTIONAL_VALUE
+}
 const invalidTradingValuesRegex = /^(\.|,|0|.0|0.|0.0|$|Infinity|NaN)$/
 const isInvalidTradingValue = (value: string) => value.match(invalidTradingValuesRegex)
 const editModeRegex = /(?!.*(0\.)).*^(,|$|0)/
@@ -23,22 +31,21 @@ export const isEditMode = (value: string) => value.match(editModeRegex)
 
 // State management derived from props
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
-  const { spotTileData, executionStatus } = nextProps
+  const {
+    spotTileData: { rfqState, price, isTradeExecutionInFlight },
+    executionStatus,
+  } = nextProps
+
   const { inputValidationMessage } = prevState
 
   const isInTrade = !Boolean(
-    executionStatus === ServiceConnectionStatus.CONNECTED &&
-      !spotTileData.isTradeExecutionInFlight &&
-      spotTileData.price,
+    executionStatus === ServiceConnectionStatus.CONNECTED && !isTradeExecutionInFlight && price,
   )
 
   const canExecute =
-    !isInTrade &&
-    spotTileData.rfqState !== 'canRequest' &&
-    spotTileData.rfqState !== 'requested' &&
-    !inputValidationMessage
-  const inputDisabled =
-    isInTrade || spotTileData.rfqState === 'requested' || spotTileData.rfqState === 'received'
+    !isInTrade && rfqState !== 'canRequest' && rfqState !== 'requested' && !inputValidationMessage
+
+  const inputDisabled = isInTrade || rfqState === 'requested' || rfqState === 'received'
 
   return {
     ...prevState,
@@ -72,7 +79,6 @@ export const getDerivedStateFromUserInput = ({
   actions,
 }: DerivedStateFromUserInput): TileState => {
   const { type, value } = notionalUpdate
-  const numericValue = convertNotionalShorthandToNumericValue(value)
   const {
     price: { symbol },
     rfqState,
@@ -126,7 +132,7 @@ export const getDerivedStateFromUserInput = ({
       ...defaultNextState,
       tradingDisabled: true,
     }
-  } else if (numericValue >= MIN_RFQ_VALUE && numericValue <= MAX_NOTIONAL_VALUE) {
+  } else if (isValueInRfqRange(value)) {
     // if in RFQ range, set tradingMode to 'rfq' to trigger prompt
     // remove any message, disable trading
     if (rfqState === 'none') {
@@ -136,7 +142,7 @@ export const getDerivedStateFromUserInput = ({
       ...defaultNextState,
       tradingDisabled: true,
     }
-  } else if (numericValue > MAX_NOTIONAL_VALUE) {
+  } else if (isValueOverRftRange(value)) {
     // if value exceeds Max, show error message
     // update value, disable trading
     if (rfqState === 'none') {
