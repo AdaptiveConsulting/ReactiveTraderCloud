@@ -93,13 +93,13 @@ const Tenth = styled(Box)`
   align-self: flex-end;
 `
 
-const Price = styled.div<{ disabled: boolean; rfqState: RfqState }>`
+const Price = styled.div<{ disabled: boolean }>`
   height: 34px;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  ${({ theme, disabled, rfqState }) => (disabled && rfqState !== 'received' ? 'opacity: 0.3' : '')}
+  ${({ disabled }) => (disabled ? 'opacity: 0.3' : '')}
 `
 
 const BigWrapper = styled.div`
@@ -152,7 +152,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
       rfqState={rfqState}
       disabled={disabled}
     >
-      <Price rfqState={rfqState} disabled={disabled}>
+      <Price disabled={disabled}>
         <BigWrapper>
           <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
           <Big>{renderBigFigureDisplay(bigFigure)}</Big>

@@ -63,9 +63,16 @@ const PriceControls: React.FC<Props> = ({
     currencyPair.pipsPosition,
     currencyPair.ratePrecision,
   )
+  const isDisabled = rfqState !== 'received' && disabled
+  const isExpired = rfqState === 'expired'
+  const isRfqStateCanRequest = rfqState === 'canRequest'
+  const isRfqStateRequested = rfqState === 'requested'
+  const isRfqStateNone = rfqState === 'none'
+  const isRfqStateReceived = rfqState === 'received'
+
   return (
     <PriceControlsStyle>
-      {(rfqState === 'none' || rfqState === 'received' || rfqState === 'expired') && (
+      {(isRfqStateNone || isRfqStateReceived || isExpired) && (
         <PriceButton
           handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
           direction={Direction.Sell}
@@ -74,17 +81,17 @@ const PriceControls: React.FC<Props> = ({
           tenth={bidRate.pipFraction}
           rawRate={bidRate.rawRate}
           rfqState={rfqState}
-          disabled={disabled}
-          expired={rfqState === 'expired'}
+          disabled={isDisabled}
+          expired={isExpired}
         />
       )}
-      {rfqState === 'canRequest' && (
+      {isRfqStateCanRequest && (
         <PriceButtonDisabledPlaceholder>
           <Icon className="fas fa-ban fa-flip-horizontal" />
           Streaming price unavailable
         </PriceButtonDisabledPlaceholder>
       )}
-      {rfqState === 'requested' && (
+      {isRfqStateRequested && (
         <PriceButtonDisabledPlaceholder>
           <AdaptiveLoaderWrapper>
             <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
@@ -96,7 +103,7 @@ const PriceControls: React.FC<Props> = ({
         priceMovementType={priceData.priceMovementType}
         spread={spread.formattedValue}
       />
-      {(rfqState === 'none' || rfqState === 'received' || rfqState === 'expired') && (
+      {(isRfqStateNone || isRfqStateReceived || isExpired) && (
         <PriceButton
           handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
           direction={Direction.Buy}
@@ -105,17 +112,17 @@ const PriceControls: React.FC<Props> = ({
           tenth={askRate.pipFraction}
           rawRate={askRate.rawRate}
           rfqState={rfqState}
-          disabled={disabled}
-          expired={rfqState === 'expired'}
+          disabled={isDisabled}
+          expired={isExpired}
         />
       )}
-      {rfqState === 'canRequest' && (
+      {isRfqStateCanRequest && (
         <PriceButtonDisabledPlaceholder>
           <Icon className="fas fa-ban fa-flip-horizontal" />
           Streaming price unavailable
         </PriceButtonDisabledPlaceholder>
       )}
-      {rfqState === 'requested' && (
+      {isRfqStateRequested && (
         <PriceButtonDisabledPlaceholder>
           <AdaptiveLoaderWrapper>
             <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
