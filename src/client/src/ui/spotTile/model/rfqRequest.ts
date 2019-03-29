@@ -1,4 +1,5 @@
 import { CurrencyPair } from '../../../rt-types/currencyPair'
+import { SpotPriceTick } from './spotPriceTick'
 
 export interface RfqRequest {
   notional: number
@@ -6,7 +7,7 @@ export interface RfqRequest {
 }
 
 export interface RfqReceived extends RfqRequest {
-  price: number
+  price: SpotPriceTick
   timeout: number
 }
 

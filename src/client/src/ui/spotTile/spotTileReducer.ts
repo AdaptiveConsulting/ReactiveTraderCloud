@@ -3,7 +3,7 @@ import { SpotTileActions, TILE_ACTION_TYPES } from './actions'
 import { PriceMovementTypes } from './model/priceMovementTypes'
 import { SpotTileData } from './model/spotTileData'
 
-interface SpotTileState {
+export interface SpotTileState {
   [currencyPair: string]: SpotTileData
 }
 
@@ -25,6 +25,8 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
     priceStale: false,
   },
   rfqState: 'none',
+  rfqPrice: null,
+  rfqTimeout: null,
 }
 
 const spotTileReducer = (
@@ -66,26 +68,31 @@ const rfqTileReducer = (
   state: SpotTileData = { ...INITIAL_SPOT_TILE_STATE },
   action: SpotTileActions,
 ): SpotTileData => {
+  const newState: SpotTileData = {
+    ...state,
+    rfqTimeout: null,
+    rfqPrice: null,
+  }
   switch (action.type) {
     case TILE_ACTION_TYPES.SET_TRADING_MODE:
       return {
-        ...state,
+        ...newState,
         rfqState: action.payload.mode === 'rfq' ? 'canRequest' : 'none',
       }
     case TILE_ACTION_TYPES.RFQ_REQUEST:
     case TILE_ACTION_TYPES.RFQ_REQUOTE:
       return {
-        ...state,
+        ...newState,
         rfqState: 'requested',
       }
     case TILE_ACTION_TYPES.RFQ_CANCEL:
       return {
-        ...state,
+        ...newState,
         rfqState: 'canRequest',
       }
     case TILE_ACTION_TYPES.RFQ_RECEIVED:
       return {
-        ...state,
+        ...newState,
         rfqState: 'received',
         rfqTimeout: action.payload.timeout,
         rfqPrice: action.payload.price,
@@ -93,11 +100,11 @@ const rfqTileReducer = (
     case TILE_ACTION_TYPES.RFQ_EXPIRED:
     case TILE_ACTION_TYPES.RFQ_REJECT:
       return {
-        ...state,
+        ...state, // Use state instead of newState to not reset rfqTimeout and rfqPrice
         rfqState: 'expired',
       }
     default:
-      return state
+      return newState
   }
 }
 

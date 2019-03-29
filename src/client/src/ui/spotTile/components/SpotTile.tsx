@@ -28,7 +28,7 @@ export default class SpotTile extends PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { price, rfqState, rfqTimeout },
+      spotTileData: { price, rfqState, rfqPrice, rfqTimeout },
       notional,
       updateNotional,
       resetNotional,
@@ -46,6 +46,7 @@ export default class SpotTile extends PureComponent<Props> {
     const handleRfqRejected = () => rfq.reject({ currencyPair })
     const showResetButton = rfqState === 'canRequest' || rfqState === 'expired'
     const showTimer = rfqState === 'received' && rfqTimeout
+    const priceData = rfqState === 'received' || rfqState === 'expired' ? rfqPrice : price
 
     return (
       <SpotTileWrapperWithPlatform>
@@ -56,7 +57,7 @@ export default class SpotTile extends PureComponent<Props> {
             </TileHeaderWrapper>
             <PriceControls
               executeTrade={executeTrade}
-              priceData={price}
+              priceData={priceData}
               currencyPair={currencyPair}
               rfqState={rfqState}
               disabled={tradingDisabled}

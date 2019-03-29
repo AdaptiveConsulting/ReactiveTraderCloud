@@ -5,6 +5,8 @@ import { ApplicationEpic } from 'StoreTypes'
 import { TILE_ACTION_TYPES, SpotTileActions } from '../actions'
 import { of, timer } from 'rxjs'
 import { RfqRequest } from '../model/rfqRequest'
+import { SpotTileState } from '../spotTileReducer'
+import { CurrencyPairState } from '../../../../src/shell/referenceData'
 
 const { rfqRequest, rfqReceived, rfqExpired, rfqReject, rfqCancel } = SpotTileActions
 
@@ -16,24 +18,39 @@ type RfqCancelActionType = ReturnType<typeof rfqCancel>
 
 const EXPIRATION_TIMEOUT_MS = 60000
 
-const fakeAjaxCall = (r: RfqRequest) =>
-  of({
+const fakeAjaxCall = (
+  r: RfqRequest,
+  currencyPairs: CurrencyPairState,
+  spotTilesData: SpotTileState,
+) => {
+  // TODO manipulate the prices relative using currencyPairData and randomNumber
+  // const randomNumber = Math.random() * (3 - 0)
+  // const currencyPairData = currencyPairs[r.currencyPair.symbol]
+  const currentEspPrice = spotTilesData[r.currencyPair.symbol].price
+
+  return of({
     notional: r.notional,
     currencyPair: r.currencyPair,
-    price: Math.random() * (3 - 0),
+    price: {
+      ...currentEspPrice,
+      // TODO manipulated price data goes here.
+    },
     timeout: EXPIRATION_TIMEOUT_MS,
   }).pipe(delay(Math.random() * (10000 - 0)))
+}
 
 const fetchRfqQuote = (payload: RfqRequest) => ({
   type: TILE_ACTION_TYPES.RFQ_RECEIVED,
   payload,
 })
 
-export const rfqRequestEpic: ApplicationEpic = action$ =>
+export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     ofType<Action, RfqRequestActionType>(TILE_ACTION_TYPES.RFQ_REQUEST),
     mergeMap(action =>
-      fakeAjaxCall(action.payload).pipe(
+      // TODO Subcribe to Pricing service instead of passing the current price
+      // to that call? Same with currencuPairs?
+      fakeAjaxCall(action.payload, state$.value.currencyPairs, state$.value.spotTilesData).pipe(
         map(response => fetchRfqQuote(response)),
         takeUntil(action$.pipe(ofType<Action, RfqCancelActionType>(TILE_ACTION_TYPES.RFQ_CANCEL))),
       ),
@@ -49,7 +66,10 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
           TILE_ACTION_TYPES.RFQ_REJECT,
           TILE_ACTION_TYPES.RFQ_EXPIRED,
         ),
-        filter(cancelAction => cancelAction.payload.currencyPair === action.payload.currencyPair),
+        filter(
+          cancelAction =>
+            cancelAction.payload.currencyPair.symbol === action.payload.currencyPair.symbol,
+        ),
       )
 
       return timer(action.payload.timeout).pipe(

@@ -19,7 +19,7 @@ interface Props {
   priceData: SpotPriceTick
   executeTrade: (direction: Direction, rawSpotRate: number) => void
   disabled: boolean
-  rfqState?: RfqState
+  rfqState: RfqState
 }
 
 const PriceButtonDisabledPlaceholder = styled.div`
