@@ -27,3 +27,7 @@ export interface RfqCancel {
 export interface RfqExpired {
   currencyPair: CurrencyPair
 }
+
+export interface RfqReset {
+  currencyPair: CurrencyPair
+}

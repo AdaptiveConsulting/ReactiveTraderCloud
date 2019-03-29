@@ -15,6 +15,7 @@ const rfqActions = {
   reject: action('reject'),
   requote: action('requote'),
   expired: action('expired'),
+  reset: action('reset'),
 }
 
 stories.add('SpotTile', () => (

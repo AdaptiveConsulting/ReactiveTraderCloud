@@ -52,7 +52,12 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   }
 
   executeTrade = (direction: Direction, rawSpotRate: number) => {
-    const { currencyPair, executeTrade } = this.props
+    const {
+      currencyPair,
+      executeTrade,
+      rfq,
+      spotTileData: { rfqState },
+    } = this.props
     const { notional } = this.state
     const tradeRequestObj: TradeRequest = {
       direction,
@@ -62,6 +67,10 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       rawSpotRate,
     }
     executeTrade(createTradeRequest(tradeRequestObj))
+    // If in RFQ, set to canRequest
+    if (rfqState === 'received') {
+      rfq.reset({ currencyPair })
+    }
   }
 
   updateNotional = (notionalUpdate: NotionalUpdate) => {

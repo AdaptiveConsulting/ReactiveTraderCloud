@@ -2,7 +2,14 @@ import { action, ActionUnion } from 'rt-util'
 import { ExecuteTradeRequest, ExecuteTradeResponse } from './model/executeTradeRequest'
 import { SpotPriceTick } from './model/spotPriceTick'
 import { TradeExectionMeta } from './model/spotTileUtils'
-import { RfqRequest, RfqReceived, RfqExpired, RfqCancel, RfqReject } from './model/rfqRequest'
+import {
+  RfqRequest,
+  RfqReceived,
+  RfqExpired,
+  RfqCancel,
+  RfqReject,
+  RfqReset,
+} from './model/rfqRequest'
 import { TradingMode } from './components/types'
 
 export enum TILE_ACTION_TYPES {
@@ -13,6 +20,7 @@ export enum TILE_ACTION_TYPES {
   RFQ_EXPIRED = '@ReactiveTraderCloud/RFQ_EXPIRED',
   RFQ_REQUOTE = '@ReactiveTraderCloud/RFQ_REQUOTE',
   RFQ_CANCEL = '@ReactiveTraderCloud/RFQ_CANCEL',
+  RFQ_RESET = '@ReactiveTraderCloud/RFQ_RESET',
   EXECUTE_TRADE = '@ReactiveTraderCloud/EXECUTE_TRADE',
   TRADE_EXECUTED = '@ReactiveTraderCloud/TRADE_EXECUTED',
   DISPLAY_CURRENCY_CHART = '@ReactiveTraderCloud/DISPLAY_CURRENCY_CHART',
@@ -39,6 +47,8 @@ export const SpotTileActions = {
   rfqReject: action<TILE_ACTION_TYPES.RFQ_REJECT, RfqReject>(TILE_ACTION_TYPES.RFQ_REJECT),
 
   rfqCancel: action<TILE_ACTION_TYPES.RFQ_CANCEL, RfqCancel>(TILE_ACTION_TYPES.RFQ_CANCEL),
+
+  rfqReset: action<TILE_ACTION_TYPES.RFQ_RESET, RfqReset>(TILE_ACTION_TYPES.RFQ_RESET),
 
   executeTrade: action<
     TILE_ACTION_TYPES.EXECUTE_TRADE,

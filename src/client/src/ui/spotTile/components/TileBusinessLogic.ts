@@ -44,6 +44,7 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
     ...prevState,
     inputDisabled,
     canExecute,
+    tradingDisabled: spotTileData.rfqState === 'received' ? false : prevState.tradingDisabled,
   }
 }
 

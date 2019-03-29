@@ -69,6 +69,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
     reject: (obj: RfqReject) => dispatch(SpotTileActions.rfqReject(obj)),
     requote: (obj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(obj)),
     expired: (obj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(obj)),
+    reset: (obj: RfqExpired) => dispatch(SpotTileActions.rfqReset(obj)),
   },
 })
 

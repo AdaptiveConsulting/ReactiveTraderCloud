@@ -52,15 +52,11 @@ const TileSwitch: React.FC<Props> = ({
           onPopoutClick={onPopoutClick}
           displayCurrencyChart={displayCurrencyChart}
         />
-        <TileBooking
-          show={spotTileData.rfqState === 'none' && spotTileData.isTradeExecutionInFlight}
-          color="blue"
-          showLoader
-        >
+        <TileBooking show={spotTileData.isTradeExecutionInFlight} color="blue" showLoader>
           Executing
         </TileBooking>
         <TileBooking
-          show={spotTileData.rfqState === 'canRequest'}
+          show={!spotTileData.isTradeExecutionInFlight && spotTileData.rfqState === 'canRequest'}
           color="blue"
           onBookingPillClick={() =>
             rfq.request({ notional: getNumericNotional(notional), currencyPair })

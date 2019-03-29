@@ -8,13 +8,14 @@ import { RfqRequest } from '../model/rfqRequest'
 import { SpotTileState } from '../spotTileReducer'
 import { CurrencyPairState } from '../../../../src/shell/referenceData'
 
-const { rfqRequest, rfqReceived, rfqExpired, rfqReject, rfqCancel } = SpotTileActions
+const { rfqRequest, rfqReceived, rfqExpired, rfqReject, rfqCancel, rfqReset } = SpotTileActions
 
 type RfqRequestActionType = ReturnType<typeof rfqRequest>
 type RfqReceivedActionType = ReturnType<typeof rfqReceived>
 type RfqRejectActionType = ReturnType<typeof rfqReject>
 type RfqExpiredActionType = ReturnType<typeof rfqExpired>
 type RfqCancelActionType = ReturnType<typeof rfqCancel>
+type RfqResetActionType = ReturnType<typeof rfqReset>
 
 const EXPIRATION_TIMEOUT_MS = 60000
 
@@ -64,9 +65,10 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
     ofType<Action, RfqReceivedActionType>(TILE_ACTION_TYPES.RFQ_RECEIVED),
     mergeMap(action => {
       const cancel$ = action$.pipe(
-        ofType<Action, RfqRejectActionType | RfqExpiredActionType>(
+        ofType<Action, RfqRejectActionType | RfqExpiredActionType | RfqResetActionType>(
           TILE_ACTION_TYPES.RFQ_REJECT,
           TILE_ACTION_TYPES.RFQ_EXPIRED,
+          TILE_ACTION_TYPES.RFQ_RESET,
         ),
         filter(
           cancelAction =>

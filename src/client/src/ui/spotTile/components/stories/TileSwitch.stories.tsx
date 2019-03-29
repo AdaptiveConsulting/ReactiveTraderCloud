@@ -19,6 +19,7 @@ const requote = action('requote')
 const reject = action('reject')
 const cancel = action('cancel')
 const expired = action('expired')
+const reset = action('reset')
 
 const rfq = {
   request,
@@ -26,6 +27,7 @@ const rfq = {
   reject,
   cancel,
   expired,
+  reset,
 }
 
 const options = {

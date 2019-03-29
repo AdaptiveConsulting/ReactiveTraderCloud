@@ -86,6 +86,7 @@ const rfqTileReducer = (
         rfqState: 'requested',
       }
     case TILE_ACTION_TYPES.RFQ_CANCEL:
+    case TILE_ACTION_TYPES.RFQ_RESET:
       return {
         ...newState,
         rfqState: 'canRequest',
@@ -124,6 +125,7 @@ export const spotTileDataReducer = (
     case TILE_ACTION_TYPES.RFQ_RECEIVED:
     case TILE_ACTION_TYPES.RFQ_EXPIRED:
     case TILE_ACTION_TYPES.RFQ_REJECT:
+    case TILE_ACTION_TYPES.RFQ_RESET:
       return {
         ...state,
         [action.payload.currencyPair.symbol]: rfqTileReducer(
