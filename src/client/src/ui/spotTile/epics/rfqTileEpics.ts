@@ -23,17 +23,19 @@ const fakeAjaxCall = (
   currencyPairs: CurrencyPairState,
   spotTilesData: SpotTileState,
 ) => {
-  // TODO manipulate the prices relative using currencyPairData and randomNumber
-  // const randomNumber = Math.random() * (3 - 0)
-  // const currencyPairData = currencyPairs[r.currencyPair.symbol]
+  const randomNumber = Math.random() * (3 - 0)
+  const { pipsPosition } = currencyPairs[r.currencyPair.symbol]
   const currentEspPrice = spotTilesData[r.currencyPair.symbol].price
+  const { ask, bid } = currentEspPrice
+  const addSubNumber = randomNumber / Math.pow(10, pipsPosition)
 
   return of({
     notional: r.notional,
     currencyPair: r.currencyPair,
     price: {
       ...currentEspPrice,
-      // TODO manipulated price data goes here.
+      ask: ask - addSubNumber,
+      bid: bid + addSubNumber,
     },
     timeout: EXPIRATION_TIMEOUT_MS,
   }).pipe(delay(Math.random() * (10000 - 0)))
