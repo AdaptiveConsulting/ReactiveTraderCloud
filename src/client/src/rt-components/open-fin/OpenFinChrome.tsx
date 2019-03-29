@@ -2,7 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { SFC } from 'react'
 import { Helmet } from 'react-helmet'
-import { styled } from 'rt-theme'
+import { styled, AccentName } from 'rt-theme'
 
 export interface ControlProps {
   minimize?: () => void
@@ -18,6 +18,7 @@ export const OpenFinChrome: SFC = ({ children }) => (
         body,
         #root {
           overflow: hidden;
+          min-height: 100%;
           max-height: 100vh;
         }
     `}</style>
@@ -26,26 +27,26 @@ export const OpenFinChrome: SFC = ({ children }) => (
   </React.Fragment>
 )
 
-export const OpenFinHeader: React.SFC<ControlProps> = ({ ...props }) => (
+export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
   <Header>
     <DragRegion />
     <OpenFinControls {...props} />
   </Header>
 )
 
-export const OpenFinControls: React.SFC<ControlProps> = ({ minimize, maximize, close }) => (
+export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close }) => (
   <React.Fragment>
     {minimize ? (
-      <HeaderControl intent="aware" onClick={minimize}>
+      <HeaderControl accent="aware" onClick={minimize}>
         <i className="fas fa-minus fa-set-position" />
       </HeaderControl>
     ) : null}
     {maximize ? (
-      <HeaderControl intent="primary" onClick={maximize}>
+      <HeaderControl accent="dominant" onClick={maximize}>
         <i className="far fa-window-maximize" />
       </HeaderControl>
     ) : null}
-    <HeaderControl intent="bad" onClick={close}>
+    <HeaderControl accent="bad" onClick={close}>
       <FontAwesomeIcon icon={faTimes} />
     </HeaderControl>
   </React.Fragment>
@@ -64,7 +65,7 @@ const DragRegion = styled.div`
   -webkit-app-region: drag;
 `
 
-const HeaderControl = styled.div<{ intent?: string }>`
+const HeaderControl = styled.div<{ accent?: AccentName }>`
   display: flex;
   justify-content: center;
   align-self: center;
@@ -74,18 +75,19 @@ const HeaderControl = styled.div<{ intent?: string }>`
   cursor: pointer;
 
   &:hover {
-    color: ${({ theme, intent = 'primary' }) => theme.button[intent].backgroundColor};
+    color: ${({ theme, accent = 'dominant' }) => theme.button[accent].backgroundColor};
   }
 `
 
 export const Root = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: ${props => props.theme.shell.backgroundColor};
-  color: ${props => props.theme.shell.textColor};
+  display: grid;
+  background-color: ${props => props.theme.core.darkBackground};
+  color: ${props => props.theme.core.textColor};
 
   height: 100%;
   width: 100%;
+
+  grid-template-rows: 1.5rem 1fr;
 `
 
 export default OpenFinChrome

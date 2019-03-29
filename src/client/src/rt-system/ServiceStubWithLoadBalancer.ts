@@ -1,7 +1,6 @@
 import { defer, Observable } from 'rxjs'
 import { distinctUntilChanged, filter, map, share, switchMap, take } from 'rxjs/operators'
-import logger, { Logger } from './logger'
-import { ServiceCollectionMap } from './ServiceInstanceCollection'
+import { IServiceStatusCollection } from './ServiceInstanceCollection'
 import { ServiceStub } from './ServiceStub'
 
 /**
@@ -10,22 +9,20 @@ import { ServiceStub } from './ServiceStub'
  * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
 
-export default class ServiceStubWithLoadBalancer {
-  private readonly log: Logger
+const LOG_NAME = 'ServiceClient: Initiated'
 
+export default class ServiceStubWithLoadBalancer {
   constructor(
     private connection: ServiceStub,
-    private readonly serviceInstanceDictionaryStream: Observable<ServiceCollectionMap>
-  ) {
-    this.log = logger.create(`ServiceClient: Initiated`)
-  }
+    private readonly serviceInstanceDictionaryStream: Observable<IServiceStatusCollection>,
+  ) {}
 
   private getServiceWithMinLoad$(serviceType: string) {
     return this.serviceInstanceDictionaryStream.pipe(
       filter(serviceCollectionMap => !!serviceCollectionMap.getServiceInstanceWithMinimumLoad(serviceType)),
       map(serviceCollectionMap => serviceCollectionMap.getServiceInstanceWithMinimumLoad(serviceType)!),
       distinctUntilChanged((last, next) => last.serviceId === next.serviceId),
-      take(1)
+      take(1),
     )
   }
 
@@ -34,15 +31,16 @@ export default class ServiceStubWithLoadBalancer {
    *
    */
   createRequestResponseOperation<TResponse, TRequest>(service: string, operationName: string, request: TRequest) {
-    this.log.info(`Creating request response operation for [${operationName}]`)
+    console.info(LOG_NAME, `Creating request response operation for [${operationName}]`)
 
     return this.getServiceWithMinLoad$(service).pipe(
       switchMap(serviceInstanceStatus => {
         if (serviceInstanceStatus.serviceId !== 'status') {
-          this.log.info(
+          console.info(
+            LOG_NAME,
             `Will use service instance [${
               serviceInstanceStatus.serviceId
-            }] for request/response operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`
+            }] for request/response operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`,
           )
         }
 
@@ -50,14 +48,24 @@ export default class ServiceStubWithLoadBalancer {
 
         return this.connection.requestResponse<TResponse, TRequest>(remoteProcedure, request)
       }),
-      share()
+      share(),
     )
   }
 
+  static generateTopicName = (service: string) =>
+    `topic_${service}_${
+      // tslint:disable-next-line:no-bitwise
+      ((Math.random() * Math.pow(36, 8)) << 0).toString(36)
+    }`
   /**
    * Gets a request-responses observable that will act against a service which currently has the min load
    */
-  createStreamOperation<TResponse, TRequest = {}>(service: string, operationName: string, request: TRequest) {
+  createStreamOperation<TResponse, TRequest = {}>(
+    service: string,
+    operationName: string,
+    request: TRequest,
+    topicGenerator = ServiceStubWithLoadBalancer.generateTopicName,
+  ) {
     return defer(() =>
       this.getServiceWithMinLoad$(service).pipe(
         switchMap(serviceInstanceStatus => {
@@ -72,15 +80,13 @@ export default class ServiceStubWithLoadBalancer {
             // Such an envelope could denote if the message stream should terminate, this would negate the need to distinguish between
             // tslint:disable-next-line:no-bitwise
 
-            const topicName = `topic_${service}_${
-              // tslint:disable-next-line:no-bitwise
-              ((Math.random() * Math.pow(36, 8)) << 0).toString(36)
-            }`
+            const topicName = topicGenerator(service)
 
-            this.log.info(
+            console.info(
+              LOG_NAME,
               `Will use service instance [${
                 serviceInstanceStatus.serviceId
-              }] for stream operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`
+              }] for stream operation [${operationName}]. IsConnected: [${serviceInstanceStatus.isConnected}]`,
             )
 
             const remoteProcedure = `${serviceInstanceStatus.serviceId}.${operationName}`
@@ -88,15 +94,15 @@ export default class ServiceStubWithLoadBalancer {
             // tslint:disable-next-line:no-bitwise
             const subscribeTopic$ = this.connection.subscribeToTopic<TResponse>(topicName, {
               next: topic => {
-                this.log.info(`Subscribed to ${topic}, requesting ${remoteProcedure}`)
+                console.info(LOG_NAME, `Subscribed to ${topic}, requesting ${remoteProcedure}`)
                 const req = this.connection
                   .requestResponse<TResponse, {}>(remoteProcedure, request, topicName)
                   .pipe(take(1))
                   .subscribe(() => {
-                    this.log.info(`request acknowledged for ${remoteProcedure}`)
+                    console.info(LOG_NAME, `request acknowledged for ${remoteProcedure}`)
                     req.unsubscribe()
                   })
-              }
+              },
             })
 
             // There must be a way to do this without an inner-subsribe
@@ -105,18 +111,17 @@ export default class ServiceStubWithLoadBalancer {
             const detectInstanceTimout = this.serviceInstanceDictionaryStream
               .pipe(
                 map(currentStatus => currentStatus.getServiceInstanceStatus(service, serviceInstanceStatus.serviceId)),
-                filter(currentStatus => !(currentStatus && currentStatus.isConnected))
+                filter(currentStatus => !(currentStatus && currentStatus.isConnected)),
               )
-              .subscribe(() => obs.error('Service timeout out'))
+              .subscribe(() => console.log('Topic timed out: ' + topicName))
 
             return () => {
-              obs.complete()
               subscription.unsubscribe()
               detectInstanceTimout.unsubscribe()
             }
           })
-        })
-      )
+        }),
+      ),
     ).pipe(share())
   }
 }

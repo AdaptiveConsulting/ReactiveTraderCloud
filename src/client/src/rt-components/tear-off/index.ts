@@ -1,1 +1,1 @@
-export { default as TearOff, TearOffContainer } from './TearOff'
+export { default as TearOff } from './TearOff'

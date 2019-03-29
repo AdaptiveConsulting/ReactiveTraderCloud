@@ -25,12 +25,6 @@ export function convertNotionalShorthandToNumericValue(value: string) {
   return newNotional
 }
 
-export function hasShorthandInput(value: string) {
-  const notionalShorthand = value.toUpperCase().replace(/,/g, '')
-  const matches = notionalShorthand.match(numberConvertRegex)
-  return matches && matches[2] !== undefined // found K or M
-}
-
 export function UtcFormatDate(date: Date, format: string = '%b %e, %H:%M:%S') {
   return utcFormat(format)(date)
 }

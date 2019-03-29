@@ -1,32 +1,39 @@
-import { applicationConnected, applicationDisconnected } from 'rt-actions'
+import { Action } from 'redux'
+import { ofType } from 'redux-observable'
+import { applicationDisconnected } from 'rt-actions'
 import { CurrencyPairMap } from 'rt-types'
-import { Observable } from 'rxjs'
-import { ignoreElements, map, mergeMap, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { ignoreElements, map, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
+import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import { SpotPriceTick } from '../model/spotPriceTick'
+import { EMPTY } from 'rxjs'
+
+const { priceUpdateAction } = SpotTileActions
+type PriceUpdateAction = ReturnType<typeof priceUpdateAction>
 
 const addRatePrecisionToPrice = (currencyData: CurrencyPairMap, price: SpotPriceTick) => ({
   ...price,
-  ratePrecision: currencyData[price.symbol].ratePrecision
+  ratePrecision: currencyData[price.symbol].ratePrecision,
 })
 
-export const publishPriceToOpenFinEpic = (pricesForCurrenciesInRefData: Observable<SpotPriceTick>): ApplicationEpic => (
+export const publishPriceUpdateEpic: ApplicationEpic = (
   action$,
-  state$,
-  { referenceDataService, openFin }
-) =>
-  action$.pipe(
-    applicationConnected,
-    switchMapTo(
-      pricesForCurrenciesInRefData.pipe(
-        mergeMap((price: SpotPriceTick) =>
-          referenceDataService.getCurrencyPairUpdates$().pipe(
-            map(currencyMap => addRatePrecisionToPrice(currencyMap, price)),
-            tap(enhancedPrice => openFin.publishPrice(enhancedPrice)),
-            ignoreElements(),
-            takeUntil(action$.pipe(applicationDisconnected))
-          )
-        )
-      )
-    )
+  _,
+  { referenceDataService$, platform },
+) => {
+  if (!platform.hasFeature('interop')) {
+    return EMPTY
+  }
+  return action$.pipe(
+    ofType<Action, PriceUpdateAction>(TILE_ACTION_TYPES.SPOT_PRICES_UPDATE),
+    map(action =>
+      referenceDataService$.pipe(
+        map(currencyMap => addRatePrecisionToPrice(currencyMap, action.payload)),
+        tap(enhancedPrice => platform.interop.publish('price-update', enhancedPrice)),
+        ignoreElements(),
+        takeUntil(action$.pipe(applicationDisconnected)),
+      ),
+    ),
+    ignoreElements(),
   )
+}

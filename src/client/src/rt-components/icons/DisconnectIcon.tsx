@@ -5,7 +5,7 @@ interface Props {
   height: number
 }
 
-const DisconnectIcon: React.SFC<Props> = ({ width, height }) => {
+const DisconnectIcon: React.FC<Props> = ({ width, height }) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={width * 16} height={height * 16} viewBox="0 0 44 36">
       <path

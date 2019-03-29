@@ -1,1 +1,1 @@
-export { default as OpenFin } from './openFin'
+export { OpenFinLimitChecker } from './openFin'

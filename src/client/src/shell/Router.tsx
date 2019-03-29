@@ -1,26 +1,20 @@
-import React, { SFC } from 'react'
+import React, { FC } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { AnalyticsContainer } from '.././ui/analytics'
-import { BlotterContainer } from '../ui/blotter'
+import { AnalyticsRoute, BlotterRoute, SpotRoute, OpenFinRoute, ShellRoute } from './routes'
+import { usePlatform } from 'rt-components'
 
-import { Environment } from 'rt-components'
-import OpenFinRoute from './routes/OpenFinRoute'
-import ShellRoute from './routes/ShellRoute'
-import SpotRoute from './routes/SpotRoute'
+const ShellSwitchRoute: FC = () => {
+  const platform = usePlatform()
+  return platform.name === 'openfin' ? <OpenFinRoute /> : <ShellRoute />
+}
 
-export const Router: SFC = () => (
+export const Router: FC = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path="/" component={ShellSwitchRoute} />
-      <Route path="/analytics" component={AnalyticsContainer} />
-      <Route path="/blotter" component={BlotterContainer} />
+      <Route path="/analytics" component={AnalyticsRoute} />
+      <Route path="/blotter" component={BlotterRoute} />
       <Route path="/spot/:symbol" component={SpotRoute} />
     </Switch>
   </BrowserRouter>
-)
-
-const ShellSwitchRoute = ({ header }: { header: React.ReactChild }) => (
-  <Environment.Consumer>
-    {({ openfin }) => (openfin ? <OpenFinRoute /> : <ShellRoute header={header} />)}
-  </Environment.Consumer>
 )

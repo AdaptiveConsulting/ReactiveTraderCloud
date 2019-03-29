@@ -9,24 +9,25 @@ import { ApplicationDependencies } from './applicationServices'
 import { compositeStatusServiceEpic } from './shell/compositeStatus'
 import { connectionStatusEpic } from './shell/connectionStatus'
 import { referenceServiceEpic } from './shell/referenceData'
-import { analyticsServiceEpic } from './ui/analytics'
-import { blotterEpic } from './ui/blotter/'
-import { spotTileEpic } from './ui/spotTile'
+
+import { createAnalyticsServiceEpic } from './ui/analytics'
+import { createBlotterEpic } from './ui/blotter/'
+import { createSpotTileEpic } from './ui/spotTile'
 
 import rootReducer from './combineReducers'
 
 export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [
     referenceServiceEpic,
-    blotterEpic,
-    analyticsServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,
-    spotTileEpic(dependencies)
+    createBlotterEpic(dependencies),
+    createAnalyticsServiceEpic(dependencies),
+    createSpotTileEpic(dependencies),
   ]
 
   const middleware = createEpicMiddleware<Action, Action, GlobalState, ApplicationDependencies>({
-    dependencies
+    dependencies,
   })
 
   const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(middleware)))

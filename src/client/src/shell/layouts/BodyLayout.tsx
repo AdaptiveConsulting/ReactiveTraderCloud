@@ -5,7 +5,7 @@ export interface Props {
   body: React.ReactNode
   aside?: React.ReactNode
 }
-const BodyLayout: React.SFC<Props> = ({ body, aside }) => (
+const BodyLayout: React.FC<Props> = ({ body, aside }) => (
   <Layout>
     {body}
     {aside}
@@ -14,7 +14,7 @@ const BodyLayout: React.SFC<Props> = ({ body, aside }) => (
 
 const Layout = styled.div`
   display: grid;
-  grid-template-columns: 1fr 22rem;
+  grid-template-columns: 1fr auto;
   @media (max-width: 750px) {
     display: block;
   }

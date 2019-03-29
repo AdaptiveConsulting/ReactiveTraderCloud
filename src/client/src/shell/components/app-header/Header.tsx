@@ -1,12 +1,11 @@
-import _ from 'lodash'
 import React from 'react'
 
-import { styled, ThemeState } from 'rt-theme'
+import { styled, ThemeName, useTheme } from 'rt-theme'
 
 import Logo from './Logo'
 
 class Header extends React.Component {
-  onClick = () => window.open('http://wearedaptive.com')
+  onClick = () => window.open('https://weareadaptive.com/')
 
   render() {
     const { children } = this.props
@@ -28,15 +27,14 @@ class Header extends React.Component {
   }
 }
 
-const ThemeControl = () => (
-  <ThemeState.Consumer>
-    {({ name, setTheme }) => (
-      <IconButton onClick={() => setTheme({ name: name === 'dark' ? 'light' : 'dark' })} type={name || 'primary'}>
-        <i className={`fa${name === 'light' ? 'r' : 's'} fa-lightbulb`} />
-      </IconButton>
-    )}
-  </ThemeState.Consumer>
-)
+const ThemeControl = () => {
+  const { themeName, toggleTheme } = useTheme()
+  return (
+    <IconButton onClick={toggleTheme} type={themeName || 'primary'}>
+      <i className={`fa${themeName === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
+    </IconButton>
+  )
+}
 
 const Root = styled.div`
   width: 100%;
@@ -50,18 +48,19 @@ const Root = styled.div`
   display: flex;
   align-items: center;
 
-  background-color: ${({ theme }) => theme.header.backgroundColor};
-  color: ${({ theme }) => theme.header.textColor};
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  color: ${({ theme }) => theme.core.textColor};
 
   position: relative;
   z-index: 10;
 
-  box-shadow: 0 0.125rem 0 ${({ theme }) => theme.shell.backgroundColor};
+  box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
 `
 
 const Fill = styled.div`
   flex: 1;
-  height: 100%;
+  height: calc(3.5rem - 5px);
+  margin-top: 5px;
   /**
     TODO 8/22 extract this extension of header, and the fill outside header layout
   */
@@ -69,7 +68,7 @@ const Fill = styled.div`
   cursor: -webkit-grab;
 `
 
-const IconButton = styled.button<{ type: string }>`
+const IconButton = styled.button`
   width: 2rem;
   height: 2rem;
   font-size: 1rem;
@@ -105,7 +104,7 @@ const Division = styled.div`
     width: 0.125rem;
     height: 100%;
     margin-right: -0.125rem;
-    background-color: ${props => props.theme.shell.backgroundColor};
+    background-color: ${props => props.theme.core.darkBackground};
   }
 `
 

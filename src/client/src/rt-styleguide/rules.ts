@@ -1,31 +1,25 @@
-import { css } from 'rt-theme'
+import { css } from 'styled-components'
 
 export const preventStutter = css`
-  -webkit-backface-visibility: hidden;
-  -webkit-transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 `
 
 export const userSelectNone = css`
   -webkit-touch-callout: none;
-  touch-callout: none;
 
   -webkit-user-drag: none;
-  user-drag: none;
 
-  -webkit-user-select: none;
   user-select: none;
 
   cursor: default;
 `
 
-export const userSelectButton = (props: { disabled?: boolean }) => css`
+export const userSelectButton = (props: { disabled?: boolean } | any) => css`
   -webkit-touch-callout: rgba(0, 0, 0, 0.05);
-  touch-callout: none;
 
   -webkit-user-drag: none;
-  user-drag: none;
 
-  -webkit-user-select: none;
   user-select: none;
 
   cursor: pointer;
@@ -41,9 +35,22 @@ export const touchScroll = css`
   -webkit-overflow-scrolling: touch;
 `
 
-export default {
+export const appRegionDrag = css`
+  ${userSelectNone};
+  -webkit-user-drag: none;
+  -webkit-app-region: drag;
+`
+
+export const appRegionNoDrag = css`
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
+`
+
+export const rules = {
   preventStutter,
   userSelectNone,
   userSelectButton,
-  touchScroll
+  touchScroll,
+  appRegionDrag,
+  appRegionNoDrag,
 }

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: eventstore
+spec:
+  type: ClusterIP
+  selector:
+    component: eventstore
+  ports:
+    - port: 1113
+      targetPort: 1113
+      name: 'http'
+    - port: 2113
+      targetPort: 2113
+      name: 'tcp'

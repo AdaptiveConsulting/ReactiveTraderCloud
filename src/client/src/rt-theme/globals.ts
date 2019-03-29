@@ -1,5 +1,3 @@
-import { injectGlobal } from 'rt-theme'
-
 /**
  * Resetting CSS
  *
@@ -48,29 +46,43 @@ import 'typeface-montserrat'
  * line-height explicit in our styles will allow us to
  * achieve a consistent vertical rhythm.
  */
-export default injectGlobal`
+
+import { createGlobalStyle } from 'styled-components'
+
+export default createGlobalStyle`
   :root, body {
     font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 16px;
     line-height: 1rem;
-    text-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;   
+
+
+    @media all and (max-width: 400px) {
+      font-size: 14px;
+    }
+
+    @media all and (max-width: 320px) {
+      font-size: 12px;
+    }
   }
   
+  body, #root {
+    height: 100vh;
+    max-width: 100vw;
+  }
+
+  button {
+    -webkit-appearance: none;
+    border-width: 0;
+    border-color: transparent;
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  /* Undo ress.css overflow-y rule */
   html {
-    overflow-y: auto;
-  }
-  
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 2px;
-    background-color: rgba(212, 221, 232, .4);
-  }
-
-  ::-webkit-scrollbar-corner {
-    background-color: rgba(0,0,0,0);
-  }
+    overflow-y: initial;
+  } 
 `

@@ -1,12 +1,9 @@
 import { Error, ISubscription } from 'autobahn'
 import { NextObserver, Observable } from 'rxjs'
-import { filter, mergeMap, switchMap } from 'rxjs/operators'
-
-import './AutoBahnTypeExtensions'
+import { filter, switchMap, take } from 'rxjs/operators'
 import { ConnectionEvent, ConnectionEventType, ConnectionOpenEvent } from './connectionStream'
-import logger from './logger'
 
-const log = logger.create('Connection')
+const LOG_NAME = 'Connection:'
 
 //  The format the server accepts
 
@@ -22,14 +19,12 @@ type SubscriptionRequest<TPayload> = Array<SubscriptionDTO<TPayload>>
  * A stub Used to call services. Hides the complexity of server interactions
  */
 export class ServiceStub {
-  constructor(private readonly userName: string, private connection$: Observable<ConnectionEvent>) {
-    this.userName = userName
-  }
+  constructor(private readonly userName: string, private connection$: Observable<ConnectionEvent>) {}
 
-  logResponse(topic: string, response: any[]): void {
+  private logResponse(topic: string, response: any[]): void {
     const payloadString = JSON.stringify(response[0])
     if (topic !== 'status') {
-      log.verbose(`Received response on topic [${topic}]. Payload[${payloadString}]`)
+      console.debug(LOG_NAME, `Received response on topic [${topic}]. Payload[${payloadString}]`)
     }
   }
 
@@ -45,7 +40,7 @@ export class ServiceStub {
       switchMap(
         ({ session }) =>
           new Observable<T>(obs => {
-            log.info(`Subscribing to topic [${topic}].`)
+            console.info(LOG_NAME, `Subscribing to topic [${topic}].`)
 
             let subscription: ISubscription
 
@@ -64,35 +59,35 @@ export class ServiceStub {
                 },
                 (error: Error) => {
                   // subscription failed, error is an instance of autobahn.Error
-                  log.error(`Error on topic ${topic}`, error)
+                  console.error(LOG_NAME, `Error on topic ${topic}`, error)
                   obs.error(error)
-                }
+                },
               )
 
             return () => {
-              log.info(`Tearing down topic ${topic}`)
+              console.info(LOG_NAME, `Tearing down topic ${topic}`)
 
               if (!subscription) {
                 return
               }
               try {
                 if (session && session.isOpen()) {
-                  session.unsubscribe(subscription).then(
-                    () => {
-                      obs.complete()
-
-                      //obs.unsubscribe()
-                      return log.info(`Successfully unsubscribing from topic ${topic}`)
-                    },
-                    err => log.error(`Error unsubscribing from topic ${topic}`, err)
-                  )
+                  // It appears that AutoBahn's unsubscribe function is not implemented properly. In the case of an internal websocket exception,
+                  // due to disconnection for example, the promise that is returned never completes; i.e., neither callback passed to `then` is
+                  // ever invoked. I would at least have expected the rejected callback to have been invoked with the error. -D.S.
+                  session
+                    .unsubscribe(subscription)
+                    .then(
+                      () => console.info(LOG_NAME, `Successfully unsubscribing from topic ${topic}`),
+                      err => console.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err),
+                    )
                 }
               } catch (err) {
-                log.error(`Error thrown unsubscribing from topic ${topic}`, err)
+                console.error(LOG_NAME, `Error thrown unsubscribing from topic ${topic}`, err)
               }
             }
-          })
-      )
+          }),
+      ),
     )
   }
 
@@ -103,17 +98,17 @@ export class ServiceStub {
   requestResponse<TResult, TPayload>(remoteProcedure: string, payload: TPayload, responseTopic: string = '') {
     return this.connection$.pipe(
       filter((connection): connection is ConnectionOpenEvent => connection.type === ConnectionEventType.CONNECTED),
-      mergeMap(
+      switchMap(
         ({ session }) =>
           new Observable<TResult>(obs => {
-            log.debug(`Doing a RPC to [${remoteProcedure}]]`)
+            console.debug(LOG_NAME, `Doing a RPC to [${remoteProcedure}]]`)
 
             const dto: SubscriptionRequest<TPayload> = [
               {
                 payload,
                 replyTo: responseTopic,
-                Username: this.userName
-              }
+                Username: this.userName,
+              },
             ]
 
             session.call<TResult>(remoteProcedure, dto).then(
@@ -123,14 +118,11 @@ export class ServiceStub {
               },
               error => {
                 obs.error(error)
-              }
+              },
             )
-
-            return () => {
-              obs.complete()
-            }
-          })
-      )
+          }),
+      ),
+      take(1),
     )
   }
 }

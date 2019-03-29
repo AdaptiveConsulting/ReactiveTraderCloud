@@ -7,13 +7,20 @@ const ResizerStyle = styled.div`
 
 const ResizableSection = styled.div<{ height: number }>`
   height: ${({ height }) => height + '%'};
-  overflow-y: hidden;
+  overflow: hidden;
+  position: relative;
+`
+
+const ResizableContent = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
 `
 
 const Bar = styled.div`
-  background-color: ${({ theme }) => theme.component.textColor};
-  box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.component.textColor},
-    0 0.125rem 0 0 ${({ theme }) => theme.component.textColor};
+  background-color: ${({ theme }) => theme.core.textColor};
+  box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
+    0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
   cursor: row-resize;
   opacity: 0.1;
   z-index: 1;
@@ -21,17 +28,20 @@ const Bar = styled.div`
   width: 100%;
 
   &:hover {
-    box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.component.textColor},
-      0 0.125rem 0 0 ${({ theme }) => theme.component.textColor};
+    box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
+      0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
     opacity: 0.3;
     transition: all 200ms ease-in-out;
   }
+
+  user-select: none;
 `
 
 interface Props {
   component: () => React.ReactNode
   minHeight?: number
   defaultHeight: number
+  disabled?: boolean
 }
 
 interface State {
@@ -44,7 +54,7 @@ export default class Resizer extends Component<Props, State> {
 
   state = {
     dragging: false,
-    height: this.props.defaultHeight
+    height: this.props.defaultHeight,
   }
 
   componentDidMount = () => {
@@ -71,7 +81,11 @@ export default class Resizer extends Component<Props, State> {
     document.removeEventListener('touchend', this.handleStop)
   }
 
-  handleStop = () => this.setState({ dragging: false })
+  handleStop = () => {
+    if (this.state.dragging) {
+      this.setState({ dragging: false })
+    }
+  }
 
   handleStart = () => this.setState({ dragging: true })
 
@@ -114,15 +128,23 @@ export default class Resizer extends Component<Props, State> {
   }
 
   render() {
-    const { children, component } = this.props
-    const { height } = this.state
+    const { children, component, disabled } = this.props
+    let { height } = this.state
+
+    if (disabled) {
+      height = 0
+    }
 
     return (
-      <ResizerStyle innerRef={this.wrapperRef}>
-        <ResizableSection height={100 - height}>{children}</ResizableSection>
+      <ResizerStyle ref={this.wrapperRef}>
+        <ResizableSection height={100 - height}>
+          <ResizableContent>{children}</ResizableContent>
+        </ResizableSection>
         <ResizableSection height={height}>
-          <Bar onMouseDown={this.handleStart} onTouchStart={this.handleStart} />
-          {component()}
+          <ResizableContent>
+            <Bar onMouseDown={this.handleStart} onTouchStart={this.handleStart} />
+            {component()}
+          </ResizableContent>
         </ResizableSection>
       </ResizerStyle>
     )

@@ -1,26 +1,27 @@
-﻿using System;
+using Adaptive.ReactiveTrader.Contract;
+using System;
 using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using Adaptive.ReactiveTrader.Contract;
+using System.Reactive.Subjects;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    public sealed class PriceSource : IDisposable
+  public sealed class PriceSource : IDisposable
+  {
+    private static readonly Random Random = new Random();
+
+    private readonly Dictionary<string, IObservable<SpotPriceDto>> _priceStreams = new Dictionary<string, IObservable<SpotPriceDto>>();
+    private readonly List<IPriceGenerator> _priceGenerators;
+    private readonly CompositeDisposable _disposable = new CompositeDisposable();
+    private readonly IConnectableObservable<long> _timer;
+
+    public PriceSource()
     {
-        private static readonly Random Random = new Random();
+      _timer = Observable.Interval(TimeSpan.FromMilliseconds(50)).Publish();
 
-        private readonly Dictionary<string, IObservable<SpotPriceDto>> _priceStreams = new Dictionary<string, IObservable<SpotPriceDto>>();
-        private readonly List<IPriceGenerator> _priceGenerators;
-        private readonly CompositeDisposable _disposable = new CompositeDisposable();
-        private readonly IObservable<long> _timer;
-
-        public PriceSource()
-        {
-            _timer = Observable.Interval(TimeSpan.FromMilliseconds(50));
-
-            _priceGenerators = new List<IPriceGenerator>
+      _priceGenerators = new List<IPriceGenerator>
             {
                 CreatePriceGenerator("EURUSD", 1.09443m, 5),
                 CreatePriceGenerator("USDJPY", 121.656m, 3),
@@ -45,59 +46,59 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                 CreatePriceGenerator("EURSEK", 9.26876m, 4)
             };
 
-            foreach (var ccy in _priceGenerators)
+      foreach (var ccy in _priceGenerators)
+      {
+        var observable = Observable.Create<SpotPriceDto>(observer =>
             {
-                var observable = Observable.Create<SpotPriceDto>(observer =>
-                    {
-                        var prices = ccy.Sequence().GetEnumerator();
+              var prices = ccy.Sequence().GetEnumerator();
 
+              prices.MoveNext();
+              observer.OnNext(prices.Current);
+
+              var disp = RegisterPriceTrigger(ccy.Symbol).Subscribe(o =>
+                      {
                         prices.MoveNext();
                         observer.OnNext(prices.Current);
+                      });
 
-                        var disp = RegisterPriceTrigger(ccy.Symbol).Subscribe(o =>
-                        {
-                            prices.MoveNext();
-                            observer.OnNext(prices.Current);
-                        });
+              _disposable.Add(disp);
 
-                        _disposable.Add(disp);
+              return disp;
+            })
+            .Replay(1)
+            .RefCount();
 
-                        return disp;
-                    })
-                    .Replay(1)
-                    .RefCount();
+        _priceStreams.Add(ccy.Symbol, observable);
+      }
 
-                _priceStreams.Add(ccy.Symbol, observable);
-            }
-
-            _timer.Publish().Connect();
-        }
-
-        public void Dispose()
-        {
-            _disposable.Dispose();
-        }
-
-        private static IPriceGenerator CreatePriceGenerator(string symbol, decimal initial, int precision)
-        {
-            return new MeanReversionRandomWalkPriceGenerator(symbol, initial, precision);
-        }
-
-        private IObservable<Unit> RegisterPriceTrigger(string symbol)
-        {
-            return _timer
-                .Where(_ => _priceGenerators[Random.Next(_priceGenerators.Count)].Symbol == symbol)
-                .Select(_ => Unit.Default);
-        }
-
-        public IObservable<SpotPriceDto> GetPriceStream(string symbol)
-        {
-            return _priceStreams[symbol];
-        }
-
-        public IObservable<SpotPriceDto> GetAllPricesStream()
-        {
-            return _priceStreams.Values.Merge();
-        }
+      _timer.Connect();
     }
+
+    public void Dispose()
+    {
+      _disposable.Dispose();
+    }
+
+    private static IPriceGenerator CreatePriceGenerator(string symbol, decimal initial, int precision)
+    {
+      return new MeanReversionRandomWalkPriceGenerator(symbol, initial, precision);
+    }
+
+    private IObservable<Unit> RegisterPriceTrigger(string symbol)
+    {
+      return _timer
+          .Where(_ => _priceGenerators[Random.Next(_priceGenerators.Count)].Symbol == symbol)
+          .Select(_ => Unit.Default);
+    }
+
+    public IObservable<SpotPriceDto> GetPriceStream(string symbol)
+    {
+      return _priceStreams[symbol];
+    }
+
+    public IObservable<SpotPriceDto> GetAllPricesStream()
+    {
+      return _priceStreams.Values.Merge();
+    }
+  }
 }

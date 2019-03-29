@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pricehistory-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: pricehistory
+  template:
+    metadata:
+      labels:
+        component: pricehistory
+    spec:
+      containers:
+        - name: pricehistory
+          image: reactivetradercloud/pricehistory:4099
+          env:
+            - name: BROKER_HOST
+              value: broker
+            - name: BROKER_PORT
+              value: '8000'

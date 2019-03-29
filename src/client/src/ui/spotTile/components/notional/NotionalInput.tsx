@@ -1,70 +1,109 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
-import { convertNotionalShorthandToNumericValue, hasShorthandInput } from './utils'
+import { convertNotionalShorthandToNumericValue } from './utils'
 
 const NUMERAL_FORMAT = '0,000,000[.]00'
 const DOT = '.'
 const ENTER = 'Enter'
-const CHAR_CODE_DOT = 46
-const CHAR_CODE_0 = 48
-const CHAR_CODE_9 = 57
-const CHAR_CODE_UNIT_SEP = 31
-const SHORTCUT_CHAR_CODES = [75, 77, 107, 109]
+const CHAR_CODE_DOT = 46 // .
+const CHAR_CODE_0 = 48 // 0
+const CHAR_CODE_9 = 57 // 9
+const CHAR_CODE_UNIT_SEP = 31 // US (unit separator)
+const SHORTCUT_CHAR_CODES = [75, 77, 107, 109] // K, M, k, m
 const MAX_NOTIONAL_VALUE = 1000000000
+export const DEFAULT_NOTIONAL_VALUE = '1000000'
+const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 
-const CurrencyPairSymbol = styled('div')`
+const CurrencyPairSymbol = styled('span')`
+  grid-area: Currency;
   opacity: 0.59;
   font-size: 0.625rem;
-  line-height: 1rem;
-  padding-right: 0.375rem;
+  line-height: 1.2rem;
 `
 
-export const Input = styled('input')`
+const MessagePlaceholder = styled.div`
+  ${({ theme }) => `color: ${theme.template.red.normal}`};
+  grid-area: Message;
+  font-size: 0.6rem;
+  line-height: normal;
+  padding-top: 2px;
+  margin-bottom: -1rem; /* Prevents the layout from changing in Tile when this MessagePlaceholder is rendered */
+`
+
+const InputWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 30px auto;
+  grid-template-rows: auto auto;
+  grid-template-areas: 'Currency Input' '. Message';
+`
+
+export const Input = styled.input<{ showMessage: boolean }>`
+  grid-area: Input;
   background: none;
+  text-align: center;
   outline: none;
   border: none;
   font-size: 0.75rem;
-  width: 70px;
-  transition: box-shadow 0.2s ease;
+  width: 80px;
   padding: 2px 0;
-
+  ${({ showMessage, theme }) =>
+    !showMessage
+      ? `
   .spot-tile:hover & {
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.textColor};
+    box-shadow: 0px 1px 0px ${theme.core.textColor};
   }
 
   .spot-tile:hover &:focus,
   &:focus {
-    box-shadow: 0px 1px 0px ${({ theme }) => theme.blue.base};
+    box-shadow: 0px 1px 0px ${theme.template.blue.normal};
   }
+  `
+      : `
+  box-shadow: 0px 1px 0px ${theme.template.red.normal}
+  `};
 `
 
 interface Props {
   currencyPairSymbol: string
   notional: string
   updateNotional: (notional: string) => void
+  setDisabledTradingState: (disableTrading: boolean) => void
+  isTradingDisabled: boolean
 }
 
-export default class NotionalInput extends PureComponent<Props> {
+interface State {
+  showMessage: boolean
+}
+
+export default class NotionalInput extends PureComponent<Props, State> {
   private inputRef = React.createRef<HTMLInputElement>()
+
+  state = {
+    // TODO Add support for other errors and warnings.
+    showMessage: convertNotionalShorthandToNumericValue(this.props.notional) >= MAX_NOTIONAL_VALUE,
+  }
 
   render() {
     const { currencyPairSymbol, notional } = this.props
+    const { showMessage } = this.state
     const formattedSize = numeral(notional).format(NUMERAL_FORMAT)
+
     return (
-      <Flex alignItems="center" justifyContent="center">
+      <InputWrapper>
         <CurrencyPairSymbol>{currencyPairSymbol}</CurrencyPairSymbol>
         <Input
           type="text"
-          innerRef={this.inputRef}
+          ref={this.inputRef}
           defaultValue={formattedSize}
           onFocus={this.handleFocus}
           onChange={this.handleInputChange}
-          onBlur={event => this.processNotional(event.currentTarget.value)}
+          onBlur={this.handleUpdateCausedByEvent}
           onKeyPress={this.handleKeyPressNotionalInput}
+          showMessage={showMessage}
         />
-      </Flex>
+        {showMessage && <MessagePlaceholder>Max exceeded</MessagePlaceholder>}
+      </InputWrapper>
     )
   }
 
@@ -73,51 +112,87 @@ export default class NotionalInput extends PureComponent<Props> {
   }
 
   handleKeyPressNotionalInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const charCode = event.charCode
-
+    const { charCode, currentTarget, nativeEvent } = event
     if (event.key === ENTER) {
-      this.processNotional(event.currentTarget.value)
+      this.handleUpdateCausedByEvent(event)
     } else if (charCode === CHAR_CODE_DOT) {
-      // only allow one dot
-      if (event.currentTarget.value.match(/\./g)) {
-        event.nativeEvent.stopImmediatePropagation()
+      // only allow one dot unless the existing dot is in the current
+      // text selection while replacing existing text.
+      const { value, selectionStart, selectionEnd } = currentTarget
+      const textWithoutSelection = value.replace(value.substring(selectionStart, selectionEnd), '')
+      if (textWithoutSelection.match(/\./g)) {
+        nativeEvent.stopImmediatePropagation()
         event.preventDefault()
       }
     } else if (!this.inputIsAllowed(charCode)) {
-      event.nativeEvent.stopImmediatePropagation()
+      nativeEvent.stopImmediatePropagation()
       event.preventDefault()
     }
   }
 
-  processNotional = (inputValue: string) => {
-    const { updateNotional } = this.props
-    const inputValueTrimmed = inputValue.trim()
-    let notional = convertNotionalShorthandToNumericValue(inputValueTrimmed)
-    if (notional >= MAX_NOTIONAL_VALUE) {
-      notional = 0
-    }
-    if (!isNaN(notional)) {
-      updateNotional(notional.toString())
-      // user may be trying to enter decimals. restore BACK into input
-      let stringNotional = notional.toString()
-      if (inputValueTrimmed.indexOf(DOT) === inputValueTrimmed.length - 1) {
-        stringNotional += DOT
-      }
-      // propagate change back to dom node's value
-      stringNotional = numeral(stringNotional).format(NUMERAL_FORMAT)
-      updateNotional(stringNotional)
-      if (this.inputRef.current) {
-        this.inputRef.current.value = stringNotional
+  handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value.trim()
+    this.checkStatus(value)
+    if (!isNaN(convertNotionalShorthandToNumericValue(value))) {
+      // user may be trying to enter decimals or
+      // user may be deleting previous entry (empty string)
+      // in those cases, format and update only when completed.
+      const lastTwoChars = value.substr(-2)
+      if (!this.isEditMode(value) && lastTwoChars.indexOf(DOT) === -1) {
+        // propagate change back
+        this.formatAndUpdateValue(value)
       }
     }
   }
 
-  handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const rawValue = ((this.inputRef.current && this.inputRef.current.value) || event.currentTarget.value).trim()
-    // check for a shortcut input
-    if (hasShorthandInput(rawValue)) {
-      this.processNotional(rawValue)
+  isEditMode = (value: string) => value.match(/(?!.*(^0\.)).*^(,|$|0)/)
+
+  handleUpdateCausedByEvent = (event: React.FormEvent<HTMLInputElement>) => {
+    const { value } = event.currentTarget
+    const valueToFormatAndUpdate = this.isInvalidTradingValue(value) ? RESET_NOTIONAL_VALUE : value
+    const callback = (newValue: string) => this.checkStatus(newValue)
+    this.formatAndUpdateValue(valueToFormatAndUpdate, callback)
+  }
+
+  isInvalidTradingValue = (value: string) => value.match(/(^(\.|0|.0|0.|0.0|$|Infinity|NaN)$)/)
+
+  formatAndUpdateValue = (inputValue: string, callback?: (newValue: string) => void) => {
+    const { updateNotional } = this.props
+    const stringNotional = numeral(inputValue).format(NUMERAL_FORMAT)
+    updateNotional(stringNotional)
+    if (this.inputRef.current) {
+      this.inputRef.current.value = stringNotional
+      if (callback) {
+        callback(stringNotional)
+      }
     }
+  }
+
+  checkStatus = (value: string) => {
+    const { isTradingDisabled } = this.props
+    const { showMessage } = this.state
+    const numericValue = convertNotionalShorthandToNumericValue(value)
+    if (this.isInvalidTradingValue(value) || this.isEditMode(value)) {
+      // if entered value is invalid trading value, disable Buy/Sell buttons.
+      // not showing message error since the user could be in the process
+      // of entering a valid value
+      this.updateStatus(true, false)
+    } else if (numericValue >= MAX_NOTIONAL_VALUE) {
+      // if entered value bigger than max, show message error.
+      this.updateStatus(true, true)
+    } else if (showMessage || isTradingDisabled) {
+      // all value checks have passed
+      // if Buy/Sell buttons are disabled (isTradingDisabled)
+      // and/or error message is shown from previous check
+      // enable buttons and remove message error.
+      this.updateStatus(false, false)
+    }
+  }
+
+  updateStatus = (disableTrading: boolean, showMessage: boolean) => {
+    const { setDisabledTradingState } = this.props
+    this.setState({ showMessage })
+    setDisabledTradingState(disableTrading)
   }
 
   inputIsAllowed = (charCode: number) => {

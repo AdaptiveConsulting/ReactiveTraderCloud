@@ -2,16 +2,19 @@ import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 
 export const Notification = styled('div')`
-  height: 100%;
-  background-color: ${props => props.theme.component.backgroundColor};
-  color: ${props => props.theme.component.textColor};
+  height: 100vh;
+  width: 100vw;
+  background-color: ${props => props.theme.core.lightBackground};
+  color: ${props => props.theme.core.textColor};
   user-select: none;
   display: flex;
   flex-direction: column;
-  padding: 0.5625rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1.25rem;
 `
 export const Top = styled(Flex)`
-  font-size: 0.75rem;
   flex-grow: 1;
 `
 
@@ -21,19 +24,16 @@ export const Traded = styled('div')<{ isDone: boolean }>`
 
 export const Status = styled('div')<{ isDone: boolean }>`
   color: ${({ theme, isDone }) => !isDone && theme.accents.bad.base};
-  font-size: 0.75rem;
 `
 
-export const Bottom = styled(Flex)`
-  font-size: 0.75rem;
-`
+export const Bottom = styled(Flex)``
 
 export const MetaContainer = styled('div')`
   flex-grow: 1;
   flex-basis: 0;
 `
 export const MetaTitle = styled('div')`
-  color: ${p => p.theme.component.textColor};
+  color: ${p => p.theme.core.textColor};
 `
 
 export const CloseContainer = styled(MetaContainer)`

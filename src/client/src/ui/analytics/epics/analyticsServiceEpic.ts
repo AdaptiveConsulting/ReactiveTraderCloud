@@ -1,25 +1,40 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { ignoreElements, tap } from 'rxjs/operators'
-import { ApplicationEpic } from 'StoreTypes'
+import { ApplicationEpic, GlobalState } from 'StoreTypes'
 import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
-import { CurrencyPairPosition } from '../model/currencyPairPosition'
+import { EMPTY } from 'rxjs'
+import { CurrencyPairPosition, CurrencyPairPositionWithPrice } from 'rt-types'
 
 const { fetchAnalytics } = AnalyticsActions
 type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
 
-const mapToDto = (ccyPairPosition: CurrencyPairPosition) => ({
-  symbol: ccyPairPosition.symbol,
-  basePnl: ccyPairPosition.basePnl,
-  baseTradedAmount: ccyPairPosition.baseTradedAmount
-})
-
-export const connectAnalyticsServiceToOpenFinEpic: ApplicationEpic = (action$, state$, { openFin }) =>
-  action$.pipe(
+export const publishPositionUpdateEpic: ApplicationEpic = (action$, state$, { platform }) => {
+  if (!platform.hasFeature('excel')) {
+    return EMPTY
+  }
+  return action$.pipe(
     ofType<Action, FetchAnalyticsAction>(ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE),
     tap((action: FetchAnalyticsAction) => {
-      const currentPositions = action.payload.currentPositions.map(p => mapToDto(p))
-      openFin.publishCurrentPositions(currentPositions)
+      if (platform.excel.isOpen()) {
+        const currentPositions = combineWithLatestPrices(
+          action.payload.currentPositions,
+          state$.value,
+        )
+        platform.excel.publishPositions(currentPositions)
+      }
     }),
-    ignoreElements()
+    ignoreElements(),
   )
+}
+
+function combineWithLatestPrices(positions: CurrencyPairPosition[], globalState: GlobalState): CurrencyPairPositionWithPrice[] {
+  return positions.map(position => {
+    const tileData = globalState.spotTilesData[position.symbol]
+    return {
+      ...position,
+      latestAsk: tileData && tileData.price.ask ? tileData.price.ask : null,
+      latestBid: tileData && tileData.price.bid ? tileData.price.bid : null,
+    }
+  })
+}

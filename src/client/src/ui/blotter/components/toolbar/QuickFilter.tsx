@@ -12,10 +12,9 @@ interface QuickFilterState {
 }
 
 const QuickFilterStyle = styled('div')`
-  padding: 0 0.625rem;
   width: 10rem;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   height: 1.25rem;
   position: relative;
 `
@@ -24,7 +23,7 @@ const QuickFilterInput = styled('input')`
   opacity: 0.59;
   background: none;
   border: none;
-  box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.textColor};
+  box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.core.textColor};
   width: 100%;
   font-size: 0.75rem;
   height: 1.25rem;
@@ -33,12 +32,12 @@ const QuickFilterInput = styled('input')`
 
   &:hover {
     opacity: 1;
-    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.blue.light};
+    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.template.blue.light};
   }
 
   &:focus {
-    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.blue.base};
-    color: ${({ theme }) => theme.textColor};
+    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.template.blue.normal};
+    color: ${({ theme }) => theme.core.textColor};
     opacity: 1;
   }
 `
@@ -57,7 +56,7 @@ const QuickFilterClearIcon = styled('i')`
   i {
     opacity: 0.59;
     cursor: pointer;
-    color: ${({ theme }) => theme.textColor};
+    color: ${({ theme }) => theme.core.textColor};
   }
 `
 
@@ -65,7 +64,7 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
   private quickFilterInput = React.createRef<HTMLInputElement>()
 
   state = {
-    quickFilterText: ''
+    quickFilterText: '',
   }
 
   render() {
@@ -75,7 +74,7 @@ export default class QuickFilter extends React.Component<QuickFilterProps, Quick
           <i className="fas fa-filter" aria-hidden="true" />
         </QuickFilterIcon>
         <QuickFilterInput
-          innerRef={this.quickFilterInput}
+          ref={this.quickFilterInput}
           type="text"
           placeholder="Filter"
           value={this.state.quickFilterText}

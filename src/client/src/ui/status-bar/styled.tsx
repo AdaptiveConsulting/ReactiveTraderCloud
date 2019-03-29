@@ -1,4 +1,3 @@
-import { darken } from 'polished'
 import React from 'react'
 import { styled } from 'rt-theme'
 import Icon from './Icon'
@@ -9,7 +8,6 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   height: 2rem;
-  cursor: pointer;
   padding: 0 1rem;
 `
 
@@ -18,7 +16,6 @@ export const Content = styled.div<{ expand?: boolean }>`
   transform-origin: center left;
   transition: transform ${({ theme }) => theme.motion.duration}ms ease;
   transform: translateY(${props => (props.expand ? expandedHeight : 0)});
-  background-color: ${props => props.theme.backgroundColor};
 `
 
 export const Root = styled.div`
@@ -36,7 +33,9 @@ export const Root = styled.div`
   }
 `
 
-export const ChevronIcon = () => <Icon name="chevron" />
+export const ChevronIcon: React.FC<{ expand: boolean }> = ({ expand, ...props }) => (
+  <Icon name="chevron" {...props} />
+)
 
 export const ExpandToggle = styled(ChevronIcon)`
   transform: rotate(${(props: { expand: boolean }) => (props.expand ? 180 : 0)}deg);
@@ -71,24 +70,8 @@ export const NodeCount = styled.div`
   opacity: 0.6;
 `
 
-export const ServiceRoot = styled.div<{ index: number }>`
-  min-height: 4.5rem;
-  max-height: 4.5rem;
-  padding: 0.5rem 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: 0.25rem 0 0.5rem -0.5rem rgba(0, 0, 0, 0.5) inset;
-  color: ${props => props.theme.textColor};
-  background-color: ${({ index = 0, theme }) =>
-    // it'd be nice if this were selected from the original palette …
-    darken(index / 50, theme.backgroundColor)};
-
-  ${Icon} {
-    /* We're using important here. 	
-         But you should see what happens with Emotion when you don't!  */
-    margin-right: 1rem !important;
+export const OpenFinLogoContainer = styled.div`
+  .svg-fill {
+    fill: ${({ theme }) => theme.core.textColor};
   }
 `

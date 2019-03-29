@@ -1,0 +1,85 @@
+version: '3'
+services:
+  eventstore:
+    build:
+      dockerfile: Dockerfile
+      context: ./services/eventstore
+  broker:
+    build:
+      dockerfile: Dockerfile
+      context: ./services/broker
+  servers:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    depends_on:
+      - eventstore
+    command: 'dotnet ./Adaptive.ReactiveTrader.Server.Launcher.dll config.prod.json --populate-eventstore'
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./services/nginx
+    ports:
+      - '80:80'
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+  analytics:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    command: 'dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json'
+    depends_on:
+      - broker
+      - eventstore
+  pricing:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    command: 'dotnet ./Adaptive.ReactiveTrader.Server.Pricing.dll config.prod.json'
+    depends_on:
+      - broker
+      - eventstore
+      - analytics
+  referencedataread:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    command: 'dotnet ./Adaptive.ReactiveTrader.Server.ReferenceDataRead.dll config.prod.json'
+    depends_on:
+      - broker
+      - eventstore
+      - pricing
+  tradeexecution:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    command: 'dotnet ./Adaptive.ReactiveTrader.Server.TradeExecution.dll config.prod.json'
+    depends_on:
+      - broker
+      - eventstore
+      - referencedataread
+  blotter:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    command: 'dotnet ./Adaptive.ReactiveTrader.Server.Blotter.dll config.prod.json'
+    depends_on:
+      - broker
+      - eventstore
+      - tradeexecution
+  pricehistory:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server/Adaptive.ReactiveTrader.Server.PriceHistory
+    volumes:
+      - /app/node_modules
+      - ./server/Adaptive.ReactiveTrader.Server.PriceHistory:/app
+    depends_on:
+      - broker
+      - pricing
+    environment:
+     - BROKER_HOST=broker
+     - BROKER_PORT=8000

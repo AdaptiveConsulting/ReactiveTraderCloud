@@ -11,6 +11,7 @@ Please start by reading the [Understand rtc build and deployments guide](./under
             1) [Optional] Follow the [install and run docker instructions](./docker-setup.md)
             1) [Optional] Follow the [build instructions](./build-rtc-locally.md)
             1) Follow the [run rtc with docker instructions](./run-rtc-with-docker.md)
+            1) Follow the [Debug / Run RTC with docker](./debug-run-rtc-with-docker.md)
         - with minikube (the closest to prod)
             1) Follow the [install and run minikube instructions](deployment/run-minikube.md)
             1) [Optional] Follow the [build instructions](./build-rtc-locally.md)

@@ -1,10 +1,8 @@
 import React from 'react'
-import { EnvironmentValue, PopoutIcon, withEnvironment } from 'rt-components'
-import { Environment } from 'rt-system'
+import { PopoutIcon, usePlatform } from 'rt-components'
 import { styled } from 'rt-theme'
-import { SpotTileWrapper } from './SpotTile'
 
-const TopRightButton = styled('button')`
+export const TopRightButton = styled('button')`
   position: absolute;
   right: 0;
   top: 0;
@@ -12,53 +10,43 @@ const TopRightButton = styled('button')`
   transition: opacity 0.2s;
   padding: 0.25rem;
 
-  ${SpotTileWrapper}:hover & {
-    opacity: 0.75;
-  }
   .svg-icon {
-    stroke: ${({ theme }) => theme.textColor};
-    fill: ${({ theme }) => theme.textColor};
+    stroke: ${({ theme }) => theme.core.textColor};
+    fill: ${({ theme }) => theme.core.textColor};
   }
 `
 
-const BottomRightButton = styled('button')`
+export const BottomRightButton = styled('button')`
   position: absolute;
   right: 0;
   bottom: 0;
   opacity: 0;
   transition: opacity 0.2s;
   padding: 0.25rem;
-
-  ${SpotTileWrapper}:hover & {
-    opacity: 0.75;
-  }
 `
 
 interface Props {
-  tornOff: boolean
+  canPopout?: boolean
   onPopoutClick?: () => void
   displayCurrencyChart?: () => void
 }
 
-const TileControls: React.SFC<Props & { environment: EnvironmentValue }> = ({
-  onPopoutClick,
-  tornOff,
-  environment,
-  displayCurrencyChart
-}) => (
-  <React.Fragment>
-    {!tornOff &&
-      !Environment.isRunningInIE() && (
+const TileControls: React.FC<Props> = ({ onPopoutClick, canPopout, displayCurrencyChart }) => {
+  const platform = usePlatform()
+  return (
+    <React.Fragment>
+      {canPopout && (
         <TopRightButton onClick={onPopoutClick}>
           <PopoutIcon width={0.8125} height={0.75} />
         </TopRightButton>
       )}
-    {environment.isDesktop && (
-      <BottomRightButton onClick={displayCurrencyChart}>
-        <i className="fas fa-chart-bar" />
-      </BottomRightButton>
-    )}
-  </React.Fragment>
-)
+      {platform.type !== 'browser' && (
+        <BottomRightButton onClick={displayCurrencyChart}>
+          <i className="fas fa-chart-bar" />
+        </BottomRightButton>
+      )}
+    </React.Fragment>
+  )
+}
 
-export default withEnvironment(TileControls)
+export default TileControls

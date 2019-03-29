@@ -1,8 +1,10 @@
+import { darken } from 'polished'
 import { mapValues } from 'lodash'
+import { keyframes } from 'styled-components'
 
-import colors, { AccentPaletteMap, Color, ColorPaletteMaps, CorePalette, CorePaletteMap } from './colors'
+import { colors, template, AccentPaletteMap, Color, CorePalette, CorePaletteMap, AccentName } from './colors'
 
-export interface BaseTheme {
+interface BaseTheme {
   white: Color
   black: Color
   transparent: Color
@@ -10,7 +12,7 @@ export interface BaseTheme {
   primary: CorePalette
   secondary: CorePalette
   accents: AccentPaletteMap
-  colors: ColorPaletteMaps
+  colors: typeof colors
 
   motion: Motion & {
     fast: Motion
@@ -20,69 +22,63 @@ export interface BaseTheme {
 
   shell: ColorPair
 
-  component: ColorPair & {
-    hover: ColorPair
-  }
-
   overlay: ColorPair
 
-  button: TouchableIntents
+  button: TouchableStyleSet
 
   // Known extensible properties
-  backgroundColor?: Color
-  textColor?: Color
-  shadowColor?: Color
-  hover?: ColorPair
+  backgroundColor: Color
+  textColor: Color
 
   // TODO (8/14/18) remove after theme migration
   [key: string]: any
 }
 
-export type ExtensibleThemeValue = Color | null
-type GeneratedTheme = ReturnType<typeof generateTheme>
+type GeneratedTheme = ReturnType<typeof createTheme>
 export type Theme = BaseTheme & GeneratedTheme
 
-export interface TouchableIntents {
-  primary: Touchable
-  secondary: Touchable
-  accent: Touchable
-  good: Touchable
-  aware: Touchable
-  bad: Touchable
-}
-
-export interface Touchable {
+interface Touchable {
   backgroundColor: Color
   textColor: Color
 
   active: ColorPair
   disabled: ColorPair
-
-  // Hover states don't transfer to mobile
-  hover?: ColorPair
 }
+export type TouchableIntentName = AccentName | 'primary' | 'secondary' | 'mute'
+type TouchableStyleSet = { [style in TouchableIntentName]: Touchable }
 
-export interface Motion {
+interface Motion {
   duration: number
   easing: string
 }
 
-export interface ColorPair {
+interface ColorPair {
   backgroundColor: string
   textColor?: string
 }
 
-type ThemeModifier = (original: GeneratedTheme) => GeneratedTheme
+export type ThemeSelector = (theme: Theme) => Color
 
-const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPaletteMap) => ({
-  white: colors.spectrum.white.base,
-  black: colors.spectrum.black.base,
-  transparent: colors.spectrum.transparent.base,
+export interface ColorProps {
+  bg?: ThemeSelector
+  fg?: ThemeSelector
+}
 
-  backgroundColor: null as ExtensibleThemeValue,
-  textColor: null as ExtensibleThemeValue,
-  shadowColor: null as ExtensibleThemeValue,
-  hover: null as ExtensibleThemeValue,
+function isColor(value: string | ThemeSelector): value is Color {
+  return typeof value === 'string' && /^(#|rgb|hsl)/.test(value)
+}
+export const getThemeColor = (theme: Theme, color: Color | ThemeSelector, fallback?: Color) =>
+  typeof color === 'function' ? color(theme) || fallback : isColor(color) ? color : fallback
+
+const createTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({
+  template,
+  core,
+  white: colors.static.white,
+  black: colors.static.black,
+  transparent: colors.static.transparent,
+
+  backgroundColor: core.darkBackground,
+  textColor: core.textColor,
 
   primary,
   secondary,
@@ -95,119 +91,64 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
 
     fast: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.19, 1, 0.22, 1)'
+      easing: 'cubic-bezier(0.19, 1, 0.22, 1)',
     },
 
     normal: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
+      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
     },
 
     slow: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
-    }
-  },
-
-  shell: {
-    backgroundColor: primary[1],
-    textColor: secondary.base
-  },
-
-  component: {
-    backgroundColor: primary.base,
-    textColor: secondary[2],
-    hover: {
-      backgroundColor: primary[1]
-    }
+      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+    },
   },
 
   overlay: {
-    backgroundColor: primary[1],
-    textColor: secondary[2]
-  },
-
-  header: {
-    backgroundColor: primary.base,
-    textColor: secondary[2]
+    backgroundColor: darken(0.1, primary[1]),
+    textColor: secondary[2],
   },
 
   tile: {
-    backgroundColor: primary.base,
-    textColor: secondary.base,
-    inputColor: secondary['4'],
-
-    blue: {
-      base: accents.accent.base,
-      light: accents.accent['2'],
-      dark: accents.accent['1']
-    },
-
-    red: {
-      base: accents.bad.base,
-      light: accents.bad['3']
-    },
-
-    green: {
-      base: accents.good.base,
-      light: accents.good['3']
-    },
-
-    priceButton: {
-      backgroundColor: primary.base,
-      textColor: colors.spectrum.white.base,
-      hoverColor: primary['1']
-    }
+    inputColor: secondary[4],
   },
 
-  blotter: {
-    backgroundColor: primary[1],
-    alternateBackgroundColor: primary.base,
-    foregroundColor: primary['3'],
-    pending: primary['2'],
-
-    textColor: secondary.base,
-
-    blue: {
-      base: accents.accent.base,
-      light: accents.accent['2']
-    },
-
-    red: {
-      base: accents.bad.base,
-      light: accents.bad['3']
-    },
-
-    green: {
-      base: accents.good.base,
-      light: accents.good['3']
+  flash: keyframes`
+    0% {
+      background-color: ${primary.base};
     }
-  },
-
-  analytics: {
-    backgroundColor: primary.base,
-    textColor: secondary.base,
-
-    red: {
-      normal: accents.bad.base
-    },
-
-    green: {
-      normal: accents.good.base
+    50% {
+      background-color: ${accents.dominant.darker};
     }
-  },
+    100% {
+      background-color: ${primary.base};
+    }
+  `,
 
   button: {
+    mute: {
+      backgroundColor: primary.base,
+      textColor: secondary.base,
+
+      active: {
+        backgroundColor: primary[4],
+      },
+      disabled: {
+        backgroundColor: primary[3],
+      },
+    },
+
     primary: {
-      backgroundColor: accents.accent.base,
+      backgroundColor: accents.dominant.base,
       textColor: colors.light.primary.base,
 
       active: {
-        backgroundColor: accents.accent[1]
+        backgroundColor: accents.dominant.darker,
       },
       disabled: {
-        backgroundColor: accents.accent[2]
-      }
+        backgroundColor: accents.dominant.lighter,
+      },
     },
 
     secondary: {
@@ -215,47 +156,33 @@ const generateTheme = ({ primary, secondary }: CorePaletteMap, accents: AccentPa
       textColor: primary.base,
 
       active: {
-        backgroundColor: secondary[3]
+        backgroundColor: secondary[3],
       },
       disabled: {
-        backgroundColor: secondary[4]
-      }
+        backgroundColor: secondary[4],
+      },
     },
 
-    ...mapValues(accents, ({ base, [1]: active, [2]: disabled }) => ({
+    ...mapValues(accents, ({ base, darker, lighter }) => ({
       backgroundColor: base,
       textColor: colors.light.primary.base,
 
       active: {
-        backgroundColor: active
+        backgroundColor: darker,
       },
       disabled: {
-        backgroundColor: disabled
-      }
-    }))
-  }
+        backgroundColor: lighter,
+      },
+    })),
+  } as TouchableStyleSet,
 })
 
-export const createTheme = (
-  { primary, secondary }: CorePaletteMap,
-  accents: AccentPaletteMap,
-  modifier: ThemeModifier = theme => ({ ...theme })
-) => modifier(generateTheme({ primary, secondary }, accents))
-
-const modifyDark: ThemeModifier = (theme: GeneratedTheme) => ({
-  ...theme,
-  button: {
-    ...theme.button,
-    secondary: {
-      ...theme.button.secondary,
-      textColor: theme.primary.base
-    }
-  }
-})
+const lightTheme = createTheme(colors.light, colors.accents)
+const darkTheme = createTheme(colors.dark, colors.accents)
+// Manual overrides
+darkTheme.button.secondary.textColor = darkTheme.primary.base
 
 export const themes = {
-  light: createTheme(colors.light, colors.accents),
-  dark: createTheme(colors.dark, colors.accents, modifyDark)
+  light: lightTheme,
+  dark: darkTheme,
 }
-
-export default themes

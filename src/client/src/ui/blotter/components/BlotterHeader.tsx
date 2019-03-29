@@ -5,6 +5,7 @@ import { PopoutIcon } from 'rt-components'
 import { styled } from 'rt-theme'
 import { columnDefinitions } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
+import ExcelLauncher from './toolbar/ExcelLauncher'
 
 interface Props {
   canPopout: boolean
@@ -20,14 +21,16 @@ const BlotterHeaderStyle = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0.5rem 1rem 1.25rem;
+  padding: 0 0.5rem;
+  height: 2.5rem;
+  background-color: ${({ theme }) => theme.core.darkBackground};
 `
 
 const BlotterControls = styled('button')`
   .svg-icon {
     opacity: 0.59;
-    fill: ${({ theme }) => theme.textColor};
-    stroke: ${({ theme }) => theme.textColor};
+    fill: ${({ theme }) => theme.core.textColor};
+    stroke: ${({ theme }) => theme.core.textColor};
   }
 `
 
@@ -39,9 +42,14 @@ const BlotterLeft = styled('div')`
   font-size: 0.9375rem;
 `
 
+const Fill = styled.div`
+  width: 1rem;
+  height: 1rem;
+`
+
 export default class BlotterHeader extends Component<Props, State> {
   state = {
-    quickFilterText: ''
+    quickFilterText: '',
   }
 
   render() {
@@ -52,6 +60,7 @@ export default class BlotterHeader extends Component<Props, State> {
       <BlotterHeaderStyle>
         <BlotterLeft>Executed Trades</BlotterLeft>
         <BlotterRight>
+          <ExcelLauncher />
           <BlotterToolbar
             isQuickFilterApplied={quickFilterText.length !== 0}
             quickFilterChangeHandler={this.quickFilterChangeHandler}
@@ -62,9 +71,12 @@ export default class BlotterHeader extends Component<Props, State> {
             columnDefinitions={columnDefinitions}
           />
           {canPopout && (
-            <BlotterControls onClick={onPopoutClick}>
-              <PopoutIcon width={0.8125} height={0.75} />
-            </BlotterControls>
+            <React.Fragment>
+              <Fill />
+              <BlotterControls onClick={onPopoutClick}>
+                <PopoutIcon width={0.8125} height={0.75} />
+              </BlotterControls>
+            </React.Fragment>
           )}
         </BlotterRight>
       </BlotterHeaderStyle>

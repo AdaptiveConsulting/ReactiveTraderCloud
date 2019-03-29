@@ -1,4 +1,4 @@
 {
-  "extends": "./tsconfig.json",
-  "noUnusedLocals": true,
+    "extends": "./tsconfig.json",
+    "noUnusedLocals": true,
 }

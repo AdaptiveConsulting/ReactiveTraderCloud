@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace Adaptive.ReactiveTrader.Common.Config
 {
@@ -6,8 +6,12 @@ namespace Adaptive.ReactiveTrader.Common.Config
     {
         public BrokerConfiguration(IConfiguration brokerSection)
         {
-            Host = brokerSection.GetStringValue("host", "localhost");
-            Port = brokerSection.GetIntValue("port", 8000);
+            var envHost = System.Environment.GetEnvironmentVariable("BROKER_HOST");
+            var envPort = System.Environment.GetEnvironmentVariable("BROKER_PORT");
+
+            Host = envHost != null ? envHost : brokerSection.GetStringValue("host", "localhost");
+            Port = envPort != null && System.Int32.TryParse(envPort, out int j) ? j : brokerSection.GetIntValue("port", 8000);
+
             Realm = brokerSection.GetStringValue("realm", "com.weareadaptive.reactivetrader");
         }
 

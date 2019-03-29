@@ -1,9 +1,9 @@
 import React from 'react'
 import { Transition } from 'react-spring'
-import { AdaptiveLoader, Flex } from 'rt-components'
+import { AdaptiveLoader } from 'rt-components'
 import { styled } from 'rt-theme'
 
-const TileBookingStyle = styled('div')`
+const TileBookingStyle = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
@@ -12,39 +12,26 @@ const TileBookingStyle = styled('div')`
   justify-content: center;
 `
 
-const BookingPill = styled(Flex)`
+const BookingPill = styled.div`
   padding: 0.75rem 0.9375rem;
   border-radius: 17px;
-  background: ${({ theme }) => theme.blue.base};
-  animation: pulse 2s infinite;
-
-  @keyframes pulse {
-    0% {
-      background: ${({ theme }) => theme.blue.base};
-    }
-    70% {
-      background: ${({ theme }) => theme.blue.dark};
-    }
-    100% {
-      background: ${({ theme }) => theme.blue.base};
-    }
-  }
+  background: ${({ theme }) => theme.template.blue.normal};
 
   rect {
-    fill: ${({ theme }) => theme.white};
+    fill: ${({ theme }) => theme.template.white.normal};
   }
 `
 
-const BookingStatus = styled('span')`
+const BookingStatus = styled.span`
   margin-left: 0.375rem;
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.template.white.normal};
   font-size: 0.8125rem;
 `
 interface Props {
   show: boolean
 }
 
-const TileBooking: React.SFC<Props> = ({ show }) => (
+const TileBooking: React.FC<Props> = ({ show }) => (
   <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
     {show &&
       (styles => (

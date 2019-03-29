@@ -1,4 +1,0 @@
-#! /bin/bash
-
-root_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/../.."
-rm -r ${root_directory}/deploy/minikube/minikube_data
