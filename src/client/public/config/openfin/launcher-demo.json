@@ -1,62 +1,62 @@
 {
-  "startup_app": {
-    "name": "Reactive Trader Cloud",
-    "url": "https://web-demo.adaptivecluster.com/launcher",
-    "uuid": "ReactiveLauncher",
-    "defaultWidth": 380,
-    "defaultHeight": 60,
-    "defaultTop": 160,
-    "defaultLeft": 30,
-    "autoShow": true,
-    "saveWindowState": false,
-    "resizable": false,
-    "shadow": true,
-    "frame": false,
-    "backgroundColor": "#444C5F",
-    "alwaysOnTop": true,
-    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
-    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png",
-    "contextMenu": true,
-    "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
-    "preload": [
-      {
-        "url": "https://web-demo.adaptivecluster.com/plugin/service-loader.js"
-      },
-      {
-        "url": "https://web-demo.adaptivecluster.com/plugin/fin.desktop.Excel.js"
-      }
-    ],
-    "accelerator": {
-      "devtools": true,
-      "reload": true,
-      "reloadIgnoringCache": true,
-      "zoom": true
-    }
-  },
-  "runtime": {
-    "arguments": "--remote-debugging-port=9222",
-    "version": "10.66.39.43",
-    "futureVersion": "10.66.39.43",
-    "forceLatest": true
-  },
-  "shortcut": {
-    "company": "Adaptive Consulting",
-    "description": "Desktop Reactive Trader Cloud",
-    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
-    "name": "Reactive Trader Cloud"
-  },
-  "appAssets": [
-    {
-      "src": "https://web-demo.adaptivecluster.com/plugin/add-in.zip",
-      "alias": "excel-api-addin",
-      "version": "2.0.0",
-      "forceDownload": true
+    "startup_app": {
+        "name": "Reactive Trader Cloud",
+        "url": "https://web-demo.adaptivecluster.com/launcher",
+        "uuid": "ReactiveLauncher",
+        "defaultWidth": 650,
+        "defaultHeight": 52,
+        "defaultTop": 160,
+        "defaultLeft": 30,
+        "autoShow": true,
+        "saveWindowState": false,
+        "resizable": false,
+        "shadow": true,
+        "frame": false,
+        "backgroundColor": "#444C5F",
+        "alwaysOnTop": true,
+        "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
+        "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png",
+        "contextMenu": true,
+        "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+        "preload": [
+            {
+                "url": "https://web-demo.adaptivecluster.com/plugin/service-loader.js"
+            },
+            {
+                "url": "https://web-demo.adaptivecluster.com/plugin/fin.desktop.Excel.js"
+            }
+        ],
+        "accelerator": {
+            "devtools": true,
+            "reload": true,
+            "reloadIgnoringCache": true,
+            "zoom": true
+        }
     },
-    {
-      "src": "https://web-demo.adaptivecluster.com/plugin/LimitChecker.zip",
-      "alias": "LimitChecker",
-      "version": "1.0.0",
-      "target": "LimitChecker.application"
-    }
-  ]
+    "runtime": {
+        "arguments": "--remote-debugging-port=9222",
+        "version": "10.66.39.43",
+        "futureVersion": "10.66.39.43",
+        "forceLatest": true
+    },
+    "shortcut": {
+        "company": "Adaptive Consulting",
+        "description": "Desktop Reactive Trader Cloud",
+        "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
+        "name": "Reactive Trader Cloud"
+    },
+    "appAssets": [
+        {
+            "src": "https://web-demo.adaptivecluster.com/plugin/add-in.zip",
+            "alias": "excel-api-addin",
+            "version": "2.0.0",
+            "forceDownload": true
+        },
+        {
+            "src": "https://web-demo.adaptivecluster.com/plugin/LimitChecker.zip",
+            "alias": "LimitChecker",
+            "version": "1.0.0",
+            "target": "LimitChecker.application"
+        }
+    ]
 }
