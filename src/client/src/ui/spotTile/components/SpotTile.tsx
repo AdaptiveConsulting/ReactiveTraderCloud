@@ -63,7 +63,7 @@ export default class SpotTile extends PureComponent<Props> {
               disabled={tradingDisabled}
             />
           </ReserveSpaceGrouping>
-          <div>
+          <ReserveSpaceGrouping>
             <NotionalInputWrapper>
               <NotionalInput
                 notional={notional}
@@ -76,7 +76,7 @@ export default class SpotTile extends PureComponent<Props> {
               />
             </NotionalInputWrapper>
             {showTimer && <RfqTimer onRejected={handleRfqRejected} timeout={rfqTimeout} />}
-          </div>
+          </ReserveSpaceGrouping>
         </SpotTileStyle>
         {children}
       </SpotTileWrapperWithPlatform>

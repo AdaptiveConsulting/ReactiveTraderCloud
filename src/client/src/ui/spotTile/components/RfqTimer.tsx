@@ -91,7 +91,9 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
 
     return (
       <TimerWrapper>
-        <TimeLeft>{timeLeft} secs</TimeLeft>
+        <TimeLeft>
+          {timeLeft} sec{timeLeft > 1 ? 's' : ''}
+        </TimeLeft>
         <ProgressBarWrapper>
           <ProgressBar style={{ width: `${percentageLeft}%` }} />
         </ProgressBarWrapper>
