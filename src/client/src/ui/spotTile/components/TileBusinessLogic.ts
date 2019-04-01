@@ -14,7 +14,7 @@ const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 
 // Utils
 export const getDefaultNotionalValue = (currencyPair: CurrencyPair) =>
-  // This is simply to have one Tile showing RFQ prompt on page load
+  // This is to simply to have one Tile showing RFQ prompt on page load
   // check JIRA ticket ARTP-532
   currencyPair.symbol === 'NZDUSD'
     ? numeral(MIN_RFQ_VALUE).format(NUMERAL_FORMAT)
