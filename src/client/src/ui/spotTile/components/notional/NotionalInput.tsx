@@ -199,7 +199,6 @@ export default class NotionalInput extends PureComponent<Props, State> {
       showResetButton,
       disabled,
     } = this.props
-    // const stringNotional = this.formatNotional(notional)
 
     return (
       <InputWrapper altLayout={Boolean(validationMessage)}>
