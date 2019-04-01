@@ -46,7 +46,6 @@ const TimerWrapper = styled.div`
   margin-bottom: -12px;
 `
 
-// TODO Move the timer to the service.
 class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
   intervalId = 0
 
@@ -75,6 +74,7 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
 
   updateTimeLeft = () => {
     this.setState(prevState => {
+      console.log('prevState', prevState)
       if (prevState.timeLeft > 0) {
         return {
           timeLeft: prevState.timeLeft - 1,

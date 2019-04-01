@@ -17,7 +17,7 @@ type RfqExpiredActionType = ReturnType<typeof rfqExpired>
 type RfqCancelActionType = ReturnType<typeof rfqCancel>
 type RfqResetActionType = ReturnType<typeof rfqReset>
 
-const EXPIRATION_TIMEOUT_MS = 60000
+const EXPIRATION_TIMEOUT_MS = 10000
 
 const fakeAjaxCall = (
   r: RfqRequest,
@@ -76,7 +76,7 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
         ),
       )
 
-      return timer(action.payload.timeout).pipe(
+      return timer(action.payload.timeout + 1000).pipe(
         takeUntil(cancel$),
         map(() => rfqExpired({ currencyPair: action.payload.currencyPair })),
       )

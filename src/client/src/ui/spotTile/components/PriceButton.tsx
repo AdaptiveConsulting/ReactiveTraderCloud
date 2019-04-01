@@ -35,7 +35,6 @@ const backgroundEffect = ({ rfqState, ...rest }: { rfqState: RfqState }) =>
     ? getAnimationCSSProperty(rest as { direction: Direction; theme: Theme })
     : ''
 
-// TODO Fix animation to make sure hover still works after
 export const TradeButton = styled.button<{ direction: Direction; rfqState: RfqState }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
