@@ -74,7 +74,6 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
 
   updateTimeLeft = () => {
     this.setState(prevState => {
-      console.log('prevState', prevState)
       if (prevState.timeLeft > 0) {
         return {
           timeLeft: prevState.timeLeft - 1,
