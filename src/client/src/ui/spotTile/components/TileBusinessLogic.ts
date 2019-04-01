@@ -73,15 +73,6 @@ interface DerivedStateFromUserInput {
   }
 }
 
-interface DerivedStateFromNotionalReset {
-  prevState: TileState
-  spotTileData: SpotTileData
-  actions: {
-    setTradingMode: TileProps['setTradingMode']
-  }
-  currencyPair: CurrencyPair
-}
-
 // State management derived from user input
 export const getDerivedStateFromUserInput = ({
   prevState,
@@ -177,6 +168,15 @@ export const getDerivedStateFromUserInput = ({
       ...defaultNextState,
     }
   }
+}
+
+interface DerivedStateFromNotionalReset {
+  prevState: TileState
+  spotTileData: SpotTileData
+  actions: {
+    setTradingMode: TileProps['setTradingMode']
+  }
+  currencyPair: CurrencyPair
 }
 
 export const resetNotional = ({
