@@ -183,16 +183,15 @@ export const resetNotional = ({
   prevState,
   spotTileData: {
     price: { symbol },
-    rfqState,
   },
   actions,
   currencyPair,
 }: DerivedStateFromNotionalReset): TileState => {
   const notional = getDefaultNotionalValue(currencyPair)
   const isInRfqRange = isValueInRfqRange(notional)
-  if (isInRfqRange && rfqState === 'none') {
+  if (isInRfqRange) {
     actions.setTradingMode({ symbol, mode: 'rfq' })
-  } else if (!isInRfqRange && rfqState !== 'none') {
+  } else {
     actions.setTradingMode({ symbol, mode: 'esp' })
   }
   return {
