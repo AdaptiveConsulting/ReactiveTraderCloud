@@ -1,9 +1,9 @@
 import numeral from 'numeral'
-import { convertNotionalShorthandToNumericValue } from './notional/utils'
+import { convertNotionalShorthandToNumericValue } from '../notional/utils'
 import { ServiceConnectionStatus, CurrencyPair } from 'rt-types'
 import { TileProps, TileState } from './Tile'
-import { NotionalUpdate } from './notional/NotionalInput'
-import { SpotTileData } from '../model/spotTileData'
+import { NotionalUpdate } from '../notional/NotionalInput'
+import { SpotTileData } from '../../model/spotTileData'
 
 // Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -28,7 +28,7 @@ export const isValueInRfqRange = (notional: string) => {
   return numericValue >= MIN_RFQ_VALUE && numericValue <= MAX_NOTIONAL_VALUE
 }
 
-const isValueOverRftRange = (notional: string) => {
+export const isValueOverRftRange = (notional: string) => {
   const numericValue = convertNotionalShorthandToNumericValue(notional)
   return numericValue > MAX_NOTIONAL_VALUE
 }

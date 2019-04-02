@@ -1,11 +1,16 @@
 import React from 'react'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import { ExecuteTradeRequest, SpotTileData, createTradeRequest, TradeRequest } from '../model/index'
-import SpotTile from './SpotTile'
-import { AnalyticsTile } from './analyticsTile'
-import { TileViews } from '../../workspace/workspaceHeader'
-import { TileSwitchChildrenProps, TradingMode, RfqActions } from './types'
-import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
+import {
+  ExecuteTradeRequest,
+  SpotTileData,
+  createTradeRequest,
+  TradeRequest,
+} from '../../model/index'
+import SpotTile from '../SpotTile'
+import { AnalyticsTile } from '../analyticsTile/index'
+import { TileViews } from '../../../workspace/workspaceHeader/index'
+import { TileSwitchChildrenProps, TradingMode, RfqActions } from '../types'
+import { ValidationMessage, NotionalUpdate } from '../notional/NotionalInput'
 import {
   getDefaultNotionalValue,
   getDerivedStateFromProps,
