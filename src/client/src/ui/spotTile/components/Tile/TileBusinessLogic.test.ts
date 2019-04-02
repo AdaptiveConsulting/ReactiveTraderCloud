@@ -3,6 +3,7 @@ import {
   isValueInRfqRange,
   isValueOverRftRange,
   isInvalidTradingValue,
+  isEditMode,
 } from './TileBusinessLogic'
 
 test('getNumericNotional', () => {
@@ -92,4 +93,45 @@ test('isInvalidTradingValue', () => {
 
   const isInvalid13 = isInvalidTradingValue('10,009.01')
   expect(isInvalid13).toBe(false)
+})
+
+test('isEditMode', () => {
+  const inEditMode = isEditMode('1')
+  expect(inEditMode).toBe(false)
+
+  const inEditMode2 = isEditMode('000,000')
+  expect(inEditMode2).toBe(true)
+
+  const inEditMode3 = isEditMode(',000,000')
+  expect(inEditMode3).toBe(true)
+
+  const inEditMode4 = isEditMode(',98')
+  expect(inEditMode4).toBe(true)
+
+  const inEditMode5 = isEditMode('0.00')
+  expect(inEditMode5).toBe(false)
+
+  const inEditMode6 = isEditMode('')
+  expect(inEditMode6).toBe(true)
+
+  const inEditMode7 = isEditMode('NaN')
+  expect(inEditMode7).toBe(false)
+
+  const inEditMode8 = isEditMode('Infinity')
+  expect(inEditMode8).toBe(false)
+
+  const inEditMode9 = isEditMode(',')
+  expect(inEditMode9).toBe(true)
+
+  const inEditMode10 = isEditMode('0.')
+  expect(inEditMode10).toBe(false)
+
+  const inEditMode11 = isEditMode('0.01')
+  expect(inEditMode11).toBe(false)
+
+  const inEditMode12 = isEditMode('0.1')
+  expect(inEditMode12).toBe(false)
+
+  const inEditMode13 = isEditMode('10,009.01')
+  expect(inEditMode13).toBe(false)
 })

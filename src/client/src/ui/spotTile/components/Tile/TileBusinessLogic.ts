@@ -33,12 +33,14 @@ export const isValueOverRftRange = (notional: string) => {
   return numericValue > MAX_NOTIONAL_VALUE
 }
 
+// To make sure the user can't trade with invalid values
 const invalidTradingValuesRegex = /^(\.|,|0|.0|0.|0.0|0.00|$|Infinity|NaN)$/
 export const isInvalidTradingValue = (value: string) =>
   Boolean(value.match(invalidTradingValuesRegex))
 
+// To make sure the notional input doesn't format on the fly in these cases
 const editModeRegex = /(?!.*(0\.)).*^(,|$|0)/
-export const isEditMode = (value: string) => value.match(editModeRegex)
+export const isEditMode = (value: string) => Boolean(value.match(editModeRegex))
 
 // State management derived from props
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
