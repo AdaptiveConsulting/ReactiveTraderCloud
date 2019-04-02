@@ -92,6 +92,9 @@ const getBigFigureDisplay = (bigFigure: number, rawRate: number) =>
 const renderBigFigureDisplay = (bigFigureDisplay: string) =>
   bigFigureDisplay.toString().length === 3 ? `${bigFigureDisplay}0` : bigFigureDisplay
 
+const displayDashAsDefaultPrice = (big: number, pip: number, tenth: number, raw: number) =>
+  big === pip && pip === tenth && tenth === raw && raw === 0
+
 const PriceButtonComp: React.FC<PriceButtonProps> = ({
   big = 0,
   pip = 0,
@@ -102,18 +105,28 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
   disabled = false,
 }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
-  return (
-    <TradeButton direction={direction} onClick={() => handleClick()} disabled={disabled}>
-      <Price>
-        <BigWrapper>
-          <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
-          <Big>{renderBigFigureDisplay(bigFigure)}</Big>
-        </BigWrapper>
-        <Pip>{renderPips(pip)}</Pip>
-        <Tenth>{tenth}</Tenth>
-      </Price>
-    </TradeButton>
-  )
+  if (!displayDashAsDefaultPrice(big, pip, tenth, rawRate)) {
+    return (
+      <TradeButton direction={direction} onClick={() => handleClick()} disabled={disabled}>
+        <Price>
+          <BigWrapper>
+            <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
+            <Big>{renderBigFigureDisplay(bigFigure)}</Big>
+          </BigWrapper>
+          <Pip>{renderPips(pip)}</Pip>
+          <Tenth>{tenth}</Tenth>
+        </Price>
+      </TradeButton>
+    )
+  } else {
+    return (
+      <TradeButton direction={direction} onClick={() => handleClick()} disabled={true}>
+        <Price>
+          <Pip>{`-`}</Pip>
+        </Price>
+      </TradeButton>
+    )
+  }
 }
 
 export default PriceButtonComp
