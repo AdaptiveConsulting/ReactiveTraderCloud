@@ -33,8 +33,9 @@ export const isValueOverRftRange = (notional: string) => {
   return numericValue > MAX_NOTIONAL_VALUE
 }
 
-const invalidTradingValuesRegex = /^(\.|,|0|.0|0.|0.0|$|Infinity|NaN)$/
-const isInvalidTradingValue = (value: string) => value.match(invalidTradingValuesRegex)
+const invalidTradingValuesRegex = /^(\.|,|0|.0|0.|0.0|0.00|$|Infinity|NaN)$/
+export const isInvalidTradingValue = (value: string) =>
+  Boolean(value.match(invalidTradingValuesRegex))
 
 const editModeRegex = /(?!.*(0\.)).*^(,|$|0)/
 export const isEditMode = (value: string) => value.match(editModeRegex)

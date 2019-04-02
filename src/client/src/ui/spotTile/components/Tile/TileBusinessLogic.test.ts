@@ -1,4 +1,9 @@
-import { getNumericNotional, isValueInRfqRange, isValueOverRftRange } from './TileBusinessLogic'
+import {
+  getNumericNotional,
+  isValueInRfqRange,
+  isValueOverRftRange,
+  isInvalidTradingValue,
+} from './TileBusinessLogic'
 
 test('getNumericNotional', () => {
   const numericValue = getNumericNotional('1,000,000')
@@ -32,18 +37,59 @@ test('isValueInRfqRange', () => {
 })
 
 test('isValueOverRftRange', () => {
-  const isInRange = isValueOverRftRange('1,000,000')
-  expect(isInRange).toBe(false)
+  const isOverRange = isValueOverRftRange('1,000,000')
+  expect(isOverRange).toBe(false)
 
-  const isInRange2 = isValueOverRftRange('10,000,000')
-  expect(isInRange2).toBe(false)
+  const isOverRange2 = isValueOverRftRange('10,000,000')
+  expect(isOverRange2).toBe(false)
 
-  const isInRange3 = isValueOverRftRange('999,999,999.99')
-  expect(isInRange3).toBe(false)
+  const isOverRange3 = isValueOverRftRange('999,999,999.99')
+  expect(isOverRange3).toBe(false)
 
-  const isInRange4 = isValueOverRftRange('1,000,000,000')
-  expect(isInRange4).toBe(false)
+  const isOverRange4 = isValueOverRftRange('1,000,000,000')
+  expect(isOverRange4).toBe(false)
 
-  const isInRange5 = isValueOverRftRange('1,000,000,001')
-  expect(isInRange5).toBe(true)
+  const isOverRange5 = isValueOverRftRange('1,000,000,001')
+  expect(isOverRange5).toBe(true)
+})
+
+test('isInvalidTradingValue', () => {
+  const isInvalid = isInvalidTradingValue('1')
+  expect(isInvalid).toBe(false)
+
+  const isInvalid2 = isInvalidTradingValue('0')
+  expect(isInvalid2).toBe(true)
+
+  const isInvalid3 = isInvalidTradingValue('.')
+  expect(isInvalid3).toBe(true)
+
+  const isInvalid4 = isInvalidTradingValue('0.0')
+  expect(isInvalid4).toBe(true)
+
+  const isInvalid5 = isInvalidTradingValue('0.00')
+  expect(isInvalid5).toBe(true)
+
+  const isInvalid6 = isInvalidTradingValue('')
+  expect(isInvalid6).toBe(true)
+
+  const isInvalid7 = isInvalidTradingValue('NaN')
+  expect(isInvalid7).toBe(true)
+
+  const isInvalid8 = isInvalidTradingValue('Infinity')
+  expect(isInvalid8).toBe(true)
+
+  const isInvalid9 = isInvalidTradingValue(',')
+  expect(isInvalid9).toBe(true)
+
+  const isInvalid10 = isInvalidTradingValue('.0')
+  expect(isInvalid10).toBe(true)
+
+  const isInvalid11 = isInvalidTradingValue('0.01')
+  expect(isInvalid11).toBe(false)
+
+  const isInvalid12 = isInvalidTradingValue('0.1')
+  expect(isInvalid12).toBe(false)
+
+  const isInvalid13 = isInvalidTradingValue('10,009.01')
+  expect(isInvalid13).toBe(false)
 })
