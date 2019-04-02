@@ -23,7 +23,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { price, historicPrices },
+      spotTileData: { price, historicPrices, rfqState },
       notional,
       updateNotional,
       resetNotional,
@@ -36,6 +36,8 @@ class AnalyticsTile extends React.PureComponent<Props> {
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
+    const showResetButton = rfqState === 'canRequest' || rfqState === 'expired'
+
     return (
       <AnalyticsWrapperWithPlatform>
         <AnalyticsTileStyle className="spot-tile">
@@ -51,6 +53,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
                 updateNotional={updateNotional}
                 resetNotional={resetNotional}
                 validationMessage={inputValidationMessage}
+                showResetButton={showResetButton}
                 disabled={inputDisabled}
               />
             </GraphNotionalWrapper>
