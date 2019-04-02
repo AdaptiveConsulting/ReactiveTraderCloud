@@ -1,6 +1,5 @@
 import { styled, Theme } from 'rt-theme'
 import { ValidationMessage } from './NotionalInput'
-import { css } from 'styled-components'
 
 export const CurrencyPairSymbol = styled('span')`
   grid-area: Currency;
@@ -35,7 +34,7 @@ const getInputBoxShadowStyles = ({
   theme: Theme
 }) =>
   validationMessage
-    ? css`
+    ? `
         box-shadow: 0px 1px 0px
           ${getValidationMessageStyles({ theme, validationMessageType: validationMessage.type })};
       `
