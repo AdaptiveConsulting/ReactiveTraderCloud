@@ -147,7 +147,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
   return (
     <TradeButton
       direction={direction}
-      onClick={() => handleClick()}
+      onClick={handleClick}
       rfqState={rfqState}
       disabled={disabled}
     >
