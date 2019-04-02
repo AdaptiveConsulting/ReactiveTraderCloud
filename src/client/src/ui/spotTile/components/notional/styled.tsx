@@ -17,17 +17,39 @@ const getValidationMessageStyles = ({
 }) => {
   switch (validationMessageType) {
     case 'error':
-      return `color: ${theme.template.red.normal}`
+      return theme.template.red.normal
     case 'warning':
-      return `color: ${theme.template.yellow.normal}`
+      return theme.template.yellow.normal
     case 'info':
     default:
-      return `color: ${theme.template.blue.normal}`
+      return theme.template.blue.normal
   }
 }
 
+const getInputBoxShadowStyles = ({
+  validationMessage,
+  theme,
+}: {
+  validationMessage: ValidationMessage
+  theme: Theme
+}) =>
+  validationMessage
+    ? `
+        box-shadow: 0px 1px 0px
+          ${getValidationMessageStyles({ theme, validationMessageType: validationMessage.type })};
+      `
+    : `
+  .spot-tile:hover & {
+    box-shadow: 0px 1px 0px ${theme.core.textColor};
+  }
+
+  .spot-tile:hover &:focus, &:focus {
+    box-shadow: 0px 1px 0px ${theme.template.blue.normal};
+  }
+`
+
 export const MessagePlaceholder = styled.div<{ validationMessageType: ValidationMessage['type'] }>`
-  ${getValidationMessageStyles};
+  color: ${getValidationMessageStyles};
   grid-area: Message;
   font-size: 0.6rem;
   line-height: normal;
@@ -62,21 +84,7 @@ export const Input = styled.input<{
   width: 80px;
   padding: 2px 0;
   ${({ disabled }) => disabled && 'opacity: 0.3;'}
-  ${({ theme, validationMessage }) =>
-    !validationMessage
-      ? `
-.spot-tile:hover & {
-  box-shadow: 0px 1px 0px ${theme.core.textColor};
-}
-
-.spot-tile:hover &:focus,
-&:focus {
-  box-shadow: 0px 1px 0px ${theme.template.blue.normal};
-}
-`
-      : `
-box-shadow: 0px 1px 0px ${theme.template.red.normal}
-`};
+  ${getInputBoxShadowStyles};
 `
 
 export const ResetInputValue = styled.button`
