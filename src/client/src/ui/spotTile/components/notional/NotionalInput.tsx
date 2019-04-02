@@ -1,7 +1,13 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import { styled, Theme } from 'rt-theme'
 import { NUMERAL_FORMAT, isEditMode } from '../TileBusinessLogic'
+import {
+  InputWrapper,
+  CurrencyPairSymbol,
+  Input,
+  ResetInputValue,
+  MessagePlaceholder,
+} from './styled'
 
 const DOT = '.'
 const ENTER = 'Enter'
@@ -20,94 +26,6 @@ export interface NotionalUpdate {
   value: string
   type: string
 }
-
-const CurrencyPairSymbol = styled('span')`
-  grid-area: Currency;
-  opacity: 0.59;
-  font-size: 0.625rem;
-  line-height: 1.2rem;
-`
-
-const getValidationMessageStyles = ({
-  theme,
-  validationMessageType,
-}: {
-  theme: Theme
-  validationMessageType: ValidationMessage['type']
-}) => {
-  switch (validationMessageType) {
-    case 'error':
-      return `color: ${theme.template.red.normal}`
-    case 'warning':
-      return `color: ${theme.template.yellow.normal}`
-    case 'info':
-    default:
-      return `color: ${theme.template.blue.normal}`
-  }
-}
-
-const MessagePlaceholder = styled.div<{ validationMessageType: ValidationMessage['type'] }>`
-  ${getValidationMessageStyles};
-  grid-area: Message;
-  font-size: 0.6rem;
-  line-height: normal;
-  padding-top: 2px;
-`
-
-const InputWrapper = styled.div<{ altLayout: boolean }>`
-  display: grid;
-  grid-template-columns: 30px auto 30px;
-  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
-  align-items: center;
-  ${({ altLayout }) =>
-    altLayout
-      ? `
-  grid-template-rows: 23px 13px;
-  margin-bottom: -0.5rem;
-  `
-      : `
-  grid-template-rows: 23px 0;
-  `};
-`
-
-export const Input = styled.input<{
-  validationMessage: ValidationMessage
-}>`
-  grid-area: Input;
-  background: none;
-  text-align: center;
-  outline: none;
-  border: none;
-  font-size: 0.75rem;
-  width: 80px;
-  padding: 2px 0;
-  ${({ disabled }) => disabled && 'opacity: 0.3;'}
-  ${({ theme, validationMessage }) =>
-    !validationMessage
-      ? `
-  .spot-tile:hover & {
-    box-shadow: 0px 1px 0px ${theme.core.textColor};
-  }
-
-  .spot-tile:hover &:focus,
-  &:focus {
-    box-shadow: 0px 1px 0px ${theme.template.blue.normal};
-  }
-  `
-      : `
-  box-shadow: 0px 1px 0px ${theme.template.red.normal}
-  `};
-`
-
-const ResetInputValue = styled.button`
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  border: 2px solid ${({ theme }) => theme.core.darkBackground};
-  border-radius: 3px;
-  margin-left: 8px;
-  grid-area: ResetInputValue;
-  font-size: 0.625rem;
-  line-height: 1.2rem;
-`
 
 interface Props {
   currencyPairSymbol: string
@@ -199,7 +117,6 @@ export default class NotionalInput extends PureComponent<Props, State> {
       showResetButton,
       disabled,
     } = this.props
-    // const stringNotional = this.formatNotional(notional)
 
     return (
       <InputWrapper altLayout={Boolean(validationMessage)}>
