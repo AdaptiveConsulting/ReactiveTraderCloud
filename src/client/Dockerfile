@@ -5,7 +5,6 @@ RUN npm install
 COPY . .
 RUN npm run build
 RUN npm run storybook:build
-COPY ./storybook/build /app/storybook/build
 
 FROM nginx
 EXPOSE 3000
