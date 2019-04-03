@@ -64,12 +64,12 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
   setTradingMode: (tradingMode: TradingMode) =>
     dispatch(SpotTileActions.setTradingMode(tradingMode)),
   rfq: {
-    request: (obj: RfqRequest) => dispatch(SpotTileActions.rfqRequest(obj)),
-    cancel: (obj: RfqCancel) => dispatch(SpotTileActions.rfqCancel(obj)),
-    reject: (obj: RfqReject) => dispatch(SpotTileActions.rfqReject(obj)),
-    requote: (obj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(obj)),
-    expired: (obj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(obj)),
-    reset: (obj: RfqExpired) => dispatch(SpotTileActions.rfqReset(obj)),
+    request: (rfqActionObj: RfqRequest) => dispatch(SpotTileActions.rfqRequest(rfqActionObj)),
+    cancel: (rfqActionObj: RfqCancel) => dispatch(SpotTileActions.rfqCancel(rfqActionObj)),
+    reject: (rfqActionObj: RfqReject) => dispatch(SpotTileActions.rfqReject(rfqActionObj)),
+    requote: (rfqActionObj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(rfqActionObj)),
+    expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
+    reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
   },
 })
 
