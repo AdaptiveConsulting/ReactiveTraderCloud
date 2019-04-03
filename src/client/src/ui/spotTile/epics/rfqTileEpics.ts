@@ -16,6 +16,10 @@ type RfqRejectActionType = ReturnType<typeof rfqReject>
 type RfqExpiredActionType = ReturnType<typeof rfqExpired>
 type RfqCancelActionType = ReturnType<typeof rfqCancel>
 type RfqResetActionType = ReturnType<typeof rfqReset>
+type RfqReceivedTimerCancellableType =
+  | RfqRejectActionType
+  | RfqExpiredActionType
+  | RfqResetActionType
 
 const EXPIRATION_TIMEOUT_MS = 10000
 
@@ -51,8 +55,8 @@ export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     ofType<Action, RfqRequestActionType>(TILE_ACTION_TYPES.RFQ_REQUEST),
     mergeMap(action =>
-      // TODO Subcribe to Pricing service instead of passing the current price
-      // to that call? Same with currencuPairs?
+      // TODO Subscribe to Pricing service instead of passing the current price
+      // to that call? Same with currencyPairs?
       fakeAjaxCall(action.payload, state$.value.currencyPairs, state$.value.spotTilesData).pipe(
         map(response => fetchRfqQuote(response)),
         takeUntil(action$.pipe(ofType<Action, RfqCancelActionType>(TILE_ACTION_TYPES.RFQ_CANCEL))),
@@ -65,7 +69,7 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
     ofType<Action, RfqReceivedActionType>(TILE_ACTION_TYPES.RFQ_RECEIVED),
     mergeMap(action => {
       const cancel$ = action$.pipe(
-        ofType<Action, RfqRejectActionType | RfqExpiredActionType | RfqResetActionType>(
+        ofType<Action, RfqReceivedTimerCancellableType>(
           TILE_ACTION_TYPES.RFQ_REJECT,
           TILE_ACTION_TYPES.RFQ_EXPIRED,
           TILE_ACTION_TYPES.RFQ_RESET,

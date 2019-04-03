@@ -20,7 +20,7 @@ export interface TileProps {
   spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
-  setTradingMode: (tradindMode: TradingMode) => void
+  setTradingMode: (tradingMode: TradingMode) => void
   tileView?: TileViews
   children: ({ notional, userError }: TileSwitchChildrenProps) => JSX.Element
   rfq: RfqActions
