@@ -4,6 +4,7 @@ import { ServiceConnectionStatus } from 'rt-types'
 import { TileProps, TileState } from './Tile'
 import { NotionalUpdate } from './notional/NotionalInput'
 import { SpotTileData } from '../model/spotTileData'
+import { getConstsFromRfqState } from '../model/spotTileUtils'
 
 // Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -42,10 +43,14 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
     executionStatus === ServiceConnectionStatus.CONNECTED && !isTradeExecutionInFlight && price,
   )
 
-  const canExecute =
-    !isInTrade && rfqState !== 'canRequest' && rfqState !== 'requested' && !inputValidationMessage
+  const { isRfqStateCanRequest, isRfqStateRequested, isRfqStateReceived } = getConstsFromRfqState(
+    rfqState,
+  )
 
-  const inputDisabled = isInTrade || rfqState === 'requested' || rfqState === 'received'
+  const canExecute =
+    !isInTrade && !isRfqStateCanRequest && !isRfqStateRequested && !inputValidationMessage
+
+  const inputDisabled = isInTrade || isRfqStateRequested || isRfqStateReceived
 
   return {
     ...prevState,
@@ -91,7 +96,7 @@ export const getDerivedStateFromUserInput = ({
     tradingDisabled: false,
   }
 
-  const isRfqStateNone = rfqState === 'none'
+  const { isRfqStateNone } = getConstsFromRfqState(rfqState)
 
   if (type === 'change' && isEditMode(value)) {
     // user is trying to enter decimals or modifying a number
@@ -178,7 +183,8 @@ export const resetNotional = ({
   },
   actions,
 }: DerivedStateFromNotionalReset): TileState => {
-  if (rfqState !== 'none') {
+  const { isRfqStateNone } = getConstsFromRfqState(rfqState)
+  if (!isRfqStateNone) {
     actions.setTradingMode({ symbol, mode: 'esp' })
   }
   return {

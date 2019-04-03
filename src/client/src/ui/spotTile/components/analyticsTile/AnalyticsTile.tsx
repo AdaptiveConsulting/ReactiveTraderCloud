@@ -14,6 +14,7 @@ import {
 } from './styled'
 import { Props } from '../types'
 import TileHeader from '../TileHeader'
+import { getConstsFromRfqState } from '../../model/spotTileUtils'
 
 const AnalyticsWrapperWithPlatform: FC = props => {
   const platform = usePlatform()
@@ -36,7 +37,8 @@ class AnalyticsTile extends React.PureComponent<Props> {
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
-    const showResetButton = rfqState === 'canRequest' || rfqState === 'expired'
+    const { isRfqExpired, isRfqStateCanRequest } = getConstsFromRfqState(rfqState)
+    const showResetButton = isRfqStateCanRequest || isRfqExpired
 
     return (
       <AnalyticsWrapperWithPlatform>

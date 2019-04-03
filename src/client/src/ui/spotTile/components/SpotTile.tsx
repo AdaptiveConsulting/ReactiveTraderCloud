@@ -13,6 +13,7 @@ import { Props } from './types'
 import { usePlatform } from 'rt-components'
 import RfqTimer from './RfqTimer'
 import styled from 'styled-components'
+import { getConstsFromRfqState } from '../model/spotTileUtils'
 
 const TileHeaderWrapper = styled.div`
   display: block;
@@ -44,9 +45,10 @@ export default class SpotTile extends PureComponent<Props> {
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     const handleRfqRejected = () => rfq.reject({ currencyPair })
-    const showResetButton = rfqState === 'canRequest' || rfqState === 'expired'
-    const showTimer = rfqState === 'received' && rfqTimeout
-    const priceData = rfqState === 'received' || rfqState === 'expired' ? rfqPrice : price
+    const { isRfqReceived, isRfqExpired, isRfqStateCanRequest } = getConstsFromRfqState(rfqState)
+    const showResetButton = isRfqStateCanRequest || isRfqExpired
+    const showTimer = isRfqReceived && rfqTimeout
+    const priceData = isRfqReceived || isRfqExpired ? rfqPrice : price
 
     return (
       <SpotTileWrapperWithPlatform>

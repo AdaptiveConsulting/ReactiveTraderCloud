@@ -9,6 +9,7 @@ import TileControls from './TileControls'
 import { TileViews } from '../../workspace/workspaceHeader'
 import { TileSwitchChildrenProps, RfqActions, TradingMode } from './types'
 import { getNumericNotional } from './TileBusinessLogic'
+import { getConstsFromRfqState } from '../model/spotTileUtils'
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
@@ -35,66 +36,72 @@ const TileSwitch: React.FC<Props> = ({
   tileView,
   setTradingMode,
   rfq,
-}) => (
-  <Tile
-    currencyPair={currencyPair}
-    spotTileData={spotTileData}
-    executeTrade={executeTrade}
-    executionStatus={executionStatus}
-    tileView={tileView}
-    setTradingMode={setTradingMode}
-    rfq={rfq}
-  >
-    {({ notional, userError }: TileSwitchChildrenProps) => (
-      <>
-        <TileControls
-          canPopout={canPopout}
-          onPopoutClick={onPopoutClick}
-          displayCurrencyChart={displayCurrencyChart}
-        />
-        <TileBooking show={spotTileData.isTradeExecutionInFlight} color="blue" showLoader>
-          Executing
-        </TileBooking>
-        <TileBooking
-          show={!spotTileData.isTradeExecutionInFlight && spotTileData.rfqState === 'canRequest'}
-          color="blue"
-          onBookingPillClick={() =>
-            rfq.request({ notional: getNumericNotional(notional), currencyPair })
-          }
-          disabled={userError}
-        >
-          Initiate
-          <br />
-          RFQ
-        </TileBooking>
-        <TileBooking
-          show={spotTileData.rfqState === 'requested'}
-          color="red"
-          onBookingPillClick={() => rfq.cancel({ currencyPair })}
-        >
-          Cancel
-          <br />
-          RFQ
-        </TileBooking>
-        <TileBooking
-          show={spotTileData.rfqState === 'expired'}
-          color="blue"
-          onBookingPillClick={() =>
-            rfq.request({ notional: getNumericNotional(notional), currencyPair })
-          }
-        >
-          Requote
-        </TileBooking>
-        <NotificationContainer
-          isPriceStale={!spotTileData.lastTradeExecutionStatus && spotTileData.price.priceStale}
-          lastTradeExecutionStatus={spotTileData.lastTradeExecutionStatus}
-          currencyPair={currencyPair}
-          onNotificationDismissed={onNotificationDismissed}
-        />
-      </>
-    )}
-  </Tile>
-)
+}) => {
+  const { isRfqExpired, isRfqStateCanRequest, isRfqStateRequested } = getConstsFromRfqState(
+    spotTileData.rfqState,
+  )
+
+  return (
+    <Tile
+      currencyPair={currencyPair}
+      spotTileData={spotTileData}
+      executeTrade={executeTrade}
+      executionStatus={executionStatus}
+      tileView={tileView}
+      setTradingMode={setTradingMode}
+      rfq={rfq}
+    >
+      {({ notional, userError }: TileSwitchChildrenProps) => (
+        <>
+          <TileControls
+            canPopout={canPopout}
+            onPopoutClick={onPopoutClick}
+            displayCurrencyChart={displayCurrencyChart}
+          />
+          <TileBooking show={spotTileData.isTradeExecutionInFlight} color="blue" showLoader>
+            Executing
+          </TileBooking>
+          <TileBooking
+            show={!spotTileData.isTradeExecutionInFlight && isRfqStateCanRequest}
+            color="blue"
+            onBookingPillClick={() =>
+              rfq.request({ notional: getNumericNotional(notional), currencyPair })
+            }
+            disabled={userError}
+          >
+            Initiate
+            <br />
+            RFQ
+          </TileBooking>
+          <TileBooking
+            show={isRfqStateRequested}
+            color="red"
+            onBookingPillClick={() => rfq.cancel({ currencyPair })}
+          >
+            Cancel
+            <br />
+            RFQ
+          </TileBooking>
+          <TileBooking
+            show={isRfqExpired}
+            color="blue"
+            onBookingPillClick={() =>
+              rfq.request({ notional: getNumericNotional(notional), currencyPair })
+            }
+          >
+            Requote
+          </TileBooking>
+          <NotificationContainer
+            isPriceStale={!spotTileData.lastTradeExecutionStatus && spotTileData.price.priceStale}
+            lastTradeExecutionStatus={spotTileData.lastTradeExecutionStatus}
+            currencyPair={currencyPair}
+            onNotificationDismissed={onNotificationDismissed}
+          />
+        </>
+      )}
+    </Tile>
+  )
+}
 
 TileSwitch.defaultProps = {
   spotTileData: {

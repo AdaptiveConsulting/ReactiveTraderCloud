@@ -14,6 +14,7 @@ import {
   resetNotional,
   isValueInRfqRange,
 } from './TileBusinessLogic'
+import { getConstsFromRfqState } from '../model/spotTileUtils'
 
 export interface TileProps {
   currencyPair: CurrencyPair
@@ -62,8 +63,9 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       currencyPair: { symbol },
     } = this.props
     const { notional } = this.state
+    const { isRfqStateNone } = getConstsFromRfqState(rfqState)
 
-    if (rfqState === 'none' && isValueInRfqRange(notional)) {
+    if (isRfqStateNone && isValueInRfqRange(notional)) {
       setTradingMode({ symbol, mode: 'rfq' })
     }
   }
@@ -76,6 +78,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       spotTileData: { rfqState },
     } = this.props
     const { notional } = this.state
+    const { isRfqStateReceived } = getConstsFromRfqState(rfqState)
     const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: currencyPair.base,
@@ -87,7 +90,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
 
     // After executing the trade we need to
     // reset our RFQ state if necessary.
-    if (rfqState === 'received') {
+    if (isRfqStateReceived) {
       rfq.reset({ currencyPair })
     }
   }
@@ -126,8 +129,10 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       canExecute,
     } = this.state
     const { rfqState } = spotTileData
+    const { isRfqStateCanRequest, isRfqStateNone } = getConstsFromRfqState(rfqState)
+
     const TileViewComponent =
-      tileView && (rfqState === 'none' || rfqState === 'canRequest')
+      tileView && (isRfqStateNone || isRfqStateCanRequest)
         ? this.tileComponents[tileView]
         : SpotTile
 
