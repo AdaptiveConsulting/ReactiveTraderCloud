@@ -80,7 +80,7 @@ const PriceControls: React.FC<Props> = ({
           pip={bidRate.pips}
           tenth={bidRate.pipFraction}
           rawRate={bidRate.rawRate}
-          rfqState={rfqState}
+          priceAnnounced={isRfqStateReceived}
           disabled={isDisabled}
           expired={isExpired}
         />
@@ -111,7 +111,7 @@ const PriceControls: React.FC<Props> = ({
           pip={askRate.pips}
           tenth={askRate.pipFraction}
           rawRate={askRate.rawRate}
-          rfqState={rfqState}
+          priceAnnounced={isRfqStateReceived}
           disabled={isDisabled}
           expired={isExpired}
         />
