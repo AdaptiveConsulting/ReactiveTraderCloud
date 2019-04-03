@@ -91,11 +91,13 @@ export const getDerivedStateFromUserInput = ({
     tradingDisabled: false,
   }
 
+  const isRfqStateNone = rfqState === 'none'
+
   if (type === 'change' && isEditMode(value)) {
     // user is trying to enter decimals or modifying a number
     // or deleting previous entry (empty string)
     // disable trading, remove any message
-    if (rfqState !== 'none') {
+    if (!isRfqStateNone) {
       actions.setTradingMode({ symbol, mode: 'esp' })
     }
     return {
@@ -105,7 +107,7 @@ export const getDerivedStateFromUserInput = ({
   } else if (type === 'blur' && isInvalidTradingValue(value)) {
     // onBlur if invalid trading value, reset value
     // remove any message, enable trading
-    if (rfqState !== 'none') {
+    if (!isRfqStateNone) {
       actions.setTradingMode({ symbol, mode: 'esp' })
     }
     return {
@@ -115,7 +117,7 @@ export const getDerivedStateFromUserInput = ({
   } else if (type === 'blur' && isEditMode(value)) {
     // onBlur if in editMore, format value
     // remove any message, enable trading
-    if (rfqState !== 'none') {
+    if (!isRfqStateNone) {
       actions.setTradingMode({ symbol, mode: 'esp' })
     }
     return {
@@ -125,7 +127,7 @@ export const getDerivedStateFromUserInput = ({
   } else if (isInvalidTradingValue(value)) {
     // onChange if invalid trading value, update value
     // disable trading, remove any message
-    if (rfqState !== 'none') {
+    if (!isRfqStateNone) {
       actions.setTradingMode({ symbol, mode: 'esp' })
     }
     return {
@@ -135,7 +137,7 @@ export const getDerivedStateFromUserInput = ({
   } else if (isValueInRfqRange(value)) {
     // if in RFQ range, set tradingMode to 'rfq' to trigger prompt
     // remove any message, disable trading
-    if (rfqState === 'none') {
+    if (isRfqStateNone) {
       actions.setTradingMode({ symbol, mode: 'rfq' })
     }
     return {
@@ -145,7 +147,7 @@ export const getDerivedStateFromUserInput = ({
   } else if (isValueOverRftRange(value)) {
     // if value exceeds Max, show error message
     // update value, disable trading
-    if (rfqState === 'none') {
+    if (isRfqStateNone) {
       actions.setTradingMode({ symbol, mode: 'rfq' })
     }
     return {
@@ -159,7 +161,7 @@ export const getDerivedStateFromUserInput = ({
   } else {
     // if under RFQ range, back to 'esp'
     // update value, remove message, enable trading
-    if (rfqState !== 'none') {
+    if (!isRfqStateNone) {
       actions.setTradingMode({ symbol, mode: 'esp' })
     }
     return {
