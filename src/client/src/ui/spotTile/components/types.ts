@@ -18,12 +18,12 @@ export interface TradingMode {
 export type RfqState = 'none' | 'canRequest' | 'requested' | 'received' | 'expired'
 
 export interface RfqActions {
-  request: (obj: RfqRequest) => void
-  cancel: (obj: RfqCancel) => void
-  reject: (obj: RfqReject) => void
-  requote: (obj: RfqRequote) => void
-  expired: (obj: RfqExpired) => void
-  reset: (obj: RfqReset) => void
+  request: (rfqActionObj: RfqRequest) => void
+  cancel: (rfqActionObj: RfqCancel) => void
+  reject: (rfqActionObj: RfqReject) => void
+  requote: (rfqActionObj: RfqRequote) => void
+  expired: (rfqActionObj: RfqExpired) => void
+  reset: (rfqActionObj: RfqReset) => void
 }
 
 export interface TileSwitchChildrenProps {

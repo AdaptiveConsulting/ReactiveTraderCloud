@@ -1,18 +1,17 @@
 import React from 'react'
-import { styled } from 'rt-theme'
 import { CurrencyPair, Direction } from 'rt-types'
-import { SpotPriceTick } from '../model/spotPriceTick'
-import { getSpread, toRate } from '../model/spotTileUtils'
-import PriceButton from './PriceButton'
-import PriceMovement from './PriceMovement'
-import { RfqState } from './types'
+import { SpotPriceTick } from '../../model/spotPriceTick'
+import { getSpread, toRate, getConstsFromRfqState } from '../../model/spotTileUtils'
+import PriceButton from '../PriceButton/index'
+import PriceMovement from '../PriceMovement'
+import { RfqState } from '../types'
 import { AdaptiveLoader } from 'rt-components'
-
-const PriceControlsStyle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
+import {
+  PriceControlsStyle,
+  PriceButtonDisabledPlaceholder,
+  AdaptiveLoaderWrapper,
+  Icon,
+} from './styled'
 
 interface Props {
   currencyPair: CurrencyPair
@@ -21,32 +20,6 @@ interface Props {
   disabled: boolean
   rfqState: RfqState
 }
-
-const PriceButtonDisabledPlaceholder = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column;
-  border: 2px solid ${({ theme }) => theme.core.darkBackground};
-  border-radius: 3px;
-  font-size: 10px;
-  transition: background-color 0.2s ease;
-  height: 58px;
-  line-height: normal;
-  min-width: 126.13px;
-  opacity: 0.5;
-  text-align: center;
-  text-transform: uppercase;
-`
-
-const Icon = styled.i`
-  font-size: 20px;
-  margin: 3px 0;
-`
-
-const AdaptiveLoaderWrapper = styled.div`
-  margin: -5px 0 3px;
-`
 
 const PriceControls: React.FC<Props> = ({
   currencyPair,
@@ -63,12 +36,17 @@ const PriceControls: React.FC<Props> = ({
     currencyPair.pipsPosition,
     currencyPair.ratePrecision,
   )
-  const isDisabled = rfqState !== 'received' && disabled
-  const isRfqExpired = rfqState === 'expired'
-  const isRfqStateCanRequest = rfqState === 'canRequest'
-  const isRfqStateRequested = rfqState === 'requested'
-  const isRfqStateNone = rfqState === 'none'
-  const isRfqStateReceived = rfqState === 'received'
+
+  const {
+    isRfqReceived,
+    isRfqExpired,
+    isRfqStateCanRequest,
+    isRfqStateRequested,
+    isRfqStateNone,
+    isRfqStateReceived,
+  } = getConstsFromRfqState(rfqState)
+
+  const isDisabled = !isRfqReceived && disabled
 
   return (
     <PriceControlsStyle>
