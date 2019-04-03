@@ -86,11 +86,9 @@ export default class NotionalInput extends PureComponent<Props, State> {
     if (notional === '.') {
       return '0.'
     }
-
     const lastTwoChars = notional.substr(-2)
-    return !isEditMode(notional) && lastTwoChars.indexOf(DOT) === -1
-      ? numeral(notional).format(NUMERAL_FORMAT)
-      : notional
+    const shouldFormat = !isEditMode(notional) && lastTwoChars.indexOf(DOT) === -1
+    return shouldFormat ? numeral(notional).format(NUMERAL_FORMAT) : notional
   }
 
   inputIsAllowed = (charCode: number) => {
