@@ -34,7 +34,7 @@
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "precommit": "lint-staged",
     "storybook": "start-storybook -p 6006 -c .storybook",
-    "storybook:build": "build-storybook",
+    "storybook:build": "build-storybook -c .storybook -o storybook/build",
     "sleep": "sleep 5"
   },
   "license": "MIT",
@@ -63,6 +63,7 @@
     "lodash": "^4.17.10",
     "luxon": "^1.11.3",
     "moment": "^2.22.2",
+    "openfin-layouts": "^1.0.0",
     "polished": "^1.9.3",
     "query-string": "^6.2.0",
     "react": "^16.8.4",
