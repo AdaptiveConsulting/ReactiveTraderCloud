@@ -23,7 +23,7 @@ type RfqReceivedTimerCancellableType =
 
 const EXPIRATION_TIMEOUT_MS = 10000
 
-const fakeAjaxCall = (
+const rfqService = (
   r: RfqRequest,
   currencyPairs: CurrencyPairState,
   spotTilesData: SpotTileState,
@@ -57,7 +57,7 @@ export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
     mergeMap(action =>
       // TODO Subscribe to Pricing service instead of passing the current price
       // to that call? Same with currencyPairs?
-      fakeAjaxCall(action.payload, state$.value.currencyPairs, state$.value.spotTilesData).pipe(
+      rfqService(action.payload, state$.value.currencyPairs, state$.value.spotTilesData).pipe(
         map(response => fetchRfqQuote(response)),
         takeUntil(action$.pipe(ofType<Action, RfqCancelActionType>(TILE_ACTION_TYPES.RFQ_CANCEL))),
       ),
