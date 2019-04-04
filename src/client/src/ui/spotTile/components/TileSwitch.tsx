@@ -7,6 +7,10 @@ import NotificationContainer from './notifications'
 import Tile from './Tile'
 import TileControls from './TileControls'
 import { TileViews } from '../../workspace/workspaceHeader'
+import { TileSwitchChildrenProps, RfqActions, TradingMode } from './types'
+import { getNumericNotional } from './TileBusinessLogic'
+import { getConstsFromRfqState } from '../model/spotTileUtils'
+
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
@@ -16,7 +20,9 @@ interface Props {
   onPopoutClick?: () => void
   onNotificationDismissed: () => void
   displayCurrencyChart?: () => void
+  setTradingMode: (tradingMode: TradingMode) => void
   tileView?: TileViews
+  rfq: RfqActions
 }
 
 const TileSwitch: React.FC<Props> = ({
@@ -29,29 +35,82 @@ const TileSwitch: React.FC<Props> = ({
   displayCurrencyChart,
   executionStatus,
   tileView,
-}) => (
-  <Tile
-    currencyPair={currencyPair}
-    spotTileData={spotTileData}
-    executeTrade={executeTrade}
-    executionStatus={executionStatus}
-    tileView={tileView}
-  >
-    <TileControls canPopout={canPopout} onPopoutClick={onPopoutClick} displayCurrencyChart={displayCurrencyChart} />
-    <TileBooking show={spotTileData.isTradeExecutionInFlight} />
-    <NotificationContainer
-      isPriceStale={!spotTileData.lastTradeExecutionStatus && spotTileData.price.priceStale}
-      lastTradeExecutionStatus={spotTileData.lastTradeExecutionStatus}
+  setTradingMode,
+  rfq,
+}) => {
+  const {
+    isRfqExpired,
+    isRfqStateCanRequest,
+    isRfqStateRequested,
+    isRfqStateNone,
+  } = getConstsFromRfqState(spotTileData.rfqState)
+
+  return (
+    <Tile
       currencyPair={currencyPair}
-      onNotificationDismissed={onNotificationDismissed}
-    />
-  </Tile>
-)
+      spotTileData={spotTileData}
+      executeTrade={executeTrade}
+      executionStatus={executionStatus}
+      tileView={tileView}
+      setTradingMode={setTradingMode}
+      rfq={rfq}
+    >
+      {({ notional, userError }: TileSwitchChildrenProps) => (
+        <>
+          <TileControls
+            canPopout={isRfqStateNone && canPopout}
+            onPopoutClick={onPopoutClick}
+            displayCurrencyChart={displayCurrencyChart}
+          />
+          <TileBooking show={spotTileData.isTradeExecutionInFlight} color="blue" showLoader>
+            Executing
+          </TileBooking>
+          <TileBooking
+            show={!spotTileData.isTradeExecutionInFlight && isRfqStateCanRequest}
+            color="blue"
+            onBookingPillClick={() =>
+              rfq.request({ notional: getNumericNotional(notional), currencyPair })
+            }
+            disabled={userError}
+          >
+            Initiate
+            <br />
+            RFQ
+          </TileBooking>
+          <TileBooking
+            show={isRfqStateRequested}
+            color="red"
+            onBookingPillClick={() => rfq.cancel({ currencyPair })}
+          >
+            Cancel
+            <br />
+            RFQ
+          </TileBooking>
+          <TileBooking
+            show={isRfqExpired}
+            color="blue"
+            onBookingPillClick={() =>
+              rfq.request({ notional: getNumericNotional(notional), currencyPair })
+            }
+          >
+            Requote
+          </TileBooking>
+          <NotificationContainer
+            isPriceStale={!spotTileData.lastTradeExecutionStatus && spotTileData.price.priceStale}
+            lastTradeExecutionStatus={spotTileData.lastTradeExecutionStatus}
+            currencyPair={currencyPair}
+            onNotificationDismissed={onNotificationDismissed}
+          />
+        </>
+      )}
+    </Tile>
+  )
+}
 
 TileSwitch.defaultProps = {
   spotTileData: {
     isTradeExecutionInFlight: false,
-    historicPrices:[],
+    historicPrices: [],
     price: {
       ask: 0,
       bid: 0,
@@ -64,6 +123,9 @@ TileSwitch.defaultProps = {
     },
     currencyChartIsOpening: false,
     lastTradeExecutionStatus: null,
+    rfqState: 'none',
+    rfqPrice: null,
+    rfqTimeout: null,
   },
   currencyPair: {
     symbol: '',

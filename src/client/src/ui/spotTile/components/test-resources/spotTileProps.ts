@@ -22,8 +22,11 @@ const spotTileData: Required<SpotTileData> = {
     symbol: 'GBPJPY',
     valueDate: '2018-08-04T00:00:00Z',
   },
-  historicPrices:[],
+  historicPrices: [],
   lastTradeExecutionStatus: null,
+  rfqState: 'none',
+  rfqTimeout: null,
+  rfqPrice: null,
 }
 
 const trade = {

@@ -1,29 +1,47 @@
 import React from 'react'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import { ExecuteTradeRequest, SpotTileData, createTradeRequest, DEFAULT_NOTIONAL, TradeRequest } from '../model/index'
+import { ExecuteTradeRequest, SpotTileData, createTradeRequest, TradeRequest } from '../model/index'
 import SpotTile from './SpotTile'
-import numeral from 'numeral'
 import { AnalyticsTile } from './analyticsTile'
 import { TileViews } from '../../workspace/workspaceHeader'
-import { DEFAULT_NOTIONAL_VALUE } from './notional/NotionalInput'
+import { TileSwitchChildrenProps, TradingMode, RfqActions } from './types'
+import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
+import {
+  getDefaultNotionalValue,
+  getDerivedStateFromProps,
+  getNumericNotional,
+  getDerivedStateFromUserInput,
+  resetNotional,
+  isValueInRfqRange,
+} from './TileBusinessLogic'
+import { getConstsFromRfqState } from '../model/spotTileUtils'
 
-interface Props {
+export interface TileProps {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
+  setTradingMode: (tradingMode: TradingMode) => void
   tileView?: TileViews
+  children: ({ notional, userError }: TileSwitchChildrenProps) => JSX.Element
+  rfq: RfqActions
 }
 
-interface State {
+export interface TileState {
   notional: string
-  disabled: boolean
+  inputDisabled: boolean
+  inputValidationMessage: ValidationMessage
+  tradingDisabled: boolean
+  canExecute: boolean
 }
 
-class Tile extends React.PureComponent<Props, State> {
-  state = {
-    notional: DEFAULT_NOTIONAL_VALUE,
-    disabled: false,
+class Tile extends React.PureComponent<TileProps, TileState> {
+  state: TileState = {
+    notional: getDefaultNotionalValue(),
+    inputValidationMessage: null,
+    inputDisabled: false,
+    tradingDisabled: false,
+    canExecute: true,
   }
 
   tileComponents = {
@@ -31,39 +49,92 @@ class Tile extends React.PureComponent<Props, State> {
     [TileViews.Analytics]: AnalyticsTile,
   }
 
-  updateNotional = (notional: string) => this.setState({ notional })
+  // State management derived from props
+  static getDerivedStateFromProps(nextProps: TileProps, prevState: TileState) {
+    return getDerivedStateFromProps(nextProps, prevState)
+  }
 
-  setDisabledTradingState = (disabled: boolean) => this.setState({ disabled })
+  // We handle the case where the initial Notional value would
+  // be in the RFQ range.
+  componentDidMount() {
+    const {
+      spotTileData: { rfqState },
+      setTradingMode,
+      currencyPair: { symbol },
+    } = this.props
+    const { notional } = this.state
+    const { isRfqStateNone } = getConstsFromRfqState(rfqState)
+
+    if (isRfqStateNone && isValueInRfqRange(notional)) {
+      setTradingMode({ symbol, mode: 'rfq' })
+    }
+  }
 
   executeTrade = (direction: Direction, rawSpotRate: number) => {
-    const { currencyPair, executeTrade } = this.props
-    const notional = this.getNotional()
+    const {
+      currencyPair,
+      executeTrade,
+      rfq,
+      spotTileData: { rfqState },
+    } = this.props
+    const { notional } = this.state
+    const { isRfqStateReceived } = getConstsFromRfqState(rfqState)
     const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: currencyPair.base,
       symbol: currencyPair.symbol,
-      notional,
+      notional: getNumericNotional(notional),
       rawSpotRate,
     }
     executeTrade(createTradeRequest(tradeRequestObj))
+
+    // After executing the trade we need to
+    // reset our RFQ state if necessary.
+    if (isRfqStateReceived) {
+      rfq.reset({ currencyPair })
+    }
   }
 
-  getNotional = () => numeral(this.state.notional).value() || DEFAULT_NOTIONAL
+  // State management derived from user input
+  updateNotional = (notionalUpdate: NotionalUpdate) => {
+    const { setTradingMode, spotTileData } = this.props
+    this.setState(prevState =>
+      getDerivedStateFromUserInput({
+        prevState,
+        notionalUpdate,
+        spotTileData,
+        actions: { setTradingMode },
+      }),
+    )
+  }
 
-  get canExecute() {
-    const { spotTileData, executionStatus } = this.props
-
-    return Boolean(
-      executionStatus === ServiceConnectionStatus.CONNECTED &&
-        !spotTileData.isTradeExecutionInFlight &&
-        spotTileData.price,
+  resetNotional = () => {
+    const { setTradingMode, spotTileData } = this.props
+    this.setState(prevState =>
+      resetNotional({
+        prevState,
+        spotTileData,
+        actions: { setTradingMode },
+      }),
     )
   }
 
   render() {
-    const { currencyPair, spotTileData, executionStatus, tileView } = this.props
-    const { notional, disabled } = this.state
-    const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
+    const { children, currencyPair, spotTileData, executionStatus, tileView, rfq } = this.props
+    const {
+      notional,
+      inputDisabled,
+      inputValidationMessage,
+      tradingDisabled,
+      canExecute,
+    } = this.state
+    const { rfqState } = spotTileData
+    const { isRfqStateCanRequest, isRfqStateNone } = getConstsFromRfqState(rfqState)
+
+    const TileViewComponent =
+      tileView && (isRfqStateNone || isRfqStateCanRequest)
+        ? this.tileComponents[tileView]
+        : SpotTile
 
     return (
       <TileViewComponent
@@ -73,10 +144,16 @@ class Tile extends React.PureComponent<Props, State> {
         executionStatus={executionStatus}
         notional={notional}
         updateNotional={this.updateNotional}
-        setDisabledTradingState={this.setDisabledTradingState}
-        disabled={disabled || !this.canExecute}
+        resetNotional={this.resetNotional}
+        inputDisabled={inputDisabled}
+        inputValidationMessage={inputValidationMessage}
+        tradingDisabled={tradingDisabled || !canExecute}
+        rfq={rfq}
       >
-        {this.props.children}
+        {children({
+          notional,
+          userError: Boolean(inputValidationMessage),
+        })}
       </TileViewComponent>
     )
   }

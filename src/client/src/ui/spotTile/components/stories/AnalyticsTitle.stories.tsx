@@ -6,8 +6,17 @@ import { currencyPair, spotTileData } from '../test-resources/spotTileProps'
 import { AnalyticsTile } from '../analyticsTile'
 
 const updateNotional = action('updateNotional')
+const resetNotional = action('resetNotional')
 const executeTrade = action('executeTrade')
-const setDisabledTradingState = action('setDisabledTradingState')
+
+const rfqActions = {
+  request: action('request'),
+  cancel: action('cancel'),
+  reject: action('reject'),
+  requote: action('requote'),
+  expired: action('expired'),
+  reset: action('reset'),
+}
 
 stories.add('AnalyticsTile', () => (
   <Story>
@@ -25,8 +34,11 @@ stories.add('AnalyticsTile', () => (
           executionStatus={ServiceConnectionStatus.CONNECTED}
           notional="1,000,000"
           updateNotional={updateNotional}
-          setDisabledTradingState={setDisabledTradingState}
-          disabled={false}
+          resetNotional={resetNotional}
+          tradingDisabled={false}
+          inputValidationMessage={null}
+          inputDisabled={false}
+          rfq={rfqActions}
         />
       </div>
     </Centered>
@@ -49,8 +61,11 @@ stories.add('AnalyticsTile in error', () => (
           executionStatus={ServiceConnectionStatus.CONNECTED}
           notional="1,000,000"
           updateNotional={updateNotional}
-          setDisabledTradingState={setDisabledTradingState}
-          disabled={true}
+          resetNotional={resetNotional}
+          tradingDisabled={true}
+          inputValidationMessage={null}
+          inputDisabled={false}
+          rfq={rfqActions}
         />
       </div>
     </Centered>
