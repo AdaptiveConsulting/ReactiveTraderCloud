@@ -1,10 +1,10 @@
 import numeral from 'numeral'
-import { convertNotionalShorthandToNumericValue } from './notional/utils'
+import { convertNotionalShorthandToNumericValue } from '../notional/utils'
 import { ServiceConnectionStatus, CurrencyPair } from 'rt-types'
 import { TileProps, TileState } from './Tile'
-import { NotionalUpdate } from './notional/NotionalInput'
-import { SpotTileData } from '../model/spotTileData'
-import { getConstsFromRfqState } from '../model/spotTileUtils'
+import { NotionalUpdate } from '../notional/NotionalInput'
+import { SpotTileData } from '../../model/spotTileData'
+import { getConstsFromRfqState } from '../../model/spotTileUtils'
 
 // Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'

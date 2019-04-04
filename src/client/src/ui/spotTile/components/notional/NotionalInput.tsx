@@ -1,6 +1,6 @@
 import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import { NUMERAL_FORMAT, isEditMode } from '../TileBusinessLogic'
+import { NUMERAL_FORMAT, isEditMode } from '../Tile/TileBusinessLogic'
 import {
   InputWrapper,
   CurrencyPairSymbol,

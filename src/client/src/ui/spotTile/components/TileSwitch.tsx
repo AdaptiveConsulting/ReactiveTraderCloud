@@ -8,7 +8,7 @@ import Tile from './Tile'
 import TileControls from './TileControls'
 import { TileViews } from '../../workspace/workspaceHeader'
 import { TileSwitchChildrenProps, RfqActions, TradingMode } from './types'
-import { getNumericNotional } from './TileBusinessLogic'
+import { getNumericNotional } from './Tile/TileBusinessLogic'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
 
 interface Props {
