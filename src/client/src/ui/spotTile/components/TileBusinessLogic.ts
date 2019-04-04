@@ -29,7 +29,7 @@ export const isValueInRfqRange = (notional: string) => {
   return numericValue >= MIN_RFQ_VALUE && numericValue <= MAX_NOTIONAL_VALUE
 }
 
-const isValueOverRftRange = (notional: string) => {
+const isValueOverRfqRange = (notional: string) => {
   const numericValue = convertNotionalShorthandToNumericValue(notional)
   return numericValue > MAX_NOTIONAL_VALUE
 }
@@ -160,7 +160,7 @@ export const getDerivedStateFromUserInput = ({
       ...defaultNextState,
       tradingDisabled: true,
     }
-  } else if (isValueOverRftRange(value)) {
+  } else if (isValueOverRfqRange(value)) {
     // if value exceeds Max, show error message
     // update value, disable trading
     if (isRfqStateNone) {
