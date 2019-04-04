@@ -99,6 +99,7 @@ export default class OpenFin extends BasePlatformAdapter {
   }
 
   excel: ExcelInterop = {
+    adapterName: excelAdapter.name,
     open: () => excelAdapter.openExcel(),
     isOpen: () => excelAdapter.isSpreadsheetOpen(),
     publishPositions: (positions: CurrencyPairPositionWithPrice[]) =>

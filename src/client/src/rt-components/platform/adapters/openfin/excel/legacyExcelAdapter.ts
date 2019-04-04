@@ -4,6 +4,7 @@ import { InteropTopics } from '../../types';
 import { ExcelAdapter } from './types';
 
 class LegacyExcelAdapter implements ExcelAdapter {
+  readonly name = "legacy"
   isSpreadsheetOpen = () => {
     // Assume it's open - data published to the bus will be just ignored if not
     // Process could be improved and actually check if ReactiveTraderExcel.xlsx is open

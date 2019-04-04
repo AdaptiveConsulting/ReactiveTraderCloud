@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs'
 import { CurrencyPairPosition } from 'rt-types'
+import { ExcelAdapterName } from './openfin/excel';
 
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
 export type PlatformType = 'browser' | 'desktop'
@@ -33,6 +34,7 @@ interface PubSubInterop {
 }
 
 export interface ExcelInterop {
+  readonly adapterName: ExcelAdapterName
   open(): Promise<void>
   isOpen(): boolean
   publishPositions: (positions: CurrencyPairPosition[]) => Promise<void>

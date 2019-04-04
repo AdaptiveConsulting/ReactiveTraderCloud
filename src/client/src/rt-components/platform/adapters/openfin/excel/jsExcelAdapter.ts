@@ -22,6 +22,7 @@ class JSExcelAdapter implements ExcelAdapter {
   rtWorkbook: fin.ExcelWorkbook
   blotterSheet: fin.ExcelWorksheet
   positionsSheet: fin.ExcelWorksheet
+  readonly name = 'JS'
 
   isSpreadsheetOpen = () => {
     return !!this.rtWorkbook && !!this.positionsSheet
