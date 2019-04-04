@@ -38,9 +38,12 @@ const TileSwitch: React.FC<Props> = ({
   setTradingMode,
   rfq,
 }) => {
-  const { isRfqExpired, isRfqStateCanRequest, isRfqStateRequested } = getConstsFromRfqState(
-    spotTileData.rfqState,
-  )
+  const {
+    isRfqExpired,
+    isRfqStateCanRequest,
+    isRfqStateRequested,
+    isRfqStateNone,
+  } = getConstsFromRfqState(spotTileData.rfqState)
 
   return (
     <Tile
@@ -55,7 +58,7 @@ const TileSwitch: React.FC<Props> = ({
       {({ notional, userError }: TileSwitchChildrenProps) => (
         <>
           <TileControls
-            canPopout={canPopout}
+            canPopout={isRfqStateNone && canPopout}
             onPopoutClick={onPopoutClick}
             displayCurrencyChart={displayCurrencyChart}
           />
