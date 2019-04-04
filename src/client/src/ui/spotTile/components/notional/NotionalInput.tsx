@@ -9,7 +9,7 @@ import {
   MessagePlaceholder,
 } from './styled'
 
-const DOT = '.'
+// const DOT = '.'
 const ENTER = 'Enter'
 const CHAR_CODE_DOT = 46 // .
 const CHAR_CODE_0 = 48 // 0
@@ -83,11 +83,16 @@ export default class NotionalInput extends PureComponent<Props, State> {
     // user may be trying to enter decimals or
     // user may be deleting previous entry (empty string)
     // in those cases, format and update only when completed.
-    if (notional === '.') {
-      return '0.'
-    }
-    const lastTwoChars = notional.substr(-2)
-    const shouldFormat = !isEditMode(notional) && lastTwoChars.indexOf(DOT) === -1
+    // if (notional === '.') {
+    //   return '0.'
+    // }
+    // const lastTwoChars = notional.substr(-2)
+    // const shouldFormat = !isEditMode(notional) && lastTwoChars.indexOf(DOT) === -1
+    const editMode = isEditMode(notional)
+    const shouldFormat = !editMode
+    console.log('notional', notional)
+    console.log('editMode', editMode)
+    // console.log('shouldFormat', shouldFormat)
     return shouldFormat ? numeral(notional).format(NUMERAL_FORMAT) : notional
   }
 

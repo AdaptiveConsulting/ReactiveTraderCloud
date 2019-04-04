@@ -29,16 +29,21 @@ export const isValueInRfqRange = (notional: string) => {
   return numericValue >= MIN_RFQ_VALUE && numericValue <= MAX_NOTIONAL_VALUE
 }
 
-const isValueOverRfqRange = (notional: string) => {
+export const isValueOverRfqRange = (notional: string) => {
   const numericValue = convertNotionalShorthandToNumericValue(notional)
   return numericValue > MAX_NOTIONAL_VALUE
 }
 
-const invalidTradingValuesRegex = /^(\.|,|0|.0|0.|0.0|$|Infinity|NaN)$/
-const isInvalidTradingValue = (value: string) => value.match(invalidTradingValuesRegex)
+// With these values, user should not be able to trade
+const invalidTradingValuesRegex = /^(\.|,|0|.0|0.|0.0|0.00|$|Infinity|NaN)$/
+// const invalidTradingValuesRegex = /(?!\d?\.\d{2,})^(,|$|0|\.|0\.(\d{1})?|Infinity|NaN)/
+export const isInvalidTradingValue = (value: string) =>
+  Boolean(value.match(invalidTradingValuesRegex))
 
-const editModeRegex = /(?!.*(0\.)).*^(,|$|0)/
-export const isEditMode = (value: string) => value.match(editModeRegex)
+// In edit mode, the notional input should not format
+// check https://regex101.com/r/MrSCRE/2a to view this regex in action
+const editModeRegex = /(?!^,$|^00$|^000$|^(.*)?\.\d{2,}$)^(,|$|0|\.|(.*)\.(\d{1})?)/
+export const isEditMode = (value: string) => Boolean(value.match(editModeRegex))
 
 // State management derived from props
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
@@ -109,7 +114,7 @@ export const getDerivedStateFromUserInput = ({
 
   const { isRfqStateNone } = getConstsFromRfqState(rfqState)
 
-  if (type === 'change' && isEditMode(value)) {
+  if (type === 'change' && isInvalidTradingValue(value)) {
     // user is trying to enter decimals or modifying a number
     // or deleting previous entry (empty string)
     // disable trading, remove any message
