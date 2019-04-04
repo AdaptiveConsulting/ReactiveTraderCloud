@@ -65,13 +65,6 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
     clearInterval(this.intervalId)
   }
 
-  handleRejectQuote = () => {
-    const { onRejected } = this.props
-    if (onRejected) {
-      onRejected()
-    }
-  }
-
   updateTimeLeft = () => {
     this.setState(prevState => {
       if (prevState.timeLeft > 0) {
@@ -85,7 +78,7 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
   }
 
   render() {
-    const { timeout } = this.props
+    const { timeout, onRejected } = this.props
     const { timeLeft } = this.state
     const percentageLeft = (timeLeft * 100) / (timeout / 1000)
 
@@ -97,7 +90,7 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
         <ProgressBarWrapper>
           <ProgressBar style={{ width: `${percentageLeft}%` }} />
         </ProgressBarWrapper>
-        <RejectQuoteButton onClick={this.handleRejectQuote}>Reject</RejectQuoteButton>
+        <RejectQuoteButton onClick={onRejected}>Reject</RejectQuoteButton>
       </TimerWrapper>
     )
   }

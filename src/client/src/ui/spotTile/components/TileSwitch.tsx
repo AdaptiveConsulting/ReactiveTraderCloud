@@ -10,6 +10,7 @@ import { TileViews } from '../../workspace/workspaceHeader'
 import { TileSwitchChildrenProps, RfqActions, TradingMode } from './types'
 import { getNumericNotional } from './TileBusinessLogic'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
+
 interface Props {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
