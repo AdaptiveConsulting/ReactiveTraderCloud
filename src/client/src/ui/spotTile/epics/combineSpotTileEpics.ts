@@ -17,7 +17,7 @@ export default ({ platform }: ApplicationDependencies) => {
     pricingHistoryEpic,
   ]
 
-  if (platform.hasFeature('excel')) {
+  if (platform.hasFeature('interop')) {
     epics.push(publishPriceUpdateEpic, publishTradeExecutedEpic, closePositionEpic)
   }
 
