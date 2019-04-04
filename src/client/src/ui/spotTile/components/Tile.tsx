@@ -37,7 +37,7 @@ export interface TileState {
 
 class Tile extends React.PureComponent<TileProps, TileState> {
   state: TileState = {
-    notional: getDefaultNotionalValue(),
+    notional: getDefaultNotionalValue(this.props.currencyPair),
     inputValidationMessage: null,
     inputDisabled: false,
     tradingDisabled: false,
@@ -109,12 +109,13 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   }
 
   resetNotional = () => {
-    const { setTradingMode, spotTileData } = this.props
+    const { setTradingMode, spotTileData, currencyPair } = this.props
     this.setState(prevState =>
       resetNotional({
         prevState,
         spotTileData,
         actions: { setTradingMode },
+        currencyPair,
       }),
     )
   }

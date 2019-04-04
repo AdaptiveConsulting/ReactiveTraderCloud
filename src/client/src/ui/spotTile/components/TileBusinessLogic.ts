@@ -1,6 +1,6 @@
 import numeral from 'numeral'
 import { convertNotionalShorthandToNumericValue } from './notional/utils'
-import { ServiceConnectionStatus } from 'rt-types'
+import { ServiceConnectionStatus, CurrencyPair } from 'rt-types'
 import { TileProps, TileState } from './Tile'
 import { NotionalUpdate } from './notional/NotionalInput'
 import { SpotTileData } from '../model/spotTileData'
@@ -14,19 +14,29 @@ const MIN_RFQ_VALUE = 10000000
 const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 
 // Utils
-export const getDefaultNotionalValue = () => numeral(DEFAULT_NOTIONAL_VALUE).format(NUMERAL_FORMAT)
+export const getDefaultNotionalValue = (currencyPair: CurrencyPair) =>
+  // This is to simply to have one Tile showing RFQ prompt on page load
+  // check JIRA ticket ARTP-532
+  currencyPair.symbol === 'NZDUSD'
+    ? numeral(MIN_RFQ_VALUE).format(NUMERAL_FORMAT)
+    : numeral(DEFAULT_NOTIONAL_VALUE).format(NUMERAL_FORMAT)
+
 export const getNumericNotional = (notional: string) =>
   numeral(notional).value() || DEFAULT_NOTIONAL_VALUE
+
 export const isValueInRfqRange = (notional: string) => {
   const numericValue = convertNotionalShorthandToNumericValue(notional)
   return numericValue >= MIN_RFQ_VALUE && numericValue <= MAX_NOTIONAL_VALUE
 }
-const isValueOverRftRange = (notional: string) => {
+
+const isValueOverRfqRange = (notional: string) => {
   const numericValue = convertNotionalShorthandToNumericValue(notional)
   return numericValue > MAX_NOTIONAL_VALUE
 }
+
 const invalidTradingValuesRegex = /^(\.|,|0|.0|0.|0.0|$|Infinity|NaN)$/
 const isInvalidTradingValue = (value: string) => value.match(invalidTradingValuesRegex)
+
 const editModeRegex = /(?!.*(0\.)).*^(,|$|0)/
 export const isEditMode = (value: string) => value.match(editModeRegex)
 
@@ -74,6 +84,7 @@ interface DerivedStateFromNotionalReset {
   actions: {
     setTradingMode: TileProps['setTradingMode']
   }
+  currencyPair: CurrencyPair
 }
 
 // State management derived from user input
@@ -149,7 +160,7 @@ export const getDerivedStateFromUserInput = ({
       ...defaultNextState,
       tradingDisabled: true,
     }
-  } else if (isValueOverRftRange(value)) {
+  } else if (isValueOverRfqRange(value)) {
     // if value exceeds Max, show error message
     // update value, disable trading
     if (isRfqStateNone) {
@@ -179,17 +190,20 @@ export const resetNotional = ({
   prevState,
   spotTileData: {
     price: { symbol },
-    rfqState,
   },
   actions,
+  currencyPair,
 }: DerivedStateFromNotionalReset): TileState => {
-  const { isRfqStateNone } = getConstsFromRfqState(rfqState)
-  if (!isRfqStateNone) {
+  const notional = getDefaultNotionalValue(currencyPair)
+  const isInRfqRange = isValueInRfqRange(notional)
+  if (isInRfqRange) {
+    actions.setTradingMode({ symbol, mode: 'rfq' })
+  } else {
     actions.setTradingMode({ symbol, mode: 'esp' })
   }
   return {
     ...prevState,
-    notional: getDefaultNotionalValue(),
+    notional,
     inputValidationMessage: null,
     tradingDisabled: false,
   }
