@@ -16,8 +16,7 @@ const ExcelButton = styled('button')`
   margin: 5px;
 
   .svg-size {
-    height: 70%;
-    width: 70%;
+    transform: scale(0.7)
   }
 `
 
