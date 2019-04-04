@@ -35,13 +35,13 @@ export const isValueOverRfqRange = (notional: string) => {
 }
 
 // With these values, user should not be able to trade
-const invalidTradingValuesRegex = /^(\.|,|0|.0|0.|0.0|0.00|$|Infinity|NaN)$/
-// const invalidTradingValuesRegex = /(?!\d?\.\d{2,})^(,|$|0|\.|0\.(\d{1})?|Infinity|NaN)/
+// check https://regex101.com/r/OWDRCO/1 to view this regex in action
+const invalidTradingValuesRegex = /(?!(\d?\.\d{2,})|(\d?\.[1-9]{1}))^(,|$|0|\.|0\.([1-9]{1})?)|(^0.00$|Infinity|NaN)/
 export const isInvalidTradingValue = (value: string) =>
   Boolean(value.match(invalidTradingValuesRegex))
 
 // In edit mode, the notional input should not format
-// check https://regex101.com/r/MrSCRE/2a to view this regex in action
+// check https://regex101.com/r/MrSCRE/2 to view this regex in action
 const editModeRegex = /(?!^,$|^00$|^000$|^(.*)?\.\d{2,}$)^(,|$|0|\.|(.*)\.(\d{1})?)/
 export const isEditMode = (value: string) => Boolean(value.match(editModeRegex))
 

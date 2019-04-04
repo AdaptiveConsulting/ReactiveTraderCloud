@@ -81,19 +81,9 @@ export default class NotionalInput extends PureComponent<Props, State> {
 
   formatNotional = (notional: string) => {
     // user may be trying to enter decimals or
-    // user may be deleting previous entry (empty string)
+    // user may be deleting previous entry (empty string, etc)
     // in those cases, format and update only when completed.
-    // if (notional === '.') {
-    //   return '0.'
-    // }
-    // const lastTwoChars = notional.substr(-2)
-    // const shouldFormat = !isEditMode(notional) && lastTwoChars.indexOf(DOT) === -1
-    const editMode = isEditMode(notional)
-    const shouldFormat = !editMode
-    console.log('notional', notional)
-    console.log('editMode', editMode)
-    // console.log('shouldFormat', shouldFormat)
-    return shouldFormat ? numeral(notional).format(NUMERAL_FORMAT) : notional
+    return !isEditMode(notional) ? numeral(notional).format(NUMERAL_FORMAT) : notional
   }
 
   inputIsAllowed = (charCode: number) => {
