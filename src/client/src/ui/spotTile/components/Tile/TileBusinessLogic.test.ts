@@ -12,9 +12,9 @@ import {
 } from './TileBusinessLogic'
 import { TileProps, TileState } from './Tile'
 import { TradingMode } from '../types'
-import { PriceMovementTypes } from '../../../../ui/spotTile/model/priceMovementTypes'
+import { PriceMovementTypes } from '../../model/priceMovementTypes'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
-import { TileViews } from '../../../../ui/workspace/workspaceHeader'
+import { TileViews } from '../../../workspace/workspaceHeader/index'
 
 // edit mode, should not format on the fly
 // https://regex101.com/r/MrSCRE/3
@@ -360,7 +360,7 @@ test('state derived from user interaction on blur when isInvalidTradingValue is 
 })
 
 const defaultTileProps: TileProps = {
-  children: null,
+  children: jest.fn(),
   currencyPair,
   executeTrade: () => {},
   setTradingMode: () => {},
@@ -421,12 +421,13 @@ test('state derived from props, RFQ requested', () => {
     ...defaultTileProps,
     spotTileData: {
       ...defaultTileProps.spotTileData,
-      rfqState: 'canRequest',
+      rfqState: 'requested',
     },
   }
   const newState: TileState = getDerivedStateFromProps(nextProps, prevState)
   const expected = {
     ...prevState,
+    inputDisabled: true,
     canExecute: false,
   }
   expect(newState).toEqual(expected)
