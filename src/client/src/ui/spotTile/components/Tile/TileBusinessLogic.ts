@@ -15,12 +15,13 @@ const MIN_RFQ_VALUE = 10000000
 const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 
 // Utils
+export const getFormattedValue = (value: number | string) => numeral(value).format(NUMERAL_FORMAT)
 export const getDefaultNotionalValue = (currencyPair: CurrencyPair) =>
   // This is to simply to have one Tile showing RFQ prompt on page load
   // check JIRA ticket ARTP-532
   currencyPair.symbol === 'NZDUSD'
-    ? numeral(MIN_RFQ_VALUE).format(NUMERAL_FORMAT)
-    : numeral(DEFAULT_NOTIONAL_VALUE).format(NUMERAL_FORMAT)
+    ? getFormattedValue(MIN_RFQ_VALUE)
+    : getFormattedValue(DEFAULT_NOTIONAL_VALUE)
 
 export const getNumericNotional = (notional: string) =>
   numeral(notional).value() || DEFAULT_NOTIONAL_VALUE
@@ -117,7 +118,7 @@ export const getDerivedStateFromUserInput = ({
     // user may be trying to enter decimals or
     // user may be deleting previous entry (empty string, etc)
     // in those cases, format and update only when completed.
-    notional: !isEditMode(value) ? numeral(value).format(NUMERAL_FORMAT) : value,
+    notional: !isEditMode(value) ? getFormattedValue(value) : value,
     inputValidationMessage: null,
     tradingDisabled: false,
   }
@@ -132,7 +133,7 @@ export const getDerivedStateFromUserInput = ({
     }
     return {
       ...defaultNextState,
-      notional: numeral(RESET_NOTIONAL_VALUE).format(NUMERAL_FORMAT),
+      notional: getFormattedValue(RESET_NOTIONAL_VALUE),
     }
   } else if (type === 'blur' && isEditMode(value)) {
     // onBlur if in editMore, format value
@@ -142,7 +143,7 @@ export const getDerivedStateFromUserInput = ({
     }
     return {
       ...defaultNextState,
-      notional: numeral(value).format(NUMERAL_FORMAT),
+      notional: getFormattedValue(value),
     }
   } else if (isInvalidTradingValue(value)) {
     // onChange if invalid trading value, update value

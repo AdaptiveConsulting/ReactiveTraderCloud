@@ -6,10 +6,13 @@ import {
   isEditMode,
   DerivedStateFromUserInput,
   getDerivedStateFromUserInput,
+  getFormattedValue,
+  getDefaultNotionalValue,
 } from './TileBusinessLogic'
 import { TileState } from './Tile'
 import { TradingMode } from '../types'
 import { PriceMovementTypes } from '../../../../ui/spotTile/model/priceMovementTypes'
+import { CurrencyPair } from 'rt-types'
 
 // edit mode, should not format on the fly
 // https://regex101.com/r/MrSCRE/3
@@ -266,19 +269,89 @@ const defaultNewState: TileState = {
   tradingDisabled: false,
 }
 
-test('state derived from user interaction on change', () => {
-  const newParams = {
-    ...defaultParams,
-    notionalUpdate: {
-      type: 'change',
-      value: '1,000',
-    },
-  }
-  const newState = getDerivedStateFromUserInput(newParams)
-  const expected = {
-    ...defaultNewState,
-    notional: '1,000',
-    tradingDisabled: false,
-  }
-  expect(newState).toEqual(expected)
+test('state derived from user interaction on change when isInvalidTradingValue is false', () => {
+  validTradingValues.forEach(value => {
+    const newParams = {
+      ...defaultParams,
+      notionalUpdate: {
+        type: 'change',
+        value,
+      },
+    }
+    const newState = getDerivedStateFromUserInput(newParams)
+    const expected = {
+      ...defaultNewState,
+      notional: isEditMode(value) ? value : getFormattedValue(value),
+      tradingDisabled: isValueInRfqRange(value) || isValueOverRfqRange(value),
+    }
+    console.log('validating state on change validTradingValues', value)
+    expect(newState).toEqual(expected)
+  })
+})
+
+test('state derived from user interaction on blur when isInvalidTradingValue is false', () => {
+  validTradingValues.forEach(value => {
+    const newParams = {
+      ...defaultParams,
+      notionalUpdate: {
+        type: 'blur',
+        value,
+      },
+    }
+    const newState = getDerivedStateFromUserInput(newParams)
+    const expected = {
+      ...defaultNewState,
+      notional: getFormattedValue(value), // onBlur always formated value
+      tradingDisabled: isValueInRfqRange(value) || isValueOverRfqRange(value),
+    }
+    console.log('validating state on blur validTradingValues', value)
+    expect(newState).toEqual(expected)
+  })
+})
+
+test('state derived from user interaction on change when isInvalidTradingValue is true', () => {
+  invalidTradingValues.forEach(value => {
+    const newParams = {
+      ...defaultParams,
+      notionalUpdate: {
+        type: 'change',
+        value,
+      },
+    }
+    const newState = getDerivedStateFromUserInput(newParams)
+    const expected = {
+      ...defaultNewState,
+      notional: isEditMode(value) ? value : getFormattedValue(value),
+      tradingDisabled: true,
+    }
+    console.log('validating state on change invalidTradingValues', value)
+    expect(newState).toEqual(expected)
+  })
+})
+
+test('state derived from user interaction on blur when isInvalidTradingValue is true', () => {
+  invalidTradingValues.forEach(value => {
+    const newParams = {
+      ...defaultParams,
+      notionalUpdate: {
+        type: 'blur',
+        value,
+      },
+    }
+    const newState = getDerivedStateFromUserInput(newParams)
+    const currencyPair: CurrencyPair = {
+      symbol: 'EURCAD',
+      ratePrecision: 5,
+      pipsPosition: 4,
+      base: 'EUR',
+      terms: 'CAD',
+    }
+    const expected = {
+      ...defaultNewState,
+      notional: getDefaultNotionalValue(currencyPair), // Something not NZDUSD
+      tradingDisabled: false, // Since it resets, set false
+    }
+    console.log('validating state on blur invalidTradingValues', value)
+    expect(newState).toEqual(expected)
+  })
 })
