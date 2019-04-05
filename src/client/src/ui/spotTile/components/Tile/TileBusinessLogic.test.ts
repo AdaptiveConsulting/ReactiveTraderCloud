@@ -8,11 +8,13 @@ import {
   getDerivedStateFromUserInput,
   getFormattedValue,
   getDefaultNotionalValue,
+  getDerivedStateFromProps,
 } from './TileBusinessLogic'
-import { TileState } from './Tile'
+import { TileProps, TileState } from './Tile'
 import { TradingMode } from '../types'
 import { PriceMovementTypes } from '../../../../ui/spotTile/model/priceMovementTypes'
-import { CurrencyPair } from 'rt-types'
+import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
+import { TileViews } from '../../../../ui/workspace/workspaceHeader'
 
 // edit mode, should not format on the fly
 // https://regex101.com/r/MrSCRE/3
@@ -225,7 +227,7 @@ test('isValueOverRfqRange', () => {
 })
 
 const prevState: TileState = {
-  canExecute: false,
+  canExecute: true,
   inputDisabled: false,
   inputValidationMessage: null,
   notional: '1,000,000',
@@ -262,11 +264,19 @@ const defaultParams: DerivedStateFromUserInput = {
 }
 
 const defaultNewState: TileState = {
-  canExecute: false,
+  canExecute: true,
   inputDisabled: false,
   inputValidationMessage: null,
   notional: '1,000,000',
   tradingDisabled: false,
+}
+
+const currencyPair: CurrencyPair = {
+  symbol: 'EURCAD',
+  ratePrecision: 5,
+  pipsPosition: 4,
+  base: 'EUR',
+  terms: 'CAD',
 }
 
 test('state derived from user interaction on change when isInvalidTradingValue is false', () => {
@@ -339,13 +349,6 @@ test('state derived from user interaction on blur when isInvalidTradingValue is 
       },
     }
     const newState = getDerivedStateFromUserInput(newParams)
-    const currencyPair: CurrencyPair = {
-      symbol: 'EURCAD',
-      ratePrecision: 5,
-      pipsPosition: 4,
-      base: 'EUR',
-      terms: 'CAD',
-    }
     const expected = {
       ...defaultNewState,
       notional: getDefaultNotionalValue(currencyPair), // Something not NZDUSD
@@ -354,4 +357,137 @@ test('state derived from user interaction on blur when isInvalidTradingValue is 
     console.log('validating state on blur invalidTradingValues', value)
     expect(newState).toEqual(expected)
   })
+})
+
+const defaultTileProps: TileProps = {
+  children: null,
+  currencyPair,
+  executeTrade: () => {},
+  setTradingMode: () => {},
+  executionStatus: 'CONNECTED' as ServiceConnectionStatus,
+  rfq: {
+    cancel: () => {},
+    expired: () => {},
+    reject: () => {},
+    request: () => {},
+    requote: () => {},
+    reset: () => {},
+  },
+  spotTileData: defaultParams.spotTileData,
+  tileView: 'Normal' as TileViews,
+}
+
+test('state derived from props, defaults, RFQ none, should be able to excute', () => {
+  const newState: TileState = getDerivedStateFromProps(defaultTileProps, prevState)
+  const expected = {
+    ...prevState,
+  }
+  expect(newState).toEqual(expected)
+})
+
+test('state derived from props, DISCONNECTED', () => {
+  const nextProps: TileProps = {
+    ...defaultTileProps,
+    executionStatus: 'DISCONNECTED' as ServiceConnectionStatus,
+  }
+  const newState: TileState = getDerivedStateFromProps(nextProps, prevState)
+  const expected = {
+    ...prevState,
+    inputDisabled: true,
+    canExecute: false,
+  }
+  expect(newState).toEqual(expected)
+})
+
+test('state derived from props, in trade', () => {
+  const nextProps: TileProps = {
+    ...defaultTileProps,
+    spotTileData: {
+      ...defaultTileProps.spotTileData,
+      isTradeExecutionInFlight: true,
+    },
+  }
+  const newState: TileState = getDerivedStateFromProps(nextProps, prevState)
+  const expected = {
+    ...prevState,
+    inputDisabled: true,
+    canExecute: false,
+  }
+  expect(newState).toEqual(expected)
+})
+
+test('state derived from props, RFQ requested', () => {
+  const nextProps: TileProps = {
+    ...defaultTileProps,
+    spotTileData: {
+      ...defaultTileProps.spotTileData,
+      rfqState: 'canRequest',
+    },
+  }
+  const newState: TileState = getDerivedStateFromProps(nextProps, prevState)
+  const expected = {
+    ...prevState,
+    canExecute: false,
+  }
+  expect(newState).toEqual(expected)
+})
+
+test('state derived from props, RFQ received', () => {
+  const nextProps: TileProps = {
+    ...defaultTileProps,
+    spotTileData: {
+      ...defaultTileProps.spotTileData,
+      rfqState: 'received',
+    },
+  }
+  const newState: TileState = getDerivedStateFromProps(nextProps, prevState)
+  const expected = {
+    ...prevState,
+    inputDisabled: true,
+  }
+  expect(newState).toEqual(expected)
+})
+
+test('state derived from props, RFQ canRequest', () => {
+  const nextProps: TileProps = {
+    ...defaultTileProps,
+    spotTileData: {
+      ...defaultTileProps.spotTileData,
+      rfqState: 'canRequest',
+    },
+  }
+  const newState: TileState = getDerivedStateFromProps(nextProps, prevState)
+  const expected = {
+    ...prevState,
+    canExecute: false,
+  }
+  expect(newState).toEqual(expected)
+})
+
+test('state derived from props, RFQ expired', () => {
+  const nextProps: TileProps = {
+    ...defaultTileProps,
+    spotTileData: {
+      ...defaultTileProps.spotTileData,
+      rfqState: 'expired',
+    },
+  }
+  const newState: TileState = getDerivedStateFromProps(nextProps, prevState)
+  const expected = {
+    ...prevState,
+  }
+  expect(newState).toEqual(expected)
+})
+
+test('state derived from props, trading disabled', () => {
+  const state: TileState = {
+    ...prevState,
+    tradingDisabled: true,
+  }
+  const newState: TileState = getDerivedStateFromProps(defaultTileProps, state)
+  const expected = {
+    ...state,
+    canExecute: false,
+  }
+  expect(newState).toEqual(expected)
 })
