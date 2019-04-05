@@ -10,6 +10,7 @@ import { getConstsFromRfqState } from '../../model/spotTileUtils'
 export const NUMERAL_FORMAT = '0,000,000[.]00'
 const DEFAULT_NOTIONAL_VALUE = 1000000
 const MAX_NOTIONAL_VALUE = 1000000000
+const MAX_PROCESSING_VALUE = 999999999999999999999
 const MIN_RFQ_VALUE = 10000000
 const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 
@@ -74,7 +75,7 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
   }
 }
 
-interface DerivedStateFromUserInput {
+export interface DerivedStateFromUserInput {
   prevState: TileState
   spotTileData: SpotTileData
   notionalUpdate: NotionalUpdate
@@ -83,7 +84,7 @@ interface DerivedStateFromUserInput {
   }
 }
 
-interface DerivedStateFromNotionalReset {
+export interface DerivedStateFromNotionalReset {
   prevState: TileState
   spotTileData: SpotTileData
   actions: {
@@ -100,6 +101,12 @@ export const getDerivedStateFromUserInput = ({
   actions,
 }: DerivedStateFromUserInput): TileState => {
   const { type, value } = notionalUpdate
+
+  // We block user input when value exceeds MAX_PROCESSING_VALUE
+  if (convertNotionalShorthandToNumericValue(value) > MAX_PROCESSING_VALUE) {
+    return prevState
+  }
+
   const {
     price: { symbol },
     rfqState,
