@@ -17,7 +17,7 @@ import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
 import { TileViews } from '../../../workspace/workspaceHeader/index'
 
 // edit mode, should not format on the fly
-// https://regex101.com/r/MrSCRE/3
+// https://regex101.com/r/MrSCRE/4
 // Leave commented values to easily compare
 const shouldNotFormatOnTheFly = [
   // '000',
@@ -53,6 +53,7 @@ const shouldNotFormatOnTheFly = [
   // '0.11',
   // 'Infinity',
   // 'NaN',
+  // '01234'
 ]
 // should format on the fly
 const shouldFormatOnTheFly = [
@@ -89,6 +90,7 @@ const shouldFormatOnTheFly = [
   '0.11',
   'Infinity',
   'NaN',
+  '01234',
 ]
 
 test('isEditMode should be true', () => {
