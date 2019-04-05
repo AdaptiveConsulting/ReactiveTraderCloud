@@ -42,7 +42,7 @@ export const isInvalidTradingValue = (value: string) =>
   Boolean(value.match(invalidTradingValuesRegex))
 
 // In edit mode, the notional input should not format
-// check https://regex101.com/r/MrSCRE/2 to view this regex explanations and tests
+// check https://regex101.com/r/MrSCRE/3 to view this regex explanations and tests
 const editModeRegex = /(?!^,$|^00$|^000$|^(.*)?\.\d{2,}$)^(,|$|0|\.|(.*)\.(\d{1})?)/
 export const isEditMode = (value: string) => Boolean(value.match(editModeRegex))
 

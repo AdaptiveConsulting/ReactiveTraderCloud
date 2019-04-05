@@ -11,6 +11,168 @@ import { TileState } from './Tile'
 import { TradingMode } from '../types'
 import { PriceMovementTypes } from '../../../../ui/spotTile/model/priceMovementTypes'
 
+// edit mode, should not format on the fly
+// https://regex101.com/r/MrSCRE/3
+// Leave commented values to easily compare
+const shouldNotFormatOnTheFly = [
+  // '000',
+  // '00',
+  // ',',
+  '',
+  '.',
+  '0',
+  '0.1',
+  '0.4',
+  // '2.82',
+  // '12.87',
+  '4.5',
+  '5.',
+  '.6',
+  '12.',
+  // '34.56',
+  '34,876.',
+  '34,876.8',
+  // '34,876.89',
+  // '6.78',
+  // '103,234,876',
+  // '100,000,000',
+  // '123456',
+  // '123 456',
+  '0.0',
+  ',000,000',
+  '00,000,000',
+  // '0.00',
+  // '.98765',
+  // '.05',
+  // '.11',
+  // '0.11',
+  // 'Infinity',
+  // 'NaN',
+]
+// should format on the fly
+const shouldFormatOnTheFly = [
+  '000',
+  '00',
+  ',',
+  // '',
+  // '.',
+  // '0',
+  // '0.1',
+  // '0.4',
+  '2.82',
+  '12.87',
+  // '4.5',
+  // '5.',
+  // '.6',
+  // '12.',
+  '34.56',
+  // '34,876.',
+  // '34,876.8',
+  '34,876.89',
+  '6.78',
+  '103,234,876',
+  '100,000,000',
+  '123456',
+  '123 456',
+  // '0.0',
+  // ',000,000',
+  // '00,000,000',
+  '0.00',
+  '.98765',
+  '.05',
+  '.11',
+  '0.11',
+  'Infinity',
+  'NaN',
+]
+
+test('isEditMode should be true', () => {
+  shouldNotFormatOnTheFly.forEach(v => {
+    console.log('shouldNotFormatOnTheFly', v)
+    expect(isEditMode(v)).toBe(true)
+  })
+})
+
+test('isEditMode should be false', () => {
+  shouldFormatOnTheFly.forEach(v => {
+    console.log('shouldFormatOnTheFly', v)
+    expect(isEditMode(v)).toBe(false)
+  })
+})
+
+// invalid trading values, should disable trading (Buy/Sell buttons)
+// https://regex101.com/r/OWDRCO/2
+// Leave commented values to easily compare
+const invalidTradingValues = [
+  '.',
+  ',',
+  '0',
+  '0.0',
+  // '0.2',
+  // '0.1',
+  // '0.01',
+  // '0.98',
+  '0.00',
+  // '0.01',
+  // '34,134.',
+  // '34,134.7',
+  // '34,134.65',
+  '000,000',
+  '01,000',
+  // '1.1',
+  // '1',
+  // '1.98',
+  ',000',
+  // '12,123,123',
+  'Infinity',
+  'NaN',
+  '0',
+  // '.76',
+  '',
+]
+// valid trading values, should enable trading (Buy/Sell buttons)
+const validTradingValues = [
+  // '.',
+  // ',',
+  // '0',
+  // '0.0',
+  '0.2',
+  '0.1',
+  '0.01',
+  '0.98',
+  // '0.00',
+  '0.01',
+  '34,134.',
+  '34,134.7',
+  '34,134.65',
+  // '000,000',
+  // '01,000',
+  '1.1',
+  '1',
+  '1.98',
+  // ',000',
+  '12,123,123',
+  // 'Infinity',
+  // 'NaN',
+  // '0',
+  '.76',
+  // ''
+]
+
+test('isInvalidTradingValue should true', () => {
+  invalidTradingValues.forEach(v => {
+    console.log('invalidTradingValues', v)
+    expect(isInvalidTradingValue(v)).toBe(true)
+  })
+})
+
+test('isInvalidTradingValue should false', () => {
+  validTradingValues.forEach(v => {
+    console.log('validTradingValues', v)
+    expect(isInvalidTradingValue(v)).toBe(false)
+  })
+})
+
 test('getNumericNotional', () => {
   const numericValue = getNumericNotional('1,000,000')
   expect(numericValue).toBe(1000000)
@@ -57,91 +219,6 @@ test('isValueOverRfqRange', () => {
 
   const isOverRange5 = isValueOverRfqRange('1,000,000,001')
   expect(isOverRange5).toBe(true)
-})
-
-test('isInvalidTradingValue', () => {
-  const isInvalid = isInvalidTradingValue('1')
-  expect(isInvalid).toBe(false)
-
-  const isInvalid2 = isInvalidTradingValue('0')
-  expect(isInvalid2).toBe(true)
-
-  const isInvalid3 = isInvalidTradingValue('.')
-  expect(isInvalid3).toBe(true)
-
-  const isInvalid4 = isInvalidTradingValue('0.0')
-  expect(isInvalid4).toBe(true)
-
-  const isInvalid5 = isInvalidTradingValue('0.00')
-  expect(isInvalid5).toBe(true)
-
-  const isInvalid6 = isInvalidTradingValue('')
-  expect(isInvalid6).toBe(true)
-
-  const isInvalid7 = isInvalidTradingValue('NaN')
-  expect(isInvalid7).toBe(true)
-
-  const isInvalid8 = isInvalidTradingValue('Infinity')
-  expect(isInvalid8).toBe(true)
-
-  const isInvalid9 = isInvalidTradingValue(',')
-  expect(isInvalid9).toBe(true)
-
-  const isInvalid10 = isInvalidTradingValue('.0')
-  expect(isInvalid10).toBe(true)
-
-  const isInvalid11 = isInvalidTradingValue('0.01')
-  expect(isInvalid11).toBe(false)
-
-  const isInvalid12 = isInvalidTradingValue('0.1')
-  expect(isInvalid12).toBe(false)
-
-  const isInvalid13 = isInvalidTradingValue('10,009.01')
-  expect(isInvalid13).toBe(false)
-})
-
-test('isEditMode', () => {
-  const inEditMode = isEditMode('1')
-  expect(inEditMode).toBe(false)
-
-  const inEditMode2 = isEditMode('000,000')
-  expect(inEditMode2).toBe(true)
-
-  const inEditMode3 = isEditMode(',000,000')
-  expect(inEditMode3).toBe(true)
-
-  const inEditMode4 = isEditMode(',98')
-  expect(inEditMode4).toBe(true)
-
-  const inEditMode5 = isEditMode('0.00')
-  expect(inEditMode5).toBe(false)
-
-  const inEditMode6 = isEditMode('')
-  expect(inEditMode6).toBe(true)
-
-  const inEditMode7 = isEditMode('NaN')
-  expect(inEditMode7).toBe(false)
-
-  const inEditMode8 = isEditMode('Infinity')
-  expect(inEditMode8).toBe(false)
-
-  const inEditMode9 = isEditMode(',')
-  expect(inEditMode9).toBe(false)
-
-  const inEditMode10 = isEditMode('0.')
-  expect(inEditMode10).toBe(true)
-
-  const inEditMode11 = isEditMode('0.01')
-  expect(inEditMode11).toBe(false)
-
-  const inEditMode12 = isEditMode('0.1')
-  expect(inEditMode12).toBe(true)
-
-  const inEditMode13 = isEditMode('10,009.01')
-  expect(inEditMode13).toBe(false)
-
-  const inEditMode14 = isEditMode('0.0')
-  expect(inEditMode14).toBe(true)
 })
 
 const prevState: TileState = {
@@ -204,34 +281,4 @@ test('state derived from user interaction on change', () => {
     tradingDisabled: false,
   }
   expect(newState).toEqual(expected)
-
-  const newParams2 = {
-    ...defaultParams,
-    notionalUpdate: {
-      type: 'change',
-      value: ',000,000',
-    },
-  }
-  const newState2 = getDerivedStateFromUserInput(newParams2)
-  const expected2 = {
-    ...defaultNewState,
-    notional: ',000,000',
-    tradingDisabled: true,
-  }
-  expect(newState2).toEqual(expected2)
-
-  const newParams3 = {
-    ...defaultParams,
-    notionalUpdate: {
-      type: 'change',
-      value: ',000,000',
-    },
-  }
-  const newState3 = getDerivedStateFromUserInput(newParams3)
-  const expected3 = {
-    ...defaultNewState,
-    notional: ',000,000',
-    tradingDisabled: true,
-  }
-  expect(newState3).toEqual(expected3)
 })
