@@ -35,7 +35,7 @@ export const isValueOverRfqRange = (notional: string) => {
 }
 
 // With these values, user should not be able to trade
-// check https://regex101.com/r/OWDRCO/1 to view this regex in action
+// check https://regex101.com/r/OWDRCO/2 to view this regex in action
 const invalidTradingValuesRegex = /(?!(\d?\.\d{2,})|(\d?\.[1-9]{1}))^(,|$|0|\.|0\.([1-9]{1})?)|(^0.00$|Infinity|NaN)/
 export const isInvalidTradingValue = (value: string) =>
   Boolean(value.match(invalidTradingValuesRegex))
@@ -107,25 +107,17 @@ export const getDerivedStateFromUserInput = ({
 
   const defaultNextState: TileState = {
     ...prevState,
-    notional: value,
+    // user may be trying to enter decimals or
+    // user may be deleting previous entry (empty string, etc)
+    // in those cases, format and update only when completed.
+    notional: !isEditMode(value) ? numeral(value).format(NUMERAL_FORMAT) : value,
     inputValidationMessage: null,
     tradingDisabled: false,
   }
 
   const { isRfqStateNone } = getConstsFromRfqState(rfqState)
 
-  if (type === 'change' && isInvalidTradingValue(value)) {
-    // user is trying to enter decimals or modifying a number
-    // or deleting previous entry (empty string)
-    // disable trading, remove any message
-    if (!isRfqStateNone) {
-      actions.setTradingMode({ symbol, mode: 'esp' })
-    }
-    return {
-      ...defaultNextState,
-      tradingDisabled: true,
-    }
-  } else if (type === 'blur' && isInvalidTradingValue(value)) {
+  if (type === 'blur' && isInvalidTradingValue(value)) {
     // onBlur if invalid trading value, reset value
     // remove any message, enable trading
     if (!isRfqStateNone) {
