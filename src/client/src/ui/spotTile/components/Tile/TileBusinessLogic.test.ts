@@ -4,7 +4,12 @@ import {
   isValueOverRfqRange,
   isInvalidTradingValue,
   isEditMode,
+  DerivedStateFromUserInput,
+  getDerivedStateFromUserInput,
 } from './TileBusinessLogic'
+import { TileState } from './Tile'
+import { TradingMode } from '../types'
+import { PriceMovementTypes } from '../../../../ui/spotTile/model/priceMovementTypes'
 
 test('getNumericNotional', () => {
   const numericValue = getNumericNotional('1,000,000')
@@ -137,4 +142,96 @@ test('isEditMode', () => {
 
   const inEditMode14 = isEditMode('0.0')
   expect(inEditMode14).toBe(true)
+})
+
+const prevState: TileState = {
+  canExecute: false,
+  inputDisabled: false,
+  inputValidationMessage: null,
+  notional: '1,000,000',
+  tradingDisabled: false,
+}
+
+const defaultParams: DerivedStateFromUserInput = {
+  actions: {
+    setTradingMode: (tradingMode: TradingMode) => {},
+  },
+  prevState,
+  notionalUpdate: {
+    type: 'blur',
+    value: '1,000,000',
+  },
+  spotTileData: {
+    currencyChartIsOpening: false,
+    historicPrices: [],
+    isTradeExecutionInFlight: false,
+    lastTradeExecutionStatus: null,
+    price: {
+      ask: 1.48364,
+      bid: 1.4835,
+      creationTimestamp: 694779224112175,
+      mid: 1.48357,
+      priceMovementType: 'Down' as PriceMovementTypes,
+      symbol: 'EURCAD',
+      valueDate: '2019-04-07T00:00:00Z',
+    },
+    rfqPrice: null,
+    rfqState: 'none',
+    rfqTimeout: null,
+  },
+}
+
+const defaultNewState: TileState = {
+  canExecute: false,
+  inputDisabled: false,
+  inputValidationMessage: null,
+  notional: '1,000,000',
+  tradingDisabled: false,
+}
+
+test('state derived from user interaction on change', () => {
+  const newParams = {
+    ...defaultParams,
+    notionalUpdate: {
+      type: 'change',
+      value: '1,000',
+    },
+  }
+  const newState = getDerivedStateFromUserInput(newParams)
+  const expected = {
+    ...defaultNewState,
+    notional: '1,000',
+    tradingDisabled: false,
+  }
+  expect(newState).toEqual(expected)
+
+  const newParams2 = {
+    ...defaultParams,
+    notionalUpdate: {
+      type: 'change',
+      value: ',000,000',
+    },
+  }
+  const newState2 = getDerivedStateFromUserInput(newParams2)
+  const expected2 = {
+    ...defaultNewState,
+    notional: ',000,000',
+    tradingDisabled: true,
+  }
+  expect(newState2).toEqual(expected2)
+
+  const newParams3 = {
+    ...defaultParams,
+    notionalUpdate: {
+      type: 'change',
+      value: ',000,000',
+    },
+  }
+  const newState3 = getDerivedStateFromUserInput(newParams3)
+  const expected3 = {
+    ...defaultNewState,
+    notional: ',000,000',
+    tradingDisabled: true,
+  }
+  expect(newState3).toEqual(expected3)
 })
