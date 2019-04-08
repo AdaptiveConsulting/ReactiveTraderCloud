@@ -1,5 +1,5 @@
 import { BasePlatformAdapter } from '../platformAdapter'
-import { AppConfig, WindowConfig, InteropTopics } from '../types'
+import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
@@ -98,7 +98,8 @@ export default class OpenFin extends BasePlatformAdapter {
       fin.desktop.InterApplicationBus.publish(topic, message),
   }
 
-  excel = {
+  excel: ExcelInterop = {
+    adapterName: excelAdapter.name,
     open: () => excelAdapter.openExcel(),
     isOpen: () => excelAdapter.isSpreadsheetOpen(),
     publishPositions: (positions: CurrencyPairPositionWithPrice[]) =>
