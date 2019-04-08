@@ -22,12 +22,12 @@ const priceTick: SpotPriceTick = {
   priceStale: true,
 }
 const generateHistoricPrices: (totalPricePrick: number) => SpotPriceTick[] = totalPricePrick => {
-  const data = []
-  for (let m = 0; m < totalPricePrick; m++) {
+  const historicPrices = []
+  for (let counter = 0; counter < totalPricePrick; counter++) {
     const mid = priceTick.mid + Math.random() * 6 + 3
-    data.push({ ...priceTick, mid })
+    historicPrices.push({ ...priceTick, mid })
   }
-  return data
+  return historicPrices
 }
 
 const spotTileData: Required<SpotTileData> = {
