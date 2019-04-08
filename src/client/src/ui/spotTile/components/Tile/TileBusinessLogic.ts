@@ -90,6 +90,7 @@ export interface DerivedStateFromUserInput {
   actions: {
     setTradingMode: TileProps['setTradingMode']
   }
+  currencyPair: CurrencyPair
 }
 
 export interface DerivedStateFromNotionalReset {
@@ -107,6 +108,7 @@ export const getDerivedStateFromUserInput = ({
   spotTileData,
   notionalUpdate,
   actions,
+  currencyPair,
 }: DerivedStateFromUserInput): TileState => {
   const { type, value } = notionalUpdate
 
@@ -115,10 +117,8 @@ export const getDerivedStateFromUserInput = ({
     return prevState
   }
 
-  const {
-    price: { symbol },
-    rfqState,
-  } = spotTileData
+  const { symbol } = currencyPair
+  const { rfqState } = spotTileData
 
   const notional = !isEditMode(value) ? getFormattedValue(value) : value
 
