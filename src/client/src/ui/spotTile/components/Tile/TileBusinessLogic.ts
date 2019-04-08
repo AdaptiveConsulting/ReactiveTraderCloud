@@ -60,11 +60,19 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
     executionStatus === ServiceConnectionStatus.CONNECTED && !isTradeExecutionInFlight && price,
   )
 
-  const { isRfqStateCanRequest, isRfqStateRequested, isRfqStateReceived } = getConstsFromRfqState(
-    rfqState,
-  )
+  const {
+    isRfqStateCanRequest,
+    isRfqStateRequested,
+    isRfqStateReceived,
+    isRfqStateExpired,
+  } = getConstsFromRfqState(rfqState)
 
-  const canExecute = !isInTrade && !isRfqStateCanRequest && !isRfqStateRequested && !tradingDisabled
+  const canExecute =
+    !isInTrade &&
+    !isRfqStateCanRequest &&
+    !isRfqStateRequested &&
+    !isRfqStateExpired &&
+    !tradingDisabled
 
   const inputDisabled = isInTrade || isRfqStateRequested || isRfqStateReceived
 
