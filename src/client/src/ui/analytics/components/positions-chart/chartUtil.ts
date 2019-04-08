@@ -1,74 +1,89 @@
-/* tslint:disable */
 import _ from 'lodash'
-import d3 from 'd3'
+import { scale, geom, layout, Selection } from 'd3'
 import numeral from 'numeral'
-import { CurrencyPairPosition } from '../../model/currencyPairPosition'
 import { PositionsBubbleChartProps } from './PositionsBubbleChart'
 import { CurrencyPairs } from '../Analytics'
 
-const baseTradedAmountName = 'baseTradedAmount'
-
-export function getPositionsDataFromSeries(series: CurrencyPairPosition[] = [], currencyPairs: CurrencyPairs) {
-  const baseAmountPropertyName = baseTradedAmountName
-  const positionsPerCcyObj = series.reduce((aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
-    const { symbol } = ccyPairPosition
-    const ccyPair = currencyPairs[symbol]
-    const baseCurrency = ccyPair ? ccyPair.base : ''
-    aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
-      ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition[baseAmountPropertyName]
-      : ccyPairPosition[baseAmountPropertyName]
-
-    return aggregatedPositionsObj
-  }, {})
-
-  return _.map(positionsPerCcyObj, (val, key) => {
-    return {
-      symbol: key,
-      [baseAmountPropertyName]: val,
-    }
-  }).filter((positionPerCcy, index) => positionPerCcy[baseAmountPropertyName] !== 0)
+export interface Scales {
+  x: scale.Linear<number, number>
+  y: scale.Linear<number, number>
+  r: scale.Linear<number, number>
 }
 
-export function createScales(props: PositionsBubbleChartProps) {
-  const ratio = 12.5
+export interface CurrencyPairPosition {
+  basePnl: number
+  basePnlName: string
+  baseTradedAmount: number
+  baseTradedAmountName: string
+  symbol: string
+}
+
+export interface CCYPosition {
+  symbol: string
+  baseTradedAmount: number
+}
+
+export interface BubbleChartNode extends layout.force.Node {
+  id: string
+  r: number
+  cx: number
+  color: string
+}
+
+export function getPositionsDataFromSeries(
+  series: CurrencyPairPosition[] = [],
+  currencyPairs: CurrencyPairs,
+): CCYPosition[] {
+  const positionsPerCcyObj = series.reduce(
+    (aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
+      const { symbol } = ccyPairPosition
+      const ccyPair = currencyPairs[symbol]
+      const baseCurrency = ccyPair ? ccyPair.base : ''
+      aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
+        ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition.baseTradedAmount
+        : ccyPairPosition.baseTradedAmount
+
+      return aggregatedPositionsObj
+    },
+    {},
+  )
+
+  return _.map(positionsPerCcyObj, (val: number, key: string) => ({
+    symbol: key,
+    baseTradedAmount: val,
+  })).filter((posPerCCY: CCYPosition) => posPerCCY.baseTradedAmount !== 0)
+}
+
+export function createScales(props: PositionsBubbleChartProps): Scales {
   const { width, height } = props.size
-  const minR = 15
-  const maxR = 60
-  const offset = maxR / 2
-  const positionData = getPositionsDataFromSeries(props.data, props.currencyPairs)
-
-  const baseValues = _.map(positionData, (val: any) => {
-    return Math.abs(val[baseTradedAmountName])
-  })
-
-  const maxValue = Math.max(...baseValues) || 0
-  let minValue = Math.min(...baseValues) || 0
-
-  if (minValue === maxValue) minValue = 0
-
-  const scales = {
-    x: d3.scale
+  const ratio: number = 12.5
+  const minR: number = 15
+  const maxR: number = 60
+  const offset: number = maxR / 2
+  const positionData: CCYPosition[] = getPositionsDataFromSeries(props.data, props.currencyPairs)
+  const baseValues: number[] = positionData.map(val => Math.abs(val.baseTradedAmount))
+  const maxValue: number = Math.max(...baseValues) || 0
+  const minValue: number = Math.min(...baseValues) !== maxValue ? Math.min(...baseValues) : 0
+  return {
+    x: scale
       .linear()
       .domain([0, props.data.length])
       .range([-(width / ratio), width / ratio - offset]),
-    y: d3.scale
+    y: scale
       .linear()
       .domain([0, props.data.length])
       .range([-(height / ratio), height / ratio]),
-    r: d3.scale
+    r: scale
       .sqrt()
       .domain([minValue, maxValue])
       .range([minR, maxR]),
   }
-
-  return scales
 }
 
-export function updateNodes(nodeGroup: any, nodes: any[], scales: any) {
+export function updateNodes(nodeGroup: Selection<any>, nodes: BubbleChartNode[]): void {
   const nodeMap = {}
-
-  nodeGroup.each(collide(0.1, nodes, scales.r)).attr({
-    transform: (d: any, i: any) => {
+  nodeGroup.each(collide(0.1, nodes)).attr({
+    transform: (d: BubbleChartNode) => {
       if (d.x !== undefined && d.y !== undefined && !isNaN(d.x) && !isNaN(d.y)) {
         nodeMap[d.id] = { x: d.x, y: d.y }
         return 'translate(' + d.x + ',' + d.y + ')'
@@ -77,12 +92,10 @@ export function updateNodes(nodeGroup: any, nodes: any[], scales: any) {
         return 'translate(0, 0)'
       }
     },
-    id: (d: any, i: any) => {
-      return d.id
-    },
+    id: (d: BubbleChartNode) => d.id,
   })
 
-  nodes.forEach((node: any) => {
+  nodes.forEach((node: BubbleChartNode) => {
     const newSettings = nodeMap[node.id]
     if (newSettings) {
       node.x = newSettings.x
@@ -91,54 +104,33 @@ export function updateNodes(nodeGroup: any, nodes: any[], scales: any) {
   })
 }
 
-export function drawCircles(nodeGroup: any, duration: number = 800) {
+export function drawCircles(nodeGroup: Selection<any>, duration: number = 800): void {
   nodeGroup
-    .on('mouseover', (d: any) => {
-      d3.select(d.target).style('fill', '#00A8CC')
-    })
-    .on('mouseout', (d: any) => {
-      d3.select(d.target).style('fill', d.color)
-    })
     .transition()
     .duration(duration)
-    .attr({
-      r: (d: any) => {
-        return d.r
-      },
-    })
+    .attr({ r: (d: BubbleChartNode) => d.r })
     .style('filter', 'url(#drop-shadow)')
-    .style({
-      fill: (d: any) => {
-        return d.color
-      },
-    })
+    .style({ fill: (d: BubbleChartNode) => d.color })
 }
 
-export function drawLabels(nodeGroup: any) {
+export function drawLabels(nodeGroup: Selection<any>): void {
   nodeGroup
-    .attr({
-      x: 0,
-      y: 3,
-      class: 'analytics__positions-label',
-    })
-    .text((d: any) => {
-      return d.id
-    })
+    .attr({ x: 0, y: 3, class: 'analytics__positions-label' })
+    .text((d: BubbleChartNode) => d.id)
 }
 
-export function getRadius(dataObj: any, scales: any) {
-  return scales.r(Math.abs(dataObj.baseTradedAmount))
-}
+export const getRadius = (currValue: CCYPosition, scales: Scales) =>
+  scales.r(Math.abs(currValue.baseTradedAmount))
 
-export function getPositionValue(id: string, positionsData: any[]) {
-  const index = _.findIndex(positionsData, (pos: any) => pos.symbol === id)
+export function getPositionValue(id: string, positionsData: CCYPosition[]): string {
+  const index: number = _.findIndex(positionsData, (pos: CCYPosition) => pos.symbol === id)
   if (index >= 0) {
     return numeral(positionsData[index].baseTradedAmount).format('0,0')
   }
   return ''
 }
 
-export function addShadow(svg: any) {
+export function addShadow(svg: Selection<any>): void {
   const definitions = svg.append('defs')
 
   const filter = definitions
@@ -165,23 +157,22 @@ export function addShadow(svg: any) {
   feMerge.append('feMergeNode').attr('in', 'SourceGraphic')
 }
 
-export function collide(alpha: number, nodes: any[], scale?: number) {
-  const quadtree = d3.geom.quadtree(nodes)
-  const offset = -3
+export function collide(alpha: number, nodes: BubbleChartNode[]) {
+  const quadtree = geom.quadtree(nodes)
+  const offset: number = -3
 
   return (d: any) => {
-    let radius = d.r + 10 + offset
-
-    const nx1 = d.x - radius
-    const nx2 = d.x + radius
-    const ny1 = d.y - radius
-    const ny2 = d.y + radius
+    let radius: number = d.r + 10 + offset
+    const nx1: number = d.x - radius
+    const nx2: number = d.x + radius
+    const ny1: number = d.y - radius
+    const ny2: number = d.y + radius
 
     return quadtree.visit((quad: any, x1: number, y1: number, x2: number, y2: number) => {
       if (quad.point && quad.point !== d) {
-        let x = d.x - quad.point.x
-        let y = d.y - quad.point.y
-        let l = Math.sqrt(x * x + y * y)
+        let x: number = d.x - quad.point.x
+        let y: number = d.y - quad.point.y
+        let l: number = Math.sqrt(x * x + y * y)
         radius = d.r + quad.point.r + offset
         if (l < radius) {
           l = ((l - radius) / l) * alpha
