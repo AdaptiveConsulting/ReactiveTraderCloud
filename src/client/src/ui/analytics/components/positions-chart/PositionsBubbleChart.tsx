@@ -48,6 +48,7 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
   componentDidMount() {
     this.redrawChart()
     this.updateNodesFromPropsData(this.props)
+    // console.log(this.props)
   }
 
   componentWillReceiveProps(nextProps: any) {
@@ -80,7 +81,8 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     // positions data has changed on the existing nodes
     const modifiedData = reduce(
       positionsData,
-      (result, value, key) => (isEqual(value, existingPositionsData[key]) ? result : result.concat(key)),
+      (result, value, key) =>
+        isEqual(value, existingPositionsData[key]) ? result : result.concat(key),
       [],
     )
 
@@ -108,7 +110,8 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
     const positionsData = getPositionsDataFromSeries(data, this.props.currencyPairs)
 
     nodes = map(positionsData, (dataObj: any, index: number) => {
-      const color = dataObj.baseTradedAmount > 0 ? colors.accents.good.base : colors.accents.bad.base
+      const color =
+        dataObj.baseTradedAmount > 0 ? colors.accents.good.base : colors.accents.bad.base
 
       // update an existing node:
       const existingNode = find(nodes, (node: any) => node.id === dataObj.symbol) as any
@@ -173,7 +176,9 @@ export class PositionsBubbleChart extends React.Component<PositionsBubbleChartPr
           this.tooltip.style('visibility', 'visible')
           this.positionTooltip(dataObj, event)
         })
-        .on('mousemove', (dataObj: any, index: number, event: MouseEvent) => this.positionTooltip(dataObj, event))
+        .on('mousemove', (dataObj: any, index: number, event: MouseEvent) =>
+          this.positionTooltip(dataObj, event),
+        )
         .on('mouseout', () => this.tooltip.style('visibility', 'hidden'))
 
       updateNodes(nodeGroup, this.state.nodes, this.scales)

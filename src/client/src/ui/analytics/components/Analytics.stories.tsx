@@ -11,6 +11,8 @@ import initialProps, {
 import Analytics from './Analytics'
 import { AnalyticsLineChart } from './analyticsLineChart'
 import { AnalyticsBarChart } from './analyticsBarChart'
+import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
+
 const stories = storiesOf('Analytics', module)
 
 const Centered = styled('div')`
@@ -36,17 +38,13 @@ const Div = styled('div')`
   height: 300px;
 `
 
+export const BubbleChart = styled.div`
+  text-anchor: middle;
+  height: 18rem;
+`
+
 stories
   .add('Default', () => (
-    <Story>
-      <Centered>
-        <div style={{ height: '100%', width: '350px' }}>
-          <Analytics {...initialProps} />
-        </div>
-      </Centered>
-    </Story>
-  ))
-  .add('Analytics Bubble-Chart', () => (
     <Story>
       <Centered>
         <div style={{ height: '100%', width: '350px' }}>
@@ -64,6 +62,20 @@ stories
       </Centered>
     </Story>
   ))
+  .add('Analytics Bubble-Chart', () => {
+    return (
+      <Story>
+        <Centered>
+          <div style={{ height: '100%', width: '350px', textAnchor: 'middle' }}>
+            <PositionsBubbleChart
+              data={initialProps.positionsChartModel.seriesData}
+              currencyPairs={initialProps.currencyPairs}
+            />
+          </div>
+        </Centered>
+      </Story>
+    )
+  })
   .add('AnalyticsBarChart', () => (
     <Story>
       <Centered>
