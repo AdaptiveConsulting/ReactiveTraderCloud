@@ -136,9 +136,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
     } = this.state
     const { rfqState } = spotTileData
     const { isRfqStateCanRequest, isRfqStateNone } = getConstsFromRfqState(rfqState)
-    if (spotTileData.price.symbol === 'NZDUSD') {
-      console.log('this.state', this.state)
-    }
+
     const TileViewComponent =
       tileView && (isRfqStateNone || isRfqStateCanRequest)
         ? this.tileComponents[tileView]
