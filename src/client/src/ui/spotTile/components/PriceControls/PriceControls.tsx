@@ -43,7 +43,6 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateCanRequest,
     isRfqStateRequested,
     isRfqStateNone,
-    isRfqStateReceived,
   } = getConstsFromRfqState(rfqState)
 
   const isDisabled = !isRfqStateReceived && disabled

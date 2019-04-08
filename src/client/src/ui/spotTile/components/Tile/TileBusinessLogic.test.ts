@@ -478,6 +478,7 @@ test('state derived from props, RFQ expired', () => {
   const newState: TileState = getDerivedStateFromProps(nextProps, prevState)
   const expected = {
     ...prevState,
+    canExecute: false,
   }
   expect(newState).toEqual(expected)
 })
