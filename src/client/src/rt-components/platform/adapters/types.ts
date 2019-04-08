@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs'
 import { CurrencyPairPosition } from 'rt-types'
+import { ExcelAdapterName } from './openfin/excel';
 
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
 export type PlatformType = 'browser' | 'desktop'
@@ -32,11 +33,12 @@ interface PubSubInterop {
   publish: (topic: string, message: any) => void
 }
 
-interface ExcelInterop {
-  open(): void
+export interface ExcelInterop {
+  readonly adapterName: ExcelAdapterName
+  open(): Promise<void>
   isOpen(): boolean
-  publishPositions: (positions: CurrencyPairPosition[]) => void
-  publishBlotter: <T extends any>(blotterData: T) => void
+  publishPositions: (positions: CurrencyPairPosition[]) => Promise<void>
+  publishBlotter: <T extends any>(blotterData: T) => Promise<void>
 }
 
 interface ChartIQInterop {
@@ -47,7 +49,6 @@ interface NotificationHighlightInterop {
   init: () => Observable<{}>
 }
 
-
 export enum InteropTopics {
   /* excel interop data feeds */
   Analytics = 'position-update',
@@ -57,7 +58,14 @@ export enum InteropTopics {
   highlight on notification click  */
   HighlightBlotter = 'highlight-blotter',
 
-  /* closing trades from Excel, currently 
-  not in use */
+  // Publish price changes on any ccy pair - legacy Excel uses this to update positions table
+  PriceUpdate = 'price-update',
+
+  // Close positions from Excel:
+  // - legacy Excel adapter publishes these from the .NET code running in Excel
+  // - Excel JS adapter publishes this from within this app when detects the command in Excel
   ClosePosition = 'close-position',
+
+  // Send to legacy Excel adapter to update UI
+  PositionClosed = 'position-closed',
 }

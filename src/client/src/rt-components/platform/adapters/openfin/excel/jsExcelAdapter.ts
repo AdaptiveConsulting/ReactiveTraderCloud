@@ -2,6 +2,7 @@ import { formTable, delay } from './utils/index'
 import { Trade, CurrencyPairPositionWithPrice } from 'rt-types'
 import { platform } from 'rt-components'
 import { InteropTopics } from '../../types'
+import { ExcelAdapter } from './types';
 
 const EXCEL_HOST_URL = `${location.protocol}//${location.host}/static/excel`
 const EXCEL_FILE_NAME = 'RTExcel.xlsx'
@@ -17,10 +18,11 @@ const RTExcelConfig = {
   ClosePositionPlaceholderColumn: 13, // Index of 'M'
 }
 
-class ExcelAdapter {
+class JSExcelAdapter implements ExcelAdapter {
   rtWorkbook: fin.ExcelWorkbook
   blotterSheet: fin.ExcelWorksheet
   positionsSheet: fin.ExcelWorksheet
+  readonly name = 'JS'
 
   isSpreadsheetOpen = () => {
     return !!this.rtWorkbook && !!this.positionsSheet
@@ -148,5 +150,4 @@ class ExcelAdapter {
   }
 }
 
-const excelAdapter = new ExcelAdapter()
-export default excelAdapter
+export default JSExcelAdapter

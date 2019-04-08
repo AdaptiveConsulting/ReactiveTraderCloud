@@ -5,7 +5,7 @@ import {
   greenKeyIcon,
   excelIcon,
 } from './icons/index'
-import { PlatformName } from 'rt-components'
+import { PlatformName, excelAdapter } from 'rt-components'
 
 // Safer than location.origin due to browser support
 const ORIGIN = `${location.protocol}//${location.host}`
@@ -56,6 +56,41 @@ export interface ApplicationConfig {
   icon: JSX.Element
   provider?: Provider
 }
+
+const excelJSAppConfig: ApplicationConfig = {
+  name: 'Excel',
+  icon: excelIcon,
+  provider: {
+    platformName: 'openfin',
+    applicationType: 'excel',
+    windowOptions: {
+      preloadScripts: excelPreloadScripts,
+      icon: `${ORIGIN}/static/media/excel-icon.ico`,
+    },
+  },
+}
+
+const excelLegacyAppConfig: ApplicationConfig = {
+  name: 'Excel',
+  icon: excelIcon,
+  url: `${ORIGIN}/static/excel/instructions.html`,
+  provider: {
+    platformName: 'openfin',
+    applicationType: 'application',
+    windowOptions: {
+      ...defaultWindowOptions,
+      defaultWidth: 800,
+      defaultHeight: 600,
+      minWidth: 520,
+      minHeight: 260,
+      frame: true,
+      alwaysOnTop: false,
+      icon: `${ORIGIN}/static/media/excel-icon.ico`,
+    },
+  },
+}
+
+const excelAppConfig = excelAdapter.name === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
 
 export const appConfigs: ApplicationConfig[] = [
   {
@@ -124,16 +159,5 @@ export const appConfigs: ApplicationConfig[] = [
       },
     },
   },
-  {
-    name: 'Excel',
-    icon: excelIcon,
-    provider: {
-      platformName: 'openfin',
-      applicationType: 'excel',
-      windowOptions: {
-        preloadScripts: excelPreloadScripts,
-        icon: `${ORIGIN}/static/media/excel-icon.ico`,
-      },
-    },
-  },
+  excelAppConfig,
 ]
