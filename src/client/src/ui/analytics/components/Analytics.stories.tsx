@@ -4,7 +4,10 @@ import { Story } from 'rt-storybook'
 import { styled } from 'rt-theme'
 
 import '../globals/index'
-import initialProps, { analyticsLineChartModel, positionsChartModel } from '../test-resources/initialProps'
+import initialProps, {
+  analyticsLineChartModel,
+  positionsChartModel,
+} from '../test-resources/initialProps'
 import Analytics from './Analytics'
 import { AnalyticsLineChart } from './analyticsLineChart'
 import { AnalyticsBarChart } from './analyticsBarChart'
@@ -35,6 +38,15 @@ const Div = styled('div')`
 
 stories
   .add('Default', () => (
+    <Story>
+      <Centered>
+        <div style={{ height: '100%', width: '350px' }}>
+          <Analytics {...initialProps} />
+        </div>
+      </Centered>
+    </Story>
+  ))
+  .add('Analytics Bubble-Chart', () => (
     <Story>
       <Centered>
         <div style={{ height: '100%', width: '350px' }}>
