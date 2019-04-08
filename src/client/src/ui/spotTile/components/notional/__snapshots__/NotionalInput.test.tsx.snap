@@ -1,0 +1,311 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotionalInput default 1`] = `
+<div
+  className="sc-htpNat idZgat"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb fauXdE"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+</div>
+`;
+
+exports[`NotionalInput default 2`] = `
+<div
+  className="sc-htpNat idZgat"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb dfDCvR"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+</div>
+`;
+
+exports[`NotionalInput disabled 1`] = `
+<div
+  className="sc-htpNat idZgat"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb ixCVbX"
+    disabled={true}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+</div>
+`;
+
+exports[`NotionalInput disabled 2`] = `
+<div
+  className="sc-htpNat idZgat"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb jPqRyz"
+    disabled={true}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+</div>
+`;
+
+exports[`NotionalInput show reset button 1`] = `
+<div
+  className="sc-htpNat idZgat"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb fauXdE"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+  <button
+    className="sc-ifAKCX gROrJN"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-redo fa-flip-horizontal"
+    />
+  </button>
+</div>
+`;
+
+exports[`NotionalInput show reset button 2`] = `
+<div
+  className="sc-htpNat idZgat"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb dfDCvR"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+  <button
+    className="sc-ifAKCX fCQbjt"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-redo fa-flip-horizontal"
+    />
+  </button>
+</div>
+`;
+
+exports[`NotionalInput with error 1`] = `
+<div
+  className="sc-htpNat kjfMBr"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb iHOuZf"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+  <div
+    className="sc-bwzfXH hUHSeX"
+  >
+    Some error
+  </div>
+</div>
+`;
+
+exports[`NotionalInput with error 2`] = `
+<div
+  className="sc-htpNat kjfMBr"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb iHOuZf"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+  <div
+    className="sc-bwzfXH hUHSeX"
+  >
+    Some error
+  </div>
+</div>
+`;
+
+exports[`NotionalInput with info 1`] = `
+<div
+  className="sc-htpNat kjfMBr"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb gDYEmO"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+  <div
+    className="sc-bwzfXH cHoFLD"
+  >
+    Some information
+  </div>
+</div>
+`;
+
+exports[`NotionalInput with info 2`] = `
+<div
+  className="sc-htpNat kjfMBr"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb gDYEmO"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+  <div
+    className="sc-bwzfXH cHoFLD"
+  >
+    Some information
+  </div>
+</div>
+`;
+
+exports[`NotionalInput with warning 1`] = `
+<div
+  className="sc-htpNat kjfMBr"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb ecOaYV"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+  <div
+    className="sc-bwzfXH bpWJsW"
+  >
+    Some warning
+  </div>
+</div>
+`;
+
+exports[`NotionalInput with warning 2`] = `
+<div
+  className="sc-htpNat kjfMBr"
+>
+  <span
+    className="sc-bdVaJa bxrsSL"
+  >
+    EURUSD
+  </span>
+  <input
+    className="sc-bxivhb ecOaYV"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyPress={[Function]}
+    type="text"
+    value="1,000,000"
+  />
+  <div
+    className="sc-bwzfXH bpWJsW"
+  >
+    Some warning
+  </div>
+</div>
+`;

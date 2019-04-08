@@ -1,6 +1,4 @@
-import numeral from 'numeral'
 import React, { PureComponent } from 'react'
-import { NUMERAL_FORMAT, isEditMode } from '../TileBusinessLogic'
 import {
   InputWrapper,
   CurrencyPairSymbol,
@@ -9,7 +7,6 @@ import {
   MessagePlaceholder,
 } from './styled'
 
-const DOT = '.'
 const ENTER = 'Enter'
 const CHAR_CODE_DOT = 46 // .
 const CHAR_CODE_0 = 48 // 0
@@ -70,25 +67,12 @@ export default class NotionalInput extends PureComponent<Props, State> {
   handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { updateNotional } = this.props
     const { currentTarget, type } = event
-    const inputValue = currentTarget.value.trim()
-    const value = this.formatNotional(inputValue)
+    const value = currentTarget.value.trim()
     updateNotional({ value, type })
   }
 
   handleResetNotional = () => {
     this.props.resetNotional()
-  }
-
-  formatNotional = (notional: string) => {
-    // user may be trying to enter decimals or
-    // user may be deleting previous entry (empty string)
-    // in those cases, format and update only when completed.
-    if (notional === '.') {
-      return '0.'
-    }
-    const lastTwoChars = notional.substr(-2)
-    const shouldFormat = !isEditMode(notional) && lastTwoChars.indexOf(DOT) === -1
-    return shouldFormat ? numeral(notional).format(NUMERAL_FORMAT) : notional
   }
 
   inputIsAllowed = (charCode: number) => {
