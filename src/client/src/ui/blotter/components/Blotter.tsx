@@ -7,7 +7,7 @@ import { styled } from 'rt-theme'
 import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
-import { columnDefinitions, DEFAULT_COLUMN_DEFINITION } from './blotterUtils'
+import { columnDefinitions, DEFAULT_COLUMN_DEFINITION, csvExportSettings } from './blotterUtils'
 
 export interface BlotterProps {
   rows: Trade[]
@@ -64,7 +64,12 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
     const { displayedRows } = this.state
     return (
       <BlotterStyle>
-        <BlotterHeader canPopout={canPopout} onPopoutClick={onPopoutClick} gridApi={this.gridApi} />
+        <BlotterHeader
+          canPopout={canPopout}
+          onPopoutClick={onPopoutClick}
+          onExportToExcelClick={this.exportToExcel}
+          gridApi={this.gridApi}
+        />
         <BlotterGrid ref={this.gridDoc}>
           <AgGridReact
             columnDefs={columnDefinitions}
@@ -90,6 +95,12 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
         </BlotterStatus>
       </BlotterStyle>
     )
+  }
+
+  private exportToExcel = () => {
+    if (this.gridApi) {
+      this.gridApi.exportDataAsCsv(csvExportSettings)
+    }
   }
 
   private onGridReady = ({ api }: { api: GridApi }) => {
