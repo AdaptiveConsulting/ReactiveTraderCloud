@@ -17,7 +17,6 @@ const LogoWithPlatform: FC = () => {
 }
 interface Props {
   fillSize?: number
-  children?: JSX.Element
 }
 const StatusBar: FC<Props> = ({ fillSize = 1, children }) => (
   <Root>

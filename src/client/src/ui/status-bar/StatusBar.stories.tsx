@@ -50,7 +50,7 @@ const connectionState = {
 Object.entries(connectionState).forEach(([key, state]) =>
   stories.add(capitalize(key), () => {
     return (
-      <Root state={state}>
+      <Root>
         <StatusBar fillSize={0.5}>
           <StatusButton connectionStatus={state.status} services={state.services} />
         </StatusBar>
@@ -67,8 +67,9 @@ const Centered = styled('div')`
   justify-content: center;
 `
 
-const Root: FC<{ state: {} }> = ({ children, state = {} }) => (
-  <Provider store={createStore(() => state)}>
+const store = createStore(() => {})
+const Root: FC = ({ children }) => (
+  <Provider store={store}>
     <Story>
       <Centered>{children}</Centered>
     </Story>
