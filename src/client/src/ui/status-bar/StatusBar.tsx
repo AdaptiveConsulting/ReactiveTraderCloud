@@ -3,7 +3,7 @@ import { Content, Fill, Header, Root, OpenFinLogoContainer } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
 import { usePlatform } from 'rt-components'
 
-const LogoWithPlatform: React.FC = () => {
+const LogoWithPlatform: FC = () => {
   const platform = usePlatform()
   return (
     <div>
