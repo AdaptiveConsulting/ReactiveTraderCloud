@@ -38,11 +38,11 @@ const Centered = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: grey;
 `
 
 const NotificationContainer = styled('div')`
-  width: 360px;
+  width: 320px;
+  height: 120px;
 `
 
 stories.add('Default', () => (

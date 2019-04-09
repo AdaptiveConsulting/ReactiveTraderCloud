@@ -1,7 +1,7 @@
 import moment from 'moment'
-import React from 'react'
+import React, { FC } from 'react'
 import { Direction, Trade, TradeStatus } from 'rt-types'
-import { Bottom, Close, CloseContainer, MetaContainer, MetaTitle, Notification, Status, Top, Traded } from './styled'
+import { Bottom, MetaContainer, MetaTitle, Notification, Status, Top, Traded } from './styled'
 
 export interface Props {
   trade: Trade
@@ -9,7 +9,11 @@ export interface Props {
   highlightTradeInBlotter?: () => void
 }
 
-const TradeNotification: React.FC<Props> = ({ trade: trade, dismissNotification, highlightTradeInBlotter }) => {
+const TradeNotification: FC<Props> = ({
+  trade: trade,
+  dismissNotification,
+  highlightTradeInBlotter,
+}) => {
   const formattedValueDate = trade
     ? moment(trade.valueDate)
         .format('DD MMM')
@@ -44,29 +48,14 @@ const TradeNotification: React.FC<Props> = ({ trade: trade, dismissNotification,
           <MetaTitle>Trade Id</MetaTitle>
           <div>{trade.tradeId}</div>
         </MetaContainer>
-        <CloseContainer>
+        {/* <CloseContainer>
           <Close>
             <i className="fas fa-share fa-lg" onClick={dismissNotification} />
           </Close>
-        </CloseContainer>
+        </CloseContainer> */}
       </Bottom>
     </Notification>
   )
-}
-
-TradeNotification.defaultProps = {
-  trade: {
-    tradeId: 0,
-    traderName: '',
-    symbol: '',
-    notional: 0,
-    dealtCurrency: '',
-    direction: '',
-    spotRate: 0,
-    tradeDate: new Date(),
-    valueDate: new Date(),
-    status: '',
-  },
 }
 
 export default TradeNotification
