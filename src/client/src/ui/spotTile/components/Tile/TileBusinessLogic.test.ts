@@ -236,6 +236,14 @@ const prevState: TileState = {
   tradingDisabled: false,
 }
 
+const currencyPair: CurrencyPair = {
+  symbol: 'EURCAD',
+  ratePrecision: 5,
+  pipsPosition: 4,
+  base: 'EUR',
+  terms: 'CAD',
+}
+
 const defaultParams: DerivedStateFromUserInput = {
   actions: {
     setTradingMode: (tradingMode: TradingMode) => {},
@@ -263,6 +271,7 @@ const defaultParams: DerivedStateFromUserInput = {
     rfqState: 'none',
     rfqTimeout: null,
   },
+  currencyPair,
 }
 
 const defaultNewState: TileState = {
@@ -271,14 +280,6 @@ const defaultNewState: TileState = {
   inputValidationMessage: null,
   notional: '1,000,000',
   tradingDisabled: false,
-}
-
-const currencyPair: CurrencyPair = {
-  symbol: 'EURCAD',
-  ratePrecision: 5,
-  pipsPosition: 4,
-  base: 'EUR',
-  terms: 'CAD',
 }
 
 test('state derived from user interaction on change when isInvalidTradingValue is false', () => {
@@ -478,6 +479,7 @@ test('state derived from props, RFQ expired', () => {
   const newState: TileState = getDerivedStateFromProps(nextProps, prevState)
   const expected = {
     ...prevState,
+    canExecute: false,
   }
   expect(newState).toEqual(expected)
 })

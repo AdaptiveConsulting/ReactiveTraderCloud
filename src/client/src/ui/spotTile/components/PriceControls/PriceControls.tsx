@@ -38,19 +38,18 @@ const PriceControls: React.FC<Props> = ({
   )
 
   const {
-    isRfqReceived,
-    isRfqExpired,
+    isRfqStateReceived,
+    isRfqStateExpired,
     isRfqStateCanRequest,
     isRfqStateRequested,
     isRfqStateNone,
-    isRfqStateReceived,
   } = getConstsFromRfqState(rfqState)
 
-  const isDisabled = !isRfqReceived && disabled
+  const isDisabled = !isRfqStateReceived && disabled
 
   return (
     <PriceControlsStyle>
-      {(isRfqStateNone || isRfqStateReceived || isRfqExpired) && (
+      {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired) && (
         <PriceButton
           handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
           direction={Direction.Sell}
@@ -60,7 +59,7 @@ const PriceControls: React.FC<Props> = ({
           rawRate={bidRate.rawRate}
           priceAnnounced={isRfqStateReceived}
           disabled={isDisabled}
-          expired={isRfqExpired}
+          expired={isRfqStateExpired}
         />
       )}
       {isRfqStateCanRequest && (
@@ -81,7 +80,7 @@ const PriceControls: React.FC<Props> = ({
         priceMovementType={priceData.priceMovementType}
         spread={spread.formattedValue}
       />
-      {(isRfqStateNone || isRfqStateReceived || isRfqExpired) && (
+      {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired) && (
         <PriceButton
           handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
           direction={Direction.Buy}
@@ -91,7 +90,7 @@ const PriceControls: React.FC<Props> = ({
           rawRate={askRate.rawRate}
           priceAnnounced={isRfqStateReceived}
           disabled={isDisabled}
-          expired={isRfqExpired}
+          expired={isRfqStateExpired}
         />
       )}
       {isRfqStateCanRequest && (
