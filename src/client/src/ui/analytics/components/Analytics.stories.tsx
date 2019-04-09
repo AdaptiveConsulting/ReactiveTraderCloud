@@ -29,7 +29,7 @@ const Wrapper = styled('div')`
   height: 300px;
 `
 
-const BubbleChart = styled(AnalyticsStyle)`
+const BubbleChartWrapper = styled(AnalyticsStyle)`
   text-anchor: middle;
   overflow: hidden;
   background-color: ${({ theme }) => theme.core.darkBackground};
@@ -57,12 +57,12 @@ stories
   .add('BubbleChart', () => (
     <Story>
       <Centered>
-        <BubbleChart>
+        <BubbleChartWrapper>
           <PositionsBubbleChart
             data={initialProps.positionsChartModel.seriesData}
             currencyPairs={initialProps.currencyPairs}
           />
-        </BubbleChart>
+        </BubbleChartWrapper>
       </Centered>
     </Story>
   ))
