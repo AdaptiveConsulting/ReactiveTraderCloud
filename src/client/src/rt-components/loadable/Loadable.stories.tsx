@@ -9,7 +9,11 @@ import Loadable from './Loadable'
 
 const stories = storiesOf('Loadable', module)
 
-const LoadableStatuses = [ServiceConnectionStatus.CONNECTING, ServiceConnectionStatus.DISCONNECTED]
+const LoadableStatuses = [
+  ServiceConnectionStatus.CONNECTING,
+  ServiceConnectionStatus.CONNECTED,
+  ServiceConnectionStatus.DISCONNECTED,
+]
 
 LoadableStatuses.map(status =>
   stories.add(capitalize(status), () => (
