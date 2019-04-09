@@ -37,8 +37,8 @@ class AnalyticsTile extends React.PureComponent<Props> {
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
-    const { isRfqExpired, isRfqStateCanRequest } = getConstsFromRfqState(rfqState)
-    const showResetButton = isRfqStateCanRequest || isRfqExpired
+    const { isRfqStateExpired, isRfqStateCanRequest } = getConstsFromRfqState(rfqState)
+    const showResetButton = isRfqStateCanRequest || isRfqStateExpired
 
     return (
       <AnalyticsWrapperWithPlatform>

@@ -39,7 +39,7 @@ const TileSwitch: React.FC<Props> = ({
   rfq,
 }) => {
   const {
-    isRfqExpired,
+    isRfqStateExpired,
     isRfqStateCanRequest,
     isRfqStateRequested,
     isRfqStateNone,
@@ -87,7 +87,7 @@ const TileSwitch: React.FC<Props> = ({
             RFQ
           </TileBooking>
           <TileBooking
-            show={isRfqExpired}
+            show={isRfqStateExpired}
             color="blue"
             onBookingPillClick={() =>
               rfq.request({ notional: getNumericNotional(notional), currencyPair })

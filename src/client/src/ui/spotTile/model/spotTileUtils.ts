@@ -64,10 +64,9 @@ export const createTradeRequest = (tradeRequestObj: TradeRequest) => {
 }
 
 export const getConstsFromRfqState = (rfqState: RfqState) => ({
-  isRfqReceived: rfqState === 'received',
-  isRfqExpired: rfqState === 'expired',
+  isRfqStateReceived: rfqState === 'received',
+  isRfqStateExpired: rfqState === 'expired',
   isRfqStateCanRequest: rfqState === 'canRequest',
   isRfqStateRequested: rfqState === 'requested',
   isRfqStateNone: rfqState === 'none',
-  isRfqStateReceived: rfqState === 'received',
 })

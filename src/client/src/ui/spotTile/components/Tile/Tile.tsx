@@ -102,17 +102,17 @@ class Tile extends React.PureComponent<TileProps, TileState> {
 
   // State management derived from user input
   updateNotional = (notionalUpdate: NotionalUpdate) => {
-    const { setTradingMode, spotTileData } = this.props
+    const { setTradingMode, spotTileData, currencyPair } = this.props
     this.setState(prevState =>
       getDerivedStateFromUserInput({
         prevState,
         notionalUpdate,
         spotTileData,
         actions: { setTradingMode },
+        currencyPair,
       }),
     )
   }
-
   resetNotional = () => {
     const { setTradingMode, spotTileData, currencyPair } = this.props
     this.setState(prevState =>

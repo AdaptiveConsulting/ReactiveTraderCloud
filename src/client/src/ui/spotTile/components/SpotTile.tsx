@@ -45,10 +45,12 @@ export default class SpotTile extends PureComponent<Props> {
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     const handleRfqRejected = () => rfq.reject({ currencyPair })
-    const { isRfqReceived, isRfqExpired, isRfqStateCanRequest } = getConstsFromRfqState(rfqState)
-    const showResetButton = isRfqStateCanRequest || isRfqExpired
-    const showTimer = isRfqReceived && rfqTimeout
-    const priceData = isRfqReceived || isRfqExpired ? rfqPrice : price
+    const { isRfqStateReceived, isRfqStateExpired, isRfqStateCanRequest } = getConstsFromRfqState(
+      rfqState,
+    )
+    const showResetButton = isRfqStateCanRequest || isRfqStateExpired
+    const showTimer = isRfqStateReceived && rfqTimeout
+    const priceData = isRfqStateReceived || isRfqStateExpired ? rfqPrice : price
 
     return (
       <SpotTileWrapperWithPlatform>
