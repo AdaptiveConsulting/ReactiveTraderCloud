@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Content, Fill, Header, Root, OpenFinLogoContainer } from './styled'
+import { Fill, Header, Root, OpenFinLogoContainer } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
 import { usePlatform } from 'rt-components'
 
@@ -21,13 +21,11 @@ interface Props {
 }
 const StatusBar: FC<Props> = ({ fillSize = 1, children }) => (
   <Root>
-    <Content>
-      <Header>
-        <Fill size={fillSize} />
-        <LogoWithPlatform />
-        {children}
-      </Header>
-    </Content>
+    <Header>
+      <Fill size={fillSize} />
+      <LogoWithPlatform />
+      {children}
+    </Header>
   </Root>
 )
 

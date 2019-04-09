@@ -11,11 +11,6 @@ export const Header = styled.div`
   padding: 0 1rem;
 `
 
-export const Content = styled.div`
-  transform-origin: center left;
-  transition: transform ${({ theme }) => theme.motion.duration}ms ease;
-`
-
 export const Root = styled.div`
   width: 100%;
   min-height: ${headerHeight};
