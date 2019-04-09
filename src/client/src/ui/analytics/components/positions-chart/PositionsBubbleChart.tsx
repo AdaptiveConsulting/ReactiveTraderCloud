@@ -54,7 +54,6 @@ export class PositionsBubbleChart extends Component<
   componentDidMount() {
     this.redrawChart()
     this.updateNodesFromPropsData(this.props)
-    // console.log(this.props)
   }
 
   componentWillReceiveProps(nextProps: PositionsBubbleChartProps) {
