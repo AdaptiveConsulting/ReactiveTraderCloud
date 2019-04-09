@@ -43,6 +43,7 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
 }) => (
   <Loadable
     onMount={onMount}
+    minHeight={11}
     status={pricingStatus}
     render={() => (
       <TileSwitch
