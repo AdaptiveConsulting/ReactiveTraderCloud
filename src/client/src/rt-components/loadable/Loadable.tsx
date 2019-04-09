@@ -38,11 +38,9 @@ export default class Loadable extends Component<Props> {
 
   render() {
     const { status, render, message = 'Disconnected', minWidth } = this.props
-
     if (status === ServiceConnectionStatus.CONNECTED) {
       return <Content minWidth={`${minWidth}rem`}>{render()}</Content>
     }
-
     return (
       <LoadableStyle minWidth={`${minWidth}rem`}>
         {status === ServiceConnectionStatus.CONNECTING ? (
