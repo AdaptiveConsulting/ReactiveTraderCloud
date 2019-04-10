@@ -2,8 +2,8 @@ import { Flex } from 'rt-components'
 import { styled } from 'rt-theme'
 
 export const Notification = styled('div')`
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background-color: ${props => props.theme.core.lightBackground};
   color: ${props => props.theme.core.textColor};
   user-select: none;
@@ -43,8 +43,4 @@ export const Close = styled('div')`
   position: absolute;
   bottom: 0;
   right: 0;
-
-  i {
-    cursor: pointer;
-  }
 `
