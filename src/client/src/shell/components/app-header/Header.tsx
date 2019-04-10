@@ -30,7 +30,7 @@ class Header extends React.Component {
 const ThemeControl = () => {
   const { themeName, toggleTheme } = useTheme()
   return (
-    <IconButton onClick={toggleTheme} type={themeName || 'primary'}>
+    <IconButton onClick={toggleTheme}>
       <i className={`fa${themeName === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
     </IconButton>
   )
@@ -82,7 +82,8 @@ const IconButton = styled.button`
 
   cursor: pointer;
 
-  transition: background-color ${({ theme }) => theme.motion.duration}ms ${({ theme }) => theme.motion.easing};
+  transition: background-color ${({ theme }) => theme.motion.duration}ms
+    ${({ theme }) => theme.motion.easing};
 
   &:hover {
     background-color: ${({ theme }) => theme.button.secondary.active.backgroundColor};
