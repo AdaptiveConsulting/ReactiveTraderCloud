@@ -54,14 +54,25 @@ const fetchRfqQuote = (payload: RfqRequest) => ({
 export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     ofType<Action, RfqRequestActionType>(TILE_ACTION_TYPES.RFQ_REQUEST),
-    mergeMap(action =>
+    mergeMap(action => {
+      const cancel$ = action$.pipe(
+        ofType<Action, RfqCancelActionType>(TILE_ACTION_TYPES.RFQ_CANCEL),
+        filter(
+          cancelAction =>
+            cancelAction.payload.currencyPair.symbol === action.payload.currencyPair.symbol,
+        ),
+      )
       // TODO Subscribe to Pricing service instead of passing the current price
       // to that call? Same with currencyPairs?
-      rfqService(action.payload, state$.value.currencyPairs, state$.value.spotTilesData).pipe(
+      return rfqService(
+        action.payload,
+        state$.value.currencyPairs,
+        state$.value.spotTilesData,
+      ).pipe(
         map(response => fetchRfqQuote(response)),
-        takeUntil(action$.pipe(ofType<Action, RfqCancelActionType>(TILE_ACTION_TYPES.RFQ_CANCEL))),
-      ),
-    ),
+        takeUntil(cancel$),
+      )
+    }),
   )
 
 export const rfqReceivedEpic: ApplicationEpic = action$ =>
