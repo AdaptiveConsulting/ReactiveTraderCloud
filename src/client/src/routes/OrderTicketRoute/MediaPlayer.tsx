@@ -2,10 +2,10 @@ import * as React from 'react'
 
 export interface Props {
   src?: Blob | string
-  at?: number
+  at: number
+  rate: number
   play?: boolean
   loop?: boolean
-  rate?: number
   context: AudioContext
   output?: AudioNode
   children?: (state: State) => React.ReactNode
@@ -18,7 +18,7 @@ export interface State {
     position: number
     pausedAt: number
   }
-  source?: AudioBufferSourceNode
+  source: AudioBufferSourceNode | null
 }
 
 class MediaPlayer extends React.PureComponent<Props, State> {
@@ -33,6 +33,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
       position: this.props.at,
       pausedAt: 0,
     },
+    source: null,
   }
 
   static getDerivedStateFromProps(
@@ -86,7 +87,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
   async componentDidMount() {
     const { src, context } = this.props
 
-    if (this.state.buffer == null) {
+    if (this.state.buffer == null && !!src) {
       const arrayBuffer: ArrayBuffer = !(src instanceof Blob)
         ? await (await fetch(src, { cache: 'force-cache' })).arrayBuffer()
         : await new Promise<ArrayBuffer>((resolve, reject) =>
@@ -109,7 +110,7 @@ class MediaPlayer extends React.PureComponent<Props, State> {
     }
   }
 
-  unmounting: boolean
+  unmounting: boolean = false
   componentWillUnmount() {
     this.unmounting = true
 

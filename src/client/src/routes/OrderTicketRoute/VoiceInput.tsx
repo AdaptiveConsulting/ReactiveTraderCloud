@@ -80,7 +80,10 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     sessionInstance: null,
   }
 
-  static getDerivedStateFromProps({ context, source, requestSession }: Props, state: State): Partial<State> {
+  static getDerivedStateFromProps(
+    { context, source, requestSession }: Props,
+    state: State,
+  ): Partial<State> {
     let next: any = null
     const { analyser, blob, destination }: any = state
 
@@ -132,7 +135,12 @@ export class VoiceInput extends React.PureComponent<Props, State> {
       this.setState(snapshot)
     }
 
-    if (prevProps.requestSession && prevState.sessionActive && this.props.requestSession && !this.state.sessionActive) {
+    if (
+      prevProps.requestSession &&
+      prevState.sessionActive &&
+      this.props.requestSession &&
+      !this.state.sessionActive
+    ) {
       this.onSessionEnd()
     }
   }
@@ -263,6 +271,8 @@ export class VoiceInput extends React.PureComponent<Props, State> {
                   // Mount sample audio for testing
                   <MediaPlayer
                     key={sessionCount}
+                    at={0}
+                    rate={1}
                     context={context}
                     output={destination}
                     play={sessionInstance}
@@ -416,7 +426,8 @@ export const Formant = styled.div<{ sessionInstance: boolean }>`
   height: 2rem;
   width: 2rem;
   [fill] {
-    fill: ${({ sessionInstance, theme }) => (sessionInstance ? theme.accents.dominant.base : theme.secondary.base)};
+    fill: ${({ sessionInstance, theme }) =>
+      sessionInstance ? theme.accents.dominant.base : theme.secondary.base};
   }
 `
 
@@ -475,10 +486,14 @@ const AnimatedText = styled.span<{ accent?: AccentName }>`
   `} infinite 3s linear;
 `
 
-const StatusText: React.FC<{ accent?: AccentName; toggle: () => void }> = ({ accent, children, toggle }) => (
+const StatusText: React.FC<{ accent?: AccentName; toggle: () => void }> = ({
+  accent,
+  children,
+  toggle,
+}) => (
   <Input
     onClick={toggle}
-    fg={t => accent ? t.accents[accent].base : t.primary[2]}
+    fg={t => (accent ? t.accents[accent].base : t.primary[2])}
     fontSize={0.625}
     letterSpacing={1}
     textTransform="uppercase"
