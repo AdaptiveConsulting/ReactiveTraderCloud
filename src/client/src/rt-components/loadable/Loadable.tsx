@@ -44,7 +44,6 @@ export default class Loadable extends Component<Props> {
     if (status === ServiceConnectionStatus.CONNECTED) {
       return <Content minWidth={`${minWidth}rem`}>{render()}</Content>
     }
-
     return (
       <LoadableStyle minWidth={`${minWidth}rem`} minHeight={`${minHeight}rem`}>
         {status === ServiceConnectionStatus.CONNECTING ? (
