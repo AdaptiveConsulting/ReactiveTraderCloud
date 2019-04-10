@@ -1,7 +1,17 @@
 import moment from 'moment'
 import React, { FC } from 'react'
 import { Direction, Trade, TradeStatus } from 'rt-types'
-import { Bottom, MetaContainer, MetaTitle, Notification, Status, Top, Traded } from './styled'
+import {
+  Bottom,
+  CloseContainer,
+  Close,
+  MetaContainer,
+  MetaTitle,
+  Notification,
+  Status,
+  Top,
+  Traded,
+} from './styled'
 
 export interface Props {
   trade: Trade
@@ -48,11 +58,11 @@ const TradeNotification: FC<Props> = ({
           <MetaTitle>Trade Id</MetaTitle>
           <div>{trade.tradeId}</div>
         </MetaContainer>
-        {/* <CloseContainer>
+        <CloseContainer>
           <Close>
             <i className="fas fa-share fa-lg" onClick={dismissNotification} />
           </Close>
-        </CloseContainer> */}
+        </CloseContainer>
       </Bottom>
     </Notification>
   )
