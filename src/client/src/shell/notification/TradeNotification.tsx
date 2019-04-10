@@ -64,7 +64,7 @@ const TradeNotification: FC<Props> = ({
         </MetaContainer>
         <CloseContainer>
           <Close onClick={dismissNotification}>
-            <FontAwesomeIcon className="fas fa-share fa-lg" icon="share" />
+            <FontAwesomeIcon icon="share" size="2x" />
           </Close>
         </CloseContainer>
       </Bottom>
