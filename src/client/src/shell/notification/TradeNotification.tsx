@@ -1,6 +1,10 @@
 import moment from 'moment'
 import React, { FC } from 'react'
 import { Direction, Trade, TradeStatus } from 'rt-types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faShare } from '@fortawesome/free-solid-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core'
+
 import {
   Bottom,
   CloseContainer,
@@ -12,7 +16,7 @@ import {
   Top,
   Traded,
 } from './styled'
-
+library.add(faShare)
 export interface Props {
   trade: Trade
   dismissNotification: () => void
@@ -59,8 +63,8 @@ const TradeNotification: FC<Props> = ({
           <div>{trade.tradeId}</div>
         </MetaContainer>
         <CloseContainer>
-          <Close>
-            <i className="fas fa-share fa-lg" onClick={dismissNotification} />
+          <Close onClick={dismissNotification}>
+            <FontAwesomeIcon className="fas fa-share fa-lg" icon="share" />
           </Close>
         </CloseContainer>
       </Bottom>
@@ -68,4 +72,18 @@ const TradeNotification: FC<Props> = ({
   )
 }
 
+TradeNotification.defaultProps = {
+  trade: {
+    tradeId: 0,
+    traderName: '',
+    symbol: '',
+    notional: 0,
+    dealtCurrency: '',
+    direction: '',
+    spotRate: 0,
+    tradeDate: new Date(),
+    valueDate: new Date(),
+    status: '',
+  },
+}
 export default TradeNotification
