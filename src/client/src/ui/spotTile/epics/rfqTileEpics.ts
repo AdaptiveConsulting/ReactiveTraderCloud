@@ -22,7 +22,7 @@ type RfqReceivedTimerCancellableType =
   | RfqResetActionType
 
 const EXPIRATION_TIMEOUT_MS = 10000
-
+const MAX_DELAY = 5000
 const rfqService = (
   r: RfqRequest,
   currencyPairs: CurrencyPairState,
@@ -43,7 +43,7 @@ const rfqService = (
       bid: bid + addSubNumber,
     },
     timeout: EXPIRATION_TIMEOUT_MS,
-  }).pipe(delay(Math.random() * (10000 - 0)))
+  }).pipe(delay(Math.random() * (MAX_DELAY - 0)))
 }
 
 const fetchRfqQuote = (payload: RfqRequest) => ({
