@@ -1,1 +1,1 @@
-export { default } from './StatusBarContainer'
+export { default } from './StatusBar'

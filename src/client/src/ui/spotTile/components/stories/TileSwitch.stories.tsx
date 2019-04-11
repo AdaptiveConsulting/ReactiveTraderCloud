@@ -4,11 +4,31 @@ import { boolean, select } from '@storybook/addon-knobs'
 import { stories, Story, Centered } from './Initialise.stories'
 import TileSwitch from '../TileSwitch'
 import { ServiceConnectionStatus } from 'rt-types'
-import { currencyPair, spotTileData, tradeExecuted, tradeRejected } from '../test-resources/spotTileProps'
+import {
+  currencyPair,
+  spotTileData,
+  tradeExecuted,
+  tradeRejected,
+} from '../test-resources/spotTileProps'
 
 const executeTrade = action('executeTrade')
-
 const onNotificationDismissedClick = action('Notification dismissed')
+const setTradingMode = action('setTradingMode')
+const request = action('request')
+const requote = action('requote')
+const reject = action('reject')
+const cancel = action('cancel')
+const expired = action('expired')
+const reset = action('reset')
+
+const rfq = {
+  request,
+  requote,
+  reject,
+  cancel,
+  expired,
+  reset,
+}
 
 const options = {
   Rejected: 'rejected',
@@ -39,6 +59,8 @@ stories.add('Booking', () => (
           spotTileData={{ ...spotTileData, isTradeExecutionInFlight: true }}
           executeTrade={executeTrade}
           onPopoutClick={action('On popout click')}
+          setTradingMode={setTradingMode}
+          rfq={rfq}
         />
       </div>
     </Centered>
@@ -62,6 +84,8 @@ stories.add('Executed', () => (
           spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeExecuted }}
           executeTrade={executeTrade}
           onPopoutClick={action('On popout click')}
+          setTradingMode={setTradingMode}
+          rfq={rfq}
         />
       </div>
     </Centered>
@@ -85,6 +109,8 @@ stories.add('Rejected', () => (
           spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeRejected }}
           executeTrade={executeTrade}
           onPopoutClick={action('On popout click')}
+          setTradingMode={setTradingMode}
+          rfq={rfq}
         />
       </div>
     </Centered>
@@ -114,6 +140,8 @@ stories.add('Switch', () => {
             }}
             executeTrade={executeTrade}
             onPopoutClick={action('On popout click')}
+            setTradingMode={setTradingMode}
+            rfq={rfq}
           />
         </div>
       </Centered>

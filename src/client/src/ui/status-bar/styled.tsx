@@ -11,13 +11,6 @@ export const Header = styled.div`
   padding: 0 1rem;
 `
 
-const expandedHeight = `calc(-100% + ${headerHeight})`
-export const Content = styled.div<{ expand?: boolean }>`
-  transform-origin: center left;
-  transition: transform ${({ theme }) => theme.motion.duration}ms ease;
-  transform: translateY(${props => (props.expand ? expandedHeight : 0)});
-`
-
 export const Root = styled.div`
   width: 100%;
   min-height: ${headerHeight};

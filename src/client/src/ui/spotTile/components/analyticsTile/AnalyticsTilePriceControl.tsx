@@ -18,13 +18,26 @@ const AnalyticsPriceControlHeader = styled.div`
   justify-content: space-between;
 `
 
-const AnalyticsPriceControl: React.SFC<Props> = ({ currencyPair, priceData, executeTrade, disabled }) => {
+const AnalyticsPriceControl: React.SFC<Props> = ({
+  currencyPair,
+  priceData,
+  executeTrade,
+  disabled,
+}) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
-  const spread = getSpread(priceData.bid, priceData.ask, currencyPair.pipsPosition, currencyPair.ratePrecision)
+  const spread = getSpread(
+    priceData.bid,
+    priceData.ask,
+    currencyPair.pipsPosition,
+    currencyPair.ratePrecision,
+  )
   return (
     <AnalyticsPriceControlHeader>
-      <PriceMovement priceMovementType={priceData.priceMovementType} spread={spread.formattedValue} />
+      <PriceMovement
+        priceMovementType={priceData.priceMovementType}
+        spread={spread.formattedValue}
+      />
       <div>
         <PriceButton
           handleClick={() => executeTrade(Direction.Sell, priceData.bid)}

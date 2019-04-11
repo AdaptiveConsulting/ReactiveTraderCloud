@@ -1,5 +1,5 @@
 import { capitalize } from 'lodash'
-import React, { SFC } from 'react'
+import React, { FC } from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
@@ -12,7 +12,7 @@ import { styled } from 'rt-theme'
 
 import { ServiceConnectionStatus } from 'rt-types'
 import StatusBar from './StatusBar'
-
+import { StatusButton } from '../status-connection/StatusButton'
 const stories = storiesOf('Status Bar', module)
 
 stories.addDecorator(withKnobs)
@@ -27,7 +27,7 @@ const generateServiceStatuses = (status: ServiceConnectionStatus) =>
   ['blotter', 'reference', 'execution', 'pricing', 'analytics'].map(serviceType => ({
     serviceType,
     connectionStatus: status,
-    connectedInstanceCount: 0,
+    connectedInstanceCount: 1,
   }))
 
 const connectionState = {
@@ -49,26 +49,29 @@ const connectionState = {
 
 Object.entries(connectionState).forEach(([key, state]) =>
   stories.add(capitalize(key), () => {
-    // const expanded = boolean('expanded', false)
     return (
-      <Root state={state}>
-        <StatusBar connectionStatus={state.status} services={state.services} />
+      <Root>
+        <StatusBar fillSize={0.5}>
+          <StatusButton connectionStatus={state.status} services={state.services} />
+        </StatusBar>
       </Root>
     )
   }),
 )
 
-const Root: SFC<{ state: {} }> = ({ children, state = {} }) => (
-  <Provider store={createStore(() => state)}>
+const Centered = styled('div')`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const store = createStore(() => {})
+const Root: FC = ({ children }) => (
+  <Provider store={store}>
     <Story>
-      <Container>{children}</Container>
+      <Centered>{children}</Centered>
     </Story>
   </Provider>
 )
-
-const Container = styled.div`
-  display: flex;
-  align-items: flex-end;
-  height: 50vh;
-  width: 100%;
-`

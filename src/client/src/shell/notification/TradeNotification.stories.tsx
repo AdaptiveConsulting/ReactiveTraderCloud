@@ -1,27 +1,34 @@
 import { action } from '@storybook/addon-actions'
-import { select } from '@storybook/addon-knobs'
+import { capitalize } from 'lodash'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { Story } from 'rt-storybook'
 import { styled } from 'rt-theme'
 import TradeNotification, { Props } from './TradeNotification'
+import { TradeStatus } from 'rt-types'
 
 const stories = storiesOf('Trade Notification', module)
 
-const props: Props = {
+const Centered = styled('div')`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const NotificationContainer = styled('div')`
+  width: 320px;
+  height: 120px;
+`
+
+const getPropsByStatus: (status: TradeStatus) => Props = status => ({
   trade: {
     dealtCurrency: 'EUR',
     direction: 'Sell',
     notional: 1000000,
     spotRate: 133.303,
-    status: select(
-      'Status',
-      {
-        Rejected: 'rejected',
-        Done: 'done',
-      },
-      'done',
-    ),
+    status,
     symbol: 'EURJPY',
     tradeDate: new Date('Thu Jul 26 2018 14:46:12 GMT-0400 (Eastern Daylight Time)'),
     tradeId: 2356,
@@ -30,27 +37,20 @@ const props: Props = {
     termsCurrency: 'JPY',
   },
   dismissNotification: action('Dismiss notification'),
-}
+})
+const tradeStatuses = [TradeStatus.Done, TradeStatus.Rejected]
 
-const Centered = styled('div')`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: grey;
-`
-
-const NotificationContainer = styled('div')`
-  width: 360px;
-`
-
-stories.add('Default', () => (
-  <Story>
-    <Centered>
-      <NotificationContainer>
-        <TradeNotification {...props} />
-      </NotificationContainer>
-    </Centered>
-  </Story>
-))
+tradeStatuses.map(tradeStatus =>
+  stories.add(capitalize(tradeStatus), () => {
+    const props = getPropsByStatus(tradeStatus)
+    return (
+      <Story>
+        <Centered>
+          <NotificationContainer>
+            <TradeNotification {...props} />
+          </NotificationContainer>
+        </Centered>
+      </Story>
+    )
+  }),
+)

@@ -14,6 +14,7 @@ import {
 } from './styled'
 import { Props } from '../types'
 import TileHeader from '../TileHeader'
+import { getConstsFromRfqState } from '../../model/spotTileUtils'
 
 const AnalyticsWrapperWithPlatform: FC = props => {
   const platform = usePlatform()
@@ -23,17 +24,22 @@ class AnalyticsTile extends React.PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { price, historicPrices },
+      spotTileData: { price, historicPrices, rfqState },
       notional,
       updateNotional,
+      resetNotional,
       executeTrade,
       children,
-      setDisabledTradingState,
-      disabled,
+      tradingDisabled,
+      inputDisabled,
+      inputValidationMessage,
     } = this.props
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
+    const { isRfqStateExpired, isRfqStateCanRequest } = getConstsFromRfqState(rfqState)
+    const showResetButton = isRfqStateCanRequest || isRfqStateExpired
+
     return (
       <AnalyticsWrapperWithPlatform>
         <AnalyticsTileStyle className="spot-tile">
@@ -47,15 +53,17 @@ class AnalyticsTile extends React.PureComponent<Props> {
                 notional={notional}
                 currencyPairSymbol={currencyPair.base}
                 updateNotional={updateNotional}
-                setDisabledTradingState={setDisabledTradingState}
-                isTradingDisabled={disabled}
+                resetNotional={resetNotional}
+                validationMessage={inputValidationMessage}
+                showResetButton={showResetButton}
+                disabled={inputDisabled}
               />
             </GraphNotionalWrapper>
             <AnalyticsPriceControl
               executeTrade={executeTrade}
               priceData={price}
               currencyPair={currencyPair}
-              disabled={disabled}
+              disabled={tradingDisabled}
             />
           </AnalyticsTileContent>
         </AnalyticsTileStyle>

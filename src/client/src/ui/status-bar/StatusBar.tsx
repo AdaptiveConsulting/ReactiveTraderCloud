@@ -1,12 +1,9 @@
-import React, { Component } from 'react'
-
-import { ConnectionState } from 'rt-system'
-import { ServiceStatus } from 'rt-types'
-import { Content, Fill, Header, Root, OpenFinLogoContainer } from './styled'
+import React, { FC } from 'react'
+import { Fill, Header, Root, OpenFinLogoContainer } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
 import { usePlatform } from 'rt-components'
 
-const LogoWithPlatform: React.FC = () => {
+const LogoWithPlatform: FC = () => {
   const platform = usePlatform()
   return (
     <div>
@@ -18,25 +15,17 @@ const LogoWithPlatform: React.FC = () => {
     </div>
   )
 }
-
-export default class StatusBar extends Component<
-  {
-    connectionStatus: ConnectionState
-    services: ServiceStatus[]
-  },
-  {}
-> {
-  render() {
-    return (
-      <Root>
-        <Content expand={false}>
-          <Header>
-            <Fill />
-            <LogoWithPlatform />
-            {this.props.children}
-          </Header>
-        </Content>
-      </Root>
-    )
-  }
+interface Props {
+  fillSize?: number
 }
+const StatusBar: FC<Props> = ({ fillSize = 1, children }) => (
+  <Root>
+    <Header>
+      <Fill size={fillSize} />
+      <LogoWithPlatform />
+      {children}
+    </Header>
+  </Root>
+)
+
+export default StatusBar

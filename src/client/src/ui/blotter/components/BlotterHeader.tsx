@@ -5,11 +5,12 @@ import { PopoutIcon } from 'rt-components'
 import { styled } from 'rt-theme'
 import { columnDefinitions } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
-import ExcelLauncher from './toolbar/ExcelLauncher'
+import ExcelButton from './toolbar/ExcelButton'
 
 interface Props {
   canPopout: boolean
   onPopoutClick: () => void
+  onExportToExcelClick: () => void
   gridApi: GridApi | null
 }
 
@@ -53,14 +54,14 @@ export default class BlotterHeader extends Component<Props, State> {
   }
 
   render() {
-    const { canPopout, onPopoutClick } = this.props
+    const { canPopout, onPopoutClick, onExportToExcelClick } = this.props
     const { quickFilterText } = this.state
 
     return (
       <BlotterHeaderStyle>
         <BlotterLeft>Executed Trades</BlotterLeft>
         <BlotterRight>
-          <ExcelLauncher />
+          <ExcelButton onClick={onExportToExcelClick} />
           <BlotterToolbar
             isQuickFilterApplied={quickFilterText.length !== 0}
             quickFilterChangeHandler={this.quickFilterChangeHandler}

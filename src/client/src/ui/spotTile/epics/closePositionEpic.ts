@@ -17,7 +17,7 @@ interface Msg {
 
 type Message = [Msg, string]
 
-export function createTrade(msg: Msg, priceData: SpotTileData, currencyPair: CurrencyPair) {
+function createTrade(msg: Msg, priceData: SpotTileData, currencyPair: CurrencyPair) {
   const direction = msg.amount > 0 ? Direction.Sell : Direction.Buy
   const notional = Math.abs(msg.amount)
 

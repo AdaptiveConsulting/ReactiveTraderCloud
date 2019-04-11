@@ -7,8 +7,15 @@ import { GlobalState } from 'StoreTypes'
 import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
 import { ExecuteTradeRequest } from './model/executeTradeRequest'
-import { selectCurrencyPair, selectExecutionStatus, selectPricingStatus, selectSpotTileData } from './selectors'
+import {
+  selectCurrencyPair,
+  selectExecutionStatus,
+  selectPricingStatus,
+  selectSpotTileData,
+} from './selectors'
 import { TileViews } from '../workspace/workspaceHeader'
+import { RfqRequest, RfqCancel, RfqRequote, RfqExpired, RfqReject } from './model/rfqRequest'
+import { TradingMode } from './components/types'
 
 export interface SpotTileContainerOwnProps {
   id: string
@@ -22,7 +29,9 @@ type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 
 type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToProps>>
 
-type SpotTileContainerProps = SpotTileContainerOwnProps & SpotTileContainerStateProps & SpotTileContainerDispatchProps
+type SpotTileContainerProps = SpotTileContainerOwnProps &
+  SpotTileContainerStateProps &
+  SpotTileContainerDispatchProps
 
 const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   onMount,
@@ -34,17 +43,35 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
 }) => (
   <Loadable
     onMount={onMount}
+    minHeight={11}
     status={pricingStatus}
-    render={() => <TileSwitch key={id} canPopout={tearable && !Environment.isRunningInIE() && !tornOff} {...props} />}
+    render={() => (
+      <TileSwitch
+        key={id}
+        canPopout={tearable && !Environment.isRunningInIE() && !tornOff}
+        {...props}
+      />
+    )}
     message={`${id} Disconnected`}
   />
 )
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
   onMount: () => dispatch(SpotTileActions.subscribeToSpotTile(ownProps.id)),
-  executeTrade: (tradeRequestObj: ExecuteTradeRequest) => dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
+  executeTrade: (tradeRequestObj: ExecuteTradeRequest) =>
+    dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
   displayCurrencyChart: () => dispatch(SpotTileActions.displayCurrencyChart(ownProps.id)),
   onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id)),
+  setTradingMode: (tradingMode: TradingMode) =>
+    dispatch(SpotTileActions.setTradingMode(tradingMode)),
+  rfq: {
+    request: (rfqActionObj: RfqRequest) => dispatch(SpotTileActions.rfqRequest(rfqActionObj)),
+    cancel: (rfqActionObj: RfqCancel) => dispatch(SpotTileActions.rfqCancel(rfqActionObj)),
+    reject: (rfqActionObj: RfqReject) => dispatch(SpotTileActions.rfqReject(rfqActionObj)),
+    requote: (rfqActionObj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(rfqActionObj)),
+    expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
+    reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
+  },
 })
 
 const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({

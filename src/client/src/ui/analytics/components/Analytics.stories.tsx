@@ -4,10 +4,16 @@ import { Story } from 'rt-storybook'
 import { styled } from 'rt-theme'
 
 import '../globals/index'
-import initialProps, { analyticsLineChartModel, positionsChartModel } from '../test-resources/initialProps'
+import initialProps, {
+  analyticsLineChartModel,
+  positionsChartModel,
+} from '../test-resources/initialProps'
 import Analytics from './Analytics'
 import { AnalyticsLineChart } from './analyticsLineChart'
 import { AnalyticsBarChart } from './analyticsBarChart'
+import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
+import { AnalyticsStyle } from './styled'
+
 const stories = storiesOf('Analytics', module)
 
 const Centered = styled('div')`
@@ -17,20 +23,16 @@ const Centered = styled('div')`
   align-items: center;
   justify-content: center;
 `
-export const AnalyticsBarStyle = styled.div`
-  border-radius: 0.25rem;
-  flex: 1;
-  width: 90%;
-  height: 20%;
-  position: relative;
-  padding: 1rem;
-  font-size: 1rem;
-  margin: auto;
-`
 
-const Div = styled('div')`
+const Wrapper = styled('div')`
   width: 400px;
   height: 300px;
+`
+
+const BubbleChartWrapper = styled(AnalyticsStyle)`
+  text-anchor: middle;
+  overflow: hidden;
+  background-color: ${({ theme }) => theme.core.darkBackground};
 `
 
 stories
@@ -46,18 +48,30 @@ stories
   .add('AnalyticsLineChart', () => (
     <Story>
       <Centered>
-        <Div>
+        <Wrapper>
           <AnalyticsLineChart model={analyticsLineChartModel} />
-        </Div>
+        </Wrapper>
+      </Centered>
+    </Story>
+  ))
+  .add('BubbleChart', () => (
+    <Story>
+      <Centered>
+        <BubbleChartWrapper>
+          <PositionsBubbleChart
+            data={initialProps.positionsChartModel.seriesData}
+            currencyPairs={initialProps.currencyPairs}
+          />
+        </BubbleChartWrapper>
       </Centered>
     </Story>
   ))
   .add('AnalyticsBarChart', () => (
     <Story>
       <Centered>
-        <Div>
+        <Wrapper>
           <AnalyticsBarChart chartData={positionsChartModel.seriesData} />
-        </Div>
+        </Wrapper>
       </Centered>
     </Story>
   ))

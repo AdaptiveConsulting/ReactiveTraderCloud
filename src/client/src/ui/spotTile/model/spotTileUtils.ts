@@ -1,11 +1,16 @@
 import { Direction } from 'rt-types'
 import { Rate } from './rate'
+import { RfqState } from '../components/types'
 
 export const DEFAULT_NOTIONAL = 1000000
 
 export const SPOT_DATE_FORMAT = 'DD MMM'
 
-export function toRate(rawRate: number = 0, ratePrecision: number = 0, pipPrecision: number = 0): Rate {
+export function toRate(
+  rawRate: number = 0,
+  ratePrecision: number = 0,
+  pipPrecision: number = 0,
+): Rate {
   const rateString = rawRate.toFixed(ratePrecision)
   const priceParts = rateString.split('.')
   const wholeNumber = priceParts[0]
@@ -21,7 +26,12 @@ export function toRate(rawRate: number = 0, ratePrecision: number = 0, pipPrecis
   }
 }
 
-export function getSpread(bid: number = 0, ask: number = 0, pipsPosition: number = 0, ratePrecision: number = 0) {
+export function getSpread(
+  bid: number = 0,
+  ask: number = 0,
+  pipsPosition: number = 0,
+  ratePrecision: number = 0,
+) {
   const spread = (ask - bid) * Math.pow(10, pipsPosition)
   const toFixedPrecision = spread.toFixed(ratePrecision - pipsPosition)
   return {
@@ -52,3 +62,11 @@ export const createTradeRequest = (tradeRequestObj: TradeRequest) => {
     DealtCurrency: tradeRequestObj.currencyBase,
   }
 }
+
+export const getConstsFromRfqState = (rfqState: RfqState) => ({
+  isRfqStateReceived: rfqState === 'received',
+  isRfqStateExpired: rfqState === 'expired',
+  isRfqStateCanRequest: rfqState === 'canRequest',
+  isRfqStateRequested: rfqState === 'requested',
+  isRfqStateNone: rfqState === 'none',
+})

@@ -67,6 +67,8 @@ export const SpotTileWrapper = styled(TileWrapperBase)<{ platform: PlatformAdapt
       : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
 `
 
+export const ReserveSpaceGrouping = styled.div``
+
 export const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme }) => theme.core.lightBackground};
   display: flex;

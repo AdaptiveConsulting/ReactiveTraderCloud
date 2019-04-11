@@ -1,12 +1,13 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { applicationDisconnected } from 'rt-actions'
+import { InteropTopics } from 'rt-components'
 import { CurrencyPairMap } from 'rt-types'
-import { ignoreElements, map, takeUntil, tap } from 'rxjs/operators'
+import { EMPTY } from 'rxjs'
+import { ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
+
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import { SpotPriceTick } from '../model/spotPriceTick'
-import { EMPTY } from 'rxjs'
 
 const { priceUpdateAction } = SpotTileActions
 type PriceUpdateAction = ReturnType<typeof priceUpdateAction>
@@ -24,16 +25,14 @@ export const publishPriceUpdateEpic: ApplicationEpic = (
   if (!platform.hasFeature('interop')) {
     return EMPTY
   }
+
   return action$.pipe(
     ofType<Action, PriceUpdateAction>(TILE_ACTION_TYPES.SPOT_PRICES_UPDATE),
-    map(action =>
-      referenceDataService$.pipe(
-        map(currencyMap => addRatePrecisionToPrice(currencyMap, action.payload)),
-        tap(enhancedPrice => platform.interop.publish('price-update', enhancedPrice)),
-        ignoreElements(),
-        takeUntil(action$.pipe(applicationDisconnected)),
-      ),
-    ),
+    withLatestFrom(referenceDataService$),
+    map(([action, currencyMap]) => addRatePrecisionToPrice(currencyMap, action.payload)),
+    tap(enhancedPrice => {
+      platform.interop.publish(InteropTopics.PriceUpdate, enhancedPrice)
+    }),
     ignoreElements(),
   )
 }

@@ -1,17 +1,19 @@
-import { ColDef } from 'ag-grid'
+import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid'
 import { Trade, TradeStatus } from 'rt-types'
 import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
 import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
-const dateRenderer = (trade: Trade, field: string) => {
-  return formatDate(trade[field], '%d-%b %H:%M:%S')
+import { capitalize } from 'lodash'
+
+const dateRenderer = (value: any) => {
+  return formatDate(value, '%d-%b %H:%M:%S')
 }
 
-const NotionalRenderer = (trade: Trade, field: string) => {
-  return numeral(trade[field]).format('0,0[.]00')
+const notionalRenderer = (value: any) => {
+  return numeral(value).format('0,0[.]00')
 }
-const UtcDateRenderer = (trade: Trade, field: string, format: string = '%d-%b-%Y') => {
-  return UtcFormatDate(trade[field], format)
+const utcDateRenderer = (value: any, format: string = '%d-%b-%Y') => {
+  return UtcFormatDate(value, format)
 }
 
 const getStatusCellClass = (trade: Trade) => {
@@ -72,7 +74,13 @@ export const COLUMN_FIELDS = [
   TRADER_NAME,
 ]
 
-export const columnDefinitions: ColDef[] = [
+interface ColCSVSettings {
+  includeInCSVExport?: boolean
+  /** Custom formatter for CSV cell values. If omitted will use default value */
+  csvCellValueFormatter?: (params: ProcessCellForExportParams) => string
+}
+
+export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
   {
     colId: STATUS_INDICATOR,
     headerName: '',
@@ -91,6 +99,7 @@ export const columnDefinitions: ColDef[] = [
     field: TRADE_ID,
     width: 100,
     filter: 'agNumberColumnFilter',
+    includeInCSVExport: true,
   },
   {
     colId: STATUS,
@@ -99,14 +108,18 @@ export const columnDefinitions: ColDef[] = [
     width: 110,
     cellClass: ({ data }) => getStatusCellClass(data),
     filterFramework: SetFilter,
+    includeInCSVExport: true,
+    csvCellValueFormatter: cell => capitalize(cell.value),
   },
   {
     colId: TRADE_DATE,
     headerName: 'Date',
     field: TRADE_DATE,
-    cellRenderer: ({ data }) => dateRenderer(data, 'tradeDate'),
+    cellRenderer: ({ data }) => dateRenderer(data['tradeDate']),
     width: 130,
     suppressFilter: true,
+    includeInCSVExport: true,
+    csvCellValueFormatter: cell => dateRenderer(cell.value),
   },
   {
     colId: DIRECTION,
@@ -114,6 +127,7 @@ export const columnDefinitions: ColDef[] = [
     field: DIRECTION,
     width: 110,
     filterFramework: SetFilter,
+    includeInCSVExport: true,
   },
   {
     colId: SYMBOL,
@@ -121,6 +135,7 @@ export const columnDefinitions: ColDef[] = [
     field: SYMBOL,
     width: 110,
     filterFramework: SetFilter,
+    includeInCSVExport: true,
   },
   {
     colId: DEALT_CURRENCY,
@@ -128,6 +143,7 @@ export const columnDefinitions: ColDef[] = [
     field: DEALT_CURRENCY,
     width: 110,
     filterFramework: SetFilter,
+    includeInCSVExport: true,
   },
   {
     colId: NOTIONAL,
@@ -137,7 +153,9 @@ export const columnDefinitions: ColDef[] = [
     headerClass: 'rt-header__numeric',
     width: 120,
     filter: 'agNumberColumnFilter',
-    cellRenderer: ({ data }) => NotionalRenderer(data, 'notional'),
+    cellRenderer: ({ data }) => notionalRenderer(data['notional']),
+    includeInCSVExport: true,
+    csvCellValueFormatter: cell => notionalRenderer(cell.value),
   },
   {
     colId: SPOT_RATE,
@@ -147,14 +165,17 @@ export const columnDefinitions: ColDef[] = [
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
     filter: 'agNumberColumnFilter',
+    includeInCSVExport: true,
   },
   {
     colId: VALUE_DATE,
     headerName: 'Value Date',
     field: VALUE_DATE,
-    cellRenderer: ({ data }) => UtcDateRenderer(data, 'valueDate'),
+    cellRenderer: ({ data }) => utcDateRenderer(data['valueDate']),
     width: 120,
     suppressFilter: true,
+    includeInCSVExport: true,
+    csvCellValueFormatter: cell => utcDateRenderer(cell.value),
   },
   {
     colId: TRADER_NAME,
@@ -162,6 +183,7 @@ export const columnDefinitions: ColDef[] = [
     headerName: 'Trader',
     width: 110,
     filterFramework: SetFilter,
+    includeInCSVExport: true,
   },
   {
     colId: 'empty',
@@ -170,5 +192,18 @@ export const columnDefinitions: ColDef[] = [
     width: 80,
     suppressSizeToFit: false,
     suppressFilter: true,
+    includeInCSVExport: true,
   },
 ]
+
+export const csvExportSettings: CsvExportParams = {
+  fileName: `RT-Blotter.csv`,
+  columnKeys: columnDefinitions.filter(c => c.includeInCSVExport).map(c => c.colId),
+  processCellCallback: cell => {
+    const colDef = columnDefinitions.find(c => c.colId === cell.column.getColId())
+    if (colDef && typeof colDef.csvCellValueFormatter === 'function') {
+      return colDef.csvCellValueFormatter(cell)
+    }
+    return cell.value
+  },
+}
