@@ -21,7 +21,7 @@ type RfqReceivedTimerCancellableType =
   | RfqExpiredActionType
   | RfqResetActionType
 
-const EXPIRATION_TIMEOUT_MS = 10000
+const EXPIRATION_TIMEOUT_MS = 5000
 
 const rfqService = (
   r: RfqRequest,
