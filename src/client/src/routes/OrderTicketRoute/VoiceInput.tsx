@@ -84,7 +84,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     { context, source, requestSession }: Props,
     state: State,
   ): Partial<State> {
-    let next: any = null
+    let next: State = null
     const { analyser, blob, destination }: any = state
 
     requestSession = Boolean(requestSession)
