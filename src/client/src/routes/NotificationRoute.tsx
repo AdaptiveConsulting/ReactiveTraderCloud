@@ -36,11 +36,8 @@ export class NotificationRoute extends React.Component<{}, State> {
     fin.desktop.InterApplicationBus.publish(InteropTopics.HighlightBlotter, this.state.message)
 
   render() {
-    let { message } = this.state
-    if (!message) {
-      message = { tradeNotification: undefined }
-    }
-    return (
+    const { message } = this.state
+    return !!message ? (
       <ThemeProvider>
         <TradeNotification
           trade={message.tradeNotification}
@@ -48,7 +45,7 @@ export class NotificationRoute extends React.Component<{}, State> {
           highlightTradeInBlotter={this.highlightTradeInBlotter}
         />
       </ThemeProvider>
-    )
+    ) : null
   }
 }
 

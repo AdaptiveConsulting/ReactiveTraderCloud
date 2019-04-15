@@ -5,11 +5,11 @@ export interface Props {
   gap: number
   height: number
   width: number
-  count?: number
-  scale?: number
-  radius?: number
-  analyser?: AnalyserNode
-  color?: (magnitude: number) => string
+  analyser: AnalyserNode
+  count: number
+  scale: number
+  radius: number
+  color: (magnitude: number) => string | null
 }
 
 interface State {
@@ -17,7 +17,7 @@ interface State {
     width: number
     height: number
     gap: number
-    style: {
+    style?: {
       width: string
       height: string
     }
@@ -31,8 +31,19 @@ interface State {
   data: Float32Array
 }
 
-class FormantBars extends Component<Props, Partial<State>> {
-  state: Partial<State> = {
+class FormantBars extends Component<Props, State> {
+  state: State = {
+    grid: {
+      width: 0,
+      height: 0,
+      gap: 0,
+    },
+    bar: {
+      width: 0,
+      height: 0,
+      radius: 0,
+      count: 0,
+    },
     data: new Float32Array(),
   }
 
@@ -45,7 +56,10 @@ class FormantBars extends Component<Props, Partial<State>> {
     scale: 2,
   }
 
-  static getDerivedStateFromProps({ analyser, count, scale, width, height, radius, gap }: Props, { data, bar }: State) {
+  static getDerivedStateFromProps(
+    { analyser, count, scale, width, height, radius, gap }: Props,
+    { data, bar }: State,
+  ) {
     let state = {}
 
     if (analyser.frequencyBinCount !== data.length) {
@@ -83,9 +97,9 @@ class FormantBars extends Component<Props, Partial<State>> {
     return state
   }
 
-  canvas: HTMLCanvasElement
+  canvas: HTMLCanvasElement | null = null
+  frameID: number = 0
   canvasScale = 2
-  frameID: number
 
   componentWillUnmount() {
     cancelAnimationFrame(this.frameID)
@@ -152,30 +166,32 @@ class FormantBars extends Component<Props, Partial<State>> {
     data = chunk(data, Math.round(data.length / bar.count)).map((vs, i, c) => _.sum(vs) / vs.length)
 
     if (canvas && canvas.getContext) {
-      const canvasCtx = canvas.getContext('2d')
+      const canvasCtx: CanvasRenderingContext2D | null = canvas.getContext('2d')
+      if (canvasCtx) {
+        canvasCtx.clearRect(0, 0, grid.width, grid.height)
+        data.forEach((value, i) => {
+          const x = i * (bar.width + grid.gap)
+          const magnitude = Math.max(2 * value, 3 * bar.width)
+          const height = Math.min(magnitude, bar.height * 1.5)
 
-      canvasCtx.clearRect(0, 0, grid.width, grid.height)
+          canvasCtx.fillStyle =
+            (color && color(clamp(magnitude / 200, 0, 1))) ||
+            'rgb(' +
+              Math.floor((0.75 + Math.sin(Math.PI * (magnitude / 50))) * magnitude + 95 / 2) +
+              ',148,245)'
 
-      data.forEach((value, i) => {
-        const x = i * (bar.width + grid.gap)
-        const magnitude = Math.max(2 * value, 3 * bar.width)
-        const height = Math.min(magnitude, bar.height * 1.5)
-
-        canvasCtx.fillStyle =
-          (color && color(clamp(magnitude / 200, 0, 1))) ||
-          'rgb(' + Math.floor((0.75 + Math.sin(Math.PI * (magnitude / 50))) * magnitude + 95 / 2) + ',148,245)'
-
-        roundRect({
-          ctx: canvasCtx,
-          x,
-          y: grid.height / 2 - height / 4,
-          width: bar.width,
-          height: height / 2,
-          radius: this.state.bar.radius,
-          fill: true,
-          stroke: false,
+          roundRect({
+            ctx: canvasCtx,
+            x,
+            y: grid.height / 2 - height / 4,
+            width: bar.width,
+            height: height / 2,
+            radius: this.state.bar.radius,
+            fill: true,
+            stroke: false,
+          })
         })
-      })
+      }
     }
   }
 

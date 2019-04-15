@@ -28,17 +28,14 @@ const TradeNotification: FC<Props> = ({
   dismissNotification,
   highlightTradeInBlotter,
 }) => {
-  const formattedValueDate = trade
-    ? moment(trade.valueDate)
-        .format('DD MMM')
-        .toUpperCase()
-    : ''
+  const formattedValueDate = moment(trade.valueDate)
+    .format('DD MMM')
+    .toUpperCase()
 
   const isDone = trade.status === TradeStatus.Done
 
   const tradeStatus = isDone ? '' : 'REJECTED'
   const direction = trade.direction === Direction.Buy ? 'Bought' : 'Sold'
-
   return (
     <Notification onClick={highlightTradeInBlotter}>
       <Top justifyContent="space-between">
@@ -72,18 +69,4 @@ const TradeNotification: FC<Props> = ({
   )
 }
 
-TradeNotification.defaultProps = {
-  trade: {
-    tradeId: 0,
-    traderName: '',
-    symbol: '',
-    notional: 0,
-    dealtCurrency: '',
-    direction: '',
-    spotRate: 0,
-    tradeDate: new Date(),
-    valueDate: new Date(),
-    status: '',
-  },
-}
 export default TradeNotification

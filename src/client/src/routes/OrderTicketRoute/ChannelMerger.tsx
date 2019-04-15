@@ -11,7 +11,7 @@ interface Props {
 }
 
 interface State {
-  destination?: AudioDestinationNode | ChannelMergerNode
+  destination: AudioDestinationNode | ChannelMergerNode
   inputs: AudioNode[]
   outputs: AudioNode[]
 }
@@ -30,7 +30,7 @@ class ChannelMerger extends PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps({ inputs, outputs }: Props, current: State) {
-    let next: State = { inputs: [], outputs: [] }
+    let next: State = { inputs: [], outputs: [], destination: current.destination }
 
     if (!isEqual(inputs, current.inputs)) {
       current.inputs.map((input: AudioNode) => input && input.disconnect(current.destination))
