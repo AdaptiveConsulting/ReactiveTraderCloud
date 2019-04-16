@@ -1,4 +1,4 @@
-import { RouteStyle, PlatformAdapter } from 'rt-components'
+import { RouteStyle } from 'rt-components'
 import { styled } from 'rt-theme'
 import { TopRightButton, BottomRightButton } from './TileControls'
 
@@ -58,13 +58,10 @@ export const TileWrapperBase = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 `
 
-export const SpotTileWrapper = styled(TileWrapperBase)<{ platform: PlatformAdapter }>`
+export const SpotTileWrapper = styled(TileWrapperBase)`
   position: relative;
   min-height: 11rem;
-  height: ${({ platform: { name } }) =>
-    name !== 'finsemble'
-      ? '100%'
-      : 'calc(100% - 25px)'}; // When loaded in Finsemble a 25px header is injected, this resets body to the correct height
+  height: 100%;
 `
 
 export const ReserveSpaceGrouping = styled.div``
