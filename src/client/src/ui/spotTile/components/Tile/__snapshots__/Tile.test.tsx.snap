@@ -2,7 +2,7 @@
 
 exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 <div
-  className="sc-eqIVtm sc-fAjcbJ koGyEZ"
+  className="sc-eqIVtm sc-fAjcbJ fjggro"
 >
   <div
     className="sc-jhAzac spot-tile sc-gisBJw iZBBaU"
@@ -157,7 +157,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 <div
-  className="sc-eqIVtm sc-fAjcbJ koGyEZ"
+  className="sc-eqIVtm sc-fAjcbJ fjggro"
 >
   <div
     className="sc-jhAzac spot-tile sc-gisBJw iZBBaU"
@@ -264,7 +264,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 <div
-  className="sc-eqIVtm sc-fAjcbJ koGyEZ"
+  className="sc-eqIVtm sc-fAjcbJ fjggro"
 >
   <div
     className="sc-jhAzac spot-tile sc-gisBJw iZBBaU"
@@ -437,7 +437,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ received 1`] = `
 <div
-  className="sc-eqIVtm sc-fAjcbJ koGyEZ"
+  className="sc-eqIVtm sc-fAjcbJ fjggro"
 >
   <div
     className="sc-jhAzac spot-tile sc-gisBJw iZBBaU"
@@ -592,7 +592,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 <div
-  className="sc-eqIVtm sc-fAjcbJ koGyEZ"
+  className="sc-eqIVtm sc-fAjcbJ fjggro"
 >
   <div
     className="sc-jhAzac spot-tile sc-gisBJw iZBBaU"
@@ -775,7 +775,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 
 exports[`Snapshot, state derived from props, defaults, RFQ none, should be able to excute 1`] = `
 <div
-  className="sc-eqIVtm sc-fAjcbJ koGyEZ"
+  className="sc-eqIVtm sc-fAjcbJ fjggro"
 >
   <div
     className="sc-jhAzac spot-tile sc-gisBJw iZBBaU"
@@ -930,7 +930,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 
 exports[`Snapshot, state derived from props, in trade 1`] = `
 <div
-  className="sc-eqIVtm sc-fAjcbJ koGyEZ"
+  className="sc-eqIVtm sc-fAjcbJ fjggro"
 >
   <div
     className="sc-jhAzac spot-tile sc-gisBJw iZBBaU"
