@@ -7,6 +7,7 @@ declare module 'audio-recorder-polyfill'
 interface Window {
   // types not currently available for FSBL - 1/24/2019
   FSBL: {
+    addEventListener: any
     UserNotification: any
     Clients: {
       RouterClient: any
