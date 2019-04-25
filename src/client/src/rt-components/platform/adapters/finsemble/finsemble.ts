@@ -35,7 +35,7 @@ export default class Finsemble extends BasePlatformAdapter {
                     options: {
                       icon: config.icon,
                       autoShow: true,
-                      frame: true,
+                      frame: false,
                     },
                     addToWorkspace: true,
                   },
