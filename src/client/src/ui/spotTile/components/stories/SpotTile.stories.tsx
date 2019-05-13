@@ -45,6 +45,45 @@ stories.add('SpotTile', () => (
   </Story>
 ))
 
+const noPriceData = {
+  ...spotTileData,
+  price: {
+    ask: 0,
+    bid: 0,
+    creationTimestamp: 31566750203189236,
+    mid: 0,
+    symbol: 'GBPJPY',
+    valueDate: '',
+  },
+}
+
+stories.add('SpotTile no price', () => (
+  <Story>
+    <Centered>
+      <div
+        style={{
+          width: '320px',
+          height: '150px',
+        }}
+      >
+        <SpotTile
+          currencyPair={currencyPair}
+          spotTileData={noPriceData}
+          executeTrade={executeTrade}
+          executionStatus={ServiceConnectionStatus.CONNECTED}
+          notional="1,000,000"
+          updateNotional={updateNotional}
+          resetNotional={resetNotional}
+          tradingDisabled={false}
+          inputValidationMessage={null}
+          inputDisabled={false}
+          rfq={rfqActions}
+        />
+      </div>
+    </Centered>
+  </Story>
+))
+
 stories.add('SpotTile in error', () => (
   <Story>
     <Centered>

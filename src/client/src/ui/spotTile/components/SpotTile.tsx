@@ -35,7 +35,7 @@ export default class SpotTile extends PureComponent<Props> {
       rfq,
     } = this.props
 
-    const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
+    const spotDate = price.valueDate && spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
     const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     const handleRfqRejected = () => rfq.reject({ currencyPair })
