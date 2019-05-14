@@ -3,6 +3,7 @@ import { styled } from 'rt-theme'
 export const OverflowScroll = styled.div`
   overflow-y: scroll;
   height: 100%;
+  scrollbar-width: thin;
 `
 
 export const Wrapper = styled.div`
