@@ -46,6 +46,7 @@ const PriceControls: React.FC<Props> = ({
   } = getConstsFromRfqState(rfqState)
 
   const isDisabled = !isRfqStateReceived && disabled
+  const hasPrice = Boolean(priceData.bid && priceData.ask)
 
   return (
     <PriceControlsStyle>
@@ -78,7 +79,7 @@ const PriceControls: React.FC<Props> = ({
       )}
       <PriceMovement
         priceMovementType={priceData.priceMovementType}
-        spread={spread.formattedValue}
+        spread={hasPrice ? spread.formattedValue : '-'}
       />
       {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired) && (
         <PriceButton
