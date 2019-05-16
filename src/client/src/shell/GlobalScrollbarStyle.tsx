@@ -10,6 +10,9 @@ export const css = memoize(
     body ::-webkit-scrollbar-thumb {
       background-color: ${color};
     }
+    body {
+      scrollbar-color: ${color} transparent;
+    }
 `,
   color => color,
 )
