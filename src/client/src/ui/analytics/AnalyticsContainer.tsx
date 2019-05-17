@@ -35,7 +35,12 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
     minWidth={22}
     onMount={onMount}
     status={status}
-    render={() => <Analytics {...props} canPopout={tearable && !Environment.isRunningInIE() && !tornOff} />}
+    render={() => (
+      <Analytics
+        {...props}
+        canPopout={tearable && !Environment.isRunningInIE() && !Environment.isPWA() && !tornOff}
+      />
+    )}
     message="Analytics Disconnected"
   />
 )
