@@ -48,7 +48,7 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
     render={() => (
       <TileSwitch
         key={id}
-        canPopout={tearable && !Environment.isRunningInIE() && !tornOff}
+        canPopout={tearable && !Environment.isRunningInIE() && !Environment.isPWA() && !tornOff}
         {...props}
       />
     )}
