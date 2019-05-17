@@ -1,12 +1,6 @@
 import { Browser, Finsemble, OpenFin, PlatformAdapter } from './adapters'
 
-/* 
-    No types currently publicly available for Finsemble 
-    https://documentation.chartiq.com/finsemble/tutorial-FAQ.html 
-*/
-let FSBL: any
-
-const isFinsemble = FSBL in window
+const isFinsemble = 'FSBL' in window
 const isOpenFin = typeof fin !== 'undefined'
 
 const getPlatform: () => PlatformAdapter = () => {
