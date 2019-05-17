@@ -26,6 +26,9 @@ export const LeftNavItemFirst = styled(LiStyle)`
   list-style-type: none;
   margin-right: 30px;
   font-size: 16px;
+  @media (max-width: 768px) {
+    margin-right: 5px;
+  }
 `
 
 export const NavItem = styled(LiStyle)<{ active: boolean }>`
