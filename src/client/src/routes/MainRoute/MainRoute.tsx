@@ -32,7 +32,7 @@ const store = configureStore(
 
 store.dispatch(ConnectionActions.connect())
 
-const APPLICATION_DISCONNECT = 15 * 60 * 1000
+const APPLICATION_DISCONNECT = 60 * 60 * 1000
 
 timer(APPLICATION_DISCONNECT).subscribe(() => {
   store.dispatch(ConnectionActions.disconnect())
@@ -44,7 +44,11 @@ export default class MainRoute extends Component {
     return (
       <React.Fragment>
         <Helmet>
-          <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          />
         </Helmet>
         <ThemeProvider>
           <ReduxProvider store={store}>
