@@ -32,7 +32,8 @@ const store = configureStore(
 
 store.dispatch(ConnectionActions.connect())
 
-const APPLICATION_DISCONNECT = 60 * 60 * 1000
+export const APPLICATION_DISCONNECT_MINS = 60
+const APPLICATION_DISCONNECT = APPLICATION_DISCONNECT_MINS * 60 * 1000
 
 timer(APPLICATION_DISCONNECT).subscribe(() => {
   store.dispatch(ConnectionActions.disconnect())
