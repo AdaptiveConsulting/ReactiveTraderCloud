@@ -14,8 +14,6 @@ const PopoutIcon: React.FC<Props> = ({ width, height }) => (
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
   >
-    <title>icon-popout</title>
-    <desc>Created with Sketch.</desc>
     <defs />
     <g className="svg-icon">
       <path
