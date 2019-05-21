@@ -22,28 +22,27 @@ type RfqReceivedTimerCancellableType =
   | RfqResetActionType
 
 const EXPIRATION_TIMEOUT_MS = 10000
-const MAX_DELAY = 5000
 const rfqService = (
-  r: RfqRequest,
+  request: RfqRequest,
   currencyPairs: CurrencyPairState,
   spotTilesData: SpotTileState,
 ) => {
-  const randomNumber = Math.random() * (3 - 0)
-  const { pipsPosition } = currencyPairs[r.currencyPair.symbol]
-  const currentEspPrice = spotTilesData[r.currencyPair.symbol].price
+  const randomNumber = 0.3
+  const { pipsPosition } = currencyPairs[request.currencyPair.symbol]
+  const currentEspPrice = spotTilesData[request.currencyPair.symbol].price
   const { ask, bid } = currentEspPrice
   const addSubNumber = randomNumber / Math.pow(10, pipsPosition)
 
   return of({
-    notional: r.notional,
-    currencyPair: r.currencyPair,
+    notional: request.notional,
+    currencyPair: request.currencyPair,
     price: {
       ...currentEspPrice,
-      ask: ask - addSubNumber,
-      bid: bid + addSubNumber,
+      ask: ask + addSubNumber,
+      bid: bid - addSubNumber,
     },
     timeout: EXPIRATION_TIMEOUT_MS,
-  }).pipe(delay(Math.random() * (MAX_DELAY - 0)))
+  }).pipe(delay(500))
 }
 
 const fetchRfqQuote = (payload: RfqRequest) => ({
@@ -62,6 +61,7 @@ export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
             cancelAction.payload.currencyPair.symbol === action.payload.currencyPair.symbol,
         ),
       )
+
       // TODO Subscribe to Pricing service instead of passing the current price
       // to that call? Same with currencyPairs?
       return rfqService(
@@ -92,8 +92,8 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
       )
 
       return timer(action.payload.timeout + 1000).pipe(
-        takeUntil(cancel$),
         map(() => rfqExpired({ currencyPair: action.payload.currencyPair })),
+        takeUntil(cancel$),
       )
     }),
   )

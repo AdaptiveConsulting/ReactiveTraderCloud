@@ -6,7 +6,7 @@ import { publishPriceUpdateEpic } from './publishPriceUpdateEpic'
 import { spotTileEpic } from './spotTileEpics'
 import { publishTradeExecutedEpic } from './tradeExecutedEpic'
 import { ApplicationDependencies } from 'applicationServices'
-import { rfqRequestEpic, rfqReceivedEpic } from './rfqTileEpics'
+import { rfqRequestEpic, rfqReceivedEpic } from './rfqEpics'
 
 export default ({ platform }: ApplicationDependencies) => {
   const epics = [
