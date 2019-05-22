@@ -26,6 +26,7 @@ export const Offset = styled.div`
 export const OriginTickWrapper = styled(FlexDiv)`
   width: 100%;
   align-items: center;
+  height: 20px;
 `
 
 export const PriceLabel = styled.div<{ color: string }>`
@@ -64,9 +65,4 @@ export const OriginTick = styled.div`
   height: 5px;
   background-color: ${bgColor};
   border: 1px solid ${bgColor};
-`
-export const Origin = styled.div`
-  font-size: 11px;
-  text-align: center;
-  color: ${({ theme }) => theme.core.textColor};
 `
