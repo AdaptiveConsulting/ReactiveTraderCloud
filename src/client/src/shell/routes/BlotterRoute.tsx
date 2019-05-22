@@ -1,10 +1,10 @@
 import React from 'react'
-import { RouteWrapper } from 'rt-components'
+import { OPENFIN_CHROME_HEADER_HEIGHT, RouteWrapper } from 'rt-components'
 import { BlotterContainer } from '../../ui/blotter'
 import { styled } from 'rt-theme'
 
 const BlotterContainerStyle = styled('div')`
-  height: 100%;
+  height: calc(100% - ${OPENFIN_CHROME_HEADER_HEIGHT});
   width: 100%;
   padding: 0.625rem;
   margin: auto;

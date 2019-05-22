@@ -53,11 +53,14 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
   </React.Fragment>
 )
 
+export const OPENFIN_CHROME_HEADER_HEIGHT = '21px'
+
 const Header = styled.div`
   display: flex;
   width: 100%;
   min-height: 1.5rem;
   font-size: 1rem;
+  height: ${OPENFIN_CHROME_HEADER_HEIGHT};
 `
 
 const DragRegion = styled.div`
@@ -70,7 +73,8 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
   display: flex;
   justify-content: center;
   align-self: center;
-  min-width: 2.5rem;
+  min-width: 2.3rem;
+  padding-top: 7px;
 
   color: ${props => props.theme.button.secondary.backgroundColor};
   cursor: pointer;
