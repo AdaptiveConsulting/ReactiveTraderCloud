@@ -13,8 +13,8 @@ const makeExternalWindowProps: (key: string) => ExternalWindowProps = (key: stri
   title: `${key} Spot`,
   config: {
     name: `${key} Spot`,
-    width: 370,
-    height: 184,
+    width: 366, // 346 content + 10 padding
+    height: 193,
     url: `/spot/${key}`,
   },
   browserConfig: { center: 'screen' },
