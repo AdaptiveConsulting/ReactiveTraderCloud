@@ -20,6 +20,7 @@ export const OpenFinChrome: SFC = ({ children }) => (
           overflow: hidden;
           min-height: 100%;
           max-height: 100vh;
+          user-select: none;
         }
     `}</style>
     </Helmet>
