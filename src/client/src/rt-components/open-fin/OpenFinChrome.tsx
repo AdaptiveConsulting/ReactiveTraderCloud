@@ -80,14 +80,11 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
 `
 
 export const Root = styled.div`
-  display: grid;
   background-color: ${props => props.theme.core.darkBackground};
   color: ${props => props.theme.core.textColor};
 
   height: 100%;
   width: 100%;
-
-  grid-template-rows: 1.5rem 1fr;
 `
 
 export default OpenFinChrome

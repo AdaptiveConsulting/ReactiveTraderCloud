@@ -18,7 +18,7 @@ const analyticsRegion: ExternalWindow = {
   title: 'Analytics',
   config: {
     name: 'analytics',
-    width: 400,
+    width: 372, // 332 content + 20 padding
     height: 800,
     url: '/analytics',
   },
