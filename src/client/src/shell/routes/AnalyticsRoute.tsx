@@ -5,7 +5,7 @@ import { styled } from 'rt-theme'
 
 const AnalyticsRouteStyle = styled.div`
   max-width: 25rem;
-  height: 100%;
+  height: calc(100% - (21px + 0.625rem)); // minus chrome header and top padding
   padding: 0.625rem;
   margin: auto;
 `
