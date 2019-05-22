@@ -2,7 +2,6 @@ import React from 'react'
 
 export const OpenFinLogo = () => (
   <svg width="87px" height="16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1092.83 297.91">
-    <title>2c_full</title>
     <g id="Layer_2" data-name="Layer 2">
       <g id="Artwork">
         <path
