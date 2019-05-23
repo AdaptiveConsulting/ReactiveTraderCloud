@@ -12,6 +12,7 @@ const RouteStyle = styled('div')<{ platform: PlatformAdapter }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  user-select: none;
 
   /* When in Finsemble a 25px header is injected,
    this resets body to the correct height */
