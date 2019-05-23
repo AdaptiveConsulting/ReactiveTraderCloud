@@ -1,16 +1,16 @@
 import React, { FC } from 'react'
-import { Fill, Header, Root, OpenFinLogoContainer } from './styled'
+import { Fill, Header, Root, OpenFinLogoLink } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
-import { usePlatform } from 'rt-components'
+import { OpenFinBrowserLink, usePlatform } from 'rt-components'
 
 const LogoWithPlatform: FC = () => {
   const platform = usePlatform()
   return (
     <div>
       {platform.name === 'openfin' && (
-        <OpenFinLogoContainer>
+        <OpenFinLogoLink href="http://www.openfin.co" as={OpenFinBrowserLink}>
           <OpenFinLogo />
-        </OpenFinLogoContainer>
+        </OpenFinLogoLink>
       )}
     </div>
   )
