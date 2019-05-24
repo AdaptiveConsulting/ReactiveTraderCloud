@@ -33,6 +33,7 @@ export default class SpotTile extends PureComponent<Props> {
       inputDisabled,
       inputValidationMessage,
       rfq,
+      displayCurrencyChart,
     } = this.props
 
     const spotDate = price.valueDate && spotDateFormatter(price.valueDate, false).toUpperCase()
@@ -51,7 +52,11 @@ export default class SpotTile extends PureComponent<Props> {
         <SpotTileStyle className="spot-tile">
           <ReserveSpaceGrouping>
             <TileHeaderWrapper>
-              <TileHeader baseTerm={baseTerm} date={date} />
+              <TileHeader
+                baseTerm={baseTerm}
+                date={date}
+                displayCurrencyChart={displayCurrencyChart}
+              />
             </TileHeaderWrapper>
             <PriceControls
               executeTrade={executeTrade}
