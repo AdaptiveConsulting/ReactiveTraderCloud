@@ -6,14 +6,11 @@ interface Props {
   className?: string
 }
 
-const OpenFinBrowserLink: FC<Props> = props => (
-  <a
-    {...props}
-    onClick={(e: MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault()
-      fin.System.openUrlWithBrowser(e.currentTarget.href)
-    }}
-  />
-)
+const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+  e.preventDefault()
+  fin.System.openUrlWithBrowser(e.currentTarget.href)
+}
+
+const OpenFinBrowserLink: FC<Props> = props => <a {...props} onClick={handleClick} />
 
 export default OpenFinBrowserLink
