@@ -29,9 +29,10 @@ export const OriginTickWrapper = styled(FlexDiv)`
   height: 20px;
 `
 
-export const PriceLabel = styled.div<{ color: string }>`
+export const PriceLabel = styled.div<{ color: string; hovering: boolean }>`
   align-self: center;
-  font-size: 11px;
+  font-size: ${({ hovering }) => (hovering ? '18px' : '11px')};
+  transition: font-size 0.2s;
   color: ${({ theme, color }) => theme.template[color].normal};
 `
 export const DiamondShape = styled.div<{ color: string }>`
