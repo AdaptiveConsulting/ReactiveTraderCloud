@@ -1,6 +1,7 @@
 import { RouteStyle } from 'rt-components'
 import { styled } from 'rt-theme'
-import { TopRightButton, BottomRightButton } from './TileControls'
+import { TopRightButton } from './TileControls'
+import { BottomRightButton } from './TileHeader'
 
 export interface ColorProps {
   color?: string
@@ -12,6 +13,7 @@ export const DeliveryDate = styled.div`
   font-size: 0.625rem;
   line-height: 1rem;
   opacity: 0.59;
+  margin-left: auto;
 `
 
 export const TileSymbol = styled.div`
@@ -44,7 +46,6 @@ export const Button = styled('button')`
 export const TileHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
 `
 
 export const TileWrapperBase = styled.div`

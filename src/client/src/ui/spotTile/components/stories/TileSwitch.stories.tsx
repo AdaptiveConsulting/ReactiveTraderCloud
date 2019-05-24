@@ -61,6 +61,7 @@ stories.add('Booking', () => (
           onPopoutClick={action('On popout click')}
           setTradingMode={setTradingMode}
           rfq={rfq}
+          displayCurrencyChart={action('On currency chart click')}
         />
       </div>
     </Centered>
@@ -86,6 +87,7 @@ stories.add('Executed', () => (
           onPopoutClick={action('On popout click')}
           setTradingMode={setTradingMode}
           rfq={rfq}
+          displayCurrencyChart={action('On currency chart click')}
         />
       </div>
     </Centered>
@@ -111,6 +113,7 @@ stories.add('Rejected', () => (
           onPopoutClick={action('On popout click')}
           setTradingMode={setTradingMode}
           rfq={rfq}
+          displayCurrencyChart={action('On currency chart click')}
         />
       </div>
     </Centered>
@@ -142,6 +145,7 @@ stories.add('Switch', () => {
             onPopoutClick={action('On popout click')}
             setTradingMode={setTradingMode}
             rfq={rfq}
+            displayCurrencyChart={action('On currency chart click')}
           />
         </div>
       </Centered>

@@ -54,14 +54,11 @@ const TileSwitch: React.FC<Props> = ({
       tileView={tileView}
       setTradingMode={setTradingMode}
       rfq={rfq}
+      displayCurrencyChart={displayCurrencyChart}
     >
       {({ notional, userError }: TileSwitchChildrenProps) => (
         <>
-          <TileControls
-            canPopout={isRfqStateNone && canPopout}
-            onPopoutClick={onPopoutClick}
-            displayCurrencyChart={displayCurrencyChart}
-          />
+          <TileControls canPopout={isRfqStateNone && canPopout} onPopoutClick={onPopoutClick} />
           <TileBooking show={spotTileData.isTradeExecutionInFlight} color="blue" showLoader>
             Executing
           </TileBooking>

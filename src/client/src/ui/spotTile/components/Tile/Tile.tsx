@@ -27,6 +27,7 @@ export interface TileProps {
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
   setTradingMode: (tradingMode: TradingMode) => void
+  displayCurrencyChart?: () => void
   tileView?: TileViews
   children: ({ notional, userError }: TileSwitchChildrenProps) => JSX.Element
   rfq: RfqActions
@@ -126,7 +127,15 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   }
 
   render() {
-    const { children, currencyPair, spotTileData, executionStatus, tileView, rfq } = this.props
+    const {
+      children,
+      currencyPair,
+      spotTileData,
+      executionStatus,
+      tileView,
+      rfq,
+      displayCurrencyChart,
+    } = this.props
     const {
       notional,
       inputDisabled,
@@ -155,6 +164,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         inputValidationMessage={inputValidationMessage}
         tradingDisabled={tradingDisabled || !canExecute}
         rfq={rfq}
+        displayCurrencyChart={displayCurrencyChart}
       >
         {children({
           notional,

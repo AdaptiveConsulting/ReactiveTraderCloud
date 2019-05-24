@@ -44,4 +44,5 @@ export interface Props {
   tradingDisabled: boolean
   chartData?: []
   rfq: RfqActions
+  displayCurrencyChart?: () => void
 }
