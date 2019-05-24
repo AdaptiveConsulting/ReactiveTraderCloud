@@ -27,6 +27,7 @@ export {
   OpenFinControls,
   OpenFinHeader,
   OPENFIN_CHROME_HEADER_HEIGHT,
+  OpenFinBrowserLink,
 } from './open-fin'
 export { Flex, flexStyle } from './flex'
 export { PopoutIcon, ExpandIcon, LogoIcon } from './icons'
