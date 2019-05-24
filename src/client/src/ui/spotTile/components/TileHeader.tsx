@@ -9,7 +9,7 @@ interface Props {
   displayCurrencyChart?: () => void
 }
 
-export const BottomRightButton = styled('button')`
+export const CurrencyChartButton = styled('button')`
   opacity: 0;
   transition: opacity 0.2s;
   margin-left: 8px;
@@ -24,9 +24,9 @@ const TileHeader: React.SFC<Props> = ({ baseTerm, date, displayCurrencyChart }) 
     <Header>
       <TileSymbol>{baseTerm}</TileSymbol>
       {platform.type !== 'browser' && (
-        <BottomRightButton onClick={displayCurrencyChart}>
+        <CurrencyChartButton onClick={displayCurrencyChart}>
           <i className="fas fa-chart-bar" />
-        </BottomRightButton>
+        </CurrencyChartButton>
       )}
       <DeliveryDate>{date}</DeliveryDate>
     </Header>

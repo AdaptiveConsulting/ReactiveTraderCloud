@@ -1,7 +1,7 @@
 import { RouteStyle } from 'rt-components'
 import { styled } from 'rt-theme'
 import { TopRightButton } from './TileControls'
-import { BottomRightButton } from './TileHeader'
+import { CurrencyChartButton } from './TileHeader'
 
 export interface ColorProps {
   color?: string
@@ -53,7 +53,7 @@ export const TileWrapperBase = styled.div`
   &:hover ${TopRightButton} {
     opacity: 0.75;
   }
-  &:hover ${BottomRightButton} {
+  &:hover ${CurrencyChartButton} {
     opacity: 0.75;
   }
   color: ${({ theme }) => theme.core.textColor};
