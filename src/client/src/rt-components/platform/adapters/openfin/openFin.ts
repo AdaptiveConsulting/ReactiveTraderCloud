@@ -4,24 +4,36 @@ import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
 import { CurrencyPairPositionWithPrice } from 'rt-types'
+import {
+  Notification,
+  NotificationButtonClickedEvent,
+  NotificationOptions,
+} from 'openfin-notifications'
+import { NotificationMessage } from '../browser/utils/sendNotification'
 
 export const openFinNotifications: any[] = []
-
-declare const window: Window & { onNotificationMessage: any }
-
-export const setupGlobalOpenfinNotifications = () => {
-  if (typeof fin !== 'undefined' && !window.onNotificationMessage) {
-    // openfin requires a global onNotificationMessage function to be defined before its notification structure is initialized in the platform adapter.
-    // NotificationRoute is imported lazily, thus we cannot define the function in that file. (Testing has shown it's already too late.)
-    // - D.S.
-    window.onNotificationMessage = (message: any) => openFinNotifications.push(message)
-  }
-}
 
 type OpenFinWindowState = Parameters<Parameters<fin.OpenFinWindow['getState']>[0]>[0]
 export default class OpenFin extends BasePlatformAdapter {
   readonly name = 'openfin'
   readonly type = 'desktop'
+
+  private createNotification: (options: NotificationOptions) => Promise<Notification>
+
+  constructor() {
+    super()
+    this.createNotification = require('openfin-notifications').create
+
+    require('openfin-notifications').addEventListener(
+      'notification-button-clicked',
+      (event: NotificationButtonClickedEvent) => {
+        fin.desktop.InterApplicationBus.publish(
+          InteropTopics.HighlightBlotter,
+          event.notification.customData,
+        )
+      },
+    )
+  }
 
   notificationHighlight = {
     init: () => this.interop.subscribe$(InteropTopics.HighlightBlotter),
@@ -108,11 +120,36 @@ export default class OpenFin extends BasePlatformAdapter {
   }
 
   notification = {
-    notify: (message: object) =>
-      new fin.desktop.Notification({
-        url: '/notification',
-        message,
-        timeout: 8000,
-      } as any),
+    notify: (message: object) => {
+      console.error('notify - message', message)
+      this.createNotification(
+        Object.assign({
+          body: this.getTradeNotificationBody(message),
+          title: this.getTradeNotificationTitle(message),
+          icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
+          customData: message,
+          buttons: [{ title: 'Highlight trade in blotter' }],
+        }),
+      )
+        .then(successVal => {
+          console.info('Notification success!', successVal)
+        })
+        .catch(err => {
+          console.error('Notification error', err)
+        })
+    },
+  }
+
+  getTradeNotificationTitle({ tradeNotification }: NotificationMessage) {
+    const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
+    return `Trade ${status}: ${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${
+      tradeNotification.notional
+    }`
+  }
+
+  getTradeNotificationBody({ tradeNotification }: NotificationMessage) {
+    return `vs. ${tradeNotification.termsCurrency} - Rate ${
+      tradeNotification.spotRate
+    } - Trade ID ${tradeNotification.tradeId}`
   }
 }
