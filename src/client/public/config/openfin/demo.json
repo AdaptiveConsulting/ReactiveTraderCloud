@@ -47,6 +47,12 @@
   "services": [
     {
       "name": "layouts"
+    },
+    {
+      "name": "fdc3"
+    },
+    {
+      "name": "notifications"
     }
   ]
 }
