@@ -11,8 +11,6 @@ import {
 } from 'openfin-notifications'
 import { NotificationMessage } from '../browser/utils/sendNotification'
 
-export const openFinNotifications: any[] = []
-
 type OpenFinWindowState = Parameters<Parameters<fin.OpenFinWindow['getState']>[0]>[0]
 export default class OpenFin extends BasePlatformAdapter {
   readonly name = 'openfin'
@@ -121,18 +119,17 @@ export default class OpenFin extends BasePlatformAdapter {
 
   notification = {
     notify: (message: object) => {
-      console.error('notify - message', message)
       this.createNotification(
         Object.assign({
-          body: this.getTradeNotificationBody(message),
-          title: this.getTradeNotificationTitle(message),
+          body: this.getNotificationBody(message),
+          title: this.getNotificationTitle(message),
           icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
           customData: message,
           buttons: [{ title: 'Highlight trade in blotter' }],
         }),
       )
         .then(successVal => {
-          console.info('Notification success!', successVal)
+          console.info('Notification success', successVal)
         })
         .catch(err => {
           console.error('Notification error', err)
@@ -140,14 +137,14 @@ export default class OpenFin extends BasePlatformAdapter {
     },
   }
 
-  getTradeNotificationTitle({ tradeNotification }: NotificationMessage) {
+  getNotificationTitle({ tradeNotification }: NotificationMessage) {
     const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
     return `Trade ${status}: ${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${
       tradeNotification.notional
     }`
   }
 
-  getTradeNotificationBody({ tradeNotification }: NotificationMessage) {
+  getNotificationBody({ tradeNotification }: NotificationMessage) {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${
       tradeNotification.spotRate
     } - Trade ID ${tradeNotification.tradeId}`
