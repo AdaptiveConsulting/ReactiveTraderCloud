@@ -4,7 +4,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
 
 import { ConnectionActions } from 'rt-actions'
-import { platform, PlatformProvider } from 'rt-components'
+import { platform, PlatformProvider, setupWorkspaces } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { ThemeProvider } from 'rt-theme'
 
@@ -29,6 +29,14 @@ const store = configureStore(
     user: FakeUserRepository.currentUser,
   }),
 )
+
+setupWorkspaces(store)
+  .then(successVal => {
+    console.info('setupWorkspaces success', successVal)
+  })
+  .catch(err => {
+    console.error('setupWorkspaces error', err)
+  })
 
 store.dispatch(ConnectionActions.connect())
 

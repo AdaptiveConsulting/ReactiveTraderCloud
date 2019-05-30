@@ -4,6 +4,15 @@ import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
 import { CurrencyPairPositionWithPrice } from 'rt-types'
+import { LayoutActions } from '../../../../shell/layouts/layoutActions'
+
+export async function setupWorkspaces(store: any) {
+  if (typeof fin !== 'undefined') {
+    const workspaces = require('openfin-layouts').workspaces
+    await workspaces.setRestoreHandler((workspace: any) => appRestoreHandler(workspace, store))
+    await workspaces.ready()
+  }
+}
 
 export const openFinNotifications: any[] = []
 
@@ -114,5 +123,79 @@ export default class OpenFin extends BasePlatformAdapter {
         message,
         timeout: 8000,
       } as any),
+  }
+}
+
+async function appRestoreHandler(workspaceApp: any, store: any) {
+  const ofApp = await fin.Application.getCurrent()
+  const openWindows = await ofApp.getChildWindows()
+
+  const opened = workspaceApp.childWindows.map(async (win: any, index: any) => {
+    if (!openWindows.some(w => w.identity.name === win.name)) {
+      const config: WindowConfig = {
+        name: win.name,
+        url: win.url,
+        width: win.bounds.width,
+        height: win.bounds.height,
+      }
+      await openDesktopWindow(
+        config,
+        () => {
+          store.dispatch(
+            LayoutActions.updateContainerVisibilityAction({
+              name: win.name,
+              display: true,
+            }),
+          )
+        },
+        { defaultLeft: win.bounds.left, defaultTop: win.bounds.top },
+      )
+
+      // we need to 'remove' the child window from the main window
+      store.dispatch(
+        LayoutActions.updateContainerVisibilityAction({
+          name: win.name,
+          display: false,
+        }),
+      )
+    } else {
+      await positionWindow(win)
+    }
+  })
+
+  await Promise.all(opened)
+  return workspaceApp
+}
+
+async function positionWindow(win: any): Promise<void> {
+  console.error('dans positionWindow', win)
+  try {
+    const { isShowing, isTabbed } = win
+
+    const ofWin = await fin.Window.wrap(win)
+    await ofWin.setBounds(win.bounds)
+
+    if (isTabbed) {
+      await ofWin.show()
+      return
+    }
+
+    await ofWin.leaveGroup()
+
+    if (isShowing) {
+      if (win.state === 'normal') {
+        // Need to both restore and show because the restore function doesn't emit a `shown` or `show-requested` event
+        await ofWin.restore()
+        await ofWin.show()
+      } else if (win.state === 'minimized') {
+        await ofWin.minimize()
+      } else if (win.state === 'maximized') {
+        await ofWin.maximize()
+      }
+    } else {
+      await ofWin.hide()
+    }
+  } catch (e) {
+    console.error('position window error', e)
   }
 }

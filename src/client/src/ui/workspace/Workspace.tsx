@@ -20,6 +20,7 @@ const WorkspaceItem = styled.div`
 interface SpotTile {
   key: string
   externalWindowProps: ExternalWindowProps
+  tornOff: boolean
 }
 
 interface Props {
@@ -45,16 +46,23 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
       <WorkspaceItems>
         {spotTiles
           .filter(({ key }) => key.includes(currency) || currency === 'ALL')
-          .map(({ key, externalWindowProps }) => (
+          .map(({ key, externalWindowProps, tornOff }) => (
             <TearOff
               id={key}
+              key={key}
               externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
               render={(popOut, tornOff) => (
                 <WorkspaceItem>
-                  <SpotTileContainer id={key} tileView={tileView} onPopoutClick={popOut} tornOff={tornOff} tearable />
+                  <SpotTileContainer
+                    id={key}
+                    tileView={tileView}
+                    onPopoutClick={popOut}
+                    tornOff={tornOff}
+                    tearable
+                  />
                 </WorkspaceItem>
               )}
-              key={key}
+              tornOff={tornOff}
             />
           ))}
       </WorkspaceItems>
