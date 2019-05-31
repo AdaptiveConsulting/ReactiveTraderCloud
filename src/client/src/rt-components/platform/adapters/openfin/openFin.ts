@@ -5,11 +5,14 @@ import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
 import { CurrencyPairPositionWithPrice } from 'rt-types'
 import { LayoutActions } from '../../../../shell/layouts/layoutActions'
+import { workspaces } from 'openfin-layouts'
+import { Store } from 'redux'
 
-export async function setupWorkspaces(store: any) {
+export async function setupWorkspaces(store: Store) {
   if (typeof fin !== 'undefined') {
-    const workspaces = require('openfin-layouts').workspaces
-    await workspaces.setRestoreHandler((workspace: any) => appRestoreHandler(workspace, store))
+    await workspaces.setRestoreHandler((workspace: workspaces.WorkspaceApp) =>
+      appRestoreHandler(workspace, store),
+    )
     await workspaces.ready()
   }
 }
@@ -126,11 +129,11 @@ export default class OpenFin extends BasePlatformAdapter {
   }
 }
 
-async function appRestoreHandler(workspaceApp: any, store: any) {
+async function appRestoreHandler(workspaceApp: workspaces.WorkspaceApp, store: Store) {
   const ofApp = await fin.Application.getCurrent()
   const openWindows = await ofApp.getChildWindows()
 
-  const opened = workspaceApp.childWindows.map(async (win: any, index: any) => {
+  const opened = workspaceApp.childWindows.map(async (win: workspaces.WorkspaceWindow) => {
     if (!openWindows.some(w => w.identity.name === win.name)) {
       const config: WindowConfig = {
         name: win.name,
@@ -167,8 +170,7 @@ async function appRestoreHandler(workspaceApp: any, store: any) {
   return workspaceApp
 }
 
-async function positionWindow(win: any): Promise<void> {
-  console.error('dans positionWindow', win)
+async function positionWindow(win: workspaces.WorkspaceWindow): Promise<void> {
   try {
     const { isShowing, isTabbed } = win
 
