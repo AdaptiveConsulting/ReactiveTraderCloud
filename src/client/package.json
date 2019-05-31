@@ -64,7 +64,7 @@
     "luxon": "^1.11.3",
     "moment": "^2.22.2",
     "openfin-layouts": "^1.0.0",
-    "openfin-notifications": "^0.10.0",
+    "openfin-notifications": "^0.10.1",
     "polished": "^1.9.3",
     "query-string": "^6.2.0",
     "react": "^16.8.4",

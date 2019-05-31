@@ -7,11 +7,7 @@ import { excelAdapter } from './excel'
 import { CurrencyPairPositionWithPrice } from 'rt-types'
 import { LayoutActions } from '../../../../shell/layouts/layoutActions'
 import { workspaces } from 'openfin-layouts'
-import {
-  Notification,
-  NotificationButtonClickedEvent,
-  NotificationOptions,
-} from 'openfin-notifications'
+import { Notification, NotificationButtonClickedEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../browser/utils/sendNotification'
 
 export async function setupWorkspaces(store: Store) {
@@ -35,13 +31,11 @@ export default class OpenFin extends BasePlatformAdapter {
   readonly name = 'openfin'
   readonly type = 'desktop'
 
-  private createNotification: (options: NotificationOptions) => Promise<Notification>
+  openFinNotifications = require('openfin-notifications')
 
   constructor() {
     super()
-    this.createNotification = require('openfin-notifications').create
-
-    require('openfin-notifications').addEventListener(
+    this.openFinNotifications.addEventListener(
       'notification-button-clicked',
       (event: NotificationButtonClickedEvent) => {
         fin.desktop.InterApplicationBus.publish(
@@ -138,19 +132,23 @@ export default class OpenFin extends BasePlatformAdapter {
 
   notification = {
     notify: (message: object) => {
-      this.createNotification(
-        Object.assign({
+      this.openFinNotifications
+        .create({
           body: this.getNotificationBody(message),
           title: this.getNotificationTitle(message),
           icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
           customData: message,
-          buttons: [{ title: 'Highlight trade in blotter' }],
-        }),
-      )
-        .then(successVal => {
+          buttons: [
+            {
+              title: 'Highlight trade in blotter',
+              iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
+            },
+          ],
+        })
+        .then((successVal: Notification) => {
           console.info('Notification success', successVal)
         })
-        .catch(err => {
+        .catch((err: any) => {
           console.error('Notification error', err)
         })
     },
