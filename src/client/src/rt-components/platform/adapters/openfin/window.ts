@@ -13,13 +13,17 @@ const generateRandomName = function() {
   return text
 }
 
-export const openDesktopWindow = (config: DesktopWindowProps, onClose?: () => void) => {
+export const openDesktopWindow = (
+  config: DesktopWindowProps,
+  onClose?: () => void,
+  position?: {},
+) => {
   const { url, width: defaultWidth, height: defaultHeight } = config
 
   return new Promise<Window>(resolve => {
     const win = new fin.desktop.Window(
       {
-        name: generateRandomName(),
+        name: config.name || generateRandomName(),
         url,
         defaultWidth,
         defaultHeight,
@@ -28,6 +32,7 @@ export const openDesktopWindow = (config: DesktopWindowProps, onClose?: () => vo
         frame: false,
         saveWindowState: false,
         shadow: true,
+        ...position,
       } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
       () => {
         if (onClose) {

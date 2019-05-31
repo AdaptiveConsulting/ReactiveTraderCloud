@@ -1,9 +1,12 @@
+import { Store } from 'redux'
 import { BasePlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
 import { CurrencyPairPositionWithPrice } from 'rt-types'
+import { LayoutActions } from '../../../../shell/layouts/layoutActions'
+import { workspaces } from 'openfin-layouts'
 import {
   Notification,
   NotificationButtonClickedEvent,
@@ -11,7 +14,23 @@ import {
 } from 'openfin-notifications'
 import { NotificationMessage } from '../browser/utils/sendNotification'
 
+export async function setupWorkspaces(store: Store) {
+  if (typeof fin !== 'undefined') {
+    await workspaces.setRestoreHandler((workspace: workspaces.WorkspaceApp) =>
+      appRestoreHandler(workspace, store),
+    )
+    await workspaces.ready()
+  }
+}
+
 type OpenFinWindowState = Parameters<Parameters<fin.OpenFinWindow['getState']>[0]>[0]
+
+enum WindowState {
+  Normal = 'normal',
+  Minimized = 'minimized',
+  Maximized = 'maximized',
+}
+
 export default class OpenFin extends BasePlatformAdapter {
   readonly name = 'openfin'
   readonly type = 'desktop'
@@ -50,11 +69,11 @@ export default class OpenFin extends BasePlatformAdapter {
       const win = fin.desktop.Window.getCurrent()
       win.getState((state: OpenFinWindowState) => {
         switch (state) {
-          case 'maximized':
-          case 'minimized':
+          case WindowState.Maximized:
+          case WindowState.Minimized:
             win.restore(() => win.bringToFront())
             break
-          case 'normal':
+          case WindowState.Normal:
           default:
             win.maximize()
             break
@@ -148,5 +167,78 @@ export default class OpenFin extends BasePlatformAdapter {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${
       tradeNotification.spotRate
     } - Trade ID ${tradeNotification.tradeId}`
+  }
+}
+
+async function appRestoreHandler(workspaceApp: workspaces.WorkspaceApp, store: Store) {
+  const ofApp = await fin.Application.getCurrent()
+  const openWindows = await ofApp.getChildWindows()
+
+  const opened = workspaceApp.childWindows.map(async (win: workspaces.WorkspaceWindow) => {
+    if (!openWindows.some(w => w.identity.name === win.name)) {
+      const config: WindowConfig = {
+        name: win.name,
+        url: win.url,
+        width: win.bounds.width,
+        height: win.bounds.height,
+      }
+      await openDesktopWindow(
+        config,
+        () => {
+          store.dispatch(
+            LayoutActions.updateContainerVisibilityAction({
+              name: win.name,
+              display: true,
+            }),
+          )
+        },
+        { defaultLeft: win.bounds.left, defaultTop: win.bounds.top },
+      )
+
+      // we need to 'remove' the child window from the main window
+      store.dispatch(
+        LayoutActions.updateContainerVisibilityAction({
+          name: win.name,
+          display: false,
+        }),
+      )
+    } else {
+      await positionWindow(win)
+    }
+  })
+
+  await Promise.all(opened)
+  return workspaceApp
+}
+
+async function positionWindow(win: workspaces.WorkspaceWindow): Promise<void> {
+  try {
+    const { isShowing, isTabbed } = win
+
+    const ofWin = await fin.Window.wrap(win)
+    await ofWin.setBounds(win.bounds)
+
+    if (isTabbed) {
+      await ofWin.show()
+      return
+    }
+
+    await ofWin.leaveGroup()
+
+    if (isShowing) {
+      if (win.state === WindowState.Normal) {
+        // Need to both restore and show because the restore function doesn't emit a `shown` or `show-requested` event
+        await ofWin.restore()
+        await ofWin.show()
+      } else if (win.state === WindowState.Minimized) {
+        await ofWin.minimize()
+      } else if (win.state === WindowState.Maximized) {
+        await ofWin.maximize()
+      }
+    } else {
+      await ofWin.hide()
+    }
+  } catch (e) {
+    console.error('position window error', e)
   }
 }
