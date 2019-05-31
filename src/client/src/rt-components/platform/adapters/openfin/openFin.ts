@@ -31,6 +31,13 @@ export const setupGlobalOpenfinNotifications = () => {
 }
 
 type OpenFinWindowState = Parameters<Parameters<fin.OpenFinWindow['getState']>[0]>[0]
+
+enum WindowState {
+  Normal = 'normal',
+  Minimized = 'minimized',
+  Maximized = 'maximized',
+}
+
 export default class OpenFin extends BasePlatformAdapter {
   readonly name = 'openfin'
   readonly type = 'desktop'
@@ -52,11 +59,11 @@ export default class OpenFin extends BasePlatformAdapter {
       const win = fin.desktop.Window.getCurrent()
       win.getState((state: OpenFinWindowState) => {
         switch (state) {
-          case 'maximized':
-          case 'minimized':
+          case WindowState.Maximized:
+          case WindowState.Minimized:
             win.restore(() => win.bringToFront())
             break
-          case 'normal':
+          case WindowState.Normal:
           default:
             win.maximize()
             break
@@ -185,13 +192,13 @@ async function positionWindow(win: workspaces.WorkspaceWindow): Promise<void> {
     await ofWin.leaveGroup()
 
     if (isShowing) {
-      if (win.state === 'normal') {
+      if (win.state === WindowState.Normal) {
         // Need to both restore and show because the restore function doesn't emit a `shown` or `show-requested` event
         await ofWin.restore()
         await ofWin.show()
-      } else if (win.state === 'minimized') {
+      } else if (win.state === WindowState.Minimized) {
         await ofWin.minimize()
-      } else if (win.state === 'maximized') {
+      } else if (win.state === WindowState.Maximized) {
         await ofWin.maximize()
       }
     } else {
