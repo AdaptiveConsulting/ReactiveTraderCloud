@@ -7,6 +7,7 @@ import {
   WindowConfig,
   openFinNotifications,
   setupGlobalOpenfinNotifications,
+  setupWorkspaces,
   usePlatform,
 } from './platform'
 
@@ -17,6 +18,7 @@ export {
   PlatformProvider,
   openFinNotifications,
   setupGlobalOpenfinNotifications,
+  setupWorkspaces,
 }
 export type PlatformAdapter = PlatformAdapter
 export type PlatformName = PlatformName

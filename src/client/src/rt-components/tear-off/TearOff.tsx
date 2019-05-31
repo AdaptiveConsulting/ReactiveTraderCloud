@@ -1,43 +1,47 @@
 import React from 'react'
 import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
+import { Dispatch } from 'redux'
+import { LayoutActions } from '../../shell/layouts/layoutActions'
+import { connect } from 'react-redux'
 
 type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
 
-interface Props {
+export interface TearOffProps {
   id: string
   render: RenderCB
   externalWindowProps: Partial<ExternalWindowProps>
-  popIn?: () => void
-  popOut?: () => void
-}
-
-interface State {
   tornOff: boolean
 }
 
-export default class TearOff extends React.PureComponent<Props, State> {
-  state = { tornOff: false }
+interface TearOffDispatchProps {
+  onPopIn: (name: string) => void
+  onPopOut: (name: string) => void
+}
 
-  popOut = () => {
-    if (this.props.popOut) {
-      this.props.popOut()
-    }
-    this.setState({ tornOff: true })
-  }
+type TearOffContainerProps = TearOffProps & TearOffDispatchProps
 
-  popIn = () => {
-    if (this.props.popIn) {
-      this.props.popIn()
-    }
-    this.setState({ tornOff: false })
-  }
-
+class TearOff extends React.PureComponent<TearOffContainerProps> {
   render() {
-    const { render, externalWindowProps } = this.props
-    const { tornOff } = this.state
+    const { render, externalWindowProps, tornOff, onPopIn, onPopOut } = this.props
+    const windowName = externalWindowProps.config.name
+    const popOut = () => onPopOut(windowName)
+    const popIn = () => onPopIn(windowName)
+
     if (tornOff) {
-      return <ExternalWindow onUnload={this.popIn} {...externalWindowProps} />
+      return <ExternalWindow onUnload={popIn} {...externalWindowProps} />
     }
-    return render(this.popOut, tornOff)
+    return render(popOut, tornOff)
   }
 }
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onPopOut: (name: string) =>
+    dispatch(LayoutActions.updateContainerVisibilityAction({ name, display: false })),
+  onPopIn: (name: string) =>
+    dispatch(LayoutActions.updateContainerVisibilityAction({ name, display: true })),
+})
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(TearOff)

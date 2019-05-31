@@ -11,27 +11,19 @@ import { WorkspaceContainer } from '../../ui/workspace'
 import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
+import { GlobalState } from '../../StoreTypes'
+import { displayAnalyticsSelector, displayBlotterSelector } from '../layouts/selectors'
+import { connect } from 'react-redux'
 
 interface Props {
   header?: React.ReactChild
-}
-
-interface State {
   displayBlotter: boolean
+  displayAnalytics: boolean
 }
 
-class ShellRoute extends PureComponent<Props, State> {
-  state = {
-    displayBlotter: true,
-  }
-
-  showBlotter = () => this.setState({ displayBlotter: true })
-
-  hideBlotter = () => this.setState({ displayBlotter: false })
-
+class ShellRoute extends PureComponent<Props> {
   render() {
-    const { header } = this.props
-    const { displayBlotter } = this.state
+    const { header, displayBlotter, displayAnalytics } = this.props
     return (
       <DefaultLayout
         header={header}
@@ -43,9 +35,10 @@ class ShellRoute extends PureComponent<Props, State> {
                 <TearOff
                   id="blotter"
                   externalWindowProps={externalWindowDefault.blotterRegion}
-                  render={(popOut, tornOff) => <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}
-                  popIn={this.showBlotter}
-                  popOut={this.hideBlotter}
+                  render={(popOut, tornOff) => (
+                    <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
+                  )}
+                  tornOff={!displayBlotter}
                 />
               </BlotterWrapper>
             )}
@@ -63,7 +56,10 @@ class ShellRoute extends PureComponent<Props, State> {
             <TearOff
               id="region"
               externalWindowProps={externalWindowDefault.analyticsRegion}
-              render={(popOut, tornOff) => <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />}
+              render={(popOut, tornOff) => (
+                <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
+              )}
+              tornOff={!displayAnalytics}
             />
           </AnalyticsWrapper>
         }
@@ -78,4 +74,9 @@ class ShellRoute extends PureComponent<Props, State> {
   }
 }
 
-export default ShellRoute
+const mapStateToProps = (state: GlobalState) => ({
+  displayBlotter: displayBlotterSelector(state),
+  displayAnalytics: displayAnalyticsSelector(state),
+})
+
+export default connect(mapStateToProps)(ShellRoute)
