@@ -1,3 +1,4 @@
+import { Store } from 'redux'
 import { BasePlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../types'
 import { openDesktopWindow } from './window'
@@ -6,7 +7,8 @@ import { excelAdapter } from './excel'
 import { CurrencyPairPositionWithPrice } from 'rt-types'
 import { LayoutActions } from '../../../../shell/layouts/layoutActions'
 import { workspaces } from 'openfin-layouts'
-import { Store } from 'redux'
+import { Notification, NotificationButtonClickedEvent } from 'openfin-notifications'
+import { NotificationMessage } from '../browser/utils/sendNotification'
 
 export async function setupWorkspaces(store: Store) {
   if (typeof fin !== 'undefined') {
@@ -14,19 +16,6 @@ export async function setupWorkspaces(store: Store) {
       appRestoreHandler(workspace, store),
     )
     await workspaces.ready()
-  }
-}
-
-export const openFinNotifications: any[] = []
-
-declare const window: Window & { onNotificationMessage: any }
-
-export const setupGlobalOpenfinNotifications = () => {
-  if (typeof fin !== 'undefined' && !window.onNotificationMessage) {
-    // openfin requires a global onNotificationMessage function to be defined before its notification structure is initialized in the platform adapter.
-    // NotificationRoute is imported lazily, thus we cannot define the function in that file. (Testing has shown it's already too late.)
-    // - D.S.
-    window.onNotificationMessage = (message: any) => openFinNotifications.push(message)
   }
 }
 
@@ -41,6 +30,21 @@ enum WindowState {
 export default class OpenFin extends BasePlatformAdapter {
   readonly name = 'openfin'
   readonly type = 'desktop'
+
+  openFinNotifications = require('openfin-notifications')
+
+  constructor() {
+    super()
+    this.openFinNotifications.addEventListener(
+      'notification-button-clicked',
+      (event: NotificationButtonClickedEvent) => {
+        fin.desktop.InterApplicationBus.publish(
+          InteropTopics.HighlightBlotter,
+          event.notification.customData,
+        )
+      },
+    )
+  }
 
   notificationHighlight = {
     init: () => this.interop.subscribe$(InteropTopics.HighlightBlotter),
@@ -127,12 +131,40 @@ export default class OpenFin extends BasePlatformAdapter {
   }
 
   notification = {
-    notify: (message: object) =>
-      new fin.desktop.Notification({
-        url: '/notification',
-        message,
-        timeout: 8000,
-      } as any),
+    notify: (message: object) => {
+      this.openFinNotifications
+        .create({
+          body: this.getNotificationBody(message),
+          title: this.getNotificationTitle(message),
+          icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
+          customData: message,
+          buttons: [
+            {
+              title: 'Highlight trade in blotter',
+              iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
+            },
+          ],
+        })
+        .then((successVal: Notification) => {
+          console.info('Notification success', successVal)
+        })
+        .catch((err: any) => {
+          console.error('Notification error', err)
+        })
+    },
+  }
+
+  getNotificationTitle({ tradeNotification }: NotificationMessage) {
+    const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
+    return `Trade ${status}: ${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${
+      tradeNotification.notional
+    }`
+  }
+
+  getNotificationBody({ tradeNotification }: NotificationMessage) {
+    return `vs. ${tradeNotification.termsCurrency} - Rate ${
+      tradeNotification.spotRate
+    } - Trade ID ${tradeNotification.tradeId}`
   }
 }
 

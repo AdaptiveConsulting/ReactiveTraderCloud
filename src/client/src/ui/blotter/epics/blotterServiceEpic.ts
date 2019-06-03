@@ -64,7 +64,7 @@ export const connectBlotterToNotifications: ApplicationEpic = (action$, state$, 
   action$.pipe(
     ofType<Action, NewTradesAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
     filter(() => state$.value.layout.displayBlotter),
-    filter(action => action.payload.trades.length > 0),
+    filter(action => !action.payload.isStateOfTheWorld && action.payload.trades.length > 0),
     map(action => action.payload.trades[0]),
     skipWhile(trade => !state$.value.currencyPairs[trade.symbol]),
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),

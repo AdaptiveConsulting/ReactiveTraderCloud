@@ -5,21 +5,11 @@ import {
   PlatformProvider,
   PlatformName,
   WindowConfig,
-  openFinNotifications,
-  setupGlobalOpenfinNotifications,
   setupWorkspaces,
   usePlatform,
 } from './platform'
 
-export {
-  platform,
-  usePlatform,
-  externalWindowDefault,
-  PlatformProvider,
-  openFinNotifications,
-  setupGlobalOpenfinNotifications,
-  setupWorkspaces,
-}
+export { platform, usePlatform, externalWindowDefault, PlatformProvider, setupWorkspaces }
 export type PlatformAdapter = PlatformAdapter
 export type PlatformName = PlatformName
 export type WindowConfig = WindowConfig

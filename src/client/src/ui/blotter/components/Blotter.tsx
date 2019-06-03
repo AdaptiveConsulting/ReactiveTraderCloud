@@ -91,7 +91,9 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
           />
         </BlotterGrid>
         <BlotterStatus>
-          <BlotterStatusText>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatusText>
+          <BlotterStatusText>{`Displaying rows ${displayedRows} of ${
+            rows.length
+          }`}</BlotterStatusText>
         </BlotterStatus>
       </BlotterStyle>
     )
@@ -109,16 +111,20 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
     api.sizeColumnsToFit()
   }
 
-  private onModelUpdated = () => this.gridApi && this.setState({ displayedRows: this.gridApi.getDisplayedRowCount() })
+  private onModelUpdated = () =>
+    this.gridApi && this.setState({ displayedRows: this.gridApi.getDisplayedRowCount() })
 
   private getRowClass({ data }: { data: Trade }) {
+    let cssClass = ''
     if (data.status === TradeStatus.Rejected) {
-      return 'rt-blotter__row-rejected'
-    } else if (data.status === TradeStatus.Pending) {
-      return 'rt-blotter__row-pending'
-    } else if (data.highlight) {
-      return 'rt-blotter__row-highlight'
+      cssClass = 'rt-blotter__row-rejected'
     }
-    return ''
+    if (data.status === TradeStatus.Pending) {
+      cssClass = 'rt-blotter__row-pending'
+    }
+    if (data.highlight) {
+      cssClass += ' rt-blotter__row-highlight'
+    }
+    return cssClass
   }
 }
