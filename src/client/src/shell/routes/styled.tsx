@@ -1,7 +1,9 @@
 import { styled } from 'rt-theme'
+import { rules } from 'rt-styleguide'
 
 export const OverflowScroll = styled.div`
   overflow-y: scroll;
+  ${rules.touchScroll};
   height: 100%;
 `
 
