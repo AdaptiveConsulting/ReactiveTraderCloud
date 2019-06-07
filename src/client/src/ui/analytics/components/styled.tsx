@@ -13,6 +13,7 @@ export const AnalyticsStyle = styled.div`
   font-size: 1rem;
   overflow-x: hidden;
   overflow-y: scroll;
+  scrollbar-width: thin;
 
   /* axis */
   .nvd3 .nv-axis path,

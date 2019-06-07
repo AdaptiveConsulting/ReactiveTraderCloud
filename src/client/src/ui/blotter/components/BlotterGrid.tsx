@@ -92,6 +92,10 @@ export default styled('div')`
     min-width: 100%;
   }
 
+  .ag-body-viewport {
+    scrollbar-width: thin;
+  }
+
   .ag-cell-label-container {
     display: flex;
     align-items: center;

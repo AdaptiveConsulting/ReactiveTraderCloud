@@ -8,8 +8,7 @@ export {
   Browser,
   OpenFin,
   Finsemble,
-  openFinNotifications,
-  setupGlobalOpenfinNotifications,
+  setupWorkspaces,
 } from './adapters'
 export { default as platform } from './platform'
 export { PlatformProvider, usePlatform } from './context'

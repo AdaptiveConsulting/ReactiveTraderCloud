@@ -43,5 +43,16 @@
       "version": "2.0.0",
       "forceDownload": true
     }
+  ],
+  "services": [
+    {
+      "name": "layouts"
+    },
+    {
+      "name": "fdc3"
+    },
+    {
+      "name": "notifications"
+    }
   ]
 }

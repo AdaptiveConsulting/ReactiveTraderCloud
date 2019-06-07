@@ -26,11 +26,13 @@ export const Offset = styled.div`
 export const OriginTickWrapper = styled(FlexDiv)`
   width: 100%;
   align-items: center;
+  height: 20px;
 `
 
-export const PriceLabel = styled.div<{ color: string }>`
+export const PriceLabel = styled.div<{ color: string; hovering: boolean }>`
   align-self: center;
-  font-size: 11px;
+  font-size: ${({ hovering }) => (hovering ? '18px' : '11px')};
+  transition: font-size 0.2s;
   color: ${({ theme, color }) => theme.template[color].normal};
 `
 export const DiamondShape = styled.div<{ color: string }>`
@@ -64,9 +66,4 @@ export const OriginTick = styled.div`
   height: 5px;
   background-color: ${bgColor};
   border: 1px solid ${bgColor};
-`
-export const Origin = styled.div`
-  font-size: 11px;
-  text-align: center;
-  color: ${({ theme }) => theme.core.textColor};
 `

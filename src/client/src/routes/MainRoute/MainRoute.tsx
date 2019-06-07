@@ -4,7 +4,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { timer } from 'rxjs'
 
 import { ConnectionActions } from 'rt-actions'
-import { platform, PlatformProvider } from 'rt-components'
+import { platform, PlatformProvider, setupWorkspaces } from 'rt-components'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { ThemeProvider } from 'rt-theme'
 
@@ -30,9 +30,18 @@ const store = configureStore(
   }),
 )
 
+setupWorkspaces(store)
+  .then(successVal => {
+    console.info('setupWorkspaces success', successVal)
+  })
+  .catch(err => {
+    console.error('setupWorkspaces error', err)
+  })
+
 store.dispatch(ConnectionActions.connect())
 
-const APPLICATION_DISCONNECT = 15 * 60 * 1000
+export const APPLICATION_DISCONNECT_MINS = 60
+const APPLICATION_DISCONNECT = APPLICATION_DISCONNECT_MINS * 60 * 1000
 
 timer(APPLICATION_DISCONNECT).subscribe(() => {
   store.dispatch(ConnectionActions.disconnect())
@@ -44,7 +53,11 @@ export default class MainRoute extends Component {
     return (
       <React.Fragment>
         <Helmet>
-          <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          />
         </Helmet>
         <ThemeProvider>
           <ReduxProvider store={store}>

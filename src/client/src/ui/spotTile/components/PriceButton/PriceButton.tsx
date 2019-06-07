@@ -41,20 +41,26 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
   expired = false,
 }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
+  const hasPrice = rawRate !== 0
+  const isDisabled = disabled || !hasPrice
   return (
     <TradeButton
       direction={direction}
       onClick={handleClick}
       priceAnnounced={priceAnnounced}
-      disabled={disabled}
+      disabled={isDisabled}
     >
-      <Price disabled={disabled}>
+      <Price disabled={isDisabled}>
         <BigWrapper>
           <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
-          <Big>{renderBigFigureDisplay(bigFigure)}</Big>
+          <Big>{hasPrice ? renderBigFigureDisplay(bigFigure) : '-'}</Big>
         </BigWrapper>
-        <Pip>{renderPips(pip)}</Pip>
-        <Tenth>{tenth}</Tenth>
+        {hasPrice && (
+          <React.Fragment>
+            <Pip>{renderPips(pip)}</Pip>
+            <Tenth>{tenth}</Tenth>
+          </React.Fragment>
+        )}
       </Price>
       {expired && <ExpiredPrice>Expired</ExpiredPrice>}
     </TradeButton>

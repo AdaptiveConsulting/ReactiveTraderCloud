@@ -16,7 +16,9 @@ interface BlotterContainerOwnProps {
 
 type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
 type BlotterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
-type BlotterContainerProps = BlotterContainerStateProps & BlotterContainerDispatchProps & BlotterContainerOwnProps
+type BlotterContainerProps = BlotterContainerStateProps &
+  BlotterContainerDispatchProps &
+  BlotterContainerOwnProps
 
 const BlotterContainer: React.FC<BlotterContainerProps> = ({
   status,
@@ -28,7 +30,12 @@ const BlotterContainer: React.FC<BlotterContainerProps> = ({
   <Loadable
     onMount={onMount}
     status={status}
-    render={() => <Blotter {...props} canPopout={tearable && !Environment.isRunningInIE() && !tornOff} />}
+    render={() => (
+      <Blotter
+        {...props}
+        canPopout={tearable && !Environment.isRunningInIE() && !Environment.isPWA() && !tornOff}
+      />
+    )}
     message="Blotter Disconnected"
   />
 )

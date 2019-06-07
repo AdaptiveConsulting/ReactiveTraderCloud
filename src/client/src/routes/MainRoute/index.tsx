@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { ThemeProvider } from 'rt-theme'
-import MainRoute from './MainRoute'
+import MainRoute, { APPLICATION_DISCONNECT_MINS } from './MainRoute'
 
 export default function MainRouteLoader() {
   return (
@@ -10,4 +10,4 @@ export default function MainRouteLoader() {
     </ThemeProvider>
   )
 }
-export { MainRouteLoader as MainRoute }
+export { MainRouteLoader as MainRoute, APPLICATION_DISCONNECT_MINS }
