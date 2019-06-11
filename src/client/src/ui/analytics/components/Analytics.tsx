@@ -11,6 +11,8 @@ import { AnalyticsStyle, BubbleChart, Title, AnalyticsLineChartWrapper, Header }
 import AnalyticsWindowHeader from './AnalyticsHeader'
 import { AnalyticsLineChart } from './analyticsLineChart'
 import LastPosition from './LastPosition'
+import { drag, dragStart, dragEnd, tilesAreDraggabe } from '../../drag/drag'
+
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
@@ -37,9 +39,15 @@ const Analytics: React.FC<Props> = ({
   useEffect(() => {
     forceUpdate()
   }, [windowSize])
-
   return (
-    <AnalyticsStyle>
+    <AnalyticsStyle
+      draggable={tilesAreDraggabe}
+      onDragEnd={(event: any) => {
+        dragEnd(event, onPopoutClick)
+      }}
+      onDragStart={dragStart}
+      onDrag={drag}
+    >
       <Header>
         <Title>Profit &amp; Loss</Title>
         <AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
