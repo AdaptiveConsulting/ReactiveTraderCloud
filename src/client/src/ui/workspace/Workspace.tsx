@@ -5,6 +5,7 @@ import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileViews } from './workspaceHeader'
 import { appendTileViewToUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
+import { drag, dragStart, dragEnd, tilesAreDraggabe } from '../drag/drag'
 
 const WorkspaceItems = styled.div`
   display: grid;
@@ -52,7 +53,14 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
               key={key}
               externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
               render={(popOut, tornOff) => (
-                <WorkspaceItem>
+                <WorkspaceItem
+                  draggable={tilesAreDraggabe}
+                  onDragEnd={(event: any) => {
+                    dragEnd(event, popOut)
+                  }}
+                  onDragStart={dragStart}
+                  onDrag={drag}
+                >
                   <SpotTileContainer
                     id={key}
                     tileView={tileView}

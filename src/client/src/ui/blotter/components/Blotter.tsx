@@ -8,6 +8,7 @@ import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION, csvExportSettings } from './blotterUtils'
+import { drag, dragStart, dragEnd, tilesAreDraggabe } from '../../drag/drag'
 
 export interface BlotterProps {
   rows: Trade[]
@@ -63,7 +64,14 @@ export default class Blotter extends React.Component<BlotterProps, BlotterState>
     const { canPopout, rows, onPopoutClick } = this.props
     const { displayedRows } = this.state
     return (
-      <BlotterStyle>
+      <BlotterStyle
+        draggable={tilesAreDraggabe}
+        onDragEnd={(event: any) => {
+          dragEnd(event, onPopoutClick)
+        }}
+        onDragStart={dragStart}
+        onDrag={drag}
+      >
         <BlotterHeader
           canPopout={canPopout}
           onPopoutClick={onPopoutClick}
