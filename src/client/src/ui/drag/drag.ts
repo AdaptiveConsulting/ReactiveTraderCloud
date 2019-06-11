@@ -10,7 +10,7 @@ const createDragImage = function($node: any) {
 
   dragNode.style.width = $node.offsetWidth + 'px'
   dragNode.style.height = $node.offsetHeight + 'px'
-  dragNode.style.outline = '2px dashed blue'
+  dragNode.classList.add('tearOff')
 
   document.body.appendChild(dragNode)
   return dragNode

@@ -59,6 +59,9 @@ export default createGlobalStyle`
     text-rendering: geometricPrecision;
     background-color: #2e3543;
 
+    .tearOff {
+      outline: 2px dashed blue;
+    }
 
     @media all and (max-width: 400px) {
       font-size: 14px;
