@@ -171,7 +171,7 @@ export default class OpenFin extends BasePlatformAdapter {
 async function appRestoreHandler(workspaceApp: workspaces.WorkspaceApp, store: Store) {
   const ofApp = await fin.Application.getCurrent()
   const openWindows = await ofApp.getChildWindows()
-
+  console.log(openWindows)
   const opened = workspaceApp.childWindows.map(async (win: workspaces.WorkspaceWindow) => {
     if (!openWindows.some(w => w.identity.name === win.name)) {
       const config: WindowConfig = {
