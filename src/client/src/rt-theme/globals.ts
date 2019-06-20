@@ -60,7 +60,8 @@ export default createGlobalStyle`
     background-color: #2e3543;
 
     .tearOff {
-      outline: 2px dashed blue;
+      box-shadow: 1px 4px 10px 0px rgba(0,0,0,0.3);
+      outline: 1px dashed #49608C;
     }
 
     @media all and (max-width: 400px) {

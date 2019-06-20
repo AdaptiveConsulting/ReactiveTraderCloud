@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileViews } from './workspaceHeader'
 import { appendTileViewToUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
-import { drag, dragStart, dragEnd, tilesAreDraggabe } from '../drag/drag'
+import { withDrag, tilesAreDraggabe } from '../drag/drag'
 
 const WorkspaceItems = styled.div`
   display: grid;
@@ -34,6 +34,8 @@ const ALL = 'ALL'
 const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
   const [currency, setCurrencyOption] = useState(ALL)
   const [tileView, setTileView] = useState(TileViews.Normal)
+  const drag = useMemo(withDrag, [])
+
   return (
     <div>
       <WorkspaceHeader
@@ -55,11 +57,11 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
               render={(popOut, tornOff) => (
                 <WorkspaceItem
                   draggable={tilesAreDraggabe}
-                  onDragEnd={(event: any) => {
-                    dragEnd(event, popOut)
+                  onDragEnd={(event: React.DragEvent<HTMLDivElement>) => {
+                    drag.onDragEnd(event, popOut)
                   }}
-                  onDragStart={dragStart}
-                  onDrag={drag}
+                  onDragStart={drag.onDragStart}
+                  onDrag={drag.onDrag}
                 >
                   <SpotTileContainer
                     id={key}
