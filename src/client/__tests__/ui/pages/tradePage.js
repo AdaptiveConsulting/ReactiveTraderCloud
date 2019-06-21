@@ -243,6 +243,11 @@ const TradePage = Object.create({}, {
       return browser.element(by.css('div.styled__TileBaseStyle-sc-6mxq7t-2.TileNotification__TileNotificationStyle-sc-19yw4wf-0.eCcGTf > button'))
     }
   },
+  tradeExecutionTimeOutMessage: {
+    get() {
+      return browser.element(by.css('.TileNotification__Content-sc-19yw4wf-5'))
+    }
+  },
   tradeSuccessMessage: {
     get() {
       return browser.element(by.css('div.styled__TileBaseStyle-sc-6mxq7t-2.TileNotification__TileNotificationStyle-sc-19yw4wf-0.bPQmtX > div.TileNotification__Content-sc-19yw4wf-5.jIfHZr'))
@@ -259,9 +264,14 @@ const TradePage = Object.create({}, {
       return browser.element(by.css('div.BlotterHeader__BlotterLeft-sc-1bvhiat-3.euXKsm'))
     }
   },
+  textBackGroundColour: {
+    get() {
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[1]'))
+    }
+  },
   textTradeId: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.ag-cell-value.ag-cell-focus'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[2]'))
     }
   },
   textTradeStatus: {
@@ -271,12 +281,12 @@ const TradePage = Object.create({}, {
   },
   textTradeDate: {
     get() {
-      return browser.element(by.css('div.ag-row.ag-row-even.ag-row-level-0.ag-row-focus > div:nth-child(4)'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[4]/span'))
     }
   },
   textTradeDirection: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.ag-cell-value.ag-cell-focus'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[5]'))
     }
   },
   textTradeCCYToCCY: {
@@ -286,27 +296,27 @@ const TradePage = Object.create({}, {
   },
   textTradeDealtCCY: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.ag-cell-value.ag-cell-focus'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[7]'))
     }
   },
   textTradeNotional: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.rt-blotter__numeric-cell.ag-cell-value.ag-cell-focus > span'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[8]/span'))
     }
   },
   textTradeRate: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.rt-blotter__numeric-cell.ag-cell-value.ag-cell-focus'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[9]'))
     }
   },
   textTradeValueDate: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.ag-cell-value.ag-cell-focus > span'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[10]/span'))
     }
   },
   textTraderName: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.ag-cell-value.ag-cell-focus'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[11]'))
     }
   },
   ButtonExportCsv: {
