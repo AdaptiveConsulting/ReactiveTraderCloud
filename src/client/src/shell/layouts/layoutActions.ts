@@ -3,6 +3,8 @@ import { action, ActionUnion } from '../../rt-util'
 export interface ContainerVisibility {
   name: string
   display: boolean
+  x?: number
+  y?: number
 }
 
 export enum LAYOUT_ACTION_TYPES {

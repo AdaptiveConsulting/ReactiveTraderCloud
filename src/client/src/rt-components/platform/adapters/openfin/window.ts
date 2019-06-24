@@ -27,11 +27,12 @@ export const openDesktopWindow = (
         url,
         defaultWidth,
         defaultHeight,
-        defaultCentered: true,
         autoShow: true,
         frame: false,
         saveWindowState: false,
         shadow: true,
+        defaultLeft: config.x ? config.x : undefined,
+        defaultTop: config.y ? config.y : undefined,
         ...position,
       } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
       () => {

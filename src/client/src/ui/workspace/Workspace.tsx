@@ -1,11 +1,10 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileViews } from './workspaceHeader'
 import { appendTileViewToUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
-import { withDrag, tilesAreDraggabe } from '../drag/drag'
 
 const WorkspaceItems = styled.div`
   display: grid;
@@ -34,7 +33,6 @@ const ALL = 'ALL'
 const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
   const [currency, setCurrencyOption] = useState(ALL)
   const [tileView, setTileView] = useState(TileViews.Normal)
-  const drag = useMemo(withDrag, [])
 
   return (
     <div>
@@ -54,20 +52,13 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
               id={key}
               key={key}
               externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
-              render={(popOut, tornOff) => (
-                <WorkspaceItem
-                  draggable={tilesAreDraggabe}
-                  onDragEnd={(event: React.DragEvent<HTMLDivElement>) => {
-                    drag.onDragEnd(event, popOut)
-                  }}
-                  onDragStart={drag.onDragStart}
-                  onDrag={drag.onDrag}
-                >
+              render={(popOut, isTornOff) => (
+                <WorkspaceItem>
                   <SpotTileContainer
                     id={key}
                     tileView={tileView}
                     onPopoutClick={popOut}
-                    tornOff={tornOff}
+                    tornOff={isTornOff}
                     tearable
                   />
                 </WorkspaceItem>

@@ -12,18 +12,31 @@ import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
 import { GlobalState } from '../../StoreTypes'
-import { displayAnalyticsSelector, displayBlotterSelector } from '../layouts/selectors'
+import { analyticsSelector, blotterSelector } from '../layouts/selectors'
+import { TileLayoutState } from '../layouts'
+import { ExternalWindow } from './../../rt-components/platform/externalWindowDefault'
 import { connect } from 'react-redux'
 
 interface Props {
   header?: React.ReactChild
-  displayBlotter: boolean
-  displayAnalytics: boolean
+  blotter: TileLayoutState
+  analytics: TileLayoutState
+}
+
+const addLayoutToConfig = (windowConfig: ExternalWindow, layout: TileLayoutState) => {
+  return {
+    ...windowConfig,
+    config: {
+      ...windowConfig.config,
+      x: layout.x,
+      y: layout.y,
+    },
+  }
 }
 
 class ShellRoute extends PureComponent<Props> {
   render() {
-    const { header, displayBlotter, displayAnalytics } = this.props
+    const { header, blotter, analytics } = this.props
     return (
       <DefaultLayout
         header={header}
@@ -34,15 +47,18 @@ class ShellRoute extends PureComponent<Props> {
               <BlotterWrapper>
                 <TearOff
                   id="blotter"
-                  externalWindowProps={externalWindowDefault.blotterRegion}
+                  externalWindowProps={addLayoutToConfig(
+                    externalWindowDefault.blotterRegion,
+                    blotter,
+                  )}
                   render={(popOut, tornOff) => (
                     <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
                   )}
-                  tornOff={!displayBlotter}
+                  tornOff={!blotter.visible}
                 />
               </BlotterWrapper>
             )}
-            disabled={!displayBlotter}
+            disabled={!blotter.visible}
           >
             <WorkspaceWrapper>
               <OverflowScroll>
@@ -55,11 +71,14 @@ class ShellRoute extends PureComponent<Props> {
           <AnalyticsWrapper>
             <TearOff
               id="region"
-              externalWindowProps={externalWindowDefault.analyticsRegion}
+              externalWindowProps={addLayoutToConfig(
+                externalWindowDefault.analyticsRegion,
+                analytics,
+              )}
               render={(popOut, tornOff) => (
                 <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
               )}
-              tornOff={!displayAnalytics}
+              tornOff={!analytics.visible}
             />
           </AnalyticsWrapper>
         }
@@ -75,8 +94,8 @@ class ShellRoute extends PureComponent<Props> {
 }
 
 const mapStateToProps = (state: GlobalState) => ({
-  displayBlotter: displayBlotterSelector(state),
-  displayAnalytics: displayAnalyticsSelector(state),
+  blotter: blotterSelector(state),
+  analytics: analyticsSelector(state),
 })
 
 export default connect(mapStateToProps)(ShellRoute)

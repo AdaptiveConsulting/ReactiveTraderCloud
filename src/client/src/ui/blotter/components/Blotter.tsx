@@ -2,13 +2,12 @@ import { GridApi } from 'ag-grid'
 import { AgGridReact } from 'ag-grid-react'
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid/dist/styles/ag-grid.css'
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { styled } from 'rt-theme'
 import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION, csvExportSettings } from './blotterUtils'
-import { withDrag, tilesAreDraggabe } from '../../drag/drag'
 
 export interface BlotterProps {
   rows: Trade[]
@@ -64,7 +63,6 @@ const getRowClass = ({ data }: { data: Trade }) => {
 const Blotter: React.FC<BlotterProps> = props => {
   const { canPopout, rows, onPopoutClick } = props
   const [displayedRows, setDisplayedRows] = useState(0)
-  const drag = useMemo(withDrag, [])
   const [gridDoc] = useState(React.createRef<HTMLDivElement>())
   const [gridApi, setGridApi] = useState(null)
 
@@ -86,14 +84,7 @@ const Blotter: React.FC<BlotterProps> = props => {
   }, [gridApi])
 
   return (
-    <BlotterStyle
-      draggable={tilesAreDraggabe}
-      onDragEnd={(event: React.DragEvent<HTMLDivElement>) => {
-        drag.onDragEnd(event, onPopoutClick)
-      }}
-      onDragStart={drag.onDragStart}
-      onDrag={drag.onDrag}
-    >
+    <BlotterStyle>
       <BlotterHeader
         canPopout={canPopout}
         onPopoutClick={onPopoutClick}

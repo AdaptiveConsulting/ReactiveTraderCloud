@@ -4,19 +4,19 @@ export const tilesAreDraggabe = !Environment.isRunningInIE()
 
 export const withDrag = () => {
   let dragNode: HTMLElement | undefined
-  let dragX = 0,
-    dragY = 0
+  let dragX = 0
+  let dragY = 0
 
   const createDragImage = function($node: HTMLElement) {
-    const dragNode = $node.cloneNode(true) as HTMLElement
-    dragNode.style.position = 'absolute'
+    const clonedNode = $node.cloneNode(true) as HTMLElement
+    clonedNode.style.position = 'absolute'
 
-    dragNode.style.width = $node.offsetWidth + 'px'
-    dragNode.style.height = $node.offsetHeight + 'px'
-    dragNode.classList.add('tearOff')
+    clonedNode.style.width = $node.offsetWidth + 'px'
+    clonedNode.style.height = $node.offsetHeight + 'px'
+    clonedNode.classList.add('tearOff')
 
-    document.body.appendChild(dragNode)
-    return dragNode
+    document.body.appendChild(clonedNode)
+    return clonedNode
   }
 
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
@@ -25,9 +25,9 @@ export const withDrag = () => {
     event.dataTransfer.setData('text', 'foo')
 
     //required for FF as its drag events have no XY coords attached
-    document.ondragover = function(event) {
-      dragX = event.pageX
-      dragY = event.pageY
+    document.ondragover = function(dragEvent) {
+      dragX = dragEvent.pageX
+      dragY = dragEvent.pageY
     }
 
     const dt = event.dataTransfer
@@ -50,14 +50,16 @@ export const withDrag = () => {
     }
   }
 
-  const onDragEnd = (event: React.DragEvent<HTMLDivElement>, popOut: () => void) => {
+  const onDragEnd = (
+    event: React.DragEvent<HTMLDivElement>,
+    popOut: (x: number, y: number) => void,
+  ) => {
     event.stopPropagation()
     if (dragNode) {
       document.body.removeChild(dragNode)
       dragNode = undefined
     }
-    // popOut(event.screenX, event.screenY)
-    popOut()
+    popOut(event.screenX, event.screenY)
   }
   return {
     onDragStart,

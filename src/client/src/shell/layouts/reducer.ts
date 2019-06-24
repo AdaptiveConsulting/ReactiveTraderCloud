@@ -1,19 +1,29 @@
 import { LAYOUT_ACTION_TYPES, LayoutActions } from './layoutActions'
 import { externalWindowDefault } from '../../rt-components'
 
+export interface TileLayoutState {
+  visible: boolean
+  x?: number
+  y?: number
+}
+
 interface TilesLayout {
-  [key: string]: boolean
+  [key: string]: TileLayoutState
 }
 
 export interface LayoutState {
-  displayBlotter: boolean
-  displayAnalytics: boolean
+  blotter: TileLayoutState
+  analytics: TileLayoutState
   spotTiles: TilesLayout
 }
 
 const INITIAL_STATE: LayoutState = {
-  displayBlotter: true,
-  displayAnalytics: true,
+  blotter: {
+    visible: true,
+  },
+  analytics: {
+    visible: true,
+  },
   spotTiles: {},
 }
 
@@ -27,12 +37,20 @@ export const layoutReducer = (
         case externalWindowDefault.blotterRegion.config.name:
           return {
             ...state,
-            displayBlotter: action.payload.display,
+            blotter: {
+              visible: action.payload.display,
+              x: action.payload.x,
+              y: action.payload.y,
+            },
           }
         case externalWindowDefault.analyticsRegion.config.name:
           return {
             ...state,
-            displayAnalytics: action.payload.display,
+            analytics: {
+              visible: action.payload.display,
+              x: action.payload.x,
+              y: action.payload.y,
+            },
           }
         default:
           // this is a spot tile
@@ -40,7 +58,11 @@ export const layoutReducer = (
             ...state,
             spotTiles: {
               ...state.spotTiles,
-              [action.payload.name]: action.payload.display,
+              [action.payload.name]: {
+                visible: action.payload.display,
+                x: action.payload.x,
+                y: action.payload.y,
+              },
             },
           }
       }

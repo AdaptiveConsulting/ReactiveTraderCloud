@@ -17,7 +17,7 @@ interface Props {
   canPopout: boolean
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
-  onPopoutClick?: () => void
+  onPopoutClick?: (x: number, y: number) => void
   onNotificationDismissed: () => void
   displayCurrencyChart?: () => void
   setTradingMode: (tradingMode: TradingMode) => void

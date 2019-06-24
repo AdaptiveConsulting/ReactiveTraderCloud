@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
 import { AnalyticsBarChart } from './analyticsBarChart'
@@ -11,7 +11,6 @@ import { AnalyticsStyle, BubbleChart, Title, AnalyticsLineChartWrapper, Header }
 import AnalyticsWindowHeader from './AnalyticsHeader'
 import { AnalyticsLineChart } from './analyticsLineChart'
 import LastPosition from './LastPosition'
-import { withDrag, tilesAreDraggabe } from '../../drag/drag'
 
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
@@ -22,7 +21,7 @@ export interface Props {
   currencyPairs: CurrencyPairs
   analyticsLineChartModel: AnalyticsLineChartModel
   positionsChartModel?: PositionsChartModel
-  onPopoutClick?: () => void
+  onPopoutClick?: (x: number, y: number) => void
 }
 
 const Analytics: React.FC<Props> = ({
@@ -34,21 +33,13 @@ const Analytics: React.FC<Props> = ({
 }) => {
   const windowSize = useWindowSize()
   const forceUpdate = useForceUpdate()
-  const drag = useMemo(withDrag, [])
 
   // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
   useEffect(() => {
     forceUpdate()
   }, [windowSize])
   return (
-    <AnalyticsStyle
-      draggable={tilesAreDraggabe}
-      onDragEnd={(event: React.DragEvent<HTMLDivElement>) => {
-        drag.onDragEnd(event, onPopoutClick)
-      }}
-      onDragStart={drag.onDragStart}
-      onDrag={drag.onDrag}
-    >
+    <AnalyticsStyle>
       <Header>
         <Title>Profit &amp; Loss</Title>
         <AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />

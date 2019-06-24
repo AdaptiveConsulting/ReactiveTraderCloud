@@ -1,47 +1,59 @@
-import React from 'react'
+import React, { useMemo, useCallback } from 'react'
 import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
-import { Dispatch } from 'redux'
+import { styled } from 'rt-theme'
 import { LayoutActions } from '../../shell/layouts/layoutActions'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { withDrag, tilesAreDraggabe } from './../../ui/drag/drag'
 
-type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
+type RenderCB = (popOut: (x?: number, y?: number) => void, tornOff: boolean) => JSX.Element
+
+const DragWrapper = styled.div`
+  height: 100%;
+`
 
 export interface TearOffProps {
   id: string
   render: RenderCB
   externalWindowProps: Partial<ExternalWindowProps>
   tornOff: boolean
+  x?: number
+  y?: number
 }
 
-interface TearOffDispatchProps {
-  onPopIn: (name: string) => void
-  onPopOut: (name: string) => void
-}
+const TearOff: React.FC<TearOffProps> = props => {
+  const dispatch = useDispatch()
+  const { render, externalWindowProps, tornOff } = props
+  const windowName = externalWindowProps.config.name
+  const popOut = useCallback(
+    (x: number, y: number) =>
+      dispatch(
+        LayoutActions.updateContainerVisibilityAction({ name: windowName, display: false, x, y }),
+      ),
+    [windowName],
+  )
+  const popIn = useCallback(
+    () =>
+      dispatch(LayoutActions.updateContainerVisibilityAction({ name: windowName, display: true })),
+    [windowName, dispatch],
+  )
+  const drag = useMemo(withDrag, [])
 
-type TearOffContainerProps = TearOffProps & TearOffDispatchProps
-
-class TearOff extends React.PureComponent<TearOffContainerProps> {
-  render() {
-    const { render, externalWindowProps, tornOff, onPopIn, onPopOut } = this.props
-    const windowName = externalWindowProps.config.name
-    const popOut = () => onPopOut(windowName)
-    const popIn = () => onPopIn(windowName)
-
-    if (tornOff) {
-      return <ExternalWindow onUnload={popIn} {...externalWindowProps} />
-    }
-    return render(popOut, tornOff)
+  if (tornOff) {
+    return <ExternalWindow onUnload={popIn} {...externalWindowProps} />
   }
+
+  return (
+    <DragWrapper
+      draggable={tilesAreDraggabe}
+      onDragEnd={(event: React.DragEvent<HTMLDivElement>) => {
+        drag.onDragEnd(event, popOut)
+      }}
+      onDragStart={drag.onDragStart}
+      onDrag={drag.onDrag}
+    >
+      {render(popOut, tornOff)}
+    </DragWrapper>
+  )
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onPopOut: (name: string) =>
-    dispatch(LayoutActions.updateContainerVisibilityAction({ name, display: false })),
-  onPopIn: (name: string) =>
-    dispatch(LayoutActions.updateContainerVisibilityAction({ name, display: true })),
-})
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(TearOff)
+export default TearOff

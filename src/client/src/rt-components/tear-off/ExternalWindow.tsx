@@ -8,6 +8,8 @@ const defaultConfig: WindowConfig = {
   width: 600,
   height: 640,
   center: WindowCenterStatus.Parent,
+  x: 0,
+  y: 0,
 }
 
 export interface ExternalWindowProps {
