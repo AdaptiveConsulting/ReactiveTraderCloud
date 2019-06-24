@@ -60,6 +60,7 @@ export const withDrag = () => {
       dragNode = undefined
     }
     popOut(event.screenX, event.screenY)
+    document.removeEventListener('dragover', null)
   }
   return {
     onDragStart,
