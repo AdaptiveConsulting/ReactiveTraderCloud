@@ -1,5 +1,5 @@
 import { applicationConnected } from 'rt-actions'
-import { map, switchMapTo, withLatestFrom, delay } from 'rxjs/operators'
+import { map, switchMapTo, withLatestFrom, delay, filter } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 import { combineEpics, ofType } from 'redux-observable'
@@ -13,10 +13,6 @@ const TRADE_HIGHLIGHT_TIME_IN_MS = 3000
 type HighlightTradeAction = ReturnType<typeof highlightTradeAction>
 
 const switchHighlight = (trade: Trade) => {
-  if (!trade) {
-    return false
-  }
-
   return {
     ...trade,
     highlight: !trade.highlight,
@@ -35,11 +31,16 @@ const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
     withLatestFrom(state$),
     map(([message, state]) => {
       const tradeNotification = message[0].tradeNotification
-      const trade = switchHighlight(state.blotterService.trades[tradeNotification.tradeId])
-      return trade
-        ? highlightTradeAction({ trades: [trade] })
-        : highlightTradeAction({ trades: [] })
+      const trade = state.blotterService.trades[tradeNotification.tradeId]
+      // only try to switch the highlight if we've found a trade, otherwise
+      // return null so we can filter it out
+      if (trade) {
+        const tradeSwitched = switchHighlight(trade)
+        return highlightTradeAction({ trades: [tradeSwitched] })
+      }
+      return null
     }),
+    filter(f => f !== null),
   )
 }
 
@@ -49,9 +50,7 @@ const removeHighlightTradeEpic: ApplicationEpic = (action$, state$, { platform }
     delay(TRADE_HIGHLIGHT_TIME_IN_MS),
     map(({ payload }) => {
       const trade = switchHighlight(payload.trades[0])
-      return trade
-        ? removeHighlightTradeAction({ trades: [trade] })
-        : highlightTradeAction({ trades: [] })
+      return removeHighlightTradeAction({ trades: [trade] })
     }),
   )
 }
