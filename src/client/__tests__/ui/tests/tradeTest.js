@@ -4,9 +4,9 @@ const TradePage = require('../pages/tradePage.js')
 const TradeMethod = require('../steps/tradeMethod.js');
 
 // function to dealy test runs
-let origFn = browser.driver.controlFlow().execute
+const origFn = browser.driver.controlFlow().execute
 browser.driver.controlFlow().execute = function() {
-  let args = arguments
+  const args = arguments
   origFn.call(browser.driver.controlFlow(), function() {
     return protractor.promise.delayed(60)
   })

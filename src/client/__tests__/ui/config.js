@@ -1,6 +1,6 @@
 'use strict'
 
-var { SpecReporter } = require('jasmine-spec-reporter')
+const { SpecReporter } = require('jasmine-spec-reporter')
 
 exports.config = {
   framework: 'jasmine',
