@@ -1,5 +1,5 @@
 import { WindowConfig } from './adapters'
-interface ExternalWindow {
+export interface ExternalWindow {
   title: string
   config: WindowConfig
 }

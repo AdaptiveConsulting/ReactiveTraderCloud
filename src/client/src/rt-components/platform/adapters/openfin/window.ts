@@ -36,11 +36,10 @@ export const openDesktopWindow = (
   position?: {},
 ) => {
   const { url, width: defaultWidth, height: defaultHeight } = config
-
   return returnChildWindows().then((childWindows: fin.OpenFinWindow[]) => {
     let updatedPosition = {}
     const hasChildWindows = childWindows && childWindows.length > 0
-    const shouldBeDefaultCentered = !hasChildWindows
+    const shouldBeDefaultCentered = !hasChildWindows && (!config.x && !config.y)
 
     if (hasChildWindows) {
       const lastWindow = _last(childWindows)
@@ -48,7 +47,13 @@ export const openDesktopWindow = (
         defaultLeft: _get(lastWindow, 'nativeWindow.screenLeft') + TEAR_OUT_OFFSET_LEFT,
         defaultTop: _get(lastWindow, 'nativeWindow.screenTop') + TEAR_OUT_OFFSET_TOP,
       }
+    } else {
+      updatedPosition = {
+        defaultLeft: config.x ? config.x : undefined,
+        defaultTop: config.y ? config.y : undefined,
+      }
     }
+
     return new Promise<Window>(resolve => {
       const win = new fin.desktop.Window(
         {

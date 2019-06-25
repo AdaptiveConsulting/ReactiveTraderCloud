@@ -1,19 +1,27 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { PopoutIcon } from 'rt-components'
 import { Controls, PopoutButton } from './styled'
 
 interface AnalyticsHeaderProps {
   canPopout: boolean
-  onPopoutClick: (() => void) | undefined
+  onPopoutClick: ((x: number, y: number) => void) | undefined
 }
 
-const AnalyticsWindowHeader: React.FC<AnalyticsHeaderProps> = ({ canPopout, onPopoutClick }) =>
-  canPopout ? (
+const AnalyticsWindowHeader: React.FC<AnalyticsHeaderProps> = ({ canPopout, onPopoutClick }) => {
+  const popoutClickHandler = useCallback(
+    event => {
+      onPopoutClick(event.screenX, event.screenY)
+    },
+    [onPopoutClick],
+  )
+
+  return canPopout ? (
     <Controls>
-      <PopoutButton onClick={onPopoutClick}>
+      <PopoutButton onClick={popoutClickHandler}>
         <PopoutIcon width={0.8125} height={0.75} />
       </PopoutButton>
     </Controls>
   ) : null
+}
 
 export default AnalyticsWindowHeader

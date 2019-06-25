@@ -3,12 +3,12 @@ import { createSelector } from 'reselect'
 
 export const selectState = (state: GlobalState) => state.layout
 
-export const displayBlotterSelector = createSelector(
+export const blotterSelector = createSelector(
   [selectState],
-  state => state.displayBlotter,
+  state => state.blotter,
 )
 
-export const displayAnalyticsSelector = createSelector(
+export const analyticsSelector = createSelector(
   [selectState],
-  state => state.displayAnalytics,
+  state => state.analytics,
 )
