@@ -15,6 +15,10 @@ export const Wrapper = styled.div`
 export const WorkspaceWrapper = styled(Wrapper)`
   padding-right: 0;
   height: 100%;
+
+  @media (max-width: 480px) {
+    padding-right: 1rem;
+  }
 `
 
 export const AnalyticsWrapper = styled(Wrapper)`
