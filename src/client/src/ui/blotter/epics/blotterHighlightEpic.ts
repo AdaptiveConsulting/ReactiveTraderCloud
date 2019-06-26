@@ -31,16 +31,12 @@ const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
     withLatestFrom(state$),
     map(([message, state]) => {
       const tradeNotification = message[0].tradeNotification
-      const trade = state.blotterService.trades[tradeNotification.tradeId]
-      // only try to switch the highlight if we've found a trade, otherwise
-      // return null so we can filter it out
-      if (trade) {
-        const tradeSwitched = switchHighlight(trade)
-        return highlightTradeAction({ trades: [tradeSwitched] })
-      }
-      return null
+      return state.blotterService.trades[tradeNotification.tradeId]
     }),
-    filter(f => f !== null),
+    filter(Boolean),
+    map(trade => {
+      return highlightTradeAction({ trades: [switchHighlight(trade)] })
+    }),
   )
 }
 
