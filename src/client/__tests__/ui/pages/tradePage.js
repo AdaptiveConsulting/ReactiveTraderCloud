@@ -15,12 +15,12 @@ const TradePage = Object.create({}, {
   },
   linkEUR: {
     get() {
-      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(0)
+      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(1)
     }
   },
   linkUSD: {
     get() {
-      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(1)
+      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(0)
     }
   },
   linkGBP: {
