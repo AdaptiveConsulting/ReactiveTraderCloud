@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
-import { Resizer, TearOff, externalWindowDefault } from 'rt-components'
+import { Resizer, TearOff, externalWindowDefault, ExternalWindow } from 'rt-components'
 
 import { AnalyticsContainer } from '../../ui/analytics'
 import { BlotterContainer } from '../../ui/blotter'
@@ -11,72 +11,82 @@ import { WorkspaceContainer } from '../../ui/workspace'
 import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
-import { GlobalState } from '../../StoreTypes'
-import { displayAnalyticsSelector, displayBlotterSelector } from '../layouts/selectors'
-import { connect } from 'react-redux'
+import { analyticsSelector, blotterSelector } from '../layouts/selectors'
+import { WindowPosition } from '../layouts'
+import { useSelector } from 'react-redux'
 
 interface Props {
   header?: React.ReactChild
-  displayBlotter: boolean
-  displayAnalytics: boolean
 }
 
-class ShellRoute extends PureComponent<Props> {
-  render() {
-    const { header, displayBlotter, displayAnalytics } = this.props
-    return (
-      <DefaultLayout
-        header={header}
-        body={
-          <Resizer
-            defaultHeight={30}
-            component={() => (
-              <BlotterWrapper>
-                <TearOff
-                  id="blotter"
-                  externalWindowProps={externalWindowDefault.blotterRegion}
-                  render={(popOut, tornOff) => (
-                    <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
-                  )}
-                  tornOff={!displayBlotter}
-                />
-              </BlotterWrapper>
-            )}
-            disabled={!displayBlotter}
-          >
-            <WorkspaceWrapper>
-              <OverflowScroll>
-                <WorkspaceContainer />
-              </OverflowScroll>
-            </WorkspaceWrapper>
-          </Resizer>
-        }
-        aside={
-          <AnalyticsWrapper>
-            <TearOff
-              id="region"
-              externalWindowProps={externalWindowDefault.analyticsRegion}
-              render={(popOut, tornOff) => (
-                <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
-              )}
-              tornOff={!displayAnalytics}
-            />
-          </AnalyticsWrapper>
-        }
-        footer={
-          <StatusBar>
-            <StatusButton />
-          </StatusBar>
-        }
-        after={<ReconnectModal />}
-      />
-    )
+const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition) => {
+  return {
+    ...windowConfig,
+    config: {
+      ...windowConfig.config,
+      x: layout.x,
+      y: layout.y,
+    },
   }
 }
 
-const mapStateToProps = (state: GlobalState) => ({
-  displayBlotter: displayBlotterSelector(state),
-  displayAnalytics: displayAnalyticsSelector(state),
-})
+const ShellRoute: React.FC<Props> = ({ header }) => {
+  const blotter = useSelector(blotterSelector)
+  const analytics = useSelector(analyticsSelector)
 
-export default connect(mapStateToProps)(ShellRoute)
+  return (
+    <DefaultLayout
+      header={header}
+      body={
+        <Resizer
+          defaultHeight={30}
+          component={() => (
+            <BlotterWrapper>
+              <TearOff
+                id="blotter"
+                externalWindowProps={addLayoutToConfig(
+                  externalWindowDefault.blotterRegion,
+                  blotter,
+                )}
+                render={(popOut, tornOff) => (
+                  <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
+                )}
+                tornOff={!blotter.visible}
+              />
+            </BlotterWrapper>
+          )}
+          disabled={!blotter.visible}
+        >
+          <WorkspaceWrapper>
+            <OverflowScroll>
+              <WorkspaceContainer />
+            </OverflowScroll>
+          </WorkspaceWrapper>
+        </Resizer>
+      }
+      aside={
+        <AnalyticsWrapper>
+          <TearOff
+            id="region"
+            externalWindowProps={addLayoutToConfig(
+              externalWindowDefault.analyticsRegion,
+              analytics,
+            )}
+            render={(popOut, tornOff) => (
+              <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
+            )}
+            tornOff={!analytics.visible}
+          />
+        </AnalyticsWrapper>
+      }
+      footer={
+        <StatusBar>
+          <StatusButton />
+        </StatusBar>
+      }
+      after={<ReconnectModal />}
+    />
+  )
+}
+
+export default ShellRoute

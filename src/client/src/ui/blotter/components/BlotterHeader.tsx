@@ -9,7 +9,7 @@ import ExcelButton from './toolbar/ExcelButton'
 
 interface Props {
   canPopout: boolean
-  onPopoutClick: () => void
+  onPopoutClick: (x: number, y: number) => void
   onExportToExcelClick: () => void
   gridApi: GridApi | null
 }
@@ -45,6 +45,13 @@ const Fill = styled.div`
 `
 
 const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, onPopoutClick }) => {
+  const popoutClickHandler = useCallback(
+    event => {
+      onPopoutClick(event.screenX, event.screenY)
+    },
+    [onPopoutClick],
+  )
+
   const [quickFilterText, setQuickFilterText] = useState('')
 
   const quickFilterChangeHandler = useCallback(
@@ -87,7 +94,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
         {canPopout && (
           <React.Fragment>
             <Fill />
-            <BlotterControls onClick={onPopoutClick}>
+            <BlotterControls onClick={popoutClickHandler}>
               <PopoutIcon width={0.8125} height={0.75} />
             </BlotterControls>
           </React.Fragment>

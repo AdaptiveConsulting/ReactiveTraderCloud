@@ -7,6 +7,7 @@ import {
   WindowConfig,
   setupWorkspaces,
   usePlatform,
+  ExternalWindow,
 } from './platform'
 
 export { platform, usePlatform, externalWindowDefault, PlatformProvider, setupWorkspaces }
@@ -31,3 +32,4 @@ export { Timer } from './timer'
 export { RouteWrapper, RouteStyle } from './route-wrapper'
 export { default as Popup } from './popup'
 export { excelAdapter, InteropTopics, Browser, OpenFin, Finsemble } from './platform'
+export type ExternalWindow = ExternalWindow

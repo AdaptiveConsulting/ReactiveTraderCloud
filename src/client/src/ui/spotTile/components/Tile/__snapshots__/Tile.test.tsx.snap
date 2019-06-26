@@ -2,34 +2,34 @@
 
 exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 <div
-  className="sc-dVhcbM sc-eqIVtm fUWgaP"
+  className="sc-eqIVtm sc-fAjcbJ iquZYL"
 >
   <div
-    className="sc-hzDkRC spot-tile sc-caSCKo jOpZpT"
+    className="sc-jhAzac spot-tile sc-gisBJw cgJjhx"
   >
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-hmzhuo eiuqZU"
+        className="sc-frDJqD fAbCDq"
       >
         <div
-          className="sc-fMiknA anWfE"
+          className="sc-dVhcbM esJDHn"
         >
           <div
-            className="sc-bRBYWo eEXrJH"
+            className="sc-hzDkRC hefQwu"
           >
             EUR/USD
           </div>
           <div
-            className="sc-Rmtcm dpuvgb"
+            className="sc-bRBYWo jmSJAL"
           >
             SPT (07 APR)
           </div>
         </div>
       </div>
       <div
-        className="sc-gPEVay YCpKu"
+        className="sc-iRbamj iTHPiO"
       >
         <button
           className="sc-EHOje gCbQHr"
@@ -125,10 +125,10 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
       </div>
     </div>
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-gisBJw iSHpXw"
+        className="sc-kjoXOD bvCYDb"
       >
         <div
           className="sc-htpNat idZgat"
@@ -157,40 +157,40 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 <div
-  className="sc-dVhcbM sc-eqIVtm fUWgaP"
+  className="sc-eqIVtm sc-fAjcbJ iquZYL"
 >
   <div
-    className="sc-hzDkRC spot-tile sc-caSCKo jOpZpT"
+    className="sc-jhAzac spot-tile sc-gisBJw cgJjhx"
   >
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-hmzhuo eiuqZU"
+        className="sc-frDJqD fAbCDq"
       >
         <div
-          className="sc-fMiknA anWfE"
+          className="sc-dVhcbM esJDHn"
         >
           <div
-            className="sc-bRBYWo eEXrJH"
+            className="sc-hzDkRC hefQwu"
           >
             EUR/USD
           </div>
           <div
-            className="sc-Rmtcm dpuvgb"
+            className="sc-bRBYWo jmSJAL"
           >
             SPT (07 APR)
           </div>
         </div>
       </div>
       <div
-        className="sc-gPEVay YCpKu"
+        className="sc-iRbamj iTHPiO"
       >
         <div
-          className="sc-iRbamj lkVRJy"
+          className="sc-jlyJG djTXEU"
         >
           <i
-            className="fas fa-ban fa-flip-horizontal sc-jlyJG cibsWh"
+            className="fas fa-ban fa-flip-horizontal sc-gipzik hRaVNo"
           />
           Streaming price unavailable
         </div>
@@ -214,20 +214,20 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           />
         </div>
         <div
-          className="sc-iRbamj lkVRJy"
+          className="sc-jlyJG djTXEU"
         >
           <i
-            className="fas fa-ban fa-flip-horizontal sc-jlyJG cibsWh"
+            className="fas fa-ban fa-flip-horizontal sc-gipzik hRaVNo"
           />
           Streaming price unavailable
         </div>
       </div>
     </div>
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-gisBJw iSHpXw"
+        className="sc-kjoXOD bvCYDb"
       >
         <div
           className="sc-htpNat idZgat"
@@ -264,34 +264,34 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 <div
-  className="sc-dVhcbM sc-eqIVtm fUWgaP"
+  className="sc-eqIVtm sc-fAjcbJ iquZYL"
 >
   <div
-    className="sc-hzDkRC spot-tile sc-caSCKo jOpZpT"
+    className="sc-jhAzac spot-tile sc-gisBJw cgJjhx"
   >
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-hmzhuo eiuqZU"
+        className="sc-frDJqD fAbCDq"
       >
         <div
-          className="sc-fMiknA anWfE"
+          className="sc-dVhcbM esJDHn"
         >
           <div
-            className="sc-bRBYWo eEXrJH"
+            className="sc-hzDkRC hefQwu"
           >
             EUR/USD
           </div>
           <div
-            className="sc-Rmtcm dpuvgb"
+            className="sc-bRBYWo jmSJAL"
           >
             SPT (07 APR)
           </div>
         </div>
       </div>
       <div
-        className="sc-gPEVay YCpKu"
+        className="sc-iRbamj iTHPiO"
       >
         <button
           className="sc-EHOje gCbQHr"
@@ -397,10 +397,10 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
       </div>
     </div>
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-gisBJw iSHpXw"
+        className="sc-kjoXOD bvCYDb"
       >
         <div
           className="sc-htpNat idZgat"
@@ -437,34 +437,34 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ received 1`] = `
 <div
-  className="sc-dVhcbM sc-eqIVtm fUWgaP"
+  className="sc-eqIVtm sc-fAjcbJ iquZYL"
 >
   <div
-    className="sc-hzDkRC spot-tile sc-caSCKo jOpZpT"
+    className="sc-jhAzac spot-tile sc-gisBJw cgJjhx"
   >
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-hmzhuo eiuqZU"
+        className="sc-frDJqD fAbCDq"
       >
         <div
-          className="sc-fMiknA anWfE"
+          className="sc-dVhcbM esJDHn"
         >
           <div
-            className="sc-bRBYWo eEXrJH"
+            className="sc-hzDkRC hefQwu"
           >
             EUR/USD
           </div>
           <div
-            className="sc-Rmtcm dpuvgb"
+            className="sc-bRBYWo jmSJAL"
           >
             SPT (07 APR)
           </div>
         </div>
       </div>
       <div
-        className="sc-gPEVay YCpKu"
+        className="sc-iRbamj iTHPiO"
       >
         <button
           className="sc-EHOje ixrtnE"
@@ -560,10 +560,10 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
       </div>
     </div>
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-gisBJw iSHpXw"
+        className="sc-kjoXOD bvCYDb"
       >
         <div
           className="sc-htpNat idZgat"
@@ -592,47 +592,47 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 <div
-  className="sc-dVhcbM sc-eqIVtm fUWgaP"
+  className="sc-eqIVtm sc-fAjcbJ iquZYL"
 >
   <div
-    className="sc-hzDkRC spot-tile sc-caSCKo jOpZpT"
+    className="sc-jhAzac spot-tile sc-gisBJw cgJjhx"
   >
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-hmzhuo eiuqZU"
+        className="sc-frDJqD fAbCDq"
       >
         <div
-          className="sc-fMiknA anWfE"
+          className="sc-dVhcbM esJDHn"
         >
           <div
-            className="sc-bRBYWo eEXrJH"
+            className="sc-hzDkRC hefQwu"
           >
             EUR/USD
           </div>
           <div
-            className="sc-Rmtcm dpuvgb"
+            className="sc-bRBYWo jmSJAL"
           >
             SPT (07 APR)
           </div>
         </div>
       </div>
       <div
-        className="sc-gPEVay YCpKu"
+        className="sc-iRbamj iTHPiO"
       >
         <div
-          className="sc-iRbamj lkVRJy"
+          className="sc-jlyJG djTXEU"
         >
           <div
-            className="sc-gipzik eqzpnJ"
+            className="sc-csuQGl kfyPEl"
           >
             <svg
               height={14}
               width={14}
             >
               <rect
-                className="sc-kEYyzF coOeJm"
+                className="sc-kkGfuU isRsVR"
                 height={10.5}
                 order={0}
                 speed={0.8}
@@ -641,7 +641,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={0.25}
               />
               <rect
-                className="sc-kEYyzF gedtZd"
+                className="sc-kkGfuU kjqbOX"
                 height={10.5}
                 order={1}
                 speed={0.8}
@@ -650,7 +650,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={3.875}
               />
               <rect
-                className="sc-kEYyzF kSdfCf"
+                className="sc-kkGfuU hcoFxx"
                 height={10.5}
                 order={2}
                 speed={0.8}
@@ -659,7 +659,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={7.5}
               />
               <rect
-                className="sc-kEYyzF brVaZY"
+                className="sc-kkGfuU ffvTAs"
                 height={10.5}
                 order={3}
                 speed={0.8}
@@ -691,17 +691,17 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           />
         </div>
         <div
-          className="sc-iRbamj lkVRJy"
+          className="sc-jlyJG djTXEU"
         >
           <div
-            className="sc-gipzik eqzpnJ"
+            className="sc-csuQGl kfyPEl"
           >
             <svg
               height={14}
               width={14}
             >
               <rect
-                className="sc-kEYyzF coOeJm"
+                className="sc-kkGfuU isRsVR"
                 height={10.5}
                 order={0}
                 speed={0.8}
@@ -710,7 +710,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={0.25}
               />
               <rect
-                className="sc-kEYyzF gedtZd"
+                className="sc-kkGfuU kjqbOX"
                 height={10.5}
                 order={1}
                 speed={0.8}
@@ -719,7 +719,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={3.875}
               />
               <rect
-                className="sc-kEYyzF kSdfCf"
+                className="sc-kkGfuU hcoFxx"
                 height={10.5}
                 order={2}
                 speed={0.8}
@@ -728,7 +728,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={7.5}
               />
               <rect
-                className="sc-kEYyzF brVaZY"
+                className="sc-kkGfuU ffvTAs"
                 height={10.5}
                 order={3}
                 speed={0.8}
@@ -743,10 +743,10 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
       </div>
     </div>
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-gisBJw iSHpXw"
+        className="sc-kjoXOD bvCYDb"
       >
         <div
           className="sc-htpNat idZgat"
@@ -775,34 +775,34 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 
 exports[`Snapshot, state derived from props, defaults, RFQ none, should be able to excute 1`] = `
 <div
-  className="sc-dVhcbM sc-eqIVtm fUWgaP"
+  className="sc-eqIVtm sc-fAjcbJ iquZYL"
 >
   <div
-    className="sc-hzDkRC spot-tile sc-caSCKo jOpZpT"
+    className="sc-jhAzac spot-tile sc-gisBJw cgJjhx"
   >
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-hmzhuo eiuqZU"
+        className="sc-frDJqD fAbCDq"
       >
         <div
-          className="sc-fMiknA anWfE"
+          className="sc-dVhcbM esJDHn"
         >
           <div
-            className="sc-bRBYWo eEXrJH"
+            className="sc-hzDkRC hefQwu"
           >
             EUR/USD
           </div>
           <div
-            className="sc-Rmtcm dpuvgb"
+            className="sc-bRBYWo jmSJAL"
           >
             SPT (07 APR)
           </div>
         </div>
       </div>
       <div
-        className="sc-gPEVay YCpKu"
+        className="sc-iRbamj iTHPiO"
       >
         <button
           className="sc-EHOje kkdSuS"
@@ -898,10 +898,10 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
       </div>
     </div>
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-gisBJw iSHpXw"
+        className="sc-kjoXOD bvCYDb"
       >
         <div
           className="sc-htpNat idZgat"
@@ -930,34 +930,34 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 
 exports[`Snapshot, state derived from props, in trade 1`] = `
 <div
-  className="sc-dVhcbM sc-eqIVtm fUWgaP"
+  className="sc-eqIVtm sc-fAjcbJ iquZYL"
 >
   <div
-    className="sc-hzDkRC spot-tile sc-caSCKo jOpZpT"
+    className="sc-jhAzac spot-tile sc-gisBJw cgJjhx"
   >
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-hmzhuo eiuqZU"
+        className="sc-frDJqD fAbCDq"
       >
         <div
-          className="sc-fMiknA anWfE"
+          className="sc-dVhcbM esJDHn"
         >
           <div
-            className="sc-bRBYWo eEXrJH"
+            className="sc-hzDkRC hefQwu"
           >
             EUR/USD
           </div>
           <div
-            className="sc-Rmtcm dpuvgb"
+            className="sc-bRBYWo jmSJAL"
           >
             SPT (07 APR)
           </div>
         </div>
       </div>
       <div
-        className="sc-gPEVay YCpKu"
+        className="sc-iRbamj iTHPiO"
       >
         <button
           className="sc-EHOje gCbQHr"
@@ -1053,10 +1053,10 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
       </div>
     </div>
     <div
-      className="sc-fAjcbJ byigni"
+      className="sc-caSCKo jjNSwx"
     >
       <div
-        className="sc-gisBJw iSHpXw"
+        className="sc-kjoXOD bvCYDb"
       >
         <div
           className="sc-htpNat idZgat"

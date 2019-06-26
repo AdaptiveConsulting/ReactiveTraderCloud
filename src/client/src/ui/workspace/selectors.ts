@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
 import { WindowConfig } from 'rt-components'
+import { WindowPosition } from './../../shell/layouts'
 
 type Center = 'screen' | 'parent'
 export interface ExternalWindowProps {
@@ -9,13 +10,18 @@ export interface ExternalWindowProps {
   browserConfig: { center: Center }
 }
 
-const makeExternalWindowProps: (key: string) => ExternalWindowProps = (key: string) => ({
+const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => ExternalWindowProps = (
+  key: string,
+  tileLayout: WindowPosition,
+) => ({
   title: `${key} Spot`,
   config: {
     name: `${key}`,
     width: 366, // 346 content + 10 padding
     height: 193,
     url: `/spot/${key}`,
+    x: tileLayout ? tileLayout.x : undefined,
+    y: tileLayout ? tileLayout.y : undefined,
   },
   browserConfig: { center: 'screen' },
 })
@@ -28,8 +34,8 @@ export const selectSpotTiles = createSelector(
   (spotTileKeys, tilesLayout) =>
     Object.keys(spotTileKeys).map(key => ({
       key,
-      externalWindowProps: makeExternalWindowProps(key),
-      tornOff: tilesLayout[key] === undefined ? false : !tilesLayout[key],
+      externalWindowProps: makeExternalWindowProps(key, tilesLayout[key]),
+      tornOff: tilesLayout[key] === undefined ? false : !tilesLayout[key].visible,
     })),
 )
 

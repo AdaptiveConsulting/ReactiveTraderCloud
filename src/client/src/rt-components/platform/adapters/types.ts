@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import { CurrencyPairPosition } from 'rt-types'
-import { ExcelAdapterName } from './openfin/excel';
+import { ExcelAdapterName } from './openfin/excel'
 
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
 export type PlatformType = 'browser' | 'desktop'
@@ -11,6 +11,8 @@ export interface WindowConfig {
   width: number
   height: number
   center?: 'parent' | 'screen'
+  x?: number
+  y?: number
 }
 
 export interface AppConfig {
