@@ -1,19 +1,19 @@
 import { LAYOUT_ACTION_TYPES, LayoutActions } from './layoutActions'
 import { externalWindowDefault } from '../../rt-components'
 
-export interface TileLayoutState {
+export interface WindowPosition {
   visible: boolean
   x?: number
   y?: number
 }
 
 interface TilesLayout {
-  [key: string]: TileLayoutState
+  [key: string]: WindowPosition
 }
 
 export interface LayoutState {
-  blotter: TileLayoutState
-  analytics: TileLayoutState
+  blotter: WindowPosition
+  analytics: WindowPosition
   spotTiles: TilesLayout
 }
 
@@ -37,20 +37,12 @@ export const layoutReducer = (
         case externalWindowDefault.blotterRegion.config.name:
           return {
             ...state,
-            blotter: {
-              visible: action.payload.display,
-              x: action.payload.x,
-              y: action.payload.y,
-            },
+            blotter: getWindowPosition(action),
           }
         case externalWindowDefault.analyticsRegion.config.name:
           return {
             ...state,
-            analytics: {
-              visible: action.payload.display,
-              x: action.payload.x,
-              y: action.payload.y,
-            },
+            analytics: getWindowPosition(action),
           }
         default:
           // this is a spot tile
@@ -58,11 +50,7 @@ export const layoutReducer = (
             ...state,
             spotTiles: {
               ...state.spotTiles,
-              [action.payload.name]: {
-                visible: action.payload.display,
-                x: action.payload.x,
-                y: action.payload.y,
-              },
+              [action.payload.name]: getWindowPosition(action),
             },
           }
       }
@@ -71,3 +59,9 @@ export const layoutReducer = (
       return state
   }
 }
+
+const getWindowPosition = (action: LayoutActions): WindowPosition => ({
+  visible: action.payload.display,
+  x: action.payload.x,
+  y: action.payload.y,
+})

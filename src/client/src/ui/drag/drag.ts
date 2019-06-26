@@ -1,5 +1,20 @@
 import { Environment } from 'rt-system'
 
+/* Drag handler
+
+onDragStart 
+  we create a clone of the dragged node, set some styles and add it to the DOM
+  we add a ondragover listener and record the dragged coordinates
+  we replace the default drag image with a div that is not displayed
+
+onDrag we move the added div to the recorded coordinates 
+
+onDragEnd 
+  we remove the cloned node from the DOM 
+  we call the popout callback
+  we clean up variables and listeners
+*/
+
 export const tilesAreDraggabe = !Environment.isRunningInIE()
 
 export const withDrag = () => {
@@ -11,8 +26,8 @@ export const withDrag = () => {
     const clonedNode = $node.cloneNode(true) as HTMLElement
     clonedNode.style.position = 'absolute'
 
-    clonedNode.style.width = $node.offsetWidth + 'px'
-    clonedNode.style.height = $node.offsetHeight + 'px'
+    clonedNode.style.width = `${$node.offsetWidth}px`
+    clonedNode.style.height = `${$node.offsetHeight}px`
     clonedNode.classList.add('tearOff')
 
     document.body.appendChild(clonedNode)
@@ -33,7 +48,7 @@ export const withDrag = () => {
     const dt = event.dataTransfer
     const element = event.currentTarget
     if (typeof dt.setDragImage === 'function') {
-      setTimeout(function() {
+      setTimeout(() => {
         dragNode = createDragImage(element)
       })
       const div = document.createElement('div')
@@ -44,10 +59,12 @@ export const withDrag = () => {
 
   const onDrag = (event: React.DragEvent<HTMLDivElement>) => {
     event.stopPropagation()
-    if (dragNode) {
-      dragNode.style.left = Math.max(0, dragX) + 'px'
-      dragNode.style.top = Math.max(0, dragY) + 'px'
-    }
+    requestAnimationFrame(() => {
+      if (dragNode) {
+        dragNode.style.left = `${Math.max(0, dragX)}px`
+        dragNode.style.top = `${Math.max(0, dragY)}px`
+      }
+    })
   }
 
   const onDragEnd = (

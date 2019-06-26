@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
 import { WindowConfig } from 'rt-components'
-import { TileLayoutState } from './../../shell/layouts'
+import { WindowPosition } from './../../shell/layouts'
 
 type Center = 'screen' | 'parent'
 export interface ExternalWindowProps {
@@ -10,10 +10,10 @@ export interface ExternalWindowProps {
   browserConfig: { center: Center }
 }
 
-const makeExternalWindowProps: (
+const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => ExternalWindowProps = (
   key: string,
-  tileLayout?: TileLayoutState,
-) => ExternalWindowProps = (key: string, tileLayout?: TileLayoutState) => ({
+  tileLayout: WindowPosition,
+) => ({
   title: `${key} Spot`,
   config: {
     name: `${key}`,
