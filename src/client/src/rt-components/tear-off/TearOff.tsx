@@ -1,15 +1,53 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
 import { styled } from 'rt-theme'
 import { LayoutActions } from '../../shell/layouts/layoutActions'
 import { useDispatch } from 'react-redux'
-import { withDrag, tilesAreDraggabe } from './../../ui/drag/drag'
+import { Environment } from 'rt-system'
 
 type RenderCB = (popOut: (x?: number, y?: number) => void, tornOff: boolean) => JSX.Element
 
 const DragWrapper = styled.div`
   height: 100%;
 `
+const tilesAreDraggabe = !Environment.isRunningInIE()
+
+/* 
+  we create a clone of the dragged node, set some styles and add it to the DOM
+  we set the drag image to this node then remove it in a timeout
+*/
+
+const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+  const eventTarget = event.target as HTMLDivElement
+  event.dataTransfer.setData('text/plain', eventTarget.id)
+  const dt = event.dataTransfer
+
+  const clientRect = eventTarget.getBoundingClientRect()
+  const y = clientRect.top
+  const x = clientRect.left
+  if (typeof dt.setDragImage === 'function') {
+    const node = event.currentTarget.cloneNode(true) as HTMLDivElement
+    node.classList.add('tearOff')
+    node.style.top = `${Math.max(0, y)}px`
+    node.style.left = `${Math.max(0, x)}px`
+    node.style.position = 'absolute'
+    node.style.pointerEvents = 'none'
+    node.style.opacity = '1'
+
+    node.style.width = clientRect.width + 'px'
+    node.style.height = clientRect.height + 'px'
+
+    document.body.appendChild(node)
+
+    const offsetX = event.clientX - clientRect.left
+    const offsetY = event.clientY - clientRect.top
+
+    dt.setDragImage(node, offsetX, offsetY)
+    setTimeout(function() {
+      node.remove()
+    })
+  }
+}
 
 export interface TearOffProps {
   id: string
@@ -36,7 +74,6 @@ const TearOff: React.FC<TearOffProps> = props => {
       dispatch(LayoutActions.updateContainerVisibilityAction({ name: windowName, display: true })),
     [windowName, dispatch],
   )
-  const drag = useMemo(withDrag, [])
 
   if (tornOff) {
     return <ExternalWindow onUnload={popIn} {...externalWindowProps} />
@@ -46,10 +83,9 @@ const TearOff: React.FC<TearOffProps> = props => {
     <DragWrapper
       draggable={tilesAreDraggabe}
       onDragEnd={(event: React.DragEvent<HTMLDivElement>) => {
-        drag.onDragEnd(event, popOut)
+        popOut(event.screenX, event.screenY)
       }}
-      onDragStart={drag.onDragStart}
-      onDrag={drag.onDrag}
+      onDragStart={onDragStart}
     >
       {render(popOut, tornOff)}
     </DragWrapper>
