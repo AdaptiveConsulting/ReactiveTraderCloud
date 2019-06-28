@@ -8,7 +8,7 @@ const origFn = browser.driver.controlFlow().execute
 browser.driver.controlFlow().execute = function() {
   const args = arguments
   origFn.call(browser.driver.controlFlow(), function() {
-    return protractor.promise.delayed(60)
+    return protractor.promise.delayed(80)
   })
   return origFn.apply(browser.driver.controlFlow(), args)
 }
@@ -27,12 +27,6 @@ describe('UI Smoke Tests for Reactive Trader Cloud App', function() {
     expect(TradePage.textBackGroundColour.getCssValue('background-color')).toEqual('rgba(40, 201, 136, 1)')
   })
 
-  it('should  validate the GBP to JPY trade', function() {
-    TradeMethod.GBPToJPYTrade()
-    expect(TradePage.textTradeStatus.getText()).toEqual('Rejected')
-    expect(TradePage.textBackGroundColour.getCssValue('background-color')).toEqual('rgba(249, 76, 76, 1)')
-  })
-
   it('should  validate the EUR to JPY trade', function() {
     TradeMethod.EURToJPYTrade()
     expect(TradePage.textTradeStatus.getText()).toEqual('Done')
@@ -44,6 +38,12 @@ describe('UI Smoke Tests for Reactive Trader Cloud App', function() {
     expect(TradePage.textTradeStatus.getText()).toEqual('Done')
     expect(TradePage.textTradeDate.isPresent()).toBeTruthy()
     expect(TradePage.textTradeDirection.getText()).toEqual('Sell')
+  })
+
+  it('should  validate the GBP to JPY trade', function() {
+    TradeMethod.GBPToJPYTrade()
+    expect(TradePage.textTradeStatus.getText()).toEqual('Rejected')
+    expect(TradePage.textBackGroundColour.getCssValue('background-color')).toEqual('rgba(249, 76, 76, 1)')
   })
 
   afterAll(function() {
