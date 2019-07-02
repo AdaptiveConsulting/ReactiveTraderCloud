@@ -8,6 +8,24 @@ import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION, csvExportSettings } from './blotterUtils'
+import { Context } from 'openfin-fdc3'
+
+const broadcastCurrencyPairs = (symbol: string) => {
+  if (typeof fin === 'undefined') {
+    return
+  }
+  const currencyPairContext: Context = {
+    type: 'fdc.instrument',
+    name: symbol,
+    market: 'currency',
+    id: {
+      id: symbol,
+    },
+  }
+  const fdc3 = require('openfin-fdc3')
+
+  return fdc3.broadcast(currencyPairContext)
+}
 
 export interface BlotterProps {
   rows: Trade[]
@@ -65,7 +83,6 @@ const Blotter: React.FC<BlotterProps> = props => {
   const [displayedRows, setDisplayedRows] = useState(0)
   const [gridDoc] = useState(React.createRef<HTMLDivElement>())
   const [gridApi, setGridApi] = useState(null)
-
   const onModelUpdated = useCallback(
     () => gridApi && setDisplayedRows(gridApi.getDisplayedRowCount()),
     [gridApi],
@@ -103,6 +120,9 @@ const Blotter: React.FC<BlotterProps> = props => {
           rowSelection="multiple"
           suppressDragLeaveHidesColumns={true}
           getRowClass={getRowClass}
+          onRowClicked={params => {
+            broadcastCurrencyPairs(params.data.symbol)
+          }}
           headerHeight={38}
           rowHeight={28}
           onModelUpdated={onModelUpdated}
