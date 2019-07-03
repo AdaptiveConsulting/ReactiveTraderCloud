@@ -11,6 +11,7 @@ import { AnalyticsStyle, BubbleChart, Title, AnalyticsLineChartWrapper, Header }
 import AnalyticsWindowHeader from './AnalyticsHeader'
 import { AnalyticsLineChart } from './analyticsLineChart'
 import LastPosition from './LastPosition'
+
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
@@ -20,7 +21,7 @@ export interface Props {
   currencyPairs: CurrencyPairs
   analyticsLineChartModel: AnalyticsLineChartModel
   positionsChartModel?: PositionsChartModel
-  onPopoutClick?: () => void
+  onPopoutClick?: (x: number, y: number) => void
 }
 
 const Analytics: React.FC<Props> = ({
@@ -37,7 +38,6 @@ const Analytics: React.FC<Props> = ({
   useEffect(() => {
     forceUpdate()
   }, [windowSize])
-
   return (
     <AnalyticsStyle>
       <Header>

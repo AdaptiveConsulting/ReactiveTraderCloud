@@ -33,6 +33,7 @@ const ALL = 'ALL'
 const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
   const [currency, setCurrencyOption] = useState(ALL)
   const [tileView, setTileView] = useState(TileViews.Normal)
+
   return (
     <div>
       <WorkspaceHeader
@@ -50,14 +51,15 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
             <TearOff
               id={key}
               key={key}
+              dragTearOff={true}
               externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
-              render={(popOut, tornOff) => (
+              render={(popOut, isTornOff) => (
                 <WorkspaceItem>
                   <SpotTileContainer
                     id={key}
                     tileView={tileView}
                     onPopoutClick={popOut}
-                    tornOff={tornOff}
+                    tornOff={isTornOff}
                     tearable
                   />
                 </WorkspaceItem>

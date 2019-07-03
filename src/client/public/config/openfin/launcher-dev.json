@@ -47,7 +47,14 @@
     },
     "services": [
         {
-            "name": "layouts"
+            "name": "layouts",
+            "config": {
+              "features": {
+                "snap": true,
+                "dock": true,
+                "tab": false
+              }
+            }
         },
         {
             "name": "fdc3"
