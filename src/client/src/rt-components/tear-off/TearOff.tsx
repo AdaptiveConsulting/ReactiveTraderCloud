@@ -56,11 +56,12 @@ export interface TearOffProps {
   tornOff: boolean
   x?: number
   y?: number
+  dragTearOff: boolean
 }
 
 const TearOff: React.FC<TearOffProps> = props => {
   const dispatch = useDispatch()
-  const { render, externalWindowProps, tornOff } = props
+  const { render, externalWindowProps, tornOff, dragTearOff } = props
   const windowName = externalWindowProps.config.name
   const popOut = useCallback(
     (x: number, y: number) =>
@@ -79,17 +80,20 @@ const TearOff: React.FC<TearOffProps> = props => {
     return <ExternalWindow onUnload={popIn} {...externalWindowProps} />
   }
 
-  return (
-    <DragWrapper
-      draggable={tilesAreDraggabe}
-      onDragEnd={(event: React.DragEvent<HTMLDivElement>) => {
-        popOut(event.screenX, event.screenY)
-      }}
-      onDragStart={onDragStart}
-    >
-      {render(popOut, tornOff)}
-    </DragWrapper>
-  )
+  if (dragTearOff) {
+    return (
+      <DragWrapper
+        draggable={tilesAreDraggabe}
+        onDragEnd={(event: React.DragEvent<HTMLDivElement>) => {
+          popOut(event.screenX, event.screenY)
+        }}
+        onDragStart={onDragStart}
+      >
+        {render(popOut, tornOff)}
+      </DragWrapper>
+    )
+  }
+  return render(popOut, tornOff)
 }
 
 export default TearOff
