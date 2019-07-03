@@ -51,6 +51,7 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
             <TearOff
               id={key}
               key={key}
+              dragTearOff={true}
               externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
               render={(popOut, isTornOff) => (
                 <WorkspaceItem>

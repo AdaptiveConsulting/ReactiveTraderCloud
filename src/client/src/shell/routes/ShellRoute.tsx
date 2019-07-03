@@ -44,6 +44,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
             <BlotterWrapper>
               <TearOff
                 id="blotter"
+                dragTearOff={false}
                 externalWindowProps={addLayoutToConfig(
                   externalWindowDefault.blotterRegion,
                   blotter,
@@ -68,6 +69,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
         <AnalyticsWrapper>
           <TearOff
             id="region"
+            dragTearOff={false}
             externalWindowProps={addLayoutToConfig(
               externalWindowDefault.analyticsRegion,
               analytics,
