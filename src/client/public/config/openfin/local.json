@@ -3,7 +3,7 @@
     "splashScreenImage": "http://localhost:3000/static/media/splash-screen.jpg",
     "startup_app": {
         "name": "Reactive Trader Cloud (LOCAL)",
-        "url": "http://localhost:3000/",
+        "url": "http://localhost:3001/",
         "uuid": "reactive-trader-cloud-local",
         "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
         "autoShow": true,

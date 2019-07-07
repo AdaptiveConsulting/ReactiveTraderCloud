@@ -1,5 +1,5 @@
-import { GridApi } from 'ag-grid'
 import { AgGridReact } from 'ag-grid-react'
+import { GridApi } from 'ag-grid'
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid/dist/styles/ag-grid.css'
 import React, { useState, useCallback } from 'react'
