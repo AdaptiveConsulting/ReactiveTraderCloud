@@ -1,22 +1,20 @@
-import { GridApi } from 'ag-grid'
 import { AgGridReact } from 'ag-grid-react'
+import { GridApi } from 'ag-grid'
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid/dist/styles/ag-grid.css'
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { styled } from 'rt-theme'
 import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION, csvExportSettings } from './blotterUtils'
+import { Context } from 'openfin-fdc3'
+import { usePlatform } from 'rt-components'
 
 export interface BlotterProps {
   rows: Trade[]
   canPopout: boolean
   onPopoutClick?: () => void
-}
-
-interface BlotterState {
-  displayedRows: number
 }
 
 const BlotterStyle = styled('div')`
@@ -50,81 +48,81 @@ const icons = {
   sortDescending: '<i class="fas fa-long-arrow-alt-down" aria-hidden="true" />',
 }
 
-export default class Blotter extends React.Component<BlotterProps, BlotterState> {
-  private gridApi: GridApi | null = null
-
-  private gridDoc = React.createRef<HTMLDivElement>()
-
-  state = {
-    displayedRows: 0,
+const getRowClass = ({ data }: { data: Trade }) => {
+  let cssClass = ''
+  if (data.status === TradeStatus.Rejected) {
+    cssClass = 'rt-blotter__row-rejected'
   }
-
-  render() {
-    const { canPopout, rows, onPopoutClick } = this.props
-    const { displayedRows } = this.state
-    return (
-      <BlotterStyle>
-        <BlotterHeader
-          canPopout={canPopout}
-          onPopoutClick={onPopoutClick}
-          onExportToExcelClick={this.exportToExcel}
-          gridApi={this.gridApi}
-        />
-        <BlotterGrid ref={this.gridDoc}>
-          <AgGridReact
-            columnDefs={columnDefinitions}
-            defaultColDef={DEFAULT_COLUMN_DEFINITION}
-            rowData={rows}
-            enableColResize={true}
-            suppressMovableColumns={true}
-            enableSorting={true}
-            enableFilter={true}
-            rowSelection="multiple"
-            suppressDragLeaveHidesColumns={true}
-            getRowClass={this.getRowClass}
-            headerHeight={38}
-            rowHeight={28}
-            onModelUpdated={this.onModelUpdated}
-            onGridReady={this.onGridReady}
-            icons={icons}
-            getDocument={() => this.gridDoc.current.ownerDocument}
-          />
-        </BlotterGrid>
-        <BlotterStatus>
-          <BlotterStatusText>{`Displaying rows ${displayedRows} of ${
-            rows.length
-          }`}</BlotterStatusText>
-        </BlotterStatus>
-      </BlotterStyle>
-    )
+  if (data.status === TradeStatus.Pending) {
+    cssClass = 'rt-blotter__row-pending'
   }
-
-  private exportToExcel = () => {
-    if (this.gridApi) {
-      this.gridApi.exportDataAsCsv(csvExportSettings)
-    }
+  if (data.highlight) {
+    cssClass += ' rt-blotter__row-highlight'
   }
-
-  private onGridReady = ({ api }: { api: GridApi }) => {
-    this.gridApi = api
-    this.onModelUpdated()
-    api.sizeColumnsToFit()
-  }
-
-  private onModelUpdated = () =>
-    this.gridApi && this.setState({ displayedRows: this.gridApi.getDisplayedRowCount() })
-
-  private getRowClass({ data }: { data: Trade }) {
-    let cssClass = ''
-    if (data.status === TradeStatus.Rejected) {
-      cssClass = 'rt-blotter__row-rejected'
-    }
-    if (data.status === TradeStatus.Pending) {
-      cssClass = 'rt-blotter__row-pending'
-    }
-    if (data.highlight) {
-      cssClass += ' rt-blotter__row-highlight'
-    }
-    return cssClass
-  }
+  return cssClass
 }
+
+const Blotter: React.FC<BlotterProps> = props => {
+  const { canPopout, rows, onPopoutClick } = props
+  const [displayedRows, setDisplayedRows] = useState(0)
+  const [gridDoc] = useState(React.createRef<HTMLDivElement>())
+  const [gridApi, setGridApi] = useState(null)
+  const platform = usePlatform()
+  const onModelUpdated = useCallback(
+    () => gridApi && setDisplayedRows(gridApi.getDisplayedRowCount()),
+    [gridApi],
+  )
+
+  const broadcastContext = (context: Context) => platform.fdc3.broadcast(context)
+
+  const onGridReady = useCallback(({ api }: { api: GridApi }) => {
+    setGridApi(api)
+    onModelUpdated()
+    api.sizeColumnsToFit()
+  }, [])
+
+  const exportToExcel = useCallback(() => {
+    if (gridApi) {
+      gridApi.exportDataAsCsv(csvExportSettings)
+    }
+  }, [gridApi])
+
+  return (
+    <BlotterStyle>
+      <BlotterHeader
+        canPopout={canPopout}
+        onPopoutClick={onPopoutClick}
+        onExportToExcelClick={exportToExcel}
+        gridApi={gridApi}
+      />
+      <BlotterGrid ref={gridDoc}>
+        <AgGridReact
+          columnDefs={columnDefinitions}
+          defaultColDef={DEFAULT_COLUMN_DEFINITION}
+          rowData={rows}
+          enableColResize={true}
+          suppressMovableColumns={true}
+          enableSorting={true}
+          enableFilter={true}
+          rowSelection="multiple"
+          suppressDragLeaveHidesColumns={true}
+          getRowClass={getRowClass}
+          onRowClicked={params => broadcastContext(params.data.symbol)}
+          headerHeight={38}
+          rowHeight={28}
+          onModelUpdated={onModelUpdated}
+          onGridReady={onGridReady}
+          icons={icons}
+          getDocument={() => gridDoc.current.ownerDocument}
+        />
+      </BlotterGrid>
+      <BlotterStatus>
+        <BlotterStatusText>{`Displaying rows ${displayedRows} of ${
+          rows.length
+        }`}</BlotterStatusText>
+      </BlotterStatus>
+    </BlotterStyle>
+  )
+}
+
+export default Blotter

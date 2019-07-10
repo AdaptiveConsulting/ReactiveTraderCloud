@@ -9,6 +9,7 @@ import { LayoutActions } from '../../../../shell/layouts/layoutActions'
 import { workspaces } from 'openfin-layouts'
 import { Notification, NotificationButtonClickedEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../browser/utils/sendNotification'
+import { Context } from 'openfin-fdc3'
 
 export async function setupWorkspaces(store: Store) {
   if (typeof fin !== 'undefined') {
@@ -32,6 +33,7 @@ export default class OpenFin extends BasePlatformAdapter {
   readonly type = 'desktop'
 
   openFinNotifications = require('openfin-notifications')
+  fdc3Context = require('openfin-fdc3')
 
   constructor() {
     super()
@@ -76,6 +78,10 @@ export default class OpenFin extends BasePlatformAdapter {
     },
 
     minimize: () => fin.desktop.Window.getCurrent().minimize(),
+  }
+
+  fdc3 = {
+    broadcast: (context: Context) => this.fdc3Context.broadcast(context),
   }
 
   app = {

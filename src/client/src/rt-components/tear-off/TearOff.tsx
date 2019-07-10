@@ -1,47 +1,99 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
-import { Dispatch } from 'redux'
+import { styled } from 'rt-theme'
 import { LayoutActions } from '../../shell/layouts/layoutActions'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { Environment } from 'rt-system'
 
-type RenderCB = (popOut: () => void, tornOff: boolean) => JSX.Element
+type RenderCB = (popOut: (x?: number, y?: number) => void, tornOff: boolean) => JSX.Element
+
+const DragWrapper = styled.div`
+  height: 100%;
+`
+const tilesAreDraggabe = !Environment.isRunningInIE()
+
+/* 
+  we create a clone of the dragged node, set some styles and add it to the DOM
+  we set the drag image to this node then remove it in a timeout
+*/
+
+const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+  const eventTarget = event.target as HTMLDivElement
+  event.dataTransfer.setData('text/plain', eventTarget.id)
+  const dt = event.dataTransfer
+
+  const clientRect = eventTarget.getBoundingClientRect()
+  const y = clientRect.top
+  const x = clientRect.left
+  if (typeof dt.setDragImage === 'function') {
+    const node = event.currentTarget.cloneNode(true) as HTMLDivElement
+    node.classList.add('tearOff')
+    node.style.top = `${Math.max(0, y)}px`
+    node.style.left = `${Math.max(0, x)}px`
+    node.style.position = 'absolute'
+    node.style.pointerEvents = 'none'
+    node.style.opacity = '1'
+
+    node.style.width = clientRect.width + 'px'
+    node.style.height = clientRect.height + 'px'
+
+    document.body.appendChild(node)
+
+    const offsetX = event.clientX - clientRect.left
+    const offsetY = event.clientY - clientRect.top
+
+    dt.setDragImage(node, offsetX, offsetY)
+    setTimeout(function() {
+      node.remove()
+    })
+  }
+}
 
 export interface TearOffProps {
   id: string
   render: RenderCB
   externalWindowProps: Partial<ExternalWindowProps>
   tornOff: boolean
+  x?: number
+  y?: number
+  dragTearOff: boolean
 }
 
-interface TearOffDispatchProps {
-  onPopIn: (name: string) => void
-  onPopOut: (name: string) => void
-}
+const TearOff: React.FC<TearOffProps> = props => {
+  const dispatch = useDispatch()
+  const { render, externalWindowProps, tornOff, dragTearOff } = props
+  const windowName = externalWindowProps.config.name
+  const popOut = useCallback(
+    (x: number, y: number) =>
+      dispatch(
+        LayoutActions.updateContainerVisibilityAction({ name: windowName, display: false, x, y }),
+      ),
+    [windowName],
+  )
+  const popIn = useCallback(
+    () =>
+      dispatch(LayoutActions.updateContainerVisibilityAction({ name: windowName, display: true })),
+    [windowName, dispatch],
+  )
 
-type TearOffContainerProps = TearOffProps & TearOffDispatchProps
-
-class TearOff extends React.PureComponent<TearOffContainerProps> {
-  render() {
-    const { render, externalWindowProps, tornOff, onPopIn, onPopOut } = this.props
-    const windowName = externalWindowProps.config.name
-    const popOut = () => onPopOut(windowName)
-    const popIn = () => onPopIn(windowName)
-
-    if (tornOff) {
-      return <ExternalWindow onUnload={popIn} {...externalWindowProps} />
-    }
-    return render(popOut, tornOff)
+  if (tornOff) {
+    return <ExternalWindow onUnload={popIn} {...externalWindowProps} />
   }
+
+  if (dragTearOff) {
+    return (
+      <DragWrapper
+        draggable={tilesAreDraggabe}
+        onDragEnd={(event: React.DragEvent<HTMLDivElement>) => {
+          popOut(event.screenX, event.screenY)
+        }}
+        onDragStart={onDragStart}
+      >
+        {render(popOut, tornOff)}
+      </DragWrapper>
+    )
+  }
+  return render(popOut, tornOff)
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onPopOut: (name: string) =>
-    dispatch(LayoutActions.updateContainerVisibilityAction({ name, display: false })),
-  onPopIn: (name: string) =>
-    dispatch(LayoutActions.updateContainerVisibilityAction({ name, display: true })),
-})
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(TearOff)
+export default TearOff

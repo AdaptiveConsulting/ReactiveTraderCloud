@@ -1,5 +1,5 @@
 import { WindowConfig, PlatformFeatures, PlatformName, PlatformType } from './types'
-
+import { Context } from 'openfin-fdc3'
 interface PlatformAdapterInterface {
   readonly name: PlatformName
   readonly type: PlatformType
@@ -16,6 +16,9 @@ interface PlatformAdapterInterface {
     notify: (message: object) => void
   }
 
+  fdc3: {
+    broadcast?: (context: Context) => void
+  }
 }
 
 export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
@@ -29,7 +32,7 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   hasFeature<FeatureName extends keyof PlatformFeatures>(
     feature: FeatureName,
   ): this is Pick<PlatformFeatures, FeatureName> {
-  // ): this is PlatformFeatures[FeatureName] {
+    // ): this is PlatformFeatures[FeatureName] {
     return !!(this as any)[feature]
   }
 
@@ -42,5 +45,8 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   }
   abstract notification: {
     notify: (message: object) => void
+  }
+  abstract fdc3: {
+    broadcast?: (context: Context) => void
   }
 }

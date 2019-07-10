@@ -10,16 +10,17 @@ const fs = require('fs')
 //     })
 //   })
 
-const createInstaller = (branch, manifestName) => {
+const createInstaller = (branch, manifestName, os='win') => {
   const fileName = `ReactiveTraderCloud-${manifestName}`
   const appJSONUrl = `https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/${branch}/src/client/public/config/openfin/${manifestName}.json`
-  const installerGeneratorUrl = `https://install.openfin.co/download/?unzipped=true&config=${appJSONUrl}&fileName=${fileName}`
+  const installerGeneratorUrl = `https://install.openfin.co/download/?unzipped=true&config=${appJSONUrl}&fileName=${fileName}&os=${os}`
 
   console.log(` - Generating installer: \x1b[36m${fileName}.exe\x1b[0m (points to \x1b[36m${branch}\x1b[0m branch)`)
 
   return new Promise(resolve => {
     https.get(installerGeneratorUrl, response => {
-      const file = fs.createWriteStream(`install/${fileName}.exe`)
+      const extension = os === 'win' ? 'exe' : 'dmg'
+      const file = fs.createWriteStream(`install/${fileName}.${extension}`)
       response.pipe(file)
       resolve()
     })
@@ -36,11 +37,13 @@ Make sure the files are available on their respective locations when distributin
 `,
   )
 
-  return installersData.reduce(
-    (sequence, { branch, manifestName }) =>
-      sequence.then(() => createInstaller(branch, manifestName)),
-    Promise.resolve(),
-  )
+  const installerDownloads = installersData.map(({ branch, manifestName })=> {
+    const winInstaller = createInstaller(branch, manifestName)
+    const osxInstaller = createInstaller(branch, manifestName, 'osx') 
+    return Promise.all([winInstaller, osxInstaller])
+  });
+
+  return Promise.all(installerDownloads)
 }
 
 // File name + github branch for each json manifest

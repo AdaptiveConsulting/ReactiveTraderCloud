@@ -1,9 +1,10 @@
 import { styled } from 'rt-theme'
+import { rules } from 'rt-styleguide'
 
 export const OverflowScroll = styled.div`
   overflow-y: scroll;
+  ${rules.touchScroll};
   height: 100%;
-  scrollbar-width: thin;
 `
 
 export const Wrapper = styled.div`
@@ -14,6 +15,10 @@ export const Wrapper = styled.div`
 export const WorkspaceWrapper = styled(Wrapper)`
   padding-right: 0;
   height: 100%;
+
+  @media (max-width: 480px) {
+    padding-right: 1rem;
+  }
 `
 
 export const AnalyticsWrapper = styled(Wrapper)`
