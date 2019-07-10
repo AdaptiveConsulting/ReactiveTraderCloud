@@ -1,5 +1,5 @@
-import { GridApi } from 'ag-grid'
 import { AgGridReact } from 'ag-grid-react'
+import { GridApi } from 'ag-grid'
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid/dist/styles/ag-grid.css'
 import React, { useState, useCallback } from 'react'
@@ -8,6 +8,8 @@ import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION, csvExportSettings } from './blotterUtils'
+import { Context } from 'openfin-fdc3'
+import { usePlatform } from 'rt-components'
 
 export interface BlotterProps {
   rows: Trade[]
@@ -65,11 +67,13 @@ const Blotter: React.FC<BlotterProps> = props => {
   const [displayedRows, setDisplayedRows] = useState(0)
   const [gridDoc] = useState(React.createRef<HTMLDivElement>())
   const [gridApi, setGridApi] = useState(null)
-
+  const platform = usePlatform()
   const onModelUpdated = useCallback(
     () => gridApi && setDisplayedRows(gridApi.getDisplayedRowCount()),
     [gridApi],
   )
+
+  const broadcastContext = (context: Context) => platform.fdc3.broadcast(context)
 
   const onGridReady = useCallback(({ api }: { api: GridApi }) => {
     setGridApi(api)
@@ -103,6 +107,7 @@ const Blotter: React.FC<BlotterProps> = props => {
           rowSelection="multiple"
           suppressDragLeaveHidesColumns={true}
           getRowClass={getRowClass}
+          onRowClicked={params => broadcastContext(params.data.symbol)}
           headerHeight={38}
           rowHeight={28}
           onModelUpdated={onModelUpdated}

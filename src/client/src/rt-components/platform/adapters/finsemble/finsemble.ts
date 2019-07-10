@@ -16,6 +16,10 @@ export default class Finsemble extends BasePlatformAdapter {
     open: (config: WindowConfig, onClose?: () => void) => Promise.resolve(window.open()),
   }
 
+  fdc3 = {
+    broadcast: () => {},
+  }
+
   app = {
     open: (id: string, config: AppConfig) =>
       new Promise<string>(
