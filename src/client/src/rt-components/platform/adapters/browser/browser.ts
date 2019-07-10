@@ -7,11 +7,14 @@ export default class Browser extends BasePlatformAdapter {
   readonly name = 'browser'
   readonly type = 'browser'
 
-
   window = {
     close: () => window.close(),
 
     open: (config: WindowConfig, onClose?: () => void) => openBrowserWindow(config, onClose),
+  }
+
+  fdc3 = {
+    broadcast: () => {},
   }
 
   notification = {

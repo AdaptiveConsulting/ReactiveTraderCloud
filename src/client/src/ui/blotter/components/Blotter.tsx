@@ -73,12 +73,7 @@ const Blotter: React.FC<BlotterProps> = props => {
     [gridApi],
   )
 
-  const broadcastContext = (context: Context) => {
-    if (platform.name !== 'openfin') {
-      return
-    }
-    platform.fdc3.broadcast(context)
-  }
+  const broadcastContext = (context: Context) => platform.fdc3.broadcast(context)
 
   const onGridReady = useCallback(({ api }: { api: GridApi }) => {
     setGridApi(api)
