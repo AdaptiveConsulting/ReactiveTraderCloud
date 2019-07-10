@@ -2,29 +2,61 @@
 
 const TradePage = require('../pages/tradePage.js')
 
-let EC = protractor.ExpectedConditions
-let max_wait_time = 10000;
+const EC = protractor.ExpectedConditions
+const maxWaitTime = 10000
 
-exports.successfulTrade = () => {
-  browser.wait(EC.visibilityOf(TradePage.linkGBP), max_wait_time)
-  TradePage.linkGBP.click()
-  browser.wait(EC.visibilityOf(TradePage.buttonSellSecondCell), max_wait_time)
-  TradePage.buttonSellSecondCell.click()
-  browser.sleep(2000)
-  browser.wait(EC.visibilityOf(TradePage.tradeSuccessMessage), max_wait_time)
-  expect(TradePage.tradeSuccessMessage.getText()).toContain('You sold')
-  browser.wait(EC.visibilityOf(TradePage.buttonCloseTradeSuccess), max_wait_time)
-  TradePage.buttonCloseTradeSuccess.click()
+async function fillNotional(newNotionalValue) {
+  await browser.wait(EC.visibilityOf(TradePage.textAmountThirdCell), maxWaitTime)
+  const textNotional = await TradePage.textAmountThirdCell.getAttribute('value')
+  expect(textNotional).toEqual('1,000,000')
+  await TradePage.textAmountThirdCell.clear()
+  await TradePage.textAmountThirdCell.sendKeys(newNotionalValue)
 }
 
-exports.failedTrade = () => {
-  browser.wait(EC.visibilityOf(TradePage.linkGBP), max_wait_time)
-  TradePage.linkGBP.click()
-  browser.wait(EC.visibilityOf(TradePage.buttonBuyFirstCell), max_wait_time)
-  TradePage.buttonBuyFirstCell.click()
-  browser.sleep(2000)
-  browser.wait(EC.visibilityOf(TradePage.tradeRejectedMessage), max_wait_time)
-  expect(TradePage.tradeRejectedMessage.getText()).toContain('Your trade has been rejected')
-  browser.wait(EC.visibilityOf(TradePage.buttonCloseTradeRejected), max_wait_time)
-  TradePage.buttonCloseTradeRejected.click()
+exports.GBPToUSDTrade = async () => {
+  await browser.wait(EC.visibilityOf(TradePage.linkAll), maxWaitTime)
+  await TradePage.linkAll.click()
+  await fillNotional('1,111,111')
+  await browser.wait(EC.visibilityOf(TradePage.buttonSellThirdCell), maxWaitTime)
+  await TradePage.buttonSellThirdCell.click()
+  await browser.wait(EC.visibilityOf(TradePage.tradeSuccessMessage), maxWaitTime)
+  expect(await TradePage.tradeSuccessMessage.getText()).toBeTruthy()
+  expect(await TradePage.tradeSuccessMessage.getText()).toContain('You sold')
+  await browser.wait(EC.visibilityOf(TradePage.buttonCloseTradeSuccess), maxWaitTime)
+  await TradePage.buttonCloseTradeSuccess.click()
+}
+
+exports.EURToJPYTrade = async () => {
+  await browser.wait(EC.visibilityOf(TradePage.linkAll), maxWaitTime)
+  await TradePage.linkAll.click()
+  await browser.wait(EC.visibilityOf(TradePage.buttonBuyFifthCell), maxWaitTime)
+  await TradePage.buttonBuyFifthCell.click()
+  await browser.wait(EC.visibilityOf(TradePage.tradeExecutionTimeOutMessage), maxWaitTime)
+  expect(await TradePage.tradeExecutionTimeOutMessage.getText()).toEqual('Trade Execution taking longer then Expected')
+  await browser.wait(EC.visibilityOf(TradePage.tradeSuccessMessage), maxWaitTime)
+  expect(await TradePage.tradeSuccessMessage.getText()).toBeTruthy()
+  expect(await TradePage.tradeSuccessMessage.getText()).toContain('You bought')
+}
+
+exports.EURToCADTrade = async () => {
+  await browser.wait(EC.visibilityOf(TradePage.linkAll), maxWaitTime)
+  await TradePage.linkAll.click()
+  await browser.wait(EC.visibilityOf(TradePage.buttonSellNinthCell), maxWaitTime)
+  await TradePage.buttonSellNinthCell.click()
+  await browser.wait(EC.visibilityOf(TradePage.tradeSuccessMessage), maxWaitTime)
+  expect(await TradePage.tradeSuccessMessage.getText()).toBeTruthy()
+  expect(await TradePage.tradeSuccessMessage.getText()).toContain('You sold')
+  await browser.wait(EC.visibilityOf(TradePage.buttonCloseTradeSuccess), maxWaitTime)
+  await TradePage.buttonCloseTradeSuccess.click()
+}
+
+exports.GBPToJPYTrade = async () => {
+  await browser.wait(EC.visibilityOf(TradePage.linkAll), maxWaitTime)
+  await TradePage.linkAll.click()
+  await browser.wait(EC.visibilityOf(TradePage.buttonBuySecondCell), maxWaitTime)
+  await TradePage.buttonBuySecondCell.click()
+  await browser.wait(EC.visibilityOf(TradePage.tradeRejectedMessage), maxWaitTime)
+  expect(await TradePage.tradeRejectedMessage.getText()).toEqual('Your trade has been rejected')
+  await browser.wait(EC.visibilityOf(TradePage.buttonCloseTradeRejected), maxWaitTime)
+  await TradePage.buttonCloseTradeRejected.click()
 }

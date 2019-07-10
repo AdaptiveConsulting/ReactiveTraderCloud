@@ -5,47 +5,47 @@ const TradePage = Object.create({}, {
   // Live rates Component locators
   labelLiveRates: {
     get() {
-      return browser.element(by.css('ul.styled__LeftNav-bh08f7-1.hvbpaO > li:nth-child(1)'))
+      return browser.element(by.css('.styled__LiStyle-bh08f7-2.styled__LeftNavItemFirst-bh08f7-3.hwNYKP'))
     }
   },
   linkAll: {
     get() {
-      return browser.element(by.css('ul.styled__LeftNav-bh08f7-1.hvbpaO > li:nth-child(2)'))
-    }
-  },
-  linkGBP: {
-    get() {
-      return browser.element(by.css('ul.styled__LeftNav-bh08f7-1.hvbpaO > li:nth-child(3)'))
+      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.dDGSrG')).get(0)
     }
   },
   linkEUR: {
     get() {
-      return browser.element(by.css('ul.styled__LeftNav-bh08f7-1.hvbpaO > li:nth-child(4)'))
+      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(1)
     }
   },
   linkUSD: {
     get() {
-      return browser.element(by.css('ul.styled__LeftNav-bh08f7-1.hvbpaO > li:nth-child(5)'))
+      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(0)
+    }
+  },
+  linkGBP: {
+    get() {
+      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(2)
     }
   },
   linkAUD: {
     get() {
-      return browser.element(by.css('ul.styled__LeftNav-bh08f7-1.hvbpaO > li:nth-child(6)'))
+      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(3)
     }
   },
   linkNZD: {
     get() {
-      return browser.element(by.css('ul.styled__LeftNav-bh08f7-1.hvbpaO > li:nth-child(7)'))
+      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(4)
     }
   },
   linkTableView: {
     get() {
-      return browser.element(by.css('ul.styled__RightNav-bh08f7-5.jlLWgn> li:nth-child(1)'))
+      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.dDGSrG')).get(1)
     }
   },
   linkGraphView: {
     get() {
-      return browser.element(by.css('ul.styled__RightNav-bh08f7-5.jlLWgn> li:nth-child(2)'))
+      return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(5)
     }
   },
   buttonsellFirstCell: {
@@ -60,17 +60,17 @@ const TradePage = Object.create({}, {
   },
   labelCurrencyFirstCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(1) > div > div > div > div:nth-child(2) > div > div > span'))
+      return browser.element.all(by.css('span.styled__CurrencyPairSymbol-wn8bkr-0.evWWeD')).get(0)
     }
   },
   textAmountFirstCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(1) > div > div > div > div:nth-child(2) > div > div > input'))
+      return browser.element.all(by.css('input.styled__Input-wn8bkr-3.IGows')).get(0)
     }
   },
   buttonDetachFirstCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(2) > div > div > button > svg'))
+      return browser.element(by.css('.TileControls__TopRightButton-sc-3ej1f5-0.eWqAno > svg')).get(0)
     }
   },
   buttonSellSecondCell: {
@@ -85,12 +85,17 @@ const TradePage = Object.create({}, {
   },
   labelCurrencySecondCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > span'))
+      return browser.element.all(by.css('span.styled__CurrencyPairSymbol-wn8bkr-0.evWWeD')).get(1)
     }
   },
   textAmountSecondCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(2) > div > div > div > div:nth-child(2) > div > div > input'))
+      return browser.element.all(by.css('input.styled__Input-wn8bkr-3.IGows')).get(1)
+    }
+  },
+  buttonDetachSecondCell: {
+    get() {
+      return browser.element(by.css('.TileControls__TopRightButton-sc-3ej1f5-0.eWqAno > svg')).get(1)
     }
   },
   buttonSellThirdCell: {
@@ -105,12 +110,17 @@ const TradePage = Object.create({}, {
   },
   labelCurrencyThirdCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(3) > div > div > div > div:nth-child(2) > div > div > span'))
+      return browser.element.all(by.css('span.styled__CurrencyPairSymbol-wn8bkr-0.evWWeD')).get(2)
     }
   },
   textAmountThirdCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(3) > div > div > div > div:nth-child(2) > div > div > input'))
+      return browser.element.all(by.css('input.styled__Input-wn8bkr-3.IGows')).get(2)
+    }
+  },
+  buttonDetachThirdCell: {
+    get() {
+      return browser.element(by.css('.TileControls__TopRightButton-sc-3ej1f5-0.eWqAno > svg')).get(2)
     }
   },
   buttonSellFourthCell: {
@@ -125,12 +135,17 @@ const TradePage = Object.create({}, {
   },
   labelCurrencyFourthCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(4) > div > div > div > div:nth-child(2) > div > div > span'))
+      return browser.element.all(by.css('span.styled__CurrencyPairSymbol-wn8bkr-0.evWWeD')).get(3)
     }
   },
   textAmountFourthCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(4) > div > div > div > div:nth-child(2) > div > div > input'))
+      return browser.element.all(by.css('input.styled__Input-wn8bkr-3.IGows')).get(3)
+    }
+  },
+  buttonDetachFourthCell: {
+    get() {
+      return browser.element(by.css('.TileControls__TopRightButton-sc-3ej1f5-0.eWqAno > svg')).get(3)
     }
   },
   buttonSellFifthCell: {
@@ -145,12 +160,17 @@ const TradePage = Object.create({}, {
   },
   labelCurrencyFifthCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(5) > div > div > div > div:nth-child(2) > div > div > span'))
+      return browser.element.all(by.css('span.styled__CurrencyPairSymbol-wn8bkr-0.evWWeD')).get(4)
     }
   },
   textAmountFifthCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(5) > div > div > div > div:nth-child(2) > div > div > input'))
+      return browser.element.all(by.css('input.styled__Input-wn8bkr-3.IGows')).get(4)
+    }
+  },
+  buttonDetachFifthCell: {
+    get() {
+      return browser.element(by.css('.TileControls__TopRightButton-sc-3ej1f5-0.eWqAno > svg')).get(4)
     }
   },
   buttonSellSixthCell: {
@@ -165,72 +185,102 @@ const TradePage = Object.create({}, {
   },
   labelCurrencySixthCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(6) > div > div > div > div:nth-child(2) > div > div > span'))
+      return browser.element.all(by.css('span.styled__CurrencyPairSymbol-wn8bkr-0.evWWeD')).get(5)
     }
   },
   textAmountSixthCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(6) > div > div > div > div:nth-child(2) > div > div > input'))
+      return browser.element.all(by.css('input.styled__Input-wn8bkr-3.IGows')).get(5)
+    }
+  },
+  buttonDetachSixthCell: {
+    get() {
+      return browser.element(by.css('.TileControls__TopRightButton-sc-3ej1f5-0.eWqAno > svg')).get(5)
     }
   },
   buttonSellSeventhCell: {
     get() {
-      return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(12)
+      return browser.element.all(by.css('div.styled__PriceButtonDisabledPlaceholder-sc-1vddl31-1.gdGMKs')).get(0)
     }
   },
   buttonBuySeventhCell: {
     get() {
-      return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(13)
+      return browser.element.all(by.css('div.styled__PriceButtonDisabledPlaceholder-sc-1vddl31-1.gdGMKs')).get(1)
+    }
+  },
+  buttonInitiateRFQ: {
+    get() {
+      return browser.element(by.css('span.TileBooking__BookingStatus-b4jprv-2.jxSENf'))
     }
   },
   labelCurrencySeventhCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(7) > div > div > div > div:nth-child(2) > div > div > span'))
+      return browser.element.all(by.css('span.styled__CurrencyPairSymbol-wn8bkr-0.evWWeD')).get(6)
     }
   },
   textAmountSeventhCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(7) > div > div > div > div:nth-child(2) > div > div > input'))
+      return browser.element.all(by.css('input.styled__Input-wn8bkr-3.IGows')).get(6)
+    }
+  },
+  buttonRedoSeventhCell: {
+    get() {
+      return browser.element(by.css('.fas.fa-redo.fa-flip-horizontal'))
+    }
+  },
+  buttonDetachSeventhCell: {
+    get() {
+      return browser.element(by.css('.TileControls__TopRightButton-sc-3ej1f5-0.eWqAno > svg')).get(6)
     }
   },
   buttonSellEigthCell: {
     get() {
-      return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(14)
+      return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(12)
     }
   },
   buttonBuyEigthCell: {
     get() {
-      return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(15)
+      return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(13)
     }
   },
   labelCurrencyEigthCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(8) > div > div > div > div:nth-child(2) > div > div > span'))
+      return browser.element.all(by.css('span.styled__CurrencyPairSymbol-wn8bkr-0.evWWeD')).get(7)
     }
   },
   textAmountEigthCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(8) > div > div > div > div:nth-child(2) > div > div > input'))
+      return browser.element.all(by.css('input.styled__Input-wn8bkr-3.IGows')).get(7)
+    }
+  },
+  buttonDetachEigthCell: {
+    get() {
+      return browser.element(by.css('.TileControls__TopRightButton-sc-3ej1f5-0.eWqAno > svg')).get(7)
     }
   },
   buttonSellNinthCell: {
     get() {
-      return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(16)
+      return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(14)
     }
   },
   buttonBuyNinthCell: {
     get() {
-      return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(17)
+      return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(15)
     }
   },
   labelCurrencyNinthCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(9) > div > div > div > div:nth-child(2) > div > div > span'))
+      return browser.element.all(by.css('span.styled__CurrencyPairSymbol-wn8bkr-0.evWWeD')).get(8)
     }
   },
   textAmountNinthCell: {
     get() {
-      return browser.element(by.css('div.Workspace__WorkspaceItems-sc-1tjnnjx-0.ciZxfB > div:nth-child(9) > div > div > div > div:nth-child(2) > div > div > input'))
+      return browser.element.all(by.css('input.styled__Input-wn8bkr-3.IGows')).get(8)
+    }
+  },
+  buttonDetachNinthCell: {
+    get() {
+      return browser.element(by.css('.TileControls__TopRightButton-sc-3ej1f5-0.eWqAno > svg')).get(8)
     }
   },
   tradeRejectedMessage: {
@@ -241,6 +291,11 @@ const TradePage = Object.create({}, {
   buttonCloseTradeRejected: {
     get() {
       return browser.element(by.css('div.styled__TileBaseStyle-sc-6mxq7t-2.TileNotification__TileNotificationStyle-sc-19yw4wf-0.eCcGTf > button'))
+    }
+  },
+  tradeExecutionTimeOutMessage: {
+    get() {
+      return browser.element(by.css('.TileNotification__Content-sc-19yw4wf-5'))
     }
   },
   tradeSuccessMessage: {
@@ -259,9 +314,14 @@ const TradePage = Object.create({}, {
       return browser.element(by.css('div.BlotterHeader__BlotterLeft-sc-1bvhiat-3.euXKsm'))
     }
   },
+  textBackGroundColour: {
+    get() {
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[1]'))
+    }
+  },
   textTradeId: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.ag-cell-value.ag-cell-focus'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[2]'))
     }
   },
   textTradeStatus: {
@@ -271,12 +331,12 @@ const TradePage = Object.create({}, {
   },
   textTradeDate: {
     get() {
-      return browser.element(by.css('div.ag-row.ag-row-even.ag-row-level-0.ag-row-focus > div:nth-child(4)'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[4]/span'))
     }
   },
   textTradeDirection: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.ag-cell-value.ag-cell-focus'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[5]'))
     }
   },
   textTradeCCYToCCY: {
@@ -286,42 +346,42 @@ const TradePage = Object.create({}, {
   },
   textTradeDealtCCY: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.ag-cell-value.ag-cell-focus'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[7]'))
     }
   },
   textTradeNotional: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.rt-blotter__numeric-cell.ag-cell-value.ag-cell-focus > span'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[8]/span'))
     }
   },
   textTradeRate: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.rt-blotter__numeric-cell.ag-cell-value.ag-cell-focus'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[9]'))
     }
   },
   textTradeValueDate: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.ag-cell-value.ag-cell-focus > span'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[10]/span'))
     }
   },
   textTraderName: {
     get() {
-      return browser.element(by.css('div.ag-cell.ag-cell-not-inline-editing.ag-cell-with-height.ag-cell-value.ag-cell-focus'))
+      return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[11]'))
     }
   },
-  ButtonExportCsv: {
+  buttonExportCsv: {
     get() {
-      return browser.element(by.css('div.BlotterHeader__BlotterRight-sc-1bvhiat-2.hfEwxw > button.ExcelButton__Button-ouhco0-0.hxONBK > svg'))
+      return browser.element(by.css('.ExcelButton__Button-ouhco0-0.hxONBK > svg'))
     }
   },
   textFieldFilter: {
     get() {
-      return browser.element(by.css('div.BlotterToolbar__BlotterToolbarStyle-sc-18kcelw-0.jhZpzs > div > input'))
+      return browser.element(by.css('input.QuickFilter__QuickFilterInput-sc-1y8fby7-1.ccuwiU'))
     }
   },
-  ButtonCloseFilter: {
+  buttonCloseFilter: {
     get() {
-      return browser.element(by.css('div.BlotterHeader__BlotterRight-sc-1bvhiat-2.hfEwxw > div.BlotterToolbar__BlotterToolbarStyle-sc-18kcelw-0.jhZpzs > div > i > i'))
+      return browser.element(by.css('.fas.fa-times'))
     }
   }
 })

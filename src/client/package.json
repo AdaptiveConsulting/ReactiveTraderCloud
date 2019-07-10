@@ -36,8 +36,8 @@
     "storybook": "start-storybook -p 6006 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o storybook/build",
     "sleep": "sleep 5",
-    "webdriver-update": "webdriver-manager update --versions.chrome=$(74.0.3729.6)",
-    "test:rtc:ui": "protractor __tests__/ui/config.js"
+    "webdriver-update": "webdriver-manager update",
+    "e2e": "protractor __tests__/ui/config.js"
   },
   "license": "MIT",
   "lint-staged": {
