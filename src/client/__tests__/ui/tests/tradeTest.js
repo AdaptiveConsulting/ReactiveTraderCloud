@@ -2,22 +2,32 @@
 // Import required pages
 const TradePage = require('../pages/tradePage.js')
 const TradeMethod = require('../steps/tradeMethod.js');
+const EC = protractor.ExpectedConditions
+const maxWaitTime = 10000;
 
-// function to dealy test runs
-let origFn = browser.driver.controlFlow().execute
+async function fillNotional(newNotionalValue) {
+  await browser.wait(EC.visibilityOf(TradePage.textAmountFourthCell), maxWaitTime)
+  const textNotional = await TradePage.textAmountFifthCell.getAttribute('value')
+  expect(textNotional).toEqual('1,000,000')
+  await TradePage.textAmountFourthCell.clear()
+  await TradePage.textAmountFourthCell.sendKeys(newNotionalValue)
+}
+
+// function to delay test runs
+const origFn = browser.driver.controlFlow().execute
 browser.driver.controlFlow().execute = function() {
-  let args = arguments
+  const args = arguments
   origFn.call(browser.driver.controlFlow(), function() {
-    return protractor.promise.delayed(60)
+    return protractor.promise.delayed(80)
   })
   return origFn.apply(browser.driver.controlFlow(), args)
 }
 
-describe('UI Smoke Tests for Reactive Trader Cloud App', () => {
+describe('UI Smoke Tests for Reactive Trader Cloud App', function() {
 
   beforeEach(async() => {
     await browser.waitForAngularEnabled(false)
-    await browser.get(browser.params.baseUrl)
+    await browser.get(browser.params.reactiveTraderCloud)
   })
 
   it('should validate the GBP to USD trade', async() => {
@@ -32,8 +42,8 @@ describe('UI Smoke Tests for Reactive Trader Cloud App', () => {
     expect(await TradePage.textTradeStatus.getText()).toEqual('Done')
   })
 
-  it('should  validate the EUR to CAD trade', async() => {
-    await TradeMethod.EURToCADTrade()
+  it('should  validate the EUR to USD trade', async() => {
+    await TradeMethod.EURToUSDTrade()
     expect(await TradePage.textTradeId.isPresent()).toBeTruthy()
     expect(await TradePage.textTradeStatus.getText()).toEqual('Done')
     expect(await TradePage.textTradeDate.isPresent()).toBeTruthy()
@@ -46,8 +56,21 @@ describe('UI Smoke Tests for Reactive Trader Cloud App', () => {
     expect(await TradePage.textBackGroundColour.getCssValue('background-color')).toEqual('rgba(249, 76, 76, 1)')
   })
 
+  it('should be able to use amounts with decimal', async() => {
+  await TradeMethod.EURToUSDTrade()
+  await fillNotional('1,111,111.88')
+  expect(await TradePage.textTradeStatus.getText()).toEqual('Done')
+  })
+
+  it('should disregard invalid amount entry', async() => {
+  await TradeMethod.EURToUSDTrade()
+  await fillNotional('-1,111,111.88')
+  //expect(textNotional).toEqual('1,111,111.88')
+  expect(await TradePage.textTradeStatus.getText()).toEqual('Done')
+    })
+
   afterAll(async() => {
-      await browser.close()
+    await browser.close()
   })
 
 })

@@ -48,7 +48,7 @@ const TradePage = Object.create({}, {
       return browser.element.all(by.css('.styled__LiStyle-bh08f7-2.styled__NavItem-bh08f7-4.hFhFum')).get(5)
     }
   },
-  buttonsellFirstCell: {
+  buttonSellFirstCell: {
     get() {
       return browser.element.all(by.css('div.styled__Box-m2h9d2-1.styled__Pip-m2h9d2-4.fnESnJ')).get(0)
     }
@@ -369,7 +369,7 @@ const TradePage = Object.create({}, {
       return browser.element(by.xpath('//*[@id="root"]/div/div[2]/div/div[1]/div[2]/div/div[2]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/div/div/div[1]/div[11]'))
     }
   },
-  buttonExportCsv: {
+  ButtonExportCsv: {
     get() {
       return browser.element(by.css('.ExcelButton__Button-ouhco0-0.hxONBK > svg'))
     }
@@ -379,7 +379,7 @@ const TradePage = Object.create({}, {
       return browser.element(by.css('input.QuickFilter__QuickFilterInput-sc-1y8fby7-1.ccuwiU'))
     }
   },
-  buttonCloseFilter: {
+  ButtonCloseFilter: {
     get() {
       return browser.element(by.css('.fas.fa-times'))
     }

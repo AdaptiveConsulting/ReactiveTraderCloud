@@ -1,6 +1,6 @@
 'use strict'
 
-var { SpecReporter } = require('jasmine-spec-reporter')
+const { SpecReporter } = require('jasmine-spec-reporter')
 
 exports.config = {
   framework: 'jasmine',
@@ -20,17 +20,18 @@ exports.config = {
     defaultTimeoutInterval: 300000
   },
   onPrepare: function() {
+    //console logs configurations
     browser.manage().window().maximize()
     jasmine.getEnv().addReporter(new SpecReporter({
-      displayStacktrace: 'all',
-      displaySuccessesSummary: false,
-      displayFailuresSummary: true,
-      displayPendingSummary: true,
-      displaySuccessfulSpec: true,
-      displayFailedSpec: true,
-      displayPendingSpec: false,
-      displaySpecDuration: false,
-      displaySuiteNumber: false,
+      displayStacktrace: 'all', // display stacktrace for each failed assertion, values: (all|specs|summary|none)
+      displaySuccessesSummary: false, // display summary of all successes after execution
+      displayFailuresSummary: true, // display summary of all failures after execution
+      displayPendingSummary: true, // display summary of all pending specs after execution
+      displaySuccessfulSpec: true, // display each successful spec
+      displayFailedSpec: true, // display each failed spec
+      displayPendingSpec: false, // display each pending spec
+      displaySpecDuration: false, // display each spec duration
+      displaySuiteNumber: false, // display each suite number (hierarchical)
       colors: {
         success: 'green',
         failure: 'red',
@@ -45,6 +46,6 @@ exports.config = {
     }))
   },
   params: {
-    baseUrl: 'http://localhost:3000/'
+    reactiveTraderCloud: 'http://localhost:3000/'
   }
 }
