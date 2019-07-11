@@ -57,7 +57,7 @@ exports.GBPToJPYTrade = async() => {
   await browser.wait(EC.visibilityOf(TradePage.linkAll), maxWaitTime)
   await TradePage.linkAll.click()
   await browser.wait(EC.visibilityOf(TradePage.buttonBuyThirdCell), maxWaitTime)
-  await TradePage.buttonBuyThirdCell.click()
+  await TradePage.buttonBuySecondCell.click()
   await browser.sleep(2000)
   await browser.wait(EC.visibilityOf(TradePage.tradeRejectedMessage), maxWaitTime)
   expect(await TradePage.tradeRejectedMessage.getText()).toEqual('Your trade has been rejected')
