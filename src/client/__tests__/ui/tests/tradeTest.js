@@ -2,8 +2,18 @@
 // Import required pages
 const TradePage = require('../pages/tradePage.js')
 const TradeMethod = require('../steps/tradeMethod.js');
+const EC = protractor.ExpectedConditions
+const maxWaitTime = 10000;
 
-// function to dealy test runs
+async function fillNotional(newNotionalValue) {
+  await browser.wait(EC.visibilityOf(TradePage.textAmountFourthCell), maxWaitTime)
+  const textNotional = await TradePage.textAmountFifthCell.getAttribute('value')
+  expect(textNotional).toEqual('1,000,000')
+  await TradePage.textAmountFourthCell.clear()
+  await TradePage.textAmountFourthCell.sendKeys(newNotionalValue)
+}
+
+// function to delay test runs
 const origFn = browser.driver.controlFlow().execute
 browser.driver.controlFlow().execute = function() {
   const args = arguments
@@ -45,6 +55,19 @@ describe('UI Smoke Tests for Reactive Trader Cloud App', function() {
     expect(await TradePage.textTradeStatus.getText()).toEqual('Rejected')
     expect(await TradePage.textBackGroundColour.getCssValue('background-color')).toEqual('rgba(249, 76, 76, 1)')
   })
+
+  it('should be able to use amounts with decimal', async() => {
+  await TradeMethod.EURToUSDTrade()
+  await fillNotional('1,111,111.88')
+  expect(await TradePage.textTradeStatus.getText()).toEqual('Done')
+  })
+
+  it('should disregard invalid amount entry', async() => {
+  await TradeMethod.EURToUSDTrade()
+  await fillNotional('-1,111,111.88')
+  //expect(textNotional).toEqual('1,111,111.88')
+  expect(await TradePage.textTradeStatus.getText()).toEqual('Done')
+    })
 
   afterAll(async() => {
     await browser.close()
