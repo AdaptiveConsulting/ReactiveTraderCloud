@@ -45,7 +45,7 @@ describe('UI Smoke Tests for Reactive Trader Cloud App', function() {
     expect(await TradePage.textTradeStatus.getText()).toEqual('Rejected')
     expect(await TradePage.textBackGroundColour.getCssValue('background-color')).toEqual('rgba(249, 76, 76, 1)')
   })
-
+  
   it('should be able to use amounts with decimal', async () => {
     await TradeMethod.EURToUSDTrade()
     await TradeMethod.fillNotional('1,111,111.88')
