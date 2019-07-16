@@ -8,13 +8,13 @@ The trading client GUI is a single page app (SPA) build using JavaScript vNext (
 * Tests use [Karma](https://karma-runner.github.io) & [Jasmine](http://jasmine.github.io).
 * Streaming data abstractions are build with [RxJs](https://github.com/Reactive-Extensions/RxJS).
 * GUI state management is done with [esp-js](https://github.com/esp/esp-js), a scalable state management library that puts your model at the forefront of the design. It works well with uni directional data flow architecture.
-* Connectivity to the backend is done via [AutobahnJs](http://autobahn.ws/js/).
+* Connectivity to the backend is done via [AutobahnJs](https://github.com/crossbario/autobahn-js).
 * Styles build using [Sass](http://sass-lang.com/).
 
 ## Machine Setup
 Please ensure you have [Node](https://nodejs.org)(>=v5), [npm](https://github.com/npm/npm)(>=v3.5) and [Git](https://git-scm.com/downloads) installed on your machine and on your path.
 
-### Mac
+### Mac and Windows
 There are no additional packages to install other than Git and a recent build of Node.
 
 ### Linux
@@ -22,10 +22,6 @@ You might want to [increase the limit](http://stackoverflow.com/questions/167487
 ```
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 ```
-
-### Windows
-
-1. Install the C++ Compiler. [Visual Studio Express](https://www.visualstudio.com/en-US/products/visual-studio-express-vs) comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
 
 ## Starting the GUI
 
