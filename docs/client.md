@@ -14,7 +14,7 @@ The trading client GUI is a single page app (SPA) build using JavaScript vNext (
 ## Machine Setup
 Please ensure you have [Node](https://nodejs.org)(>=v5), [npm](https://github.com/npm/npm)(>=v3.5) and [Git](https://git-scm.com/downloads) installed on your machine and on your path.
 
-### Mac and Windows
+### Mac
 There are no additional packages to install other than Git and a recent build of Node.
 
 ### Linux
@@ -22,6 +22,9 @@ You might want to [increase the limit](http://stackoverflow.com/questions/167487
 ```
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 ```
+
+### Windows
+Install the C++ Compiler. Visual Studio Express comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
 
 ## Starting the GUI
 
