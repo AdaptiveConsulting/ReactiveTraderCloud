@@ -1,6 +1,6 @@
 # Reactive Trader Cloud - UI
 
-The trading client GUI is a single page app (SPA) built using Typescript, React, Redux and Styled components. It can run as a desktop application usig Openfin, in the browser, or on mobile as a PWA.
+The trading client GUI is a single page app (SPA) built using Typescript, React, Redux and Styled components. It can run as a desktop application using Openfin, in the browser, or on mobile as a PWA.
 
 ## High level technologies
 
