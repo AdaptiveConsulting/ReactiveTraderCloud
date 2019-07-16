@@ -12,7 +12,7 @@ All frameworks and libraries used are entirely open source, and each component c
 
 The services are distributed and can be recovered from disconnections - this is similar to the approach that major financial institutions use for trading systems.
 
-![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/docs/reactive-trader-screencapture.gif)
+![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/docs/reactive-trader.gif)
 
 ### Live demo
 For a live demo, see [web-demo.adaptivecluster.com/](https://web-demo.adaptivecluster.com/)
