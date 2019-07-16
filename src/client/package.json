@@ -28,7 +28,6 @@
     "build:cloud": "cross-env REACT_APP_BROKER_HOST=web-dev.adaptivecluster.com REACT_APP_BROKER_PORT=80 npm run build",
     "test": "react-app-rewired test --verbose=false",
     "analyze": "source-map-explorer build/static/js/main.*",
-    "preopenfin": "npm run sleep",
     "openfin": "openfin -c public/config/openfin/local.json -l",
     "openfin:launcher": "openfin -c public/config/openfin/launcher-local.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",

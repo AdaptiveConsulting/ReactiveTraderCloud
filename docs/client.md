@@ -37,7 +37,7 @@ You can then browse the app at [http://localhost:3000](http://localhost:3000)
 ### Additional command line options
 
 ```sh
-npm run dev:local
+npm run start:local
 ```
 
 Similar to `npm run start`, but configures the client to point to your local backend server. You can then browse the app at [http://localhost:3000](http://localhost:3000)).
@@ -53,25 +53,20 @@ npm run test:dev
 Similar to `npm run test`, but will watch for changes and re-run tests.
 
 ```sh
-npm run lint
+npm run precommit
 ```
 Run ESLint against all `.js` files in `~/src`.
-Note the linter also runs by default during normal dev watch build (`npm run dev`).
-
-```sh
-npm run deploy
-```
-Run webpack using the webpack config.
+Note the linter also runs by default during normal dev watch build (`npm run build`).
 
 ### Openfin
 
 ```sh
-npm run dev:openfin:cloud
+npm run openfin:cloud
 ```
 Starts the app in Openfin pointing to the demo environment
 
 ```sh
-npm run dev:openfin:local
+npm run openfin:local
 ```
 
 Starts the app in Openfin pointing to your local server
