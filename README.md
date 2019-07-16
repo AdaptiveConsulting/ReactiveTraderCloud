@@ -6,13 +6,11 @@
 
 Reactive Trader Cloud is a real-time FX trading platform demo showcasing reactive programming principles applied across the full application stack.
 
-Since [Reactive Trader v1](https://github.com/AdaptiveConsulting/ReactiveTrader) we've improved the platform across the board, eg we've revamped the UI with a modern JavaScript framework (React) and increased data resiliency by using an event-sourcing approach for the backend services.
-
 All frameworks and libraries used are entirely open source, and each component can be run on either Windows, Linux or Mac OS X.
 
 The services are distributed and can be recovered from disconnections - this is similar to the approach that major financial institutions use for trading systems.
 
-![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/docs/reactive-trader-screencapture.gif)
+![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/docs/reactive-trader.gif)
 
 ### Live demo
 For a live demo, see [web-demo.adaptivecluster.com/](https://web-demo.adaptivecluster.com/)
@@ -23,13 +21,13 @@ The backend is made up of distributed services written in .NET using the cross-p
 
 You can deploy server components via Docker containers. This means you can manage clusters using tools such as [Kubernetes](http://kubernetes.io/) for better resiliency and ease of deployment.
 
-Client-side implementations are available for all major platforms, including desktop browser, OpenFin, Android, iOS, Apple Watch and WPF.
+Client-side implementations are available for all major platforms, including desktop and mobile browser as well as OpenFin.
 
 ![Architecture Overview](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/docs/ArchitectureOverview.png)
 
 ### Front end
 
-The front end is written in JavaScript with React. For more details on the client-side infrastructure, see [here](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/client.md).
+The front end is written with Typescript, React, Redux and Styled components. For more details on the client-side infrastructure, see [here](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/client.md).
 
 ### Back end
 

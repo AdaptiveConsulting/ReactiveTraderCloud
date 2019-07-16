@@ -73,7 +73,22 @@ const Blotter: React.FC<BlotterProps> = props => {
     [gridApi],
   )
 
-  const broadcastContext = (context: Context) => platform.fdc3.broadcast(context)
+  const getCurrencyPairContext = (currencyPair: string): Context => {
+    const formattedCurrencyPair = `${currencyPair.slice(0, 3)}/${currencyPair.slice(3, 6)}`
+    return {
+      type: 'fdc3.security',
+      name: formattedCurrencyPair,
+      id: {},
+      market: 'CURRENCY',
+    }
+  }
+
+  const broadcastContext = (currencyPair: string) => {
+    if (!currencyPair) {
+      return
+    }
+    platform.fdc3.broadcast(getCurrencyPairContext(currencyPair))
+  }
 
   const onGridReady = useCallback(({ api }: { api: GridApi }) => {
     setGridApi(api)
