@@ -8,7 +8,7 @@ The trading client GUI is a single page app (SPA) build using JavaScript vNext (
 * Tests use [Karma](https://karma-runner.github.io) & [Jasmine](http://jasmine.github.io).
 * Streaming data abstractions are build with [RxJs](https://github.com/Reactive-Extensions/RxJS).
 * GUI state management is done with [esp-js](https://github.com/esp/esp-js), a scalable state management library that puts your model at the forefront of the design. It works well with uni directional data flow architecture.
-* Connectivity to the backend is done via [AutobahnJs](http://autobahn.ws/js/).
+* Connectivity to the backend is done via [AutobahnJs](https://github.com/crossbario/autobahn-js).
 * Styles build using [Sass](http://sass-lang.com/).
 
 ## Machine Setup
@@ -24,8 +24,7 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 ```
 
 ### Windows
-
-1. Install the C++ Compiler. [Visual Studio Express](https://www.visualstudio.com/en-US/products/visual-studio-express-vs) comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
+Install the C++ Compiler. Visual Studio Express comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
 
 ## Starting the GUI
 
@@ -41,7 +40,7 @@ You can then browse the app at [http://localhost:3000](http://localhost:3000)
 ### Additional command line options
 
 ```sh
-npm run dev:local
+npm run start:local
 ```
 
 Similar to `npm run start`, but configures the client to point to your local backend server. You can then browse the app at [http://localhost:3000](http://localhost:3000)).
@@ -57,25 +56,20 @@ npm run test:dev
 Similar to `npm run test`, but will watch for changes and re-run tests.
 
 ```sh
-npm run lint
+npm run precommit
 ```
 Run ESLint against all `.js` files in `~/src`.
-Note the linter also runs by default during normal dev watch build (`npm run dev`).
-
-```sh
-npm run deploy
-```
-Run webpack using the webpack config.
+Note the linter also runs by default during normal dev watch build (`npm run build`).
 
 ### Openfin
 
 ```sh
-npm run dev:openfin:cloud
+npm run openfin:cloud
 ```
 Starts the app in Openfin pointing to the demo environment
 
 ```sh
-npm run dev:openfin:local
+npm run openfin:local
 ```
 
 Starts the app in Openfin pointing to your local server
