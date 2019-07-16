@@ -23,7 +23,7 @@ The backend is made up of distributed services written in .NET using the cross-p
 
 You can deploy server components via Docker containers. This means you can manage clusters using tools such as [Kubernetes](http://kubernetes.io/) for better resiliency and ease of deployment.
 
-Client-side implementations are available for all major platforms, including desktop browser, OpenFin, Android, iOS, Apple Watch and WPF.
+Client-side implementations are available for all major platforms, including desktop and mobile browser as well as OpenFin.
 
 ![Architecture Overview](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/master/docs/ArchitectureOverview.png)
 
