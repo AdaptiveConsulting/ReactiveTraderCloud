@@ -2,12 +2,7 @@
 
 ## Starting the GUI:
 
-Clone the repo and install the necessary node modules:
-
--   `npm install` # Install Node modules listed in ./package.json
--   `npm start`   # Compile and launches the webpack dev server. By default, the client connects to a demo environment.
-
-You can then browse the app at <http://localhost:3000>
+For setup and running the localhost, see  [here](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/client.md).
 
 ## Run ui e2e tests:
 
