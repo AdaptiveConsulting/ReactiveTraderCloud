@@ -52,7 +52,7 @@ You can then browse the app at [http://localhost:3000](http://localhost:3000)
 Run the client with pointing to your local backend server:
 
 ```sh
-npm start:local-backend
+npm run start:local-backend
 ```
 
 Run the client with a back end on the cloud:
