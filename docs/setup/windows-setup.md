@@ -5,7 +5,7 @@ For the web client follow these [instructions](../client.md)
 
 ## Running with Visual Studio 2019 on Windows
 
-Install Visual Studio 2017 Pro or Community. Upon running the installation, be sure to install the following optional components:
+Install Visual Studio 2019 Pro or Community. Upon running the installation, be sure to install the following optional components:
   - .NET Framework 4.6.2
   - .NET Core 2.1 development tools
 
