@@ -8,7 +8,7 @@ The trading client GUI is a single page app (SPA) built using Typescript, React,
 * Tests use [Jest](https://jestjs.io/)
 * Streaming data abstractions are build with [RxJs](https://github.com/Reactive-Extensions/RxJS).
 * GUI state management is done with [redux](https://redux.js.org/).
-* Connectivity to the backend is done via [AutobahnJs](http://autobahn.ws/js/).
+* Connectivity to the backend is done via [AutobahnJs](https://github.com/crossbario/autobahn-js).
 * Styles build using [Styled Components](https://www.styled-components.com/).
 
 ## Machine Setup
@@ -52,7 +52,7 @@ You can then browse the app at [http://localhost:3000](http://localhost:3000)
 Run the client with pointing to your local backend server:
 
 ```sh
-npm start:local-backend
+npm run start:local-backend
 ```
 
 Run the client with a back end on the cloud:
