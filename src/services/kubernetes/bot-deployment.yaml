@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: bot
+  template:
+    metadata:
+      labels:
+        component: bot
+    spec:
+      containers:
+        - name: bot
+          image: reactivetradercloud/bot:4764
+          env:
+            - name: BROKER_HOST
+              value: broker
+            - name: BROKER_PORT
+              value: '8000'
+            - name: BOT_NAME
+              value: 'rt-bot'
+            - name: BOT_ADDRESS
+              value: 'rt-bot@weareadaptive.com'
+            - name: PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: syphony-secrets
+                  key: rsa-privatekey

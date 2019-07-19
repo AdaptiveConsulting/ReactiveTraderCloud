@@ -10,7 +10,7 @@ interface BotConfig {
     botEmailAddress: string
 }
 
-function createConfig(botConfig: BotConfig) {
+function createConfig(botConfig: BotConfig, botPrivateKeyPath: string) {
     return {
         sessionAuthHost: `${botConfig.subdomain}-api.symphony.com`,
         sessionAuthPort: 443,
@@ -24,7 +24,7 @@ function createConfig(botConfig: BotConfig) {
         botCertPath: "",
         botCertName: "",
         botCertPassword: "",
-        botPrivateKeyPath: "rsa/",
+        botPrivateKeyPath,
         botPrivateKeyName: "rsa-private-rt-bot.pem",
         botUsername: botConfig.botUsername,
         botEmailAddress: botConfig.botEmailAddress,
@@ -69,7 +69,7 @@ class SymphonyCLient {
     constructor(private botConfig: BotConfig, private key: string, private debug: boolean, private path: string = 'config/') {
         Symphony.setDebugMode(debug)
         logger.info('Writing config files')
-        writeConfigFiles(this.key, createConfig(this.botConfig), path)
+        writeConfigFiles(this.key, createConfig(this.botConfig, path), path)
         this.botConnnection$ = from(Symphony.initBot(`${this.path}/config.json`)).pipe(shareReplay(1))
     }
 
