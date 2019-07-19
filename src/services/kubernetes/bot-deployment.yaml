@@ -14,16 +14,22 @@ spec:
     spec:
       containers:
         - name: bot
-          image: reactivetradercloud/bot:4764
+          image: reactivetradercloud/bot:4765
           env:
             - name: BROKER_HOST
               value: broker
             - name: BROKER_PORT
               value: '8000'
             - name: BOT_NAME
-              value: 'rt-bot'
+              valueFrom:
+                configMapKeyRef:
+                  name: bot-config
+                  key: bot-name
             - name: BOT_ADDRESS
-              value: 'rt-bot@weareadaptive.com'
+              valueFrom:
+                configMapKeyRef:
+                  name: bot-config
+                  key: bot-address
             - name: PRIVATE_KEY
               valueFrom:
                 secretKeyRef:
