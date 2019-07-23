@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "start:local-backend": "cross-env REACT_APP_BROKER_HOST=localhost REACT_APP_BROKER_PORT=80 npm run start",
+    "start:local-backend": "cross-env REACT_APP_BROKER_HOST=localhost REACT_APP_BROKER_PORT=8000 npm run start",
     "start:dev-backend": "cross-env REACT_APP_BROKER_HOST=web-dev.adaptivecluster.com REACT_APP_BROKER_PORT=80 npm run start",
     "start:demo-backend": "cross-env REACT_APP_BROKER_HOST=web-demo.adaptivecluster.com REACT_APP_BROKER_PORT=80 npm run start",
     "start:openfin:demo-backend": "npm-run-all -p start:demo-backend openfin",
