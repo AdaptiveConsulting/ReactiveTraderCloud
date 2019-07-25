@@ -1,0 +1,71 @@
+{
+  "name": "adaptive.reactivetrader.server.boy",
+  "version": "0.0.1",
+  "description": "Bot Service for Reactive Trader",
+  "main": "lib/index",
+  "types": "lib/index",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "start": "cross-env NODE_ENV=production node lib/index.js",
+    "dev:debug": "nodemon --inspect src/index.ts",
+    "build": "cross-env NODE_ENV=production tsc -p .",
+    "prettier:base": "prettier --parser typescript --single-quote",
+    "prettier:check": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
+    "prettier:write": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\"",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
+    "precommit": "lint-staged"
+  },
+  "keywords": [
+    "RFQ"
+  ],
+  "lint-staged": {
+    "src/**/*.{js,ts,tsx,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.{ts,tsx}": [
+      "tslint --fix",
+      "git add"
+    ]
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
+  "author": "Bhavesh Desai",
+  "license": "MIT",
+  "devDependencies": {
+    "autobahn": "^18.10.2",
+    "cross-env": "^5.2.0",
+    "husky": "^1.3.1",
+    "jest": "^24.1.0",
+    "lint-staged": "^8.1.4",
+    "live-server": "^1.2.1",
+    "nodemon": "^1.19.1",
+    "prettier": "1.16.4",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^8.0.3",
+    "tslint": "^5.13.0",
+    "typescript": "^3.5.3",
+    "ws": "^3.3.3"
+  },
+  "dependencies": {
+    "@types/autobahn": "^0.9.42",
+    "@types/debug": "^4.1.2",
+    "@types/dotenv": "^6.1.1",
+    "@types/jest": "^24.0.4",
+    "@types/node": "^11.9.3",
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.4",
+    "@types/uuid": "^3.4.4",
+    "dotenv": "^8.0.0",
+    "moment": "^2.24.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "rxjs": "^6.4.0",
+    "symphony-api-client-node": "^1.0.5",
+    "tslint-config-prettier": "^1.18.0",
+    "uuid": "^3.3.2",
+    "winston": "^3.2.1"
+  }
+}
