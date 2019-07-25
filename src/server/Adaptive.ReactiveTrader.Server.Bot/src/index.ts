@@ -3,8 +3,8 @@ import { map, mergeMap, scan, shareReplay, tap, withLatestFrom } from 'rxjs/oper
 import AutobahnConnectionProxy, { createConnection$, ServiceStub } from './connection';
 import { convertToPrice, Price, RawPrice } from './domain';
 import logger from './logger';
-import { createPriceMessage } from './messages';
-import SymphonClient from './symphony';
+import { createPriceMessage } from './messages/messages';
+import { SymphonyClient } from './symphony';
 
 config()
 
@@ -42,8 +42,6 @@ const botUsername = process.env.BOT_NAME
 const botEmailAddress = process.env.BOT_ADDRESS
 
 if (!key || !botUsername || !botEmailAddress) {
-  logger.error(key)
-
   throw Error('missing configuration')
 }
 
@@ -51,16 +49,16 @@ const symphonyConfig = { subdomain: 'weareadaptive', botUsername, botEmailAddres
 
 logger.info('Configuring client with', symphonyConfig)
 
-const symphony = new SymphonClient(symphonyConfig, key, false)
+const symphony = new SymphonyClient(symphonyConfig, key, false)
 
-const priceToQuery = (prices: Map<string, Price>, text)=>Array.from(prices.keys()).find(pair => text.search(pair) > -1)
+const priceToQuery = (prices: Map<string, Price>, text) => Array.from(prices.keys()).find(pair => text.search(pair) > -1)
 
 const messageEvent$ = symphony.dataEvents$()
   .pipe(
-    tap(message=>logger.info(message)),
+    tap(message => logger.info(message)),
     withLatestFrom(priceSubsription$),
     mergeMap(([message, latestPrices]) => {
-      const matched = priceToQuery(latestPrices,message.messageText)
+      const matched = priceToQuery(latestPrices, message.messageText)
       const returnMessage = matched ? createPriceMessage(latestPrices.get(matched)!) : `No symbol found for: ${message.messageText}`
       return symphony.sendMessage(message.stream.streamId, returnMessage)
     })

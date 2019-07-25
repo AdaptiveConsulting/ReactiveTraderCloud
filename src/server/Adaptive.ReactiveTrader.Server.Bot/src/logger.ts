@@ -3,7 +3,6 @@ import { createLogger, format, transports } from 'winston'
 const logger = createLogger({
   level: 'info',
   format: format.json(),
-  defaultMeta: { service: 'bot-service' },
   transports: [
     //
     // - Write to all logs with level `info` and below to `combined.log`
@@ -14,9 +13,6 @@ const logger = createLogger({
     new transports.Console({
       format: format.combine(
         format.colorize({ all: true }),
-        format.timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
         format.simple(),
       ),
     }),
