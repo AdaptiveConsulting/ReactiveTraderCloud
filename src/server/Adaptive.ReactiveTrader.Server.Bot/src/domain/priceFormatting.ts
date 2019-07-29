@@ -1,4 +1,6 @@
-import logger from '../logger'
+
+import moment from 'moment';
+import numeral from 'numeral'
 export interface Rate {
     bigFigure: number
     rawRate: number
@@ -30,4 +32,12 @@ export interface Rate {
       value: Number(toFixedPrecision),
       formattedValue: toFixedPrecision,
     }
+  }
+
+  export function formatNumber(num:number) {
+    return  numeral(num).format('0,000,000[.]00')
+  }
+
+  export function formatDate(date:string) {
+    return  moment(date).format('DD MMM YY')
   }

@@ -12,6 +12,7 @@ const LOG_NAME = 'Connection:'
 interface SubscriptionDTO<TPayload> {
   payload: TPayload
   Username: string
+  replyTo: string
 }
 
 type SubscriptionRequest<TPayload> = Array<SubscriptionDTO<TPayload>>
@@ -82,6 +83,38 @@ export class ServiceStub {
             }
           }),
       ),
+    )
+  }
+
+
+  requestResponse<TResult, TPayload>(remoteProcedure: string, payload: TPayload, responseTopic: string = '') {
+    return this.connection$.pipe(
+      filter((connection): connection is ConnectionOpenEvent => connection.type === ConnectionEventType.CONNECTED),
+      switchMap(
+        ({ session }) =>
+          new Observable<TResult>(obs => {
+            logger.info(LOG_NAME, `Doing a RPC to [${remoteProcedure}]]`)
+
+            const dto: SubscriptionRequest<TPayload> = [
+              {
+                payload,
+                replyTo: responseTopic,
+                Username: this.userName,
+              },
+            ]
+
+            session.call<TResult>(remoteProcedure, dto).then(
+              result => {
+                obs.next(result)
+                obs.complete()
+              },
+              error => {
+                obs.error(error)
+              },
+            )
+          }),
+      ),
+      take(1),
     )
   }
 
