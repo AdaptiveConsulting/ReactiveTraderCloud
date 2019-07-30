@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { usePlatform } from 'rt-components'
 import { styled } from 'rt-theme'
 import { TileHeader as Header, TileSymbol, DeliveryDate } from './styled'
@@ -20,9 +20,23 @@ export const CurrencyChartButton = styled('button')`
 const TileHeader: React.SFC<Props> = ({ baseTerm, date, displayCurrencyChart }) => {
   const platform = usePlatform()
 
+  const [onTileSymbolClick, setOnTileSymbolClick] = useState({
+    // TODO can we avoid having an additional key? We weren't sure how to do this optimization
+    handler: () =>
+      // @ts-ignore publishToChannel temporarily until made optional
+      platform.window.publishToChannel(baseTerm),
+  })
+
+  useEffect(() => {
+    setOnTileSymbolClick({
+      // @ts-ignore publishToChannel temporarily until made optional
+      handler: () => platform.window.publishToChannel(baseTerm),
+    })
+  }, [baseTerm])
+
   return (
     <Header>
-      <TileSymbol>{baseTerm}</TileSymbol>
+      <TileSymbol onClick={onTileSymbolClick.handler}>{baseTerm}</TileSymbol>
       {platform.type !== 'browser' && (
         <CurrencyChartButton onClick={displayCurrencyChart}>
           <i className="fas fa-chart-bar" />

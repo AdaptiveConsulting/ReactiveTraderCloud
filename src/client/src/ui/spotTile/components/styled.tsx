@@ -20,6 +20,7 @@ export const TileSymbol = styled.div`
   color: ${({ theme }) => theme.core.textColor};
   font-size: 0.8125rem;
   line-height: 1rem;
+  cursor: pointer;
 `
 
 export const TileBaseStyle = styled.div`

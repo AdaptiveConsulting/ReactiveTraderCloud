@@ -158,7 +158,9 @@
     "webpack": "4.39.1"
   },
   "optionalDependencies": {
-    "openfin-cli": "^2.0.4"
+    "glue4office": "1.4.5",
+    "openfin-cli": "^2.0.4",
+    "tick42-glue": "4.4.1"
   },
   "browserslist": [
     "> 1%",

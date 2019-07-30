@@ -10,6 +10,7 @@ interface PlatformAdapterInterface {
     maximize?: () => void
     minimize?: () => void
     resize?: () => void
+    publishToChannel?: (symbol: string) => void // TODO how can we make it optional for other adapters while avoiding ts errors in TileHeader.tsx?
   }
 
   notification: {
@@ -42,6 +43,7 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
     maximize?: () => void
     minimize?: () => void
     resize?: () => void
+    publishToChannel?: (symbol: string) => void // TODO how can we make it optional for other adapters while avoiding ts errors in TileHeader.tsx?
   }
   abstract notification: {
     notify: (message: object) => void

@@ -1,30 +1,91 @@
-import React from 'react'
+import React, { FC, useState, useEffect } from 'react'
 
 import { styled, ThemeName, useTheme } from 'rt-theme'
 
 import Logo from './Logo'
+import { onGlueLoaded } from '../../../rt-components/platform/adapters/glue/glue'
 
-class Header extends React.Component {
-  onClick = () => window.open('https://weareadaptive.com/')
+export const Header: FC = ({ children }) => {
+  const [
+    { isStackAllButtonVisible, isTabAllButtonVisible, isToggleCollapseButtonVisible },
+    setButtonsVisibility,
+  ] = useState({
+    isStackAllButtonVisible: false,
+    isTabAllButtonVisible: false,
+    isToggleCollapseButtonVisible: false,
+  })
 
-  render() {
-    const { children } = this.props
-    return (
-      <Root>
-        <Logo size={1.75} onClick={this.onClick} />
+  useEffect(
+    () =>
+      onGlueLoaded(() =>
+        window.glue.agm.register(
+          'toggleHeaderButtons',
+          // TODO expose toggleHeaderButtons?
+          // @ts-ignore temporarily
+          (args: { numberOfOpenedWindows: number }) => {
+            setButtonsVisibility({
+              isStackAllButtonVisible: args.numberOfOpenedWindows > 1,
+              isTabAllButtonVisible: args.numberOfOpenedWindows > 1,
+              isToggleCollapseButtonVisible: args.numberOfOpenedWindows > 0,
+            })
+          },
+        ),
+      ),
+    [],
+  ) // empty array means componentDidMount
 
-        <Fill />
+  // TODO expose onClick, stackAll, tabAll and toggleCollapse?
+  const onClick = () =>
+    !window.glue
+      ? window.open('https://weareadaptive.com/')
+      : window.glue.windows.open('adaptiveName', 'https://weareadaptive.com/', {
+          title: 'my title',
+        } as any) // TODO remove as any when typings for glue.windows.open() are fixed
 
-        <ThemeControl />
-        {children == null ? null : (
-          <React.Fragment>
-            <Division />
-            {children}
-          </React.Fragment>
-        )}
-      </Root>
-    )
-  }
+  const stackAll = () =>
+    onGlueLoaded(() => {
+      window.glue.agm.invoke('stackAllWindows')
+    })
+
+  const tabAll = () =>
+    onGlueLoaded(() => {
+      window.glue.agm.invoke('tabAllWindows')
+    })
+
+  const toggleCollapse = () =>
+    onGlueLoaded(() => {
+      window.glue.agm.invoke('toggleCollapse')
+    })
+
+  return (
+    <Root>
+      <Logo size={1.75} onClick={onClick} />
+
+      <Fill />
+      {isStackAllButtonVisible && (
+        <IconButton onClick={stackAll} title="Stack All">
+          <i className="fas fa-layer-group" />
+        </IconButton>
+      )}
+      {isTabAllButtonVisible && (
+        <IconButton onClick={tabAll} title="Tab All">
+          <i className="fas fa-window-restore" />
+        </IconButton>
+      )}
+      {isToggleCollapseButtonVisible && (
+        <IconButton onClick={toggleCollapse} title="Toggle Collapse">
+          <i className="fas fa-minus" />
+        </IconButton>
+      )}
+      <ThemeControl />
+      {children != null && (
+        <React.Fragment>
+          <Division />
+          {children}
+        </React.Fragment>
+      )}
+    </Root>
+  )
 }
 
 const ThemeControl = () => {
