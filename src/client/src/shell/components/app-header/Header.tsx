@@ -5,7 +5,50 @@ import { styled, ThemeName, useTheme } from 'rt-theme'
 import Logo from './Logo'
 
 class Header extends React.Component {
+  // The added buttons handle the Spot windows management
+
+  // The state handles the buttons visibility
+  state = {
+    showStackAll: false,
+    showTabAll: false,
+    showToggleCollapse: false,
+  }
+
+  componentDidMount() {
+    // On Spot window open/close the buttons visibility is updated
+    const interval = setInterval(() => {
+      if (!(window as any).glue) {
+        return
+      }
+      (window as any).glue.agm.register(
+        'toggleHeaderButtons',
+        (args: { numberOfOpenedWindows: number }) => {
+          this.setState({
+            showStackAll: args.numberOfOpenedWindows > 1,
+            showTabAll: args.numberOfOpenedWindows > 1,
+            showToggleCollapse: args.numberOfOpenedWindows > 0,
+          })
+        },
+      )
+      clearInterval(interval)
+    }, 500)
+  }
+
   onClick = () => window.open('https://weareadaptive.com/')
+
+  // On button click a Glue method is invoked
+
+  stackAll() {
+    (window as any).glue.agm.invoke('stackAllWindows')
+  }
+
+  tabAll() {
+    (window as any).glue.agm.invoke('tabAllWindows')
+  }
+
+  toggleCollapse() {
+    (window as any).glue.agm.invoke('toggleCollapse')
+  }
 
   render() {
     const { children } = this.props
@@ -14,7 +57,21 @@ class Header extends React.Component {
         <Logo size={1.75} onClick={this.onClick} />
 
         <Fill />
-
+        {this.state.showStackAll && (
+          <IconButton onClick={this.stackAll} type="primary" title={'Stack All'}>
+            <i className="fas fa-layer-group" data-tip="hello world" />
+          </IconButton>
+        )}
+        {this.state.showTabAll && (
+          <IconButton onClick={this.tabAll} type="primary" title={'Tab All'}>
+            <i className="fas fa-window-restore" />
+          </IconButton>
+        )}
+        {this.state.showToggleCollapse && (
+          <IconButton onClick={this.toggleCollapse} type="primary" title={'Toggle Collapse'}>
+            <i className="fas fa-minus" />
+          </IconButton>
+        )}
         <ThemeControl />
         {children == null ? null : (
           <React.Fragment>

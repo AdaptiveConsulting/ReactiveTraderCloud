@@ -7,6 +7,7 @@ interface Props {
   baseTerm: string
   date: string
   displayCurrencyChart?: () => void
+  publishToChannel?: (symbol: string) => void
 }
 
 export const CurrencyChartButton = styled('button')`
@@ -17,12 +18,12 @@ export const CurrencyChartButton = styled('button')`
   border-left: 1px solid white;
 `
 
-const TileHeader: React.SFC<Props> = ({ baseTerm, date, displayCurrencyChart }) => {
+const TileHeader: React.SFC<Props> = ({ baseTerm, date, displayCurrencyChart, publishToChannel }) => {
   const platform = usePlatform()
 
   return (
     <Header>
-      <TileSymbol>{baseTerm}</TileSymbol>
+      <TileSymbol onClick={() => publishToChannel(baseTerm)} style={{ cursor: 'pointer' }}>{baseTerm}</TileSymbol>
       {platform.type !== 'browser' && (
         <CurrencyChartButton onClick={displayCurrencyChart}>
           <i className="fas fa-chart-bar" />

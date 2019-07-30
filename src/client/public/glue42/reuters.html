@@ -1,0 +1,44 @@
+<html>
+<head>
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+    iframe {
+      display: block;
+      background: #000;
+      border: none;
+      height: 100vh;
+      width: 100vw;
+    }
+  </style>
+  <script type="text/javascript" src="tick42-glue/tick42-glue.min.js"></script>
+  <script>
+    window.onload = () => {
+      Glue({channels: true}).then((glue) => {
+        window.glue = glue;
+        setUrlSrc(glue.windows.my().context.symbol);
+
+        glue.channels.subscribe(({symbol}) => {
+          setUrlSrc(symbol);
+        })
+      });
+    };
+
+    const setUrlSrc = (symbol) => {
+      if (!symbol) {
+        const url = 'https://www.reuters.com';
+        document.getElementById('appHost').src = url;
+        return;
+      }
+      const srcCurr = symbol.substr(0, 3);
+      const destCurr = symbol.substr(3, symbol.length);
+      const url = `https://www.reuters.com/finance/currencies/quote?srcCurr=${srcCurr}&destCurr=${destCurr}`;
+      document.getElementById('appHost').src = url;
+    }
+  </script>
+</head>
+<body>
+  <iframe id="appHost"></iframe>
+</body>
+</html>

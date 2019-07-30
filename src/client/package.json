@@ -158,6 +158,10 @@
     "unzip": "^0.1.11",
     "webpack": "4.28.3"
   },
+  "optionalDependencies": {
+    "glue4office": "^1.4.5",
+    "tick42-glue": "^4.4.1"
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",

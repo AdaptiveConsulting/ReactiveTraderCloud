@@ -20,6 +20,23 @@ const TileHeaderWrapper = styled.div`
 `
 
 export default class SpotTile extends PureComponent<Props> {
+  /**
+   * In order to integrate Glue42 with channels the clicked symbol needs to be published to the channel.
+   * @param {string} symbol
+   */
+  publishToChannel = (symbol: string) => {
+    if (!(window as any).glue) {
+      return
+    }
+
+    symbol = symbol.replace('/', '')
+    try {
+      (window as any).glue.channels.publish({ symbol })
+    } catch (err) {
+      console.warn(err.message)
+    }
+  }
+
   render() {
     const {
       currencyPair,
@@ -56,6 +73,7 @@ export default class SpotTile extends PureComponent<Props> {
                 baseTerm={baseTerm}
                 date={date}
                 displayCurrencyChart={displayCurrencyChart}
+                publishToChannel={this.publishToChannel}
               />
             </TileHeaderWrapper>
             <PriceControls
