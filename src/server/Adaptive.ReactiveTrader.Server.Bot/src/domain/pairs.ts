@@ -1,4 +1,4 @@
-const pairSettings = new Map<string, {pipsPosition:number, ratePrecision:number}>()
+export const pairSettings = new Map<string, {pipsPosition:number, ratePrecision:number}>()
 
 pairSettings.set("EURUSD",{pipsPosition: 4, ratePrecision: 5})
 pairSettings.set("USDJPY",{pipsPosition: 2, ratePrecision: 3})
@@ -21,5 +21,3 @@ pairSettings.set("CADJPY",{pipsPosition: 2, ratePrecision: 3})
 pairSettings.set("CHFUSD",{pipsPosition: 4, ratePrecision: 5})
 pairSettings.set("EURNOK",{pipsPosition: 4, ratePrecision: 4})
 pairSettings.set("EURSEK",{pipsPosition: 4, ratePrecision: 4})
-
-export default pairSettings

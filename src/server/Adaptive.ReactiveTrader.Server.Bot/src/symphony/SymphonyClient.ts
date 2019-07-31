@@ -5,8 +5,6 @@ import * as Symphony from 'symphony-api-client-node'
 import logger from '../logger';
 import { BotConfig, createConfig } from './config';
 
-
-
 class SymphonyClient {
 
     /* 

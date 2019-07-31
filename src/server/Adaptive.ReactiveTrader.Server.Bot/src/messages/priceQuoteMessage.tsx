@@ -2,8 +2,7 @@ import moment from 'moment'
 import React, { FC } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { Price } from '../domain'
-import { getSpread, toRate } from '../domain/priceFormatting'
-import '../extensions'
+import { getSpread, toRate } from '../domain'
 import { downArrow, upArrow } from './data-images'
 
 const BG_COLOR = '#2f3542'
@@ -91,7 +90,7 @@ const MovementIndicator:FC<{price:Price}> = ({price}) => {
 const PriceMessage: FC<{ price: Price }> = ({ price }) => {
   return (
     <>
-    <h4><cash tag="GBPUSD"/> as of: {moment().format('DD MMM LTS')}</h4>
+    <h4><cash tag={price.symbol}/> as of: {moment().format('DD MMM LTS')}</h4>
     <div style={spotTileMessageStyle}>
       <CCYPairLabel pair={price.symbol} />
       <div style={{ backgroundColor: BG_COLOR, marginTop: 10 }}>

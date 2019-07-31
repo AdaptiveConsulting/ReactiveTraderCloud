@@ -6,10 +6,11 @@
     ],
     "jsRules": {},
     "rules": {
+        "max-classes-per-file": false,
         "object-literal-sort-keys": false,
 
         "interface-name": [
-            true,
+            false,
             "never-prefix"
           ],
           "member-access": false
