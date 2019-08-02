@@ -17,8 +17,9 @@ const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.has('symphony')) {
   
   console.info('Running RT as a Symphony Controller')
-  
-  initiateSymphony(window.SYMPHONY,  urlParams.get('env'))
+  setTimeout(()=>{
+    initiateSymphony(window.SYMPHONY,  urlParams.get('env'))
+  }, 3000)
 
 } else {
   ReactDOM.render(
