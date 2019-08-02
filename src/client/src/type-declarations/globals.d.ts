@@ -1,9 +1,9 @@
+
 declare var __VERSION__: string
 declare var REACT_APP_ENV: string
 declare module 'react-nvd3'
 declare module 'react-sizeme'
 declare module 'audio-recorder-polyfill'
-
 interface Window {
   // types not currently available for FSBL - 1/24/2019
   FSBL: {
@@ -13,5 +13,8 @@ interface Window {
       RouterClient: any
       LauncherClient: any
     }
-  }
+  },
+
+  SYMPHONY: SymphonyClient;
+
 }
