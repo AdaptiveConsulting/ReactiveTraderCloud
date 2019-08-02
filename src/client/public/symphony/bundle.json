@@ -1,0 +1,14 @@
+{
+  "applications": [
+    {
+      "type": "sandbox",
+      "id": "reactiveTrader",
+      "name": "Reactive Trader",
+      "blurb": "Symphony integration with Reactive Trader",
+      "publisher": "Adaptive Financial Consulting",
+      "url": "https://localhost:3000/?symphony=true",
+      "domain": "localhost",
+      "icon":"https://localhost:3000/symphony/symphony/logo.png"
+    }
+  ]
+}
