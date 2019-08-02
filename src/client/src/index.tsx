@@ -18,8 +18,10 @@ if (urlParams.has('symphony')) {
   
   console.info('Running RT as a Symphony Controller')
   setTimeout(()=>{
+    console.info('Initiating Symphony')
+
     initiateSymphony(window.SYMPHONY,  urlParams.get('env'))
-  }, 3000)
+  }, 10000)
 
 } else {
   ReactDOM.render(
