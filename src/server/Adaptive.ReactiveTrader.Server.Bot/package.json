@@ -7,13 +7,13 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "start": "cross-env NODE_ENV=production node lib/index.js",
-    "dev:debug": "nodemon --inspect src/index.ts",
     "build": "cross-env NODE_ENV=production tsc -p .",
     "prettier:base": "prettier --parser typescript --single-quote",
     "prettier:check": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
     "prettier:write": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\"",
     "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "debug": "node --inspect-brk --require ts-node/register src/index.ts"
   },
   "keywords": [
     "RFQ"
@@ -54,12 +54,14 @@
   "dependencies": {
     "@types/autobahn": "^0.9.42",
     "@types/debug": "^4.1.2",
+    "@types/dialogflow": "^0.9.4",
     "@types/dotenv": "^6.1.1",
     "@types/jest": "^24.0.4",
     "@types/node": "^11.9.3",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
     "@types/uuid": "^3.4.4",
+    "dialogflow": "^0.10.3",
     "dotenv": "^8.0.0",
     "moment": "^2.24.0",
     "react": "^16.8.6",

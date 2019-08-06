@@ -21,7 +21,7 @@ if (urlParams.has('symphony')) {
     console.info('Initiating Symphony')
 
     initiateSymphony(window.SYMPHONY,  urlParams.get('env'))
-  }, 10000)
+  }, 3000)
 
 } else {
   ReactDOM.render(
