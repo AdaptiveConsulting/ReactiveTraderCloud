@@ -1,6 +1,6 @@
 import { writeFileSync } from 'fs'
 import { from, Observable } from 'rxjs'
-import { concatMap, mergeMap, shareReplay, switchMap, take } from 'rxjs/operators'
+import { concatMap, mergeMap, share, shareReplay, switchMap, take } from 'rxjs/operators'
 import * as Symphony from 'symphony-api-client-node'
 import logger from '../logger';
 import { BotConfig, createConfig } from './config';
@@ -48,7 +48,9 @@ class SymphonyClient {
     dataEvents$() {
         return this.botConnnection$.pipe(
             switchMap(() => SymphonyClient.wrapDataFeed()),
-            concatMap<Symphony.Message[], Observable<Symphony.Message>>(event => from(event)))
+            concatMap<Symphony.Message[], Observable<Symphony.Message>>(event => from(event)),
+            share()
+        )
     }
 
     sendMessage(streamId: string, message: string) {

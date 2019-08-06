@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { formatDate, pairSettings, Price, toRate } from '../domain';
-import '../extensions';
-import logger from '../logger';
+import React, { FC } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { formatDate, pairSettings, Price, toRate } from '../domain'
+import '../extensions'
+import { downArrow, upArrow } from './data-images'
 
 const sortPrices = (prices: Price[]) =>
   prices.sort((a, b) => {
@@ -21,21 +21,29 @@ const Rate: FC<{ rawRate: number; symbol: string }> = ({ rawRate, symbol }) => {
     </>
   )
 }
+const imgStyle: React.CSSProperties = {
+  paddingLeft: '2px',
+}
 
 const numberCellStyle: React.CSSProperties = {
   textAlign: 'right',
+}
+
+const arrowCellStyle: React.CSSProperties = {
+  textAlign: 'center',
 }
 const MarketMessage: FC<{ prices: Price[] }> = ({ prices }) => {
   const sorted = sortPrices(prices)
 
   return (
-    <table style={({maxWidth:'500px'})}>
+    <table style={{ maxWidth: '500px' }}>
       <thead>
         <tr>
           <th>Symbol</th>
           <th style={numberCellStyle}>Ask</th>
           <th style={numberCellStyle}>Bid</th>
           <th style={numberCellStyle}>Date</th>
+          <th style={numberCellStyle}>Movement</th>
         </tr>
       </thead>
       <tbody>
@@ -49,6 +57,9 @@ const MarketMessage: FC<{ prices: Price[] }> = ({ prices }) => {
               <Rate rawRate={price.bid} symbol={price.symbol} />
             </td>
             <td style={numberCellStyle}>{formatDate(price.valueDate)}</td>
+            <td style={arrowCellStyle}>
+              <img style={imgStyle} src={price.lastMove === 'up' ? upArrow : downArrow} />
+            </td>
           </tr>
         ))}
       </tbody>

@@ -6,6 +6,7 @@ export interface Price {
     creationTimestamp: number
     symbol: string
     valueDate: string
+    lastMove: 'up'|'down'|'none'
   }
   
   export function convertToPrice(dto: RawPrice): Price {
@@ -16,6 +17,7 @@ export interface Price {
       creationTimestamp: dto.CreationTimestamp,
       symbol: dto.Symbol,
       valueDate: dto.ValueDate,
+      lastMove:'up'
     }
   }
   
