@@ -12,9 +12,16 @@ spec:
       labels:
         component: bot
     spec:
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: nlp-key
       containers:
         - name: bot
-          image: reactivetradercloud/bot:4765
+          image: reactivetradercloud/bot:4805
+          volumeMounts:
+          - name: google-cloud-key
+            mountPath: /var/secrets/google
           env:
             - name: BROKER_HOST
               value: broker
@@ -35,3 +42,5 @@ spec:
                 secretKeyRef:
                   name: syphony-secrets
                   key: rsa-privatekey
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
