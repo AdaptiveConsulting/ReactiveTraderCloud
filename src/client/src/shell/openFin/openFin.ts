@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 import { Observable } from 'rxjs'
 const LOG_NAME = 'OpenFin: '
 
@@ -35,7 +37,11 @@ export class OpenFinLimitChecker {
         observer.complete()
       }
 
-      fin.desktop.InterApplicationBus.subscribe(this.limitCheckSubscriber, topic, limitCheckResponse)
+      fin.desktop.InterApplicationBus.subscribe(
+        this.limitCheckSubscriber,
+        topic,
+        limitCheckResponse,
+      )
 
       const payload = {
         ...message,
@@ -43,10 +49,18 @@ export class OpenFinLimitChecker {
         responseTopic: topic,
       }
 
-      fin.desktop.InterApplicationBus.send(this.limitCheckSubscriber, REQUEST_LIMIT_CHECK_TOPIC, payload)
+      fin.desktop.InterApplicationBus.send(
+        this.limitCheckSubscriber,
+        REQUEST_LIMIT_CHECK_TOPIC,
+        payload,
+      )
 
       return () => {
-        fin.desktop.InterApplicationBus.unsubscribe(this.limitCheckSubscriber!, topic, limitCheckResponse)
+        fin.desktop.InterApplicationBus.unsubscribe(
+          this.limitCheckSubscriber!,
+          topic,
+          limitCheckResponse,
+        )
       }
     })
   }
@@ -59,11 +73,16 @@ export class OpenFinLimitChecker {
     fin.desktop.main(() => {
       fin.desktop.InterApplicationBus.addSubscribeListener(this.setLimitCheckSubscriber)
       fin.desktop.InterApplicationBus.addUnsubscribeListener(this.removeLimitCheckSubscriber)
-      fin.desktop.InterApplicationBus.subscribe(LIMIT_CHECKER_UUID, null, LIMIT_CHECKER_STATUS_TOPIC, (message, _) => {
-        if (message === 'ALIVE') {
-          this.setLimitCheckSubscriber(LIMIT_CHECKER_UUID, REQUEST_LIMIT_CHECK_TOPIC)
-        }
-      })
+      fin.desktop.InterApplicationBus.subscribe(
+        LIMIT_CHECKER_UUID,
+        null,
+        LIMIT_CHECKER_STATUS_TOPIC,
+        (message, _) => {
+          if (message === 'ALIVE') {
+            this.setLimitCheckSubscriber(LIMIT_CHECKER_UUID, REQUEST_LIMIT_CHECK_TOPIC)
+          }
+        },
+      )
       fin.desktop.InterApplicationBus.send(LIMIT_CHECKER_UUID, LIMIT_CHECKER_STATUS_TOPIC, null)
     })
   }
