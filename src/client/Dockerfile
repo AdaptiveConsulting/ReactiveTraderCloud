@@ -1,7 +1,8 @@
 FROM node:11.10-alpine as builder
 WORKDIR '/app'
 COPY ./package*.json ./
-RUN npm install
+COPY ./allowEslintrc.js ./
+RUN npm install --unsafe-perm
 COPY . .
 RUN npm run build
 RUN npm run storybook:build
