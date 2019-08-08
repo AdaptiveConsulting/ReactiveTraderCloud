@@ -39,7 +39,8 @@
     "storybook": "start-storybook -p 6006 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o storybook/build",
     "sleep": "sleep 5",
-    "lint:fix": "eslint --fix ./src"
+    "lint:fix": "eslint --fix ./src",
+    "postinstall": "node ./allowEslintrc.js"
   },
   "license": "MIT",
   "lint-staged": {
