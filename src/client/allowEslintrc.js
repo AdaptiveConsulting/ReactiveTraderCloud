@@ -6,8 +6,8 @@ const webpack = fs.readFileSync(reactScriptsWebpackConfig, 'utf8');
 const customConfig = webpack.replace(/(?<=useEslintrc:\s)false/gm, 'true');
 
 fs.writeFile(reactScriptsWebpackConfig, customConfig, 'utf8', function(err) {
-    if (err) {
-        process.exit(1);
-    }
-    process.exit(0);
+  if (err) {
+    process.exit(1);
+  }
+  process.exit(0);
 });
