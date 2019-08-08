@@ -25,6 +25,31 @@ export interface SpotTileContainerOwnProps {
   tearable?: boolean
 }
 
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
+  onMount: () => dispatch(SpotTileActions.subscribeToSpotTile(ownProps.id)),
+  executeTrade: (tradeRequestObj: ExecuteTradeRequest) =>
+    dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
+  displayCurrencyChart: () => dispatch(SpotTileActions.displayCurrencyChart(ownProps.id)),
+  onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id)),
+  setTradingMode: (tradingMode: TradingMode) =>
+    dispatch(SpotTileActions.setTradingMode(tradingMode)),
+  rfq: {
+    request: (rfqActionObj: RfqRequest) => dispatch(SpotTileActions.rfqRequest(rfqActionObj)),
+    cancel: (rfqActionObj: RfqCancel) => dispatch(SpotTileActions.rfqCancel(rfqActionObj)),
+    reject: (rfqActionObj: RfqReject) => dispatch(SpotTileActions.rfqReject(rfqActionObj)),
+    requote: (rfqActionObj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(rfqActionObj)),
+    expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
+    reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
+  },
+})
+
+const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
+  pricingStatus: selectPricingStatus(state),
+  executionStatus: selectExecutionStatus(state),
+  currencyPair: selectCurrencyPair(state, ownProps),
+  spotTileData: selectSpotTileData(state, ownProps),
+})
+
 type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 
 type SpotTileContainerStateProps = ReturnType<ReturnType<typeof makeMapStateToProps>>
@@ -55,31 +80,6 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
     message={`${id} Disconnected`}
   />
 )
-
-const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
-  onMount: () => dispatch(SpotTileActions.subscribeToSpotTile(ownProps.id)),
-  executeTrade: (tradeRequestObj: ExecuteTradeRequest) =>
-    dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
-  displayCurrencyChart: () => dispatch(SpotTileActions.displayCurrencyChart(ownProps.id)),
-  onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id)),
-  setTradingMode: (tradingMode: TradingMode) =>
-    dispatch(SpotTileActions.setTradingMode(tradingMode)),
-  rfq: {
-    request: (rfqActionObj: RfqRequest) => dispatch(SpotTileActions.rfqRequest(rfqActionObj)),
-    cancel: (rfqActionObj: RfqCancel) => dispatch(SpotTileActions.rfqCancel(rfqActionObj)),
-    reject: (rfqActionObj: RfqReject) => dispatch(SpotTileActions.rfqReject(rfqActionObj)),
-    requote: (rfqActionObj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(rfqActionObj)),
-    expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
-    reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
-  },
-})
-
-const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
-  pricingStatus: selectPricingStatus(state),
-  executionStatus: selectExecutionStatus(state),
-  currencyPair: selectCurrencyPair(state, ownProps),
-  spotTileData: selectSpotTileData(state, ownProps),
-})
 
 const ConnectedSpotTileContainer = connect(
   makeMapStateToProps,

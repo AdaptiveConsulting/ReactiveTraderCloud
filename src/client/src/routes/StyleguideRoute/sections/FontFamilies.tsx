@@ -18,7 +18,7 @@ const CHARACTERS = [
   `ABCĆDEFGHIJKLMNOPQRSŠTUVWXYZŽ`,
   `abcćdefghijklmnopqrsštuvwxyzž`,
   `1234567890`,
-  `‘?’“!”(%)[#]{@}/&\<-+÷×=>®©$€£¥¢:;,.*`,
+  `‘?’“!”(%)[#]{@}/&<-+÷×=>®©$€£¥¢:;,.*`,
 ].map(line => line.split('').join(' '))
 
 const LATO = {
@@ -56,9 +56,9 @@ export const FontFamilies: React.FC = () => (
       <H3>Primary — LATO</H3>
 
       <Paragraph>
-        Lato meaning ‘Summer’ in polish has a clear corporate but modern style that works really well in digital
-        products. It is available for free as part of the open-source Open Font Licence and can be downloaded directly
-        from Google fonts and used without restriction.
+        Lato meaning ‘Summer’ in polish has a clear corporate but modern style that works really
+        well in digital products. It is available for free as part of the open-source Open Font
+        Licence and can be downloaded directly from Google fonts and used without restriction.
       </Paragraph>
       <FontFamilySample {...LATO} />
     </SectionBlock>
@@ -66,9 +66,10 @@ export const FontFamilies: React.FC = () => (
       <H3>Secondary — MONTSERRAT</H3>
 
       <Paragraph>
-        Secondary fonts can be used if required to add interest to specific titles or summary data. Be sure to select a
-        complimentary style that can work alongside the primary font. Montserrat has been chosen for it’s strong bold
-        style at small font sizes. It is also available to be used without restriction from Google fonts.
+        Secondary fonts can be used if required to add interest to specific titles or summary data.
+        Be sure to select a complimentary style that can work alongside the primary font. Montserrat
+        has been chosen for it’s strong bold style at small font sizes. It is also available to be
+        used without restriction from Google fonts.
       </Paragraph>
 
       <FontFamilySample {...MONTSERRAT} />
@@ -77,14 +78,16 @@ export const FontFamilies: React.FC = () => (
     <SectionBlock mh={5}>
       <H2>Font Sizes</H2>
       <Paragraph>
-        You should be free to select a font size that seems appropriate for the use however try to control the number of
-        similar sized fonts used unless there really is a clear visual benefit. Defining a paragraph size is very
-        important and can be used to define the headings and sub-heading sizes. Always ensure you are maintaining a
-        clear hierarchy in your screen layout by using the correctly weighted and sized fonts.
+        You should be free to select a font size that seems appropriate for the use however try to
+        control the number of similar sized fonts used unless there really is a clear visual
+        benefit. Defining a paragraph size is very important and can be used to define the headings
+        and sub-heading sizes. Always ensure you are maintaining a clear hierarchy in your screen
+        layout by using the correctly weighted and sized fonts.
       </Paragraph>
       <Paragraph fontStyle="italic" my={3}>
-        <strong>Note</strong>: You can use the Fibonacci numbers to define the upper and lower font sizes. Starting from
-        8, 13, 21, 34, 55, and then add minor increments inbetween as you see the need.
+        <strong>Note</strong>: You can use the Fibonacci numbers to define the upper and lower font
+        sizes. Starting from 8, 13, 21, 34, 55, and then add minor increments inbetween as you see
+        the need.
       </Paragraph>
 
       <FontSizeGrid>
@@ -140,7 +143,9 @@ const FontFamilySample: React.FC<{
   </FontFamilySampleGrid>
 )
 
-const Heading: React.FC = props => <Paragraph display="block" fontSize={1} lineHeight={2} mt={2} {...props} />
+const Heading: React.FC = props => (
+  <Paragraph display="block" fontSize={1} lineHeight={2} mt={2} {...props} />
+)
 
 const FontFamilySampleGrid = styled(Text)<TextProps>`
   display: grid;

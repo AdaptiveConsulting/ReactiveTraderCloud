@@ -1,3 +1,9 @@
+/*
+Per this Create React App issue: https://github.com/facebook/create-react-app/issues/808
+Allows a custom eslintrc file in the root directory.
+Without it, global configurations would be inflexible, requiring inline overrides for the app to successfully compile.
+*/
+
 const fs = require('fs');
 const path = require('path');
 

@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-globals */
-
 import { select, layout, Selection } from 'd3'
 import React, { Component, createRef } from 'react'
 import { colors } from 'rt-theme'

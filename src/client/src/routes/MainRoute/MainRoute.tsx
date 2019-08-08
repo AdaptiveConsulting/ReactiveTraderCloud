@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-globals */
-
 import React, { Component } from 'react'
 import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'

@@ -30,7 +30,7 @@ const getStatusCellClass = (trade: Trade) => {
 const getStatusIndicatorClass = (trade: Trade) => {
   switch (trade.status) {
     case TradeStatus.Rejected:
-      return 'rt-blotter__status-i' + 'ndicator--rejected'
+      return 'rt-blotter__status-indicator--rejected'
     case TradeStatus.Done:
       return 'rt-blotter__status-indicator--done'
     case TradeStatus.Pending:

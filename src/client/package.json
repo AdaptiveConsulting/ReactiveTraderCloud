@@ -149,11 +149,7 @@
     "react-scripts": "^3.0.1",
     "react-test-renderer": "^16.8.6",
     "redux-devtools-extension": "^2.13.2",
-    "rxjs-tslint-rules": "^4.24.3",
     "source-map-explorer": "^2.0.1",
-    "tslint": "^5.18.0",
-    "tslint-config-prettier": "^1.17.0",
-    "tslint-react-hooks": "^2.2.1",
     "typescript": "^3.5.3",
     "webpack": "4.29.6"
   },
