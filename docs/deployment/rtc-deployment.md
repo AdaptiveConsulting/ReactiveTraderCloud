@@ -1,6 +1,6 @@
-# You want to: Deploy Reactive Trader Cloud
+# Deploy Reactive Trader Cloud
 
-- [You want to: Deploy Reactive Trader Cloud](#you-want-to-deploy-reactive-trader-cloud)
+- [Deploy Reactive Trader Cloud](#deploy-reactive-trader-cloud)
     - [Do the deployment](#do-the-deployment)
 
 ## Do the deployment
