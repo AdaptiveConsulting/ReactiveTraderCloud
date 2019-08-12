@@ -43,7 +43,7 @@ export interface TileState {
 
 class Tile extends React.PureComponent<TileProps, TileState> {
   state: TileState = {
-    notional: getDefaultNotionalValue(this.props.currencyPair),
+    notional: window.DEFAULT_NOTIONAL || getDefaultNotionalValue(this.props.currencyPair),
     inputValidationMessage: null,
     inputDisabled: false,
     tradingDisabled: false,

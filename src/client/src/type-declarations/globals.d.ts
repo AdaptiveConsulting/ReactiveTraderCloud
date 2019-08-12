@@ -16,5 +16,5 @@ interface Window {
   },
 
   SYMPHONY: SymphonyClient;
-
+  DEFAULT_NOTIONAL: string;
 }

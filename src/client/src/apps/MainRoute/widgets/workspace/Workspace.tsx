@@ -47,26 +47,28 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
       <WorkspaceItems>
         {spotTiles
           .filter(({ key }) => key.includes(currency) || currency === 'ALL')
-          .map(({ key, externalWindowProps, tornOff }) => (
-            <TearOff
-              id={key}
-              key={key}
-              dragTearOff={true}
-              externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
-              render={(popOut, isTornOff) => (
-                <WorkspaceItem>
-                  <SpotTileContainer
-                    id={key}
-                    tileView={tileView}
-                    onPopoutClick={popOut}
-                    tornOff={isTornOff}
-                    tearable
-                  />
-                </WorkspaceItem>
-              )}
-              tornOff={tornOff}
-            />
-          ))}
+          .map(({ key, externalWindowProps, tornOff }) => {
+            return (
+              <TearOff   
+                id={key}
+                key={key}   
+                dragTearOff={true}
+                externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
+                render={(popOut, isTornOff) => (
+                  <WorkspaceItem>
+                    <SpotTileContainer
+                      id={key}
+                      tileView={tileView}
+                      onPopoutClick={popOut}
+                      tornOff={isTornOff}
+                      tearable
+                    />
+                  </WorkspaceItem>
+                )}
+                tornOff={tornOff}
+              />
+            )
+          })}
       </WorkspaceItems>
     </div>
   )

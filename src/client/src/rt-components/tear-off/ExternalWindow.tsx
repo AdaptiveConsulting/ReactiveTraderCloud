@@ -17,13 +17,15 @@ export interface ExternalWindowProps {
   onBlock?: () => void
   onUnload: () => void
   config?: WindowConfig
+  defaultNotional: string | undefined
 }
 
-const ExternalWindow: FC<ExternalWindowProps> = ({
+const ExternalWindow: FC<ExternalWindowProps> = ({   
   title = '',
   onBlock = null as () => void,
   onUnload = null as () => void,
   config = defaultConfig,
+  defaultNotional
 }) => {
   const platform = usePlatform()
 
@@ -43,6 +45,7 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
       externalWindow = await platform.window.open(config, release)
       if (externalWindow) {
         window.addEventListener('beforeunload', release)
+        externalWindow.DEFAULT_NOTIONAL = defaultNotional
       }
     }
 

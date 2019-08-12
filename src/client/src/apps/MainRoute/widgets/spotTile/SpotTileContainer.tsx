@@ -19,7 +19,7 @@ import { TradingMode } from './components/types'
 export interface SpotTileContainerOwnProps {
   id: string
   tileView: TileViews
-  onPopoutClick?: (x: number, y: number) => void
+  onPopoutClick?: (notional: string) => any
   tornOff?: boolean
   tearable?: boolean
 }

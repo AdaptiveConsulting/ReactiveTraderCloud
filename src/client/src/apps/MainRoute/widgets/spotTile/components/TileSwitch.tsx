@@ -17,7 +17,7 @@ interface Props {
   canPopout: boolean
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
-  onPopoutClick?: (x: number, y: number) => void
+  onPopoutClick?: (notional: string) => any
   onNotificationDismissed: () => void
   displayCurrencyChart?: () => void
   setTradingMode: (tradingMode: TradingMode) => void
@@ -58,7 +58,7 @@ const TileSwitch: React.FC<Props> = ({
     >
       {({ notional, userError }: TileSwitchChildrenProps) => (
         <>
-          <TileControls canPopout={isRfqStateNone && canPopout} onPopoutClick={onPopoutClick} />
+          <TileControls canPopout={isRfqStateNone && canPopout} onPopoutClick={typeof onPopoutClick === 'function' ? onPopoutClick(notional) : onPopoutClick} />
           <TileBooking show={spotTileData.isTradeExecutionInFlight} color="blue" showLoader>
             Executing
           </TileBooking>
