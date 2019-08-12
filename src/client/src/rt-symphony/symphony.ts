@@ -23,10 +23,15 @@ interface ModuleService {
 
 }
 
+interface EntityService {
+    registerRenderer: (type: string, options: any, serviceName: string) => void
+}
+
 interface Service {
     implement: (implementations: {
         menuSelect?: (itemId: String) => void
         select?: (itemId: String) => void
+        render?: (type: string, data: object) => { template: string, data: object }
     }) => void
 }
 
@@ -34,6 +39,7 @@ type TypeName<T extends SymphonyServices> =
     T extends "ui" ? UIService :
     T extends "applications-nav" ? NavService :
     T extends "modules" ? ModuleService :
+    T extends "entity" ? EntityService :
     never;
 
 interface Services {

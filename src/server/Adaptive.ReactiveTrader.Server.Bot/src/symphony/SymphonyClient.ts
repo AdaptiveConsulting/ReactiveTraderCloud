@@ -51,10 +51,15 @@ class SymphonyClient {
     )
   }
 
-  sendMessage(streamId: string, message: string) {
+  sendMessage(
+    streamId: string,
+    message: string,
+    data: string | null = null,
+    format: Symphony.MessageFormat = Symphony.MESSAGEML_FORMAT,
+  ) {
     logger.info('Sending message to symphony:', streamId)
     return this.botConnnection$.pipe(
-      mergeMap(() => from(Symphony.sendMessage(streamId, message, null, Symphony.MESSAGEML_FORMAT))),
+      mergeMap(() => from(Symphony.sendMessage(streamId, message, data, format))),
       take(1),
     )
   }
