@@ -25,15 +25,23 @@ interface ModuleService {
 
 interface EntityService {
     registerRenderer: (type: string, options: any, serviceName: string) => void
+    update: (entityInstanceId: string, template: string, data: any) => void
 }
 
 interface Service {
-    implement: (implementations: {
-        menuSelect?: (itemId: String) => void
-        select?: (itemId: String) => void
-        render?: (type: string, data: object) => { template: string, data: object }
-    }) => void
+    implement: (implementations: UIServiceImpl & EntityServiceImpl) => void
 }
+
+interface UIServiceImpl {
+    menuSelect?: (itemId: String) => void
+    select?: (itemId: String) => void
+}
+interface EntityServiceImpl {
+    render?: (type: string, data: any) => { template: string, data: any, entityInstanceId?: string }
+    pause?: (id: string) => void
+    resume?: (id: string) => void
+}
+
 
 type TypeName<T extends SymphonyServices> =
     T extends "ui" ? UIService :
