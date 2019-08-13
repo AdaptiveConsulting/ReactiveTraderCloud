@@ -42,6 +42,12 @@
     "lint:fix": "eslint --fix ./src",
     "postinstall": "node ./allowEslintrc.js"
   },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "./.eslintrc.json"
+    ]
+  },
   "license": "MIT",
   "lint-staged": {
     "src/**/*.{js,ts,tsx,json}": [
@@ -135,23 +141,23 @@
     "awesome-typescript-loader": "^5.2.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "24.8.0",
-    "babel-loader": "8.0.5",
+    "babel-loader": "8.0.6",
     "cors": "^2.8.5",
     "cross-env": "^5.1.4",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "husky": "^3.0.2",
-    "jest": "24.7.1",
+    "jest": "24.8.0",
     "lint-staged": "^9.2.1",
     "npm-run-all": "^4.1.2",
     "numeral": "^2.0.6",
     "prettier": "^1.18.2",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^3.1.0",
     "react-test-renderer": "^16.8.6",
     "redux-devtools-extension": "^2.13.2",
     "source-map-explorer": "^2.0.1",
     "typescript": "^3.5.3",
-    "webpack": "4.29.6"
+    "webpack": "4.39.1"
   },
   "optionalDependencies": {
     "openfin-cli": "^2.0.4"
