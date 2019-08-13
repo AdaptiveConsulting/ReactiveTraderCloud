@@ -121,6 +121,7 @@ export const getDerivedStateFromUserInput = ({
   const { rfqState } = spotTileData
 
   const notional = !isEditMode(value) ? getFormattedValue(value) : value
+  if (window.DEFAULT_NOTIONAL !== undefined) window.DEFAULT_NOTIONAL = notional
 
   const defaultNextState: TileState = {
     ...prevState,
@@ -152,7 +153,7 @@ export const getDerivedStateFromUserInput = ({
     }
     return {
       ...defaultNextState,
-      notional: getFormattedValue(notional),
+      notional: getFormattedValue(notional)
     }
   } else if (isInvalidTradingValue(notional)) {
     // onChange if invalid trading value, update value
@@ -209,6 +210,7 @@ export const resetNotional = ({
   currencyPair,
 }: DerivedStateFromNotionalReset): TileState => {
   const notional = getDefaultNotionalValue(currencyPair)
+  if (window.DEFAULT_NOTIONAL !== undefined) window.DEFAULT_NOTIONAL = notional;
   const isInRfqRange = isValueInRfqRange(notional)
   if (isInRfqRange) {
     actions.setTradingMode({ symbol, mode: 'rfq' })

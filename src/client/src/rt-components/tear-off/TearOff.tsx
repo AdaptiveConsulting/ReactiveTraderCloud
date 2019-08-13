@@ -5,7 +5,7 @@ import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
 import { useDispatch } from 'react-redux'
 import { usePlatform } from 'rt-components'
 
-type RenderCB = (popOut: (notional: string) => any, tornOff: boolean) => JSX.Element
+type RenderCB = (popOut: (notional: string) => any, tornOff: boolean, defaultNotional?: string) => JSX.Element
 
 const DragWrapper = styled.div`
   height: 100%;
@@ -50,7 +50,7 @@ const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
 export interface TearOffProps {
   id: string
   render: RenderCB
-  defaultNotional?: string | undefined
+  defaultNotional?: string
   externalWindowProps: Partial<ExternalWindowProps>
   tornOff: boolean
   x?: number
@@ -82,6 +82,10 @@ const TearOff: React.FC<TearOffProps> = props => {
       }
     }
   }
+  const returnNotional = (notional: string) => {
+    setDefaultNotional(notional)
+  }
+
   const popIn = useCallback(
     () =>
       dispatch(LayoutActions.updateContainerVisibilityAction({ name: windowName, display: true })),
@@ -89,7 +93,7 @@ const TearOff: React.FC<TearOffProps> = props => {
   )
 
   if (tornOff) {
-    return <ExternalWindow onUnload={popIn} defaultNotional={defaultNotional} {...externalWindowProps} />
+    return <ExternalWindow onUnload={popIn} defaultNotional={defaultNotional} returnNotional={returnNotional} {...externalWindowProps} />
   }
 
   if (dragTearOff) {
@@ -103,11 +107,11 @@ const TearOff: React.FC<TearOffProps> = props => {
         }}
         onDragStart={onDragStart}
       >
-        {render(popOutWithNotional(popOut), tornOff)}
+        {render(popOutWithNotional(popOut), tornOff, defaultNotional)}
       </DragWrapper>
     )
   }
-  return render(popOutWithNotional(popOut), tornOff)
+  return render(popOutWithNotional(popOut), tornOff, defaultNotional)
 }
 
 export default TearOff

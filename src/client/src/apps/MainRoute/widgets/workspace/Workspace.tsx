@@ -54,13 +54,14 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
                 key={key}   
                 dragTearOff={true}
                 externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
-                render={(popOut, isTornOff) => (
+                render={(popOut, isTornOff, defaultNotional) => (
                   <WorkspaceItem>
                     <SpotTileContainer
                       id={key}
                       tileView={tileView}
                       onPopoutClick={popOut}
                       tornOff={isTornOff}
+                      defaultNotional={defaultNotional}
                       tearable
                     />
                   </WorkspaceItem>

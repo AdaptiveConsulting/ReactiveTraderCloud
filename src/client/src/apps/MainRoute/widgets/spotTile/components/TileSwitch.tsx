@@ -23,6 +23,7 @@ interface Props {
   setTradingMode: (tradingMode: TradingMode) => void
   tileView?: TileViews
   rfq: RfqActions
+  defaultNotional?: string
 }
 
 const TileSwitch: React.FC<Props> = ({
@@ -37,6 +38,7 @@ const TileSwitch: React.FC<Props> = ({
   tileView,
   setTradingMode,
   rfq,
+  defaultNotional
 }) => {
   const {
     isRfqStateExpired,
@@ -55,6 +57,7 @@ const TileSwitch: React.FC<Props> = ({
       setTradingMode={setTradingMode}
       rfq={rfq}
       displayCurrencyChart={displayCurrencyChart}
+      defaultNotional={defaultNotional}
     >
       {({ notional, userError }: TileSwitchChildrenProps) => (
         <>

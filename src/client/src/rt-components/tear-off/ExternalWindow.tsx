@@ -17,7 +17,8 @@ export interface ExternalWindowProps {
   onBlock?: () => void
   onUnload: () => void
   config?: WindowConfig
-  defaultNotional: string | undefined
+  defaultNotional?: string
+  returnNotional: (notional: string) => void
 }
 
 const ExternalWindow: FC<ExternalWindowProps> = ({   
@@ -25,7 +26,8 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
   onBlock = null as () => void,
   onUnload = null as () => void,
   config = defaultConfig,
-  defaultNotional
+  defaultNotional,
+  returnNotional
 }) => {
   const platform = usePlatform()
 
@@ -35,6 +37,8 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
     const release = () => {
       if (externalWindow) {
         window.removeEventListener('beforeunload', release)
+        returnNotional(externalWindow.DEFAULT_NOTIONAL)
+        console.log(externalWindow.DEFAULT_NOTIONAL)
       }
       if (typeof onUnload === 'function') {
         onUnload.call(null)

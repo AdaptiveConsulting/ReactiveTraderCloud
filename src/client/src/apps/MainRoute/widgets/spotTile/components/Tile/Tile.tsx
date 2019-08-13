@@ -31,6 +31,7 @@ export interface TileProps {
   tileView?: TileViews
   children: ({ notional, userError }: TileSwitchChildrenProps) => JSX.Element
   rfq: RfqActions
+  defaultNotional?: string
 }
 
 export interface TileState {
@@ -43,7 +44,7 @@ export interface TileState {
 
 class Tile extends React.PureComponent<TileProps, TileState> {
   state: TileState = {
-    notional: window.DEFAULT_NOTIONAL || getDefaultNotionalValue(this.props.currencyPair),
+    notional: window.DEFAULT_NOTIONAL || this.props.defaultNotional || getDefaultNotionalValue(this.props.currencyPair),
     inputValidationMessage: null,
     inputDisabled: false,
     tradingDisabled: false,
@@ -105,7 +106,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   updateNotional = (notionalUpdate: NotionalUpdate) => {
     const { setTradingMode, spotTileData, currencyPair } = this.props
     this.setState(prevState =>
-      getDerivedStateFromUserInput({
+      getDerivedStateFromUserInput({  
         prevState,
         notionalUpdate,
         spotTileData,
