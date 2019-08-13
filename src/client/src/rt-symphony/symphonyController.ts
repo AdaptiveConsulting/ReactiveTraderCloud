@@ -13,7 +13,7 @@ export const initiateSymphony = async (SYMPHONY: SymphonyClient, env?: string) =
 
   const ENTITY_CONTROLLER = 'adaptive:controller'
   const entityController = SYMPHONY.services.register(ENTITY_CONTROLLER);
-
+  const VERSION = 0.2
 
   const helloResult = await SYMPHONY.remote.hello()
   console.info('Symphony has been initiated', helloResult)
@@ -39,7 +39,7 @@ export const initiateSymphony = async (SYMPHONY: SymphonyClient, env?: string) =
 
   entityController.implement({
     render: (type, data) => {
-      if (type === "com.adaptive.fx" && data.version > 0.1) {
+      if (type === "com.adaptive.fx" && data.version >= VERSION) {
         return {
           template: createTemplate(data.symbol),
           data,
