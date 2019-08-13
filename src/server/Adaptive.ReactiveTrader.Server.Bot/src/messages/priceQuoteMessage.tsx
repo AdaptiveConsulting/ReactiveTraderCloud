@@ -77,29 +77,33 @@ const imgStyle: React.CSSProperties = {
   paddingLeft: '2px',
 }
 
-const MovementIndicator:FC<{price:Price}> = ({price}) => {
+const MovementIndicator: FC<{ price: Price }> = ({ price }) => {
   const spread = getSpread(price.ask, price.bid, 4, 5)
 
-  return <div style={midStyle}>
-    {price.mid > 0 && <img style={imgStyle} src={upArrow} />}
-    <p>{Math.abs(spread.value)}</p>
-    {price.mid < 0 && <img style={imgStyle} src={downArrow} />}
-  </div>
+  return (
+    <div style={midStyle}>
+      {price.mid > 0 && <img style={imgStyle} src={upArrow} />}
+      <p>{Math.abs(spread.value)}</p>
+      {price.mid < 0 && <img style={imgStyle} src={downArrow} />}
+    </div>
+  )
 }
 
 const PriceMessage: FC<{ price: Price }> = ({ price }) => {
   return (
-    <>
-    <h4><cash tag={price.symbol}/> as of: {moment().format('DD MMM LTS')}</h4>
-    <div style={spotTileMessageStyle}>
-      <CCYPairLabel pair={price.symbol} />
-      <div style={{ backgroundColor: BG_COLOR, marginTop: 10 }}>
-        <CCYTile price={price.bid} side="Bid" />
-        <MovementIndicator price={price}/>
-        <CCYTile price={price.ask} side="Ask" />
+    <div className="entity" data-entity-id="entityIdentifier">
+      <h4>
+        <cash tag={price.symbol} /> as of: {moment().format('DD MMM LTS')}
+      </h4>
+      <div style={spotTileMessageStyle}>
+        <CCYPairLabel pair={price.symbol} />
+        <div style={{ backgroundColor: BG_COLOR, marginTop: 10 }}>
+          <CCYTile price={price.bid} side="Bid" />
+          <MovementIndicator price={price} />
+          <CCYTile price={price.ask} side="Ask" />
+        </div>
       </div>
     </div>
-    </>
   )
 }
 
