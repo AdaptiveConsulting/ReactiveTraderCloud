@@ -38,7 +38,6 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
       if (externalWindow) {
         window.removeEventListener('beforeunload', release)
         returnNotional(externalWindow.DEFAULT_NOTIONAL)
-        console.log(externalWindow.DEFAULT_NOTIONAL)
       }
       if (typeof onUnload === 'function') {
         onUnload.call(null)

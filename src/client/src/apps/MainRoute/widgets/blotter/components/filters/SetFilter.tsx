@@ -167,7 +167,6 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     for (const key in options) {
       if (options[key] === true) {
         newSelectedValueSet.push(key)
-        console.log('Works')
       }
     }
     const newFilterText = newSelectedValueSet.join(' ')

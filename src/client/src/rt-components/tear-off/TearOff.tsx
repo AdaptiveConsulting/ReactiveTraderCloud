@@ -59,11 +59,8 @@ export interface TearOffProps {
 }
 
 const TearOff: React.FC<TearOffProps> = props => {
-<<<<<<< HEAD
   const { allowTearOff } = usePlatform()
-=======
   const [defaultNotional, setDefaultNotional] = useState('')
->>>>>>> Persist notional on pop-up
   const dispatch = useDispatch()
   const { render, externalWindowProps, tornOff, dragTearOff } = props
   const windowName = externalWindowProps.config.name
