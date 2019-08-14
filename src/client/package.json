@@ -39,12 +39,10 @@
     "storybook": "start-storybook -p 6006 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o storybook/build",
     "sleep": "sleep 5",
-    "lint:fix": "eslint --fix ./src",
-    "postinstall": "node ./allowEslintrc.js"
+    "lint:fix": "eslint --fix ./src"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
       "./.eslintrc.json"
     ]
   },
@@ -152,7 +150,7 @@
     "npm-run-all": "^4.1.2",
     "numeral": "^2.0.6",
     "prettier": "^1.18.2",
-    "react-scripts": "^3.1.0",
+    "react-scripts": "^3.1.1",
     "react-test-renderer": "^16.8.6",
     "redux-devtools-extension": "^2.13.2",
     "source-map-explorer": "^2.0.1",
