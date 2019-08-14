@@ -1,5 +1,3 @@
-## NB! This manual is for running backend without docker, if you don't plan to debug back-end it may be easier to follow docker route: [Understand rtc build and deployments guide](./deployment/understand-rtc-build-and-deployments.md)
-
 Reactive Trader Cloud - Server
 ===============
 
