@@ -39,11 +39,11 @@ deployment:
 ```
 
 ### Ignored branches
-This let use ignore some branches.  
+This allows us to ignore some branches.  
 For now only documentation is skipped
 
 ### Build dependencies
-We only have a dependency to docker at the moment
+We only have a dependency on docker at the moment
 
 ### Cache between builds
 There is 2 states that circleci use to build RTC:
