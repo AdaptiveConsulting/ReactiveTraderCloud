@@ -1,5 +1,6 @@
 import { timeFormat, utcFormat } from 'd3-time-format'
 
+/* eslint-disable-next-line */
 const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/
 
 /**

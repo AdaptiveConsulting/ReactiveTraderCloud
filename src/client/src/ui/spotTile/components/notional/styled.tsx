@@ -72,9 +72,7 @@ grid-template-rows: 23px 0;
 `};
 `
 
-export const Input = styled.input<{
-  validationMessage: ValidationMessage
-}>`
+export const Input = styled.input<{ validationMessage: ValidationMessage }>`
   grid-area: Input;
   background: none;
   text-align: center;

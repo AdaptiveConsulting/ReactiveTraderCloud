@@ -1,9 +1,9 @@
 import React from 'react'
-
 import { Flex, Modal } from 'rt-components'
 import { Button } from 'rt-styleguide'
 import { styled } from 'rt-theme'
 import { APPLICATION_DISCONNECT_MINS } from '../../../routes/MainRoute'
+import connect, { Props } from './connect'
 
 const Message = styled.div`
   display: flex;
@@ -13,12 +13,7 @@ const Message = styled.div`
   line-height: 1.25rem;
 `
 
-interface Props {
-  shouldShow: boolean
-  reconnect: () => void
-}
-
-const ReconnectModal: React.FC<Props> = ({ reconnect, shouldShow }) => (
+export const ReconnectModal: React.FC<Props> = ({ reconnect, shouldShow }) => (
   <Modal shouldShow={shouldShow} title="Session expired">
     <Flex direction="column" justifyContent="center" alignItems="center">
       <Message>
@@ -31,4 +26,4 @@ const ReconnectModal: React.FC<Props> = ({ reconnect, shouldShow }) => (
   </Modal>
 )
 
-export default ReconnectModal
+export default connect(ReconnectModal)

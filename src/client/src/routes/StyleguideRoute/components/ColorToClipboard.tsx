@@ -3,9 +3,9 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 import { styled } from 'rt-theme'
+import CopyToClipboard from 'react-copy-to-clipboard'
 
 library.add(faCopy)
-import CopyToClipboard from 'react-copy-to-clipboard'
 
 interface ColorToClipboardProps {
   color: string

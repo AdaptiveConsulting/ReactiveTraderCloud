@@ -14,6 +14,15 @@ interface BlotterContainerOwnProps {
   tearable?: boolean
 }
 
+const mapStateToProps = (state: GlobalState) => ({
+  rows: selectBlotterRows(state),
+  status: selectBlotterStatus(state),
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onMount: () => dispatch(BlotterActions.subscribeToBlotterAction()),
+})
+
 type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
 type BlotterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 type BlotterContainerProps = BlotterContainerStateProps &
@@ -39,15 +48,6 @@ const BlotterContainer: React.FC<BlotterContainerProps> = ({
     message="Blotter Disconnected"
   />
 )
-
-const mapStateToProps = (state: GlobalState) => ({
-  rows: selectBlotterRows(state),
-  status: selectBlotterStatus(state),
-})
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onMount: () => dispatch(BlotterActions.subscribeToBlotterAction()),
-})
 
 export default connect(
   mapStateToProps,

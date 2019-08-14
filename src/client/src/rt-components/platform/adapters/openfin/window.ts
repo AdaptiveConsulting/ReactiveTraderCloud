@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { WindowConfig } from '../types'
 import { last as _last, get as _get } from 'lodash'
 

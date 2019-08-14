@@ -6,6 +6,15 @@ import {
   IServiceStatusCollection,
 } from './ServiceInstanceCollection'
 import { RawServiceStatus } from './serviceInstanceStatus'
+import {
+  ConnectionEvent,
+  createConnection$,
+  ConnectionOpenEvent,
+  ConnectionClosedEvent,
+} from './connectionStream'
+import { ConnectionType } from './connectionType'
+import { AutobahnConnection } from './AutoBahnConnection'
+
 export type RawServiceStatus = RawServiceStatus
 export { ServiceInstanceCollection, ServiceCollectionMap }
 export type ServiceConnectionInfo = ServiceConnectionInfo
@@ -14,21 +23,13 @@ export type ConnectionState = ConnectionState
 export type IServiceStatusCollection = IServiceStatusCollection
 export { retryWithBackOff, retryConstantly } from './retryPolicy'
 export { default as Environment } from './environment'
-import { ConnectionType } from './connectionType'
 export type ConnectionType = ConnectionType
 export { ServiceStub } from './ServiceStub'
 export { default as ServiceClient } from './ServiceStubWithLoadBalancer'
 export { ConnectionEventType } from './connectionStream'
-import { AutobahnConnection } from './AutoBahnConnection'
 export type AutobahnConnection = AutobahnConnection
 export { default as AutobahnConnectionProxy } from './AutobahnConnectionProxy'
 
-import {
-  ConnectionEvent,
-  createConnection$,
-  ConnectionOpenEvent,
-  ConnectionClosedEvent,
-} from './connectionStream'
 export { createConnection$ }
 export type ConnectionEvent = ConnectionEvent
 export type ConnectionOpenEvent = ConnectionOpenEvent

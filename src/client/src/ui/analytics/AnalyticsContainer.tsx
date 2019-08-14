@@ -18,6 +18,17 @@ interface AnalyticsContainerOwnProps {
   tearable?: boolean
 }
 
+const mapStateToProps = (state: GlobalState) => ({
+  analyticsLineChartModel: selectAnalyticsLineChartModel(state),
+  positionsChartModel: selectPositionsChartModel(state),
+  status: selectAnalyticsStatus(state),
+  currencyPairs: selectCurrencyPairs(state),
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onMount: () => dispatch(AnalyticsActions.subcribeToAnalytics()),
+})
+
 type AnalyticsContainerStateProps = ReturnType<typeof mapStateToProps>
 type AnalyticsContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 type AnalyticsContainerProps = AnalyticsContainerStateProps &
@@ -44,17 +55,6 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
     message="Analytics Disconnected"
   />
 )
-
-const mapStateToProps = (state: GlobalState) => ({
-  analyticsLineChartModel: selectAnalyticsLineChartModel(state),
-  positionsChartModel: selectPositionsChartModel(state),
-  status: selectAnalyticsStatus(state),
-  currencyPairs: selectCurrencyPairs(state),
-})
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onMount: () => dispatch(AnalyticsActions.subcribeToAnalytics()),
-})
 
 export default connect(
   mapStateToProps,

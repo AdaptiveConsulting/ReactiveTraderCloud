@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-globals */
+
 import { WindowConfig } from '../types'
 
 type BrowserWindowProps = WindowConfig

@@ -35,7 +35,7 @@ const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
     }),
     filter(Boolean),
     map(trade => {
-      return highlightTradeAction({ trades: [switchHighlight(trade)] })
+      return highlightTradeAction({ trades: [switchHighlight(trade as Trade)] })
     }),
   )
 }

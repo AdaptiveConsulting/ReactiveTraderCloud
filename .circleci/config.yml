@@ -76,7 +76,7 @@ jobs:
           command: 'cd ./src/client && docker build -t ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} -f ./Dockerfile.dev .'
       - run:
           name: Run client tests
-          command: 'docker run ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
+          command: 'docker run -e CI=true ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
       - run:
           name: Push images to dockerhub
           command:

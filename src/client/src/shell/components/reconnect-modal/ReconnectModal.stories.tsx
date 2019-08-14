@@ -7,7 +7,7 @@ import { storiesOf } from '@storybook/react'
 
 import { Story } from 'rt-storybook'
 
-import ReconnectModal from './ReconnectModal'
+import { ReconnectModal } from './'
 
 const stories = storiesOf('ReconnectModal', module).addDecorator(withKnobs)
 

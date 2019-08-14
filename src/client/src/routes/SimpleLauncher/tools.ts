@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { ApplicationConfig } from './applicationConfigurations'
 import { excelAdapter } from 'rt-components'
 

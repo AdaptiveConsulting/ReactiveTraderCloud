@@ -1,4 +1,4 @@
-import { clamp, chunk } from 'lodash'
+import _, { clamp, chunk } from 'lodash'
 import React, { Component } from 'react'
 
 export interface Props {

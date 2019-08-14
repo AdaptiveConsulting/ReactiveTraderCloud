@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-restricted-globals */
+
 import { Store } from 'redux'
 import { BasePlatformAdapter } from '../platformAdapter'
 import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../types'
@@ -162,15 +165,11 @@ export default class OpenFin extends BasePlatformAdapter {
 
   getNotificationTitle({ tradeNotification }: NotificationMessage) {
     const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
-    return `Trade ${status}: ${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${
-      tradeNotification.notional
-    }`
+    return `Trade ${status}: ${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${tradeNotification.notional}`
   }
 
   getNotificationBody({ tradeNotification }: NotificationMessage) {
-    return `vs. ${tradeNotification.termsCurrency} - Rate ${
-      tradeNotification.spotRate
-    } - Trade ID ${tradeNotification.tradeId}`
+    return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
   }
 }
 
