@@ -65,7 +65,7 @@ const TileBooking: React.FC<Props> = ({
           <BookingPill
             color={color}
             onClick={e => {
-              if (!disabled) {
+              if (!disabled && onBookingPillClick != null) {
                 onBookingPillClick()
               }
             }}
