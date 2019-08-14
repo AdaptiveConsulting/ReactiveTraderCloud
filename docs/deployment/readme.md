@@ -1,5 +1,3 @@
-Please start by reading the [Understand rtc build and deployments guide](./understand-rtc-build-and-deployments.md)
-
 ## HOW TO
 - Manage Environments
     - Build and/or run RTC locally
