@@ -1,16 +1,10 @@
 # Logs
 
 - [Logs](#logs)
-    - [Standard approach - Installing everything on your machine](#standard-approach---installing-everything-on-your-machine)
-    - [Environment running in kubernetes on gcloud](#environment-running-in-kubernetes-on-gcloud)
-    - [Environment running with docker](#environment-running-with-docker)
+    - [Remote Environment running in on gcloud](#environment-running-in-on-gcloud)
+    - [Local Environment running with docker](#environment-running-with-docker)
 
-Reactive Trader Cloud logs are setup differently for each deployment kind.
-
-## Standard approach - Installing everything on your machine
-TODO
-
-## Environment running in kubernetes on gcloud
+## Remote Environment running on gcloud
 - get your [environment name][environment-name]
 - go to the [google cloud console][google-cloud-console]
 - on the upper left, select **adaptive-trader**
@@ -23,7 +17,7 @@ TODO
     - --> **cluster**
     - --> **<ENVIRONMENT_NAME>**
 
-## Environment running with docker
+## Local Environment running with docker
 All logs will be shown on the console following the `docker-compose up` command
 
 [google-cloud-console]: https://console.cloud.google.com/home/dashboard?project=adaptive-trader
