@@ -35,7 +35,7 @@ export class ServiceStub {
       switchMap(
         ({ session }) =>
           new Observable<T>(obs => {
-            logger.info(LOG_NAME, `Subscribing to topic [${topic}].`)
+            logger.info(`${LOG_NAME} Subscribing to topic [${topic}].`)
 
             let subscription: ISubscription
 
@@ -54,13 +54,13 @@ export class ServiceStub {
                 },
                 (error: Error) => {
                   // subscription failed, error is an instance of autobahn.Error
-                  logger.error(LOG_NAME, `Error on topic ${topic}`, error)
+                  logger.error(`${LOG_NAME} Error on topic ${topic}`, error)
                   obs.error(error)
                 },
               )
 
             return () => {
-              logger.info(LOG_NAME, `Tearing down topic ${topic}`)
+              logger.info(`${LOG_NAME} Tearing down topic ${topic}`)
 
               if (!subscription) {
                 return
@@ -73,19 +73,18 @@ export class ServiceStub {
                   session
                     .unsubscribe(subscription)
                     .then(
-                      () => logger.info(LOG_NAME, `Successfully unsubscribing from topic ${topic}`),
-                      err => logger.error(LOG_NAME, `Error unsubscribing from topic ${topic}`, err),
+                      () => logger.info(`${LOG_NAME} Successfully unsubscribing from topic ${topic}`),
+                      err => logger.error(`${LOG_NAME} Error unsubscribing from topic ${topic}`, err),
                     )
                 }
               } catch (err) {
-                logger.error(LOG_NAME, `Error thrown unsubscribing from topic ${topic}`, err)
+                logger.error(`${LOG_NAME} Error thrown unsubscribing from topic ${topic}`, err)
               }
             }
           }),
       ),
     )
   }
-
 
   requestResponse<TResult, TPayload>(remoteProcedure: string, payload: TPayload, responseTopic: string = '') {
     return this.connection$.pipe(
