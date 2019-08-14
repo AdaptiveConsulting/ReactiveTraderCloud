@@ -31,11 +31,11 @@ The installation procedure is different on each OS. Plase follow the installatio
 ### Windows specifics
 - follow the [bash setup instructions][bash-setup]
 
-### standard
+### All Platforms
 - just confirm that you run Linux containers by:
     - right clicking on docker icon
     - confirm that **Switch to Windows containers** is present, showing you are running **Linux containers**
-- when you run RTC script, answer yes to sharing the RTC folder
+- when you start RTC, answer yes to sharing the RTC folder
 
 [docker]: https://www.docker.com/
 [bash-setup]: ./bash-setup.md
