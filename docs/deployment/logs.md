@@ -24,7 +24,7 @@ TODO
     - --> **<ENVIRONMENT_NAME>**
 
 ## Environment running with docker
-All logs will be shown on the console following the **./deploy/docker/runAll** command
+All logs will be shown on the console following the `docker-compose up` command
 
 [google-cloud-console]: https://console.cloud.google.com/home/dashboard?project=adaptive-trader
 [environment-name]: ./environment-name.md
