@@ -1,10 +1,13 @@
 import { SymphonyClient } from "./symphony";
-
+import { waitForObject } from "rt-util";
 
 const RT_MODULE_ID = 'reactiveTrader'
-export const initiateSymphony = async (SYMPHONY: SymphonyClient, env?: string) => {
 
-  const enviroment = !env ? 'https://localhost:3000' : `https://web-${env}.adaptivecluster.com`
+export const initiateSymphony = async (env?: string) => {
+
+  const SYMPHONY = await waitForObject<SymphonyClient>('SYMPHONY')
+
+  const host = !env ? 'https://localhost:3000' : `https://web-${env}.adaptivecluster.com`
 
 
   const MENU_CONTROLLER = 'menu:controller'
@@ -16,7 +19,7 @@ export const initiateSymphony = async (SYMPHONY: SymphonyClient, env?: string) =
   const VERSION = 0.2
 
   const helloResult = await SYMPHONY.remote.hello()
-  console.info('Symphony has been initiated', helloResult)
+  console.info('Adaptive: Symphony has been initiated', helloResult)
 
   const registerResult = await SYMPHONY.application
     .register(
@@ -25,10 +28,11 @@ export const initiateSymphony = async (SYMPHONY: SymphonyClient, env?: string) =
       [ENTITY_CONTROLLER, MENU_CONTROLLER]
     )
 
-  console.info('Symphony has been registered', registerResult)
+  console.info('Adaptive: Symphony has been registered', registerResult)
   const modulesService = SYMPHONY.services.subscribe('modules');
-
+  const navService = SYMPHONY.services.subscribe('applications-nav');
   const entityService = SYMPHONY.services.subscribe("entity");
+
   entityService.registerRenderer(
     "com.adaptive.fx",
     {},
@@ -48,13 +52,12 @@ export const initiateSymphony = async (SYMPHONY: SymphonyClient, env?: string) =
     },
   })
 
-  const navService = SYMPHONY.services.subscribe('applications-nav');
-
   const PRIMARY_NAV_ID = 'rt-nav'
-  navService.add(PRIMARY_NAV_ID, { title: 'Reactive Trader', icon: `${enviroment}/symphony/logo.png` }, ENTITY_CONTROLLER);
+  navService.add(PRIMARY_NAV_ID, { title: 'Reactive Trader', icon: `${host}/symphony/logo.png` }, MENU_CONTROLLER);
 
   menuController.implement({
     select(id) {
+      console.info('Adaptive: Selected' + id)
       if (id === PRIMARY_NAV_ID) {
         navService.focus(PRIMARY_NAV_ID)
       }
@@ -62,8 +65,8 @@ export const initiateSymphony = async (SYMPHONY: SymphonyClient, env?: string) =
       modulesService.show(
         RT_MODULE_ID,
         'Reactive Trader',
-        ENTITY_CONTROLLER,
-        `${enviroment}/`,
+        MENU_CONTROLLER,
+        `${host}/?symphony=true&waitFor=SYMPHONY`,
         {
           // You must specify canFloat in the module options so that the module can be pinned
           canFloat: true

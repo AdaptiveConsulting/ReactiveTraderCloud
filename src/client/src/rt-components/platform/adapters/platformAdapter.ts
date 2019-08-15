@@ -1,8 +1,9 @@
-import { WindowConfig, PlatformFeatures, PlatformName, PlatformType } from './types'
+import { WindowConfig, PlatformFeatures, PlatformType } from './types'
 import { Context } from 'openfin-fdc3'
 interface PlatformAdapterInterface {
-  readonly name: PlatformName
   readonly type: PlatformType
+
+  readonly allowTearOff: boolean
 
   window: {
     open: (config: WindowConfig, onClose?: () => void) => Promise<Window | null>
@@ -22,9 +23,9 @@ interface PlatformAdapterInterface {
 }
 
 export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
-  abstract readonly name: PlatformName
   abstract readonly type: PlatformType
 
+  abstract readonly allowTearOff:boolean
   /**
    * Determines whether a platform has a given feature and performs a type guard for it
    * @param feature name of the feature
@@ -36,8 +37,9 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
     return !!(this as any)[feature]
   }
 
+
   abstract window: {
-    open: (config: WindowConfig, onClose?: () => void) => Promise<Window>
+    open: (config: WindowConfig, onClose?: () => void) => Promise<Window | null>
     close?: () => void
     maximize?: () => void
     minimize?: () => void

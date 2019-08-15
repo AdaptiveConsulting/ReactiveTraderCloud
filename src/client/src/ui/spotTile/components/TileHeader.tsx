@@ -23,7 +23,7 @@ const TileHeader: React.SFC<Props> = ({ baseTerm, date, displayCurrencyChart }) 
   return (
     <Header>
       <TileSymbol>{baseTerm}</TileSymbol>
-      {platform.type !== 'browser' && (
+      {platform.hasFeature('chartIQ') && (
         <CurrencyChartButton onClick={displayCurrencyChart}>
           <i className="fas fa-chart-bar" />
         </CurrencyChartButton>

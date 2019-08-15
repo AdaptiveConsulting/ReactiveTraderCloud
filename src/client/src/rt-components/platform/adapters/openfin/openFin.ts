@@ -34,6 +34,7 @@ enum WindowState {
 export default class OpenFin extends BasePlatformAdapter {
   readonly name = 'openfin'
   readonly type = 'desktop'
+  readonly allowTearOff = true
 
   openFinNotifications = require('openfin-notifications')
   fdc3Context = require('openfin-fdc3')
