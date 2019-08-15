@@ -9,7 +9,7 @@ interface Props {
   displayCurrencyChart?: () => void
 }
 
-export const CurrencyChartButton = styled('button')`
+export const ActionButton = styled('button')`
   opacity: 0;
   transition: opacity 0.2s;
   margin-left: 8px;
@@ -24,9 +24,14 @@ const TileHeader: React.SFC<Props> = ({ baseTerm, date, displayCurrencyChart }) 
     <Header>
       <TileSymbol>{baseTerm}</TileSymbol>
       {platform.hasFeature('chartIQ') && (
-        <CurrencyChartButton onClick={displayCurrencyChart}>
+        <ActionButton onClick={displayCurrencyChart}>
           <i className="fas fa-chart-bar" />
-        </CurrencyChartButton>
+        </ActionButton>
+      )}
+      {platform.hasFeature('share') && (
+        <ActionButton onClick={() => platform.share('GBPUSD')}>
+          <i className="fas fa-share" />
+        </ActionButton>
       )}
       <DeliveryDate>{date}</DeliveryDate>
     </Header>

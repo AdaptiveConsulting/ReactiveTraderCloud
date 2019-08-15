@@ -4,6 +4,8 @@ interface PlatformAdapterInterface {
   readonly type: PlatformType
 
   readonly allowTearOff: boolean
+  
+  readonly name: string
 
   window: {
     open: (config: WindowConfig, onClose?: () => void) => Promise<Window | null>
@@ -26,6 +28,8 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   abstract readonly type: PlatformType
 
   abstract readonly allowTearOff:boolean
+
+  abstract readonly name: string
   /**
    * Determines whether a platform has a given feature and performs a type guard for it
    * @param feature name of the feature

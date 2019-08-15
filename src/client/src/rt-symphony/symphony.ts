@@ -28,13 +28,26 @@ interface EntityService {
     update: (entityInstanceId: string, template: string, data: any) => void
 }
 
+interface SharePayload {
+    plaintext:string,
+    presentationML:string
+    entityJSON: object
+    entity: object
+    format: string
+    inputAutofill:string
+}
+ 
+interface ShareService {
+    share:(name:string, payload:SharePayload) => void
+}
+
 interface Service {
     implement: (implementations: UIServiceImpl & EntityServiceImpl) => void
 }
 
 interface UIServiceImpl {
-    menuSelect?: (itemId: String) => void
-    select?: (itemId: String) => void
+    menuSelect?: (itemId: string) => void
+    select?: (itemId: string) => void
 }
 interface EntityServiceImpl {
     render?: (type: string, data: any) => { template: string, data: any, entityInstanceId?: string }
@@ -48,6 +61,7 @@ type TypeName<T extends SymphonyServices> =
     T extends "applications-nav" ? NavService :
     T extends "modules" ? ModuleService :
     T extends "entity" ? EntityService :
+    T extends "share" ? ShareService :
     never;
 
 interface Services {
@@ -61,7 +75,8 @@ interface Remote {
 }
 
 interface Application {
-    register: (name: string, symphonyModules: SymphonyServices[], appModules: string[]) => Promise<{ userReferenceId: string }>
+    register: (name: string, symphonyModules: SymphonyServices[], appModules?: string[]) => Promise<{ userReferenceId: string }>
+    connect: (name: string, symphonyModules: SymphonyServices[], appModules?: string[]) => Promise<{ userReferenceId: string }>
 }
 
 interface Theme {
@@ -74,4 +89,5 @@ export interface SymphonyClient {
     services: Services
     remote: Remote
     application: Application
+    
 }

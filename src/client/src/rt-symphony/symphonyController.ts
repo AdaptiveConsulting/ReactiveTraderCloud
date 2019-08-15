@@ -1,20 +1,16 @@
 import { SymphonyClient } from "./symphony";
+import { SYMPHONY_APP_ID, createTileMessage, FX_ENTITY_TYPE } from "./constants";
 import { waitForObject } from "rt-util";
-
-const RT_MODULE_ID = 'reactiveTrader'
-
 export const initiateSymphony = async (env?: string) => {
 
   const SYMPHONY = await waitForObject<SymphonyClient>('SYMPHONY')
 
   const host = !env ? 'https://localhost:3000' : `https://web-${env}.adaptivecluster.com`
 
-
   const MENU_CONTROLLER = 'menu:controller'
   const menuController = SYMPHONY.services.register(MENU_CONTROLLER);
 
-
-  const ENTITY_CONTROLLER = 'adaptive:controller'
+  const ENTITY_CONTROLLER = 'entity:controller'
   const entityController = SYMPHONY.services.register(ENTITY_CONTROLLER);
   const VERSION = 0.2
 
@@ -23,7 +19,7 @@ export const initiateSymphony = async (env?: string) => {
 
   const registerResult = await SYMPHONY.application
     .register(
-      RT_MODULE_ID,
+      SYMPHONY_APP_ID,
       ['modules', 'applications-nav', 'entity'],
       [ENTITY_CONTROLLER, MENU_CONTROLLER]
     )
@@ -34,16 +30,16 @@ export const initiateSymphony = async (env?: string) => {
   const entityService = SYMPHONY.services.subscribe("entity");
 
   entityService.registerRenderer(
-    "com.adaptive.fx",
+    FX_ENTITY_TYPE,
     {},
     ENTITY_CONTROLLER
   );
 
-  const createTemplate = (symbol: string) => `<entity><iframe style="height: 190px;" src="https://web-demo.adaptivecluster.com/spot/${symbol}?tileView=Normal"/></entity>`
+  const createTemplate = (symbol: string) => createTileMessage(host, symbol)
 
   entityController.implement({
     render: (type, data) => {
-      if (type === "com.adaptive.fx" && data.version >= VERSION) {
+      if (type === FX_ENTITY_TYPE && data.version >= VERSION) {
         return {
           template: createTemplate(data.symbol),
           data,
@@ -52,28 +48,42 @@ export const initiateSymphony = async (env?: string) => {
     },
   })
 
+  const createNavItem = (id: string, title:string)=> navService.add(id, { title, icon: `${host}/symphony/logo.png` }, MENU_CONTROLLER);
+
   const PRIMARY_NAV_ID = 'rt-nav'
-  navService.add(PRIMARY_NAV_ID, { title: 'Reactive Trader', icon: `${host}/symphony/logo.png` }, MENU_CONTROLLER);
+  createNavItem(PRIMARY_NAV_ID, 'Reactive Trader')
+
+  const BLOTTER_ID = 'rt-blotter-nav'
+  createNavItem(BLOTTER_ID, 'Blotter')
+
+  const ANALYTICS_NAV_ID = 'rt-analytics-nav'
+  createNavItem(ANALYTICS_NAV_ID, 'Analytics')
+
+  const TILES_NAV_ID = 'rt-tiles-nav'
+  createNavItem(TILES_NAV_ID, 'Prices')
+
+  const symphonyMap: { [key: string]: string } = {
+    'rt-blotter-nav': `${host}/blotter`,
+    'rt-analytics-nav': `${host}/analytics`,
+    'rt-tiles-nav': `${host}/tiles`,
+    'rt-nav': `${host}`
+  }
 
   menuController.implement({
     select(id) {
-      console.info('Adaptive: Selected' + id)
-      if (id === PRIMARY_NAV_ID) {
-        navService.focus(PRIMARY_NAV_ID)
-      }
+      navService.focus(id)
 
       modulesService.show(
-        RT_MODULE_ID,
+        SYMPHONY_APP_ID + id,
         'Reactive Trader',
         MENU_CONTROLLER,
-        `${host}/?symphony=true&waitFor=SYMPHONY`,
+        `${symphonyMap[id]}/?symphony=true&waitFor=SYMPHONY`,
         {
-          // You must specify canFloat in the module options so that the module can be pinned
           canFloat: true
         }
       )
 
-      modulesService.focus(RT_MODULE_ID)
+      modulesService.focus(SYMPHONY_APP_ID)
     }
   })
 

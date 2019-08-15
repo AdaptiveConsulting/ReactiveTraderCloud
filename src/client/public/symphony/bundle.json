@@ -2,7 +2,7 @@
   "applications": [
     {
       "type": "sandbox",
-      "id": "reactiveTrader",
+      "id": "reactiveTrader-dev",
       "name": "Reactive Trader",
       "blurb": "Symphony integration with Reactive Trader",
       "publisher": "Adaptive Financial Consulting",

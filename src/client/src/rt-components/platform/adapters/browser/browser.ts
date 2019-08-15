@@ -9,14 +9,14 @@ interface Navigator {
 }
 
 const isRunningInIE = () => {
-    const browser = new userAgentParser().getBrowser().name
-    return  browser.indexOf('IE') !== -1
+  const browser = new userAgentParser().getBrowser().name
+  return browser.indexOf('IE') !== -1
 }
 
-const isPWA = () => 
-    window.matchMedia('(display-mode: standalone)').matches ||
-    (window.navigator as Navigator).standalone
-  
+const isPWA = () =>
+  window.matchMedia('(display-mode: standalone)').matches ||
+  (window.navigator as Navigator).standalone
+
 
 
 export default class Browser extends BasePlatformAdapter {
@@ -31,7 +31,7 @@ export default class Browser extends BasePlatformAdapter {
   }
 
   fdc3 = {
-    broadcast: () => {},
+    broadcast: () => { },
   }
 
   notification = {
