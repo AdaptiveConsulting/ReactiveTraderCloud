@@ -38,7 +38,6 @@ export default class SpotTile extends PureComponent<Props> {
 
     const spotDate = price.valueDate && spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
-    const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     const handleRfqRejected = () => rfq.reject({ currencyPair })
     const { isRfqStateReceived, isRfqStateExpired, isRfqStateCanRequest } = getConstsFromRfqState(
       rfqState,
@@ -53,7 +52,7 @@ export default class SpotTile extends PureComponent<Props> {
           <ReserveSpaceGrouping>
             <TileHeaderWrapper>
               <TileHeader
-                baseTerm={baseTerm}
+                ccyPair={currencyPair}
                 date={date}
                 displayCurrencyChart={displayCurrencyChart}
               />

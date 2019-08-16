@@ -2,11 +2,28 @@ import { BasePlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
 import { sendNotification, NotifyPermission } from './utils/sendNotification'
+import { UAParser } from 'ua-parser-js'
+
+interface Navigator {
+  standalone?: boolean
+}
+
+const isRunningInIE = () => {
+  const browser = new UAParser().getBrowser().name
+  return browser.indexOf('IE') !== -1
+}
+
+const isPWA = () =>
+  (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+  (window.navigator as Navigator).standalone
+
+
 
 export default class Browser extends BasePlatformAdapter {
   readonly name = 'browser'
   readonly type = 'browser'
 
+  readonly allowTearOff = !isRunningInIE() && !isPWA()
   window = {
     close: () => window.close(),
 
@@ -14,7 +31,7 @@ export default class Browser extends BasePlatformAdapter {
   }
 
   fdc3 = {
-    broadcast: () => {},
+    broadcast: () => { },
   }
 
   notification = {

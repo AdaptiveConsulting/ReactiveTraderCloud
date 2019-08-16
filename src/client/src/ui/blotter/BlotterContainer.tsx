@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Loadable } from 'rt-components'
-import { Environment } from 'rt-system'
+import { Loadable, usePlatform } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
 import { BlotterActions } from './actions'
 import Blotter from './components'
@@ -35,19 +34,18 @@ const BlotterContainer: React.FC<BlotterContainerProps> = ({
   tearable = false,
   tornOff,
   ...props
-}) => (
-  <Loadable
-    onMount={onMount}
-    status={status}
-    render={() => (
-      <Blotter
-        {...props}
-        canPopout={tearable && !Environment.isRunningInIE() && !Environment.isPWA() && !tornOff}
-      />
-    )}
-    message="Blotter Disconnected"
-  />
-)
+}) => {
+  const { allowTearOff } = usePlatform()
+
+  return (
+    <Loadable
+      onMount={onMount}
+      status={status}
+      render={() => <Blotter {...props} canPopout={tearable && allowTearOff && !tornOff} />}
+      message="Blotter Disconnected"
+    />
+  )
+}
 
 export default connect(
   mapStateToProps,

@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Loadable } from 'rt-components'
-import { Environment } from 'rt-system'
+import { Loadable, usePlatform } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
 import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
@@ -65,21 +64,25 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   id,
   tornOff,
   ...props
-}) => (
-  <Loadable
-    onMount={onMount}
-    minHeight={11}
-    status={pricingStatus}
-    render={() => (
-      <TileSwitch
-        key={id}
-        canPopout={tearable && !Environment.isRunningInIE() && !Environment.isPWA() && !tornOff}
-        {...props}
-      />
-    )}
-    message={`${id} Disconnected`}
-  />
-)
+}) => {
+  const { allowTearOff } = usePlatform()
+
+  return (
+    <Loadable
+      onMount={onMount}
+      minHeight={11}
+      status={pricingStatus}
+      render={() => (
+        <TileSwitch
+          key={id}
+          canPopout={tearable && allowTearOff && !tornOff}
+          {...props}
+        />
+      )}
+      message={`${id} Disconnected`}
+    />
+  )
+}
 
 const ConnectedSpotTileContainer = connect(
   makeMapStateToProps,

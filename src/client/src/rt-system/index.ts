@@ -22,7 +22,6 @@ export { ConnectionStatus }
 export type ConnectionState = ConnectionState
 export type IServiceStatusCollection = IServiceStatusCollection
 export { retryWithBackOff, retryConstantly } from './retryPolicy'
-export { default as Environment } from './environment'
 export type ConnectionType = ConnectionType
 export { ServiceStub } from './ServiceStub'
 export { default as ServiceClient } from './ServiceStubWithLoadBalancer'

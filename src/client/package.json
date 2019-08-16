@@ -21,6 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:https": "cross-env HTTPS=true react-scripts start",
     "start:local-backend": "cross-env REACT_APP_BROKER_HOST=localhost REACT_APP_BROKER_PORT=8000 npm run start",
     "start:dev-backend": "cross-env REACT_APP_BROKER_HOST=web-dev.adaptivecluster.com REACT_APP_BROKER_PORT=80 npm run start",
     "start:demo-backend": "cross-env REACT_APP_BROKER_HOST=web-demo.adaptivecluster.com REACT_APP_BROKER_PORT=80 npm run start",
@@ -58,6 +59,7 @@
     ]
   },
   "dependencies": {
+    "uuid": "3.3.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.2",
@@ -134,6 +136,7 @@
     "@types/storybook__react": "4.0.0",
     "@types/styled-components": "^4.1.18",
     "@types/ua-parser-js": "^0.7.33",
+    "@types/uuid": "^3.4.3",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "awesome-typescript-loader": "^5.2.1",

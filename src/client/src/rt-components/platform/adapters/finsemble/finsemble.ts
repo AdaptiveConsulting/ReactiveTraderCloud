@@ -5,6 +5,7 @@ import { fromEventPattern } from 'rxjs'
 export default class Finsemble extends BasePlatformAdapter {
   readonly name = 'finsemble'
   readonly type = 'desktop'
+  readonly allowTearOff = true
 
   chartIQ = {
     open: (id: string, config: AppConfig) => this.app.open(id, config),
@@ -17,7 +18,7 @@ export default class Finsemble extends BasePlatformAdapter {
   }
 
   fdc3 = {
-    broadcast: () => {},
+    broadcast: () => { },
   }
 
   app = {

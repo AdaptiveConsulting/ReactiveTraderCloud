@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Loadable } from 'rt-components'
-import { Environment } from 'rt-system'
+import { Loadable, usePlatform } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
 import { AnalyticsActions } from './actions'
 import Analytics from './components'
@@ -41,20 +40,18 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
   tearable = false,
   tornOff,
   ...props
-}) => (
-  <Loadable
-    minWidth={22}
-    onMount={onMount}
-    status={status}
-    render={() => (
-      <Analytics
-        {...props}
-        canPopout={tearable && !Environment.isRunningInIE() && !Environment.isPWA() && !tornOff}
-      />
-    )}
-    message="Analytics Disconnected"
-  />
-)
+}) => {
+  const { allowTearOff } = usePlatform()
+  return (
+    <Loadable
+      minWidth={22}
+      onMount={onMount}
+      status={status}
+      render={() => <Analytics {...props} canPopout={tearable && allowTearOff && !tornOff} />}
+      message="Analytics Disconnected"
+    />
+  )
+}
 
 export default connect(
   mapStateToProps,

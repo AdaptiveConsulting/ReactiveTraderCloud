@@ -27,7 +27,8 @@ export interface PlatformFeatures {
   excel: ExcelInterop
   chartIQ: ChartIQInterop
   notificationHighlight: NotificationHighlightInterop
-  interop: PubSubInterop
+  interop: PubSubInterop,
+  share:(object:any)=>{}
 }
 
 interface PubSubInterop {
