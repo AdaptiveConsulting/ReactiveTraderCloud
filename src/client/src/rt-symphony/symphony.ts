@@ -14,6 +14,8 @@ interface NavService {
     focus: (navItem: string) => void
 }
 
+
+
 interface ModuleService {
     openLink: (link: string) => void
     addMenuItem: (moduleId: string, title: string, itemId: string) => void

@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { usePlatform } from 'rt-components'
 import { styled } from 'rt-theme'
 import { TileHeader as Header, TileSymbol, DeliveryDate } from './styled'
+import { CurrencyPair } from 'rt-types'
 
 interface Props {
-  baseTerm: string
+  ccyPair: CurrencyPair
   date: string
   displayCurrencyChart?: () => void
 }
@@ -17,9 +18,16 @@ export const ActionButton = styled('button')`
   border-left: 1px solid white;
 `
 
-const TileHeader: React.SFC<Props> = ({ baseTerm, date, displayCurrencyChart }) => {
+const TileHeader: React.SFC<Props> = ({ ccyPair, date, displayCurrencyChart }) => {
   const platform = usePlatform()
 
+  const share = useCallback(() => {
+    if (platform.hasFeature('share')) {
+      platform.share(ccyPair.symbol)
+    }
+  }, [ccyPair.symbol])
+
+  const baseTerm = `${ccyPair.base}/${ccyPair.terms}`
   return (
     <Header>
       <TileSymbol>{baseTerm}</TileSymbol>
@@ -29,7 +37,7 @@ const TileHeader: React.SFC<Props> = ({ baseTerm, date, displayCurrencyChart }) 
         </ActionButton>
       )}
       {platform.hasFeature('share') && (
-        <ActionButton onClick={() => platform.share('GBPUSD')}>
+        <ActionButton onClick={share}>
           <i className="fas fa-share" />
         </ActionButton>
       )}

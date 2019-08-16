@@ -14,8 +14,8 @@ export const initiateSymphony = async (env?: string) => {
   const entityController = SYMPHONY.services.register(ENTITY_CONTROLLER);
   const VERSION = 0.2
 
-  const helloResult = await SYMPHONY.remote.hello()
-  console.info('Adaptive: Symphony has been initiated', helloResult)
+  const initiatationResult = await SYMPHONY.remote.hello()
+  console.info('Adaptive: Symphony has been initiated', initiatationResult)
 
   const registerResult = await SYMPHONY.application
     .register(
@@ -25,6 +25,7 @@ export const initiateSymphony = async (env?: string) => {
     )
 
   console.info('Adaptive: Symphony has been registered', registerResult)
+
   const modulesService = SYMPHONY.services.subscribe('modules');
   const navService = SYMPHONY.services.subscribe('applications-nav');
   const entityService = SYMPHONY.services.subscribe("entity");
@@ -48,7 +49,7 @@ export const initiateSymphony = async (env?: string) => {
     },
   })
 
-  const createNavItem = (id: string, title:string)=> navService.add(id, { title, icon: `${host}/symphony/logo.png` }, MENU_CONTROLLER);
+  const createNavItem = (id: string, title: string) => navService.add(id, { title, icon: `${host}/symphony/logo.png` }, MENU_CONTROLLER);
 
   const PRIMARY_NAV_ID = 'rt-nav'
   createNavItem(PRIMARY_NAV_ID, 'Reactive Trader')
@@ -63,18 +64,21 @@ export const initiateSymphony = async (env?: string) => {
   createNavItem(TILES_NAV_ID, 'Prices')
 
   const symphonyMap: { [key: string]: string } = {
-    'rt-blotter-nav': `${host}/blotter`,
-    'rt-analytics-nav': `${host}/analytics`,
-    'rt-tiles-nav': `${host}/tiles`,
-    'rt-nav': `${host}`
+    [BLOTTER_ID]: `${host}/blotter`,
+    [ANALYTICS_NAV_ID]: `${host}/analytics`,
+    [TILES_NAV_ID]: `${host}/tiles`,
+    [PRIMARY_NAV_ID]: `${host}`
   }
 
   menuController.implement({
     select(id) {
+      console.log('adaptive' + id)
+      console.log(symphonyMap)
+
       navService.focus(id)
 
       modulesService.show(
-        SYMPHONY_APP_ID + id,
+        id,
         'Reactive Trader',
         MENU_CONTROLLER,
         `${symphonyMap[id]}/?symphony=true&waitFor=SYMPHONY`,

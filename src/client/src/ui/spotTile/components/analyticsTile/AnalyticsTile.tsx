@@ -36,14 +36,13 @@ class AnalyticsTile extends React.PureComponent<Props> {
     } = this.props
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
-    const baseTerm = `${currencyPair.base}/${currencyPair.terms}`
     const { isRfqStateExpired, isRfqStateCanRequest } = getConstsFromRfqState(rfqState)
     const showResetButton = isRfqStateCanRequest || isRfqStateExpired
 
     return (
       <AnalyticsWrapperWithPlatform>
         <AnalyticsTileStyle className="spot-tile">
-          <TileHeader baseTerm={baseTerm} date={date} />
+          <TileHeader ccyPair={currencyPair} date={date} />
           <AnalyticsTileContent>
             <GraphNotionalWrapper>
               <LineChartWrapper>
