@@ -2,14 +2,14 @@ import { BasePlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
 import { sendNotification, NotifyPermission } from './utils/sendNotification'
-import userAgentParser from 'ua-parser-js'
+import { UAParser } from 'ua-parser-js'
 
 interface Navigator {
   standalone?: boolean
 }
 
 const isRunningInIE = () => {
-  const browser = new userAgentParser().getBrowser().name
+  const browser = new UAParser().getBrowser().name
   return browser.indexOf('IE') !== -1
 }
 

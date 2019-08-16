@@ -59,6 +59,7 @@
     ]
   },
   "dependencies": {
+    "uuid": "3.3.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.2",
@@ -135,6 +136,7 @@
     "@types/storybook__react": "4.0.0",
     "@types/styled-components": "^4.1.18",
     "@types/ua-parser-js": "^0.7.33",
+    "@types/uuid": "^3.4.3",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "awesome-typescript-loader": "^5.2.1",

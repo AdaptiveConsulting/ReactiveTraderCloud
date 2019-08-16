@@ -1,6 +1,8 @@
 import { SymphonyClient } from "./symphony";
 import { SYMPHONY_APP_ID, createTileMessage, FX_ENTITY_TYPE } from "./constants";
 import { waitForObject } from "rt-util";
+import uuid from 'uuid';
+
 export const initiateSymphony = async (env?: string) => {
 
   const SYMPHONY = await waitForObject<SymphonyClient>('SYMPHONY')
@@ -38,12 +40,24 @@ export const initiateSymphony = async (env?: string) => {
 
   const createTemplate = (symbol: string) => createTileMessage(host, symbol)
 
+  const map: { [key: string]: string } = {}
+
   entityController.implement({
+    pause(id) {
+      entityService.update(id, "<entity><span>paused</span></entity>", { symbol: map[id], version: 0.2, type: FX_ENTITY_TYPE });
+    },
+    resume(id) {
+      entityService.update(id, createTemplate(map[id]), { symbol: map[id], version: 0.2, type: FX_ENTITY_TYPE });
+    },
+
     render: (type, data) => {
       if (type === FX_ENTITY_TYPE && data.version >= VERSION) {
+        const entityInstanceId = uuid.v4()
+        map[entityInstanceId] = data.symbol
         return {
           template: createTemplate(data.symbol),
           data,
+          entityInstanceId
         };
       }
     },
