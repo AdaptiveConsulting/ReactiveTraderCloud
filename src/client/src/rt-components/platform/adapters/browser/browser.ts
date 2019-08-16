@@ -14,7 +14,7 @@ const isRunningInIE = () => {
 }
 
 const isPWA = () =>
-  window.matchMedia('(display-mode: standalone)').matches ||
+  (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
   (window.navigator as Navigator).standalone
 
 
