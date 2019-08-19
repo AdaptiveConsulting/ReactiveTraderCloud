@@ -1,6 +1,6 @@
-# You want to: Deploy and use gcloud cluster
+# Deploy and use gcloud cluster
 
-- [You want to: Deploy and use gcloud cluster](#you-want-to-deploy-and-use-gcloud-cluster)
+- [Deploy and use gcloud cluster](#you-want-to-deploy-and-use-gcloud-cluster)
     - [Deploy a kubernetes cluster on gcloud](#deploy-a-kubernetes-cluster-on-gcloud)
     - [Use an already running gcloud cluster](#use-an-already-running-gcloud-cluster)
     - [Update cluster instance version](#update-cluster-instance-version)

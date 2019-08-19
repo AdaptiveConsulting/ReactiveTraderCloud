@@ -7,7 +7,6 @@
     - [Configuration](#configuration)
         - [Windows specifics](#windows-specifics)
         - [standard](#standard)
-        - [minikube](#minikube)
 
 ## Docker in really short
 In short, docker is like a virtual machine but without the kernel emulation. Every container share the host kernel. For RTC, we use Linux containers that require a Linux kernel.
@@ -32,17 +31,11 @@ The installation procedure is different on each OS. Plase follow the installatio
 ### Windows specifics
 - follow the [bash setup instructions][bash-setup]
 
-### standard
+### All Platforms
 - just confirm that you run Linux containers by:
     - right clicking on docker icon
     - confirm that **Switch to Windows containers** is present, showing you are running **Linux containers**
-- when you run RTC script, answer yes to sharing the RTC folder
-
-### minikube
-Minikube comes with a different Linux virtual machine than the official docker one. That one runs kubernetes inside containers. For RTC to run smoothly, you need to configure your docker client to point to the docker daemon inside the minikube. This will let you build the images directly on the good daemon.
-
-You can do that by running a script generated when you start the minikube. Just follow [the run minikube instructions][run-minikube].
+- when you start RTC, answer yes to sharing the RTC folder
 
 [docker]: https://www.docker.com/
 [bash-setup]: ./bash-setup.md
-[run-minikube]: ./run-minikube.md

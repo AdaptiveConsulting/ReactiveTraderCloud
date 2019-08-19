@@ -15,6 +15,12 @@ The services are distributed and can be recovered from disconnections - this is 
 ### Live demo
 For a live demo, see [web-demo.adaptivecluster.com/](https://web-demo.adaptivecluster.com/)
 
+### Live demo in OpenFin
+For live demo in OpenFin download [Reactive Trader App](src/client/install)
+
+### Reactive Trader Excel
+You can use Reactive Trader Excel in integration with Reactive Trader, you can find the instructions for setting it up [here](docs/setup/reactive-trader-excel.md)
+
 ## Architecture
 
 The backend is made up of distributed services written in .NET using the cross-platform capabilities provided by [.NET Core](https://dotnet.github.io).
@@ -34,9 +40,7 @@ The front end is written with Typescript, React, Redux and Styled components. Fo
 The back-end services are cross-platform. For more details on the back-end infrastructure, see [here](docs/server.md).
 
 ## Getting started
-You can go to the [You want to](docs/deployment/readme.md) page to follow build and deployment with docker
-
-Or for more traditional builds for your platform, see [here](docs/setup/getting-started.md).
+You can go to the [How to](docs/deployment/readme.md) page to follow build and deployment
 
 ## Talks and podcasts
 
