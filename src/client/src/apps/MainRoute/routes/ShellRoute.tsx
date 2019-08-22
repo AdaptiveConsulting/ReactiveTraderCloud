@@ -2,11 +2,11 @@ import React from 'react'
 
 import { Resizer, TearOff, externalWindowDefault, ExternalWindow } from 'rt-components'
 
-import { AnalyticsContainer } from '../../ui/analytics'
-import { BlotterContainer } from '../../ui/blotter'
-import StatusBar from '../../ui/status-bar'
-import StatusButton from '../../ui/status-connection'
-import { WorkspaceContainer } from '../../ui/workspace'
+import { AnalyticsContainer } from '../widgets/analytics'
+import { BlotterContainer } from '../widgets/blotter'
+import StatusBar from '../widgets/status-bar'
+import StatusButton from '../widgets/status-connection'
+import { WorkspaceContainer } from '../widgets/workspace'
 
 import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'

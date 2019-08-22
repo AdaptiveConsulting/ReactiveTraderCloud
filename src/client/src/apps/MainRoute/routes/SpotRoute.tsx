@@ -2,8 +2,8 @@ import React from 'react'
 import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
-import SpotTileContainer from '../../ui/spotTile/SpotTileContainer'
-import { TileViews } from '../../ui/workspace/workspaceHeader'
+import SpotTileContainer from '../widgets/spotTile/SpotTileContainer'
+import { TileViews } from '../widgets/workspace/workspaceHeader'
 import { styled } from 'rt-theme'
 
 const SpotTileStyle = styled.div`

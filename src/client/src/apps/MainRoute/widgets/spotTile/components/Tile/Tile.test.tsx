@@ -43,6 +43,7 @@ const defaultParams: DerivedStateFromUserInput = {
     rfqState: 'none',
     rfqTimeout: null,
   },
+  currencyPair,
 }
 
 const defaultTileProps: TileProps = {

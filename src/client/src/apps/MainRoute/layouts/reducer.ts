@@ -1,5 +1,5 @@
 import { LAYOUT_ACTION_TYPES, LayoutActions } from './layoutActions'
-import { externalWindowDefault } from '../../rt-components'
+import { externalWindowDefault } from 'rt-components'
 
 export interface WindowPosition {
   visible: boolean

@@ -1,4 +1,4 @@
-import { initiateSymphony } from 'rt-symphony'
+import { initiateSymphony } from 'rt-platforms/symphony'
 import IApplication from './IApplication'
 
 export default class Symphony implements IApplication {

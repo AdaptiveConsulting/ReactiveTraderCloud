@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { WindowConfig } from '../../platform/adapters/types'
+import { WindowConfig } from '../../types'
 import { last as _last, get as _get } from 'lodash'
 
 const TEAR_OUT_OFFSET_LEFT = 50

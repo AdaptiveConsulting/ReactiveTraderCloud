@@ -1,4 +1,4 @@
-import { GlobalState } from '../../StoreTypes'
+import { GlobalState } from 'StoreTypes'
 import { createSelector } from 'reselect'
 
 export const selectState = (state: GlobalState) => state.layout

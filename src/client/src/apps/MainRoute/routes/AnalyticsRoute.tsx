@@ -1,6 +1,6 @@
 import React from 'react'
 import { OPENFIN_CHROME_HEADER_HEIGHT, RouteWrapper } from 'rt-components'
-import { AnalyticsContainer } from '../../ui/analytics'
+import { AnalyticsContainer } from '../widgets/analytics'
 import { styled } from 'rt-theme'
 
 const AnalyticsRouteStyle = styled.div`

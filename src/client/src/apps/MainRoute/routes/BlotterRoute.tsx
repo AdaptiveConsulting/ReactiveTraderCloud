@@ -1,6 +1,6 @@
 import React from 'react'
 import { OPENFIN_CHROME_HEADER_HEIGHT, RouteWrapper } from 'rt-components'
-import { BlotterContainer } from '../../ui/blotter'
+import { BlotterContainer } from '../widgets/blotter'
 import { styled } from 'rt-theme'
 
 const BlotterContainerStyle = styled('div')`

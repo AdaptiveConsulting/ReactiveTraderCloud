@@ -6,7 +6,7 @@ import { TILE_ACTION_TYPES, SpotTileActions } from '../actions'
 import { of, timer } from 'rxjs'
 import { RfqRequest } from '../model/rfqRequest'
 import { SpotTileState } from '../spotTileReducer'
-import { CurrencyPairState } from '../../../../src/shell/referenceData'
+import { CurrencyPairState } from '../../../data/referenceData'
 
 const { rfqRequest, rfqReceived, rfqExpired, rfqReject, rfqCancel, rfqReset } = SpotTileActions
 

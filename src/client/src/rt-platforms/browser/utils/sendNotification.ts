@@ -1,4 +1,4 @@
-import { Trade } from 'rt-core/rt-types'
+import { Trade } from 'rt-types'
 
 export enum NotifyPermission {
   granted = 'granted',
