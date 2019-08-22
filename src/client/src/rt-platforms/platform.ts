@@ -1,4 +1,4 @@
-import { Browser, Finsemble, OpenFin, PlatformAdapter, Symphony } from './adapters'
+import { Browser, Finsemble, OpenFin, PlatformAdapter, Symphony } from './'
 
 const isFinsemble = 'FSBL' in window
 const isOpenFin = 'fin' in window

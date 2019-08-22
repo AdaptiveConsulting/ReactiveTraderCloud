@@ -4,7 +4,7 @@
 import { formTable, delay } from './utils/index'
 import { Trade, CurrencyPairPositionWithPrice } from 'rt-types'
 import { platform } from 'rt-components'
-import { InteropTopics } from '../../types'
+import { InteropTopics } from '../../../platform/adapters/types'
 import { ExcelAdapter } from './types'
 
 const EXCEL_HOST_URL = `${location.protocol}//${location.host}/static/excel`

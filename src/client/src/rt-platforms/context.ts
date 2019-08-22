@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { PlatformAdapter } from './adapters'
+import { PlatformAdapter } from './'
 import { useContext } from 'react'
 import platform from './platform'
 

@@ -2,7 +2,7 @@
 
 import { CurrencyPairPositionWithPrice, Trade } from 'rt-types'
 
-import { InteropTopics } from '../../types'
+import { InteropTopics } from '../../../platform/adapters/types'
 import { ExcelAdapter } from './types'
 
 class LegacyExcelAdapter implements ExcelAdapter {

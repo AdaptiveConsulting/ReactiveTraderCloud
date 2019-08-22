@@ -2,16 +2,16 @@
 /* eslint-disable no-restricted-globals */
 
 import { Store } from 'redux'
-import { BasePlatformAdapter } from '../platformAdapter'
-import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../types'
+import { BasePlatformAdapter } from '../../platformAdapter'
+import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import { excelAdapter } from './excel'
 import { CurrencyPairPositionWithPrice } from 'rt-types'
-import { LayoutActions } from '../../../../shell/layouts/layoutActions'
+import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
 import { workspaces } from 'openfin-layouts'
 import { Notification, NotificationButtonClickedEvent } from 'openfin-notifications'
-import { NotificationMessage } from '../browser/utils/sendNotification'
+import { NotificationMessage } from '../../browser/utils/sendNotification'
 import { Context } from 'openfin-fdc3'
 
 export async function setupWorkspaces(store: Store) {

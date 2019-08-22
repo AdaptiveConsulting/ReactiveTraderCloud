@@ -1,5 +1,5 @@
-import { BasePlatformAdapter } from '../adapters/platformAdapter'
-import { WindowConfig } from '../adapters/types'
+import { BasePlatformAdapter } from '../platformAdapter'
+import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
 import { sendNotification, NotifyPermission } from './utils/sendNotification'
 import { UAParser } from 'ua-parser-js'

@@ -1,5 +1,5 @@
-import { BasePlatformAdapter } from '../adapters/platformAdapter'
-import { WindowConfig, AppConfig } from '../adapters/types'
+import { BasePlatformAdapter } from '../platformAdapter'
+import { WindowConfig, AppConfig } from '../types'
 import { fromEventPattern } from 'rxjs'
 
 export default class Finsemble extends BasePlatformAdapter {

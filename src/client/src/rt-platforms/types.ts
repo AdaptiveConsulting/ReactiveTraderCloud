@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import { CurrencyPairPosition } from 'rt-types'
-import { ExcelAdapterName } from './openfin/excel'
+import { ExcelAdapterName } from './openFin/adapter/excel'
 
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
 export type PlatformType = 'browser' | 'desktop'
@@ -27,8 +27,8 @@ export interface PlatformFeatures {
   excel: ExcelInterop
   chartIQ: ChartIQInterop
   notificationHighlight: NotificationHighlightInterop
-  interop: PubSubInterop,
-  share:(object:any)=>{}
+  interop: PubSubInterop
+  share: (object: any) => {}
 }
 
 interface PubSubInterop {
