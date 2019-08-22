@@ -1,7 +1,7 @@
 import { Action } from 'redux'
 import { Epic } from 'redux-observable'
-import { ApplicationDependencies } from './applicationServices'
-import rootReducer from './combineReducers'
+import { ApplicationDependencies } from './apps/MainRoute/store/applicationServices'
+import rootReducer from './apps/MainRoute/store/combineReducers'
 
 export type GlobalState = ReturnType<typeof rootReducer>
 export type ApplicationEpic<
