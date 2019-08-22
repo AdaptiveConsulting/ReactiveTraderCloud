@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
 import { styled } from 'rt-theme'
-import { LayoutActions } from '../../shell/layouts/layoutActions'
+import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
 import { useDispatch } from 'react-redux'
 import { usePlatform } from 'rt-components'
 
