@@ -1,74 +1,32 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
-import { timer } from 'rxjs'
-
-import { ConnectionActions } from 'rt-actions'
-import { platform, PlatformProvider, setupWorkspaces } from 'rt-components'
-import { AutobahnConnectionProxy } from 'rt-system'
+import { platform, PlatformProvider } from 'rt-components'
 import { ThemeProvider } from 'rt-theme'
-
-import { createApplicationServices } from './store/applicationServices'
-import configureStore from './store/configureStore'
 import { Router } from './data'
-import FakeUserRepository from './fakeUserRepository'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
+import { store } from './store'
 
-const LOG_NAME = 'Application Service: '
-
-const store = configureStore(
-  createApplicationServices({
-    autobahn: new AutobahnConnectionProxy(
-      process.env.REACT_APP_BROKER_HOST || location.hostname,
-      'com.weareadaptive.reactivetrader',
-      +(process.env.REACT_APP_BROKER_PORT || location.port),
-    ),
-    limitChecker: platform.limitChecker,
-    platform,
-    user: FakeUserRepository.currentUser,
-  }),
+const MainRoute = () => (
+  <React.Fragment>
+    <Helmet>
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+      />
+    </Helmet>
+    <ThemeProvider>
+      <ReduxProvider store={store}>
+        <PlatformProvider value={platform}>
+          <React.Fragment>
+            <GlobalScrollbarStyle />
+            <Router />
+          </React.Fragment>
+        </PlatformProvider>
+      </ReduxProvider>
+    </ThemeProvider>
+  </React.Fragment>
 )
 
-setupWorkspaces(store)
-  .then(successVal => {
-    console.info('setupWorkspaces success', successVal)
-  })
-  .catch(err => {
-    console.error('setupWorkspaces error', err)
-  })
-
-store.dispatch(ConnectionActions.connect())
-
-export const APPLICATION_DISCONNECT_MINS = 60
-const APPLICATION_DISCONNECT = APPLICATION_DISCONNECT_MINS * 60 * 1000
-
-timer(APPLICATION_DISCONNECT).subscribe(() => {
-  store.dispatch(ConnectionActions.disconnect())
-  console.warn(LOG_NAME, `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`)
-})
-
-export default class MainRoute extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <Helmet>
-          <link
-            rel="stylesheet"
-            type="text/css"
-            href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-          />
-        </Helmet>
-        <ThemeProvider>
-          <ReduxProvider store={store}>
-            <PlatformProvider value={platform}>
-              <React.Fragment>
-                <GlobalScrollbarStyle />
-                <Router />
-              </React.Fragment>
-            </PlatformProvider>
-          </ReduxProvider>
-        </ThemeProvider>
-      </React.Fragment>
-    )
-  }
-}
+export default MainRoute
