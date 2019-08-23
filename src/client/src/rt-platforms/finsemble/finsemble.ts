@@ -1,6 +1,7 @@
 import { BasePlatformAdapter } from '../platformAdapter'
 import { WindowConfig, AppConfig } from '../types'
 import { fromEventPattern } from 'rxjs'
+import FinsembleRoute from './FinsembleRoute'
 
 export default class Finsemble extends BasePlatformAdapter {
   readonly name = 'finsemble'
@@ -71,4 +72,6 @@ export default class Finsemble extends BasePlatformAdapter {
         duration: 1000 * 50,
       }),
   }
+
+  route = FinsembleRoute
 }

@@ -22,6 +22,8 @@ interface PlatformAdapterInterface {
   fdc3: {
     broadcast?: (context: Context) => void
   }
+
+  route: React.FC
 }
 
 export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
@@ -54,4 +56,6 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   abstract fdc3: {
     broadcast?: (context: Context) => void
   }
+
+  abstract route: React.FC
 }

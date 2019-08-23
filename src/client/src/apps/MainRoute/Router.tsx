@@ -1,12 +1,16 @@
 import React, { FC } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { AnalyticsRoute, BlotterRoute, SpotRoute, OpenFinRoute, ShellRoute, TileRoute } from './routes'
+import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
 import { usePlatform } from 'rt-components'
 
-const ShellSwitchRoute: FC = () => {
-  const platform = usePlatform()
-  return platform.name === 'openfin' ? <OpenFinRoute /> : <ShellRoute />
-}
+const platform = usePlatform()
+const PlatformRoute: FC = platform.route
+
+const ShellSwitchRoute: FC = () => (
+  <PlatformRoute>
+    <ShellRoute />
+  </PlatformRoute>
+)
 
 export const Router: FC = () => (
   <BrowserRouter>

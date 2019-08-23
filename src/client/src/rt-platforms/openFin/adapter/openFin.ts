@@ -12,6 +12,7 @@ import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
 import { workspaces } from 'openfin-layouts'
 import { Notification, NotificationButtonClickedEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
+import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
 
 export async function setupWorkspaces(store: Store) {
@@ -163,6 +164,8 @@ export default class OpenFin extends BasePlatformAdapter {
         })
     },
   }
+
+  route = OpenFinRoute
 
   getNotificationTitle({ tradeNotification }: NotificationMessage) {
     const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
