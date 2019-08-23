@@ -62,9 +62,3 @@ export const NodeCount = styled.div`
   font-size: 0.5rem;
   opacity: 0.6;
 `
-
-export const OpenFinLogoLink = styled.a`
-  .svg-fill {
-    fill: ${({ theme }) => theme.core.textColor};
-  }
-`
