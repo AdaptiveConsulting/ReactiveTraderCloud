@@ -14,6 +14,7 @@ import { Notification, NotificationButtonClickedEvent } from 'openfin-notificati
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
+import Logo from './logo'
 
 export async function setupWorkspaces(store: Store) {
   if (typeof fin !== 'undefined') {
@@ -164,6 +165,8 @@ export default class OpenFin extends BasePlatformAdapter {
         })
     },
   }
+
+  Logo: React.FC = Logo
 
   PlatformRoute = OpenFinRoute
 

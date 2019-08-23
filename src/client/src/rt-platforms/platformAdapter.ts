@@ -1,6 +1,7 @@
 import { WindowConfig, PlatformFeatures, PlatformType } from './types'
 import { Context } from 'openfin-fdc3'
 import DefaultRoute from './defaultRoute'
+import Logo from './logo'
 
 interface PlatformAdapterInterface {
   readonly type: PlatformType
@@ -24,6 +25,8 @@ interface PlatformAdapterInterface {
   fdc3: {
     broadcast?: (context: Context) => void
   }
+
+  Logo: React.FC
 
   PlatformRoute: React.FC
 }
@@ -58,6 +61,8 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   abstract fdc3: {
     broadcast?: (context: Context) => void
   }
+
+  Logo: any = Logo
 
   PlatformRoute: React.FC = DefaultRoute
 }
