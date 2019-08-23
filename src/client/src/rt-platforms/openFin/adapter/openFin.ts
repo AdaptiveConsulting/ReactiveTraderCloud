@@ -165,7 +165,7 @@ export default class OpenFin extends BasePlatformAdapter {
     },
   }
 
-  route = OpenFinRoute
+  PlatformRoute = OpenFinRoute
 
   getNotificationTitle({ tradeNotification }: NotificationMessage) {
     const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'

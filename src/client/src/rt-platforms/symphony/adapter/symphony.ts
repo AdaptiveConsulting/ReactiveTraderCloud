@@ -1,7 +1,6 @@
 import { BasePlatformAdapter } from '../../platformAdapter'
 import { WindowConfig } from '../../types'
 import { SymphonyClient, SYMPHONY_APP_ID, FX_ENTITY_TYPE, createTileMessage } from '../'
-import SymphonyRoute from './SymphonyRoute'
 
 const symphony: SymphonyClient = window.SYMPHONY
 
@@ -39,8 +38,6 @@ export default class Symphony extends BasePlatformAdapter {
   notification = {
     notify: (message: object) => {},
   }
-
-  route = SymphonyRoute
 
   share = (obj: any) => {
     const shareService = symphony.services.subscribe('share')

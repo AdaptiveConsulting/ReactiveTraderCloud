@@ -3,7 +3,6 @@ import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
 import { sendNotification, NotifyPermission } from './utils/sendNotification'
 import { UAParser } from 'ua-parser-js'
-import BrowserRoute from './BrowserRoute'
 
 interface Navigator {
   standalone?: boolean
@@ -42,8 +41,6 @@ export default class Browser extends BasePlatformAdapter {
       }
     },
   }
-
-  route = BrowserRoute
 
   /* 
     TODO: Browser can subscribe and publish via autobahn, so it would make sense to implement these methods.
