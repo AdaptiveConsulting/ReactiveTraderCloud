@@ -1,12 +1,13 @@
 /* eslint-disable no-undef */
 
 import { Observable } from 'rxjs'
+import { LimitChecker } from 'rt-platforms/platformAdapter'
 const LOG_NAME = 'OpenFin: '
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'
 const LIMIT_CHECKER_UUID = 'LIMIT-CHECKER'
 const LIMIT_CHECKER_STATUS_TOPIC = 'request-limit-check-status'
-export class OpenFinLimitChecker {
+export class OpenFinLimitChecker implements LimitChecker {
   private limitCheckSubscriber: string | null = null
   private limitCheckId: number = 1
 
