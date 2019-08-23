@@ -13,7 +13,6 @@ import configureStore from './store/configureStore'
 import { Router } from './data'
 import FakeUserRepository from './fakeUserRepository'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
-import { OpenFinLimitChecker } from 'rt-platforms/openFin'
 
 const LOG_NAME = 'Application Service: '
 
@@ -24,7 +23,7 @@ const store = configureStore(
       'com.weareadaptive.reactivetrader',
       +(process.env.REACT_APP_BROKER_PORT || location.port),
     ),
-    limitChecker: new OpenFinLimitChecker(),
+    limitChecker: platform.limitChecker,
     platform,
     user: FakeUserRepository.currentUser,
   }),

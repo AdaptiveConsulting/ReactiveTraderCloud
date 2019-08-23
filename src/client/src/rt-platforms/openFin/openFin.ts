@@ -11,11 +11,9 @@ export class OpenFinLimitChecker {
   private limitCheckId: number = 1
 
   constructor() {
-    if (typeof fin !== 'undefined') {
-      this.setLimitCheckSubscriber = this.setLimitCheckSubscriber.bind(this)
-      this.removeLimitCheckSubscriber = this.removeLimitCheckSubscriber.bind(this)
-      this.initializeLimitChecker()
-    }
+    this.setLimitCheckSubscriber = this.setLimitCheckSubscriber.bind(this)
+    this.removeLimitCheckSubscriber = this.removeLimitCheckSubscriber.bind(this)
+    this.initializeLimitChecker()
   }
 
   rpc(message: object) {
@@ -69,7 +67,7 @@ export class OpenFinLimitChecker {
    * Initialize limit checker
    * @private
    */
-  initializeLimitChecker() {
+  private initializeLimitChecker() {
     fin.desktop.main(() => {
       fin.desktop.InterApplicationBus.addSubscribeListener(this.setLimitCheckSubscriber)
       fin.desktop.InterApplicationBus.addUnsubscribeListener(this.removeLimitCheckSubscriber)
@@ -87,7 +85,7 @@ export class OpenFinLimitChecker {
     })
   }
 
-  setLimitCheckSubscriber(uuid: string, topic: string) {
+  private setLimitCheckSubscriber(uuid: string, topic: string) {
     if (topic === REQUEST_LIMIT_CHECK_TOPIC) {
       console.info(LOG_NAME, `${uuid} has subscribed as a limit checker`)
       // There will only be one. If there are more, last subscriber will be used
@@ -95,7 +93,7 @@ export class OpenFinLimitChecker {
     }
   }
 
-  removeLimitCheckSubscriber(uuid: string, topic: string) {
+  private removeLimitCheckSubscriber(uuid: string, topic: string) {
     if (topic === REQUEST_LIMIT_CHECK_TOPIC) {
       console.info(LOG_NAME, `${uuid} has unsubscribed as a limit checker`)
       this.limitCheckSubscriber = null
