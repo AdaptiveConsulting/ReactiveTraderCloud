@@ -12,7 +12,6 @@ import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
 import { workspaces } from 'openfin-layouts'
 import { Notification, NotificationButtonClickedEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
-import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
 import Logo from './logo'
 import { OpenFinLimitChecker } from '../openFin'
@@ -170,8 +169,6 @@ export default class OpenFin extends BasePlatformAdapter {
   }
 
   Logo: React.FC = Logo
-
-  PlatformRoute = OpenFinRoute
 
   getNotificationTitle({ tradeNotification }: NotificationMessage) {
     const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'

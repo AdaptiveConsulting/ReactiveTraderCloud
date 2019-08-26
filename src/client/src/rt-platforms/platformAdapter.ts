@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs'
 import { WindowConfig, PlatformFeatures, PlatformType } from './types'
 import { Context } from 'openfin-fdc3'
-import DefaultRoute from './defaultRoute'
 import Logo from './logo'
 
 export interface LimitChecker {
@@ -40,8 +39,6 @@ interface PlatformAdapterInterface {
   }
 
   Logo: React.FC
-
-  PlatformRoute: React.FC
 }
 
 export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
@@ -78,6 +75,4 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   limitChecker: LimitChecker = new LimitCheckerImpl()
 
   Logo: any = Logo
-
-  PlatformRoute: React.FC = DefaultRoute
 }

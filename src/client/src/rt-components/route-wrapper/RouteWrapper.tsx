@@ -22,6 +22,7 @@ interface RouteWrapperProps {
   children: any
   extendedControls?: boolean
 }
+
 const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, extendedControls }) => {
   const platform = usePlatform()
   const window = platform.window

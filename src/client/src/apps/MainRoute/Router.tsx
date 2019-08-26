@@ -1,14 +1,13 @@
 import React, { FC } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
-import { usePlatform } from 'rt-components'
+import { RouteWrapper } from 'rt-components'
 
 const ShellSwitchRoute: FC = () => {
-  const { PlatformRoute } = usePlatform()
   return (
-    <PlatformRoute>
+    <RouteWrapper extendedControls={true}>
       <ShellRoute />
-    </PlatformRoute>
+    </RouteWrapper>
   )
 }
 
