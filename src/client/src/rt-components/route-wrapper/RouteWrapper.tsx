@@ -18,15 +18,25 @@ const RouteStyle = styled('div')<{ platform: PlatformAdapter }>`
    this resets body to the correct height */
   height: ${({ platform: { name } }) => (name === 'finsemble' ? 'calc(100% - 25px)' : '100%')};
 `
-
-const RouteWrapper: React.FC = ({ children }) => {
+interface RouteWrapperProps {
+  children: any
+  extendedControls?: boolean
+}
+const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, extendedControls }) => {
   const platform = usePlatform()
+  const window = platform.window
+
+  let header = extendedControls ? (
+    <OpenFinHeader minimize={window.minimize} maximize={window.maximize} close={window.close} />
+  ) : (
+    <OpenFinHeader close={window.close} />
+  )
 
   return (
     <RouteStyle platform={platform}>
       {platform.name === 'openfin' ? (
         <OpenFinChrome>
-          <OpenFinHeader close={platform.window.close} />
+          {header}
           {children}
         </OpenFinChrome>
       ) : (
