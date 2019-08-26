@@ -13,19 +13,23 @@ import {
 import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
 import { retryWhen, multicast, refCount } from 'rxjs/operators'
-import { OpenFinLimitChecker } from 'rt-platforms/openFin'
 import { referenceDataService } from '../data/referenceData'
+import { LimitChecker } from 'rt-platforms/platformAdapter'
 const HEARTBEAT_TIMEOUT = 3000
-
 
 export interface ApplicationProps {
   autobahn: AutobahnConnection
   platform: PlatformAdapter
-  limitChecker: OpenFinLimitChecker
+  limitChecker: LimitChecker
   user: User
 }
 
-export function createApplicationServices({ autobahn, limitChecker, user, platform }: ApplicationProps) {
+export function createApplicationServices({
+  autobahn,
+  limitChecker,
+  user,
+  platform,
+}: ApplicationProps) {
   const connection$ = createConnection$(autobahn).pipe(
     retryWhen(retryWithBackOff()),
     multicast(() => {
@@ -35,7 +39,7 @@ export function createApplicationServices({ autobahn, limitChecker, user, platfo
   )
 
   const serviceStub = new ServiceStub(user.code, connection$)
- 
+
   const statusUpdates$ = serviceStub.subscribeToTopic<RawServiceStatus>('status')
   const serviceStatus$ = serviceStatusStream$(statusUpdates$, HEARTBEAT_TIMEOUT).pipe(
     multicast(() => {

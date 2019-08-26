@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-globals */
 
 import { Store } from 'redux'
-import { BasePlatformAdapter } from '../../platformAdapter'
+import { BasePlatformAdapter, LimitChecker } from '../../platformAdapter'
 import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern } from 'rxjs'
@@ -15,6 +15,7 @@ import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
 import Logo from './logo'
+import { OpenFinLimitChecker } from '../openFin'
 
 export async function setupWorkspaces(store: Store) {
   if (typeof fin !== 'undefined') {
@@ -141,6 +142,8 @@ export default class OpenFin extends BasePlatformAdapter {
       excelAdapter.publishPositions(positions),
     publishBlotter: <T extends any>(blotterData: T) => excelAdapter.publishBlotter(blotterData),
   }
+
+  limitChecker: LimitChecker = new OpenFinLimitChecker()
 
   notification = {
     notify: (message: object) => {
