@@ -1,7 +1,6 @@
 import React from 'react'
 import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router-dom'
-import { RouteWrapper } from 'rt-components'
 import SpotTileContainer from '../widgets/spotTile/SpotTileContainer'
 import { TileViews } from '../widgets/workspace/workspaceHeader'
 import { styled } from 'rt-theme'
@@ -26,10 +25,8 @@ const getTileViewFromQueryStr: (queryStr: string) => TileViews = queryStr => {
 export default ({ location: { search }, match }: RouteComponentProps<{ symbol: string }>) => {
   const tileView = getTileViewFromQueryStr(search)
   return (
-    <RouteWrapper>
-      <SpotTileStyle>
-        <SpotTileContainer id={match.params.symbol} tileView={tileView} />
-      </SpotTileStyle>
-    </RouteWrapper>
+    <SpotTileStyle>
+      <SpotTileContainer id={match.params.symbol} tileView={tileView} />
+    </SpotTileStyle>
   )
 }

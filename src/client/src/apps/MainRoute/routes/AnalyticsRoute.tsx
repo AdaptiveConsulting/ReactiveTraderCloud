@@ -1,5 +1,5 @@
 import React from 'react'
-import { OPENFIN_CHROME_HEADER_HEIGHT, RouteWrapper } from 'rt-components'
+import { OPENFIN_CHROME_HEADER_HEIGHT } from 'rt-components'
 import { AnalyticsContainer } from '../widgets/analytics'
 import { styled } from 'rt-theme'
 
@@ -10,11 +10,9 @@ const AnalyticsRouteStyle = styled.div`
   margin: auto;
 `
 const AnalyticsRoute = () => (
-  <RouteWrapper>
-    <AnalyticsRouteStyle>
-      <AnalyticsContainer />
-    </AnalyticsRouteStyle>
-  </RouteWrapper>
+  <AnalyticsRouteStyle>
+    <AnalyticsContainer />
+  </AnalyticsRouteStyle>
 )
 
 export default AnalyticsRoute

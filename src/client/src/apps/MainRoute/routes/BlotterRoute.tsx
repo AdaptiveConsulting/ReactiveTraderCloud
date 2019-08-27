@@ -1,5 +1,5 @@
 import React from 'react'
-import { OPENFIN_CHROME_HEADER_HEIGHT, RouteWrapper } from 'rt-components'
+import { OPENFIN_CHROME_HEADER_HEIGHT } from 'rt-components'
 import { BlotterContainer } from '../widgets/blotter'
 import { styled } from 'rt-theme'
 
@@ -11,11 +11,9 @@ const BlotterContainerStyle = styled('div')`
 `
 
 const BlotterRoute = () => (
-  <RouteWrapper>
-    <BlotterContainerStyle>
-      <BlotterContainer />
-    </BlotterContainerStyle>
-  </RouteWrapper>
+  <BlotterContainerStyle>
+    <BlotterContainer />
+  </BlotterContainerStyle>
 )
 
 export default BlotterRoute
