@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, RouteComponentProps } from 'react-router-dom'
 import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
 import { RouteWrapper } from 'rt-components'
 
@@ -7,7 +7,10 @@ export interface RouterProps {
   windowType?: 'main' | 'sub'
 }
 
-const route = (Component: any, { windowType }: RouterProps) => ({ ...rest }) => (
+const route = (
+  Component: FC | FC<RouteComponentProps<{ symbol: string }>>,
+  { windowType }: RouterProps,
+) => ({ ...rest }: RouteComponentProps<{ symbol: string }>) => (
   <RouteWrapper windowType={windowType}>
     <Component {...rest} />
   </RouteWrapper>
