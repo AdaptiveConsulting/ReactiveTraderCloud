@@ -1,18 +1,31 @@
-import React, { FC } from 'react'
-import { OpenFinChrome, OpenFinControls } from 'rt-components'
+import React, { FC, ReactNode } from 'react'
+import { OpenFinChrome, OpenFinHeader } from 'rt-components'
 import { usePlatform } from 'rt-components'
 
-const useHeader = () => {
-  const { window } = usePlatform()
-  return (
-    <OpenFinControls minimize={window.minimize} maximize={window.maximize} close={window.close} />
-  )
+type WindowRole = 'main' | 'sub'
+
+interface RouteWrapperProps {
+  children?: ReactNode
+  windowType?: WindowRole
 }
 
-export const OpenFinRoute: FC = ({ children }) => {
+export const OpenFinRoute: FC<RouteWrapperProps> = ({ children, windowType = 'main' }) => {
+  const { window } = usePlatform()
+  const windowControls =
+    windowType === 'main'
+      ? {
+          close: window.close,
+          minimize: window.minimize,
+          maximize: window.maximize,
+        }
+      : {
+          close: window.close,
+        }
+
   return (
     <OpenFinChrome>
-      {React.cloneElement(children as React.ReactElement, { header: useHeader() })}
+      <OpenFinHeader {...windowControls} />
+      {children}
     </OpenFinChrome>
   )
 }

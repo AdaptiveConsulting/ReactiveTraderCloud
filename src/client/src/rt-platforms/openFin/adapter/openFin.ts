@@ -171,7 +171,7 @@ export default class OpenFin extends BasePlatformAdapter {
 
   Logo: React.FC = Logo
 
-  PlatformRoute = OpenFinRoute
+  PlatformRoute: React.FC<any> = OpenFinRoute
 
   getNotificationTitle({ tradeNotification }: NotificationMessage) {
     const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'

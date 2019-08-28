@@ -77,7 +77,7 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
 
   limitChecker: LimitChecker = new LimitCheckerImpl()
 
-  Logo: any = Logo
-
   PlatformRoute: React.FC = DefaultRoute
+
+  Logo: any = Logo
 }
