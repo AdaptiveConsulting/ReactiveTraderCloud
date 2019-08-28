@@ -8,7 +8,7 @@ export type WindowConfig = WindowConfig
 export type PlatformName = PlatformName
 
 export { Browser } from './browser'
-export { Symphony } from './symphony'
+export { Symphony, initiateSymphony } from './symphony'
 
 export { OpenFin, setupWorkspaces, excelAdapter } from './openFin'
 export { default as Finsemble } from './finsemble'
