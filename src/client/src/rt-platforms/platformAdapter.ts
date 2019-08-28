@@ -13,7 +13,6 @@ class LimitCheckerImpl implements LimitChecker {
     return new Observable<boolean>(observer => {
       observer.next(true)
       observer.complete()
-      return
     })
   }
 }
