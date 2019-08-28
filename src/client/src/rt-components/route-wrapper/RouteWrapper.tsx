@@ -18,9 +18,9 @@ const RouteStyle = styled('div')<{ platform: PlatformAdapter }>`
   height: ${({ platform: { name } }) => (name === 'finsemble' ? 'calc(100% - 25px)' : '100%')};
 `
 
-export type WindowRole = 'main' | 'sub'
+type WindowRole = 'main' | 'sub'
 
-export interface RouteWrapperProps {
+interface RouteWrapperProps {
   children: ReactNode
   windowType?: WindowRole
 }
