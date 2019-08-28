@@ -14,7 +14,7 @@ import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
 import { retryWhen, multicast, refCount } from 'rxjs/operators'
 import { referenceDataService } from '../data/referenceData'
-import { LimitChecker } from 'rt-platforms/platformAdapter'
+import { LimitChecker } from 'rt-platforms'
 const HEARTBEAT_TIMEOUT = 3000
 
 export interface ApplicationProps {

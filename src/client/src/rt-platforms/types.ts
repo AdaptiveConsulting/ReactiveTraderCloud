@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import { CurrencyPairPosition } from 'rt-types'
-import { ExcelAdapterName } from './openFin/adapter/excel'
+import { ExcelAdapterName } from './openFin'
 
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
 export type PlatformType = 'browser' | 'desktop'

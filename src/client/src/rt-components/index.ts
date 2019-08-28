@@ -15,13 +15,6 @@ export type PlatformAdapter = PlatformAdapter
 export type PlatformName = PlatformName
 export type WindowConfig = WindowConfig
 export { TearOff } from './tear-off'
-export {
-  OpenFinChrome,
-  OpenFinControls,
-  OpenFinHeader,
-  OPENFIN_CHROME_HEADER_HEIGHT,
-  OpenFinBrowserLink,
-} from 'rt-platforms/openFin/components'
 export { Flex, flexStyle } from './flex'
 export { PopoutIcon, ExpandIcon, LogoIcon } from './icons'
 export { default as Modal } from './modal'

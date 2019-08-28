@@ -1,6 +1,6 @@
 import { BasePlatformAdapter } from '../../platformAdapter'
 import { WindowConfig } from '../../types'
-import { SymphonyClient, SYMPHONY_APP_ID, FX_ENTITY_TYPE, createTileMessage } from '../'
+import { SymphonyClient, SYMPHONY_APP_ID, FX_ENTITY_TYPE, createTileMessage } from '../index'
 
 const symphony: SymphonyClient = window.SYMPHONY
 

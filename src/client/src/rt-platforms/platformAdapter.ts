@@ -5,11 +5,11 @@ import DefaultRoute from './defaultRoute'
 import Logo from './logo'
 
 export interface LimitChecker {
-  rpc(message: object): Observable<boolean>
+  rpc(message?: object): Observable<boolean>
 }
 
 class LimitCheckerImpl implements LimitChecker {
-  rpc({}) {
+  rpc() {
     return new Observable<boolean>(() => {})
   }
 }
@@ -37,6 +37,10 @@ interface PlatformAdapterInterface {
 
   fdc3: {
     broadcast?: (context: Context) => void
+  }
+
+  style: {
+    [key: string]: string | number
   }
 
   Logo: React.FC
@@ -76,6 +80,10 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   }
 
   limitChecker: LimitChecker = new LimitCheckerImpl()
+
+  style = {
+    height: '100%',
+  }
 
   PlatformRoute: React.FC = DefaultRoute
 

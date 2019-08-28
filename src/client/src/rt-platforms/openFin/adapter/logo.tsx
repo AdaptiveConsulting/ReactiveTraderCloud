@@ -1,7 +1,7 @@
 import React from 'react'
 import { OpenFinLogoLink } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
-import { OpenFinBrowserLink } from 'rt-components'
+import { OpenFinBrowserLink } from '../components'
 
 export default () => {
   return (

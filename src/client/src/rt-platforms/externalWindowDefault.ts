@@ -1,4 +1,4 @@
-import { WindowConfig } from './adapters'
+import { WindowConfig } from './'
 export interface ExternalWindow {
   title: string
   config: WindowConfig

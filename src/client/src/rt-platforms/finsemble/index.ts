@@ -63,6 +63,10 @@ export default class Finsemble extends BasePlatformAdapter {
       window.FSBL && window.FSBL.Clients.RouterClient.transmit(topic, message),
   }
 
+  style = {
+    height: 'calc(100% - 25px)'
+  }
+
   notification = {
     notify: (message: object) =>
       window.FSBL &&

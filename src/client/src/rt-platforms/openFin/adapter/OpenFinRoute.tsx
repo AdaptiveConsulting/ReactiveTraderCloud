@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react'
-import { OpenFinChrome, OpenFinHeader } from 'rt-components'
+import { OpenFinChrome, OpenFinHeader } from '../components'
 import { usePlatform } from 'rt-components'
 
 type WindowRole = 'main' | 'sub'
