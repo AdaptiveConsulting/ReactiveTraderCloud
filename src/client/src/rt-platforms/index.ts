@@ -10,6 +10,7 @@ export { default as Browser } from './browser/browser'
 export { default as Symphony } from './symphony/adapter/symphony'
 
 export { default as OpenFin, setupWorkspaces } from './openFin/adapter/openFin'
+export { default as OpenFinRoute } from './openFin/adapter/OpenFinRoute'
 export { default as Finsemble } from './finsemble/finsemble'
 export { excelAdapter } from './openFin/adapter/excel'
 export { InteropTopics } from './types'

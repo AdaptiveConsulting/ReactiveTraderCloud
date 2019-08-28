@@ -1,5 +1,4 @@
-import React from 'react'
-import { OpenFinChrome, OpenFinHeader } from 'rt-components'
+import React, { ReactNode } from 'react'
 import { styled } from 'rt-theme'
 import { usePlatform } from 'rt-components'
 import { PlatformAdapter } from 'rt-components'
@@ -19,19 +18,21 @@ const RouteStyle = styled('div')<{ platform: PlatformAdapter }>`
   height: ${({ platform: { name } }) => (name === 'finsemble' ? 'calc(100% - 25px)' : '100%')};
 `
 
-const RouteWrapper: React.FC = ({ children }) => {
+type WindowRole = 'main' | 'sub'
+
+interface RouteWrapperProps {
+  children: ReactNode
+  windowType?: WindowRole
+}
+
+const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'main' }) => {
   const platform = usePlatform()
+  const { PlatformRoute } = platform
+  const props = { windowType }
 
   return (
     <RouteStyle platform={platform}>
-      {platform.name === 'openfin' ? (
-        <OpenFinChrome>
-          <OpenFinHeader close={platform.window.close} />
-          {children}
-        </OpenFinChrome>
-      ) : (
-        children
-      )}
+      <PlatformRoute {...props}>{children}</PlatformRoute>
     </RouteStyle>
   )
 }
