@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
-import { initiateSymphony } from 'rt-symphony'
+import { initiateSymphony } from 'rt-platforms'
 import { waitForObject } from 'rt-util'
 
-const MainRoute = lazy(() => import('./routes/MainRoute'))
-const StyleguideRoute = lazy(() => import('./routes/StyleguideRoute'))
-const OrderTicketRoute = lazy(() => import('./routes/OrderTicketRoute'))
-const SimpleLauncher = lazy(() => import('./routes/SimpleLauncher'))
+const MainRoute = lazy(() => import('./apps/MainRoute'))
+const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
+const OrderTicketRoute = lazy(() => import('./apps/OrderTicketRoute'))
+const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 
 const urlParams = new URLSearchParams(window.location.search)
 
