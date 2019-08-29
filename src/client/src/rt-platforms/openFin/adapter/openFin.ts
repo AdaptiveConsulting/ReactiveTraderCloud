@@ -16,6 +16,7 @@ import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
 import Logo from './logo'
 import { OpenFinLimitChecker } from '../openFin'
+import { OpenFinHeader, OpenFinControls } from '../components'
 
 export async function setupWorkspaces(store: Store) {
   if (typeof fin !== 'undefined') {
@@ -170,6 +171,10 @@ export default class OpenFin extends BasePlatformAdapter {
   }
 
   Logo: React.FC = Logo
+
+  PlatformHeader: React.FC<any> = OpenFinHeader
+
+  PlatformControls: React.FC<any> = OpenFinControls
 
   PlatformRoute: React.FC<any> = OpenFinRoute
 
