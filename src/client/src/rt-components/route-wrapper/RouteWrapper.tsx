@@ -27,12 +27,16 @@ interface RouteWrapperProps {
 
 const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'main' }) => {
   const platform = usePlatform()
-  const { PlatformRoute } = platform
-  const props = { windowType }
+  const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
+  const Header = windowType === 'main' ? PlatformControls : null
+  const subheader = windowType === 'sub' ? <PlatformHeader close={window.close} /> : null
 
   return (
     <RouteStyle platform={platform}>
-      <PlatformRoute {...props}>{children}</PlatformRoute>
+      <PlatformRoute>
+        {subheader}
+        {React.cloneElement(children as React.ReactElement, { header: <Header {...window} /> })}
+      </PlatformRoute>
     </RouteStyle>
   )
 }

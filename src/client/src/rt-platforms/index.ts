@@ -10,7 +10,7 @@ export type PlatformName = PlatformName
 export { Browser } from './browser'
 export { Symphony, initiateSymphony } from './symphony'
 
-export { OpenFin, setupWorkspaces, excelAdapter } from './openFin'
+export { OpenFin, OpenFinHeader, setupWorkspaces, excelAdapter } from './openFin'
 export { default as Finsemble } from './finsemble'
 export { InteropTopics } from './types'
 export { default as platform } from './platform'

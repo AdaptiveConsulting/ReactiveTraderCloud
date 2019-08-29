@@ -48,6 +48,10 @@ interface PlatformAdapterInterface {
 
   Logo: React.FC
 
+  PlatformHeader: React.FC<any>
+
+  PlatformControls: React.FC<any>
+
   PlatformRoute: React.FC
 }
 
@@ -87,6 +91,10 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   style = {
     height: '100%',
   }
+
+  PlatformHeader: React.FC<any> = () => null
+
+  PlatformControls: React.FC<any> = () => null
 
   PlatformRoute: React.FC = DefaultRoute
 
