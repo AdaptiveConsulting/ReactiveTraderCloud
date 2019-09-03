@@ -82,6 +82,7 @@ export const AnalyticsLineChartWrapper = styled.div`
   width: 100%;
   height: 20%;
   margin-top: 20px;
+  margin-bottom: 20px;
 `
 
 export const Header = styled.div`
