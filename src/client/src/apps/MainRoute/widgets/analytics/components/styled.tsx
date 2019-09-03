@@ -91,8 +91,8 @@ export const Header = styled.div`
 
 export const Title = styled.div`
   margin-bottom: 1rem;
-  width: 84px;
-  height: 18px;
+  width: auto;
+  height: auto;
   font-size: 15px;
   font-weight: normal;
 `

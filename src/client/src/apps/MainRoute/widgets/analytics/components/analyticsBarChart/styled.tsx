@@ -53,6 +53,7 @@ export const BarPriceContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  overflow-x: hidden;
 `
 const bgColor = '#444c5f'
 export const Bar = styled.div`
