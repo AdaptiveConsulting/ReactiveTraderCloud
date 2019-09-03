@@ -11,8 +11,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
   /// </summary>
   public class YahooFinanceCurrencyAdapter : AdapterBase, IMarketDataAdapter
   {
-    private const string requestUriString = "https://uk.finance.yahoo.com/currencies?guccounter=1";
+    private const string requestUriString = "https://uk.finance.yahoo.com/currencies";
     private const string sourceName = "Yahoo";
+
     private readonly string[] _findRowHeaders = { "Symbol", "Name", "Last price" };
 
     public YahooFinanceCurrencyAdapter() : base(requestUriString)
@@ -54,7 +55,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
 
     private async Task<JArray> GetJson()
     {
-      var document = await GetRequestHtmlDocument();
+      var document = await GetRequestHtmlDocument("?guccounter=1");
       var table = FindTableUsingRowHeaders(document.DocumentNode, _findRowHeaders);
       return GetHtmlTable(table);
 

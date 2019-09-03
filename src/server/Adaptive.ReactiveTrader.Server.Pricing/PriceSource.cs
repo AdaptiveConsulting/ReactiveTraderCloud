@@ -25,6 +25,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     public PriceSource()
     {
       //register the required data source adapters
+      _marketAdapters.Add(new EuropeanCentralBankAdapter());
       _marketAdapters.Add(new FinancialModelingPrepAdapter());
       _marketAdapters.Add(new YahooFinanceCurrencyAdapter());
 
@@ -57,10 +58,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
       _timer = Observable.Interval(TimeSpan.FromMilliseconds(50)).Publish();
       _disposable.Add(_timer.Subscribe(observer =>
       {
-        if ((DateTime.Now - _lastMarketUpdate).TotalHours > 24)
+        if ((DateTime.UtcNow - _lastMarketUpdate).TotalHours > 1)
         {
-          //Just refresh the currency pairs back to real market values once every 24 hours.
-          //Note some of the prices sources (e.g. https://fixer.io) are only free if there are less than a restricted number of API calls per month.
+          //Just refresh the currency pairs from the markets once every hour.
           RefreshMarketRates(DateTime.UtcNow);
         }
         _priceGenerators[keys[Random.Next(_priceGenerators.Count)]].UpdateWalkPrice();
@@ -86,7 +86,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         var marketData = new List<MarketData>(adapter.GetMarketData().Result);
         foreach (var item in marketData)
         {
-          if (_priceGenerators.TryGetValue(item.Symbol, out IPriceGenerator priceGenerator) && (refreshDateTime - priceGenerator.EffectiveDate).TotalHours > 12)
+          if (_priceGenerators.TryGetValue(item.Symbol, out IPriceGenerator priceGenerator) && (refreshDateTime - priceGenerator.EffectiveDate).TotalMinutes > 30)
           {
             priceGenerator.UpdateInitialValue(item.SampleRate, item.Date, item.Source);
           }

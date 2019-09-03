@@ -1,6 +1,7 @@
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,9 +25,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
     /// Called when the remote site returns a response containing json
     /// </summary>
     /// <returns>The http response content as a JObject</returns>
-    protected async Task<JObject> GetRequestJson()
+    protected async Task<JObject> GetRequestJson(string queryParameters = "")
     {
-      using (var stream = await GetRequestStream())
+      using (var stream = await GetRequestStream(RequestUriString + queryParameters))
       {
         using (var sr = new StreamReader(stream))
         {
@@ -43,11 +44,11 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
     /// Creates an HttpClient and executes a get request
     /// </summary>
     /// <returns>The http response content as a Stream</returns>
-    protected async Task<Stream> GetRequestStream()
+    protected async Task<Stream> GetRequestStream(string requestUriString)
     {
       using (var hc = new HttpClient())
       {
-        var result = await hc.GetAsync(RequestUriString);
+        var result = await hc.GetAsync(requestUriString);
         return await result.Content.ReadAsStreamAsync();
       }
     }
@@ -56,9 +57,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
     /// Called when the remote site returns a response containing html
     /// </summary>
     /// <returns>The http response content as an HtmlDocument that can be queried with XPath</returns>
-    protected async Task<HtmlDocument> GetRequestHtmlDocument()
+    protected async Task<HtmlDocument> GetRequestHtmlDocument(string queryParameters = "")
     {
-      using (var stream = await GetRequestStream())
+      using (var stream = await GetRequestStream(RequestUriString + queryParameters))
       {
         var document = new HtmlDocument();
         document.Load(stream);
@@ -105,6 +106,14 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
         jsonRows.Add(new JObject(properties.ToArray()));
       }
       return new JArray(jsonRows.ToArray());
+    }
+
+    protected static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+    {
+      // Unix timestamp is seconds past epoch
+      var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+      dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
+      return dtDateTime;
     }
 
   }
