@@ -1,80 +1,83 @@
 {
-    "startup_app": {
-        "name": "Reactive Trader Cloud (LOCAL)",
-        "url": "http://localhost:3000/launcher",
-        "uuid": "ReactiveLauncher",
-        "defaultWidth": 650,
-        "defaultHeight": 52,
-        "defaultTop": 160,
-        "defaultLeft": 30,
-        "autoShow": true,
-        "saveWindowState": false,
-        "resizable": false,
-        "shadow": true,
-        "frame": false,
-        "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
-        "preload": [
-            {
-                "url": "http://localhost:3000/plugin/service-loader.js"
-            },
-            {
-                "url": "http://localhost:3000/plugin/fin.desktop.Excel.js"
-            }
-        ],
-        "backgroundColor": "#444C5F",
-        "alwaysOnTop": true,
-        "icon": "http://localhost:3000/static/media/icon.ico",
-        "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
-        "contextMenu": true,
-        "accelerator": {
-            "devtools": true,
-            "reload": true,
-            "reloadIgnoringCache": true,
-            "zoom": true
-        }
-    },
-    "runtime": {
-        "arguments": "--remote-debugging-port=9222",
-        "version": "10.66.39.43",
-        "futureVersion": "10.66.39.43",
-        "forceLatest": true
-    },
-    "shortcut": {
-        "company": "Adaptive Consulting",
-        "description": "Desktop Reactive Trader Cloud",
-        "icon": "http://localhost:3000/static/media/icon.ico",
-        "name": "Reactive Trader Cloud"
-    },
-    "appAssets": [
-        {
-            "src": "http://localhost:3000/plugin/add-in.zip",
-            "alias": "excel-api-addin",
-            "version": "2.0.0",
-            "forceDownload": true
-        },
-        {
-            "src": "http://localhost:3000/plugin/LimitChecker.zip",
-            "alias": "LimitChecker",
-            "version": "1.0.0",
-            "target": "LimitChecker.application"
-        }
+  "startup_app": {
+    "name": "Reactive Trader Cloud (LOCAL)",
+    "url": "http://localhost:3000/launcher",
+    "uuid": "ReactiveLauncher",
+    "defaultWidth": 650,
+    "defaultHeight": 52,
+    "defaultTop": 160,
+    "defaultLeft": 30,
+    "autoShow": true,
+    "saveWindowState": false,
+    "resizable": false,
+    "shadow": true,
+    "frame": false,
+    "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+    "preload": [
+      {
+        "url": "http://localhost:3000/plugin/service-loader.js"
+      },
+      {
+        "url": "http://localhost:3000/plugin/fin.desktop.Excel.js"
+      }
     ],
-    "services": [
-        {
-            "name": "layouts",
-            "config": {
-              "features": {
-                "snap": true,
-                "dock": true,
-                "tab": false
-              }
-            }
-        },
-        {
-            "name": "fdc3"
-        },
-        {
-            "name": "notifications"
+    "backgroundColor": "#444C5F",
+    "alwaysOnTop": true,
+    "icon": "http://localhost:3000/static/media/icon.ico",
+    "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
+    "contextMenu": true,
+    "accelerator": {
+      "devtools": true,
+      "reload": true,
+      "reloadIgnoringCache": true,
+      "zoom": true
+    }
+  },
+  "runtime": {
+    "arguments": "--remote-debugging-port=9222",
+    "version": "10.66.39.43",
+    "futureVersion": "10.66.39.43",
+    "forceLatest": true
+  },
+  "shortcut": {
+    "company": "Adaptive Consulting",
+    "description": "Desktop Reactive Trader Cloud",
+    "icon": "http://localhost:3000/static/media/icon.ico",
+    "name": "Reactive Trader Cloud"
+  },
+  "appAssets": [
+    {
+      "src": "http://localhost:3000/plugin/add-in.zip",
+      "alias": "excel-api-addin",
+      "version": "2.0.0",
+      "forceDownload": true
+    },
+    {
+      "src": "http://localhost:3000/plugin/LimitChecker.zip",
+      "alias": "LimitChecker",
+      "version": "1.0.0",
+      "target": "LimitChecker.application"
+    }
+  ],
+  "services": [
+    {
+      "name": "layouts",
+      "config": {
+        "features": {
+          "snap": true,
+          "dock": true,
+          "tab": false
         }
-    ]
+      },
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/app.json"
+    },
+    {
+      "name": "fdc3",
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/app.json"
+    },
+    {
+      "name": "notifications",
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/app.json"
+    }
+  ]
 }
