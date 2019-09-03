@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { PositionsChartModel } from '../model/positionsChartModel'
-import { AnalyticsBarChart } from './analyticsBarChart'
-import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
 import { ProfitAndLoss, ProfitAndLossProps } from './ProfitAndLoss'
 import { CurrencyPair } from 'rt-types'
 import { useForceUpdate, useWindowSize } from 'rt-util'
 
-import { AnalyticsStyle, BubbleChart, Title } from './styled'
+import { AnalyticsStyle } from './styled'
+
+import { Positions } from './Positions'
+import { PnL } from './PnL'
 
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
@@ -41,15 +42,9 @@ const Analytics: React.FC<Props> = ({
 
       {positionsChartModel && positionsChartModel.seriesData.length !== 0 && (
         <React.Fragment>
-          <Title>Positions</Title>
-          <BubbleChart>
-            <PositionsBubbleChart
-              data={positionsChartModel.seriesData}
-              currencyPairs={currencyPairs}
-            />
-          </BubbleChart>
-          <Title>PnL</Title>
-          <AnalyticsBarChart chartData={positionsChartModel.seriesData} />
+          <Positions data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+
+          <PnL chartData={positionsChartModel.seriesData} />
         </React.Fragment>
       )}
     </AnalyticsStyle>
