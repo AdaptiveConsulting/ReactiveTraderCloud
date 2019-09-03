@@ -3,16 +3,14 @@ import { transparentColor } from '../globals/variables'
 
 export const AnalyticsStyle = styled.div`
   border-radius: 0.25rem;
-  flex: 1;
   color: ${({ theme }) => theme.core.textColor};
   background-color: ${({ theme }) => theme.core.lightBackground};
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
   position: relative;
   padding: 1rem;
   font-size: 1rem;
-  overflow-x: hidden;
-  overflow-y: scroll;
   scrollbar-width: thin;
 
   /* axis */
@@ -82,6 +80,7 @@ export const AnalyticsLineChartWrapper = styled.div`
   width: 100%;
   height: 20%;
   margin-top: 20px;
+  margin-bottom: 20px;
 `
 
 export const Header = styled.div`
