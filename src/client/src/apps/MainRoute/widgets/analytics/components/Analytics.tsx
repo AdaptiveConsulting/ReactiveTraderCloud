@@ -1,27 +1,20 @@
 import React, { useEffect } from 'react'
-import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
 import { AnalyticsBarChart } from './analyticsBarChart'
 import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
-
+import { ProfitAndLoss, ProfitAndLossProps } from './ProfitAndLoss'
 import { CurrencyPair } from 'rt-types'
 import { useForceUpdate, useWindowSize } from 'rt-util'
 
-import { AnalyticsStyle, BubbleChart, Title, AnalyticsLineChartWrapper, Header } from './styled'
-import AnalyticsWindowHeader from './AnalyticsHeader'
-import { AnalyticsLineChart } from './analyticsLineChart'
-import LastPosition from './LastPosition'
+import { AnalyticsStyle, BubbleChart, Title } from './styled'
 
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
 
-export interface Props {
-  canPopout: boolean
+export interface Props extends ProfitAndLossProps {
   currencyPairs: CurrencyPairs
-  analyticsLineChartModel: AnalyticsLineChartModel
   positionsChartModel?: PositionsChartModel
-  onPopoutClick?: (x: number, y: number) => void
 }
 
 const Analytics: React.FC<Props> = ({
@@ -40,14 +33,12 @@ const Analytics: React.FC<Props> = ({
   }, [windowSize])
   return (
     <AnalyticsStyle>
-      <Header>
-        <Title>Profit &amp; Loss</Title>
-        <AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
-      </Header>
-      <LastPosition lastPos={analyticsLineChartModel.lastPos} />
-      <AnalyticsLineChartWrapper>
-        <AnalyticsLineChart model={analyticsLineChartModel} />
-      </AnalyticsLineChartWrapper>
+      <ProfitAndLoss
+        canPopout={canPopout}
+        onPopoutClick={onPopoutClick}
+        analyticsLineChartModel={analyticsLineChartModel}
+      />
+
       {positionsChartModel && positionsChartModel.seriesData.length !== 0 && (
         <React.Fragment>
           <Title>Positions</Title>
