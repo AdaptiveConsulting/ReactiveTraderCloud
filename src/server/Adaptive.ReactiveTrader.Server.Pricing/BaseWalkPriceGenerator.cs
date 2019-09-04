@@ -1,6 +1,5 @@
 using Adaptive.ReactiveTrader.Contract;
 using System;
-using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
 
@@ -16,17 +15,16 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     protected decimal _initial;
     protected decimal _previousMid;
 
-    public BaseWalkPriceGenerator(string symbol, decimal initial, int precision)
+    public BaseWalkPriceGenerator(CurrencyPair currencyPair, decimal initial, int precision)
     {
-      Symbol = symbol;
+      CurrencyPair = currencyPair;
       _initial = _previousMid = initial;
       _precision = precision;
       EffectiveDate = new DateTime(2019, 1, 1);
       SourceName = PriceSource.HardCodedSourceName;
-      //PriceChanges = _priceChanges.Replay(1).RefCount();
     }
 
-    public string Symbol { get; }
+    public CurrencyPair CurrencyPair { get; }
     public DateTime EffectiveDate { get; private set; }
     public string SourceName { get; private set; }
     public decimal SampleRate => _previousMid;
@@ -51,7 +49,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
     public IObservable<SpotPriceDto> PriceChanges => _priceChanges;
 
-    public override string ToString() => $"{Symbol}|{EffectiveDate}|{_initial}|{SourceName}";
+    public override string ToString() => $"{CurrencyPair.Symbol}|{EffectiveDate}|{_initial}|{SourceName}";
     
 
   }

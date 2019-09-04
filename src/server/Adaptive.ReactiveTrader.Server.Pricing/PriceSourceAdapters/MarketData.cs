@@ -4,18 +4,18 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
 {
   public class MarketData
   {
-    public MarketData(string symbol, decimal sampleRate, DateTime date, string source)
+    public MarketData(CurrencyPair currencyPair, decimal sampleRate, DateTime date, string source)
     {
-      Symbol = symbol;
+      CurrencyPair = currencyPair;
       SampleRate = sampleRate;
       Date = date;
       Source = source;
     }
-    public string Symbol { get; }
+    public CurrencyPair CurrencyPair { get; }
     public decimal SampleRate { get; }
     public DateTime Date { get; }
     public string Source { get; }
 
-    public override string ToString() => $"{Symbol} | {SampleRate} | {Date} | {Source}";
+    public override string ToString() => $"{CurrencyPair.Symbol} | {SampleRate} | {Date} | {Source}";
   }
 }

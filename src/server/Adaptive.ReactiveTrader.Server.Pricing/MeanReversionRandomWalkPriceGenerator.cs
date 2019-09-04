@@ -10,7 +10,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     private readonly decimal _reversion;
     private readonly decimal _vol;
 
-    public MeanReversionRandomWalkPriceGenerator(string symbol, decimal initial, int precision, decimal reversionCoefficient = 0.001m, decimal volatility = 5m) : base(symbol, initial, precision)
+    public MeanReversionRandomWalkPriceGenerator(CurrencyPair currencyPair, decimal initial, int precision, decimal reversionCoefficient = 0.001m, decimal volatility = 5m)
+      : base(currencyPair, initial, precision)
     {
       _reversion = reversionCoefficient;
       var power = (decimal)Math.Pow(10, precision);
@@ -29,7 +30,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
       _priceChanges.OnNext(
         new SpotPriceDto
         {
-          Symbol = Symbol,
+          Symbol = CurrencyPair.Symbol,
           ValueDate = DateTime.UtcNow.AddDays(2).Date,
           Mid = Format(_previousMid),
           Ask = Format(_previousMid * (1 + _halfSpreadPercentage)),

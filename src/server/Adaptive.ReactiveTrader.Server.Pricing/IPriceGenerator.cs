@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
   public interface IPriceGenerator
   {
-    string Symbol { get; }
+    CurrencyPair CurrencyPair { get; }
     DateTime EffectiveDate { get; }
     string SourceName { get; }
     decimal SampleRate { get; }

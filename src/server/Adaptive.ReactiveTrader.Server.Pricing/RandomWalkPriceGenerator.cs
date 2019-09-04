@@ -8,7 +8,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
   {
     private readonly int _halfSpread;
 
-    public RandomWalkPriceGenerator(string symbol, decimal initial, int precision) : base(symbol, initial, precision)
+    public RandomWalkPriceGenerator(CurrencyPair currencyPair, decimal initial, int precision)
+      : base(currencyPair, initial, precision)
     {
       _halfSpread = Random.Value.Next(2, 10);
     }
@@ -27,7 +28,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
       _priceChanges.OnNext(
         new SpotPriceDto
         {
-          Symbol = Symbol,
+          Symbol = CurrencyPair.Symbol,
           ValueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday(),
           Mid = newMid,
           Ask = newMid + _halfSpread / pow,

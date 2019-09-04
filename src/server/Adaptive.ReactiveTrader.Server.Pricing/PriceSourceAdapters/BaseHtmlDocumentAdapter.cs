@@ -1,7 +1,5 @@
 using HtmlAgilityPack;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,41 +8,23 @@ using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
 {
-  public abstract class AdapterBase
+  /// <summary>
+  /// Requests an html page from a remote source and implements methods to find an html table and parse it into json
+  /// </summary>
+  public class BaseHtmlDocumentAdapter
   {
-    public AdapterBase(string requestUriString)
+    public BaseHtmlDocumentAdapter(string requestUriString)
     {
       RequestUriString = requestUriString;
     }
 
-    public abstract Task<IEnumerable<MarketData>> GetMarketData();
-
     public string RequestUriString { get; }
-
-    /// <summary>
-    /// Called when the remote site returns a response containing json
-    /// </summary>
-    /// <returns>The http response content as a JObject</returns>
-    protected async Task<JObject> GetRequestJson(string queryParameters = "")
-    {
-      using (var stream = await GetRequestStream(RequestUriString + queryParameters))
-      {
-        using (var sr = new StreamReader(stream))
-        {
-          using (var jr = new JsonTextReader(sr))
-          {
-            var serializer = new JsonSerializer();
-            return serializer.Deserialize<JObject>(jr);
-          }
-        }
-      }
-    }
 
     /// <summary>
     /// Creates an HttpClient and executes a get request
     /// </summary>
     /// <returns>The http response content as a Stream</returns>
-    protected async Task<Stream> GetRequestStream(string requestUriString)
+    public async Task<Stream> GetRequestStream(string requestUriString)
     {
       using (var hc = new HttpClient())
       {
@@ -57,7 +37,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
     /// Called when the remote site returns a response containing html
     /// </summary>
     /// <returns>The http response content as an HtmlDocument that can be queried with XPath</returns>
-    protected async Task<HtmlDocument> GetRequestHtmlDocument(string queryParameters = "")
+    public async Task<HtmlDocument> GetRequestHtmlDocument(string queryParameters = "")
     {
       using (var stream = await GetRequestStream(RequestUriString + queryParameters))
       {
@@ -73,7 +53,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
     /// <param name="documentNode"></param>
     /// <param name="findRowHeaders"></param>
     /// <returns>The HtmlNode for the table, or null if none was found</returns>
-    protected HtmlNode FindTableUsingRowHeaders(HtmlNode documentNode, string[] findRowHeaders)
+    public HtmlNode FindTableUsingRowHeaders(HtmlNode documentNode, string[] findRowHeaders)
     {
       var headerText = new HashSet<string>(findRowHeaders);
       var tables = documentNode.SelectNodes("//table");
@@ -90,7 +70,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
     /// </summary>
     /// <param name="table">the html table located</param>
     /// <returns>JArray</returns>
-    protected JArray GetHtmlTable(HtmlNode table)
+    public JArray GetHtmlTable(HtmlNode table)
     {
       var jsonRows = new List<JObject>();
       var headers = table.SelectNodes("//th").Select(x => x.InnerText).ToArray();
@@ -106,14 +86,6 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
         jsonRows.Add(new JObject(properties.ToArray()));
       }
       return new JArray(jsonRows.ToArray());
-    }
-
-    protected static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
-    {
-      // Unix timestamp is seconds past epoch
-      var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-      dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
-      return dtDateTime;
     }
 
   }
