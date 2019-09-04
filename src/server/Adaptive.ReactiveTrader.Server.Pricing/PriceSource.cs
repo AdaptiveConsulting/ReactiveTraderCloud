@@ -108,16 +108,23 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     {
       foreach (var adapter in _marketAdapters)
       {
-        var marketData = new List<MarketData>(await adapter.GetMarketData());
-        foreach (var item in marketData)
+        try
         {
-          //Any item older than 10 minutes is considered available to update, this way if the preceeding adapters did not update the rate then perhaps the next adapter will
-          if (
-            _priceGenerators.TryGetValue(item.CurrencyPair.Symbol, out IPriceGenerator priceGenerator) &&
-            (DateTime.UtcNow - priceGenerator.EffectiveDate).TotalMinutes > 10)
+          var marketData = new List<MarketData>(await adapter.GetMarketData());
+          foreach (var item in marketData)
           {
-            priceGenerator.UpdateInitialValue(item.SampleRate, item.Date, item.Source);
+            //Any item older than 10 minutes is considered available to update, this way if the preceeding adapters did not update the rate then perhaps the next adapter will
+            if (
+              _priceGenerators.TryGetValue(item.CurrencyPair.Symbol, out IPriceGenerator priceGenerator) &&
+              (DateTime.UtcNow - priceGenerator.EffectiveDate).TotalMinutes > 10)
+            {
+              priceGenerator.UpdateInitialValue(item.SampleRate, item.Date, item.Source);
+            }
           }
+        }
+        catch(Exception ex)
+        {
+          Log.Error(ex, $"Adapter for {adapter.RequestUriString} threw an unhandled exception");
         }
       }
       ComputeMissingReciprocals();
