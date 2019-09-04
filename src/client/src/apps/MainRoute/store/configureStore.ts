@@ -15,9 +15,11 @@ import { createBlotterEpic } from '../widgets/blotter/index'
 import { createSpotTileEpic } from '../widgets/spotTile/index'
 
 import rootReducer from './combineReducers'
+import { layoutEpic } from '../layouts/epics'
 
 export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [
+    layoutEpic,
     referenceServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,

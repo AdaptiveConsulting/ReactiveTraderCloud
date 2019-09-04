@@ -1,14 +1,11 @@
 import { setupLayout, LayoutActions } from './layoutActions'
-import { map, switchMapTo, takeUntil, switchMap } from 'rxjs/operators'
+import { switchMapTo } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
-import { ConnectionStatusService } from '../layoutService'
+import { platform } from 'rt-platforms'
 
-type LayoutSetupAction = ReturnType<typeof LayoutActions.setup>
-
-export const connectionStatusEpic: ApplicationEpic = (action$, state$) => {
-  const layoutService = new ConnectionStatusService(connection$)
+export const layoutEpic: ApplicationEpic = (action$, state$) => {
   return action$.pipe(
     setupLayout,
-    switchMap(async ({ stuff }) => {}),
+    switchMapTo(platform.setupWorkspaces(LayoutActions.updateContainerVisibilityAction)),
   )
 }

@@ -1,14 +1,12 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-restricted-globals */
 
-import { Store } from 'redux'
 import { BasePlatformAdapter, LimitChecker } from '../../platformAdapter'
 import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../../types'
 import { openDesktopWindow } from './window'
-import { fromEventPattern } from 'rxjs'
+import { fromEventPattern, Observable, Observer } from 'rxjs'
 import { excelAdapter } from './excel'
 import { CurrencyPairPositionWithPrice } from 'rt-types'
-import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
 import { workspaces } from 'openfin-layouts'
 import { Notification, NotificationButtonClickedEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
@@ -18,13 +16,14 @@ import Logo from './logo'
 import { OpenFinLimitChecker } from '../openFin'
 import { OpenFinHeader, OpenFinControls } from '../components'
 
-export async function setupWorkspaces(store: Store) {
-  if (typeof fin !== 'undefined') {
-    await workspaces.setRestoreHandler((workspace: workspaces.WorkspaceApp) =>
-      appRestoreHandler(workspace, store),
-    )
-    await workspaces.ready()
-  }
+export function setupWorkspaces(action: any) {
+  return new Observable<any>(observer => {
+    workspaces
+      .setRestoreHandler((workspace: workspaces.WorkspaceApp) =>
+        appRestoreHandler(workspace, observer, action),
+      )
+      .then(workspaces.ready)
+  })
 }
 
 type OpenFinWindowState = Parameters<Parameters<fin.OpenFinWindow['getState']>[0]>[0]
@@ -186,9 +185,15 @@ export default class OpenFin extends BasePlatformAdapter {
   getNotificationBody({ tradeNotification }: NotificationMessage) {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
   }
+
+  setupWorkspaces = setupWorkspaces
 }
 
-async function appRestoreHandler(workspaceApp: workspaces.WorkspaceApp, store: Store) {
+async function appRestoreHandler(
+  workspaceApp: workspaces.WorkspaceApp,
+  observer: Observer<any>,
+  action: (data: Object) => void,
+) {
   const ofApp = await fin.Application.getCurrent()
   const openWindows = await ofApp.getChildWindows()
 
@@ -203,8 +208,8 @@ async function appRestoreHandler(workspaceApp: workspaces.WorkspaceApp, store: S
       await openDesktopWindow(
         config,
         () => {
-          store.dispatch(
-            LayoutActions.updateContainerVisibilityAction({
+          observer.next(
+            action({
               name: win.name,
               display: true,
             }),
@@ -214,8 +219,8 @@ async function appRestoreHandler(workspaceApp: workspaces.WorkspaceApp, store: S
       )
 
       // we need to 'remove' the child window from the main window
-      store.dispatch(
-        LayoutActions.updateContainerVisibilityAction({
+      observer.next(
+        action({
           name: win.name,
           display: false,
         }),

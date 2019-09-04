@@ -17,6 +17,12 @@ class LimitCheckerImpl implements LimitChecker {
   }
 }
 
+const setupWorkspaces = () =>
+  new Observable(observer => {
+    observer.next()
+    observer.complete()
+  })
+
 interface PlatformAdapterInterface {
   readonly type: PlatformType
 
@@ -41,6 +47,8 @@ interface PlatformAdapterInterface {
   fdc3: {
     broadcast?: (context: Context) => void
   }
+
+  setupWorkspaces: (action?: any) => Observable<any>
 
   style: {
     [key: string]: string | number
@@ -87,6 +95,8 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   }
 
   limitChecker: LimitChecker = new LimitCheckerImpl()
+
+  setupWorkspaces: (action?: object) => Observable<any> = setupWorkspaces
 
   style = {
     height: '100%',

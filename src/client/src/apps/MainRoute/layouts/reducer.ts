@@ -1,5 +1,6 @@
-import { LAYOUT_ACTION_TYPES, LayoutActions } from './layoutActions'
+import { LAYOUT_ACTION_TYPES, LayoutActions, ContainerVisibility } from './layoutActions'
 import { externalWindowDefault } from 'rt-components'
+import { ActionWithPayload } from 'rt-util/ActionHelper'
 
 export interface WindowPosition {
   visible: boolean
@@ -60,7 +61,9 @@ export const layoutReducer = (
   }
 }
 
-const getWindowPosition = (action: LayoutActions): WindowPosition => ({
+const getWindowPosition = (
+  action: ActionWithPayload<LAYOUT_ACTION_TYPES.CONTAINER_VISIBILITY_UPDATE, ContainerVisibility>,
+): WindowPosition => ({
   visible: action.payload.display,
   x: action.payload.x,
   y: action.payload.y,
