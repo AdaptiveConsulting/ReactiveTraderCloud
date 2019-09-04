@@ -160,6 +160,7 @@ export default class OpenFin extends BasePlatformAdapter {
               iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
             },
           ],
+          category: 'Trade Executed',
         })
         .then((successVal: Notification) => {
           console.info('Notification success', successVal)
