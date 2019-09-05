@@ -11,7 +11,8 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
   /// </summary>
   public class FinancialModelingPrepAdapter : IMarketDataAdapter
   {
-    private const string timeZoneId = "US Eastern Standard Time";
+    private const string windowsTimeZoneId = "US Eastern Standard Time";
+    private const string linuxTimeZoneId = "America/New_York";
     private const string requestUriString = "https://financialmodelingprep.com/api/v3/forex";
     private const string jsonDataPropertyName = "forexList";
     private const string sourceName = "FinancialModelingPrep";
@@ -23,7 +24,14 @@ namespace Adaptive.ReactiveTrader.Server.Pricing.PriceSourceAdapters
       _adapter = new BaseJsonApiAdapter(requestUriString);
 
       //This API seems to be based on the US east coast and publishes what looks like local times (not even UTC)
-      TimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+      try
+      {
+        TimeZone = TimeZoneInfo.FindSystemTimeZoneById(windowsTimeZoneId);
+      }
+      catch (TimeZoneNotFoundException)
+      {
+        TimeZone = TimeZoneInfo.FindSystemTimeZoneById(linuxTimeZoneId);
+      }
     }
 
     public string RequestUriString => _adapter.RequestUriString;
