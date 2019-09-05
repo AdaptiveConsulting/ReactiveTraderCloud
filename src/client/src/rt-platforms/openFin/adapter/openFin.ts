@@ -4,7 +4,7 @@
 import { BasePlatformAdapter, LimitChecker } from '../../platformAdapter'
 import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../../types'
 import { openDesktopWindow } from './window'
-import { fromEventPattern, Observable, Observer } from 'rxjs'
+import { fromEventPattern, Observable } from 'rxjs'
 import { excelAdapter } from './excel'
 import { CurrencyPairPositionWithPrice } from 'rt-types'
 import { workspaces } from 'openfin-layouts'
@@ -16,11 +16,18 @@ import Logo from './logo'
 import { OpenFinLimitChecker } from '../openFin'
 import { OpenFinHeader, OpenFinControls } from '../components'
 
-export function setupWorkspaces(action: any) {
-  return new Observable<any>(observer => {
+interface WinProps {
+  name: string
+  display: boolean
+}
+
+export function setupWorkspaces() {
+  return new Observable<WinProps>(observer => {
     workspaces
       .setRestoreHandler((workspace: workspaces.WorkspaceApp) =>
-        appRestoreHandler(workspace, observer, action),
+        appRestoreHandler(workspace, (data: WinProps) => {
+          observer.next(data)
+        }),
       )
       .then(workspaces.ready)
   })
@@ -191,8 +198,7 @@ export default class OpenFin extends BasePlatformAdapter {
 
 async function appRestoreHandler(
   workspaceApp: workspaces.WorkspaceApp,
-  observer: Observer<any>,
-  action: (data: Object) => void,
+  callback: (data: WinProps) => void,
 ) {
   const ofApp = await fin.Application.getCurrent()
   const openWindows = await ofApp.getChildWindows()
@@ -208,23 +214,19 @@ async function appRestoreHandler(
       await openDesktopWindow(
         config,
         () => {
-          observer.next(
-            action({
-              name: win.name,
-              display: true,
-            }),
-          )
+          callback({
+            name: win.name,
+            display: true,
+          })
         },
         { defaultLeft: win.bounds.left, defaultTop: win.bounds.top },
       )
 
       // we need to 'remove' the child window from the main window
-      observer.next(
-        action({
-          name: win.name,
-          display: false,
-        }),
-      )
+      callback({
+        name: win.name,
+        display: true,
+      })
     } else {
       await positionWindow(win)
     }
