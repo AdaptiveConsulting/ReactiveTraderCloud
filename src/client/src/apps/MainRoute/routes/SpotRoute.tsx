@@ -24,15 +24,6 @@ const getTileViewFromQueryStr: (queryStr: string) => TileViews = queryStr => {
     : Object.values(TileViews).includes(tileView)
     ? (tileView as TileViews)
     : TileViews.Normal
-
-  if (!tileView) {
-    return TileViews.Normal
-  } else {
-    if (Object.values(TileViews).includes(tileView)) {
-      return tileView as TileViews
-    }
-    return TileViews.Normal
-  }
 }
 export default ({ location: { search }, match }: RouteComponentProps<{ symbol: string }>) => {
   const tileView = getTileViewFromQueryStr(search)
