@@ -188,7 +188,7 @@ export default class OpenFin extends BasePlatformAdapter {
   }
 
   getNotificationBody({ tradeNotification }: NotificationMessage) {
-    return `vs. OOOOOOOOOOOOOOOO ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
+    return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
   }
 }
 
