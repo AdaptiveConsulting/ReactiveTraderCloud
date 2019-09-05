@@ -32,6 +32,7 @@ export const OriginTickWrapper = styled(FlexDiv)`
 export const PriceLabel = styled.div<{ color: string; hovering: boolean }>`
   align-self: center;
   font-size: ${({ hovering }) => (hovering ? '18px' : '11px')};
+  padding-bottom: ${({ hovering }) => (hovering ? '3px' : '0px')};
   transition: font-size 0.2s;
   color: ${({ theme, color }) => theme.template[color].normal};
 `
