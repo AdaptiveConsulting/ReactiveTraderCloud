@@ -5,9 +5,14 @@ export const AnalyticsStyle = styled.div`
   border-radius: 0.25rem;
   color: ${({ theme }) => theme.core.textColor};
   background-color: ${({ theme }) => theme.core.lightBackground};
+  display: grid;
+  grid-template-rows: repeat(3, 100%);
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 0.75rem;
   width: 100%;
-  height: 100%;
+  height: auto;
   overflow-y: scroll;
+  overflow-x: hidden;
   position: relative;
   padding: 1rem;
   font-size: 1rem;
@@ -78,7 +83,7 @@ export const AnalyticsStyle = styled.div`
 
 export const AnalyticsLineChartWrapper = styled.div`
   width: 100%;
-  height: 20%;
+  height: 80%;
   margin-top: 20px;
   margin-bottom: 20px;
 `
@@ -86,13 +91,15 @@ export const AnalyticsLineChartWrapper = styled.div`
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  grid-column: 1/-1;
+  grid-row-start: 1;
+  grid-row-end: 2;
 `
 
 export const Title = styled.div`
   margin-bottom: 1rem;
-  width: auto;
-  height: auto;
+  width: 84px;
+  height: 18px;
   font-size: 15px;
   font-weight: normal;
 `
