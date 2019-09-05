@@ -4,6 +4,7 @@ src/client/coverage
 .vs/
 npm-debug.log
 dist/
+build/
 *.suo
 project.lock.json
 *.xproj.user
