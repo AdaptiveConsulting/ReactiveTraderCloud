@@ -1,13 +1,12 @@
 import React from 'react'
 import { platform, PlatformProvider } from 'rt-components'
 import { styled, ThemeName, ThemeProvider, GlobalStyle, useTheme } from 'rt-theme'
-import { getPlatform } from 'rt-util'
 
 const Story: React.FC = ({ children }) => (
   <>
     <GlobalStyle />
     <ThemeProvider>
-      <PlatformProvider value={getPlatform(platform)}>
+      <PlatformProvider value={platform()}>
         <StyledStory>
           <StoryToolbar />
           <Content>{children}</Content>

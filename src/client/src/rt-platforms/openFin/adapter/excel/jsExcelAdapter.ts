@@ -6,7 +6,6 @@ import { Trade, CurrencyPairPositionWithPrice } from 'rt-types'
 import { platform } from 'rt-platforms'
 import { InteropTopics } from '../../../types'
 import { ExcelAdapter } from './types'
-import { getPlatform } from 'rt-util'
 
 const EXCEL_HOST_URL = `${location.protocol}//${location.host}/static/excel`
 const EXCEL_FILE_NAME = 'RTExcel.xlsx'
@@ -22,7 +21,8 @@ const RTExcelConfig = {
   ClosePositionPlaceholderColumn: 13, // Index of 'M'
 }
 
-const platformInstance = getPlatform(platform) || { hasFeature: () => false }
+/* eslint-disable-next-line */
+const platformInstance = (platform && platform()) || { hasFeature: () => false }
 
 class JSExcelAdapter implements ExcelAdapter {
   rtWorkbook: fin.ExcelWorkbook

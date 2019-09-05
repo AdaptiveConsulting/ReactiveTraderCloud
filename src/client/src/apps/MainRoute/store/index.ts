@@ -5,7 +5,6 @@ import { platform, setupWorkspaces } from 'rt-components'
 import FakeUserRepository from '../fakeUserRepository'
 import { createApplicationServices } from './applicationServices'
 import configureStore from './configureStore'
-import { getPlatform } from 'rt-util'
 
 const LOG_NAME = 'Application Service: '
 
@@ -17,8 +16,8 @@ const storeGen = () => {
         'com.weareadaptive.reactivetrader',
         +(process.env.REACT_APP_BROKER_PORT || location.port),
       ),
-      limitChecker: getPlatform(platform).limitChecker,
-      platform: getPlatform(platform),
+      limitChecker: platform().limitChecker,
+      platform: platform(),
       user: FakeUserRepository.currentUser,
     }),
   )

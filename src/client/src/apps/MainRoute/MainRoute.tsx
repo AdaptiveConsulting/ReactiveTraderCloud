@@ -1,12 +1,12 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
-import { platform, PlatformProvider } from 'rt-components'
+import { PlatformProvider } from 'rt-components'
 import { ThemeProvider } from 'rt-theme'
 import { Router } from './data'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
 import { store } from './store'
-import { getPlatform } from 'rt-util'
+import { platform } from 'rt-platforms'
 
 const MainRoute = () => (
   <React.Fragment>
@@ -19,7 +19,7 @@ const MainRoute = () => (
     </Helmet>
     <ThemeProvider>
       <ReduxProvider store={store}>
-        <PlatformProvider value={getPlatform(platform)}>
+        <PlatformProvider value={platform()}>
           <React.Fragment>
             <GlobalScrollbarStyle />
             <Router />

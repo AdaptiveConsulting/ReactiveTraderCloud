@@ -43,7 +43,6 @@ let platform: PlatformWrapper = {
 export const loadPlatform = () =>
   getPlatform().then(result => {
     platform.platform = result
-    return true
   })
 
-export default platform
+export default () => platform.platform
