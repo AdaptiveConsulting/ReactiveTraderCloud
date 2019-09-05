@@ -108,6 +108,10 @@ export const HrBar = styled.hr`
 export const BubbleChart = styled.div`
   text-anchor: middle;
   height: 18rem;
+  overflow: hidden;
+  & > div {
+    height: 100%;
+  }
 `
 
 export const Controls = styled('div')`

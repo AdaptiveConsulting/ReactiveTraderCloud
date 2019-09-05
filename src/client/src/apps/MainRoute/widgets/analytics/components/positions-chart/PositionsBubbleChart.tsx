@@ -186,8 +186,8 @@ export class PositionsBubbleChart extends Component<
 
     const svg = select(dom)
       .append('svg')
-      .attr('width', this.props.size.width)
-      .attr('height', this.props.size.height)
+      .attr('width', '100%')
+      .attr('height', '100%')
 
     addShadow(svg)
 
