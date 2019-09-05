@@ -5,21 +5,26 @@ import { platform, setupWorkspaces } from 'rt-components'
 import FakeUserRepository from '../fakeUserRepository'
 import { createApplicationServices } from './applicationServices'
 import configureStore from './configureStore'
+import { getPlatform } from 'rt-util'
 
 const LOG_NAME = 'Application Service: '
 
-export const store = configureStore(
-  createApplicationServices({
-    autobahn: new AutobahnConnectionProxy(
-      process.env.REACT_APP_BROKER_HOST || location.hostname,
-      'com.weareadaptive.reactivetrader',
-      +(process.env.REACT_APP_BROKER_PORT || location.port),
-    ),
-    limitChecker: platform.limitChecker,
-    platform,
-    user: FakeUserRepository.currentUser,
-  }),
-)
+const storeGen = () => {
+  return configureStore(
+    createApplicationServices({
+      autobahn: new AutobahnConnectionProxy(
+        process.env.REACT_APP_BROKER_HOST || location.hostname,
+        'com.weareadaptive.reactivetrader',
+        +(process.env.REACT_APP_BROKER_PORT || location.port),
+      ),
+      limitChecker: getPlatform(platform).limitChecker,
+      platform: getPlatform(platform),
+      user: FakeUserRepository.currentUser,
+    }),
+  )
+}
+
+export const store = storeGen()
 
 setupWorkspaces(store)
   .then(successVal => {

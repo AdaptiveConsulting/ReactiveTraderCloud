@@ -1,12 +1,13 @@
 import React from 'react'
 import { platform, PlatformProvider } from 'rt-components'
 import { styled, ThemeName, ThemeProvider, GlobalStyle, useTheme } from 'rt-theme'
+import { getPlatform } from 'rt-util'
 
 const Story: React.FC = ({ children }) => (
   <>
     <GlobalStyle />
     <ThemeProvider>
-      <PlatformProvider value={platform}>
+      <PlatformProvider value={getPlatform(platform)}>
         <StyledStory>
           <StoryToolbar />
           <Content>{children}</Content>
@@ -42,7 +43,8 @@ const IconButton = styled.div<{ type: string }>`
 
   cursor: pointer;
 
-  transition: background-color ${({ theme }) => theme.motion.duration}ms ${({ theme }) => theme.motion.easing};
+  transition: background-color ${({ theme }) => theme.motion.duration}ms
+    ${({ theme }) => theme.motion.easing};
 
   &:hover {
     background-color: ${({ theme }) => theme.button.secondary.active.backgroundColor};

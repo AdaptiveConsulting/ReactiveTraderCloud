@@ -3,9 +3,10 @@
 
 import { formTable, delay } from './utils/index'
 import { Trade, CurrencyPairPositionWithPrice } from 'rt-types'
-import { platform } from 'rt-components'
+import { platform } from 'rt-platforms'
 import { InteropTopics } from '../../../types'
 import { ExcelAdapter } from './types'
+import { getPlatform } from 'rt-util'
 
 const EXCEL_HOST_URL = `${location.protocol}//${location.host}/static/excel`
 const EXCEL_FILE_NAME = 'RTExcel.xlsx'
@@ -20,6 +21,8 @@ const RTExcelConfig = {
   ClosePositionPlaceholder: 'M',
   ClosePositionPlaceholderColumn: 13, // Index of 'M'
 }
+
+const platformInstance = getPlatform(platform) || { hasFeature: () => false }
 
 class JSExcelAdapter implements ExcelAdapter {
   rtWorkbook: fin.ExcelWorkbook
@@ -77,7 +80,7 @@ class JSExcelAdapter implements ExcelAdapter {
    * We are simulating the 'Close position' buttons with plain cells so we detect clicks this way
    */
   onPositionsSheetSelectionChanged = async ({ data }: fin.WorksheetSelectionChangedEventArgs) => {
-    if (!this.positionsSheet || !platform.hasFeature('interop')) {
+    if (!this.positionsSheet || !platformInstance.hasFeature('interop')) {
       return
     }
 
@@ -104,7 +107,7 @@ class JSExcelAdapter implements ExcelAdapter {
     const symbol = positionData[0].value
     const amount = Number(positionData[3].value) || 0
     if (amount !== 0) {
-      platform.interop.publish(InteropTopics.ClosePosition, { amount, symbol })
+      platformInstance.interop.publish(InteropTopics.ClosePosition, { amount, symbol })
       // Give enough time to execute the trade and the position to go to 0 before displaying the 'Close position' button again
       await delay(5000)
       await this.positionsSheet.setCells(

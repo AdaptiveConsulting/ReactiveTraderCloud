@@ -1,5 +1,5 @@
 import { publishPositionUpdateEpic } from './analyticsServiceEpic'
-import { PlatformAdapter } from 'rt-components'
+import { PlatformAdapter } from 'rt-platforms'
 import { ActionsObservable, StateObservable } from 'redux-observable'
 import { Action } from 'redux'
 import { PositionUpdates } from '../model'

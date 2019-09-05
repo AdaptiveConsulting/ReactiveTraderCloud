@@ -5,6 +5,7 @@ import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
 import { initiateSymphony } from 'rt-platforms'
 import { waitForObject } from 'rt-util'
+import { loadPlatform } from 'rt-platforms'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -20,6 +21,9 @@ async function init() {
     if (urlParams.has('waitFor')) {
       await waitForObject(urlParams.get('waitFor'))
     }
+
+    await loadPlatform()
+
     ReactDOM.render(
       <React.Fragment>
         <GlobalStyle />

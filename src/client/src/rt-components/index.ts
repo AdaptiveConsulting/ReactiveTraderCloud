@@ -4,20 +4,12 @@ import {
   setupWorkspaces,
   PlatformProvider,
   PlatformName,
-  PlatformAdapter,
   WindowConfig,
   usePlatform,
   ExternalWindow,
 } from 'rt-platforms'
 
-export {
-  platform,
-  usePlatform,
-  externalWindowDefault,
-  PlatformProvider,
-  PlatformAdapter,
-  setupWorkspaces,
-}
+export { platform, usePlatform, externalWindowDefault, PlatformProvider, setupWorkspaces }
 export type PlatformName = PlatformName
 export type WindowConfig = WindowConfig
 export { TearOff } from './tear-off'

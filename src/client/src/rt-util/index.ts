@@ -1,4 +1,5 @@
 import { ActionCreatorsMapObject } from 'redux'
+import { PlatformWrapper, PlatformAdapter } from 'rt-platforms'
 import { action, ActionUnion } from './ActionHelper'
 import {
   RequireAtLeastOne,
@@ -7,6 +8,9 @@ import {
   LiteralUnion,
   DeepPartial,
 } from './utilityTypes'
+
+export const getPlatform = (p: PlatformWrapper): PlatformAdapter => p && p.platform
+
 export { action }
 export { wait, getDeferredPromise } from './asyncUtils'
 export { useForceUpdate } from './hooks/useForceUpdate'

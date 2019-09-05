@@ -6,6 +6,7 @@ import { ThemeProvider } from 'rt-theme'
 import { Router } from './data'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
 import { store } from './store'
+import { getPlatform } from 'rt-util'
 
 const MainRoute = () => (
   <React.Fragment>
@@ -18,7 +19,7 @@ const MainRoute = () => (
     </Helmet>
     <ThemeProvider>
       <ReduxProvider store={store}>
-        <PlatformProvider value={platform}>
+        <PlatformProvider value={getPlatform(platform)}>
           <React.Fragment>
             <GlobalScrollbarStyle />
             <Router />

@@ -19,7 +19,7 @@ export const ActionButton = styled('button')`
 `
 
 const TileHeader: React.SFC<Props> = ({ ccyPair, date, displayCurrencyChart }) => {
-  const platform = usePlatform()
+  const platform = usePlatform() || { hasFeature: () => false }
 
   const share = useCallback(() => {
     if (platform.hasFeature('share')) {

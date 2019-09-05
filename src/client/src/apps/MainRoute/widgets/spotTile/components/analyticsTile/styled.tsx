@@ -1,6 +1,6 @@
 import { styled } from 'rt-theme'
 import { TileWrapperBase, SpotTileStyle } from '../styled'
-import { PlatformAdapter } from 'rt-components'
+import { PlatformAdapter } from 'rt-platforms'
 
 export const AnalyticsTileContent = styled.div`
   display: flex;
