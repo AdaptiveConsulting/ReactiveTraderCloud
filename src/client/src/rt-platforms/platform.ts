@@ -40,9 +40,8 @@ let platform: PlatformWrapper = {
   platform: null,
 }
 
-export const loadPlatform = () =>
-  getPlatform().then(result => {
-    platform.platform = result
-  })
+export const loadPlatform = getPlatform().then(result => {
+  if (!platform.platform) platform.platform = result
+})
 
 export default () => platform.platform

@@ -22,7 +22,7 @@ async function init() {
       await waitForObject(urlParams.get('waitFor'))
     }
 
-    await loadPlatform()
+    await loadPlatform
 
     ReactDOM.render(
       <React.Fragment>
