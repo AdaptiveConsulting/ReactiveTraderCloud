@@ -7,6 +7,12 @@ export interface WindowPosition {
   y?: number
 }
 
+export interface WindowPosition {
+  visible: boolean
+  x?: number
+  y?: number
+}
+
 interface TilesLayout {
   [key: string]: WindowPosition
 }
