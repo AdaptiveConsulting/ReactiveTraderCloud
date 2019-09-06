@@ -12,6 +12,7 @@ import { Notification, NotificationButtonClickedEvent } from 'openfin-notificati
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
+import { customEpics } from './epics'
 import Logo from './logo'
 import { OpenFinLimitChecker } from '../openFin'
 import { OpenFinHeader, OpenFinControls } from '../components'
@@ -194,7 +195,7 @@ export default class OpenFin extends BasePlatformAdapter {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
   }
 
-  setupWorkspaces = setupWorkspaces
+  customEpics = customEpics
 }
 
 async function appRestoreHandler(

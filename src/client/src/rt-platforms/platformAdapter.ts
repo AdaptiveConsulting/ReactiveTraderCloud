@@ -3,6 +3,8 @@ import { WindowConfig, PlatformFeatures, PlatformType } from './types'
 import { Context } from 'openfin-fdc3'
 import DefaultRoute from './defaultRoute'
 import Logo from './logo'
+import { ActionUnion } from 'rt-util/ActionHelper'
+import { Epic } from 'redux-observable'
 
 export interface LimitChecker {
   rpc(message?: object): Observable<boolean>
@@ -16,11 +18,6 @@ class LimitCheckerImpl implements LimitChecker {
     })
   }
 }
-
-const setupWorkspaces = () =>
-  new Observable(observer => {
-    observer.complete()
-  })
 
 interface PlatformAdapterInterface {
   readonly type: PlatformType
@@ -47,11 +44,11 @@ interface PlatformAdapterInterface {
     broadcast?: (context: Context) => void
   }
 
-  setupWorkspaces: () => Observable<any>
-
   style: {
     [key: string]: string | number
   }
+
+  customEpics: (action: ActionUnion<any>, types: any) => Array<Epic<any>>
 
   Logo: React.FC
 
@@ -95,11 +92,11 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
 
   limitChecker: LimitChecker = new LimitCheckerImpl()
 
-  setupWorkspaces: () => Observable<any> = setupWorkspaces
-
   style = {
     height: '100%',
   }
+
+  customEpics = (_: ActionUnion<any>, __: any): Array<any> => []
 
   PlatformHeader: React.FC<any> = () => null
 

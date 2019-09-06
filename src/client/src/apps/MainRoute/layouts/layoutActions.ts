@@ -1,5 +1,3 @@
-import { Action } from 'redux'
-import { ofType } from 'redux-observable'
 import { action, ActionUnion } from 'rt-util'
 
 export interface ContainerVisibility {
@@ -23,5 +21,4 @@ export const LayoutActions = {
 }
 
 export type SetupAction = ReturnType<typeof LayoutActions.setup>
-export const setupLayout = ofType<Action, SetupAction>(LAYOUT_ACTION_TYPES.SETUP)
 export type LayoutActions = ActionUnion<typeof LayoutActions>
