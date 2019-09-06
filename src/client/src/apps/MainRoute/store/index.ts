@@ -8,22 +8,18 @@ import configureStore from './configureStore'
 
 const LOG_NAME = 'Application Service: '
 
-const storeGen = () => {
-  return configureStore(
-    createApplicationServices({
-      autobahn: new AutobahnConnectionProxy(
-        process.env.REACT_APP_BROKER_HOST || location.hostname,
-        'com.weareadaptive.reactivetrader',
-        +(process.env.REACT_APP_BROKER_PORT || location.port),
-      ),
-      limitChecker: platform().limitChecker,
-      platform: platform(),
-      user: FakeUserRepository.currentUser,
-    }),
-  )
-}
-
-export const store = storeGen()
+export const store = configureStore(
+  createApplicationServices({
+    autobahn: new AutobahnConnectionProxy(
+      process.env.REACT_APP_BROKER_HOST || location.hostname,
+      'com.weareadaptive.reactivetrader',
+      +(process.env.REACT_APP_BROKER_PORT || location.port),
+    ),
+    limitChecker: platform().limitChecker,
+    platform: platform(),
+    user: FakeUserRepository.currentUser,
+  }),
+)
 
 setupWorkspaces(store)
   .then(successVal => {
