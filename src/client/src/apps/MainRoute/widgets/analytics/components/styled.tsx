@@ -18,9 +18,9 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   width: 100%;
   height: 100%;
   max-width: 60rem;
-  margin: 0 auto;
+  min-width: 20rem;
+  margin: auto;
   overflow-y: scroll;
-  overflow-x: hidden;
   position: relative;
   padding: 1rem;
   font-size: 1rem;
