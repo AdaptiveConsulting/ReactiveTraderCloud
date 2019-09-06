@@ -7,10 +7,13 @@ const AnalyticsRouteStyle = styled.div`
   padding: 0.625rem;
   margin: auto;
 `
-const AnalyticsRoute = () => (
-  <AnalyticsRouteStyle>
-    <AnalyticsContainer />
-  </AnalyticsRouteStyle>
-)
+
+const AnalyticsRoute = () => {
+  return (
+    <AnalyticsRouteStyle>
+      <AnalyticsContainer inExternalWindow={true} />
+    </AnalyticsRouteStyle>
+  )
+}
 
 export default AnalyticsRoute

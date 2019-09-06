@@ -3,8 +3,9 @@ import { PositionsChartModel } from '../model/positionsChartModel'
 import { ProfitAndLoss, ProfitAndLossProps } from './ProfitAndLoss'
 import { CurrencyPair } from 'rt-types'
 import { useForceUpdate, useWindowSize } from 'rt-util'
-import AnalyticsWindowHeader from './AnalyticsHeader'
-import { Title, AnalyticsStyle, Header } from './styled'
+
+import { AnalyticsStyle } from './styled'
+
 import { Positions } from './Positions'
 import { PnL } from './PnL'
 
@@ -14,8 +15,7 @@ export interface CurrencyPairs {
 
 export interface Props extends ProfitAndLossProps {
   currencyPairs: CurrencyPairs
-  onPopoutClick?: (x: number, y: number) => void
-  canPopout: boolean
+  inExternalWindow?: boolean
   positionsChartModel?: PositionsChartModel
 }
 
@@ -25,6 +25,7 @@ const Analytics: React.FC<Props> = ({
   analyticsLineChartModel,
   positionsChartModel,
   onPopoutClick,
+  inExternalWindow,
 }) => {
   const windowSize = useWindowSize()
   const forceUpdate = useForceUpdate()
@@ -34,12 +35,12 @@ const Analytics: React.FC<Props> = ({
     forceUpdate()
   }, [windowSize])
   return (
-    <AnalyticsStyle>
-      <Header>
-        <Title>Profit &amp; Loss</Title>
-        <AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
-      </Header>
-      <ProfitAndLoss analyticsLineChartModel={analyticsLineChartModel} />
+    <AnalyticsStyle inExternalWindow={inExternalWindow}>
+      <ProfitAndLoss
+        canPopout={canPopout}
+        onPopoutClick={onPopoutClick}
+        analyticsLineChartModel={analyticsLineChartModel}
+      />
 
       {positionsChartModel && positionsChartModel.seriesData.length !== 0 && (
         <React.Fragment>
