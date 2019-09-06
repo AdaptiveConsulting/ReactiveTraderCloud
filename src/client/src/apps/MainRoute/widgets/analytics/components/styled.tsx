@@ -1,16 +1,24 @@
 import { styled } from 'rt-theme'
 import { transparentColor } from '../globals/variables'
 
-export const AnalyticsStyle = styled.div`
+export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   border-radius: 0.25rem;
   color: ${({ theme }) => theme.core.textColor};
   background-color: ${({ theme }) => theme.core.lightBackground};
-  display: grid;
-  grid-template-rows: repeat(3, 100%);
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 0.75rem;
+  ${({ inExternalWindow }) =>
+    inExternalWindow
+      ? `@media (min-width: 640px) {
+      display: grid;
+      grid-template-rows: repeat(3, auto);
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 0.5rem;
+    }`
+      : ``}
+
   width: 100%;
-  height: auto;
+  height: 100%;
+  max-width: 60rem;
+  margin: 0 auto;
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
@@ -83,7 +91,7 @@ export const AnalyticsStyle = styled.div`
 
 export const AnalyticsLineChartWrapper = styled.div`
   width: 100%;
-  height: 80%;
+  height: 18rem;
   margin-top: 20px;
   margin-bottom: 20px;
 `
@@ -91,9 +99,7 @@ export const AnalyticsLineChartWrapper = styled.div`
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  grid-column: 1/-1;
-  grid-row-start: 1;
-  grid-row-end: 2;
+  margin-bottom: 0.5rem;
 `
 
 export const Title = styled.div`
