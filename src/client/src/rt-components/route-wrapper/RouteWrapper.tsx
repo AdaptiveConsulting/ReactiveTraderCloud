@@ -8,7 +8,9 @@ const RouteStyle = styled('div')<{ platform: PlatformAdapter }>`
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
   margin: 0 auto;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   user-select: none;
 
   /* When in Finsemble a 25px header is injected,

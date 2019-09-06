@@ -11,10 +11,7 @@ const SpotTileStyle = styled.div`
   min-height: 12rem;
   height: 12rem;
   padding: 0.625rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: 0 auto;
 `
 const getTileViewFromQueryStr: (queryStr: string) => TileViews = queryStr => {
   const parsedQueryString = queryString.parse(queryStr)
