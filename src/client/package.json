@@ -59,7 +59,6 @@
     ]
   },
   "dependencies": {
-    "uuid": "3.3.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.2",
@@ -76,7 +75,7 @@
     "moment": "^2.22.2",
     "openfin-fdc3": "^0.1.1",
     "openfin-layouts": "^1.0.5",
-    "openfin-notifications": "^0.10.1",
+    "openfin-notifications": "^0.11.0",
     "polished": "^3.4.1",
     "query-string": "^6.8.2",
     "react": "^16.8.6",
@@ -99,7 +98,8 @@
     "styled-components": "^4.3.2",
     "typeface-lato": "^0.0.54",
     "typeface-montserrat": "^0.0.54",
-    "ua-parser-js": "0.7.10"
+    "ua-parser-js": "0.7.10",
+    "uuid": "3.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
