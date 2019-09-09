@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: bot
+  template:
+    metadata:
+      labels:
+        component: bot
+    spec:
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: nlp-key
+      - name: symphony-cloud-key
+        secret:
+          secretName: symphony-key
+      containers:
+        - name: bot
+          image: reactivetradercloud/bot:4805
+          volumeMounts:
+          - name: google-cloud-key
+            mountPath: /var/secrets/google
+          - name:  symphony-cloud-key
+            mountPath: /var/secrets/symphony
+          env:
+            - name: BROKER_HOST
+              value: broker
+            - name: BROKER_PORT
+              value: '8000'
+            - name: BOT_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: bot-config
+                  key: bot-name
+            - name: BOT_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: bot-config
+                  key: bot-address
+            - name: PRIVATE_KEY_PATH
+              value: /var/secrets/symphony/
+            - name: PRIVATE_KEY_NAME
+              value: rsa.pem
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json

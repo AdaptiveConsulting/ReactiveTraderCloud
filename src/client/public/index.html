@@ -47,6 +47,20 @@
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
+
+  <script>
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if(urlParams.has('symphony')){
+      const script = document.createElement('script')
+      script.type = "text/javascript" 
+      script.src = "/symphony/symphony.js" 
+      script.charset = "utf-8"
+      document.head.appendChild(script)
+    }
+  </script>
+
   <div id="root"></div>
   <!--
       This HTML file is a template.

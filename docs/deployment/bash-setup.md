@@ -1,6 +1,6 @@
-# You want to: Setup Bash
+# Setup Bash
 
-- [You want to: Setup Bash](#you-want-to-setup-bash)
+- [Setup Bash](#you-want-to-setup-bash)
     - [Linux](#linux)
     - [Windows](#windows)
     - [Mac](#mac)

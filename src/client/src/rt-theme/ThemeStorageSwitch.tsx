@@ -5,12 +5,14 @@ import { withTheme } from 'styled-components'
 
 export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
 
-const ThemeStorageSwitch: React.FC<ThemeStorageSwitchProps & { theme: Theme }> = ({ theme, ...props }) => {
+const ThemeStorageSwitch: React.FC<ThemeStorageSwitchProps & { theme: Theme }> = ({
+  theme,
+  ...props
+}) => {
   const { themeName, toggleTheme } = useTheme()
 
   return (
     <Switch
-      ariaLabel="Switch Theme"
       onChange={toggleTheme}
       checked={themeName === ThemeName.Dark}
       checkedIcon={false}

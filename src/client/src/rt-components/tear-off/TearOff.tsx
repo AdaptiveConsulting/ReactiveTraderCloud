@@ -1,17 +1,15 @@
 import React, { useCallback } from 'react'
 import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
 import { styled } from 'rt-theme'
-import { LayoutActions } from '../../shell/layouts/layoutActions'
+import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
 import { useDispatch } from 'react-redux'
-import { Environment } from 'rt-system'
+import { usePlatform } from 'rt-components'
 
 type RenderCB = (popOut: (x?: number, y?: number) => void, tornOff: boolean) => JSX.Element
 
 const DragWrapper = styled.div`
   height: 100%;
 `
-const tilesAreDraggabe = !Environment.isRunningInIE()
-
 /* 
   we create a clone of the dragged node, set some styles and add it to the DOM
   we set the drag image to this node then remove it in a timeout
@@ -60,6 +58,7 @@ export interface TearOffProps {
 }
 
 const TearOff: React.FC<TearOffProps> = props => {
+  const { allowTearOff } = usePlatform()
   const dispatch = useDispatch()
   const { render, externalWindowProps, tornOff, dragTearOff } = props
   const windowName = externalWindowProps.config.name
@@ -83,7 +82,7 @@ const TearOff: React.FC<TearOffProps> = props => {
   if (dragTearOff) {
     return (
       <DragWrapper
-        draggable={tilesAreDraggabe}
+        draggable={allowTearOff}
         onDragEnd={(event: React.DragEvent<HTMLDivElement>) => {
           popOut(event.screenX, event.screenY)
         }}

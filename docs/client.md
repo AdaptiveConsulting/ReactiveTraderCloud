@@ -1,18 +1,18 @@
 # Reactive Trader Cloud - UI
 
-The trading client GUI is a single page app (SPA) build using JavaScript vNext (i.e. Ecmascript 6 transpiled with [babeljs.io](http://babeljs.io)).
+The trading client GUI is a single page app (SPA) built using Typescript, React, Redux and Styled components. It can run as a desktop application using Openfin, in the browser, or on mobile as a PWA.
 
 ## High level technologies
 
-* Html, javascript, css etc is built (i.e. transpiled and bundled) with [webpack](https://webpack.github.io). Script targets in `package.json` kick off webpack, tests etc.
-* Tests use [Karma](https://karma-runner.github.io) & [Jasmine](http://jasmine.github.io).
+* HTML5, Typescript, Redux and React
+* Tests use [Jest](https://jestjs.io/)
 * Streaming data abstractions are build with [RxJs](https://github.com/Reactive-Extensions/RxJS).
-* GUI state management is done with [esp-js](https://github.com/esp/esp-js), a scalable state management library that puts your model at the forefront of the design. It works well with uni directional data flow architecture.
-* Connectivity to the backend is done via [AutobahnJs](http://autobahn.ws/js/).
-* Styles build using [Sass](http://sass-lang.com/).
+* GUI state management is done with [redux](https://redux.js.org/).
+* Connectivity to the backend is done via [AutobahnJs](https://github.com/crossbario/autobahn-js).
+* Styles build using [Styled Components](https://www.styled-components.com/).
 
 ## Machine Setup
-Please ensure you have [Node](https://nodejs.org)(>=v5), [npm](https://github.com/npm/npm)(>=v3.5) and [Git](https://git-scm.com/downloads) installed on your machine and on your path.
+Please ensure you have [Node](https://nodejs.org)(>=v10), [npm](https://github.com/npm/npm)(>=v5) and [Git](https://git-scm.com/downloads) installed on your machine and on your path.
 
 ### Mac
 There are no additional packages to install other than Git and a recent build of Node.
@@ -24,8 +24,17 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 ```
 
 ### Windows
+Install the C++ Compiler. Visual Studio Express comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
 
-1. Install the C++ Compiler. [Visual Studio Express](https://www.visualstudio.com/en-US/products/visual-studio-express-vs) comes bundled with a free C++ compiler. Or, if you already have Visual Studio installed: Open Visual Studio and go to File -> New -> Project -> Visual C++ -> Install Visual C++ Tools for Windows Desktop. The C++ compiler is used to compile browser-sync (and perhaps other Node modules).
+
+## RT Enviroments
+
+We deploy Reactive Trader to two enviroments:
+
+* [Demo](https://web-demo.adaptivecluster.com/) 
+The most stable version of the application it always reflects the `master` branch
+* [Dev](https://web-dev.adaptivecluster.com/) The most up to date version of the application it always reflects the `develop` branch
+
 
 ## Starting the GUI
 
@@ -35,47 +44,49 @@ Clone the repo and install the necessary node modules:
 npm install  # Install Node modules listed in ./package.json
 npm start    # Compile and launches the webpack dev server. By default, the client connects to a demo environment.
 ```
-
 You can then browse the app at [http://localhost:3000](http://localhost:3000)
+
 
 ### Additional command line options
 
+Run the client with pointing to your local backend server:
+
 ```sh
-npm run dev:local
+npm run start:local-backend
 ```
 
-Similar to `npm run start`, but configures the client to point to your local backend server. You can then browse the app at [http://localhost:3000](http://localhost:3000)).
+Run the client with a back end on the cloud:
+
+```sh
+npm run start:dev-backend 
+
+# or
+
+npm run start:demo-backend
+```
+
+Runs unit tests with Jest.
 
 ```sh
 npm run test
 ```
-Runs unit tests with Karma and Jasmine.
+
+Create a production version of the application in the dist folder
 
 ```sh
-npm run test:dev
+npm run build
+
+# You can also build versions for particular enviroment
+npm run build:demo-backend
+npm run build:dev-backend
+
 ```
-Similar to `npm run test`, but will watch for changes and re-run tests.
+
+## Openfin
+
+Starts the application in Openfin pointing to an enviroment
 
 ```sh
-npm run lint
+npm start:openfin:demo-backend
+npm start:openfin:dev-backend
 ```
-Run ESLint against all `.js` files in `~/src`.
-Note the linter also runs by default during normal dev watch build (`npm run dev`).
-
-```sh
-npm run deploy
-```
-Run webpack using the webpack config.
-
-### Openfin
-
-```sh
-npm run dev:openfin:cloud
-```
-Starts the app in Openfin pointing to the demo environment
-
-```sh
-npm run dev:openfin:local
-```
-
-Starts the app in Openfin pointing to your local server

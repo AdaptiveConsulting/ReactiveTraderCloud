@@ -15,6 +15,6 @@ When [circle ci][circleci] runs a build, it generates docker images and uses the
 When you [build RTC locally][local-build], you have to define yourself the *build id*. It's just a string, so it can be *0*, *local* or *mylocalbuild*. It doesn't really matter as far as it continues to be local. If you want to push to [docker hub][dockerhub], you will have to choose something different than a *number* as they could be already used by RTC [pipeline with circleci][circleci].  
 - *ie: **issues599build0***
 
-[dockerhub]: https://store.docker.com/profiles/reactivetrader/
+[dockerhub]: https://hub.docker.com/u/reactivetradercloud/
 [circleci]: ./circleci.md
 [local-build]: ./build-rtc-locally.md

@@ -2,7 +2,15 @@ import { darken } from 'polished'
 import { mapValues } from 'lodash'
 import { keyframes } from 'styled-components'
 
-import { colors, template, AccentPaletteMap, Color, CorePalette, CorePaletteMap, AccentName } from './colors'
+import {
+  colors,
+  template,
+  AccentPaletteMap,
+  Color,
+  CorePalette,
+  CorePaletteMap,
+  AccentName,
+} from './colors'
 
 interface BaseTheme {
   white: Color
@@ -33,7 +41,7 @@ interface BaseTheme {
   // TODO (8/14/18) remove after theme migration
   [key: string]: any
 }
-
+/* eslint-disable-next-line */
 type GeneratedTheme = ReturnType<typeof createTheme>
 export type Theme = BaseTheme & GeneratedTheme
 

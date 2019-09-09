@@ -17,6 +17,7 @@ export default class AutobahnConnectionProxy implements AutobahnConnection {
   ) => void
 
   constructor(url: string, realm: string, port?: number) {
+    /* eslint-disable-next-line */
     const useSecure = location.protocol === 'https:'
     const securePort = 443
     const defaultPort = port ? port : 80
@@ -94,7 +95,11 @@ export default class AutobahnConnectionProxy implements AutobahnConnection {
   }
 
   onclose(
-    callback: (reason: DisconnectionReason, details: { reason: string; message: string }, willRetry: boolean) => void,
+    callback: (
+      reason: DisconnectionReason,
+      details: { reason: string; message: string },
+      willRetry: boolean,
+    ) => void,
   ) {
     this.onClose = callback
   }

@@ -27,6 +27,9 @@ jobs:
           name: Build pricehistory
           command: 'cd ./src/server/Adaptive.ReactiveTrader.Server.PriceHistory/ && docker build -t ${DOCKER_USER}/pricehistory:${CIRCLE_BUILD_NUM} .'
       - run:
+          name: Build bot
+          command: 'cd ./src/server/Adaptive.ReactiveTrader.Server.Bot/ && docker build -t ${DOCKER_USER}/bot:${CIRCLE_BUILD_NUM} .'
+      - run:
           name: Run broker
           command: 'docker run -d --net circleci --name broker ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM}'
       - run:
@@ -73,13 +76,14 @@ jobs:
           command: 'cd ./src/client && docker build -t ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} -f ./Dockerfile.dev .'
       - run:
           name: Run client tests
-          command: 'docker run ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
+          command: 'docker run -e CI=true ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
       - run:
           name: Push images to dockerhub
           command:
             'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin &&
             docker push ${DOCKER_USER}/client:${CIRCLE_BUILD_NUM} &&
             docker push ${DOCKER_USER}/pricehistory:${CIRCLE_BUILD_NUM} &&
+            docker push ${DOCKER_USER}/bot:${CIRCLE_BUILD_NUM} &&
             docker push ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} &&
             docker push ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM} &&
             docker push ${DOCKER_USER}/eventstore:${CIRCLE_BUILD_NUM} &&
@@ -127,8 +131,8 @@ jobs:
             kubectl --namespace=${NAMESPACE} set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/pricehistory:${BUILD_NUM}  
-
+            kubectl --namespace=${NAMESPACE} set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/pricehistory:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/bot-deployment bot=${DOCKER_USER}/bot:${BUILD_NUM}
 workflows:
   version: 2
   main:
