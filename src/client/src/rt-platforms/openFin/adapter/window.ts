@@ -36,7 +36,10 @@ export const openDesktopWindow = (
   onClose?: () => void,
   position?: {},
 ) => {
-  const { url, width: defaultWidth, height: defaultHeight } = config
+  const { url, width: defaultWidth, height: defaultHeight, maxHeight, maxWidth } = config
+  const minWidth = config.minWidth ? config.minWidth : 100
+  const minHeight = config.minHeight ? config.minHeight : 100
+
   return returnChildWindows().then((childWindows: fin.OpenFinWindow[]) => {
     let updatedPosition = {}
     const hasChildWindows = childWindows && childWindows.length > 0
@@ -62,6 +65,10 @@ export const openDesktopWindow = (
           url,
           defaultWidth,
           defaultHeight,
+          minWidth,
+          minHeight,
+          maxHeight,
+          maxWidth,
           defaultCentered: shouldBeDefaultCentered,
           autoShow: true,
           frame: false,

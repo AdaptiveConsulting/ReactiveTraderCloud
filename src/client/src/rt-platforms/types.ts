@@ -16,6 +16,10 @@ export interface WindowConfig {
   url: string
   width: number
   height: number
+  minHeight?: number
+  minWidth?: number
+  maxHeight?: number
+  maxWidth?: number
   center?: 'parent' | 'screen'
   x?: number
   y?: number

@@ -19,6 +19,10 @@ const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => Ext
     name: `${key}`,
     width: 366, // 346 content + 10 padding
     height: 193,
+    minWidth: 366,
+    minHeight: 193,
+    maxWidth: 366,
+    maxHeight: 193,
     url: `/spot/${key}`,
     x: tileLayout ? tileLayout.x : undefined,
     y: tileLayout ? tileLayout.y : undefined,

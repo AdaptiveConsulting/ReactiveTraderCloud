@@ -32,6 +32,7 @@ export const OriginTickWrapper = styled(FlexDiv)`
 export const PriceLabel = styled.div<{ color: string; hovering: boolean }>`
   align-self: center;
   font-size: ${({ hovering }) => (hovering ? '18px' : '11px')};
+  padding-bottom: ${({ hovering }) => (hovering ? '3px' : '0px')};
   transition: font-size 0.2s;
   color: ${({ theme, color }) => theme.template[color].normal};
 `
@@ -53,6 +54,7 @@ export const BarPriceContainer = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  overflow-x: hidden;
 `
 const bgColor = '#444c5f'
 export const Bar = styled.div`

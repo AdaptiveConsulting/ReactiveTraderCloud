@@ -1,18 +1,29 @@
 import { styled } from 'rt-theme'
 import { transparentColor } from '../globals/variables'
 
-export const AnalyticsStyle = styled.div`
+export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   border-radius: 0.25rem;
-  flex: 1;
   color: ${({ theme }) => theme.core.textColor};
   background-color: ${({ theme }) => theme.core.lightBackground};
+  ${({ inExternalWindow }) =>
+    inExternalWindow
+      ? `@media (min-width: 640px) {
+      display: grid;
+      grid-template-rows: repeat(3, auto);
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 0.5rem;
+    }`
+      : ``}
+
   width: 100%;
   height: 100%;
+  max-width: 60rem;
+  min-width: 20rem;
+  margin: auto;
+  overflow-y: scroll;
   position: relative;
   padding: 1rem;
   font-size: 1rem;
-  overflow-x: hidden;
-  overflow-y: scroll;
   scrollbar-width: thin;
 
   /* axis */
@@ -80,8 +91,9 @@ export const AnalyticsStyle = styled.div`
 
 export const AnalyticsLineChartWrapper = styled.div`
   width: 100%;
-  height: 20%;
+  height: 18rem;
   margin-top: 20px;
+  margin-bottom: 20px;
 `
 
 export const Header = styled.div`
@@ -109,6 +121,7 @@ export const HrBar = styled.hr`
 export const BubbleChart = styled.div`
   text-anchor: middle;
   height: 18rem;
+  overflow: hidden;
 `
 
 export const Controls = styled('div')`
