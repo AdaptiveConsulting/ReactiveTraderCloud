@@ -2,6 +2,7 @@ import { Action, applyMiddleware, createStore } from 'redux'
 // tslint:disable-next-line:no-submodule-imports
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import { combineEpics, createEpicMiddleware } from 'redux-observable'
+import { platform } from 'rt-platforms'
 
 import { GlobalState } from 'StoreTypes'
 import { ApplicationDependencies } from './applicationServices'
@@ -16,8 +17,11 @@ import { createSpotTileEpic } from '../widgets/spotTile/index'
 
 import rootReducer from './combineReducers'
 
+const platformEpics = platform.epics
+
 export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [
+    ...platformEpics,
     referenceServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,

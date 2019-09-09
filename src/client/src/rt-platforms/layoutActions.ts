@@ -1,8 +1,8 @@
 import { action, ActionUnion } from 'rt-util'
 
 export interface ContainerVisibility {
-  name: string
-  display: boolean
+  name?: string
+  display?: boolean
   x?: number
   y?: number
 }
