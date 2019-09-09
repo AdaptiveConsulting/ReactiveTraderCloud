@@ -15,8 +15,8 @@ export const PriceContainer = styled(FlexDiv).attrs((props: { distance: number }
   },
 }))<{ distance: number }>`
   width: 100%;
-  font-size: 11px;
   transition: transform 0.5s;
+  font-size: 11px;
   transition-timing-function: ${({ theme }) => theme.motion.easing};
 `
 
@@ -25,16 +25,22 @@ export const Offset = styled.div`
 `
 export const OriginTickWrapper = styled(FlexDiv)`
   width: 100%;
-  align-items: center;
   height: 20px;
 `
 
-export const PriceLabel = styled.div<{ color: string; hovering: boolean }>`
+export const PriceLabel = styled.div<{ color: string; distance: number }>`
   align-self: center;
-  font-size: ${({ hovering }) => (hovering ? '18px' : '11px')};
-  padding-bottom: ${({ hovering }) => (hovering ? '3px' : '0px')};
-  transition: font-size 0.2s;
+  transition: font-size 0.2s, transform 0.2s;
   color: ${({ theme, color }) => theme.template[color].normal};
+  padding-bottom: 0px;
+
+  &:hover {
+    font-size: 18px;
+    padding-bottom: 3px;
+    transform: translateX(
+      ${({ distance }) => (Math.abs(distance) > 30 ? `${distance * -1}%` : '0%')}
+    );
+  }
 `
 export const DiamondShape = styled.div<{ color: string }>`
   align-self: center;
@@ -52,8 +58,6 @@ export const Label = styled.div`
 `
 export const BarPriceContainer = styled.div`
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
   overflow-x: hidden;
 `
 const bgColor = '#444c5f'
