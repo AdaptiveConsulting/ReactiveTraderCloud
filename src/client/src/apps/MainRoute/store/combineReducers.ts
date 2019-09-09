@@ -5,11 +5,11 @@ import { analyticsReducer } from '../widgets/analytics/index'
 import { blotterReducer } from '../widgets/blotter/index'
 import { spotTileDataReducer } from '../widgets/spotTile/index'
 
-const customReducers = platform.customReducers
+const platformReducers = platform.reducers
 
 const rootReducer = combineReducers({
   ...reducers,
-  ...customReducers,
+  ...platformReducers,
   blotterService: blotterReducer,
   analyticsService: analyticsReducer,
   spotTilesData: spotTileDataReducer,

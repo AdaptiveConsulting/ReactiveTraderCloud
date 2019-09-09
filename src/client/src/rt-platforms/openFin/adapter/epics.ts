@@ -8,7 +8,7 @@ import { ApplicationEpic } from 'StoreTypes'
 
 const setupLayout = ofType<Action>(SetupActions.setup)
 
-export const customEpics: Array<ApplicationEpic> = [
+export const platformEpics: Array<ApplicationEpic> = [
   (action$: ActionsObservable<Action>, _: StateObservable<any>) => {
     return action$.pipe(
       setupLayout,

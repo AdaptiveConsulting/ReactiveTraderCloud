@@ -12,7 +12,7 @@ import { Notification, NotificationActionEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
-import { customEpics } from './epics'
+import { platformEpics } from './epics'
 import Logo from './logo'
 import { OpenFinLimitChecker } from '../openFin'
 import { OpenFinHeader, OpenFinControls } from '../components'
@@ -199,7 +199,7 @@ export default class OpenFin extends BasePlatformAdapter {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
   }
 
-  customEpics: Array<ApplicationEpic> = customEpics
+  epics: Array<ApplicationEpic> = platformEpics
 }
 
 async function appRestoreHandler(

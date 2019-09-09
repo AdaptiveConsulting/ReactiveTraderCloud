@@ -17,11 +17,11 @@ import { createSpotTileEpic } from '../widgets/spotTile/index'
 
 import rootReducer from './combineReducers'
 
-const customEpics = platform.customEpics
+const platformEpics = platform.epics
 
 export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [
-    ...customEpics,
+    ...platformEpics,
     referenceServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,

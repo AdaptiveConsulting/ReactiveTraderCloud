@@ -23,7 +23,7 @@ const INITIAL_STATE: LayoutState = {
   spotTiles: {},
 }
 
-export const customReducers = {
+export const platformReducers = {
   layout: (state: LayoutState = INITIAL_STATE, action: LayoutActions): LayoutState => {
     switch (action.type) {
       case LAYOUT_ACTION_TYPES.CONTAINER_VISIBILITY_UPDATE: {

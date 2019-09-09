@@ -6,7 +6,7 @@ import Logo from './logo'
 import { ApplicationEpic } from 'StoreTypes'
 import { ActionUnion } from 'rt-util/ActionHelper'
 import { LayoutActions } from './layoutActions'
-import { customReducers } from './reducer'
+import { platformReducers } from './reducer'
 
 export interface LimitChecker {
   rpc(message?: object): Observable<boolean>
@@ -50,11 +50,11 @@ interface PlatformAdapterInterface {
     [key: string]: string | number
   }
 
-  customActions: ActionUnion<any>
+  actions: ActionUnion<any>
 
-  customEpics: Array<ApplicationEpic>
+  epics: Array<ApplicationEpic>
 
-  customReducers: any
+  reducers: any
 
   Logo: React.FC
 
@@ -102,11 +102,11 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
     height: '100%',
   }
 
-  customActions: ActionUnion<any> = { LayoutActions }
+  actions: ActionUnion<any> = { LayoutActions }
 
-  customEpics: Array<ApplicationEpic> = []
+  epics: Array<ApplicationEpic> = []
 
-  customReducers = customReducers
+  reducers = platformReducers
 
   PlatformHeader: React.FC<any> = () => null
 
