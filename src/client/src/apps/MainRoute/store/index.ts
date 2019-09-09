@@ -5,7 +5,7 @@ import { platform } from 'rt-components'
 import FakeUserRepository from '../fakeUserRepository'
 import { createApplicationServices } from './applicationServices'
 import configureStore from './configureStore'
-import { LayoutActions } from '../layouts/layoutActions'
+import { SetupActions } from 'rt-actions'
 
 const LOG_NAME = 'Application Service: '
 
@@ -22,7 +22,7 @@ export const store = configureStore(
   }),
 )
 
-store.dispatch(LayoutActions.setup())
+store.dispatch(SetupActions.setup())
 store.dispatch(ConnectionActions.connect())
 
 export const APPLICATION_DISCONNECT_MINS = 60

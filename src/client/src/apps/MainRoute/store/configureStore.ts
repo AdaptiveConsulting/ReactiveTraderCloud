@@ -11,8 +11,6 @@ import { compositeStatusServiceEpic } from '../data/compositeStatus'
 import { connectionStatusEpic } from '../data/connectionStatus'
 import { referenceServiceEpic } from '../data/referenceData'
 
-import { LayoutActions, LAYOUT_ACTION_TYPES } from '../layouts'
-
 import { createAnalyticsServiceEpic } from '../widgets/analytics/index'
 import { createBlotterEpic } from '../widgets/blotter/index'
 import { createSpotTileEpic } from '../widgets/spotTile/index'
@@ -23,7 +21,7 @@ const customEpics = platform.customEpics
 
 export default function configureStore(dependencies: ApplicationDependencies) {
   const epics = [
-    ...customEpics(LayoutActions, LAYOUT_ACTION_TYPES),
+    ...customEpics,
     referenceServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,

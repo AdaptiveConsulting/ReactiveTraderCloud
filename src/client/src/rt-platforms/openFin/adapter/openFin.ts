@@ -16,6 +16,7 @@ import { customEpics } from './epics'
 import Logo from './logo'
 import { OpenFinLimitChecker } from '../openFin'
 import { OpenFinHeader, OpenFinControls } from '../components'
+import { ApplicationEpic } from 'StoreTypes'
 
 interface WinProps {
   name: string
@@ -195,7 +196,7 @@ export default class OpenFin extends BasePlatformAdapter {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
   }
 
-  customEpics = customEpics
+  customEpics: Array<ApplicationEpic> = customEpics
 }
 
 async function appRestoreHandler(

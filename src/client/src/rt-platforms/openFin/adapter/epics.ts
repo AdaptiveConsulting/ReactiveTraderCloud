@@ -1,18 +1,18 @@
 import { Action } from 'redux'
-import { ActionUnion } from 'rt-util/ActionHelper'
 import { switchMapTo, map } from 'rxjs/operators'
 import { ActionsObservable, StateObservable, ofType } from 'redux-observable'
+import { SetupActions } from 'rt-actions'
+import { LayoutActions } from '../../layoutActions'
 import { setupWorkspaces } from './openFin'
+import { ApplicationEpic } from 'StoreTypes'
 
-export const customEpics = (actions: ActionUnion<any>, types: any) => {
-  const setupLayout = ofType<Action, typeof actions.setup>(types.SETUP)
+const setupLayout = ofType<Action>(SetupActions.setup)
 
-  return [
-    (action$: ActionsObservable<Action>, _: StateObservable<any>) => {
-      return action$.pipe(
-        setupLayout,
-        switchMapTo(setupWorkspaces().pipe(map(actions.updateContainerVisibilityAction))),
-      )
-    },
-  ]
-}
+export const customEpics: Array<ApplicationEpic> = [
+  (action$: ActionsObservable<Action>, _: StateObservable<any>) => {
+    return action$.pipe(
+      setupLayout,
+      switchMapTo(setupWorkspaces().pipe(map(LayoutActions.updateContainerVisibilityAction))),
+    )
+  },
+]
