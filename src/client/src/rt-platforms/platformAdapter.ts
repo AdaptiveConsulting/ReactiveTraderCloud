@@ -3,6 +3,10 @@ import { WindowConfig, PlatformFeatures, PlatformType } from './types'
 import { Context } from 'openfin-fdc3'
 import DefaultRoute from './defaultRoute'
 import Logo from './logo'
+import { ApplicationEpic } from 'StoreTypes'
+import { ActionUnion } from 'rt-util/ActionHelper'
+import { LayoutActions } from './layoutActions'
+import { platformReducers } from './reducer'
 
 export interface LimitChecker {
   rpc(message?: object): Observable<boolean>
@@ -45,6 +49,12 @@ interface PlatformAdapterInterface {
   style: {
     [key: string]: string | number
   }
+
+  actions: ActionUnion<any>
+
+  epics: Array<ApplicationEpic>
+
+  reducers: any
 
   Logo: React.FC
 
@@ -91,6 +101,12 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   style = {
     height: '100%',
   }
+
+  actions: ActionUnion<any> = { LayoutActions }
+
+  epics: Array<ApplicationEpic> = []
+
+  reducers = platformReducers
 
   PlatformHeader: React.FC<any> = () => null
 

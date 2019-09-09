@@ -12,7 +12,7 @@ import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
 import { analyticsSelector, blotterSelector } from '../layouts/selectors'
-import { WindowPosition } from '../layouts'
+import { WindowPosition } from 'rt-platforms/types'
 import { useSelector } from 'react-redux'
 
 interface Props {

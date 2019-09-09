@@ -1,10 +1,11 @@
 import { timer } from 'rxjs'
 import { ConnectionActions } from 'rt-actions'
 import { AutobahnConnectionProxy } from 'rt-system'
-import { platform, setupWorkspaces } from 'rt-components'
+import { platform } from 'rt-components'
 import FakeUserRepository from '../fakeUserRepository'
 import { createApplicationServices } from './applicationServices'
 import configureStore from './configureStore'
+import { SetupActions } from 'rt-actions'
 
 const LOG_NAME = 'Application Service: '
 
@@ -21,14 +22,7 @@ export const store = configureStore(
   }),
 )
 
-setupWorkspaces(store)
-  .then(successVal => {
-    console.info('setupWorkspaces success', successVal)
-  })
-  .catch(err => {
-    console.error('setupWorkspaces error', err)
-  })
-
+store.dispatch(SetupActions.setup())
 store.dispatch(ConnectionActions.connect())
 
 export const APPLICATION_DISCONNECT_MINS = 60
