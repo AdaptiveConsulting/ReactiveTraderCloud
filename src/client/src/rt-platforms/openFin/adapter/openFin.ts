@@ -10,7 +10,7 @@ import { excelAdapter } from './excel'
 import { CurrencyPairPositionWithPrice } from 'rt-types'
 import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
 import { workspaces } from 'openfin-layouts'
-import { Notification, NotificationButtonClickedEvent } from 'openfin-notifications'
+import { Notification, NotificationActionEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
@@ -46,12 +46,14 @@ export default class OpenFin extends BasePlatformAdapter {
   constructor() {
     super()
     this.openFinNotifications.addEventListener(
-      'notification-button-clicked',
-      (event: NotificationButtonClickedEvent) => {
-        fin.desktop.InterApplicationBus.publish(
-          InteropTopics.HighlightBlotter,
-          event.notification.customData,
-        )
+      'notification-action',
+      (event: NotificationActionEvent) => {
+        if (event.result['task'] === 'highlight-trade') {
+          fin.desktop.InterApplicationBus.publish(
+            InteropTopics.HighlightBlotter,
+            event.notification.customData,
+          )
+        }
       },
     )
   }
@@ -158,6 +160,7 @@ export default class OpenFin extends BasePlatformAdapter {
             {
               title: 'Highlight trade in blotter',
               iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
+              onClick: { task: 'highlight-trade' },
             },
           ],
           category: 'Trade Executed',
