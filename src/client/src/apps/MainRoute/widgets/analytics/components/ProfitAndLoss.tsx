@@ -1,15 +1,13 @@
 import React, { FC } from 'react'
 import { Title, AnalyticsLineChartWrapper, Header } from './styled'
-import AnalyticsWindowHeader from './AnalyticsHeader'
 import { AnalyticsLineChart } from './analyticsLineChart'
 import LastPosition from './LastPosition'
 import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
 import { styled } from 'rt-theme'
 
-export interface ProfitAndLossProps {
-  canPopout: boolean
+interface ProfitAndLossProps {
   analyticsLineChartModel: AnalyticsLineChartModel
-  onPopoutClick?: (x: number, y: number) => void
+  popoutButton?: React.ReactElement
 }
 
 export const ProfitAndLossStyle = styled.div`
@@ -20,14 +18,13 @@ export const ProfitAndLossStyle = styled.div`
   grid-column: 1/-1;
 `
 export const ProfitAndLoss: FC<ProfitAndLossProps> = ({
-  canPopout,
   analyticsLineChartModel,
-  onPopoutClick,
+  popoutButton,
 }) => (
   <ProfitAndLossStyle>
     <Header>
       <Title>Profit &amp; Loss</Title>
-      <AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
+      {popoutButton}
     </Header>
     <LastPosition lastPos={analyticsLineChartModel.lastPos} />
     <AnalyticsLineChartWrapper>
