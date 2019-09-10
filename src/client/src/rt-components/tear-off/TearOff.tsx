@@ -62,8 +62,9 @@ export interface TearOffProps {
 }
 
 const TearOff: React.FC<TearOffProps> = props => {
-  const { allowTearOff } = usePlatform()
+  const { allowTearOff, actions } = usePlatform()
   const [defaultNotional, setDefaultNotional] = useState('')
+  const { LayoutActions } = actions
   const dispatch = useDispatch()
   const { render, externalWindowProps, tornOff, dragTearOff } = props
   const windowName = externalWindowProps.config.name
