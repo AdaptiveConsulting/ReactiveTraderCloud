@@ -2,7 +2,7 @@ import { Action } from 'redux'
 import { switchMapTo, map } from 'rxjs/operators'
 import { ActionsObservable, StateObservable, ofType } from 'redux-observable'
 import { SetupActions } from 'rt-actions'
-import { LayoutActions } from '../../layoutActions'
+import { LayoutActions } from 'rt-actions/layoutActions'
 import { setupWorkspaces } from './openFin'
 import { ApplicationEpic } from 'StoreTypes'
 

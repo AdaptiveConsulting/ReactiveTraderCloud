@@ -3,6 +3,7 @@ import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
 import { styled } from 'rt-theme'
 import { useDispatch } from 'react-redux'
 import { usePlatform } from 'rt-platforms'
+import { LayoutActions } from 'rt-actions'
 
 type RenderCB = (popOut: (x?: number, y?: number) => void, tornOff: boolean) => JSX.Element
 
@@ -57,8 +58,7 @@ export interface TearOffProps {
 }
 
 const TearOff: React.FC<TearOffProps> = props => {
-  const { allowTearOff, actions } = usePlatform()
-  const { LayoutActions } = actions
+  const { allowTearOff } = usePlatform()
   const dispatch = useDispatch()
   const { render, externalWindowProps, tornOff, dragTearOff } = props
   const windowName = externalWindowProps.config.name
