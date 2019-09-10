@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { PositionsChartModel } from '../model/positionsChartModel'
-import { ProfitAndLoss, ProfitAndLossProps } from './ProfitAndLoss'
+import { ProfitAndLoss } from './ProfitAndLoss'
 import { CurrencyPair } from 'rt-types'
 import { useForceUpdate, useWindowSize } from 'rt-util'
-
+import AnalyticsWindowHeader from './AnalyticsHeader'
+import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
 import { AnalyticsStyle } from './styled'
 
 import { Positions } from './Positions'
@@ -13,9 +14,12 @@ export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
 
-export interface Props extends ProfitAndLossProps {
+export interface Props {
   currencyPairs: CurrencyPairs
   inExternalWindow?: boolean
+  canPopout: boolean
+  analyticsLineChartModel: AnalyticsLineChartModel
+  onPopoutClick?: (x: number, y: number) => void
   positionsChartModel?: PositionsChartModel
 }
 
@@ -37,9 +41,8 @@ const Analytics: React.FC<Props> = ({
   return (
     <AnalyticsStyle inExternalWindow={inExternalWindow}>
       <ProfitAndLoss
-        canPopout={canPopout}
-        onPopoutClick={onPopoutClick}
         analyticsLineChartModel={analyticsLineChartModel}
+        popoutButton={<AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />}
       />
 
       {positionsChartModel && positionsChartModel.seriesData.length !== 0 && (

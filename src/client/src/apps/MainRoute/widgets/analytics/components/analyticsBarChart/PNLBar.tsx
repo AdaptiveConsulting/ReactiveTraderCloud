@@ -27,23 +27,23 @@ const getLogRatio: (max: number, numb: number) => number = (max, numb) => {
 }
 
 const PNLBar: React.FC<PNLBarProps> = ({ symbol, basePnl, maxVal }) => {
-  const [hovering, setHovering] = useState<boolean>(false)
+  const [hovering, setHovering] = useState(false)
   const color = basePnl >= 0 ? 'green' : 'red'
   const distance = getLogRatio(maxVal, basePnl) * TRANSLATION_WIDTH * (basePnl >= 0 ? 1 : -1)
   const price = numeral(Math.abs(basePnl)).format('0a')
   const hoverPrice = basePnl.toFixed(2)
-
   return (
     <BarChart>
       <Label>{symbol}</Label>
       <Offset />
       <BarPriceContainer>
-        <PriceContainer
-          distance={distance}
-          onMouseEnter={() => setHovering(true)}
-          onMouseLeave={() => setHovering(false)}
-        >
-          <PriceLabel color={color} hovering={hovering}>
+        <PriceContainer distance={distance}>
+          <PriceLabel
+            onMouseEnter={() => setHovering(true)}
+            onMouseLeave={() => setHovering(false)}
+            distance={distance}
+            color={color}
+          >
             {hovering ? hoverPrice : price}
           </PriceLabel>
           <DiamondShape color={color} />

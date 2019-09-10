@@ -35,7 +35,9 @@ const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'mai
     <RouteStyle platform={platform}>
       <PlatformRoute>
         {subheader}
-        {React.cloneElement(children as React.ReactElement, { header: <Header {...window} /> })}
+        {React.cloneElement(children as React.ReactElement, {
+          header: Header ? <Header {...window} /> : null,
+        })}
       </PlatformRoute>
     </RouteStyle>
   )
