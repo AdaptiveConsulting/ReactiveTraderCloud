@@ -19,7 +19,8 @@ import { TradingMode } from './components/types'
 export interface SpotTileContainerOwnProps {
   id: string
   tileView: TileViews
-  onPopoutClick?: (notional: string) => any
+  onPopoutClick?: (notional: string) => void
+  defaultNotional?: string
   tornOff?: boolean
   tearable?: boolean
 }
@@ -73,11 +74,7 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
       minHeight={11}
       status={pricingStatus}
       render={() => (
-        <TileSwitch
-          key={id}
-          canPopout={tearable && allowTearOff && !tornOff}
-          {...props}
-        />
+        <TileSwitch key={id} canPopout={tearable && allowTearOff && !tornOff} {...props} />
       )}
       message={`${id} Disconnected`}
     />

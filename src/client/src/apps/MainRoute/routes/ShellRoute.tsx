@@ -50,7 +50,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
                   blotter,
                 )}
                 render={(popOut, tornOff) => (
-                  <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
+                  <BlotterContainer onPopoutClick={popOut('')} tornOff={tornOff} tearable />
                 )}
                 tornOff={!blotter.visible}
               />
@@ -75,7 +75,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
               analytics,
             )}
             render={(popOut, tornOff) => (
-              <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
+              <AnalyticsContainer onPopoutClick={popOut('')} tornOff={tornOff} tearable />
             )}
             tornOff={!analytics.visible}
           />

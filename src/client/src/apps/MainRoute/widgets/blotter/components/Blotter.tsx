@@ -14,7 +14,7 @@ import { usePlatform } from 'rt-components'
 export interface BlotterProps {
   rows: Trade[]
   canPopout: boolean
-  onPopoutClick?: () => void
+  onPopoutClick?: () => any
 }
 
 const BlotterStyle = styled('div')`
@@ -132,9 +132,7 @@ const Blotter: React.FC<BlotterProps> = props => {
         />
       </BlotterGrid>
       <BlotterStatus>
-        <BlotterStatusText>{`Displaying rows ${displayedRows} of ${
-          rows.length
-        }`}</BlotterStatusText>
+        <BlotterStatusText>{`Displaying rows ${displayedRows} of ${rows.length}`}</BlotterStatusText>
       </BlotterStatus>
     </BlotterStyle>
   )
