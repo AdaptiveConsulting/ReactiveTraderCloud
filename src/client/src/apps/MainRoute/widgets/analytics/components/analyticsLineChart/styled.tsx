@@ -5,6 +5,7 @@ export const AnalyticsLineChartStyle = styled.div`
   height: 100%;
   min-height: 35px; /* Required to avoid JS errors when resizing the height of the browser small enough such 
                         that the height of the chart is computed as negative values. -D.S. ARTP-394 */
+
   overflow-y: hidden;
   .recharts-cartesian-axis-ticks {
     color: #ffffff;

@@ -7,8 +7,8 @@ const RouteStyle = styled('div')<{ platform: PlatformAdapter }>`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
+  margin: 0 auto;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   user-select: none;
@@ -35,7 +35,9 @@ const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'mai
     <RouteStyle platform={platform}>
       <PlatformRoute>
         {subheader}
-        {React.cloneElement(children as React.ReactElement, { header: <Header {...window} /> })}
+        {React.cloneElement(children as React.ReactElement, {
+          header: Header ? <Header {...window} /> : null,
+        })}
       </PlatformRoute>
     </RouteStyle>
   )

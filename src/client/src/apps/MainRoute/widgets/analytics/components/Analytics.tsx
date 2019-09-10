@@ -1,27 +1,26 @@
 import React, { useEffect } from 'react'
-import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
 import { PositionsChartModel } from '../model/positionsChartModel'
-import { AnalyticsBarChart } from './analyticsBarChart'
-import PositionsBubbleChart from './positions-chart/PositionsBubbleChart'
-
+import { ProfitAndLoss } from './ProfitAndLoss'
 import { CurrencyPair } from 'rt-types'
 import { useForceUpdate, useWindowSize } from 'rt-util'
-
-import { AnalyticsStyle, BubbleChart, Title, AnalyticsLineChartWrapper, Header } from './styled'
 import AnalyticsWindowHeader from './AnalyticsHeader'
-import { AnalyticsLineChart } from './analyticsLineChart'
-import LastPosition from './LastPosition'
+import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
+import { AnalyticsStyle } from './styled'
+
+import { Positions } from './Positions'
+import { PnL } from './PnL'
 
 export interface CurrencyPairs {
   [id: string]: CurrencyPair
 }
 
 export interface Props {
-  canPopout: boolean
   currencyPairs: CurrencyPairs
+  inExternalWindow?: boolean
+  canPopout: boolean
   analyticsLineChartModel: AnalyticsLineChartModel
-  positionsChartModel?: PositionsChartModel
   onPopoutClick?: (x: number, y: number) => void
+  positionsChartModel?: PositionsChartModel
 }
 
 const Analytics: React.FC<Props> = ({
@@ -30,6 +29,7 @@ const Analytics: React.FC<Props> = ({
   analyticsLineChartModel,
   positionsChartModel,
   onPopoutClick,
+  inExternalWindow,
 }) => {
   const windowSize = useWindowSize()
   const forceUpdate = useForceUpdate()
@@ -39,26 +39,17 @@ const Analytics: React.FC<Props> = ({
     forceUpdate()
   }, [windowSize])
   return (
-    <AnalyticsStyle>
-      <Header>
-        <Title>Profit &amp; Loss</Title>
-        <AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />
-      </Header>
-      <LastPosition lastPos={analyticsLineChartModel.lastPos} />
-      <AnalyticsLineChartWrapper>
-        <AnalyticsLineChart model={analyticsLineChartModel} />
-      </AnalyticsLineChartWrapper>
+    <AnalyticsStyle inExternalWindow={inExternalWindow}>
+      <ProfitAndLoss
+        analyticsLineChartModel={analyticsLineChartModel}
+        popoutButton={<AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />}
+      />
+
       {positionsChartModel && positionsChartModel.seriesData.length !== 0 && (
         <React.Fragment>
-          <Title>Positions</Title>
-          <BubbleChart>
-            <PositionsBubbleChart
-              data={positionsChartModel.seriesData}
-              currencyPairs={currencyPairs}
-            />
-          </BubbleChart>
-          <Title>PnL</Title>
-          <AnalyticsBarChart chartData={positionsChartModel.seriesData} />
+          <Positions data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+
+          <PnL chartData={positionsChartModel.seriesData} />
         </React.Fragment>
       )}
     </AnalyticsStyle>

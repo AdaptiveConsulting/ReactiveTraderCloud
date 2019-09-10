@@ -23,7 +23,9 @@ export const Button = styled.div`
 
 const StatusCircleCore: FunctionComponent<{ className?: string }> = ({ className }) => {
   return (
-    <div style={{ width: '0.65rem', height: '0.65rem', display: 'inline-block', marginTop: '-2px' }}>
+    <div
+      style={{ width: '0.65rem', height: '0.65rem', display: 'inline-block', marginTop: '-2px' }}
+    >
       <svg className={className} viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
         <circle cx="5" cy="5" r="5" />
       </svg>
@@ -42,10 +44,10 @@ export const StatusCircle = styled(StatusCircleCore)<{ status: ServiceConnection
   }
 `
 
-const StatusLabelCore: FunctionComponent<{ className?: string; status: ServiceConnectionStatus }> = ({
-  className,
-  status,
-}) => <span className={className}>{capitalize(status)}</span>
+const StatusLabelCore: FunctionComponent<{
+  className?: string
+  status: ServiceConnectionStatus
+}> = ({ className, status }) => <span className={className}>{capitalize(status)}</span>
 export const StatusLabel = styled(StatusLabelCore)`
   margin-left: 0.75rem;
 `
@@ -53,6 +55,7 @@ export const StatusLabel = styled(StatusLabelCore)`
 export const Root = styled.div`
   position: relative;
   float: right;
+  backface-visibility: hidden;
   min-height: ${buttonHeight};
   max-height: ${buttonHeight};
   z-index: 20;

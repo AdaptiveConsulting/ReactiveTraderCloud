@@ -1,11 +1,14 @@
 import React, { useCallback, useState } from 'react'
 import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
 import { styled } from 'rt-theme'
-import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
 import { useDispatch } from 'react-redux'
-import { usePlatform } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 
-type RenderCB = (popOut: (notional: string) => any, tornOff: boolean, defaultNotional?: string) => JSX.Element
+type RenderCB = (
+  popOut: (notional: string) => any,
+  tornOff: boolean,
+  defaultNotional?: string,
+) => JSX.Element
 
 const DragWrapper = styled.div`
   height: 100%;
@@ -74,8 +77,8 @@ const TearOff: React.FC<TearOffProps> = props => {
   const popOutWithNotional = (popOut: any) => {
     return (notional: string) => {
       return (x: number, y: number) => {
-        setDefaultNotional(notional);
-        popOut(x, y);
+        setDefaultNotional(notional)
+        popOut(x, y)
       }
     }
   }
@@ -90,7 +93,14 @@ const TearOff: React.FC<TearOffProps> = props => {
   )
 
   if (tornOff) {
-    return <ExternalWindow onUnload={popIn} defaultNotional={defaultNotional} returnNotional={returnNotional} {...externalWindowProps} />
+    return (
+      <ExternalWindow
+        onUnload={popIn}
+        defaultNotional={defaultNotional}
+        returnNotional={returnNotional}
+        {...externalWindowProps}
+      />
+    )
   }
 
   if (dragTearOff) {

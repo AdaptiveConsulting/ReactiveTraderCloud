@@ -5,11 +5,21 @@ import { ExcelAdapterName } from './openFin'
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
 export type PlatformType = 'browser' | 'desktop'
 
+export interface WindowPosition {
+  visible: boolean
+  x?: number
+  y?: number
+}
+
 export interface WindowConfig {
   name: string
   url: string
   width: number
   height: number
+  minHeight?: number
+  minWidth?: number
+  maxHeight?: number
+  maxWidth?: number
   center?: 'parent' | 'screen'
   x?: number
   y?: number
