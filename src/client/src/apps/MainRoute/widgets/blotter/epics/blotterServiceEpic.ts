@@ -31,9 +31,15 @@ function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
   if (Object.keys(currencyPairs).length === 0 || Object.keys(blotterData).length === 0) {
     return []
   }
-  return Object.keys(blotterData).map(x =>
-    formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol]),
-  )
+  return Object.keys(blotterData)
+    .map(x => {
+      try {
+        return formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol])
+      } catch (e) {
+        console.log(`Symbol not found for TradeId: ${blotterData[x].tradeId}`)
+      }
+    })
+    .filter(Boolean)
 }
 
 export const publishBlotterToExcelEpic: ApplicationEpic = (action$, state$, { platform }) => {
