@@ -31,7 +31,7 @@ const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => Ext
 })
 
 const getSpotTiles = (state: GlobalState) => state.currencyPairs
-const getSpotTilesLayout = (state: GlobalState) => state.layout.spotTiles
+const getSpotTilesLayout = (state: GlobalState) => state.layoutService.spotTiles
 
 export const selectSpotTiles = createSelector(
   [getSpotTiles, getSpotTilesLayout],

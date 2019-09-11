@@ -1,7 +1,7 @@
 import { GlobalState } from 'StoreTypes'
 import { createSelector } from 'reselect'
 
-export const selectState = (state: GlobalState) => state.layout
+export const selectState = (state: GlobalState) => state.layoutService
 
 export const blotterSelector = createSelector(
   [selectState],
