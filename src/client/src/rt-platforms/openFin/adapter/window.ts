@@ -79,7 +79,7 @@ export const openDesktopWindow = (
         } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
         () => {
           if (onClose) {
-            win.addEventListener('closed', onClose)
+            win.addEventListener('closed', onClose.bind(win))
           }
           resolve(win.getNativeWindow())
         },

@@ -21,27 +21,31 @@ export interface ExternalWindowProps {
   returnNotional: (notional: string) => void
 }
 
-const ExternalWindow: FC<ExternalWindowProps> = ({   
+const ExternalWindow: FC<ExternalWindowProps> = ({
   title = '',
   onBlock = null as () => void,
   onUnload = null as () => void,
   config = defaultConfig,
   defaultNotional,
-  returnNotional
+  returnNotional,
 }) => {
   const platform = usePlatform()
 
   useEffect(() => {
     let externalWindow: Window
 
-    const release = () => {
-      if (externalWindow) {
-        window.removeEventListener('beforeunload', release)
-        returnNotional(externalWindow.DEFAULT_NOTIONAL)
-      }
-      if (typeof onUnload === 'function') {
-        onUnload.call(null)
-      }
+    const release = function() {
+      setTimeout(() => {
+        if (externalWindow.closed) {
+          returnNotional(externalWindow.DEFAULT_NOTIONAL)
+          if (typeof onUnload === 'function') {
+            window.removeEventListener('beforeunload', release)
+            onUnload.call(null)
+          }
+        } else {
+          this.onbeforeunload = release
+        }
+      }, 10)
     }
 
     const getWindow = async () => {

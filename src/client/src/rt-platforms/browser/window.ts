@@ -20,7 +20,7 @@ export const openBrowserWindow = (config: BrowserWindowProps, onClose?: () => vo
   )
 
   if (onClose && win) {
-    win.addEventListener('beforeunload', onClose)
+    win.addEventListener('beforeunload', onClose.bind(win))
   }
 
   return Promise.resolve(win)
