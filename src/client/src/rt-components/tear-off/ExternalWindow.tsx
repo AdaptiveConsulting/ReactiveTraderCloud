@@ -38,20 +38,15 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
       setTimeout(() => {
         if (externalWindow.closed) {
           returnNotional(externalWindow.DEFAULT_NOTIONAL)
-          if (typeof onUnload === 'function') {
-            window.removeEventListener('beforeunload', release)
-            onUnload.call(null)
-          }
-        } else {
-          this.onbeforeunload = release
-        }
-      }, 10)
+          onUnload.call(null)
+        } else this.onbeforeunload = release
+      }, 100)
     }
 
     const getWindow = async () => {
       externalWindow = await platform.window.open(config, release)
       if (externalWindow) {
-        window.addEventListener('beforeunload', release)
+        window.addEventListener('beforeunload', onUnload.bind(null))
         externalWindow.DEFAULT_NOTIONAL = defaultNotional
       }
     }
