@@ -632,7 +632,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
               width={14}
             >
               <rect
-                className="sc-iAyFgw eFZwUi"
+                className="sc-iAyFgw dIvKNG"
                 height={10.5}
                 order={0}
                 speed={0.8}
@@ -641,7 +641,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={0.25}
               />
               <rect
-                className="sc-iAyFgw dTrBco"
+                className="sc-iAyFgw hqmrGm"
                 height={10.5}
                 order={1}
                 speed={0.8}
@@ -650,7 +650,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={3.875}
               />
               <rect
-                className="sc-iAyFgw gZAogR"
+                className="sc-iAyFgw kxSqEr"
                 height={10.5}
                 order={2}
                 speed={0.8}
@@ -659,7 +659,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={7.5}
               />
               <rect
-                className="sc-iAyFgw buJJcK"
+                className="sc-iAyFgw jTLbXm"
                 height={10.5}
                 order={3}
                 speed={0.8}
@@ -701,7 +701,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
               width={14}
             >
               <rect
-                className="sc-iAyFgw eFZwUi"
+                className="sc-iAyFgw dIvKNG"
                 height={10.5}
                 order={0}
                 speed={0.8}
@@ -710,7 +710,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={0.25}
               />
               <rect
-                className="sc-iAyFgw dTrBco"
+                className="sc-iAyFgw hqmrGm"
                 height={10.5}
                 order={1}
                 speed={0.8}
@@ -719,7 +719,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={3.875}
               />
               <rect
-                className="sc-iAyFgw gZAogR"
+                className="sc-iAyFgw kxSqEr"
                 height={10.5}
                 order={2}
                 speed={0.8}
@@ -728,7 +728,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={7.5}
               />
               <rect
-                className="sc-iAyFgw buJJcK"
+                className="sc-iAyFgw jTLbXm"
                 height={10.5}
                 order={3}
                 speed={0.8}
