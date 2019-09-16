@@ -63,7 +63,7 @@ export const publishBlotterToExcelEpic: ApplicationEpic = (action$, state$, { pl
 export const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     ofType<Action, NewTradesAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
-    filter(() => state$.value.layout.blotter.visible),
+    filter(() => state$.value.layoutService.blotter.visible),
     filter(action => !action.payload.isStateOfTheWorld && action.payload.trades.length > 0),
     map(action => action.payload.trades[0]),
     skipWhile(trade => !state$.value.currencyPairs[trade.symbol]),
