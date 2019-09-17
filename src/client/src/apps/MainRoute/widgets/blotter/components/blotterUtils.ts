@@ -1,19 +1,32 @@
 import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid'
 import { Trade, TradeStatus } from 'rt-types'
-import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
+import { UtcFormatDate } from '../../spotTile/components/notional/utils'
 import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
 import { capitalize } from 'lodash'
-
-const dateRenderer = (value: any) => {
-  return formatDate(value, '%d-%b %H:%M:%S')
-}
 
 const notionalRenderer = (value: any) => {
   return numeral(value).format('0,0[.]00')
 }
 const utcDateRenderer = (value: any, format: string = '%d-%b-%Y') => {
   return UtcFormatDate(value, format)
+}
+
+const tradeDateRenderer = (value: any, format: string = '%d-%b-%Y') => {
+  const day = value.getDay() - 2
+  const date = value.getDate()
+  const tradeDate = new Date(value.getTime())
+  switch (day) {
+    case 0: {
+      return utcDateRenderer(tradeDate.setDate(date - 4), format)
+    }
+    case 6: {
+      return utcDateRenderer(tradeDate.setDate(date - 3), format)
+    }
+    default: {
+      return utcDateRenderer(tradeDate.setDate(date - 2), format)
+    }
+  }
 }
 
 const getStatusCellClass = (trade: Trade) => {
@@ -115,11 +128,11 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     colId: TRADE_DATE,
     headerName: 'Date',
     field: TRADE_DATE,
-    cellRenderer: ({ data }) => dateRenderer(data['tradeDate']),
+    cellRenderer: ({ data }) => tradeDateRenderer(data['tradeDate']),
     width: 130,
     suppressFilter: true,
     includeInCSVExport: true,
-    csvCellValueFormatter: cell => dateRenderer(cell.value),
+    csvCellValueFormatter: cell => tradeDateRenderer(cell.value),
   },
   {
     colId: DIRECTION,
