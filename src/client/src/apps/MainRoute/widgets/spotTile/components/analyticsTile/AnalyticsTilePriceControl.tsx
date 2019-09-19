@@ -33,7 +33,7 @@ const AnalyticsPriceControl: React.SFC<Props> = ({
     currencyPair.ratePrecision,
   )
   return (
-    <AnalyticsPriceControlHeader>
+    <AnalyticsPriceControlHeader data-qa="analytics-tile-price-control__header">
       <PriceMovement
         priceMovementType={priceData.priceMovementType}
         spread={spread.formattedValue}

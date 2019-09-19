@@ -64,13 +64,13 @@ const PriceControls: React.FC<Props> = ({
         />
       )}
       {isRfqStateCanRequest && (
-        <PriceButtonDisabledPlaceholder>
+        <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled-0">
           <Icon className="fas fa-ban fa-flip-horizontal" />
           Streaming price unavailable
         </PriceButtonDisabledPlaceholder>
       )}
       {isRfqStateRequested && (
-        <PriceButtonDisabledPlaceholder>
+        <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled-0--loading">
           <AdaptiveLoaderWrapper>
             <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
           </AdaptiveLoaderWrapper>
@@ -95,13 +95,13 @@ const PriceControls: React.FC<Props> = ({
         />
       )}
       {isRfqStateCanRequest && (
-        <PriceButtonDisabledPlaceholder>
+        <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled-1">
           <Icon className="fas fa-ban fa-flip-horizontal" />
           Streaming price unavailable
         </PriceButtonDisabledPlaceholder>
       )}
       {isRfqStateRequested && (
-        <PriceButtonDisabledPlaceholder>
+        <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled-1--loading">
           <AdaptiveLoaderWrapper>
             <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
           </AdaptiveLoaderWrapper>

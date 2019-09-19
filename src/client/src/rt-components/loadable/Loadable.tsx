@@ -45,7 +45,11 @@ export default class Loadable extends Component<Props> {
       return <Content minWidth={`${minWidth}rem`}>{render()}</Content>
     }
     return (
-      <LoadableStyle minWidth={`${minWidth}rem`} minHeight={`${minHeight}rem`}>
+      <LoadableStyle
+        minWidth={`${minWidth}rem`}
+        minHeight={`${minHeight}rem`}
+        data-qa="loadable__loader"
+      >
         {status === ServiceConnectionStatus.CONNECTING ? (
           <AdaptiveLoader size={50} speed={1.4} />
         ) : (

@@ -49,20 +49,25 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
       onClick={handleClick}
       priceAnnounced={priceAnnounced}
       disabled={isDisabled}
+      data-qa="price-button__trade-button"
     >
       <Price disabled={isDisabled}>
         <BigWrapper>
-          <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
-          <Big>{hasPrice ? renderBigFigureDisplay(bigFigure) : '-'}</Big>
+          <DirectionLabel data-qa="price-button__direction-label">
+            {direction.toUpperCase()}
+          </DirectionLabel>
+          <Big data-qa="price-button__big">
+            {hasPrice ? renderBigFigureDisplay(bigFigure) : '-'}
+          </Big>
         </BigWrapper>
         {hasPrice && (
           <React.Fragment>
-            <Pip>{renderPips(pip)}</Pip>
-            <Tenth>{tenth}</Tenth>
+            <Pip data-qa="price-button__pip">{renderPips(pip)}</Pip>
+            <Tenth data-qa="price-button__tenth">{tenth}</Tenth>
           </React.Fragment>
         )}
       </Price>
-      {expired && <ExpiredPrice>Expired</ExpiredPrice>}
+      {expired && <ExpiredPrice data-qa="price-button__expired">Expired</ExpiredPrice>}
     </TradeButton>
   )
 }

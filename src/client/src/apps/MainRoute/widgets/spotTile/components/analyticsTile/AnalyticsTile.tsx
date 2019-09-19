@@ -41,7 +41,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
 
     return (
       <AnalyticsWrapperWithPlatform>
-        <AnalyticsTileStyle className="spot-tile">
+        <AnalyticsTileStyle className="spot-tile" data-qa="analytics-tile__spot-tile">
           <TileHeader ccyPair={currencyPair} date={date} />
           <AnalyticsTileContent>
             <GraphNotionalWrapper>

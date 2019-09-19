@@ -84,13 +84,15 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
 
     return (
       <TimerWrapper>
-        <TimeLeft>
+        <TimeLeft data-qa="rfq-timer__time-left">
           {timeLeft} sec{timeLeft > 1 ? 's' : ''}
         </TimeLeft>
         <ProgressBarWrapper>
-          <ProgressBar style={{ width: `${percentageLeft}%` }} />
+          <ProgressBar style={{ width: `${percentageLeft}%` }} data-qa="rfq-timer__progress-bar" />
         </ProgressBarWrapper>
-        <RejectQuoteButton onClick={onRejected}>Reject</RejectQuoteButton>
+        <RejectQuoteButton onClick={onRejected} data-qa="rfq-timer__reject-quote-button">
+          Reject
+        </RejectQuoteButton>
       </TimerWrapper>
     )
   }
