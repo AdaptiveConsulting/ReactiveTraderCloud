@@ -63,6 +63,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
               priceData={price}
               currencyPair={currencyPair}
               disabled={tradingDisabled}
+              rfqState={rfqState}
             />
           </AnalyticsTileContent>
         </AnalyticsTileStyle>
