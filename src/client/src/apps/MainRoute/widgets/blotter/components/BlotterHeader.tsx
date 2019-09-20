@@ -94,7 +94,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
         {canPopout && (
           <React.Fragment>
             <Fill />
-            <BlotterControls onClick={popoutClickHandler}>
+            <BlotterControls onClick={popoutClickHandler} data-qa="blotter-header__pop-out-button">
               <PopoutIcon width={0.8125} height={0.75} />
             </BlotterControls>
           </React.Fragment>

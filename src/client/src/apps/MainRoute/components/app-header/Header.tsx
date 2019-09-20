@@ -30,7 +30,7 @@ class Header extends React.Component {
 const ThemeControl = () => {
   const { themeName, toggleTheme } = useTheme()
   return (
-    <IconButton onClick={toggleTheme}>
+    <IconButton onClick={toggleTheme} data-qa="header__toggle-theme-button">
       <i className={`fa${themeName === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
     </IconButton>
   )
