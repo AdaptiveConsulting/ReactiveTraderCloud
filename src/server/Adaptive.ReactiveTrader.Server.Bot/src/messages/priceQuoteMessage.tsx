@@ -91,19 +91,26 @@ const MovementIndicator: FC<{ price: Price }> = ({ price }) => {
 
 const PriceMessage: FC<{ price: Price }> = ({ price }) => {
   return (
-    <div className="entity" data-entity-id="entityIdentifier">
-      <h4>
-        <cash tag={price.symbol} /> as of: {moment().format('DD MMM LTS')}
-      </h4>
-      <div style={spotTileMessageStyle}>
-        <CCYPairLabel pair={price.symbol} />
-        <div style={{ backgroundColor: BG_COLOR, marginTop: 10 }}>
-          <CCYTile price={price.bid} side="Bid" />
-          <MovementIndicator price={price} />
-          <CCYTile price={price.ask} side="Ask" />
+    <card accent="tempo-bg-color--blue" iconSrc="https://web-demo.adaptivecluster.com/favicon.ico">
+      <header>
+        Latest Prices for <cash tag={price.symbol} />
+      </header>
+      <body>
+        <div className="entity" data-entity-id="entityIdentifier">
+          <h4>
+            <cash tag={price.symbol} /> as of: {moment().format('DD MMM LTS')}
+          </h4>
+          <div style={spotTileMessageStyle}>
+            <CCYPairLabel pair={price.symbol} />
+            <div style={{ backgroundColor: BG_COLOR, marginTop: 10 }}>
+              <CCYTile price={price.bid} side="Bid" />
+              <MovementIndicator price={price} />
+              <CCYTile price={price.ask} side="Ask" />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </body>
+    </card>
   )
 }
 
