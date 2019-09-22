@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { formatDate, pairSettings, Price, toRate } from '../domain'
+import { formatDate, formatDateTime, pairSettings, Price, toRate } from '../domain'
 import '../extensions'
 import { downArrow, upArrow } from './data-images'
 
@@ -36,34 +36,41 @@ const MarketMessage: FC<{ prices: Price[] }> = ({ prices }) => {
   const sorted = sortPrices(prices)
 
   return (
-    <table style={{ maxWidth: '500px' }}>
-      <thead>
-        <tr>
-          <th>Symbol</th>
-          <th style={numberCellStyle}>Ask</th>
-          <th style={numberCellStyle}>Bid</th>
-          <th style={numberCellStyle}>Date</th>
-          <th style={numberCellStyle}>Movement</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sorted.map(price => (
-          <tr>
-            <td>{price.symbol}</td>
-            <td style={numberCellStyle}>
-              <Rate rawRate={price.ask} symbol={price.symbol} />
-            </td>
-            <td style={numberCellStyle}>
-              <Rate rawRate={price.bid} symbol={price.symbol} />
-            </td>
-            <td style={numberCellStyle}>{formatDate(price.valueDate)}</td>
-            <td style={arrowCellStyle}>
-              <img style={imgStyle} src={price.lastMove === 'up' ? upArrow : downArrow} />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <card accent="tempo-bg-color--blue" iconSrc="https://web-demo.adaptivecluster.com/favicon.ico">
+      <header>
+        <b>Market Snapshot as of {formatDateTime(new Date())}</b>
+      </header>
+      <body>
+        <table style={{ maxWidth: '500px' }}>
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th style={numberCellStyle}>Ask</th>
+              <th style={numberCellStyle}>Bid</th>
+              <th style={numberCellStyle}>Date</th>
+              <th style={numberCellStyle}>Movement</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map(price => (
+              <tr>
+                <td>{price.symbol}</td>
+                <td style={numberCellStyle}>
+                  <Rate rawRate={price.ask} symbol={price.symbol} />
+                </td>
+                <td style={numberCellStyle}>
+                  <Rate rawRate={price.bid} symbol={price.symbol} />
+                </td>
+                <td style={numberCellStyle}>{formatDate(price.valueDate)}</td>
+                <td style={arrowCellStyle}>
+                  <img style={imgStyle} src={price.lastMove === 'up' ? upArrow : downArrow} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </body>
+    </card>
   )
 }
 

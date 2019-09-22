@@ -1,7 +1,7 @@
 import { filter, mergeMap, withLatestFrom } from 'rxjs/operators'
 import logger from '../logger'
 import { createPriceMessage } from '../messages'
-import { INTENT_SPOT_QUOTE, IntentStringParameter } from '../nlp-services'
+import { IntentStringParameter } from '../nlp-services'
 import { Handler } from './handlers'
 
 interface MarketIntentFields {
@@ -9,6 +9,7 @@ interface MarketIntentFields {
 }
 
 const ENTITY_TYPE = 'com.adaptive.fx'
+export const INTENT_SPOT_QUOTE = 'rt.spot.quote'
 
 const createDataPayload = (symbol: string) =>
   JSON.stringify({
