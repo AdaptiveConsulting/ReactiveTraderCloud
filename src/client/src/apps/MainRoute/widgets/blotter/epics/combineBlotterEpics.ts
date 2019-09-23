@@ -1,18 +1,22 @@
 import { combineEpics } from 'redux-observable'
-import { publishBlotterToExcelEpic } from './blotterServiceEpic'
 import { blotterServiceEpic } from './epics'
-import { connectBlotterToNotifications, requestBrowserNotificationPermission } from './blotterServiceEpic'
+import {
+  connectBlotterToNotifications,
+  publishBlotterToExcelEpic,
+  requestBrowserNotificationPermission,
+} from './blotterServiceEpic'
 import { ApplicationDependencies } from 'apps/MainRoute/store/applicationServices'
 import { blotterHighlightEpic } from './blotterHighlightEpic'
 
 export default ({ platform }: ApplicationDependencies) => {
-  const epics = [blotterServiceEpic, connectBlotterToNotifications, requestBrowserNotificationPermission]
+  const epics = [
+    blotterServiceEpic,
+    connectBlotterToNotifications,
+    requestBrowserNotificationPermission,
+    publishBlotterToExcelEpic,
+  ]
 
-  if (platform.hasFeature('excel')) {
-    epics.push(publishBlotterToExcelEpic)
-  }
-
-  if (platform.hasFeature('notificationHighlight')) {
+  if (platform.hasFeature('interop')) {
     epics.push(blotterHighlightEpic)
   }
 

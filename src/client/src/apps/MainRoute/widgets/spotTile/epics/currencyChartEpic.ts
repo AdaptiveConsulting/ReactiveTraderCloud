@@ -20,13 +20,13 @@ const createChartConfig = (symbol: string, interval: number): AppConfig => ({
 })
 
 export const displayCurrencyChartEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  if (!platform.hasFeature('chartIQ')) {
+  if (!platform.hasFeature('app')) {
     return EMPTY
   }
   return action$.pipe(
     ofType<Action, DisplayChartAction>(TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART),
     mergeMap<DisplayChartAction, string>((action: DisplayChartAction) =>
-      from<string>(platform.chartIQ.open(CHART_ID, createChartConfig(action.payload, 5))),
+      from<string>(platform.app.open(CHART_ID, createChartConfig(action.payload, 5))),
     ),
     map<string, ChartOpenedAction>(symbol => currencyChartOpened(symbol)),
   )

@@ -21,7 +21,7 @@ export default ({ platform }: ApplicationDependencies) => {
     epics.push(publishPriceUpdateEpic, publishTradeExecutedEpic, closePositionEpic)
   }
 
-  if (platform.hasFeature('chartIQ')) {
+  if (platform.hasFeature('app')) {
     epics.push(displayCurrencyChartEpic)
   }
 

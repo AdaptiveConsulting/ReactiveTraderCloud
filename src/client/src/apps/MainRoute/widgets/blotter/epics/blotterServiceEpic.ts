@@ -8,8 +8,7 @@ import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap } f
 
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
-
-import { interval, EMPTY } from 'rxjs'
+import { interval } from 'rxjs'
 
 type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
 
@@ -36,30 +35,26 @@ function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
   )
 }
 
-export const publishBlotterToExcelEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  if (!platform.hasFeature('excel')) {
-    return EMPTY
-  }
-
-  return action$.pipe(
+export const publishBlotterToExcelEpic: ApplicationEpic = (action$, state$, { excelApp }) =>
+  action$.pipe(
     applicationConnected,
     switchMapTo(
       interval(7500).pipe(
         takeUntil(action$.pipe(applicationDisconnected)),
         tap(() => {
-          if (platform.excel.isOpen()) {
+          if (excelApp.isOpen()) {
             const parsedData = parseBlotterData(
               state$.value.blotterService.trades,
               state$.value.currencyPairs,
             )
-            platform.excel.publishBlotter(parsedData)
+            excelApp.publishBlotter(parsedData)
           }
         }),
         ignoreElements(),
       ),
     ),
   )
-}
+
 export const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { platform }) =>
   action$.pipe(
     ofType<Action, NewTradesAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_NEW_TRADES),
