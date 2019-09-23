@@ -49,7 +49,6 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
             >
               <div
                 className="sc-bZQynM sc-gzVnrw lDSPw"
-                data-qa="price-button__direction-label"
               >
                 SELL
               </div>
@@ -112,7 +111,6 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
             >
               <div
                 className="sc-bZQynM sc-gzVnrw lDSPw"
-                data-qa="price-button__direction-label"
               >
                 BUY
               </div>
@@ -338,7 +336,6 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
             >
               <div
                 className="sc-bZQynM sc-gzVnrw lDSPw"
-                data-qa="price-button__direction-label"
               >
                 SELL
               </div>
@@ -407,7 +404,6 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
             >
               <div
                 className="sc-bZQynM sc-gzVnrw lDSPw"
-                data-qa="price-button__direction-label"
               >
                 BUY
               </div>
@@ -531,7 +527,6 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
             >
               <div
                 className="sc-bZQynM sc-gzVnrw lDSPw"
-                data-qa="price-button__direction-label"
               >
                 SELL
               </div>
@@ -594,7 +589,6 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
             >
               <div
                 className="sc-bZQynM sc-gzVnrw lDSPw"
-                data-qa="price-button__direction-label"
               >
                 BUY
               </div>
@@ -897,7 +891,6 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
             >
               <div
                 className="sc-bZQynM sc-gzVnrw lDSPw"
-                data-qa="price-button__direction-label"
               >
                 SELL
               </div>
@@ -960,7 +953,6 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
             >
               <div
                 className="sc-bZQynM sc-gzVnrw lDSPw"
-                data-qa="price-button__direction-label"
               >
                 BUY
               </div>
@@ -1069,7 +1061,6 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
             >
               <div
                 className="sc-bZQynM sc-gzVnrw lDSPw"
-                data-qa="price-button__direction-label"
               >
                 SELL
               </div>
@@ -1132,7 +1123,6 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
             >
               <div
                 className="sc-bZQynM sc-gzVnrw lDSPw"
-                data-qa="price-button__direction-label"
               >
                 BUY
               </div>

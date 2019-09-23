@@ -53,9 +53,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
     >
       <Price disabled={isDisabled}>
         <BigWrapper>
-          <DirectionLabel data-qa="price-button__direction-label">
-            {direction.toUpperCase()}
-          </DirectionLabel>
+          <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
           <Big data-qa="price-button__big">
             {hasPrice ? renderBigFigureDisplay(bigFigure) : '-'}
           </Big>
