@@ -48,7 +48,11 @@ export default class SpotTile extends PureComponent<Props> {
 
     return (
       <SpotTileWrapper>
-        <SpotTileStyle className="spot-tile">
+        <SpotTileStyle
+          className="spot-tile"
+          data-qa="spot-tile__tile"
+          data-qa-id={`currency-pair-${currencyPair.symbol.toLowerCase()}`}
+        >
           <ReserveSpaceGrouping>
             <TileHeaderWrapper>
               <TileHeader

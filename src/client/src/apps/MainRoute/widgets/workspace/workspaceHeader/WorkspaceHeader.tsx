@@ -35,7 +35,8 @@ const WorkspaceHeader: React.FC<Props> = ({
             key={currencyOption}
             active={currencyOption === currency}
             onClick={() => onCurrencyChange(currencyOption)}
-            data-qa={`workspace-header__nav-item-${currencyOption}`}
+            data-qa="workspace-header__nav-item"
+            data-qa-id={`currency-option-${currencyOption}`}
           >
             {currencyOption}
           </NavItem>

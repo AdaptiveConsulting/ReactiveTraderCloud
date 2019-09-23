@@ -50,6 +50,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
       priceAnnounced={priceAnnounced}
       disabled={isDisabled}
       data-qa="price-button__trade-button"
+      data-qa-id={`direction-${direction.toLowerCase()}`}
     >
       <Price disabled={isDisabled}>
         <BigWrapper>

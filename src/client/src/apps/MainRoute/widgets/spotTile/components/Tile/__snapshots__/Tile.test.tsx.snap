@@ -6,6 +6,8 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 >
   <div
     className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
   >
     <div
       className="sc-gisBJw kDlVKO"
@@ -36,6 +38,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
         <button
           className="sc-EHOje gCbQHr"
           data-qa="price-button__trade-button"
+          data-qa-id="direction-sell"
           direction="Sell"
           disabled={true}
           onClick={[Function]}
@@ -98,6 +101,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
         <button
           className="sc-EHOje gCbQHr"
           data-qa="price-button__trade-button"
+          data-qa-id="direction-buy"
           direction="Buy"
           disabled={true}
           onClick={[Function]}
@@ -176,6 +180,8 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 >
   <div
     className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
   >
     <div
       className="sc-gisBJw kDlVKO"
@@ -293,6 +299,8 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 >
   <div
     className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
   >
     <div
       className="sc-gisBJw kDlVKO"
@@ -323,6 +331,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         <button
           className="sc-EHOje gCbQHr"
           data-qa="price-button__trade-button"
+          data-qa-id="direction-sell"
           direction="Sell"
           disabled={true}
           onClick={[Function]}
@@ -391,6 +400,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         <button
           className="sc-EHOje gCbQHr"
           data-qa="price-button__trade-button"
+          data-qa-id="direction-buy"
           direction="Buy"
           disabled={true}
           onClick={[Function]}
@@ -484,6 +494,8 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 >
   <div
     className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
   >
     <div
       className="sc-gisBJw kDlVKO"
@@ -514,6 +526,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
         <button
           className="sc-EHOje ixrtnE"
           data-qa="price-button__trade-button"
+          data-qa-id="direction-sell"
           direction="Sell"
           disabled={false}
           onClick={[Function]}
@@ -576,6 +589,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
         <button
           className="sc-EHOje iHiLlf"
           data-qa="price-button__trade-button"
+          data-qa-id="direction-buy"
           direction="Buy"
           disabled={false}
           onClick={[Function]}
@@ -654,6 +668,8 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 >
   <div
     className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
   >
     <div
       className="sc-gisBJw kDlVKO"
@@ -848,6 +864,8 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 >
   <div
     className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
   >
     <div
       className="sc-gisBJw kDlVKO"
@@ -878,6 +896,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
         <button
           className="sc-EHOje kkdSuS"
           data-qa="price-button__trade-button"
+          data-qa-id="direction-sell"
           direction="Sell"
           disabled={false}
           onClick={[Function]}
@@ -940,6 +959,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
         <button
           className="sc-EHOje ciDDPg"
           data-qa="price-button__trade-button"
+          data-qa-id="direction-buy"
           direction="Buy"
           disabled={false}
           onClick={[Function]}
@@ -1018,6 +1038,8 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
 >
   <div
     className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
   >
     <div
       className="sc-gisBJw kDlVKO"
@@ -1048,6 +1070,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         <button
           className="sc-EHOje gCbQHr"
           data-qa="price-button__trade-button"
+          data-qa-id="direction-sell"
           direction="Sell"
           disabled={true}
           onClick={[Function]}
@@ -1110,6 +1133,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         <button
           className="sc-EHOje gCbQHr"
           data-qa="price-button__trade-button"
+          data-qa-id="direction-buy"
           direction="Buy"
           disabled={true}
           onClick={[Function]}
