@@ -5,12 +5,16 @@ import { SpotPriceTick } from '../../model/spotPriceTick'
 import { getSpread, toRate } from '../../model/spotTileUtils'
 import PriceButton from '../PriceButton'
 import PriceMovement from '../PriceMovement'
+import { RfqState } from '../types'
+import { getConstsFromRfqState } from '../../model/spotTileUtils'
+import { PriceButtonDisabledPlaceholder, Icon } from '../PriceControls/styled'
 
 interface Props {
   currencyPair: CurrencyPair
   priceData: SpotPriceTick
   executeTrade: (direction: Direction, rawSpotRate: number) => void
   disabled: boolean
+  rfqState: RfqState
 }
 const AnalyticsPriceControlHeader = styled.div`
   display: flex;
@@ -23,6 +27,7 @@ const AnalyticsPriceControl: React.SFC<Props> = ({
   priceData,
   executeTrade,
   disabled,
+  rfqState,
 }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
@@ -32,6 +37,13 @@ const AnalyticsPriceControl: React.SFC<Props> = ({
     currencyPair.pipsPosition,
     currencyPair.ratePrecision,
   )
+  const {
+    isRfqStateReceived,
+    isRfqStateExpired,
+    isRfqStateCanRequest,
+    isRfqStateNone,
+  } = getConstsFromRfqState(rfqState)
+
   return (
     <AnalyticsPriceControlHeader data-qa="analytics-tile-price-control__header">
       <PriceMovement
@@ -39,24 +51,40 @@ const AnalyticsPriceControl: React.SFC<Props> = ({
         spread={spread.formattedValue}
       />
       <div>
-        <PriceButton
-          handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
-          direction={Direction.Sell}
-          big={bidRate.bigFigure}
-          pip={bidRate.pips}
-          tenth={bidRate.pipFraction}
-          rawRate={bidRate.rawRate}
-          disabled={disabled}
-        />
-        <PriceButton
-          handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
-          direction={Direction.Buy}
-          big={askRate.bigFigure}
-          pip={askRate.pips}
-          tenth={askRate.pipFraction}
-          rawRate={askRate.rawRate}
-          disabled={disabled}
-        />
+        {isRfqStateCanRequest && (
+          <PriceButtonDisabledPlaceholder data-qa="analytics-tile-price-control__price-button--disabled">
+            <Icon className="fas fa-ban fa-flip-horizontal" />
+            Streaming price unavailable
+          </PriceButtonDisabledPlaceholder>
+        )}
+        {isRfqStateCanRequest && (
+          <PriceButtonDisabledPlaceholder data-qa="analytics-tile-price-control__price-button--disabled">
+            <Icon className="fas fa-ban fa-flip-horizontal" />
+            Streaming price unavailable
+          </PriceButtonDisabledPlaceholder>
+        )}
+        {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired) && (
+          <React.Fragment>
+            <PriceButton
+              handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
+              direction={Direction.Sell}
+              big={bidRate.bigFigure}
+              pip={bidRate.pips}
+              tenth={bidRate.pipFraction}
+              rawRate={bidRate.rawRate}
+              disabled={disabled}
+            />
+            <PriceButton
+              handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
+              direction={Direction.Buy}
+              big={askRate.bigFigure}
+              pip={askRate.pips}
+              tenth={askRate.pipFraction}
+              rawRate={askRate.rawRate}
+              disabled={disabled}
+            />
+          </React.Fragment>
+        )}
       </div>
     </AnalyticsPriceControlHeader>
   )
