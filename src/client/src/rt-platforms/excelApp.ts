@@ -23,8 +23,8 @@ export interface ExcelApp {
   publishBlotter<T extends any>(blotterData: T): Promise<void>
 }
 
-class DefaultExcelAppImpl implements ExcelApp {
-  readonly name = 'DefaultExcelAppImpl'
+class NoopExcelAppImpl implements ExcelApp {
+  readonly name = 'NoopExcelAppImpl'
 
   isOpen(): boolean {
     return false
@@ -48,5 +48,5 @@ export const createExcelApp = (platformName: string) => {
     return EXCEL_ADAPTER_NAME === 'legacy' ? new LegacyExcelAdapter() : new JSExcelAdapter()
   }
 
-  return new DefaultExcelAppImpl()
+  return new NoopExcelAppImpl()
 }
