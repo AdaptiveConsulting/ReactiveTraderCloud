@@ -1,54 +1,62 @@
-import moment from 'moment';
-import React, { FC } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { formatNumber, Trade } from '../domain';
-import '../extensions';
+import React, { FC } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { formatDate, formatNumber, Trade } from '../domain'
+import '../extensions'
 
-const sortPrices = (prices: Trade[]) =>
-  prices.sort((a, b) => {
-    return a.TradeDate < b.TradeDate ? -1 : a.TradeDate > b.TradeDate ? 1 : 0
-  })
+type Prevalance = 'NORMAL' | 'HIGH'
 
-const numberCellStyle:React.CSSProperties = {
-  textAlign:'right'
+const prevelanceMap = new Map<Prevalance, string>([['NORMAL', 'tempo-bg-color--blue'], ['HIGH', 'tempo-bg-color--red']])
+
+const numberCellStyle: React.CSSProperties = {
+  textAlign: 'right',
+}
+interface Props {
+  trades: Trade[]
+  label: string
+  prevalance: Prevalance
 }
 
-const TradesMessage: FC<{ trades: Trade[] }> = ({ trades }) => {
-  const sorted = sortPrices(trades)
+const TradesMessage: FC<Props> = ({ trades, label, prevalance }) => {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>TradeId</th>
-          <th>Status</th>
-          <th>Date</th>
-          <th>Direction</th>
-          <th>CCYCCY</th>
-          <th>Dealt CCY</th>
-          <th>Notional</th>
-          <th>SpotRate</th>
-          <th>Value Date</th>
-          <th>Trader</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sorted.map(trade => (
-          <tr>
-            <td>{trade.TradeId}</td>
-            <td>{trade.Status}</td>
-            <td>{moment(trade.TradeDate).format('DD MMM YY')}</td>
-            <td>{trade.Direction}</td>
-            <td>{trade.CurrencyPair}</td>
-            <td>{trade.DealtCurrency}</td>
-            <td style={numberCellStyle}>{formatNumber( trade.Notional)}</td>
-            <td style={numberCellStyle}>{trade.SpotRate}</td>
-            <td>{moment(trade.ValueDate).format('DD MMM YY')}</td>
-            <td>{trade.TraderName}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      <card accent={prevelanceMap.get(prevalance)} iconSrc="https://web-demo.adaptivecluster.com/favicon.ico">
+        <header>{label}</header>
+        <body>
+          <table>
+            <thead>
+              <tr>
+                <th>TradeId</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Direction</th>
+                <th>CCY</th>
+                <th>Dealt CCY</th>
+                <th style={numberCellStyle}>Notional</th>
+                <th style={numberCellStyle}>SpotRate</th>
+                <th>Trader</th>
+              </tr>
+            </thead>
+            <tbody>
+              {trades.map(trade => (
+                <tr>
+                  <td>{trade.TradeId}</td>
+                  <td>{trade.Status}</td>
+                  <td>{formatDate(trade.TradeDate)}</td>
+                  <td>{trade.Direction}</td>
+                  <td>{trade.CurrencyPair}</td>
+                  <td>{trade.DealtCurrency}</td>
+                  <td style={numberCellStyle}>{formatNumber(trade.Notional)}</td>
+                  <td style={numberCellStyle}>{trade.SpotRate}</td>
+                  <td>{trade.TraderName}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </body>
+      </card>
+    </>
   )
 }
 
-export const tradeUpdateMessage = (trades: Trade[]) => renderToStaticMarkup(<TradesMessage trades={trades} />)
+export const tradeUpdateMessage = (trades: Trade[], label: string, prevelance: Prevalance = 'NORMAL') =>
+  renderToStaticMarkup(<TradesMessage trades={trades} label={label} prevalance={prevelance} />)
