@@ -52,13 +52,13 @@ const AnalyticsPriceControl: React.SFC<Props> = ({
       />
       <div>
         {isRfqStateCanRequest && (
-          <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled-1">
+          <PriceButtonDisabledPlaceholder data-qa="analytics-tile-price-control__price-button--disabled">
             <Icon className="fas fa-ban fa-flip-horizontal" />
             Streaming price unavailable
           </PriceButtonDisabledPlaceholder>
         )}
         {isRfqStateCanRequest && (
-          <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled-1">
+          <PriceButtonDisabledPlaceholder data-qa="analytics-tile-price-control__price-button--disabled">
             <Icon className="fas fa-ban fa-flip-horizontal" />
             Streaming price unavailable
           </PriceButtonDisabledPlaceholder>
