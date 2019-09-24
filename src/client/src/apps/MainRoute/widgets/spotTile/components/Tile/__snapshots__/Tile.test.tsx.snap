@@ -158,7 +158,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           </span>
           <input
             className="sc-bxivhb ixCVbX"
-            data-qa="notional-input__input-eurusd"
+            data-qa-id="notional-input__input-eurusd"
             disabled={true}
             onBlur={[Function]}
             onChange={[Function]}
@@ -268,7 +268,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           </span>
           <input
             className="sc-bxivhb fauXdE"
-            data-qa="notional-input__input-eurusd"
+            data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
@@ -463,7 +463,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           </span>
           <input
             className="sc-bxivhb fauXdE"
-            data-qa="notional-input__input-eurusd"
+            data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
@@ -646,7 +646,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           </span>
           <input
             className="sc-bxivhb ixCVbX"
-            data-qa="notional-input__input-eurusd"
+            data-qa-id="notional-input__input-eurusd"
             disabled={true}
             onBlur={[Function]}
             onChange={[Function]}
@@ -842,7 +842,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           </span>
           <input
             className="sc-bxivhb ixCVbX"
-            data-qa="notional-input__input-eurusd"
+            data-qa-id="notional-input__input-eurusd"
             disabled={true}
             onBlur={[Function]}
             onChange={[Function]}
@@ -1016,7 +1016,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           </span>
           <input
             className="sc-bxivhb fauXdE"
-            data-qa="notional-input__input-eurusd"
+            data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
@@ -1190,7 +1190,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </span>
           <input
             className="sc-bxivhb ixCVbX"
-            data-qa="notional-input__input-eurusd"
+            data-qa-id="notional-input__input-eurusd"
             disabled={true}
             onBlur={[Function]}
             onChange={[Function]}

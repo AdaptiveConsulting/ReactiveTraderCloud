@@ -117,7 +117,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
           onKeyPress={this.handleKeyPressNotionalInput}
           validationMessage={validationMessage}
           disabled={disabled}
-          data-qa={`notional-input__input-${currencyPairSymbol.toLowerCase()}`}
+          data-qa-id={`notional-input__input-${currencyPairSymbol.toLowerCase()}`}
         />
         {showResetButton && (
           <ResetInputValue
