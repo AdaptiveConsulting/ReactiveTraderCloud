@@ -21,6 +21,7 @@ interface PriceButtonProps {
   priceAnnounced?: boolean
   disabled?: boolean
   expired?: boolean
+  currencyPairSymbol?: string
 }
 
 const renderPips = (pips: number) => (pips.toString().length === 1 ? `0${pips}` : pips)
@@ -39,6 +40,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
   priceAnnounced,
   disabled = false,
   expired = false,
+  currencyPairSymbol,
 }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
   const hasPrice = rawRate !== 0
@@ -50,7 +52,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
       priceAnnounced={priceAnnounced}
       disabled={isDisabled}
       data-qa="price-button__trade-button"
-      data-qa-id={`direction-${direction.toLowerCase()}`}
+      data-qa-id={`direction-${direction.toLowerCase()}-${currencyPairSymbol.toLowerCase()}`}
     >
       <Price disabled={isDisabled}>
         <BigWrapper>

@@ -54,7 +54,8 @@ class AnalyticsTile extends React.PureComponent<Props> {
               </LineChartWrapper>
               <NotionalInput
                 notional={notional}
-                currencyPairSymbol={currencyPair.base}
+                currencyPairBase={currencyPair.base}
+                currencyPairSymbol={currencyPair.symbol}
                 updateNotional={updateNotional}
                 resetNotional={resetNotional}
                 validationMessage={inputValidationMessage}

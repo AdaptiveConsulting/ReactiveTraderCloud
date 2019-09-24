@@ -25,6 +25,7 @@ export interface NotionalUpdate {
 }
 
 interface Props {
+  currencyPairBase: string
   currencyPairSymbol: string
   notional: string
   updateNotional: (notionalUpdate: NotionalUpdate) => void
@@ -94,6 +95,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
   render() {
     const {
       currencyPairSymbol,
+      currencyPairBase,
       notional,
       validationMessage,
       showResetButton,
@@ -103,7 +105,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
     return (
       <InputWrapper altLayout={Boolean(validationMessage)}>
         <CurrencyPairSymbol data-qa="notional-input__currency-pair-symbol">
-          {currencyPairSymbol}
+          {currencyPairBase}
         </CurrencyPairSymbol>
         <Input
           type="text"
@@ -115,7 +117,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
           onKeyPress={this.handleKeyPressNotionalInput}
           validationMessage={validationMessage}
           disabled={disabled}
-          data-qa="notional-input__input"
+          data-qa={`notional-input__input-${currencyPairSymbol.toLowerCase()}`}
         />
         {showResetButton && (
           <ResetInputValue

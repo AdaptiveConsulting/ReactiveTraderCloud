@@ -73,7 +73,8 @@ export default class SpotTile extends PureComponent<Props> {
             <NotionalInputWrapper>
               <NotionalInput
                 notional={notional}
-                currencyPairSymbol={currencyPair.base}
+                currencyPairBase={currencyPair.base}
+                currencyPairSymbol={currencyPair.symbol}
                 updateNotional={updateNotional}
                 resetNotional={resetNotional}
                 validationMessage={inputValidationMessage}

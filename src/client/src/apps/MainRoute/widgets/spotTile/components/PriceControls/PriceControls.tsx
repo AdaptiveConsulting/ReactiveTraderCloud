@@ -61,6 +61,7 @@ const PriceControls: React.FC<Props> = ({
           priceAnnounced={isRfqStateReceived}
           disabled={isDisabled}
           expired={isRfqStateExpired}
+          currencyPairSymbol={currencyPair.symbol}
         />
       )}
       {isRfqStateCanRequest && (
@@ -92,6 +93,7 @@ const PriceControls: React.FC<Props> = ({
           priceAnnounced={isRfqStateReceived}
           disabled={isDisabled}
           expired={isRfqStateExpired}
+          currencyPairSymbol={currencyPair.symbol}
         />
       )}
       {isRfqStateCanRequest && (
