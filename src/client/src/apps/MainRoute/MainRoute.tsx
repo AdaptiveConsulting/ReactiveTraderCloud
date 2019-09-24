@@ -1,7 +1,6 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
-import { platform, PlatformProvider } from 'rt-components'
 import { ThemeProvider } from 'rt-theme'
 import { Router } from './data'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
@@ -18,12 +17,10 @@ const MainRoute = () => (
     </Helmet>
     <ThemeProvider>
       <ReduxProvider store={store}>
-        <PlatformProvider value={platform}>
-          <React.Fragment>
-            <GlobalScrollbarStyle />
-            <Router />
-          </React.Fragment>
-        </PlatformProvider>
+        <React.Fragment>
+          <GlobalScrollbarStyle />
+          <Router />
+        </React.Fragment>
       </ReduxProvider>
     </ThemeProvider>
   </React.Fragment>

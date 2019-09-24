@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
-import { initiateSymphony } from 'rt-platforms'
-import { waitForObject } from 'rt-util'
+import { initiateSymphony, PlatformProvider } from 'rt-platforms'
+import { getPlatformAsync } from './rt-platforms/platform'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -17,21 +17,22 @@ async function init() {
   if (urlParams.has('startAsSymphonyController')) {
     await initiateSymphony(urlParams.get('env'))
   } else {
-    if (urlParams.has('waitFor')) {
-      await waitForObject(urlParams.get('waitFor'))
-    }
+    const platform = await getPlatformAsync()
+
     ReactDOM.render(
       <React.Fragment>
         <GlobalStyle />
         <BrowserRouter>
-          <Suspense fallback={<div />}>
-            <Switch>
-              <Route path="/launcher" render={() => <SimpleLauncher />} />
-              <Route path="/styleguide" render={() => <StyleguideRoute />} />
-              <Route path="/order-ticket" render={() => <OrderTicketRoute />} />
-              <Route render={() => <MainRoute />} />
-            </Switch>
-          </Suspense>
+          <PlatformProvider value={platform}>
+            <Suspense fallback={<div />}>
+              <Switch>
+                <Route path="/launcher" render={() => <SimpleLauncher />} />
+                <Route path="/styleguide" render={() => <StyleguideRoute />} />
+                <Route path="/order-ticket" render={() => <OrderTicketRoute />} />
+                <Route render={() => <MainRoute />} />
+              </Switch>
+            </Suspense>
+          </PlatformProvider>
         </BrowserRouter>
       </React.Fragment>,
       document.getElementById('root'),
