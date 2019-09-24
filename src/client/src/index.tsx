@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
-import { initiateSymphony, PlatformProvider } from 'rt-platforms'
-import { getPlatformAsync } from './rt-platforms/platform'
+import { initiateSymphony, PlatformProvider, getPlatformAsync } from 'rt-platforms'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))

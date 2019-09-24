@@ -13,7 +13,7 @@ export { Symphony, initiateSymphony } from './symphony'
 export { OpenFin, OpenFinHeader, setupWorkspaces, excelAdapter } from './openFin'
 export { default as Finsemble } from './finsemble'
 export { InteropTopics } from './types'
-export { default as platform } from './platform'
+export { default as platform, getPlatformAsync } from './platform'
 export { PlatformProvider, usePlatform } from './context'
 export { externalWindowDefault } from './externalWindowDefault'
 export type ExternalWindow = ExternalWindow
