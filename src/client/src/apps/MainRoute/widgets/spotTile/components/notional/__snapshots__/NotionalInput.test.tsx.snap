@@ -8,11 +8,11 @@ exports[`NotionalInput default 1`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb fauXdE"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
@@ -32,11 +32,11 @@ exports[`NotionalInput default 2`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb dfDCvR"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
@@ -56,11 +56,11 @@ exports[`NotionalInput disabled 1`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb ixCVbX"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={true}
     onBlur={[Function]}
     onChange={[Function]}
@@ -80,11 +80,11 @@ exports[`NotionalInput disabled 2`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb jPqRyz"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={true}
     onBlur={[Function]}
     onChange={[Function]}
@@ -104,11 +104,11 @@ exports[`NotionalInput show reset button 1`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb fauXdE"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
@@ -137,11 +137,11 @@ exports[`NotionalInput show reset button 2`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb dfDCvR"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
@@ -170,11 +170,11 @@ exports[`NotionalInput with error 1`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb iHOuZf"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
@@ -200,11 +200,11 @@ exports[`NotionalInput with error 2`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb iHOuZf"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
@@ -230,11 +230,11 @@ exports[`NotionalInput with info 1`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb gDYEmO"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
@@ -260,11 +260,11 @@ exports[`NotionalInput with info 2`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb gDYEmO"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
@@ -290,11 +290,11 @@ exports[`NotionalInput with warning 1`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb ecOaYV"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
@@ -320,11 +320,11 @@ exports[`NotionalInput with warning 2`] = `
     className="sc-bdVaJa bxrsSL"
     data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb ecOaYV"
-    data-qa="notional-input__input"
+    data-qa="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
