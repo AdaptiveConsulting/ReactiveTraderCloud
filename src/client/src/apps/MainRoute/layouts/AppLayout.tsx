@@ -16,7 +16,7 @@ class AppLayout extends React.Component<Props> {
     const { before, header, body, footer, after } = this.props
 
     return (
-      <AppLayoutRoot>
+      <AppLayoutRoot data-qa="app-layout__root">
         {before}
 
         <Header>{header}</Header>
