@@ -21,7 +21,7 @@ interface PriceButtonProps {
   priceAnnounced?: boolean
   disabled?: boolean
   expired?: boolean
-  currencyPairSymbol?: string
+  currencyPairSymbol: string
 }
 
 const renderPips = (pips: number) => (pips.toString().length === 1 ? `0${pips}` : pips)
