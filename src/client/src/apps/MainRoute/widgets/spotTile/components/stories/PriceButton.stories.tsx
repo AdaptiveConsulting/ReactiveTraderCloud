@@ -22,8 +22,18 @@ stories.add('Price button', () => {
     <Story>
       <Centered>
         <Flex>
-          <PriceButton direction={Direction.Buy} handleClick={handleClick} {...priceProps} />
-          <PriceButton direction={Direction.Sell} handleClick={handleClick} {...priceProps} />
+          <PriceButton
+            direction={Direction.Buy}
+            handleClick={handleClick}
+            currencyPairSymbol={'eurusd'}
+            {...priceProps}
+          />
+          <PriceButton
+            direction={Direction.Sell}
+            handleClick={handleClick}
+            currencyPairSymbol={'eurusd'}
+            {...priceProps}
+          />
         </Flex>
       </Centered>
     </Story>
