@@ -37,16 +37,16 @@ export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
 export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close }) => (
   <React.Fragment>
     {minimize ? (
-      <HeaderControl accent="aware" onClick={minimize}>
+      <HeaderControl accent="aware" onClick={minimize} data-qa="openfin-chrome__minimize">
         <i className="fas fa-minus fa-set-position" />
       </HeaderControl>
     ) : null}
     {maximize ? (
-      <HeaderControl accent="dominant" onClick={maximize}>
+      <HeaderControl accent="dominant" onClick={maximize} data-qa="openfin-chrome__maximize">
         <i className="far fa-window-maximize" />
       </HeaderControl>
     ) : null}
-    <HeaderControl accent="bad" onClick={close}>
+    <HeaderControl accent="bad" onClick={close} data-qa="openfin-chrome__close">
       <FontAwesomeIcon icon={faTimes} />
     </HeaderControl>
   </React.Fragment>

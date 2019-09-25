@@ -30,18 +30,18 @@ const TileHeader: React.SFC<Props> = ({ ccyPair, date, displayCurrencyChart }) =
   const baseTerm = `${ccyPair.base}/${ccyPair.terms}`
   return (
     <Header>
-      <TileSymbol>{baseTerm}</TileSymbol>
+      <TileSymbol data-qa="tile-header__tile-symbol">{baseTerm}</TileSymbol>
       {platform.hasFeature('chartIQ') && (
-        <ActionButton onClick={displayCurrencyChart}>
+        <ActionButton data-qa="tile-header__chartiq-button" onClick={displayCurrencyChart}>
           <i className="fas fa-chart-bar" />
         </ActionButton>
       )}
       {platform.hasFeature('share') && (
-        <ActionButton onClick={share}>
+        <ActionButton data-qa="tile-header__share-button" onClick={share}>
           <i className="fas fa-share" />
         </ActionButton>
       )}
-      <DeliveryDate>{date}</DeliveryDate>
+      <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
     </Header>
   )
 }

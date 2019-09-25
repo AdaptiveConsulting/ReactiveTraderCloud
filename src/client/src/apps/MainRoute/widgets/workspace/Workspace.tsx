@@ -35,7 +35,7 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
   const [tileView, setTileView] = useState(TileViews.Normal)
 
   return (
-    <div>
+    <div data-qa="workspace__tiles-workspace">
       <WorkspaceHeader
         currencyOptions={currencyOptions}
         currency={currency}
@@ -44,7 +44,7 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
         onCurrencyChange={setCurrencyOption}
         onTileViewChange={setTileView}
       />
-      <WorkspaceItems>
+      <WorkspaceItems data-qa="workspace__tiles-workspace-items">
         {spotTiles
           .filter(({ key }) => key.includes(currency) || currency === 'ALL')
           .map(({ key, externalWindowProps, tornOff }) => (

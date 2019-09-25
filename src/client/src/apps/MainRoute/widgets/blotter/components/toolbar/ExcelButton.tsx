@@ -24,7 +24,7 @@ interface Props {
 }
 
 const ExcelButton: FC<Props> = ({ onClick }) => (
-  <Button onClick={onClick}>
+  <Button onClick={onClick} data-qa="excel-button__button">
     <ExcelIcon />
   </Button>
 )

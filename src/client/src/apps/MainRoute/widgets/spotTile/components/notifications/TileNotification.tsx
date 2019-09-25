@@ -57,23 +57,47 @@ interface Props {
   handleClick?: () => void
 }
 
-const TileNotification: React.FC<Props> = ({ style, isWarning, symbols, tradeId, handleClick, children }) => {
+const TileNotification: React.FC<Props> = ({
+  style,
+  isWarning,
+  symbols,
+  tradeId,
+  handleClick,
+  children,
+}) => {
   const accentColor = isWarning ? 'red' : 'green'
 
   return (
-    <TileNotificationStyle accentColor={accentColor} style={style}>
+    <TileNotificationStyle
+      accentColor={accentColor}
+      style={style}
+      data-qa="tile-notification__trade-notification"
+    >
       <TradeSymbol>
         {isWarning ? (
-          <Icon color="white" className="fas fa-lg fa-exclamation-triangle" aria-hidden="true" />
+          <Icon
+            color="white"
+            className="fas fa-lg fa-exclamation-triangle"
+            aria-hidden="true"
+            data-qa="tile-notification__warning-icon"
+          />
         ) : (
-          <CheckIcon className="fas fa-check" aria-hidden="true" />
+          <CheckIcon
+            className="fas fa-check"
+            aria-hidden="true"
+            data-qa="tile-notification__check-icon"
+          />
         )}
-        <HeavyFont>{symbols}</HeavyFont>
+        <HeavyFont data-qa="tile-notification__symbols">{symbols}</HeavyFont>
       </TradeSymbol>
-      {tradeId && <HeavyFont>Trade ID: {tradeId}</HeavyFont>}
-      <Content>{children}</Content>
+      {tradeId && <HeavyFont data-qa="tile-notification__tradeid">Trade ID: {tradeId}</HeavyFont>}
+      <Content data-qa="tile-notification__content">{children}</Content>
       {(handleClick && (
-        <PillButton accentColor={accentColor} onClick={handleClick}>
+        <PillButton
+          accentColor={accentColor}
+          onClick={handleClick}
+          data-qa="tile-notification__pill-button"
+        >
           Close
         </PillButton>
       )) || <div />}

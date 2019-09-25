@@ -73,6 +73,7 @@ const AnalyticsPriceControl: React.SFC<Props> = ({
               tenth={bidRate.pipFraction}
               rawRate={bidRate.rawRate}
               disabled={disabled}
+              currencyPairSymbol={currencyPair.symbol}
             />
             <PriceButton
               handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
@@ -82,6 +83,7 @@ const AnalyticsPriceControl: React.SFC<Props> = ({
               tenth={askRate.pipFraction}
               rawRate={askRate.rawRate}
               disabled={disabled}
+              currencyPairSymbol={currencyPair.symbol}
             />
           </React.Fragment>
         )}

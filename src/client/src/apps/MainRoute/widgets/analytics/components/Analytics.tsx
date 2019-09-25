@@ -39,7 +39,7 @@ const Analytics: React.FC<Props> = ({
     forceUpdate()
   }, [windowSize])
   return (
-    <AnalyticsStyle inExternalWindow={inExternalWindow}>
+    <AnalyticsStyle inExternalWindow={inExternalWindow} data-qa="analytics__analytics-content">
       <ProfitAndLoss
         analyticsLineChartModel={analyticsLineChartModel}
         popoutButton={<AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />}

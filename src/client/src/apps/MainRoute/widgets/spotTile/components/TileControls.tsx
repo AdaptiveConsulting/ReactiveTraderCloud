@@ -32,7 +32,7 @@ const TileControls: React.FC<Props> = ({ onPopoutClick, canPopout }) => {
   return (
     <React.Fragment>
       {canPopout && (
-        <TopRightButton onClick={popoutClickHandler}>
+        <TopRightButton onClick={popoutClickHandler} data-qa="tile-controls__popout-button">
           <PopoutIcon width={0.8125} height={0.75} />
         </TopRightButton>
       )}

@@ -11,7 +11,7 @@ class Header extends React.Component {
     const { children } = this.props
     return (
       <Root>
-        <Logo size={1.75} onClick={this.onClick} />
+        <Logo size={1.75} onClick={this.onClick} data-qa="header__root-logo" />
 
         <Fill />
 
@@ -30,7 +30,7 @@ class Header extends React.Component {
 const ThemeControl = () => {
   const { themeName, toggleTheme } = useTheme()
   return (
-    <IconButton onClick={toggleTheme}>
+    <IconButton onClick={toggleTheme} data-qa="header__toggle-theme-button">
       <i className={`fa${themeName === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
     </IconButton>
   )

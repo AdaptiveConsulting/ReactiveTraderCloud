@@ -12,7 +12,8 @@ stories.add('Notional input', () => (
       <div style={{ padding: '1.5rem' }}>
         <NotionalInput
           notional="1,000,000"
-          currencyPairSymbol="USD"
+          currencyPairSymbol="USDJPY"
+          currencyPairBase="USD"
           updateNotional={updateNotional}
           resetNotional={resetNotional}
           validationMessage={null}
@@ -29,7 +30,8 @@ stories.add('Notional input with trading disabled', () => (
       <div style={{ padding: '1.5rem' }}>
         <NotionalInput
           notional="1,000,000"
-          currencyPairSymbol="USD"
+          currencyPairSymbol="USDJPY"
+          currencyPairBase="USD"
           updateNotional={updateNotional}
           resetNotional={resetNotional}
           validationMessage={null}

@@ -103,7 +103,7 @@ const Blotter: React.FC<BlotterProps> = props => {
   }, [gridApi])
 
   return (
-    <BlotterStyle>
+    <BlotterStyle data-qa="blotter__blotter-content">
       <BlotterHeader
         canPopout={canPopout}
         onPopoutClick={onPopoutClick}
@@ -132,9 +132,9 @@ const Blotter: React.FC<BlotterProps> = props => {
         />
       </BlotterGrid>
       <BlotterStatus>
-        <BlotterStatusText>{`Displaying rows ${displayedRows} of ${
-          rows.length
-        }`}</BlotterStatusText>
+        <BlotterStatusText data-qa="blotter__blotter-status-text">
+          {`Displaying rows ${displayedRows} of ${rows.length}`}
+        </BlotterStatusText>
       </BlotterStatus>
     </BlotterStyle>
   )

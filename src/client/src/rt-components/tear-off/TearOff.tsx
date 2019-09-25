@@ -87,6 +87,7 @@ const TearOff: React.FC<TearOffProps> = props => {
           popOut(event.screenX, event.screenY)
         }}
         onDragStart={onDragStart}
+        data-qa="tear-off__drag-wrapper"
       >
         {render(popOut, tornOff)}
       </DragWrapper>
