@@ -5,8 +5,9 @@ import { Loadable, usePlatform } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
 import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
-import { ExecuteTradeRequest } from './model/executeTradeRequest'
+import { ExecuteTradeRequest, UpdateRequestedNotional } from './model/executeTradeRequest'
 import {
+  selectNotional,
   selectCurrencyPair,
   selectExecutionStatus,
   selectPricingStatus,
@@ -40,9 +41,12 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
     expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
     reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
   },
+  updateRequestedNotional: (requestedNotionalObject: UpdateRequestedNotional) =>
+    dispatch(SpotTileActions.setRequestedNotional(requestedNotionalObject)),
 })
 
 const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
+  requestedNotional: selectNotional(state, ownProps),
   pricingStatus: selectPricingStatus(state),
   executionStatus: selectExecutionStatus(state),
   currencyPair: selectCurrencyPair(state, ownProps),
@@ -73,11 +77,7 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
       minHeight={11}
       status={pricingStatus}
       render={() => (
-        <TileSwitch
-          key={id}
-          canPopout={tearable && allowTearOff && !tornOff}
-          {...props}
-        />
+        <TileSwitch key={id} canPopout={tearable && allowTearOff && !tornOff} {...props} />
       )}
       message={`${id} Disconnected`}
     />

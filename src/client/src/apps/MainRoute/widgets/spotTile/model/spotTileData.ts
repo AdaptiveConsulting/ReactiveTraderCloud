@@ -2,6 +2,7 @@ import { Trade } from 'rt-types'
 import { ExecuteTradeRequest } from './executeTradeRequest'
 import { SpotPriceTick } from './spotPriceTick'
 import { RfqState } from '../components/types'
+import { TileState } from '../components/Tile/Tile'
 
 export interface LastTradeExecutionStatus {
   request: ExecuteTradeRequest
@@ -19,4 +20,5 @@ export interface SpotTileData {
   rfqState: RfqState
   rfqTimeout: number | null
   rfqPrice: SpotPriceTick | null
+  requestedNotional: TileState | null
 }

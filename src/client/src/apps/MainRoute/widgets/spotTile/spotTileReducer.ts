@@ -27,6 +27,13 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   rfqState: 'none',
   rfqPrice: null,
   rfqTimeout: null,
+  requestedNotional: {
+    notional: '1,000,000',
+    inputDisabled: false,
+    inputValidationMessage: null,
+    tradingDisabled: false,
+    canExecute: true,
+  },
 }
 
 const spotTileReducer = (
@@ -34,6 +41,11 @@ const spotTileReducer = (
   action: SpotTileActions,
 ): SpotTileData => {
   switch (action.type) {
+    case TILE_ACTION_TYPES.SET_NOTIONAL:
+      return {
+        ...state,
+        requestedNotional: action.payload.RequestedNotional,
+      }
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
@@ -114,6 +126,11 @@ export const spotTileDataReducer = (
   action: SpotTileActions | DisconnectAction,
 ): SpotTileState => {
   switch (action.type) {
+    case TILE_ACTION_TYPES.SET_NOTIONAL:
+      return {
+        ...state,
+        [action.payload.CurrencyPair]: spotTileReducer(state[action.payload.CurrencyPair], action),
+      }
     case TILE_ACTION_TYPES.SET_TRADING_MODE:
       return {
         ...state,
