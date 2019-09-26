@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { ignoreElements, tap } from 'rxjs/operators'
+import { ignoreElements, tap, filter } from 'rxjs/operators'
 import { ApplicationEpic, GlobalState } from 'StoreTypes'
 import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
 import { CurrencyPairPosition, CurrencyPairPositionWithPrice } from '../../../../../rt-types'
@@ -11,14 +11,13 @@ type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
 export const publishPositionToExcelEpic: ApplicationEpic = (action$, state$, { excelApp }) =>
   action$.pipe(
     ofType<Action, FetchAnalyticsAction>(ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE),
+    filter(() => excelApp.isOpen()),
     tap((action: FetchAnalyticsAction) => {
-      if (excelApp.isOpen()) {
-        const currentPositions = combineWithLatestPrices(
-          action.payload.currentPositions,
-          state$.value,
-        )
-        excelApp.publishPositions(currentPositions)
-      }
+      const currentPositions = combineWithLatestPrices(
+        action.payload.currentPositions,
+        state$.value,
+      )
+      excelApp.publishPositions(currentPositions)
     }),
     ignoreElements(),
   )

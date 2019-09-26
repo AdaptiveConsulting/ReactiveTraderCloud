@@ -6,7 +6,7 @@ import { combineEpics, ofType } from 'redux-observable'
 import { Action } from 'redux'
 import { Trade } from 'rt-types'
 import { EMPTY } from 'rxjs'
-import { InteropTopics } from '../../../../../rt-platforms'
+import { InteropTopics } from 'rt-platforms'
 
 const { highlightTradeAction, removeHighlightTradeAction } = BlotterActions
 const TRADE_HIGHLIGHT_TIME_IN_MS = 3000
