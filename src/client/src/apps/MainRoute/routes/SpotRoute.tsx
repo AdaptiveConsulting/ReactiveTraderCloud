@@ -15,11 +15,11 @@ const SpotTileStyle = styled.div`
 `
 const getTileViewFromQueryStr: (queryStr: string) => TileViews = queryStr => {
   const parsedQueryString = queryString.parse(queryStr)
-  const tileView = parsedQueryString['tileView']
+  const tileView = parsedQueryString['tileView'] as TileViews
   return !tileView
     ? TileViews.Normal
     : Object.values(TileViews).includes(tileView)
-    ? (tileView as TileViews)
+    ? tileView
     : TileViews.Normal
 }
 export default ({ location: { search }, match }: RouteComponentProps<{ symbol: string }>) => {
