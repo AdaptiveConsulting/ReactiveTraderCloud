@@ -1,4 +1,5 @@
 import { CollectionUpdates, Direction, Trade, TradeStatus } from 'rt-types'
+import numeral from 'numeral'
 
 export interface TradeRaw {
   TradeId: number
@@ -78,7 +79,7 @@ function createTrade(
     notional,
     dealtCurrency,
     direction,
-    spotRate,
+    spotRate: +numeral(spotRate).format('0,000[.]00000'),
     tradeDate,
     valueDate,
     status,
