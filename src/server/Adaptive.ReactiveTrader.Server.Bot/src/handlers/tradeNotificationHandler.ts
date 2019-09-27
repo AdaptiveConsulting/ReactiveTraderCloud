@@ -1,5 +1,5 @@
 import { concat, from } from 'rxjs'
-import { filter, map, mergeMap, switchMap, take } from 'rxjs/operators'
+import { concatMap, filter, map, mergeMap, switchMap, take } from 'rxjs/operators'
 import { formatNumber } from '../domain/priceFormatting'
 import logger from '../logger'
 import { tradeUpdateMessage } from '../messages'
@@ -39,32 +39,32 @@ export const tradeNotificationHandler: Handler = (symphony, { intentsFromDF$ }, 
         const notifcationMessage = `Notification: A ${ccyPair || ccy || ''} trade over ${formatNumber(
           notional,
         )} was executed`
+        return symphony.sendMessage(request.originalMessage.stream.streamId, standardMessage(updateMessage)).pipe(
+          concatMap(() =>
+            latestTrades$.pipe(
+              filter(trade => {
+                if (notional > trade.Notional) {
+                  return false
+                }
 
-        return concat(
-          symphony.sendMessage(request.originalMessage.stream.streamId, standardMessage(updateMessage)),
-          latestTrades$.pipe(
-            filter(trade => {
-              if (notional > trade.Notional) {
-                return false
-              }
+                if (ccyPair) {
+                  return trade.CurrencyPair === ccyPair
+                }
 
-              if (ccyPair) {
-                return trade.CurrencyPair === ccyPair
-              }
+                if (ccy) {
+                  return trade.CurrencyPair.substr(0, 3) === ccy
+                }
 
-              if (ccy) {
-                return trade.CurrencyPair.substr(0, 3) === ccy
-              }
-
-              return true
-            }),
-            mergeMap(trade =>
-              symphony.sendMessage(
-                request.originalMessage.stream.streamId,
-                tradeUpdateMessage([trade], notifcationMessage, 'HIGH'),
+                return true
+              }),
+              mergeMap(trade =>
+                symphony.sendMessage(
+                  request.originalMessage.stream.streamId,
+                  tradeUpdateMessage([trade], notifcationMessage, 'HIGH'),
+                ),
               ),
+              take(5),
             ),
-            take(5),
           ),
         )
       }),

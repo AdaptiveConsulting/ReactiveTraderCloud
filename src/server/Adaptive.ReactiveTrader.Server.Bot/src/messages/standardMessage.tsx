@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 
 const Message: FC<{ text: string }> = ({ text }) => {
   return (
-    <card accent="tempo-bg-color--blue">
+    <card iconSrc="https://web-demo.adaptivecluster.com/favicon.ico" accent="tempo-bg-color--blue">
       <header>{text}</header>
     </card>
   )
