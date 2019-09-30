@@ -19,6 +19,7 @@ interface Props {
   executeTrade: (direction: Direction, rawSpotRate: number) => void
   disabled: boolean
   rfqState: RfqState
+  isTradeExecutionInFlight: boolean
 }
 
 const PriceControls: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const PriceControls: React.FC<Props> = ({
   executeTrade,
   rfqState,
   disabled,
+  isTradeExecutionInFlight,
 }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
@@ -50,7 +52,7 @@ const PriceControls: React.FC<Props> = ({
 
   return (
     <PriceControlsStyle>
-      {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired) && (
+      {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired || isTradeExecutionInFlight) && (
         <PriceButton
           handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
           direction={Direction.Sell}
@@ -82,7 +84,7 @@ const PriceControls: React.FC<Props> = ({
         priceMovementType={priceData.priceMovementType}
         spread={hasPrice ? spread.formattedValue : '-'}
       />
-      {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired) && (
+      {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired || isTradeExecutionInFlight) && (
         <PriceButton
           handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
           direction={Direction.Buy}
