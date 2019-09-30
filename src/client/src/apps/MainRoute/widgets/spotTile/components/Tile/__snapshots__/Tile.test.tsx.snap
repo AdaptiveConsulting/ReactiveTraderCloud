@@ -1,0 +1,1207 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
+<div
+  className="sc-fAjcbJ sc-caSCKo jEmDht"
+>
+  <div
+    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-kvZOFW jeDDbd"
+      >
+        <div
+          className="sc-eqIVtm bkOZSq"
+        >
+          <div
+            className="sc-jhAzac dMjkVa"
+            data-qa="tile-header__tile-symbol"
+          >
+            EUR/USD
+          </div>
+          <div
+            className="sc-hzDkRC izpKta"
+            data-qa="tile-header__delivery-date"
+          >
+            SPT (07 APR)
+          </div>
+        </div>
+      </div>
+      <div
+        className="sc-jlyJG ePoUEg"
+      >
+        <button
+          className="sc-EHOje gCbQHr"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-gZMcBi egNMcT"
+            disabled={true}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                SELL
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+        <div
+          className="sc-jzJRlG iKkJoh"
+        >
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            color="green"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="sc-fjdhpX flAxeK"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            color="red"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <button
+          className="sc-EHOje gCbQHr"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-gZMcBi egNMcT"
+            disabled={true}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                BUY
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-cHGsZl eNCaOT"
+      >
+        <div
+          className="sc-htpNat idZgat"
+        >
+          <span
+            className="sc-bdVaJa bxrsSL"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="sc-bxivhb ixCVbX"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={true}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
+<div
+  className="sc-fAjcbJ sc-caSCKo jEmDht"
+>
+  <div
+    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-kvZOFW jeDDbd"
+      >
+        <div
+          className="sc-eqIVtm bkOZSq"
+        >
+          <div
+            className="sc-jhAzac dMjkVa"
+            data-qa="tile-header__tile-symbol"
+          >
+            EUR/USD
+          </div>
+          <div
+            className="sc-hzDkRC izpKta"
+            data-qa="tile-header__delivery-date"
+          >
+            SPT (07 APR)
+          </div>
+        </div>
+      </div>
+      <div
+        className="sc-jlyJG ePoUEg"
+      >
+        <div
+          className="sc-gipzik hreSLC"
+          data-qa="price-controls__price-button-disabled"
+        >
+          <i
+            className="fas fa-ban fa-flip-horizontal sc-csuQGl gqkcpi"
+          />
+          Streaming price unavailable
+        </div>
+        <div
+          className="sc-jzJRlG iKkJoh"
+        >
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            color="green"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="sc-fjdhpX flAxeK"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            color="red"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <div
+          className="sc-gipzik hreSLC"
+          data-qa="price-controls__price-button-disabled"
+        >
+          <i
+            className="fas fa-ban fa-flip-horizontal sc-csuQGl gqkcpi"
+          />
+          Streaming price unavailable
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-cHGsZl eNCaOT"
+      >
+        <div
+          className="sc-htpNat idZgat"
+        >
+          <span
+            className="sc-bdVaJa bxrsSL"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="sc-bxivhb fauXdE"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+          <button
+            className="sc-ifAKCX gROrJN"
+            data-qa="notional-input__reset-input-value"
+            onClick={[Function]}
+          >
+            <i
+              className="fas fa-redo fa-flip-horizontal"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, RFQ expired 1`] = `
+<div
+  className="sc-fAjcbJ sc-caSCKo jEmDht"
+>
+  <div
+    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-kvZOFW jeDDbd"
+      >
+        <div
+          className="sc-eqIVtm bkOZSq"
+        >
+          <div
+            className="sc-jhAzac dMjkVa"
+            data-qa="tile-header__tile-symbol"
+          >
+            EUR/USD
+          </div>
+          <div
+            className="sc-hzDkRC izpKta"
+            data-qa="tile-header__delivery-date"
+          >
+            SPT (07 APR)
+          </div>
+        </div>
+      </div>
+      <div
+        className="sc-jlyJG ePoUEg"
+      >
+        <button
+          className="sc-EHOje gCbQHr"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-gZMcBi egNMcT"
+            disabled={true}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                SELL
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+          <div
+            className="sc-VigVT cLQaHF"
+            data-qa="price-button__expired"
+          >
+            Expired
+          </div>
+        </button>
+        <div
+          className="sc-jzJRlG iKkJoh"
+        >
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            color="green"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="sc-fjdhpX flAxeK"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            color="red"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <button
+          className="sc-EHOje gCbQHr"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-gZMcBi egNMcT"
+            disabled={true}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                BUY
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+          <div
+            className="sc-VigVT cLQaHF"
+            data-qa="price-button__expired"
+          >
+            Expired
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-cHGsZl eNCaOT"
+      >
+        <div
+          className="sc-htpNat idZgat"
+        >
+          <span
+            className="sc-bdVaJa bxrsSL"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="sc-bxivhb fauXdE"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+          <button
+            className="sc-ifAKCX gROrJN"
+            data-qa="notional-input__reset-input-value"
+            onClick={[Function]}
+          >
+            <i
+              className="fas fa-redo fa-flip-horizontal"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, RFQ received 1`] = `
+<div
+  className="sc-fAjcbJ sc-caSCKo jEmDht"
+>
+  <div
+    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-kvZOFW jeDDbd"
+      >
+        <div
+          className="sc-eqIVtm bkOZSq"
+        >
+          <div
+            className="sc-jhAzac dMjkVa"
+            data-qa="tile-header__tile-symbol"
+          >
+            EUR/USD
+          </div>
+          <div
+            className="sc-hzDkRC izpKta"
+            data-qa="tile-header__delivery-date"
+          >
+            SPT (07 APR)
+          </div>
+        </div>
+      </div>
+      <div
+        className="sc-jlyJG ePoUEg"
+      >
+        <button
+          className="sc-EHOje ixrtnE"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={false}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-gZMcBi crpdKd"
+            disabled={false}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                SELL
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+        <div
+          className="sc-jzJRlG iKkJoh"
+        >
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            color="green"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="sc-fjdhpX flAxeK"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            color="red"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <button
+          className="sc-EHOje iHiLlf"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={false}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-gZMcBi crpdKd"
+            disabled={false}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                BUY
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-cHGsZl eNCaOT"
+      >
+        <div
+          className="sc-htpNat idZgat"
+        >
+          <span
+            className="sc-bdVaJa bxrsSL"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="sc-bxivhb ixCVbX"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={true}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, RFQ requested 1`] = `
+<div
+  className="sc-fAjcbJ sc-caSCKo jEmDht"
+>
+  <div
+    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-kvZOFW jeDDbd"
+      >
+        <div
+          className="sc-eqIVtm bkOZSq"
+        >
+          <div
+            className="sc-jhAzac dMjkVa"
+            data-qa="tile-header__tile-symbol"
+          >
+            EUR/USD
+          </div>
+          <div
+            className="sc-hzDkRC izpKta"
+            data-qa="tile-header__delivery-date"
+          >
+            SPT (07 APR)
+          </div>
+        </div>
+      </div>
+      <div
+        className="sc-jlyJG ePoUEg"
+      >
+        <div
+          className="sc-gipzik hreSLC"
+          data-qa="price-controls__price-button-disabled--loading"
+        >
+          <div
+            className="sc-Rmtcm iAvTcQ"
+          >
+            <svg
+              data-qa="adaptive-loader__svg"
+              height={14}
+              width={14}
+            >
+              <rect
+                className="sc-iAyFgw cxWxYt"
+                height={10.5}
+                order={0}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={0.25}
+              />
+              <rect
+                className="sc-iAyFgw bhdnzD"
+                height={10.5}
+                order={1}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={3.875}
+              />
+              <rect
+                className="sc-iAyFgw dCCxYH"
+                height={10.5}
+                order={2}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={7.5}
+              />
+              <rect
+                className="sc-iAyFgw fhFpJw"
+                height={10.5}
+                order={3}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={11.125}
+              />
+            </svg>
+          </div>
+          Awaiting price
+        </div>
+        <div
+          className="sc-jzJRlG iKkJoh"
+        >
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            color="green"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="sc-fjdhpX flAxeK"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            color="red"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <div
+          className="sc-gipzik hreSLC"
+          data-qa="price-controls__price-button-disabled--loading"
+        >
+          <div
+            className="sc-Rmtcm iAvTcQ"
+          >
+            <svg
+              data-qa="adaptive-loader__svg"
+              height={14}
+              width={14}
+            >
+              <rect
+                className="sc-iAyFgw cxWxYt"
+                height={10.5}
+                order={0}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={0.25}
+              />
+              <rect
+                className="sc-iAyFgw bhdnzD"
+                height={10.5}
+                order={1}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={3.875}
+              />
+              <rect
+                className="sc-iAyFgw dCCxYH"
+                height={10.5}
+                order={2}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={7.5}
+              />
+              <rect
+                className="sc-iAyFgw fhFpJw"
+                height={10.5}
+                order={3}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={11.125}
+              />
+            </svg>
+          </div>
+          Awaiting price
+        </div>
+      </div>
+    </div>
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-cHGsZl eNCaOT"
+      >
+        <div
+          className="sc-htpNat idZgat"
+        >
+          <span
+            className="sc-bdVaJa bxrsSL"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="sc-bxivhb ixCVbX"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={true}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, defaults, RFQ none, should be able to excute 1`] = `
+<div
+  className="sc-fAjcbJ sc-caSCKo jEmDht"
+>
+  <div
+    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-kvZOFW jeDDbd"
+      >
+        <div
+          className="sc-eqIVtm bkOZSq"
+        >
+          <div
+            className="sc-jhAzac dMjkVa"
+            data-qa="tile-header__tile-symbol"
+          >
+            EUR/USD
+          </div>
+          <div
+            className="sc-hzDkRC izpKta"
+            data-qa="tile-header__delivery-date"
+          >
+            SPT (07 APR)
+          </div>
+        </div>
+      </div>
+      <div
+        className="sc-jlyJG ePoUEg"
+      >
+        <button
+          className="sc-EHOje kkdSuS"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={false}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-gZMcBi crpdKd"
+            disabled={false}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                SELL
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+        <div
+          className="sc-jzJRlG iKkJoh"
+        >
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            color="green"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="sc-fjdhpX flAxeK"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            color="red"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <button
+          className="sc-EHOje ciDDPg"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={false}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-gZMcBi crpdKd"
+            disabled={false}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                BUY
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-cHGsZl eNCaOT"
+      >
+        <div
+          className="sc-htpNat idZgat"
+        >
+          <span
+            className="sc-bdVaJa bxrsSL"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="sc-bxivhb fauXdE"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, in trade 1`] = `
+<div
+  className="sc-fAjcbJ sc-caSCKo jEmDht"
+>
+  <div
+    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-kvZOFW jeDDbd"
+      >
+        <div
+          className="sc-eqIVtm bkOZSq"
+        >
+          <div
+            className="sc-jhAzac dMjkVa"
+            data-qa="tile-header__tile-symbol"
+          >
+            EUR/USD
+          </div>
+          <div
+            className="sc-hzDkRC izpKta"
+            data-qa="tile-header__delivery-date"
+          >
+            SPT (07 APR)
+          </div>
+        </div>
+      </div>
+      <div
+        className="sc-jlyJG ePoUEg"
+      >
+        <button
+          className="sc-EHOje gCbQHr"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-gZMcBi egNMcT"
+            disabled={true}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                SELL
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+        <div
+          className="sc-jzJRlG iKkJoh"
+        >
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            color="green"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="sc-fjdhpX flAxeK"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            color="red"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <button
+          className="sc-EHOje gCbQHr"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="sc-gZMcBi egNMcT"
+            disabled={true}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                BUY
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="sc-gisBJw kDlVKO"
+    >
+      <div
+        className="sc-cHGsZl eNCaOT"
+      >
+        <div
+          className="sc-htpNat idZgat"
+        >
+          <span
+            className="sc-bdVaJa bxrsSL"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="sc-bxivhb ixCVbX"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={true}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
