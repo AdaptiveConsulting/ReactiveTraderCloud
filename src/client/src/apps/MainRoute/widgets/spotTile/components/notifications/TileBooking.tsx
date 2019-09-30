@@ -71,13 +71,14 @@ const TileBooking: React.FC<Props> = ({
             }}
             altStyle={showLoader}
             disabled={disabled}
+            data-qa="tile-booking__booking-pill"
           >
             {showLoader && (
               <AdaptiveLoaderWrapper>
                 <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
               </AdaptiveLoaderWrapper>
             )}
-            <BookingStatus>{children}</BookingStatus>
+            <BookingStatus data-qa="tile-booking__booking-status">{children}</BookingStatus>
           </BookingPill>
         </TileBookingStyle>
       ))}

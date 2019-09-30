@@ -3,6 +3,7 @@ import NotionalInput, { ValidationMessage } from './NotionalInput'
 import { renderWithTheme } from '../../../../../../../__tests__/helpers'
 
 const notional = '1,000,000'
+const currencyPairBase = 'EUR'
 const currencyPairSymbol = 'EURUSD'
 const updateNotional = jest.fn()
 const resetNotional = jest.fn()
@@ -24,6 +25,7 @@ test('NotionalInput default', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -40,6 +42,7 @@ test('NotionalInput with error', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -56,6 +59,7 @@ test('NotionalInput with warning', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -72,6 +76,7 @@ test('NotionalInput with info', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -88,6 +93,7 @@ test('NotionalInput disabled', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -104,6 +110,7 @@ test('NotionalInput show reset button', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -121,6 +128,7 @@ test('NotionalInput default', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -138,6 +146,7 @@ test('NotionalInput with error', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -155,6 +164,7 @@ test('NotionalInput with warning', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -172,6 +182,7 @@ test('NotionalInput with info', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -189,6 +200,7 @@ test('NotionalInput disabled', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
@@ -206,6 +218,7 @@ test('NotionalInput show reset button', () => {
   const component = renderWithTheme(
     <NotionalInput
       notional={notional}
+      currencyPairBase={currencyPairBase}
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}

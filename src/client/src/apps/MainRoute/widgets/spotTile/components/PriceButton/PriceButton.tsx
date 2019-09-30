@@ -21,6 +21,7 @@ interface PriceButtonProps {
   priceAnnounced?: boolean
   disabled?: boolean
   expired?: boolean
+  currencyPairSymbol: string
 }
 
 const renderPips = (pips: number) => (pips.toString().length === 1 ? `0${pips}` : pips)
@@ -39,6 +40,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
   priceAnnounced,
   disabled = false,
   expired = false,
+  currencyPairSymbol,
 }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
   const hasPrice = rawRate !== 0
@@ -49,20 +51,24 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
       onClick={handleClick}
       priceAnnounced={priceAnnounced}
       disabled={isDisabled}
+      data-qa="price-button__trade-button"
+      data-qa-id={`direction-${direction.toLowerCase()}-${currencyPairSymbol.toLowerCase()}`}
     >
       <Price disabled={isDisabled}>
         <BigWrapper>
           <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
-          <Big>{hasPrice ? renderBigFigureDisplay(bigFigure) : '-'}</Big>
+          <Big data-qa="price-button__big">
+            {hasPrice ? renderBigFigureDisplay(bigFigure) : '-'}
+          </Big>
         </BigWrapper>
         {hasPrice && (
           <React.Fragment>
-            <Pip>{renderPips(pip)}</Pip>
-            <Tenth>{tenth}</Tenth>
+            <Pip data-qa="price-button__pip">{renderPips(pip)}</Pip>
+            <Tenth data-qa="price-button__tenth">{tenth}</Tenth>
           </React.Fragment>
         )}
       </Price>
-      {expired && <ExpiredPrice>Expired</ExpiredPrice>}
+      {expired && <ExpiredPrice data-qa="price-button__expired">Expired</ExpiredPrice>}
     </TradeButton>
   )
 }

@@ -36,7 +36,7 @@ interface BarProps {
 const Bar = styled('rect')<BarProps>`
   animation: ${({ moveDistance }: BarProps) => getBounce(moveDistance)} ${({ speed }) => speed}s
     infinite;
-  animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER) - 0.829}s;
+  animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER)}s;
   fill: ${({ theme }) => theme.core.textColor};
   will-change: transform;
 `
@@ -62,7 +62,7 @@ export class AdaptiveLoader extends PureComponent<Props> {
     const extraWidth = sizeNum - totalBarWidth
 
     return (
-      <svg width={sizeNum} height={sizeNum}>
+      <svg width={sizeNum} height={sizeNum} data-qa="adaptive-loader__svg">
         {bars.map((item, i) => (
           <Bar
             type={type || 'primary'}

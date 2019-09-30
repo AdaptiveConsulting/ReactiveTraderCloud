@@ -29,13 +29,15 @@ const PriceMovementStyle = styled.div`
 const PriceMovement: React.FC<Props> = ({ priceMovementType, spread }) => (
   <PriceMovementStyle>
     <MovementIcon
+      data-qa="price-movement__movement-icon--up"
       show={priceMovementType === PriceMovementTypes.Up}
       color="green"
       className="fas fa-caret-up"
       aria-hidden="true"
     />
-    <MovementValue>{spread}</MovementValue>
+    <MovementValue data-qa="price-movement__movement-value">{spread}</MovementValue>
     <MovementIcon
+      data-qa="price-movement__movement-icon--down"
       show={priceMovementType === PriceMovementTypes.Down}
       color="red"
       className="fas fa-caret-down"

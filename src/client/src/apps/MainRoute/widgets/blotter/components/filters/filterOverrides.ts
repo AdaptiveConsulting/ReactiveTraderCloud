@@ -38,14 +38,15 @@ NumberFilter.prototype.bodyTemplate = function() {
             </div>
             <div class="filter-container__content-wrapper">
               <div>
-               ${selector}
-               
-               <input class="ag-filter-filter filter-container__free-text-input" 
-                  id="filterText" type="text" placeholder="${translate('filterOoo')}"/>
-                </div>
-                 <div class="ag-filter-number-to" id="filterNumberToPanel">
-                    <input class="ag-filter-filter filter-container__free-text-input" 
-                      id="filterToText" type="text" placeholder="${translate('filterOoo')}"/>
+                ${selector}
+                <input class="ag-filter-filter filter-container__free-text-input" 
+                  id="filterText" type="text" placeholder="${translate('filterOoo')}"
+                  data-qa="set-filter__filter-input"/>
+              </div>
+              <div class="ag-filter-number-to" id="filterNumberToPanel">
+                <input class="ag-filter-filter filter-container__free-text-input" 
+                  id="filterToText" type="text" placeholder="${translate('filterOoo')}"
+                  data-qa="set-filter__filter-input"/>
                </div>
             </div>
           </div>`

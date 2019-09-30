@@ -41,7 +41,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
         <Resizer
           defaultHeight={30}
           component={() => (
-            <BlotterWrapper>
+            <BlotterWrapper data-qa="shell-route__blotter-wrapper">
               <TearOff
                 id="blotter"
                 dragTearOff={false}
@@ -58,7 +58,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
           )}
           disabled={!blotter.visible}
         >
-          <WorkspaceWrapper>
+          <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
             <OverflowScroll>
               <WorkspaceContainer />
             </OverflowScroll>
@@ -66,7 +66,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
         </Resizer>
       }
       aside={
-        <AnalyticsWrapper>
+        <AnalyticsWrapper data-qa="shell-route__analytics-wrapper">
           <TearOff
             id="region"
             dragTearOff={false}

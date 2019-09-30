@@ -56,7 +56,11 @@ export default class AppliedFilters extends React.Component<AppliedFiltersProps,
           <FilterField key={colDef.field}>
             <FilterName>{colDef.headerName}</FilterName>
             <FilterButton>
-              <FilterIcon className="fas fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
+              <FilterIcon
+                className="fas fa-times"
+                onClick={() => this.props.removeFilter(colDef.field || '')}
+                data-qa="applied-filters___remove-filter-button"
+              />
             </FilterButton>
           </FilterField>
         )

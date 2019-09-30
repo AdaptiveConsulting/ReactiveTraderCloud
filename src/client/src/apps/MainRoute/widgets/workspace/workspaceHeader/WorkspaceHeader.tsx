@@ -35,6 +35,8 @@ const WorkspaceHeader: React.FC<Props> = ({
             key={currencyOption}
             active={currencyOption === currency}
             onClick={() => onCurrencyChange(currencyOption)}
+            data-qa="workspace-header__nav-item"
+            data-qa-id={`currency-option-${currencyOption.toLowerCase()}`}
           >
             {currencyOption}
           </NavItem>
@@ -44,7 +46,13 @@ const WorkspaceHeader: React.FC<Props> = ({
         {Object.keys(tileViews).map(view => {
           const Icon = tileViews[view]
           return (
-            <NavItem key={view} active={view === tileView} onClick={() => onTileViewChange(view as TileViews)}>
+            <NavItem
+              key={view}
+              active={view === tileView}
+              onClick={() => onTileViewChange(view as TileViews)}
+              data-qa="workspace-header__nav-item--view"
+              data-qa-id={`workspace-view-${view.toLowerCase()}`}
+            >
               <Icon />
             </NavItem>
           )

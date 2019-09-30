@@ -2,13 +2,13 @@ import { BasePlatformAdapter } from '../../platformAdapter'
 import { WindowConfig } from '../../types'
 import { SymphonyClient, SYMPHONY_APP_ID, FX_ENTITY_TYPE, createTileMessage } from '../index'
 
-const symphony: SymphonyClient = window.SYMPHONY
-
 export default class Symphony extends BasePlatformAdapter {
   readonly name = 'browser'
   readonly type = 'browser'
 
   async init() {
+    const symphony: SymphonyClient = window.SYMPHONY
+
     try {
       await symphony.remote.hello()
       await symphony.application.connect(SYMPHONY_APP_ID, ['modules', 'share'])
@@ -40,6 +40,7 @@ export default class Symphony extends BasePlatformAdapter {
   }
 
   share = (obj: any) => {
+    const symphony: SymphonyClient = window.SYMPHONY
     const shareService = symphony.services.subscribe('share')
     const ccyPair = 'GBPUSD'
     shareService.share(FX_ENTITY_TYPE, {

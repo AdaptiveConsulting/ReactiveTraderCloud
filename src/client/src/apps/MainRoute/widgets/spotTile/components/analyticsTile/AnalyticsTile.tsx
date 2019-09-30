@@ -41,7 +41,11 @@ class AnalyticsTile extends React.PureComponent<Props> {
 
     return (
       <AnalyticsWrapperWithPlatform>
-        <AnalyticsTileStyle className="spot-tile">
+        <AnalyticsTileStyle
+          className="spot-tile"
+          data-qa="analytics-tile__spot-tile"
+          data-qa-id={`currency-pair-${currencyPair.symbol.toLowerCase()}`}
+        >
           <TileHeader ccyPair={currencyPair} date={date} />
           <AnalyticsTileContent>
             <GraphNotionalWrapper>
@@ -50,7 +54,8 @@ class AnalyticsTile extends React.PureComponent<Props> {
               </LineChartWrapper>
               <NotionalInput
                 notional={notional}
-                currencyPairSymbol={currencyPair.base}
+                currencyPairBase={currencyPair.base}
+                currencyPairSymbol={currencyPair.symbol}
                 updateNotional={updateNotional}
                 resetNotional={resetNotional}
                 validationMessage={inputValidationMessage}
@@ -63,6 +68,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
               priceData={price}
               currencyPair={currencyPair}
               disabled={tradingDisabled}
+              rfqState={rfqState}
             />
           </AnalyticsTileContent>
         </AnalyticsTileStyle>

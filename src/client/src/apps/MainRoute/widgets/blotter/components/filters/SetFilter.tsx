@@ -238,6 +238,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
             value={this.state.selectedFreeText}
             onChange={this.onTextChange}
             className="filter-container__free-text-input"
+            data-qa="set-filter__filter-input"
           />
 
           <div className="filter_container__select-all-option-container">

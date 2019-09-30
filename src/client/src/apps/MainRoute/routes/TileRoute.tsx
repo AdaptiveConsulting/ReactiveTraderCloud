@@ -13,7 +13,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
     <DefaultLayout
       header={header}
       body={
-        <WorkspaceWrapper>
+        <WorkspaceWrapper data-qa="tile-route__workspace-wrapper">
           <OverflowScroll>
             <WorkspaceContainer />
           </OverflowScroll>

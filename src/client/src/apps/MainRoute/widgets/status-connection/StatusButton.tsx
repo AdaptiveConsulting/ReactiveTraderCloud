@@ -2,7 +2,15 @@ import React, { Component, SyntheticEvent } from 'react'
 
 import { ConnectionState } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
-import { Button, StatusCircle, StatusLabel, Root, AppUrl, ServiceListPopup, ServiceList } from './styled'
+import {
+  Button,
+  StatusCircle,
+  StatusLabel,
+  Root,
+  AppUrl,
+  ServiceListPopup,
+  ServiceList,
+} from './styled'
 import Service from './Service'
 
 interface State {
@@ -54,14 +62,20 @@ export class StatusButton extends Component<
     const appUrl = `${url} (${transportType})`
     return (
       <Root>
-        <Button onClick={this.toggleOpen}>
+        <Button onClick={this.toggleOpen} data-qa="status-button__toggle-button">
           <StatusCircle status={appStatus} />
           <StatusLabel status={appStatus} />
         </Button>
 
         <ServiceListPopup open={opened} onClick={this.toggleOpen}>
           <ServiceList>
-            <AppUrl title={appUrl} readOnly={true} value={appUrl} onFocus={this.selectAll} onClick={this.selectAll} />
+            <AppUrl
+              title={appUrl}
+              readOnly={true}
+              value={appUrl}
+              onFocus={this.selectAll}
+              onClick={this.selectAll}
+            />
 
             {services.map(service => (
               <Service key={service.serviceType} service={service} />
