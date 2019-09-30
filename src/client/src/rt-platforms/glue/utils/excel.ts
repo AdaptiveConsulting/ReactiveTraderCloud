@@ -19,6 +19,7 @@ export const getAddinStatus = () =>
   window.glue4office ? window.glue4office.excel.addinStatus : false
 
 export const openSheet = async (blotterData: BlotterData[] = []) => {
+  console.log(blotterData)
   const options = {
     columnConfig: [
       { header: 'Trade ID', fieldName: 'tradeId', width: 11 },
@@ -32,7 +33,7 @@ export const openSheet = async (blotterData: BlotterData[] = []) => {
       { header: 'Value Date', fieldName: 'valueDate', width: 13 },
       { header: 'Trader', fieldName: 'traderName', width: 13 },
     ],
-    data: convertBlotterData(blotterData),
+    data: blotterData,
     options: {
       worksheet: 'Executed Trades',
       workbook: 'ReactiveTrader',
@@ -53,7 +54,7 @@ export const updateSheet = async (blotterData: BlotterData[]) => {
     return
   }
   if (!sheet) {
-    await openSheet(blotterData)
+    await openSheet(convertBlotterData(blotterData))
     return
   }
 
@@ -68,11 +69,11 @@ export const updateSheet = async (blotterData: BlotterData[]) => {
  */
 const convertBlotterData = (blotterData: BlotterData[]) =>
   blotterData
-    .map(data => {
-      data.status = `${data.status.charAt(0).toUpperCase()}${data.status.slice(1)}`
-      data.tradeDate = convertTradeDate(data.tradeDate)
-      return data
-    })
+    .map(data => ({
+      ...data,
+      status: `${data.status.charAt(0).toUpperCase()}${data.status.slice(1)}`,
+      tradeDate: convertTradeDate(data.tradeDate),
+    }))
     .reverse()
 
 const convertTradeDate = (tradeDate: string) => {
@@ -91,9 +92,11 @@ const convertTradeDate = (tradeDate: string) => {
     'Nov',
     'Dec',
   ]
-  const hours = date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`
-  const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`
-  const seconds = date.getSeconds() < 10 ? `0${date.getSeconds()}` : `${date.getSeconds()}`
+  const getTime = ({ timeType }: { timeType: 'Hours' | 'Minutes' | 'Seconds' }) =>
+    date[`get${timeType}`]() < 10 ? `0${date[`get${timeType}`]()}` : `${date[`get${timeType}`]()}`
+  const hours = getTime({ timeType: 'Hours' })
+  const minutes = getTime({ timeType: 'Minutes' })
+  const seconds = getTime({ timeType: 'Seconds' })
 
   return `${date.getDate()}-${months[date.getMonth()]} ${hours}:${minutes}:${seconds}`
 }

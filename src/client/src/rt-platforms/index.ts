@@ -12,6 +12,7 @@ export { Symphony, initiateSymphony } from './symphony'
 
 export { OpenFin, OpenFinHeader, setupWorkspaces, excelAdapter } from './openFin'
 export { default as Finsemble } from './finsemble'
+export { Glue42 } from './glue/glue'
 export { InteropTopics } from './types'
 export { default as platform } from './platform'
 export { PlatformProvider, usePlatform } from './context'

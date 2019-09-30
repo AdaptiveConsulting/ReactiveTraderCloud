@@ -7,8 +7,9 @@ import { openGlueWindow, registerWindowMethods } from './window'
 import { sendNotification, NotifyPermission } from './utils/sendNotification'
 import { getAddinStatus, openSheet, updateSheet, BlotterData } from './utils/excel'
 import DefaultRoute from 'rt-platforms/defaultRoute'
-import Logo from 'apps/MainRoute/components/app-header/Logo'
 import { ApplicationEpic } from 'StoreTypes'
+import { GlueHeader, GlueLogoLink } from './'
+import { useEffect } from 'react'
 
 // TODO remove onGlueLoaded and its usages when the whole app is rendered after glue has loaded
 export const onGlueLoaded = (callback: () => void) => {
@@ -20,12 +21,14 @@ export const onGlueLoaded = (callback: () => void) => {
   }, 100)
 }
 
+export const useOnGlueLoaded = (callback: () => void) => useEffect(() => onGlueLoaded(callback), [])
+
 /**
  * Glue implementation of the base platform adapter.
  * Glue4Office is an optional library for working with excel.
  */
-export default class Glue42 extends BasePlatformAdapter {
-  allowTearOff: boolean
+export class Glue42 extends BasePlatformAdapter {
+  allowTearOff = true
   readonly name = 'glue'
   readonly type = 'desktop'
 
@@ -34,7 +37,7 @@ export default class Glue42 extends BasePlatformAdapter {
     Glue({ channels: true })
       .then((glue: GlueInterface.Glue) => {
         window.glue = glue
-        registerWindowMethods(glue)
+        registerWindowMethods()
         return Glue4Office()
       })
       .then((glue4office: Glue42OfficeInterface.Glue4Office) => {
@@ -55,13 +58,11 @@ export default class Glue42 extends BasePlatformAdapter {
      * In order to integrate Glue42 with channels the clicked symbol needs to be published to the channel.
      */
     publishToChannel: (symbol: string) => {
-      onGlueLoaded(() => {
-        try {
-          window.glue.channels.publish({ symbol: symbol.replace('/', '') })
-        } catch (err) {
-          console.warn(err.message)
-        }
-      })
+      try {
+        window.glue.channels.publish({ symbol: symbol.replace('/', '') })
+      } catch (err) {
+        console.warn(err.message)
+      }
     },
   }
 
@@ -90,9 +91,9 @@ export default class Glue42 extends BasePlatformAdapter {
 
   PlatformHeader: React.FC<any> = () => null
 
-  PlatformControls: React.FC<any> = () => null
+  PlatformControls: React.FC<any> = GlueHeader
 
   PlatformRoute: React.FC = DefaultRoute
 
-  Logo: any = Logo
+  Logo = GlueLogoLink
 }

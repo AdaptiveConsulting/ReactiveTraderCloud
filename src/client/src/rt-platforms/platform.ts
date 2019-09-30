@@ -1,5 +1,4 @@
-import { Browser, Finsemble, OpenFin, PlatformAdapter, Symphony } from './'
-import Glue42 from './glue/glue'
+import { Browser, Finsemble, OpenFin, PlatformAdapter, Symphony, Glue42 } from './'
 
 const urlParams = new URLSearchParams(window.location.search)
 
