@@ -7,6 +7,8 @@ import {
   createExecuteTradeResponseForError,
   ExecuteTradeRequest,
 } from '../model/executeTradeRequest'
+import numeral from 'numeral'
+
 interface RawTradeReponse {
   Trade: TradeRaw
 }
@@ -19,16 +21,27 @@ const EXECUTION_REQUEST_TIMEOUT_MS = 30000
 export default class ExecutionService {
   constructor(
     private readonly serviceClient: ServiceClient,
-    private readonly limitChecker: (executeTradeRequest: ExecuteTradeRequest) => Observable<boolean>,
+    private readonly limitChecker: (
+      executeTradeRequest: ExecuteTradeRequest,
+    ) => Observable<boolean>,
   ) {}
 
-  executeTrade(executeTradeRequest: ExecuteTradeRequest) {
+  formatTradeRequest(rawTradeRequest: ExecuteTradeRequest) {
+    const SpotRate = +numeral(rawTradeRequest.SpotRate).format('0,000[.]00000')
+    return { ...rawTradeRequest, SpotRate }
+  }
+
+  executeTrade(rawExecuteTradeRequest: ExecuteTradeRequest) {
+    const executeTradeRequest = this.formatTradeRequest(rawExecuteTradeRequest)
+
     return this.limitChecker(executeTradeRequest).pipe(
       tap(() => console.info(LOG_NAME, 'executing: ', executeTradeRequest)),
       take(1),
       mergeMap(tradeWithinLimit => {
         if (!tradeWithinLimit) {
-          return of(createExecuteTradeResponseForError('Credit limit exceeded', executeTradeRequest))
+          return of(
+            createExecuteTradeResponseForError('Credit limit exceeded', executeTradeRequest),
+          )
         }
         return this.serviceClient
           .createRequestResponseOperation<RawTradeReponse, ExecuteTradeRequest>(
@@ -67,7 +80,12 @@ export default class ExecutionService {
 
                 // After a longer period of time we know a trade is not coming back
                 timer(EXECUTION_REQUEST_TIMEOUT_MS).pipe(
-                  mapTo(createExecuteTradeResponseForError('Trade execution timeout exceeded', executeTradeRequest)),
+                  mapTo(
+                    createExecuteTradeResponseForError(
+                      'Trade execution timeout exceeded',
+                      executeTradeRequest,
+                    ),
+                  ),
                   takeUntil(request),
                 ),
               ),
