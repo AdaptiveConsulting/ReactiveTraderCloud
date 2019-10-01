@@ -23,7 +23,7 @@ export default class SpotTile extends PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { price, rfqState, rfqPrice, rfqTimeout },
+      spotTileData: { isTradeExecutionInFlight, price, rfqState, rfqPrice, rfqTimeout },
       notional,
       updateNotional,
       resetNotional,
@@ -62,6 +62,7 @@ export default class SpotTile extends PureComponent<Props> {
               />
             </TileHeaderWrapper>
             <PriceControls
+              isTradeExecutionInFlight={isTradeExecutionInFlight}
               executeTrade={executeTrade}
               priceData={priceData}
               currencyPair={currencyPair}
