@@ -1,5 +1,5 @@
 {
-  "name": "adaptive.reactivetrader.server.boy",
+  "name": "adaptive.reactivetrader.server.bot",
   "version": "0.0.1",
   "description": "Bot Service for Reactive Trader",
   "main": "lib/index",
