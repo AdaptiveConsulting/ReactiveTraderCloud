@@ -1,9 +1,5 @@
 import { action, ActionUnion } from 'rt-util'
-import {
-  ExecuteTradeRequest,
-  ExecuteTradeResponse,
-  UpdateRequestedNotional,
-} from './model/executeTradeRequest'
+import { ExecuteTradeRequest, ExecuteTradeResponse } from './model/executeTradeRequest'
 import { SpotPriceTick } from './model/spotPriceTick'
 import { TradeExectionMeta } from './model/spotTileUtils'
 import {
@@ -15,6 +11,7 @@ import {
   RfqReset,
 } from './model/rfqRequest'
 import { TradingMode } from './components/types'
+import { CurrencyPairNotional } from './model/spotTileData'
 
 export enum TILE_ACTION_TYPES {
   SET_NOTIONAL = '@ReactiveTraderCloud/SET_NOTIONAL',
@@ -37,7 +34,7 @@ export enum TILE_ACTION_TYPES {
 }
 
 export const SpotTileActions = {
-  setRequestedNotional: action<TILE_ACTION_TYPES.SET_NOTIONAL, UpdateRequestedNotional>(
+  setNotional: action<TILE_ACTION_TYPES.SET_NOTIONAL, CurrencyPairNotional>(
     TILE_ACTION_TYPES.SET_NOTIONAL,
   ),
 

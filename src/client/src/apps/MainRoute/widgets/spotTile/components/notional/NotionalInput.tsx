@@ -6,6 +6,7 @@ import {
   ResetInputValue,
   MessagePlaceholder,
 } from './styled'
+import { NotionalUpdate } from '../../model/spotTileData'
 
 const ENTER = 'Enter'
 const CHAR_CODE_DOT = 46 // .
@@ -17,11 +18,6 @@ const SHORTCUT_CHAR_CODES = [75, 77, 107, 109] // K, M, k, m
 export type ValidationMessage = null | {
   type: 'warning' | 'error' | 'info'
   content: string
-}
-
-export interface NotionalUpdate {
-  value: string
-  type: string
 }
 
 interface Props {
@@ -67,9 +63,9 @@ export default class NotionalInput extends PureComponent<Props, State> {
 
   handleChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { updateNotional } = this.props
-    const { currentTarget, type } = event
+    const { currentTarget, type: updateType } = event
     const value = currentTarget.value.trim()
-    updateNotional({ value, type })
+    updateNotional({ value, updateType })
   }
 
   handleResetNotional = () => {

@@ -1,6 +1,6 @@
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
 import { SpotTileData } from '../model'
-import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
+import { ValidationMessage } from './notional/NotionalInput'
 import {
   RfqRequest,
   RfqCancel,
@@ -9,6 +9,7 @@ import {
   RfqReject,
   RfqReset,
 } from '../model/rfqRequest'
+import { NotionalUpdate } from '../model/spotTileData'
 
 export interface TradingMode {
   symbol: CurrencyPair['symbol']

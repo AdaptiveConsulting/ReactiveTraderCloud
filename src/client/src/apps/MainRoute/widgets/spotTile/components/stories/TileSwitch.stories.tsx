@@ -20,7 +20,7 @@ const reject = action('reject')
 const cancel = action('cancel')
 const expired = action('expired')
 const reset = action('reset')
-const updateRequestedNotional = action('update requested notional')
+const updateNotional = action('update notional')
 
 const rfq = {
   request,
@@ -63,7 +63,7 @@ stories.add('Booking', () => (
           setTradingMode={setTradingMode}
           rfq={rfq}
           displayCurrencyChart={action('On currency chart click')}
-          updateRequestedNotional={updateRequestedNotional}
+          updateNotional={updateNotional}
         />
       </div>
     </Centered>
@@ -90,7 +90,7 @@ stories.add('Executed', () => (
           setTradingMode={setTradingMode}
           rfq={rfq}
           displayCurrencyChart={action('On currency chart click')}
-          updateRequestedNotional={updateRequestedNotional}
+          updateNotional={updateNotional}
         />
       </div>
     </Centered>
@@ -117,7 +117,7 @@ stories.add('Rejected', () => (
           setTradingMode={setTradingMode}
           rfq={rfq}
           displayCurrencyChart={action('On currency chart click')}
-          updateRequestedNotional={updateRequestedNotional}
+          updateNotional={updateNotional}
         />
       </div>
     </Centered>
@@ -150,7 +150,7 @@ stories.add('Switch', () => {
             setTradingMode={setTradingMode}
             rfq={rfq}
             displayCurrencyChart={action('On currency chart click')}
-            updateRequestedNotional={updateRequestedNotional}
+            updateNotional={updateNotional}
           />
         </div>
       </Centered>

@@ -2,9 +2,9 @@ import numeral from 'numeral'
 import { convertNotionalShorthandToNumericValue } from '../notional/utils'
 import { ServiceConnectionStatus, CurrencyPair } from 'rt-types'
 import { TileProps, TileState } from './Tile'
-import { NotionalUpdate } from '../notional/NotionalInput'
 import { SpotTileData } from '../../model/spotTileData'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
+import { NotionalUpdate } from '../../model/spotTileData'
 
 // Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -110,7 +110,7 @@ export const getDerivedStateFromUserInput = ({
   actions,
   currencyPair,
 }: DerivedStateFromUserInput): TileState => {
-  const { type, value } = notionalUpdate
+  const { updateType, value } = notionalUpdate
 
   // We block user input when value exceeds MAX_PROCESSING_VALUE
   if (convertNotionalShorthandToNumericValue(value) > MAX_PROCESSING_VALUE) {
@@ -134,7 +134,7 @@ export const getDerivedStateFromUserInput = ({
 
   const { isRfqStateNone } = getConstsFromRfqState(rfqState)
 
-  if (type === 'blur' && isInvalidTradingValue(notional)) {
+  if (updateType === 'blur' && isInvalidTradingValue(notional)) {
     // onBlur if invalid trading value, reset value
     // remove any message, enable trading
     if (!isRfqStateNone) {
@@ -144,7 +144,7 @@ export const getDerivedStateFromUserInput = ({
       ...defaultNextState,
       notional: getFormattedValue(RESET_NOTIONAL_VALUE),
     }
-  } else if (type === 'blur' && isEditMode(notional)) {
+  } else if (updateType === 'blur' && isEditMode(notional)) {
     // onBlur if in editMore, format value
     // remove any message, enable trading
     if (!isRfqStateNone) {
@@ -197,28 +197,5 @@ export const getDerivedStateFromUserInput = ({
     return {
       ...defaultNextState,
     }
-  }
-}
-
-export const resetNotional = ({
-  prevState,
-  spotTileData: {
-    price: { symbol },
-  },
-  actions,
-  currencyPair,
-}: DerivedStateFromNotionalReset): TileState => {
-  const notional = getDefaultNotionalValue(currencyPair)
-  const isInRfqRange = isValueInRfqRange(notional)
-  if (isInRfqRange) {
-    actions.setTradingMode({ symbol, mode: 'rfq' })
-  } else {
-    actions.setTradingMode({ symbol, mode: 'esp' })
-  }
-  return {
-    ...prevState,
-    notional,
-    inputValidationMessage: null,
-    tradingDisabled: false,
   }
 }

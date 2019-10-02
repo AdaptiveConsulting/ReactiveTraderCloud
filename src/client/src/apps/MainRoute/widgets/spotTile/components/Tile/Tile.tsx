@@ -10,17 +10,17 @@ import SpotTile from '../SpotTile'
 import { AnalyticsTile } from '../analyticsTile/index'
 import { TileViews } from '../../../workspace/workspaceHeader/index'
 import { TileSwitchChildrenProps, TradingMode, RfqActions } from '../types'
-import { ValidationMessage, NotionalUpdate } from '../notional/NotionalInput'
+import { ValidationMessage } from '../notional/NotionalInput'
 import {
   getDefaultNotionalValue,
   getDerivedStateFromProps,
   getNumericNotional,
   getDerivedStateFromUserInput,
-  resetNotional,
   isValueInRfqRange,
 } from './TileBusinessLogic'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
-import { UpdateRequestedNotional } from '../../model/executeTradeRequest'
+import { CurrencyPairNotional } from '../../model/spotTileData'
+import { NotionalUpdate } from '../../model/spotTileData'
 
 export interface TileProps {
   currencyPair: CurrencyPair
@@ -32,7 +32,7 @@ export interface TileProps {
   tileView?: TileViews
   children: ({ notional, userError }: TileSwitchChildrenProps) => JSX.Element
   rfq: RfqActions
-  updateRequestedNotional: (requestedNotionalObject: UpdateRequestedNotional) => void
+  updateNotional: (notionalUpdate: CurrencyPairNotional) => void
 }
 
 export interface TileState {
@@ -59,7 +59,17 @@ class Tile extends React.PureComponent<TileProps, TileState> {
 
   // State management derived from props
   static getDerivedStateFromProps(nextProps: TileProps, prevState: TileState) {
-    return getDerivedStateFromProps(nextProps, prevState)
+    const { setTradingMode, spotTileData, currencyPair } = nextProps
+    return {
+      ...getDerivedStateFromProps(nextProps, prevState),
+      ...getDerivedStateFromUserInput({
+        prevState,
+        notionalUpdate: spotTileData.notional,
+        spotTileData,
+        actions: { setTradingMode },
+        currencyPair,
+      }),
+    }
   }
 
   // We handle the case where the initial Notional value would
@@ -83,14 +93,14 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       currencyPair,
       executeTrade,
       rfq,
-      spotTileData: { rfqState, requestedNotional },
+      spotTileData: { rfqState, notional },
     } = this.props
     const { isRfqStateReceived } = getConstsFromRfqState(rfqState)
     const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: currencyPair.base,
       symbol: currencyPair.symbol,
-      notional: getNumericNotional(requestedNotional.notional),
+      notional: getNumericNotional(notional.value),
       rawSpotRate,
     }
     executeTrade(createTradeRequest(tradeRequestObj))
@@ -102,32 +112,26 @@ class Tile extends React.PureComponent<TileProps, TileState> {
     }
   }
 
-  // State management derived from user input
   updateNotional = (notionalUpdate: NotionalUpdate) => {
-    const { setTradingMode, spotTileData, currencyPair, updateRequestedNotional } = this.props
-    const { requestedNotional } = spotTileData
+    const { currencyPair, updateNotional } = this.props
 
-    updateRequestedNotional({
-      CurrencyPair: currencyPair.symbol,
-      RequestedNotional: getDerivedStateFromUserInput({
-        prevState: requestedNotional,
-        notionalUpdate,
-        spotTileData,
-        actions: { setTradingMode },
-        currencyPair,
-      }),
+    updateNotional({
+      currencyPair: currencyPair.symbol,
+      notional: notionalUpdate,
     })
   }
+
   resetNotional = () => {
-    const { setTradingMode, spotTileData, currencyPair } = this.props
-    this.setState(prevState =>
-      resetNotional({
-        prevState,
-        spotTileData,
-        actions: { setTradingMode },
-        currencyPair,
-      }),
-    )
+    const { setTradingMode, currencyPair, updateNotional } = this.props
+    const defaultNotional = getDefaultNotionalValue(currencyPair)
+    const isInRfqRange = isValueInRfqRange(defaultNotional)
+    setTradingMode({ symbol: currencyPair.symbol, mode: isInRfqRange ? 'rfq' : 'esp' })
+    updateNotional({
+      currencyPair: currencyPair.symbol,
+      notional: {
+        value: defaultNotional,
+      },
+    })
   }
 
   render() {
@@ -140,8 +144,14 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       rfq,
       displayCurrencyChart,
     } = this.props
-    const { inputDisabled, inputValidationMessage, tradingDisabled, canExecute } = this.state
-    const { rfqState, requestedNotional } = spotTileData
+    const {
+      inputDisabled,
+      inputValidationMessage,
+      tradingDisabled,
+      canExecute,
+      notional,
+    } = this.state
+    const { rfqState } = spotTileData
     const { isRfqStateCanRequest, isRfqStateNone } = getConstsFromRfqState(rfqState)
 
     const TileViewComponent =
@@ -155,7 +165,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         spotTileData={spotTileData}
         executeTrade={this.executeTrade}
         executionStatus={executionStatus}
-        notional={requestedNotional.notional}
+        notional={notional}
         updateNotional={this.updateNotional}
         resetNotional={this.resetNotional}
         inputDisabled={inputDisabled}
@@ -165,7 +175,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         displayCurrencyChart={displayCurrencyChart}
       >
         {children({
-          notional: requestedNotional.notional,
+          notional,
           userError: Boolean(inputValidationMessage),
         })}
       </TileViewComponent>

@@ -36,16 +36,16 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
         className="sc-jlyJG ePoUEg"
       >
         <button
-          className="sc-iwsKbI gSUNrG"
+          className="sc-iwsKbI bLNvkJ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG kbGqUO"
-            disabled={true}
+            className="sc-jzJRlG gBsEcH"
+            disabled={false}
           >
             <div
               className="sc-cSHVUG eSKBUX"
@@ -99,16 +99,16 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           />
         </div>
         <button
-          className="sc-iwsKbI gSUNrG"
+          className="sc-iwsKbI bKqJGN"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG kbGqUO"
-            disabled={true}
+            className="sc-jzJRlG gBsEcH"
+            disabled={false}
           >
             <div
               className="sc-cSHVUG eSKBUX"
@@ -157,9 +157,9 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
             EUR
           </span>
           <input
-            className="sc-htoDjs UGDne"
+            className="sc-htoDjs dlzouj"
             data-qa-id="notional-input__input-eurusd"
-            disabled={true}
+            disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
@@ -329,16 +329,16 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         className="sc-jlyJG ePoUEg"
       >
         <button
-          className="sc-iwsKbI gSUNrG"
+          className="sc-iwsKbI bLNvkJ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG kbGqUO"
-            disabled={true}
+            className="sc-jzJRlG gBsEcH"
+            disabled={false}
           >
             <div
               className="sc-cSHVUG eSKBUX"
@@ -398,16 +398,16 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           />
         </div>
         <button
-          className="sc-iwsKbI gSUNrG"
+          className="sc-iwsKbI bKqJGN"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG kbGqUO"
-            disabled={true}
+            className="sc-jzJRlG gBsEcH"
+            disabled={false}
           >
             <div
               className="sc-cSHVUG eSKBUX"
@@ -645,9 +645,9 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
             EUR
           </span>
           <input
-            className="sc-htoDjs UGDne"
+            className="sc-htoDjs dlzouj"
             data-qa-id="notional-input__input-eurusd"
-            disabled={true}
+            disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
@@ -841,9 +841,9 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
             EUR
           </span>
           <input
-            className="sc-htoDjs UGDne"
+            className="sc-htoDjs dlzouj"
             data-qa-id="notional-input__input-eurusd"
-            disabled={true}
+            disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
@@ -1068,16 +1068,16 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         className="sc-jlyJG ePoUEg"
       >
         <button
-          className="sc-iwsKbI gSUNrG"
+          className="sc-iwsKbI bLNvkJ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG kbGqUO"
-            disabled={true}
+            className="sc-jzJRlG gBsEcH"
+            disabled={false}
           >
             <div
               className="sc-cSHVUG eSKBUX"
@@ -1131,16 +1131,16 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           />
         </div>
         <button
-          className="sc-iwsKbI gSUNrG"
+          className="sc-iwsKbI bKqJGN"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG kbGqUO"
-            disabled={true}
+            className="sc-jzJRlG gBsEcH"
+            disabled={false}
           >
             <div
               className="sc-cSHVUG eSKBUX"
@@ -1189,9 +1189,9 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
             EUR
           </span>
           <input
-            className="sc-htoDjs UGDne"
+            className="sc-htoDjs dlzouj"
             data-qa-id="notional-input__input-eurusd"
-            disabled={true}
+            disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}

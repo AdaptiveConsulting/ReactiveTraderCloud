@@ -10,7 +10,7 @@ import { TileViews } from '../../workspace/workspaceHeader'
 import { TileSwitchChildrenProps, RfqActions, TradingMode } from './types'
 import { getNumericNotional } from './Tile/TileBusinessLogic'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
-import { UpdateRequestedNotional } from '../model/executeTradeRequest'
+import { CurrencyPairNotional } from '../model/spotTileData'
 
 interface Props {
   currencyPair: CurrencyPair
@@ -24,7 +24,7 @@ interface Props {
   setTradingMode: (tradingMode: TradingMode) => void
   tileView?: TileViews
   rfq: RfqActions
-  updateRequestedNotional: (requestedNotionalObject: UpdateRequestedNotional) => void
+  updateNotional: (currencyPairNotional: CurrencyPairNotional) => void
 }
 
 const TileSwitch: React.FC<Props> = ({
@@ -39,7 +39,7 @@ const TileSwitch: React.FC<Props> = ({
   tileView,
   setTradingMode,
   rfq,
-  updateRequestedNotional,
+  updateNotional,
 }) => {
   const {
     isRfqStateExpired,
@@ -58,7 +58,7 @@ const TileSwitch: React.FC<Props> = ({
       setTradingMode={setTradingMode}
       rfq={rfq}
       displayCurrencyChart={displayCurrencyChart}
-      updateRequestedNotional={updateRequestedNotional}
+      updateNotional={updateNotional}
     >
       {({ notional, userError }: TileSwitchChildrenProps) => (
         <>
@@ -110,12 +110,8 @@ const TileSwitch: React.FC<Props> = ({
 
 TileSwitch.defaultProps = {
   spotTileData: {
-    requestedNotional: {
-      notional: '1,000,000',
-      inputDisabled: false,
-      inputValidationMessage: null,
-      tradingDisabled: false,
-      canExecute: true,
+    notional: {
+      value: '1,000,000',
     },
     isTradeExecutionInFlight: false,
     historicPrices: [],
