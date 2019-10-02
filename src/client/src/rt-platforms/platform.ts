@@ -1,5 +1,4 @@
 import { Browser, Finsemble, OpenFin, Symphony } from './'
-import { waitForObject } from '../rt-util'
 
 const urlParams = new URLSearchParams(window.location.search)
 
@@ -9,7 +8,6 @@ const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYM
 
 export const getPlatformAsync = async () => {
   if (isSymphony) {
-    await waitForObject(urlParams.get('waitFor'))
     return new Symphony()
   }
 
