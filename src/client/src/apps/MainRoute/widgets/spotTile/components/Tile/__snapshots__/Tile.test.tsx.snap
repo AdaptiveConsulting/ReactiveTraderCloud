@@ -32,14 +32,14 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
         className="sc-jlyJG ePoUEg"
       >
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje kkdSuS"
           direction="Sell"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
-            disabled={true}
+            className="sc-gZMcBi crpdKd"
+            disabled={false}
           >
             <div
               className="sc-gqjmRU cKkifn"
@@ -87,14 +87,14 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje ciDDPg"
           direction="Buy"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
-            disabled={true}
+            className="sc-gZMcBi crpdKd"
+            disabled={false}
           >
             <div
               className="sc-gqjmRU cKkifn"
@@ -139,8 +139,8 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
             EUR
           </span>
           <input
-            className="sc-bxivhb ixCVbX"
-            disabled={true}
+            className="sc-bxivhb fauXdE"
+            disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
@@ -294,14 +294,14 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         className="sc-jlyJG ePoUEg"
       >
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje kkdSuS"
           direction="Sell"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
-            disabled={true}
+            className="sc-gZMcBi crpdKd"
+            disabled={false}
           >
             <div
               className="sc-gqjmRU cKkifn"
@@ -354,14 +354,14 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje ciDDPg"
           direction="Buy"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
-            disabled={true}
+            className="sc-gZMcBi crpdKd"
+            disabled={false}
           >
             <div
               className="sc-gqjmRU cKkifn"
@@ -574,8 +574,8 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
             EUR
           </span>
           <input
-            className="sc-bxivhb ixCVbX"
-            disabled={true}
+            className="sc-bxivhb fauXdE"
+            disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
@@ -757,8 +757,8 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
             EUR
           </span>
           <input
-            className="sc-bxivhb ixCVbX"
-            disabled={true}
+            className="sc-bxivhb fauXdE"
+            disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
@@ -960,14 +960,14 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         className="sc-jlyJG ePoUEg"
       >
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje kkdSuS"
           direction="Sell"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
-            disabled={true}
+            className="sc-gZMcBi crpdKd"
+            disabled={false}
           >
             <div
               className="sc-gqjmRU cKkifn"
@@ -1015,14 +1015,14 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje ciDDPg"
           direction="Buy"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
-            disabled={true}
+            className="sc-gZMcBi crpdKd"
+            disabled={false}
           >
             <div
               className="sc-gqjmRU cKkifn"
@@ -1067,8 +1067,8 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
             EUR
           </span>
           <input
-            className="sc-bxivhb ixCVbX"
-            disabled={true}
+            className="sc-bxivhb fauXdE"
+            disabled={false}
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}

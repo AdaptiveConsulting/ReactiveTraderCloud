@@ -16,15 +16,17 @@ const prevState: TileState = {
   tradingDisabled: false,
 }
 
+const notionalUpdate = {
+  updateType: 'blur',
+  value: '1,000,000',
+}
+
 const defaultParams: DerivedStateFromUserInput = {
   actions: {
     setTradingMode: (tradingMode: TradingMode) => {},
   },
   prevState,
-  notionalUpdate: {
-    type: 'blur',
-    value: '1,000,000',
-  },
+  notionalUpdate,
   spotTileData: {
     currencyChartIsOpening: false,
     historicPrices: [],
@@ -42,6 +44,7 @@ const defaultParams: DerivedStateFromUserInput = {
     rfqPrice: null,
     rfqState: 'none',
     rfqTimeout: null,
+    notional: notionalUpdate,
   },
   currencyPair,
 }
@@ -62,6 +65,7 @@ const defaultTileProps: TileProps = {
   },
   spotTileData: defaultParams.spotTileData,
   tileView: 'Normal' as TileViews,
+  updateNotional: () => {},
 }
 
 test('Snapshot, state derived from props, defaults, RFQ none, should be able to excute', () => {

@@ -1,10 +1,4 @@
 import { Direction, Trade } from 'rt-types'
-import { TileState } from '../components/Tile/Tile'
-
-export interface UpdateRequestedNotional {
-  CurrencyPair: string
-  RequestedNotional: TileState
-}
 
 export interface ExecuteTradeRequest extends Object {
   CurrencyPair: string

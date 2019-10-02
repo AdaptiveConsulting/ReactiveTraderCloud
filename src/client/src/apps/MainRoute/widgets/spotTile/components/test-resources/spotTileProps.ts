@@ -31,12 +31,8 @@ const generateHistoricPrices: (totalPricePrick: number) => SpotPriceTick[] = tot
 }
 
 const spotTileData: Required<SpotTileData> = {
-  requestedNotional: {
-    notional: '1,000,000',
-    inputDisabled: false,
-    inputValidationMessage: null as null,
-    tradingDisabled: false,
-    canExecute: true,
+  notional: {
+    value: '1,000,000',
   },
   currencyChartIsOpening: false,
   isTradeExecutionInFlight: false,

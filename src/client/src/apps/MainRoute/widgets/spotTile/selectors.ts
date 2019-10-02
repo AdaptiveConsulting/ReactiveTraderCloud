@@ -3,7 +3,7 @@ import { GlobalState } from 'StoreTypes'
 import { SpotTileContainerOwnProps } from './SpotTileContainer'
 
 const selectNotional = (state: GlobalState, props: SpotTileContainerOwnProps) =>
-  state.spotTilesData[props.id] && state.spotTilesData[props.id].requestedNotional
+  state.spotTilesData[props.id] && state.spotTilesData[props.id].notional
 
 const getCurrencyPair = (state: GlobalState, props: SpotTileContainerOwnProps) =>
   state.currencyPairs[props.id]
