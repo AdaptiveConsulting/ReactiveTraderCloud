@@ -4,7 +4,7 @@ import AnalyticsPriceControl from './AnalyticsTilePriceControl'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
 import { usePlatform } from 'rt-components'
-
+import { getDefaultNotionalValue } from '../Tile/TileBusinessLogic'
 import {
   AnalyticsTileStyle,
   AnalyticsTileContent,
@@ -24,7 +24,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { price, historicPrices, rfqState },
+      spotTileData: { isTradeExecutionInFlight, price, historicPrices, rfqState },
       notional,
       updateNotional,
       resetNotional,
@@ -36,8 +36,13 @@ class AnalyticsTile extends React.PureComponent<Props> {
     } = this.props
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
-    const { isRfqStateExpired, isRfqStateCanRequest } = getConstsFromRfqState(rfqState)
-    const showResetButton = isRfqStateCanRequest || isRfqStateExpired
+    const { isRfqStateExpired, isRfqStateCanRequest, isRfqStateNone } = getConstsFromRfqState(
+      rfqState,
+    )
+    const showResetButton =
+      !isTradeExecutionInFlight &&
+      getDefaultNotionalValue(currencyPair) !== notional &&
+      (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
 
     return (
       <AnalyticsWrapperWithPlatform>
