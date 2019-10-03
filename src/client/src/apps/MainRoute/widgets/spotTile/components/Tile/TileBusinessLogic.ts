@@ -120,7 +120,12 @@ export const getDerivedStateFromUserInput = ({
   const { symbol } = currencyPair
   const { rfqState } = spotTileData
 
-  const notional = !isEditMode(value) ? getFormattedValue(value) : value
+  let notional: string
+  if (type === 'keypress' && isEditMode(value)) {
+    notional = getFormattedValue(value)
+  } else {
+    notional = !isEditMode(value) ? getFormattedValue(value) : value
+  }
 
   const defaultNextState: TileState = {
     ...prevState,
