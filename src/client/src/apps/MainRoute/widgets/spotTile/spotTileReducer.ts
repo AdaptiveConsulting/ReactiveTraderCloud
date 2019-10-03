@@ -26,6 +26,7 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   },
   rfqState: 'none',
   rfqPrice: null,
+  rfqReceivedTime: null,
   rfqTimeout: null,
 }
 
@@ -70,6 +71,7 @@ const rfqTileReducer = (
 ): SpotTileData => {
   const newState: SpotTileData = {
     ...state,
+    rfqReceivedTime: null,
     rfqTimeout: null,
     rfqPrice: null,
   }
@@ -95,6 +97,7 @@ const rfqTileReducer = (
       return {
         ...newState,
         rfqState: 'received',
+        rfqReceivedTime: action.payload.time,
         rfqTimeout: action.payload.timeout,
         rfqPrice: action.payload.price,
       }
