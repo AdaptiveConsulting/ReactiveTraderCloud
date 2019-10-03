@@ -110,9 +110,7 @@ const TileSwitch: React.FC<Props> = ({
 
 TileSwitch.defaultProps = {
   spotTileData: {
-    notional: {
-      value: '1,000,000',
-    },
+    notional: null,
     isTradeExecutionInFlight: false,
     historicPrices: [],
     price: {
