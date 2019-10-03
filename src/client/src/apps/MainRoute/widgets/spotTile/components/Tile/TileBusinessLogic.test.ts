@@ -7,7 +7,7 @@ import {
   DerivedStateFromUserInput,
   getDerivedStateFromUserInput,
   getFormattedValue,
-  getDefaultNotionalValue,
+  getDefaultInitialNotionalValue,
   getDerivedStateFromProps,
 } from './TileBusinessLogic'
 import { TileProps, TileState } from './Tile'
@@ -354,7 +354,7 @@ test('state derived from user interaction on blur when isInvalidTradingValue is 
     const newState = getDerivedStateFromUserInput(newParams)
     const expected = {
       ...defaultNewState,
-      notional: getDefaultNotionalValue(currencyPair), // Something not NZDUSD
+      notional: getDefaultInitialNotionalValue(currencyPair), // Something not NZDUSD
       tradingDisabled: false, // Since it resets, set false
     }
     console.log('validating state on blur invalidTradingValues', value)

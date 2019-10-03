@@ -12,11 +12,12 @@ import { TileViews } from '../../../workspace/workspaceHeader/index'
 import { TileSwitchChildrenProps, TradingMode, RfqActions } from '../types'
 import { ValidationMessage } from '../notional/NotionalInput'
 import {
-  getDefaultNotionalValue,
+  getDefaultInitialNotionalValue,
   getDerivedStateFromProps,
   getNumericNotional,
   getDerivedStateFromUserInput,
   isValueInRfqRange,
+  getDefaultNotionalValue,
 } from './TileBusinessLogic'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
 import { CurrencyPairNotional } from '../../model/spotTileData'
@@ -45,7 +46,7 @@ export interface TileState {
 
 class Tile extends React.PureComponent<TileProps, TileState> {
   state: TileState = {
-    notional: getDefaultNotionalValue(this.props.currencyPair),
+    notional: getDefaultInitialNotionalValue(this.props.currencyPair),
     inputValidationMessage: null,
     inputDisabled: false,
     tradingDisabled: false,
@@ -93,14 +94,15 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       currencyPair,
       executeTrade,
       rfq,
-      spotTileData: { rfqState, notional },
+      spotTileData: { rfqState },
     } = this.props
+    const { notional } = this.state
     const { isRfqStateReceived } = getConstsFromRfqState(rfqState)
     const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: currencyPair.base,
       symbol: currencyPair.symbol,
-      notional: getNumericNotional(notional.value),
+      notional: getNumericNotional(notional),
       rawSpotRate,
     }
     executeTrade(createTradeRequest(tradeRequestObj))
@@ -123,7 +125,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
 
   resetNotional = () => {
     const { setTradingMode, currencyPair, updateNotional } = this.props
-    const defaultNotional = getDefaultNotionalValue(currencyPair)
+    const defaultNotional = getDefaultNotionalValue()
     const isInRfqRange = isValueInRfqRange(defaultNotional)
     setTradingMode({ symbol: currencyPair.symbol, mode: isInRfqRange ? 'rfq' : 'esp' })
     updateNotional({
