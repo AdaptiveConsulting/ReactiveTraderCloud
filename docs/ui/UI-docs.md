@@ -13,12 +13,12 @@ The app has 5 main routes (can run as a stand-alone) as described in `../apps/Ma
 
 The main application can be broken down into 6 main sections: <br />
 ![RTC layout](./images/rtc-layout.png) <br />
-- [**Header**](#header-component) section has the Adaptive logo and toggle theme button and in different platforms (OpenFin) also comes with window controls such as `minimize`, `maximize`, and `close`.
-- [**Workspace**](#workspace-component) section houses all the spot tile currency pairs (EUR/USD, GBP/USD, USD/JPY, etc.). This section can be viewed in two ways, _'normal'_ and _'analytics'_.
+- [**Header**](#header) section has the Adaptive logo and toggle theme button and in different platforms (OpenFin) also comes with window controls such as `minimize`, `maximize`, and `close`.
+- [**Workspace**](#workspace) section houses all the spot tile currency pairs (EUR/USD, GBP/USD, USD/JPY, etc.). This section can be viewed in two ways, _'normal'_ and _'analytics'_.
 - [**Spot**](./SpotTile-docs.md) -  a single currency pair tile. This is where all trade execution happens.
-- [**Analytics**](#analytics-component) section showcases the `Profit & Loss`, `Positions`, and `PnL` graphs in different forms.
-- [**Blotter**](#blotter-component) section shows a table of all the executed trades.
-- [**Footer**](#footer-component) section has a status button that toggles a service list pop-up showing the connection status of each services and the number of connected instances open. 
+- [**Analytics**](#analytics) section showcases the `Profit & Loss`, `Positions`, and `PnL` graphs in different forms.
+- [**Blotter**](#blotter) section shows a table of all the executed trades.
+- [**Footer**](#footer) section has a status button that toggles a service list pop-up showing the connection status of each services and the number of connected instances open. 
 
 ### Header
 **Browser**
@@ -47,7 +47,7 @@ File location: `../apps/MainRoute/components/app-header/Header.tsx`
 
   - #### [Spot Tile](./SpotTile-docs.md)
 
-### Analytics Component
+### Analytics
 
 Analytics files are located in `../apps/MainRoute/widgets/analytics`.
 
