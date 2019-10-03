@@ -110,6 +110,9 @@ export const getDerivedStateFromUserInput = ({
   actions,
   currencyPair,
 }: DerivedStateFromUserInput): TileState => {
+  if (!notionalUpdate) {
+    return prevState
+  }
   const { updateType, value } = notionalUpdate
 
   // We block user input when value exceeds MAX_PROCESSING_VALUE
