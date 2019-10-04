@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import SpotTileContainer from '../widgets/spotTile/SpotTileContainer'
 import { TileViews } from '../widgets/workspace/workspaceHeader'
 import { styled } from 'rt-theme'
+import { Provider } from 'react-redux'
 
 const SpotTileStyle = styled.div`
   min-width: 26rem;
@@ -24,9 +25,22 @@ const getTileViewFromQueryStr: (queryStr: string) => TileViews = queryStr => {
 }
 export default ({ location: { search }, match }: RouteComponentProps<{ symbol: string }>) => {
   const tileView = getTileViewFromQueryStr(search)
-  return (
+  let store = null
+
+  const spotTile = (
     <SpotTileStyle>
       <SpotTileContainer id={match.params.symbol} tileView={tileView} />
     </SpotTileStyle>
   )
+
+  if (window.opener) {
+    // Child window => retrieve store from window
+    store = window.opener.__store__
+
+    if (store) {
+      return <Provider store={store}>{spotTile}</Provider>
+    }
+  }
+
+  return spotTile
 }

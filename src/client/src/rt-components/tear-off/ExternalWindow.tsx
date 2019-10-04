@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react'
 import { usePlatform, WindowConfig } from 'rt-components'
 import { WindowCenterStatus } from './types'
+import { useStore } from 'react-redux'
 
 const defaultConfig: WindowConfig = {
   name: '',
@@ -26,6 +27,7 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
   config = defaultConfig,
 }) => {
   const platform = usePlatform()
+  const store = useStore()
 
   useEffect(() => {
     let externalWindow: Window
@@ -40,6 +42,10 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
     }
 
     const getWindow = async () => {
+      // Make store available to child windows
+      // @ts-ignore
+      window.__store__ = window.__store__ || store
+
       externalWindow = await platform.window.open(config, release)
       if (externalWindow) {
         window.addEventListener('beforeunload', release)
