@@ -120,12 +120,7 @@ export const getDerivedStateFromUserInput = ({
   const { symbol } = currencyPair
   const { rfqState } = spotTileData
 
-  let notional: string
-  if (type === 'keypress' && isEditMode(value)) {
-    notional = getFormattedValue(value)
-  } else {
-    notional = !isEditMode(value) ? getFormattedValue(value) : value
-  }
+  const notional = !isEditMode(value) ? getFormattedValue(value) : value
 
   const defaultNextState: TileState = {
     ...prevState,
@@ -149,8 +144,8 @@ export const getDerivedStateFromUserInput = ({
       ...defaultNextState,
       notional: getFormattedValue(RESET_NOTIONAL_VALUE),
     }
-  } else if (type === 'blur' && isEditMode(notional)) {
-    // onBlur if in editMore, format value
+  } else if ((type === 'blur' || type === 'keypress') && isEditMode(notional)) {
+    // onBlur if in editMore, format value | enter pressed, format value
     // remove any message, enable trading
     if (!isRfqStateNone) {
       actions.setTradingMode({ symbol, mode: 'esp' })
