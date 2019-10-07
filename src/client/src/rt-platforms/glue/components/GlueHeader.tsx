@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { waitForObject } from 'rt-util'
 import { IconButton } from '../../../apps/MainRoute/components/app-header/Header'
 
 export const GlueHeader: React.FC<any> = () => {
@@ -11,9 +12,9 @@ export const GlueHeader: React.FC<any> = () => {
     isToggleCollapseButtonVisible: false,
   })
 
-  useEffect(
-    () =>
-      window.glue &&
+  useEffect(() => {
+    const waitForGlue = async () => {
+      await waitForObject('glue')
       window.glue.interop.register(
         'toggleHeaderButtons',
         (args: { numberOfOpenedWindows: number }) => {
@@ -23,9 +24,10 @@ export const GlueHeader: React.FC<any> = () => {
             isToggleCollapseButtonVisible: args.numberOfOpenedWindows > 0,
           })
         },
-      ),
-    [],
-  )
+      )
+    }
+    waitForGlue()
+  }, [])
 
   // TODO expose onClick on logo?
 
