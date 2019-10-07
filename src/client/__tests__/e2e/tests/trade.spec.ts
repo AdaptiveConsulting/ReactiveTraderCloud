@@ -30,18 +30,6 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     const tradeCurrency = await mainPage.tile.tradeType.confirmationScreen.labelCurrency
     await waitForElementToBeVisible(browser, tradeCurrency)
     expect(tradeCurrency.getText()).toEqual('USD/JPY')
-    const tradeIdActual = await mainPage.tile.tradeType.confirmationScreen.labelTradeId
-    await waitForElementToBeVisible(browser, tradeIdActual)
-    const parsedTradeId = (await tradeIdActual.getText()).slice(10,14)
-    const tradeIdExpected = await mainPage.blotter.tradesTable.executedTrades.tradeID
-    await waitForElementToBeVisible(browser, tradeIdExpected)
-    expect(tradeIdExpected.getText()).toEqual(parsedTradeId)
-    const tradeStatus = await mainPage.blotter.tradesTable.executedTrades.tradeStatus
-    await waitForElementToBeVisible(browser, tradeStatus)
-    expect(tradeStatus.getText()).toEqual('Done')
-    const tradeSuccessBanner = await mainPage.blotter.tradesTable.executedTrades.tradeBackGroundColour
-    await waitForElementToBeVisible(browser, tradeSuccessBanner)
-    expect(tradeSuccessBanner.getCssValue('background-color')).toEqual('rgba(40, 201, 136, 1)')
   })
 
   afterAll(async () => {
