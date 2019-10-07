@@ -1,7 +1,7 @@
 import { AgGridReact } from 'ag-grid-react'
-import { GridApi } from 'ag-grid'
+import { GridApi } from 'ag-grid-community'
 // tslint:disable-next-line:no-submodule-imports
-import 'ag-grid/dist/styles/ag-grid.css'
+import 'ag-grid-community/dist/styles/ag-grid.css'
 import React, { useState, useCallback } from 'react'
 import { styled } from 'rt-theme'
 import { Trade, TradeStatus } from 'rt-types'
@@ -115,10 +115,7 @@ const Blotter: React.FC<BlotterProps> = props => {
           columnDefs={columnDefinitions}
           defaultColDef={DEFAULT_COLUMN_DEFINITION}
           rowData={rows}
-          enableColResize={true}
           suppressMovableColumns={true}
-          enableSorting={true}
-          enableFilter={true}
           rowSelection="multiple"
           suppressDragLeaveHidesColumns={true}
           getRowClass={getRowClass}

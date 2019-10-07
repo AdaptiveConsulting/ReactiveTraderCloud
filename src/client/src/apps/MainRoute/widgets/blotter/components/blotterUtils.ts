@@ -1,4 +1,4 @@
-import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid'
+import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid-community'
 import { Trade, TradeStatus } from 'rt-types'
 import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
 import SetFilter from './filters/SetFilter'
@@ -44,8 +44,10 @@ const getStatusIndicatorClass = (trade: Trade) => {
 export const DEFAULT_COLUMN_DEFINITION: ColDef = {
   menuTabs: ['filterMenuTab'],
   suppressSizeToFit: true,
-  suppressFilter: false,
+  filter: false,
   minWidth: 40,
+  resizable: true,
+  sortable: true,
 }
 
 export const STATUS_INDICATOR = 'statusIndicator'
@@ -89,7 +91,7 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     maxWidth: 6,
     minWidth: 6,
     cellClass: ({ data }) => getStatusIndicatorClass(data),
-    suppressSorting: true,
+    sortable: false,
     suppressMenu: true,
     headerClass: 'rt-status-indicator__header',
   },
@@ -113,11 +115,11 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
   },
   {
     colId: TRADE_DATE,
-    headerName: 'Date',
+    headerName: 'Trade Date',
     field: TRADE_DATE,
     cellRenderer: ({ data }) => dateRenderer(data['tradeDate']),
     width: 130,
-    suppressFilter: true,
+    filter: true,
     includeInCSVExport: true,
     csvCellValueFormatter: cell => dateRenderer(cell.value),
   },
@@ -141,7 +143,7 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     colId: DEALT_CURRENCY,
     headerName: 'Dealt CCY',
     field: DEALT_CURRENCY,
-    width: 110,
+    width: 80,
     filterFramework: SetFilter,
     includeInCSVExport: true,
   },
@@ -151,7 +153,7 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     field: NOTIONAL,
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
-    width: 120,
+    width: 110,
     filter: 'agNumberColumnFilter',
     cellRenderer: ({ data }) => notionalRenderer(data['notional']),
     includeInCSVExport: true,
@@ -173,7 +175,7 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     field: VALUE_DATE,
     cellRenderer: ({ data }) => utcDateRenderer(data['valueDate']),
     width: 120,
-    suppressFilter: true,
+    filter: true,
     includeInCSVExport: true,
     csvCellValueFormatter: cell => utcDateRenderer(cell.value),
   },
@@ -191,7 +193,7 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     headerName: '',
     width: 80,
     suppressSizeToFit: false,
-    suppressFilter: true,
+    filter: true,
     includeInCSVExport: true,
   },
 ]
