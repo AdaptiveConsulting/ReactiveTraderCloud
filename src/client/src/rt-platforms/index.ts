@@ -15,6 +15,7 @@ export { Symphony, initiateSymphony } from './symphony'
 
 export { OpenFin, OpenFinHeader, setupWorkspaces } from './openFin'
 export { default as Finsemble } from './finsemble'
+export { Glue42 } from './glue/glue'
 export { InteropTopics } from './types'
 export { getPlatformAsync } from './platform'
 export { PlatformProvider, usePlatform } from './context'
