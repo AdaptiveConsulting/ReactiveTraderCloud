@@ -6,6 +6,8 @@ import FakeUserRepository from '../fakeUserRepository'
 import { createApplicationServices } from './applicationServices'
 import configureStore from './configureStore'
 import { SetupActions } from 'rt-actions'
+import { createLimitChecker } from '../../../rt-platforms/limitChecker'
+import { createExcelApp } from '../../../rt-platforms/excelApp'
 
 const LOG_NAME = 'Application Service: '
 
@@ -16,7 +18,8 @@ export const store = configureStore(
       'com.weareadaptive.reactivetrader',
       +(process.env.REACT_APP_BROKER_PORT || location.port),
     ),
-    limitChecker: platform.limitChecker,
+    limitChecker: createLimitChecker(platform.name),
+    excelApp: createExcelApp(platform.name),
     platform,
     user: FakeUserRepository.currentUser,
   }),

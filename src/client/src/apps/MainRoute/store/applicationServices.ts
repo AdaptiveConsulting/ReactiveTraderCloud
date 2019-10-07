@@ -14,19 +14,21 @@ import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
 import { retryWhen, multicast, refCount } from 'rxjs/operators'
 import { referenceDataService } from '../data/referenceData'
-import { LimitChecker } from 'rt-platforms'
+import { LimitChecker, ExcelApp } from 'rt-platforms'
 const HEARTBEAT_TIMEOUT = 3000
 
 export interface ApplicationProps {
   autobahn: AutobahnConnection
   platform: PlatformAdapter
   limitChecker: LimitChecker
+  excelApp: ExcelApp
   user: User
 }
 
 export function createApplicationServices({
   autobahn,
   limitChecker,
+  excelApp,
   user,
   platform,
 }: ApplicationProps) {
@@ -56,6 +58,7 @@ export function createApplicationServices({
     referenceDataService$,
     platform,
     limitChecker,
+    excelApp,
     loadBalancedServiceStub,
     serviceStatus$,
     connection$,

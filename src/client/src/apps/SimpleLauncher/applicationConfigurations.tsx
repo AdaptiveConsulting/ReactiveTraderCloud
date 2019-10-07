@@ -5,7 +5,7 @@ import {
   greenKeyIcon,
   excelIcon,
 } from './icons/index'
-import { PlatformName, excelAdapter } from 'rt-components'
+import { PlatformName, EXCEL_ADAPTER_NAME } from 'rt-components'
 
 // Safer than location.origin due to browser support
 const ORIGIN = `${location.protocol}//${location.host}`
@@ -90,7 +90,7 @@ const excelLegacyAppConfig: ApplicationConfig = {
   },
 }
 
-const excelAppConfig = excelAdapter.name === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
+const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
 
 export const appConfigs: ApplicationConfig[] = [
   {

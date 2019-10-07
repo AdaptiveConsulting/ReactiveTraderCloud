@@ -24,5 +24,5 @@ export { default as Resizer } from './resizer'
 export { Timer } from './timer'
 export { RouteWrapper, RouteStyle } from './route-wrapper'
 export { default as Popup } from './popup'
-export { excelAdapter, InteropTopics, Browser, OpenFin, Finsemble } from 'rt-platforms'
+export { InteropTopics, Browser, OpenFin, Finsemble, EXCEL_ADAPTER_NAME } from 'rt-platforms'
 export type ExternalWindow = ExternalWindow
