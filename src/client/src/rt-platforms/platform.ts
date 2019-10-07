@@ -1,4 +1,4 @@
-import { Browser, Finsemble, OpenFin, PlatformAdapter, Symphony, Glue42 } from './'
+import { Browser, Finsemble, OpenFin, Symphony, Glue42 } from './'
 
 const urlParams = new URLSearchParams(window.location.search)
 
@@ -7,9 +7,8 @@ const isOpenFin = 'fin' in window
 const isGlue42 = 'glue42gd' in window
 const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYMPHONY'
 
-const getPlatform: () => PlatformAdapter = () => {
+export const getPlatformAsync = async () => {
   if (isSymphony) {
-    console.info('Using Symphony')
     return new Symphony()
   }
 
@@ -30,6 +29,3 @@ const getPlatform: () => PlatformAdapter = () => {
   console.info('Using Browser API')
   return new Browser()
 }
-
-const platform = getPlatform()
-export default platform

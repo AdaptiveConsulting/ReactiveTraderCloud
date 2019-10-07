@@ -1,5 +1,4 @@
 import {
-  platform,
   PlatformAdapter,
   externalWindowDefault,
   PlatformProvider,
@@ -10,7 +9,7 @@ import {
   ExternalWindow,
 } from 'rt-platforms'
 
-export { platform, usePlatform, externalWindowDefault, PlatformProvider, setupWorkspaces }
+export { usePlatform, externalWindowDefault, PlatformProvider, setupWorkspaces }
 export type PlatformAdapter = PlatformAdapter
 export type PlatformName = PlatformName
 export type WindowConfig = WindowConfig
