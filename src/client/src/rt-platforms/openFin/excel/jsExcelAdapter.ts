@@ -3,9 +3,9 @@
 
 import { formTable, delay } from './utils'
 import { Trade, CurrencyPairPositionWithPrice } from 'rt-types'
-import { platform } from 'rt-components'
-import { InteropTopics } from '../../types'
 import { ExcelApp } from '../../excelApp'
+import { OpenFin } from '../adapter'
+import { InteropTopics } from '../../types'
 
 const EXCEL_HOST_URL = `${location.protocol}//${location.host}/static/excel`
 const EXCEL_FILE_NAME = 'RTExcel.xlsx'
@@ -25,6 +25,8 @@ class JSExcelAdapter implements ExcelApp {
   rtWorkbook: fin.ExcelWorkbook
   blotterSheet: fin.ExcelWorksheet
   positionsSheet: fin.ExcelWorksheet
+  platform = new OpenFin()
+
   readonly name = 'JS'
 
   isOpen = () => {
@@ -77,7 +79,7 @@ class JSExcelAdapter implements ExcelApp {
    * We are simulating the 'Close position' buttons with plain cells so we detect clicks this way
    */
   onPositionsSheetSelectionChanged = async ({ data }: fin.WorksheetSelectionChangedEventArgs) => {
-    if (!this.positionsSheet || !platform.hasFeature('interop')) {
+    if (!this.positionsSheet || !this.platform.hasFeature('interop')) {
       return
     }
 
@@ -104,7 +106,7 @@ class JSExcelAdapter implements ExcelApp {
     const symbol = positionData[0].value
     const amount = Number(positionData[3].value) || 0
     if (amount !== 0) {
-      platform.interop.publish(InteropTopics.ClosePosition, { amount, symbol })
+      this.platform.interop.publish(InteropTopics.ClosePosition, { amount, symbol })
       // Give enough time to execute the trade and the position to go to 0 before displaying the 'Close position' button again
       await delay(5000)
       await this.positionsSheet.setCells(
