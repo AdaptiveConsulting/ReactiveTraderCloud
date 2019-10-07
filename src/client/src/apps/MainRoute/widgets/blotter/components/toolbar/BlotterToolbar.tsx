@@ -1,4 +1,4 @@
-import { ColDef } from 'ag-grid'
+import { ColDef } from 'ag-grid-community'
 import React from 'react'
 import { flexStyle } from 'rt-components'
 import { styled } from 'rt-theme'
@@ -23,7 +23,10 @@ const BlotterToolbarStyle = styled('div')`
   ${flexStyle({ alignItems: 'center', justifyContent: 'flex-end' })};
 `
 
-export default class BlotterToolbar extends React.Component<BlotterToolbarProps, BlotterToobarState> {
+export default class BlotterToolbar extends React.Component<
+  BlotterToolbarProps,
+  BlotterToobarState
+> {
   render() {
     return (
       <BlotterToolbarStyle>
