@@ -9,19 +9,6 @@ import { getAddinStatus, openSheet, updateSheet, BlotterData } from './utils/exc
 import DefaultRoute from 'rt-platforms/defaultRoute'
 import { ApplicationEpic } from 'StoreTypes'
 import { GlueHeader, GlueLogoLink } from './'
-import { useEffect } from 'react'
-
-// TODO remove onGlueLoaded and its usages when the whole app is rendered after glue has loaded
-export const onGlueLoaded = (callback: () => void) => {
-  const interval = setInterval(() => {
-    if (window.glue) {
-      callback()
-      clearInterval(interval)
-    }
-  }, 100)
-}
-
-export const useOnGlueLoaded = (callback: () => void) => useEffect(() => onGlueLoaded(callback), [])
 
 /**
  * Glue implementation of the base platform adapter.

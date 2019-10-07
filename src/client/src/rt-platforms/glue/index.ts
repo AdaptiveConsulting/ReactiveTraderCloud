@@ -1,2 +1,2 @@
-export { Glue42, onGlueLoaded } from './glue'
+export { Glue42 } from './glue'
 export { GlueHeader, GlueLogoLink } from './components'

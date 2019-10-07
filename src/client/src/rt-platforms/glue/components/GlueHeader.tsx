@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { useOnGlueLoaded } from '../glue'
+import React, { useState, useEffect } from 'react'
 import { IconButton } from '../../../apps/MainRoute/components/app-header/Header'
 
 export const GlueHeader: React.FC<any> = () => {
@@ -12,17 +11,20 @@ export const GlueHeader: React.FC<any> = () => {
     isToggleCollapseButtonVisible: false,
   })
 
-  useOnGlueLoaded(() =>
-    window.glue.interop.register(
-      'toggleHeaderButtons',
-      (args: { numberOfOpenedWindows: number }) => {
-        setButtonsVisibility({
-          isStackAllButtonVisible: args.numberOfOpenedWindows > 1,
-          isTabAllButtonVisible: args.numberOfOpenedWindows > 1,
-          isToggleCollapseButtonVisible: args.numberOfOpenedWindows > 0,
-        })
-      },
-    ),
+  useEffect(
+    () =>
+      window.glue &&
+      window.glue.interop.register(
+        'toggleHeaderButtons',
+        (args: { numberOfOpenedWindows: number }) => {
+          setButtonsVisibility({
+            isStackAllButtonVisible: args.numberOfOpenedWindows > 1,
+            isTabAllButtonVisible: args.numberOfOpenedWindows > 1,
+            isToggleCollapseButtonVisible: args.numberOfOpenedWindows > 0,
+          })
+        },
+      ),
+    [],
   )
 
   // TODO expose onClick on logo?
