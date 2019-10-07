@@ -4,9 +4,18 @@ import { WindowConfig } from '../types'
 
 type BrowserWindowProps = WindowConfig
 
-export const openBrowserWindow = (config: BrowserWindowProps, onClose?: () => void) => {
+export const openBrowserWindow = function(
+  this: { prevWindow: Window },
+  config: BrowserWindowProps,
+  onClose?: () => void,
+) {
   const { name, width, height, center, url } = config
-  const { left, top } = calculatePosition(center, width, height)
+  const windowReferencePosition =
+    this.prevWindow && !this.prevWindow.closed
+      ? { left: this.prevWindow.screenX, top: this.prevWindow.screenY }
+      : null
+
+  const { left, top } = calculatePosition(center, width, height, windowReferencePosition)
 
   const win = window.open(
     url,
@@ -23,12 +32,22 @@ export const openBrowserWindow = (config: BrowserWindowProps, onClose?: () => vo
     win.addEventListener('beforeunload', onClose)
   }
 
-  return Promise.resolve(win)
-}
+  this.prevWindow = win
 
-function calculatePosition(center: string = 'parent', width: number, height: number) {
+  return Promise.resolve(win)
+}.bind({ prevWindow: null })
+
+function calculatePosition(
+  center: string = 'parent',
+  width: number,
+  height: number,
+  reference?: { top: number; left: number },
+) {
   let left = 0
   let top = 0
+  const LEFT_POSITION_OFFSET = 50
+  const TOP_POSITION_OFFSET = 50
+
   if (center === 'parent') {
     left = window.top.outerWidth / 2 + window.top.screenX - width / 2
     top = window.top.outerHeight / 2 + window.top.screenY - height / 2
@@ -48,7 +67,10 @@ function calculatePosition(center: string = 'parent', width: number, height: num
     left = windowWidth / 2 - width / 2 + screenLeft
     top = windowHeight / 2 - height / 2 + screenTop
   }
-  return { left, top }
+
+  return reference
+    ? { left: reference.left + LEFT_POSITION_OFFSET, top: reference.top + TOP_POSITION_OFFSET }
+    : { left, top }
 }
 
 interface WindowFeatures {
