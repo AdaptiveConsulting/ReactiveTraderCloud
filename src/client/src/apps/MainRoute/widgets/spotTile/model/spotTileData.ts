@@ -30,5 +30,5 @@ export interface CurrencyPairNotional {
 
 export interface NotionalUpdate {
   value: string
-  updateType?: string // 'blur', 'change'
+  updateType?: string // 'blur', 'change', 'keypress'
 }
