@@ -8,6 +8,7 @@ import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
 import { ExecuteTradeRequest } from './model/executeTradeRequest'
 import {
+  selectNotional,
   selectCurrencyPair,
   selectExecutionStatus,
   selectPricingStatus,
@@ -16,6 +17,7 @@ import {
 import { TileViews } from '../workspace/workspaceHeader'
 import { RfqRequest, RfqCancel, RfqRequote, RfqExpired, RfqReject } from './model/rfqRequest'
 import { TradingMode } from './components/types'
+import { CurrencyPairNotional } from './model/spotTileData'
 
 export interface SpotTileContainerOwnProps {
   id: string
@@ -41,9 +43,12 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
     expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
     reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
   },
+  updateNotional: (currencyPairNotional: CurrencyPairNotional) =>
+    dispatch(SpotTileActions.setNotional(currencyPairNotional)),
 })
 
 const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
+  notional: selectNotional(state, ownProps),
   pricingStatus: selectPricingStatus(state),
   executionStatus: selectExecutionStatus(state),
   currencyPair: selectCurrencyPair(state, ownProps),
