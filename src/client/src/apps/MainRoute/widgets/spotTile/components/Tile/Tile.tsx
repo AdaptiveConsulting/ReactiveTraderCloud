@@ -61,16 +61,14 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   // State management derived from props
   static getDerivedStateFromProps(nextProps: TileProps, prevState: TileState) {
     const { setTradingMode, spotTileData, currencyPair } = nextProps
-    return {
-      ...getDerivedStateFromProps(nextProps, prevState),
-      ...getDerivedStateFromUserInput({
-        prevState,
-        notionalUpdate: spotTileData.notional,
-        spotTileData,
-        actions: { setTradingMode },
-        currencyPair,
-      }),
-    }
+    const stateFromProps = getDerivedStateFromProps(nextProps, prevState)
+    return getDerivedStateFromUserInput({
+      prevState: stateFromProps,
+      notionalUpdate: spotTileData.notional,
+      spotTileData,
+      actions: { setTradingMode },
+      currencyPair,
+    })
   }
 
   // We handle the case where the initial Notional value would

@@ -44,6 +44,7 @@ const defaultParams: DerivedStateFromUserInput = {
     rfqPrice: null,
     rfqState: 'none',
     rfqTimeout: null,
+    rfqReceivedTime: null,
     notional: notionalUpdate,
   },
   currencyPair,
