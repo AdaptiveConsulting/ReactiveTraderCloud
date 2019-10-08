@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 
 import { Observable } from 'rxjs'
-import { LimitChecker } from 'rt-platforms/limitChecker'
+import { LimitChecker } from '../../limitChecker'
 const LOG_NAME = 'OpenFin: '
 
 const REQUEST_LIMIT_CHECK_TOPIC = 'request-limit-check'

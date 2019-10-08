@@ -41,11 +41,10 @@ export default class Symphony extends BasePlatformAdapter {
     notify: (message: object) => {},
   }
 
-  share = (obj: any) => {
+  share = (ccyPair: string) => {
     const shareService = this.symphony.services.subscribe('share')
-    const ccyPair = 'GBPUSD'
     shareService.share(FX_ENTITY_TYPE, {
-      plaintext: `Latest Price for $${ccyPair}`,
+      plaintext: `Latest prices for $${ccyPair}`,
       presentationML: createTileMessage(process.env.REACT_APP_BROKER_HOST, ccyPair),
       entityJSON: {
         type: FX_ENTITY_TYPE,
@@ -54,7 +53,7 @@ export default class Symphony extends BasePlatformAdapter {
       },
       entity: {},
       format: 'com.symphony.messageml.v2',
-      inputAutofill: `Here is our Latest Prices for $${ccyPair}`,
+      inputAutofill: `Here are our latest prices for $${ccyPair}`,
     })
   }
 }

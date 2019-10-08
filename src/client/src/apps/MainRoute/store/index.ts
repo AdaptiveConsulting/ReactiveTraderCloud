@@ -2,12 +2,10 @@ import { AutobahnConnectionProxy } from 'rt-system'
 import FakeUserRepository from '../fakeUserRepository'
 import { createApplicationServices } from './applicationServices'
 import configureStore from './configureStore'
-import { createLimitChecker } from '../../../rt-platforms/limitChecker'
-import { createExcelApp } from '../../../rt-platforms/excelApp'
 import { ConnectionActions, SetupActions } from 'rt-actions'
-import { PlatformAdapter } from 'rt-platforms'
+import { createExcelApp, createLimitChecker, PlatformAdapter } from 'rt-platforms'
 
-export const createStore = (platform: PlatformAdapter) => {
+export const createStore = async (platform: PlatformAdapter) => {
   const store = configureStore(
     createApplicationServices({
       autobahn: new AutobahnConnectionProxy(
@@ -15,8 +13,8 @@ export const createStore = (platform: PlatformAdapter) => {
         'com.weareadaptive.reactivetrader',
         +(process.env.REACT_APP_BROKER_PORT || location.port),
       ),
-      limitChecker: createLimitChecker(platform.name),
-      excelApp: createExcelApp(platform.name),
+      limitChecker: await createLimitChecker(platform.name),
+      excelApp: await createExcelApp(platform.name),
       platform,
       user: FakeUserRepository.currentUser,
     }),

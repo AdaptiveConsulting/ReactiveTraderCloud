@@ -2,30 +2,30 @@
 
 exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 <div
-  className="sc-fAjcbJ sc-caSCKo jEmDht"
+  className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kvZOFW jeDDbd"
+        className="sc-kgAjT lpkrDV"
       >
         <div
-          className="sc-eqIVtm bkOZSq"
+          className="sc-hzDkRC ktZwAf"
         >
           <div
-            className="sc-jhAzac dMjkVa"
+            className="sc-gipzik eHfKsv"
             data-qa="tile-header__tile-symbol"
           >
             EUR/USD
           </div>
           <div
-            className="sc-hzDkRC izpKta"
+            className="sc-jlyJG gaAQgC"
             data-qa="tile-header__delivery-date"
           >
             SPT (07 APR)
@@ -33,10 +33,10 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
         </div>
       </div>
       <div
-        className="sc-jlyJG ePoUEg"
+        className="sc-cMljjf buguXb"
       >
         <button
-          className="sc-iwsKbI bLNvkJ"
+          className="sc-EHOje kkdSuS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -44,32 +44,32 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG gBsEcH"
+            className="sc-gZMcBi crpdKd"
             disabled={false}
           >
             <div
-              className="sc-cSHVUG eSKBUX"
+              className="sc-gqjmRU cKkifn"
             >
               <div
-                className="sc-gZMcBi sc-gqjmRU jRFncc"
+                className="sc-bZQynM sc-gzVnrw lDSPw"
               >
                 SELL
               </div>
               <div
-                className="sc-gZMcBi sc-VigVT iHWDPD"
+                className="sc-bZQynM sc-htoDjs duRaET"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-gZMcBi sc-jTzLTM iFGkhj"
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-gZMcBi sc-fjdhpX bKruQT"
+              className="sc-bZQynM sc-iwsKbI CPNEg"
               data-qa="price-button__tenth"
             >
               4
@@ -77,29 +77,29 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           </div>
         </button>
         <div
-          className="sc-kGXeez gaDLRQ"
+          className="sc-jzJRlG iKkJoh"
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-chPdSV jHiwyK"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="sc-kgoBCf jqNZZA"
+            className="sc-fjdhpX flAxeK"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-chPdSV iSCvLR"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <button
-          className="sc-iwsKbI bKqJGN"
+          className="sc-EHOje ciDDPg"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -107,32 +107,32 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG gBsEcH"
+            className="sc-gZMcBi crpdKd"
             disabled={false}
           >
             <div
-              className="sc-cSHVUG eSKBUX"
+              className="sc-gqjmRU cKkifn"
             >
               <div
-                className="sc-gZMcBi sc-gqjmRU jRFncc"
+                className="sc-bZQynM sc-gzVnrw lDSPw"
               >
                 BUY
               </div>
               <div
-                className="sc-gZMcBi sc-VigVT iHWDPD"
+                className="sc-bZQynM sc-htoDjs duRaET"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-gZMcBi sc-jTzLTM iFGkhj"
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-gZMcBi sc-fjdhpX bKruQT"
+              className="sc-bZQynM sc-iwsKbI CPNEg"
               data-qa="price-button__tenth"
             >
               4
@@ -142,22 +142,22 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
       </div>
     </div>
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-cHGsZl eNCaOT"
+        className="sc-eqIVtm dxqJyr"
       >
         <div
-          className="sc-gzVnrw pTfxi"
+          className="sc-htpNat idZgat"
         >
           <span
-            className="sc-EHOje gQaEZW"
+            className="sc-bdVaJa bxrsSL"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="sc-htoDjs dlzouj"
+            className="sc-bxivhb fauXdE"
             data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
@@ -176,30 +176,30 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 <div
-  className="sc-fAjcbJ sc-caSCKo jEmDht"
+  className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kvZOFW jeDDbd"
+        className="sc-kgAjT lpkrDV"
       >
         <div
-          className="sc-eqIVtm bkOZSq"
+          className="sc-hzDkRC ktZwAf"
         >
           <div
-            className="sc-jhAzac dMjkVa"
+            className="sc-gipzik eHfKsv"
             data-qa="tile-header__tile-symbol"
           >
             EUR/USD
           </div>
           <div
-            className="sc-hzDkRC izpKta"
+            className="sc-jlyJG gaAQgC"
             data-qa="tile-header__delivery-date"
           >
             SPT (07 APR)
@@ -207,67 +207,67 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
         </div>
       </div>
       <div
-        className="sc-jlyJG ePoUEg"
+        className="sc-cMljjf buguXb"
       >
         <div
-          className="sc-gipzik hreSLC"
+          className="sc-jAaTju jNhJYD"
           data-qa="price-controls__price-button-disabled"
         >
           <i
-            className="fas fa-ban fa-flip-horizontal sc-csuQGl gqkcpi"
+            className="fas fa-ban fa-flip-horizontal sc-jDwBTQ dBQkTU"
           />
           Streaming price unavailable
         </div>
         <div
-          className="sc-kGXeez gaDLRQ"
+          className="sc-jzJRlG iKkJoh"
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-chPdSV jHiwyK"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="sc-kgoBCf jqNZZA"
+            className="sc-fjdhpX flAxeK"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-chPdSV iSCvLR"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <div
-          className="sc-gipzik hreSLC"
+          className="sc-jAaTju jNhJYD"
           data-qa="price-controls__price-button-disabled"
         >
           <i
-            className="fas fa-ban fa-flip-horizontal sc-csuQGl gqkcpi"
+            className="fas fa-ban fa-flip-horizontal sc-jDwBTQ dBQkTU"
           />
           Streaming price unavailable
         </div>
       </div>
     </div>
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-cHGsZl eNCaOT"
+        className="sc-eqIVtm dxqJyr"
       >
         <div
-          className="sc-gzVnrw pTfxi"
+          className="sc-htpNat idZgat"
         >
           <span
-            className="sc-EHOje gQaEZW"
+            className="sc-bdVaJa bxrsSL"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="sc-htoDjs dlzouj"
+            className="sc-bxivhb fauXdE"
             data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
@@ -286,30 +286,30 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 <div
-  className="sc-fAjcbJ sc-caSCKo jEmDht"
+  className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kvZOFW jeDDbd"
+        className="sc-kgAjT lpkrDV"
       >
         <div
-          className="sc-eqIVtm bkOZSq"
+          className="sc-hzDkRC ktZwAf"
         >
           <div
-            className="sc-jhAzac dMjkVa"
+            className="sc-gipzik eHfKsv"
             data-qa="tile-header__tile-symbol"
           >
             EUR/USD
           </div>
           <div
-            className="sc-hzDkRC izpKta"
+            className="sc-jlyJG gaAQgC"
             data-qa="tile-header__delivery-date"
           >
             SPT (07 APR)
@@ -317,10 +317,10 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         </div>
       </div>
       <div
-        className="sc-jlyJG ePoUEg"
+        className="sc-cMljjf buguXb"
       >
         <button
-          className="sc-iwsKbI bLNvkJ"
+          className="sc-EHOje kkdSuS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -328,68 +328,68 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG gBsEcH"
+            className="sc-gZMcBi crpdKd"
             disabled={false}
           >
             <div
-              className="sc-cSHVUG eSKBUX"
+              className="sc-gqjmRU cKkifn"
             >
               <div
-                className="sc-gZMcBi sc-gqjmRU jRFncc"
+                className="sc-bZQynM sc-gzVnrw lDSPw"
               >
                 SELL
               </div>
               <div
-                className="sc-gZMcBi sc-VigVT iHWDPD"
+                className="sc-bZQynM sc-htoDjs duRaET"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-gZMcBi sc-jTzLTM iFGkhj"
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-gZMcBi sc-fjdhpX bKruQT"
+              className="sc-bZQynM sc-iwsKbI CPNEg"
               data-qa="price-button__tenth"
             >
               4
             </div>
           </div>
           <div
-            className="sc-kAzzGY gDmmKa"
+            className="sc-VigVT cLQaHF"
             data-qa="price-button__expired"
           >
             Expired
           </div>
         </button>
         <div
-          className="sc-kGXeez gaDLRQ"
+          className="sc-jzJRlG iKkJoh"
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-chPdSV jHiwyK"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="sc-kgoBCf jqNZZA"
+            className="sc-fjdhpX flAxeK"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-chPdSV iSCvLR"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <button
-          className="sc-iwsKbI bKqJGN"
+          className="sc-EHOje ciDDPg"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -397,39 +397,39 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG gBsEcH"
+            className="sc-gZMcBi crpdKd"
             disabled={false}
           >
             <div
-              className="sc-cSHVUG eSKBUX"
+              className="sc-gqjmRU cKkifn"
             >
               <div
-                className="sc-gZMcBi sc-gqjmRU jRFncc"
+                className="sc-bZQynM sc-gzVnrw lDSPw"
               >
                 BUY
               </div>
               <div
-                className="sc-gZMcBi sc-VigVT iHWDPD"
+                className="sc-bZQynM sc-htoDjs duRaET"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-gZMcBi sc-jTzLTM iFGkhj"
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-gZMcBi sc-fjdhpX bKruQT"
+              className="sc-bZQynM sc-iwsKbI CPNEg"
               data-qa="price-button__tenth"
             >
               4
             </div>
           </div>
           <div
-            className="sc-kAzzGY gDmmKa"
+            className="sc-VigVT cLQaHF"
             data-qa="price-button__expired"
           >
             Expired
@@ -438,22 +438,22 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
       </div>
     </div>
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-cHGsZl eNCaOT"
+        className="sc-eqIVtm dxqJyr"
       >
         <div
-          className="sc-gzVnrw pTfxi"
+          className="sc-htpNat idZgat"
         >
           <span
-            className="sc-EHOje gQaEZW"
+            className="sc-bdVaJa bxrsSL"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="sc-htoDjs dlzouj"
+            className="sc-bxivhb fauXdE"
             data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
@@ -472,30 +472,30 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ received 1`] = `
 <div
-  className="sc-fAjcbJ sc-caSCKo jEmDht"
+  className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kvZOFW jeDDbd"
+        className="sc-kgAjT lpkrDV"
       >
         <div
-          className="sc-eqIVtm bkOZSq"
+          className="sc-hzDkRC ktZwAf"
         >
           <div
-            className="sc-jhAzac dMjkVa"
+            className="sc-gipzik eHfKsv"
             data-qa="tile-header__tile-symbol"
           >
             EUR/USD
           </div>
           <div
-            className="sc-hzDkRC izpKta"
+            className="sc-jlyJG gaAQgC"
             data-qa="tile-header__delivery-date"
           >
             SPT (07 APR)
@@ -503,10 +503,10 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
         </div>
       </div>
       <div
-        className="sc-jlyJG ePoUEg"
+        className="sc-cMljjf buguXb"
       >
         <button
-          className="sc-iwsKbI dDECIz"
+          className="sc-EHOje ixrtnE"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -514,32 +514,32 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG gBsEcH"
+            className="sc-gZMcBi crpdKd"
             disabled={false}
           >
             <div
-              className="sc-cSHVUG eSKBUX"
+              className="sc-gqjmRU cKkifn"
             >
               <div
-                className="sc-gZMcBi sc-gqjmRU jRFncc"
+                className="sc-bZQynM sc-gzVnrw lDSPw"
               >
                 SELL
               </div>
               <div
-                className="sc-gZMcBi sc-VigVT iHWDPD"
+                className="sc-bZQynM sc-htoDjs duRaET"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-gZMcBi sc-jTzLTM iFGkhj"
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-gZMcBi sc-fjdhpX bKruQT"
+              className="sc-bZQynM sc-iwsKbI CPNEg"
               data-qa="price-button__tenth"
             >
               4
@@ -547,29 +547,29 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           </div>
         </button>
         <div
-          className="sc-kGXeez gaDLRQ"
+          className="sc-jzJRlG iKkJoh"
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-chPdSV jHiwyK"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="sc-kgoBCf jqNZZA"
+            className="sc-fjdhpX flAxeK"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-chPdSV iSCvLR"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <button
-          className="sc-iwsKbI eFXKNx"
+          className="sc-EHOje iHiLlf"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -577,32 +577,32 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG gBsEcH"
+            className="sc-gZMcBi crpdKd"
             disabled={false}
           >
             <div
-              className="sc-cSHVUG eSKBUX"
+              className="sc-gqjmRU cKkifn"
             >
               <div
-                className="sc-gZMcBi sc-gqjmRU jRFncc"
+                className="sc-bZQynM sc-gzVnrw lDSPw"
               >
                 BUY
               </div>
               <div
-                className="sc-gZMcBi sc-VigVT iHWDPD"
+                className="sc-bZQynM sc-htoDjs duRaET"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-gZMcBi sc-jTzLTM iFGkhj"
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-gZMcBi sc-fjdhpX bKruQT"
+              className="sc-bZQynM sc-iwsKbI CPNEg"
               data-qa="price-button__tenth"
             >
               4
@@ -612,22 +612,22 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
       </div>
     </div>
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-cHGsZl eNCaOT"
+        className="sc-eqIVtm dxqJyr"
       >
         <div
-          className="sc-gzVnrw pTfxi"
+          className="sc-htpNat idZgat"
         >
           <span
-            className="sc-EHOje gQaEZW"
+            className="sc-bdVaJa bxrsSL"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="sc-htoDjs dlzouj"
+            className="sc-bxivhb fauXdE"
             data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
@@ -646,30 +646,30 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 <div
-  className="sc-fAjcbJ sc-caSCKo jEmDht"
+  className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kvZOFW jeDDbd"
+        className="sc-kgAjT lpkrDV"
       >
         <div
-          className="sc-eqIVtm bkOZSq"
+          className="sc-hzDkRC ktZwAf"
         >
           <div
-            className="sc-jhAzac dMjkVa"
+            className="sc-gipzik eHfKsv"
             data-qa="tile-header__tile-symbol"
           >
             EUR/USD
           </div>
           <div
-            className="sc-hzDkRC izpKta"
+            className="sc-jlyJG gaAQgC"
             data-qa="tile-header__delivery-date"
           >
             SPT (07 APR)
@@ -677,14 +677,14 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
         </div>
       </div>
       <div
-        className="sc-jlyJG ePoUEg"
+        className="sc-cMljjf buguXb"
       >
         <div
-          className="sc-gipzik hreSLC"
+          className="sc-jAaTju jNhJYD"
           data-qa="price-controls__price-button-disabled--loading"
         >
           <div
-            className="sc-Rmtcm iAvTcQ"
+            className="sc-gPEVay ScvMT"
           >
             <svg
               data-qa="adaptive-loader__svg"
@@ -692,7 +692,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
               width={14}
             >
               <rect
-                className="sc-iAyFgw cTwpdR"
+                className="sc-jKJlTe dSCVMx"
                 height={10.5}
                 order={0}
                 speed={0.8}
@@ -701,7 +701,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={0.25}
               />
               <rect
-                className="sc-iAyFgw fcWnGG"
+                className="sc-jKJlTe liUgNR"
                 height={10.5}
                 order={1}
                 speed={0.8}
@@ -710,7 +710,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={3.875}
               />
               <rect
-                className="sc-iAyFgw gWyjuf"
+                className="sc-jKJlTe feRRie"
                 height={10.5}
                 order={2}
                 speed={0.8}
@@ -719,7 +719,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={7.5}
               />
               <rect
-                className="sc-iAyFgw jGBUVo"
+                className="sc-jKJlTe bxfSfv"
                 height={10.5}
                 order={3}
                 speed={0.8}
@@ -732,33 +732,33 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           Awaiting price
         </div>
         <div
-          className="sc-kGXeez gaDLRQ"
+          className="sc-jzJRlG iKkJoh"
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-chPdSV jHiwyK"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="sc-kgoBCf jqNZZA"
+            className="sc-fjdhpX flAxeK"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-chPdSV iSCvLR"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <div
-          className="sc-gipzik hreSLC"
+          className="sc-jAaTju jNhJYD"
           data-qa="price-controls__price-button-disabled--loading"
         >
           <div
-            className="sc-Rmtcm iAvTcQ"
+            className="sc-gPEVay ScvMT"
           >
             <svg
               data-qa="adaptive-loader__svg"
@@ -766,7 +766,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
               width={14}
             >
               <rect
-                className="sc-iAyFgw cTwpdR"
+                className="sc-jKJlTe dSCVMx"
                 height={10.5}
                 order={0}
                 speed={0.8}
@@ -775,7 +775,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={0.25}
               />
               <rect
-                className="sc-iAyFgw fcWnGG"
+                className="sc-jKJlTe liUgNR"
                 height={10.5}
                 order={1}
                 speed={0.8}
@@ -784,7 +784,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={3.875}
               />
               <rect
-                className="sc-iAyFgw gWyjuf"
+                className="sc-jKJlTe feRRie"
                 height={10.5}
                 order={2}
                 speed={0.8}
@@ -793,7 +793,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
                 x={7.5}
               />
               <rect
-                className="sc-iAyFgw jGBUVo"
+                className="sc-jKJlTe bxfSfv"
                 height={10.5}
                 order={3}
                 speed={0.8}
@@ -808,22 +808,22 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
       </div>
     </div>
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-cHGsZl eNCaOT"
+        className="sc-eqIVtm dxqJyr"
       >
         <div
-          className="sc-gzVnrw pTfxi"
+          className="sc-htpNat idZgat"
         >
           <span
-            className="sc-EHOje gQaEZW"
+            className="sc-bdVaJa bxrsSL"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="sc-htoDjs dlzouj"
+            className="sc-bxivhb fauXdE"
             data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
@@ -842,30 +842,30 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 
 exports[`Snapshot, state derived from props, defaults, RFQ none, should be able to excute 1`] = `
 <div
-  className="sc-fAjcbJ sc-caSCKo jEmDht"
+  className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kvZOFW jeDDbd"
+        className="sc-kgAjT lpkrDV"
       >
         <div
-          className="sc-eqIVtm bkOZSq"
+          className="sc-hzDkRC ktZwAf"
         >
           <div
-            className="sc-jhAzac dMjkVa"
+            className="sc-gipzik eHfKsv"
             data-qa="tile-header__tile-symbol"
           >
             EUR/USD
           </div>
           <div
-            className="sc-hzDkRC izpKta"
+            className="sc-jlyJG gaAQgC"
             data-qa="tile-header__delivery-date"
           >
             SPT (07 APR)
@@ -873,10 +873,10 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
         </div>
       </div>
       <div
-        className="sc-jlyJG ePoUEg"
+        className="sc-cMljjf buguXb"
       >
         <button
-          className="sc-iwsKbI bLNvkJ"
+          className="sc-EHOje kkdSuS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -884,32 +884,32 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG gBsEcH"
+            className="sc-gZMcBi crpdKd"
             disabled={false}
           >
             <div
-              className="sc-cSHVUG eSKBUX"
+              className="sc-gqjmRU cKkifn"
             >
               <div
-                className="sc-gZMcBi sc-gqjmRU jRFncc"
+                className="sc-bZQynM sc-gzVnrw lDSPw"
               >
                 SELL
               </div>
               <div
-                className="sc-gZMcBi sc-VigVT iHWDPD"
+                className="sc-bZQynM sc-htoDjs duRaET"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-gZMcBi sc-jTzLTM iFGkhj"
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-gZMcBi sc-fjdhpX bKruQT"
+              className="sc-bZQynM sc-iwsKbI CPNEg"
               data-qa="price-button__tenth"
             >
               4
@@ -917,29 +917,29 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           </div>
         </button>
         <div
-          className="sc-kGXeez gaDLRQ"
+          className="sc-jzJRlG iKkJoh"
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-chPdSV jHiwyK"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="sc-kgoBCf jqNZZA"
+            className="sc-fjdhpX flAxeK"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-chPdSV iSCvLR"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <button
-          className="sc-iwsKbI bKqJGN"
+          className="sc-EHOje ciDDPg"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -947,32 +947,32 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG gBsEcH"
+            className="sc-gZMcBi crpdKd"
             disabled={false}
           >
             <div
-              className="sc-cSHVUG eSKBUX"
+              className="sc-gqjmRU cKkifn"
             >
               <div
-                className="sc-gZMcBi sc-gqjmRU jRFncc"
+                className="sc-bZQynM sc-gzVnrw lDSPw"
               >
                 BUY
               </div>
               <div
-                className="sc-gZMcBi sc-VigVT iHWDPD"
+                className="sc-bZQynM sc-htoDjs duRaET"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-gZMcBi sc-jTzLTM iFGkhj"
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-gZMcBi sc-fjdhpX bKruQT"
+              className="sc-bZQynM sc-iwsKbI CPNEg"
               data-qa="price-button__tenth"
             >
               4
@@ -982,22 +982,22 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
       </div>
     </div>
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-cHGsZl eNCaOT"
+        className="sc-eqIVtm dxqJyr"
       >
         <div
-          className="sc-gzVnrw pTfxi"
+          className="sc-htpNat idZgat"
         >
           <span
-            className="sc-EHOje gQaEZW"
+            className="sc-bdVaJa bxrsSL"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="sc-htoDjs dlzouj"
+            className="sc-bxivhb fauXdE"
             data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
@@ -1016,30 +1016,30 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 
 exports[`Snapshot, state derived from props, in trade 1`] = `
 <div
-  className="sc-fAjcbJ sc-caSCKo jEmDht"
+  className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-fBuWsC spot-tile sc-kjoXOD efDquV"
+    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kvZOFW jeDDbd"
+        className="sc-kgAjT lpkrDV"
       >
         <div
-          className="sc-eqIVtm bkOZSq"
+          className="sc-hzDkRC ktZwAf"
         >
           <div
-            className="sc-jhAzac dMjkVa"
+            className="sc-gipzik eHfKsv"
             data-qa="tile-header__tile-symbol"
           >
             EUR/USD
           </div>
           <div
-            className="sc-hzDkRC izpKta"
+            className="sc-jlyJG gaAQgC"
             data-qa="tile-header__delivery-date"
           >
             SPT (07 APR)
@@ -1047,10 +1047,10 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         </div>
       </div>
       <div
-        className="sc-jlyJG ePoUEg"
+        className="sc-cMljjf buguXb"
       >
         <button
-          className="sc-iwsKbI bLNvkJ"
+          className="sc-EHOje kkdSuS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -1058,32 +1058,32 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG gBsEcH"
+            className="sc-gZMcBi crpdKd"
             disabled={false}
           >
             <div
-              className="sc-cSHVUG eSKBUX"
+              className="sc-gqjmRU cKkifn"
             >
               <div
-                className="sc-gZMcBi sc-gqjmRU jRFncc"
+                className="sc-bZQynM sc-gzVnrw lDSPw"
               >
                 SELL
               </div>
               <div
-                className="sc-gZMcBi sc-VigVT iHWDPD"
+                className="sc-bZQynM sc-htoDjs duRaET"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-gZMcBi sc-jTzLTM iFGkhj"
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-gZMcBi sc-fjdhpX bKruQT"
+              className="sc-bZQynM sc-iwsKbI CPNEg"
               data-qa="price-button__tenth"
             >
               4
@@ -1091,29 +1091,29 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
         </button>
         <div
-          className="sc-kGXeez gaDLRQ"
+          className="sc-jzJRlG iKkJoh"
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-chPdSV jHiwyK"
+            className="fas fa-caret-up sc-jTzLTM gkTtVL"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="sc-kgoBCf jqNZZA"
+            className="sc-fjdhpX flAxeK"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-chPdSV iSCvLR"
+            className="fas fa-caret-down sc-jTzLTM TMXdn"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <button
-          className="sc-iwsKbI bKqJGN"
+          className="sc-EHOje ciDDPg"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -1121,32 +1121,32 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-jzJRlG gBsEcH"
+            className="sc-gZMcBi crpdKd"
             disabled={false}
           >
             <div
-              className="sc-cSHVUG eSKBUX"
+              className="sc-gqjmRU cKkifn"
             >
               <div
-                className="sc-gZMcBi sc-gqjmRU jRFncc"
+                className="sc-bZQynM sc-gzVnrw lDSPw"
               >
                 BUY
               </div>
               <div
-                className="sc-gZMcBi sc-VigVT iHWDPD"
+                className="sc-bZQynM sc-htoDjs duRaET"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-gZMcBi sc-jTzLTM iFGkhj"
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-gZMcBi sc-fjdhpX bKruQT"
+              className="sc-bZQynM sc-iwsKbI CPNEg"
               data-qa="price-button__tenth"
             >
               4
@@ -1156,22 +1156,22 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
       </div>
     </div>
     <div
-      className="sc-gisBJw kDlVKO"
+      className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-cHGsZl eNCaOT"
+        className="sc-eqIVtm dxqJyr"
       >
         <div
-          className="sc-gzVnrw pTfxi"
+          className="sc-htpNat idZgat"
         >
           <span
-            className="sc-EHOje gQaEZW"
+            className="sc-bdVaJa bxrsSL"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="sc-htoDjs dlzouj"
+            className="sc-bxivhb fauXdE"
             data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}

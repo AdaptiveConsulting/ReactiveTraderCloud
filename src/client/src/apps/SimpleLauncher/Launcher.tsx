@@ -9,10 +9,14 @@ import { LogoIcon } from 'rt-components'
 import { createGlobalStyle } from 'styled-components'
 import { ThemeStorageSwitch, styled } from 'rt-theme'
 import { open } from './tools'
-import { OpenFin } from 'rt-platforms'
+import { getOpenFinPlatform } from 'rt-platforms'
 library.add(faSignOutAlt)
 
-const platform = new OpenFin()
+const exitHandler = async () => {
+  const { OpenFin } = await getOpenFinPlatform()
+  const platform = new OpenFin()
+  platform.window.close()
+}
 
 const LauncherGlobalStyle = createGlobalStyle`
 :root, body {
@@ -25,7 +29,7 @@ const LauncherGlobalStyle = createGlobalStyle`
 
 const LauncherExit = () => (
   <ButtonContainer key="exit">
-    <LaunchButton onClick={platform.window.close}>
+    <LaunchButton onClick={exitHandler}>
       <FontAwesomeIcon icon="sign-out-alt" />
       <IconTitle>Exit</IconTitle>
     </LaunchButton>
