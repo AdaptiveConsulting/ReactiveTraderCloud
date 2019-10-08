@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Resizer, TearOff, externalWindowDefault, ExternalWindow } from 'rt-components'
-
+import { Resizer, TearOff } from 'rt-components'
+import { externalWindowDefault, ExternalWindow } from 'rt-platforms'
 import { AnalyticsContainer } from '../widgets/analytics'
 import { BlotterContainer } from '../widgets/blotter'
 import StatusBar from '../widgets/status-bar'

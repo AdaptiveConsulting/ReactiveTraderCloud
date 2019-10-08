@@ -1,4 +1,4 @@
-import { WindowConfig, PlatformName } from './types'
+import { WindowConfig, WindowPosition, PlatformName } from './types'
 import { ExternalWindow } from './externalWindowDefault'
 import { BasePlatformAdapter } from './platformAdapter'
 import { LimitChecker } from './limitChecker'
@@ -8,6 +8,7 @@ export type LimitChecker = LimitChecker
 export type ExcelApp = ExcelApp
 export type PlatformAdapter = BasePlatformAdapter
 export type WindowConfig = WindowConfig
+export type WindowPosition = WindowPosition
 export type PlatformName = PlatformName
 
 export { Browser } from './browser'

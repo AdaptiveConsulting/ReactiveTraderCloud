@@ -5,7 +5,7 @@ import {
   greenKeyIcon,
   excelIcon,
 } from './icons/index'
-import { PlatformName, EXCEL_ADAPTER_NAME } from 'rt-components'
+import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
 
 // Safer than location.origin due to browser support
 const ORIGIN = `${location.protocol}//${location.host}`

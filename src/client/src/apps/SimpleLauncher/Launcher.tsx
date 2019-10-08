@@ -1,15 +1,15 @@
 import React from 'react'
-
 import { rules } from 'rt-styleguide'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { appConfigs } from './applicationConfigurations'
 import { LaunchButton } from './LaunchButton'
-import { LogoIcon, OpenFin } from 'rt-components'
+import { LogoIcon } from 'rt-components'
 import { createGlobalStyle } from 'styled-components'
 import { ThemeStorageSwitch, styled } from 'rt-theme'
 import { open } from './tools'
+import { OpenFin } from 'rt-platforms'
 library.add(faSignOutAlt)
 
 const platform = new OpenFin()

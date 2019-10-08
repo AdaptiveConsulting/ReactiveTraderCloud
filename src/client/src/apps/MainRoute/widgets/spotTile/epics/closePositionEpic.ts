@@ -5,7 +5,7 @@ import { map, switchMapTo, withLatestFrom } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions } from '../actions'
 import { SpotTileData } from '../model/spotTileData'
-import { InteropTopics } from 'rt-components'
+import { InteropTopics } from 'rt-platforms'
 import { EMPTY } from 'rxjs'
 
 interface Msg {
