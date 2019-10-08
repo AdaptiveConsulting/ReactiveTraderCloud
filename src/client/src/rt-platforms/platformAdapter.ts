@@ -1,22 +1,8 @@
-import { Observable } from 'rxjs'
-import { WindowConfig, PlatformFeatures, PlatformType } from './types'
+import { PlatformFeatures, PlatformType, WindowConfig } from './types'
 import { Context } from 'openfin-fdc3'
 import DefaultRoute from './defaultRoute'
 import Logo from './logo'
 import { ApplicationEpic } from 'StoreTypes'
-
-export interface LimitChecker {
-  rpc(message?: object): Observable<boolean>
-}
-
-class LimitCheckerImpl implements LimitChecker {
-  rpc() {
-    return new Observable<boolean>(observer => {
-      observer.next(true)
-      observer.complete()
-    })
-  }
-}
 
 interface PlatformAdapterInterface {
   readonly type: PlatformType
@@ -32,8 +18,6 @@ interface PlatformAdapterInterface {
     minimize?: () => void
     resize?: () => void
   }
-
-  limitChecker: LimitChecker
 
   notification: {
     notify: (message: object) => void
@@ -88,8 +72,6 @@ export abstract class BasePlatformAdapter implements PlatformAdapterInterface {
   abstract fdc3: {
     broadcast?: (context: Context) => void
   }
-
-  limitChecker: LimitChecker = new LimitCheckerImpl()
 
   style = {
     height: '100%',

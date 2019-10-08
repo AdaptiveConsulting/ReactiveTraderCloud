@@ -25,8 +25,13 @@ If you want to persist data across sessions then you should run a local Event St
 #### Run Broker (Crossbar)
 Crossbar.io is required for RTC to properly run.  If not installed, the server cannot communicate with the client.
 To install crossbar.io:
-- [Download Crossbar](http://crossbar.io/docs/Installation-on-Windows/) - !!!Use Python 3.x as 2.7 is no longer supported!!!
-- You may find this link helpful: https://www.lfd.uci.edu/~gohlke/pythonlibs/
+- [Download Crossbar](http://crossbar.io/docs/Installation-on-Windows/): At the time of writing, the download instructions for Crossbar on Windows aren't perfect. The following should work:
+  - [Install Python 3.x 32bit](https://www.python.org/), tick the 'Add Python to PATH' checkbox in the installer
+  - [Install PyWin](https://github.com/mhammond/pywin32/releases)
+  - The dependency 'snappy' doesn't build on Windows, so use a pre-built version:
+    - [Download snappy binary](https://www.lfd.uci.edu/~gohlke/pythonlibs/#python-snappy) (choose the appropriate binary for your version of Python)
+    - Install it: `pip install python_snappy-0.5.4-cp37-cp37m-win32.whl` (or whichever `whl` file you downloaded in the previous step)
+  - Install Crossbar: `pip install crossbar`
 - Run `crossbar start` from the `\src\services\broker\.crossbar` working directory on the command line
 
 #### Run Services

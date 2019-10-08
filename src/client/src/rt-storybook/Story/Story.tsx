@@ -1,6 +1,8 @@
 import React from 'react'
-import { platform, PlatformProvider } from 'rt-components'
+import { PlatformProvider, Browser } from 'rt-platforms'
 import { styled, ThemeName, ThemeProvider, GlobalStyle, useTheme } from 'rt-theme'
+
+const platform = new Browser()
 
 const Story: React.FC = ({ children }) => (
   <>
@@ -42,7 +44,8 @@ const IconButton = styled.div<{ type: string }>`
 
   cursor: pointer;
 
-  transition: background-color ${({ theme }) => theme.motion.duration}ms ${({ theme }) => theme.motion.easing};
+  transition: background-color ${({ theme }) => theme.motion.duration}ms
+    ${({ theme }) => theme.motion.easing};
 
   &:hover {
     background-color: ${({ theme }) => theme.button.secondary.active.backgroundColor};

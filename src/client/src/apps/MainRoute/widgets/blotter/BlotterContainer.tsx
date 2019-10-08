@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Loadable, usePlatform } from 'rt-components'
+import { Loadable } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
 import { BlotterActions } from './actions'
 import Blotter from './components'
 import { selectBlotterRows, selectBlotterStatus } from './selectors'
+import { usePlatform } from 'rt-platforms'
 
 interface BlotterContainerOwnProps {
   onPopoutClick?: () => void

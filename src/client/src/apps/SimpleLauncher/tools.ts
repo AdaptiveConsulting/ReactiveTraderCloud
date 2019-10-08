@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { ApplicationConfig } from './applicationConfigurations'
-import { excelAdapter } from 'rt-components'
+import { createExcelApp } from '../../rt-platforms/excelApp'
 
 export async function open(
   config: ApplicationConfig,
@@ -27,7 +27,8 @@ export async function open(
       case 'download':
         return launchLimitChecker(config)
       case 'excel':
-        return excelAdapter.openExcel()
+        const excelApp = createExcelApp(provider.platformName)
+        return excelApp.open()
       case 'application':
       default:
         const app = await createOpenFinApplication(config)

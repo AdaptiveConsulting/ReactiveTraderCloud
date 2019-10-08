@@ -7,7 +7,7 @@ import {
   DerivedStateFromUserInput,
   getDerivedStateFromUserInput,
   getFormattedValue,
-  getDefaultNotionalValue,
+  getDefaultInitialNotionalValue,
   getDerivedStateFromProps,
 } from './TileBusinessLogic'
 import { TileProps, TileState } from './Tile'
@@ -17,75 +17,55 @@ import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
 import { TileViews } from '../../../workspace/workspaceHeader/index'
 
 // edit mode, should not format on the fly
-// https://regex101.com/r/MrSCRE/4
-// Leave commented values to easily compare
+// https://regex101.com/r/MrSCRE/7
 const shouldNotFormatOnTheFly = [
-  // '000',
-  // '00',
-  // ',',
-  '',
   '.',
-  '0',
-  '0.1',
-  '0.4',
-  // '2.82',
-  // '12.87',
+  '12,321.',
   '4.5',
   '5.',
   '.6',
   '12.',
-  // '34.56',
+  '0.1',
+  '0.4',
   '34,876.',
   '34,876.8',
-  // '34,876.89',
-  // '6.78',
-  // '103,234,876',
-  // '100,000,000',
-  // '123456',
-  // '123 456',
+  '12132432.',
+  '12,123,123,123.',
+  '0.1',
+  '0.4',
+  '4.5',
+  '5.',
+  '.6',
+  '12.',
+  '34,876.',
+  '34,876.8',
   '0.0',
-  ',000,000',
-  '00,000,000',
-  // '0.00',
-  // '.98765',
-  // '.05',
-  // '.11',
-  // '0.11',
-  // 'Infinity',
-  // 'NaN',
-  // '01234'
 ]
 // should format on the fly
 const shouldFormatOnTheFly = [
   '000',
   '00',
   ',',
-  // '',
-  // '.',
-  // '0',
-  // '0.1',
-  // '0.4',
+  ' ',
+  '1,,,.',
+  '0',
   '2.82',
   '12.87',
-  // '4.5',
-  // '5.',
-  // '.6',
-  // '12.',
   '34.56',
-  // '34,876.',
-  // '34,876.8',
   '34,876.89',
   '6.78',
   '103,234,876',
   '100,000,000',
   '123456',
   '123 456',
-  // '0.0',
-  // ',000,000',
-  // '00,000,000',
+  ',000,000',
+  '00,000,000',
   '0.00',
   '.98765',
   '.05',
+  '1.1M',
+  '12.3k',
+  '2.5m',
   '.11',
   '0.11',
   'Infinity',
@@ -109,61 +89,34 @@ test('isEditMode should be false', () => {
 
 // invalid trading values, should disable trading (Buy/Sell buttons)
 // https://regex101.com/r/OWDRCO/2
-// Leave commented values to easily compare
 const invalidTradingValues = [
   '.',
   ',',
   '0',
   '0.0',
-  // '0.2',
-  // '0.1',
-  // '0.01',
-  // '0.98',
   '0.00',
-  // '0.01',
-  // '34,134.',
-  // '34,134.7',
-  // '34,134.65',
   '000,000',
-  '01,000',
-  // '1.1',
-  // '1',
-  // '1.98',
   ',000',
-  // '12,123,123',
   'Infinity',
   'NaN',
   '0',
-  // '.76',
   '',
 ]
 // valid trading values, should enable trading (Buy/Sell buttons)
 const validTradingValues = [
-  // '.',
-  // ',',
-  // '0',
-  // '0.0',
   '0.2',
   '0.1',
   '0.01',
   '0.98',
-  // '0.00',
   '0.01',
   '34,134.',
   '34,134.7',
   '34,134.65',
-  // '000,000',
-  // '01,000',
   '1.1',
   '1',
   '1.98',
-  // ',000',
   '12,123,123',
-  // 'Infinity',
-  // 'NaN',
-  // '0',
   '.76',
-  // ''
 ]
 
 test('isInvalidTradingValue should true', () => {
@@ -250,7 +203,7 @@ const defaultParams: DerivedStateFromUserInput = {
   },
   prevState,
   notionalUpdate: {
-    type: 'blur',
+    updateType: 'blur',
     value: '1,000,000',
   },
   spotTileData: {
@@ -287,7 +240,7 @@ test('state derived from user interaction on change when isInvalidTradingValue i
     const newParams = {
       ...defaultParams,
       notionalUpdate: {
-        type: 'change',
+        updateType: 'change',
         value,
       },
     }
@@ -307,7 +260,7 @@ test('state derived from user interaction on blur when isInvalidTradingValue is 
     const newParams = {
       ...defaultParams,
       notionalUpdate: {
-        type: 'blur',
+        updateType: 'blur',
         value,
       },
     }
@@ -327,7 +280,7 @@ test('state derived from user interaction on change when isInvalidTradingValue i
     const newParams = {
       ...defaultParams,
       notionalUpdate: {
-        type: 'change',
+        updateType: 'change',
         value,
       },
     }
@@ -347,14 +300,14 @@ test('state derived from user interaction on blur when isInvalidTradingValue is 
     const newParams = {
       ...defaultParams,
       notionalUpdate: {
-        type: 'blur',
+        updateType: 'blur',
         value,
       },
     }
     const newState = getDerivedStateFromUserInput(newParams)
     const expected = {
       ...defaultNewState,
-      notional: getDefaultNotionalValue(currencyPair), // Something not NZDUSD
+      notional: getDefaultInitialNotionalValue(currencyPair), // Something not NZDUSD
       tradingDisabled: false, // Since it resets, set false
     }
     console.log('validating state on blur invalidTradingValues', value)
@@ -378,6 +331,7 @@ const defaultTileProps: TileProps = {
   },
   spotTileData: defaultParams.spotTileData,
   tileView: 'Normal' as TileViews,
+  updateNotional: () => {},
 }
 
 test('state derived from props, defaults, RFQ none, should be able to excute', () => {

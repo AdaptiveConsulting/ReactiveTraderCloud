@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Loadable, usePlatform } from 'rt-components'
+import { Loadable } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 import { GlobalState } from 'StoreTypes'
 import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
 import { ExecuteTradeRequest } from './model/executeTradeRequest'
 import {
+  selectNotional,
   selectCurrencyPair,
   selectExecutionStatus,
   selectPricingStatus,
@@ -15,6 +17,7 @@ import {
 import { TileViews } from '../workspace/workspaceHeader'
 import { RfqRequest, RfqCancel, RfqRequote, RfqExpired, RfqReject } from './model/rfqRequest'
 import { TradingMode } from './components/types'
+import { CurrencyPairNotional } from './model/spotTileData'
 
 export interface SpotTileContainerOwnProps {
   id: string
@@ -40,9 +43,12 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
     expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
     reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
   },
+  updateNotional: (currencyPairNotional: CurrencyPairNotional) =>
+    dispatch(SpotTileActions.setNotional(currencyPairNotional)),
 })
 
 const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
+  notional: selectNotional(state, ownProps),
   pricingStatus: selectPricingStatus(state),
   executionStatus: selectExecutionStatus(state),
   currencyPair: selectCurrencyPair(state, ownProps),
@@ -73,11 +79,7 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
       minHeight={11}
       status={pricingStatus}
       render={() => (
-        <TileSwitch
-          key={id}
-          canPopout={tearable && allowTearOff && !tornOff}
-          {...props}
-        />
+        <TileSwitch key={id} canPopout={tearable && allowTearOff && !tornOff} {...props} />
       )}
       message={`${id} Disconnected`}
     />

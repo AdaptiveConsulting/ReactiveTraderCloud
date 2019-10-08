@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { usePlatform } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 import { styled } from 'rt-theme'
 import { TileHeader as Header, TileSymbol, DeliveryDate } from './styled'
 import { CurrencyPair } from 'rt-types'
@@ -31,7 +31,7 @@ const TileHeader: React.SFC<Props> = ({ ccyPair, date, displayCurrencyChart }) =
   return (
     <Header>
       <TileSymbol data-qa="tile-header__tile-symbol">{baseTerm}</TileSymbol>
-      {platform.hasFeature('chartIQ') && (
+      {platform.hasFeature('app') && (
         <ActionButton data-qa="tile-header__chartiq-button" onClick={displayCurrencyChart}>
           <i className="fas fa-chart-bar" />
         </ActionButton>

@@ -1,10 +1,9 @@
-import React, { Suspense, lazy } from 'react'
+import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
 import { initiateSymphony } from 'rt-platforms'
-import { waitForObject } from 'rt-util'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -17,9 +16,6 @@ async function init() {
   if (urlParams.has('startAsSymphonyController')) {
     await initiateSymphony(urlParams.get('env'))
   } else {
-    if (urlParams.has('waitFor')) {
-      await waitForObject(urlParams.get('waitFor'))
-    }
     ReactDOM.render(
       <React.Fragment>
         <GlobalStyle />

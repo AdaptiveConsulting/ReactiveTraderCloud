@@ -26,9 +26,9 @@ Reactive Trader's [Excel interoperability features](https://weareadaptive.com/20
 
 ## `ExcelAdapter`s
 
-Both Excel integration methods are available through [`LegacyExcelAdapter`](./legacyExcelAdapter.ts) and [`JSExcelAdapter`](./jsExcelAdapter.ts) respectively, which implement the `ExcelAdapter` interface. 
+Both Excel integration methods are available through [`LegacyExcelAdapter`](legacyExcelAdapter.ts) and [`JSExcelAdapter`](jsExcelAdapter.ts) respectively, which implement the `ExcelAdapter` interface. 
 
-Due to the limitations of the latter, at the time of writing the former is preferred, and enabled by the `USE_LEGACY_EXCEL_ADAPTER` flag on [`./index.ts`](./index.ts).
+Due to the limitations of the latter, at the time of writing the former is preferred, and enabled by the `USE_LEGACY_EXCEL_ADAPTER` flag on [`./index.ts`](index.ts).
 
 
 

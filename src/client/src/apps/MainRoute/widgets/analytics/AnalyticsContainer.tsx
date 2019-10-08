@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Loadable, usePlatform } from 'rt-components'
+import { Loadable } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
 import { AnalyticsActions } from './actions'
 import Analytics from './components'
@@ -11,6 +11,8 @@ import {
   selectAnalyticsLineChartModel,
   selectPositionsChartModel,
 } from './selectors'
+import { usePlatform } from 'rt-platforms'
+
 interface AnalyticsContainerOwnProps {
   onPopoutClick?: () => void
   tornOff?: boolean

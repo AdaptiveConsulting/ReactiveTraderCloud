@@ -9,7 +9,7 @@ import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION, csvExportSettings } from './blotterUtils'
 import { Context } from 'openfin-fdc3'
-import { usePlatform } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 
 export interface BlotterProps {
   rows: Trade[]
