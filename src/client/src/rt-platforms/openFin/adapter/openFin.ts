@@ -1,12 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-restricted-globals */
 
-import { BasePlatformAdapter, LimitChecker } from '../../platformAdapter'
-import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../../types'
+import { BasePlatformAdapter } from '../../platformAdapter'
+import { AppConfig, WindowConfig, InteropTopics } from '../../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern, Observable } from 'rxjs'
-import { excelAdapter } from './excel'
-import { CurrencyPairPositionWithPrice } from 'rt-types'
 import { workspaces } from 'openfin-layouts'
 import { Notification, NotificationActionEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
@@ -14,7 +12,6 @@ import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
 import { platformEpics } from './epics'
 import Logo from './logo'
-import { OpenFinLimitChecker } from '../openFin'
 import { OpenFinHeader, OpenFinControls } from '../components'
 import { ApplicationEpic } from 'StoreTypes'
 
@@ -64,14 +61,6 @@ export default class OpenFin extends BasePlatformAdapter {
         }
       },
     )
-  }
-
-  notificationHighlight = {
-    init: () => this.interop.subscribe$(InteropTopics.HighlightBlotter),
-  }
-
-  chartIQ = {
-    open: (id: string, config: AppConfig) => this.app.open(id, config),
   }
 
   window = {
@@ -144,17 +133,6 @@ export default class OpenFin extends BasePlatformAdapter {
     publish: (topic: string, message: string | object) =>
       fin.desktop.InterApplicationBus.publish(topic, message),
   }
-
-  excel: ExcelInterop = {
-    adapterName: excelAdapter.name,
-    open: () => excelAdapter.openExcel(),
-    isOpen: () => excelAdapter.isSpreadsheetOpen(),
-    publishPositions: (positions: CurrencyPairPositionWithPrice[]) =>
-      excelAdapter.publishPositions(positions),
-    publishBlotter: <T extends any>(blotterData: T) => excelAdapter.publishBlotter(blotterData),
-  }
-
-  limitChecker: LimitChecker = new OpenFinLimitChecker()
 
   notification = {
     notify: (message: object) => {

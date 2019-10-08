@@ -1,4 +1,4 @@
-import { Browser, Finsemble, OpenFin, PlatformAdapter, Symphony } from './'
+import { Browser, Finsemble, OpenFin, Symphony } from './'
 
 const urlParams = new URLSearchParams(window.location.search)
 
@@ -6,10 +6,8 @@ const isFinsemble = 'FSBL' in window
 const isOpenFin = 'fin' in window
 const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYMPHONY'
 
-const getPlatform: () => PlatformAdapter = () => {
-
+export const getPlatformAsync = async () => {
   if (isSymphony) {
-    console.info('Using Symphony')
     return new Symphony()
   }
 
@@ -22,10 +20,6 @@ const getPlatform: () => PlatformAdapter = () => {
     return new OpenFin()
   }
 
-
   console.info('Using Browser API')
   return new Browser()
 }
-
-const platform = getPlatform()
-export default platform

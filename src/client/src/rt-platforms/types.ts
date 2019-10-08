@@ -1,6 +1,4 @@
 import { Observable } from 'rxjs'
-import { CurrencyPairPosition } from 'rt-types'
-import { ExcelAdapterName } from './openFin'
 
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
 export type PlatformType = 'browser' | 'desktop'
@@ -34,9 +32,7 @@ export interface AppConfig {
 }
 
 export interface PlatformFeatures {
-  excel: ExcelInterop
-  chartIQ: ChartIQInterop
-  notificationHighlight: NotificationHighlightInterop
+  app: AppInterop
   interop: PubSubInterop
   share: (object: any) => {}
 }
@@ -46,20 +42,8 @@ interface PubSubInterop {
   publish: (topic: string, message: any) => void
 }
 
-export interface ExcelInterop {
-  readonly adapterName: ExcelAdapterName
-  open(): Promise<void>
-  isOpen(): boolean
-  publishPositions: (positions: CurrencyPairPosition[]) => Promise<void>
-  publishBlotter: <T extends any>(blotterData: T) => Promise<void>
-}
-
-interface ChartIQInterop {
+interface AppInterop {
   open: (id: string, config: AppConfig) => Promise<string>
-}
-
-interface NotificationHighlightInterop {
-  init: () => Observable<{}>
 }
 
 export enum InteropTopics {

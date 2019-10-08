@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
-import { WindowConfig } from 'rt-components'
-import { WindowPosition } from 'rt-platforms/types'
+import { WindowConfig, WindowPosition } from 'rt-platforms'
 
 type Center = 'screen' | 'parent'
 export interface ExternalWindowProps {

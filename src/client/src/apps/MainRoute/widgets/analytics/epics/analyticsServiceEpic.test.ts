@@ -1,5 +1,4 @@
-import { publishPositionUpdateEpic } from './analyticsServiceEpic'
-import { PlatformAdapter } from 'rt-components'
+import { publishPositionToExcelEpic } from './analyticsServiceEpic'
 import { ActionsObservable, StateObservable } from 'redux-observable'
 import { Action } from 'redux'
 import { PositionUpdates } from '../model'
@@ -8,24 +7,18 @@ import { MockScheduler } from 'rt-testing'
 import { CurrencyPairPositionWithPrice, CurrencyPairPosition } from 'rt-types'
 import { GlobalState } from 'StoreTypes'
 import { DeepPartial } from 'rt-util'
+import { ExcelApp } from '../../../../../rt-platforms'
 
-const MockPlatformAdapter = jest.fn<PlatformAdapter>(() => ({
-  interop: {
-    subscribe: (sender: string, topic: string, listener: () => void) => jest.fn(() => 'values'),
-    unsubscribe: (sender: string, topic: string, listener: () => void) => {},
-  },
-  excel: {
-    isOpen: () => true,
-    publishPositions: jest.fn((data: any) => {}),
-    publishBlotter: jest.fn((data: any) => {}),
-  },
-  hasFeature: (featureName: string) => true,
+const MockExcelApp = jest.fn<ExcelApp>(() => ({
+  isOpen: () => true,
+  publishPositions: jest.fn((data: any) => {}),
+  publishBlotter: jest.fn((data: any) => {}),
 }))
 
-describe('publishPositionUpdateEpic', () => {
+describe('publishPositionToExcelEpic', () => {
   it('should ignore actions that are not FetchAnalytics', () => {
     const testScheduler = new MockScheduler()
-    const platform = new MockPlatformAdapter()
+    const excelApp = new MockExcelApp()
 
     const randomAction = 'random'
     const actionReference = {
@@ -40,20 +33,18 @@ describe('publishPositionUpdateEpic', () => {
       const coldAction = cold<Action<any>>(actionLifetime, actionReference)
 
       const action$ = ActionsObservable.from(coldAction, testScheduler)
-      const epics$ = publishPositionUpdateEpic(action$, undefined, { platform })
+      const epics$ = publishPositionToExcelEpic(action$, undefined, { excelApp })
 
       expectObservable(epics$).toBe(expectedAction)
       flush()
 
-      if (platform.hasFeature('excel')) {
-        expect(platform.excel.publishPositions).toHaveBeenCalledTimes(0)
-      }
+      expect(excelApp.publishPositions).toHaveBeenCalledTimes(0)
     })
   })
 
   it('should call platform publish on FetchAnalyticsAction with arguments publishUpdate and currentPositions', () => {
     const testScheduler = new MockScheduler()
-    const platform: PlatformAdapter = new MockPlatformAdapter()
+    const excelApp: ExcelApp = new MockExcelApp()
     const currencyPairPos: CurrencyPairPosition = {
       symbol: 'AAPL',
       basePnl: 10,
@@ -96,15 +87,13 @@ describe('publishPositionUpdateEpic', () => {
 
       const action$ = ActionsObservable.from(coldAction, testScheduler)
       const state$ = { value: mockGlobalStateWithSpotTileData } as StateObservable<GlobalState>
-      const epics$ = publishPositionUpdateEpic(action$, state$, { platform })
+      const epics$ = publishPositionToExcelEpic(action$, state$, { excelApp })
 
       expectObservable(epics$).toBe(expectedAction)
       flush()
 
-      if (platform.hasFeature('excel')) {
-        expect(platform.excel.publishPositions).toHaveBeenCalledTimes(1)
-        expect(platform.excel.publishPositions).toHaveBeenCalledWith([currencyPairPosWithPrice])
-      }
+      expect(excelApp.publishPositions).toHaveBeenCalledTimes(1)
+      expect(excelApp.publishPositions).toHaveBeenCalledWith([currencyPairPosWithPrice])
     })
   })
 })

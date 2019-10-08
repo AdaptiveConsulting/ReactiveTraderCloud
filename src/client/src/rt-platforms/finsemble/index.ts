@@ -7,10 +7,6 @@ export default class Finsemble extends BasePlatformAdapter {
   readonly type = 'desktop'
   readonly allowTearOff = true
 
-  chartIQ = {
-    open: (id: string, config: AppConfig) => this.app.open(id, config),
-  }
-
   window = {
     close: () => window.close(),
 
@@ -64,7 +60,7 @@ export default class Finsemble extends BasePlatformAdapter {
   }
 
   style = {
-    height: 'calc(100% - 25px)'
+    height: 'calc(100% - 25px)',
   }
 
   notification = {

@@ -32,7 +32,7 @@ const AnalyticsTileChart: React.FC<Props> = ({ history }) => {
               <stop stopColor="#737987" stopOpacity={1} strokeWidth={1.2} />
             </linearGradient>
           </defs>
-          <Line dataKey="mid" dot={false} stroke="url(#lineColour)" />
+          <Line dataKey="mid" dot={false} stroke="url(#lineColour)" isAnimationActive={false} />
           <YAxis
             width={0}
             domain={['dataMin', 'dataMax']}

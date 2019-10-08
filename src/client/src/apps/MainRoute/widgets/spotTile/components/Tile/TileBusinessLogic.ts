@@ -2,9 +2,9 @@ import numeral from 'numeral'
 import { convertNotionalShorthandToNumericValue } from '../notional/utils'
 import { ServiceConnectionStatus, CurrencyPair } from 'rt-types'
 import { TileProps, TileState } from './Tile'
-import { NotionalUpdate } from '../notional/NotionalInput'
 import { SpotTileData } from '../../model/spotTileData'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
+import { NotionalUpdate } from '../../model/spotTileData'
 
 // Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -16,7 +16,8 @@ const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 
 // Utils
 export const getFormattedValue = (value: number | string) => numeral(value).format(NUMERAL_FORMAT)
-export const getDefaultNotionalValue = (currencyPair: CurrencyPair) =>
+export const getDefaultNotionalValue = () => getFormattedValue(DEFAULT_NOTIONAL_VALUE)
+export const getDefaultInitialNotionalValue = (currencyPair: CurrencyPair) =>
   // This is to simply to have one Tile showing RFQ prompt on page load
   // check JIRA ticket ARTP-532
   currencyPair.symbol === 'NZDUSD'
@@ -102,7 +103,10 @@ export const getDerivedStateFromUserInput = ({
   actions,
   currencyPair,
 }: DerivedStateFromUserInput): TileState => {
-  const { type, value } = notionalUpdate
+  if (!notionalUpdate) {
+    return prevState
+  }
+  const { updateType, value } = notionalUpdate
 
   // We block user input when value exceeds MAX_PROCESSING_VALUE
   if (convertNotionalShorthandToNumericValue(value) > MAX_PROCESSING_VALUE) {
@@ -126,7 +130,7 @@ export const getDerivedStateFromUserInput = ({
 
   const { isRfqStateNone } = getConstsFromRfqState(rfqState)
 
-  if (type === 'blur' && isInvalidTradingValue(notional)) {
+  if (updateType === 'blur' && isInvalidTradingValue(notional)) {
     // onBlur if invalid trading value, reset value
     // remove any message, enable trading
     if (!isRfqStateNone) {
@@ -136,8 +140,9 @@ export const getDerivedStateFromUserInput = ({
       ...defaultNextState,
       notional: getFormattedValue(RESET_NOTIONAL_VALUE),
     }
-  } else if ((type === 'blur' || type === 'keypress') && isEditMode(notional)) {
     // onBlur if in editMore, format value | enter pressed, format value
+  } else if ((updateType === 'blur' || updateType === 'keypress') && isEditMode(notional)) {
+    // onBlur if in editMore, format value
     // remove any message, enable trading
     if (!isRfqStateNone) {
       actions.setTradingMode({ symbol, mode: 'esp' })
@@ -189,28 +194,5 @@ export const getDerivedStateFromUserInput = ({
     return {
       ...defaultNextState,
     }
-  }
-}
-
-export const resetNotional = ({
-  prevState,
-  spotTileData: {
-    price: { symbol },
-  },
-  actions,
-  currencyPair,
-}: DerivedStateFromNotionalReset): TileState => {
-  const notional = getDefaultNotionalValue(currencyPair)
-  const isInRfqRange = isValueInRfqRange(notional)
-  if (isInRfqRange) {
-    actions.setTradingMode({ symbol, mode: 'rfq' })
-  } else {
-    actions.setTradingMode({ symbol, mode: 'esp' })
-  }
-  return {
-    ...prevState,
-    notional,
-    inputValidationMessage: null,
-    tradingDisabled: false,
   }
 }

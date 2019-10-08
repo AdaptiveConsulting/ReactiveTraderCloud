@@ -1,11 +1,11 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
 
-import { formTable, delay } from './utils/index'
+import { formTable, delay } from './utils'
 import { Trade, CurrencyPairPositionWithPrice } from 'rt-types'
-import { platform } from 'rt-components'
-import { InteropTopics } from '../../../types'
-import { ExcelAdapter } from './types'
+import { ExcelApp } from '../../excelApp'
+import { OpenFin } from '../adapter'
+import { InteropTopics } from '../../types'
 
 const EXCEL_HOST_URL = `${location.protocol}//${location.host}/static/excel`
 const EXCEL_FILE_NAME = 'RTExcel.xlsx'
@@ -21,20 +21,22 @@ const RTExcelConfig = {
   ClosePositionPlaceholderColumn: 13, // Index of 'M'
 }
 
-class JSExcelAdapter implements ExcelAdapter {
+class JSExcelAdapter implements ExcelApp {
   rtWorkbook: fin.ExcelWorkbook
   blotterSheet: fin.ExcelWorksheet
   positionsSheet: fin.ExcelWorksheet
+  platform = new OpenFin()
+
   readonly name = 'JS'
 
-  isSpreadsheetOpen = () => {
+  isOpen = () => {
     return !!this.rtWorkbook && !!this.positionsSheet
   }
 
   /**
    * Ensure the OpenFin Excel service is initialized and the spreadsheet loaded
    */
-  openExcel = async () => {
+  open = async () => {
     if (typeof fin.desktop.ExcelService === 'undefined' || !fin.desktop.ExcelService) {
       throw Error('fin.desktop.ExcelService not available! Make sure the library is loaded')
     }
@@ -77,7 +79,7 @@ class JSExcelAdapter implements ExcelAdapter {
    * We are simulating the 'Close position' buttons with plain cells so we detect clicks this way
    */
   onPositionsSheetSelectionChanged = async ({ data }: fin.WorksheetSelectionChangedEventArgs) => {
-    if (!this.positionsSheet || !platform.hasFeature('interop')) {
+    if (!this.positionsSheet || !this.platform.hasFeature('interop')) {
       return
     }
 
@@ -104,7 +106,7 @@ class JSExcelAdapter implements ExcelAdapter {
     const symbol = positionData[0].value
     const amount = Number(positionData[3].value) || 0
     if (amount !== 0) {
-      platform.interop.publish(InteropTopics.ClosePosition, { amount, symbol })
+      this.platform.interop.publish(InteropTopics.ClosePosition, { amount, symbol })
       // Give enough time to execute the trade and the position to go to 0 before displaying the 'Close position' button again
       await delay(5000)
       await this.positionsSheet.setCells(
@@ -132,7 +134,7 @@ class JSExcelAdapter implements ExcelAdapter {
   }
 
   publishPositions = async (positions: CurrencyPairPositionWithPrice[]) => {
-    if (!this.isSpreadsheetOpen() || !this.positionsSheet) {
+    if (!this.isOpen() || !this.positionsSheet) {
       return
     }
 
@@ -141,7 +143,7 @@ class JSExcelAdapter implements ExcelAdapter {
   }
 
   publishBlotter = async (blotterData: any) => {
-    if (!this.isSpreadsheetOpen() || !this.blotterSheet) {
+    if (!this.isOpen() || !this.blotterSheet) {
       return
     }
 
