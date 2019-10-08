@@ -1,9 +1,9 @@
 import { ElementFinder, ExpectedConditions as EC, ProtractorBrowser } from 'protractor'
 import { MainPage } from '../pages/main.page'
 import { getBrowser } from '../browser-manager'
-import { waitForElementToBeClickable, waitForElementToBeVisible } from '../utils/browser.utils'
-import { wait } from '../utils/async.utils'
-import { TileComponent } from '../tmp/pages/tile.component'
+import { waitForElementToBeClickable, waitForElementToBeVisible } from './browser.utils'
+import { wait } from './async.utils'
+import { TileComponent } from '../pages/tile.component'
 
 let mainPage: MainPage
 let browser: ProtractorBrowser
