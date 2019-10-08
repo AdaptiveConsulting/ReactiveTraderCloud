@@ -8,6 +8,7 @@ export interface RfqRequest {
 
 export interface RfqReceived extends RfqRequest {
   price: SpotPriceTick
+  time: number
   timeout: number
 }
 

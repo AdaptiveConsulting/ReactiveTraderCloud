@@ -1,5 +1,5 @@
 import React from 'react'
-import { renderWithTheme } from '../../../../../../../__tests__/helpers'
+import { renderWithProviders } from '../../../../../../../__tests__/helpers'
 import Tile, { TileProps, TileState } from './Tile'
 import { currencyPair } from '../test-resources/spotTileProps'
 import { ServiceConnectionStatus } from 'rt-types'
@@ -16,15 +16,17 @@ const prevState: TileState = {
   tradingDisabled: false,
 }
 
+const notionalUpdate = {
+  updateType: 'blur',
+  value: '1,000,000',
+}
+
 const defaultParams: DerivedStateFromUserInput = {
   actions: {
     setTradingMode: (tradingMode: TradingMode) => {},
   },
   prevState,
-  notionalUpdate: {
-    type: 'blur',
-    value: '1,000,000',
-  },
+  notionalUpdate,
   spotTileData: {
     currencyChartIsOpening: false,
     historicPrices: [],
@@ -42,6 +44,7 @@ const defaultParams: DerivedStateFromUserInput = {
     rfqPrice: null,
     rfqState: 'none',
     rfqTimeout: null,
+    notional: notionalUpdate,
   },
   currencyPair,
 }
@@ -62,10 +65,11 @@ const defaultTileProps: TileProps = {
   },
   spotTileData: defaultParams.spotTileData,
   tileView: 'Normal' as TileViews,
+  updateNotional: () => {},
 }
 
 test('Snapshot, state derived from props, defaults, RFQ none, should be able to excute', () => {
-  const component = renderWithTheme(<Tile {...defaultTileProps} />)
+  const component = renderWithProviders(<Tile {...defaultTileProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -75,7 +79,7 @@ test('Snapshot, state derived from props, DISCONNECTED', () => {
     ...defaultTileProps,
     executionStatus: 'DISCONNECTED' as ServiceConnectionStatus,
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -88,7 +92,7 @@ test('Snapshot, state derived from props, in trade', () => {
       isTradeExecutionInFlight: true,
     },
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -101,7 +105,7 @@ test('Snapshot, state derived from props, RFQ requested', () => {
       rfqState: 'requested',
     },
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -123,7 +127,7 @@ test('Snapshot, state derived from props, RFQ received', () => {
       },
     },
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -136,7 +140,7 @@ test('Snapshot, state derived from props, RFQ canRequest', () => {
       rfqState: 'canRequest',
     },
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -158,7 +162,7 @@ test('Snapshot, state derived from props, RFQ expired', () => {
       },
     },
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })

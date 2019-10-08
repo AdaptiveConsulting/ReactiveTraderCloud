@@ -32,14 +32,13 @@ export const OriginTickWrapper = styled(FlexDiv)`
 export const PriceLabel = styled.div<{ color: string; distance: number }>`
   align-self: center;
   height: 1.1rem;
-  transition: font-size 0.2s, transform 0.2s;
+  transition: transform 0.2s;
   color: ${({ theme, color }) => theme.template[color].normal};
   padding-bottom: 0px;
 
   &:hover {
-    font-size: 18px;
-    padding-bottom: 3px;
-    transform: translateX(${({ distance }) => (distance > 35 ? `${(distance / 2) * -1}%` : '0%')});
+    transform: scale(1.64);
+    transform-origin: ${({ distance }) => (distance > 35 ? 'calc(164% - 15px)' : 'center')} 12px;
   }
 `
 export const DiamondShape = styled.div<{ color: string }>`

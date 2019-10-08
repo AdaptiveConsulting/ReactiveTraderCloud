@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { usePlatform, WindowConfig } from 'rt-components'
+import { usePlatform, WindowConfig } from 'rt-platforms'
 import { WindowCenterStatus } from './types'
 
 const defaultConfig: WindowConfig = {

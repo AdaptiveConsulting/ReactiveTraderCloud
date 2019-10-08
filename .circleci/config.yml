@@ -6,6 +6,14 @@ jobs:
     steps:
       - checkout
       - run:
+          name: 'Configure the environment'
+          command: |
+            # Inject a dummy user for builds triggered from forks, because secure variables are not available there.
+            # This allows the job to proceed with building and testing docker images.
+            if [[ -n "${CIRCLE_PR_REPONAME}" ]] ; then
+              echo 'export DOCKER_USER=adaptive' >> $BASH_ENV
+            fi
+      - run:
           name: Create network
           command: 'docker network create -d bridge circleci'
       - run:
@@ -78,16 +86,23 @@ jobs:
           name: Run client tests
           command: 'docker run -e CI=true ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
       - run:
+          name: 'Skip the next steps for PRs'
+          command: |
+            # Check the environment and gracefully stop the job for PRs
+            if [[ "$CIRCLE_BRANCH" != "master" ]] && [[ "$CIRCLE_BRANCH" != "develop" ]] ; then
+              circleci-agent step halt
+            fi
+      - run:
           name: Push images to dockerhub
-          command:
-            'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin &&
-            docker push ${DOCKER_USER}/client:${CIRCLE_BUILD_NUM} &&
-            docker push ${DOCKER_USER}/pricehistory:${CIRCLE_BUILD_NUM} &&
-            docker push ${DOCKER_USER}/bot:${CIRCLE_BUILD_NUM} &&
-            docker push ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} &&
-            docker push ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM} &&
-            docker push ${DOCKER_USER}/eventstore:${CIRCLE_BUILD_NUM} &&
-            docker push ${DOCKER_USER}/nginx:${CIRCLE_BUILD_NUM}'
+          command: |
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push ${DOCKER_USER}/client:${CIRCLE_BUILD_NUM}
+            docker push ${DOCKER_USER}/pricehistory:${CIRCLE_BUILD_NUM}
+            docker push ${DOCKER_USER}/bot:${CIRCLE_BUILD_NUM}
+            docker push ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM}
+            docker push ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM}
+            docker push ${DOCKER_USER}/eventstore:${CIRCLE_BUILD_NUM}
+            docker push ${DOCKER_USER}/nginx:${CIRCLE_BUILD_NUM}
       - run:
           name: Store build number
           command: |
@@ -121,8 +136,8 @@ jobs:
       - run:
           name: Update images
           command: |
-            kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${BUILD_NUM} 
-            kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${BUILD_NUM} 
+            kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/web-deployment web=${DOCKER_USER}/nginx:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/client-deployment client=${DOCKER_USER}/client:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${BUILD_NUM}

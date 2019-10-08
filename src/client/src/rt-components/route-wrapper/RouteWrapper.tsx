@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 import { styled } from 'rt-theme'
-import { usePlatform } from 'rt-components'
-import { PlatformAdapter } from 'rt-components'
+import { PlatformAdapter, usePlatform } from 'rt-platforms'
 
 const RouteStyle = styled('div')<{ platform: PlatformAdapter }>`
   width: 100%;

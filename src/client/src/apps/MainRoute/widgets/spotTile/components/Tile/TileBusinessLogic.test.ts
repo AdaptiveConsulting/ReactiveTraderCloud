@@ -7,7 +7,7 @@ import {
   DerivedStateFromUserInput,
   getDerivedStateFromUserInput,
   getFormattedValue,
-  getDefaultNotionalValue,
+  getDefaultInitialNotionalValue,
   getDerivedStateFromProps,
 } from './TileBusinessLogic'
 import { TileProps, TileState } from './Tile'
@@ -250,7 +250,7 @@ const defaultParams: DerivedStateFromUserInput = {
   },
   prevState,
   notionalUpdate: {
-    type: 'blur',
+    updateType: 'blur',
     value: '1,000,000',
   },
   spotTileData: {
@@ -287,7 +287,7 @@ test('state derived from user interaction on change when isInvalidTradingValue i
     const newParams = {
       ...defaultParams,
       notionalUpdate: {
-        type: 'change',
+        updateType: 'change',
         value,
       },
     }
@@ -307,7 +307,7 @@ test('state derived from user interaction on blur when isInvalidTradingValue is 
     const newParams = {
       ...defaultParams,
       notionalUpdate: {
-        type: 'blur',
+        updateType: 'blur',
         value,
       },
     }
@@ -327,7 +327,7 @@ test('state derived from user interaction on change when isInvalidTradingValue i
     const newParams = {
       ...defaultParams,
       notionalUpdate: {
-        type: 'change',
+        updateType: 'change',
         value,
       },
     }
@@ -347,14 +347,14 @@ test('state derived from user interaction on blur when isInvalidTradingValue is 
     const newParams = {
       ...defaultParams,
       notionalUpdate: {
-        type: 'blur',
+        updateType: 'blur',
         value,
       },
     }
     const newState = getDerivedStateFromUserInput(newParams)
     const expected = {
       ...defaultNewState,
-      notional: getDefaultNotionalValue(currencyPair), // Something not NZDUSD
+      notional: getDefaultInitialNotionalValue(currencyPair), // Something not NZDUSD
       tradingDisabled: false, // Since it resets, set false
     }
     console.log('validating state on blur invalidTradingValues', value)
@@ -378,6 +378,7 @@ const defaultTileProps: TileProps = {
   },
   spotTileData: defaultParams.spotTileData,
   tileView: 'Normal' as TileViews,
+  updateNotional: () => {},
 }
 
 test('state derived from props, defaults, RFQ none, should be able to excute', () => {
