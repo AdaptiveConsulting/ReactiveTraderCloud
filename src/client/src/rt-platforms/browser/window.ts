@@ -29,7 +29,18 @@ export const openBrowserWindow = function(
   )
 
   if (onClose && win) {
-    win.addEventListener('beforeunload', onClose)
+    const unloadListener = () => {
+      setTimeout(() => {
+        if (win.closed) {
+          onClose()
+        } else {
+          // needs to be re-set after window reload
+          setUnloadListener()
+        }
+      }, 100)
+    }
+    const setUnloadListener = () => win.addEventListener('unload', unloadListener)
+    setUnloadListener()
   }
 
   this.prevWindow = win
