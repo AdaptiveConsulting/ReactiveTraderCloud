@@ -78,14 +78,6 @@ export default styled('div')`
     display: none;
   }
 
-  .ag-header-cell-filtered {
-    .ag-header-cell-menu-button {
-      float: right;
-      opacity: 1 !important;
-      order: -1;
-    }
-  }
-
   .ag-body-container {
     min-width: 100%;
   }
@@ -171,6 +163,18 @@ export default styled('div')`
   }
 
   .rt-header__numeric {
-    padding-right: 0.5rem;
+    padding-right: 1.5rem;
+
+    .ag-cell-label-container .ag-header-cell-menu-button {
+      order: 1;
+    }
+
+    .ag-cell-label-container .ag-header-cell-label {
+      order: -2;
+    }
+
+    .ag-cell-label-container .ag-header-icon {
+      order: -1;
+    }
   }
 `
