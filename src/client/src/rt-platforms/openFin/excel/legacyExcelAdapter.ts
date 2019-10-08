@@ -2,18 +2,18 @@
 
 import { CurrencyPairPositionWithPrice, Trade } from 'rt-types'
 
-import { InteropTopics } from '../../../types'
-import { ExcelAdapter } from './types'
+import { InteropTopics } from '../../types'
+import { ExcelApp } from '../../excelApp'
 
-class LegacyExcelAdapter implements ExcelAdapter {
+class LegacyExcelAdapter implements ExcelApp {
   readonly name = 'legacy'
-  isSpreadsheetOpen = () => {
+  isOpen = () => {
     // Assume it's open - data published to the bus will be just ignored if not
     // Process could be improved and actually check if ReactiveTraderExcel.xlsx is open
     return true
   }
 
-  openExcel = async () => {
+  open = async () => {
     // Legacy adapter just assumes it's running.
     // Process could be improved and actually try to launch ReactiveTraderExcel.xlsx from here
   }

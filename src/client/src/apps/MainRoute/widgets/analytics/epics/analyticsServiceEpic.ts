@@ -1,34 +1,31 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { ignoreElements, tap } from 'rxjs/operators'
+import { ignoreElements, tap, filter } from 'rxjs/operators'
 import { ApplicationEpic, GlobalState } from 'StoreTypes'
 import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
-import { EMPTY } from 'rxjs'
-import { CurrencyPairPosition, CurrencyPairPositionWithPrice } from 'rt-types'
+import { CurrencyPairPosition, CurrencyPairPositionWithPrice } from '../../../../../rt-types'
 
 const { fetchAnalytics } = AnalyticsActions
 type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
 
-export const publishPositionUpdateEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  if (!platform.hasFeature('excel')) {
-    return EMPTY
-  }
-  return action$.pipe(
+export const publishPositionToExcelEpic: ApplicationEpic = (action$, state$, { excelApp }) =>
+  action$.pipe(
     ofType<Action, FetchAnalyticsAction>(ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE),
+    filter(() => excelApp.isOpen()),
     tap((action: FetchAnalyticsAction) => {
-      if (platform.excel.isOpen()) {
-        const currentPositions = combineWithLatestPrices(
-          action.payload.currentPositions,
-          state$.value,
-        )
-        platform.excel.publishPositions(currentPositions)
-      }
+      const currentPositions = combineWithLatestPrices(
+        action.payload.currentPositions,
+        state$.value,
+      )
+      excelApp.publishPositions(currentPositions)
     }),
     ignoreElements(),
   )
-}
 
-function combineWithLatestPrices(positions: CurrencyPairPosition[], globalState: GlobalState): CurrencyPairPositionWithPrice[] {
+function combineWithLatestPrices(
+  positions: CurrencyPairPosition[],
+  globalState: GlobalState,
+): CurrencyPairPositionWithPrice[] {
   return positions.map(position => {
     const tileData = globalState.spotTilesData[position.symbol]
     return {

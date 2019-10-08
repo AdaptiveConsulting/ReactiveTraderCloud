@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Loadable, usePlatform } from 'rt-components'
+import { Loadable } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 import { GlobalState } from 'StoreTypes'
 import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
@@ -73,11 +74,7 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
       minHeight={11}
       status={pricingStatus}
       render={() => (
-        <TileSwitch
-          key={id}
-          canPopout={tearable && allowTearOff && !tornOff}
-          {...props}
-        />
+        <TileSwitch key={id} canPopout={tearable && allowTearOff && !tornOff} {...props} />
       )}
       message={`${id} Disconnected`}
     />

@@ -93,6 +93,10 @@ const LineCharts: React.FC<LineChartProps> = React.memo(props => {
   const offset = getLinearGradientOffset(data)
   const dataPoints = getDataPoint(data)
 
+  const yValues = data.map(i => parseInt(i.y, 10))
+  const dataMax = Math.max(...yValues)
+  const dataMin = Math.min(...yValues)
+
   return seriesData.length > 0 ? (
     <AnalyticsLineChartStyle>
       <ResponsiveContainer width="100%" height="100%">
@@ -115,6 +119,7 @@ const LineCharts: React.FC<LineChartProps> = React.memo(props => {
             padding={{ top: 0, bottom: 0 }}
             axisLine={false}
             tickFormatter={tickFormatYAxis}
+            domain={[dataMin, dataMax]}
           />
 
           <XAxis

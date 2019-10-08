@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { InteropTopics } from 'rt-components'
+import { InteropTopics } from 'rt-platforms'
 import { CurrencyPairMap } from 'rt-types'
 import { EMPTY } from 'rxjs'
 import { ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'

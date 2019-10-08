@@ -2,7 +2,6 @@ import { Action, applyMiddleware, createStore } from 'redux'
 // tslint:disable-next-line:no-submodule-imports
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import { combineEpics, createEpicMiddleware } from 'redux-observable'
-import { platform } from 'rt-platforms'
 
 import { GlobalState } from 'StoreTypes'
 import { ApplicationDependencies } from './applicationServices'
@@ -16,10 +15,11 @@ import { createBlotterEpic } from '../widgets/blotter/index'
 import { createSpotTileEpic } from '../widgets/spotTile/index'
 
 import rootReducer from './combineReducers'
-
-const platformEpics = platform.epics
+import { disconnectAfterAWhile } from './middleware'
 
 export default function configureStore(dependencies: ApplicationDependencies) {
+  const platformEpics = dependencies.platform.epics
+
   const epics = [
     ...platformEpics,
     referenceServiceEpic,
@@ -34,7 +34,10 @@ export default function configureStore(dependencies: ApplicationDependencies) {
     dependencies,
   })
 
-  const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(middleware)))
+  const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(middleware, disconnectAfterAWhile)),
+  )
   middleware.run(combineEpics(...epics))
 
   return store

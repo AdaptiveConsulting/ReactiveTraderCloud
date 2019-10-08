@@ -3,12 +3,15 @@ import styled from 'styled-components'
 
 interface RfqTimerProps {
   onRejected: () => void
+  receivedTime: number
   timeout: number
 }
 
 interface RfqTimerState {
   timeLeft: number
 }
+
+const UPDATE_FREQ_MS = 200
 
 const TimeLeft = styled.div`
   font-size: 10px;
@@ -24,7 +27,7 @@ const ProgressBarWrapper = styled.div`
 const ProgressBar = styled.div`
   background-color: ${({ theme }) => theme.template.blue.normal};
   border-radius: 3px;
-  transition: width 1.67s linear;
+  transition: width ${UPDATE_FREQ_MS}ms linear;
   height: 100%;
 `
 
@@ -54,11 +57,11 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
   }
 
   state = {
-    timeLeft: this.props.timeout / 1000,
+    timeLeft: calculateTimeLeft(this.props.receivedTime, this.props.timeout),
   }
 
   componentDidMount() {
-    this.intervalId = setInterval(this.updateTimeLeft, 1000)
+    this.intervalId = setInterval(this.updateTimeLeft, UPDATE_FREQ_MS)
   }
 
   componentWillUnmount() {
@@ -69,7 +72,7 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
     this.setState(prevState => {
       if (prevState.timeLeft > 0) {
         return {
-          timeLeft: prevState.timeLeft - 1,
+          timeLeft: calculateTimeLeft(this.props.receivedTime, this.props.timeout),
         }
       }
       clearInterval(this.intervalId)
@@ -80,12 +83,13 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
   render() {
     const { timeout, onRejected } = this.props
     const { timeLeft } = this.state
-    const percentageLeft = (timeLeft * 100) / (timeout / 1000)
+    const percentageLeft = (100 * timeLeft) / timeout
+    const timeLeftSecs = Math.ceil(timeLeft / 1000)
 
     return (
       <TimerWrapper>
         <TimeLeft data-qa="rfq-timer__time-left">
-          {timeLeft} sec{timeLeft > 1 ? 's' : ''}
+          {timeLeftSecs} sec{timeLeftSecs > 1 ? 's' : ''}
         </TimeLeft>
         <ProgressBarWrapper>
           <ProgressBar style={{ width: `${percentageLeft}%` }} data-qa="rfq-timer__progress-bar" />
@@ -96,6 +100,10 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
       </TimerWrapper>
     )
   }
+}
+
+function calculateTimeLeft(receivedTime: number, timeout: number) {
+  return Math.max(0, receivedTime + timeout - Date.now())
 }
 
 export default RfqTimer
