@@ -7,55 +7,46 @@ export class TileComponent {
   constructor(private browser: ProtractorBrowser, public root: ElementFinder) {
     this.tradeType = {
       EURToUSD: {
-        labelCurrency: root.element(by.qa('tile-notification__symbols')),
         sell: root.element(by.qaTag('direction-sell-eurusd')),
         buy: root.element(by.qaTag('direction-buy-eurusd')),
         notional: root.element(by.qaTag('notional-input__input-eurusd'))
       },
       USDToJPY: {
-        labelCurrency: root.element(by.qa('tile-notification__symbols')),
         sell: root.element(by.qaTag('direction-sell-usdjpy')),
         buy: root.element(by.qaTag('direction-buy-usdjpy')),
         notional: root.element(by.qaTag('notional-input__input-usdjpy'))
       },
       GBPToUSD: {
-        labelCurrency: root.element(by.qa('tile-notification__symbols')),
         sell: root.element(by.qaTag('direction-sell-gbpusd')),
         buy: root.element(by.qaTag('direction-buy-gbpusd')),
         notional: root.element(by.qaTag('notional-input__input-gbpusd'))
       },
       GBPToJPY: {
-        labelCurrency: root.element(by.qa('tile-notification__symbols')),
         sell: root.element(by.qaTag('direction-sell-gbpjpy')),
         buy: root.element(by.qaTag('direction-buy-gbpjpy')),
         notional: root.element(by.qaTag('notional-input__input-gbpjpy'))
       },
       AUDToUSD: {
-        labelCurrency: root.element(by.qa('tile-notification__symbols')),
         sell: root.element(by.qaTag('direction-sell-audusd')),
         buy: root.element(by.qaTag('direction-buy-audusd')),
         notional: root.element(by.qaTag('notional-input__input-audusd'))
       },
       NZDToUSD: {
-        labelCurrency: root.element(by.qa('tile-notification__symbols')),
         sell: root.element(by.qaTag('direction-sell-nzdusd')),
         buy: root.element(by.qaTag('direction-buy-nzdusd')),
         notional: root.element(by.qaTag('notional-input__input-nzdusd'))
       },
       EURToAUD: {
-        labelCurrency: root.element(by.qa('tile-notification__symbols')),
         sell: root.element(by.qaTag('direction-sell-euraud')),
         buy: root.element(by.qaTag('direction-buy-euraud')),
         notional: root.element(by.qaTag('notional-input__input-euraud'))
       },
       EURToCAD: {
-        labelCurrency: root.element(by.qa('tile-notification__symbols')),
         sell: root.element(by.qaTag('direction-sell-eurcad')),
         buy: root.element(by.qaTag('direction-buy-eurcad')),
         notional: root.element(by.qaTag('notional-input__input-eurcad'))
       },
       EURToJPY: {
-        labelCurrency: root.element(by.qa('tile-notification__symbols')),
         sell: root.element(by.qaTag('direction-sell-eurjpy')),
         buy: root.element(by.qaTag('direction-buy-eurjpy')),
         notional: root.element(by.qaTag('notional-input__input-eurjpy'))
