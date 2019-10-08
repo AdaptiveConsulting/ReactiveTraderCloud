@@ -68,7 +68,7 @@ const Fill = styled.div`
   cursor: -webkit-grab;
 `
 
-export const IconButton = styled.button`
+const IconButton = styled.button`
   width: 2rem;
   height: 2rem;
   font-size: 1rem;
