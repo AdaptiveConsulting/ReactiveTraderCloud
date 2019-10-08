@@ -31,7 +31,7 @@
     "build:dev-backend": "cross-env REACT_APP_BROKER_HOST=web-dev.adaptivecluster.com REACT_APP_BROKER_PORT=80 npm run build",
     "build:demo-backend": "cross-env REACT_APP_BROKER_HOST=web-demo.adaptivecluster.com REACT_APP_BROKER_PORT=80 npm run build",
     "test": "react-scripts test --verbose=false",
-    "analyze": "source-map-explorer build/static/js/main.*",
+    "analyze": "source-map-explorer build/static/js/*.chunk.js",
     "preopenfin": "npm run sleep",
     "openfin": "openfin -c public/config/openfin/local.json -l",
     "openfin:launcher": "openfin -c public/config/openfin/launcher-local.json -l",
