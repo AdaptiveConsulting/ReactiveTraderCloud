@@ -17,7 +17,6 @@ import {
   getNumericNotional,
   getDerivedStateFromUserInput,
   isValueInRfqRange,
-  getDefaultNotionalValue,
 } from './TileBusinessLogic'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
 import { CurrencyPairNotional } from '../../model/spotTileData'
@@ -123,7 +122,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
 
   resetNotional = () => {
     const { setTradingMode, currencyPair, updateNotional } = this.props
-    const defaultNotional = getDefaultNotionalValue()
+    const defaultNotional = getDefaultInitialNotionalValue(currencyPair)
     const isInRfqRange = isValueInRfqRange(defaultNotional)
     setTradingMode({ symbol: currencyPair.symbol, mode: isInRfqRange ? 'rfq' : 'esp' })
     updateNotional({
