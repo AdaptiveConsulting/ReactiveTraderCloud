@@ -3,8 +3,8 @@ import { ofType } from 'redux-observable'
 import { delay, map, takeUntil, mergeMap, filter } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { TILE_ACTION_TYPES, SpotTileActions } from '../actions'
-import { of, timer } from 'rxjs'
-import { RfqRequest } from '../model/rfqRequest'
+import { Observable, of, timer } from 'rxjs'
+import { RfqRequest, RfqReceived } from '../model/rfqRequest'
 import { SpotTileState } from '../spotTileReducer'
 import { CurrencyPairState } from '../../../data/referenceData'
 
@@ -26,29 +26,28 @@ const rfqService = (
   request: RfqRequest,
   currencyPairs: CurrencyPairState,
   spotTilesData: SpotTileState,
-) => {
+): Observable<RfqReceived> => {
   const randomNumber = 0.3
   const { pipsPosition } = currencyPairs[request.currencyPair.symbol]
   const currentEspPrice = spotTilesData[request.currencyPair.symbol].price
   const { ask, bid } = currentEspPrice
   const addSubNumber = randomNumber / Math.pow(10, pipsPosition)
 
-  return of({
-    notional: request.notional,
-    currencyPair: request.currencyPair,
-    price: {
-      ...currentEspPrice,
-      ask: ask + addSubNumber,
-      bid: bid - addSubNumber,
-    },
-    timeout: EXPIRATION_TIMEOUT_MS,
-  }).pipe(delay(500))
+  return of(true).pipe(
+    delay(500),
+    map(() => ({
+      notional: request.notional,
+      currencyPair: request.currencyPair,
+      price: {
+        ...currentEspPrice,
+        ask: ask + addSubNumber,
+        bid: bid - addSubNumber,
+      },
+      time: Date.now(),
+      timeout: EXPIRATION_TIMEOUT_MS,
+    })),
+  )
 }
-
-const fetchRfqQuote = (payload: RfqRequest) => ({
-  type: TILE_ACTION_TYPES.RFQ_RECEIVED,
-  payload,
-})
 
 export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
@@ -69,7 +68,7 @@ export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
         state$.value.currencyPairs,
         state$.value.spotTilesData,
       ).pipe(
-        map(response => fetchRfqQuote(response)),
+        map(rfqReceived),
         takeUntil(cancel$),
       )
     }),

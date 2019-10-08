@@ -45,6 +45,7 @@ const spotTileData: Required<SpotTileData> = {
   historicPrices: generateHistoricPrices(50),
   lastTradeExecutionStatus: null,
   rfqState: 'none',
+  rfqReceivedTime: null,
   rfqTimeout: null,
   rfqPrice: null,
 }

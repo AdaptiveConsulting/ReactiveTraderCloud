@@ -23,7 +23,14 @@ export default class SpotTile extends PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { isTradeExecutionInFlight, price, rfqState, rfqPrice, rfqTimeout },
+      spotTileData: {
+        isTradeExecutionInFlight,
+        price,
+        rfqState,
+        rfqPrice,
+        rfqReceivedTime,
+        rfqTimeout,
+      },
       notional,
       updateNotional,
       resetNotional,
@@ -83,7 +90,13 @@ export default class SpotTile extends PureComponent<Props> {
                 disabled={inputDisabled}
               />
             </NotionalInputWrapper>
-            {showTimer && <RfqTimer onRejected={handleRfqRejected} timeout={rfqTimeout} />}
+            {showTimer && (
+              <RfqTimer
+                onRejected={handleRfqRejected}
+                receivedTime={rfqReceivedTime}
+                timeout={rfqTimeout}
+              />
+            )}
           </ReserveSpaceGrouping>
         </SpotTileStyle>
         {children}

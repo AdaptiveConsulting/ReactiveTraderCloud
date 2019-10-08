@@ -122,6 +122,7 @@ TileSwitch.defaultProps = {
     lastTradeExecutionStatus: null,
     rfqState: 'none',
     rfqPrice: null,
+    rfqReceivedTime: null,
     rfqTimeout: null,
   },
   currencyPair: {
