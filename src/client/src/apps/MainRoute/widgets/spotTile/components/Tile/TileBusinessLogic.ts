@@ -40,13 +40,12 @@ export const isValueOverRfqRange = (notional: string) => {
 // With these values, user should not be able to trade
 // check https://regex101.com/r/OWDRCO/2 to view this regex explanations and tests
 const invalidTradingValuesRegex = /(?!(\d?\.\d{2,})|(\d?\.[1-9]{1}))^(,|$|0|\.|0\.([1-9]{1})?)|(^0.00$|Infinity|NaN)/
-export const isInvalidTradingValue = (value: string) =>
-  Boolean(value.match(invalidTradingValuesRegex))
+export const isInvalidTradingValue = (value: string) => !!value.match(invalidTradingValuesRegex)
 
 // In edit mode, the notional input should not format
-// check https://regex101.com/r/MrSCRE/4 to view this regex explanations and tests
-const editModeRegex = /(?!^,$|^0\d{1,}$|^(.*)?\.\d{2,}$)^(,|$|0|\.|(.*)\.(\d{1})?)/
-export const isEditMode = (value: string) => Boolean(value.match(editModeRegex))
+// check https://regex101.com/r/MrSCRE/7 to view this regex explanations and tests
+const editModeRegex = /^\d*(\d{0,3},\d{3})*(\.\d{0,1})$|[\b]/g
+export const isEditMode = (value: string) => !!value.match(editModeRegex)
 
 // State management derived from props
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
@@ -84,16 +83,6 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
   }
 }
 
-export interface DerivedStateFromUserInput {
-  prevState: TileState
-  spotTileData: SpotTileData
-  notionalUpdate: NotionalUpdate
-  actions: {
-    setTradingMode: TileProps['setTradingMode']
-  }
-  currencyPair: CurrencyPair
-}
-
 export interface DerivedStateFromNotionalReset {
   prevState: TileState
   spotTileData: SpotTileData
@@ -103,6 +92,9 @@ export interface DerivedStateFromNotionalReset {
   currencyPair: CurrencyPair
 }
 
+export interface DerivedStateFromUserInput extends DerivedStateFromNotionalReset {
+  notionalUpdate: NotionalUpdate
+}
 // State management derived from user input
 export const getDerivedStateFromUserInput = ({
   prevState,
@@ -148,7 +140,8 @@ export const getDerivedStateFromUserInput = ({
       ...defaultNextState,
       notional: getFormattedValue(RESET_NOTIONAL_VALUE),
     }
-  } else if (updateType === 'blur' && isEditMode(notional)) {
+    // onBlur if in editMore, format value | enter pressed, format value
+  } else if ((updateType === 'blur' || updateType === 'keypress') && isEditMode(notional)) {
     // onBlur if in editMore, format value
     // remove any message, enable trading
     if (!isRfqStateNone) {
