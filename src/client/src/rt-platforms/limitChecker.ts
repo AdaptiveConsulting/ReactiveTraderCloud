@@ -1,5 +1,5 @@
-import { OpenFinLimitChecker } from './openFin/limitChecker/openFin'
 import { Observable } from 'rxjs'
+import { getOpenFinPlatform } from './platform'
 
 export interface LimitChecker {
   rpc(message?: object): Observable<boolean>
@@ -14,8 +14,9 @@ class LimitCheckerImpl implements LimitChecker {
   }
 }
 
-export const createLimitChecker = (platformName: string) => {
+export const createLimitChecker = async (platformName: string) => {
   if (platformName === 'openfin') {
+    const { OpenFinLimitChecker } = await getOpenFinPlatform()
     return new OpenFinLimitChecker()
   }
 

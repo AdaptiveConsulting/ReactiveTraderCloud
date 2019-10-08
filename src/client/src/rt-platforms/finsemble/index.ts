@@ -2,7 +2,7 @@ import { BasePlatformAdapter } from '../platformAdapter'
 import { WindowConfig, AppConfig } from '../types'
 import { fromEventPattern } from 'rxjs'
 
-export default class Finsemble extends BasePlatformAdapter {
+export class Finsemble extends BasePlatformAdapter {
   readonly name = 'finsemble'
   readonly type = 'desktop'
   readonly allowTearOff = true

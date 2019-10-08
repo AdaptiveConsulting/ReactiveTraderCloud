@@ -14,7 +14,7 @@ const MainRoute = () => {
   useEffect(() => {
     const getPlatform = async () => {
       const runningPlatform = await getPlatformAsync()
-      const store = createStore(runningPlatform)
+      const store = await createStore(runningPlatform)
       setPlatform(runningPlatform)
       setStore(store)
     }
