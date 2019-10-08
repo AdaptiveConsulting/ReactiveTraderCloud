@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Resizer, TearOff } from 'rt-components'
-import { externalWindowDefault, ExternalWindow } from 'rt-platforms'
+import { externalWindowDefault, ExternalWindow, WindowPosition } from 'rt-platforms'
 import { AnalyticsContainer } from '../widgets/analytics'
 import { BlotterContainer } from '../widgets/blotter'
 import StatusBar from '../widgets/status-bar'
@@ -12,7 +12,6 @@ import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
 import { analyticsSelector, blotterSelector } from '../layouts/selectors'
-import { WindowPosition } from 'rt-platforms/types'
 import { useSelector } from 'react-redux'
 
 interface Props {

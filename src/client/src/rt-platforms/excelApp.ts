@@ -1,5 +1,5 @@
 import { CurrencyPairPositionWithPrice } from '../rt-types'
-import { JSExcelAdapter, LegacyExcelAdapter } from './openFin/excel'
+import { getOpenFinPlatform } from './platform'
 
 export type ExcelAdapterName = 'legacy' | 'JS'
 
@@ -43,8 +43,9 @@ class NoopExcelAppImpl implements ExcelApp {
   }
 }
 
-export const createExcelApp = (platformName: string) => {
+export const createExcelApp = async (platformName: string) => {
   if (platformName === 'openfin') {
+    const { JSExcelAdapter, LegacyExcelAdapter } = await getOpenFinPlatform()
     return EXCEL_ADAPTER_NAME === 'legacy' ? new LegacyExcelAdapter() : new JSExcelAdapter()
   }
 

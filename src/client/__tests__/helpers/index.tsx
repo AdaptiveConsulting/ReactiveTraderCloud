@@ -2,7 +2,8 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import { ThemeProvider } from 'styled-components'
 import { themes } from '../../src/rt-theme'
-import { Browser, PlatformProvider } from 'rt-platforms'
+import { PlatformProvider } from 'rt-platforms'
+import { Browser } from 'rt-platforms/browser';
 
 const lightTheme = themes.light
 const darkTheme = themes.dark

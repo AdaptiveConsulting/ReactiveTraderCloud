@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
-import { initiateSymphony } from 'rt-platforms'
+import { getSymphonyPlatform } from 'rt-platforms'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -14,6 +14,7 @@ const urlParams = new URLSearchParams(window.location.search)
 
 async function init() {
   if (urlParams.has('startAsSymphonyController')) {
+    const { initiateSymphony } = await getSymphonyPlatform()
     await initiateSymphony(urlParams.get('env'))
   } else {
     ReactDOM.render(

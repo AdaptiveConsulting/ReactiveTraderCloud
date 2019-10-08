@@ -1,8 +1,7 @@
 import { LAYOUT_ACTION_TYPES, LayoutAction } from 'rt-actions'
 import { ContainerVisibility } from 'rt-actions/layoutActions'
-import { externalWindowDefault } from 'rt-platforms'
+import { externalWindowDefault, WindowPosition } from 'rt-platforms'
 import { ActionWithPayload } from 'rt-util/ActionHelper'
-import { WindowPosition } from 'rt-platforms/types'
 
 interface TilesLayout {
   [key: string]: WindowPosition
