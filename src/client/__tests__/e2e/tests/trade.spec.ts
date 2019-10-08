@@ -4,6 +4,7 @@ import { waitForElementToBeClickable, waitForElementToBeVisible } from '../utils
 import { getBrowser } from '../browser-manager'
 import { wait } from '../utils/async.utils'
 import { MainPage } from '../pages/main.page'
+import * as tileUtils from '../utils/tile.utils'
 
 let browser: ProtractorBrowser
 let mainPage: MainPage
@@ -20,47 +21,69 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     expect(title).toBe('Reactive Trader Cloud')
   })
 
-  it('Should validate successful USD to JPY trade', async () => {
+  it('should validate filtering by currencies', async () => {
+    let expectedCurrencies: string[]
+    await mainPage.workspace.selectCurrency('eur')
+    expectedCurrencies = ['EUR/USD','EUR/AUD','EUR/CAD','EUR/JPY']
+    await tileUtils.assertDisplayedCurrencies(expectedCurrencies)
     await mainPage.workspace.selectCurrency('usd')
-    await mainPage.tile.selectSpotTile('USDToJPY', 'buy')
-    const tradeSuccessMessage = await mainPage.tile.tradeType.confirmationScreen.labelMessage
-    await waitForElementToBeVisible(browser, tradeSuccessMessage)
-    const parsedTradeText = (await tradeSuccessMessage.getText()).slice(0, 14)
-    expect(parsedTradeText).toEqual('You bought USD')
-    const tradeCurrency = await mainPage.tile.tradeType.confirmationScreen.labelCurrency
-    await waitForElementToBeVisible(browser, tradeCurrency)
-    expect(tradeCurrency.getText()).toEqual('USD/JPY')
-    const tradeIdActual = await mainPage.tile.tradeType.confirmationScreen.labelTradeId
-    await waitForElementToBeVisible(browser, tradeIdActual)
-    const parsedTradeId = (await tradeIdActual.getText()).slice(10,14)
-    const tradeIdExpected = await mainPage.blotter.tradesTable.executedTrades.tradeID
-    await waitForElementToBeVisible(browser, tradeIdExpected)
-    expect(tradeIdExpected.getText()).toEqual(parsedTradeId)
-    const tradeStatus = await mainPage.blotter.tradesTable.executedTrades.tradeStatus
-    await waitForElementToBeVisible(browser, tradeStatus)
-    expect(tradeStatus.getText()).toEqual('Done')
+    expectedCurrencies = ['EUR/USD','USD/JPY','GBP/USD','AUD/USD','NZD/USD']
+    await tileUtils.assertDisplayedCurrencies(expectedCurrencies)
+    await mainPage.workspace.selectCurrency('gbp')
+    expectedCurrencies = ['GBP/USD','GBP/JPY']
+    await tileUtils.assertDisplayedCurrencies(expectedCurrencies)     
+    await mainPage.workspace.selectCurrency('aud')
+    expectedCurrencies = ['AUD/USD','EUR/AUD']
+    await tileUtils.assertDisplayedCurrencies(expectedCurrencies)
+    await mainPage.workspace.selectCurrency('nzd')
+    expectedCurrencies = ['NZD/USD']
+    await tileUtils.assertDisplayedCurrencies(expectedCurrencies)
+    await mainPage.workspace.selectCurrency('all')
+    expectedCurrencies = ['EUR/USD','USD/JPY','GBP/USD','GBP/JPY','AUD/USD','NZD/USD','EUR/AUD','EUR/CAD','EUR/JPY']    
+    await tileUtils.assertDisplayedCurrencies(expectedCurrencies)
   })
 
-  it('Should validate successful GBP to USD trade', async () => {
-    await mainPage.workspace.selectCurrency('gbp')
-    await mainPage.tile.selectSpotTile('GBPToUSD', 'sell')
-    const tradeSuccessMessage = await mainPage.tile.tradeType.confirmationScreen.labelMessage
-    await waitForElementToBeVisible(browser, tradeSuccessMessage)
-    const parsedTradeText = (await tradeSuccessMessage.getText()).slice(0, 12)
-    expect(parsedTradeText).toEqual('You sold GBP')
-    const tradeCurrency = await mainPage.tile.tradeType.confirmationScreen.labelCurrency
-    await waitForElementToBeVisible(browser, tradeCurrency)
-    expect(tradeCurrency.getText()).toEqual('GBP/USD')
-    const tradeIdActual = await mainPage.tile.tradeType.confirmationScreen.labelTradeId
-    await waitForElementToBeVisible(browser, tradeIdActual)
-    const parsedTradeId = (await tradeIdActual.getText()).slice(10,14)
-    const tradeIdExpected = await mainPage.blotter.tradesTable.executedTrades.tradeID
-    await waitForElementToBeVisible(browser, tradeIdExpected)
-    expect(tradeIdExpected.getText()).toEqual(parsedTradeId)
-    const tradeStatus = await mainPage.blotter.tradesTable.executedTrades.tradeStatus
-    await waitForElementToBeVisible(browser, tradeStatus)
-    expect(tradeStatus.getText()).toEqual('Done')
+  it('should validate successful USD to JPY purchase', async () => {
+    await mainPage.workspace.selectCurrency('usd')
+    const notional = await mainPage.tile.tradeType.USDToJPY.notional
+    await mainPage.tile.selectSpotTile('USDToJPY', 'buy')
+    await tileUtils.confirmationMessageAsserts('USD/JPY','buy','Success', notional.getAttribute('value'))
   })
+
+  it('should validate successful USD to JPY Sale', async () => {
+    await mainPage.workspace.selectCurrency('usd')
+    const notional = await mainPage.tile.tradeType.USDToJPY.notional
+    await mainPage.tile.selectSpotTile('USDToJPY', 'sell')
+    await tileUtils.confirmationMessageAsserts('USD/JPY','sell','Success', notional.getAttribute('value'))
+  })
+
+  fit('should validate successful GBP to USD sale with updated notional', async () => {
+    await mainPage.workspace.selectCurrency('gbp')
+    const notional = await mainPage.tile.tradeType.GBPoUSD.notional
+    await mainPage.tile.selectSpotTile('GBPToUSD', 'sell')
+    await tileUtils.confirmationMessageAsserts('GBP/USD','sell','Success', notional.getAttribute('value'))
+  })
+
+  it('should validate successful GBP to USD purchase with updated notional', async () => {
+    await mainPage.workspace.selectCurrency('gbp')
+    const notional = await mainPage.tile.tradeType.GBPToUSD.notional
+    await mainPage.tile.selectSpotTile('GBPToUSD', 'buy')
+    await tileUtils.confirmationMessageAsserts('GBP/USD','buy','Success', notional.getAttribute('value'))
+  })
+
+  it('should validate failed GBP to JPY sale', async () => {
+    await mainPage.workspace.selectCurrency('gbp')
+    const notional = await mainPage.tile.tradeType.GBPToUSD.notional
+    await mainPage.tile.selectSpotTile('GBPToJPY', 'sell')
+    tileUtils.confirmationMessageAsserts('GBP/JPY','sell','Rejected', notional.getAttribute('value'))
+  })
+
+  it('should validate failed GBP to JPY purchase', async () => {
+    await mainPage.workspace.selectCurrency('gbp')
+    const notional = await mainPage.tile.tradeType.GBPToUSD.notional
+    await mainPage.tile.selectSpotTile('GBPToJPY', 'buy')
+    tileUtils.confirmationMessageAsserts('GBP/JPY','buy','Rejected', notional.getAttribute('value'))
+  }) 
 
   afterAll(async () => {
     await browser.close()
