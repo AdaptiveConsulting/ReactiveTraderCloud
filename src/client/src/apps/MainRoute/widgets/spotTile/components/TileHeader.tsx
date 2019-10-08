@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { usePlatform } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 import { styled } from 'rt-theme'
 import { TileHeader as Header, TileSymbol, DeliveryDate } from './styled'
 import { CurrencyPair } from 'rt-types'

@@ -3,7 +3,7 @@ import { spotDateFormatter } from '../../model/dateUtils'
 import AnalyticsPriceControl from './AnalyticsTilePriceControl'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
-import { usePlatform } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 
 import {
   AnalyticsTileStyle,
