@@ -57,14 +57,14 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     await tileUtils.confirmationMessageAsserts('USD/JPY','sell','Success', notional.getAttribute('value'))
   })
 
-  fit('should validate successful GBP to USD sale with updated notional', async () => {
+  it('should validate successful GBP to USD sale', async () => {
     await mainPage.workspace.selectCurrency('gbp')
-    const notional = await mainPage.tile.tradeType.GBPoUSD.notional
+    const notional = await mainPage.tile.tradeType.GBPToUSD.notional
     await mainPage.tile.selectSpotTile('GBPToUSD', 'sell')
     await tileUtils.confirmationMessageAsserts('GBP/USD','sell','Success', notional.getAttribute('value'))
   })
 
-  it('should validate successful GBP to USD purchase with updated notional', async () => {
+  it('should validate successful GBP to USD purchase', async () => {
     await mainPage.workspace.selectCurrency('gbp')
     const notional = await mainPage.tile.tradeType.GBPToUSD.notional
     await mainPage.tile.selectSpotTile('GBPToUSD', 'buy')
