@@ -30,6 +30,15 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     const tradeCurrency = await mainPage.tile.tradeType.confirmationScreen.labelCurrency
     await waitForElementToBeVisible(browser, tradeCurrency)
     expect(tradeCurrency.getText()).toEqual('USD/JPY')
+    const tradeIdActual = await mainPage.tile.tradeType.confirmationScreen.labelTradeId
+    await waitForElementToBeVisible(browser, tradeIdActual)
+    const parsedTradeId = (await tradeIdActual.getText()).slice(10,14)
+    const tradeIdExpected = await mainPage.blotter.tradesTable.executedTrades.tradeID
+    await waitForElementToBeVisible(browser, tradeIdExpected)
+    expect(tradeIdExpected.getText()).toEqual(parsedTradeId)
+    const tradeStatus = await mainPage.blotter.tradesTable.executedTrades.tradeStatus
+    await waitForElementToBeVisible(browser, tradeStatus)
+    expect(tradeStatus.getText()).toEqual('Done')
   })
 
   it('Should validate successful GBP to USD trade', async () => {
@@ -42,34 +51,15 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     const tradeCurrency = await mainPage.tile.tradeType.confirmationScreen.labelCurrency
     await waitForElementToBeVisible(browser, tradeCurrency)
     expect(tradeCurrency.getText()).toEqual('GBP/USD')
-  })
-
-  it('Should validate successful EUR to JPY trade', async () => {
-    await mainPage.workspace.selectCurrency('eur')
-    await mainPage.tile.selectSpotTile('EURToJPY', 'sell')
-    const tradeTimeOutMessage = await mainPage.tile.tradeType.confirmationScreen.labelMessage
-    await waitForElementToBeVisible(browser, tradeTimeOutMessage)
-    expect(tradeTimeOutMessage.getText()).toEqual('Trade Execution taking longer then Expected')
-    const tradeCurrency = await mainPage.tile.tradeType.confirmationScreen.labelCurrency
-    await waitForElementToBeVisible(browser, tradeCurrency)
-    expect(tradeCurrency.getText()).toEqual('EUR/JPY')
-    // Timeout to change status from trade timeout message to success message state
-    await wait(5000)
-    const tradeSuccessMessage = await mainPage.tile.tradeType.confirmationScreen.labelMessage
-    await waitForElementToBeVisible(browser, tradeSuccessMessage)
-    const parsedTradeText = (await tradeSuccessMessage.getText()).slice(0, 12)
-    expect(parsedTradeText).toEqual('You sold EUR')
-  })
-
-  it('Should validate rejected GBP to JPY trade', async () => {
-    await mainPage.workspace.selectCurrency('gbp')
-    await mainPage.tile.selectSpotTile('GBPToJPY', 'buy')
-    const tradeRejectedMessage = await mainPage.tile.tradeType.confirmationScreen.labelMessage
-    await waitForElementToBeVisible(browser, tradeRejectedMessage)
-    expect(tradeRejectedMessage.getText()).toEqual('Your trade has been rejected')
-    const tradeCurrency = await mainPage.tile.tradeType.confirmationScreen.labelCurrency
-    await waitForElementToBeVisible(browser, tradeCurrency)
-    expect(tradeCurrency.getText()).toEqual('GBP/JPY')
+    const tradeIdActual = await mainPage.tile.tradeType.confirmationScreen.labelTradeId
+    await waitForElementToBeVisible(browser, tradeIdActual)
+    const parsedTradeId = (await tradeIdActual.getText()).slice(10,14)
+    const tradeIdExpected = await mainPage.blotter.tradesTable.executedTrades.tradeID
+    await waitForElementToBeVisible(browser, tradeIdExpected)
+    expect(tradeIdExpected.getText()).toEqual(parsedTradeId)
+    const tradeStatus = await mainPage.blotter.tradesTable.executedTrades.tradeStatus
+    await waitForElementToBeVisible(browser, tradeStatus)
+    expect(tradeStatus.getText()).toEqual('Done')
   })
 
   afterAll(async () => {
