@@ -1,15 +1,9 @@
 import { timeFormat, utcFormat } from 'd3-time-format'
 
-/* eslint-disable-next-line */
-const numberConvertRegex = /^([0-9\.]+)?([MK]{1})?$/
+const numberConvertRegex = /^([0-9.]+)?([MK]{1})?$/i
 
-/**
- * Returns the expanded price from k/m shorthand.
- * @param {String|Number} notionalShorthand
- * @returns {Number}
- */
-export function convertNotionalShorthandToNumericValue(value: string) {
-  const notionalShorthand: string = value.toUpperCase().replace(/,/g, '')
+export function convertNotionalShorthandToNumericValue(value: string): number {
+  const notionalShorthand: string = value.replace(/,/g, '')
   const matches = notionalShorthand.match(numberConvertRegex)
 
   let newNotional: number = 0

@@ -277,15 +277,6 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
             type="text"
             value="1,000,000"
           />
-          <button
-            className="sc-dnqmqq dxNJiT"
-            data-qa="notional-input__reset-input-value"
-            onClick={[Function]}
-          >
-            <i
-              className="fas fa-redo fa-flip-horizontal"
-            />
-          </button>
         </div>
       </div>
     </div>
@@ -472,15 +463,6 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
             type="text"
             value="1,000,000"
           />
-          <button
-            className="sc-dnqmqq dxNJiT"
-            data-qa="notional-input__reset-input-value"
-            onClick={[Function]}
-          >
-            <i
-              className="fas fa-redo fa-flip-horizontal"
-            />
-          </button>
         </div>
       </div>
     </div>
