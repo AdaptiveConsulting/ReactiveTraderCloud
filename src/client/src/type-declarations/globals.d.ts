@@ -1,4 +1,3 @@
-
 declare var __VERSION__: string
 declare var REACT_APP_ENV: string
 declare module 'react-nvd3'
@@ -13,8 +12,11 @@ interface Window {
       RouterClient: any
       LauncherClient: any
     }
-  },
+  }
 
-  SYMPHONY: SymphonyClient;
+  SYMPHONY: SymphonyClient
 
+  glue: GlueInterface
+
+  glue4office: Glue42OfficeInterface
 }

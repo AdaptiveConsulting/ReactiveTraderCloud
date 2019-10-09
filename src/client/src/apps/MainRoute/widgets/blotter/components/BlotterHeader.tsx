@@ -1,4 +1,4 @@
-import { GridApi } from 'ag-grid'
+import { GridApi } from 'ag-grid-community'
 import React, { useCallback, useState, FC } from 'react'
 import { flexStyle } from 'rt-components'
 import { PopoutIcon } from 'rt-components'

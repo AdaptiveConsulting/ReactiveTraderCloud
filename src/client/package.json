@@ -64,8 +64,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.2",
-    "ag-grid": "18.1.2",
-    "ag-grid-react": "18.1.0",
+    "ag-grid-community": "^21.2.2",
+    "ag-grid-react": "^21.2.2",
     "audio-recorder-polyfill": "^0.1.6",
     "autobahn": "19.7.3",
     "d3": "3.5.12",
@@ -153,6 +153,8 @@
     "typescript": "^3.5.3"
   },
   "optionalDependencies": {
+    "@glue42/desktop": "^4.5.7",
+    "@glue42/office": "^1.4.9",
     "openfin-cli": "^2.0.4"
   },
   "browserslist": [
