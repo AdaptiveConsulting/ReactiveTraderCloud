@@ -1,4 +1,4 @@
-src/client/node_modules
+node_modules
 src/client/coverage
 .idea/
 .vs/
