@@ -1,4 +1,4 @@
-import { ColDef } from 'ag-grid'
+import { ColDef } from 'ag-grid-community'
 import React from 'react'
 import { styled } from 'rt-theme'
 

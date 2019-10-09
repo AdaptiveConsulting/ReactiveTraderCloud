@@ -1,7 +1,13 @@
-import { ClientSideRowModel, ColDef, Column, GridApi, ProcessRowParams, RowNode } from 'ag-grid'
+import {
+  ClientSideRowModel,
+  ColDef,
+  Column,
+  GridApi,
+  ProcessRowParams,
+  RowNode,
+} from 'ag-grid-community'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './filterOverrides'
 
 const ALL = 'all'
 

@@ -11,10 +11,6 @@ export default styled('div')`
     text-transform: uppercase;
   }
 
-  .ag-header-container {
-    margin-top: 0.75rem;
-  }
-
   .ag-row-odd {
     background-color: ${({ theme }) => theme.core.darkBackground};
   }
@@ -82,35 +78,31 @@ export default styled('div')`
     display: none;
   }
 
-  .ag-header-cell-filtered {
-    .ag-header-cell-menu-button {
-      opacity: 1 !important;
-    }
-  }
-
   .ag-body-container {
     min-width: 100%;
   }
 
   .ag-body-viewport {
     scrollbar-width: thin;
+    @media (min-width: 1500px) {
+      position: relative;
+    }
+
+    .ag-center-cols-container {
+      @media (min-width: 1500px) {
+        position: static;
+      }
+    }
   }
 
   .ag-cell-label-container {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-
-    .ag-header-cell-label {
-      order: -1;
-    }
-
-    i {
-      padding: 0 0.25rem;
-    }
+    width: auto;
   }
 
-  .ag-header-cell-label i {
+  .ag-header-icon {
     padding: 0 0.25rem;
   }
 
@@ -119,6 +111,7 @@ export default styled('div')`
     box-shadow: 0 0 0.3125rem 0 ${({ theme }) => theme.core.textColor};
     border-radius: 0.1875rem;
 
+    ag-filter-body-wrapper,
     .filter-container__checkbox-container {
       display: flex;
       align-items: center;
@@ -134,6 +127,8 @@ export default styled('div')`
       border-bottom: 0.125rem solid ${({ theme }) => theme.core.textColor};
     }
 
+    .ag-filter-select,
+    .ag-filter-filter,
     .filter-container__free-text-input,
     .filter-container__select {
       margin: 0.625rem;
@@ -165,6 +160,30 @@ export default styled('div')`
 
     label {
       text-transform: capitalize;
+    }
+  }
+
+  .rt-header__numeric,
+  .rt-blotter__numeric-cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 1.5rem;
+  }
+
+  .rt-header__numeric {
+    padding-right: 1.5rem;
+
+    .ag-cell-label-container .ag-header-cell-menu-button {
+      order: 1;
+    }
+
+    .ag-cell-label-container .ag-header-cell-label {
+      order: -2;
+    }
+
+    .ag-cell-label-container .ag-header-icon {
+      order: -1;
     }
   }
 `
