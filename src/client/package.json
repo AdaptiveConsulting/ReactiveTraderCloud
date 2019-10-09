@@ -153,6 +153,8 @@
     "typescript": "^3.5.3"
   },
   "optionalDependencies": {
+    "@glue42/desktop": "^4.5.7",
+    "@glue42/office": "^1.4.9",
     "openfin-cli": "^2.0.4"
   },
   "browserslist": [

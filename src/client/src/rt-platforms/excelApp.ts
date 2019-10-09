@@ -1,5 +1,5 @@
 import { CurrencyPairPositionWithPrice } from '../rt-types'
-import { getOpenFinPlatform } from './platform'
+import { getOpenFinPlatform, getGlue42Platform } from './platform'
 
 export type ExcelAdapterName = 'legacy' | 'JS'
 
@@ -47,6 +47,11 @@ export const createExcelApp = async (platformName: string) => {
   if (platformName === 'openfin') {
     const { JSExcelAdapter, LegacyExcelAdapter } = await getOpenFinPlatform()
     return EXCEL_ADAPTER_NAME === 'legacy' ? new LegacyExcelAdapter() : new JSExcelAdapter()
+  }
+
+  if (platformName === 'glue') {
+    const { GlueExcelAdapter } = await getGlue42Platform()
+    return new GlueExcelAdapter()
   }
 
   return new NoopExcelAppImpl()
