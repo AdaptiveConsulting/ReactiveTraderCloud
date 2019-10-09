@@ -47,8 +47,7 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateNone,
   } = getConstsFromRfqState(rfqState)
 
-  const isDisabled =
-    (!isRfqStateReceived && (isTradeExecutionInFlight || disabled)) || isRfqStateExpired
+  const isDisabled = !isRfqStateReceived && disabled
   const hasPrice = Boolean(priceData.bid && priceData.ask)
   let priceButtonDisabledStatus: JSX.Element = null
   let priceButtonBuy: JSX.Element = null
