@@ -1,14 +1,24 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { delay, map, takeUntil, mergeMap, filter } from 'rxjs/operators'
+import { delay, filter, map, mergeMap, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
-import { TILE_ACTION_TYPES, SpotTileActions } from '../actions'
-import { Observable, of, timer } from 'rxjs'
-import { RfqRequest, RfqReceived } from '../model/rfqRequest'
+import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
+import { concat, from, Observable, of, timer } from 'rxjs'
+import { RfqReceived, RfqRequest } from '../model/rfqRequest'
 import { SpotTileState } from '../spotTileReducer'
 import { CurrencyPairState } from '../../../data/referenceData'
+import { getDefaultNotionalValue } from '../components/Tile/TileBusinessLogic'
 
-const { rfqRequest, rfqReceived, rfqExpired, rfqReject, rfqCancel, rfqReset } = SpotTileActions
+const {
+  rfqRequest,
+  rfqReceived,
+  rfqExpired,
+  rfqReject,
+  rfqCancel,
+  rfqReset,
+  setNotional,
+  setTradingMode,
+} = SpotTileActions
 
 type RfqRequestActionType = ReturnType<typeof rfqRequest>
 type RfqReceivedActionType = ReturnType<typeof rfqReceived>
@@ -22,15 +32,17 @@ type RfqReceivedTimerCancellableType =
   | RfqResetActionType
 
 const EXPIRATION_TIMEOUT_MS = 10000
+export const IDLE_TIME_MS = 60000
+
 const rfqService = (
   request: RfqRequest,
   currencyPairs: CurrencyPairState,
   spotTilesData: SpotTileState,
 ): Observable<RfqReceived> => {
   const randomNumber = 0.3
-  const { pipsPosition } = currencyPairs[request.currencyPair.symbol]
+  const {pipsPosition} = currencyPairs[request.currencyPair.symbol]
   const currentEspPrice = spotTilesData[request.currencyPair.symbol].price
-  const { ask, bid } = currentEspPrice
+  const {ask, bid} = currentEspPrice
   const addSubNumber = randomNumber / Math.pow(10, pipsPosition)
 
   return of(true).pipe(
@@ -78,21 +90,34 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
   action$.pipe(
     ofType<Action, RfqReceivedActionType>(TILE_ACTION_TYPES.RFQ_RECEIVED),
     mergeMap(action => {
+      const {currencyPair} = action.payload
       const cancel$ = action$.pipe(
         ofType<Action, RfqReceivedTimerCancellableType>(
           TILE_ACTION_TYPES.RFQ_REJECT,
-          TILE_ACTION_TYPES.RFQ_EXPIRED,
           TILE_ACTION_TYPES.RFQ_RESET,
         ),
-        filter(
-          cancelAction =>
-            cancelAction.payload.currencyPair.symbol === action.payload.currencyPair.symbol,
-        ),
+        filter(cancelAction => cancelAction.payload.currencyPair.symbol === currencyPair.symbol),
       )
 
-      return timer(action.payload.timeout + 1000).pipe(
-        map(() => rfqExpired({ currencyPair: action.payload.currencyPair })),
-        takeUntil(cancel$),
-      )
+      return concat(
+        timer(action.payload.timeout + 1000).pipe(map(() => rfqExpired({currencyPair}))),
+        timer(IDLE_TIME_MS).pipe(
+          mergeMap(() =>
+            from([
+              setNotional({
+                currencyPair: currencyPair.symbol,
+                notional: {
+                  value: getDefaultNotionalValue(),
+                },
+              }),
+              setTradingMode({
+                symbol: currencyPair.symbol,
+                mode: 'esp',
+              }),
+              rfqReset({currencyPair}),
+            ]),
+          ),
+        ),
+      ).pipe(takeUntil(cancel$))
     }),
   )
