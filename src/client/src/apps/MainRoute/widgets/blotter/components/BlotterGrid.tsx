@@ -84,6 +84,15 @@ export default styled('div')`
 
   .ag-body-viewport {
     scrollbar-width: thin;
+    @media (min-width: 1500px) {
+      position: relative;
+    }
+
+    .ag-center-cols-container {
+      @media (min-width: 1500px) {
+        position: static;
+      }
+    }
   }
 
   .ag-cell-label-container {
