@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 let sheet: any
 let dataLength: number
 
@@ -71,32 +73,6 @@ const convertBlotterData = (blotterData: BlotterData[]) =>
   blotterData
     .map(data => ({
       ...data,
-      status: `${data.status.charAt(0).toUpperCase()}${data.status.slice(1)}`,
-      tradeDate: convertTradeDate(data.tradeDate),
+      status: _.startCase(_.toLower(data.status)),
     }))
     .reverse()
-
-const convertTradeDate = (tradeDate: string) => {
-  const date = new Date(tradeDate)
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ]
-  const getTime = ({ timeType }: { timeType: 'Hours' | 'Minutes' | 'Seconds' }) =>
-    date[`get${timeType}`]() < 10 ? `0${date[`get${timeType}`]()}` : `${date[`get${timeType}`]()}`
-  const hours = getTime({ timeType: 'Hours' })
-  const minutes = getTime({ timeType: 'Minutes' })
-  const seconds = getTime({ timeType: 'Seconds' })
-
-  return `${date.getDate()}-${months[date.getMonth()]} ${hours}:${minutes}:${seconds}`
-}

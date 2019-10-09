@@ -1,5 +1,6 @@
 import { Glue42 as GlueInterface } from '@glue42/desktop'
 import { GDObject } from '@glue42/core'
+import _ from 'lodash'
 import { WindowConfig } from '../types'
 import { frameButtonBase64 } from './utils/frameButtonImage'
 import { CanvasAPI } from './canvas'
@@ -82,7 +83,7 @@ export const openGlueWindow = async (config: BrowserWindowProps, onClose?: () =>
   const isTabWindow = isSpot(url)
 
   const win = await window.glue.windows.open(name, fullUrl, {
-    title: capitalizeFirstLetter(name.split(' ')[0]),
+    title: _.startCase(_.toLower(name)),
     width: Math.round(modifiedWidth),
     height: Math.round(modifiedHeight),
     left: Math.round(left),
@@ -148,8 +149,6 @@ const calculatePosition = (
   }
   return { left, top, modifiedWidth: width, modifiedHeight: height, relativeTo, relativeDirection }
 }
-
-const capitalizeFirstLetter = (str: string) => `${str.charAt(0).toUpperCase()}${str.slice(1)}`
 
 /**
  * Adds a custom frame button for expand/collapse.
