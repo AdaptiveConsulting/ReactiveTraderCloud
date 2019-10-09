@@ -1,51 +1,34 @@
 import numeral from 'numeral'
-import { convertNotionalShorthandToNumericValue } from '../notional/utils'
 import { ServiceConnectionStatus, CurrencyPair } from 'rt-types'
 import { TileProps, TileState } from './Tile'
 import { SpotTileData } from '../../model/spotTileData'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
-import { NotionalUpdate } from '../../model/spotTileData'
 
 // Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'
 const DEFAULT_NOTIONAL_VALUE = 1000000
 const MAX_NOTIONAL_VALUE = 1000000000
-const MAX_PROCESSING_VALUE = 999999999999999999999
 const MIN_RFQ_VALUE = 10000000
-const RESET_NOTIONAL_VALUE = DEFAULT_NOTIONAL_VALUE
 
 // Utils
 export const getFormattedValue = (value: number | string) => numeral(value).format(NUMERAL_FORMAT)
-export const getDefaultNotionalValue = () => getFormattedValue(DEFAULT_NOTIONAL_VALUE)
+export const getDefaultNotionalValue = () => DEFAULT_NOTIONAL_VALUE
 export const getDefaultInitialNotionalValue = (currencyPair: CurrencyPair) =>
   // This is to simply to have one Tile showing RFQ prompt on page load
   // check JIRA ticket ARTP-532
-  currencyPair.symbol === 'NZDUSD'
-    ? getFormattedValue(MIN_RFQ_VALUE)
-    : getFormattedValue(DEFAULT_NOTIONAL_VALUE)
+  currencyPair.symbol === 'NZDUSD' ? MIN_RFQ_VALUE : DEFAULT_NOTIONAL_VALUE
 
-export const getNumericNotional = (notional: string) =>
-  numeral(notional).value() || DEFAULT_NOTIONAL_VALUE
-
-export const isValueInRfqRange = (notional: string) => {
-  const numericValue = convertNotionalShorthandToNumericValue(notional)
-  return numericValue >= MIN_RFQ_VALUE && numericValue <= MAX_NOTIONAL_VALUE
+export const isValueInRfqRange = (notional: number) => {
+  return notional >= MIN_RFQ_VALUE && notional <= MAX_NOTIONAL_VALUE
 }
 
-export const isValueOverRfqRange = (notional: string) => {
-  const numericValue = convertNotionalShorthandToNumericValue(notional)
-  return numericValue > MAX_NOTIONAL_VALUE
+export const isValueOverRfqRange = (notional: number) => {
+  return notional > MAX_NOTIONAL_VALUE
 }
 
 // With these values, user should not be able to trade
-// check https://regex101.com/r/OWDRCO/2 to view this regex explanations and tests
-const invalidTradingValuesRegex = /(?!(\d?\.\d{2,})|(\d?\.[1-9]{1}))^(,|$|0|\.|0\.([1-9]{1})?)|(^0.00$|Infinity|NaN)/
-export const isInvalidTradingValue = (value: string) => !!value.match(invalidTradingValuesRegex)
-
-// In edit mode, the notional input should not format
-// check https://regex101.com/r/MrSCRE/7 to view this regex explanations and tests
-const editModeRegex = /^\d*(\d{0,3},\d{3})*(\.\d{0,1})$|[\b]/g
-export const isEditMode = (value: string) => !!value.match(editModeRegex)
+export const isInvalidTradingValue = (value: number) =>
+  value === 0 || value === Infinity || value === -Infinity || Number.isNaN(value)
 
 // State management derived from props
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
@@ -83,75 +66,32 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
   }
 }
 
-export interface DerivedStateFromNotionalReset {
+// State management derived from user input
+export const getDerivedStateFromUserInput = ({
+  prevState,
+  spotTileData,
+  actions,
+  currencyPair,
+}: {
   prevState: TileState
   spotTileData: SpotTileData
   actions: {
     setTradingMode: TileProps['setTradingMode']
   }
   currencyPair: CurrencyPair
-}
-
-export interface DerivedStateFromUserInput extends DerivedStateFromNotionalReset {
-  notionalUpdate: NotionalUpdate
-}
-// State management derived from user input
-export const getDerivedStateFromUserInput = ({
-  prevState,
-  spotTileData,
-  notionalUpdate,
-  actions,
-  currencyPair,
-}: DerivedStateFromUserInput): TileState => {
-  if (!notionalUpdate) {
-    return prevState
-  }
-  const { updateType, value } = notionalUpdate
-
-  // We block user input when value exceeds MAX_PROCESSING_VALUE
-  if (convertNotionalShorthandToNumericValue(value) > MAX_PROCESSING_VALUE) {
-    return prevState
-  }
-
+}): TileState => {
   const { symbol } = currencyPair
-  const { rfqState } = spotTileData
-
-  const notional = !isEditMode(value) ? getFormattedValue(value) : value
+  const { rfqState, notional } = spotTileData
 
   const defaultNextState: TileState = {
     ...prevState,
-    // user may be trying to enter decimals or
-    // user may be deleting previous entry (empty string, etc)
-    // in those cases, format and update only when completed.
-    notional,
     inputValidationMessage: null,
     tradingDisabled: false,
   }
 
   const { isRfqStateNone } = getConstsFromRfqState(rfqState)
 
-  if (updateType === 'blur' && isInvalidTradingValue(notional)) {
-    // onBlur if invalid trading value, reset value
-    // remove any message, enable trading
-    if (!isRfqStateNone) {
-      actions.setTradingMode({ symbol, mode: 'esp' })
-    }
-    return {
-      ...defaultNextState,
-      notional: getFormattedValue(RESET_NOTIONAL_VALUE),
-    }
-    // onBlur if in editMore, format value | enter pressed, format value
-  } else if ((updateType === 'blur' || updateType === 'keypress') && isEditMode(notional)) {
-    // onBlur if in editMore, format value
-    // remove any message, enable trading
-    if (!isRfqStateNone) {
-      actions.setTradingMode({ symbol, mode: 'esp' })
-    }
-    return {
-      ...defaultNextState,
-      notional: getFormattedValue(notional),
-    }
-  } else if (isInvalidTradingValue(notional)) {
+  if (isInvalidTradingValue(notional)) {
     // onChange if invalid trading value, update value
     // disable trading, remove any message
     if (!isRfqStateNone) {

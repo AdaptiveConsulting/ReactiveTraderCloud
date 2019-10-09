@@ -40,9 +40,9 @@ const rfqService = (
   spotTilesData: SpotTileState,
 ): Observable<RfqReceived> => {
   const randomNumber = 0.3
-  const {pipsPosition} = currencyPairs[request.currencyPair.symbol]
+  const { pipsPosition } = currencyPairs[request.currencyPair.symbol]
   const currentEspPrice = spotTilesData[request.currencyPair.symbol].price
-  const {ask, bid} = currentEspPrice
+  const { ask, bid } = currentEspPrice
   const addSubNumber = randomNumber / Math.pow(10, pipsPosition)
 
   return of(true).pipe(
@@ -90,7 +90,7 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
   action$.pipe(
     ofType<Action, RfqReceivedActionType>(TILE_ACTION_TYPES.RFQ_RECEIVED),
     mergeMap(action => {
-      const {currencyPair} = action.payload
+      const { currencyPair } = action.payload
       const cancel$ = action$.pipe(
         ofType<Action, RfqReceivedTimerCancellableType>(
           TILE_ACTION_TYPES.RFQ_REJECT,
@@ -100,21 +100,19 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
       )
 
       return concat(
-        timer(action.payload.timeout + 1000).pipe(map(() => rfqExpired({currencyPair}))),
+        timer(action.payload.timeout + 1000).pipe(map(() => rfqExpired({ currencyPair }))),
         timer(IDLE_TIME_MS).pipe(
           mergeMap(() =>
             from([
               setNotional({
                 currencyPair: currencyPair.symbol,
-                notional: {
-                  value: getDefaultNotionalValue(),
-                },
+                notional: getDefaultNotionalValue(),
               }),
               setTradingMode({
                 symbol: currencyPair.symbol,
                 mode: 'esp',
               }),
-              rfqReset({currencyPair}),
+              rfqReset({ currencyPair }),
             ]),
           ),
         ),

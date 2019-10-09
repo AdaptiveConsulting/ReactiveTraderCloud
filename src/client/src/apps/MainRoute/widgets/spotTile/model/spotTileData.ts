@@ -20,15 +20,10 @@ export interface SpotTileData {
   rfqReceivedTime: number | null
   rfqTimeout: number | null
   rfqPrice: SpotPriceTick | null
-  notional: NotionalUpdate | null
+  notional: number
 }
 
 export interface CurrencyPairNotional {
   currencyPair: string
-  notional: NotionalUpdate
-}
-
-export interface NotionalUpdate {
-  value: string
-  updateType?: string // 'blur', 'change', 'keypress'
+  notional: number
 }

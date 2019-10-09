@@ -161,9 +161,7 @@ describe('rfqEpics', () => {
         type: TILE_ACTION_TYPES.SET_NOTIONAL,
         payload: {
           currencyPair: currencyPair.symbol,
-          notional: {
-            value: getDefaultNotionalValue(),
-          },
+          notional: getDefaultNotionalValue(),
         },
       },
       c: {
