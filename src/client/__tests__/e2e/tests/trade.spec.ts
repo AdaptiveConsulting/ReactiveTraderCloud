@@ -8,6 +8,20 @@ import * as assertUtils from '../utils/assert.utils'
 
 let browser: ProtractorBrowser
 let mainPage: MainPage
+const currencyList: [string, string[]][] = [
+  ['all', ['EUR/USD','USD/JPY','GBP/USD','GBP/JPY','AUD/USD','NZD/USD','EUR/AUD','EUR/CAD','EUR/JPY']],
+  ['eur', ['EUR/USD','EUR/AUD','EUR/CAD','EUR/JPY']],
+  ['usd', ['EUR/USD','USD/JPY','GBP/USD','AUD/USD','NZD/USD']],
+  ['gbp', ['GBP/USD','GBP/JPY']],
+  ['aud', ['AUD/USD','EUR/AUD']],
+  ['nzd', ['NZD/USD']]
+]
+const tradeList = [
+  ['usd', 'USD/JPY', 'buy', 'Success'],
+  ['usd', 'USD/JPY', 'sell', 'Success'],
+  ['gbp', 'GBP/JPY', 'buy', 'Rejected'],
+  ['gbp', 'GBP/JPY', 'sell', 'Rejected'],
+]
 
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
 
@@ -21,69 +35,22 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     expect(title).toBe('Reactive Trader Cloud')
   })
 
-  it('should validate filtering by currencies', async () => {
-    let expectedCurrencies: string[]
-    await mainPage.workspace.selectCurrency('eur')
-    expectedCurrencies = ['EUR/USD','EUR/AUD','EUR/CAD','EUR/JPY']
-    await assertUtils.assertDisplayedCurrencies(expectedCurrencies)
-    await mainPage.workspace.selectCurrency('usd')
-    expectedCurrencies = ['EUR/USD','USD/JPY','GBP/USD','AUD/USD','NZD/USD']
-    await assertUtils.assertDisplayedCurrencies(expectedCurrencies)
-    await mainPage.workspace.selectCurrency('gbp')
-    expectedCurrencies = ['GBP/USD','GBP/JPY']
-    await assertUtils.assertDisplayedCurrencies(expectedCurrencies)     
-    await mainPage.workspace.selectCurrency('aud')
-    expectedCurrencies = ['AUD/USD','EUR/AUD']
-    await assertUtils.assertDisplayedCurrencies(expectedCurrencies)
-    await mainPage.workspace.selectCurrency('nzd')
-    expectedCurrencies = ['NZD/USD']
-    await assertUtils.assertDisplayedCurrencies(expectedCurrencies)
-    await mainPage.workspace.selectCurrency('all')
-    expectedCurrencies = ['EUR/USD','USD/JPY','GBP/USD','GBP/JPY','AUD/USD','NZD/USD','EUR/AUD','EUR/CAD','EUR/JPY']    
-    await assertUtils.assertDisplayedCurrencies(expectedCurrencies)
+  currencyList.forEach(([selectedCurrency, expectedCurrencies]) => {
+    it(`should validate filtering currencies by ${selectedCurrency}`, async () => {
+      await mainPage.workspace.selectCurrency(selectedCurrency)
+      await assertUtils.assertDisplayedCurrencies(expectedCurrencies)
+    })
   })
 
-  it('should validate successful USD to JPY purchase', async () => {
-    await mainPage.workspace.selectCurrency('usd')
-    const notional = await mainPage.tile.tradeType.USDToJPY.notional
-    await mainPage.tile.selectSpotTile('USDToJPY', 'buy')
-    await assertUtils.confirmationMessageAsserts('USD/JPY','buy','Success', notional.getAttribute('value'))
+  tradeList.forEach(([selectedCurrency, currencyPair, direction, expectedResult]) => {
+    it(`should validate ${currencyPair} ${direction}`, async () => {
+      const tradingCurrency = currencyPair.replace('/', 'To');
+      await mainPage.workspace.selectCurrency(selectedCurrency)
+      const notional = await mainPage.tile.tradeType[tradingCurrency].notional
+      await mainPage.tile.selectSpotTile(tradingCurrency, direction)
+      await assertUtils.confirmationMessageAsserts(currencyPair, direction, expectedResult, notional.getAttribute('value'))
+    })
   })
-
-  it('should validate successful USD to JPY Sale', async () => {
-    await mainPage.workspace.selectCurrency('usd')
-    const notional = await mainPage.tile.tradeType.USDToJPY.notional
-    await mainPage.tile.selectSpotTile('USDToJPY', 'sell')
-    await assertUtils.confirmationMessageAsserts('USD/JPY','sell','Success', notional.getAttribute('value'))
-  })
-
-  it('should validate successful GBP to USD sale', async () => {
-    await mainPage.workspace.selectCurrency('gbp')
-    const notional = await mainPage.tile.tradeType.GBPToUSD.notional
-    await mainPage.tile.selectSpotTile('GBPToUSD', 'sell')
-    await assertUtils.confirmationMessageAsserts('GBP/USD','sell','Success', notional.getAttribute('value'))
-  })
-
-  it('should validate successful GBP to USD purchase', async () => {
-    await mainPage.workspace.selectCurrency('gbp')
-    const notional = await mainPage.tile.tradeType.GBPToUSD.notional
-    await mainPage.tile.selectSpotTile('GBPToUSD', 'buy')
-    await assertUtils.confirmationMessageAsserts('GBP/USD','buy','Success', notional.getAttribute('value'))
-  })
-
-  it('should validate failed GBP to JPY sale', async () => {
-    await mainPage.workspace.selectCurrency('gbp')
-    const notional = await mainPage.tile.tradeType.GBPToUSD.notional
-    await mainPage.tile.selectSpotTile('GBPToJPY', 'sell')
-    await assertUtils.confirmationMessageAsserts('GBP/JPY','sell','Rejected', notional.getAttribute('value'))
-  })
-
-  it('should validate failed GBP to JPY purchase', async () => {
-    await mainPage.workspace.selectCurrency('gbp')
-    const notional = await mainPage.tile.tradeType.GBPToUSD.notional
-    await mainPage.tile.selectSpotTile('GBPToJPY', 'buy')
-    await assertUtils.confirmationMessageAsserts('GBP/JPY','buy','Rejected', notional.getAttribute('value'))
-  }) 
 
   afterAll(async () => {
     await browser.close()
