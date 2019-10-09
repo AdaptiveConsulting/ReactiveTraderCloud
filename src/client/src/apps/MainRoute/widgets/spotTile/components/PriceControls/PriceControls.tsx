@@ -47,71 +47,70 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateNone,
   } = getConstsFromRfqState(rfqState)
 
-  const isDisabled = !isRfqStateReceived && disabled
+  const isDisabled =
+    (!isRfqStateReceived && (isTradeExecutionInFlight || disabled)) || isRfqStateExpired
   const hasPrice = Boolean(priceData.bid && priceData.ask)
+  let priceButtonDisabledStatus: JSX.Element = null
+  let priceButtonBuy: JSX.Element = null
+  let priceButtonSell: JSX.Element = null
+
+  if (isRfqStateNone || isRfqStateReceived || isRfqStateExpired || isTradeExecutionInFlight) {
+    priceButtonSell = (
+      <PriceButton
+        handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
+        direction={Direction.Sell}
+        big={bidRate.bigFigure}
+        pip={bidRate.pips}
+        tenth={bidRate.pipFraction}
+        rawRate={bidRate.rawRate}
+        priceAnnounced={isRfqStateReceived}
+        disabled={isDisabled}
+        expired={isRfqStateExpired}
+        currencyPairSymbol={currencyPair.symbol}
+      />
+    )
+    priceButtonBuy = (
+      <PriceButton
+        handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
+        direction={Direction.Buy}
+        big={askRate.bigFigure}
+        pip={askRate.pips}
+        tenth={askRate.pipFraction}
+        rawRate={askRate.rawRate}
+        priceAnnounced={isRfqStateReceived}
+        disabled={isDisabled}
+        expired={isRfqStateExpired}
+        currencyPairSymbol={currencyPair.symbol}
+      />
+    )
+  } else if (isRfqStateCanRequest) {
+    priceButtonDisabledStatus = (
+      <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled">
+        <Icon className="fas fa-ban fa-flip-horizontal" />
+        Streaming price unavailable
+      </PriceButtonDisabledPlaceholder>
+    )
+  } else if (isRfqStateRequested) {
+    priceButtonDisabledStatus = (
+      <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled--loading">
+        <AdaptiveLoaderWrapper>
+          <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
+        </AdaptiveLoaderWrapper>
+        Awaiting price
+      </PriceButtonDisabledPlaceholder>
+    )
+  }
 
   return (
     <PriceControlsStyle>
-      {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired || isTradeExecutionInFlight) && (
-        <PriceButton
-          handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
-          direction={Direction.Sell}
-          big={bidRate.bigFigure}
-          pip={bidRate.pips}
-          tenth={bidRate.pipFraction}
-          rawRate={bidRate.rawRate}
-          priceAnnounced={isRfqStateReceived}
-          disabled={isDisabled}
-          expired={isRfqStateExpired}
-          currencyPairSymbol={currencyPair.symbol}
-        />
-      )}
-      {isRfqStateCanRequest && (
-        <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled">
-          <Icon className="fas fa-ban fa-flip-horizontal" />
-          Streaming price unavailable
-        </PriceButtonDisabledPlaceholder>
-      )}
-      {isRfqStateRequested && (
-        <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled--loading">
-          <AdaptiveLoaderWrapper>
-            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
-          </AdaptiveLoaderWrapper>
-          Awaiting price
-        </PriceButtonDisabledPlaceholder>
-      )}
+      {priceButtonSell}
+      {priceButtonDisabledStatus}
       <PriceMovement
         priceMovementType={priceData.priceMovementType}
         spread={hasPrice ? spread.formattedValue : '-'}
       />
-      {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired || isTradeExecutionInFlight) && (
-        <PriceButton
-          handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
-          direction={Direction.Buy}
-          big={askRate.bigFigure}
-          pip={askRate.pips}
-          tenth={askRate.pipFraction}
-          rawRate={askRate.rawRate}
-          priceAnnounced={isRfqStateReceived}
-          disabled={isDisabled}
-          expired={isRfqStateExpired}
-          currencyPairSymbol={currencyPair.symbol}
-        />
-      )}
-      {isRfqStateCanRequest && (
-        <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled">
-          <Icon className="fas fa-ban fa-flip-horizontal" />
-          Streaming price unavailable
-        </PriceButtonDisabledPlaceholder>
-      )}
-      {isRfqStateRequested && (
-        <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled--loading">
-          <AdaptiveLoaderWrapper>
-            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
-          </AdaptiveLoaderWrapper>
-          Awaiting price
-        </PriceButtonDisabledPlaceholder>
-      )}
+      {priceButtonBuy}
+      {priceButtonDisabledStatus}
     </PriceControlsStyle>
   )
 }
