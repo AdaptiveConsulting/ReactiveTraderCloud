@@ -34,6 +34,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
       tradingDisabled,
       inputDisabled,
       inputValidationMessage,
+      displayCurrencyChart,
     } = this.props
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
@@ -52,7 +53,11 @@ class AnalyticsTile extends React.PureComponent<Props> {
           data-qa="analytics-tile__spot-tile"
           data-qa-id={`currency-pair-${currencyPair.symbol.toLowerCase()}`}
         >
-          <TileHeader ccyPair={currencyPair} date={date} />
+          <TileHeader
+            ccyPair={currencyPair}
+            date={date}
+            displayCurrencyChart={displayCurrencyChart}
+          />
           <AnalyticsTileContent>
             <GraphNotionalWrapper>
               <LineChartWrapper>
