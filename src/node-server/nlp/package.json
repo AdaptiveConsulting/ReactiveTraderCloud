@@ -4,8 +4,8 @@
   "description": "NLP Service for Reactive Trader",
   "main": "lib/index",
   "scripts": {
-    "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'node -r ts-node/register --inspect' src/index.ts",
-    "start": "cross-env NODE_ENV=production node lib/index.js",
+    "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'node -r ts-node/register -r tsconfig-paths/register --inspect' src/index.ts",
+    "start": "cross-env NODE_ENV=production node -r tsconfig-paths/register lib/index.js",
     "build": "cross-env NODE_ENV=production tsc -p ."
   },
   "keywords": [
@@ -42,6 +42,7 @@
     "nodemon": "^1.18.10",
     "prettier": "1.16.4",
     "ts-node": "^8.0.2",
+    "tsconfig-paths": "^3.9.0",
     "tslint": "^5.13.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.6.3"

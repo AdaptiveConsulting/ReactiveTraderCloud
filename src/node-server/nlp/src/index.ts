@@ -8,13 +8,14 @@ import {
   switchMap,
   takeUntil
 } from "rxjs/operators";
-import uuid from "uuid/v1";
-import logger from "../../shared/src/logger";
-import AutobahnConnectionProxy, {
+import {
+  AutobahnConnectionProxy,
   ConnectionEventType,
   ConnectionOpenEvent,
-  createConnection$
-} from "../../shared/src/transport";
+  createConnection$,
+  logger
+} from "shared";
+import uuid from "uuid/v1";
 import { NlpIntentRequest } from "./types";
 
 config();
