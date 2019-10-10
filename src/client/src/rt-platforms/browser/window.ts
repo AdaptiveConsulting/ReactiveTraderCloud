@@ -5,7 +5,7 @@ import { WindowConfig } from '../types'
 type BrowserWindowProps = WindowConfig
 
 export const openBrowserWindow = function(
-  this: { prevWindow: Window },
+  this: { prevWindow: Window; externalWindows: Window[] },
   config: BrowserWindowProps,
   onClose?: () => void,
 ) {
@@ -16,6 +16,10 @@ export const openBrowserWindow = function(
       : null
 
   const { left, top } = calculatePosition(center, width, height, windowReferencePosition)
+
+  this.externalWindows.forEach(window => {
+    window.focus()
+  })
 
   const win = window.open(
     url,
@@ -44,9 +48,10 @@ export const openBrowserWindow = function(
   }
 
   this.prevWindow = win
+  this.externalWindows = this.externalWindows.filter(window => !window.closed).concat(win)
 
   return Promise.resolve(win)
-}.bind({ prevWindow: null })
+}.bind({ prevWindow: null, externalWindows: [] })
 
 function calculatePosition(
   center: string = 'parent',
