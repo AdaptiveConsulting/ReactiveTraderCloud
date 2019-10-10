@@ -6,7 +6,8 @@
   "scripts": {
     "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'node -r ts-node/register -r tsconfig-paths/register --inspect' src/index.ts",
     "start": "cross-env NODE_ENV=production node -r tsconfig-paths/register lib/index.js",
-    "build": "cross-env NODE_ENV=production tsc -p ."
+    "build": "cross-env NODE_ENV=production tsc -p .",
+    "eslint": "eslint --ext .ts ./src"
   },
   "keywords": [
     "NLP"
@@ -17,7 +18,7 @@
       "git add"
     ],
     "src/**/*.{ts,tsx}": [
-      "tslint --fix",
+      "eslint --fix",
       "git add"
     ]
   },
@@ -36,15 +37,17 @@
     "@types/dotenv": "^6.1.0",
     "@types/node": "^11.9.3",
     "@types/uuid": "^3.4.4",
+    "@typescript-eslint/eslint-plugin": "^2.3.3",
+    "@typescript-eslint/parser": "^2.3.3",
     "cross-env": "^5.2.0",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.4.0",
     "husky": "^1.3.1",
     "lint-staged": "^8.1.4",
     "nodemon": "^1.18.10",
     "prettier": "1.16.4",
     "ts-node": "^8.0.2",
     "tsconfig-paths": "^3.9.0",
-    "tslint": "^5.13.0",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.6.3"
   }
 }
