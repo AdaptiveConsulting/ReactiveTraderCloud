@@ -37,25 +37,15 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
     executionStatus,
   } = nextProps
 
-  const { tradingDisabled } = prevState
-
   const isInTrade = !Boolean(
     executionStatus === ServiceConnectionStatus.CONNECTED && !isTradeExecutionInFlight && price,
   )
 
-  const {
-    isRfqStateCanRequest,
-    isRfqStateRequested,
-    isRfqStateReceived,
-    isRfqStateExpired,
-  } = getConstsFromRfqState(rfqState)
+  const { isRfqStateRequested, isRfqStateReceived, isRfqStateNone } = getConstsFromRfqState(
+    rfqState,
+  )
 
-  const canExecute =
-    !isInTrade &&
-    !isRfqStateCanRequest &&
-    !isRfqStateRequested &&
-    !isRfqStateExpired &&
-    !tradingDisabled
+  const canExecute = !isInTrade && (isRfqStateReceived || isRfqStateNone)
 
   const inputDisabled = isInTrade || isRfqStateRequested || isRfqStateReceived
 
@@ -86,53 +76,23 @@ export const getDerivedStateFromUserInput = ({
   const defaultNextState: TileState = {
     ...prevState,
     inputValidationMessage: null,
-    tradingDisabled: false,
   }
 
   const { isRfqStateNone } = getConstsFromRfqState(rfqState)
 
-  if (isInvalidTradingValue(notional)) {
-    // onChange if invalid trading value, update value
-    // disable trading, remove any message
-    if (!isRfqStateNone) {
-      actions.setTradingMode({ symbol, mode: 'esp' })
-    }
-    return {
-      ...defaultNextState,
-      tradingDisabled: true,
-    }
-  } else if (isValueInRfqRange(notional)) {
-    // if in RFQ range, set tradingMode to 'rfq' to trigger prompt
-    // remove any message, disable trading
-    if (isRfqStateNone) {
-      actions.setTradingMode({ symbol, mode: 'rfq' })
-    }
-    return {
-      ...defaultNextState,
-      tradingDisabled: true,
-    }
-  } else if (isValueOverRfqRange(notional)) {
-    // if value exceeds Max, show error message
-    // update value, disable trading
-    if (isRfqStateNone) {
-      actions.setTradingMode({ symbol, mode: 'rfq' })
-    }
-    return {
-      ...defaultNextState,
-      inputValidationMessage: {
-        type: 'error',
-        content: 'Max exceeded',
-      },
-      tradingDisabled: true,
-    }
+  if (isValueOverRfqRange(notional) || isValueInRfqRange(notional)) {
+    if (isRfqStateNone) actions.setTradingMode({ symbol, mode: 'rfq' })
   } else {
-    // if under RFQ range, back to 'esp'
-    // update value, remove message, enable trading
-    if (!isRfqStateNone) {
-      actions.setTradingMode({ symbol, mode: 'esp' })
-    }
-    return {
-      ...defaultNextState,
-    }
+    if (!isRfqStateNone) actions.setTradingMode({ symbol, mode: 'esp' })
   }
+
+  return isValueOverRfqRange(notional)
+    ? {
+        ...defaultNextState,
+        inputValidationMessage: {
+          type: 'error',
+          content: 'Max exceeded',
+        },
+      }
+    : { ...defaultNextState }
 }
