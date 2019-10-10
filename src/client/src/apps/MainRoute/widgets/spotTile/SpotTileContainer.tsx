@@ -8,7 +8,6 @@ import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
 import { ExecuteTradeRequest } from './model/executeTradeRequest'
 import {
-  selectNotional,
   selectCurrencyPair,
   selectExecutionStatus,
   selectPricingStatus,
@@ -48,7 +47,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
 })
 
 const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
-  notional: selectNotional(state, ownProps),
   pricingStatus: selectPricingStatus(state),
   executionStatus: selectExecutionStatus(state),
   currencyPair: selectCurrencyPair(state, ownProps),

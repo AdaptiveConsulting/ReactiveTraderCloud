@@ -17,7 +17,6 @@ exports[`NotionalInput default 1`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -41,7 +40,6 @@ exports[`NotionalInput default 2`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -65,7 +63,6 @@ exports[`NotionalInput disabled 1`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -89,7 +86,6 @@ exports[`NotionalInput disabled 2`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -113,7 +109,6 @@ exports[`NotionalInput show reset button 1`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -146,7 +141,6 @@ exports[`NotionalInput show reset button 2`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -179,7 +173,6 @@ exports[`NotionalInput with error 1`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -209,7 +202,6 @@ exports[`NotionalInput with error 2`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -239,7 +231,6 @@ exports[`NotionalInput with info 1`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -269,7 +260,6 @@ exports[`NotionalInput with info 2`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -299,7 +289,6 @@ exports[`NotionalInput with warning 1`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -329,7 +318,6 @@ exports[`NotionalInput with warning 2`] = `
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />

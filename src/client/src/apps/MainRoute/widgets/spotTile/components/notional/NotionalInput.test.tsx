@@ -1,8 +1,9 @@
 import React from 'react'
-import NotionalInput, { ValidationMessage } from './NotionalInput'
+import NotionalInput from './NotionalInput'
+import { ValidationMessage } from './types'
 import { renderWithProviders } from '../../../../../../../__tests__/helpers'
 
-const notional = '1,000,000'
+const notional = 1000000
 const currencyPairBase = 'EUR'
 const currencyPairSymbol = 'EURUSD'
 const updateNotional = jest.fn()

@@ -2,9 +2,6 @@ import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
 import { SpotTileContainerOwnProps } from './SpotTileContainer'
 
-const selectNotional = (state: GlobalState, props: SpotTileContainerOwnProps) =>
-  state.spotTilesData[props.id] && state.spotTilesData[props.id].notional
-
 const getCurrencyPair = (state: GlobalState, props: SpotTileContainerOwnProps) =>
   state.currencyPairs[props.id]
 const selectCurrencyPair = createSelector(
@@ -37,10 +34,4 @@ const selectExecutionStatus = createSelector(
   serviceStatus => serviceStatus,
 )
 
-export {
-  selectNotional,
-  selectCurrencyPair,
-  selectSpotTileData,
-  selectExecutionStatus,
-  selectPricingStatus,
-}
+export { selectCurrencyPair, selectSpotTileData, selectExecutionStatus, selectPricingStatus }
