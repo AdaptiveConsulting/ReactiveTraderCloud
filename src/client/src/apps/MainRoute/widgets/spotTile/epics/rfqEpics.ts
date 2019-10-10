@@ -92,10 +92,7 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
     mergeMap(action => {
       const { currencyPair } = action.payload
       const cancel$ = action$.pipe(
-        ofType<Action, RfqReceivedTimerCancellableType>(
-          TILE_ACTION_TYPES.RFQ_REJECT,
-          TILE_ACTION_TYPES.RFQ_RESET,
-        ),
+        ofType<Action, RfqReceivedTimerCancellableType>(TILE_ACTION_TYPES.RFQ_RESET),
         filter(cancelAction => cancelAction.payload.currencyPair.symbol === currencyPair.symbol),
       )
 
