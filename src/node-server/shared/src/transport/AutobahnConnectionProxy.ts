@@ -6,7 +6,7 @@ import { DisconnectionReason } from './DisconnectionReason'
 /**
  * AutobahnProxy: makes the autobahn connection api more explicit, aids testing
  */
-export default class AutobahnConnectionProxy implements AutobahnConnection {
+export class AutobahnConnectionProxy implements AutobahnConnection {
   public session?: AutobahnSessionProxy
   private readonly connection: Connection
   private onOpen?: (session: AutobahnSessionProxy) => void
