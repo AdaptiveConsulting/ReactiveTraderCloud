@@ -25,6 +25,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             Log.Debug("Received ExecuteTrade from {username}", context.UserSession.Username);
 
             var payload = JsonConvert.DeserializeObject<ExecuteTradeRequestDto>(Encoding.UTF8.GetString(message.Payload));
+            
+            Log.Information("Received Trade Execution request {trade}", JsonConvert.SerializeObject(payload));
 
             return _service.ExecuteTrade(context, payload);
         }

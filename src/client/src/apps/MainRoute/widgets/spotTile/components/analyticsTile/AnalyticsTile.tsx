@@ -25,8 +25,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { isTradeExecutionInFlight, price, historicPrices, rfqState },
-      notional,
+      spotTileData: { notional, isTradeExecutionInFlight, price, historicPrices, rfqState },
       updateNotional,
       resetNotional,
       executeTrade,

@@ -4,7 +4,7 @@ import Tile, { TileProps, TileState } from './Tile'
 import { currencyPair } from '../test-resources/spotTileProps'
 import { ServiceConnectionStatus } from 'rt-types'
 import { TileViews } from '../../../workspace/workspaceHeader'
-import { DerivedStateFromUserInput } from './TileBusinessLogic'
+import { getDerivedStateFromUserInput } from './TileBusinessLogic'
 import { TradingMode } from '../types'
 import { PriceMovementTypes } from '../../model/priceMovementTypes'
 
@@ -12,21 +12,14 @@ const prevState: TileState = {
   canExecute: true,
   inputDisabled: false,
   inputValidationMessage: null,
-  notional: '1,000,000',
   tradingDisabled: false,
 }
 
-const notionalUpdate = {
-  updateType: 'blur',
-  value: '1,000,000',
-}
-
-const defaultParams: DerivedStateFromUserInput = {
+const defaultParams: Parameters<typeof getDerivedStateFromUserInput>[0] = {
   actions: {
     setTradingMode: (tradingMode: TradingMode) => {},
   },
   prevState,
-  notionalUpdate,
   spotTileData: {
     currencyChartIsOpening: false,
     historicPrices: [],
@@ -45,7 +38,7 @@ const defaultParams: DerivedStateFromUserInput = {
     rfqState: 'none',
     rfqTimeout: null,
     rfqReceivedTime: null,
-    notional: notionalUpdate,
+    notional: 1000000,
   },
   currencyPair,
 }

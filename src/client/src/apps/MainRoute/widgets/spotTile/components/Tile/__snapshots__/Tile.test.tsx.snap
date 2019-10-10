@@ -163,7 +163,6 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            onKeyPress={[Function]}
             type="text"
             value="1,000,000"
           />
@@ -273,7 +272,6 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            onKeyPress={[Function]}
             type="text"
             value="1,000,000"
           />
@@ -459,7 +457,6 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            onKeyPress={[Function]}
             type="text"
             value="1,000,000"
           />
@@ -633,7 +630,6 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            onKeyPress={[Function]}
             type="text"
             value="1,000,000"
           />
@@ -829,7 +825,6 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            onKeyPress={[Function]}
             type="text"
             value="1,000,000"
           />
@@ -1003,7 +998,6 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            onKeyPress={[Function]}
             type="text"
             value="1,000,000"
           />
@@ -1177,7 +1171,6 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            onKeyPress={[Function]}
             type="text"
             value="1,000,000"
           />

@@ -1,9 +1,17 @@
 import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid-community'
+import { timeFormat, utcFormat } from 'd3-time-format'
 import { Trade, TradeStatus } from 'rt-types'
-import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
 import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
 import { capitalize } from 'lodash'
+
+function UtcFormatDate(date: Date, format: string = '%b %e, %H:%M:%S') {
+  return utcFormat(format)(date)
+}
+
+function formatDate(date: Date, format: string = '%b %e, %H:%M:%S') {
+  return timeFormat(format)(date)
+}
 
 const dateRenderer = (value: any) => {
   return formatDate(value, '%d-%b %H:%M:%S')
