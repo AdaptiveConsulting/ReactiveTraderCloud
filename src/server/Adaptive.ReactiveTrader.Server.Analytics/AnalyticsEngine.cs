@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Adaptive.ReactiveTrader.Contract;
 using Serilog;
+using Newtonsoft.Json;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
@@ -56,6 +57,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             _eventLoopScheduler.Schedule(() =>
             {
                 var currencyPair = trade.CurrencyPair;
+                Log.Information("Trade detected {trade}", JsonConvert.SerializeObject(trade));
 
                 var currencyPairTracker = GetTrackerFor(currencyPair);
 
@@ -99,7 +101,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
             pud.History = _currentPositionUpdatesDto.History
                                                     .Where(hpu => hpu.Timestamp >= window)
-                                                    .Concat(new[] {new HistoricPositionDto {Timestamp = now, UsdPnl = usdPnl}})
+                                                    .Concat(new[] { new HistoricPositionDto { Timestamp = now, UsdPnl = usdPnl } })
                                                     .ToArray();
 
             lock (_currentPositionLock)
