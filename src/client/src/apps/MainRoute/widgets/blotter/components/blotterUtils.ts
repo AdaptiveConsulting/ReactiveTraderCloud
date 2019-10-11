@@ -1,27 +1,20 @@
 import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid-community'
-import { timeFormat, utcFormat } from 'd3-time-format'
+import { DateTime } from 'luxon'
 import { Trade, TradeStatus } from 'rt-types'
 import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
 import { capitalize } from 'lodash'
 
-function UtcFormatDate(date: Date, format: string = '%b %e, %H:%M:%S') {
-  return utcFormat(format)(date)
-}
-
-function formatDate(date: Date, format: string = '%b %e, %H:%M:%S') {
-  return timeFormat(format)(date)
-}
-
-const dateRenderer = (value: any) => {
-  return formatDate(value, '%d-%b %H:%M:%S')
+const dateRenderer = (value: Date) => {
+  return DateTime.fromJSDate(value).toFormat('dd-MMM hh:mm:ss')
 }
 
 const notionalRenderer = (value: any) => {
   return numeral(value).format('0,0[.]00')
 }
-const utcDateRenderer = (value: any, format: string = '%d-%b-%Y') => {
-  return UtcFormatDate(value, format)
+
+const utcDateRenderer = (value: Date) => {
+  return DateTime.fromJSDate(value, { zone: 'utc' }).toFormat('dd-MMM-yyyy')
 }
 
 const getStatusCellClass = (trade: Trade) => {
