@@ -1,11 +1,13 @@
 import { Observable } from 'rxjs'
 import { AutobahnConnection } from './AutoBahnConnection'
-import AutobahnSessionProxy from './AutobahnSessionProxy'
+import { AutobahnSessionProxy } from './AutobahnSessionProxy'
 import './AutoBahnTypeExtensions'
 import { ConnectionType } from './connectionType'
 import { DisconnectionReason } from './DisconnectionReason'
-const LOG_NAME = 'Service Broker: '
 import logger from '../logger'
+
+const LOG_NAME = 'Service Broker: '
+
 export enum ConnectionEventType {
   CONNECTED = 'CONNECTED',
   DISCONNECTED = 'DISCONNECTED',
@@ -61,7 +63,7 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
               })
             } else {
               logger.error(LOG_NAME, `Connection ${reason}`, details)
-              obs.error({ reason, details })
+              obs.error({reason, details})
             }
             break
         }
