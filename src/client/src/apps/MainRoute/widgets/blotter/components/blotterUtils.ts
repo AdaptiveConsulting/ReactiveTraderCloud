@@ -1,5 +1,5 @@
 import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid-community'
-import { timeFormat, utcFormat } from 'd3-time-format'
+import { utcFormat } from 'd3-time-format'
 import { Trade, TradeStatus } from 'rt-types'
 import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
@@ -7,14 +7,6 @@ import { capitalize } from 'lodash'
 
 function UtcFormatDate(date: Date, format: string = '%b %e, %H:%M:%S') {
   return utcFormat(format)(date)
-}
-
-function formatDate(date: Date, format: string = '%b %e, %H:%M:%S') {
-  return timeFormat(format)(date)
-}
-
-const dateRenderer = (value: any) => {
-  return formatDate(value, '%d-%b %H:%M:%S')
 }
 
 const notionalRenderer = (value: any) => {
@@ -125,10 +117,10 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     colId: TRADE_DATE,
     headerName: 'Trade Date',
     field: TRADE_DATE,
-    cellRenderer: ({ data }) => dateRenderer(data['tradeDate']),
+    cellRenderer: ({ data }) => utcDateRenderer(data['tradeDate']),
     width: 130,
     includeInCSVExport: true,
-    csvCellValueFormatter: cell => dateRenderer(cell.value),
+    csvCellValueFormatter: cell => utcDateRenderer(cell.value),
   },
   {
     colId: DIRECTION,

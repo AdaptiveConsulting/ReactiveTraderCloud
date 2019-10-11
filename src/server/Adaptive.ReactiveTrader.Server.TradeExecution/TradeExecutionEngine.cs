@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
@@ -29,7 +29,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
         public async Task<ExecuteTradeResponseDto> ExecuteAsync(ExecuteTradeRequestDto request, string user)
         {
             var id = await _tradeIdProvider.GetNextId();
-            var tradeDate = DateTime.UtcNow.AddDays(2).Date;
+            var tradeDate = DateTime.UtcNow.Date;
 
             DateTime valueDate;
             if (!DateTime.TryParse(request.ValueDate, out valueDate))
