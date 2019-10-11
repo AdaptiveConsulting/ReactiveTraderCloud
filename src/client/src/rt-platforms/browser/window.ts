@@ -4,20 +4,18 @@ import { WindowConfig } from '../types'
 
 type BrowserWindowProps = WindowConfig
 
-export const openBrowserWindow = function(
-  this: { prevWindow: Window; externalWindows: Window[] },
-  config: BrowserWindowProps,
-  onClose?: () => void,
-) {
+let openPopoutWindows: Window[] = []
+
+export function openBrowserWindow(config: BrowserWindowProps, onClose?: () => void) {
   const { name, width, height, center, url } = config
-  const windowReferencePosition =
-    this.prevWindow && !this.prevWindow.closed
-      ? { left: this.prevWindow.screenX, top: this.prevWindow.screenY }
-      : null
+  const prevWindow = openPopoutWindows[openPopoutWindows.length - 1]
+  const windowReferencePosition = prevWindow
+    ? { left: prevWindow.screenX, top: prevWindow.screenY }
+    : null
 
   const { left, top } = calculatePosition(center, width, height, windowReferencePosition)
 
-  this.externalWindows.forEach(window => {
+  openPopoutWindows.forEach(window => {
     window.focus()
   })
 
@@ -37,6 +35,7 @@ export const openBrowserWindow = function(
       setTimeout(() => {
         if (win.closed) {
           onClose()
+          openPopoutWindows = openPopoutWindows.filter(window => !window.closed)
         } else {
           // needs to be re-set after window reload
           setUnloadListener()
@@ -47,11 +46,10 @@ export const openBrowserWindow = function(
     setUnloadListener()
   }
 
-  this.prevWindow = win
-  this.externalWindows = this.externalWindows.filter(window => !window.closed).concat(win)
+  openPopoutWindows = openPopoutWindows.concat(win)
 
   return Promise.resolve(win)
-}.bind({ prevWindow: null, externalWindows: [] })
+}
 
 function calculatePosition(
   center: string = 'parent',
