@@ -13,11 +13,13 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "dialogflow": "^0.12.0",
     "dotenv": "^8.1.0",
     "rxjs": "^6.5.3",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@types/dialogflow": "^0.11.0",
     "@types/dotenv": "^6.1.0",
     "@types/node": "^11.9.3",
     "@types/uuid": "^3.4.4",

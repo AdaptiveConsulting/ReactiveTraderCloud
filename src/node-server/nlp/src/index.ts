@@ -18,6 +18,7 @@ import {
 } from "shared";
 import uuid from "uuid/v1";
 import { NlpIntentRequest } from "./types";
+import { detectIntent } from "./dialogFlowClient";
 
 config();
 
@@ -71,12 +72,14 @@ session$.pipe(takeUntil(exit$)).subscribe(session => {
   const topic = `${hostInstance}.getNlpIntent`;
   logger.info(`Registering ${topic}`);
 
-  session.register(topic, (request: NlpIntentRequest) => {
-    logger.info(`Received request: ${JSON.stringify(request)}`);
+  session.register(topic, async (request: NlpIntentRequest) => {
+    const result = await detectIntent(request[0].payload);
+    logger.info(
+      `Received response: ${JSON.stringify(result)} for ${JSON.stringify(
+        request
+      )}`
+    );
 
-    // TODO - integrate with DialogFlow
-    return {
-      payload: []
-    };
+    return result;
   });
 });
