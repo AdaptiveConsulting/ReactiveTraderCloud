@@ -7,16 +7,24 @@ import { wait } from './async.utils'
 let mainPage: MainPage
 let browser: ProtractorBrowser
 
-export async function confirmationMessageAsserts(currencies: string, transaction: string, expectedResult: string, notional: string) {
+export async function confirmationMessageAsserts(currencies: string, transaction: string, expectedResult: string , notional: string, timeout: string) {
   browser = await getBrowser()
   mainPage = new MainPage(browser)
   let tradeWord: string
   let parsedTradeText: string
   const currency = currencies.slice(0, 3)
   const tradeSuccessMessage = await mainPage.tile.tradeType.confirmationScreen.labelMessage
-  await waitForElementToBeVisible(browser, tradeSuccessMessage)
-  const tradeSuccessString = await tradeSuccessMessage.getText()
 
+  // Assert timeout message
+  if (timeout === 'true') {
+    parsedTradeText = (await tradeSuccessMessage.getText())
+    expect(parsedTradeText).toEqual(`Trade Execution taking longer then Expected`)
+    while (parsedTradeText == `Trade Execution taking longer then Expected`) {
+        await wait(500)
+        parsedTradeText = (await tradeSuccessMessage.getText())
+    }
+    } 
+    
   // Assert trade success message string
   if (transaction === 'buy') {
     parsedTradeText = (await tradeSuccessMessage.getText()).slice(0, 14)
@@ -43,6 +51,33 @@ export async function confirmationMessageAsserts(currencies: string, transaction
   const displayedCurrency = await tradeCurrency.getText()
   expect(displayedCurrency).toEqual(currencies)
 
+  // Assert notional input value with executed trade notional value
+  await waitForElementToBeVisible(browser, tradeSuccessMessage)
+  const tradeSuccessString = await tradeSuccessMessage.getText()
+  if (expectedResult === 'Success') {
+    const regularExpression = new RegExp('(?<=You ' + tradeWord + ' ' + currency + ' )(\\d{1,3}(,\\d{1,3})?(,\\d{1,3})?(,\\d{1,3})?)+(\\.\\d{2})?')
+    const confirmationNotional = tradeSuccessString.match(regularExpression)[0]
+    expect(notional).toEqual(confirmationNotional)
+  }
+
+  // Close the confirmation screen
+  const closeButton = await mainPage.tile.tradeType.confirmationScreen.pillButton
+  await waitForElementToBeVisible(browser, closeButton)
+  await closeButton.click()
+}
+
+export async function assertDisplayedCurrencies(expectedCurrencies: string[]) {
+  const currencyPairs = ['EUR/USD', 'USD/JPY', 'GBP/USD', 'GBP/JPY', 'AUD/USD', 'NZD/USD', 'EUR/AUD', 'EUR/CAD', 'EUR/JPY']
+  for (let index in currencyPairs) {
+    const convertedCurrency = currencyPairs[index].replace(/\//ig, "To")
+    if (expectedCurrencies.includes(index)) {
+      const tradeCurrency = await mainPage.tile.tradeType[convertedCurrency].labelCurrency
+      const displayedCurrency = await tradeCurrency.getText()
+      expect(displayedCurrency).toEqual(currencyPairs[index])
+    }
+  }
+}
+export async function assertblotter(currencies: string, transaction: string, expectedResult: string, notional: string) {
   // Assert trade id tile component with blotter component
   const tradeIdTile = await mainPage.tile.tradeType.confirmationScreen.labelTradeId
   if (!tradeIdTile) {
@@ -66,29 +101,5 @@ export async function confirmationMessageAsserts(currencies: string, transaction
   }
   else {
     expect(tradeSuccessBanner.getCssValue('background-color')).toEqual('rgba(249, 76, 76, 1)')
-  }
-
-  // Assert notional input value with executed trade notional value
-  if (expectedResult === 'Success') {
-    const regularExpression = new RegExp('(?<=You ' + tradeWord + ' ' + currency + ' )(\\d{1,3}(,\\d{1,3})?(,\\d{1,3})?(,\\d{1,3})?)+(\\.\\d{2})?')
-    const confirmationNotional = tradeSuccessString.match(regularExpression)[0]
-    expect(notional).toEqual(confirmationNotional)
-  }
-
-  // Close the confirmation screen
-  const closeButton = await mainPage.tile.tradeType.confirmationScreen.pillButton
-  await waitForElementToBeVisible(browser, closeButton)
-  await closeButton.click()
-}
-
-export async function assertDisplayedCurrencies(expectedCurrencies: string[]) {
-  const currencyPairs = ['EUR/USD', 'USD/JPY', 'GBP/USD', 'GBP/JPY', 'AUD/USD', 'NZD/USD', 'EUR/AUD', 'EUR/CAD', 'EUR/JPY']
-  for (let index in currencyPairs) {
-    const convertedCurrency = currencyPairs[index].replace(/\//ig, "To")
-    if (expectedCurrencies.includes(index)) {
-      const tradeCurrency = await mainPage.tile.tradeType[convertedCurrency].labelCurrency
-      const displayedCurrency = await tradeCurrency.getText()
-      expect(displayedCurrency).toEqual(currencyPairs[index])
-    }
   }
 }

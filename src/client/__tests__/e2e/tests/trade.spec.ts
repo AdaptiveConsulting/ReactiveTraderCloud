@@ -17,8 +17,9 @@ const currencyList: [string, string[]][] = [
   ['all', ['EUR/USD','USD/JPY','GBP/USD','GBP/JPY','AUD/USD','NZD/USD','EUR/AUD','EUR/CAD','EUR/JPY']]
 ]
 const tradeList = [
-  ['usd', 'USD/JPY', 'buy', 'Success'],
-  ['gbp', 'GBP/JPY', 'sell', 'Rejected']
+  ['eur','EUR/JPY', 'buy','Success', 'true'],
+  ['usd', 'USD/JPY', 'buy', 'Success','false'],
+  ['gbp', 'GBP/JPY', 'sell', 'Rejected','false']
 ]
 
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
@@ -40,13 +41,13 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     })
   })
 
-  tradeList.forEach(([selectedCurrency, currencyPair, direction, expectedResult]) => {
+  tradeList.forEach(([selectedCurrency, currencyPair, direction, expectedResult, timeout]) => {
     it(`should validate ${currencyPair} ${direction}`, async () => {
       const tradingCurrency = currencyPair.replace('/', 'To');
       await mainPage.workspace.selectCurrency(selectedCurrency)
       const notional = await mainPage.tile.tradeType[tradingCurrency].notional
       await mainPage.tile.selectSpotTile(tradingCurrency, direction)
-      await assertUtils.confirmationMessageAsserts(currencyPair, direction, expectedResult, notional.getAttribute('value'))
+      await assertUtils.confirmationMessageAsserts(currencyPair, direction, expectedResult, notional.getAttribute('value'), timeout)
     })
   })
 
