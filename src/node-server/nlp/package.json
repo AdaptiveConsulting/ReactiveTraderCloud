@@ -21,6 +21,10 @@
   "devDependencies": {
     "@types/dotenv": "^6.1.0",
     "@types/node": "^11.9.3",
-    "@types/uuid": "^3.4.4"
+    "@types/uuid": "^3.4.4",
+    "cross-env": "^6.0.3",
+    "nodemon": "^1.19.3",
+    "ts-node": "^8.4.1",
+    "tsconfig-paths": "^3.9.0"
   }
 }
