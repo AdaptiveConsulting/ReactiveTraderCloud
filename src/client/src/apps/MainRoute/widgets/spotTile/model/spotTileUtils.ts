@@ -4,7 +4,7 @@ import { RfqState } from '../components/types'
 
 export const DEFAULT_NOTIONAL = 1000000
 
-export const SPOT_DATE_FORMAT = 'DD MMM'
+export const SPOT_DATE_FORMAT = 'dd MMM'
 
 export function toRate(
   rawRate: number = 0,
