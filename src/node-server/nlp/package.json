@@ -2,12 +2,11 @@
   "name": "adaptive.reactivetrader.server.nlp",
   "version": "0.0.1",
   "description": "NLP Service for Reactive Trader",
-  "main": "lib/index",
+  "main": "dist/index",
   "scripts": {
     "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'node -r ts-node/register -r tsconfig-paths/register --inspect' src/index.ts",
-    "start": "cross-env NODE_ENV=production node -r tsconfig-paths/register lib/index.js",
-    "build": "cross-env NODE_ENV=production tsc -p .",
-    "eslint": "eslint --ext .ts ./src"
+    "build": "webpack",
+    "start": "node ./dist/index.js"
   },
   "keywords": [
     "NLP"
@@ -22,9 +21,12 @@
     "@types/dotenv": "^6.1.0",
     "@types/node": "^11.9.3",
     "@types/uuid": "^3.4.4",
-    "cross-env": "^6.0.3",
-    "nodemon": "^1.19.3",
     "ts-node": "^8.4.1",
-    "tsconfig-paths": "^3.9.0"
+    "tsconfig-paths": "^3.9.0",
+    "nodemon": "^1.19.3",
+    "ts-loader": "^6.2.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
   }
 }

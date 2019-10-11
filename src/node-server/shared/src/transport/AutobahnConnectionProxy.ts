@@ -1,6 +1,6 @@
 import { Connection } from 'autobahn'
 import { AutobahnConnection } from './AutoBahnConnection'
-import AutobahnSessionProxy from './AutobahnSessionProxy'
+import { AutobahnSessionProxy } from './AutobahnSessionProxy'
 import { DisconnectionReason } from './DisconnectionReason'
 
 /**

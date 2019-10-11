@@ -13,6 +13,7 @@ import {
   ConnectionEventType,
   ConnectionOpenEvent,
   createConnection$,
+  AutobahnSessionProxy,
   logger
 } from "shared";
 import uuid from "uuid/v1";
@@ -20,7 +21,7 @@ import { NlpIntentRequest } from "./types";
 
 config();
 
-const host = process.env.BROKER_HOST || "";
+const host = process.env.BROKER_HOST || "localhost";
 const realm = process.env.WAMP_REALM || "com.weareadaptive.reactivetrader";
 const port = process.env.BROKER_PORT || 80;
 
@@ -53,12 +54,8 @@ logger.info(`Starting heartbeat for ${hostInstance}`);
 
 session$
   .pipe(
-    switchMap(session =>
-      interval(HEARTBEAT_INTERVAL_MS).pipe(
-        mapTo(session),
-        takeUntil(exit$)
-      )
-    )
+    takeUntil(exit$),
+    switchMap(session => interval(HEARTBEAT_INTERVAL_MS).pipe(mapTo(session)))
   )
   .subscribe(session => {
     const status = {
