@@ -1,8 +1,8 @@
 import { HistoricPosition } from './historicPosition'
 
 export interface PricePoint {
-  x: any
-  y: any
+  x: Date
+  y: string
 }
 
 export interface AnalyticsLineChartModel {
@@ -15,7 +15,9 @@ const DEFAULT_PNL: AnalyticsLineChartModel = {
   seriesData: [],
 }
 
-export const getModel: (positions: HistoricPosition[]) => AnalyticsLineChartModel = (positions = []) => {
+export const getModel: (positions: HistoricPosition[]) => AnalyticsLineChartModel = (
+  positions = [],
+) => {
   if (positions.length === 0) {
     return DEFAULT_PNL
   }

@@ -1,5 +1,6 @@
 import { by, ElementFinder, ProtractorBrowser } from 'protractor'
 import { waitForElementToBeClickable, waitForElementToBeVisible } from '../utils/browser.utils'
+import { wait } from '../utils/async.utils'
 
 export class TileComponent {
   tradeType: Record<string, Record<string, ElementFinder>>
@@ -54,7 +55,8 @@ export class TileComponent {
       confirmationScreen: {
         labelCurrency: root.element(by.qa('tile-notification__symbols')),
         labelTradeId: root.element(by.qa('tile-notification__tradeid')),
-        labelMessage: root.element(by.qa('tile-notification__content'))
+        labelMessage: root.element(by.qa('tile-notification__content')),
+        pillButton: root.element(by.qa('tile-notification__pill-button'))
       }
     }
   }
@@ -66,6 +68,7 @@ export class TileComponent {
     }
     await waitForElementToBeClickable(this.browser, buttonElement)
     await buttonElement.click()
+    await wait(2000)
   }
 
   async setNotional(currencyTrade: string, textNotional: string, notional: number) {

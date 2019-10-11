@@ -1,10 +1,7 @@
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import { SPOT_DATE_FORMAT } from './spotTileUtils'
 
-function momentDateFormatter(date: string, formatter: string = SPOT_DATE_FORMAT) {
-  return moment.utc(date).format(formatter)
-}
-
 export function spotDateFormatter(date: string, tenorRequired: boolean = true) {
-  return tenorRequired ? `SP. ${momentDateFormatter(date)}` : `${momentDateFormatter(date)}`
+  const formattedDate = DateTime.fromISO(date).toFormat(SPOT_DATE_FORMAT)
+  return tenorRequired ? `SP. ${formattedDate}` : formattedDate
 }

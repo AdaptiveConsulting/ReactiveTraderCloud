@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import numeral from 'numeral'
 import {
   XAxis,
@@ -16,7 +16,7 @@ import {
   ToolTipChildRight,
   ToolTipChildLeft,
 } from './styled'
-import { AnalyticsLineChartModel } from '../../model/AnalyticsLineChartModel'
+import { AnalyticsLineChartModel, PricePoint } from '../../model/AnalyticsLineChartModel'
 
 interface LineChartProps {
   model: AnalyticsLineChartModel
@@ -27,8 +27,8 @@ interface DataPoint {
   y: string
 }
 
-const formatDataPoint: (dataPoint: DataPoint) => DataPoint = ({ x, y }) => ({
-  x: moment(x).format('hh:mm:ss A'),
+const formatDataPoint: (dataPoint: PricePoint) => DataPoint = ({ x, y }) => ({
+  x: DateTime.fromJSDate(x).toFormat('hh:mm:ss a'),
   y,
 })
 
