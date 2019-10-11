@@ -1,12 +1,12 @@
 import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid-community'
-import { utcFormat } from 'd3-time-format'
+import { DateTime } from 'luxon'
 import { Trade, TradeStatus } from 'rt-types'
 import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
 import { capitalize } from 'lodash'
 
 function UtcFormatDate(date: Date, format: string = '%b %e, %H:%M:%S') {
-  return utcFormat(format)(date)
+  return DateTime.fromJSDate(date, { zone: 'utc' }).toFormat('dd-MMM-yyyy')
 }
 
 const notionalRenderer = (value: any) => {
