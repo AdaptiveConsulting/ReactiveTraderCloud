@@ -36,7 +36,6 @@
     "openfin": "openfin -c public/config/openfin/local.json -l",
     "openfin:launcher": "openfin -c public/config/openfin/launcher-local.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
-    "precommit": "lint-staged",
     "storybook": "start-storybook -p 6006 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o storybook/build",
     "sleep": "sleep 5",
@@ -50,16 +49,6 @@
     ]
   },
   "license": "MIT",
-  "lint-staged": {
-    "src/**/*.{js,ts,tsx,json}": [
-      "prettier --write",
-      "git add"
-    ],
-    "src/**/*.{ts,tsx}": [
-      "eslint --fix ./src",
-      "git add"
-    ]
-  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
@@ -135,18 +124,12 @@
     "@types/styled-components": "^4.1.18",
     "@types/ua-parser-js": "^0.7.33",
     "@types/uuid": "^3.4.3",
-    "@typescript-eslint/eslint-plugin": "^1.13.0",
-    "@typescript-eslint/parser": "^1.13.0",
     "core-js": "^2.5.7",
     "cors": "^2.8.5",
-    "cross-env": "^5.1.4",
-    "husky": "^3.0.2",
     "jasmine": "^3.5.0",
     "jasmine-spec-reporter": "^4.2.1",
     "jest": "24.8.0",
-    "lint-staged": "^9.2.1",
     "npm-run-all": "^4.1.2",
-    "prettier": "^1.18.2",
     "protractor": "^5.4.2",
     "react-scripts": "^3.1.1",
     "react-test-renderer": "^16.8.6",
