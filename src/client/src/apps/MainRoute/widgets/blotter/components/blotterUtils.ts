@@ -12,9 +12,6 @@ function UtcFormatDate(date: Date, format: string = '%b %e, %H:%M:%S') {
 const notionalRenderer = (value: any) => {
   return numeral(value).format('0,0[.]00')
 }
-const utcDateRenderer = (value: any, format: string = '%d-%b-%Y') => {
-  return UtcFormatDate(value, format)
-}
 
 const getStatusCellClass = (trade: Trade) => {
   if (trade.status === TradeStatus.Rejected) {
@@ -117,10 +114,10 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     colId: TRADE_DATE,
     headerName: 'Trade Date',
     field: TRADE_DATE,
-    cellRenderer: ({ data }) => utcDateRenderer(data['tradeDate']),
+    cellRenderer: ({ data }) => UtcFormatDate(data['tradeDate']),
     width: 130,
     includeInCSVExport: true,
-    csvCellValueFormatter: cell => utcDateRenderer(cell.value),
+    csvCellValueFormatter: cell => UtcFormatDate(cell.value),
   },
   {
     colId: DIRECTION,
@@ -172,10 +169,10 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     colId: VALUE_DATE,
     headerName: 'Value Date',
     field: VALUE_DATE,
-    cellRenderer: ({ data }) => utcDateRenderer(data['valueDate']),
+    cellRenderer: ({ data }) => UtcFormatDate(data['valueDate']),
     width: 120,
     includeInCSVExport: true,
-    csvCellValueFormatter: cell => utcDateRenderer(cell.value),
+    csvCellValueFormatter: cell => UtcFormatDate(cell.value),
   },
   {
     colId: TRADER_NAME,

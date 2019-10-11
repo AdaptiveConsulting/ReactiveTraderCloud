@@ -22,3 +22,4 @@ obj/
 deploy/**/docker-compose.yml
 *.pyc
 *.sln
+lerna-debug.log

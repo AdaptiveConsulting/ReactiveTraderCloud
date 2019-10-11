@@ -3,7 +3,7 @@ import { Session, Subscription } from 'autobahn'
 /**
  * AutobahnSessionProxy: makes the autobahn session api more explicit, aids testing
  */
-export default class AutobahnSessionProxy {
+export class AutobahnSessionProxy {
   readonly session: Session
 
   constructor(session: Session) {
@@ -33,3 +33,5 @@ export default class AutobahnSessionProxy {
     return this.session.register(topic, handler)
   }
 }
+
+export default AutobahnSessionProxy;

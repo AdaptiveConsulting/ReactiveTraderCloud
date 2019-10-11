@@ -13,14 +13,16 @@ import {
   ConnectionEventType,
   ConnectionOpenEvent,
   createConnection$,
+  AutobahnSessionProxy,
   logger
 } from "shared";
 import uuid from "uuid/v1";
 import { NlpIntentRequest } from "./types";
+import { detectIntent } from "./dialogFlowClient";
 
 config();
 
-const host = process.env.BROKER_HOST || "";
+const host = process.env.BROKER_HOST || "localhost";
 const realm = process.env.WAMP_REALM || "com.weareadaptive.reactivetrader";
 const port = process.env.BROKER_PORT || 80;
 
@@ -53,12 +55,8 @@ logger.info(`Starting heartbeat for ${hostInstance}`);
 
 session$
   .pipe(
-    switchMap(session =>
-      interval(HEARTBEAT_INTERVAL_MS).pipe(
-        mapTo(session),
-        takeUntil(exit$)
-      )
-    )
+    takeUntil(exit$),
+    switchMap(session => interval(HEARTBEAT_INTERVAL_MS).pipe(mapTo(session)))
   )
   .subscribe(session => {
     const status = {
@@ -74,12 +72,14 @@ session$.pipe(takeUntil(exit$)).subscribe(session => {
   const topic = `${hostInstance}.getNlpIntent`;
   logger.info(`Registering ${topic}`);
 
-  session.register(topic, (request: NlpIntentRequest) => {
-    logger.info(`Received request: ${JSON.stringify(request)}`);
+  session.register(topic, async (request: NlpIntentRequest) => {
+    const result = await detectIntent(request[0].payload);
+    logger.info(
+      `Received response: ${JSON.stringify(result)} for ${JSON.stringify(
+        request
+      )}`
+    );
 
-    // TODO - integrate with DialogFlow
-    return {
-      payload: []
-    };
+    return result;
   });
 });

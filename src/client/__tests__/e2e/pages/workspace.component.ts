@@ -1,5 +1,6 @@
 import { by, ElementFinder, ProtractorBrowser } from 'protractor'
 import { waitForElementToBeClickable, waitForElementToBeVisible } from '../utils/browser.utils'
+import { wait } from '../utils/async.utils'
 
 export class WorkspaceComponent {
   links: Record<string, ElementFinder>
@@ -23,5 +24,6 @@ export class WorkspaceComponent {
     }
     await waitForElementToBeClickable(this.browser, linkElement)
     await linkElement.click()
+    await wait(500)
   }
 }
