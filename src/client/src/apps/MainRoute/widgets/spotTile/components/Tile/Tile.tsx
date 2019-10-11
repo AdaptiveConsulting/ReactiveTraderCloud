@@ -36,7 +36,6 @@ export interface TileProps {
 export interface TileState {
   inputDisabled: boolean
   inputValidationMessage: ValidationMessage
-  tradingDisabled: boolean
   canExecute: boolean
 }
 
@@ -44,7 +43,6 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   state: TileState = {
     inputValidationMessage: null,
     inputDisabled: false,
-    tradingDisabled: false,
     canExecute: true,
   }
 
@@ -134,7 +132,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       rfq,
       displayCurrencyChart,
     } = this.props
-    const { inputDisabled, inputValidationMessage, tradingDisabled, canExecute } = this.state
+    const { inputDisabled, inputValidationMessage, canExecute } = this.state
     const { rfqState } = spotTileData
     const { isRfqStateCanRequest, isRfqStateNone } = getConstsFromRfqState(rfqState)
 
@@ -153,7 +151,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         resetNotional={this.resetNotional}
         inputDisabled={inputDisabled}
         inputValidationMessage={inputValidationMessage}
-        tradingDisabled={tradingDisabled || !canExecute}
+        tradingDisabled={!canExecute}
         rfq={rfq}
         displayCurrencyChart={displayCurrencyChart}
       >
