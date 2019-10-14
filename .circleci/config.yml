@@ -152,7 +152,7 @@ jobs:
             kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/pricehistory:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/bot-deployment bot=${DOCKER_USER}/bot:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/nlp-deployment nlp=${DOCKER_USER}/nlp:${BUILD_NUM}
+
 workflows:
   version: 2
   main:
