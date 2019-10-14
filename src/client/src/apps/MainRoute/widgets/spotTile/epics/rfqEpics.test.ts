@@ -211,7 +211,7 @@ describe('rfqEpics', () => {
       })
     })
 
-    describe('when rfq is reject', () => {
+    describe('when rfq is rejected', () => {
       it('should expire rfq and reset rfq after idle time', () => {
         const testScheduler = new MockScheduler()
 
