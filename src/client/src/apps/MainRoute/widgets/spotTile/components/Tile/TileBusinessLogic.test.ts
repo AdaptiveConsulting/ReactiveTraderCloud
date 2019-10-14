@@ -69,7 +69,6 @@ const prevState: TileState = {
   canExecute: true,
   inputDisabled: false,
   inputValidationMessage: null,
-  tradingDisabled: false,
 }
 
 const currencyPair: CurrencyPair = {
@@ -112,7 +111,6 @@ const defaultNewState: TileState = {
   canExecute: true,
   inputDisabled: false,
   inputValidationMessage: null,
-  tradingDisabled: false,
 }
 
 validTradingValues.forEach(value => {
@@ -127,25 +125,6 @@ validTradingValues.forEach(value => {
     const newState = getDerivedStateFromUserInput(newParams)
     const expected = {
       ...defaultNewState,
-      tradingDisabled: isValueInRfqRange(value) || isValueOverRfqRange(value),
-    }
-    expect(newState).toEqual(expected)
-  })
-})
-
-invalidTradingValues.forEach(value => {
-  test(`state derived from notional ${value} (isInvalidTradingValue is true)`, () => {
-    const newParams = {
-      ...defaultParams,
-      spotTileData: {
-        ...defaultParams.spotTileData,
-        notional: value,
-      },
-    }
-    const newState = getDerivedStateFromUserInput(newParams)
-    const expected = {
-      ...defaultNewState,
-      tradingDisabled: true,
     }
     expect(newState).toEqual(expected)
   })
@@ -269,19 +248,6 @@ test('state derived from props, RFQ expired', () => {
   const newState: TileState = getDerivedStateFromProps(nextProps, prevState)
   const expected = {
     ...prevState,
-    canExecute: false,
-  }
-  expect(newState).toEqual(expected)
-})
-
-test('state derived from props, trading disabled', () => {
-  const state: TileState = {
-    ...prevState,
-    tradingDisabled: true,
-  }
-  const newState: TileState = getDerivedStateFromProps(defaultTileProps, state)
-  const expected = {
-    ...state,
     canExecute: false,
   }
   expect(newState).toEqual(expected)

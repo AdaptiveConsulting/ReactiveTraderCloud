@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import numeral from 'numeral'
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
@@ -18,11 +18,11 @@ const formatTradeNotification = (trade: Trade, currencyPair: CurrencyPair) => ({
   notional: numeral(trade.notional).format('0,000,000[.]00'),
   direction: trade.direction,
   tradeId: trade.tradeId.toString(),
-  tradeDate: moment(trade.tradeDate).format(),
+  tradeDate: DateTime.fromJSDate(trade.tradeDate).toString(),
   status: trade.status,
   dealtCurrency: trade.dealtCurrency,
   termsCurrency: currencyPair.terms,
-  valueDate: moment.utc(trade.valueDate).format('DD MMM'),
+  valueDate: DateTime.fromJSDate(trade.tradeDate, { zone: 'utc' }).toFormat('dd MMM'),
   traderName: trade.traderName,
 })
 

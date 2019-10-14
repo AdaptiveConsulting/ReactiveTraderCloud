@@ -30,9 +30,10 @@ type RfqReceivedTimerCancellableType =
   | RfqRejectActionType
   | RfqExpiredActionType
   | RfqResetActionType
+  | RfqCancelActionType
 
 const EXPIRATION_TIMEOUT_MS = 10000
-export const IDLE_TIME_MS = 60000
+export const IDLE_TIME_MS = 2000
 
 const rfqService = (
   request: RfqRequest,
@@ -92,7 +93,10 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
     mergeMap(action => {
       const { currencyPair } = action.payload
       const cancel$ = action$.pipe(
-        ofType<Action, RfqReceivedTimerCancellableType>(TILE_ACTION_TYPES.RFQ_RESET),
+        ofType<Action, RfqReceivedTimerCancellableType>(
+          TILE_ACTION_TYPES.RFQ_RESET,
+          TILE_ACTION_TYPES.RFQ_CANCEL,
+        ),
         filter(cancelAction => cancelAction.payload.currencyPair.symbol === currencyPair.symbol),
       )
 

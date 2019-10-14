@@ -6,6 +6,10 @@
     "declaration": false,
     "strict": true,
     "esModuleInterop": true,
-    "sourceMap": true
-  }
+    "sourceMap": true,
+    "rootDir":  "."
+  },
+  "references": [
+    {"path": "shared"}
+  ]
 }
