@@ -94,7 +94,6 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
       const { currencyPair } = action.payload
       const cancel$ = action$.pipe(
         ofType<Action, RfqReceivedTimerCancellableType>(
-          TILE_ACTION_TYPES.RFQ_REJECT,
           TILE_ACTION_TYPES.RFQ_RESET,
           TILE_ACTION_TYPES.RFQ_CANCEL,
         ),
