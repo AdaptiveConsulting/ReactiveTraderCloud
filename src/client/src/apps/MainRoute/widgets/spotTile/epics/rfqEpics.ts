@@ -33,7 +33,7 @@ type RfqReceivedTimerCancellableType =
   | RfqCancelActionType
 
 const EXPIRATION_TIMEOUT_MS = 10000
-export const IDLE_TIME_MS = 2000
+export const IDLE_TIME_MS = 60000
 
 const rfqService = (
   request: RfqRequest,
