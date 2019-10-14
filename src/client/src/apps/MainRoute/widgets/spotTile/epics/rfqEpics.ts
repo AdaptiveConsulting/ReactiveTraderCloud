@@ -30,6 +30,7 @@ type RfqReceivedTimerCancellableType =
   | RfqRejectActionType
   | RfqExpiredActionType
   | RfqResetActionType
+  | RfqCancelActionType
 
 const EXPIRATION_TIMEOUT_MS = 10000
 export const IDLE_TIME_MS = 60000
@@ -95,6 +96,7 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
         ofType<Action, RfqReceivedTimerCancellableType>(
           TILE_ACTION_TYPES.RFQ_REJECT,
           TILE_ACTION_TYPES.RFQ_RESET,
+          TILE_ACTION_TYPES.RFQ_CANCEL,
         ),
         filter(cancelAction => cancelAction.payload.currencyPair.symbol === currencyPair.symbol),
       )
