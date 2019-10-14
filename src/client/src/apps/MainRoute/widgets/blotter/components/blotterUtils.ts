@@ -5,16 +5,12 @@ import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
 import { capitalize } from 'lodash'
 
-const dateRenderer = (value: Date) => {
-  return DateTime.fromJSDate(value).toFormat('dd-MMM hh:mm:ss')
+function UtcFormatDate(date: Date) {
+  return DateTime.fromJSDate(date, { zone: 'utc' }).toFormat('dd-MMM-yyyy')
 }
 
 const notionalRenderer = (value: any) => {
   return numeral(value).format('0,0[.]00')
-}
-
-const utcDateRenderer = (value: Date) => {
-  return DateTime.fromJSDate(value, { zone: 'utc' }).toFormat('dd-MMM-yyyy')
 }
 
 const getStatusCellClass = (trade: Trade) => {
@@ -118,10 +114,10 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     colId: TRADE_DATE,
     headerName: 'Trade Date',
     field: TRADE_DATE,
-    cellRenderer: ({ data }) => dateRenderer(data['tradeDate']),
+    cellRenderer: ({ data }) => UtcFormatDate(data['tradeDate']),
     width: 130,
     includeInCSVExport: true,
-    csvCellValueFormatter: cell => dateRenderer(cell.value),
+    csvCellValueFormatter: cell => UtcFormatDate(cell.value),
   },
   {
     colId: DIRECTION,
@@ -173,10 +169,10 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     colId: VALUE_DATE,
     headerName: 'Value Date',
     field: VALUE_DATE,
-    cellRenderer: ({ data }) => utcDateRenderer(data['valueDate']),
+    cellRenderer: ({ data }) => UtcFormatDate(data['valueDate']),
     width: 120,
     includeInCSVExport: true,
-    csvCellValueFormatter: cell => utcDateRenderer(cell.value),
+    csvCellValueFormatter: cell => UtcFormatDate(cell.value),
   },
   {
     colId: TRADER_NAME,
