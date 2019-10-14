@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +18,8 @@ namespace Adaptive.ReactiveTrader.Common.Config
         private readonly string[] searchPaths =
         {
             Path.Combine(Directory.GetCurrentDirectory(), ConfigFolderName),
-            Path.Combine(Directory.GetCurrentDirectory(), "..", ConfigFolderName)
+            Path.Combine(Directory.GetCurrentDirectory(), "..", ConfigFolderName),
+            Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", ConfigFolderName)
         };
 
         private ServiceConfiguration(string[] args) : this(args.Any() ? args.First() : "config.dev.json")

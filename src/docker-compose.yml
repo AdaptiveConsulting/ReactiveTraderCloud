@@ -83,3 +83,12 @@ services:
     environment:
      - BROKER_HOST=broker
      - BROKER_PORT=8000
+  nlp:
+    build:
+      dockerfile: Nlp.Dockerfile
+      context: ./node-server
+    depends_on:
+      - broker
+    environment:
+      - BROKER_HOST=broker
+      - BROKER_PORT=8000

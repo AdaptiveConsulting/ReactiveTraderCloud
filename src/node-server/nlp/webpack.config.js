@@ -13,11 +13,11 @@ module.exports = {
         test: /\.ts?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      },
+      }
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.json'],
     plugins: [new TsconfigPathsPlugin()],
     alias: {
       'rxjs': path.resolve(path.join(__dirname, 'node_modules', 'rxjs'))
@@ -31,5 +31,8 @@ module.exports = {
     new webpack.IgnorePlugin({
       resourceRegExp: /vertx/
     })
-  ]
+  ],
+  node: {
+    __dirname: false
+  }
 };
