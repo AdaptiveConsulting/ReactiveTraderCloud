@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nlp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: nlp
+  template:
+    metadata:
+      labels:
+        component: nlp
+    spec:
+      volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: nlp-key
+      containers:
+        - name: nlp
+          image: reactivetradercloud/nlp:4805
+          volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+          env:
+            - name: BROKER_HOST
+              value: broker
+            - name: BROKER_PORT
+              value: '8000'
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
