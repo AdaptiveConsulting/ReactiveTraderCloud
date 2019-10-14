@@ -5,7 +5,7 @@ import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
 import { capitalize } from 'lodash'
 
-function UtcFormatDate(date: Date, format: string = '%b %e, %H:%M:%S') {
+function UtcFormatDate(date: Date) {
   return DateTime.fromJSDate(date, { zone: 'utc' }).toFormat('dd-MMM-yyyy')
 }
 
