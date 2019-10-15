@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Reactive Trader Cloud",
   "scripts": {
+    "client-strict-null-checks": "tsc -p src/client/tsconfig.strictNullChecks.json",
     "lint": "eslint --ext .ts,.tsx ./src/client/src ./src/node-server/shared/src ./src/node-server/nlp/src",
     "postinstall": "lerna bootstrap"
   },
@@ -21,7 +22,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && npm run client-strict-null-checks"
     }
   },
   "devDependencies": {
