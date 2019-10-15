@@ -7,6 +7,8 @@ import { AutobahnConnectionProxy } from 'rt-system'
 import { take, timeout } from 'rxjs/operators'
 import { mapIntent } from './responseMapper'
 import { DetectIntentResponse } from 'dialogflow'
+import { usePlatform } from '../../rt-platforms'
+import { handleIntent } from './handleIntent'
 
 const Container = styled.div`
   color: ${({ theme }) => theme.core.textColor};
@@ -48,11 +50,12 @@ const autobahn = new AutobahnConnectionProxy(
   process.env.REACT_APP_BROKER_HOST || location.hostname,
   'com.weareadaptive.reactivetrader',
   +(process.env.REACT_APP_BROKER_PORT || location.port),
-);
+)
 
 export const Spotlight: FC = () => {
   const [{ request, response, contacting }, dispatch] = useReducer(reducer, initialState)
-  const {serviceStub} = useServiceStub(autobahn);
+  const { serviceStub } = useServiceStub(autobahn)
+  const platform = usePlatform()
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = e => {
     dispatch({ type: 'SET_REQUEST', request: e.target.value })
@@ -63,17 +66,24 @@ export const Spotlight: FC = () => {
       case 'Enter':
         const value = e.currentTarget.value
         dispatch({ type: 'SEND_REQUEST', request: value })
-        serviceStub.createRequestResponseOperation('nlp', 'getNlpIntent', value)
+        serviceStub
+          .createRequestResponseOperation('nlp', 'getNlpIntent', value)
           .pipe(
             timeout(5000),
-            take(1)
+            take(1),
           )
-          .subscribe((response: DetectIntentResponse[]) => {
-            const result = mapIntent(response);
-            dispatch({ type: 'RECEIVE_RESPONSE', response: `I heard "${result}".` })
-          }, () => {
-            dispatch({ type: 'RECEIVE_RESPONSE', response: `Oops. I didn't hear anything.` });
-          })
+          .subscribe(
+            (response: DetectIntentResponse[]) => {
+              //TODO: remove this explicit handling of intents, favor registering handlers for different intents (fdc3?)
+              handleIntent(response, platform)
+
+              const result = mapIntent(response)
+              dispatch({ type: 'RECEIVE_RESPONSE', response: `I heard "${result}".` })
+            },
+            () => {
+              dispatch({ type: 'RECEIVE_RESPONSE', response: `Oops. I didn't hear anything.` })
+            },
+          )
         break
       case 'ArrowDown':
         e.preventDefault()

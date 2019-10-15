@@ -122,6 +122,19 @@ export const appConfigs: ApplicationConfig[] = [
     },
   },
   {
+    name: 'Spotlight',
+    url: `${ORIGIN}/spotlight`,
+    icon: limitCheckerIcon,
+    provider: {
+      platformName: 'openfin',
+      applicationType: 'application',
+      windowOptions: {
+        ...defaultWindowOptions,
+        frame: true,
+      },
+    },
+  },
+  {
     name: 'Limit Checker',
     url: `${ORIGIN}/plugin/LimitChecker.zip`,
     icon: limitCheckerIcon,

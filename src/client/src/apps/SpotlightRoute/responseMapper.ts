@@ -1,9 +1,10 @@
 import { DetectIntentResponse } from 'dialogflow'
-
-const CURRENCY_INTENT = 'rt.currency.info'
-const MARKET_INFO_INTENT = 'rt.market.info'
-const SPOT_QUOTE_INTENT = 'rt.spot.quote'
-const TRADES_INFO_INTENT = 'rt.trades.info'
+import {
+  CURRENCY_INTENT,
+  MARKET_INFO_INTENT,
+  SPOT_QUOTE_INTENT,
+  TRADES_INFO_INTENT,
+} from './intents'
 
 export const mapIntent = (response: DetectIntentResponse[]) => {
   let result = ''
@@ -15,10 +16,9 @@ export const mapIntent = (response: DetectIntentResponse[]) => {
     default:
       result = [
         response[0].queryResult.intent.displayName,
-        response[0].queryResult.fulfillmentText
+        response[0].queryResult.fulfillmentText,
       ].join(' => ')
   }
-
 
   return result
 }
