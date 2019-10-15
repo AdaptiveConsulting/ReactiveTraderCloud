@@ -5,6 +5,7 @@ import { getBrowser } from '../browser-manager'
 import { wait } from '../utils/async.utils'
 import { MainPage } from '../pages/main.page'
 import * as assertUtils from '../utils/assert.utils'
+import { TileComponent } from '../pages/tile.component'
 
 let browser: ProtractorBrowser
 let mainPage: MainPage
@@ -22,6 +23,12 @@ const tradeList: [string, string, string, string, boolean][] = [
   ['gbp', 'GBP/JPY', 'sell', 'Rejected', false]
 ]
 
+const notionalList = [
+  ['999999','999,999'],
+  ['2m','2,000,000'],
+  ['45k','45,000']
+]
+
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
 
   beforeEach(async () => {
@@ -32,6 +39,15 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
   it('Verify page title', async () => {
     const title = await browser.getTitle()
     expect(title).toBe('Reactive Trader Cloud')
+  })
+
+  notionalList.forEach(([enteredNotional, expectedNotional]) => {
+    it(`should validate notional entry ${enteredNotional}`, async () => {
+      await mainPage.tile.setNotional('EURToUSD', enteredNotional)
+      const notional = await mainPage.tile.tradeType.EURToUSD.notional
+      const returnedNotional = notional.getAttribute('value')
+      expect(returnedNotional).toEqual(expectedNotional)
+    })
   })
 
   currencyList.forEach(([selectedCurrency, expectedCurrencies]) => {
