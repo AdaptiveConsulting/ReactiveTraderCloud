@@ -9,17 +9,17 @@ import * as assertUtils from '../utils/assert.utils'
 let browser: ProtractorBrowser
 let mainPage: MainPage
 const currencyList: [string, string[]][] = [
-  ['eur', ['EUR/USD','EUR/AUD','EUR/CAD','EUR/JPY']],
-  ['usd', ['EUR/USD','USD/JPY','GBP/USD','AUD/USD','NZD/USD']],
-  ['gbp', ['GBP/USD','GBP/JPY']],
-  ['aud', ['AUD/USD','EUR/AUD']],
+  ['eur', ['EUR/USD', 'EUR/AUD', 'EUR/CAD', 'EUR/JPY']],
+  ['usd', ['EUR/USD', 'USD/JPY', 'GBP/USD', 'AUD/USD', 'NZD/USD']],
+  ['gbp', ['GBP/USD', 'GBP/JPY']],
+  ['aud', ['AUD/USD', 'EUR/AUD']],
   ['nzd', ['NZD/USD']],
-  ['all', ['EUR/USD','USD/JPY','GBP/USD','GBP/JPY','AUD/USD','NZD/USD','EUR/AUD','EUR/CAD','EUR/JPY']]
+  ['all', ['EUR/USD', 'USD/JPY', 'GBP/USD', 'GBP/JPY', 'AUD/USD', 'NZD/USD', 'EUR/AUD', 'EUR/CAD', 'EUR/JPY']]
 ]
-const tradeList: [ string, string, string, string, boolean][] = [
-  ['eur','EUR/JPY', 'buy','Success', true],
-  ['usd', 'USD/JPY', 'buy', 'Success',false],
-  ['gbp', 'GBP/JPY', 'sell', 'Rejected',false]
+const tradeList: [string, string, string, string, boolean][] = [
+  ['eur', 'EUR/JPY', 'buy', 'Success', true],
+  ['usd', 'USD/JPY', 'buy', 'Success', false],
+  ['gbp', 'GBP/JPY', 'sell', 'Rejected', false]
 ]
 
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
