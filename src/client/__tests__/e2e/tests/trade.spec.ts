@@ -16,10 +16,10 @@ const currencyList: [string, string[]][] = [
   ['nzd', ['NZD/USD']],
   ['all', ['EUR/USD','USD/JPY','GBP/USD','GBP/JPY','AUD/USD','NZD/USD','EUR/AUD','EUR/CAD','EUR/JPY']]
 ]
-const tradeList = [
-  ['eur','EUR/JPY', 'buy','Success', 'true'],
-  ['usd', 'USD/JPY', 'buy', 'Success','false'],
-  ['gbp', 'GBP/JPY', 'sell', 'Rejected','false']
+const tradeList: [ string, string, string, string, boolean][] = [
+  ['eur','EUR/JPY', 'buy','Success', true],
+  ['usd', 'USD/JPY', 'buy', 'Success',false],
+  ['gbp', 'GBP/JPY', 'sell', 'Rejected',false]
 ]
 
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {

@@ -7,7 +7,7 @@ import { wait } from './async.utils'
 let mainPage: MainPage
 let browser: ProtractorBrowser
 
-export async function confirmationMessageAsserts(currencies: string, transaction: string, expectedResult: string , notional: string, timeout: string) {
+export async function confirmationMessageAsserts(currencies: string, transaction: string, expectedResult: string , notional: string, timeout: boolean) {
   browser = await getBrowser()
   mainPage = new MainPage(browser)
   let tradeWord: string
@@ -16,7 +16,7 @@ export async function confirmationMessageAsserts(currencies: string, transaction
   const tradeSuccessMessage = await mainPage.tile.tradeType.confirmationScreen.labelMessage
 
   // Assert timeout message
-  if (timeout === 'true') {
+  if (timeout === true) {
     parsedTradeText = (await tradeSuccessMessage.getText())
     expect(parsedTradeText).toEqual(`Trade Execution taking longer then Expected`)
     while (parsedTradeText == `Trade Execution taking longer then Expected`) {
