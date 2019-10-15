@@ -1,9 +1,10 @@
 import {
+  excelIcon,
+  greenKeyIcon,
+  limitCheckerIcon,
   reactiveAnalyticsIcon,
   reactiveTraderIcon,
-  limitCheckerIcon,
-  greenKeyIcon,
-  excelIcon,
+  searchIcon,
 } from './icons/index'
 import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
 
@@ -44,6 +45,7 @@ const excelPreloadScripts: fin.DownloadPreloadOption[] = [
 ]
 
 type ApplicationType = 'window' | 'download' | 'application' | 'excel'
+
 interface Provider {
   platformName: PlatformName
   applicationType: ApplicationType
@@ -92,7 +94,7 @@ const excelLegacyAppConfig: ApplicationConfig = {
 
 const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
 
-export const appConfigs: ApplicationConfig[] = [
+const appConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Trader',
     url: `${ORIGIN}`,
@@ -159,5 +161,25 @@ export const appConfigs: ApplicationConfig[] = [
       },
     },
   },
-  excelAppConfig,
+  excelAppConfig
 ]
+
+if (process.env.NODE_ENV === 'development') {
+  appConfigs.push({
+    name: 'Spotlight',
+    url: `${ORIGIN}/spotlight`,
+    icon: searchIcon,
+    provider: {
+      platformName: 'openfin',
+      applicationType: 'application',
+      windowOptions: {
+        ...defaultWindowOptions,
+        frame: true
+      },
+    }
+  })
+}
+
+export {
+  appConfigs
+}
