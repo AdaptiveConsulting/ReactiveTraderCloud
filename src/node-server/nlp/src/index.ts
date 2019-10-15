@@ -1,6 +1,6 @@
 import { config } from "dotenv"
 import { interval, Observable, ReplaySubject } from "rxjs"
-import { filter, map, mapTo, multicast, refCount, retryWhen, switchMap, takeUntil } from "rxjs/operators"
+import { filter, map, mapTo, multicast, refCount, retryWhen, switchMap, takeUntil, tap } from "rxjs/operators"
 import {
   AutobahnConnectionProxy,
   ConnectionEvent,
@@ -48,6 +48,7 @@ const session$ = connection$.pipe(
     (connection): connection is ConnectionOpenEvent =>
       connection.type === ConnectionEventType.CONNECTED
   ),
+  tap(() => logger.info('Starting new session...')),
   map(connection => connection.session)
 )
 
@@ -56,7 +57,8 @@ logger.info(`Starting heartbeat for ${hostInstance}`)
 session$
   .pipe(
     takeUntil(exit$),
-    switchMap(session => interval(HEARTBEAT_INTERVAL_MS).pipe(mapTo(session)))
+    switchMap(session => interval(HEARTBEAT_INTERVAL_MS).pipe(mapTo(session))),
+    tap(() => logger.debug('Publish heartbeat'))
   )
   .subscribe(session => {
     const status = {
@@ -65,7 +67,12 @@ session$
       TimeStamp: Date.now(),
       Instance: hostInstance
     }
-    session.publish("status", [status])
+
+    try {
+      session.publish("status", [status])
+    } catch (err) {
+      logger.error('Failed to publish heartbeat', err)
+    }
   })
 
 session$.pipe(takeUntil(exit$)).subscribe(session => {
