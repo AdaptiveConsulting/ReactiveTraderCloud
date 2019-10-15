@@ -5,16 +5,14 @@ import {
   SPOT_QUOTE_INTENT,
   TRADES_INFO_INTENT,
 } from './intents'
-import { BasePlatformAdapter } from '../../rt-platforms/platformAdapter'
-import { WindowConfig } from '../../rt-platforms'
-import { WindowCenterStatus } from '../../rt-components/tear-off/types'
+import { PlatformAdapter, WindowConfig } from 'rt-platforms'
 
 const defaultConfig: WindowConfig = {
   name: '',
   url: '',
   width: 600,
   height: 400,
-  center: WindowCenterStatus.Parent,
+  center: 'parent',
   x: 0,
   y: 0,
 }
@@ -22,7 +20,7 @@ const defaultConfig: WindowConfig = {
 // Safer than location.origin due to browser support
 const ORIGIN = `${location.protocol}//${location.host}`
 
-function showCurrencyPair(currencyPair: string, { window }: BasePlatformAdapter) {
+function showCurrencyPair(currencyPair: string, { window }: PlatformAdapter) {
   // TODO: position and size of the window, also make it frame-less
   window.open({
     ...defaultConfig,
@@ -32,7 +30,7 @@ function showCurrencyPair(currencyPair: string, { window }: BasePlatformAdapter)
 
 export const handleIntent = (
   response: DetectIntentResponse[],
-  platformAdapter: BasePlatformAdapter,
+  platformAdapter: PlatformAdapter,
 ) => {
   const queryResult = response[0].queryResult
 

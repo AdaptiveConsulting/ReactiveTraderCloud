@@ -1,13 +1,13 @@
-import React, { FC, KeyboardEventHandler, useReducer, ChangeEventHandler } from 'react'
+import React, { ChangeEventHandler, FC, KeyboardEventHandler, useReducer } from 'react'
 import { styled } from 'rt-theme'
 import { AdaptiveLoader } from 'rt-components'
-import { reducer, initialState } from './reducer'
+import { initialState, reducer } from './reducer'
 import { useServiceStub } from './hooks'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { take, timeout } from 'rxjs/operators'
 import { mapIntent } from './responseMapper'
 import { DetectIntentResponse } from 'dialogflow'
-import { usePlatform } from '../../rt-platforms'
+import { usePlatform } from 'rt-platforms'
 import { handleIntent } from './handleIntent'
 
 const Container = styled.div`
