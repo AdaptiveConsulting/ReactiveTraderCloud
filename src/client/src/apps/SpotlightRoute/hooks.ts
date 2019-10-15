@@ -3,11 +3,12 @@ import {
   ConnectionEvent,
   createConnection$,
   RawServiceStatus,
-  retryWithBackOff, ServiceCollectionMap,
+  retryWithBackOff,
+  ServiceCollectionMap,
   serviceStatusStream$,
   ServiceStub,
   ServiceStubWithLoadBalancer
-} from '../../rt-system'
+} from 'rt-system'
 import { multicast, refCount, retryWhen } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
 import { useEffect, useState } from 'react'
@@ -39,7 +40,7 @@ export function useServiceStub(autobahn: AutobahnConnection) {
     const loadBalancedServiceStub = new ServiceStubWithLoadBalancer(serviceStub, serviceStatus$)
 
     setServiceStub(loadBalancedServiceStub);
-  }, [])
+  }, [autobahn])
 
 
   return {

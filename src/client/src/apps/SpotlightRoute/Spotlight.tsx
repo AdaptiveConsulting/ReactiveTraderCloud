@@ -6,6 +6,7 @@ import { useServiceStub } from './hooks'
 import { AutobahnConnectionProxy } from 'rt-system'
 import { take, timeout } from 'rxjs/operators'
 import { mapIntent } from './responseMapper'
+import { DetectIntentResponse } from 'dialogflow'
 
 const Container = styled.div`
   color: ${({ theme }) => theme.core.textColor};
@@ -67,7 +68,7 @@ export const Spotlight: FC = () => {
             timeout(5000),
             take(1)
           )
-          .subscribe((response: any) => {
+          .subscribe((response: DetectIntentResponse[]) => {
             const result = mapIntent(response);
             dispatch({ type: 'RECEIVE_RESPONSE', response: `I heard "${result}".` })
           }, () => {
