@@ -24,9 +24,9 @@ const tradeList: [string, string, string, string, boolean][] = [
 ]
 
 const notionalList = [
-  ['999999','999,999'],
-  ['2m','2,000,000'],
-  ['45k','45,000']
+  ['999999', '999,999'],
+  ['2m', '2,000,000'],
+  ['45k', '45,000']
 ]
 
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
