@@ -18,7 +18,7 @@ spec:
             secretName: nlp-key
       containers:
         - name: nlp
-          image: reactivetradercloud/nlp:4805
+          image: reactivetradercloud/nlp:5290
           volumeMounts:
             - name: google-cloud-key
               mountPath: /var/secrets/google
