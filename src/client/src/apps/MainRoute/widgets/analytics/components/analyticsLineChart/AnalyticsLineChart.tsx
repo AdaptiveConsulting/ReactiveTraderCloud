@@ -80,7 +80,8 @@ const LineCharts: React.FC<LineChartProps> = React.memo(props => {
   useEffect(() => {
     const newOffset = offsetState + 1 === intervalWidth ? 0 : offsetState + 1
     setOffsetState(newOffset)
-  }, [props, offsetState])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props])
 
   const getDataPoint = useCallback(
     (dataPoints: DataPoint[]) =>
