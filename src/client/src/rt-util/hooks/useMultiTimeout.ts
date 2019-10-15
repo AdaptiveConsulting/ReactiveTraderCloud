@@ -18,7 +18,8 @@ export function useMultiTimeout(...params: MultiTimeoutStage[]) {
 
   function runStage() {
     if (stageRef.current < params.length) {
-      const { onEnter = () => {}, duration = 0, onLeave = () => {} } = params[stageRef.current] || {}
+      const { onEnter = () => {}, duration = 0, onLeave = () => {} } =
+        params[stageRef.current] || {}
       onEnter(stageRef.current)
       // clearTimeout(timeoutRef.current)
       timeoutRef.current = window.setTimeout(() => {
@@ -46,6 +47,7 @@ export function useMultiTimeout(...params: MultiTimeoutStage[]) {
       mountedRef.current = false
       clearTimeout(timeoutRef.current)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return [stage, gotoStage] as [number, (stage: number) => void]

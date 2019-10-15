@@ -37,7 +37,7 @@ const Analytics: React.FC<Props> = ({
   // Resizing the window is causing the nvd3 chart to resize incorrectly. This forces a render when the window resizes
   useEffect(() => {
     forceUpdate()
-  }, [windowSize])
+  }, [windowSize, forceUpdate])
   return (
     <AnalyticsStyle inExternalWindow={inExternalWindow} data-qa="analytics__analytics-content">
       <ProfitAndLoss

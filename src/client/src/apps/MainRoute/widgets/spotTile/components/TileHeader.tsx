@@ -25,7 +25,7 @@ const TileHeader: React.SFC<Props> = ({ ccyPair, date, displayCurrencyChart }) =
     if (platform.hasFeature('share')) {
       platform.share(ccyPair.symbol)
     }
-  }, [ccyPair.symbol])
+  }, [ccyPair.symbol, platform])
 
   const baseTerm = `${ccyPair.base}/${ccyPair.terms}`
   return (

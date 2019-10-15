@@ -90,11 +90,14 @@ const Blotter: React.FC<BlotterProps> = props => {
     platform.fdc3.broadcast(getCurrencyPairContext(currencyPair))
   }
 
-  const onGridReady = useCallback(({ api }: { api: GridApi }) => {
-    setGridApi(api)
-    onModelUpdated()
-    api.sizeColumnsToFit()
-  }, [])
+  const onGridReady = useCallback(
+    ({ api }: { api: GridApi }) => {
+      setGridApi(api)
+      onModelUpdated()
+      api.sizeColumnsToFit()
+    },
+    [onModelUpdated],
+  )
 
   const exportToExcel = useCallback(() => {
     if (gridApi) {
