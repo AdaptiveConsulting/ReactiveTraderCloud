@@ -67,7 +67,7 @@ const TearOff: React.FC<TearOffProps> = props => {
       dispatch(
         LayoutActions.updateContainerVisibilityAction({ name: windowName, display: false, x, y }),
       ),
-    [windowName],
+    [windowName, dispatch],
   )
   const popIn = useCallback(
     () =>
