@@ -28,3 +28,7 @@ export const mapIntent = (response: DetectIntentResponse) => {
 export const isSpotQuoteIntent = (response: DetectIntentResponse) => {
   return response && response.queryResult.intent.displayName === SPOT_QUOTE_INTENT
 }
+
+export const isTradeIntent = (response: DetectIntentResponse) => {
+  return response && response.queryResult.intent.displayName === TRADES_INFO_INTENT
+}

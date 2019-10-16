@@ -6,9 +6,10 @@ import { useServiceStub } from './context'
 import { take, timeout } from 'rxjs/operators'
 import { DetectIntentResponse } from 'dialogflow'
 import { usePlatform } from 'rt-platforms'
-import { handleIntent } from './handleIntent'
-import { isSpotQuoteIntent, mapIntent } from './responseMapper'
+import { getCurrency, getCurrencyPair, handleIntent } from './handleIntent'
+import { isSpotQuoteIntent, isTradeIntent, mapIntent } from './responseMapper'
 import { InlineQuote } from './InlineQuote'
+import { InlineBlotter } from './InlineBlotter'
 
 const Container = styled.div`
   color: ${({theme}) => theme.core.textColor};
@@ -119,7 +120,15 @@ export const Spotlight: FC = () => {
       {isSpotQuoteIntent(response)
         ? (
           <Suggestion onClick={() => handleIntent(response, platform)}>
-            <InlineQuote currencyPair={response.queryResult.parameters.fields.CurrencyPairs.stringValue}/>
+            <InlineQuote currencyPair={getCurrencyPair(response.queryResult)}/>
+          </Suggestion>
+        )
+        : null
+      }
+      {isTradeIntent(response)
+        ? (
+          <Suggestion onClick={() => handleIntent(response, platform)}>
+            <InlineBlotter currency={getCurrency(response.queryResult)}/>
           </Suggestion>
         )
         : null
