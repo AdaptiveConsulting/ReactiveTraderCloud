@@ -80,7 +80,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
               currencyPair={currencyPair}
               disabled={tradingDisabled}
               rfqState={rfqState}
-              analyticsView={true}
+              isAnalyticsView={true}
             />
           </AnalyticsTileContent>
         </AnalyticsTileStyle>
