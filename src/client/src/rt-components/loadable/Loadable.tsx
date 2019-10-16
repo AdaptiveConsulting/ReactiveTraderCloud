@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { styled } from 'rt-theme'
 import { ServiceConnectionStatus } from 'rt-types'
 import DisconnectIcon from '../icons/DisconnectIcon'
@@ -35,32 +35,39 @@ interface Props {
   minHeight?: number
 }
 
-export default class Loadable extends Component<Props> {
-  componentDidMount = () => this.props.onMount && this.props.onMount()
+const Loadable: React.FC<Props> = ({
+  status,
+  render,
+  onMount,
+  message = 'Disconnected',
+  minWidth,
+  minHeight,
+}) => {
+  useEffect(() => {
+    onMount && onMount()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  render() {
-    const { status, render, message = 'Disconnected', minWidth, minHeight } = this.props
-
-    if (status === ServiceConnectionStatus.CONNECTED) {
-      return <Content minWidth={`${minWidth}rem`}>{render()}</Content>
-    }
-    return (
-      <LoadableStyle
-        minWidth={`${minWidth}rem`}
-        minHeight={`${minHeight}rem`}
-        data-qa="loadable__loader"
-      >
-        {status === ServiceConnectionStatus.CONNECTING ? (
-          <AdaptiveLoader size={50} speed={1.4} />
-        ) : (
-          <React.Fragment>
-            <div>
-              <DisconnectIcon width={2.75} height={3} />
-            </div>
-            <div>{message}</div>
-          </React.Fragment>
-        )}
-      </LoadableStyle>
-    )
-  }
+  return status === ServiceConnectionStatus.CONNECTED ? (
+    <Content minWidth={`${minWidth}rem`}>{render()}</Content>
+  ) : (
+    <LoadableStyle
+      minWidth={`${minWidth}rem`}
+      minHeight={`${minHeight}rem`}
+      data-qa="loadable__loader"
+    >
+      {status === ServiceConnectionStatus.CONNECTING ? (
+        <AdaptiveLoader size={50} speed={1.4} />
+      ) : (
+        <React.Fragment>
+          <div>
+            <DisconnectIcon width={2.75} height={3} />
+          </div>
+          <div>{message}</div>
+        </React.Fragment>
+      )}
+    </LoadableStyle>
+  )
 }
+
+export default Loadable

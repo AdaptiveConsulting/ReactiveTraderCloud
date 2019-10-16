@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { styled } from 'rt-theme'
 
 const ResizerStyle = styled.div`
@@ -44,66 +44,40 @@ interface Props {
   disabled?: boolean
 }
 
-interface State {
-  dragging: boolean
-  height: number
-}
+const Resizer: React.FC<Props> = ({ component, defaultHeight, children }) => {
+  const wrapperRef = React.createRef<HTMLDivElement>()
+  const [height, setHeight] = useState(defaultHeight)
+  const [dragging, setDragging] = useState<Boolean>(false)
 
-export default class Resizer extends Component<Props, State> {
-  wrapperRef = React.createRef<HTMLDivElement>()
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => setClientHeight(event.clientY)
+    const handleStop = () => (dragging ? setDragging(false) : null)
+    const handleTouchMove = (event: TouchEvent) => setClientHeight(event.touches[0].clientY)
 
-  state = {
-    dragging: false,
-    height: this.props.defaultHeight,
-  }
+    // componentDidMount calls
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleStop)
+    document.addEventListener('touchmove', handleTouchMove)
+    document.addEventListener('touchend', handleStop)
 
-  componentDidMount = () => {
-    // Add event listeners to mouse and touch movements on component mount
-
-    document.addEventListener('mousemove', this.handleMouseMove)
-
-    document.addEventListener('mouseup', this.handleStop)
-
-    document.addEventListener('touchmove', this.handleTouchMove)
-
-    document.addEventListener('touchend', this.handleStop)
-  }
-
-  componentWillUnmount = () => {
-    // Remove event listeners on unmount
-
-    document.removeEventListener('mousemove', this.handleMouseMove)
-
-    document.removeEventListener('mouseup', this.handleStop)
-
-    document.removeEventListener('touchmove', this.handleTouchMove)
-
-    document.removeEventListener('touchend', this.handleStop)
-  }
-
-  handleStop = () => {
-    if (this.state.dragging) {
-      this.setState({ dragging: false })
+    return () => {
+      // componentWillUnmount calls - for cleanup
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleStop)
+      document.removeEventListener('touchmove', handleTouchMove)
+      document.removeEventListener('touchend', handleStop)
     }
-  }
+  })
 
-  handleStart = () => this.setState({ dragging: true })
+  const handleStart = useCallback(() => setDragging(true), [setDragging])
 
-  handleMouseMove = (event: MouseEvent) => this.setHeight(event.clientY)
-
-  handleTouchMove = (event: TouchEvent) => this.setHeight(event.touches[0].clientY)
-
-  setHeight = (clientY: number) => {
+  const setClientHeight = (clientY: number) => {
     // If we're not dragging the resize bar, don't do anything
-    if (!this.state.dragging) {
-      return
-    }
+    if (!dragging) return
 
-    const wrapperElement = this.wrapperRef.current
+    const wrapperElement = wrapperRef.current
 
-    if (!wrapperElement) {
-      return
-    }
+    if (!wrapperElement) return
 
     // Calculate the height of the bottom div based on cursor position
     const wrapperHeight = wrapperElement.offsetHeight
@@ -115,38 +89,27 @@ export default class Resizer extends Component<Props, State> {
     let height = Math.round((rawHeight / wrapperHeight) * 100)
 
     // Block heights that would completely overlap top div
-    if (height > 90) {
-      height = 90
-    }
+    if (height > 90) height = 90
 
     // Block heights that would hide bottom div
-    if (height < 10) {
-      height = 10
-    }
+    if (height < 10) height = 10
 
-    this.setState({ height })
+    setHeight(height)
   }
 
-  render() {
-    const { children, component, disabled } = this.props
-    let { height } = this.state
-
-    if (disabled) {
-      height = 0
-    }
-
-    return (
-      <ResizerStyle ref={this.wrapperRef}>
-        <ResizableSection height={100 - height}>
-          <ResizableContent>{children}</ResizableContent>
-        </ResizableSection>
-        <ResizableSection height={height}>
-          <ResizableContent>
-            <Bar onMouseDown={this.handleStart} onTouchStart={this.handleStart} />
-            {component()}
-          </ResizableContent>
-        </ResizableSection>
-      </ResizerStyle>
-    )
-  }
+  return (
+    <ResizerStyle ref={wrapperRef}>
+      <ResizableSection height={100 - height}>
+        <ResizableContent>{children}</ResizableContent>
+      </ResizableSection>
+      <ResizableSection height={height}>
+        <ResizableContent>
+          <Bar onMouseDown={handleStart} onTouchStart={handleStart} />
+          {component()}
+        </ResizableContent>
+      </ResizableSection>
+    </ResizerStyle>
+  )
 }
+
+export default Resizer
