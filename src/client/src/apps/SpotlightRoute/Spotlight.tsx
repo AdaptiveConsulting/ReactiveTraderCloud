@@ -2,16 +2,15 @@ import React, { ChangeEventHandler, FC, KeyboardEventHandler, useReducer } from 
 import { styled } from 'rt-theme'
 import { AdaptiveLoader } from 'rt-components'
 import { initialState, reducer } from './reducer'
-import { useServiceStub } from './hooks'
-import { AutobahnConnectionProxy } from 'rt-system'
+import { useServiceStub } from './context'
 import { take, timeout } from 'rxjs/operators'
-import { mapIntent } from './responseMapper'
 import { DetectIntentResponse } from 'dialogflow'
 import { usePlatform } from 'rt-platforms'
 import { handleIntent } from './handleIntent'
+import { mapIntent } from './responseMapper'
 
 const Container = styled.div`
-  color: ${({ theme }) => theme.core.textColor};
+  color: ${({theme}) => theme.core.textColor};
   display: flex;
   flex-flow: column nowrap;
   padding: 1rem;
@@ -40,58 +39,59 @@ const Response = styled.div`
   margin: 0.5rem 0 0;
 `
 
+const Suggestion = styled.div`
+  padding: 10px 5px;
+  line-height: 1rem;
+  cursor: pointer;
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  &:hover {
+    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
+  }
+`
+
 const Contacting = styled.span`
   margin-left: 0.5rem;
 `
 
 const INPUT_ID = 'spotlight'
 
-const autobahn = new AutobahnConnectionProxy(
-  process.env.REACT_APP_BROKER_HOST || location.hostname,
-  'com.weareadaptive.reactivetrader',
-  +(process.env.REACT_APP_BROKER_PORT || location.port),
-)
-
 export const Spotlight: FC = () => {
-  const [{ request, response, contacting }, dispatch] = useReducer(reducer, initialState)
-  const { serviceStub } = useServiceStub(autobahn)
+  const [{request, response, contacting}, dispatch] = useReducer(reducer, initialState)
+  const serviceStub = useServiceStub()
   const platform = usePlatform()
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = e => {
-    dispatch({ type: 'SET_REQUEST', request: e.target.value })
+    dispatch({type: 'SET_REQUEST', request: e.target.value})
   }
 
   const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = e => {
     switch (e.key) {
       case 'Enter':
         const value = e.currentTarget.value
-        dispatch({ type: 'SEND_REQUEST', request: value })
+        dispatch({type: 'SEND_REQUEST', request: value})
         serviceStub
-          .createRequestResponseOperation('nlp', 'getNlpIntent', value)
+          .createRequestResponseOperation<DetectIntentResponse[], string>('nlp', 'getNlpIntent', value)
           .pipe(
             timeout(5000),
             take(1),
           )
-          .subscribe(
-            (response: DetectIntentResponse[]) => {
+          .subscribe(response => {
               //TODO: remove this explicit handling of intents, favor registering handlers for different intents (fdc3?)
-              handleIntent(response, platform)
-
-              const result = mapIntent(response)
-              dispatch({ type: 'RECEIVE_RESPONSE', response: `I heard "${result}".` })
+              dispatch({type: 'RECEIVE_RESPONSE', response: response[0]})
             },
-            () => {
-              dispatch({ type: 'RECEIVE_RESPONSE', response: `Oops. I didn't hear anything.` })
+            (err: any) => {
+              console.error(err)
+              dispatch({type: 'RECEIVE_RESPONSE', response: response[0]})
             },
           )
         break
       case 'ArrowDown':
         e.preventDefault()
-        dispatch({ type: 'HISTORY_NEXT' })
+        dispatch({type: 'HISTORY_NEXT'})
         break
       case 'ArrowUp':
         e.preventDefault()
-        dispatch({ type: 'HISTORY_PREVIOUS' })
+        dispatch({type: 'HISTORY_PREVIOUS'})
         break
     }
   }
@@ -109,11 +109,13 @@ export const Spotlight: FC = () => {
       <Response>
         {contacting ? (
           <>
-            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
+            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary"/>
             <Contacting>Contacting…</Contacting>
           </>
         ) : (
-          response
+          <Suggestion onClick={() => handleIntent(response, platform)}>
+            {mapIntent(response)}
+          </Suggestion>
         )}
       </Response>
     </Container>
