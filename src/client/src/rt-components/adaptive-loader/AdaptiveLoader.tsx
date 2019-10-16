@@ -1,5 +1,5 @@
 import { memoize } from 'lodash'
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { keyframes } from 'styled-components'
 import { styled } from 'rt-theme'
 
@@ -49,10 +49,8 @@ interface Props {
   speed?: number
 }
 
-export class AdaptiveLoader extends PureComponent<Props> {
-  render() {
-    const { size, type, seperation, speed, children } = this.props
-
+const AdaptiveLoader: React.FC<Props> = React.memo(
+  ({ size, type, seperation, speed, children }) => {
     const sizeNum = Number(size)
     const barHeight = sizeNum * 0.75
     const barWidth = barHeight / 4
@@ -78,7 +76,7 @@ export class AdaptiveLoader extends PureComponent<Props> {
         {children}
       </svg>
     )
-  }
-}
+  },
+)
 
 export default AdaptiveLoader
