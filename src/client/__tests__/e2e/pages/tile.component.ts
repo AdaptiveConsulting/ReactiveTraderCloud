@@ -71,10 +71,10 @@ export class TileComponent {
     await wait(2000)
   }
 
-  async setNotional(currencyTrade: string, textNotional: string, notional: number) {
-    const textElement = this.tradeType[currencyTrade][textNotional]
+  async setNotional(currencyTrade: string, notional: string) {
+    const textElement = this.tradeType[currencyTrade].notional
     if (!textElement) {
-      throw new Error(`could not find element with symbol ${currencyTrade}${textNotional}`)
+      throw new Error(`could not find element with symbol ${currencyTrade}`)
     }
     await waitForElementToBeVisible(this.browser, textElement)
     await textElement.clear()
