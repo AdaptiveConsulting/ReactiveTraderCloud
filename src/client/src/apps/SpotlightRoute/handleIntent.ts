@@ -8,7 +8,7 @@ import {
 import { PlatformAdapter } from 'rt-platforms'
 import { showBlotter, showCurrencyPair } from './intent-handlers'
 
-function getCurrencyPair(queryResult: QueryResult): string | undefined {
+export function getCurrencyPair(queryResult: QueryResult): string | undefined {
   try {
     return queryResult.parameters.fields.CurrencyPairs.stringValue
   } catch (e) {
@@ -17,7 +17,7 @@ function getCurrencyPair(queryResult: QueryResult): string | undefined {
   }
 }
 
-function getCurrency(queryResult: QueryResult): string | undefined {
+export function getCurrency(queryResult: QueryResult): string | undefined {
   try {
     return queryResult.parameters.fields.Currency.stringValue
   } catch (e) {
