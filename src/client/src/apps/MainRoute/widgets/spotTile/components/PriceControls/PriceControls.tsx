@@ -30,7 +30,7 @@ const PriceControls: React.FC<Props> = ({
   rfqState,
   disabled,
   isTradeExecutionInFlight,
-  isAnalyticsView: isAnalyticsView,
+  isAnalyticsView,
 }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
