@@ -18,10 +18,11 @@ const Table = styled.table`
 `
 
 interface IProps {
-  currency: string
+  currency?: string
+  count?: number
 }
 
-export const InlineBlotter: FC<IProps> = ({currency}) => {
+export const InlineBlotter: FC<IProps> = ({currency, count}) => {
   const [trades, setTrades] = useState([])
   const serviceStub = useServiceStub()
   const blotterService = useBlotterService(serviceStub)
@@ -40,7 +41,7 @@ export const InlineBlotter: FC<IProps> = ({currency}) => {
         map((trades: TradeLookup) => Array.from(trades.values()).reverse()),
       )
       .subscribe(result => {
-        setTrades(result)
+        setTrades(result.slice(0, count))
       }, console.error)
 
     return () => {
@@ -48,7 +49,7 @@ export const InlineBlotter: FC<IProps> = ({currency}) => {
         subscription.unsubscribe()
       }
     }
-  }, [blotterService, currency])
+  }, [blotterService, currency, count])
 
   return (
     <>
