@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ExpandIcon = () => (
+const ExpandIcon: React.FC = () => (
   <svg
     width="12px"
     height="12px"

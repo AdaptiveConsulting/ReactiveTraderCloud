@@ -57,10 +57,9 @@ export interface TearOffProps {
   dragTearOff: boolean
 }
 
-const TearOff: React.FC<TearOffProps> = props => {
+const TearOff: React.FC<TearOffProps> = ({ render, externalWindowProps, tornOff, dragTearOff }) => {
   const { allowTearOff } = usePlatform()
   const dispatch = useDispatch()
-  const { render, externalWindowProps, tornOff, dragTearOff } = props
   const windowName = externalWindowProps.config.name
   const popOut = useCallback(
     (x: number, y: number) =>
