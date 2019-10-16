@@ -8,9 +8,12 @@ export const mapIntent = (response: DetectIntentResponse) => {
   }
 
   switch (response.queryResult.intent.displayName) {
+    case SPOT_QUOTE_INTENT:
+      const currencyPair = response.queryResult.parameters.fields.CurrencyPairs.stringValue
+      result = `Open ${currencyPair}`
+      break
     case CURRENCY_INTENT:
     case MARKET_INFO_INTENT:
-    case SPOT_QUOTE_INTENT:
     case TRADES_INFO_INTENT:
     default:
       result = [
@@ -20,4 +23,8 @@ export const mapIntent = (response: DetectIntentResponse) => {
   }
 
   return result
+}
+
+export const isSpotQuoteIntent = (response: DetectIntentResponse) => {
+  return response && response.queryResult.intent.displayName === SPOT_QUOTE_INTENT
 }
