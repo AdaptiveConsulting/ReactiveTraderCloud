@@ -26,6 +26,15 @@ export function getCurrency(queryResult: QueryResult): string | undefined {
   }
 }
 
+export function getNumber(queryResult: QueryResult): number | undefined {
+  try {
+    return queryResult.parameters.fields.number.numberValue
+  } catch (e) {
+    console.error(`Can't read number`)
+    return undefined
+  }
+}
+
 function getIntentDisplayName(queryResult: QueryResult): string | undefined {
   try {
     return queryResult.intent.displayName

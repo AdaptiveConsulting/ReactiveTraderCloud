@@ -6,7 +6,7 @@ import { useServiceStub } from './context'
 import { take, timeout } from 'rxjs/operators'
 import { DetectIntentResponse } from 'dialogflow'
 import { usePlatform } from 'rt-platforms'
-import { getCurrency, getCurrencyPair, handleIntent } from './handleIntent'
+import { getCurrency, getCurrencyPair, handleIntent, getNumber } from './handleIntent'
 import { isSpotQuoteIntent, isTradeIntent, mapIntent } from './responseMapper'
 import { InlineQuote } from './InlineQuote'
 import { InlineBlotter } from './InlineBlotter'
@@ -128,7 +128,7 @@ export const Spotlight: FC = () => {
       {isTradeIntent(response)
         ? (
           <Suggestion onClick={() => handleIntent(response, platform)}>
-            <InlineBlotter currency={getCurrency(response.queryResult)}/>
+            <InlineBlotter currency={getCurrency(response.queryResult)} count={getNumber(response.queryResult)}/>
           </Suggestion>
         )
         : null
