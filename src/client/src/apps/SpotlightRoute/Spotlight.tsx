@@ -71,7 +71,7 @@ export const Spotlight: FC = () => {
         dispatch({ type: 'SEND_REQUEST', request: value })
         serviceStub
           .createRequestResponseOperation<DetectIntentResponse[], string>(
-            'nlp-vlad',
+            'nlp',
             'getNlpIntent',
             value,
           )
