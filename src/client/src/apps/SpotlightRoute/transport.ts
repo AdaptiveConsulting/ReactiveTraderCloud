@@ -1,13 +1,12 @@
 import {
   AutobahnConnection,
-  ConnectionEvent,
   createConnection$,
   RawServiceStatus,
   retryWithBackOff, ServiceCollectionMap,
   serviceStatusStream$,
   ServiceStub, ServiceStubWithLoadBalancer
 } from '../../rt-system'
-import { multicast, refCount, retryWhen } from 'rxjs/operators'
+import { multicast, refCount, retryWhen, shareReplay } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
 
 const HEARTBEAT_TIMEOUT = 3000;
@@ -15,10 +14,7 @@ const HEARTBEAT_TIMEOUT = 3000;
 export function createServiceStub(autobahn: AutobahnConnection) {
   const connection$ = createConnection$(autobahn).pipe(
     retryWhen(retryWithBackOff()),
-    multicast(() => {
-      return new ReplaySubject<ConnectionEvent>(1)
-    }),
-    refCount(),
+    shareReplay(1)
   )
 
   const serviceStub = new ServiceStub('Spotlight', connection$)
