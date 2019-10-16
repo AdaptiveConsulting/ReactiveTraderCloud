@@ -44,7 +44,7 @@ interface Props {
   disabled?: boolean
 }
 
-const Resizer: React.FC<Props> = ({ component, defaultHeight, children }) => {
+const Resizer: React.FC<Props> = ({ component, defaultHeight, children, disabled }) => {
   const wrapperRef = React.createRef<HTMLDivElement>()
   const [height, setHeight] = useState(defaultHeight)
   const [dragging, setDragging] = useState<Boolean>(false)
@@ -68,6 +68,12 @@ const Resizer: React.FC<Props> = ({ component, defaultHeight, children }) => {
       document.removeEventListener('touchend', handleStop)
     }
   })
+
+  useEffect(() => {
+    if (disabled) setHeight(0)
+
+    return () => setHeight(defaultHeight)
+  }, [disabled, defaultHeight])
 
   const handleStart = useCallback(() => setDragging(true), [setDragging])
 
