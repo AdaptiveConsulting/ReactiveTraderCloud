@@ -1,8 +1,10 @@
+import { DetectIntentResponse } from 'dialogflow'
+
 type State = {
   request: string
-  response: string
+  response: DetectIntentResponse
   contacting: boolean
-  history: readonly string[]
+  readonly history: string[]
   historyPosition: number
 }
 
@@ -17,7 +19,7 @@ type Action =
     }
   | {
       type: 'RECEIVE_RESPONSE'
-      response: string
+      response: DetectIntentResponse
     }
   | {
       type: 'HISTORY_PREVIOUS'
@@ -30,7 +32,7 @@ const HISTORY_SIZE = 20
 
 export const initialState: State = {
   request: '',
-  response: '',
+  response: null,
   contacting: false,
   history: [],
   historyPosition: -1,

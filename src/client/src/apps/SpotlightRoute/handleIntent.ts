@@ -29,10 +29,10 @@ function showCurrencyPair(currencyPair: string, { window }: PlatformAdapter) {
 }
 
 export const handleIntent = (
-  response: DetectIntentResponse[],
+  response: DetectIntentResponse,
   platformAdapter: PlatformAdapter,
 ) => {
-  const queryResult = response[0].queryResult
+  const queryResult = response.queryResult
 
   let intentDisplayName
   try {
