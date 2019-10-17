@@ -25,10 +25,7 @@
     ]
   },
   "runtime": {
-    "arguments": "--force-device-scale-factor=1",
-    "version": "10.66.39.43",
-    "futureVersion": "10.66.39.43",
-    "forceLatest": true
+    "version": "10.66.39.43"
   },
   "shortcut": {
     "company": "Adaptive Consulting",
@@ -46,16 +43,16 @@
           "tab": false
         }
       },
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/app.json"
-    },
-    {
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.0.5/app.json"
+  },
+  {
       "name": "fdc3",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/app.json"
-    },
-    {
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.1.1/app.json"
+  },
+  {
       "name": "notifications",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/app.json"
-    }
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.10.1/app.json"
+  }
   ],
   "appAssets": [
     {
