@@ -71,10 +71,6 @@ export const handleIntent = (response: DetectIntentResponse, platformAdapter: Pl
     case TRADES_INFO_INTENT: {
       const currencyPair = getCurrencyPair(queryResult)
       const currency = getCurrency(queryResult)
-      if (!currencyPair || !currency) {
-        console.error(`No currency pair or currency in queryResult`)
-        return
-      }
       showBlotter({ currencyPair, currency }, platformAdapter)
       return
     }
