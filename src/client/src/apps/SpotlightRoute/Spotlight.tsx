@@ -97,6 +97,8 @@ export const Spotlight: FC = () => {
     return () => {
       subscription.unsubscribe()
     }
+    // Only trigger nlp call when contacting goes to 'true'.
+    // The request variable is updated on every input change, hence why we remove it from the list of deps below
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contacting, serviceStub])
 
