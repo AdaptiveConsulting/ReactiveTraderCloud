@@ -57,6 +57,11 @@ export class TileComponent {
         labelTradeId: root.element(by.qa('tile-notification__tradeid')),
         labelMessage: root.element(by.qa('tile-notification__content')),
         pillButton: root.element(by.qa('tile-notification__pill-button'))
+      },
+      initiateRFQ: {
+        buttonInitiateRFQ: root.element(by.qa('tile-booking__booking-status')),
+        buttonReload: root.element(by.qa('notional-input__reset-input-value')),
+        buttonReject: root.element(by.qa('rfq-timer__reject-quote-button')),
       }
     }
   }
@@ -69,6 +74,15 @@ export class TileComponent {
     await waitForElementToBeClickable(this.browser, buttonElement)
     await buttonElement.click()
     await wait(2000)
+  }
+  async resetNotional(currencyTrade: string) {
+    const buttonElement = this.tradeType.initiateRFQ.buttonReload
+    if (!buttonElement) {
+      throw new Error(`could not find reset notional button on ${currencyTrade}`)
+    }
+    await waitForElementToBeClickable(this.browser, buttonElement)
+    await buttonElement.click()
+    await wait(200)
   }
 
   async setNotional(currencyTrade: string, notional: string) {

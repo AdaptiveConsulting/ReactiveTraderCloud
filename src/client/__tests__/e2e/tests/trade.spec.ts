@@ -25,6 +25,7 @@ const tradeList: [string, string, string, string, boolean][] = [
 
 const notionalList = [
   ['999999', '999,999'],
+  ['2345678.99', '2,345,678.99'],
   ['2m', '2,000,000'],
   ['45k', '45,000']
 ]
@@ -48,6 +49,20 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
       const returnedNotional = notional.getAttribute('value')
       expect(returnedNotional).toEqual(expectedNotional)
     })
+  })
+
+  it('Should validate a notional value larger than the maximum allowed', async () => {
+    await mainPage.tile.setNotional('EURToUSD', '99999999')
+    const notional = await mainPage.tile.tradeType.EURToUSD.notional
+    var returnedNotional = notional.getAttribute('value')
+    expect(returnedNotional).toEqual('99,999,999')
+    const resetInput = await mainPage.tile.tradeType.EURToUSD.resetInput
+    const labelRFQ = await mainPage.tile.tradeType.confirmationScreen.labelRFQ
+    const RFQText = labelRFQ.getText()
+    expect(RFQText).toEqual('Initiate\nRFQ')
+    await mainPage.tile.resetNotional('EURToUSD')
+    returnedNotional = notional.getAttribute('value')
+    expect(returnedNotional).toEqual('1,000,000')
   })
 
   currencyList.forEach(([selectedCurrency, expectedCurrencies]) => {
