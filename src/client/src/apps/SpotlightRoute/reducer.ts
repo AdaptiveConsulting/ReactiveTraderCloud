@@ -49,7 +49,6 @@ export function reducer(currentState: State, action: Action): State {
     case 'SEND_REQUEST':
       return {
         ...currentState,
-        request: '',
         contacting: true,
         history: [
           action.request,
