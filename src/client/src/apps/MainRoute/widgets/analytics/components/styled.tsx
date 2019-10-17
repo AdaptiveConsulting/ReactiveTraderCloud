@@ -23,7 +23,7 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
-  padding: 1rem;
+  padding: 0.25rem 1rem 1rem 1rem;
   font-size: 1rem;
   scrollbar-width: thin;
 
@@ -124,10 +124,12 @@ export const BubbleChart = styled.div`
 `
 
 export const Controls = styled('div')`
+  text-align: right;
+  padding-bottom: 0.25rem;
   opacity: 0;
   transition: opacity 0.2s;
 
-  /* We want to whow the popout icon when we hover over the whole panel */
+  /* We want to show the popout icon when we hover over the whole panel */
   ${AnalyticsStyle}:hover & {
     opacity: 0.75;
   }

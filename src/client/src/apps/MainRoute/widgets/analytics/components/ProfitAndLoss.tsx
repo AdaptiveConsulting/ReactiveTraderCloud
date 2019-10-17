@@ -22,11 +22,11 @@ export const ProfitAndLoss: FC<ProfitAndLossProps> = ({
   popoutButton,
 }) => (
   <ProfitAndLossStyle>
+    {popoutButton}
     <Header>
       <Title>Profit &amp; Loss</Title>
-      {popoutButton}
+      <LastPosition lastPos={analyticsLineChartModel.lastPos} />
     </Header>
-    <LastPosition lastPos={analyticsLineChartModel.lastPos} />
     <AnalyticsLineChartWrapper>
       <AnalyticsLineChart model={analyticsLineChartModel} />
     </AnalyticsLineChartWrapper>
