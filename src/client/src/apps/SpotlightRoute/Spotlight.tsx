@@ -1,12 +1,19 @@
-import React, { ChangeEventHandler, FC, KeyboardEventHandler, useReducer } from 'react'
+import React, {
+  ChangeEventHandler,
+  FC,
+  FocusEventHandler,
+  KeyboardEventHandler,
+  useEffect,
+  useReducer
+} from 'react'
 import { styled } from 'rt-theme'
 import { AdaptiveLoader } from 'rt-components'
 import { initialState, reducer } from './reducer'
 import { useServiceStub } from './context'
-import { take, timeout } from 'rxjs/operators'
+import { take, tap, timeout } from 'rxjs/operators'
 import { DetectIntentResponse } from 'dialogflow'
 import { usePlatform } from 'rt-platforms'
-import { getCurrency, getCurrencyPair, handleIntent, getNumber } from './handleIntent'
+import { getCurrency, getCurrencyPair, getNumber, handleIntent } from './handleIntent'
 import { isSpotQuoteIntent, isTradeIntent, mapIntent } from './responseMapper'
 import { InlineQuote } from './InlineQuote'
 import { InlineBlotter } from './InlineBlotter'
@@ -62,6 +69,39 @@ export const Spotlight: FC = () => {
   const serviceStub = useServiceStub()
   const platform = usePlatform()
 
+  useEffect(() => {
+    if (!contacting) {
+      return;
+    }
+    const subscription = serviceStub
+      .createRequestResponseOperation<DetectIntentResponse[], string>(
+        'nlp',
+        'getNlpIntent',
+        request,
+      )
+      .pipe(
+        tap(() => console.info(JSON.stringify(request))),
+        timeout(10000),
+        take(1),
+      )
+      .subscribe(
+        response => {
+          dispatch({type: 'RECEIVE_RESPONSE', response: response[0]})
+        },
+        (err: any) => {
+          console.error(err)
+          dispatch({type: 'RECEIVE_RESPONSE', response: null})
+        },
+      )
+
+    return () => {
+      subscription.unsubscribe()
+    }
+    // Only trigger nlp call when contacting goes to 'true'.
+    // The request variable is updated on every input change, hence why we remove it from the list of deps below
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contacting, serviceStub])
+
   const handleChange: ChangeEventHandler<HTMLInputElement> = e => {
     dispatch({type: 'SET_REQUEST', request: e.target.value})
   }
@@ -71,26 +111,6 @@ export const Spotlight: FC = () => {
       case 'Enter':
         const value = e.currentTarget.value
         dispatch({type: 'SEND_REQUEST', request: value})
-        serviceStub
-          .createRequestResponseOperation<DetectIntentResponse[], string>(
-            'nlp',
-            'getNlpIntent',
-            value,
-          )
-          .pipe(
-            timeout(5000),
-            take(1),
-          )
-          .subscribe(
-            response => {
-              //TODO: remove this explicit handling of intents, favor registering handlers for different intents (fdc3?)
-              dispatch({type: 'RECEIVE_RESPONSE', response: response[0]})
-            },
-            (err: any) => {
-              console.error(err)
-              dispatch({type: 'RECEIVE_RESPONSE', response: response && response[0]})
-            },
-          )
         break
       case 'ArrowDown':
         e.preventDefault()
@@ -101,6 +121,10 @@ export const Spotlight: FC = () => {
         dispatch({type: 'HISTORY_PREVIOUS'})
         break
     }
+  }
+
+  const handleFocus: FocusEventHandler<HTMLInputElement> = e => {
+    e.currentTarget.setSelectionRange(0, e.currentTarget.value.length);
   }
 
   const intent = mapIntent(response)
@@ -143,6 +167,7 @@ export const Spotlight: FC = () => {
         id={INPUT_ID}
         autoFocus
         value={request}
+        onFocus={handleFocus}
         onChange={handleChange}
         onKeyDown={handleOnKeyDown}
       />
