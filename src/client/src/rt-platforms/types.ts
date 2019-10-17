@@ -65,4 +65,7 @@ export enum InteropTopics {
 
   // Send to legacy Excel adapter to update UI
   PositionClosed = 'position-closed',
+
+  // Spotlight
+  FilterBlotter = 'filter-blotter'
 }
