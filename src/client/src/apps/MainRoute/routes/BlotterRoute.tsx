@@ -1,8 +1,10 @@
 import React from 'react'
 import { styled } from 'rt-theme'
 import { BlotterContainer } from '../widgets/blotter'
-import { SYMBOL, TRADER_NAME } from '../widgets/blotter/components/blotterUtils';
-import { FilterValuesByFieldId } from '../widgets/blotter/BlotterContainer';
+import { DEALT_CURRENCY, SYMBOL } from '../widgets/blotter/components/blotterUtils';
+import { BlotterFilter } from '../widgets/blotter/BlotterContainer';
+import queryString from 'query-string';
+import { RouteComponentProps } from 'react-router';
 
 const BlotterContainerStyle = styled('div')`
   height: calc(100% - 21px);
@@ -11,15 +13,21 @@ const BlotterContainerStyle = styled('div')`
   margin: auto;
 `
 
-const defaultPreset: FilterValuesByFieldId = {
-  [SYMBOL]: ['GBPJPY', 'USDJPY'],
-  [TRADER_NAME]: ['MPE']
-}
+const getFilterFromQueryStr: (queryStr: string) => BlotterFilter =
+  queryStr => {
+    const parsedQueryString = queryString.parse(queryStr)
+    return {
+      [SYMBOL]: parsedQueryString[SYMBOL] as ReadonlyArray<any>,
+      [DEALT_CURRENCY]: parsedQueryString[DEALT_CURRENCY] as ReadonlyArray<any>
+    }
+  }
 
-const BlotterRoute = () => (
-  <BlotterContainerStyle>
-    <BlotterContainer filters={defaultPreset}/>
-  </BlotterContainerStyle>
-)
+const BlotterRoute = ({location: {search}}: RouteComponentProps<{ symbol: string }>) => {
+  return (
+    <BlotterContainerStyle>
+      <BlotterContainer filter={getFilterFromQueryStr(search)}/>
+    </BlotterContainerStyle>
+  )
+}
 
 export default BlotterRoute

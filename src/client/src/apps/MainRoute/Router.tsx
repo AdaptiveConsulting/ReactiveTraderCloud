@@ -10,7 +10,7 @@ export const Router: FC = () => (
       path="/"
       render={() => (
         <RouteWrapper>
-          <ShellRoute />
+          <ShellRoute/>
         </RouteWrapper>
       )}
     />
@@ -18,19 +18,19 @@ export const Router: FC = () => (
       path="/analytics"
       render={() => (
         <RouteWrapper windowType="sub">
-          <AnalyticsRoute />
+          <AnalyticsRoute/>
         </RouteWrapper>
       )}
     />
     <Route
       path="/blotter"
-      render={() => (
+      render={routeProps => (
         <RouteWrapper windowType="sub">
-          <BlotterRoute />
+          <BlotterRoute {...routeProps}/>
         </RouteWrapper>
       )}
     />
-    <Route path="/tiles" component={TileRoute} />
+    <Route path="/tiles" component={TileRoute}/>
     <Route
       path="/spot/:symbol"
       render={routeProps => (

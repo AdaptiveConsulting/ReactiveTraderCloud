@@ -9,18 +9,22 @@ import { selectBlotterRows, selectBlotterStatus } from './selectors'
 import { usePlatform } from 'rt-platforms'
 import { Trade } from 'rt-types'
 
-export type FilterValuesByFieldId = { [fieldId: string]: ReadonlyArray<any> }
+export type FieldValues = ReadonlyArray<any> | undefined;
+export type BlotterFilter = { [fieldId: string]: FieldValues }
 
 interface BlotterContainerOwnProps {
-  filters?: FilterValuesByFieldId
+  filter?: BlotterFilter
   onPopoutClick?: () => void
   tornOff?: boolean
   tearable?: boolean
 }
 
-const tradeMatchesFilter = (trade: Trade, filterField: string, matchingValues: ReadonlyArray<any>) => {
+const tradeMatchesFilter = (trade: Trade, filterField: string, filteringFieldValues: FieldValues) => {
   if (!trade) {
     return false
+  }
+  if (!filteringFieldValues) {
+    return true
   }
   if (!(trade as any).hasOwnProperty(filterField)) {
     console.warn(`Trying to filter of field ${filterField} which does not exist in 'Trade' object`);
@@ -29,10 +33,10 @@ const tradeMatchesFilter = (trade: Trade, filterField: string, matchingValues: R
 
   const tradeFieldValue = trade[filterField]
 
-  return matchingValues.includes(tradeFieldValue)
+  return filteringFieldValues.includes(tradeFieldValue)
 }
 
-function selectBlotterRowsAndFilter(state: GlobalState, filters?: FilterValuesByFieldId) {
+function selectBlotterRowsAndFilter(state: GlobalState, filters?: BlotterFilter) {
   const trades: ReadonlyArray<Trade> = selectBlotterRows(state)
   return trades.filter(
     trade => {
@@ -40,13 +44,16 @@ function selectBlotterRowsAndFilter(state: GlobalState, filters?: FilterValuesBy
         return true
       }
       const fieldsToFilterBy = Object.keys(filters);
+      if (fieldsToFilterBy.length === 0) {
+        return true
+      }
       return fieldsToFilterBy.every(fieldToFilterBy => tradeMatchesFilter(trade, fieldToFilterBy, filters[fieldToFilterBy]))
     }
   )
 }
 
 const mapStateToProps = (state: GlobalState, ownProps: BlotterContainerOwnProps) => ({
-  rows: selectBlotterRowsAndFilter(state, ownProps.filters),
+  rows: selectBlotterRowsAndFilter(state, ownProps.filter),
   status: selectBlotterStatus(state),
 })
 
