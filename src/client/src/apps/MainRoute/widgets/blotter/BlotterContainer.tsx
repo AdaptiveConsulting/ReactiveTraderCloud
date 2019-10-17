@@ -7,15 +7,46 @@ import { BlotterActions } from './actions'
 import Blotter from './components'
 import { selectBlotterRows, selectBlotterStatus } from './selectors'
 import { usePlatform } from 'rt-platforms'
+import { Trade } from 'rt-types'
+
+export type FilterValuesByFieldId = { [fieldId: string]: ReadonlyArray<any> }
 
 interface BlotterContainerOwnProps {
+  filters?: FilterValuesByFieldId
   onPopoutClick?: () => void
   tornOff?: boolean
   tearable?: boolean
 }
 
-const mapStateToProps = (state: GlobalState) => ({
-  rows: selectBlotterRows(state),
+const tradeMatchesFilter = (trade: Trade, filterField: string, matchingValues: ReadonlyArray<any>) => {
+  if (!trade) {
+    return false
+  }
+  if (!(trade as any).hasOwnProperty(filterField)) {
+    console.warn(`Trying to filter of field ${filterField} which does not exist in 'Trade' object`);
+    return true
+  }
+
+  const tradeFieldValue = trade[filterField]
+
+  return matchingValues.includes(tradeFieldValue)
+}
+
+function selectBlotterRowsAndFilter(state: GlobalState, filters?: FilterValuesByFieldId) {
+  const trades: ReadonlyArray<Trade> = selectBlotterRows(state)
+  return trades.filter(
+    trade => {
+      if (!filters) {
+        return true
+      }
+      const fieldsToFilterBy = Object.keys(filters);
+      return fieldsToFilterBy.every(fieldToFilterBy => tradeMatchesFilter(trade, fieldToFilterBy, filters[fieldToFilterBy]))
+    }
+  )
+}
+
+const mapStateToProps = (state: GlobalState, ownProps: BlotterContainerOwnProps) => ({
+  rows: selectBlotterRowsAndFilter(state, ownProps.filters),
   status: selectBlotterStatus(state),
 })
 
@@ -42,7 +73,7 @@ const BlotterContainer: React.FC<BlotterContainerProps> = ({
     <Loadable
       onMount={onMount}
       status={status}
-      render={() => <Blotter {...props} canPopout={tearable && allowTearOff && !tornOff} />}
+      render={() => <Blotter {...props} canPopout={tearable && allowTearOff && !tornOff}/>}
       message="Blotter Disconnected"
     />
   )
