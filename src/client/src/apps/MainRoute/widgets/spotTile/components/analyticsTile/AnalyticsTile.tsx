@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { spotDateFormatter } from '../../model/dateUtils'
-import AnalyticsPriceControl from './AnalyticsTilePriceControl'
+import PriceControls from '../PriceControls'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
 import { usePlatform } from 'rt-platforms'
@@ -73,12 +73,14 @@ class AnalyticsTile extends React.PureComponent<Props> {
                 disabled={inputDisabled}
               />
             </GraphNotionalWrapper>
-            <AnalyticsPriceControl
+            <PriceControls
+              isTradeExecutionInFlight={isTradeExecutionInFlight}
               executeTrade={executeTrade}
               priceData={price}
               currencyPair={currencyPair}
               disabled={tradingDisabled}
               rfqState={rfqState}
+              isAnalyticsView={true}
             />
           </AnalyticsTileContent>
         </AnalyticsTileStyle>

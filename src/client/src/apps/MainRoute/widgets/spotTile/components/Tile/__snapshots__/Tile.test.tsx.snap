@@ -5,7 +5,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
+    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -13,27 +13,23 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
       className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kgAjT lpkrDV"
+        className="sc-hzDkRC ktZwAf"
       >
         <div
-          className="sc-hzDkRC ktZwAf"
+          className="sc-gipzik eHfKsv"
+          data-qa="tile-header__tile-symbol"
         >
-          <div
-            className="sc-gipzik eHfKsv"
-            data-qa="tile-header__tile-symbol"
-          >
-            EUR/USD
-          </div>
-          <div
-            className="sc-jlyJG gaAQgC"
-            data-qa="tile-header__delivery-date"
-          >
-            SPT (07 APR)
-          </div>
+          EUR/USD
+        </div>
+        <div
+          className="sc-jlyJG gaAQgC"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf buguXb"
+        className="sc-cMljjf zdUPu"
       >
         <button
           className="sc-EHOje gCbQHr"
@@ -178,7 +174,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
+    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -186,27 +182,23 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
       className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kgAjT lpkrDV"
+        className="sc-hzDkRC ktZwAf"
       >
         <div
-          className="sc-hzDkRC ktZwAf"
+          className="sc-gipzik eHfKsv"
+          data-qa="tile-header__tile-symbol"
         >
-          <div
-            className="sc-gipzik eHfKsv"
-            data-qa="tile-header__tile-symbol"
-          >
-            EUR/USD
-          </div>
-          <div
-            className="sc-jlyJG gaAQgC"
-            data-qa="tile-header__delivery-date"
-          >
-            SPT (07 APR)
-          </div>
+          EUR/USD
+        </div>
+        <div
+          className="sc-jlyJG gaAQgC"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf buguXb"
+        className="sc-cMljjf zdUPu"
       >
         <div
           className="sc-jAaTju jNhJYD"
@@ -287,7 +279,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
+    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -295,27 +287,23 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
       className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kgAjT lpkrDV"
+        className="sc-hzDkRC ktZwAf"
       >
         <div
-          className="sc-hzDkRC ktZwAf"
+          className="sc-gipzik eHfKsv"
+          data-qa="tile-header__tile-symbol"
         >
-          <div
-            className="sc-gipzik eHfKsv"
-            data-qa="tile-header__tile-symbol"
-          >
-            EUR/USD
-          </div>
-          <div
-            className="sc-jlyJG gaAQgC"
-            data-qa="tile-header__delivery-date"
-          >
-            SPT (07 APR)
-          </div>
+          EUR/USD
+        </div>
+        <div
+          className="sc-jlyJG gaAQgC"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf buguXb"
+        className="sc-cMljjf zdUPu"
       >
         <button
           className="sc-EHOje gCbQHr"
@@ -472,7 +460,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
+    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -480,27 +468,23 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
       className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kgAjT lpkrDV"
+        className="sc-hzDkRC ktZwAf"
       >
         <div
-          className="sc-hzDkRC ktZwAf"
+          className="sc-gipzik eHfKsv"
+          data-qa="tile-header__tile-symbol"
         >
-          <div
-            className="sc-gipzik eHfKsv"
-            data-qa="tile-header__tile-symbol"
-          >
-            EUR/USD
-          </div>
-          <div
-            className="sc-jlyJG gaAQgC"
-            data-qa="tile-header__delivery-date"
-          >
-            SPT (07 APR)
-          </div>
+          EUR/USD
+        </div>
+        <div
+          className="sc-jlyJG gaAQgC"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf buguXb"
+        className="sc-cMljjf zdUPu"
       >
         <button
           className="sc-EHOje ixrtnE"
@@ -645,7 +629,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
+    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -653,27 +637,23 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
       className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kgAjT lpkrDV"
+        className="sc-hzDkRC ktZwAf"
       >
         <div
-          className="sc-hzDkRC ktZwAf"
+          className="sc-gipzik eHfKsv"
+          data-qa="tile-header__tile-symbol"
         >
-          <div
-            className="sc-gipzik eHfKsv"
-            data-qa="tile-header__tile-symbol"
-          >
-            EUR/USD
-          </div>
-          <div
-            className="sc-jlyJG gaAQgC"
-            data-qa="tile-header__delivery-date"
-          >
-            SPT (07 APR)
-          </div>
+          EUR/USD
+        </div>
+        <div
+          className="sc-jlyJG gaAQgC"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf buguXb"
+        className="sc-cMljjf zdUPu"
       >
         <div
           className="sc-jAaTju jNhJYD"
@@ -840,7 +820,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
+    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -848,27 +828,23 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
       className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kgAjT lpkrDV"
+        className="sc-hzDkRC ktZwAf"
       >
         <div
-          className="sc-hzDkRC ktZwAf"
+          className="sc-gipzik eHfKsv"
+          data-qa="tile-header__tile-symbol"
         >
-          <div
-            className="sc-gipzik eHfKsv"
-            data-qa="tile-header__tile-symbol"
-          >
-            EUR/USD
-          </div>
-          <div
-            className="sc-jlyJG gaAQgC"
-            data-qa="tile-header__delivery-date"
-          >
-            SPT (07 APR)
-          </div>
+          EUR/USD
+        </div>
+        <div
+          className="sc-jlyJG gaAQgC"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf buguXb"
+        className="sc-cMljjf zdUPu"
       >
         <button
           className="sc-EHOje kkdSuS"
@@ -1013,7 +989,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM panKn"
+    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -1021,27 +997,23 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
       className="sc-fMiknA bxZCMx"
     >
       <div
-        className="sc-kgAjT lpkrDV"
+        className="sc-hzDkRC ktZwAf"
       >
         <div
-          className="sc-hzDkRC ktZwAf"
+          className="sc-gipzik eHfKsv"
+          data-qa="tile-header__tile-symbol"
         >
-          <div
-            className="sc-gipzik eHfKsv"
-            data-qa="tile-header__tile-symbol"
-          >
-            EUR/USD
-          </div>
-          <div
-            className="sc-jlyJG gaAQgC"
-            data-qa="tile-header__delivery-date"
-          >
-            SPT (07 APR)
-          </div>
+          EUR/USD
+        </div>
+        <div
+          className="sc-jlyJG gaAQgC"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf buguXb"
+        className="sc-cMljjf zdUPu"
       >
         <button
           className="sc-EHOje gCbQHr"

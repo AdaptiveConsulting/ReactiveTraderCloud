@@ -12,13 +12,7 @@ import {
 } from './styled'
 import { Props } from './types'
 import RfqTimer from './RfqTimer'
-import styled from 'styled-components'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
-
-const TileHeaderWrapper = styled.div`
-  display: block;
-  margin-bottom: 15px;
-`
 
 export default class SpotTile extends PureComponent<Props> {
   render() {
@@ -68,13 +62,11 @@ export default class SpotTile extends PureComponent<Props> {
           data-qa-id={`currency-pair-${currencyPair.symbol.toLowerCase()}`}
         >
           <ReserveSpaceGrouping>
-            <TileHeaderWrapper>
-              <TileHeader
-                ccyPair={currencyPair}
-                date={date}
-                displayCurrencyChart={displayCurrencyChart}
-              />
-            </TileHeaderWrapper>
+            <TileHeader
+              ccyPair={currencyPair}
+              date={date}
+              displayCurrencyChart={displayCurrencyChart}
+            />
             <PriceControls
               isTradeExecutionInFlight={isTradeExecutionInFlight}
               executeTrade={executeTrade}

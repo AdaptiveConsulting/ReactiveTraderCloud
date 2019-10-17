@@ -20,6 +20,7 @@ interface Props {
   disabled: boolean
   rfqState: RfqState
   isTradeExecutionInFlight: boolean
+  isAnalyticsView?: boolean
 }
 
 const PriceControls: React.FC<Props> = ({
@@ -29,6 +30,7 @@ const PriceControls: React.FC<Props> = ({
   rfqState,
   disabled,
   isTradeExecutionInFlight,
+  isAnalyticsView,
 }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
@@ -87,8 +89,24 @@ const PriceControls: React.FC<Props> = ({
       </PriceButtonDisabledPlaceholder>
     ) : null
 
-  return (
-    <PriceControlsStyle>
+  return isAnalyticsView ? (
+    <PriceControlsStyle
+      data-qa="analytics-tile-price-control__header"
+      isAnalyticsView={isAnalyticsView}
+    >
+      <PriceMovement
+        priceMovementType={priceData.priceMovementType}
+        spread={hasPrice ? spread.formattedValue : '-'}
+      />
+      <div>
+        {priceButtonDisabledStatus}
+        {priceButtonDisabledStatus}
+        {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
+        {showPriceButton(Direction.Buy, priceData.ask, askRate)}
+      </div>
+    </PriceControlsStyle>
+  ) : (
+    <PriceControlsStyle isAnalyticsView={isAnalyticsView}>
       {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
       {priceButtonDisabledStatus}
       <PriceMovement

@@ -74,6 +74,9 @@ export const SpotTileStyle = styled(TileBaseStyle)`
   justify-content: space-between;
   flex-direction: column;
   overflow: hidden;
+  &:hover {
+    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
+  }
 `
 export const NotionalInputWrapper = styled('div')`
   display: flex;
