@@ -4,6 +4,19 @@ import { Trade, TradeStatus } from 'rt-types'
 import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
 import { capitalize } from 'lodash'
+import {
+  DEALT_CURRENCY,
+  DIRECTION,
+  NOTIONAL,
+  SPOT_RATE,
+  STATUS,
+  STATUS_INDICATOR,
+  SYMBOL,
+  TRADE_DATE,
+  TRADE_ID,
+  TRADER_NAME,
+  VALUE_DATE
+} from '../blotterFields';
 
 function UtcFormatDate(date: Date) {
   return DateTime.fromJSDate(date, { zone: 'utc' }).toFormat('dd-MMM-yyyy')
@@ -46,18 +59,6 @@ export const DEFAULT_COLUMN_DEFINITION: ColDef = {
   resizable: true,
   sortable: true,
 }
-
-export const STATUS_INDICATOR = 'statusIndicator'
-export const TRADE_ID = 'tradeId'
-export const STATUS = 'status'
-export const TRADE_DATE = 'tradeDate'
-export const DIRECTION = 'direction'
-export const SYMBOL = 'symbol'
-export const DEALT_CURRENCY = 'dealtCurrency'
-export const NOTIONAL = 'notional'
-export const SPOT_RATE = 'spotRate'
-export const VALUE_DATE = 'valueDate'
-export const TRADER_NAME = 'traderName'
 
 export const COLUMN_FIELDS = [
   STATUS_INDICATOR,

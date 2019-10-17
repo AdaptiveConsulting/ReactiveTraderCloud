@@ -1,10 +1,8 @@
 import React from 'react'
 import { styled } from 'rt-theme'
-import { BlotterContainer } from '../widgets/blotter'
-import { DEALT_CURRENCY, SYMBOL } from '../widgets/blotter/components/blotterUtils';
-import { BlotterFilter } from '../widgets/blotter/BlotterContainer';
 import queryString from 'query-string';
 import { RouteComponentProps } from 'react-router';
+import { BlotterContainer, BlotterFilter, DEALT_CURRENCY, SYMBOL } from '../widgets/blotter'
 
 const BlotterContainerStyle = styled('div')`
   height: calc(100% - 21px);
