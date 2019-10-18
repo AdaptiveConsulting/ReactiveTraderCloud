@@ -71,7 +71,7 @@ export const handleIntent = (response: DetectIntentResponse, platformAdapter: Pl
     case TRADES_INFO_INTENT: {
       const currencyPair = getCurrencyPair(queryResult)
       const currency = getCurrency(queryResult)
-      showBlotter({ currencyPair, currency }, platformAdapter)
+      showBlotter({ dealtCurrency:[currency], symbol: [currencyPair] }, platformAdapter)
       return
     }
     default:
