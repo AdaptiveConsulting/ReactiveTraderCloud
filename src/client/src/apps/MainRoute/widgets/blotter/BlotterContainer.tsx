@@ -38,15 +38,13 @@ const tradeMatchesFilter = (trade: Trade, filterField: string, filteringFieldVal
 
 function selectBlotterRowsAndFilter(state: GlobalState, filters?: BlotterFilter) {
   const trades: ReadonlyArray<Trade> = selectBlotterRows(state)
+  const fieldsToFilterBy = Object.keys(filters || {})
+  if (!filters || fieldsToFilterBy.length === 0) {
+    return trades;
+  }
+
   return trades.filter(
     trade => {
-      if (!filters) {
-        return true
-      }
-      const fieldsToFilterBy = Object.keys(filters);
-      if (fieldsToFilterBy.length === 0) {
-        return true
-      }
       return fieldsToFilterBy.every(fieldToFilterBy => tradeMatchesFilter(trade, fieldToFilterBy, filters[fieldToFilterBy]))
     }
   )
