@@ -36,7 +36,7 @@ const tradeMatchesFilter = (trade: Trade, filterField: string, filteringFieldVal
   return filteringFieldValues.includes(tradeFieldValue)
 }
 
-function selectBlotterRowsAndFilter(state: GlobalState, filters?: BlotterFilter) {
+function selectBlotterRowsAndFilter(state: GlobalState, filters?: BlotterFilter): ReadonlyArray<Trade>  {
   const trades: ReadonlyArray<Trade> = selectBlotterRows(state)
   const fieldsToFilterBy = Object.keys(filters || {})
   if (!filters || fieldsToFilterBy.length === 0) {
@@ -51,7 +51,7 @@ function selectBlotterRowsAndFilter(state: GlobalState, filters?: BlotterFilter)
 }
 
 const mapStateToProps = (state: GlobalState, ownProps: BlotterContainerOwnProps) => ({
-  rows: selectBlotterRowsAndFilter(state, ownProps.filter),
+  rows: selectBlotterRowsAndFilter(state, ownProps.filter) as Trade[],
   status: selectBlotterStatus(state),
 })
 
