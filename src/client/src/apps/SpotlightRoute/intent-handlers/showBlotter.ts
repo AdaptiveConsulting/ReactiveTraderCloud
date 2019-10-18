@@ -1,25 +1,9 @@
 import { InteropTopics, PlatformAdapter } from 'rt-platforms'
 import { stringify } from 'query-string'
 import { defaultConfig, windowOrigin } from './defaultWindowConfig'
-import { BlotterFilters } from '../../MainRoute/widgets/blotter';
+import { BlotterFilters, validateFilters } from '../../MainRoute/widgets/blotter';
 
 let blotterWindow: Window = null;
-
-/**
- * Remove meaningless filter values
- */
-function validateFilters(filters: BlotterFilters): BlotterFilters {
-  return Object.entries(filters).reduce(
-    (acc, [fieldId, values]) => {
-      const validatedValues = values.filter(value => typeof value !== 'undefined' && value !== '')
-      if (validatedValues.length > 0) {
-        acc[fieldId] = validatedValues
-      }
-      return acc
-    },
-    {}
-  )
-}
 
 export function showBlotter(
   filters: BlotterFilters,

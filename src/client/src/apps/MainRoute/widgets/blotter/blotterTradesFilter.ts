@@ -25,8 +25,25 @@ const tradeMatchesFilter = (trade: Trade, filterField: string, filteringFieldVal
   return filteringFieldValues.includes(tradeFieldValue)
 }
 
+/**
+ * Remove meaningless filter values
+ */
+export function validateFilters(filters: BlotterFilters): BlotterFilters {
+  return Object.entries(filters).reduce(
+    (acc, [fieldId, values]) => {
+      const validatedValues = values.filter(value => typeof value !== 'undefined' && value !== '')
+      if (validatedValues.length > 0) {
+        acc[fieldId] = validatedValues
+      }
+      return acc
+    },
+    {}
+  )
+}
+
 export function filterBlotterTrades(trades: ReadonlyArray<Trade>, filters: BlotterFilters): ReadonlyArray<Trade> {
-  const fieldsToFilterBy = Object.keys(filters || {})
+  filters = validateFilters(filters || {})
+  const fieldsToFilterBy = Object.keys(filters)
   if (!filters || fieldsToFilterBy.length === 0) {
     return trades;
   }

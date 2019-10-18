@@ -8,6 +8,7 @@ import { useServiceStub } from './context'
 import { Trade } from 'rt-types'
 // TODO - lift out
 import { TradesUpdate } from '../MainRoute/widgets/blotter/blotterService'
+import { BlotterFilters, filterBlotterTrades } from '../MainRoute/widgets/blotter';
 
 type TradeLookup = Map<number, Trade>
 
@@ -21,12 +22,11 @@ const Table = styled.table`
 `
 
 interface IProps {
-  currency?: string
-  count?: number
+  readonly filters?: BlotterFilters
+  readonly count?: number
 }
 
-// TODO: reuse filtering from BlotterContainer - then we will get the same results in both
-export const InlineBlotter: FC<IProps> = ({currency, count}) => {
+export const InlineBlotter: FC<IProps> = ({filters, count}) => {
   const [trades, setTrades] = useState([])
   const [tradeCount, setTradeCount] = useState(0)
   const serviceStub = useServiceStub()
@@ -38,8 +38,11 @@ export const InlineBlotter: FC<IProps> = ({currency, count}) => {
     }
     const subscription = blotterService.getTradesStream()
       .pipe(
-        map((tradeUpdate: TradesUpdate) => tradeUpdate.trades.filter(trade => !currency || trade.dealtCurrency === currency)),
-        scan<Trade[], Map<number, Trade>>((acc, trades) => {
+        map(
+          (tradeUpdate: TradesUpdate) =>
+            filterBlotterTrades(tradeUpdate.trades, filters)
+        ),
+        scan<ReadonlyArray<Trade>, Map<number, Trade>>((acc, trades) => {
           trades.forEach(trade => acc.set(trade.tradeId, trade))
           return acc
         }, new Map<number, Trade>()),
@@ -55,7 +58,7 @@ export const InlineBlotter: FC<IProps> = ({currency, count}) => {
         subscription.unsubscribe()
       }
     }
-  }, [blotterService, currency, count])
+  }, [blotterService, filters, count])
 
   return (
     <>

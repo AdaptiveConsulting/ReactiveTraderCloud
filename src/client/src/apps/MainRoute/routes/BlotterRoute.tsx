@@ -11,11 +11,15 @@ const BlotterContainerStyle = styled('div')`
   margin: auto;
 `
 
+function enforceArray(element: string[] | string | null | undefined): ReadonlyArray<any> {
+  return Array.isArray(element) ? element : [element]
+}
+
 function getFiltersFromQueryStr(queryStr: string): BlotterFilters {
   const parsedQueryString = queryString.parse(queryStr)
   return {
-    [SYMBOL]: parsedQueryString[SYMBOL] as ReadonlyArray<any>,
-    [DEALT_CURRENCY]: parsedQueryString[DEALT_CURRENCY] as ReadonlyArray<any>
+    [SYMBOL]: enforceArray(parsedQueryString[SYMBOL]),
+    [DEALT_CURRENCY]: enforceArray(parsedQueryString[DEALT_CURRENCY])
   }
 }
 

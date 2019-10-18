@@ -1,18 +1,11 @@
-import React, {
-  ChangeEventHandler,
-  FC,
-  FocusEventHandler,
-  KeyboardEventHandler,
-  useEffect,
-  useReducer
-} from 'react'
+import React, { ChangeEventHandler, FC, FocusEventHandler, KeyboardEventHandler, useEffect, useReducer } from 'react'
 import { styled } from 'rt-theme'
 import { AdaptiveLoader } from 'rt-components'
 import { initialState, reducer } from './reducer'
 import { useServiceStub } from './context'
 import { take, tap, timeout } from 'rxjs/operators'
 import { DetectIntentResponse } from 'dialogflow'
-import { usePlatform } from 'rt-platforms'
+import { PlatformAdapter, usePlatform } from 'rt-platforms'
 import { getCurrency, getCurrencyPair, getNumber, handleIntent } from './handleIntent'
 import { isSpotQuoteIntent, isTradeIntent, mapIntent } from './responseMapper'
 import { InlineQuote } from './InlineQuote'
@@ -63,6 +56,37 @@ const Contacting = styled.span`
 `
 
 const INPUT_ID = 'spotlight'
+
+function getSuggestionsComponent(response: DetectIntentResponse, platform: PlatformAdapter, intent: string) {
+  const currencyPair = getCurrencyPair(response.queryResult)
+  const currency = getCurrency(response.queryResult)
+
+  return (
+    <>
+      <Suggestion onClick={() => handleIntent(response, platform)}>
+        {intent}
+      </Suggestion>
+      {isSpotQuoteIntent(response)
+        ? (
+          <Suggestion onClick={() => handleIntent(response, platform)}>
+            <InlineQuote currencyPair={currencyPair}/>
+          </Suggestion>
+        )
+        : null
+      }
+      {isTradeIntent(response)
+        ? (
+          <Suggestion onClick={() => handleIntent(response, platform)}>
+            <InlineBlotter
+              filters={{dealtCurrency: [currency], symbol: [currencyPair]}}
+              count={getNumber(response.queryResult)}/>
+          </Suggestion>
+        )
+        : null
+      }
+    </>
+  );
+}
 
 export const Spotlight: FC = () => {
   const [{request, response, contacting}, dispatch] = useReducer(reducer, initialState)
@@ -136,29 +160,7 @@ export const Spotlight: FC = () => {
     </>
   )
 
-  const suggestions = intent && response && (
-    <>
-      <Suggestion onClick={() => handleIntent(response, platform)}>
-        {intent}
-      </Suggestion>
-      {isSpotQuoteIntent(response)
-        ? (
-          <Suggestion onClick={() => handleIntent(response, platform)}>
-            <InlineQuote currencyPair={getCurrencyPair(response.queryResult)}/>
-          </Suggestion>
-        )
-        : null
-      }
-      {isTradeIntent(response)
-        ? (
-          <Suggestion onClick={() => handleIntent(response, platform)}>
-            <InlineBlotter currency={getCurrency(response.queryResult)} count={getNumber(response.queryResult)}/>
-          </Suggestion>
-        )
-        : null
-      }
-    </>
-  )
+  const suggestions = intent && response && getSuggestionsComponent(response, platform, intent)
 
   return (
     <Container>
