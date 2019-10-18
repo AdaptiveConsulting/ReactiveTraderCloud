@@ -1,12 +1,11 @@
 import { DetectIntentResponse, QueryResult } from 'dialogflow'
 import {
-  CURRENCY_INTENT,
   MARKET_INFO_INTENT,
   SPOT_QUOTE_INTENT,
   TRADES_INFO_INTENT,
 } from './intents'
 import { PlatformAdapter } from 'rt-platforms'
-import { showBlotter, showCurrencyPair } from './intent-handlers'
+import { showBlotter, showCurrencyPair, showMarket } from './intent-handlers'
 
 export function getCurrencyPair(queryResult: QueryResult): string | undefined {
   try {
@@ -66,8 +65,9 @@ export const handleIntent = (response: DetectIntentResponse, platformAdapter: Pl
       showCurrencyPair(currencyPair, platformAdapter)
       return
     }
-    case CURRENCY_INTENT:
     case MARKET_INFO_INTENT:
+      showMarket(platformAdapter)
+      return
     case TRADES_INFO_INTENT: {
       const currencyPair = getCurrencyPair(queryResult)
       const currency = getCurrency(queryResult)
