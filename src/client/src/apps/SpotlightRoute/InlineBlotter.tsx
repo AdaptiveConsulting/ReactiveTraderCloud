@@ -25,6 +25,7 @@ interface IProps {
   count?: number
 }
 
+// TODO: reuse filtering from BlotterContainer - then we will get the same results in both
 export const InlineBlotter: FC<IProps> = ({currency, count}) => {
   const [trades, setTrades] = useState([])
   const [tradeCount, setTradeCount] = useState(0)

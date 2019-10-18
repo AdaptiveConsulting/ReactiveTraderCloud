@@ -8,50 +8,22 @@ import Blotter from './components'
 import { selectBlotterRows, selectBlotterStatus } from './selectors'
 import { usePlatform } from 'rt-platforms'
 import { Trade } from 'rt-types'
-
-export type FieldValues = ReadonlyArray<any> | undefined;
-export type BlotterFilter = { [fieldId: string]: FieldValues }
+import { BlotterFilters, filterBlotterTrades } from './blotterTradesFilter';
 
 interface BlotterContainerOwnProps {
-  filter?: BlotterFilter
+  filters?: BlotterFilters
   onPopoutClick?: () => void
   tornOff?: boolean
   tearable?: boolean
 }
 
-const tradeMatchesFilter = (trade: Trade, filterField: string, filteringFieldValues: FieldValues) => {
-  if (!trade) {
-    return false
-  }
-  if (!filteringFieldValues) {
-    return true
-  }
-  if (!(trade as any).hasOwnProperty(filterField)) {
-    console.warn(`Trying to filter of field ${filterField} which does not exist in 'Trade' object`);
-    return true
-  }
-
-  const tradeFieldValue = trade[filterField]
-
-  return filteringFieldValues.includes(tradeFieldValue)
-}
-
-function selectBlotterRowsAndFilter(state: GlobalState, filters?: BlotterFilter): ReadonlyArray<Trade>  {
+function selectBlotterRowsAndFilter(state: GlobalState, filters?: BlotterFilters): ReadonlyArray<Trade> {
   const trades: ReadonlyArray<Trade> = selectBlotterRows(state)
-  const fieldsToFilterBy = Object.keys(filters || {})
-  if (!filters || fieldsToFilterBy.length === 0) {
-    return trades;
-  }
-
-  return trades.filter(
-    trade => {
-      return fieldsToFilterBy.every(fieldToFilterBy => tradeMatchesFilter(trade, fieldToFilterBy, filters[fieldToFilterBy]))
-    }
-  )
+  return filterBlotterTrades(trades, filters);
 }
 
 const mapStateToProps = (state: GlobalState, ownProps: BlotterContainerOwnProps) => ({
-  rows: selectBlotterRowsAndFilter(state, ownProps.filter) as Trade[],
+  rows: selectBlotterRowsAndFilter(state, ownProps.filters) as Trade[],
   status: selectBlotterStatus(state),
 })
 
