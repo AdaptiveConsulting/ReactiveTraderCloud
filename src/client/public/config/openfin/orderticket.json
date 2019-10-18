@@ -30,8 +30,6 @@
     },
     "shortcut": {},
     "runtime": {
-        "version": "10.66.39.43",
-        "futureVersion": "10.66.39.43",
-        "forceLatest": true
+        "version": "13.76.44.21"
     }
 }
