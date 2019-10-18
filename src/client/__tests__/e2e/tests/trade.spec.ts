@@ -56,7 +56,6 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     const notional = await mainPage.tile.tradeType.EURToUSD.notional
     var returnedNotional = notional.getAttribute('value')
     expect(returnedNotional).toEqual('99,999,999')
-    const resetInput = await mainPage.tile.tradeType.EURToUSD.resetInput
     const labelRFQ = await mainPage.tile.tradeType.confirmationScreen.labelRFQ
     const RFQText = labelRFQ.getText()
     expect(RFQText).toEqual('Initiate\nRFQ')
