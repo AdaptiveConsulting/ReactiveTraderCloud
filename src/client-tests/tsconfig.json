@@ -6,9 +6,12 @@
     "moduleResolution": "node",
     "sourceMap": false,
     "inlineSourceMap": true,
+    "esModuleInterop": true,
     "declaration": false,
     "noImplicitAny": false,
-    "outDir": "tmp",
-    "types": ["node", "jest"]
-  }
+    "outDir": "dist",
+    "types": ["node"],
+  },
+  "exclude": ["node_modules"],
+  "include": ["./e2e/**/*"]
 }
