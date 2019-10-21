@@ -70,7 +70,7 @@
     },
     {
       "name": "fdc3",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json"
+      "manifestUrl": "http://localhost:3000/config/openfin/local-fdc3.json"
     },
     {
       "name": "notifications",

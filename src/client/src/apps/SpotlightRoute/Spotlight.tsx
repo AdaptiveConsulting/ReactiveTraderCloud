@@ -1,4 +1,12 @@
-import React, { ChangeEventHandler, FC, FocusEventHandler, KeyboardEventHandler, useEffect, useReducer } from 'react'
+import React, {
+  ChangeEventHandler,
+  FC,
+  FocusEventHandler,
+  KeyboardEventHandler,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react'
 import { styled } from 'rt-theme'
 import { AdaptiveLoader } from 'rt-components'
 import { initialState, reducer } from './reducer'
@@ -10,9 +18,11 @@ import { getCurrency, getCurrencyPair, getNumber, handleIntent } from './handleI
 import { isSpotQuoteIntent, isTradeIntent, mapIntent } from './responseMapper'
 import { InlineQuote } from './InlineQuote'
 import { InlineBlotter } from './InlineBlotter'
+import { useFdc3 } from './fdc3/context'
+import { SpotlightApplication } from './fdc3/fdc3'
 
 const Container = styled.div`
-  color: ${({theme}) => theme.core.textColor};
+  color: ${({ theme }) => theme.core.textColor};
   display: flex;
   flex-flow: column nowrap;
   padding: 1rem;
@@ -45,9 +55,9 @@ const Suggestion = styled.div`
   padding: 10px 5px;
   line-height: 1rem;
   cursor: pointer;
-  background-color: ${({theme}) => theme.core.lightBackground};
+  background-color: ${({ theme }) => theme.core.lightBackground};
   &:hover {
-    background-color: ${({theme}) => theme.core.backgroundHoverColor};
+    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
   }
 `
 
@@ -57,45 +67,69 @@ const Contacting = styled.span`
 
 const INPUT_ID = 'spotlight'
 
-function getSuggestionsComponent(response: DetectIntentResponse, platform: PlatformAdapter, intent: string) {
+function getDirectoryAppsComponent(
+  directoryApps: SpotlightApplication[],
+  { onClick }: { onClick: (appId: string) => {} },
+) {
+  return (
+    <>
+      {directoryApps.map(app => (
+        <Suggestion onClick={() => onClick(app.id)} key={app.id}>
+          {app.name}
+        </Suggestion>
+      ))}
+    </>
+  )
+}
+
+function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: PlatformAdapter) {
   const currencyPair = getCurrencyPair(response.queryResult)
   const currency = getCurrency(response.queryResult)
 
   return (
     <>
-      <Suggestion onClick={() => handleIntent(response, platform)}>
-        {intent}
-      </Suggestion>
-      {isSpotQuoteIntent(response)
-        ? (
-          <Suggestion onClick={() => handleIntent(response, platform)}>
-            <InlineQuote currencyPair={currencyPair}/>
-          </Suggestion>
-        )
-        : null
-      }
-      {isTradeIntent(response)
-        ? (
-          <Suggestion onClick={() => handleIntent(response, platform)}>
-            <InlineBlotter
-              filters={{dealtCurrency: [currency], symbol: [currencyPair]}}
-              count={getNumber(response.queryResult)}/>
-          </Suggestion>
-        )
-        : null
-      }
+      {isSpotQuoteIntent(response) ? (
+        <Suggestion onClick={() => handleIntent(response, platform)}>
+          <InlineQuote currencyPair={currencyPair} />
+        </Suggestion>
+      ) : null}
+      {isTradeIntent(response) ? (
+        <Suggestion onClick={() => handleIntent(response, platform)}>
+          <InlineBlotter
+            filters={{ dealtCurrency: [currency], symbol: [currencyPair] }}
+            count={getNumber(response.queryResult)}
+          />
+        </Suggestion>
+      ) : null}
     </>
-  );
+  )
+}
+
+function getNonDirectoryAppsComponent(response: DetectIntentResponse, platform: PlatformAdapter) {
+  const intent = mapIntent(response)
+  return <Suggestion onClick={() => handleIntent(response, platform)}>{intent}</Suggestion>
 }
 
 export const Spotlight: FC = () => {
-  const [{request, response, contacting}, dispatch] = useReducer(reducer, initialState)
+  const [{ request, response, contacting }, dispatch] = useReducer(reducer, initialState)
+  const [dirApps, setDirApps] = useState([])
   const serviceStub = useServiceStub()
   const platform = usePlatform()
+  const fdc3 = useFdc3()
+
+  useEffect(() => {
+    const getApps = async () => {
+      const directoryApps = await fdc3.getMatchingApps(response)
+
+      setDirApps(directoryApps)
+    }
+
+    getApps()
+  }, [response, fdc3])
 
   useEffect(() => {
     if (!contacting) {
-      return;
+      return
     }
     const subscription = serviceStub
       .createRequestResponseOperation<DetectIntentResponse[], string>(
@@ -110,11 +144,11 @@ export const Spotlight: FC = () => {
       )
       .subscribe(
         response => {
-          dispatch({type: 'RECEIVE_RESPONSE', response: response[0]})
+          dispatch({ type: 'RECEIVE_RESPONSE', response: response[0] })
         },
         (err: any) => {
           console.error(err)
-          dispatch({type: 'RECEIVE_RESPONSE', response: null})
+          dispatch({ type: 'RECEIVE_RESPONSE', response: null })
         },
       )
 
@@ -127,40 +161,40 @@ export const Spotlight: FC = () => {
   }, [contacting, serviceStub])
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = e => {
-    dispatch({type: 'SET_REQUEST', request: e.target.value})
+    dispatch({ type: 'SET_REQUEST', request: e.target.value })
   }
 
   const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = e => {
     switch (e.key) {
       case 'Enter':
         const value = e.currentTarget.value
-        dispatch({type: 'SEND_REQUEST', request: value})
+        dispatch({ type: 'SEND_REQUEST', request: value })
         break
       case 'ArrowDown':
         e.preventDefault()
-        dispatch({type: 'HISTORY_NEXT'})
+        dispatch({ type: 'HISTORY_NEXT' })
         break
       case 'ArrowUp':
         e.preventDefault()
-        dispatch({type: 'HISTORY_PREVIOUS'})
+        dispatch({ type: 'HISTORY_PREVIOUS' })
         break
     }
   }
 
   const handleFocus: FocusEventHandler<HTMLInputElement> = e => {
-    e.currentTarget.setSelectionRange(0, e.currentTarget.value.length);
+    e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
   }
-
-  const intent = mapIntent(response)
 
   const loader = (
     <>
-      <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary"/>
+      <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
       <Contacting>Contacting…</Contacting>
     </>
   )
 
-  const suggestions = intent && response && getSuggestionsComponent(response, platform, intent)
+  const directoryAppSuggestions = getDirectoryAppsComponent(dirApps, { onClick: fdc3.open })
+  const nonDirectoryAppSuggestions = response && getNonDirectoryAppsComponent(response, platform)
+  const inlineSuggestions = response && getInlineSuggestionsComponent(response, platform)
 
   return (
     <Container>
@@ -173,7 +207,17 @@ export const Spotlight: FC = () => {
         onChange={handleChange}
         onKeyDown={handleOnKeyDown}
       />
-      <Response>{contacting ? loader : suggestions}</Response>
+      <Response>
+        {contacting ? (
+          loader
+        ) : (
+          <>
+            {directoryAppSuggestions}
+            {nonDirectoryAppSuggestions}
+            {inlineSuggestions}
+          </>
+        )}
+      </Response>
     </Container>
   )
 }

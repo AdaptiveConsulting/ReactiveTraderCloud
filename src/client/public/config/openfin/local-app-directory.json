@@ -1,0 +1,15 @@
+[
+  {
+    "appId": "fdc3-blotter",
+    "name": "fdc3-blotter",
+    "manifest": "http://localhost:3000/config/openfin/local-blotter.json",
+    "manifestType": "openfin",
+    "title": "Blotter",
+    "intents": [
+      {
+        "name": "fdc3.ViewBlotter",
+        "displayName": "View Blotter"
+      }
+    ]
+  }
+]

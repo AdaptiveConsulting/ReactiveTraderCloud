@@ -10,6 +10,7 @@ import { createGlobalStyle } from 'styled-components'
 import { ThemeStorageSwitch, styled } from 'rt-theme'
 import { open } from './tools'
 import { getOpenFinPlatform } from 'rt-platforms'
+
 library.add(faSignOutAlt)
 
 const exitHandler = async () => {

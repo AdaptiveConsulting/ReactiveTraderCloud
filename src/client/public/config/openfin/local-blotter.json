@@ -1,0 +1,46 @@
+{
+  "devtools_port": 9090,
+  "splashScreenImage": "http://localhost:3000/static/media/splash-screen.jpg",
+  "startup_app": {
+    "name": "Reactive Trader Cloud Blotter (LOCAL)",
+    "url": "http://localhost:3000/blotter",
+    "uuid": "reactive-trader-cloud-blotter-local",
+    "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
+    "autoShow": true,
+    "defaultWidth": 1280,
+    "defaultHeight": 900,
+    "minWidth": 800,
+    "minHeight": 600,
+    "resizable": true,
+    "maximizable": true,
+    "frame": false,
+    "shadow": true,
+    "contextMenu": true,
+    "accelerator": {
+      "devtools": true,
+      "reload": true,
+      "reloadIgnoringCache": true,
+      "zoom": true
+    }
+  },
+  "runtime": {
+    "version": "13.76.44.21"
+  },
+  "services": [
+    {
+      "name": "layouts",
+      "config": {
+        "features": {
+          "snap": true,
+          "dock": true,
+          "tab": false
+        }
+      },
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/app.json"
+    },
+    {
+      "name": "fdc3",
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/app.json"
+    }
+  ]
+}
