@@ -8,7 +8,7 @@ import Blotter from './components'
 import { selectBlotterRows, selectBlotterStatus } from './selectors'
 import { usePlatform } from 'rt-platforms'
 import { Trade } from 'rt-types'
-import { BlotterFilters, filterBlotterTrades } from './blotterTradesFilter';
+import { BlotterFilters, filterBlotterTrades } from './blotterTradesFilter'
 
 interface BlotterContainerOwnProps {
   filters?: BlotterFilters
@@ -17,13 +17,16 @@ interface BlotterContainerOwnProps {
   tearable?: boolean
 }
 
-function selectBlotterRowsAndFilter(state: GlobalState, filters?: BlotterFilters): ReadonlyArray<Trade> {
+function selectBlotterRowsAndFilter(
+  state: GlobalState,
+  filters: BlotterFilters,
+): ReadonlyArray<Trade> {
   const trades: ReadonlyArray<Trade> = selectBlotterRows(state)
-  return filterBlotterTrades(trades, filters);
+  return filterBlotterTrades(trades, filters)
 }
 
 const mapStateToProps = (state: GlobalState, ownProps: BlotterContainerOwnProps) => ({
-  rows: selectBlotterRowsAndFilter(state, ownProps.filters) as Trade[],
+  rows: selectBlotterRowsAndFilter(state, ownProps.filters || {}) as Trade[],
   status: selectBlotterStatus(state),
 })
 
@@ -50,7 +53,7 @@ const BlotterContainer: React.FC<BlotterContainerProps> = ({
     <Loadable
       onMount={onMount}
       status={status}
-      render={() => <Blotter {...props} canPopout={tearable && allowTearOff && !tornOff}/>}
+      render={() => <Blotter {...props} canPopout={tearable && allowTearOff && !tornOff} />}
       message="Blotter Disconnected"
     />
   )
