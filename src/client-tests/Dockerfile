@@ -9,18 +9,14 @@ RUN \
   && apk add --no-cache --virtual .build-deps \
     gifsicle pngquant optipng libjpeg-turbo-utils \
     udev ttf-opensans chromium firefox \
+    libexif udev chromium-chromedriver xvfb \
   && rm -rf /var/cache/apk/* /tmp/*
 
-RUN libexif udev chromium-chromedriver xvfb
 
 ENV CHROME_BIN /usr/bin/chromium-browser
 
 WORKDIR /client-tests
 
-COPY ./package*.json ./
+COPY . .
 RUN npm i
-COPY ./e2e ./e2e
-COPY ./tsconfig.json .
 
-
-## TODO CMD ['npm i e2e -- --chromeDriver=/usr/bin/chromeDriver']

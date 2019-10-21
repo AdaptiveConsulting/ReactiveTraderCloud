@@ -4,14 +4,14 @@
     "lib": ["es5", "es6", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": false,
-    "inlineSourceMap": true,
+    "sourceMap": true,
     "esModuleInterop": true,
     "declaration": false,
     "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
     "outDir": "dist",
-    "types": ["node"],
+    "types": ["node", "jasmine"],
   },
   "exclude": ["node_modules"],
-  "include": ["./e2e/**/*"]
+  "include": ["./src/**/*"]
 }

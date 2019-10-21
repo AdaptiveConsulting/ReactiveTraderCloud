@@ -17,7 +17,7 @@ async function prepareBrowser(): Promise<ProtractorBrowser> {
   // We are testing a React project. We need to disable Angular sync.
   await browser.waitForAngularEnabled(false)
 
-  await browser.get(browser.params.baseUrl, 10000)
+  await browser.get(browser.baseUrl, 10000)
 
   // Wait for first rendering, for good measure.
   await wait(5000)

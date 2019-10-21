@@ -1,18 +1,18 @@
-import { EOL } from 'os'
-import { SpecReporter } from 'jasmine-spec-reporter'
-import colors from 'colors'
-import 'jasmine'
-import { Config, by, browser } from 'protractor'
+'use strict'
+
+const { EOL } = require('os')
+const { SpecReporter } = require('jasmine-spec-reporter')
+const colors = require('colors')
 
 
-const CHROME_CAPABILITIES: Config["capabilities"] = {
+const CHROME_CAPABILITIES = {
   browserName: 'chrome',
   chromeOptions: {
     args: ['--start-maximized', '--disable-infobars', '--disable-notifications', '--headless', '--no-sandbox']
   }
 }
 
-const FIREFOX_CAPABILITIES: Config['capabilities'] = {
+const FIREFOX_CAPABILITIES = {
   browserName: 'firefox',
   'moz:firefoxOptions': {
     args: ['--start-maximized', '--disable-infobars', '--disable-notifications', '--headless', '--no-sandbox']
@@ -32,12 +32,12 @@ function getBrowserCapabilities() {
   }
 }
 
-export const config: Config = {
+const config = {
   allScriptsTimeout: 100000,
   framework: 'jasmine',
   directConnect: true,
   maxSessions: 10,
-  specs: ['./tests/*.spec.js'],
+  specs: ['./e2e/**/*.spec.ts'],
   capabilities: getBrowserCapabilities(),
   jasmineNodeOpts: {
     isVerbose: true,
@@ -49,7 +49,8 @@ export const config: Config = {
   },
   onPrepare: function () {
     setUpCustomLocators();
-    (jasmine as any).getEnv().addReporter(new SpecReporter({
+    require('ts-node').register()
+    jasmine.getEnv().addReporter(new SpecReporter({
       spec: {
         displayDuration: true,
         displaySuccessful: true,
@@ -76,10 +77,10 @@ export const config: Config = {
       customProcessors: []
     }));
   },
-  params: {
-    baseUrl: 'http://localhost:3000/'
-  }
+  baseUrl: 'http://localhost:3000/'
 }
+
+module.exports.config = config;
 
 function setUpCustomLocators() {
   by.addLocator('qaTag', (qaTag, parentElement) => {

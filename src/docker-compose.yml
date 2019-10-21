@@ -26,6 +26,16 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./client
+  smoketest:
+    build:
+      dockerfile: Dockerfile
+      context: ./client-tests
+    command: 'npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx'
+    depends_on:
+      - client
+      - nginx
+      - eventstore
+      - blotter
   analytics:
     build:
       dockerfile: Dockerfile
