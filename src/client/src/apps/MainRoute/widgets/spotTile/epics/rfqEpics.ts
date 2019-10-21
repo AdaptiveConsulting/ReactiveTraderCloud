@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { delay, filter, map, mergeMap, takeUntil } from 'rxjs/operators'
+import { delay, filter, map, mergeMap, takeUntil, tap } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import { concat, from, Observable, of, timer } from 'rxjs'
@@ -104,7 +104,6 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
         ofType<Action, RfqReceivedTimerCancellableType>(
           TILE_ACTION_TYPES.RFQ_RESET,
           TILE_ACTION_TYPES.RFQ_CANCEL,
-          TILE_ACTION_TYPES.RFQ_REJECT,
         ),
         filter(cancelAction => cancelAction.payload.currencyPair.symbol === currencyPair.symbol),
       )
@@ -112,6 +111,7 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
       return concat(
         timer(action.payload.timeout + 1000).pipe(map(() => rfqExpired({ currencyPair }))),
         timer(IDLE_TIME_MS).pipe(
+          tap(timer => console.log('*** timer ', timer)),
           mergeMap(() =>
             from([
               setNotional({
