@@ -27,7 +27,7 @@ export const handleIntent = (response: DetectIntentResponse, platformAdapter: Pl
       const filters: BlotterFilters = {
         dealtCurrency: [currency],
         symbol: [currencyPair],
-        count: getNumber(response.queryResult),
+        count: getNumber(queryResult),
       }
       showBlotter(filters, platformAdapter)
       return
