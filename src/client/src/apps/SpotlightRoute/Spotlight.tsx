@@ -5,7 +5,7 @@ import React, {
   KeyboardEventHandler,
   useEffect,
   useReducer,
-  useState,
+  useState
 } from 'react'
 import { styled } from 'rt-theme'
 import { AdaptiveLoader } from 'rt-components'
@@ -14,12 +14,14 @@ import { useServiceStub } from './context'
 import { take, tap, timeout } from 'rxjs/operators'
 import { DetectIntentResponse } from 'dialogflow'
 import { PlatformAdapter, usePlatform } from 'rt-platforms'
-import { getCurrency, getCurrencyPair, getNumber, handleIntent } from './handleIntent'
+import { handleIntent } from './handleIntent'
+import { getCurrency, getCurrencyPair, getNumber } from './intentUtils'
 import { isSpotQuoteIntent, isTradeIntent, mapIntent } from './responseMapper'
 import { InlineQuote } from './InlineQuote'
 import { InlineBlotter } from './InlineBlotter'
 import { useFdc3 } from './fdc3/context'
 import { SpotlightApplication } from './fdc3/fdc3'
+import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from '../MainRoute/widgets/blotter'
 
 const Container = styled.div`
   color: ${({ theme }) => theme.core.textColor};
@@ -85,7 +87,11 @@ function getDirectoryAppsComponent(
 function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: PlatformAdapter) {
   const currencyPair = getCurrencyPair(response.queryResult)
   const currency = getCurrency(response.queryResult)
-
+  const blotterFilter: BlotterFilters = {
+    [DEALT_CURRENCY]: [currency],
+    [SYMBOL]: [currencyPair],
+    count: getNumber(response.queryResult),
+  }
   return (
     <>
       {isSpotQuoteIntent(response) ? (
@@ -95,10 +101,7 @@ function getInlineSuggestionsComponent(response: DetectIntentResponse, platform:
       ) : null}
       {isTradeIntent(response) ? (
         <Suggestion onClick={() => handleIntent(response, platform)}>
-          <InlineBlotter
-            filters={{ dealtCurrency: [currency], symbol: [currencyPair] }}
-            count={getNumber(response.queryResult)}
-          />
+          <InlineBlotter filters={blotterFilter} />
         </Suggestion>
       ) : null}
     </>
