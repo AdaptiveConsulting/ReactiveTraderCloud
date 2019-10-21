@@ -16,6 +16,7 @@ const {
   rfqReject,
   rfqCancel,
   rfqReset,
+  rfqRequote,
   setNotional,
   setTradingMode,
 } = SpotTileActions
@@ -31,6 +32,7 @@ type RfqReceivedTimerCancellableType =
   | RfqExpiredActionType
   | RfqResetActionType
   | RfqCancelActionType
+type RfqRequoteActionType = ReturnType<typeof rfqRequote>
 
 const EXPIRATION_TIMEOUT_MS = 10000
 export const IDLE_TIME_MS = 60000
@@ -64,10 +66,16 @@ const rfqService = (
 
 export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
-    ofType<Action, RfqRequestActionType>(TILE_ACTION_TYPES.RFQ_REQUEST),
+    ofType<Action, RfqRequestActionType | RfqRequoteActionType>(
+      TILE_ACTION_TYPES.RFQ_REQUEST,
+      TILE_ACTION_TYPES.RFQ_REQUOTE,
+    ),
     mergeMap(action => {
       const cancel$ = action$.pipe(
-        ofType<Action, RfqCancelActionType>(TILE_ACTION_TYPES.RFQ_CANCEL),
+        ofType<Action, RfqCancelActionType | RfqRejectActionType>(
+          TILE_ACTION_TYPES.RFQ_CANCEL,
+          TILE_ACTION_TYPES.RFQ_REJECT,
+        ),
         filter(
           cancelAction =>
             cancelAction.payload.currencyPair.symbol === action.payload.currencyPair.symbol,
@@ -96,6 +104,7 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
         ofType<Action, RfqReceivedTimerCancellableType>(
           TILE_ACTION_TYPES.RFQ_RESET,
           TILE_ACTION_TYPES.RFQ_CANCEL,
+          TILE_ACTION_TYPES.RFQ_REJECT,
         ),
         filter(cancelAction => cancelAction.payload.currencyPair.symbol === currencyPair.symbol),
       )
