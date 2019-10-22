@@ -50,6 +50,7 @@ const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
 
     return () => filterSubscription && filterSubscription.unsubscribe()
   }, [platform])
+
   const filters = (filtersFromInterop && filtersFromInterop[0]) || getFiltersFromQueryStr(search)
   return (
     <BlotterContainerStyle>
