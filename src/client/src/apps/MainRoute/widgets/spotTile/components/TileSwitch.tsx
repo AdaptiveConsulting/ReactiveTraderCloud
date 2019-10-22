@@ -85,6 +85,13 @@ const TileSwitch: React.FC<Props> = ({
             RFQ
           </TileBooking>
           <TileBooking
+            show={!spotTileData.isTradeExecutionInFlight && isRfqStateExpired}
+            color="blue"
+            onBookingPillClick={() => rfq.requote({ notional, currencyPair })}
+          >
+            Requote
+          </TileBooking>
+          <TileBooking
             show={isRfqStateRequested}
             color="red"
             onBookingPillClick={() => rfq.cancel({ currencyPair })}
@@ -92,13 +99,6 @@ const TileSwitch: React.FC<Props> = ({
             Cancel
             <br />
             RFQ
-          </TileBooking>
-          <TileBooking
-            show={isRfqStateExpired}
-            color="blue"
-            onBookingPillClick={() => rfq.request({ notional, currencyPair })}
-          >
-            Requote
           </TileBooking>
           <NotificationContainer
             isPriceStale={!spotTileData.lastTradeExecutionStatus && spotTileData.price.priceStale}
