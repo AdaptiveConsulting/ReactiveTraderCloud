@@ -1,5 +1,5 @@
 import { darken } from 'polished'
-import React, { useCallback } from 'react'
+import React from 'react'
 
 import { styled } from 'rt-theme'
 
@@ -64,12 +64,10 @@ interface Props {
 // TODO disable tabbing outside of the modal
 // tslint:disable-next-line:variable-name
 const Modal: React.FC<Props> = ({ shouldShow, title, onDismiss, children }) => {
-  const onModalDismiss = useCallback(() => onDismiss(), [onDismiss])
-
   return (
     shouldShow && (
       <ModalContainer>
-        <ModalOverlay onClick={onModalDismiss} />
+        <ModalOverlay />
         <ModalPanel>
           {title && <Header>{title}</Header>}
           <Body>{children}</Body>

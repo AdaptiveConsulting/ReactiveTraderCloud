@@ -7,15 +7,26 @@ import { BlotterActions } from './actions'
 import Blotter from './components'
 import { selectBlotterRows, selectBlotterStatus } from './selectors'
 import { usePlatform } from 'rt-platforms'
+import { Trade } from 'rt-types'
+import { BlotterFilters, filterBlotterTrades } from './blotterTradesFilter'
 
 interface BlotterContainerOwnProps {
+  filters?: BlotterFilters
   onPopoutClick?: () => void
   tornOff?: boolean
   tearable?: boolean
 }
 
-const mapStateToProps = (state: GlobalState) => ({
-  rows: selectBlotterRows(state),
+function selectBlotterRowsAndFilter(
+  state: GlobalState,
+  filters: BlotterFilters,
+): ReadonlyArray<Trade> {
+  const trades: ReadonlyArray<Trade> = selectBlotterRows(state)
+  return filterBlotterTrades(trades, filters)
+}
+
+const mapStateToProps = (state: GlobalState, ownProps: BlotterContainerOwnProps) => ({
+  rows: selectBlotterRowsAndFilter(state, ownProps.filters || {}) as Trade[],
   status: selectBlotterStatus(state),
 })
 

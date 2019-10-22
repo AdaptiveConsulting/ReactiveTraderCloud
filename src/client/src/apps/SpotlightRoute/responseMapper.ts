@@ -1,7 +1,7 @@
 import { DetectIntentResponse } from 'dialogflow'
-import { CURRENCY_INTENT, MARKET_INFO_INTENT, SPOT_QUOTE_INTENT, TRADES_INFO_INTENT, } from './intents'
+import { MARKET_INFO_INTENT, SPOT_QUOTE_INTENT, TRADES_INFO_INTENT, } from './intents'
 
-export const mapIntent = (response: DetectIntentResponse) => {
+export const mapIntent = (response: DetectIntentResponse): string => {
   let result = ''
   if (!response) {
     return result
@@ -12,9 +12,10 @@ export const mapIntent = (response: DetectIntentResponse) => {
       const currencyPair = response.queryResult.parameters.fields.CurrencyPairs.stringValue
       result = `Open ${currencyPair}`
       break
-    case CURRENCY_INTENT:
     case MARKET_INFO_INTENT:
+      return `Open market view`
     case TRADES_INFO_INTENT:
+      return `Open blotter`
     default:
       result = [
         response.queryResult.intent.displayName,

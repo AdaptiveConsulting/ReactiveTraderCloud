@@ -78,6 +78,15 @@ export class TileComponent {
     await buttonElement.click()
     await wait(2000)
   }
+  async resetNotional(currencyTrade: string) {
+    const buttonElement = this.tradeType.initiateRFQ.buttonReload
+    if (!buttonElement) {
+      throw new Error(`could not find reset notional button on ${currencyTrade}`)
+    }
+    await waitForElementToBeClickable(this.browser, buttonElement)
+    await buttonElement.click()
+    await wait(200)
+  }
 
   async setNotional(currencyTrade: string, notional: string) {
     const textElement = this.tradeType[currencyTrade].notional

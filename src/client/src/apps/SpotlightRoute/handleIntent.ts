@@ -1,60 +1,12 @@
-import { DetectIntentResponse, QueryResult } from 'dialogflow'
-import {
-  CURRENCY_INTENT,
-  MARKET_INFO_INTENT,
-  SPOT_QUOTE_INTENT,
-  TRADES_INFO_INTENT,
-} from './intents'
+import { DetectIntentResponse } from 'dialogflow'
+import { MARKET_INFO_INTENT, SPOT_QUOTE_INTENT, TRADES_INFO_INTENT } from './intents'
 import { PlatformAdapter } from 'rt-platforms'
-import { showBlotter, showCurrencyPair } from './intent-handlers'
-
-export function getCurrencyPair(queryResult: QueryResult): string | undefined {
-  try {
-    return queryResult.parameters.fields.CurrencyPairs.stringValue
-  } catch (e) {
-    console.error(`Can't read currency pair`)
-    return undefined
-  }
-}
-
-export function getCurrency(queryResult: QueryResult): string | undefined {
-  try {
-    return queryResult.parameters.fields.Currency.stringValue
-  } catch (e) {
-    console.error(`Can't read currency`)
-    return undefined
-  }
-}
-
-export function getNumber(queryResult: QueryResult): number | undefined {
-  try {
-    return queryResult.parameters.fields.number.numberValue
-  } catch (e) {
-    console.error(`Can't read number`)
-    return undefined
-  }
-}
-
-function getIntentDisplayName(queryResult: QueryResult): string | undefined {
-  try {
-    return queryResult.intent.displayName
-  } catch (e) {
-    console.error(`Can't read intent display name`)
-    return
-  }
-}
-
-function getQueryResult(response: DetectIntentResponse): QueryResult {
-  try {
-    return response.queryResult
-  } catch (e) {
-    console.error(`Can't read queryResult`)
-    return
-  }
-}
+import { showBlotter, showCurrencyPair, showMarket } from './intent-handlers'
+import { getCurrency, getCurrencyPair, getIntentDisplayName, getNumber } from './intentUtils'
+import { BlotterFilters } from '../MainRoute/widgets/blotter'
 
 export const handleIntent = (response: DetectIntentResponse, platformAdapter: PlatformAdapter) => {
-  const queryResult = getQueryResult(response)
+  const queryResult = response.queryResult
   const intentDisplayName = getIntentDisplayName(queryResult)
   switch (intentDisplayName) {
     case SPOT_QUOTE_INTENT: {
@@ -66,12 +18,18 @@ export const handleIntent = (response: DetectIntentResponse, platformAdapter: Pl
       showCurrencyPair(currencyPair, platformAdapter)
       return
     }
-    case CURRENCY_INTENT:
     case MARKET_INFO_INTENT:
+      showMarket(platformAdapter)
+      return
     case TRADES_INFO_INTENT: {
       const currencyPair = getCurrencyPair(queryResult)
       const currency = getCurrency(queryResult)
-      showBlotter({ currencyPair, currency }, platformAdapter)
+      const filters: BlotterFilters = {
+        dealtCurrency: [currency],
+        symbol: [currencyPair],
+        count: getNumber(queryResult),
+      }
+      showBlotter(filters, platformAdapter)
       return
     }
     default:

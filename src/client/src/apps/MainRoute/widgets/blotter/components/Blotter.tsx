@@ -66,7 +66,7 @@ const Blotter: React.FC<BlotterProps> = props => {
   const { canPopout, rows, onPopoutClick } = props
   const [displayedRows, setDisplayedRows] = useState(0)
   const [gridDoc] = useState(React.createRef<HTMLDivElement>())
-  const [gridApi, setGridApi] = useState(null)
+  const [gridApi, setGridApi] = useState<GridApi>(null)
   const platform = usePlatform()
   const onModelUpdated = useCallback(
     () => gridApi && setDisplayedRows(gridApi.getDisplayedRowCount()),
