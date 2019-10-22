@@ -33,7 +33,7 @@ jobs:
           command: 'cd ./src/services/eventstore  && docker build -t ${DOCKER_USER}/baseeventstore .'
       - run:
           name: Build pricehistory
-          command: 'cd ./src/node-server/ && docker build -t ${DOCKER_USER}/pricehistory:${CIRCLE_BUILD_NUM}  -f ./PriceHistory.Dockerfile .'
+          command: 'cd ./src/node-server/ && docker build -t ${DOCKER_USER}/pricehistory:${CIRCLE_BUILD_NUM} -f ./PriceHistory.Dockerfile .'
       - run:
           name: Build bot
           command: 'cd ./src/server/Adaptive.ReactiveTrader.Server.Bot/ && docker build -t ${DOCKER_USER}/bot:${CIRCLE_BUILD_NUM} .'
