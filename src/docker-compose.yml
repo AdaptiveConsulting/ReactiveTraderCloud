@@ -72,8 +72,8 @@ services:
       - tradeexecution
   pricehistory:
     build:
-      dockerfile: Dockerfile.dev
-      context: ./server/Adaptive.ReactiveTrader.Server.PriceHistory
+      dockerfile: PriceHistory.Dockerfile
+      context: ./node-server
     depends_on:
       - broker
       - pricing
