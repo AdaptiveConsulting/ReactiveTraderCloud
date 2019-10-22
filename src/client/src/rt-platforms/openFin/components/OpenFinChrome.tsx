@@ -1,6 +1,6 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { SFC } from 'react'
+import React, { FC } from 'react'
 import { Helmet } from 'react-helmet'
 import { styled, AccentName } from 'rt-theme'
 
@@ -10,7 +10,7 @@ export interface ControlProps {
   close: () => void
 }
 
-export const OpenFinChrome: SFC = ({ children }) => (
+export const OpenFinChrome: FC = ({ children }) => (
   <React.Fragment>
     <Helmet>
       <style type="text/css">{`

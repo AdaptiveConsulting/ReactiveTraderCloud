@@ -18,7 +18,7 @@ export const ActionButton = styled('button')`
   border-left: 1px solid white;
 `
 
-const TileHeader: React.SFC<Props> = ({ ccyPair, date, displayCurrencyChart }) => {
+const TileHeader: React.FC<Props> = ({ ccyPair, date, displayCurrencyChart }) => {
   const platform = usePlatform()
 
   const share = useCallback(() => {
