@@ -213,6 +213,8 @@ export const Spotlight: FC = () => {
       <Response>
         {contacting ? (
           loader
+        ) : response === null ? (
+          'Oops. Something went wrong'
         ) : (
           <>
             {directoryAppSuggestions}

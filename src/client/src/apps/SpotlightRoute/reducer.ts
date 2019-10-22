@@ -32,7 +32,7 @@ const HISTORY_SIZE = 20
 
 export const initialState: State = {
   request: '',
-  response: null,
+  response: undefined,
   contacting: false,
   history: [],
   historyPosition: -1,
