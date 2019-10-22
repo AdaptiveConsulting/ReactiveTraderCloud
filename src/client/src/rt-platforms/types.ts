@@ -67,5 +67,6 @@ export enum InteropTopics {
   PositionClosed = 'position-closed',
 
   // Spotlight
-  FilterBlotter = 'filter-blotter'
+  FilterBlotter = 'filter-blotter',
+  FilterCurrencyPair = 'filter-currency-pair',
 }
