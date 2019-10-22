@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Loadable } from 'rt-components'
@@ -71,21 +71,14 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   ...props
 }) => {
   const { allowTearOff } = usePlatform()
-  const [mounted, setMounted] = useState<boolean>(false)
 
   // watch currency pair changes when component is mounted
   useEffect(() => {
-    if (!mounted) {
-      return
-    }
     onCurrencyPairChanged(id)
-  }, [mounted, id, onCurrencyPairChanged])
-
-  const onMount = useCallback(() => setMounted(true), [])
+  }, [id, onCurrencyPairChanged])
 
   return (
     <Loadable
-      onMount={onMount}
       minHeight={11}
       status={pricingStatus}
       render={() => (
