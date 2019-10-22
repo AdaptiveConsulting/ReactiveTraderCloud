@@ -35,7 +35,8 @@ export class TileComponent {
       NZDToUSD: {
         sell: root.element(by.qaTag('direction-sell-nzdusd')),
         buy: root.element(by.qaTag('direction-buy-nzdusd')),
-        notional: root.element(by.qaTag('notional-input__input-nzdusd'))
+        notional: root.element(by.qaTag('notional-input__input-nzdusd')),
+        initiateRFQ: root.element(by.qa('tile-booking__booking-status')),
       },
       EURToAUD: {
         sell: root.element(by.qaTag('direction-sell-euraud')),
@@ -57,6 +58,13 @@ export class TileComponent {
         labelTradeId: root.element(by.qa('tile-notification__tradeid')),
         labelMessage: root.element(by.qa('tile-notification__content')),
         pillButton: root.element(by.qa('tile-notification__pill-button'))
+      },
+      initiateRFQ: {
+        buttonInitiateRFQ: root.element(by.qa('tile-booking__booking-status')),
+        buttonReload: root.element(by.qa('notional-input__reset-input-value')),
+        buttonReject: root.element(by.qa('rfq-timer__reject-quote-button')),
+        labelTextStreamingUnavailable: root.element(by.qa('price-controls__price-button-disabled')),
+        labelTextTradeExpired: root.element(by.qa('price-button__expired'))
       }
     }
   }
@@ -80,4 +88,42 @@ export class TileComponent {
     await textElement.clear()
     await textElement.sendKeys(notional)
   }
+
+  async initiateRFQ(initiateRFQ: string) {
+    const labelTextStreaming = this.tradeType[initiateRFQ].labelTextStreamingUnavailable
+    expect(labelTextStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
+    const buttonRFQ = this.tradeType[initiateRFQ].buttonInitiateRFQ
+    await waitForElementToBeClickable(this.browser, buttonRFQ)
+    await buttonRFQ.click()
+    const buttonReject = this.tradeType[initiateRFQ].buttonReject
+    await waitForElementToBeClickable(this.browser, buttonReject)
+    await buttonReject.click()
+    const labelTextExpired = this.tradeType[initiateRFQ].labelTextTradeExpired
+    expect(labelTextExpired.getText()).toEqual('EXPIRED')
+    // To avoid click interception between the elements
+    await wait(800)
+    const buttonRequote = this.tradeType[initiateRFQ].buttonInitiateRFQ
+    await waitForElementToBeClickable(this.browser, buttonRequote)
+    await buttonRequote.click()
+    // Wait for button reload to appear after requote
+    await wait(10500)
+    const buttonReload = this.tradeType[initiateRFQ].buttonReload
+    await waitForElementToBeClickable(this.browser, buttonReload)
+    await buttonReload.click()
+  }
+
+  async NZDToUSDRFQ(currencyTrade: string) {
+    const buttonRFQ = this.tradeType[currencyTrade].initiateRFQ
+    await waitForElementToBeClickable(this.browser, buttonRFQ)
+    await buttonRFQ.click()
+    const buttonSell = this.tradeType.NZDToUSD.sell
+    await waitForElementToBeClickable(this.browser, buttonSell)
+    expect(buttonSell.isPresent()).toBe(true)
+    const buttonBuy = this.tradeType.NZDToUSD.buy
+    await waitForElementToBeClickable(this.browser, buttonBuy)
+    expect(buttonBuy.isPresent()).toBe(true)
+    // Wait for button requote to appear after inititiate RFQ timeout
+    await wait(10500)
+  }
+
 }

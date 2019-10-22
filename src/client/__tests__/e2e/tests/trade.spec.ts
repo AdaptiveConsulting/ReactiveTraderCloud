@@ -67,6 +67,19 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     })
   })
 
+  it('should validate RFQ mode', async () => {
+    await mainPage.workspace.selectCurrency('usd')
+    await mainPage.tile.setNotional('USDToJPY', '10m')
+    await mainPage.tile.initiateRFQ('initiateRFQ')
+  })
+
+  it('should validate unavailable streaming', async () => {
+    await mainPage.workspace.selectCurrency('nzd')
+    const textStreaming = await mainPage.tile.tradeType.initiateRFQ.labelTextStreamingUnavailable
+    expect(textStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
+    await mainPage.tile.NZDToUSDRFQ('NZDToUSD')
+  })
+
   afterAll(async () => {
     await browser.close()
   })
