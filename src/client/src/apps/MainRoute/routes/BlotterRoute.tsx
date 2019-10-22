@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from 'rt-theme'
 import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router'
 import { BlotterContainer, BlotterFilters, DEALT_CURRENCY, SYMBOL } from '../widgets/blotter'
+import { InteropTopics, usePlatform } from 'rt-platforms'
+import { Subscription } from 'rxjs'
 
 const BlotterContainerStyle = styled('div')`
   height: calc(100% - 21px);
@@ -32,10 +34,26 @@ function getFiltersFromQueryStr(queryStr: string): BlotterFilters {
   }
 }
 
-const BlotterRoute = ({ location: { search } }: RouteComponentProps<{ symbol: string }>) => {
+const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
+  location: { search },
+}) => {
+  const platform = usePlatform()
+  const [filtersFromInterop, setFiltersFromInterop] = useState<ReadonlyArray<BlotterFilters>>()
+
+  useEffect(() => {
+    let filterSubscription: Subscription
+
+    if (platform.hasFeature('interop')) {
+      const blotterFilters$ = platform.interop.subscribe$(InteropTopics.FilterBlotter)
+      filterSubscription = blotterFilters$.subscribe(setFiltersFromInterop)
+    }
+
+    return () => filterSubscription && filterSubscription.unsubscribe()
+  }, [platform])
+  const filters = (filtersFromInterop && filtersFromInterop[0]) || getFiltersFromQueryStr(search)
   return (
     <BlotterContainerStyle>
-      <BlotterContainer filters={getFiltersFromQueryStr(search)} />
+      <BlotterContainer filters={filters} />
     </BlotterContainerStyle>
   )
 }
