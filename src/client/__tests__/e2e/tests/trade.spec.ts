@@ -54,14 +54,11 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
   it('Should validate a notional value larger than the maximum allowed', async () => {
     await mainPage.tile.setNotional('EURToUSD', '99999999')
     const notional = await mainPage.tile.tradeType.EURToUSD.notional
-    var returnedNotional = notional.getAttribute('value')
-    expect(returnedNotional).toEqual('99,999,999')
-    const labelRFQ = await mainPage.tile.tradeType.confirmationScreen.labelRFQ
-    const RFQText = labelRFQ.getText()
-    expect(RFQText).toEqual('Initiate\nRFQ')
+    expect(notional.getAttribute('value')).toEqual('99,999,999')
+    const labelRFQ = await mainPage.tile.tradeType.initiateRFQ.buttonInitiateRFQ
+    expect(labelRFQ.getText()).toEqual('Initiate\nRFQ')
     await mainPage.tile.resetNotional('EURToUSD')
-    returnedNotional = notional.getAttribute('value')
-    expect(returnedNotional).toEqual('1,000,000')
+    expect(notional.getAttribute('value')).toEqual('1,000,000')
   })
 
   currencyList.forEach(([selectedCurrency, expectedCurrencies]) => {
