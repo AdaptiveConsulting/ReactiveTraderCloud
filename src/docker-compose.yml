@@ -82,7 +82,7 @@ services:
      - BROKER_PORT=8000
   nlp:
     build:
-      dockerfile: Nlp.Dockerfile
+      dockerfile: nlp/Dockerfile
       context: ./node-server
     depends_on:
       - broker

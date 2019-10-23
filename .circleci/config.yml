@@ -39,7 +39,7 @@ jobs:
           command: 'cd ./src/server/Adaptive.ReactiveTrader.Server.Bot/ && docker build -t ${DOCKER_USER}/bot:${CIRCLE_BUILD_NUM} .'
       - run:
           name: Build nlp
-          command: 'cd ./src/node-server/ && docker build -t ${DOCKER_USER}/nlp:${CIRCLE_BUILD_NUM} -f ./Nlp.Dockerfile .'
+          command: 'cd ./src/node-server/ && docker build -t ${DOCKER_USER}/nlp:${CIRCLE_BUILD_NUM} -f ./nlp/Dockerfile .'
       - run:
           name: Run broker
           command: 'docker run -d --net circleci --name broker ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM}'
