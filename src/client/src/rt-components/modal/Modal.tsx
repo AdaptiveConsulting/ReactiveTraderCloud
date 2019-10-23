@@ -58,12 +58,11 @@ const Body = styled.div`
 interface Props {
   shouldShow?: boolean
   title?: string
-  onDismiss?: () => void
 }
 
 // TODO disable tabbing outside of the modal
 // tslint:disable-next-line:variable-name
-const Modal: React.FC<Props> = ({ shouldShow, title, onDismiss, children }) => {
+const Modal: React.FC<Props> = ({ shouldShow, title, children }) => {
   return (
     shouldShow && (
       <ModalContainer>
