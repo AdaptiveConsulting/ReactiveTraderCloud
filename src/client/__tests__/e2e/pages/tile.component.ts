@@ -37,7 +37,7 @@ export class TileComponent {
       NZDToUSD: {
         sell: root.element(by.qaTag('direction-sell-nzdusd')),
         buy: root.element(by.qaTag('direction-buy-nzdusd')),
-        notional: root.element(by.qaTag('notional-input__input-nzdusd')),
+        notional: root.element(by.qaTag('notional-input__input-nzdusd'))
       },
       EURToAUD: {
         sell: root.element(by.qaTag('direction-sell-euraud')),
