@@ -7,11 +7,12 @@ export function showCurrencyPair(currencyPair: string, platform: PlatformAdapter
   currencyPair = currencyPair.toUpperCase()
 
   if (!currencyPairWindow || currencyPairWindow.closed) {
-    // TODO: position and size of the window, also make it frame-less
     platform.window
       .open(
         {
           ...defaultConfig,
+          width: 380,
+          height: 180,
           url: `${windowOrigin}/spot/${currencyPair}?tileView=Normal`,
         },
         () => (currencyPairWindow = null),
