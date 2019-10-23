@@ -1,30 +1,23 @@
-import React from 'react'
-
+import React, { useCallback } from 'react'
 import { styled, ThemeName, useTheme } from 'rt-theme'
-
 import Logo from './Logo'
 
-class Header extends React.Component {
-  onClick = () => window.open('https://weareadaptive.com/')
+const Header: React.FC = ({ children }) => {
+  const onLogoClick = useCallback(() => window.open('https://weareadaptive.com/'), [])
 
-  render() {
-    const { children } = this.props
-    return (
-      <Root>
-        <Logo size={1.75} onClick={this.onClick} data-qa="header__root-logo" />
-
-        <Fill />
-
-        <ThemeControl />
-        {children == null ? null : (
-          <React.Fragment>
-            <Division />
-            {children}
-          </React.Fragment>
-        )}
-      </Root>
-    )
-  }
+  return (
+    <Root>
+      <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
+      <Fill />
+      <ThemeControl />
+      {children == null ? null : (
+        <React.Fragment>
+          <Division />
+          {children}
+        </React.Fragment>
+      )}
+    </Root>
+  )
 }
 
 const ThemeControl = () => {
