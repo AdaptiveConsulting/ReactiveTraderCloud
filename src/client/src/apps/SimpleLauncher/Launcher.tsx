@@ -76,6 +76,9 @@ const Root = styled.div`
 const IconTitle = styled.span`
   position: absolute;
   bottom: 2px;
+  right: 0;
+  left: 0;
+  text-align: center;
   font-size: 9px;
   font-family: Lato;
   color: transparent;
