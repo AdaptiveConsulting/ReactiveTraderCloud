@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { styled } from 'rt-theme'
 
 const ResizerStyle = styled.div`
@@ -45,7 +45,7 @@ interface Props {
 }
 
 const Resizer: React.FC<Props> = ({ component, defaultHeight, children, disabled }) => {
-  const wrapperRef = React.createRef<HTMLDivElement>()
+  const wrapperRef = useRef<HTMLDivElement>()
   const [height, setHeight] = useState(defaultHeight)
   const [dragging, setDragging] = useState<Boolean>(false)
 
