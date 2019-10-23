@@ -41,6 +41,9 @@ jobs:
           name: Build nlp
           command: 'cd ./src/node-server/ && docker build -t ${DOCKER_USER}/nlp:${CIRCLE_BUILD_NUM} -f ./Nlp.Dockerfile .'
       - run:
+          name: Build smoketest
+          command: 'cd ./src/client-tests/ && docker build -t ${DOCKER_USER}/smoketest:${CIRCLE_BUILD_NUM} .'
+      - run:
           name: Run broker
           command: 'docker run -d --net circleci --name broker ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM}'
       - run:
@@ -81,13 +84,19 @@ jobs:
           command: 'docker ps -q -a | xargs -t -L 1 docker logs'
       - run:
           name: Run server tests
-          command: 'docker run --net circleci --name tests ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll'
+          command: 'docker run --net circleci --name tests ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll'  
       - run:
           name: Build client tests
           command: 'cd ./src/client && docker build -t ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} -f ./Dockerfile.dev .'
       - run:
           name: Run client tests
           command: 'docker run -e CI=true ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
+      - run:
+          name: 'Run e2e tests'
+          command: 'docker run --net circleci --name smoketest -t ${DOCKER_USER}/smoketest:${CIRCLE_BUILD_NUM} npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx'
+      - run: 
+          name: 'Output smoke test results'
+          command: 'docker log smoketest'
       - run:
           name: 'Skip the next steps for PRs'
           command: |
@@ -107,6 +116,8 @@ jobs:
             docker push ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM}
             docker push ${DOCKER_USER}/eventstore:${CIRCLE_BUILD_NUM}
             docker push ${DOCKER_USER}/nginx:${CIRCLE_BUILD_NUM}
+            docker push ${DOCKER_USER}/smoketest:${CIRCLE_BUILD_NUM}
+
       - run:
           name: Store build number
           command: |
@@ -140,7 +151,7 @@ jobs:
       - run:
           name: Update images
           command: |
-            kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${BUILD_NUM}
+            kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${1.168.0}
             kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/web-deployment web=${DOCKER_USER}/nginx:${BUILD_NUM}
             kubectl --namespace=${NAMESPACE} set image deployments/client-deployment client=${DOCKER_USER}/client:${BUILD_NUM}
