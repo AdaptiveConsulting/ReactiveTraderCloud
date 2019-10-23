@@ -7,6 +7,7 @@ import { createServiceStub } from './transport'
 import { ServiceStubProvider } from './context'
 import { getFdc3 } from './fdc3/fdc3'
 import { Fdc3Provider } from './fdc3/context'
+import { RouteWrapper } from 'rt-components/route-wrapper'
 
 const autobahn = new AutobahnConnectionProxy(
   process.env.REACT_APP_BROKER_HOST || location.hostname,
@@ -40,7 +41,9 @@ export default function SpotlightRoute() {
         <ServiceStubProvider value={serviceStub}>
           <Fdc3Provider value={fdc3}>
             <PlatformProvider value={platform}>
-              <Spotlight />
+              <RouteWrapper windowType="sub">
+                <Spotlight />
+              </RouteWrapper>
             </PlatformProvider>
           </Fdc3Provider>
         </ServiceStubProvider>

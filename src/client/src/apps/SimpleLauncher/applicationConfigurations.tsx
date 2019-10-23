@@ -173,7 +173,6 @@ const spotlightConfig: ApplicationConfig = {
     applicationType: 'application',
     windowOptions: {
       ...defaultWindowOptions,
-      frame: true,
     },
   },
 }
