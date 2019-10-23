@@ -93,7 +93,7 @@ jobs:
           command: 'docker run -e CI=true ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
       - run:
           name: 'Run e2e tests'
-          command: 'docker run --net circleci --name smoketest -t ${DOCKER_USER}/smoketest:${CIRCLE_BUILD_NUM} npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx'
+          command: 'docker run --net circleci --name smoketest -t ${DOCKER_USER}/smoketest:${CIRCLE_BUILD_NUM} sh -c "sleep 30 && npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx"'
       - run: 
           name: 'Output smoke test results'
           command: 'docker log smoketest'
