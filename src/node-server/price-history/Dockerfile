@@ -1,6 +1,8 @@
 FROM node:alpine
 WORKDIR "/app"
-COPY . .
+COPY shared shared
+COPY price-history price-history
+COPY tsconfig-base.json .
 WORKDIR "/app/shared"
 RUN npm install
 WORKDIR "/app/price-history"

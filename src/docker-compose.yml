@@ -72,7 +72,7 @@ services:
       - tradeexecution
   pricehistory:
     build:
-      dockerfile: PriceHistory.Dockerfile
+      dockerfile: price-history/Dockerfile
       context: ./node-server
     depends_on:
       - broker
