@@ -15,33 +15,34 @@ interface BlotterToolbarProps {
   removeFilter: (key: string) => void
 }
 
-interface BlotterToobarState {
-  themeName: string
-}
-
 const BlotterToolbarStyle = styled('div')`
   ${flexStyle({ alignItems: 'center', justifyContent: 'flex-end' })};
 `
 
-export default class BlotterToolbar extends React.Component<
-  BlotterToolbarProps,
-  BlotterToobarState
-> {
-  render() {
-    return (
-      <BlotterToolbarStyle>
-        <AppliedFilters
-          filterModel={this.props.filterModel}
-          columnDefinitions={this.props.columnDefinitions}
-          removeAllFilters={this.props.removeAllFilters}
-          removeFilter={this.props.removeFilter}
-        />
-        <QuickFilter
-          isFilterApplied={this.props.isQuickFilterApplied}
-          removeQuickFilter={this.props.removeQuickFilter}
-          quickFilterChangeHandler={this.props.quickFilterChangeHandler}
-        />
-      </BlotterToolbarStyle>
-    )
-  }
+const BlotterToolbar: React.FC<BlotterToolbarProps> = ({
+  filterModel,
+  columnDefinitions,
+  removeAllFilters,
+  removeFilter,
+  isQuickFilterApplied,
+  removeQuickFilter,
+  quickFilterChangeHandler,
+}) => {
+  return (
+    <BlotterToolbarStyle>
+      <AppliedFilters
+        filterModel={filterModel}
+        columnDefinitions={columnDefinitions}
+        removeAllFilters={removeAllFilters}
+        removeFilter={removeFilter}
+      />
+      <QuickFilter
+        isFilterApplied={isQuickFilterApplied}
+        removeQuickFilter={removeQuickFilter}
+        quickFilterChangeHandler={quickFilterChangeHandler}
+      />
+    </BlotterToolbarStyle>
+  )
 }
+
+export default BlotterToolbar

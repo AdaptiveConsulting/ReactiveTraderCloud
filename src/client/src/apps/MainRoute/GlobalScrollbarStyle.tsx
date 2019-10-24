@@ -1,6 +1,6 @@
 import { memoize } from 'lodash'
 import { rgba } from 'polished'
-import React, { Component } from 'react'
+import React from 'react'
 import Helmet from 'react-helmet'
 import { withTheme, createGlobalStyle } from 'styled-components'
 import { Theme } from 'rt-theme'
@@ -47,17 +47,13 @@ body .ag-body ::-webkit-scrollbar {
 }
 `
 
-export class GlobalScrollbarStyle extends Component<{ theme: Theme }> {
-  render() {
-    return (
-      <React.Fragment>
-        <ScrollbarGlobal />
-        <Helmet>
-          <style>{css(rgba(this.props.theme.secondary[3], 0.2))}</style>
-        </Helmet>
-      </React.Fragment>
-    )
-  }
-}
+const GlobalScrollbarStyle: React.FC<{ theme: Theme }> = ({ theme }) => (
+  <React.Fragment>
+    <ScrollbarGlobal />
+    <Helmet>
+      <style>{css(rgba(theme.secondary[3], 0.2))}</style>
+    </Helmet>
+  </React.Fragment>
+)
 
 export default withTheme(GlobalScrollbarStyle)

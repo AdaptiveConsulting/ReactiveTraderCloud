@@ -1,4 +1,4 @@
-import React, { Component, SyntheticEvent } from 'react'
+import React, { useState, useCallback, SyntheticEvent, useEffect } from 'react'
 
 import { ConnectionState } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
@@ -13,76 +13,67 @@ import {
 } from './styled'
 import Service from './Service'
 
-interface State {
-  opened: boolean
+interface Props {
+  connectionStatus: ConnectionState
+  services: ServiceStatus[]
 }
 
-export class StatusButton extends Component<
-  {
-    connectionStatus: ConnectionState
-    services: ServiceStatus[]
-  },
-  State
-> {
-  state = {
-    opened: false,
-  }
+export const StatusButton: React.FC<Props> = ({
+  connectionStatus: { url, transportType },
+  services,
+}) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [appStatus, setAppStatus] = useState<ServiceConnectionStatus>()
 
-  toggleOpen = (e: SyntheticEvent) => {
-    if (!this.isAppUrl(e.target)) {
-      this.setState(({ opened }) => ({ opened: !opened }))
-    }
-  }
+  const toggleOpen = useCallback(
+    (event: SyntheticEvent) => {
+      const isAppUrl = (element: any) => element instanceof HTMLInputElement
 
-  isAppUrl = (element: any) => element instanceof HTMLInputElement
+      if (!isAppUrl(event.target)) {
+        setIsOpen(!isOpen)
+      }
+    },
+    [isOpen, setIsOpen],
+  )
 
-  selectAll = (e: SyntheticEvent) => {
-    const input = e.target as HTMLInputElement
+  const selectAll = useCallback((event: SyntheticEvent) => {
+    const input = event.target as HTMLInputElement
     input.select()
-  }
+  }, [])
 
-  getApplicationStatus = (services: ServiceStatus[]) => {
+  useEffect(() => {
     if (services.every(s => s.connectionStatus === ServiceConnectionStatus.CONNECTED)) {
-      return ServiceConnectionStatus.CONNECTED
+      setAppStatus(ServiceConnectionStatus.CONNECTED)
     } else if (services.some(s => s.connectionStatus === ServiceConnectionStatus.CONNECTING)) {
-      return ServiceConnectionStatus.CONNECTING
+      setAppStatus(ServiceConnectionStatus.CONNECTING)
     } else {
-      return ServiceConnectionStatus.DISCONNECTED
+      setAppStatus(ServiceConnectionStatus.DISCONNECTED)
     }
-  }
+  }, [services])
 
-  render() {
-    const {
-      connectionStatus: { url, transportType },
-      services,
-    } = this.props
+  const appUrl = `${url} (${transportType})`
+  return (
+    <Root>
+      <Button onClick={toggleOpen} data-qa="status-button__toggle-button">
+        <StatusCircle status={appStatus} />
+        <StatusLabel status={appStatus} />
+      </Button>
 
-    const { opened } = this.state
-    const appStatus = this.getApplicationStatus(services)
-    const appUrl = `${url} (${transportType})`
-    return (
-      <Root>
-        <Button onClick={this.toggleOpen} data-qa="status-button__toggle-button">
-          <StatusCircle status={appStatus} />
-          <StatusLabel status={appStatus} />
-        </Button>
+      <ServiceListPopup open={isOpen} onClick={toggleOpen}>
+        <ServiceList>
+          <AppUrl
+            title={appUrl}
+            readOnly={true}
+            value={appUrl}
+            onFocus={selectAll}
+            onClick={selectAll}
+          />
 
-        <ServiceListPopup open={opened} onClick={this.toggleOpen}>
-          <ServiceList>
-            <AppUrl
-              title={appUrl}
-              readOnly={true}
-              value={appUrl}
-              onFocus={this.selectAll}
-              onClick={this.selectAll}
-            />
-
-            {services.map(service => (
-              <Service key={service.serviceType} service={service} />
-            ))}
-          </ServiceList>
-        </ServiceListPopup>
-      </Root>
-    )
-  }
+          {services.map(service => (
+            <Service key={service.serviceType} service={service} />
+          ))}
+        </ServiceList>
+      </ServiceListPopup>
+    </Root>
+  )
 }
