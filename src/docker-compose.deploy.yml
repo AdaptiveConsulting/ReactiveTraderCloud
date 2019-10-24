@@ -1,0 +1,12 @@
+version: '3'
+services:
+  servers:
+    image: ${DOCKER_USER}/servers:${BUILD_VERSION}
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    depends_on:
+      - eventstore
+    command: 'echo "Override based docker-compose to not populate event store"'
+  #
+  # docker run -d servers:1.3.0 dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll

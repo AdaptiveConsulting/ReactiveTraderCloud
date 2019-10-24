@@ -1,0 +1,109 @@
+version: 2.1
+commands:
+  semver:
+    description: "Setup semver version for this release"
+    parameters:
+      bump:
+        default: "minor"
+        description: The semver bump type. Must be one of "major", "minor", "patch".
+        type: enum
+        enum: ["major", "minor", "patch"]
+    steps:
+      - run: |
+          LAST_TAG="$(git describe --tags)"
+          echo "Original tag: $LAST_TAG"
+          NEW_TAG="$(/semver bump << parameters.bump >> ${LAST_TAG} || echo 1.0.0)"
+          echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
+          echo "export DOCKER_USER=$DOCKER_USER" >> $BASH_ENV
+          git tag $NEW_TAG
+          echo "Created new tag: $(git describe --tags)"
+  build_images:
+    description: "Build the deployable container images"
+    steps:
+      - run: |
+          docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
+  run_tests:
+    description: "Runs the integration tests"
+    steps:
+      - run: |
+          docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
+          # run --use-aliases --name test \
+          #  servers dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll
+  push_images:
+    steps:
+      - run: |
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker-compose -f src/docker-compose.deploy.yml -f src/docker/compose.yml \
+            push \
+              broker \
+              nginx \
+              eventstore \
+              servers \
+              nlp \
+              bot \
+              pricehistory
+  deploy:
+    description: "Deploy the specific version to gcloud"
+    # parameters:
+    #   version:
+    #     description: The environment variable specifiying the version to deploy. Must already be hosted on dockerhub
+    #     type: env_var_name
+    #   environment:
+    #     description: The environment variable containing the environment to deploy to. One of "dev", "demo"
+    #     type: env_var_name
+    steps:
+      - run: |
+          echo $BASH_ENV
+          # echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          # gcloud config set project ${GOOGLE_PROJECT_ID}
+          # gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+          # gcloud container clusters get-credentials cluster
+          # # TODO: use docker stack deploy?
+
+jobs:
+  release_build:
+    machine:
+        docker_layer_caching: true
+    steps:
+      - attach_workspace:
+          at: /envs
+      - run: |
+          docker-compose --version
+      - checkout
+      - semver:
+          bump: minor
+      - build_images
+      - run_tests
+      - run: |
+          # set environment variables for deployment
+          echo "export DEPLOY_TARGET=dev" >> $BASH_ENV
+          cat ${BASH_ENV}
+          mkdir -p envs
+          echo "export DEPLOY_TARGET=$DEPLOY_TARGET" >> envs/vars
+          echo "export BUILD_VERSION=$BUILD_VERSION" >> envs/vars
+
+  deploy:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - attach_workspace:
+          at: /envs
+      - run: |
+          cat $BASH_ENV
+          cat /envs/vars >> $BASH_ENV;
+          cat $BASH_ENV
+      - run: |
+          # push new tag upstream
+          # git push --follow-tags
+
+workflows:
+  version: 2.1
+  main:
+    jobs:
+      - release_build:
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - release_build
