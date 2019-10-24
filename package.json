@@ -22,10 +22,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run client-strict-null-checks"
+      "pre-commit": "lint-staged && npm run client-strict-null-checks",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^2.3.3",
     "@typescript-eslint/parser": "^2.3.3",
     "babel-eslint": "10.0.2",
