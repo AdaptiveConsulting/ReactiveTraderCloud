@@ -7,7 +7,7 @@ import { concat, from, Observable, of, timer } from 'rxjs'
 import { RfqReceived, RfqRequest } from '../model/rfqRequest'
 import { SpotTileState } from '../spotTileReducer'
 import { CurrencyPairState } from '../../../data/referenceData'
-import { getDefaultNotionalValue } from '../components/Tile/TileBusinessLogic'
+import { getDefaultInitialNotionalValue } from '../components/Tile/TileBusinessLogic'
 
 const {
   rfqRequest,
@@ -115,7 +115,7 @@ export const rfqReceivedEpic: ApplicationEpic = action$ =>
             from([
               setNotional({
                 currencyPair: currencyPair.symbol,
-                notional: getDefaultNotionalValue(),
+                notional: getDefaultInitialNotionalValue(currencyPair),
               }),
               setTradingMode({
                 symbol: currencyPair.symbol,
