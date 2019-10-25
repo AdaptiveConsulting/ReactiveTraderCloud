@@ -12,7 +12,6 @@ const MIN_RFQ_VALUE = 10000000
 
 // Utils
 export const getFormattedValue = (value: number | string) => numeral(value).format(NUMERAL_FORMAT)
-export const getDefaultNotionalValue = () => DEFAULT_NOTIONAL_VALUE
 export const getDefaultInitialNotionalValue = (currencyPair: CurrencyPair) =>
   // This is to simply to have one Tile showing RFQ prompt on page load
   // check JIRA ticket ARTP-532
