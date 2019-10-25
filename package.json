@@ -32,6 +32,7 @@
     "@typescript-eslint/eslint-plugin": "^2.3.3",
     "@typescript-eslint/parser": "^2.3.3",
     "babel-eslint": "10.0.2",
+    "danger": "^9.2.2",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
     "eslint-config-react-app": "^5.0.2",
