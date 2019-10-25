@@ -5,7 +5,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class CurrencyPairTracker
     {
-        private decimal _baseSpot;
         private decimal _baseTradedAmount;
         private decimal _counterTradedAmount;
 
@@ -31,12 +30,12 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             if (trade.Direction == DirectionDto.Buy)
             {
                 _baseTradedAmount += trade.Notional;
-                _counterTradedAmount += trade.Notional*trade.SpotRate;
+                _counterTradedAmount -= trade.Notional*trade.SpotRate;
             }
             else
             {
                 _baseTradedAmount -= trade.Notional;
-                _counterTradedAmount -= trade.Notional*trade.SpotRate;
+                _counterTradedAmount += trade.Notional*trade.SpotRate;
             }
             TradeCount++;
 
@@ -55,11 +54,9 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
                 return;
             }
 
-            _baseSpot = isLong
-                ? _counterTradedAmount/monitoredPrice.Bid
-                : _counterTradedAmount/monitoredPrice.Ask;
+            var rate = isLong ? monitoredPrice.Bid : monitoredPrice.Ask;
 
-            var basePnl = _baseTradedAmount - _baseSpot;
+            var basePnl = _counterTradedAmount/rate + _baseTradedAmount;
 
             decimal usdPnl;
             if (isUsdBased)
@@ -77,6 +74,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             {
                 Symbol = CurrencyPair,
                 BaseTradedAmount = _baseTradedAmount,
+                CounterTradedAmount = _counterTradedAmount,
                 BasePnl = basePnl,
                 UsdPnl = usdPnl,
                 WasTraded = wasTraded
