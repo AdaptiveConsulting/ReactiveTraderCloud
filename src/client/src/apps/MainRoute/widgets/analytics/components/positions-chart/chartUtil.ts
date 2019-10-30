@@ -14,6 +14,7 @@ export interface CurrencyPairPosition {
   basePnl: number
   basePnlName: string
   baseTradedAmount: number
+  counterTradedAmount: number
   baseTradedAmountName: string
   symbol: string
 }
@@ -39,9 +40,12 @@ export function getPositionsDataFromSeries(
       const { symbol } = ccyPairPosition
       const ccyPair = currencyPairs[symbol]
       const baseCurrency = ccyPair ? ccyPair.base : ''
-      aggregatedPositionsObj[baseCurrency] = aggregatedPositionsObj[baseCurrency]
-        ? aggregatedPositionsObj[baseCurrency] + ccyPairPosition.baseTradedAmount
-        : ccyPairPosition.baseTradedAmount
+      const counterCurrency = ccyPair ? ccyPair.terms : ''
+      aggregatedPositionsObj[baseCurrency] =
+        (aggregatedPositionsObj[baseCurrency] || 0) + ccyPairPosition.baseTradedAmount
+
+      aggregatedPositionsObj[counterCurrency] =
+        (aggregatedPositionsObj[counterCurrency] || 0) + ccyPairPosition.counterTradedAmount
 
       return aggregatedPositionsObj
     },

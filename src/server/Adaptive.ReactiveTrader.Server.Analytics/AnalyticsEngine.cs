@@ -87,7 +87,8 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
                     {
                         Symbol = ccp.CurrencyPair,
                         BasePnl = ccp.CurrentPosition.BasePnl,
-                        BaseTradedAmount = ccp.CurrentPosition.BaseTradedAmount
+                        BaseTradedAmount = ccp.CurrentPosition.BaseTradedAmount,
+                        CounterTradedAmount = ccp.CurrentPosition.CounterTradedAmount,
                     })
                     .ToArray()
             };

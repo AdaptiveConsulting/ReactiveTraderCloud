@@ -25,6 +25,7 @@ function mapPositionsFromDto(dtos: CurrencyPairPositionRaw[]): CurrencyPairPosit
     symbol: dto.Symbol,
     basePnl: dto.BasePnl,
     baseTradedAmount: dto.BaseTradedAmount,
+    counterTradedAmount: dto.CounterTradedAmount,
     basePnlName: 'basePnl',
     baseTradedAmountName: 'baseTradedAmount',
   }))
