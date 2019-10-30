@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
-import { WindowConfig } from 'rt-components'
-import { WindowPosition } from '../../layouts'
+import { WindowConfig, WindowPosition } from 'rt-platforms'
 
 type Center = 'screen' | 'parent'
 export interface ExternalWindowProps {
@@ -19,6 +18,10 @@ const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => Ext
     name: `${key}`,
     width: 366, // 346 content + 10 padding
     height: 193,
+    minWidth: 366,
+    minHeight: 193,
+    maxWidth: 366,
+    maxHeight: 193,
     url: `/spot/${key}`,
     x: tileLayout ? tileLayout.x : undefined,
     y: tileLayout ? tileLayout.y : undefined,
@@ -27,7 +30,7 @@ const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => Ext
 })
 
 const getSpotTiles = (state: GlobalState) => state.currencyPairs
-const getSpotTilesLayout = (state: GlobalState) => state.layout.spotTiles
+const getSpotTilesLayout = (state: GlobalState) => state.layoutService.spotTiles
 
 export const selectSpotTiles = createSelector(
   [getSpotTiles, getSpotTilesLayout],

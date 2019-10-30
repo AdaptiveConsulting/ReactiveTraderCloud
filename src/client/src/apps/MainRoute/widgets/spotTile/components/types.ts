@@ -1,6 +1,6 @@
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
 import { SpotTileData } from '../model'
-import { ValidationMessage, NotionalUpdate } from './notional/NotionalInput'
+import { ValidationMessage } from './notional'
 import {
   RfqRequest,
   RfqCancel,
@@ -27,7 +27,7 @@ export interface RfqActions {
 }
 
 export interface TileSwitchChildrenProps {
-  notional: string
+  notional: number
   userError: boolean
 }
 
@@ -36,8 +36,7 @@ export interface Props {
   spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
   executeTrade: (direction: Direction, rawSpotRate: number) => void
-  notional: string
-  updateNotional: (notionalUpdate: NotionalUpdate) => void
+  updateNotional: (notional: number) => void
   resetNotional: () => void
   inputDisabled: boolean
   inputValidationMessage: ValidationMessage

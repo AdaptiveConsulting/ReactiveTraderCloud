@@ -1,9 +1,10 @@
 import React, { FC } from 'react'
 import { spotDateFormatter } from '../../model/dateUtils'
-import AnalyticsPriceControl from './AnalyticsTilePriceControl'
+import PriceControls from '../PriceControls'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
-import { usePlatform } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
+import { getDefaultInitialNotionalValue } from '../Tile/TileBusinessLogic'
 
 import {
   AnalyticsTileStyle,
@@ -24,8 +25,7 @@ class AnalyticsTile extends React.PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { price, historicPrices, rfqState },
-      notional,
+      spotTileData: { notional, isTradeExecutionInFlight, price, historicPrices, rfqState },
       updateNotional,
       resetNotional,
       executeTrade,
@@ -33,16 +33,30 @@ class AnalyticsTile extends React.PureComponent<Props> {
       tradingDisabled,
       inputDisabled,
       inputValidationMessage,
+      displayCurrencyChart,
     } = this.props
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
-    const { isRfqStateExpired, isRfqStateCanRequest } = getConstsFromRfqState(rfqState)
-    const showResetButton = isRfqStateCanRequest || isRfqStateExpired
+    const { isRfqStateExpired, isRfqStateCanRequest, isRfqStateNone } = getConstsFromRfqState(
+      rfqState,
+    )
+    const showResetButton =
+      !isTradeExecutionInFlight &&
+      getDefaultInitialNotionalValue(currencyPair) !== notional &&
+      (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
 
     return (
       <AnalyticsWrapperWithPlatform>
-        <AnalyticsTileStyle className="spot-tile">
-          <TileHeader ccyPair={currencyPair} date={date} />
+        <AnalyticsTileStyle
+          className="spot-tile"
+          data-qa="analytics-tile__spot-tile"
+          data-qa-id={`currency-pair-${currencyPair.symbol.toLowerCase()}`}
+        >
+          <TileHeader
+            ccyPair={currencyPair}
+            date={date}
+            displayCurrencyChart={displayCurrencyChart}
+          />
           <AnalyticsTileContent>
             <GraphNotionalWrapper>
               <LineChartWrapper>
@@ -50,7 +64,8 @@ class AnalyticsTile extends React.PureComponent<Props> {
               </LineChartWrapper>
               <NotionalInput
                 notional={notional}
-                currencyPairSymbol={currencyPair.base}
+                currencyPairBase={currencyPair.base}
+                currencyPairSymbol={currencyPair.symbol}
                 updateNotional={updateNotional}
                 resetNotional={resetNotional}
                 validationMessage={inputValidationMessage}
@@ -58,11 +73,14 @@ class AnalyticsTile extends React.PureComponent<Props> {
                 disabled={inputDisabled}
               />
             </GraphNotionalWrapper>
-            <AnalyticsPriceControl
+            <PriceControls
+              isTradeExecutionInFlight={isTradeExecutionInFlight}
               executeTrade={executeTrade}
               priceData={price}
               currencyPair={currencyPair}
               disabled={tradingDisabled}
+              rfqState={rfqState}
+              isAnalyticsView={true}
             />
           </AnalyticsTileContent>
         </AnalyticsTileStyle>

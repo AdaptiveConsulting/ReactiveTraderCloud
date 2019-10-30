@@ -5,3 +5,4 @@ node_modules/
 .DS_Store
 # Excel temp files
 ~$*.xls*
+__tests__/e2e/tmp/

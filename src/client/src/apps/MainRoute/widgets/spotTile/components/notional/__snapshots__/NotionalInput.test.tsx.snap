@@ -6,16 +6,17 @@ exports[`NotionalInput default 1`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb fauXdE"
+    data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -28,16 +29,17 @@ exports[`NotionalInput default 2`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb dfDCvR"
+    data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -50,16 +52,17 @@ exports[`NotionalInput disabled 1`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb ixCVbX"
+    data-qa-id="notional-input__input-eurusd"
     disabled={true}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -72,16 +75,17 @@ exports[`NotionalInput disabled 2`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb jPqRyz"
+    data-qa-id="notional-input__input-eurusd"
     disabled={true}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
@@ -94,21 +98,23 @@ exports[`NotionalInput show reset button 1`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb fauXdE"
+    data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
   <button
     className="sc-ifAKCX gROrJN"
+    data-qa="notional-input__reset-input-value"
     onClick={[Function]}
   >
     <i
@@ -124,21 +130,23 @@ exports[`NotionalInput show reset button 2`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb dfDCvR"
+    data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
   <button
     className="sc-ifAKCX fCQbjt"
+    data-qa="notional-input__reset-input-value"
     onClick={[Function]}
   >
     <i
@@ -154,21 +162,23 @@ exports[`NotionalInput with error 1`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb iHOuZf"
+    data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
   <div
     className="sc-bwzfXH hUHSeX"
+    data-qa="notional-input__validation-message"
   >
     Some error
   </div>
@@ -181,21 +191,23 @@ exports[`NotionalInput with error 2`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb iHOuZf"
+    data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
   <div
     className="sc-bwzfXH hUHSeX"
+    data-qa="notional-input__validation-message"
   >
     Some error
   </div>
@@ -208,21 +220,23 @@ exports[`NotionalInput with info 1`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb gDYEmO"
+    data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
   <div
     className="sc-bwzfXH cHoFLD"
+    data-qa="notional-input__validation-message"
   >
     Some information
   </div>
@@ -235,21 +249,23 @@ exports[`NotionalInput with info 2`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb gDYEmO"
+    data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
   <div
     className="sc-bwzfXH cHoFLD"
+    data-qa="notional-input__validation-message"
   >
     Some information
   </div>
@@ -262,21 +278,23 @@ exports[`NotionalInput with warning 1`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb ecOaYV"
+    data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
   <div
     className="sc-bwzfXH bpWJsW"
+    data-qa="notional-input__validation-message"
   >
     Some warning
   </div>
@@ -289,21 +307,23 @@ exports[`NotionalInput with warning 2`] = `
 >
   <span
     className="sc-bdVaJa bxrsSL"
+    data-qa="notional-input__currency-pair-symbol"
   >
-    EURUSD
+    EUR
   </span>
   <input
     className="sc-bxivhb ecOaYV"
+    data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    onKeyPress={[Function]}
     type="text"
     value="1,000,000"
   />
   <div
     className="sc-bwzfXH bpWJsW"
+    data-qa="notional-input__validation-message"
   >
     Some warning
   </div>

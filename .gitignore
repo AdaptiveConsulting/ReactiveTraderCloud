@@ -1,4 +1,4 @@
-src/client/node_modules
+node_modules/
 src/client/coverage
 .idea/
 .vs/
@@ -22,3 +22,4 @@ obj/
 deploy/**/docker-compose.yml
 *.pyc
 *.sln
+lerna-debug.log

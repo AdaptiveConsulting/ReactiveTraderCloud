@@ -1,7 +1,7 @@
 import { AgGridReact } from 'ag-grid-react'
-import { GridApi } from 'ag-grid'
+import { GridApi } from 'ag-grid-community'
 // tslint:disable-next-line:no-submodule-imports
-import 'ag-grid/dist/styles/ag-grid.css'
+import 'ag-grid-community/dist/styles/ag-grid.css'
 import React, { useState, useCallback } from 'react'
 import { styled } from 'rt-theme'
 import { Trade, TradeStatus } from 'rt-types'
@@ -9,7 +9,7 @@ import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION, csvExportSettings } from './blotterUtils'
 import { Context } from 'openfin-fdc3'
-import { usePlatform } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 
 export interface BlotterProps {
   rows: Trade[]
@@ -66,7 +66,7 @@ const Blotter: React.FC<BlotterProps> = props => {
   const { canPopout, rows, onPopoutClick } = props
   const [displayedRows, setDisplayedRows] = useState(0)
   const [gridDoc] = useState(React.createRef<HTMLDivElement>())
-  const [gridApi, setGridApi] = useState(null)
+  const [gridApi, setGridApi] = useState<GridApi>(null)
   const platform = usePlatform()
   const onModelUpdated = useCallback(
     () => gridApi && setDisplayedRows(gridApi.getDisplayedRowCount()),
@@ -90,11 +90,14 @@ const Blotter: React.FC<BlotterProps> = props => {
     platform.fdc3.broadcast(getCurrencyPairContext(currencyPair))
   }
 
-  const onGridReady = useCallback(({ api }: { api: GridApi }) => {
-    setGridApi(api)
-    onModelUpdated()
-    api.sizeColumnsToFit()
-  }, [])
+  const onGridReady = useCallback(
+    ({ api }: { api: GridApi }) => {
+      setGridApi(api)
+      onModelUpdated()
+      api.sizeColumnsToFit()
+    },
+    [onModelUpdated],
+  )
 
   const exportToExcel = useCallback(() => {
     if (gridApi) {
@@ -103,7 +106,7 @@ const Blotter: React.FC<BlotterProps> = props => {
   }, [gridApi])
 
   return (
-    <BlotterStyle>
+    <BlotterStyle data-qa="blotter__blotter-content">
       <BlotterHeader
         canPopout={canPopout}
         onPopoutClick={onPopoutClick}
@@ -115,10 +118,7 @@ const Blotter: React.FC<BlotterProps> = props => {
           columnDefs={columnDefinitions}
           defaultColDef={DEFAULT_COLUMN_DEFINITION}
           rowData={rows}
-          enableColResize={true}
           suppressMovableColumns={true}
-          enableSorting={true}
-          enableFilter={true}
           rowSelection="multiple"
           suppressDragLeaveHidesColumns={true}
           getRowClass={getRowClass}
@@ -132,9 +132,9 @@ const Blotter: React.FC<BlotterProps> = props => {
         />
       </BlotterGrid>
       <BlotterStatus>
-        <BlotterStatusText>{`Displaying rows ${displayedRows} of ${
-          rows.length
-        }`}</BlotterStatusText>
+        <BlotterStatusText data-qa="blotter__blotter-status-text">
+          {`Displaying rows ${displayedRows} of ${rows.length}`}
+        </BlotterStatusText>
       </BlotterStatus>
     </BlotterStyle>
   )

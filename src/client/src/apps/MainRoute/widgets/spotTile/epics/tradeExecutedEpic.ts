@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { InteropTopics } from 'rt-components'
+import { InteropTopics } from 'rt-platforms'
 import { EMPTY } from 'rxjs'
 import { ignoreElements, tap } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'

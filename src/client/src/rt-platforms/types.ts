@@ -1,15 +1,23 @@
 import { Observable } from 'rxjs'
-import { CurrencyPairPosition } from 'rt-types'
-import { ExcelAdapterName } from './openFin'
 
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
 export type PlatformType = 'browser' | 'desktop'
+
+export interface WindowPosition {
+  visible: boolean
+  x?: number
+  y?: number
+}
 
 export interface WindowConfig {
   name: string
   url: string
   width: number
   height: number
+  minHeight?: number
+  minWidth?: number
+  maxHeight?: number
+  maxWidth?: number
   center?: 'parent' | 'screen'
   x?: number
   y?: number
@@ -24,9 +32,7 @@ export interface AppConfig {
 }
 
 export interface PlatformFeatures {
-  excel: ExcelInterop
-  chartIQ: ChartIQInterop
-  notificationHighlight: NotificationHighlightInterop
+  app: AppInterop
   interop: PubSubInterop
   share: (object: any) => {}
 }
@@ -36,20 +42,8 @@ interface PubSubInterop {
   publish: (topic: string, message: any) => void
 }
 
-export interface ExcelInterop {
-  readonly adapterName: ExcelAdapterName
-  open(): Promise<void>
-  isOpen(): boolean
-  publishPositions: (positions: CurrencyPairPosition[]) => Promise<void>
-  publishBlotter: <T extends any>(blotterData: T) => Promise<void>
-}
-
-interface ChartIQInterop {
+interface AppInterop {
   open: (id: string, config: AppConfig) => Promise<string>
-}
-
-interface NotificationHighlightInterop {
-  init: () => Observable<{}>
 }
 
 export enum InteropTopics {
@@ -71,4 +65,8 @@ export enum InteropTopics {
 
   // Send to legacy Excel adapter to update UI
   PositionClosed = 'position-closed',
+
+  // Spotlight
+  FilterBlotter = 'filter-blotter',
+  FilterCurrencyPair = 'filter-currency-pair',
 }

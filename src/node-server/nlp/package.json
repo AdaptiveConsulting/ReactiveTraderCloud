@@ -1,0 +1,36 @@
+{
+  "name": "adaptive.reactivetrader.server.nlp",
+  "version": "0.0.1",
+  "description": "NLP Service for Reactive Trader",
+  "main": "dist/index",
+  "scripts": {
+    "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'node -r ts-node/register -r tsconfig-paths/register --inspect' src/index.ts",
+    "build": "webpack",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "NLP"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "dialogflow": "^0.12.0",
+    "dotenv": "^8.1.0",
+    "rxjs": "^6.5.3",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/dialogflow": "^0.11.0",
+    "@types/dotenv": "^6.1.0",
+    "@types/node": "^11.9.3",
+    "@types/uuid": "^3.4.4",
+    "copy-webpack-plugin": "^5.0.4",
+    "nodemon": "^1.19.3",
+    "ts-loader": "^6.2.0",
+    "ts-node": "^8.4.1",
+    "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  }
+}

@@ -1,17 +1,19 @@
 import { BasePlatformAdapter } from '../../platformAdapter'
 import { WindowConfig } from '../../types'
 import { SymphonyClient, SYMPHONY_APP_ID, FX_ENTITY_TYPE, createTileMessage } from '../index'
-
-const symphony: SymphonyClient = window.SYMPHONY
+import { waitForObject } from 'rt-util'
 
 export default class Symphony extends BasePlatformAdapter {
   readonly name = 'browser'
   readonly type = 'browser'
+  symphony: SymphonyClient;
 
   async init() {
+    this.symphony = await waitForObject('SYMPHONY');
+
     try {
-      await symphony.remote.hello()
-      await symphony.application.connect(SYMPHONY_APP_ID, ['modules', 'share'])
+      await this.symphony.remote.hello()
+      await this.symphony.application.connect(SYMPHONY_APP_ID, ['modules', 'share'])
       console.info('Adaptive Symphony Initialised')
     } catch (e) {
       console.error('Adaptive Symphony Failed' + e)
@@ -39,11 +41,10 @@ export default class Symphony extends BasePlatformAdapter {
     notify: (message: object) => {},
   }
 
-  share = (obj: any) => {
-    const shareService = symphony.services.subscribe('share')
-    const ccyPair = 'GBPUSD'
+  share = (ccyPair: string) => {
+    const shareService = this.symphony.services.subscribe('share')
     shareService.share(FX_ENTITY_TYPE, {
-      plaintext: `Latest Price for $${ccyPair}`,
+      plaintext: `Latest prices for $${ccyPair}`,
       presentationML: createTileMessage(process.env.REACT_APP_BROKER_HOST, ccyPair),
       entityJSON: {
         type: FX_ENTITY_TYPE,
@@ -52,7 +53,7 @@ export default class Symphony extends BasePlatformAdapter {
       },
       entity: {},
       format: 'com.symphony.messageml.v2',
-      inputAutofill: `Here is our Latest Prices for $${ccyPair}`,
+      inputAutofill: `Here are our latest prices for $${ccyPair}`,
     })
   }
 }

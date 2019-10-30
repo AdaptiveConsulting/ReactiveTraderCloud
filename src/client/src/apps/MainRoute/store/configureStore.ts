@@ -15,9 +15,13 @@ import { createBlotterEpic } from '../widgets/blotter/index'
 import { createSpotTileEpic } from '../widgets/spotTile/index'
 
 import rootReducer from './combineReducers'
+import { disconnectAfterAWhile } from './middleware'
 
 export default function configureStore(dependencies: ApplicationDependencies) {
+  const platformEpics = dependencies.platform.epics
+
   const epics = [
+    ...platformEpics,
     referenceServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,
@@ -30,7 +34,10 @@ export default function configureStore(dependencies: ApplicationDependencies) {
     dependencies,
   })
 
-  const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(middleware)))
+  const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(middleware, disconnectAfterAWhile)),
+  )
   middleware.run(combineEpics(...epics))
 
   return store

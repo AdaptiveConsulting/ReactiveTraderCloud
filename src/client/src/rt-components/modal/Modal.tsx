@@ -58,36 +58,22 @@ const Body = styled.div`
 interface Props {
   shouldShow?: boolean
   title?: string
-  onDismiss?: () => void
 }
 
 // TODO disable tabbing outside of the modal
 // tslint:disable-next-line:variable-name
-export default class Modal extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props)
-    this.onDismiss = this.onDismiss.bind(this)
-  }
-
-  onDismiss() {
-    const { onDismiss } = this.props
-    if (onDismiss) {
-      onDismiss()
-    }
-  }
-
-  render() {
-    const { shouldShow, title, children } = this.props
-    return (
-      shouldShow && (
-        <ModalContainer>
-          <ModalOverlay onClick={this.onDismiss} />
-          <ModalPanel>
-            {title && <Header>{title}</Header>}
-            <Body>{children}</Body>
-          </ModalPanel>
-        </ModalContainer>
-      )
+const Modal: React.FC<Props> = ({ shouldShow, title, children }) => {
+  return (
+    shouldShow && (
+      <ModalContainer>
+        <ModalOverlay />
+        <ModalPanel>
+          {title && <Header>{title}</Header>}
+          <Body>{children}</Body>
+        </ModalPanel>
+      </ModalContainer>
     )
-  }
+  )
 }
+
+export default Modal

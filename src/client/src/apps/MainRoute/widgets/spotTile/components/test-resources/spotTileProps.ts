@@ -31,6 +31,7 @@ const generateHistoricPrices: (totalPricePrick: number) => SpotPriceTick[] = tot
 }
 
 const spotTileData: Required<SpotTileData> = {
+  notional: 1000000,
   currencyChartIsOpening: false,
   isTradeExecutionInFlight: false,
   price: {
@@ -45,6 +46,7 @@ const spotTileData: Required<SpotTileData> = {
   historicPrices: generateHistoricPrices(50),
   lastTradeExecutionStatus: null,
   rfqState: 'none',
+  rfqReceivedTime: null,
   rfqTimeout: null,
   rfqPrice: null,
 }

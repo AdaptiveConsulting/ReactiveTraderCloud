@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig-base",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "outDir": "."
+  },
+  "include": ["./src/**/*"],
+  "exclude": []
+}

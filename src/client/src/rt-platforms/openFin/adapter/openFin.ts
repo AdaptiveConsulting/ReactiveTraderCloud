@@ -1,30 +1,35 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-restricted-globals */
 
-import { Store } from 'redux'
-import { BasePlatformAdapter, LimitChecker } from '../../platformAdapter'
-import { AppConfig, WindowConfig, InteropTopics, ExcelInterop } from '../../types'
+import { BasePlatformAdapter } from '../../platformAdapter'
+import { AppConfig, WindowConfig, InteropTopics } from '../../types'
 import { openDesktopWindow } from './window'
-import { fromEventPattern } from 'rxjs'
-import { excelAdapter } from './excel'
-import { CurrencyPairPositionWithPrice } from 'rt-types'
-import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
+import { fromEventPattern, Observable } from 'rxjs'
 import { workspaces } from 'openfin-layouts'
-import { Notification, NotificationButtonClickedEvent } from 'openfin-notifications'
+import { Notification, NotificationActionEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
+import { platformEpics } from './epics'
 import Logo from './logo'
-import { OpenFinLimitChecker } from '../openFin'
 import { OpenFinHeader, OpenFinControls } from '../components'
+import { ApplicationEpic } from 'StoreTypes'
 
-export async function setupWorkspaces(store: Store) {
-  if (typeof fin !== 'undefined') {
-    await workspaces.setRestoreHandler((workspace: workspaces.WorkspaceApp) =>
-      appRestoreHandler(workspace, store),
-    )
-    await workspaces.ready()
-  }
+interface WinProps {
+  name: string
+  display: boolean
+}
+
+export function setupWorkspaces() {
+  return new Observable<WinProps>(observer => {
+    workspaces
+      .setRestoreHandler((workspace: workspaces.WorkspaceApp) =>
+        appRestoreHandler(workspace, (data: WinProps) => {
+          observer.next(data)
+        }),
+      )
+      .then(workspaces.ready)
+  })
 }
 
 type OpenFinWindowState = Parameters<Parameters<fin.OpenFinWindow['getState']>[0]>[0]
@@ -46,22 +51,16 @@ export default class OpenFin extends BasePlatformAdapter {
   constructor() {
     super()
     this.openFinNotifications.addEventListener(
-      'notification-button-clicked',
-      (event: NotificationButtonClickedEvent) => {
-        fin.desktop.InterApplicationBus.publish(
-          InteropTopics.HighlightBlotter,
-          event.notification.customData,
-        )
+      'notification-action',
+      (event: NotificationActionEvent) => {
+        if (event.result['task'] === 'highlight-trade') {
+          fin.desktop.InterApplicationBus.publish(
+            InteropTopics.HighlightBlotter,
+            event.notification.customData,
+          )
+        }
       },
     )
-  }
-
-  notificationHighlight = {
-    init: () => this.interop.subscribe$(InteropTopics.HighlightBlotter),
-  }
-
-  chartIQ = {
-    open: (id: string, config: AppConfig) => this.app.open(id, config),
   }
 
   window = {
@@ -135,17 +134,6 @@ export default class OpenFin extends BasePlatformAdapter {
       fin.desktop.InterApplicationBus.publish(topic, message),
   }
 
-  excel: ExcelInterop = {
-    adapterName: excelAdapter.name,
-    open: () => excelAdapter.openExcel(),
-    isOpen: () => excelAdapter.isSpreadsheetOpen(),
-    publishPositions: (positions: CurrencyPairPositionWithPrice[]) =>
-      excelAdapter.publishPositions(positions),
-    publishBlotter: <T extends any>(blotterData: T) => excelAdapter.publishBlotter(blotterData),
-  }
-
-  limitChecker: LimitChecker = new OpenFinLimitChecker()
-
   notification = {
     notify: (message: object) => {
       this.openFinNotifications
@@ -158,6 +146,7 @@ export default class OpenFin extends BasePlatformAdapter {
             {
               title: 'Highlight trade in blotter',
               iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
+              onClick: { task: 'highlight-trade' },
             },
           ],
           category: 'Trade Executed',
@@ -187,9 +176,14 @@ export default class OpenFin extends BasePlatformAdapter {
   getNotificationBody({ tradeNotification }: NotificationMessage) {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
   }
+
+  epics: Array<ApplicationEpic> = platformEpics
 }
 
-async function appRestoreHandler(workspaceApp: workspaces.WorkspaceApp, store: Store) {
+async function appRestoreHandler(
+  workspaceApp: workspaces.WorkspaceApp,
+  callback: (data: WinProps) => void,
+) {
   const ofApp = await fin.Application.getCurrent()
   const openWindows = await ofApp.getChildWindows()
 
@@ -204,23 +198,19 @@ async function appRestoreHandler(workspaceApp: workspaces.WorkspaceApp, store: S
       await openDesktopWindow(
         config,
         () => {
-          store.dispatch(
-            LayoutActions.updateContainerVisibilityAction({
-              name: win.name,
-              display: true,
-            }),
-          )
+          callback({
+            name: win.name,
+            display: true,
+          })
         },
         { defaultLeft: win.bounds.left, defaultTop: win.bounds.top },
       )
 
       // we need to 'remove' the child window from the main window
-      store.dispatch(
-        LayoutActions.updateContainerVisibilityAction({
-          name: win.name,
-          display: false,
-        }),
-      )
+      callback({
+        name: win.name,
+        display: true,
+      })
     } else {
       await positionWindow(win)
     }

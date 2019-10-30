@@ -1,5 +1,6 @@
 import { styled, Theme } from 'rt-theme'
-import { ValidationMessage } from './NotionalInput'
+import { FormattedNumericInput } from './FormattedNumericInput'
+import { ValidationMessage } from './types'
 
 export const CurrencyPairSymbol = styled('span')`
   grid-area: Currency;
@@ -72,7 +73,7 @@ grid-template-rows: 23px 0;
 `};
 `
 
-export const Input = styled.input<{ validationMessage: ValidationMessage }>`
+export const Input = styled(FormattedNumericInput)`
   grid-area: Input;
   background: none;
   text-align: center;

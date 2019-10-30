@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { usePlatform, WindowConfig } from 'rt-components'
+import { usePlatform, WindowConfig } from 'rt-platforms'
 import { WindowCenterStatus } from './types'
 
 const defaultConfig: WindowConfig = {
@@ -52,6 +52,7 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
         externalWindow.close()
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return null

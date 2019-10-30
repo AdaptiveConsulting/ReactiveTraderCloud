@@ -1,6 +1,4 @@
-import { ExcelAdapterName } from './adapter'
-
-export type ExcelAdapterName = ExcelAdapterName
-export { OpenFin, setupWorkspaces, openDesktopWindow, excelAdapter } from './adapter'
-export { OpenFinLimitChecker } from './openFin'
+export { OpenFin, setupWorkspaces, openDesktopWindow } from './adapter'
+export { OpenFinLimitChecker } from './limitChecker/openFin'
 export { OpenFinHeader } from './components'
+export * from './excel'

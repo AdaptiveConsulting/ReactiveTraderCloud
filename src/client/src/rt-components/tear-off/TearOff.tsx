@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
 import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
 import { styled } from 'rt-theme'
-import { LayoutActions } from 'apps/MainRoute/layouts/layoutActions'
 import { useDispatch } from 'react-redux'
-import { usePlatform } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
+import { LayoutActions } from 'rt-actions'
 
 type RenderCB = (popOut: (x?: number, y?: number) => void, tornOff: boolean) => JSX.Element
 
@@ -57,17 +57,16 @@ export interface TearOffProps {
   dragTearOff: boolean
 }
 
-const TearOff: React.FC<TearOffProps> = props => {
+const TearOff: React.FC<TearOffProps> = ({ render, externalWindowProps, tornOff, dragTearOff }) => {
   const { allowTearOff } = usePlatform()
   const dispatch = useDispatch()
-  const { render, externalWindowProps, tornOff, dragTearOff } = props
   const windowName = externalWindowProps.config.name
   const popOut = useCallback(
     (x: number, y: number) =>
       dispatch(
         LayoutActions.updateContainerVisibilityAction({ name: windowName, display: false, x, y }),
       ),
-    [windowName],
+    [windowName, dispatch],
   )
   const popIn = useCallback(
     () =>
@@ -87,6 +86,7 @@ const TearOff: React.FC<TearOffProps> = props => {
           popOut(event.screenX, event.screenY)
         }}
         onDragStart={onDragStart}
+        data-qa="tear-off__drag-wrapper"
       >
         {render(popOut, tornOff)}
       </DragWrapper>

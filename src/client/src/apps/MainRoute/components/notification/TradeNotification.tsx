@@ -1,5 +1,5 @@
-import moment from 'moment'
 import React, { FC } from 'react'
+import { DateTime } from 'luxon'
 import { Direction, Trade, TradeStatus } from 'rt-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShare } from '@fortawesome/free-solid-svg-icons'
@@ -23,13 +23,9 @@ export interface Props {
   highlightTradeInBlotter?: () => void
 }
 
-const TradeNotification: FC<Props> = ({
-  trade: trade,
-  dismissNotification,
-  highlightTradeInBlotter,
-}) => {
-  const formattedValueDate = moment(trade.valueDate)
-    .format('DD MMM')
+const TradeNotification: FC<Props> = ({ trade, dismissNotification, highlightTradeInBlotter }) => {
+  const formattedValueDate = DateTime.fromJSDate(trade.valueDate)
+    .toFormat('dd MMM')
     .toUpperCase()
 
   const isDone = trade.status === TradeStatus.Done

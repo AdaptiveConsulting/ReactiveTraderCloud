@@ -1,17 +1,23 @@
 import React from 'react'
-
 import { rules } from 'rt-styleguide'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { platform } from 'rt-components'
 import { appConfigs } from './applicationConfigurations'
 import { LaunchButton } from './LaunchButton'
 import { LogoIcon } from 'rt-components'
 import { createGlobalStyle } from 'styled-components'
 import { ThemeStorageSwitch, styled } from 'rt-theme'
 import { open } from './tools'
+import { getOpenFinPlatform } from 'rt-platforms'
+
 library.add(faSignOutAlt)
+
+const exitHandler = async () => {
+  const { OpenFin } = await getOpenFinPlatform()
+  const platform = new OpenFin()
+  platform.window.close()
+}
 
 const LauncherGlobalStyle = createGlobalStyle`
 :root, body {
@@ -24,7 +30,7 @@ const LauncherGlobalStyle = createGlobalStyle`
 
 const LauncherExit = () => (
   <ButtonContainer key="exit">
-    <LaunchButton onClick={platform.window.close}>
+    <LaunchButton onClick={exitHandler}>
       <FontAwesomeIcon icon="sign-out-alt" />
       <IconTitle>Exit</IconTitle>
     </LaunchButton>
@@ -70,6 +76,9 @@ const Root = styled.div`
 const IconTitle = styled.span`
   position: absolute;
   bottom: 2px;
+  right: 0;
+  left: 0;
+  text-align: center;
   font-size: 9px;
   font-family: Lato;
   color: transparent;

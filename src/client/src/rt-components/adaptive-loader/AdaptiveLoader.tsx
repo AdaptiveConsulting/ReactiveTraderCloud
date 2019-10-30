@@ -1,5 +1,5 @@
 import { memoize } from 'lodash'
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { keyframes } from 'styled-components'
 import { styled } from 'rt-theme'
 
@@ -34,8 +34,9 @@ interface BarProps {
 }
 
 const Bar = styled('rect')<BarProps>`
-  animation: ${({ moveDistance }: BarProps) => getBounce(moveDistance)} ${({ speed }) => speed}s infinite;
-  animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER)}s;
+  animation: ${({ moveDistance }: BarProps) => getBounce(moveDistance)} ${({ speed }) => speed}s
+    infinite;
+  animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER) - speed * 0.6}s;
   fill: ${({ theme }) => theme.core.textColor};
   will-change: transform;
 `
@@ -48,10 +49,8 @@ interface Props {
   speed?: number
 }
 
-export class AdaptiveLoader extends PureComponent<Props> {
-  render() {
-    const { size, type, seperation, speed, children } = this.props
-
+const AdaptiveLoader: React.FC<Props> = React.memo(
+  ({ size, type, seperation, speed, children }) => {
     const sizeNum = Number(size)
     const barHeight = sizeNum * 0.75
     const barWidth = barHeight / 4
@@ -61,7 +60,7 @@ export class AdaptiveLoader extends PureComponent<Props> {
     const extraWidth = sizeNum - totalBarWidth
 
     return (
-      <svg width={sizeNum} height={sizeNum}>
+      <svg width={sizeNum} height={sizeNum} data-qa="adaptive-loader__svg">
         {bars.map((item, i) => (
           <Bar
             type={type || 'primary'}
@@ -77,7 +76,7 @@ export class AdaptiveLoader extends PureComponent<Props> {
         {children}
       </svg>
     )
-  }
-}
+  },
+)
 
 export default AdaptiveLoader

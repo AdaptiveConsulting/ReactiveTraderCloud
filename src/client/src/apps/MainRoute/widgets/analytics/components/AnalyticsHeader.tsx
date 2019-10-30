@@ -17,7 +17,7 @@ const AnalyticsWindowHeader: React.FC<AnalyticsHeaderProps> = ({ canPopout, onPo
 
   return canPopout ? (
     <Controls>
-      <PopoutButton onClick={popoutClickHandler}>
+      <PopoutButton onClick={popoutClickHandler} data-qa="analytics-header__popout-button">
         <PopoutIcon width={0.8125} height={0.75} />
       </PopoutButton>
     </Controls>

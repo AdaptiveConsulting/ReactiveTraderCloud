@@ -1,4 +1,4 @@
-import { rfqRequestEpic, rfqReceivedEpic } from './rfqEpics'
+import { IDLE_TIME_MS, rfqReceivedEpic, rfqRequestEpic } from './rfqEpics'
 import { ActionsObservable, StateObservable } from 'redux-observable'
 import { Action } from 'redux'
 import { MockScheduler } from 'rt-testing'
@@ -6,6 +6,7 @@ import { CurrencyPair } from 'rt-types'
 import { DeepPartial } from 'rt-util'
 import { GlobalState } from 'StoreTypes'
 import { TILE_ACTION_TYPES } from '../actions'
+import { getDefaultInitialNotionalValue } from '../components/Tile/TileBusinessLogic'
 
 describe('rfqEpics', () => {
   const currencyPair: CurrencyPair = {
@@ -156,14 +157,32 @@ describe('rfqEpics', () => {
         type: TILE_ACTION_TYPES.RFQ_EXPIRED,
         payload: { currencyPair },
       },
+      b: {
+        type: TILE_ACTION_TYPES.SET_NOTIONAL,
+        payload: {
+          currencyPair: currencyPair.symbol,
+          notional: getDefaultInitialNotionalValue(currencyPair),
+        },
+      },
+      c: {
+        type: TILE_ACTION_TYPES.SET_TRADING_MODE,
+        payload: {
+          symbol: currencyPair.symbol,
+          mode: 'esp',
+        },
+      },
+      d: {
+        type: TILE_ACTION_TYPES.RFQ_RESET,
+        payload: { currencyPair },
+      },
     }
 
-    it('should expire rfq after timeout (+ 1 second)', () => {
+    it('should expire rfq after timeout (+ 1 second), and reset rfq after idle time', () => {
       const testScheduler = new MockScheduler()
 
       testScheduler.run(({ cold, expectObservable }) => {
         const actionLifetime = '-a 10999ms --|'
-        const expectedAction = '-- 10999ms a-|'
+        const expectedAction = `-- 10999ms a ${IDLE_TIME_MS - 1}ms (bcd|)`
 
         const coldAction = cold<Action<any>>(actionLifetime, inputActions)
 
@@ -175,44 +194,74 @@ describe('rfqEpics', () => {
       })
     })
 
-    const expiryCases = [['rejected', 'b', 'e'], ['expired', 'c', 'f'], ['reset', 'd', 'g']]
+    it('should stop counting idle time when user resets rfq', () => {
+      const testScheduler = new MockScheduler()
 
-    expiryCases.forEach(([action, key, otherKey]) => {
-      describe(`when rfq is ${action}`, () => {
-        it('should not expire rfq', () => {
-          const testScheduler = new MockScheduler()
+      testScheduler.run(({ cold, expectObservable }) => {
+        const actionLifetime = '-a 10999ms --d|'
+        const expectedAction = `-- 10999ms a--|`
 
-          testScheduler.run(({ cold, expectObservable }) => {
-            const actionLifetime = `-a 9999ms ${key} 999ms   -|`
-            const expectedAction = '--               10999ms -|'
+        const coldAction = cold<Action<any>>(actionLifetime, inputActions)
 
-            const coldAction = cold<Action<any>>(actionLifetime, inputActions)
+        const action$ = ActionsObservable.from(coldAction, testScheduler)
+        const state$ = { value: mockState } as StateObservable<GlobalState>
+        const epics$ = rfqReceivedEpic(action$, state$, {})
 
-            const action$ = ActionsObservable.from(coldAction, testScheduler)
-            const state$ = { value: mockState } as StateObservable<GlobalState>
-            const epics$ = rfqReceivedEpic(action$, state$, {})
+        expectObservable(epics$).toBe(expectedAction, outputActions)
+      })
+    })
 
-            expectObservable(epics$).toBe(expectedAction, outputActions)
-          })
+    describe('when rfq is rejected', () => {
+      it('should expire rfq and reset rfq after idle time', () => {
+        const testScheduler = new MockScheduler()
+
+        testScheduler.run(({ cold, expectObservable }) => {
+          const actionLifetime = '-a 9999ms b 999ms   -|'
+          const expectedAction = `-- 10999ms a ${IDLE_TIME_MS - 1}ms (bcd|)`
+
+          const coldAction = cold<Action<any>>(actionLifetime, inputActions)
+
+          const action$ = ActionsObservable.from(coldAction, testScheduler)
+          const state$ = { value: mockState } as StateObservable<GlobalState>
+          const epics$ = rfqReceivedEpic(action$, state$, {})
+          expectObservable(epics$).toBe(expectedAction, outputActions)
         })
       })
+    })
 
-      describe(`when some other rfq is ${action}`, () => {
-        it('should expire rfq after timeout (+ 1 second)', () => {
-          const testScheduler = new MockScheduler()
+    describe('when rfq is reset', () => {
+      it('should not expire rfq', () => {
+        const testScheduler = new MockScheduler()
 
-          testScheduler.run(({ cold, expectObservable }) => {
-            const actionLifetime = `-a 9999ms ${otherKey} 999ms   --|`
-            const expectedAction = '--                    10999ms a-|'
+        testScheduler.run(({ cold, expectObservable }) => {
+          const actionLifetime = '-a 9999ms d 999ms   -|'
+          const expectedAction = '--               10999ms -|'
 
-            const coldAction = cold<Action<any>>(actionLifetime, inputActions)
+          const coldAction = cold<Action<any>>(actionLifetime, inputActions)
 
-            const action$ = ActionsObservable.from(coldAction, testScheduler)
-            const state$ = { value: mockState } as StateObservable<GlobalState>
-            const epics$ = rfqReceivedEpic(action$, state$, {})
+          const action$ = ActionsObservable.from(coldAction, testScheduler)
+          const state$ = { value: mockState } as StateObservable<GlobalState>
+          const epics$ = rfqReceivedEpic(action$, state$, {})
+          expectObservable(epics$).toBe(expectedAction, outputActions)
+        })
+      })
+    })
 
-            expectObservable(epics$).toBe(expectedAction, outputActions)
-          })
+    describe('when some other rfq is reset', () => {
+      it('should expire rfq after timeout (+ 1 second), and reset rfq after idle time', () => {
+        const testScheduler = new MockScheduler()
+
+        testScheduler.run(({ cold, expectObservable }) => {
+          const actionLifetime = '-a 9999ms g 999ms   --|'
+          const expectedAction = `-- 10999ms a ${IDLE_TIME_MS - 1}ms (bcd|)`
+
+          const coldAction = cold<Action<any>>(actionLifetime, inputActions)
+
+          const action$ = ActionsObservable.from(coldAction, testScheduler)
+          const state$ = { value: mockState } as StateObservable<GlobalState>
+          const epics$ = rfqReceivedEpic(action$, state$, {})
+
+          expectObservable(epics$).toBe(expectedAction, outputActions)
         })
       })
     })

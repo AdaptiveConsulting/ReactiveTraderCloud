@@ -1,19 +1,29 @@
-import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid'
+import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid-community'
+import { DateTime } from 'luxon'
 import { Trade, TradeStatus } from 'rt-types'
-import { formatDate, UtcFormatDate } from '../../spotTile/components/notional/utils'
 import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
 import { capitalize } from 'lodash'
+import {
+  DEALT_CURRENCY,
+  DIRECTION,
+  NOTIONAL,
+  SPOT_RATE,
+  STATUS,
+  STATUS_INDICATOR,
+  SYMBOL,
+  TRADE_DATE,
+  TRADE_ID,
+  TRADER_NAME,
+  VALUE_DATE
+} from '../blotterFields';
 
-const dateRenderer = (value: any) => {
-  return formatDate(value, '%d-%b %H:%M:%S')
+function UtcFormatDate(date: Date) {
+  return DateTime.fromJSDate(date, { zone: 'utc' }).toFormat('dd-MMM-yyyy')
 }
 
 const notionalRenderer = (value: any) => {
   return numeral(value).format('0,0[.]00')
-}
-const utcDateRenderer = (value: any, format: string = '%d-%b-%Y') => {
-  return UtcFormatDate(value, format)
 }
 
 const getStatusCellClass = (trade: Trade) => {
@@ -44,21 +54,11 @@ const getStatusIndicatorClass = (trade: Trade) => {
 export const DEFAULT_COLUMN_DEFINITION: ColDef = {
   menuTabs: ['filterMenuTab'],
   suppressSizeToFit: true,
-  suppressFilter: false,
+  filter: false,
   minWidth: 40,
+  resizable: true,
+  sortable: true,
 }
-
-export const STATUS_INDICATOR = 'statusIndicator'
-export const TRADE_ID = 'tradeId'
-export const STATUS = 'status'
-export const TRADE_DATE = 'tradeDate'
-export const DIRECTION = 'direction'
-export const SYMBOL = 'symbol'
-export const DEALT_CURRENCY = 'dealtCurrency'
-export const NOTIONAL = 'notional'
-export const SPOT_RATE = 'spotRate'
-export const VALUE_DATE = 'valueDate'
-export const TRADER_NAME = 'traderName'
 
 export const COLUMN_FIELDS = [
   STATUS_INDICATOR,
@@ -89,7 +89,7 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     maxWidth: 6,
     minWidth: 6,
     cellClass: ({ data }) => getStatusIndicatorClass(data),
-    suppressSorting: true,
+    sortable: false,
     suppressMenu: true,
     headerClass: 'rt-status-indicator__header',
   },
@@ -113,13 +113,12 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
   },
   {
     colId: TRADE_DATE,
-    headerName: 'Date',
+    headerName: 'Trade Date',
     field: TRADE_DATE,
-    cellRenderer: ({ data }) => dateRenderer(data['tradeDate']),
+    cellRenderer: ({ data }) => UtcFormatDate(data['tradeDate']),
     width: 130,
-    suppressFilter: true,
     includeInCSVExport: true,
-    csvCellValueFormatter: cell => dateRenderer(cell.value),
+    csvCellValueFormatter: cell => UtcFormatDate(cell.value),
   },
   {
     colId: DIRECTION,
@@ -141,7 +140,7 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     colId: DEALT_CURRENCY,
     headerName: 'Dealt CCY',
     field: DEALT_CURRENCY,
-    width: 110,
+    width: 90,
     filterFramework: SetFilter,
     includeInCSVExport: true,
   },
@@ -151,7 +150,7 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     field: NOTIONAL,
     cellClass: 'rt-blotter__numeric-cell',
     headerClass: 'rt-header__numeric',
-    width: 120,
+    width: 110,
     filter: 'agNumberColumnFilter',
     cellRenderer: ({ data }) => notionalRenderer(data['notional']),
     includeInCSVExport: true,
@@ -171,11 +170,10 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     colId: VALUE_DATE,
     headerName: 'Value Date',
     field: VALUE_DATE,
-    cellRenderer: ({ data }) => utcDateRenderer(data['valueDate']),
+    cellRenderer: ({ data }) => UtcFormatDate(data['valueDate']),
     width: 120,
-    suppressFilter: true,
     includeInCSVExport: true,
-    csvCellValueFormatter: cell => utcDateRenderer(cell.value),
+    csvCellValueFormatter: cell => UtcFormatDate(cell.value),
   },
   {
     colId: TRADER_NAME,
@@ -191,7 +189,7 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     headerName: '',
     width: 80,
     suppressSizeToFit: false,
-    suppressFilter: true,
+    filter: true,
     includeInCSVExport: true,
   },
 ]

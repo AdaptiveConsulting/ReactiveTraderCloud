@@ -8,8 +8,9 @@ import Tile from './Tile'
 import TileControls from './TileControls'
 import { TileViews } from '../../workspace/workspaceHeader'
 import { TileSwitchChildrenProps, RfqActions, TradingMode } from './types'
-import { getNumericNotional } from './Tile/TileBusinessLogic'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
+import { CurrencyPairNotional } from '../model/spotTileData'
+import { getDefaultInitialNotionalValue } from './Tile/TileBusinessLogic'
 
 interface Props {
   currencyPair: CurrencyPair
@@ -23,6 +24,7 @@ interface Props {
   setTradingMode: (tradingMode: TradingMode) => void
   tileView?: TileViews
   rfq: RfqActions
+  updateNotional: (currencyPairNotional: CurrencyPairNotional) => void
 }
 
 const TileSwitch: React.FC<Props> = ({
@@ -37,6 +39,7 @@ const TileSwitch: React.FC<Props> = ({
   tileView,
   setTradingMode,
   rfq,
+  updateNotional,
 }) => {
   const {
     isRfqStateExpired,
@@ -45,16 +48,25 @@ const TileSwitch: React.FC<Props> = ({
     isRfqStateNone,
   } = getConstsFromRfqState(spotTileData.rfqState)
 
+  const spotTileDataWithNotional =
+    spotTileData.notional === null
+      ? {
+          ...spotTileData,
+          notional: getDefaultInitialNotionalValue(currencyPair),
+        }
+      : spotTileData
+
   return (
     <Tile
       currencyPair={currencyPair}
-      spotTileData={spotTileData}
+      spotTileData={spotTileDataWithNotional}
       executeTrade={executeTrade}
       executionStatus={executionStatus}
       tileView={tileView}
       setTradingMode={setTradingMode}
       rfq={rfq}
       displayCurrencyChart={displayCurrencyChart}
+      updateNotional={updateNotional}
     >
       {({ notional, userError }: TileSwitchChildrenProps) => (
         <>
@@ -65,14 +77,19 @@ const TileSwitch: React.FC<Props> = ({
           <TileBooking
             show={!spotTileData.isTradeExecutionInFlight && isRfqStateCanRequest}
             color="blue"
-            onBookingPillClick={() =>
-              rfq.request({ notional: getNumericNotional(notional), currencyPair })
-            }
+            onBookingPillClick={() => rfq.request({ notional, currencyPair })}
             disabled={userError}
           >
             Initiate
             <br />
             RFQ
+          </TileBooking>
+          <TileBooking
+            show={!spotTileData.isTradeExecutionInFlight && isRfqStateExpired}
+            color="blue"
+            onBookingPillClick={() => rfq.requote({ notional, currencyPair })}
+          >
+            Requote
           </TileBooking>
           <TileBooking
             show={isRfqStateRequested}
@@ -82,15 +99,6 @@ const TileSwitch: React.FC<Props> = ({
             Cancel
             <br />
             RFQ
-          </TileBooking>
-          <TileBooking
-            show={isRfqStateExpired}
-            color="blue"
-            onBookingPillClick={() =>
-              rfq.request({ notional: getNumericNotional(notional), currencyPair })
-            }
-          >
-            Requote
           </TileBooking>
           <NotificationContainer
             isPriceStale={!spotTileData.lastTradeExecutionStatus && spotTileData.price.priceStale}
@@ -106,6 +114,7 @@ const TileSwitch: React.FC<Props> = ({
 
 TileSwitch.defaultProps = {
   spotTileData: {
+    notional: null,
     isTradeExecutionInFlight: false,
     historicPrices: [],
     price: {
@@ -122,6 +131,7 @@ TileSwitch.defaultProps = {
     lastTradeExecutionStatus: null,
     rfqState: 'none',
     rfqPrice: null,
+    rfqReceivedTime: null,
     rfqTimeout: null,
   },
   currencyPair: {

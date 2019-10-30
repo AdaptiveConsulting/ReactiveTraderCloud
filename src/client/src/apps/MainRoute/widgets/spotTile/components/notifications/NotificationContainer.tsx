@@ -12,19 +12,29 @@ interface Props {
   onNotificationDismissed: () => void
 }
 
-const hasNotification = (tradeStatus: LastTradeExecutionStatus) => tradeStatus.hasError || tradeStatus.trade
+const hasNotification = (tradeStatus: LastTradeExecutionStatus) =>
+  tradeStatus.hasError || tradeStatus.trade
 
 export default class NotificationContainer extends PureComponent<Props> {
   render() {
     return (
-      <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0, pointerEvents: 'none' }}>
+      <Transition
+        from={{ opacity: 0 }}
+        enter={{ opacity: 1 }}
+        leave={{ opacity: 0, pointerEvents: 'none' }}
+      >
         {this.renderNotifications() as any}
       </Transition>
     )
   }
 
   private renderNotifications: () => (style: React.CSSProperties) => JSX.Element | null = () => {
-    const { lastTradeExecutionStatus, currencyPair, onNotificationDismissed, isPriceStale } = this.props
+    const {
+      lastTradeExecutionStatus,
+      currencyPair,
+      onNotificationDismissed,
+      isPriceStale,
+    } = this.props
     const symbols = `${currencyPair.base}/${currencyPair.terms}`
     if (isPriceStale) {
       return (style: React.CSSProperties) => (

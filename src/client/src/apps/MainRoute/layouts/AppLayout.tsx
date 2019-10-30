@@ -11,23 +11,19 @@ export interface Props {
   after?: React.ReactNode
 }
 
-class AppLayout extends React.Component<Props> {
-  render() {
-    const { before, header, body, footer, after } = this.props
+const AppLayout: React.FC<Props> = ({ before, header, body, footer, after }) => {
+  return (
+    <AppLayoutRoot data-qa="app-layout__root">
+      {before}
 
-    return (
-      <AppLayoutRoot>
-        {before}
+      <Header>{header}</Header>
 
-        <Header>{header}</Header>
+      <Body>{body}</Body>
 
-        <Body>{body}</Body>
-
-        {footer}
-        {after}
-      </AppLayoutRoot>
-    )
-  }
+      {footer}
+      {after}
+    </AppLayoutRoot>
+  )
 }
 
 const AppLayoutRoot = styled.div`

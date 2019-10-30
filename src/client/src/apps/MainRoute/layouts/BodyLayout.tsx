@@ -6,7 +6,7 @@ export interface Props {
   aside?: React.ReactNode
 }
 const BodyLayout: React.FC<Props> = ({ body, aside }) => (
-  <Layout>
+  <Layout data-qa="body-layout__main">
     {body}
     {aside}
   </Layout>

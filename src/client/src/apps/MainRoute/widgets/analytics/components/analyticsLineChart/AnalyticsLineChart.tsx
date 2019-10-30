@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import numeral from 'numeral'
 import {
   XAxis,
@@ -16,7 +16,7 @@ import {
   ToolTipChildRight,
   ToolTipChildLeft,
 } from './styled'
-import { AnalyticsLineChartModel } from '../../model/AnalyticsLineChartModel'
+import { AnalyticsLineChartModel, PricePoint } from '../../model/AnalyticsLineChartModel'
 
 interface LineChartProps {
   model: AnalyticsLineChartModel
@@ -27,8 +27,8 @@ interface DataPoint {
   y: string
 }
 
-const formatDataPoint: (dataPoint: DataPoint) => DataPoint = ({ x, y }) => ({
-  x: moment(x).format('hh:mm:ss A'),
+const formatDataPoint: (dataPoint: PricePoint) => DataPoint = ({ x, y }) => ({
+  x: DateTime.fromJSDate(x).toFormat('hh:mm:ss a'),
   y,
 })
 
@@ -80,6 +80,7 @@ const LineCharts: React.FC<LineChartProps> = React.memo(props => {
   useEffect(() => {
     const newOffset = offsetState + 1 === intervalWidth ? 0 : offsetState + 1
     setOffsetState(newOffset)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const getDataPoint = useCallback(
@@ -92,6 +93,10 @@ const LineCharts: React.FC<LineChartProps> = React.memo(props => {
   const data = seriesData.map(formatDataPoint)
   const offset = getLinearGradientOffset(data)
   const dataPoints = getDataPoint(data)
+
+  const yValues = data.map(i => parseInt(i.y, 10))
+  const dataMax = Math.max(...yValues)
+  const dataMin = Math.min(...yValues)
 
   return seriesData.length > 0 ? (
     <AnalyticsLineChartStyle>
@@ -115,6 +120,7 @@ const LineCharts: React.FC<LineChartProps> = React.memo(props => {
             padding={{ top: 0, bottom: 0 }}
             axisLine={false}
             tickFormatter={tickFormatYAxis}
+            domain={[dataMin, dataMax]}
           />
 
           <XAxis

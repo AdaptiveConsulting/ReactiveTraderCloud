@@ -19,6 +19,8 @@ interface Props {
   executeTrade: (direction: Direction, rawSpotRate: number) => void
   disabled: boolean
   rfqState: RfqState
+  isTradeExecutionInFlight: boolean
+  isAnalyticsView?: boolean
 }
 
 const PriceControls: React.FC<Props> = ({
@@ -27,6 +29,8 @@ const PriceControls: React.FC<Props> = ({
   executeTrade,
   rfqState,
   disabled,
+  isTradeExecutionInFlight,
+  isAnalyticsView,
 }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
@@ -45,69 +49,72 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateNone,
   } = getConstsFromRfqState(rfqState)
 
-  const isDisabled = !isRfqStateReceived && disabled
   const hasPrice = Boolean(priceData.bid && priceData.ask)
+  const showPrices =
+    isRfqStateNone || isRfqStateReceived || isRfqStateExpired || isTradeExecutionInFlight
 
-  return (
-    <PriceControlsStyle>
-      {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired) && (
-        <PriceButton
-          handleClick={() => executeTrade(Direction.Sell, priceData.bid)}
-          direction={Direction.Sell}
-          big={bidRate.bigFigure}
-          pip={bidRate.pips}
-          tenth={bidRate.pipFraction}
-          rawRate={bidRate.rawRate}
-          priceAnnounced={isRfqStateReceived}
-          disabled={isDisabled}
-          expired={isRfqStateExpired}
-        />
-      )}
-      {isRfqStateCanRequest && (
-        <PriceButtonDisabledPlaceholder>
-          <Icon className="fas fa-ban fa-flip-horizontal" />
-          Streaming price unavailable
-        </PriceButtonDisabledPlaceholder>
-      )}
-      {isRfqStateRequested && (
-        <PriceButtonDisabledPlaceholder>
-          <AdaptiveLoaderWrapper>
-            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
-          </AdaptiveLoaderWrapper>
-          Awaiting price
-        </PriceButtonDisabledPlaceholder>
-      )}
+  const showPriceButton = (
+    btnDirection: Direction,
+    price: number,
+    rate: ReturnType<typeof toRate>,
+  ) => {
+    return showPrices ? (
+      <PriceButton
+        handleClick={() => executeTrade(btnDirection, price)}
+        direction={btnDirection}
+        big={rate.bigFigure}
+        pip={rate.pips}
+        tenth={rate.pipFraction}
+        rawRate={rate.rawRate}
+        priceAnnounced={isRfqStateReceived}
+        disabled={disabled}
+        expired={isRfqStateExpired}
+        currencyPairSymbol={currencyPair.symbol}
+      />
+    ) : null
+  }
+
+  const priceButtonDisabledStatus =
+    !showPrices && isRfqStateCanRequest ? (
+      <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled">
+        <Icon className="fas fa-ban fa-flip-horizontal" />
+        Streaming price unavailable
+      </PriceButtonDisabledPlaceholder>
+    ) : !showPrices && isRfqStateRequested ? (
+      <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled--loading">
+        <AdaptiveLoaderWrapper>
+          <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
+        </AdaptiveLoaderWrapper>
+        Awaiting price
+      </PriceButtonDisabledPlaceholder>
+    ) : null
+
+  return isAnalyticsView ? (
+    <PriceControlsStyle
+      data-qa="analytics-tile-price-control__header"
+      isAnalyticsView={isAnalyticsView}
+    >
       <PriceMovement
         priceMovementType={priceData.priceMovementType}
         spread={hasPrice ? spread.formattedValue : '-'}
       />
-      {(isRfqStateNone || isRfqStateReceived || isRfqStateExpired) && (
-        <PriceButton
-          handleClick={() => executeTrade(Direction.Buy, priceData.ask)}
-          direction={Direction.Buy}
-          big={askRate.bigFigure}
-          pip={askRate.pips}
-          tenth={askRate.pipFraction}
-          rawRate={askRate.rawRate}
-          priceAnnounced={isRfqStateReceived}
-          disabled={isDisabled}
-          expired={isRfqStateExpired}
-        />
-      )}
-      {isRfqStateCanRequest && (
-        <PriceButtonDisabledPlaceholder>
-          <Icon className="fas fa-ban fa-flip-horizontal" />
-          Streaming price unavailable
-        </PriceButtonDisabledPlaceholder>
-      )}
-      {isRfqStateRequested && (
-        <PriceButtonDisabledPlaceholder>
-          <AdaptiveLoaderWrapper>
-            <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
-          </AdaptiveLoaderWrapper>
-          Awaiting price
-        </PriceButtonDisabledPlaceholder>
-      )}
+      <div>
+        {priceButtonDisabledStatus}
+        {priceButtonDisabledStatus}
+        {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
+        {showPriceButton(Direction.Buy, priceData.ask, askRate)}
+      </div>
+    </PriceControlsStyle>
+  ) : (
+    <PriceControlsStyle isAnalyticsView={isAnalyticsView}>
+      {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
+      {priceButtonDisabledStatus}
+      <PriceMovement
+        priceMovementType={priceData.priceMovementType}
+        spread={hasPrice ? spread.formattedValue : '-'}
+      />
+      {showPriceButton(Direction.Buy, priceData.ask, askRate)}
+      {priceButtonDisabledStatus}
     </PriceControlsStyle>
   )
 }

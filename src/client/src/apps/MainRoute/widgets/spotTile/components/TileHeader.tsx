@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { usePlatform } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 import { styled } from 'rt-theme'
 import { TileHeader as Header, TileSymbol, DeliveryDate } from './styled'
 import { CurrencyPair } from 'rt-types'
@@ -18,30 +18,30 @@ export const ActionButton = styled('button')`
   border-left: 1px solid white;
 `
 
-const TileHeader: React.SFC<Props> = ({ ccyPair, date, displayCurrencyChart }) => {
+const TileHeader: React.FC<Props> = ({ ccyPair, date, displayCurrencyChart }) => {
   const platform = usePlatform()
 
   const share = useCallback(() => {
     if (platform.hasFeature('share')) {
       platform.share(ccyPair.symbol)
     }
-  }, [ccyPair.symbol])
+  }, [ccyPair.symbol, platform])
 
   const baseTerm = `${ccyPair.base}/${ccyPair.terms}`
   return (
     <Header>
-      <TileSymbol>{baseTerm}</TileSymbol>
-      {platform.hasFeature('chartIQ') && (
-        <ActionButton onClick={displayCurrencyChart}>
+      <TileSymbol data-qa="tile-header__tile-symbol">{baseTerm}</TileSymbol>
+      {platform.hasFeature('app') && (
+        <ActionButton data-qa="tile-header__chartiq-button" onClick={displayCurrencyChart}>
           <i className="fas fa-chart-bar" />
         </ActionButton>
       )}
       {platform.hasFeature('share') && (
-        <ActionButton onClick={share}>
+        <ActionButton data-qa="tile-header__share-button" onClick={share}>
           <i className="fas fa-share" />
         </ActionButton>
       )}
-      <DeliveryDate>{date}</DeliveryDate>
+      <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
     </Header>
   )
 }

@@ -7,6 +7,7 @@ const FlexDiv = styled.div`
 
 export const BarChart = styled.div`
   display: flex;
+  backface-visibility: hidden;
 `
 
 export const PriceContainer = styled(FlexDiv).attrs((props: { distance: number }) => ({
@@ -15,8 +16,8 @@ export const PriceContainer = styled(FlexDiv).attrs((props: { distance: number }
   },
 }))<{ distance: number }>`
   width: 100%;
-  font-size: 11px;
   transition: transform 0.5s;
+  font-size: 11px;
   transition-timing-function: ${({ theme }) => theme.motion.easing};
 `
 
@@ -25,15 +26,20 @@ export const Offset = styled.div`
 `
 export const OriginTickWrapper = styled(FlexDiv)`
   width: 100%;
-  align-items: center;
   height: 20px;
 `
 
-export const PriceLabel = styled.div<{ color: string; hovering: boolean }>`
+export const PriceLabel = styled.div<{ color: string; distance: number }>`
   align-self: center;
-  font-size: ${({ hovering }) => (hovering ? '18px' : '11px')};
-  transition: font-size 0.2s;
+  height: 1.1rem;
+  transition: transform 0.2s;
   color: ${({ theme, color }) => theme.template[color].normal};
+  padding-bottom: 0px;
+
+  &:hover {
+    transform: scale(1.64);
+    transform-origin: ${({ distance }) => (distance > 35 ? 'calc(164% - 15px)' : 'center')} 12px;
+  }
 `
 export const DiamondShape = styled.div<{ color: string }>`
   align-self: center;
@@ -51,8 +57,6 @@ export const Label = styled.div`
 `
 export const BarPriceContainer = styled.div`
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
 `
 const bgColor = '#444c5f'
 export const Bar = styled.div`

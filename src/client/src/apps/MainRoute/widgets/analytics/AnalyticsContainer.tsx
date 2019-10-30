@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Loadable, usePlatform } from 'rt-components'
+import { Loadable } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
 import { AnalyticsActions } from './actions'
 import Analytics from './components'
@@ -11,10 +11,13 @@ import {
   selectAnalyticsLineChartModel,
   selectPositionsChartModel,
 } from './selectors'
+import { usePlatform } from 'rt-platforms'
+
 interface AnalyticsContainerOwnProps {
   onPopoutClick?: () => void
   tornOff?: boolean
   tearable?: boolean
+  inExternalWindow?: boolean
 }
 
 const mapStateToProps = (state: GlobalState) => ({
@@ -39,6 +42,7 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
   onMount,
   tearable = false,
   tornOff,
+  inExternalWindow = false,
   ...props
 }) => {
   const { allowTearOff } = usePlatform()
@@ -47,7 +51,13 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
       minWidth={22}
       onMount={onMount}
       status={status}
-      render={() => <Analytics {...props} canPopout={tearable && allowTearOff && !tornOff} />}
+      render={() => (
+        <Analytics
+          {...props}
+          inExternalWindow={inExternalWindow}
+          canPopout={tearable && allowTearOff && !tornOff}
+        />
+      )}
       message="Analytics Disconnected"
     />
   )

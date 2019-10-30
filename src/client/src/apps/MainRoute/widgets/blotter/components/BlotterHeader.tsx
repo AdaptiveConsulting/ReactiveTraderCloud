@@ -1,4 +1,4 @@
-import { GridApi } from 'ag-grid'
+import { GridApi } from 'ag-grid-community'
 import React, { useCallback, useState, FC } from 'react'
 import { flexStyle } from 'rt-components'
 import { PopoutIcon } from 'rt-components'
@@ -94,7 +94,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
         {canPopout && (
           <React.Fragment>
             <Fill />
-            <BlotterControls onClick={popoutClickHandler}>
+            <BlotterControls onClick={popoutClickHandler} data-qa="blotter-header__pop-out-button">
               <PopoutIcon width={0.8125} height={0.75} />
             </BlotterControls>
           </React.Fragment>

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es6"],
+    "declaration": false,
+    "strict": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "rootDir":  "."
+  },
+  "references": [
+    {"path": "shared"}
+  ]
+}

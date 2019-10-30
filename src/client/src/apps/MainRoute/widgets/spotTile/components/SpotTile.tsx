@@ -3,6 +3,7 @@ import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import TileHeader from './TileHeader'
+import { getDefaultInitialNotionalValue } from './Tile/TileBusinessLogic'
 import {
   NotionalInputWrapper,
   SpotTileWrapper,
@@ -11,20 +12,21 @@ import {
 } from './styled'
 import { Props } from './types'
 import RfqTimer from './RfqTimer'
-import styled from 'styled-components'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
-
-const TileHeaderWrapper = styled.div`
-  display: block;
-  margin-bottom: 15px;
-`
 
 export default class SpotTile extends PureComponent<Props> {
   render() {
     const {
       currencyPair,
-      spotTileData: { price, rfqState, rfqPrice, rfqTimeout },
-      notional,
+      spotTileData: {
+        notional,
+        isTradeExecutionInFlight,
+        price,
+        rfqState,
+        rfqPrice,
+        rfqReceivedTime,
+        rfqTimeout,
+      },
       updateNotional,
       resetNotional,
       executeTrade,
@@ -39,25 +41,34 @@ export default class SpotTile extends PureComponent<Props> {
     const spotDate = price.valueDate && spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
     const handleRfqRejected = () => rfq.reject({ currencyPair })
-    const { isRfqStateReceived, isRfqStateExpired, isRfqStateCanRequest } = getConstsFromRfqState(
-      rfqState,
-    )
-    const showResetButton = isRfqStateCanRequest || isRfqStateExpired
+    const {
+      isRfqStateReceived,
+      isRfqStateExpired,
+      isRfqStateCanRequest,
+      isRfqStateNone,
+    } = getConstsFromRfqState(rfqState)
+    const showResetButton =
+      !isTradeExecutionInFlight &&
+      getDefaultInitialNotionalValue(currencyPair) !== notional &&
+      (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
     const showTimer = isRfqStateReceived && rfqTimeout
     const priceData = isRfqStateReceived || isRfqStateExpired ? rfqPrice : price
 
     return (
       <SpotTileWrapper>
-        <SpotTileStyle className="spot-tile">
+        <SpotTileStyle
+          className="spot-tile"
+          data-qa="spot-tile__tile"
+          data-qa-id={`currency-pair-${currencyPair.symbol.toLowerCase()}`}
+        >
           <ReserveSpaceGrouping>
-            <TileHeaderWrapper>
-              <TileHeader
-                ccyPair={currencyPair}
-                date={date}
-                displayCurrencyChart={displayCurrencyChart}
-              />
-            </TileHeaderWrapper>
+            <TileHeader
+              ccyPair={currencyPair}
+              date={date}
+              displayCurrencyChart={displayCurrencyChart}
+            />
             <PriceControls
+              isTradeExecutionInFlight={isTradeExecutionInFlight}
               executeTrade={executeTrade}
               priceData={priceData}
               currencyPair={currencyPair}
@@ -69,7 +80,8 @@ export default class SpotTile extends PureComponent<Props> {
             <NotionalInputWrapper>
               <NotionalInput
                 notional={notional}
-                currencyPairSymbol={currencyPair.base}
+                currencyPairBase={currencyPair.base}
+                currencyPairSymbol={currencyPair.symbol}
                 updateNotional={updateNotional}
                 resetNotional={resetNotional}
                 validationMessage={inputValidationMessage}
@@ -77,7 +89,13 @@ export default class SpotTile extends PureComponent<Props> {
                 disabled={inputDisabled}
               />
             </NotionalInputWrapper>
-            {showTimer && <RfqTimer onRejected={handleRfqRejected} timeout={rfqTimeout} />}
+            {showTimer && (
+              <RfqTimer
+                onRejected={handleRfqRejected}
+                receivedTime={rfqReceivedTime}
+                timeout={rfqTimeout}
+              />
+            )}
           </ReserveSpaceGrouping>
         </SpotTileStyle>
         {children}

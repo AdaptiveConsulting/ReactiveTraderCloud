@@ -26,7 +26,9 @@ export function useMultiTimeoutPromises(...params: MultiTimeoutStage[]) {
         setStage(nextStage)
       }
     })
-    return () => (mountedRef.current = false)
+    return () => {
+      mountedRef.current = false
+    }
   }, [stage])
 
   return [stage, (val: number) => goToCb([val, false])] as [number, (val: number) => void]

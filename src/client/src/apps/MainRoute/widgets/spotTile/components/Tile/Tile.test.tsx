@@ -1,10 +1,10 @@
 import React from 'react'
-import { renderWithTheme } from '../../../../../../../__tests__/helpers'
+import { renderWithProviders } from '../../../../../../../__tests__/helpers'
 import Tile, { TileProps, TileState } from './Tile'
 import { currencyPair } from '../test-resources/spotTileProps'
 import { ServiceConnectionStatus } from 'rt-types'
 import { TileViews } from '../../../workspace/workspaceHeader'
-import { DerivedStateFromUserInput } from './TileBusinessLogic'
+import { getDerivedStateFromUserInput } from './TileBusinessLogic'
 import { TradingMode } from '../types'
 import { PriceMovementTypes } from '../../model/priceMovementTypes'
 
@@ -12,19 +12,14 @@ const prevState: TileState = {
   canExecute: true,
   inputDisabled: false,
   inputValidationMessage: null,
-  notional: '1,000,000',
   tradingDisabled: false,
 }
 
-const defaultParams: DerivedStateFromUserInput = {
+const defaultParams: Parameters<typeof getDerivedStateFromUserInput>[0] = {
   actions: {
     setTradingMode: (tradingMode: TradingMode) => {},
   },
   prevState,
-  notionalUpdate: {
-    type: 'blur',
-    value: '1,000,000',
-  },
   spotTileData: {
     currencyChartIsOpening: false,
     historicPrices: [],
@@ -42,6 +37,8 @@ const defaultParams: DerivedStateFromUserInput = {
     rfqPrice: null,
     rfqState: 'none',
     rfqTimeout: null,
+    rfqReceivedTime: null,
+    notional: 1000000,
   },
   currencyPair,
 }
@@ -62,10 +59,11 @@ const defaultTileProps: TileProps = {
   },
   spotTileData: defaultParams.spotTileData,
   tileView: 'Normal' as TileViews,
+  updateNotional: () => {},
 }
 
 test('Snapshot, state derived from props, defaults, RFQ none, should be able to excute', () => {
-  const component = renderWithTheme(<Tile {...defaultTileProps} />)
+  const component = renderWithProviders(<Tile {...defaultTileProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -75,7 +73,7 @@ test('Snapshot, state derived from props, DISCONNECTED', () => {
     ...defaultTileProps,
     executionStatus: 'DISCONNECTED' as ServiceConnectionStatus,
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -88,7 +86,7 @@ test('Snapshot, state derived from props, in trade', () => {
       isTradeExecutionInFlight: true,
     },
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -101,7 +99,7 @@ test('Snapshot, state derived from props, RFQ requested', () => {
       rfqState: 'requested',
     },
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -123,7 +121,7 @@ test('Snapshot, state derived from props, RFQ received', () => {
       },
     },
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -136,7 +134,7 @@ test('Snapshot, state derived from props, RFQ canRequest', () => {
       rfqState: 'canRequest',
     },
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })
@@ -158,7 +156,7 @@ test('Snapshot, state derived from props, RFQ expired', () => {
       },
     },
   }
-  const component = renderWithTheme(<Tile {...nextProps} />)
+  const component = renderWithProviders(<Tile {...nextProps} />)
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
 })

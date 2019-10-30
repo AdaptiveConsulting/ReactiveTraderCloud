@@ -4,6 +4,7 @@ import { Handler } from './handlers/handlers'
 import { marketMessageHandler } from './handlers/marketIntentHandler'
 import { priceQuoteHandler } from './handlers/priceQuoteIntentHandler'
 import { tradeMessageHandler } from './handlers/tradeIntentHandler'
+import { tradeNotificationHandler } from './handlers/tradeNotificationHandler'
 import logger from './logger'
 import { createNlpStream } from './nlp-services'
 import { createApplicationServices } from './rt-services'
@@ -61,6 +62,7 @@ const registerIntentHandlers = (handlers: Handler[]) => {
 
 const disposables = registerIntentHandlers([
   tradeMessageHandler,
+  tradeNotificationHandler,
   marketMessageHandler,
   priceQuoteHandler,
   defaultIntentHander,

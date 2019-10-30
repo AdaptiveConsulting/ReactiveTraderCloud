@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Resizer, TearOff, externalWindowDefault, ExternalWindow } from 'rt-components'
-
+import { Resizer, TearOff } from 'rt-components'
+import { externalWindowDefault, ExternalWindow, WindowPosition } from 'rt-platforms'
 import { AnalyticsContainer } from '../widgets/analytics'
 import { BlotterContainer } from '../widgets/blotter'
 import StatusBar from '../widgets/status-bar'
@@ -12,7 +12,6 @@ import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
 import { analyticsSelector, blotterSelector } from '../layouts/selectors'
-import { WindowPosition } from '../layouts'
 import { useSelector } from 'react-redux'
 
 interface Props {
@@ -41,7 +40,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
         <Resizer
           defaultHeight={30}
           component={() => (
-            <BlotterWrapper>
+            <BlotterWrapper data-qa="shell-route__blotter-wrapper">
               <TearOff
                 id="blotter"
                 dragTearOff={false}
@@ -58,7 +57,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
           )}
           disabled={!blotter.visible}
         >
-          <WorkspaceWrapper>
+          <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
             <OverflowScroll>
               <WorkspaceContainer />
             </OverflowScroll>
@@ -66,7 +65,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
         </Resizer>
       }
       aside={
-        <AnalyticsWrapper>
+        <AnalyticsWrapper data-qa="shell-route__analytics-wrapper">
           <TearOff
             id="region"
             dragTearOff={false}

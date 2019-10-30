@@ -1,14 +1,10 @@
-import React from 'react'
+import React, { useRef, useState, useCallback } from 'react'
 import { styled } from 'rt-theme'
 
 interface QuickFilterProps {
   isFilterApplied: boolean
   removeQuickFilter: () => void
   quickFilterChangeHandler: (event: React.FormEvent<any>) => void
-}
-
-interface QuickFilterState {
-  quickFilterText: string
 }
 
 const QuickFilterStyle = styled('div')`
@@ -60,43 +56,51 @@ const QuickFilterClearIcon = styled('i')`
   }
 `
 
-export default class QuickFilter extends React.Component<QuickFilterProps, QuickFilterState> {
-  private quickFilterInput = React.createRef<HTMLInputElement>()
+const QuickFilter: React.FC<QuickFilterProps> = ({
+  isFilterApplied,
+  removeQuickFilter,
+  quickFilterChangeHandler,
+}) => {
+  const quickFilterInput = useRef<HTMLInputElement>()
+  const [quickFilterText, setQuickFilterText] = useState<string>('')
 
-  state = {
-    quickFilterText: '',
-  }
+  const quickFilterOnChange = useCallback(
+    (event: React.FormEvent<HTMLInputElement>) => {
+      const target = event.target as HTMLInputElement // cast event.target
+      setQuickFilterText(target.value)
+      quickFilterChangeHandler(event)
+    },
+    [quickFilterChangeHandler],
+  )
 
-  render() {
-    return (
-      <QuickFilterStyle>
-        <QuickFilterIcon onClick={this.quickFilterFocus}>
-          <i className="fas fa-filter" aria-hidden="true" />
-        </QuickFilterIcon>
-        <QuickFilterInput
-          ref={this.quickFilterInput}
-          type="text"
-          placeholder="Filter"
-          value={this.state.quickFilterText}
-          onChange={(event: React.FormEvent<any>) => this.quickFilterChangeHandler(event)}
-        />
-        <QuickFilterClearIcon onClick={this.removeQuickFilter}>
-          {this.props.isFilterApplied && <i className="fas fa-times" />}
-        </QuickFilterClearIcon>
-      </QuickFilterStyle>
-    )
-  }
+  const clearQuickFilter = useCallback(() => {
+    setQuickFilterText('')
+    removeQuickFilter()
+  }, [removeQuickFilter])
 
-  private quickFilterChangeHandler = (event: React.FormEvent<any>) => {
-    const target = event.target as HTMLInputElement
-    this.setState({ quickFilterText: target.value })
-    this.props.quickFilterChangeHandler(event)
-  }
+  const quickFilterFocus = useCallback(() => {
+    quickFilterInput.current && quickFilterInput.current.focus()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  private removeQuickFilter = () => {
-    this.setState({ quickFilterText: '' })
-    this.props.removeQuickFilter()
-  }
-
-  private quickFilterFocus = () => this.quickFilterInput.current && this.quickFilterInput.current.focus()
+  return (
+    <QuickFilterStyle>
+      <QuickFilterIcon onClick={quickFilterFocus} data-qa="quick-filter__filter-icon">
+        <i className="fas fa-filter" aria-hidden="true" />
+      </QuickFilterIcon>
+      <QuickFilterInput
+        ref={quickFilterInput}
+        type="text"
+        placeholder="Filter"
+        value={quickFilterText}
+        onChange={quickFilterOnChange}
+        data-qa="quick-filer__filter-input"
+      />
+      <QuickFilterClearIcon onClick={clearQuickFilter} data-qa="quick-filter__filter-clear-icon">
+        {isFilterApplied && <i className="fas fa-times" />}
+      </QuickFilterClearIcon>
+    </QuickFilterStyle>
+  )
 }
+
+export default QuickFilter

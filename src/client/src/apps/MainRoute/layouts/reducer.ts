@@ -1,17 +1,7 @@
-import { LAYOUT_ACTION_TYPES, LayoutActions } from './layoutActions'
-import { externalWindowDefault } from 'rt-components'
-
-export interface WindowPosition {
-  visible: boolean
-  x?: number
-  y?: number
-}
-
-export interface WindowPosition {
-  visible: boolean
-  x?: number
-  y?: number
-}
+import { LAYOUT_ACTION_TYPES, LayoutAction } from 'rt-actions'
+import { ContainerVisibility } from 'rt-actions/layoutActions'
+import { externalWindowDefault, WindowPosition } from 'rt-platforms'
+import { ActionWithPayload } from 'rt-util/ActionHelper'
 
 interface TilesLayout {
   [key: string]: WindowPosition
@@ -35,7 +25,7 @@ const INITIAL_STATE: LayoutState = {
 
 export const layoutReducer = (
   state: LayoutState = INITIAL_STATE,
-  action: LayoutActions,
+  action: LayoutAction,
 ): LayoutState => {
   switch (action.type) {
     case LAYOUT_ACTION_TYPES.CONTAINER_VISIBILITY_UPDATE: {
@@ -66,7 +56,9 @@ export const layoutReducer = (
   }
 }
 
-const getWindowPosition = (action: LayoutActions): WindowPosition => ({
+const getWindowPosition = (
+  action: ActionWithPayload<LAYOUT_ACTION_TYPES.CONTAINER_VISIBILITY_UPDATE, ContainerVisibility>,
+): WindowPosition => ({
   visible: action.payload.display,
   x: action.payload.x,
   y: action.payload.y,

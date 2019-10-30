@@ -1,4 +1,4 @@
-import { ColDef } from 'ag-grid'
+import { ColDef } from 'ag-grid-community'
 import React from 'react'
 import { styled } from 'rt-theme'
 
@@ -41,22 +41,26 @@ const FilterIcon = styled('i')`
   line-height: 1rem;
 `
 
-export default class AppliedFilters extends React.Component<AppliedFiltersProps, any> {
-  render() {
-    return <React.Fragment>{this.getAppliedFilters()}</React.Fragment>
-  }
-
-  private getAppliedFilters() {
-    if (this.props.filterModel && this.props.columnDefinitions) {
-      const filteredColDefs = this.props.columnDefinitions.filter((colDef: any) => {
-        return this.props.filterModel.hasOwnProperty(colDef.field)
+const AppliedFilters: React.FC<AppliedFiltersProps> = ({
+  filterModel,
+  columnDefinitions,
+  removeFilter,
+}) => {
+  const getAppliedFilters = () => {
+    if (filterModel && columnDefinitions) {
+      const filteredColDefs = columnDefinitions.filter((colDef: any) => {
+        return filterModel.hasOwnProperty(colDef.field)
       })
       return filteredColDefs.map(colDef => {
         return (
           <FilterField key={colDef.field}>
             <FilterName>{colDef.headerName}</FilterName>
             <FilterButton>
-              <FilterIcon className="fas fa-times" onClick={() => this.props.removeFilter(colDef.field || '')} />
+              <FilterIcon
+                className="fas fa-times"
+                onClick={() => removeFilter(colDef.field || '')}
+                data-qa="applied-filters___remove-filter-button"
+              />
             </FilterButton>
           </FilterField>
         )
@@ -64,4 +68,8 @@ export default class AppliedFilters extends React.Component<AppliedFiltersProps,
     }
     return []
   }
+
+  return <React.Fragment>{getAppliedFilters()}</React.Fragment>
 }
+
+export default AppliedFilters

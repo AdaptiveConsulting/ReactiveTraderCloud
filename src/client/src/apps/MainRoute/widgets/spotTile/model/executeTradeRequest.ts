@@ -30,18 +30,24 @@ export function tradeError(response: ExecuteTradeResponse): response is TradeErr
 
 export type ExecuteTradeResponse = TradeErrorResponse | TradeSuccessResponse
 
-export function createExecuteTradeResponseForError(error: string, request: ExecuteTradeRequest): TradeErrorResponse {
+export function createExecuteTradeResponseForError(
+  error: string,
+  request: ExecuteTradeRequest,
+): TradeErrorResponse {
   return {
     error,
     request,
-    hasError: true
+    hasError: true,
   }
 }
 
-export function createExecuteTradeResponse(trade: Trade, request: ExecuteTradeRequest): TradeSuccessResponse {
+export function createExecuteTradeResponse(
+  trade: Trade,
+  request: ExecuteTradeRequest,
+): TradeSuccessResponse {
   return {
     trade,
     hasError: false,
-    request
+    request,
   }
 }

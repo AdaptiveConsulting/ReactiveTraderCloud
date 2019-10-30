@@ -17,6 +17,13 @@ export interface SpotTileData {
   historicPrices: SpotPriceTick[]
   lastTradeExecutionStatus?: LastTradeExecutionStatus | null
   rfqState: RfqState
+  rfqReceivedTime: number | null
   rfqTimeout: number | null
   rfqPrice: SpotPriceTick | null
+  notional: number
+}
+
+export interface CurrencyPairNotional {
+  currencyPair: string
+  notional: number
 }

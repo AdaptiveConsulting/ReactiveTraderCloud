@@ -74,12 +74,18 @@ services:
     build:
       dockerfile: Dockerfile.dev
       context: ./server/Adaptive.ReactiveTrader.Server.PriceHistory
-    volumes:
-      - /app/node_modules
-      - ./server/Adaptive.ReactiveTrader.Server.PriceHistory:/app
     depends_on:
       - broker
       - pricing
     environment:
      - BROKER_HOST=broker
      - BROKER_PORT=8000
+  nlp:
+    build:
+      dockerfile: Nlp.Dockerfile
+      context: ./node-server
+    depends_on:
+      - broker
+    environment:
+      - BROKER_HOST=broker
+      - BROKER_PORT=8000

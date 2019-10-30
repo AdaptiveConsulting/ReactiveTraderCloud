@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { Loadable, usePlatform } from 'rt-components'
+import { Loadable } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 import { GlobalState } from 'StoreTypes'
 import { SpotTileActions } from './actions'
 import { TileSwitch } from './components'
@@ -13,8 +14,9 @@ import {
   selectSpotTileData,
 } from './selectors'
 import { TileViews } from '../workspace/workspaceHeader'
-import { RfqRequest, RfqCancel, RfqRequote, RfqExpired, RfqReject } from './model/rfqRequest'
+import { RfqCancel, RfqExpired, RfqReject, RfqRequest, RfqRequote } from './model/rfqRequest'
 import { TradingMode } from './components/types'
+import { CurrencyPairNotional } from './model/spotTileData'
 
 export interface SpotTileContainerOwnProps {
   id: string
@@ -25,7 +27,8 @@ export interface SpotTileContainerOwnProps {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
-  onMount: () => dispatch(SpotTileActions.subscribeToSpotTile(ownProps.id)),
+  onCurrencyPairChanged: (currencyPair: string) =>
+    dispatch(SpotTileActions.subscribeToSpotTile(currencyPair)),
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) =>
     dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
   displayCurrencyChart: () => dispatch(SpotTileActions.displayCurrencyChart(ownProps.id)),
@@ -40,6 +43,8 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
     expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
     reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
   },
+  updateNotional: (currencyPairNotional: CurrencyPairNotional) =>
+    dispatch(SpotTileActions.setNotional(currencyPairNotional)),
 })
 
 const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
@@ -58,26 +63,26 @@ type SpotTileContainerProps = SpotTileContainerOwnProps &
   SpotTileContainerDispatchProps
 
 const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
-  onMount,
   pricingStatus,
   tearable = false,
   id,
   tornOff,
+  onCurrencyPairChanged,
   ...props
 }) => {
   const { allowTearOff } = usePlatform()
 
+  // watch currency pair changes when component is mounted
+  useEffect(() => {
+    onCurrencyPairChanged(id)
+  }, [id, onCurrencyPairChanged])
+
   return (
     <Loadable
-      onMount={onMount}
       minHeight={11}
       status={pricingStatus}
       render={() => (
-        <TileSwitch
-          key={id}
-          canPopout={tearable && allowTearOff && !tornOff}
-          {...props}
-        />
+        <TileSwitch key={id} canPopout={tearable && allowTearOff && !tornOff} {...props} />
       )}
       message={`${id} Disconnected`}
     />
