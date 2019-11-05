@@ -11,7 +11,7 @@ export function openBrowserWindow(config: BrowserWindowProps, onClose?: () => vo
   const prevWindow = openPopoutWindows[openPopoutWindows.length - 1]
   const windowReferencePosition = prevWindow
     ? { left: prevWindow.screenX, top: prevWindow.screenY }
-    : null
+    : undefined
 
   const { left, top } = calculatePosition(center, width, height, windowReferencePosition)
 
@@ -46,7 +46,9 @@ export function openBrowserWindow(config: BrowserWindowProps, onClose?: () => vo
     setUnloadListener()
   }
 
-  openPopoutWindows = openPopoutWindows.concat(win)
+  if (win) {
+    openPopoutWindows = openPopoutWindows.concat(win)
+  }
 
   return Promise.resolve(win)
 }

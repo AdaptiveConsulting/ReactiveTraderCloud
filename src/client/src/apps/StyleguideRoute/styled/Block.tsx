@@ -10,7 +10,7 @@ export interface BlockProps extends ColorProps, TextProps, MarginPaddingProps {}
 export const Block = styled.div<BlockProps>`
   ${({ theme, bg, fg }) =>
     css({
-      transition: bg ? 'background-color ease-out 0.15s' : null,
+      transition: bg ? 'background-color ease-out 0.15s' : undefined,
       backgroundColor: bg && getThemeColor(theme, bg, theme.primary.base),
       color: fg && getThemeColor(theme, fg, theme.secondary.base),
     })};

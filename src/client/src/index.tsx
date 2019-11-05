@@ -16,7 +16,7 @@ const urlParams = new URLSearchParams(window.location.search)
 async function init() {
   if (urlParams.has('startAsSymphonyController')) {
     const { initiateSymphony } = await getSymphonyPlatform()
-    await initiateSymphony(urlParams.get('env'))
+    await initiateSymphony(urlParams.get('env') || undefined)
   } else {
     ReactDOM.render(
       <React.Fragment>

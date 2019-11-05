@@ -2,13 +2,25 @@ import AudioRecorderPolyfill from 'audio-recorder-polyfill'
 
 declare const global: Window
 
-export type MediaRecorderEventType = 'start' | 'stop' | 'dataavailable' | 'pause' | 'resume' | 'error'
+export type MediaRecorderEventType =
+  | 'start'
+  | 'stop'
+  | 'dataavailable'
+  | 'pause'
+  | 'resume'
+  | 'error'
 
 declare global {
   // Augment MediaRecorder type with strongly typed methods
   interface MediaRecorder {
-    addEventListener<T extends Event>(eventType: MediaRecorderEventType, callback?: (event: T) => void): void
-    removeEventListener<T extends Event>(eventType: MediaRecorderEventType, callback?: (event: T) => void): void
+    addEventListener<T extends Event>(
+      eventType: MediaRecorderEventType,
+      callback: (event: T) => void | null,
+    ): void
+    removeEventListener<T extends Event>(
+      eventType: MediaRecorderEventType,
+      callback: (event: T) => void,
+    ): void
   }
 }
 

@@ -35,11 +35,18 @@ export function createConnection$(autobahn: AutobahnConnection): Observable<Conn
     autobahn.onopen(session => {
       if (!unsubscribed) {
         console.info(LOG_NAME, 'Connected')
+
+        const connection = autobahn.getConnection()
+        if (!connection.transport.info.url) {
+          console.error('No URL in transport')
+          return
+        }
+
         obs.next({
           type: ConnectionEventType.CONNECTED,
           session,
-          url: autobahn.getConnection().transport.info.url,
-          transportType: autobahn.getConnection().transport.info.type as ConnectionType,
+          url: connection.transport.info.url,
+          transportType: connection.transport.info.type as ConnectionType,
         })
       }
     })

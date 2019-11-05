@@ -1,5 +1,5 @@
 import numeral from 'numeral'
-import { ServiceConnectionStatus, CurrencyPair } from 'rt-types'
+import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
 import { TileProps, TileState } from './Tile'
 import { SpotTileData } from '../../model/spotTileData'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
@@ -22,6 +22,9 @@ export const isValueInRfqRange = (notional: number) => {
 }
 
 export const isValueOverRfqRange = (notional: number) => {
+  if (typeof notional === 'undefined') {
+    return false
+  }
   return notional > MAX_NOTIONAL_VALUE
 }
 
@@ -74,7 +77,7 @@ export const getDerivedStateFromUserInput = ({
 
   const defaultNextState: TileState = {
     ...prevState,
-    inputValidationMessage: null,
+    inputValidationMessage: undefined,
   }
 
   const { isRfqStateNone } = getConstsFromRfqState(rfqState)

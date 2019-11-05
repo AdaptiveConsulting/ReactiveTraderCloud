@@ -21,7 +21,8 @@ import { colors, styled, AccentName } from 'rt-theme'
 import { keyframes } from 'styled-components'
 
 type SourceType = 'microphone' | 'sample'
-interface Props {
+
+interface VoiceInputProps {
   value: string[]
   source?: SourceType
   context?: AudioContext
@@ -35,19 +36,19 @@ interface Props {
   }
 }
 
-interface State {
+interface VoiceInputState {
   // audio
   analyser: AnalyserNode
   blob?: Blob
   destination: MediaStreamAudioDestinationNode
   outputs: AudioDestinationNode[]
   source?: SourceType
-  userPermissionGranted: boolean
+  userPermissionGranted: boolean | null
   // connection
   requestSession: boolean
   sessionActive: boolean
   sessionCount: number
-  sessionConnected: boolean
+  sessionConnected: boolean | null
   sessionInstance?: any
   sessionError?: SessionEvent
   // data
@@ -57,13 +58,13 @@ interface State {
 // tslint:disable-next-line
 export interface VoiceInputResult extends SessionResult {}
 
-export class VoiceInput extends React.PureComponent<Props, State> {
+export class VoiceInput extends React.PureComponent<VoiceInputProps, VoiceInputState> {
   static defaultProps = {
     source: 'microphone',
     context: new AudioContext(),
   }
 
-  state: State = {
+  state: VoiceInputState = {
     // audio
     analyser: Object.assign(this.props.context.createAnalyser(), {
       fftSize: 32,
@@ -81,10 +82,10 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(
-    { context, source, requestSession }: Props,
-    state: State,
-  ): Partial<State> {
-    let next: State = null
+    { context, source, requestSession }: VoiceInputProps,
+    state: VoiceInputState,
+  ): Partial<VoiceInputState> {
+    let next: VoiceInputState = null
     const { analyser, blob, destination }: any = state
 
     requestSession = Boolean(requestSession)
@@ -116,7 +117,10 @@ export class VoiceInput extends React.PureComponent<Props, State> {
     return next
   }
 
-  getSnapshotBeforeUpdate({ source }: Props, { sessionInstance, sessionActive }: State) {
+  getSnapshotBeforeUpdate(
+    { source }: VoiceInputProps,
+    { sessionInstance, sessionActive }: VoiceInputState,
+  ) {
     let next = null
 
     // Capture last voice recording for replay in testing
@@ -130,7 +134,11 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   }
 
   // @ts-ignore
-  componentDidUpdate(prevProps: Props, prevState: State, snapshot: State) {
+  componentDidUpdate(
+    prevProps: VoiceInputProps,
+    prevState: VoiceInputState,
+    snapshot: VoiceInputState,
+  ) {
     if (snapshot != null) {
       this.setState(snapshot)
     }
@@ -158,7 +166,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   }
 
   onPermission = ({ ok }: UserMediaState) => {
-    this.setState({ userPermissionGranted: ok })
+    this.setState({ userPermissionGranted: !!ok })
   }
 
   onSessionStart = () => {
@@ -181,7 +189,7 @@ export class VoiceInput extends React.PureComponent<Props, State> {
   }
 
   onSessionEnd: () => void = async () => {
-    if ((await new Promise<State>(resolve => this.setState(resolve))).sessionError) {
+    if ((await new Promise<VoiceInputState>(resolve => this.setState(resolve))).sessionError) {
       return null
     }
 

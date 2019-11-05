@@ -6,7 +6,7 @@ import { OrderTicket } from './OrderTicket'
 import { getPlatformAsync, PlatformProvider } from 'rt-platforms'
 
 export default function OrderTicketRoute() {
-  const [platform, setPlatform] = useState(null)
+  const [platform, setPlatform] = useState()
   const [instance, setInstance] = useState(0)
   const reset = () => setInstance(instance + 1)
 

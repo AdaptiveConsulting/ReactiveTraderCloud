@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators'
 import { ServiceStubWithLoadBalancer } from 'rt-system'
 
 const position = {
-  CurrentPositions: [],
-  History: [],
+  CurrentPositions: [] as any[],
+  History: [] as any[],
 }
 const serviceType = '@ReactiveTraderCloud/ANALYTICS_SERVICE'
 
@@ -36,7 +36,9 @@ describe('Analytics epics', () => {
       const actionlifteTime = '-a-a-(rs)a--'
       const expecteLifetime = '-----a--'
 
-      const loadBalancedServiceStub = new MockServiceStubWithLoadBalancer(createStreamOperation$)
+      const loadBalancedServiceStub: ServiceStubWithLoadBalancer = new MockServiceStubWithLoadBalancer(
+        createStreamOperation$,
+      ) as ServiceStubWithLoadBalancer
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
@@ -67,7 +69,9 @@ describe('Analytics epics', () => {
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
 
-      const loadBalancedServiceStub = new MockServiceStubWithLoadBalancer(createStreamOperation$)
+      const loadBalancedServiceStub: ServiceStubWithLoadBalancer = (new MockServiceStubWithLoadBalancer(
+        createStreamOperation$,
+      ) as any) as ServiceStubWithLoadBalancer
 
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
       const epics$ = analyticsServiceEpic(action$, undefined, { loadBalancedServiceStub }).pipe(
@@ -78,8 +82,12 @@ describe('Analytics epics', () => {
   })
 })
 
-const MockServiceStubWithLoadBalancer = jest.fn<ServiceStubWithLoadBalancer>(
-  (getResponses: (service: string, operationName: string, request: any) => Observable<any>) => ({
-    createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
-  }),
-)
+const implementation = (
+  getResponses: (service: string, operationName: string, request: any) => Observable<any>,
+) => ({
+  createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
+})
+const MockServiceStubWithLoadBalancer = jest.fn<
+  Partial<ServiceStubWithLoadBalancer>,
+  Parameters<typeof implementation>
+>(implementation)

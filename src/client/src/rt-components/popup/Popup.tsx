@@ -8,7 +8,9 @@ interface Props {
 }
 
 const Popup: React.FC<Props> = ({ className, open = false, onClick, children }) => {
-  const onPopupClick = useCallback((e: MouseEvent<HTMLDivElement>) => onClick(e), [onClick])
+  const onPopupClick = useCallback((e: MouseEvent<HTMLDivElement>) => onClick && onClick(e), [
+    onClick,
+  ])
 
   return (
     <PopupContainer className={className} open={open} onClick={onPopupClick}>

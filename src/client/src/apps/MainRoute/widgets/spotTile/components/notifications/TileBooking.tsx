@@ -14,7 +14,7 @@ const TileBookingStyle = styled.div`
   text-align: center;
 `
 
-const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean }>`
+const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean; color: string }>`
   padding: 0.75rem 0.9375rem;
   border-radius: ${({ altStyle }) => (altStyle ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
@@ -42,7 +42,7 @@ const AdaptiveLoaderWrapper = styled.span`
   padding-right: 0.375rem;
 `
 
-interface Props {
+interface TileBookingProps {
   show: boolean
   showLoader?: boolean
   disabled?: boolean
@@ -50,7 +50,7 @@ interface Props {
   onBookingPillClick?: () => void
 }
 
-const TileBooking: React.FC<Props> = ({
+const TileBooking: React.FC<TileBookingProps> = ({
   show,
   showLoader,
   disabled,
@@ -69,8 +69,8 @@ const TileBooking: React.FC<Props> = ({
                 onBookingPillClick()
               }
             }}
-            altStyle={showLoader}
-            disabled={disabled}
+            altStyle={!!showLoader}
+            disabled={!!disabled}
             data-qa="tile-booking__booking-pill"
           >
             {showLoader && (

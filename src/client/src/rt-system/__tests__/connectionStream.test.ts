@@ -1,6 +1,4 @@
-import { Observer } from 'rxjs'
-import { createConnection$, AutobahnConnection, ConnectionEventType } from 'rt-system'
-import { Connection } from 'autobahn'
+import { AutobahnConnection, ConnectionEventType, createConnection$ } from 'rt-system'
 
 beforeEach(() => jest.clearAllMocks())
 
@@ -10,7 +8,8 @@ describe('createConnection$', () => {
     const mockConnection = new MockAutobahnConnection()
 
     // act
-    const connection = createConnection$(mockConnection)
+    // TODO: remove this 'any' horror. It was done to remove type incompatibility errors. Sorry :(
+    const connection = createConnection$((mockConnection as any) as AutobahnConnection)
 
     // assert
     expect(connection).toBeDefined()
@@ -19,7 +18,8 @@ describe('createConnection$', () => {
 
   it('returns a cold observable', () => {
     // arrange
-    const mockConnection = new MockAutobahnConnection()
+    // TODO: remove this 'any' horror. It was done to remove type incompatibility errors. Sorry :(
+    const mockConnection: AutobahnConnection = (new MockAutobahnConnection() as any) as AutobahnConnection
 
     // act
     createConnection$(mockConnection)
@@ -33,7 +33,8 @@ describe('createConnection$', () => {
 
   it('returns an observable that calls open on subscribe', () => {
     // arrange
-    const mockConnection = new MockAutobahnConnection()
+    // TODO: remove this 'any' horror. It was done to remove type incompatibility errors. Sorry :(
+    const mockConnection: AutobahnConnection = (new MockAutobahnConnection() as any) as AutobahnConnection
 
     // act
     createConnection$(mockConnection).subscribe()
@@ -45,7 +46,8 @@ describe('createConnection$', () => {
 
   it('returns an observable that calls close on unsubscribe', () => {
     // arrange
-    const mockConnection = new MockAutobahnConnection()
+    // TODO: remove this 'any' horror. It was done to remove type incompatibility errors. Sorry :(
+    const mockConnection: AutobahnConnection = (new MockAutobahnConnection() as any) as AutobahnConnection
 
     // act
     createConnection$(mockConnection)
@@ -58,7 +60,8 @@ describe('createConnection$', () => {
 
   it('returns an observable that receives an onopen notification when open is called', () => {
     // arrange
-    const mockConnection = new MockAutobahnConnection()
+    // TODO: remove this 'any' horror. It was done to remove type incompatibility errors. Sorry :(
+    const mockConnection: AutobahnConnection = (new MockAutobahnConnection() as any) as AutobahnConnection
     const onNext = jest.fn()
 
     // act
@@ -75,7 +78,8 @@ describe('createConnection$', () => {
 
   it('returns an observable that is completed when onclose is called without indicating that the service will retry', () => {
     // arrange
-    const mockConnection = new MockAutobahnConnection()
+    // TODO: remove this 'any' horror. It was done to remove type incompatibility errors. Sorry :(
+    const mockConnection: AutobahnConnection = (new MockAutobahnConnection() as any) as AutobahnConnection
     const mockObserver = new MockObserver()
 
     // act
@@ -89,7 +93,8 @@ describe('createConnection$', () => {
 
   it('returns an observable that terminates with an error when onclose is called with an error', () => {
     // arrange
-    const mockConnection = new MockAutobahnConnection(true)
+    // TODO: remove this 'any' horror. It was done to remove type incompatibility errors. Sorry :(
+    const mockConnection: AutobahnConnection = (new MockAutobahnConnection(true) as any) as AutobahnConnection
     const mockObserver = new MockObserver()
 
     // act
@@ -109,7 +114,8 @@ describe('createConnection$', () => {
 
   it('returns an observable that contains a disconnected notification when onclose is called, indicating that the service will retry', () => {
     // arrange
-    const mockConnection = new MockAutobahnConnection(false, true)
+    // TODO: remove this 'any' horror. It was done to remove type incompatibility errors. Sorry :(
+    const mockConnection: AutobahnConnection = (new MockAutobahnConnection(false, true) as any) as AutobahnConnection
     const mockObserver = new MockObserver()
 
     // act
@@ -128,7 +134,8 @@ describe('createConnection$', () => {
 
   it('returns an observable that contains a connected notification when onclose is called and then onopen is called', () => {
     // arrange
-    const mockConnection = new MockAutobahnConnection(false, true)
+    // TODO: remove this 'any' horror. It was done to remove type incompatibility errors. Sorry :(
+    const mockConnection: AutobahnConnection = (new MockAutobahnConnection(false, true) as any) as AutobahnConnection
     const mockObserver = new MockObserver()
 
     // act
@@ -148,7 +155,7 @@ describe('createConnection$', () => {
   })
 })
 
-const MockAutobahnConnection = jest.fn<AutobahnConnection>((oncloseError, willRetry) => {
+const MockAutobahnConnection = jest.fn((oncloseError?, willRetry?) => {
   let onopenCallback: (x: any) => void
   let oncloseCallback: (reason: string, details: {}, willRetry: boolean) => void
 
@@ -176,7 +183,7 @@ const MockAutobahnConnection = jest.fn<AutobahnConnection>((oncloseError, willRe
           ),
       )
       .mockName('close'),
-    getConnection: jest.fn<Connection>(() => ({
+    getConnection: jest.fn(() => ({
       transport: {
         info: {
           type: 'websocket',
@@ -187,7 +194,7 @@ const MockAutobahnConnection = jest.fn<AutobahnConnection>((oncloseError, willRe
   }
 })
 
-const MockObserver = jest.fn<Observer<any>>(() => ({
+const MockObserver = jest.fn(() => ({
   next: jest.fn(),
   error: jest.fn(),
   complete: jest.fn(),

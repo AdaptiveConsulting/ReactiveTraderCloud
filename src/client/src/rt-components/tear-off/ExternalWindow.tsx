@@ -21,14 +21,14 @@ export interface ExternalWindowProps {
 
 const ExternalWindow: FC<ExternalWindowProps> = ({
   title = '',
-  onBlock = null as () => void,
-  onUnload = null as () => void,
+  onBlock = () => undefined,
+  onUnload = () => undefined,
   config = defaultConfig,
 }) => {
   const platform = usePlatform()
 
   useEffect(() => {
-    let externalWindow: Window
+    let externalWindow: Window | null
 
     const release = () => {
       if (externalWindow) {

@@ -9,6 +9,7 @@
       "es2017",
       "dom"
     ],
+    "strictNullChecks": false,
     "sourceMap": true,
     "allowJs": true,
     "strict": true,
@@ -22,7 +23,6 @@
     "noImplicitReturns": false,
     "noImplicitThis": false,
     "noImplicitAny": true,
-    "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
     "declaration": false,
     "noUnusedLocals": true,

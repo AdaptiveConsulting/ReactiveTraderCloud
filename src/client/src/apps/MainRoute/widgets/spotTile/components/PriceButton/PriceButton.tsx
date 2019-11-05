@@ -49,7 +49,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
     <TradeButton
       direction={direction}
       onClick={handleClick}
-      priceAnnounced={priceAnnounced}
+      priceAnnounced={!!priceAnnounced}
       disabled={isDisabled}
       data-qa="price-button__trade-button"
       data-qa-id={`direction-${direction.toLowerCase()}-${currencyPairSymbol.toLowerCase()}`}

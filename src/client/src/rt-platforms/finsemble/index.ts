@@ -24,28 +24,40 @@ export class Finsemble extends BasePlatformAdapter {
           window.FSBL &&
           window.FSBL.Clients.LauncherClient.getActiveDescriptors(
             (error: string, activeWindows: object) => {
-              const isRunning = config.uuid in activeWindows ? true : false
+              const isRunning = config.uuid && config.uuid in activeWindows
               if (isRunning) {
-                this.interop.publish(config.topic, config.payload)
-              } else {
-                window.FSBL.Clients.LauncherClient.spawn(
-                  config.uuid,
-                  {
-                    url: config.url,
-                    name: config.uuid,
-                    options: {
-                      icon: config.icon,
-                      autoShow: true,
-                      frame: false,
-                    },
-                    addToWorkspace: true,
-                  },
-                  (err: string) => (err ? reject(err) : resolve()),
-                )
+                this.publish(config)
+                return
               }
+              window.FSBL.Clients.LauncherClient.spawn(
+                config.uuid,
+                {
+                  url: config.url,
+                  name: config.uuid,
+                  options: {
+                    icon: config.icon,
+                    autoShow: true,
+                    frame: false,
+                  },
+                  addToWorkspace: true,
+                },
+                (err: string) => (err ? reject(err) : resolve()),
+              )
             },
           ),
       ),
+  }
+
+  private publish(config: AppConfig) {
+    if (typeof config.topic === 'undefined') {
+      console.error(`Can't publish on empty topic`)
+      return
+    }
+    if (typeof config.payload === 'undefined') {
+      console.error(`Can't publish empty payload`)
+      return
+    }
+    this.interop.publish(config.topic, config.payload)
   }
 
   interop = {

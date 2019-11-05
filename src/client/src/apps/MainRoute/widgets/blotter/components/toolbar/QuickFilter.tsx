@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { styled } from 'rt-theme'
 
 interface QuickFilterProps {
@@ -42,6 +42,7 @@ const QuickFilterIcon = styled('div')`
   width: 0.875rem;
   margin: 0 0.25rem;
   opacity: 0.59;
+  cursor: pointer;
 `
 
 const QuickFilterClearIcon = styled('i')`
@@ -61,7 +62,7 @@ const QuickFilter: React.FC<QuickFilterProps> = ({
   removeQuickFilter,
   quickFilterChangeHandler,
 }) => {
-  const quickFilterInput = useRef<HTMLInputElement>()
+  const quickFilterInput = useRef<HTMLInputElement>(null)
   const [quickFilterText, setQuickFilterText] = useState<string>('')
 
   const quickFilterOnChange = useCallback(

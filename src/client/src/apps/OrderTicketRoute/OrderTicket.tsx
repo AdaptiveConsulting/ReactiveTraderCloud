@@ -17,7 +17,7 @@ import { OrderStatus } from './OrderStatus'
 import { Notification } from './Notification'
 import { Timer } from 'rt-components'
 
-interface State {
+interface OrderTicketState {
   executed?: boolean
   requestExecution?: boolean
   requestQuote: boolean
@@ -34,24 +34,19 @@ interface Props {
   reset: () => void
 }
 
-export class OrderTicket extends PureComponent<Props, State> {
+export class OrderTicket extends PureComponent<Props, OrderTicketState> {
   static defaultProps = {
     showChrome: true,
   }
-  state: State = {
+  state: OrderTicketState = {
     requestSession: false,
     requestQuote: false,
     sessionActive: false,
-    sessionResult: null,
+    sessionResult: undefined,
     source: 'microphone',
     query: {},
     features: {},
-    ...(process.env.NODE_ENV === 'development' &&
-      {
-        // requestSession: true,
-        // requestQuote: true,
-        // source: 'sample',
-      }),
+    ...(process.env.NODE_ENV === 'development' && {}),
   }
 
   viewportRef = React.createRef<any>()
@@ -105,7 +100,7 @@ export class OrderTicket extends PureComponent<Props, State> {
       requestSession: true,
       requestQuote: false,
       sessionActive: true,
-      sessionResult: null,
+      sessionResult: undefined,
       query: {
         product: '',
         client: '',
@@ -144,12 +139,9 @@ export class OrderTicket extends PureComponent<Props, State> {
   }
 
   onSessionEnd = () => {
-    // const { query, sessionResult } = this.state
-
     this.setState({
       requestSession: false,
       sessionActive: false,
-      // requestQuote: _.get(sessionResult, 'data.result.final') && Object.keys(query).length >= 3,
     })
   }
 
@@ -170,9 +162,9 @@ export class OrderTicket extends PureComponent<Props, State> {
       requestSession: false,
       requestQuote: false,
       sessionActive: false,
-      sessionResult: null,
+      sessionResult: undefined,
       requestExecution: false,
-      executed: null,
+      executed: undefined,
       query: _.mapValues(this.state.query, () => ''),
     })
   }
@@ -195,15 +187,17 @@ export class OrderTicket extends PureComponent<Props, State> {
     if (this.state.requestQuote) {
       this.setState({
         requestExecution: true,
-        executed: null,
+        executed: undefined,
       })
     }
   }
 
   tryGetSessionResultTranscript() {
     try {
-      return this.state.sessionResult.transcripts[0][0].transcript
-    } catch {}
+      return this.state.sessionResult && this.state.sessionResult.transcripts[0][0].transcript
+    } catch (error) {
+      console.error(`Error getting session result transcript`, error)
+    }
     return undefined
   }
 
@@ -275,7 +269,7 @@ export class OrderTicket extends PureComponent<Props, State> {
                           ? this.onCancel()
                           : this.setState({
                               requestExecution: false,
-                              executed: null,
+                              executed: undefined,
                             })
                       }
                     >

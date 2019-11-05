@@ -5,7 +5,7 @@ import React, {
   KeyboardEventHandler,
   useEffect,
   useReducer,
-  useState
+  useState,
 } from 'react'
 import { styled } from 'rt-theme'
 import { AdaptiveLoader } from 'rt-components'
@@ -94,7 +94,7 @@ function getInlineSuggestionsComponent(response: DetectIntentResponse, platform:
   }
   return (
     <>
-      {isSpotQuoteIntent(response) ? (
+      {isSpotQuoteIntent(response) && currencyPair ? (
         <Suggestion onClick={() => handleIntent(response, platform)}>
           <InlineQuote currencyPair={currencyPair} />
         </Suggestion>

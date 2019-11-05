@@ -31,7 +31,7 @@ export interface TileSwitchChildrenProps {
   userError: boolean
 }
 
-export interface Props {
+export interface SpotTileProps {
   currencyPair: CurrencyPair
   spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
@@ -39,7 +39,7 @@ export interface Props {
   updateNotional: (notional: number) => void
   resetNotional: () => void
   inputDisabled: boolean
-  inputValidationMessage: ValidationMessage
+  inputValidationMessage?: ValidationMessage
   tradingDisabled: boolean
   chartData?: []
   rfq: RfqActions

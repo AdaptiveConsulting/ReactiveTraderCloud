@@ -28,7 +28,7 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   rfqPrice: null,
   rfqReceivedTime: null,
   rfqTimeout: null,
-  notional: null,
+  notional: 0,
 }
 
 const spotTileReducer = (

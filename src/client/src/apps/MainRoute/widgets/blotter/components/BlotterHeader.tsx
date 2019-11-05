@@ -11,7 +11,7 @@ interface Props {
   canPopout: boolean
   onPopoutClick: (x: number, y: number) => void
   onExportToExcelClick: () => void
-  gridApi: GridApi | null
+  gridApi?: GridApi
 }
 
 const BlotterHeaderStyle = styled('div')`

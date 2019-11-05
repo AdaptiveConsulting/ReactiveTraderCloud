@@ -135,8 +135,9 @@ const calculatePosition = (
   let relativeDirection: RelativeDirection = 'left'
 
   if (isSpot(url)) {
-    left = myWindow.bounds.left - width - 20
-    top = myWindow.bounds.top
+    // TODO: remove "!" - this is a temp fix for typings
+    left = myWindow.bounds.left! - width - 20
+    top = myWindow.bounds.top!
   } else {
     relativeTo = myWindow.id
     if (isAnalytics(url)) {

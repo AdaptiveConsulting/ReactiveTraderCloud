@@ -5,11 +5,14 @@ import { combineLatest, map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 import BlotterService from '../blotterService'
+import { ServiceStubWithLoadBalancer } from 'rt-system'
 type SubscribeToBlotterAction = ReturnType<typeof BlotterActions.subscribeToBlotterAction>
 
 const { createNewTradesAction } = BlotterActions
 
-export const blotterServiceEpic: ApplicationEpic = (action$, state$, { loadBalancedServiceStub }) => {
+export const blotterServiceEpic: ApplicationEpic<{
+  loadBalancedServiceStub: ServiceStubWithLoadBalancer
+}> = (action$, state$, { loadBalancedServiceStub }) => {
   const blotterService = new BlotterService(loadBalancedServiceStub)
 
   const connectAction$ = action$.pipe(applicationConnected)

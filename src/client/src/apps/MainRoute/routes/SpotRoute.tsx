@@ -34,6 +34,9 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   const [ccyPairFromInterop, setCcyPairFromInterop] = useState<ReadonlyArray<string>>()
 
   useEffect(() => {
+    if (!platform) {
+      return
+    }
     let ccyPairSubscription: Subscription
 
     if (platform.hasFeature('interop')) {

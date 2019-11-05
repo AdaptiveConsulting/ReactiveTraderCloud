@@ -3,11 +3,11 @@ import {
   ConnectionEvent,
   ConnectionEventType,
   ConnectionOpenEvent,
+  ServiceStub,
 } from 'rt-system'
 import { MockScheduler } from 'rt-testing'
-import { ServiceStub } from 'rt-system'
 import { of } from 'rxjs'
-import { ISubscription } from 'autobahn'
+import { ISubscription, Session } from 'autobahn'
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -154,10 +154,13 @@ const UnsubscribeMock = jest.fn().mockReturnValue({
   then: (cb: () => {}) => cb(),
 })
 
-const SubscriptionMock = jest.fn<ISubscription>()
+// TODO: fix types, replace any with actual types
+const SubscriptionMock = jest.fn<any, any>()
 
-const MockSession = jest.fn<AutobahnSessionProxy>(() => {
+// TODO: fix types, replace any with actual types
+const MockSession = jest.fn<any, any>(() => {
   return {
+    session: ({} as any) as Session,
     isOpen: jest.fn().mockReturnValue(true),
     subscribe: SubscribeMock,
     unsubscribe: UnsubscribeMock,

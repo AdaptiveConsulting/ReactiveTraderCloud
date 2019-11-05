@@ -24,12 +24,23 @@ function getSingleNumberFromQuery(count: string[] | string | null | undefined): 
   return parseInt(count)
 }
 
+function ensureArray(
+  item: ReadonlyArray<string> | string | null | undefined,
+): ReadonlyArray<string> {
+  if (!item) {
+    return []
+  }
+  if (Array.isArray(item)) {
+    return item
+  }
+  return [item as string]
+}
+
 function getFiltersFromQueryStr(queryStr: string): BlotterFilters {
   const parsedQueryString = queryString.parse(queryStr)
-  // enforce array for values
   return {
-    [SYMBOL]: [].concat(parsedQueryString[SYMBOL]),
-    [DEALT_CURRENCY]: [].concat(parsedQueryString[DEALT_CURRENCY]),
+    [SYMBOL]: ensureArray(parsedQueryString[SYMBOL]),
+    [DEALT_CURRENCY]: ensureArray(parsedQueryString[DEALT_CURRENCY]),
     count: getSingleNumberFromQuery(parsedQueryString.count),
   }
 }
@@ -41,6 +52,9 @@ const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   const [filtersFromInterop, setFiltersFromInterop] = useState<ReadonlyArray<BlotterFilters>>()
 
   useEffect(() => {
+    if (!platform) {
+      return
+    }
     let filterSubscription: Subscription
 
     if (platform.hasFeature('interop')) {

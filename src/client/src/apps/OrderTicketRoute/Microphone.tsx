@@ -25,7 +25,7 @@ class Microphone extends React.PureComponent<Props, State> {
     let source = current.source
 
     if (mediaStream !== current.mediaStream) {
-      source = mediaStream ? context.createMediaStreamSource(mediaStream) : null
+      source = mediaStream ? context.createMediaStreamSource(mediaStream) : undefined
 
       next = { ...next, mediaStream, source }
     }

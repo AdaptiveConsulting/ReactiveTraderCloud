@@ -14,7 +14,7 @@ interface Props {
   notional: number
   updateNotional: (notional: number) => void
   resetNotional: () => void
-  validationMessage: ValidationMessage
+  validationMessage?: ValidationMessage
   showResetButton?: boolean
   disabled: boolean
 }

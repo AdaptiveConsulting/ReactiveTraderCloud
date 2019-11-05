@@ -22,9 +22,9 @@ const RTExcelConfig = {
 }
 
 class JSExcelAdapter implements ExcelApp {
-  rtWorkbook: fin.ExcelWorkbook
-  blotterSheet: fin.ExcelWorksheet
-  positionsSheet: fin.ExcelWorksheet
+  rtWorkbook?: fin.ExcelWorkbook
+  blotterSheet?: fin.ExcelWorksheet
+  positionsSheet?: fin.ExcelWorksheet
   platform = new OpenFin()
 
   readonly name = 'JS'
@@ -51,10 +51,21 @@ class JSExcelAdapter implements ExcelApp {
       this.rtWorkbook = wbs.find(wb => wb.name === EXCEL_FILE_NAME)
     }
 
+    if (!this.rtWorkbook) {
+      console.error(`Error opening - rtWorkbook is not set`)
+      return
+    }
+
     const worksheets = await this.rtWorkbook.getWorksheets()
     this.blotterSheet = worksheets.find(ws => ws.name === 'Blotter')
     this.positionsSheet = worksheets.find(ws => ws.name === 'Positions')
     fin.desktop.Excel.addEventListener('workbookClosed', this.onWorkbookClosed)
+
+    if (!this.positionsSheet) {
+      console.log(`Error adding listeners to positionsSheet, it is undefined`)
+      return
+    }
+
     this.positionsSheet.addEventListener('sheetChanged', this.onPositionsSheetChanged)
     this.positionsSheet.addEventListener('selectionChanged', this.onPositionsSheetSelectionChanged)
   }
@@ -68,9 +79,9 @@ class JSExcelAdapter implements ExcelApp {
           this.onPositionsSheetSelectionChanged,
         )
       }
-      this.blotterSheet = null
-      this.positionsSheet = null
-      this.rtWorkbook = null
+      this.blotterSheet = undefined
+      this.positionsSheet = undefined
+      this.rtWorkbook = undefined
     }
   }
 

@@ -60,9 +60,9 @@ export interface TearOffProps {
 const TearOff: React.FC<TearOffProps> = ({ render, externalWindowProps, tornOff, dragTearOff }) => {
   const { allowTearOff } = usePlatform()
   const dispatch = useDispatch()
-  const windowName = externalWindowProps.config.name
+  const windowName = externalWindowProps.config && externalWindowProps.config.name
   const popOut = useCallback(
-    (x: number, y: number) =>
+    (x?: number, y?: number) =>
       dispatch(
         LayoutActions.updateContainerVisibilityAction({ name: windowName, display: false, x, y }),
       ),
