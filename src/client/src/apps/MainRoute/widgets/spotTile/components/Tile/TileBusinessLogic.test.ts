@@ -9,7 +9,7 @@ import { TileProps, TileState } from './Tile'
 import { TradingMode } from '../types'
 import { PriceMovementTypes } from '../../model/priceMovementTypes'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
-import { TileViews } from '../../../workspace/workspaceHeader/index'
+import { TileViews } from '../../../workspace/workspaceHeader'
 
 // invalid trading values, should disable trading (Buy/Sell buttons)
 // https://regex101.com/r/OWDRCO/2
@@ -68,7 +68,7 @@ test('isValueOverRfqRange', () => {
 const prevState: TileState = {
   canExecute: true,
   inputDisabled: false,
-  inputValidationMessage: null,
+  inputValidationMessage: undefined,
 }
 
 const currencyPair: CurrencyPair = {
@@ -110,7 +110,7 @@ const defaultParams: Parameters<typeof getDerivedStateFromUserInput>[0] = {
 const defaultNewState: TileState = {
   canExecute: true,
   inputDisabled: false,
-  inputValidationMessage: null,
+  inputValidationMessage: undefined,
 }
 
 validTradingValues.forEach(value => {

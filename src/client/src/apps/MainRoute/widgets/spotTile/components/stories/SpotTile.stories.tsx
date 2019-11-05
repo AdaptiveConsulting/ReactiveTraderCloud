@@ -35,7 +35,6 @@ stories.add('SpotTile', () => (
           updateNotional={updateNotional}
           resetNotional={resetNotional}
           tradingDisabled={false}
-          inputValidationMessage={null}
           inputDisabled={false}
           rfq={rfqActions}
         />
@@ -73,7 +72,6 @@ stories.add('SpotTile no price', () => (
           updateNotional={updateNotional}
           resetNotional={resetNotional}
           tradingDisabled={false}
-          inputValidationMessage={null}
           inputDisabled={false}
           rfq={rfqActions}
         />
@@ -99,7 +97,6 @@ stories.add('SpotTile in error', () => (
           updateNotional={updateNotional}
           resetNotional={resetNotional}
           tradingDisabled={true}
-          inputValidationMessage={null}
           inputDisabled={false}
           rfq={rfqActions}
         />

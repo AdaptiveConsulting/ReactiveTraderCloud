@@ -23,9 +23,7 @@ interface Props {
 
 const TileControls: React.FC<Props> = ({ onPopoutClick, canPopout }) => {
   const popoutClickHandler = useCallback(
-    event => {
-      onPopoutClick(event.screenX, event.screenY)
-    },
+    event => onPopoutClick && onPopoutClick(event.screenX, event.screenY),
     [onPopoutClick],
   )
 

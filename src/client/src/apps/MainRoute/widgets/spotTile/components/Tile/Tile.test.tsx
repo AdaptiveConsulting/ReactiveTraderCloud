@@ -11,8 +11,7 @@ import { PriceMovementTypes } from '../../model/priceMovementTypes'
 const prevState: TileState = {
   canExecute: true,
   inputDisabled: false,
-  inputValidationMessage: null,
-  tradingDisabled: false,
+  inputValidationMessage: undefined,
 }
 
 const defaultParams: Parameters<typeof getDerivedStateFromUserInput>[0] = {

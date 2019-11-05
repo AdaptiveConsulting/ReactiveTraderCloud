@@ -10,7 +10,7 @@ export default class Environment {
   static isRunningInIE() {
     if (isRunningInIE === null) {
       const browser = new UAParser().getBrowser().name
-      isRunningInIE = browser.indexOf('IE') !== -1
+      isRunningInIE = !!browser && browser.indexOf('IE') !== -1
     }
     return isRunningInIE
   }

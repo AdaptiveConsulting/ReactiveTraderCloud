@@ -11,7 +11,7 @@ export interface ExternalWindowProps {
 
 const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => ExternalWindowProps = (
   key: string,
-  tileLayout: WindowPosition,
+  tileLayout?: WindowPosition,
 ) => ({
   title: `${key} Spot`,
   config: {

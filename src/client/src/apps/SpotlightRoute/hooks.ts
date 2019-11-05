@@ -4,8 +4,11 @@ import { ServiceClient } from 'rt-system'
 import PricingService from '../MainRoute/widgets/spotTile/epics/pricingService'
 import BlotterService from '../MainRoute/widgets/blotter/blotterService'
 
-const useXxxService = <T>(TCreator: { new (serviceStub: ServiceClient): T; }, serviceStub: ServiceClient): T => {
-  const [service, setService] = useState(null)
+const useXxxService = <T>(
+  TCreator: { new (serviceStub: ServiceClient): T },
+  serviceStub: ServiceClient,
+): T => {
+  const [service, setService] = useState()
 
   useEffect(() => {
     const service = new TCreator(serviceStub)

@@ -2,20 +2,21 @@ import React, { FC, useEffect, useState } from 'react'
 import { usePriceService } from './hooks'
 import { useServiceStub } from './context'
 
-interface IProps {
+interface InlineQuoteProps {
   currencyPair: string
 }
 
-export const InlineQuote: FC<IProps> = ({currencyPair}) => {
-  const [quote, setQuote] = useState({symbol: '', mid: null})
+export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
+  const [quote, setQuote] = useState({ symbol: '', mid: null })
   const serviceStub = useServiceStub()
-  const priceService = usePriceService(serviceStub)
+  const priceService = usePriceService(serviceStub!)
 
   useEffect(() => {
     if (!priceService) {
       return
     }
-    const subscription = priceService.getSpotPriceStream({symbol: currencyPair})
+    const subscription = priceService
+      .getSpotPriceStream({ symbol: currencyPair })
       .subscribe(result => {
         setQuote(result)
       }, console.error)

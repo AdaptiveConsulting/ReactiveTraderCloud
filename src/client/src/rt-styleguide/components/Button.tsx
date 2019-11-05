@@ -15,12 +15,19 @@ export interface ButtonStyleProps {
 
 const boxShadow = `0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08)`
 
-function getButtonColors({ theme, intent, outline, active, disabled, invert }: ButtonStyleProps & { theme: Theme }) {
-  const buttonStyleSet = theme.button[intent]
-  let fg = buttonStyleSet.textColor || theme.textColor
-  let bg = buttonStyleSet.backgroundColor || theme.backgroundColor
+function getButtonColors({
+  theme,
+  intent,
+  outline,
+  active,
+  disabled,
+  invert,
+}: ButtonStyleProps & { theme: Theme }) {
+  const buttonStyleSet = typeof intent !== 'undefined' && theme.button[intent]
+  let fg = (buttonStyleSet && buttonStyleSet.textColor) || theme.textColor
+  let bg = (buttonStyleSet && buttonStyleSet.backgroundColor) || theme.backgroundColor
 
-  if (active) {
+  if (active && buttonStyleSet) {
     bg = buttonStyleSet.active.backgroundColor
   }
 
@@ -32,7 +39,7 @@ function getButtonColors({ theme, intent, outline, active, disabled, invert }: B
     ;[fg, bg] = [bg, fg]
   }
 
-  if (outline) {
+  if (outline && buttonStyleSet) {
     if (active) {
       bg = buttonStyleSet.backgroundColor
       fg = buttonStyleSet.textColor || theme.textColor
@@ -208,7 +215,8 @@ const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
   }
 
   ${({ size }) =>
-    (size || size > 1) &&
+    size &&
+    size > 1 &&
     css`
       padding-top: ${((size + 1) / 2) * 0.75}rem;
       padding-bottom: ${((size + 1) / 2) * 0.75}rem;

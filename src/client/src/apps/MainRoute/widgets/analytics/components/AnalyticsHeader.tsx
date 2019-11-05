@@ -4,13 +4,13 @@ import { Controls, PopoutButton } from './styled'
 
 interface AnalyticsHeaderProps {
   canPopout: boolean
-  onPopoutClick: ((x: number, y: number) => void) | undefined
+  onPopoutClick?: (x: number, y: number) => void
 }
 
 const AnalyticsWindowHeader: React.FC<AnalyticsHeaderProps> = ({ canPopout, onPopoutClick }) => {
   const popoutClickHandler = useCallback(
     event => {
-      onPopoutClick(event.screenX, event.screenY)
+      onPopoutClick && onPopoutClick(event.screenX, event.screenY)
     },
     [onPopoutClick],
   )

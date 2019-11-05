@@ -1,8 +1,10 @@
 import * as React from 'react'
-import { PlatformAdapter } from './'
 import { useContext } from 'react'
+import { PlatformAdapter } from './'
+import NoopPlatformAdapter from './noopAdapter'
 
-const PlatformContext = React.createContext<PlatformAdapter>(null)
+const PlatformContext = React.createContext<PlatformAdapter>(new NoopPlatformAdapter())
+
 export const { Provider: PlatformProvider } = PlatformContext
 
 export function usePlatform() {

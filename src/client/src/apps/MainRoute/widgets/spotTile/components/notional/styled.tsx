@@ -31,7 +31,7 @@ const getInputBoxShadowStyles = ({
   validationMessage,
   theme,
 }: {
-  validationMessage: ValidationMessage
+  validationMessage?: ValidationMessage
   theme: Theme
 }) =>
   validationMessage

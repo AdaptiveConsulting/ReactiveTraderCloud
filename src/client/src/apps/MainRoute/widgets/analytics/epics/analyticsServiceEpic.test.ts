@@ -7,12 +7,14 @@ import { MockScheduler } from 'rt-testing'
 import { CurrencyPairPositionWithPrice, CurrencyPairPosition } from 'rt-types'
 import { GlobalState } from 'StoreTypes'
 import { DeepPartial } from 'rt-util'
-import { ExcelApp } from '../../../../../rt-platforms'
+import { ExcelApp } from 'rt-platforms'
 
-const MockExcelApp = jest.fn<ExcelApp>(() => ({
+const MockExcelApp = jest.fn<ExcelApp, []>(() => ({
+  name: 'xxx',
   isOpen: () => true,
-  publishPositions: jest.fn((data: any) => {}),
-  publishBlotter: jest.fn((data: any) => {}),
+  open: () => Promise.resolve(),
+  publishPositions: jest.fn((data: any) => Promise.resolve()),
+  publishBlotter: jest.fn((data: any) => Promise.resolve()),
 }))
 
 describe('publishPositionToExcelEpic', () => {
@@ -51,6 +53,7 @@ describe('publishPositionToExcelEpic', () => {
       baseTradedAmount: 120,
       basePnlName: 'basePnl',
       baseTradedAmountName: 'baseTradedAmount',
+      counterTradedAmount: 100,
     }
 
     const mockGlobalStateWithSpotTileData: DeepPartial<GlobalState> = {

@@ -144,7 +144,10 @@ function isMarginPaddingRuleType(rule: string): rule is MarginPaddingRuleType {
 export const mapMarginPaddingProps = (props: MarginPaddingProps | { [key: string]: any }) => {
   return Object.keys(props)
     .filter(isMarginPaddingRuleType)
-    .map(key => marginPaddingProps[key][props[key]])
+    .map(key => {
+      const marginPaddingProp = marginPaddingProps[key]
+      return marginPaddingProp && marginPaddingProp[props[key]]
+    })
     .filter(Boolean)
     .join(';')
 }

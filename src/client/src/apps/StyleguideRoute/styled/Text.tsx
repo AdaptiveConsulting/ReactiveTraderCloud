@@ -56,7 +56,9 @@ export interface TextProps {
   opacity?: 0 | 0.25 | 0.5 | 0.75 | 1
 }
 
-type TextPropsToCssMapper = { [k in keyof TextProps]: (props: TextProps & { theme: Theme }) => ReturnType<typeof css> }
+type TextPropsToCssMapper = {
+  [k in keyof TextProps]: (props: TextProps & { theme: Theme }) => ReturnType<typeof css>
+}
 
 const textPropsToCSS: TextPropsToCssMapper = {
   display: ({ display }) => css({ display }),
@@ -88,7 +90,10 @@ function isTextProp(propName: string): propName is keyof TextProps {
 export function mapTextProps(props: TextProps & { theme: Theme }) {
   return Object.keys(props)
     .filter(isTextProp)
-    .map(propName => textPropsToCSS[propName](props))
+    .map(propName => {
+      const textPropsToCSSValue = textPropsToCSS[propName]
+      return textPropsToCSSValue && textPropsToCSSValue(props)
+    })
     .filter(Boolean)
     .join(';')
 }

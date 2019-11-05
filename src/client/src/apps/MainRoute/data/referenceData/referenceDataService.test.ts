@@ -52,10 +52,14 @@ describe('ReferenceDataService', () => {
       )
 
       const serviceClient = new MockServiceClient(createStreamOperation)
-      referenceDataService(serviceClient)
+      referenceDataService(serviceClient as ServiceClient)
       flush()
       expect(createStreamOperation).toHaveBeenCalledTimes(1)
-      expect(createStreamOperation).toHaveBeenCalledWith('reference', 'getCurrencyPairUpdatesStream', {})
+      expect(createStreamOperation).toHaveBeenCalledWith(
+        'reference',
+        'getCurrencyPairUpdatesStream',
+        {},
+      )
     })
   })
 
@@ -70,11 +74,13 @@ describe('ReferenceDataService', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const actionLifetime = '--a--'
       const expectLifetime = '--a--'
-      const createStreamOperation$ = jest.fn<Observable<RawCurrencyPairUpdates>>((s: string, o: string, r: any) =>
+      const createStreamOperation$ = jest.fn<Observable<RawCurrencyPairUpdates>, []>(() =>
         cold<RawCurrencyPairUpdates>(actionLifetime, actionReference),
       )
       const serviceClient = new MockServiceClient(createStreamOperation$)
-      const referenceData$ = referenceDataService(serviceClient).pipe(map(refData => refData.hasOwnProperty('USDYAN')))
+      const referenceData$ = referenceDataService(serviceClient as ServiceClient).pipe(
+        map(refData => refData.hasOwnProperty('USDYAN')),
+      )
 
       expectObservable(referenceData$).toBe(expectLifetime, expectReference)
     })
@@ -90,12 +96,12 @@ describe('ReferenceDataService', () => {
       const actionLifetime = '--a--'
       const expectLifetime = '--a--'
 
-      const createStreamOperation$ = jest.fn<Observable<RawCurrencyPairUpdates>>((s: string, o: string, r: any) =>
+      const createStreamOperation$ = jest.fn<Observable<RawCurrencyPairUpdates>, []>(() =>
         cold<RawCurrencyPairUpdates>(actionLifetime, actionReference),
       )
       const serviceClient = new MockServiceClient(createStreamOperation$)
 
-      const referenceData$ = referenceDataService(serviceClient)
+      const referenceData$ = referenceDataService(serviceClient as ServiceClient)
       expectObservable(referenceData$).toBe(expectLifetime, expectReference)
     })
   })
@@ -103,6 +109,6 @@ describe('ReferenceDataService', () => {
 
 type CallBack = (service: string, operationName: string, request: any) => Observable<any>
 
-const MockServiceClient = jest.fn<ServiceClient>((cb: CallBack) => ({
+const MockServiceClient = jest.fn<Partial<ServiceClient>, [CallBack]>((cb: CallBack) => ({
   createStreamOperation: (s: string, o: string, r: any) => cb(s, o, r),
 }))

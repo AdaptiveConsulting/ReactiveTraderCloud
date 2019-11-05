@@ -15,8 +15,8 @@ import {
   TRADE_DATE,
   TRADE_ID,
   TRADER_NAME,
-  VALUE_DATE
-} from '../blotterFields';
+  VALUE_DATE,
+} from '../blotterFields'
 
 function UtcFormatDate(date: Date) {
   return DateTime.fromJSDate(date, { zone: 'utc' }).toFormat('dd-MMM-yyyy')
@@ -194,9 +194,14 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
   },
 ]
 
+const columnKeys: (string)[] = columnDefinitions
+  .filter(c => c.includeInCSVExport)
+  .map(c => c.colId)
+  .filter(x => typeof x !== 'undefined') as (string)[]
+
 export const csvExportSettings: CsvExportParams = {
   fileName: `RT-Blotter.csv`,
-  columnKeys: columnDefinitions.filter(c => c.includeInCSVExport).map(c => c.colId),
+  columnKeys,
   processCellCallback: cell => {
     const colDef = columnDefinitions.find(c => c.colId === cell.column.getColId())
     if (colDef && typeof colDef.csvCellValueFormatter === 'function') {

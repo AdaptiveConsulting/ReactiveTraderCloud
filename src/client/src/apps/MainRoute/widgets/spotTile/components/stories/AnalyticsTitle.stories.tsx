@@ -35,7 +35,6 @@ stories.add('AnalyticsTile', () => (
           updateNotional={updateNotional}
           resetNotional={resetNotional}
           tradingDisabled={false}
-          inputValidationMessage={null}
           inputDisabled={false}
           rfq={rfqActions}
         />
@@ -61,7 +60,6 @@ stories.add('AnalyticsTile in error', () => (
           updateNotional={updateNotional}
           resetNotional={resetNotional}
           tradingDisabled={true}
-          inputValidationMessage={null}
           inputDisabled={false}
           rfq={rfqActions}
         />

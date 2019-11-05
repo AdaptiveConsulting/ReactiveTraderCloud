@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash'
 import React from 'react'
 
-const Context = React.createContext<UserMediaState>(null)
+const Context = React.createContext<UserMediaState | undefined>(undefined)
 
 export interface UserMediaState {
   constraints: MediaStreamConstraints | null

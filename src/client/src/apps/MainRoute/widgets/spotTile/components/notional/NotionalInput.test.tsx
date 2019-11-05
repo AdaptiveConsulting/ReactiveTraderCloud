@@ -30,7 +30,6 @@ test('NotionalInput default', () => {
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
-      validationMessage={null}
       showResetButton={false}
       disabled={false}
     />,
@@ -98,7 +97,6 @@ test('NotionalInput disabled', () => {
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
-      validationMessage={null}
       showResetButton={false}
       disabled={true}
     />,
@@ -115,7 +113,6 @@ test('NotionalInput show reset button', () => {
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
-      validationMessage={null}
       showResetButton={true}
       disabled={false}
     />,
@@ -133,7 +130,6 @@ test('NotionalInput default', () => {
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
-      validationMessage={null}
       showResetButton={false}
       disabled={false}
     />,
@@ -205,7 +201,6 @@ test('NotionalInput disabled', () => {
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
-      validationMessage={null}
       showResetButton={false}
       disabled={true}
     />,
@@ -223,7 +218,6 @@ test('NotionalInput show reset button', () => {
       currencyPairSymbol={currencyPairSymbol}
       updateNotional={updateNotional}
       resetNotional={resetNotional}
-      validationMessage={null}
       showResetButton={true}
       disabled={false}
     />,

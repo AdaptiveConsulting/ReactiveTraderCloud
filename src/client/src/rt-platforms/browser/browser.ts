@@ -1,7 +1,7 @@
 import { BasePlatformAdapter } from '../platformAdapter'
 import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
-import { sendNotification, NotifyPermission } from './utils/sendNotification'
+import { sendNotification, NotifyPermission, NotificationMessage } from './utils/sendNotification'
 import { UAParser } from 'ua-parser-js'
 
 interface Navigator {
@@ -10,7 +10,7 @@ interface Navigator {
 
 const isRunningInIE = () => {
   const browser = new UAParser().getBrowser().name
-  return browser.indexOf('IE') !== -1
+  return browser && browser.indexOf('IE') !== -1
 }
 
 const isPWA = () =>
@@ -36,7 +36,7 @@ export default class Browser extends BasePlatformAdapter {
     notify: (message: object) => {
       if ('Notification' in window) {
         if (Notification.permission === NotifyPermission.granted) {
-          sendNotification(message)
+          sendNotification(message as NotificationMessage)
         }
       }
     },

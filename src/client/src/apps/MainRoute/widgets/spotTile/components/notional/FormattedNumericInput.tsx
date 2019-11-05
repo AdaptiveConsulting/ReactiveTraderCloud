@@ -8,13 +8,13 @@ import React, {
 import numeral from 'numeral'
 import { ValidationMessage } from './types'
 
-type Props = JSX.IntrinsicElements['input'] & {
-  numericValue?: number
+type FormattedNumericInputProps = JSX.IntrinsicElements['input'] & {
+  numericValue: number
   onNumericValueChange?: (numericValue: number) => void
   validationMessage?: ValidationMessage
 }
 
-export const FormattedNumericInput = forwardRef<HTMLInputElement, Props>(
+export const FormattedNumericInput = forwardRef<HTMLInputElement, FormattedNumericInputProps>(
   ({ numericValue, onNumericValueChange, onChange, onBlur, validationMessage, ...props }, ref) => {
     const [value, setValue] = useState(stringifyNumericValue(numericValue))
 

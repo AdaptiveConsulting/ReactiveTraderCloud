@@ -1,7 +1,7 @@
 import { Trade } from 'rt-types'
 import { DEALT_CURRENCY, SYMBOL } from './blotterFields'
 
-export type FieldValues = ReadonlyArray<any> | undefined
+export type FieldValues = ReadonlyArray<any> | undefined | null
 
 export type BlotterFilters = {
   readonly [SYMBOL]?: FieldValues

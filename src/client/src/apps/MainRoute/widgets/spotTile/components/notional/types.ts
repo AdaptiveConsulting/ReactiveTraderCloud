@@ -1,4 +1,4 @@
-export type ValidationMessage = null | {
+export type ValidationMessage = {
   type: 'warning' | 'error' | 'info'
   content: string
 }
