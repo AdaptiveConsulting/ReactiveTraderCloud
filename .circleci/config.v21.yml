@@ -9,39 +9,43 @@ commands:
         type: enum
         enum: ["major", "minor", "patch"]
     steps:
-      - run: |
-          LAST_TAG="$(git describe --tags)"
-          echo "Original tag: $LAST_TAG"
-          NEW_TAG="$(/semver bump << parameters.bump >> ${LAST_TAG} || echo 1.0.0)"
-          echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
-          echo "export DOCKER_USER=$DOCKER_USER" >> $BASH_ENV
-          git tag $NEW_TAG
-          echo "Created new tag: $(git describe --tags)"
+      - run:
+          name: Semver Versioning "<< parameters.bump >>"
+          command: |
+            LAST_TAG="$(git describe --tags)"
+            echo "Original tag: $LAST_TAG"
+            NEW_TAG="$(./semver bump << parameters.bump >> ${LAST_TAG} || echo 1.0.0)"
+            echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
+            echo "export DOCKER_USER=$DOCKER_USER" >> $BASH_ENV
+            git tag $NEW_TAG
+            echo "Created new tag: $(git describe --tags)"
   build_images:
     description: "Build the deployable container images"
     steps:
-      - run: |
-          docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
+      - run:
+          name: Build Images
+          command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
   run_tests:
     description: "Runs the integration tests"
     steps:
-      - run: |
-          docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
-          # run --use-aliases --name test \
-          #  servers dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll
+      - run:
+          name: Integration Tests
+          command: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
   push_images:
     steps:
-      - run: |
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker-compose -f src/docker-compose.deploy.yml -f src/docker/compose.yml \
-            push \
-              broker \
-              nginx \
-              eventstore \
-              servers \
-              nlp \
-              bot \
-              pricehistory
+      - run:
+          name: Push Images
+          command: |
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker-compose -f src/docker-compose.deploy.yml -f src/docker/compose.yml \
+              push \
+                broker \
+                nginx \
+                eventstore \
+                servers \
+                nlp \
+                bot \
+                pricehistory
   deploy:
     description: "Deploy the specific version to gcloud"
     # parameters:
@@ -62,39 +66,39 @@ commands:
 
 jobs:
   release_build:
-    machine:
-        docker_layer_caching: true
+    docker:
+      - image: circleci/node:latest
+    # machine:
+    #   docker_layer_caching: true
+    #   image: circleci/buildpack-deps:18.04-dind
     steps:
-      - attach_workspace:
-          at: /envs
-      - run: |
-          docker-compose --version
+      - setup_remote_docker
       - checkout
       - semver:
           bump: minor
-      - build_images
-      - run_tests
       - run: |
           # set environment variables for deployment
           echo "export DEPLOY_TARGET=dev" >> $BASH_ENV
           cat ${BASH_ENV}
-          mkdir -p envs
-          echo "export DEPLOY_TARGET=$DEPLOY_TARGET" >> envs/vars
-          echo "export BUILD_VERSION=$BUILD_VERSION" >> envs/vars
+          mkdir -p /tmp/vars
+          echo "export DEPLOY_TARGET=$DEPLOY_TARGET" >> /tmp/vars/env
+          echo "export BUILD_VERSION=$BUILD_VERSION" >> /tmp/vars/env
+      - persist_to_workspace:
+          root: /tmp
+          paths: vars/
+      - build_images
+      - run_tests
 
-  deploy:
+  deploy_to_env:
     docker:
       - image: google/cloud-sdk
     steps:
       - attach_workspace:
-          at: /envs
-      - run: |
+          at: /tmp/vars
+      - run:
           cat $BASH_ENV
-          cat /envs/vars >> $BASH_ENV;
+          cat /tmp/vars/env >> $BASH_ENV;
           cat $BASH_ENV
-      - run: |
-          # push new tag upstream
-          # git push --follow-tags
 
 workflows:
   version: 2.1
@@ -103,7 +107,11 @@ workflows:
       - release_build:
           filters:
             branches:
-              only: master
-      - deploy:
+              only: feat/semver-builds
+      - deploy_to_env:
           requires:
             - release_build
+          filters:
+            branches:
+              only: feat/semver-builds
+
