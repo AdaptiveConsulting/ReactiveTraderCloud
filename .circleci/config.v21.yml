@@ -12,9 +12,9 @@ commands:
       - run:
           name: Semver Versioning "<< parameters.bump >>"
           command: |
+            # npm i -g semver
             LAST_TAG="$(git describe --tags)"
-            echo "Original tag: $LAST_TAG"
-            NEW_TAG="$(./semver bump << parameters.bump >> ${LAST_TAG} || echo 1.0.0)"
+            NEW_TAG="$(./semver -i << parameters.bump >> ${LAST_TAG} || echo 1.0.0)"
             echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
             echo "export DOCKER_USER=$DOCKER_USER" >> $BASH_ENV
             git tag $NEW_TAG
@@ -77,25 +77,31 @@ jobs:
       - semver:
           bump: minor
       - run: |
-          # set environment variables for deployment
+          # set environment variables for deployment stage
           echo "export DEPLOY_TARGET=dev" >> $BASH_ENV
           cat ${BASH_ENV}
           mkdir -p /tmp/vars
           echo "export DEPLOY_TARGET=$DEPLOY_TARGET" >> /tmp/vars/env
           echo "export BUILD_VERSION=$BUILD_VERSION" >> /tmp/vars/env
+          ls /tmp/vars
+          cat /tmp/vars/env
       - persist_to_workspace:
-          root: /tmp
-          paths: vars/
-      - build_images
-      - run_tests
+          root: /tmp/workspace
+          paths: /tmp/vars/*
+      # - build_images
+      # - run_tests
 
   deploy_to_env:
     docker:
       - image: google/cloud-sdk
     steps:
       - attach_workspace:
-          at: /tmp/vars
+          at: /tmp/workspace
       - run:
+          ls /tmp
+          ls /tmp/workspace
+          ls /tmp/workspace/tmp/vars
+
           cat $BASH_ENV
           cat /tmp/vars/env >> $BASH_ENV;
           cat $BASH_ENV
