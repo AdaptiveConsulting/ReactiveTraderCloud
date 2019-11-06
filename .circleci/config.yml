@@ -1,231 +1,223 @@
-version: 2
+version: 2.1
+
+references:
+  push_images_list: &push_images_list
+    client pricehistory bot nlp servers broker eventstore nginx
+
+commands:
+  install_tools:
+    steps:
+      - run:
+          name: Install tools
+          command: |
+            sudo npm i -g semver@6.3.0
+      - run: printenv
+      - run:
+          name: Setup git
+          command: |
+            # TODO: Use correct environment variables
+            git config --global user.email "$GIT_AUTHOR_NAME"
+            git config --global user.name “$EMAIL”
+
+  semver:
+    description: "Setup semver version for this release"
+    parameters:
+      bump:
+        default: "minor"
+        description: The semver bump type. Must be one of "major", "minor", "patch".
+        type: enum
+        enum: ["major", "minor", "patch", "prerelease"]
+    steps:
+      - run:
+          name: Semver Versioning "<< parameters.bump >>"
+          command: |
+            PREVIOUS_TAG="$(git describe --tags $(git rev-list --tags --max-count=1))"
+            NEW_TAG="$(semver -i << parameters.bump >> ${PREVIOUS_TAG} || echo 1.0.0)"
+            echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
+            echo "export DOCKER_USER=$DOCKER_USER" >> $BASH_ENV
+            git tag $NEW_TAG -a -m "v$NEW_TAG"
+            echo "Created new tag: $(git describe --abbr=0)"
+
+  build_images:
+    description: "Build the deployable container images"
+    steps:
+      - run:
+          name: Build Images
+          command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
+
+  run_tests:
+    description: "Runs the integration tests"
+    steps:
+      - run:
+          name: Integration Tests
+          command: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
+
+  list_images:
+    steps:
+      - run:
+          name: List images
+          command: docker images -a
+
+  push_images:
+    parameters:
+      images:
+        type: string
+    steps:
+      - run:
+          name: Push Images
+          command: |
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker-compose \
+              -f src/docker-compose.deploy.yml -f src/docker-compose.yml \
+              push << parameters.images >>
+
+  deploy_to_environment:
+    description: "Deploy the specific version to gcloud"
+    parameters:
+      version:
+        description: The environment variable specifiying the version to deploy. Must already be hosted on dockerhub
+        type: env_var_name
+      environment:
+        description: The environment variable containing the environment to deploy to. One of "dev", "demo"
+        type: env_var_name
+    steps:
+      - run:
+          name: Authenticate with gcloud
+          command: |
+            echo $BASH_ENV
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud config set project ${GOOGLE_PROJECT_ID}
+            gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+            gcloud container clusters get-credentials cluster
+      - run:
+          name: Updating deployment definition to new images
+          command: |
+            # TODO: looking into looking for new deployment config from git history
+            # TODO: create new environment automatically
+            # TODO: validate package exists
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/web-deployment web=${DOCKER_USER}/nginx:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/client-deployment client=${DOCKER_USER}/client:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/pricing-deployment pricing=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/pricehistory:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/bot-deployment bot=${DOCKER_USER}/bot:${ << parameters.version >> }
+
+
+  main_pipeline:
+    description: "Main pipeline"
+    parameters:
+      bump:
+        description: The semver bump type. Must be one of "major", "minor", "patch".
+        type: enum
+        enum: ["major", "minor", "patch", "prerelease"]
+      environment:
+        type: string
+    steps:
+      - setup_remote_docker
+      - install_tools
+      - checkout
+      - semver:
+          bump: << parameters.bump >>
+      - run:
+          name: Set up persisted variables
+          command: |
+            mkdir -p ~/vars
+            echo "export DEPLOY_TARGET=<< parameters.environment >>" >> ~/vars/env
+            echo "export BUILD_VERSION=$BUILD_VERSION" >> ~/vars/env
+      - persist_to_workspace:
+          root: ~/
+          paths: vars/env
+      - build_images
+      - list_images
+      - run_tests
+
+
 jobs:
   release_build:
     docker:
-    - image: circleci/node:latest
+      - image: circleci/node:latest
     steps:
-    - setup_remote_docker
-    - checkout
-    - run:
-        name: Semver Versioning "minor"
-        command: |
-          sudo npm i -g semver@6.3.0
-          LAST_TAG="$(git describe --tags)"
-          NEW_TAG="$(semver -i minor ${LAST_TAG} || echo 1.0.0)"
-          echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
-          echo "export DOCKER_USER=$DOCKER_USER" >> $BASH_ENV
-          git tag $NEW_TAG
-          echo "Created new tag: $(git describe --tags)"
-    - run:
-        name: Set up persisted variables
-        command: |
-          mkdir -p ~/vars
-          echo "export DEPLOY_TARGET=dev" >> ~/vars/env
-          echo "export BUILD_VERSION=$BUILD_VERSION" >> ~/vars/env
-    - persist_to_workspace:
-        root: ~/
-        paths: vars/env
-    - run:
-        name: Build Images
-        command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
-    - run:
-        name: Integration Tests
-        command: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
-    - run:
-        name: Push Images
-        command: |
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker-compose \
-            -f src/docker-compose.deploy.yml -f src/docker/compose.yml \
-            push client pricehistory bot nlp servers broker eventstore nginx
-  deploy_to_env:
+      - main_pipeline:
+          bump: minor
+          environment: dev
+      - push_images:
+          images: *push_images_list
+
+  patch_build:
     docker:
-    - image: google/cloud-sdk
+      - image: circleci/node:latest
     steps:
-    - attach_workspace:
-        at: ~/
-    - run:
-        name: Retrieve deployment parameters
-        command: |
-          # Check we have the correct variables present
-          # These should have come from the persisted workspace,
-          #   or from parameters passed via the circleci api (https://circleci.com/docs/2.0/env-vars/#injecting-environment-variables-with-the-api)
-          source ~/vars/env || true
-          echo "Deploying version $BUILD_VERSION to environment $DEPLOY_TARGET"
-          if [[ "$DEPLOY_TARGET" = "" ]] ; then
-            echo "Missing parameter DEPLOY_TARGET"
-            circleci-agent step halt
-          fi
-          if [[ "$BUILD_VERSION" = "" ]] ; then
-            echo "Missing parameter BUILD_VERSION"
-            circleci-agent step halt
-          fi
-    - run:
-        name: Authenticate with gcloud
-        command: |
-          echo $BASH_ENV
-          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-          gcloud config set project ${GOOGLE_PROJECT_ID}
-          gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-          gcloud container clusters get-credentials cluster
+      - main_pipeline:
+          bump: patch
+          environment: none
+      - push_images:
+          images: *push_images_list
+
+  feature_build:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - main_pipeline:
+          bump: prerelease
+          environment: none
+
+
+  deployment:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: "Retrieve deployment parameters"
+          command: |
+            # Check we have the correct variables present
+            # These can come from the persisted workspace or from parameters
+            # passed via the circleci api (https://circleci.com/docs/2.0/env-vars/#injecting-environment-variables-with-the-api)
+            source ~/vars/env || true
+            echo "Deploying version $BUILD_VERSION to environment $DEPLOY_TARGET"
+            if [[ "$DEPLOY_TARGET" = "" ]] ; then
+              echo "Missing parameter DEPLOY_TARGET"
+              circleci-agent step halt
+            fi
+            if [[ "$BUILD_VERSION" = "" ]] ; then
+              echo "Missing parameter BUILD_VERSION"
+              circleci-agent step halt
+            fi
+      - deploy_to_environment:
+          version: BUILD_VERSION
+          environment: DEPLOY_TARGET
+
+
 workflows:
-  version: 2
+  version: 2.1
   main:
     jobs:
-    - release_build:
-        filters:
-          branches:
-            only: feat/semver-builds
-    - deploy_to_env:
-        filters:
-          branches:
-            only: feat/semver-builds
-        requires:
-        - release_build
+      - patch_build:
+          filters:
+            branches:
+              only: /^release\/*/
+      - release_build:
+          filters:
+            branches:
+              only: master
+      - deployment:
+          requires:
+            - release_build
+          filters:
+            branches:
+              only: master
+      - feature_build:
+          filters:
+            branches:
+              ignore:
+                - master
+                - /^release\/*/
 
-# Original config.yml file:
-# version: 2.1
-# 
-# commands:
-#   semver:
-#     description: \"Setup semver version for this release\"
-#     parameters:
-#       bump:
-#         default: \"minor\"
-#         description: The semver bump type. Must be one of \"major\", \"minor\", \"patch\".
-#         type: enum
-#         enum: [\"major\", \"minor\", \"patch\"]
-#     steps:
-#       - run:
-#           name: Semver Versioning \"<< parameters.bump >>\"
-#           command: |
-#             sudo npm i -g semver@6.3.0
-#             LAST_TAG=\"$(git describe --tags)\"
-#             NEW_TAG=\"$(semver -i << parameters.bump >> ${LAST_TAG} || echo 1.0.0)\"
-#             echo \"export BUILD_VERSION=$NEW_TAG\" >> $BASH_ENV
-#             echo \"export DOCKER_USER=$DOCKER_USER\" >> $BASH_ENV
-#             git tag $NEW_TAG
-#             echo \"Created new tag: $(git describe --tags)\"
-#   build_images:
-#     description: \"Build the deployable container images\"
-#     steps:
-#       - run:
-#           name: Build Images
-#           command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
-#   run_tests:
-#     description: \"Runs the integration tests\"
-#     steps:
-#       - run:
-#           name: Integration Tests
-#           command: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
-#   push_images:
-#     parameters:
-#       images:
-#         type: string
-#     steps:
-#       - run:
-#           name: Push Images
-#           command: |
-#             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-#             docker-compose \\
-#               -f src/docker-compose.deploy.yml -f src/docker/compose.yml \\
-#               push << parameters.images >>
-#   deploy_to_environment:
-#     description: \"Deploy the specific version to gcloud\"
-#     parameters:
-#       version:
-#         description: The environment variable specifiying the version to deploy. Must already be hosted on dockerhub
-#         type: env_var_name
-#       environment:
-#         description: The environment variable containing the environment to deploy to. One of \"dev\", \"demo\"
-#         type: env_var_name
-#     steps:
-#       - run:
-#           name: Authenticate with gcloud
-#           command: |
-#             echo $BASH_ENV
-#             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-#             gcloud config set project ${GOOGLE_PROJECT_ID}
-#             gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-#             gcloud container clusters get-credentials cluster
-#       # - run:
-#       #     name: Updating deployment definition to new images
-#       #     command: |
-#       #       # TODO: looking into looking for new deployment config from git history
-#       #       #\u00A0TODO: new environment automatically
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/web-deployment web=${DOCKER_USER}/nginx:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/client-deployment client=${DOCKER_USER}/client:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/pricing-deployment pricing=${DOCKER_USER}/servers:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/pricehistory:${ << parameters.version >> }
-#       #       kubectl --namespace=${ << parameters.environment >> } set image deployments/bot-deployment bot=${DOCKER_USER}/bot:${ << parameters.environment >> }
-# 
-# jobs:
-#   release_build:
-#     docker:
-#       - image: circleci/node:latest
-#     steps:
-#       - setup_remote_docker
-#       - checkout
-#       - semver:
-#           bump: minor
-#       - run:
-#           name: \"Set up persisted variables\"
-#           command: |
-#             mkdir -p ~/vars
-#             echo \"export DEPLOY_TARGET=dev\" >> ~/vars/env
-#             echo \"export BUILD_VERSION=$BUILD_VERSION\" >> ~/vars/env
-#       - persist_to_workspace:
-#           root: ~/
-#           paths: vars/env
-#       - build_images
-#       - run_tests
-#       - push_images:
-#           images: client pricehistory bot nlp servers broker eventstore nginx
-# 
-#   deploy_to_env:
-#     docker:
-#       - image: google/cloud-sdk
-#     steps:
-#       - attach_workspace:
-#           at: ~/
-#       - run:
-#           name: \"Retrieve deployment parameters\"
-#           command: |
-#             # Check we have the correct variables present
-#             # These should have come from the persisted workspace,
-#             #   or from parameters passed via the circleci api (https://circleci.com/docs/2.0/env-vars/#injecting-environment-variables-with-the-api)
-#             source ~/vars/env || true
-#             echo \"Deploying version $BUILD_VERSION to environment $DEPLOY_TARGET\"
-#             if [[ \"$DEPLOY_TARGET\" = \"\" ]] ; then
-#               echo \"Missing parameter DEPLOY_TARGET\"
-#               circleci-agent step halt
-#             fi
-#             if [[ \"$BUILD_VERSION\" = \"\" ]] ; then
-#               echo \"Missing parameter BUILD_VERSION\"
-#               circleci-agent step halt
-#             fi
-#       - deploy_to_environment:
-#           version: BUILD_VERSION
-#           environment: DEPLOY_TARGET
-# 
-# workflows:
-#   version: 2.1
-#   main:
-#     jobs:
-#       - release_build:
-#           filters:
-#             branches:
-#               only: feat/semver-builds
-#       - deploy_to_env:
-#           requires:
-#             - release_build
-#           filters:
-#             branches:
-#               only: feat/semver-builds
+
