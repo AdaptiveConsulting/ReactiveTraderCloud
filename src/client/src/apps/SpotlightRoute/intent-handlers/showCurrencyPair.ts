@@ -1,7 +1,7 @@
 import { InteropTopics, PlatformAdapter } from 'rt-platforms'
 import { defaultConfig, windowOrigin } from './defaultWindowConfig'
 
-let currencyPairWindow: Window = null
+let currencyPairWindow: Window | null = null
 
 export function showCurrencyPair(currencyPair: string, platform: PlatformAdapter) {
   currencyPair = currencyPair.toUpperCase()

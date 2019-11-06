@@ -1,15 +1,16 @@
 import React, { FC, useEffect, useState } from 'react'
 import { usePriceService } from './hooks'
 import { useServiceStub } from './context'
+import { SpotPriceTick } from '../MainRoute/widgets/spotTile/model'
 
 interface InlineQuoteProps {
   currencyPair: string
 }
 
 export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
-  const [quote, setQuote] = useState({ symbol: '', mid: null })
+  const [quote, setQuote] = useState<SpotPriceTick>()
   const serviceStub = useServiceStub()
-  const priceService = usePriceService(serviceStub!)
+  const priceService = usePriceService(serviceStub)
 
   useEffect(() => {
     if (!priceService) {
@@ -28,10 +29,10 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
     }
   }, [priceService, currencyPair])
 
-  const baseCcy = quote.symbol.substring(0, 3)
-  const counterCcy = quote.symbol.substring(3)
+  const baseCcy = quote && quote.symbol.substring(0, 3)
+  const counterCcy = quote && quote.symbol.substring(3)
 
-  return quote.symbol ? (
+  return quote && quote.symbol ? (
     <div>
       1 {baseCcy} = {quote.mid} {counterCcy}
     </div>

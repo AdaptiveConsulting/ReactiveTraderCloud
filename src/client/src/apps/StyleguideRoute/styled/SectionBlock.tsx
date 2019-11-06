@@ -7,6 +7,7 @@ import { styled, ColorProps as ThemeSelectorPair } from 'rt-theme'
 import { css } from 'styled-components'
 
 type ColorSchemeName = 'primary' | 'secondary' | 'inverted'
+
 export interface SectionProps extends BlockProps, MarginPaddingProps {
   mh?: number
   invert?: boolean
@@ -42,7 +43,7 @@ export class SectionBlock extends React.Component<SectionProps, { error?: boolea
     const { bg, fg } = colorSchemes[colorScheme]
 
     return (
-      <SectionBleed py={2} bg={invert ? fg : bg} fg={invert ? bg : fg} {...props}>
+      <SectionBleed py={0} bg={invert ? fg : bg} fg={invert ? bg : fg} {...props}>
         <div
         // Allows SectionBody margins to collapse with children
         >
@@ -80,9 +81,11 @@ export const SectionBleed = styled(Block)<SectionProps>`
     ${mapMarginPaddingProps};
   }
 
-  ${({ bleeds }: SectionProps): false | ReturnType<typeof css> =>
-    bleeds &&
-    css`
+  ${({ bleeds }: SectionProps): false | ReturnType<typeof css> => {
+    if (!bleeds) {
+      return css({})
+    }
+    return css`
       @media all and (max-width: 960px) {
         padding-right: 0;
         padding-left: 0;
@@ -109,7 +112,8 @@ export const SectionBleed = styled(Block)<SectionProps>`
           }
         }
       }
-    `};
+    `
+  }};
 `
 
 export const SectionBody = styled.div`

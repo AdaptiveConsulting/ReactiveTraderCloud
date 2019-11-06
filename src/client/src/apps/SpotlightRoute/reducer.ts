@@ -2,7 +2,7 @@ import { DetectIntentResponse } from 'dialogflow'
 
 type State = {
   request: string
-  response: DetectIntentResponse
+  response?: DetectIntentResponse
   contacting: boolean
   readonly history: string[]
   historyPosition: number
@@ -19,7 +19,7 @@ type Action =
     }
   | {
       type: 'RECEIVE_RESPONSE'
-      response: DetectIntentResponse
+      response?: DetectIntentResponse
     }
   | {
       type: 'HISTORY_PREVIOUS'

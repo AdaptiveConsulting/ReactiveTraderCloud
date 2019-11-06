@@ -71,7 +71,7 @@ const INPUT_ID = 'spotlight'
 
 function getDirectoryAppsComponent(
   directoryApps: SpotlightApplication[],
-  { onClick }: { onClick: (appId: string) => {} },
+  { onClick }: { onClick: (appId: string) => void },
 ) {
   return (
     <>
@@ -115,15 +115,17 @@ function getNonDirectoryAppsComponent(response: DetectIntentResponse, platform: 
 
 export const Spotlight: FC = () => {
   const [{ request, response, contacting }, dispatch] = useReducer(reducer, initialState)
-  const [dirApps, setDirApps] = useState([])
+  const [dirApps, setDirApps] = useState<SpotlightApplication[]>([])
   const serviceStub = useServiceStub()
   const platform = usePlatform()
   const fdc3 = useFdc3()
 
   useEffect(() => {
+    if (!fdc3 || !response) {
+      return
+    }
     const getApps = async () => {
       const directoryApps = await fdc3.getMatchingApps(response)
-
       setDirApps(directoryApps)
     }
 
@@ -132,6 +134,10 @@ export const Spotlight: FC = () => {
 
   useEffect(() => {
     if (!contacting) {
+      return
+    }
+    if (!serviceStub) {
+      console.error(`Error creating subscription - serviceStub was not defined`)
       return
     }
     const subscription = serviceStub
@@ -151,7 +157,7 @@ export const Spotlight: FC = () => {
         },
         (err: any) => {
           console.error(err)
-          dispatch({ type: 'RECEIVE_RESPONSE', response: null })
+          dispatch({ type: 'RECEIVE_RESPONSE' })
         },
       )
 
@@ -195,7 +201,15 @@ export const Spotlight: FC = () => {
     </>
   )
 
-  const directoryAppSuggestions = getDirectoryAppsComponent(dirApps, { onClick: fdc3.open })
+  const directoryAppSuggestions = getDirectoryAppsComponent(dirApps, {
+    onClick: appId => {
+      if (!fdc3) {
+        console.error(`Error using FDC3 - fdc3 instace is undefined`)
+        return
+      }
+      return fdc3.open(appId)
+    },
+  })
   const nonDirectoryAppSuggestions = response && getNonDirectoryAppsComponent(response, platform)
   const inlineSuggestions = response && getInlineSuggestionsComponent(response, platform)
 

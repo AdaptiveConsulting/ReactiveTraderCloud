@@ -65,7 +65,7 @@ interface ColorPair {
   textColor?: string
 }
 
-export type ThemeSelector = (theme: Theme) => Color
+export type ThemeSelector = (theme: Theme) => Color | undefined
 
 export interface ColorProps {
   bg?: ThemeSelector

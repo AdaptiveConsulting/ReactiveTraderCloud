@@ -18,7 +18,7 @@ export class Timer extends PureComponent<TimerProps> {
 
     this.id = interval
       ? window.setInterval(interval, duration)
-      : window.setTimeout(timeout, duration)
+      : timeout && window.setTimeout(timeout, duration)
 
     if (immediate) {
       const intervalOrTimeout = interval || timeout
