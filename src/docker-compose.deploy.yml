@@ -1,0 +1,10 @@
+version: '3'
+services:
+  servers:
+    image: ${DOCKER_USER}/servers:${BUILD_VERSION}
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    depends_on:
+      - eventstore
+    command: 'echo "Override base docker-compose to not populate event store"'
