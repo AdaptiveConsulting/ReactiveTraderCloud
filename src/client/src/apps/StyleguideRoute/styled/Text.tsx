@@ -76,9 +76,9 @@ const textPropsToCSS: TextPropsToCssMapper = {
       return css({ color: textColor })
     }
     if (typeof textColor === 'function') {
-      return css({ color: textColor(theme as Theme) })
+      return css({ color: textColor(theme) })
     }
-    return undefined
+    return css({})
   },
   opacity: ({ opacity }) => css({ opacity }),
 }

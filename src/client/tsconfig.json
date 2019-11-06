@@ -9,7 +9,6 @@
       "es2017",
       "dom"
     ],
-    "strictNullChecks": false,
     "sourceMap": true,
     "allowJs": true,
     "strict": true,

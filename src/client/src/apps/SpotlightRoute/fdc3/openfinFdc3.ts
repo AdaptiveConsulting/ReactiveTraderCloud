@@ -3,16 +3,16 @@ import { findIntent, open } from 'openfin-fdc3'
 import { SpotlightApplication, SpotlightFdc3 } from './fdc3'
 import { TRADES_INFO_INTENT } from '../intents'
 
-const mapIntentToFdc3 = (response: DetectIntentResponse): string => {
+const mapIntentToFdc3 = (response: DetectIntentResponse): string | undefined => {
   if (!response) {
-    return null
+    return
   }
 
   switch (response.queryResult.intent.displayName) {
     case TRADES_INFO_INTENT:
       return `fdc3.ViewBlotter`
     default:
-      return null
+      return
   }
 }
 

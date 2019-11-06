@@ -94,7 +94,7 @@ export const FontFamilies: React.FC = () => (
         {SIZES.map(([label, fontSize, lineHeight]) => (
           <React.Fragment key={label}>
             <Text textColor={theme => theme.secondary[1]}>
-              {label} — {fontSize * 16 /* Assuming :root font-size is 16px!*/}
+              {label} — {fontSize && fontSize * 16 /* Assuming :root font-size is 16px!*/}
               px
             </Text>
             <Paragraph fontSize={fontSize} lineHeight={lineHeight}>

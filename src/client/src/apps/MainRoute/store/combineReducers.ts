@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 import { reducers } from 'apps/MainRoute/data'
 import { layoutReducer } from 'apps/MainRoute/layouts'
-import { analyticsReducer } from '../widgets/analytics/index'
-import { blotterReducer } from '../widgets/blotter/index'
-import { spotTileDataReducer } from '../widgets/spotTile/index'
+import { analyticsReducer } from '../widgets/analytics'
+import { blotterReducer } from '../widgets/blotter'
+import { spotTileDataReducer } from '../widgets/spotTile'
 
 const rootReducer = combineReducers({
   ...reducers,

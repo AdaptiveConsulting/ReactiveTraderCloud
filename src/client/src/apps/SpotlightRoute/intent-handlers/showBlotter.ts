@@ -3,7 +3,7 @@ import { stringify } from 'query-string'
 import { defaultConfig, windowOrigin } from './defaultWindowConfig'
 import { BlotterFilters, validateFilters } from '../../MainRoute/widgets/blotter'
 
-let blotterWindow: Window = null
+let blotterWindow: Window | null = null
 
 export function showBlotter(filters: BlotterFilters, platform: PlatformAdapter) {
   if (!blotterWindow || blotterWindow.closed) {

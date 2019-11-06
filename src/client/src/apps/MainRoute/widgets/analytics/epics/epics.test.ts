@@ -1,12 +1,13 @@
 import { MockScheduler } from 'rt-testing'
 import { ReferenceActions, ConnectionActions } from 'rt-actions'
 import { analyticsServiceEpic } from './epics'
-import { ActionsObservable } from 'redux-observable'
+import { ActionsObservable, StateObservable } from 'redux-observable'
 import { AnalyticsActions } from '../actions'
 import { Action } from 'redux'
 import { of, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { ServiceStubWithLoadBalancer } from 'rt-system'
+import { GlobalState } from '../../../../../StoreTypes'
 
 const position = {
   CurrentPositions: [] as any[],
@@ -42,7 +43,9 @@ describe('Analytics epics', () => {
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
-      const epics$ = analyticsServiceEpic(action$, undefined, { loadBalancedServiceStub }).pipe(
+      const state$ = {} as StateObservable<GlobalState>
+
+      const epics$ = analyticsServiceEpic(action$, state$, { loadBalancedServiceStub }).pipe(
         map(x => x.type === serviceType),
       )
       expectObservable(epics$).toBe(expecteLifetime, { a: true })
@@ -74,7 +77,9 @@ describe('Analytics epics', () => {
       ) as any) as ServiceStubWithLoadBalancer
 
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
-      const epics$ = analyticsServiceEpic(action$, undefined, { loadBalancedServiceStub }).pipe(
+      const state$ = {} as StateObservable<GlobalState>
+
+      const epics$ = analyticsServiceEpic(action$, state$, { loadBalancedServiceStub }).pipe(
         map(x => x.type === serviceType),
       )
       expectObservable(epics$).toBe(expecteLifetime, { a: true })

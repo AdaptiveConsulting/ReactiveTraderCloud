@@ -1,4 +1,4 @@
-import { ActionsObservable } from 'redux-observable'
+import { ActionsObservable, StateObservable } from 'redux-observable'
 import { blotterServiceEpic } from './epics'
 import { BlotterActions } from '../actions'
 import { Observable, of } from 'rxjs'
@@ -7,6 +7,7 @@ import { Direction } from 'rt-types'
 import { MockScheduler } from 'rt-testing'
 import { ConnectionActions } from 'rt-actions'
 import { ServiceStubWithLoadBalancer } from 'rt-system'
+import { GlobalState } from '../../../../../StoreTypes'
 
 const rawTrades = {
   IsStateOfTheWorld: true,
@@ -48,8 +49,9 @@ describe('blotterServiceEpic', () => {
         of(rawTrades),
       ) as any) as ServiceStubWithLoadBalancer
       const action$ = cold(actionLifetime, actionReference)
+      const state$ = {} as StateObservable<GlobalState>
 
-      const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, {
+      const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), state$, {
         loadBalancedServiceStub,
       })
       expectObservable(epics$).toBe(expectLifetime)
@@ -72,8 +74,9 @@ describe('blotterServiceEpic', () => {
         of(rawTrades),
       ) as any) as ServiceStubWithLoadBalancer
       const action$ = cold(actionLifetime, actionReference)
+      const state$ = {} as StateObservable<GlobalState>
 
-      const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, {
+      const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), state$, {
         loadBalancedServiceStub,
       }).pipe(map(r => r.type === newTradesType))
 
@@ -98,8 +101,9 @@ describe('blotterServiceEpic', () => {
         of(rawTrades),
       ) as any) as ServiceStubWithLoadBalancer
       const action$ = cold(actionLifetime, actionReference)
+      const state$ = {} as StateObservable<GlobalState>
 
-      const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), undefined, {
+      const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), state$, {
         loadBalancedServiceStub,
       }).pipe(map(r => r.type === newTradesType))
 

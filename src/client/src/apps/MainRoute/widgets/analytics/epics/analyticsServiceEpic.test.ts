@@ -4,9 +4,8 @@ import { Action } from 'redux'
 import { PositionUpdates } from '../model'
 import { AnalyticsActions } from '../actions'
 import { MockScheduler } from 'rt-testing'
-import { CurrencyPairPositionWithPrice, CurrencyPairPosition } from 'rt-types'
+import { CurrencyPairPosition, CurrencyPairPositionWithPrice } from 'rt-types'
 import { GlobalState } from 'StoreTypes'
-import { DeepPartial } from 'rt-util'
 import { ExcelApp } from 'rt-platforms'
 
 const MockExcelApp = jest.fn<ExcelApp, []>(() => ({
@@ -35,7 +34,9 @@ describe('publishPositionToExcelEpic', () => {
       const coldAction = cold<Action<any>>(actionLifetime, actionReference)
 
       const action$ = ActionsObservable.from(coldAction, testScheduler)
-      const epics$ = publishPositionToExcelEpic(action$, undefined, { excelApp })
+      const state$ = {} as StateObservable<GlobalState>
+
+      const epics$ = publishPositionToExcelEpic(action$, state$, { excelApp })
 
       expectObservable(epics$).toBe(expectedAction)
       flush()
@@ -56,7 +57,7 @@ describe('publishPositionToExcelEpic', () => {
       counterTradedAmount: 100,
     }
 
-    const mockGlobalStateWithSpotTileData: DeepPartial<GlobalState> = {
+    const mockGlobalStateWithSpotTileData = {
       spotTilesData: {
         [currencyPairPos.symbol]: {
           price: {
@@ -67,10 +68,14 @@ describe('publishPositionToExcelEpic', () => {
       },
     }
 
+    const spotTilesData = mockGlobalStateWithSpotTileData.spotTilesData
+    const spotTilesDatum = spotTilesData[currencyPairPos.symbol]
+    const price = spotTilesDatum.price
+
     const currencyPairPosWithPrice: CurrencyPairPositionWithPrice = {
       ...currencyPairPos,
-      latestAsk: mockGlobalStateWithSpotTileData.spotTilesData[currencyPairPos.symbol].price.ask,
-      latestBid: mockGlobalStateWithSpotTileData.spotTilesData[currencyPairPos.symbol].price.bid,
+      latestAsk: price.ask,
+      latestBid: price.bid,
     }
 
     const payload: PositionUpdates = {

@@ -38,12 +38,12 @@ const Table = styled.table`
   }
 `
 
-interface IProps {
+interface BlotterProps {
   readonly filters?: BlotterFilters
 }
 
-export const InlineBlotter: FC<IProps> = ({ filters }) => {
-  const [trades, setTrades] = useState([])
+export const InlineBlotter: FC<BlotterProps> = ({ filters }) => {
+  const [trades, setTrades] = useState<Trade[]>([])
   const [tradeCount, setTradeCount] = useState(0)
   const serviceStub = useServiceStub()
   const blotterService = useBlotterService(serviceStub)
@@ -71,7 +71,10 @@ export const InlineBlotter: FC<IProps> = ({ filters }) => {
       .subscribe(result => {
         setTradeCount(result.length)
         setTrades(
-          result.slice(0, typeof filters.count !== 'undefined' ? filters.count : MAX_TRADES),
+          result.slice(
+            0,
+            filters && typeof filters.count !== 'undefined' ? filters.count : MAX_TRADES,
+          ),
         )
       }, console.error)
 

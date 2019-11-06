@@ -6,11 +6,14 @@ import BlotterService from '../MainRoute/widgets/blotter/blotterService'
 
 const useXxxService = <T>(
   TCreator: { new (serviceStub: ServiceClient): T },
-  serviceStub: ServiceClient,
-): T => {
-  const [service, setService] = useState()
+  serviceStub?: ServiceClient,
+): T | undefined => {
+  const [service, setService] = useState<T | undefined>(undefined)
 
   useEffect(() => {
+    if (!serviceStub) {
+      return
+    }
     const service = new TCreator(serviceStub)
 
     setService(service)
@@ -19,10 +22,10 @@ const useXxxService = <T>(
   return service
 }
 
-export const usePriceService = (serviceStub: ServiceClient): PricingService => {
+export const usePriceService = (serviceStub?: ServiceClient): PricingService | undefined => {
   return useXxxService(PricingService, serviceStub)
 }
 
-export const useBlotterService = (serviceStub: ServiceClient): BlotterService => {
+export const useBlotterService = (serviceStub?: ServiceClient): BlotterService | undefined => {
   return useXxxService(BlotterService, serviceStub)
 }
