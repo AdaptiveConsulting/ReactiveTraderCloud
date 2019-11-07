@@ -13,6 +13,8 @@ const SpotlightRoute = lazy(() => import('./apps/SpotlightRoute'))
 const urlParams = new URLSearchParams(window.location.search)
 
 async function init() {
+  console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
+
   if (urlParams.has('startAsSymphonyController')) {
     const { initiateSymphony } = await getSymphonyPlatform()
     await initiateSymphony(urlParams.get('env') || undefined)
