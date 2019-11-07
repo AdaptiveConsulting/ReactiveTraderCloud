@@ -1,8 +1,8 @@
-﻿using Adaptive.ReactiveTrader.Server.Host;
+using Adaptive.ReactiveTrader.Server.Host;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {

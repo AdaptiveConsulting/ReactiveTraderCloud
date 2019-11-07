@@ -13,8 +13,6 @@ namespace Adaptive.ReactiveTrader.Messaging.WAMP
 {
     internal class RpcOperation : IWampRpcOperation
     {
-        //protected static readonly ILogger Log = Log.ForContext<RpcOperation>();
-
         private readonly Func<IRequestContext, IMessage, Task> _serviceMethod;
 
         public RpcOperation(string name, Func<IRequestContext, IMessage, Task> serviceMethod)

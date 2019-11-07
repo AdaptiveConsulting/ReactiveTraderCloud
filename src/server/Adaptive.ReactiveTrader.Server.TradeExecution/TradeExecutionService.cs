@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
@@ -8,7 +8,6 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     public class TradeExecutionService : ITradeExecutionService, IDisposable
     {
-        //private static readonly ILogger Log = Log.ForContext<TradeExecutionService>();
         private readonly TradeExecutionEngine _executionEngine;
 
         public TradeExecutionService(TradeExecutionEngine executionEngine)

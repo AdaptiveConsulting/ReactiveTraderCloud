@@ -1,3 +1,0 @@
-namespace Adaptive.ReactiveTrader.Messaging
-{
-}

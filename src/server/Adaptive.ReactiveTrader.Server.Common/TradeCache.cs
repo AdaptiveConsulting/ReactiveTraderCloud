@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Adaptive.ReactiveTrader.Common;
@@ -7,7 +7,6 @@ using Adaptive.ReactiveTrader.Contract.Events.Trade;
 using Adaptive.ReactiveTrader.EventStore;
 using EventStore.ClientAPI;
 using Serilog;
-using ILogger = Serilog.ILogger;
 
 namespace Adaptive.ReactiveTrader.Server.Host
 {
@@ -16,7 +15,6 @@ namespace Adaptive.ReactiveTrader.Server.Host
         private const string TradeCompletedEvent = "TradeCompletedEvent";
         private const string TradeRejectedEvent = "TradeRejectedEvent";
         private const string TradeCreatedEvent = "TradeCreatedEvent";
-        //protected static readonly ILogger Log = Log.ForContext<TradeCache>();
 
         private static readonly ISet<string> TradeEventTypes = new HashSet<string>
         {

@@ -15,7 +15,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     protected decimal _initial;
     protected decimal _previousMid;
 
-    public BaseWalkPriceGenerator(CurrencyPair currencyPair, decimal initial, int precision)
+    protected BaseWalkPriceGenerator(CurrencyPair currencyPair, decimal initial, int precision)
     {
       CurrencyPair = currencyPair;
       _initial = _previousMid = initial;

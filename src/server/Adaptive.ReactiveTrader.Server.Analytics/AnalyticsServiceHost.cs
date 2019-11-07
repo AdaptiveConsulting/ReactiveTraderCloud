@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -12,7 +12,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsServiceHost : ServiceHostBase
     {
-        //private new static readonly ILogger Log = Log.ForContext<AnalyticsServiceHost>();
         private readonly IBroker _broker;
         private readonly IAnalyticsService _service;
         private readonly CompositeDisposable _subscriptions;

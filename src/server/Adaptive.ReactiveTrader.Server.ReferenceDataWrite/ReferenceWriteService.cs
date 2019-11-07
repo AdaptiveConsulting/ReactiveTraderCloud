@@ -10,7 +10,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
     public class ReferenceWriteService : IDisposable
     {
-        //private static readonly ILogger Log = Log.ForContext<ReferenceWriteService>();
         private readonly IRepository _repository;
 
         public ReferenceWriteService(IRepository repository)

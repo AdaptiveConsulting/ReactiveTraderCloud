@@ -7,10 +7,8 @@ using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
-    public class ReferenceDataHelper
+    public static class ReferenceDataHelper
     {
-        //protected static readonly Serilog.ILogger Log = Log.ForContext<ReferenceDataHelper>();
-
         public static async Task PopulateRefData(IEventStoreConnection eventStoreConnection)
         {
             Log.Information("Reference Writer Service starting...");

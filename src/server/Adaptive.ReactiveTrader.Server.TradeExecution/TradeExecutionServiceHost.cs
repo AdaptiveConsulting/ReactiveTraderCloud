@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
@@ -10,7 +10,6 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     internal class TradeExecutionServiceHost : ServiceHostBase
     {
-        //private new static readonly ILogger Log = Log.ForContext<TradeExecutionServiceHost>();
         private readonly ITradeExecutionService _service;
 
         public TradeExecutionServiceHost(ITradeExecutionService service, IBroker broker) : base(broker, "execution")

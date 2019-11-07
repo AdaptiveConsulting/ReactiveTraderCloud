@@ -12,13 +12,9 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     public class BrokerConnection : IDisposable
     {
-        //protected static readonly ILogger Log = Log.ForContext<BrokerConnection>();
-
         private readonly IWampChannel _channel;
-
         private readonly WampChannelReconnector _reconnector;
         private readonly SerialDisposable _sessionDispose = new SerialDisposable();
-
         private readonly BehaviorSubject<IConnected<IBroker>> _subject =
             new BehaviorSubject<IConnected<IBroker>>(Connected.No<IBroker>());
 
@@ -46,7 +42,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                     Log.Error(exception, "Connection Failed.");
 
                     _subject.OnNext(Connected.No<IBroker>());
-                    throw exception;
+                    throw;
                 }
             };
 

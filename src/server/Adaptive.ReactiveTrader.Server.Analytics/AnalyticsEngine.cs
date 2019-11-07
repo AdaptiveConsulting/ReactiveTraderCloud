@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
@@ -12,7 +12,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsEngine
     {
-        //private static readonly ILogger Log = Log.ForContext<AnalyticsEngine>();
         private readonly IDictionary<string, CurrencyPairTracker> _ccyPairTracker = new Dictionary<string, CurrencyPairTracker>();
         private readonly object _currentPositionLock = new object();
         private readonly EventLoopScheduler _eventLoopScheduler = new EventLoopScheduler();

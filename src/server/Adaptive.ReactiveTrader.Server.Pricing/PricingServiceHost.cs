@@ -12,7 +12,6 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public class PricingServiceHost : ServiceHostBase
     {
-        // protected new static readonly ILogger Log = Log.ForContext<PricingServiceHost>();
         private readonly IBroker _broker;
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
 

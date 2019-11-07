@@ -10,8 +10,6 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
     public class TradeExecutionEngine : IDisposable
     {
-        //protected static readonly ILogger Log = Log.ForContext<TradeExecutionEngine>();
-
         private readonly IRepository _repository;
         private readonly TradeIdProvider _tradeIdProvider;
 

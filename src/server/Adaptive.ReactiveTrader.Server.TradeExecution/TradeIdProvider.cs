@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -18,12 +18,10 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
     {
         private const int HiValueTryCount = 3;
         private const int Multiplier = 100;
-        //protected static readonly ILogger Log = Log.FoContext<TradeIdProvider>();
         private readonly IRepository _repository;
         private readonly EventLoopScheduler _scheduler = new EventLoopScheduler();
         private int _hiValue;
         private bool _initialized;
-
         private int _loValue;
 
         public TradeIdProvider(IRepository repository)

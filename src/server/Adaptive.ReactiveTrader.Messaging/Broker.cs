@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -18,14 +18,11 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class Broker : IBroker, IDisposable
     {
-        //private static readonly ILogger Log = Log.ForContext<Broker>();
         private readonly Subject<Unit> _brokerTeardown;
-
         private readonly IWampChannel _channel;
         private readonly WampMetaApiServiceProxy _meta;
         private readonly IObservable<long> _sessionTeardowns;
         private readonly IObservable<long> _subscriptionTeardowns;
-
 
         public Broker(IWampChannel channel)
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
@@ -12,7 +12,6 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 {
     public class BlotterServiceHost : ServiceHostBase
     {
-        //private new static readonly ILogger Log = Log.ForContext<BlotterServiceHost>();
         private readonly IBroker _broker;
         private readonly IBlotterService _service;
         private IDisposable _subscription;
