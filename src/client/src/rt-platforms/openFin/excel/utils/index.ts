@@ -22,7 +22,12 @@ export const formTable = {
   },
   blotter: (data: Array<Partial<Trade>>) => {
     return data
-      .sort((a, b) => b.tradeId - a.tradeId) // Sort by most recent trades first
+      .sort((a, b) => {
+        if (typeof b.tradeId === 'undefined' || typeof a.tradeId === 'undefined') {
+          return 0
+        }
+        return b.tradeId - a.tradeId
+      }) // Sort by most recent trades first
       .map((item: Partial<Trade>) => [
         item.tradeId,
         item.tradeDate,

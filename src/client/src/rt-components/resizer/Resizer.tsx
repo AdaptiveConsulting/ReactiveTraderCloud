@@ -45,7 +45,7 @@ interface Props {
 }
 
 const Resizer: React.FC<Props> = ({ component, defaultHeight, children, disabled }) => {
-  const wrapperRef = useRef<HTMLDivElement>()
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(defaultHeight)
   const [dragging, setDragging] = useState<Boolean>(false)
 

@@ -1,15 +1,10 @@
 import React from 'react'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import {
-  ExecuteTradeRequest,
-  SpotTileData,
-  createTradeRequest,
-  TradeRequest,
-} from '../../model/index'
+import { createTradeRequest, ExecuteTradeRequest, SpotTileData, TradeRequest } from '../../model'
 import SpotTile from '../SpotTile'
 import { AnalyticsTile } from '../analyticsTile/index'
-import { TileViews } from '../../../workspace/workspaceHeader/index'
-import { TileSwitchChildrenProps, TradingMode, RfqActions } from '../types'
+import { TileViews } from '../../../workspace/workspaceHeader'
+import { RfqActions, TileSwitchChildrenProps, TradingMode } from '../types'
 import { ValidationMessage } from '../notional'
 import {
   getDefaultInitialNotionalValue,
@@ -35,13 +30,13 @@ export interface TileProps {
 
 export interface TileState {
   inputDisabled: boolean
-  inputValidationMessage: ValidationMessage
+  inputValidationMessage?: ValidationMessage
   canExecute: boolean
 }
 
 class Tile extends React.PureComponent<TileProps, TileState> {
   state: TileState = {
-    inputValidationMessage: null,
+    inputValidationMessage: undefined,
     inputDisabled: false,
     canExecute: true,
   }
@@ -86,6 +81,10 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       spotTileData: { notional, rfqState },
     } = this.props
     const { isRfqStateReceived } = getConstsFromRfqState(rfqState)
+    if (typeof notional === 'undefined') {
+      console.error(`Error executing trade with no notional`)
+      return
+    }
     const tradeRequestObj: TradeRequest = {
       direction,
       currencyBase: currencyPair.base,

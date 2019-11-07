@@ -1,10 +1,11 @@
 import { MockScheduler } from 'rt-testing'
 import { referenceServiceEpic } from './epics'
 import { Action } from 'redux'
-import { ActionsObservable } from 'redux-observable'
+import { ActionsObservable, StateObservable } from 'redux-observable'
 import { of } from 'rxjs'
 import { ConnectionActions, ReferenceActions } from 'rt-actions'
 import { CurrencyPair, CurrencyPairMap } from 'rt-types'
+import { GlobalState } from '../../../../StoreTypes'
 
 const currencyPair = {
   symbol: 'USDYAN',
@@ -43,8 +44,9 @@ describe('Reference Epics', () => {
       const referenceDataService$ = of<CurrencyPairMap>(currencyPair)
       const source$ = cold<Action<any>>(actionLifetime, actionReference)
       const action$ = ActionsObservable.from(source$, testScheduler)
+      const state$ = {} as StateObservable<GlobalState>
 
-      const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService$ })
+      const epics$ = referenceServiceEpic(action$, state$, { referenceDataService$ })
       expectObservable(epics$).toBe(expectLitetime, expectReference)
     })
   })
@@ -63,8 +65,9 @@ describe('Reference Epics', () => {
 
       const source$ = cold<Action<any>>(actionLifetime, actionReference)
       const action$ = ActionsObservable.from(source$, testScheduler)
+      const state$ = {} as StateObservable<GlobalState>
 
-      const epics$ = referenceServiceEpic(action$, undefined, { referenceDataService$ })
+      const epics$ = referenceServiceEpic(action$, state$, { referenceDataService$ })
       expectObservable(epics$).toBe(expectLifetime, expectReference)
     })
   })

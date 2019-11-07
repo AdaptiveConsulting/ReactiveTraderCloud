@@ -12,16 +12,18 @@ export default () => (
       <NumberedLayout number="1">
         <H5>Design Systems</H5>
         <H3>Adaptive UI Library</H3>
-        <Paragraph>Sets the visual tone of the user interface defining the color and font styles to be used.</Paragraph>
+        <Paragraph>
+          Sets the visual tone of the user interface defining the color and font styles to be used.
+        </Paragraph>
       </NumberedLayout>
     </SectionBlock>
 
     <SectionBlock mh={0} py={0}>
       <Paragraph>
         <i>
-          <strong>Tip</strong>: Colors used can and will change in a UI therefore resist the temptation to reference the
-          color in the style name. Instead name the color according to its hierarchy in the UI. For example primary,
-          secondary, tertiary, accent-usage-type etc.
+          <strong>Tip</strong>: Colors used can and will change in a UI therefore resist the
+          temptation to reference the color in the style name. Instead name the color according to
+          its hierarchy in the UI. For example primary, secondary, tertiary, accent-usage-type etc.
         </i>
       </Paragraph>
     </SectionBlock>
@@ -31,7 +33,9 @@ export default () => (
 
     <SectionBlock mh={3}>
       <H2 pt={4}>Brand Colors</H2>
-      <Paragraph>Brand colors aim to communicate a companies visual ownership of the digital product.</Paragraph>
+      <Paragraph>
+        Brand colors aim to communicate a companies visual ownership of the digital product.
+      </Paragraph>
       <Swatch
         is={LargeSwatchColor}
         label="Brand Primary"
@@ -45,8 +49,9 @@ export default () => (
     <SectionBlock mh={3}>
       <H2>Core UI</H2>
       <Paragraph>
-        Core color control the general look and feel of the application and make up 90% of the overall UI aesthetic.
-        When switching from a light to a dark theme these are the key color that change.
+        Core color control the general look and feel of the application and make up 90% of the
+        overall UI aesthetic. When switching from a light to a dark theme these are the key color
+        that change.
       </Paragraph>
 
       <H3 mt={4}>Light</H3>
@@ -61,9 +66,9 @@ export default () => (
         <span>
           <H2>Accents & Functional colors</H2>
           <Paragraph mb={3}>
-            Accent colors inject focus points in to the UI and are used to give the UI character and guide users
-            attention. These colors often work with the brand helping to retain the ‘feeling’ of being from the same
-            organisation but not always.
+            Accent colors inject focus points in to the UI and are used to give the UI character and
+            guide users attention. These colors often work with the brand helping to retain the
+            ‘feeling’ of being from the same organisation but not always.
           </Paragraph>
         </span>
 
@@ -72,7 +77,8 @@ export default () => (
         <span>
           <H2>Unique Collections</H2>
           <Paragraph>
-            Create separate references for key areas of the application such as trading directions shown below.
+            Create separate references for key areas of the application such as trading directions
+            shown below.
           </Paragraph>
         </span>
 
@@ -94,32 +100,44 @@ const PaletteLayout: React.FC<{
   palette: any
   include?: any[]
   codes?: object
-}> = ({ grid: SwatchGrid, fg, label: paletteLabel, palette, include = ['base', 1, 2, 3, 4], codes = {} }) => (
-  <SwatchGrid
-    style={{
-      boxShadow: `0 0 0 4px ${rgba(fg, 0.05)}`,
-    }}
-  >
-    {include.map((key, i) => {
-      const color = palette[key]
+}> = ({
+  grid: SwatchGrid,
+  fg,
+  label: paletteLabel,
+  palette,
+  include = ['base', 1, 2, 3, 4],
+  codes = {},
+}) => {
+  if (!SwatchGrid) {
+    return <></>
+  }
+  return (
+    <SwatchGrid style={{ boxShadow: `0 0 0 4px ${rgba(fg, 0.05)}` }}>
+      {include.map((key, i) => {
+        const color = palette[key]
 
-      return (
-        <Swatch
-          key={key}
-          extra={css({
-            gridArea: (key === 'base' && key) || undefined,
-            boxShadow: i < 1 && `0 0 2rem ${rgba(palette[include[include.length - 1]], 0.5)}`,
-          })}
-          label={`${paletteLabel} ${key}`}
-          value={color}
-          code={codes[key] || key}
-          bg={_ => color}
-          fg={_ => fg}
-        />
-      )
-    })}
-  </SwatchGrid>
-)
+        const themeForCss: any = {}
+        if (key === 'base') {
+          themeForCss.gridArea = key
+        }
+        if (i < 1) {
+          themeForCss.boxShadow = `0 0 2rem ${rgba(palette[include[include.length - 1]], 0.5)}`
+        }
+        return (
+          <Swatch
+            key={key}
+            extra={css(themeForCss)}
+            label={`${paletteLabel} ${key}`}
+            value={color}
+            code={codes[key] || key}
+            bg={_ => color}
+            fg={_ => fg}
+          />
+        )
+      })}
+    </SwatchGrid>
+  )
+}
 
 export interface SwatchColorProps {
   extra?: FlattenSimpleInterpolation
@@ -214,7 +232,12 @@ const ThemePalettes: React.FC<{ theme: any }> = ({ theme: { primary, secondary }
   return (
     <ThemeRow>
       <PaletteLayout grid={CoreSwatchGrid} label="Primary" palette={primary} fg={secondary.base} />
-      <PaletteLayout grid={CoreSwatchGrid} label="Secondary" palette={secondary} fg={primary.base} />
+      <PaletteLayout
+        grid={CoreSwatchGrid}
+        label="Secondary"
+        palette={secondary}
+        fg={primary.base}
+      />
     </ThemeRow>
   )
 }

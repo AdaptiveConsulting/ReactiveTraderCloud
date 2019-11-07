@@ -64,7 +64,7 @@ const rfqService = (
   )
 }
 
-export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
+export const rfqRequestEpic: ApplicationEpic<{}> = (action$, state$) =>
   action$.pipe(
     ofType<Action, RfqRequestActionType | RfqRequoteActionType>(
       TILE_ACTION_TYPES.RFQ_REQUEST,
@@ -95,7 +95,7 @@ export const rfqRequestEpic: ApplicationEpic = (action$, state$) =>
     }),
   )
 
-export const rfqReceivedEpic: ApplicationEpic = action$ =>
+export const rfqReceivedEpic: ApplicationEpic<{}> = action$ =>
   action$.pipe(
     ofType<Action, RfqReceivedActionType>(TILE_ACTION_TYPES.RFQ_RECEIVED),
     mergeMap(action => {

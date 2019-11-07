@@ -125,10 +125,10 @@ const STANDARD_PADDING_RULES = {
   },
 }
 
-type AllMarginRules = Partial<typeof STANDARD_MARGIN_RULES>
-type AllPaddingRules = Partial<typeof STANDARD_PADDING_RULES>
-export type MarginProps = { [P in keyof AllMarginRules]: keyof AllMarginRules[P] }
-export type PaddingProps = { [P in keyof AllPaddingRules]: keyof AllPaddingRules[P] }
+type AllMarginRules = typeof STANDARD_MARGIN_RULES
+type AllPaddingRules = typeof STANDARD_PADDING_RULES
+export type MarginProps = { [P in keyof AllMarginRules]?: keyof AllMarginRules[P] }
+export type PaddingProps = { [P in keyof AllPaddingRules]?: keyof AllPaddingRules[P] }
 export type MarginPaddingProps = MarginProps & PaddingProps
 type MarginPaddingRuleType = keyof MarginPaddingProps
 
@@ -144,7 +144,10 @@ function isMarginPaddingRuleType(rule: string): rule is MarginPaddingRuleType {
 export const mapMarginPaddingProps = (props: MarginPaddingProps | { [key: string]: any }) => {
   return Object.keys(props)
     .filter(isMarginPaddingRuleType)
-    .map(key => marginPaddingProps[key][props[key]])
+    .map(key => {
+      const marginPaddingProp = marginPaddingProps[key]
+      return marginPaddingProp && marginPaddingProp[props[key]]
+    })
     .filter(Boolean)
     .join(';')
 }

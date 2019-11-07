@@ -9,6 +9,10 @@ export interface NotificationMessage {
 }
 
 export const sendNotification = ({ tradeNotification }: NotificationMessage) => {
+  if (!tradeNotification) {
+    console.log(`Error sending notification as 'tradeNotification' is undefined`)
+    return
+  }
   const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
   const title = `Trade ${status}: ${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${tradeNotification.notional}`
   const body = `vs. ${tradeNotification.termsCurrency} \nRate ${tradeNotification.spotRate}    Trade ID ${tradeNotification.tradeId}`

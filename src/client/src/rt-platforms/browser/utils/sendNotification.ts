@@ -5,7 +5,7 @@ export enum NotifyPermission {
 }
 
 export interface NotificationMessage {
-  tradeNotification?: Trade
+  tradeNotification: Trade
 }
 
 export const sendNotification = ({ tradeNotification }: NotificationMessage) => {

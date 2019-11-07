@@ -16,9 +16,9 @@ const autobahn = new AutobahnConnectionProxy(
 )
 
 export default function SpotlightRoute() {
-  const [platform, setPlatform] = useState(null)
-  const [fdc3, setFdc3] = useState(null)
-  const [serviceStub, setServiceStub] = useState(null)
+  const [platform, setPlatform] = useState()
+  const [fdc3, setFdc3] = useState()
+  const [serviceStub, setServiceStub] = useState()
 
   useEffect(() => {
     const bootstrap = async () => {
@@ -33,21 +33,21 @@ export default function SpotlightRoute() {
     bootstrap()
   }, [])
 
+  if (!platform || !serviceStub || !fdc3) {
+    return <></>
+  }
+
   return (
-    platform &&
-    serviceStub &&
-    fdc3 && (
-      <ThemeProvider>
-        <ServiceStubProvider value={serviceStub}>
-          <Fdc3Provider value={fdc3}>
-            <PlatformProvider value={platform}>
-              <RouteWrapper windowType="sub">
-                <Spotlight />
-              </RouteWrapper>
-            </PlatformProvider>
-          </Fdc3Provider>
-        </ServiceStubProvider>
-      </ThemeProvider>
-    )
+    <ThemeProvider>
+      <ServiceStubProvider value={serviceStub}>
+        <Fdc3Provider value={fdc3}>
+          <PlatformProvider value={platform}>
+            <RouteWrapper windowType="sub">
+              <Spotlight />
+            </RouteWrapper>
+          </PlatformProvider>
+        </Fdc3Provider>
+      </ServiceStubProvider>
+    </ThemeProvider>
   )
 }

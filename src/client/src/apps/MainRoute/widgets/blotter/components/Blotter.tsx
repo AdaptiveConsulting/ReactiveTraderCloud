@@ -63,10 +63,10 @@ const getRowClass = ({ data }: { data: Trade }) => {
 }
 
 const Blotter: React.FC<BlotterProps> = props => {
-  const { canPopout, rows, onPopoutClick } = props
+  const { canPopout, rows } = props
   const [displayedRows, setDisplayedRows] = useState(0)
   const [gridDoc] = useState(React.createRef<HTMLDivElement>())
-  const [gridApi, setGridApi] = useState<GridApi>(null)
+  const [gridApi, setGridApi] = useState<GridApi>()
   const platform = usePlatform()
   const onModelUpdated = useCallback(
     () => gridApi && setDisplayedRows(gridApi.getDisplayedRowCount()),
@@ -87,6 +87,10 @@ const Blotter: React.FC<BlotterProps> = props => {
     if (!currencyPair) {
       return
     }
+    if (!platform.fdc3.broadcast) {
+      console.error(`Broadcasting is not available on the platform ${platform.name}`)
+      return
+    }
     platform.fdc3.broadcast(getCurrencyPairContext(currencyPair))
   }
 
@@ -104,6 +108,13 @@ const Blotter: React.FC<BlotterProps> = props => {
       gridApi.exportDataAsCsv(csvExportSettings)
     }
   }, [gridApi])
+
+  const onPopoutClick = useCallback(() => props.onPopoutClick && props.onPopoutClick(), [props])
+
+  const getDocument = useCallback(
+    () => (gridDoc.current && gridDoc.current.ownerDocument) || document,
+    [gridDoc],
+  )
 
   return (
     <BlotterStyle data-qa="blotter__blotter-content">
@@ -128,7 +139,7 @@ const Blotter: React.FC<BlotterProps> = props => {
           onModelUpdated={onModelUpdated}
           onGridReady={onGridReady}
           icons={icons}
-          getDocument={() => gridDoc.current.ownerDocument}
+          getDocument={getDocument}
         />
       </BlotterGrid>
       <BlotterStatus>

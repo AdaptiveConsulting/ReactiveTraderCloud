@@ -106,7 +106,7 @@ const PriceControls: React.FC<Props> = ({
       </div>
     </PriceControlsStyle>
   ) : (
-    <PriceControlsStyle isAnalyticsView={isAnalyticsView}>
+    <PriceControlsStyle isAnalyticsView={!!isAnalyticsView}>
       {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
       {priceButtonDisabledStatus}
       <PriceMovement

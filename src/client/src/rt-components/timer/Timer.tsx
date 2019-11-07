@@ -11,15 +11,18 @@ interface Props {
 export type TimerProps = RequireOnlyOne<Props, 'timeout' | 'interval'>
 
 export class Timer extends PureComponent<TimerProps> {
-  id: number
+  id?: number
 
   componentDidMount() {
     const { interval, timeout, duration, immediate } = this.props
 
-    this.id = interval ? window.setInterval(interval, duration) : window.setTimeout(timeout, duration)
+    this.id = interval
+      ? window.setInterval(interval, duration)
+      : timeout && window.setTimeout(timeout, duration)
 
     if (immediate) {
-      ;(interval || timeout)()
+      const intervalOrTimeout = interval || timeout
+      intervalOrTimeout && intervalOrTimeout()
     }
   }
 

@@ -74,7 +74,9 @@ export class OpenFinLimitChecker implements LimitChecker {
       fin.desktop.InterApplicationBus.addUnsubscribeListener(this.removeLimitCheckSubscriber)
       fin.desktop.InterApplicationBus.subscribe(
         LIMIT_CHECKER_UUID,
-        null,
+        // TODO: figure out if OpenFin typings are wrong - looks like this parameter is optional in docs but required in typings
+        // TODO: this is why I had to use this weird construct - make undefined look like string
+        (undefined as any) as string,
         LIMIT_CHECKER_STATUS_TOPIC,
         (message, _) => {
           if (message === 'ALIVE') {

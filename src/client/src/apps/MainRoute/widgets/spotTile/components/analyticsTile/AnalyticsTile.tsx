@@ -13,7 +13,7 @@ import {
   LineChartWrapper,
   AnalyticsTileWrapper,
 } from './styled'
-import { Props } from '../types'
+import { SpotTileProps } from '../types'
 import TileHeader from '../TileHeader'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
 
@@ -21,7 +21,7 @@ const AnalyticsWrapperWithPlatform: FC = props => {
   const platform = usePlatform()
   return <AnalyticsTileWrapper {...props} platform={platform} />
 }
-class AnalyticsTile extends React.PureComponent<Props> {
+class AnalyticsTile extends React.PureComponent<SpotTileProps> {
   render() {
     const {
       currencyPair,

@@ -22,7 +22,6 @@
     "noImplicitReturns": false,
     "noImplicitThis": false,
     "noImplicitAny": true,
-    "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
     "declaration": false,
     "noUnusedLocals": true,

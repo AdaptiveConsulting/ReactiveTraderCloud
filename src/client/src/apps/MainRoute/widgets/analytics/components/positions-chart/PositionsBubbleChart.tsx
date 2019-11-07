@@ -1,4 +1,4 @@
-import { select, layout, Selection } from 'd3'
+import { select, layout, Selection, event as d3Event } from 'd3'
 import React, { Component, createRef } from 'react'
 import { colors } from 'rt-theme'
 
@@ -40,8 +40,8 @@ export class PositionsBubbleChart extends Component<
   PositionsBubbleChartProps,
   PositionsBubbleChartState
 > {
-  chartRef = createRef<HTMLDivElement>()
-  force: layout.Force<layout.force.Link<layout.force.Node>, layout.force.Node>
+  chartDivRef = createRef<HTMLDivElement>()
+  force: layout.Force<layout.force.Link<layout.force.Node>, layout.force.Node> | undefined
   scales: Scales
   tooltip: any
 
@@ -49,6 +49,11 @@ export class PositionsBubbleChart extends Component<
     nodes: [],
     prevPositionsData: [],
     updateRequired: false,
+  }
+
+  constructor(props: PositionsBubbleChartProps) {
+    super(props)
+    this.scales = createScales(props)
   }
 
   componentDidMount() {
@@ -84,11 +89,11 @@ export class PositionsBubbleChart extends Component<
     const existingPositionsData: CCYPosition[] = this.state.prevPositionsData
 
     // positions data has changed on the existing nodes
-    const modifiedData = reduce(
+    const modifiedData: ReadonlyArray<number> = reduce(
       positionsData,
-      (result, value, key) =>
-        isEqual(value, existingPositionsData[key]) ? result : result.concat(key),
-      [],
+      (acc, value, key: number) =>
+        isEqual(value, existingPositionsData[key]) ? acc : acc.concat(key),
+      [] as ReadonlyArray<number>,
     )
 
     function filterStale(existingPos: CCYPosition) {
@@ -148,8 +153,11 @@ export class PositionsBubbleChart extends Component<
   }
 
   private redrawChart(nextProps = this.props): void {
-    const dom: HTMLElement = this.chartRef.current
-    const svg: Selection<SVGElement> = select(dom).select('svg')
+    const chartDiv = this.chartDivRef.current
+    if (!chartDiv) {
+      return
+    }
+    const svg: Selection<SVGElement> = select(chartDiv).select('svg')
     svg.remove() // clear all child nodes
     this.setState({ updateRequired: true })
     this.createTooltip()
@@ -160,31 +168,39 @@ export class PositionsBubbleChart extends Component<
     if (this.tooltip) {
       return
     }
-    const dom = this.chartRef.current
-    this.tooltip = select(dom)
+    const chartDiv = this.chartDivRef.current
+    if (!chartDiv) {
+      return
+    }
+    this.tooltip = select(chartDiv)
       .append('div')
       .style('visibility', 'hidden')
       .attr('class', 'analytics__positions-tooltip')
   }
 
   private createChartForce(nextProps: PositionsBubbleChartProps): void {
-    const dom = this.chartRef.current
     this.scales = createScales(nextProps)
+
+    const chartDiv = this.chartDivRef.current
+    if (!chartDiv) {
+      return
+    }
+
     const tick = () => {
       const nodeGroup = svg
         .selectAll('g.node')
         .on('mouseover', (dataObj: BubbleChartNode) => {
           this.tooltip.style('visibility', 'visible')
-          this.positionTooltip(dataObj, event as MouseEvent)
+          this.positionTooltip(dataObj, d3Event as MouseEvent)
         })
         .on('mousemove', (dataObj: BubbleChartNode) =>
-          this.positionTooltip(dataObj, event as MouseEvent),
+          this.positionTooltip(dataObj, d3Event as MouseEvent),
         )
         .on('mouseout', () => this.tooltip.style('visibility', 'hidden'))
       updateNodes(nodeGroup, this.state.nodes)
     }
 
-    const svg = select(dom)
+    const svg = select(chartDiv)
       .append('svg')
       .attr('width', this.props.size.width)
       .attr('height', this.props.size.height)
@@ -204,8 +220,11 @@ export class PositionsBubbleChart extends Component<
   }
 
   positionTooltip(node: BubbleChartNode, event: MouseEvent): void {
-    const posX: number = (event ? event.layerX : node.x) - this.tooltip[0][0].clientWidth / 2
-    const posY: number = event ? event.layerY : node.y
+    if (typeof node.x === 'undefined' || typeof node.y === 'undefined') {
+      return
+    }
+    const posX: number = (event ? event.offsetX : node.x) - this.tooltip[0][0].clientWidth / 2
+    const posY: number = event ? event.offsetY : node.y
     const id: string = node.id
     this.tooltip.style('top', posY + 15 + 'px').style('left', posX + 'px')
     this.tooltip.text(`${id} ${getPositionValue(id, this.state.prevPositionsData)}`)
@@ -216,10 +235,14 @@ export class PositionsBubbleChart extends Component<
       return
     }
 
+    const chartDiv = this.chartDivRef.current
+    if (!chartDiv) {
+      return
+    }
+
     this.setState({ updateRequired: false })
 
-    const dom = this.chartRef.current
-    const svg = select(dom).select('svg')
+    const svg = select(chartDiv).select('svg')
 
     const nodeGroup = svg.selectAll('g.node').data(nodes, (d: BubbleChartNode) => d.id)
 
@@ -241,14 +264,16 @@ export class PositionsBubbleChart extends Component<
 
       setTimeout(() => {
         updateNodes(nodeGroup, this.state.nodes)
-        this.force.start()
+        if (this.force) {
+          this.force.start()
+        }
       }, 200)
     }
     nodeGroup.exit().remove()
   }
 
   render() {
-    return <div ref={this.chartRef} />
+    return <div ref={this.chartDivRef} />
   }
 }
 

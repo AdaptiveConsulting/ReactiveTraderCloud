@@ -1,16 +1,17 @@
 import { MockScheduler } from 'rt-testing'
 import { ReferenceActions, ConnectionActions } from 'rt-actions'
 import { analyticsServiceEpic } from './epics'
-import { ActionsObservable } from 'redux-observable'
+import { ActionsObservable, StateObservable } from 'redux-observable'
 import { AnalyticsActions } from '../actions'
 import { Action } from 'redux'
 import { of, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { ServiceStubWithLoadBalancer } from 'rt-system'
+import { GlobalState } from '../../../../../StoreTypes'
 
 const position = {
-  CurrentPositions: [],
-  History: [],
+  CurrentPositions: [] as any[],
+  History: [] as any[],
 }
 const serviceType = '@ReactiveTraderCloud/ANALYTICS_SERVICE'
 
@@ -36,11 +37,15 @@ describe('Analytics epics', () => {
       const actionlifteTime = '-a-a-(rs)a--'
       const expecteLifetime = '-----a--'
 
-      const loadBalancedServiceStub = new MockServiceStubWithLoadBalancer(createStreamOperation$)
+      const loadBalancedServiceStub: ServiceStubWithLoadBalancer = new MockServiceStubWithLoadBalancer(
+        createStreamOperation$,
+      ) as ServiceStubWithLoadBalancer
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
-      const epics$ = analyticsServiceEpic(action$, undefined, { loadBalancedServiceStub }).pipe(
+      const state$ = {} as StateObservable<GlobalState>
+
+      const epics$ = analyticsServiceEpic(action$, state$, { loadBalancedServiceStub }).pipe(
         map(x => x.type === serviceType),
       )
       expectObservable(epics$).toBe(expecteLifetime, { a: true })
@@ -67,10 +72,14 @@ describe('Analytics epics', () => {
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
 
-      const loadBalancedServiceStub = new MockServiceStubWithLoadBalancer(createStreamOperation$)
+      const loadBalancedServiceStub: ServiceStubWithLoadBalancer = (new MockServiceStubWithLoadBalancer(
+        createStreamOperation$,
+      ) as any) as ServiceStubWithLoadBalancer
 
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
-      const epics$ = analyticsServiceEpic(action$, undefined, { loadBalancedServiceStub }).pipe(
+      const state$ = {} as StateObservable<GlobalState>
+
+      const epics$ = analyticsServiceEpic(action$, state$, { loadBalancedServiceStub }).pipe(
         map(x => x.type === serviceType),
       )
       expectObservable(epics$).toBe(expecteLifetime, { a: true })
@@ -78,8 +87,12 @@ describe('Analytics epics', () => {
   })
 })
 
-const MockServiceStubWithLoadBalancer = jest.fn<ServiceStubWithLoadBalancer>(
-  (getResponses: (service: string, operationName: string, request: any) => Observable<any>) => ({
-    createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
-  }),
-)
+const implementation = (
+  getResponses: (service: string, operationName: string, request: any) => Observable<any>,
+) => ({
+  createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
+})
+const MockServiceStubWithLoadBalancer = jest.fn<
+  Partial<ServiceStubWithLoadBalancer>,
+  Parameters<typeof implementation>
+>(implementation)

@@ -59,7 +59,7 @@ stories
       <Centered>
         <BubbleChartWrapper>
           <PositionsBubbleChart
-            data={initialProps.positionsChartModel.seriesData}
+            data={initialProps.positionsChartModel && initialProps.positionsChartModel.seriesData}
             currencyPairs={initialProps.currencyPairs}
           />
         </BubbleChartWrapper>

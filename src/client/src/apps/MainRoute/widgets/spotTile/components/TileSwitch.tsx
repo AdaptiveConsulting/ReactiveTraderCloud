@@ -2,12 +2,11 @@ import React from 'react'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
 import { ExecuteTradeRequest, SpotTileData } from '../model'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
-import { TileBooking } from './notifications'
-import NotificationContainer from './notifications'
+import NotificationContainer, { TileBooking } from './notifications'
 import Tile from './Tile'
 import TileControls from './TileControls'
 import { TileViews } from '../../workspace/workspaceHeader'
-import { TileSwitchChildrenProps, RfqActions, TradingMode } from './types'
+import { RfqActions, TileSwitchChildrenProps, TradingMode } from './types'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
 import { CurrencyPairNotional } from '../model/spotTileData'
 import { getDefaultInitialNotionalValue } from './Tile/TileBusinessLogic'
@@ -114,7 +113,7 @@ const TileSwitch: React.FC<Props> = ({
 
 TileSwitch.defaultProps = {
   spotTileData: {
-    notional: null,
+    notional: 0,
     isTradeExecutionInFlight: false,
     historicPrices: [],
     price: {

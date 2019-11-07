@@ -7,16 +7,17 @@ import { getSymphonyPlatform } from 'rt-platforms'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
-const OrderTicketRoute = lazy(() => import('./apps/OrderTicketRoute'))
 const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 const SpotlightRoute = lazy(() => import('./apps/SpotlightRoute'))
 
 const urlParams = new URLSearchParams(window.location.search)
 
 async function init() {
+  console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
+
   if (urlParams.has('startAsSymphonyController')) {
     const { initiateSymphony } = await getSymphonyPlatform()
-    await initiateSymphony(urlParams.get('env'))
+    await initiateSymphony(urlParams.get('env') || undefined)
   } else {
     ReactDOM.render(
       <React.Fragment>
@@ -26,7 +27,6 @@ async function init() {
             <Switch>
               <Route path="/launcher" render={() => <SimpleLauncher />} />
               <Route path="/styleguide" render={() => <StyleguideRoute />} />
-              <Route path="/order-ticket" render={() => <OrderTicketRoute />} />
               <Route path="/spotlight" render={() => <SpotlightRoute />} />
               <Route render={() => <MainRoute />} />
             </Switch>

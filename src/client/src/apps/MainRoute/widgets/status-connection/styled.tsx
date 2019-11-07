@@ -33,7 +33,7 @@ const StatusCircleCore: FunctionComponent<{ className?: string }> = ({ className
   )
 }
 
-export const StatusCircle = styled(StatusCircleCore)<{ status: ServiceConnectionStatus }>`
+export const StatusCircle = styled(StatusCircleCore)<{ status?: ServiceConnectionStatus }>`
   circle {
     fill: ${({ theme, status }) =>
       status === ServiceConnectionStatus.CONNECTED
@@ -46,7 +46,7 @@ export const StatusCircle = styled(StatusCircleCore)<{ status: ServiceConnection
 
 const StatusLabelCore: FunctionComponent<{
   className?: string
-  status: ServiceConnectionStatus
+  status?: ServiceConnectionStatus
 }> = ({ className, status }) => <span className={className}>{capitalize(status)}</span>
 export const StatusLabel = styled(StatusLabelCore)`
   margin-left: 0.75rem;

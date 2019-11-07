@@ -63,16 +63,17 @@ interface Props {
 // TODO disable tabbing outside of the modal
 // tslint:disable-next-line:variable-name
 const Modal: React.FC<Props> = ({ shouldShow, title, children }) => {
+  if (!shouldShow) {
+    return <></>
+  }
   return (
-    shouldShow && (
-      <ModalContainer>
-        <ModalOverlay />
-        <ModalPanel>
-          {title && <Header>{title}</Header>}
-          <Body>{children}</Body>
-        </ModalPanel>
-      </ModalContainer>
-    )
+    <ModalContainer>
+      <ModalOverlay />
+      <ModalPanel>
+        {title && <Header>{title}</Header>}
+        <Body>{children}</Body>
+      </ModalPanel>
+    </ModalContainer>
   )
 }
 

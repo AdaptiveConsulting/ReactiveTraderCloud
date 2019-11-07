@@ -1,7 +1,6 @@
 import { Direction } from 'rt-types'
-import { SpotTileData } from '../../model/index'
+import { SpotPriceTick, SpotTileData } from '../../model'
 import { PriceMovementTypes } from '../../model/priceMovementTypes'
-import { SpotPriceTick } from '../../model/spotPriceTick'
 
 const currencyPair = {
   base: 'EUR',
@@ -30,7 +29,7 @@ const generateHistoricPrices: (totalPricePrick: number) => SpotPriceTick[] = tot
   return historicPrices
 }
 
-const spotTileData: Required<SpotTileData> = {
+const spotTileData: SpotTileData = {
   notional: 1000000,
   currencyChartIsOpening: false,
   isTradeExecutionInFlight: false,
@@ -44,11 +43,11 @@ const spotTileData: Required<SpotTileData> = {
     valueDate: '2018-08-04T00:00:00Z',
   },
   historicPrices: generateHistoricPrices(50),
-  lastTradeExecutionStatus: null,
   rfqState: 'none',
+  rfqPrice: null,
   rfqReceivedTime: null,
   rfqTimeout: null,
-  rfqPrice: null,
+  lastTradeExecutionStatus: null,
 }
 
 const trade = {

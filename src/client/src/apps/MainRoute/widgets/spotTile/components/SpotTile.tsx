@@ -10,11 +10,11 @@ import {
   SpotTileStyle,
   ReserveSpaceGrouping,
 } from './styled'
-import { Props } from './types'
+import { SpotTileProps } from './types'
 import RfqTimer from './RfqTimer'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
 
-export default class SpotTile extends PureComponent<Props> {
+export default class SpotTile extends PureComponent<SpotTileProps> {
   render() {
     const {
       currencyPair,
@@ -52,7 +52,11 @@ export default class SpotTile extends PureComponent<Props> {
       getDefaultInitialNotionalValue(currencyPair) !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
     const showTimer = isRfqStateReceived && rfqTimeout
-    const priceData = isRfqStateReceived || isRfqStateExpired ? rfqPrice : price
+    const priceData = (isRfqStateReceived || isRfqStateExpired) && rfqPrice ? rfqPrice : price
+
+    if ((isRfqStateReceived || isRfqStateExpired) && !rfqPrice) {
+      console.error(`Unexpected state - rfq price should be displayed but it is not defined`)
+    }
 
     return (
       <SpotTileWrapper>
@@ -89,7 +93,7 @@ export default class SpotTile extends PureComponent<Props> {
                 disabled={inputDisabled}
               />
             </NotionalInputWrapper>
-            {showTimer && (
+            {showTimer && rfqTimeout !== null && rfqReceivedTime !== null && (
               <RfqTimer
                 onRejected={handleRfqRejected}
                 receivedTime={rfqReceivedTime}

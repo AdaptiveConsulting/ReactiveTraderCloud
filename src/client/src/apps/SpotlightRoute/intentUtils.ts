@@ -5,7 +5,7 @@ export function getCurrencyPair(queryResult: QueryResult): string | undefined {
     return queryResult.parameters.fields.CurrencyPairs.stringValue
   } catch (e) {
     console.error(`Can't read currency pair`)
-    return undefined
+    return
   }
 }
 
@@ -14,7 +14,7 @@ export function getCurrency(queryResult: QueryResult): string | undefined {
     return queryResult.parameters.fields.Currency.stringValue
   } catch (e) {
     console.error(`Can't read currency`)
-    return undefined
+    return
   }
 }
 
@@ -23,7 +23,7 @@ export function getNumber(queryResult: QueryResult): number | undefined {
     return queryResult.parameters.fields.number.numberValue
   } catch (e) {
     console.error(`Can't read number`)
-    return undefined
+    return
   }
 }
 

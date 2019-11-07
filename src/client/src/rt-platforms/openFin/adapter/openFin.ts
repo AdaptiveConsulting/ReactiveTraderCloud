@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-globals */
 
 import { BasePlatformAdapter } from '../../platformAdapter'
-import { AppConfig, WindowConfig, InteropTopics } from '../../types'
+import { AppConfig, InteropTopics, WindowConfig } from '../../types'
 import { openDesktopWindow } from './window'
 import { fromEventPattern, Observable } from 'rxjs'
 import { workspaces } from 'openfin-layouts'
@@ -12,7 +12,7 @@ import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
 import { platformEpics } from './epics'
 import Logo from './logo'
-import { OpenFinHeader, OpenFinControls } from '../components'
+import { OpenFinControls, OpenFinHeader } from '../components'
 import { ApplicationEpic } from 'StoreTypes'
 
 interface WinProps {
@@ -32,7 +32,9 @@ export function setupWorkspaces() {
   })
 }
 
-type OpenFinWindowState = Parameters<Parameters<fin.OpenFinWindow['getState']>[0]>[0]
+type GetStateArguments = Parameters<fin.OpenFinWindow['getState']>
+type GetStateCallback = Required<GetStateArguments>[0]
+type OpenFinWindowState = Parameters<GetStateCallback>[0]
 
 enum WindowState {
   Normal = 'normal',
@@ -99,24 +101,29 @@ export default class OpenFin extends BasePlatformAdapter {
           const isRunning = apps.find(app => app.isRunning && app.uuid === id)
           if (isRunning) {
             // tslint:disable-next-line:no-unused-expression
+            if (typeof config.topic === 'undefined') {
+              console.error(`Error sending the message - topic was not defined`)
+              return
+            }
+
             config.payload && this.interop.publish(config.topic, config.payload)
-          } else {
-            const appConfig = {
+            return
+          }
+
+          if (typeof config.uuid === 'undefined') {
+            console.error(`Error creating the application - uuid was not defined in the config`)
+            return
+          }
+          const app: fin.OpenFinApplication = new fin.desktop.Application(
+            {
               name: config.uuid,
               uuid: config.uuid,
               url: config.url,
-              mainWindowOptions: {
-                icon: config.icon,
-                autoShow: true,
-                frame: true,
-              },
-            }
-            const app: fin.OpenFinApplication = new fin.desktop.Application(
-              appConfig,
-              () => app.run(() => setTimeout(() => resolve(id), 1000), err => reject(err)),
-              err => reject(err),
-            )
-          }
+              mainWindowOptions: { icon: config.icon, autoShow: true, frame: true },
+            },
+            () => app.run(() => setTimeout(() => resolve(id), 1000), err => reject(err)),
+            err => reject(err),
+          )
         })
       }),
   }
@@ -138,8 +145,8 @@ export default class OpenFin extends BasePlatformAdapter {
     notify: (message: object) => {
       this.openFinNotifications
         .create({
-          body: this.getNotificationBody(message),
-          title: this.getNotificationTitle(message),
+          body: this.getNotificationBody(message as NotificationMessage),
+          title: this.getNotificationTitle(message as NotificationMessage),
           icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
           customData: message,
           buttons: [

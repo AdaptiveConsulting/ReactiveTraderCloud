@@ -46,7 +46,7 @@ export const layoutReducer = (
             ...state,
             spotTiles: {
               ...state.spotTiles,
-              [action.payload.name]: getWindowPosition(action),
+              [action.payload.name!]: getWindowPosition(action),
             },
           }
       }
@@ -59,7 +59,7 @@ export const layoutReducer = (
 const getWindowPosition = (
   action: ActionWithPayload<LAYOUT_ACTION_TYPES.CONTAINER_VISIBILITY_UPDATE, ContainerVisibility>,
 ): WindowPosition => ({
-  visible: action.payload.display,
+  visible: !!action.payload.display,
   x: action.payload.x,
   y: action.payload.y,
 })

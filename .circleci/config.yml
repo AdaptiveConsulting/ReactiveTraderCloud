@@ -1,168 +1,223 @@
-version: 2
-jobs:
-  build_and_test:
-    machine:
-      enabled: true
+version: 2.1
+
+references:
+  push_images_list: &push_images_list
+    client pricehistory bot nlp servers broker eventstore nginx
+
+commands:
+  install_tools:
     steps:
-      - checkout
       - run:
-          name: 'Configure the environment'
+          name: Install tools
           command: |
-            # Inject a dummy user for builds triggered from forks, because secure variables are not available there.
-            # This allows the job to proceed with building and testing docker images.
-            if [[ -n "${CIRCLE_PR_REPONAME}" ]] ; then
-              echo 'export DOCKER_USER=adaptive' >> $BASH_ENV
-            fi
+            sudo npm i -g semver@6.3.0
       - run:
-          name: Create network
-          command: 'docker network create -d bridge circleci'
-      - run:
-          name: Build client
-          command: 'cd ./src/client  && docker build -t ${DOCKER_USER}/client:${CIRCLE_BUILD_NUM} .'
-      - run:
-          name: Build servers
-          command: 'cd ./src/server && docker build -t ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} .'
-      - run:
-          name: Build nginx
-          command: 'cd ./src/services/nginx  && docker build -t ${DOCKER_USER}/nginx:${CIRCLE_BUILD_NUM} .'
-      - run:
-          name: Build broker
-          command: 'cd ./src/services/broker  && docker build -t ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM} .'
-      - run:
-          name: Build eventstore
-          command: 'cd ./src/services/eventstore  && docker build -t ${DOCKER_USER}/baseeventstore .'
-      - run:
-          name: Build pricehistory
-          command: 'cd ./src/server/Adaptive.ReactiveTrader.Server.PriceHistory/ && docker build -t ${DOCKER_USER}/pricehistory:${CIRCLE_BUILD_NUM} .'
-      - run:
-          name: Build bot
-          command: 'cd ./src/server/Adaptive.ReactiveTrader.Server.Bot/ && docker build -t ${DOCKER_USER}/bot:${CIRCLE_BUILD_NUM} .'
-      - run:
-          name: Build nlp
-          command: 'cd ./src/node-server/ && docker build -t ${DOCKER_USER}/nlp:${CIRCLE_BUILD_NUM} -f ./Nlp.Dockerfile .'
-      - run:
-          name: Run broker
-          command: 'docker run -d --net circleci --name broker ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM}'
-      - run:
-          name: Run eventstore
-          command: 'docker run -d --net circleci --name eventstore ${DOCKER_USER}/baseeventstore'
-      - run:
-          name: Populate eventstore
-          command: 'docker run --net circleci --name servers ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Launcher.dll config.prod.json --populate-eventstore'
-      - run:
-          name: Save eventstore
-          command: 'docker commit eventstore ${DOCKER_USER}/eventstore:${CIRCLE_BUILD_NUM}'
-      - run:
-          name: Run analytics
-          command: 'docker run -d --net circleci --name analytics ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json'
-      - run:
-          name: Run pricing
-          command: 'docker run -d --net circleci --name pricing ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Pricing.dll config.prod.json'
-      - run:
-          name: Run referencedataread
-          command: 'docker run -d --net circleci --name referencedataread ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.ReferenceDataRead.dll config.prod.json'
-      - run:
-          name: Run tradeexecution
-          command: 'docker run -d --net circleci --name tradeexecution ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.TradeExecution.dll config.prod.json'
-      - run:
-          name: Run blotter
-          command: 'docker run -d --net circleci --name blotter ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet ./Adaptive.ReactiveTrader.Server.Blotter.dll config.prod.json'
-      - run:
-          name: Run nginx
-          command: 'docker run -d --net circleci -p 80:80 --name nginx ${DOCKER_USER}/nginx:${CIRCLE_BUILD_NUM}'
-      - run:
-          name: Run client
-          command: 'docker run -d --net circleci --name client ${DOCKER_USER}/client:${CIRCLE_BUILD_NUM}'
-      - run:
-          name: List containers
-          command: 'docker ps'
-      - run:
-          name: Print container logs
-          command: 'docker ps -q -a | xargs -t -L 1 docker logs'
-      - run:
-          name: Run server tests
-          command: 'docker run --net circleci --name tests ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM} dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll'
-      - run:
-          name: Build client tests
-          command: 'cd ./src/client && docker build -t ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} -f ./Dockerfile.dev .'
-      - run:
-          name: Run client tests
-          command: 'docker run -e CI=true ${DOCKER_USER}/client-test${CIRCLE_BUILD_NUM} npm run test -- --coverage'
-      - run:
-          name: 'Skip the next steps for PRs'
+          name: Setup git
           command: |
-            # Check the environment and gracefully stop the job for PRs
-            if [[ "$CIRCLE_BRANCH" != "master" ]] && [[ "$CIRCLE_BRANCH" != "develop" ]] ; then
-              circleci-agent step halt
-            fi
+            # TODO: Use correct environment variables
+            git config --global user.email "$GIT_AUTHOR_NAME"
+            git config --global user.name “$EMAIL”
+
+  semver:
+    description: "Setup semver version for this release"
+    parameters:
+      bump:
+        default: "minor"
+        description: The semver bump type. Must be one of "major", "minor", "patch".
+        type: enum
+        enum: ["major", "minor", "patch", "prerelease"]
+    steps:
       - run:
-          name: Push images to dockerhub
+          name: Semver Versioning "<< parameters.bump >>"
+          command: |
+            PREVIOUS_TAG="$(semver valid $(git describe --tags) || echo 1.0.0)"
+            NEW_TAG="$(semver -i << parameters.bump >> ${PREVIOUS_TAG})"
+            echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
+            echo "export DOCKER_USER=$DOCKER_USER" >> $BASH_ENV
+            git tag $NEW_TAG -a -m "v$NEW_TAG"
+            echo "Created new tag: $(git describe --abbr=0)"
+
+  build_images:
+    description: "Build the deployable container images"
+    steps:
+      - run:
+          name: Build Images
+          command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
+
+  run_tests:
+    description: "Runs the integration tests"
+    steps:
+      - run:
+          name: Integration Tests
+          command: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
+
+  list_images:
+    steps:
+      - run:
+          name: List images
+          command: docker images -a
+
+  push_images:
+    parameters:
+      images:
+        type: string
+    steps:
+      - run:
+          name: Push Images
           command: |
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            docker push ${DOCKER_USER}/client:${CIRCLE_BUILD_NUM}
-            docker push ${DOCKER_USER}/pricehistory:${CIRCLE_BUILD_NUM}
-            docker push ${DOCKER_USER}/bot:${CIRCLE_BUILD_NUM}
-            docker push ${DOCKER_USER}/nlp:${CIRCLE_BUILD_NUM}
-            docker push ${DOCKER_USER}/servers:${CIRCLE_BUILD_NUM}
-            docker push ${DOCKER_USER}/broker:${CIRCLE_BUILD_NUM}
-            docker push ${DOCKER_USER}/eventstore:${CIRCLE_BUILD_NUM}
-            docker push ${DOCKER_USER}/nginx:${CIRCLE_BUILD_NUM}
-      - run:
-          name: Store build number
-          command: |
-            mkdir -p envs
-            echo "export BUILD_NUM=${CIRCLE_BUILD_NUM}" >> envs/env_build_num
-      - persist_to_workspace:
-          root: envs
-          paths:
-            - env_build_num
+            docker-compose \
+              -f src/docker-compose.deploy.yml -f src/docker-compose.yml \
+              push << parameters.images >>
+            echo "Pushing new tag to remote"
+            git push origin $BUILD_VERSION
 
-  deploy:
-    docker:
-      - image: google/cloud-sdk
+  deploy_to_environment:
+    description: "Deploy the specific version to gcloud"
+    parameters:
+      version:
+        description: The environment variable specifiying the version to deploy. Must already be hosted on dockerhub
+        type: env_var_name
+      environment:
+        description: The environment variable containing the environment to deploy to. One of "dev", "demo"
+        type: env_var_name
     steps:
-      - checkout
-      - attach_workspace:
-          at: /envs
-      - run:
-          name: Restore build number
-          command: cat /envs/env_build_num >> $BASH_ENV;
       - run:
           name: Authenticate with gcloud
           command: |
+            echo $BASH_ENV
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud config set project ${GOOGLE_PROJECT_ID}
             gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
             gcloud container clusters get-credentials cluster
       - run:
-          name: Set namespace
-          command: declare -A envs=( ["develop"]="dev" ["master"]="demo"); echo "export NAMESPACE='${envs[$CIRCLE_BRANCH]}'" >> $BASH_ENV;
-      - run:
-          name: Update images
+          name: Updating deployment definition to new images
           command: |
-            kubectl --namespace=${NAMESPACE} set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/web-deployment web=${DOCKER_USER}/nginx:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/client-deployment client=${DOCKER_USER}/client:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/pricing-deployment pricing=${DOCKER_USER}/servers:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/pricehistory:${BUILD_NUM}
-            kubectl --namespace=${NAMESPACE} set image deployments/bot-deployment bot=${DOCKER_USER}/bot:${BUILD_NUM}
+            # TODO: look for new deployment config from git history
+            # TODO: create new environment automatically
+            # TODO: validate package exists
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/web-deployment web=${DOCKER_USER}/nginx:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/client-deployment client=${DOCKER_USER}/client:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/pricing-deployment pricing=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/pricehistory:${ << parameters.version >> }
+            kubectl --namespace=${ << parameters.environment >> } set image deployments/bot-deployment bot=${DOCKER_USER}/bot:${ << parameters.version >> }
+
+
+  main_pipeline:
+    description: "Main pipeline"
+    parameters:
+      bump:
+        description: The semver bump type. Must be one of "major", "minor", "patch".
+        type: enum
+        enum: ["major", "minor", "patch", "prerelease"]
+      environment:
+        type: string
+    steps:
+      - setup_remote_docker
+      - install_tools
+      - checkout
+      - semver:
+          bump: << parameters.bump >>
+      - run:
+          name: Set up persisted variables
+          command: |
+            mkdir -p ~/vars
+            echo "export DEPLOY_TARGET=<< parameters.environment >>" >> ~/vars/env
+            echo "export BUILD_VERSION=$BUILD_VERSION" >> ~/vars/env
+      - persist_to_workspace:
+          root: ~/
+          paths: vars/env
+      - build_images
+      - list_images
+      - run_tests
+
+
+jobs:
+  release_build:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - main_pipeline:
+          bump: minor
+          environment: dev
+      - push_images:
+          images: *push_images_list
+
+  patch_build:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - main_pipeline:
+          bump: patch
+          environment: none
+      - push_images:
+          images: *push_images_list
+
+  feature_build:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - main_pipeline:
+          bump: prerelease
+          environment: none
+
+  deployment:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: "Retrieve deployment parameters"
+          command: |
+            # Check we have the correct variables present
+            # These can come from the persisted workspace or from parameters
+            # passed via the circleci api (https://circleci.com/docs/2.0/env-vars/#injecting-environment-variables-with-the-api)
+            source ~/vars/env || true
+            echo "Deploying version $BUILD_VERSION to environment $DEPLOY_TARGET"
+            if [[ "$DEPLOY_TARGET" = "" ]] ; then
+              echo "Missing parameter DEPLOY_TARGET"
+              circleci-agent step halt
+            fi
+            if [[ "$BUILD_VERSION" = "" ]] ; then
+              echo "Missing parameter BUILD_VERSION"
+              circleci-agent step halt
+            fi
+      - deploy_to_environment:
+          version: BUILD_VERSION
+          environment: DEPLOY_TARGET
+
 
 workflows:
-  version: 2
+  version: 2.1
   main:
     jobs:
-      - build_and_test
-      - deploy:
-          requires:
-            - build_and_test
+      - patch_build:
           filters:
             branches:
-              only:
+              only: /^release\/.*/
+      - release_build:
+          filters:
+            branches:
+              only: master
+      - deployment:
+          requires:
+            - release_build
+          filters:
+            branches:
+              only: master
+      - feature_build:
+          filters:
+            branches:
+              ignore:
                 - master
-                - develop
+                - /^release\/.*/
+
+

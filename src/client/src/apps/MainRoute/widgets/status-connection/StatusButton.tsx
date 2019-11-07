@@ -12,6 +12,7 @@ import {
   ServiceList,
 } from './styled'
 import Service from './Service'
+import FooterVersion from '../footer-version'
 
 interface Props {
   connectionStatus: ConnectionState
@@ -72,6 +73,8 @@ export const StatusButton: React.FC<Props> = ({
           {services.map(service => (
             <Service key={service.serviceType} service={service} />
           ))}
+
+          <FooterVersion />
         </ServiceList>
       </ServiceListPopup>
     </Root>
