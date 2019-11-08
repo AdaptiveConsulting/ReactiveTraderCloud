@@ -21,6 +21,10 @@ commands:
           command: |
             # For fork PRs set the docker user to adaptive
             echo "export DOCKER_USER=${DOCKER_USER:-adaptive}" >> $BASH_ENV
+      - add_ssh_keys:
+          # For push commands pack to github
+          fingerprints:
+            - "79:e8:92:e2:cb:49:2b:26:2d:d5:f9:6f:7b:f7:46:b6"
 
   semver:
     description: "Setup semver version for this release"
