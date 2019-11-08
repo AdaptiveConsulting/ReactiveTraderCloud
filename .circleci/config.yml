@@ -30,7 +30,7 @@ commands:
       - run:
           name: Semver Versioning "<< parameters.bump >>"
           command: |
-            PREVIOUS_TAG="$(semver valid $(git describe --tags) || echo 1.0.0)"
+            PREVIOUS_TAG="$(semver valid $(git describe --tags --abbrev=0) || echo 1.0.0)"
             NEW_TAG="$(semver -i << parameters.bump >> ${PREVIOUS_TAG})"
             echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
             echo "export DOCKER_USER=$DOCKER_USER" >> $BASH_ENV
