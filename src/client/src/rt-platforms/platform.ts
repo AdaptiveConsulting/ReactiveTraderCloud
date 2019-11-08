@@ -1,45 +1,64 @@
-const urlParams = new URLSearchParams(window.location.search)
+import { AppConfig, PlatformType } from './types'
+import { Context } from 'openfin-fdc3'
+import { ApplicationEpic } from 'StoreTypes'
+import { Observable } from 'rxjs'
+import { PlatformWindow, PlatformWindowApi } from './platformWindow'
 
-const isFinsemble = 'FSBL' in window
-const isOpenFin = 'fin' in window
-const isGlue42 = 'glue42gd' in window
-const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYMPHONY'
+export interface PlatformFeatures {
+  app: AppInterop
+  interop: PubSubInterop
+  share: (object: any) => void
+}
 
-export const getSymphonyPlatform = () => import(/* webpackChunkName: "symphony" */ './symphony')
+interface PubSubInterop {
+  subscribe$: (topic: string) => Observable<any>
+  publish: (topic: string, message: any) => void
+}
 
-export const getFinsemblePlatform = () => import(/* webpackChunkName: "finsemble" */ './finsemble')
+interface AppInterop {
+  open: (id: string, config: AppConfig) => Promise<string>
+}
 
-export const getOpenFinPlatform = () => import(/* webpackChunkName: "openfin" */ './openFin')
+export type Platform = Partial<PlatformFeatures> & {
+  readonly type: PlatformType
 
-export const getGlue42Platform = () => import(/* webpackChunkName: "glue" */ './glue')
+  readonly allowTearOff: boolean
 
-export const getBrowserPlatform = () => import(/* webpackChunkName: "browser" */ './browser')
+  readonly name: string
 
-export const getPlatformAsync = async () => {
-  if (isSymphony) {
-    const { Symphony } = await getSymphonyPlatform()
-    return new Symphony()
+  readonly window: PlatformWindowApi & Partial<PlatformWindow>
+
+  readonly notification: {
+    notify: (message: object) => void
   }
 
-  if (isFinsemble) {
-    console.info('Using Finsemble API')
-    const { Finsemble } = await getFinsemblePlatform()
-    return new Finsemble()
+  readonly fdc3: {
+    broadcast?: (context: Context) => void
   }
 
-  if (isOpenFin) {
-    console.info('Using OpenFin API')
-    const { OpenFin } = await getOpenFinPlatform()
-    return new OpenFin()
+  readonly style: {
+    [key: string]: string | number
   }
 
-  if (isGlue42) {
-    console.info('Using Glue42 API')
-    const { Glue42 } = await getGlue42Platform()
-    return new Glue42()
-  }
+  readonly epics: Array<ApplicationEpic>
 
-  console.info('Using Browser API')
-  const { Browser } = await getBrowserPlatform()
-  return new Browser()
+  readonly Logo: React.FC
+
+  readonly PlatformHeader: React.FC<any>
+
+  readonly PlatformControls: React.FC<any>
+
+  readonly PlatformRoute: React.FC
+}
+
+/**
+ * Determines whether a platform has a given feature and performs a type guard for it
+ * @param platform
+ * @param feature name of the feature
+ */
+export function platformHasFeature<FeatureName extends keyof PlatformFeatures>(
+  platform: Platform,
+  feature: FeatureName,
+): platform is Platform & Pick<PlatformFeatures, FeatureName> {
+  return !!(platform as any)[feature]
 }

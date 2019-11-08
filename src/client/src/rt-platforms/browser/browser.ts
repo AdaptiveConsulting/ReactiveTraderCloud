@@ -1,8 +1,11 @@
-import { BasePlatformAdapter } from '../platformAdapter'
+import { UAParser } from 'ua-parser-js'
 import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
-import { sendNotification, NotifyPermission, NotificationMessage } from './utils/sendNotification'
-import { UAParser } from 'ua-parser-js'
+import { NotificationMessage, NotifyPermission, sendNotification } from './utils/sendNotification'
+import { Platform } from '../platform'
+import { createDefaultPlatformWindow } from '../defaultPlatformWindow'
+import DefaultRoute from '../defaultRoute'
+import Logo from '../logo'
 
 interface Navigator {
   standalone?: boolean
@@ -17,14 +20,22 @@ const isPWA = () =>
   (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
   (window.navigator as Navigator).standalone
 
-export default class Browser extends BasePlatformAdapter {
+export default class Browser implements Platform {
   readonly name = 'browser'
   readonly type = 'browser'
-
   readonly allowTearOff = !isRunningInIE() && !isPWA()
-  window = {
-    close: () => window.close(),
 
+  style = {
+    height: '100%',
+  }
+  epics = []
+  PlatformHeader = () => null
+  PlatformControls = () => null
+  PlatformRoute = DefaultRoute
+  Logo = Logo
+
+  window = {
+    ...createDefaultPlatformWindow(window),
     open: (config: WindowConfig, onClose?: () => void) => openBrowserWindow(config, onClose),
   }
 

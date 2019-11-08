@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { usePlatform } from 'rt-platforms'
+import { platformHasFeature, usePlatform } from 'rt-platforms'
 import { styled } from 'rt-theme'
 import { TileHeader as Header, TileSymbol, DeliveryDate } from './styled'
 import { CurrencyPair } from 'rt-types'
@@ -22,7 +22,7 @@ const TileHeader: React.FC<Props> = ({ ccyPair, date, displayCurrencyChart }) =>
   const platform = usePlatform()
 
   const share = useCallback(() => {
-    if (platform.hasFeature('share')) {
+    if (platformHasFeature(platform, 'share')) {
       platform.share(ccyPair.symbol)
     }
   }, [ccyPair.symbol, platform])
@@ -31,12 +31,12 @@ const TileHeader: React.FC<Props> = ({ ccyPair, date, displayCurrencyChart }) =>
   return (
     <Header>
       <TileSymbol data-qa="tile-header__tile-symbol">{baseTerm}</TileSymbol>
-      {platform.hasFeature('app') && (
+      {platformHasFeature(platform, 'app') && (
         <ActionButton data-qa="tile-header__chartiq-button" onClick={displayCurrencyChart}>
           <i className="fas fa-chart-bar" />
         </ActionButton>
       )}
-      {platform.hasFeature('share') && (
+      {platformHasFeature(platform, 'share') && (
         <ActionButton data-qa="tile-header__share-button" onClick={share}>
           <i className="fas fa-share" />
         </ActionButton>

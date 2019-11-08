@@ -1,7 +1,7 @@
 import Glue, { Glue42 as GlueInterface } from '@glue42/desktop'
 import Glue4Office, { Glue42Office as Glue42OfficeInterface } from '@glue42/office'
 import { WindowConfig } from '../types'
-import { BasePlatformAdapter } from '../platformAdapter'
+import { Platform } from '../platform'
 import { openGlueWindow, registerWindowMethods } from './window'
 import { sendNotification, NotifyPermission } from './utils/sendNotification'
 import DefaultRoute from 'rt-platforms/defaultRoute'
@@ -12,13 +12,15 @@ import { GlueHeader, GlueLogoLink } from './'
  * Glue implementation of the base platform adapter.
  * Glue4Office is an optional library for working with excel.
  */
-export class Glue42 extends BasePlatformAdapter {
+export class Glue42 implements Platform {
   allowTearOff = true
   readonly name = 'glue'
   readonly type = 'desktop'
+  style = {
+    height: '100%',
+  }
 
   constructor() {
-    super()
     Glue({ channels: true })
       .then((glue: GlueInterface.Glue) => {
         window.glue = glue

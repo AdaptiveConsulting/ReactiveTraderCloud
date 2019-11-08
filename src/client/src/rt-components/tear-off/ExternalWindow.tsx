@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { usePlatform, WindowConfig } from 'rt-platforms'
+import { PlatformWindow, usePlatform, WindowConfig } from 'rt-platforms'
 import { WindowCenterStatus } from './types'
 
 const defaultConfig: WindowConfig = {
@@ -28,11 +28,12 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
   const platform = usePlatform()
 
   useEffect(() => {
-    let externalWindow: Window | null
+    let externalWindow: PlatformWindow | undefined
+    let externalNativeWindow: Window | undefined
 
     const release = () => {
-      if (externalWindow) {
-        window.removeEventListener('beforeunload', release)
+      if (externalNativeWindow) {
+        externalNativeWindow.removeEventListener('beforeunload', release)
       }
       if (typeof onUnload === 'function') {
         onUnload.call(null)
@@ -42,18 +43,19 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
     const getWindow = async () => {
       externalWindow = await platform.window.open(config, release)
       if (externalWindow) {
-        window.addEventListener('beforeunload', release)
+        externalNativeWindow = await externalWindow.getNativeWindow()
+        externalNativeWindow.addEventListener('beforeunload', release)
       }
     }
 
     getWindow()
+
     return () => {
       if (externalWindow) {
         externalWindow.close()
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [config, onUnload, platform.window])
 
   return null
 }

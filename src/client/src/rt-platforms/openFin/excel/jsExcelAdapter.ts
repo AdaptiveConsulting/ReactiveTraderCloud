@@ -6,6 +6,7 @@ import { Trade, CurrencyPairPositionWithPrice } from 'rt-types'
 import { ExcelApp } from '../../excelApp'
 import { OpenFin } from '../adapter'
 import { InteropTopics } from '../../types'
+import { platformHasFeature } from '../../platform'
 
 const EXCEL_HOST_URL = `${location.protocol}//${location.host}/static/excel`
 const EXCEL_FILE_NAME = 'RTExcel.xlsx'
@@ -90,7 +91,7 @@ class JSExcelAdapter implements ExcelApp {
    * We are simulating the 'Close position' buttons with plain cells so we detect clicks this way
    */
   onPositionsSheetSelectionChanged = async ({ data }: fin.WorksheetSelectionChangedEventArgs) => {
-    if (!this.positionsSheet || !this.platform.hasFeature('interop')) {
+    if (!this.positionsSheet || !platformHasFeature(this.platform, 'interop')) {
       return
     }
 

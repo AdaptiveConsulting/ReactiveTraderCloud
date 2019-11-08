@@ -7,6 +7,7 @@ import {
 } from './blotterServiceEpic'
 import { ApplicationDependencies } from 'apps/MainRoute/store/applicationServices'
 import { blotterHighlightEpic } from './blotterHighlightEpic'
+import { platformHasFeature } from 'rt-platforms'
 
 export default ({ platform }: ApplicationDependencies) => {
   const epics = [
@@ -16,7 +17,7 @@ export default ({ platform }: ApplicationDependencies) => {
     publishBlotterToExcelEpic,
   ]
 
-  if (platform.hasFeature('interop')) {
+  if (platformHasFeature(platform, 'interop')) {
     epics.push(blotterHighlightEpic)
   }
 

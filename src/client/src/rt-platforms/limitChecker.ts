@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs'
-import { getOpenFinPlatform } from './platform'
+import { getOpenFinPlatform } from './getPlatformAsync'
 
 export interface LimitChecker {
   rpc(message?: object): Observable<boolean>

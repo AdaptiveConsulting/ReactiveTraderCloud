@@ -4,6 +4,7 @@ import { from, EMPTY } from 'rxjs'
 import { map, mergeMap } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
+import { platformHasFeature } from 'rt-platforms'
 
 const { displayCurrencyChart, currencyChartOpened } = SpotTileActions
 type DisplayChartAction = ReturnType<typeof displayCurrencyChart>
@@ -20,7 +21,7 @@ const createChartConfig = (symbol: string, interval: number): AppConfig => ({
 })
 
 export const displayCurrencyChartEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  if (!platform.hasFeature('app')) {
+  if (!platformHasFeature(platform, 'app')) {
     return EMPTY
   }
   return action$.pipe(

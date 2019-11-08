@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-restricted-globals */
 
-import { BasePlatformAdapter } from '../../platformAdapter'
+import { Platform } from '../../platform'
 import { AppConfig, InteropTopics, WindowConfig } from '../../types'
-import { openDesktopWindow } from './window'
+import { createPlatformWindow, openDesktopWindow, openfinWindowStates } from './window'
 import { fromEventPattern, Observable } from 'rxjs'
 import { workspaces } from 'openfin-layouts'
 import { Notification, NotificationActionEvent } from 'openfin-notifications'
@@ -32,31 +32,24 @@ export function setupWorkspaces() {
   })
 }
 
-type GetStateArguments = Parameters<fin.OpenFinWindow['getState']>
-type GetStateCallback = Required<GetStateArguments>[0]
-type OpenFinWindowState = Parameters<GetStateCallback>[0]
-
-enum WindowState {
-  Normal = 'normal',
-  Minimized = 'minimized',
-  Maximized = 'maximized',
-}
-
-export default class OpenFin extends BasePlatformAdapter {
+export default class OpenFin implements Platform {
   readonly name = 'openfin'
   readonly type = 'desktop'
   readonly allowTearOff = true
+
+  style = {
+    height: '100%',
+  }
 
   openFinNotifications = require('openfin-notifications')
   fdc3Context = require('openfin-fdc3')
 
   constructor() {
-    super()
     this.openFinNotifications.addEventListener(
       'notification-action',
       (event: NotificationActionEvent) => {
         if (event.result['task'] === 'highlight-trade') {
-          fin.desktop.InterApplicationBus.publish(
+          fin.InterApplicationBus.publish(
             InteropTopics.HighlightBlotter,
             event.notification.customData,
           )
@@ -66,27 +59,8 @@ export default class OpenFin extends BasePlatformAdapter {
   }
 
   window = {
-    close: () => fin.desktop.Window.getCurrent().close(),
-
-    open: (config: WindowConfig, onClose?: () => void) => openDesktopWindow(config, onClose),
-
-    maximize: () => {
-      const win = fin.desktop.Window.getCurrent()
-      win.getState((state: OpenFinWindowState) => {
-        switch (state) {
-          case WindowState.Maximized:
-          case WindowState.Minimized:
-            win.restore(() => win.bringToFront())
-            break
-          case WindowState.Normal:
-          default:
-            win.maximize()
-            break
-        }
-      })
-    },
-
-    minimize: () => fin.desktop.Window.getCurrent().minimize(),
+    ...createPlatformWindow(() => Promise.resolve(fin.desktop.Window.getCurrent())),
+    open: openDesktopWindow,
   }
 
   fdc3 = {
@@ -242,13 +216,13 @@ async function positionWindow(win: workspaces.WorkspaceWindow): Promise<void> {
     await ofWin.leaveGroup()
 
     if (isShowing) {
-      if (win.state === WindowState.Normal) {
+      if (win.state === openfinWindowStates.Normal) {
         // Need to both restore and show because the restore function doesn't emit a `shown` or `show-requested` event
         await ofWin.restore()
         await ofWin.show()
-      } else if (win.state === WindowState.Minimized) {
+      } else if (win.state === openfinWindowStates.Minimized) {
         await ofWin.minimize()
-      } else if (win.state === WindowState.Maximized) {
+      } else if (win.state === openfinWindowStates.Maximized) {
         await ofWin.maximize()
       }
     } else {

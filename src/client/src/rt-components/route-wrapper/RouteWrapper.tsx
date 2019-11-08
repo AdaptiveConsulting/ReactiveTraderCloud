@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
 import { styled } from 'rt-theme'
-import { PlatformAdapter, usePlatform } from 'rt-platforms'
+import { Platform, usePlatform } from 'rt-platforms'
 
-const RouteStyle = styled('div')<{ platform: PlatformAdapter }>`
+const RouteStyle = styled('div')<{ platform: Platform }>`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;

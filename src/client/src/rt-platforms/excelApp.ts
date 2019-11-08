@@ -1,5 +1,5 @@
 import { CurrencyPairPositionWithPrice } from '../rt-types'
-import { getOpenFinPlatform, getGlue42Platform } from './platform'
+import { getOpenFinPlatform, getGlue42Platform } from './getPlatformAsync'
 
 export type ExcelAdapterName = 'legacy' | 'JS'
 

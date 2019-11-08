@@ -16,7 +16,7 @@ library.add(faSignOutAlt)
 const exitHandler = async () => {
   const { OpenFin } = await getOpenFinPlatform()
   const platform = new OpenFin()
-  platform.window.close()
+  return platform.window.close()
 }
 
 const LauncherGlobalStyle = createGlobalStyle`

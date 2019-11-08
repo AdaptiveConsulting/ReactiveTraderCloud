@@ -1,6 +1,6 @@
 import { styled } from 'rt-theme'
 import { TileWrapperBase, SpotTileStyle } from '../styled'
-import { PlatformAdapter } from 'rt-platforms'
+import { Platform } from 'rt-platforms'
 
 export const AnalyticsTileContent = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ export const AnalyticsTileStyle = styled(SpotTileStyle)`
     background-color: ${({ theme }) => theme.core.backgroundHoverColor};
   }
 `
-export const AnalyticsTileWrapper = styled(TileWrapperBase)<{ platform: PlatformAdapter }>`
+export const AnalyticsTileWrapper = styled(TileWrapperBase)<{ platform: Platform }>`
   min-height: 11rem;
   height: ${({ platform: { name } }) =>
     name !== 'finsemble'

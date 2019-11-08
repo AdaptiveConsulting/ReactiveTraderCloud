@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { InteropTopics } from 'rt-platforms'
+import { InteropTopics, platformHasFeature } from 'rt-platforms'
 import { CurrencyPairMap } from 'rt-types'
 import { EMPTY } from 'rxjs'
 import { ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
@@ -22,7 +22,7 @@ export const publishPriceUpdateEpic: ApplicationEpic = (
   _,
   { referenceDataService$, platform },
 ) => {
-  if (!platform.hasFeature('interop')) {
+  if (!platformHasFeature(platform, 'interop')) {
     return EMPTY
   }
 

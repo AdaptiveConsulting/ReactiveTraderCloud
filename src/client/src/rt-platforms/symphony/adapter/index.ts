@@ -1,11 +1,23 @@
-import { BasePlatformAdapter } from '../../platformAdapter'
+import { Platform } from '../../platform'
 import { WindowConfig } from '../../types'
-import { SymphonyClient, SYMPHONY_APP_ID, FX_ENTITY_TYPE, createTileMessage } from '../index'
+import { createTileMessage, FX_ENTITY_TYPE, SYMPHONY_APP_ID, SymphonyClient } from '../index'
 import { waitForObject } from 'rt-util'
+import DefaultRoute from '../../defaultRoute'
+import Logo from '../../logo'
+import { createDefaultPlatformWindow } from '../../defaultPlatformWindow'
 
-export default class Symphony extends BasePlatformAdapter {
+export default class Symphony implements Platform {
   readonly name = 'browser'
   readonly type = 'browser'
+  style = {
+    height: '100%',
+  }
+  epics = []
+  PlatformHeader = () => null
+  PlatformControls = () => null
+  PlatformRoute = DefaultRoute
+  Logo = Logo
+
   symphony?: SymphonyClient
 
   async init() {
@@ -21,15 +33,15 @@ export default class Symphony extends BasePlatformAdapter {
   }
 
   constructor() {
-    super()
     this.init()
   }
-  readonly allowTearOff = false
-  window = {
-    close: () => window.close(),
 
+  readonly allowTearOff = false
+
+  window = {
+    ...createDefaultPlatformWindow(window),
     open: (config: WindowConfig, onClose?: () => void) => {
-      return Promise.resolve(null)
+      return Promise.resolve(undefined)
     },
   }
 

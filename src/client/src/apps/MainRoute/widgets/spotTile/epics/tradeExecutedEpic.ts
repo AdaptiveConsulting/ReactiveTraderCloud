@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
-import { InteropTopics } from 'rt-platforms'
+import { InteropTopics, platformHasFeature } from 'rt-platforms'
 import { EMPTY } from 'rxjs'
 import { ignoreElements, tap } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
@@ -9,7 +9,7 @@ import { TILE_ACTION_TYPES } from '../actions'
 import { ExecutedTradeAction } from './spotTileEpics'
 
 export const publishTradeExecutedEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  if (!platform.hasFeature('interop')) {
+  if (!platformHasFeature(platform, 'interop')) {
     return EMPTY
   }
   return action$.pipe(
