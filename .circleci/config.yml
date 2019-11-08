@@ -14,9 +14,8 @@ commands:
       - run:
           name: Setup git
           command: |
-            # TODO: Use correct environment variables
-            git config --global user.email "$GIT_AUTHOR_NAME"
-            git config --global user.name “$EMAIL”
+            git config --global user.email "${GIT_AUTHOR_NAME}"
+            git config --global user.name “${GIT_EMAIL}”
 
   semver:
     description: "Setup semver version for this release"
@@ -30,7 +29,7 @@ commands:
       - run:
           name: Semver Versioning "<< parameters.bump >>"
           command: |
-            PREVIOUS_TAG="$(semver valid $(git describe --tags) || echo 1.0.0)"
+            PREVIOUS_TAG="$(semver valid $(git describe --tags --abbrev=0) || echo 1.0.0)"
             NEW_TAG="$(semver -i << parameters.bump >> ${PREVIOUS_TAG})"
             echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
             echo "export DOCKER_USER=$DOCKER_USER" >> $BASH_ENV
@@ -82,6 +81,10 @@ commands:
         description: The environment variable containing the environment to deploy to. One of "dev", "demo"
         type: env_var_name
     steps:
+      - run:
+          name: "Deployment information"
+          command: |
+            echo "Deploying $BUILD_VERSION -> $DEPLOY_TARGET"
       - run:
           name: Authenticate with gcloud
           command: |
@@ -168,7 +171,7 @@ jobs:
           bump: prerelease
           environment: none
 
-  deployment:
+  deploy_last_build:
     docker:
       - image: google/cloud-sdk
     steps:
@@ -176,24 +179,40 @@ jobs:
           at: ~/
       - run:
           name: "Retrieve deployment parameters"
-          command: |
-            # Check we have the correct variables present
-            # These can come from the persisted workspace or from parameters
-            # passed via the circleci api (https://circleci.com/docs/2.0/env-vars/#injecting-environment-variables-with-the-api)
-            source ~/vars/env || true
-            echo "Deploying version $BUILD_VERSION to environment $DEPLOY_TARGET"
-            if [[ "$DEPLOY_TARGET" = "" ]] ; then
-              echo "Missing parameter DEPLOY_TARGET"
-              circleci-agent step halt
-            fi
-            if [[ "$BUILD_VERSION" = "" ]] ; then
-              echo "Missing parameter BUILD_VERSION"
-              circleci-agent step halt
-            fi
+          command: source ~/vars/env
       - deploy_to_environment:
           version: BUILD_VERSION
           environment: DEPLOY_TARGET
 
+  deploy_version_from_env_tag:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - run:
+          name: "Parse tags"
+          command: |
+            echo "Parsing current commit tags. Looking for version and requested environment."
+
+            echo "Environment is found via env-* tags"
+            ENVIRONMENT_TAG=$(git tag -l --points-at HEAD env-*)
+            DEPLOY_TARGET=${ENVIRONMENT_TAG/env-/}
+            echo "DEPLOY_TARGET: $DEPLOY_TARGET"
+
+            echo "Build version is found via semver tag"
+            BUILD_VERSION=$(git tag -l --points-at HEAD | grep ^[0-9+]\.)
+            echo "BUILD_VERSION: $BUILD_VERSION"
+
+            if [[ "$BUILD_VERSION" = "" ]] ; then
+                echo "Could not find a valid version on this commit. Was the semver tag on the same tag as the env-* one?"
+                circleci-agent step halt
+            fi
+
+            echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
+            echo "export DEPLOY_TARGET=$DEPLOY_TARGET" >> $BASH_ENV
+      - deploy_to_environment:
+          version: BUILD_VERSION
+          environment: DEPLOY_TARGET
 
 workflows:
   version: 2.1
@@ -207,7 +226,7 @@ workflows:
           filters:
             branches:
               only: master
-      - deployment:
+      - deploy_last_build:
           requires:
             - release_build
           filters:
@@ -219,5 +238,12 @@ workflows:
               ignore:
                 - master
                 - /^release\/.*/
+      - deploy_version_from_env_tag:
+          filters:
+            branches:
+              ignore: /.*/  # only run on matching tag
+            tags:
+              only: /^env-.*/
+
 
 
