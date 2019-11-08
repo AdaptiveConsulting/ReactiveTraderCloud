@@ -1,11 +1,7 @@
-// Import required pages
-import { ProtractorBrowser, ElementFinder, by } from 'protractor'
-import { waitForElementToBeClickable, waitForElementToBeVisible } from '../utils/browser.utils'
+import { ProtractorBrowser } from 'protractor'
 import { getBrowser } from '../browser-manager'
-import { wait } from '../utils/async.utils'
 import { MainPage } from '../pages/main.page'
 import * as assertUtils from '../utils/assert.utils'
-import { TileComponent } from '../pages/tile.component'
 
 let browser: ProtractorBrowser
 let mainPage: MainPage
@@ -86,6 +82,7 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
 
   it('should validate unavailable streaming', async () => {
     await mainPage.workspace.selectCurrency('nzd')
+    await mainPage.tile.setNotional('NZDToUSD', '10m')
     const textStreaming = await mainPage.tile.tradeType.initiateRFQ.labelTextStreamingUnavailable
     expect(textStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
     await mainPage.tile.NZDToUSDRFQ()

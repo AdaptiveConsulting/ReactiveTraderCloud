@@ -1,13 +1,21 @@
 'use strict'
 
+const { EOL } = require('os')
 const { SpecReporter } = require('jasmine-spec-reporter')
 const colors = require('colors')
-const { EOL } = require('os')
+
 
 const CHROME_CAPABILITIES = {
   browserName: 'chrome',
   chromeOptions: {
-    args: ['--start-maximized', '--disable-infobars', '--disable-notifications', '--headless', '--no-sandbox']
+    args: ['--start-maximized', '--disable-infobars', '--disable-notifications', '--no-sandbox']
+  }
+}
+
+const CHROME_CAPABILITIES_HEADLESS = {
+  browserName: 'chrome',
+  chromeOptions: {
+    args: [ ...CHROME_CAPABILITIES.chromeOptions.args, '---headless']
   }
 }
 
@@ -19,11 +27,13 @@ const FIREFOX_CAPABILITIES = {
 }
 
 function getBrowserCapabilities() {
-  const browserName = process.env.BROWSER || 'chrome'
+  const browserName = process.env.BROWSER || 'chromeheadless'
 
   switch (browserName.toLowerCase()) {
     case 'chrome':
       return CHROME_CAPABILITIES
+    case 'chromeheadless':
+        return CHROME_CAPABILITIES_HEADLESS
     case 'firefox':
       return FIREFOX_CAPABILITIES
     default:
@@ -31,12 +41,12 @@ function getBrowserCapabilities() {
   }
 }
 
-exports.config = {
+const config = {
   allScriptsTimeout: 100000,
   framework: 'jasmine',
   directConnect: true,
   maxSessions: 10,
-  specs: ['tmp/*/*.js'],
+  specs: ['./tests/**/*.spec.ts'],
   capabilities: getBrowserCapabilities(),
   jasmineNodeOpts: {
     isVerbose: true,
@@ -44,37 +54,42 @@ exports.config = {
     showColors: true,
     includeStackTrace: true,
     defaultTimeoutInterval: 300000,
-    print: () => {},
+    print: () => { },
   },
-  onPrepare: function() {
-    setUpCustomLocators()
+  onPrepare: function () {
+    setUpCustomLocators();
+    require('ts-node').register()
     jasmine.getEnv().addReporter(new SpecReporter({
-      displayStacktrace: 'all',
-      displaySuccessesSummary: false,
-      displayFailuresSummary: true,
-      displayPendingSummary: true,
-      displaySuccessfulSpec: true,
-      displayFailedSpec: true,
-      displayPendingSpec: false,
-      displaySpecDuration: false,
-      displaySuiteNumber: false,
+      spec: {
+        displayDuration: true,
+        displaySuccessful: true,
+        displayFailed: true,
+        displayErrorMessages: true,
+        displayStacktrace: true
+      },
+      summary: {
+        displayStacktrace: true,
+        displaySuccessful: false,
+        displayFailed: true,
+        displayPending: true,
+      },
       colors: {
-        success: 'green',
-        failure: 'red',
+        successful: 'green',
+        failed: 'red',
         pending: 'yellow'
       },
       prefixes: {
-        success: '✓ ',
-        failure: '✗ ',
+        successful: '✓ ',
+        failed: '✗ ',
         pending: '* '
       },
       customProcessors: []
-    }))
+    }));
   },
-  params: {
-    baseUrl: 'http://localhost:3000/'
-  }
+  baseUrl: 'http://localhost:3000'
 }
+
+module.exports.config = config;
 
 function setUpCustomLocators() {
   by.addLocator('qaTag', (qaTag, parentElement) => {
@@ -107,9 +122,9 @@ function setupBrowserErrorsLogging() {
       .then(logs => {
         const filteredLogs = logs.filter(
           l =>
-          !l.message.includes('/polyfills') &&
-          !l.message.includes('401 (Unauthorized)') &&
-          !l.message.includes('HttpErrorResponse')
+            !l.message.includes('/polyfills') &&
+            !l.message.includes('401 (Unauthorized)') &&
+            !l.message.includes('HttpErrorResponse')
         );
 
         if (filteredLogs.length > 0) {

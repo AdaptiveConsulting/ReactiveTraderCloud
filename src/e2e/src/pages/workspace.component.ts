@@ -1,6 +1,5 @@
-import { by, ElementFinder, ProtractorBrowser } from 'protractor'
-import { waitForElementToBeClickable, waitForElementToBeVisible } from '../utils/browser.utils'
-import { wait } from '../utils/async.utils'
+import { by, ElementFinder, ProtractorBrowser, ExpectedConditions } from 'protractor'
+import { waitForElementToBeClickable} from '../utils/browser.utils'
 
 export class WorkspaceComponent {
   links: Record<string, ElementFinder>
@@ -22,8 +21,11 @@ export class WorkspaceComponent {
     if (!linkElement) {
       throw new Error(`could not find element with symbol ${linkCurrency}`)
     }
+
     await waitForElementToBeClickable(this.browser, linkElement)
+
+    const workspace = await this.root.element(by.qaTag('workspace__tiles-workspace-items'))
     await linkElement.click()
-    await wait(500)
+    await this.browser.wait(() => ExpectedConditions.stalenessOf(workspace), 500)
   }
 }

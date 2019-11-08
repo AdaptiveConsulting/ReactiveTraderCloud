@@ -1,5 +1,9 @@
 {
   "version": "1.0.0",
   "npmClient": "npm",
-  "packages": ["src/client", "src/node-server/*"]
+  "packages": [
+    "src/client",
+    "src/e2e",
+    "src/node-server/*"
+  ]
 }

@@ -7,3 +7,13 @@ services:
     depends_on:
       - servers
     command: dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll
+  e2e:
+    image: ${DOCKER_USER}/e2ebase:${BUILD_VERSION}
+    hostname: e2e
+    container_name: e2e
+    command: 'npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx'
+    depends_on:
+      - e2ebase
+      - client
+      - nginx
+      - servers
