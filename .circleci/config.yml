@@ -16,6 +16,11 @@ commands:
           command: |
             git config --global user.email "${GIT_AUTHOR_NAME}"
             git config --global user.name “${GIT_EMAIL}”
+      - run:
+          name: Default docker user
+          command: |
+            # For fork PRs set the docker user to adaptive
+            echo "export DOCKER_USER=${DOCKER_USER:-adaptive}" >> $BASH_ENV
 
   semver:
     description: "Setup semver version for this release"
@@ -99,18 +104,18 @@ commands:
             # TODO: look for new deployment config from git history
             # TODO: create new environment automatically
             # TODO: validate package exists
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/web-deployment web=${DOCKER_USER}/nginx:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/client-deployment client=${DOCKER_USER}/client:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/pricing-deployment pricing=${DOCKER_USER}/servers:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/pricehistory:${ << parameters.version >> }
-            kubectl --namespace=${ << parameters.environment >> } set image deployments/bot-deployment bot=${DOCKER_USER}/bot:${ << parameters.version >> }
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/web-deployment web=${DOCKER_USER}/nginx:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/client-deployment client=${DOCKER_USER}/client:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/pricing-deployment pricing=${DOCKER_USER}/servers:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/pricehistory:${<< parameters.version >>}
+            kubectl --namespace=${<< parameters.environment >>} set image deployments/bot-deployment bot=${DOCKER_USER}/bot:${<< parameters.version >>}
 
 
   main_pipeline:
@@ -208,7 +213,7 @@ jobs:
                 circleci-agent step halt
             fi
 
-            echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
+            echo "export BUILD_VERSION=$BUILD_VERSION" >> $BASH_ENV
             echo "export DEPLOY_TARGET=$DEPLOY_TARGET" >> $BASH_ENV
       - deploy_to_environment:
           version: BUILD_VERSION
