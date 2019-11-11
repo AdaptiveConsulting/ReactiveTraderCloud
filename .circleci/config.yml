@@ -5,7 +5,7 @@ references:
     client pricehistory bot nlp servers broker eventstore nginx
 
 commands:
-  install_tools:
+  setup_env:
     steps:
       - run:
           name: Install tools
@@ -41,7 +41,6 @@ commands:
             PREVIOUS_TAG="$(semver $(git tag --merged) 1.0.0 | tail -n -1)"
             NEW_TAG="$(semver -i << parameters.bump >> ${PREVIOUS_TAG})"
             echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
-            echo "export DOCKER_USER=$DOCKER_USER" >> $BASH_ENV
             git tag $NEW_TAG -a -m "v$NEW_TAG"
             echo "Created new tag: $(git describe --abbr=0)"
 
@@ -67,6 +66,9 @@ commands:
       - run:
           name: Integration Tests
           command: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
+      - run:
+          name: e2e Tests
+          command: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run e2e
 
   list_images:
     steps:
@@ -142,7 +144,7 @@ commands:
         type: string
     steps:
       - setup_remote_docker
-      - install_tools
+      - setup_env
       - checkout
       - semver:
           bump: << parameters.bump >>

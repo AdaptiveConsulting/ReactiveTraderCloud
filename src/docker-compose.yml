@@ -42,6 +42,11 @@ services:
       args:
         - CI=true
         - REACT_APP_BUILD_VERSION=${BUILD_VERSION}
+  e2ebase:
+    image: ${DOCKER_USER}/e2ebase:${BUILD_VERSION}
+    build:
+      dockerfile: Dockerfile
+      context: ./e2e
   analytics:
     image: ${DOCKER_USER}/analytics:${BUILD_VERSION}
     build:

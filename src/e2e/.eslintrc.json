@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "no-restricted-globals": "off",
+    "@typescript-eslint/no-angle-bracket-type-assertion": "off"
+  },
+  "parserOptions": { "ecmaVersion": 2018 }
+}

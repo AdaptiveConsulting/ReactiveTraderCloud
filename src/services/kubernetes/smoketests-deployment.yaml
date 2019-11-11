@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smoketest-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: smoketest
+  template:
+    metadata:
+      labels:
+        component: smoketest
+    spec:
+      containers:
+        - name: smoketest
+          image: reactivetradercloud/smoketest:3810
+          command:
+            [
+              'sh',
+              '-c',
+              'npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx'
+            ]

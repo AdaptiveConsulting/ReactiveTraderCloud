@@ -1,8 +1,7 @@
-import { ElementFinder, ExpectedConditions as EC, ProtractorBrowser } from 'protractor'
+import { ProtractorBrowser } from 'protractor'
 import { MainPage } from '../pages/main.page'
 import { getBrowser } from '../browser-manager'
-import { waitForElementToBeClickable, waitForElementToBeVisible } from './browser.utils'
-import { wait } from './async.utils'
+import { waitForElementToBeVisible } from './browser.utils'
 
 let mainPage: MainPage
 let browser: ProtractorBrowser
@@ -10,55 +9,49 @@ let browser: ProtractorBrowser
 export async function confirmationMessageAsserts(currencies: string, transaction: string, expectedResult: string, notional: string, timeout: boolean) {
   browser = await getBrowser()
   mainPage = new MainPage(browser)
-  let tradeWord: string
-  let parsedTradeText: string
+  const tradeWord: string = transaction === 'buy' ? 'bought' : 'sold';
   const currency = currencies.slice(0, 3)
-  const tradeSuccessMessage = await mainPage.tile.tradeType.confirmationScreen.labelMessage
-
+  const tradeSuccessElement = await mainPage.tile.tradeType.confirmationScreen.labelMessage
+  let tradeText: string = await tradeSuccessElement.getText()
   // Assert timeout message
   if (timeout === true) {
-    parsedTradeText = (await tradeSuccessMessage.getText())
-    expect(parsedTradeText).toEqual(`Trade Execution taking longer then Expected`)
-    while (parsedTradeText == `Trade Execution taking longer then Expected`) {
-      await wait(500)
-      parsedTradeText = (await tradeSuccessMessage.getText())
-    }
+    expect(tradeText).toEqual(`Trade Execution taking longer then Expected`)
+
+    await browser.wait(async () => {
+      try {
+        await waitForElementToBeVisible(browser, tradeSuccessElement);
+        tradeText = await tradeSuccessElement.getText()
+        return tradeText !== `Trade Execution taking longer then Expected`
+      }
+      catch (ex) {
+        // swallow
+        return false;
+      }
+    }, 10_000)
   }
 
-  // Assert trade success message string
-  if (transaction === 'buy') {
-    parsedTradeText = (await tradeSuccessMessage.getText()).slice(0, 14)
-    tradeWord = 'bought'
-  }
-  else {
-    parsedTradeText = (await tradeSuccessMessage.getText()).slice(0, 12)
-    tradeWord = 'sold'
-  }
-
-  if (expectedResult === 'Success') {
-    expect(parsedTradeText).toEqual(`You ${tradeWord} ${currency}`)
-  }
-  else {
-    expect(await tradeSuccessMessage.getText()).toEqual('Your trade has been rejected')
-  }
-
-  // Assert trade currencies with executed currencies
-  const tradeCurrency = await mainPage.tile.tradeType.confirmationScreen.labelCurrency
+  const tradeCurrency = mainPage.tile.tradeType.confirmationScreen.labelCurrency
   await waitForElementToBeVisible(browser, tradeCurrency)
-  if (!tradeCurrency) {
-    throw new Error(`could not find element with symbol ${tradeCurrency}$`)
-  }
   const displayedCurrency = await tradeCurrency.getText()
   expect(displayedCurrency).toEqual(currencies)
 
-  // Assert notional input value with executed trade notional value
-  await waitForElementToBeVisible(browser, tradeSuccessMessage)
-  const tradeSuccessString = await tradeSuccessMessage.getText()
   if (expectedResult === 'Success') {
+    const shortMessage = transaction === 'buy' ? tradeText.slice(0, 14) : tradeText.slice(0, 12)
+    if (transaction === 'buy') {
+      expect(shortMessage).toEqual(`You bought ${currency}`)
+    }
+    else {
+      expect(shortMessage).toEqual(`You sold ${currency}`)
+    }
+
     const regularExpression = new RegExp('(?<=You ' + tradeWord + ' ' + currency + ' )(\\d{1,3}(,\\d{1,3})?(,\\d{1,3})?(,\\d{1,3})?)+(\\.\\d{2})?')
-    const confirmationNotional = tradeSuccessString.match(regularExpression)[0]
+    const confirmationNotional = tradeText.match(regularExpression)[0]
     expect(notional).toEqual(confirmationNotional)
   }
+  else {
+    expect(tradeText).toEqual('Your trade has been rejected')
+  }
+
 
   // Close the confirmation screen
   const closeButton = await mainPage.tile.tradeType.confirmationScreen.pillButton

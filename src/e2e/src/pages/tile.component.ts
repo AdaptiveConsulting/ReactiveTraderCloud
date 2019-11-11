@@ -101,7 +101,7 @@ export class TileComponent {
 
   async initiateRFQ() {
     const labelTextStreaming = this.tradeType.initiateRFQ.labelTextStreamingUnavailable
-    expect(labelTextStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
+    expect(await labelTextStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
     const buttonRFQ = this.tradeType.initiateRFQ.buttonInitiateRFQ
     await waitForElementToBeClickable(this.browser, buttonRFQ)
     await buttonRFQ.click()
@@ -109,7 +109,7 @@ export class TileComponent {
     await waitForElementToBeClickable(this.browser, buttonReject)
     await buttonReject.click()
     const labelTextExpired = this.tradeType.initiateRFQ.labelTextTradeExpired
-    expect(labelTextExpired.getText()).toEqual('EXPIRED')
+    expect(await labelTextExpired.getText()).toEqual('EXPIRED')
     // To avoid click interception between the elements
     await wait(800)
     const buttonRequote = this.tradeType.initiateRFQ.buttonInitiateRFQ
@@ -128,10 +128,10 @@ export class TileComponent {
     await buttonRFQ.click()
     const buttonSell = this.tradeType.NZDToUSD.sell
     await waitForElementToBeClickable(this.browser, buttonSell)
-    expect(buttonSell.isPresent()).toBe(true)
+    expect(await buttonSell.isPresent()).toBe(true)
     const buttonBuy = this.tradeType.NZDToUSD.buy
     await waitForElementToBeClickable(this.browser, buttonBuy)
-    expect(buttonBuy.isPresent()).toBe(true)
+    expect(await buttonBuy.isPresent()).toBe(true)
     // Wait for button requote to appear after inititiate RFQ timeout
     await wait(RFQ_EXPIRATION_TIMEOUT_MS)
   }
