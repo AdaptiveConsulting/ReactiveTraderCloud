@@ -52,6 +52,15 @@ commands:
           name: Build Images
           command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
 
+  setup_initial_currency_data:
+    steps:
+      - run:
+          name: Setup initial currencies
+          command: |
+            # The eventstore should have a clean set of data, which is populated via the servers
+            docker-compose -f src/docker-compose.yml run servers
+            docker commit eventstore_base ${DOCKER_USER}/eventstore:${BUILD_VERSION}
+
   run_tests:
     description: "Runs the integration tests"
     steps:
@@ -147,6 +156,7 @@ commands:
           root: ~/
           paths: vars/env
       - build_images
+      - setup_initial_currency_data
       - list_images
       - run_tests
 
