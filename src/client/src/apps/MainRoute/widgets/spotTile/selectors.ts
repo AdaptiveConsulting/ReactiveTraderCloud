@@ -1,18 +1,46 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
-import { SpotTileContainerOwnProps } from './SpotTileContainer'
 import { getDefaultNotionalValue } from './components/Tile/TileBusinessLogic';
 import { SpotTileData, SpotTileDataWithNotional } from './model';
 import { CurrencyPair } from 'rt-types';
+import { PriceMovementTypes } from './model/priceMovementTypes';
 
-const getCurrencyPair = (state: GlobalState, props: SpotTileContainerOwnProps) =>
-  state.currencyPairs[props.id]
+const DEFAULT_TILE_DATA: SpotTileDataWithNotional = {
+  notional: 0,
+  isTradeExecutionInFlight: false,
+  historicPrices: [],
+  price: {
+    ask: 0,
+    bid: 0,
+    mid: 0,
+    creationTimestamp: 0,
+    symbol: '',
+    valueDate: '',
+    priceMovementType: PriceMovementTypes.None,
+    priceStale: false,
+  },
+  currencyChartIsOpening: false,
+  lastTradeExecutionStatus: null,
+  rfqState: 'none',
+  rfqPrice: null,
+  rfqReceivedTime: null,
+  rfqTimeout: null
+}
+
+const getCurrencyPair = (state: GlobalState, currencyPairId: string): CurrencyPair =>
+  state.currencyPairs[currencyPairId]
 const selectCurrencyPair = createSelector(
   [getCurrencyPair],
   currencyPair => currencyPair,
 )
 
-function getSpotTileDataWithNotional(spotTileData: SpotTileData, currencyPair: CurrencyPair): SpotTileDataWithNotional {
+function getSpotTileDataWithNotional(spotTileData: SpotTileData/*| undefined*/, currencyPair: CurrencyPair): SpotTileDataWithNotional {
+  // TODO: instead of creating items in the selector, consider creating them in the
+    // reducer (when tile are created, which in turn happens when reference data is created)
+  if (!spotTileData) {
+    return /*spotTileData*/DEFAULT_TILE_DATA
+  }
+
   const validNotional = typeof spotTileData.notional === 'undefined' ?
     getDefaultNotionalValue(currencyPair) : spotTileData.notional
 
@@ -22,11 +50,11 @@ function getSpotTileDataWithNotional(spotTileData: SpotTileData, currencyPair: C
   };
 }
 
-const getSpotTileData = (state: GlobalState, props: SpotTileContainerOwnProps) =>
-  state.spotTilesData[props.id]
+const getSpotTileData = (state: GlobalState, currencyPairId: string) =>
+  state.spotTilesData[currencyPairId]
 const selectSpotTileData = createSelector(
   [getSpotTileData, getCurrencyPair],
-  (spotTileData, currencyPair) => getSpotTileDataWithNotional(spotTileData, currencyPair)
+  (spotTileData: SpotTileData /*| undefined*/, currencyPair: CurrencyPair) => getSpotTileDataWithNotional(spotTileData, currencyPair)
 )
 
 const getPricingStatus = (state: GlobalState) =>

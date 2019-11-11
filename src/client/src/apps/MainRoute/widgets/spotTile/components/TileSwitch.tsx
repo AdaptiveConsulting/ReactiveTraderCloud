@@ -1,7 +1,7 @@
 import React from 'react'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
 import { ExecuteTradeRequest, SpotTileDataWithNotional } from '../model'
-import { PriceMovementTypes } from '../model/priceMovementTypes'
+// import { PriceMovementTypes } from '../model/priceMovementTypes'
 import NotificationContainer, { TileBooking } from './notifications'
 import Tile from './Tile'
 import TileControls from './TileControls'
@@ -102,35 +102,35 @@ const TileSwitch: React.FC<Props> = ({
   )
 }
 
-TileSwitch.defaultProps = {
-  spotTileData: {
-    notional: 0,
-    isTradeExecutionInFlight: false,
-    historicPrices: [],
-    price: {
-      ask: 0,
-      bid: 0,
-      mid: 0,
-      creationTimestamp: 0,
-      symbol: '',
-      valueDate: '',
-      priceMovementType: PriceMovementTypes.None,
-      priceStale: false,
-    },
-    currencyChartIsOpening: false,
-    lastTradeExecutionStatus: null,
-    rfqState: 'none',
-    rfqPrice: null,
-    rfqReceivedTime: null,
-    rfqTimeout: null,
-  },
-  currencyPair: {
-    symbol: '',
-    ratePrecision: 0,
-    pipsPosition: 0,
-    base: '',
-    terms: '',
-  },
-}
+// TileSwitch.defaultProps = {
+//   spotTileData: {
+//     notional: 0,
+//     isTradeExecutionInFlight: false,
+//     historicPrices: [],
+//     price: {
+//       ask: 0,
+//       bid: 0,
+//       mid: 0,
+//       creationTimestamp: 0,
+//       symbol: '',
+//       valueDate: '',
+//       priceMovementType: PriceMovementTypes.None,
+//       priceStale: false,
+//     },
+//     currencyChartIsOpening: false,
+//     lastTradeExecutionStatus: null,
+//     rfqState: 'none',
+//     rfqPrice: null,
+//     rfqReceivedTime: null,
+//     rfqTimeout: null,
+//   },
+//   currencyPair: {
+//     symbol: '',
+//     ratePrecision: 0,
+//     pipsPosition: 0,
+//     base: '',
+//     terms: '',
+//   },
+// }
 
 export default TileSwitch
