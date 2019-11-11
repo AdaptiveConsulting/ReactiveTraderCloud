@@ -1,6 +1,7 @@
 version: '3'
 services:
   eventstore:
+    container_name: eventstore_base
     image: ${DOCKER_USER}/eventstore:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
