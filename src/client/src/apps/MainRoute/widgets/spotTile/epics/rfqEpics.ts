@@ -1,13 +1,14 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { delay, filter, map, mergeMap, takeUntil } from 'rxjs/operators'
-import { ApplicationEpic } from 'StoreTypes'
+import { ApplicationEpic, GlobalState } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import { concat, from, Observable, of, timer } from 'rxjs'
 import { RfqReceived, RfqRequest } from '../model/rfqRequest'
-import { SpotTileState } from '../spotTileDataReducer'
 import { CurrencyPairState } from '../../../data/referenceData'
 import { getDefaultNotionalValue } from '../components/Tile/TileBusinessLogic'
+import { CurrencyPair } from 'rt-types';
+import { SpotTileData } from '../model';
 
 const {
   rfqRequest,
@@ -40,13 +41,13 @@ export const IDLE_TIME_MS = 60000
 const rfqService = (
   request: RfqRequest,
   currencyPairs: CurrencyPairState,
-  spotTilesData: SpotTileState,
+  spotTilesData: SpotTileData,
 ): Observable<RfqReceived> => {
   const randomNumber = 0.3
   const {currencyPair, notional} = request;
   const {symbol} = currencyPair;
   const {pipsPosition} = currencyPairs[symbol]
-  const currentEspPrice = spotTilesData[symbol]!.price // we know price exists since we filtered out that case upsteam
+  const currentEspPrice = spotTilesData.price
   const {ask, bid} = currentEspPrice
   const addSubNumber = randomNumber / Math.pow(10, pipsPosition)
 
@@ -66,17 +67,18 @@ const rfqService = (
   )
 }
 
+function getSpotTilesDataByCurrency(currencyPair: CurrencyPair, state: GlobalState) {
+  const {symbol} = currencyPair;
+  return state.spotTilesData[symbol]
+}
+
 export const rfqRequestEpic: ApplicationEpic<{}> = (action$, state$) =>
   action$.pipe(
     ofType<Action, RfqRequestActionType | RfqRequoteActionType>(
       TILE_ACTION_TYPES.RFQ_REQUEST,
       TILE_ACTION_TYPES.RFQ_REQUOTE,
     ),
-    filter(action => {
-      const {currencyPair} = action.payload;
-      const {symbol} = currencyPair;
-      return state$.value.spotTilesData.hasOwnProperty(symbol)
-    }),
+    filter(action => !!getSpotTilesDataByCurrency(action.payload.currencyPair, state$.value)),
     mergeMap(action => {
       const cancel$ = action$.pipe(
         ofType<Action, RfqCancelActionType | RfqRejectActionType>(
@@ -94,7 +96,7 @@ export const rfqRequestEpic: ApplicationEpic<{}> = (action$, state$) =>
       return rfqService(
         action.payload,
         state$.value.currencyPairs,
-        state$.value.spotTilesData,
+        getSpotTilesDataByCurrency(action.payload.currencyPair, state$.value)!, // we know price exists since we filtered out that case upsteam
       ).pipe(
         map(rfqReceived),
         takeUntil(cancel$),
