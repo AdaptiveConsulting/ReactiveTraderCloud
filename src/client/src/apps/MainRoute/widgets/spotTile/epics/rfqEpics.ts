@@ -43,16 +43,18 @@ const rfqService = (
   spotTilesData: SpotTileState,
 ): Observable<RfqReceived> => {
   const randomNumber = 0.3
-  const { pipsPosition } = currencyPairs[request.currencyPair.symbol]
-  const currentEspPrice = spotTilesData[request.currencyPair.symbol].price
-  const { ask, bid } = currentEspPrice
+  const {currencyPair, notional} = request;
+  const {symbol} = currencyPair;
+  const {pipsPosition} = currencyPairs[symbol]
+  const currentEspPrice = spotTilesData[symbol]!.price // we know price exists since we filtered out that case upsteam
+  const {ask, bid} = currentEspPrice
   const addSubNumber = randomNumber / Math.pow(10, pipsPosition)
 
   return of(true).pipe(
     delay(500),
     map(() => ({
-      notional: request.notional,
-      currencyPair: request.currencyPair,
+      notional,
+      currencyPair,
       price: {
         ...currentEspPrice,
         ask: ask + addSubNumber,
@@ -60,7 +62,7 @@ const rfqService = (
       },
       time: Date.now(),
       timeout: EXPIRATION_TIMEOUT_MS,
-    })),
+    }))
   )
 }
 
@@ -70,6 +72,11 @@ export const rfqRequestEpic: ApplicationEpic<{}> = (action$, state$) =>
       TILE_ACTION_TYPES.RFQ_REQUEST,
       TILE_ACTION_TYPES.RFQ_REQUOTE,
     ),
+    filter(action => {
+      const {currencyPair} = action.payload;
+      const {symbol} = currencyPair;
+      return state$.value.spotTilesData.hasOwnProperty(symbol)
+    }),
     mergeMap(action => {
       const cancel$ = action$.pipe(
         ofType<Action, RfqCancelActionType | RfqRejectActionType>(
@@ -99,7 +106,7 @@ export const rfqReceivedEpic: ApplicationEpic<{}> = action$ =>
   action$.pipe(
     ofType<Action, RfqReceivedActionType>(TILE_ACTION_TYPES.RFQ_RECEIVED),
     mergeMap(action => {
-      const { currencyPair } = action.payload
+      const {currencyPair} = action.payload
       const cancel$ = action$.pipe(
         ofType<Action, RfqReceivedTimerCancellableType>(
           TILE_ACTION_TYPES.RFQ_RESET,
@@ -109,7 +116,7 @@ export const rfqReceivedEpic: ApplicationEpic<{}> = action$ =>
       )
 
       return concat(
-        timer(action.payload.timeout + 1000).pipe(map(() => rfqExpired({ currencyPair }))),
+        timer(action.payload.timeout + 1000).pipe(map(() => rfqExpired({currencyPair}))),
         timer(IDLE_TIME_MS).pipe(
           mergeMap(() =>
             from([
@@ -121,7 +128,7 @@ export const rfqReceivedEpic: ApplicationEpic<{}> = action$ =>
                 symbol: currencyPair.symbol,
                 mode: 'esp',
               }),
-              rfqReset({ currencyPair }),
+              rfqReset({currencyPair}),
             ]),
           ),
         ),

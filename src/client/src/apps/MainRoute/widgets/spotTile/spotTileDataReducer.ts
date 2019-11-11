@@ -4,7 +4,7 @@ import { PriceMovementTypes } from './model/priceMovementTypes'
 import { SpotTileData } from './model/spotTileData'
 
 // we want to let compiler know that values for certain keys might be missing
-export type  SpotTileState = { [currencyPair: string]: SpotTileData /*| undefined*/ }
+export type  SpotTileState = { [currencyPair: string]: SpotTileData | undefined }
 
 const INITIAL_STATE: SpotTileState = {}
 

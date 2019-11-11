@@ -5,8 +5,7 @@ import { SpotTileData, SpotTileDataWithNotional } from './model';
 import { CurrencyPair } from 'rt-types';
 import { PriceMovementTypes } from './model/priceMovementTypes';
 
-const DEFAULT_TILE_DATA: SpotTileDataWithNotional = {
-  notional: 0,
+const DEFAULT_TILE_DATA: SpotTileData = {
   isTradeExecutionInFlight: false,
   historicPrices: [],
   price: {
@@ -34,11 +33,11 @@ const selectCurrencyPair = createSelector(
   currencyPair => currencyPair,
 )
 
-function getSpotTileDataWithNotional(spotTileData: SpotTileData/*| undefined*/, currencyPair: CurrencyPair): SpotTileDataWithNotional {
+function getSpotTileDataWithNotional(spotTileData: SpotTileData | undefined, currencyPair: CurrencyPair): SpotTileDataWithNotional {
   // TODO: instead of creating items in the selector, consider creating them in the
-    // reducer (when tile are created, which in turn happens when reference data is created)
+  // reducer (when tiles are created, which in turn happens when reference data is created)
   if (!spotTileData) {
-    return /*spotTileData*/DEFAULT_TILE_DATA
+    spotTileData = DEFAULT_TILE_DATA
   }
 
   const validNotional = typeof spotTileData.notional === 'undefined' ?
@@ -54,7 +53,7 @@ const getSpotTileData = (state: GlobalState, currencyPairId: string) =>
   state.spotTilesData[currencyPairId]
 const selectSpotTileData = createSelector(
   [getSpotTileData, getCurrencyPair],
-  (spotTileData: SpotTileData /*| undefined*/, currencyPair: CurrencyPair) => getSpotTileDataWithNotional(spotTileData, currencyPair)
+  (spotTileData: SpotTileData | undefined, currencyPair: CurrencyPair) => getSpotTileDataWithNotional(spotTileData, currencyPair)
 )
 
 const getPricingStatus = (state: GlobalState) =>
