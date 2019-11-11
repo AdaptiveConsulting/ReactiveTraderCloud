@@ -188,7 +188,13 @@ jobs:
           at: ~/
       - run:
           name: "Retrieve deployment parameters"
-          command: source ~/vars/env
+          command: |
+            source ~/vars/env
+            echo "Loaded deploy params from last release_build."
+            echo "BUILD_VERSION=$BUILD_VERSION"
+            echo "DEPLOY_TARGET=$DEPLOY_TARGET"
+            echo "export BUILD_VERSION=$BUILD_VERSION" >> $BASH_ENV
+            echo "export DEPLOY_TARGET=$DEPLOY_TARGET" >> $BASH_ENV
       - deploy_to_environment:
           version: BUILD_VERSION
           environment: DEPLOY_TARGET
