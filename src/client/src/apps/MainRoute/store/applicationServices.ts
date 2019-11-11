@@ -13,12 +13,12 @@ import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
 import { retryWhen, multicast, refCount } from 'rxjs/operators'
 import { referenceDataService } from '../data/referenceData'
-import { LimitChecker, ExcelApp, PlatformAdapter } from 'rt-platforms'
+import { LimitChecker, ExcelApp, Platform } from 'rt-platforms'
 const HEARTBEAT_TIMEOUT = 3000
 
 export interface ApplicationProps {
   autobahn: AutobahnConnection
-  platform: PlatformAdapter
+  platform: Platform
   limitChecker: LimitChecker
   excelApp: ExcelApp
   user: User

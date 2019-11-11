@@ -1,4 +1,10 @@
-import { excelIcon, limitCheckerIcon, reactiveAnalyticsIcon, reactiveTraderIcon, searchIcon, } from './icons/index'
+import {
+  excelIcon,
+  limitCheckerIcon,
+  reactiveAnalyticsIcon,
+  reactiveTraderIcon,
+  searchIcon,
+} from './icons/index'
 import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
 
 // Safer than location.origin due to browser support
@@ -39,7 +45,7 @@ const excelPreloadScripts: fin.DownloadPreloadOption[] = [
 
 type ApplicationType = 'window' | 'download' | 'application' | 'excel'
 
-interface Provider {
+export interface ApplicationProvider {
   platformName: PlatformName
   applicationType: ApplicationType
   windowOptions?: OpenFinWindowOptions
@@ -49,7 +55,7 @@ export interface ApplicationConfig {
   name: string
   url?: string
   icon: JSX.Element
-  provider?: Provider
+  provider?: ApplicationProvider
 }
 
 const excelJSAppConfig: ApplicationConfig = {
@@ -111,7 +117,7 @@ const baseAppConfigs: ApplicationConfig[] = [
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
-        frame: true,
+        frame: false,
         icon: `${ORIGIN}/static/media/ra-icon.ico`,
       },
     },

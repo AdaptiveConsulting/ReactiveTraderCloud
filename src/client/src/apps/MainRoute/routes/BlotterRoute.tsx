@@ -3,7 +3,7 @@ import { styled } from 'rt-theme'
 import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router'
 import { BlotterContainer, BlotterFilters, DEALT_CURRENCY, SYMBOL } from '../widgets/blotter'
-import { InteropTopics, usePlatform } from 'rt-platforms'
+import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
 import { Subscription } from 'rxjs'
 
 const BlotterContainerStyle = styled('div')`
@@ -57,7 +57,7 @@ const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
     }
     let filterSubscription: Subscription
 
-    if (platform.hasFeature('interop')) {
+    if (platformHasFeature(platform, 'interop')) {
       const blotterFilters$ = platform.interop.subscribe$(InteropTopics.FilterBlotter)
       filterSubscription = blotterFilters$.subscribe(setFiltersFromInterop)
     }

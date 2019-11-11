@@ -1,16 +1,29 @@
-import { BasePlatformAdapter } from '../platformAdapter'
-import { WindowConfig, AppConfig } from '../types'
+import { Platform } from '../platform'
+import { AppConfig, WindowConfig } from '../types'
 import { fromEventPattern } from 'rxjs'
+import DefaultRoute from '../defaultRoute'
+import Logo from '../logo'
+import { createDefaultPlatformWindow } from '../defaultPlatformWindow'
 
-export class Finsemble extends BasePlatformAdapter {
+export class Finsemble implements Platform {
   readonly name = 'finsemble'
   readonly type = 'desktop'
   readonly allowTearOff = true
+  style = {
+    height: 'calc(100% - 25px)',
+  }
+  epics = []
+  PlatformHeader = () => null
+  PlatformControls = () => null
+  PlatformRoute = DefaultRoute
+  Logo = Logo
 
   window = {
-    close: () => window.close(),
-
-    open: (config: WindowConfig, onClose?: () => void) => Promise.resolve(window.open()),
+    ...createDefaultPlatformWindow(window),
+    open: (config: WindowConfig, onClose?: () => void) => {
+      const createdWindow = window.open()
+      return Promise.resolve(createdWindow ? createDefaultPlatformWindow(createdWindow) : undefined)
+    },
   }
 
   fdc3 = {
@@ -69,10 +82,6 @@ export class Finsemble extends BasePlatformAdapter {
 
     publish: (topic: string, message: string | object) =>
       window.FSBL && window.FSBL.Clients.RouterClient.transmit(topic, message),
-  }
-
-  style = {
-    height: 'calc(100% - 25px)',
   }
 
   notification = {

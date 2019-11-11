@@ -7,6 +7,7 @@ import { spotTileEpic } from './spotTileEpics'
 import { publishTradeExecutedEpic } from './tradeExecutedEpic'
 import { ApplicationDependencies } from 'apps/MainRoute/store/applicationServices'
 import { rfqRequestEpic, rfqReceivedEpic } from './rfqEpics'
+import { platformHasFeature } from 'rt-platforms'
 
 export default ({ platform }: ApplicationDependencies) => {
   const epics = [
@@ -17,11 +18,11 @@ export default ({ platform }: ApplicationDependencies) => {
     pricingHistoryEpic,
   ]
 
-  if (platform.hasFeature('interop')) {
+  if (platformHasFeature(platform, 'interop')) {
     epics.push(publishPriceUpdateEpic, publishTradeExecutedEpic, closePositionEpic)
   }
 
-  if (platform.hasFeature('app')) {
+  if (platformHasFeature(platform, 'app')) {
     epics.push(displayCurrencyChartEpic)
   }
 

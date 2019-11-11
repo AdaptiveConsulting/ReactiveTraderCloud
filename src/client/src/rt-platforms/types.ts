@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs'
-
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
 export type PlatformType = 'browser' | 'desktop'
 
@@ -29,21 +27,6 @@ export interface AppConfig {
   uuid?: string
   payload?: string | object
   topic?: string
-}
-
-export interface PlatformFeatures {
-  app: AppInterop
-  interop: PubSubInterop
-  share: (object: any) => {}
-}
-
-interface PubSubInterop {
-  subscribe$: (topic: string) => Observable<any>
-  publish: (topic: string, message: any) => void
-}
-
-interface AppInterop {
-  open: (id: string, config: AppConfig) => Promise<string>
 }
 
 export enum InteropTopics {

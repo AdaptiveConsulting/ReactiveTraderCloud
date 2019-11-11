@@ -5,7 +5,7 @@ import { map, switchMapTo, withLatestFrom } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions } from '../actions'
 import { SpotTileData } from '../model/spotTileData'
-import { InteropTopics } from 'rt-platforms'
+import { InteropTopics, platformHasFeature } from 'rt-platforms'
 import { EMPTY } from 'rxjs'
 
 interface Msg {
@@ -33,7 +33,7 @@ function createTrade(msg: Msg, priceData: SpotTileData, currencyPair: CurrencyPa
 }
 
 export const closePositionEpic: ApplicationEpic = (action$, state$, { platform }) => {
-  if (!platform.hasFeature('interop')) {
+  if (!platformHasFeature(platform, 'interop')) {
     return EMPTY
   }
 

@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import SpotTileContainer from '../widgets/spotTile/SpotTileContainer'
 import { TileViews } from '../widgets/workspace/workspaceHeader'
 import { styled } from 'rt-theme'
-import { InteropTopics, usePlatform } from 'rt-platforms'
+import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
 import { Subscription } from 'rxjs'
 
 const SpotTileStyle = styled.div`
@@ -33,13 +33,14 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   const platform = usePlatform()
   const [ccyPairFromInterop, setCcyPairFromInterop] = useState<ReadonlyArray<string>>()
 
+  // TODO: ccyPair from interop has to be in the hook or in the  store, same for BlotterRoute, but don't leave them here (side-effects)
   useEffect(() => {
     if (!platform) {
       return
     }
     let ccyPairSubscription: Subscription
 
-    if (platform.hasFeature('interop')) {
+    if (platformHasFeature(platform, 'interop')) {
       const blotterFilters$ = platform.interop.subscribe$(InteropTopics.FilterCurrencyPair)
       ccyPairSubscription = blotterFilters$.subscribe(setCcyPairFromInterop)
     }

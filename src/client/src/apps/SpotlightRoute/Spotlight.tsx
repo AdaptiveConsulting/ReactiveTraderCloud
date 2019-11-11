@@ -13,7 +13,7 @@ import { initialState, reducer } from './reducer'
 import { useServiceStub } from './context'
 import { take, tap, timeout } from 'rxjs/operators'
 import { DetectIntentResponse } from 'dialogflow'
-import { PlatformAdapter, usePlatform } from 'rt-platforms'
+import { Platform, usePlatform } from 'rt-platforms'
 import { handleIntent } from './handleIntent'
 import { getCurrency, getCurrencyPair, getNumber } from './intentUtils'
 import { isSpotQuoteIntent, isTradeIntent, mapIntent } from './responseMapper'
@@ -84,7 +84,7 @@ function getDirectoryAppsComponent(
   )
 }
 
-function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: PlatformAdapter) {
+function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: Platform) {
   const currencyPair = getCurrencyPair(response.queryResult)
   const currency = getCurrency(response.queryResult)
   const blotterFilter: BlotterFilters = {
@@ -108,7 +108,7 @@ function getInlineSuggestionsComponent(response: DetectIntentResponse, platform:
   )
 }
 
-function getNonDirectoryAppsComponent(response: DetectIntentResponse, platform: PlatformAdapter) {
+function getNonDirectoryAppsComponent(response: DetectIntentResponse, platform: Platform) {
   const intent = mapIntent(response)
   return <Suggestion onClick={() => handleIntent(response, platform)}>{intent}</Suggestion>
 }

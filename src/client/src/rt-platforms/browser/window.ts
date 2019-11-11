@@ -1,12 +1,17 @@
 /* eslint-disable no-restricted-globals */
 
 import { WindowConfig } from '../types'
+import { PlatformWindow } from '../platformWindow'
+import { createDefaultPlatformWindow } from '../defaultPlatformWindow'
 
 type BrowserWindowProps = WindowConfig
 
 let openPopoutWindows: Window[] = []
 
-export function openBrowserWindow(config: BrowserWindowProps, onClose?: () => void) {
+export function openBrowserWindow(
+  config: BrowserWindowProps,
+  onClose?: () => void,
+): Promise<PlatformWindow | undefined> {
   const { name, width, height, center, url } = config
   const prevWindow = openPopoutWindows[openPopoutWindows.length - 1]
   const windowReferencePosition = prevWindow
@@ -50,7 +55,7 @@ export function openBrowserWindow(config: BrowserWindowProps, onClose?: () => vo
     openPopoutWindows = openPopoutWindows.concat(win)
   }
 
-  return Promise.resolve(win)
+  return Promise.resolve(win ? createDefaultPlatformWindow(win) : undefined)
 }
 
 function calculatePosition(

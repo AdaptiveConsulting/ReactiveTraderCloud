@@ -3,9 +3,9 @@ import FakeUserRepository from '../fakeUserRepository'
 import { createApplicationServices } from './applicationServices'
 import configureStore from './configureStore'
 import { ConnectionActions, SetupActions } from 'rt-actions'
-import { createExcelApp, createLimitChecker, PlatformAdapter } from 'rt-platforms'
+import { createExcelApp, createLimitChecker, Platform } from 'rt-platforms'
 
-export const createStore = async (platform: PlatformAdapter) => {
+export const createStore = async (platform: Platform) => {
   const store = configureStore(
     createApplicationServices({
       autobahn: new AutobahnConnectionProxy(

@@ -1,11 +1,11 @@
 import { DetectIntentResponse } from 'dialogflow'
 import { MARKET_INFO_INTENT, SPOT_QUOTE_INTENT, TRADES_INFO_INTENT } from './intents'
-import { PlatformAdapter } from 'rt-platforms'
+import { Platform } from 'rt-platforms'
 import { showBlotter, showCurrencyPair, showMarket } from './intent-handlers'
 import { getCurrency, getCurrencyPair, getIntentDisplayName, getNumber } from './intentUtils'
 import { BlotterFilters } from '../MainRoute/widgets/blotter'
 
-export const handleIntent = (response: DetectIntentResponse, platformAdapter: PlatformAdapter) => {
+export const handleIntent = (response: DetectIntentResponse, platform: Platform) => {
   const queryResult = response.queryResult
   const intentDisplayName = getIntentDisplayName(queryResult)
   switch (intentDisplayName) {
@@ -15,11 +15,11 @@ export const handleIntent = (response: DetectIntentResponse, platformAdapter: Pl
         console.error(`No currency pair in queryResult`)
         return
       }
-      showCurrencyPair(currencyPair, platformAdapter)
+      showCurrencyPair(currencyPair, platform)
       return
     }
     case MARKET_INFO_INTENT:
-      showMarket(platformAdapter)
+      showMarket(platform)
       return
     case TRADES_INFO_INTENT: {
       const currencyPair = getCurrencyPair(queryResult)
@@ -29,7 +29,7 @@ export const handleIntent = (response: DetectIntentResponse, platformAdapter: Pl
         symbol: [currencyPair],
         count: getNumber(queryResult),
       }
-      showBlotter(filters, platformAdapter)
+      showBlotter(filters, platform)
       return
     }
     default:
