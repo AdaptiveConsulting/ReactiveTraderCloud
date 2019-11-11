@@ -11,8 +11,6 @@ namespace Adaptive.ReactiveTrader.Server.Host
 {
     public class App
     {
-        public const int ThreadSleep = 5000;
-        //private static readonly ILogger Log = Log.ForContext<App>();
         private readonly string[] _args;
         private readonly IServiceHostFactory _factory;
         private readonly ManualResetEvent _reset = new ManualResetEvent(false);
@@ -54,8 +52,6 @@ namespace Adaptive.ReactiveTrader.Server.Host
                 using (var connectionFactory = BrokerConnectionFactory.Create(config.Broker))
                 {
                     var brokerStream = connectionFactory.GetBrokerStream();
-
-
                     var esFactory = _factory as IServiceHostFactoryWithEventStore;
 
                     if (esFactory != null)
@@ -70,7 +66,6 @@ namespace Adaptive.ReactiveTrader.Server.Host
                         using (esFactory.Initialize(brokerStream, esStream))
                         {
                             connectionFactory.Start();
-
                             _reset.WaitOne();
                         }
                     }
@@ -96,7 +91,6 @@ namespace Adaptive.ReactiveTrader.Server.Host
                 EventStoreConnectionFactory.Create(
                     EventStoreLocation.External,
                     configuration);
-
 
             return eventStoreConnection;
         }

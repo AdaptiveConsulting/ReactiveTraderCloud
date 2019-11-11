@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Contract;
 using Serilog;
@@ -7,7 +7,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 {
     public class AnalyticsService : IAnalyticsService
     {
-        //private static readonly ILogger Log = Log.ForContext<AnalyticsService>();
         private readonly AnalyticsEngine _analyticsEngine;
 
         public AnalyticsService(AnalyticsEngine analyticsEngine)

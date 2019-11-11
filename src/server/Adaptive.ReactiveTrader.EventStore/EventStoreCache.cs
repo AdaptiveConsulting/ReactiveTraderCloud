@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
@@ -171,7 +171,12 @@ namespace Adaptive.ReactiveTrader.EventStore
                     });
                 };
 
-                var subscription = connection.SubscribeToAllFrom(Position.Start, false, onEvent, onCaughtUp);
+                var subscriptionSettings = new CatchUpSubscriptionSettings(
+                    CatchUpSubscriptionSettings.Default.MaxLiveQueueSize,
+                    CatchUpSubscriptionSettings.Default.ReadBatchSize,
+                    CatchUpSubscriptionSettings.Default.VerboseLogging,
+                    false);
+                var subscription = connection.SubscribeToAllFrom(Position.Start, subscriptionSettings, onEvent, onCaughtUp);
                 var guid = Guid.Empty;
 
                 if (_log.IsEnabled(LogEventLevel.Information))

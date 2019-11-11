@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using Adaptive.ReactiveTrader.Common.Config;
 using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.EventStore.Connection
 {
-    public class EventStoreConnectionFactory
+    public static class EventStoreConnectionFactory
     {
         public static IEventStoreConnection Create(EventStoreLocation eventStoreLocation, IEventStoreConfiguration configuration)
         {

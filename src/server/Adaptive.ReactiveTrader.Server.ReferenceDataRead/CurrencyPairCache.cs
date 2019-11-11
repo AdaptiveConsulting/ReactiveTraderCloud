@@ -15,7 +15,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
         private const string CurrencyPairChangedEventType = "CurrencyPairChangedEvent";
         private const string CurrencyPairActivatedEventType = "CurrencyPairActivatedEvent";
         private const string CurrencyPairDeactivatedEventType = "CurrencyPairDeactivatedEvent";
-        //protected static readonly Serilog.ILogger Log = Serilog.Log.ForContext<CurrencyPairCache>();
 
         private static readonly ISet<string> CurrencyPairEventTypes = new HashSet<string>
         {

@@ -13,7 +13,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
     public class ReferenceReadServiceHost : ServiceHostBase
     {
-        //private new static readonly ILogger Log = Log.ForContext<ReferenceReadServiceHost>();
         private readonly IBroker _broker;
         private readonly IReferenceService _service;
         private int _clients;

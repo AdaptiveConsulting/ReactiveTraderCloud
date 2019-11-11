@@ -10,7 +10,7 @@ using Adaptive.ReactiveTrader.EventStore;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
-    public class ReferenceDataWriteServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
+    public class ReferenceDataWriteServiceHostFactory : IServiceHostFactoryWithEventStore
     {
         private readonly SerialDisposable _cleanup = new SerialDisposable();
 

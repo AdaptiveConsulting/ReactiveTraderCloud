@@ -8,7 +8,7 @@ using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
-    public class BlotterServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
+    public class BlotterServiceHostFactory : IServiceHostFactoryWithEventStore
     {
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
         private TradeCache _cache;

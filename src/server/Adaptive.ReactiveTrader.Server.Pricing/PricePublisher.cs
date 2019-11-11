@@ -9,8 +9,6 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     internal class PricePublisher : IDisposable
     {
-        //protected static readonly ILogger Log = Log.ForContext<PricePublisher>();
-
         private readonly IBroker _broker;
         private readonly IObservable<SpotPriceDto> _priceStream;
         private IDisposable _disp = Disposable.Empty;

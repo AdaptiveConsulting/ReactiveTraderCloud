@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Host;
@@ -6,7 +6,7 @@ using EventStore.ClientAPI;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
-    public class AnalyticsServiceHostFactory : IServiceHostFactoryWithEventStore, IDisposable
+    public class AnalyticsServiceHostFactory : IServiceHostFactoryWithEventStore
     {
         private TradeCache _cache;
 

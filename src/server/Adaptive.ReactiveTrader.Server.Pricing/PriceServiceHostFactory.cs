@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
@@ -9,10 +9,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 {
     public class PriceServiceHostFactory : IServiceHostFactory
     {
-        //protected static readonly ILogger Log = Log.ForContext<PriceServiceHostFactory>();
-
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
-
         private readonly PricingService _service;
 
         public PriceServiceHostFactory()

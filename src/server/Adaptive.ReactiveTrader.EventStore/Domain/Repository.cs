@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,7 +18,6 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
     {
         private const int WritePageSize = 500;
         private const int ReadPageSize = 500;
-        //private static readonly ILogger Log = Log.ForContext<Repository>();
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.None};
         private readonly IEventStoreConnection _eventStoreConnection;
         private readonly EventTypeResolver _eventTypeResolver;

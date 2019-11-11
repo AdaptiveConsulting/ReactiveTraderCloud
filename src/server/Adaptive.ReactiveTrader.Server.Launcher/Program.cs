@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -14,13 +14,13 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
         private LauncherConfig _config;
         
         private static readonly ConsoleLogger Log = new ConsoleLogger();
-        
-        public Program(IServiceLauncher serviceLauncher)
+
+        private Program(IServiceLauncher serviceLauncher)
         {
             _launcher = serviceLauncher;
         }
 
-        public void Run(LauncherConfig config)
+        private void Run(LauncherConfig config)
         {
             _config = config;
 
@@ -119,7 +119,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             }
         }
 
-        public bool ParseCommand(string input)
+        private bool ParseCommand(string input)
         {
             var command = input.ToLower();
 
@@ -186,7 +186,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             p.Run(ArgumentParser.GetLauncherConfig(args));
         }
 
-        public void Stop()
+        private void Stop()
         {
             _terminationSignal.Set();
             _running = false;

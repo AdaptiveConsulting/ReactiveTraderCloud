@@ -4,7 +4,7 @@ namespace Adaptive.ReactiveTrader.Contract
 {
     public class CurrencyPairUpdatesDto
     {
-        public static CurrencyPairUpdatesDto Empty = new CurrencyPairUpdatesDto(new CurrencyPairUpdateDto[0], false, false);
+        public static readonly CurrencyPairUpdatesDto Empty = new CurrencyPairUpdatesDto(new CurrencyPairUpdateDto[0], false, false);
 
         public CurrencyPairUpdatesDto(IList<CurrencyPairUpdateDto> updates, bool isStateOfTheWorld, bool isStale)
         {
