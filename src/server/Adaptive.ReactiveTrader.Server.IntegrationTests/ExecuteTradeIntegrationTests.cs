@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
-using System.Threading;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
@@ -20,9 +19,6 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         private readonly IWampChannel _channel;
         private readonly string _executionServiceInstance;
         private readonly IObservable<dynamic> _heartbeatStream;
-        private readonly CancellationTokenSource _timeoutCancellationTokenSource;
-        private string _analyticsServiceInstance;
-        private string _blotterServiceInstance;
 
         public ExecuteTradeIntegrationTests()
         {
@@ -33,30 +29,18 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                                        .Publish()
                                        .RefCount();
 
-            _executionServiceInstance = _heartbeatStream
-                .Where(hb => hb.Type == ServiceTypes.Execution)
-                .Select(hb => hb.Instance)
-                .Take(1)
-                .Timeout(ResponseTimeout)
-                .ToTask()
-                .Result;
-
-            _timeoutCancellationTokenSource = new CancellationTokenSource();
+            _executionServiceInstance = GetInstanceName(ServiceTypes.Execution).Result;
         }
 
         [Fact]
         public async void ShouldReceiveExecutedTradeInBlotter()
         {
-            var pass = false;
             var testCcyPair = "XXXXXB";
-
-            _blotterServiceInstance = await _heartbeatStream
-                .Where(hb => hb.Type == ServiceTypes.Blotter)
-                .Select(hb => hb.Instance)
-                .Take(1);
+            var asyncAssertion = new TaskCompletionSource<bool>();
+            var blotterServiceInstance = await GetInstanceName(ServiceTypes.Blotter);
 
             // this is the callback when the blotter receives the executed trade notification
-            Action<dynamic> blotterCallbackAssertion = d =>
+            void BlotterCallbackAssertion(dynamic d)
             {
                 foreach (var dto in d)
                 {
@@ -66,44 +50,35 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                         {
                             Console.WriteLine(dto);
                             // set the assertion
-                            pass = true;
-                            _timeoutCancellationTokenSource.Cancel(false);
+                            asyncAssertion.SetResult(true);
                             return;
                         }
                     }
                 }
-            };
+            }
 
-            await _channel.RealmProxy.TopicContainer
-                          .GetTopicByUri(BlotterUpdatesReplyTo)
-                          .Subscribe(new WampSubscriber(blotterCallbackAssertion), new SubscribeOptions());
+            await SetupAssertionListener(BlotterUpdatesReplyTo, BlotterCallbackAssertion);
 
             // subscribe to blotter with the callback
-            _channel.RealmProxy.RpcCatalog.Invoke(
-                new RpcCallback(() => { }),
-                new CallOptions(),
-                $"{_blotterServiceInstance}.getTradesStream",
-                new object[] {new {ReplyTo = BlotterUpdatesReplyTo, Payload = new NothingDto()}});
+            Subscribe(blotterServiceInstance, "getTradesStream", BlotterUpdatesReplyTo);
 
-            // call execute trade
-            await CallExecuteTrade(testCcyPair);
+            CallExecuteTrade(testCcyPair);
+
+            var pass = await asyncAssertion.Task.ToObservable().Timeout(ResponseTimeout, Observable.Return(false)).Take(1);
 
             Assert.True(pass);
         }
 
+
         [Fact]
         public async void ShouldReceiveExecutedTradeInAnalytics()
         {
-            var pass = false;
             var testCcyPair = "XXXXXA";
-
-            _analyticsServiceInstance = await _heartbeatStream
-                .Where(hb => hb.Type == ServiceTypes.Analytics)
-                .Select(hb => hb.Instance)
-                .Take(1);
+            var asyncAssertion = new TaskCompletionSource<bool>();
+            var analyticsServiceInstance = await GetInstanceName(ServiceTypes.Analytics);
 
             // this is the callback when the analytics svc receives the executed trade notification
-            Action<dynamic> analyticsCallbackAssertion = d =>
+            void AnalyticsCallbackAssertion(dynamic d)
             {
                 foreach (var dto in d)
                 {
@@ -113,31 +88,52 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                         {
                             Console.WriteLine(currentPosition);
                             // set the assertion
-                            pass = true;
-                            _timeoutCancellationTokenSource.Cancel(false);
+                            asyncAssertion.SetResult(true);
+                            return;
                         }
                     }
                 }
-            };
+            }
 
-            await _channel.RealmProxy.TopicContainer
-                          .GetTopicByUri(AnalyticsUpdatesReplyTo)
-                          .Subscribe(new WampSubscriber(analyticsCallbackAssertion), new SubscribeOptions());
+            await SetupAssertionListener(AnalyticsUpdatesReplyTo, AnalyticsCallbackAssertion);
 
             // subscribe to analytics with the callback
-            _channel.RealmProxy.RpcCatalog.Invoke(
-                new RpcCallback(() => { }),
-                new CallOptions(),
-                $"{_analyticsServiceInstance}.getAnalytics",
-                new object[] {new {ReplyTo = AnalyticsUpdatesReplyTo, Payload = new NothingDto()}});
+            Subscribe(analyticsServiceInstance, "getAnalytics", AnalyticsUpdatesReplyTo);
 
-            // call execute trade
-            await CallExecuteTrade(testCcyPair);
+            CallExecuteTrade(testCcyPair);
+
+            var pass = await asyncAssertion.Task.ToObservable().Timeout(ResponseTimeout, Observable.Return(false)).Take(1);
 
             Assert.True(pass);
         }
 
-        private async Task CallExecuteTrade(string testCcyPair)
+        private Task<dynamic> GetInstanceName(string serviceType)
+        {
+            return _heartbeatStream
+                .Where(hb => hb.Type == serviceType)
+                .Select(hb => hb.Instance.ToString())
+                .Take(1)
+                .Timeout(ResponseTimeout)
+                .ToTask();
+        }
+
+        private async Task SetupAssertionListener(string topic, Action<dynamic> callbackAssertion)
+        {
+            await _channel.RealmProxy.TopicContainer
+                .GetTopicByUri(topic)
+                .Subscribe(new WampSubscriber(callbackAssertion), new SubscribeOptions());
+        }
+
+        private void Subscribe(string instanceName, string methodName, string replyTo)
+        {
+            _channel.RealmProxy.RpcCatalog.Invoke(
+                new RpcCallback(() => { }),
+                new CallOptions(),
+                $"{instanceName}.{methodName}",
+                new object[] { new { ReplyTo = replyTo, Payload = new NothingDto() } });
+        }
+
+        private void CallExecuteTrade(string testCcyPair)
         {
             // call execute trade
             _channel.RealmProxy.RpcCatalog.Invoke(
@@ -160,16 +156,6 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                         }
                     }
                 });
-
-            try
-            {
-                // set timeout
-                await Task.Delay(ResponseTimeout, _timeoutCancellationTokenSource.Token);
-                Console.WriteLine($"Test timed out after {ResponseTimeout.TotalSeconds} seconds");
-            }
-            catch (TaskCanceledException)
-            {
-            }
         }
     }
 }
