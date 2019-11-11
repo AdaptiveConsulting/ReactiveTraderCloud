@@ -1,6 +1,6 @@
 import React from 'react'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
-import { ExecuteTradeRequest, SpotTileData } from '../model'
+import { ExecuteTradeRequest, SpotTileDataWithNotional } from '../model'
 import { PriceMovementTypes } from '../model/priceMovementTypes'
 import NotificationContainer, { TileBooking } from './notifications'
 import Tile from './Tile'
@@ -9,11 +9,10 @@ import { TileViews } from '../../workspace/workspaceHeader'
 import { RfqActions, TileSwitchChildrenProps, TradingMode } from './types'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
 import { CurrencyPairNotional } from '../model/spotTileData'
-import { getDefaultInitialNotionalValue } from './Tile/TileBusinessLogic'
 
 interface Props {
   currencyPair: CurrencyPair
-  spotTileData: SpotTileData
+  spotTileData: SpotTileDataWithNotional
   canPopout: boolean
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
@@ -47,18 +46,10 @@ const TileSwitch: React.FC<Props> = ({
     isRfqStateNone,
   } = getConstsFromRfqState(spotTileData.rfqState)
 
-  const spotTileDataWithNotional =
-    spotTileData.notional === null
-      ? {
-          ...spotTileData,
-          notional: getDefaultInitialNotionalValue(currencyPair),
-        }
-      : spotTileData
-
   return (
     <Tile
       currencyPair={currencyPair}
-      spotTileData={spotTileDataWithNotional}
+      spotTileData={spotTileData}
       executeTrade={executeTrade}
       executionStatus={executionStatus}
       tileView={tileView}

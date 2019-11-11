@@ -20,8 +20,11 @@ export interface SpotTileData {
   rfqReceivedTime: number | null
   rfqTimeout: number | null
   rfqPrice: SpotPriceTick | null
-  notional: number
+  notional?: number
 }
+
+type SpotTileDataNotional = Pick<SpotTileData, 'notional'>
+export type SpotTileDataWithNotional = SpotTileData & Required<SpotTileDataNotional>
 
 export interface CurrencyPairNotional {
   currencyPair: string

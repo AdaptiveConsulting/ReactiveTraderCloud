@@ -1,6 +1,9 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
 import { SpotTileContainerOwnProps } from './SpotTileContainer'
+import { getDefaultNotionalValue } from './components/Tile/TileBusinessLogic';
+import { SpotTileData, SpotTileDataWithNotional } from './model';
+import { CurrencyPair } from 'rt-types';
 
 const getCurrencyPair = (state: GlobalState, props: SpotTileContainerOwnProps) =>
   state.currencyPairs[props.id]
@@ -9,11 +12,21 @@ const selectCurrencyPair = createSelector(
   currencyPair => currencyPair,
 )
 
+function getSpotTileDataWithNotional(spotTileData: SpotTileData, currencyPair: CurrencyPair): SpotTileDataWithNotional {
+  const validNotional = typeof spotTileData.notional === 'undefined' ?
+    getDefaultNotionalValue(currencyPair) : spotTileData.notional
+
+  return {
+    ...spotTileData,
+    notional: validNotional
+  };
+}
+
 const getSpotTileData = (state: GlobalState, props: SpotTileContainerOwnProps) =>
   state.spotTilesData[props.id]
 const selectSpotTileData = createSelector(
-  [getSpotTileData],
-  spotTileData => spotTileData,
+  [getSpotTileData, getCurrencyPair],
+  (spotTileData, currencyPair) => getSpotTileDataWithNotional(spotTileData, currencyPair)
 )
 
 const getPricingStatus = (state: GlobalState) =>

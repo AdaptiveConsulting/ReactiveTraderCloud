@@ -1,13 +1,13 @@
 import React from 'react'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import { createTradeRequest, ExecuteTradeRequest, SpotTileData, TradeRequest } from '../../model'
+import { createTradeRequest, ExecuteTradeRequest, SpotTileDataWithNotional, TradeRequest } from '../../model'
 import SpotTile from '../SpotTile'
 import { AnalyticsTile } from '../analyticsTile/index'
 import { TileViews } from '../../../workspace/workspaceHeader'
 import { RfqActions, TileSwitchChildrenProps, TradingMode } from '../types'
 import { ValidationMessage } from '../notional'
 import {
-  getDefaultInitialNotionalValue,
+  getDefaultNotionalValue,
   getDerivedStateFromProps,
   getDerivedStateFromUserInput,
   isValueInRfqRange,
@@ -17,7 +17,7 @@ import { CurrencyPairNotional } from '../../model/spotTileData'
 
 export interface TileProps {
   currencyPair: CurrencyPair
-  spotTileData: SpotTileData
+  spotTileData: SpotTileDataWithNotional
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
   setTradingMode: (tradingMode: TradingMode) => void
@@ -110,9 +110,11 @@ class Tile extends React.PureComponent<TileProps, TileState> {
     })
   }
 
+  // TODO: it looks like this should be moved to a reducer or epic. There should be an
+  // action called ResetNotional and all logic below should be there
   resetNotional = () => {
     const { setTradingMode, currencyPair, updateNotional } = this.props
-    const defaultNotional = getDefaultInitialNotionalValue(currencyPair)
+    const defaultNotional = getDefaultNotionalValue(currencyPair)
     const isInRfqRange = isValueInRfqRange(defaultNotional)
     setTradingMode({ symbol: currencyPair.symbol, mode: isInRfqRange ? 'rfq' : 'esp' })
     updateNotional({

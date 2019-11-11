@@ -4,7 +4,7 @@ import PriceControls from '../PriceControls'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
 import { usePlatform } from 'rt-platforms'
-import { getDefaultInitialNotionalValue } from '../Tile/TileBusinessLogic'
+import { getDefaultNotionalValue } from '../Tile/TileBusinessLogic'
 
 import {
   AnalyticsTileStyle,
@@ -42,7 +42,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
     )
     const showResetButton =
       !isTradeExecutionInFlight &&
-      getDefaultInitialNotionalValue(currencyPair) !== notional &&
+      getDefaultNotionalValue(currencyPair) !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
 
     return (

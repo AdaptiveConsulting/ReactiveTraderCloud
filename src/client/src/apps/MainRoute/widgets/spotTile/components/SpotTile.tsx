@@ -3,7 +3,7 @@ import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import TileHeader from './TileHeader'
-import { getDefaultInitialNotionalValue } from './Tile/TileBusinessLogic'
+import { getDefaultNotionalValue } from './Tile/TileBusinessLogic'
 import {
   NotionalInputWrapper,
   SpotTileWrapper,
@@ -49,7 +49,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
     } = getConstsFromRfqState(rfqState)
     const showResetButton =
       !isTradeExecutionInFlight &&
-      getDefaultInitialNotionalValue(currencyPair) !== notional &&
+      getDefaultNotionalValue(currencyPair) !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
     const showTimer = isRfqStateReceived && rfqTimeout
     const priceData = (isRfqStateReceived || isRfqStateExpired) && rfqPrice ? rfqPrice : price

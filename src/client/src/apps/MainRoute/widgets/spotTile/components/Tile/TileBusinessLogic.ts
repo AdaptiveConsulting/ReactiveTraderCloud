@@ -1,8 +1,8 @@
 import numeral from 'numeral'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
 import { TileProps, TileState } from './Tile'
-import { SpotTileData } from '../../model/spotTileData'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
+import { SpotTileDataWithNotional } from '../../model';
 
 // Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -12,7 +12,7 @@ const MIN_RFQ_VALUE = 10000000
 
 // Utils
 export const getFormattedValue = (value: number | string) => numeral(value).format(NUMERAL_FORMAT)
-export const getDefaultInitialNotionalValue = (currencyPair: CurrencyPair) =>
+export const getDefaultNotionalValue = (currencyPair: CurrencyPair) =>
   // This is to simply to have one Tile showing RFQ prompt on page load
   // check JIRA ticket ARTP-532
   currencyPair.symbol === 'NZDUSD' ? MIN_RFQ_VALUE : DEFAULT_NOTIONAL_VALUE
@@ -66,7 +66,7 @@ export const getDerivedStateFromUserInput = ({
   currencyPair,
 }: {
   prevState: TileState
-  spotTileData: SpotTileData
+  spotTileData: SpotTileDataWithNotional
   actions: {
     setTradingMode: TileProps['setTradingMode']
   }

@@ -6,7 +6,7 @@ import { CurrencyPair } from 'rt-types'
 import { DeepPartial } from 'rt-util'
 import { GlobalState } from 'StoreTypes'
 import { TILE_ACTION_TYPES } from '../actions'
-import { getDefaultInitialNotionalValue } from '../components/Tile/TileBusinessLogic'
+import { getDefaultNotionalValue } from '../components/Tile/TileBusinessLogic'
 
 describe('rfqEpics', () => {
   const currencyPair: CurrencyPair = {
@@ -161,7 +161,7 @@ describe('rfqEpics', () => {
         type: TILE_ACTION_TYPES.SET_NOTIONAL,
         payload: {
           currencyPair: currencyPair.symbol,
-          notional: getDefaultInitialNotionalValue(currencyPair),
+          notional: getDefaultNotionalValue(currencyPair),
         },
       },
       c: {
