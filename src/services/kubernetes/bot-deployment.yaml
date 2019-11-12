@@ -21,7 +21,7 @@ spec:
           secretName: symphony-key
       containers:
         - name: bot
-          image: reactivetradercloud/bot:4805
+          image: reactivetradercloud/bot:${BUILD_VERSION}
           volumeMounts:
           - name: google-cloud-key
             mountPath: /var/secrets/google

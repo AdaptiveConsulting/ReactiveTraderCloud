@@ -11,6 +11,7 @@ commands:
           name: Install tools
           command: |
             sudo npm i -g semver@6.3.0
+            sudo apt-get install gettext-base
       - run:
           name: Setup git
           command: |
@@ -105,22 +106,11 @@ commands:
       - run:
           name: Updating deployment definition to new images
           command: |
-            # TODO: look for new deployment config from git history
-            # TODO: create new environment automatically
-            # TODO: validate package exists
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/broker-deployment broker=${DOCKER_USER}/broker:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/eventstore-deployment eventstore=${DOCKER_USER}/eventstore:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/web-deployment web=${DOCKER_USER}/nginx:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/client-deployment client=${DOCKER_USER}/client:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/referencedataread-deployment referencedataread=${DOCKER_USER}/servers:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/pricing-deployment pricing=${DOCKER_USER}/servers:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/analytics-deployment analytics=${DOCKER_USER}/servers:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/blotter-deployment blotter=${DOCKER_USER}/servers:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/tradeexecution-deployment tradeexecution=${DOCKER_USER}/servers:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/pricehistory-deployment pricehistory=${DOCKER_USER}/pricehistory:${<< parameters.version >>}
-            kubectl --namespace=${<< parameters.environment >>} set image deployments/bot-deployment bot=${DOCKER_USER}/bot:${<< parameters.version >>}
-
+            # TODO: create new environment automatically
+            # Update/create each deployment file in src/services/kubernetes
+            for f in ./src/services/kubernetes/*-deployment.yaml; do
+                cat $f | envsubst | kubectl --namespace=${<< parameters.environment >>} apply -f
+            done
 
   main_pipeline:
     description: "Main pipeline"
@@ -186,6 +176,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/
+      - checkout
       - run:
           name: "Retrieve deployment parameters"
           command: source ~/vars/env

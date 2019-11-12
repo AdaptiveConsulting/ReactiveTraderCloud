@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: eventstore
-          image: reactivetradercloud/eventstore:3810
+          image: reactivetradercloud/eventstore:${BUILD_VERSION}
           ports:
             - containerPort: 1113
             - containerPort: 2113
