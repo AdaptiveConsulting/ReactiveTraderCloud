@@ -1,28 +1,25 @@
 const https = require('https')
 const fs = require('fs')
 
-// const childProcess = require('child_process')
-
-// const getCurrentGitBranchName = () =>
-//   new Promise(resolve => {
-//     childProcess.exec(`git rev-parse --abbrev-ref HEAD`, (err, stdout, stderr) => {
-//       resolve((stdout || '').trimRight())
-//     })
-//   })
-
-const createInstaller = (branch, manifestName, os='win') => {
+const createInstaller = (tag, manifestName, os='win') => {
   const fileName = `ReactiveTraderCloud-${manifestName}`
-  const appJSONUrl = `https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/${branch}/src/client/public/config/openfin/${manifestName}.json`
+  const appJSONUrl = `https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/${tag}/src/client/public/config/openfin/${manifestName}.json`
   const installerGeneratorUrl = `https://install.openfin.co/download/?unzipped=true&config=${appJSONUrl}&fileName=${fileName}&os=${os}`
+  console.log(` - Generating installer: \x1b[36m${fileName}.exe\x1b[0m (points to \x1b[36m${tag}\x1b[0m tag)`)
 
-  console.log(` - Generating installer: \x1b[36m${fileName}.exe\x1b[0m (points to \x1b[36m${branch}\x1b[0m branch)`)
-
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     https.get(installerGeneratorUrl, response => {
-      const extension = os === 'win' ? 'exe' : 'dmg'
-      const file = fs.createWriteStream(`install/${fileName}.${extension}`)
-      response.pipe(file)
-      resolve()
+      if(response.statusCode === 200) {
+        const extension = os === 'win' ? 'exe' : 'dmg'
+        const file = fs.createWriteStream(`install/${fileName}.${extension}`)
+        response.pipe(file)
+        console.info(` - \x1b[32mSuccessfully created installer for ${tag} ${manifestName} ${os}\x1b[0m`)
+        resolve()
+      }
+      else {
+        console.error(` - \x1b[31mFailed to create installer for ${tag} ${manifestName} ${os}\x1b[0m`)
+        reject()
+      }
     })
   })
 }
@@ -37,21 +34,23 @@ Make sure the files are available on their respective locations when distributin
 `,
   )
 
-  const installerDownloads = installersData.map(({ branch, manifestName })=> {
-    const winInstaller = createInstaller(branch, manifestName)
-    const osxInstaller = createInstaller(branch, manifestName, 'osx') 
+  const installerDownloads = installersData.map(({ tag, manifestName })=> {
+    const winInstaller = createInstaller(tag, manifestName)
+    const osxInstaller = createInstaller(tag, manifestName, 'osx') 
     return Promise.all([winInstaller, osxInstaller])
   });
 
-  return Promise.all(installerDownloads)
+  return Promise.all(installerDownloads).catch(ex => {
+    process.exit(1);
+  })
 }
 
 // File name + github branch for each json manifest
 const INSTALLERS_TO_CREATE = [
-  { manifestName: 'dev', branch: 'develop' },
-  { manifestName: 'launcher-dev', branch: 'develop' },
-  { manifestName: 'demo', branch: 'master' },
-  { manifestName: 'launcher-demo', branch: 'master' },
+  { manifestName: 'dev', tag: 'env-dev' },
+  { manifestName: 'launcher-dev', tag: 'env-dev' },
+  { manifestName: 'demo', tag: 'env-demo' },
+  { manifestName: 'launcher-demo', tag: 'env-demo' },
 ]
 
 createInstallers(INSTALLERS_TO_CREATE)

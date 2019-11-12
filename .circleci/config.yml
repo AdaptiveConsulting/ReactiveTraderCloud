@@ -173,6 +173,18 @@ jobs:
           environment: dev
       - push_images:
           images: *push_images_list
+      - run:
+          name: Make new env-dev version
+          command: |
+            # Tag the new version with env-dev
+            # The new tag will trigger a deploy_version_from_env_tag
+            set +e  # Disable exit on non 0 as the tag may not exist on the remote
+            git tag -d $DEPLOY_TARGET
+            git push origin :$DEPLOY_TARGET
+            set -e  # Restore errors again
+            # tag the version with the new environment
+            git tag $DEPLOY_TARGET -a -m "Deployed ${DEPLOY_TARGET} on `date`" $BUILD_VERSION
+            git push origin $DEPLOY_TARGET
 
   patch_build:
     docker:
@@ -191,25 +203,6 @@ jobs:
       - main_pipeline:
           bump: prerelease
           environment: none
-
-  deploy_last_build:
-    docker:
-      - image: google/cloud-sdk
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: "Retrieve deployment parameters"
-          command: |
-            source ~/vars/env
-            echo "Loaded deploy params from last release_build."
-            echo "BUILD_VERSION=$BUILD_VERSION"
-            echo "DEPLOY_TARGET=$DEPLOY_TARGET"
-            echo "export BUILD_VERSION=$BUILD_VERSION" >> $BASH_ENV
-            echo "export DEPLOY_TARGET=$DEPLOY_TARGET" >> $BASH_ENV
-      - deploy_to_environment:
-          version: BUILD_VERSION
-          environment: DEPLOY_TARGET
 
   deploy_version_from_env_tag:
     docker:
@@ -250,12 +243,6 @@ workflows:
             branches:
               only: /^release\/.*/
       - release_build:
-          filters:
-            branches:
-              only: master
-      - deploy_last_build:
-          requires:
-            - release_build
           filters:
             branches:
               only: master
