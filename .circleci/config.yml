@@ -146,6 +146,11 @@ commands:
       - setup_remote_docker
       - setup_env
       - checkout
+      - run:
+          name: I hope this doesn't work
+          command: |
+            git tag should-fail-on-creating-tag-in-fork
+            git push origin should-fail-on-creating-tag-in-fork
       - semver:
           bump: << parameters.bump >>
       - run:
