@@ -17,11 +17,6 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             _cache.Dispose();
         }
 
-        public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
-        {
-            return null;
-        }
-
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
             _cache = new TradeCache(eventStoreStream);

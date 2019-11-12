@@ -7,12 +7,16 @@ namespace Adaptive.ReactiveTrader.Server.Host
 {
     public interface IServiceHostFactory : IDisposable
     {
-        IDisposable Initialize(IObservable<IConnected<IBroker>> broker);
+    }
+
+    public interface IServiceHostFactoryWithBroker : IServiceHostFactory
+    {
+        IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream);
     }
 
     public interface IServiceHostFactoryWithEventStore : IServiceHostFactory
     {
-        IDisposable Initialize(IObservable<IConnected<IBroker>> broker,
-                               IObservable<IConnected<IEventStoreConnection>> eventStore);
+        IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream,
+                               IObservable<IConnected<IEventStoreConnection>> eventStoreStream);
     }
 }

@@ -14,11 +14,6 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
     {
         private readonly SerialDisposable _cleanup = new SerialDisposable();
 
-        public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
-        {
-            return Disposable.Empty;
-        }
-
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
             var repositoryStream = eventStoreStream.LaunchOrKill(conn => new Repository(conn, new EventTypeResolver(ReflectionHelper.ContractsAssembly)));

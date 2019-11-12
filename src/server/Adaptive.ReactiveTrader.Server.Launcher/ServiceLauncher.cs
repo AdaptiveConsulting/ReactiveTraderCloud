@@ -45,7 +45,7 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
             
             var factory = _factories[type].Value;
 
-            var a = new App(new string[] {}, factory);
+            var a = App.Create(new string[] {}, factory);
             _services.Add(name, Disposable.Create(() => a.Kill()));
             Task.Run(() => a.Start());
 
