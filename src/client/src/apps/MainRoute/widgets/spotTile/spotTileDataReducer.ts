@@ -4,7 +4,7 @@ import { PriceMovementTypes } from './model/priceMovementTypes'
 import { SpotTileData } from './model/spotTileData'
 
 // we want to let compiler know that values for certain keys might be missing
-export type  SpotTileState = { [currencyPair: string]: SpotTileData | undefined }
+export type SpotTileState = Record<string, SpotTileData | undefined>
 
 const INITIAL_STATE: SpotTileState = {}
 
@@ -26,11 +26,11 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   rfqState: 'none',
   rfqPrice: null,
   rfqReceivedTime: null,
-  rfqTimeout: null
+  rfqTimeout: null,
 }
 
 const spotTileReducer = (
-  state: SpotTileData = {...INITIAL_SPOT_TILE_STATE},
+  state: SpotTileData = { ...INITIAL_SPOT_TILE_STATE },
   action: SpotTileActions,
 ): SpotTileData => {
   switch (action.type) {
@@ -48,13 +48,13 @@ const spotTileReducer = (
         historicPrices: [...state.historicPrices.slice(1), action.payload],
       }
     case TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED:
-      return {...state, historicPrices: action.payload}
+      return { ...state, historicPrices: action.payload }
     case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
-      return {...state, currencyChartIsOpening: true}
+      return { ...state, currencyChartIsOpening: true }
     case TILE_ACTION_TYPES.CURRENCY_CHART_OPENED:
-      return {...state, currencyChartIsOpening: false}
+      return { ...state, currencyChartIsOpening: false }
     case TILE_ACTION_TYPES.EXECUTE_TRADE:
-      return {...state, isTradeExecutionInFlight: true}
+      return { ...state, isTradeExecutionInFlight: true }
     case TILE_ACTION_TYPES.TRADE_EXECUTED: {
       return {
         ...state,
@@ -63,14 +63,14 @@ const spotTileReducer = (
       }
     }
     case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
-      return {...state, lastTradeExecutionStatus: null}
+      return { ...state, lastTradeExecutionStatus: null }
     default:
       return state
   }
 }
 
 const rfqTileReducer = (
-  state: SpotTileData = {...INITIAL_SPOT_TILE_STATE},
+  state: SpotTileData = { ...INITIAL_SPOT_TILE_STATE },
   action: SpotTileActions,
 ): SpotTileData => {
   const newState: SpotTileData = {
@@ -169,9 +169,9 @@ export const spotTileDataReducer = (
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
       return state[action.payload.symbol]
         ? {
-          ...state,
-          [action.payload.symbol]: spotTileReducer(state[action.payload.symbol], action),
-        }
+            ...state,
+            [action.payload.symbol]: spotTileReducer(state[action.payload.symbol], action),
+          }
         : state
     case TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED:
       return {
