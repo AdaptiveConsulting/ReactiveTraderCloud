@@ -3,9 +3,8 @@ import { SpotTileActions, TILE_ACTION_TYPES } from './actions'
 import { PriceMovementTypes } from './model/priceMovementTypes'
 import { SpotTileData } from './model/spotTileData'
 
-export interface SpotTileState {
-  [currencyPair: string]: SpotTileData
-}
+// we want to let compiler know that values for certain keys might be missing
+export type SpotTileState = Record<string, SpotTileData | undefined>
 
 const INITIAL_STATE: SpotTileState = {}
 
@@ -28,7 +27,6 @@ const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   rfqPrice: null,
   rfqReceivedTime: null,
   rfqTimeout: null,
-  notional: 0,
 }
 
 const spotTileReducer = (

@@ -1,13 +1,14 @@
 import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { delay, filter, map, mergeMap, takeUntil } from 'rxjs/operators'
-import { ApplicationEpic } from 'StoreTypes'
+import { ApplicationEpic, GlobalState } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import { concat, from, Observable, of, timer } from 'rxjs'
 import { RfqReceived, RfqRequest } from '../model/rfqRequest'
-import { SpotTileState } from '../spotTileReducer'
 import { CurrencyPairState } from '../../../data/referenceData'
-import { getDefaultInitialNotionalValue } from '../components/Tile/TileBusinessLogic'
+import { getDefaultNotionalValue } from '../components/Tile/TileBusinessLogic'
+import { CurrencyPair } from 'rt-types';
+import { SpotTileData } from '../model';
 
 const {
   rfqRequest,
@@ -40,19 +41,21 @@ export const IDLE_TIME_MS = 60000
 const rfqService = (
   request: RfqRequest,
   currencyPairs: CurrencyPairState,
-  spotTilesData: SpotTileState,
+  spotTilesData: SpotTileData,
 ): Observable<RfqReceived> => {
   const randomNumber = 0.3
-  const { pipsPosition } = currencyPairs[request.currencyPair.symbol]
-  const currentEspPrice = spotTilesData[request.currencyPair.symbol].price
-  const { ask, bid } = currentEspPrice
+  const {currencyPair, notional} = request;
+  const {symbol} = currencyPair;
+  const {pipsPosition} = currencyPairs[symbol]
+  const currentEspPrice = spotTilesData.price
+  const {ask, bid} = currentEspPrice
   const addSubNumber = randomNumber / Math.pow(10, pipsPosition)
 
   return of(true).pipe(
     delay(500),
     map(() => ({
-      notional: request.notional,
-      currencyPair: request.currencyPair,
+      notional,
+      currencyPair,
       price: {
         ...currentEspPrice,
         ask: ask + addSubNumber,
@@ -60,8 +63,13 @@ const rfqService = (
       },
       time: Date.now(),
       timeout: EXPIRATION_TIMEOUT_MS,
-    })),
+    }))
   )
+}
+
+function getSpotTilesDataByCurrency(currencyPair: CurrencyPair, state: GlobalState) {
+  const {symbol} = currencyPair;
+  return state.spotTilesData[symbol]
 }
 
 export const rfqRequestEpic: ApplicationEpic<{}> = (action$, state$) =>
@@ -70,6 +78,7 @@ export const rfqRequestEpic: ApplicationEpic<{}> = (action$, state$) =>
       TILE_ACTION_TYPES.RFQ_REQUEST,
       TILE_ACTION_TYPES.RFQ_REQUOTE,
     ),
+    filter(action => !!getSpotTilesDataByCurrency(action.payload.currencyPair, state$.value)),
     mergeMap(action => {
       const cancel$ = action$.pipe(
         ofType<Action, RfqCancelActionType | RfqRejectActionType>(
@@ -87,7 +96,7 @@ export const rfqRequestEpic: ApplicationEpic<{}> = (action$, state$) =>
       return rfqService(
         action.payload,
         state$.value.currencyPairs,
-        state$.value.spotTilesData,
+        getSpotTilesDataByCurrency(action.payload.currencyPair, state$.value)!, // we know price exists since we filtered out that case upsteam
       ).pipe(
         map(rfqReceived),
         takeUntil(cancel$),
@@ -99,7 +108,7 @@ export const rfqReceivedEpic: ApplicationEpic<{}> = action$ =>
   action$.pipe(
     ofType<Action, RfqReceivedActionType>(TILE_ACTION_TYPES.RFQ_RECEIVED),
     mergeMap(action => {
-      const { currencyPair } = action.payload
+      const {currencyPair} = action.payload
       const cancel$ = action$.pipe(
         ofType<Action, RfqReceivedTimerCancellableType>(
           TILE_ACTION_TYPES.RFQ_RESET,
@@ -109,19 +118,19 @@ export const rfqReceivedEpic: ApplicationEpic<{}> = action$ =>
       )
 
       return concat(
-        timer(action.payload.timeout + 1000).pipe(map(() => rfqExpired({ currencyPair }))),
+        timer(action.payload.timeout + 1000).pipe(map(() => rfqExpired({currencyPair}))),
         timer(IDLE_TIME_MS).pipe(
           mergeMap(() =>
             from([
               setNotional({
                 currencyPair: currencyPair.symbol,
-                notional: getDefaultInitialNotionalValue(currencyPair),
+                notional: getDefaultNotionalValue(currencyPair),
               }),
               setTradingMode({
                 symbol: currencyPair.symbol,
                 mode: 'esp',
               }),
-              rfqReset({ currencyPair }),
+              rfqReset({currencyPair}),
             ]),
           ),
         ),

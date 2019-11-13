@@ -1,7 +1,6 @@
 import React from 'react'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
-import { ExecuteTradeRequest, SpotTileData } from '../model'
-import { PriceMovementTypes } from '../model/priceMovementTypes'
+import { ExecuteTradeRequest, SpotTileDataWithNotional } from '../model'
 import NotificationContainer, { TileBooking } from './notifications'
 import Tile from './Tile'
 import TileControls from './TileControls'
@@ -9,11 +8,10 @@ import { TileViews } from '../../workspace/workspaceHeader'
 import { RfqActions, TileSwitchChildrenProps, TradingMode } from './types'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
 import { CurrencyPairNotional } from '../model/spotTileData'
-import { getDefaultInitialNotionalValue } from './Tile/TileBusinessLogic'
 
 interface Props {
   currencyPair: CurrencyPair
-  spotTileData: SpotTileData
+  spotTileData: SpotTileDataWithNotional
   canPopout: boolean
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
@@ -47,18 +45,10 @@ const TileSwitch: React.FC<Props> = ({
     isRfqStateNone,
   } = getConstsFromRfqState(spotTileData.rfqState)
 
-  const spotTileDataWithNotional =
-    spotTileData.notional === null
-      ? {
-          ...spotTileData,
-          notional: getDefaultInitialNotionalValue(currencyPair),
-        }
-      : spotTileData
-
   return (
     <Tile
       currencyPair={currencyPair}
-      spotTileData={spotTileDataWithNotional}
+      spotTileData={spotTileData}
       executeTrade={executeTrade}
       executionStatus={executionStatus}
       tileView={tileView}
@@ -109,37 +99,6 @@ const TileSwitch: React.FC<Props> = ({
       )}
     </Tile>
   )
-}
-
-TileSwitch.defaultProps = {
-  spotTileData: {
-    notional: 0,
-    isTradeExecutionInFlight: false,
-    historicPrices: [],
-    price: {
-      ask: 0,
-      bid: 0,
-      mid: 0,
-      creationTimestamp: 0,
-      symbol: '',
-      valueDate: '',
-      priceMovementType: PriceMovementTypes.None,
-      priceStale: false,
-    },
-    currencyChartIsOpening: false,
-    lastTradeExecutionStatus: null,
-    rfqState: 'none',
-    rfqPrice: null,
-    rfqReceivedTime: null,
-    rfqTimeout: null,
-  },
-  currencyPair: {
-    symbol: '',
-    ratePrecision: 0,
-    pipsPosition: 0,
-    base: '',
-    terms: '',
-  },
 }
 
 export default TileSwitch

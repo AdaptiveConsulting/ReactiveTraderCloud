@@ -50,8 +50,10 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
 const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
   pricingStatus: selectPricingStatus(state),
   executionStatus: selectExecutionStatus(state),
-  currencyPair: selectCurrencyPair(state, ownProps),
-  spotTileData: selectSpotTileData(state, ownProps),
+
+  // here 'ownProps.id' is an ID of the tile, but it's ID of the currency pair too (same thing for now)
+  currencyPair: selectCurrencyPair(state, ownProps.id),
+  spotTileData: selectSpotTileData(state, ownProps.id),
 })
 
 type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>

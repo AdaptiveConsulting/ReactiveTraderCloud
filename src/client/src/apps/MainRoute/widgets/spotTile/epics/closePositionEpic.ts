@@ -1,8 +1,8 @@
 import { applicationConnected } from 'rt-actions'
 import { Direction } from 'rt-types'
 import { CurrencyPair } from 'rt-types'
-import { map, switchMapTo, withLatestFrom } from 'rxjs/operators'
-import { ApplicationEpic } from 'StoreTypes'
+import { filter, map, switchMapTo, withLatestFrom } from 'rxjs/operators'
+import { ApplicationEpic, GlobalState } from 'StoreTypes'
 import { SpotTileActions } from '../actions'
 import { SpotTileData } from '../model/spotTileData'
 import { InteropTopics, platformHasFeature } from 'rt-platforms'
@@ -32,7 +32,12 @@ function createTrade(msg: Msg, priceData: SpotTileData, currencyPair: CurrencyPa
   }
 }
 
-export const closePositionEpic: ApplicationEpic = (action$, state$, { platform }) => {
+function getSpotTilesDataFromMessage(message: Message, state: GlobalState) {
+  const [msg] = message as Message
+  return state.spotTilesData[msg.symbol]
+}
+
+export const closePositionEpic: ApplicationEpic = (action$, state$, {platform}) => {
   if (!platformHasFeature(platform, 'interop')) {
     return EMPTY
   }
@@ -43,19 +48,18 @@ export const closePositionEpic: ApplicationEpic = (action$, state$, { platform }
     applicationConnected,
     switchMapTo(interopSubscribe$),
     withLatestFrom(state$),
+    filter(([message, state]) => !!getSpotTilesDataFromMessage(message, state)),
     map(([message, state]) => {
-      const [msg, uuid] = message as Message
+      const [msg, uuid] = message
       const trade = createTrade(
         msg,
-        state.spotTilesData[msg.symbol],
+        getSpotTilesDataFromMessage(message, state)!, // we know that spot tile data exists as we have filtered it out above
         state.currencyPairs[msg.symbol],
       )
       return SpotTileActions.executeTrade(trade, {
         uuid,
         correlationId: msg.correlationId,
       })
-    }),
-
-    // ignoreElements(),
+    })
   )
 }
