@@ -1,43 +1,61 @@
 using System;
 using System.Threading;
+using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Common.Config;
-using Adaptive.ReactiveTrader.EventStore;
-using Adaptive.ReactiveTrader.EventStore.Connection;
 using Adaptive.ReactiveTrader.Messaging;
-using EventStore.ClientAPI;
 using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Host
 {
-    public class App
+    public abstract class App
     {
-        private readonly string[] _args;
-        private readonly IServiceHostFactory _factory;
-        private readonly ManualResetEvent _reset = new ManualResetEvent(false);
-
-        public App(string[] args, IServiceHostFactory factory)
-        {
-            _args = args;
-            _factory = factory;
-        }
+        protected readonly ManualResetEvent Reset = new ManualResetEvent(false);
 
         public static void Run(string[] args, IServiceHostFactory factory)
         {
-            var a = new App(args, factory);
-            a.Start();
+            var app = Create(args, factory);
+            app.Start();
         }
+
+        public static App Create(string[] args, IServiceHostFactory factory)
+        {
+            var config = ServiceConfiguration.FromArgs(args);
+            switch (factory)
+            {
+                case IServiceHostFactoryWithBroker withBroker:
+                    return new BrokerOnlyApp(config, withBroker);
+                case IServiceHostFactoryWithEventStore withEventStore:
+                    return new EventStoreApp(config, withEventStore);
+                default:
+                    throw new ArgumentException($"Unsupported service host factory type: '{factory.GetType().FullName}'", nameof(factory));
+            }
+        }
+
+        public abstract void Start();
 
         public void Kill()
         {
-            _reset.Set();
+            Reset.Set();
+        }
+    }
+
+    public abstract class App<T>: App where T: IServiceHostFactory
+    {
+        protected readonly IServiceConfiguration Config;
+        protected readonly T Factory;
+
+        protected App(IServiceConfiguration config, T factory)
+        {
+            Config = config;
+            Factory = factory;
         }
 
-        public void Start()
+        public override void Start()
         {
             Console.CancelKeyPress += (sender, eventArgs) =>
             {
                 eventArgs.Cancel = true;
-                _reset.Set();
+                Reset.Set();
             };
 
             Log.Logger = new LoggerConfiguration()
@@ -45,37 +63,15 @@ namespace Adaptive.ReactiveTrader.Server.Host
                 .WriteTo.ColoredConsole()
                 .CreateLogger();
 
-            var config = ServiceConfiguration.FromArgs(_args);
-
             try
             {
-                using (var connectionFactory = BrokerConnectionFactory.Create(config.Broker))
+                using (var connectionFactory = BrokerConnectionFactory.Create(Config.Broker))
                 {
                     var brokerStream = connectionFactory.GetBrokerStream();
-                    var esFactory = _factory as IServiceHostFactoryWithEventStore;
-
-                    if (esFactory != null)
+                    using (InitializeFactory(brokerStream))
                     {
-                        // TODO TIDY
-
-                        var eventStoreConnection = GetEventStoreConnection(config.EventStore);
-                        var mon = new ConnectionStatusMonitor(eventStoreConnection);
-                        var esStream = mon.GetEventStoreConnectedStream(eventStoreConnection);
-                        eventStoreConnection.ConnectAsync().Wait();
-
-                        using (esFactory.Initialize(brokerStream, esStream))
-                        {
-                            connectionFactory.Start();
-                            _reset.WaitOne();
-                        }
-                    }
-                    else
-                    {
-                        using (_factory.Initialize(brokerStream))
-                        {
-                            connectionFactory.Start();
-                            _reset.WaitOne();
-                        }
+                        connectionFactory.Start();
+                        Reset.WaitOne();
                     }
                 }
             }
@@ -85,14 +81,6 @@ namespace Adaptive.ReactiveTrader.Server.Host
             }
         }
 
-        private static IEventStoreConnection GetEventStoreConnection(IEventStoreConfiguration configuration)
-        {
-            var eventStoreConnection =
-                EventStoreConnectionFactory.Create(
-                    EventStoreLocation.External,
-                    configuration);
-
-            return eventStoreConnection;
-        }
+        protected abstract IDisposable InitializeFactory(IObservable<IConnected<IBroker>> brokerStream);
     }
 }

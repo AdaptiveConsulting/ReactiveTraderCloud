@@ -7,7 +7,7 @@ using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
-    public class PriceServiceHostFactory : IServiceHostFactory
+    public class PriceServiceHostFactory : IServiceHostFactoryWithBroker
     {
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
         private readonly PricingService _service;

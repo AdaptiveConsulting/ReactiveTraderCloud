@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reactive.Disposables;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.EventStore;
@@ -13,11 +13,6 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
     public class TradeExecutionServiceHostFactory : IServiceHostFactoryWithEventStore
     {
         private readonly CompositeDisposable _cleanup = new CompositeDisposable();
-
-        public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
-        {
-            return Disposable.Empty;
-        }
 
         public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {

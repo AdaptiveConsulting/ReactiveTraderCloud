@@ -1,6 +1,4 @@
 using System;
-using System.Reactive.Disposables;
-using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Host;
@@ -10,9 +8,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 {
     public class BlotterServiceHostFactory : IServiceHostFactoryWithEventStore
     {
-        private readonly CompositeDisposable _cleanup = new CompositeDisposable();
         private TradeCache _cache;
-
         private BlotterService _service;
 
         public void Dispose()
@@ -20,25 +16,11 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             _cache.Dispose();
         }
 
-        public IDisposable Initialize(IObservable<IConnected<IBroker>> broker)
+        public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStoreStream)
         {
-            return null;
-        }
-
-        public IDisposable Initialize(IObservable<IConnected<IBroker>> brokerStream, IObservable<IConnected<IEventStoreConnection>> eventStore)
-        {
-            _cache = new TradeCache(eventStore);
+            _cache = new TradeCache(eventStoreStream);
             _service = new BlotterService(_cache.GetTrades());
-            var disposable = brokerStream.LaunchOrKill(broker => new BlotterServiceHost(_service, broker)).Subscribe();
-
-            _cleanup.Add(disposable);
-
-            return disposable;
-        }
-
-        public Task<ServiceHostBase> Create(IBroker broker)
-        {
-            return Task.FromResult<ServiceHostBase>(new BlotterServiceHost(_service, broker));
+            return brokerStream.LaunchOrKill(broker => new BlotterServiceHost(_service, broker)).Subscribe();
         }
     }
 }
