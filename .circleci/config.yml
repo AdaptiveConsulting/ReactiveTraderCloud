@@ -161,8 +161,6 @@ jobs:
       - main_pipeline:
           bump: minor
           environment: dev
-      - push_images:
-          images: *push_images_list
 
   patch_build:
     docker:
@@ -171,8 +169,6 @@ jobs:
       - main_pipeline:
           bump: patch
           environment: none
-      - push_images:
-          images: *push_images_list
 
   feature_build:
     docker:
@@ -241,12 +237,6 @@ workflows:
             branches:
               only: /^release\/.*/
       - release_build:
-          filters:
-            branches:
-              only: master
-      - deploy_last_build:
-          requires:
-            - release_build
           filters:
             branches:
               only: master
