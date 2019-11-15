@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: web
-          image: reactivetradercloud/nginx:3810
+          image: reactivetradercloud/nginx:${BUILD_VERSION}
           ports:
             - containerPort: 3000
