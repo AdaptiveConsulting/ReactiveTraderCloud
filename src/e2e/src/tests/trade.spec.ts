@@ -87,6 +87,14 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     await mainPage.tile.NZDToUSDRFQ()
   })
 
+  it('should validate zero notional', async () => {
+    await mainPage.workspace.selectCurrency('usd')
+    await mainPage.tile.setNotional('USDToJPY', '0')
+    const tradeButton = await mainPage.tile.tradeType.USDToJPY.sell
+    const disabledAttribute = await tradeButton.getAttribute('disabled');
+    expect(disabledAttribute).toBe('true')
+  })
+
   afterAll(async () => {
     await browser.close()
   })

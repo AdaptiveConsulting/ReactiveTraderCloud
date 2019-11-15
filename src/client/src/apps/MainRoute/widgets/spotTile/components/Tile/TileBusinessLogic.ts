@@ -2,7 +2,7 @@ import numeral from 'numeral'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
 import { TileProps, TileState } from './Tile'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
-import { SpotTileDataWithNotional } from '../../model';
+import { SpotTileDataWithNotional } from '../../model'
 
 // Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -86,6 +86,17 @@ export const getDerivedStateFromUserInput = ({
     if (isRfqStateNone) actions.setTradingMode({ symbol, mode: 'rfq' })
   } else {
     if (!isRfqStateNone) actions.setTradingMode({ symbol, mode: 'esp' })
+  }
+
+  if (notional === 0) {
+    return {
+      ...defaultNextState,
+      canExecute: false,
+      inputValidationMessage: {
+        type: 'error',
+        content: '',
+      },
+    }
   }
 
   return isValueOverRfqRange(notional)
