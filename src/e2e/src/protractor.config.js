@@ -46,7 +46,7 @@ const config = {
   framework: 'jasmine',
   directConnect: true,
   maxSessions: 10,
-  specs: ['./tests/**/*.spec.ts'],
+  specs: ['./tests/**/*trade*.spec.ts'],
   capabilities: getBrowserCapabilities(),
   jasmineNodeOpts: {
     isVerbose: true,

@@ -20,7 +20,7 @@ async function init() {
     await initiateSymphony(urlParams.get('env') || undefined)
   } else {
     ReactDOM.render(
-      <React.Fragment>
+      <React.Fragmentdd>
         <GlobalStyle />
         <BrowserRouter>
           <Suspense fallback={<div />}>
@@ -32,7 +32,7 @@ async function init() {
             </Switch>
           </Suspense>
         </BrowserRouter>
-      </React.Fragment>,
+      </React.Fragmentdd>,
       document.getElementById('root'),
     )
 
