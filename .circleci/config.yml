@@ -120,7 +120,7 @@ commands:
             # TODO: create new environment automatically
             # Update/create each deployment file in src/services/kubernetes
             for f in ./src/services/kubernetes/*-deployment.yaml; do
-                cat $f | envsubst | kubectl --namespace=${<< parameters.environment >>} apply -f
+                cat $f | /usr/bin/envsubst | kubectl --namespace=${<< parameters.environment >>} apply -f
             done
 
   main_pipeline:
@@ -190,6 +190,10 @@ jobs:
           at: ~/
       - checkout
       - run:
+          name: "Install required OS dependencies"
+          command: |
+            apt-get install gettext -qy
+      - run:
           name: "Retrieve deployment parameters"
           command: |
             source ~/vars/env
@@ -207,6 +211,10 @@ jobs:
       - image: google/cloud-sdk
     steps:
       - checkout
+      - run:
+          name: "Install required OS dependencies"
+          command: |
+            apt-get install gettext -qy
       - run:
           name: "Parse tags"
           command: |
