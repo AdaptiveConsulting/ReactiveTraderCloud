@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 references:
   push_images_list: &push_images_list
@@ -133,6 +133,14 @@ commands:
       environment:
         type: string
     steps:
+      - run:
+          name: Call HelloWorld
+          command: |
+            curl \
+            --user ${API_TOKEN}: \
+            --header "Content-Type: application/json" \
+            --data "{\"build_parameters\": {\"CIRCLE_JOB\": \"hello\"}}" \
+            --request POST "https://circleci.com/api/v1.1/project/github/kptdobe/circleci_bug_report/tree/v2.0"
       - setup_remote_docker
       - setup_env
       - checkout
@@ -237,7 +245,7 @@ jobs:
           environment: DEPLOY_TARGET
 
 workflows:
-  version: 2
+  version: 2.1
   main:
     jobs:
       - patch_build:
