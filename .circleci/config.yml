@@ -162,6 +162,8 @@ jobs:
           bump: minor
           environment: dev
 
+  empty_master_job:
+
   patch_build:
     docker:
       - image: circleci/node:latest
