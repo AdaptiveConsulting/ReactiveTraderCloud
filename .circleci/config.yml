@@ -267,13 +267,14 @@ workflows:
               ignore:
                 - master
                 - /^release\/.*/
+
       - feature_build:
           filters:
             branches:
               ignore:
                 - master
                 - /^release\/.*/
-                -
+
       - deploy_version_from_env_tag:
           filters:
             branches:
