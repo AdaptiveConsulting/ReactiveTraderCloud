@@ -9,7 +9,7 @@ Reactive Trader Cloud is a real-time FX trading platform demo showcasing reactiv
 All frameworks and libraries used are entirely open source, and each component can be run on either Windows, Linux or Mac OS X.
 
 The services are distributed and can be recovered from disconnections - this is similar to the approach that major financial institutions use for trading systems.
-
+.
 ![image](docs/reactive-trader.gif)
 
 ### Live demo
