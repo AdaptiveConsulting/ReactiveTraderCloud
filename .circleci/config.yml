@@ -165,6 +165,10 @@ jobs:
   empty_master_job:
     docker:
       - image: circleci/node:latest
+    steps:
+      - run:
+          name: Nothing
+          command: echo master
 
   patch_build:
     docker:
