@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 
 references:
   push_images_list: &push_images_list
@@ -237,7 +237,7 @@ jobs:
           environment: DEPLOY_TARGET
 
 workflows:
-  version: 2.1
+  version: 2
   main:
     jobs:
       - patch_build:
