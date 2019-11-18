@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 
 references:
   push_images_list: &push_images_list
@@ -162,14 +162,6 @@ jobs:
           bump: minor
           environment: dev
 
-  empty_master_job:
-    docker:
-      - image: circleci/node:latest
-    steps:
-      - run:
-          name: Nothing
-          command: echo master
-
   patch_build:
     docker:
       - image: circleci/node:latest
@@ -254,11 +246,6 @@ workflows:
               only: /^release\/.*/
 
       - release_build:
-          filters:
-            branches:
-              only: master
-
-      - empty_master_job:
           filters:
             branches:
               only: master
