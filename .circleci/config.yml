@@ -178,6 +178,14 @@ jobs:
           bump: prerelease
           environment: none
 
+  feature_build_initiated_by_master:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - main_pipeline:
+          bump: prerelease
+          environment: none
+
   deploy_last_build:
     docker:
       - image: google/cloud-sdk
@@ -236,22 +244,39 @@ workflows:
           filters:
             branches:
               only: /^release\/.*/
+
       - release_build:
           filters:
             branches:
               only: master
+
+      - empty_master_job:
+          filters:
+            branches:
+              only: master
+
+      - feature_build_initiated_by_master:
+          requires:
+            # this is a hacky way to achieve building PRs when master is merged. there is a problem though:
+            # 1) building PR will not start until build on master finishes (ideally we want build on PR start immediately after master merge)
+            # 2) if master build fails, then PRs will not be rebuilt - but we want PRs to be build immediately on a new commit to master
+            # what if we create a dummy empty job on master which always succeeds and then build PRs in chain
+            - empty_master_job
+          filters:
+            branches:
+              ignore:
+                - master
+                - /^release\/.*/
       - feature_build:
           filters:
             branches:
               ignore:
                 - master
                 - /^release\/.*/
+                -
       - deploy_version_from_env_tag:
           filters:
             branches:
               ignore: /.*/  # only run on matching tag
             tags:
               only: /^env-.*/
-
-
-
