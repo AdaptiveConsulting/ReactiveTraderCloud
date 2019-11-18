@@ -120,7 +120,7 @@ commands:
             # TODO: create new environment automatically
             # Update/create each deployment file in src/services/kubernetes
             for f in ./src/services/kubernetes/*-deployment.yaml; do
-                cat $f | /usr/bin/envsubst | kubectl --namespace=${<< parameters.environment >>} apply -f
+                cat $f | /usr/bin/envsubst | kubectl --namespace=${<< parameters.environment >>} apply -f -
             done
 
   main_pipeline:
