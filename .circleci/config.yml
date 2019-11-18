@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.0
 
 references:
   push_images_list: &push_images_list
@@ -269,7 +269,7 @@ workflows:
             # 1) building PR will not start until build on master finishes (ideally we want build on PR start immediately after master merge)
             # 2) if master build fails, then PRs will not be rebuilt - but we want PRs to be build immediately on a new commit to master
             # what if we create a dummy empty job on master which always succeeds and then build PRs in chain
-            - empty_master_job
+            - release_build
           filters:
             branches:
               ignore:
