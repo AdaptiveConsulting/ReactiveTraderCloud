@@ -163,6 +163,8 @@ jobs:
           environment: dev
 
   empty_master_job:
+    docker:
+      - image: circleci/node:latest
 
   patch_build:
     docker:
