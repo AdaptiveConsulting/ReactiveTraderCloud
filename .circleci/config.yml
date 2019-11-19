@@ -198,10 +198,11 @@ jobs:
           command: |
             TARGET_ORIGIN="sizov"
             TARGET_BRANCH="master"
-
+            echo 1
             git_data=$(curl https://api.github.com/repos/sizov/ReactiveTraderCloud/pulls\?state=open\?access_token\=${GIT_API_USER_TOKEN})
+            echo 2
             PR_BRANCHES=$( grep -oP "(?<=\"label\": \"${TARGET_ORIGIN}:).*?(?=\")" \<<< $git_data | sort -u)
-
+            echo 3
             if [ -z "$PR_BRANCHES" ]; then
               echo "Exiting - no branches with opened PRs"
               exit 0
