@@ -185,15 +185,15 @@ jobs:
       - run:
           name: "Notify branches that master has a commit"
           command: |
-            target_origin="sizov"
-            target_branch="master"
+            TARGET_ORIGIN="sizov"
+            TARGET_BRANCH="master"
 
             git_data=$(curl https://api.github.com/repos/sizov/ReactiveTraderCloud/pulls\?state=open\?access_token\=${GIT_API_USER_TOKEN})
-            pr_branches=$( grep -oP "(?<=\"label\": \"${target_origin}:).*?(?=\")" <<< $git_data | sort -u)
+            PR_BRANCHES=$( grep -oP "(?<=\"label\": \"${TARGET_ORIGIN}:).*?(?=\")" <<< $git_data | sort -u)
 
-            for branch in $pr_branches
+            for branch in $PR_BRANCHES
             do
-              if [ "$branch" != $target_branch ]; then
+              if [ "$branch" != TARGET_BRANCH ]; then
                 echo "Triggering build on branch: ${$branch}"
                 echo "\"branch\": \"${branch}\""
                      curl -u ${CIRCLE_API_USER_TOKEN}: -X POST --header "Content-Type: application/json" -d "{
