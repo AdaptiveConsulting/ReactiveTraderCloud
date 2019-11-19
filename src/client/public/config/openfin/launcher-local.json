@@ -8,6 +8,11 @@
         "defaultTop": 160,
         "defaultLeft": 30,
         "autoShow": true,
+        "permissions": {
+            "System": {
+                "launchExternalProcess": true
+            }
+        },
         "saveWindowState": false,
         "resizable": false,
         "shadow": true,
@@ -52,7 +57,7 @@
         {
             "src": "http://localhost:3000/plugin/LimitChecker.zip",
             "alias": "LimitChecker",
-            "version": "1.0.0",
+            "version": "1.6.0",
             "target": "LimitChecker.application"
         }
     ],
