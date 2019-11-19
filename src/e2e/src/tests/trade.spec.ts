@@ -47,7 +47,7 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     })
   })
 
-  xit('Should validate a notional value larger than the maximum allowed', async () => {
+  it('Should validate a notional value larger than the maximum allowed', async () => {
     await mainPage.tile.setNotional('EURToUSD', '99999999')
     const notional = await mainPage.tile.tradeType.EURToUSD.notional
     expect(notional.getAttribute('value')).toEqual('99,999,999')
@@ -58,14 +58,14 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
   })
 
   currencyList.forEach(([selectedCurrency, expectedCurrencies]) => {
-    xit(`should validate filtering currencies by ${selectedCurrency}`, async () => {
+    it(`should validate filtering currencies by ${selectedCurrency}`, async () => {
       await mainPage.workspace.selectCurrency(selectedCurrency)
       await assertUtils.assertDisplayedCurrencies(expectedCurrencies)
     })
   })
 
   tradeList.forEach(([selectedCurrency, currencyPair, direction, expectedResult, timeout]) => {
-    xit(`should validate ${currencyPair} ${direction}`, async () => {
+    it(`should validate ${currencyPair} ${direction}`, async () => {
       const tradingCurrency = currencyPair.replace('/', 'To');
       await mainPage.workspace.selectCurrency(selectedCurrency)
       const notional = await mainPage.tile.tradeType[tradingCurrency].notional
@@ -74,13 +74,13 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     })
   })
 
-  xit('should validate RFQ mode', async () => {
+  it('should validate RFQ mode', async () => {
     await mainPage.workspace.selectCurrency('usd')
     await mainPage.tile.setNotional('USDToJPY', '10m')
     await mainPage.tile.initiateRFQ()
   })
 
-  xit('should validate unavailable streaming', async () => {
+  it('should validate unavailable streaming', async () => {
     await mainPage.workspace.selectCurrency('nzd')
     const textStreaming = await mainPage.tile.tradeType.initiateRFQ.labelTextStreamingUnavailable
     expect(textStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
@@ -92,7 +92,7 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     await mainPage.tile.setNotional('USDToJPY', '0')
     const tradeButton = await mainPage.tile.tradeType.USDToJPY.sell
     const disabledAttribute = await tradeButton.getAttribute('disabled');
-    expect(disabledAttribute).toBe('false')
+    expect(disabledAttribute).toBe('true')
   })
 
   afterAll(async () => {

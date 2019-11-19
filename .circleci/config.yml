@@ -126,6 +126,9 @@ commands:
   main_pipeline:
     description: "Main pipeline"
     parameters:
+      rebase_with_master:
+        type: boolean
+        default: false
       bump:
         description: The semver bump type. Must be one of "major", "minor", "patch".
         type: enum
@@ -136,6 +139,13 @@ commands:
       - setup_remote_docker
       - setup_env
       - checkout
+      - when:
+          condition: <<parameters.rebase_with_master>>
+          steps:
+            - run:
+                name: Rebase with master
+                command: |
+                  git rebase origin master
       - semver:
           bump: << parameters.bump >>
       - run:
@@ -284,7 +294,3 @@ workflows:
               ignore: /.*/  # only run on matching tag
             tags:
               only: /^env-.*/
-
-
-# - use env var to see if you are on a branch that has PR (when param or inline in command)
-# - launch build for all existing branches - ones that do not have PRs will auto-cancel themselves
