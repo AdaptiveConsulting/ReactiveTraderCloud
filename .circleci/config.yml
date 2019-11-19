@@ -193,7 +193,7 @@ jobs:
 
             for branch in $PR_BRANCHES
             do
-              if [ "$branch" != TARGET_BRANCH ]; then
+              if [ "$branch" != $TARGET_BRANCH ]; then
                 echo "Triggering build on branch: ${branch}"
                 echo "\"branch\": \"${branch}\""
                      curl -u ${CIRCLE_API_USER_TOKEN}: -X POST --header "Content-Type: application/json" -d "{
