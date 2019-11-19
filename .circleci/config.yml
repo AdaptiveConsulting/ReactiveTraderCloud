@@ -187,6 +187,7 @@ jobs:
       - main_pipeline:
           bump: prerelease
           environment: none
+          rebase_with_master: true
 
   notify_about_merge_to_master:
     docker:
