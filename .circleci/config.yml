@@ -191,7 +191,16 @@ jobs:
             git_data=$(curl https://api.github.com/repos/sizov/ReactiveTraderCloud/pulls\?state=open\?access_token\=${GIT_API_USER_TOKEN})
             PR_BRANCHES=$( grep -oP "(?<=\"label\": \"${TARGET_ORIGIN}:).*?(?=\")" \<<< $git_data | sort -u)
 
-            echo $PR_BRANCHES
+            for branch in $PR_BRANCHES
+            do
+              if [ "$branch" != TARGET_BRANCH ]; then
+                echo "Triggering build on branch: ${branch}"
+                echo "\"branch\": \"${branch}\""
+                     curl -u ${CIRCLE_API_USER_TOKEN}: -X POST --header "Content-Type: application/json" -d "{
+                       \"branch\": \"${branch}\"
+                     }" https://circleci.com/api/v2/project/github/sizov/ReactiveTraderCloud/pipeline
+              fi
+            done
 
   deploy_last_build:
     docker:
