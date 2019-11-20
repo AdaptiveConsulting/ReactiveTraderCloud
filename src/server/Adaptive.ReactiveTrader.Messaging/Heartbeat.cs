@@ -29,9 +29,9 @@ namespace Adaptive.ReactiveTrader.Messaging
             Log.Information("Stopped heartbeat for {host}", _host);
         }
 
-        public async Task Start()
+        public Task Start()
         {
-            var endpoint = await _broker.GetPublicEndPoint<HeartbeatDto>("status");
+            var endpoint = _broker.GetPublicEndPoint<HeartbeatDto>("status");
 
             _disp = _heartbeatStream.Select(
                 _ =>
@@ -45,6 +45,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                                     .Subscribe(endpoint);
 
             Log.Information("Started heartbeat for {host}", _host);
+            return Task.CompletedTask;
         }
     }
 }

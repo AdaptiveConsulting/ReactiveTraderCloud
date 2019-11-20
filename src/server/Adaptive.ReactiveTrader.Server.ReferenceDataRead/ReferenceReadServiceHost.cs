@@ -27,15 +27,15 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
             StartHeartBeat();
         }
 
-        private async Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
+        private Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
             Log.Debug("Received GetCurrencyPairUpdatesStream from {}",
-                            context.UserSession.Username ?? "<UNKNOWN USER>");
+                            context.Username ?? "<UNKNOWN USER>");
 
             var payload = JsonConvert.DeserializeObject<NothingDto>(Encoding.UTF8.GetString(message.Payload));
-            var replyTo = message.ReplyTo;
+            var replyTo = context.ReplyTo;
 
-            var endPoint = await _broker.GetPrivateEndPoint<CurrencyPairUpdatesDto>(replyTo);
+            var endPoint = _broker.GetPrivateEndPoint<CurrencyPairUpdatesDto>(replyTo, context.CorrelationId);
 
             Interlocked.Increment(ref _clients);
 
@@ -49,6 +49,7 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
                                     .TakeUntil(endPoint.TerminationSignal).Finally(() => Interlocked.Decrement(ref _clients))
                                     .Finally(() => { Log.Debug("Tidying up subscription from {replyTo}.", replyTo); })
                                     .Subscribe(endPoint);
+          return Task.CompletedTask;
         }
 
         public override double GetLoad()

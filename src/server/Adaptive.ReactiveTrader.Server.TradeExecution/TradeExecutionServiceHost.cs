@@ -21,7 +21,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
 
         public Task<ExecuteTradeResponseDto> ExecuteTrade(IRequestContext context, IMessage message)
         {
-            Log.Debug("Received ExecuteTrade from {username}", context.UserSession.Username);
+            Log.Debug("Received ExecuteTrade from {username}", context.Username);
 
             var payload = JsonConvert.DeserializeObject<ExecuteTradeRequestDto>(Encoding.UTF8.GetString(message.Payload));
             
