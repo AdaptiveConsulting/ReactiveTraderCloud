@@ -2,7 +2,7 @@ version: 2.1
 
 references:
   push_images_list: &push_images_list
-    client pricehistory bot nlp servers broker eventstore nginx
+                      client pricehistory bot nlp servers broker eventstore nginx
 
 commands:
   setup_env:
@@ -10,6 +10,7 @@ commands:
       - run:
           name: Install tools
           command: |
+            echo "Value of CIRCLE_BRANCH env var: " $CIRCLE_BRANCH
             sudo npm i -g semver@6.3.0
             sudo apt-get install gettext-base
       - run:
@@ -120,8 +121,47 @@ commands:
             # TODO: create new environment automatically
             # Update/create each deployment file in src/services/kubernetes
             for f in ./src/services/kubernetes/*-deployment.yaml; do
-                cat $f | envsubst | kubectl --namespace=${<< parameters.environment >>} apply -f
+                cat $f | /usr/bin/envsubst | kubectl --namespace=${<< parameters.environment >>} apply -f -
             done
+
+  # This is a fix for an edge case:
+  # We always need to trigger a build on all PRs once we have a new commit in master. We use CircleCi API to trigger
+  # those builds (see a job "notify_about_merge_to_master"). That job uses a branch name for opened PR
+  # to trigger the build. But there is a special case for PRs raised from forks - there are no branch names that
+  # builds can be identified with (since branches are in forks), so CircleCi crates a special branch for them in
+  # format "pull/123". Then we use such number in CircleCi API to trigger a build on those PRs.
+  # (see a job "notify_about_merge_to_master")
+  # Unfortunately it looks like there is a bug in CircleCi API:
+  # their API does not allow to trigger builds for fork PRs (where branch is "pull/123").
+  # We found that instead of calling API with "pull/123", we need to call it with "pull/123/head" - then the
+  # build can be triggered. This looks great, but then unfortunately such build fails on the step where CircleCi
+  # checks out the code from the repo. It says that it can't find a branch with name "pull/123/head/head" -
+  # clearly it adds "head" into the branch name that we passed to it with API ("pull/123/head" + "/head").
+  # So the trick here is next: before checking out the code, validate the environment variable
+  # "CIRCLE_BRANCH" to make sure it does not have "head" in the end, so turn "pull/123/head" into "pull/123"
+  validate_branch_env_var:
+    steps:
+      - run:
+          name: Validating branch name for pull requests
+          command: |
+            echo "Value of CIRCLE_BRANCH env var: " $CIRCLE_BRANCH
+
+            CLEAN_PR_BRANCH_NAME=$( grep -oP "(?=pull\/).*(?=\/head)" \<<< $CIRCLE_BRANCH ) || true
+
+            CIRCLE_BRANCH="XXXYYYZZZ"
+            export CIRCLE_BRANCH=$CIRCLE_BRANCH
+            export CIRCLE_BRANCH="XXXXYYYYYZZZZ"
+            echo 'export CIRCLE_BRANCH="XXXXYYYYYZZZZ"' >> $BASH_ENV
+            source $BASH_ENV
+
+            if [ -z "$CLEAN_PR_BRANCH_NAME" ]; then
+              echo "Exiting - branch name does not have to be fixed."
+              exit 0
+            fi
+            echo "Fixing branch name: " $CIRCLE_BRANCH " => " $CLEAN_PR_BRANCH_NAME
+            CIRCLE_BRANCH="$CLEAN_PR_BRANCH_NAME"
+
+            echo "New value of CIRCLE_BRANCH env var: " $CIRCLE_BRANCH
 
   main_pipeline:
     description: "Main pipeline"
@@ -136,6 +176,7 @@ commands:
       environment:
         type: string
     steps:
+      - validate_branch_env_var
       - setup_remote_docker
       - setup_env
       - checkout
@@ -171,6 +212,8 @@ jobs:
       - main_pipeline:
           bump: minor
           environment: dev
+      - push_images:
+          images: *push_images_list
 
   patch_build:
     docker:
@@ -179,6 +222,8 @@ jobs:
       - main_pipeline:
           bump: patch
           environment: none
+      - push_images:
+          images: *push_images_list
 
   feature_build:
     docker:
@@ -194,20 +239,27 @@ jobs:
       - image: circleci/node:latest
     steps:
       - run:
-          name: "Notify branches that master has a commit"
+          name: "Trigger build on branches with PRs (because master had a commit)"
           command: |
-            TARGET_ORIGIN="sizov"
+            TARGET_USER="AdaptiveConsulting"
             TARGET_BRANCH="master"
 
-            git_data=$(curl https://api.github.com/repos/sizov/ReactiveTraderCloud/pulls\?state=open\?access_token\=${GIT_API_USER_TOKEN})
+            # Fetching info about opened pull requests (using github API)
+            pr_info=$(curl https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/pulls\?state=open\?access_token\=${GIT_API_USER_TOKEN})
 
-            PR_BRANCHES=$( grep -oP "(?<=\"label\": \"${TARGET_ORIGIN}:).*?(?=\")" \<<< $git_data | sort -u || true) || true
+            # Extracting branch names from info about PRs. This info has branch names for opened PRs,
+            # the format is: ` "label": "user:branch-name" `.
+            # To extract branch names, we need to remove the string `user:`, remove the string `"label":` and some other extra symbols
+            # and then we need to exclude duplicated records:
+            PR_BRANCHES=$( grep -oP "(?<=\"label\": \"${TARGET_USER}:).*?(?=\")" \<<< $pr_info | sort -u || true) || true
 
             if [ -z "$PR_BRANCHES" ]; then
               echo "Exiting - no branches with opened PRs"
               exit 0
             fi
 
+            # Now iterate on branches that have opened PRs and for each of them invoke a new build using
+            # Circle CI API (v2): https://github.com/CircleCI-Public/api-preview-docs/blob/master/docs/api-changes.md
             for branch in $PR_BRANCHES
             do
               if [ "$branch" != $TARGET_BRANCH ]; then
@@ -215,7 +267,7 @@ jobs:
                 echo "\"branch\": \"${branch}\""
                      curl -u ${CIRCLE_API_USER_TOKEN}: -X POST --header "Content-Type: application/json" -d "{
                        \"branch\": \"${branch}\"
-                     }" https://circleci.com/api/v2/project/github/sizov/ReactiveTraderCloud/pipeline
+                     }" https://circleci.com/api/v2/project/github/AdaptiveConsulting/ReactiveTraderCloud/pipeline
               fi
             done
 
@@ -226,6 +278,10 @@ jobs:
       - attach_workspace:
           at: ~/
       - checkout
+      - run:
+          name: "Install required OS dependencies"
+          command: |
+            apt-get install gettext -qy
       - run:
           name: "Retrieve deployment parameters"
           command: |
@@ -244,6 +300,10 @@ jobs:
       - image: google/cloud-sdk
     steps:
       - checkout
+      - run:
+          name: "Install required OS dependencies"
+          command: |
+            apt-get install gettext -qy
       - run:
           name: "Parse tags"
           command: |
@@ -279,6 +339,13 @@ workflows:
               only: /^release\/.*/
 
       - release_build:
+          filters:
+            branches:
+              only: master
+
+      - deploy_last_build:
+          requires:
+            - release_build
           filters:
             branches:
               only: master
