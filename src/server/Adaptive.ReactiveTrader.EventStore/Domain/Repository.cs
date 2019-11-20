@@ -10,7 +10,6 @@ using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
-using ILogger = Serilog.ILogger;
 
 namespace Adaptive.ReactiveTrader.EventStore.Domain
 {

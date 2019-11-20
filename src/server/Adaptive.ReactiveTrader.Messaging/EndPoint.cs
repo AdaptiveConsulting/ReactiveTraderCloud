@@ -1,24 +1,30 @@
 using System;
-using System.Net;
-using System.Reactive.Subjects;
+using System.Text;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
 using Serilog;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
     internal class EndPoint<T> : IEndPoint<T>
     {
-        private readonly ISubject<T> _subject;
+        private readonly IModel _channel;
+        private readonly string _topic;
 
-        public EndPoint(ISubject<T> subject)
+
+        public EndPoint(IModel channel, string topic)
         {
-            _subject = subject;
+            _channel = channel;
+            _topic = topic;
+            _channel.ExchangeDeclare(topic, ExchangeType.Fanout);
         }
 
         public void PushMessage(T obj)
         {
             try
             {
-                _subject.OnNext(obj);
+                var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj));
+                _channel.BasicPublish(_topic, string.Empty, null, body);
             }
             catch (Exception e)
             {
@@ -28,7 +34,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public void PushError(Exception ex)
         {
-            _subject.OnError(ex);
+            throw new InvalidOperationException("", ex); //TODO: discuss implementing proper error propagation to UI
         }
     }
 }

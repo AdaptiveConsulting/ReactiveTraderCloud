@@ -27,7 +27,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         public async Task Start()
         {
-            var endpoint = await _broker.GetPublicEndPoint<SpotPriceDto>("prices");
+            var endpoint = _broker.GetPublicEndPoint<SpotPriceDto>("prices");
 
             _disp = _priceStream.Subscribe(endpoint);
 
