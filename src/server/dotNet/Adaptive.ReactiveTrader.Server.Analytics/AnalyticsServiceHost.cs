@@ -51,9 +51,9 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         private async Task GetAnalyticsStream(IRequestContext context, IMessage message)
         {
-            Log.Debug("Received GetAnalyticsStream from {username}", context.UserSession.Username);
+            Log.Debug("Received GetAnalyticsStream from {username}", context.Username);
 
-            var endPoint = await _broker.GetPrivateEndPoint<PositionUpdatesDto>(message.ReplyTo);
+            var endPoint = _broker.GetPrivateEndPoint<PositionUpdatesDto>(context.ReplyTo, context.CorrelationId);
 
             _subscriptions.Add(_service.GetAnalyticsStream()
                                        .TakeUntil(endPoint.TerminationSignal)

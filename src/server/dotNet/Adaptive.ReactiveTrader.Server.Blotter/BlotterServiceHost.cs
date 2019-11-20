@@ -28,10 +28,10 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 
         private async Task GetTradesStream(IRequestContext context, IMessage message)
         {
-            Log.Debug("Received GetTradesStream from {username}", context.UserSession.Username ?? "<UNKNOWN USER>");
-            var replyTo = message.ReplyTo;
+            Log.Debug("Received GetTradesStream from {username}", context.Username ?? "<UNKNOWN USER>");
+            var replyTo = context.ReplyTo;
 
-            var endPoint = await _broker.GetPrivateEndPoint<TradesDto>(replyTo);
+            var endPoint = _broker.GetPrivateEndPoint<TradesDto>(context.ReplyTo, context.CorrelationId);
 
             _subscription = _service.GetTradesStream()
                 .Select(x =>
