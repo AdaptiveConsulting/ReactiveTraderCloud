@@ -124,7 +124,6 @@ const baseAppConfigs: ApplicationConfig[] = [
   },
   {
     name: 'Limit Checker',
-    url: `${ORIGIN}/plugin/LimitChecker.zip`,
     icon: limitCheckerIcon,
     provider: {
       platformName: 'openfin',

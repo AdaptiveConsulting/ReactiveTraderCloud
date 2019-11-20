@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-import { ApplicationConfig, ApplicationProvider } from './applicationConfigurations'
-import { createExcelApp } from 'rt-platforms'
-import { createOpenFinWindow, createOrBringToFrontOpenFinApplication } from '../utils'
-import { Application } from 'openfin/_v2/main'
+import {ApplicationConfig, ApplicationProvider} from './applicationConfigurations'
+import {createExcelApp} from 'rt-platforms'
+import {createOpenFinWindow, createOrBringToFrontOpenFinApplication} from '../utils'
+import {Application} from 'openfin/_v2/main'
 
 function openWindow(provider: ApplicationProvider, name: string, url?: string) {
   if (!provider.windowOptions) {
@@ -13,7 +13,7 @@ function openWindow(provider: ApplicationProvider, name: string, url?: string) {
     console.error(`Error opening app - url is missing`)
     return
   }
-  return createOpenFinWindow({ name, url, windowOptions: provider.windowOptions })
+  return createOpenFinWindow({name, url, windowOptions: provider.windowOptions})
 }
 
 function handleApplication(provider: ApplicationProvider, name: string, url?: string) {
@@ -35,7 +35,7 @@ function handleApplication(provider: ApplicationProvider, name: string, url?: st
 export async function open(
   config: ApplicationConfig,
 ): Promise<Window | fin.OpenFinWindow | Application | void | null> {
-  const { provider, url, name } = config
+  const {provider, url, name} = config
 
   // Not under openfin -> open as url on browser
   if (typeof fin === 'undefined') {
@@ -71,12 +71,19 @@ export async function open(
 }
 
 async function launchLimitChecker(config: ApplicationConfig) {
-  const app = fin.Application.wrap({ uuid: config.name })
-  fin.desktop.System.launchExternalProcess({
-    alias: 'LimitChecker',
-    listener(result) {
-      console.log('the exit code', result.exitCode)
+  const app = fin.Application.wrap({uuid: config.name})
+  fin.desktop.System.launchExternalProcess(
+    {
+      alias: 'LimitChecker',
+      listener: result => {
+        console.log('the exit code', result.exitCode)
+      },
     },
-  })
+    (data) => {
+      console.info('Process launched: ' + data)
+    },
+    (e) => {
+      console.error('Process launch failed: ' + e)
+    })
   return app
 }
