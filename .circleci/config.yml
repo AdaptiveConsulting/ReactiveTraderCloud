@@ -61,6 +61,7 @@ commands:
             elif [[ "$CIRCLE_BRANCH" =~ ^pull\/* ]]
             then
               # For PR from Fork
+              echo "Value of CIRCLE_BRANCH env var for current pull request branch: " $CIRCLE_BRANCH
 
               # This is a fix for an edge case:
               # We always need to trigger a build on all PRs once we have a new commit in master. We use CircleCi API to trigger
@@ -77,13 +78,15 @@ commands:
               # clearly it adds "head" into the branch name that we passed to it with API ("pull/123/head" + "/head").
               # So the trick here is next: before checking out the code, validate the environment variable
               # "CIRCLE_BRANCH" to make sure it does not have "head" in the end, so turn "pull/123/head" into "pull/123"
-              echo "Value of CIRCLE_BRANCH env var for current pull request branch: " $CIRCLE_BRANCH
-              CLEAN_PR_BRANCH_NAME=$( grep -oP "(?=pull\/).*(?=\/head)" \<<< $CIRCLE_BRANCH ) || true
-              echo "Fixing branch name: " $CIRCLE_BRANCH " => " $CLEAN_PR_BRANCH_NAME
+              FIXED_PR_BRANCH_NAME=$( grep -oP "(?=pull\/).*(?=\/head)" \<<< $CIRCLE_BRANCH ) || true
+              if [ ! -z "$FIXED_PR_BRANCH_NAME" ]; then
+                echo "Fixing branch name: " $CIRCLE_BRANCH " => " $FIXED_PR_BRANCH_NAME
+                CIRCLE_BRANCH=$FIXED_PR_BRANCH_NAME
+              fi
 
-              git fetch --force origin "$CLEAN_PR_BRANCH_NAME/head:remotes/origin/$CLEAN_PR_BRANCH_NAME"
+              git fetch --force origin "$CIRCLE_BRANCH/head:remotes/origin/$CIRCLE_BRANCH"
             else
-               git fetch --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
+              git fetch --force origin "$CIRCLE_BRANCH:remotes/origin/$CIRCLE_BRANCH"
             fi
 
       - run:
