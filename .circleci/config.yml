@@ -7,7 +7,7 @@ references:
 commands:
 
   # rewriting internal 'checkout' command to solve the issue with triggering forked PRs build with API
-  checkout:
+  custom_checkout:
     steps:
       - run:
           name: Set up HOME environment variable
@@ -238,7 +238,7 @@ commands:
     steps:
       - setup_remote_docker
       - setup_env
-      - checkout
+      - custom_checkout
       - when:
           condition: <<parameters.rebase_with_master>>
           steps:
