@@ -12,12 +12,6 @@ commands:
       - run:
           name: Set up HOME environment variable
           command: |
-            # TODO: remove before merging
-            echo $CIRCLE_PROJECT_USERNAME
-            echo CIRCLE_PROJECT_REPONAME
-            pr_info=$(curl https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls\?state=open\?access_token\=${GIT_API_USER_TOKEN})
-            echo $pr_info
-
             # Workaround old docker images with incorrect $HOME
             # check https://github.com/docker/docker/issues/2968 for details
             if [ "${HOME}" = "/" ]
@@ -341,7 +335,7 @@ jobs:
                 CIRCLE_BRANCH_TO_TRIGGER_BUILD=$FORKED_BRANCH_NAME
               fi
 
-              echo "Triggering build: ${CIRCLE_BRANCH_TO_TRIGGER_BUILD}\n"
+              echo "Triggering build: ${CIRCLE_BRANCH_TO_TRIGGER_BUILD}"
               echo " "
 
               curl -u ${CIRCLE_API_USER_TOKEN}: -X POST --header "Content-Type: application/json" -d "{
