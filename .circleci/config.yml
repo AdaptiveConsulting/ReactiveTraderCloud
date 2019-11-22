@@ -306,7 +306,7 @@ jobs:
             # Fetching info about opened pull requests (using github API)
             # PLEASE NOTE: calling GitHub API with token restricts amount of calls to 60 per hour:
             # https://developer.github.com/v3/#rate-limiting
-            pr_info=$(curl https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/pulls\?state=open\?access_token\=${GIT_API_USER_TOKEN})
+            pr_info=$(curl https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls\?state=open\?access_token\=${GIT_API_USER_TOKEN})
 
             # Iterating through the list of opened PRs and mapping records to objects that only have info about PR number and full branch name
             for pr_item in $(jq -c 'map( {pr_number: .number, branch_label: .head.label} ) | .[]' \<<< $pr_info); do
@@ -336,6 +336,7 @@ jobs:
               fi
 
               echo "Triggering build: ${CIRCLE_BRANCH_TO_TRIGGER_BUILD}"
+              echo " "
 
               curl -u ${CIRCLE_API_USER_TOKEN}: -X POST --header "Content-Type: application/json" -d "{
                 \"branch\": \"${CIRCLE_BRANCH_TO_TRIGGER_BUILD}\"
