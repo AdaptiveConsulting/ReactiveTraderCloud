@@ -6,7 +6,7 @@ references:
 
 commands:
 
-  # rewriting internal 'checkout' command to solve the issue with triggering forked PRs build with API
+  # custom 'checkout' command to solve the issue with triggering forked PRs build with API
   custom_checkout:
     steps:
       - run:
