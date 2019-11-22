@@ -81,6 +81,7 @@ git tag -a env-demo -m "Deployed 1.60.0" 1.60.0
 
 # delete local tag:
 git tag -d env-demo
+
 # delete remote tag:
 git push origin :env-demo
 ```
