@@ -10,7 +10,7 @@ import { getConstsFromRfqState } from '../model/spotTileUtils'
 import { CurrencyPairNotional } from '../model/spotTileData'
 
 interface Props {
-  currencyPair: CurrencyPair
+  currencyPair?: CurrencyPair
   spotTileData: SpotTileDataWithNotional
   canPopout: boolean
   executionStatus: ServiceConnectionStatus
@@ -44,6 +44,10 @@ const TileSwitch: React.FC<Props> = ({
     isRfqStateRequested,
     isRfqStateNone,
   } = getConstsFromRfqState(spotTileData.rfqState)
+
+  if (!currencyPair) {
+    return <></>
+  }
 
   return (
     <Tile

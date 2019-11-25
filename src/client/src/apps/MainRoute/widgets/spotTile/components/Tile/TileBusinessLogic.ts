@@ -12,10 +12,10 @@ const MIN_RFQ_VALUE = 10000000
 
 // Utils
 export const getFormattedValue = (value: number | string) => numeral(value).format(NUMERAL_FORMAT)
-export const getDefaultNotionalValue = (currencyPair: CurrencyPair) =>
+export const getDefaultNotionalValue = (currencyPair: CurrencyPair | undefined) =>
   // This is to simply to have one Tile showing RFQ prompt on page load
   // check JIRA ticket ARTP-532
-  currencyPair.symbol === 'NZDUSD' ? MIN_RFQ_VALUE : DEFAULT_NOTIONAL_VALUE
+  currencyPair && currencyPair.symbol === 'NZDUSD' ? MIN_RFQ_VALUE : DEFAULT_NOTIONAL_VALUE
 
 export const isValueInRfqRange = (notional: number) => {
   return notional >= MIN_RFQ_VALUE && notional <= MAX_NOTIONAL_VALUE
