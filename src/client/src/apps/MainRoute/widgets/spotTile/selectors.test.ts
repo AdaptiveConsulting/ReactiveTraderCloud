@@ -1,38 +1,38 @@
 import { GlobalState } from 'StoreTypes'
-import { selectSpotTileData } from './selectors';
-import { SpotTileData, SpotTileDataWithNotional } from './model';
-import { ConnectionStatus } from 'rt-system';
-import { PriceMovementTypes } from './model/priceMovementTypes';
+import { selectSpotTileData } from './selectors'
+import { SpotTileData, SpotTileDataWithNotional } from './model'
+import { ConnectionStatus } from 'rt-system'
+import { PriceMovementTypes } from './model/priceMovementTypes'
 
 const getDefaultGlobalState = (): GlobalState => ({
   analyticsService: {
     history: [],
-    currentPositions: []
+    currentPositions: [],
   },
   blotterService: {
-    trades: []
+    trades: [],
   },
   compositeStatusService: {},
   connectionStatus: {
     status: ConnectionStatus.connected,
     transportType: 'unknown',
-    url: ''
+    url: '',
   },
   currencyPairs: {},
   layoutService: {
     analytics: {
       visible: true,
       x: 0,
-      y: 0
+      y: 0,
     },
     blotter: {
       visible: true,
       x: 0,
-      y: 0
+      y: 0,
     },
-    spotTiles: {}
+    spotTiles: {},
   },
-  spotTilesData: {}
+  spotTilesData: {},
 })
 
 const getDefaultSpotTileData = (): SpotTileData => ({
@@ -53,55 +53,67 @@ const getDefaultSpotTileData = (): SpotTileData => ({
   rfqState: 'none',
   rfqPrice: null,
   rfqReceivedTime: null,
-  rfqTimeout: null
+  rfqTimeout: null,
 })
 
 describe('selectSpotTileData', () => {
-
-  it('should set default notional to 1000000 for GBPUSD', () => {
+  it('should set default notional to 1,000,000 for GBPUSD', () => {
     const globalState: GlobalState = {
       ...getDefaultGlobalState(),
       currencyPairs: {
-        'GBPUSD': {
+        GBPUSD: {
           symbol: 'GBPUSD',
           ratePrecision: 2,
           pipsPosition: 2,
           base: '',
-          terms: ''
-        }
-      }
+          terms: '',
+        },
+      },
     }
 
-    const spotTileData = selectSpotTileData(globalState, 'GBPUSD');
+    const spotTileData = selectSpotTileData(globalState, 'GBPUSD')
     const expectedTileDataForGBPUSD: SpotTileDataWithNotional = {
       ...getDefaultSpotTileData(),
-      notional: 1000000
+      notional: 1000000,
     }
 
-    expect(spotTileData).toEqual(expectedTileDataForGBPUSD);
+    expect(spotTileData).toEqual(expectedTileDataForGBPUSD)
   })
 
-  it('should set default notional to 10000000 for NZDUSD', () => {
+  it('should set default notional to 1,000,000 for undefined currency', () => {
+    const globalState: GlobalState = {
+      ...getDefaultGlobalState(),
+    }
 
+    const spotTileData = selectSpotTileData(globalState, undefined)
+    const expectedTileData: SpotTileDataWithNotional = {
+      ...getDefaultSpotTileData(),
+      notional: 1000000,
+    }
+
+    expect(spotTileData).toEqual(expectedTileData)
+  })
+
+  it('should set default notional to 10,000,000 for NZDUSD', () => {
     const globalState: GlobalState = {
       ...getDefaultGlobalState(),
       currencyPairs: {
-        'NZDUSD': {
+        NZDUSD: {
           symbol: 'NZDUSD',
           ratePrecision: 2,
           pipsPosition: 2,
           base: '',
-          terms: ''
-        }
-      }
+          terms: '',
+        },
+      },
     }
 
-    const spotTileData = selectSpotTileData(globalState, 'NZDUSD');
+    const spotTileData = selectSpotTileData(globalState, 'NZDUSD')
     const expectedTileDataForGBPUSD: SpotTileDataWithNotional = {
       ...getDefaultSpotTileData(),
-      notional: 10000000
+      notional: 10000000,
     }
 
-    expect(spotTileData).toEqual(expectedTileDataForGBPUSD);
+    expect(spotTileData).toEqual(expectedTileDataForGBPUSD)
   })
 })

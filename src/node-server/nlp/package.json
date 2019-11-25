@@ -4,7 +4,7 @@
   "description": "NLP Service for Reactive Trader",
   "main": "dist/index",
   "scripts": {
-    "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'node -r ts-node/register -r tsconfig-paths/register --inspect' src/index.ts",
+    "start:dev": "nodemon --watch 'src/**/*.ts' --exec \"node -r ts-node/register -r tsconfig-paths/register --inspect\" src/index.ts",
     "build": "webpack",
     "start": "node dist/index.js"
   },
