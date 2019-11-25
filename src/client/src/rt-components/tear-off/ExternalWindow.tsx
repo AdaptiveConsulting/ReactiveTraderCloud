@@ -55,7 +55,8 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
         externalWindow.close()
       }
     }
-  }, [config, onUnload, platform.window])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return null
 }
