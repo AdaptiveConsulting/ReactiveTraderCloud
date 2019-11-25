@@ -99,12 +99,15 @@ export const openDesktopWindow = async (
     }
   }
 
+  const windowName = config.name || generateRandomName();
+  console.info(`Creating Openfin window: ${windowName}`);
+
   //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
   // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
   const ofWindowPromise = new Promise<fin.OpenFinWindow>(resolve => {
     const win = new fin.desktop.Window(
       {
-        name: config.name || generateRandomName(),
+        name: windowName,
         url,
         defaultWidth,
         defaultHeight,
@@ -121,8 +124,10 @@ export const openDesktopWindow = async (
         ...updatedPosition,
       } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
       () => {
+        console.info(`Openfin window created: ${windowName}`);
         if (onClose) {
           const closeListener = () => {
+            console.log(`Received 'close' event for Openfin window: ${windowName}`);
             win.removeEventListener('closed', closeListener)
             onClose && onClose()
           }
@@ -131,7 +136,7 @@ export const openDesktopWindow = async (
         resolve(win)
       },
       error => {
-        console.log('Error creating window:', error)
+        console.error(`Error creating Openfin window: ${windowName}`, error)
       },
     )
   })
