@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
-import { WindowConfig } from '../../types'
-import { get as _get, last as _last } from 'lodash'
-import { PlatformWindow } from '../../platformWindow'
+import {WindowConfig} from '../../types'
+import {get as _get, last as _last} from 'lodash'
+import {PlatformWindow} from '../../platformWindow'
 
 const TEAR_OUT_OFFSET_LEFT = 50
 const TEAR_OUT_OFFSET_TOP = 50
@@ -20,7 +20,7 @@ export const openfinWindowStates: { readonly [key: string]: WindowState } = {
   Maximized: 'maximized',
 }
 
-const generateRandomName = function() {
+const generateRandomName = function () {
   let text = ''
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -74,32 +74,42 @@ export function createPlatformWindow(getWindow: () => Promise<fin.OpenFinWindow>
   }
 }
 
-export const openDesktopWindow = async (
-  config: DesktopWindowProps,
-  onClose?: () => void,
-  position?: {},
-): Promise<PlatformWindow> => {
-  const { url, width: defaultWidth, height: defaultHeight, maxHeight, maxWidth } = config
-  const minWidth = config.minWidth ? config.minWidth : 100
-  const minHeight = config.minHeight ? config.minHeight : 100
+type OpenfinWindowPosition = Pick<fin.WindowOption, 'defaultLeft' | 'defaultTop'>;
 
-  const childWindows = await getChildWindows()
-  const hasChildWindows = childWindows && childWindows.length > 0
-  const shouldBeDefaultCentered = !hasChildWindows && (!config.x && !config.y)
-
-  let updatedPosition = {
-    defaultLeft: config.x ? config.x : undefined,
-    defaultTop: config.y ? config.y : undefined,
+async function getOpenfinWindowPosition(config: DesktopWindowProps, childWindows?: fin.OpenFinWindow[]): Promise<OpenfinWindowPosition> {
+  if (typeof config.x !== 'undefined' || typeof config.y !== 'undefined') {
+    return {
+      defaultLeft: config.x,
+      defaultTop: config.y
+    }
   }
-  if (hasChildWindows) {
+
+  if (childWindows && childWindows.length > 0) {
     const lastWindow = _last(childWindows)
-    updatedPosition = {
+    return {
       defaultLeft: _get(lastWindow, 'nativeWindow.screenLeft') + TEAR_OUT_OFFSET_LEFT,
       defaultTop: _get(lastWindow, 'nativeWindow.screenTop') + TEAR_OUT_OFFSET_TOP,
     }
   }
 
+  return {
+    defaultLeft: undefined,
+    defaultTop: undefined,
+  }
+}
+
+export const openDesktopWindow = async (
+  config: DesktopWindowProps,
+  onClose?: () => void,
+  position?: {},
+): Promise<PlatformWindow> => {
+  const {url, width: defaultWidth, height: defaultHeight, maxHeight, maxWidth} = config
+  const childWindows = await getChildWindows()
+  const hasChildWindows = childWindows && childWindows.length > 0
+  const configHasXYCoordinates = typeof config.x !== 'undefined' && typeof config.y !== 'undefined'
+  const updatedPosition = await getOpenfinWindowPosition(config, childWindows)
   const windowName = config.name || generateRandomName();
+
   console.info(`Creating Openfin window: ${windowName}`);
 
   //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
@@ -111,11 +121,11 @@ export const openDesktopWindow = async (
         url,
         defaultWidth,
         defaultHeight,
-        minWidth,
-        minHeight,
+        minWidth: config.minWidth ? config.minWidth : 100,
+        minHeight: config.minHeight ? config.minHeight : 100,
         maxHeight,
         maxWidth,
-        defaultCentered: shouldBeDefaultCentered,
+        defaultCentered: !hasChildWindows && !configHasXYCoordinates,
         autoShow: true,
         frame: false,
         saveWindowState: false,

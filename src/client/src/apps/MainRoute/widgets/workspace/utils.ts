@@ -1,5 +1,5 @@
 import { ExternalWindowProps } from './selectors'
-import { TileViews } from './workspaceHeader/index'
+import { TileViews } from './workspaceHeader'
 
 export const appendTileViewToUrl: (
   externalWindowProps: ExternalWindowProps,
