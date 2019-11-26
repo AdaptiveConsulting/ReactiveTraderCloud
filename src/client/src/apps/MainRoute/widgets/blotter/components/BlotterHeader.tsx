@@ -81,7 +81,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
     <BlotterHeaderStyle>
       <BlotterLeft>Executed Trades</BlotterLeft>
       <BlotterRight>
-        <ExcelButton onClick={onExportToExcelClick} />
+        <ExcelButton onClick={onExportToExcelClick}/>
         <BlotterToolbar
           isQuickFilterApplied={quickFilterText.length !== 0}
           quickFilterChangeHandler={quickFilterChangeHandler}
@@ -93,9 +93,9 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
         />
         {canPopout && (
           <React.Fragment>
-            <Fill />
+            <Fill/>
             <BlotterControls onClick={popoutClickHandler} data-qa="blotter-header__pop-out-button">
-              <PopoutIcon width={0.8125} height={0.75} />
+              <PopoutIcon width={0.8125} height={0.75}/>
             </BlotterControls>
           </React.Fragment>
         )}

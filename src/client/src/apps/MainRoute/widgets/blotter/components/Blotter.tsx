@@ -14,7 +14,7 @@ import { usePlatform } from 'rt-platforms'
 export interface BlotterProps {
   rows: Trade[]
   canPopout: boolean
-  onPopoutClick?: () => void
+  onPopoutClick?: (x: number, y: number) => void
 }
 
 const BlotterStyle = styled('div')`
@@ -109,7 +109,7 @@ const Blotter: React.FC<BlotterProps> = props => {
     }
   }, [gridApi])
 
-  const onPopoutClick = useCallback(() => props.onPopoutClick && props.onPopoutClick(), [props])
+  const onPopoutClick = useCallback((x: number, y: number) => props.onPopoutClick && props.onPopoutClick(x, y), [props])
 
   const getDocument = useCallback(
     () => (gridDoc.current && gridDoc.current.ownerDocument) || document,

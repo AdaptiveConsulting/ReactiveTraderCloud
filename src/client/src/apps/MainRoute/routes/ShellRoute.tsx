@@ -33,59 +33,65 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
   const blotter = useSelector(blotterSelector)
   const analytics = useSelector(analyticsSelector)
 
+  const body = (
+    <Resizer
+      defaultHeight={30}
+      component={() => (
+        <BlotterWrapper data-qa="shell-route__blotter-wrapper">
+          <TearOff
+            id="blotter"
+            dragTearOff={true}
+            externalWindowProps={addLayoutToConfig(
+              externalWindowDefault.blotterRegion,
+              blotter,
+            )}
+            render={(popOut, tornOff) => (
+              <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable/>
+            )}
+            tornOff={!blotter.visible}
+          />
+        </BlotterWrapper>
+      )}
+      disabled={!blotter.visible}
+    >
+      <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
+        <OverflowScroll>
+          <WorkspaceContainer/>
+        </OverflowScroll>
+      </WorkspaceWrapper>
+    </Resizer>
+  );
+
+  const aside = (
+    <AnalyticsWrapper data-qa="shell-route__analytics-wrapper">
+      <TearOff
+        id="region"
+        dragTearOff={true}
+        externalWindowProps={addLayoutToConfig(
+          externalWindowDefault.analyticsRegion,
+          analytics,
+        )}
+        render={(popOut, tornOff) => (
+          <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable/>
+        )}
+        tornOff={!analytics.visible}
+      />
+    </AnalyticsWrapper>
+  );
+
+  const footer = (
+    <StatusBar>
+      <StatusButton/>
+    </StatusBar>
+  );
+
   return (
     <DefaultLayout
       header={header}
-      body={
-        <Resizer
-          defaultHeight={30}
-          component={() => (
-            <BlotterWrapper data-qa="shell-route__blotter-wrapper">
-              <TearOff
-                id="blotter"
-                dragTearOff={false}
-                externalWindowProps={addLayoutToConfig(
-                  externalWindowDefault.blotterRegion,
-                  blotter,
-                )}
-                render={(popOut, tornOff) => (
-                  <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
-                )}
-                tornOff={!blotter.visible}
-              />
-            </BlotterWrapper>
-          )}
-          disabled={!blotter.visible}
-        >
-          <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
-            <OverflowScroll>
-              <WorkspaceContainer />
-            </OverflowScroll>
-          </WorkspaceWrapper>
-        </Resizer>
-      }
-      aside={
-        <AnalyticsWrapper data-qa="shell-route__analytics-wrapper">
-          <TearOff
-            id="region"
-            dragTearOff={false}
-            externalWindowProps={addLayoutToConfig(
-              externalWindowDefault.analyticsRegion,
-              analytics,
-            )}
-            render={(popOut, tornOff) => (
-              <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
-            )}
-            tornOff={!analytics.visible}
-          />
-        </AnalyticsWrapper>
-      }
-      footer={
-        <StatusBar>
-          <StatusButton />
-        </StatusBar>
-      }
-      after={<ReconnectModal />}
+      body={body}
+      aside={aside}
+      footer={footer}
+      after={<ReconnectModal/>}
     />
   )
 }
