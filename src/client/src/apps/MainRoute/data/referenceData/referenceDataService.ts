@@ -1,11 +1,12 @@
-import { ServiceStubWithLoadBalancer as ServiceClient } from 'rt-system'
+import { retryWithBackOff, ServiceStubWithLoadBalancer as ServiceClient } from 'rt-system'
 import { CurrencyPairMap, UpdateType } from 'rt-types'
-import { map, publishReplay, refCount, scan } from 'rxjs/operators'
+import { map, publishReplay, refCount, retryWhen, scan } from 'rxjs/operators'
 import { CurrencyPairUpdates } from './currencyPairUpdates'
 import { default as referenceDataMapper, RawCurrencyPairUpdates } from './referenceDataMapper'
 
 export const referenceDataService = (serviceClient: ServiceClient) =>
   serviceClient.createStreamOperation<RawCurrencyPairUpdates>('reference', 'getCurrencyPairUpdatesStream', {}).pipe(
+    retryWhen(retryWithBackOff()),
     map(referenceDataMapper.mapCurrencyPairsFromDto),
     scan<CurrencyPairUpdates, CurrencyPairMap>((acc, update) => {
       const pairUpdates = update.currencyPairUpdates

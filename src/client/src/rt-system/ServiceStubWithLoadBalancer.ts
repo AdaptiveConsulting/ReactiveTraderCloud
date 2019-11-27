@@ -105,15 +105,17 @@ export default class ServiceStubWithLoadBalancer {
               },
             })
 
-            // There must be a way to do this without an inner-subsribe
+            // There must be a way to do this without an inner-subscribe
             const subscription = subscribeTopic$.subscribe(obs)
 
+            // This will detect when a service has gone down an emit an error on to stream. This allows any subscribers
+            // to handle the timeout and `retryWhen` would be good option
             const detectInstanceTimout = this.serviceInstanceDictionaryStream
               .pipe(
                 map(currentStatus => currentStatus.getServiceInstanceStatus(service, serviceInstanceStatus.serviceId)),
                 filter(currentStatus => !(currentStatus && currentStatus.isConnected)),
               )
-              .subscribe(() => console.log('Topic timed out: ' + topicName))
+              .subscribe(() => obs.error('Topic timed out: ' + topicName))
 
             return () => {
               subscription.unsubscribe()
