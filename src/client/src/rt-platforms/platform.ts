@@ -26,7 +26,7 @@ export type Platform = Partial<PlatformFeatures> & {
 
   readonly name: string
 
-  readonly window: PlatformWindowApi & Partial<PlatformWindow>
+  readonly window: PlatformWindowApi & PlatformWindow
 
   readonly notification: {
     notify: (message: object) => void

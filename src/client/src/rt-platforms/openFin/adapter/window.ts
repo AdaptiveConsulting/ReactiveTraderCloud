@@ -48,10 +48,6 @@ const getChildWindows = () => {
 // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
 export function createPlatformWindow(getWindow: () => Promise<fin.OpenFinWindow>): PlatformWindow {
   return {
-    getNativeWindow: async () => {
-      const w = await getWindow()
-      return w.getNativeWindow()
-    },
     close: async () => (await getWindow()).close(),
     bringToFront: async () => (await getWindow()).bringToFront(),
     minimize: async () => (await getWindow()).minimize(),

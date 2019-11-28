@@ -6,7 +6,6 @@ export type PlatformWindowApi = {
 
 export type PlatformWindow = {
   readonly close: () => Promise<void>
-  readonly getNativeWindow: () => Promise<Window>
 
   readonly maximize?: () => Promise<void>
   readonly minimize?: () => Promise<void>
