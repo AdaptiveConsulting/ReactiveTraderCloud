@@ -35,9 +35,8 @@ export class Glue42 implements Platform {
       })
   }
 
-  // TODO how can we remove the any?
-  window: any = {
-    close: () => window.close(),
+  window = {
+    close: () => Promise.resolve(window.close()),
 
     open: (config: WindowConfig, onClose?: () => void) => openGlueWindow(config, onClose),
 

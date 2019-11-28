@@ -29,11 +29,10 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
 
   useEffect(() => {
     let externalWindow: PlatformWindow | undefined
-    let externalNativeWindow: Window | undefined
 
     const release = () => {
-      if (externalNativeWindow) {
-        externalNativeWindow.removeEventListener('beforeunload', release)
+      if (externalWindow) {
+        window.removeEventListener('beforeunload', release)
       }
       if (typeof onUnload === 'function') {
         onUnload.call(null)
@@ -43,8 +42,7 @@ const ExternalWindow: FC<ExternalWindowProps> = ({
     const getWindow = async () => {
       externalWindow = await platform.window.open(config, release)
       if (externalWindow) {
-        externalNativeWindow = await externalWindow.getNativeWindow()
-        externalNativeWindow.addEventListener('beforeunload', release)
+        window.addEventListener('beforeunload', release)
       }
     }
 
