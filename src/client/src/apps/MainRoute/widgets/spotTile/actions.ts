@@ -25,8 +25,6 @@ export enum TILE_ACTION_TYPES {
   RFQ_RESET = '@ReactiveTraderCloud/RFQ_RESET',
   EXECUTE_TRADE = '@ReactiveTraderCloud/EXECUTE_TRADE',
   TRADE_EXECUTED = '@ReactiveTraderCloud/TRADE_EXECUTED',
-  DISPLAY_CURRENCY_CHART = '@ReactiveTraderCloud/DISPLAY_CURRENCY_CHART',
-  CURRENCY_CHART_OPENED = '@ReactiveTraderCloud/CURRENCY_CHART_OPENED',
   DISMISS_NOTIFICATION = '@ReactiveTraderCloud/DISMISS_NOTIFICATION',
   SPOT_TILE_SUBSCRIBE = '@ReactiveTraderCloud/SPOT_TILE_SUBSCRIBE',
   SPOT_PRICES_UPDATE = '@ReactiveTraderCloud/SPOT_PRICES_UPDATE',
@@ -66,12 +64,6 @@ export const SpotTileActions = {
     ExecuteTradeResponse,
     TradeExectionMeta | null
   >(TILE_ACTION_TYPES.TRADE_EXECUTED),
-  displayCurrencyChart: action<TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART, string>(
-    TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART,
-  ),
-  currencyChartOpened: action<TILE_ACTION_TYPES.CURRENCY_CHART_OPENED, string>(
-    TILE_ACTION_TYPES.CURRENCY_CHART_OPENED,
-  ),
   dismissNotification: action<TILE_ACTION_TYPES.DISMISS_NOTIFICATION, string>(
     TILE_ACTION_TYPES.DISMISS_NOTIFICATION,
   ),
@@ -81,7 +73,7 @@ export const SpotTileActions = {
   priceUpdateAction: action<TILE_ACTION_TYPES.SPOT_PRICES_UPDATE, SpotPriceTick>(
     TILE_ACTION_TYPES.SPOT_PRICES_UPDATE,
   ),
-  priceHistoryReceieved: action<TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED, SpotPriceTick[], string>(
+  priceHistoryReceived: action<TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED, SpotPriceTick[], string>(
     TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED,
   ),
 }

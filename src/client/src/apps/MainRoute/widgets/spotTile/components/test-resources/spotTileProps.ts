@@ -31,7 +31,6 @@ const generateHistoricPrices: (totalPricePrick: number) => SpotPriceTick[] = tot
 
 const spotTileData: SpotTileDataWithNotional = {
   notional: 1000000,
-  currencyChartIsOpening: false,
   isTradeExecutionInFlight: false,
   price: {
     ask: 184.775,

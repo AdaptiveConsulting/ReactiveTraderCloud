@@ -18,7 +18,6 @@ const DEFAULT_TILE_DATA: SpotTileData = {
     priceMovementType: PriceMovementTypes.None,
     priceStale: false,
   },
-  currencyChartIsOpening: false,
   lastTradeExecutionStatus: null,
   rfqState: 'none',
   rfqPrice: null,

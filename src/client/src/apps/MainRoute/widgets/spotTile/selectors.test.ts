@@ -48,7 +48,6 @@ const getDefaultSpotTileData = (): SpotTileData => ({
     priceMovementType: PriceMovementTypes.None,
     priceStale: false,
   },
-  currencyChartIsOpening: false,
   lastTradeExecutionStatus: null,
   rfqState: 'none',
   rfqPrice: null,
