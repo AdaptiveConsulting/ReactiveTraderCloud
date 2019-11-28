@@ -2,11 +2,11 @@ import React from 'react'
 import { styled } from 'rt-theme'
 import { Button, Icon, TileBaseStyle } from '../styled'
 
-type AccentColor = 'red' | 'green'
+type AccentColor = 'good' | 'bad' | 'aware'
 
 export const TileNotificationStyle = styled(TileBaseStyle)<{ accentColor: AccentColor }>`
   color: ${({ theme }) => theme.template.white.normal};
-  background-color: ${({ theme, accentColor }) => theme.template[accentColor].dark};
+  background-color: ${({ theme, accentColor }) => theme.accents[accentColor].darker};
   font-size: 0.8125rem;
   text-align: center;
   line-height: 1.5;
@@ -37,7 +37,7 @@ const HeavyFont = styled('span')`
 
 const PillButton = styled(Button)<{ accentColor: AccentColor }>`
   color: ${({ theme }) => theme.template.white.normal};
-  background-color: ${({ theme, accentColor }) => theme.template[accentColor].normal};
+  background-color: ${({ theme, accentColor }) => theme.accents[accentColor].darker};
   border-radius: 17px;
   padding: 0.5rem 0.625rem;
   font-weight: 900;
@@ -48,9 +48,17 @@ const Content = styled.div`
   max-width: 280px;
 `
 
+export type TileNotificationLevel = 'success' | 'info' | 'warning'
+
+const NotificationToColour: { [K in TileNotificationLevel]: AccentColor } = {
+  success: 'good',
+  info: 'aware',
+  warning: 'bad',
+}
+
 interface Props {
   style: React.CSSProperties
-  isWarning: boolean
+  notificationLevel: TileNotificationLevel
   symbols: string
   children: React.ReactNode
   tradeId?: number
@@ -59,14 +67,14 @@ interface Props {
 
 const TileNotification: React.FC<Props> = ({
   style,
-  isWarning,
+  notificationLevel,
   symbols,
   tradeId,
   handleClick,
   children,
 }) => {
-  const accentColor = isWarning ? 'red' : 'green'
-
+  const showAlert = notificationLevel === 'info' || notificationLevel === 'warning'
+  const accentColor = NotificationToColour[notificationLevel]
   return (
     <TileNotificationStyle
       accentColor={accentColor}
@@ -74,7 +82,7 @@ const TileNotification: React.FC<Props> = ({
       data-qa="tile-notification__trade-notification"
     >
       <TradeSymbol>
-        {isWarning ? (
+        {showAlert ? (
           <Icon
             color="white"
             className="fas fa-lg fa-exclamation-triangle"

@@ -38,7 +38,7 @@ export default class NotificationContainer extends PureComponent<Props> {
     const symbols = `${currencyPair.base}/${currencyPair.terms}`
     if (isPriceStale) {
       return (style: React.CSSProperties) => (
-        <TileNotification style={style} symbols={symbols} isWarning={true}>
+        <TileNotification style={style} symbols={symbols} notificationLevel={'info'}>
           Pricing is unavailable
         </TileNotification>
       )
@@ -48,7 +48,7 @@ export default class NotificationContainer extends PureComponent<Props> {
     }
     if (lastTradeExecutionStatus.hasError) {
       return (style: React.CSSProperties) => (
-        <TileNotification style={style} symbols={symbols} isWarning={true}>
+        <TileNotification style={style} symbols={symbols} notificationLevel={'warning'}>
           {lastTradeExecutionStatus.error}
         </TileNotification>
       )
@@ -63,10 +63,10 @@ export default class NotificationContainer extends PureComponent<Props> {
         return (style: React.CSSProperties) => (
           <TileNotification
             style={style}
-            isWarning={false}
             symbols={symbols}
             tradeId={tradeId}
             handleClick={onNotificationDismissed}
+            notificationLevel={'success'}
           >
             <TileExecuted
               direction={direction}
@@ -83,10 +83,10 @@ export default class NotificationContainer extends PureComponent<Props> {
         return (style: React.CSSProperties) => (
           <TileNotification
             style={style}
-            isWarning={true}
             symbols={symbols}
             tradeId={tradeId}
             handleClick={onNotificationDismissed}
+            notificationLevel={'warning'}
           >
             Your trade has been rejected
           </TileNotification>

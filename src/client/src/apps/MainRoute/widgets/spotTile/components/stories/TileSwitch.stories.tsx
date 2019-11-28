@@ -1,15 +1,11 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { boolean, select } from '@storybook/addon-knobs'
-import { stories, Story, Centered } from './Initialise.stories'
+import { Centered, stories, Story } from './Initialise.stories'
 import TileSwitch from '../TileSwitch'
 import { ServiceConnectionStatus } from 'rt-types'
-import {
-  currencyPair,
-  spotTileData,
-  tradeExecuted,
-  tradeRejected,
-} from '../test-resources/spotTileProps'
+import { currencyPair, spotTileData, tradeExecuted, tradeRejected, } from '../test-resources/spotTileProps'
+import { SpotTileDataWithNotional } from '../../model/spotTileData'
 
 const executeTrade = action('executeTrade')
 const onNotificationDismissedClick = action('Notification dismissed')
@@ -126,6 +122,16 @@ stories.add('Rejected', () => (
 
 stories.add('Switch', () => {
   const option = select('Notification', options, 'none')
+
+  const tileData: SpotTileDataWithNotional = {
+    ...spotTileData,
+    isTradeExecutionInFlight: boolean('Booking', false),
+    lastTradeExecutionStatus: tradeOptions[option],
+    price: {
+      ...spotTileData.price,
+      priceStale: boolean('Pricing stale', false),
+    },
+  }
   return (
     <Story>
       <Centered>
@@ -141,9 +147,7 @@ stories.add('Switch', () => {
             onNotificationDismissed={onNotificationDismissedClick}
             currencyPair={currencyPair}
             spotTileData={{
-              ...spotTileData,
-              isTradeExecutionInFlight: boolean('Booking', false),
-              lastTradeExecutionStatus: tradeOptions[option],
+              ...tileData,
             }}
             executeTrade={executeTrade}
             onPopoutClick={action('On popout click')}
