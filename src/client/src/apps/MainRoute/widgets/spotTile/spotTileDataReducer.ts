@@ -10,7 +10,6 @@ const INITIAL_STATE: SpotTileState = {}
 
 const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   isTradeExecutionInFlight: false,
-  currencyChartIsOpening: false,
   lastTradeExecutionStatus: null,
   historicPrices: [],
   price: {
@@ -49,10 +48,6 @@ const spotTileReducer = (
       }
     case TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED:
       return { ...state, historicPrices: action.payload }
-    case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
-      return { ...state, currencyChartIsOpening: true }
-    case TILE_ACTION_TYPES.CURRENCY_CHART_OPENED:
-      return { ...state, currencyChartIsOpening: false }
     case TILE_ACTION_TYPES.EXECUTE_TRADE:
       return { ...state, isTradeExecutionInFlight: true }
     case TILE_ACTION_TYPES.TRADE_EXECUTED: {
@@ -145,9 +140,7 @@ export const spotTileDataReducer = (
           action,
         ),
       }
-    case TILE_ACTION_TYPES.DISPLAY_CURRENCY_CHART:
-    case TILE_ACTION_TYPES.CURRENCY_CHART_OPENED:
-    case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
+   case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return {
         ...state,
