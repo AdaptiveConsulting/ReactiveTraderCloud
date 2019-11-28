@@ -11,7 +11,6 @@ export interface LastTradeExecutionStatus {
 }
 
 export interface SpotTileData {
-  currencyChartIsOpening: boolean
   isTradeExecutionInFlight: boolean
   price: SpotPriceTick
   historicPrices: SpotPriceTick[]

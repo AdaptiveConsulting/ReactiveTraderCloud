@@ -31,7 +31,6 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
     dispatch(SpotTileActions.subscribeToSpotTile(currencyPair)),
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) =>
     dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
-  displayCurrencyChart: () => dispatch(SpotTileActions.displayCurrencyChart(ownProps.id)),
   onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id)),
   setTradingMode: (tradingMode: TradingMode) =>
     dispatch(SpotTileActions.setTradingMode(tradingMode)),
