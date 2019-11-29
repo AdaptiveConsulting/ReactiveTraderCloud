@@ -94,7 +94,6 @@ const TileSwitch: React.FC<Props> = ({
             RFQ
           </TileBooking>
           <NotificationContainer
-            isPriceStale={!spotTileData.lastTradeExecutionStatus && spotTileData.price.priceStale}
             lastTradeExecutionStatus={spotTileData.lastTradeExecutionStatus}
             currencyPair={currencyPair}
             onNotificationDismissed={onNotificationDismissed}

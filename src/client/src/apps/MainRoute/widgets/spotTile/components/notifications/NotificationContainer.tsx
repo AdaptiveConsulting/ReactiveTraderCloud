@@ -6,7 +6,6 @@ import TileExecuted from './TileExecuted'
 import TileNotification from './TileNotification'
 
 interface Props {
-  isPriceStale?: boolean
   lastTradeExecutionStatus?: LastTradeExecutionStatus | null
   currencyPair: CurrencyPair
   onNotificationDismissed: () => void
@@ -29,20 +28,8 @@ export default class NotificationContainer extends PureComponent<Props> {
   }
 
   private renderNotifications: () => (style: React.CSSProperties) => JSX.Element | null = () => {
-    const {
-      lastTradeExecutionStatus,
-      currencyPair,
-      onNotificationDismissed,
-      isPriceStale,
-    } = this.props
+    const { lastTradeExecutionStatus, currencyPair, onNotificationDismissed } = this.props
     const symbols = `${currencyPair.base}/${currencyPair.terms}`
-    if (isPriceStale) {
-      return (style: React.CSSProperties) => (
-        <TileNotification style={style} symbols={symbols} isWarning={true}>
-          Pricing is unavailable
-        </TileNotification>
-      )
-    }
     if (!lastTradeExecutionStatus || !hasNotification(lastTradeExecutionStatus)) {
       return () => null
     }

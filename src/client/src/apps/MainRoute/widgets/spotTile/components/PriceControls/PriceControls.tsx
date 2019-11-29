@@ -23,6 +23,13 @@ interface Props {
   isAnalyticsView?: boolean
 }
 
+const PriceButtonDisabledBanIcon: React.FC = ({ children }) => (
+  <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled">
+    <Icon className="fas fa-ban fa-flip-horizontal" />
+    {children}
+  </PriceButtonDisabledPlaceholder>
+)
+
 const PriceControls: React.FC<Props> = ({
   currencyPair,
   priceData,
@@ -49,9 +56,12 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateNone,
   } = getConstsFromRfqState(rfqState)
 
-  const hasPrice = Boolean(priceData.bid && priceData.ask)
+  const { priceStale } = priceData
+  const hasPrice = Boolean(priceData.bid && priceData.ask && !priceStale)
   const showPrices =
     isRfqStateNone || isRfqStateReceived || isRfqStateExpired || isTradeExecutionInFlight
+  const priceMovement = hasPrice ? priceData.priceMovementType : 'none'
+  const spreadValue = hasPrice ? spread.formattedValue : '-'
 
   const showPriceButton = (
     btnDirection: Direction,
@@ -59,27 +69,28 @@ const PriceControls: React.FC<Props> = ({
     rate: ReturnType<typeof toRate>,
   ) => {
     return showPrices ? (
-      <PriceButton
-        handleClick={() => executeTrade(btnDirection, price)}
-        direction={btnDirection}
-        big={rate.bigFigure}
-        pip={rate.pips}
-        tenth={rate.pipFraction}
-        rawRate={rate.rawRate}
-        priceAnnounced={isRfqStateReceived}
-        disabled={disabled}
-        expired={isRfqStateExpired}
-        currencyPairSymbol={currencyPair.symbol}
-      />
+      priceStale ? (
+        <PriceButtonDisabledBanIcon>Pricing unavailable</PriceButtonDisabledBanIcon>
+      ) : (
+        <PriceButton
+          handleClick={() => executeTrade(btnDirection, price)}
+          direction={btnDirection}
+          big={rate.bigFigure}
+          pip={rate.pips}
+          tenth={rate.pipFraction}
+          rawRate={rate.rawRate}
+          priceAnnounced={isRfqStateReceived}
+          disabled={disabled}
+          expired={isRfqStateExpired}
+          currencyPairSymbol={currencyPair.symbol}
+        />
+      )
     ) : null
   }
 
   const priceButtonDisabledStatus =
     !showPrices && isRfqStateCanRequest ? (
-      <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled">
-        <Icon className="fas fa-ban fa-flip-horizontal" />
-        Streaming price unavailable
-      </PriceButtonDisabledPlaceholder>
+      <PriceButtonDisabledBanIcon>Streaming price unavailable</PriceButtonDisabledBanIcon>
     ) : !showPrices && isRfqStateRequested ? (
       <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled--loading">
         <AdaptiveLoaderWrapper>
@@ -95,8 +106,8 @@ const PriceControls: React.FC<Props> = ({
       isAnalyticsView={isAnalyticsView}
     >
       <PriceMovement
-        priceMovementType={priceData.priceMovementType}
-        spread={hasPrice ? spread.formattedValue : '-'}
+        priceMovementType={priceMovement}
+        spread={spreadValue}
       />
       <div>
         {priceButtonDisabledStatus}
@@ -110,8 +121,8 @@ const PriceControls: React.FC<Props> = ({
       {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
       {priceButtonDisabledStatus}
       <PriceMovement
-        priceMovementType={priceData.priceMovementType}
-        spread={hasPrice ? spread.formattedValue : '-'}
+        priceMovementType={priceMovement}
+        spread={spreadValue}
       />
       {showPriceButton(Direction.Buy, priceData.ask, askRate)}
       {priceButtonDisabledStatus}
