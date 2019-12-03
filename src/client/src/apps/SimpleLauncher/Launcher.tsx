@@ -1,119 +1,135 @@
-import React from 'react'
-import { rules } from 'rt-styleguide'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { appConfigs } from './applicationConfigurations'
 import { LaunchButton } from './LaunchButton'
-import { LogoIcon } from 'rt-components'
-import { createGlobalStyle } from 'styled-components'
-import { ThemeStorageSwitch, styled } from 'rt-theme'
-import { open } from './tools'
-import { getOpenFinPlatform } from 'rt-platforms'
+import { LauncherApps } from './LauncherApps'
+import { AdaptiveLoader } from 'rt-components'
+import { ThemeStorageSwitch } from 'rt-theme'
+import { Bounds } from 'openfin/_v2/shapes'
+import SearchIcon from './icons/searchIcon'
+import {
+  ButtonContainer,
+  HorizontalContainer,
+  IconTitle,
+  LauncherGlobalStyle,
+  LogoContainer,
+  RootContainer,
+  ThemeSwitchContainer
+} from './styles'
+import { animateCurrentWindowSize, closeCurrentWindow, getCurrentWindowBounds } from './windowUtils';
+import Measure, { ContentRect } from 'react-measure'
+import { SearchControl, SearchState } from './spotlight';
 
 library.add(faSignOutAlt)
 
-const exitHandler = async () => {
-  const { OpenFin } = await getOpenFinPlatform()
-  const platform = new OpenFin()
-  return platform.window.close()
-}
-
-const LauncherGlobalStyle = createGlobalStyle`
-:root, body {
-  @media all {
-    font-size: 16px;
-    -webkit-app-region: drag;
-  }
-}
-`
-
-const LauncherExit = () => (
+const LauncherExit: React.FC = () => (
   <ButtonContainer key="exit">
-    <LaunchButton onClick={exitHandler}>
-      <FontAwesomeIcon icon="sign-out-alt" />
+    <LaunchButton onClick={closeCurrentWindow}>
+      <FontAwesomeIcon icon="sign-out-alt"/>
       <IconTitle>Exit</IconTitle>
     </LaunchButton>
   </ButtonContainer>
 )
-export class Launcher extends React.Component {
-  render() {
-    return (
-      <React.Fragment>
-        <LauncherGlobalStyle />
-        <Root>
-          <LogoContainer>
-            <LogoIcon width={1.3} height={1.3} />
-          </LogoContainer>
-          {appConfigs.map(app => (
-            <ButtonContainer key={app.name}>
-              <LaunchButton onClick={() => open(app)}>
-                {app.icon}
-                <IconTitle>{app.name}</IconTitle>
-              </LaunchButton>
-            </ButtonContainer>
-          ))}
-          <LauncherExit />
-          <ThemeSwitchContainer>
-            <ThemeStorageSwitch />
-          </ThemeSwitchContainer>
-        </Root>
-      </React.Fragment>
-    )
-  }
+
+const SearchButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
+  <ButtonContainer>
+    <LaunchButton onClick={onClick}>{SearchIcon}</LaunchButton>
+  </ButtonContainer>
+)
+
+export const Launcher: React.FC = () => {
+  const [initialBounds, setInitialBounds] = useState<Bounds>()
+  const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false)
+  const [isSearchBusy, setIsSearchBusy] = useState<boolean>()
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    getCurrentWindowBounds().then(setInitialBounds)
+  }, [])
+
+  const showSearch = useCallback(
+    () => {
+      if (isSearchVisible) {
+        searchInputRef.current && searchInputRef.current.focus({ preventScroll: true })
+      }
+      setIsSearchVisible(true)
+    },
+    [isSearchVisible]
+  );
+
+  // if search is made visible - focus on it
+  useEffect(
+    () => {
+      if (isSearchVisible) {
+        searchInputRef.current && searchInputRef.current.focus({ preventScroll: true })
+      }
+    },
+    [isSearchVisible]
+  )
+
+  // hide search if Escape is pressed
+  useEffect(
+    () => {
+      const onKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          setIsSearchVisible(false)
+        }
+      }
+      document.addEventListener('keydown', onKeyDown)
+      return () => document.removeEventListener('keydown', onKeyDown)
+    }, []
+  )
+
+  const handleSearchStateChange = useCallback(
+    (state: SearchState) => setIsSearchBusy(state.typing || state.loading),
+    []
+  )
+
+  const handleSearchSizeChange = useCallback(
+    (contentRect: ContentRect) => {
+      if (!initialBounds) {
+        return
+      }
+      animateCurrentWindowSize({
+        ...initialBounds,
+        height: initialBounds.height + (contentRect.bounds ? contentRect.bounds.height : 0)
+      })
+    },
+    [initialBounds]
+  )
+
+  return (
+    <RootContainer>
+      <LauncherGlobalStyle/>
+
+      <HorizontalContainer>
+        <LogoContainer>
+          <AdaptiveLoader size={24} speed={isSearchBusy ? 0.8 : 0} seperation={1.5} type="secondary"/>
+          {/*<LogoIcon width={1.3} height={1.3}/>*/}
+        </LogoContainer>
+        <SearchButton onClick={showSearch}/>
+        <LauncherApps/>
+        <LauncherExit/>
+        <ThemeSwitchContainer>
+          <ThemeStorageSwitch/>
+        </ThemeSwitchContainer>
+      </HorizontalContainer>
+
+      <Measure
+        bounds
+        onResize={handleSearchSizeChange}>
+        {({ measureRef }) => (
+          <div ref={measureRef}>
+            {isSearchVisible && (
+              <SearchControl
+                ref={searchInputRef}
+                onStateChange={handleSearchStateChange}/>
+            )}
+          </div>
+        )}
+      </Measure>
+
+    </RootContainer>
+  )
 }
-
-const Root = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  color: ${({ theme }) => theme.core.textColor};
-`
-
-const IconTitle = styled.span`
-  position: absolute;
-  bottom: 2px;
-  right: 0;
-  left: 0;
-  text-align: center;
-  font-size: 9px;
-  font-family: Lato;
-  color: transparent;
-  transition: color 0.3s ease;
-
-  /* avoids text highlighting on icon titles */
-  user-select: none;
-`
-
-const IconContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  &:hover {
-    span {
-      color: ${({ theme }) => theme.core.textColor};
-    }
-  }
-`
-
-const ButtonContainer = styled(IconContainer)`
-  ${rules.appRegionNoDrag};
-`
-const ThemeSwitchContainer = styled(ButtonContainer)`
-  width: 35%;
-`
-
-const LogoContainer = styled(IconContainer)`
-  width: 50%;
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  .svg-icon {
-    fill: ${({ theme }) => theme.core.textColor};
-  }
-  ${rules.appRegionDrag};
-`

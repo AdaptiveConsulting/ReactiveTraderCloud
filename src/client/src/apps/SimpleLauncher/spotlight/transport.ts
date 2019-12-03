@@ -5,7 +5,7 @@ import {
   retryWithBackOff, ServiceCollectionMap,
   serviceStatusStream$,
   ServiceStub, ServiceStubWithLoadBalancer
-} from '../../rt-system'
+} from 'rt-system'
 import { multicast, refCount, retryWhen, shareReplay } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
 
