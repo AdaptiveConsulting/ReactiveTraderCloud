@@ -54,6 +54,7 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
       []
     )
 
+    // if not called again within 350ms, set isTyping to false
     const debouncedStopTyping = useCallback(
       debounce(
         () => setIsTyping(false),
@@ -69,7 +70,9 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
     const handleChange = useCallback(
       (e: ChangeEvent<HTMLInputElement>) => {
         setIsTyping(true)
+        // when typing stops, we want to change the state after a bit of delay
         debouncedStopTyping()
+        // don't send requests on each keystroke - send the last one in given 250ms
         throttledSendRequest(e.target.value)
       },
       [throttledSendRequest, debouncedStopTyping]
