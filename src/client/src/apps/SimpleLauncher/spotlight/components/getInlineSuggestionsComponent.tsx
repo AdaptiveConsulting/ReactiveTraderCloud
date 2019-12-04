@@ -47,9 +47,11 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
 
     if (intent) {
       return (
-        <Intent>
-          {intent}
-        </Intent>
+        <Suggestion onClick={() => handleIntent(response, platform)}>
+          <Intent>
+            {intent}
+          </Intent>
+        </Suggestion>
       )
     }
     return (

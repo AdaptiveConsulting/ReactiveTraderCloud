@@ -106,9 +106,9 @@ export const Launcher: React.FC = () => {
       <HorizontalContainer>
         <LogoContainer>
           <AdaptiveLoader size={24} speed={isSearchBusy ? 0.8 : 0} seperation={1.5} type="secondary"/>
-          {/*<LogoIcon width={1.3} height={1.3}/>*/}
         </LogoContainer>
-        <SearchButton onClick={showSearch}/>
+        {/* TODO: enable in production when we are ready */}
+        {process.env.NODE_ENV === 'development' ? <SearchButton onClick={showSearch}/> : null}
         <LauncherApps/>
         <LauncherExit/>
         <ThemeSwitchContainer>
