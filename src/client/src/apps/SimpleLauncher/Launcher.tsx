@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
-import { AdaptiveLoader } from 'rt-components'
+import { AdaptiveLoader, LogoIcon } from 'rt-components'
 import { ThemeStorageSwitch } from 'rt-theme'
 import { Bounds } from 'openfin/_v2/shapes'
 import SearchIcon from './icons/searchIcon'
@@ -38,10 +38,20 @@ const SearchButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   </ButtonContainer>
 )
 
+const DynamicLogo: React.FC<{ isMoving: boolean }> = ({ isMoving }) => (
+  <LogoContainer>
+    {
+      isMoving ?
+        <AdaptiveLoader size={23} speed={isMoving ? 0.8 : 0} seperation={1} type="secondary"/> :
+        <LogoIcon width={1.4} height={1.4}/>
+    }
+  </LogoContainer>
+)
+
 export const Launcher: React.FC = () => {
   const [initialBounds, setInitialBounds] = useState<Bounds>()
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false)
-  const [isSearchBusy, setIsSearchBusy] = useState<boolean>()
+  const [isSearchBusy, setIsSearchBusy] = useState<boolean>(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -102,11 +112,8 @@ export const Launcher: React.FC = () => {
   return (
     <RootContainer>
       <LauncherGlobalStyle/>
-
       <HorizontalContainer>
-        <LogoContainer>
-          <AdaptiveLoader size={24} speed={isSearchBusy ? 0.8 : 0} seperation={1.5} type="secondary"/>
-        </LogoContainer>
+        <DynamicLogo isMoving={isSearchBusy}/>
         {/* TODO: enable in production when we are ready */}
         {process.env.NODE_ENV === 'development' ? <SearchButton onClick={showSearch}/> : null}
         <LauncherApps/>

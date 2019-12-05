@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'rt-theme'
-
 import { Launcher } from './Launcher'
 import { createServiceStub } from './spotlight/transport';
-import { getPlatformAsync, PlatformProvider } from 'rt-platforms';
-import { getFdc3 } from './spotlight/fdc3/fdc3';
-import { AutobahnConnectionProxy } from '../../rt-system';
+import { getPlatformAsync, Platform, PlatformProvider } from 'rt-platforms';
+import { getFdc3, SpotlightFdc3 } from './spotlight/fdc3/fdc3';
+import { AutobahnConnectionProxy, ServiceStubWithLoadBalancer } from 'rt-system';
 import { Fdc3Provider } from './spotlight/fdc3/context';
-import { TradeUpdatesProvider, PricingServiceProvider, ServiceStubProvider } from './spotlight/context';
+import { PricingServiceProvider, ServiceStubProvider, TradeUpdatesProvider } from './spotlight/context';
 import BlotterService, { TradesUpdate } from '../MainRoute/widgets/blotter/blotterService';
 import { Observable, ReplaySubject } from 'rxjs';
 import PricingService from '../MainRoute/widgets/spotTile/epics/pricingService';
@@ -18,37 +17,45 @@ const autobahn = new AutobahnConnectionProxy(
   +(process.env.REACT_APP_BROKER_PORT || location.port),
 )
 
+type Dependencies = {
+  platform: Platform,
+  pricingService: PricingService,
+  tradeUpdatesStream: Observable<TradesUpdate>,
+  serviceStub: ServiceStubWithLoadBalancer,
+  fdc3: SpotlightFdc3
+}
+
 export const SimpleLauncher: React.FC = () => {
 
-  const [platform, setPlatform] = useState()
-  const [fdc3, setFdc3] = useState()
-  const [serviceStub, setServiceStub] = useState()
-  const [pricingService, setPricingService] = useState<PricingService>()
-  const [tradesUpdates, setTradeUpdates] = useState<Observable<TradesUpdate>>()
+  const [dependencies, setDependencies] = useState<Dependencies>()
 
   useEffect(() => {
-    const bootstrap = async () => {
-      const serviceStubResult = createServiceStub(autobahn)
+    (async () => {
+      const serviceStub = createServiceStub(autobahn)
       const platformResult = await getPlatformAsync()
-      const fdc3Result = await getFdc3()
+      const fdc3 = await getFdc3()
 
       // blotter service
-      const blotterService = new BlotterService(serviceStubResult)
+      const blotterService = new BlotterService(serviceStub)
       const blotterUpdates$ = blotterService.getTradesStream()
       const tradesUpdates$ = new ReplaySubject<TradesUpdate>();
       blotterUpdates$.subscribe(tradesUpdates$)
-      setTradeUpdates(tradesUpdates$)
 
-      // pricing service
-      setPricingService(new PricingService(serviceStubResult))
-
-      setServiceStub(serviceStubResult)
-      setPlatform(platformResult)
-      setFdc3(fdc3Result)
-    }
-
-    bootstrap()
+      setDependencies({
+        pricingService: new PricingService(serviceStub),
+        tradeUpdatesStream: tradesUpdates$,
+        serviceStub,
+        platform: platformResult,
+        fdc3
+      })
+    })()
   }, [])
+
+  if (!dependencies) {
+    return <></>
+  }
+
+  const { fdc3, platform, pricingService, serviceStub, tradeUpdatesStream } = dependencies;
 
   if (!platform || !serviceStub || !fdc3) {
     return <></>
@@ -57,7 +64,7 @@ export const SimpleLauncher: React.FC = () => {
   return (
     <ThemeProvider>
       <ServiceStubProvider value={serviceStub}>
-        <TradeUpdatesProvider value={tradesUpdates}>
+        <TradeUpdatesProvider value={tradeUpdatesStream}>
           <PricingServiceProvider value={pricingService}>
             <Fdc3Provider value={fdc3}>
               <PlatformProvider value={platform}>
