@@ -17,10 +17,6 @@ export const mapIntent = (response: DetectIntentResponse): string => {
     case TRADES_INFO_INTENT:
       return `Open blotter`
     default:
-      result = [
-        response.queryResult.intent.displayName,
-        response.queryResult.fulfillmentText,
-      ].join(' => ')
   }
 
   return result

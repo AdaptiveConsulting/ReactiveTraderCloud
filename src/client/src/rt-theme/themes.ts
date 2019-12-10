@@ -37,9 +37,6 @@ interface BaseTheme {
   // Known extensible properties
   backgroundColor: Color
   textColor: Color
-
-  // TODO (8/14/18) remove after theme migration
-  [key: string]: any
 }
 /* eslint-disable-next-line */
 type GeneratedTheme = ReturnType<typeof createTheme>

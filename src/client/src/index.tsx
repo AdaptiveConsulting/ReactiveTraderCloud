@@ -8,7 +8,6 @@ import { getSymphonyPlatform } from 'rt-platforms'
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
 const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
-const SpotlightRoute = lazy(() => import('./apps/SpotlightRoute'))
 
 const urlParams = new URLSearchParams(window.location.search)
 
@@ -27,7 +26,6 @@ async function init() {
             <Switch>
               <Route path="/launcher" render={() => <SimpleLauncher />} />
               <Route path="/styleguide" render={() => <StyleguideRoute />} />
-              <Route path="/spotlight" render={() => <SpotlightRoute />} />
               <Route render={() => <MainRoute />} />
             </Switch>
           </Suspense>

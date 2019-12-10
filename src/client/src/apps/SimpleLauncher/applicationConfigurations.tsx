@@ -3,7 +3,6 @@ import {
   limitCheckerIcon,
   reactiveAnalyticsIcon,
   reactiveTraderIcon,
-  searchIcon,
 } from './icons/index'
 import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
 
@@ -137,18 +136,4 @@ const baseAppConfigs: ApplicationConfig[] = [
   excelAppConfig,
 ]
 
-const spotlightConfig: ApplicationConfig = {
-  name: 'Spotlight',
-  url: `${ORIGIN}/spotlight`,
-  icon: searchIcon,
-  provider: {
-    platformName: 'openfin',
-    applicationType: 'application',
-    windowOptions: {
-      ...defaultWindowOptions,
-    },
-  },
-}
-
-export const appConfigs =
-  process.env.NODE_ENV === 'development' ? [...baseAppConfigs, spotlightConfig] : baseAppConfigs
+export const appConfigs = baseAppConfigs

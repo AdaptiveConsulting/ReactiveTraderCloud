@@ -12,6 +12,7 @@ export async function showMarket({ window }: Platform) {
   // TODO: position and size of the window, also make it frame-less
   openedWindow = await window.open({
     ...defaultConfig,
+    height: 900,
     url: `${windowOrigin}/tiles`,
   })
   if (!openedWindow) {
