@@ -32,13 +32,13 @@ const LauncherExit: React.FC = () => (
   </ButtonContainer>
 )
 
-const SearchButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
+const SearchButton: React.FC<{ onClick: () => void }> = ({onClick}) => (
   <ButtonContainer>
     <LaunchButton onClick={onClick}>{SearchIcon}</LaunchButton>
   </ButtonContainer>
 )
 
-const DynamicLogo: React.FC<{ isMoving: boolean }> = ({ isMoving }) => (
+const DynamicLogo: React.FC<{ isMoving: boolean }> = ({isMoving}) => (
   <LogoContainer>
     {
       isMoving ?
@@ -61,7 +61,7 @@ export const Launcher: React.FC = () => {
   const showSearch = useCallback(
     () => {
       if (isSearchVisible) {
-        searchInputRef.current && searchInputRef.current.focus({ preventScroll: true })
+        searchInputRef.current && searchInputRef.current.focus({preventScroll: true})
       }
       setIsSearchVisible(true)
     },
@@ -72,7 +72,7 @@ export const Launcher: React.FC = () => {
   useEffect(
     () => {
       if (isSearchVisible) {
-        searchInputRef.current && searchInputRef.current.focus({ preventScroll: true })
+        searchInputRef.current && searchInputRef.current.focus({preventScroll: true})
       }
     },
     [isSearchVisible]
@@ -114,8 +114,7 @@ export const Launcher: React.FC = () => {
       <LauncherGlobalStyle/>
       <HorizontalContainer>
         <DynamicLogo isMoving={isSearchBusy}/>
-        {/* TODO: enable in production when we are ready */}
-        {process.env.NODE_ENV === 'development' ? <SearchButton onClick={showSearch}/> : null}
+        <SearchButton onClick={showSearch}/>
         <LauncherApps/>
         <LauncherExit/>
         <ThemeSwitchContainer>
@@ -126,7 +125,7 @@ export const Launcher: React.FC = () => {
       <Measure
         bounds
         onResize={handleSearchSizeChange}>
-        {({ measureRef }) => (
+        {({measureRef}) => (
           <div ref={measureRef}>
             {isSearchVisible && (
               <SearchControl
