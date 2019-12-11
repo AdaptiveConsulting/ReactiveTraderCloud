@@ -115,9 +115,6 @@
     "@types/react-test-renderer": "^16.8.3",
     "@types/react-virtualized": "9.7.10",
     "@types/recharts": "^1.1.20",
-    "@types/storybook__addon-actions": "3.4.2",
-    "@types/storybook__addon-knobs": "4.0.4",
-    "@types/storybook__react": "4.0.0",
     "@types/styled-components": "^4.1.18",
     "@types/ua-parser-js": "^0.7.33",
     "@types/uuid": "^3.4.3",
@@ -129,7 +126,7 @@
     "react-test-renderer": "^16.12.0",
     "redux-devtools-extension": "^2.13.2",
     "source-map-explorer": "^2.0.1",
-    "typescript": "^3.5.3"
+    "typescript": "^3.6.4"
   },
   "optionalDependencies": {
     "openfin-cli": "^2.0.4"
