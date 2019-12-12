@@ -1,6 +1,5 @@
 import { combineEpics } from 'redux-observable'
 import { closePositionEpic } from './closePositionEpic'
-import { displayCurrencyChartEpic } from './currencyChartEpic'
 import { pricingServiceEpic, pricingHistoryEpic } from './pricingEpics'
 import { publishPriceUpdateEpic } from './publishPriceUpdateEpic'
 import { spotTileEpic } from './spotTileEpics'
@@ -19,10 +18,6 @@ export default ({ platform }: ApplicationDependencies) => {
 
   if (platform.hasFeature('interop')) {
     epics.push(publishPriceUpdateEpic, publishTradeExecutedEpic, closePositionEpic)
-  }
-
-  if (platform.hasFeature('app')) {
-    epics.push(displayCurrencyChartEpic)
   }
 
   return combineEpics(...epics)
