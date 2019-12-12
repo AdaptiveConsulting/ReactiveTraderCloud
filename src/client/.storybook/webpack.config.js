@@ -1,7 +1,7 @@
 const path = require('path')
 
-module.exports = (baseConfig, env, defaultConfig) => {
-  defaultConfig.module.rules.push({
+module.exports = ({config}) => {
+  config.module.rules.push({
     test: /\.(ts|tsx)$/,
     loader: require.resolve('babel-loader'),
     options: {
@@ -9,8 +9,8 @@ module.exports = (baseConfig, env, defaultConfig) => {
       presets: [['react-app', { flow: false, typescript: true }]]
     }
   })
-  defaultConfig.resolve.extensions.push('.ts', '.tsx', '.js')
-  defaultConfig.resolve.alias = {
+  config.resolve.extensions.push('.ts', '.tsx', '.js')
+  config.resolve.alias = {
     'rt-components': path.resolve(__dirname, '../src', 'rt-components'),
     'rt-util': path.resolve(__dirname, '../src', 'rt-util'),
     'rt-types': path.resolve(__dirname, '../src', 'rt-types'),
@@ -24,5 +24,5 @@ module.exports = (baseConfig, env, defaultConfig) => {
     shell: path.resolve(__dirname, '../src', 'shell')
   }
 
-  return defaultConfig
+  return config
 }

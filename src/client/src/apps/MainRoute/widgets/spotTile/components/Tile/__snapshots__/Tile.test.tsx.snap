@@ -5,7 +5,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
+    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -77,7 +77,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            className="sc-jTzLTM gkTtVL fas fa-caret-up"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
@@ -89,7 +89,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            className="sc-jTzLTM TMXdn fas fa-caret-down"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
@@ -174,7 +174,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
+    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -205,7 +205,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           data-qa="price-controls__price-button-disabled"
         >
           <i
-            className="fas fa-ban fa-flip-horizontal sc-jDwBTQ dBQkTU"
+            className="sc-jDwBTQ dBQkTU fas fa-ban fa-flip-horizontal"
           />
           Streaming price unavailable
         </div>
@@ -214,7 +214,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            className="sc-jTzLTM gkTtVL fas fa-caret-up"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
@@ -226,7 +226,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            className="sc-jTzLTM TMXdn fas fa-caret-down"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
@@ -236,7 +236,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           data-qa="price-controls__price-button-disabled"
         >
           <i
-            className="fas fa-ban fa-flip-horizontal sc-jDwBTQ dBQkTU"
+            className="sc-jDwBTQ dBQkTU fas fa-ban fa-flip-horizontal"
           />
           Streaming price unavailable
         </div>
@@ -279,7 +279,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
+    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -357,7 +357,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            className="sc-jTzLTM gkTtVL fas fa-caret-up"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
@@ -369,7 +369,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            className="sc-jTzLTM TMXdn fas fa-caret-down"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
@@ -460,7 +460,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
+    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -532,7 +532,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            className="sc-jTzLTM gkTtVL fas fa-caret-up"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
@@ -544,7 +544,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            className="sc-jTzLTM TMXdn fas fa-caret-down"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
@@ -629,7 +629,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
+    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -712,7 +712,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            className="sc-jTzLTM gkTtVL fas fa-caret-up"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
@@ -724,7 +724,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            className="sc-jTzLTM TMXdn fas fa-caret-down"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
@@ -820,7 +820,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
+    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -892,7 +892,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            className="sc-jTzLTM gkTtVL fas fa-caret-up"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
@@ -904,7 +904,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            className="sc-jTzLTM TMXdn fas fa-caret-down"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
@@ -989,7 +989,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   className="sc-jhAzac sc-fBuWsC bJSBCb"
 >
   <div
-    className="sc-csuQGl spot-tile sc-dVhcbM MlRwl"
+    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -1061,7 +1061,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         >
           <i
             aria-hidden="true"
-            className="fas fa-caret-up sc-jTzLTM gkTtVL"
+            className="sc-jTzLTM gkTtVL fas fa-caret-up"
             color="green"
             data-qa="price-movement__movement-icon--up"
           />
@@ -1073,7 +1073,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
           <i
             aria-hidden="true"
-            className="fas fa-caret-down sc-jTzLTM TMXdn"
+            className="sc-jTzLTM TMXdn fas fa-caret-down"
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
