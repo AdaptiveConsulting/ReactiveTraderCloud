@@ -39,7 +39,7 @@ export function createApplicationServices({
     refCount(),
   )
 
-  const serviceStub = new ServiceStub(user.code, connection$)
+  const serviceStub = new ServiceStub(user.code, autobahn)
 
   const statusUpdates$ = serviceStub.subscribeToTopic<RawServiceStatus>('status')
   const serviceStatus$ = serviceStatusStream$(statusUpdates$, HEARTBEAT_TIMEOUT).pipe(
@@ -49,7 +49,7 @@ export function createApplicationServices({
     refCount(),
   )
 
-  const loadBalancedServiceStub = new ServiceStubWithLoadBalancer(serviceStub, serviceStatus$)
+  const loadBalancedServiceStub = new ServiceStubWithLoadBalancer(serviceStub)
 
   const referenceDataService$ = referenceDataService(loadBalancedServiceStub)
 

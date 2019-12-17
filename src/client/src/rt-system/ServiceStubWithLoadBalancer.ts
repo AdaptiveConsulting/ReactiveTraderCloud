@@ -1,6 +1,4 @@
-import { defer, Observable } from 'rxjs'
-import { distinctUntilChanged, filter, map, share, switchMap, take } from 'rxjs/operators'
-import { IServiceStatusCollection } from './ServiceInstanceCollection'
+import { share} from 'rxjs/operators'
 import { ServiceStub } from './ServiceStub'
 
 /**
@@ -14,17 +12,8 @@ const LOG_NAME = 'ServiceClient: Initiated'
 export default class ServiceStubWithLoadBalancer {
   constructor(
     private connection: ServiceStub,
-    private readonly serviceInstanceDictionaryStream: Observable<IServiceStatusCollection>,
+    
   ) {}
-
-  private getServiceWithMinLoad$(serviceType: string) {
-    return this.serviceInstanceDictionaryStream.pipe(
-      filter(serviceCollectionMap => !!serviceCollectionMap.getServiceInstanceWithMinimumLoad(serviceType)),
-      map(serviceCollectionMap => serviceCollectionMap.getServiceInstanceWithMinimumLoad(serviceType)!),
-      distinctUntilChanged((last, next) => last.serviceId === next.serviceId),
-      take(1),
-    )
-  }
 
   /**
    * Gets a request-response observable that will act against a service which currently has the min load
@@ -32,7 +21,10 @@ export default class ServiceStubWithLoadBalancer {
    */
   createRequestResponseOperation<TResponse, TRequest>(service: string, operationName: string, request: TRequest) {
     console.info(LOG_NAME, `Creating request response operation for [${operationName}]`)
-
+    
+    const remoteProcedure = service + '.' + operationName
+    return this.connection.requestResponse<TResponse, TRequest>(remoteProcedure, request).pipe(share());
+    /*
     return this.getServiceWithMinLoad$(service).pipe(
       switchMap(serviceInstanceStatus => {
         if (serviceInstanceStatus.serviceId !== 'status') {
@@ -49,7 +41,7 @@ export default class ServiceStubWithLoadBalancer {
         return this.connection.requestResponse<TResponse, TRequest>(remoteProcedure, request)
       }),
       share(),
-    )
+    )*/
   }
 
   static generateTopicName = (service: string) =>
@@ -63,9 +55,13 @@ export default class ServiceStubWithLoadBalancer {
   createStreamOperation<TResponse, TRequest = {}>(
     service: string,
     operationName: string,
-    request: TRequest,
-    topicGenerator = ServiceStubWithLoadBalancer.generateTopicName,
+    request: TRequest
   ) {
+    const remoteProcedure = `${service}.${operationName}`
+    console.log(`subscriping to RPC stream ${remoteProcedure}`)
+    return this.connection.requestStream<TResponse, TRequest>(remoteProcedure, request).pipe(share());
+
+    /*
     return defer(() =>
       this.getServiceWithMinLoad$(service).pipe(
         switchMap(serviceInstanceStatus => {
@@ -124,6 +120,6 @@ export default class ServiceStubWithLoadBalancer {
           })
         }),
       ),
-    ).pipe(share())
-  }
+    ).pipe(share())*/
+  } 
 }

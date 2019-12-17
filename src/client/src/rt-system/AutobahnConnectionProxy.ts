@@ -2,11 +2,15 @@ import { Connection } from 'autobahn'
 import { AutobahnConnection } from './AutoBahnConnection'
 import AutobahnSessionProxy from './AutobahnSessionProxy'
 import { DisconnectionReason } from './DisconnectionReason'
+import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
+
 
 /**
  * AutobahnProxy: makes the autobahn connection api more explicit, aids testing
  */
 export default class AutobahnConnectionProxy implements AutobahnConnection {
+  public rpcEndpoint: RxStompRPC
+  public streamEndpoint: RxStomp
   public session?: AutobahnSessionProxy
   private readonly connection: Connection
   private onOpen?: (session: AutobahnSessionProxy) => void
@@ -20,7 +24,15 @@ export default class AutobahnConnectionProxy implements AutobahnConnection {
     /* eslint-disable-next-line */
     const useSecure = location.protocol === 'https:'
     const securePort = 443
-    const defaultPort = port ? port : 80
+    const defaultPort = port ? port : 15674
+
+    this.streamEndpoint = new RxStomp()
+    this.streamEndpoint.configure({
+      brokerURL:useSecure ? `wss://${url}:${securePort}/ws` : `ws://${url}:${defaultPort}/ws`,
+      reconnectDelay: 500
+    })
+    this.rpcEndpoint = new RxStompRPC(this.streamEndpoint)
+    this.streamEndpoint.activate();
 
     this.connection = new Connection({
       realm,
