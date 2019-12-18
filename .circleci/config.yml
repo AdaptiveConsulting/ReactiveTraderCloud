@@ -136,7 +136,7 @@ jobs:
             gcloud container clusters get-credentials cluster
       - run:
           name: Set namespace
-          command: declare -A envs=( ["develop"]="dev" ["master"]="demo" ["release/1.1"] = "uat"); echo "export NAMESPACE='${envs[$CIRCLE_BRANCH]}'" >> $BASH_ENV;
+          command: declare -A envs=( ["develop"]="dev" ["master"]="demo" ["release/1.1"]="uat"); echo "export NAMESPACE='${envs[$CIRCLE_BRANCH]}'" >> $BASH_ENV;
       - run:
           name: Update images
           command: |
