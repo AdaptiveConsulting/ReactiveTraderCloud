@@ -92,7 +92,7 @@ jobs:
           name: 'Skip the next steps for PRs'
           command: |
             # Check the environment and gracefully stop the job for PRs
-            if [[ "$CIRCLE_BRANCH" != "master" ]] && [[ "$CIRCLE_BRANCH" != "develop" ]] ; then
+            if [[ "$CIRCLE_BRANCH" != "master" ]] && [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "release/1.1" ]] ; then
               circleci-agent step halt
             fi
       - run:
