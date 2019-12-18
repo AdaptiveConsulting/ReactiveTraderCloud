@@ -1,8 +1,8 @@
 {
     "startup_app": {
-        "name": "Reactive Ecosystem Launcher (DEV)",
-        "url": "https://web-dev.adaptivecluster.com/launcher",
-        "uuid": "reactive-launcher-dev",
+        "name": "Reactive Ecosystem Launcher (UAT)",
+        "url": "https://web-uat.adaptivecluster.com/launcher",
+        "uuid": "reactive-launcher-uat",
         "defaultWidth": 650,
         "defaultHeight": 52,
         "defaultTop": 160,
@@ -19,16 +19,16 @@
         "frame": false,
         "backgroundColor": "#444C5F",
         "alwaysOnTop": true,
-        "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
-        "applicationIcon": "https://web-dev.adaptivecluster.com/static/media/adaptive-mark-large.png",
+        "icon": "https://web-uat.adaptivecluster.com/static/media/icon.ico",
+        "applicationIcon": "https://web-uat.adaptivecluster.com/static/media/adaptive-mark-large.png",
         "contextMenu": true,
         "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
         "preload": [
             {
-                "url": "https://web-dev.adaptivecluster.com/plugin/service-loader.js"
+                "url": "https://web-uat.adaptivecluster.com/plugin/service-loader.js"
             },
             {
-                "url": "https://web-dev.adaptivecluster.com/plugin/fin.desktop.Excel.js"
+                "url": "https://web-uat.adaptivecluster.com/plugin/fin.desktop.Excel.js"
             }
         ],
         "accelerator": {
@@ -44,8 +44,8 @@
     },
     "shortcut": {
         "company": "Adaptive Consulting",
-        "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
-        "name": "Reactive Ecosystem Launcher (DEV)"
+        "icon": "https://web-uat.adaptivecluster.com/static/media/icon.ico",
+        "name": "Reactive Ecosystem Launcher (UAT)"
     },
     "services": [
         {
@@ -70,13 +70,13 @@
     ],
     "appAssets": [
         {
-            "src": "https://web-dev.adaptivecluster.com/plugin/add-in.zip",
+            "src": "https://web-uat.adaptivecluster.com/plugin/add-in.zip",
             "alias": "excel-api-addin",
             "version": "2.0.0",
             "forceDownload": true
         },
         {
-            "src": "https://web-dev.adaptivecluster.com/plugin/LimitChecker.zip",
+            "src": "https://web-uat.adaptivecluster.com/plugin/LimitChecker.zip",
             "alias": "LimitChecker",
             "version": "1.6.0",
             "target": "LimitChecker.application"
