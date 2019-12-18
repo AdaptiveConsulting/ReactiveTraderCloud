@@ -48,9 +48,12 @@ Make sure the files are available on their respective locations when distributin
 const INSTALLERS_TO_CREATE = [
   { manifestName: 'dev', branch: 'master', os: 'win' },
   { manifestName: 'dev', branch: 'master', os: 'osx' },
+  { manifestName: 'uat', branch: 'master', os: 'win' },
+  { manifestName: 'uat', branch: 'master', os: 'osx' },
   { manifestName: 'demo', branch: 'master', os: 'win' },
   { manifestName: 'demo', branch: 'master', os: 'osx' },
   { manifestName: 'launcher-dev', branch: 'master', os: 'win' },
+  { manifestName: 'launcher-uat', branch: 'master', os: 'win' },
   { manifestName: 'launcher-demo', branch: 'master', os: 'win' }
 ]
 
