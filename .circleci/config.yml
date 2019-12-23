@@ -215,7 +215,7 @@ commands:
   main_pipeline:
     description: "Main pipeline"
     parameters:
-      rebase_with_master:
+      merge_with_master:
         type: boolean
         default: false
       environment:
@@ -225,12 +225,12 @@ commands:
       - setup_env
       - custom_checkout
       - when:
-          condition: <<parameters.rebase_with_master>>
+          condition: <<parameters.merge_with_master>>
           steps:
             - run:
-                name: Rebase with master
+                name: Merge with master
                 command: |
-                  git rebase origin master
+                  git merge master
       - set_version
       - run:
           name: Set up persisted variables
@@ -272,7 +272,7 @@ jobs:
     steps:
       - main_pipeline:
           environment: none
-          rebase_with_master: true
+          merge_with_master: true
 
   notify_about_merge_to_master:
     docker:
