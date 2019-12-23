@@ -368,7 +368,7 @@ jobs:
             echo "DEPLOY_TARGET: $DEPLOY_TARGET"
 
             echo "Build version is found via git describe"
-            GIT_VERSION=$(git describe)
+            BUILD_VERSION=$(git describe)
             echo "BUILD_VERSION: $BUILD_VERSION"
 
             if [[ "$BUILD_VERSION" = "" ]] ; then
