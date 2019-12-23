@@ -253,7 +253,6 @@ jobs:
       - image: circleci/node:latest
     steps:
       - main_pipeline:
-          bump: minor
           environment: dev
       - push_images:
           images: *push_images_list
@@ -263,7 +262,6 @@ jobs:
       - image: circleci/node:latest
     steps:
       - main_pipeline:
-          bump: patch
           environment: none
       - push_images:
           images: *push_images_list
@@ -273,7 +271,6 @@ jobs:
       - image: circleci/node:latest
     steps:
       - main_pipeline:
-          bump: prerelease
           environment: none
           rebase_with_master: true
 
