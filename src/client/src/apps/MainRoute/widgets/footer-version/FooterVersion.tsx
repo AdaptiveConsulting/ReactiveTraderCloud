@@ -7,6 +7,6 @@ export const Wrapper = styled.div`
   font-size: 0.75rem;
 `
 
-const FooterVersion: FC = () => <Wrapper>v{process.env.REACT_APP_BUILD_VERSION}</Wrapper>
+const FooterVersion: FC = () => <Wrapper>{process.env.REACT_APP_BUILD_VERSION}</Wrapper>
 
 export default FooterVersion
