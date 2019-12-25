@@ -398,7 +398,7 @@ workflows:
             tags:
               # build for version tags starting with 'v', matching rudimentary semver rules
               # note that docker tags does not support '+' characters, only '-'
-              only: ^v\d+(?:\.\d+){1,2}(?:-[a-zA-Z0-9-\.]+)?$
+              only: /^v\d+(?:\.\d+){1,2}(?:-[a-zA-Z0-9-\.]+)?$/
 
       - deploy_last_build:
           requires:
