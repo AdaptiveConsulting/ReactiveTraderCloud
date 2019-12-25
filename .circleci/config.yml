@@ -363,8 +363,10 @@ jobs:
             echo "Parsing current commit tags. Looking for version and requested environment."
 
             echo "Environment is found via env-* tags"
-            ENVIRONMENT_TAG=$(git tag -l --points-at HEAD env-*)
-            DEPLOY_TARGET=${ENVIRONMENT_TAG/env-/}
+            ENVIRONMENT_TAGS=$(git tag -l --points-at HEAD env-*)
+            echo "Current env-* tags: $ENVIRONMENT_TAGS"
+            echo "Requested tag via CircleCI: $CIRCLE_TAG"
+            DEPLOY_TARGET=${CIRCLE_TAG/env-/}
             echo "DEPLOY_TARGET: $DEPLOY_TARGET"
 
             echo "Build version is found via git describe"
