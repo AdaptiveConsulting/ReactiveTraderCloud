@@ -1,48 +1,26 @@
 {
-  "name": "adaptive.reactivetrader.root",
   "private": true,
-  "version": "1.0.0",
-  "description": "Reactive Trader Cloud",
-  "scripts": {
-    "lint": "eslint --ext .ts,.tsx ./src/client/src ./src/node-server/shared/src ./src/node-server/nlp/src",
-    "postinstall": "lerna bootstrap"
-  },
-  "author": "",
-  "license": "MIT",
-  "lint-staged": {
-    "src/{client,node-server}/src/**/*.{js,ts,tsx,json}": [
-      "prettier --write",
-      "git add"
-    ],
-    "src/{client,node-server}/src/**/*.{ts,tsx}": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "pre-commit": "lerna run --concurrency 1 --stream precommit",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "scripts": {
+    "lint": "lerna run --concurrency 1 lint",
+    "postinstall": "lerna bootstrap"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
-    "@typescript-eslint/eslint-plugin": "^2.3.3",
-    "@typescript-eslint/parser": "^2.3.3",
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.7.2",
-    "eslint-config-prettier": "^6.4.0",
-    "eslint-config-react-app": "^5.0.2",
-    "eslint-plugin-flowtype": "^3.13.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.16.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
-    "husky": "^3.0.8",
+    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/parser": "^2.13.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "husky": "^3.1.0",
     "lerna": "^3.19.0",
-    "lint-staged": "^9.4.2",
-    "prettier": "^1.18.2",
-    "typescript": "^3.6.4"
+    "lint-staged": "^9.5.0",
+    "prettier": "^1.19.1",
+    "typescript": "^3.7.4"
   }
 }

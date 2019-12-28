@@ -1,5 +1,5 @@
 import { by, ElementFinder, ProtractorBrowser, ExpectedConditions } from 'protractor'
-import { waitForElementToBeClickable} from '../utils/browser.utils'
+import { waitForElementToBeClickable } from '../utils/browser.utils'
 
 export class WorkspaceComponent {
   links: Record<string, ElementFinder>
@@ -11,11 +11,11 @@ export class WorkspaceComponent {
       usd: root.element(by.qaTag('currency-option-usd')),
       gbp: root.element(by.qaTag('currency-option-gbp')),
       aud: root.element(by.qaTag('currency-option-aud')),
-      nzd: root.element(by.qaTag('currency-option-nzd'))
+      nzd: root.element(by.qaTag('currency-option-nzd')),
     }
   }
 
-  async selectCurrency(linkCurrency: String) {
+  async selectCurrency(linkCurrency: string) {
     const key = linkCurrency.toLowerCase()
     const linkElement = this.links[key]
     if (!linkElement) {
