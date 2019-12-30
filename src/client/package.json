@@ -1,6 +1,5 @@
 {
   "name": "reactive-trader-cloud",
-  "version": "2.1.0",
   "description": "Reactive Trader - Cloud edition. Example reactive currency pair trading app",
   "keywords": [
     "react",
@@ -20,6 +19,7 @@
     "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
   },
   "scripts": {
+    "precommit": "lint-staged",
     "start": "cross-env REACT_APP_BUILD_VERSION=$(git describe) react-scripts start",
     "start:https": "cross-env HTTPS=true react-scripts start",
     "start:local-backend": "cross-env REACT_APP_BROKER_HOST=localhost REACT_APP_BROKER_PORT=8000 npm run start",
@@ -38,7 +38,8 @@
     "storybook": "start-storybook -p 6006 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o storybook/build",
     "sleep": "sleep 5",
-    "lint:fix": "eslint --fix ./src"
+    "lint": "eslint --ext .ts,.tsx ./src",
+    "lint:fix": "eslint --fix --ext .ts,.tsx ./src"
   },
   "eslintConfig": {
     "extends": [

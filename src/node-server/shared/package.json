@@ -1,6 +1,5 @@
 {
   "name": "shared",
-  "version": "0.0.1",
   "description": "Reactive Trader - Shared lib",
   "repository": {
     "type": "git",
@@ -12,6 +11,10 @@
     "autobahn": "^18.10.2",
     "rxjs": "^6.5.3",
     "winston": "^3.2.1"
+  },
+  "scripts": {
+    "precommit": "lint-staged",
+    "lint": "eslint --ext .ts ./src"
   },
   "devDependencies": {
     "@types/autobahn": "^0.9.42",

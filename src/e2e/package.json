@@ -1,6 +1,5 @@
 {
   "name": "reactive-trader-cloud-e2e-tests",
-  "version": "1.0.0",
   "description": "Reactive Trader - e2e Tests",
   "keywords": [
     "smoketest",
@@ -24,8 +23,10 @@
     ]
   },
   "scripts": {
+    "precommit": "lint-staged",
     "postinstall": "webdriver-manager update --standalone=false",
-    "e2e": "protractor src/protractor.config.js"
+    "e2e": "protractor src/protractor.config.js",
+    "lint": "eslint --ext .ts ./src"
   },
   "license": "MIT",
   "dependencies": {
