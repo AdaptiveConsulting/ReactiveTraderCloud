@@ -1,19 +1,24 @@
 const https = require('https')
+const getJSON = require('get-json')
 const fs = require('fs')
 
-// const childProcess = require('child_process')
+const getInstallerGeneratorUrl = async (fileName, appJSONUrl, os) => {
+  const installerGeneratorUrl = `https://install.openfin.co/download/?config=${appJSONUrl}&fileName=${fileName}&os=${os}`;
 
-// const getCurrentGitBranchName = () =>
-//   new Promise(resolve => {
-//     childProcess.exec(`git rev-parse --abbrev-ref HEAD`, (err, stdout, stderr) => {
-//       resolve((stdout || '').trimRight())
-//     })
-//   })
+  if (os === 'osx') {
+    const appJSON = await getJSON(appJSONUrl)
+    const appName = appJSON.startup_app.name
+    const iconFile = appJSON.startup_app.applicationIcon
+    return `${installerGeneratorUrl}&internal=true&appName=${appName}&iconFile=${iconFile}`
+  }
 
-const createInstaller = (branch, manifestName, os='win') => {
+  return `${installerGeneratorUrl}&unzipped=true`
+}
+
+const createInstaller = async (branch, manifestName, os = 'win') => {
   const fileName = `ReactiveTraderCloud-${manifestName}`
   const appJSONUrl = `https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/${branch}/src/client/public/config/openfin/${manifestName}.json`
-  const installerGeneratorUrl = `https://install.openfin.co/download/?unzipped=true&config=${appJSONUrl}&fileName=${fileName}&os=${os}`
+  const installerGeneratorUrl = await getInstallerGeneratorUrl(fileName, appJSONUrl, os)
   const extension = os === 'win' ? 'exe' : 'dmg'
   
   console.log(` - Generating installer: \x1b[36m${fileName}.${extension}\x1b[0m (points to \x1b[36m${branch}\x1b[0m branch)`)
