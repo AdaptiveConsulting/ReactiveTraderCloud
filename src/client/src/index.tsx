@@ -11,9 +11,11 @@ const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 
 const urlParams = new URLSearchParams(window.location.search)
 
-const getEnv = () => {
-  const url = process.env.REACT_APP_BROKER_HOST
-  return Object.keys(envTitles).filter(env => url !== undefined && url.includes(env))[0]
+function getEnv() {
+  const serviceUrl = process.env.REACT_APP_BROKER_HOST || window.location.host;
+  if (serviceUrl.includes('localhost')) return 'localhost';
+  const envMatch = serviceUrl.match(/web-([a-zA-Z]+)\.adaptivecluster\.com/);
+  return envMatch ? envMatch[1] : undefined
 }
 
 const envTitles = {
@@ -27,7 +29,7 @@ async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
 
   const env = getEnv()
-  document.title = `${document.title} ${envTitles[env]}`
+  if (env !== undefined) document.title = `${document.title} ${envTitles[env]}`
 
   console.log('HERE', process.env.REACT_APP_BROKER_HOST)
 
