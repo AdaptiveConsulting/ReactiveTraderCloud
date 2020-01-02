@@ -11,8 +11,25 @@ const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 
 const urlParams = new URLSearchParams(window.location.search)
 
+const getEnv = () => {
+  const url = process.env.REACT_APP_BROKER_HOST
+  return Object.keys(envTitles).filter(env => url !== undefined && url.includes(env))[0]
+}
+
+const envTitles = {
+  localhost: '(LOCAL)',
+  dev: '(DEV)',
+  uat: '(UAT)',
+  demo: '',
+}
+
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
+
+  const env = getEnv()
+  document.title = `${document.title} ${envTitles[env]}`
+
+  console.log('HERE', process.env.REACT_APP_BROKER_HOST)
 
   if (urlParams.has('startAsSymphonyController')) {
     const { initiateSymphony } = await getSymphonyPlatform()
