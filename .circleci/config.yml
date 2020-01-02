@@ -109,7 +109,6 @@ commands:
       - run:
           name: Install tools
           command: |
-            sudo npm i -g semver@6.3.0
             sudo apt-get install gettext-base
             sudo apt-get install jq
       - run:
@@ -127,23 +126,15 @@ commands:
           fingerprints:
             - "79:e8:92:e2:cb:49:2b:26:2d:d5:f9:6f:7b:f7:46:b6"
 
-  semver:
-    description: "Setup semver version for this release"
-    parameters:
-      bump:
-        default: "minor"
-        description: The semver bump type. Must be one of "major", "minor", "patch".
-        type: enum
-        enum: ["major", "minor", "patch", "prerelease"]
+  set_version:
+    description: "Set the version for this release by using git describe"
     steps:
       - run:
-          name: Semver Versioning "<< parameters.bump >>"
+          name: Set version
           command: |
-            PREVIOUS_TAG="$(semver $(git tag --merged) 1.0.0 | tail -n -1)"
-            NEW_TAG="$(semver -i << parameters.bump >> ${PREVIOUS_TAG})"
-            echo "export BUILD_VERSION=$NEW_TAG" >> $BASH_ENV
-            git tag $NEW_TAG -a -m "v$NEW_TAG"
-            echo "Created new tag: $(git describe --abbr=0)"
+            GIT_VERSION="$(git describe)"
+            echo "Build version based on git describe: $GIT_VERSION"
+            echo "export BUILD_VERSION=$GIT_VERSION" >> $BASH_ENV
 
   build_images:
     description: "Build the deployable container images"
@@ -189,8 +180,6 @@ commands:
             docker-compose \
               -f src/docker-compose.deploy.yml -f src/docker-compose.yml \
               push << parameters.images >>
-            echo "Pushing new tag to remote"
-            git push origin $BUILD_VERSION
 
   deploy_to_environment:
     description: "Deploy the specific version to gcloud"
@@ -226,13 +215,9 @@ commands:
   main_pipeline:
     description: "Main pipeline"
     parameters:
-      rebase_with_master:
+      merge_with_master:
         type: boolean
         default: false
-      bump:
-        description: The semver bump type. Must be one of "major", "minor", "patch".
-        type: enum
-        enum: ["major", "minor", "patch", "prerelease"]
       environment:
         type: string
     steps:
@@ -240,14 +225,13 @@ commands:
       - setup_env
       - custom_checkout
       - when:
-          condition: <<parameters.rebase_with_master>>
+          condition: <<parameters.merge_with_master>>
           steps:
             - run:
-                name: Rebase with master
+                name: Merge with master
                 command: |
-                  git rebase origin master
-      - semver:
-          bump: << parameters.bump >>
+                  git merge master
+      - set_version
       - run:
           name: Set up persisted variables
           command: |
@@ -269,7 +253,6 @@ jobs:
       - image: circleci/node:latest
     steps:
       - main_pipeline:
-          bump: minor
           environment: dev
       - push_images:
           images: *push_images_list
@@ -279,7 +262,6 @@ jobs:
       - image: circleci/node:latest
     steps:
       - main_pipeline:
-          bump: patch
           environment: none
       - push_images:
           images: *push_images_list
@@ -289,9 +271,8 @@ jobs:
       - image: circleci/node:latest
     steps:
       - main_pipeline:
-          bump: prerelease
           environment: none
-          rebase_with_master: true
+          merge_with_master: true
 
   notify_about_merge_to_master:
     docker:
@@ -382,16 +363,18 @@ jobs:
             echo "Parsing current commit tags. Looking for version and requested environment."
 
             echo "Environment is found via env-* tags"
-            ENVIRONMENT_TAG=$(git tag -l --points-at HEAD env-*)
-            DEPLOY_TARGET=${ENVIRONMENT_TAG/env-/}
+            ENVIRONMENT_TAGS=$(git tag -l --points-at HEAD env-*)
+            echo "Current env-* tags: $ENVIRONMENT_TAGS"
+            echo "Requested tag via CircleCI: $CIRCLE_TAG"
+            DEPLOY_TARGET=${CIRCLE_TAG/env-/}
             echo "DEPLOY_TARGET: $DEPLOY_TARGET"
 
-            echo "Build version is found via semver tag"
-            BUILD_VERSION=$(git tag -l --points-at HEAD | grep ^[0-9+]\.)
+            echo "Build version is found via git describe"
+            BUILD_VERSION=$(git describe)
             echo "BUILD_VERSION: $BUILD_VERSION"
 
             if [[ "$BUILD_VERSION" = "" ]] ; then
-                echo "Could not find a valid version on this commit. Was the semver tag on the same tag as the env-* one?"
+                echo "Could not generate a valid version for this commit via git describe. Are there any annotated tags in the repo?"
                 circleci-agent step halt
             fi
 
@@ -414,6 +397,10 @@ workflows:
           filters:
             branches:
               only: master
+            tags:
+              # build for version tags starting with 'v', matching rudimentary semver rules
+              # note that docker tags does not support '+' characters, only '-'
+              only: /^v\d+(?:\.\d+){1,2}(?:-[a-zA-Z0-9-\.]+)?$/
 
       - deploy_last_build:
           requires:

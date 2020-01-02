@@ -1,12 +1,13 @@
 {
   "name": "adaptive.reactivetrader.server.nlp",
-  "version": "0.0.1",
   "description": "NLP Service for Reactive Trader",
   "main": "dist/index",
   "scripts": {
+    "precommit": "lint-staged",
     "start:dev": "nodemon --watch 'src/**/*.ts' --exec \"node -r ts-node/register -r tsconfig-paths/register --inspect\" src/index.ts",
     "build": "webpack",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "lint": "eslint --ext .ts ./src"
   },
   "keywords": [
     "NLP"
