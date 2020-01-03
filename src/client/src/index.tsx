@@ -17,13 +17,14 @@ const envTitles = {
   dev: '(DEV)',
   uat: '(UAT)',
   demo: '',
+  unknown: '(UNKNOWN)',
 }
 
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
 
   const env = getEnvironment()
-  document.title = `${document.title} ${env !== undefined ? envTitles[env] : '(UNKNOWN)'}`
+  document.title = `${document.title} ${envTitles[env || 'unknown']}`;
 
   if (urlParams.has('startAsSymphonyController')) {
     const { initiateSymphony } = await getSymphonyPlatform()
