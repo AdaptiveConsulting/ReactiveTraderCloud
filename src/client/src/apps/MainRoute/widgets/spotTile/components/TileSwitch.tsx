@@ -95,6 +95,7 @@ const TileSwitch: React.FC<Props> = ({
           </TileBooking>
           <NotificationContainer
             lastTradeExecutionStatus={spotTileData.lastTradeExecutionStatus}
+            spotDate={spotTileData.price.valueDate}
             currencyPair={currencyPair}
             onNotificationDismissed={onNotificationDismissed}
           />

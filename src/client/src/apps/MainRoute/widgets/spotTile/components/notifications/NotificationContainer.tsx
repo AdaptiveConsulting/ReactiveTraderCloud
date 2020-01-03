@@ -7,6 +7,7 @@ import TileNotification from './TileNotification'
 
 interface Props {
   lastTradeExecutionStatus?: LastTradeExecutionStatus | null
+  spotDate: string
   currencyPair: CurrencyPair
   onNotificationDismissed: () => void
 }
@@ -28,8 +29,9 @@ export default class NotificationContainer extends PureComponent<Props> {
   }
 
   private renderNotifications: () => (style: React.CSSProperties) => JSX.Element | null = () => {
-    const { lastTradeExecutionStatus, currencyPair, onNotificationDismissed } = this.props
+    const { lastTradeExecutionStatus, currencyPair, onNotificationDismissed, spotDate } = this.props
     const symbols = `${currencyPair.base}/${currencyPair.terms}`
+    const date = new Date(spotDate)
     if (!lastTradeExecutionStatus || !hasNotification(lastTradeExecutionStatus)) {
       return () => null
     }
@@ -45,7 +47,7 @@ export default class NotificationContainer extends PureComponent<Props> {
       const { dealtCurrency, tradeId } = lastTradeExecutionStatus.trade
       const { terms } = currencyPair
       if (lastTradeExecutionStatus.trade.status === TradeStatus.Done) {
-        const { direction, notional, spotRate, tradeDate } = lastTradeExecutionStatus.trade
+        const { direction, notional, spotRate } = lastTradeExecutionStatus.trade
 
         return (style: React.CSSProperties) => (
           <TileNotification
@@ -61,7 +63,7 @@ export default class NotificationContainer extends PureComponent<Props> {
               counterCurrency={terms}
               notional={notional}
               rate={spotRate}
-              date={tradeDate}
+              date={date}
             />
           </TileNotification>
         )
