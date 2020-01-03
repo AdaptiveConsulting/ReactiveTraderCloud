@@ -12,7 +12,7 @@ using Serilog.Events;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
-    internal class Broker : IBroker
+    public class Broker : IBroker
     {
         private readonly IModel _channel;
 
