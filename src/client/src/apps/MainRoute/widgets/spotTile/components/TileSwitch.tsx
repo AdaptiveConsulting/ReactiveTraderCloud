@@ -1,7 +1,7 @@
 import React from 'react'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
 import { ExecuteTradeRequest, SpotTileDataWithNotional } from '../model'
-import NotificationContainer, { TileBooking } from './notifications'
+import NotificationContainer from './notifications'
 import Tile from './Tile'
 import TileControls from './TileControls'
 import { TileViews } from '../../workspace/workspaceHeader'
@@ -38,12 +38,7 @@ const TileSwitch: React.FC<Props> = ({
   rfq,
   updateNotional,
 }) => {
-  const {
-    isRfqStateExpired,
-    isRfqStateCanRequest,
-    isRfqStateRequested,
-    isRfqStateNone,
-  } = getConstsFromRfqState(spotTileData.rfqState)
+  const { isRfqStateNone } = getConstsFromRfqState(spotTileData.rfqState)
 
   if (!currencyPair) {
     return <></>
@@ -64,7 +59,7 @@ const TileSwitch: React.FC<Props> = ({
       {({ notional, userError }: TileSwitchChildrenProps) => (
         <>
           <TileControls canPopout={isRfqStateNone && canPopout} onPopoutClick={onPopoutClick} />
-          <TileBooking show={spotTileData.isTradeExecutionInFlight} color="blue" showLoader>
+          {/* <TileBooking show={spotTileData.isTradeExecutionInFlight} color="blue" showLoader>
             Executing
           </TileBooking>
           <TileBooking
@@ -92,7 +87,7 @@ const TileSwitch: React.FC<Props> = ({
             Cancel
             <br />
             RFQ
-          </TileBooking>
+          </TileBooking> */}
           <NotificationContainer
             lastTradeExecutionStatus={spotTileData.lastTradeExecutionStatus}
             currencyPair={currencyPair}
