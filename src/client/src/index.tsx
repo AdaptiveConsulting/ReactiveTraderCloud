@@ -22,7 +22,7 @@ const envTitles = {
 
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
-
+  
   const env = getEnvironment()
   document.title = `${document.title} ${envTitles[env || 'unknown']}`;
 
