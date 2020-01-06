@@ -109,24 +109,8 @@ const PriceControls: React.FC<Props> = ({
       </PriceButtonDisabledPlaceholder>
     ) : null
 
-  return isAnalyticsView ? (
-    <PriceControlsStyle
-      data-qa="analytics-tile-price-control__header"
-      isAnalyticsView={isAnalyticsView}
-    >
-      <PriceMovement priceMovementType={priceMovement} spread={spreadValue} />
-      <div>
-        {priceButtonDisabledStatus}
-        {priceButtonDisabledStatus}
-        {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
-        {showPriceButton(Direction.Buy, priceData.ask, askRate)}
-      </div>
-    </PriceControlsStyle>
-  ) : (
-    <PriceControlsStyle isAnalyticsView={!!isAnalyticsView}>
-      {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
-      {priceButtonDisabledStatus}
-      <PriceMovement priceMovementType={priceMovement} spread={spreadValue} />
+  const TileBookingSwitch = () => (
+    <>
       <TileBooking show={isTradeExecutionInFlight} color="blue" showLoader>
         Executing
       </TileBooking>
@@ -156,6 +140,29 @@ const PriceControls: React.FC<Props> = ({
         <br />
         RFQ
       </TileBooking>
+    </>
+  )
+
+  return isAnalyticsView ? (
+    <PriceControlsStyle
+      data-qa="analytics-tile-price-control__header"
+      isAnalyticsView={isAnalyticsView}
+    >
+      <PriceMovement priceMovementType={priceMovement} spread={spreadValue} />
+      <TileBookingSwitch />
+      <div>
+        {priceButtonDisabledStatus}
+        {priceButtonDisabledStatus}
+        {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
+        {showPriceButton(Direction.Buy, priceData.ask, askRate)}
+      </div>
+    </PriceControlsStyle>
+  ) : (
+    <PriceControlsStyle isAnalyticsView={!!isAnalyticsView}>
+      {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
+      {priceButtonDisabledStatus}
+      <PriceMovement priceMovementType={priceMovement} spread={spreadValue} />
+      <TileBookingSwitch />
       {showPriceButton(Direction.Buy, priceData.ask, askRate)}
       {priceButtonDisabledStatus}
     </PriceControlsStyle>

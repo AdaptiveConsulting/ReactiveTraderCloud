@@ -24,6 +24,7 @@ const PriceMovementStyle = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 100%;
+  z-index: 1;
 `
 
 const PriceMovement: React.FC<Props> = ({ priceMovementType, spread }) => (

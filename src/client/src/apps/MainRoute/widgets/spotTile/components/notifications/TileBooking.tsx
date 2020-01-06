@@ -13,6 +13,7 @@ const TileBookingStyle = styled.div`
   justify-content: center;
   pointer-events: none; /* allow clicks to go through div */
   text-align: center;
+  z-index: 2;
 `
 
 const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean; color: string }>`
