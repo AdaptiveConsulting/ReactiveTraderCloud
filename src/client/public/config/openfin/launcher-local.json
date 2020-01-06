@@ -2,7 +2,7 @@
     "startup_app": {
         "name": "Reactive Ecosystem Launcher (LOCAL)",
         "url": "http://localhost:3000/launcher",
-        "uuid": "ReactiveLauncher",
+        "uuid": "reactive-launcher-local",
         "defaultWidth": 650,
         "defaultHeight": 52,
         "defaultTop": 160,
