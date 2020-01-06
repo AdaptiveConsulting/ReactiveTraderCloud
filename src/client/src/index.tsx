@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
 import { getSymphonyPlatform } from 'rt-platforms'
+import { getEnvironment } from 'rt-util/getEnvironment'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -11,8 +12,19 @@ const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 
 const urlParams = new URLSearchParams(window.location.search)
 
+const envTitles = {
+  localhost: '(LOCAL)',
+  dev: '(DEV)',
+  uat: '(UAT)',
+  demo: '',
+  unknown: '(UNKNOWN)',
+}
+
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
+  
+  const env = getEnvironment()
+  document.title = `${document.title} ${envTitles[env || 'unknown']}`;
 
   if (urlParams.has('startAsSymphonyController')) {
     const { initiateSymphony } = await getSymphonyPlatform()
