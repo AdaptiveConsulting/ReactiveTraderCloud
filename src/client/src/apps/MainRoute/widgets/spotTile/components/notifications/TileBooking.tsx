@@ -16,12 +16,12 @@ const TileBookingStyle = styled.div`
 `
 
 const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean; color: string }>`
-  padding: 0.75rem 0.9375rem;
+  padding: 0.4rem;
   border-radius: ${({ altStyle }) => (altStyle ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
-
+  width: 64px;
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
   }
