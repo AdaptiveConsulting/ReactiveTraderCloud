@@ -12,11 +12,14 @@ export interface Props {
 }
 
 const AppLayout: React.FC<Props> = ({ before, header, body, footer, after }) => {
+  //@ts-ignore
+  const isChildView = window.fin && window.fin.me.isView;
+
   return (
     <AppLayoutRoot data-qa="app-layout__root">
       {before}
 
-      <Header>{header}</Header>
+      { !isChildView && <Header>{header}</Header> }
 
       <Body>{body}</Body>
 

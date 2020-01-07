@@ -24,11 +24,15 @@ interface RouteWrapperProps {
   windowType?: WindowRole
 }
 
+//@ts-ignore
+const isChildView = window.fin && window.fin.me.isView;
+
 const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'main' }) => {
   const platform = usePlatform()
   const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
+
   const Header = windowType === 'main' ? PlatformControls : null
-  const subheader = windowType === 'sub' ? <PlatformHeader close={window.close} /> : null
+  const subheader = windowType === 'sub' && !isChildView ? <PlatformHeader close={window.close} /> : null
 
   return (
     <RouteStyle platform={platform}>

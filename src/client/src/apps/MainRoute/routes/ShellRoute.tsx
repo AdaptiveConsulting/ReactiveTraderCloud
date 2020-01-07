@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Resizer, TearOff } from 'rt-components'
 import { externalWindowDefault, ExternalWindow, WindowPosition } from 'rt-platforms'
@@ -13,6 +13,8 @@ import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
 import { analyticsSelector, blotterSelector } from '../layouts/selectors'
 import { useSelector } from 'react-redux'
+import { createGlobalStyle } from 'styled-components'
+import { Theme } from 'rt-theme'
 
 interface Props {
   header?: React.ReactChild
@@ -32,6 +34,13 @@ const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition)
 const ShellRoute: React.FC<Props> = ({ header }) => {
   const blotter = useSelector(blotterSelector)
   const analytics = useSelector(analyticsSelector)
+
+  useEffect(() => {
+    window.document.dispatchEvent(new Event("DOMContentLoaded", {
+      bubbles: true,
+      cancelable: true
+    }));
+  }, [])
 
   const body = (
     <Resizer
@@ -84,6 +93,45 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
       <StatusButton/>
     </StatusBar>
   );
+
+  //@ts-ignore
+  if (window.fin && window.fin.me.isWindow) {
+    const OfTabTheme = createGlobalStyle<{ theme: Theme }>`
+      .lm_tabs {
+        background-color: ${({ theme }) => theme.core.lightBackground};
+        border-radius: 0px;
+      }
+
+      .lm_content {
+        background-color: ${({ theme }) => theme.core.lightBackground};
+      }
+
+      .lm_tab, .lm_tab.lm_active {
+        background-color: ${({ theme }) => theme.core.darkBackground} !important;
+        color: ${({ theme }) => theme.core.textColor} !important;
+      }
+
+      .lm_splitter {
+        background-color: ${({ theme }) => theme.core.offBackground} !important;
+      }
+    `;
+
+    const OfBody = (
+      <React.Fragment>
+        <OfTabTheme />
+        <div style={{ height: "100%", width: "100%" }} id="layout-container" />
+      </React.Fragment>
+    )
+
+    return (
+      <DefaultLayout
+        header={header}
+        body={OfBody}
+        footer={footer}
+        after={<ReconnectModal/>}
+      />
+    )
+  }
 
   return (
     <DefaultLayout

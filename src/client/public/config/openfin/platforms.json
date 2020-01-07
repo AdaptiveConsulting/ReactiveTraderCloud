@@ -1,0 +1,191 @@
+{
+    "runtime": {
+        "arguments": "--v=1 --inspect",
+        "version": "14.78.48.3"
+    },
+    "shortcut": {
+        "company": "Adaptive Consulting",
+        "description": "Desktop Reactive Trader Cloud",
+        "icon": "http://localhost:3000/static/media/icon.ico",
+        "name": "Reactive Trader Cloud (LOCAL)"
+    },
+    "appAssets": [
+        {
+            "src": "http://localhost:3000/plugin/add-in.zip",
+            "alias": "excel-api-addin",
+            "version": "2.0.0",
+            "forceDownload": true
+        }
+    ],
+    "services": [
+        {
+            "name": "layouts",
+            "config": {
+                "features": {
+                    "snap": true,
+                    "dock": true,
+                    "tab": false
+                }
+            },
+            "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.2.0/app.json"
+        },
+        {
+            "name": "fdc3",
+            "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json"
+        },
+        {
+            "name": "notifications",
+            "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json"
+        }
+    ],
+    "platform": {
+        "uuid": "platform_prototype_generated",
+        "applicationIcon": "https://openfin.github.io/golden-prototype/favicon.ico",
+        "autoShow": false,
+        "defaultWindowOptions": {
+            "contextMenu": true,
+            "frame": false
+        }
+    },
+    "snapshot": {
+        "windows": [
+            {
+                "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
+                "autoShow": true,
+                "defaultWidth": 1280,
+                "defaultHeight": 900,
+                "minWidth": 800,
+                "minHeight": 600,
+                "resizable": true,
+                "maximizable": true,
+                "frame": false,
+                "shadow": true,
+                "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+                "preload": [
+                    {
+                        "url": "http://localhost:3000/plugin/service-loader.js"
+                    },
+                    {
+                        "url": "http://localhost:3000/plugin/fin.desktop.Excel.js"
+                    }
+                ],
+                "contextMenu": true,
+                "accelerator": {
+                    "devtools": true,
+                    "reload": true,
+                    "reloadIgnoringCache": true,
+                    "zoom": true
+                },
+                "saveWindowState": false,
+                "url": "http://localhost:3000/",
+                "layout": {
+                    "settings": {
+                        "blockedPopoutsThrowError": false,
+                        "closePopoutsOnUnload": true,
+                        "constrainDragToContainer": false,
+                        "hasHeaders": true,
+                        "popoutWholeStack": false,
+                        "reorderEnabled": true,
+                        "reorderOnTabMenuClick": true,
+                        "responsiveMode": "always",
+                        "selectionEnabled": true,
+                        "showCloseIcon": false,
+                        "showMaximiseIcon": false,
+                        "showPopoutIcon": false,
+                        "tabControlOffset": 10,
+                        "tabOverlapAllowance": 0
+                    },
+                    "content": [
+                        {
+                            "type": "row",
+                            "id": "mainRow",
+                            "isClosable": true,
+                            "reorderEnabled": true,
+                            "contextMenu": true,
+                            "title": "",
+                            "content": [
+                                {
+                                    "type": "column",
+                                    "isClosable": true,
+                                    "reorderEnabled": true,
+                                    "title": "",
+                                    "width": 80,
+                                    "content": [
+                                        {
+                                            "type": "stack",
+                                            "width": 50,
+                                            "height": 50,
+                                            "isClosable": true,
+                                            "reorderEnabled": true,
+                                            "title": "",
+                                            "activeItemIndex": 0,
+                                            "content": [
+                                                {
+                                                    "type": "component",
+                                                    "componentName": "view",
+                                                    "contextMenu": true,
+                                                    "componentState": {
+                                                        "url": "http://localhost:3000/tiles",
+                                                        "name": "Tiles"
+                                                    },
+                                                    "isClosable": true,
+                                                    "reorderEnabled": true,
+                                                    "title": "view"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "stack",
+                                            "header": {},
+                                            "isClosable": true,
+                                            "reorderEnabled": true,
+                                            "title": "",
+                                            "activeItemIndex": 0,
+                                            "height": 50,
+                                            "content": [
+                                                {
+                                                    "type": "component",
+                                                    "componentName": "view",
+                                                    "componentState": {
+                                                        "url": "http://localhost:3000/blotter",
+                                                        "name": "Blotter"
+                                                    },
+                                                    "isClosable": true,
+                                                    "reorderEnabled": true,
+                                                    "title": "view"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "stack",
+                                    "width": 30,
+                                    "height": 100,
+                                    "isClosable": true,
+                                    "reorderEnabled": true,
+                                    "title": "",
+                                    "activeItemIndex": 0,
+                                    "content": [
+                                        {
+                                            "type": "component",
+                                            "componentName": "view",
+                                            "componentState": {
+                                                "url": "http://localhost:3000/analytics",
+                                                "name": "Analytics"
+                                            },
+                                            "isClosable": true,
+                                            "reorderEnabled": true,
+                                            "title": "view"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "startup_app": null
+}
