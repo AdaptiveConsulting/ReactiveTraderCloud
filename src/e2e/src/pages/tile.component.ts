@@ -12,61 +12,64 @@ export class TileComponent {
       EURToUSD: {
         sell: root.element(by.qaTag('direction-sell-eurusd')),
         buy: root.element(by.qaTag('direction-buy-eurusd')),
-        notional: root.element(by.qaTag('notional-input__input-eurusd'))
+        notional: root.element(by.qaTag('notional-input__input-eurusd')),
       },
       USDToJPY: {
         sell: root.element(by.qaTag('direction-sell-usdjpy')),
         buy: root.element(by.qaTag('direction-buy-usdjpy')),
-        notional: root.element(by.qaTag('notional-input__input-usdjpy'))
+        notional: root.element(by.qaTag('notional-input__input-usdjpy')),
       },
       GBPToUSD: {
         sell: root.element(by.qaTag('direction-sell-gbpusd')),
         buy: root.element(by.qaTag('direction-buy-gbpusd')),
-        notional: root.element(by.qaTag('notional-input__input-gbpusd'))
+        notional: root.element(by.qaTag('notional-input__input-gbpusd')),
       },
       GBPToJPY: {
         sell: root.element(by.qaTag('direction-sell-gbpjpy')),
         buy: root.element(by.qaTag('direction-buy-gbpjpy')),
-        notional: root.element(by.qaTag('notional-input__input-gbpjpy'))
+        notional: root.element(by.qaTag('notional-input__input-gbpjpy')),
       },
       AUDToUSD: {
         sell: root.element(by.qaTag('direction-sell-audusd')),
         buy: root.element(by.qaTag('direction-buy-audusd')),
-        notional: root.element(by.qaTag('notional-input__input-audusd'))
+        notional: root.element(by.qaTag('notional-input__input-audusd')),
       },
       NZDToUSD: {
         sell: root.element(by.qaTag('direction-sell-nzdusd')),
         buy: root.element(by.qaTag('direction-buy-nzdusd')),
-        notional: root.element(by.qaTag('notional-input__input-nzdusd'))
+        notional: root.element(by.qaTag('notional-input__input-nzdusd')),
       },
       EURToAUD: {
         sell: root.element(by.qaTag('direction-sell-euraud')),
         buy: root.element(by.qaTag('direction-buy-euraud')),
-        notional: root.element(by.qaTag('notional-input__input-euraud'))
+        notional: root.element(by.qaTag('notional-input__input-euraud')),
       },
       EURToCAD: {
         sell: root.element(by.qaTag('direction-sell-eurcad')),
         buy: root.element(by.qaTag('direction-buy-eurcad')),
-        notional: root.element(by.qaTag('notional-input__input-eurcad'))
+        notional: root.element(by.qaTag('notional-input__input-eurcad')),
       },
       EURToJPY: {
         sell: root.element(by.qaTag('direction-sell-eurjpy')),
         buy: root.element(by.qaTag('direction-buy-eurjpy')),
-        notional: root.element(by.qaTag('notional-input__input-eurjpy'))
+        notional: root.element(by.qaTag('notional-input__input-eurjpy')),
       },
       confirmationScreen: {
         labelCurrency: root.element(by.qa('tile-notification__symbols')),
         labelTradeId: root.element(by.qa('tile-notification__tradeid')),
         labelMessage: root.element(by.qa('tile-notification__content')),
-        pillButton: root.element(by.qa('tile-notification__pill-button'))
+        pillButton: root.element(by.qa('tile-notification__pill-button')),
       },
       initiateRFQ: {
         buttonInitiateRFQ: root.element(by.qa('tile-booking__booking-status')),
         buttonReload: root.element(by.qa('notional-input__reset-input-value')),
         buttonReject: root.element(by.qa('rfq-timer__reject-quote-button')),
         labelTextStreamingUnavailable: root.element(by.qa('price-controls__price-button-disabled')),
-        labelTextTradeExpired: root.element(by.qa('price-button__expired'))
-      }
+        labelTextTradeExpired: root.element(by.qa('price-button__expired')),
+      },
+      navigation: {
+        pricesOnly: root.element(by.id('workspace-view-analytics')),
+      },
     }
   }
 
@@ -102,6 +105,9 @@ export class TileComponent {
   async initiateRFQ() {
     const labelTextStreaming = this.tradeType.initiateRFQ.labelTextStreamingUnavailable
     expect(await labelTextStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
+    const pricesButton = this.tradeType.navigation.pricesOnly
+    await waitForElementToBeClickable(this.browser, pricesButton)
+    await pricesButton.click()
     const buttonRFQ = this.tradeType.initiateRFQ.buttonInitiateRFQ
     await waitForElementToBeClickable(this.browser, buttonRFQ)
     await buttonRFQ.click()
@@ -123,6 +129,9 @@ export class TileComponent {
   }
 
   async NZDToUSDRFQ() {
+    const pricesButton = this.tradeType.navigation.pricesOnly
+    await waitForElementToBeClickable(this.browser, pricesButton)
+    await pricesButton.click()
     const buttonRFQ = this.tradeType.initiateRFQ.buttonInitiateRFQ
     await waitForElementToBeClickable(this.browser, buttonRFQ)
     await buttonRFQ.click()
@@ -135,5 +144,4 @@ export class TileComponent {
     // Wait for button requote to appear after inititiate RFQ timeout
     await wait(RFQ_EXPIRATION_TIMEOUT_MS)
   }
-
 }
