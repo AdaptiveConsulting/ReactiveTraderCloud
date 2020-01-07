@@ -12,8 +12,8 @@ import {
   AdaptiveLoaderWrapper,
   Icon,
 } from './styled'
-import { TileBooking } from '../notifications'
 import { ValidationMessage } from '../notional'
+import TileBookingSwitch from './TileBookingSwitch'
 
 interface Props {
   currencyPair: CurrencyPair
@@ -109,47 +109,20 @@ const PriceControls: React.FC<Props> = ({
       </PriceButtonDisabledPlaceholder>
     ) : null
 
-  const TileBookingSwitch = () => (
-    <>
-      <TileBooking show={isTradeExecutionInFlight} color="blue" showLoader>
-        Executing
-      </TileBooking>
-      <TileBooking
-        show={!isTradeExecutionInFlight && isRfqStateCanRequest}
-        color="blue"
-        onBookingPillClick={() => rfq.request({ notional, currencyPair })}
-        disabled={userError}
-      >
-        Initiate
-        <br />
-        RFQ
-      </TileBooking>
-      <TileBooking
-        show={!isTradeExecutionInFlight && isRfqStateExpired}
-        color="blue"
-        onBookingPillClick={() => rfq.requote({ notional, currencyPair })}
-      >
-        Requote
-      </TileBooking>
-      <TileBooking
-        show={isRfqStateRequested}
-        color="red"
-        onBookingPillClick={() => rfq.cancel({ currencyPair })}
-      >
-        Cancel
-        <br />
-        RFQ
-      </TileBooking>
-    </>
-  )
-
   return isAnalyticsView ? (
     <PriceControlsStyle
       data-qa="analytics-tile-price-control__header"
       isAnalyticsView={isAnalyticsView}
     >
       <PriceMovement priceMovementType={priceMovement} spread={spreadValue} />
-      <TileBookingSwitch />
+      <TileBookingSwitch
+        isTradeExecutionInFlight={isTradeExecutionInFlight}
+        currencyPair={currencyPair}
+        notional={notional}
+        rfq={rfq}
+        rfqState={rfqState}
+        userError={userError}
+      />
       <div>
         {priceButtonDisabledStatus}
         {priceButtonDisabledStatus}
@@ -162,7 +135,14 @@ const PriceControls: React.FC<Props> = ({
       {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
       {priceButtonDisabledStatus}
       <PriceMovement priceMovementType={priceMovement} spread={spreadValue} />
-      <TileBookingSwitch />
+      <TileBookingSwitch
+        isTradeExecutionInFlight={isTradeExecutionInFlight}
+        currencyPair={currencyPair}
+        notional={notional}
+        rfq={rfq}
+        rfqState={rfqState}
+        userError={userError}
+      />
       {showPriceButton(Direction.Buy, priceData.ask, askRate)}
       {priceButtonDisabledStatus}
     </PriceControlsStyle>
