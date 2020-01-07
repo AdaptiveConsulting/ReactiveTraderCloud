@@ -68,7 +68,7 @@ export class TileComponent {
         labelTextTradeExpired: root.element(by.qa('price-button__expired')),
       },
       navigation: {
-        pricesOnly: root.element(by.id('workspace-view-analytics')),
+        pricesOnly: root.element(by.qaTag('workspace-view-analytics')),
       },
     }
   }
@@ -103,11 +103,11 @@ export class TileComponent {
   }
 
   async initiateRFQ() {
-    const labelTextStreaming = this.tradeType.initiateRFQ.labelTextStreamingUnavailable
-    expect(await labelTextStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
     const pricesButton = this.tradeType.navigation.pricesOnly
     await waitForElementToBeClickable(this.browser, pricesButton)
     await pricesButton.click()
+    const labelTextStreaming = this.tradeType.initiateRFQ.labelTextStreamingUnavailable
+    expect(await labelTextStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
     const buttonRFQ = this.tradeType.initiateRFQ.buttonInitiateRFQ
     await waitForElementToBeClickable(this.browser, buttonRFQ)
     await buttonRFQ.click()
