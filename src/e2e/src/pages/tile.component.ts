@@ -67,9 +67,6 @@ export class TileComponent {
         labelTextStreamingUnavailable: root.element(by.qa('price-controls__price-button-disabled')),
         labelTextTradeExpired: root.element(by.qa('price-button__expired')),
       },
-      navigation: {
-        pricesOnly: root.element(by.qaTag('workspace-view-analytics')),
-      },
     }
   }
 
@@ -82,6 +79,7 @@ export class TileComponent {
     await buttonElement.click()
     await wait(2000)
   }
+
   async resetNotional(currencyTrade: string) {
     const buttonElement = this.tradeType.initiateRFQ.buttonReload
     if (!buttonElement) {
@@ -103,9 +101,9 @@ export class TileComponent {
   }
 
   async initiateRFQ() {
-    const pricesButton = this.tradeType.navigation.pricesOnly
-    await waitForElementToBeClickable(this.browser, pricesButton)
-    await pricesButton.click()
+    const normalViewButton = this.browser.element(by.qaTag('workspace-view-normal'))
+    await waitForElementToBeClickable(this.browser, normalViewButton)
+    await normalViewButton.click()
     const labelTextStreaming = this.tradeType.initiateRFQ.labelTextStreamingUnavailable
     expect(await labelTextStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
     const buttonRFQ = this.tradeType.initiateRFQ.buttonInitiateRFQ
@@ -129,9 +127,9 @@ export class TileComponent {
   }
 
   async NZDToUSDRFQ() {
-    const pricesButton = this.tradeType.navigation.pricesOnly
-    await waitForElementToBeClickable(this.browser, pricesButton)
-    await pricesButton.click()
+    const normalViewButton = this.browser.element(by.qaTag('workspace-view-normal'))
+    await waitForElementToBeClickable(this.browser, normalViewButton)
+    await normalViewButton.click()
     const buttonRFQ = this.tradeType.initiateRFQ.buttonInitiateRFQ
     await waitForElementToBeClickable(this.browser, buttonRFQ)
     await buttonRFQ.click()
