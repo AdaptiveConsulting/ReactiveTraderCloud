@@ -10,7 +10,7 @@ type RenderCB = (popOut: (x?: number, y?: number) => void, tornOff: boolean) => 
 const DragWrapper = styled.div`
   height: 100%;
 `
-/* 
+/*
   we create a clone of the dragged node, set some styles and add it to the DOM
   we set the drag image to this node then remove it in a timeout
 */

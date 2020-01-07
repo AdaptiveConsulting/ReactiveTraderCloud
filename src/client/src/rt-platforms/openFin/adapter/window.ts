@@ -2,6 +2,7 @@
 import {WindowConfig} from '../../types'
 import {get as _get, last as _last} from 'lodash'
 import {PlatformWindow} from '../../platformWindow'
+import { _Window } from 'openfin/_v2/api/window/window'
 
 const TEAR_OUT_OFFSET_LEFT = 50
 const TEAR_OUT_OFFSET_TOP = 50
@@ -46,7 +47,7 @@ const getChildWindows = () => {
 
 //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
 // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
-export function createPlatformWindow(getWindow: () => Promise<fin.OpenFinWindow>): PlatformWindow {
+export function createPlatformWindow(getWindow: () => Promise<fin.OpenFinWindow | _Window>): PlatformWindow {
   return {
     close: async () => (await getWindow()).close(),
     bringToFront: async () => (await getWindow()).bringToFront(),
@@ -99,53 +100,52 @@ export const openDesktopWindow = async (
   onClose?: () => void,
   position?: {},
 ): Promise<PlatformWindow> => {
+  //@ts-ignore
   const {url, width: defaultWidth, height: defaultHeight, maxHeight, maxWidth} = config
   const childWindows = await getChildWindows()
+  //@ts-ignore
   const hasChildWindows = childWindows && childWindows.length > 0
+  //@ts-ignore
   const configHasXYCoordinates = typeof config.x !== 'undefined' && typeof config.y !== 'undefined'
+  //@ts-ignore
   const updatedPosition = await getOpenfinWindowPosition(config, childWindows)
   const windowName = config.name || generateRandomName();
 
   console.info(`Creating Openfin window: ${windowName}`);
 
-  //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
-  // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
-  const ofWindowPromise = new Promise<fin.OpenFinWindow>(resolve => {
-    const win = new fin.desktop.Window(
-      {
+  //@ts-ignore
+  const winIdentity = await fin.Platform.getCurrentSync().createWindow(
+    {
         name: windowName,
-        url,
         defaultWidth,
         defaultHeight,
         minWidth: config.minWidth ? config.minWidth : 100,
         minHeight: config.minHeight ? config.minHeight : 100,
         maxHeight,
         maxWidth,
+        url: `${window.location.origin}${url}`,
         defaultCentered: !hasChildWindows && !configHasXYCoordinates,
         autoShow: true,
         frame: false,
         saveWindowState: false,
         shadow: true,
+        contextMenu: true,
         ...position,
         ...updatedPosition,
-      } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
-      () => {
-        console.info(`Openfin window created: ${windowName}`);
-        if (onClose) {
-          const closeListener = () => {
-            console.log(`Received 'close' event for Openfin window: ${windowName}`);
-            win.removeEventListener('closed', closeListener)
-            onClose && onClose()
-          }
-          win.addEventListener('closed', closeListener)
-        }
-        resolve(win)
-      },
-      error => {
-        console.error(`Error creating Openfin window: ${windowName}`, error)
-      },
-    )
-  })
+        layout: {},
+    }
+  );
 
-  return createPlatformWindow(() => ofWindowPromise)
+  const win = await window.fin.Window.wrap(winIdentity);
+
+  if (onClose) {
+    const closeListener = () => {
+      console.log(`Received 'close' event for Openfin window: ${windowName}`);
+      onClose && onClose()
+    }
+
+    win.once('closed', closeListener)
+  }
+
+  return createPlatformWindow(() => Promise.resolve(win))
 }
