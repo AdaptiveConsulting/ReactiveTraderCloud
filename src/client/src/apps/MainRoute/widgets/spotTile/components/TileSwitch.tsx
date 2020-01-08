@@ -6,7 +6,6 @@ import Tile from './Tile'
 import TileControls from './TileControls'
 import { TileViews } from '../../workspace/workspaceHeader'
 import { RfqActions, TradingMode } from './types'
-import { getConstsFromRfqState } from '../model/spotTileUtils'
 import { CurrencyPairNotional } from '../model/spotTileData'
 
 interface Props {
@@ -38,8 +37,6 @@ const TileSwitch: React.FC<Props> = ({
   rfq,
   updateNotional,
 }) => {
-  const { isRfqStateNone, isRfqStateCanRequest } = getConstsFromRfqState(spotTileData.rfqState)
-
   if (!currencyPair) {
     return <></>
   }
@@ -58,7 +55,7 @@ const TileSwitch: React.FC<Props> = ({
     >
       {() => (
         <>
-          <TileControls canPopout={(isRfqStateCanRequest || isRfqStateNone) && canPopout} onPopoutClick={onPopoutClick} />
+          <TileControls canPopout={canPopout} onPopoutClick={onPopoutClick} />
           <NotificationContainer
             lastTradeExecutionStatus={spotTileData.lastTradeExecutionStatus}
             currencyPair={currencyPair}
