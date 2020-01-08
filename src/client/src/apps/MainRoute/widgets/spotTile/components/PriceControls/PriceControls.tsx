@@ -55,7 +55,7 @@ const PriceControls: React.FC<Props> = ({
     currencyPair.pipsPosition,
     currencyPair.ratePrecision,
   )
-  const userError = Boolean(inputValidationMessage)
+  const hasUserError = Boolean(inputValidationMessage)
 
   const {
     isRfqStateReceived,
@@ -133,7 +133,7 @@ const PriceControls: React.FC<Props> = ({
         notional={notional}
         rfq={rfq}
         rfqState={rfqState}
-        userError={userError}
+        hasUserError={hasUserError}
       />
       {showPriceButton(Direction.Buy, priceData.ask, askRate)}
       {priceButtonDisabledStatus}

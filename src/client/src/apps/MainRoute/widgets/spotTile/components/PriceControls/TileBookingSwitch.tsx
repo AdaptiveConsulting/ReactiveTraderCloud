@@ -10,7 +10,7 @@ interface Props {
   notional: number
   rfq: RfqActions
   rfqState: RfqState
-  userError: boolean
+  hasUserError: boolean
 }
 
 const TileBookingSwitch: FC<Props> = ({
@@ -18,7 +18,7 @@ const TileBookingSwitch: FC<Props> = ({
   rfqState,
   notional,
   currencyPair,
-  userError,
+  hasUserError,
   rfq,
 }) => {
   const { isRfqStateExpired, isRfqStateCanRequest, isRfqStateRequested } = getConstsFromRfqState(
@@ -34,7 +34,7 @@ const TileBookingSwitch: FC<Props> = ({
         show={!isTradeExecutionInFlight && isRfqStateCanRequest}
         color="blue"
         onBookingPillClick={() => rfq.request({ notional, currencyPair })}
-        disabled={userError}
+        disabled={hasUserError}
       >
         Initiate
         <br />
