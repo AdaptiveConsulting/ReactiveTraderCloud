@@ -32,8 +32,6 @@ const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean; color: st
     !disabled &&
     `
   cursor: pointer;
-  position: relative;
-  top:-8px;
   `}
 `
 
