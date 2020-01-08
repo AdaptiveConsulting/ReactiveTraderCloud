@@ -2,34 +2,34 @@
 
 exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 <div
-  className="sc-jhAzac sc-fBuWsC bJSBCb"
+  className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
+    className="sc-eqIVtm sc-kgAjT dFhfHo spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-hzDkRC ktZwAf"
+        className="sc-gisBJw fixKCf"
       >
         <div
-          className="sc-gipzik eHfKsv"
+          className="sc-dVhcbM fFZIqx"
           data-qa="tile-header__tile-symbol"
         >
           EUR/USD
         </div>
         <div
-          className="sc-jlyJG gaAQgC"
+          className="sc-fMiknA hNiKui"
           data-qa="tile-header__delivery-date"
         >
           SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf zdUPu"
+        className="sc-cMljjf hkZocT"
       >
         <button
           className="sc-EHOje gCbQHr"
@@ -73,7 +73,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG iKkJoh"
+          className="sc-jzJRlG elTuMv"
         >
           <i
             aria-hidden="true"
@@ -138,10 +138,10 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
       </div>
     </div>
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-eqIVtm dxqJyr"
+        className="sc-cJSrbW dZfIuu"
       >
         <div
           className="sc-htpNat idZgat"
@@ -171,37 +171,37 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 <div
-  className="sc-jhAzac sc-fBuWsC bJSBCb"
+  className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
+    className="sc-eqIVtm sc-kgAjT dFhfHo spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-hzDkRC ktZwAf"
+        className="sc-gisBJw fixKCf"
       >
         <div
-          className="sc-gipzik eHfKsv"
+          className="sc-dVhcbM fFZIqx"
           data-qa="tile-header__tile-symbol"
         >
           EUR/USD
         </div>
         <div
-          className="sc-jlyJG gaAQgC"
+          className="sc-fMiknA hNiKui"
           data-qa="tile-header__delivery-date"
         >
           SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf zdUPu"
+        className="sc-cMljjf hkZocT"
       >
         <div
-          className="sc-jAaTju jNhJYD"
+          className="sc-jAaTju eRYZLd"
           data-qa="price-controls__price-button-disabled"
         >
           <i
@@ -210,7 +210,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           Streaming price unavailable
         </div>
         <div
-          className="sc-jzJRlG iKkJoh"
+          className="sc-jzJRlG elTuMv"
         >
           <i
             aria-hidden="true"
@@ -232,7 +232,32 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           />
         </div>
         <div
-          className="sc-jAaTju jNhJYD"
+          className="sc-iRbamj kalpzL"
+          style={
+            Object {
+              "opacity": 0,
+            }
+          }
+        >
+          <div
+            className="sc-jlyJG iSkInz"
+            color="blue"
+            data-qa="tile-booking__booking-pill"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="sc-gipzik eXtAkj"
+              data-qa="tile-booking__booking-status"
+            >
+              Initiate
+              <br />
+              RFQ
+            </span>
+          </div>
+        </div>
+        <div
+          className="sc-jAaTju eRYZLd"
           data-qa="price-controls__price-button-disabled"
         >
           <i
@@ -243,10 +268,10 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
       </div>
     </div>
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-eqIVtm dxqJyr"
+        className="sc-cJSrbW dZfIuu"
       >
         <div
           className="sc-htpNat idZgat"
@@ -276,34 +301,34 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 <div
-  className="sc-jhAzac sc-fBuWsC bJSBCb"
+  className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
+    className="sc-eqIVtm sc-kgAjT dFhfHo spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-hzDkRC ktZwAf"
+        className="sc-gisBJw fixKCf"
       >
         <div
-          className="sc-gipzik eHfKsv"
+          className="sc-dVhcbM fFZIqx"
           data-qa="tile-header__tile-symbol"
         >
           EUR/USD
         </div>
         <div
-          className="sc-jlyJG gaAQgC"
+          className="sc-fMiknA hNiKui"
           data-qa="tile-header__delivery-date"
         >
           SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf zdUPu"
+        className="sc-cMljjf hkZocT"
       >
         <button
           className="sc-EHOje gCbQHr"
@@ -353,7 +378,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG iKkJoh"
+          className="sc-jzJRlG elTuMv"
         >
           <i
             aria-hidden="true"
@@ -373,6 +398,29 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
+        </div>
+        <div
+          className="sc-iRbamj kalpzL"
+          style={
+            Object {
+              "opacity": 0,
+            }
+          }
+        >
+          <div
+            className="sc-jlyJG iSkInz"
+            color="blue"
+            data-qa="tile-booking__booking-pill"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="sc-gipzik eXtAkj"
+              data-qa="tile-booking__booking-status"
+            >
+              Requote
+            </span>
+          </div>
         </div>
         <button
           className="sc-EHOje gCbQHr"
@@ -424,10 +472,10 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
       </div>
     </div>
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-eqIVtm dxqJyr"
+        className="sc-cJSrbW dZfIuu"
       >
         <div
           className="sc-htpNat idZgat"
@@ -457,34 +505,34 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ received 1`] = `
 <div
-  className="sc-jhAzac sc-fBuWsC bJSBCb"
+  className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
+    className="sc-eqIVtm sc-kgAjT dFhfHo spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-hzDkRC ktZwAf"
+        className="sc-gisBJw fixKCf"
       >
         <div
-          className="sc-gipzik eHfKsv"
+          className="sc-dVhcbM fFZIqx"
           data-qa="tile-header__tile-symbol"
         >
           EUR/USD
         </div>
         <div
-          className="sc-jlyJG gaAQgC"
+          className="sc-fMiknA hNiKui"
           data-qa="tile-header__delivery-date"
         >
           SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf zdUPu"
+        className="sc-cMljjf hkZocT"
       >
         <button
           className="sc-EHOje ixrtnE"
@@ -528,7 +576,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG iKkJoh"
+          className="sc-jzJRlG elTuMv"
         >
           <i
             aria-hidden="true"
@@ -593,10 +641,10 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
       </div>
     </div>
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-eqIVtm dxqJyr"
+        className="sc-cJSrbW dZfIuu"
       >
         <div
           className="sc-htpNat idZgat"
@@ -626,37 +674,37 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 
 exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 <div
-  className="sc-jhAzac sc-fBuWsC bJSBCb"
+  className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
+    className="sc-eqIVtm sc-kgAjT dFhfHo spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-hzDkRC ktZwAf"
+        className="sc-gisBJw fixKCf"
       >
         <div
-          className="sc-gipzik eHfKsv"
+          className="sc-dVhcbM fFZIqx"
           data-qa="tile-header__tile-symbol"
         >
           EUR/USD
         </div>
         <div
-          className="sc-jlyJG gaAQgC"
+          className="sc-fMiknA hNiKui"
           data-qa="tile-header__delivery-date"
         >
           SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf zdUPu"
+        className="sc-cMljjf hkZocT"
       >
         <div
-          className="sc-jAaTju jNhJYD"
+          className="sc-jAaTju eRYZLd"
           data-qa="price-controls__price-button-disabled--loading"
         >
           <div
@@ -708,7 +756,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           Awaiting price
         </div>
         <div
-          className="sc-jzJRlG iKkJoh"
+          className="sc-jzJRlG elTuMv"
         >
           <i
             aria-hidden="true"
@@ -730,7 +778,32 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           />
         </div>
         <div
-          className="sc-jAaTju jNhJYD"
+          className="sc-iRbamj kalpzL"
+          style={
+            Object {
+              "opacity": 0,
+            }
+          }
+        >
+          <div
+            className="sc-jlyJG cQKJBU"
+            color="red"
+            data-qa="tile-booking__booking-pill"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="sc-gipzik eXtAkj"
+              data-qa="tile-booking__booking-status"
+            >
+              Cancel
+              <br />
+              RFQ
+            </span>
+          </div>
+        </div>
+        <div
+          className="sc-jAaTju eRYZLd"
           data-qa="price-controls__price-button-disabled--loading"
         >
           <div
@@ -784,10 +857,10 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
       </div>
     </div>
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-eqIVtm dxqJyr"
+        className="sc-cJSrbW dZfIuu"
       >
         <div
           className="sc-htpNat idZgat"
@@ -817,34 +890,34 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 
 exports[`Snapshot, state derived from props, defaults, RFQ none, should be able to excute 1`] = `
 <div
-  className="sc-jhAzac sc-fBuWsC bJSBCb"
+  className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
+    className="sc-eqIVtm sc-kgAjT dFhfHo spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-hzDkRC ktZwAf"
+        className="sc-gisBJw fixKCf"
       >
         <div
-          className="sc-gipzik eHfKsv"
+          className="sc-dVhcbM fFZIqx"
           data-qa="tile-header__tile-symbol"
         >
           EUR/USD
         </div>
         <div
-          className="sc-jlyJG gaAQgC"
+          className="sc-fMiknA hNiKui"
           data-qa="tile-header__delivery-date"
         >
           SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf zdUPu"
+        className="sc-cMljjf hkZocT"
       >
         <button
           className="sc-EHOje kkdSuS"
@@ -888,7 +961,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           </div>
         </button>
         <div
-          className="sc-jzJRlG iKkJoh"
+          className="sc-jzJRlG elTuMv"
         >
           <i
             aria-hidden="true"
@@ -953,10 +1026,10 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
       </div>
     </div>
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-eqIVtm dxqJyr"
+        className="sc-cJSrbW dZfIuu"
       >
         <div
           className="sc-htpNat idZgat"
@@ -986,34 +1059,34 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 
 exports[`Snapshot, state derived from props, in trade 1`] = `
 <div
-  className="sc-jhAzac sc-fBuWsC bJSBCb"
+  className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-csuQGl sc-dVhcbM MlRwl spot-tile"
+    className="sc-eqIVtm sc-kgAjT dFhfHo spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-hzDkRC ktZwAf"
+        className="sc-gisBJw fixKCf"
       >
         <div
-          className="sc-gipzik eHfKsv"
+          className="sc-dVhcbM fFZIqx"
           data-qa="tile-header__tile-symbol"
         >
           EUR/USD
         </div>
         <div
-          className="sc-jlyJG gaAQgC"
+          className="sc-fMiknA hNiKui"
           data-qa="tile-header__delivery-date"
         >
           SPT (07 APR)
         </div>
       </div>
       <div
-        className="sc-cMljjf zdUPu"
+        className="sc-cMljjf hkZocT"
       >
         <button
           className="sc-EHOje gCbQHr"
@@ -1057,7 +1130,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG iKkJoh"
+          className="sc-jzJRlG elTuMv"
         >
           <i
             aria-hidden="true"
@@ -1077,6 +1150,75 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
             color="red"
             data-qa="price-movement__movement-icon--down"
           />
+        </div>
+        <div
+          className="sc-iRbamj kalpzL"
+          style={
+            Object {
+              "opacity": 0,
+            }
+          }
+        >
+          <div
+            className="sc-jlyJG cimDJM"
+            color="blue"
+            data-qa="tile-booking__booking-pill"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="sc-csuQGl hogrVX"
+            >
+              <svg
+                data-qa="adaptive-loader__svg"
+                height={14}
+                width={14}
+              >
+                <rect
+                  className="sc-jKJlTe dSCVMx"
+                  height={10.5}
+                  order={0}
+                  speed={0.8}
+                  type="secondary"
+                  width={2.625}
+                  x={0.25}
+                />
+                <rect
+                  className="sc-jKJlTe liUgNR"
+                  height={10.5}
+                  order={1}
+                  speed={0.8}
+                  type="secondary"
+                  width={2.625}
+                  x={3.875}
+                />
+                <rect
+                  className="sc-jKJlTe feRRie"
+                  height={10.5}
+                  order={2}
+                  speed={0.8}
+                  type="secondary"
+                  width={2.625}
+                  x={7.5}
+                />
+                <rect
+                  className="sc-jKJlTe bxfSfv"
+                  height={10.5}
+                  order={3}
+                  speed={0.8}
+                  type="secondary"
+                  width={2.625}
+                  x={11.125}
+                />
+              </svg>
+            </span>
+            <span
+              className="sc-gipzik eXtAkj"
+              data-qa="tile-booking__booking-status"
+            >
+              Executing
+            </span>
+          </div>
         </div>
         <button
           className="sc-EHOje gCbQHr"
@@ -1122,10 +1264,10 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
       </div>
     </div>
     <div
-      className="sc-fMiknA bxZCMx"
+      className="sc-TOsTZ kjYrri"
     >
       <div
-        className="sc-eqIVtm dxqJyr"
+        className="sc-cJSrbW dZfIuu"
       >
         <div
           className="sc-htpNat idZgat"

@@ -5,6 +5,7 @@ export const PriceControlsStyle = styled('div')<{ isAnalyticsView: boolean }>`
   justify-content: space-between;
   ${({ isAnalyticsView }) =>
     isAnalyticsView ? `width: 50%;` : `align-items: center; margin-top: 15px;`}
+  position: relative;
 `
 
 export const PriceButtonDisabledPlaceholder = styled.div`
@@ -16,9 +17,10 @@ export const PriceButtonDisabledPlaceholder = styled.div`
   border-radius: 3px;
   font-size: 10px;
   transition: background-color 0.2s ease;
-  height: 58px;
+  height: 59px;
+  width: 122px;
+  min-width: 122px;
   line-height: normal;
-  min-width: 126.13px;
   opacity: 0.5;
   text-align: center;
   text-transform: uppercase;

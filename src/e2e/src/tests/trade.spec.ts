@@ -1,4 +1,4 @@
-import { ProtractorBrowser } from 'protractor'
+import { ProtractorBrowser, by } from 'protractor'
 import { getBrowser } from '../browser-manager'
 import { MainPage } from '../pages/main.page'
 import * as assertUtils from '../utils/assert.utils'
@@ -12,19 +12,32 @@ const currencyList: [string, string[]][] = [
   ['gbp', ['GBP/USD', 'GBP/JPY']],
   ['aud', ['AUD/USD', 'EUR/AUD']],
   ['nzd', ['NZD/USD']],
-  ['all', ['EUR/USD', 'USD/JPY', 'GBP/USD', 'GBP/JPY', 'AUD/USD', 'NZD/USD', 'EUR/AUD', 'EUR/CAD', 'EUR/JPY']]
+  [
+    'all',
+    [
+      'EUR/USD',
+      'USD/JPY',
+      'GBP/USD',
+      'GBP/JPY',
+      'AUD/USD',
+      'NZD/USD',
+      'EUR/AUD',
+      'EUR/CAD',
+      'EUR/JPY',
+    ],
+  ],
 ]
 const tradeList: [string, string, string, string, boolean][] = [
   ['eur', 'EUR/JPY', 'buy', 'Success', true],
   ['usd', 'USD/JPY', 'buy', 'Success', false],
-  ['gbp', 'GBP/JPY', 'sell', 'Rejected', false]
+  ['gbp', 'GBP/JPY', 'sell', 'Rejected', false],
 ]
 
 const notionalList = [
   ['999999', '999,999'],
   ['2345678.99', '2,345,678.99'],
   ['2m', '2,000,000'],
-  ['45k', '45,000']
+  ['45k', '45,000'],
 ]
 
 const envTitles = [
@@ -36,7 +49,6 @@ const envTitles = [
 ]
 
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
-
   beforeEach(async () => {
     browser = await getBrowser()
     mainPage = new MainPage(browser)
@@ -61,6 +73,8 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     await mainPage.tile.setNotional('EURToUSD', '99999999')
     const notional = await mainPage.tile.tradeType.EURToUSD.notional
     expect(notional.getAttribute('value')).toEqual('99,999,999')
+    const pricesButton = browser.element(by.qaTag('workspace-view-normal'))
+    await pricesButton.click()
     const labelRFQ = await mainPage.tile.tradeType.initiateRFQ.buttonInitiateRFQ
     expect(labelRFQ.getText()).toEqual('Initiate\nRFQ')
     await mainPage.tile.resetNotional('EURToUSD')
@@ -76,11 +90,17 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
 
   tradeList.forEach(([selectedCurrency, currencyPair, direction, expectedResult, timeout]) => {
     it(`should validate ${currencyPair} ${direction}`, async () => {
-      const tradingCurrency = currencyPair.replace('/', 'To');
+      const tradingCurrency = currencyPair.replace('/', 'To')
       await mainPage.workspace.selectCurrency(selectedCurrency)
       const notional = await mainPage.tile.tradeType[tradingCurrency].notional
       await mainPage.tile.selectSpotTile(tradingCurrency, direction)
-      await assertUtils.confirmationMessageAsserts(currencyPair, direction, expectedResult, notional.getAttribute('value'), timeout)
+      await assertUtils.confirmationMessageAsserts(
+        currencyPair,
+        direction,
+        expectedResult,
+        notional.getAttribute('value'),
+        timeout,
+      )
     })
   })
 
@@ -101,12 +121,11 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     await mainPage.workspace.selectCurrency('usd')
     await mainPage.tile.setNotional('USDToJPY', '0')
     const tradeButton = await mainPage.tile.tradeType.USDToJPY.sell
-    const disabledAttribute = await tradeButton.getAttribute('disabled');
+    const disabledAttribute = await tradeButton.getAttribute('disabled')
     expect(disabledAttribute).toBe('true')
   })
 
   afterAll(async () => {
     await browser.close()
   })
-
 })

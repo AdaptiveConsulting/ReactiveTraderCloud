@@ -4,7 +4,7 @@ import { SpotPriceTick } from '../../model/spotPriceTick'
 import { getSpread, toRate, getConstsFromRfqState } from '../../model/spotTileUtils'
 import PriceButton from '../PriceButton/index'
 import PriceMovement from '../PriceMovement'
-import { RfqState } from '../types'
+import { RfqState, RfqActions } from '../types'
 import { AdaptiveLoader } from 'rt-components'
 import {
   PriceControlsStyle,
@@ -12,6 +12,8 @@ import {
   AdaptiveLoaderWrapper,
   Icon,
 } from './styled'
+import { ValidationMessage } from '../notional'
+import TileBookingSwitch from './TileBookingSwitch'
 
 interface Props {
   currencyPair: CurrencyPair
@@ -20,7 +22,10 @@ interface Props {
   disabled: boolean
   rfqState: RfqState
   isTradeExecutionInFlight: boolean
+  rfq: RfqActions
+  notional: number
   isAnalyticsView?: boolean
+  inputValidationMessage?: ValidationMessage
 }
 
 const PriceButtonDisabledBanIcon: React.FC = ({ children }) => (
@@ -38,6 +43,9 @@ const PriceControls: React.FC<Props> = ({
   disabled,
   isTradeExecutionInFlight,
   isAnalyticsView,
+  rfq,
+  notional,
+  inputValidationMessage,
 }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
@@ -47,6 +55,7 @@ const PriceControls: React.FC<Props> = ({
     currencyPair.pipsPosition,
     currencyPair.ratePrecision,
   )
+  const hasUserError = Boolean(inputValidationMessage)
 
   const {
     isRfqStateReceived,
@@ -105,10 +114,7 @@ const PriceControls: React.FC<Props> = ({
       data-qa="analytics-tile-price-control__header"
       isAnalyticsView={isAnalyticsView}
     >
-      <PriceMovement
-        priceMovementType={priceMovement}
-        spread={spreadValue}
-      />
+      <PriceMovement priceMovementType={priceMovement} spread={spreadValue} />
       <div>
         {priceButtonDisabledStatus}
         {priceButtonDisabledStatus}
@@ -120,9 +126,14 @@ const PriceControls: React.FC<Props> = ({
     <PriceControlsStyle isAnalyticsView={!!isAnalyticsView}>
       {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
       {priceButtonDisabledStatus}
-      <PriceMovement
-        priceMovementType={priceMovement}
-        spread={spreadValue}
+      <PriceMovement priceMovementType={priceMovement} spread={spreadValue} />
+      <TileBookingSwitch
+        isTradeExecutionInFlight={isTradeExecutionInFlight}
+        currencyPair={currencyPair}
+        notional={notional}
+        rfq={rfq}
+        rfqState={rfqState}
+        hasUserError={hasUserError}
       />
       {showPriceButton(Direction.Buy, priceData.ask, askRate)}
       {priceButtonDisabledStatus}
