@@ -5,6 +5,7 @@ import {
   reactiveTraderIcon,
 } from './icons/index'
 import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
+import { getEnvironment } from 'rt-util/getEnvironment'
 
 // Safer than location.origin due to browser support
 const ORIGIN = `${location.protocol}//${location.host}`
@@ -52,6 +53,7 @@ export interface ApplicationProvider {
 
 export interface ApplicationConfig {
   name: string
+  uuid?: string
   url?: string
   icon: JSX.Element
   provider?: ApplicationProvider
@@ -92,9 +94,13 @@ const excelLegacyAppConfig: ApplicationConfig = {
 
 const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
 
+const env = getEnvironment() || 'unknown'
+const envFormatted = `(${env.toUpperCase()})`
+
 const baseAppConfigs: ApplicationConfig[] = [
   {
-    name: 'Reactive Trader',
+    name: `Reactive Trader Cloud (${envFormatted})`,
+    uuid: `reactive-trader-cloud-web-${env}`,
     url: `${ORIGIN}`,
     icon: reactiveTraderIcon,
     provider: {

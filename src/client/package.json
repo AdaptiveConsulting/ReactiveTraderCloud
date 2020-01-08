@@ -20,7 +20,7 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "start": "cross-env REACT_APP_BUILD_VERSION=$(git describe) react-scripts start",
+    "start": "cross-env react-scripts start",
     "start:https": "cross-env HTTPS=true react-scripts start",
     "start:local-backend": "cross-env REACT_APP_BROKER_HOST=localhost REACT_APP_BROKER_PORT=8000 npm run start",
     "start:dev-backend": "cross-env REACT_APP_BROKER_HOST=web-dev.adaptivecluster.com REACT_APP_BROKER_PORT=80 npm run start",
@@ -33,7 +33,12 @@
     "test": "react-scripts test --verbose=false",
     "analyze": "source-map-explorer build/static/js/*.chunk.js",
     "openfin": "openfin -c public/config/openfin/local.json -l",
+    "openfin-dev": "openfin -c public/config/openfin/dev.json -l",
+    "openfin-uat": "openfin -c public/config/openfin/uat.json -l",
     "openfin:launcher": "openfin -c public/config/openfin/launcher-local.json -l",
+    "openfin:launcher-dev": "openfin -c public/config/openfin/launcher-dev.json -l",
+    "openfin:launcher-demo": "openfin -c public/config/openfin/launcher-demo.json -l",
+    "openfin:launcher-uat": "openfin -c public/config/openfin/launcher-uat.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "storybook": "start-storybook -p 6006 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o storybook/build",
@@ -131,7 +136,7 @@
     "typescript": "^3.6.4"
   },
   "optionalDependencies": {
-    "openfin-cli": "^2.0.4"
+    "openfin-cli": "^2.0.12"
   },
   "browserslist": [
     "> 1%",
