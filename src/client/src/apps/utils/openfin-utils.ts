@@ -52,7 +52,7 @@ export async function createAndRunOpenFinApplication({
   const appOptions: fin.ApplicationOption = {
     name,
     url,
-    uuid: uuid!,
+    uuid: uuid || name,
     nonPersistent: true,
     mainWindowOptions: windowOptions,
   }
