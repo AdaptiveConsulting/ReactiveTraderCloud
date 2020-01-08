@@ -1,10 +1,15 @@
 import React from 'react'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import { createTradeRequest, ExecuteTradeRequest, SpotTileDataWithNotional, TradeRequest } from '../../model'
+import {
+  createTradeRequest,
+  ExecuteTradeRequest,
+  SpotTileDataWithNotional,
+  TradeRequest,
+} from '../../model'
 import SpotTile from '../SpotTile'
 import { AnalyticsTile } from '../analyticsTile/index'
 import { TileViews } from '../../../workspace/workspaceHeader'
-import { RfqActions, TileSwitchChildrenProps, TradingMode } from '../types'
+import { RfqActions, TradingMode } from '../types'
 import { ValidationMessage } from '../notional'
 import {
   getDefaultNotionalValue,
@@ -23,7 +28,7 @@ export interface TileProps {
   setTradingMode: (tradingMode: TradingMode) => void
   displayCurrencyChart?: () => void
   tileView?: TileViews
-  children: ({ notional, userError }: TileSwitchChildrenProps) => JSX.Element
+  children: () => JSX.Element
   rfq: RfqActions
   updateNotional: (notionalUpdate: CurrencyPairNotional) => void
 }
@@ -156,10 +161,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         rfq={rfq}
         displayCurrencyChart={displayCurrencyChart}
       >
-        {children({
-          notional: spotTileData.notional,
-          userError: Boolean(inputValidationMessage),
-        })}
+        {children()}
       </TileViewComponent>
     )
   }

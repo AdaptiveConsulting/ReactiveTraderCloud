@@ -5,6 +5,7 @@ import { styled } from 'rt-theme'
 
 const TileBookingStyle = styled.div`
   position: absolute;
+  left: 0;
   height: 100%;
   width: 100%;
   display: flex;
@@ -12,15 +13,16 @@ const TileBookingStyle = styled.div`
   justify-content: center;
   pointer-events: none; /* allow clicks to go through div */
   text-align: center;
+  z-index: 2;
 `
 
 const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean; color: string }>`
-  padding: 0.7rem 0.9375rem;
+  padding: 0.4rem;
   border-radius: ${({ altStyle }) => (altStyle ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
-
+  width: 64px;
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
   }

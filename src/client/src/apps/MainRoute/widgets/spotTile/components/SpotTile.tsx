@@ -53,7 +53,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
     const showTimer = isRfqStateReceived && rfqTimeout
     const priceData = (isRfqStateReceived || isRfqStateExpired) && rfqPrice ? rfqPrice : price
-    const {priceStale} = priceData;
+    const { priceStale } = priceData
 
     if ((isRfqStateReceived || isRfqStateExpired) && !rfqPrice) {
       console.error(`Unexpected state - rfq price should be displayed but it is not defined`)
@@ -79,6 +79,8 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
               currencyPair={currencyPair}
               rfqState={rfqState}
               disabled={tradingDisabled}
+              rfq={rfq}
+              notional={notional}
             />
           </ReserveSpaceGrouping>
           <ReserveSpaceGrouping>
