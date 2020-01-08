@@ -16,7 +16,7 @@ function openWindow(provider: ApplicationProvider, name: string, url?: string) {
   return createOpenFinWindow({name, url, windowOptions: provider.windowOptions})
 }
 
-function handleApplication(provider: ApplicationProvider, name: string, url?: string) {
+function handleApplication(provider: ApplicationProvider, name: string, uuid?: string, url?: string) {
   if (!provider.windowOptions) {
     console.error(`Error opening app - windowOptions object is missing`)
     return
@@ -28,6 +28,7 @@ function handleApplication(provider: ApplicationProvider, name: string, url?: st
   return createOrBringToFrontOpenFinApplication({
     name,
     url,
+    uuid,
     windowOptions: provider.windowOptions,
   })
 }
@@ -35,7 +36,7 @@ function handleApplication(provider: ApplicationProvider, name: string, url?: st
 export async function open(
   config: ApplicationConfig,
 ): Promise<Window | fin.OpenFinWindow | Application | void | null> {
-  const {provider, url, name} = config
+  const {provider, url, name, uuid} = config
 
   // Not under openfin -> open as url on browser
   if (typeof fin === 'undefined') {
@@ -65,7 +66,7 @@ export async function open(
         return excelApp.open()
       case 'application':
       default:
-        return handleApplication(provider, name, url)
+        return handleApplication(provider, name, uuid, url)
     }
   }
 }
