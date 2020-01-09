@@ -131,7 +131,7 @@
     "typescript": "^3.6.4"
   },
   "optionalDependencies": {
-    "openfin-cli": "^2.0.4"
+    "openfin-cli": "^2.0.12"
   },
   "browserslist": [
     "> 1%",

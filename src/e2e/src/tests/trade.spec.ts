@@ -5,7 +5,6 @@ import * as assertUtils from '../utils/assert.utils'
 
 let browser: ProtractorBrowser
 let mainPage: MainPage
-
 const currencyList: [string, string[]][] = [
   ['eur', ['EUR/USD', 'EUR/AUD', 'EUR/CAD', 'EUR/JPY']],
   ['usd', ['EUR/USD', 'USD/JPY', 'GBP/USD', 'AUD/USD', 'NZD/USD']],
@@ -40,14 +39,6 @@ const notionalList = [
   ['45k', '45,000'],
 ]
 
-const envTitles = [
-  'Reactive Trader Cloud',
-  'Reactive Trader Cloud (DEV)',
-  'Reactive Trader Cloud (LOCAL)',
-  'Reactive Trader Cloud (UAT)',
-  'Reactive Trader Cloud (UNKNOWN)',
-]
-
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
   beforeEach(async () => {
     browser = await getBrowser()
@@ -56,8 +47,7 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
 
   it('Verify page title', async () => {
     const title = await browser.getTitle()
-    const isValid = envTitles.includes(title)
-    expect(isValid).toBeTruthy()
+    expect(title).toBe('Reactive Trader Cloud')
   })
 
   notionalList.forEach(([enteredNotional, expectedNotional]) => {

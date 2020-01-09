@@ -3,6 +3,7 @@ import { Application } from 'openfin/_v2/main'
 export interface ApplicationConfig {
   name: string
   url: string
+  uuid?: string
   windowOptions?: OpenFinWindowOptions
 }
 
@@ -31,6 +32,7 @@ async function restoreExistingApp(existingApp: Application): Promise<void> {
 export async function createOrBringToFrontOpenFinApplication({
   name,
   url,
+  uuid,
   windowOptions,
 }: ApplicationConfig): Promise<Application> {
   const existingApp = await getExistingOpenFinApplication(name)
@@ -38,18 +40,19 @@ export async function createOrBringToFrontOpenFinApplication({
     await restoreExistingApp(existingApp)
     return existingApp
   }
-  return createAndRunOpenFinApplication({ name, url, windowOptions })
+  return createAndRunOpenFinApplication({ name, url, uuid, windowOptions })
 }
 
 export async function createAndRunOpenFinApplication({
   name,
   url,
+  uuid,
   windowOptions,
 }: ApplicationConfig): Promise<Application> {
   const appOptions: fin.ApplicationOption = {
     name,
     url,
-    uuid: name,
+    uuid: uuid || name,
     nonPersistent: true,
     mainWindowOptions: windowOptions,
   }
