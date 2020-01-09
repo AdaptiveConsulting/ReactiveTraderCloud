@@ -1,16 +1,6 @@
-import { Canvas } from './items/canvas'
 import { CanvasApplicationConfig } from '../../../schemas/app/application'
-import {
-  InnerCanvas,
-  SaveOptions,
-  CanvasEventType,
-  CanvasItem,
-  WorkspaceHibernationSettings,
-} from './types'
+import { InnerCanvas, SaveOptions, CanvasEventType } from './types'
 import { UnsubscribeFunction } from 'callback-registry'
-import { JsSerializeFrameResult } from '../../bridge/types'
-import { FrameWrapper } from './frameWrapper'
-import { Bounds } from '../types/window'
 import {
   LayoutType,
   SwimlaneLayout,
@@ -185,7 +175,7 @@ export interface CanvasAPI {
   setTitle(title: string, canvasId?: string): Promise<void>
 
   setWindowTitle(
-    options: string | LazyLoadedWindowInfo & { title?: string; windowId?: string },
+    options: string | (LazyLoadedWindowInfo & { title?: string; windowId?: string }),
     success?: () => void,
     error?: (err: string) => void,
   ): Promise<void>
