@@ -5,6 +5,7 @@ import {
   reactiveTraderIcon,
 } from './icons/index'
 import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
+import { getEnvironment } from 'rt-util/getEnvironment'
 
 // Safer than location.origin due to browser support
 const ORIGIN = `${location.protocol}//${location.host}`
@@ -92,6 +93,8 @@ const excelLegacyAppConfig: ApplicationConfig = {
 
 const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
 
+const env = getEnvironment()
+
 const baseAppConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Trader',
@@ -109,7 +112,7 @@ const baseAppConfigs: ApplicationConfig[] = [
   },
   {
     name: 'Reactive Analytics',
-    url: 'http://demo-reactive-analytics.adaptivecluster.com/',
+    url: `http://${env === 'dev' ? env : 'demo'}-reactive-analytics.adaptivecluster.com/`,
     icon: reactiveAnalyticsIcon,
     provider: {
       platformName: 'openfin',
