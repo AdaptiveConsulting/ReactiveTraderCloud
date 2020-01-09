@@ -1,9 +1,9 @@
-import { Centered, stories, Story } from "./Initialise.stories";
-import React from "react";
-import PriceControls from "../PriceControls";
-import { action } from "@storybook/addon-actions";
-import { boolean, select } from "@storybook/addon-knobs";
-import { RfqState } from "../types";
+import { Centered, stories, Story } from './Initialise.stories'
+import React from 'react'
+import PriceControls from '../PriceControls'
+import { action } from '@storybook/addon-actions'
+import { boolean, select } from '@storybook/addon-knobs'
+import { RfqState } from '../types'
 
 stories.add('Price controls', () => {
   const rfqStates = {
@@ -11,7 +11,7 @@ stories.add('Price controls', () => {
     canRequest: 'canRequest',
     requested: 'requested',
     received: 'received',
-    expired: 'expired'
+    expired: 'expired',
   }
 
   const onTradeExecute = action('execute trade')
@@ -32,14 +32,24 @@ stories.add('Price controls', () => {
   const spotTick = {
     ask: 10.6,
     bid: 10.1,
-    mid: 10.2 ,
+    mid: 10.2,
     creationTimestamp: 1000,
     symbol: 'USDYAN',
     valueDate: '2019-01-02',
-    priceStale: isPricingStale
+    priceStale: isPricingStale,
   }
 
-  return(
+  const rfqActions = {
+    request: action('request'),
+    cancel: action('cancel'),
+    reject: action('reject'),
+    requote: action('requote'),
+    expired: action('expired'),
+    reset: action('reset'),
+  }
+  const notional = 1000000
+
+  return (
     <Story>
       <Centered>
         <PriceControls
@@ -49,7 +59,10 @@ stories.add('Price controls', () => {
           disabled={isDisabled}
           rfqState={rfqSatesSelector as RfqState}
           isTradeExecutionInFlight={isTradeExecutionInFlight}
-          isAnalyticsView={isAnalyticsView} />
+          isAnalyticsView={isAnalyticsView}
+          rfq={rfqActions}
+          notional={notional}
+        />
       </Centered>
     </Story>
   )

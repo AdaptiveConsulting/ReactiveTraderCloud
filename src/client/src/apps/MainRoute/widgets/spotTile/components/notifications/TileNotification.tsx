@@ -15,6 +15,7 @@ export const TileNotificationStyle = styled(TileBaseStyle)<{ accentColor: Accent
   align-items: center;
   justify-content: space-between;
   height: 100%;
+  z-index: 3;
 `
 
 const TradeSymbol = styled.div`

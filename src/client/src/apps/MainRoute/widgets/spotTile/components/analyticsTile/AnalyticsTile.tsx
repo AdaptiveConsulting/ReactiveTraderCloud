@@ -34,6 +34,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       inputDisabled,
       inputValidationMessage,
       displayCurrencyChart,
+      rfq,
     } = this.props
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
@@ -81,6 +82,8 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
               disabled={tradingDisabled}
               rfqState={rfqState}
               isAnalyticsView={true}
+              rfq={rfq}
+              notional={notional}
             />
           </AnalyticsTileContent>
         </AnalyticsTileStyle>
