@@ -9,11 +9,11 @@ import { workspaces } from 'openfin-layouts'
 import { Notification, NotificationActionEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
-import { Context } from 'openfin-fdc3'
 import { platformEpics } from './epics'
 import Logo from './logo'
 import { OpenFinControls, OpenFinHeader } from '../components'
 import { ApplicationEpic } from 'StoreTypes'
+import { IntentsProvider } from 'rt-intents/types'
 
 interface WinProps {
   name: string
@@ -36,15 +36,17 @@ export default class OpenFin implements Platform {
   readonly name = 'openfin'
   readonly type = 'desktop'
   readonly allowTearOff = true
+  readonly intents: IntentsProvider
 
   style = {
     height: '100%',
   }
 
   openFinNotifications = require('openfin-notifications')
-  fdc3Context = require('openfin-fdc3')
 
-  constructor() {
+  constructor(intents: IntentsProvider) {
+    this.intents = intents
+
     this.openFinNotifications.addEventListener(
       'notification-action',
       (event: NotificationActionEvent) => {
@@ -61,10 +63,6 @@ export default class OpenFin implements Platform {
   window = {
     ...createPlatformWindow(() => Promise.resolve(fin.desktop.Window.getCurrent())),
     open: openDesktopWindow,
-  }
-
-  fdc3 = {
-    broadcast: (context: Context) => this.fdc3Context.broadcast(context),
   }
 
   app = {
@@ -95,7 +93,11 @@ export default class OpenFin implements Platform {
               url: config.url,
               mainWindowOptions: { icon: config.icon, autoShow: true, frame: true },
             },
-            () => app.run(() => setTimeout(() => resolve(id), 1000), err => reject(err)),
+            () =>
+              app.run(
+                () => setTimeout(() => resolve(id), 1000),
+                err => reject(err),
+              ),
             err => reject(err),
           )
         })

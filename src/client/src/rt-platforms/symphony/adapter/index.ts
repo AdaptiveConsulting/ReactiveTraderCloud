@@ -5,6 +5,7 @@ import { waitForObject } from 'rt-util'
 import DefaultRoute from '../../defaultRoute'
 import Logo from '../../logo'
 import { createDefaultPlatformWindow } from '../../defaultPlatformWindow'
+import { Noop } from 'rt-intents'
 
 export default class Symphony implements Platform {
   readonly name = 'browser'
@@ -45,9 +46,7 @@ export default class Symphony implements Platform {
     },
   }
 
-  fdc3 = {
-    broadcast: () => {},
-  }
+  intents = new Noop()
 
   notification = {
     notify: (message: object) => {},
