@@ -6,10 +6,11 @@ export function useMultiTimeoutPromises(...params: MultiTimeoutStage[]) {
   const mountedRef = useRef(false)
   const [stage, setStage] = useState(0)
   const [gotoPromise, goToCb] = getDeferredPromise<[number, boolean]>()
+  const currentStage = params[stage]
 
   useEffect(() => {
     mountedRef.current = true
-    const currentStage = params[stage]
+
     if (!currentStage) {
       return
     }
@@ -29,7 +30,7 @@ export function useMultiTimeoutPromises(...params: MultiTimeoutStage[]) {
     return () => {
       mountedRef.current = false
     }
-  }, [stage])
+  }, [currentStage, gotoPromise, stage])
 
   return [stage, (val: number) => goToCb([val, false])] as [number, (val: number) => void]
 }
