@@ -45,7 +45,7 @@ export default class NotificationContainer extends PureComponent<Props> {
       const { dealtCurrency, tradeId } = lastTradeExecutionStatus.trade
       const { terms } = currencyPair
       if (lastTradeExecutionStatus.trade.status === TradeStatus.Done) {
-        const { direction, notional, spotRate, tradeDate } = lastTradeExecutionStatus.trade
+        const { direction, notional, spotRate, valueDate } = lastTradeExecutionStatus.trade
 
         return (style: React.CSSProperties) => (
           <TileNotification
@@ -61,7 +61,7 @@ export default class NotificationContainer extends PureComponent<Props> {
               counterCurrency={terms}
               notional={notional}
               rate={spotRate}
-              date={tradeDate}
+              date={valueDate}
             />
           </TileNotification>
         )

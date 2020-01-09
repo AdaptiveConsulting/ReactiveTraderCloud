@@ -31,7 +31,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         new SpotPriceDto
         {
           Symbol = CurrencyPair.Symbol,
-          ValueDate = DateTime.UtcNow.AddDays(2).Date,
+          ValueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday(),
           Mid = Format(_previousMid),
           Ask = Format(_previousMid * (1 + _halfSpreadPercentage)),
           Bid = Format(_previousMid * (1 - _halfSpreadPercentage)),

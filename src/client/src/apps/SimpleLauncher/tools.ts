@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-import {ApplicationConfig, ApplicationProvider} from './applicationConfigurations'
-import {createExcelApp} from 'rt-platforms'
-import {createOpenFinWindow, createOrBringToFrontOpenFinApplication} from '../utils'
-import {Application} from 'openfin/_v2/main'
+import { ApplicationConfig, ApplicationProvider } from './applicationConfigurations'
+import { createExcelApp } from 'rt-platforms'
+import { createOpenFinWindow, createOrBringToFrontOpenFinApplication } from '../utils'
+import { Application } from 'openfin/_v2/main'
 
 function openWindow(provider: ApplicationProvider, name: string, url?: string) {
   if (!provider.windowOptions) {
@@ -13,10 +13,15 @@ function openWindow(provider: ApplicationProvider, name: string, url?: string) {
     console.error(`Error opening app - url is missing`)
     return
   }
-  return createOpenFinWindow({name, url, windowOptions: provider.windowOptions})
+  return createOpenFinWindow({ name, url, windowOptions: provider.windowOptions })
 }
 
-function handleApplication(provider: ApplicationProvider, name: string, url?: string) {
+function handleApplication(
+  provider: ApplicationProvider,
+  name: string,
+  uuid?: string,
+  url?: string,
+) {
   if (!provider.windowOptions) {
     console.error(`Error opening app - windowOptions object is missing`)
     return
@@ -28,6 +33,7 @@ function handleApplication(provider: ApplicationProvider, name: string, url?: st
   return createOrBringToFrontOpenFinApplication({
     name,
     url,
+    uuid,
     windowOptions: provider.windowOptions,
   })
 }
@@ -35,7 +41,7 @@ function handleApplication(provider: ApplicationProvider, name: string, url?: st
 export async function open(
   config: ApplicationConfig,
 ): Promise<Window | fin.OpenFinWindow | Application | void | null> {
-  const {provider, url, name} = config
+  const { provider, url, name, uuid } = config
 
   // Not under openfin -> open as url on browser
   if (typeof fin === 'undefined') {
@@ -65,13 +71,13 @@ export async function open(
         return excelApp.open()
       case 'application':
       default:
-        return handleApplication(provider, name, url)
+        return handleApplication(provider, name, uuid, url)
     }
   }
 }
 
 async function launchLimitChecker(config: ApplicationConfig) {
-  const app = fin.Application.wrap({uuid: config.name})
+  const app = fin.Application.wrap({ uuid: config.name })
   fin.desktop.System.launchExternalProcess(
     {
       alias: 'LimitChecker',
@@ -79,11 +85,12 @@ async function launchLimitChecker(config: ApplicationConfig) {
         console.log('the exit code', result.exitCode)
       },
     },
-    (data) => {
+    data => {
       console.info('Process launched: ' + data)
     },
-    (e) => {
+    e => {
       console.error('Process launch failed: ' + e)
-    })
+    },
+  )
   return app
 }

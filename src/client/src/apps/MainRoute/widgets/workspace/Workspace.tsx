@@ -32,7 +32,7 @@ const ALL = 'ALL'
 
 const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
   const [currency, setCurrencyOption] = useState(ALL)
-  const [tileView, setTileView] = useState(TileViews.Analytics)
+  const [tileView, setTileView] = useState(TileViews.Normal)
 
   return (
     <div data-qa="workspace__tiles-workspace">

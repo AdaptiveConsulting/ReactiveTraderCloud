@@ -22,7 +22,7 @@ const formatTradeNotification = (trade: Trade, currencyPair: CurrencyPair) => ({
   status: trade.status,
   dealtCurrency: trade.dealtCurrency,
   termsCurrency: currencyPair.terms,
-  valueDate: DateTime.fromJSDate(trade.tradeDate, { zone: 'utc' }).toFormat('dd MMM'),
+  valueDate: DateTime.fromJSDate(trade.valueDate, { zone: 'utc' }).toFormat('dd MMM'),
   traderName: trade.traderName,
 })
 
