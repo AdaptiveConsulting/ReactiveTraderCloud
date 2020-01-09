@@ -216,7 +216,7 @@ describe('rfqEpics', () => {
         const testScheduler = new MockScheduler()
 
         testScheduler.run(({ cold, expectObservable }) => {
-          const actionLifetime = '-a 9999ms b 999ms   -|'
+          const actionLifetime = '-a 9999ms e 999ms   -|'
           const expectedAction = `-- 10999ms a ${IDLE_TIME_MS - 1}ms (bcd|)`
 
           const coldAction = cold<Action<any>>(actionLifetime, inputActions)
