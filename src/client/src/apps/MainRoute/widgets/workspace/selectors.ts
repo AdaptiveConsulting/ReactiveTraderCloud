@@ -31,17 +31,19 @@ const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => Ext
 
 const getSpotTiles = (state: GlobalState) => state.currencyPairs
 const getSpotTilesLayout = (state: GlobalState) => state.layoutService.spotTiles
+const getSpotTileData = (state: GlobalState) => state.spotTilesData
 
 // TODO: instead of creating tiles in the selector, consider creating them in the reducer for
   // reference data
 export const selectSpotTiles = createSelector(
-  [getSpotTiles, getSpotTilesLayout],
-  (spotTileKeys, tilesLayout) =>
+  [getSpotTiles, getSpotTilesLayout, getSpotTileData],
+  (spotTileKeys, tilesLayout, spotTileData) =>
     Object.keys(spotTileKeys).map(key => ({
       key,
       externalWindowProps: makeExternalWindowProps(key, tilesLayout[key]),
       tornOff: tilesLayout[key] === undefined ? false : !tilesLayout[key].visible,
-    })),
+      rfqState: typeof spotTileData[key] !== 'undefined' ? spotTileData[key] : 'none'
+    }))
 )
 
 export const selectSpotCurrencies = createSelector(
