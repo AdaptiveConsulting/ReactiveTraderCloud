@@ -28,7 +28,7 @@ async function openNewWindow(
       ...defaultConfig,
       width: 380,
       height: 200,
-      url: `${windowOrigin}/spot/${currencyPair}?tileView=Normal`,
+      url: `${windowOrigin}/spot/${currencyPair}?tileView=Analytics`,
     },
     () => (openedWindow = undefined),
   )
