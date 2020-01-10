@@ -32,7 +32,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         new SpotPriceDto
         {
           Symbol = CurrencyPair.Symbol,
-          ValueDate = DateTime.UtcNow.AddWeekDays(2),
+          ValueDate = DateTimeOffset.UtcNow.AddWeekDays(2),
           Mid = Format(_previousMid),
           Ask = Format(_previousMid * (1 + _halfSpreadPercentage)),
           Bid = Format(_previousMid * (1 - _halfSpreadPercentage)),

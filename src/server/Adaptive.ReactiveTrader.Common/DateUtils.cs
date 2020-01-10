@@ -5,30 +5,30 @@ namespace Adaptive.ReactiveTrader.Common
 {
     public static class DateUtils
     {
-        public static string ToSerializationFormat(DateTime dateTime)
+        public static string ToSerializationFormat(DateTimeOffset dateTimeOffset)
         {
-            if (dateTime.Kind != DateTimeKind.Utc)
+            if (dateTimeOffset.Offset != TimeSpan.Zero)
             {
                 throw new ArgumentException("DateTime must be in UTC format to serialize");
             }
-            return dateTime.ToString("u");
+            return dateTimeOffset.ToString("u");
         }
 
-        public static DateTime FromSerializationFormat(string dateTimeString)
+        public static DateTimeOffset FromSerializationFormat(string dateTimeString)
         {
-            var date = DateTime.ParseExact(dateTimeString, "u", CultureInfo.CurrentCulture);
+            var date = DateTimeOffset.ParseExact(dateTimeString, "u", CultureInfo.CurrentCulture);
             return date.ToUniversalTime();
         }
 
-        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+        public static DateTimeOffset UnixTimeStampToDateTime(double unixTimeStamp)
         {
             // Unix timestamp is seconds past epoch
-            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            var dtDateTime = new DateTimeOffset(1970, 1, 1, 0, 0, 0, 0, TimeSpan.Zero);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
             return dtDateTime;
         }
 
-        public static DateTime AddWeekDays(this DateTime date, int value)
+        public static DateTimeOffset AddWeekDays(this DateTimeOffset date, int value)
         {
             for (var i = 0; i < value; i++)
             {
