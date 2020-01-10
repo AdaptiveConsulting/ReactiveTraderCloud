@@ -4,7 +4,7 @@ import { fromEventPattern } from 'rxjs'
 import DefaultRoute from '../defaultRoute'
 import Logo from '../logo'
 import { createDefaultPlatformWindow } from '../defaultPlatformWindow'
-import { Noop } from 'rt-intents'
+import { NoopProvider } from 'rt-intents'
 
 export class Finsemble implements Platform {
   readonly name = 'finsemble'
@@ -27,7 +27,7 @@ export class Finsemble implements Platform {
     },
   }
 
-  intents = new Noop()
+  intents = new NoopProvider()
 
   app = {
     open: (id: string, config: AppConfig) =>

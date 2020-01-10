@@ -1,1 +1,1 @@
-export { default as Noop } from './provider'
+export { default as NoopProvider } from './provider'

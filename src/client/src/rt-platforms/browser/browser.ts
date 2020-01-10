@@ -6,7 +6,7 @@ import { Platform } from '../platform'
 import { createDefaultPlatformWindow } from '../defaultPlatformWindow'
 import DefaultRoute from '../defaultRoute'
 import Logo from '../logo'
-import { Noop } from 'rt-intents'
+import { NoopProvider } from 'rt-intents'
 
 interface Navigator {
   standalone?: boolean
@@ -40,7 +40,7 @@ export default class Browser implements Platform {
     open: (config: WindowConfig, onClose?: () => void) => openBrowserWindow(config, onClose),
   }
 
-  intents = new Noop()
+  intents = new NoopProvider()
 
   notification = {
     notify: (message: object) => {
