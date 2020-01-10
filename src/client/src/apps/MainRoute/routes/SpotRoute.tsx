@@ -6,6 +6,17 @@ import { TileViews } from '../widgets/workspace/workspaceHeader'
 import { styled } from 'rt-theme'
 import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
 import { Subscription } from 'rxjs'
+import { RfqState } from '../widgets/spotTile/components/types'
+
+export interface rfqQueryObject {
+  rfqState: RfqState
+  rfqAskPrice: number | undefined
+  rfqBidPrice: number | undefined
+  rfqMidPrice: number | undefined
+  rfqReceivedTime: number | null
+  rfqTimeout: number | null
+  notional: number | undefined
+}
 
 const SpotTileStyle = styled.div`
   min-width: 26rem;
@@ -16,14 +27,45 @@ const SpotTileStyle = styled.div`
   margin: 0 auto;
 `
 
-const getTileViewFromQueryStr: (queryStr: string) => TileViews = queryStr => {
-  const parsedQueryString = queryString.parse(queryStr)
+const getFloatFromQuery = (query: string[] | string | null | undefined): number | undefined => {
+  if (query === null || typeof query === 'undefined' || Array.isArray(query) || query === 'undefined') {
+    return undefined
+  }
+  
+  return parseFloat(query)
+}
+
+const getIntFromQuery = (query: string[] | string | null | undefined): number | null => {
+  if (query === null || typeof query === 'undefined' || Array.isArray(query) || query === 'null') {
+    return null
+  }
+  
+  return parseInt(query)
+}
+
+const getTileViewFromQueryStr: (query: string) => TileViews = query => {
+  const parsedQueryString = queryString.parse(query)
   const tileView = parsedQueryString['tileView'] as TileViews
+
   return !tileView
     ? TileViews.Normal
     : Object.values(TileViews).includes(tileView)
     ? tileView
     : TileViews.Normal
+}
+
+const getRfqDatafromQuery: (query: string) => rfqQueryObject = query => {
+  const parsedQueryString = queryString.parse(query)
+
+  return {
+    rfqState: parsedQueryString['rfqState'] as RfqState,
+    rfqAskPrice: getFloatFromQuery(parsedQueryString['rfqAskPrice']),
+    rfqBidPrice: getFloatFromQuery(parsedQueryString['rfqBidPrice']),
+    rfqMidPrice: getFloatFromQuery(parsedQueryString['rfqMidPrice']),
+    rfqReceivedTime: getIntFromQuery(parsedQueryString['rfqReceivedTime']),
+    rfqTimeout: getIntFromQuery(parsedQueryString['rfqTimeout']),
+    notional: getFloatFromQuery(parsedQueryString['notional']),
+  }
 }
 
 const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
@@ -49,10 +91,13 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   }, [platform])
 
   const tileView = getTileViewFromQueryStr(search)
+  const rfqQueryObject = getRfqDatafromQuery(search)
+
   const id = (ccyPairFromInterop && ccyPairFromInterop[0]) || match.params.symbol
+
   return (
     <SpotTileStyle>
-      <SpotTileContainer id={id} tileView={tileView} />
+      <SpotTileContainer id={id} tileView={tileView} rfqQueryObject={rfqQueryObject} />
     </SpotTileStyle>
   )
 }

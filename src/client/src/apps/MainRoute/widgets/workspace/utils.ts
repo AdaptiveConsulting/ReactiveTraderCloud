@@ -11,13 +11,24 @@ export const appendTileViewToUrl: (
   rfqReceivedTime: number | null,
   rfqTimeout: number | null,
   notional: number | undefined,
-) => ExternalWindowProps = (externalWindowProps, tileView, rfqState, rfqPrice, rfqReceivedTime, rfqTimeout, notional) => {
+) => ExternalWindowProps = (
+    externalWindowProps, 
+    tileView, 
+    rfqState, 
+    rfqPrice, 
+    rfqReceivedTime, 
+    rfqTimeout, 
+  notional
+  ) => {
   const { config } = externalWindowProps
+  const {ask, bid, mid} = rfqPrice || {}
 
   const url = config.url 
     + '?tileView=' + tileView 
     + '&rfqState=' + rfqState 
-    + '&rfqPrice=' + rfqPrice 
+    + '&rfqAskPrice=' + ask 
+    + '&rfqBidPrice=' + bid 
+    + '&rfqMidPrice=' + mid 
     + '&rfqReceivedTime=' + rfqReceivedTime
     + '&rfqTimeout=' + rfqTimeout
     + '&notional=' + notional
