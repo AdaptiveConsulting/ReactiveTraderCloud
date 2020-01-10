@@ -28,7 +28,7 @@ namespace Adaptive.ReactiveTrader.Common
             return dtDateTime;
         }
 
-        public static DateTime AddWeekDays(this DateTime date, double value)
+        public static DateTime AddWeekDays(this DateTime date, int value)
         {
             for (var i = 0; i < value; i++)
             {
