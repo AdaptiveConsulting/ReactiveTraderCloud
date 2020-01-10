@@ -1,12 +1,27 @@
 import { ExternalWindowProps } from './selectors'
 import { TileViews } from './workspaceHeader'
+import { RfqState } from '../spotTile/components/types'
+import { SpotPriceTick } from '../spotTile/model/spotPriceTick'
 
 export const appendTileViewToUrl: (
   externalWindowProps: ExternalWindowProps,
   tileView: TileViews,
-) => ExternalWindowProps = (externalWindowProps, tileView) => {
+  rfqState: RfqState,
+  rfqPrice: SpotPriceTick | null,
+  rfqReceivedTime: number | null,
+  rfqTimeout: number | null,
+  notional: number | undefined,
+) => ExternalWindowProps = (externalWindowProps, tileView, rfqState, rfqPrice, rfqReceivedTime, rfqTimeout, notional) => {
   const { config } = externalWindowProps
-  const url = config.url + '?tileView=' + tileView
+
+  const url = config.url 
+    + '?tileView=' + tileView 
+    + '&rfqState=' + rfqState 
+    + '&rfqPrice=' + rfqPrice 
+    + '&rfqReceivedTime=' + rfqReceivedTime
+    + '&rfqTimeout=' + rfqTimeout
+    + '&notional=' + notional
+
   const newConfig = { ...config, url }
   return { ...externalWindowProps, config: newConfig }
 }

@@ -5,6 +5,8 @@ import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileViews } from './workspaceHeader'
 import { appendTileViewToUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
+import { RfqState } from '../spotTile/components/types'
+import { SpotPriceTick } from '../spotTile/model/spotPriceTick'
 
 const WorkspaceItems = styled.div`
   display: grid;
@@ -16,11 +18,15 @@ const WorkspaceItem = styled.div`
   flex-grow: 1;
   flex-basis: 20rem;
 `
-
 interface SpotTile {
   key: string
   externalWindowProps: ExternalWindowProps
   tornOff: boolean
+  rfqState: RfqState
+  rfqPrice: SpotPriceTick | null
+  rfqReceivedTime: number | null
+  rfqTimeout: number | null
+  notional: number | undefined
 }
 
 interface Props {
@@ -47,12 +53,12 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
       <WorkspaceItems data-qa="workspace__tiles-workspace-items">
         {spotTiles
           .filter(({ key }) => key.includes(currency) || currency === 'ALL')
-          .map(({ key, externalWindowProps, tornOff }) => (
+          .map(({ key, externalWindowProps, tornOff, rfqState, rfqPrice, rfqReceivedTime, rfqTimeout, notional }) => (
             <TearOff
               id={key}
               key={key}
               dragTearOff={true}
-              externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
+              externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView, rfqState, rfqPrice, rfqReceivedTime, rfqTimeout, notional)}
               render={(popOut, isTornOff) => (
                 <WorkspaceItem>
                   <SpotTileContainer
