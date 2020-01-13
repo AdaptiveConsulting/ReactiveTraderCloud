@@ -7,6 +7,7 @@ import { SpotTileData } from './model/spotTileData'
 export type SpotTileState = Record<string, SpotTileData | undefined>
 
 const INITIAL_STATE: SpotTileState = {}
+const HISTORIC_PRICES_MAX_POINTS = 250
 
 const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   isTradeExecutionInFlight: false,
@@ -42,7 +43,9 @@ const spotTileReducer = (
       return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
       const startIndexSlice =
-        state.historicPrices.length < 250 ? 1 : state.historicPrices.length - 250
+        state.historicPrices.length < HISTORIC_PRICES_MAX_POINTS
+          ? 1
+          : state.historicPrices.length - HISTORIC_PRICES_MAX_POINTS
 
       return {
         ...state,
