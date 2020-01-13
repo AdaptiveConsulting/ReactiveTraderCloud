@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
 import { WindowConfig, WindowPosition } from 'rt-platforms'
-import { SpotTileState } from '../spotTile/spotTileDataReducer'
 
 type Center = 'screen' | 'parent'
 export interface ExternalWindowProps {
@@ -34,23 +33,25 @@ const getSpotTiles = (state: GlobalState) => state.currencyPairs
 const getSpotTilesLayout = (state: GlobalState) => state.layoutService.spotTiles
 const getSpotTilesData = (state: GlobalState) => state.spotTilesData
 
-const spotTilesDataTypeChecker = (spotTilesData: SpotTileState, key: string) => typeof spotTilesData !== 'undefined' && typeof spotTilesData[key] !== 'undefined'
-
 // TODO: instead of creating tiles in the selector, consider creating them in the reducer for
   // reference data
 export const selectSpotTiles = createSelector(
   [getSpotTiles, getSpotTilesLayout, getSpotTilesData],
   (spotTileKeys, tilesLayout, spotTilesData) =>
-    Object.keys(spotTileKeys).map(key => ({
-      key,
-      externalWindowProps: makeExternalWindowProps(key, tilesLayout[key]),
-      tornOff: tilesLayout[key] === undefined ? false : !tilesLayout[key].visible,
-      rfqState: spotTilesDataTypeChecker(spotTilesData, key) ? spotTilesData[key]!.rfqState : 'none',
-      rfqPrice: spotTilesDataTypeChecker(spotTilesData, key) ? spotTilesData[key]!.rfqPrice : null,
-      rfqReceivedTime: spotTilesDataTypeChecker(spotTilesData, key) ? spotTilesData[key]!.rfqReceivedTime : null, 
-      rfqTimeout: spotTilesDataTypeChecker(spotTilesData, key) ? spotTilesData[key]!.rfqTimeout : null,
-      notional: spotTilesDataTypeChecker(spotTilesData, key) ? spotTilesData[key]!.notional : undefined,
-    }))
+    Object.keys(spotTileKeys).map(key => {
+      const hasData = typeof spotTilesData[key] !== 'undefined';
+
+      return {
+        key,
+        externalWindowProps: makeExternalWindowProps(key, tilesLayout[key]),
+        tornOff: tilesLayout[key] === undefined ? false : !tilesLayout[key].visible,
+        rfqState: hasData ? spotTilesData[key]!.rfqState : 'none',
+        rfqPrice: hasData ? spotTilesData[key]!.rfqPrice : null,
+        rfqReceivedTime: hasData ? spotTilesData[key]!.rfqReceivedTime : null, 
+        rfqTimeout: hasData ? spotTilesData[key]!.rfqTimeout : null,
+        notional: hasData ? spotTilesData[key]!.notional : undefined,
+      }
+    })
 )
 
 export const selectSpotCurrencies = createSelector(
