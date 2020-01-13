@@ -1,7 +1,6 @@
 import { Platform } from './platform'
 import { WindowConfig } from './types'
 import DefaultRoute from './defaultRoute'
-import { NoopProvider } from 'rt-intents'
 
 function throwNotImplemented() {
   throw new Error('NOT IMPLEMENTED')
@@ -26,8 +25,6 @@ export default class NoopPlatformAdapter implements Platform {
       throw new Error('NOT IMPLEMENTED')
     },
   }
-
-  intents = new NoopProvider()
 
   notification = {
     notify: throwNotImplemented,

@@ -2,7 +2,6 @@ import { AppConfig, PlatformType } from './types'
 import { ApplicationEpic } from 'StoreTypes'
 import { Observable } from 'rxjs'
 import { PlatformWindow, PlatformWindowApi } from './platformWindow'
-import { IntentsProvider } from 'rt-intents/types'
 
 export interface PlatformFeatures {
   app: AppInterop
@@ -31,8 +30,6 @@ export type Platform = Partial<PlatformFeatures> & {
   readonly notification: {
     notify: (message: object) => void
   }
-
-  readonly intents: IntentsProvider
 
   readonly style: {
     [key: string]: string | number

@@ -13,7 +13,6 @@ import { platformEpics } from './epics'
 import Logo from './logo'
 import { OpenFinControls, OpenFinHeader } from '../components'
 import { ApplicationEpic } from 'StoreTypes'
-import { IntentsProvider } from 'rt-intents/types'
 
 interface WinProps {
   name: string
@@ -36,7 +35,6 @@ export default class OpenFin implements Platform {
   readonly name = 'openfin'
   readonly type = 'desktop'
   readonly allowTearOff = true
-  readonly intents: IntentsProvider
 
   style = {
     height: '100%',
@@ -44,9 +42,7 @@ export default class OpenFin implements Platform {
 
   openFinNotifications = require('openfin-notifications')
 
-  constructor(intents: IntentsProvider) {
-    this.intents = intents
-
+  constructor() {
     this.openFinNotifications.addEventListener(
       'notification-action',
       (event: NotificationActionEvent) => {
