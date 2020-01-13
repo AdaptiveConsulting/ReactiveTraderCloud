@@ -41,10 +41,16 @@ const spotTileReducer = (
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
+      const startIndexSlice =
+        state.historicPrices.length < 250 ? 1 : state.historicPrices.length - 250
+
       return {
         ...state,
         price: action.payload,
-        historicPrices: [...state.historicPrices.slice(1), action.payload],
+        historicPrices: [
+          ...state.historicPrices.slice(startIndexSlice, state.historicPrices.length - 1),
+          action.payload,
+        ],
       }
     case TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED:
       return { ...state, historicPrices: action.payload }
@@ -140,7 +146,7 @@ export const spotTileDataReducer = (
           action,
         ),
       }
-   case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
+    case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return {
         ...state,
