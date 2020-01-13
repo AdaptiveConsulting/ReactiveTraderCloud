@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
 import { getSymphonyPlatform } from 'rt-platforms'
-import { Provider as IntentsProvider, getProvider } from './rt-intents'
+import { Provider as IntentsProvider, getProvider } from 'rt-intents'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))

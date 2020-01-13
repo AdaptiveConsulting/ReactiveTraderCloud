@@ -1,8 +1,17 @@
-import { IntentsProvider } from 'rt-intents/types'
 import { noop } from 'rxjs'
+import { DetectIntentResponse } from 'dialogflow'
+import { IntentsProvider } from 'rt-intents/types'
 
 export default class NoopProvider implements IntentsProvider {
   readonly name = 'noop'
 
   currencyPairSelected = noop
+
+  getMatchingApps = (_response: DetectIntentResponse) => {
+    return Promise.resolve([])
+  }
+
+  open = (appId: string): Promise<void> => {
+    return Promise.reject('Not Supported')
+  }
 }

@@ -1,7 +1,7 @@
 import { InteropTopics, Platform, platformHasFeature, PlatformWindow } from 'rt-platforms'
 import { stringify } from 'query-string'
 import { defaultConfig, windowOrigin } from './defaultWindowConfig'
-import { BlotterFilters, validateFilters } from '../../../MainRoute/widgets/blotter'
+import { BlotterFilters, validateFilters } from 'apps/MainRoute/widgets/blotter/blotterTradesFilter'
 
 let openedWindow: PlatformWindow | undefined
 

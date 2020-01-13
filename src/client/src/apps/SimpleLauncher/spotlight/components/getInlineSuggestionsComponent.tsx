@@ -1,6 +1,6 @@
 import React from 'react'
-import { DetectIntentResponse } from 'dialogflow';
-import { Platform } from 'rt-platforms';
+import { DetectIntentResponse } from 'dialogflow'
+import { Platform } from 'rt-platforms'
 import {
   getCurrency,
   getCurrencyPair,
@@ -8,26 +8,25 @@ import {
   handleIntent,
   isSpotQuoteIntent,
   isTradeIntent,
-  mapIntent
-} from '../intents';
-import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from '../../../MainRoute/widgets/blotter';
-import { Intent, Suggestion } from './styles';
-import { InlineBlotter } from './InlineBlotter';
-import { InlineQuote } from './InlineQuote';
+  mapIntent,
+} from 'rt-intents'
+import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from '../../../MainRoute/widgets/blotter'
+import { Intent, Suggestion } from './styles'
+import { InlineBlotter } from './InlineBlotter'
+import { InlineQuote } from './InlineQuote'
 
 export function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: Platform) {
   const currencyPair = getCurrencyPair(response.queryResult)
   const currency = getCurrency(response.queryResult)
   const intent = mapIntent(response)
 
-  const quoteSuggestion = isSpotQuoteIntent(response) && currencyPair ? (
-    <Suggestion onClick={() => handleIntent(response, platform)}>
-      <Intent>
-        {intent}
-      </Intent>
-      <InlineQuote currencyPair={currencyPair}/>
-    </Suggestion>
-  ) : null;
+  const quoteSuggestion =
+    isSpotQuoteIntent(response) && currencyPair ? (
+      <Suggestion onClick={() => handleIntent(response, platform)}>
+        <Intent>{intent}</Intent>
+        <InlineQuote currencyPair={currencyPair} />
+      </Suggestion>
+    ) : null
 
   const blotterFilter: BlotterFilters = {
     [DEALT_CURRENCY]: [currency],
@@ -36,27 +35,20 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
   }
   const blotterSuggestion = isTradeIntent(response) ? (
     <Suggestion onClick={() => handleIntent(response, platform)}>
-      <Intent>
-        {intent}
-      </Intent>
-      <InlineBlotter filters={blotterFilter}/>
+      <Intent>{intent}</Intent>
+      <InlineBlotter filters={blotterFilter} />
     </Suggestion>
-  ) : null;
+  ) : null
 
   if (!quoteSuggestion && !blotterSuggestion) {
-
     if (intent) {
       return (
         <Suggestion onClick={() => handleIntent(response, platform)}>
-          <Intent>
-            {intent}
-          </Intent>
+          <Intent>{intent}</Intent>
         </Suggestion>
       )
     }
-    return (
-      <div>No results</div>
-    )
+    return <div>No results</div>
   }
 
   return (

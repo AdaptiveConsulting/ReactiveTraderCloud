@@ -7,7 +7,6 @@ import { ExcelApp } from '../../excelApp'
 import { OpenFin } from '../adapter'
 import { InteropTopics } from '../../types'
 import { platformHasFeature } from '../../platform'
-import { FDC3, OpenFinFDC3 } from 'rt-intents'
 
 const EXCEL_HOST_URL = `${location.protocol}//${location.host}/static/excel`
 const EXCEL_FILE_NAME = 'RTExcel.xlsx'
@@ -27,15 +26,9 @@ class JSExcelAdapter implements ExcelApp {
   rtWorkbook?: fin.ExcelWorkbook
   blotterSheet?: fin.ExcelWorksheet
   positionsSheet?: fin.ExcelWorksheet
-  platform: OpenFin
+  platform = new OpenFin()
 
   readonly name = 'JS'
-
-  constructor() {
-    const openFinFDC3 = new OpenFinFDC3()
-    const intentsProvider = new FDC3(openFinFDC3)
-    this.platform = new OpenFin(intentsProvider)
-  }
 
   isOpen = () => {
     return !!this.rtWorkbook && !!this.positionsSheet
