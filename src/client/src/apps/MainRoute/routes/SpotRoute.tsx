@@ -16,6 +16,8 @@ export interface rfqQueryObject {
   rfqReceivedTime: number | null
   rfqTimeout: number | null
   notional: number | undefined
+  creationTimestamp: number | null
+  valueDate: string | null
 }
 
 const SpotTileStyle = styled.div`
@@ -36,11 +38,19 @@ const getFloatFromQuery = (query: string[] | string | null | undefined): number 
 }
 
 const getIntFromQuery = (query: string[] | string | null | undefined): number | null => {
-  if (query === null || typeof query === 'undefined' || Array.isArray(query) || query === 'null') {
+  if (query === null || typeof query === 'undefined' || Array.isArray(query) || query === 'null' || query === 'undefined') {
     return null
   }
   
   return parseInt(query)
+}
+
+const getStringFromQuery = (query: string[] | string | null | undefined): string | null => {
+  if (query === null || typeof query === 'undefined' || Array.isArray(query) || query === 'null') {
+    return null
+  }
+  
+  return query
 }
 
 const getTileViewFromQueryStr: (query: string) => TileViews = query => {
@@ -65,6 +75,8 @@ const getRfqDatafromQuery: (query: string) => rfqQueryObject = query => {
     rfqReceivedTime: getIntFromQuery(parsedQueryString['rfqReceivedTime']),
     rfqTimeout: getIntFromQuery(parsedQueryString['rfqTimeout']),
     notional: getFloatFromQuery(parsedQueryString['notional']),
+    creationTimestamp: getIntFromQuery(parsedQueryString['rfqCreationTimestamp']),
+    valueDate: getStringFromQuery(parsedQueryString['rfqValueDate'])
   }
 }
 

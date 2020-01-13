@@ -11,11 +11,12 @@ import {
   RfqReset,
 } from './model/rfqRequest'
 import { TradingMode } from './components/types'
-import { CurrencyPairNotional } from './model/spotTileData'
+import { CurrencyPairNotional, CurrencyPairRfqQuery} from './model/spotTileData'
 
 export enum TILE_ACTION_TYPES {
   SET_NOTIONAL = '@ReactiveTraderCloud/SET_NOTIONAL',
   SET_TRADING_MODE = '@ReactiveTraderCloud/SET_TRADING_MODE',
+  SET_RFQ_FROM_QUERY = '@ReactiveTraderCloud/SET_RFQ_FROM_QUERY',
   RFQ_REQUEST = '@ReactiveTraderCloud/RFQ_REQUEST',
   RFQ_RECEIVED = '@ReactiveTraderCloud/RFQ_RECEIVED',
   RFQ_REJECT = '@ReactiveTraderCloud/RFQ_REJECT',
@@ -34,6 +35,10 @@ export enum TILE_ACTION_TYPES {
 export const SpotTileActions = {
   setNotional: action<TILE_ACTION_TYPES.SET_NOTIONAL, CurrencyPairNotional>(
     TILE_ACTION_TYPES.SET_NOTIONAL,
+  ),
+
+  setRfq: action<TILE_ACTION_TYPES.SET_RFQ_FROM_QUERY, CurrencyPairRfqQuery>(
+    TILE_ACTION_TYPES.SET_RFQ_FROM_QUERY
   ),
 
   setTradingMode: action<TILE_ACTION_TYPES.SET_TRADING_MODE, TradingMode>(

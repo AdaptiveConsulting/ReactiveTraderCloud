@@ -14,9 +14,11 @@ import {
   selectSpotTileData,
 } from './selectors'
 import { TileViews } from '../workspace/workspaceHeader'
-import { RfqCancel, RfqExpired, RfqReject, RfqRequest, RfqRequote } from './model/rfqRequest'
+import { RfqCancel, RfqExpired, RfqReject, RfqRequest, RfqRequote, RfqReceived } from './model/rfqRequest'
 import { TradingMode } from './components/types'
-import { CurrencyPairNotional } from './model/spotTileData'
+import { CurrencyPairNotional, CurrencyPairRfqQuery } from './model/spotTileData'
+import { rfqQueryObject } from '../../routes/SpotRoute'
+import { getConstsFromRfqState } from '../spotTile/model/spotTileUtils'
 
 export interface SpotTileContainerOwnProps {
   id: string
@@ -24,6 +26,7 @@ export interface SpotTileContainerOwnProps {
   onPopoutClick?: (x: number, y: number) => void
   tornOff?: boolean
   tearable?: boolean
+  rfqQueryObject?: rfqQueryObject
 }
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
@@ -41,9 +44,12 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnPr
     requote: (rfqActionObj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(rfqActionObj)),
     expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
     reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
+    received: (rfqActionObj: RfqReceived) => dispatch(SpotTileActions.rfqReceived(rfqActionObj))
   },
   updateNotional: (currencyPairNotional: CurrencyPairNotional) =>
     dispatch(SpotTileActions.setNotional(currencyPairNotional)),
+  updateRfq: (currencyPairRfqQuery : CurrencyPairRfqQuery) => 
+    dispatch(SpotTileActions.setRfq(currencyPairRfqQuery))
 })
 
 const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
@@ -69,6 +75,8 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   id,
   tornOff,
   onCurrencyPairChanged,
+  rfqQueryObject,
+  updateRfq,
   ...props
 }) => {
   const { allowTearOff } = usePlatform()
@@ -77,6 +85,39 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   useEffect(() => {
     onCurrencyPairChanged(id)
   }, [id, onCurrencyPairChanged])
+
+  useEffect(() => {
+    if (typeof rfqQueryObject !== 'undefined') {
+      const { 
+        notional, 
+        rfqAskPrice, 
+        rfqBidPrice,
+        rfqMidPrice,
+        rfqReceivedTime,
+        rfqTimeout,
+        rfqState,
+        creationTimestamp,
+        valueDate
+      } = rfqQueryObject
+
+      const { isRfqStateNone } = getConstsFromRfqState(rfqState)
+
+      if (!isRfqStateNone) {
+        updateRfq({ 
+          currencyPair: id,
+          rfqState,
+          notional,
+          rfqAskPrice: typeof rfqAskPrice === 'undefined' ? 0 : rfqAskPrice,
+          rfqBidPrice: typeof rfqBidPrice === 'undefined' ? 0 : rfqBidPrice,
+          rfqMidPrice: typeof rfqMidPrice === 'undefined' ? 0 : rfqMidPrice,
+          rfqReceivedTime,
+          rfqTimeout,
+          creationTimestamp: !creationTimestamp ? 0 : creationTimestamp,
+          valueDate: !valueDate ? '' : valueDate
+        })
+      }
+    }
+  }, [rfqQueryObject, id, updateRfq])
 
   return (
     <Loadable

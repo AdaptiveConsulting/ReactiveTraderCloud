@@ -39,6 +39,22 @@ const spotTileReducer = (
         ...state,
         notional: action.payload.notional,
       }
+    case TILE_ACTION_TYPES.SET_RFQ_FROM_QUERY:
+      return {
+        ...state,
+        notional: action.payload.notional,
+        rfqState: action.payload.rfqState,
+        rfqPrice: { 
+          ask: action.payload.rfqAskPrice,
+          bid: action.payload.rfqBidPrice,
+          mid: action.payload.rfqMidPrice,
+          symbol: action.payload.currencyPair,
+          creationTimestamp: action.payload.creationTimestamp,
+          valueDate: action.payload.valueDate
+        },
+        rfqReceivedTime: action.payload.rfqReceivedTime,
+        rfqTimeout: action.payload.rfqTimeout,
+      }
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
@@ -123,6 +139,11 @@ export const spotTileDataReducer = (
 ): SpotTileState => {
   switch (action.type) {
     case TILE_ACTION_TYPES.SET_NOTIONAL:
+      return {
+        ...state,
+        [action.payload.currencyPair]: spotTileReducer(state[action.payload.currencyPair], action),
+      }
+    case TILE_ACTION_TYPES.SET_RFQ_FROM_QUERY:
       return {
         ...state,
         [action.payload.currencyPair]: spotTileReducer(state[action.payload.currencyPair], action),

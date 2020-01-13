@@ -40,3 +40,16 @@ export interface CurrencyPairNotional {
   currencyPair: string
   notional: number
 }
+
+export interface CurrencyPairRfqQuery {
+  currencyPair: string
+  notional?: number
+  rfqState: RfqState
+  rfqAskPrice: number
+  rfqBidPrice: number
+  rfqMidPrice: number
+  rfqReceivedTime: number | null
+  rfqTimeout: number | null
+  creationTimestamp: number
+  valueDate: string
+}

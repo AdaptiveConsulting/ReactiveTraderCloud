@@ -21,7 +21,7 @@ export const appendTileViewToUrl: (
   notional
   ) => {
   const { config } = externalWindowProps
-  const {ask, bid, mid} = rfqPrice || {}
+  const {ask, bid, mid, creationTimestamp, valueDate} = rfqPrice || {}
 
   const url = config.url 
     + '?tileView=' + tileView 
@@ -31,6 +31,8 @@ export const appendTileViewToUrl: (
     + '&rfqMidPrice=' + mid 
     + '&rfqReceivedTime=' + rfqReceivedTime
     + '&rfqTimeout=' + rfqTimeout
+    + '&rfqCreationTimestamp=' + creationTimestamp
+    + '&rfqValueDate=' + valueDate
     + '&notional=' + notional
 
   const newConfig = { ...config, url }
