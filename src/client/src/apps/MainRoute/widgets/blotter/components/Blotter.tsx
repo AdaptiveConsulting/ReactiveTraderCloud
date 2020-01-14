@@ -70,14 +70,14 @@ const Blotter: React.FC<BlotterProps> = props => {
     () => gridApi && setDisplayedRows(gridApi.getDisplayedRowCount()),
     [gridApi],
   )
-  const intents = useInterop()
+  const interop = useInterop()
 
   const broadcastContext = (currencyPair: string) => {
-    if (intents === null || !currencyPair) {
+    if (interop === null || !currencyPair) {
       return
     }
 
-    const { currencyPairSelected } = intents
+    const { currencyPairSelected } = interop
 
     currencyPairSelected(currencyPair)
   }
