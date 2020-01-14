@@ -42,10 +42,7 @@ const spotTileReducer = (
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
-      const startIndexSlice =
-        state.historicPrices.length < HISTORIC_PRICES_MAX_POINTS
-          ? 1
-          : state.historicPrices.length - HISTORIC_PRICES_MAX_POINTS
+      const startIndexSlice = Math.max(1, state.historicPrices.length - HISTORIC_PRICES_MAX_POINTS)
 
       return {
         ...state,
