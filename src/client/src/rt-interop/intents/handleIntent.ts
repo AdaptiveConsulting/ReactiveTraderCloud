@@ -1,11 +1,11 @@
 import { DetectIntentResponse } from 'dialogflow'
 import { Platform } from 'rt-platforms'
-import { BlotterFilters } from '../../../MainRoute/widgets/blotter'
-import { getCurrency, getCurrencyPair, getIntentDisplayName, getNumber } from './intentUtils';
-import { MARKET_INFO_INTENT, SPOT_QUOTE_INTENT, TRADES_INFO_INTENT } from './intents';
-import { showCurrencyPair } from './showCurrencyPair';
-import { showMarket } from './showMarket';
-import { showBlotter } from './showBlotter';
+import { getCurrency, getCurrencyPair, getIntentDisplayName, getNumber } from './intentUtils'
+import { MARKET_INFO_INTENT, SPOT_QUOTE_INTENT, TRADES_INFO_INTENT } from './intents'
+import { showCurrencyPair } from './showCurrencyPair'
+import { showMarket } from './showMarket'
+import { showBlotter } from './showBlotter'
+import { BlotterFilters } from 'apps/MainRoute/widgets/blotter'
 
 export const handleIntent = (response: DetectIntentResponse, platform: Platform) => {
   const queryResult = response.queryResult

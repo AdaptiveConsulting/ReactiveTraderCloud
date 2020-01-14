@@ -26,10 +26,6 @@ export class Finsemble implements Platform {
     },
   }
 
-  fdc3 = {
-    broadcast: () => {},
-  }
-
   app = {
     open: (id: string, config: AppConfig) =>
       new Promise<string>(

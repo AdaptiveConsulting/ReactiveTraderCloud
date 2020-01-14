@@ -9,7 +9,6 @@ import { workspaces } from 'openfin-layouts'
 import { Notification, NotificationActionEvent } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
-import { Context } from 'openfin-fdc3'
 import { platformEpics } from './epics'
 import Logo from './logo'
 import { OpenFinControls, OpenFinHeader } from '../components'
@@ -42,7 +41,6 @@ export default class OpenFin implements Platform {
   }
 
   openFinNotifications = require('openfin-notifications')
-  fdc3Context = require('openfin-fdc3')
 
   constructor() {
     this.openFinNotifications.addEventListener(
@@ -61,10 +59,6 @@ export default class OpenFin implements Platform {
   window = {
     ...createPlatformWindow(() => Promise.resolve(fin.desktop.Window.getCurrent())),
     open: openDesktopWindow,
-  }
-
-  fdc3 = {
-    broadcast: (context: Context) => this.fdc3Context.broadcast(context),
   }
 
   app = {
@@ -95,7 +89,11 @@ export default class OpenFin implements Platform {
               url: config.url,
               mainWindowOptions: { icon: config.icon, autoShow: true, frame: true },
             },
-            () => app.run(() => setTimeout(() => resolve(id), 1000), err => reject(err)),
+            () =>
+              app.run(
+                () => setTimeout(() => resolve(id), 1000),
+                err => reject(err),
+              ),
             err => reject(err),
           )
         })

@@ -39,10 +39,6 @@ export default class Browser implements Platform {
     open: (config: WindowConfig, onClose?: () => void) => openBrowserWindow(config, onClose),
   }
 
-  fdc3 = {
-    broadcast: () => {},
-  }
-
   notification = {
     notify: (message: object) => {
       if ('Notification' in window) {
@@ -53,7 +49,7 @@ export default class Browser implements Platform {
     },
   }
 
-  /* 
+  /*
     TODO: Browser can subscribe and publish via autobahn, so it would make sense to implement these methods.
     In that case the interop object could be promoted as abstract to the base class
   */

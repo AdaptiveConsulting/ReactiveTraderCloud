@@ -3,13 +3,12 @@ import { GridApi } from 'ag-grid-community'
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import React, { useState, useCallback } from 'react'
+import { useInterop } from 'rt-interop'
 import { styled } from 'rt-theme'
 import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
 import BlotterHeader from './BlotterHeader'
 import { columnDefinitions, DEFAULT_COLUMN_DEFINITION, csvExportSettings } from './blotterUtils'
-import { Context } from 'openfin-fdc3'
-import { usePlatform } from 'rt-platforms'
 
 export interface BlotterProps {
   rows: Trade[]
@@ -67,31 +66,20 @@ const Blotter: React.FC<BlotterProps> = props => {
   const [displayedRows, setDisplayedRows] = useState(0)
   const [gridDoc] = useState(React.createRef<HTMLDivElement>())
   const [gridApi, setGridApi] = useState<GridApi>()
-  const platform = usePlatform()
   const onModelUpdated = useCallback(
     () => gridApi && setDisplayedRows(gridApi.getDisplayedRowCount()),
     [gridApi],
   )
-
-  const getCurrencyPairContext = (currencyPair: string): Context => {
-    const formattedCurrencyPair = `${currencyPair.slice(0, 3)}/${currencyPair.slice(3, 6)}`
-    return {
-      type: 'fdc3.security',
-      name: formattedCurrencyPair,
-      id: {},
-      market: 'CURRENCY',
-    }
-  }
+  const interop = useInterop()
 
   const broadcastContext = (currencyPair: string) => {
-    if (!currencyPair) {
+    if (interop === null || !currencyPair) {
       return
     }
-    if (!platform.fdc3.broadcast) {
-      console.error(`Broadcasting is not available on the platform ${platform.name}`)
-      return
-    }
-    platform.fdc3.broadcast(getCurrencyPairContext(currencyPair))
+
+    const { currencyPairSelected } = interop
+
+    currencyPairSelected(currencyPair)
   }
 
   const onGridReady = useCallback(
@@ -109,7 +97,10 @@ const Blotter: React.FC<BlotterProps> = props => {
     }
   }, [gridApi])
 
-  const onPopoutClick = useCallback((x: number, y: number) => props.onPopoutClick && props.onPopoutClick(x, y), [props])
+  const onPopoutClick = useCallback(
+    (x: number, y: number) => props.onPopoutClick && props.onPopoutClick(x, y),
+    [props],
+  )
 
   const getDocument = useCallback(
     () => (gridDoc.current && gridDoc.current.ownerDocument) || document,

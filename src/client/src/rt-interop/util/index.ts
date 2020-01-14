@@ -1,0 +1,1 @@
+export { getProvider } from './getProvider'

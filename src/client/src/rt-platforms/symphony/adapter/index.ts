@@ -45,10 +45,6 @@ export default class Symphony implements Platform {
     },
   }
 
-  fdc3 = {
-    broadcast: () => {},
-  }
-
   notification = {
     notify: (message: object) => {},
   }
