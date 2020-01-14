@@ -71,6 +71,7 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateNone || isRfqStateReceived || isRfqStateExpired || isTradeExecutionInFlight
   const priceMovement = hasPrice ? priceData.priceMovementType : 'none'
   const spreadValue = hasPrice ? spread.formattedValue : '-'
+  const showPriceMovement = isRfqStateNone ? (true ? !isTradeExecutionInFlight : true) : false
 
   const showPriceButton = (
     btnDirection: Direction,
@@ -114,7 +115,11 @@ const PriceControls: React.FC<Props> = ({
       data-qa="analytics-tile-price-control__header"
       isAnalyticsView={isAnalyticsView}
     >
-      <PriceMovement priceMovementType={priceMovement} spread={spreadValue} />
+      <PriceMovement
+        priceMovementType={priceMovement}
+        spread={spreadValue}
+        show={showPriceMovement}
+      />
       <div>
         {priceButtonDisabledStatus}
         {priceButtonDisabledStatus}
@@ -126,7 +131,11 @@ const PriceControls: React.FC<Props> = ({
     <PriceControlsStyle isAnalyticsView={!!isAnalyticsView}>
       {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
       {priceButtonDisabledStatus}
-      <PriceMovement priceMovementType={priceMovement} spread={spreadValue} />
+      <PriceMovement
+        priceMovementType={priceMovement}
+        spread={spreadValue}
+        show={showPriceMovement}
+      />
       <TileBookingSwitch
         isTradeExecutionInFlight={isTradeExecutionInFlight}
         currencyPair={currencyPair}
