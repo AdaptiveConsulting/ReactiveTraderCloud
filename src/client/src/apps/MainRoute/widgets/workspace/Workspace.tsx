@@ -6,7 +6,6 @@ import { WorkspaceHeader, TileViews } from './workspaceHeader'
 import { appendTileViewToUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
 import { RfqState } from '../spotTile/components/types'
-import { SpotPriceTick } from '../spotTile/model/spotPriceTick'
 
 const WorkspaceItems = styled.div`
   display: grid;
@@ -23,10 +22,16 @@ interface SpotTile {
   externalWindowProps: ExternalWindowProps
   tornOff: boolean
   rfqState: RfqState
-  rfqPrice: SpotPriceTick | null
-  rfqReceivedTime: number | null
-  rfqTimeout: number | null
-  notional: number | undefined
+  rfqPrice: {
+    ask: number
+    bid: number
+    mid: number
+    creationTimestamp: number
+    valueDate: string
+  }
+  rfqReceivedTime: number
+  rfqTimeout: number
+  notional: number
 }
 
 interface Props {

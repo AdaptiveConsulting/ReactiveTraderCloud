@@ -29,30 +29,6 @@ const SpotTileStyle = styled.div`
   margin: 0 auto;
 `
 
-const getFloatFromQuery = (query: string[] | string | null | undefined): number | undefined => {
-  if (query === null || typeof query === 'undefined' || Array.isArray(query) || query === 'undefined') {
-    return undefined
-  }
-  
-  return parseFloat(query)
-}
-
-const getIntFromQuery = (query: string[] | string | null | undefined): number | null => {
-  if (query === null || typeof query === 'undefined' || Array.isArray(query) || query === 'null' || query === 'undefined') {
-    return null
-  }
-  
-  return parseInt(query)
-}
-
-const getStringFromQuery = (query: string[] | string | null | undefined): string | null => {
-  if (query === null || typeof query === 'undefined' || Array.isArray(query) || query === 'null') {
-    return null
-  }
-  
-  return query
-}
-
 const getTileViewFromQueryStr: (query: string) => TileViews = query => {
   const parsedQueryString = queryString.parse(query)
   const tileView = parsedQueryString['tileView'] as TileViews
@@ -65,18 +41,18 @@ const getTileViewFromQueryStr: (query: string) => TileViews = query => {
 }
 
 const getRfqDatafromQuery: (query: string) => rfqQueryObject = query => {
-  const parsedQueryString = queryString.parse(query)
+  const parsedQueryString = queryString.parse(query, {parseNumbers: true})
 
   return {
     rfqState: parsedQueryString['rfqState'] as RfqState,
-    rfqAskPrice: getFloatFromQuery(parsedQueryString['rfqAskPrice']),
-    rfqBidPrice: getFloatFromQuery(parsedQueryString['rfqBidPrice']),
-    rfqMidPrice: getFloatFromQuery(parsedQueryString['rfqMidPrice']),
-    rfqReceivedTime: getIntFromQuery(parsedQueryString['rfqReceivedTime']),
-    rfqTimeout: getIntFromQuery(parsedQueryString['rfqTimeout']),
-    notional: getFloatFromQuery(parsedQueryString['notional']),
-    creationTimestamp: getIntFromQuery(parsedQueryString['rfqCreationTimestamp']),
-    valueDate: getStringFromQuery(parsedQueryString['rfqValueDate'])
+    rfqAskPrice: parsedQueryString['rfqAskPrice'] as number,
+    rfqBidPrice: parsedQueryString['rfqBidPrice'] as number,
+    rfqMidPrice: parsedQueryString['rfqMidPrice'] as number,
+    rfqReceivedTime: parsedQueryString['rfqReceivedTime'] as number,
+    rfqTimeout: parsedQueryString['rfqTimeout'] as number,
+    notional: parsedQueryString['notional'] as number,
+    creationTimestamp: parsedQueryString['rfqCreationTimestamp'] as number,
+    valueDate: parsedQueryString['rfqValueDate'] as string
   }
 }
 
