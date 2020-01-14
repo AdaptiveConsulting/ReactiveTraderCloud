@@ -1,5 +1,5 @@
 import { Context } from 'openfin-fdc3'
-import { IntentsProvider, Application } from 'rt-intents/types'
+import { IntentsProvider, Application } from 'rt-interop/types'
 import { getCurrencyPair } from './contexts'
 import { DetectIntentResponse } from 'dialogflow'
 import { TRADES_INFO_INTENT } from '../intents'

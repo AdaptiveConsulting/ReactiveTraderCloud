@@ -1,6 +1,6 @@
 import { noop } from 'rxjs'
 import { DetectIntentResponse } from 'dialogflow'
-import { IntentsProvider } from 'rt-intents/types'
+import { IntentsProvider } from 'rt-interop/types'
 
 export default class NoopProvider implements IntentsProvider {
   readonly name = 'noop'
