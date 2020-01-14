@@ -5,6 +5,7 @@ import { PriceMovementTypes } from '../model/priceMovementTypes'
 interface Props {
   priceMovementType?: string
   spread: string
+  show: boolean
 }
 
 const MovementIcon = styled('i')<{ show: boolean; color: string }>`
@@ -27,11 +28,11 @@ const PriceMovementStyle = styled.div`
   z-index: 1;
 `
 
-const PriceMovement: React.FC<Props> = ({ priceMovementType, spread }) => (
+const PriceMovement: React.FC<Props> = ({ priceMovementType, spread, show }) => (
   <PriceMovementStyle>
     <MovementIcon
       data-qa="price-movement__movement-icon--up"
-      show={priceMovementType === PriceMovementTypes.Up}
+      show={show && priceMovementType === PriceMovementTypes.Up}
       color="green"
       className="fas fa-caret-up"
       aria-hidden="true"
@@ -39,7 +40,7 @@ const PriceMovement: React.FC<Props> = ({ priceMovementType, spread }) => (
     <MovementValue data-qa="price-movement__movement-value">{spread}</MovementValue>
     <MovementIcon
       data-qa="price-movement__movement-icon--down"
-      show={priceMovementType === PriceMovementTypes.Down}
+      show={show && priceMovementType === PriceMovementTypes.Down}
       color="red"
       className="fas fa-caret-down"
       aria-hidden="true"

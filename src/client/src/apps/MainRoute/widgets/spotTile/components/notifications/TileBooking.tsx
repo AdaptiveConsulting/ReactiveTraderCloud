@@ -22,7 +22,7 @@ const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean; color: st
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
-  width: 64px;
+  width: ${({ altStyle }) => (altStyle ? '125px' : '64px')};
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
   }
