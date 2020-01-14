@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adaptive.ReactiveTrader.Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adaptive.ReactiveTrader.EventStore", "Adaptive.ReactiveTrader.EventStore\Adaptive.ReactiveTrader.EventStore.csproj", "{9DB332BD-3FF8-4AE3-AD4E-46D917471B75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adaptive.ReactiveTrader.Common.UnitTests", "Adaptive.ReactiveTrader.Common.UnitTests\Adaptive.ReactiveTrader.Common.UnitTests.csproj", "{FF264C8E-C67F-4150-964B-279C08AC3CE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{9DB332BD-3FF8-4AE3-AD4E-46D917471B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DB332BD-3FF8-4AE3-AD4E-46D917471B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DB332BD-3FF8-4AE3-AD4E-46D917471B75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF264C8E-C67F-4150-964B-279C08AC3CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF264C8E-C67F-4150-964B-279C08AC3CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF264C8E-C67F-4150-964B-279C08AC3CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF264C8E-C67F-4150-964B-279C08AC3CE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,5 +120,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9EB7F80F-1D5A-4BB2-B9B5-646541354706} = {08F51E3B-21F1-441B-A381-E03B99FE7728}
 		{E91BF503-5523-4F11-BD95-544EEE37E115} = {2F7266E2-E44D-4F24-92E6-FD1DD57E3D39}
+		{FF264C8E-C67F-4150-964B-279C08AC3CE7} = {2F7266E2-E44D-4F24-92E6-FD1DD57E3D39}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B15FF7FA-E28D-4354-B9DB-D78A323B279E}
 	EndGlobalSection
 EndGlobal
