@@ -1,3 +1,5 @@
+import { FDC3, OpenFinFDC3 } from 'rt-intents'
+
 const urlParams = new URLSearchParams(window.location.search)
 
 const isFinsemble = 'FSBL' in window
@@ -30,7 +32,9 @@ export const getPlatformAsync = async () => {
   if (isOpenFin) {
     console.info('Using OpenFin API')
     const { OpenFin } = await getOpenFinPlatform()
-    return new OpenFin()
+    const openFinFDC3 = new OpenFinFDC3()
+    const intentsProvider = new FDC3(openFinFDC3)
+    return new OpenFin(intentsProvider)
   }
 
   if (isGlue42) {

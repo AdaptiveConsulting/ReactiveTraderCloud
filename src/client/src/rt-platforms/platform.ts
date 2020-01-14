@@ -1,8 +1,8 @@
 import { AppConfig, PlatformType } from './types'
-import { Context } from 'openfin-fdc3'
 import { ApplicationEpic } from 'StoreTypes'
 import { Observable } from 'rxjs'
 import { PlatformWindow, PlatformWindowApi } from './platformWindow'
+import { IntentsProvider } from 'rt-intents/types'
 
 export interface PlatformFeatures {
   app: AppInterop
@@ -32,9 +32,7 @@ export type Platform = Partial<PlatformFeatures> & {
     notify: (message: object) => void
   }
 
-  readonly fdc3: {
-    broadcast?: (context: Context) => void
-  }
+  readonly intents: IntentsProvider
 
   readonly style: {
     [key: string]: string | number
