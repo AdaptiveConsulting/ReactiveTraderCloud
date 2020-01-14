@@ -3,7 +3,7 @@ import { GridApi } from 'ag-grid-community'
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import React, { useState, useCallback } from 'react'
-import { useIntents } from 'rt-intents'
+import { useInterop } from 'rt-interop'
 import { styled } from 'rt-theme'
 import { Trade, TradeStatus } from 'rt-types'
 import BlotterGrid from './BlotterGrid'
@@ -70,14 +70,14 @@ const Blotter: React.FC<BlotterProps> = props => {
     () => gridApi && setDisplayedRows(gridApi.getDisplayedRowCount()),
     [gridApi],
   )
-  const intents = useIntents()
+  const intents = useInterop()
 
   const broadcastContext = (currencyPair: string) => {
-    const { currencyPairSelected } = intents
-
-    if (!currencyPair || typeof currencyPairSelected !== 'function') {
+    if (intents === null || !currencyPair) {
       return
     }
+
+    const { currencyPairSelected } = intents
 
     currencyPairSelected(currencyPair)
   }

@@ -1,5 +1,4 @@
 import { OpenFinFDC3, FDC3 } from '../fdc3'
-import { NoopProvider } from '../noop'
 
 const isOpenFin = 'fin' in window
 
@@ -9,5 +8,5 @@ export const getProvider = () => {
     return new FDC3(openFinFDC3)
   }
 
-  return new NoopProvider()
+  return null
 }

@@ -1,5 +1,5 @@
 import { Context } from 'openfin-fdc3'
-import { IntentsProvider, Application } from 'rt-interop/types'
+import { InteropProvider, Application } from 'rt-interop/types'
 import { getCurrencyPair } from './contexts'
 import { DetectIntentResponse } from 'dialogflow'
 import { TRADES_INFO_INTENT } from '../intents'
@@ -18,7 +18,7 @@ const mapIntentToFdc3 = (response: DetectIntentResponse): string | undefined => 
   }
 }
 
-export default class FDC3 implements IntentsProvider {
+export default class FDC3 implements InteropProvider {
   readonly name = 'fdc3'
 
   readonly context: FDC3Platform

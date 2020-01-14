@@ -1,5 +1,3 @@
-export { FDC3, OpenFinFDC3 } from './fdc3'
-export { NoopProvider } from './noop'
-export { Provider, useIntents } from './context'
+export { Provider, useInterop } from './context'
 export { getProvider } from './util'
 export * from './intents'

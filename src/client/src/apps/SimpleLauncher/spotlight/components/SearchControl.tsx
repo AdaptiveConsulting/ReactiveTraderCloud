@@ -10,7 +10,7 @@ import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
 import { Input, Response, SearchContainer } from './styles'
 import { usePlatform } from 'rt-platforms'
-import { handleIntent } from 'rt-intents'
+import { handleIntent } from 'rt-interop'
 import { useNlpService } from './useNlpService'
 import { getInlineSuggestionsComponent } from './getInlineSuggestionsComponent'
 

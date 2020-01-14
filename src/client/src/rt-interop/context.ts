@@ -1,11 +1,10 @@
 import React, { useContext } from 'react'
-import { IntentsProvider } from './types'
-import { NoopProvider } from './noop'
+import { InteropProvider } from './types'
 
-const IntentsContext = React.createContext<IntentsProvider>(new NoopProvider())
+const IntentsContext = React.createContext<InteropProvider | null>(null)
 
 export const { Provider } = IntentsContext
 
-export function useIntents() {
+export function useInterop() {
   return useContext(IntentsContext)
 }

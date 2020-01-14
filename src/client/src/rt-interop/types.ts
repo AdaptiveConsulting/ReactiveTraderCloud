@@ -7,12 +7,12 @@ export interface Application {
   name: string
 }
 
-export type IntentsProvider = {
+export type InteropProvider = {
   readonly name: ProviderName
 
   readonly getMatchingApps: (response: DetectIntentResponse) => Promise<Application[]>
 
   readonly open: (appId: string) => Promise<void>
 
-  readonly currencyPairSelected?: (currencyPair: string) => void
+  readonly currencyPairSelected: (currencyPair: string) => void
 }
