@@ -32,7 +32,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             DateTime valueDate;
             if (!DateTime.TryParse(request.ValueDate, out valueDate))
             {
-                valueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday();
+                valueDate = DateTime.UtcNow.AddWeekDays(2);
             }
 
 

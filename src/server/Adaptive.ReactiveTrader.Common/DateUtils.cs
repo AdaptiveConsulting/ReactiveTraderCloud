@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 
 namespace Adaptive.ReactiveTrader.Common
@@ -20,17 +20,32 @@ namespace Adaptive.ReactiveTrader.Common
             return date.ToUniversalTime();
         }
 
-        public static DateTime ToWeekday(this DateTime date)
+        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
         {
-            switch (date.DayOfWeek)
+            // Unix timestamp is seconds past epoch
+            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
+            return dtDateTime;
+        }
+
+        public static DateTime AddWeekDays(this DateTime date, double value)
+        {
+            for (var i = 0; i < value; i++)
             {
-                case DayOfWeek.Saturday:
-                    return date.AddDays(2);
-                case DayOfWeek.Sunday:
-                    return date.AddDays(1);
-                default:
-                    return date;
+                date = date.AddDays(1);
+
+                switch (date.DayOfWeek)
+                {
+                    case DayOfWeek.Saturday:
+                        date = date.AddDays(2);
+                        break;
+                    case DayOfWeek.Sunday:
+                        date = date.AddDays(1);
+                        break;
+                }
             }
+
+            return date;
         }
     }
 }
