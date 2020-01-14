@@ -33,7 +33,7 @@ const getSpotTiles = (state: GlobalState) => state.currencyPairs
 const getSpotTilesLayout = (state: GlobalState) => state.layoutService.spotTiles
 const getSpotTilesData = (state: GlobalState) => state.spotTilesData
 
-const isValueNullandUndefined = (value: object | undefined, properties: string) => typeof value![properties] !== 'undefined' && value![properties] !== null
+const isValueNotNullorUndefined = (value: object | undefined, properties: string) => typeof value![properties] !== 'undefined' && value![properties] !== null
 
 // TODO: instead of creating tiles in the selector, consider creating them in the reducer for
   // reference data
@@ -42,7 +42,7 @@ export const selectSpotTiles = createSelector(
   (spotTileKeys, tilesLayout, spotTilesData) =>
     Object.keys(spotTileKeys).map(key => {
       const hasData = typeof spotTilesData[key] !== 'undefined';
-      const isRfqPriceNotNull = hasData && isValueNullandUndefined(spotTilesData[key], 'rfqPrice')
+      const isRfqPriceNotNull = hasData && isValueNotNullorUndefined(spotTilesData[key], 'rfqPrice')
 
       return {
         key,
@@ -62,8 +62,8 @@ export const selectSpotTiles = createSelector(
           creationTimestamp: 0,
           valueDate: ''
         },
-        rfqReceivedTime: hasData && isValueNullandUndefined(spotTilesData[key], 'rfqReceivedTime') ? spotTilesData[key]!.rfqReceivedTime as number : 0, 
-        rfqTimeout: hasData && isValueNullandUndefined(spotTilesData[key], 'rfqTimeout') ? spotTilesData[key]!.rfqTimeout as number : 0,
+        rfqReceivedTime: hasData && isValueNotNullorUndefined(spotTilesData[key], 'rfqReceivedTime') ? spotTilesData[key]!.rfqReceivedTime as number : 0, 
+        rfqTimeout: hasData && isValueNotNullorUndefined(spotTilesData[key], 'rfqTimeout') ? spotTilesData[key]!.rfqTimeout as number : 0,
         notional: hasData && typeof spotTilesData[key]!.notional !== 'undefined' ? spotTilesData[key]!.notional as number : 0
       }
     })
