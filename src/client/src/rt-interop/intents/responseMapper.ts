@@ -1,5 +1,5 @@
 import { DetectIntentResponse } from 'dialogflow'
-import { MARKET_INFO_INTENT, SPOT_QUOTE_INTENT, TRADES_INFO_INTENT, } from './intents'
+import { MARKET_INFO_INTENT, SPOT_QUOTE_INTENT, TRADES_INFO_INTENT } from './intents'
 
 export const mapIntent = (response: DetectIntentResponse): string => {
   let result = ''

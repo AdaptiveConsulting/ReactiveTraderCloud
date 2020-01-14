@@ -7,7 +7,6 @@ import { sendNotification, NotifyPermission } from './utils/sendNotification'
 import DefaultRoute from 'rt-platforms/defaultRoute'
 import { ApplicationEpic } from 'StoreTypes'
 import { GlueHeader, GlueLogoLink } from './'
-import { Noop } from 'rt-intents'
 
 /**
  * Glue implementation of the base platform adapter.
@@ -62,8 +61,6 @@ export class Glue42 implements Platform {
       }
     },
   }
-
-  intents = new Noop()
 
   epics: Array<ApplicationEpic> = []
 
