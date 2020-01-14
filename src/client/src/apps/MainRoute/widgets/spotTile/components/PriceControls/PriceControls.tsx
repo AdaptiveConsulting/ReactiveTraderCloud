@@ -71,7 +71,7 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateNone || isRfqStateReceived || isRfqStateExpired || isTradeExecutionInFlight
   const priceMovement = hasPrice ? priceData.priceMovementType : 'none'
   const spreadValue = hasPrice ? spread.formattedValue : '-'
-  const showPriceMovement = isRfqStateNone && !isTradeExecutionInFlight ? true : false
+  const showPriceMovement = isRfqStateNone && !isTradeExecutionInFlight
 
   const showPriceButton = (
     btnDirection: Direction,
