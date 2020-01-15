@@ -1,5 +1,5 @@
 {
-  "name": "adaptive.reactivetrader.server.openfin-config-gen",
+  "name": "adaptive.reactivetrader.server.openfin-config",
   "description": "OpenFin installer config generator",
   "main": "dist/index",
   "scripts": {
