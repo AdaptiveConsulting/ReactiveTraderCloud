@@ -20,7 +20,7 @@ const createInstaller = async (type, env, os = 'win') => {
   const isLauncher = type === 'launcher'
   const fileName = `ReactiveTraderCloud${isLauncher ? '-launcher' : ''}-${env}`
 
-  const appJSONUrl = `http://localhost:8080?type=${type}&env=${env}`
+  const appJSONUrl = `https://web-dev.adaptivecluster.com:8080?type=${type}&env=${env}`
   const installerGeneratorUrl = await getInstallerGeneratorUrl(fileName, appJSONUrl, os)
   const extension = os === 'win' ? 'exe' : 'dmg'
 
