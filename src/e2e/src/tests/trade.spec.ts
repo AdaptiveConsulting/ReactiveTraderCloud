@@ -39,6 +39,14 @@ const notionalList = [
   ['45k', '45,000'],
 ]
 
+const envTitles = [
+  'Reactive Trader Cloud',
+  'Reactive Trader Cloud (DEV)',
+  'Reactive Trader Cloud (LOCAL)',
+  'Reactive Trader Cloud (UAT)',
+  'Reactive Trader Cloud (UNKNOWN)',
+]
+
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
   beforeEach(async () => {
     browser = await getBrowser()
@@ -47,7 +55,8 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
 
   it('Verify page title', async () => {
     const title = await browser.getTitle()
-    expect(title).toBe('Reactive Trader Cloud')
+    const isValid = envTitles.includes(title)
+    expect(isValid).toBeTruthy()
   })
 
   notionalList.forEach(([enteredNotional, expectedNotional]) => {
