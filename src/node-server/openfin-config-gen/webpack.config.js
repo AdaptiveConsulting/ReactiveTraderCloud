@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   mode: 'development',
@@ -22,6 +23,9 @@ module.exports = {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
   },
+  plugins: [
+    new webpack.ContextReplacementPlugin(/any-promise/)
+  ],
   node: {
     __filename: false,
     __dirname: false
