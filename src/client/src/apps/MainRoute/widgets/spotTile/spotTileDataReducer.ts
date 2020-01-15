@@ -7,7 +7,7 @@ import { SpotTileData } from './model/spotTileData'
 export type SpotTileState = Record<string, SpotTileData | undefined>
 
 const INITIAL_STATE: SpotTileState = {}
-const HISTORIC_PRICES_MAX_POINTS = 250
+const HISTORIC_PRICES_MAX_POINTS = 100
 
 const INITIAL_SPOT_TILE_STATE: SpotTileData = {
   isTradeExecutionInFlight: false,
@@ -42,18 +42,24 @@ const spotTileReducer = (
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return state
     case TILE_ACTION_TYPES.SPOT_PRICES_UPDATE:
-      const startIndexSlice = Math.max(1, state.historicPrices.length - HISTORIC_PRICES_MAX_POINTS)
-
+      const startIndexUpdatePrices = Math.max(
+        1,
+        state.historicPrices.length - HISTORIC_PRICES_MAX_POINTS,
+      )
       return {
         ...state,
         price: action.payload,
         historicPrices: [
-          ...state.historicPrices.slice(startIndexSlice, state.historicPrices.length - 1),
+          ...state.historicPrices.slice(startIndexUpdatePrices, state.historicPrices.length),
           action.payload,
         ],
       }
     case TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED:
-      return { ...state, historicPrices: action.payload }
+      const startIndexPrices = Math.max(1, action.payload.length - HISTORIC_PRICES_MAX_POINTS)
+      return {
+        ...state,
+        historicPrices: action.payload.slice(startIndexPrices, action.payload.length),
+      }
     case TILE_ACTION_TYPES.EXECUTE_TRADE:
       return { ...state, isTradeExecutionInFlight: true }
     case TILE_ACTION_TYPES.TRADE_EXECUTED: {
