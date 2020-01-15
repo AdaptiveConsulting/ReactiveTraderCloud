@@ -13,10 +13,10 @@ const TRADE_HIGHLIGHT_TIME_IN_MS = 3000
 
 type HighlightTradeAction = ReturnType<typeof highlightTradeAction>
 
-const switchHighlight = (trade: Trade) => {
+const switchHighlight = (trade: Trade, on: boolean) => {
   return {
     ...trade,
-    highlight: !trade.highlight,
+    highlight: on,
   }
 }
 
@@ -36,7 +36,7 @@ const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
     }),
     filter(Boolean),
     map(trade => {
-      return highlightTradeAction({ trades: [switchHighlight(trade as Trade)] })
+      return highlightTradeAction({ trades: [switchHighlight(trade as Trade, true)] })
     }),
   )
 }
@@ -46,7 +46,7 @@ const removeHighlightTradeEpic: ApplicationEpic = (action$, state$, { platform }
     ofType<Action, HighlightTradeAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_HIGHLIGHT_TRADE),
     delay(TRADE_HIGHLIGHT_TIME_IN_MS),
     map(({ payload }) => {
-      const trade = switchHighlight(payload.trades[0])
+      const trade = switchHighlight(payload.trades[0], false)
       return removeHighlightTradeAction({ trades: [trade] })
     }),
   )
