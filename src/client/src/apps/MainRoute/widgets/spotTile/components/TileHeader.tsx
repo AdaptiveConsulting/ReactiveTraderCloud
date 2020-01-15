@@ -41,10 +41,4 @@ const TileHeader: React.FC<Props> = ({ ccyPair, date, displayCurrencyChart }) =>
   )
 }
 
-const areEqual = (prevProps: Props, nextProps: Props) => {
-  const prevBaseTerm: string = `${prevProps.ccyPair.base}/${prevProps.ccyPair.terms}`
-  const nextBaseTerm: string = `${nextProps.ccyPair.base}/${nextProps.ccyPair.terms}`
-  return prevBaseTerm === nextBaseTerm && prevProps.date === nextProps.date
-}
-
-export default React.memo(TileHeader, areEqual)
+export default React.memo(TileHeader)
