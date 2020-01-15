@@ -13,8 +13,8 @@ interface Props {
 }
 
 const tileViews = {
-  [TileViews.Normal]: SpotTileViewIcon,
   [TileViews.Analytics]: AnalyticsViewIcon,
+  [TileViews.Normal]: SpotTileViewIcon,
 }
 
 const WorkspaceHeader: React.FC<Props> = ({
