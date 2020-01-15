@@ -165,6 +165,10 @@ export interface OpenFinApplicationConfiguration {
      */
     autoShow?: boolean
     /**
+     * The window's backfill color as a hexadecimal value, not to be confused with the content background color. This color briefly fills a window's (a) content area before its content is loaded as well as (b) newly exposed areas when growing a window. Setting this value to the anticipated content background color can help improve user experience.
+     */
+    backgroundColor?: string
+    /**
      * Allow non API created child windows, such as window.open, to authenticate.
      */
     childWindowAutoAuth?: boolean
@@ -292,6 +296,10 @@ export interface OpenFinApplicationConfiguration {
      * A flag to cache the location of the window or not.
      */
     saveWindowState?: boolean
+    /**
+     * A flag to display a shadow on your application windows. Shadow and rounded corners are mutually exclusive. On Win7, aero theme is required. Not updatable via window.updateOptions.
+     */
+    shadow?: boolean
     /**
      * A flag to show the Window’s icon in the taskbar.
      */

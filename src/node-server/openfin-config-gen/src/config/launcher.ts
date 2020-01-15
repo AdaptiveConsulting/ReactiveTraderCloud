@@ -2,22 +2,30 @@
 import { OpenFinApplicationConfiguration } from '../types'
 
 /* eslint-disable @typescript-eslint/camelcase */
-export default (env = 'demo'): OpenFinApplicationConfiguration => ({
-  devtools_port: 9090,
-  splashScreenImage: `https://web-${env}.adaptivecluster.com/static/media/splash-screen.jpg`,
+export default (env: string): OpenFinApplicationConfiguration => ({
   startup_app: {
-    name: 'Reactive Trader Cloud',
-    url: `https://web-${env}.adaptivecluster.com/`,
-    uuid: `reactive-trader-cloud-web-${env}`,
-    applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-mark-large.png`,
+    name: 'Reactive Ecosystem Launcher',
+    url: `https://web-${env}.adaptivecluster.com/launcher`,
+    uuid: `reactive-launcher-${env}`,
+    defaultWidth: 650,
+    defaultHeight: 52,
+    defaultTop: 160,
+    defaultLeft: 30,
     autoShow: true,
-    defaultWidth: 1280,
-    defaultHeight: 900,
-    minWidth: 800,
-    minHeight: 600,
-    resizable: true,
-    maximizable: true,
+    permissions: {
+      System: {
+        launchExternalProcess: true,
+      },
+    },
+    saveWindowState: false,
+    resizable: false,
+    shadow: true,
     frame: false,
+    backgroundColor: '#444C5F',
+    alwaysOnTop: true,
+    icon: `https://web-${env}.adaptivecluster.com/static/media/icon.ico`,
+    applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-mark-large.png`,
+    contextMenu: true,
     // @ts-ignore
     _comment:
       'Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)',
@@ -29,20 +37,33 @@ export default (env = 'demo'): OpenFinApplicationConfiguration => ({
         url: `https://web-${env}.adaptivecluster.com/plugin/fin.desktop.Excel.js`,
       },
     ],
+    accelerator: {
+      devtools: true,
+      reload: true,
+      reloadIgnoreCache: true,
+      zoom: true,
+    },
   },
   runtime: {
+    arguments: '--remote-debugging-port=9222',
     version: '13.76.44.21',
   },
   shortcut: {
     company: 'Adaptive Consulting',
     icon: `https://web-${env}.adaptivecluster.com/static/media/icon.ico`,
-    name: 'Reactive Trader Cloud',
+    name: 'Reactive Ecosystem Launcher',
   },
   appAssets: [
     {
       src: `https://web-${env}.adaptivecluster.com/plugin/add-in.zip`,
       alias: 'excel-api-addin',
       version: '2.0.0',
+    },
+    {
+      src: `https://web-${env}.adaptivecluster.com/plugin/LimitChecker.zip`,
+      alias: 'LimitChecker',
+      version: '1.6.0',
+      target: 'LimitChecker.application',
     },
   ],
   services: [
