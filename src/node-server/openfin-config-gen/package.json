@@ -1,0 +1,23 @@
+{
+  "name": "adaptive.reactivetrader.server.openfin-config-gen",
+  "description": "OpenFin installer config generator",
+  "main": "dist/index",
+  "scripts": {
+    "precommit": "lint-staged",
+    "start:dev": "nodemon --watch 'src/**/*.ts' --exec \"node -r ts-node/register -r tsconfig-paths/register --inspect\" src/index.ts",
+    "build": "webpack",
+    "start": "node dist/index.js",
+    "lint": "eslint --ext .ts ./src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^13.1.7",
+    "nodemon": "^2.0.2",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.6.2",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.7.4",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
