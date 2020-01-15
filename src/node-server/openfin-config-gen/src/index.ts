@@ -1,15 +1,10 @@
-import http from 'http'
+import Koa from 'koa'
 import { getConfig } from './config'
 
-http
-  .createServer(function(_request, response) {
-    response.writeHead(200, {
-      'Content-Type': 'text/json',
-      'Access-Control-Allow-Origin': '*',
-    })
+const app = new Koa()
 
-    const config = getConfig()
-    response.write(JSON.stringify(config))
-    response.end()
-  })
-  .listen('8080')
+app.use(async ctx => {
+  ctx.body = getConfig()
+})
+
+app.listen(8080)
