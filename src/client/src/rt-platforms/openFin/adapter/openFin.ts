@@ -43,6 +43,8 @@ export default class OpenFin implements Platform {
   openFinNotifications = require('openfin-notifications')
 
   constructor() {
+    window.addEventListener('unload', () => this.openFinNotifications.removeEventListener('notification-action'))
+
     this.openFinNotifications.addEventListener(
       'notification-action',
       (event: NotificationActionEvent) => {
