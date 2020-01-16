@@ -60,8 +60,11 @@ const INSTALLERS_TO_CREATE = [
   { type: 'app', env: 'demo', os: 'win' },
   { type: 'app', env: 'demo', os: 'osx' },
   { type: 'launcher', env: 'dev', os: 'win' },
+  { type: 'launcher', env: 'dev', os: 'osx' },
   { type: 'launcher', env: 'uat', os: 'win' },
-  { type: 'launcher', env: 'demo', os: 'win' }
+  { type: 'launcher', env: 'uat', os: 'osx' },
+  { type: 'launcher', env: 'demo', os: 'win' },
+  { type: 'launcher', env: 'demo', os: 'osx' }
 ]
 
 createInstallers(INSTALLERS_TO_CREATE)
