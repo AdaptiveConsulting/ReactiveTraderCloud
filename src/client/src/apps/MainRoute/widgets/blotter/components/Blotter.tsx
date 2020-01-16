@@ -1,6 +1,5 @@
 import { AgGridReact } from 'ag-grid-react'
 import { GridApi } from 'ag-grid-community'
-import { isEqual } from 'lodash'
 // tslint:disable-next-line:no-submodule-imports
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import React, { useState, useCallback } from 'react'
@@ -143,6 +142,4 @@ const Blotter: React.FC<BlotterProps> = props => {
   )
 }
 
-const areEqual = (prev: BlotterProps, next: BlotterProps) => isEqual(prev.rows, next.rows)
-
-export default React.memo(Blotter, areEqual)
+export default React.memo(Blotter)
