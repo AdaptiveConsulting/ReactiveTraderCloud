@@ -16,13 +16,21 @@ const TileBookingStyle = styled.div`
   z-index: 2;
 `
 
-const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean; color: string }>`
-  padding: 0.4rem;
+const BookingPill = styled.div<{
+  disabled: boolean
+  altStyle: boolean
+  color: string
+  isAnalyticView: boolean
+}>`
+  padding: 0.3rem;
+  position: relative;
+  left: ${({ isAnalyticView }) => (isAnalyticView ? '9px' : '0px')};
   border-radius: ${({ altStyle }) => (altStyle ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
-  width: ${({ altStyle }) => (altStyle ? '125px' : '64px')};
+  width: ${({ altStyle, isAnalyticView }) =>
+    isAnalyticView ? '82px' : altStyle ? '125px' : '64px'};
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
   }
@@ -35,9 +43,9 @@ const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean; color: st
   `}
 `
 
-const BookingStatus = styled.span`
+const BookingStatus = styled.span<{ altStyle: boolean }>`
   color: ${({ theme }) => theme.template.white.normal};
-  font-size: 0.8125rem;
+  font-size: ${({ altStyle }) => (altStyle ? '13px' : '11px')};
 `
 
 const AdaptiveLoaderWrapper = styled.span`
@@ -50,6 +58,7 @@ interface TileBookingProps {
   disabled?: boolean
   color: string
   onBookingPillClick?: () => void
+  isAnalyticView?: boolean
 }
 
 const TileBooking: React.FC<TileBookingProps> = ({
@@ -59,6 +68,7 @@ const TileBooking: React.FC<TileBookingProps> = ({
   color,
   onBookingPillClick,
   children,
+  isAnalyticView,
 }) => (
   <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
     {show &&
@@ -73,6 +83,7 @@ const TileBooking: React.FC<TileBookingProps> = ({
             }}
             altStyle={!!showLoader}
             disabled={!!disabled}
+            isAnalyticView={!!isAnalyticView}
             data-qa="tile-booking__booking-pill"
           >
             {showLoader && (
@@ -80,7 +91,9 @@ const TileBooking: React.FC<TileBookingProps> = ({
                 <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
               </AdaptiveLoaderWrapper>
             )}
-            <BookingStatus data-qa="tile-booking__booking-status">{children}</BookingStatus>
+            <BookingStatus data-qa="tile-booking__booking-status" altStyle={!!showLoader}>
+              {children}
+            </BookingStatus>
           </BookingPill>
         </TileBookingStyle>
       ))}
