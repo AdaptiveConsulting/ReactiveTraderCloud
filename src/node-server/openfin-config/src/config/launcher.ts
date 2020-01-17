@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
+import merge from 'lodash.merge'
 import { OpenFinApplicationConfiguration } from '../types'
+import base from './base'
 
 /* eslint-disable @typescript-eslint/camelcase */
 export default (env: string): OpenFinApplicationConfiguration => {
+  const baseConfig = base(env)
   const name = `Reactive Ecosystem Launcher${env !== 'demo' ? ` (${env.toUpperCase()})` : ''}`
 
-  return {
+  return merge(baseConfig, {
     startup_app: {
       name,
       url: `https://web-${env}.adaptivecluster.com/launcher`,
@@ -14,7 +17,6 @@ export default (env: string): OpenFinApplicationConfiguration => {
       defaultHeight: 52,
       defaultTop: 160,
       defaultLeft: 30,
-      autoShow: true,
       permissions: {
         System: {
           launchExternalProcess: true,
@@ -23,33 +25,17 @@ export default (env: string): OpenFinApplicationConfiguration => {
       saveWindowState: false,
       resizable: false,
       shadow: true,
-      frame: false,
       backgroundColor: '#444C5F',
       alwaysOnTop: true,
       icon: `https://web-${env}.adaptivecluster.com/static/media/icon.ico`,
       applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-mark-large.png`,
       contextMenu: true,
-      // @ts-ignore
-      _comment:
-        'Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)',
-      preload: [
-        {
-          url: `https://web-${env}.adaptivecluster.com/plugin/service-loader.js`,
-        },
-        {
-          url: `https://web-${env}.adaptivecluster.com/plugin/fin.desktop.Excel.js`,
-        },
-      ],
       accelerator: {
         devtools: true,
         reload: true,
         reloadIgnoreCache: true,
         zoom: true,
       },
-    },
-    runtime: {
-      arguments: '--remote-debugging-port=9222',
-      version: '13.76.44.21',
     },
     shortcut: {
       company: 'Adaptive Consulting',
@@ -69,26 +55,5 @@ export default (env: string): OpenFinApplicationConfiguration => {
         target: 'LimitChecker.application',
       },
     ],
-    services: [
-      {
-        name: 'layouts',
-        config: {
-          features: {
-            snap: true,
-            dock: true,
-            tab: false,
-          },
-        },
-        manifestUrl: 'https://cdn.openfin.co/services/openfin/layouts/1.1.0/app.json',
-      },
-      {
-        name: 'fdc3',
-        manifestUrl: 'https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json',
-      },
-      {
-        name: 'notifications',
-        manifestUrl: 'https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json',
-      },
-    ],
-  }
+  })
 }

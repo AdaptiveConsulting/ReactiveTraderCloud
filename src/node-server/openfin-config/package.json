@@ -12,6 +12,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/koa": "^2.11.0",
+    "@types/lodash.merge": "^4.6.6",
     "@types/node": "^13.1.7",
     "nodemon": "^2.0.2",
     "ts-loader": "^6.2.1",
@@ -22,6 +23,7 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "koa": "^2.11.0"
+    "koa": "^2.11.0",
+    "lodash.merge": "^4.6.2"
   }
 }
