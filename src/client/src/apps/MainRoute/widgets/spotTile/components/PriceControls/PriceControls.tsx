@@ -119,6 +119,7 @@ const PriceControls: React.FC<Props> = ({
         priceMovementType={priceMovement}
         spread={spreadValue}
         show={showPriceMovement}
+        isAnalyticView={isAnalyticsView}
       />
       <TileBookingSwitch
         isTradeExecutionInFlight={isTradeExecutionInFlight}
@@ -144,6 +145,7 @@ const PriceControls: React.FC<Props> = ({
         priceMovementType={priceMovement}
         spread={spreadValue}
         show={showPriceMovement}
+        isAnalyticView={!!isAnalyticsView}
       />
       <TileBookingSwitch
         isTradeExecutionInFlight={isTradeExecutionInFlight}
