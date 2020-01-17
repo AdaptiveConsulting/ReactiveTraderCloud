@@ -68,7 +68,11 @@ const PriceControls: React.FC<Props> = ({
   const { priceStale } = priceData
   const hasPrice = Boolean(priceData.bid && priceData.ask && !priceStale)
   const showPrices =
-    isRfqStateNone || isRfqStateReceived || isRfqStateExpired || isTradeExecutionInFlight
+    isRfqStateNone ||
+    isRfqStateCanRequest ||
+    isRfqStateReceived ||
+    isRfqStateExpired ||
+    isTradeExecutionInFlight
   const priceMovement = hasPrice ? priceData.priceMovementType : 'none'
   const spreadValue = hasPrice ? spread.formattedValue : '-'
   const showPriceMovement = isRfqStateNone && !isTradeExecutionInFlight
