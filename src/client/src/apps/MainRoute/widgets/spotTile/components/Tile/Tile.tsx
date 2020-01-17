@@ -139,13 +139,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       displayCurrencyChart,
     } = this.props
     const { inputDisabled, inputValidationMessage, canExecute } = this.state
-    const { rfqState } = spotTileData
-    const { isRfqStateCanRequest, isRfqStateNone } = getConstsFromRfqState(rfqState)
-
-    const TileViewComponent =
-      tileView && (isRfqStateNone || isRfqStateCanRequest)
-        ? this.tileComponents[tileView]
-        : SpotTile
+    const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
 
     return (
       <TileViewComponent

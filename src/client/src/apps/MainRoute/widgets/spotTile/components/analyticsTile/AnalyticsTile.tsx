@@ -12,6 +12,7 @@ import {
   GraphNotionalWrapper,
   LineChartWrapper,
   AnalyticsTileWrapper,
+  PriceControlWrapper,
 } from './styled'
 import { SpotTileProps } from '../types'
 import TileHeader from '../TileHeader'
@@ -95,17 +96,19 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
                 />
               )}
             </GraphNotionalWrapper>
-            <PriceControls
-              isTradeExecutionInFlight={isTradeExecutionInFlight}
-              executeTrade={executeTrade}
-              priceData={price}
-              currencyPair={currencyPair}
-              disabled={tradingDisabled}
-              rfqState={rfqState}
-              isAnalyticsView={true}
-              rfq={rfq}
-              notional={notional}
-            />
+            <PriceControlWrapper>
+              <PriceControls
+                isTradeExecutionInFlight={isTradeExecutionInFlight}
+                executeTrade={executeTrade}
+                priceData={price}
+                currencyPair={currencyPair}
+                disabled={tradingDisabled}
+                rfqState={rfqState}
+                isAnalyticsView={true}
+                rfq={rfq}
+                notional={notional}
+              />
+            </PriceControlWrapper>
           </AnalyticsTileContent>
         </AnalyticsTileStyle>
         {children}

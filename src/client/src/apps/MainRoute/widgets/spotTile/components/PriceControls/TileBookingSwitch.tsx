@@ -60,9 +60,7 @@ const TileBookingSwitch: FC<Props> = ({
         onBookingPillClick={() => rfq.cancel({ currencyPair })}
         isAnalyticView={isAnalyticView}
       >
-        Cancel
-        <br />
-        RFQ
+        Cancel RFQ
       </TileBooking>
     </>
   )

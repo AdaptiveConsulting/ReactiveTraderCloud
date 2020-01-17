@@ -23,8 +23,8 @@ const BookingPill = styled.div<{
   isAnalyticView: boolean
 }>`
   padding: 0.3rem;
-  position: relative;
-  left: ${({ isAnalyticView }) => (isAnalyticView ? '9px' : '0px')};
+  position: absolute;
+  left: ${({ isAnalyticView }) => (isAnalyticView ? '50%' : '')};
   border-radius: ${({ altStyle }) => (altStyle ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};

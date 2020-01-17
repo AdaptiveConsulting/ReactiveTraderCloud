@@ -8,12 +8,15 @@ export const AnalyticsTileContent = styled.div`
   justify-content: space-between;
 `
 export const GraphNotionalWrapper = styled.div`
-  width: 50%;
+  width: 44%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `
-
+export const PriceControlWrapper = styled.div`
+  width: 50%;
+  display: flex;
+`
 export const LineChartWrapper = styled.div`
   width: 100%;
   height: 80%;
