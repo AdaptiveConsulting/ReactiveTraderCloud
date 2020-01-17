@@ -101,6 +101,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
                 onRejected={handleRfqRejected}
                 receivedTime={rfqReceivedTime}
                 timeout={rfqTimeout}
+                isAnalyticsView={false}
               />
             )}
           </ReserveSpaceGrouping>

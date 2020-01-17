@@ -5,6 +5,7 @@ interface RfqTimerProps {
   onRejected: () => void
   receivedTime: number
   timeout: number
+  isAnalyticsView: boolean
 }
 
 interface RfqTimerState {
@@ -40,9 +41,9 @@ const RejectQuoteButton = styled.button`
   margin-left: 3px;
 `
 
-const TimerWrapper = styled.div`
+const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   display: grid;
-  width: 130%;
+  width: ${({ isAnalyticsView }) => (isAnalyticsView ? '130%' : '100%')};
   align-items: center;
   grid-template-columns: 35px auto 55px;
   grid-template-rows: auto;
@@ -82,13 +83,13 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
   }
 
   render() {
-    const { timeout, onRejected } = this.props
+    const { timeout, onRejected, isAnalyticsView } = this.props
     const { timeLeft } = this.state
     const percentageLeft = (100 * timeLeft) / timeout
     const timeLeftSecs = Math.ceil(timeLeft / 1000)
 
     return (
-      <TimerWrapper>
+      <TimerWrapper isAnalyticsView={isAnalyticsView}>
         <TimeLeft data-qa="rfq-timer__time-left">
           {timeLeftSecs} sec{timeLeftSecs > 1 ? 's' : ''}
         </TimeLeft>

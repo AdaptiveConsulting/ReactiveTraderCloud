@@ -24,13 +24,14 @@ const BookingPill = styled.div<{
 }>`
   padding: 0.3rem;
   position: absolute;
-  left: ${({ isAnalyticView }) => (isAnalyticView ? '65%' : '')};
+  left: ${({ isAnalyticView, altStyle }) =>
+    isAnalyticView && !altStyle ? '65%' : isAnalyticView ? '-65%' : ''};
   border-radius: ${({ altStyle }) => (altStyle ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
   width: ${({ altStyle, isAnalyticView }) =>
-    isAnalyticView ? '82px' : altStyle ? '125px' : '64px'};
+    isAnalyticView && !altStyle ? '82px' : altStyle ? '125px' : '64px'};
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
   }

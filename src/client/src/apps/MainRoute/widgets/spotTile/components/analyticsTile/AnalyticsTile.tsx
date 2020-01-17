@@ -94,6 +94,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
                   onRejected={handleRfqRejected}
                   receivedTime={rfqReceivedTime}
                   timeout={rfqTimeout}
+                  isAnalyticsView={true}
                 />
               )}
             </GraphNotionalWrapper>
