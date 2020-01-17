@@ -20,7 +20,7 @@ const createInstaller = async (type, env, os = 'win') => {
   const isLauncher = type === 'launcher'
   const fileName = `ReactiveTraderCloud${isLauncher ? '-launcher' : ''}-${env}`
 
-  const appJSONUrl = `https://web-dev.adaptivecluster.com/openfinconfig?type=${type}&env=${env}`
+  const appJSONUrl = `https://web-dev.adaptivecluster.com/openfin/${type}/${env}.json`
   const installerGeneratorUrl = await getInstallerGeneratorUrl(fileName, appJSONUrl, os)
   const extension = os === 'win' ? 'exe' : 'dmg'
 
