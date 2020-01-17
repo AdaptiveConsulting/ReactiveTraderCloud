@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import merge from 'lodash.merge'
 import { OpenFinApplicationConfiguration } from '../types'
 import base from './base'
