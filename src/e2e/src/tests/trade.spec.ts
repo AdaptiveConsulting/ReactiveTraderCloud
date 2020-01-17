@@ -109,7 +109,8 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     await mainPage.tile.initiateRFQ()
   })
 
-  it('should validate unavailable streaming', async () => {
+  // This test is currently disabled since it does not seem to be a case where it happens anymore
+  xit('should validate unavailable streaming', async () => {
     await mainPage.workspace.selectCurrency('nzd')
     const textStreaming = await mainPage.tile.tradeType.initiateRFQ.labelTextStreamingUnavailable
     expect(textStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
