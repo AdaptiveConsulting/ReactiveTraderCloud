@@ -17,9 +17,9 @@ export const PriceControlWrapper = styled.div`
   width: 50%;
   display: flex;
 `
-export const LineChartWrapper = styled.div`
+export const LineChartWrapper = styled.div<{ isTimerOn: boolean }>`
   width: 100%;
-  height: 80%;
+  height: ${({ isTimerOn }) => (isTimerOn ? '60%' : '80%')};
 `
 
 export const AnalyticsTileStyle = styled(SpotTileStyle)`

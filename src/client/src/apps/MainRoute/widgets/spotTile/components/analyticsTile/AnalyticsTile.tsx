@@ -60,6 +60,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
     const showTimer = isRfqStateReceived && rfqTimeout
     const handleRfqRejected = () => rfq.reject({ currencyPair })
+    const isTimerOn = showTimer && rfqTimeout !== null && rfqReceivedTime !== null
 
     return (
       <AnalyticsWrapperWithPlatform>
@@ -75,7 +76,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
           />
           <AnalyticsTileContent>
             <GraphNotionalWrapper>
-              <LineChartWrapper>
+              <LineChartWrapper isTimerOn={!!isTimerOn}>
                 <AnalyticsTileChart history={historicPrices} />
               </LineChartWrapper>
               <NotionalInput

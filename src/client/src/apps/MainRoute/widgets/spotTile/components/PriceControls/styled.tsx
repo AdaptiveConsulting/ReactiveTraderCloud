@@ -20,6 +20,7 @@ export const PriceButtonDisabledPlaceholder = styled.div`
   height: 59px;
   width: 122px;
   min-width: 122px;
+  min-height: 59px;
   line-height: normal;
   opacity: 0.5;
   text-align: center;

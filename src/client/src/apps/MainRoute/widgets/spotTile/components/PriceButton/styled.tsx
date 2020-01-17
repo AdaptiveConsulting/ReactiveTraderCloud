@@ -40,6 +40,10 @@ export const TradeButton = styled.button<{ direction: Direction; priceAnnounced:
   cursor: pointer;
   border: none;
   outline: none;
+  width: 122px;
+  min-width: 122px;
+  height: 59px;
+  min-height: 59px;
   padding: 0.75rem 1.5rem;
   margin-bottom: 2px;
   ${backgroundEffect}
@@ -106,6 +110,6 @@ export const BigWrapper = styled.div`
 
 export const ExpiredPrice = styled.div`
   color: ${({ theme }) => theme.template.red.normal};
-  font-size: 10px;
+  font-size: 9px;
   text-transform: uppercase;
 `

@@ -42,6 +42,7 @@ const RejectQuoteButton = styled.button`
 
 const TimerWrapper = styled.div`
   display: grid;
+  width: 130%;
   align-items: center;
   grid-template-columns: 35px auto 55px;
   grid-template-rows: auto;
