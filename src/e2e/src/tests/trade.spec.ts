@@ -109,13 +109,6 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     await mainPage.tile.initiateRFQ()
   })
 
-  it('should validate unavailable streaming', async () => {
-    await mainPage.workspace.selectCurrency('nzd')
-    const textStreaming = await mainPage.tile.tradeType.initiateRFQ.labelTextStreamingUnavailable
-    expect(textStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
-    await mainPage.tile.NZDToUSDRFQ()
-  })
-
   it('should validate zero notional', async () => {
     await mainPage.workspace.selectCurrency('usd')
     await mainPage.tile.setNotional('USDToJPY', '0')

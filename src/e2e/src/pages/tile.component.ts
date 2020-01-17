@@ -104,8 +104,6 @@ export class TileComponent {
     const normalViewButton = this.browser.element(by.qaTag('workspace-view-normal'))
     await waitForElementToBeClickable(this.browser, normalViewButton)
     await normalViewButton.click()
-    const labelTextStreaming = this.tradeType.initiateRFQ.labelTextStreamingUnavailable
-    expect(await labelTextStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
     const buttonRFQ = this.tradeType.initiateRFQ.buttonInitiateRFQ
     await waitForElementToBeClickable(this.browser, buttonRFQ)
     await buttonRFQ.click()
