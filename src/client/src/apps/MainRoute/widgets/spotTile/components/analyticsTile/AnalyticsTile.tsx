@@ -16,6 +16,7 @@ import {
 import { SpotTileProps } from '../types'
 import TileHeader from '../TileHeader'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
+import RfqTimer from '../RfqTimer'
 
 const AnalyticsWrapperWithPlatform: FC = props => {
   const platform = usePlatform()
@@ -25,7 +26,15 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
   render() {
     const {
       currencyPair,
-      spotTileData: { notional, isTradeExecutionInFlight, price, historicPrices, rfqState },
+      spotTileData: {
+        notional,
+        isTradeExecutionInFlight,
+        price,
+        historicPrices,
+        rfqState,
+        rfqTimeout,
+        rfqReceivedTime,
+      },
       updateNotional,
       resetNotional,
       executeTrade,
@@ -38,13 +47,18 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
     } = this.props
     const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
-    const { isRfqStateExpired, isRfqStateCanRequest, isRfqStateNone } = getConstsFromRfqState(
-      rfqState,
-    )
+    const {
+      isRfqStateExpired,
+      isRfqStateCanRequest,
+      isRfqStateNone,
+      isRfqStateReceived,
+    } = getConstsFromRfqState(rfqState)
     const showResetButton =
       !isTradeExecutionInFlight &&
       getDefaultNotionalValue(currencyPair) !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
+    const showTimer = isRfqStateReceived && rfqTimeout
+    const handleRfqRejected = () => rfq.reject({ currencyPair })
 
     return (
       <AnalyticsWrapperWithPlatform>
@@ -73,6 +87,13 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
                 showResetButton={showResetButton}
                 disabled={inputDisabled}
               />
+              {showTimer && rfqTimeout !== null && rfqReceivedTime !== null && (
+                <RfqTimer
+                  onRejected={handleRfqRejected}
+                  receivedTime={rfqReceivedTime}
+                  timeout={rfqTimeout}
+                />
+              )}
             </GraphNotionalWrapper>
             <PriceControls
               isTradeExecutionInFlight={isTradeExecutionInFlight}
