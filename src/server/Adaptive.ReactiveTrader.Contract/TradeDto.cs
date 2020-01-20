@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -16,8 +16,8 @@ namespace Adaptive.ReactiveTrader.Contract
         public DirectionDto Direction { get; set; }
 
         public decimal SpotRate { get; set; }
-        public DateTime TradeDate { get; set; }
-        public DateTime ValueDate { get; set; }
+        public DateTimeOffset TradeDate { get; set; }
+        public DateTimeOffset ValueDate { get; set; }
 
         [JsonConverter(typeof (StringEnumConverter))]
         public TradeStatusDto Status { get; set; }

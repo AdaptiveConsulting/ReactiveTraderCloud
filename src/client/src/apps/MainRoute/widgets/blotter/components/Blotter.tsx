@@ -142,4 +142,4 @@ const Blotter: React.FC<BlotterProps> = props => {
   )
 }
 
-export default Blotter
+export default React.memo(Blotter)

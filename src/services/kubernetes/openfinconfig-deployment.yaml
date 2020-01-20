@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openfinconfig-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: openfinconfig
+  template:
+    metadata:
+      labels:
+        component: openfinconfig
+    spec:
+      volumes:
+        - name: google-cloud-key
+          secret:
+            secretName: openfinconfig-key
+      containers:
+        - name: openfinconfig
+          image: reactivetradercloud/openfinconfig:${BUILD_VERSION}
+          ports:
+            - containerPort: 8080

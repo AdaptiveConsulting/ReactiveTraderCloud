@@ -118,6 +118,12 @@ services:
     environment:
       - BROKER_HOST=broker
       - BROKER_PORT=8000
+  openfinconfig:
+    image: ${DOCKER_USER}/openfinconfig:${BUILD_VERSION}
+    hostname: openfinconfig
+    build:
+      dockerfile: OpenfinConfig.Dockerfile
+      context: ./node-server
   bot:
     hostname: bot
     image: ${DOCKER_USER}/bot:${BUILD_VERSION}

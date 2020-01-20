@@ -1,5 +1,4 @@
 using System;
-using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Contract.Events.Trade;
 using Adaptive.ReactiveTrader.EventStore.Domain;
@@ -16,8 +15,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
                      string userName,
                      string currencyPair,
                      decimal spotRate,
-                     DateTime tradeDate,
-                     DateTime valueDate,
+                     DateTimeOffset tradeDate,
+                     DateTimeOffset valueDate,
                      DirectionDto direction,
                      decimal notional,
                      string dealtCurrency)
@@ -39,8 +38,8 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution.Domain
         public string TraderName { get; private set; }
         public string CurrencyPair { get; private set; }
         public decimal SpotRate { get; private set; }
-        public DateTime TradeDate { get; private set; }
-        public DateTime ValueDate { get; private set; }
+        public DateTimeOffset TradeDate { get; private set; }
+        public DateTimeOffset ValueDate { get; private set; }
         public DirectionDto Direction { get; private set; }
         public decimal Notional { get; private set; }
         public string DealtCurrency { get; private set; }

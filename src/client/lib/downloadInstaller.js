@@ -15,13 +15,16 @@ const getInstallerGeneratorUrl = async (fileName, appJSONUrl, os) => {
   return `${installerGeneratorUrl}&unzipped=true`
 }
 
-const createInstaller = async (branch, manifestName, os = 'win') => {
-  const fileName = `ReactiveTraderCloud-${manifestName}`
-  const appJSONUrl = `https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTraderCloud/${branch}/src/client/public/config/openfin/${manifestName}.json`
+const createInstaller = async (type, env, os = 'win') => {
+  // maintain previous filenames for installers TODO: is this a requirement?
+  const isLauncher = type === 'launcher'
+  const fileName = `ReactiveTraderCloud${isLauncher ? '-launcher' : ''}-${env}`
+
+  const appJSONUrl = `https://web-dev.adaptivecluster.com/openfin/${type}/${env}.json`
   const installerGeneratorUrl = await getInstallerGeneratorUrl(fileName, appJSONUrl, os)
   const extension = os === 'win' ? 'exe' : 'dmg'
-  
-  console.log(` - Generating installer: \x1b[36m${fileName}.${extension}\x1b[0m (points to \x1b[36m${branch}\x1b[0m branch)`)
+
+  console.log(` - Generating installer: \x1b[36m${fileName}.${extension}\x1b[0m`)
 
   return new Promise(resolve => {
     https.get(installerGeneratorUrl, response => {
@@ -42,24 +45,23 @@ Make sure the files are available on their respective locations when distributin
 `,
   )
 
-  const installerDownloads = installersData.map(({ branch, manifestName, os })=> {
-    return createInstaller(branch, manifestName, os)
+  const installerDownloads = installersData.map(({ type, env, os })=> {
+    return createInstaller(type, env, os)
   });
 
   return Promise.all(installerDownloads)
 }
 
-// File name + github branch for each json manifest
 const INSTALLERS_TO_CREATE = [
-  { manifestName: 'dev', branch: 'master', os: 'win' },
-  { manifestName: 'dev', branch: 'master', os: 'osx' },
-  { manifestName: 'uat', branch: 'master', os: 'win' },
-  { manifestName: 'uat', branch: 'master', os: 'osx' },
-  { manifestName: 'demo', branch: 'master', os: 'win' },
-  { manifestName: 'demo', branch: 'master', os: 'osx' },
-  { manifestName: 'launcher-dev', branch: 'master', os: 'win' },
-  { manifestName: 'launcher-uat', branch: 'master', os: 'win' },
-  { manifestName: 'launcher-demo', branch: 'master', os: 'win' }
+  { type: 'app', env: 'dev', os: 'win' },
+  { type: 'app', env: 'dev', os: 'osx' },
+  { type: 'app', env: 'uat', os: 'win' },
+  { type: 'app', env: 'uat', os: 'osx' },
+  { type: 'app', env: 'demo', os: 'win' },
+  { type: 'app', env: 'demo', os: 'osx' },
+  { type: 'launcher', env: 'dev', os: 'win' },
+  { type: 'launcher', env: 'uat', os: 'win' },
+  { type: 'launcher', env: 'demo', os: 'win' }
 ]
 
 createInstallers(INSTALLERS_TO_CREATE)

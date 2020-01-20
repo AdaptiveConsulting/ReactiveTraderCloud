@@ -200,15 +200,47 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
       <div
         className="sc-cMljjf hkZocT"
       >
-        <div
-          className="sc-jAaTju eobcqR"
-          data-qa="price-controls__price-button-disabled"
+        <button
+          className="sc-EHOje ISMxz"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={true}
+          onClick={[Function]}
         >
-          <i
-            className="sc-jDwBTQ dBQkTU fas fa-ban fa-flip-horizontal"
-          />
-          Streaming price unavailable
-        </div>
+          <div
+            className="sc-gZMcBi egNMcT"
+            disabled={true}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                SELL
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
         <div
           className="sc-jzJRlG cxjlMm"
         >
@@ -254,15 +286,47 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
             </span>
           </div>
         </div>
-        <div
-          className="sc-jAaTju eobcqR"
-          data-qa="price-controls__price-button-disabled"
+        <button
+          className="sc-EHOje ISMxz"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={true}
+          onClick={[Function]}
         >
-          <i
-            className="sc-jDwBTQ dBQkTU fas fa-ban fa-flip-horizontal"
-          />
-          Streaming price unavailable
-        </div>
+          <div
+            className="sc-gZMcBi egNMcT"
+            disabled={true}
+          >
+            <div
+              className="sc-gqjmRU cKkifn"
+            >
+              <div
+                className="sc-bZQynM sc-gzVnrw lDSPw"
+              >
+                BUY
+              </div>
+              <div
+                className="sc-bZQynM sc-htoDjs duRaET"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="sc-bZQynM sc-dnqmqq fBMQfa"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="sc-bZQynM sc-iwsKbI CPNEg"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
       </div>
     </div>
     <div
