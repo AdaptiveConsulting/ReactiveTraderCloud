@@ -32,7 +32,6 @@ const appTitles = {
   [APP_PATHS.LAUNCHER]: 'Reactive Ecosystem Launcher',
   [APP_PATHS.TRADER]: 'Reactive Trader Cloud',
   [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader',
-  unknown: document.title,
 }
 
 async function init() {
@@ -40,7 +39,7 @@ async function init() {
   const intentsProvider = getProvider()
 
   const env = getEnvironment()
-  document.title = `${appTitles[pathname] || appTitles['unknown']} ${envTitles[env || 'unknown']}`
+  document.title = `${appTitles[pathname] || document.title} ${envTitles[env || 'unknown']}`
 
   if (urlParams.has('startAsSymphonyController')) {
     const { initiateSymphony } = await getSymphonyPlatform()
