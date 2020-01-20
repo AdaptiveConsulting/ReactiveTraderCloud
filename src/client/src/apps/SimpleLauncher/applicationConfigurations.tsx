@@ -95,11 +95,10 @@ const excelLegacyAppConfig: ApplicationConfig = {
 const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
 
 const env = getEnvironment() || 'unknown'
-const envFormatted = `(${env.toUpperCase()})`
 
 const baseAppConfigs: ApplicationConfig[] = [
   {
-    name: `Reactive Trader Cloud (${envFormatted})`,
+    name: `Reactive Trader Cloud`,
     uuid: `reactive-trader-cloud-web-${env}`,
     url: `${ORIGIN}`,
     icon: reactiveTraderIcon,
