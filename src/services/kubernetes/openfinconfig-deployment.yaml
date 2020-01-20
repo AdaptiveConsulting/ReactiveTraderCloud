@@ -15,7 +15,7 @@ spec:
       volumes:
         - name: google-cloud-key
           secret:
-            secretName: openfinconfig-key
+            secretName: nlp-key
       containers:
         - name: openfinconfig
           image: reactivetradercloud/openfinconfig:${BUILD_VERSION}
