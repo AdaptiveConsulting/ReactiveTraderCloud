@@ -32,7 +32,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje ISMxz"
+          className="sc-EHOje gyzxsl"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -95,7 +95,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje ISMxz"
+          className="sc-EHOje gyzxsl"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -201,7 +201,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje ISMxz"
+          className="sc-EHOje gyzxsl"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -287,7 +287,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje ISMxz"
+          className="sc-EHOje gyzxsl"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -393,7 +393,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje ISMxz"
+          className="sc-EHOje gyzxsl"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -485,7 +485,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje ISMxz"
+          className="sc-EHOje gyzxsl"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -597,7 +597,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje dMrstF"
+          className="sc-EHOje cqLBDP"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -660,7 +660,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje iNOQDN"
+          className="sc-EHOje bIhQyY"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -980,7 +980,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje dBRWIy"
+          className="sc-EHOje lbkXsS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -1043,7 +1043,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           />
         </div>
         <button
-          className="sc-EHOje eLhfpu"
+          className="sc-EHOje cnoevC"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -1149,7 +1149,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje ISMxz"
+          className="sc-EHOje gyzxsl"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -1281,7 +1281,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje ISMxz"
+          className="sc-EHOje gyzxsl"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"

@@ -1,12 +1,12 @@
 import React from 'react'
 import { stories, Story, Centered } from './Initialise.stories'
 import PriceMovement from '../PriceMovement'
-import { select } from '@storybook/addon-knobs'
+import { select, boolean } from '@storybook/addon-knobs'
 
 stories.add('Price movement', () => {
   const priceMovementType = select('Direction', { Up: 'Up', Down: 'Down' }, 'Up')
   const showPriceMovement = true
-  const isAnalyticView = true
+  const isAnalyticView = boolean('Analytic View', true)
   return (
     <Story>
       <Centered>

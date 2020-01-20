@@ -40,9 +40,7 @@ export const TradeButton = styled.button<{ direction: Direction; priceAnnounced:
   cursor: pointer;
   border: none;
   outline: none;
-  width: 122px;
   min-width: 122px;
-  height: 59px;
   min-height: 59px;
   padding: 0.75rem 1.5rem;
   margin-bottom: 2px;

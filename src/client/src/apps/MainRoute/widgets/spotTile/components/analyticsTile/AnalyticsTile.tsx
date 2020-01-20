@@ -24,6 +24,7 @@ const AnalyticsWrapperWithPlatform: FC = props => {
   return <AnalyticsTileWrapper {...props} platform={platform} />
 }
 class AnalyticsTile extends React.PureComponent<SpotTileProps> {
+  private handleRfqRejected = () => this.props.rfq.reject({ currencyPair: this.props.currencyPair })
   render() {
     const {
       currencyPair,
@@ -59,8 +60,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       getDefaultNotionalValue(currencyPair) !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
     const showTimer = isRfqStateReceived && rfqTimeout
-    const handleRfqRejected = () => rfq.reject({ currencyPair })
-    const isTimerOn = showTimer && rfqTimeout !== null && rfqReceivedTime !== null
+    const isTimerOn = Boolean(showTimer) && rfqTimeout !== null && rfqReceivedTime !== null
 
     return (
       <AnalyticsWrapperWithPlatform>
@@ -76,7 +76,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
           />
           <AnalyticsTileContent>
             <GraphNotionalWrapper>
-              <LineChartWrapper isTimerOn={!!isTimerOn}>
+              <LineChartWrapper isTimerOn={isTimerOn}>
                 <AnalyticsTileChart history={historicPrices} />
               </LineChartWrapper>
               <NotionalInput
@@ -91,10 +91,10 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
               />
               {showTimer && rfqTimeout !== null && rfqReceivedTime !== null && (
                 <RfqTimer
-                  onRejected={handleRfqRejected}
+                  onRejected={this.handleRfqRejected}
                   receivedTime={rfqReceivedTime}
                   timeout={rfqTimeout}
-                  isAnalyticsView={true}
+                  isAnalyticsView
                 />
               )}
             </GraphNotionalWrapper>
