@@ -5,7 +5,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-eqIVtm sc-kgAjT iukmTY spot-tile"
+    className="sc-eqIVtm sc-kgAjT vgZiC spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -174,7 +174,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-eqIVtm sc-kgAjT iukmTY spot-tile"
+    className="sc-eqIVtm sc-kgAjT vgZiC spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -368,7 +368,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-eqIVtm sc-kgAjT iukmTY spot-tile"
+    className="sc-eqIVtm sc-kgAjT vgZiC spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -572,7 +572,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-eqIVtm sc-kgAjT iukmTY spot-tile"
+    className="sc-eqIVtm sc-kgAjT vgZiC spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -741,7 +741,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-eqIVtm sc-kgAjT iukmTY spot-tile"
+    className="sc-eqIVtm sc-kgAjT vgZiC spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -957,7 +957,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-eqIVtm sc-kgAjT iukmTY spot-tile"
+    className="sc-eqIVtm sc-kgAjT vgZiC spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -1126,7 +1126,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   className="sc-kjoXOD sc-cHGsZl bzMndt"
 >
   <div
-    className="sc-eqIVtm sc-kgAjT iukmTY spot-tile"
+    className="sc-eqIVtm sc-kgAjT vgZiC spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
