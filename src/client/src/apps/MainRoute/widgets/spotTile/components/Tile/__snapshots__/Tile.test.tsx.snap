@@ -32,7 +32,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje gyzxsl"
+          className="sc-EHOje iLmffQ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -95,7 +95,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje gyzxsl"
+          className="sc-EHOje iLmffQ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -201,7 +201,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje gyzxsl"
+          className="sc-EHOje iLmffQ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -272,14 +272,14 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           }
         >
           <div
-            className="sc-jlyJG jbEnWN"
+            className="sc-jlyJG cSjJcx"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="sc-gipzik eFroXM"
+              className="sc-gipzik hJMFkk"
               data-qa="tile-booking__booking-status"
             >
               Initiate RFQ
@@ -287,7 +287,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje gyzxsl"
+          className="sc-EHOje iLmffQ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -393,7 +393,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje gyzxsl"
+          className="sc-EHOje iLmffQ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -470,14 +470,14 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           }
         >
           <div
-            className="sc-jlyJG jbEnWN"
+            className="sc-jlyJG cSjJcx"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="sc-gipzik eFroXM"
+              className="sc-gipzik hJMFkk"
               data-qa="tile-booking__booking-status"
             >
               Requote
@@ -485,7 +485,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje gyzxsl"
+          className="sc-EHOje iLmffQ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -597,7 +597,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje cqLBDP"
+          className="sc-EHOje cZgnHF"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -660,7 +660,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje bIhQyY"
+          className="sc-EHOje cFbNy"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -766,7 +766,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <div
-          className="sc-jAaTju eobcqR"
+          className="sc-jAaTju flSvNH"
           data-qa="price-controls__price-button-disabled--loading"
         >
           <div
@@ -848,14 +848,14 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           }
         >
           <div
-            className="sc-jlyJG gZYAjX"
+            className="sc-jlyJG ekxzdp"
             color="red"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="sc-gipzik eFroXM"
+              className="sc-gipzik hJMFkk"
               data-qa="tile-booking__booking-status"
             >
               Cancel RFQ
@@ -863,7 +863,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           </div>
         </div>
         <div
-          className="sc-jAaTju eobcqR"
+          className="sc-jAaTju flSvNH"
           data-qa="price-controls__price-button-disabled--loading"
         >
           <div
@@ -980,7 +980,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje lbkXsS"
+          className="sc-EHOje jYIGMu"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -1043,7 +1043,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           />
         </div>
         <button
-          className="sc-EHOje cnoevC"
+          className="sc-EHOje kcRZIj"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -1149,7 +1149,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje gyzxsl"
+          className="sc-EHOje iLmffQ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -1220,7 +1220,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           }
         >
           <div
-            className="sc-jlyJG jeNLbj"
+            className="sc-jlyJG zbVFC"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
@@ -1273,7 +1273,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
               </svg>
             </span>
             <span
-              className="sc-gipzik ewUEuG"
+              className="sc-gipzik eXtAkj"
               data-qa="tile-booking__booking-status"
             >
               Executing
@@ -1281,7 +1281,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje gyzxsl"
+          className="sc-EHOje iLmffQ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"

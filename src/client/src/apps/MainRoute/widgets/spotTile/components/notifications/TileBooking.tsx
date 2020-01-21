@@ -24,8 +24,8 @@ const BookingPill = styled.div<{
 }>`
   padding: 0.3rem;
   position: absolute;
-  left: ${({ isAnalyticsView, isExecutingStatus }) =>
-    isAnalyticsView && !isExecutingStatus ? '65%' : isAnalyticsView ? '-65%' : ''};
+  ${({ isAnalyticsView, isExecutingStatus }) =>
+    isAnalyticsView && !isExecutingStatus ? 'right: 1.5rem' : isAnalyticsView ? 'left: -35%' : ''};
   border-radius: ${({ isExecutingStatus }) => (isExecutingStatus ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
@@ -46,7 +46,7 @@ const BookingPill = styled.div<{
 
 const BookingStatus = styled.span<{ isExecutingStatus: boolean }>`
   color: ${({ theme }) => theme.template.white.normal};
-  font-size: ${({ isExecutingStatus }) => (isExecutingStatus ? '13px' : '11px')};
+  font-size: ${({ isExecutingStatus }) => (isExecutingStatus ? '0.8125rem' : '0.78rem')};
 `
 
 const AdaptiveLoaderWrapper = styled.span`
