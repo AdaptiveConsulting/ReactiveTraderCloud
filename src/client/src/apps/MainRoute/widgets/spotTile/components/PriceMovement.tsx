@@ -6,7 +6,7 @@ interface Props {
   priceMovementType?: string
   spread: string
   show: boolean
-  isAnalyticView: boolean
+  isAnalyticsView: boolean
 }
 
 const MovementIcon = styled('i')<{ show: boolean; color: string }>`
@@ -21,10 +21,10 @@ const MovementValue = styled.div`
 `
 
 const PriceMovementStyle = styled.div<{
-  isAnalyticView: boolean
+  isAnalyticsView: boolean
 }>`
   display: flex;
-  padding-right: ${({ isAnalyticView }) => (isAnalyticView ? '15%' : '0')};
+  padding-right: ${({ isAnalyticsView }) => (isAnalyticsView ? '15%' : '0')};
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -32,8 +32,8 @@ const PriceMovementStyle = styled.div<{
   z-index: 1;
 `
 
-const PriceMovement: React.FC<Props> = ({ priceMovementType, spread, show, isAnalyticView }) => (
-  <PriceMovementStyle isAnalyticView={isAnalyticView}>
+const PriceMovement: React.FC<Props> = ({ priceMovementType, spread, show, isAnalyticsView }) => (
+  <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
     <MovementIcon
       data-qa="price-movement__movement-icon--up"
       show={show && priceMovementType === PriceMovementTypes.Up}

@@ -20,18 +20,18 @@ const BookingPill = styled.div<{
   disabled: boolean
   isExecutingStatus: boolean
   color: string
-  isAnalyticView: boolean
+  isAnalyticsView: boolean
 }>`
   padding: 0.3rem;
   position: absolute;
-  left: ${({ isAnalyticView, isExecutingStatus }) =>
-    isAnalyticView && !isExecutingStatus ? '65%' : isAnalyticView ? '-65%' : ''};
+  left: ${({ isAnalyticsView, isExecutingStatus }) =>
+    isAnalyticsView && !isExecutingStatus ? '65%' : isAnalyticsView ? '-65%' : ''};
   border-radius: ${({ isExecutingStatus }) => (isExecutingStatus ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
-  width: ${({ isExecutingStatus, isAnalyticView }) =>
-    isAnalyticView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '64px'};
+  width: ${({ isExecutingStatus, isAnalyticsView }) =>
+    isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '64px'};
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
   }
@@ -59,7 +59,7 @@ interface TileBookingProps {
   disabled?: boolean
   color: string
   onBookingPillClick?: () => void
-  isAnalyticView: boolean
+  isAnalyticsView: boolean
 }
 
 const TileBooking: React.FC<TileBookingProps> = ({
@@ -69,7 +69,7 @@ const TileBooking: React.FC<TileBookingProps> = ({
   color,
   onBookingPillClick,
   children,
-  isAnalyticView,
+  isAnalyticsView,
 }) => (
   <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
     {show &&
@@ -84,7 +84,7 @@ const TileBooking: React.FC<TileBookingProps> = ({
             }}
             isExecutingStatus={showLoader}
             disabled={!!disabled}
-            isAnalyticView={isAnalyticView}
+            isAnalyticsView={isAnalyticsView}
             data-qa="tile-booking__booking-pill"
           >
             {showLoader && (

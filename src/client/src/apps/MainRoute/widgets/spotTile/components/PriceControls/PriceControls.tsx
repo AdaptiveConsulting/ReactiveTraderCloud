@@ -111,7 +111,7 @@ const PriceControls: React.FC<Props> = ({
         priceMovementType={priceMovement}
         spread={spreadValue}
         show={showPriceMovement}
-        isAnalyticView={isAnalyticsView}
+        isAnalyticsView={isAnalyticsView}
       />
       <TileBookingSwitch
         isTradeExecutionInFlight={isTradeExecutionInFlight}
@@ -120,7 +120,7 @@ const PriceControls: React.FC<Props> = ({
         rfq={rfq}
         rfqState={rfqState}
         hasUserError={hasUserError}
-        isAnalyticView={isAnalyticsView}
+        isAnalyticsView={isAnalyticsView}
       />
       <div>
         {priceButtonDisabledStatus}
@@ -130,14 +130,14 @@ const PriceControls: React.FC<Props> = ({
       </div>
     </PriceControlsStyle>
   ) : (
-    <PriceControlsStyle isAnalyticsView={!!isAnalyticsView}>
+    <PriceControlsStyle isAnalyticsView={isAnalyticsView}>
       {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
       {priceButtonDisabledStatus}
       <PriceMovement
         priceMovementType={priceMovement}
         spread={spreadValue}
         show={showPriceMovement}
-        isAnalyticView={isAnalyticsView}
+        isAnalyticsView={isAnalyticsView}
       />
       <TileBookingSwitch
         isTradeExecutionInFlight={isTradeExecutionInFlight}
@@ -146,7 +146,7 @@ const PriceControls: React.FC<Props> = ({
         rfq={rfq}
         rfqState={rfqState}
         hasUserError={hasUserError}
-        isAnalyticView={isAnalyticsView}
+        isAnalyticsView={isAnalyticsView}
       />
       {showPriceButton(Direction.Buy, priceData.ask, askRate)}
       {priceButtonDisabledStatus}

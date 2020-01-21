@@ -11,7 +11,7 @@ interface Props {
   rfq: RfqActions
   rfqState: RfqState
   hasUserError: boolean
-  isAnalyticView: boolean
+  isAnalyticsView: boolean
 }
 
 const TileBookingSwitch: FC<Props> = ({
@@ -21,7 +21,7 @@ const TileBookingSwitch: FC<Props> = ({
   currencyPair,
   hasUserError,
   rfq,
-  isAnalyticView,
+  isAnalyticsView,
 }) => {
   const { isRfqStateExpired, isRfqStateCanRequest, isRfqStateRequested } = getConstsFromRfqState(
     rfqState,
@@ -33,7 +33,7 @@ const TileBookingSwitch: FC<Props> = ({
         show={isTradeExecutionInFlight}
         color="blue"
         showLoader
-        isAnalyticView={isAnalyticView}
+        isAnalyticsView={isAnalyticsView}
       >
         Executing
       </TileBooking>
@@ -43,7 +43,7 @@ const TileBookingSwitch: FC<Props> = ({
         showLoader={false}
         onBookingPillClick={() => rfq.request({ notional, currencyPair })}
         disabled={hasUserError}
-        isAnalyticView={isAnalyticView}
+        isAnalyticsView={isAnalyticsView}
       >
         Initiate RFQ
       </TileBooking>
@@ -52,7 +52,7 @@ const TileBookingSwitch: FC<Props> = ({
         color="blue"
         showLoader={false}
         onBookingPillClick={() => rfq.requote({ notional, currencyPair })}
-        isAnalyticView={isAnalyticView}
+        isAnalyticsView={isAnalyticsView}
       >
         Requote
       </TileBooking>
@@ -61,7 +61,7 @@ const TileBookingSwitch: FC<Props> = ({
         color="red"
         showLoader={false}
         onBookingPillClick={() => rfq.cancel({ currencyPair })}
-        isAnalyticView={isAnalyticView}
+        isAnalyticsView={isAnalyticsView}
       >
         Cancel RFQ
       </TileBooking>
