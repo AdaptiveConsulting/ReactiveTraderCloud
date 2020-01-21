@@ -6,7 +6,13 @@ import { AppConfig, InteropTopics, WindowConfig } from '../../types'
 import { createPlatformWindow, openDesktopWindow, openfinWindowStates } from './window'
 import { fromEventPattern, Observable } from 'rxjs'
 import { workspaces } from 'openfin-layouts'
-import { Notification, NotificationActionEvent, removeEventListener } from 'openfin-notifications'
+import {
+  Notification,
+  NotificationActionEvent,
+  removeEventListener,
+  addEventListener,
+  create,
+} from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
 import { platformEpics } from './epics'
@@ -40,15 +46,10 @@ export default class OpenFin implements Platform {
     height: '100%',
   }
 
-  openFinNotifications = require('openfin-notifications')
-
   constructor() {
     window.addEventListener('beforeunload', this.handleWindowUnload)
 
-    this.openFinNotifications.addEventListener(
-      'notification-action',
-      handleNotificationAction
-    )
+    addEventListener('notification-action', this.handleNotificationAction)
   }
 
   window = {
@@ -110,21 +111,20 @@ export default class OpenFin implements Platform {
 
   notification = {
     notify: (message: object) => {
-      this.openFinNotifications
-        .create({
-          body: this.getNotificationBody(message as NotificationMessage),
-          title: this.getNotificationTitle(message as NotificationMessage),
-          icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
-          customData: message,
-          buttons: [
-            {
-              title: 'Highlight trade in blotter',
-              iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
-              onClick: { task: 'highlight-trade' },
-            },
-          ],
-          category: 'Trade Executed',
-        })
+      create({
+        body: this.getNotificationBody(message as NotificationMessage),
+        title: this.getNotificationTitle(message as NotificationMessage),
+        icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
+        customData: message,
+        buttons: [
+          {
+            title: 'Highlight trade in blotter',
+            iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
+            onClick: { task: 'highlight-trade' },
+          },
+        ],
+        category: 'Trade Executed',
+      })
         .then((successVal: Notification) => {
           console.info('Notification success', successVal)
         })
@@ -151,24 +151,17 @@ export default class OpenFin implements Platform {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
   }
 
-  handleWindowUnload() {
-    removeEventListener(
-      'notification-action', 
-      handleNotificationAction
-    )
-    window.removeEventListener('beforeunload', this.handleWindowUnload)
+  handleNotificationAction = (event: NotificationActionEvent) => {
+    if (event.result['task'] === 'highlight-trade') {
+      fin.InterApplicationBus.publish(InteropTopics.HighlightBlotter, event.notification.customData)
+    }
+  }
+
+  handleWindowUnload = () => {
+    removeEventListener('notification-action', this.handleNotificationAction)
   }
 
   epics: Array<ApplicationEpic> = platformEpics
-}
-
-function handleNotificationAction(event: NotificationActionEvent) {
-  if (event.result['task'] === 'highlight-trade') {
-    fin.InterApplicationBus.publish(
-      InteropTopics.HighlightBlotter,
-      event.notification.customData,
-    )
-  }
 }
 
 async function appRestoreHandler(
