@@ -6,7 +6,7 @@ import { AppConfig, InteropTopics, WindowConfig } from '../../types'
 import { createPlatformWindow, openDesktopWindow, openfinWindowStates } from './window'
 import { fromEventPattern, Observable } from 'rxjs'
 import { workspaces } from 'openfin-layouts'
-import { Notification, NotificationActionEvent } from 'openfin-notifications'
+import { Notification, NotificationActionEvent, removeEventListener } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
 import { platformEpics } from './epics'
@@ -43,17 +43,11 @@ export default class OpenFin implements Platform {
   openFinNotifications = require('openfin-notifications')
 
   constructor() {
-    window.addEventListener('unload', () => {
-      this.openFinNotifications.removeEventListener('notification-action', () => {
-        console.info('Removed openFinNotifications listener to notification-action')
-      })
-    })
-
-    window.removeEventListener('unload', () => console.info('Removed window listener to unload'))
+    window.addEventListener('beforeunload', this.handleWindowUnload)
 
     this.openFinNotifications.addEventListener(
       'notification-action',
-      this.handleNotificationAction
+      handleNotificationAction
     )
   }
 
@@ -157,16 +151,24 @@ export default class OpenFin implements Platform {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
   }
 
-  handleNotificationAction(event: NotificationActionEvent) {
-    if (event.result['task'] === 'highlight-trade') {
-      fin.InterApplicationBus.publish(
-        InteropTopics.HighlightBlotter,
-        event.notification.customData,
-      )
-    }
+  handleWindowUnload() {
+    removeEventListener(
+      'notification-action', 
+      handleNotificationAction
+    )
+    window.removeEventListener('beforeunload', this.handleWindowUnload)
   }
 
   epics: Array<ApplicationEpic> = platformEpics
+}
+
+function handleNotificationAction(event: NotificationActionEvent) {
+  if (event.result['task'] === 'highlight-trade') {
+    fin.InterApplicationBus.publish(
+      InteropTopics.HighlightBlotter,
+      event.notification.customData,
+    )
+  }
 }
 
 async function appRestoreHandler(
