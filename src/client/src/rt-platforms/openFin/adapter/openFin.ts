@@ -43,18 +43,17 @@ export default class OpenFin implements Platform {
   openFinNotifications = require('openfin-notifications')
 
   constructor() {
-    window.addEventListener('unload', () => this.openFinNotifications.removeEventListener('notification-action'))
+    window.addEventListener('unload', () => {
+      this.openFinNotifications.removeEventListener('notification-action', () => {
+        console.info('Removed openFinNotifications listener to notification-action')
+      })
+    })
+
+    window.removeEventListener('unload', () => console.info('Removed window listener to unload'))
 
     this.openFinNotifications.addEventListener(
       'notification-action',
-      (event: NotificationActionEvent) => {
-        if (event.result['task'] === 'highlight-trade') {
-          fin.InterApplicationBus.publish(
-            InteropTopics.HighlightBlotter,
-            event.notification.customData,
-          )
-        }
-      },
+      this.handleNotificationAction
     )
   }
 
@@ -156,6 +155,15 @@ export default class OpenFin implements Platform {
 
   getNotificationBody({ tradeNotification }: NotificationMessage) {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
+  }
+
+  handleNotificationAction(event: NotificationActionEvent) {
+    if (event.result['task'] === 'highlight-trade') {
+      fin.InterApplicationBus.publish(
+        InteropTopics.HighlightBlotter,
+        event.notification.customData,
+      )
+    }
   }
 
   epics: Array<ApplicationEpic> = platformEpics
