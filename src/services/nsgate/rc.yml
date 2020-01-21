@@ -35,6 +35,8 @@ spec:
             name: "eventstore-tcp"
           - containerPort: 2113
             name: "eventstore"
+          - containerPort: 8080
+            name: "openfinconfig"
         volumeMounts:
         - name: web-ssl
           readOnly: true
