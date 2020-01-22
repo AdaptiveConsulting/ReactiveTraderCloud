@@ -14,7 +14,6 @@ export const GraphNotionalWrapper = styled.div`
   justify-content: space-between;
 `
 export const PriceControlWrapper = styled.div`
-  width: 50%;
   display: flex;
 `
 export const LineChartWrapper = styled.div<{ isTimerOn: boolean }>`

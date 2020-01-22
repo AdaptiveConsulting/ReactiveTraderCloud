@@ -32,7 +32,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje iLmffQ"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -40,7 +40,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -95,7 +95,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje iLmffQ"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -103,7 +103,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -201,7 +201,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje iLmffQ"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -209,7 +209,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -272,7 +272,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           }
         >
           <div
-            className="sc-jlyJG cSjJcx"
+            className="sc-jlyJG ExiWe"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
@@ -287,7 +287,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje iLmffQ"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -295,7 +295,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -393,7 +393,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje iLmffQ"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -401,7 +401,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -470,7 +470,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           }
         >
           <div
-            className="sc-jlyJG cSjJcx"
+            className="sc-jlyJG ExiWe"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
@@ -485,7 +485,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje iLmffQ"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -493,7 +493,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -597,7 +597,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje cZgnHF"
+          className="sc-EHOje jzqBgP"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -605,7 +605,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi crpdKd"
+            className="sc-gZMcBi hILJIt"
             disabled={false}
           >
             <div
@@ -660,7 +660,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje cFbNy"
+          className="sc-EHOje jOHaCZ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -668,7 +668,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi crpdKd"
+            className="sc-gZMcBi hILJIt"
             disabled={false}
           >
             <div
@@ -766,7 +766,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <div
-          className="sc-jAaTju flSvNH"
+          className="sc-jAaTju drpnLW"
           data-qa="price-controls__price-button-disabled--loading"
         >
           <div
@@ -848,7 +848,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           }
         >
           <div
-            className="sc-jlyJG ekxzdp"
+            className="sc-jlyJG dYxgqf"
             color="red"
             data-qa="tile-booking__booking-pill"
             disabled={false}
@@ -863,7 +863,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           </div>
         </div>
         <div
-          className="sc-jAaTju flSvNH"
+          className="sc-jAaTju drpnLW"
           data-qa="price-controls__price-button-disabled--loading"
         >
           <div
@@ -980,7 +980,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje jYIGMu"
+          className="sc-EHOje bmcBH"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -988,7 +988,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi crpdKd"
+            className="sc-gZMcBi hILJIt"
             disabled={false}
           >
             <div
@@ -1043,7 +1043,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           />
         </div>
         <button
-          className="sc-EHOje kcRZIj"
+          className="sc-EHOje gdaXVo"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -1051,7 +1051,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi crpdKd"
+            className="sc-gZMcBi hILJIt"
             disabled={false}
           >
             <div
@@ -1149,7 +1149,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje iLmffQ"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -1157,7 +1157,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -1220,7 +1220,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           }
         >
           <div
-            className="sc-jlyJG zbVFC"
+            className="sc-jlyJG kPGhVC"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
@@ -1281,7 +1281,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje iLmffQ"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -1289,7 +1289,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div

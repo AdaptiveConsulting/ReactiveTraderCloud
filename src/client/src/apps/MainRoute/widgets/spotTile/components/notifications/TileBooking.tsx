@@ -22,10 +22,11 @@ const BookingPill = styled.div<{
   color: string
   isAnalyticsView: boolean
 }>`
-  padding: 0.3rem;
+  padding-bottom: 0.25rem;
+  padding-top: ${({ isExecutingStatus }) => (isExecutingStatus ? '0.2rem' : '0.1rem')};
   position: absolute;
   ${({ isAnalyticsView, isExecutingStatus }) =>
-    isAnalyticsView && !isExecutingStatus ? 'right: 1.5rem' : isAnalyticsView ? 'left: -35%' : ''};
+    isAnalyticsView && !isExecutingStatus ? 'right: 1.5rem' : isAnalyticsView ? 'left: -20%' : ''};
   border-radius: ${({ isExecutingStatus }) => (isExecutingStatus ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
