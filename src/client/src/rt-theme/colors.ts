@@ -98,7 +98,7 @@ const offblack = createPalette(OFFBLACK, {
   // We are overriding these values due to insuffcient contrast ratio
   // and inconsistency with the designers intent.
   D3: rgb(46, 53, 67),
-  D4: rgb(39, 45, 58),
+  D4: rgb(33, 37, 47),
 })
 const blue = createPalette(rgb(81, 147, 253), { L95: OFFWHITE })
 
