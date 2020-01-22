@@ -24,7 +24,7 @@ interface Props {
   isTradeExecutionInFlight: boolean
   rfq: RfqActions
   notional: number
-  isAnalyticsView?: boolean
+  isAnalyticsView: boolean
   inputValidationMessage?: ValidationMessage
 }
 
@@ -111,6 +111,16 @@ const PriceControls: React.FC<Props> = ({
         priceMovementType={priceMovement}
         spread={spreadValue}
         show={showPriceMovement}
+        isAnalyticsView={isAnalyticsView}
+      />
+      <TileBookingSwitch
+        isTradeExecutionInFlight={isTradeExecutionInFlight}
+        currencyPair={currencyPair}
+        notional={notional}
+        rfq={rfq}
+        rfqState={rfqState}
+        hasUserError={hasUserError}
+        isAnalyticsView={isAnalyticsView}
       />
       <div>
         {priceButtonDisabledStatus}
@@ -120,13 +130,14 @@ const PriceControls: React.FC<Props> = ({
       </div>
     </PriceControlsStyle>
   ) : (
-    <PriceControlsStyle isAnalyticsView={!!isAnalyticsView}>
+    <PriceControlsStyle isAnalyticsView={isAnalyticsView}>
       {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
       {priceButtonDisabledStatus}
       <PriceMovement
         priceMovementType={priceMovement}
         spread={spreadValue}
         show={showPriceMovement}
+        isAnalyticsView={isAnalyticsView}
       />
       <TileBookingSwitch
         isTradeExecutionInFlight={isTradeExecutionInFlight}
@@ -135,6 +146,7 @@ const PriceControls: React.FC<Props> = ({
         rfq={rfq}
         rfqState={rfqState}
         hasUserError={hasUserError}
+        isAnalyticsView={isAnalyticsView}
       />
       {showPriceButton(Direction.Buy, priceData.ask, askRate)}
       {priceButtonDisabledStatus}

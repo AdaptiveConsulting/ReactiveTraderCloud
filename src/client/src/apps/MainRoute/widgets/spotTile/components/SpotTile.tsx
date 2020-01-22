@@ -76,6 +76,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
               isTradeExecutionInFlight={isTradeExecutionInFlight}
               executeTrade={executeTrade}
               priceData={priceData}
+              isAnalyticsView={false}
               currencyPair={currencyPair}
               rfqState={rfqState}
               disabled={tradingDisabled}
@@ -101,6 +102,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
                 onRejected={handleRfqRejected}
                 receivedTime={rfqReceivedTime}
                 timeout={rfqTimeout}
+                isAnalyticsView={false}
               />
             )}
           </ReserveSpaceGrouping>

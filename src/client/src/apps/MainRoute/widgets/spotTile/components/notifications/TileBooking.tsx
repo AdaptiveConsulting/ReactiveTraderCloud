@@ -16,13 +16,23 @@ const TileBookingStyle = styled.div`
   z-index: 2;
 `
 
-const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean; color: string }>`
-  padding: 0.4rem;
-  border-radius: ${({ altStyle }) => (altStyle ? '17px' : '3px')};
+const BookingPill = styled.div<{
+  disabled: boolean
+  isExecutingStatus: boolean
+  color: string
+  isAnalyticsView: boolean
+}>`
+  padding-bottom: 6px;
+  padding-top: ${({ isExecutingStatus }) => (isExecutingStatus ? '6px' : '3.5px')};
+  position: absolute;
+  ${({ isAnalyticsView, isExecutingStatus }) =>
+    isAnalyticsView && !isExecutingStatus ? 'right: 1.5rem' : isAnalyticsView ? 'left: -20%' : ''};
+  border-radius: ${({ isExecutingStatus }) => (isExecutingStatus ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
-  width: ${({ altStyle }) => (altStyle ? '125px' : '64px')};
+  width: ${({ isExecutingStatus, isAnalyticsView }) =>
+    isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '64px'};
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
   }
@@ -35,9 +45,14 @@ const BookingPill = styled.div<{ disabled: boolean; altStyle: boolean; color: st
   `}
 `
 
-const BookingStatus = styled.span`
+const BookingStatus = styled.span<{ isExecutingStatus: boolean; isAnalyticsView: boolean }>`
   color: ${({ theme }) => theme.template.white.normal};
-  font-size: 0.8125rem;
+  font-size: ${({ isExecutingStatus, isAnalyticsView }) =>
+    isAnalyticsView && !isExecutingStatus
+      ? '0.6875rem '
+      : isExecutingStatus
+      ? '0.8125rem'
+      : '0.77rem'};
 `
 
 const AdaptiveLoaderWrapper = styled.span`
@@ -46,10 +61,11 @@ const AdaptiveLoaderWrapper = styled.span`
 
 interface TileBookingProps {
   show: boolean
-  showLoader?: boolean
+  showLoader: boolean
   disabled?: boolean
   color: string
   onBookingPillClick?: () => void
+  isAnalyticsView: boolean
 }
 
 const TileBooking: React.FC<TileBookingProps> = ({
@@ -59,6 +75,7 @@ const TileBooking: React.FC<TileBookingProps> = ({
   color,
   onBookingPillClick,
   children,
+  isAnalyticsView,
 }) => (
   <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
     {show &&
@@ -71,8 +88,9 @@ const TileBooking: React.FC<TileBookingProps> = ({
                 onBookingPillClick()
               }
             }}
-            altStyle={!!showLoader}
+            isExecutingStatus={showLoader}
             disabled={!!disabled}
+            isAnalyticsView={isAnalyticsView}
             data-qa="tile-booking__booking-pill"
           >
             {showLoader && (
@@ -80,7 +98,13 @@ const TileBooking: React.FC<TileBookingProps> = ({
                 <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
               </AdaptiveLoaderWrapper>
             )}
-            <BookingStatus data-qa="tile-booking__booking-status">{children}</BookingStatus>
+            <BookingStatus
+              data-qa="tile-booking__booking-status"
+              isExecutingStatus={showLoader}
+              isAnalyticsView={isAnalyticsView}
+            >
+              {children}
+            </BookingStatus>
           </BookingPill>
         </TileBookingStyle>
       ))}

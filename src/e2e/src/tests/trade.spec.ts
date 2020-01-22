@@ -75,7 +75,7 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     const pricesButton = browser.element(by.qaTag('workspace-view-normal'))
     await pricesButton.click()
     const labelRFQ = await mainPage.tile.tradeType.initiateRFQ.buttonInitiateRFQ
-    expect(labelRFQ.getText()).toEqual('Initiate\nRFQ')
+    expect(labelRFQ.getText()).toEqual('Initiate RFQ')
     await mainPage.tile.resetNotional('EURToUSD')
     expect(notional.getAttribute('value')).toEqual('1,000,000')
   })

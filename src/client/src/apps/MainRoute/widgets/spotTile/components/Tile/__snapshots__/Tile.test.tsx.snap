@@ -32,7 +32,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -40,7 +40,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -73,7 +73,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG elTuMv"
+          className="sc-jzJRlG cxjlMm"
         >
           <i
             aria-hidden="true"
@@ -95,7 +95,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -103,7 +103,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -201,7 +201,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -209,7 +209,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -242,7 +242,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG elTuMv"
+          className="sc-jzJRlG cxjlMm"
         >
           <i
             aria-hidden="true"
@@ -272,24 +272,22 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           }
         >
           <div
-            className="sc-jlyJG iSkInz"
+            className="sc-jlyJG bJHKfU"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="sc-gipzik eXtAkj"
+              className="sc-gipzik gYgvay"
               data-qa="tile-booking__booking-status"
             >
-              Initiate
-              <br />
-              RFQ
+              Initiate RFQ
             </span>
           </div>
         </div>
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -297,7 +295,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -395,7 +393,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -403,7 +401,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -435,14 +433,14 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
             </div>
           </div>
           <div
-            className="sc-VigVT cLQaHF"
+            className="sc-VigVT jYMuao"
             data-qa="price-button__expired"
           >
             Expired
           </div>
         </button>
         <div
-          className="sc-jzJRlG elTuMv"
+          className="sc-jzJRlG cxjlMm"
         >
           <i
             aria-hidden="true"
@@ -472,14 +470,14 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           }
         >
           <div
-            className="sc-jlyJG iSkInz"
+            className="sc-jlyJG bJHKfU"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="sc-gipzik eXtAkj"
+              className="sc-gipzik gYgvay"
               data-qa="tile-booking__booking-status"
             >
               Requote
@@ -487,7 +485,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -495,7 +493,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -527,7 +525,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
             </div>
           </div>
           <div
-            className="sc-VigVT cLQaHF"
+            className="sc-VigVT jYMuao"
             data-qa="price-button__expired"
           >
             Expired
@@ -599,7 +597,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje ixrtnE"
+          className="sc-EHOje jzqBgP"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -607,7 +605,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi crpdKd"
+            className="sc-gZMcBi hILJIt"
             disabled={false}
           >
             <div
@@ -640,7 +638,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG elTuMv"
+          className="sc-jzJRlG cxjlMm"
         >
           <i
             aria-hidden="true"
@@ -662,7 +660,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           />
         </div>
         <button
-          className="sc-EHOje iHiLlf"
+          className="sc-EHOje jOHaCZ"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -670,7 +668,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi crpdKd"
+            className="sc-gZMcBi hILJIt"
             disabled={false}
           >
             <div
@@ -768,7 +766,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <div
-          className="sc-jAaTju eRYZLd"
+          className="sc-jAaTju drpnLW"
           data-qa="price-controls__price-button-disabled--loading"
         >
           <div
@@ -820,7 +818,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           Awaiting price
         </div>
         <div
-          className="sc-jzJRlG elTuMv"
+          className="sc-jzJRlG cxjlMm"
         >
           <i
             aria-hidden="true"
@@ -850,24 +848,22 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           }
         >
           <div
-            className="sc-jlyJG cQKJBU"
+            className="sc-jlyJG hyMhTf"
             color="red"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="sc-gipzik eXtAkj"
+              className="sc-gipzik gYgvay"
               data-qa="tile-booking__booking-status"
             >
-              Cancel
-              <br />
-              RFQ
+              Cancel RFQ
             </span>
           </div>
         </div>
         <div
-          className="sc-jAaTju eRYZLd"
+          className="sc-jAaTju drpnLW"
           data-qa="price-controls__price-button-disabled--loading"
         >
           <div
@@ -984,7 +980,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje kkdSuS"
+          className="sc-EHOje bmcBH"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -992,7 +988,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi crpdKd"
+            className="sc-gZMcBi hILJIt"
             disabled={false}
           >
             <div
@@ -1025,7 +1021,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           </div>
         </button>
         <div
-          className="sc-jzJRlG elTuMv"
+          className="sc-jzJRlG cxjlMm"
         >
           <i
             aria-hidden="true"
@@ -1047,7 +1043,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           />
         </div>
         <button
-          className="sc-EHOje ciDDPg"
+          className="sc-EHOje gdaXVo"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -1055,7 +1051,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi crpdKd"
+            className="sc-gZMcBi hILJIt"
             disabled={false}
           >
             <div
@@ -1153,7 +1149,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         className="sc-cMljjf hkZocT"
       >
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -1161,7 +1157,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div
@@ -1194,7 +1190,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG elTuMv"
+          className="sc-jzJRlG cxjlMm"
         >
           <i
             aria-hidden="true"
@@ -1224,7 +1220,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           }
         >
           <div
-            className="sc-jlyJG haulNY"
+            className="sc-jlyJG bjGecF"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
@@ -1285,7 +1281,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
         </div>
         <button
-          className="sc-EHOje gCbQHr"
+          className="sc-EHOje hSxnyS"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -1293,7 +1289,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           onClick={[Function]}
         >
           <div
-            className="sc-gZMcBi egNMcT"
+            className="sc-gZMcBi lcZYqF"
             disabled={true}
           >
             <div

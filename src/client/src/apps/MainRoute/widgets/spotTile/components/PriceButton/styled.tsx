@@ -40,7 +40,10 @@ export const TradeButton = styled.button<{ direction: Direction; priceAnnounced:
   cursor: pointer;
   border: none;
   outline: none;
-  padding: 0.75rem 1.5rem;
+  min-height: 2rem;
+  max-height: 3.7rem;
+  min-width: 125px;
+  padding: 0.7rem 1.5rem;
   margin-bottom: 2px;
   ${backgroundEffect}
 
@@ -89,7 +92,7 @@ export const Tenth = styled(Box)`
 `
 
 export const Price = styled.div<{ disabled: boolean }>`
-  height: 34px;
+  height: 2.1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -106,6 +109,6 @@ export const BigWrapper = styled.div`
 
 export const ExpiredPrice = styled.div`
   color: ${({ theme }) => theme.template.red.normal};
-  font-size: 10px;
+  font-size: 9px;
   text-transform: uppercase;
 `
