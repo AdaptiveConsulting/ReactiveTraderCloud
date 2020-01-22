@@ -1,5 +1,5 @@
-import { applicationConnected } from 'rt-actions'
-import { map, switchMapTo, withLatestFrom, delay, filter } from 'rxjs/operators'
+import { applicationConnected, applicationDisconnected } from 'rt-actions'
+import { map, switchMapTo, withLatestFrom, delay, filter, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 import { combineEpics, ofType } from 'redux-observable'
@@ -13,12 +13,10 @@ const TRADE_HIGHLIGHT_TIME_IN_MS = 3000
 
 type HighlightTradeAction = ReturnType<typeof highlightTradeAction>
 
-const switchHighlight = (trade: Trade) => {
-  return {
-    ...trade,
-    highlight: !trade.highlight,
-  }
-}
+const switchHighlight = (trade: Trade, on: boolean) => ({
+  ...trade,
+  highlight: on,
+})
 
 const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
   if (!platformHasFeature(platform, 'interop')) {
@@ -36,8 +34,9 @@ const highlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
     }),
     filter(Boolean),
     map(trade => {
-      return highlightTradeAction({ trades: [switchHighlight(trade as Trade)] })
+      return highlightTradeAction({ trades: [switchHighlight(trade as Trade, true)] })
     }),
+    takeUntil(action$.pipe(applicationDisconnected))
   )
 }
 
@@ -46,9 +45,10 @@ const removeHighlightTradeEpic: ApplicationEpic = (action$, state$, { platform }
     ofType<Action, HighlightTradeAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_HIGHLIGHT_TRADE),
     delay(TRADE_HIGHLIGHT_TIME_IN_MS),
     map(({ payload }) => {
-      const trade = switchHighlight(payload.trades[0])
+      const trade = switchHighlight(payload.trades[0], false)
       return removeHighlightTradeAction({ trades: [trade] })
     }),
+    takeUntil(action$.pipe(applicationDisconnected))
   )
 }
 

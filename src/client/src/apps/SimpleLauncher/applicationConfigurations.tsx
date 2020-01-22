@@ -53,6 +53,7 @@ export interface ApplicationProvider {
 
 export interface ApplicationConfig {
   name: string
+  displayName: string
   uuid?: string
   url?: string
   icon: JSX.Element
@@ -61,6 +62,7 @@ export interface ApplicationConfig {
 
 const excelJSAppConfig: ApplicationConfig = {
   name: 'Excel',
+  displayName: 'Excel',
   icon: excelIcon,
   provider: {
     platformName: 'openfin',
@@ -74,6 +76,7 @@ const excelJSAppConfig: ApplicationConfig = {
 
 const excelLegacyAppConfig: ApplicationConfig = {
   name: 'Excel',
+  displayName: 'Excel',
   icon: excelIcon,
   url: `${ORIGIN}/static/excel/instructions.html`,
   provider: {
@@ -94,12 +97,16 @@ const excelLegacyAppConfig: ApplicationConfig = {
 
 const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
 
+const prodEnvs = ['demo']
 const env = getEnvironment() || 'unknown'
-const envFormatted = `(${env.toUpperCase()})`
+const envFormatted = prodEnvs.includes(env) ? '' : `(${env.toUpperCase()})`
+
+console.log(envFormatted)
 
 const baseAppConfigs: ApplicationConfig[] = [
   {
-    name: `Reactive Trader Cloud (${envFormatted})`,
+    name: `Reactive Trader Cloud ${envFormatted}`,
+    displayName: 'Reactive Trader Cloud',
     uuid: `reactive-trader-cloud-web-${env}`,
     url: `${ORIGIN}`,
     icon: reactiveTraderIcon,
@@ -115,6 +122,7 @@ const baseAppConfigs: ApplicationConfig[] = [
   },
   {
     name: 'Reactive Analytics',
+    displayName: 'Reactive Analytics',
     url: `http://${env === 'dev' ? env : 'demo'}-reactive-analytics.adaptivecluster.com/`,
     icon: reactiveAnalyticsIcon,
     provider: {
@@ -129,6 +137,7 @@ const baseAppConfigs: ApplicationConfig[] = [
   },
   {
     name: 'Limit Checker',
+    displayName: 'Limit Checker',
     icon: limitCheckerIcon,
     provider: {
       platformName: 'openfin',
