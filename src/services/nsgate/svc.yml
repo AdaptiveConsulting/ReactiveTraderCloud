@@ -24,8 +24,5 @@ spec:
     -   port: 2113
         targetPort: 2113
         name: "eventstore"
-    -   port: 8080
-        targetPort: 8080
-        name: "openfinconfig"
     type: "LoadBalancer"
     __LOAD_BALANCER_IP__
