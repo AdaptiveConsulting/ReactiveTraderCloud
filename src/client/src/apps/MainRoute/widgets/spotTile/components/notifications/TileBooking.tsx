@@ -22,8 +22,8 @@ const BookingPill = styled.div<{
   color: string
   isAnalyticsView: boolean
 }>`
-  padding-bottom: 0.25rem;
-  padding-top: ${({ isExecutingStatus }) => (isExecutingStatus ? '0.2rem' : '0.1rem')};
+  padding-bottom: 6px;
+  padding-top: ${({ isExecutingStatus }) => (isExecutingStatus ? '6px' : '3.5px')};
   position: absolute;
   ${({ isAnalyticsView, isExecutingStatus }) =>
     isAnalyticsView && !isExecutingStatus ? 'right: 1.5rem' : isAnalyticsView ? 'left: -20%' : ''};
@@ -45,9 +45,14 @@ const BookingPill = styled.div<{
   `}
 `
 
-const BookingStatus = styled.span<{ isExecutingStatus: boolean }>`
+const BookingStatus = styled.span<{ isExecutingStatus: boolean; isAnalyticsView: boolean }>`
   color: ${({ theme }) => theme.template.white.normal};
-  font-size: ${({ isExecutingStatus }) => (isExecutingStatus ? '0.8125rem' : '0.78rem')};
+  font-size: ${({ isExecutingStatus, isAnalyticsView }) =>
+    isAnalyticsView && !isExecutingStatus
+      ? '0.6875rem '
+      : isExecutingStatus
+      ? '0.8125rem'
+      : '0.77rem'};
 `
 
 const AdaptiveLoaderWrapper = styled.span`
@@ -93,7 +98,11 @@ const TileBooking: React.FC<TileBookingProps> = ({
                 <AdaptiveLoader size={14} speed={0.8} seperation={1.5} type="secondary" />
               </AdaptiveLoaderWrapper>
             )}
-            <BookingStatus data-qa="tile-booking__booking-status" isExecutingStatus={showLoader}>
+            <BookingStatus
+              data-qa="tile-booking__booking-status"
+              isExecutingStatus={showLoader}
+              isAnalyticsView={isAnalyticsView}
+            >
               {children}
             </BookingStatus>
           </BookingPill>

@@ -272,14 +272,14 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           }
         >
           <div
-            className="sc-jlyJG eZthlA"
+            className="sc-jlyJG bJHKfU"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="sc-gipzik hJMFkk"
+              className="sc-gipzik gYgvay"
               data-qa="tile-booking__booking-status"
             >
               Initiate RFQ
@@ -470,14 +470,14 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           }
         >
           <div
-            className="sc-jlyJG eZthlA"
+            className="sc-jlyJG bJHKfU"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="sc-gipzik hJMFkk"
+              className="sc-gipzik gYgvay"
               data-qa="tile-booking__booking-status"
             >
               Requote
@@ -848,14 +848,14 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           }
         >
           <div
-            className="sc-jlyJG eZqBOR"
+            className="sc-jlyJG hyMhTf"
             color="red"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="sc-gipzik hJMFkk"
+              className="sc-gipzik gYgvay"
               data-qa="tile-booking__booking-status"
             >
               Cancel RFQ
@@ -1220,7 +1220,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           }
         >
           <div
-            className="sc-jlyJG kCjSCS"
+            className="sc-jlyJG bjGecF"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
