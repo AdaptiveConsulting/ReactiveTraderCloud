@@ -5,7 +5,7 @@ import { select, boolean } from '@storybook/addon-knobs'
 
 stories.add('Price movement', () => {
   const priceMovementType = select('Direction', { Up: 'Up', Down: 'Down' }, 'Up')
-  const showPriceMovement = true
+  const showPriceMovement = boolean('show price movement', true)
   const isAnalyticsView = boolean('Analytic View', true)
   return (
     <Story>

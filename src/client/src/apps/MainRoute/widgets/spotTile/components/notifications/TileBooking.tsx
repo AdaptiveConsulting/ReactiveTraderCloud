@@ -22,7 +22,7 @@ const BookingPill = styled.div<{
   color: string
   isAnalyticsView: boolean
 }>`
-  padding-bottom: 6px;
+  padding-bottom: ${({ isExecutingStatus }) => (isExecutingStatus ? '7px' : '6px')};
   padding-top: ${({ isExecutingStatus }) => (isExecutingStatus ? '6px' : '3.5px')};
   position: absolute;
   ${({ isAnalyticsView, isExecutingStatus }) =>

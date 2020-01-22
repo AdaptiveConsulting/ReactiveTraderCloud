@@ -1220,7 +1220,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           }
         >
           <div
-            className="sc-jlyJG bjGecF"
+            className="sc-jlyJG dbfaso"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
