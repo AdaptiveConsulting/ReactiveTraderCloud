@@ -1,56 +1,91 @@
-import { action } from '@storybook/addon-actions'
-import { capitalize } from 'lodash'
-import { storiesOf } from '@storybook/react'
 import React from 'react'
-import { Story } from 'rt-storybook'
-import { styled } from 'rt-theme'
-import TradeNotification, { Props } from './TradeNotification'
-import { TradeStatus } from 'rt-types'
+import { action } from '@storybook/addon-actions'
+import { Story, Centered } from 'rt-storybook'
+import { TileSwitch } from 'apps/MainRoute/widgets/spotTile/components'
+import { ServiceConnectionStatus } from 'rt-types'
+import {
+  spotTileData,
+  tradeExecuted,
+  tradeRejected,
+} from 'apps/MainRoute/widgets/spotTile/components/test-resources/spotTileProps'
+import { storiesOf } from '@storybook/react'
 
 const stories = storiesOf('Trade Notification', module)
 
-const Centered = styled('div')`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
+const onNotificationDismissedClick = action('Notification dismissed')
+const executeTrade = action('executeTrade')
+const setTradingMode = action('setTradingMode')
+const onPopoutClick = action('On popout click')
+const displayCurrencyChart = action('On currency chart click')
+const updateNotional = action('update notional')
 
-const NotificationContainer = styled('div')`
-  width: 320px;
-  height: 120px;
-`
+const rfqActions = {
+  request: action('request'),
+  cancel: action('cancel'),
+  reject: action('reject'),
+  requote: action('requote'),
+  expired: action('expired'),
+  reset: action('reset'),
+}
 
-const getPropsByStatus: (status: TradeStatus) => Props = status => ({
-  trade: {
-    dealtCurrency: 'EUR',
-    direction: 'Sell',
-    notional: 1000000,
-    spotRate: 133.303,
-    status,
-    symbol: 'EURJPY',
-    tradeDate: new Date('Thu Jul 26 2018 14:46:12 GMT-0400 (Eastern Daylight Time)'),
-    tradeId: 2356,
-    traderName: 'DOR',
-    valueDate: new Date('Sun Jul 29 2018 20:00:00 GMT-0400 (Eastern Daylight Time)'),
-    termsCurrency: 'JPY',
-  },
-  dismissNotification: action('Dismiss notification'),
-})
-const tradeStatuses = [TradeStatus.Done, TradeStatus.Rejected]
+const currencyPair = {
+  base: 'EUR',
+  pipsPosition: 2,
+  ratePrecision: 3,
+  symbol: 'EURUSD',
+  terms: 'USD',
+}
 
-tradeStatuses.map(tradeStatus =>
-  stories.add(capitalize(tradeStatus), () => {
-    const props = getPropsByStatus(tradeStatus)
-    return (
-      <Story>
-        <Centered>
-          <NotificationContainer>
-            <TradeNotification {...props} />
-          </NotificationContainer>
-        </Centered>
-      </Story>
-    )
-  }),
-)
+stories.add('Executed', () => (
+  <Story>
+    <Centered>
+      <div
+        style={{
+          width: '320px',
+          height: '150px',
+        }}
+      >
+        <TileSwitch
+          canPopout
+          executionStatus={ServiceConnectionStatus.CONNECTED}
+          onNotificationDismissed={onNotificationDismissedClick}
+          currencyPair={currencyPair}
+          spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeExecuted }}
+          executeTrade={executeTrade}
+          onPopoutClick={onPopoutClick}
+          setTradingMode={setTradingMode}
+          rfq={rfqActions}
+          displayCurrencyChart={displayCurrencyChart}
+          updateNotional={updateNotional}
+        />
+      </div>
+    </Centered>
+  </Story>
+))
+
+stories.add('Rejected', () => (
+  <Story>
+    <Centered>
+      <div
+        style={{
+          width: '320px',
+          height: '150px',
+        }}
+      >
+        <TileSwitch
+          canPopout
+          executionStatus={ServiceConnectionStatus.CONNECTED}
+          onNotificationDismissed={onNotificationDismissedClick}
+          currencyPair={currencyPair}
+          spotTileData={{ ...spotTileData, lastTradeExecutionStatus: tradeRejected }}
+          executeTrade={executeTrade}
+          onPopoutClick={onPopoutClick}
+          setTradingMode={setTradingMode}
+          rfq={rfqActions}
+          displayCurrencyChart={displayCurrencyChart}
+          updateNotional={updateNotional}
+        />
+      </div>
+    </Centered>
+  </Story>
+))
