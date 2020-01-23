@@ -4,8 +4,9 @@ import { Story, Centered } from 'rt-storybook'
 import RfqTimer from '../RfqTimer'
 import { boolean } from '@storybook/addon-knobs'
 import { action } from '@storybook/addon-actions'
+import { currencyPair } from '../test-resources/spotTileProps'
 
-stories.add('Rfq TImer', () => {
+stories.add('Rfq Timer', () => {
   const isAnalyticsView = boolean('Analytic View', false)
   const rfqTimeout = 10000
   const rfqReceivedTime = Date.now()
@@ -16,13 +17,6 @@ stories.add('Rfq TImer', () => {
     requote: action('requote'),
     expired: action('expired'),
     reset: action('reset'),
-  }
-  const currencyPair = {
-    symbol: 'USDYAN',
-    ratePrecision: 1.5,
-    pipsPosition: 1.0,
-    base: 'USD',
-    terms: 'YAN',
   }
   const handleRfqRejected = () => rfq.reject({ currencyPair })
 
