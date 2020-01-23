@@ -143,7 +143,7 @@ jobs:
       - image: circleci/node:latest
     steps:
       - main_pipeline:
-          environment: dev
+          environment: openfin
       - push_images:
           images: *push_images_list
 
@@ -246,7 +246,7 @@ workflows:
             - release_build
           filters:
             branches:
-              only: master
+              only: master,layouts-2.0
 
       - feature_build:
           filters:
@@ -254,6 +254,7 @@ workflows:
               ignore:
                 - master
                 - /^release\/.*/
+                - layouts-2.0
 
       - deploy_version_from_env_tag:
           filters:
