@@ -3,6 +3,7 @@ import { getConfig } from './config'
 import json from 'koa-json'
 
 const app = new Koa()
+app.proxy = true
 
 // Pretty-print JSON responses
 app.use(json())
