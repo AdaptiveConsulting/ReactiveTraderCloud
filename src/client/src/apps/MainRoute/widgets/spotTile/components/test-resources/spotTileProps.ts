@@ -83,4 +83,40 @@ const tradeRejected = {
   trade: { ...trade, status: 'rejected' },
 }
 
-export { currencyPair, spotTileData, tradeExecuted, tradeRejected, trade, generateHistoricPrices }
+const spotTileDataWithRfq: SpotTileDataWithNotional = {
+  notional: 100000000,
+  isTradeExecutionInFlight: false,
+  price: {
+    ask: 184.775,
+    bid: 184.767,
+    creationTimestamp: 31566750203189236,
+    mid: 184.771,
+    priceMovementType: PriceMovementTypes.Up,
+    symbol: 'GBPJPY',
+    valueDate: '2018-08-04T00:00:00Z',
+  },
+  historicPrices: generateHistoricPrices(50),
+  rfqState: 'none',
+  rfqPrice: null,
+  rfqReceivedTime: null,
+  rfqTimeout: null,
+  lastTradeExecutionStatus: null,
+}
+
+const switchOptions = {
+  canRequest: 'canRequest',
+  requested: 'requested',
+  expired: 'expired',
+  none: 'none',
+}
+
+export {
+  currencyPair,
+  spotTileData,
+  tradeExecuted,
+  tradeRejected,
+  trade,
+  generateHistoricPrices,
+  spotTileDataWithRfq,
+  switchOptions,
+}

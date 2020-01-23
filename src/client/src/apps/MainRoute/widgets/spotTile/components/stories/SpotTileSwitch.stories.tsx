@@ -2,13 +2,13 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { boolean, select } from '@storybook/addon-knobs'
 import { stories, Story, Centered } from './Initialise.stories'
-import { currencyPair, spotTileDataWithRfq, switchOptions } from '../test-resources/spotTileProps'
-import { AnalyticsTile } from '../analyticsTile'
-import { SpotTileDataWithNotional } from '../../model'
+import SpotTile from '../SpotTile'
 import { ServiceConnectionStatus } from 'rt-types'
+import { currencyPair, spotTileDataWithRfq, switchOptions } from '../test-resources/spotTileProps'
+import { SpotTileDataWithNotional } from '../../model'
 
 const executeTrade = action('executeTrade')
-const updateNotional = action('update notional')
+const updateNotional = action('updateNotional')
 const resetNotional = action('resetNotional')
 
 const rfqActions = {
@@ -20,16 +20,16 @@ const rfqActions = {
   reset: action('reset'),
 }
 
-stories.add('AnalyticsTile Booking status', () => (
+stories.add('SpotTile Booking status', () => (
   <Story>
     <Centered>
       <div
         style={{
-          width: '340px',
+          width: '320px',
           height: '150px',
         }}
       >
-        <AnalyticsTile
+        <SpotTile
           currencyPair={currencyPair}
           spotTileData={{ ...spotTileDataWithRfq, isTradeExecutionInFlight: true }}
           executeTrade={executeTrade}
@@ -45,16 +45,16 @@ stories.add('AnalyticsTile Booking status', () => (
   </Story>
 ))
 
-stories.add('AnalyticsTile Initiate RFQ', () => (
+stories.add('SpotTile Initiate RFQ', () => (
   <Story>
     <Centered>
       <div
         style={{
-          width: '340px',
+          width: '320px',
           height: '150px',
         }}
       >
-        <AnalyticsTile
+        <SpotTile
           currencyPair={currencyPair}
           spotTileData={{ ...spotTileDataWithRfq, rfqState: 'canRequest' }}
           executeTrade={executeTrade}
@@ -70,23 +70,23 @@ stories.add('AnalyticsTile Initiate RFQ', () => (
   </Story>
 ))
 
-stories.add('AnalyticsTile Cancel RFQ', () => (
+stories.add('SpotTile Cancel RFQ', () => (
   <Story>
     <Centered>
       <div
         style={{
-          width: '340px',
+          width: '320px',
           height: '150px',
         }}
       >
-        <AnalyticsTile
+        <SpotTile
           currencyPair={currencyPair}
           spotTileData={{ ...spotTileDataWithRfq, rfqState: 'requested' }}
           executeTrade={executeTrade}
           executionStatus={ServiceConnectionStatus.CONNECTED}
           updateNotional={updateNotional}
           resetNotional={resetNotional}
-          tradingDisabled={false}
+          tradingDisabled={true}
           inputDisabled={false}
           rfq={rfqActions}
         />
@@ -95,16 +95,16 @@ stories.add('AnalyticsTile Cancel RFQ', () => (
   </Story>
 ))
 
-stories.add('AnalyticsTile Requote', () => (
+stories.add('SpotTile Requote', () => (
   <Story>
     <Centered>
       <div
         style={{
-          width: '340px',
+          width: '320px',
           height: '150px',
         }}
       >
-        <AnalyticsTile
+        <SpotTile
           currencyPair={currencyPair}
           spotTileData={{ ...spotTileDataWithRfq, rfqState: 'expired' }}
           executeTrade={executeTrade}
@@ -120,18 +120,18 @@ stories.add('AnalyticsTile Requote', () => (
   </Story>
 ))
 
-stories.add('AnalyticsTile RFQ Switch', () => {
+stories.add('SpotTile RFQ Switch', () => {
   const rfqStatesSwitch = select('states', switchOptions, 'canRequest')
   return (
     <Story>
       <Centered>
         <div
           style={{
-            width: '340px',
+            width: '320px',
             height: '150px',
           }}
         >
-          <AnalyticsTile
+          <SpotTile
             currencyPair={currencyPair}
             spotTileData={
               {
