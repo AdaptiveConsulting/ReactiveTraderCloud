@@ -246,7 +246,9 @@ workflows:
             - release_build
           filters:
             branches:
-              only: master,layouts-2.0
+              only: 
+                - master
+                - layouts-2.0
 
       - feature_build:
           filters:

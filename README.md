@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/AdaptiveConsulting/ReactiveTraderCloud/tree/master.svg?style=svg&circle-token=801547883329d22e505634493b58b26fbb742e46)](https://app.circleci.com/github/AdaptiveConsulting/ReactiveTraderCloud/pipelines?branch=master)
+[![CircleCI](https://circleci.com/gh/AdaptiveConsulting/ReactiveTraderCloud-Private.svg?style=svg)](https://app.circleci.com/github/AdaptiveConsulting/ReactiveTraderCloud-Private/pipelines)
 # Reactive Trader Cloud 
 ## Overview
 
