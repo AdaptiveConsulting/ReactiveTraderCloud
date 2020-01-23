@@ -83,4 +83,4 @@ const tradeRejected = {
   trade: { ...trade, status: 'rejected' },
 }
 
-export { currencyPair, spotTileData, tradeExecuted, tradeRejected, trade }
+export { currencyPair, spotTileData, tradeExecuted, tradeRejected, trade, generateHistoricPrices }

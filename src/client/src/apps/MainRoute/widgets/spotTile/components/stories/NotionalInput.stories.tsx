@@ -28,12 +28,12 @@ stories.add('Notional input with trading disabled', () => (
     <Centered>
       <div style={{ padding: '1.5rem' }}>
         <NotionalInput
-          notional={1000000}
+          notional={1000000000}
           currencyPairSymbol="USDJPY"
           currencyPairBase="USD"
           updateNotional={updateNotional}
           resetNotional={resetNotional}
-          disabled={false}
+          disabled={true}
         />
       </div>
     </Centered>
