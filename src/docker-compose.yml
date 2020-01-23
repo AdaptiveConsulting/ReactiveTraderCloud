@@ -13,6 +13,11 @@ services:
       context: ./services/broker
     ports:
       - '8000:8000'
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:8000"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
   servers:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     build:
@@ -49,6 +54,7 @@ services:
       context: ./e2e
   analytics:
     image: ${DOCKER_USER}/analytics:${BUILD_VERSION}
+    restart: on-failure
     build:
       dockerfile: Dockerfile
       context: ./server
@@ -58,6 +64,7 @@ services:
       - eventstore
   pricing:
     image: ${DOCKER_USER}/pricing:${BUILD_VERSION}
+    restart: on-failure
     build:
       dockerfile: Dockerfile
       context: ./server
@@ -68,6 +75,7 @@ services:
       - analytics
   referencedataread:
     image: ${DOCKER_USER}/referencedataread:${BUILD_VERSION}
+    restart: on-failure
     build:
       dockerfile: Dockerfile
       context: ./server
@@ -78,6 +86,7 @@ services:
       - pricing
   tradeexecution:
     image: ${DOCKER_USER}/tradeexecution:${BUILD_VERSION}
+    restart: on-failure
     build:
       dockerfile: Dockerfile
       context: ./server
@@ -88,6 +97,7 @@ services:
       - referencedataread
   blotter:
     image: ${DOCKER_USER}/blotter:${BUILD_VERSION}
+    restart: on-failure
     build:
       dockerfile: Dockerfile
       context: ./server
