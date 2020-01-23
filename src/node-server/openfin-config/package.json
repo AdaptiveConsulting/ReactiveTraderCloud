@@ -12,6 +12,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/koa": "^2.11.0",
+    "@types/koa-json": "^2.0.18",
     "@types/lodash.merge": "^4.6.6",
     "@types/node": "^13.1.7",
     "nodemon": "^2.0.2",
@@ -24,6 +25,7 @@
   },
   "dependencies": {
     "koa": "^2.11.0",
+    "koa-json": "^2.0.2",
     "lodash.merge": "^4.6.2"
   }
 }

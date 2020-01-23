@@ -1,7 +1,11 @@
 import Koa from 'koa'
 import { getConfig } from './config'
+import json from 'koa-json'
 
 const app = new Koa()
+
+// Pretty-print JSON responses
+app.use(json())
 
 const pathCapture = /\/(?<type>\w+)\/(?<env>\w+)(\.json)?$/
 
