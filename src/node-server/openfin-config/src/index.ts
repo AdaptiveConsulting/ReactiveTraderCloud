@@ -7,20 +7,26 @@ const app = new Koa()
 // Pretty-print JSON responses
 app.use(json())
 
-const pathCapture = /\/(?<type>\w+)\/(?<env>\w+)(\.json)?$/
+const pathRegex = /\/(?<type>\w+)(\.json)?$/
+const hostRegex = /^\w+-(?<env>\w+)\.\w+\.\w+$/
 
 app.use(async (ctx, next) => {
   if (ctx.accepts('application/json') !== 'application/json') {
     return next()
   }
 
-  const capture = ctx.path.match(pathCapture)
+  const { hostname, path } = ctx
 
-  if (capture === null || typeof capture.groups === 'undefined') {
+  const pathCapture = path.match(pathRegex)
+  const hostCapture = hostname.match(hostRegex)
+
+  if (pathCapture === null || typeof pathCapture.groups === 'undefined') {
     return next()
   }
 
-  const { type, env } = capture.groups
+  const env = hostCapture?.groups?.env
+  const { type } = pathCapture.groups
+
   ctx.body = getConfig(type, env)
 })
 
