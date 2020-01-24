@@ -1,7 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { styled, ThemeProvider } from 'rt-theme'
-
 import FloatingTools from './components/FloatingsTools'
 import OnePageNavBar from './components/OnePageNavBar'
 import { Block, SectionBlock } from './styled'
@@ -28,27 +26,16 @@ const StyleguideRoute: React.FC = () => (
   <ThemeProvider>
     <Root>
       <FloatingTools />
-      <BrowserRouter>
-        <Switch>
-          {sections.map(({ path, Section }) => (
-            <Route key={path} path={`#${path}`}>
-              <Section />
-            </Route>
-          ))}
-          <Route>
-            <Introduction key="introduction" />
-            <OnePageNavBar sections={navSections} />
-            <React.Fragment>
-              {sections.map(({ path, Section, title }) => (
-                <div id={path} style={{ scrollMargin: '76px' }}>
-                  <Section key={path} />
-                </div>
-              ))}
-            </React.Fragment>
-            <SectionBlock mh={5} colorScheme="inverted" />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <Introduction key="introduction" />
+      <OnePageNavBar sections={navSections} />
+      <React.Fragment>
+        {sections.map(({ path, Section, title }) => (
+          <div id={path} style={{ scrollMargin: '76px' }}>
+            <Section key={path} />
+          </div>
+        ))}
+      </React.Fragment>
+      <SectionBlock mh={5} colorScheme="inverted" />
     </Root>
   </ThemeProvider>
 )

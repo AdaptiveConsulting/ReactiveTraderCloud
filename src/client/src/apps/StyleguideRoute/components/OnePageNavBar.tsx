@@ -12,6 +12,7 @@ export interface OnePageNavBar {
 }
 
 const MAX_SCROLL_HEIGHT = 100000000
+const isBrowser = typeof window !== `undefined`
 const isActive = (to: string): string => (window.location.hash === `#${to}` ? 'active' : '')
 
 const OnePageNavBar: React.FC<OnePageNavBar> = props => {
@@ -32,8 +33,6 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
       setPositionNavBar(ref.current.offsetTop)
     }
   }, [positionNavBar, scrollTop])
-
-  console.log(window.location)
 
   return (
     <NavBarBleed className={scrollTop > positionNavBar ? 'sticky' : ''} ref={ref}>
