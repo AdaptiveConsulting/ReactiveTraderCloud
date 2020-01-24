@@ -1,8 +1,9 @@
 import React from 'react'
 import { styled } from 'rt-theme'
-
+import { css } from 'styled-components'
 import designTownPNGURL from '../assets/design-town.png'
-import logo from '../assets/adaptive-logo-without-background.png'
+import logodark from '../assets/adaptive-logo-without-background.png'
+import logolight from '../assets/adaptive-mark-large.png'
 
 import { H1, H3 } from '../elements'
 import { Paragraph, SectionBlock } from '../styled'
@@ -21,16 +22,6 @@ export const Introduction: React.FC = props => (
         </Content>
         <Background />
       </Flex>
-    </SectionBlock>
-    <SectionBlock mh={0} py={0}>
-      <Paragraph>
-        <i>
-          <strong>Notes & Instructions</strong>: Build up a consistent color profile for your
-          application by selecting a few base colors to work from. The collection below is setup in
-          such a way that it will generate the varying color scales for you. From this spectrum you
-          should color pick and define the final color values to be used in your user interface.
-        </i>
-      </Paragraph>
     </SectionBlock>
     <div>
       <SectionBlock colorScheme="secondary" mh={0.125 / 5} py={0} />
@@ -52,7 +43,10 @@ const Content = styled.div`
 const Logo = styled.div`
   height: 2rem;
   padding: 0 2rem;
-  background-image: url(${logo});
+  ${({ theme }) =>
+    css({
+      backgroundImage: `url(${theme.name === 'dark' ? logodark : logolight})`,
+    })};
   background-position: left center;
   background-size: contain;
   font-size: 1.2rem;

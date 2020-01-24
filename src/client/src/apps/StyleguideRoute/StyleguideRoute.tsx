@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { styled, ThemeProvider } from 'rt-theme'
 
 import FloatingTools from './components/FloatingsTools'
+import OnePageNavBar from './components/OnePageNavBar'
 import { Block, SectionBlock } from './styled'
 
 import Atoms from './sections/Atoms'
@@ -11,14 +12,17 @@ import CoreBranding from './sections/CoreBranding'
 import FontFamilies from './sections/FontFamilies'
 import Introduction from './sections/Introduction'
 
-const sections: Array<{ path: string; Section: React.ComponentType }> = [
-  { path: 'introduction', Section: Introduction },
-  { path: 'color-spectrum', Section: ColorSpectrum },
-  { path: 'core-branding', Section: CoreBranding },
-  { path: 'font-families', Section: FontFamilies },
-  { path: 'atoms', Section: Atoms },
-  { path: 'ending', Section: () => <SectionBlock mh={5} colorScheme="inverted" /> },
+const sections: Array<{ path: string; Section: React.ComponentType; title: string }> = [
+  { path: 'color-spectrum', Section: ColorSpectrum, title: 'Colour' },
+  { path: 'font-families', Section: FontFamilies, title: 'Typography' },
+  { path: 'core-branding', Section: CoreBranding, title: 'Iconography' },
+  { path: 'atoms', Section: Atoms, title: 'Atoms' },
 ]
+
+const navSections: Array<{ path: string; title: string }> = sections.map(({ path, title }) => ({
+  path,
+  title,
+}))
 
 const StyleguideRoute: React.FC = () => (
   <ThemeProvider>
@@ -31,13 +35,15 @@ const StyleguideRoute: React.FC = () => (
               <Section />
             </Route>
           ))}
-
           <Route>
+            <Introduction key="introduction" />
+            <OnePageNavBar sections={navSections} />
             <React.Fragment>
               {sections.map(({ path, Section }) => (
                 <Section key={path} />
               ))}
             </React.Fragment>
+            <SectionBlock mh={5} colorScheme="inverted" />
           </Route>
         </Switch>
       </BrowserRouter>
