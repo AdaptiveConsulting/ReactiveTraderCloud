@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { HashLink as Link } from 'react-router-hash-link'
 import { styled } from 'rt-theme'
 import { Block } from '../styled'
 import { mapMarginPaddingProps } from '../styled/mapMarginPaddingProps'
@@ -12,6 +12,7 @@ export interface OnePageNavBar {
 }
 
 const MAX_SCROLL_HEIGHT = 100000000
+const isActive = (to: string): string => (window.location.hash === `#${to}` ? 'active' : '')
 
 const OnePageNavBar: React.FC<OnePageNavBar> = props => {
   const ref = useRef<HTMLDivElement>(null)
@@ -19,9 +20,7 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
   const [scrollTop, setScrollTop] = useState(window.scrollY)
   const [positionNavBar, setPositionNavBar] = useState(MAX_SCROLL_HEIGHT)
 
-  const handleScroll = () => {
-    setScrollTop(window.scrollY)
-  }
+  const handleScroll = () => setScrollTop(window.scrollY)
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
@@ -34,6 +33,8 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
     }
   }, [positionNavBar, scrollTop])
 
+  console.log(window.location)
+
   return (
     <NavBarBleed className={scrollTop > positionNavBar ? 'sticky' : ''} ref={ref}>
       <Flex style={{ justifyContent: 'space-between' }}>
@@ -44,7 +45,12 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
         <div>
           <Flex>
             {sections.map(({ path, title }) => (
-              <OnePageNavLink key={`navlink-${path}`} to={`#${path}`}>
+              <OnePageNavLink
+                key={`navlink-${path}`}
+                to={`#${path}`}
+                scroll={el => el.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                className={isActive(path)}
+              >
                 {title}
               </OnePageNavLink>
             ))}
@@ -88,7 +94,8 @@ const OnePageNavLink = styled(Link)`
   margin-right: 16px;
   border-bottom: 3px solid transparent;
 
-  &:hover {
+  &:hover,
+  &.active {
     border-bottom: 3px solid white;
     ${({ theme }) =>
       css({
@@ -128,20 +135,15 @@ const NavBarBleed = styled(NavBar)`
   z-index: 10000;
   width: 100%;
 
+  &.sticky {
+    position: fixed;
+    top: 0;
+  }
+
   & > div > div:first-child {
     opacity: 0;
     display: none;
     transition: all 3s ease;
-  }
-
-  &.sticky {
-    position: fixed;
-    top: 0;
-
-    & > div > div:first-child {
-      opacity: 1;
-      display: block;
-    }
   }
 
   @media all and (min-width: 375px) {
@@ -152,6 +154,18 @@ const NavBarBleed = styled(NavBar)`
   @media all and (min-width: 420px) {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  @media all and (min-width: 768px) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    &.sticky {
+      & > div > div:first-child {
+        opacity: 1;
+        display: block;
+      }
+    }
   }
 
   @media all and (min-width: 0) {

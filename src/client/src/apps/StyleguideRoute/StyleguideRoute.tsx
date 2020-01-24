@@ -31,7 +31,7 @@ const StyleguideRoute: React.FC = () => (
       <BrowserRouter>
         <Switch>
           {sections.map(({ path, Section }) => (
-            <Route key={path} path={`/styleguide/${path}`}>
+            <Route key={path} path={`#${path}`}>
               <Section />
             </Route>
           ))}
@@ -39,8 +39,10 @@ const StyleguideRoute: React.FC = () => (
             <Introduction key="introduction" />
             <OnePageNavBar sections={navSections} />
             <React.Fragment>
-              {sections.map(({ path, Section }) => (
-                <Section key={path} />
+              {sections.map(({ path, Section, title }) => (
+                <div id={path} style={{ scrollMargin: '76px' }}>
+                  <Section key={path} />
+                </div>
               ))}
             </React.Fragment>
             <SectionBlock mh={5} colorScheme="inverted" />
