@@ -1,5 +1,5 @@
 import React from 'react'
-import { stories, Story, Centered } from './Initialise.stories'
+import { Story, Centered, analyticsTileStories } from './Initialise.stories'
 import { action } from '@storybook/addon-actions'
 import { ServiceConnectionStatus } from 'rt-types'
 import { currencyPair, spotTileData } from '../test-resources/spotTileProps'
@@ -30,7 +30,7 @@ const rfqActions = {
   reset: action('reset'),
 }
 
-stories.add('AnalyticsTile', () => {
+analyticsTileStories.add('Default View', () => {
   return (
     <Story>
       <Centered>
@@ -57,7 +57,7 @@ stories.add('AnalyticsTile', () => {
   )
 })
 
-stories.add('AnalyticsTile in error', () => (
+analyticsTileStories.add('Error', () => (
   <Story>
     <Centered>
       <div
@@ -82,7 +82,7 @@ stories.add('AnalyticsTile in error', () => (
   </Story>
 ))
 
-stories.add('AnalyticsTile no price', () => (
+analyticsTileStories.add('No price', () => (
   <Story>
     <Centered>
       <div

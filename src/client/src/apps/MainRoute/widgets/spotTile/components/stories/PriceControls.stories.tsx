@@ -1,11 +1,11 @@
-import { Centered, stories, Story } from './Initialise.stories'
+import { Centered, priceStories, Story } from './Initialise.stories'
 import React from 'react'
 import PriceControls from '../PriceControls'
 import { action } from '@storybook/addon-actions'
 import { boolean, select } from '@storybook/addon-knobs'
 import { RfqState } from '../types'
 
-stories.add('Price controls', () => {
+priceStories.add('Price controls', () => {
   const rfqStates = {
     none: 'none',
     canRequest: 'canRequest',

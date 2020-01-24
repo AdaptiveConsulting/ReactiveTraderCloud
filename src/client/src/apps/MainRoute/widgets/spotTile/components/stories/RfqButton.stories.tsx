@@ -1,5 +1,5 @@
 import React from 'react'
-import { stories } from './Initialise.stories'
+import { rfqStories } from './Initialise.stories'
 import { Story, Centered } from 'rt-storybook'
 import TileBookingSwitch from '../PriceControls/TileBookingSwitch'
 import { boolean, select } from '@storybook/addon-knobs'
@@ -7,7 +7,7 @@ import { action } from '@storybook/addon-actions'
 import { RfqState } from '../types'
 import { currencyPair } from '../test-resources/spotTileProps'
 
-stories.add('Rfq Button', () => {
+rfqStories.add('Rfq Button', () => {
   const rfqStates = {
     none: 'none',
     canRequest: 'canRequest',

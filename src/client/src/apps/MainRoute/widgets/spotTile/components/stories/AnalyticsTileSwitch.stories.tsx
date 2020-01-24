@@ -1,7 +1,7 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { boolean, select } from '@storybook/addon-knobs'
-import { stories, Story, Centered } from './Initialise.stories'
+import { Story, Centered, analyticsTileStories } from './Initialise.stories'
 import { currencyPair, spotTileDataWithRfq, switchOptions } from '../test-resources/spotTileProps'
 import { AnalyticsTile } from '../analyticsTile'
 import { SpotTileDataWithNotional } from '../../model'
@@ -20,7 +20,7 @@ const rfqActions = {
   reset: action('reset'),
 }
 
-stories.add('AnalyticsTile Booking status', () => (
+analyticsTileStories.add('Booking status', () => (
   <Story>
     <Centered>
       <div
@@ -45,7 +45,7 @@ stories.add('AnalyticsTile Booking status', () => (
   </Story>
 ))
 
-stories.add('AnalyticsTile Initiate RFQ', () => (
+analyticsTileStories.add('Initiate RFQ', () => (
   <Story>
     <Centered>
       <div
@@ -70,7 +70,7 @@ stories.add('AnalyticsTile Initiate RFQ', () => (
   </Story>
 ))
 
-stories.add('AnalyticsTile Cancel RFQ', () => (
+analyticsTileStories.add('Cancel RFQ', () => (
   <Story>
     <Centered>
       <div
@@ -95,7 +95,7 @@ stories.add('AnalyticsTile Cancel RFQ', () => (
   </Story>
 ))
 
-stories.add('AnalyticsTile RFQ timer', () => (
+analyticsTileStories.add('RFQ timer', () => (
   <Story>
     <Centered>
       <div
@@ -125,7 +125,7 @@ stories.add('AnalyticsTile RFQ timer', () => (
   </Story>
 ))
 
-stories.add('AnalyticsTile Requote', () => (
+analyticsTileStories.add('Requote', () => (
   <Story>
     <Centered>
       <div
@@ -150,7 +150,7 @@ stories.add('AnalyticsTile Requote', () => (
   </Story>
 ))
 
-stories.add('AnalyticsTile RFQ Switch', () => {
+analyticsTileStories.add('RFQ Switch', () => {
   const rfqStatesSwitch = select('states', switchOptions, 'canRequest')
   return (
     <Story>

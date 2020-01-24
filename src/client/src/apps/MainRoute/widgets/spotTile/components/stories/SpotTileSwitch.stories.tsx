@@ -1,7 +1,7 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { boolean, select } from '@storybook/addon-knobs'
-import { stories, Story, Centered } from './Initialise.stories'
+import { Story, Centered, spotTileStories } from './Initialise.stories'
 import SpotTile from '../SpotTile'
 import { ServiceConnectionStatus } from 'rt-types'
 import { currencyPair, spotTileDataWithRfq, switchOptions } from '../test-resources/spotTileProps'
@@ -20,7 +20,7 @@ const rfqActions = {
   reset: action('reset'),
 }
 
-stories.add('SpotTile Booking status', () => (
+spotTileStories.add('Booking status', () => (
   <Story>
     <Centered>
       <div
@@ -45,7 +45,7 @@ stories.add('SpotTile Booking status', () => (
   </Story>
 ))
 
-stories.add('SpotTile Initiate RFQ', () => (
+spotTileStories.add('Initiate RFQ', () => (
   <Story>
     <Centered>
       <div
@@ -70,7 +70,7 @@ stories.add('SpotTile Initiate RFQ', () => (
   </Story>
 ))
 
-stories.add('SpotTile Cancel RFQ', () => (
+spotTileStories.add('Cancel RFQ', () => (
   <Story>
     <Centered>
       <div
@@ -95,7 +95,7 @@ stories.add('SpotTile Cancel RFQ', () => (
   </Story>
 ))
 
-stories.add('SpotTile RFQ timer', () => (
+spotTileStories.add('RFQ timer', () => (
   <Story>
     <Centered>
       <div
@@ -125,7 +125,7 @@ stories.add('SpotTile RFQ timer', () => (
   </Story>
 ))
 
-stories.add('SpotTile Requote', () => (
+spotTileStories.add('Requote', () => (
   <Story>
     <Centered>
       <div
@@ -150,7 +150,7 @@ stories.add('SpotTile Requote', () => (
   </Story>
 ))
 
-stories.add('SpotTile RFQ Switch', () => {
+spotTileStories.add('RFQ Switch', () => {
   const rfqStatesSwitch = select('states', switchOptions, 'canRequest')
   return (
     <Story>

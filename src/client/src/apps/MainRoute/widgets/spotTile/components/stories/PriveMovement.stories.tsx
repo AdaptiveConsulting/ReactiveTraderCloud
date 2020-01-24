@@ -1,9 +1,9 @@
 import React from 'react'
-import { stories, Story, Centered } from './Initialise.stories'
+import { Story, Centered, priceStories } from './Initialise.stories'
 import PriceMovement from '../PriceMovement'
 import { select, boolean } from '@storybook/addon-knobs'
 
-stories.add('Price movement', () => {
+priceStories.add('Price movement', () => {
   const priceMovementType = select('Direction', { Up: 'Up', Down: 'Down' }, 'Up')
   const showPriceMovement = boolean('show price movement', true)
   const isAnalyticsView = boolean('Analytic View', true)

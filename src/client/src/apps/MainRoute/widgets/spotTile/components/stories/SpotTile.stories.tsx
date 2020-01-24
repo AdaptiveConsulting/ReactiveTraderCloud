@@ -1,6 +1,6 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
-import { stories, Story, Centered } from './Initialise.stories'
+import { Story, Centered, spotTileStories } from './Initialise.stories'
 import { ServiceConnectionStatus } from 'rt-types'
 import { currencyPair, spotTileData } from '../test-resources/spotTileProps'
 import SpotTile from '../SpotTile'
@@ -18,7 +18,7 @@ const rfqActions = {
   reset: action('reset'),
 }
 
-stories.add('SpotTile', () => (
+spotTileStories.add('Default View', () => (
   <Story>
     <Centered>
       <div
@@ -55,7 +55,7 @@ const noPriceData = {
   },
 }
 
-stories.add('SpotTile no price', () => (
+spotTileStories.add('No price', () => (
   <Story>
     <Centered>
       <div
@@ -80,7 +80,7 @@ stories.add('SpotTile no price', () => (
   </Story>
 ))
 
-stories.add('SpotTile in error', () => (
+spotTileStories.add('Error', () => (
   <Story>
     <Centered>
       <div

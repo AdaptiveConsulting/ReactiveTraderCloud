@@ -4,11 +4,11 @@ import { action } from '@storybook/addon-actions'
 import PriceButton from '../PriceButton'
 import { Flex } from 'rt-components'
 import { Direction } from 'rt-types'
-import { stories, Story, Centered } from './Initialise.stories'
+import { priceStories, Story, Centered } from './Initialise.stories'
 
 const handleClick = action('execute')
 
-stories.add('Price button', () => {
+priceStories.add('Price button', () => {
   const priceProps = boolean('No Rate', false)
     ? {}
     : {
