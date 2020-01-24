@@ -95,6 +95,36 @@ stories.add('SpotTile Cancel RFQ', () => (
   </Story>
 ))
 
+stories.add('SpotTile RFQ timer', () => (
+  <Story>
+    <Centered>
+      <div
+        style={{
+          width: '320px',
+          height: '150px',
+        }}
+      >
+        <SpotTile
+          currencyPair={currencyPair}
+          spotTileData={{
+            ...spotTileDataWithRfq,
+            rfqState: 'received',
+            rfqTimeout: 10000,
+            rfqReceivedTime: Date.now(),
+          }}
+          executeTrade={executeTrade}
+          executionStatus={ServiceConnectionStatus.CONNECTED}
+          updateNotional={updateNotional}
+          resetNotional={resetNotional}
+          tradingDisabled={true}
+          inputDisabled={false}
+          rfq={rfqActions}
+        />
+      </div>
+    </Centered>
+  </Story>
+))
+
 stories.add('SpotTile Requote', () => (
   <Story>
     <Centered>

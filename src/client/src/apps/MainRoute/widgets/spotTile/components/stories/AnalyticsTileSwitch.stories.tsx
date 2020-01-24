@@ -95,6 +95,36 @@ stories.add('AnalyticsTile Cancel RFQ', () => (
   </Story>
 ))
 
+stories.add('AnalyticsTile RFQ timer', () => (
+  <Story>
+    <Centered>
+      <div
+        style={{
+          width: '340px',
+          height: '150px',
+        }}
+      >
+        <AnalyticsTile
+          currencyPair={currencyPair}
+          spotTileData={{
+            ...spotTileDataWithRfq,
+            rfqState: 'received',
+            rfqTimeout: 10000,
+            rfqReceivedTime: Date.now(),
+          }}
+          executeTrade={executeTrade}
+          executionStatus={ServiceConnectionStatus.CONNECTED}
+          updateNotional={updateNotional}
+          resetNotional={resetNotional}
+          tradingDisabled={false}
+          inputDisabled={false}
+          rfq={rfqActions}
+        />
+      </div>
+    </Centered>
+  </Story>
+))
+
 stories.add('AnalyticsTile Requote', () => (
   <Story>
     <Centered>
