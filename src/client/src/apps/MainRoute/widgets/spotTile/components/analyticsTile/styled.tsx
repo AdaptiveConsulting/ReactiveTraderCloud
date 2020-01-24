@@ -12,9 +12,11 @@ export const GraphNotionalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  z-index: 2;
 `
 export const PriceControlWrapper = styled.div`
   display: flex;
+  z-index: 1;
 `
 export const LineChartWrapper = styled.div<{ isTimerOn: boolean }>`
   width: 100%;
