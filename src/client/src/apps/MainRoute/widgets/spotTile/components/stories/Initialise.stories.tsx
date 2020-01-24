@@ -17,4 +17,9 @@ export const Centered = styled('div')`
 export const Story: React.FC = ({ children }) => <BaseStory>{children}</BaseStory>
 
 export const stories = storiesOf('Spot Tile', module)
+export const priceStories = storiesOf('Spot Tile.Price', module)
+export const rfqStories = storiesOf('Spot Tile.RFQ', module)
+export const analyticsTileStories = storiesOf('Spot Tile.Analytic Tile', module)
+export const spotTileStories = storiesOf('Spot Tile.SpotTile', module)
+
 stories.addDecorator(withKnobs)

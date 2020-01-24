@@ -1,8 +1,10 @@
 import React from 'react'
 import NotionalInput from '../notional'
-import { stories, Story, Centered } from './Initialise.stories'
+import { Story, Centered } from './Initialise.stories'
 import { action } from '@storybook/addon-actions'
+import { storiesOf } from '@storybook/react'
 
+const stories = storiesOf('Spot Tile.Notional', module)
 const updateNotional = action('updateNotional')
 const resetNotional = action('resetNotional')
 
@@ -28,12 +30,12 @@ stories.add('Notional input with trading disabled', () => (
     <Centered>
       <div style={{ padding: '1.5rem' }}>
         <NotionalInput
-          notional={1000000}
+          notional={1000000000}
           currencyPairSymbol="USDJPY"
           currencyPairBase="USD"
           updateNotional={updateNotional}
           resetNotional={resetNotional}
-          disabled={false}
+          disabled={true}
         />
       </div>
     </Centered>
