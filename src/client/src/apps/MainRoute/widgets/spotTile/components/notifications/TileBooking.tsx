@@ -61,6 +61,7 @@ const BookingStatus = styled.span<{ isExecutingStatus: boolean; isAnalyticsView:
 
 const AdaptiveLoaderWrapper = styled.span`
   padding-right: 0.375rem;
+  padding-top: 0.04rem;
 `
 
 interface TileBookingProps {
