@@ -18,7 +18,6 @@ export const GraphNotionalWrapper = styled.div`
 export const PriceControlWrapper = styled.div`
   display: flex;
   width: 160px;
-  z-index: 1;
 `
 export const LineChartWrapper = styled.div<{ isTimerOn: boolean }>`
   width: 100%;
