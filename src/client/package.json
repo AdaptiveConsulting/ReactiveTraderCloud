@@ -8,10 +8,12 @@
         "cloud",
         "rxjs"
     ],
-    "authors": [{
-        "name": "Adaptive Consulting",
-        "email": "@AdaptiveLimited"
-    }],
+    "authors": [
+        {
+            "name": "Adaptive Consulting",
+            "email": "@AdaptiveLimited"
+        }
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
@@ -91,7 +93,7 @@
         "typeface-montserrat": "^0.0.54",
         "ua-parser-js": "0.7.10",
         "uuid": "3.3.2",
-        "react-router-hash-link": "^1.2.2",
+        "react-router-hash-link": "^1.2.2"
     },
     "devDependencies": {
         "@storybook/addon-actions": "^5.2.8",
