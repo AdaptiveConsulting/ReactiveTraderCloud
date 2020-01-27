@@ -1,9 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { HashLink as Link } from 'react-router-hash-link'
-import { styled } from 'rt-theme'
-import { Block } from '../styled'
-import { mapMarginPaddingProps } from '../styled/mapMarginPaddingProps'
 import { css } from 'styled-components'
+import { styled } from 'rt-theme'
+import { Flex } from 'rt-components'
+import { H2 } from '../elements'
+import { mapMarginPaddingProps } from '../styled/mapMarginPaddingProps'
+
 import logodark from '../assets/adaptive-logo-without-background.png'
 import logolight from '../assets/adaptive-mark-large.png'
 
@@ -12,7 +14,6 @@ export interface OnePageNavBar {
 }
 
 const MAX_SCROLL_HEIGHT = 100000000
-const isBrowser = typeof window !== `undefined`
 const isActive = (to: string): string => (window.location.hash === `#${to}` ? 'active' : '')
 
 const OnePageNavBar: React.FC<OnePageNavBar> = props => {
@@ -20,7 +21,7 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
   const { sections } = props
   const [scrollTop, setScrollTop] = useState(window.scrollY)
   const [positionNavBar, setPositionNavBar] = useState(MAX_SCROLL_HEIGHT)
-
+  const [currentSection, setCurrentSection] = useState('')
   const handleScroll = () => setScrollTop(window.scrollY)
 
   useEffect(() => {
@@ -35,28 +36,36 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
   }, [positionNavBar, scrollTop])
 
   return (
-    <NavBarBleed className={scrollTop > positionNavBar ? 'sticky' : ''} ref={ref}>
-      <Flex style={{ justifyContent: 'space-between' }}>
-        <div>
-          <Logo>Adaptive</Logo>
-          <TextHeader>Design Systems Library UI</TextHeader>
-        </div>
-        <div>
-          <Flex>
-            {sections.map(({ path, title }) => (
-              <OnePageNavLink
-                key={`navlink-${path}`}
-                to={`#${path}`}
-                scroll={el => el.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                className={isActive(path)}
-              >
-                {title}
-              </OnePageNavLink>
-            ))}
-          </Flex>
-        </div>
-      </Flex>
-    </NavBarBleed>
+    <React.Fragment>
+      <NavBarBleed className={scrollTop > positionNavBar ? 'sticky' : ''} ref={ref}>
+        <FlexWrapper justifyContent="space-between" alignItems="center">
+          <div>
+            <Logo>Adaptive</Logo>
+            <TextHeader>Design Systems Library UI</TextHeader>
+          </div>
+          <div>
+            <FlexWrapper justifyContent="flex-start" alignItems="center">
+              {sections.map(({ path, title }) => (
+                <OnePageNavLink
+                  key={`navlink-${path}`}
+                  to={`#${path}`}
+                  scroll={el => el.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                  className={isActive(path)}
+                  onClick={() => setCurrentSection(title)}
+                >
+                  {title}
+                </OnePageNavLink>
+              ))}
+            </FlexWrapper>
+          </div>
+        </FlexWrapper>
+      </NavBarBleed>
+      <TitleBar className={scrollTop > positionNavBar ? 'sticky' : ''}>
+        <FlexWrapper justifyContent="space-between" alignItems="center">
+          <TitleHeading>{currentSection}</TitleHeading>
+        </FlexWrapper>
+      </TitleBar>
+    </React.Fragment>
   )
 }
 
@@ -103,15 +112,13 @@ const OnePageNavLink = styled(Link)`
   }
 `
 
-const Flex = styled(Block)`
-  display: flex;
+const FlexWrapper = styled(Flex)`
   flex-flow: row wrap;
-  align-items: center;
-  justify-content: 'flex-start';
   width: 100%;
   margin: 0 auto;
   max-width: 60rem;
 `
+
 const NavBar = styled.div`
   height: 76px;
   transition: all 1000ms ease;
@@ -142,7 +149,6 @@ const NavBarBleed = styled(NavBar)`
   & > div > div:first-child {
     opacity: 0;
     display: none;
-    transition: all 3s ease;
   }
 
   @media all and (min-width: 375px) {
@@ -169,6 +175,31 @@ const NavBarBleed = styled(NavBar)`
 
   @media all and (min-width: 0) {
     ${mapMarginPaddingProps};
+  }
+`
+
+const TitleHeading = styled(H2)`
+  text-transform: uppercase;
+  margin: 0.5rem 0;
+  ${({ theme }) =>
+    css({
+      color: theme.secondary[4],
+    })};
+`
+
+const TitleBar = styled(NavBarBleed)`
+  display: none;
+  height: 50px;
+
+  &.sticky {
+    display: none;
+  }
+
+  @media all and (min-width: 768px) {
+    &.sticky {
+      top: 76px;
+      display: block;
+    }
   }
 `
 

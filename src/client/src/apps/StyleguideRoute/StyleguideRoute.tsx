@@ -14,7 +14,7 @@ const sections: Array<{ path: string; Section: React.ComponentType; title: strin
   { path: 'color-spectrum', Section: ColorSpectrum, title: 'Colour' },
   { path: 'font-families', Section: FontFamilies, title: 'Typography' },
   { path: 'core-branding', Section: CoreBranding, title: 'Iconography' },
-  { path: 'atoms', Section: Atoms, title: 'Atoms' },
+  { path: 'atoms-molecules', Section: Atoms, title: 'Atoms' },
 ]
 
 const navSections: Array<{ path: string; title: string }> = sections.map(({ path, title }) => ({
@@ -30,7 +30,7 @@ const StyleguideRoute: React.FC = () => (
       <OnePageNavBar sections={navSections} />
       <React.Fragment>
         {sections.map(({ path, Section, title }) => (
-          <div id={path} style={{ scrollMargin: '76px' }}>
+          <div id={path} style={{ scrollMargin: '126px' }}>
             <Section key={path} />
           </div>
         ))}
