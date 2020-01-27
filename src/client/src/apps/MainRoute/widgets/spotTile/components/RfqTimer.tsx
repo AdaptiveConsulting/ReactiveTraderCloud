@@ -17,12 +17,14 @@ const UPDATE_FREQ_MS = 200
 const TimeLeft = styled.div`
   font-size: 10px;
   opacity: 0.6;
+  grid-area: TimeLeft;
 `
 
 const ProgressBarWrapper = styled.div`
   background-color: ${({ theme }) => theme.core.darkBackground};
   height: 6px;
   width: 100%;
+  grid-area: ProgressBar;
 `
 
 const ProgressBar = styled.div`
@@ -39,15 +41,16 @@ const RejectQuoteButton = styled.button`
   font-size: 12px;
   padding: 4px 5px;
   margin-left: 3px;
+  grid-area: RejectQuoteButton;
 `
 
 const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   display: grid;
-  width: ${({ isAnalyticsView }) => (isAnalyticsView ? '120%' : '100%')};
+  width: ${({ isAnalyticsView }) => (isAnalyticsView ? '105%' : '100%')};
   align-items: center;
   grid-template-columns: 35px auto 55px;
-  grid-template-rows: auto;
-  grid-template-areas: 'TimeLeft ProgressBar RejectQuoteButton';
+  grid-template-rows: 5px 20px;
+  grid-template-areas: 'TimeLeft . .' 'ProgressBar ProgressBar RejectQuoteButton';
   margin-bottom: -12px;
 `
 
