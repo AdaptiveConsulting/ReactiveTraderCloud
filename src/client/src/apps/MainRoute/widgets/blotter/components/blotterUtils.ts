@@ -19,7 +19,9 @@ import {
 } from '../blotterFields'
 
 function UtcFormatDate(date: Date) {
-  return DateTime.fromJSDate(date, { zone: 'utc' }).toFormat('dd-MMM-yyyy')
+  const localZoneName = DateTime.local().zoneName
+
+  return DateTime.fromJSDate(date, { zone: localZoneName }).toFormat('dd-MMM-yyyy')
 }
 
 const notionalRenderer = (value: any) => {

@@ -1,9 +1,10 @@
 import React, { FC } from 'react'
+import { DateTime } from 'luxon'
+import { usePlatform } from 'rt-platforms'
 import { spotDateFormatter } from '../../model/dateUtils'
 import PriceControls from '../PriceControls'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
-import { usePlatform } from 'rt-platforms'
 import { getDefaultNotionalValue } from '../Tile/TileBusinessLogic'
 
 import {
@@ -47,18 +48,23 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       displayCurrencyChart,
       rfq,
     } = this.props
-    const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
+
+    const localZoneName = DateTime.local().zoneName
+    const spotDate = spotDateFormatter(price.valueDate, false, localZoneName).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
+
     const {
       isRfqStateExpired,
       isRfqStateCanRequest,
       isRfqStateNone,
       isRfqStateReceived,
     } = getConstsFromRfqState(rfqState)
+
     const showResetButton =
       !isTradeExecutionInFlight &&
       getDefaultNotionalValue(currencyPair) !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
+
     const showTimer = isRfqStateReceived && rfqTimeout
     const isTimerOn = Boolean(showTimer) && rfqTimeout !== null && rfqReceivedTime !== null
 
