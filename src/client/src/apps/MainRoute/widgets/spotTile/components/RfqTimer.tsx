@@ -43,7 +43,7 @@ const RejectQuoteButton = styled.button`
 
 const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   display: grid;
-  width: ${({ isAnalyticsView }) => (isAnalyticsView ? '130%' : '100%')};
+  width: ${({ isAnalyticsView }) => (isAnalyticsView ? '120%' : '100%')};
   align-items: center;
   grid-template-columns: 35px auto 55px;
   grid-template-rows: auto;
