@@ -73,7 +73,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG cxjlMm"
+          className="sc-jzJRlG klXBNG"
         >
           <i
             aria-hidden="true"
@@ -242,7 +242,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG cxjlMm"
+          className="sc-jzJRlG klXBNG"
         >
           <i
             aria-hidden="true"
@@ -440,7 +440,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG cxjlMm"
+          className="sc-jzJRlG klXBNG"
         >
           <i
             aria-hidden="true"
@@ -638,7 +638,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG cxjlMm"
+          className="sc-jzJRlG klXBNG"
         >
           <i
             aria-hidden="true"
@@ -818,7 +818,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           Awaiting price
         </div>
         <div
-          className="sc-jzJRlG cxjlMm"
+          className="sc-jzJRlG klXBNG"
         >
           <i
             aria-hidden="true"
@@ -1021,7 +1021,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           </div>
         </button>
         <div
-          className="sc-jzJRlG cxjlMm"
+          className="sc-jzJRlG klXBNG"
         >
           <i
             aria-hidden="true"
@@ -1190,7 +1190,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
         </button>
         <div
-          className="sc-jzJRlG cxjlMm"
+          className="sc-jzJRlG klXBNG"
         >
           <i
             aria-hidden="true"

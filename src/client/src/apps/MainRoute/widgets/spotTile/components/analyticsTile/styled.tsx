@@ -8,7 +8,8 @@ export const AnalyticsTileContent = styled.div`
   justify-content: space-between;
 `
 export const GraphNotionalWrapper = styled.div`
-  width: 44%;
+  min-width: 0; //fixed bug with recharts resizing
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -16,6 +17,7 @@ export const GraphNotionalWrapper = styled.div`
 `
 export const PriceControlWrapper = styled.div`
   display: flex;
+  width: 160px;
   z-index: 1;
 `
 export const LineChartWrapper = styled.div<{ isTimerOn: boolean }>`
