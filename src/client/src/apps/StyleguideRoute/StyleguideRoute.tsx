@@ -30,15 +30,23 @@ const StyleguideRoute: React.FC = () => (
       <OnePageNavBar sections={navSections} />
       <React.Fragment>
         {sections.map(({ path, Section, title }) => (
-          <div id={path} style={{ scrollMargin: '126px' }}>
+          <ScrollableContainer id={path}>
             <Section key={path} />
-          </div>
+          </ScrollableContainer>
         ))}
       </React.Fragment>
       <SectionBlock mh={5} colorScheme="inverted" />
     </Root>
   </ThemeProvider>
 )
+
+const ScrollableContainer = styled.div`
+  scroll-margin: 76px;
+
+  @media (min-width: 768px) {
+    scroll-margin: 126px;
+  }
+`
 
 export const Root = styled(Block)`
   min-height: 100%;
