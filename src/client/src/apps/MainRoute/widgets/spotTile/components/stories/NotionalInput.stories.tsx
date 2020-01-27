@@ -1,14 +1,12 @@
 import React from 'react'
 import NotionalInput from '../notional'
-import { Story, Centered } from './Initialise.stories'
+import { Story, Centered, notionalStories } from './Initialise.stories'
 import { action } from '@storybook/addon-actions'
-import { storiesOf } from '@storybook/react'
 
-const stories = storiesOf('Spot Tile.Notional', module)
 const updateNotional = action('updateNotional')
 const resetNotional = action('resetNotional')
 
-stories.add('Notional input', () => (
+notionalStories.add('Notional input', () => (
   <Story>
     <Centered>
       <div style={{ padding: '1.5rem' }}>
@@ -25,7 +23,7 @@ stories.add('Notional input', () => (
   </Story>
 ))
 
-stories.add('Notional input with trading disabled', () => (
+notionalStories.add('Notional input with trading disabled', () => (
   <Story>
     <Centered>
       <div style={{ padding: '1.5rem' }}>

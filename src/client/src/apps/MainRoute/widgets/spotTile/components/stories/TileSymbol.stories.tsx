@@ -1,8 +1,8 @@
 import React from 'react'
-import { stories, Story, Centered } from './Initialise.stories'
+import { componentStories, Story, Centered } from './Initialise.stories'
 import { TileSymbol } from '../styled'
 
-stories.add('Symbol', () => (
+componentStories.add('Symbol', () => (
   <Story>
     <Centered>
       <div style={{ padding: '1.5rem' }}>
