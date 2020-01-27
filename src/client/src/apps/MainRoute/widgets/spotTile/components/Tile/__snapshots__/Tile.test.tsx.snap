@@ -272,7 +272,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           }
         >
           <div
-            className="sc-jlyJG fhblWQ"
+            className="sc-jlyJG eSRRBg"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
@@ -470,7 +470,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           }
         >
           <div
-            className="sc-jlyJG fhblWQ"
+            className="sc-jlyJG eSRRBg"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
@@ -848,7 +848,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           }
         >
           <div
-            className="sc-jlyJG hftPGU"
+            className="sc-jlyJG kJhwbT"
             color="red"
             data-qa="tile-booking__booking-pill"
             disabled={false}
@@ -1220,14 +1220,14 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           }
         >
           <div
-            className="sc-jlyJG cAZKlR"
+            className="sc-jlyJG fbfbOA"
             color="blue"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="sc-csuQGl hogrVX"
+              className="sc-csuQGl kujRdr"
             >
               <svg
                 data-qa="adaptive-loader__svg"
