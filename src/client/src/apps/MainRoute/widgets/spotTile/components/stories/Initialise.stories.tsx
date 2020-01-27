@@ -14,12 +14,7 @@ export const Centered = styled('div')`
 
 export const Story: React.FC = ({ children }) => <BaseStory>{children}</BaseStory>
 
-export const stories = storiesOf('Spot Tile', module).addParameters({
-  options: {
-    storySort: (a, b) =>
-      a[1].kind === b[1].kind ? 0 : a[1].id.localeCompare(b[1].id, undefined, { numeric: true }),
-  },
-})
+export const stories = storiesOf('Spot Tile', module)
 export const priceStories = storiesOf('Spot Tile.Components.Price', module)
 export const rfqStories = storiesOf('Spot Tile.Components.RFQ', module)
 export const notionalStories = storiesOf('Spot Tile.Components.Notional', module)
