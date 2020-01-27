@@ -1,10 +1,7 @@
 import React from 'react'
 import { styled } from 'rt-theme'
-import { css } from 'styled-components'
 import designTownPNGURL from '../assets/design-town.png'
-import logodark from '../assets/adaptive-logo-without-background.png'
-import logolight from '../assets/adaptive-mark-large.png'
-
+import Logo from '../../MainRoute/components/app-header/Logo'
 import { H1, H3 } from '../elements'
 import { Paragraph, SectionBlock } from '../styled'
 
@@ -13,7 +10,7 @@ export const Introduction: React.FC = props => (
     <SectionBlock colorScheme="secondary" {...props}>
       <Flex>
         <Content>
-          <Logo>Adaptive</Logo>
+          <Logo />
           <H3Intro>Design Systems</H3Intro>
           <H1>Adaptive UI Library</H1>
           <Paragraph>
@@ -39,19 +36,6 @@ const Flex = styled.div`
 const Content = styled.div`
   flex: 1 1 100%;
   max-width: 24rem;
-`
-const Logo = styled.div`
-  height: 2rem;
-  padding: 0 2rem;
-  ${({ theme }) =>
-    css({
-      backgroundImage: `url(${theme.name === 'dark' ? logodark : logolight})`,
-    })};
-  background-position: left center;
-  background-size: contain;
-  font-size: 1.2rem;
-  font-weight: bold;
-  line-height: 2rem;
 `
 
 const Background = styled.div`

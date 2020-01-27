@@ -4,10 +4,8 @@ import { css } from 'styled-components'
 import { styled } from 'rt-theme'
 import { Flex } from 'rt-components'
 import { H2 } from '../elements'
+import Logo from '../../MainRoute/components/app-header/Logo'
 import { mapMarginPaddingProps } from '../styled/mapMarginPaddingProps'
-
-import logodark from '../assets/adaptive-logo-without-background.png'
-import logolight from '../assets/adaptive-mark-large.png'
 
 export interface OnePageNavBar {
   sections: Array<{ path: string; title: string }>
@@ -40,7 +38,7 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
       <NavBarBleed className={scrollTop > positionNavBar ? 'sticky' : ''} ref={ref}>
         <FlexWrapper justifyContent="space-between" alignItems="center">
           <div>
-            <Logo>Adaptive</Logo>
+            <Logo />
             <TextHeader>Design Systems Library UI</TextHeader>
           </div>
           <div>
@@ -69,22 +67,7 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
   )
 }
 
-const Logo = styled.div`
-  height: 2rem;
-  padding: 0 2rem;
-  ${({ theme }) =>
-    css({
-      backgroundImage: `url(${theme.name === 'dark' ? logodark : logolight})`,
-      color: theme.secondary.base,
-    })};
-  background-position: left center;
-  background-size: contain;
-  font-size: 1.2rem;
-  font-weight: bold;
-  line-height: 2rem;
-`
-
-const TextHeader = styled.span`
+const TextHeader = styled.p`
   ${({ theme }) =>
     css({
       color: theme.secondary.base,
