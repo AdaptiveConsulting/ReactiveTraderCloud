@@ -10,7 +10,7 @@ export const FloatingTools: React.FC = () => {
   return (
     <Root>
       <Bar>
-        <Label>Switch to {isDark ? 'Light' : 'Dark'} mode </Label>
+        <Label>Show {isDark ? 'Light' : 'Dark'} theme </Label>
         <ThemeStorageSwitch handleDiameter={18} />
       </Bar>
     </Root>
@@ -19,7 +19,9 @@ export const FloatingTools: React.FC = () => {
 
 const Root: React.FC = props => <Block bg={t => t.primary[2]} {...props} />
 
-const Bar = styled(props => <Block px={3} bg={t => t.primary[1]} fg={t => t.secondary[3]} {...props} />)`
+const Bar = styled(props => (
+  <Block px={3} bg={t => t.primary[1]} fg={t => t.secondary[3]} {...props} />
+))`
   position: fixed;
   display: flex;
   align-items: center;

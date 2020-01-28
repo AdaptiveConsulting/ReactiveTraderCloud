@@ -95,7 +95,7 @@ export type ColorPalette = BasePalette & PaletteShadeSet
 const offblack = createPalette(OFFBLACK, {
   // We can override the generated shades.
   L3: mix(0.25, WHITE, rgb(85, 93, 112)),
-  // We are overriding these values due to insuffcient contrast ratio
+  // We are overriding these values due to insuffcient contrast ratiobes
   // and inconsistency with the designers intent.
   D3: rgb(46, 53, 67),
   D4: rgb(39, 45, 58),

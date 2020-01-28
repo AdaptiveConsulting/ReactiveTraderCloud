@@ -75,7 +75,12 @@ function isColor(value: string | ThemeSelector): value is Color {
 export const getThemeColor = (theme: Theme, color: Color | ThemeSelector, fallback?: Color) =>
   typeof color === 'function' ? color(theme) || fallback : isColor(color) ? color : fallback
 
-const createTheme = ({ primary, secondary, core }: CorePaletteMap, accents: AccentPaletteMap) => ({
+const createTheme = (
+  name: string,
+  { primary, secondary, core }: CorePaletteMap,
+  accents: AccentPaletteMap,
+) => ({
+  name,
   template,
   core,
   white: colors.static.white,
@@ -182,8 +187,8 @@ const createTheme = ({ primary, secondary, core }: CorePaletteMap, accents: Acce
   } as TouchableStyleSet,
 })
 
-const lightTheme = createTheme(colors.light, colors.accents)
-const darkTheme = createTheme(colors.dark, colors.accents)
+const lightTheme = createTheme('light', colors.light, colors.accents)
+const darkTheme = createTheme('dark', colors.dark, colors.accents)
 // Manual overrides
 darkTheme.button.secondary.textColor = darkTheme.primary.base
 
