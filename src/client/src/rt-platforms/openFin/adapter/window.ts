@@ -153,3 +153,17 @@ export const openDesktopWindow = async (
 
   return createPlatformWindow(() => ofWindowPromise)
 }
+
+export const isMainWindow = async () => {
+  const app = await fin.Application.getCurrent()
+
+  const win = await app.getWindow()
+
+  return win.isMainWindow()
+}
+
+export const addApplicationEventHandler = (event: string) => (handler: Function) => {
+  const app = fin.Application.getCurrentSync()
+
+  app.addListener(event, handler as () => any)
+}

@@ -2,10 +2,9 @@
 /* eslint-disable no-restricted-globals */
 
 import { Platform } from '../../platform'
-import { AppConfig, InteropTopics, WindowConfig } from '../../types'
-import { createPlatformWindow, openDesktopWindow, openfinWindowStates } from './window'
-import { fromEventPattern, Observable } from 'rxjs'
-import { workspaces } from 'openfin-layouts'
+import { AppConfig, InteropTopics } from '../../types'
+import { createPlatformWindow, openDesktopWindow } from './window'
+import { fromEventPattern } from 'rxjs'
 import {
   Notification,
   NotificationActionEvent,
@@ -19,23 +18,6 @@ import { platformEpics } from './epics'
 import Logo from './logo'
 import { OpenFinControls, OpenFinHeader } from '../components'
 import { ApplicationEpic } from 'StoreTypes'
-
-interface WinProps {
-  name: string
-  display: boolean
-}
-
-export function setupWorkspaces() {
-  return new Observable<WinProps>(observer => {
-    workspaces
-      .setRestoreHandler((workspace: workspaces.WorkspaceApp) =>
-        appRestoreHandler(workspace, (data: WinProps) => {
-          observer.next(data)
-        }),
-      )
-      .then(workspaces.ready)
-  })
-}
 
 export default class OpenFin implements Platform {
   readonly name = 'openfin'
@@ -162,76 +144,4 @@ export default class OpenFin implements Platform {
   }
 
   epics: Array<ApplicationEpic> = platformEpics
-}
-
-async function appRestoreHandler(
-  workspaceApp: workspaces.WorkspaceApp,
-  callback: (data: WinProps) => void,
-) {
-  const ofApp = await fin.Application.getCurrent()
-  const openWindows = await ofApp.getChildWindows()
-
-  const opened = workspaceApp.childWindows.map(async (win: workspaces.WorkspaceWindow) => {
-    if (!openWindows.some(w => w.identity.name === win.name)) {
-      const config: WindowConfig = {
-        name: win.name,
-        url: win.url,
-        width: win.bounds.width,
-        height: win.bounds.height,
-      }
-      await openDesktopWindow(
-        config,
-        () => {
-          callback({
-            name: win.name,
-            display: true,
-          })
-        },
-        { defaultLeft: win.bounds.left, defaultTop: win.bounds.top },
-      )
-
-      // we need to 'remove' the child window from the main window
-      callback({
-        name: win.name,
-        display: true,
-      })
-    } else {
-      await positionWindow(win)
-    }
-  })
-
-  await Promise.all(opened)
-  return workspaceApp
-}
-
-async function positionWindow(win: workspaces.WorkspaceWindow): Promise<void> {
-  try {
-    const { isShowing, isTabbed } = win
-
-    const ofWin = await fin.Window.wrap(win)
-    await ofWin.setBounds(win.bounds)
-
-    if (isTabbed) {
-      await ofWin.show()
-      return
-    }
-
-    await ofWin.leaveGroup()
-
-    if (isShowing) {
-      if (win.state === openfinWindowStates.Normal) {
-        // Need to both restore and show because the restore function doesn't emit a `shown` or `show-requested` event
-        await ofWin.restore()
-        await ofWin.show()
-      } else if (win.state === openfinWindowStates.Minimized) {
-        await ofWin.minimize()
-      } else if (win.state === openfinWindowStates.Maximized) {
-        await ofWin.maximize()
-      }
-    } else {
-      await ofWin.hide()
-    }
-  } catch (e) {
-    console.error('position window error', e)
-  }
 }
