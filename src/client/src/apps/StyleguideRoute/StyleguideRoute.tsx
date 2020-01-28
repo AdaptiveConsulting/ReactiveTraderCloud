@@ -30,8 +30,8 @@ const StyleguideRoute: React.FC = () => (
       <OnePageNavBar sections={navSections} />
       <React.Fragment>
         {sections.map(({ path, Section, title }) => (
-          <ScrollableContainer id={path}>
-            <Section key={path} />
+          <ScrollableContainer id={path} key={path}>
+            <Section />
           </ScrollableContainer>
         ))}
       </React.Fragment>
