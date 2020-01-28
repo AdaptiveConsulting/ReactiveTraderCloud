@@ -75,7 +75,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
             displayCurrencyChart={displayCurrencyChart}
           />
           <AnalyticsTileContent>
-            <GraphNotionalWrapper>
+            <GraphNotionalWrapper isTimerOn={isTimerOn}>
               <LineChartWrapper isTimerOn={isTimerOn}>
                 <AnalyticsTileChart history={historicPrices} />
               </LineChartWrapper>
