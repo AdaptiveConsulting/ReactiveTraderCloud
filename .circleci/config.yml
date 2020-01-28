@@ -235,7 +235,9 @@ workflows:
       - release_build:
           filters:
             branches:
-              only: master
+              only: 
+                - master
+                - layouts-2.0
             tags:
               # build for version tags starting with 'v', matching rudimentary semver rules
               # note that docker tags does not support '+' characters, only '-'
