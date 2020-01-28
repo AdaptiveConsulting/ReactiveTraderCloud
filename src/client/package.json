@@ -33,6 +33,7 @@
     "test": "react-scripts test --verbose=false",
     "analyze": "source-map-explorer build/static/js/*.chunk.js",
     "openfin": "openfin -c public/config/openfin/local.json -l",
+    "openfin:platform": "openfin -c public/config/openfin/platforms.json -l",
     "openfin:launcher": "openfin -c public/config/openfin/launcher-local.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "storybook": "start-storybook -p 6006 -c .storybook",
@@ -131,7 +132,7 @@
     "typescript": "^3.6.4"
   },
   "optionalDependencies": {
-    "openfin-cli": "^2.0.12"
+    "openfin-cli": "^3.0.1-beta.1"
   },
   "browserslist": [
     "> 1%",
