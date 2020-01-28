@@ -14,12 +14,12 @@ export const Centered = styled('div')`
 
 export const Story: React.FC = ({ children }) => <BaseStory>{children}</BaseStory>
 
-export const stories = storiesOf('Spot Tile', module)
-export const priceStories = storiesOf('Spot Tile.Components.Price', module)
-export const rfqStories = storiesOf('Spot Tile.Components.RFQ', module)
-export const notionalStories = storiesOf('Spot Tile.Components.Notional', module)
-export const analyticsTileStories = storiesOf('Spot Tile.Vertical', module)
-export const spotTileStories = storiesOf('Spot Tile.Horizontal', module)
-export const componentStories = storiesOf('Spot Tile.Components', module)
-
-stories.addDecorator(withKnobs)
+export const stories = storiesOf('Spot Tile', module).addDecorator(withKnobs)
+export const priceStories = storiesOf('Spot Tile.Components.Price', module).addDecorator(withKnobs)
+export const rfqStories = storiesOf('Spot Tile.Components.RFQ', module).addDecorator(withKnobs)
+export const notionalStories = storiesOf('Spot Tile.Components.Notional', module).addDecorator(
+  withKnobs,
+)
+export const analyticsTileStories = storiesOf('Spot Tile.Vertical', module).addDecorator(withKnobs)
+export const spotTileStories = storiesOf('Spot Tile.Horizontal', module).addDecorator(withKnobs)
+export const componentStories = storiesOf('Spot Tile.Components', module).addDecorator(withKnobs)
