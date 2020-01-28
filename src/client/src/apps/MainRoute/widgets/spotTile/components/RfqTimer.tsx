@@ -52,9 +52,9 @@ const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   display: grid;
   width: ${({ isAnalyticsView }) => (isAnalyticsView ? 'calc(100% + 23.09px)' : '100%')};
   align-items: center;
-  grid-template-columns: 35px auto 55px;
+  grid-template-columns: ${({isAnalyticsView}) => (isAnalyticsView ? '35px auto 55px' : '35px auto 7px 55px')};
   grid-template-rows: ${({isAnalyticsView}) => (isAnalyticsView ? '5px 20px' : 'auto')};
-  grid-template-areas: ${({isAnalyticsView}) => (isAnalyticsView ? "'TimeLeft . .' 'ProgressBar ProgressBar RejectQuoteButton'": "'TimeLeft ProgressBar RejectQuoteButton'")};
+  grid-template-areas: ${({isAnalyticsView}) => (isAnalyticsView ? "'TimeLeft . .' 'ProgressBar ProgressBar RejectQuoteButton'": "'TimeLeft ProgressBar . RejectQuoteButton'")};
   margin-bottom: -12px;
 `
 
