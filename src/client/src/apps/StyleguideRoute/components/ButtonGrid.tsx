@@ -1,103 +1,73 @@
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 
-import { Button, ButtonGroup } from 'rt-styleguide'
+import { Button } from 'rt-styleguide'
 import { styled } from 'rt-theme'
 
-import { ButtonStyleProps } from 'rt-styleguide';
+import { ButtonStyleProps } from 'rt-styleguide'
+
+interface TitleButtonProp {
+  title?: string
+}
 
 export default (() => (
   <Root>
     <LabelColumn>
       <div />
       <label>Normal</label>
+      <label>Hover</label>
       <label>Active</label>
       <label>Disabled</label>
-      <label>With Icons</label>
-      <label>Grouped</label>
     </LabelColumn>
     <ButtonColumn>
-      <ColumnTitle>Standard</ColumnTitle>
-      <ButtonVariants />
+      <ColumnTitle>Primary</ColumnTitle>
+      <ButtonVariants intent="primary" title="Primary" />
     </ButtonColumn>
     <ButtonColumn>
-      <ColumnTitle>Standard Outline</ColumnTitle>
-      <ButtonVariants outline />
+      <ColumnTitle>Primary-Outline</ColumnTitle>
+      <ButtonVariants intent="primary" title="Primary outline" outline />
     </ButtonColumn>
     <ButtonColumn>
-      <ColumnTitle>Pill</ColumnTitle>
-      <ButtonVariants pill />
+      <ColumnTitle>Secondary</ColumnTitle>
+      <ButtonVariants intent="secondary" title="Secondary" />
     </ButtonColumn>
     <ButtonColumn>
-      <ColumnTitle>Pill Outline</ColumnTitle>
-      <ButtonVariants pill outline />
+      <ColumnTitle>Secondary-Outline</ColumnTitle>
+      <ButtonVariants intent="secondary" title="Secondary outline" outline />
     </ButtonColumn>
   </Root>
 )) as React.FC
 
-const ButtonVariants: React.FC<ButtonStyleProps> = props => (
+const ButtonVariants: React.FC<ButtonStyleProps & TitleButtonProp> = props => (
   <React.Fragment>
     {
       // standard
       <ButtonRow>
-        <Button {...props} intent="primary">
-          Primary
-        </Button>
-        <Button {...props} intent="secondary">
-          Secondary
+        <Button {...props}>{props.title}</Button>
+      </ButtonRow>
+    }
+    {
+      //  hover
+      <ButtonRow>
+        <Button {...props} active>
+          Active
         </Button>
       </ButtonRow>
     }
     {
       //  active
       <ButtonRow>
-        <Button {...props} intent="primary" active>
-          Primary
-        </Button>
-        <Button {...props} intent="secondary" active>
-          Secondary
+        <Button {...props} active>
+          Hover
         </Button>
       </ButtonRow>
     }
     {
       //  disabled
       <ButtonRow>
-        <Button {...props} intent="primary" disabled>
-          Primary
-        </Button>
-        <Button {...props} intent="secondary" disabled>
-          Secondary
+        <Button {...props} disabled>
+          Disabled
         </Button>
       </ButtonRow>
-    }
-    {
-      //  With Icons
-      <ButtonRow>
-        <Button {...props} intent="primary">
-          <FontAwesomeIcon icon={faCheck} /> Primary
-        </Button>
-        <Button {...props} intent="secondary">
-          <FontAwesomeIcon icon={faCheck} /> Secondary
-        </Button>
-      </ButtonRow>
-    }
-    {
-      // Grouped
-      <div>
-        <ButtonGroup {...props} intent="primary">
-          <Button>Left</Button>
-          <Button>Middle</Button>
-          <Button>Right</Button>
-        </ButtonGroup>
-        <ButtonGroup {...props} intent="secondary">
-          <Button>1</Button>
-          <Button>2</Button>
-          <Button>3</Button>
-          <Button>4</Button>
-          <Button>5</Button>
-        </ButtonGroup>
-      </div>
     }
   </React.Fragment>
 )
@@ -111,7 +81,7 @@ const GridColumn = styled.div`
 
 const LabelColumn = styled(GridColumn)`
   font-size: 0.6875rem;
-  color: ${({theme}) => theme.secondary.base};
+  color: ${({ theme }) => theme.secondary.base};
 `
 
 const ColumnTitle = styled.div``
@@ -143,7 +113,7 @@ const Root = styled.div`
       left: 0;
       top: 0;
       bottom: 0;
-      box-shadow: 2rem 0 0 ${({theme}) => theme.primary[1]};
+      box-shadow: 2rem 0 0 ${({ theme }) => theme.primary[1]};
       box-shadow: 2rem 0 0 black;
     }
   }
