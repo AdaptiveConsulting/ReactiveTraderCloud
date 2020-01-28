@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import { DateTime } from 'luxon'
 import { spotDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
@@ -38,8 +39,10 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
       displayCurrencyChart,
     } = this.props
 
-    const spotDate = price.valueDate && spotDateFormatter(price.valueDate, false).toUpperCase()
+    const localZoneName = DateTime.local().zoneName
+    const spotDate = spotDateFormatter(price.valueDate, false, localZoneName).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
+    
     const handleRfqRejected = () => rfq.reject({ currencyPair })
     const {
       isRfqStateReceived,
