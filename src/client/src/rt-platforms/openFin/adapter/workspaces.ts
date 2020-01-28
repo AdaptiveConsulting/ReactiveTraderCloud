@@ -1,8 +1,8 @@
-import { openfinWindowStates, openDesktopWindow } from './window'
 import { workspaces } from 'openfin-layouts'
+import { Workspace } from 'openfin-layouts/dist/client/workspaces'
+import { openfinWindowStates, openDesktopWindow } from './window'
 import { Observable } from 'rxjs'
 import { WindowConfig } from 'rt-platforms'
-import { Workspace } from 'openfin-layouts/dist/client/workspaces'
 
 interface WinProps {
   name: string
@@ -95,13 +95,15 @@ async function positionWindow(win: workspaces.WorkspaceWindow): Promise<void> {
   }
 }
 
+const LS_WORKSPACE_KEY = 'workspace'
+
 export const saveWorkspace = async () => {
   const workspace = await workspaces.generate()
-  window.localStorage.setItem('workspace', JSON.stringify(workspace))
+  window.localStorage.setItem(LS_WORKSPACE_KEY, JSON.stringify(workspace))
 }
 
 export const getWorkspace = (): Workspace | null => {
-  const workspace = window.localStorage.getItem('workspace')
+  const workspace = window.localStorage.getItem(LS_WORKSPACE_KEY)
 
   if (!workspace) {
     return null
