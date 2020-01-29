@@ -10,9 +10,29 @@ const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
 const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 
 const urlParams = new URLSearchParams(window.location.search)
+const { pathname } = new URL(window.location.href)
+
+const APP_PATHS = {
+  LAUNCHER: '/launcher',
+  TRADER: '/',
+  STYLEGUIDE: '/styleguide',
+  BLOTTER: '/blotter',
+  ANALYTICS: '/analytics',
+  TILES: '/tiles',
+}
+
+const appTitles = {
+  [APP_PATHS.LAUNCHER]: 'Reactive Ecosystem Launcher',
+  [APP_PATHS.TRADER]: 'Reactive Trader Cloud',
+  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader',
+  [APP_PATHS.BLOTTER]: 'Blotter',
+  [APP_PATHS.ANALYTICS]: 'Analytics',
+  [APP_PATHS.TILES]: 'Pricing',
+}
 
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
+  document.title = `${appTitles[pathname] || document.title}`
 
   if (urlParams.has('startAsSymphonyController')) {
     const { initiateSymphony } = await getSymphonyPlatform()
