@@ -18,6 +18,7 @@ import { Theme } from 'rt-theme'
 
 interface Props {
   header?: React.ReactChild
+  footer?: React.ReactChild
 }
 
 const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition) => {
@@ -31,7 +32,7 @@ const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition)
   }
 }
 
-const ShellRoute: React.FC<Props> = ({ header }) => {
+const ShellRoute: React.FC<Props> = ({ header,footer }) => {
   const blotter = useSelector(blotterSelector)
   const analytics = useSelector(analyticsSelector)
 
@@ -88,8 +89,9 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
     </AnalyticsWrapper>
   );
 
-  const footer = (
+  const statusBar = (
     <StatusBar>
+      {footer}
       <StatusButton/>
     </StatusBar>
   );
@@ -127,7 +129,6 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
       <DefaultLayout
         header={header}
         body={OfBody}
-        footer={footer}
         after={<ReconnectModal/>}
       />
     )
@@ -138,7 +139,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
       header={header}
       body={body}
       aside={aside}
-      footer={footer}
+      footer={statusBar}
       after={<ReconnectModal/>}
     />
   )

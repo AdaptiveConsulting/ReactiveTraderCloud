@@ -1,14 +1,15 @@
-import { CurrencyPairPositionRaw, PositionsRaw, HistoryRaw } from './TradePositions'
-import { CurrencyPairPosition } from './currencyPairPosition'
-import { AnalyticsLineChartModel } from './AnalyticsLineChartModel'
-import { PositionUpdates } from './positionUpdates'
-import { PositionsChartModel } from './positionsChartModel'
-import { HistoricPosition } from './historicPosition'
-export type CurrencyPairPositionRaw = CurrencyPairPositionRaw
-export type PositionsRaw = PositionsRaw
-export type HistoryRaw = HistoryRaw
-export type CurrencyPairPosition = CurrencyPairPosition
-export type AnalyticsLineChartModel = AnalyticsLineChartModel
-export type PositionUpdates = PositionUpdates
-export type PositionsChartModel = PositionsChartModel
-export type HistoricPosition = HistoricPosition
+import { CurrencyPairPositionRaw as _CurrencyPairPositionRaw, PositionsRaw as _PositionsRaw, HistoryRaw as _HistoryRaw } from './TradePositions'
+import { CurrencyPairPosition as _CurrencyPairPosition} from './currencyPairPosition'
+import { AnalyticsLineChartModel as _AnalyticsLineChartModel } from './AnalyticsLineChartModel'
+import { PositionUpdates as _PositionUpdates } from './positionUpdates'
+import { PositionsChartModel as _PositionsChartModel } from './positionsChartModel'
+import { HistoricPosition as _HistoricPosition } from './historicPosition'
+
+export type CurrencyPairPositionRaw = _CurrencyPairPositionRaw
+export type PositionsRaw = _PositionsRaw
+export type HistoryRaw = _HistoryRaw
+export type CurrencyPairPosition = _CurrencyPairPosition
+export type AnalyticsLineChartModel = _AnalyticsLineChartModel
+export type PositionUpdates = _PositionUpdates
+export type PositionsChartModel = _PositionsChartModel
+export type HistoricPosition = _HistoricPosition

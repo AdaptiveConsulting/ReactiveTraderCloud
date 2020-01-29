@@ -15,6 +15,7 @@ export class Finsemble implements Platform {
   epics = []
   PlatformHeader = () => null
   PlatformControls = () => null
+  PlatformFooter = () => null
   PlatformRoute = DefaultRoute
   Logo = Logo
 
