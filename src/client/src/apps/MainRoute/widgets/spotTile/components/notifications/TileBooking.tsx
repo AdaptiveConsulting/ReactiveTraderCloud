@@ -22,10 +22,12 @@ const BookingPill = styled.div<{
   color: string
   isAnalyticsView: boolean
 }>`
+  display: flex;
+  justify-content: center;
   padding-bottom: ${({ isExecutingStatus, isAnalyticsView }) =>
     isAnalyticsView && !isExecutingStatus ? '6px' : isExecutingStatus ? '10px' : '8px'};
   padding-top: ${({ isExecutingStatus, isAnalyticsView }) =>
-    isAnalyticsView && !isExecutingStatus ? '3.5px' : isExecutingStatus ? '8px' : '5px'};
+    isAnalyticsView && !isExecutingStatus ? '3.5px' : isExecutingStatus ? '10px' : '5px'};
   position: absolute;
   ${({ isAnalyticsView, isExecutingStatus }) =>
     isAnalyticsView && !isExecutingStatus ? 'right: 1.5rem' : isAnalyticsView ? 'left: -20%' : ''};
@@ -59,6 +61,7 @@ const BookingStatus = styled.span<{ isExecutingStatus: boolean; isAnalyticsView:
 
 const AdaptiveLoaderWrapper = styled.span`
   padding-right: 0.375rem;
+  padding-top: 0.04rem;
 `
 
 interface TileBookingProps {
