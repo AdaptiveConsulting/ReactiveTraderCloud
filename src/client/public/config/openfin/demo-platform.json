@@ -1,0 +1,195 @@
+{
+  "devtools_port": 9090,
+  "splashScreenImage": "https://web-openfin.adaptivecluster.com/static/media/splash-screen.jpg",
+  "runtime": {
+    "arguments": "--v=1 --inspect",
+    "version": "14.78.48.3"
+  },
+  "shortcut": {
+    "company": "Adaptive Consulting",
+    "description": "Desktop Reactive Trader Cloud",
+    "icon": "https://web-openfin.adaptivecluster.com/static/media/icon.ico",
+    "name": "Reactive Trader Cloud (Platform)"
+  },
+  "appAssets": [
+    {
+      "src": "https://web-openfin.adaptivecluster.com/plugin/add-in.zip",
+      "alias": "excel-api-addin",
+      "version": "2.0.0",
+      "forceDownload": true
+    }
+  ],
+  "services": [
+    {
+      "name": "layouts",
+      "config": {
+        "features": {
+          "snap": true,
+          "dock": true,
+          "tab": false
+        }
+      },
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.2.0/app.json"
+    },
+    {
+      "name": "fdc3",
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json"
+    },
+    {
+      "name": "notifications",
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json"
+    }
+  ],
+  "platform": {
+    "uuid": "reactive-launcher-platform-demo",
+    "applicationIcon": "https://web-openfin.adaptivecluster.com/static/media/icon.ico",
+    "url": "https://web-openfin.adaptivecluster.com",
+    "defaultWindowOptions": {
+      "contextMenu": true,
+      "frame": false,
+      "stylesheetUrl": "https://web-openfin.adaptivecluster.com/static/css/platform-titlebar.css"
+    }
+  },
+  "snapshot": {
+    "windows": [
+      {
+        "applicationIcon": "https://web-openfin.adaptivecluster.com/static/media/adaptive-mark-large.png",
+        "autoShow": true,
+        "defaultWidth": 1280,
+        "defaultHeight": 900,
+        "minWidth": 800,
+        "minHeight": 600,
+        "defaultCentered": true,
+        "resizable": true,
+        "maximizable": true,
+        "saveWindowState": false,
+        "frame": false,
+        "shadow": true,
+        "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+        "preload": [
+          {
+            "url": "https://web-openfin.adaptivecluster.com/plugin/service-loader.js"
+          },
+          {
+            "url": "https://web-openfin.adaptivecluster.com/plugin/fin.desktop.Excel.js"
+          }
+        ],
+        "contextMenu": true,
+        "accelerator": {
+          "devtools": true,
+          "reload": true,
+          "reloadIgnoringCache": true,
+          "zoom": true
+        },
+        "url": "https://web-openfin.adaptivecluster.com/",
+        "layout": {
+          "settings": {
+            "blockedPopoutsThrowError": false,
+            "closePopoutsOnUnload": true,
+            "constrainDragToContainer": false,
+            "hasHeaders": true,
+            "popoutWholeStack": false,
+            "reorderEnabled": true,
+            "reorderOnTabMenuClick": true,
+            "responsiveMode": "always",
+            "selectionEnabled": true,
+            "showCloseIcon": false,
+            "showMaximiseIcon": false,
+            "showPopoutIcon": false,
+            "tabControlOffset": 10,
+            "tabOverlapAllowance": 0
+          },
+          "content": [
+            {
+              "type": "row",
+              "id": "mainRow",
+              "isClosable": true,
+              "reorderEnabled": true,
+              "contextMenu": true,
+              "title": "",
+              "content": [
+                {
+                  "type": "column",
+                  "isClosable": true,
+                  "reorderEnabled": true,
+                  "title": "",
+                  "width": 80,
+                  "content": [
+                    {
+                      "type": "stack",
+                      "width": 50,
+                      "height": 50,
+                      "isClosable": true,
+                      "reorderEnabled": true,
+                      "title": "",
+                      "activeItemIndex": 0,
+                      "content": [
+                        {
+                          "type": "component",
+                          "componentName": "view",
+                          "contextMenu": true,
+                          "componentState": {
+                            "url": "https://web-openfin.adaptivecluster.com/tiles",
+                            "name": "Tiles"
+                          },
+                          "isClosable": true,
+                          "reorderEnabled": true,
+                          "title": "Spot Tiles"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "stack",
+                      "header": {},
+                      "isClosable": true,
+                      "reorderEnabled": true,
+                      "title": "",
+                      "activeItemIndex": 0,
+                      "height": 50,
+                      "content": [
+                        {
+                          "type": "component",
+                          "componentName": "view",
+                          "componentState": {
+                            "url": "https://web-openfin.adaptivecluster.com/blotter",
+                            "name": "Blotter"
+                          },
+                          "isClosable": true,
+                          "reorderEnabled": true,
+                          "title": "Blotter"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "stack",
+                  "width": 30,
+                  "height": 100,
+                  "isClosable": true,
+                  "reorderEnabled": true,
+                  "title": "",
+                  "activeItemIndex": 0,
+                  "content": [
+                    {
+                      "type": "component",
+                      "componentName": "view",
+                      "componentState": {
+                        "url": "https://web-openfin.adaptivecluster.com/analytics",
+                        "name": "Analytics"
+                      },
+                      "isClosable": true,
+                      "reorderEnabled": true,
+                      "title": "Analytics"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "startup_app": null
+}

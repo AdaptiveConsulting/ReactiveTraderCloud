@@ -1,4 +1,6 @@
 {
+    "devtools_port": 9090,
+    "splashScreenImage": "http://localhost:3000/static/media/splash-screen.jpg",
     "runtime": {
         "arguments": "--v=1 --inspect",
         "version": "14.78.48.3"
@@ -39,12 +41,13 @@
         }
     ],
     "platform": {
-        "uuid": "platform_prototype_generated",
-        "applicationIcon": "https://openfin.github.io/golden-prototype/favicon.ico",
-        "autoShow": false,
+        "uuid": "reactive-launcher-platform-demo",
+        "applicationIcon": "http://localhost:3000/static/media/icon.ico",
+        "url": "http://localhost:3000",
         "defaultWindowOptions": {
             "contextMenu": true,
-            "frame": false
+            "frame": false,
+            "stylesheetUrl": "http://localhost:3000/static/css/platform-titlebar.css"
         }
     },
     "snapshot": {
@@ -56,8 +59,10 @@
                 "defaultHeight": 900,
                 "minWidth": 800,
                 "minHeight": 600,
+                "defaultCentered": true,
                 "resizable": true,
                 "maximizable": true,
+                "saveWindowState": false,
                 "frame": false,
                 "shadow": true,
                 "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
@@ -76,7 +81,6 @@
                     "reloadIgnoringCache": true,
                     "zoom": true
                 },
-                "saveWindowState": false,
                 "url": "http://localhost:3000/",
                 "layout": {
                     "settings": {
@@ -130,7 +134,7 @@
                                                     },
                                                     "isClosable": true,
                                                     "reorderEnabled": true,
-                                                    "title": "view"
+                                                    "title": "Spot Tiles"
                                                 }
                                             ]
                                         },
@@ -152,7 +156,7 @@
                                                     },
                                                     "isClosable": true,
                                                     "reorderEnabled": true,
-                                                    "title": "view"
+                                                    "title": "Blotter"
                                                 }
                                             ]
                                         }
@@ -176,7 +180,7 @@
                                             },
                                             "isClosable": true,
                                             "reorderEnabled": true,
-                                            "title": "view"
+                                            "title": "Analytics"
                                         }
                                     ]
                                 }
