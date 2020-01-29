@@ -24,6 +24,8 @@ const BookingPill = styled.div<{
 }>`
   display: flex;
   justify-content: center;
+  padding-left: ${({ isAnalyticsView }) => (isAnalyticsView ? '1px' : '6px')};
+  padding-right: ${({ isAnalyticsView }) => (isAnalyticsView ? '1px' : '6px')};
   padding-bottom: ${({ isExecutingStatus, isAnalyticsView }) =>
     isAnalyticsView && !isExecutingStatus ? '6px' : isExecutingStatus ? '10px' : '8px'};
   padding-top: ${({ isExecutingStatus, isAnalyticsView }) =>
@@ -36,7 +38,7 @@ const BookingPill = styled.div<{
     theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
   width: ${({ isExecutingStatus, isAnalyticsView }) =>
-    isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '64px'};
+    isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '58px'};
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
   }
@@ -47,6 +49,16 @@ const BookingPill = styled.div<{
     `
   cursor: pointer;
   `}
+  @media (min-width: 321px) {
+    width: ${({ isExecutingStatus, isAnalyticsView }) =>
+      isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '60px'};
+  }
+  @media (min-width: 401px) {
+    width: ${({ isExecutingStatus, isAnalyticsView }) =>
+      isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '64px'};
+    padding-left: 1px;
+    padding-right: 1px;
+  }
 `
 
 const BookingStatus = styled.span<{ isExecutingStatus: boolean; isAnalyticsView: boolean }>`

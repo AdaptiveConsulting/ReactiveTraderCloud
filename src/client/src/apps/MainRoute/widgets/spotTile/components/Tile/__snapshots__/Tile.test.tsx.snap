@@ -642,13 +642,15 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+  padding-left: 6px;
+  padding-right: 6px;
   padding-bottom: 8px;
   padding-top: 5px;
   position: absolute;
   border-radius: 3px;
   background: #5f94f5;
   pointer-events: auto;
-  width: 64px;
+  width: 58px;
   cursor: pointer;
 }
 
@@ -747,6 +749,20 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+}
+
+@media (min-width:321px) {
+  .c18 {
+    width: 60px;
+  }
+}
+
+@media (min-width:401px) {
+  .c18 {
+    width: 64px;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
 }
 
 <div
@@ -1154,13 +1170,15 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+  padding-left: 6px;
+  padding-right: 6px;
   padding-bottom: 8px;
   padding-top: 5px;
   position: absolute;
   border-radius: 3px;
   background: #5f94f5;
   pointer-events: auto;
-  width: 64px;
+  width: 58px;
   cursor: pointer;
 }
 
@@ -1259,6 +1277,20 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+}
+
+@media (min-width:321px) {
+  .c19 {
+    width: 60px;
+  }
+}
+
+@media (min-width:401px) {
+  .c19 {
+    width: 64px;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
 }
 
 <div
@@ -2132,13 +2164,15 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+  padding-left: 6px;
+  padding-right: 6px;
   padding-bottom: 8px;
   padding-top: 5px;
   position: absolute;
   border-radius: 3px;
   background: #f94c4c;
   pointer-events: auto;
-  width: 64px;
+  width: 58px;
   cursor: pointer;
 }
 
@@ -2237,6 +2271,20 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+}
+
+@media (min-width:321px) {
+  .c17 {
+    width: 60px;
+  }
+}
+
+@media (min-width:401px) {
+  .c17 {
+    width: 64px;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
 }
 
 <div
@@ -3161,6 +3209,8 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+  padding-left: 6px;
+  padding-right: 6px;
   padding-bottom: 10px;
   padding-top: 10px;
   position: absolute;
@@ -3271,6 +3321,20 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+}
+
+@media (min-width:321px) {
+  .c18 {
+    width: 125px;
+  }
+}
+
+@media (min-width:401px) {
+  .c18 {
+    width: 125px;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
 }
 
 <div
