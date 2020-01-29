@@ -100,127 +100,92 @@
                         "tabOverlapAllowance": 0
                     },
                     "content": [
-                      {
-                        "type": "column",
-                        "id": "mainStack",
-                        "isClosable": true,
-                        "reorderEnabled": true,
-                        "contextMenu": true,
-                        "activeItemIndex": 0,
-                        "title": "",
-                        "content": [
-                          {
+                        {
                             "type": "row",
                             "id": "mainRow",
                             "isClosable": true,
                             "reorderEnabled": true,
                             "contextMenu": true,
                             "title": "",
-                            "width": 100,
-                            "height": 90,
                             "content": [
-                              {
-                                "type": "column",
-                                "isClosable": true,
-                                "reorderEnabled": true,
-                                "title": "",
-                                "width": 80,
-                                "content": [
-                                  {
-                                    "type": "stack",
-                                    "width": 50,
-                                    "height": 50,
+                                {
+                                    "type": "column",
                                     "isClosable": true,
                                     "reorderEnabled": true,
                                     "title": "",
-                                    "activeItemIndex": 0,
+                                    "width": 80,
                                     "content": [
-                                      {
-                                        "type": "component",
-                                        "componentName": "view",
-                                        "contextMenu": true,
-                                        "componentState": {
-                                          "url": "http://localhost:3000/tiles",
-                                          "name": "Tiles"
+                                        {
+                                            "type": "stack",
+                                            "width": 50,
+                                            "height": 50,
+                                            "isClosable": true,
+                                            "reorderEnabled": true,
+                                            "title": "",
+                                            "activeItemIndex": 0,
+                                            "content": [
+                                                {
+                                                    "type": "component",
+                                                    "componentName": "view",
+                                                    "contextMenu": true,
+                                                    "componentState": {
+                                                        "url": "http://localhost:3000/tiles",
+                                                        "name": "Tiles"
+                                                    },
+                                                    "isClosable": true,
+                                                    "reorderEnabled": true,
+                                                    "title": "Spot Tiles"
+                                                }
+                                            ]
                                         },
-                                        "isClosable": true,
-                                        "reorderEnabled": true,
-                                        "title": "Spot Tiles"
-                                      }
+                                        {
+                                            "type": "stack",
+                                            "header": {},
+                                            "isClosable": true,
+                                            "reorderEnabled": true,
+                                            "title": "",
+                                            "activeItemIndex": 0,
+                                            "height": 50,
+                                            "content": [
+                                                {
+                                                    "type": "component",
+                                                    "componentName": "view",
+                                                    "componentState": {
+                                                        "url": "http://localhost:3000/blotter",
+                                                        "name": "Blotter"
+                                                    },
+                                                    "isClosable": true,
+                                                    "reorderEnabled": true,
+                                                    "title": "Blotter"
+                                                }
+                                            ]
+                                        }
                                     ]
-                                  },
-                                  {
-                                    "type": "stack",
-                                    "header": {},
-                                    "isClosable": true,
-                                    "reorderEnabled": true,
-                                    "title": "",
-                                    "activeItemIndex": 0,
-                                    "height": 50,
-                                    "content": [
-                                      {
-                                        "type": "component",
-                                        "componentName": "view",
-                                        "componentState": {
-                                          "url": "http://localhost:3000/blotter",
-                                          "name": "Blotter"
-                                        },
-                                        "isClosable": true,
-                                        "reorderEnabled": true,
-                                        "title": "Blotter"
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "type": "stack",
-                                "width": 30,
-                                "height": 100,
-                                "isClosable": true,
-                                "reorderEnabled": true,
-                                "title": "",
-                                "activeItemIndex": 0,
-                                "content": [
-                                  {
-                                    "type": "component",
-                                    "componentName": "view",
-                                    "componentState": {
-                                      "url": "http://localhost:3000/analytics",
-                                      "name": "Analytics"
-                                    },
-                                    "isClosable": true,
-                                    "reorderEnabled": true,
-                                    "title": "Analytics"
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "type": "stack",
-                            "width": 30,
-                            "height": 100,
-                            "isClosable": true,
-                            "reorderEnabled": true,
-                            "title": "",
-                            "activeItemIndex": 0,
-                            "content": [
-                              {
-                                "type": "component",
-                                "componentName": "view",
-                                "componentState": {
-                                  "url": "http://localhost:3000/footer",
-                                  "name": "Footer"
                                 },
-                                "isClosable": true,
-                                "reorderEnabled": true,
-                                "title": "Footer"
-                              }
+                                {
+                                    "type": "stack",
+                                    "width": 30,
+                                    "height": 100,
+                                    "isClosable": true,
+                                    "reorderEnabled": true,
+                                    "title": "",
+                                    "activeItemIndex": 0,
+                                    "content": [
+                                        {
+                                            "type": "component",
+                                            "componentName": "view",
+                                            "componentState": {
+                                                "url": "http://localhost:3000/analytics",
+                                                "name": "Analytics"
+                                            },
+                                            "isClosable": true,
+                                            "reorderEnabled": true,
+                                            "title": "Analytics"
+                                        }
+                                    ]
+                                }
                             ]
-                          }
-                        ]
-                      }
+                        }
                     ]
                 }
             }

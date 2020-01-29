@@ -22,11 +22,11 @@ import { ServiceConnectionStatus } from 'rt-types'
 import { StatusCircle } from '../../../../apps/MainRoute/widgets/status-connection/styled'
 
 interface ExtendedFin {
-  Platform: any;
+  Platform: any
 }
 
 // apply additional types to fabric and export it for usage
-export const FinWithPlatform: (ExtendedFin & typeof fin) = fin as any;
+export const FinWithPlatform: ExtendedFin & typeof fin = fin as any
 
 const WORKSPACE_CURRENT_KEY = 'OPENFIN_WORKSPACE_CURRENT'
 const WORKSPACE_NAMES_KEY = 'OPENFIN_WORKSPACE_NAMES'
@@ -45,15 +45,20 @@ const OpenfinWorkspaceSelection: React.FC = props => {
     if (workspaces) {
       return JSON.parse(workspaces)
     }
-    return [];
+    return []
   })
 
   const toggleOpen = useCallback(
-    (event: SyntheticEvent) => {
+    async (event: SyntheticEvent) => {
       const isAppUrl = (element: any) => element instanceof HTMLInputElement
       if (!isAppUrl(event.target)) {
+        const currWin = await fin.Window.getCurrent()
+        const views = await currWin.getCurrentViews()
         if (isOpen) {
+          views.forEach(v => v.show())
           setNewWorkspace('')
+        } else {
+          views.forEach(v => v.hide())
         }
         setIsOpen(!isOpen)
       }
@@ -64,12 +69,14 @@ const OpenfinWorkspaceSelection: React.FC = props => {
   const workspaceListContent = useMemo(() => {
     if (workspaces.length) {
       return workspaces.map((workspace: string, idx: number) => (
-          <WorkspaceRoot key={`workspace_${idx}`} onClick={e => selectWorkspace(workspace)}>
-            {console.log('-------------------->', workspace, currentWorkspace)}
-            {workspace === currentWorkspace && <StatusCircle status={ServiceConnectionStatus.CONNECTED} />}
-            <WorkspaceName>{workspace}</WorkspaceName>
-          </WorkspaceRoot>
-        ))
+        <WorkspaceRoot key={`workspace_${idx}`} onClick={e => selectWorkspace(workspace)}>
+          {console.log('-------------------->', workspace, currentWorkspace)}
+          {workspace === currentWorkspace && (
+            <StatusCircle status={ServiceConnectionStatus.CONNECTED} />
+          )}
+          <WorkspaceName>{workspace}</WorkspaceName>
+        </WorkspaceRoot>
+      ))
     } else {
       return <WorkspaceRoot>No saved workspaces.</WorkspaceRoot>
     }
@@ -130,9 +137,7 @@ const OpenfinWorkspaceSelection: React.FC = props => {
         {currentWorkspace || 'My workspaces'}
       </Button>
       <WorkspaceListPopup open={isOpen} onClick={toggleOpen}>
-        <WorkspaceList>
-          {workspaceListContent}
-        </WorkspaceList>
+        <WorkspaceList>{workspaceListContent}</WorkspaceList>
         <HrBar />
         <FormControl>
           <TextInputLabel>Save current workspace as</TextInputLabel>

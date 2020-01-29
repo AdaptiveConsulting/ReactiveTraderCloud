@@ -1,12 +1,6 @@
 import React, { FC } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import {
-  AnalyticsRoute,
-  BlotterRoute,
-  SpotRoute,
-  ShellRoute,
-  TileRoute,
-} from './routes'
+import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
 import { RouteWrapper } from 'rt-components'
 
 export const Router: FC = () => (
@@ -23,7 +17,7 @@ export const Router: FC = () => (
     <Route
       path="/analytics"
       render={() => (
-        <RouteWrapper title="Analytics" windowType="sub">
+        <RouteWrapper windowType="sub">
           <AnalyticsRoute />
         </RouteWrapper>
       )}
@@ -31,33 +25,18 @@ export const Router: FC = () => (
     <Route
       path="/blotter"
       render={routeProps => (
-        <RouteWrapper title="Blotter" windowType="sub">
+        <RouteWrapper windowType="sub">
           <BlotterRoute {...routeProps} />
         </RouteWrapper>
       )}
     />
-    <Route
-      path="/tiles"
-      render={() => (
-        <RouteWrapper title="Spot Tiles" windowType="sub">
-          <TileRoute />
-        </RouteWrapper>
-      )}
-    />
+    <Route path="/tiles" component={TileRoute} />
     <Route
       path="/spot/:symbol"
       render={routeProps => (
-        <RouteWrapper title="Spot Tile" windowType="sub">
+        <RouteWrapper windowType="sub">
           <SpotRoute {...routeProps} />
         </RouteWrapper>
-      )}
-    />
-    <Route
-      path="/footer"
-      render={(routeProps) => (
-          <RouteWrapper title="Blotter" windowType="sub">
-              <BlotterRoute {...routeProps} />
-          </RouteWrapper>
       )}
     />
   </Switch>
