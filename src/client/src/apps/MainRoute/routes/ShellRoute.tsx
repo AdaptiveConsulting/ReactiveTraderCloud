@@ -7,7 +7,7 @@ import { BlotterContainer } from '../widgets/blotter'
 import StatusBar from '../widgets/status-bar'
 import StatusButton from '../widgets/status-connection'
 import { WorkspaceContainer } from '../widgets/workspace'
-
+import OpenFinStatusButton from 'rt-platforms/openFin/components/OpenFinStatusConnection'
 import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
@@ -85,13 +85,6 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
     </AnalyticsWrapper>
   )
 
-  const statusBar = (
-    <StatusBar>
-      {footer}
-      <StatusButton />
-    </StatusBar>
-  )
-
   //@ts-ignore
   if (window.fin && window.fin.me.isWindow) {
     const OfTabTheme = createGlobalStyle<{ theme: Theme }>`
@@ -121,10 +114,29 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
       </React.Fragment>
     )
 
+    const ofStatusBar = (
+      <StatusBar>
+        {footer}
+        <OpenFinStatusButton />
+      </StatusBar>
+    )
+
     return (
-      <DefaultLayout header={header} body={OfBody} footer={statusBar} after={<ReconnectModal />} />
+      <DefaultLayout
+        header={header}
+        body={OfBody}
+        footer={ofStatusBar}
+        after={<ReconnectModal />}
+      />
     )
   }
+
+  const statusBar = (
+    <StatusBar>
+      {footer}
+      <StatusButton />
+    </StatusBar>
+  )
 
   return (
     <DefaultLayout

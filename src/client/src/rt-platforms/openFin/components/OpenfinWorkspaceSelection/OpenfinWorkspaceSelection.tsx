@@ -1,33 +1,32 @@
 import React, {
-  useState,
+  KeyboardEventHandler,
+  SyntheticEvent,
+  useCallback,
   useEffect,
   useMemo,
-  useCallback,
-  SyntheticEvent,
-  KeyboardEventHandler,
+  useState,
 } from 'react'
 import {
   Button,
+  CloseButton,
   FormControl,
   HrBar,
   Root,
+  StatusCircle,
   TextInput,
   TextInputLabel,
   WorkspaceList,
-  WorkspaceListPopup,
+  WorkspaceListTitle,
   WorkspaceName,
   WorkspaceRoot,
 } from './styled'
-import { ServiceConnectionStatus } from 'rt-types'
-import { StatusCircle } from '../../../../apps/MainRoute/widgets/status-connection/styled'
+import { Flex, Modal } from 'rt-components'
+import { WorkspaceActiveStatus } from 'rt-types'
+import { finWithPlatform } from '../../OpenFinWithPlatform'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-interface ExtendedFin {
-  Platform: any
-}
-
-// apply additional types to fabric and export it for usage
-export const FinWithPlatform: ExtendedFin & typeof fin = fin as any
-
+const WORKSPACE_DEFAULT_NAME = 'RTC Default Workspace'
 const WORKSPACE_CURRENT_KEY = 'OPENFIN_WORKSPACE_CURRENT'
 const WORKSPACE_NAMES_KEY = 'OPENFIN_WORKSPACE_NAMES'
 const WORKSPACE_SNAPSHOTS_KEY = 'OPENFIN_WORKSPACE_SNAPSHOTS'
@@ -68,12 +67,15 @@ const OpenfinWorkspaceSelection: React.FC = props => {
 
   const workspaceListContent = useMemo(() => {
     if (workspaces.length) {
-      return workspaces.map((workspace: string, idx: number) => (
+      return workspaces.sort().map((workspace: string, idx: number) => (
         <WorkspaceRoot key={`workspace_${idx}`} onClick={e => selectWorkspace(workspace)}>
-          {console.log('-------------------->', workspace, currentWorkspace)}
-          {workspace === currentWorkspace && (
-            <StatusCircle status={ServiceConnectionStatus.CONNECTED} />
-          )}
+          <StatusCircle
+            status={
+              workspace === currentWorkspace
+                ? WorkspaceActiveStatus.ACTIVE
+                : WorkspaceActiveStatus.INACTIVE
+            }
+          />
           <WorkspaceName>{workspace}</WorkspaceName>
         </WorkspaceRoot>
       ))
@@ -83,8 +85,27 @@ const OpenfinWorkspaceSelection: React.FC = props => {
   }, [workspaces, currentWorkspace])
 
   useEffect(() => {
+    if (!!workspaces && !workspaces.length) {
+      finWithPlatform.Platform.getCurrent()
+        .then((platform: any) => {
+          return platform.getSnapshot()
+        })
+        .then((snapshot: any) => {
+          window.localStorage.setItem(WORKSPACE_NAMES_KEY, JSON.stringify([WORKSPACE_DEFAULT_NAME]))
+          window.localStorage.setItem(
+            WORKSPACE_SNAPSHOTS_KEY,
+            JSON.stringify({ [WORKSPACE_DEFAULT_NAME]: snapshot }),
+          )
+          window.localStorage.setItem(WORKSPACE_CURRENT_KEY, WORKSPACE_DEFAULT_NAME)
+          setWorkspaces([WORKSPACE_DEFAULT_NAME])
+          setCurrentWorkspace(WORKSPACE_DEFAULT_NAME)
+        })
+    }
+  }, [workspaces])
+
+  useEffect(() => {
     if (isSaving) {
-      FinWithPlatform.Platform.getCurrent()
+      finWithPlatform.Platform.getCurrent()
         .then((platform: any) => {
           return platform.getSnapshot()
         })
@@ -109,7 +130,7 @@ const OpenfinWorkspaceSelection: React.FC = props => {
   useEffect(() => {
     if (isLoading) {
       //@ts-ignore
-      FinWithPlatform.Platform.getCurrent().then((platform: any) => {
+      finWithPlatform.Platform.getCurrent().then((platform: any) => {
         const snapshots = window.localStorage.getItem(WORKSPACE_SNAPSHOTS_KEY)
         const snapshotsJson = JSON.parse(snapshots || '{}')
         platform.applySnapshot(snapshotsJson[isLoading], { closeExistingWindows: true })
@@ -121,7 +142,7 @@ const OpenfinWorkspaceSelection: React.FC = props => {
   }, [isLoading])
 
   const handleWorkspaceSubmission: KeyboardEventHandler<HTMLInputElement> = e => {
-    if (!!newWorkspace && e.key === 'Enter') {
+    if (e.key === 'Enter' && !!newWorkspace && newWorkspace !== WORKSPACE_DEFAULT_NAME) {
       e.preventDefault()
       setIsSaving(true)
     }
@@ -136,19 +157,36 @@ const OpenfinWorkspaceSelection: React.FC = props => {
       <Button onClick={toggleOpen} data-qa="workspaces-button__toggle-button">
         {currentWorkspace || 'My workspaces'}
       </Button>
-      <WorkspaceListPopup open={isOpen} onClick={toggleOpen}>
-        <WorkspaceList>{workspaceListContent}</WorkspaceList>
-        <HrBar />
-        <FormControl>
-          <TextInputLabel>Save current workspace as</TextInputLabel>
-          <TextInput
-            disabled={isSaving}
-            value={newWorkspace}
-            onChange={e => setNewWorkspace(e.target.value)}
-            onKeyDown={handleWorkspaceSubmission}
-          />
-        </FormControl>
-      </WorkspaceListPopup>
+      <Modal
+        shouldShow={isOpen}
+        onOverlayClick={toggleOpen}
+        title={
+          <Flex justifyContent="space-between">
+            <div>My workspaces</div>
+            <CloseButton accent="bad" onClick={toggleOpen} data-qa="openfin-chrome__close">
+              <FontAwesomeIcon icon={faTimes} />
+            </CloseButton>
+          </Flex>
+        }
+      >
+        <Flex direction="column">
+          <WorkspaceList>
+            <WorkspaceListTitle>Restore a saved workspace</WorkspaceListTitle>
+            {workspaceListContent}
+          </WorkspaceList>
+          <HrBar />
+          <FormControl>
+            <TextInputLabel>Save current workspace as</TextInputLabel>
+            <TextInput
+              disabled={isSaving}
+              placeholder="Workspace Name"
+              value={newWorkspace}
+              onChange={e => setNewWorkspace(e.target.value)}
+              onKeyDown={handleWorkspaceSubmission}
+            />
+          </FormControl>
+        </Flex>
+      </Modal>
     </Root>
   )
 }

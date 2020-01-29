@@ -1,9 +1,9 @@
 import { capitalize } from 'lodash'
-import { styled } from 'rt-theme'
+import { AccentName, styled } from 'rt-theme'
 import { FunctionComponent } from 'react'
 import React from 'react'
 import { Popup } from 'rt-components'
-import { ServiceConnectionStatus } from 'rt-types'
+import { WorkspaceActiveStatus } from 'rt-types'
 
 const buttonHeight = '2rem'
 
@@ -14,6 +14,14 @@ export const HrBar = styled.hr`
   margin-bottom: 10px;
   margin-top: 5px;
   border: none;
+`
+
+export const CloseButton = styled.div<{ accent?: AccentName }>`
+  color: ${props => props.theme.button.secondary.backgroundColor};
+  cursor: pointer;
+  &:hover {
+    color: ${({ theme, accent = 'dominant' }) => theme.button[accent].backgroundColor};
+  }
 `
 
 export const Button = styled.div`
@@ -30,7 +38,7 @@ export const Button = styled.div`
   font-weight: 350;
 `
 
-  const StatusCircleCore: FunctionComponent<{ className?: string }> = ({ className }) => {
+const StatusCircleCore: FunctionComponent<{ className?: string }> = ({ className }) => {
   return (
     <div
       style={{ width: '0.65rem', height: '0.65rem', display: 'inline-block', marginTop: '-2px' }}
@@ -42,20 +50,18 @@ export const Button = styled.div`
   )
 }
 
-export const StatusCircle = styled(StatusCircleCore)<{ status?: ServiceConnectionStatus }>`
+export const StatusCircle = styled(StatusCircleCore)<{ status?: WorkspaceActiveStatus }>`
   circle {
     fill: ${({ theme, status }) =>
-      status === ServiceConnectionStatus.CONNECTED
+      status === WorkspaceActiveStatus.ACTIVE
         ? theme.template.green.normal
-        : status === ServiceConnectionStatus.CONNECTING
-        ? theme.template.yellow.normal
-        : theme.template.red.normal};
+        : theme.template.gray.normal};
   }
 `
 
 const StatusLabelCore: FunctionComponent<{
   className?: string
-  status?: ServiceConnectionStatus
+  status?: WorkspaceActiveStatus
 }> = ({ className, status }) => <span className={className}>{capitalize(status)}</span>
 export const StatusLabel = styled(StatusLabelCore)`
   margin-left: 0.75rem;
@@ -67,7 +73,6 @@ export const Root = styled.div`
   backface-visibility: hidden;
   min-height: ${buttonHeight};
   max-height: ${buttonHeight};
-  z-index: 20;
 
   font-size: 0.75rem;
 
@@ -89,13 +94,13 @@ export const WorkspaceName = styled.div`
 `
 
 export const WorkspaceRoot = styled.div`
-  min-height: 3rem;
-  max-height: 3rem;
-  padding: 0.5rem 0.5rem;
+  min-height: 2.5rem;
+  max-height: 2.5rem;
+  padding: 0.25rem 0.5rem;
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
 
   color: ${props => props.theme.textColor};
 `
@@ -116,11 +121,14 @@ export const TextInputLabel = styled.label`
   color: ${props => props.theme.textColor};
   display: block;
 `
-
+export const WorkspaceListTitle = styled.label`
+  color: ${props => props.theme.textColor};
+  display: block;
+`
 export const TextInput = styled.input.attrs(props => ({
-  type: 'text'
+  type: 'text',
 }))`
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   border: none;
   color: ${props => props.theme.textColor};
@@ -134,7 +142,7 @@ export const TextInput = styled.input.attrs(props => ({
 export const FormControl = styled.div`
   padding: 0.1rem 0.5rem;
   width: 100%;
-  
+
   > ${TextInputLabel} {
     margin-bottom: 6px;
   }
