@@ -74,7 +74,7 @@ const ButtonVariants: React.FC<ButtonStyleProps & TitleButtonProp> = props => (
 
 const GridColumn = styled.div`
   display: grid;
-  grid-template-rows: 3rem repeat(3, 2rem) 4.5rem 5rem;
+  grid-template-rows: 3rem repeat(3, 2rem) 4.5rem;
   grid-row-gap: 0.5rem;
   align-items: center;
 `
