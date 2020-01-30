@@ -119,7 +119,6 @@ export const openDesktopWindow = async (
 
   console.info(`Creating Openfin window: ${windowName}`)
 
-  //@ts-ignore
   const winIdentity = await finWithPlatform.Platform.getCurrentSync().createWindow({
     name: windowName,
     defaultWidth,
@@ -136,8 +135,7 @@ export const openDesktopWindow = async (
     shadow: true,
     contextMenu: true,
     ...position,
-    ...updatedPosition,
-    layout: {},
+    ...updatedPosition
   })
 
   const win = await window.fin.Window.wrap(winIdentity)
