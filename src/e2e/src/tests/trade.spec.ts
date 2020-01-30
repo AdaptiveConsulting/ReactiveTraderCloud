@@ -6,25 +6,25 @@ import * as assertUtils from '../utils/assert.utils'
 let browser: ProtractorBrowser
 let mainPage: MainPage
 const currencyList: [string, string[]][] = [
+  [
+    'all',
+    [
+      'AUD/USD',
+      'EUR/AUD',
+      'EUR/CAD',
+      'EUR/JPY',
+      'EUR/USD',
+      'GBP/JPY',
+      'GBP/USD',
+      'NZD/USD',
+      'USD/JPY',
+    ],
+  ],
   ['eur', ['EUR/USD', 'EUR/AUD', 'EUR/CAD', 'EUR/JPY']],
   ['usd', ['EUR/USD', 'USD/JPY', 'GBP/USD', 'AUD/USD', 'NZD/USD']],
   ['gbp', ['GBP/USD', 'GBP/JPY']],
   ['aud', ['AUD/USD', 'EUR/AUD']],
   ['nzd', ['NZD/USD']],
-  [
-    'all',
-    [
-      'EUR/USD',
-      'USD/JPY',
-      'GBP/USD',
-      'GBP/JPY',
-      'AUD/USD',
-      'NZD/USD',
-      'EUR/AUD',
-      'EUR/CAD',
-      'EUR/JPY',
-    ],
-  ],
 ]
 const tradeList: [string, string, string, string, boolean][] = [
   ['eur', 'EUR/JPY', 'buy', 'Success', true],
