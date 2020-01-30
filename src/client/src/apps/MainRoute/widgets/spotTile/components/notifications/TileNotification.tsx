@@ -2,7 +2,13 @@ import React from 'react'
 import { styled } from 'rt-theme'
 import { Button, Icon, TileBaseStyle } from '../styled'
 
-type AccentColor = 'red' | 'green'
+export enum NotificationType {
+  Error = 'red',
+  Success = 'green',
+  Warning = 'yellow',
+}
+
+type AccentColor = NotificationType.Error | NotificationType.Success | NotificationType.Warning
 
 export const TileNotificationStyle = styled(TileBaseStyle)<{ accentColor: AccentColor }>`
   color: ${({ theme }) => theme.template.white.normal};
@@ -51,42 +57,40 @@ const Content = styled.div`
 
 interface Props {
   style: React.CSSProperties
-  isWarning: boolean
   symbols: string
   children: React.ReactNode
   tradeId?: number
   handleClick?: () => void
+  type: NotificationType
 }
 
 const TileNotification: React.FC<Props> = ({
   style,
-  isWarning,
   symbols,
   tradeId,
   handleClick,
   children,
+  type,
 }) => {
-  const accentColor = isWarning ? 'red' : 'green'
-
   return (
     <TileNotificationStyle
-      accentColor={accentColor}
+      accentColor={type}
       style={style}
       data-qa="tile-notification__trade-notification"
     >
       <TradeSymbol>
-        {isWarning ? (
+        {type === NotificationType.Success ? (
+          <CheckIcon
+            className="fas fa-check"
+            aria-hidden="true"
+            data-qa="tile-notification__check-icon"
+          />
+        ) : (
           <Icon
             color="white"
             className="fas fa-lg fa-exclamation-triangle"
             aria-hidden="true"
             data-qa="tile-notification__warning-icon"
-          />
-        ) : (
-          <CheckIcon
-            className="fas fa-check"
-            aria-hidden="true"
-            data-qa="tile-notification__check-icon"
           />
         )}
         <HeavyFont data-qa="tile-notification__symbols">{symbols}</HeavyFont>
@@ -95,7 +99,7 @@ const TileNotification: React.FC<Props> = ({
       <Content data-qa="tile-notification__content">{children}</Content>
       {(handleClick && (
         <PillButton
-          accentColor={accentColor}
+          accentColor={type}
           onClick={handleClick}
           data-qa="tile-notification__pill-button"
         >
