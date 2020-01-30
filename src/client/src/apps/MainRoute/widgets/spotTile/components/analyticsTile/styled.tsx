@@ -33,6 +33,7 @@ export const AnalyticsTileStyle = styled(SpotTileStyle)`
 `
 export const AnalyticsTileWrapper = styled(TileWrapperBase)<{ platform: Platform }>`
   min-height: 11rem;
+  position: relative;
   height: ${({ platform: { name } }) =>
     name !== 'finsemble'
       ? '100%'

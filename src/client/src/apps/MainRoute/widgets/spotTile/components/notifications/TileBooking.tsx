@@ -3,9 +3,10 @@ import { Transition } from 'react-spring'
 import { AdaptiveLoader } from 'rt-components'
 import { styled } from 'rt-theme'
 
-const TileBookingStyle = styled.div`
+const TileBookingStyle = styled.div<{isAnalyticsView: boolean}>`
   position: absolute;
   left: 0;
+  ${({ isAnalyticsView }) => (isAnalyticsView && 'top: 0')}
   height: 100%;
   width: 100%;
   display: flex;
@@ -32,7 +33,7 @@ const BookingPill = styled.div<{
     isAnalyticsView && !isExecutingStatus ? '3.5px' : isExecutingStatus ? '10px' : '5px'};
   position: absolute;
   ${({ isAnalyticsView, isExecutingStatus }) =>
-    isAnalyticsView && !isExecutingStatus ? 'right: 1.5rem' : isAnalyticsView ? 'left: -20%' : ''};
+    isAnalyticsView && !isExecutingStatus && 'right: 1.5rem'};
   border-radius: ${({ isExecutingStatus }) => (isExecutingStatus ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
@@ -97,7 +98,7 @@ const TileBooking: React.FC<TileBookingProps> = ({
   <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
     {show &&
       (styles => (
-        <TileBookingStyle style={styles}>
+        <TileBookingStyle isAnalyticsView={isAnalyticsView} style={styles}>
           <BookingPill
             color={color}
             onClick={e => {

@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
-export const PriceControlsStyle = styled('div')<{ isAnalyticsView: boolean }>`
+export const PriceControlsStyle = styled('div')<{ isAnalyticsView: boolean, isTradeExecutionInFlight?: boolean }>`
   display: flex;
   justify-content: space-between;
   ${({ isAnalyticsView }) => (isAnalyticsView ? `` : `align-items: center; margin-top: 15px;`)}
-  position: relative;
+  ${({isTradeExecutionInFlight}) => (!isTradeExecutionInFlight && 'position: relative')}
 `
 
 export const PriceButtonDisabledPlaceholder = styled.div`
