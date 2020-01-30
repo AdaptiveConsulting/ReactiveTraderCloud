@@ -7,11 +7,13 @@ interface Props {
   spread: string
   show: boolean
   isAnalyticsView: boolean
+  isRequestRFQ: boolean
 }
 
 const MovementIcon = styled('i')<{ show: boolean; color: string }>`
   text-align: center;
-  color: ${({ theme, color }) => theme.template[color].normal};
+  color: ${({ theme, color }) =>
+    color === 'none' ? theme.colors.light.secondary[4] : theme.template[color].normal};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
 `
 
@@ -33,12 +35,18 @@ const PriceMovementStyle = styled.div<{
   z-index: 1;
 `
 
-const PriceMovement: React.FC<Props> = ({ priceMovementType, spread, show, isAnalyticsView }) => (
+const PriceMovement: React.FC<Props> = ({
+  priceMovementType,
+  spread,
+  show,
+  isAnalyticsView,
+  isRequestRFQ: isInitiateRFQ,
+}) => (
   <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
     <MovementIcon
       data-qa="price-movement__movement-icon--up"
       show={show && priceMovementType === PriceMovementTypes.Up}
-      color="green"
+      color={isInitiateRFQ ? 'none' : 'green'}
       className="fas fa-caret-up"
       aria-hidden="true"
     />
@@ -46,7 +54,7 @@ const PriceMovement: React.FC<Props> = ({ priceMovementType, spread, show, isAna
     <MovementIcon
       data-qa="price-movement__movement-icon--down"
       show={show && priceMovementType === PriceMovementTypes.Down}
-      color="red"
+      color={isInitiateRFQ ? 'none' : 'red'}
       className="fas fa-caret-down"
       aria-hidden="true"
     />

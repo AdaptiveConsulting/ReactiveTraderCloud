@@ -62,13 +62,15 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateExpired,
     isRfqStateRequested,
     isRfqStateNone,
+    isRfqStateCanRequest,
   } = getConstsFromRfqState(rfqState)
 
   const { priceStale } = priceData
   const hasPrice = Boolean(priceData.bid && priceData.ask && !priceStale)
   const priceMovement = hasPrice ? priceData.priceMovementType : 'none'
   const spreadValue = hasPrice ? spread.formattedValue : '-'
-  const showPriceMovement = isRfqStateNone && !isTradeExecutionInFlight
+  const showPriceMovement =
+    (isRfqStateNone || isRfqStateCanRequest || isRfqStateRequested) && !isTradeExecutionInFlight
 
   const showPriceButton = (
     btnDirection: Direction,
@@ -113,6 +115,7 @@ const PriceControls: React.FC<Props> = ({
         spread={spreadValue}
         show={showPriceMovement}
         isAnalyticsView={isAnalyticsView}
+        isRequestRFQ={Boolean(isRfqStateCanRequest || isRfqStateRequested)}
       />
       <TileBookingSwitch
         isTradeExecutionInFlight={isTradeExecutionInFlight}
@@ -139,6 +142,7 @@ const PriceControls: React.FC<Props> = ({
         spread={spreadValue}
         show={showPriceMovement}
         isAnalyticsView={isAnalyticsView}
+        isRequestRFQ={Boolean(isRfqStateCanRequest || isRfqStateRequested)}
       />
       <TileBookingSwitch
         isTradeExecutionInFlight={isTradeExecutionInFlight}
