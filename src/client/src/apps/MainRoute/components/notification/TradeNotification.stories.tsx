@@ -2,7 +2,9 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { Story, Centered } from 'rt-storybook'
 import { storiesOf } from '@storybook/react'
-import TileNotification from 'apps/MainRoute/widgets/spotTile/components/notifications/TileNotification'
+import TileNotification, {
+  NotificationType,
+} from 'apps/MainRoute/widgets/spotTile/components/notifications/TileNotification'
 import TileExecuted from 'apps/MainRoute/widgets/spotTile/components/notifications/TileExecuted'
 import {
   currencyPair,
@@ -23,10 +25,10 @@ stories.add('Executed', () => (
     <Centered>
       <TileNotification
         style={style}
-        isWarning={false}
         symbols={symbols}
         tradeId={trade.tradeId}
         handleClick={onNotificationDismissedClick}
+        type={NotificationType.Success}
       >
         <TileExecuted
           direction={trade.direction}
@@ -46,10 +48,10 @@ stories.add('Rejected', () => (
     <Centered>
       <TileNotification
         style={style}
-        isWarning={true}
         symbols={symbols}
         tradeId={trade.tradeId}
         handleClick={onNotificationDismissedClick}
+        type={NotificationType.Error}
       >
         Your trade has been rejected
       </TileNotification>
@@ -60,7 +62,7 @@ stories.add('Rejected', () => (
 stories.add('Warning: Execution longer', () => (
   <Story>
     <Centered>
-      <TileNotification style={style} symbols={symbols} isWarning={true}>
+      <TileNotification style={style} symbols={symbols} type={NotificationType.Warning}>
         Trade Execution taking longer then Expected
       </TileNotification>
     </Centered>
@@ -70,7 +72,7 @@ stories.add('Warning: Execution longer', () => (
 stories.add('Warning: Timeout', () => (
   <Story>
     <Centered>
-      <TileNotification style={style} symbols={symbols} isWarning={true}>
+      <TileNotification style={style} symbols={symbols} type={NotificationType.Warning}>
         Trade execution timeout exceeded
       </TileNotification>
     </Centered>
