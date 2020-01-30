@@ -50,7 +50,7 @@ const DropdownVariants: React.FC<DropdownStyleProps> = props => (
 
 const GridColumn = styled.div`
   display: grid;
-  grid-template-rows: 3rem repeat(3, 2rem) 4.5rem;
+  grid-template-rows: 3rem repeat(4, 2rem);
   grid-row-gap: 0.5rem;
   align-items: center;
 `

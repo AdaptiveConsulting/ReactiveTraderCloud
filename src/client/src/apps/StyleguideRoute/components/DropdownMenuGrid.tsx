@@ -67,7 +67,7 @@ const Root = styled.div`
   max-width: 60rem;
 
   display: grid;
-  grid-template-columns: 5rem 1fr 1fr 1fr 1fr ;
+  grid-template-columns: 5rem 1fr 1fr 1fr 1fr 1fr 1fr ;
   grid-column-gap: 2rem;
 
   padding-bottom: 2rem;
