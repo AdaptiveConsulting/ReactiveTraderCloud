@@ -48,24 +48,17 @@ const envTitles = [
 ]
 
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     browser = await getBrowser()
     mainPage = new MainPage(browser)
   })
 
-  it('Verify page title', async () => {
-    const title = await browser.getTitle()
-    const isValid = envTitles.includes(title)
-    expect(isValid).toBeTruthy()
+  beforeEach(async () => {
+    await browser.refresh()
   })
 
-  notionalList.forEach(([enteredNotional, expectedNotional]) => {
-    it(`should validate notional entry ${enteredNotional}`, async () => {
-      await mainPage.tile.setNotional('EURToUSD', enteredNotional)
-      const notional = await mainPage.tile.tradeType.EURToUSD.notional
-      const returnedNotional = notional.getAttribute('value')
-      expect(returnedNotional).toEqual(expectedNotional)
-    })
+  afterAll(async () => {
+    await browser.close()
   })
 
   it('Should validate a notional value larger than the maximum allowed', async () => {
