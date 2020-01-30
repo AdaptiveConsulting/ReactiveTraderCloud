@@ -12,7 +12,7 @@ import OpenFinRoute from './OpenFinRoute'
 import { Context } from 'openfin-fdc3'
 import { platformEpics } from './epics'
 import Logo from './logo'
-import { OpenFinControls, OpenFinHeader } from '../components'
+import { OpenFinControls, OpenFinHeader, OpenFinFooter } from '../components'
 import { ApplicationEpic } from 'StoreTypes'
 
 interface WinProps {
@@ -95,7 +95,11 @@ export default class OpenFin implements Platform {
               url: config.url,
               mainWindowOptions: { icon: config.icon, autoShow: true, frame: true },
             },
-            () => app.run(() => setTimeout(() => resolve(id), 1000), err => reject(err)),
+            () =>
+              app.run(
+                () => setTimeout(() => resolve(id), 1000),
+                err => reject(err),
+              ),
             err => reject(err),
           )
         })
@@ -148,6 +152,8 @@ export default class OpenFin implements Platform {
   PlatformControls: React.FC<any> = OpenFinControls
 
   PlatformRoute: React.FC<any> = OpenFinRoute
+
+  PlatformFooter: React.FC<any> = OpenFinFooter
 
   getNotificationTitle({ tradeNotification }: NotificationMessage) {
     const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'

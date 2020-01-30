@@ -33,7 +33,7 @@
     "test": "react-scripts test --verbose=false",
     "analyze": "source-map-explorer build/static/js/*.chunk.js",
     "openfin": "openfin -c public/config/openfin/local.json -l",
-    "openfin:platform": "openfin -c public/config/openfin/platforms.json -l",
+    "openfin:platform": "openfin -c public/config/openfin/local-platform.json -l",
     "openfin:launcher": "openfin -c public/config/openfin/launcher-local.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "storybook": "start-storybook -p 6006 -c .storybook",

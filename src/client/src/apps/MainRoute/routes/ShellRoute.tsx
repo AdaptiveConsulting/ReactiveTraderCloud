@@ -7,7 +7,7 @@ import { BlotterContainer } from '../widgets/blotter'
 import StatusBar from '../widgets/status-bar'
 import StatusButton from '../widgets/status-connection'
 import { WorkspaceContainer } from '../widgets/workspace'
-
+import OpenFinStatusButton from 'rt-platforms/openFin/components/OpenFinStatusConnection'
 import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
@@ -18,6 +18,7 @@ import { Theme } from 'rt-theme'
 
 interface Props {
   header?: React.ReactChild
+  footer?: React.ReactChild
 }
 
 const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition) => {
@@ -31,15 +32,17 @@ const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition)
   }
 }
 
-const ShellRoute: React.FC<Props> = ({ header }) => {
+const ShellRoute: React.FC<Props> = ({ header, footer }) => {
   const blotter = useSelector(blotterSelector)
   const analytics = useSelector(analyticsSelector)
 
   useEffect(() => {
-    window.document.dispatchEvent(new Event("DOMContentLoaded", {
-      bubbles: true,
-      cancelable: true
-    }));
+    window.document.dispatchEvent(
+      new Event('DOMContentLoaded', {
+        bubbles: true,
+        cancelable: true,
+      }),
+    )
   }, [])
 
   const body = (
@@ -50,12 +53,9 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
           <TearOff
             id="blotter"
             dragTearOff={true}
-            externalWindowProps={addLayoutToConfig(
-              externalWindowDefault.blotterRegion,
-              blotter,
-            )}
+            externalWindowProps={addLayoutToConfig(externalWindowDefault.blotterRegion, blotter)}
             render={(popOut, tornOff) => (
-              <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable/>
+              <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
             )}
             tornOff={!blotter.visible}
           />
@@ -65,34 +65,25 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
     >
       <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
         <OverflowScroll>
-          <WorkspaceContainer/>
+          <WorkspaceContainer />
         </OverflowScroll>
       </WorkspaceWrapper>
     </Resizer>
-  );
+  )
 
   const aside = (
     <AnalyticsWrapper data-qa="shell-route__analytics-wrapper">
       <TearOff
         id="region"
         dragTearOff={true}
-        externalWindowProps={addLayoutToConfig(
-          externalWindowDefault.analyticsRegion,
-          analytics,
-        )}
+        externalWindowProps={addLayoutToConfig(externalWindowDefault.analyticsRegion, analytics)}
         render={(popOut, tornOff) => (
-          <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable/>
+          <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
         )}
         tornOff={!analytics.visible}
       />
     </AnalyticsWrapper>
-  );
-
-  const footer = (
-    <StatusBar>
-      <StatusButton/>
-    </StatusBar>
-  );
+  )
 
   //@ts-ignore
   if (window.fin && window.fin.me.isWindow) {
@@ -114,32 +105,46 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
       .lm_splitter {
         background-color: ${({ theme }) => theme.core.offBackground} !important;
       }
-    `;
+    `
 
     const OfBody = (
       <React.Fragment>
         <OfTabTheme />
-        <div style={{ height: "100%", width: "100%" }} id="layout-container" />
+        <div style={{ height: '100%', width: '100%' }} id="layout-container" />
       </React.Fragment>
+    )
+
+    const ofStatusBar = (
+      <StatusBar>
+        {footer}
+        <OpenFinStatusButton />
+      </StatusBar>
     )
 
     return (
       <DefaultLayout
         header={header}
         body={OfBody}
-        footer={footer}
-        after={<ReconnectModal/>}
+        footer={ofStatusBar}
+        after={<ReconnectModal />}
       />
     )
   }
+
+  const statusBar = (
+    <StatusBar>
+      {footer}
+      <StatusButton />
+    </StatusBar>
+  )
 
   return (
     <DefaultLayout
       header={header}
       body={body}
       aside={aside}
-      footer={footer}
-      after={<ReconnectModal/>}
+      footer={statusBar}
+      after={<ReconnectModal />}
     />
   )
 }

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { FC } from 'react'
 import { Helmet } from 'react-helmet'
 import { styled, AccentName } from 'rt-theme'
+import OpenfinWorkspaceSelection from './OpenfinWorkspaceSelection'
 
 export interface ControlProps {
   minimize?: () => void
@@ -32,6 +33,12 @@ export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
     <DragRegion />
     <OpenFinControls {...props} />
   </Header>
+)
+
+export const OpenFinFooter: React.FC = ({ ...props }) => (
+  <FooterControl>
+    <OpenfinWorkspaceSelection />
+  </FooterControl>
 )
 
 export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close }) => (
@@ -81,6 +88,10 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
   &:hover {
     color: ${({ theme, accent = 'dominant' }) => theme.button[accent].backgroundColor};
   }
+`
+
+const FooterControl = styled.div`
+  margin-right: 0.75rem
 `
 
 export const Root = styled.div`
