@@ -1,5 +1,5 @@
 import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid-community'
-import { DateTime } from 'luxon'
+import { DateTime, Info } from 'luxon'
 import { Trade, TradeStatus } from 'rt-types'
 import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
@@ -19,7 +19,7 @@ import {
 } from '../blotterFields'
 
 function UtcFormatDate(date: Date) {
-  const localZoneName = DateTime.local().zoneName
+  const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
 
   return DateTime.fromJSDate(date, { zone: localZoneName }).toFormat('dd-MMM-yyyy')
 }

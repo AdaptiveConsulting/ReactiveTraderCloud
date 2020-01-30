@@ -31,4 +31,9 @@ describe('spotDateFormatter', () => {
     const formattedApiaDate = spotDateFormatter(spotDate, true, zoneNames.apia)
     expect(formattedApiaDate).toEqual('SP. 30 Jan')
   })
+
+  it('should return the formatted dat in utc if localZoneName is undefined', () => {
+    const formattedAnchorageDate = spotDateFormatter(spotDate, true, undefined)
+    expect(formattedAnchorageDate).toEqual('SP. 30 Jan')
+  })
 })

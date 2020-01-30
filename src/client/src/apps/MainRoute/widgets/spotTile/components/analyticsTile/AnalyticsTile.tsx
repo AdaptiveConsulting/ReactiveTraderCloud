@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { DateTime } from 'luxon'
+import { DateTime, Info } from 'luxon'
 import { usePlatform } from 'rt-platforms'
 import { spotDateFormatter } from '../../model/dateUtils'
 import PriceControls from '../PriceControls'
@@ -50,7 +50,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       rfq,
     } = this.props
 
-    const localZoneName = DateTime.local().zoneName
+    const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
     const spotDate = spotDateFormatter(price.valueDate, false, localZoneName).toUpperCase()
     const date = spotDate && `SPT (${spotDate})`
 
