@@ -8,7 +8,7 @@ import { ExternalWindowProps } from './selectors'
 
 const WorkspaceItems = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   grid-gap: 0.25rem;
 `
 

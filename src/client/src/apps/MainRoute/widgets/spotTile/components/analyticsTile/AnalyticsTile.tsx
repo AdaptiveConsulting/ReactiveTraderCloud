@@ -34,6 +34,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
         isTradeExecutionInFlight,
         price,
         historicPrices,
+        rfqPrice,
         rfqState,
         rfqTimeout,
         rfqReceivedTime,
@@ -67,6 +68,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
 
     const showTimer = isRfqStateReceived && rfqTimeout
     const isTimerOn = Boolean(showTimer) && rfqTimeout !== null && rfqReceivedTime !== null
+    const priceData = (isRfqStateReceived || isRfqStateExpired) && rfqPrice ? rfqPrice : price
 
     return (
       <AnalyticsWrapperWithPlatform>
@@ -81,7 +83,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
             displayCurrencyChart={displayCurrencyChart}
           />
           <AnalyticsTileContent>
-            <GraphNotionalWrapper>
+            <GraphNotionalWrapper isTimerOn={isTimerOn}>
               <LineChartWrapper isTimerOn={isTimerOn}>
                 <AnalyticsTileChart history={historicPrices} />
               </LineChartWrapper>
@@ -108,7 +110,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
               <PriceControls
                 isTradeExecutionInFlight={isTradeExecutionInFlight}
                 executeTrade={executeTrade}
-                priceData={price}
+                priceData={priceData}
                 currencyPair={currencyPair}
                 disabled={tradingDisabled}
                 rfqState={rfqState}

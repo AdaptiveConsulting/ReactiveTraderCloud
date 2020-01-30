@@ -3,9 +3,10 @@ import { Transition } from 'react-spring'
 import { AdaptiveLoader } from 'rt-components'
 import { styled } from 'rt-theme'
 
-const TileBookingStyle = styled.div`
+const TileBookingStyle = styled.div<{isAnalyticsView: boolean}>`
   position: absolute;
   left: 0;
+  ${({ isAnalyticsView }) => (isAnalyticsView && 'top: 0')}
   height: 100%;
   width: 100%;
   display: flex;
@@ -22,19 +23,23 @@ const BookingPill = styled.div<{
   color: string
   isAnalyticsView: boolean
 }>`
+  display: flex;
+  justify-content: center;
+  padding-left: ${({ isAnalyticsView }) => (isAnalyticsView ? '1px' : '6px')};
+  padding-right: ${({ isAnalyticsView }) => (isAnalyticsView ? '1px' : '6px')};
   padding-bottom: ${({ isExecutingStatus, isAnalyticsView }) =>
     isAnalyticsView && !isExecutingStatus ? '6px' : isExecutingStatus ? '10px' : '8px'};
   padding-top: ${({ isExecutingStatus, isAnalyticsView }) =>
-    isAnalyticsView && !isExecutingStatus ? '3.5px' : isExecutingStatus ? '8px' : '5px'};
+    isAnalyticsView && !isExecutingStatus ? '3.5px' : isExecutingStatus ? '10px' : '5px'};
   position: absolute;
   ${({ isAnalyticsView, isExecutingStatus }) =>
-    isAnalyticsView && !isExecutingStatus ? 'right: 1.5rem' : isAnalyticsView ? 'left: -20%' : ''};
+    isAnalyticsView && !isExecutingStatus && 'right: 1.5rem'};
   border-radius: ${({ isExecutingStatus }) => (isExecutingStatus ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};
   pointer-events: auto; /* restore the click on this child */
   width: ${({ isExecutingStatus, isAnalyticsView }) =>
-    isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '64px'};
+    isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '58px'};
   rect {
     fill: ${({ theme }) => theme.template.white.normal};
   }
@@ -45,6 +50,16 @@ const BookingPill = styled.div<{
     `
   cursor: pointer;
   `}
+  @media (min-width: 321px) {
+    width: ${({ isExecutingStatus, isAnalyticsView }) =>
+      isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '60px'};
+  }
+  @media (min-width: 401px) {
+    width: ${({ isExecutingStatus, isAnalyticsView }) =>
+      isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '64px'};
+    padding-left: 1px;
+    padding-right: 1px;
+  }
 `
 
 const BookingStatus = styled.span<{ isExecutingStatus: boolean; isAnalyticsView: boolean }>`
@@ -59,6 +74,7 @@ const BookingStatus = styled.span<{ isExecutingStatus: boolean; isAnalyticsView:
 
 const AdaptiveLoaderWrapper = styled.span`
   padding-right: 0.375rem;
+  padding-top: 0.04rem;
 `
 
 interface TileBookingProps {
@@ -82,7 +98,7 @@ const TileBooking: React.FC<TileBookingProps> = ({
   <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
     {show &&
       (styles => (
-        <TileBookingStyle style={styles}>
+        <TileBookingStyle isAnalyticsView={isAnalyticsView} style={styles}>
           <BookingPill
             color={color}
             onClick={e => {

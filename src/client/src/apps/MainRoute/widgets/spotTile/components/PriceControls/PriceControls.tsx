@@ -106,6 +106,7 @@ const PriceControls: React.FC<Props> = ({
     <PriceControlsStyle
       data-qa="analytics-tile-price-control__header"
       isAnalyticsView={isAnalyticsView}
+      isTradeExecutionInFlight={isTradeExecutionInFlight}
     >
       <PriceMovement
         priceMovementType={priceMovement}
