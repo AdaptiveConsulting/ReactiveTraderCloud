@@ -3,7 +3,7 @@ import { Transition } from 'react-spring'
 import { CurrencyPair, TradeStatus } from 'rt-types'
 import { LastTradeExecutionStatus } from '../../model/spotTileData'
 import TileExecuted from './TileExecuted'
-import TileNotification from './TileNotification'
+import TileNotification, { NotificationType } from './TileNotification'
 
 interface Props {
   lastTradeExecutionStatus?: LastTradeExecutionStatus | null
@@ -35,7 +35,7 @@ export default class NotificationContainer extends PureComponent<Props> {
     }
     if (lastTradeExecutionStatus.hasError) {
       return (style: React.CSSProperties) => (
-        <TileNotification style={style} symbols={symbols} isWarning={true}>
+        <TileNotification style={style} symbols={symbols} type={NotificationType.Warning}>
           {lastTradeExecutionStatus.error}
         </TileNotification>
       )
@@ -50,10 +50,10 @@ export default class NotificationContainer extends PureComponent<Props> {
         return (style: React.CSSProperties) => (
           <TileNotification
             style={style}
-            isWarning={false}
             symbols={symbols}
             tradeId={tradeId}
             handleClick={onNotificationDismissed}
+            type={NotificationType.Success}
           >
             <TileExecuted
               direction={direction}
@@ -70,10 +70,10 @@ export default class NotificationContainer extends PureComponent<Props> {
         return (style: React.CSSProperties) => (
           <TileNotification
             style={style}
-            isWarning={true}
             symbols={symbols}
             tradeId={tradeId}
             handleClick={onNotificationDismissed}
+            type={NotificationType.Error}
           >
             Your trade has been rejected
           </TileNotification>
