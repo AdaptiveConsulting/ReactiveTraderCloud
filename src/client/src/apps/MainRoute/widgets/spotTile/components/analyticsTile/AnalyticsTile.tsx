@@ -37,6 +37,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
         rfqState,
         rfqTimeout,
         rfqReceivedTime,
+        lastTradeExecutionStatus,
       },
       updateNotional,
       resetNotional,
@@ -111,6 +112,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
                 isAnalyticsView={true}
                 rfq={rfq}
                 notional={notional}
+                lastTradeExecutionStatus={lastTradeExecutionStatus}
               />
             </PriceControlWrapper>
           </AnalyticsTileContent>

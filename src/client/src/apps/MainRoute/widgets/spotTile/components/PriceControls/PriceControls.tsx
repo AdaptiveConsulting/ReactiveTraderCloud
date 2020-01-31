@@ -14,6 +14,7 @@ import {
 } from './styled'
 import { ValidationMessage } from '../notional'
 import TileBookingSwitch from './TileBookingSwitch'
+import { LastTradeExecutionStatus } from '../../model/spotTileData'
 
 interface Props {
   currencyPair: CurrencyPair
@@ -26,6 +27,7 @@ interface Props {
   notional: number
   isAnalyticsView: boolean
   inputValidationMessage?: ValidationMessage
+  lastTradeExecutionStatus: LastTradeExecutionStatus | null
 }
 
 const PriceButtonDisabledBanIcon: React.FC = ({ children }) => (
@@ -46,6 +48,7 @@ const PriceControls: React.FC<Props> = ({
   rfq,
   notional,
   inputValidationMessage,
+  lastTradeExecutionStatus,
 }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
@@ -62,13 +65,15 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateExpired,
     isRfqStateRequested,
     isRfqStateNone,
+    isRfqStateCanRequest,
   } = getConstsFromRfqState(rfqState)
 
   const { priceStale } = priceData
   const hasPrice = Boolean(priceData.bid && priceData.ask && !priceStale)
   const priceMovement = hasPrice ? priceData.priceMovementType : 'none'
   const spreadValue = hasPrice ? spread.formattedValue : '-'
-  const showPriceMovement = isRfqStateNone && !isTradeExecutionInFlight
+  const showPriceMovement =
+    (isRfqStateNone || isRfqStateCanRequest || isRfqStateRequested) && !isTradeExecutionInFlight
 
   const showPriceButton = (
     btnDirection: Direction,
@@ -113,16 +118,19 @@ const PriceControls: React.FC<Props> = ({
         spread={spreadValue}
         show={showPriceMovement}
         isAnalyticsView={isAnalyticsView}
+        isRequestRFQ={Boolean(isRfqStateCanRequest || isRfqStateRequested)}
       />
-      <TileBookingSwitch
-        isTradeExecutionInFlight={isTradeExecutionInFlight}
-        currencyPair={currencyPair}
-        notional={notional}
-        rfq={rfq}
-        rfqState={rfqState}
-        hasUserError={hasUserError}
-        isAnalyticsView={isAnalyticsView}
-      />
+      {!lastTradeExecutionStatus && (
+        <TileBookingSwitch
+          isTradeExecutionInFlight={isTradeExecutionInFlight}
+          currencyPair={currencyPair}
+          notional={notional}
+          rfq={rfq}
+          rfqState={rfqState}
+          hasUserError={hasUserError}
+          isAnalyticsView={isAnalyticsView}
+        />
+      )}
       <div>
         {priceButtonDisabledStatus}
         {priceButtonDisabledStatus}
@@ -139,6 +147,7 @@ const PriceControls: React.FC<Props> = ({
         spread={spreadValue}
         show={showPriceMovement}
         isAnalyticsView={isAnalyticsView}
+        isRequestRFQ={Boolean(isRfqStateCanRequest || isRfqStateRequested)}
       />
       <TileBookingSwitch
         isTradeExecutionInFlight={isTradeExecutionInFlight}

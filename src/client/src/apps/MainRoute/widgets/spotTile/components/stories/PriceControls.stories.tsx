@@ -62,6 +62,7 @@ priceStories.add('Price controls', () => {
           isAnalyticsView={isAnalyticsView}
           rfq={rfqActions}
           notional={notional}
+          lastTradeExecutionStatus={null}
         />
       </Centered>
     </Story>

@@ -557,14 +557,14 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 
 .c14 {
   text-align: center;
-  color: #28c988;
+  color: #a1a5af;
   visibility: hidden;
 }
 
 .c16 {
   text-align: center;
-  color: #f94c4c;
-  visibility: hidden;
+  color: #a1a5af;
+  visibility: visible;
 }
 
 .c15 {
@@ -642,10 +642,10 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  padding-left: 6px;
-  padding-right: 6px;
+  padding-left: 9px;
+  padding-right: 10px;
   padding-bottom: 8px;
-  padding-top: 5px;
+  padding-top: 8px;
   position: absolute;
   border-radius: 3px;
   background: #5f94f5;
@@ -660,7 +660,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 
 .c19 {
   color: #ffffff;
-  font-size: 0.77rem;
+  font-size: 0.6875rem;
 }
 
 .c4 {
@@ -760,8 +760,6 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 @media (min-width:401px) {
   .c18 {
     width: 64px;
-    padding-left: 1px;
-    padding-right: 1px;
   }
 }
 
@@ -842,7 +840,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           <i
             aria-hidden="true"
             className="c14 fas fa-caret-up"
-            color="green"
+            color="none"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -854,7 +852,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           <i
             aria-hidden="true"
             className="c16 fas fa-caret-down"
-            color="red"
+            color="none"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -1170,10 +1168,10 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  padding-left: 6px;
-  padding-right: 6px;
+  padding-left: 9px;
+  padding-right: 10px;
   padding-bottom: 8px;
-  padding-top: 5px;
+  padding-top: 8px;
   position: absolute;
   border-radius: 3px;
   background: #5f94f5;
@@ -1188,7 +1186,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 
 .c20 {
   color: #ffffff;
-  font-size: 0.77rem;
+  font-size: 0.6875rem;
 }
 
 .c4 {
@@ -1288,8 +1286,6 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 @media (min-width:401px) {
   .c19 {
     width: 64px;
-    padding-left: 1px;
-    padding-right: 1px;
   }
 }
 
@@ -2007,14 +2003,14 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 
 .c13 {
   text-align: center;
-  color: #28c988;
+  color: #a1a5af;
   visibility: hidden;
 }
 
 .c15 {
   text-align: center;
-  color: #f94c4c;
-  visibility: hidden;
+  color: #a1a5af;
+  visibility: visible;
 }
 
 .c14 {
@@ -2164,10 +2160,10 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  padding-left: 6px;
-  padding-right: 6px;
+  padding-left: 9px;
+  padding-right: 10px;
   padding-bottom: 8px;
-  padding-top: 5px;
+  padding-top: 8px;
   position: absolute;
   border-radius: 3px;
   background: #f94c4c;
@@ -2182,7 +2178,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 
 .c18 {
   color: #ffffff;
-  font-size: 0.77rem;
+  font-size: 0.6875rem;
 }
 
 .c4 {
@@ -2282,8 +2278,6 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 @media (min-width:401px) {
   .c17 {
     width: 64px;
-    padding-left: 1px;
-    padding-right: 1px;
   }
 }
 
@@ -2375,7 +2369,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           <i
             aria-hidden="true"
             className="c13 fas fa-caret-up"
-            color="green"
+            color="none"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -2387,7 +2381,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           <i
             aria-hidden="true"
             className="c15 fas fa-caret-down"
-            color="red"
+            color="none"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -3209,8 +3203,8 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  padding-left: 6px;
-  padding-right: 6px;
+  padding-left: 9px;
+  padding-right: 10px;
   padding-bottom: 10px;
   padding-top: 10px;
   position: absolute;
@@ -3332,8 +3326,6 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
 @media (min-width:401px) {
   .c18 {
     width: 125px;
-    padding-left: 1px;
-    padding-right: 1px;
   }
 }
 
