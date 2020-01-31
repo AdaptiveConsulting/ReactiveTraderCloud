@@ -18,7 +18,7 @@ const TimeLeft = styled.div<{ isAnalyticsView: boolean }>`
   font-size: 10px;
   opacity: 0.6;
   grid-area: TimeLeft;
-  ${({isAnalyticsView}) => (isAnalyticsView ? 'margin-top: 4.5px' : 'margin-bottom: 1px')};
+  ${({ isAnalyticsView }) => (isAnalyticsView ? 'margin-top: 4.5px' : 'margin-bottom: 1px')};
 `
 
 const ProgressBarWrapper = styled.div<{ isAnalyticsView: boolean }>`
@@ -26,8 +26,8 @@ const ProgressBarWrapper = styled.div<{ isAnalyticsView: boolean }>`
   height: 6px;
   width: 100%;
   grid-area: ProgressBar;
-  align-self: ${({isAnalyticsView}) => (isAnalyticsView ? 'end': 'center')};
-  ${({isAnalyticsView}) => (isAnalyticsView ? 'margin-bottom: 4.5px' : 'margin-top: 1px')};
+  align-self: ${({ isAnalyticsView }) => (isAnalyticsView ? 'end' : 'center')};
+  ${({ isAnalyticsView }) => (isAnalyticsView ? 'margin-bottom: 4.5px' : 'margin-top: 1px')};
 `
 
 const ProgressBar = styled.div`
@@ -41,20 +41,24 @@ const RejectQuoteButton = styled.button<{ isAnalyticsView: boolean }>`
   background-color: ${({ theme }) => `${theme.core.lightBackground}`};
   border: ${({ theme }) => `2px solid ${theme.core.darkBackground}`};
   border-radius: 3px;
-  font-size: 12px;
-  padding: 4px 5px;
-  margin-left: 3px;
+  font-size: 11px;
+  padding: 2px 5px 3px 5px;
+  margin-left: 11px;
   grid-area: RejectQuoteButton;
-  align-self: ${({isAnalyticsView}) => (isAnalyticsView ? 'end': 'center')};
+  align-self: ${({ isAnalyticsView }) => (isAnalyticsView ? 'end' : 'center')};
 `
 
 const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   display: grid;
   width: ${({ isAnalyticsView }) => (isAnalyticsView ? 'calc(100% + 23.09px)' : '100%')};
   align-items: center;
-  grid-template-columns: ${({isAnalyticsView}) => (isAnalyticsView ? '35px auto 55px' : '35px auto 7px 55px')};
-  grid-template-rows: ${({isAnalyticsView}) => (isAnalyticsView ? '5px 20px' : 'auto')};
-  grid-template-areas: ${({isAnalyticsView}) => (isAnalyticsView ? "'TimeLeft . .' 'ProgressBar ProgressBar RejectQuoteButton'": "'TimeLeft ProgressBar . RejectQuoteButton'")};
+  grid-template-columns: ${({ isAnalyticsView }) =>
+    isAnalyticsView ? '35px auto 55px' : '35px auto 7px 55px'};
+  grid-template-rows: ${({ isAnalyticsView }) => (isAnalyticsView ? '5px 20px' : 'auto')};
+  grid-template-areas: ${({ isAnalyticsView }) =>
+    isAnalyticsView
+      ? "'TimeLeft . .' 'ProgressBar ProgressBar RejectQuoteButton'"
+      : "'TimeLeft ProgressBar . RejectQuoteButton'"};
   margin-bottom: -12px;
 `
 
@@ -103,7 +107,11 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
         <ProgressBarWrapper isAnalyticsView={isAnalyticsView}>
           <ProgressBar style={{ width: `${percentageLeft}%` }} data-qa="rfq-timer__progress-bar" />
         </ProgressBarWrapper>
-        <RejectQuoteButton isAnalyticsView={isAnalyticsView} onClick={onRejected} data-qa="rfq-timer__reject-quote-button">
+        <RejectQuoteButton
+          isAnalyticsView={isAnalyticsView}
+          onClick={onRejected}
+          data-qa="rfq-timer__reject-quote-button"
+        >
           Reject
         </RejectQuoteButton>
       </TimerWrapper>
