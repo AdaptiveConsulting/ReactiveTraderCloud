@@ -20,7 +20,11 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
   const [scrollTop, setScrollTop] = useState(window.scrollY)
   const [positionNavBar, setPositionNavBar] = useState(MAX_SCROLL_HEIGHT)
   const [currentSection, setCurrentSection] = useState('')
+  const [isSticky, setIsSticky] = useState(false)
   const handleScroll = () => setScrollTop(window.scrollY)
+  const scrollToSection = (top: number) => {
+    window.scrollTo({ top: top, behavior: 'smooth' })
+  }
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
@@ -33,14 +37,24 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
     }
   }, [positionNavBar, scrollTop])
 
+  useEffect(() => {
+    setIsSticky(scrollTop > positionNavBar)
+  }, [scrollTop, positionNavBar])
+
+  useEffect(() => {
+    if (!isSticky) {
+      setCurrentSection('')
+    }
+  }, [isSticky, setCurrentSection])
+
   return (
     <React.Fragment>
-      <NavBarBleed className={scrollTop > positionNavBar ? 'sticky' : ''} ref={ref}>
+      <NavBarBleed className={isSticky ? 'sticky' : ''} ref={ref}>
         <FlexWrapper justifyContent="space-between" alignItems="center">
-          <div>
+          <LogoContainer onClick={() => scrollToSection(0)}>
             <Logo />
             <TextHeader>Design Systems Library UI</TextHeader>
-          </div>
+          </LogoContainer>
           <div>
             <FlexWrapper justifyContent="flex-start" alignItems="center">
               {sections.map(({ path, title }) => (
@@ -58,11 +72,13 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
           </div>
         </FlexWrapper>
       </NavBarBleed>
-      <TitleBar className={scrollTop > positionNavBar ? 'sticky' : ''}>
-        <FlexWrapper justifyContent="space-between" alignItems="center">
-          <TitleHeading>{currentSection}</TitleHeading>
-        </FlexWrapper>
-      </TitleBar>
+      {currentSection && (
+        <TitleBar className={isSticky ? 'sticky' : ''}>
+          <FlexWrapper justifyContent="space-between" alignItems="center">
+            <TitleHeading>{currentSection}</TitleHeading>
+          </FlexWrapper>
+        </TitleBar>
+      )}
     </React.Fragment>
   )
 }
@@ -73,6 +89,10 @@ const TextHeader = styled.p`
       color: theme.secondary.base,
     })};
   margin: 0;
+`
+
+const LogoContainer = styled.div`
+  cursor: pointer;
 `
 
 const OnePageNavLink = styled(Link)`
