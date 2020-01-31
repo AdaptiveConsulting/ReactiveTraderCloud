@@ -23,7 +23,13 @@ export const Dropdown: React.FC<DropdownStyleProps> = props => {
 
 const StyledDropdown = styled(Button)<DropdownStyleProps>`
   background-color: ${({ theme, active, disabled }) =>
-    active ? theme.primary[2] : disabled ? theme.primary[1] : theme.primary.base};
+    active
+      ? theme.dropdown.active.backgroundColor
+      : disabled
+      ? theme.dropdown.disabled.backgroundColor
+      : theme.dropdown.backgroundColor};
+  color: ${({ theme, disabled }) =>
+    disabled ? theme.dropdown.disabled.textColor : theme.dropdown.textColor};}
   min-width: 80px;
 
   & > span {
@@ -31,10 +37,6 @@ const StyledDropdown = styled(Button)<DropdownStyleProps>`
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    & > svg {
-      font-weight: 100;
-    }
   }
 `
 

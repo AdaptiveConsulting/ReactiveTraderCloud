@@ -39,7 +39,7 @@ const StyledBase = styled.div<DropdownOptionStyleProps>`
   background-color: ${({ active, theme }) => (active ? theme.button.primary.backgroundColor : '')};
   text-decoration: ${({ hover }) => (hover ? 'underline' : 'none')};
   color: ${({ disabled, theme }) =>
-    disabled ? theme.button.mute.disabled.backgroundColor : theme.secondary.base};
+    disabled ? theme.dropdown.disabled.textColor : theme.dropdown.textColor};
 `
 
 const StyledButtonBase = StyledBase.withComponent('button')
