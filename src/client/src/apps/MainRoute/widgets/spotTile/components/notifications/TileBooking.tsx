@@ -30,7 +30,7 @@ const BookingPill = styled.div<{
   padding-bottom: ${({ isExecutingStatus, isAnalyticsView }) =>
     isAnalyticsView && !isExecutingStatus ? '7px' : isExecutingStatus ? '10px' : '8px'};
   padding-top: ${({ isExecutingStatus, isAnalyticsView }) =>
-    isAnalyticsView && !isExecutingStatus ? '6.5px' : isExecutingStatus ? '10px' : '8px'};
+    isAnalyticsView && !isExecutingStatus ? '6px' : isExecutingStatus ? '10px' : '8px'};
   position: absolute;
   ${({ isAnalyticsView, isExecutingStatus }) =>
     isAnalyticsView && !isExecutingStatus && 'right: 1.35rem'};

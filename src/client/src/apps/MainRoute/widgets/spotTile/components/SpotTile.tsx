@@ -26,6 +26,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
         rfqPrice,
         rfqReceivedTime,
         rfqTimeout,
+        lastTradeExecutionStatus,
       },
       updateNotional,
       resetNotional,
@@ -82,6 +83,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
               disabled={tradingDisabled}
               rfq={rfq}
               notional={notional}
+              lastTradeExecutionStatus={lastTradeExecutionStatus}
             />
           </ReserveSpaceGrouping>
           <ReserveSpaceGrouping>

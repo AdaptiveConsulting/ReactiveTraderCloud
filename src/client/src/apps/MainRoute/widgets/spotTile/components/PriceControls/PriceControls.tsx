@@ -14,6 +14,7 @@ import {
 } from './styled'
 import { ValidationMessage } from '../notional'
 import TileBookingSwitch from './TileBookingSwitch'
+import { LastTradeExecutionStatus } from '../../model/spotTileData'
 
 interface Props {
   currencyPair: CurrencyPair
@@ -26,6 +27,7 @@ interface Props {
   notional: number
   isAnalyticsView: boolean
   inputValidationMessage?: ValidationMessage
+  lastTradeExecutionStatus: LastTradeExecutionStatus | null
 }
 
 const PriceButtonDisabledBanIcon: React.FC = ({ children }) => (
@@ -46,6 +48,7 @@ const PriceControls: React.FC<Props> = ({
   rfq,
   notional,
   inputValidationMessage,
+  lastTradeExecutionStatus,
 }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
@@ -117,15 +120,17 @@ const PriceControls: React.FC<Props> = ({
         isAnalyticsView={isAnalyticsView}
         isRequestRFQ={Boolean(isRfqStateCanRequest || isRfqStateRequested)}
       />
-      <TileBookingSwitch
-        isTradeExecutionInFlight={isTradeExecutionInFlight}
-        currencyPair={currencyPair}
-        notional={notional}
-        rfq={rfq}
-        rfqState={rfqState}
-        hasUserError={hasUserError}
-        isAnalyticsView={isAnalyticsView}
-      />
+      {lastTradeExecutionStatus ? null : (
+        <TileBookingSwitch
+          isTradeExecutionInFlight={isTradeExecutionInFlight}
+          currencyPair={currencyPair}
+          notional={notional}
+          rfq={rfq}
+          rfqState={rfqState}
+          hasUserError={hasUserError}
+          isAnalyticsView={isAnalyticsView}
+        />
+      )}
       <div>
         {priceButtonDisabledStatus}
         {priceButtonDisabledStatus}
