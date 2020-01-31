@@ -120,27 +120,42 @@ export const openDesktopWindow = async (
   console.info(`Creating Openfin window: ${windowName}`)
 
   //@ts-ignore
-  const winIdentity = await finWithPlatform.Platform.getCurrentSync().createWindow({
-    name: windowName,
-    defaultWidth,
+  const platform = await finWithPlatform.Platform.getCurrent()
+  const winIdentity = await finWithPlatform.Application.getCurrentSync().getWindow()
+  const newWinIdentity = await platform.createWindow({
+    autoShow: true,
+    contextMenu: true,
+    defaultCentered: !hasChildWindows && !configHasXYCoordinates,
     defaultHeight,
-    minWidth: config.minWidth ? config.minWidth : 100,
-    minHeight: config.minHeight ? config.minHeight : 100,
+    defaultWidth,
+    frame: false,
     maxHeight,
     maxWidth,
-    url: `${window.location.origin}${url}`,
-    defaultCentered: !hasChildWindows && !configHasXYCoordinates,
-    autoShow: true,
-    frame: false,
+    minHeight: config.minHeight ? config.minHeight : 100,
+    minWidth: config.minWidth ? config.minWidth : 100,
+    name: windowName,
     saveWindowState: false,
     shadow: true,
-    contextMenu: true,
+    title: windowName,
     ...position,
     ...updatedPosition,
-    layout: {},
-  })
+    layout: {
+      content: [{
+        type: 'stack',
+        content:[{
+          type: 'component',
+          componentName: 'view',
+          componentState: {
+            name: `${windowName}_view`,
+            url: `${window.location.origin}${url}`
+          },
+          title: windowName
+        }]
+      }]
+    }
+  }, winIdentity)
 
-  const win = await window.fin.Window.wrap(winIdentity)
+  const win = await window.fin.Window.wrap(newWinIdentity)
 
   if (onClose) {
     const closeListener = () => {

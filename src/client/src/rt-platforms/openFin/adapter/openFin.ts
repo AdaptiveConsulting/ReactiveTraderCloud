@@ -59,7 +59,7 @@ export default class OpenFin implements Platform {
   }
 
   window = {
-    ...createPlatformWindow(() => Promise.resolve(fin.desktop.Window.getCurrent())),
+    ...createPlatformWindow(() => Promise.resolve(fin.Window.getCurrent())),
     open: openDesktopWindow,
   }
 

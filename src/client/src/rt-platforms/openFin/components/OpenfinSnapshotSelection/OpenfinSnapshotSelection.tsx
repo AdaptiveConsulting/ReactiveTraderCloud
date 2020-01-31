@@ -26,12 +26,12 @@ import { SnapshotActiveStatus } from 'rt-types'
 import { finWithPlatform } from '../../OpenFinWithPlatform'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-
+import canned_snapshots from "../../snapshots/canned.json"
 const OPENFIN_SNAPSHOT_CURRENT = 'OPENFIN_SNAPSHOT_CURRENT'
 const OPENFIN_SNAPSHOT_NAMES = 'OPENFIN_SNAPSHOT_NAMES'
 const OPENFIN_SNAPSHOTS = 'OPENFIN_SNAPSHOTS'
 
-const OPENFIN_SNAPSHOT_DEFAULT_NAME = 'RTC Default Snapshot'
+const OPENFIN_SNAPSHOT_DEFAULT_NAME = 'RTC - Default'
 
 type SnapshotError = {
   message: string,
@@ -109,15 +109,13 @@ const OpenfinSnapshotSelection: React.FC = props => {
   useEffect(
     () => {
       if (!!snapshotNames && !snapshotNames.length) {
-        finWithPlatform.Platform.getCurrent()
-          .then((platform: any) => platform.getSnapshot())
-          .then((snapshot: any) => {
-            window.localStorage.setItem(OPENFIN_SNAPSHOT_NAMES, JSON.stringify([OPENFIN_SNAPSHOT_DEFAULT_NAME]))
-            window.localStorage.setItem(OPENFIN_SNAPSHOTS, JSON.stringify({ [OPENFIN_SNAPSHOT_DEFAULT_NAME]: snapshot }))
-            window.localStorage.setItem(OPENFIN_SNAPSHOT_CURRENT, OPENFIN_SNAPSHOT_DEFAULT_NAME)
-            setSnapshotNames([OPENFIN_SNAPSHOT_DEFAULT_NAME])
-            setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
-          })
+        console.log('YAY!')
+        const names = Object.keys(canned_snapshots)
+        window.localStorage.setItem(OPENFIN_SNAPSHOT_NAMES, JSON.stringify(Object.keys(canned_snapshots)))
+        window.localStorage.setItem(OPENFIN_SNAPSHOTS, JSON.stringify(canned_snapshots))
+        window.localStorage.setItem(OPENFIN_SNAPSHOT_CURRENT, OPENFIN_SNAPSHOT_DEFAULT_NAME)
+        setSnapshotNames(names)
+        setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
       }
     },
     [snapshotNames]

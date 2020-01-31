@@ -78,8 +78,8 @@ export const SnapshotName = styled.div`
 `
 
 export const SnapshotRoot = styled.div`
-  min-height: 2.5rem;
-  max-height: 2.5rem;
+  min-height: 2rem;
+  max-height: 2rem;
   padding: 0.25rem 0.5rem;
 
   display: flex;
@@ -117,6 +117,7 @@ export const TextInputLabel = styled.label`
 export const SnapshotListTitle = styled.label`
   color: ${props => props.theme.textColor};
   display: block;
+  margin-bottom: 0.5rem;
 `
 export const TextInput = styled.input.attrs(props => ({
   type: 'text',
@@ -144,6 +145,6 @@ export const FormControl = styled.div`
   width: 100%;
 
   > ${TextInputLabel} {
-    margin-bottom: 6px;
+    margin-bottom: 0.5rem;
   }
 `
