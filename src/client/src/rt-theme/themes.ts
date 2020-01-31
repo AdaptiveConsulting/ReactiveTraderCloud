@@ -185,6 +185,20 @@ const createTheme = (
       },
     })),
   } as TouchableStyleSet,
+
+  dropdown: {
+    backgroundColor: primary.base,
+    textColor: secondary.base,
+
+    active: {
+      backgroundColor: primary[2],
+    },
+
+    disabled: {
+      backgroundColor: primary[1],
+      textColor: primary[2],
+    },
+  },
 })
 
 const lightTheme = createTheme('light', colors.light, colors.accents)
