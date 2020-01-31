@@ -120,7 +120,7 @@ const PriceControls: React.FC<Props> = ({
         isAnalyticsView={isAnalyticsView}
         isRequestRFQ={Boolean(isRfqStateCanRequest || isRfqStateRequested)}
       />
-      {lastTradeExecutionStatus ? null : (
+      {!lastTradeExecutionStatus && (
         <TileBookingSwitch
           isTradeExecutionInFlight={isTradeExecutionInFlight}
           currencyPair={currencyPair}
