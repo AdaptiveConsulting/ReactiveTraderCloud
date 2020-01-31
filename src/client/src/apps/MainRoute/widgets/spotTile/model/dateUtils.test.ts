@@ -33,7 +33,7 @@ describe('spotDateFormatter', () => {
   })
 
   it('should return the formatted dat in utc if localZoneName is undefined', () => {
-    const formattedAnchorageDate = spotDateFormatter(spotDate, true, undefined)
-    expect(formattedAnchorageDate).toEqual('SP. 30 Jan')
+    const formatteUndefinedZoneDate = spotDateFormatter(spotDate, true, undefined)
+    expect(formatteUndefinedZoneDate).toEqual('SP. 30 Jan')
   })
 })
