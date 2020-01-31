@@ -1,9 +1,7 @@
-import { capitalize } from 'lodash'
 import { AccentName, styled } from 'rt-theme'
 import { FunctionComponent } from 'react'
 import React from 'react'
-import { Popup } from 'rt-components'
-import { WorkspaceActiveStatus } from 'rt-types'
+import { SnapshotActiveStatus } from 'rt-types'
 
 const buttonHeight = '2rem'
 
@@ -50,21 +48,13 @@ const StatusCircleCore: FunctionComponent<{ className?: string }> = ({ className
   )
 }
 
-export const StatusCircle = styled(StatusCircleCore)<{ status?: WorkspaceActiveStatus }>`
+export const StatusCircle = styled(StatusCircleCore)<{ status?: SnapshotActiveStatus }>`
   circle {
     fill: ${({ theme, status }) =>
-      status === WorkspaceActiveStatus.ACTIVE
+      status === SnapshotActiveStatus.ACTIVE
         ? theme.template.green.normal
         : theme.template.gray.normal};
   }
-`
-
-const StatusLabelCore: FunctionComponent<{
-  className?: string
-  status?: WorkspaceActiveStatus
-}> = ({ className, status }) => <span className={className}>{capitalize(status)}</span>
-export const StatusLabel = styled(StatusLabelCore)`
-  margin-left: 0.75rem;
 `
 
 export const Root = styled.div`
@@ -79,13 +69,7 @@ export const Root = styled.div`
   color: ${props => props.theme.textColor};
 `
 
-export const WorkspaceListPopup = styled(Popup)`
-  bottom: calc(${buttonHeight} + 0.25rem);
-  right: 0;
-  border-radius: 0.5rem;
-`
-
-export const WorkspaceName = styled.div`
+export const SnapshotName = styled.div`
   min-width: 5rem;
   text-transform: capitalize;
   font-size: 0.75rem;
@@ -93,7 +77,7 @@ export const WorkspaceName = styled.div`
   display: inline-block;
 `
 
-export const WorkspaceRoot = styled.div`
+export const SnapshotRoot = styled.div`
   min-height: 2.5rem;
   max-height: 2.5rem;
   padding: 0.25rem 0.5rem;
@@ -103,15 +87,24 @@ export const WorkspaceRoot = styled.div`
   justify-content: start;
 
   color: ${props => props.theme.textColor};
+  
+  &:hover {
+    cursor: pointer;
+    ${StatusCircle} {
+      circle {
+        fill: ${props => props.theme.template.blue.normal};
+      }
+    }
+  }
 `
 
-export const WorkspaceList = styled.div`
+export const SnapshotList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   grid-auto-flow: dense;
   padding: 0 0.75rem;
 
-  ${WorkspaceName} {
+  ${SnapshotName} {
     padding-left: 1rem;
     padding-top: 0.1rem;
   }
@@ -121,7 +114,7 @@ export const TextInputLabel = styled.label`
   color: ${props => props.theme.textColor};
   display: block;
 `
-export const WorkspaceListTitle = styled.label`
+export const SnapshotListTitle = styled.label`
   color: ${props => props.theme.textColor};
   display: block;
 `
@@ -137,6 +130,13 @@ export const TextInput = styled.input.attrs(props => ({
   margin: 0 0 1em;
   padding: 0.25rem 0.75rem;
   width: 100%;
+`
+
+export const ErrorAlert = styled.div`
+  background-color: ${props => props.theme.template.red.normal};
+  color: ${props => props.theme.textColor};
+  padding: 0.25rem 0.75rem;
+  margin: 0.25rem 0;
 `
 
 export const FormControl = styled.div`

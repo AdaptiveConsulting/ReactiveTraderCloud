@@ -6,7 +6,7 @@ import { Button, StatusCircle, StatusLabel, Root, AppUrl, ServiceList } from './
 import Service from './Service'
 import FooterVersion from '../../../../apps/MainRoute/widgets/footer-version'
 import { Flex, Modal } from 'rt-components'
-import { CloseButton } from '../OpenfinWorkspaceSelection/styled'
+import { CloseButton } from '../OpenfinSnapshotSelection/styled'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
