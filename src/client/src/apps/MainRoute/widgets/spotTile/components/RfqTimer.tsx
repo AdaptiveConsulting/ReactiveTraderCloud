@@ -43,7 +43,7 @@ const RejectQuoteButton = styled.button<{ isAnalyticsView: boolean }>`
   border-radius: 3px;
   font-size: 11px;
   padding: 2px 5px 3px 5px;
-  margin-left: 11px;
+  margin-left: 9px;
   grid-area: RejectQuoteButton;
   align-self: ${({ isAnalyticsView }) => (isAnalyticsView ? 'end' : 'center')};
 `

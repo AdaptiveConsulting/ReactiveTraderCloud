@@ -26,8 +26,8 @@ const PriceMovementStyle = styled.div<{
   isAnalyticsView: boolean
 }>`
   display: flex;
-  padding-right: ${({ isAnalyticsView }) => (isAnalyticsView ? '12px' : '0')};
-  padding-left: ${({ isAnalyticsView }) => (isAnalyticsView ? '8px' : '0')};
+  padding-right: ${({ isAnalyticsView }) => (isAnalyticsView ? '9px' : '0')};
+  padding-left: ${({ isAnalyticsView }) => (isAnalyticsView ? '9px' : '0')};
   align-items: center;
   justify-content: center;
   flex-direction: column;
