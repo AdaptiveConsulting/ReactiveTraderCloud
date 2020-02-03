@@ -54,7 +54,8 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
   })
 
   beforeEach(async () => {
-    await browser.refresh()
+    const normalViewBtn = browser.element(by.qaTag('workspace-view-normal'))
+    await normalViewBtn.click()
   })
 
   afterAll(async () => {
@@ -83,8 +84,8 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
       await mainPage.tile.setNotional('EURToUSD', '99999999')
       const notional = await mainPage.tile.tradeType.EURToUSD.notional
       expect(notional.getAttribute('value')).toEqual('99,999,999')
-      const pricesButton = browser.element(by.qaTag('workspace-view-normal'))
-      await pricesButton.click()
+      const normalViewBtn = browser.element(by.qaTag('workspace-view-normal'))
+      await normalViewBtn.click()
       const labelRFQ = await mainPage.tile.tradeType.initiateRFQ.buttonInitiateRFQ
       expect(labelRFQ.getText()).toEqual('Initiate RFQ')
       await mainPage.tile.resetNotional('EURToUSD')
