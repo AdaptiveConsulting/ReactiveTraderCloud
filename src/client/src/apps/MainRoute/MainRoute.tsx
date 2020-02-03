@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
+import { DateTime } from 'luxon'
 import { ThemeProvider } from 'rt-theme'
 import { Router } from './data'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
@@ -18,7 +19,9 @@ const MainRoute = () => {
       setPlatform(runningPlatform)
       setStore(store)
     }
+
     getPlatform()
+    console.info('IANA ZONE: ', DateTime.local().zoneName)
   }, [])
 
   if (!store || !platform) {
