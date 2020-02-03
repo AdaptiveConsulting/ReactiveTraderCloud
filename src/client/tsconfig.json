@@ -4,20 +4,13 @@
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es2018",
-    "lib": [
-      "es2015",
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2015", "es2017", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "strict": true,
     "jsx": "preserve",
     "moduleResolution": "node",
-    "rootDirs": [
-      "src",
-      "stories"
-    ],
+    "rootDirs": ["src", "stories"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": false,
     "noImplicitThis": false,
@@ -42,7 +35,5 @@
     "**/*.spec.ts",
     "storybook-static"
   ],
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

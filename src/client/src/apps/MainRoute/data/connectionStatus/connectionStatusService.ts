@@ -1,9 +1,15 @@
-import { ConnectionEvent, ConnectionEventType, ConnectionStatus, ConnectionType } from 'rt-system'
+import {
+  ConnectionEvent,
+  ConnectionEventType,
+  ConnectionStatusType,
+  ConnectionStatus,
+  ConnectionType,
+} from 'rt-system'
 import { Observable } from 'rxjs'
 import { map, publishBehavior, refCount } from 'rxjs/operators'
 
 export interface ConnectionInfo {
-  status: ConnectionStatus
+  status: ConnectionStatusType
   url: string
   transportType: ConnectionType
 }
@@ -18,23 +24,23 @@ export class ConnectionStatusService {
           return {
             status: ConnectionStatus.connected,
             url: connectionUpdate.url,
-            transportType: connectionUpdate.transportType
+            transportType: connectionUpdate.transportType,
           }
         } else {
           return {
             status: ConnectionStatus.disconnected,
             url: 'Disconnected',
-            transportType: 'unknown'
+            transportType: 'unknown',
           }
         }
       }),
       publishBehavior({
         status: ConnectionStatus.init,
         url: 'Starting',
-        transportType: 'unknown'
+        transportType: 'unknown',
       } as ConnectionInfo),
 
-      refCount()
+      refCount(),
     )
   }
 

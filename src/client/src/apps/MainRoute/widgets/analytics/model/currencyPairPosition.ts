@@ -1,2 +1,2 @@
-import { CurrencyPairPosition } from 'rt-types'
-export type CurrencyPairPosition = CurrencyPairPosition
+import * as rtTypes from 'rt-types'
+export type CurrencyPairPosition = rtTypes.CurrencyPairPosition

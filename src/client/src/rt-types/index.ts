@@ -1,34 +1,35 @@
-import { CurrencyPair, CurrencyPairMap } from './currencyPair'
-import { CurrencyPairPosition } from './currencyPairPosition'
-import { ServiceStatus, ServiceConnectionStatus } from './serviceStatus'
-import { Trade, Trades } from './trade'
-import { User } from './user'
-import { CollectionUpdate, CollectionUpdates } from './CollectionUpdate'
-import { mapFromTradeDto, TradeRaw, RawTradeUpdate } from './tradeMapper'
+import * as currencyPair from './currencyPair'
+import * as currencyPairPosition from './currencyPairPosition'
+import * as serviceStatus from './serviceStatus'
+import * as trade from './trade'
+import * as user from './user'
+import * as collectionUpdate from './CollectionUpdate'
+import * as tradeMapper from './tradeMapper'
 
-export type CurrencyPair = CurrencyPair
-export type CurrencyPairMap = CurrencyPairMap
+export type CurrencyPair = currencyPair.CurrencyPair
+export type CurrencyPairMap = currencyPair.CurrencyPairMap
 
-export type CurrencyPairPosition = CurrencyPairPosition
-export type CurrencyPairPositionWithPrice = CurrencyPairPosition & {
+export type CurrencyPairPosition = currencyPairPosition.CurrencyPairPosition
+export type CurrencyPairPositionWithPrice = currencyPairPosition.CurrencyPairPosition & {
   latestAsk?: number
   latestBid?: number
 }
 export { Direction } from './direction'
 
-export { ServiceConnectionStatus }
-export type ServiceStatus = ServiceStatus
+export const { ServiceConnectionStatus } = serviceStatus
+export type ServiceConnectionStatus = serviceStatus.ServiceConnectionStatus
+export type ServiceStatus = serviceStatus.ServiceStatus
 
-export type Trade = Trade
-export type Trades = Trades
+export type Trade = trade.Trade
+export type Trades = trade.Trades
 export { TradeStatus } from './tradeStatus'
 export { UpdateType } from './updateType'
 
-export type User = User
+export type User = user.User
 
-export type CollectionUpdate = CollectionUpdate
-export type CollectionUpdates = CollectionUpdates
+export type CollectionUpdate = collectionUpdate.CollectionUpdate
+export type CollectionUpdates = collectionUpdate.CollectionUpdates
 
-export { mapFromTradeDto }
-export type TradeRaw = TradeRaw
-export type RawTradeUpdate = RawTradeUpdate
+export const { mapFromTradeDto } = tradeMapper
+export type TradeRaw = tradeMapper.TradeRaw
+export type RawTradeUpdate = tradeMapper.RawTradeUpdate

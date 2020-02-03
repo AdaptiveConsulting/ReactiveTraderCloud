@@ -1,9 +1,9 @@
-import { WindowConfig, WindowPosition, PlatformName } from './types'
-import { ExternalWindow } from './externalWindowDefault'
+import * as types from './types'
+import * as externalWindowDefault from './externalWindowDefault'
 
-export type WindowConfig = WindowConfig
-export type WindowPosition = WindowPosition
-export type PlatformName = PlatformName
+export type WindowConfig = types.WindowConfig
+export type WindowPosition = types.WindowPosition
+export type PlatformName = types.PlatformName
 
 export { InteropTopics } from './types'
 export * from './platformWindow'
@@ -13,4 +13,4 @@ export { PlatformProvider, usePlatform } from './context'
 export { externalWindowDefault } from './externalWindowDefault'
 export * from './excelApp'
 export * from './limitChecker'
-export type ExternalWindow = ExternalWindow
+export type ExternalWindow = externalWindowDefault.ExternalWindow
