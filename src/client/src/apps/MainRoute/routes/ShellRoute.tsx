@@ -15,6 +15,7 @@ import { analyticsSelector, blotterSelector } from '../layouts/selectors'
 import { useSelector } from 'react-redux'
 import { createGlobalStyle } from 'styled-components'
 import { Theme } from 'rt-theme'
+import { applySnapshotFromStorageOnLoad } from "rt-platforms/openFin/snapshots"
 
 interface Props {
   header?: React.ReactChild
@@ -44,6 +45,53 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
       }),
     )
   }, [])
+
+  //@ts-ignore
+  if (window.fin && window.fin.Application.me) {
+
+    //TODO: Wait for OpenFin to complete Platform context get/set.
+    applySnapshotFromStorageOnLoad().catch(ex => console.error(ex))
+
+    const OfTabTheme = createGlobalStyle<{ theme: Theme }>`
+      .lm_tabs {
+        background-color: ${({ theme }) => theme.core.lightBackground};
+        border-radius: 0px;
+      }
+      .lm_content {
+        background-color: ${({ theme }) => theme.core.lightBackground};
+      }
+      .lm_tab, .lm_tab.lm_active {
+        background-color: ${({ theme }) => theme.core.darkBackground} !important;
+        color: ${({ theme }) => theme.core.textColor} !important;
+      }
+      .lm_splitter {
+        background-color: ${({ theme }) => theme.core.offBackground} !important;
+      }
+    `
+
+    const OfBody = (
+      <React.Fragment>
+        <OfTabTheme />
+        <div style={{ height: '100%', width: '100%' }} id="layout-container" />
+      </React.Fragment>
+    )
+
+    const ofStatusBar = (
+      <StatusBar>
+        {footer}
+        <OpenFinStatusButton />
+      </StatusBar>
+    )
+
+    return (
+      <DefaultLayout
+        header={header}
+        body={OfBody}
+        footer={ofStatusBar}
+        after={<ReconnectModal />}
+      />
+    )
+  }
 
   const body = (
     <Resizer
@@ -84,52 +132,6 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
       />
     </AnalyticsWrapper>
   )
-
-  //@ts-ignore
-  if (window.fin && window.fin.me.isWindow) {
-    const OfTabTheme = createGlobalStyle<{ theme: Theme }>`
-      .lm_tabs {
-        background-color: ${({ theme }) => theme.core.lightBackground};
-        border-radius: 0px;
-      }
-
-      .lm_content {
-        background-color: ${({ theme }) => theme.core.lightBackground};
-      }
-
-      .lm_tab, .lm_tab.lm_active {
-        background-color: ${({ theme }) => theme.core.darkBackground} !important;
-        color: ${({ theme }) => theme.core.textColor} !important;
-      }
-
-      .lm_splitter {
-        background-color: ${({ theme }) => theme.core.offBackground} !important;
-      }
-    `
-
-    const OfBody = (
-      <React.Fragment>
-        <OfTabTheme />
-        <div style={{ height: '100%', width: '100%' }} id="layout-container" />
-      </React.Fragment>
-    )
-
-    const ofStatusBar = (
-      <StatusBar>
-        {footer}
-        <OpenFinStatusButton />
-      </StatusBar>
-    )
-
-    return (
-      <DefaultLayout
-        header={header}
-        body={OfBody}
-        footer={ofStatusBar}
-        after={<ReconnectModal />}
-      />
-    )
-  }
 
   const statusBar = (
     <StatusBar>

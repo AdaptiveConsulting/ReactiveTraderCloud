@@ -4,6 +4,7 @@ import { get as _get, last as _last } from 'lodash'
 import { PlatformWindow } from '../../platformWindow'
 import { _Window } from 'openfin/_v2/api/window/window'
 import { finWithPlatform } from '../OpenFinWithPlatform'
+import {resetCurrentSnapshotName} from "../snapshots"
 
 const TEAR_OUT_OFFSET_LEFT = 50
 const TEAR_OUT_OFFSET_TOP = 50
@@ -52,7 +53,10 @@ export function createPlatformWindow(
   getWindow: () => Promise<fin.OpenFinWindow | _Window>,
 ): PlatformWindow {
   return {
-    close: async () => (await getWindow()).close(),
+    close: async () => {
+      resetCurrentSnapshotName()
+      return (await getWindow()).close()
+    },
     bringToFront: async () => (await getWindow()).bringToFront(),
     minimize: async () => (await getWindow()).minimize(),
     maximize: async () => {
@@ -119,9 +123,9 @@ export const openDesktopWindow = async (
 
   console.info(`Creating Openfin window: ${windowName}`)
 
-  //@ts-ignore
   const platform = await finWithPlatform.Platform.getCurrent()
-  const winIdentity = await finWithPlatform.Application.getCurrentSync().getWindow()
+
+  //@ts-ignore
   const newWinIdentity = await platform.createWindow({
     autoShow: true,
     contextMenu: true,
@@ -136,7 +140,6 @@ export const openDesktopWindow = async (
     name: windowName,
     saveWindowState: false,
     shadow: true,
-    title: windowName,
     ...position,
     ...updatedPosition,
     layout: {
@@ -153,7 +156,7 @@ export const openDesktopWindow = async (
         }]
       }]
     }
-  }, winIdentity)
+  })
 
   const win = await window.fin.Window.wrap(newWinIdentity)
 

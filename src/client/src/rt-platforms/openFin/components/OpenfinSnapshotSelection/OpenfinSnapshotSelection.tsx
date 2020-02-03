@@ -3,7 +3,6 @@ import React, {
   SyntheticEvent,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from 'react'
 import {
@@ -23,15 +22,9 @@ import {
 } from './styled'
 import { Flex, Modal } from 'rt-components'
 import { SnapshotActiveStatus } from 'rt-types'
-import { finWithPlatform } from '../../OpenFinWithPlatform'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import canned_snapshots from "../../snapshots/canned.json"
-const OPENFIN_SNAPSHOT_CURRENT = 'OPENFIN_SNAPSHOT_CURRENT'
-const OPENFIN_SNAPSHOT_NAMES = 'OPENFIN_SNAPSHOT_NAMES'
-const OPENFIN_SNAPSHOTS = 'OPENFIN_SNAPSHOTS'
-
-const OPENFIN_SNAPSHOT_DEFAULT_NAME = 'RTC - Default'
+import {applySnapshotFromStorage, getCurrentSnapshotName, getSnapshotNames, saveSnapshotToStorage} from "rt-platforms/openFin/snapshots"
 
 type SnapshotError = {
   message: string,
@@ -40,21 +33,13 @@ type SnapshotError = {
 
 const OpenfinSnapshotSelection: React.FC = props => {
 
-  const [currentSnapshotName, setCurrentSnapshotName] = useState<string>(() => {
-    return window.localStorage.getItem(OPENFIN_SNAPSHOT_CURRENT) || ''
-  })
   const [isLoading, setIsLoading] = useState<string>('')
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const [newSnapshotName, setNewSnapshotName] = useState<string>('')
   const [snapshotError, setSnapshotError] = useState<SnapshotError>()
-  const [snapshotNames, setSnapshotNames] = useState<string[]>(() => {
-    const snapshotNamesStr = window.localStorage.getItem(OPENFIN_SNAPSHOT_NAMES)
-    if (snapshotNamesStr) {
-      return JSON.parse(snapshotNamesStr)
-    }
-    return []
-  })
+
+  //region Callbacks
 
   const toggleOpen = useCallback(
     async (event: SyntheticEvent) => {
@@ -84,88 +69,41 @@ const OpenfinSnapshotSelection: React.FC = props => {
     []
   );
 
-  const snapshotListContent = useMemo(
-    () => {
-      if (snapshotNames.length) {
-        return snapshotNames.sort().map((snapshotName: string, idx: number) => (
-          <SnapshotRoot key={`snapshot_${idx}`} onClick={e => selectSnapshot(snapshotName)}>
-            <StatusCircle
-              status={
-                snapshotName === currentSnapshotName
-                  ? SnapshotActiveStatus.ACTIVE
-                  : SnapshotActiveStatus.INACTIVE
-              }
-            />
-            <SnapshotName>{snapshotName}</SnapshotName>
-          </SnapshotRoot>
-        ))
-      } else {
-        return <SnapshotRoot>No saved snapshots.</SnapshotRoot>
-      }
-    },
-    [snapshotNames, currentSnapshotName]
-  )
+  //endregion
 
-  useEffect(
-    () => {
-      if (!!snapshotNames && !snapshotNames.length) {
-        console.log('YAY!')
-        const names = Object.keys(canned_snapshots)
-        window.localStorage.setItem(OPENFIN_SNAPSHOT_NAMES, JSON.stringify(Object.keys(canned_snapshots)))
-        window.localStorage.setItem(OPENFIN_SNAPSHOTS, JSON.stringify(canned_snapshots))
-        window.localStorage.setItem(OPENFIN_SNAPSHOT_CURRENT, OPENFIN_SNAPSHOT_DEFAULT_NAME)
-        setSnapshotNames(names)
-        setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
-      }
-    },
-    [snapshotNames]
-  )
+  //region Effects
 
   useEffect(
     () => {
       if (isSaving) {
-        finWithPlatform.Platform.getCurrent()
-          .then((platform: any) => platform.getSnapshot())
-          .then((snapshot: any) => {
-            const snapshotsStr = window.localStorage.getItem(OPENFIN_SNAPSHOTS)
-            const snapshots = JSON.parse(snapshotsStr || '{}')
-            const updatedSnapshots = [...snapshotNames, newSnapshotName]
-            window.localStorage.setItem(OPENFIN_SNAPSHOT_NAMES, JSON.stringify(updatedSnapshots))
-            window.localStorage.setItem(OPENFIN_SNAPSHOTS, JSON.stringify({ ...snapshots, [newSnapshotName]: snapshot }))
-            window.localStorage.setItem(OPENFIN_SNAPSHOT_CURRENT, newSnapshotName)
+        saveSnapshotToStorage(newSnapshotName)
+          .then(() => {
             setSnapshotError(undefined)
-            setIsSaving(false)
-            setSnapshotNames(updatedSnapshots)
             setNewSnapshotName('')
-            setCurrentSnapshotName(newSnapshotName)
+            setIsSaving(false)
           })
           .catch((ex: Error) => {
             console.error(ex)
-            setSnapshotError({topic: 'save', message: "Failed to take snapshot."})
+            setSnapshotError({ topic: 'save', message: 'Failed to take snapshot.' })
             setIsSaving(false)
           })
       }
     },
-    [isSaving, newSnapshotName, snapshotNames]
+    [isSaving, newSnapshotName]
   )
 
   useEffect(
     () => {
       if (isLoading) {
-        finWithPlatform.Platform.getCurrent()
-          .then((platform: any) => {
-            const snapshots = window.localStorage.getItem(OPENFIN_SNAPSHOTS)
-            const snapshotsJson = JSON.parse(snapshots || '{}')
-            platform.applySnapshot(snapshotsJson[isLoading], { closeExistingWindows: true })
-            window.localStorage.setItem(OPENFIN_SNAPSHOT_CURRENT, isLoading)
+        applySnapshotFromStorage(isLoading)
+          .then(() => {
             setSnapshotError(undefined)
-            setCurrentSnapshotName(isLoading)
+            setNewSnapshotName('')
+            setIsLoading('')
           })
           .catch((ex: Error) => {
             console.error(ex)
             setSnapshotError({topic: 'load', message: `Failed to load snapshot ${isLoading}.`})
-          })
-          .finally(() => {
             setIsLoading('')
           })
       }
@@ -173,10 +111,29 @@ const OpenfinSnapshotSelection: React.FC = props => {
     [isLoading]
   )
 
-  const handleSnapshotSubmission: KeyboardEventHandler<HTMLInputElement> = e => {
-    if (e.key === 'Enter' && !!newSnapshotName && newSnapshotName !== OPENFIN_SNAPSHOT_DEFAULT_NAME) {
-      e.preventDefault()
-      setIsSaving(true)
+  //endregion
+
+  //region Handlers
+
+  const snapshotListContent = () => {
+    const currentSnapshotName = getCurrentSnapshotName()
+    const snapshotNames = getSnapshotNames()
+    if (snapshotNames.length) {
+      return snapshotNames.sort().map((snapshotName: string, idx: number) => {
+        const isActive = snapshotName === currentSnapshotName
+        return <SnapshotRoot key={`snapshot_${idx}`} isActive={isActive} onClick={e => selectSnapshot(snapshotName)}>
+          <StatusCircle
+            status={
+              isActive
+                ? SnapshotActiveStatus.ACTIVE
+                : SnapshotActiveStatus.INACTIVE
+            }
+          />
+          <SnapshotName>{snapshotName}</SnapshotName>
+        </SnapshotRoot>
+      })
+    } else {
+      return <SnapshotRoot isActive={true}>No saved snapshots.</SnapshotRoot>
     }
   }
 
@@ -184,9 +141,18 @@ const OpenfinSnapshotSelection: React.FC = props => {
     setIsLoading(snapshotName)
   }
 
+  const handleSnapshotSubmission: KeyboardEventHandler<HTMLInputElement> = e => {
+    if (e.key === 'Enter' && !!newSnapshotName && !getSnapshotNames().includes(newSnapshotName)) {
+      e.preventDefault()
+      setIsSaving(true)
+    }
+  }
+
+  //endregion
+
   return <Root>
     <Button onClick={toggleOpen} data-qa="snapshots-button__toggle-button">
-      {currentSnapshotName || 'My snapshotNames'}
+      {getCurrentSnapshotName() || 'My snapshots'}
     </Button>
     <Modal
       shouldShow={isOpen}
@@ -203,7 +169,7 @@ const OpenfinSnapshotSelection: React.FC = props => {
       <Flex direction="column">
         <SnapshotList>
           <SnapshotListTitle>Restore a snapshot</SnapshotListTitle>
-          {snapshotListContent}
+          {snapshotListContent()}
           <SnapshotErrorAlert snapshotError={snapshotError} topics={["load"]} />
         </SnapshotList>
         <HrBar />
