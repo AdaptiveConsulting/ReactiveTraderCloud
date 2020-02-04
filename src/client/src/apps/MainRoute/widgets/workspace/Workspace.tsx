@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { TearOff } from 'rt-components'
+import { useParams } from 'react-router-dom'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileView } from './workspaceHeader'
@@ -31,8 +32,11 @@ interface Props {
 const ALL = 'ALL'
 
 const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
-  const [currency, setCurrencyOption] = useState(ALL)
-  const [tileView, setTileView] = useState(TileViews.Analytics)
+  const { currency, tileView } = useParams()
+
+  if (!currency || !tileView) {
+    return null
+  }
 
   return (
     <div data-qa="workspace__tiles-workspace">
@@ -40,9 +44,7 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
         currencyOptions={currencyOptions}
         currency={currency}
         defaultOption={ALL}
-        tileView={tileView}
-        onCurrencyChange={setCurrencyOption}
-        onTileViewChange={setTileView}
+        tileView={tileView as TileView}
       />
       <WorkspaceItems data-qa="workspace__tiles-workspace-items">
         {spotTiles
@@ -52,12 +54,12 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
               id={key}
               key={key}
               dragTearOff={true}
-              externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView)}
+              externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView as TileView)}
               render={(popOut, isTornOff) => (
                 <WorkspaceItem>
                   <SpotTileContainer
                     id={key}
-                    tileView={tileView}
+                    tileView={tileView as TileView}
                     onPopoutClick={popOut}
                     tornOff={isTornOff}
                     tearable

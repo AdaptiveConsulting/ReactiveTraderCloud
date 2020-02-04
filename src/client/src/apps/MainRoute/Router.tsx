@@ -1,24 +1,16 @@
 import React, { FC } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
 import { RouteWrapper } from 'rt-components'
 
 export const Router: FC = () => (
   <Switch>
-    <Route
-      exact
-      path="/"
-      render={() => (
-        <RouteWrapper>
-          <ShellRoute/>
-        </RouteWrapper>
-      )}
-    />
+    <Redirect exact from="/" to="/ALL/Analytics" />
     <Route
       path="/analytics"
       render={() => (
         <RouteWrapper windowType="sub">
-          <AnalyticsRoute/>
+          <AnalyticsRoute />
         </RouteWrapper>
       )}
     />
@@ -26,16 +18,25 @@ export const Router: FC = () => (
       path="/blotter"
       render={routeProps => (
         <RouteWrapper windowType="sub">
-          <BlotterRoute {...routeProps}/>
+          <BlotterRoute {...routeProps} />
         </RouteWrapper>
       )}
     />
-    <Route path="/tiles" component={TileRoute}/>
+    <Route path="/tiles" component={TileRoute} />
     <Route
       path="/spot/:symbol"
       render={routeProps => (
         <RouteWrapper windowType="sub">
           <SpotRoute {...routeProps} />
+        </RouteWrapper>
+      )}
+    />
+    <Route
+      exact
+      path="/:currency/:tileView"
+      render={() => (
+        <RouteWrapper>
+          <ShellRoute />
         </RouteWrapper>
       )}
     />
