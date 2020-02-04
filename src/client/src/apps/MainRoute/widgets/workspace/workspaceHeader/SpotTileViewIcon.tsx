@@ -15,13 +15,13 @@ const Hr = styled.hr`
 `
 
 const SpotTileViewIcon: FC = () => (
-  <div>
+  <>
     <IconWrapper>
       <FirstRect />
       <Rect />
     </IconWrapper>
     <Hr />
-  </div>
+  </>
 )
 
 export default SpotTileViewIcon

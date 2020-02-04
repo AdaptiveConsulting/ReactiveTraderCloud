@@ -40,7 +40,10 @@ export const NavItem = styled(LiStyle)<{ active: boolean }>`
 
   a {
     color: inherit;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
     height: 34px;
     line-height: 34px;
     opacity: ${({ active }) => (active ? '1' : '0.52')};
