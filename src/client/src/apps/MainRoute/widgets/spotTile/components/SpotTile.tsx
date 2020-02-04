@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { DateTime, Info } from 'luxon'
-import { spotDateFormatter } from '../model/dateUtils'
+import { memoDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import TileHeader from './TileHeader'
@@ -15,6 +15,8 @@ import { SpotTileProps } from './types'
 import RfqTimer from './RfqTimer'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
 
+const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
+const dateFomatter = memoDateFormatter(valueDate => valueDate.slice(0, 10))
 export default class SpotTile extends PureComponent<SpotTileProps> {
   render() {
     const {
@@ -39,10 +41,9 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
       displayCurrencyChart,
     } = this.props
 
-    const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
-    const spotDate = spotDateFormatter(price.valueDate, false, localZoneName).toUpperCase()
+    const spotDate = dateFomatter(price.valueDate, false, localZoneName)
     const date = spotDate && `SPT (${spotDate})`
-    
+
     const handleRfqRejected = () => rfq.reject({ currencyPair })
     const {
       isRfqStateReceived,
