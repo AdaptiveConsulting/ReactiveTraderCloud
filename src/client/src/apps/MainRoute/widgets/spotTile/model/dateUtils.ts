@@ -11,7 +11,7 @@ export function spotDateFormatter(
 
   const formattedDate = dt.isValid ? dt.toFormat(SPOT_DATE_FORMAT) : date
 
-  return tenorRequired ? `SP. ${formattedDate}` : formattedDate
+  return (tenorRequired ? `SP. ${formattedDate}` : formattedDate).toLocaleUpperCase()
 }
 
 export const memoDateFormatter = (createKey: ((...args: any[]) => any) | undefined) =>

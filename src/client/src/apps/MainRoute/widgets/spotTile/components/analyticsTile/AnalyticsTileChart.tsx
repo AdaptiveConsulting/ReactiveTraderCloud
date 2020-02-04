@@ -12,7 +12,6 @@ interface Props {
   history: SpotPriceTick[]
 }
 const AnalyticsTileChart: React.FC<Props> = ({ history }) => {
-  const data = history.slice(history.length - 100, history.length)
   const lineProps = {
     strokeDasharray: '4 3',
     stroke: '#737987',
