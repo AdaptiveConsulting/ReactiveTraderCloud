@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { FC } from 'react'
 import { Helmet } from 'react-helmet'
 import { styled, AccentName } from 'rt-theme'
-import OpenfinWorkspaceSelection from './OpenfinWorkspaceSelection'
+import OpenfinSnapshotSelection from './OpenfinSnapshotSelection'
 
 export interface ControlProps {
   minimize?: () => void
@@ -37,7 +37,7 @@ export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
 
 export const OpenFinFooter: React.FC = ({ ...props }) => (
   <FooterControl>
-    <OpenfinWorkspaceSelection />
+    <OpenfinSnapshotSelection />
   </FooterControl>
 )
 
