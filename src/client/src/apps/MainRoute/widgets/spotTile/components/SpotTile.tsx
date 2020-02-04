@@ -18,6 +18,11 @@ import { getConstsFromRfqState } from '../model/spotTileUtils'
 const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
 const dateFomatter = memoDateFormatter(valueDate => valueDate.slice(0, 10))
 export default class SpotTile extends PureComponent<SpotTileProps> {
+  handleRfqRejected = () => {
+    const { rfq, currencyPair } = this.props
+    rfq.reject({ currencyPair })
+  }
+
   render() {
     const {
       currencyPair,
@@ -44,17 +49,18 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
     const spotDate = dateFomatter(price.valueDate, false, localZoneName)
     const date = spotDate && `SPT (${spotDate})`
 
-    const handleRfqRejected = () => rfq.reject({ currencyPair })
     const {
       isRfqStateReceived,
       isRfqStateExpired,
       isRfqStateCanRequest,
       isRfqStateNone,
     } = getConstsFromRfqState(rfqState)
+
     const showResetButton =
       !isTradeExecutionInFlight &&
       getDefaultNotionalValue(currencyPair) !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
+
     const showTimer = isRfqStateReceived && rfqTimeout
     const priceData = (isRfqStateReceived || isRfqStateExpired) && rfqPrice ? rfqPrice : price
     const { priceStale } = priceData
@@ -103,7 +109,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
             </NotionalInputWrapper>
             {showTimer && rfqTimeout !== null && rfqReceivedTime !== null && (
               <RfqTimer
-                onRejected={handleRfqRejected}
+                onRejected={this.handleRfqRejected}
                 receivedTime={rfqReceivedTime}
                 timeout={rfqTimeout}
                 isAnalyticsView={false}
