@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { TearOff } from 'rt-components'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
-import { WorkspaceHeader, TileViews } from './workspaceHeader'
+import { WorkspaceHeader, TileView } from './workspaceHeader'
 import { appendTileViewToUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
 

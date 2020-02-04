@@ -1,11 +1,11 @@
 import React from 'react'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
-import { TileViews } from './types'
+import { TileView } from './types'
 import AnalyticsViewIcon from './AnalyticsTileViewIcon'
 import SpotTileViewIcon from './SpotTileViewIcon'
 interface Props {
   currencyOptions: string[]
-  tileView: TileViews
+  tileView: TileView
   currency: string
   defaultOption: string
   onCurrencyChange: (currency: string) => void
@@ -13,8 +13,8 @@ interface Props {
 }
 
 const tileViews = {
-  [TileViews.Analytics]: AnalyticsViewIcon,
-  [TileViews.Normal]: SpotTileViewIcon,
+  [TileView.Analytics]: AnalyticsViewIcon,
+  [TileView.Normal]: SpotTileViewIcon,
 }
 
 const WorkspaceHeader: React.FC<Props> = ({

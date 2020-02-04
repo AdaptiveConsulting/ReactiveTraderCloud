@@ -8,7 +8,7 @@ import {
 } from '../../model'
 import SpotTile from '../SpotTile'
 import { AnalyticsTile } from '../analyticsTile/index'
-import { TileViews } from '../../../workspace/workspaceHeader'
+import { TileView } from '../../../workspace/workspaceHeader'
 import { RfqActions, TradingMode } from '../types'
 import { ValidationMessage } from '../notional'
 import {
@@ -27,7 +27,7 @@ export interface TileProps {
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
   setTradingMode: (tradingMode: TradingMode) => void
   displayCurrencyChart?: () => void
-  tileView?: TileViews
+  tileView?: TileView
   children: () => JSX.Element
   rfq: RfqActions
   updateNotional: (notionalUpdate: CurrencyPairNotional) => void
@@ -47,8 +47,8 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   }
 
   tileComponents = {
-    [TileViews.Normal]: SpotTile,
-    [TileViews.Analytics]: AnalyticsTile,
+    [TileView.Normal]: SpotTile,
+    [TileView.Analytics]: AnalyticsTile,
   }
 
   // State management derived from props
