@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import memoize from 'lodash/memoize'
 import { Loadable } from 'rt-components'
 import { usePlatform } from 'rt-platforms'
 import { GlobalState } from 'StoreTypes'
@@ -26,34 +27,40 @@ export interface SpotTileContainerOwnProps {
   tearable?: boolean
 }
 
-const mapDispatchToProps = (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
-  onCurrencyPairChanged: (currencyPair: string) =>
-    dispatch(SpotTileActions.subscribeToSpotTile(currencyPair)),
-  executeTrade: (tradeRequestObj: ExecuteTradeRequest) =>
-    dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
-  onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id)),
-  setTradingMode: (tradingMode: TradingMode) =>
-    dispatch(SpotTileActions.setTradingMode(tradingMode)),
-  rfq: {
-    request: (rfqActionObj: RfqRequest) => dispatch(SpotTileActions.rfqRequest(rfqActionObj)),
-    cancel: (rfqActionObj: RfqCancel) => dispatch(SpotTileActions.rfqCancel(rfqActionObj)),
-    reject: (rfqActionObj: RfqReject) => dispatch(SpotTileActions.rfqReject(rfqActionObj)),
-    requote: (rfqActionObj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(rfqActionObj)),
-    expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
-    reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
-  },
-  updateNotional: (currencyPairNotional: CurrencyPairNotional) =>
-    dispatch(SpotTileActions.setNotional(currencyPairNotional)),
-})
+const mapDispatchToProps = memoize(
+  (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
+    onCurrencyPairChanged: (currencyPair: string) =>
+      dispatch(SpotTileActions.subscribeToSpotTile(currencyPair)),
+    executeTrade: (tradeRequestObj: ExecuteTradeRequest) =>
+      dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
+    onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id)),
+    setTradingMode: (tradingMode: TradingMode) =>
+      dispatch(SpotTileActions.setTradingMode(tradingMode)),
+    rfq: {
+      request: (rfqActionObj: RfqRequest) => dispatch(SpotTileActions.rfqRequest(rfqActionObj)),
+      cancel: (rfqActionObj: RfqCancel) => dispatch(SpotTileActions.rfqCancel(rfqActionObj)),
+      reject: (rfqActionObj: RfqReject) => dispatch(SpotTileActions.rfqReject(rfqActionObj)),
+      requote: (rfqActionObj: RfqRequote) => dispatch(SpotTileActions.rfqRequote(rfqActionObj)),
+      expired: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqExpired(rfqActionObj)),
+      reset: (rfqActionObj: RfqExpired) => dispatch(SpotTileActions.rfqReset(rfqActionObj)),
+    },
+    updateNotional: (currencyPairNotional: CurrencyPairNotional) =>
+      dispatch(SpotTileActions.setNotional(currencyPairNotional)),
+  }),
+  (_, { id }) => id,
+)
 
-const makeMapStateToProps = () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
-  pricingStatus: selectPricingStatus(state),
-  executionStatus: selectExecutionStatus(state),
+const makeMapStateToProps = memoize(
+  () => (state: GlobalState, ownProps: SpotTileContainerOwnProps) => ({
+    pricingStatus: selectPricingStatus(state),
+    executionStatus: selectExecutionStatus(state),
 
-  // here 'ownProps.id' is an ID of the tile, but it's ID of the currency pair too (same thing for now)
-  currencyPair: selectCurrencyPair(state, ownProps.id),
-  spotTileData: selectSpotTileData(state, ownProps.id),
-})
+    // here 'ownProps.id' is an ID of the tile, but it's ID of the currency pair too (same thing for now)
+    currencyPair: selectCurrencyPair(state, ownProps.id),
+    spotTileData: selectSpotTileData(state, ownProps.id),
+  }),
+  (_, { id }) => id,
+)
 
 type SpotTileContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
 
