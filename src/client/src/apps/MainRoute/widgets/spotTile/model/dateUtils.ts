@@ -7,7 +7,6 @@ export function spotDateFormatter(
   tenorRequired: boolean = true,
   localZoneName: string = 'utc',
 ) {
-  console.log('spotDateFormatter')
   const dt = DateTime.fromISO(date, { zone: localZoneName })
 
   const formattedDate = dt.isValid ? dt.toFormat(SPOT_DATE_FORMAT) : date
