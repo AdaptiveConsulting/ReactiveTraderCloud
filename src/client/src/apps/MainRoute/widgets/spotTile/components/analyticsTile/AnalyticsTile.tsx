@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { DateTime, Info } from 'luxon'
 import { usePlatform } from 'rt-platforms'
-import { spotDateFormatter } from '../../model/dateUtils'
+import { memoDateFormatter } from '../../model/dateUtils'
 import PriceControls from '../PriceControls'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
@@ -19,6 +19,9 @@ import { SpotTileProps } from '../types'
 import TileHeader from '../TileHeader'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
 import RfqTimer from '../RfqTimer'
+
+const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
+const dateFomatter = memoDateFormatter(valueDate => valueDate.slice(0, 10))
 
 const AnalyticsWrapperWithPlatform: FC = props => {
   const platform = usePlatform()
@@ -50,8 +53,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       rfq,
     } = this.props
 
-    const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
-    const spotDate = spotDateFormatter(price.valueDate, false, localZoneName).toUpperCase()
+    const spotDate = dateFomatter(price.valueDate, false, localZoneName)
     const date = spotDate && `SPT (${spotDate})`
 
     const {
