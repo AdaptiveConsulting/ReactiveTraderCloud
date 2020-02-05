@@ -75,7 +75,7 @@ const OpenfinSnapshotSelection: React.FC = props => {
 
   useEffect(
     () => {
-      if (isSaving) {
+      if (isSaving && newSnapshotName) {
         saveSnapshotToStorage(newSnapshotName)
           .then(() => {
             setSnapshotError(undefined)
