@@ -1,9 +1,10 @@
 import React, { FC } from 'react'
-import { spotDateFormatter } from '../../model/dateUtils'
+import { DateTime, Info } from 'luxon'
+import { usePlatform } from 'rt-platforms'
+import { memoDateFormatter } from '../../model/dateUtils'
 import PriceControls from '../PriceControls'
 import NotionalInput from '../notional'
 import AnalyticsTileChart from './AnalyticsTileChart'
-import { usePlatform } from 'rt-platforms'
 import { getDefaultNotionalValue } from '../Tile/TileBusinessLogic'
 
 import {
@@ -18,6 +19,9 @@ import { SpotTileProps } from '../types'
 import TileHeader from '../TileHeader'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
 import RfqTimer from '../RfqTimer'
+
+const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
+const dateFomatter = memoDateFormatter(valueDate => valueDate.slice(0, 10))
 
 const AnalyticsWrapperWithPlatform: FC = props => {
   const platform = usePlatform()
@@ -49,7 +53,8 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       displayCurrencyChart,
       rfq,
     } = this.props
-    const spotDate = spotDateFormatter(price.valueDate, false).toUpperCase()
+
+    const spotDate = dateFomatter(price.valueDate, false, localZoneName)
     const date = spotDate && `SPT (${spotDate})`
     const {
       isRfqStateExpired,

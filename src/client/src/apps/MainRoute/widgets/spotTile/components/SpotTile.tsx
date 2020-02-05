@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
-import { spotDateFormatter } from '../model/dateUtils'
+import { DateTime, Info } from 'luxon'
+import { memoDateFormatter } from '../model/dateUtils'
 import NotionalInput from './notional'
 import PriceControls from './PriceControls'
 import TileHeader from './TileHeader'
@@ -14,7 +15,14 @@ import { SpotTileProps } from './types'
 import RfqTimer from './RfqTimer'
 import { getConstsFromRfqState } from '../model/spotTileUtils'
 
+const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
+const dateFomatter = memoDateFormatter(valueDate => valueDate.slice(0, 10))
 export default class SpotTile extends PureComponent<SpotTileProps> {
+  handleRfqRejected = () => {
+    const { rfq, currencyPair } = this.props
+    rfq.reject({ currencyPair })
+  }
+
   render() {
     const {
       currencyPair,
@@ -39,19 +47,21 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
       displayCurrencyChart,
     } = this.props
 
-    const spotDate = price.valueDate && spotDateFormatter(price.valueDate, false).toUpperCase()
+    const spotDate = dateFomatter(price.valueDate, false, localZoneName)
     const date = spotDate && `SPT (${spotDate})`
-    const handleRfqRejected = () => rfq.reject({ currencyPair })
+
     const {
       isRfqStateReceived,
       isRfqStateExpired,
       isRfqStateCanRequest,
       isRfqStateNone,
     } = getConstsFromRfqState(rfqState)
+
     const showResetButton =
       !isTradeExecutionInFlight &&
       getDefaultNotionalValue(currencyPair) !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
+
     const showTimer = isRfqStateReceived && rfqTimeout
     const priceData = (isRfqStateReceived || isRfqStateExpired) && rfqPrice ? rfqPrice : price
     const { priceStale } = priceData
@@ -101,7 +111,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
             </NotionalInputWrapper>
             {showTimer && rfqTimeout !== null && rfqReceivedTime !== null && (
               <RfqTimer
-                onRejected={handleRfqRejected}
+                onRejected={this.handleRfqRejected}
                 receivedTime={rfqReceivedTime}
                 timeout={rfqTimeout}
                 isAnalyticsView={false}
