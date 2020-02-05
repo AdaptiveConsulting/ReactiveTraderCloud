@@ -77,9 +77,9 @@ export const SnapshotName = styled.div`
   display: inline-block;
 `
 
-export const SnapshotRoot = styled.div`
-  min-height: 2.5rem;
-  max-height: 2.5rem;
+export const SnapshotRoot = styled.div<{ isActive?: boolean }>`
+  min-height: 2rem;
+  max-height: 2rem;
   padding: 0.25rem 0.5rem;
 
   display: flex;
@@ -88,14 +88,16 @@ export const SnapshotRoot = styled.div`
 
   color: ${props => props.theme.textColor};
   
-  &:hover {
-    cursor: pointer;
-    ${StatusCircle} {
-      circle {
-        fill: ${props => props.theme.template.blue.normal};
+   ${({ isActive, theme }) => !isActive && `
+    &:hover {
+      cursor: pointer;
+      ${StatusCircle} {
+        circle {
+          fill: ${theme.template.blue.normal};
+        }
       }
     }
-  }
+  `}
 `
 
 export const SnapshotList = styled.div`
@@ -117,6 +119,7 @@ export const TextInputLabel = styled.label`
 export const SnapshotListTitle = styled.label`
   color: ${props => props.theme.textColor};
   display: block;
+  margin-bottom: 0.5rem;
 `
 export const TextInput = styled.input.attrs(props => ({
   type: 'text',
@@ -144,6 +147,6 @@ export const FormControl = styled.div`
   width: 100%;
 
   > ${TextInputLabel} {
-    margin-bottom: 6px;
+    margin-bottom: 0.5rem;
   }
 `

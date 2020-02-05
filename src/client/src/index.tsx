@@ -14,20 +14,14 @@ const { pathname } = new URL(window.location.href)
 
 const APP_PATHS = {
   LAUNCHER: '/launcher',
-  TRADER: '/',
   STYLEGUIDE: '/styleguide',
-  BLOTTER: '/blotter',
-  ANALYTICS: '/analytics',
-  TILES: '/tiles',
+  TRADER: '/'
 }
 
 const appTitles = {
   [APP_PATHS.LAUNCHER]: 'Reactive Ecosystem Launcher',
-  [APP_PATHS.TRADER]: 'Reactive Trader Cloud',
   [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader',
-  [APP_PATHS.BLOTTER]: 'Blotter',
-  [APP_PATHS.ANALYTICS]: 'Analytics',
-  [APP_PATHS.TILES]: 'Pricing',
+  [APP_PATHS.TRADER]: 'Reactive Trader Cloud',
 }
 
 async function init() {
