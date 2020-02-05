@@ -41,7 +41,6 @@
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "storybook": "start-storybook -p 6006 -c .storybook",
     "storybook:build": "build-storybook -c .storybook -o storybook/build",
-    "sleep": "sleep 5",
     "lint": "eslint --ext .ts,.tsx ./src",
     "lint:fix": "eslint --fix --ext .ts,.tsx ./src"
   },
