@@ -59,7 +59,10 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
     setScrollTop(window.scrollY)
     const currentSectionScrolled: NavSection = getCurrentSection()
 
-    if (typeof currentSectionScrolled !== 'undefined') {
+    if (
+      typeof currentSectionScrolled !== 'undefined' &&
+      !location.hash.includes(currentSectionScrolled.path)
+    ) {
       history.pushState(null, '', '#' + currentSectionScrolled.path)
       setCurrentSection(currentSectionScrolled.title)
     }
