@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
 import { HashLink as Link } from 'react-router-hash-link'
 import { css } from 'styled-components'
 import { styled } from 'rt-theme'
@@ -7,11 +7,21 @@ import { H2 } from '../elements'
 import Logo from '../../MainRoute/components/app-header/Logo'
 import { mapMarginPaddingProps } from '../styled/mapMarginPaddingProps'
 
+export type NavSection =
+  | {
+      path: string
+      title: string
+      Section: React.ComponentType
+      ref: React.RefObject<HTMLDivElement>
+    }
+  | undefined
+
 export interface OnePageNavBar {
-  sections: Array<{ path: string; title: string }>
+  sections: Array<NavSection>
 }
 
 const MAX_SCROLL_HEIGHT = 100000000
+const DEFAULT_OFFSET = 120
 const isActive = (to: string): string => (window.location.hash === `#${to}` ? 'active' : '')
 
 const OnePageNavBar: React.FC<OnePageNavBar> = props => {
@@ -21,7 +31,41 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
   const [positionNavBar, setPositionNavBar] = useState(MAX_SCROLL_HEIGHT)
   const [currentSection, setCurrentSection] = useState('')
   const [isSticky, setIsSticky] = useState(false)
-  const handleScroll = () => setScrollTop(window.scrollY)
+
+  const handleScroll = useCallback(() => {
+    setScrollTop(window.scrollY)
+
+    const getCurrentSection = (): NavSection => {
+      let currentSection = undefined
+      const currentScroll = window.scrollY
+
+      sections.forEach((section: NavSection) => {
+        if (section) {
+          if (section.ref) {
+            if (section.ref.current) {
+              const borderTop = section.ref.current.offsetTop - DEFAULT_OFFSET
+              const borderBottom =
+                section.ref.current.offsetTop + section.ref.current.offsetHeight - DEFAULT_OFFSET
+
+              if (currentScroll >= borderTop && currentScroll < borderBottom) {
+                currentSection = section
+              }
+            }
+          }
+        }
+      })
+
+      return currentSection
+    }
+
+    const currentSectionScrolled: NavSection = getCurrentSection()
+
+    if (typeof currentSectionScrolled !== 'undefined') {
+      history.pushState(null, '', '#' + currentSectionScrolled.path)
+      setCurrentSection(currentSectionScrolled.title)
+    }
+  }, [sections])
+
   const scrollToSection = (top: number) => {
     window.scrollTo({ top: top, behavior: 'smooth' })
   }
@@ -29,7 +73,7 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [handleScroll])
 
   useEffect(() => {
     if (ref.current && positionNavBar === MAX_SCROLL_HEIGHT) {
@@ -41,12 +85,6 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
     setIsSticky(scrollTop > positionNavBar)
   }, [scrollTop, positionNavBar])
 
-  useEffect(() => {
-    if (!isSticky) {
-      setCurrentSection('')
-    }
-  }, [isSticky, setCurrentSection])
-
   return (
     <React.Fragment>
       <NavBarBleed className={isSticky ? 'sticky' : ''} ref={ref}>
@@ -57,17 +95,20 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
           </LogoContainer>
           <div>
             <FlexWrapper justifyContent="flex-start" alignItems="center">
-              {sections.map(({ path, title }) => (
-                <OnePageNavLink
-                  key={`navlink-${path}`}
-                  to={`#${path}`}
-                  scroll={el => el.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                  className={isActive(path)}
-                  onClick={() => setCurrentSection(title)}
-                >
-                  {title}
-                </OnePageNavLink>
-              ))}
+              {sections.map(
+                section =>
+                  section && (
+                    <OnePageNavLink
+                      key={`navlink-${section.path}`}
+                      to={`#${section.path}`}
+                      scroll={el => el.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                      className={isActive(section.path)}
+                      onClick={() => setCurrentSection(section.title)}
+                    >
+                      {section.title}
+                    </OnePageNavLink>
+                  ),
+              )}
             </FlexWrapper>
           </div>
         </FlexWrapper>
