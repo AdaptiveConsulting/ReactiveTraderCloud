@@ -36,9 +36,19 @@ export const LeftNavItemFirst = styled(LiStyle)`
 
 export const NavItem = styled(LiStyle)<{ active: boolean }>`
   list-style-type: none;
-  height: 34px;
-  opacity: ${({ active }) => (active ? '1' : '0.52')};
   margin-left: 15px;
+
+  a {
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    height: 34px;
+    line-height: 34px;
+    opacity: ${({ active }) => (active ? '1' : '0.52')};
+    text-decoration: none;
+  }
 `
 
 export const RightNav = styled.ul`

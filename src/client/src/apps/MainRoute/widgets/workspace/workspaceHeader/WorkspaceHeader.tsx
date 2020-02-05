@@ -1,28 +1,25 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
-import { TileViews } from './types'
+import { TileView } from './types'
 import AnalyticsViewIcon from './AnalyticsTileViewIcon'
 import SpotTileViewIcon from './SpotTileViewIcon'
 interface Props {
   currencyOptions: string[]
-  tileView: TileViews
+  tileView: TileView
   currency: string
   defaultOption: string
-  onCurrencyChange: (currency: string) => void
-  onTileViewChange: (tileView: TileViews) => void
 }
 
 const tileViews = {
-  [TileViews.Analytics]: AnalyticsViewIcon,
-  [TileViews.Normal]: SpotTileViewIcon,
+  [TileView.Analytics]: AnalyticsViewIcon,
+  [TileView.Normal]: SpotTileViewIcon,
 }
 
 const WorkspaceHeader: React.FC<Props> = ({
   defaultOption,
   tileView,
   currency,
-  onCurrencyChange,
-  onTileViewChange,
   currencyOptions,
 }) => {
   const options = [defaultOption, ...currencyOptions]
@@ -34,11 +31,10 @@ const WorkspaceHeader: React.FC<Props> = ({
           <NavItem
             key={currencyOption}
             active={currencyOption === currency}
-            onClick={() => onCurrencyChange(currencyOption)}
             data-qa="workspace-header__nav-item"
             data-qa-id={`currency-option-${currencyOption.toLowerCase()}`}
           >
-            {currencyOption}
+            <NavLink to={`/${currencyOption}/${tileView}`}>{currencyOption}</NavLink>
           </NavItem>
         ))}
       </LeftNav>
@@ -49,11 +45,12 @@ const WorkspaceHeader: React.FC<Props> = ({
             <NavItem
               key={view}
               active={view === tileView}
-              onClick={() => onTileViewChange(view as TileViews)}
               data-qa="workspace-header__nav-item--view"
               data-qa-id={`workspace-view-${view.toLowerCase()}`}
             >
-              <Icon />
+              <NavLink to={`/${currency}/${view}`}>
+                <Icon />
+              </NavLink>
             </NavItem>
           )
         })}

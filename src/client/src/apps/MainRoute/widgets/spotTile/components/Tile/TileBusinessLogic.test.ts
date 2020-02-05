@@ -9,7 +9,7 @@ import { TileProps, TileState } from './Tile'
 import { TradingMode } from '../types'
 import { PriceMovementTypes } from '../../model/priceMovementTypes'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
-import { TileViews } from '../../../workspace/workspaceHeader'
+import { TileView } from '../../../workspace/workspaceHeader'
 
 // invalid trading values, should disable trading (Buy/Sell buttons)
 // https://regex101.com/r/OWDRCO/2
@@ -145,7 +145,7 @@ const defaultTileProps: TileProps = {
     reset: () => {},
   },
   spotTileData: defaultParams.spotTileData,
-  tileView: 'Normal' as TileViews,
+  tileView: 'Normal' as TileView,
   updateNotional: () => {},
 }
 

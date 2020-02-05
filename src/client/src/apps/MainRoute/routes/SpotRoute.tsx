@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router-dom'
 import SpotTileContainer from '../widgets/spotTile/SpotTileContainer'
-import { TileViews } from '../widgets/workspace/workspaceHeader'
+import { TileView } from '../widgets/workspace/workspaceHeader'
 import { styled } from 'rt-theme'
 import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
 import { Subscription } from 'rxjs'
@@ -16,14 +16,14 @@ const SpotTileStyle = styled.div`
   margin: 0 auto;
 `
 
-const getTileViewFromQueryStr: (queryStr: string) => TileViews = queryStr => {
+const getTileViewFromQueryStr: (queryStr: string) => TileView = queryStr => {
   const parsedQueryString = queryString.parse(queryStr)
-  const tileView = parsedQueryString['tileView'] as TileViews
+  const tileView = parsedQueryString['tileView'] as TileView
   return !tileView
-    ? TileViews.Normal
-    : Object.values(TileViews).includes(tileView)
+    ? TileView.Normal
+    : Object.values(TileView).includes(tileView)
     ? tileView
-    : TileViews.Normal
+    : TileView.Normal
 }
 
 const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
