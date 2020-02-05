@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "snapshots": {
     "RTC - Default": {
       "windows": [
@@ -491,7 +491,7 @@
           "saveWindowState": false,
           "state": "normal",
           "title": "EURUSD",
-          "url": "file:///C:/Users/RobLeo/AppData/Local/OpenFin/runtime/14.78.48.3/OpenFin/resources/app.asar/assets/frame/standard-frame.html",
+          "url": "/openfin-window-frame",
           "uuid": "reactive-launcher-platform-demo",
           "width": 367,
           "x": 814,
@@ -589,7 +589,7 @@
           "saveWindowState": false,
           "state": "normal",
           "title": "AUDUSD",
-          "url": "file:///C:/Users/RobLeo/AppData/Local/OpenFin/runtime/14.78.48.3/OpenFin/resources/app.asar/assets/frame/standard-frame.html",
+          "url": "/openfin-window-frame",
           "uuid": "reactive-launcher-platform-demo",
           "width": 368,
           "x": 816,
@@ -687,7 +687,7 @@
           "saveWindowState": false,
           "state": "normal",
           "title": "child-window-bd46012c-0619-49c2-9891-f7e0f4ed14af",
-          "url": "file:///C:/Users/RobLeo/AppData/Local/OpenFin/runtime/14.78.48.3/OpenFin/resources/app.asar/assets/frame/standard-frame.html",
+          "url": "/openfin-window-frame",
           "uuid": "reactive-launcher-platform-demo",
           "width": 818,
           "x": 1191,
@@ -785,7 +785,7 @@
           "saveWindowState": false,
           "state": "normal",
           "title": "child-window-c88b5a67-9c4a-47f3-b849-99c6d6ac87d6",
-          "url": "file:///C:/Users/RobLeo/AppData/Local/OpenFin/runtime/14.78.48.3/OpenFin/resources/app.asar/assets/frame/standard-frame.html",
+          "url": "/openfin-window-frame",
           "uuid": "reactive-launcher-platform-demo",
           "width": 1189,
           "x": 818,
