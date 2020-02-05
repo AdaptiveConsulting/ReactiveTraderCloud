@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
 import { RouteWrapper } from 'rt-components'
+import WindowFrame from './components/windowFrame'
 
 export const Router: FC = () => (
   <Switch>
@@ -22,6 +23,7 @@ export const Router: FC = () => (
         </RouteWrapper>
       )}
     />
+
     <Route
       path="/blotter"
       render={routeProps => (
@@ -41,10 +43,14 @@ export const Router: FC = () => (
     <Route
       path="/spot/:symbol"
       render={routeProps => {
-        return <RouteWrapper title={routeProps.match.params['symbol']} windowType="sub">
-          <SpotRoute {...routeProps} />
-        </RouteWrapper>
+        return (
+          <RouteWrapper title={routeProps.match.params['symbol']} windowType="sub">
+            <SpotRoute {...routeProps} />
+          </RouteWrapper>
+        )
       }}
     />
+
+    <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
   </Switch>
 )

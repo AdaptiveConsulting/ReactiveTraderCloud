@@ -47,7 +47,7 @@
     "defaultWindowOptions": {
       "contextMenu": true,
       "frame": false,
-      "stylesheetUrl": "https://web-openfin.adaptivecluster.com/static/css/platform-titlebar.css"
+      "url": "https://web-openfin.adaptivecluster.com/openfin-window-frame"
     }
   },
   "snapshot": {
