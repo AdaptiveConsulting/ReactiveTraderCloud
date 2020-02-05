@@ -23,7 +23,7 @@ export const DropdownMenu: React.FC<DropdownMenuStyleProps> = props => {
     <DropdownMenuContainer>
       <DropdownMenuOption option="option 1" active={active} hover={hover} disabled={disabled} />
       {options.map(option => (
-        <DropdownMenuOption option={option} />
+        <DropdownMenuOption option={option} key={option} />
       ))}
     </DropdownMenuContainer>
   )
