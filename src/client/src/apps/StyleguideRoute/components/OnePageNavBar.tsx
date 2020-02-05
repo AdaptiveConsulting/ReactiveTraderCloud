@@ -32,39 +32,38 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
   const [currentSection, setCurrentSection] = useState('')
   const [isSticky, setIsSticky] = useState(false)
 
-  const handleScroll = useCallback(() => {
-    setScrollTop(window.scrollY)
+  const getCurrentSection = useCallback((): NavSection => {
+    let currentSection = undefined
+    const currentScroll = window.scrollY
 
-    const getCurrentSection = (): NavSection => {
-      let currentSection = undefined
-      const currentScroll = window.scrollY
+    sections.forEach((section: NavSection) => {
+      if (section) {
+        if (section.ref) {
+          if (section.ref.current) {
+            const borderTop = section.ref.current.offsetTop - DEFAULT_OFFSET
+            const borderBottom =
+              section.ref.current.offsetTop + section.ref.current.offsetHeight - DEFAULT_OFFSET
 
-      sections.forEach((section: NavSection) => {
-        if (section) {
-          if (section.ref) {
-            if (section.ref.current) {
-              const borderTop = section.ref.current.offsetTop - DEFAULT_OFFSET
-              const borderBottom =
-                section.ref.current.offsetTop + section.ref.current.offsetHeight - DEFAULT_OFFSET
-
-              if (currentScroll >= borderTop && currentScroll < borderBottom) {
-                currentSection = section
-              }
+            if (currentScroll >= borderTop && currentScroll < borderBottom) {
+              currentSection = section
             }
           }
         }
-      })
+      }
+    })
 
-      return currentSection
-    }
+    return currentSection
+  }, [sections])
 
+  const handleScroll = useCallback(() => {
+    setScrollTop(window.scrollY)
     const currentSectionScrolled: NavSection = getCurrentSection()
 
     if (typeof currentSectionScrolled !== 'undefined') {
       history.pushState(null, '', '#' + currentSectionScrolled.path)
       setCurrentSection(currentSectionScrolled.title)
     }
-  }, [sections])
+  }, [getCurrentSection])
 
   const scrollToSection = (top: number) => {
     window.scrollTo({ top: top, behavior: 'smooth' })
