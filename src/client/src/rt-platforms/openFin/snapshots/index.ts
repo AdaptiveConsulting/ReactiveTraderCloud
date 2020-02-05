@@ -2,11 +2,11 @@ import {
   OPENFIN_SNAPSHOT_CURRENT,
   OPENFIN_SNAPSHOT_DEFAULT_NAME,
   OPENFIN_SNAPSHOT_NAMES,
-  OPENFIN_SNAPSHOTS
-} from "../StorageItems"
-import canned from "./canned.json"
+  OPENFIN_SNAPSHOTS,
+} from '../StorageItems'
+import canned from './canned.json'
 import { finWithPlatform } from '../OpenFinWithPlatform'
-import {union} from "lodash"
+import { union } from 'lodash'
 
 export const resetCurrentSnapshotName = () => {
   setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
@@ -46,20 +46,20 @@ const setSnapshots = (snapshots: any) => {
 // }
 
 export const applySnapshotFromStorage = (snapshotName: string) => {
-  return finWithPlatform.Platform.getCurrent()
-    .then((platform: any) => {
-      const currentSnapshotName = getCurrentSnapshotName()
-      const snapshotNames = getSnapshotNames()
-      const snapshots = getSnapshots()
-      if (snapshotName !== currentSnapshotName && snapshotNames.includes(snapshotName)) {
-        setCurrentSnapshotName(snapshotName)
-        return platform.applySnapshot(snapshots.snapshots[snapshotName], { closeExistingWindows: true })
-      }
-      return false
-    })
+  return finWithPlatform.Platform.getCurrent().then((platform: any) => {
+    const currentSnapshotName = getCurrentSnapshotName()
+    const snapshotNames = getSnapshotNames()
+    const snapshots = getSnapshots()
+    if (snapshotName !== currentSnapshotName && snapshotNames.includes(snapshotName)) {
+      setCurrentSnapshotName(snapshotName)
+      return platform.applySnapshot(snapshots.snapshots[snapshotName], {
+        closeExistingWindows: true,
+      })
+    }
+    return false
+  })
 }
 export const applySnapshotFromStorageOnLoad = async () => {
-
   //TODO: Wait for OpenFin to complete Platform context get/set.
 
   //const platform = await finWithPlatform.Platform.getCurrent()
@@ -73,13 +73,12 @@ export const applySnapshotFromStorageOnLoad = async () => {
 
   // @ts-ignore
   if (!currentSnapshotName || snapshots.version !== canned.version) {
-
     const snapshotNames = getSnapshotNames()
 
     let canned_snapshots_str = JSON.stringify(canned.snapshots)
     canned_snapshots_str = canned_snapshots_str.replace(
-      new RegExp(/\"url\":*\"/, 'g'),
-      `"url": "${window.location.origin}`
+      new RegExp(/"url":*"/, 'g'),
+      `"url": "${window.location.origin}`,
     )
     const canned_snapshots_json = JSON.parse(canned_snapshots_str)
 
@@ -88,8 +87,8 @@ export const applySnapshotFromStorageOnLoad = async () => {
       version: canned.version,
       snapshots: {
         ...(snapshots.version ? snapshots.snapshots : snapshots),
-        ...canned_snapshots_json
-      }
+        ...canned_snapshots_json,
+      },
     })
     setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
     //platformSnapshotName = OPENFIN_SNAPSHOT_DEFAULT_NAME
@@ -103,7 +102,6 @@ export const applySnapshotFromStorageOnLoad = async () => {
   // }
 }
 export const saveSnapshotToStorage = async (newSnapshotName: string) => {
-
   const platform = await finWithPlatform.Platform.getCurrent()
   const snapshot = await platform.getSnapshot()
 
