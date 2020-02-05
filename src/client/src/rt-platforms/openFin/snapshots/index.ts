@@ -74,7 +74,6 @@ export const applySnapshotFromStorageOnLoad = async () => {
   // @ts-ignore
   if (!currentSnapshotName || snapshots.version !== canned.version) {
 
-    console.log('HGELLO!!!!!!!!')
     const snapshotNames = getSnapshotNames()
 
     let canned_snapshots_str = JSON.stringify(canned.snapshots)
