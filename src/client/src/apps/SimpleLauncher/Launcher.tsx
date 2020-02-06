@@ -15,36 +15,36 @@ import {
   LauncherGlobalStyle,
   LogoContainer,
   RootContainer,
-  ThemeSwitchContainer
+  ThemeSwitchContainer,
 } from './styles'
-import { animateCurrentWindowSize, closeCurrentWindow, getCurrentWindowBounds } from './windowUtils';
+import { animateCurrentWindowSize, closeCurrentWindow, getCurrentWindowBounds } from './windowUtils'
 import Measure, { ContentRect } from 'react-measure'
-import { SearchControl, SearchState } from './spotlight';
+import { SearchControl, SearchState } from './spotlight'
 
 library.add(faSignOutAlt)
 
 const LauncherExit: React.FC = () => (
   <ButtonContainer key="exit">
     <LaunchButton onClick={closeCurrentWindow}>
-      <FontAwesomeIcon icon="sign-out-alt"/>
+      <FontAwesomeIcon icon="sign-out-alt" />
       <IconTitle>Exit</IconTitle>
     </LaunchButton>
   </ButtonContainer>
 )
 
-const SearchButton: React.FC<{ onClick: () => void }> = ({onClick}) => (
+const SearchButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   <ButtonContainer>
     <LaunchButton onClick={onClick}>{SearchIcon}</LaunchButton>
   </ButtonContainer>
 )
 
-const DynamicLogo: React.FC<{ isMoving: boolean }> = ({isMoving}) => (
+const DynamicLogo: React.FC<{ isMoving: boolean }> = ({ isMoving }) => (
   <LogoContainer>
-    {
-      isMoving ?
-        <AdaptiveLoader size={23} speed={isMoving ? 0.8 : 0} seperation={1} type="secondary"/> :
-        <LogoIcon width={1.4} height={1.4}/>
-    }
+    {isMoving ? (
+      <AdaptiveLoader size={23} speed={isMoving ? 0.8 : 0} seperation={1} type="secondary" />
+    ) : (
+      <LogoIcon width={1.4} height={1.4} />
+    )}
   </LogoContainer>
 )
 
@@ -55,45 +55,39 @@ export const Launcher: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    getCurrentWindowBounds().then(setInitialBounds)
+    getCurrentWindowBounds()
+      .then(setInitialBounds)
+      .catch(console.error)
   }, [])
 
-  const showSearch = useCallback(
-    () => {
-      if (isSearchVisible) {
-        searchInputRef.current && searchInputRef.current.focus({preventScroll: true})
-      }
-      setIsSearchVisible(true)
-    },
-    [isSearchVisible]
-  );
+  const showSearch = useCallback(() => {
+    if (isSearchVisible) {
+      searchInputRef.current && searchInputRef.current.focus({ preventScroll: true })
+    }
+    setIsSearchVisible(true)
+  }, [isSearchVisible])
 
   // if search is made visible - focus on it
-  useEffect(
-    () => {
-      if (isSearchVisible) {
-        searchInputRef.current && searchInputRef.current.focus({preventScroll: true})
-      }
-    },
-    [isSearchVisible]
-  )
+  useEffect(() => {
+    if (isSearchVisible) {
+      searchInputRef.current && searchInputRef.current.focus({ preventScroll: true })
+    }
+  }, [isSearchVisible])
 
   // hide search if Escape is pressed
-  useEffect(
-    () => {
-      const onKeyDown = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-          setIsSearchVisible(false)
-        }
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsSearchVisible(false)
       }
-      document.addEventListener('keydown', onKeyDown)
-      return () => document.removeEventListener('keydown', onKeyDown)
-    }, []
-  )
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [])
 
   const handleSearchStateChange = useCallback(
     (state: SearchState) => setIsSearchBusy(state.typing || state.loading),
-    []
+    [],
   )
 
   const handleSearchSizeChange = useCallback(
@@ -103,39 +97,34 @@ export const Launcher: React.FC = () => {
       }
       animateCurrentWindowSize({
         ...initialBounds,
-        height: initialBounds.height + (contentRect.bounds ? contentRect.bounds.height : 0)
+        height: initialBounds.height + (contentRect.bounds ? contentRect.bounds.height : 0),
       })
     },
-    [initialBounds]
+    [initialBounds],
   )
 
   return (
     <RootContainer>
-      <LauncherGlobalStyle/>
+      <LauncherGlobalStyle />
       <HorizontalContainer>
-        <DynamicLogo isMoving={isSearchBusy}/>
-        <SearchButton onClick={showSearch}/>
-        <LauncherApps/>
-        <LauncherExit/>
+        <DynamicLogo isMoving={isSearchBusy} />
+        <SearchButton onClick={showSearch} />
+        <LauncherApps />
+        <LauncherExit />
         <ThemeSwitchContainer>
-          <ThemeStorageSwitch/>
+          <ThemeStorageSwitch />
         </ThemeSwitchContainer>
       </HorizontalContainer>
 
-      <Measure
-        bounds
-        onResize={handleSearchSizeChange}>
-        {({measureRef}) => (
+      <Measure bounds onResize={handleSearchSizeChange}>
+        {({ measureRef }) => (
           <div ref={measureRef}>
             {isSearchVisible && (
-              <SearchControl
-                ref={searchInputRef}
-                onStateChange={handleSearchStateChange}/>
+              <SearchControl ref={searchInputRef} onStateChange={handleSearchStateChange} />
             )}
           </div>
         )}
       </Measure>
-
     </RootContainer>
   )
 }
