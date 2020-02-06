@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { ThemeProvider } from 'rt-theme'
-import { Launcher } from './Launcher'
-import { createServiceStub } from './spotlight/transport'
+import { ThemeProvider } from 'styled-components'
+import { Observable, ReplaySubject } from 'rxjs'
+import { Provider as InteropProvider, getProvider } from 'rt-interop'
 import { getPlatformAsync, Platform, PlatformProvider } from 'rt-platforms'
 import { AutobahnConnectionProxy, ServiceStubWithLoadBalancer } from 'rt-system'
+import { themes } from 'rt-theme'
+import { BlotterService, TradesUpdate, PricingService } from 'apps/MainRoute'
+import { Launcher } from './Launcher'
 import {
+  createServiceStub,
   PricingServiceProvider,
   ServiceStubProvider,
   TradeUpdatesProvider,
-} from './spotlight/context'
-import BlotterService, { TradesUpdate } from '../MainRoute/widgets/blotter/blotterService'
-import { Observable, ReplaySubject } from 'rxjs'
-import PricingService from '../MainRoute/widgets/spotTile/epics/pricingService'
+} from './spotlight'
 
 const autobahn = new AutobahnConnectionProxy(
   process.env.REACT_APP_BROKER_HOST || location.hostname,
@@ -28,6 +29,7 @@ type Dependencies = {
 
 export const SimpleLauncher: React.FC = () => {
   const [dependencies, setDependencies] = useState<Dependencies>()
+  const intentsProvider = getProvider()
 
   useEffect(() => {
     ;(async () => {
@@ -60,16 +62,18 @@ export const SimpleLauncher: React.FC = () => {
   }
 
   return (
-    <ThemeProvider>
-      <ServiceStubProvider value={serviceStub}>
-        <TradeUpdatesProvider value={tradeUpdatesStream}>
-          <PricingServiceProvider value={pricingService}>
-            <PlatformProvider value={platform}>
-              <Launcher />
-            </PlatformProvider>
-          </PricingServiceProvider>
-        </TradeUpdatesProvider>
-      </ServiceStubProvider>
+    <ThemeProvider theme={themes.dark}>
+      <InteropProvider value={intentsProvider}>
+        <ServiceStubProvider value={serviceStub}>
+          <TradeUpdatesProvider value={tradeUpdatesStream}>
+            <PricingServiceProvider value={pricingService}>
+              <PlatformProvider value={platform}>
+                <Launcher />
+              </PlatformProvider>
+            </PricingServiceProvider>
+          </TradeUpdatesProvider>
+        </ServiceStubProvider>
+      </InteropProvider>
     </ThemeProvider>
   )
 }
