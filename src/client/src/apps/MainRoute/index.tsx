@@ -1,4 +1,3 @@
-import React from 'react'
 import { APPLICATION_DISCONNECT_MINS } from './store/middleware'
 import MainRoute from './MainRoute'
 import {
@@ -11,15 +10,12 @@ import {
 } from './widgets/blotter'
 import { PricingService, SpotPriceTick as SpotPriceTickType } from './widgets/spotTile'
 
-export default function MainRouteLoader() {
-  return <MainRoute />
-}
+export default MainRoute
 export {
   APPLICATION_DISCONNECT_MINS,
   BlotterService,
   DEALT_CURRENCY,
   filterBlotterTrades,
-  MainRouteLoader as MainRoute,
   PricingService,
   SYMBOL,
 }
