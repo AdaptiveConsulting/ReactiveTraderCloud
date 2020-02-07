@@ -1,16 +1,43 @@
 import { Action } from 'redux'
-import { ofType } from 'redux-observable'
-import { applicationDisconnected } from 'rt-actions'
-import { map, mergeMap, takeUntil } from 'rxjs/operators'
+import { ofType, ActionsObservable } from 'redux-observable'
+import { CONNECTION_ACTION_TYPES } from 'rt-actions'
+import { merge, MonoTypeOperatorFunction } from 'rxjs'
+import { map, mergeMap, takeUntil, filter } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import PricingService from './pricingService'
 import { getHistoricPrices } from './historicPriceService'
+import { DisconnectAction } from 'rt-actions/connectionActions'
 
-const { priceUpdateAction, subscribeToSpotTile, priceHistoryReceived } = SpotTileActions
+const {
+  priceUpdateAction,
+  subscribeToSpotTile,
+  priceHistoryReceived,
+  unsubscribeToSpotTile,
+} = SpotTileActions
+
 type SubscribeToSpotTileAction = ReturnType<typeof subscribeToSpotTile>
+type UnsubscribeToSpotTileAction = ReturnType<typeof unsubscribeToSpotTile>
 
-export const pricingServiceEpic: ApplicationEpic = (action$, state$, { loadBalancedServiceStub }) => {
+const priceUpdatesUntil = (
+  action$: ActionsObservable<Action>,
+  currencyPair: string,
+): MonoTypeOperatorFunction<Action> =>
+  takeUntil(
+    merge(
+      action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)),
+      action$.pipe(
+        ofType<Action, UnsubscribeToSpotTileAction>(TILE_ACTION_TYPES.SPOT_TILE_UNSUBSCRIBE),
+        filter(({ payload }) => payload === currencyPair),
+      ),
+    ),
+  )
+
+export const pricingServiceEpic: ApplicationEpic = (
+  action$,
+  _state$,
+  { loadBalancedServiceStub },
+) => {
   const pricingService = new PricingService(loadBalancedServiceStub)
 
   return action$.pipe(
@@ -20,21 +47,22 @@ export const pricingServiceEpic: ApplicationEpic = (action$, state$, { loadBalan
         .getSpotPriceStream({
           symbol: action.payload,
         })
-        .pipe(
-          map(priceUpdateAction),
-          takeUntil(action$.pipe(applicationDisconnected)),
-        ),
+        .pipe(map(priceUpdateAction), priceUpdatesUntil(action$, action.payload)),
     ),
   )
 }
 
-export const pricingHistoryEpic: ApplicationEpic = (action$, state$, { loadBalancedServiceStub }) => {
+export const pricingHistoryEpic: ApplicationEpic = (
+  action$,
+  _state$,
+  { loadBalancedServiceStub },
+) => {
   return action$.pipe(
     ofType<Action, SubscribeToSpotTileAction>(TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE),
     mergeMap((action: SubscribeToSpotTileAction) =>
       getHistoricPrices(loadBalancedServiceStub, action.payload).pipe(
         map(priceData => priceHistoryReceived(priceData, action.payload)),
-        takeUntil(action$.pipe(applicationDisconnected)),
+        priceUpdatesUntil(action$, action.payload),
       ),
     ),
   )
