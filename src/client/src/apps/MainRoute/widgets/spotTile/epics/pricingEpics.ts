@@ -19,7 +19,7 @@ const {
 type SubscribeToSpotTileAction = ReturnType<typeof subscribeToSpotTile>
 type UnsubscribeToSpotTileAction = ReturnType<typeof unsubscribeToSpotTile>
 
-const priceUpdatesUntil = (
+const takePriceUpdatesUntil = (
   action$: ActionsObservable<Action>,
   currencyPair: string,
 ): MonoTypeOperatorFunction<Action> =>
@@ -47,7 +47,7 @@ export const pricingServiceEpic: ApplicationEpic = (
         .getSpotPriceStream({
           symbol: action.payload,
         })
-        .pipe(map(priceUpdateAction), priceUpdatesUntil(action$, action.payload)),
+        .pipe(map(priceUpdateAction), takePriceUpdatesUntil(action$, action.payload)),
     ),
   )
 }
@@ -62,7 +62,7 @@ export const pricingHistoryEpic: ApplicationEpic = (
     mergeMap((action: SubscribeToSpotTileAction) =>
       getHistoricPrices(loadBalancedServiceStub, action.payload).pipe(
         map(priceData => priceHistoryReceived(priceData, action.payload)),
-        priceUpdatesUntil(action$, action.payload),
+        takePriceUpdatesUntil(action$, action.payload),
       ),
     ),
   )
