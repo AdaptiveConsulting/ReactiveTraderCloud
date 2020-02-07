@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { faSignOutAlt, faWindowMinimize } from '@fortawesome/free-solid-svg-icons'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
 import { AdaptiveLoader, LogoIcon } from 'rt-components'
@@ -16,8 +16,14 @@ import {
   LogoContainer,
   RootContainer,
   ThemeSwitchContainer,
+  MinExitContainer,
 } from './styles'
-import { animateCurrentWindowSize, closeCurrentWindow, getCurrentWindowBounds } from './windowUtils'
+import {
+  animateCurrentWindowSize,
+  closeCurrentWindow,
+  getCurrentWindowBounds,
+  minimiseCurrentWindow,
+} from './windowUtils'
 import Measure, { ContentRect } from 'react-measure'
 import { SearchControl, SearchState } from './spotlight'
 
@@ -46,6 +52,14 @@ const DynamicLogo: React.FC<{ isMoving: boolean }> = ({ isMoving }) => (
       <LogoIcon width={1.4} height={1.4} />
     )}
   </LogoContainer>
+)
+
+const LauncherMinimise: React.FC = () => (
+  <ButtonContainer key="minimise">
+    <LaunchButton onClick={minimiseCurrentWindow}>
+      <FontAwesomeIcon icon={faWindowMinimize} />
+    </LaunchButton>
+  </ButtonContainer>
 )
 
 export const Launcher: React.FC = () => {
@@ -114,6 +128,9 @@ export const Launcher: React.FC = () => {
         <ThemeSwitchContainer>
           <ThemeStorageSwitch />
         </ThemeSwitchContainer>
+        <MinExitContainer>
+          <LauncherMinimise />
+        </MinExitContainer>
       </HorizontalContainer>
 
       <Measure bounds onResize={handleSearchSizeChange}>
