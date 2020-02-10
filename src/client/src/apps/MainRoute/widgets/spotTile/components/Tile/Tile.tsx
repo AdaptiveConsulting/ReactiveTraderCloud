@@ -80,8 +80,10 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       currencyPair,
       executeTrade,
       rfq,
-      spotTileData: { notional, rfqState },
+      spotTileData: { rfqState },
     } = this.props
+    const notional = this.props.spotTileData.notional || getDefaultNotionalValue(currencyPair)
+
     const { isRfqStateReceived } = getConstsFromRfqState(rfqState)
     if (typeof notional === 'undefined') {
       console.error(`Error executing trade with no notional`)
