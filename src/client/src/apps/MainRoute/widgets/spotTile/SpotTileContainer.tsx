@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
+import { Dispatch, compose } from 'redux'
 import memoize from 'lodash/memoize'
 import { Loadable } from 'rt-components'
 import { usePlatform } from 'rt-platforms'
@@ -31,6 +31,7 @@ const mapDispatchToProps = memoize(
   (dispatch: Dispatch, ownProps: SpotTileContainerOwnProps) => ({
     onCurrencyPairChanged: (currencyPair: string) =>
       dispatch(SpotTileActions.subscribeToSpotTile(currencyPair)),
+    onUnmount: compose(dispatch, SpotTileActions.unsubscribeToSpotTile),
     executeTrade: (tradeRequestObj: ExecuteTradeRequest) =>
       dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
     onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id)),
@@ -76,6 +77,7 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   id,
   tornOff,
   onCurrencyPairChanged,
+  onUnmount,
   ...props
 }) => {
   const { allowTearOff } = usePlatform()
@@ -83,7 +85,11 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   // watch currency pair changes when component is mounted
   useEffect(() => {
     onCurrencyPairChanged(id)
-  }, [id, onCurrencyPairChanged])
+
+    return () => {
+      onUnmount(id)
+    }
+  }, [id, onCurrencyPairChanged, onUnmount])
 
   return (
     <Loadable

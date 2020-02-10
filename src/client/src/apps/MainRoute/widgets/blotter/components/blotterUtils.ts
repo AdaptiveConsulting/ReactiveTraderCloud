@@ -196,10 +196,10 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
   },
 ]
 
-const columnKeys: (string)[] = columnDefinitions
+const columnKeys: string[] = columnDefinitions
   .filter(c => c.includeInCSVExport)
   .map(c => c.colId)
-  .filter(x => typeof x !== 'undefined') as (string)[]
+  .filter(x => typeof x !== 'undefined') as string[]
 
 export const csvExportSettings: CsvExportParams = {
   fileName: `RT-Blotter.csv`,
