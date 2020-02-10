@@ -1,11 +1,6 @@
 import React from 'react'
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import {
-  createTradeRequest,
-  ExecuteTradeRequest,
-  SpotTileDataWithNotional,
-  TradeRequest,
-} from '../../model'
+import { createTradeRequest, ExecuteTradeRequest, SpotTileData, TradeRequest } from '../../model'
 import SpotTile from '../SpotTile'
 import { AnalyticsTile } from '../analyticsTile/index'
 import { TileView } from '../../../workspace/workspaceHeader'
@@ -22,7 +17,7 @@ import { CurrencyPairNotional } from '../../model/spotTileData'
 
 export interface TileProps {
   currencyPair: CurrencyPair
-  spotTileData: SpotTileDataWithNotional
+  spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
   setTradingMode: (tradingMode: TradingMode) => void
@@ -67,10 +62,12 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   // be in the RFQ range.
   componentDidMount() {
     const {
-      spotTileData: { notional, rfqState },
+      spotTileData: { rfqState },
       setTradingMode,
       currencyPair: { symbol },
     } = this.props
+    const notional =
+      this.props.spotTileData.notional || getDefaultNotionalValue(this.props.currencyPair)
     const { isRfqStateNone } = getConstsFromRfqState(rfqState)
 
     if (isRfqStateNone && isValueInRfqRange(notional)) {

@@ -2,7 +2,7 @@ import numeral from 'numeral'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
 import { TileProps, TileState } from './Tile'
 import { getConstsFromRfqState } from '../../model/spotTileUtils'
-import { SpotTileDataWithNotional } from '../../model'
+import { SpotTileData } from '../../model'
 
 // Constants
 export const NUMERAL_FORMAT = '0,000,000[.]00'
@@ -66,14 +66,15 @@ export const getDerivedStateFromUserInput = ({
   currencyPair,
 }: {
   prevState: TileState
-  spotTileData: SpotTileDataWithNotional
+  spotTileData: SpotTileData
   actions: {
     setTradingMode: TileProps['setTradingMode']
   }
   currencyPair: CurrencyPair
 }): TileState => {
   const { symbol } = currencyPair
-  const { rfqState, notional } = spotTileData
+  const { rfqState } = spotTileData
+  const notional = spotTileData.notional || getDefaultNotionalValue(currencyPair)
 
   const defaultNextState: TileState = {
     ...prevState,

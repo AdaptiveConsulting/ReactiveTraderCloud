@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
-import { getDefaultNotionalValue } from './components/Tile/TileBusinessLogic'
-import { SpotTileData, SpotTileDataWithNotional } from './model'
+import { SpotTileData } from './model'
 import { CurrencyPair } from 'rt-types'
 import { PriceMovementTypes } from './model/priceMovementTypes'
 
@@ -31,31 +30,7 @@ const getCurrencyPair = (
 ): CurrencyPair | undefined =>
   typeof currencyPairId === 'undefined' ? undefined : state.currencyPairs[currencyPairId]
 
-const selectCurrencyPair = createSelector(
-  [getCurrencyPair],
-  currencyPair => currencyPair,
-)
-
-function getSpotTileDataWithNotional(
-  spotTileData: SpotTileData | undefined,
-  currencyPair: CurrencyPair | undefined,
-): SpotTileDataWithNotional {
-  // TODO: instead of creating items in the selector, consider creating them in the
-  // reducer (when tiles are created, which in turn happens when reference data is created)
-  if (!spotTileData) {
-    spotTileData = DEFAULT_TILE_DATA
-  }
-
-  const validNotional =
-    typeof spotTileData.notional === 'undefined'
-      ? getDefaultNotionalValue(currencyPair)
-      : spotTileData.notional
-
-  return {
-    ...spotTileData,
-    notional: validNotional,
-  }
-}
+const selectCurrencyPair = createSelector([getCurrencyPair], currencyPair => currencyPair)
 
 const getSpotTileData = (
   state: GlobalState,
@@ -64,27 +39,20 @@ const getSpotTileData = (
   typeof currencyPairId === 'undefined' ? undefined : state.spotTilesData[currencyPairId]
 
 const selectSpotTileData = createSelector(
-  [getSpotTileData, getCurrencyPair],
-  (spotTileData: SpotTileData | undefined, currencyPair: CurrencyPair | undefined) =>
-    getSpotTileDataWithNotional(spotTileData, currencyPair),
+  getSpotTileData,
+  (spotTileData: SpotTileData | undefined) => spotTileData || DEFAULT_TILE_DATA,
 )
 
 const getPricingStatus = (state: GlobalState) =>
   state.compositeStatusService &&
   state.compositeStatusService.pricing &&
   state.compositeStatusService.pricing.connectionStatus
-const selectPricingStatus = createSelector(
-  [getPricingStatus],
-  serviceStatus => serviceStatus,
-)
+const selectPricingStatus = createSelector([getPricingStatus], serviceStatus => serviceStatus)
 
 const getExecutionStatus = (state: GlobalState) =>
   state.compositeStatusService &&
   state.compositeStatusService.execution &&
   state.compositeStatusService.execution.connectionStatus
-const selectExecutionStatus = createSelector(
-  [getExecutionStatus],
-  serviceStatus => serviceStatus,
-)
+const selectExecutionStatus = createSelector([getExecutionStatus], serviceStatus => serviceStatus)
 
 export { selectCurrencyPair, selectSpotTileData, selectExecutionStatus, selectPricingStatus }
