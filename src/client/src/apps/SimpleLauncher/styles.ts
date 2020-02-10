@@ -79,7 +79,10 @@ export const LogoContainer = styled(IconContainer)`
 export const ExitButton = styled.button`
   width: 75%;
   border-bottom: 1px solid;
-  border-color: #d8d8d8;
+  border-color: #8c8c8c;
+  padding-top: 3px;
 `
 
-export const MinimiseButton = styled.button``
+export const MinimiseButton = styled.button`
+  padding-bottom: 3px;
+`
