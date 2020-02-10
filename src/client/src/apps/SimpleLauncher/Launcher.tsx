@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import Measure, { ContentRect } from 'react-measure'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { AdaptiveLoader, LogoIcon } from 'rt-components'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
-import { AdaptiveLoader, LogoIcon } from 'rt-components'
-import { ThemeStorageSwitch } from 'rt-theme'
 import { Bounds } from 'openfin/_v2/shapes'
 import SearchIcon from './icons/searchIcon'
 import {
@@ -15,10 +15,8 @@ import {
   LauncherGlobalStyle,
   LogoContainer,
   RootContainer,
-  ThemeSwitchContainer,
 } from './styles'
 import { animateCurrentWindowSize, closeCurrentWindow, getCurrentWindowBounds } from './windowUtils'
-import Measure, { ContentRect } from 'react-measure'
 import { SearchControl, SearchState } from './spotlight'
 
 library.add(faSignOutAlt)
@@ -111,9 +109,6 @@ export const Launcher: React.FC = () => {
         <SearchButton onClick={showSearch} />
         <LauncherApps />
         <LauncherExit />
-        <ThemeSwitchContainer>
-          <ThemeStorageSwitch />
-        </ThemeSwitchContainer>
       </HorizontalContainer>
 
       <Measure bounds onResize={handleSearchSizeChange}>

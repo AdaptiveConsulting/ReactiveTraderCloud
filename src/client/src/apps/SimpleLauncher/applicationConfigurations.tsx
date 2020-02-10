@@ -1,11 +1,11 @@
+import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
+import { getEnvironment } from 'rt-util'
 import {
   excelIcon,
   limitCheckerIcon,
   reactiveAnalyticsIcon,
   reactiveTraderIcon,
 } from './icons/index'
-import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
-import { getEnvironment } from 'rt-util/getEnvironment'
 
 // Safer than location.origin due to browser support
 const ORIGIN = `${location.protocol}//${location.host}`
