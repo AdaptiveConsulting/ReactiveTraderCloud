@@ -56,16 +56,19 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
 
     const spotDate = dateFomatter(price.valueDate, false, localZoneName)
     const date = spotDate && `SPT (${spotDate})`
+
     const {
       isRfqStateExpired,
       isRfqStateCanRequest,
       isRfqStateNone,
       isRfqStateReceived,
     } = getConstsFromRfqState(rfqState)
+
     const showResetButton =
       !isTradeExecutionInFlight &&
       getDefaultNotionalValue(currencyPair) !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
+
     const showTimer = isRfqStateReceived && rfqTimeout
     const isTimerOn = Boolean(showTimer) && rfqTimeout !== null && rfqReceivedTime !== null
     const priceData = (isRfqStateReceived || isRfqStateExpired) && rfqPrice ? rfqPrice : price

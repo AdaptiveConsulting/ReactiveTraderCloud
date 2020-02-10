@@ -4,7 +4,7 @@ import { ExecuteTradeRequest, SpotTileDataWithNotional } from '../model'
 import NotificationContainer from './notifications'
 import Tile from './Tile'
 import TileControls from './TileControls'
-import { TileViews } from '../../workspace/workspaceHeader'
+import { TileView } from '../../workspace/workspaceHeader'
 import { RfqActions, TradingMode } from './types'
 import { CurrencyPairNotional } from '../model/spotTileData'
 
@@ -18,7 +18,7 @@ interface Props {
   onNotificationDismissed: () => void
   displayCurrencyChart?: () => void
   setTradingMode: (tradingMode: TradingMode) => void
-  tileView?: TileViews
+  tileView?: TileView
   rfq: RfqActions
   updateNotional: (currencyPairNotional: CurrencyPairNotional) => void
 }

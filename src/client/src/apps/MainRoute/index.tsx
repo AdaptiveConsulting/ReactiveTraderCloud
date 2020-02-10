@@ -1,13 +1,24 @@
-import React from 'react'
-import { ThemeProvider } from 'rt-theme'
 import { APPLICATION_DISCONNECT_MINS } from './store/middleware'
 import MainRoute from './MainRoute'
+import {
+  BlotterFilters as BlotterFiltersType,
+  BlotterService,
+  DEALT_CURRENCY,
+  filterBlotterTrades,
+  SYMBOL,
+  TradesUpdate as TradesUpdateType,
+} from './widgets/blotter'
+import { PricingService, SpotPriceTick as SpotPriceTickType } from './widgets/spotTile'
 
-export default function MainRouteLoader() {
-  return (
-    <ThemeProvider>
-      <MainRoute />
-    </ThemeProvider>
-  )
+export default MainRoute
+export {
+  APPLICATION_DISCONNECT_MINS,
+  BlotterService,
+  DEALT_CURRENCY,
+  filterBlotterTrades,
+  PricingService,
+  SYMBOL,
 }
-export { MainRouteLoader as MainRoute, APPLICATION_DISCONNECT_MINS }
+export type TradesUpdate = TradesUpdateType
+export type BlotterFilters = BlotterFiltersType
+export type SpotPriceTick = SpotPriceTickType

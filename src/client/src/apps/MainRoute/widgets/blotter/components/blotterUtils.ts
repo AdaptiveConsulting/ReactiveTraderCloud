@@ -1,5 +1,5 @@
 import { ColDef, CsvExportParams, ProcessCellForExportParams } from 'ag-grid-community'
-import { DateTime } from 'luxon'
+import { DateTime, Info } from 'luxon'
 import { Trade, TradeStatus } from 'rt-types'
 import SetFilter from './filters/SetFilter'
 import numeral from 'numeral'
@@ -19,7 +19,9 @@ import {
 } from '../blotterFields'
 
 function UtcFormatDate(date: Date) {
-  return DateTime.fromJSDate(date, { zone: 'utc' }).toFormat('dd-MMM-yyyy')
+  const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
+
+  return DateTime.fromJSDate(date, { zone: localZoneName }).toFormat('dd-MMM-yyyy')
 }
 
 const notionalRenderer = (value: any) => {
@@ -194,10 +196,10 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
   },
 ]
 
-const columnKeys: (string)[] = columnDefinitions
+const columnKeys: string[] = columnDefinitions
   .filter(c => c.includeInCSVExport)
   .map(c => c.colId)
-  .filter(x => typeof x !== 'undefined') as (string)[]
+  .filter(x => typeof x !== 'undefined') as string[]
 
 export const csvExportSettings: CsvExportParams = {
   fileName: `RT-Blotter.csv`,

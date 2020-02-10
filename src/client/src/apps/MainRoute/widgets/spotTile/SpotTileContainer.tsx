@@ -14,14 +14,14 @@ import {
   selectPricingStatus,
   selectSpotTileData,
 } from './selectors'
-import { TileViews } from '../workspace/workspaceHeader'
+import { TileView } from '../workspace/workspaceHeader'
 import { RfqCancel, RfqExpired, RfqReject, RfqRequest, RfqRequote } from './model/rfqRequest'
 import { TradingMode } from './components/types'
 import { CurrencyPairNotional } from './model/spotTileData'
 
 export interface SpotTileContainerOwnProps {
   id: string
-  tileView: TileViews
+  tileView: TileView
   onPopoutClick?: (x: number, y: number) => void
   tornOff?: boolean
   tearable?: boolean

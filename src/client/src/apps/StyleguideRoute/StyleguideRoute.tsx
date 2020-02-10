@@ -1,8 +1,7 @@
-import React from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import React, { createRef } from 'react'
 import { styled, ThemeProvider } from 'rt-theme'
-
 import FloatingTools from './components/FloatingsTools'
+import OnePageNavBar from './components/OnePageNavBar'
 import { Block, SectionBlock } from './styled'
 
 import Atoms from './sections/Atoms'
@@ -11,39 +10,43 @@ import CoreBranding from './sections/CoreBranding'
 import FontFamilies from './sections/FontFamilies'
 import Introduction from './sections/Introduction'
 
-const sections: Array<{ path: string; Section: React.ComponentType }> = [
-  { path: 'introduction', Section: Introduction },
-  { path: 'color-spectrum', Section: ColorSpectrum },
-  { path: 'core-branding', Section: CoreBranding },
-  { path: 'font-families', Section: FontFamilies },
-  { path: 'atoms', Section: Atoms },
-  { path: 'ending', Section: () => <SectionBlock mh={5} colorScheme="inverted" /> },
+const sections: Array<{ path: string; Section: React.ComponentType; title: string }> = [
+  { path: 'color-spectrum', Section: ColorSpectrum, title: 'Colour' },
+  { path: 'font-families', Section: FontFamilies, title: 'Typography' },
+  { path: 'core-branding', Section: CoreBranding, title: 'Iconography' },
+  { path: 'atoms-molecules', Section: Atoms, title: 'Atoms' },
 ]
 
-const StyleguideRoute: React.FC = () => (
-  <ThemeProvider>
-    <Root>
-      <FloatingTools />
-      <BrowserRouter>
-        <Switch>
-          {sections.map(({ path, Section }) => (
-            <Route key={path} path={`/styleguide/${path}`}>
-              <Section />
-            </Route>
-          ))}
+const StyleguideRoute: React.FC = () => {
+  const refs: React.RefObject<HTMLDivElement>[] = [...Array(sections.length)].map(() => createRef())
+  const navSections = sections.map((section, index) => ({ ...section, ref: refs[index] }))
 
-          <Route>
-            <React.Fragment>
-              {sections.map(({ path, Section }) => (
-                <Section key={path} />
-              ))}
-            </React.Fragment>
-          </Route>
-        </Switch>
-      </BrowserRouter>
-    </Root>
-  </ThemeProvider>
-)
+  return (
+    <ThemeProvider>
+      <Root>
+        <FloatingTools />
+        <Introduction key="introduction" />
+        <OnePageNavBar sections={navSections} />
+        <React.Fragment>
+          {navSections.map(({ path, Section, ref }) => (
+            <ScrollableContainer id={path} key={path} ref={ref}>
+              <Section />
+            </ScrollableContainer>
+          ))}
+        </React.Fragment>
+        <SectionBlock mh={5} colorScheme="inverted" />
+      </Root>
+    </ThemeProvider>
+  )
+}
+
+const ScrollableContainer = styled.div`
+  scroll-margin: 76px;
+
+  @media (min-width: 768px) {
+    scroll-margin: 126px;
+  }
+`
 
 export const Root = styled(Block)`
   min-height: 100%;

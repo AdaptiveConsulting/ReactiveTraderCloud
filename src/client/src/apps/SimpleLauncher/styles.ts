@@ -1,6 +1,6 @@
-import { styled } from 'rt-theme';
-import { rules } from 'rt-styleguide';
-import { createGlobalStyle } from 'styled-components';
+import { styled } from 'rt-theme'
+import { rules } from 'rt-styleguide'
+import { createGlobalStyle } from 'styled-components'
 
 export const LauncherGlobalStyle = createGlobalStyle`
 :root, body {
@@ -57,9 +57,6 @@ export const IconContainer = styled.div`
 
 export const ButtonContainer = styled(IconContainer)`
   ${rules.appRegionNoDrag};
-`
-export const ThemeSwitchContainer = styled(ButtonContainer)`
-  width: 35%;
 `
 
 export const LogoContainer = styled(IconContainer)`

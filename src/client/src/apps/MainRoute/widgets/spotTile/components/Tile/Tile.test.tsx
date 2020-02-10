@@ -3,7 +3,7 @@ import { renderWithProviders } from '../../../../../../../__tests__/helpers'
 import Tile, { TileProps, TileState } from './Tile'
 import { currencyPair } from '../test-resources/spotTileProps'
 import { ServiceConnectionStatus } from 'rt-types'
-import { TileViews } from '../../../workspace/workspaceHeader'
+import { TileView } from '../../../workspace/workspaceHeader'
 import { getDerivedStateFromUserInput } from './TileBusinessLogic'
 import { TradingMode } from '../types'
 import { PriceMovementTypes } from '../../model/priceMovementTypes'
@@ -56,7 +56,7 @@ const defaultTileProps: TileProps = {
     reset: () => {},
   },
   spotTileData: defaultParams.spotTileData,
-  tileView: 'Normal' as TileViews,
+  tileView: 'Normal' as TileView,
   updateNotional: () => {},
 }
 

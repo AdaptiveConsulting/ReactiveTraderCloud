@@ -1,8 +1,7 @@
 import React from 'react'
 import { styled } from 'rt-theme'
-
 import designTownPNGURL from '../assets/design-town.png'
-
+import Logo from '../../MainRoute/components/app-header/Logo'
 import { H1, H3 } from '../elements'
 import { Paragraph, SectionBlock } from '../styled'
 
@@ -11,22 +10,15 @@ export const Introduction: React.FC = props => (
     <SectionBlock colorScheme="secondary" {...props}>
       <Flex>
         <Content>
-          <H3>Design Systems</H3>
+          <Logo />
+          <H3Intro>Design Systems</H3Intro>
           <H1>Adaptive UI Library</H1>
-          <Paragraph>A quicker, more consistent and collaborative way to design and build complex UI's.</Paragraph>
+          <Paragraph>
+            A quicker, more consistent and collaborative way to design and build complex UI's.
+          </Paragraph>
         </Content>
         <Background />
       </Flex>
-    </SectionBlock>
-    <SectionBlock mh={0} py={0}>
-      <Paragraph>
-        <i>
-          <strong>Notes & Instructions</strong>: Build up a consistent color profile for your application by selecting a
-          few base colors to work from. The collection below is setup in such a way that it will generate the varying
-          color scales for you. From this spectrum you should color pick and define the final color values to be used in
-          your user interface.
-        </i>
-      </Paragraph>
     </SectionBlock>
     <div>
       <SectionBlock colorScheme="secondary" mh={0.125 / 5} py={0} />
@@ -55,6 +47,10 @@ const Background = styled.div`
   background-image: url(${designTownPNGURL});
   background-position: center left;
   background-size: contain;
+`
+
+export const H3Intro = styled(H3)`
+  margin: 0.5rem 0 1rem 0;
 `
 
 export default Introduction

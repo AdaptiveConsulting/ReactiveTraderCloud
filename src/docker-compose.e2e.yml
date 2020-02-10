@@ -11,7 +11,7 @@ services:
     image: ${DOCKER_USER}/e2ebase:${BUILD_VERSION}
     hostname: e2e
     container_name: e2e
-    command: 'npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx'
+    command: 'npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx/ALL/Normal'
     depends_on:
       - e2ebase
       - client

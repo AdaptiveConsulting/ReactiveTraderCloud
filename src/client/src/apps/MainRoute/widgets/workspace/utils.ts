@@ -1,9 +1,9 @@
 import { ExternalWindowProps } from './selectors'
-import { TileViews } from './workspaceHeader'
+import { TileView } from './workspaceHeader'
 
 export const appendTileViewToUrl: (
   externalWindowProps: ExternalWindowProps,
-  tileView: TileViews,
+  tileView: TileView,
 ) => ExternalWindowProps = (externalWindowProps, tileView) => {
   const { config } = externalWindowProps
   const url = config.url + '?tileView=' + tileView

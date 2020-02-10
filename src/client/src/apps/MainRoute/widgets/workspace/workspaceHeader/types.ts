@@ -1,4 +1,4 @@
-export enum TileViews {
+export enum TileView {
   Normal = 'Normal',
   Analytics = 'Analytics',
 }
