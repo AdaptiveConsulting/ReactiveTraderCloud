@@ -63,7 +63,11 @@ export const ThemeSwitchContainer = styled(ButtonContainer)`
 `
 
 export const MinExitContainer = styled(ButtonContainer)`
-  width: 35%;
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `
 
 export const LogoContainer = styled(IconContainer)`
@@ -74,3 +78,11 @@ export const LogoContainer = styled(IconContainer)`
   }
   ${rules.appRegionDrag};
 `
+
+export const ExitButton = styled.button`
+  width: 75%;
+  border-bottom: 1px solid;
+  border-color: #d8d8d8;
+`
+
+export const MinimiseButton = styled.button``

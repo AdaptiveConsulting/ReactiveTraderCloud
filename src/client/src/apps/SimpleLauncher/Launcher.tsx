@@ -1,22 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt, faWindowMinimize } from '@fortawesome/free-solid-svg-icons'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
 import { AdaptiveLoader, LogoIcon } from 'rt-components'
-import { ThemeStorageSwitch } from 'rt-theme'
 import { Bounds } from 'openfin/_v2/shapes'
 import SearchIcon from './icons/searchIcon'
 import {
   ButtonContainer,
   HorizontalContainer,
-  IconTitle,
   LauncherGlobalStyle,
   LogoContainer,
   RootContainer,
-  ThemeSwitchContainer,
   MinExitContainer,
+  ExitButton,
+  MinimiseButton,
 } from './styles'
 import {
   animateCurrentWindowSize,
@@ -26,16 +22,13 @@ import {
 } from './windowUtils'
 import Measure, { ContentRect } from 'react-measure'
 import { SearchControl, SearchState } from './spotlight'
+import { exitNormalIcon, minimiseNormalIcon } from './icons'
 
-library.add(faSignOutAlt)
-
-const LauncherExit: React.FC = () => (
-  <ButtonContainer key="exit">
-    <LaunchButton onClick={closeCurrentWindow}>
-      <FontAwesomeIcon icon="sign-out-alt" />
-      <IconTitle>Exit</IconTitle>
-    </LaunchButton>
-  </ButtonContainer>
+const LauncherMinimiseAndExit: React.FC = () => (
+  <>
+    <ExitButton onClick={closeCurrentWindow}>{exitNormalIcon}</ExitButton>
+    <MinimiseButton onClick={minimiseCurrentWindow}>{minimiseNormalIcon}</MinimiseButton>
+  </>
 )
 
 const SearchButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
@@ -52,14 +45,6 @@ const DynamicLogo: React.FC<{ isMoving: boolean }> = ({ isMoving }) => (
       <LogoIcon width={1.4} height={1.4} />
     )}
   </LogoContainer>
-)
-
-const LauncherMinimise: React.FC = () => (
-  <ButtonContainer key="minimise">
-    <LaunchButton onClick={minimiseCurrentWindow}>
-      <FontAwesomeIcon icon={faWindowMinimize} />
-    </LaunchButton>
-  </ButtonContainer>
 )
 
 export const Launcher: React.FC = () => {
@@ -124,12 +109,8 @@ export const Launcher: React.FC = () => {
         <DynamicLogo isMoving={isSearchBusy} />
         <SearchButton onClick={showSearch} />
         <LauncherApps />
-        <LauncherExit />
-        <ThemeSwitchContainer>
-          <ThemeStorageSwitch />
-        </ThemeSwitchContainer>
         <MinExitContainer>
-          <LauncherMinimise />
+          <LauncherMinimiseAndExit />
         </MinExitContainer>
       </HorizontalContainer>
 
