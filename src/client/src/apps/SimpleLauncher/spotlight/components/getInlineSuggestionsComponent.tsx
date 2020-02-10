@@ -10,7 +10,7 @@ import {
   isTradeIntent,
   mapIntent,
 } from 'rt-interop'
-import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from '../../../MainRoute/widgets/blotter'
+import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from 'apps/MainRoute'
 import { Intent, Suggestion } from './styles'
 import { InlineBlotter } from './InlineBlotter'
 import { InlineQuote } from './InlineQuote'

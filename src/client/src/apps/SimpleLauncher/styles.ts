@@ -58,9 +58,6 @@ export const IconContainer = styled.div`
 export const ButtonContainer = styled(IconContainer)`
   ${rules.appRegionNoDrag};
 `
-export const ThemeSwitchContainer = styled(ButtonContainer)`
-  width: 35%;
-`
 
 export const MinExitContainer = styled(ButtonContainer)`
   width: 30%;

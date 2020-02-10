@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
 import { getSymphonyPlatform } from 'rt-platforms'
-import { Provider as InteropProvider, getProvider } from 'rt-interop'
 import { getEnvironment } from 'rt-util/getEnvironment'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
@@ -36,7 +35,6 @@ const appTitles = {
 
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
-  const intentsProvider = getProvider()
 
   const env = getEnvironment()
   document.title = `${appTitles[pathname] || document.title} ${envTitles[env || 'unknown']}`
@@ -47,18 +45,16 @@ async function init() {
   } else {
     ReactDOM.render(
       <React.Fragment>
-        <InteropProvider value={intentsProvider}>
-          <GlobalStyle />
-          <BrowserRouter>
-            <Suspense fallback={<div />}>
-              <Switch>
-                <Route path={APP_PATHS.LAUNCHER} render={() => <SimpleLauncher />} />
-                <Route path={APP_PATHS.STYLEGUIDE} render={() => <StyleguideRoute />} />
-                <Route render={() => <MainRoute />} />
-              </Switch>
-            </Suspense>
-          </BrowserRouter>
-        </InteropProvider>
+        <GlobalStyle />
+        <BrowserRouter>
+          <Suspense fallback={<div />}>
+            <Switch>
+              <Route path={APP_PATHS.LAUNCHER} render={() => <SimpleLauncher />} />
+              <Route path={APP_PATHS.STYLEGUIDE} render={() => <StyleguideRoute />} />
+              <Route render={() => <MainRoute />} />
+            </Switch>
+          </Suspense>
+        </BrowserRouter>
       </React.Fragment>,
       document.getElementById('root'),
     )
