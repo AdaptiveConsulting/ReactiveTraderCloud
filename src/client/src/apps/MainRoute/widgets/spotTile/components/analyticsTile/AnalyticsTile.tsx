@@ -29,11 +29,11 @@ const AnalyticsWrapperWithPlatform: FC = props => {
 }
 class AnalyticsTile extends React.PureComponent<SpotTileProps> {
   private handleRfqRejected = () => this.props.rfq.reject({ currencyPair: this.props.currencyPair })
+
   render() {
     const {
       currencyPair,
       spotTileData: {
-        notional,
         isTradeExecutionInFlight,
         price,
         historicPrices,
@@ -53,7 +53,8 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       displayCurrencyChart,
       rfq,
     } = this.props
-
+    const defaultNotional = getDefaultNotionalValue(currencyPair)
+    const notional = this.props.spotTileData.notional || defaultNotional
     const spotDate = dateFomatter(price.valueDate, false, localZoneName)
     const date = spotDate && `SPT (${spotDate})`
     const {
@@ -64,7 +65,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
     } = getConstsFromRfqState(rfqState)
     const showResetButton =
       !isTradeExecutionInFlight &&
-      getDefaultNotionalValue(currencyPair) !== notional &&
+      defaultNotional !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
     const showTimer = isRfqStateReceived && rfqTimeout
     const isTimerOn = Boolean(showTimer) && rfqTimeout !== null && rfqReceivedTime !== null

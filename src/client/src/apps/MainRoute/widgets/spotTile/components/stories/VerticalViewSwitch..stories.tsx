@@ -4,7 +4,7 @@ import { boolean, select } from '@storybook/addon-knobs'
 import { Story, Centered, analyticsTileStories } from './Initialise.stories'
 import { currencyPair, spotTileDataWithRfq, switchOptions } from '../test-resources/spotTileProps'
 import { AnalyticsTile } from '../analyticsTile'
-import { SpotTileDataWithNotional } from '../../model'
+import { SpotTileData } from '../../model'
 import { ServiceConnectionStatus } from 'rt-types'
 
 const executeTrade = action('executeTrade')
@@ -168,7 +168,7 @@ analyticsTileStories.add('RFQ Switch', () => {
                 ...spotTileDataWithRfq,
                 rfqState: rfqStatesSwitch,
                 isTradeExecutionInFlight: boolean('Booking', false),
-              } as SpotTileDataWithNotional
+              } as SpotTileData
             }
             executeTrade={executeTrade}
             executionStatus={ServiceConnectionStatus.CONNECTED}

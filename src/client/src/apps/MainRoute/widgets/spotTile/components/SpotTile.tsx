@@ -27,7 +27,6 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
     const {
       currencyPair,
       spotTileData: {
-        notional,
         isTradeExecutionInFlight,
         price,
         rfqState,
@@ -46,6 +45,8 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
       rfq,
       displayCurrencyChart,
     } = this.props
+    const defaultNotional = getDefaultNotionalValue(currencyPair)
+    const notional = this.props.spotTileData.notional || defaultNotional
 
     const spotDate = dateFomatter(price.valueDate, false, localZoneName)
     const date = spotDate && `SPT (${spotDate})`
@@ -59,7 +60,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
 
     const showResetButton =
       !isTradeExecutionInFlight &&
-      getDefaultNotionalValue(currencyPair) !== notional &&
+      defaultNotional !== notional &&
       (isRfqStateNone || isRfqStateCanRequest || isRfqStateExpired)
 
     const showTimer = isRfqStateReceived && rfqTimeout
