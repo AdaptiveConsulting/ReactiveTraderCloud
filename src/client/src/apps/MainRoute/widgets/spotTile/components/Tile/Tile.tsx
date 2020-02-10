@@ -62,12 +62,13 @@ class Tile extends React.PureComponent<TileProps, TileState> {
   // be in the RFQ range.
   componentDidMount() {
     const {
-      spotTileData: { rfqState },
+      spotTileData: { rfqState, notional: spotTileNotional },
       setTradingMode,
-      currencyPair: { symbol },
+      currencyPair,
     } = this.props
+    const { symbol } = currencyPair
     const notional =
-      this.props.spotTileData.notional || getDefaultNotionalValue(this.props.currencyPair)
+      spotTileNotional !== undefined ? spotTileNotional : getDefaultNotionalValue(currencyPair)
     const { isRfqStateNone } = getConstsFromRfqState(rfqState)
 
     if (isRfqStateNone && isValueInRfqRange(notional)) {
@@ -80,9 +81,10 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       currencyPair,
       executeTrade,
       rfq,
-      spotTileData: { rfqState },
+      spotTileData: { rfqState, notional: spotTileNotional },
     } = this.props
-    const notional = this.props.spotTileData.notional || getDefaultNotionalValue(currencyPair)
+    const notional =
+      spotTileNotional !== undefined ? spotTileNotional : getDefaultNotionalValue(currencyPair)
 
     const { isRfqStateReceived } = getConstsFromRfqState(rfqState)
     if (typeof notional === 'undefined') {

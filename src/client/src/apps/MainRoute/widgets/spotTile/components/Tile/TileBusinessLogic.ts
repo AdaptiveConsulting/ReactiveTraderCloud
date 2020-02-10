@@ -73,8 +73,9 @@ export const getDerivedStateFromUserInput = ({
   currencyPair: CurrencyPair
 }): TileState => {
   const { symbol } = currencyPair
-  const { rfqState } = spotTileData
-  const notional = spotTileData.notional || getDefaultNotionalValue(currencyPair)
+  const { rfqState, notional: spotTileNotional } = spotTileData
+  const notional =
+    spotTileNotional !== undefined ? spotTileNotional : getDefaultNotionalValue(currencyPair)
 
   const defaultNextState: TileState = {
     ...prevState,

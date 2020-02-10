@@ -42,6 +42,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
         rfqTimeout,
         rfqReceivedTime,
         lastTradeExecutionStatus,
+        notional: spotTileNotional,
       },
       updateNotional,
       resetNotional,
@@ -54,7 +55,9 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       rfq,
     } = this.props
     const defaultNotional = getDefaultNotionalValue(currencyPair)
-    const notional = this.props.spotTileData.notional || defaultNotional
+    const notional =
+      spotTileNotional !== undefined ? spotTileNotional : getDefaultNotionalValue(currencyPair)
+
     const spotDate = dateFomatter(price.valueDate, false, localZoneName)
     const date = spotDate && `SPT (${spotDate})`
     const {
