@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 
-export const PriceControlsStyle = styled('div')<{ isAnalyticsView: boolean, isTradeExecutionInFlight?: boolean }>`
+export const PriceControlsStyle = styled('div')<{
+  isAnalyticsView: boolean
+  isTradeExecutionInFlight?: boolean
+}>`
   display: flex;
   justify-content: space-between;
   ${({ isAnalyticsView }) => (isAnalyticsView ? `` : `align-items: center; margin-top: 15px;`)}
-  ${({isTradeExecutionInFlight}) => (!isTradeExecutionInFlight && 'position: relative')}
+  ${({ isTradeExecutionInFlight }) => !isTradeExecutionInFlight && 'position: relative'}
 `
 
 export const PriceButtonDisabledPlaceholder = styled.div`
@@ -33,5 +36,5 @@ export const Icon = styled.i`
 `
 
 export const AdaptiveLoaderWrapper = styled.div`
-  margin: -5px 0 3px;
+  margin: 0 3px;
 `

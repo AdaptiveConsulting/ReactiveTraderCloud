@@ -4,17 +4,17 @@ import { Platform } from 'rt-platforms'
 
 export const AnalyticsTileContent = styled.div`
   display: flex;
-  height: 85%;
+  height: 90%;
   justify-content: space-between;
 `
-export const GraphNotionalWrapper = styled.div<{isTimerOn: boolean}>`
+export const GraphNotionalWrapper = styled.div<{ isTimerOn: boolean }>`
   min-width: 0; //fixed bug with recharts resizing
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   z-index: 2;
-  max-height: ${({isTimerOn}) => (isTimerOn && '103px')};
+  max-height: ${({ isTimerOn }) => isTimerOn && '103px'};
 `
 export const PriceControlWrapper = styled.div`
   display: flex;
