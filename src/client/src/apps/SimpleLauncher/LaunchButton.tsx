@@ -15,9 +15,7 @@ const StyledButton = styled.button`
   z-index: 100;
 
   border-radius: 4px;
-  border: 0.5px solid ${({ theme }) => theme.core.darkBackground};
-
-  background-color: ${({ theme }) => theme.core.alternateBackground};
+  background-color: #313131;
 
   .svg-fill {
     fill: ${({ theme }) => theme.core.textColor};
@@ -28,7 +26,7 @@ const StyledButton = styled.button`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.button.dominant.backgroundColor};
+    background-color: #2b2b2b;
     svg {
       transition-timing-function: ease-out;
       transition: transform 0.3s;

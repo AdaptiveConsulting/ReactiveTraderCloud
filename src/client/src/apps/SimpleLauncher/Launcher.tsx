@@ -13,6 +13,8 @@ import {
   MinExitContainer,
   ExitButton,
   MinimiseButton,
+  LogoLauncherContainer,
+  RootLauncherContainer,
 } from './styles'
 import {
   animateCurrentWindowSize,
@@ -38,13 +40,13 @@ const SearchButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
 )
 
 const DynamicLogo: React.FC<{ isMoving: boolean }> = ({ isMoving }) => (
-  <LogoContainer>
+  <LogoLauncherContainer>
     {isMoving ? (
       <AdaptiveLoader size={23} speed={isMoving ? 0.8 : 0} seperation={1} type="secondary" />
     ) : (
       <LogoIcon width={1.4} height={1.4} />
     )}
-  </LogoContainer>
+  </LogoLauncherContainer>
 )
 
 export const Launcher: React.FC = () => {
@@ -103,12 +105,12 @@ export const Launcher: React.FC = () => {
   )
 
   return (
-    <RootContainer>
+    <RootLauncherContainer>
       <LauncherGlobalStyle />
       <HorizontalContainer>
         <DynamicLogo isMoving={isSearchBusy} />
-        <SearchButton onClick={showSearch} />
         <LauncherApps />
+        <SearchButton onClick={showSearch} />
         <MinExitContainer>
           <LauncherMinimiseAndExit />
         </MinExitContainer>
@@ -123,6 +125,6 @@ export const Launcher: React.FC = () => {
           </div>
         )}
       </Measure>
-    </RootContainer>
+    </RootLauncherContainer>
   )
 }

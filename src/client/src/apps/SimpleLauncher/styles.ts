@@ -67,6 +67,10 @@ export const MinExitContainer = styled(ButtonContainer)`
   flex-direction: column;
 `
 
+export const ThemeSwitchContainer = styled(ButtonContainer)`
+  width: 35%;
+`
+
 export const LogoContainer = styled(IconContainer)`
   width: 50%;
   background-color: ${({ theme }) => theme.core.lightBackground};
@@ -85,4 +89,22 @@ export const ExitButton = styled.button`
 
 export const MinimiseButton = styled.button`
   padding-bottom: 3px;
+`
+export const LogoLauncherContainer = styled(IconContainer)`
+  width: 50%;
+  min-width: 56px;
+  background-color: #313131;
+  border-right: 1px solid #7f7f7f;
+  height: 80%;
+  .svg-icon {
+    fill: ${({ theme }) => theme.core.textColor};
+  }
+  ${rules.appRegionDrag};
+`
+
+export const RootLauncherContainer = styled(RootContainer)`
+  padding: 4px;
+  border-radius: 3px;
+  background-color: #313131;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 `

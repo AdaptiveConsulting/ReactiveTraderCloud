@@ -57,7 +57,7 @@ export default createGlobalStyle`
     font-size: 16px;
     line-height: 1rem;
     text-rendering: geometricPrecision;
-    background-color: #2e3543;
+    border-radius: 3px;
 
     .tearOff {
       box-shadow: 1px 4px 10px 0px rgba(0,0,0,0.3);
