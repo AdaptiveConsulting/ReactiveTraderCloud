@@ -17,6 +17,7 @@ priceStories.add('Price button', () => {
         tenth: 22,
         rawRate: 33.0122,
       }
+  const isAnalyticsView = boolean('isAnalyticsView', false)
 
   return (
     <Story>
@@ -25,12 +26,14 @@ priceStories.add('Price button', () => {
           <PriceButton
             direction={Direction.Buy}
             handleClick={handleClick}
+            isAnalyticsView
             currencyPairSymbol={'eurusd'}
             {...priceProps}
           />
           <PriceButton
             direction={Direction.Sell}
             handleClick={handleClick}
+            isAnalyticsView
             currencyPairSymbol={'eurusd'}
             {...priceProps}
           />
