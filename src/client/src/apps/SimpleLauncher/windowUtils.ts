@@ -1,4 +1,4 @@
-import { Bounds } from 'openfin/_v2/shapes';
+import { Bounds } from 'openfin/_v2/shapes'
 
 export async function animateCurrentWindowSize(bounds: Bounds, duration: number = 200) {
   const window = await fin.Window.getCurrent()
@@ -25,4 +25,9 @@ export const getCurrentWindowBounds = async () => {
 export const closeCurrentWindow = async () => {
   const window = await fin.Window.getCurrent()
   window.close()
+}
+
+export const minimiseCurrentWindow = async () => {
+  const window = await fin.Window.getCurrent()
+  window.minimize()
 }

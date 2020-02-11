@@ -59,6 +59,14 @@ export const ButtonContainer = styled(IconContainer)`
   ${rules.appRegionNoDrag};
 `
 
+export const MinExitContainer = styled(ButtonContainer)`
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`
+
 export const LogoContainer = styled(IconContainer)`
   width: 50%;
   background-color: ${({ theme }) => theme.core.lightBackground};
@@ -66,4 +74,15 @@ export const LogoContainer = styled(IconContainer)`
     fill: ${({ theme }) => theme.core.textColor};
   }
   ${rules.appRegionDrag};
+`
+
+export const ExitButton = styled.button`
+  width: 75%;
+  border-bottom: 1px solid;
+  border-color: #8c8c8c;
+  padding-top: 3px;
+`
+
+export const MinimiseButton = styled.button`
+  padding-bottom: 3px;
 `

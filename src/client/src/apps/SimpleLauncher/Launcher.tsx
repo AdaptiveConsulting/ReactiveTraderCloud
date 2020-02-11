@@ -1,33 +1,34 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import Measure, { ContentRect } from 'react-measure'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
-import { AdaptiveLoader, LogoIcon } from 'rt-components'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
+import { AdaptiveLoader, LogoIcon } from 'rt-components'
 import { Bounds } from 'openfin/_v2/shapes'
 import SearchIcon from './icons/searchIcon'
 import {
   ButtonContainer,
   HorizontalContainer,
-  IconTitle,
   LauncherGlobalStyle,
   LogoContainer,
   RootContainer,
+  MinExitContainer,
+  ExitButton,
+  MinimiseButton,
 } from './styles'
-import { animateCurrentWindowSize, closeCurrentWindow, getCurrentWindowBounds } from './windowUtils'
+import {
+  animateCurrentWindowSize,
+  closeCurrentWindow,
+  getCurrentWindowBounds,
+  minimiseCurrentWindow,
+} from './windowUtils'
+import Measure, { ContentRect } from 'react-measure'
 import { SearchControl, SearchState } from './spotlight'
+import { exitNormalIcon, minimiseNormalIcon } from './icons'
 
-library.add(faSignOutAlt)
-
-const LauncherExit: React.FC = () => (
-  <ButtonContainer key="exit">
-    <LaunchButton onClick={closeCurrentWindow}>
-      <FontAwesomeIcon icon="sign-out-alt" />
-      <IconTitle>Exit</IconTitle>
-    </LaunchButton>
-  </ButtonContainer>
+const LauncherMinimiseAndExit: React.FC = () => (
+  <>
+    <ExitButton onClick={closeCurrentWindow}>{exitNormalIcon}</ExitButton>
+    <MinimiseButton onClick={minimiseCurrentWindow}>{minimiseNormalIcon}</MinimiseButton>
+  </>
 )
 
 const SearchButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
@@ -108,7 +109,9 @@ export const Launcher: React.FC = () => {
         <DynamicLogo isMoving={isSearchBusy} />
         <SearchButton onClick={showSearch} />
         <LauncherApps />
-        <LauncherExit />
+        <MinExitContainer>
+          <LauncherMinimiseAndExit />
+        </MinExitContainer>
       </HorizontalContainer>
 
       <Measure bounds onResize={handleSearchSizeChange}>
