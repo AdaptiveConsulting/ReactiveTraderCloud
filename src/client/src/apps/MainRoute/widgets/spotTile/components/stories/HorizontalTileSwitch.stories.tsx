@@ -5,7 +5,7 @@ import { Story, Centered, spotTileStories } from './Initialise.stories'
 import SpotTile from '../SpotTile'
 import { ServiceConnectionStatus } from 'rt-types'
 import { currencyPair, spotTileDataWithRfq, switchOptions } from '../test-resources/spotTileProps'
-import { SpotTileDataWithNotional } from '../../model'
+import { SpotTileData } from '../../model'
 
 const executeTrade = action('executeTrade')
 const updateNotional = action('updateNotional')
@@ -168,7 +168,7 @@ spotTileStories.add('RFQ Switch', () => {
                 ...spotTileDataWithRfq,
                 rfqState: rfqStatesSwitch,
                 isTradeExecutionInFlight: boolean('Booking', false),
-              } as SpotTileDataWithNotional
+              } as SpotTileData
             }
             executeTrade={executeTrade}
             executionStatus={ServiceConnectionStatus.CONNECTED}

@@ -94,6 +94,7 @@ const PriceControls: React.FC<Props> = ({
         disabled={disabled}
         expired={isRfqStateExpired}
         currencyPairSymbol={currencyPair.symbol}
+        isAnalyticsView={isAnalyticsView}
       />
     ) : null
   }

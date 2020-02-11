@@ -49,10 +49,9 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  min-height: 2rem;
-  max-height: 3.7rem;
+  height: 59px;
   min-width: 125px;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
   margin-bottom: 2px;
   cursor: initial;
   pointer-events: none;
@@ -482,10 +481,9 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  min-height: 2rem;
-  max-height: 3.7rem;
+  height: 59px;
   min-width: 125px;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
   margin-bottom: 2px;
   cursor: initial;
   pointer-events: none;
@@ -1002,10 +1000,9 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  min-height: 2rem;
-  max-height: 3.7rem;
+  height: 59px;
   min-width: 125px;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
   margin-bottom: 2px;
   cursor: initial;
   pointer-events: none;
@@ -1541,10 +1538,9 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  min-height: 2rem;
-  max-height: 3.7rem;
+  height: 59px;
   min-width: 125px;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
   margin-bottom: 2px;
   -webkit-animation: hlRYgF 5s;
   animation: hlRYgF 5s;
@@ -1568,10 +1564,9 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  min-height: 2rem;
-  max-height: 3.7rem;
+  height: 59px;
   min-width: 125px;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
   margin-bottom: 2px;
   -webkit-animation: ceeoSx 5s;
   animation: ceeoSx 5s;
@@ -2126,7 +2121,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 }
 
 .c7 {
-  margin: -5px 0 3px;
+  margin: 0 3px;
 }
 
 .c16 {
@@ -2542,10 +2537,9 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   cursor: pointer;
   border: none;
   outline: none;
-  min-height: 2rem;
-  max-height: 3.7rem;
+  height: 59px;
   min-width: 125px;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
   margin-bottom: 2px;
 }
 
@@ -2567,10 +2561,9 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   cursor: pointer;
   border: none;
   outline: none;
-  min-height: 2rem;
-  max-height: 3.7rem;
+  height: 59px;
   min-width: 125px;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
   margin-bottom: 2px;
 }
 
@@ -3007,10 +3000,9 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  min-height: 2rem;
-  max-height: 3.7rem;
+  height: 59px;
   min-width: 125px;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
   margin-bottom: 2px;
   cursor: initial;
   pointer-events: none;

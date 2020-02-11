@@ -31,7 +31,11 @@ const getAnimationCSSProperty = (props: { direction: Direction; theme: Theme }) 
 const backgroundEffect = ({ priceAnnounced, ...rest }: { priceAnnounced: boolean }) =>
   priceAnnounced ? getAnimationCSSProperty(rest as { direction: Direction; theme: Theme }) : ''
 
-export const TradeButton = styled.button<{ direction: Direction; priceAnnounced: boolean }>`
+export const TradeButton = styled.button<{
+  direction: Direction
+  priceAnnounced: boolean
+  isAnalyticsView: boolean
+}>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
   color: ${({ theme, priceAnnounced, direction }) =>
@@ -40,10 +44,9 @@ export const TradeButton = styled.button<{ direction: Direction; priceAnnounced:
   cursor: pointer;
   border: none;
   outline: none;
-  min-height: 2rem;
-  max-height: 3.7rem;
+  height: ${({ isAnalyticsView }) => (isAnalyticsView ? '50%' : '59px')}
   min-width: 125px;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
   margin-bottom: 2px;
   ${backgroundEffect}
 

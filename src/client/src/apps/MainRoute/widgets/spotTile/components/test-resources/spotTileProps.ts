@@ -1,5 +1,5 @@
 import { Direction } from 'rt-types'
-import { SpotPriceTick, SpotTileDataWithNotional } from '../../model'
+import { SpotPriceTick, SpotTileData } from '../../model'
 import { PriceMovementTypes } from '../../model/priceMovementTypes'
 
 const currencyPair = {
@@ -29,7 +29,7 @@ const generateHistoricPrices: (totalPricePrick: number) => SpotPriceTick[] = tot
   return historicPrices
 }
 
-const spotTileData: SpotTileDataWithNotional = {
+const spotTileData: SpotTileData = {
   notional: 1000000,
   isTradeExecutionInFlight: false,
   price: {
@@ -83,7 +83,7 @@ const tradeRejected = {
   trade: { ...trade, status: 'rejected' },
 }
 
-const spotTileDataWithRfq: SpotTileDataWithNotional = {
+const spotTileDataWithRfq: SpotTileData = {
   notional: 100000000,
   isTradeExecutionInFlight: false,
   price: {

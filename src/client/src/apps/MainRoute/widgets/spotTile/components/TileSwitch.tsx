@@ -1,6 +1,6 @@
 import React from 'react'
 import { CurrencyPair, ServiceConnectionStatus } from 'rt-types'
-import { ExecuteTradeRequest, SpotTileDataWithNotional } from '../model'
+import { ExecuteTradeRequest, SpotTileData } from '../model'
 import NotificationContainer from './notifications'
 import Tile from './Tile'
 import TileControls from './TileControls'
@@ -10,7 +10,7 @@ import { CurrencyPairNotional } from '../model/spotTileData'
 
 interface Props {
   currencyPair?: CurrencyPair
-  spotTileData: SpotTileDataWithNotional
+  spotTileData: SpotTileData
   canPopout: boolean
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
