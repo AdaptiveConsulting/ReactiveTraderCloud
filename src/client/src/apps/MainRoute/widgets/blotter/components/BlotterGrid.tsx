@@ -23,6 +23,10 @@ export default styled('div')`
     background-color: ${({ theme }) => theme.core.alternateBackground};
   }
 
+  .ag-row-no-animation .ag-row {
+    transition: background-color 0.2s ease;
+  }
+
   .rt-blotter__row-pending {
     background-color: ${({ theme }) => theme.core.offBackground};
   }
