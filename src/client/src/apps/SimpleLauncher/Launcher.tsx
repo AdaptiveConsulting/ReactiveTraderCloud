@@ -8,8 +8,6 @@ import {
   ButtonContainer,
   HorizontalContainer,
   LauncherGlobalStyle,
-  LogoContainer,
-  RootContainer,
   MinExitContainer,
   ExitButton,
   MinimiseButton,
