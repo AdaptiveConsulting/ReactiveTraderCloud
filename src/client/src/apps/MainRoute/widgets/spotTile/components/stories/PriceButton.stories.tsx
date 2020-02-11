@@ -26,14 +26,14 @@ priceStories.add('Price button', () => {
           <PriceButton
             direction={Direction.Buy}
             handleClick={handleClick}
-            isAnalyticsView
+            isAnalyticsView={isAnalyticsView}
             currencyPairSymbol={'eurusd'}
             {...priceProps}
           />
           <PriceButton
             direction={Direction.Sell}
             handleClick={handleClick}
-            isAnalyticsView
+            isAnalyticsView={isAnalyticsView}
             currencyPairSymbol={'eurusd'}
             {...priceProps}
           />
