@@ -3,8 +3,8 @@
     "name": "Reactive Ecosystem Launcher (LOCAL)",
     "url": "http://localhost:3000/launcher",
     "uuid": "reactive-launcher-local",
-    "defaultWidth": 650,
-    "defaultHeight": 52,
+    "defaultWidth": 356,
+    "defaultHeight": 60,
     "defaultTop": 160,
     "defaultLeft": 30,
     "autoShow": true,
@@ -26,7 +26,6 @@
         "url": "http://localhost:3000/plugin/fin.desktop.Excel.js"
       }
     ],
-    "backgroundColor": "#444C5F",
     "alwaysOnTop": true,
     "icon": "http://localhost:3000/static/media/icon.ico",
     "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
