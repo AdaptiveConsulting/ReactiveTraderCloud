@@ -21,17 +21,6 @@
   ],
   "services": [
     {
-      "name": "layouts",
-      "config": {
-        "features": {
-          "snap": true,
-          "dock": true,
-          "tab": false
-        }
-      },
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.2.0/app.json"
-    },
-    {
       "name": "fdc3",
       "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json"
     },
@@ -62,7 +51,7 @@
         "defaultCentered": true,
         "resizable": true,
         "maximizable": true,
-        "saveWindowState": false,
+        "saveWindowState": true,
         "frame": false,
         "shadow": true,
         "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",

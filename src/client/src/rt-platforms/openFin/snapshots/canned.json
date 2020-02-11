@@ -300,7 +300,7 @@
       "windows": [
         {
           "autoShow": true,
-          "defaultCentered": true,
+          "defaultCentered": false,
           "defaultHeight": 807,
           "defaultLeft": 4,
           "defaultTop": 10,
