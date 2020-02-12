@@ -59,10 +59,6 @@ export const ButtonContainer = styled(IconContainer)`
   ${rules.appRegionNoDrag};
 `
 
-export const ThemeSwitchContainer = styled(ButtonContainer)`
-  width: 35%;
-`
-
 export const LogoContainer = styled(IconContainer)`
   width: 50%;
   background-color: ${({ theme }) => theme.core.lightBackground};
