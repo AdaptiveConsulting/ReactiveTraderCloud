@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
-import { AdaptiveLoader, LogoIcon } from 'rt-components'
+import { AdaptiveLoader, LogoIcon, Tooltip } from 'rt-components'
 import { Bounds } from 'openfin/_v2/shapes'
 import SearchIcon from './icons/searchIcon'
 import {
@@ -108,7 +108,9 @@ export const Launcher: React.FC = () => {
       <HorizontalContainer>
         <DynamicLogo isMoving={isSearchBusy} />
         <LauncherApps />
-        <SearchButton onClick={showSearch} />
+        <Tooltip message="Search ecosystem">
+          <SearchButton onClick={showSearch} />
+        </Tooltip>
         <MinExitContainer>
           <LauncherMinimiseAndExit />
         </MinExitContainer>

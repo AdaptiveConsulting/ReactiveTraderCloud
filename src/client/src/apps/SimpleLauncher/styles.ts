@@ -80,6 +80,7 @@ export const ExitButton = styled.button`
 export const MinimiseButton = styled.button`
   padding-bottom: 3px;
 `
+
 export const MinExitContainer = styled(ButtonContainer)`
   width: 30%;
   height: 80%;
@@ -88,6 +89,7 @@ export const MinExitContainer = styled(ButtonContainer)`
   flex-direction: column;
   border-left: 1px solid rgba(216, 216, 216, 0.15);
   padding-left: 4px;
+  margin-right: 4px;
 `
 
 export const LogoLauncherContainer = styled(IconContainer)`
@@ -103,7 +105,10 @@ export const LogoLauncherContainer = styled(IconContainer)`
 `
 
 export const RootLauncherContainer = styled(RootContainer)`
-  padding: 4px;
+  height: 60px;
+  padding-top: 4px;
+  border-radius: 3px;
   background-color: #313131;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  overflow: initial;
 `

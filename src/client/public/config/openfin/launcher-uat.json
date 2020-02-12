@@ -3,11 +3,12 @@
     "name": "Reactive Ecosystem Launcher (UAT)",
     "url": "https://web-uat.adaptivecluster.com/launcher",
     "uuid": "reactive-launcher-uat",
-    "defaultWidth": 356,
-    "defaultHeight": 60,
+    "defaultWidth": 400,
+    "defaultHeight": 120,
     "defaultTop": 160,
     "defaultLeft": 30,
     "autoShow": true,
+    "transparent": true,
     "permissions": {
       "System": {
         "launchExternalProcess": true
@@ -39,7 +40,7 @@
     }
   },
   "runtime": {
-    "arguments": "--remote-debugging-port=9222",
+    "arguments": "--remote-debugging-port=9222 --disable-legacy-window",
     "version": "13.76.44.21"
   },
   "shortcut": {
