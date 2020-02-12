@@ -110,7 +110,7 @@ const baseAppConfigs: ApplicationConfig[] = [
   {
     name: `Reactive Trader Cloud ${envFormatted}`,
     displayName: 'RT',
-    tooltipName: 'Reactive Trader Cloud',
+    tooltipName: 'Launch Reactive Trader',
     uuid: `reactive-trader-cloud-web-${env}`,
     url: `${ORIGIN}`,
     icon: reactiveTraderIcon,
@@ -127,7 +127,7 @@ const baseAppConfigs: ApplicationConfig[] = [
   {
     name: 'Reactive Analytics',
     displayName: 'RA',
-    tooltipName: 'Reactive Analytics',
+    tooltipName: 'Launch Reactive Analytics',
     url: `http://${env === 'dev' ? env : 'demo'}-reactive-analytics.adaptivecluster.com/`,
     icon: reactiveAnalyticsIcon,
     provider: {
@@ -143,7 +143,7 @@ const baseAppConfigs: ApplicationConfig[] = [
   {
     name: 'Limit Checker',
     displayName: 'LC',
-    tooltipName: 'Limit Checker',
+    tooltipName: 'Launch Limit Checker',
     icon: limitCheckerIcon,
     provider: {
       platformName: 'openfin',

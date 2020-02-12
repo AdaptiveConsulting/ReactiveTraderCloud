@@ -29,13 +29,13 @@ const TooltipBubble = styled.div<Props>`
     css`
       top: 100%;
       left: 50%;
-      padding-top: 9px;
+      padding-top: 4px;
       transform: translateX(-50%);
 
       &::after {
-        border-left: 9px solid transparent;
-        border-right: 9px solid transparent;
-        border-bottom: 9px solid #e4e4e4;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-bottom: 4px solid #e4e4e4;
         top: 0;
         left: 50%;
         transform: translateX(-50%);
@@ -47,13 +47,13 @@ const TooltipBubble = styled.div<Props>`
     css`
       bottom: 100%;
       left: 50%;
-      padding-bottom: 9px;
+      padding-bottom: 4px;
       transform: translateX(-50%);
 
       &::after {
-        border-left: 9px solid transparent;
-        border-right: 9px solid transparent;
-        border-top: 9px solid #e4e4e4;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 4px solid #e4e4e4;
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
@@ -65,13 +65,13 @@ const TooltipBubble = styled.div<Props>`
     css`
       top: 50%;
       left: 100%;
-      padding-left: 9px;
+      padding-left: 4px;
       transform: translateY(-50%);
 
       &::after {
-        border-right: 9px solid #e4e4e4;
-        border-top: 9px solid transparent;
-        border-bottom: 9px solid transparent;
+        border-right: 4px solid #e4e4e4;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
         top: 50%;
         left: 0;
         transform: translateY(-50%);
@@ -83,13 +83,13 @@ const TooltipBubble = styled.div<Props>`
     css`
       top: 50%;
       right: 100%;
-      padding-right: 9px;
+      padding-right: 4px;
       transform: translateY(-50%);
 
       &::after {
-        border-left: 9px solid #e4e4e4;
-        border-top: 9px solid transparent;
-        border-bottom: 9px solid transparent;
+        border-left: 4px solid #e4e4e4;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
         top: 50%;
         right: 0;
         transform: translateY(-50%);
