@@ -27,7 +27,7 @@ const TooltipBubble = styled.div<Props>`
   ${props =>
     props.position === 'bottom' &&
     css`
-      top: calc(100% - 4px);
+      top: calc(100% - 2px);
       left: 50%;
       padding-top: 6px;
       transform: translateX(-50%);
@@ -45,7 +45,7 @@ const TooltipBubble = styled.div<Props>`
   ${props =>
     props.position === 'top' &&
     css`
-      bottom: calc(100% - 4px);
+      bottom: calc(100% - 2px);
       left: 50%;
       padding-bottom: 4px;
       transform: translateX(-50%);
@@ -64,7 +64,7 @@ const TooltipBubble = styled.div<Props>`
     props.position === 'right' &&
     css`
       top: 50%;
-      left: calc(100% - 4px);
+      left: calc(100% - 2px);
       padding-left: 4px;
       transform: translateY(-50%);
 
@@ -82,7 +82,7 @@ const TooltipBubble = styled.div<Props>`
     props.position === 'left' &&
     css`
       top: 50%;
-      right: calc(100% - 4px);
+      right: calc(100% - 2px);
       padding-right: 4px;
       transform: translateY(-50%);
 
