@@ -20,7 +20,7 @@ export const RootContainer = styled.div`
 `
 
 export const HorizontalContainer = styled.div`
-  height: 52px;
+  height: 56px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -56,6 +56,17 @@ export const IconContainer = styled.div`
 `
 
 export const ButtonContainer = styled(IconContainer)`
+  display: flex;
+  align-items: center;
+  height: auto;
+  ${rules.appRegionNoDrag};
+`
+
+export const SearchButtonContainer = styled(ButtonContainer)`
+  display: flex;
+  align-items: center;
+  height: auto;
+  width: 40px;
   ${rules.appRegionNoDrag};
 `
 
@@ -106,9 +117,8 @@ export const RootLauncherContainer = styled(RootContainer)`
 `
 
 export const LauncherContainer = styled(RootContainer)`
-  height: 60px;
+  height: 56px;
   max-width: 355px;
-  padding-top: 4px;
   border-radius: 3px;
   background-color: #313131;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);

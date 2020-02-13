@@ -2,8 +2,8 @@ import React from 'react'
 import { styled } from 'rt-theme'
 
 const StyledButton = styled.button`
-  width: 100%;
-  height: 100%;
+  width: 40px;
+  height: 45px;
   font-size: 1.5rem;
   text-align: center;
   display: flex;

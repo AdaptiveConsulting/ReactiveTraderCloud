@@ -64,7 +64,7 @@ export interface ApplicationConfig {
 const excelJSAppConfig: ApplicationConfig = {
   name: 'Excel',
   displayName: 'EX',
-  tooltipName: 'Excel',
+  tooltipName: 'Launch Excel',
   icon: excelIcon,
   provider: {
     platformName: 'openfin',
@@ -79,7 +79,7 @@ const excelJSAppConfig: ApplicationConfig = {
 const excelLegacyAppConfig: ApplicationConfig = {
   name: 'Excel',
   displayName: 'EX',
-  tooltipName: 'Excel',
+  tooltipName: 'Launch Excel',
   icon: excelIcon,
   url: `${ORIGIN}/static/excel/instructions.html`,
   provider: {
