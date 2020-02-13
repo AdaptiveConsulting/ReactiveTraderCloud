@@ -14,8 +14,8 @@ const TooltipContainer = styled.div`
 `
 
 const TooltipBubble = styled.div<Props>`
-  min-width: 130px;
-  max-width: 210px;
+  min-width: ${({ message }) =>
+    message === 'Search ecosystem' ? '120px' : message === 'Excel' ? '53px' : '138px'};
   position: absolute;
   z-index: 1000;
 
@@ -101,7 +101,8 @@ const TooltipBubble = styled.div<Props>`
     border-radius: 3px;
     font-size: 11.1px;
     line-height: 1.4;
-    padding: 0.75em 5px;
+    padding-top: 0.75em;
+    padding-bottom: 9px;
     text-align: center;
     font-weight: 700;
     font-stretch: normal;
@@ -122,7 +123,7 @@ const Tooltip: React.FC<Props> = props => {
   return (
     <TooltipContainer onMouseLeave={hideTooltip} onMouseOver={showTooltip}>
       {show && (
-        <TooltipBubble position={position}>
+        <TooltipBubble position={position} message={message}>
           <div>{message}</div>
         </TooltipBubble>
       )}
