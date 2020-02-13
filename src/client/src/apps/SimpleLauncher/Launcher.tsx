@@ -13,6 +13,7 @@ import {
   MinimiseButton,
   LogoLauncherContainer,
   RootLauncherContainer,
+  LauncherContainer,
 } from './styles'
 import {
   animateCurrentWindowSize,
@@ -104,27 +105,29 @@ export const Launcher: React.FC = () => {
 
   return (
     <RootLauncherContainer>
-      <LauncherGlobalStyle />
-      <HorizontalContainer>
-        <DynamicLogo isMoving={isSearchBusy} />
-        <LauncherApps />
-        <Tooltip message="Search ecosystem">
-          <SearchButton onClick={showSearch} />
-        </Tooltip>
-        <MinExitContainer>
-          <LauncherMinimiseAndExit />
-        </MinExitContainer>
-      </HorizontalContainer>
+      <LauncherContainer>
+        <LauncherGlobalStyle />
+        <HorizontalContainer>
+          <DynamicLogo isMoving={isSearchBusy} />
+          <LauncherApps />
+          <Tooltip message="Search ecosystem">
+            <SearchButton onClick={showSearch} />
+          </Tooltip>
+          <MinExitContainer>
+            <LauncherMinimiseAndExit />
+          </MinExitContainer>
+        </HorizontalContainer>
 
-      <Measure bounds onResize={handleSearchSizeChange}>
-        {({ measureRef }) => (
-          <div ref={measureRef}>
-            {isSearchVisible && (
-              <SearchControl ref={searchInputRef} onStateChange={handleSearchStateChange} />
-            )}
-          </div>
-        )}
-      </Measure>
+        <Measure bounds onResize={handleSearchSizeChange}>
+          {({ measureRef }) => (
+            <div ref={measureRef}>
+              {isSearchVisible && (
+                <SearchControl ref={searchInputRef} onStateChange={handleSearchStateChange} />
+              )}
+            </div>
+          )}
+        </Measure>
+      </LauncherContainer>
     </RootLauncherContainer>
   )
 }

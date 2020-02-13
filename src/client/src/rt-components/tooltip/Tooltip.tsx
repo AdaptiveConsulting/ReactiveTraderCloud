@@ -14,7 +14,7 @@ const TooltipContainer = styled.div`
 `
 
 const TooltipBubble = styled.div<Props>`
-  min-width: 120px;
+  min-width: 130px;
   max-width: 210px;
   position: absolute;
   z-index: 1000;
@@ -99,9 +99,9 @@ const TooltipBubble = styled.div<Props>`
   & > div {
     background-color: #e4e4e4;
     border-radius: 3px;
-    font-size: 0.75rem;
+    font-size: 11.1px;
     line-height: 1.4;
-    padding: 0.75em;
+    padding: 0.75em 5px;
     text-align: center;
     font-weight: 700;
     font-stretch: normal;

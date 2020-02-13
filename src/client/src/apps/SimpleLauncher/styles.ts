@@ -101,7 +101,13 @@ export const LogoLauncherContainer = styled(IconContainer)`
 `
 
 export const RootLauncherContainer = styled(RootContainer)`
+  background-color: transparent;
+  overflow: hiddent;
+`
+
+export const LauncherContainer = styled(RootContainer)`
   height: 60px;
+  max-width: 355px;
   padding-top: 4px;
   border-radius: 3px;
   background-color: #313131;
