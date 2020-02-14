@@ -62,12 +62,14 @@ export const ButtonContainer = styled(IconContainer)`
   ${rules.appRegionNoDrag};
 `
 
-export const SearchButtonContainer = styled(ButtonContainer)`
+export const SearchButtonContainer = styled(ButtonContainer) <{ isSearchVisible: boolean }>`
   display: flex;
   align-items: center;
   height: auto;
   width: 40px;
+  border-radius: 0 3px 3px 0;
   ${rules.appRegionNoDrag};
+  background-color: ${({ isSearchVisible }) => isSearchVisible ? '#8c7ae6' : ''};
 `
 
 export const LogoContainer = styled(IconContainer)`

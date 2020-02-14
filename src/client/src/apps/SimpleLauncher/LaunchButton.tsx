@@ -12,10 +12,9 @@ const StyledButton = styled.button<{ fill?: string }>`
   justify-content: center;
   text-decoration: none;
   position: relative;
-  z-index: 100;
 
   border-radius: 4px;
-  background-color: #313131;
+  background-color: inherit;
 
   .svg-fill {
     fill: ${({ theme }) => theme.core.textColor};
@@ -26,7 +25,6 @@ const StyledButton = styled.button<{ fill?: string }>`
   }
 
   &:hover {
-    background-color: #2b2b2b;
     svg {
       transition-timing-function: ease-out;
       transition: transform 0.3s;

@@ -58,17 +58,48 @@ export const InlineIntent = styled.div`
 
 export const Input = styled.input`
   width: 100%;
-  background: none;
+  height: 45px;
+  background: #2b2b2b;
   outline: none;
-  border: none;
-  font-size: 1.25rem;
+  border-radius: 3px 0 0 3px;
+  font-size: 1rem;
+  font-weight: 400;
+  padding-left: 9px;
+  caret-color: #8c7ae6;
   ${rules.appRegionNoDrag};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.textColor}
+  }
+`
+
+export const CancelButton = styled.button`
+  position: absolute;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #3f3f3f;
+  cursor: pointer;
+  z-index: 2;
 `
 
 export const SearchContainer = styled.div`
-  padding: 7px;
   background-color: #313131;
-  width: 100%;
+  position: absolute;
+  left: 350px;
+  right: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  z-index: 1;
+  transition: left 0.3s, opacity 0.1s ease;
+  
+  &.search-container--active {
+    opacity: 1;
+    left: 56px;
+  }
 `
 
 export const InlineQuoteContainer = styled.div`
