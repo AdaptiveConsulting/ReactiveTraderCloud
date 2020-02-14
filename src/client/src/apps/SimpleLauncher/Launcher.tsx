@@ -1,18 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
-import { AdaptiveLoader, LogoIcon } from 'rt-components'
+import { AdaptiveLoader, LogoIcon, Tooltip } from 'rt-components'
 import { Bounds } from 'openfin/_v2/shapes'
 import SearchIcon from './icons/searchIcon'
 import {
-  ButtonContainer,
   HorizontalContainer,
   LauncherGlobalStyle,
-  LogoContainer,
-  RootContainer,
   MinExitContainer,
   ExitButton,
   MinimiseButton,
+  LogoLauncherContainer,
+  RootLauncherContainer,
+  LauncherContainer,
+  SearchButtonContainer,
 } from './styles'
 import {
   animateCurrentWindowSize,
@@ -32,19 +33,21 @@ const LauncherMinimiseAndExit: React.FC = () => (
 )
 
 const SearchButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
-  <ButtonContainer>
-    <LaunchButton onClick={onClick}>{SearchIcon}</LaunchButton>
-  </ButtonContainer>
+  <SearchButtonContainer>
+    <Tooltip message="Search ecosystem">
+      <LaunchButton onClick={onClick}>{SearchIcon}</LaunchButton>
+    </Tooltip>
+  </SearchButtonContainer>
 )
 
 const DynamicLogo: React.FC<{ isMoving: boolean }> = ({ isMoving }) => (
-  <LogoContainer>
+  <LogoLauncherContainer>
     {isMoving ? (
-      <AdaptiveLoader size={23} speed={isMoving ? 0.8 : 0} seperation={1} type="secondary" />
+      <AdaptiveLoader size={21} speed={isMoving ? 0.8 : 0} seperation={1} type="secondary" />
     ) : (
-      <LogoIcon width={1.4} height={1.4} />
+      <LogoIcon width={1.2} height={1.2} />
     )}
-  </LogoContainer>
+  </LogoLauncherContainer>
 )
 
 export const Launcher: React.FC = () => {
@@ -103,26 +106,28 @@ export const Launcher: React.FC = () => {
   )
 
   return (
-    <RootContainer>
-      <LauncherGlobalStyle />
-      <HorizontalContainer>
-        <DynamicLogo isMoving={isSearchBusy} />
-        <SearchButton onClick={showSearch} />
-        <LauncherApps />
-        <MinExitContainer>
-          <LauncherMinimiseAndExit />
-        </MinExitContainer>
-      </HorizontalContainer>
+    <RootLauncherContainer>
+      <LauncherContainer>
+        <LauncherGlobalStyle />
+        <HorizontalContainer>
+          <DynamicLogo isMoving={isSearchBusy} />
+          <LauncherApps />
+          <SearchButton onClick={showSearch} />
+          <MinExitContainer>
+            <LauncherMinimiseAndExit />
+          </MinExitContainer>
+        </HorizontalContainer>
 
-      <Measure bounds onResize={handleSearchSizeChange}>
-        {({ measureRef }) => (
-          <div ref={measureRef}>
-            {isSearchVisible && (
-              <SearchControl ref={searchInputRef} onStateChange={handleSearchStateChange} />
-            )}
-          </div>
-        )}
-      </Measure>
-    </RootContainer>
+        <Measure bounds onResize={handleSearchSizeChange}>
+          {({ measureRef }) => (
+            <div ref={measureRef}>
+              {isSearchVisible && (
+                <SearchControl ref={searchInputRef} onStateChange={handleSearchStateChange} />
+              )}
+            </div>
+          )}
+        </Measure>
+      </LauncherContainer>
+    </RootLauncherContainer>
   )
 }

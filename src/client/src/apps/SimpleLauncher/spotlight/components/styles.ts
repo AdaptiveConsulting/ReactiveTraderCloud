@@ -1,5 +1,5 @@
-import { styled } from 'rt-theme';
-import { rules } from 'rt-styleguide';
+import { styled } from 'rt-theme'
+import { rules } from 'rt-styleguide'
 
 export const Table = styled.table`
   font-size: 0.6875rem;
@@ -24,7 +24,6 @@ export const Table = styled.table`
     }
   }
 `
-
 
 export const Suggestion = styled.div`
   display: flex;
@@ -68,6 +67,8 @@ export const Input = styled.input`
 
 export const SearchContainer = styled.div`
   padding: 7px;
+  background-color: #313131;
+  width: 100%;
 `
 
 export const InlineQuoteContainer = styled.div`

@@ -20,7 +20,7 @@ export const RootContainer = styled.div`
 `
 
 export const HorizontalContainer = styled.div`
-  height: 52px;
+  height: 56px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -56,15 +56,18 @@ export const IconContainer = styled.div`
 `
 
 export const ButtonContainer = styled(IconContainer)`
+  display: flex;
+  align-items: center;
+  height: auto;
   ${rules.appRegionNoDrag};
 `
 
-export const MinExitContainer = styled(ButtonContainer)`
-  width: 30%;
-  height: 100%;
+export const SearchButtonContainer = styled(ButtonContainer)`
   display: flex;
   align-items: center;
-  flex-direction: column;
+  height: auto;
+  width: 40px;
+  ${rules.appRegionNoDrag};
 `
 
 export const LogoContainer = styled(IconContainer)`
@@ -77,12 +80,47 @@ export const LogoContainer = styled(IconContainer)`
 `
 
 export const ExitButton = styled.button`
-  width: 75%;
-  border-bottom: 1px solid;
-  border-color: #8c8c8c;
+  border-bottom: 1px solid rgba(216, 216, 216, 0.15);
   padding-top: 3px;
 `
 
 export const MinimiseButton = styled.button`
   padding-bottom: 3px;
+`
+
+export const MinExitContainer = styled(ButtonContainer)`
+  width: 30%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-left: 1px solid rgba(216, 216, 216, 0.15);
+  padding-left: 4px;
+  margin-right: 4px;
+`
+
+export const LogoLauncherContainer = styled(IconContainer)`
+  width: 50%;
+  min-width: 56px;
+  background-color: #313131;
+  border-right: 1px solid rgba(216, 216, 216, 0.15);
+  height: 80%;
+  .svg-icon {
+    fill: ${({ theme }) => theme.core.textColor};
+  }
+  ${rules.appRegionDrag};
+`
+
+export const RootLauncherContainer = styled(RootContainer)`
+  background-color: transparent;
+  overflow: hiddent;
+`
+
+export const LauncherContainer = styled(RootContainer)`
+  height: 56px;
+  max-width: 355px;
+  border-radius: 3px;
+  background-color: #313131;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  overflow: initial;
 `

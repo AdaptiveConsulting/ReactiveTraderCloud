@@ -3,11 +3,12 @@
     "name": "Reactive Ecosystem Launcher (LOCAL)",
     "url": "http://localhost:3000/launcher",
     "uuid": "reactive-launcher-local",
-    "defaultWidth": 650,
-    "defaultHeight": 52,
+    "defaultWidth": 400,
+    "defaultHeight": 120,
     "defaultTop": 160,
     "defaultLeft": 30,
     "autoShow": true,
+    "transparent": true,
     "permissions": {
       "System": {
         "launchExternalProcess": true
@@ -26,7 +27,6 @@
         "url": "http://localhost:3000/plugin/fin.desktop.Excel.js"
       }
     ],
-    "backgroundColor": "#444C5F",
     "alwaysOnTop": true,
     "icon": "http://localhost:3000/static/media/icon.ico",
     "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
@@ -39,7 +39,7 @@
     }
   },
   "runtime": {
-    "arguments": "--remote-debugging-port=9222",
+    "arguments": "--remote-debugging-port=9222 --disable-legacy-window",
     "version": "13.76.44.21"
   },
   "shortcut": {

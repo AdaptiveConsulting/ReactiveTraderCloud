@@ -12,10 +12,11 @@ export default (env: string): OpenFinApplicationConfiguration => {
       name,
       url: `https://web-${env}.adaptivecluster.com/launcher`,
       uuid: `reactive-launcher-${env}`,
-      defaultWidth: 650,
-      defaultHeight: 52,
+      defaultWidth: 400,
+      defaultHeight: 120,
       defaultTop: 160,
       defaultLeft: 30,
+      transparent: true,
       permissions: {
         System: {
           launchExternalProcess: true,
@@ -35,6 +36,10 @@ export default (env: string): OpenFinApplicationConfiguration => {
         reloadIgnoreCache: true,
         zoom: true,
       },
+    },
+    runtime: {
+      arguments: '--remote-debugging-port=9222 --disable-legacy-window',
+      version: '13.76.44.21',
     },
     shortcut: {
       company: 'Adaptive Consulting',
