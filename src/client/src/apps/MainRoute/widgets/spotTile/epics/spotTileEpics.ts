@@ -7,14 +7,18 @@ import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import { ExecuteTradeRequest, ExecuteTradeResponse } from '../model/executeTradeRequest'
 import ExecutionService from './executionService'
 
-const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
+const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 3000
 
 const { executeTrade, tradeExecuted } = SpotTileActions
 type ExecutionAction = ReturnType<typeof executeTrade>
 
 export type ExecutedTradeAction = ReturnType<typeof tradeExecuted>
 
-const executeTradeEpic: ApplicationEpic = (action$, state$, { loadBalancedServiceStub, limitChecker }) => {
+const executeTradeEpic: ApplicationEpic = (
+  action$,
+  state$,
+  { loadBalancedServiceStub, limitChecker },
+) => {
   const limitCheck = (executeTradeRequest: ExecuteTradeRequest) =>
     limitChecker.rpc({
       tradedCurrencyPair: executeTradeRequest.CurrencyPair,
