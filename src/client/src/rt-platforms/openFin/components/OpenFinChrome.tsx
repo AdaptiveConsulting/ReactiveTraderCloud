@@ -2,6 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { FC } from 'react'
 import { Helmet } from 'react-helmet'
+import { snapAndDock } from 'openfin-layouts'
 import { styled, AccentName } from 'rt-theme'
 
 export interface ControlProps {
@@ -29,6 +30,7 @@ export const OpenFinChrome: FC = ({ children }) => (
 
 export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
   <Header>
+    <OpenFinUndockControl />
     <DragRegion />
     <OpenFinControls {...props} />
   </Header>
@@ -51,6 +53,20 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
     </HeaderControl>
   </React.Fragment>
 )
+
+const OpenFinUndockControl: React.FC = () => {
+  const handleUndockClick = () => {
+    snapAndDock.undockWindow()
+  }
+
+  return (
+      <UndockButton
+        onClick={handleUndockClick}
+      >
+        Undock
+      </UndockButton>
+  )
+}
 
 export const OPENFIN_CHROME_HEADER_HEIGHT = '21px'
 
@@ -81,6 +97,14 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
   &:hover {
     color: ${({ theme, accent = 'dominant' }) => theme.button[accent].backgroundColor};
   }
+`
+
+const UndockButton = styled.button`
+  display: block;
+  height: 100%;
+  width: max-content;
+  padding: 0.625rem 0 0 0.625rem;
+  cursor: pointer;
 `
 
 export const Root = styled.div`
