@@ -27,12 +27,12 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
         public async Task<ExecuteTradeResponseDto> ExecuteAsync(ExecuteTradeRequestDto request, string user)
         {
             var id = await _tradeIdProvider.GetNextId();
-            var tradeDate = DateTime.UtcNow.Date;
+            var tradeDate = DateTimeOffset.UtcNow.Date;
 
-            DateTime valueDate;
-            if (!DateTime.TryParse(request.ValueDate, out valueDate))
+            DateTimeOffset valueDate;
+            if (!DateTimeOffset.TryParse(request.ValueDate, out valueDate))
             {
-                valueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday();
+                valueDate = DateTimeOffset.UtcNow.AddWeekDays(2);
             }
 
 

@@ -128,7 +128,7 @@ class JSExcelAdapter implements ExcelApp {
     }
   }
 
-  /* 
+  /*
     Alternative approach: ActiveX button in excel to change the value of a particular cell via
     VBA macros and pick up the change here. Currently the favoured approach is to detect the
     selection of the "Close position" cell (styled as a button in Excel)

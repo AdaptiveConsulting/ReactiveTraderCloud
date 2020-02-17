@@ -29,27 +29,31 @@ interface RouteWrapperProps {
 const isChildView = window.fin && window.fin.me.isView
 
 const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'main', title }) => {
-
   const platform = usePlatform()
   const { PlatformFooter, PlatformHeader, PlatformControls, PlatformRoute, window } = platform
 
   const Header = windowType === 'main' ? PlatformControls : null
   const Footer = windowType === 'main' ? PlatformFooter : null
-  const subheader = windowType === 'sub' && !isChildView ? <PlatformHeader close={window.close} /> : null
+  const subheader =
+    windowType === 'sub' && !isChildView ? (
+      <PlatformHeader close={window.close} minimize={window.minimize} />
+    ) : null
 
   if (title) {
     document.title = title
   }
 
-  return <RouteStyle platform={platform}>
-    <PlatformRoute>
-      {subheader}
-      {React.cloneElement(children as React.ReactElement, {
-        header: Header ? <Header {...window} /> : null,
-        footer: Footer ? <Footer /> : null,
-      })}
-    </PlatformRoute>
-  </RouteStyle>
+  return (
+    <RouteStyle platform={platform}>
+      <PlatformRoute>
+        {subheader}
+        {React.cloneElement(children as React.ReactElement, {
+          header: Header ? <Header {...window} /> : null,
+          footer: Footer ? <Footer /> : null,
+        })}
+      </PlatformRoute>
+    </RouteStyle>
+  )
 }
 
 export { RouteStyle, RouteWrapper }

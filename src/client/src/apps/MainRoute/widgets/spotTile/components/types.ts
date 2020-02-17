@@ -1,7 +1,14 @@
 import { CurrencyPair, Direction, ServiceConnectionStatus } from 'rt-types'
-import { SpotTileDataWithNotional } from '../model'
+import { SpotTileData } from '../model'
 import { ValidationMessage } from './notional'
-import { RfqCancel, RfqExpired, RfqReject, RfqRequest, RfqRequote, RfqReset, } from '../model/rfqRequest'
+import {
+  RfqCancel,
+  RfqExpired,
+  RfqReject,
+  RfqRequest,
+  RfqRequote,
+  RfqReset,
+} from '../model/rfqRequest'
 
 export interface TradingMode {
   symbol: CurrencyPair['symbol']
@@ -26,7 +33,7 @@ export interface TileSwitchChildrenProps {
 
 export interface SpotTileProps {
   currencyPair: CurrencyPair
-  spotTileData: SpotTileDataWithNotional
+  spotTileData: SpotTileData
   executionStatus: ServiceConnectionStatus
   executeTrade: (direction: Direction, rawSpotRate: number) => void
   updateNotional: (notional: number) => void

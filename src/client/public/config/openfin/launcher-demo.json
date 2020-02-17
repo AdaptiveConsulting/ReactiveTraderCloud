@@ -9,9 +9,9 @@
     "defaultLeft": 30,
     "autoShow": true,
     "permissions": {
-        "System": {
-            "launchExternalProcess": true
-        }
+      "System": {
+        "launchExternalProcess": true
+      }
     },
     "saveWindowState": false,
     "resizable": false,

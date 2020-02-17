@@ -1,17 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NotionalInput default 1`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+}
+
+.spot-tile:hover .c2 {
+  box-shadow: 0px 1px 0px #fff;
+}
+
+.spot-tile:hover .c2:focus,
+.c2:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
 <div
-  className="sc-htpNat idZgat"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb fauXdE"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -24,17 +62,55 @@ exports[`NotionalInput default 1`] = `
 `;
 
 exports[`NotionalInput default 2`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+}
+
+.spot-tile:hover .c2 {
+  box-shadow: 0px 1px 0px #333333;
+}
+
+.spot-tile:hover .c2:focus,
+.c2:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
 <div
-  className="sc-htpNat idZgat"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb dfDCvR"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -47,17 +123,56 @@ exports[`NotionalInput default 2`] = `
 `;
 
 exports[`NotionalInput disabled 1`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  opacity: 0.3;
+}
+
+.spot-tile:hover .c2 {
+  box-shadow: 0px 1px 0px #fff;
+}
+
+.spot-tile:hover .c2:focus,
+.c2:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
 <div
-  className="sc-htpNat idZgat"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb ixCVbX"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={true}
     onBlur={[Function]}
@@ -70,17 +185,56 @@ exports[`NotionalInput disabled 1`] = `
 `;
 
 exports[`NotionalInput disabled 2`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  opacity: 0.3;
+}
+
+.spot-tile:hover .c2 {
+  box-shadow: 0px 1px 0px #333333;
+}
+
+.spot-tile:hover .c2:focus,
+.c2:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
 <div
-  className="sc-htpNat idZgat"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb jPqRyz"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={true}
     onBlur={[Function]}
@@ -93,17 +247,65 @@ exports[`NotionalInput disabled 2`] = `
 `;
 
 exports[`NotionalInput show reset button 1`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+}
+
+.spot-tile:hover .c2 {
+  box-shadow: 0px 1px 0px #fff;
+}
+
+.spot-tile:hover .c2:focus,
+.c2:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
+.c3 {
+  background-color: #2e3543;
+  border: 2px solid #272d3a;
+  border-radius: 3px;
+  margin-left: 8px;
+  grid-area: ResetInputValue;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
 <div
-  className="sc-htpNat idZgat"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb fauXdE"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -113,7 +315,7 @@ exports[`NotionalInput show reset button 1`] = `
     value="1,000,000"
   />
   <button
-    className="sc-ifAKCX gROrJN"
+    className="c3"
     data-qa="notional-input__reset-input-value"
     onClick={[Function]}
   >
@@ -125,17 +327,65 @@ exports[`NotionalInput show reset button 1`] = `
 `;
 
 exports[`NotionalInput show reset button 2`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+}
+
+.spot-tile:hover .c2 {
+  box-shadow: 0px 1px 0px #333333;
+}
+
+.spot-tile:hover .c2:focus,
+.c2:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
+.c3 {
+  background-color: #fff;
+  border: 2px solid #f4f6f9;
+  border-radius: 3px;
+  margin-left: 8px;
+  grid-area: ResetInputValue;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
 <div
-  className="sc-htpNat idZgat"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb dfDCvR"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -145,7 +395,7 @@ exports[`NotionalInput show reset button 2`] = `
     value="1,000,000"
   />
   <button
-    className="sc-ifAKCX fCQbjt"
+    className="c3"
     data-qa="notional-input__reset-input-value"
     onClick={[Function]}
   >
@@ -157,17 +407,56 @@ exports[`NotionalInput show reset button 2`] = `
 `;
 
 exports[`NotionalInput with error 1`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c3 {
+  color: #f94c4c;
+  grid-area: Message;
+  font-size: 0.6rem;
+  line-height: normal;
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 13px;
+  margin-bottom: -0.5rem;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  box-shadow: 0px 1px 0px #f94c4c;
+}
+
 <div
-  className="sc-htpNat kjfMBr"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb iHOuZf"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -177,7 +466,7 @@ exports[`NotionalInput with error 1`] = `
     value="1,000,000"
   />
   <div
-    className="sc-bwzfXH hUHSeX"
+    className="c3"
     data-qa="notional-input__validation-message"
   >
     Some error
@@ -186,17 +475,56 @@ exports[`NotionalInput with error 1`] = `
 `;
 
 exports[`NotionalInput with error 2`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c3 {
+  color: #f94c4c;
+  grid-area: Message;
+  font-size: 0.6rem;
+  line-height: normal;
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 13px;
+  margin-bottom: -0.5rem;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  box-shadow: 0px 1px 0px #f94c4c;
+}
+
 <div
-  className="sc-htpNat kjfMBr"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb iHOuZf"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -206,7 +534,7 @@ exports[`NotionalInput with error 2`] = `
     value="1,000,000"
   />
   <div
-    className="sc-bwzfXH hUHSeX"
+    className="c3"
     data-qa="notional-input__validation-message"
   >
     Some error
@@ -215,17 +543,56 @@ exports[`NotionalInput with error 2`] = `
 `;
 
 exports[`NotionalInput with info 1`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c3 {
+  color: #5f94f5;
+  grid-area: Message;
+  font-size: 0.6rem;
+  line-height: normal;
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 13px;
+  margin-bottom: -0.5rem;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
 <div
-  className="sc-htpNat kjfMBr"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb gDYEmO"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -235,7 +602,7 @@ exports[`NotionalInput with info 1`] = `
     value="1,000,000"
   />
   <div
-    className="sc-bwzfXH cHoFLD"
+    className="c3"
     data-qa="notional-input__validation-message"
   >
     Some information
@@ -244,17 +611,56 @@ exports[`NotionalInput with info 1`] = `
 `;
 
 exports[`NotionalInput with info 2`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c3 {
+  color: #5f94f5;
+  grid-area: Message;
+  font-size: 0.6rem;
+  line-height: normal;
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 13px;
+  margin-bottom: -0.5rem;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
 <div
-  className="sc-htpNat kjfMBr"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb gDYEmO"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -264,7 +670,7 @@ exports[`NotionalInput with info 2`] = `
     value="1,000,000"
   />
   <div
-    className="sc-bwzfXH cHoFLD"
+    className="c3"
     data-qa="notional-input__validation-message"
   >
     Some information
@@ -273,17 +679,56 @@ exports[`NotionalInput with info 2`] = `
 `;
 
 exports[`NotionalInput with warning 1`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c3 {
+  color: #F7D036;
+  grid-area: Message;
+  font-size: 0.6rem;
+  line-height: normal;
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 13px;
+  margin-bottom: -0.5rem;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  box-shadow: 0px 1px 0px #F7D036;
+}
+
 <div
-  className="sc-htpNat kjfMBr"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb ecOaYV"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -293,7 +738,7 @@ exports[`NotionalInput with warning 1`] = `
     value="1,000,000"
   />
   <div
-    className="sc-bwzfXH bpWJsW"
+    className="c3"
     data-qa="notional-input__validation-message"
   >
     Some warning
@@ -302,17 +747,56 @@ exports[`NotionalInput with warning 1`] = `
 `;
 
 exports[`NotionalInput with warning 2`] = `
+.c1 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c3 {
+  color: #F7D036;
+  grid-area: Message;
+  font-size: 0.6rem;
+  line-height: normal;
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 13px;
+  margin-bottom: -0.5rem;
+}
+
+.c2 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  box-shadow: 0px 1px 0px #F7D036;
+}
+
 <div
-  className="sc-htpNat kjfMBr"
+  className="c0"
 >
   <span
-    className="sc-bdVaJa bxrsSL"
+    className="c1"
     data-qa="notional-input__currency-pair-symbol"
   >
     EUR
   </span>
   <input
-    className="sc-bxivhb ecOaYV"
+    className="c2"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -322,7 +806,7 @@ exports[`NotionalInput with warning 2`] = `
     value="1,000,000"
   />
   <div
-    className="sc-bwzfXH bpWJsW"
+    className="c3"
     data-qa="notional-input__validation-message"
   >
     Some warning

@@ -16,4 +16,6 @@ services:
       - e2ebase
       - client
       - nginx
+      - openfinconfig
+      - nlp
       - servers

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "build/dist",
     "module": "esnext",
-    "target": "es5",
+    "target": "es2018",
     "lib": [
       "es2015",
       "es2017",

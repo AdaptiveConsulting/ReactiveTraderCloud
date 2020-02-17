@@ -1,12 +1,12 @@
 import React from 'react'
 import NotionalInput from '../notional'
-import { stories, Story, Centered } from './Initialise.stories'
+import { Story, Centered, notionalStories } from './Initialise.stories'
 import { action } from '@storybook/addon-actions'
 
 const updateNotional = action('updateNotional')
 const resetNotional = action('resetNotional')
 
-stories.add('Notional input', () => (
+notionalStories.add('Notional input', () => (
   <Story>
     <Centered>
       <div style={{ padding: '1.5rem' }}>
@@ -23,17 +23,17 @@ stories.add('Notional input', () => (
   </Story>
 ))
 
-stories.add('Notional input with trading disabled', () => (
+notionalStories.add('Notional input with trading disabled', () => (
   <Story>
     <Centered>
       <div style={{ padding: '1.5rem' }}>
         <NotionalInput
-          notional={1000000}
+          notional={1000000000}
           currencyPairSymbol="USDJPY"
           currencyPairBase="USD"
           updateNotional={updateNotional}
           resetNotional={resetNotional}
-          disabled={false}
+          disabled={true}
         />
       </div>
     </Centered>
