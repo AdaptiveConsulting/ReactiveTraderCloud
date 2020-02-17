@@ -29,6 +29,7 @@ export default class NotificationContainer extends PureComponent<Props> {
 
   private renderNotifications: () => (style: React.CSSProperties) => JSX.Element | null = () => {
     const { lastTradeExecutionStatus, currencyPair, onNotificationDismissed } = this.props
+    console.log(this.props)
     const symbols = `${currencyPair.base}/${currencyPair.terms}`
     if (!lastTradeExecutionStatus || !hasNotification(lastTradeExecutionStatus)) {
       return () => null

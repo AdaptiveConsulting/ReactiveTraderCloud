@@ -153,6 +153,18 @@ export const spotTileDataReducer = (
         ),
       }
     case TILE_ACTION_TYPES.DISMISS_NOTIFICATION:
+      const shouldDismiss =
+        !action.payload.id ||
+        (state[action.payload.currencyPair] &&
+          state[action.payload.currencyPair]!.lastTradeExecutionStatus &&
+          state[action.payload.currencyPair]!.lastTradeExecutionStatus!.request.id ===
+            action.payload.id)
+      return {
+        ...state,
+        [action.payload.currencyPair]: shouldDismiss
+          ? spotTileReducer(state[action.payload.currencyPair], action)
+          : state[action.payload.currencyPair],
+      }
     case TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE:
       return {
         ...state,

@@ -1,13 +1,13 @@
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 // import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
-import { delay, map, mergeMap } from 'rxjs/operators'
+import { delay, map, mergeMap, filter } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import { ExecuteTradeRequest, ExecuteTradeResponse } from '../model/executeTradeRequest'
 import ExecutionService from './executionService'
 
-const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 3000
+const DISMISS_NOTIFICATION_AFTER_X_IN_MS = 6000
 
 const { executeTrade, tradeExecuted } = SpotTileActions
 type ExecutionAction = ReturnType<typeof executeTrade>
@@ -41,9 +41,29 @@ const executeTradeEpic: ApplicationEpic = (
 export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     ofType<Action, ExecutedTradeAction>(TILE_ACTION_TYPES.TRADE_EXECUTED),
+    filter((action: ExecutedTradeAction) => !action.payload.hasError),
     delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
-    map((action: ExecutedTradeAction) => action.payload.request.CurrencyPair),
+    map((action: ExecutedTradeAction) => ({
+      currencyPair: action.payload.request.CurrencyPair,
+      id: action.payload.request.id,
+    })),
     map(SpotTileActions.dismissNotification),
   )
 
 export const spotTileEpic = combineEpics(executeTradeEpic, onTradeExecuted)
+
+// export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
+//   action$.pipe(
+//     ofType<Action, ExecutedTradeAction>(TILE_ACTION_TYPES.TRADE_EXECUTED),
+//     mergeMap((action: ExecutedTradeAction) => {
+//       const dismiss$ = action$.pipe(
+//         ofType<Action, DissmissNotisfication>(TILE_ACTION_TYPES.DISMISS_NOTIFICATION),
+//         filter(dismissAction => dismissAction.payload === action.payload.request.CurrencyPair),
+//       )
+
+//       return of(SpotTileActions.dismissNotification(action.payload.request.CurrencyPair)).pipe(
+//         takeUntil(dismiss$),
+//         delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
+//       )
+//     }),
+//   )

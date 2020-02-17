@@ -1,6 +1,7 @@
 import { Direction, Trade } from 'rt-types'
 
 export interface ExecuteTradeRequest extends Object {
+  id: string
   CurrencyPair: string
   SpotRate: number
   Direction: Direction
