@@ -1,9 +1,10 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { FC } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { snapAndDock } from 'openfin-layouts'
 import { styled, AccentName } from 'rt-theme'
+import { UndockIcon } from '../../../rt-components'
 
 export interface ControlProps {
   minimize?: () => void
@@ -11,7 +12,7 @@ export interface ControlProps {
   close: () => void
 }
 
-export const OpenFinChrome: FC = ({ children }) => (
+export const OpenFinChrome: React.FC = ({ children }) => (
   <React.Fragment>
     <Helmet>
       <style type="text/css">{`
@@ -55,16 +56,35 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
 )
 
 const OpenFinUndockControl: React.FC = () => {
+  const [isWindowDocked, setIsWindowDocked] = useState(false)
+
+  useEffect(() => {
+    const handleWindowDocked = () => {
+      setIsWindowDocked(true)
+    }
+
+    snapAndDock.addEventListener('window-docked', handleWindowDocked)
+
+    return () => snapAndDock.removeEventListener('window-docked', handleWindowDocked)
+  }, [])
+
   const handleUndockClick = () => {
     snapAndDock.undockWindow()
+    setIsWindowDocked(false)
   }
 
   return (
-      <UndockButton
-        onClick={handleUndockClick}
-      >
-        Undock
-      </UndockButton>
+    <>
+      {isWindowDocked && (
+        <UndockButton
+          onClick={handleUndockClick}
+        >
+          <UndockIcon width={16} height={16} />
+          <SubTitle>Undock</SubTitle>
+        </UndockButton>
+      )
+      }
+    </>
   )
 }
 
@@ -105,6 +125,13 @@ const UndockButton = styled.button`
   width: max-content;
   padding: 0.625rem 0 0 0.625rem;
   cursor: pointer;
+`
+
+const SubTitle = styled.span`
+  color: ${props => props.theme.core.offBackground};
+  padding: 0.25rem;
+  font-size: 0.875rem;
+  vertical-align: text-top;
 `
 
 export const Root = styled.div`

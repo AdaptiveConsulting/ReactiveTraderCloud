@@ -1,6 +1,6 @@
 export { TearOff } from './tear-off'
 export { Flex, flexStyle } from './flex'
-export { PopoutIcon, ExpandIcon, LogoIcon } from './icons'
+export * from './icons'
 export { default as Modal } from './modal'
 export { default as AdaptiveLoader } from './adaptive-loader'
 export { default as Loadable } from './loadable'
