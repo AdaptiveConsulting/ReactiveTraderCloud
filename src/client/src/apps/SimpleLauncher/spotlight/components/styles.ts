@@ -69,7 +69,8 @@ export const Input = styled.input`
   ${rules.appRegionNoDrag};
 
   &::placeholder {
-    color: ${({ theme }) => theme.textColor}
+    color: ${({ theme }) => theme.textColor};
+    opacity: 0.6;
   }
 `
 
@@ -98,7 +99,7 @@ export const SearchContainer = styled.div`
   
   &.search-container--active {
     opacity: 1;
-    left: 56px;
+    left: 55px;
   }
 `
 
