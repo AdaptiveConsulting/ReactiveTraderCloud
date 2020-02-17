@@ -1,10 +1,10 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Helmet } from 'react-helmet'
 import { snapAndDock } from 'openfin-layouts'
 import { styled, AccentName } from 'rt-theme'
-import { UndockIcon } from '../../../rt-components'
+import { UndockIcon, IconStateTypes } from '../../../rt-components'
 
 export interface ControlProps {
   minimize?: () => void
@@ -57,6 +57,7 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
 
 const OpenFinUndockControl: React.FC = () => {
   const [isWindowDocked, setIsWindowDocked] = useState(false)
+  const [iconState, setIconState] = useState(IconStateTypes.Normal);
 
   useEffect(() => {
     const handleWindowDocked = () => {
@@ -68,22 +69,23 @@ const OpenFinUndockControl: React.FC = () => {
     return () => snapAndDock.removeEventListener('window-docked', handleWindowDocked)
   }, [])
 
-  const handleUndockClick = () => {
+  const handleUndockClick = useCallback(() => {
     snapAndDock.undockWindow()
+    setIconState(IconStateTypes.Normal)
     setIsWindowDocked(false)
-  }
+  }, [])
 
   return (
     <>
       {isWindowDocked && (
         <UndockButton
           onClick={handleUndockClick}
+          onMouseEnter={() => setIconState(IconStateTypes.Hover)}
+          onMouseLeave={() => setIconState(IconStateTypes.Normal)}
         >
-          <UndockIcon width={16} height={16} />
-          <SubTitle>Undock</SubTitle>
+          <UndockIcon width={24} height={24} iconState={iconState} />
         </UndockButton>
-      )
-      }
+      )}
     </>
   )
 }
@@ -123,15 +125,8 @@ const UndockButton = styled.button`
   display: block;
   height: 100%;
   width: max-content;
-  padding: 0.625rem 0 0 0.625rem;
+  padding-left: 0.625rem;
   cursor: pointer;
-`
-
-const SubTitle = styled.span`
-  color: ${props => props.theme.core.offBackground};
-  padding: 0.25rem;
-  font-size: 0.875rem;
-  vertical-align: text-top;
 `
 
 export const Root = styled.div`
