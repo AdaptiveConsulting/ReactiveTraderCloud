@@ -37,9 +37,17 @@ const StyledButton = styled.button`
 
 interface LaunchButtonProps {
   onClick: () => void
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
   children: JSX.Element[] | JSX.Element
 }
 
 export const LaunchButton = (props: LaunchButtonProps) => (
-  <StyledButton onClick={props.onClick}>{props.children}</StyledButton>
+  <StyledButton
+    onClick={props.onClick}
+    onMouseEnter={props.onMouseEnter}
+    onMouseLeave={props.onMouseLeave}
+  >
+    {props.children}
+  </StyledButton>
 )

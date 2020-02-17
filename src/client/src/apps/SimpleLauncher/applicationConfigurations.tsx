@@ -4,6 +4,7 @@ import {
   excelIcon,
   limitCheckerIcon,
   reactiveAnalyticsIcon,
+  reactiveAnalyticsIconHover,
   reactiveTraderIcon,
 } from './icons/index'
 
@@ -58,6 +59,7 @@ export interface ApplicationConfig {
   uuid?: string
   url?: string
   icon: JSX.Element
+  iconhover?: JSX.Element
   provider?: ApplicationProvider
 }
 
@@ -130,13 +132,14 @@ const baseAppConfigs: ApplicationConfig[] = [
     tooltipName: 'Launch Reactive Analytics',
     url: `http://${env === 'dev' ? env : 'demo'}-reactive-analytics.adaptivecluster.com/`,
     icon: reactiveAnalyticsIcon,
+    iconhover: reactiveAnalyticsIconHover,
     provider: {
       platformName: 'openfin',
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
         frame: false,
-        icon: `${ORIGIN}/static/media/ra-icon.ico`,
+        icon: `${ORIGIN}/static/media/ra-icon-color.ico`,
       },
     },
   },
