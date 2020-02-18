@@ -1,7 +1,7 @@
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
 // import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
-import { delay, map, mergeMap } from 'rxjs/operators'
+import { delay, map, mergeMap, filter } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import { ExecuteTradeRequest, ExecuteTradeResponse } from '../model/executeTradeRequest'
@@ -14,7 +14,11 @@ type ExecutionAction = ReturnType<typeof executeTrade>
 
 export type ExecutedTradeAction = ReturnType<typeof tradeExecuted>
 
-const executeTradeEpic: ApplicationEpic = (action$, state$, { loadBalancedServiceStub, limitChecker }) => {
+const executeTradeEpic: ApplicationEpic = (
+  action$,
+  state$,
+  { loadBalancedServiceStub, limitChecker },
+) => {
   const limitCheck = (executeTradeRequest: ExecuteTradeRequest) =>
     limitChecker.rpc({
       tradedCurrencyPair: executeTradeRequest.CurrencyPair,
@@ -37,8 +41,12 @@ const executeTradeEpic: ApplicationEpic = (action$, state$, { loadBalancedServic
 export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     ofType<Action, ExecutedTradeAction>(TILE_ACTION_TYPES.TRADE_EXECUTED),
+    filter((action: ExecutedTradeAction) => !action.payload.hasError),
     delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
-    map((action: ExecutedTradeAction) => action.payload.request.CurrencyPair),
+    map((action: ExecutedTradeAction) => ({
+      currencyPair: action.payload.request.CurrencyPair,
+      id: action.payload.request.id,
+    })),
     map(SpotTileActions.dismissNotification),
   )
 
