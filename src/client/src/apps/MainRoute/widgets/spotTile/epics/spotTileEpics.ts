@@ -51,19 +51,3 @@ export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
   )
 
 export const spotTileEpic = combineEpics(executeTradeEpic, onTradeExecuted)
-
-// export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
-//   action$.pipe(
-//     ofType<Action, ExecutedTradeAction>(TILE_ACTION_TYPES.TRADE_EXECUTED),
-//     mergeMap((action: ExecutedTradeAction) => {
-//       const dismiss$ = action$.pipe(
-//         ofType<Action, DissmissNotisfication>(TILE_ACTION_TYPES.DISMISS_NOTIFICATION),
-//         filter(dismissAction => dismissAction.payload === action.payload.request.CurrencyPair),
-//       )
-
-//       return of(SpotTileActions.dismissNotification(action.payload.request.CurrencyPair)).pipe(
-//         takeUntil(dismiss$),
-//         delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
-//       )
-//     }),
-//   )
