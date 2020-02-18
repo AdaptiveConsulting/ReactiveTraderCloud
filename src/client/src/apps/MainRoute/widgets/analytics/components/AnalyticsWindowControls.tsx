@@ -7,7 +7,7 @@ interface AnalyticsHeaderProps {
   onPopoutClick?: (x: number, y: number) => void
 }
 
-const AnalyticsWindowHeader: React.FC<AnalyticsHeaderProps> = ({ canPopout, onPopoutClick }) => {
+const AnalyticsWindowControls: React.FC<AnalyticsHeaderProps> = ({ canPopout, onPopoutClick }) => {
   const popoutClickHandler = useCallback(
     event => {
       onPopoutClick && onPopoutClick(event.screenX, event.screenY)
@@ -24,4 +24,4 @@ const AnalyticsWindowHeader: React.FC<AnalyticsHeaderProps> = ({ canPopout, onPo
   ) : null
 }
 
-export default AnalyticsWindowHeader
+export default AnalyticsWindowControls
