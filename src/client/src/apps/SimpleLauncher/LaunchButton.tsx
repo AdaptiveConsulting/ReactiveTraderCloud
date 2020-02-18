@@ -26,7 +26,6 @@ const StyledButton = styled.button<{ fill?: string }>`
   }
 
   &:hover {
-    fill: ${({ fill }) => fill || 'inherited'};
     background-color: #2b2b2b;
     svg {
       transition-timing-function: ease-out;
