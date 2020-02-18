@@ -1,9 +1,10 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { FC } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Helmet } from 'react-helmet'
 import { snapAndDock } from 'openfin-layouts'
 import { styled, AccentName } from 'rt-theme'
+import { UndockIcon, IconStateTypes } from '../../../rt-components'
 
 export interface ControlProps {
   minimize?: () => void
@@ -11,7 +12,7 @@ export interface ControlProps {
   close: () => void
 }
 
-export const OpenFinChrome: FC = ({ children }) => (
+export const OpenFinChrome: React.FC = ({ children }) => (
   <React.Fragment>
     <Helmet>
       <style type="text/css">{`
@@ -55,16 +56,37 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
 )
 
 const OpenFinUndockControl: React.FC = () => {
-  const handleUndockClick = () => {
+  const [isWindowDocked, setIsWindowDocked] = useState(false)
+  const [iconState, setIconState] = useState(IconStateTypes.Normal);
+
+  useEffect(() => {
+    const handleWindowDocked = () => {
+      setIsWindowDocked(true)
+    }
+
+    snapAndDock.addEventListener('window-docked', handleWindowDocked)
+
+    return () => snapAndDock.removeEventListener('window-docked', handleWindowDocked)
+  }, [])
+
+  const handleUndockClick = useCallback(() => {
     snapAndDock.undockWindow()
-  }
+    setIconState(IconStateTypes.Normal)
+    setIsWindowDocked(false)
+  }, [])
 
   return (
-      <UndockButton
-        onClick={handleUndockClick}
-      >
-        Undock
-      </UndockButton>
+    <>
+      {isWindowDocked && (
+        <UndockButton
+          onClick={handleUndockClick}
+          onMouseEnter={() => setIconState(IconStateTypes.Hover)}
+          onMouseLeave={() => setIconState(IconStateTypes.Normal)}
+        >
+          <UndockIcon width={24} height={24} iconState={iconState} />
+        </UndockButton>
+      )}
+    </>
   )
 }
 
@@ -103,7 +125,7 @@ const UndockButton = styled.button`
   display: block;
   height: 100%;
   width: max-content;
-  padding: 0.625rem 0 0 0.625rem;
+  padding-left: 0.625rem;
   cursor: pointer;
 `
 
