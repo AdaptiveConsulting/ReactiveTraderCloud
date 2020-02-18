@@ -1,10 +1,9 @@
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState, useCallback } from 'react'
 import { Helmet } from 'react-helmet'
 import { snapAndDock } from 'openfin-layouts'
 import { styled, AccentName } from 'rt-theme'
 import { UndockIcon, IconStateTypes } from '../../../rt-components'
+import { minimiseNormalIcon, maximiseScreenIcon, exitNormalIcon } from 'apps/SimpleLauncher/icons'
 
 export interface ControlProps {
   minimize?: () => void
@@ -40,24 +39,24 @@ export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
 export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close }) => (
   <React.Fragment>
     {minimize ? (
-      <HeaderControl accent="aware" onClick={minimize} data-qa="openfin-chrome__minimize">
-        <i className="fas fa-minus fa-set-position" />
+      <HeaderControl onClick={minimize} data-qa="openfin-chrome__minimize">
+        {minimiseNormalIcon}
       </HeaderControl>
     ) : null}
     {maximize ? (
-      <HeaderControl accent="dominant" onClick={maximize} data-qa="openfin-chrome__maximize">
-        <i className="far fa-window-maximize" />
+      <HeaderControl onClick={maximize} data-qa="openfin-chrome__maximize">
+        {maximiseScreenIcon}
       </HeaderControl>
     ) : null}
-    <HeaderControl accent="bad" onClick={close} data-qa="openfin-chrome__close">
-      <FontAwesomeIcon icon={faTimes} />
+    <HeaderControl onClick={close} data-qa="openfin-chrome__close">
+      {exitNormalIcon}
     </HeaderControl>
   </React.Fragment>
 )
 
 const OpenFinUndockControl: React.FC = () => {
   const [isWindowDocked, setIsWindowDocked] = useState(false)
-  const [iconState, setIconState] = useState(IconStateTypes.Normal);
+  const [iconState, setIconState] = useState(IconStateTypes.Normal)
 
   useEffect(() => {
     const handleWindowDocked = () => {
@@ -117,7 +116,9 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
   cursor: pointer;
 
   &:hover {
-    color: ${({ theme, accent = 'dominant' }) => theme.button[accent].backgroundColor};
+    svg path:last-child {
+      fill: #5f94f5;
+    }
   }
 `
 

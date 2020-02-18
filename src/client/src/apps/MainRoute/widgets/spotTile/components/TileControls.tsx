@@ -9,10 +9,10 @@ export const TopRightButton = styled('button')`
   opacity: 0;
   transition: opacity 0.2s;
   padding: 0.25rem;
-
-  .svg-icon {
-    stroke: ${({ theme }) => theme.core.textColor};
-    fill: ${({ theme }) => theme.core.textColor};
+  &:hover {
+    .hover-state {
+      fill: #5f94f5;
+    }
   }
 `
 
@@ -31,7 +31,7 @@ const TileControls: React.FC<Props> = ({ onPopoutClick, canPopout }) => {
     <React.Fragment>
       {canPopout && (
         <TopRightButton onClick={popoutClickHandler} data-qa="tile-controls__popout-button">
-          <PopoutIcon width={0.8125} height={0.75} />
+          {PopoutIcon}
         </TopRightButton>
       )}
     </React.Fragment>

@@ -82,10 +82,20 @@ export const LogoContainer = styled(IconContainer)`
 export const ExitButton = styled.button`
   border-bottom: 1px solid rgba(216, 216, 216, 0.15);
   padding-top: 3px;
+  &:hover {
+    svg path:last-child {
+      fill: #5f94f5;
+    }
+  }
 `
 
 export const MinimiseButton = styled.button`
   padding-bottom: 3px;
+  &:hover {
+    svg path:last-child {
+      fill: #5f94f5;
+    }
+  }
 `
 
 export const MinExitContainer = styled(ButtonContainer)`

@@ -136,8 +136,9 @@ export const Controls = styled('div')`
 `
 
 export const PopoutButton = styled('button')`
-  .svg-icon {
-    stroke: ${({ theme }) => theme.core.textColor};
-    fill: ${({ theme }) => theme.core.textColor};
+  &:hover {
+    .hover-state {
+      fill: #5f94f5;
+    }
   }
 `
