@@ -1,6 +1,25 @@
 import { styled } from 'rt-theme'
 import { transparentColor } from '../globals/variables'
 
+export const AnalyticsWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  max-width: 60rem;
+  min-width: 20rem;
+  margin: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+`
+
+export const AnalyticsHeader = styled.header`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 24px;
+  padding: 10px;
+  color: ${({ theme }) => theme.core.textColor};
+`
+
 export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   border-radius: 0.25rem;
   color: ${({ theme }) => theme.core.textColor};
@@ -14,19 +33,9 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
       grid-gap: 0.5rem;
     }`
       : ``}
-
-  width: 100%;
-  height: 100%;
-  max-width: 60rem;
-  min-width: 20rem;
-  margin: auto;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  position: relative;
-  padding: 0.25rem 1rem 1rem 1rem;
+  padding: 1rem;
   font-size: 1rem;
   scrollbar-width: thin;
-
   /* axis */
   .nvd3 .nv-axis path,
   .nvd3 .nv-axis .tick.zero line {
@@ -97,7 +106,7 @@ export const AnalyticsLineChartWrapper = styled.div`
   margin-bottom: 20px;
 `
 
-export const Header = styled.div`
+export const ProfitAndLossHeader = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.5rem;
@@ -125,19 +134,8 @@ export const BubbleChart = styled.div`
 
 export const Controls = styled('div')`
   text-align: right;
-  padding-bottom: 0.25rem;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s;
-
-  /* We want to show the popout icon when we hover over the whole panel */
-  ${AnalyticsStyle}:hover & {
-    opacity: 0.75;
-  }
 `
 
-export const PopoutButton = styled('button')`
-  .svg-icon {
-    stroke: ${({ theme }) => theme.core.textColor};
-    fill: ${({ theme }) => theme.core.textColor};
-  }
-`
+export const PopoutButton = styled('button')``
