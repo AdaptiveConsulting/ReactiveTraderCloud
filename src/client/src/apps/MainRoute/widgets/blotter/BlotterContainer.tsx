@@ -5,10 +5,10 @@ import { Loadable } from 'rt-components'
 import { GlobalState } from 'StoreTypes'
 import { BlotterActions } from './actions'
 import Blotter from './components'
-import { selectBlotterRows, selectBlotterStatus } from './selectors'
+import { selectBlotterStatus, selectBlotterRowsAndFilter } from './selectors'
 import { usePlatform } from 'rt-platforms'
 import { Trade } from 'rt-types'
-import { BlotterFilters, filterBlotterTrades } from './blotterTradesFilter'
+import { BlotterFilters } from './blotterTradesFilter'
 
 interface BlotterContainerOwnProps {
   filters?: BlotterFilters
@@ -17,16 +17,8 @@ interface BlotterContainerOwnProps {
   tearable?: boolean
 }
 
-function selectBlotterRowsAndFilter(
-  state: GlobalState,
-  filters: BlotterFilters,
-): ReadonlyArray<Trade> {
-  const trades: ReadonlyArray<Trade> = selectBlotterRows(state)
-  return filterBlotterTrades(trades, filters)
-}
-
 const mapStateToProps = (state: GlobalState, ownProps: BlotterContainerOwnProps) => ({
-  rows: selectBlotterRowsAndFilter(state, ownProps.filters || {}) as Trade[],
+  rows: selectBlotterRowsAndFilter(ownProps.filters || {})(state) as Trade[],
   status: selectBlotterStatus(state),
 })
 
@@ -59,7 +51,4 @@ const BlotterContainer: React.FC<BlotterContainerProps> = ({
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(BlotterContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(BlotterContainer)

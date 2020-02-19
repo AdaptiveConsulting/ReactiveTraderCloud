@@ -2,7 +2,7 @@ version: 2.1
 
 references:
   push_images_list: &push_images_list
-    client pricehistory bot nlp servers broker eventstore nginx
+    client pricehistory bot nlp openfinconfig servers broker eventstore nginx
 
 commands:
   setup_env:

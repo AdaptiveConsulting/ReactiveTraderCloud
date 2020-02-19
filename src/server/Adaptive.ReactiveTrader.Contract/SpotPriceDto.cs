@@ -19,7 +19,7 @@ namespace Adaptive.ReactiveTrader.Contract
         public decimal Mid { get; set; }
 
         [ProtoMember(5)]
-        public DateTime ValueDate { get; set; }
+        public DateTimeOffset ValueDate { get; set; }
 
         [ProtoMember(6)]
         public long CreationTimestamp { get; set; }

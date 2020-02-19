@@ -41,4 +41,4 @@ const TileHeader: React.FC<Props> = ({ ccyPair, date, displayCurrencyChart }) =>
   )
 }
 
-export default TileHeader
+export default React.memo(TileHeader)

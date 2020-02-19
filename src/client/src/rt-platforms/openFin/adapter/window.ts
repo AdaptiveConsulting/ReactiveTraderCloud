@@ -4,7 +4,7 @@ import { get as _get, last as _last } from 'lodash'
 import { PlatformWindow } from '../../platformWindow'
 import { _Window } from 'openfin/_v2/api/window/window'
 import { finWithPlatform } from '../OpenFinWithPlatform'
-import {resetCurrentSnapshotName} from "../snapshots"
+import { resetCurrentSnapshotName } from '../snapshots'
 
 const TEAR_OUT_OFFSET_LEFT = 50
 const TEAR_OUT_OFFSET_TOP = 50
@@ -120,6 +120,8 @@ export const openDesktopWindow = async (
   //@ts-ignore
   const updatedPosition = await getOpenfinWindowPosition(config, childWindows)
   const windowName = config.name || generateRandomName()
+  //@ts-ignore
+  const centered = (!hasChildWindows && !configHasXYCoordinates) || config.center === 'screen'
 
   console.info(`Creating Openfin window: ${windowName}`)
 
@@ -129,7 +131,7 @@ export const openDesktopWindow = async (
   const newWinIdentity = await platform.createWindow({
     autoShow: true,
     contextMenu: true,
-    defaultCentered: !hasChildWindows && !configHasXYCoordinates,
+    defaultCentered: centered,
     defaultHeight,
     defaultWidth,
     frame: false,
@@ -143,19 +145,23 @@ export const openDesktopWindow = async (
     ...position,
     ...updatedPosition,
     layout: {
-      content: [{
-        type: 'stack',
-        content:[{
-          type: 'component',
-          componentName: 'view',
-          componentState: {
-            name: `${windowName}_view`,
-            url: `${window.location.origin}${url}`
-          },
-          title: windowName
-        }]
-      }]
-    }
+      content: [
+        {
+          type: 'stack',
+          content: [
+            {
+              type: 'component',
+              componentName: 'view',
+              componentState: {
+                name: `${windowName}_view`,
+                url: `${window.location.origin}${url}`,
+              },
+              title: windowName,
+            },
+          ],
+        },
+      ],
+    },
   })
 
   const win = await window.fin.Window.wrap(newWinIdentity)

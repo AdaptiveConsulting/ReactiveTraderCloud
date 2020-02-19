@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.Host
@@ -13,8 +13,8 @@ namespace Adaptive.ReactiveTrader.Server.Host
             string dealtCurrency,
             DirectionDto direction,
             decimal spotRate,
-            DateTime tradeDate,
-            DateTime valueDate,
+            DateTimeOffset tradeDate,
+            DateTimeOffset valueDate,
             TradeStatusDto status)
         {
             TradeId = tradeId;
@@ -36,8 +36,8 @@ namespace Adaptive.ReactiveTrader.Server.Host
         public string DealtCurrency { get; }
         public DirectionDto Direction { get; }
         public decimal SpotRate { get; }
-        public DateTime TradeDate { get; }
-        public DateTime ValueDate { get; }
+        public DateTimeOffset TradeDate { get; }
+        public DateTimeOffset ValueDate { get; }
         public TradeStatusDto Status { get; set; }
 
         public override string ToString()

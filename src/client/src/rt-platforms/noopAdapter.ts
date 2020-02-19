@@ -27,10 +27,6 @@ export default class NoopPlatformAdapter implements Platform {
     },
   }
 
-  fdc3 = {
-    broadcast: throwNotImplemented,
-  }
-
   notification = {
     notify: throwNotImplemented,
   }

@@ -39,6 +39,14 @@ const notionalList = [
   ['45k', '45,000'],
 ]
 
+const envTitles = [
+  'Reactive Trader Cloud',
+  'Reactive Trader Cloud (DEV)',
+  'Reactive Trader Cloud (LOCAL)',
+  'Reactive Trader Cloud (UAT)',
+  'Reactive Trader Cloud (UNKNOWN)',
+]
+
 describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
   beforeEach(async () => {
     browser = await getBrowser()
@@ -47,7 +55,8 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
 
   it('Verify page title', async () => {
     const title = await browser.getTitle()
-    expect(title).toBe('Reactive Trader Cloud')
+    const isValid = envTitles.includes(title)
+    expect(isValid).toBeTruthy()
   })
 
   notionalList.forEach(([enteredNotional, expectedNotional]) => {
@@ -66,7 +75,7 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     const pricesButton = browser.element(by.qaTag('workspace-view-normal'))
     await pricesButton.click()
     const labelRFQ = await mainPage.tile.tradeType.initiateRFQ.buttonInitiateRFQ
-    expect(labelRFQ.getText()).toEqual('Initiate\nRFQ')
+    expect(labelRFQ.getText()).toEqual('Initiate RFQ')
     await mainPage.tile.resetNotional('EURToUSD')
     expect(notional.getAttribute('value')).toEqual('1,000,000')
   })
@@ -98,13 +107,6 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
     await mainPage.workspace.selectCurrency('usd')
     await mainPage.tile.setNotional('USDToJPY', '10m')
     await mainPage.tile.initiateRFQ()
-  })
-
-  it('should validate unavailable streaming', async () => {
-    await mainPage.workspace.selectCurrency('nzd')
-    const textStreaming = await mainPage.tile.tradeType.initiateRFQ.labelTextStreamingUnavailable
-    expect(textStreaming.getText()).toEqual('STREAMING PRICE UNAVAILABLE')
-    await mainPage.tile.NZDToUSDRFQ()
   })
 
   it('should validate zero notional', async () => {

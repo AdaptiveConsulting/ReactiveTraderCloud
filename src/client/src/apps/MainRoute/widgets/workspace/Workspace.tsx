@@ -8,7 +8,7 @@ import { ExternalWindowProps } from './selectors'
 
 const WorkspaceItems = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   grid-gap: 0.25rem;
 `
 
@@ -32,7 +32,7 @@ const ALL = 'ALL'
 
 const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
   const [currency, setCurrencyOption] = useState(ALL)
-  const [tileView, setTileView] = useState(TileViews.Normal)
+  const [tileView, setTileView] = useState(TileViews.Analytics)
 
   return (
     <div data-qa="workspace__tiles-workspace">

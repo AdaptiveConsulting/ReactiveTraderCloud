@@ -1,5 +1,5 @@
 import { Direction } from 'rt-types'
-import { SpotPriceTick, SpotTileDataWithNotional } from '../../model'
+import { SpotPriceTick, SpotTileData } from '../../model'
 import { PriceMovementTypes } from '../../model/priceMovementTypes'
 
 const currencyPair = {
@@ -29,7 +29,7 @@ const generateHistoricPrices: (totalPricePrick: number) => SpotPriceTick[] = tot
   return historicPrices
 }
 
-const spotTileData: SpotTileDataWithNotional = {
+const spotTileData: SpotTileData = {
   notional: 1000000,
   isTradeExecutionInFlight: false,
   price: {
@@ -83,4 +83,40 @@ const tradeRejected = {
   trade: { ...trade, status: 'rejected' },
 }
 
-export { currencyPair, spotTileData, tradeExecuted, tradeRejected }
+const spotTileDataWithRfq: SpotTileData = {
+  notional: 100000000,
+  isTradeExecutionInFlight: false,
+  price: {
+    ask: 184.775,
+    bid: 184.767,
+    creationTimestamp: 31566750203189236,
+    mid: 184.771,
+    priceMovementType: PriceMovementTypes.Up,
+    symbol: 'GBPJPY',
+    valueDate: '2018-08-04T00:00:00Z',
+  },
+  historicPrices: generateHistoricPrices(50),
+  rfqState: 'none',
+  rfqPrice: null,
+  rfqReceivedTime: null,
+  rfqTimeout: null,
+  lastTradeExecutionStatus: null,
+}
+
+const switchOptions = {
+  canRequest: 'canRequest',
+  requested: 'requested',
+  expired: 'expired',
+  none: 'none',
+}
+
+export {
+  currencyPair,
+  spotTileData,
+  tradeExecuted,
+  tradeRejected,
+  trade,
+  generateHistoricPrices,
+  spotTileDataWithRfq,
+  switchOptions,
+}
