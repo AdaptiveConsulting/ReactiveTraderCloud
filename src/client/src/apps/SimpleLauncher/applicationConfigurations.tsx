@@ -58,6 +58,7 @@ export interface ApplicationConfig {
   uuid?: string
   url?: string
   icon: JSX.Element
+  iconhovercolor?: string
   provider?: ApplicationProvider
 }
 
@@ -130,13 +131,14 @@ const baseAppConfigs: ApplicationConfig[] = [
     tooltipName: 'Launch Reactive Analytics',
     url: `http://${env === 'dev' ? env : 'demo'}-reactive-analytics.adaptivecluster.com/`,
     icon: reactiveAnalyticsIcon,
+    iconhovercolor: '#AAABD1',
     provider: {
       platformName: 'openfin',
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
         frame: false,
-        icon: `${ORIGIN}/static/media/ra-icon.ico`,
+        icon: `${ORIGIN}/static/media/ra-icon-color.ico`,
       },
     },
   },

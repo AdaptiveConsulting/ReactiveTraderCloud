@@ -3,9 +3,9 @@ import { PositionsChartModel } from '../model/positionsChartModel'
 import { ProfitAndLoss } from './ProfitAndLoss'
 import { CurrencyPair } from 'rt-types'
 import { useForceUpdate, useWindowSize } from 'rt-util'
-import AnalyticsWindowHeader from './AnalyticsHeader'
+import AnalyticsWindowControls from './AnalyticsWindowControls'
 import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
-import { AnalyticsStyle } from './styled'
+import { AnalyticsStyle, AnalyticsWrapper, AnalyticsHeader } from './styled'
 
 import { Positions } from './Positions'
 import { PnL } from './PnL'
@@ -40,20 +40,23 @@ const Analytics: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [windowSize])
   return (
-    <AnalyticsStyle inExternalWindow={inExternalWindow} data-qa="analytics__analytics-content">
-      <ProfitAndLoss
-        analyticsLineChartModel={analyticsLineChartModel}
-        popoutButton={<AnalyticsWindowHeader canPopout={canPopout} onPopoutClick={onPopoutClick} />}
-      />
+    <AnalyticsWrapper>
+      <AnalyticsHeader>
+        Analytics
+        <AnalyticsWindowControls canPopout={canPopout} onPopoutClick={onPopoutClick} />
+      </AnalyticsHeader>
+      <AnalyticsStyle inExternalWindow={inExternalWindow} data-qa="analytics__analytics-content">
+        <ProfitAndLoss analyticsLineChartModel={analyticsLineChartModel} />
 
-      {positionsChartModel && positionsChartModel.seriesData.length !== 0 && (
-        <React.Fragment>
-          <Positions data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
+        {positionsChartModel && positionsChartModel.seriesData.length !== 0 && (
+          <React.Fragment>
+            <Positions data={positionsChartModel.seriesData} currencyPairs={currencyPairs} />
 
-          <PnL chartData={positionsChartModel.seriesData} />
-        </React.Fragment>
-      )}
-    </AnalyticsStyle>
+            <PnL chartData={positionsChartModel.seriesData} />
+          </React.Fragment>
+        )}
+      </AnalyticsStyle>
+    </AnalyticsWrapper>
   )
 }
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Title, AnalyticsLineChartWrapper, Header } from './styled'
+import { Title, AnalyticsLineChartWrapper, ProfitAndLossHeader } from './styled'
 import { AnalyticsLineChart } from './analyticsLineChart'
 import LastPosition from './LastPosition'
 import { AnalyticsLineChartModel } from '../model/AnalyticsLineChartModel'
@@ -7,7 +7,6 @@ import { styled } from 'rt-theme'
 
 interface ProfitAndLossProps {
   analyticsLineChartModel: AnalyticsLineChartModel
-  popoutButton?: React.ReactElement
 }
 
 export const ProfitAndLossStyle = styled.div`
@@ -17,16 +16,12 @@ export const ProfitAndLossStyle = styled.div`
   grid-row-end: 2;
   grid-column: 1/-1;
 `
-export const ProfitAndLoss: FC<ProfitAndLossProps> = ({
-  analyticsLineChartModel,
-  popoutButton,
-}) => (
+export const ProfitAndLoss: FC<ProfitAndLossProps> = ({ analyticsLineChartModel }) => (
   <ProfitAndLossStyle>
-    {popoutButton}
-    <Header>
+    <ProfitAndLossHeader>
       <Title>Profit &amp; Loss</Title>
       <LastPosition lastPos={analyticsLineChartModel.lastPos} />
-    </Header>
+    </ProfitAndLossHeader>
     <AnalyticsLineChartWrapper>
       <AnalyticsLineChart model={analyticsLineChartModel} />
     </AnalyticsLineChartWrapper>
