@@ -14,7 +14,7 @@ export const DeliveryDate = styled.div`
   line-height: 1rem;
   opacity: 0.59;
   margin-left: auto;
-  margin-right: 1.25rem;
+  transition: margin-right 0.2s;
 `
 
 export const TileSymbol = styled.div`
@@ -53,6 +53,9 @@ export const TileWrapperBase = styled.div`
   position: relative;
   &:hover ${TopRightButton} {
     opacity: 0.75;
+  }
+  &:hover ${DeliveryDate} {
+    margin-right: 1.25rem;
   }
   &:hover ${ActionButton} {
     opacity: 0.75;
