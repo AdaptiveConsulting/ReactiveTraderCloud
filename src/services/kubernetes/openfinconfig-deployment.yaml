@@ -12,10 +12,6 @@ spec:
       labels:
         component: openfinconfig
     spec:
-      volumes:
-        - name: google-cloud-key
-          secret:
-            secretName: nlp-key
       containers:
         - name: openfinconfig
           image: reactivetradercloud/openfinconfig:${BUILD_VERSION}
