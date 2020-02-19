@@ -7,6 +7,7 @@ import { SpotTileActions } from '../actions'
 import { SpotTileData } from '../model/spotTileData'
 import { InteropTopics, platformHasFeature } from 'rt-platforms'
 import { EMPTY } from 'rxjs'
+import uuid from 'uuid'
 
 interface Msg {
   amount: number
@@ -24,6 +25,7 @@ function createTrade(msg: Msg, priceData: SpotTileData, currencyPair: CurrencyPa
   const spotRate = direction === Direction.Buy ? priceData.price.ask : priceData.price.bid
 
   return {
+    id: uuid(),
     CurrencyPair: priceData.price.symbol,
     SpotRate: spotRate,
     Direction: direction,
@@ -37,7 +39,7 @@ function getSpotTilesDataFromMessage(message: Message, state: GlobalState) {
   return state.spotTilesData[msg.symbol]
 }
 
-export const closePositionEpic: ApplicationEpic = (action$, state$, {platform}) => {
+export const closePositionEpic: ApplicationEpic = (action$, state$, { platform }) => {
   if (!platformHasFeature(platform, 'interop')) {
     return EMPTY
   }
@@ -60,6 +62,6 @@ export const closePositionEpic: ApplicationEpic = (action$, state$, {platform}) 
         uuid,
         correlationId: msg.correlationId,
       })
-    })
+    }),
   )
 }

@@ -34,7 +34,8 @@ const mapDispatchToProps = memoize(
     onUnmount: compose(dispatch, SpotTileActions.unsubscribeToSpotTile),
     executeTrade: (tradeRequestObj: ExecuteTradeRequest) =>
       dispatch(SpotTileActions.executeTrade(tradeRequestObj, null)),
-    onNotificationDismissed: () => dispatch(SpotTileActions.dismissNotification(ownProps.id)),
+    onNotificationDismissed: () =>
+      dispatch(SpotTileActions.dismissNotification({ currencyPair: ownProps.id })),
     setTradingMode: (tradingMode: TradingMode) =>
       dispatch(SpotTileActions.setTradingMode(tradingMode)),
     rfq: {
