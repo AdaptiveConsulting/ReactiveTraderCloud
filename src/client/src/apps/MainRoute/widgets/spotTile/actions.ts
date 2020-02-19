@@ -65,9 +65,10 @@ export const SpotTileActions = {
     ExecuteTradeResponse,
     TradeExectionMeta | null
   >(TILE_ACTION_TYPES.TRADE_EXECUTED),
-  dismissNotification: action<TILE_ACTION_TYPES.DISMISS_NOTIFICATION, string>(
+  dismissNotification: action<
     TILE_ACTION_TYPES.DISMISS_NOTIFICATION,
-  ),
+    { currencyPair: string; id?: string }
+  >(TILE_ACTION_TYPES.DISMISS_NOTIFICATION),
   subscribeToSpotTile: action<TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE, string>(
     TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE,
   ),
