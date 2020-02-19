@@ -4,11 +4,10 @@ import { styled } from 'rt-theme'
 
 export const TopRightButton = styled('button')`
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 1rem;
+  top: 0.995rem;
   opacity: 0;
   transition: opacity 0.2s;
-  padding: 0.25rem;
   &:hover {
     .hover-state {
       fill: #5f94f5;

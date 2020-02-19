@@ -14,6 +14,7 @@ export const DeliveryDate = styled.div`
   line-height: 1rem;
   opacity: 0.59;
   margin-left: auto;
+  margin-right: 1.25rem;
 `
 
 export const TileSymbol = styled.div`
