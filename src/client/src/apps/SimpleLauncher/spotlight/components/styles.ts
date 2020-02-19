@@ -99,8 +99,10 @@ export const SearchContainer = styled.div<{ launcherWidth: number }>`
     opacity: 1;
     left: 55px;
     right: ${({ launcherWidth }) => 355 - launcherWidth + 118 + 'px'};
+
     > input {
       padding-left: 9px;
+      transition: padding-left 0.3s;
     }
   }
 `

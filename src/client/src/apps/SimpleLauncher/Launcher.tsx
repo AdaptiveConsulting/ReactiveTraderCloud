@@ -128,7 +128,7 @@ export const Launcher: React.FC = () => {
   ), [contentBounds, response, initialLauncherWidth])
 
   return (
-    <RootLauncherContainer>
+    <RootLauncherContainer response={Boolean(response)}>
       <LauncherContainer width={launcherContainerWidth}>
         <LauncherGlobalStyle />
         <HorizontalContainer>

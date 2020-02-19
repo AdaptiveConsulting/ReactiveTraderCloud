@@ -19,8 +19,8 @@ export const RootContainer = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 `
 
-export const RootLauncherContainer = styled(RootContainer)`
-  background-color: transparent;
+export const RootLauncherContainer = styled(RootContainer) <{ response: boolean }>`
+  background-color: ${({ response }) => response ? 'inherent' : 'transparent'};
   overflow: hidden;
 `
 
