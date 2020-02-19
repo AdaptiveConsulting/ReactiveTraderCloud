@@ -122,9 +122,6 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
   display: flex;
   justify-content: center;
   align-self: center;
-  min-width: 2.3rem;
-  padding-top: 7px;
-
   color: ${props => props.theme.button.secondary.backgroundColor};
   cursor: pointer;
 
