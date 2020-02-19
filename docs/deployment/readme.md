@@ -56,9 +56,15 @@ Patches are not automatically deployed at this stage, so this will have to be do
         - without docker
             1) [server](../server.md)
             2) [client](../client.md)
+	- with kubernetes
+	    1) Enable Kubernetes on your desktop
+            2) In terminal go to ../../src folder and execute the following file:
+		```bash
+		./kubectl-deploy.yml
+		```
     - See your code deployed to an emvironment in cloud
         1) Follow the [build with circleci instructions](./circleci.md)
-        1) Follow the [gcloud instructions](./gcloud.md)
+        2) Follow the [gcloud instructions](./gcloud.md)
     - See the [logs of an environment](./logs.md)
 - Environment Infrastructure
     - [Deploy the kubernetes cluster on glcoud](./gcloud.md#Deploy-a-kubernetes-cluster-on-gcloud)
