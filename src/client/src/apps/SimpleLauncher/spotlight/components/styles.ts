@@ -38,8 +38,6 @@ export const Suggestion = styled.div`
 `
 
 export const Response = styled.div`
-  padding-top: 5px;
-  padding-left: 15px;
   font-size: 1rem;
   font-style: italic;
   opacity: 0.59;
@@ -64,7 +62,6 @@ export const Input = styled.input`
   border-radius: 3px 0 0 3px;
   font-size: 1rem;
   font-weight: 400;
-  padding-left: 9px;
   caret-color: #8c7ae6;
   ${rules.appRegionNoDrag};
 
@@ -85,21 +82,26 @@ export const CancelButton = styled.button`
   z-index: 2;
 `
 
-export const SearchContainer = styled.div`
+export const SearchContainer = styled.div<{ launcherWidth: number }>`
   background-color: #313131;
   position: absolute;
-  left: 350px;
+  left: ${({ launcherWidth }) => launcherWidth + 'px'};
   right: 118px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   opacity: 0;
   z-index: 1;
-  transition: left 0.3s, opacity 0.1s ease;
+  transition: left 0.3s, right 0.3s, opacity 0.1s ease;
+  will-change: opacity;
   
   &.search-container--active {
     opacity: 1;
     left: 55px;
+    right: ${({ launcherWidth }) => 355 - launcherWidth + 118 + 'px'};
+    > input {
+      padding-left: 9px;
+    }
   }
 `
 

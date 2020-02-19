@@ -19,6 +19,22 @@ export const RootContainer = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 `
 
+export const RootLauncherContainer = styled(RootContainer)`
+  background-color: transparent;
+  overflow: hidden;
+`
+
+export const LauncherContainer = styled(RootContainer) <{ width: number }>`
+  height: 56px;
+  width: ${({ width }) => width + 'px'};
+  border-radius: 3px;
+  background-color: #313131;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  overflow: initial;
+  transition: width 0.3s ease-out;
+  will-change: contents;
+`
+
 export const HorizontalContainer = styled.div`
   height: 56px;
   width: 100%;
@@ -121,18 +137,4 @@ export const LogoLauncherContainer = styled(IconContainer)`
     fill: ${({ theme }) => theme.core.textColor};
   }
   ${rules.appRegionDrag};
-`
-
-export const RootLauncherContainer = styled(RootContainer)`
-  background-color: transparent;
-  overflow: hiddent;
-`
-
-export const LauncherContainer = styled(RootContainer)`
-  height: 56px;
-  max-width: 355px;
-  border-radius: 3px;
-  background-color: #313131;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-  overflow: initial;
 `

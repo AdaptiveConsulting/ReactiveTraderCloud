@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
 import { AdaptiveLoader, LogoIcon, Tooltip } from 'rt-components'
@@ -32,6 +32,7 @@ import { SearchControl } from './spotlight'
 import { exitNormalIcon, minimiseNormalIcon } from './icons'
 
 const exitIcon = exitNormalIcon()
+const initialLauncherWidth = 355;
 
 const LauncherMinimiseAndExit: React.FC = () => (
   <>
@@ -63,6 +64,7 @@ const DynamicLogo: React.FC<{ isMoving: boolean }> = ({ isMoving }) => (
 
 export const Launcher: React.FC = () => {
   const [initialBounds, setInitialBounds] = useState<Bounds>()
+  const [contentBounds, setContentBounds] = useState<ContentRect>()
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false)
   const [isSearchBusy, setIsSearchBusy] = useState<boolean>(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
@@ -107,6 +109,8 @@ export const Launcher: React.FC = () => {
       if (!initialBounds) {
         return
       }
+
+      setContentBounds(contentRect)
       animateCurrentWindowSize({
         ...initialBounds,
         height: initialBounds.height + (contentRect.bounds ? contentRect.bounds.height : 0),
@@ -115,9 +119,17 @@ export const Launcher: React.FC = () => {
     [initialBounds],
   )
 
+  const launcherContainerWidth = useMemo(() => (
+    typeof response !== 'undefined'
+      && typeof contentBounds !== 'undefined'
+      && typeof contentBounds.bounds !== 'undefined'
+      ? contentBounds.bounds.width
+      : initialLauncherWidth
+  ), [contentBounds, response, initialLauncherWidth])
+
   return (
     <RootLauncherContainer>
-      <LauncherContainer>
+      <LauncherContainer width={launcherContainerWidth}>
         <LauncherGlobalStyle />
         <HorizontalContainer>
           <DynamicLogo isMoving={isSearchBusy || contacting} />
@@ -129,6 +141,7 @@ export const Launcher: React.FC = () => {
             sendRequest={sendRequest}
             platform={platform}
             isSearchVisible={isSearchVisible}
+            launcherWidth={launcherContainerWidth}
           />
           <SearchButton
             onClick={showSearch}
@@ -138,17 +151,16 @@ export const Launcher: React.FC = () => {
             <LauncherMinimiseAndExit />
           </MinExitContainer>
         </HorizontalContainer>
-
-        <Measure bounds onResize={handleSearchSizeChange}>
-          {({ measureRef }) => (
-            <div ref={measureRef}>
-              {response && (
-                <Response>{getInlineSuggestionsComponent(response, platform)}</Response>
-              )}
-            </div>
-          )}
-        </Measure>
       </LauncherContainer>
+      <Measure bounds onResize={handleSearchSizeChange}>
+        {({ measureRef }) => (
+          <div ref={measureRef}>
+            {response && (
+              <Response>{getInlineSuggestionsComponent(response, platform)}</Response>
+            )}
+          </div>
+        )}
+      </Measure>
     </RootLauncherContainer>
   )
 }
