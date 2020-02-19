@@ -3,12 +3,18 @@ import { Helmet } from 'react-helmet'
 import { snapAndDock } from 'openfin-layouts'
 import { styled, AccentName } from 'rt-theme'
 import { UndockIcon, IconStateTypes } from '../../../rt-components'
-import { minimiseNormalIcon, maximiseScreenIcon, exitNormalIcon } from 'apps/SimpleLauncher/icons'
+import {
+  minimiseNormalIcon,
+  maximiseScreenIcon,
+  exitNormalIcon,
+  popInIcon,
+} from 'apps/SimpleLauncher/icons'
 
 export interface ControlProps {
   minimize?: () => void
   maximize?: () => void
-  close: () => void
+  popIn?: () => void
+  close?: () => void
 }
 
 export const OpenFinChrome: React.FC = ({ children }) => (
@@ -36,7 +42,7 @@ export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
   </Header>
 )
 
-export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close }) => (
+export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close, popIn }) => (
   <React.Fragment>
     {minimize ? (
       <HeaderControl onClick={minimize} data-qa="openfin-chrome__minimize">
@@ -48,9 +54,16 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
         {maximiseScreenIcon}
       </HeaderControl>
     ) : null}
-    <HeaderControl onClick={close} data-qa="openfin-chrome__close">
-      {exitNormalIcon}
-    </HeaderControl>
+    {popIn ? (
+      <HeaderControl onClick={popIn} data-qa="openfin-chrome__maximize">
+        {popInIcon}
+      </HeaderControl>
+    ) : null}
+    {close ? (
+      <HeaderControl onClick={close} data-qa="openfin-chrome__close">
+        {exitNormalIcon}
+      </HeaderControl>
+    ) : null}
   </React.Fragment>
 )
 

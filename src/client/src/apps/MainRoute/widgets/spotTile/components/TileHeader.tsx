@@ -3,9 +3,6 @@ import { platformHasFeature, usePlatform } from 'rt-platforms'
 import { styled } from 'rt-theme'
 import { TileHeader as Header, TileSymbol, DeliveryDate } from './styled'
 import { CurrencyPair } from 'rt-types'
-import { TopRightButton } from './TileControls'
-import { PopoutIcon } from 'rt-components'
-
 interface Props {
   ccyPair: CurrencyPair
   date: string
@@ -39,7 +36,6 @@ const TileHeader: React.FC<Props> = ({ ccyPair, date, displayCurrencyChart }) =>
         </ActionButton>
       )}
       <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
-      <TopRightButton>{PopoutIcon}</TopRightButton>
     </Header>
   )
 }
