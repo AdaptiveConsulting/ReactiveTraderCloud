@@ -56,8 +56,8 @@ Patches are not automatically deployed at this stage, so this will have to be do
         - without docker
             1) [server](../server.md)
             2) [client](../client.md)
-	- with kubernetes
-	    1) Enable Kubernetes on your desktop
+	  - with kubernetes
+	      1) Enable Kubernetes on your desktop
         2) Execute ../../src/kubernetes-deploy-local.sh
 		
     - See your code deployed to an emvironment in cloud
