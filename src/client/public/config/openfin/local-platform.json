@@ -3,7 +3,7 @@
   "splashScreenImage": "http://localhost:3000/static/media/splash-screen.jpg",
   "runtime": {
     "arguments": "--v=1 --inspect",
-    "version": "14.78.48.15"
+    "version": "15.80.48.13"
   },
   "shortcut": {
     "company": "Adaptive Consulting",
@@ -19,16 +19,6 @@
       "forceDownload": true
     }
   ],
-  "services": [
-    {
-      "name": "fdc3",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json"
-    },
-    {
-      "name": "notifications",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json"
-    }
-  ],
   "platform": {
     "uuid": "reactive-launcher-platform-demo",
     "applicationIcon": "http://localhost:3000/static/media/icon.ico",
@@ -37,7 +27,17 @@
       "contextMenu": true,
       "frame": false,
       "url": "http://localhost:3000/openfin-window-frame"
-    }
+    },
+    "services": [
+      {
+        "name": "fdc3",
+        "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json"
+      },
+      {
+        "name": "notifications",
+        "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json"
+      }
+    ]
   },
   "snapshot": {
     "windows": [
@@ -179,6 +179,5 @@
         }
       }
     ]
-  },
-  "startup_app": null
+  }
 }
