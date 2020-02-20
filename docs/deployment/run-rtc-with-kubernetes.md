@@ -3,11 +3,11 @@
 - [Run Reactive Trader Cloud with kubernetes](#run-reactive-trader-cloud-with-kubernetes)
   - [Start RTC](#start-rtc)
   - [See it running](#see-it-running)
-  - [Stop all the running containers](#stop-all-the-running-containers)
+  - [Remove stack](#remove-stack)
 
 Running RTC with docker is extremely easy
 
-## Build RTC
+## Start RTC
 
 If you never ran docker-compose up and your images are not built,
 in terminal go to ../../src folder and execute the following command:
@@ -26,8 +26,8 @@ DOCKER_STACK_ORCHESTRATOR=kubernetes docker stack deploy --compose-file ./docker
 
 Open a browser, navigate to the docker address (`localhost`) and the web client will load.
 
-## Stop all the running containers
+## Remove stack
 
 ```bash
-docker-compose down
+kubectl delete stack rtcstack
 ```

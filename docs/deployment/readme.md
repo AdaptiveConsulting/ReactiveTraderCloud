@@ -60,7 +60,7 @@ Patches are not automatically deployed at this stage, so this will have to be do
       1. [server](../server.md)
       2. [client](../client.md)
     - with kubernetes
-      1. Enable kubernetes on your docker desktop on [windows] or [mac]
+      1. Enable kubernetes on your docker desktop for [windows] or [mac]
       2. Follow the [run rtc with kubernetes instructions](./run-rtc-with-kubernetes.md)
 
   - See your code deployed to an emvironment in cloud
