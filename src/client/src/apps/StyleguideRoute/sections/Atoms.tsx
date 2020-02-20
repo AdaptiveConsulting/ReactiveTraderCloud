@@ -1,6 +1,7 @@
 import React from 'react'
 import FormGrid from '../components/FormGrid'
 import PricingTilesGrid from '../components/PricingTilesGrid'
+import ChartingGrid from '../components/ChartingGrid'
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { Paragraph, SectionBlock } from '../styled'
 
@@ -25,6 +26,7 @@ export default () => {
         <H3>Pricing Tiles</H3>
         <H5>FX</H5>
         <PricingTilesGrid />
+        <ChartingGrid />
       </SectionBlock>
 
       <SectionBlock colorScheme="secondary" py={2} bleeds>
