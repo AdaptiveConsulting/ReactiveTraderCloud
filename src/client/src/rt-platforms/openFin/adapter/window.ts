@@ -2,6 +2,7 @@
 import { WindowConfig } from '../../types'
 import { get as _get, last as _last } from 'lodash'
 import { PlatformWindow } from '../../platformWindow'
+import { snapAndDock } from 'openfin-layouts'
 
 const TEAR_OUT_OFFSET_LEFT = 50
 const TEAR_OUT_OFFSET_TOP = 50
@@ -20,7 +21,7 @@ export const openfinWindowStates: { readonly [key: string]: WindowState } = {
   Maximized: 'maximized',
 }
 
-const generateRandomName = function() {
+const generateRandomName = function () {
   let text = ''
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -167,3 +168,28 @@ export const addApplicationEventHandler = (event: string) => (handler: Function)
 
   app.addListener(event, handler as () => any)
 }
+
+
+export async function isCurrentWindowDocked() {
+  const currentWindow = await fin.Window.getCurrent()
+  const dockedWindows = await snapAndDock.getDockedWindows(currentWindow.identity)
+
+  const { name, uuid } = currentWindow.identity
+
+  if (!dockedWindows) {
+    return false
+  }
+
+  return dockedWindows.reduce((hasIdentity, window) => {
+    if (Array.isArray(window)) {
+      return false
+    }
+
+    if (window.name === name && window.uuid === uuid) {
+      hasIdentity = hasIdentity || true
+    }
+
+    return hasIdentity
+  }, false)
+}
+

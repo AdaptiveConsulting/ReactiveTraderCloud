@@ -30,7 +30,6 @@ export default class OpenFin implements Platform {
 
   constructor() {
     window.addEventListener('beforeunload', this.handleWindowUnload)
-
     addEventListener('notification-action', this.handleNotificationAction)
   }
 
@@ -141,6 +140,7 @@ export default class OpenFin implements Platform {
 
   handleWindowUnload = () => {
     removeEventListener('notification-action', this.handleNotificationAction)
+    window.removeEventListener('beforeunload', this.handleWindowUnload)
   }
 
   epics: Array<ApplicationEpic> = platformEpics
