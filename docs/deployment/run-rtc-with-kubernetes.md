@@ -18,7 +18,7 @@ docker-compose build
 Run the following command:
 
 ```bash
-DOCKER_STACK_ORCHESTRATOR=kubernetes docker stack deploy --compose-file ./docker-compose.yml rtcstack
+docker stack deploy --orchestrator kubernetes --compose-file ./docker-compose.yml rtcstack
 ```
 
 ## See your services and pods running
