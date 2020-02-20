@@ -58,10 +58,8 @@ Patches are not automatically deployed at this stage, so this will have to be do
             2) [client](../client.md)
 	- with kubernetes
 	    1) Enable Kubernetes on your desktop
-            2) In terminal go to ../../src folder and execute the following file:
-		```bash
-		./kubectl-deploy.yml
-		```
+        2) Execute ../../src/kubernetes-deploy-local.sh
+		
     - See your code deployed to an emvironment in cloud
         1) Follow the [build with circleci instructions](./circleci.md)
         2) Follow the [gcloud instructions](./gcloud.md)
