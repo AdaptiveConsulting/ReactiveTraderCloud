@@ -7,7 +7,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 
 import { Story } from 'rt-storybook'
-import { ConnectionStatus, ConnectionType } from 'rt-system'
+import { ConnectionStatus, ConnectionStatusType, ConnectionType } from 'rt-system'
 import { styled } from 'rt-theme'
 
 import { ServiceConnectionStatus } from 'rt-types'
@@ -16,8 +16,7 @@ import { StatusButton } from '../status-connection/StatusButton'
 const stories = storiesOf('Status Bar', module)
 
 stories.addDecorator(withKnobs)
-
-const generateConnectionStatus = (status: ConnectionStatus) => ({
+const generateConnectionStatus = (status: ConnectionStatusType) => ({
   status,
   url: 'wss://web-demo.adaptivecluster.com:443/ws',
   transportType: 'websocket' as ConnectionType,

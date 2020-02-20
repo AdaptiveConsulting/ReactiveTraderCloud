@@ -1,20 +1,21 @@
 // For inclusion in rt-styleguide package
-import { mapMarginPaddingProps, MarginPaddingProps, MarginProps, PaddingProps } from './mapMarginPaddingProps'
-import Block, { BlockProps } from './Block'
-import { Paragraph, ParagraphProps } from './Paragraph'
-import { Text, TextProps, mapTextProps } from './Text'
-export { Paragraph }
-export { mapMarginPaddingProps }
-export type MarginPaddingProps = MarginPaddingProps
-export type MarginProps = MarginProps
-export type PaddingProps = PaddingProps
+import * as mMPP from './mapMarginPaddingProps'
+import * as block from './Block'
+import Block from './Block'
+import * as paragraph from './Paragraph'
+import * as text from './Text'
+export const { Paragraph } = paragraph
+export const { mapMarginPaddingProps } = mMPP
+export type MarginPaddingProps = mMPP.MarginPaddingProps
+export type MarginProps = mMPP.MarginProps
+export type PaddingProps = mMPP.PaddingProps
+
+export type BlockProps = block.BlockProps
 export { Block }
+export const { Text, mapTextProps } = text
+export type TextProps = text.TextProps
 
-export type BlockProps = BlockProps
-export { Text, mapTextProps }
-export type TextProps = TextProps
-
-export type ParagraphProps = ParagraphProps
+export type ParagraphProps = paragraph.ParagraphProps
 
 // Back to our regularly scheduled exports
 export { SectionBlock, SectionBody } from './SectionBlock'

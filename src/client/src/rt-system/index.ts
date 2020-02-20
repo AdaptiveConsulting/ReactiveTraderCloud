@@ -1,38 +1,30 @@
-import { ConnectionStatus, ConnectionState } from './connectionStatus'
-import {
-  ServiceInstanceCollection,
-  ServiceCollectionMap,
-  ServiceConnectionInfo,
-  IServiceStatusCollection,
-} from './ServiceInstanceCollection'
-import { RawServiceStatus } from './serviceInstanceStatus'
-import {
-  ConnectionEvent,
-  createConnection$,
-  ConnectionOpenEvent,
-  ConnectionClosedEvent,
-} from './connectionStream'
-import { ConnectionType } from './connectionType'
-import { AutobahnConnection } from './AutoBahnConnection'
+import * as connectionStatus from './connectionStatus'
+import * as serviceInstanceCollection from './ServiceInstanceCollection'
+import * as serviceInstanceStatus from './serviceInstanceStatus'
+import * as connectionStream from './connectionStream'
+import * as connectionType from './connectionType'
+import * as autoBahnConnection from './AutoBahnConnection'
 
-export type RawServiceStatus = RawServiceStatus
-export { ServiceInstanceCollection, ServiceCollectionMap }
-export type ServiceConnectionInfo = ServiceConnectionInfo
-export { ConnectionStatus }
-export type ConnectionState = ConnectionState
-export type IServiceStatusCollection = IServiceStatusCollection
+export type RawServiceStatus = serviceInstanceStatus.RawServiceStatus
+export const { ServiceInstanceCollection } = serviceInstanceCollection
+export type ServiceCollectionMap = serviceInstanceCollection.ServiceCollectionMap
+export type ServiceConnectionInfo = serviceInstanceCollection.ServiceConnectionInfo
+export type ConnectionStatusType = connectionStatus.ConnectionStatus
+export const { ConnectionStatus } = connectionStatus
+export type ConnectionState = connectionStatus.ConnectionState
+export type IServiceStatusCollection = serviceInstanceCollection.IServiceStatusCollection
 export { retryWithBackOff, retryConstantly } from './retryPolicy'
-export type ConnectionType = ConnectionType
+export type ConnectionType = connectionType.ConnectionType
 export { ServiceStub } from './ServiceStub'
 export { default as ServiceClient } from './ServiceStubWithLoadBalancer'
-export { ConnectionEventType } from './connectionStream'
-export type AutobahnConnection = AutobahnConnection
+export const { ConnectionEventType } = connectionStream
+export type AutobahnConnection = autoBahnConnection.AutobahnConnection
 export { default as AutobahnConnectionProxy } from './AutobahnConnectionProxy'
 
-export { createConnection$ }
-export type ConnectionEvent = ConnectionEvent
-export type ConnectionOpenEvent = ConnectionOpenEvent
-export type ConnectionClosedEvent = ConnectionClosedEvent
+export const { createConnection$ } = connectionStream
+export type ConnectionEvent = connectionStream.ConnectionEvent
+export type ConnectionOpenEvent = connectionStream.ConnectionOpenEvent
+export type ConnectionClosedEvent = connectionStream.ConnectionClosedEvent
 
 export { default as AutobahnSessionProxy } from './AutobahnSessionProxy'
 export { default as ServiceStubWithLoadBalancer } from './ServiceStubWithLoadBalancer'

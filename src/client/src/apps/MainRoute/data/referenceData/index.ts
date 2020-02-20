@@ -1,5 +1,5 @@
-import { currencyPairReducer, CurrencyPairState } from './reducer'
+import * as reducer from './reducer'
 export { referenceServiceEpic } from './epics'
-export { currencyPairReducer }
-export type CurrencyPairState = CurrencyPairState
+export const currencyPairReducer = reducer.currencyPairReducer
+export type CurrencyPairState = reducer.CurrencyPairState
 export { referenceDataService } from './referenceDataService'

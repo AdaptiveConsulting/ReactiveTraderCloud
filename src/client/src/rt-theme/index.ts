@@ -1,36 +1,21 @@
 import baseStyled, { ThemedStyledInterface } from 'styled-components'
-import {
-  Color,
-  colors,
-  LightShade,
-  DarkShade,
-  ColorPalette,
-  AccentName,
-  AccentPaletteMap,
-} from './colors'
-import {
-  Theme,
-  ColorProps,
-  ThemeSelector,
-  TouchableIntentName,
-  themes,
-  getThemeColor,
-} from './themes'
-export { colors }
-export type LightShade = LightShade
-export type DarkShade = DarkShade
-export type ColorPalette = ColorPalette
-export type AccentName = AccentName
-export type AccentPaletteMap = AccentPaletteMap
-export type Color = Color
+import * as colorsLib from './colors'
+import * as themesLib from './themes'
+export const { colors } = colorsLib
+export type LightShade = colorsLib.LightShade
+export type DarkShade = colorsLib.DarkShade
+export type ColorPalette = colorsLib.ColorPalette
+export type AccentName = colorsLib.AccentName
+export type AccentPaletteMap = colorsLib.AccentPaletteMap
+export type Color = colorsLib.Color
 export { default as GlobalStyle } from './globals'
 
 export const styled: ThemedStyledInterface<Theme> = baseStyled
 
 export { ThemeName, ThemeProvider, ThemeConsumer, useTheme } from './ThemeContext'
-export type Theme = Theme
-export type TouchableIntentName = TouchableIntentName
-export type ColorProps = ColorProps
-export type ThemeSelector = ThemeSelector
-export { themes, getThemeColor }
+export type Theme = themesLib.Theme
+export type TouchableIntentName = themesLib.TouchableIntentName
+export type ColorProps = themesLib.ColorProps
+export type ThemeSelector = themesLib.ThemeSelector
+export const { themes, getThemeColor } = themesLib
 export { default as ThemeStorageSwitch } from './ThemeStorageSwitch'

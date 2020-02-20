@@ -2,6 +2,7 @@ import React from 'react'
 import DropdowGrid from '../components/DropdowGrid'
 import DropdowMenuGrid from '../components/DropdownMenuGrid'
 import ButtonGrid from '../components/ButtonGrid'
+import FormGrid from '../components/FormGrid'
 import { H2, H3, H5, NumberedLayout } from '../elements'
 import { ThemeName, useTheme } from 'rt-theme'
 import { Paragraph, SectionBlock } from '../styled'
@@ -38,6 +39,11 @@ export default () => {
       <SectionBlock colorScheme="secondary" py={2} bleeds>
         <H3>Dropdown Menu</H3>
         <DropdowMenuGrid />
+      </SectionBlock>
+
+      <SectionBlock colorScheme="secondary" py={2} bleeds>
+        <H3>Form Elements</H3>
+        <FormGrid />
       </SectionBlock>
     </React.Fragment>
   )
