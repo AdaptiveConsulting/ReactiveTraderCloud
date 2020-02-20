@@ -64,6 +64,10 @@ export const TradeButton = styled.button<{
     background-color: ${theme.template[hoverColors[direction]].normal};
     color: ${theme.template.white.normal};
   }
+  &:hover {
+    background-color: ${theme.template[hoverColors[direction]].normal};
+    color: ${theme.template.white.normal};
+  }
   `};
 `
 
