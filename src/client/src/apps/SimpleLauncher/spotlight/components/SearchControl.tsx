@@ -47,6 +47,12 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
       e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
     }, [])
 
+    const handleBlur: FocusEventHandler<HTMLInputElement> = useCallback(e => {
+      if (isSearchVisible) {
+        e.target.focus({ preventScroll: true })
+      }
+    }, [isSearchVisible])
+
     const throttledSendRequest = useCallback(
       throttle((requestString: string) => sendRequest(requestString), 250, {
         leading: false,
@@ -91,6 +97,7 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
           onChange={handleChange}
           ref={ref}
           onFocus={handleFocus}
+          onBlur={handleBlur}
           onKeyDown={handleOnKeyDown}
           placeholder="Type something"
         />
