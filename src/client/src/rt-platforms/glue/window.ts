@@ -79,7 +79,7 @@ export const openGlueWindow = async (config: BrowserWindowProps, onClose?: () =>
     relativeTo,
     relativeDirection,
   } = calculatePosition(myWindow, width, height, url)
-  const fullUrl = `${location.href.slice(0, -1)}${url}`
+  const fullUrl = `${location.origin}${url}`
   const isTabWindow = isSpot(url)
 
   const win = await window.glue.windows.open(name, fullUrl, {
