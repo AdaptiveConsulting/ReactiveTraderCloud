@@ -2,6 +2,7 @@
 
 - [Run Reactive Trader Cloud with kubernetes](#run-reactive-trader-cloud-with-kubernetes)
   - [Start RTC](#start-rtc)
+  - [See your services and pods running](#see-your-services-and-pods-running)
   - [See it running](#see-it-running)
   - [Remove stack](#remove-stack)
 
@@ -20,6 +21,16 @@ Then, run the following command:
 
 ```bash
 DOCKER_STACK_ORCHESTRATOR=kubernetes docker stack deploy --compose-file ./docker-compose.yml rtcstack
+```
+
+## See your services and pods running
+
+```bash
+kubectl get services
+```
+
+```bash
+kubectl get pods
 ```
 
 ## See it running
