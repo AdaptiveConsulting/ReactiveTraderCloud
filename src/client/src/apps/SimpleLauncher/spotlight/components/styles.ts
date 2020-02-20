@@ -62,8 +62,9 @@ export const Input = styled.input`
   border-radius: 3px 0 0 3px;
   font-size: 1rem;
   font-weight: 400;
-  caret-color: #8c7ae6;
+  caret-color: transparent;
   ${rules.appRegionNoDrag};
+  transition: all 0.3s ease;
 
   &::placeholder {
     color: ${({ theme }) => theme.textColor};
@@ -96,13 +97,13 @@ export const SearchContainer = styled.div<{ launcherWidth: number }>`
   will-change: opacity;
   
   &.search-container--active {
-    opacity: 1;
     left: 55px;
+    opacity: 1;
     right: ${({ launcherWidth }) => 355 - launcherWidth + 118 + 'px'};
 
     > input {
+      caret-color: #8c7ae6;
       padding-left: 9px;
-      transition: padding-left 0.3s;
     }
   }
 `

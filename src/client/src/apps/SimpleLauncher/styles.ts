@@ -19,15 +19,16 @@ export const RootContainer = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 `
 
-export const RootLauncherContainer = styled(RootContainer) <{ response: boolean }>`
-  background-color: ${({ response }) => response ? 'inherent' : 'transparent'};
+export const RootLauncherContainer = styled(RootContainer) <{ showResponsePanel: boolean }>`
+  background-color: ${({ showResponsePanel }) => showResponsePanel ? '#313131' : 'transparent'};
+  border-radius: 3px;
   overflow: hidden;
 `
 
-export const LauncherContainer = styled(RootContainer) <{ width: number }>`
+export const LauncherContainer = styled(RootContainer) <{ width: number, showResponsePanel: boolean }>`
   height: 56px;
-  width: ${({ width }) => width + 'px'};
-  border-radius: 3px;
+  width: ${({ showResponsePanel, width }) => showResponsePanel ? width + 'px' : '355px'};
+  border-radius: ${({ showResponsePanel }) => showResponsePanel ? '3px 3px 0 0' : '3px'};
   background-color: #313131;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   overflow: initial;

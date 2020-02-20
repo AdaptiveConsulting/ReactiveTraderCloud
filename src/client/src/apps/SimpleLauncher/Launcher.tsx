@@ -127,9 +127,11 @@ export const Launcher: React.FC = () => {
       : initialLauncherWidth
   ), [contentBounds, response, initialLauncherWidth])
 
+  const showResponsePanel = useMemo(() => Boolean(isSearchVisible && response), [response, isSearchVisible])
+
   return (
-    <RootLauncherContainer response={Boolean(response)}>
-      <LauncherContainer width={launcherContainerWidth}>
+    <RootLauncherContainer showResponsePanel={showResponsePanel}>
+      <LauncherContainer width={launcherContainerWidth} showResponsePanel={showResponsePanel}>
         <LauncherGlobalStyle />
         <HorizontalContainer>
           <DynamicLogo isMoving={isSearchBusy || contacting} />
@@ -155,7 +157,7 @@ export const Launcher: React.FC = () => {
       <Measure bounds onResize={handleSearchSizeChange}>
         {({ measureRef }) => (
           <div ref={measureRef}>
-            {response && (
+            {(isSearchVisible && response) && (
               <Response>{getInlineSuggestionsComponent(response, platform)}</Response>
             )}
           </div>
