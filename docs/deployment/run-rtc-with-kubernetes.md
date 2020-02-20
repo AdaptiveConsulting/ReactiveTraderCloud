@@ -15,7 +15,7 @@ in terminal go to ../../src folder and execute the following command:
 docker-compose build
 ```
 
-Then, run the following command:
+Run the following command:
 
 ```bash
 DOCKER_STACK_ORCHESTRATOR=kubernetes docker stack deploy --compose-file ./docker-compose.yml rtcstack
