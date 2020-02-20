@@ -5,7 +5,6 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using SystemEx;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Adaptive.ReactiveTrader.Messaging.WAMP;
 using Serilog;
@@ -13,6 +12,7 @@ using Serilog.Events;
 using WampSharp.V2;
 using WampSharp.V2.Core.Contracts;
 using WampSharp.V2.MetaApi;
+using IAsyncDisposable = SystemEx.IAsyncDisposable;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
