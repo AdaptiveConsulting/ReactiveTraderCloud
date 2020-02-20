@@ -52,6 +52,7 @@ const TileSwitch: React.FC<Props> = ({
       rfq={rfq}
       displayCurrencyChart={displayCurrencyChart}
       updateNotional={updateNotional}
+      canPopout={canPopout}
     >
       {() => (
         <>

@@ -49,13 +49,13 @@ export const TileHeader = styled.div`
   align-items: center;
 `
 
-export const TileWrapperBase = styled.div`
+export const TileWrapperBase = styled.div<{ canPopout?: boolean }>`
   position: relative;
   &:hover ${TopRightButton} {
     opacity: 0.75;
   }
   &:hover ${DeliveryDate} {
-    margin-right: 1.25rem;
+    margin-right: ${({ canPopout }) => (canPopout ? '1.3rem' : '0')};
   }
   &:hover ${ActionButton} {
     opacity: 0.75;
