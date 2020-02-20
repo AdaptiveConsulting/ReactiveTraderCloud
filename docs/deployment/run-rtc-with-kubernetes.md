@@ -6,8 +6,6 @@
   - [See it running](#see-it-running)
   - [Remove stack](#remove-stack)
 
-Running RTC with docker is extremely easy
-
 ## Start RTC
 
 If you never ran docker-compose up and your images are not built,
