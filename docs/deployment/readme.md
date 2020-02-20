@@ -1,7 +1,7 @@
 # Deployment
 
 We practice _Continous Delivery_. Every merge to master triggers a build and publishing of the application's images.
-The commit will be tagged with the latest version, the published docker images will be similarly tagged with the same version, and there will  be a version number published in the application's UI. The new version will be automatically deployed to the [`dev`](https://web-dev.adaptivecluster.com/) environment.
+The commit will be tagged with the latest version, the published docker images will be similarly tagged with the same version, and there will be a version number published in the application's UI. The new version will be automatically deployed to the [`dev`](https://web-dev.adaptivecluster.com/) environment.
 
 ## Versioning
 
@@ -20,7 +20,7 @@ To deploy a version into a specific environment, create a [lightweight tag](http
 # Create a new lightweight tag at the current HEAD (the force option will overwrite the tag if it exists)
 git tag -f env-demo
 
-# You can also tag a specific release tag to push to an environment 
+# You can also tag a specific release tag to push to an environment
 git tag -f env-demo v1.1.0
 
 # push the updated tag
@@ -48,23 +48,34 @@ If the bug also exists in another environment, it will be expected that either m
 Patches are not automatically deployed at this stage, so this will have to be done by manually creating the `env-<environment_name>` tag.
 
 ## How to
+
 - Manage Environments
-    - Build and/or run RTC locally
-        - with docker (the simpler way)
-            1) [Optional] Follow the [install and run docker instructions](./docker-setup.md)
-            1) Follow the [run rtc with docker instructions](./run-rtc-with-docker.md)
-        - without docker
-            1) [server](../server.md)
-            2) [client](../client.md)
-    - See your code deployed to an emvironment in cloud
-        1) Follow the [build with circleci instructions](./circleci.md)
-        1) Follow the [gcloud instructions](./gcloud.md)
-    - See the [logs of an environment](./logs.md)
+
+  - Build and/or run RTC locally
+
+    - with docker (the simpler way)
+      1. [Optional] Follow the [install and run docker instructions](./docker-setup.md)
+      2. Follow the [run rtc with docker instructions](./run-rtc-with-docker.md)
+    - without docker
+      1. [server](../server.md)
+      2. [client](../client.md)
+    - with kubernetes
+      1. Enable kubernetes on your docker desktop on [windows] or [mac]
+      2. Follow the [run rtc with kubernetes instructions](./run-rtc-with-kubernetes.md)
+
+  - See your code deployed to an emvironment in cloud
+    1. Follow the [build with circleci instructions](./circleci.md)
+    2. Follow the [gcloud instructions](./gcloud.md)
+  - See the [logs of an environment](./logs.md)
+
 - Environment Infrastructure
-    - [Deploy the kubernetes cluster on glcoud](./gcloud.md#Deploy-a-kubernetes-cluster-on-gcloud)
-    - [Update cluster version](./gcloud.md#Update-cluster-instance-version)
+  - [Deploy the kubernetes cluster on glcoud](./gcloud.md#Deploy-a-kubernetes-cluster-on-gcloud)
+  - [Update cluster version](./gcloud.md#Update-cluster-instance-version)
 - Understand Concepts
-    - [Understand Nsgate, our gcloud cluster front loadbalancer](./nsgate.md)
+  - [Understand Nsgate, our gcloud cluster front loadbalancer](./nsgate.md)
 - Set Up
-    - [Setup your bash client](./bash-setup.md)
-    - [Setup docker](./docker-setup.md)
+  - [Setup your bash client](./bash-setup.md)
+  - [Setup docker](./docker-setup.md)
+
+[windows]: https://www.docker.com/blog/docker-windows-desktop-now-kubernetes/
+[mac]: https://docs.docker.com/docker-for-mac/#kubernetes
