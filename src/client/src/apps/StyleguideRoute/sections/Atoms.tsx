@@ -30,6 +30,11 @@ export default () => {
       </SectionBlock>
 
       <SectionBlock colorScheme="secondary" py={2} bleeds>
+        <H3>Form Elements</H3>
+        <FormGrid />
+      </SectionBlock>
+
+      <SectionBlock colorScheme="secondary" py={2} bleeds>
         <Separator />
         <H3>Pricing Tiles</H3>
         <AtomsContainer>
@@ -38,11 +43,6 @@ export default () => {
           <ChartingGrid />
           <ConfirmationGrid />
         </AtomsContainer>
-      </SectionBlock>
-
-      <SectionBlock colorScheme="secondary" py={2} bleeds>
-        <H3>Form Elements</H3>
-        <FormGrid />
       </SectionBlock>
     </React.Fragment>
   )
