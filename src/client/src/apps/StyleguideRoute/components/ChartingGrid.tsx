@@ -1,6 +1,5 @@
 import React from 'react'
 import { styled } from 'rt-theme'
-import { Caption } from '../elements'
 import {
   LineChartWrapper,
   GraphNotionalWrapper,
@@ -39,46 +38,44 @@ const historicPrices: SpotPriceTick[] = Array.from(
 export default (() => (
   <Root>
     <LabelColumn>
-      <div></div>
+      <div>Charting</div>
       <label>Normal</label>
-      <label>Active</label>
     </LabelColumn>
     <ChartingColumn>
-      <ColumnTitle>
-        Charting
-        <Caption>molecules/pricing-tiles/fx/charting</Caption>
-      </ColumnTitle>
-      <PriceButtonVariants />
-      <PriceButtonVariants />
+      <ChartingRow />
+      <ChartingRow>
+        <PriceButtonVariants />
+      </ChartingRow>
     </ChartingColumn>
   </Root>
 )) as React.FC
 
 const PriceButtonVariants: React.FC = () => (
-  <ChartingRow>
-    <ChartingContainer>
-      <GraphNotionalWrapper isTimerOn={true}>
-        <LineChartWrapper isTimerOn={true}>
-          <AnalyticsTileChart history={historicPrices} />
-        </LineChartWrapper>
-      </GraphNotionalWrapper>
-    </ChartingContainer>
-  </ChartingRow>
+  <ChartingContainer>
+    <GraphNotionalWrapper isTimerOn={true}>
+      <LineChartWrapper isTimerOn={true}>
+        <AnalyticsTileChart history={historicPrices} />
+      </LineChartWrapper>
+    </GraphNotionalWrapper>
+  </ChartingContainer>
 )
 
 const GridColumn = styled.div`
   display: grid;
-  grid-template-rows: 4rem repeat(2, 1fr);
+  grid-template-rows: 2rem 1fr;
   grid-row-gap: 0.5rem;
   align-items: center;
 `
 
 const LabelColumn = styled(GridColumn)`
   font-size: 0.6875rem;
-  color: ${({ theme }) => theme.secondary.base};
+  color: ${({ theme }) => theme.secondary[1]};
+
+  & > div {
+    font-size: 0.875rem;
+  }
 `
 
-const ColumnTitle = styled.div``
 const ChartingRow = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -99,7 +96,7 @@ const Root = styled.div`
   max-width: 60rem;
 
   display: grid;
-  grid-template-columns: minmax(auto, 120px) 1fr 1fr 1fr ;
+  grid-template-columns: minmax(auto, 120px) 1fr  ;
   grid-column-gap: 2rem;
 
   padding-bottom: 2rem;
