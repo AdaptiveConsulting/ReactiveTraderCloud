@@ -1,6 +1,6 @@
 import React from 'react'
 import { TearOff } from 'rt-components'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileView } from './workspaceHeader'

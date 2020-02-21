@@ -40,8 +40,8 @@ export default () => (
         is={LargeSwatchColor}
         label="Brand Primary"
         value={colors.spectrum.brand.base}
-        bg={t => t.colors.spectrum.brand.base}
-        fg={t => t.colors.static.white}
+        bg={(theme: Theme) => theme.colors.spectrum.brand.base}
+        fg={(theme: Theme) => theme.colors.static.white}
         code="Base"
       />
     </SectionBlock>
@@ -130,8 +130,8 @@ const PaletteLayout: React.FC<{
             label={`${paletteLabel} ${key}`}
             value={color}
             code={codes[key] || key}
-            bg={_ => color}
-            fg={_ => fg}
+            bg={() => color}
+            fg={() => fg}
           />
         )
       })}
