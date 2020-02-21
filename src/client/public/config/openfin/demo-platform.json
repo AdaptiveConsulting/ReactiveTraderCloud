@@ -3,7 +3,7 @@
   "splashScreenImage": "https://web-openfin.adaptivecluster.com/static/media/splash-screen.jpg",
   "runtime": {
     "arguments": "--v=1 --inspect",
-    "version": "14.78.48.3"
+    "version": "15.80.48.13"
   },
   "shortcut": {
     "company": "Adaptive Consulting",
