@@ -8,7 +8,7 @@ export default (env: string) => {
 
   const config = {
     devtools_port: 9090,
-    splashScreenImage: `${appUrl}/static/media/splash-screen.jpg`,
+    splashScreenImage: `${appUrl}static/media/splash-screen.jpg`,
     runtime: {
       arguments: '--v=1 --inspect',
       version: '15.80.48.13',
@@ -23,16 +23,17 @@ export default (env: string) => {
         src: `${appUrl}plugin/add-in.zip`,
         alias: 'excel-api-addin',
         version: '2.0.0',
+        forceDownload: true,
       },
     ],
     platform: {
       uuid: appId,
-      applicationIcon: `${appUrl}/static/media/icon.ico`,
+      applicationIcon: `${appUrl}static/media/icon.ico`,
       url: `${appUrl}`,
       defaultWindowOptions: {
         contextMenu: true,
         frame: false,
-        url: `${appUrl}`,
+        url: `${appUrl}openfin-window-frame`,
       },
       services: [
         {
