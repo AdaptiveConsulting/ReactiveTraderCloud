@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.0.0-sdk AS build 
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build 
 WORKDIR /src
 
 COPY ./*.sln ./NuGet.config  ./
@@ -8,7 +8,7 @@ RUN dotnet restore
 COPY . .
 RUN dotnet publish --configuration=Release --runtime=linux-x64 --output=/app  
 
-FROM microsoft/dotnet:2.0.0-sdk AS final  
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS final  
 WORKDIR /app
 COPY --from=build /app .
 COPY --from=build /src/configs ./configs
