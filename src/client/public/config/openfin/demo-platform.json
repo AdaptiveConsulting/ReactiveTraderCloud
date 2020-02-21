@@ -30,7 +30,7 @@
     }
   ],
   "platform": {
-    "uuid": "reactive-launcher-platform-demo",
+    "uuid": "reactive-trader-cloud-platform-demo",
     "applicationIcon": "https://web-openfin.adaptivecluster.com/static/media/icon.ico",
     "url": "https://web-openfin.adaptivecluster.com",
     "defaultWindowOptions": {
@@ -179,6 +179,5 @@
         }
       }
     ]
-  },
-  "startup_app": null
+  }
 }
