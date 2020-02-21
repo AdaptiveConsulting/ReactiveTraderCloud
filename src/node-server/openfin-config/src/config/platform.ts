@@ -4,23 +4,23 @@ export default (env: string) => {
   //const baseConfig = base(env)
   const appId = 'reactive-trader-cloud-platform-demo'
   const name = 'Reactive Trader Cloud (Platform)'
-  const appUrl = `https://web-${env}.adaptivecluster.com/`
+  const appUrl = `https://web-${env}.adaptivecluster.com`
 
   const config = {
     devtools_port: 9090,
-    splashScreenImage: `${appUrl}static/media/splash-screen.jpg`,
+    splashScreenImage: `${appUrl}/static/media/splash-screen.jpg`,
     runtime: {
       arguments: '--v=1 --inspect',
       version: '15.80.48.13',
     },
     shortcut: {
       company: 'Adaptive Consulting',
-      icon: `${appUrl}static/media/icon.ico`,
+      icon: `${appUrl}/static/media/icon.ico`,
       name,
     },
     appAssets: [
       {
-        src: `${appUrl}plugin/add-in.zip`,
+        src: `${appUrl}/plugin/add-in.zip`,
         alias: 'excel-api-addin',
         version: '2.0.0',
         forceDownload: true,
@@ -28,28 +28,28 @@ export default (env: string) => {
     ],
     platform: {
       uuid: appId,
-      applicationIcon: `${appUrl}static/media/icon.ico`,
+      applicationIcon: `${appUrl}/static/media/icon.ico`,
       url: `${appUrl}`,
       defaultWindowOptions: {
         contextMenu: true,
         frame: false,
-        url: `${appUrl}openfin-window-frame`,
+        url: `${appUrl}/openfin-window-frame`,
       },
-      services: [
-        {
-          name: 'fdc3',
-          manifestUrl: 'https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json',
-        },
-        {
-          name: 'notifications',
-          manifestUrl: 'https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json',
-        },
-      ],
     },
+    services: [
+      {
+        name: 'fdc3',
+        manifestUrl: 'https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json',
+      },
+      {
+        name: 'notifications',
+        manifestUrl: 'https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json',
+      },
+    ],
     snapshot: {
       windows: [
         {
-          applicationIcon: `${appUrl}static/media/adaptive-mark-large.png`,
+          applicationIcon: `${appUrl}/static/media/adaptive-mark-large.png`,
           autoShow: true,
           defaultWidth: 1280,
           defaultHeight: 900,
@@ -65,10 +65,10 @@ export default (env: string) => {
             'Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)',
           preload: [
             {
-              url: `${appUrl}plugin/service-loader.js`,
+              url: `${appUrl}/plugin/service-loader.js`,
             },
             {
-              url: `${appUrl}plugin/fin.desktop.Excel.js`,
+              url: `${appUrl}/plugin/fin.desktop.Excel.js`,
             },
           ],
           contextMenu: true,
@@ -126,7 +126,7 @@ export default (env: string) => {
                             componentName: 'view',
                             contextMenu: true,
                             componentState: {
-                              url: `${appUrl}tiles`,
+                              url: `${appUrl}/tiles`,
                               name: 'Tiles',
                             },
                             isClosable: true,
@@ -148,7 +148,7 @@ export default (env: string) => {
                             type: 'component',
                             componentName: 'view',
                             componentState: {
-                              url: `${appUrl}blotter`,
+                              url: `${appUrl}/blotter`,
                               name: 'Blotter',
                             },
                             isClosable: true,
@@ -172,7 +172,7 @@ export default (env: string) => {
                         type: 'component',
                         componentName: 'view',
                         componentState: {
-                          url: `${appUrl}analytics`,
+                          url: `${appUrl}/analytics`,
                           name: 'Analytics',
                         },
                         isClosable: true,

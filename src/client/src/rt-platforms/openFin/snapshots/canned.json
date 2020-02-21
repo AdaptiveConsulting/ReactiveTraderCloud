@@ -162,7 +162,7 @@
           "state": "normal",
           "title": "child-window-7e0be02e-729e-4c78-8581-67dfb87ecfa3",
           "url": "/",
-          "uuid": "reactive-launcher-platform-demo",
+          "uuid": "reactive-trader-cloud-platform-demo",
           "width": 1176,
           "x": 436,
           "y": 0
@@ -289,7 +289,7 @@
           "state": "normal",
           "title": "child-window-7e0be02e-729e-4c78-8581-67dfb87ecfa3",
           "url": "/",
-          "uuid": "reactive-launcher-platform-demo",
+          "uuid": "reactive-trader-cloud-platform-demo",
           "width": 1176,
           "x": 436,
           "y": 0
@@ -394,7 +394,7 @@
           "state": "normal",
           "title": "child-window-7e0be02e-729e-4c78-8581-67dfb87ecfa3",
           "url": "/",
-          "uuid": "reactive-launcher-platform-demo",
+          "uuid": "reactive-trader-cloud-platform-demo",
           "width": 801,
           "x": 4,
           "y": 10
@@ -492,7 +492,7 @@
           "state": "normal",
           "title": "EURUSD",
           "url": "/openfin-window-frame",
-          "uuid": "reactive-launcher-platform-demo",
+          "uuid": "reactive-trader-cloud-platform-demo",
           "width": 367,
           "x": 814,
           "y": 11
@@ -590,7 +590,7 @@
           "state": "normal",
           "title": "AUDUSD",
           "url": "/openfin-window-frame",
-          "uuid": "reactive-launcher-platform-demo",
+          "uuid": "reactive-trader-cloud-platform-demo",
           "width": 368,
           "x": 816,
           "y": 209
@@ -688,7 +688,7 @@
           "state": "normal",
           "title": "child-window-bd46012c-0619-49c2-9891-f7e0f4ed14af",
           "url": "/openfin-window-frame",
-          "uuid": "reactive-launcher-platform-demo",
+          "uuid": "reactive-trader-cloud-platform-demo",
           "width": 818,
           "x": 1191,
           "y": 15
@@ -786,7 +786,7 @@
           "state": "normal",
           "title": "child-window-c88b5a67-9c4a-47f3-b849-99c6d6ac87d6",
           "url": "/openfin-window-frame",
-          "uuid": "reactive-launcher-platform-demo",
+          "uuid": "reactive-trader-cloud-platform-demo",
           "width": 1189,
           "x": 818,
           "y": 408
