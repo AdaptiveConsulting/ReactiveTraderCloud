@@ -24,10 +24,10 @@ const BlotterHeaderStyle = styled('div')`
 `
 
 const BlotterControls = styled('button')`
-  .svg-icon {
-    opacity: 0.59;
-    fill: ${({ theme }) => theme.core.textColor};
-    stroke: ${({ theme }) => theme.core.textColor};
+  &:hover {
+    .hover-state {
+      fill: #5f94f5;
+    }
   }
 `
 
@@ -81,7 +81,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
     <BlotterHeaderStyle>
       <BlotterLeft>Executed Trades</BlotterLeft>
       <BlotterRight>
-        <ExcelButton onClick={onExportToExcelClick}/>
+        <ExcelButton onClick={onExportToExcelClick} />
         <BlotterToolbar
           isQuickFilterApplied={quickFilterText.length !== 0}
           quickFilterChangeHandler={quickFilterChangeHandler}
@@ -93,9 +93,9 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
         />
         {canPopout && (
           <React.Fragment>
-            <Fill/>
+            <Fill />
             <BlotterControls onClick={popoutClickHandler} data-qa="blotter-header__pop-out-button">
-              <PopoutIcon width={0.8125} height={0.75}/>
+              {PopoutIcon}
             </BlotterControls>
           </React.Fragment>
         )}

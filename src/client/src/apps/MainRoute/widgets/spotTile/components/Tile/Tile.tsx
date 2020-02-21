@@ -26,6 +26,7 @@ export interface TileProps {
   children: () => JSX.Element
   rfq: RfqActions
   updateNotional: (notionalUpdate: CurrencyPairNotional) => void
+  canPopout?: boolean
 }
 
 export interface TileState {
@@ -138,6 +139,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
       tileView,
       rfq,
       displayCurrencyChart,
+      canPopout,
     } = this.props
     const { inputDisabled, inputValidationMessage, canExecute } = this.state
     const TileViewComponent = tileView ? this.tileComponents[tileView] : SpotTile
@@ -155,6 +157,7 @@ class Tile extends React.PureComponent<TileProps, TileState> {
         tradingDisabled={!canExecute}
         rfq={rfq}
         displayCurrencyChart={displayCurrencyChart}
+        canPopout={canPopout}
       >
         {children()}
       </TileViewComponent>

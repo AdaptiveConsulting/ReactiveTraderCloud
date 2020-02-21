@@ -3,7 +3,6 @@ import { platformHasFeature, usePlatform } from 'rt-platforms'
 import { styled } from 'rt-theme'
 import { TileHeader as Header, TileSymbol, DeliveryDate } from './styled'
 import { CurrencyPair } from 'rt-types'
-
 interface Props {
   ccyPair: CurrencyPair
   date: string

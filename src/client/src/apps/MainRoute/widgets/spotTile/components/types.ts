@@ -44,4 +44,5 @@ export interface SpotTileProps {
   chartData?: []
   rfq: RfqActions
   displayCurrencyChart?: () => void
+  canPopout?: boolean
 }

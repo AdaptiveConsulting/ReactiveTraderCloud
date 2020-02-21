@@ -14,6 +14,7 @@ export const DeliveryDate = styled.div`
   line-height: 1rem;
   opacity: 0.59;
   margin-left: auto;
+  transition: margin-right 0.2s;
 `
 
 export const TileSymbol = styled.div`
@@ -48,10 +49,13 @@ export const TileHeader = styled.div`
   align-items: center;
 `
 
-export const TileWrapperBase = styled.div`
+export const TileWrapperBase = styled.div<{ canPopout?: boolean }>`
   position: relative;
   &:hover ${TopRightButton} {
     opacity: 0.75;
+  }
+  &:hover ${DeliveryDate} {
+    margin-right: ${({ canPopout }) => (canPopout ? '1.3rem' : '0')};
   }
   &:hover ${ActionButton} {
     opacity: 0.75;

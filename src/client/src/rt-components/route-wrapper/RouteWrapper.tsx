@@ -29,7 +29,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'mai
   const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
   const Header = windowType === 'main' ? PlatformControls : null
   const subheader =
-    windowType === 'sub' ? <PlatformHeader close={window.close} minimize={window.minimize} /> : null
+    windowType === 'sub' ? <PlatformHeader popIn={window.close} minimize={window.minimize} /> : null
 
   return (
     <RouteStyle platform={platform}>

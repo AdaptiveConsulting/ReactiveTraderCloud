@@ -10,9 +10,9 @@ import { Subscription } from 'rxjs'
 const SpotTileStyle = styled.div`
   min-width: 26rem;
   width: 26rem;
-  min-height: 12rem;
-  height: 12rem;
-  padding: 0.625rem;
+  min-height: 12.2rem;
+  height: 12.2rem;
+  padding: 0 0.575rem 0.5rem 0.575rem;
   margin: 0 auto;
 `
 

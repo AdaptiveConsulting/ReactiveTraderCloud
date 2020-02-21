@@ -1,15 +1,20 @@
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState, useCallback } from 'react'
 import { Helmet } from 'react-helmet'
 import { snapAndDock } from 'openfin-layouts'
 import { styled, AccentName } from 'rt-theme'
 import { UndockIcon, IconStateTypes } from '../../../rt-components'
+import {
+  minimiseNormalIcon,
+  maximiseScreenIcon,
+  exitNormalIcon,
+  popInIcon,
+} from 'apps/SimpleLauncher/icons'
 
 export interface ControlProps {
   minimize?: () => void
   maximize?: () => void
-  close: () => void
+  popIn?: () => void
+  close?: () => void
 }
 
 export const OpenFinChrome: React.FC = ({ children }) => (
@@ -37,27 +42,34 @@ export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
   </Header>
 )
 
-export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close }) => (
+export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close, popIn }) => (
   <React.Fragment>
     {minimize ? (
-      <HeaderControl accent="aware" onClick={minimize} data-qa="openfin-chrome__minimize">
-        <i className="fas fa-minus fa-set-position" />
+      <HeaderControl onClick={minimize} data-qa="openfin-chrome__minimize">
+        {minimiseNormalIcon}
       </HeaderControl>
     ) : null}
     {maximize ? (
-      <HeaderControl accent="dominant" onClick={maximize} data-qa="openfin-chrome__maximize">
-        <i className="far fa-window-maximize" />
+      <HeaderControl onClick={maximize} data-qa="openfin-chrome__maximize">
+        {maximiseScreenIcon}
       </HeaderControl>
     ) : null}
-    <HeaderControl accent="bad" onClick={close} data-qa="openfin-chrome__close">
-      <FontAwesomeIcon icon={faTimes} />
-    </HeaderControl>
+    {popIn ? (
+      <HeaderControl onClick={popIn} data-qa="openfin-chrome__maximize">
+        {popInIcon}
+      </HeaderControl>
+    ) : null}
+    {close ? (
+      <HeaderControl onClick={close} data-qa="openfin-chrome__close">
+        {exitNormalIcon}
+      </HeaderControl>
+    ) : null}
   </React.Fragment>
 )
 
 const OpenFinUndockControl: React.FC = () => {
   const [isWindowDocked, setIsWindowDocked] = useState(false)
-  const [iconState, setIconState] = useState(IconStateTypes.Normal);
+  const [iconState, setIconState] = useState(IconStateTypes.Normal)
 
   useEffect(() => {
     const handleWindowDocked = () => {
@@ -110,14 +122,13 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
   display: flex;
   justify-content: center;
   align-self: center;
-  min-width: 2.3rem;
-  padding-top: 7px;
-
   color: ${props => props.theme.button.secondary.backgroundColor};
   cursor: pointer;
 
   &:hover {
-    color: ${({ theme, accent = 'dominant' }) => theme.button[accent].backgroundColor};
+    svg path:last-child {
+      fill: #5f94f5;
+    }
   }
 `
 
