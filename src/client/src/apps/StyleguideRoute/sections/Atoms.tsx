@@ -1,50 +1,66 @@
 import React from 'react'
-import DropdowGrid from '../components/DropdowGrid'
-import DropdowMenuGrid from '../components/DropdownMenuGrid'
-import ButtonGrid from '../components/ButtonGrid'
 import FormGrid from '../components/FormGrid'
-import { H2, H3, H5, NumberedLayout } from '../elements'
-import { ThemeName, useTheme } from 'rt-theme'
+import { styled } from 'rt-theme'
+import PricingTilesGrid from '../components/PricingTilesGrid'
+import ChartingGrid from '../components/ChartingGrid'
+import { H2, H3 } from '../elements'
 import { Paragraph, SectionBlock } from '../styled'
+import ButtonGrid from '../components/ButtonGrid'
+import SpreadGrid from '../components/SpreadGrid'
+import ConfirmationGrid from '../components/ConfirmationGrid'
 
 export const layout = React.Fragment
 export const props = {}
 
 export default () => {
-  const { themeName } = useTheme()
-  const isDark = themeName === ThemeName.Dark
-
   return (
     <React.Fragment>
-      <SectionBlock mh={3}>
-        <NumberedLayout number="2">
-          <H5>Design Systems</H5>
-          <H3>Adaptive UI Library</H3>
-          <Paragraph>Basic controls of any UI</Paragraph>
-        </NumberedLayout>
+      <SectionBlock py={0} pt={2} mh={0} colorScheme="secondary">
+        <H2 pt={4}>Atoms</H2>
+        <Paragraph>
+          Atoms are the lowest level of a UI such as a button, text link, input field etc. Atoms are
+          placed together to create a specific piece of functionality. All controls are scalable in
+          height and width so as to accomodate a compact or spacious UI preference.
+        </Paragraph>
       </SectionBlock>
 
       <SectionBlock colorScheme="secondary" py={2} bleeds>
-        <H2>{isDark ? 'Dark ' : 'Light '} Atoms</H2>
-        <H3>Basic Elements</H3>
         <H3>Buttons</H3>
         <ButtonGrid />
-      </SectionBlock>
-
-      <SectionBlock colorScheme="secondary" py={2} bleeds>
-        <H3>Dropdown</H3>
-        <DropdowGrid />
-      </SectionBlock>
-
-      <SectionBlock colorScheme="secondary" py={2} bleeds>
-        <H3>Dropdown Menu</H3>
-        <DropdowMenuGrid />
       </SectionBlock>
 
       <SectionBlock colorScheme="secondary" py={2} bleeds>
         <H3>Form Elements</H3>
         <FormGrid />
       </SectionBlock>
+
+      <SectionBlock colorScheme="secondary" py={2} bleeds>
+        <Separator />
+        <H3>Pricing Tiles</H3>
+        <AtomsContainer>
+          <PricingTilesGrid />
+          <SpreadGrid />
+          <ChartingGrid />
+          <ConfirmationGrid />
+        </AtomsContainer>
+      </SectionBlock>
     </React.Fragment>
   )
 }
+
+const AtomsContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 8rem;
+  margin-top: 2rem;
+
+  & > div:first-child {
+    grid-row: 1 / 4;
+  }
+`
+
+const Separator = styled.hr`
+  border: none;
+  border-bottom: 2px solid ${({ theme }) => theme.primary[3]};
+  margin: 4rem 0;
+`

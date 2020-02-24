@@ -1569,6 +1569,11 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   color: #ffffff;
 }
 
+.c7:hover {
+  background-color: #f94c4c;
+  color: #ffffff;
+}
+
 .c18 {
   background-color: #2e3543;
   border-radius: 3px;
@@ -1590,6 +1595,11 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 }
 
 .spot-tile:hover .c18:hover {
+  background-color: #5f94f5;
+  color: #ffffff;
+}
+
+.c18:hover {
   background-color: #5f94f5;
   color: #ffffff;
 }
@@ -2576,6 +2586,11 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   color: #ffffff;
 }
 
+.c7:hover {
+  background-color: #f94c4c;
+  color: #ffffff;
+}
+
 .c18 {
   background-color: #2e3543;
   border-radius: 3px;
@@ -2595,6 +2610,11 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 }
 
 .spot-tile:hover .c18:hover {
+  background-color: #5f94f5;
+  color: #ffffff;
+}
+
+.c18:hover {
   background-color: #5f94f5;
   color: #ffffff;
 }

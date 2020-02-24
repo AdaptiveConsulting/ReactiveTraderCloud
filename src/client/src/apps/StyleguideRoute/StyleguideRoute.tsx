@@ -1,4 +1,5 @@
 import React, { createRef } from 'react'
+import Helmet from 'react-helmet'
 import { styled, ThemeProvider } from 'rt-theme'
 import FloatingTools from './components/FloatingsTools'
 import OnePageNavBar from './components/OnePageNavBar'
@@ -22,21 +23,30 @@ const StyleguideRoute: React.FC = () => {
   const navSections = sections.map((section, index) => ({ ...section, ref: refs[index] }))
 
   return (
-    <ThemeProvider>
-      <Root>
-        <FloatingTools />
-        <Introduction key="introduction" />
-        <OnePageNavBar sections={navSections} />
-        <React.Fragment>
-          {navSections.map(({ path, Section, ref }) => (
-            <ScrollableContainer id={path} key={path} ref={ref}>
-              <Section />
-            </ScrollableContainer>
-          ))}
-        </React.Fragment>
-        <SectionBlock mh={5} colorScheme="inverted" />
-      </Root>
-    </ThemeProvider>
+    <React.Fragment>
+      <Helmet>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+        />
+      </Helmet>
+      <ThemeProvider>
+        <Root>
+          <FloatingTools />
+          <Introduction key="introduction" />
+          <OnePageNavBar sections={navSections} />
+          <React.Fragment>
+            {navSections.map(({ path, Section, ref }) => (
+              <ScrollableContainer id={path} key={path} ref={ref}>
+                <Section />
+              </ScrollableContainer>
+            ))}
+          </React.Fragment>
+          <SectionBlock mh={5} colorScheme="inverted" />
+        </Root>
+      </ThemeProvider>
+    </React.Fragment>
   )
 }
 

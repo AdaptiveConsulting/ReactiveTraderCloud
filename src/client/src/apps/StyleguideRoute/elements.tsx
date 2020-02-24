@@ -6,7 +6,9 @@ import { mapMarginPaddingProps, mapTextProps, MarginPaddingProps, TextProps } fr
 
 export { Paragraph } from './styled'
 
-const Hashable = ({ is: Element = 'div' as any, ...props }) => <Element {...props} id={kebabCase(props.children)} />
+const Hashable = ({ is: Element = 'div' as any, ...props }) => (
+  <Element {...props} id={kebabCase(props.children)} />
+)
 
 interface HeaderProps extends MarginPaddingProps, TextProps {}
 export const Header = styled(Hashable)<HeaderProps>`
@@ -92,4 +94,12 @@ export const SectionNumber = styled.div`
 
   color: ${({ theme }) => theme.secondary[2]};
   box-shadow: 0 0 0 0.125rem ${({ theme }) => theme.secondary[2]};
+`
+
+export const Caption = styled.div`
+  display: block;
+  font-size: 0.6rem;
+  line-height: normal;
+  margin: 0;
+  color: ${({ theme }) => theme.primary[2]};
 `
