@@ -49,8 +49,9 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  height: 59px min-width:125px;
-  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
   margin-bottom: 2px;
   cursor: initial;
   pointer-events: none;
@@ -486,8 +487,9 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  height: 59px min-width:125px;
-  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
   margin-bottom: 2px;
   cursor: initial;
   pointer-events: none;
@@ -1010,8 +1012,9 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  height: 59px min-width:125px;
-  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.6rem 1.5rem 0.4rem 1.5rem;
   margin-bottom: 2px;
   cursor: initial;
   pointer-events: none;
@@ -1553,8 +1556,9 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  height: 59px min-width:125px;
-  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
   margin-bottom: 2px;
   -webkit-animation: eJClnE 5s;
   animation: eJClnE 5s;
@@ -1583,8 +1587,9 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  height: 59px min-width:125px;
-  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
   margin-bottom: 2px;
   -webkit-animation: eNgZhw 5s;
   animation: eNgZhw 5s;
@@ -2572,8 +2577,9 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   cursor: pointer;
   border: none;
   outline: none;
-  height: 59px min-width:125px;
-  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
   margin-bottom: 2px;
 }
 
@@ -2600,8 +2606,9 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   cursor: pointer;
   border: none;
   outline: none;
-  height: 59px min-width:125px;
-  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
   margin-bottom: 2px;
 }
 
@@ -3049,8 +3056,9 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   cursor: pointer;
   border: none;
   outline: none;
-  height: 59px min-width:125px;
-  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
   margin-bottom: 2px;
   cursor: initial;
   pointer-events: none;

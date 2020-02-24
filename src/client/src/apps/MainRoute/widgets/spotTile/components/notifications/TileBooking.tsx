@@ -34,6 +34,8 @@ const BookingPill = styled.div<{
   position: absolute;
   ${({ isAnalyticsView, isExecutingStatus }) =>
     isAnalyticsView && !isExecutingStatus && 'right: 1.35rem'};
+  top: ${({ isAnalyticsView, isExecutingStatus }) =>
+    isAnalyticsView && !isExecutingStatus ? '2.8rem' : isAnalyticsView ? '2.3rem' : ''};
   border-radius: ${({ isExecutingStatus }) => (isExecutingStatus ? '17px' : '3px')};
   background: ${({ theme, color, disabled }) =>
     theme.template[color][disabled ? 'dark' : 'normal']};

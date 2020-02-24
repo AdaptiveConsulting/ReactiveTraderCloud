@@ -35,6 +35,7 @@ export const TradeButton = styled.button<{
   direction: Direction
   priceAnnounced: boolean
   isAnalyticsView: boolean
+  expired?: boolean
 }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
@@ -44,9 +45,10 @@ export const TradeButton = styled.button<{
   cursor: pointer;
   border: none;
   outline: none;
-  height: ${({ isAnalyticsView }) => (isAnalyticsView ? '50%' : '59px')}
+  height: 59px;
   min-width: 125px;
-  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
+  padding: ${({ expired }) =>
+    expired ? '0.6rem 1.5rem 0.4rem 1.5rem' : '0.55rem 1.5rem 0.6rem 1.5rem'};
   margin-bottom: 2px;
   ${backgroundEffect}
 

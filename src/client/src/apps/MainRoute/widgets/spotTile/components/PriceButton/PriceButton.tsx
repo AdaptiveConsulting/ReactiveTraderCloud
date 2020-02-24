@@ -54,6 +54,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
       priceAnnounced={!!priceAnnounced}
       disabled={isDisabled}
       isAnalyticsView={isAnalyticsView}
+      expired={expired}
       data-qa="price-button__trade-button"
       data-qa-id={`direction-${direction.toLowerCase()}-${currencyPairSymbol.toLowerCase()}`}
     >
