@@ -17,7 +17,7 @@ services:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     depends_on:
       - broker
       - eventstore
@@ -51,7 +51,7 @@ services:
     image: ${DOCKER_USER}/analytics:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     command: 'dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json'
     depends_on:
       - broker
@@ -60,7 +60,7 @@ services:
     image: ${DOCKER_USER}/pricing:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     command: 'dotnet ./Adaptive.ReactiveTrader.Server.Pricing.dll config.prod.json'
     depends_on:
       - broker
@@ -70,7 +70,7 @@ services:
     image: ${DOCKER_USER}/referencedataread:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     command: 'dotnet ./Adaptive.ReactiveTrader.Server.ReferenceDataRead.dll config.prod.json'
     depends_on:
       - broker
@@ -80,7 +80,7 @@ services:
     image: ${DOCKER_USER}/tradeexecution:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     command: 'dotnet ./Adaptive.ReactiveTrader.Server.TradeExecution.dll config.prod.json'
     depends_on:
       - broker
@@ -90,7 +90,7 @@ services:
     image: ${DOCKER_USER}/blotter:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     command: 'dotnet ./Adaptive.ReactiveTrader.Server.Blotter.dll config.prod.json'
     depends_on:
       - broker
