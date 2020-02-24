@@ -100,7 +100,7 @@ services:
     image: ${DOCKER_USER}/pricehistory:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile.dev
-      context: ./server/Adaptive.ReactiveTrader.Server.PriceHistory
+      context: ./server/node/priceHistory
     depends_on:
       - broker
       - pricing
@@ -112,7 +112,7 @@ services:
     hostname: nlp
     build:
       dockerfile: Nlp.Dockerfile
-      context: ./node-server
+      context: ./server/node
     depends_on:
       - broker
     environment:
@@ -123,9 +123,9 @@ services:
     hostname: openfinconfig
     build:
       dockerfile: OpenfinConfig.Dockerfile
-      context: ./node-server
+      context: ./server/node
   bot:
     hostname: bot
     image: ${DOCKER_USER}/bot:${BUILD_VERSION}
     build:
-      context: ./server/Adaptive.ReactiveTrader.Server.Bot
+      context: ./server/node/bot
