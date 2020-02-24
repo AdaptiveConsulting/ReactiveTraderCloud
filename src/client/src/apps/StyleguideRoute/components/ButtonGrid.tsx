@@ -13,26 +13,24 @@ export default (() => (
   <Root>
     <LabelColumn>
       <div />
-      <label>Normal</label>
-      <label>Hover</label>
-      <label>Active</label>
-      <label>Disabled</label>
+      <label>Primary</label>
+      <label>Secondary</label>
     </LabelColumn>
     <ButtonColumn>
-      <ColumnTitle>Primary</ColumnTitle>
-      <ButtonVariants intent="primary" title="Primary" />
+      <ColumnTitle>Normal</ColumnTitle>
+      <ButtonVariants />
     </ButtonColumn>
     <ButtonColumn>
-      <ColumnTitle>Primary-Outline</ColumnTitle>
-      <ButtonVariants intent="primary" title="Primary outline" outline />
+      <ColumnTitle>Hover</ColumnTitle>
+      <ButtonVariants active />
     </ButtonColumn>
     <ButtonColumn>
-      <ColumnTitle>Secondary</ColumnTitle>
-      <ButtonVariants intent="secondary" title="Secondary" />
+      <ColumnTitle>Active</ColumnTitle>
+      <ButtonVariants active />
     </ButtonColumn>
     <ButtonColumn>
-      <ColumnTitle>Secondary-Outline</ColumnTitle>
-      <ButtonVariants intent="secondary" title="Secondary outline" outline />
+      <ColumnTitle>Disabled</ColumnTitle>
+      <ButtonVariants disabled />
     </ButtonColumn>
   </Root>
 )) as React.FC
@@ -42,30 +40,14 @@ const ButtonVariants: React.FC<ButtonStyleProps & TitleButtonProp> = props => (
     {
       // standard
       <ButtonRow>
-        <Button {...props}>{props.title}</Button>
+        <Button {...props}>Action</Button>
       </ButtonRow>
     }
     {
       //  hover
       <ButtonRow>
-        <Button {...props} active>
-          Hover
-        </Button>
-      </ButtonRow>
-    }
-    {
-      //  active
-      <ButtonRow>
-        <Button {...props} active>
-          Active
-        </Button>
-      </ButtonRow>
-    }
-    {
-      //  disabled
-      <ButtonRow>
-        <Button {...props} disabled>
-          Disabled
+        <Button intent="secondary" {...props}>
+          Action
         </Button>
       </ButtonRow>
     }
