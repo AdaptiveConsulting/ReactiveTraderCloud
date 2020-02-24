@@ -22,7 +22,14 @@ export const Router: FC = () => (
         </RouteWrapper>
       )}
     />
-    <Route path="/tiles" component={TileRoute} />
+    <Route
+      path="/tiles"
+      render={() => (
+        <RouteWrapper>
+          <TileRoute />
+        </RouteWrapper>
+      )}
+    />
     <Route
       path="/spot/:symbol"
       render={routeProps => (
