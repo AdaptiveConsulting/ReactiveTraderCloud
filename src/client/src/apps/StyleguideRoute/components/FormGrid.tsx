@@ -67,7 +67,7 @@ const FormGrid = () => {
       <ActiveNumberInput type="number" placeholder="Prompt" value="10" label="" />
       <Input type="number" placeholder="Prompt" value="10" disabled label="" />
 
-      <div>text</div>
+      <div>Text</div>
       <Input type="text" placeholder="Text" label="" />
       <HoveredInput type="text" placeholder="Text" status="info" label="" />
       <ActiveNumberInput type="text" placeholder="Prompt" status="info" value="Text" label="" />
