@@ -56,9 +56,10 @@ const ButtonVariants: React.FC<ButtonStyleProps & TitleButtonProp> = props => (
 
 const GridColumn = styled.div`
   display: grid;
-  grid-template-rows: 3rem repeat(4, 2rem);
+  grid-template-rows: 3rem repeat(2, 2rem);
   grid-row-gap: 0.5rem;
   align-items: center;
+  margin-bottom: 2rem;
 `
 
 const LabelColumn = styled(GridColumn)`
@@ -82,8 +83,6 @@ const Root = styled.div`
   display: grid;
   grid-template-columns: 5rem 1fr 1fr 1fr 1fr ;
   grid-column-gap: 2rem;
-
-  padding-bottom: 2rem;
 
   ${ButtonColumn} + ${ButtonColumn} {
     position: relative;

@@ -72,6 +72,15 @@ const StyledInput = styled.input<InputStyleProps>`
   &:disabled {
     border-bottom: ${({ status, theme }) =>
       `1px solid ${status ? theme.accents[inputColors[status]].darker : theme.primary[2]}`};
+    color: ${({ theme, disabled }) =>
+      theme.name === 'light'
+        ? disabled
+          ? theme.secondary[2]
+          : theme.secondary[2]
+        : disabled
+        ? theme.colors.light.secondary[1]
+        : theme.colors.light.secondary[2]};
+    cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   }
   &::placeholder {
     color: ${({ theme, disabled }) =>
@@ -89,11 +98,11 @@ const Label = styled.label<LabelProps>`
   color: ${({ theme, disabled }) =>
     theme.name === 'light'
       ? disabled
-        ? theme.secondary[4]
+        ? theme.secondary[2]
         : theme.secondary[2]
       : disabled
-      ? theme.primary[3]
-      : theme.colors.light.secondary[4]};
+      ? theme.colors.light.secondary[1]
+      : theme.colors.light.secondary[2]};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `
 
