@@ -21,7 +21,7 @@ export const openfinWindowStates: { readonly [key: string]: WindowState } = {
   Maximized: 'maximized',
 }
 
-const generateRandomName = function () {
+const generateRandomName = function() {
   let text = ''
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -168,7 +168,6 @@ export const addApplicationEventHandler = (event: string) => (handler: Function)
 
   app.addListener(event, handler as () => any)
 }
-
 
 export async function isCurrentWindowDocked() {
   const currentWindow = await fin.Window.getCurrent()
