@@ -2,13 +2,14 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { Helmet } from 'react-helmet'
 import { snapAndDock } from 'openfin-layouts'
 import { styled, AccentName } from 'rt-theme'
-import { UndockIcon, IconStateTypes } from '../../../rt-components'
 import {
   minimiseNormalIcon,
   maximiseScreenIcon,
   exitNormalIcon,
   popInIcon,
 } from 'apps/SimpleLauncher/icons'
+import { isCurrentWindowDocked } from '../adapter'
+import { UndockIcon } from '../../../rt-components'
 
 export interface ControlProps {
   minimize?: () => void
@@ -69,7 +70,6 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
 
 const OpenFinUndockControl: React.FC = () => {
   const [isWindowDocked, setIsWindowDocked] = useState(false)
-  const [iconState, setIconState] = useState(IconStateTypes.Normal)
 
   useEffect(() => {
     const handleWindowDocked = () => {
@@ -78,12 +78,20 @@ const OpenFinUndockControl: React.FC = () => {
 
     snapAndDock.addEventListener('window-docked', handleWindowDocked)
 
-    return () => snapAndDock.removeEventListener('window-docked', handleWindowDocked)
+    return () => {
+      snapAndDock.removeEventListener('window-docked', handleWindowDocked)
+    }
+  }, [])
+
+  useEffect(() => {
+    isCurrentWindowDocked()
+      .then(isDocked => {
+        setIsWindowDocked(isDocked)
+      })
   }, [])
 
   const handleUndockClick = useCallback(() => {
     snapAndDock.undockWindow()
-    setIconState(IconStateTypes.Normal)
     setIsWindowDocked(false)
   }, [])
 
@@ -92,10 +100,8 @@ const OpenFinUndockControl: React.FC = () => {
       {isWindowDocked && (
         <UndockButton
           onClick={handleUndockClick}
-          onMouseEnter={() => setIconState(IconStateTypes.Hover)}
-          onMouseLeave={() => setIconState(IconStateTypes.Normal)}
         >
-          <UndockIcon width={24} height={24} iconState={iconState} />
+          <UndockIcon width={24} height={24} />
         </UndockButton>
       )}
     </>
@@ -138,6 +144,28 @@ const UndockButton = styled.button`
   width: max-content;
   padding-left: 0.625rem;
   cursor: pointer;
+
+  &:hover {
+    .icon {
+      path:nth-child(2) {
+        fill: #5F94F5;
+      }
+      path:last-child {
+        fill: #535760;
+      }
+    }
+  }
+
+  &:disabled {
+    .icon {
+      path:nth-child(2) {
+        fill: #535760;
+      }
+      path:last-child {
+        fill: #3D424C;
+      }
+    }
+  }
 `
 
 export const Root = styled.div`
