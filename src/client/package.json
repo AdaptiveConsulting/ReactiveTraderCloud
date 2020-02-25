@@ -91,6 +91,7 @@
     "styled-components": "^5.0.1",
     "typeface-lato": "^0.0.54",
     "typeface-montserrat": "^0.0.54",
+    "typeface-roboto": "0.0.75",
     "ua-parser-js": "0.7.10",
     "uuid": "3.3.2"
   },
