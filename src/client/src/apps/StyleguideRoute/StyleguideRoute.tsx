@@ -10,11 +10,13 @@ import ColorSpectrum from './sections/ColorSpectrum'
 import CoreBranding from './sections/CoreBranding'
 import FontFamilies from './sections/FontFamilies'
 import Introduction from './sections/Introduction'
+import Iconography from './sections/Iconography'
 
 const sections: Array<{ path: string; Section: React.ComponentType; title: string }> = [
   { path: 'color-spectrum', Section: ColorSpectrum, title: 'Colour' },
+  { path: 'core-branding', Section: CoreBranding, title: 'Color branding' },
   { path: 'font-families', Section: FontFamilies, title: 'Typography' },
-  { path: 'core-branding', Section: CoreBranding, title: 'Iconography' },
+  { path: 'icons-family', Section: Iconography, title: 'Iconography' },
   { path: 'atoms-molecules', Section: Atoms, title: 'Atoms' },
 ]
 
