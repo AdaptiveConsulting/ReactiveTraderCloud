@@ -9,6 +9,7 @@ const Grid = styled.div`
   grid-template-columns: 5rem 1fr 1fr 1fr 1fr;
   gap: 20px;
   align-items: center;
+  margin-top: 2rem;
 `
 
 const HoveredInput = styled(Input)`
@@ -55,12 +56,6 @@ const ActiveNumberInput = styled(ActiveInput)`
 const FormGrid = () => {
   return (
     <Grid>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-
       <div>Figures</div>
       <Input type="number" placeholder="Prompt" label="" />
       <HoveredInput type="number" placeholder="Value" label="" />
