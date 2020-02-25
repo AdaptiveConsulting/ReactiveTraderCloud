@@ -19,16 +19,22 @@ export const RootContainer = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 `
 
-export const RootLauncherContainer = styled(RootContainer) <{ showResponsePanel: boolean }>`
-  background-color: ${({ showResponsePanel }) => showResponsePanel ? '#313131' : 'transparent'};
+export const RootLauncherContainer = styled(RootContainer)<{ showResponsePanel: boolean }>`
+  background-color: ${({ showResponsePanel }) => (showResponsePanel ? '#313131' : 'transparent')};
   border-radius: 3px;
   overflow: hidden;
 `
+export const RootResultsContainer = styled.div`
+  padding: 5px;
+`
 
-export const LauncherContainer = styled(RootContainer) <{ width: number, showResponsePanel: boolean }>`
+export const LauncherContainer = styled(RootContainer)<{
+  width: number
+  showResponsePanel: boolean
+}>`
   height: 56px;
-  width: ${({ showResponsePanel, width }) => showResponsePanel ? width + 'px' : '355px'};
-  border-radius: ${({ showResponsePanel }) => showResponsePanel ? '3px 3px 0 0' : '3px'};
+  width: ${({ showResponsePanel, width }) => (showResponsePanel ? width + 'px' : '355px')};
+  border-radius: ${({ showResponsePanel }) => (showResponsePanel ? '3px 3px 0 0' : '3px')};
   background-color: #313131;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   overflow: initial;
@@ -79,14 +85,14 @@ export const ButtonContainer = styled(IconContainer)`
   ${rules.appRegionNoDrag};
 `
 
-export const SearchButtonContainer = styled(ButtonContainer) <{ isSearchVisible: boolean }>`
+export const SearchButtonContainer = styled(ButtonContainer)<{ isSearchVisible: boolean }>`
   display: flex;
   align-items: center;
   height: auto;
   width: 40px;
   border-radius: 0 3px 3px 0;
   ${rules.appRegionNoDrag};
-  background-color: ${({ isSearchVisible }) => isSearchVisible ? '#8c7ae6' : ''};
+  background-color: ${({ isSearchVisible }) => (isSearchVisible ? '#8c7ae6' : '')};
 `
 
 export const LogoContainer = styled(IconContainer)`
