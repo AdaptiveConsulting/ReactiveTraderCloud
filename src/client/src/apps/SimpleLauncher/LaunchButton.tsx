@@ -40,10 +40,11 @@ interface LaunchButtonProps {
   onClick: () => void
   fill?: string
   children: JSX.Element[] | JSX.Element
+  title?: string
 }
 
 export const LaunchButton = (props: LaunchButtonProps) => (
-  <StyledButton onClick={props.onClick} fill={props.fill}>
+  <StyledButton title={props.title} onClick={props.onClick} fill={props.fill}>
     {props.children}
   </StyledButton>
 )

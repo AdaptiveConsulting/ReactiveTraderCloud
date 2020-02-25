@@ -12,11 +12,16 @@ export default (env: string): OpenFinApplicationConfiguration => {
       name,
       url: `https://web-${env}.adaptivecluster.com/launcher`,
       uuid: `reactive-launcher-${env}`,
-      defaultWidth: 400,
-      defaultHeight: 120,
+      defaultWidth: 350,
+      defaultHeight: 56,
       defaultTop: 160,
       defaultLeft: 30,
-      transparent: true,
+      autoShow: true,
+      backgroundColor: '#313131',
+      cornerRounding: {
+        width: 4,
+        height: 4
+      },  
       permissions: {
         System: {
           launchExternalProcess: true,
@@ -25,7 +30,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
       saveWindowState: false,
       resizable: false,
       shadow: true,
-      backgroundColor: '#444C5F',
+      frame: false,
       alwaysOnTop: true,
       icon: `https://web-${env}.adaptivecluster.com/static/media/icon.ico`,
       applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-mark-large.png`,
@@ -38,7 +43,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
       },
     },
     runtime: {
-      arguments: '--remote-debugging-port=9222 --disable-legacy-window',
+      arguments: '--remote-debugging-port=9222',
       version: '13.76.44.21',
     },
     shortcut: {

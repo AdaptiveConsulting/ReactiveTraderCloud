@@ -87,7 +87,7 @@ export const SearchContainer = styled.div<{ launcherWidth: number }>`
   background-color: #313131;
   position: absolute;
   left: ${({ launcherWidth }) => launcherWidth + 'px'};
-  right: 118px;
+  right: 75px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -95,11 +95,11 @@ export const SearchContainer = styled.div<{ launcherWidth: number }>`
   z-index: 1;
   transition: left 0.3s, right 0.3s, opacity 0.1s ease;
   will-change: opacity;
-  
+
   &.search-container--active {
     left: 55px;
     opacity: 1;
-    right: ${({ launcherWidth }) => 355 - launcherWidth + 118 + 'px'};
+    right: ${({ launcherWidth }) => 355 - launcherWidth + 75 + 'px'};
 
     > input {
       caret-color: #8c7ae6;
