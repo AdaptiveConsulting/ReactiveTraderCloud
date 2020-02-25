@@ -22,8 +22,9 @@ type NormalizedFontSize =
   | 3
   | 3.4375
   | 5
+  | 7.5
 
-type NormalizedLineHeight = 1 | 1.25 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 5
+type NormalizedLineHeight = 1 | 1.25 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 5 | 7.5
 
 export interface TextProps {
   display?: 'inline' | 'block' | 'inline-block'
@@ -37,7 +38,7 @@ export interface TextProps {
   fontSize?: NormalizedFontSize
   fontWeight?: 'bold' | number
   fontStyle?: 'italic' | string
-  fontFamily?: 'lato' | 'montserrat' | string
+  fontFamily?: 'lato' | 'montserrat' | 'roboto' | string
   textAlign?: 'initial' | 'left' | 'center' | 'right'
   textTransform?: 'uppercase' | 'capitalize'
   whiteSpace?: 'initial' | 'nowrap' | 'pre-line' | 'pre-wrap'

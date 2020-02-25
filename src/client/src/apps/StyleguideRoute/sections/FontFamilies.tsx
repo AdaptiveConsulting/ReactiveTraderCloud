@@ -1,17 +1,28 @@
 import React from 'react'
 import { styled } from 'rt-theme'
 
-import { H2, H3 } from '../elements'
+import { H2, H3, H5 } from '../elements'
 import { Paragraph, SectionBlock, Text, TextProps } from '../styled'
-import { css } from 'styled-components'
 
-const SIZES: Array<[string, TextProps['fontSize'], TextProps['lineHeight']]> = [
-  ['Heading H1', 3.4375, 3.5],
-  ['Heading H2', 2.125, 2.5],
-  ['Heading H3', 1.3125, 1.5],
-  ['Heading H4', 0.8125, 1],
-  ['Body', 0.6875, 1],
-  ['Caption', 0.5, 1],
+const SIZES: Array<[
+  string,
+  string,
+  string,
+  string,
+  string,
+  TextProps['fontSize'],
+  TextProps['lineHeight'],
+]> = [
+  ['H1', 'Regular', 'Left', '19px', 'Sentence', 1.25, 1.25],
+  ['H2', 'Regular', 'Left', '16px', 'Sentence', 1, 1],
+  ['H3', 'Medium', 'Left', '13px', 'Sentence', 0.8125, 1],
+  ['H4', 'Bold', 'Left', '10px', 'All caps', 0.625, 1],
+  ['SUBTITLE 1', 'Medium', 'Left', '10px', 'All caps', 0.625, 1],
+  ['Nav', 'Medium', 'Left', '13px', 'Sentence', 0.8125, 1],
+  ['Body 1', 'Multiple*', 'Mutiple', '12px', 'Sentence', 0.75, 1],
+  ['Body 2', 'Multiple*', 'Mutiple', '11px', 'Sentence', 0.6875, 1],
+  ['Button', 'Medium', 'Mutiple', '11px', 'Sentence', 0.6875, 1],
+  ['Caption', 'Light italic', 'Left', '11px', 'Sentence', 0.6875, 1],
 ]
 
 const CHARACTERS = [
@@ -32,8 +43,8 @@ const LATO = {
   ],
 }
 
-const MONTSERRAT = {
-  fontFamily: 'montserrat',
+const ROBOTO = {
+  fontFamily: 'roboto',
   fontFaces: [
     { fontWeight: 100, advised: true, name: 'Thin' },
     { fontWeight: 200, advised: true, name: 'Extra Light' },
@@ -49,60 +60,49 @@ const MONTSERRAT = {
 
 export const FontFamilies: React.FC = () => (
   <React.Fragment>
-    <SectionBlock mh={1}>
-      <H2>Font Families</H2>
-    </SectionBlock>
-    <SectionBlock colorScheme="inverted">
-      <H3>Primary — LATO</H3>
-
-      <Paragraph>
-        Lato meaning ‘Summer’ in polish has a clear corporate but modern style that works really
-        well in digital products. It is available for free as part of the open-source Open Font
-        Licence and can be downloaded directly from Google fonts and used without restriction.
-      </Paragraph>
-      <FontFamilySample {...LATO} />
-    </SectionBlock>
     <SectionBlock colorScheme="secondary">
-      <H3>Secondary — MONTSERRAT</H3>
+      <H2 pt={4}>Tipography</H2>
+      <H3>Roboto</H3>
 
       <Paragraph>
-        Secondary fonts can be used if required to add interest to specific titles or summary data.
-        Be sure to select a complimentary style that can work alongside the primary font. Montserrat
-        has been chosen for it’s strong bold style at small font sizes. It is also available to be
-        used without restriction from Google fonts.
+        Roboto has a dual nature. It has a mechanical skeleton and the forms are largely geometric.
+        At the same time, the font features friendly and open curves. While some grotesks distort
+        their letterforms to force a rigid rhythm, Roboto doesn’t compromise, allowing letters to be
+        settled into their natural width. This makes for a more natural reading rhythm more commonly
+        found in humanist and serif types.
       </Paragraph>
 
-      <FontFamilySample {...MONTSERRAT} />
+      <FontFamilySample {...ROBOTO} />
+
+      <H3>Font Sizes & Style Usage</H3>
+      <FontSizeGridHeader>
+        <H5>Category</H5>
+        <H5>Font Styles</H5>
+        <H5>Alignment</H5>
+        <H5>Size</H5>
+        <H5>Case</H5>
+      </FontSizeGridHeader>
+      {SIZES.map(([label, fontWeight, alignment, fontSizeText, caps, fontSize, lineHeight]) => (
+        <FontSizeGrid key={label}>
+          <Text textColor={theme => theme.secondary[1]} fontSize={fontSize} lineHeight={1.5}>
+            {label}
+          </Text>
+          <Text textColor={theme => theme.secondary[1]}>{fontWeight}</Text>
+          <Text textColor={theme => theme.secondary[1]}>{alignment}</Text>
+          <Text textColor={theme => theme.secondary[1]}>{fontSizeText}</Text>
+          <Text textColor={theme => theme.secondary[1]}>{caps}</Text>
+        </FontSizeGrid>
+      ))}
     </SectionBlock>
-
-    <SectionBlock mh={5}>
-      <H2>Font Sizes</H2>
+    <SectionBlock colorScheme="secondary" mh={0} py={0}>
       <Paragraph>
-        You should be free to select a font size that seems appropriate for the use however try to
-        control the number of similar sized fonts used unless there really is a clear visual
-        benefit. Defining a paragraph size is very important and can be used to define the headings
-        and sub-heading sizes. Always ensure you are maintaining a clear hierarchy in your screen
-        layout by using the correctly weighted and sized fonts.
+        <i>
+          *Means there will often be regular, bold, medium, italic, underline styles available The
+          above are the core set of available fonts and their styles. You should feel free to
+          deviate to some degree, for example using a body style then amending the weight to bold,
+          italic underlined etc.
+        </i>
       </Paragraph>
-      <Paragraph fontStyle="italic" my={3}>
-        <strong>Note</strong>: You can use the Fibonacci numbers to define the upper and lower font
-        sizes. Starting from 8, 13, 21, 34, 55, and then add minor increments inbetween as you see
-        the need.
-      </Paragraph>
-
-      <FontSizeGrid>
-        {SIZES.map(([label, fontSize, lineHeight]) => (
-          <React.Fragment key={label}>
-            <Text textColor={theme => theme.secondary[1]}>
-              {label} — {fontSize && fontSize * 16 /* Assuming :root font-size is 16px!*/}
-              px
-            </Text>
-            <Paragraph fontSize={fontSize} lineHeight={lineHeight}>
-              Adaptive Financial
-            </Paragraph>
-          </React.Fragment>
-        ))}
-      </FontSizeGrid>
     </SectionBlock>
   </React.Fragment>
 )
@@ -128,17 +128,6 @@ const FontFamilySample: React.FC<{
             ),
         )}
       </CharacterMap>
-      <Heading>Styles</Heading>
-      <FontWeightGrid fontSize={1} lineHeight={2} fontFamily={fontFamily}>
-        {fontFaces.map(face => (
-          <div key={face.name} style={{ width: 'min-content' }}>
-            <FontWeight {...face}>{face.name}</FontWeight>
-            <FontWeight {...face} fontStyle="italic">
-              {face.name}
-            </FontWeight>
-          </div>
-        ))}
-      </FontWeightGrid>
     </div>
   </FontFamilySampleGrid>
 )
@@ -150,15 +139,16 @@ const Heading: React.FC = props => (
 const FontFamilySampleGrid = styled(Text)<TextProps>`
   display: grid;
   grid-template-columns: minmax(auto, 0.2fr) 1fr;
-  grid-column-gap: 1rem;
+  grid-column-gap: 5rem;
   max-width: 100%;
   overflow: hidden;
+  margin: 3rem 0;
 `
 
 const Glyph: React.FC<{ fontFamily: string }> = props => (
   <div>
     <Heading>Glyph</Heading>
-    <Paragraph fontSize={5} lineHeight={5} fontWeight="bold" {...props} />
+    <Paragraph fontSize={7.5} lineHeight={7.5} {...props} />
   </div>
 )
 
@@ -179,50 +169,23 @@ const CharacterLine = styled.div`
   @media all and (min-width: 640px) {
   }
 `
-
-const FontWeightGrid = styled(Text)<TextProps>`
+const FontSizeGridHeader = styled.div<{ children: any[] }>`
   display: grid;
-  grid-column-gap: 0.5rem;
   grid-template-rows: auto;
-  grid-template-columns: repeat(auto-fill, minmax(calc(50% - 1rem), 1fr));
-
-  @media all and (min-width: 480px) {
-    grid-template-columns: repeat(auto-fill, minmax(calc(33% - 1rem), 1fr));
-  }
-
-  @media all and (min-width: 640px) {
-    grid-template-columns: repeat(auto-fill, minmax(calc(20% - 1rem), 1fr));
-  }
-`
-
-const FontWeight = styled(Text)<{ advised: boolean } & TextProps>`
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  width: min-content;
-
-  ${({ advised }) =>
-    advised &&
-    css`
-      position: relative;
-
-      &:after {
-        position: absolute;
-        left: 0;
-        right: 0;
-        height: 1px;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0);
-      }
-    `};
+  grid-template-columns: minmax(25%, max-content) repeat(4, 1fr);
+  grid-column-gap: 1rem;
+  align-items: baseline;
+  background-color: ${({ theme }) => theme.primary[2]};
+  padding: 1rem;
 `
 
 const FontSizeGrid = styled.div<{ children: any[] }>`
   display: grid;
-
+  border-bottom: 1px solid ${({ theme }) => theme.primary[2]};
   grid-template-rows: auto;
-  grid-template-columns: minmax(25%, max-content) 1fr;
+  grid-template-columns: minmax(25%, max-content) repeat(4, 1fr);
   grid-column-gap: 1rem;
-
+  padding: 0.5rem 1rem;
   align-items: baseline;
 `
 
