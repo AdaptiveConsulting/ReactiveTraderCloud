@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using Adaptive.ReactiveTrader.Server.Host;
+using Adaptive.ReactiveTrader.Server.Common;
 using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics

@@ -1,7 +1,7 @@
 using System;
 using Adaptive.ReactiveTrader.Contract;
 
-namespace Adaptive.ReactiveTrader.Server.Host
+namespace Adaptive.ReactiveTrader.Server.Common
 {
     public class Trade
     {

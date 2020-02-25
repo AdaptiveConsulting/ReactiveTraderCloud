@@ -1,6 +1,6 @@
-﻿using Adaptive.ReactiveTrader.Contract;
+using Adaptive.ReactiveTrader.Contract;
 
-namespace Adaptive.ReactiveTrader.Server.Host
+namespace Adaptive.ReactiveTrader.Server.Common
 {
     public static class TradeMapper
     {

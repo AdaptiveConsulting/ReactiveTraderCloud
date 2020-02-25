@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Adaptive.ReactiveTrader.Server.TradeExecution\Adaptive.ReactiveTrader.Server.TradeExecution.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="EventStore.ClientAPI.DotNetCore" Version="2.0.0" />
-  </ItemGroup>
-
 </Project>

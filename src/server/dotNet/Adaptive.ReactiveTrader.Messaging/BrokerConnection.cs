@@ -12,7 +12,6 @@ namespace Adaptive.ReactiveTrader.Messaging
 {
     public class BrokerConnection : IDisposable
     {
-        private readonly IWampChannel _channel;
         private readonly WampChannelReconnector _reconnector;
         private readonly SerialDisposable _sessionDispose = new SerialDisposable();
         private readonly BehaviorSubject<IConnected<IBroker>> _subject =
@@ -20,22 +19,22 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public BrokerConnection(string uri, string realm)
         {
-            _channel = new WampChannelFactory()
+            var channel = new WampChannelFactory()
                 .ConnectToRealm(realm)
                 .WebSocketTransport(new Uri(uri))
                 .JsonSerialization()
                 .Build();
 
-            Func<Task> connect = async () =>
+            async Task Connect()
             {
                 Log.Information("Trying to connect to broker {brokerUri}", uri);
 
                 try
                 {
-                    await _channel.Open();
+                    await channel.Open();
                     Log.Debug("Connection Opened.");
 
-                    _subject.OnNext(Connected.Yes(new Broker(_channel)));
+                    _subject.OnNext(Connected.Yes(new Broker(channel)));
                 }
                 catch (Exception exception)
                 {
@@ -44,9 +43,9 @@ namespace Adaptive.ReactiveTrader.Messaging
                     _subject.OnNext(Connected.No<IBroker>());
                     throw;
                 }
-            };
+            }
 
-            _reconnector = new WampChannelReconnector(_channel, connect);
+            _reconnector = new WampChannelReconnector(channel, Connect);
         }
 
         public void Dispose()

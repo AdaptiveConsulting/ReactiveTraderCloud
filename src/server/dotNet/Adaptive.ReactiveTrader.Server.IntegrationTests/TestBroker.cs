@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using WampSharp.V2;
 using WampSharp.V2.Client;
