@@ -3,12 +3,15 @@
     "name": "Reactive Ecosystem Launcher (LOCAL)",
     "url": "http://localhost:3000/launcher",
     "uuid": "reactive-launcher-local",
-    "defaultWidth": 400,
-    "defaultHeight": 120,
+    "defaultWidth": 350,
+    "defaultHeight": 56,
     "defaultTop": 160,
     "defaultLeft": 30,
     "autoShow": true,
-    "transparent": true,
+    "cornerRounding": {
+      "width": 4,
+      "height": 4
+    },
     "permissions": {
       "System": {
         "launchExternalProcess": true
@@ -39,7 +42,7 @@
     }
   },
   "runtime": {
-    "arguments": "--remote-debugging-port=9222 --disable-legacy-window",
+    "arguments": "--remote-debugging-port=9222",
     "version": "13.76.44.21"
   },
   "shortcut": {

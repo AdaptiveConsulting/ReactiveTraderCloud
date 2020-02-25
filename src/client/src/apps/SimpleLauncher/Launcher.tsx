@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
-import { AdaptiveLoader, LogoIcon, Tooltip } from 'rt-components'
+import { AdaptiveLoader, LogoIcon } from 'rt-components'
 import { usePlatform } from 'rt-platforms'
 import { Bounds } from 'openfin/_v2/shapes'
 import SearchIcon from './icons/searchIcon'
@@ -46,9 +46,7 @@ const SearchButton: React.FC<{
   isSearchVisible: boolean
 }> = ({ onClick, isSearchVisible }) => (
   <SearchButtonContainer isSearchVisible={isSearchVisible}>
-    <Tooltip message="Search ecosystem">
-      <LaunchButton onClick={onClick}>{SearchIcon}</LaunchButton>
-    </Tooltip>
+    <LaunchButton title="Search ecosystem" onClick={onClick}>{SearchIcon}</LaunchButton>
   </SearchButtonContainer>
 )
 
@@ -125,7 +123,7 @@ export const Launcher: React.FC = () => {
       && typeof contentBounds.bounds !== 'undefined'
       ? contentBounds.bounds.width
       : initialLauncherWidth
-  ), [contentBounds, response, initialLauncherWidth])
+  ), [contentBounds, response])
 
   const showResponsePanel = useMemo(() => Boolean(isSearchVisible && response), [response, isSearchVisible])
 
