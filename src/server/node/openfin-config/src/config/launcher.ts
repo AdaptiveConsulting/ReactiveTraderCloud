@@ -17,6 +17,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
       defaultTop: 160,
       defaultLeft: 30,
       autoShow: true,
+      backgroundColor: '#313131',
       cornerRounding: {
         width: 4,
         height: 4
@@ -30,7 +31,6 @@ export default (env: string): OpenFinApplicationConfiguration => {
       resizable: false,
       shadow: true,
       frame: false,
-      backgroundColor: '#444C5F',
       alwaysOnTop: true,
       icon: `https://web-${env}.adaptivecluster.com/static/media/icon.ico`,
       applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-mark-large.png`,

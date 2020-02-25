@@ -8,6 +8,7 @@
     "defaultTop": 160,
     "defaultLeft": 30,
     "autoShow": true,
+    "backgroundColor": "#313131",
     "cornerRounding": {
       "width": 4,
       "height": 4
