@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
 import { AdaptiveLoader, LogoIcon, Tooltip } from 'rt-components'
+import { usePlatform } from 'rt-platforms'
 import { Bounds } from 'openfin/_v2/shapes'
 import SearchIcon from './icons/searchIcon'
+import { useNlpService } from './spotlight/components/useNlpService'
 import {
   HorizontalContainer,
   LauncherGlobalStyle,
@@ -21,19 +23,29 @@ import {
   getCurrentWindowBounds,
   minimiseCurrentWindow,
 } from './windowUtils'
+import {
+  Response,
+  getInlineSuggestionsComponent
+} from './spotlight'
 import Measure, { ContentRect } from 'react-measure'
-import { SearchControl, SearchState } from './spotlight'
+import { SearchControl } from './spotlight'
 import { exitNormalIcon, minimiseNormalIcon } from './icons'
+
+const exitIcon = exitNormalIcon()
+const initialLauncherWidth = 355;
 
 const LauncherMinimiseAndExit: React.FC = () => (
   <>
-    <ExitButton onClick={closeCurrentWindow}>{exitNormalIcon}</ExitButton>
+    <ExitButton onClick={closeCurrentWindow}>{exitIcon}</ExitButton>
     <MinimiseButton onClick={minimiseCurrentWindow}>{minimiseNormalIcon}</MinimiseButton>
   </>
 )
 
-const SearchButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
-  <SearchButtonContainer>
+const SearchButton: React.FC<{
+  onClick: () => void
+  isSearchVisible: boolean
+}> = ({ onClick, isSearchVisible }) => (
+  <SearchButtonContainer isSearchVisible={isSearchVisible}>
     <Tooltip message="Search ecosystem">
       <LaunchButton onClick={onClick}>{SearchIcon}</LaunchButton>
     </Tooltip>
@@ -45,16 +57,19 @@ const DynamicLogo: React.FC<{ isMoving: boolean }> = ({ isMoving }) => (
     {isMoving ? (
       <AdaptiveLoader size={21} speed={isMoving ? 0.8 : 0} seperation={1} type="secondary" />
     ) : (
-      <LogoIcon width={1.2} height={1.2} />
-    )}
+        <LogoIcon width={1.2} height={1.2} />
+      )}
   </LogoLauncherContainer>
 )
 
 export const Launcher: React.FC = () => {
   const [initialBounds, setInitialBounds] = useState<Bounds>()
+  const [contentBounds, setContentBounds] = useState<ContentRect>()
   const [isSearchVisible, setIsSearchVisible] = useState<boolean>(false)
   const [isSearchBusy, setIsSearchBusy] = useState<boolean>(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const platform = usePlatform()
+  const [contacting, response, sendRequest] = useNlpService()
 
   useEffect(() => {
     getCurrentWindowBounds()
@@ -63,10 +78,7 @@ export const Launcher: React.FC = () => {
   }, [])
 
   const showSearch = useCallback(() => {
-    if (isSearchVisible) {
-      searchInputRef.current && searchInputRef.current.focus({ preventScroll: true })
-    }
-    setIsSearchVisible(true)
+    setIsSearchVisible(!isSearchVisible)
   }, [isSearchVisible])
 
   // if search is made visible - focus on it
@@ -88,7 +100,7 @@ export const Launcher: React.FC = () => {
   }, [])
 
   const handleSearchStateChange = useCallback(
-    (state: SearchState) => setIsSearchBusy(state.typing || state.loading),
+    (isTyping: boolean) => setIsSearchBusy(isTyping),
     [],
   )
 
@@ -97,6 +109,8 @@ export const Launcher: React.FC = () => {
       if (!initialBounds) {
         return
       }
+
+      setContentBounds(contentRect)
       animateCurrentWindowSize({
         ...initialBounds,
         height: initialBounds.height + (contentRect.bounds ? contentRect.bounds.height : 0),
@@ -105,29 +119,50 @@ export const Launcher: React.FC = () => {
     [initialBounds],
   )
 
+  const launcherContainerWidth = useMemo(() => (
+    typeof response !== 'undefined'
+      && typeof contentBounds !== 'undefined'
+      && typeof contentBounds.bounds !== 'undefined'
+      ? contentBounds.bounds.width
+      : initialLauncherWidth
+  ), [contentBounds, response, initialLauncherWidth])
+
+  const showResponsePanel = useMemo(() => Boolean(isSearchVisible && response), [response, isSearchVisible])
+
   return (
-    <RootLauncherContainer>
-      <LauncherContainer>
+    <RootLauncherContainer showResponsePanel={showResponsePanel}>
+      <LauncherContainer width={launcherContainerWidth} showResponsePanel={showResponsePanel}>
         <LauncherGlobalStyle />
         <HorizontalContainer>
-          <DynamicLogo isMoving={isSearchBusy} />
+          <DynamicLogo isMoving={isSearchBusy || contacting} />
           <LauncherApps />
-          <SearchButton onClick={showSearch} />
+          <SearchControl
+            ref={searchInputRef}
+            onStateChange={handleSearchStateChange}
+            response={response}
+            sendRequest={sendRequest}
+            platform={platform}
+            isSearchVisible={isSearchVisible}
+            launcherWidth={launcherContainerWidth}
+          />
+          <SearchButton
+            onClick={showSearch}
+            isSearchVisible={isSearchVisible}
+          />
           <MinExitContainer>
             <LauncherMinimiseAndExit />
           </MinExitContainer>
         </HorizontalContainer>
-
-        <Measure bounds onResize={handleSearchSizeChange}>
-          {({ measureRef }) => (
-            <div ref={measureRef}>
-              {isSearchVisible && (
-                <SearchControl ref={searchInputRef} onStateChange={handleSearchStateChange} />
-              )}
-            </div>
-          )}
-        </Measure>
       </LauncherContainer>
+      <Measure bounds onResize={handleSearchSizeChange}>
+        {({ measureRef }) => (
+          <div ref={measureRef}>
+            {(isSearchVisible && response) && (
+              <Response>{getInlineSuggestionsComponent(response, platform)}</Response>
+            )}
+          </div>
+        )}
+      </Measure>
     </RootLauncherContainer>
   )
 }

@@ -6,35 +6,33 @@ import React, {
   useEffect,
   useState,
 } from 'react'
+import { DetectIntentResponse } from 'dialogflow';
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
-import { Input, Response, SearchContainer } from './styles'
-import { usePlatform } from 'rt-platforms'
+import { Platform } from 'rt-platforms'
 import { handleIntent } from 'rt-interop'
-import { useNlpService } from './useNlpService'
-import { getInlineSuggestionsComponent } from './getInlineSuggestionsComponent'
-
-export type SearchState = {
-  loading: boolean
-  typing: boolean
-}
+import { Input, SearchContainer, CancelButton } from './styles'
+import { exitNormalIcon } from '../../icons'
 
 export interface SearchControlsProps {
-  onStateChange: (state: SearchState) => void
+  onStateChange: (isTyping: boolean) => void
+  response: DetectIntentResponse | undefined
+  sendRequest: (requestString: string) => void
+  platform: Platform
+  isSearchVisible: boolean
+  launcherWidth: number
 }
 
+const cancelIcon = exitNormalIcon("#FFFFFF")
+
 export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsProps>(
-  ({ onStateChange }, ref) => {
+  ({ onStateChange, response, sendRequest, platform, isSearchVisible, launcherWidth }, ref) => {
     const [isTyping, setIsTyping] = useState(false)
-    const platform = usePlatform()
-    const [contacting, response, sendRequest] = useNlpService()
+    const [inputValue, setInputValue] = useState('')
 
     useEffect(() => {
-      onStateChange({
-        loading: contacting,
-        typing: isTyping,
-      })
-    }, [contacting, isTyping, onStateChange])
+      onStateChange(isTyping)
+    }, [isTyping, onStateChange])
 
     const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
       e => {
@@ -48,6 +46,12 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
     const handleFocus: FocusEventHandler<HTMLInputElement> = useCallback(e => {
       e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
     }, [])
+
+    const handleBlur: FocusEventHandler<HTMLInputElement> = useCallback(e => {
+      if (isSearchVisible) {
+        e.target.focus({ preventScroll: true })
+      }
+    }, [isSearchVisible])
 
     const throttledSendRequest = useCallback(
       throttle((requestString: string) => sendRequest(requestString), 250, {
@@ -71,23 +75,38 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
         setIsTyping(true)
         // when typing stops, we want to change the state after a bit of delay
         debouncedStopTyping()
+
+        setInputValue(e.target.value)
         // don't send requests on each keystroke - send the last one in given 250ms
         throttledSendRequest(e.target.value)
       },
       [throttledSendRequest, debouncedStopTyping],
     )
 
+    const handleCancelClick = useCallback(() => {
+      setInputValue('')
+    }, [])
+
     return (
-      <SearchContainer>
+      <SearchContainer
+        className={isSearchVisible ? 'search-container--active' : ''}
+        launcherWidth={launcherWidth}
+      >
         <Input
+          value={inputValue}
           onChange={handleChange}
           ref={ref}
           onFocus={handleFocus}
+          onBlur={handleBlur}
           onKeyDown={handleOnKeyDown}
+          placeholder="Type something"
         />
-
-        {response && (
-          <Response>{response && getInlineSuggestionsComponent(response, platform)}</Response>
+        {inputValue && (
+          <CancelButton
+            onClick={handleCancelClick}
+          >
+            {cancelIcon}
+          </CancelButton>
         )}
       </SearchContainer>
     )
