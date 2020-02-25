@@ -11,7 +11,7 @@ namespace Adaptive.ReactiveTrader.Messaging
         private readonly IBroker _broker;
         private readonly Heartbeat _heartbeat;
         private readonly CompositeDisposable _registedCalls = new CompositeDisposable();
-        public readonly string InstanceID;
+        public readonly string InstanceId;
 
         public readonly string ServiceType;
 
@@ -19,7 +19,7 @@ namespace Adaptive.ReactiveTrader.Messaging
         {
             ServiceType = type;
             _broker = broker;
-            InstanceID = type + "." + Guid.NewGuid().ToString().Substring(0, 4);
+            InstanceId = type + "." + Guid.NewGuid().ToString().Substring(0, 4);
             _heartbeat = new Heartbeat(this, broker);
         }
 
@@ -31,7 +31,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         protected void RegisterCall(string procName, Func<IRequestContext, IMessage, Task> procedure)
         {
-            var instanceProcedureName = $"{InstanceID}.{procName}";
+            var instanceProcedureName = $"{InstanceId}.{procName}";
             var call = _broker.RegisterCall(instanceProcedureName, procedure);
             _registedCalls.Add(Disposable.Create(() =>
             {
@@ -44,7 +44,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         protected void RegisterCallResponse<T>(string procName, Func<IRequestContext, IMessage, Task<T>> procedure)
         {
-            var instanceProcedureName = $"{InstanceID}.{procName}";
+            var instanceProcedureName = $"{InstanceId}.{procName}";
             var call = _broker.RegisterCallResponse(instanceProcedureName, procedure);
             _registedCalls.Add(Disposable.Create(() =>
             {
@@ -67,7 +67,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public override string ToString()
         {
-            return $"{InstanceID}";
+            return $"{InstanceId}";
         }
     }
 }
