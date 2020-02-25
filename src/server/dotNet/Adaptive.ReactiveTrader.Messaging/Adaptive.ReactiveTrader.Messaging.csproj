@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>Messaging</Description>
@@ -22,7 +22,7 @@
     <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
     <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
     <PackageReference Include="System.Net.WebSockets.Client" Version="4.3.2" />
-    <PackageReference Include="WampSharp.Default.Client" Version="19.1.1" />
+    <PackageReference Include="WampSharp.Default.Client" Version="19.3.1" />
   </ItemGroup>
 
 </Project>

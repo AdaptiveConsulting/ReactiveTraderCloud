@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,12 +6,19 @@ using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using WampSharp.V2.Core.Contracts;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
     public class ReferenceDataSmokeTest
     {
+        private readonly ITestOutputHelper _testOutputHelper;
         private static readonly TimeSpan ResponseTimeout = TimeSpan.FromSeconds(10);
+
+        public ReferenceDataSmokeTest(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
 
         [Fact]
         public async void ShouldContainSomeReferenceData()
@@ -64,7 +71,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             try
             {
                 await Task.Delay(ResponseTimeout, timeoutCancellationTokenSource.Token);
-                Console.WriteLine($"Test timed out after {ResponseTimeout.TotalSeconds} seconds");
+                _testOutputHelper.WriteLine($"Test timed out after {ResponseTimeout.TotalSeconds} seconds");
             }
             catch (TaskCanceledException)
             {
