@@ -24,12 +24,9 @@ export default () => {
         </Paragraph>
       </SectionBlock>
 
-      <SectionBlock colorScheme="secondary" py={2} bleeds>
+      <SectionBlock py={0} pt={2} mh={0} colorScheme="secondary">
         <H3>Buttons</H3>
         <ButtonGrid />
-      </SectionBlock>
-
-      <SectionBlock colorScheme="secondary" py={2} bleeds>
         <H3>Form Elements</H3>
         <FormGrid />
       </SectionBlock>
