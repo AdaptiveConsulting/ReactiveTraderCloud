@@ -17,7 +17,7 @@ services:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     depends_on:
       - broker
       - eventstore
@@ -42,6 +42,8 @@ services:
       args:
         - CI=true
         - REACT_APP_BUILD_VERSION=${BUILD_VERSION}
+    depends_on:
+      - servers
   e2ebase:
     image: ${DOCKER_USER}/e2ebase:${BUILD_VERSION}
     build:
@@ -51,7 +53,7 @@ services:
     image: ${DOCKER_USER}/analytics:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     command: 'dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json'
     depends_on:
       - broker
@@ -60,7 +62,7 @@ services:
     image: ${DOCKER_USER}/pricing:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     command: 'dotnet ./Adaptive.ReactiveTrader.Server.Pricing.dll config.prod.json'
     depends_on:
       - broker
@@ -70,7 +72,7 @@ services:
     image: ${DOCKER_USER}/referencedataread:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     command: 'dotnet ./Adaptive.ReactiveTrader.Server.ReferenceDataRead.dll config.prod.json'
     depends_on:
       - broker
@@ -80,7 +82,7 @@ services:
     image: ${DOCKER_USER}/tradeexecution:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     command: 'dotnet ./Adaptive.ReactiveTrader.Server.TradeExecution.dll config.prod.json'
     depends_on:
       - broker
@@ -90,7 +92,7 @@ services:
     image: ${DOCKER_USER}/blotter:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server/dotNet
     command: 'dotnet ./Adaptive.ReactiveTrader.Server.Blotter.dll config.prod.json'
     depends_on:
       - broker
@@ -100,7 +102,7 @@ services:
     image: ${DOCKER_USER}/pricehistory:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile.dev
-      context: ./server/Adaptive.ReactiveTrader.Server.PriceHistory
+      context: ./server/node/priceHistory
     depends_on:
       - broker
       - pricing
@@ -112,7 +114,7 @@ services:
     hostname: nlp
     build:
       dockerfile: Nlp.Dockerfile
-      context: ./node-server
+      context: ./server/node
     depends_on:
       - broker
     environment:
@@ -123,9 +125,9 @@ services:
     hostname: openfinconfig
     build:
       dockerfile: OpenfinConfig.Dockerfile
-      context: ./node-server
+      context: ./server/node
   bot:
     hostname: bot
     image: ${DOCKER_USER}/bot:${BUILD_VERSION}
     build:
-      context: ./server/Adaptive.ReactiveTrader.Server.Bot
+      context: ./server/node/bot
