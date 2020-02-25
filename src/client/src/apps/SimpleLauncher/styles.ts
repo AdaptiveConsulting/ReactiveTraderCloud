@@ -20,7 +20,7 @@ export const RootContainer = styled.div`
 `
 
 export const RootLauncherContainer = styled(RootContainer)<{ showResponsePanel: boolean }>`
-  background-color: ${({ showResponsePanel }) => (showResponsePanel ? '#313131' : 'transparent')};
+  background-color: '#313131';
   border-radius: 3px;
   overflow: hidden;
 `
