@@ -11,6 +11,8 @@ import {
 import { isCurrentWindowDocked } from '../adapter'
 import { UndockIcon } from '../../../rt-components'
 
+const exitIcon = exitNormalIcon()
+
 export interface ControlProps {
   minimize?: () => void
   maximize?: () => void
@@ -62,7 +64,7 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
     ) : null}
     {close ? (
       <HeaderControl onClick={close} data-qa="openfin-chrome__close">
-        {exitNormalIcon}
+        {exitIcon}
       </HeaderControl>
     ) : null}
   </React.Fragment>
@@ -84,10 +86,9 @@ const OpenFinUndockControl: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    isCurrentWindowDocked()
-      .then(isDocked => {
-        setIsWindowDocked(isDocked)
-      })
+    isCurrentWindowDocked().then(isDocked => {
+      setIsWindowDocked(isDocked)
+    })
   }, [])
 
   const handleUndockClick = useCallback(() => {
@@ -98,9 +99,7 @@ const OpenFinUndockControl: React.FC = () => {
   return (
     <>
       {isWindowDocked && (
-        <UndockButton
-          onClick={handleUndockClick}
-        >
+        <UndockButton onClick={handleUndockClick}>
           <UndockIcon width={24} height={24} />
         </UndockButton>
       )}
@@ -148,7 +147,7 @@ const UndockButton = styled.button`
   &:hover {
     .icon {
       path:nth-child(2) {
-        fill: #5F94F5;
+        fill: #5f94f5;
       }
       path:last-child {
         fill: #535760;
@@ -162,7 +161,7 @@ const UndockButton = styled.button`
         fill: #535760;
       }
       path:last-child {
-        fill: #3D424C;
+        fill: #3d424c;
       }
     }
   }
