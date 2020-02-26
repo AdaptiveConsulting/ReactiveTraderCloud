@@ -23,6 +23,7 @@ import {
   closeCurrentWindow,
   getCurrentWindowBounds,
   minimiseCurrentWindow,
+  useAppBoundReset,
 } from './windowUtils'
 import { Response, getInlineSuggestionsComponent } from './spotlight'
 import Measure, { ContentRect } from 'react-measure'
@@ -69,15 +70,13 @@ export const Launcher: React.FC = () => {
   const platform = usePlatform()
   const [contacting, response, sendRequest] = useNlpService()
 
+  useAppBoundReset(initialBounds)
+
   useEffect(() => {
     getCurrentWindowBounds()
       .then(setInitialBounds)
       .catch(console.error)
   }, [])
-
-  const showSearch = useCallback(() => {
-    setIsSearchVisible(!isSearchVisible)
-  }, [isSearchVisible])
 
   // if search is made visible - focus on it
   useEffect(() => {
@@ -96,6 +95,10 @@ export const Launcher: React.FC = () => {
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [])
+
+  const showSearch = useCallback(() => {
+    setIsSearchVisible(!isSearchVisible)
+  }, [isSearchVisible])
 
   const handleSearchStateChange = useCallback((isTyping: boolean) => setIsSearchBusy(isTyping), [])
 

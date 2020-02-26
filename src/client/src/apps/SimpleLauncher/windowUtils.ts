@@ -1,4 +1,5 @@
 import { Bounds } from 'openfin/_v2/shapes'
+import { useLayoutEffect } from 'react'
 
 export async function animateCurrentWindowSize(bounds: Bounds, duration: number = 200) {
   const window = await fin.Window.getCurrent()
@@ -30,4 +31,26 @@ export const closeCurrentWindow = async () => {
 export const minimiseCurrentWindow = async () => {
   const window = await fin.Window.getCurrent()
   window.minimize()
+}
+
+export const useAppBoundReset = (bounds: Bounds | undefined) => {
+  const app = fin.desktop.Application.getCurrent()
+
+  useLayoutEffect(() => {
+    if (!bounds) {
+      return
+    }
+
+    const resetAppBound = () => {
+      animateCurrentWindowSize({
+        ...bounds,
+      })
+    }
+
+    app.addEventListener('window-start-load', resetAppBound)
+
+    return () => {
+      app.removeEventListener('window-start-load', resetAppBound)
+    }
+  }, [app, bounds])
 }
