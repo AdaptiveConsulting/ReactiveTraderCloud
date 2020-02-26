@@ -3,11 +3,16 @@
     "name": "Reactive Ecosystem Launcher (DEV)",
     "url": "https://web-dev.adaptivecluster.com/launcher",
     "uuid": "reactive-launcher-dev",
-    "defaultWidth": 650,
-    "defaultHeight": 52,
+    "defaultWidth": 350,
+    "defaultHeight": 56,
     "defaultTop": 160,
     "defaultLeft": 30,
     "autoShow": true,
+    "backgroundColor": "#313131",
+    "cornerRounding": {
+      "width": 4,
+      "height": 4
+    },
     "permissions": {
       "System": {
         "launchExternalProcess": true
@@ -17,11 +22,6 @@
     "resizable": false,
     "shadow": true,
     "frame": false,
-    "backgroundColor": "#444C5F",
-    "alwaysOnTop": true,
-    "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
-    "applicationIcon": "https://web-dev.adaptivecluster.com/static/media/adaptive-mark-large.png",
-    "contextMenu": true,
     "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
     "preload": [
       {
@@ -31,6 +31,10 @@
         "url": "https://web-dev.adaptivecluster.com/plugin/fin.desktop.Excel.js"
       }
     ],
+    "alwaysOnTop": true,
+    "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
+    "applicationIcon": "https://web-dev.adaptivecluster.com/static/media/adaptive-mark-large.png",
+    "contextMenu": true,
     "accelerator": {
       "devtools": true,
       "reload": true,
@@ -47,6 +51,20 @@
     "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
     "name": "Reactive Ecosystem Launcher (DEV)"
   },
+  "appAssets": [
+    {
+      "src": "https://web-dev.adaptivecluster.com/plugin/add-in.zip",
+      "alias": "excel-api-addin",
+      "version": "2.0.0",
+      "forceDownload": true
+    },
+    {
+      "src": "https://web-dev.adaptivecluster.com/plugin/LimitChecker.zip",
+      "alias": "LimitChecker",
+      "version": "1.6.0",
+      "target": "LimitChecker.application"
+    }
+  ],
   "services": [
     {
       "name": "layouts",
@@ -66,20 +84,6 @@
     {
       "name": "notifications",
       "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json"
-    }
-  ],
-  "appAssets": [
-    {
-      "src": "https://web-dev.adaptivecluster.com/plugin/add-in.zip",
-      "alias": "excel-api-addin",
-      "version": "2.0.0",
-      "forceDownload": true
-    },
-    {
-      "src": "https://web-dev.adaptivecluster.com/plugin/LimitChecker.zip",
-      "alias": "LimitChecker",
-      "version": "1.6.0",
-      "target": "LimitChecker.application"
     }
   ]
 }

@@ -6,7 +6,8 @@ const getInstallerGeneratorUrl = async (fileName, appJSONUrl, os) => {
   const installerGeneratorUrl = `https://install.openfin.co/download/?config=${appJSONUrl}&fileName=${fileName}&os=${os}`;
 
   if (os === 'osx') {
-    const appJSON = await getJSON(appJSONUrl)
+    // our current https certificate gives an error when fetching, so use http instead
+    const appJSON = await getJSON(appJSONUrl.replace('https', 'http'))
     const appName = appJSON.startup_app.name
     const iconFile = appJSON.startup_app.applicationIcon
     return `${installerGeneratorUrl}&internal=true&appName=${appName}&iconFile=${iconFile}`
@@ -45,25 +46,24 @@ Make sure the files are available on their respective locations when distributin
 `,
   )
 
-  const installerDownloads = installersData.map(({ type, env, os })=> {
-    return createInstaller(type, env, os)
-  });
-
-  return Promise.all(installerDownloads)
+  installersData.reduce(async (prev, { type, env, os }) => {
+    await prev;
+    return createInstaller(type, env, os);
+  }, Promise.resolve())
 }
 
 const INSTALLERS_TO_CREATE = [
   { type: 'app', env: 'dev', os: 'win' },
-  { type: 'app', env: 'dev', os: 'osx' },
   { type: 'app', env: 'uat', os: 'win' },
-  { type: 'app', env: 'uat', os: 'osx' },
   { type: 'app', env: 'demo', os: 'win' },
+  { type: 'app', env: 'dev', os: 'osx' },
+  { type: 'app', env: 'uat', os: 'osx' },
   { type: 'app', env: 'demo', os: 'osx' },
   { type: 'launcher', env: 'dev', os: 'win' },
-  { type: 'launcher', env: 'dev', os: 'osx' },
   { type: 'launcher', env: 'uat', os: 'win' },
-  { type: 'launcher', env: 'uat', os: 'osx' },
   { type: 'launcher', env: 'demo', os: 'win' },
+  { type: 'launcher', env: 'dev', os: 'osx' },
+  { type: 'launcher', env: 'uat', os: 'osx' },
   { type: 'launcher', env: 'demo', os: 'osx' }
 ]
 
