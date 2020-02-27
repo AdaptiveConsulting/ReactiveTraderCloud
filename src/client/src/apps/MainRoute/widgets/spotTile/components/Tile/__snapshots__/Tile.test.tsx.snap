@@ -28,11 +28,9 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
+  caret-color: #282e39;
   opacity: 0.3;
-}
-
-.spot-tile:hover .c21 {
-  box-shadow: 0px 1px 0px #fff;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
 .spot-tile:hover .c21:focus,
@@ -467,10 +465,8 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-}
-
-.spot-tile:hover .c24 {
-  box-shadow: 0px 1px 0px #fff;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
 .spot-tile:hover .c24:focus,
@@ -992,10 +988,8 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-}
-
-.spot-tile:hover .c25 {
-  box-shadow: 0px 1px 0px #fff;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
 .spot-tile:hover .c25:focus,
@@ -1535,11 +1529,9 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
+  caret-color: #282e39;
   opacity: 0.3;
-}
-
-.spot-tile:hover .c22 {
-  box-shadow: 0px 1px 0px #fff;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
 .spot-tile:hover .c22:focus,
@@ -2018,11 +2010,9 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
+  caret-color: #282e39;
   opacity: 0.3;
-}
-
-.spot-tile:hover .c23 {
-  box-shadow: 0px 1px 0px #fff;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
 .spot-tile:hover .c23:focus,
@@ -2195,7 +2185,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   padding-top: 8px;
   position: absolute;
   border-radius: 3px;
-  background: #ff274b;
+  background: #5f94f5;
   pointer-events: auto;
   width: 58px;
   cursor: pointer;
@@ -2430,7 +2420,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
         >
           <div
             className="c18"
-            color="error"
+            color="primary"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
@@ -2557,10 +2547,8 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-}
-
-.spot-tile:hover .c22 {
-  box-shadow: 0px 1px 0px #fff;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
 .spot-tile:hover .c22:focus,
@@ -3035,11 +3023,9 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
+  caret-color: #282e39;
   opacity: 0.3;
-}
-
-.spot-tile:hover .c29 {
-  box-shadow: 0px 1px 0px #fff;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
 .spot-tile:hover .c29:focus,

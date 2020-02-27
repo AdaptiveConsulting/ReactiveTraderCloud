@@ -58,7 +58,7 @@ const TileBookingSwitch: FC<Props> = ({
       </TileBooking>
       <TileBooking
         show={isRfqStateRequested}
-        color="error"
+        color="primary"
         showLoader={false}
         onBookingPillClick={() => rfq.cancel({ currencyPair })}
         isAnalyticsView={isAnalyticsView}
