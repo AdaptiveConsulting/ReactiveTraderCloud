@@ -13,8 +13,15 @@
       "width": 4,
       "height": 4
     },
+    "permissions": {
+      "System": {
+        "launchExternalProcess": true
+      }
+    },
     "saveWindowState": false,
     "resizable": false,
+    "shadow": true,
+    "frame": false,
     "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
     "preload": [
       {
@@ -24,10 +31,19 @@
         "url": "https://web-dev.adaptivecluster.com/plugin/fin.desktop.Excel.js"
       }
     ],
+    "alwaysOnTop": true,
     "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
-    "applicationIcon": "https://web-dev.adaptivecluster.com/static/media/adaptive-mark-large.png"
+    "applicationIcon": "https://web-dev.adaptivecluster.com/static/media/adaptive-mark-large.png",
+    "contextMenu": true,
+    "accelerator": {
+      "devtools": true,
+      "reload": true,
+      "reloadIgnoringCache": true,
+      "zoom": true
+    }
   },
   "runtime": {
+    "arguments": "--remote-debugging-port=9222",
     "version": "13.76.44.21"
   },
   "shortcut": {
@@ -35,6 +51,20 @@
     "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
     "name": "Reactive Ecosystem Launcher (DEV)"
   },
+  "appAssets": [
+    {
+      "src": "https://web-dev.adaptivecluster.com/plugin/add-in.zip",
+      "alias": "excel-api-addin",
+      "version": "2.0.0",
+      "forceDownload": true
+    },
+    {
+      "src": "https://web-dev.adaptivecluster.com/plugin/LimitChecker.zip",
+      "alias": "LimitChecker",
+      "version": "1.6.0",
+      "target": "LimitChecker.application"
+    }
+  ],
   "services": [
     {
       "name": "layouts",
@@ -54,13 +84,6 @@
     {
       "name": "notifications",
       "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json"
-    }
-  ],
-  "appAssets": [
-    {
-      "src": "https://web-dev.adaptivecluster.com/plugin/add-in.zip",
-      "alias": "excel-api-addin",
-      "version": "2.0.0"
     }
   ]
 }

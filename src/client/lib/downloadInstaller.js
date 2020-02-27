@@ -6,21 +6,23 @@ const getInstallerGeneratorUrl = async (fileName, appJSONUrl, os) => {
   const installerGeneratorUrl = `https://install.openfin.co/download/?config=${appJSONUrl}&fileName=${fileName}&os=${os}`;
 
   if (os === 'osx') {
-    // our current https certificate gives an error when fetching, so use http instead
-    const appJSON = await getJSON(appJSONUrl.replace('https', 'http'))
-    const appName = appJSON.startup_app.name
-    const iconFile = appJSON.startup_app.applicationIcon
+    const appJSON = await getJSON(appJSONUrl.replace('https','http'))
+    const appName = appJSON.startup_app ? appJSON.startup_app.name : appJSON.shortcut.name
+    const iconFile = appJSON.startup_app ? appJSON.startup_app.name : appJSON.snapshot.windows[0].applicationIcon
     return `${installerGeneratorUrl}&internal=true&appName=${appName}&iconFile=${iconFile}`
   }
 
   return `${installerGeneratorUrl}&unzipped=true`
 }
 
-const createInstaller = async (type, env, os = 'win') => {
-  // maintain previous filenames for installers TODO: is this a requirement?
-  const isLauncher = type === 'launcher'
-  const fileName = `ReactiveTraderCloud${isLauncher ? '-launcher' : ''}-${env}`
+const getFileSuffix = (type, env) => {
+  if (type === 'launcher') return `-launcher-${env}`;
+  if (type === 'platform') return '-platform';
+  return `-${env}`;
+}
 
+const createInstaller = async (type, env, os = 'win') => {
+  const fileName = `ReactiveTraderCloud${getFileSuffix(type, env)}`
   const appJSONUrl = `https://web-${env}.adaptivecluster.com/openfin/${type}.json`
   const installerGeneratorUrl = await getInstallerGeneratorUrl(fileName, appJSONUrl, os)
   const extension = os === 'win' ? 'exe' : 'dmg'
@@ -53,18 +55,23 @@ Make sure the files are available on their respective locations when distributin
 }
 
 const INSTALLERS_TO_CREATE = [
+  // win
   { type: 'app', env: 'dev', os: 'win' },
   { type: 'app', env: 'uat', os: 'win' },
   { type: 'app', env: 'demo', os: 'win' },
-  { type: 'app', env: 'dev', os: 'osx' },
-  { type: 'app', env: 'uat', os: 'osx' },
-  { type: 'app', env: 'demo', os: 'osx' },
   { type: 'launcher', env: 'dev', os: 'win' },
   { type: 'launcher', env: 'uat', os: 'win' },
   { type: 'launcher', env: 'demo', os: 'win' },
+  { type: 'platform', env: 'openfin', os: 'win' },
+
+  // os-x
+  { type: 'app', env: 'uat', os: 'osx' },
+  { type: 'app', env: 'dev', os: 'osx' },
+  { type: 'app', env: 'demo', os: 'osx' },
+  { type: 'launcher', env: 'demo', os: 'osx' },
   { type: 'launcher', env: 'dev', os: 'osx' },
   { type: 'launcher', env: 'uat', os: 'osx' },
-  { type: 'launcher', env: 'demo', os: 'osx' }
+  { type: 'platform', env: 'openfin', os: 'osx' },
 ]
 
 createInstallers(INSTALLERS_TO_CREATE)
