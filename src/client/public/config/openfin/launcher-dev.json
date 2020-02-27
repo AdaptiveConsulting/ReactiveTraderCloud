@@ -13,11 +13,6 @@
       "width": 4,
       "height": 4
     },
-    "permissions": {
-      "System": {
-        "launchExternalProcess": true
-      }
-    },
     "saveWindowState": false,
     "resizable": false,
     "shadow": true,
