@@ -38,7 +38,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
       accelerator: {
         devtools: true,
         reload: true,
-        reloadIgnoreCache: true,
+        reloadIgnoringCache: true,
         zoom: true,
       },
     },
@@ -56,6 +56,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
         src: `https://web-${env}.adaptivecluster.com/plugin/add-in.zip`,
         alias: 'excel-api-addin',
         version: '2.0.0',
+        forceDownload: true
       },
       {
         src: `https://web-${env}.adaptivecluster.com/plugin/LimitChecker.zip`,
