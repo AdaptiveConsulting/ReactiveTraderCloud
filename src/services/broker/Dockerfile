@@ -1,2 +1,2 @@
-FROM crossbario/crossbar:community
+FROM crossbario/crossbar
 COPY ./.crossbar/config.json /node/.crossbar
