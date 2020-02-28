@@ -153,7 +153,7 @@ const OnePageNavLink = styled(Link)`
     border-bottom: 3px solid white;
     ${({ theme }) =>
       css({
-        borderBottom: `3px solid ${theme.secondary[4]}`,
+        borderBottom: `3px solid ${theme.accents.dominant.base}`,
       })};
   }
 `
@@ -174,8 +174,8 @@ const NavBarBleed = styled(NavBar)`
   ${({ theme }) =>
     css({
       transition: 'background-color ease-out 0.15s',
-      backgroundColor: theme.primary.base,
-      borderBottom: `2px solid ${theme.primary[1]}`,
+      backgroundColor: theme.core.secondaryStyleGuideBackground,
+      borderBottom: `2px solid ${theme.core.primaryStyleGuideBackground}`,
     })};
 
   display: flex;
@@ -226,10 +226,11 @@ const NavBarBleed = styled(NavBar)`
 
 const TitleHeading = styled(H2)`
   text-transform: uppercase;
+  font-weight: normal;
   margin: 0.5rem 0;
   ${({ theme }) =>
     css({
-      color: theme.secondary[4],
+      color: theme.accents.dominant.base,
     })};
 `
 

@@ -60,7 +60,7 @@ const ROBOTO = {
 
 export const FontFamilies: React.FC = () => (
   <React.Fragment>
-    <SectionBlock colorScheme="secondary">
+    <SectionBlock>
       <H2 pt={4}>Tipography</H2>
       <H3>Roboto</H3>
 
@@ -94,7 +94,7 @@ export const FontFamilies: React.FC = () => (
         </FontSizeGrid>
       ))}
     </SectionBlock>
-    <SectionBlock colorScheme="secondary" mh={0} py={0}>
+    <SectionBlock mh={0} py={0}>
       <Paragraph>
         <i>
           *Means there will often be regular, bold, medium, italic, underline styles available The

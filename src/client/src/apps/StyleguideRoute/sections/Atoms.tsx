@@ -15,7 +15,7 @@ export const props = {}
 export default () => {
   return (
     <React.Fragment>
-      <SectionBlock py={0} pt={2} mh={0} colorScheme="secondary">
+      <SectionBlock py={0} pt={2} mh={0}>
         <H2 pt={4}>Atoms</H2>
         <Paragraph>
           Atoms are the lowest level of a UI such as a button, text link, input field etc. Atoms are
@@ -24,14 +24,14 @@ export default () => {
         </Paragraph>
       </SectionBlock>
 
-      <SectionBlock py={0} pt={2} mh={0} colorScheme="secondary">
+      <SectionBlock py={0} pt={2} mh={0}>
         <H3>Buttons</H3>
         <ButtonGrid />
-        <H3>Form Elements</H3>
+        <H3>Input Fields</H3>
         <FormGrid />
       </SectionBlock>
 
-      <SectionBlock colorScheme="secondary" py={2} bleeds>
+      <SectionBlock py={2} bleeds>
         <Separator />
         <H3>Pricing Tiles</H3>
         <AtomsContainer>
