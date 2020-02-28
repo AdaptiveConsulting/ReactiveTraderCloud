@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { DetectIntentResponse } from 'dialogflow';
+import { DetectIntentResponse } from 'dialogflow'
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
 import { Platform } from 'rt-platforms'
@@ -20,13 +20,12 @@ export interface SearchControlsProps {
   sendRequest: (requestString: string) => void
   platform: Platform
   isSearchVisible: boolean
-  launcherWidth: number
 }
 
-const cancelIcon = exitNormalIcon("#FFFFFF")
+const cancelIcon = exitNormalIcon('#FFFFFF')
 
 export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsProps>(
-  ({ onStateChange, response, sendRequest, platform, isSearchVisible, launcherWidth }, ref) => {
+  ({ onStateChange, response, sendRequest, platform, isSearchVisible }, ref) => {
     const [isTyping, setIsTyping] = useState(false)
     const [inputValue, setInputValue] = useState('')
 
@@ -47,11 +46,18 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
       e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
     }, [])
 
-    const handleBlur: FocusEventHandler<HTMLInputElement> = useCallback(e => {
-      if (isSearchVisible) {
-        e.target.focus({ preventScroll: true })
-      }
-    }, [isSearchVisible])
+    const handleBlur: FocusEventHandler<HTMLInputElement> = useCallback(
+      e => {
+        if (isSearchVisible) {
+          e.target.focus({ preventScroll: true })
+        }
+      },
+      [isSearchVisible],
+    )
+
+    const handleCancelButtonClick = useCallback(() => {
+      setInputValue('')
+    }, [])
 
     const throttledSendRequest = useCallback(
       throttle((requestString: string) => sendRequest(requestString), 250, {
@@ -77,21 +83,17 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
         debouncedStopTyping()
 
         setInputValue(e.target.value)
-        // don't send requests on each keystroke - send the last one in given 250ms
-        throttledSendRequest(e.target.value)
       },
-      [throttledSendRequest, debouncedStopTyping],
+      [debouncedStopTyping],
     )
 
-    const handleCancelClick = useCallback(() => {
-      setInputValue('')
-    }, [])
+    useEffect(() => {
+      // don't send requests on each keystroke - send the last one in given 250ms
+      throttledSendRequest(inputValue)
+    }, [throttledSendRequest, inputValue])
 
     return (
-      <SearchContainer
-        className={isSearchVisible ? 'search-container--active' : ''}
-        launcherWidth={launcherWidth}
-      >
+      <SearchContainer className={isSearchVisible ? 'search-container--active' : ''}>
         <Input
           value={inputValue}
           onChange={handleChange}
@@ -101,13 +103,7 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
           onKeyDown={handleOnKeyDown}
           placeholder="Type something"
         />
-        {inputValue && (
-          <CancelButton
-            onClick={handleCancelClick}
-          >
-            {cancelIcon}
-          </CancelButton>
-        )}
+        {inputValue && <CancelButton onClick={handleCancelButtonClick}>{cancelIcon}</CancelButton>}
       </SearchContainer>
     )
   },

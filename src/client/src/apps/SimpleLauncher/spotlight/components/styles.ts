@@ -83,10 +83,10 @@ export const CancelButton = styled.button`
   z-index: 2;
 `
 
-export const SearchContainer = styled.div<{ launcherWidth: number }>`
+export const SearchContainer = styled.div`
   background-color: #313131;
   position: absolute;
-  left: ${({ launcherWidth }) => launcherWidth + 'px'};
+  left: 350px;
   right: 75px;
   display: flex;
   flex-direction: column;
@@ -99,7 +99,7 @@ export const SearchContainer = styled.div<{ launcherWidth: number }>`
   &.search-container--active {
     left: 55px;
     opacity: 1;
-    right: ${({ launcherWidth }) => 355 - launcherWidth + 75 + 'px'};
+    right: 83px;
 
     > input {
       caret-color: #8c7ae6;
