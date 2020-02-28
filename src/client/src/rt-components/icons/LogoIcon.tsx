@@ -3,9 +3,10 @@ import React from 'react'
 interface Props {
   width: number
   height: number
+  active?: boolean
 }
 
-const LogoIcon: React.FC<Props> = ({ width, height }) => (
+const LogoIcon: React.FC<Props> = ({ width, height, active }) => (
   <svg
     width={width * 16}
     height={height * 16}
@@ -17,7 +18,13 @@ const LogoIcon: React.FC<Props> = ({ width, height }) => (
     <title>logo-bars-only</title>
     <desc>Created with Sketch.</desc>
     <defs />
-    <g className="svg-icon" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+    <g
+      className={active ? 'svg-icon--active' : 'svg-icon'}
+      stroke="none"
+      strokeWidth="1"
+      fill="none"
+      fillRule="evenodd"
+    >
       <g transform="translate(-30.000000, -15.000000)">
         <g transform="translate(30.000000, 15.000000)">
           <g>

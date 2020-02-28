@@ -14,40 +14,60 @@ export const LauncherGlobalStyle = createGlobalStyle`
 export const RootContainer = styled.div`
   height: 100%;
   width: 100%;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: #313131;
   overflow: hidden;
   color: ${({ theme }) => theme.core.textColor};
 `
 
-export const RootLauncherContainer = styled(RootContainer)<{ showResponsePanel: boolean }>`
-  background-color: '#313131';
+export const RootLauncherContainer = styled(RootContainer)`
   border-radius: 3px;
-  overflow: hidden;
+  transition: all 0.2s ease-out;
+  will-change: contents;
 `
+
 export const RootResultsContainer = styled.div`
   padding: 5px;
 `
 
-export const LauncherContainer = styled(RootContainer)<{
-  width: number
-  showResponsePanel: boolean
-}>`
-  height: 56px;
-  width: ${({ showResponsePanel, width }) => (showResponsePanel ? width + 'px' : '355px')};
-  border-radius: ${({ showResponsePanel }) => (showResponsePanel ? '3px 3px 0 0' : '3px')};
+export const LauncherContainer = styled.div<{ showResponsePanel: boolean }>`
+  max-height: 56px;
+  height: 100%;
+  width: 100%;
   background-color: #313131;
+  display: flex;
+  align-items: center;
+  border-radius: ${({ showResponsePanel }) => showResponsePanel && '3px 3px 0 0'};
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-  overflow: initial;
-  transition: width 0.3s ease-out;
-  will-change: contents;
 `
 
-export const HorizontalContainer = styled.div`
-  height: 56px;
-  width: 100%;
+export const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+
+  &:hover {
+    span {
+      color: ${({ theme }) => theme.core.textColor};
+    }
+  }
+`
+
+export const LogoLauncherContainer = styled(IconContainer)`
+  width: 50%;
+  min-width: 56px;
+  border-right: 1px solid rgba(216, 216, 216, 0.15);
+  height: 70%;
+
+  .svg-icon {
+    fill: ${({ theme }) => theme.core.textColor};
+  }
+
+  .svg-icon--active {
+    fill: #8c7ae6;
+    transition: fill 0.2s ease-in-out;
+  }
+  ${rules.appRegionDrag};
 `
 
 export const IconTitle = styled.span`
@@ -64,35 +84,17 @@ export const IconTitle = styled.span`
   user-select: none;
 `
 
-export const IconContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  &:hover {
-    span {
-      color: ${({ theme }) => theme.core.textColor};
-    }
-  }
-`
-
 export const ButtonContainer = styled(IconContainer)`
-  display: flex;
-  align-items: center;
-  height: auto;
+  width: 100%;
   ${rules.appRegionNoDrag};
 `
 
 export const SearchButtonContainer = styled(ButtonContainer)<{ isSearchVisible: boolean }>`
-  display: flex;
-  align-items: center;
   height: auto;
   width: 40px;
   border-radius: 0 3px 3px 0;
-  ${rules.appRegionNoDrag};
   background-color: ${({ isSearchVisible }) => (isSearchVisible ? '#8c7ae6' : '')};
+  ${rules.appRegionNoDrag};
 `
 
 export const LogoContainer = styled(IconContainer)`
@@ -125,23 +127,8 @@ export const MinimiseButton = styled.button`
 
 export const MinExitContainer = styled(ButtonContainer)`
   width: 30%;
-  height: 80%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  height: 70%;
   border-left: 1px solid rgba(216, 216, 216, 0.15);
   padding-left: 4px;
   margin-right: 4px;
-`
-
-export const LogoLauncherContainer = styled(IconContainer)`
-  width: 50%;
-  min-width: 56px;
-  background-color: #313131;
-  border-right: 1px solid rgba(216, 216, 216, 0.15);
-  height: 80%;
-  .svg-icon {
-    fill: ${({ theme }) => theme.core.textColor};
-  }
-  ${rules.appRegionDrag};
 `

@@ -20,13 +20,12 @@ export interface SearchControlsProps {
   sendRequest: (requestString: string) => void
   platform: Platform
   isSearchVisible: boolean
-  launcherWidth: number
 }
 
 const cancelIcon = exitNormalIcon('#FFFFFF')
 
 export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsProps>(
-  ({ onStateChange, response, sendRequest, platform, isSearchVisible, launcherWidth }, ref) => {
+  ({ onStateChange, response, sendRequest, platform, isSearchVisible }, ref) => {
     const [isTyping, setIsTyping] = useState(false)
     const [inputValue, setInputValue] = useState('')
 
@@ -94,10 +93,7 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
     }, [throttledSendRequest, inputValue])
 
     return (
-      <SearchContainer
-        className={isSearchVisible ? 'search-container--active' : ''}
-        launcherWidth={launcherWidth}
-      >
+      <SearchContainer className={isSearchVisible ? 'search-container--active' : ''}>
         <Input
           value={inputValue}
           onChange={handleChange}

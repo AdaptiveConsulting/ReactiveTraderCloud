@@ -3,6 +3,7 @@ import { useLayoutEffect } from 'react'
 
 export async function animateCurrentWindowSize(bounds: Bounds, duration: number = 200) {
   const window = await fin.Window.getCurrent()
+
   return window.animate(
     {
       size: {
