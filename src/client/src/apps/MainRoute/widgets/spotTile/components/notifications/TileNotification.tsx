@@ -3,16 +3,16 @@ import { styled } from 'rt-theme'
 import { Button, Icon, TileBaseStyle } from '../styled'
 
 export enum NotificationType {
-  Error = 'red',
-  Success = 'green',
-  Warning = 'yellow',
+  Error = 'bad',
+  Success = 'good',
+  Warning = 'aware',
 }
 
 type AccentColor = NotificationType.Error | NotificationType.Success | NotificationType.Warning
 
 export const TileNotificationStyle = styled(TileBaseStyle)<{ accentColor: AccentColor }>`
-  color: ${({ theme }) => theme.template.white.normal};
-  background-color: ${({ theme, accentColor }) => theme.template[accentColor].dark};
+  color: ${({ theme }) => theme.white};
+  background-color: ${({ theme, accentColor }) => theme.accents[accentColor].darker};
   font-size: 0.8125rem;
   text-align: center;
   line-height: 1.5;
@@ -33,7 +33,7 @@ const TradeSymbol = styled.div`
 `
 
 const CheckIcon = styled(Icon)`
-  background-color: ${({ theme }) => theme.template.green.normal};
+  background-color: ${({ theme }) => theme.accents.good.base};
   border-radius: 50%;
   padding: 0.3125rem;
 `
@@ -43,8 +43,8 @@ const HeavyFont = styled('span')`
 `
 
 const PillButton = styled(Button)<{ accentColor: AccentColor }>`
-  color: ${({ theme }) => theme.template.white.normal};
-  background-color: ${({ theme, accentColor }) => theme.template[accentColor].normal};
+  color: ${({ theme }) => theme.white};
+  background-color: ${({ theme, accentColor }) => theme.accents[accentColor].base};
   border-radius: 17px;
   padding: 0.5rem 0.625rem;
   font-weight: 900;

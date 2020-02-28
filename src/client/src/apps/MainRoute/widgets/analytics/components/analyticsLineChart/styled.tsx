@@ -29,10 +29,10 @@ export const ToolTipChildLeft = styled.div`
   width: 70px;
   opacity: 0.6;
   font-size: 10px;
-  color: ${({ theme }) => theme.template.white.dark};
+  color: ${({ theme }) => theme.white};
 `
 export const ToolTipChildRight = styled.div`
   width: 30px;
   font-size: 10px;
-  color: ${({ theme }) => theme.template.white.normal};
+  color: ${({ theme }) => theme.white};
 `

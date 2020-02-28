@@ -39,14 +39,14 @@ export default styled('div')`
     width: 0.3125rem !important;
     padding: 0;
     margin: 0;
-    background-color: ${({ theme }) => theme.template.green.normal};
+    background-color: ${({ theme }) => theme.accents.good.base};
   }
 
   .rt-blotter__status-indicator--rejected {
     width: 0.3125rem !important;
     padding: 0;
     margin: 0;
-    background-color: ${({ theme }) => theme.template.red.normal};
+    background-color: ${({ theme }) => theme.accents.bad.base};
   }
 
   .rt-blotter__cell-rejected,
@@ -60,7 +60,7 @@ export default styled('div')`
     position: absolute;
     top: 50%;
     left: 0;
-    border-bottom: 0.0625rem solid ${({ theme }) => theme.template.red.normal};
+    border-bottom: 0.0625rem solid ${({ theme }) => theme.accents.bad.base};
     width: 100%;
   }
 
@@ -145,7 +145,7 @@ export default styled('div')`
       outline: none;
 
       &:focus {
-        border-bottom: 0.0625rem solid ${({ theme }) => theme.template.blue.normal};
+        border-bottom: 0.0625rem solid ${({ theme }) => theme.accents.dominant.base};
       }
     }
 
