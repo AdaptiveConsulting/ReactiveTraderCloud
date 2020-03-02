@@ -37,7 +37,7 @@ export const TileBaseStyle = styled.div`
 `
 
 export const Icon = styled('i')`
-  color: ${({ theme }) => theme.template.white.normal};
+  color: ${({ theme }) => theme.white};
 `
 
 export const Button = styled('button')`

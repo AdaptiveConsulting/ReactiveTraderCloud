@@ -26,13 +26,16 @@ function getButtonColors({
   const buttonStyleSet = typeof intent !== 'undefined' && theme.button[intent]
   let fg = (buttonStyleSet && buttonStyleSet.textColor) || theme.textColor
   let bg = (buttonStyleSet && buttonStyleSet.backgroundColor) || theme.backgroundColor
+  console.log(intent, buttonStyleSet)
 
   if (active && buttonStyleSet) {
     bg = buttonStyleSet.active.backgroundColor
   }
 
-  if (disabled) {
+  if (disabled && buttonStyleSet) {
     // Disabled flag only affects to opacity and pointer events - colors don't change
+    bg = buttonStyleSet.disabled.backgroundColor
+    fg = buttonStyleSet.textColor || theme.textColor
   }
 
   if (invert) {
@@ -41,7 +44,7 @@ function getButtonColors({
 
   if (outline && buttonStyleSet) {
     if (active) {
-      bg = buttonStyleSet.backgroundColor
+      bg = buttonStyleSet.active.backgroundColor
       fg = buttonStyleSet.textColor || theme.textColor
     } else {
       bg = theme.colors.static.transparent
@@ -49,6 +52,7 @@ function getButtonColors({
     }
   }
 
+  console.log(intent, buttonStyleSet, `active:${active} disabled:${disabled}`, bg, fg)
   return {
     ...theme,
     bg,
@@ -66,7 +70,6 @@ class BaseButtonThemeProvider extends React.Component<ButtonStyleProps & { theme
 
   render() {
     const { children, theme } = this.props
-
     return <ThemeProvider theme={theme}>{children as ReactChild}</ThemeProvider>
   }
 }

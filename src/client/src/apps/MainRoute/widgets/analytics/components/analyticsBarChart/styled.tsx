@@ -33,7 +33,7 @@ export const PriceLabel = styled.div<{ color: string; distance: number }>`
   align-self: center;
   height: 1.1rem;
   transition: transform 0.2s;
-  color: ${({ theme, color }) => theme.template[color].normal};
+  color: ${({ theme, color }) => theme.accents[color].base};
   padding-bottom: 0px;
 
   &:hover {
@@ -46,7 +46,7 @@ export const DiamondShape = styled.div<{ color: string }>`
   width: 6px;
   height: 6px;
   transform: rotate(45deg);
-  background-color: ${({ theme, color }) => theme.template[color].normal};
+  background-color: ${({ theme, color }) => theme.accents[color].base};
 `
 export const Label = styled.div`
   flex: 0 0 60px;

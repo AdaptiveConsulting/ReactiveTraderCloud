@@ -1,4 +1,5 @@
 import { mix, rgb, rgba } from 'polished'
+import { Direction } from 'rt-types'
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// 1. Colors ///////////////////////////////////
@@ -35,43 +36,14 @@ const TRANSPARENT: Color = rgba(255, 255, 255, 0)
 // between elements.
 const OFFWHITE = rgb(244, 246, 249)
 const OFFBLACK = rgb(68, 76, 95) // sRGB
-const DARKGREY = '#333333' // For text over light background
 const BRAND = rgb(42, 87, 141) // Adaptive blue a.k.a. #2A578D
-
-/*---------------------------- 1.2 Template colors ---------------------------*/
-
-// TODO: Kept for backward compatibility purposes. Consider unifying as accent palettes
-
-export const template = {
-  green: {
-    dark: '#23b47a',
-    normal: '#28c988',
-    light: '#93e4c3',
-  },
-  red: {
-    dark: '#e04444',
-    normal: '#f94c4c',
-    light: '#fca5a5',
-  },
-  white: {
-    dark: '#dfdfdf',
-    normal: '#ffffff',
-  },
-  blue: {
-    dark: '#4c76c4',
-    normal: '#5f94f5',
-    light: '#aec9f9',
-  },
-  yellow: {
-    dark: '#A38D00',
-    normal: '#F7D036',
-    light: '#F4E0A4',
-  },
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// 2. Palettes //////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
+//Kept for backward compatibility purposes. Current palette is not generated from one color
+
 interface BasePalette {
   base: Color
 }
@@ -117,9 +89,10 @@ const brand = createPalette(BRAND)
 
 /*---------------------------- 2.2 Core palettes -----------------------------*/
 
-type CorePaletteVariant = 'base' | 1 | 2 | 3 | 4
+type CorePaletteVariant = 'base' | 1 | 2 | 3 | 4 | 5
+
 /**
- * A palette consisting of a `base` and 4 variants
+ * A palette consisting of a `base` and 5 variants
  */
 
 export type CorePalette = { [variant in CorePaletteVariant]: Color }
@@ -132,6 +105,8 @@ interface SemanticColors {
   offBackground: Color
   textColor: Color
   backgroundHoverColor: Color
+  primaryStyleGuideBackground: Color
+  secondaryStyleGuideBackground: Color
 }
 
 export interface CorePaletteMap {
@@ -140,53 +115,52 @@ export interface CorePaletteMap {
   core: SemanticColors
 }
 
-export const light: CorePaletteMap = {
-  primary: {
-    base: WHITE,
-    1: blue.L95,
-    2: blue.L9,
-    3: blue.L8,
-    4: blue.L7,
-  },
-  secondary: {
-    base: offblack.base,
-    1: offblack.L1,
-    2: offblack.L3,
-    3: offblack.D4,
-    4: offblack.L5,
-  },
-  core: {
-    lightBackground: WHITE,
-    darkBackground: blue.L95,
-    alternateBackground: blue.L8,
-    offBackground: blue.L9,
-    textColor: DARKGREY,
-    backgroundHoverColor: WHITE,
-  },
+// New color definition based on custom rgb colors, not from colorPalettes generated before
+const darkPrimary = {
+  base: rgb(40, 46, 57),
+  1: rgb(52, 58, 71),
+  2: rgb(61, 66, 76),
+  3: rgb(83, 87, 96),
+  4: rgb(104, 109, 116),
+  5: rgb(126, 129, 136),
+}
+
+const darkSecondary = {
+  base: WHITE,
+  1: rgb(249, 249, 249),
+  2: rgb(243, 243, 244),
+  3: rgb(228, 229, 230),
+  4: rgb(207, 208, 211),
+  5: rgb(189, 190, 195),
 }
 
 export const dark: CorePaletteMap = {
-  primary: {
-    base: offblack.D3,
-    1: offblack.D4,
-    2: offblack.base,
-    3: offblack.D1,
-    4: offblack.D7,
-  },
-  secondary: {
-    base: WHITE,
-    1: blue.L95,
-    2: blue.L9,
-    3: blue.L8,
-    4: blue.L5,
-  },
+  primary: darkPrimary,
+  secondary: darkSecondary,
   core: {
-    lightBackground: offblack.D3,
-    darkBackground: offblack.D4,
-    alternateBackground: offblack.D1,
-    offBackground: offblack.base,
-    textColor: WHITE,
-    backgroundHoverColor: offblack.D1,
+    lightBackground: darkPrimary[1],
+    darkBackground: darkPrimary.base,
+    alternateBackground: darkPrimary[3],
+    offBackground: darkPrimary[3],
+    textColor: darkSecondary.base,
+    backgroundHoverColor: darkPrimary[1],
+    primaryStyleGuideBackground: rgb(32, 36, 45),
+    secondaryStyleGuideBackground: rgb(40, 45, 57),
+  },
+}
+
+export const light: CorePaletteMap = {
+  primary: darkSecondary,
+  secondary: darkPrimary,
+  core: {
+    lightBackground: darkSecondary[1],
+    darkBackground: darkSecondary.base,
+    alternateBackground: darkSecondary[3],
+    offBackground: darkSecondary[3],
+    textColor: darkPrimary.base,
+    backgroundHoverColor: darkSecondary[1],
+    primaryStyleGuideBackground: rgb(253, 253, 253),
+    secondaryStyleGuideBackground: rgb(243, 243, 243),
   },
 }
 
@@ -198,34 +172,54 @@ export const dark: CorePaletteMap = {
 interface AccentPalette extends BasePalette {
   darker: Color
   lighter: Color
+  medium?: Color
 }
 
-export type AccentName = 'dominant' | 'good' | 'aware' | 'bad'
+interface TradingAccentPalette extends BasePalette {
+  lighter: Color
+}
+
+export type AccentName = 'primary' | 'success' | 'aware' | 'error'
 /**
  * A set of theme-agnostic palettes
  */
 export type AccentPaletteMap = { [accent in AccentName]: AccentPalette }
 
 const accents: AccentPaletteMap = {
-  dominant: {
-    base: blue.base,
-    darker: blue.D2,
-    lighter: blue.L5,
+  primary: {
+    base: rgb(95, 148, 245),
+    darker: rgb(76, 118, 196),
+    lighter: rgb(127, 169, 247),
   },
-  good: {
-    base: green.base,
-    darker: green.D1,
-    lighter: green.L5,
+  success: {
+    base: rgb(1, 195, 141),
+    darker: rgb(3, 160, 119),
+    lighter: rgb(12, 150, 116),
+    medium: rgb(153, 231, 209),
   },
   aware: {
-    base: yellow.base,
-    darker: yellow.D1,
-    lighter: yellow.L5,
+    base: rgb(255, 141, 0),
+    darker: rgb(229, 126, 0),
+    lighter: rgb(255, 232, 204),
+    medium: rgb(255, 197, 127),
   },
-  bad: {
-    base: red.base,
-    darker: red.D1,
-    lighter: red.L5,
+  error: {
+    base: rgb(255, 39, 75),
+    darker: rgb(230, 35, 67),
+    lighter: rgb(255, 211, 219),
+    medium: rgb(255, 146, 164),
+  },
+}
+
+export type TradingPaletteMap = { [direction in Direction]: TradingAccentPalette }
+const uniqueCollections: TradingPaletteMap = {
+  [Direction.Sell]: {
+    base: rgb(255, 39, 75),
+    lighter: rgb(255, 211, 219),
+  },
+  [Direction.Buy]: {
+    base: rgb(45, 149, 255),
+    lighter: rgb(191, 222, 255),
   },
 }
 
@@ -236,6 +230,7 @@ const spectrum = {
   green,
   yellow,
   blue,
+  uniqueCollections,
 }
 
 export const colors = {

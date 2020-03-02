@@ -13,7 +13,7 @@ interface Props {
 const MovementIcon = styled('i')<{ show: boolean; color: string }>`
   text-align: center;
   color: ${({ theme, color }) =>
-    color === 'none' ? theme.colors.light.secondary[4] : theme.template[color].normal};
+    color === 'none' ? theme.colors.light.secondary[4] : theme.accents[color].base};
   visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
 `
 
@@ -46,7 +46,7 @@ const PriceMovement: React.FC<Props> = ({
     <MovementIcon
       data-qa="price-movement__movement-icon--up"
       show={show && priceMovementType === PriceMovementTypes.Up}
-      color={isInitiateRFQ ? 'none' : 'green'}
+      color={isInitiateRFQ ? 'none' : 'success'}
       className="fas fa-caret-up"
       aria-hidden="true"
     />
@@ -54,7 +54,7 @@ const PriceMovement: React.FC<Props> = ({
     <MovementIcon
       data-qa="price-movement__movement-icon--down"
       show={show && priceMovementType === PriceMovementTypes.Down}
-      color={isInitiateRFQ ? 'none' : 'red'}
+      color={isInitiateRFQ ? 'none' : 'error'}
       className="fas fa-caret-down"
       aria-hidden="true"
     />

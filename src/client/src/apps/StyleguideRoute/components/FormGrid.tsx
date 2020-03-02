@@ -6,16 +6,17 @@ import { keyframes } from 'styled-components'
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 5rem 1fr 1fr 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(5, 100px);
+  grid-column-gap: 2rem;
+  grid-row-gap: 0.5rem;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 1rem;
 `
 
 const HoveredInput = styled(Input)`
   & input {
     border-bottom: ${({ theme }) =>
-      `1px solid ${theme.name === 'light' ? '#beccdc' : theme.colors.light.secondary[1]}`};
+      `1px solid ${theme.name === 'light' ? '#beccdc' : theme.colors.light.secondary[4]}`};
   }
 `
 
@@ -30,15 +31,15 @@ const blink = keyframes`
 
 const ActiveInput = styled(Input)`
   & input {
-    border-bottom: ${({ theme }) => `1px solid ${theme.accents.dominant.darker}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.accents.primary.darker}`};
   }
   & input:hover {
-    border-bottom: ${({ theme }) => `1px solid ${theme.accents.dominant.base}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.accents.primary.base}`};
   }
   & label::before {
     content: '';
     position: absolute;
-    background-color: ${({ theme }) => theme.accents.dominant.base};
+    background-color: ${({ theme }) => theme.accents.primary.base};
     width: 1px;
     animation: ${blink} 1s infinite;
     height: 12px;

@@ -7,9 +7,11 @@ export const AnalyticsWrapper = styled.div`
   max-width: 60rem;
   min-width: 20rem;
   margin: auto;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   position: relative;
+  display: grid;
+  grid-template-rows: 46px auto;
 `
 
 export const AnalyticsHeader = styled.header`
@@ -62,7 +64,7 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
   }
 
   .analytics__positions-label {
-    fill: ${({ theme }) => theme.template.white.normal};
+    fill: ${({ theme }) => theme.white};
     font-size: 0.6875rem;
     pointer-events: none;
     user-select: none;
@@ -78,23 +80,23 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
 
   .stop1,
   .lineStop1 {
-    stop-color: ${({ theme }) => theme.template.green.normal};
+    stop-color: ${({ theme }) => theme.accents.success.base};
     stop-opacity: 0.5;
   }
 
   .stop1End,
   .lineStop1End {
-    stop-color: ${({ theme }) => theme.template.green.normal};
+    stop-color: ${({ theme }) => theme.accents.success.base};
   }
 
   .stop2,
   .lineStop2 {
-    stop-color: ${({ theme }) => theme.template.red.normal};
+    stop-color: ${({ theme }) => theme.accents.error.base};
   }
 
   .stop2End,
   .lineStop2End {
-    stop-color: ${({ theme }) => theme.template.red.normal};
+    stop-color: ${({ theme }) => theme.accents.error.base};
     stop-opacity: 0.5;
   }
 `

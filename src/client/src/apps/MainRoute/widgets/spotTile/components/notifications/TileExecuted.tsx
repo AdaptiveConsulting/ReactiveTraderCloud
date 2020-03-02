@@ -13,8 +13,8 @@ const HeavyItalicsFont = styled(HeavyFont)`
 `
 
 const InverseFont = styled(HeavyFont)`
-  background-color: ${({ theme }) => theme.template.white.normal};
-  color: ${({ theme }) => theme.template.green.normal};
+  background-color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.accents.success.base};
   border-radius: 2px;
   padding: 0 0.0625rem;
 `

@@ -4,6 +4,7 @@ import { rules } from 'rt-styleguide'
 import { Block, BlockProps } from '../styled'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 import { styled, ColorProps as ThemeSelectorPair } from 'rt-theme'
+import { H2 } from '../elements'
 import { css } from 'styled-components'
 
 type ColorSchemeName = 'primary' | 'secondary' | 'inverted'
@@ -16,8 +17,8 @@ export interface SectionProps extends BlockProps, MarginPaddingProps {
 }
 
 const colorSchemes: { [scheme in ColorSchemeName]: ThemeSelectorPair } = {
-  primary: { bg: t => t.primary.base, fg: t => t.secondary.base },
-  secondary: { bg: t => t.primary[1], fg: t => t.secondary[1] },
+  primary: { bg: t => t.core.primaryStyleGuideBackground, fg: t => t.secondary.base },
+  secondary: { bg: t => t.core.secondaryStyleGuideBackground, fg: t => t.secondary[1] },
   inverted: { bg: t => t.secondary[3], fg: t => t.primary[1] },
 }
 
@@ -125,4 +126,10 @@ export const SectionBody = styled.div`
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
+  ${H2} {
+    font-weight: normal;
+    color: ${({ theme }) => theme.accents.primary.base}
+  }
+
+
 `

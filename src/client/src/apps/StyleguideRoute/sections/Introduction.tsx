@@ -7,7 +7,7 @@ import { Paragraph, SectionBlock } from '../styled'
 
 export const Introduction: React.FC = props => (
   <React.Fragment>
-    <SectionBlock colorScheme="secondary" {...props}>
+    <SectionBlock {...props}>
       <Flex>
         <Content>
           <Logo />

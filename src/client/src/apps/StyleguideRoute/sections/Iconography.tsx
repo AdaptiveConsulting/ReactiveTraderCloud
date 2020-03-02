@@ -18,7 +18,7 @@ import { Paragraph, SectionBlock, Text, TextProps } from '../styled'
 
 export const FontFamilies: React.FC = () => (
   <React.Fragment>
-    <SectionBlock py={0} pt={2} mh={0}>
+    <SectionBlock colorScheme="secondary" py={0} pt={2} mh={0}>
       <H2 pt={4}>Iconography</H2>
 
       <Paragraph>
@@ -27,7 +27,7 @@ export const FontFamilies: React.FC = () => (
         to their container size.
       </Paragraph>
     </SectionBlock>
-    <SectionBlock py={2} pt={2} mh={0}>
+    <SectionBlock colorScheme="secondary" py={2} pt={2} mh={0}>
       <H3>Generic</H3>
       <IconGrid>
         <div></div>

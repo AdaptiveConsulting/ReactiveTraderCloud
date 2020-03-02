@@ -41,7 +41,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 }
 
 .c7 {
-  background-color: #2e3543;
+  background-color: #343a47;
   border-radius: 3px;
   color: inherit;
   -webkit-transition: background-color 0.2s ease;
@@ -123,13 +123,13 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 
 .c15 {
   text-align: center;
-  color: #28c988;
+  color: #01c38d;
   visibility: hidden;
 }
 
 .c17 {
   text-align: center;
-  color: #f94c4c;
+  color: #ff274b;
   visibility: visible;
 }
 
@@ -231,7 +231,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
-  background-color: #2e3543;
+  background-color: #343a47;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -253,7 +253,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 }
 
 .c1:hover {
-  background-color: #3d4455;
+  background-color: #343a47;
 }
 
 .c18 {
@@ -348,7 +348,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           <i
             aria-hidden="true"
             className="c15 fas fa-caret-up"
-            color="green"
+            color="success"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -360,7 +360,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           <i
             aria-hidden="true"
             className="c17 fas fa-caret-down"
-            color="red"
+            color="error"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -479,7 +479,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 }
 
 .c7 {
-  background-color: #2e3543;
+  background-color: #343a47;
   border-radius: 3px;
   color: inherit;
   -webkit-transition: background-color 0.2s ease;
@@ -561,13 +561,13 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 
 .c15 {
   text-align: center;
-  color: #a1a5af;
+  color: #686d74;
   visibility: hidden;
 }
 
 .c17 {
   text-align: center;
-  color: #a1a5af;
+  color: #686d74;
   visibility: visible;
 }
 
@@ -659,11 +659,11 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 }
 
 .c19 rect {
-  fill: #ffffff;
+  fill: #fff;
 }
 
 .c20 {
-  color: #ffffff;
+  color: #fff;
   font-size: 0.6875rem;
 }
 
@@ -721,7 +721,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
-  background-color: #2e3543;
+  background-color: #343a47;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -743,7 +743,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 }
 
 .c1:hover {
-  background-color: #3d4455;
+  background-color: #343a47;
 }
 
 .c21 {
@@ -876,7 +876,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
         >
           <div
             className="c19"
-            color="blue"
+            color="primary"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
@@ -1004,7 +1004,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 }
 
 .c7 {
-  background-color: #2e3543;
+  background-color: #343a47;
   border-radius: 3px;
   color: inherit;
   -webkit-transition: background-color 0.2s ease;
@@ -1085,20 +1085,20 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 }
 
 .c14 {
-  color: #f94c4c;
+  color: #ff274b;
   font-size: 9px;
   text-transform: uppercase;
 }
 
 .c16 {
   text-align: center;
-  color: #28c988;
+  color: #01c38d;
   visibility: hidden;
 }
 
 .c18 {
   text-align: center;
-  color: #f94c4c;
+  color: #ff274b;
   visibility: hidden;
 }
 
@@ -1190,11 +1190,11 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 }
 
 .c20 rect {
-  fill: #ffffff;
+  fill: #fff;
 }
 
 .c21 {
-  color: #ffffff;
+  color: #fff;
   font-size: 0.6875rem;
 }
 
@@ -1252,7 +1252,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
-  background-color: #2e3543;
+  background-color: #343a47;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1274,7 +1274,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 }
 
 .c1:hover {
-  background-color: #3d4455;
+  background-color: #343a47;
 }
 
 .c22 {
@@ -1387,7 +1387,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           <i
             aria-hidden="true"
             className="c16 fas fa-caret-up"
-            color="green"
+            color="success"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -1399,7 +1399,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           <i
             aria-hidden="true"
             className="c18 fas fa-caret-down"
-            color="red"
+            color="error"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -1413,7 +1413,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         >
           <div
             className="c20"
-            color="blue"
+            color="primary"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
@@ -1548,9 +1548,9 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 }
 
 .c7 {
-  background-color: #2e3543;
+  background-color: #343a47;
   border-radius: 3px;
-  color: #f94c4c;
+  color: #ff274b;
   -webkit-transition: background-color 0.2s ease;
   transition: background-color 0.2s ease;
   cursor: pointer;
@@ -1560,28 +1560,28 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   min-width: 125px;
   padding: 0.55rem 1.5rem 0.6rem 1.5rem;
   margin-bottom: 2px;
-  -webkit-animation: eJClnE 5s;
-  animation: eJClnE 5s;
+  -webkit-animation: dnMAbE 5s;
+  animation: dnMAbE 5s;
 }
 
 .spot-tile:hover .c7 {
-  background-color: #272d3a;
+  background-color: #282e39;
 }
 
 .spot-tile:hover .c7:hover {
-  background-color: #f94c4c;
-  color: #ffffff;
+  background-color: #ff274b;
+  color: #fff;
 }
 
 .c7:hover {
-  background-color: #f94c4c;
-  color: #ffffff;
+  background-color: #ff274b;
+  color: #fff;
 }
 
 .c18 {
-  background-color: #2e3543;
+  background-color: #343a47;
   border-radius: 3px;
-  color: #5f94f5;
+  color: #2d95ff;
   -webkit-transition: background-color 0.2s ease;
   transition: background-color 0.2s ease;
   cursor: pointer;
@@ -1591,22 +1591,22 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   min-width: 125px;
   padding: 0.55rem 1.5rem 0.6rem 1.5rem;
   margin-bottom: 2px;
-  -webkit-animation: eNgZhw 5s;
-  animation: eNgZhw 5s;
+  -webkit-animation: dQmnms 5s;
+  animation: dQmnms 5s;
 }
 
 .spot-tile:hover .c18 {
-  background-color: #272d3a;
+  background-color: #282e39;
 }
 
 .spot-tile:hover .c18:hover {
-  background-color: #5f94f5;
-  color: #ffffff;
+  background-color: #2d95ff;
+  color: #fff;
 }
 
 .c18:hover {
-  background-color: #5f94f5;
-  color: #ffffff;
+  background-color: #2d95ff;
+  color: #fff;
 }
 
 .c10 {
@@ -1674,13 +1674,13 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 
 .c15 {
   text-align: center;
-  color: #28c988;
+  color: #01c38d;
   visibility: hidden;
 }
 
 .c17 {
   text-align: center;
-  color: #f94c4c;
+  color: #ff274b;
   visibility: hidden;
 }
 
@@ -1782,7 +1782,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
-  background-color: #2e3543;
+  background-color: #343a47;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1804,7 +1804,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 }
 
 .c1:hover {
-  background-color: #3d4455;
+  background-color: #343a47;
 }
 
 .c19 {
@@ -1899,7 +1899,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           <i
             aria-hidden="true"
             className="c15 fas fa-caret-up"
-            color="green"
+            color="success"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -1911,7 +1911,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           <i
             aria-hidden="true"
             className="c17 fas fa-caret-down"
-            color="red"
+            color="error"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -2032,13 +2032,13 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 
 .c14 {
   text-align: center;
-  color: #a1a5af;
+  color: #686d74;
   visibility: hidden;
 }
 
 .c16 {
   text-align: center;
-  color: #a1a5af;
+  color: #686d74;
   visibility: visible;
 }
 
@@ -2138,7 +2138,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   -webkit-flex-flow: column;
   -ms-flex-flow: column;
   flex-flow: column;
-  border: 2px solid #272d3a;
+  border: 2px solid #282e39;
   border-radius: 3px;
   font-size: 10px;
   -webkit-transition: background-color 0.2s ease;
@@ -2195,18 +2195,18 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   padding-top: 8px;
   position: absolute;
   border-radius: 3px;
-  background: #f94c4c;
+  background: #ff274b;
   pointer-events: auto;
   width: 58px;
   cursor: pointer;
 }
 
 .c18 rect {
-  fill: #ffffff;
+  fill: #fff;
 }
 
 .c19 {
-  color: #ffffff;
+  color: #fff;
   font-size: 0.6875rem;
 }
 
@@ -2264,7 +2264,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
-  background-color: #2e3543;
+  background-color: #343a47;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2286,7 +2286,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 }
 
 .c1:hover {
-  background-color: #3d4455;
+  background-color: #343a47;
 }
 
 .c20 {
@@ -2430,7 +2430,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
         >
           <div
             className="c18"
-            color="red"
+            color="error"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
@@ -2569,7 +2569,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 }
 
 .c7 {
-  background-color: #2e3543;
+  background-color: #343a47;
   border-radius: 3px;
   color: inherit;
   -webkit-transition: background-color 0.2s ease;
@@ -2584,21 +2584,21 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 }
 
 .spot-tile:hover .c7 {
-  background-color: #272d3a;
+  background-color: #282e39;
 }
 
 .spot-tile:hover .c7:hover {
-  background-color: #f94c4c;
-  color: #ffffff;
+  background-color: #ff274b;
+  color: #fff;
 }
 
 .c7:hover {
-  background-color: #f94c4c;
-  color: #ffffff;
+  background-color: #ff274b;
+  color: #fff;
 }
 
 .c18 {
-  background-color: #2e3543;
+  background-color: #343a47;
   border-radius: 3px;
   color: inherit;
   -webkit-transition: background-color 0.2s ease;
@@ -2613,17 +2613,17 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 }
 
 .spot-tile:hover .c18 {
-  background-color: #272d3a;
+  background-color: #282e39;
 }
 
 .spot-tile:hover .c18:hover {
-  background-color: #5f94f5;
-  color: #ffffff;
+  background-color: #2d95ff;
+  color: #fff;
 }
 
 .c18:hover {
-  background-color: #5f94f5;
-  color: #ffffff;
+  background-color: #2d95ff;
+  color: #fff;
 }
 
 .c10 {
@@ -2691,13 +2691,13 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 
 .c15 {
   text-align: center;
-  color: #28c988;
+  color: #01c38d;
   visibility: hidden;
 }
 
 .c17 {
   text-align: center;
-  color: #f94c4c;
+  color: #ff274b;
   visibility: visible;
 }
 
@@ -2799,7 +2799,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
-  background-color: #2e3543;
+  background-color: #343a47;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2821,7 +2821,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 }
 
 .c1:hover {
-  background-color: #3d4455;
+  background-color: #343a47;
 }
 
 .c19 {
@@ -2916,7 +2916,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           <i
             aria-hidden="true"
             className="c15 fas fa-caret-up"
-            color="green"
+            color="success"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -2928,7 +2928,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           <i
             aria-hidden="true"
             className="c17 fas fa-caret-down"
-            color="red"
+            color="error"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -3048,7 +3048,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
 }
 
 .c7 {
-  background-color: #2e3543;
+  background-color: #343a47;
   border-radius: 3px;
   color: inherit;
   -webkit-transition: background-color 0.2s ease;
@@ -3130,13 +3130,13 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
 
 .c15 {
   text-align: center;
-  color: #28c988;
+  color: #01c38d;
   visibility: hidden;
 }
 
 .c17 {
   text-align: center;
-  color: #f94c4c;
+  color: #ff274b;
   visibility: hidden;
 }
 
@@ -3264,11 +3264,11 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
 }
 
 .c19 rect {
-  fill: #ffffff;
+  fill: #fff;
 }
 
 .c25 {
-  color: #ffffff;
+  color: #fff;
   font-size: 0.8125rem;
 }
 
@@ -3331,7 +3331,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
-  background-color: #2e3543;
+  background-color: #343a47;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3353,7 +3353,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
 }
 
 .c1:hover {
-  background-color: #3d4455;
+  background-color: #343a47;
 }
 
 .c26 {
@@ -3460,7 +3460,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           <i
             aria-hidden="true"
             className="c15 fas fa-caret-up"
-            color="green"
+            color="success"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -3472,7 +3472,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           <i
             aria-hidden="true"
             className="c17 fas fa-caret-down"
-            color="red"
+            color="error"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -3486,7 +3486,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         >
           <div
             className="c19"
-            color="blue"
+            color="primary"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}

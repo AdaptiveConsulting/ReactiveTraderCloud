@@ -2,11 +2,6 @@ import { styled, Theme } from 'rt-theme'
 import { Direction } from 'rt-types'
 import { keyframes, css } from 'styled-components'
 
-const hoverColors = {
-  [Direction.Buy]: 'blue',
-  [Direction.Sell]: 'red',
-}
-
 const backgroundEffectKeyframes = ({
   direction,
   theme,
@@ -15,11 +10,11 @@ const backgroundEffectKeyframes = ({
   theme: Theme
 }) => keyframes`
   5% {
-    background-color: ${theme.template[hoverColors[direction]].normal};
+    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
     color: white;
   }
   80% {
-    background-color: ${theme.template[hoverColors[direction]].normal};
+    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
     color: white;
   }
 `
@@ -40,7 +35,7 @@ export const TradeButton = styled.button<{
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
   color: ${({ theme, priceAnnounced, direction }) =>
-    priceAnnounced ? theme.template[hoverColors[direction]].normal : 'inherit'};
+    priceAnnounced ? theme.colors.spectrum.uniqueCollections[direction].base : 'inherit'};
   transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;
@@ -63,12 +58,12 @@ export const TradeButton = styled.button<{
     background-color: ${theme.core.darkBackground};
   }
   .spot-tile:hover &:hover {
-    background-color: ${theme.template[hoverColors[direction]].normal};
-    color: ${theme.template.white.normal};
+    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    color: ${theme.white};
   }
   &:hover {
-    background-color: ${theme.template[hoverColors[direction]].normal};
-    color: ${theme.template.white.normal};
+    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    color: ${theme.white};
   }
   `};
 `
@@ -117,7 +112,7 @@ export const BigWrapper = styled.div`
 `
 
 export const ExpiredPrice = styled.div`
-  color: ${({ theme }) => theme.template.red.normal};
+  color: ${({ theme }) => theme.colors.spectrum.uniqueCollections.Sell.base};
   font-size: 9px;
   text-transform: uppercase;
 `

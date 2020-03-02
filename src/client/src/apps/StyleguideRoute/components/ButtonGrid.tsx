@@ -56,7 +56,7 @@ const ButtonVariants: React.FC<ButtonStyleProps & TitleButtonProp> = props => (
 
 const GridColumn = styled.div`
   display: grid;
-  grid-template-rows: 3rem repeat(2, 2rem);
+  grid-template-rows: auto;
   grid-row-gap: 0.5rem;
   align-items: center;
   margin-bottom: 2rem;
@@ -70,7 +70,7 @@ const LabelColumn = styled(GridColumn)`
 const ColumnTitle = styled.div``
 const ButtonRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-column-gap: 0.5rem;
 `
 const ButtonColumn = styled(GridColumn)`
@@ -81,7 +81,7 @@ const Root = styled.div`
   max-width: 60rem;
 
   display: grid;
-  grid-template-columns: 5rem 1fr 1fr 1fr 1fr ;
+  grid-template-columns: repeat(5, 100px) ;
   grid-column-gap: 2rem;
 
   ${ButtonColumn} + ${ButtonColumn} {

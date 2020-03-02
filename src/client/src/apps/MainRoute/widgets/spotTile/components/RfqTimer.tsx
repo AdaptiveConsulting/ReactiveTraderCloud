@@ -31,7 +31,7 @@ const ProgressBarWrapper = styled.div<{ isAnalyticsView: boolean }>`
 `
 
 const ProgressBar = styled.div`
-  background-color: ${({ theme }) => theme.template.blue.normal};
+  background-color: ${({ theme }) => theme.accents.primary.base};
   border-radius: 3px;
   transition: width ${UPDATE_FREQ_MS}ms linear;
   height: 100%;

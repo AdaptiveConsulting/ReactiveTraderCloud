@@ -2,15 +2,7 @@ import { darken } from 'polished'
 import { mapValues } from 'lodash'
 import { keyframes } from 'styled-components'
 
-import {
-  colors,
-  template,
-  AccentPaletteMap,
-  Color,
-  CorePalette,
-  CorePaletteMap,
-  AccentName,
-} from './colors'
+import { colors, AccentPaletteMap, Color, CorePalette, CorePaletteMap, AccentName } from './colors'
 
 interface BaseTheme {
   white: Color
@@ -81,7 +73,6 @@ const createTheme = (
   accents: AccentPaletteMap,
 ) => ({
   name,
-  template,
   core,
   white: colors.static.white,
   black: colors.static.black,
@@ -129,7 +120,7 @@ const createTheme = (
       background-color: ${primary.base};
     }
     50% {
-      background-color: ${accents.dominant.darker};
+      background-color: ${accents.primary.darker};
     }
     100% {
       background-color: ${primary.base};
@@ -150,26 +141,26 @@ const createTheme = (
     },
 
     primary: {
-      backgroundColor: accents.dominant.base,
-      textColor: colors.light.primary.base,
+      backgroundColor: accents.primary.base,
+      textColor: secondary.base,
 
       active: {
-        backgroundColor: accents.dominant.darker,
+        backgroundColor: accents.primary.darker,
       },
       disabled: {
-        backgroundColor: accents.dominant.lighter,
+        backgroundColor: primary[1],
       },
     },
 
     secondary: {
-      backgroundColor: secondary.base,
-      textColor: primary.base,
+      backgroundColor: primary[1],
+      textColor: secondary.base,
 
       active: {
-        backgroundColor: secondary[3],
+        backgroundColor: accents.primary.darker,
       },
       disabled: {
-        backgroundColor: secondary[4],
+        backgroundColor: primary[1],
       },
     },
 
@@ -203,8 +194,6 @@ const createTheme = (
 
 const lightTheme = createTheme('light', colors.light, colors.accents)
 const darkTheme = createTheme('dark', colors.dark, colors.accents)
-// Manual overrides
-darkTheme.button.secondary.textColor = darkTheme.primary.base
 
 export const themes = {
   light: lightTheme,

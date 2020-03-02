@@ -37,13 +37,12 @@ const BookingPill = styled.div<{
   top: ${({ isAnalyticsView, isExecutingStatus }) =>
     isAnalyticsView && !isExecutingStatus ? '2.8rem' : isAnalyticsView ? '2.3rem' : ''};
   border-radius: ${({ isExecutingStatus }) => (isExecutingStatus ? '17px' : '3px')};
-  background: ${({ theme, color, disabled }) =>
-    theme.template[color][disabled ? 'dark' : 'normal']};
+  background: ${({ theme, color, disabled }) => theme.accents[color][disabled ? 'dark' : 'base']};
   pointer-events: auto; /* restore the click on this child */
   width: ${({ isExecutingStatus, isAnalyticsView }) =>
     isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '58px'};
   rect {
-    fill: ${({ theme }) => theme.template.white.normal};
+    fill: ${({ theme }) => theme.white};
   }
 
   ${({ onClick, disabled }) =>
@@ -63,7 +62,7 @@ const BookingPill = styled.div<{
 `
 
 const BookingStatus = styled.span<{ isExecutingStatus: boolean }>`
-  color: ${({ theme }) => theme.template.white.normal};
+  color: ${({ theme }) => theme.white};
   font-size: ${({ isExecutingStatus }) => (isExecutingStatus ? '0.8125rem' : '0.6875rem')};
 `
 

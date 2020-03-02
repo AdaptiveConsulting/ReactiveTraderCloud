@@ -28,7 +28,7 @@ const getLogRatio: (max: number, numb: number) => number = (max, numb) => {
 
 const PNLBar: React.FC<PNLBarProps> = ({ symbol, basePnl, maxVal }) => {
   const [hovering, setHovering] = useState(false)
-  const color = basePnl >= 0 ? 'green' : 'red'
+  const color = basePnl >= 0 ? 'success' : 'error'
   const distance = getLogRatio(maxVal, basePnl) * TRANSLATION_WIDTH * (basePnl >= 0 ? 1 : -1)
   const price = numeral(Math.abs(basePnl)).format('0a')
   const hoverPrice = numeral(basePnl).format('0,0.00')
