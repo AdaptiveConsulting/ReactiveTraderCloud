@@ -8,7 +8,7 @@ export default (env: string) => {
 
   const config = {
     devtools_port: 9090,
-    splashScreenImage: `${appUrl}/static/media/splash-screen.jpg`,
+    splashScreenImage: `${appUrl}/static/media/splash.png`,
     runtime: {
       arguments: '--v=1 --inspect',
       version: '15.80.48.13',

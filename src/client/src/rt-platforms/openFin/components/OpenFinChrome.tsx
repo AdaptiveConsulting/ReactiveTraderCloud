@@ -91,7 +91,7 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
 `
 
 const FooterControl = styled.div`
-  margin-right: 0.75rem
+  margin-right: 0.5rem;
 `
 
 export const Root = styled.div`
