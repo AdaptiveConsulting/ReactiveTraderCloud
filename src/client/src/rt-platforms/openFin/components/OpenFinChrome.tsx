@@ -97,7 +97,6 @@ const FooterControl = styled.div`
 export const Root = styled.div`
   background-color: ${props => props.theme.core.darkBackground};
   color: ${props => props.theme.core.textColor};
-
   height: 100%;
   width: 100%;
 `

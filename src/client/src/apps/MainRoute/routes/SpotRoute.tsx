@@ -22,8 +22,8 @@ const getTileViewFromQueryStr: (queryStr: string) => TileViews = queryStr => {
   return !tileView
     ? TileViews.Normal
     : Object.values(TileViews).includes(tileView)
-    ? tileView
-    : TileViews.Normal
+      ? tileView
+      : TileViews.Normal
 }
 
 const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({

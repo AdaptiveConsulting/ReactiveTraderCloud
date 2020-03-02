@@ -12,6 +12,12 @@ const FrameRoot = styled.div`
   position: absolute;
   overflow: hidden;
 
+  #layout-container {
+    height: 100%;
+    width: 100%
+    padding: 0;
+  }
+  
   .lm_tabs {
     background-color: ${({ theme }) => theme.core.lightBackground};
     border-radius: 0px;
@@ -41,7 +47,9 @@ const TitleBarRoot = styled.div`
   height: var(--title-bar-height);
   display: flex;
 `
-
+const LayoutRoot = styled.div`
+  height: calc(100% - var(--title-bar-height));
+`
 const WindowFrame: FC = () => {
   const win = fin.Window.getCurrentSync()
   const onClose = () => win.close()
@@ -68,8 +76,11 @@ const WindowFrame: FC = () => {
           close={() => onClose()}
         />
       </TitleBarRoot>
-      {/* This div and id is required by Openfin */}
-      <div id="layout-container"></div>
+
+      <LayoutRoot>
+        {/* This div and id is required by Openfin */}
+        <div id="layout-container"></div>
+      </LayoutRoot>
     </FrameRoot>
   )
 }
