@@ -3,8 +3,8 @@ import { styled } from 'rt-theme'
 import { Button, Icon, TileBaseStyle } from '../styled'
 
 export enum NotificationType {
-  Error = 'bad',
-  Success = 'good',
+  Error = 'error',
+  Success = 'success',
   Warning = 'aware',
 }
 
