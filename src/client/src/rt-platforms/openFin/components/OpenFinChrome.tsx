@@ -78,10 +78,16 @@ const OpenFinUndockControl: React.FC = () => {
       setIsWindowDocked(true)
     }
 
+    const handleWindowUnDocked = () => {
+      setIsWindowDocked(false)
+    }
+
     snapAndDock.addEventListener('window-docked', handleWindowDocked)
+    snapAndDock.addEventListener('window-undocked', handleWindowUnDocked)
 
     return () => {
       snapAndDock.removeEventListener('window-docked', handleWindowDocked)
+      snapAndDock.removeEventListener('window-undocked', handleWindowUnDocked)
     }
   }, [])
 
