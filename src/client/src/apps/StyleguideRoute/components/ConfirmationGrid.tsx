@@ -29,7 +29,7 @@ const ConfirmationBlock = styled.div<{ rejected?: boolean }>`
   min-height: 60px;
   border-radius: 3px;
   background-color: ${({ theme, rejected }) =>
-    rejected ? theme.accents.bad.base : theme.accents.good.base};
+    rejected ? theme.accents.error.base : theme.accents.success.base};
 `
 
 const GridColumn = styled.div`

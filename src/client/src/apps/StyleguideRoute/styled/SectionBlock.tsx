@@ -128,7 +128,7 @@ export const SectionBody = styled.div`
   }
   ${H2} {
     font-weight: normal;
-    color: ${({ theme }) => theme.accents.dominant.base}
+    color: ${({ theme }) => theme.accents.primary.base}
   }
 
 

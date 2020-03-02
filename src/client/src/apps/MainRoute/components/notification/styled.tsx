@@ -23,7 +23,7 @@ export const Traded = styled('div')<{ isDone: boolean }>`
 `
 
 export const Status = styled('div')<{ isDone: boolean }>`
-  color: ${({ theme, isDone }) => !isDone && theme.accents.bad.base};
+  color: ${({ theme, isDone }) => !isDone && theme.accents.error.base};
 `
 
 export const Bottom = styled(Flex)``

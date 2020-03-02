@@ -33,7 +33,7 @@ const TradeSymbol = styled.div`
 `
 
 const CheckIcon = styled(Icon)`
-  background-color: ${({ theme }) => theme.accents.good.base};
+  background-color: ${({ theme }) => theme.accents.success.base};
   border-radius: 50%;
   padding: 0.3125rem;
 `

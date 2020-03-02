@@ -179,19 +179,19 @@ interface TradingAccentPalette extends BasePalette {
   lighter: Color
 }
 
-export type AccentName = 'dominant' | 'good' | 'aware' | 'bad'
+export type AccentName = 'primary' | 'success' | 'aware' | 'error'
 /**
  * A set of theme-agnostic palettes
  */
 export type AccentPaletteMap = { [accent in AccentName]: AccentPalette }
 
 const accents: AccentPaletteMap = {
-  dominant: {
+  primary: {
     base: rgb(95, 148, 245),
     darker: rgb(76, 118, 196),
     lighter: rgb(127, 169, 247),
   },
-  good: {
+  success: {
     base: rgb(1, 195, 141),
     darker: rgb(3, 160, 119),
     lighter: rgb(12, 150, 116),
@@ -203,7 +203,7 @@ const accents: AccentPaletteMap = {
     lighter: rgb(255, 232, 204),
     medium: rgb(255, 197, 127),
   },
-  bad: {
+  error: {
     base: rgb(255, 39, 75),
     darker: rgb(230, 35, 67),
     lighter: rgb(255, 211, 219),

@@ -6,7 +6,7 @@ import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
 import { colors, styled, Theme, AccentName } from 'rt-theme'
 import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-components'
 
-const { dominant, ...others } = colors.accents
+const { primary, ...others } = colors.accents
 
 export default () => (
   <React.Fragment>
@@ -34,7 +34,7 @@ export default () => (
             Brand colors aim to communicate a companies visual ownership of the digital product.
           </Paragraph>
         </span>
-        <DominantAccentPalettes dominant={dominant} />
+        <DominantAccentPalettes dominant={primary} />
       </QuadrantLayout>
     </SectionBlock>
 
@@ -296,7 +296,7 @@ const DominantAccentPalettes: React.FC<{ dominant: object }> = ({ dominant, ...p
       <PaletteLayout
         key="dominant"
         grid={DominantAccentSwatchGrid}
-        label="dominant"
+        label="primary"
         palette={dominant}
         fg="#FFF"
         include={['base', 'darker', 'lighter']}

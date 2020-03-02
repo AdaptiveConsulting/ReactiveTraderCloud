@@ -80,23 +80,23 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
 
   .stop1,
   .lineStop1 {
-    stop-color: ${({ theme }) => theme.accents.good.base};
+    stop-color: ${({ theme }) => theme.accents.success.base};
     stop-opacity: 0.5;
   }
 
   .stop1End,
   .lineStop1End {
-    stop-color: ${({ theme }) => theme.accents.good.base};
+    stop-color: ${({ theme }) => theme.accents.success.base};
   }
 
   .stop2,
   .lineStop2 {
-    stop-color: ${({ theme }) => theme.accents.bad.base};
+    stop-color: ${({ theme }) => theme.accents.error.base};
   }
 
   .stop2End,
   .lineStop2End {
-    stop-color: ${({ theme }) => theme.accents.bad.base};
+    stop-color: ${({ theme }) => theme.accents.error.base};
     stop-opacity: 0.5;
   }
 `

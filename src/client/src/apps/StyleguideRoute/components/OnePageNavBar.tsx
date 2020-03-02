@@ -153,7 +153,7 @@ const OnePageNavLink = styled(Link)`
     border-bottom: 3px solid white;
     ${({ theme }) =>
       css({
-        borderBottom: `3px solid ${theme.accents.dominant.base}`,
+        borderBottom: `3px solid ${theme.accents.primary.base}`,
       })};
   }
 `
@@ -230,7 +230,7 @@ const TitleHeading = styled(H2)`
   margin: 0.5rem 0;
   ${({ theme }) =>
     css({
-      color: theme.accents.dominant.base,
+      color: theme.accents.primary.base,
     })};
 `
 

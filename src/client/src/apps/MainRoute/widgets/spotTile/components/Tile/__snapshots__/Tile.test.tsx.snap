@@ -348,7 +348,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           <i
             aria-hidden="true"
             className="c15 fas fa-caret-up"
-            color="good"
+            color="success"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -360,7 +360,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           <i
             aria-hidden="true"
             className="c17 fas fa-caret-down"
-            color="bad"
+            color="error"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -876,7 +876,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
         >
           <div
             className="c19"
-            color="dominant"
+            color="primary"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
@@ -1387,7 +1387,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           <i
             aria-hidden="true"
             className="c16 fas fa-caret-up"
-            color="good"
+            color="success"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -1399,7 +1399,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           <i
             aria-hidden="true"
             className="c18 fas fa-caret-down"
-            color="bad"
+            color="error"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -1413,7 +1413,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
         >
           <div
             className="c20"
-            color="dominant"
+            color="primary"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
@@ -1899,7 +1899,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           <i
             aria-hidden="true"
             className="c15 fas fa-caret-up"
-            color="good"
+            color="success"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -1911,7 +1911,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           <i
             aria-hidden="true"
             className="c17 fas fa-caret-down"
-            color="bad"
+            color="error"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -2430,7 +2430,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
         >
           <div
             className="c18"
-            color="bad"
+            color="error"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
@@ -2916,7 +2916,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           <i
             aria-hidden="true"
             className="c15 fas fa-caret-up"
-            color="good"
+            color="success"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -2928,7 +2928,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           <i
             aria-hidden="true"
             className="c17 fas fa-caret-down"
-            color="bad"
+            color="error"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -3460,7 +3460,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           <i
             aria-hidden="true"
             className="c15 fas fa-caret-up"
-            color="good"
+            color="success"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -3472,7 +3472,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           <i
             aria-hidden="true"
             className="c17 fas fa-caret-down"
-            color="bad"
+            color="error"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -3486,7 +3486,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
         >
           <div
             className="c19"
-            color="dominant"
+            color="primary"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}

@@ -18,12 +18,12 @@ const getValidationMessageStyles = ({
 }) => {
   switch (validationMessageType) {
     case 'error':
-      return theme.accents.bad.base
+      return theme.accents.error.base
     case 'warning':
       return theme.accents.aware.base
     case 'info':
     default:
-      return theme.accents.dominant.base
+      return theme.accents.primary.base
   }
 }
 
@@ -45,7 +45,7 @@ const getInputBoxShadowStyles = ({
   }
 
   .spot-tile:hover &:focus, &:focus {
-    box-shadow: 0px 1px 0px ${theme.accents.dominant.base};
+    box-shadow: 0px 1px 0px ${theme.accents.primary.base};
   }
 `
 

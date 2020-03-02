@@ -31,15 +31,15 @@ const blink = keyframes`
 
 const ActiveInput = styled(Input)`
   & input {
-    border-bottom: ${({ theme }) => `1px solid ${theme.accents.dominant.darker}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.accents.primary.darker}`};
   }
   & input:hover {
-    border-bottom: ${({ theme }) => `1px solid ${theme.accents.dominant.base}`};
+    border-bottom: ${({ theme }) => `1px solid ${theme.accents.primary.base}`};
   }
   & label::before {
     content: '';
     position: absolute;
-    background-color: ${({ theme }) => theme.accents.dominant.base};
+    background-color: ${({ theme }) => theme.accents.primary.base};
     width: 1px;
     animation: ${blink} 1s infinite;
     height: 12px;

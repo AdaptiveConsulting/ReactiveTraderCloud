@@ -46,7 +46,7 @@ const PriceMovement: React.FC<Props> = ({
     <MovementIcon
       data-qa="price-movement__movement-icon--up"
       show={show && priceMovementType === PriceMovementTypes.Up}
-      color={isInitiateRFQ ? 'none' : 'good'}
+      color={isInitiateRFQ ? 'none' : 'success'}
       className="fas fa-caret-up"
       aria-hidden="true"
     />
@@ -54,7 +54,7 @@ const PriceMovement: React.FC<Props> = ({
     <MovementIcon
       data-qa="price-movement__movement-icon--down"
       show={show && priceMovementType === PriceMovementTypes.Down}
-      color={isInitiateRFQ ? 'none' : 'bad'}
+      color={isInitiateRFQ ? 'none' : 'error'}
       className="fas fa-caret-down"
       aria-hidden="true"
     />

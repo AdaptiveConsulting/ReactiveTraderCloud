@@ -120,7 +120,7 @@ const createTheme = (
       background-color: ${primary.base};
     }
     50% {
-      background-color: ${accents.dominant.darker};
+      background-color: ${accents.primary.darker};
     }
     100% {
       background-color: ${primary.base};
@@ -141,11 +141,11 @@ const createTheme = (
     },
 
     primary: {
-      backgroundColor: accents.dominant.base,
+      backgroundColor: accents.primary.base,
       textColor: secondary.base,
 
       active: {
-        backgroundColor: accents.dominant.darker,
+        backgroundColor: accents.primary.darker,
       },
       disabled: {
         backgroundColor: primary[1],
@@ -157,7 +157,7 @@ const createTheme = (
       textColor: secondary.base,
 
       active: {
-        backgroundColor: accents.dominant.darker,
+        backgroundColor: accents.primary.darker,
       },
       disabled: {
         backgroundColor: primary[1],

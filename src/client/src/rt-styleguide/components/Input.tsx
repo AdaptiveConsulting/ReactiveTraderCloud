@@ -2,8 +2,8 @@ import React, { useRef } from 'react'
 import { styled } from 'rt-theme'
 
 const inputColors = {
-  error: 'bad',
-  info: 'dominant',
+  error: 'error',
+  info: 'primary',
 }
 
 export interface InputStyleProps extends React.HTMLAttributes<HTMLInputElement> {
@@ -62,11 +62,11 @@ const StyledInput = styled.input<InputStyleProps>`
   }
   &:focus {
     caret-color: ${({ status, theme }) =>
-      `${status ? theme.accents[inputColors[status]].darker : theme.accents.dominant.darker}`};
+      `${status ? theme.accents[inputColors[status]].darker : theme.accents.primary.darker}`};
     outline: none;
     border-bottom: ${({ status, theme }) =>
       `1px solid ${
-        status ? theme.accents[inputColors[status]].darker : theme.accents.dominant.darker
+        status ? theme.accents[inputColors[status]].darker : theme.accents.primary.darker
       }`};
   }
   &:disabled {

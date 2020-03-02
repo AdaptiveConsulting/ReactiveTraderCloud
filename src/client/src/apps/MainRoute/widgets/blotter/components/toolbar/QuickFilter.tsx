@@ -28,11 +28,11 @@ const QuickFilterInput = styled('input')`
 
   &:hover {
     opacity: 1;
-    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.accents.dominant.lighter};
+    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.accents.primary.lighter};
   }
 
   &:focus {
-    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.accents.dominant.base};
+    box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.accents.primary.base};
     color: ${({ theme }) => theme.core.textColor};
     opacity: 1;
   }
