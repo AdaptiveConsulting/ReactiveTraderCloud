@@ -15,3 +15,12 @@ The cross-platform capability opens the door to a wide range of deployment tools
 An event sourcing approach is used for persistence, with [Event Store](https://geteventstore.com/) as the backing implementation. This provides many advantages, including data resiliency and facilitates re-hydration of state.
 
 Multiple instances of each service run concurrently for fail-over purposes. Each service instance broadcasts heartbeats, and the client is able to switch to a different instance if the connected instance is no longer reachable. Using this mechanism, load balancing strategies can also be implemented.
+
+## Node server components
+
+Some services are using node.js and can be started independently with [Node](./server-node.md).
+
+- Price History
+- Nlp
+- Bot
+- Openfin Config

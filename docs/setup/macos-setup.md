@@ -37,7 +37,7 @@ Populate eventstore with the following command from the`/src/server/dotNet` dire
 $ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher --populate-eventstore
 ```
 
-Then to start the backaend services, run the following command from the`/src/server/dotNet` directory:
+Then to start the backend services, run the following command from the`/src/server/dotNet` directory:
 
 ```bash
 $ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher all

@@ -8,7 +8,7 @@ import { convertToPrice, Price, RawPrice } from './domain'
 import { RawServiceStatus } from './domain'
 import logger from './logger'
 
-const host = process.env.BROKER_HOST || 'broker'
+const host = process.env.BROKER_HOST || 'localhost'
 const realm = process.env.WAMP_REALM || 'com.weareadaptive.reactivetrader'
 const port = process.env.BROKER_PORT || 8000
 
@@ -43,8 +43,9 @@ const savePrices = scan<Price, Map<string, Price[]>>((acc, price) => {
 const priceSubsription$ = stub
   .subscribeToTopic<RawPrice>('prices')
   .pipe(
-    map(price=>convertToPrice(price)),
-    savePrices)
+    map(price => convertToPrice(price)),
+    savePrices,
+  )
   .subscribe(newPrices => {
     latest = newPrices
   })
@@ -76,11 +77,9 @@ session$.subscribe(session => {
   const registration = `${hostInstance}.getPriceHistory`
   logger.info(`Registering ${registration}`)
 
-
   logger.info('Connection Established')
 
   session.register(registration, (request: PriceHistoryRequest) => {
-
     if (!request || !request[0] || !request[0].payload) {
       throw new Error(`The request for price history was malformed: ${request}`)
     }
@@ -90,7 +89,6 @@ session$.subscribe(session => {
       throw Error(`The currency pair requested was not recognised: ${symbol}`)
     }
     logger.info(`Request recieved ${symbol}`)
-
 
     return latest.get(symbol)
   })
