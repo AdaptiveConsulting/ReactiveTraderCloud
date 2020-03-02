@@ -37,7 +37,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                 _ =>
                     new HeartbeatDto
                     {
-                        Instance = _host.InstanceID,
+                        Instance = _host.InstanceId,
                         Timestamp = DateTime.Now,
                         Type = _host.ServiceType,
                         Load = _host.GetLoad()
