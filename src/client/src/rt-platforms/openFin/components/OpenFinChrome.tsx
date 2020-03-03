@@ -18,6 +18,7 @@ export interface ControlProps {
   maximize?: () => void
   popIn?: () => void
   close?: () => void
+  title?: string
 }
 
 export const OpenFinChrome: React.FC = ({ children }) => (
@@ -40,7 +41,7 @@ export const OpenFinChrome: React.FC = ({ children }) => (
 export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
   <Header>
     <OpenFinUndockControl />
-    <DragRegion />
+    <DragRegion>{props.title}</DragRegion>
     <OpenFinControls {...props} />
   </Header>
 )
@@ -103,74 +104,60 @@ const OpenFinUndockControl: React.FC = () => {
   }, [])
 
   return (
-    <>
-      {isWindowDocked && (
-        <UndockButton onClick={handleUndockClick}>
-          <UndockIcon width={24} height={24} />
-        </UndockButton>
-      )}
-    </>
+    <UndockControl
+      disabled={!isWindowDocked}
+      onClick={handleUndockClick}
+      isWindowDocked={isWindowDocked}
+    >
+      <UndockIcon width={24} height={24} />
+    </UndockControl>
   )
 }
-
-export const OPENFIN_CHROME_HEADER_HEIGHT = '21px'
 
 const Header = styled.div`
   display: flex;
   width: 100%;
   min-height: 1.5rem;
   font-size: 1rem;
-  height: ${OPENFIN_CHROME_HEADER_HEIGHT};
+  padding: 0 0.625rem;
 `
 
 const DragRegion = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-grow: 1;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+
   -webkit-app-region: drag;
 `
 
-const HeaderControl = styled.div<{ accent?: AccentName }>`
-  display: flex;
-  justify-content: center;
-  align-self: center;
-  color: ${props => props.theme.button.secondary.backgroundColor};
+const HeaderControl = styled.button<{ accent?: AccentName }>`
   cursor: pointer;
 
   &:hover {
-    svg path:last-child {
-      fill: #5f94f5;
-    }
-  }
-`
-
-const UndockButton = styled.button`
-  display: block;
-  height: 100%;
-  width: max-content;
-  padding-left: 0.625rem;
-  cursor: pointer;
-
-  &:hover {
-    .icon {
-      path:nth-child(2) {
-        fill: #5f94f5;
-      }
+    svg {
       path:last-child {
-        fill: #535760;
+        fill: #5f94f5;
       }
     }
   }
 
   &:disabled {
-    .icon {
+    svg {
       path:nth-child(2) {
         fill: #535760;
       }
       path:last-child {
-        fill: #3d424c;
+        fill: #535760;
       }
     }
   }
+`
+const UndockControl = styled(HeaderControl)<{ isWindowDocked: boolean }>`
+  visibility: ${({ isWindowDocked }) => (isWindowDocked ? 'visible' : 'hidden')};
 `
 
 export const Root = styled.div`

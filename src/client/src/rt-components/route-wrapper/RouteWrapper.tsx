@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react'
+import { useParams } from 'react-router'
 import { styled } from 'rt-theme'
 import { Platform, usePlatform } from 'rt-platforms'
+import { currencyFormatter } from 'rt-util'
 
 const RouteStyle = styled('div')<{ platform: Platform }>`
   width: 100%;
@@ -22,14 +24,31 @@ type WindowRole = 'main' | 'sub'
 interface RouteWrapperProps {
   children: ReactNode
   windowType?: WindowRole
+  title?: string
 }
 
-const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'main' }) => {
+const RouteWrapper: React.FC<RouteWrapperProps> = props => {
+  const { children, windowType = 'main', title } = props
   const platform = usePlatform()
+  const { symbol } = useParams()
+
   const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
+
+  let formattedCurrency
+
+  if (!title && symbol) {
+    formattedCurrency = currencyFormatter(symbol)
+  }
+
   const Header = windowType === 'main' ? PlatformControls : null
   const subheader =
-    windowType === 'sub' ? <PlatformHeader popIn={window.close} minimize={window.minimize} /> : null
+    windowType === 'sub' ? (
+      <PlatformHeader
+        popIn={window.close}
+        minimize={window.minimize}
+        title={title || formattedCurrency}
+      />
+    ) : null
 
   return (
     <RouteStyle platform={platform}>
