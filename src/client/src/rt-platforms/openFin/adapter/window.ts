@@ -47,6 +47,10 @@ const getChildWindows = () => {
   })
 }
 
+const getWindowState = async (window: fin.OpenFinWindow | _Window) => {
+  return await window.getState()
+}
+
 //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
 // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
 export function createPlatformWindow(
@@ -58,10 +62,12 @@ export function createPlatformWindow(
       return (await getWindow()).close()
     },
     bringToFront: async () => (await getWindow()).bringToFront(),
-    minimize: async () => (await getWindow()).minimize(),
+    minimize: async () => {
+      ;(await getWindow()).minimize()
+    },
     maximize: async () => {
       const window = await getWindow()
-      window.getState((state: WindowState) => {
+      getWindowState(window).then(state => {
         switch (state) {
           case openfinWindowStates.Maximized:
           case openfinWindowStates.Minimized:
@@ -123,7 +129,7 @@ export const openDesktopWindow = async (
   //@ts-ignore
   const centered = (!hasChildWindows && !configHasXYCoordinates) || config.center === 'screen'
 
-  console.info(`Creating Openfin window: ${windowName}`)
+  console.info(`Creating Openfin window: ${windowName}`, config)
 
   const platform = await finWithPlatform.Platform.getCurrent()
 
