@@ -129,7 +129,7 @@ export const openDesktopWindow = async (
   //@ts-ignore
   const centered = (!hasChildWindows && !configHasXYCoordinates) || config.center === 'screen'
 
-  console.info(`Creating Openfin window: ${windowName}`, config)
+  console.info(`Creating Openfin window: ${windowName}`)
 
   const platform = await finWithPlatform.Platform.getCurrent()
 
