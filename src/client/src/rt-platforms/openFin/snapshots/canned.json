@@ -470,10 +470,10 @@
             },
             "title": ""
           },
-          "maxHeight": 193,
+          "maxHeight": 208,
           "maxWidth": 366,
           "maximizable": true,
-          "minHeight": 193,
+          "minHeight": 208,
           "minWidth": 366,
           "minimizable": true,
           "name": "EURUSD",
