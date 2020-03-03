@@ -54,10 +54,8 @@ const WindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
   const win = fin.Window.getCurrentSync()
   const onClose = () => win.close()
   const onMinimize = () => win.minimize()
-  const onMaximize = maximize
-    ? () => async () =>
-        win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize()))
-    : undefined
+  const onMaximize = async () =>
+    win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize()))
 
   useEffect(() => {
     window.document.dispatchEvent(
@@ -68,16 +66,14 @@ const WindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
     )
   }, [])
 
-  console.log(win)
-
   return (
     <FrameRoot>
       <TitleBarRoot>
         <div className="title-bar-draggable"></div>
         <OpenFinControls
-          minimize={() => onMinimize()}
-          maximize={onMaximize}
-          close={() => onClose()}
+          minimize={onMinimize}
+          maximize={maximize ? onMaximize : undefined}
+          close={onClose}
         />
       </TitleBarRoot>
 
