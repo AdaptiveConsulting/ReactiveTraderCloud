@@ -6,7 +6,7 @@
         {
           "autoShow": true,
           "defaultCentered": true,
-          "defaultHeight": 824,
+          "defaultHeight": 844,
           "defaultLeft": 436,
           "defaultTop": 0,
           "defaultWidth": 1176,
@@ -301,12 +301,12 @@
         {
           "autoShow": true,
           "defaultCentered": false,
-          "defaultHeight": 807,
+          "defaultHeight": 893,
           "defaultLeft": 4,
           "defaultTop": 10,
           "defaultWidth": 801,
           "frame": false,
-          "height": 807,
+          "height": 893,
           "layout": {
             "content": [
               {
@@ -402,12 +402,12 @@
         {
           "autoShow": true,
           "defaultCentered": false,
-          "defaultHeight": 194,
+          "defaultHeight": 208,
           "defaultLeft": 814,
           "defaultTop": 11,
           "defaultWidth": 367,
           "frame": false,
-          "height": 194,
+          "height": 208,
           "layout": {
             "content": [
               {
@@ -500,12 +500,12 @@
         {
           "autoShow": true,
           "defaultCentered": false,
-          "defaultHeight": 195,
-          "defaultLeft": 816,
-          "defaultTop": 209,
+          "defaultHeight": 208,
+          "defaultLeft": 814,
+          "defaultTop": 251,
           "defaultWidth": 368,
           "frame": false,
-          "height": 195,
+          "height": 208,
           "layout": {
             "content": [
               {
@@ -568,10 +568,10 @@
             },
             "title": ""
           },
-          "maxHeight": 193,
+          "maxHeight": 208,
           "maxWidth": 366,
           "maximizable": true,
-          "minHeight": 193,
+          "minHeight": 208,
           "minWidth": 366,
           "minimizable": true,
           "name": "AUDUSD",
@@ -592,18 +592,18 @@
           "url": "/openfin-window-frame",
           "uuid": "reactive-trader-cloud-platform-demo",
           "width": 368,
-          "x": 816,
-          "y": 209
+          "x": 814,
+          "y": 251
         },
         {
           "autoShow": true,
           "defaultCentered": false,
-          "defaultHeight": 389,
+          "defaultHeight": 445,
           "defaultLeft": 1191,
           "defaultTop": 15,
           "defaultWidth": 818,
           "frame": false,
-          "height": 389,
+          "height": 445,
           "layout": {
             "content": [
               {
@@ -697,8 +697,8 @@
           "autoShow": true,
           "defaultCentered": false,
           "defaultHeight": 413,
-          "defaultLeft": 818,
-          "defaultTop": 408,
+          "defaultLeft": 814,
+          "defaultTop": 492,
           "defaultWidth": 1189,
           "frame": false,
           "height": 413,
@@ -788,8 +788,8 @@
           "url": "/openfin-window-frame",
           "uuid": "reactive-trader-cloud-platform-demo",
           "width": 1189,
-          "x": 818,
-          "y": 408
+          "x": 814,
+          "y": 492
         }
       ]
     }
