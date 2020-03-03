@@ -50,12 +50,14 @@ const TitleBarRoot = styled.div`
 const LayoutRoot = styled.div`
   height: calc(100% - var(--title-bar-height));
 `
-const WindowFrame: FC = () => {
+const WindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
   const win = fin.Window.getCurrentSync()
   const onClose = () => win.close()
   const onMinimize = () => win.minimize()
-  const onMaximize = async () =>
-    win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize()))
+  const onMaximize = maximize
+    ? () => async () =>
+        win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize()))
+    : undefined
 
   useEffect(() => {
     window.document.dispatchEvent(
@@ -66,13 +68,15 @@ const WindowFrame: FC = () => {
     )
   }, [])
 
+  console.log(win)
+
   return (
     <FrameRoot>
       <TitleBarRoot>
         <div className="title-bar-draggable"></div>
         <OpenFinControls
           minimize={() => onMinimize()}
-          maximize={() => onMaximize()}
+          maximize={onMaximize}
           close={() => onClose()}
         />
       </TitleBarRoot>
