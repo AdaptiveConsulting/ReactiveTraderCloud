@@ -33,11 +33,11 @@ Install the C++ Compiler. Visual Studio Express comes bundled with a free C++ co
 
 ## RT Enviroments
 
-We deploy Reactive Trader to two enviroments:
+We deploy Reactive Trader to three enviroments:
 
 - [Demo](https://web-demo.adaptivecluster.com/)
-  The most stable version of the application it always reflects the `master` branch
-- [Dev](https://web-dev.adaptivecluster.com/) The most up to date version of the application it always reflects the `develop` branch
+- [Uat](https://web-uat.adaptivecluster.com/)
+- [Dev](https://web-dev.adaptivecluster.com/)
 
 ## Starting the GUI
 
@@ -45,7 +45,7 @@ Clone the repo and install the necessary node modules:
 
 ```sh
 npm install  # Install Node modules listed in ./package.json
-npm start    # Compile and launch the webpack dev server. By default, the client connects to a demo environment.
+npm start    # Compile and launch the webpack dev server. By default, the client connects to the dev environment.
 ```
 
 You can then browse the app at [http://localhost:3000](http://localhost:3000)
