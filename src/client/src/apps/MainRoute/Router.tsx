@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
-import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
 import { RouteWrapper } from 'rt-components'
+import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
+import { urlCurrencyPairExtractor } from '../utils'
 
 export const Router: FC = () => (
   <Switch>
@@ -9,7 +10,7 @@ export const Router: FC = () => (
     <Route
       path="/analytics"
       render={() => (
-        <RouteWrapper windowType="sub">
+        <RouteWrapper windowType="sub" title="Analytics">
           <AnalyticsRoute />
         </RouteWrapper>
       )}
@@ -17,7 +18,7 @@ export const Router: FC = () => (
     <Route
       path="/blotter"
       render={routeProps => (
-        <RouteWrapper windowType="sub">
+        <RouteWrapper windowType="sub" title="Blotter">
           <BlotterRoute {...routeProps} />
         </RouteWrapper>
       )}
@@ -25,18 +26,25 @@ export const Router: FC = () => (
     <Route
       path="/tiles"
       render={() => (
-        <RouteWrapper>
+        <RouteWrapper title="Tiles">
           <TileRoute />
         </RouteWrapper>
       )}
     />
     <Route
       path="/spot/:symbol"
-      render={routeProps => (
-        <RouteWrapper windowType="sub">
-          <SpotRoute {...routeProps} />
-        </RouteWrapper>
-      )}
+      render={routeProps => {
+        const {
+          location: { pathname },
+        } = routeProps
+        const ccyPair = urlCurrencyPairExtractor(pathname)
+
+        return (
+          <RouteWrapper windowType="sub" title={ccyPair}>
+            <SpotRoute {...routeProps} />
+          </RouteWrapper>
+        )
+      }}
     />
     <Route
       exact
