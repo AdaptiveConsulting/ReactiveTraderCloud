@@ -1,27 +1,7 @@
 {
   "startup_app": {
-    "name": "Reactive Ecosystem Launcher (UAT)",
-    "url": "https://web-uat.adaptivecluster.com/launcher",
-    "uuid": "reactive-launcher-uat",
-    "defaultWidth": 650,
-    "defaultHeight": 52,
-    "defaultTop": 160,
-    "defaultLeft": 30,
     "autoShow": true,
-    "permissions": {
-      "System": {
-        "launchExternalProcess": true
-      }
-    },
-    "saveWindowState": false,
-    "resizable": false,
-    "shadow": true,
     "frame": false,
-    "backgroundColor": "#444C5F",
-    "alwaysOnTop": true,
-    "icon": "https://web-uat.adaptivecluster.com/static/media/icon.ico",
-    "applicationIcon": "https://web-uat.adaptivecluster.com/static/media/adaptive-mark-large.png",
-    "contextMenu": true,
     "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
     "preload": [
       {
@@ -31,6 +11,30 @@
         "url": "https://web-uat.adaptivecluster.com/plugin/fin.desktop.Excel.js"
       }
     ],
+    "name": "Reactive Ecosystem Launcher (UAT)",
+    "url": "https://web-uat.adaptivecluster.com/launcher",
+    "uuid": "reactive-launcher-uat",
+    "defaultWidth": 350,
+    "defaultHeight": 56,
+    "defaultTop": 160,
+    "defaultLeft": 30,
+    "backgroundColor": "#313131",
+    "cornerRounding": {
+      "width": 4,
+      "height": 4
+    },
+    "permissions": {
+      "System": {
+        "launchExternalProcess": true
+      }
+    },
+    "saveWindowState": false,
+    "resizable": false,
+    "shadow": true,
+    "alwaysOnTop": true,
+    "icon": "https://web-uat.adaptivecluster.com/static/media/icon.ico",
+    "applicationIcon": "https://web-uat.adaptivecluster.com/static/media/adaptive-mark-large.png",
+    "contextMenu": true,
     "accelerator": {
       "devtools": true,
       "reload": true,
@@ -39,13 +43,8 @@
     }
   },
   "runtime": {
-    "arguments": "--remote-debugging-port=9222",
-    "version": "13.76.44.21"
-  },
-  "shortcut": {
-    "company": "Adaptive Consulting",
-    "icon": "https://web-uat.adaptivecluster.com/static/media/icon.ico",
-    "name": "Reactive Ecosystem Launcher (UAT)"
+    "version": "13.76.44.21",
+    "arguments": "--remote-debugging-port=9222"
   },
   "services": [
     {
@@ -68,6 +67,11 @@
       "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json"
     }
   ],
+  "shortcut": {
+    "company": "Adaptive Consulting",
+    "icon": "https://web-uat.adaptivecluster.com/static/media/icon.ico",
+    "name": "Reactive Ecosystem Launcher (UAT)"
+  },
   "appAssets": [
     {
       "src": "https://web-uat.adaptivecluster.com/plugin/add-in.zip",
