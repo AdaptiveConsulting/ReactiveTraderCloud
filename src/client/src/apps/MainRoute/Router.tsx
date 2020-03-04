@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
+import { currencyFormatter } from 'rt-util'
 import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
 
 export const Router: FC = () => (
@@ -33,7 +34,7 @@ export const Router: FC = () => (
     <Route
       path="/spot/:symbol"
       render={routeProps => (
-        <RouteWrapper windowType="sub">
+        <RouteWrapper windowType="sub" title={currencyFormatter(routeProps.match.params.symbol)}>
           <SpotRoute {...routeProps} />
         </RouteWrapper>
       )}
