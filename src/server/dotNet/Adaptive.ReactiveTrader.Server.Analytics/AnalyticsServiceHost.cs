@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Adaptive.ReactiveTrader.Server.Common;
 using Serilog;
 
@@ -49,7 +48,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             Log.Information("Subscribed to trades");
         }
 
-        private async Task GetAnalyticsStream(IRequestContext context, IMessage message)
+        private Task GetAnalyticsStream(IRequestContext context, IMessage message)
         {
             Log.Debug("Received GetAnalyticsStream from {username}", context.Username);
 
@@ -58,6 +57,8 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
             _subscriptions.Add(_service.GetAnalyticsStream()
                                        .TakeUntil(endPoint.TerminationSignal)
                                        .Subscribe(endPoint));
+
+            return Task.CompletedTask;
         }
 
         public override void Dispose()

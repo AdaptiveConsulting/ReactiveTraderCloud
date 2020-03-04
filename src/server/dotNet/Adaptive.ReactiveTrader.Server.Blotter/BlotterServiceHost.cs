@@ -5,7 +5,6 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Serilog;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
@@ -26,7 +25,7 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
             StartHeartBeat();
         }
 
-        private async Task GetTradesStream(IRequestContext context, IMessage message)
+        private Task GetTradesStream(IRequestContext context, IMessage message)
         {
             Log.Debug("Received GetTradesStream from {username}", context.Username ?? "<UNKNOWN USER>");
             var replyTo = context.ReplyTo;
@@ -50,6 +49,8 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
                 .TakeUntil(endPoint.TerminationSignal)
                 .Finally(() => Log.Debug("Tidying up subscription from {replyTo}.", replyTo))
                 .Subscribe(endPoint);
+
+            return Task.CompletedTask;
         }
 
         public override void Dispose()

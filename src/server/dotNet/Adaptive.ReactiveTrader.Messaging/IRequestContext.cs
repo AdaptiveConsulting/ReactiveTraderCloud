@@ -1,4 +1,4 @@
-namespace Adaptive.ReactiveTrader.Messaging.Abstraction
+namespace Adaptive.ReactiveTrader.Messaging
 {
     public interface IRequestContext
     {

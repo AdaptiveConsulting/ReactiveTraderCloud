@@ -1,4 +1,4 @@
-namespace Adaptive.ReactiveTrader.Messaging.WAMP
+namespace Adaptive.ReactiveTrader.Messaging
 {
     public class MessageDto
     {

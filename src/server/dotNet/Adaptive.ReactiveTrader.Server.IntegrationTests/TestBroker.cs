@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
-using System.Reactive.Linq;
 using System.Text;
 
 namespace Adaptive.ReactiveTrader.Server.IntegrationTests

@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 

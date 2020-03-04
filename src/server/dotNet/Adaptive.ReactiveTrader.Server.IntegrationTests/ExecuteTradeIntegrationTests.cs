@@ -4,7 +4,6 @@ using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.Messaging;
 using Xunit;
 
 namespace Adaptive.ReactiveTrader.Server.IntegrationTests
@@ -22,7 +21,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         [Fact]
         public async void ShouldReceiveExecutedTradeInBlotter()
         {
-            var testCcyPair = "XXXXXB";
+            const string testCcyPair = "XXXXXB";
             var asyncAssertion = new TaskCompletionSource<bool>();
 
             // this is the callback when the blotter receives the executed trade notification
@@ -52,7 +51,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         [Fact]
         public async void ShouldReceiveExecutedTradeInAnalytics()
         {
-            var testCcyPair = "XXXXXA";
+            const string testCcyPair = "XXXXXA";
             var asyncAssertion = new TaskCompletionSource<bool>();
 
             // this is the callback when the analytics svc receives the executed trade notification

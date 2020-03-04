@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using RabbitMQ.Client;
 
 namespace Adaptive.ReactiveTrader.Messaging

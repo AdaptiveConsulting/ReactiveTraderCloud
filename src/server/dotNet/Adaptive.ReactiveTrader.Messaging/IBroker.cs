@@ -1,7 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
-using IAsyncDisposable = SystemEx.IAsyncDisposable;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {

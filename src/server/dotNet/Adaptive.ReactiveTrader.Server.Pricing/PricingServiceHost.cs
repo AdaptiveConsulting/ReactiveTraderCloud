@@ -4,7 +4,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -31,7 +30,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         {
             var priceTrunkStream = _service.GetAllPriceUpdates(); // TODO dispose this when service host goes down
             var priceTrunk = new PricePublisher(priceTrunkStream, _broker);
-            priceTrunk.Start().Wait();
+            priceTrunk.Start();
         }
 
         public Task GetPriceUpdates(IRequestContext context, IMessage message)
@@ -52,6 +51,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
                                      .Subscribe(endpoint);
 
             _cleanup.Add(disposable);
+
             return Task.CompletedTask;
         }
 

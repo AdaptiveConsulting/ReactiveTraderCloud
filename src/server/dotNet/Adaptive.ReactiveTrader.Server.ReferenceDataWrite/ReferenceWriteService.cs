@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.EventStore.Domain;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
+using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.ReferenceDataWrite.Domain;
 using Serilog;
 

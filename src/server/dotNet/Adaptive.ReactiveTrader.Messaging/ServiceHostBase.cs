@@ -1,7 +1,6 @@
 using System;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Serilog;
 
 namespace Adaptive.ReactiveTrader.Messaging

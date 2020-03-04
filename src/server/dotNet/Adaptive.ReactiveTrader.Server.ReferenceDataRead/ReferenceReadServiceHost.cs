@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Newtonsoft.Json;
 using Serilog;
 
