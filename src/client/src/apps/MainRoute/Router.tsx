@@ -23,7 +23,7 @@ export const Router: FC = () => (
       )}
     />
     <Route
-      path="/tiles"
+      path="/tiles/:currency/:tileView"
       render={() => (
         <RouteWrapper>
           <TileRoute />
