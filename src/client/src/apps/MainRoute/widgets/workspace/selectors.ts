@@ -20,6 +20,8 @@ const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => Ext
     height: 208,
     minWidth: 366,
     minHeight: 208,
+    // TODO: If we are able to disable dropping other windows 
+    // on to the SpotTiles, we can re-enable the maxWidth and maxHeight properties
     // maxWidth: 366,
     // maxHeight: 208,
     url: `/spot/${key}`,
