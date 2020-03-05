@@ -14,7 +14,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
         public TestBroker()
         {
-            var connectionFactory = new ConnectionFactory() { HostName = TestAddress.BrokerHost, Port = TestAddress.BrokerPort, AutomaticRecoveryEnabled = true };
+            var connectionFactory = new ConnectionFactory { HostName = TestAddress.BrokerHost, Port = TestAddress.BrokerPort, AutomaticRecoveryEnabled = true };
             var connection = connectionFactory.CreateConnection();
             _channel = connection.CreateModel();
             _broker = new Broker(_channel);

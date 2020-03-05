@@ -20,7 +20,7 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public RabbitMQConnection(string hostName, int port)
         {
-            _connectionFactory = new ConnectionFactory() {HostName = hostName, Port = port, AutomaticRecoveryEnabled = true};
+            _connectionFactory = new ConnectionFactory {HostName = hostName, Port = port, AutomaticRecoveryEnabled = true};
         }
 
         public void Start()

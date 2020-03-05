@@ -26,13 +26,13 @@ namespace Adaptive.ReactiveTrader.Messaging
                 arguments: null);
             Channel.BasicQos(0, 1, false);
             var consumer = new EventingBasicConsumer(Channel);
-            consumer.Received += MessageRecieved;
+            consumer.Received += MessageReceived;
             _consumerTag = Channel.BasicConsume(procName, false, consumer);
         }
 
         protected abstract Task HandleMessage(RequestContext requestContext, IBasicProperties replyProperties);
 
-        private async void MessageRecieved(object sender, BasicDeliverEventArgs args)
+        private async void MessageReceived(object sender, BasicDeliverEventArgs args)
         {
             try
             {

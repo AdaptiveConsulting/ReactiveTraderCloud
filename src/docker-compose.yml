@@ -12,7 +12,7 @@ services:
       dockerfile: Dockerfile
       context: ./services/broker
     ports:
-      - '8000:8000'
+      - '5672:5672'
   servers:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     build:
@@ -51,6 +51,7 @@ services:
       context: ./e2e
   analytics:
     image: ${DOCKER_USER}/analytics:${BUILD_VERSION}
+    restart: always
     build:
       dockerfile: Dockerfile
       context: ./server/dotNet
@@ -60,6 +61,7 @@ services:
       - eventstore
   pricing:
     image: ${DOCKER_USER}/pricing:${BUILD_VERSION}
+    restart: always
     build:
       dockerfile: Dockerfile
       context: ./server/dotNet
@@ -70,6 +72,7 @@ services:
       - analytics
   referencedataread:
     image: ${DOCKER_USER}/referencedataread:${BUILD_VERSION}
+    restart: always
     build:
       dockerfile: Dockerfile
       context: ./server/dotNet
@@ -80,6 +83,7 @@ services:
       - pricing
   tradeexecution:
     image: ${DOCKER_USER}/tradeexecution:${BUILD_VERSION}
+    restart: always
     build:
       dockerfile: Dockerfile
       context: ./server/dotNet
@@ -90,6 +94,7 @@ services:
       - referencedataread
   blotter:
     image: ${DOCKER_USER}/blotter:${BUILD_VERSION}
+    restart: always
     build:
       dockerfile: Dockerfile
       context: ./server/dotNet
@@ -108,7 +113,7 @@ services:
       - pricing
     environment:
      - BROKER_HOST=broker
-     - BROKER_PORT=8000
+     - BROKER_PORT=5672
   nlp:
     image: ${DOCKER_USER}/nlp:${BUILD_VERSION}
     hostname: nlp
@@ -119,7 +124,7 @@ services:
       - broker
     environment:
       - BROKER_HOST=broker
-      - BROKER_PORT=8000
+      - BROKER_PORT=5672
   openfinconfig:
     image: ${DOCKER_USER}/openfinconfig:${BUILD_VERSION}
     hostname: openfinconfig
