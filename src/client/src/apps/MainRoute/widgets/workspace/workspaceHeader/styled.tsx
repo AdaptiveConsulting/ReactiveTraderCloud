@@ -39,7 +39,7 @@ export const NavItem = styled(LiStyle)<{ active: boolean }>`
   margin-left: 15px;
 
   a {
-    color: inherit;
+    color: ${({ theme }) => theme.secondary.base};
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -47,7 +47,22 @@ export const NavItem = styled(LiStyle)<{ active: boolean }>`
     height: 34px;
     line-height: 34px;
     opacity: ${({ active }) => (active ? '1' : '0.52')};
+    background: ${({ active, theme }) => (active ? theme.core.lightBackground : 'none')};
     text-decoration: none;
+    padding: 5px;
+    min-width: 34px;
+    min-height: 34px;
+    text-align: center;
+    border-radius: 2px;
+
+    svg {
+      min-width: 90%;
+      height: auto;
+    }
+
+    svg path:last-child {
+      fill: ${({ theme }) => theme.secondary.base};
+    }
   }
 `
 
