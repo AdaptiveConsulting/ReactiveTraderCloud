@@ -23,7 +23,7 @@ export const openfinWindowStates: { readonly [key: string]: WindowState } = {
   Maximized: 'maximized',
 }
 
-const generateRandomName = function() {
+const generateRandomName = function () {
   let text = ''
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -63,7 +63,7 @@ export function createPlatformWindow(
     },
     bringToFront: async () => (await getWindow()).bringToFront(),
     minimize: async () => {
-      ;(await getWindow()).minimize()
+      ; (await getWindow()).minimize()
     },
     maximize: async () => {
       const window = await getWindow()
