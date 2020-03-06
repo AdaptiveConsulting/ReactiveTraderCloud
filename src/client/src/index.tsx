@@ -26,6 +26,7 @@ const envTitles = {
   uat: '(UAT)',
   demo: '',
   unknown: '(UNKNOWN)',
+  openfin: '(PLATFORM)',
 }
 
 const appTitles = {
