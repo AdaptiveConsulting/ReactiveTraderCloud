@@ -91,10 +91,5 @@ export default createGlobalStyle`
   /* Undo ress.css overflow-y rule */
   html {
     overflow-y: initial;
-  } 
-
-  .wrapper_title {
-    display: none;
-    /* or whatever else youd like to do */
   }
 `
