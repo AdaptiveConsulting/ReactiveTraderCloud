@@ -54,15 +54,6 @@ export const NavItem = styled(LiStyle)<{ active: boolean }>`
     min-height: 34px;
     text-align: center;
     border-radius: 2px;
-
-    svg {
-      min-width: 90%;
-      height: auto;
-    }
-
-    svg path:last-child {
-      fill: ${({ theme }) => theme.secondary.base};
-    }
   }
 `
 
