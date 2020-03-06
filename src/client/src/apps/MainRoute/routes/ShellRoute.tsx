@@ -48,8 +48,6 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
 
   //@ts-ignore
   if (window.fin && window.fin.Application.me) {
-
-    //TODO: Wait for OpenFin to complete Platform context get/set.
     applySnapshotFromStorageOnLoad().catch(ex => console.error(ex))
 
     const OfTabTheme = createGlobalStyle<{ theme: Theme }>`
