@@ -50,7 +50,7 @@ const TitleBarRoot = styled.div`
 const LayoutRoot = styled.div`
   height: calc(100% - var(--title-bar-height));
 `
-const WindowFrame: FC = () => {
+const WindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
   const win = fin.Window.getCurrentSync()
   const onClose = () => win.close()
   const onMinimize = () => win.minimize()
@@ -71,9 +71,9 @@ const WindowFrame: FC = () => {
       <TitleBarRoot>
         <div className="title-bar-draggable"></div>
         <OpenFinControls
-          minimize={() => onMinimize()}
-          maximize={() => onMaximize()}
-          close={() => onClose()}
+          minimize={onMinimize}
+          maximize={maximize ? onMaximize : undefined}
+          close={onClose}
         />
       </TitleBarRoot>
 
