@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
@@ -29,7 +30,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         new SpotPriceDto
         {
           Symbol = CurrencyPair.Symbol,
-          ValueDate = DateTime.UtcNow.AddDays(2).Date.ToWeekday(),
+          ValueDate = DateTimeOffset.UtcNow.AddWeekDays(2),
           Mid = newMid,
           Ask = newMid + _halfSpread / pow,
           Bid = newMid - _halfSpread / pow,

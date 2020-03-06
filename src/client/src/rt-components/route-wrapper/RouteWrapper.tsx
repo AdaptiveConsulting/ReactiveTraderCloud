@@ -22,19 +22,26 @@ type WindowRole = 'main' | 'sub'
 interface RouteWrapperProps {
   children: ReactNode
   windowType?: WindowRole
+  title?: string
 }
 
 //@ts-ignore
 const isChildView = window.fin && window.fin.me.isView
 
-const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'main' }) => {
+const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'main', title }) => {
   const platform = usePlatform()
   const { PlatformFooter, PlatformHeader, PlatformControls, PlatformRoute, window } = platform
 
   const Header = windowType === 'main' ? PlatformControls : null
   const Footer = windowType === 'main' ? PlatformFooter : null
   const subheader =
-    windowType === 'sub' && !isChildView ? <PlatformHeader close={window.close} /> : null
+    windowType === 'sub' && !isChildView ? (
+      <PlatformHeader close={window.close} minimize={window.minimize} />
+    ) : null
+
+  if (title) {
+    document.title = title
+  }
 
   return (
     <RouteStyle platform={platform}>

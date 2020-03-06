@@ -15,5 +15,6 @@ ENV CHROME_BIN /usr/bin/chromium-browser
 WORKDIR /client-tests
 
 COPY . .
+RUN npm set unsafe-perm true
 RUN npm i
 

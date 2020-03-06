@@ -62,10 +62,6 @@ export class Glue42 implements Platform {
     },
   }
 
-  fdc3 = {
-    broadcast: () => {},
-  }
-
   epics: Array<ApplicationEpic> = []
 
   PlatformHeader: React.FC<any> = () => null

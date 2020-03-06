@@ -1,56 +1,78 @@
-import { action } from '@storybook/addon-actions'
-import { capitalize } from 'lodash'
-import { storiesOf } from '@storybook/react'
 import React from 'react'
-import { Story } from 'rt-storybook'
-import { styled } from 'rt-theme'
-import TradeNotification, { Props } from './TradeNotification'
-import { TradeStatus } from 'rt-types'
+import { action } from '@storybook/addon-actions'
+import { Story, Centered } from 'rt-storybook'
+import { storiesOf } from '@storybook/react'
+import TileNotification from 'apps/MainRoute/widgets/spotTile/components/notifications/TileNotification'
+import TileExecuted from 'apps/MainRoute/widgets/spotTile/components/notifications/TileExecuted'
+import {
+  currencyPair,
+  trade,
+} from 'apps/MainRoute/widgets/spotTile/components/test-resources/spotTileProps'
 
 const stories = storiesOf('Trade Notification', module)
 
-const Centered = styled('div')`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
+const onNotificationDismissedClick = action('Notification dismissed')
+const symbols = `${currencyPair.base}/${currencyPair.terms}`
+const style = {
+  width: '320px',
+  height: '170px',
+}
 
-const NotificationContainer = styled('div')`
-  width: 320px;
-  height: 120px;
-`
+stories.add('Executed', () => (
+  <Story>
+    <Centered>
+      <TileNotification
+        style={style}
+        isWarning={false}
+        symbols={symbols}
+        tradeId={trade.tradeId}
+        handleClick={onNotificationDismissedClick}
+      >
+        <TileExecuted
+          direction={trade.direction}
+          dealtCurrency={trade.dealtCurrency}
+          counterCurrency={currencyPair.terms}
+          notional={trade.notional}
+          rate={trade.spotRate}
+          date={trade.valueDate}
+        />
+      </TileNotification>
+    </Centered>
+  </Story>
+))
 
-const getPropsByStatus: (status: TradeStatus) => Props = status => ({
-  trade: {
-    dealtCurrency: 'EUR',
-    direction: 'Sell',
-    notional: 1000000,
-    spotRate: 133.303,
-    status,
-    symbol: 'EURJPY',
-    tradeDate: new Date('Thu Jul 26 2018 14:46:12 GMT-0400 (Eastern Daylight Time)'),
-    tradeId: 2356,
-    traderName: 'DOR',
-    valueDate: new Date('Sun Jul 29 2018 20:00:00 GMT-0400 (Eastern Daylight Time)'),
-    termsCurrency: 'JPY',
-  },
-  dismissNotification: action('Dismiss notification'),
-})
-const tradeStatuses = [TradeStatus.Done, TradeStatus.Rejected]
+stories.add('Rejected', () => (
+  <Story>
+    <Centered>
+      <TileNotification
+        style={style}
+        isWarning={true}
+        symbols={symbols}
+        tradeId={trade.tradeId}
+        handleClick={onNotificationDismissedClick}
+      >
+        Your trade has been rejected
+      </TileNotification>
+    </Centered>
+  </Story>
+))
 
-tradeStatuses.map(tradeStatus =>
-  stories.add(capitalize(tradeStatus), () => {
-    const props = getPropsByStatus(tradeStatus)
-    return (
-      <Story>
-        <Centered>
-          <NotificationContainer>
-            <TradeNotification {...props} />
-          </NotificationContainer>
-        </Centered>
-      </Story>
-    )
-  }),
-)
+stories.add('Warning: Execution longer', () => (
+  <Story>
+    <Centered>
+      <TileNotification style={style} symbols={symbols} isWarning={true}>
+        Trade Execution taking longer then Expected
+      </TileNotification>
+    </Centered>
+  </Story>
+))
+
+stories.add('Warning: Timeout', () => (
+  <Story>
+    <Centered>
+      <TileNotification style={style} symbols={symbols} isWarning={true}>
+        Trade execution timeout exceeded
+      </TileNotification>
+    </Centered>
+  </Story>
+))

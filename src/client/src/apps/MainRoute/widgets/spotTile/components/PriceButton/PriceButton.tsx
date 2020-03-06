@@ -22,6 +22,7 @@ interface PriceButtonProps {
   disabled?: boolean
   expired?: boolean
   currencyPairSymbol: string
+  isAnalyticsView: boolean
 }
 
 const renderPips = (pips: number) => (pips.toString().length === 1 ? `0${pips}` : pips)
@@ -41,6 +42,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
   disabled = false,
   expired = false,
   currencyPairSymbol,
+  isAnalyticsView,
 }) => {
   const bigFigure = getBigFigureDisplay(big, rawRate)
   const hasPrice = rawRate !== 0
@@ -51,6 +53,7 @@ const PriceButtonComp: React.FC<PriceButtonProps> = ({
       onClick={handleClick}
       priceAnnounced={!!priceAnnounced}
       disabled={isDisabled}
+      isAnalyticsView={isAnalyticsView}
       data-qa="price-button__trade-button"
       data-qa-id={`direction-${direction.toLowerCase()}-${currencyPairSymbol.toLowerCase()}`}
     >

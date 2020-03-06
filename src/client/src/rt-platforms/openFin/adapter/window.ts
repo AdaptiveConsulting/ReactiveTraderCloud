@@ -4,6 +4,7 @@ import { get as _get, last as _last } from 'lodash'
 import { PlatformWindow } from '../../platformWindow'
 import { _Window } from 'openfin/_v2/api/window/window'
 import { finWithPlatform } from '../OpenFinWithPlatform'
+import { resetCurrentSnapshotName } from '../snapshots'
 
 const TEAR_OUT_OFFSET_LEFT = 50
 const TEAR_OUT_OFFSET_TOP = 50
@@ -22,7 +23,7 @@ export const openfinWindowStates: { readonly [key: string]: WindowState } = {
   Maximized: 'maximized',
 }
 
-const generateRandomName = function() {
+const generateRandomName = function () {
   let text = ''
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -46,18 +47,27 @@ const getChildWindows = () => {
   })
 }
 
+const getWindowState = async (window: fin.OpenFinWindow | _Window) => {
+  return await window.getState()
+}
+
 //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
 // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
 export function createPlatformWindow(
   getWindow: () => Promise<fin.OpenFinWindow | _Window>,
 ): PlatformWindow {
   return {
-    close: async () => (await getWindow()).close(),
+    close: async () => {
+      resetCurrentSnapshotName()
+      return (await getWindow()).close()
+    },
     bringToFront: async () => (await getWindow()).bringToFront(),
-    minimize: async () => (await getWindow()).minimize(),
+    minimize: async () => {
+      ; (await getWindow()).minimize()
+    },
     maximize: async () => {
       const window = await getWindow()
-      window.getState((state: WindowState) => {
+      getWindowState(window).then(state => {
         switch (state) {
           case openfinWindowStates.Maximized:
           case openfinWindowStates.Minimized:
@@ -116,29 +126,51 @@ export const openDesktopWindow = async (
   //@ts-ignore
   const updatedPosition = await getOpenfinWindowPosition(config, childWindows)
   const windowName = config.name || generateRandomName()
+  //@ts-ignore
+  const centered = (!hasChildWindows && !configHasXYCoordinates) || config.center === 'screen'
 
   console.info(`Creating Openfin window: ${windowName}`)
 
-  const winIdentity = await finWithPlatform.Platform.getCurrentSync().createWindow({
-    name: windowName,
-    defaultWidth,
+  const platform = await finWithPlatform.Platform.getCurrent()
+
+  //@ts-ignore
+  const newWinIdentity = await platform.createWindow({
+    autoShow: true,
+    contextMenu: true,
+    defaultCentered: centered,
     defaultHeight,
-    minWidth: config.minWidth ? config.minWidth : 100,
-    minHeight: config.minHeight ? config.minHeight : 100,
+    defaultWidth,
+    frame: false,
     maxHeight,
     maxWidth,
-    url: `${window.location.origin}${url}`,
-    defaultCentered: !hasChildWindows && !configHasXYCoordinates,
-    autoShow: true,
-    frame: false,
+    minHeight: config.minHeight ? config.minHeight : 100,
+    minWidth: config.minWidth ? config.minWidth : 100,
+    name: windowName,
     saveWindowState: false,
     shadow: true,
-    contextMenu: true,
     ...position,
-    ...updatedPosition
+    ...updatedPosition,
+    layout: {
+      content: [
+        {
+          type: 'stack',
+          content: [
+            {
+              type: 'component',
+              componentName: 'view',
+              componentState: {
+                name: `${windowName}_view`,
+                url: `${window.location.origin}${url}`,
+              },
+              title: windowName,
+            },
+          ],
+        },
+      ],
+    },
   })
 
-  const win = await window.fin.Window.wrap(winIdentity)
+  const win = await window.fin.Window.wrap(newWinIdentity)
 
   if (onClose) {
     const closeListener = () => {

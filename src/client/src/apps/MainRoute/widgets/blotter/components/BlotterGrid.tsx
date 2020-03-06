@@ -28,7 +28,7 @@ export default styled('div')`
   }
 
   .rt-blotter__row-highlight {
-    animation: ${({ theme }) => theme.flash} 1s ease-in-out 0s infinite;
+    animation: ${({ theme }) => theme.flash} 1s ease-in-out 3;
   }
 
   .rt-blotter__status-indicator--done {

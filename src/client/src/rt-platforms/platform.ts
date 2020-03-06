@@ -1,5 +1,4 @@
 import { AppConfig, PlatformType } from './types'
-import { Context } from 'openfin-fdc3'
 import { ApplicationEpic } from 'StoreTypes'
 import { Observable } from 'rxjs'
 import { PlatformWindow, PlatformWindowApi } from './platformWindow'
@@ -30,10 +29,6 @@ export type Platform = Partial<PlatformFeatures> & {
 
   readonly notification: {
     notify: (message: object) => void
-  }
-
-  readonly fdc3: {
-    broadcast?: (context: Context) => void
   }
 
   readonly style: {

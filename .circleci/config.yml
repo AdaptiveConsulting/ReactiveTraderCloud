@@ -2,7 +2,7 @@ version: 2.1
 
 references:
   push_images_list: &push_images_list
-    client pricehistory bot nlp servers broker eventstore nginx
+    client pricehistory bot nlp openfinconfig servers broker eventstore nginx
 
 commands:
   setup_env:
@@ -105,6 +105,10 @@ commands:
             gcloud config set project ${GOOGLE_PROJECT_ID}
             gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
             gcloud container clusters get-credentials cluster
+      - run:
+          name: Downscale all deployments
+          command: |
+            kubectl -n ${<< parameters.environment >>} scale deploy --replicas=0 --all
       - run:
           name: Updating deployment definition to new images
           command: |

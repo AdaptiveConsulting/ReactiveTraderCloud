@@ -17,11 +17,13 @@ const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => Ext
   config: {
     name: `${key}`,
     width: 366, // 346 content + 10 padding
-    height: 193,
+    height: 208,
     minWidth: 366,
-    minHeight: 193,
-    maxWidth: 366,
-    maxHeight: 193,
+    minHeight: 208,
+    // TODO: If we are able to disable dropping other windows 
+    // on to the SpotTiles, we can re-enable the maxWidth and maxHeight properties
+    // maxWidth: 366,
+    // maxHeight: 208,
     url: `/spot/${key}`,
     x: tileLayout ? tileLayout.x : undefined,
     y: tileLayout ? tileLayout.y : undefined,
@@ -33,7 +35,7 @@ const getSpotTiles = (state: GlobalState) => state.currencyPairs
 const getSpotTilesLayout = (state: GlobalState) => state.layoutService.spotTiles
 
 // TODO: instead of creating tiles in the selector, consider creating them in the reducer for
-  // reference data
+// reference data
 export const selectSpotTiles = createSelector(
   [getSpotTiles, getSpotTilesLayout],
   (spotTileKeys, tilesLayout) =>

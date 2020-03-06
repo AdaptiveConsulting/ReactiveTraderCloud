@@ -31,7 +31,11 @@ const getAnimationCSSProperty = (props: { direction: Direction; theme: Theme }) 
 const backgroundEffect = ({ priceAnnounced, ...rest }: { priceAnnounced: boolean }) =>
   priceAnnounced ? getAnimationCSSProperty(rest as { direction: Direction; theme: Theme }) : ''
 
-export const TradeButton = styled.button<{ direction: Direction; priceAnnounced: boolean }>`
+export const TradeButton = styled.button<{
+  direction: Direction
+  priceAnnounced: boolean
+  isAnalyticsView: boolean
+}>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
   color: ${({ theme, priceAnnounced, direction }) =>
@@ -40,7 +44,9 @@ export const TradeButton = styled.button<{ direction: Direction; priceAnnounced:
   cursor: pointer;
   border: none;
   outline: none;
-  padding: 0.75rem 1.5rem;
+  height: ${({ isAnalyticsView }) => (isAnalyticsView ? '50%' : '59px')}
+  min-width: 125px;
+  padding: 0.6rem 1.5rem 0.7rem 1.5rem;
   margin-bottom: 2px;
   ${backgroundEffect}
 
@@ -89,7 +95,7 @@ export const Tenth = styled(Box)`
 `
 
 export const Price = styled.div<{ disabled: boolean }>`
-  height: 34px;
+  height: 2.1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -106,6 +112,6 @@ export const BigWrapper = styled.div`
 
 export const ExpiredPrice = styled.div`
   color: ${({ theme }) => theme.template.red.normal};
-  font-size: 10px;
+  font-size: 9px;
   text-transform: uppercase;
 `

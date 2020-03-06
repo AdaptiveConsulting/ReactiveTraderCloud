@@ -71,6 +71,7 @@ export const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme }) => theme.core.lightBackground};
   display: flex;
   height: 100%;
+  width: 100%;
   justify-content: space-between;
   flex-direction: column;
   overflow: hidden;

@@ -2,35 +2,20 @@
 /* eslint-disable no-restricted-globals */
 
 import { Platform } from '../../platform'
-import { AppConfig, InteropTopics, WindowConfig } from '../../types'
-import { createPlatformWindow, openDesktopWindow, openfinWindowStates } from './window'
-import { fromEventPattern, Observable } from 'rxjs'
-import { workspaces } from 'openfin-layouts'
-import { Notification, NotificationActionEvent } from 'openfin-notifications'
+import { AppConfig, InteropTopics } from '../../types'
+import { createPlatformWindow, openDesktopWindow } from './window'
+import { fromEventPattern } from 'rxjs'
+import {
+  Notification,
+  NotificationActionEvent,
+  removeEventListener,
+  addEventListener,
+  create,
+} from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
-import { Context } from 'openfin-fdc3'
-import { platformEpics } from './epics'
 import Logo from './logo'
 import { OpenFinControls, OpenFinHeader, OpenFinFooter } from '../components'
-import { ApplicationEpic } from 'StoreTypes'
-
-interface WinProps {
-  name: string
-  display: boolean
-}
-
-export function setupWorkspaces() {
-  return new Observable<WinProps>(observer => {
-    workspaces
-      .setRestoreHandler((workspace: workspaces.WorkspaceApp) =>
-        appRestoreHandler(workspace, (data: WinProps) => {
-          observer.next(data)
-        }),
-      )
-      .then(workspaces.ready)
-  })
-}
 
 export default class OpenFin implements Platform {
   readonly name = 'openfin'
@@ -41,30 +26,15 @@ export default class OpenFin implements Platform {
     height: '100%',
   }
 
-  openFinNotifications = require('openfin-notifications')
-  fdc3Context = require('openfin-fdc3')
-
   constructor() {
-    this.openFinNotifications.addEventListener(
-      'notification-action',
-      (event: NotificationActionEvent) => {
-        if (event.result['task'] === 'highlight-trade') {
-          fin.InterApplicationBus.publish(
-            InteropTopics.HighlightBlotter,
-            event.notification.customData,
-          )
-        }
-      },
-    )
+    window.addEventListener('beforeunload', this.handleWindowUnload)
+
+    addEventListener('notification-action', this.handleNotificationAction)
   }
 
   window = {
-    ...createPlatformWindow(() => Promise.resolve(fin.desktop.Window.getCurrent())),
+    ...createPlatformWindow(() => Promise.resolve(fin.Window.getCurrent())),
     open: openDesktopWindow,
-  }
-
-  fdc3 = {
-    broadcast: (context: Context) => this.fdc3Context.broadcast(context),
   }
 
   app = {
@@ -121,21 +91,20 @@ export default class OpenFin implements Platform {
 
   notification = {
     notify: (message: object) => {
-      this.openFinNotifications
-        .create({
-          body: this.getNotificationBody(message as NotificationMessage),
-          title: this.getNotificationTitle(message as NotificationMessage),
-          icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
-          customData: message,
-          buttons: [
-            {
-              title: 'Highlight trade in blotter',
-              iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
-              onClick: { task: 'highlight-trade' },
-            },
-          ],
-          category: 'Trade Executed',
-        })
+      create({
+        body: this.getNotificationBody(message as NotificationMessage),
+        title: this.getNotificationTitle(message as NotificationMessage),
+        icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
+        customData: message,
+        buttons: [
+          {
+            title: 'Highlight trade in blotter',
+            iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
+            onClick: { task: 'highlight-trade' },
+          },
+        ],
+        category: 'Trade Executed',
+      })
         .then((successVal: Notification) => {
           console.info('Notification success', successVal)
         })
@@ -164,77 +133,15 @@ export default class OpenFin implements Platform {
     return `vs. ${tradeNotification.termsCurrency} - Rate ${tradeNotification.spotRate} - Trade ID ${tradeNotification.tradeId}`
   }
 
-  epics: Array<ApplicationEpic> = platformEpics
-}
-
-async function appRestoreHandler(
-  workspaceApp: workspaces.WorkspaceApp,
-  callback: (data: WinProps) => void,
-) {
-  const ofApp = await fin.Application.getCurrent()
-  const openWindows = await ofApp.getChildWindows()
-
-  const opened = workspaceApp.childWindows.map(async (win: workspaces.WorkspaceWindow) => {
-    if (!openWindows.some(w => w.identity.name === win.name)) {
-      const config: WindowConfig = {
-        name: win.name,
-        url: win.url,
-        width: win.bounds.width,
-        height: win.bounds.height,
-      }
-      await openDesktopWindow(
-        config,
-        () => {
-          callback({
-            name: win.name,
-            display: true,
-          })
-        },
-        { defaultLeft: win.bounds.left, defaultTop: win.bounds.top },
-      )
-
-      // we need to 'remove' the child window from the main window
-      callback({
-        name: win.name,
-        display: true,
-      })
-    } else {
-      await positionWindow(win)
+  handleNotificationAction = (event: NotificationActionEvent) => {
+    if (event.result['task'] === 'highlight-trade') {
+      fin.InterApplicationBus.publish(InteropTopics.HighlightBlotter, event.notification.customData)
     }
-  })
-
-  await Promise.all(opened)
-  return workspaceApp
-}
-
-async function positionWindow(win: workspaces.WorkspaceWindow): Promise<void> {
-  try {
-    const { isShowing, isTabbed } = win
-
-    const ofWin = await fin.Window.wrap(win)
-    await ofWin.setBounds(win.bounds)
-
-    if (isTabbed) {
-      await ofWin.show()
-      return
-    }
-
-    await ofWin.leaveGroup()
-
-    if (isShowing) {
-      if (win.state === openfinWindowStates.Normal) {
-        // Need to both restore and show because the restore function doesn't emit a `shown` or `show-requested` event
-        await ofWin.restore()
-        await ofWin.show()
-      } else if (win.state === openfinWindowStates.Minimized) {
-        await ofWin.minimize()
-      } else if (win.state === openfinWindowStates.Maximized) {
-        await ofWin.maximize()
-      }
-    } else {
-      await ofWin.hide()
-    }
-  } catch (e) {
-    console.error('position window error', e)
   }
+
+  handleWindowUnload = () => {
+    removeEventListener('notification-action', this.handleNotificationAction)
+  }
+
+  epics = []
 }

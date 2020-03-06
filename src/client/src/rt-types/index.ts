@@ -1,7 +1,7 @@
 import { CurrencyPair, CurrencyPairMap } from './currencyPair'
 import { CurrencyPairPosition } from './currencyPairPosition'
 import { ServiceStatus, ServiceConnectionStatus } from './serviceStatus'
-import { WorkspaceActiveStatus } from './workspaceStatus'
+import { SnapshotActiveStatus } from './snapshotStatus'
 import { Trade, Trades } from './trade'
 import { User } from './user'
 import { CollectionUpdate, CollectionUpdates } from './CollectionUpdate'
@@ -19,7 +19,7 @@ export { Direction } from './direction'
 
 export { ServiceConnectionStatus }
 export type ServiceStatus = ServiceStatus
-export { WorkspaceActiveStatus }
+export { SnapshotActiveStatus }
 
 export type Trade = Trade
 export type Trades = Trades
