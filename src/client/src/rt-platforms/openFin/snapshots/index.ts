@@ -13,7 +13,7 @@ export const resetCurrentSnapshotName = () => {
 }
 
 export const getCurrentSnapshotName = () => {
-  return window.localStorage.getItem(OPENFIN_SNAPSHOT_CURRENT) || ''
+  return window.localStorage.getItem(OPENFIN_SNAPSHOT_CURRENT) || OPENFIN_SNAPSHOT_DEFAULT_NAME
 }
 export const getSnapshotNames = () => {
   const snapshotNamesStr = window.localStorage.getItem(OPENFIN_SNAPSHOT_NAMES)
@@ -67,10 +67,10 @@ export const applySnapshotFromStorageOnLoad = async () => {
   const snapshots = getSnapshots()
 
   let platformSnapshotName = platformCtx.platformSnapshotName
-  let currentSnapshot = snapshots.snapshots[currentSnapshotName]
+  let currentSnapshot = snapshots.snapshots && snapshots.snapshots[currentSnapshotName]
 
   // @ts-ignore
-  if (!currentSnapshotName || snapshots.version !== canned.version) {
+  if (snapshots.version !== canned.version) {
     const snapshotNames = getSnapshotNames()
 
     let canned_snapshots_str = JSON.stringify(canned.snapshots)
