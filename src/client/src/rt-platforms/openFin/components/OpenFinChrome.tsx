@@ -17,9 +17,14 @@ const LAYOUT_ITEMS = {
   Pricing: 'dollar-sign',
 }
 
-const getEmptyContent = (key: string) => {
-  const icon = LAYOUT_ITEMS[key];
-  return icon ? `<i style="font-size: 6rem" class="fas fa-${icon} fa-set-position" />` : key
+const getEmptyContent = (key: string, useIcon: boolean = true) => {
+  if (useIcon) {
+    const icon = LAYOUT_ITEMS[key];
+    if (icon) {
+      return `<i style="font-size: 6rem" class="fas fa-${icon} fa-set-position" />`;
+    }
+  }
+  return key;
 }
 
 export const OpenFinChrome: FC = ({ children }) => {
@@ -32,12 +37,12 @@ export const OpenFinChrome: FC = ({ children }) => {
       const listener = (e: any) => {
         const layoutItems : HTMLCollectionOf<Element> = document.getElementsByClassName('lm_item')
         for (let idx in layoutItems) {
-          let layoutItem = layoutItems[idx]
+          const layoutItem = layoutItems[idx]
           if (layoutItem) {
-            let placeholder = layoutItem.querySelector('.wrapper_title')
-            let tab = layoutItem.querySelector('.lm_tab.lm_active .lm_title')
+            const placeholder = layoutItem.querySelector('.wrapper_title')
+            const tab = layoutItem.querySelector('.lm_tab.lm_active .lm_title')
             if (placeholder && tab) {
-              placeholder.innerHTML = getEmptyContent(tab.innerHTML)
+              placeholder.innerHTML = getEmptyContent(tab.innerHTML, false)
             }
           }
         }
