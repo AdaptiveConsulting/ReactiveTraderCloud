@@ -35,10 +35,10 @@ export const OpenFinChrome: FC = ({ children }) => {
     //@ts-ignore
     if (!window.fin.me.isView) {
       const listener = (e: any) => {
-        const layoutItems : HTMLCollectionOf<Element> = document.getElementsByClassName('lm_item')
+        const layoutItems: HTMLCollectionOf<Element> = document.getElementsByClassName('lm_item')
         for (let idx in layoutItems) {
           const layoutItem = layoutItems[idx]
-          if (layoutItem) {
+          if (layoutItem && layoutItem.querySelector) {
             const placeholder = layoutItem.querySelector('.wrapper_title')
             const tab = layoutItem.querySelector('.lm_tab.lm_active .lm_title')
             if (placeholder && tab) {
