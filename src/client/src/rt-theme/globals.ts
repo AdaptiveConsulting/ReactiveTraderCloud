@@ -92,4 +92,9 @@ export default createGlobalStyle`
   html {
     overflow-y: initial;
   } 
+
+  .wrapper_title {
+    display: none;
+    /* or whatever else youd like to do */
+  }
 `
