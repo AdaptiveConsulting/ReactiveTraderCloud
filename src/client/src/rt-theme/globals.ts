@@ -91,5 +91,5 @@ export default createGlobalStyle`
   /* Undo ress.css overflow-y rule */
   html {
     overflow-y: initial;
-  } 
+  }
 `
