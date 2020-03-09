@@ -15,6 +15,13 @@ in terminal go to ../../src folder and execute the following command:
 docker-compose build
 ```
 
+You may need to set the environment variables because the .env file won't be loaded unlike when running docker-compose.
+
+```bash
+export DOCKER_USER=localuser
+export BUILD_VERSION=0.0.0
+```
+
 Run the following command:
 
 ```bash
