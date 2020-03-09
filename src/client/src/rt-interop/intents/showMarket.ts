@@ -14,7 +14,7 @@ export async function showMarket({ window }: Platform) {
     {
       ...defaultConfig,
       height: 900,
-      url: `${windowOrigin}/tiles`,
+      url: `${windowOrigin}/tiles/ALL/Analytics`,
     },
     () => (openedWindow = undefined),
   )
