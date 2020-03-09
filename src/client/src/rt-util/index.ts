@@ -8,6 +8,7 @@ export { useMultiTimeout } from './hooks/useMultiTimeout'
 export { useWindowSize } from './hooks/useWindowSize'
 export { waitForObject } from './waitForObject'
 export { getEnvironment } from './getEnvironment'
+export { currencyFormatter } from './url-utils'
 export type ActionUnion<A extends ActionCreatorsMapObject> = actionHelper.ActionUnion<A>
 export type Extends<T, U extends T> = utilityTypes.Extends<T, U>
 export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = utilityTypes.RequireAtLeastOne<
