@@ -18,18 +18,27 @@ const RouteStyle = styled('div')<{ platform: Platform }>`
 `
 
 type WindowRole = 'main' | 'sub'
+interface SymbolParamObject {
+  symbol: string
+}
 
 interface RouteWrapperProps {
   children: ReactNode
   windowType?: WindowRole
+  title?: string | SymbolParamObject
 }
 
-const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'main' }) => {
+const RouteWrapper: React.FC<RouteWrapperProps> = props => {
+  const { children, windowType = 'main', title } = props
   const platform = usePlatform()
+
   const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
+
   const Header = windowType === 'main' ? PlatformControls : null
   const subheader =
-    windowType === 'sub' ? <PlatformHeader popIn={window.close} minimize={window.minimize} /> : null
+    windowType === 'sub' ? (
+      <PlatformHeader popIn={window.close} minimize={window.minimize} title={title} />
+    ) : null
 
   return (
     <RouteStyle platform={platform}>
