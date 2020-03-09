@@ -13,7 +13,7 @@ export async function showMarket({ window }: Platform) {
   openedWindow = await window.open({
     ...defaultConfig,
     height: 900,
-    url: `${windowOrigin}/tiles`,
+    url: `${windowOrigin}/tiles/ALL/Analytics`,
   })
   if (!openedWindow) {
     console.log(`Error opening new window`)
