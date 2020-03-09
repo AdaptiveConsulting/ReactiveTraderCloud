@@ -12,7 +12,7 @@ import { SymphonyClient } from './symphony'
 
 config()
 
-const host = process.env.BROKER_HOST || 'broker'
+const host = process.env.BROKER_HOST || 'localhost'
 const realm = process.env.WAMP_REALM || 'com.weareadaptive.reactivetrader'
 const port = process.env.BROKER_PORT || `8000`
 
