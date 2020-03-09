@@ -12,13 +12,12 @@ interface Props {
 const ToggleView: React.FC<Props> = ({ tileView, currency }) => {
   const isAnalyticsViewActive = TileView.Analytics === tileView
   const goToView = isAnalyticsViewActive ? TileView.Normal : TileView.Analytics
-  const currentView = isAnalyticsViewActive ? TileView.Normal : TileView.Analytics
 
   return (
     <NavItem
       active={isAnalyticsViewActive}
       data-qa="workspace-header__nav-item--view"
-      data-qa-id={`workspace-view-${currentView.toLowerCase()}`}
+      data-qa-id={`workspace-view-${tileView.toLowerCase()}`}
     >
       <NavLink to={`/${currency}/${goToView}`}>
         <ChartIcon active={isAnalyticsViewActive} />
