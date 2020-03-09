@@ -65,12 +65,16 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
       .lm_splitter {
         background-color: ${({ theme }) => theme.core.offBackground} !important;
       }
+      #layout-container {
+        max-height: calc(100vh - 5rem);
+        max-width: 100vw;
+      }
     `
 
     const OfBody = (
       <React.Fragment>
         <OfTabTheme />
-        <div style={{ height: '100%', width: '100%' }} id="layout-container" />
+        <div id="layout-container" />
       </React.Fragment>
     )
 
