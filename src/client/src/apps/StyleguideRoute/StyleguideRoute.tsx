@@ -10,12 +10,14 @@ import CoreBranding from './sections/CoreBranding'
 import FontFamilies from './sections/FontFamilies'
 import Introduction from './sections/Introduction'
 import Iconography from './sections/Iconography'
+import Molecules from './sections/Molecules'
 
 const sections: Array<{ path: string; Section: React.ComponentType; title: string }> = [
   { path: 'core-branding', Section: CoreBranding, title: 'Colour' },
   { path: 'font-families', Section: FontFamilies, title: 'Typography' },
   { path: 'icons-family', Section: Iconography, title: 'Iconography' },
-  { path: 'atoms-molecules', Section: Atoms, title: 'Atoms' },
+  { path: 'atoms-components', Section: Atoms, title: 'Atoms' },
+  { path: 'molecules-components', Section: Molecules, title: 'Molecules' },
 ]
 
 const StyleguideRoute: React.FC = () => {

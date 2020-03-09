@@ -1,6 +1,7 @@
 import { styled, Theme } from 'rt-theme'
 import { FormattedNumericInput } from './FormattedNumericInput'
 import { ValidationMessage } from './types'
+import { transparentize } from 'polished'
 
 export const CurrencyPairSymbol = styled('span')`
   grid-area: Currency;
@@ -40,9 +41,7 @@ const getInputBoxShadowStyles = ({
           ${getValidationMessageStyles({ theme, validationMessageType: validationMessage.type })};
       `
     : `
-  .spot-tile:hover & {
-    box-shadow: 0px 1px 0px ${theme.core.textColor};
-  }
+    box-shadow: 0px 1px 0px ${transparentize(0.59, theme.core.textColor)};
 
   .spot-tile:hover &:focus, &:focus {
     box-shadow: 0px 1px 0px ${theme.accents.primary.base};
@@ -82,7 +81,8 @@ export const Input = styled(FormattedNumericInput)`
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
-  ${({ disabled }) => disabled && 'opacity: 0.3;'}
+  caret-color: ${({ theme }) => theme.primary.base};
+  ${({ disabled }) => disabled && 'opacity: 0.3;'};
   ${getInputBoxShadowStyles};
 `
 

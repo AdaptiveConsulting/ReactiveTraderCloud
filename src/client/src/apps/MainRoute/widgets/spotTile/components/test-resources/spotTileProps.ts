@@ -37,7 +37,7 @@ const spotTileData: SpotTileData = {
     bid: 184.767,
     creationTimestamp: 31566750203189236,
     mid: 184.771,
-    priceMovementType: PriceMovementTypes.Up,
+    priceMovementType: PriceMovementTypes.Down,
     symbol: 'GBPJPY',
     valueDate: '2018-08-04T00:00:00Z',
   },
