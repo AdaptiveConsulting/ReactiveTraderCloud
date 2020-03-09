@@ -1,4 +1,4 @@
-import { ProtractorBrowser, by } from 'protractor'
+import { ProtractorBrowser } from 'protractor'
 import { getBrowser } from '../browser-manager'
 import { MainPage } from '../pages/main.page'
 import * as assertUtils from '../utils/assert.utils'
@@ -83,8 +83,6 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
       await mainPage.tile.setNotional('EURToUSD', '99999999')
       const notional = await mainPage.tile.tradeType.EURToUSD.notional
       expect(notional.getAttribute('value')).toEqual('99,999,999')
-      const pricesButton = browser.element(by.qaTag('workspace-view-normal'))
-      await pricesButton.click()
       const labelRFQ = await mainPage.tile.tradeType.initiateRFQ.buttonInitiateRFQ
       expect(labelRFQ.getText()).toEqual('Initiate RFQ')
       await mainPage.tile.resetNotional('EURToUSD')

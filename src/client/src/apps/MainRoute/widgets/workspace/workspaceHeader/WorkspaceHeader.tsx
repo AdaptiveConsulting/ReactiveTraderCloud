@@ -2,18 +2,13 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
 import { TileView } from './types'
-import AnalyticsViewIcon from './AnalyticsTileViewIcon'
-import SpotTileViewIcon from './SpotTileViewIcon'
+import ToggleView from './ToggleView'
+
 interface Props {
   currencyOptions: string[]
   tileView: TileView
   currency: string
   defaultOption: string
-}
-
-const tileViews = {
-  [TileView.Analytics]: AnalyticsViewIcon,
-  [TileView.Normal]: SpotTileViewIcon,
 }
 
 const WorkspaceHeader: React.FC<Props> = ({
@@ -39,21 +34,7 @@ const WorkspaceHeader: React.FC<Props> = ({
         ))}
       </LeftNav>
       <RightNav>
-        {Object.keys(tileViews).map(view => {
-          const Icon = tileViews[view]
-          return (
-            <NavItem
-              key={view}
-              active={view === tileView}
-              data-qa="workspace-header__nav-item--view"
-              data-qa-id={`workspace-view-${view.toLowerCase()}`}
-            >
-              <NavLink to={`/${currency}/${view}`}>
-                <Icon />
-              </NavLink>
-            </NavItem>
-          )
-        })}
+        <ToggleView currency={currency} tileView={tileView} />
       </RightNav>
     </Header>
   )
