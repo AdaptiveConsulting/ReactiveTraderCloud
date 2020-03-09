@@ -1,6 +1,6 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { styled, AccentName } from 'rt-theme'
 import OpenfinSnapshotSelection from './OpenfinSnapshotSelection'
@@ -11,8 +11,66 @@ export interface ControlProps {
   close: () => void
 }
 
-export const OpenFinChrome: FC = ({ children }) => (
-  <React.Fragment>
+const LAYOUT_ITEMS = {
+  Blotter: 'stream',
+  Analytics: 'chart-line',
+  Pricing: 'dollar-sign',
+}
+
+const getEmptyContent = (key: string, useIcon: boolean = true) => {
+  if (useIcon) {
+    const icon = LAYOUT_ITEMS[key];
+    if (icon) {
+      return `<i style="font-size: 6rem" class="fas fa-${icon} fa-set-position" />`;
+    }
+  }
+  return key;
+}
+
+export const OpenFinChrome: FC = ({ children }) => {
+
+  //TODO: Remove this HACK once OpenFin exposes content of "empty" layout containers...
+  useEffect(() => {
+
+    //@ts-ignore
+    if (!window.fin.me.isView) {
+      const listener = (e: any) => {
+        const layoutItems: HTMLCollectionOf<Element> = document.getElementsByClassName('lm_item')
+        for (let idx in layoutItems) {
+          const layoutItem = layoutItems[idx]
+          if (layoutItem && layoutItem.querySelector) {
+            const placeholder = layoutItem.querySelector('.wrapper_title')
+            const tab = layoutItem.querySelector('.lm_tab.lm_active .lm_title')
+            if (placeholder && tab) {
+              placeholder.innerHTML = getEmptyContent(tab.innerHTML, false)
+            }
+          }
+        }
+      }
+
+      fin.Application.getCurrent()
+        .then((app) => {
+          app.addListener(
+            'view-hidden',
+            listener
+          )
+        })
+        .catch(ex => console.warn(ex))
+
+      return () => {
+        fin.Application.getCurrent()
+          .then((app) => {
+            app.removeListener(
+              'view-hidden',
+              listener
+            )
+          })
+          .catch(ex => console.warn(ex))
+      }
+    }
+  }, [])
+
+  return <>
     <Helmet>
       <style type="text/css">{`
         :root,
@@ -25,8 +83,8 @@ export const OpenFinChrome: FC = ({ children }) => (
     `}</style>
     </Helmet>
     <Root>{children}</Root>
-  </React.Fragment>
-)
+  </>
+}
 
 export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
   <Header>
