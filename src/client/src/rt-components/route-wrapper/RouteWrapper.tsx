@@ -34,10 +34,17 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
 
   const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
 
+  const isBlotterOrTrade = title === 'trades' || title === 'live - rates'
+
   const Header = windowType === 'main' ? PlatformControls : null
   const subheader =
     windowType === 'sub' ? (
-      <PlatformHeader popIn={window.close} minimize={window.minimize} title={title} />
+      <PlatformHeader
+        popIn={window.close}
+        minimize={window.minimize}
+        title={`Reactive Trader - ${title}`}
+        isBlotterOrTrade={isBlotterOrTrade}
+      />
     ) : null
 
   return (
