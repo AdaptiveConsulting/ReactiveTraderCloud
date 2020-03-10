@@ -38,13 +38,13 @@ export default (() => (
 const ButtonVariants: React.FC<ButtonStyleProps & TitleButtonProp> = props => (
   <React.Fragment>
     {
-      // standard
+      // primary
       <ButtonRow>
         <Button {...props}>Action</Button>
       </ButtonRow>
     }
     {
-      //  hover
+      // secondary
       <ButtonRow>
         <Button intent="secondary" {...props}>
           Action
