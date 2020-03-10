@@ -79,7 +79,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
 
   return (
     <BlotterHeaderStyle>
-      <BlotterLeft>Executed Trades</BlotterLeft>
+      <BlotterLeft>Trades</BlotterLeft>
       <BlotterRight>
         <ExcelButton onClick={onExportToExcelClick} />
         <BlotterToolbar

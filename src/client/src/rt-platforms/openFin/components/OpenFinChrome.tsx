@@ -19,6 +19,7 @@ export interface ControlProps {
   popIn?: () => void
   close?: () => void
   title?: string
+  isBlotterOrTrade?: boolean
 }
 
 export const OpenFinChrome: React.FC = ({ children }) => (
@@ -39,7 +40,7 @@ export const OpenFinChrome: React.FC = ({ children }) => (
 )
 
 export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
-  <Header>
+  <Header hasBottomBorder={props.isBlotterOrTrade}>
     <OpenFinUndockControl />
     <DragRegion>{props.title}</DragRegion>
     <OpenFinControls {...props} />
@@ -114,12 +115,14 @@ const OpenFinUndockControl: React.FC = () => {
   )
 }
 
-const Header = styled.div`
+const Header = styled.div<{ hasBottomBorder?: boolean }>`
   display: flex;
   width: 100%;
   min-height: 1.5rem;
   font-size: 1rem;
   padding: 0 0.625rem;
+  border-bottom: ${({ hasBottomBorder, theme }) =>
+    hasBottomBorder ? `1px solid ${theme.primary[1]}` : 0};
 `
 
 const DragRegion = styled.div`
@@ -128,8 +131,8 @@ const DragRegion = styled.div`
   align-items: center;
   flex-grow: 1;
   color: rgba(255, 255, 255, 0.58);
-  font-size: 0.75rem;
-  letter-spacing: 0.75px;
+  font-size: 0.625rem;
+  letter-spacing: 0.2px;
   text-transform: uppercase;
 
   -webkit-app-region: drag;
