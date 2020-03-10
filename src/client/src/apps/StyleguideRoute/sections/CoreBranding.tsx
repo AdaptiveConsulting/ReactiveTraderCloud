@@ -274,7 +274,7 @@ const QuadrantLayout = styled.div`
   grid-column-gap: 2rem;
 
   grid-template-rows: auto;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 4fr;
 
   @media all and (max-width: 800px) {
     grid-template-columns: auto;
@@ -303,7 +303,7 @@ const AccentPalettes: React.FC<{ accents: object }> = ({ accents, ...props }) =>
         <PaletteLayout
           key={accentName}
           grid={AccentSwatchGrid}
-          label={accentName}
+          label={`Accent-${accentName}`}
           palette={accents[accentName]}
           fg="#000"
           include={['base', 'darker', 'medium', 'lighter']}
@@ -314,7 +314,6 @@ const AccentPalettes: React.FC<{ accents: object }> = ({ accents, ...props }) =>
 }
 
 const AccentRowGrid = styled.div`
-  max-width: 30rem;
   display: grid;
   grid-gap: 0.5rem;
   grid-template-columns: 1fr;

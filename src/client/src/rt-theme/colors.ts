@@ -179,7 +179,7 @@ interface TradingAccentPalette extends BasePalette {
   lighter: Color
 }
 
-export type AccentName = 'primary' | 'success' | 'aware' | 'error'
+export type AccentName = 'primary' | 'positive' | 'aware' | 'negative'
 /**
  * A set of theme-agnostic palettes
  */
@@ -191,7 +191,7 @@ const accents: AccentPaletteMap = {
     darker: rgb(76, 118, 196),
     lighter: rgb(127, 169, 247),
   },
-  success: {
+  positive: {
     base: rgb(1, 195, 141),
     darker: rgb(3, 160, 119),
     lighter: rgb(12, 150, 116),
@@ -203,7 +203,7 @@ const accents: AccentPaletteMap = {
     lighter: rgb(255, 232, 204),
     medium: rgb(255, 197, 127),
   },
-  error: {
+  negative: {
     base: rgb(255, 39, 75),
     darker: rgb(230, 35, 67),
     lighter: rgb(255, 211, 219),

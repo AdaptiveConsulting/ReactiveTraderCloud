@@ -122,7 +122,7 @@ export class PositionsBubbleChart extends Component<
     const positionsData: CCYPosition[] = getPositionsDataFromSeries(data, this.props.currencyPairs)
     nodes = map(positionsData, (dataObj: CCYPosition, index: number) => {
       const color =
-        dataObj.baseTradedAmount > 0 ? colors.accents.success.base : colors.accents.error.base
+        dataObj.baseTradedAmount > 0 ? colors.accents.positive.base : colors.accents.negative.base
       // update an existing node:
       const existingNode = find(nodes, (node: BubbleChartNode) => node.id === dataObj.symbol)
       if (existingNode) {

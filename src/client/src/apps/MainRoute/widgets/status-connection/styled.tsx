@@ -37,10 +37,10 @@ export const StatusCircle = styled(StatusCircleCore)<{ status?: ServiceConnectio
   circle {
     fill: ${({ theme, status }) =>
       status === ServiceConnectionStatus.CONNECTED
-        ? theme.accents.success.base
+        ? theme.accents.positive.base
         : status === ServiceConnectionStatus.CONNECTING
         ? theme.accents.aware.base
-        : theme.accents.error.base};
+        : theme.accents.negative.base};
   }
 `
 
