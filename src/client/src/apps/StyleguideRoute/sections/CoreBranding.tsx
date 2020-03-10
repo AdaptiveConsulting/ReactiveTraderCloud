@@ -10,8 +10,8 @@ const { primary, ...others } = colors.accents
 
 export default () => (
   <React.Fragment>
-    <SectionBlock colorScheme="secondary" mh={3}>
-      <H2 pt={4}>COLOUR</H2>
+    <SectionBlock colorScheme="secondary" mh={2}>
+      <H2 pt={2}>COLOUR</H2>
       <H3>Core UI</H3>
       <Paragraph>
         Core color control the general look and feel of the application and make up 90% of the
@@ -20,29 +20,21 @@ export default () => (
       </Paragraph>
 
       <ThemePalettes theme={colors.dark} />
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" py={0} pt={0} mh={0}>
       <Separator />
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" mh={3}>
       <QuadrantLayout>
         <span>
           <H3>Brand / Accent Colours</H3>
-          <Paragraph mb={3}>
+          <Paragraph mb={0}>
             Brand colors aim to communicate a companies visual ownership of the digital product.
           </Paragraph>
         </span>
         <DominantAccentPalettes dominant={primary} />
       </QuadrantLayout>
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" py={0} pt={0} mh={0}>
       <Separator />
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" mh={3}>
       <QuadrantLayout>
         <span>
           <H3>Accents & Functional colors</H3>
@@ -55,13 +47,9 @@ export default () => (
 
         <AccentPalettes accents={others} />
       </QuadrantLayout>
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" py={0} pt={0} mh={0}>
       <Separator />
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" mh={3}>
       <QuadrantLayout>
         <span>
           <H3>Unique Collections</H3>
@@ -80,7 +68,7 @@ export default () => (
         <span>
           <UniquePalettes
             palettes={{
-              'Trading Sell': {
+              'Trading-Sell': {
                 base: colors.spectrum.uniqueCollections.Sell.base,
                 1: colors.spectrum.uniqueCollections.Sell.lighter,
               },
@@ -88,7 +76,7 @@ export default () => (
           />
           <UniquePalettes
             palettes={{
-              'Trading Buy': {
+              'Trading-Buy': {
                 base: colors.spectrum.uniqueCollections.Buy.base,
                 1: colors.spectrum.uniqueCollections.Buy.lighter,
               },
@@ -128,7 +116,9 @@ const PaletteLayout: React.FC<{
       {include.map((key, i) => {
         const color = palette[key]
 
-        const themeForCss: any = {}
+        const themeForCss: any = {
+          justifyContent: 'center',
+        }
 
         if (key === 'base') {
           themeForCss.gridArea = key
@@ -142,7 +132,7 @@ const PaletteLayout: React.FC<{
           <Swatch
             key={key}
             extra={css(themeForCss)}
-            label={`${paletteLabel} ${key}`}
+            label={`${paletteLabel} ${key === 'base' ? '' : `-${i}`}`}
             value={color}
             code={codes[key] || key}
             bg={() => color}
@@ -233,7 +223,7 @@ const CoreSwatchGrid = styled.div`
 
   @media all and (min-width: 640px) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 14rem 7rem;
+    grid-template-rows: 10rem 7rem;
     grid-template-areas:
       'base base base1 base1'
       '2 3 4 5';
@@ -278,6 +268,7 @@ const ThemeRow = styled.div`
 `
 
 const QuadrantLayout = styled.div`
+  margin: 30px 0px;
   display: grid;
   grid-row-gap: 1rem;
   grid-column-gap: 2rem;
@@ -296,7 +287,7 @@ const DominantAccentPalettes: React.FC<{ dominant: object }> = ({ dominant, ...p
       <PaletteLayout
         key="dominant"
         grid={DominantAccentSwatchGrid}
-        label="primary"
+        label="Accent-Primary"
         palette={dominant}
         fg="#FFF"
         include={['base', 'darker', 'lighter']}
