@@ -99,10 +99,18 @@ export const FontFamilies: React.FC = () => (
         </div>
 
         <H5>Chart</H5>
-        <div>{ChartIcon}</div>
-        <ActiveIcon>{ChartIcon}</ActiveIcon>
-        <ActiveIcon>{ChartIcon}</ActiveIcon>
-        <div>{ChartIcon}</div>
+        <div>
+          <ChartIcon height={20} width={20} />
+        </div>
+        <ActiveIcon>
+          <ChartIcon height={20} width={20} />
+        </ActiveIcon>
+        <ActiveIcon>
+          <ChartIcon active height={20} width={20} />
+        </ActiveIcon>
+        <div>
+          <ChartIcon height={20} width={20} />
+        </div>
       </IconGrid>
     </SectionBlock>
   </React.Fragment>
@@ -123,7 +131,7 @@ const ActiveIcon = styled.div`
 `
 
 const ActiveIconInverse = styled.div`
-  svg path:nth-child(2) {
+  svg path:nth-child(3) {
     fill: #5f94f5;
   }
 `
