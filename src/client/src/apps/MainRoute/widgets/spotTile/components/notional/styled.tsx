@@ -19,7 +19,7 @@ const getValidationMessageStyles = ({
 }) => {
   switch (validationMessageType) {
     case 'error':
-      return theme.accents.error.base
+      return theme.accents.negative.base
     case 'warning':
       return theme.accents.aware.base
     case 'info':

@@ -2,7 +2,7 @@ import React from 'react'
 import numeral from 'numeral'
 import { styled } from 'rt-theme'
 
-type Accents = 'success' | 'error'
+type Accents = 'positive' | 'negative'
 
 const USDspan = styled.span`
   opacity: 0.6;
@@ -24,7 +24,7 @@ interface FormattedLastPosition {
 
 const lastPositionColor: (lastPos: number) => FormattedLastPosition = (lastPos: number) => {
   const lastPosition = lastPos >= 0 ? '+' + numeral(lastPos).format() : numeral(lastPos).format()
-  const color: Accents = lastPos >= 0 ? 'success' : 'error'
+  const color: Accents = lastPos >= 0 ? 'positive' : 'negative'
   return { color, lastPosition }
 }
 

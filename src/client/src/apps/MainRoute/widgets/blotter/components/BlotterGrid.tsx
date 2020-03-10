@@ -39,14 +39,14 @@ export default styled('div')`
     width: 0.3125rem !important;
     padding: 0;
     margin: 0;
-    background-color: ${({ theme }) => theme.accents.success.base};
+    background-color: ${({ theme }) => theme.accents.positive.base};
   }
 
   .rt-blotter__status-indicator--rejected {
     width: 0.3125rem !important;
     padding: 0;
     margin: 0;
-    background-color: ${({ theme }) => theme.accents.error.base};
+    background-color: ${({ theme }) => theme.accents.negative.base};
   }
 
   .rt-blotter__cell-rejected,
@@ -60,7 +60,7 @@ export default styled('div')`
     position: absolute;
     top: 50%;
     left: 0;
-    border-bottom: 0.0625rem solid ${({ theme }) => theme.accents.error.base};
+    border-bottom: 0.0625rem solid ${({ theme }) => theme.accents.negative.base};
     width: 100%;
   }
 

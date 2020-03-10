@@ -3,8 +3,8 @@ import { styled } from 'rt-theme'
 import { Button, Icon, TileBaseStyle } from '../styled'
 
 export enum NotificationType {
-  Error = 'error',
-  Success = 'success',
+  Error = 'negative',
+  Success = 'positive',
   Warning = 'aware',
 }
 
@@ -33,7 +33,7 @@ const TradeSymbol = styled.div`
 `
 
 const CheckIcon = styled(Icon)`
-  background-color: ${({ theme }) => theme.accents.success.base};
+  background-color: ${({ theme }) => theme.accents.positive.base};
   border-radius: 50%;
   padding: 0.3125rem;
 `

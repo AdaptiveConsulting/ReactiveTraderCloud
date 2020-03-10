@@ -10,8 +10,8 @@ const { primary, ...others } = colors.accents
 
 export default () => (
   <React.Fragment>
-    <SectionBlock colorScheme="secondary" mh={3}>
-      <H2 pt={4}>COLOUR</H2>
+    <SectionBlock colorScheme="secondary" mh={2}>
+      <H2 pt={2}>COLOUR</H2>
       <H3>Core UI</H3>
       <Paragraph>
         Core color control the general look and feel of the application and make up 90% of the
@@ -20,33 +20,25 @@ export default () => (
       </Paragraph>
 
       <ThemePalettes theme={colors.dark} />
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" py={0} pt={0} mh={0}>
       <Separator />
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" mh={3}>
       <QuadrantLayout>
         <span>
           <H3>Brand / Accent Colours</H3>
-          <Paragraph mb={3}>
+          <Paragraph mb={0} pr={3}>
             Brand colors aim to communicate a companies visual ownership of the digital product.
           </Paragraph>
         </span>
         <DominantAccentPalettes dominant={primary} />
       </QuadrantLayout>
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" py={0} pt={0} mh={0}>
       <Separator />
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" mh={3}>
       <QuadrantLayout>
         <span>
           <H3>Accents & Functional colors</H3>
-          <Paragraph mb={3}>
+          <Paragraph mb={3} pr={3}>
             Accent colors inject focus points in to the UI and are used to give the UI character and
             guide users attention. These colors often work with the brand helping to retain the
             ‘feeling’ of being from the same organisation but not always.
@@ -55,20 +47,16 @@ export default () => (
 
         <AccentPalettes accents={others} />
       </QuadrantLayout>
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" py={0} pt={0} mh={0}>
       <Separator />
-    </SectionBlock>
 
-    <SectionBlock colorScheme="secondary" mh={3}>
       <QuadrantLayout>
         <span>
           <H3>Unique Collections</H3>
-          <Paragraph>
+          <Paragraph pr={3}>
             Create separate references for key areas of the application such as trading directions.
           </Paragraph>
-          <Paragraph>
+          <Paragraph pr={3}>
             <i>
               Note: Why are some colours the same but named differently? Answer: These colours will
               be chosen and used in different situations allowing key functional colours and
@@ -80,7 +68,7 @@ export default () => (
         <span>
           <UniquePalettes
             palettes={{
-              'Trading Sell': {
+              'Trading-Sell': {
                 base: colors.spectrum.uniqueCollections.Sell.base,
                 1: colors.spectrum.uniqueCollections.Sell.lighter,
               },
@@ -88,7 +76,7 @@ export default () => (
           />
           <UniquePalettes
             palettes={{
-              'Trading Buy': {
+              'Trading-Buy': {
                 base: colors.spectrum.uniqueCollections.Buy.base,
                 1: colors.spectrum.uniqueCollections.Buy.lighter,
               },
@@ -128,7 +116,9 @@ const PaletteLayout: React.FC<{
       {include.map((key, i) => {
         const color = palette[key]
 
-        const themeForCss: any = {}
+        const themeForCss: any = {
+          justifyContent: 'center',
+        }
 
         if (key === 'base') {
           themeForCss.gridArea = key
@@ -142,7 +132,7 @@ const PaletteLayout: React.FC<{
           <Swatch
             key={key}
             extra={css(themeForCss)}
-            label={`${paletteLabel} ${key}`}
+            label={`${paletteLabel} ${key === 'base' ? '' : `-${i}`}`}
             value={color}
             code={codes[key] || key}
             bg={() => color}
@@ -176,9 +166,10 @@ export const Swatch: React.FC<SwatchProps> = ({
   code,
   bg,
   fg,
+  p,
   ...props
 }) => (
-  <SwatchElement p={2} bg={bg} fg={fg} {...props}>
+  <SwatchElement p={1} bg={bg} fg={fg} {...props}>
     <Text fontSize={0.75} fontWeight="bold" textTransform="capitalize">
       {label}
     </Text>
@@ -233,7 +224,7 @@ const CoreSwatchGrid = styled.div`
 
   @media all and (min-width: 640px) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 14rem 7rem;
+    grid-template-rows: 10rem 7rem;
     grid-template-areas:
       'base base base1 base1'
       '2 3 4 5';
@@ -278,9 +269,10 @@ const ThemeRow = styled.div`
 `
 
 const QuadrantLayout = styled.div`
+  margin: 30px 0px;
   display: grid;
   grid-row-gap: 1rem;
-  grid-column-gap: 2rem;
+  grid-column-gap: 0.5rem;
 
   grid-template-rows: auto;
   grid-template-columns: 1fr 1fr;
@@ -296,7 +288,7 @@ const DominantAccentPalettes: React.FC<{ dominant: object }> = ({ dominant, ...p
       <PaletteLayout
         key="dominant"
         grid={DominantAccentSwatchGrid}
-        label="primary"
+        label="Accent-Primary"
         palette={dominant}
         fg="#FFF"
         include={['base', 'darker', 'lighter']}
@@ -312,7 +304,7 @@ const AccentPalettes: React.FC<{ accents: object }> = ({ accents, ...props }) =>
         <PaletteLayout
           key={accentName}
           grid={AccentSwatchGrid}
-          label={accentName}
+          label={`Accent-${accentName}`}
           palette={accents[accentName]}
           fg="#000"
           include={['base', 'darker', 'medium', 'lighter']}
@@ -323,7 +315,6 @@ const AccentPalettes: React.FC<{ accents: object }> = ({ accents, ...props }) =>
 }
 
 const AccentRowGrid = styled.div`
-  max-width: 30rem;
   display: grid;
   grid-gap: 0.5rem;
   grid-template-columns: 1fr;
@@ -342,8 +333,8 @@ const DominantAccentSwatchGrid = styled.div`
   border-radius: 1rem;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 6rem;
-  grid-template-areas: 'base base darker lighter';
+  grid-template-columns: 49% 26% 25%;
+  grid-template-areas: 'base darker lighter';
 `
 
 const UniquePalettes: React.FC<{ palettes: any }> = ({ palettes, ...props }) => {
@@ -366,8 +357,8 @@ const UniquePalettes: React.FC<{ palettes: any }> = ({ palettes, ...props }) => 
 const UniqueRowGrid = styled.div`
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: 70%;
-  margin: 1rem;
+  grid-template-columns: 50%;
+  margin-bottom: 1rem;
 `
 
 const UniqueSwatchGrid = styled.div`
