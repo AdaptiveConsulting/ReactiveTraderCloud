@@ -26,7 +26,7 @@ export default () => (
       <QuadrantLayout>
         <span>
           <H3>Brand / Accent Colours</H3>
-          <Paragraph mb={0}>
+          <Paragraph mb={0} pr={3}>
             Brand colors aim to communicate a companies visual ownership of the digital product.
           </Paragraph>
         </span>
@@ -38,7 +38,7 @@ export default () => (
       <QuadrantLayout>
         <span>
           <H3>Accents & Functional colors</H3>
-          <Paragraph mb={3}>
+          <Paragraph mb={3} pr={3}>
             Accent colors inject focus points in to the UI and are used to give the UI character and
             guide users attention. These colors often work with the brand helping to retain the
             ‘feeling’ of being from the same organisation but not always.
@@ -53,10 +53,10 @@ export default () => (
       <QuadrantLayout>
         <span>
           <H3>Unique Collections</H3>
-          <Paragraph>
+          <Paragraph pr={3}>
             Create separate references for key areas of the application such as trading directions.
           </Paragraph>
-          <Paragraph>
+          <Paragraph pr={3}>
             <i>
               Note: Why are some colours the same but named differently? Answer: These colours will
               be chosen and used in different situations allowing key functional colours and
@@ -166,9 +166,10 @@ export const Swatch: React.FC<SwatchProps> = ({
   code,
   bg,
   fg,
+  p,
   ...props
 }) => (
-  <SwatchElement p={2} bg={bg} fg={fg} {...props}>
+  <SwatchElement p={1} bg={bg} fg={fg} {...props}>
     <Text fontSize={0.75} fontWeight="bold" textTransform="capitalize">
       {label}
     </Text>
@@ -271,10 +272,10 @@ const QuadrantLayout = styled.div`
   margin: 30px 0px;
   display: grid;
   grid-row-gap: 1rem;
-  grid-column-gap: 2rem;
+  grid-column-gap: 0.5rem;
 
   grid-template-rows: auto;
-  grid-template-columns: 3fr 4fr;
+  grid-template-columns: 1fr 1fr;
 
   @media all and (max-width: 800px) {
     grid-template-columns: auto;
@@ -332,8 +333,8 @@ const DominantAccentSwatchGrid = styled.div`
   border-radius: 1rem;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 6rem;
-  grid-template-areas: 'base base darker lighter';
+  grid-template-columns: 49% 26% 25%;
+  grid-template-areas: 'base darker lighter';
 `
 
 const UniquePalettes: React.FC<{ palettes: any }> = ({ palettes, ...props }) => {
@@ -356,8 +357,8 @@ const UniquePalettes: React.FC<{ palettes: any }> = ({ palettes, ...props }) => 
 const UniqueRowGrid = styled.div`
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: 70%;
-  margin: 1rem;
+  grid-template-columns: 50%;
+  margin-bottom: 1rem;
 `
 
 const UniqueSwatchGrid = styled.div`
