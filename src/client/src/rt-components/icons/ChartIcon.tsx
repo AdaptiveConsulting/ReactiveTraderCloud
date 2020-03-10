@@ -1,11 +1,13 @@
 import React from 'react'
 
 interface Props {
-  active: boolean
+  active?: boolean
+  height?: number
+  width?: number
 }
 
-const ChartIcon: React.FC<Props> = ({ active }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 8">
+const ChartIcon: React.FC<Props> = ({ active = false, height, width }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 8" height={height} width={width}>
     <g fill="none" fillRule="evenodd">
       <path d="M0 0H24V24H0z" transform="translate(-4 -8)" />
       <path

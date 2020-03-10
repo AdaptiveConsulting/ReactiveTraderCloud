@@ -61,7 +61,7 @@ const ROBOTO = {
 export const FontFamilies: React.FC = () => (
   <React.Fragment>
     <SectionBlock>
-      <H2 pt={4}>Tipography</H2>
+      <H2 pt={4}>Typography</H2>
       <H3>Roboto</H3>
 
       <Paragraph>
