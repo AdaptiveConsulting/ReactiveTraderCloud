@@ -128,7 +128,8 @@ const DragRegion = styled.div`
   align-items: center;
   flex-grow: 1;
   color: rgba(255, 255, 255, 0.58);
-  font-size: 0.625rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.75px;
   text-transform: uppercase;
 
   -webkit-app-region: drag;
