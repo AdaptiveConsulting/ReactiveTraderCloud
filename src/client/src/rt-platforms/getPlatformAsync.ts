@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search)
 
 const isFinsemble = 'FSBL' in window
-const isOpenFin = 'fin' in window
+const isOpenFin = 'fin' in window && !isFinsemble
 const isGlue42 = 'glue42gd' in window
 const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYMPHONY'
 

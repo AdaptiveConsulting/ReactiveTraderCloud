@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import { styled } from 'rt-theme'
 import { Platform, usePlatform } from 'rt-platforms'
 
-const RouteStyle = styled('div')<{ platform: Platform }>`
+const RouteStyle = styled('div') <{ platform: Platform }>`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
@@ -26,7 +26,7 @@ interface RouteWrapperProps {
 }
 
 //@ts-ignore
-const isChildView = window.fin && window.fin.me.isView
+const isChildView = window.fin && window.fin.me && window.fin.me.isView
 
 const RouteWrapper: React.FC<RouteWrapperProps> = ({ children, windowType = 'main', title }) => {
   const platform = usePlatform()
