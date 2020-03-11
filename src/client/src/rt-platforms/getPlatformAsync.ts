@@ -1,7 +1,9 @@
 const urlParams = new URLSearchParams(window.location.search)
 
 const isFinsemble = 'FSBL' in window
-const isOpenFin = 'fin' in window
+// TODO: We should not need to negate `isFinsemble` to check for OpenFin.
+// Somewhere, `fin` is being added to the `window` object even in electron/finsemble versions.
+const isOpenFin = 'fin' in window && !isFinsemble
 const isGlue42 = 'glue42gd' in window
 const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYMPHONY'
 
