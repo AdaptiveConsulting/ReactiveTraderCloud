@@ -210,7 +210,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   height: 100%;
 }
 
-.c0:hover .sc-fzoydu {
+.c0:hover .sc-fzoaKM {
   opacity: 0.75;
 }
 
@@ -218,7 +218,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   margin-right: 0;
 }
 
-.c0:hover .sc-fzoJMP {
+.c0:hover .sc-fzomuh {
   opacity: 0.75;
 }
 
@@ -246,7 +246,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   overflow: hidden;
 }
 
-.sc-fzpmMD .c1 {
+.sc-fznZeY .c1 {
   border-radius: 0px;
 }
 
@@ -270,10 +270,10 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 }
 
 <div
-  className="sc-fzqAui c0"
+  className="sc-fznyYp c0"
 >
   <div
-    className="sc-fznAgC c1 spot-tile"
+    className="sc-fzowVh c1 spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -315,25 +315,25 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 SELL
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -378,25 +378,25 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 BUY
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -698,7 +698,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   height: 100%;
 }
 
-.c0:hover .sc-fzoydu {
+.c0:hover .sc-fzoaKM {
   opacity: 0.75;
 }
 
@@ -706,7 +706,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   margin-right: 0;
 }
 
-.c0:hover .sc-fzoJMP {
+.c0:hover .sc-fzomuh {
   opacity: 0.75;
 }
 
@@ -734,7 +734,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
   overflow: hidden;
 }
 
-.sc-fzpmMD .c1 {
+.sc-fznZeY .c1 {
   border-radius: 0px;
 }
 
@@ -770,10 +770,10 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 }
 
 <div
-  className="sc-fzqAui c0"
+  className="sc-fznyYp c0"
 >
   <div
-    className="sc-fznAgC c1 spot-tile"
+    className="sc-fzowVh c1 spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -815,25 +815,25 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 SELL
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -901,25 +901,25 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 BUY
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -1227,7 +1227,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   height: 100%;
 }
 
-.c0:hover .sc-fzoydu {
+.c0:hover .sc-fzoaKM {
   opacity: 0.75;
 }
 
@@ -1235,7 +1235,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   margin-right: 0;
 }
 
-.c0:hover .sc-fzoJMP {
+.c0:hover .sc-fzomuh {
   opacity: 0.75;
 }
 
@@ -1263,7 +1263,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   overflow: hidden;
 }
 
-.sc-fzpmMD .c1 {
+.sc-fznZeY .c1 {
   border-radius: 0px;
 }
 
@@ -1299,10 +1299,10 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 }
 
 <div
-  className="sc-fzqAui c0"
+  className="sc-fznyYp c0"
 >
   <div
-    className="sc-fznAgC c1 spot-tile"
+    className="sc-fzowVh c1 spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -1344,25 +1344,25 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 SELL
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -1436,25 +1436,25 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 BUY
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -1755,7 +1755,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   height: 100%;
 }
 
-.c0:hover .sc-fzoydu {
+.c0:hover .sc-fzoaKM {
   opacity: 0.75;
 }
 
@@ -1763,7 +1763,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   margin-right: 0;
 }
 
-.c0:hover .sc-fzoJMP {
+.c0:hover .sc-fzomuh {
   opacity: 0.75;
 }
 
@@ -1791,7 +1791,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   overflow: hidden;
 }
 
-.sc-fzpmMD .c1 {
+.sc-fznZeY .c1 {
   border-radius: 0px;
 }
 
@@ -1815,10 +1815,10 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 }
 
 <div
-  className="sc-fzqAui c0"
+  className="sc-fznyYp c0"
 >
   <div
-    className="sc-fznAgC c1 spot-tile"
+    className="sc-fzowVh c1 spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -1860,25 +1860,25 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 SELL
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -1923,25 +1923,25 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 BUY
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -1983,6 +1983,42 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 `;
 
 exports[`Snapshot, state derived from props, RFQ requested 1`] = `
+.c9 {
+  -webkit-animation: kpOBsK 0.8s infinite;
+  animation: kpOBsK 0.8s infinite;
+  -webkit-animation-delay: -0.48s;
+  animation-delay: -0.48s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c10 {
+  -webkit-animation: kpOBsK 0.8s infinite;
+  animation: kpOBsK 0.8s infinite;
+  -webkit-animation-delay: -0.3261538461538461s;
+  animation-delay: -0.3261538461538461s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c11 {
+  -webkit-animation: kpOBsK 0.8s infinite;
+  animation: kpOBsK 0.8s infinite;
+  -webkit-animation-delay: -0.17230769230769227s;
+  animation-delay: -0.17230769230769227s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c12 {
+  -webkit-animation: kpOBsK 0.8s infinite;
+  animation: kpOBsK 0.8s infinite;
+  -webkit-animation-delay: -0.018461538461538418s;
+  animation-delay: -0.018461538461538418s;
+  fill: #fff;
+  will-change: transform;
+}
+
 .c22 {
   grid-area: Currency;
   opacity: 0.59;
@@ -2057,42 +2093,6 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   flex-direction: column;
   width: 100%;
   z-index: 1;
-}
-
-.c9 {
-  -webkit-animation: kpOBsK 0.8s infinite;
-  animation: kpOBsK 0.8s infinite;
-  -webkit-animation-delay: -0.48s;
-  animation-delay: -0.48s;
-  fill: #fff;
-  will-change: transform;
-}
-
-.c10 {
-  -webkit-animation: kpOBsK 0.8s infinite;
-  animation: kpOBsK 0.8s infinite;
-  -webkit-animation-delay: -0.3261538461538461s;
-  animation-delay: -0.3261538461538461s;
-  fill: #fff;
-  will-change: transform;
-}
-
-.c11 {
-  -webkit-animation: kpOBsK 0.8s infinite;
-  animation: kpOBsK 0.8s infinite;
-  -webkit-animation-delay: -0.17230769230769227s;
-  animation-delay: -0.17230769230769227s;
-  fill: #fff;
-  will-change: transform;
-}
-
-.c12 {
-  -webkit-animation: kpOBsK 0.8s infinite;
-  animation: kpOBsK 0.8s infinite;
-  -webkit-animation-delay: -0.018461538461538418s;
-  animation-delay: -0.018461538461538418s;
-  fill: #fff;
-  will-change: transform;
 }
 
 .c6 {
@@ -2235,7 +2235,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   height: 100%;
 }
 
-.c0:hover .sc-fzoydu {
+.c0:hover .sc-fzoaKM {
   opacity: 0.75;
 }
 
@@ -2243,7 +2243,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   margin-right: 0;
 }
 
-.c0:hover .sc-fzoJMP {
+.c0:hover .sc-fzomuh {
   opacity: 0.75;
 }
 
@@ -2271,7 +2271,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   overflow: hidden;
 }
 
-.sc-fzpmMD .c1 {
+.sc-fznZeY .c1 {
   border-radius: 0px;
 }
 
@@ -2307,10 +2307,10 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 }
 
 <div
-  className="sc-fzqAui c0"
+  className="sc-fznyYp c0"
 >
   <div
-    className="sc-fznAgC c1 spot-tile"
+    className="sc-fzowVh c1 spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -2768,7 +2768,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   height: 100%;
 }
 
-.c0:hover .sc-fzoydu {
+.c0:hover .sc-fzoaKM {
   opacity: 0.75;
 }
 
@@ -2776,7 +2776,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   margin-right: 0;
 }
 
-.c0:hover .sc-fzoJMP {
+.c0:hover .sc-fzomuh {
   opacity: 0.75;
 }
 
@@ -2804,7 +2804,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   overflow: hidden;
 }
 
-.sc-fzpmMD .c1 {
+.sc-fznZeY .c1 {
   border-radius: 0px;
 }
 
@@ -2828,10 +2828,10 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 }
 
 <div
-  className="sc-fzqAui c0"
+  className="sc-fznyYp c0"
 >
   <div
-    className="sc-fznAgC c1 spot-tile"
+    className="sc-fzowVh c1 spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -2873,25 +2873,25 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 SELL
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -2936,25 +2936,25 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 BUY
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -2996,6 +2996,42 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 `;
 
 exports[`Snapshot, state derived from props, in trade 1`] = `
+.c21 {
+  -webkit-animation: kpOBsK 0.8s infinite;
+  animation: kpOBsK 0.8s infinite;
+  -webkit-animation-delay: -0.48s;
+  animation-delay: -0.48s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c22 {
+  -webkit-animation: kpOBsK 0.8s infinite;
+  animation: kpOBsK 0.8s infinite;
+  -webkit-animation-delay: -0.3261538461538461s;
+  animation-delay: -0.3261538461538461s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c23 {
+  -webkit-animation: kpOBsK 0.8s infinite;
+  animation: kpOBsK 0.8s infinite;
+  -webkit-animation-delay: -0.17230769230769227s;
+  animation-delay: -0.17230769230769227s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c24 {
+  -webkit-animation: kpOBsK 0.8s infinite;
+  animation: kpOBsK 0.8s infinite;
+  -webkit-animation-delay: -0.018461538461538418s;
+  animation-delay: -0.018461538461538418s;
+  fill: #fff;
+  will-change: transform;
+}
+
 .c28 {
   grid-area: Currency;
   opacity: 0.59;
@@ -3153,42 +3189,6 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   z-index: 1;
 }
 
-.c21 {
-  -webkit-animation: kpOBsK 0.8s infinite;
-  animation: kpOBsK 0.8s infinite;
-  -webkit-animation-delay: -0.48s;
-  animation-delay: -0.48s;
-  fill: #fff;
-  will-change: transform;
-}
-
-.c22 {
-  -webkit-animation: kpOBsK 0.8s infinite;
-  animation: kpOBsK 0.8s infinite;
-  -webkit-animation-delay: -0.3261538461538461s;
-  animation-delay: -0.3261538461538461s;
-  fill: #fff;
-  will-change: transform;
-}
-
-.c23 {
-  -webkit-animation: kpOBsK 0.8s infinite;
-  animation: kpOBsK 0.8s infinite;
-  -webkit-animation-delay: -0.17230769230769227s;
-  animation-delay: -0.17230769230769227s;
-  fill: #fff;
-  will-change: transform;
-}
-
-.c24 {
-  -webkit-animation: kpOBsK 0.8s infinite;
-  animation: kpOBsK 0.8s infinite;
-  -webkit-animation-delay: -0.018461538461538418s;
-  animation-delay: -0.018461538461538418s;
-  fill: #fff;
-  will-change: transform;
-}
-
 .c6 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -3298,7 +3298,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   height: 100%;
 }
 
-.c0:hover .sc-fzoydu {
+.c0:hover .sc-fzoaKM {
   opacity: 0.75;
 }
 
@@ -3306,7 +3306,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   margin-right: 0;
 }
 
-.c0:hover .sc-fzoJMP {
+.c0:hover .sc-fzomuh {
   opacity: 0.75;
 }
 
@@ -3334,7 +3334,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   overflow: hidden;
 }
 
-.sc-fzpmMD .c1 {
+.sc-fznZeY .c1 {
   border-radius: 0px;
 }
 
@@ -3370,10 +3370,10 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
 }
 
 <div
-  className="sc-fzqAui c0"
+  className="sc-fznyYp c0"
 >
   <div
-    className="sc-fznAgC c1 spot-tile"
+    className="sc-fzowVh c1 spot-tile"
     data-qa="spot-tile__tile"
     data-qa-id="currency-pair-eurusd"
   >
@@ -3415,25 +3415,25 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 SELL
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
@@ -3547,25 +3547,25 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
               className="c9"
             >
               <div
-                className="sc-AxheI c10"
+                className="sc-fznxKY c10"
               >
                 BUY
               </div>
               <div
-                className="sc-AxheI c11"
+                className="sc-fznxKY c11"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="sc-AxheI c12"
+              className="sc-fznxKY c12"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="sc-AxheI c13"
+              className="sc-fznxKY c13"
               data-qa="price-button__tenth"
             >
               4
