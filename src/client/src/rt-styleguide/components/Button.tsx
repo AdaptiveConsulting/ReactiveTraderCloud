@@ -51,6 +51,8 @@ function getButtonColors({
     }
   }
 
+  console.log(bg, fg)
+
   return {
     ...theme,
     bg,
