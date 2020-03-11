@@ -139,6 +139,7 @@ const DragRegion = styled.div`
 `
 
 const HeaderControl = styled.button<{ accent?: AccentName }>`
+  display: flex;
   cursor: pointer;
 
   &:hover {

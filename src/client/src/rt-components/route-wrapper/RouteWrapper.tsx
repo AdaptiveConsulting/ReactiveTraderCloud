@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { styled } from 'rt-theme'
-import { Platform, usePlatform } from 'rt-platforms'
+import { Platform, usePlatform, isParentAppLauncher } from 'rt-platforms'
 
 const RouteStyle = styled('div')<{ platform: Platform }>`
   width: 100%;
@@ -30,9 +30,20 @@ interface RouteWrapperProps {
 
 const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const { children, windowType = 'main', title } = props
+  const [fromLauncher, setFromLauncher] = useState<boolean>(false)
   const platform = usePlatform()
 
   const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
+
+  useEffect(() => {
+    isParentAppLauncher()
+      .then(isLauncher => {
+        setFromLauncher(isLauncher)
+      })
+      .catch(() => {
+        console.error('Can not find parent window')
+      })
+  }, [])
 
   const isBlotterOrTrade = title === 'trades' || title === 'live - rates'
 
@@ -40,7 +51,8 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const subheader =
     windowType === 'sub' ? (
       <PlatformHeader
-        popIn={window.close}
+        close={fromLauncher && window.close}
+        popIn={!fromLauncher && window.close}
         minimize={window.minimize}
         title={`Reactive Trader - ${title}`}
         isBlotterOrTrade={isBlotterOrTrade}
