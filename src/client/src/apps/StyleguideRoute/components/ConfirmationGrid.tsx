@@ -62,7 +62,7 @@ const Root = styled.div`
   max-width: 60rem;
 
   display: grid;
-  grid-template-columns: minmax(auto, 120px) 1fr  ;
+  grid-template-columns: minmax(auto, 80px) 1fr  ;
   grid-column-gap: 2rem;
   padding-bottom: 2rem;
 

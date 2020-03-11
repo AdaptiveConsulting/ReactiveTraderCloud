@@ -10,8 +10,9 @@ const AnalyticsTileChartWrapper = styled.div`
 
 interface Props {
   history: SpotPriceTick[]
+  over?: boolean
 }
-const AnalyticsTileChart: React.FC<Props> = ({ history }) => {
+const AnalyticsTileChart: React.FC<Props> = ({ history, over = false }) => {
   const lineProps = {
     strokeDasharray: '4 3',
     stroke: '#737987',
@@ -22,7 +23,7 @@ const AnalyticsTileChart: React.FC<Props> = ({ history }) => {
   const [chartColor, setChartColor] = useState('#737987')
 
   const handleMouseEvent = () => {
-    setChartColor(chartColor === '#5f94f5' ? '#737987' : '#5f94f5')
+    setChartColor(chartColor === '#5f94f5' && !over ? '#737987' : '#5f94f5')
   }
 
   return (
@@ -33,7 +34,13 @@ const AnalyticsTileChart: React.FC<Props> = ({ history }) => {
         data-qa="analytics-tile-chart__recharts-container"
       >
         <LineChart data={history} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-          <Line dataKey="mid" dot={false} stroke={chartColor} isAnimationActive={false} />
+          <Line
+            dataKey="mid"
+            dot={false}
+            stroke={chartColor}
+            strokeWidth={1.6}
+            isAnimationActive={false}
+          />
           <YAxis
             width={0}
             domain={['dataMin', 'dataMax']}

@@ -40,29 +40,35 @@ export default (() => (
     <LabelColumn>
       <div>Charting</div>
       <label>Normal</label>
+      <label>Active</label>
     </LabelColumn>
     <ChartingColumn>
       <ChartingRow />
       <ChartingRow>
-        <PriceButtonVariants />
+        <ChartsVariants />
+      </ChartingRow>
+      <ChartingRow>
+        <ChartsVariants over />
       </ChartingRow>
     </ChartingColumn>
   </Root>
 )) as React.FC
 
-const PriceButtonVariants: React.FC = () => (
-  <ChartingContainer>
-    <GraphNotionalWrapper isTimerOn={true}>
-      <LineChartWrapper isTimerOn={true}>
-        <AnalyticsTileChart history={historicPrices} />
-      </LineChartWrapper>
-    </GraphNotionalWrapper>
-  </ChartingContainer>
+const ChartsVariants: React.FC<{ over?: boolean }> = ({ over }) => (
+  <React.Fragment>
+    <ChartingContainer>
+      <GraphNotionalWrapper isTimerOn={true}>
+        <LineChartWrapper isTimerOn={true}>
+          <AnalyticsTileChart history={historicPrices} over={over} />
+        </LineChartWrapper>
+      </GraphNotionalWrapper>
+    </ChartingContainer>
+  </React.Fragment>
 )
 
 const GridColumn = styled.div`
   display: grid;
-  grid-template-rows: 2rem 1fr;
+  grid-template-rows: 2rem 1fr 1fr;
   grid-row-gap: 0.5rem;
   align-items: center;
 `
@@ -96,7 +102,7 @@ const Root = styled.div`
   max-width: 60rem;
 
   display: grid;
-  grid-template-columns: minmax(auto, 120px) 1fr  ;
+  grid-template-columns: minmax(auto, 80px) 1fr  ;
   grid-column-gap: 2rem;
 
   padding-bottom: 2rem;
