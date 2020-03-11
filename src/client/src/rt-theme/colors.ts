@@ -189,7 +189,7 @@ const accents: AccentPaletteMap = {
   primary: {
     base: rgb(95, 148, 245),
     darker: rgb(76, 118, 196),
-    lighter: rgb(52, 58, 71),
+    lighter: rgb(127, 169, 247),
   },
   positive: {
     base: rgb(1, 195, 141),

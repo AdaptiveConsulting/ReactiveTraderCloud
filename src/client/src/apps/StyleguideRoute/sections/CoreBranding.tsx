@@ -8,6 +8,8 @@ import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-compone
 
 const { primary, ...others } = colors.accents
 
+console.log(primary)
+
 export default () => (
   <React.Fragment>
     <SectionBlock colorScheme="secondary" mh={2}>
