@@ -5,35 +5,7 @@ import {
   GraphNotionalWrapper,
 } from '../../MainRoute/widgets/spotTile/components/analyticsTile/styled'
 import AnalyticsTileChart from '../../MainRoute/widgets/spotTile/components/analyticsTile/AnalyticsTileChart'
-import { SpotPriceTick } from 'apps/MainRoute'
-
-const historicPrices: SpotPriceTick[] = Array.from(
-  {
-    length: 30,
-  },
-  () => ({
-    ask: Math.floor(Math.random() * 20),
-    bid: Math.floor(Math.random() * 20),
-    mid: Math.floor(Math.random() * 20),
-    creationTimestamp: new Date().getMilliseconds(),
-    symbol: 'USD',
-    valueDate: 'date',
-  }),
-).concat(
-  Array.from(
-    {
-      length: 30,
-    },
-    () => ({
-      ask: Math.floor(Math.random() * 20),
-      bid: Math.floor(Math.random() * -20),
-      mid: Math.floor(Math.random() * -20),
-      creationTimestamp: new Date().getMilliseconds(),
-      symbol: 'USD',
-      valueDate: 'date',
-    }),
-  ),
-)
+import { spotTileData } from 'apps/MainRoute/widgets/spotTile/components/test-resources/spotTileProps'
 
 export default (() => (
   <Root>
@@ -59,7 +31,7 @@ const ChartsVariants: React.FC<{ over?: boolean }> = ({ over }) => (
     <ChartingContainer>
       <GraphNotionalWrapper isTimerOn={true}>
         <LineChartWrapper isTimerOn={true}>
-          <AnalyticsTileChart history={historicPrices} over={over} />
+          <AnalyticsTileChart history={spotTileData.historicPrices} over={over} />
         </LineChartWrapper>
       </GraphNotionalWrapper>
     </ChartingContainer>

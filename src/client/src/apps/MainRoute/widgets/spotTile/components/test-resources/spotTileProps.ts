@@ -11,9 +11,9 @@ const currencyPair = {
 }
 
 const priceTick: SpotPriceTick = {
-  ask: 125,
-  bid: 180,
-  mid: 140,
+  ask: 12.5,
+  bid: 14.0,
+  mid: 13.0,
   creationTimestamp: 20052,
   symbol: 'EURCAD',
   valueDate: '2018-08-04T00:00:00Z',
@@ -23,9 +23,11 @@ const priceTick: SpotPriceTick = {
 const generateHistoricPrices: (totalPricePrick: number) => SpotPriceTick[] = totalPricePrick => {
   const historicPrices = []
   for (let counter = 0; counter < totalPricePrick; counter++) {
-    const mid = priceTick.mid + Math.random() * 6 + 3
-    historicPrices.push({ ...priceTick, mid })
+    const mid = Math.random() * priceTick.mid
+    const finalMid = Math.random() < 0.3 ? mid * -1 + 0.5 : mid
+    historicPrices.push({ ...priceTick, mid: finalMid })
   }
+
   return historicPrices
 }
 
@@ -41,7 +43,7 @@ const spotTileData: SpotTileData = {
     symbol: 'GBPJPY',
     valueDate: '2018-08-04T00:00:00Z',
   },
-  historicPrices: generateHistoricPrices(50),
+  historicPrices: generateHistoricPrices(20),
   rfqState: 'none',
   rfqPrice: null,
   rfqReceivedTime: null,
@@ -95,7 +97,7 @@ const spotTileDataWithRfq: SpotTileData = {
     symbol: 'GBPJPY',
     valueDate: '2018-08-04T00:00:00Z',
   },
-  historicPrices: generateHistoricPrices(50),
+  historicPrices: generateHistoricPrices(20),
   rfqState: 'none',
   rfqPrice: null,
   rfqReceivedTime: null,
