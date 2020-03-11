@@ -34,7 +34,7 @@ export const minimiseCurrentWindow = async () => {
   window.minimize()
 }
 
-export const useAppBoundReset = (bounds: Bounds | undefined) => {
+export function useAppBoundReset(bounds: Bounds | undefined) {
   useEffect(() => {
     if (!bounds) {
       return

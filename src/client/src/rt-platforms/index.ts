@@ -14,3 +14,4 @@ export { externalWindowDefault } from './externalWindowDefault'
 export * from './excelApp'
 export * from './limitChecker'
 export type ExternalWindow = externalWindowDefault.ExternalWindow
+export { isParentAppLauncher } from './openFin'
