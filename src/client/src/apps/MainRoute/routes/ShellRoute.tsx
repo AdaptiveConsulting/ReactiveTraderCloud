@@ -11,7 +11,7 @@ import { WorkspaceContainer } from '../widgets/workspace'
 import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
 import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
-import { analyticsSelector, blotterSelector } from '../layouts/selectors'
+import { analyticsSelector, blotterSelector, spotTilesSelector } from '../layouts/selectors'
 import { useSelector } from 'react-redux'
 
 interface Props {
@@ -32,6 +32,7 @@ const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition)
 const ShellRoute: React.FC<Props> = ({ header }) => {
   const blotter = useSelector(blotterSelector)
   const analytics = useSelector(analyticsSelector)
+  const spotTiles = useSelector(spotTilesSelector)
 
   const body = (
     <Resizer
@@ -41,12 +42,9 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
           <TearOff
             id="blotter"
             dragTearOff={true}
-            externalWindowProps={addLayoutToConfig(
-              externalWindowDefault.blotterRegion,
-              blotter,
-            )}
+            externalWindowProps={addLayoutToConfig(externalWindowDefault.blotterRegion, blotter)}
             render={(popOut, tornOff) => (
-              <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable/>
+              <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
             )}
             tornOff={!blotter.visible}
           />
@@ -54,36 +52,41 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
       )}
       disabled={!blotter.visible}
     >
-      <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
-        <OverflowScroll>
-          <WorkspaceContainer/>
-        </OverflowScroll>
-      </WorkspaceWrapper>
+      <TearOff
+        id="tiles"
+        dragTearOff={true}
+        externalWindowProps={addLayoutToConfig(externalWindowDefault.spotTilesRegion, spotTiles)}
+        render={(popOut, tornOff) => (
+          <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
+            <OverflowScroll>
+              <WorkspaceContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
+            </OverflowScroll>
+          </WorkspaceWrapper>
+        )}
+        tornOff={!blotter.visible}
+      />
     </Resizer>
-  );
+  )
 
   const aside = (
     <AnalyticsWrapper data-qa="shell-route__analytics-wrapper">
       <TearOff
         id="region"
         dragTearOff={true}
-        externalWindowProps={addLayoutToConfig(
-          externalWindowDefault.analyticsRegion,
-          analytics,
-        )}
+        externalWindowProps={addLayoutToConfig(externalWindowDefault.analyticsRegion, analytics)}
         render={(popOut, tornOff) => (
-          <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable/>
+          <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
         )}
         tornOff={!analytics.visible}
       />
     </AnalyticsWrapper>
-  );
+  )
 
   const footer = (
     <StatusBar>
-      <StatusButton/>
+      <StatusButton />
     </StatusBar>
-  );
+  )
 
   return (
     <DefaultLayout
@@ -91,7 +94,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
       body={body}
       aside={aside}
       footer={footer}
-      after={<ReconnectModal/>}
+      after={<ReconnectModal />}
     />
   )
 }

@@ -9,6 +9,7 @@ interface Props {
   tileView: TileView
   currency: string
   defaultOption: string
+  canPopout: boolean
 }
 
 const WorkspaceHeader: React.FC<Props> = ({
@@ -16,8 +17,10 @@ const WorkspaceHeader: React.FC<Props> = ({
   tileView,
   currency,
   currencyOptions,
+  canPopout,
 }) => {
   const options = [defaultOption, ...currencyOptions]
+
   return (
     <Header>
       <LeftNav>
@@ -35,6 +38,7 @@ const WorkspaceHeader: React.FC<Props> = ({
       </LeftNav>
       <RightNav>
         <ToggleView currency={currency} tileView={tileView} />
+        {canPopout && 'HI'}
       </RightNav>
     </Header>
   )

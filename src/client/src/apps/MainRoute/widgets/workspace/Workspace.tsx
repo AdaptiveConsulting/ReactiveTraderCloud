@@ -27,11 +27,12 @@ interface SpotTile {
 interface Props {
   spotTiles: SpotTile[]
   currencyOptions: string[]
+  canPopout: boolean
 }
 
 const ALL = 'ALL'
 
-const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
+const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions, canPopout }) => {
   const { currency, tileView } = useParams()
 
   if (!currency || !tileView) {
@@ -41,6 +42,7 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
   return (
     <div data-qa="workspace__tiles-workspace">
       <WorkspaceHeader
+        canPopout={canPopout}
         currencyOptions={currencyOptions}
         currency={currency}
         defaultOption={ALL}
