@@ -26,7 +26,6 @@ function getButtonColors({
   const buttonStyleSet = typeof intent !== 'undefined' && theme.button[intent]
   let fg = (buttonStyleSet && buttonStyleSet.textColor) || theme.textColor
   let bg = (buttonStyleSet && buttonStyleSet.backgroundColor) || theme.backgroundColor
-  console.log(intent, buttonStyleSet)
 
   if (active && buttonStyleSet) {
     bg = buttonStyleSet.active.backgroundColor
@@ -52,7 +51,8 @@ function getButtonColors({
     }
   }
 
-  console.log(intent, buttonStyleSet, `active:${active} disabled:${disabled}`, bg, fg)
+  console.log(bg, fg)
+
   return {
     ...theme,
     bg,

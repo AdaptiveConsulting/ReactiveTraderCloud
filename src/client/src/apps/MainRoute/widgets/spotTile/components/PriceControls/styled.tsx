@@ -28,6 +28,8 @@ export const PriceButtonDisabledPlaceholder = styled.div`
   opacity: 0.5;
   text-align: center;
   text-transform: uppercase;
+  color: ${({ theme }) => theme.primary[5]};
+  font-weight: 400;
 `
 
 export const Icon = styled.i`

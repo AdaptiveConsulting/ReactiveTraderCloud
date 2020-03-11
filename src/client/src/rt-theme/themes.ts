@@ -172,7 +172,7 @@ const createTheme = (
         backgroundColor: darker,
       },
       disabled: {
-        backgroundColor: lighter,
+        backgroundColor: primary[1],
       },
     })),
   } as TouchableStyleSet,
