@@ -73,10 +73,12 @@ const Box = styled.div`
   margin: 0;
 `
 
-export const DirectionLabel = styled(Box)`
+export const DirectionLabel = styled(Box)<{ priceAnnounced?: boolean }>`
   opacity: 0.59;
   margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
+
+  color: ${({ priceAnnounced, theme }) => (priceAnnounced ? theme.white : theme.secondary[1])};
 `
 
 export const Big = styled(Box)`
