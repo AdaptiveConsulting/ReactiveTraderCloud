@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { LineChart, ResponsiveContainer, Line, YAxis, ReferenceLine } from 'recharts'
 import { styled } from 'rt-theme'
 import { SpotPriceTick } from '../../model'
@@ -18,20 +18,22 @@ const AnalyticsTileChart: React.FC<Props> = ({ history }) => {
     strokeOpacity: 0.9,
     strokeWidth: 0.8,
   }
+
+  const [chartColor, setChartColor] = useState('#737987')
+
+  const handleMouseEvent = () => {
+    setChartColor(chartColor === '#5f94f5' ? '#737987' : '#5f94f5')
+  }
+
   return (
-    <AnalyticsTileChartWrapper>
+    <AnalyticsTileChartWrapper onMouseEnter={handleMouseEvent} onMouseLeave={handleMouseEvent}>
       <ResponsiveContainer
         width="100%"
         height="100%"
         data-qa="analytics-tile-chart__recharts-container"
       >
         <LineChart data={history} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-          <defs>
-            <linearGradient id="lineColour" x1="0" y1="0" x2="0" y2="1">
-              <stop stopColor="#737987" stopOpacity={1} strokeWidth={1.2} />
-            </linearGradient>
-          </defs>
-          <Line dataKey="mid" dot={false} stroke="url(#lineColour)" isAnimationActive={false} />
+          <Line dataKey="mid" dot={false} stroke={chartColor} isAnimationActive={false} />
           <YAxis
             width={0}
             domain={['dataMin', 'dataMax']}
