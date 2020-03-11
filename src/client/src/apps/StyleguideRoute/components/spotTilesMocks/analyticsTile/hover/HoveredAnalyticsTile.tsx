@@ -4,6 +4,7 @@ import { usePlatform } from 'rt-platforms'
 import PriceControls from '../../horizontalTiles/hover/HoveredPriceControls'
 import NotionalInput from '../../horizontalTiles/BaseNotionalInput'
 import AnalyticsTileChart from '../BaseAnalyticsTileChart'
+import { PopoutIcon } from 'rt-components'
 
 import {
   AnalyticsTileContent,
@@ -13,7 +14,7 @@ import {
   PriceControlWrapper,
 } from '../styled'
 import RfqTimer from 'apps/MainRoute/widgets/spotTile/components/RfqTimer'
-
+import { DeliveryDate } from 'apps/MainRoute/widgets/spotTile/components/styled'
 import { memoDateFormatter } from 'apps/MainRoute/widgets/spotTile/model/dateUtils'
 import { getDefaultNotionalValue } from 'apps/MainRoute/widgets/spotTile/components/Tile/TileBusinessLogic'
 import { SpotTileProps } from 'apps/MainRoute/widgets/spotTile/components/types'
@@ -58,7 +59,6 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       inputValidationMessage,
       displayCurrencyChart,
       rfq,
-      canPopout,
     } = this.props
     const defaultNotional = getDefaultNotionalValue(currencyPair)
     const notional =
@@ -84,7 +84,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
     const priceData = (isRfqStateReceived || isRfqStateExpired) && rfqPrice ? rfqPrice : price
 
     return (
-      <AnalyticsWrapperWithPlatform canPopout={canPopout}>
+      <AnalyticsWrapperWithPlatformHovered canPopout={true}>
         <AnalyticsTileStyle
           className="spot-tile"
           data-qa="analytics-tile__spot-tile"
@@ -136,9 +136,30 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
           </AnalyticsTileContent>
         </AnalyticsTileStyle>
         {children}
-      </AnalyticsWrapperWithPlatform>
+        <TopRightButton>{PopoutIcon}</TopRightButton>
+      </AnalyticsWrapperWithPlatformHovered>
     )
   }
 }
+
+const AnalyticsWrapperWithPlatformHovered = styled(AnalyticsWrapperWithPlatform)`
+  position: relative;
+  & ${DeliveryDate} {
+    margin-right: 1.3rem;
+  }
+`
+
+export const TopRightButton = styled('button')`
+  position: absolute;
+  right: 1rem;
+  top: 0.995rem;
+  opacity: 1;
+  transition: opacity 0.2s;
+  & {
+    .hover-state {
+      fill: #5f94f5;
+    }
+  }
+`
 
 export default AnalyticsTile

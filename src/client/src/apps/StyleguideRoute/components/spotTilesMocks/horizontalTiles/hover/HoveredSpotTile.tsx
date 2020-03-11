@@ -15,6 +15,8 @@ import TileHeader from 'apps/MainRoute/widgets/spotTile/components/TileHeader'
 import PriceControls from './HoveredPriceControls'
 import RfqTimer from 'apps/MainRoute/widgets/spotTile/components/RfqTimer'
 import { styled } from 'rt-theme'
+import { DeliveryDate } from 'apps/MainRoute/widgets/spotTile/components/styled'
+import { PopoutIcon } from 'rt-components'
 
 export const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme }) => theme.primary[1]};
@@ -86,7 +88,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
     }
 
     return (
-      <SpotTileWrapper canPopout={true}>
+      <SpotTileWrapperHovered canPopout={true}>
         <SpotTileStyle
           className="spot-tile"
           data-qa="spot-tile__tile"
@@ -135,7 +137,28 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
           </ReserveSpaceGrouping>
         </SpotTileStyle>
         {children}
-      </SpotTileWrapper>
+        <TopRightButton>{PopoutIcon}</TopRightButton>
+      </SpotTileWrapperHovered>
     )
   }
 }
+
+const SpotTileWrapperHovered = styled(SpotTileWrapper)`
+  position: relative;
+  & ${DeliveryDate} {
+    margin-right: 1.3rem;
+  }
+`
+
+export const TopRightButton = styled('button')`
+  position: absolute;
+  right: 1rem;
+  top: 0.995rem;
+  opacity: 1;
+  transition: opacity 0.2s;
+  & {
+    .hover-state {
+      fill: #5f94f5;
+    }
+  }
+`
