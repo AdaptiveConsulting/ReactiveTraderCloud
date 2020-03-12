@@ -33,12 +33,8 @@ const takePriceUpdatesUntil = (
     ),
   )
 
-export const pricingServiceEpic: ApplicationEpic = (
-  action$,
-  _state$,
-  { loadBalancedServiceStub },
-) => {
-  const pricingService = new PricingService(loadBalancedServiceStub)
+export const pricingServiceEpic: ApplicationEpic = (action$, _state$, { serviceStub }) => {
+  const pricingService = new PricingService(serviceStub)
 
   return action$.pipe(
     ofType<Action, SubscribeToSpotTileAction>(TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE),
@@ -52,15 +48,11 @@ export const pricingServiceEpic: ApplicationEpic = (
   )
 }
 
-export const pricingHistoryEpic: ApplicationEpic = (
-  action$,
-  _state$,
-  { loadBalancedServiceStub },
-) => {
+export const pricingHistoryEpic: ApplicationEpic = (action$, _state$, { serviceStub }) => {
   return action$.pipe(
     ofType<Action, SubscribeToSpotTileAction>(TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE),
     mergeMap((action: SubscribeToSpotTileAction) =>
-      getHistoricPrices(loadBalancedServiceStub, action.payload).pipe(
+      getHistoricPrices(serviceStub, action.payload).pipe(
         map(priceData => priceHistoryReceived(priceData, action.payload)),
         takePriceUpdatesUntil(action$, action.payload),
       ),

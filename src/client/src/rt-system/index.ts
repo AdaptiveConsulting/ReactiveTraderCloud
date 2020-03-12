@@ -16,7 +16,7 @@ export type IServiceStatusCollection = serviceInstanceCollection.IServiceStatusC
 export { retryWithBackOff, retryConstantly } from './retryPolicy'
 export type ConnectionType = connectionType.ConnectionType
 export { ServiceStub } from './ServiceStub'
-export { default as ServiceClient } from './ServiceStubWithLoadBalancer'
+export { ServiceStub as ServiceClient } from './ServiceStub'
 export const { ConnectionEventType } = connectionStream
 export type AutobahnConnection = autoBahnConnection.AutobahnConnection
 export { default as AutobahnConnectionProxy } from './AutobahnConnectionProxy'
@@ -27,6 +27,5 @@ export type ConnectionOpenEvent = connectionStream.ConnectionOpenEvent
 export type ConnectionClosedEvent = connectionStream.ConnectionClosedEvent
 
 export { default as AutobahnSessionProxy } from './AutobahnSessionProxy'
-export { default as ServiceStubWithLoadBalancer } from './ServiceStubWithLoadBalancer'
 export { serviceStatusStream$ } from './serviceStatusStream'
 export { debounceWithSelector } from './debounceOnMissedHeartbeat'

@@ -1,8 +1,8 @@
 import { NextObserver, Observable } from 'rxjs'
 import { AutobahnConnection } from 'rt-system'
-import { map, tap } from 'rxjs/operators'
+import { map, tap, share } from 'rxjs/operators'
 
-const LOG_NAME = 'Connection:'
+const LOG_NAME = 'ServiceClient: Initiated'
 
 //  The format the server accepts
 
@@ -76,5 +76,26 @@ export class ServiceStub {
         tap(x => this.logResponse(remoteProcedure, { headers: x.headers, body: x.body })),
         map(x => JSON.parse(x.body) as TResult),
       )
+  }
+
+  createRequestResponseOperation<TResponse, TRequest>(
+    service: string,
+    operationName: string,
+    request: TRequest,
+  ) {
+    console.info(LOG_NAME, `Creating request response operation for [${operationName}]`)
+
+    const remoteProcedure = service + '.' + operationName
+    return this.requestResponse<TResponse, TRequest>(remoteProcedure, request).pipe(share())
+  }
+
+  createStreamOperation<TResponse, TRequest = {}>(
+    service: string,
+    operationName: string,
+    request: TRequest,
+  ) {
+    const remoteProcedure = `${service}.${operationName}`
+    console.log(`subscriping to RPC stream ${remoteProcedure}`)
+    return this.requestStream<TResponse, TRequest>(remoteProcedure, request).pipe(share())
   }
 }

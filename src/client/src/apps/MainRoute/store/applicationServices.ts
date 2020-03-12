@@ -1,9 +1,8 @@
 import {
   AutobahnConnection,
   createConnection$,
-  ServiceStubWithLoadBalancer,
-  serviceStatusStream$,
   ServiceStub,
+  serviceStatusStream$,
   ConnectionEvent,
   ServiceCollectionMap,
   retryWithBackOff,
@@ -49,16 +48,14 @@ export function createApplicationServices({
     refCount(),
   )
 
-  const loadBalancedServiceStub = new ServiceStubWithLoadBalancer(serviceStub)
-
-  const referenceDataService$ = referenceDataService(loadBalancedServiceStub)
+  const referenceDataService$ = referenceDataService(serviceStub)
 
   return {
     referenceDataService$,
     platform,
     limitChecker,
     excelApp,
-    loadBalancedServiceStub,
+    serviceStub,
     serviceStatus$,
     connection$,
   }

@@ -1,11 +1,9 @@
 import React from 'react'
 import { Observable } from 'rxjs'
-import { ServiceStubWithLoadBalancer } from 'rt-system'
+import { ServiceStub } from 'rt-system'
 import { PricingService, TradesUpdate } from 'apps/MainRoute'
 
-export const ServiceStubContext = React.createContext<ServiceStubWithLoadBalancer | undefined>(
-  undefined,
-)
+export const ServiceStubContext = React.createContext<ServiceStub | undefined>(undefined)
 export const { Provider: ServiceStubProvider } = ServiceStubContext
 
 export const PricingServiceContext = React.createContext<PricingService | undefined>(undefined)

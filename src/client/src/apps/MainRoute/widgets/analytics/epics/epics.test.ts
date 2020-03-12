@@ -6,7 +6,7 @@ import { AnalyticsActions } from '../actions'
 import { Action } from 'redux'
 import { of, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { ServiceStubWithLoadBalancer } from 'rt-system'
+import { ServiceStub } from 'rt-system'
 import { GlobalState } from '../../../../../StoreTypes'
 
 const position = {
@@ -37,15 +37,13 @@ describe('Analytics epics', () => {
       const actionlifteTime = '-a-a-(rs)a--'
       const expecteLifetime = '-----a--'
 
-      const loadBalancedServiceStub: ServiceStubWithLoadBalancer = new MockServiceStubWithLoadBalancer(
-        createStreamOperation$,
-      ) as ServiceStubWithLoadBalancer
+      const serviceStub: ServiceStub = new MockServiceStub(createStreamOperation$) as ServiceStub
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
       const state$ = {} as StateObservable<GlobalState>
 
-      const epics$ = analyticsServiceEpic(action$, state$, { loadBalancedServiceStub }).pipe(
+      const epics$ = analyticsServiceEpic(action$, state$, { serviceStub }).pipe(
         map(x => x.type === serviceType),
       )
       expectObservable(epics$).toBe(expecteLifetime, { a: true })
@@ -72,14 +70,14 @@ describe('Analytics epics', () => {
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
 
-      const loadBalancedServiceStub: ServiceStubWithLoadBalancer = (new MockServiceStubWithLoadBalancer(
+      const serviceStub: ServiceStub = (new MockServiceStub(
         createStreamOperation$,
-      ) as any) as ServiceStubWithLoadBalancer
+      ) as any) as ServiceStub
 
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
       const state$ = {} as StateObservable<GlobalState>
 
-      const epics$ = analyticsServiceEpic(action$, state$, { loadBalancedServiceStub }).pipe(
+      const epics$ = analyticsServiceEpic(action$, state$, { serviceStub }).pipe(
         map(x => x.type === serviceType),
       )
       expectObservable(epics$).toBe(expecteLifetime, { a: true })
@@ -92,7 +90,6 @@ const implementation = (
 ) => ({
   createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
 })
-const MockServiceStubWithLoadBalancer = jest.fn<
-  Partial<ServiceStubWithLoadBalancer>,
-  Parameters<typeof implementation>
->(implementation)
+const MockServiceStub = jest.fn<Partial<ServiceStub>, Parameters<typeof implementation>>(
+  implementation,
+)

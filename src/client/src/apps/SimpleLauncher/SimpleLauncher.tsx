@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components'
 import { Observable, ReplaySubject } from 'rxjs'
 import { Provider as InteropProvider, getProvider } from 'rt-interop'
 import { getPlatformAsync, Platform, PlatformProvider } from 'rt-platforms'
-import { AutobahnConnectionProxy, ServiceStubWithLoadBalancer } from 'rt-system'
+import { AutobahnConnectionProxy, ServiceStub } from 'rt-system'
 import { themes } from 'rt-theme'
 import { BlotterService, TradesUpdate, PricingService } from 'apps/MainRoute'
 import { Launcher } from './Launcher'
@@ -24,7 +24,7 @@ type Dependencies = {
   platform: Platform
   pricingService: PricingService
   tradeUpdatesStream: Observable<TradesUpdate>
-  serviceStub: ServiceStubWithLoadBalancer
+  serviceStub: ServiceStub
 }
 
 export const SimpleLauncher: React.FC = () => {
