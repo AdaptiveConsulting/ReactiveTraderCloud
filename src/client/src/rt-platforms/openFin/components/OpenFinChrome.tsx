@@ -4,6 +4,7 @@ import React, { FC, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { styled, AccentName } from 'rt-theme'
 import OpenfinSnapshotSelection from './OpenfinSnapshotSelection'
+import ReactGA from "react-ga"
 
 export interface ControlProps {
   minimize?: () => void
@@ -34,7 +35,15 @@ export const OpenFinChrome: FC = ({ children }) => {
 
     //@ts-ignore
     if (!window.fin.me.isView) {
-      const listener = (e: any) => {
+      const listenerViewAttached = (e: any) => {
+        const label: string = ((e || {}).viewIdentity || {}).name || 'unknown'
+        ReactGA.event({category: 'RT - Tab', action: 'attach', label})
+      }
+      const listenerViewDetached = (e: any) => {
+        const label: string = ((e || {}).viewIdentity || {}).name || 'unknown'
+        ReactGA.event({category: 'RT - Tab', action: 'detach', label})
+      }
+      const listenerViewHidden = (e: any) => {
         const layoutItems: HTMLCollectionOf<Element> = document.getElementsByClassName('lm_item')
         for (let idx in layoutItems) {
           const layoutItem = layoutItems[idx]
@@ -47,23 +56,41 @@ export const OpenFinChrome: FC = ({ children }) => {
           }
         }
       }
+      const listenerWindowCreated = (e: any) => {
+        const label: string = (e || {}).name || 'unknown'
+        ReactGA.event({category: 'RT - Window', action: 'open', label})
+      }
+      const listenerWindowClosed = (e: any) => {
+        const label: string = (e || {}).name || 'unknown'
+        ReactGA.event({category: 'RT - Window', action: 'close', label})
+      }
 
+      fin.Window.getCurrent()
+        .then((window) => {
+          window.addListener('view-attached', listenerViewAttached)
+          window.addListener('view-detached', listenerViewDetached)
+        })
+        .catch(ex => console.warn(ex))
       fin.Application.getCurrent()
         .then((app) => {
-          app.addListener(
-            'view-hidden',
-            listener
-          )
+          app.addListener('view-hidden', listenerViewHidden)
+          app.addListener('window-closed', listenerWindowClosed)
+          app.addListener('window-created', listenerWindowCreated)
         })
         .catch(ex => console.warn(ex))
 
       return () => {
+        fin.Window.getCurrent()
+          .then((window) => {
+            window.removeListener('view-attached', listenerViewAttached)
+            window.removeListener('view-detached', listenerViewDetached)
+          })
+          .catch(ex => console.warn(ex))
         fin.Application.getCurrent()
           .then((app) => {
-            app.removeListener(
-              'view-hidden',
-              listener
-            )
+            app.removeListener('view-hidden', listenerViewHidden)
+            app.removeListener('window-closed', listenerWindowClosed)
+            app.removeListener('window-created', listenerWindowCreated)
           })
           .catch(ex => console.warn(ex))
       }
