@@ -13,6 +13,7 @@ services:
       context: ./services/broker
     ports:
       - '5672:5672'
+      - '15674:15674'
   servers:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     build:
