@@ -32,8 +32,8 @@ const MainRoute = () => {
         dimension2: platform.name,
         page: window.location.pathname,
       })
+      ReactGA.pageview(window.location.pathname)
     }
-    ReactGA.pageview(window.location.pathname)
   }, [platform])
 
   useEffect(() => {
