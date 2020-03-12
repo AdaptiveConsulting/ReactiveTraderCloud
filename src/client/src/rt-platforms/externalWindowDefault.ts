@@ -29,14 +29,14 @@ const analyticsRegion: ExternalWindow = {
 }
 
 const spotTilesRegion: ExternalWindow = {
-  title: 'Analytics',
+  title: 'SpotTiles',
   config: {
-    name: 'analytics',
-    width: 352, // 332 content + 10 padding
-    height: 800,
-    minWidth: 360,
-    minHeight: 200,
-    url: '/analytics',
+    name: 'spotTiles',
+    width: 664,
+    height: 617,
+    minWidth: 664,
+    minHeight: 617,
+    url: '/tiles/:currency/:tileView',
   },
 }
 

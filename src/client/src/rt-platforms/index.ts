@@ -3,6 +3,7 @@ import * as externalWindowDefault from './externalWindowDefault'
 
 export type WindowConfig = types.WindowConfig
 export type WindowPosition = types.WindowPosition
+export type TilesLayout = types.TilesLayout
 export type PlatformName = types.PlatformName
 
 export { InteropTopics } from './types'

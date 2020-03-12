@@ -21,7 +21,7 @@ const mapStateToProps = (state: GlobalState) => ({
 type Props = ReturnType<typeof mapStateToProps> & WorkspaceContainerOwnProps
 
 const WorkspaceContainer: React.FC<Props> = props => {
-  const { status, tearable = false, tornOff } = props
+  const { status, tearable = false, tornOff, onPopoutClick } = props
   const { allowTearOff } = usePlatform()
   console.log(allowTearOff)
   console.log(tearable)
@@ -29,7 +29,13 @@ const WorkspaceContainer: React.FC<Props> = props => {
   return (
     <Loadable
       status={status}
-      render={() => <Workspace {...props} canPopout={allowTearOff && tearable && !tornOff} />}
+      render={() => (
+        <Workspace
+          {...props}
+          canPopout={allowTearOff && tearable && !tornOff}
+          onPopoutClick={onPopoutClick}
+        />
+      )}
       message="Pricing Disconnected"
     />
   )

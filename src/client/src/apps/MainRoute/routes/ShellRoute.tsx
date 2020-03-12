@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Resizer, TearOff } from 'rt-components'
-import { externalWindowDefault, ExternalWindow, WindowPosition } from 'rt-platforms'
+import { externalWindowDefault, ExternalWindow } from 'rt-platforms'
 import { AnalyticsContainer } from '../widgets/analytics'
 import { BlotterContainer } from '../widgets/blotter'
 import StatusBar from '../widgets/status-bar'
@@ -10,7 +10,7 @@ import { WorkspaceContainer } from '../widgets/workspace'
 
 import ReconnectModal from '../components/reconnect-modal'
 import DefaultLayout from '../layouts/DefaultLayout'
-import { BlotterWrapper, AnalyticsWrapper, WorkspaceWrapper, OverflowScroll } from './styled'
+import { BlotterWrapper, AnalyticsWrapper, OverflowScroll, WorkspaceWrapper } from './styled'
 import { analyticsSelector, blotterSelector, spotTilesSelector } from '../layouts/selectors'
 import { useSelector } from 'react-redux'
 
@@ -18,7 +18,7 @@ interface Props {
   header?: React.ReactChild
 }
 
-const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition) => {
+const addLayoutToConfig = (windowConfig: ExternalWindow, layout: any) => {
   return {
     ...windowConfig,
     config: {
@@ -33,7 +33,9 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
   const blotter = useSelector(blotterSelector)
   const analytics = useSelector(analyticsSelector)
   const spotTiles = useSelector(spotTilesSelector)
-
+  console.log(spotTiles)
+  console.log(blotter)
+  console.log(analytics)
   const body = (
     <Resizer
       defaultHeight={30}
@@ -65,6 +67,11 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
         )}
         tornOff={!blotter.visible}
       />
+      {/* <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
+        <OverflowScroll>
+          <WorkspaceContainer />
+        </OverflowScroll>
+      </WorkspaceWrapper> */}
     </Resizer>
   )
 
