@@ -24,17 +24,21 @@ function getButtonColors({
   invert,
 }: ButtonStyleProps & { theme: Theme }) {
   const buttonStyleSet = typeof intent !== 'undefined' && theme.button[intent]
+
+  console.log(intent, buttonStyleSet, theme)
+
   let fg = (buttonStyleSet && buttonStyleSet.textColor) || theme.textColor
   let bg = (buttonStyleSet && buttonStyleSet.backgroundColor) || theme.backgroundColor
 
   if (active && buttonStyleSet) {
     bg = buttonStyleSet.active.backgroundColor
+    fg = buttonStyleSet.active.textColor || fg
   }
 
   if (disabled && buttonStyleSet) {
     // Disabled flag only affects to opacity and pointer events - colors don't change
     bg = buttonStyleSet.disabled.backgroundColor
-    fg = buttonStyleSet.textColor || theme.textColor
+    fg = buttonStyleSet.disabled.textColor || theme.textColor
   }
 
   if (invert) {
