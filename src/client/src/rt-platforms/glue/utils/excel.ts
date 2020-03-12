@@ -21,7 +21,6 @@ export const getAddinStatus = () =>
   window.glue4office ? window.glue4office.excel.addinStatus : false
 
 export const openSheet = async (blotterData: BlotterData[] = []) => {
-  console.log(blotterData)
   const options = {
     columnConfig: [
       { header: 'Trade ID', fieldName: 'tradeId', width: 11 },

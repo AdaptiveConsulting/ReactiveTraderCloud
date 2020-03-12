@@ -25,8 +25,6 @@ function getButtonColors({
 }: ButtonStyleProps & { theme: Theme }) {
   const buttonStyleSet = typeof intent !== 'undefined' && theme.button[intent]
 
-  console.log(intent, buttonStyleSet, theme)
-
   let fg = (buttonStyleSet && buttonStyleSet.textColor) || theme.textColor
   let bg = (buttonStyleSet && buttonStyleSet.backgroundColor) || theme.backgroundColor
 
@@ -54,8 +52,6 @@ function getButtonColors({
       fg = buttonStyleSet.backgroundColor
     }
   }
-
-  console.log(bg, fg)
 
   return {
     ...theme,
