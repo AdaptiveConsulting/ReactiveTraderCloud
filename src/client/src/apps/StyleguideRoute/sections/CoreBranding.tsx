@@ -3,92 +3,95 @@ import React from 'react'
 
 import { H2, H3 } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
-import { colors, styled, Theme, AccentName } from 'rt-theme'
+import { colors, styled, Theme, AccentName, useTheme, ThemeName } from 'rt-theme'
 import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-components'
 
 const { primary, ...others } = colors.accents
 
-console.log(primary)
+export default () => {
+  const { themeName } = useTheme()
 
-export default () => (
-  <React.Fragment>
-    <SectionBlock colorScheme="secondary" mh={2}>
-      <H2 pt={2}>COLOUR</H2>
-      <H3>Core UI</H3>
-      <Paragraph>
-        Core color control the general look and feel of the application and make up 90% of the
-        overall UI aesthetic. When switching from a light to a dark theme these are the key color
-        that change.
-      </Paragraph>
+  return (
+    <React.Fragment>
+      <SectionBlock colorScheme="secondary" mh={2}>
+        <H2 pt={2}>COLOUR</H2>
+        <H3>Core UI</H3>
+        <Paragraph>
+          Core color control the general look and feel of the application and make up 90% of the
+          overall UI aesthetic. When switching from a light to a dark theme these are the key color
+          that change.
+        </Paragraph>
 
-      <ThemePalettes theme={colors.dark} />
+        <ThemePalettes theme={themeName === ThemeName.Dark ? colors.dark : colors.light} />
 
-      <Separator />
+        <Separator />
 
-      <QuadrantLayout>
-        <span>
-          <H3>Brand / Accent Colours</H3>
-          <Paragraph mb={0} pr={3}>
-            Brand colors aim to communicate a companies visual ownership of the digital product.
-          </Paragraph>
-        </span>
-        <DominantAccentPalettes dominant={primary} />
-      </QuadrantLayout>
+        <QuadrantLayout>
+          <span>
+            <H3>Brand / Accent Colours</H3>
+            <Paragraph mb={0} pr={3}>
+              Brand colors aim to communicate a companies visual ownership of the digital product.
+            </Paragraph>
+          </span>
+          <DominantAccentPalettes dominant={primary} />
+        </QuadrantLayout>
 
-      <Separator />
+        <Separator />
 
-      <QuadrantLayout>
-        <span>
-          <H3>Accents & Functional colors</H3>
-          <Paragraph mb={3} pr={3}>
-            Accent colors inject focus points in to the UI and are used to give the UI character and
-            guide users attention. These colors often work with the brand helping to retain the
-            ‘feeling’ of being from the same organisation but not always.
-          </Paragraph>
-        </span>
+        <QuadrantLayout>
+          <span>
+            <H3>Accents & Functional colors</H3>
+            <Paragraph mb={3} pr={3}>
+              Accent colors inject focus points in to the UI and are used to give the UI character
+              and guide users attention. These colors often work with the brand helping to retain
+              the ‘feeling’ of being from the same organisation but not always.
+            </Paragraph>
+          </span>
 
-        <AccentPalettes accents={others} />
-      </QuadrantLayout>
+          <AccentPalettes accents={others} />
+        </QuadrantLayout>
 
-      <Separator />
+        <Separator />
 
-      <QuadrantLayout>
-        <span>
-          <H3>Unique Collections</H3>
-          <Paragraph pr={3}>
-            Create separate references for key areas of the application such as trading directions.
-          </Paragraph>
-          <Paragraph pr={3}>
-            <i>
-              Note: Why are some colours the same but named differently? Answer: These colours will
-              be chosen and used in different situations allowing key functional colours and
-              branding to be changed independantly of one another.
-            </i>
-          </Paragraph>
-        </span>
+        <QuadrantLayout>
+          <span>
+            <H3>Unique Collections</H3>
+            <Paragraph pr={3}>
+              Create separate references for key areas of the application such as trading
+              directions.
+            </Paragraph>
+            <Paragraph pr={3}>
+              <i>
+                Note: Why are some colours the same but named differently? Answer: These colours
+                will be chosen and used in different situations allowing key functional colours and
+                branding to be changed independantly of one another.
+              </i>
+            </Paragraph>
+          </span>
 
-        <span>
-          <UniquePalettes
-            palettes={{
-              'Trading-Sell': {
-                base: colors.spectrum.uniqueCollections.Sell.base,
-                1: colors.spectrum.uniqueCollections.Sell.lighter,
-              },
-            }}
-          />
-          <UniquePalettes
-            palettes={{
-              'Trading-Buy': {
-                base: colors.spectrum.uniqueCollections.Buy.base,
-                1: colors.spectrum.uniqueCollections.Buy.lighter,
-              },
-            }}
-          />
-        </span>
-      </QuadrantLayout>
-    </SectionBlock>
-  </React.Fragment>
-)
+          <span>
+            <UniquePalettes
+              palettes={{
+                'Trading-Sell': {
+                  base: colors.spectrum.uniqueCollections.Sell.base,
+                  1: colors.spectrum.uniqueCollections.Sell.lighter,
+                },
+              }}
+            />
+            <UniquePalettes
+              palettes={{
+                'Trading-Buy': {
+                  base: colors.spectrum.uniqueCollections.Buy.base,
+                  1: colors.spectrum.uniqueCollections.Buy.lighter,
+                },
+              }}
+            />
+          </span>
+        </QuadrantLayout>
+      </SectionBlock>
+    </React.Fragment>
+  )
+}
 
 const Separator = styled.div`
   height: 2px;

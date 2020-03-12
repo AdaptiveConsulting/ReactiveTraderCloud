@@ -142,13 +142,15 @@ const createTheme = (
 
     primary: {
       backgroundColor: accents.primary.base,
-      textColor: secondary.base,
+      textColor: colors.static.white,
 
       active: {
         backgroundColor: accents.primary.darker,
+        textColor: colors.static.white,
       },
       disabled: {
         backgroundColor: primary[1],
+        textColor: secondary.base,
       },
     },
 
@@ -158,21 +160,23 @@ const createTheme = (
 
       active: {
         backgroundColor: accents.primary.darker,
+        textColor: colors.static.white,
       },
       disabled: {
         backgroundColor: primary[1],
       },
     },
 
-    ...mapValues(accents, ({ base, darker, lighter }) => ({
+    ...mapValues(accents, ({ base, darker }) => ({
       backgroundColor: base,
-      textColor: colors.light.primary.base,
+      textColor: colors.static.white,
 
       active: {
         backgroundColor: darker,
       },
       disabled: {
         backgroundColor: primary[1],
+        textColor: secondary.base,
       },
     })),
   } as TouchableStyleSet,

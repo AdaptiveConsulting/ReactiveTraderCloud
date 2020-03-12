@@ -105,8 +105,6 @@ const prodEnvs = ['demo']
 const env = getEnvironment() || 'unknown'
 const envFormatted = prodEnvs.includes(env) ? '' : `(${env.toUpperCase()})`
 
-console.log(envFormatted)
-
 const baseAppConfigs: ApplicationConfig[] = [
   {
     name: `Reactive Trader Cloud ${envFormatted}`,
