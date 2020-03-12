@@ -4,6 +4,7 @@ import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { ThemeProvider } from 'rt-theme'
+import { getEnvironment } from 'rt-util/getEnvironment'
 import { Router } from './data'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
 import { getPlatformAsync, PlatformProvider } from 'rt-platforms'
@@ -36,15 +37,10 @@ const MainRoute = () => {
       ReactGA.set({
         dimension1: platform.type,
         dimension2: platform.name,
-        dimension3: process.env.NODE_ENV,
+        dimension3: getEnvironment() || 'unknown',
         page: window.location.pathname,
       })
       ReactGA.pageview(window.location.pathname)
-      ReactGA.event({
-        category: 'RT - App',
-        action: 'open',
-        label: `Platform: ${platform.name}`,
-      })
     }
   }, [platform])
 

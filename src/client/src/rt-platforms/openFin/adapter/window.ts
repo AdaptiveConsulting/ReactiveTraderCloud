@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import ReactGA from "react-ga";
 import { WindowConfig } from '../../types'
 import { get as _get, last as _last } from 'lodash'
 import { PlatformWindow } from '../../platformWindow'
@@ -59,6 +60,11 @@ export function createPlatformWindow(
   return {
     close: async () => {
       resetCurrentSnapshotName()
+      ReactGA.event({
+        category: 'RT - Window',
+        action: 'close',
+        label: window.name,
+      })
       return (await getWindow()).close()
     },
     bringToFront: async () => (await getWindow()).bringToFront(),
@@ -130,6 +136,12 @@ export const openDesktopWindow = async (
   const centered = (!hasChildWindows && !configHasXYCoordinates) || config.center === 'screen'
 
   console.info(`Creating Openfin window: ${windowName}`)
+
+  ReactGA.event({
+    category: 'RT - Window',
+    action: 'open',
+    label: windowName,
+  })
 
   const platform = await finWithPlatform.Platform.getCurrent()
 
