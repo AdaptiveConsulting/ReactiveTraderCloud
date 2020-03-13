@@ -1,24 +1,21 @@
 import React from 'react'
-
+import { useSelector, useMemo } from 'react-redux'
 import { Resizer, TearOff } from 'rt-components'
-import { externalWindowDefault, ExternalWindow } from 'rt-platforms'
+import { externalWindowDefault, ExternalWindow, WindowPosition } from 'rt-platforms'
 import { AnalyticsContainer } from '../widgets/analytics'
 import { BlotterContainer } from '../widgets/blotter'
 import StatusBar from '../widgets/status-bar'
 import StatusButton from '../widgets/status-connection'
 import { WorkspaceContainer } from '../widgets/workspace'
-
 import ReconnectModal from '../components/reconnect-modal'
-import DefaultLayout from '../layouts/DefaultLayout'
+import { analyticsSelector, blotterSelector, liveRatesSelector, DefaultLayout } from '../layouts'
 import { BlotterWrapper, AnalyticsWrapper, OverflowScroll, WorkspaceWrapper } from './styled'
-import { analyticsSelector, blotterSelector, liveRatesSelector } from '../layouts/selectors'
-import { useSelector } from 'react-redux'
 
 interface Props {
   header?: React.ReactChild
 }
 
-const addLayoutToConfig = (windowConfig: ExternalWindow, layout: any) => {
+const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition) => {
   return {
     ...windowConfig,
     config: {
@@ -34,6 +31,14 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
   const analytics = useSelector(analyticsSelector)
   const liveRates = useSelector(liveRatesSelector)
 
+  const lastRemainingService = useMemo(() => {
+    const numberOfVisibleService = [blotter.visible, analytics.visible, liveRates.visible].filter(
+      visible => visible === true,
+    ).length
+
+    return numberOfVisibleService === 1
+  }, [blotter.visible, analytics.visible, liveRates.visible])
+
   const body = (
     <Resizer
       defaultHeight={30}
@@ -44,7 +49,12 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
             dragTearOff
             externalWindowProps={addLayoutToConfig(externalWindowDefault.blotterRegion, blotter)}
             render={(popOut, tornOff) => (
-              <BlotterContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
+              <BlotterContainer
+                onPopoutClick={popOut}
+                tornOff={tornOff}
+                tearable
+                lastRemainingService
+              />
             )}
             tornOff={!blotter.visible}
           />
