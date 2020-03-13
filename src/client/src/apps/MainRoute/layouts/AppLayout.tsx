@@ -16,7 +16,7 @@ const AppLayout: React.FC<Props> = ({ before, header, body, footer, after }) => 
     <AppLayoutRoot data-qa="app-layout__root">
       {before}
 
-      <Header>{header}</Header>
+      {header !== null && <Header>{header}</Header>}
 
       <Body>{body}</Body>
 
