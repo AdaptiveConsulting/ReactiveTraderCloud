@@ -1,3 +1,4 @@
+import ReactGA from "react-ga";
 import { UAParser } from 'ua-parser-js'
 import { WindowConfig } from '../types'
 import { openBrowserWindow } from './window'
@@ -37,7 +38,14 @@ export default class Browser implements Platform {
 
   window = {
     ...createDefaultPlatformWindow(window),
-    open: (config: WindowConfig, onClose?: () => void) => openBrowserWindow(config, onClose),
+    open: (config: WindowConfig, onClose?: () => void) => {
+      ReactGA.event({
+        category: 'RT - Window',
+        action: 'open',
+        label: config.name,
+      })
+      return openBrowserWindow(config, onClose)
+    },
   }
 
   notification = {
