@@ -62,13 +62,7 @@ export const StatusButton: React.FC<Props> = ({
 
       <ServiceListPopup open={isOpen} onClick={toggleOpen}>
         <ServiceList>
-          <AppUrl
-            title={appUrl}
-            readOnly={true}
-            value={appUrl}
-            onFocus={selectAll}
-            onClick={selectAll}
-          />
+          <AppUrl title={appUrl} readOnly value={appUrl} onFocus={selectAll} onClick={selectAll} />
 
           {services.map(service => (
             <Service key={service.serviceType} service={service} />

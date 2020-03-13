@@ -28,20 +28,20 @@ const analyticsRegion: ExternalWindow = {
   },
 }
 
-const spotTilesRegion: ExternalWindow = {
-  title: 'SpotTiles',
+const liveRatesRegion: ExternalWindow = {
+  title: 'LiveRates',
   config: {
-    name: 'spotTiles',
+    name: 'LiveRates',
     width: 664,
     height: 617,
     minWidth: 664,
     minHeight: 617,
-    url: '/tiles/:currency/:tileView',
+    url: '/tiles/ALL/Analytics',
   },
 }
 
 export const externalWindowDefault = {
   blotterRegion,
   analyticsRegion,
-  spotTilesRegion,
+  liveRatesRegion,
 }

@@ -7,6 +7,7 @@ export interface LayoutState {
   blotter: WindowPosition
   analytics: WindowPosition
   spotTiles: TilesLayout
+  liveRates: WindowPosition
 }
 
 const INITIAL_STATE: LayoutState = {
@@ -17,6 +18,9 @@ const INITIAL_STATE: LayoutState = {
     visible: true,
   },
   spotTiles: {},
+  liveRates: {
+    visible: true,
+  },
 }
 
 export const layoutReducer = (
@@ -36,13 +40,10 @@ export const layoutReducer = (
             ...state,
             analytics: getWindowPosition(action),
           }
-        case externalWindowDefault.spotTilesRegion.config.name:
+        case externalWindowDefault.liveRatesRegion.config.name:
           return {
             ...state,
-            spotTiles: {
-              ...state.spotTiles,
-              [action.payload.name!]: getWindowPosition(action),
-            },
+            liveRates: getWindowPosition(action),
           }
         default:
           // this is a spot tile

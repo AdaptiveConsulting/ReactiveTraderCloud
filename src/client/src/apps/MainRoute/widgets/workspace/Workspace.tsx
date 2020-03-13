@@ -62,7 +62,7 @@ const Workspace: React.FC<Props> = ({
             <TearOff
               id={key}
               key={key}
-              dragTearOff={true}
+              dragTearOff
               externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView as TileView)}
               render={(popOut, isTornOff) => (
                 <WorkspaceItem>

@@ -13,7 +13,7 @@ const AnalyticsRouteStyle = styled.div`
 const AnalyticsRoute = () => {
   return (
     <AnalyticsRouteStyle>
-      <AnalyticsContainer inExternalWindow={true} />
+      <AnalyticsContainer inExternalWindow />
     </AnalyticsRouteStyle>
   )
 }

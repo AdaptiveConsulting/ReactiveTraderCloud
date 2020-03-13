@@ -125,7 +125,7 @@ const AnalyticsTile: React.FC<SpotTileProps> = props => {
               currencyPair={currencyPair}
               disabled={tradingDisabled}
               rfqState={rfqState}
-              isAnalyticsView={true}
+              isAnalyticsView
               rfq={rfq}
               notional={notional}
               lastTradeExecutionStatus={lastTradeExecutionStatus}

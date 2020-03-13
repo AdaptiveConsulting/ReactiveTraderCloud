@@ -7,4 +7,4 @@ export const blotterSelector = createSelector([selectState], state => state.blot
 
 export const analyticsSelector = createSelector([selectState], state => state.analytics)
 
-export const spotTilesSelector = createSelector([selectState], state => state.spotTiles)
+export const liveRatesSelector = createSelector([selectState], state => state.liveRates)

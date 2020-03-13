@@ -23,9 +23,7 @@ type Props = ReturnType<typeof mapStateToProps> & WorkspaceContainerOwnProps
 const WorkspaceContainer: React.FC<Props> = props => {
   const { status, tearable = false, tornOff, onPopoutClick } = props
   const { allowTearOff } = usePlatform()
-  console.log(allowTearOff)
-  console.log(tearable)
-  console.log(!tornOff)
+
   return (
     <Loadable
       status={status}
