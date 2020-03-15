@@ -1,4 +1,4 @@
-import { AutobahnSessionProxy, ConnectionEvent, ServiceStub, AutobahnConnection } from 'rt-system'
+import { AutobahnSessionProxy, ServiceStub, AutobahnConnection } from 'rt-system'
 import { MockScheduler } from 'rt-testing'
 import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
 import { IMessage } from '@stomp/stompjs'
@@ -12,14 +12,17 @@ describe('ServiceStub', () => {
   const Username = 'USER'
 
   describe('Request Response method', () => {
-    const procedure = 'procedure'
+    const service = 'service'
+    const operationName = 'operation'
     const payload = 'payload'
-    const replyTo = 'responseTopic'
+    const procedure = service + '.' + operationName
 
     it('invokes a remote procedure with the correct payload', () => {
       const rpcEndpoint = new MockRpcEndpoint()
       const stub = new ServiceStub(Username, createMockConnection(rpcEndpoint))
-      const rpc = stub.requestResponse<string, string>(procedure, payload, replyTo).subscribe()
+      const rpc = stub
+        .createRequestResponseOperation<string, string>(service, operationName, payload)
+        .subscribe()
 
       expect(rpcEndpoint.rpc).lastCalledWith({
         destination: `/amq/queue/${procedure}`,
@@ -33,13 +36,17 @@ describe('ServiceStub', () => {
   })
 
   describe('Request Stream method', () => {
-    const procedure = 'procedure'
+    const service = 'service'
+    const operationName = 'operation'
     const payload = 'payload'
+    const procedure = service + '.' + operationName
 
     it('invokes a remote procedure with the correct payload', () => {
       const rpcEndpoint = new MockRpcEndpoint()
       const stub = new ServiceStub(Username, createMockConnection(rpcEndpoint))
-      const rpc = stub.requestStream<string, string>(procedure, payload).subscribe()
+      const rpc = stub
+        .createStreamOperation<string, string>(service, operationName, payload)
+        .subscribe()
 
       expect(rpcEndpoint.stream).lastCalledWith({
         destination: `/amq/queue/${procedure}`,
@@ -83,7 +90,7 @@ describe('ServiceStub', () => {
     })
 
     xit('Observable topic errors when an acknowledgement fails', () => {
-      new MockScheduler().run(({ cold, expectObservable }) => {
+      new MockScheduler().run(({ expectObservable }) => {
         const streamEndpoint = new MockStreamEndpoint()
         const stub = new ServiceStub(Username, createMockConnection(undefined, streamEndpoint))
         const topicSubscription$ = stub.subscribeToTopic(FAILURE_TOPIC)

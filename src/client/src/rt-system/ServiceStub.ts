@@ -37,31 +37,17 @@ export class ServiceStub {
     )
   }
 
-  requestStream<TResult, TPayload>(remoteProcedure: string, payload: TPayload) {
-    const dto: SubscriptionDTO<TPayload> = {
-      payload,
-      Username: this.userName,
-    }
-
-    return this.connection.rpcEndpoint
-      .stream({
-        destination: `/amq/queue/${remoteProcedure}`,
-        body: JSON.stringify(dto),
-      })
-      .pipe(
-        tap(x => this.logResponse(remoteProcedure, { headers: x.headers, body: x.body })),
-        map(x => JSON.parse(x.body) as TResult),
-      )
-  }
   /**
    * wraps a RPC up as an observable stream
    */
-
-  requestResponse<TResult, TPayload>(
-    remoteProcedure: string,
+  createRequestResponseOperation<TResponse, TPayload>(
+    service: string,
+    operationName: string,
     payload: TPayload,
-    responseTopic: string = '',
   ) {
+    console.info(LOG_NAME, `Creating request response operation for [${operationName}]`)
+
+    const remoteProcedure = service + '.' + operationName
     const dto: SubscriptionDTO<TPayload> = {
       payload,
       Username: this.userName,
@@ -74,28 +60,32 @@ export class ServiceStub {
       })
       .pipe(
         tap(x => this.logResponse(remoteProcedure, { headers: x.headers, body: x.body })),
-        map(x => JSON.parse(x.body) as TResult),
+        map(x => JSON.parse(x.body) as TResponse),
       )
+      .pipe(share())
   }
 
-  createRequestResponseOperation<TResponse, TRequest>(
+  createStreamOperation<TResponse, TPayload = {}>(
     service: string,
     operationName: string,
-    request: TRequest,
-  ) {
-    console.info(LOG_NAME, `Creating request response operation for [${operationName}]`)
-
-    const remoteProcedure = service + '.' + operationName
-    return this.requestResponse<TResponse, TRequest>(remoteProcedure, request).pipe(share())
-  }
-
-  createStreamOperation<TResponse, TRequest = {}>(
-    service: string,
-    operationName: string,
-    request: TRequest,
+    payload: TPayload,
   ) {
     const remoteProcedure = `${service}.${operationName}`
     console.log(`subscriping to RPC stream ${remoteProcedure}`)
-    return this.requestStream<TResponse, TRequest>(remoteProcedure, request).pipe(share())
+    const dto: SubscriptionDTO<TPayload> = {
+      payload,
+      Username: this.userName,
+    }
+
+    return this.connection.rpcEndpoint
+      .stream({
+        destination: `/amq/queue/${remoteProcedure}`,
+        body: JSON.stringify(dto),
+      })
+      .pipe(
+        tap(x => this.logResponse(remoteProcedure, { headers: x.headers, body: x.body })),
+        map(x => JSON.parse(x.body) as TResponse),
+      )
+      .pipe(share())
   }
 }
