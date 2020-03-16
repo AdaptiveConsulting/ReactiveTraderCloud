@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
 import { WindowConfig, WindowPosition } from 'rt-platforms'
+import { selectSpotTileData } from '../spotTile/selectors'
 
 type Center = 'screen' | 'parent'
 export interface ExternalWindowProps {
@@ -35,12 +36,13 @@ const getSpotTilesLayout = (state: GlobalState) => state.layoutService.spotTiles
 // TODO: instead of creating tiles in the selector, consider creating them in the reducer for
 // reference data
 export const selectSpotTiles = createSelector(
-  [getSpotTiles, getSpotTilesLayout],
-  (spotTileKeys, tilesLayout) =>
+  [getSpotTiles, getSpotTilesLayout, state => state],
+  (spotTileKeys, tilesLayout, state) =>
     Object.keys(spotTileKeys).map(key => ({
       key,
       externalWindowProps: makeExternalWindowProps(key, tilesLayout[key]),
       tornOff: tilesLayout[key] === undefined ? false : !tilesLayout[key].visible,
+      data: selectSpotTileData(state, key),
     })),
 )
 

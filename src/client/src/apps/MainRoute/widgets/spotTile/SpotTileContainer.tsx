@@ -22,6 +22,7 @@ import { CurrencyPairNotional } from './model/spotTileData'
 export interface SpotTileContainerOwnProps {
   id: string
   tileView: TileView
+  notional?: number
   onPopoutClick?: (x: number, y: number) => void
   tornOff?: boolean
   tearable?: boolean
@@ -79,9 +80,17 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   tornOff,
   onCurrencyPairChanged,
   onUnmount,
+  notional,
   ...props
 }) => {
   const { allowTearOff } = usePlatform()
+
+  useEffect(() => {
+    if (typeof notional !== 'undefined' && notional !== props.spotTileData.notional) {
+      props.updateNotional({ currencyPair: id, notional })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // watch currency pair changes when component is mounted
   useEffect(() => {
