@@ -1,7 +1,7 @@
 import { styled } from 'rt-theme'
 import { transparentColor } from '../globals/variables'
 
-export const AnalyticsWrapper = styled.div<{ canPopout: boolean }>`
+export const AnalyticsWrapper = styled.div<{ inExternalWindow?: boolean }>`
   width: 100%;
   height: 100%;
   max-width: 60rem;
@@ -11,7 +11,7 @@ export const AnalyticsWrapper = styled.div<{ canPopout: boolean }>`
   overflow-x: hidden;
   position: relative;
   display: grid;
-  grid-template-rows: ${({ canPopout }) => (canPopout ? '46px auto' : '0 auto')};
+  grid-template-rows: ${({ inExternalWindow }) => (inExternalWindow ? '0 auto' : '46px auto')};
 `
 
 export const AnalyticsHeader = styled.header`

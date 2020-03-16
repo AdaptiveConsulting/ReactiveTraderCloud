@@ -1,5 +1,5 @@
-import React from 'react'
-import { useSelector, useMemo } from 'react-redux'
+import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import { Resizer, TearOff } from 'rt-components'
 import { externalWindowDefault, ExternalWindow, WindowPosition } from 'rt-platforms'
 import { AnalyticsContainer } from '../widgets/analytics'
@@ -52,8 +52,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
               <BlotterContainer
                 onPopoutClick={popOut}
                 tornOff={tornOff}
-                tearable
-                lastRemainingService
+                tearable={!lastRemainingService}
               />
             )}
             tornOff={!blotter.visible}
@@ -69,7 +68,11 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
         render={(popOut, tornOff) => (
           <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
             <OverflowScroll>
-              <WorkspaceContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
+              <WorkspaceContainer
+                onPopoutClick={popOut}
+                tornOff={tornOff}
+                tearable={!lastRemainingService}
+              />
             </OverflowScroll>
           </WorkspaceWrapper>
         )}
@@ -85,7 +88,11 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
         dragTearOff
         externalWindowProps={addLayoutToConfig(externalWindowDefault.analyticsRegion, analytics)}
         render={(popOut, tornOff) => (
-          <AnalyticsContainer onPopoutClick={popOut} tornOff={tornOff} tearable />
+          <AnalyticsContainer
+            onPopoutClick={popOut}
+            tornOff={tornOff}
+            tearable={!lastRemainingService}
+          />
         )}
         tornOff={!analytics.visible}
       />
