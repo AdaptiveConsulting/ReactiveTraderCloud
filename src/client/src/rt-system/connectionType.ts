@@ -1,3 +1,1 @@
-import { DefaultTransportType } from 'autobahn'
-
-export type ConnectionType = DefaultTransportType | 'unknown'
+export type ConnectionType = string | 'unknown'

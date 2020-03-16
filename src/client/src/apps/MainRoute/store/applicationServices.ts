@@ -1,5 +1,5 @@
 import {
-  AutobahnConnection,
+  WsConnection,
   createConnection$,
   ServiceStub,
   serviceStatusStream$,
@@ -16,7 +16,7 @@ import { LimitChecker, ExcelApp, Platform } from 'rt-platforms'
 const HEARTBEAT_TIMEOUT = 3000
 
 export interface ApplicationProps {
-  autobahn: AutobahnConnection
+  broker: WsConnection
   platform: Platform
   limitChecker: LimitChecker
   excelApp: ExcelApp
@@ -24,13 +24,13 @@ export interface ApplicationProps {
 }
 
 export function createApplicationServices({
-  autobahn,
+  broker,
   limitChecker,
   excelApp,
   user,
   platform,
 }: ApplicationProps) {
-  const connection$ = createConnection$(autobahn).pipe(
+  const connection$ = createConnection$(broker).pipe(
     retryWhen(retryWithBackOff()),
     multicast(() => {
       return new ReplaySubject<ConnectionEvent>(1)
@@ -38,7 +38,7 @@ export function createApplicationServices({
     refCount(),
   )
 
-  const serviceStub = new ServiceStub(user.code, autobahn)
+  const serviceStub = new ServiceStub(user.code, broker)
 
   const statusUpdates$ = serviceStub.subscribeToTopic<RawServiceStatus>('status')
   const serviceStatus$ = serviceStatusStream$(statusUpdates$, HEARTBEAT_TIMEOUT).pipe(

@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components'
 import { Observable, ReplaySubject } from 'rxjs'
 import { Provider as InteropProvider, getProvider } from 'rt-interop'
 import { getPlatformAsync, Platform, PlatformProvider } from 'rt-platforms'
-import { AutobahnConnectionProxy, ServiceStub } from 'rt-system'
+import { WsConnectionProxy, ServiceStub } from 'rt-system'
 import { themes } from 'rt-theme'
 import { BlotterService, TradesUpdate, PricingService } from 'apps/MainRoute'
 import { Launcher } from './Launcher'
@@ -14,9 +14,8 @@ import {
   TradeUpdatesProvider,
 } from './spotlight'
 
-const autobahn = new AutobahnConnectionProxy(
+const broker = new WsConnectionProxy(
   process.env.REACT_APP_BROKER_HOST || location.hostname,
-  'com.weareadaptive.reactivetrader',
   +(process.env.REACT_APP_BROKER_PORT || location.port),
 )
 
@@ -33,7 +32,7 @@ export const SimpleLauncher: React.FC = () => {
 
   useEffect(() => {
     ;(async () => {
-      const serviceStub = createServiceStub(autobahn)
+      const serviceStub = createServiceStub(broker)
       const platformResult = await getPlatformAsync()
 
       // blotter service

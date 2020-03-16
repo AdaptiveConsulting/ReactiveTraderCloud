@@ -52,7 +52,7 @@ export default class Browser implements Platform {
   }
 
   /*
-    TODO: Browser can subscribe and publish via autobahn, so it would make sense to implement these methods.
+    TODO: Browser can subscribe and publish via the web socket, so it would make sense to implement these methods.
     In that case the interop object could be promoted as abstract to the base class
   */
   // interop?: {

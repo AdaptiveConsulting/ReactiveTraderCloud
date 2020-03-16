@@ -1,5 +1,5 @@
-import { AutobahnConnection, ServiceStub } from 'rt-system'
+import { WsConnection, ServiceStub } from 'rt-system'
 
-export function createServiceStub(autobahn: AutobahnConnection) {
-  return new ServiceStub('Spotlight', autobahn)
+export function createServiceStub(broker: WsConnection) {
+  return new ServiceStub('Spotlight', broker)
 }

@@ -1,5 +1,4 @@
-import { AutobahnSessionProxy, ServiceStub, AutobahnConnection } from 'rt-system'
-import { MockScheduler } from 'rt-testing'
+import { ServiceStub, WsConnection } from 'rt-system'
 import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
 import { IMessage } from '@stomp/stompjs'
 import { Observable } from 'rxjs'
@@ -60,17 +59,6 @@ describe('ServiceStub', () => {
   })
 
   describe('Subscribe To Topic method', () => {
-    let variables: {}
-
-    beforeEach(() => {
-      variables = {
-        c: createMockConnection(),
-        1: 'result1',
-        2: 'result2',
-        3: 'result3',
-      }
-    })
-
     const topic = 'someTopic'
     it('subscribes to the correct topic name', () => {
       const streamEndpoint = new MockStreamEndpoint()
@@ -78,47 +66,21 @@ describe('ServiceStub', () => {
       stub.subscribeToTopic(topic).subscribe()
       expect(streamEndpoint.watch).lastCalledWith(`/exchange/${topic}`)
     })
-
-    xit('streams topic results', () => {
-      new MockScheduler().run(({ expectObservable }) => {
-        const streamEndpoint = new MockStreamEndpoint()
-        const stub = new ServiceStub(Username, createMockConnection(undefined, streamEndpoint))
-        const expected = '--(123)'
-        const topicSubscription$ = stub.subscribeToTopic(topic)
-        expectObservable(topicSubscription$).toBe(expected, variables)
-      })
-    })
-
-    xit('Observable topic errors when an acknowledgement fails', () => {
-      new MockScheduler().run(({ expectObservable }) => {
-        const streamEndpoint = new MockStreamEndpoint()
-        const stub = new ServiceStub(Username, createMockConnection(undefined, streamEndpoint))
-        const topicSubscription$ = stub.subscribeToTopic(FAILURE_TOPIC)
-        expectObservable(topicSubscription$).toBe('--#', variables, topicError)
-      })
-    })
   })
 })
 
-const createMockConnection: (
-  rpcEndpoint?: RxStompRPC,
-  streamEndpoint?: RxStomp,
-) => AutobahnConnection = (
+const createMockConnection: (rpcEndpoint?: RxStompRPC, streamEndpoint?: RxStomp) => WsConnection = (
   rpcEndpoint: RxStompRPC = new MockRpcEndpoint(),
   streamEndpoint: RxStomp = new MockStreamEndpoint(),
 ) => ({
+  config: { brokerURL: 'FAKE', connectionType: 'websocket', reconnectDelay: 500 },
   rpcEndpoint: rpcEndpoint,
   streamEndpoint: streamEndpoint,
-  session: {} as AutobahnSessionProxy,
   open: jest.fn().mockReturnValue(true),
   close: jest.fn(),
-  getConnection: jest.fn<any, any>(),
   onopen: jest.fn(),
   onclose: jest.fn(),
 })
-
-const FAILURE_TOPIC = 'FAILURE_TOPIC'
-const topicError = new Error('failure')
 
 const MockRpcEndpoint = jest.fn<any, any>(() => {
   return {

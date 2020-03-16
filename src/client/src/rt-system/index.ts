@@ -3,7 +3,7 @@ import * as serviceInstanceCollection from './ServiceInstanceCollection'
 import * as serviceInstanceStatus from './serviceInstanceStatus'
 import * as connectionStream from './connectionStream'
 import * as connectionType from './connectionType'
-import * as autoBahnConnection from './AutoBahnConnection'
+import * as wsConnection from './WsConnection'
 
 export type RawServiceStatus = serviceInstanceStatus.RawServiceStatus
 export const { ServiceInstanceCollection } = serviceInstanceCollection
@@ -18,14 +18,11 @@ export type ConnectionType = connectionType.ConnectionType
 export { ServiceStub } from './ServiceStub'
 export { ServiceStub as ServiceClient } from './ServiceStub'
 export const { ConnectionEventType } = connectionStream
-export type AutobahnConnection = autoBahnConnection.AutobahnConnection
-export { default as AutobahnConnectionProxy } from './AutobahnConnectionProxy'
+export type WsConnection = wsConnection.WsConnection
+export { default as WsConnectionProxy } from './WsConnectionProxy'
 
 export const { createConnection$ } = connectionStream
 export type ConnectionEvent = connectionStream.ConnectionEvent
-export type ConnectionOpenEvent = connectionStream.ConnectionOpenEvent
-export type ConnectionClosedEvent = connectionStream.ConnectionClosedEvent
 
-export { default as AutobahnSessionProxy } from './AutobahnSessionProxy'
 export { serviceStatusStream$ } from './serviceStatusStream'
 export { debounceWithSelector } from './debounceOnMissedHeartbeat'

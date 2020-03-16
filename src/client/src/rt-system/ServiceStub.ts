@@ -1,6 +1,6 @@
-import { NextObserver, Observable } from 'rxjs'
-import { AutobahnConnection } from 'rt-system'
-import { map, tap, share } from 'rxjs/operators'
+import { Observable } from 'rxjs'
+import { map, tap } from 'rxjs/operators'
+import { WsConnection } from './WsConnection'
 
 const LOG_NAME = 'ServiceClient: Initiated'
 
@@ -15,7 +15,7 @@ interface SubscriptionDTO<TPayload> {
  * A stub Used to call services. Hides the complexity of server interactions
  */
 export class ServiceStub {
-  constructor(private readonly userName: string, private connection: AutobahnConnection) {}
+  constructor(private readonly userName: string, private connection: WsConnection) {}
 
   private logResponse(topic: string, response: any): void {
     const payloadString = JSON.stringify(response)
@@ -30,10 +30,10 @@ export class ServiceStub {
    * @param acknowledgementObs
    * @returns {Observable}
    */
-  subscribeToTopic<T>(topic: string, acknowledgementObs?: NextObserver<string>): Observable<T> {
+  subscribeToTopic<TResponse>(topic: string): Observable<TResponse> {
     return this.connection.streamEndpoint.watch(`/exchange/${topic}`).pipe(
       tap(x => this.logResponse(topic, { headers: x.headers, body: x.body })),
-      map(x => JSON.parse(x.body) as T),
+      map(x => JSON.parse(x.body) as TResponse),
     )
   }
 
@@ -44,7 +44,7 @@ export class ServiceStub {
     service: string,
     operationName: string,
     payload: TPayload,
-  ) {
+  ): Observable<TResponse> {
     console.info(LOG_NAME, `Creating request response operation for [${operationName}]`)
 
     const remoteProcedure = service + '.' + operationName
@@ -62,14 +62,13 @@ export class ServiceStub {
         tap(x => this.logResponse(remoteProcedure, { headers: x.headers, body: x.body })),
         map(x => JSON.parse(x.body) as TResponse),
       )
-      .pipe(share())
   }
 
   createStreamOperation<TResponse, TPayload = {}>(
     service: string,
     operationName: string,
     payload: TPayload,
-  ) {
+  ): Observable<TResponse> {
     const remoteProcedure = `${service}.${operationName}`
     console.log(`subscriping to RPC stream ${remoteProcedure}`)
     const dto: SubscriptionDTO<TPayload> = {
@@ -86,6 +85,5 @@ export class ServiceStub {
         tap(x => this.logResponse(remoteProcedure, { headers: x.headers, body: x.body })),
         map(x => JSON.parse(x.body) as TResponse),
       )
-      .pipe(share())
   }
 }
