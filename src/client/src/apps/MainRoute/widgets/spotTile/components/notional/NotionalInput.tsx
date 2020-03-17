@@ -34,12 +34,19 @@ export default class NotionalInput extends PureComponent<Props, State> {
     this.props.resetNotional()
   }
 
+  handleUpdateNotional = (currencyPairSymbol: string) => (value: number) => {
+    if (localStorage) {
+      localStorage.setItem(currencyPairSymbol, `${value}`)
+    }
+
+    this.props.updateNotional(value)
+  }
+
   render() {
     const {
       currencyPairSymbol,
       currencyPairBase,
       notional,
-      updateNotional,
       validationMessage,
       showResetButton,
       disabled,
@@ -55,7 +62,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
           ref={this.inputRef}
           numericValue={notional}
           onFocus={this.handleFocus}
-          onNumericValueChange={updateNotional}
+          onNumericValueChange={this.handleUpdateNotional(currencyPairSymbol)}
           validationMessage={validationMessage}
           disabled={disabled}
           data-qa-id={`notional-input__input-${currencyPairSymbol.toLowerCase()}`}

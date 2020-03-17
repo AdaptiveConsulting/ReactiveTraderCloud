@@ -73,6 +73,15 @@ type SpotTileContainerProps = SpotTileContainerOwnProps &
   SpotTileContainerStateProps &
   SpotTileContainerDispatchProps
 
+const getNotionalFromLocalStorage: (id: string) => number | undefined = id => {
+  if (localStorage) {
+    const notional = localStorage.getItem(id)
+    return notional ? Number.parseFloat(notional) : undefined
+  }
+
+  return undefined
+}
+
 const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   pricingStatus,
   tearable = false,
@@ -80,12 +89,12 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   tornOff,
   onCurrencyPairChanged,
   onUnmount,
-  notional,
   ...props
 }) => {
   const { allowTearOff } = usePlatform()
 
   useEffect(() => {
+    const notional = getNotionalFromLocalStorage(id)
     if (typeof notional !== 'undefined' && notional !== props.spotTileData.notional) {
       props.updateNotional({ currencyPair: id, notional })
     }

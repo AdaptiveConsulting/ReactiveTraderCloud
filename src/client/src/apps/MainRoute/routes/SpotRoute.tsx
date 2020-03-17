@@ -27,17 +27,6 @@ const getTileViewFromQueryStr: (queryStr: string) => TileView = queryStr => {
     : TileView.Normal
 }
 
-const getNotionalFromQueryStr: (queryStr: string) => number | undefined = queryStr => {
-  const parsedQueryString = queryString.parse(queryStr)
-  const notionalAsText = parsedQueryString['notional'] as string
-  const notional =
-    typeof notionalAsText !== 'undefined'
-      ? (Number.parseFloat(notionalAsText) as number)
-      : undefined
-
-  return notional
-}
-
 const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   location: { search },
   match,
@@ -61,12 +50,12 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   }, [platform])
 
   const tileView = getTileViewFromQueryStr(search)
-  const notional = getNotionalFromQueryStr(search)
 
   const id = (ccyPairFromInterop && ccyPairFromInterop[0]) || match.params.symbol
+
   return (
     <SpotTileStyle>
-      <SpotTileContainer id={id} tileView={tileView} notional={notional} />
+      <SpotTileContainer id={id} tileView={tileView} />
     </SpotTileStyle>
   )
 }

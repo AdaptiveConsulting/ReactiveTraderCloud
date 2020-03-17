@@ -6,7 +6,6 @@ import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileView } from './workspaceHeader'
 import { appendTileViewToUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
-import { SpotTileData } from '../spotTile/model'
 
 const WorkspaceItems = styled.div`
   display: grid;
@@ -23,7 +22,6 @@ interface SpotTile {
   key: string
   externalWindowProps: ExternalWindowProps
   tornOff: boolean
-  data: SpotTileData
 }
 
 interface Props {
@@ -51,16 +49,12 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
       <WorkspaceItems data-qa="workspace__tiles-workspace-items">
         {spotTiles
           .filter(({ key }) => key.includes(currency) || currency === 'ALL')
-          .map(({ key, externalWindowProps, tornOff, data }) => (
+          .map(({ key, externalWindowProps, tornOff }) => (
             <TearOff
               id={key}
               key={key}
               dragTearOff={true}
-              externalWindowProps={appendTileViewToUrl(
-                externalWindowProps,
-                tileView as TileView,
-                data,
-              )}
+              externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView as TileView)}
               render={(popOut, isTornOff) => (
                 <WorkspaceItem>
                   <SpotTileContainer
