@@ -5,13 +5,11 @@ import { styled, AccentName } from 'rt-theme'
 import {
   minimiseNormalIcon,
   maximiseScreenIcon,
-  exitNormalIcon,
+  ExitIcon,
   popInIcon,
 } from 'apps/SimpleLauncher/icons'
 import { isCurrentWindowDocked } from '../adapter'
 import { UndockIcon } from '../../../rt-components'
-
-const exitIcon = exitNormalIcon()
 
 export interface ControlProps {
   minimize?: () => void
@@ -66,7 +64,7 @@ export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, cl
     ) : null}
     {close ? (
       <HeaderControl onClick={close} data-qa="openfin-chrome__close">
-        {exitIcon}
+        <ExitIcon />
       </HeaderControl>
     ) : null}
   </React.Fragment>

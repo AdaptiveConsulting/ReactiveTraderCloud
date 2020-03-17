@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
+import Measure, { ContentRect } from 'react-measure'
+import { Bounds } from 'openfin/_v2/shapes'
+import { usePlatform } from 'rt-platforms'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
-import { AdaptiveLoader, LogoIcon } from 'rt-components'
-import { usePlatform } from 'rt-platforms'
-import { Bounds } from 'openfin/_v2/shapes'
-import SearchIcon from './icons/searchIcon'
-import { useNlpService } from './spotlight/components/useNlpService'
 import {
   LauncherGlobalStyle,
   MinExitContainer,
@@ -24,17 +22,16 @@ import {
   minimiseCurrentWindow,
   useAppBoundReset,
 } from './windowUtils'
-import { Response, getInlineSuggestionsComponent } from './spotlight'
-import Measure, { ContentRect } from 'react-measure'
-import { SearchControl } from './spotlight'
-import { exitNormalIcon, minimiseNormalIcon } from './icons'
+import { SearchControl, Response, getInlineSuggestionsComponent, useNlpService } from './spotlight'
+import { ExitIcon, minimiseNormalIcon, DynamicLauncherLogo, SearchIcon } from './icons'
 
-const exitIcon = exitNormalIcon()
 const expandedLauncherWidth = 600
 
 const LauncherMinimiseAndExit: React.FC = () => (
   <>
-    <ExitButton onClick={closeCurrentWindow}>{exitIcon}</ExitButton>
+    <ExitButton onClick={closeCurrentWindow}>
+      <ExitIcon />
+    </ExitButton>
     <MinimiseButton onClick={minimiseCurrentWindow}>{minimiseNormalIcon}</MinimiseButton>
   </>
 )
@@ -50,22 +47,11 @@ const SearchButton: React.FC<{
   </SearchButtonContainer>
 )
 
-const DynamicLogo: React.FC<{
+const Logo: React.FC<{
   isMoving: boolean
-  active: boolean
-}> = ({ isMoving, active }) => (
+}> = ({ isMoving }) => (
   <LogoLauncherContainer>
-    {isMoving ? (
-      <AdaptiveLoader
-        size={21}
-        speed={isMoving ? 0.8 : 0}
-        seperation={1}
-        type="secondary"
-        active={active}
-      />
-    ) : (
-      <LogoIcon width={1.2} height={1.2} active={active} />
-    )}
+    <DynamicLauncherLogo isMoving={isMoving} />
   </LogoLauncherContainer>
 )
 
@@ -139,7 +125,7 @@ export const Launcher: React.FC = () => {
     <RootLauncherContainer>
       <LauncherContainer showResponsePanel={showResponsePanel}>
         <LauncherGlobalStyle />
-        <DynamicLogo isMoving={isSearchBusy || contacting} active={isSearchVisible} />
+        <Logo isMoving={isSearchBusy || contacting} />
         <LauncherApps />
         <SearchControl
           ref={searchInputRef}
