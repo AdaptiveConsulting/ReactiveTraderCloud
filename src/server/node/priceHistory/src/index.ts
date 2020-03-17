@@ -1,24 +1,28 @@
 import { interval, NextObserver } from 'rxjs'
 import { filter, map, mapTo, scan, shareReplay, switchMap } from 'rxjs/operators'
 import uuid from 'uuid/v1'
-import AutobahnConnectionProxy from './connection'
-import { ConnectionEventType, ConnectionOpenEvent, createConnection$ } from './connection'
-import { ServiceStub } from './connection'
+import {
+  WsConnectionProxy,
+  ConnectionEvent,
+  ConnectionEventType,
+  connectionStream$,
+  ServiceStub,
+  logger,
+  retryWithBackOff,
+} from 'shared'
 import { convertToPrice, Price, RawPrice } from './domain'
 import { RawServiceStatus } from './domain'
-import logger from './logger'
 
 const host = process.env.BROKER_HOST || 'localhost'
-const realm = process.env.WAMP_REALM || 'com.weareadaptive.reactivetrader'
 const port = process.env.BROKER_PORT || 8000
 
-logger.info(`Started priceHistory service for ${host}:${port} on realm ${realm}`)
+logger.info(`Started priceHistory service for ${host}:${port}`)
 
-const autobahn = new AutobahnConnectionProxy(host, realm!, +port!)
+const broker = new WsConnectionProxy(host, +port!)
 
-const connection$ = createConnection$(autobahn).pipe(shareReplay(1))
+const connection$ = connectionStream$(broker).pipe(shareReplay(1))
 
-const stub = new ServiceStub('BHA', connection$)
+const stub = new ServiceStub('BHA', broker)
 
 const HISTORY_LENGTH = 1000
 
@@ -51,7 +55,7 @@ const priceSubsription$ = stub
   })
 
 const session$ = connection$.pipe(
-  filter((connection): connection is ConnectionOpenEvent => connection.type === ConnectionEventType.CONNECTED),
+  filter((connection): connection is ConnectionEvent => connection.type === ConnectionEventType.CONNECTED),
   map(connection => connection.session),
 )
 

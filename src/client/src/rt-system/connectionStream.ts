@@ -2,7 +2,7 @@ import { Observable } from 'rxjs'
 import { WsConnection } from './WsConnection'
 import { ConnectionType } from './connectionType'
 import { RxStompState } from '@stomp/rx-stomp'
-import { map } from 'rxjs/operators'
+import { map, tap } from 'rxjs/operators'
 
 export enum ConnectionEventType {
   CONNECTING = 'CONNECTING',
@@ -17,8 +17,9 @@ export interface ConnectionEvent {
   transportType: ConnectionType
 }
 
-export function createConnection$(broker: WsConnection): Observable<ConnectionEvent> {
+export function connectionStream$(broker: WsConnection): Observable<ConnectionEvent> {
   return broker.streamEndpoint.connectionState$.pipe(
+    tap(x => console.debug('', `Received response on topic status: ${x}`)),
     map(x => {
       let type: ConnectionEventType
       switch (x) {

@@ -1,5 +1,1 @@
-export enum ConnectionType {
-  Unknown = '',
-  WebSocket = 'websocket',
-  LongPolling = 'long polling',
-}
+export type ConnectionType = string | 'unknown'

@@ -12,11 +12,10 @@ import {
   tap,
 } from 'rxjs/operators'
 import {
-  AutobahnConnectionProxy,
+  WsConnectionProxy,
   ConnectionEvent,
   ConnectionEventType,
-  ConnectionOpenEvent,
-  createConnection$,
+  connectionStream$,
   logger,
   retryWithBackOff,
 } from 'shared'
@@ -27,7 +26,6 @@ import { detectIntent } from './dialogFlowClient'
 config()
 
 const host = process.env.BROKER_HOST || 'localhost'
-const realm = process.env.WAMP_REALM || 'com.weareadaptive.reactivetrader'
 const port = process.env.BROKER_PORT || 8000
 
 const HOST_TYPE = 'nlp'
@@ -41,11 +39,11 @@ const exit$ = new Observable(observer => {
   })
 })
 
-logger.info(`Starting NLP service for ${host}:${port} on realm ${realm}`)
+logger.info(`Starting NLP service for ${host}:${port}`)
 
-const proxy = new AutobahnConnectionProxy(host, realm, +port)
+const proxy = new WsConnectionProxy(host, +port)
 
-const connection$ = createConnection$(proxy).pipe(
+const connection$ = connectionStream$(proxy).pipe(
   retryWhen(retryWithBackOff()),
   multicast(() => {
     return new ReplaySubject<ConnectionEvent>(1)
@@ -55,16 +53,14 @@ const connection$ = createConnection$(proxy).pipe(
 
 const session$ = connection$.pipe(
   filter(
-    (connection): connection is ConnectionOpenEvent =>
+    (connection): connection is ConnectionEvent =>
       connection.type === ConnectionEventType.CONNECTED,
   ),
-  tap(() => logger.info('Starting new session...')),
-  map(connection => connection.session),
 )
 
 logger.info(`Starting heartbeat for ${hostInstance}`)
 
-session$
+connection$
   .pipe(
     takeUntil(exit$),
     switchMap(session => interval(HEARTBEAT_INTERVAL_MS).pipe(mapTo(session))),
@@ -85,7 +81,7 @@ session$
     }
   })
 
-session$.pipe(takeUntil(exit$)).subscribe(session => {
+connection$.pipe(takeUntil(exit$)).subscribe(session => {
   const topic = `${hostInstance}.getNlpIntent`
   logger.info(`Registering ${topic}`)
 

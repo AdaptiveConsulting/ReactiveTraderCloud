@@ -1,5 +1,4 @@
-export { AutobahnConnectionProxy } from './AutobahnConnectionProxy'
-export { AutobahnSessionProxy } from './AutobahnSessionProxy'
-export { ConnectionEventType, ConnectionOpenEvent, createConnection$, ConnectionEvent } from './connectionStream'
+export { WsConnectionProxy } from './WsConnectionProxy'
+export { ConnectionEventType, connectionStream$, ConnectionEvent } from './connectionStream'
 export { ServiceStub } from './ServiceStub'
 export { retryConstantly, retryWithBackOff } from './retryPolicy'

@@ -21,7 +21,7 @@ export const { ConnectionEventType } = connectionStream
 export type WsConnection = wsConnection.WsConnection
 export { default as WsConnectionProxy } from './WsConnectionProxy'
 
-export const { createConnection$ } = connectionStream
+export const { connectionStream$ } = connectionStream
 export type ConnectionEvent = connectionStream.ConnectionEvent
 
 export { serviceStatusStream$ } from './serviceStatusStream'
