@@ -51,17 +51,18 @@ const setSnapshots = (snapshots: any) => {
   window.localStorage.setItem(OPENFIN_SNAPSHOTS, JSON.stringify(snapshots))
 }
 
-// const setPlatformSnapshotName = async (platform: any, platformSnapshotName: string) => {
-//   await platform.setContext({ platformSnapshotName })
-//   return platformSnapshotName
-// }
+const setPlatformSnapshotName = async (platform: any, platformSnapshotName: string) => {
+  await platform.setContext({ platformSnapshotName })
+  return platformSnapshotName
+}
 
 export const applySnapshotFromStorage = (snapshotName: string) => {
   return finWithPlatform.Platform.getCurrent().then((platform: any) => {
-    const currentSnapshotName = getCurrentSnapshotName()
+    // const currentSnapshotName = getCurrentSnapshotName()
     const snapshotNames = getSnapshotNames()
     const snapshots = getSnapshots()
-    if (snapshotName !== currentSnapshotName && snapshotNames.includes(snapshotName)) {
+
+    if (snapshotNames.includes(snapshotName)) {
       setCurrentSnapshotName(snapshotName)
       return platform.applySnapshot(snapshots.snapshots[snapshotName], {
         closeExistingWindows: true,
@@ -71,15 +72,16 @@ export const applySnapshotFromStorage = (snapshotName: string) => {
   })
 }
 export const applySnapshotFromStorageOnLoad = async () => {
-  // const platform = await finWithPlatform.Platform.getCurrent()
-  // const platformCtx = await platform.getContext() || {}
+  const platform = await finWithPlatform.Platform.getCurrent()
+  const platformCtx = await platform.getContext() || {}
 
-  // const currentSnapshotName = getCurrentSnapshotName()
+  const currentSnapshotName = getCurrentSnapshotName()
   const snapshots = getSnapshots()
 
-  // let platformSnapshotName = platformCtx.platformSnapshotName
-  // let currentSnapshot = snapshots.snapshots && snapshots.snapshots[currentSnapshotName]
-
+  let platformSnapshotName = platformCtx.platformSnapshotName
+  let currentSnapshot = snapshots.snapshots && snapshots.snapshots[currentSnapshotName]
+  console.log(platformSnapshotName, currentSnapshotName)
+  console.log(currentSnapshot)
   // @ts-ignore
   if (snapshots.version !== canned.version) {
     const snapshotNames = getSnapshotNames()
@@ -103,13 +105,13 @@ export const applySnapshotFromStorageOnLoad = async () => {
     // platformSnapshotName = OPENFIN_SNAPSHOT_DEFAULT_NAME
   }
 
-  // if (platformSnapshotName !== currentSnapshotName) {
-  //   platformSnapshotName = await setPlatformSnapshotName(platform, currentSnapshotName)
-  // }
+  if (platformSnapshotName !== currentSnapshotName) {
+    platformSnapshotName = await setPlatformSnapshotName(platform, currentSnapshotName)
+  }
 
-  // if (platformSnapshotName !== OPENFIN_SNAPSHOT_DEFAULT_NAME) {
-  //   return !!(platform.applySnapshot(currentSnapshot))
-  // }
+  if (platformSnapshotName !== OPENFIN_SNAPSHOT_DEFAULT_NAME) {
+    return !!(platform.applySnapshot(currentSnapshot))
+  }
 }
 export const saveSnapshotToStorage = async (newSnapshotName: string) => {
   const platform = await finWithPlatform.Platform.getCurrent()

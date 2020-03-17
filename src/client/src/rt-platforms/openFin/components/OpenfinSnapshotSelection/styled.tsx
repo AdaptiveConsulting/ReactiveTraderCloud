@@ -48,12 +48,12 @@ const StatusCircleCore: FunctionComponent<{ className?: string }> = ({ className
   )
 }
 
-export const StatusCircle = styled(StatusCircleCore)<{ status?: SnapshotActiveStatus }>`
+export const StatusCircle = styled(StatusCircleCore) <{ status?: SnapshotActiveStatus }>`
   circle {
     fill: ${({ theme, status }) =>
-      status === SnapshotActiveStatus.ACTIVE
-        ? theme.template.green.normal
-        : theme.template.gray.normal};
+    status === SnapshotActiveStatus.ACTIVE
+      ? theme.template.green.normal
+      : theme.template.gray.normal};
   }
 `
 
@@ -69,7 +69,7 @@ export const Root = styled.div`
   color: ${props => props.theme.textColor};
 `
 
-export const SnapshotName = styled.div`
+const Label = styled.div`
   min-width: 5rem;
   text-transform: capitalize;
   font-size: 0.75rem;
@@ -77,20 +77,34 @@ export const SnapshotName = styled.div`
   display: inline-block;
 `
 
+export const SnapshotReset = styled(Label)`
+  display: none;
+  margin-left: 0.5rem;
+`;
+
+export const SnapshotName = styled(Label) <{ isActive?: boolean }>`
+  &:hover {
+    ${({ isActive }) => `
+      ${SnapshotReset} {
+        display: ${isActive ? 'inline-block' : 'none'}
+      }
+    `}
+  }
+`;
+
 export const SnapshotRoot = styled.div<{ isActive?: boolean }>`
   min-height: 2rem;
   max-height: 2rem;
   padding: 0.25rem 0.5rem;
-
   display: flex;
   align-items: center;
   justify-content: start;
+  cursor: pointer;
 
   color: ${props => props.theme.textColor};
   
-   ${({ isActive, theme }) => !isActive && `
+   ${({ theme }) => `
     &:hover {
-      cursor: pointer;
       ${StatusCircle} {
         circle {
           fill: ${theme.template.blue.normal};

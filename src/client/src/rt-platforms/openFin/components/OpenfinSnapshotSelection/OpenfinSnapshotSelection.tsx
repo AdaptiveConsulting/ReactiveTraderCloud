@@ -18,13 +18,14 @@ import {
   SnapshotList,
   SnapshotListTitle,
   SnapshotName,
+  SnapshotReset,
   SnapshotRoot,
 } from './styled'
 import { Flex, Modal } from 'rt-components'
 import { SnapshotActiveStatus } from 'rt-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import {applySnapshotFromStorage, getCurrentSnapshotName, getSnapshotNames, saveSnapshotToStorage} from "rt-platforms/openFin/snapshots"
+import { applySnapshotFromStorage, getCurrentSnapshotName, getSnapshotNames, saveSnapshotToStorage } from "rt-platforms/openFin/snapshots"
 
 type SnapshotError = {
   message: string,
@@ -94,19 +95,19 @@ const OpenfinSnapshotSelection: React.FC = props => {
 
   useEffect(
     () => {
-      if (isLoading) {
-        applySnapshotFromStorage(isLoading)
-          .then(() => {
-            setSnapshotError(undefined)
-            setNewSnapshotName('')
-            setIsLoading('')
-          })
-          .catch((ex: Error) => {
-            console.error(ex)
-            setSnapshotError({topic: 'load', message: `Failed to load snapshot ${isLoading}.`})
-            setIsLoading('')
-          })
-      }
+
+      applySnapshotFromStorage(isLoading)
+        .then(() => {
+          setSnapshotError(undefined)
+          setNewSnapshotName('')
+          setIsLoading('')
+        })
+        .catch((ex: Error) => {
+          console.error(ex)
+          setSnapshotError({ topic: 'load', message: `Failed to load snapshot ${isLoading}.` })
+          setIsLoading('')
+        })
+
     },
     [isLoading]
   )
@@ -129,7 +130,11 @@ const OpenfinSnapshotSelection: React.FC = props => {
                 : SnapshotActiveStatus.INACTIVE
             }
           />
-          <SnapshotName>{snapshotName}</SnapshotName>
+          <SnapshotName isActive={isActive}>
+            {snapshotName}
+            <SnapshotReset>(Reset)</SnapshotReset>
+          </SnapshotName>
+
         </SnapshotRoot>
       })
     } else {
@@ -190,7 +195,7 @@ const OpenfinSnapshotSelection: React.FC = props => {
   </Root>
 }
 
-const SnapshotErrorAlert: React.FC<{snapshotError: SnapshotError | undefined, topics: string[]}> = ({snapshotError, topics}) => {
+const SnapshotErrorAlert: React.FC<{ snapshotError: SnapshotError | undefined, topics: string[] }> = ({ snapshotError, topics }) => {
   if (!!snapshotError && topics.includes(snapshotError.topic)) {
     return <ErrorAlert>{snapshotError.message}</ErrorAlert>
   }
