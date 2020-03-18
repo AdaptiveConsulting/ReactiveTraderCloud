@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router'
 import { Resizer, TearOff } from 'rt-components'
 import { externalWindowDefault, ExternalWindow, WindowPosition } from 'rt-platforms'
 import { AnalyticsContainer } from '../widgets/analytics'
 import { BlotterContainer } from '../widgets/blotter'
 import StatusBar from '../widgets/status-bar'
 import StatusButton from '../widgets/status-connection'
-import { WorkspaceContainer } from '../widgets/workspace'
+import { WorkspaceContainer, TileView } from '../widgets/workspace'
 import ReconnectModal from '../components/reconnect-modal'
 import { analyticsSelector, blotterSelector, liveRatesSelector, DefaultLayout } from '../layouts'
 import { BlotterWrapper, AnalyticsWrapper, OverflowScroll, WorkspaceWrapper } from './styled'
@@ -30,6 +31,8 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
   const blotter = useSelector(blotterSelector)
   const analytics = useSelector(analyticsSelector)
   const liveRates = useSelector(liveRatesSelector)
+
+  const { currency, tileView } = useParams()
 
   const lastRemainingService = useMemo(() => {
     const numberOfVisibleService = [blotter.visible, analytics.visible, liveRates.visible].filter(
@@ -64,7 +67,10 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
       <TearOff
         id="liveRates"
         dragTearOff
-        externalWindowProps={addLayoutToConfig(externalWindowDefault.liveRatesRegion, liveRates)}
+        externalWindowProps={addLayoutToConfig(
+          externalWindowDefault.liveRatesRegion(currency, tileView as TileView),
+          liveRates,
+        )}
         render={(popOut, tornOff) => (
           <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
             <OverflowScroll>

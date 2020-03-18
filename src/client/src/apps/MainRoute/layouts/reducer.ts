@@ -40,7 +40,7 @@ export const layoutReducer = (
             ...state,
             analytics: getWindowPosition(action),
           }
-        case externalWindowDefault.liveRatesRegion.config.name:
+        case externalWindowDefault.liveRatesRegion().config.name:
           return {
             ...state,
             liveRates: getWindowPosition(action),

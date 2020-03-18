@@ -42,7 +42,7 @@ const WorkspaceHeader: React.FC<Props> = ({
         ))}
       </LeftNav>
       <RightNav>
-        <ToggleView currency={currency} tileView={tileView} />
+        <ToggleView canPopout={canPopout} currency={currency} tileView={tileView} />
         {canPopout && (
           <WorkspaceControl onPopoutClick={onPopoutClick} data-qa="tiles-header__pop-out-button" />
         )}
