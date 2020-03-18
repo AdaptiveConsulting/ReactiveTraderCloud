@@ -216,7 +216,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 }
 
 .c0:hover .c4 {
-  margin-right: 0;
+  margin-right: 1.3rem;
 }
 
 .c0:hover .sc-fzomuh {
@@ -705,7 +705,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 }
 
 .c0:hover .c4 {
-  margin-right: 0;
+  margin-right: 1.3rem;
 }
 
 .c0:hover .sc-fzomuh {
@@ -1235,7 +1235,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 }
 
 .c0:hover .c4 {
-  margin-right: 0;
+  margin-right: 1.3rem;
 }
 
 .c0:hover .sc-fzomuh {
@@ -1764,7 +1764,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 }
 
 .c0:hover .c4 {
-  margin-right: 0;
+  margin-right: 1.3rem;
 }
 
 .c0:hover .sc-fzomuh {
@@ -2246,7 +2246,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 }
 
 .c0:hover .c4 {
-  margin-right: 0;
+  margin-right: 1.3rem;
 }
 
 .c0:hover .sc-fzomuh {
@@ -2780,7 +2780,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 }
 
 .c0:hover .c4 {
-  margin-right: 0;
+  margin-right: 1.3rem;
 }
 
 .c0:hover .sc-fzomuh {
@@ -3311,7 +3311,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
 }
 
 .c0:hover .c4 {
-  margin-right: 0;
+  margin-right: 1.3rem;
 }
 
 .c0:hover .sc-fzomuh {
