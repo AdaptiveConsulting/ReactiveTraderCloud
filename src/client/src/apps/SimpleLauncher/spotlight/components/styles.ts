@@ -81,6 +81,12 @@ export const CancelButton = styled.button`
   background-color: #3f3f3f;
   cursor: pointer;
   z-index: 2;
+
+  svg {
+    path:last-child {
+      fill: ${({ theme }) => theme.secondary[1]};
+    }
+  }
 `
 
 export const SearchContainer = styled.div`

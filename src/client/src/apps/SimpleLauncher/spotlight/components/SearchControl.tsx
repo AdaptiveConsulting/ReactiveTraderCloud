@@ -12,7 +12,7 @@ import debounce from 'lodash/debounce'
 import { Platform } from 'rt-platforms'
 import { handleIntent } from 'rt-interop'
 import { Input, SearchContainer, CancelButton } from './styles'
-import { exitNormalIcon } from '../../icons'
+import { ExitIcon } from '../../icons'
 
 export interface SearchControlsProps {
   onStateChange: (isTyping: boolean) => void
@@ -21,8 +21,6 @@ export interface SearchControlsProps {
   platform: Platform
   isSearchVisible: boolean
 }
-
-const cancelIcon = exitNormalIcon('#FFFFFF')
 
 export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsProps>(
   ({ onStateChange, response, sendRequest, platform, isSearchVisible }, ref) => {
@@ -69,7 +67,7 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
 
     // if not called again within 350ms, set isTyping to false
     const debouncedStopTyping = useCallback(
-      debounce(() => setIsTyping(false), 350, {
+      debounce(() => setIsTyping(false), 300, {
         leading: false,
         trailing: true,
       }),
@@ -103,7 +101,11 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
           onKeyDown={handleOnKeyDown}
           placeholder="Type something"
         />
-        {inputValue && <CancelButton onClick={handleCancelButtonClick}>{cancelIcon}</CancelButton>}
+        {inputValue && (
+          <CancelButton onClick={handleCancelButtonClick}>
+            <ExitIcon />
+          </CancelButton>
+        )}
       </SearchContainer>
     )
   },

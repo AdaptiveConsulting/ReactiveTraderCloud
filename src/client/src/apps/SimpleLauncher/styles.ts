@@ -1,6 +1,6 @@
+import { createGlobalStyle, css } from 'styled-components'
 import { styled } from 'rt-theme'
 import { rules } from 'rt-styleguide'
-import { createGlobalStyle } from 'styled-components'
 
 export const LauncherGlobalStyle = createGlobalStyle`
 :root, body {
@@ -59,14 +59,6 @@ export const LogoLauncherContainer = styled(IconContainer)`
   border-right: 1px solid rgba(216, 216, 216, 0.15);
   height: 70%;
 
-  .svg-icon {
-    fill: ${({ theme }) => theme.core.textColor};
-  }
-
-  .svg-icon--active {
-    fill: #8c7ae6;
-    transition: fill 0.2s ease-in-out;
-  }
   ${rules.appRegionDrag};
 `
 
@@ -106,23 +98,22 @@ export const LogoContainer = styled(IconContainer)`
   ${rules.appRegionDrag};
 `
 
-export const ExitButton = styled.button`
-  border-bottom: 1px solid rgba(216, 216, 216, 0.15);
-  padding-top: 3px;
+const controlButtonHoverStyle = css`
   &:hover {
     svg path:last-child {
       fill: #5f94f5;
     }
   }
 `
+export const ExitButton = styled.button`
+  border-bottom: 1px solid rgba(216, 216, 216, 0.15);
+  padding-top: 3px;
+  ${controlButtonHoverStyle}
+`
 
 export const MinimiseButton = styled.button`
   padding-bottom: 3px;
-  &:hover {
-    svg path:last-child {
-      fill: #5f94f5;
-    }
-  }
+  ${controlButtonHoverStyle}
 `
 
 export const MinExitContainer = styled(ButtonContainer)`
