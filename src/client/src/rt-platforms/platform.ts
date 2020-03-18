@@ -7,6 +7,7 @@ export interface PlatformFeatures {
   app: AppInterop
   interop: PubSubInterop
   share: (object: any) => void
+  allowPopIn?: boolean
 }
 
 interface PubSubInterop {
