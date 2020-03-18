@@ -28,7 +28,7 @@ export const AnalyticsTileStyle = styled(SpotTileStyle)`
 
 const localZoneName = Info.features().zones ? DateTime.local().zoneName : 'utc'
 const dateFomatter = memoDateFormatter(valueDate => valueDate.slice(0, 10))
-const AnalyticsWrapperWithPlatform: FC<{ canPopout?: boolean }> = props => {
+const AnalyticsWrapperWithPlatform: FC<{ shouldMoveDate: boolean }> = props => {
   const platform = usePlatform()
   return <AnalyticsTileWrapper {...props} platform={platform} />
 }
@@ -58,8 +58,8 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
       inputValidationMessage,
       displayCurrencyChart,
       rfq,
-      canPopout,
     } = this.props
+
     const defaultNotional = getDefaultNotionalValue(currencyPair)
     const notional =
       spotTileNotional !== undefined ? spotTileNotional : getDefaultNotionalValue(currencyPair)
@@ -84,7 +84,7 @@ class AnalyticsTile extends React.PureComponent<SpotTileProps> {
     const priceData = (isRfqStateReceived || isRfqStateExpired) && rfqPrice ? rfqPrice : price
 
     return (
-      <AnalyticsWrapperWithPlatform canPopout={canPopout}>
+      <AnalyticsWrapperWithPlatform shouldMoveDate={false}>
         <AnalyticsTileStyle
           className="spot-tile"
           data-qa="analytics-tile__spot-tile"

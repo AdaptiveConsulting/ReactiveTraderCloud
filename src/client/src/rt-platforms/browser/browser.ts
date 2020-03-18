@@ -34,6 +34,8 @@ export default class Browser implements Platform {
   PlatformRoute = DefaultRoute
   Logo = Logo
 
+  allowPopIn = true
+
   window = {
     ...createDefaultPlatformWindow(window),
     open: (config: WindowConfig, onClose?: () => void) => openBrowserWindow(config, onClose),
