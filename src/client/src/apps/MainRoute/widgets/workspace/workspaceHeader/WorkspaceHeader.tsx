@@ -35,7 +35,9 @@ const WorkspaceHeader: React.FC<Props> = ({
             data-qa="workspace-header__nav-item"
             data-qa-id={`currency-option-${currencyOption.toLowerCase()}`}
           >
-            <NavLink to={`/${currencyOption}/${tileView}`}>{currencyOption}</NavLink>
+            <NavLink to={`${canPopout ? '' : '/tiles'}/${currencyOption}/${tileView}`}>
+              {currencyOption}
+            </NavLink>
           </NavItem>
         ))}
       </LeftNav>
