@@ -88,7 +88,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
     }
 
     return (
-      <SpotTileWrapperHovered canPopout={true}>
+      <SpotTileWrapperHovered shouldMoveDate={true}>
         <SpotTileStyle
           className="spot-tile"
           data-qa="spot-tile__tile"

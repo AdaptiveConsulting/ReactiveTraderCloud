@@ -56,7 +56,6 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
       inputValidationMessage,
       rfq,
       displayCurrencyChart,
-      canPopout,
     } = this.props
     const defaultNotional = getDefaultNotionalValue(currencyPair)
     const notional =
@@ -86,7 +85,7 @@ export default class SpotTile extends PureComponent<SpotTileProps> {
     }
 
     return (
-      <SpotTileWrapper canPopout={canPopout}>
+      <SpotTileWrapper shouldMoveDate={false}>
         <SpotTileStyle
           className="spot-tile"
           data-qa="spot-tile__tile"
