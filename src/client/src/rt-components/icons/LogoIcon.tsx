@@ -22,7 +22,7 @@ const LogoIcon: React.FC<Props> = ({ width, height, active }) => (
       className={active ? 'svg-icon--active' : 'svg-icon'}
       stroke="none"
       strokeWidth="1"
-      fill="none"
+      fill="#FFF"
       fillRule="evenodd"
     >
       <g transform="translate(-30.000000, -15.000000)">
