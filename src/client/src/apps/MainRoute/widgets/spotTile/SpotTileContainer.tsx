@@ -22,7 +22,6 @@ import { CurrencyPairNotional } from './model/spotTileData'
 export interface SpotTileContainerOwnProps {
   id: string
   tileView: TileView
-  notional?: number
   onPopoutClick?: (x: number, y: number) => void
   tornOff?: boolean
   tearable?: boolean
