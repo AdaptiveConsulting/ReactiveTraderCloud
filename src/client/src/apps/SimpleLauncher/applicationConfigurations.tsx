@@ -114,7 +114,7 @@ const baseAppConfigs: ApplicationConfig[] = [
       windowOptions: {
         ...defaultWindowOptions,
         preloadScripts: excelPreloadScripts,
-        icon: `${ORIGIN}/static/media/rt-icon.ico`,
+        icon: `${ORIGIN}/static/media/icon.ico`,
       },
     },
   },
