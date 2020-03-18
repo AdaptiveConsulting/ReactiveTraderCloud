@@ -6,7 +6,7 @@ import { ConnectionType } from './connectionType'
 export default class StompConfig {
   public brokerURL: string
   public reconnectDelay = 500
-  public connectionType: ConnectionType = 'websocket'
+  public connectionType: ConnectionType = 'ws'
 
   constructor(url: string, port?: number) {
     /* eslint-disable-next-line */

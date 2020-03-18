@@ -107,14 +107,14 @@ services:
   pricehistory:
     image: ${DOCKER_USER}/pricehistory:${BUILD_VERSION}
     build:
-      dockerfile: Dockerfile.dev
-      context: ./server/node/priceHistory
+      dockerfile: PriceHistory.Dockerfile
+      context: ./server/node
     depends_on:
       - broker
       - pricing
     environment:
-     - BROKER_HOST=broker
-     - BROKER_PORT=5672
+      - BROKER_HOST=broker
+      - BROKER_PORT=15674
   nlp:
     image: ${DOCKER_USER}/nlp:${BUILD_VERSION}
     hostname: nlp
@@ -125,7 +125,7 @@ services:
       - broker
     environment:
       - BROKER_HOST=broker
-      - BROKER_PORT=5672
+      - BROKER_PORT=15674
   openfinconfig:
     image: ${DOCKER_USER}/openfinconfig:${BUILD_VERSION}
     hostname: openfinconfig

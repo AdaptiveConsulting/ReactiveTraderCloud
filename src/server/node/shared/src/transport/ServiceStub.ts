@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs'
+import { Observable, Subscription } from 'rxjs'
 import { map, tap } from 'rxjs/operators'
 import { WsConnection } from './WsConnection'
 
@@ -32,7 +32,7 @@ export class ServiceStub {
    */
   subscribeToTopic<TResponse>(topic: string): Observable<TResponse> {
     return this.connection.streamEndpoint.watch(`/exchange/${topic}`).pipe(
-      tap(x => this.logResponse(topic, { headers: x.headers, body: x.body })),
+      //tap(x => this.logResponse(topic, { headers: x.headers, body: x.body })),
       map(x => JSON.parse(x.body) as TResponse),
     )
   }
@@ -45,9 +45,9 @@ export class ServiceStub {
     operationName: string,
     payload: TPayload,
   ): Observable<TResponse> {
-    console.info(LOG_NAME, `Creating request response operation for [${operationName}]`)
-
     const remoteProcedure = service + '.' + operationName
+    console.info(LOG_NAME, `Creating request response operation for [${remoteProcedure}]`)
+
     const dto: SubscriptionDTO<TPayload> = {
       payload,
       Username: this.userName,
@@ -62,6 +62,32 @@ export class ServiceStub {
         tap(x => this.logResponse(remoteProcedure, { headers: x.headers, body: x.body })),
         map(x => JSON.parse(x.body) as TResponse),
       )
+  }
+
+  replyToRequestResponseOperation<TResponse, TPayload>(
+    service: string,
+    operationName: string,
+    handler: (payload: TPayload) => TResponse,
+  ): Subscription {
+    const remoteProcedure = service + '.' + operationName
+
+    return this.connection.streamEndpoint.watch(`/queue/${remoteProcedure}`).subscribe(request => {
+      const replyTo = request.headers['reply-to']
+      const correlationId = request.headers['correlation-id']
+      const payload = JSON.parse(request.body) as TPayload
+      const response = JSON.stringify(handler(payload))
+
+      this.logResponse(
+        remoteProcedure,
+        'RPC Server: Response: ' + response + ' for ' + request.body,
+      )
+
+      this.connection.streamEndpoint.publish({
+        destination: replyTo,
+        body: response,
+        headers: { 'correlation-id': correlationId },
+      })
+    })
   }
 
   createStreamOperation<TResponse, TPayload = {}>(

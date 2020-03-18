@@ -2,6 +2,8 @@ import { WsConnection } from './WsConnection'
 import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
 import StompConfig from './StompConfig'
 
+Object.assign(global, { WebSocket: require('ws') })
+
 /**
  * BrokerProxy: makes the broker connection api more explicit, aids testing
  */
@@ -21,6 +23,8 @@ export class WsConnectionProxy implements WsConnection {
     this.streamEndpoint.configure({
       brokerURL: this.config.brokerURL,
       reconnectDelay: this.config.reconnectDelay,
+      heartbeatIncoming: 1000,
+      heartbeatOutgoing: 1000,
     })
     this.rpcEndpoint = new RxStompRPC(this.streamEndpoint)
 

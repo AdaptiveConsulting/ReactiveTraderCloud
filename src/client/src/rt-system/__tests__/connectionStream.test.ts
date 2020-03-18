@@ -1,4 +1,4 @@
-import { createConnection$, WsConnection } from 'rt-system'
+import { connectionStream$, WsConnection } from 'rt-system'
 import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
 import StompConfig from 'rt-system/StompConfig'
 
@@ -10,7 +10,7 @@ describe('createConnection$', () => {
     const mockConnection = new MockWsConnection()
 
     // act
-    const connection = createConnection$(mockConnection)
+    const connection = connectionStream$(mockConnection)
 
     // assert
     expect(connection).toBeDefined()
@@ -22,7 +22,7 @@ describe('createConnection$', () => {
     const mockConnection: WsConnection = new MockWsConnection()
 
     // act
-    createConnection$(mockConnection)
+    connectionStream$(mockConnection)
 
     // assert
     expect(mockConnection.open).toHaveBeenCalledTimes(0)
