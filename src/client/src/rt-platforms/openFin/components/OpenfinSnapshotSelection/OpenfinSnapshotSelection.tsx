@@ -122,20 +122,17 @@ const OpenfinSnapshotSelection: React.FC = props => {
     if (snapshotNames.length) {
       return snapshotNames.sort().map((snapshotName: string, idx: number) => {
         const isActive = snapshotName === currentSnapshotName
-        return <SnapshotRoot key={`snapshot_${idx}`} isActive={isActive} onClick={e => selectSnapshot(snapshotName)}>
-          <StatusCircle
-            status={
-              isActive
-                ? SnapshotActiveStatus.ACTIVE
-                : SnapshotActiveStatus.INACTIVE
-            }
-          />
-          <SnapshotName isActive={isActive}>
-            {snapshotName}
-            <SnapshotReset>(Reset)</SnapshotReset>
-          </SnapshotName>
-
-        </SnapshotRoot>
+        return (
+          <SnapshotRoot key={`snapshot_${idx}`} isActive={isActive} onClick={e => selectSnapshot(snapshotName)}>
+            <StatusCircle
+              status={isActive ? SnapshotActiveStatus.ACTIVE : SnapshotActiveStatus.INACTIVE}
+            />
+            <SnapshotName isActive={isActive}>
+              {snapshotName}
+              <SnapshotReset>(Reset)</SnapshotReset>
+            </SnapshotName>
+          </SnapshotRoot>
+        )
       })
     } else {
       return <SnapshotRoot isActive={true}>No saved snapshots.</SnapshotRoot>
