@@ -95,19 +95,19 @@ const OpenfinSnapshotSelection: React.FC = props => {
 
   useEffect(
     () => {
-
-      applySnapshotFromStorage(isLoading)
-        .then(() => {
-          setSnapshotError(undefined)
-          setNewSnapshotName('')
-          setIsLoading('')
-        })
-        .catch((ex: Error) => {
-          console.error(ex)
-          setSnapshotError({ topic: 'load', message: `Failed to load snapshot ${isLoading}.` })
-          setIsLoading('')
-        })
-
+      if (isLoading) {
+        applySnapshotFromStorage(isLoading)
+          .then(() => {
+            setSnapshotError(undefined)
+            setNewSnapshotName('')
+            setIsLoading('')
+          })
+          .catch((ex: Error) => {
+            console.error(ex)
+            setSnapshotError({ topic: 'load', message: `Failed to load snapshot ${isLoading}.` })
+            setIsLoading('')
+          })
+      }
     },
     [isLoading]
   )
