@@ -77,12 +77,12 @@ export const applySnapshotFromStorageOnLoad = async () => {
   const platformCtx = await platform.getContext() || {}
 
   const currentSnapshotName = getCurrentSnapshotName()
-  const snapshots = () => getSnapshots()
+  const snapshots = getSnapshots()
 
   let platformSnapshotName = platformCtx.platformSnapshotName
-  let currentSnapshot = snapshots().snapshots && snapshots().snapshots[currentSnapshotName]
+  let currentSnapshot = snapshots.snapshots && snapshots.snapshots[currentSnapshotName]
 
-  if (snapshots().version !== canned.version) {
+  if (snapshots.version !== canned.version) {
     const snapshotNames = getSnapshotNames()
 
     let canned_snapshots_str = JSON.stringify(canned.snapshots)
@@ -96,14 +96,14 @@ export const applySnapshotFromStorageOnLoad = async () => {
     setSnapshots({
       version: canned.version,
       snapshots: {
-        ...(snapshots().version ? snapshots().snapshots : snapshots),
+        ...(snapshots.version ? snapshots.snapshots : snapshots),
         ...canned_snapshots_json,
       },
     })
 
     platformSnapshotName = OPENFIN_SNAPSHOT_DEFAULT_NAME
     setCurrentSnapshotName(platformSnapshotName)
-    platform.applySnapshot(snapshots().snapshots[platformSnapshotName])
+    platform.applySnapshot(getSnapshots().snapshots[platformSnapshotName])
   }
 
   if (platformSnapshotName !== currentSnapshotName) {
