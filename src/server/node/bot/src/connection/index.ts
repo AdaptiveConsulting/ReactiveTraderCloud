@@ -1,3 +1,3 @@
-export { default } from './AutobahnConnectionProxy'
-export { ConnectionEventType, ConnectionOpenEvent, createConnection$ } from './connectionStream'
+export { WsConnectionProxy } from './WsConnectionProxy'
+export { ConnectionEventType, ConnectionEvent, connectionStream$ } from './connectionStream'
 export { ServiceStub } from './ServiceStub'

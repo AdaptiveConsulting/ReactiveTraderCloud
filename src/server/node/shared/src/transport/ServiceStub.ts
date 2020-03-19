@@ -67,7 +67,7 @@ export class ServiceStub {
   replyToRequestResponseOperation<TResponse, TPayload>(
     service: string,
     operationName: string,
-    handler: (payload: TPayload) => TResponse,
+    handler: (payload: TPayload) => Promise<TResponse>,
   ): Subscription {
     const remoteProcedure = service + '.' + operationName
 
@@ -75,17 +75,17 @@ export class ServiceStub {
       const replyTo = request.headers['reply-to']
       const correlationId = request.headers['correlation-id']
       const payload = JSON.parse(request.body) as TPayload
-      const response = JSON.stringify(handler(payload))
-
-      this.logResponse(
-        remoteProcedure,
-        'RPC Server: Response: ' + response + ' for ' + request.body,
-      )
-
-      this.connection.streamEndpoint.publish({
-        destination: replyTo,
-        body: response,
-        headers: { 'correlation-id': correlationId },
+      handler(payload).then(x => {
+        const response = JSON.stringify(x)
+        this.logResponse(
+          remoteProcedure,
+          'RPC Server: Response: ' + response + ' for ' + request.body,
+        )
+        this.connection.streamEndpoint.publish({
+          destination: replyTo,
+          body: response,
+          headers: { 'correlation-id': correlationId },
+        })
       })
     })
   }

@@ -53,9 +53,12 @@ logger.info(`Starting listening to price requests`)
 
 type PriceHistoryRequest = { payload: string }
 
-function handlePriceRequest(priceHistoryRequest: PriceHistoryRequest): Price[] | undefined {
+async function handlePriceRequest(priceHistoryRequest: PriceHistoryRequest): Promise<Price[] | undefined> {
   if (!priceHistoryRequest || !priceHistoryRequest.payload) {
     throw new Error(`Invalid request`)
+  }
+  if (!latest) {
+    throw new Error(`No prices available`)
   }
   const symbol = priceHistoryRequest.payload
   if (!latest.has(symbol)) {
