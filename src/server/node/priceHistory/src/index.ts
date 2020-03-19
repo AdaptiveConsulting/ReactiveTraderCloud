@@ -1,8 +1,7 @@
 import { map, scan } from 'rxjs/operators'
 import uuid from 'uuid/v1'
-import { WsConnectionProxy, connectionStream$, ServiceStub, logger } from 'shared'
+import { WsConnectionProxy, Heartbeat, ServiceStub, logger } from 'shared'
 import { convertToPrice, Price, RawPrice } from './domain'
-import { RawServiceStatus } from './domain'
 
 const host = process.env.BROKER_HOST || 'localhost'
 const port = process.env.BROKER_PORT || 15674
@@ -32,21 +31,9 @@ const savePrices = scan<Price, Map<string, Price[]>>((acc, price) => {
   return acc
 }, new Map())
 
-function publishStatus(): void {
-  const status: RawServiceStatus = {
-    Type: 'priceHistory',
-    Load: 1,
-    TimeStamp: Date.now(),
-    Instance: hostInstance,
-  }
-  broker.streamEndpoint.publish({ destination: '/exchange/status', body: JSON.stringify(status) })
-}
-
-connectionStream$(broker).subscribe(state => {
-  console.debug(`Broker connection state: ${state}`)
-  publishStatus()
-})
 logger.info(`Starting heart beat with ${HOST_TYPE} and ${hostInstance}`)
+const heartbeat = new Heartbeat(broker, HOST_TYPE, hostInstance)
+heartbeat.StartHeartbeat()
 
 logger.info('Subscribing to Pricing')
 
@@ -60,7 +47,6 @@ const heartbeat$ = stub
   )
   .subscribe(newPrices => {
     latest = newPrices
-    publishStatus()
   })
 
 logger.info(`Starting listening to price requests`)

@@ -1074,3 +1074,13 @@
 {"level":"info","message":""}
 {"level":"info","message":""}
 {"level":"info","message":""}
+{"message":"Starting NLP service for localhost:15674","level":"info"}
+{"level":"info","message":""}
+{"message":"Starting heartbeat for nlp.b254","level":"info"}
+{"level":"info","message":""}
+{"message":"Starting NLP service for localhost:15674","level":"info"}
+{"message":"Starting heartbeat for nlp.8f0e","level":"info"}
+{"message":"Starting NLP service for localhost:15674","level":"info"}
+{"message":"Starting heartbeat for nlp.076e","level":"info"}
+{"message":"Starting NLP service for localhost:15674","level":"info"}
+{"message":"Starting heartbeat for nlp.84aa","level":"info"}

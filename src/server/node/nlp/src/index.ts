@@ -1,9 +1,10 @@
 import { config } from 'dotenv'
-import { WsConnectionProxy, connectionStream$, logger, ServiceStub } from 'shared'
+import { WsConnectionProxy, Heartbeat, logger, ServiceStub } from 'shared'
 import uuid from 'uuid/v1'
 import { NlpIntentRequest } from './types'
 import { detectIntent } from './dialogFlowClient'
 import { DetectIntentResponse } from 'dialogflow'
+import { Observable } from 'rxjs'
 
 config()
 
@@ -12,32 +13,18 @@ const port = process.env.BROKER_PORT || 15674
 
 const HOST_TYPE = 'nlp'
 const hostInstance = `${HOST_TYPE}.${uuid().substring(0, 4)}`
-// const HEARTBEAT_INTERVAL_MS = 1000
-
-// const exit$ = new Observable(observer => {
-//   process.on('exit', () => {
-//     observer.next()
-//     observer.complete()
-//   })
-// })
 
 logger.info(`Starting NLP service for ${host}:${port}`)
 
 const broker = new WsConnectionProxy(host, +port)
+const heartbeat = new Heartbeat(broker, HOST_TYPE, hostInstance)
+heartbeat.StartHeartbeat()
 
-function publishStatus(): void {
-  const status = {
-    Type: 'nlp',
-    Load: 1,
-    TimeStamp: Date.now(),
-    Instance: hostInstance,
-  }
-  broker.streamEndpoint.publish({ destination: '/exchange/status', body: JSON.stringify(status) })
-}
-
-connectionStream$(broker).subscribe(state => {
-  console.debug(`Broker connection state: ${state}`)
-  publishStatus()
+const exit$ = new Observable(observer => {
+  process.on('exit', () => {
+    observer.next()
+    observer.complete()
+  })
 })
 
 logger.info(`Starting heartbeat for ${hostInstance}`)

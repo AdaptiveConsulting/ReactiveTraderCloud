@@ -23,8 +23,6 @@ export class WsConnectionProxy implements WsConnection {
     this.streamEndpoint.configure({
       brokerURL: this.config.brokerURL,
       reconnectDelay: this.config.reconnectDelay,
-      heartbeatIncoming: 1000,
-      heartbeatOutgoing: 1000,
     })
     this.rpcEndpoint = new RxStompRPC(this.streamEndpoint)
 
