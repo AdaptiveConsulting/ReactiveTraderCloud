@@ -1,14 +1,3 @@
-/*
-TODO:
-
-We have commented-out the platform context snapshot code
-pre-webinar (on 17.3.2020) due to an issue that was causing
-the app to loop indefinitely.
-
-After the webinar we should re-implement this functionality
-and find the root cause of the bug causing the infinite loop.
-*/
-
 import {
   OPENFIN_SNAPSHOT_CURRENT,
   OPENFIN_SNAPSHOT_DEFAULT_NAME,
@@ -22,7 +11,6 @@ import { union } from 'lodash'
 export const resetCurrentSnapshotName = () => {
   setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
 }
-
 export const getCurrentSnapshotName = () => {
   return window.localStorage.getItem(OPENFIN_SNAPSHOT_CURRENT) || OPENFIN_SNAPSHOT_DEFAULT_NAME
 }
@@ -50,7 +38,6 @@ const setSnapshotNames = (snapshotNames: string[]) => {
 const setSnapshots = (snapshots: any) => {
   window.localStorage.setItem(OPENFIN_SNAPSHOTS, JSON.stringify(snapshots))
 }
-
 const setPlatformSnapshotName = async (platform: any, platformSnapshotName: string) => {
   await platform.setContext({ platformSnapshotName })
   return platformSnapshotName
@@ -114,6 +101,7 @@ export const applySnapshotFromStorageOnLoad = async () => {
     return !!(platform.applySnapshot(currentSnapshot))
   }
 }
+
 export const saveSnapshotToStorage = async (newSnapshotName: string) => {
   const platform = await finWithPlatform.Platform.getCurrent()
   const snapshot = await platform.getSnapshot()
