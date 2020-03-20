@@ -11,9 +11,10 @@ import {
   mapIntent,
 } from 'rt-interop'
 import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from 'apps/MainRoute'
-import { Intent, Suggestion, IntentWrapper, IntentActions } from './styles'
+import { LogoWrapper, Intent, Suggestion, IntentWrapper, IntentActions } from './styles'
 import { InlineBlotter } from './InlineBlotter'
 import { InlineQuote } from './InlineQuote'
+import Logo from 'apps/MainRoute/components/app-header/Logo'
 
 export function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: Platform) {
   const currencyPair = getCurrencyPair(response.queryResult)
@@ -22,7 +23,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
   console.log(response, intent, platform)
   const quoteSuggestion =
     isSpotQuoteIntent(response) && currencyPair ? (
-      <Suggestion onClick={() => handleIntent(response, platform)}>
+      <Suggestion>
         <InlineQuote currencyPair={currencyPair} />
       </Suggestion>
     ) : null
@@ -33,13 +34,13 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
     count: getNumber(response.queryResult),
   }
   const blotterSuggestion = isTradeIntent(response) ? (
-    <Suggestion onClick={() => handleIntent(response, platform)}>
+    <Suggestion>
       <InlineBlotter filters={blotterFilter} />
     </Suggestion>
   ) : null
 
   const otherSuggestion = !quoteSuggestion && !blotterSuggestion && (
-    <Suggestion onClick={() => handleIntent(response, platform)}>
+    <Suggestion>
       <Intent>{intent}</Intent>
     </Suggestion>
   )
@@ -47,21 +48,18 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
   if (!intent) {
     return <div>No results</div>
   }
-  // if (!quoteSuggestion && !blotterSuggestion) {
-  //   if (intent) {
-  //     return (
-  //     )
-  //   }
-  //   return
-  // }
 
   return (
     <IntentWrapper>
       <IntentActions>
-        <img src="http://placehold.it/50x50" />
+        <div>
+          <LogoWrapper>
+            <Logo size={1.5} withText={false} />
+          </LogoWrapper>
+        </div>
         <div>
           <button>Launch Platform</button>
-          <button>{intent}</button>
+          <button onClick={() => handleIntent(response, platform)}>{intent}</button>
         </div>
       </IntentActions>
       {quoteSuggestion}

@@ -32,7 +32,6 @@ export const Suggestion = styled.div`
   flex-direction: row;
   padding: 5px 2px;
   line-height: 1rem;
-  cursor: pointer;
 `
 
 export const Response = styled.div`
@@ -49,7 +48,15 @@ export const Intent = styled.div`
 export const InlineIntent = styled.div`
   width: 100%;
 `
-
+export const LogoWrapper = styled.div`
+  border-radius: 3px;
+  background-color: #27578c;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 export const IntentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -61,6 +68,7 @@ export const IntentActionWrapper = styled(IntentWrapper)`
 `
 export const IntentActions = styled(IntentActionWrapper)`
   button {
+    cursor: pointer;
     padding: 0.75rem 1.5rem;
     background-color: #313131;
     &:first-of-type {
