@@ -1,6 +1,7 @@
 import { AnyAction, Dispatch, MiddlewareAPI } from 'redux'
 import { timer } from 'rxjs'
 import { ConnectionActions } from 'rt-actions'
+import { clearNotionalsOnStorage } from 'rt-util'
 
 const LOG_NAME = 'Application Service: '
 export const APPLICATION_DISCONNECT_MINS = 60
@@ -21,11 +22,9 @@ export const disconnectAfterAWhile = ({ dispatch }: MiddlewareAPI) => (next: Dis
   return (action: AnyAction) => next(action)
 }
 
-export const resetLocalStorageAfterAWhile = ({ dispatch }: MiddlewareAPI) => (next: Dispatch) => {
+export const resetStoredStateAfterAWhile = ({ dispatch }: MiddlewareAPI) => (next: Dispatch) => {
   timer(APPLICATION_CLEAR_STORAGE).subscribe(() => {
-    if (localStorage) {
-      localStorage.clear()
-    }
+    clearNotionalsOnStorage()
     console.warn(LOG_NAME, `Application has cleared storage ${APPLICATION_DISCONNECT}`)
   })
 

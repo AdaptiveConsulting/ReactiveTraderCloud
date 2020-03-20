@@ -7,6 +7,7 @@ import {
   MessagePlaceholder,
 } from './styled'
 import { ValidationMessage } from './types'
+import { setNotionalOnStorage } from 'rt-util'
 
 interface Props {
   currencyPairBase: string
@@ -35,10 +36,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
   }
 
   handleUpdateNotional = (currencyPairSymbol: string) => (value: number) => {
-    if (localStorage) {
-      localStorage.setItem(currencyPairSymbol, `${value}`)
-    }
-
+    setNotionalOnStorage(currencyPairSymbol, value)
     this.props.updateNotional(value)
   }
 
