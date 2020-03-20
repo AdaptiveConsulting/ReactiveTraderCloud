@@ -11,7 +11,7 @@ import {
   mapIntent,
 } from 'rt-interop'
 import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from 'apps/MainRoute'
-import { Intent, Suggestion } from './styles'
+import { Intent, Suggestion, IntentWrapper, IntentActions } from './styles'
 import { InlineBlotter } from './InlineBlotter'
 import { InlineQuote } from './InlineQuote'
 
@@ -19,11 +19,10 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
   const currencyPair = getCurrencyPair(response.queryResult)
   const currency = getCurrency(response.queryResult)
   const intent = mapIntent(response)
-
+  console.log(response, intent, platform)
   const quoteSuggestion =
     isSpotQuoteIntent(response) && currencyPair ? (
       <Suggestion onClick={() => handleIntent(response, platform)}>
-        <Intent>{intent}</Intent>
         <InlineQuote currencyPair={currencyPair} />
       </Suggestion>
     ) : null
@@ -35,26 +34,39 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
   }
   const blotterSuggestion = isTradeIntent(response) ? (
     <Suggestion onClick={() => handleIntent(response, platform)}>
-      <Intent>{intent}</Intent>
       <InlineBlotter filters={blotterFilter} />
     </Suggestion>
   ) : null
 
-  if (!quoteSuggestion && !blotterSuggestion) {
-    if (intent) {
-      return (
-        <Suggestion onClick={() => handleIntent(response, platform)}>
-          <Intent>{intent}</Intent>
-        </Suggestion>
-      )
-    }
+  const otherSuggestion = !quoteSuggestion && !blotterSuggestion && (
+    <Suggestion onClick={() => handleIntent(response, platform)}>
+      <Intent>{intent}</Intent>
+    </Suggestion>
+  )
+
+  if (!intent) {
     return <div>No results</div>
   }
+  // if (!quoteSuggestion && !blotterSuggestion) {
+  //   if (intent) {
+  //     return (
+  //     )
+  //   }
+  //   return
+  // }
 
   return (
-    <>
+    <IntentWrapper>
+      <IntentActions>
+        <img src="http://placehold.it/50x50" />
+        <div>
+          <button>Launch Platform</button>
+          <button>{intent}</button>
+        </div>
+      </IntentActions>
       {quoteSuggestion}
       {blotterSuggestion}
-    </>
+      {otherSuggestion}
+    </IntentWrapper>
   )
 }
