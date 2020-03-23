@@ -6,6 +6,7 @@ using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Newtonsoft.Json;
 using Serilog;
+using Serilog.Context;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
@@ -35,24 +36,27 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
         public Task GetPriceUpdates(IRequestContext context, IMessage message)
         {
-            Log.Debug("{host} Received GetPriceUpdates from [{user}] for replyTo {replyTo}",
+            using (LogContext.PushProperty("InstanceId", InstanceId))
+            {
+                Log.Debug("{host} Received GetPriceUpdates from [{user}] for replyTo {replyTo}",
                             this,
                             context.Username ?? "Unknown User",
                             context.ReplyTo);
 
-            var spotStreamRequest = JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
+                var spotStreamRequest = JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
 
-            var replyTo = context.ReplyTo;
+                var replyTo = context.ReplyTo;
 
-            var endpoint = _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo, context.CorrelationId);
+                var endpoint = _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo, context.CorrelationId);
 
-            var disposable = _service.GetPriceUpdates(context, spotStreamRequest)
-                                     .TakeUntil(endpoint.TerminationSignal)
-                                     .Subscribe(endpoint);
+                var disposable = _service.GetPriceUpdates(context, spotStreamRequest)
+                                         .TakeUntil(endpoint.TerminationSignal)
+                                         .Subscribe(endpoint);
 
-            _cleanup.Add(disposable);
+                _cleanup.Add(disposable);
 
-            return Task.CompletedTask;
+                return Task.CompletedTask;
+            }
         }
 
         public override void Dispose()

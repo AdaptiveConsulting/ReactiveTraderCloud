@@ -2,6 +2,7 @@ using System;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Serilog;
+using Serilog.Context;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
@@ -20,6 +21,15 @@ namespace Adaptive.ReactiveTrader.Messaging
             _broker = broker;
             InstanceId = type + "." + Guid.NewGuid().ToString().Substring(0, 4);
             _heartbeat = new Heartbeat(this, broker);
+
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .MinimumLevel.Debug()
+                .WriteTo.ColoredConsole(outputTemplate:
+                "{Timestamp:yyyy-mm-dd HH:mm:ss} {Level:u3} [{InstanceId}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            LogContext.PushProperty("InstanceId", InstanceId);
         }
 
         public virtual void Dispose()

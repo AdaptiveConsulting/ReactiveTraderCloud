@@ -6,6 +6,7 @@ using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Adaptive.ReactiveTrader.Server.Common;
 using Serilog;
+using Serilog.Context;
 
 namespace Adaptive.ReactiveTrader.Server.Analytics
 {
@@ -31,34 +32,40 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         private void ListenForPricesAndTrades()
         {
-            Log.Information("Subscribing to prices topic...");
+            using (LogContext.PushProperty("InstanceId", InstanceId))
+            {
+                Log.Information("Subscribing to prices topic...");
 
-            _subscriptions.Add(_broker.SubscribeToTopic<SpotPriceDto>("prices")
-                                      .Subscribe(p => _service.OnPrice(p)));
+                _subscriptions.Add(_broker.SubscribeToTopic<SpotPriceDto>("prices")
+                                          .Subscribe(p => _service.OnPrice(p)));
 
-            Log.Information("Subscribed to prices topic");
+                Log.Information("Subscribed to prices topic");
 
-            Log.Information("Subscribing to trades...");
+                Log.Information("Subscribing to trades...");
 
-            _subscriptions.Add(_tradeCache.GetTrades()
-                                          .SelectMany(t => t.Trades)
-                                          .Where(t => t.Status == TradeStatusDto.Done)
-                                          .Subscribe(t => _service.OnTrade(t)));
+                _subscriptions.Add(_tradeCache.GetTrades()
+                                              .SelectMany(t => t.Trades)
+                                              .Where(t => t.Status == TradeStatusDto.Done)
+                                              .Subscribe(t => _service.OnTrade(t)));
 
-            Log.Information("Subscribed to trades");
+                Log.Information("Subscribed to trades");
+            }
         }
 
         private Task GetAnalyticsStream(IRequestContext context, IMessage message)
         {
-            Log.Debug("Received GetAnalyticsStream from {username}", context.Username);
+            using (LogContext.PushProperty("InstanceId", InstanceId))
+            {
+                Log.Debug("Received GetAnalyticsStream from {username}", context.Username);
 
-            var endPoint = _broker.GetPrivateEndPoint<PositionUpdatesDto>(context.ReplyTo, context.CorrelationId);
+                var endPoint = _broker.GetPrivateEndPoint<PositionUpdatesDto>(context.ReplyTo, context.CorrelationId);
 
-            _subscriptions.Add(_service.GetAnalyticsStream()
-                                       .TakeUntil(endPoint.TerminationSignal)
-                                       .Subscribe(endPoint));
+                _subscriptions.Add(_service.GetAnalyticsStream()
+                                           .TakeUntil(endPoint.TerminationSignal)
+                                           .Subscribe(endPoint));
 
-            return Task.CompletedTask;
+                return Task.CompletedTask;
+            }
         }
 
         public override void Dispose()

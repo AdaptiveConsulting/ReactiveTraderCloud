@@ -4,6 +4,7 @@ using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Newtonsoft.Json;
 using Serilog;
+using Serilog.Context;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {
@@ -16,17 +17,22 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
             _service = service;
             RegisterCallResponse("executeTrade", ExecuteTrade);
             StartHeartBeat();
+
+            LogContext.PushProperty("InstanceId", InstanceId);
         }
 
-        public Task<ExecuteTradeResponseDto> ExecuteTrade(IRequestContext context, IMessage message)
+        protected Task<ExecuteTradeResponseDto> ExecuteTrade(IRequestContext context, IMessage message)
         {
-            Log.Debug("Received ExecuteTrade from {username}", context.Username);
+            using (LogContext.PushProperty("InstanceId", InstanceId))
+            {
+                Log.Debug("Received ExecuteTrade from {username}", context.Username);
 
-            var payload = JsonConvert.DeserializeObject<ExecuteTradeRequestDto>(Encoding.UTF8.GetString(message.Payload));
-            
-            Log.Information("Received Trade Execution request {trade}", JsonConvert.SerializeObject(payload));
+                var payload = JsonConvert.DeserializeObject<ExecuteTradeRequestDto>(Encoding.UTF8.GetString(message.Payload));
 
-            return _service.ExecuteTrade(context, payload);
+                Log.Information("Received Trade Execution request {trade}", JsonConvert.SerializeObject(payload));
+
+                return _service.ExecuteTrade(context, payload);
+            }
         }
     }
 }

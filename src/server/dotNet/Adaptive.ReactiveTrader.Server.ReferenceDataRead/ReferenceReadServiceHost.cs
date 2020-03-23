@@ -7,6 +7,7 @@ using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Newtonsoft.Json;
 using Serilog;
+using Serilog.Context;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 {
@@ -28,27 +29,30 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataRead
 
         private Task GetCurrencyPairUpdatesStream(IRequestContext context, IMessage message)
         {
-            Log.Debug("Received GetCurrencyPairUpdatesStream from {}",
+            using (LogContext.PushProperty("InstanceId", InstanceId))
+            {
+                Log.Debug("Received GetCurrencyPairUpdatesStream from {}",
                             context.Username ?? "<UNKNOWN USER>");
 
-            var payload = JsonConvert.DeserializeObject<NothingDto>(Encoding.UTF8.GetString(message.Payload));
-            var replyTo = context.ReplyTo;
+                var payload = JsonConvert.DeserializeObject<NothingDto>(Encoding.UTF8.GetString(message.Payload));
+                var replyTo = context.ReplyTo;
 
-            var endPoint = _broker.GetPrivateEndPoint<CurrencyPairUpdatesDto>(replyTo, context.CorrelationId);
+                var endPoint = _broker.GetPrivateEndPoint<CurrencyPairUpdatesDto>(replyTo, context.CorrelationId);
 
-            Interlocked.Increment(ref _clients);
+                Interlocked.Increment(ref _clients);
 
-            _subscription = _service.GetCurrencyPairUpdatesStream(context, payload)
-                                    .Do(
-                                        o =>
-                                        {
-                                            Log.Debug(
-                                                $"Sending currency pair update to {replyTo}. Count: {o.Updates.Count}. IsStateOfTheWorld: {o.IsStateOfTheWorld}. IsStale: {o.IsStale}");
-                                        })
-                                    .TakeUntil(endPoint.TerminationSignal).Finally(() => Interlocked.Decrement(ref _clients))
-                                    .Finally(() => { Log.Debug("Tidying up subscription from {replyTo}.", replyTo); })
-                                    .Subscribe(endPoint);
-          return Task.CompletedTask;
+                _subscription = _service.GetCurrencyPairUpdatesStream(context, payload)
+                                        .Do(
+                                            o =>
+                                            {
+                                                Log.Debug(
+                                                    $"Sending currency pair update to {replyTo}. Count: {o.Updates.Count}. IsStateOfTheWorld: {o.IsStateOfTheWorld}. IsStale: {o.IsStale}");
+                                            })
+                                        .TakeUntil(endPoint.TerminationSignal).Finally(() => Interlocked.Decrement(ref _clients))
+                                        .Finally(() => { Log.Debug("Tidying up subscription from {replyTo}.", replyTo); })
+                                        .Subscribe(endPoint);
+                return Task.CompletedTask;
+            }
         }
 
         public override double GetLoad()

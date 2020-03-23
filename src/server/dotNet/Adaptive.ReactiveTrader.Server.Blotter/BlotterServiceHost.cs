@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Serilog;
+using Serilog.Context;
 
 namespace Adaptive.ReactiveTrader.Server.Blotter
 {
@@ -27,30 +28,33 @@ namespace Adaptive.ReactiveTrader.Server.Blotter
 
         private Task GetTradesStream(IRequestContext context, IMessage message)
         {
-            Log.Debug("Received GetTradesStream from {username}", context.Username ?? "<UNKNOWN USER>");
-            var replyTo = context.ReplyTo;
+            using (LogContext.PushProperty("InstanceId", InstanceId))
+            {
+                Log.Debug("Received GetTradesStream from {username}", context.Username ?? "<UNKNOWN USER>");
+                var replyTo = context.ReplyTo;
 
-            var endPoint = _broker.GetPrivateEndPoint<TradesDto>(context.ReplyTo, context.CorrelationId);
+                var endPoint = _broker.GetPrivateEndPoint<TradesDto>(context.ReplyTo, context.CorrelationId);
 
-            _subscription = _service.GetTradesStream()
-                .Select(x =>
-                {
-                    if (x.IsStateOfTheWorld && x.Trades.Count > MaxSotwTrades)
+                _subscription = _service.GetTradesStream()
+                    .Select(x =>
                     {
-                        return new TradesDto(new List<TradeDto>(x.Trades.Skip(x.Trades.Count - MaxSotwTrades)), true, false);
-                    }
-                    return x;
-                })
-                .Do(o =>
-                {
-                    Log.Debug(
-                        $"Sending trades update to {replyTo}. Count: {o.Trades.Count}. IsStateOfTheWorld: {o.IsStateOfTheWorld}. IsStale: {o.IsStale}");
-                })
-                .TakeUntil(endPoint.TerminationSignal)
-                .Finally(() => Log.Debug("Tidying up subscription from {replyTo}.", replyTo))
-                .Subscribe(endPoint);
+                        if (x.IsStateOfTheWorld && x.Trades.Count > MaxSotwTrades)
+                        {
+                            return new TradesDto(new List<TradeDto>(x.Trades.Skip(x.Trades.Count - MaxSotwTrades)), true, false);
+                        }
+                        return x;
+                    })
+                    .Do(o =>
+                    {
+                        Log.Debug(
+                            $"Sending trades update to {replyTo}. Count: {o.Trades.Count}. IsStateOfTheWorld: {o.IsStateOfTheWorld}. IsStale: {o.IsStale}");
+                    })
+                    .TakeUntil(endPoint.TerminationSignal)
+                    .Finally(() => Log.Debug("Tidying up subscription from {replyTo}.", replyTo))
+                    .Subscribe(endPoint);
 
-            return Task.CompletedTask;
+                return Task.CompletedTask;
+            }
         }
 
         public override void Dispose()
