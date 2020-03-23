@@ -18,13 +18,14 @@ import {
   SnapshotList,
   SnapshotListTitle,
   SnapshotName,
+  SnapshotReset,
   SnapshotRoot,
 } from './styled'
 import { Flex, Modal } from 'rt-components'
 import { SnapshotActiveStatus } from 'rt-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import {applySnapshotFromStorage, getCurrentSnapshotName, getSnapshotNames, saveSnapshotToStorage} from "rt-platforms/openFin/snapshots"
+import { applySnapshotFromStorage, getCurrentSnapshotName, getSnapshotNames, saveSnapshotToStorage } from "rt-platforms/openFin/snapshots"
 
 type SnapshotError = {
   message: string,
@@ -103,7 +104,7 @@ const OpenfinSnapshotSelection: React.FC = props => {
           })
           .catch((ex: Error) => {
             console.error(ex)
-            setSnapshotError({topic: 'load', message: `Failed to load snapshot ${isLoading}.`})
+            setSnapshotError({ topic: 'load', message: `Failed to load snapshot ${isLoading}.` })
             setIsLoading('')
           })
       }
@@ -121,16 +122,17 @@ const OpenfinSnapshotSelection: React.FC = props => {
     if (snapshotNames.length) {
       return snapshotNames.sort().map((snapshotName: string, idx: number) => {
         const isActive = snapshotName === currentSnapshotName
-        return <SnapshotRoot key={`snapshot_${idx}`} isActive={isActive} onClick={e => selectSnapshot(snapshotName)}>
-          <StatusCircle
-            status={
-              isActive
-                ? SnapshotActiveStatus.ACTIVE
-                : SnapshotActiveStatus.INACTIVE
-            }
-          />
-          <SnapshotName>{snapshotName}</SnapshotName>
-        </SnapshotRoot>
+        return (
+          <SnapshotRoot key={`snapshot_${idx}`} isActive={isActive} onClick={e => selectSnapshot(snapshotName)}>
+            <StatusCircle
+              status={isActive ? SnapshotActiveStatus.ACTIVE : SnapshotActiveStatus.INACTIVE}
+            />
+            <SnapshotName isActive={isActive}>
+              {snapshotName}
+              <SnapshotReset>(Reset)</SnapshotReset>
+            </SnapshotName>
+          </SnapshotRoot>
+        )
       })
     } else {
       return <SnapshotRoot isActive={true}>No saved snapshots.</SnapshotRoot>
@@ -190,7 +192,7 @@ const OpenfinSnapshotSelection: React.FC = props => {
   </Root>
 }
 
-const SnapshotErrorAlert: React.FC<{snapshotError: SnapshotError | undefined, topics: string[]}> = ({snapshotError, topics}) => {
+const SnapshotErrorAlert: React.FC<{ snapshotError: SnapshotError | undefined, topics: string[] }> = ({ snapshotError, topics }) => {
   if (!!snapshotError && topics.includes(snapshotError.topic)) {
     return <ErrorAlert>{snapshotError.message}</ErrorAlert>
   }

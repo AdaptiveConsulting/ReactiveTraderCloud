@@ -1,14 +1,3 @@
-/*
-TODO:
-
-We have commented-out the platform context snapshot code
-pre-webinar (on 17.3.2020) due to an issue that was causing
-the app to loop indefinitely.
-
-After the webinar we should re-implement this functionality
-and find the root cause of the bug causing the infinite loop.
-*/
-
 import {
   OPENFIN_SNAPSHOT_CURRENT,
   OPENFIN_SNAPSHOT_DEFAULT_NAME,
@@ -22,7 +11,6 @@ import { union } from 'lodash'
 export const resetCurrentSnapshotName = () => {
   setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
 }
-
 export const getCurrentSnapshotName = () => {
   return window.localStorage.getItem(OPENFIN_SNAPSHOT_CURRENT) || OPENFIN_SNAPSHOT_DEFAULT_NAME
 }
@@ -50,18 +38,18 @@ const setSnapshotNames = (snapshotNames: string[]) => {
 const setSnapshots = (snapshots: any) => {
   window.localStorage.setItem(OPENFIN_SNAPSHOTS, JSON.stringify(snapshots))
 }
-
-// const setPlatformSnapshotName = async (platform: any, platformSnapshotName: string) => {
-//   await platform.setContext({ platformSnapshotName })
-//   return platformSnapshotName
-// }
+const setPlatformSnapshotName = async (platform: any, platformSnapshotName: string) => {
+  await platform.setContext({ platformSnapshotName })
+  return platformSnapshotName
+}
 
 export const applySnapshotFromStorage = (snapshotName: string) => {
   return finWithPlatform.Platform.getCurrent().then((platform: any) => {
-    const currentSnapshotName = getCurrentSnapshotName()
+
     const snapshotNames = getSnapshotNames()
     const snapshots = getSnapshots()
-    if (snapshotName !== currentSnapshotName && snapshotNames.includes(snapshotName)) {
+
+    if (snapshotNames.includes(snapshotName)) {
       setCurrentSnapshotName(snapshotName)
       return platform.applySnapshot(snapshots.snapshots[snapshotName], {
         closeExistingWindows: true,
@@ -70,17 +58,17 @@ export const applySnapshotFromStorage = (snapshotName: string) => {
     return false
   })
 }
-export const applySnapshotFromStorageOnLoad = async () => {
-  // const platform = await finWithPlatform.Platform.getCurrent()
-  // const platformCtx = await platform.getContext() || {}
 
-  // const currentSnapshotName = getCurrentSnapshotName()
+export const applySnapshotFromStorageOnLoad = async () => {
+  const platform = await finWithPlatform.Platform.getCurrent()
+  const platformCtx = await platform.getContext() || {}
+
+  const currentSnapshotName = getCurrentSnapshotName()
   const snapshots = getSnapshots()
 
-  // let platformSnapshotName = platformCtx.platformSnapshotName
-  // let currentSnapshot = snapshots.snapshots && snapshots.snapshots[currentSnapshotName]
+  let platformSnapshotName = platformCtx.platformSnapshotName
+  let currentSnapshot = snapshots.snapshots && snapshots.snapshots[currentSnapshotName]
 
-  // @ts-ignore
   if (snapshots.version !== canned.version) {
     const snapshotNames = getSnapshotNames()
 
@@ -99,18 +87,21 @@ export const applySnapshotFromStorageOnLoad = async () => {
         ...canned_snapshots_json,
       },
     })
-    setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
-    // platformSnapshotName = OPENFIN_SNAPSHOT_DEFAULT_NAME
+
+    platformSnapshotName = OPENFIN_SNAPSHOT_DEFAULT_NAME
+    setCurrentSnapshotName(platformSnapshotName)
+    platform.applySnapshot(getSnapshots().snapshots[platformSnapshotName])
   }
 
-  // if (platformSnapshotName !== currentSnapshotName) {
-  //   platformSnapshotName = await setPlatformSnapshotName(platform, currentSnapshotName)
-  // }
+  if (platformSnapshotName !== currentSnapshotName) {
+    platformSnapshotName = await setPlatformSnapshotName(platform, currentSnapshotName)
+  }
 
-  // if (platformSnapshotName !== OPENFIN_SNAPSHOT_DEFAULT_NAME) {
-  //   return !!(platform.applySnapshot(currentSnapshot))
-  // }
+  if (platformSnapshotName !== OPENFIN_SNAPSHOT_DEFAULT_NAME) {
+    return !!(platform.applySnapshot(currentSnapshot))
+  }
 }
+
 export const saveSnapshotToStorage = async (newSnapshotName: string) => {
   const platform = await finWithPlatform.Platform.getCurrent()
   const snapshot = await platform.getSnapshot()
