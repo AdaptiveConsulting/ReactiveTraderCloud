@@ -109,7 +109,7 @@ const baseAppConfigs: ApplicationConfig[] = [
     tooltipName: 'Launch Reactive Trader',
     uuid: `reactive-trader-cloud-web-${env}`,
     url: `${ORIGIN}`,
-    icon: <LogoIcon width={1.5} height={1.5} />,
+    icon: <LogoIcon width={1.2} height={1.2} />,
     iconhovercolor: '#28588d',
     provider: {
       platformName: 'openfin',
