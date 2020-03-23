@@ -1,9 +1,9 @@
 import React from 'react'
 import { styled } from 'rt-theme'
 
-const StyledButton = styled.button<{ fill?: string }>`
+const StyledButton = styled.button<{ fill?: string; active?: boolean }>`
   width: 40px;
-  height: 45px;
+  height: ${({ active }) => (active ? '40px' : '45px')};
   font-size: 1.5rem;
   text-align: center;
   display: flex;
@@ -14,25 +14,13 @@ const StyledButton = styled.button<{ fill?: string }>`
   position: relative;
 
   border-radius: 4px;
-  background-color: inherit;
-
-  .svg-fill {
-    fill: ${({ theme }) => theme.core.textColor};
-  }
-
-  .svg-stroke {
-    stroke: ${({ theme }) => theme.core.textColor};
-  }
+  background-color: ${({ fill, active }) => (active ? fill : 'inherited')};
 
   &:hover {
-    svg {
-      transition-timing-function: ease-out;
-      transition: transform 0.3s;
-      transform: translateY(-20%);
-      [fill] {
-        fill: ${({ fill }) => fill || 'inherited'};
-      }
-    }
+    height: 45px;
+    background-color: ${({ fill }) => fill};
+    justify-content: start;
+    padding-top: 8px;
   }
 `
 
@@ -41,10 +29,11 @@ interface LaunchButtonProps {
   fill?: string
   children: JSX.Element[] | JSX.Element
   title?: string
+  active?: boolean
 }
 
 export const LaunchButton = (props: LaunchButtonProps) => (
-  <StyledButton title={props.title} onClick={props.onClick} fill={props.fill}>
+  <StyledButton title={props.title} onClick={props.onClick} fill={props.fill} active={props.active}>
     {props.children}
   </StyledButton>
 )
