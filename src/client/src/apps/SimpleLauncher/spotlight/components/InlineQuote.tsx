@@ -1,10 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
 import { usePriceService } from './usePriceService'
 import { SpotPriceTick } from 'apps/MainRoute'
-import { InlineIntent } from './styles'
+import { InlineIntent, LoadingWrapper } from './styles'
 import { DateTime } from 'luxon'
 import { ResultsTable, Col } from './resultsTable'
 import { MovementIcon } from '../../icons'
+import { AdaptiveLoader } from 'rt-components'
 
 interface InlineQuoteProps {
   currencyPair: string
@@ -51,9 +52,14 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
         ]
       : []
 
-  return quote && quote.symbol ? (
+  return (
     <InlineIntent>
-      <ResultsTable cols={colDefs} rows={rows} />
+      {!quote && (
+        <LoadingWrapper>
+          <AdaptiveLoader size={25} speed={1.4} />
+        </LoadingWrapper>
+      )}
+      {quote && quote.symbol && <ResultsTable cols={colDefs} rows={rows} />}
     </InlineIntent>
-  ) : null
+  )
 }

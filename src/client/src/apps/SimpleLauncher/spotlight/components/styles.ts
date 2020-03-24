@@ -91,6 +91,14 @@ export const LogoWrapper = styled.div`
   justify-content: center;
   margin-right: 1rem;
 `
+
+export const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+`
+
 export const IntentWrapper = styled.div`
   display: flex;
   flex-direction: column;
