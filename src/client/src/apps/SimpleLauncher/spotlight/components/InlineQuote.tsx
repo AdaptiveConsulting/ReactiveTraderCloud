@@ -1,7 +1,9 @@
 import React, { FC, useEffect, useState } from 'react'
 import { usePriceService } from './usePriceService'
 import { SpotPriceTick } from 'apps/MainRoute'
-import { InlineIntent, InlineQuoteContainer } from './styles'
+import { InlineIntent } from './styles'
+import { DateTime } from 'luxon'
+import { ResultsTable } from './resultsTable'
 
 interface InlineQuoteProps {
   currencyPair: string
@@ -28,14 +30,27 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
     }
   }, [priceService, currencyPair])
 
-  const baseCcy = quote && quote.symbol.substring(0, 3)
-  const counterCcy = quote && quote.symbol.substring(3)
+  const colDefs = [
+    { title: 'Symbol', id: 'symbol' },
+    { title: 'Ask', id: 'ask' },
+    { title: 'Mid', id: 'mid' },
+    { title: 'Bid', id: 'bid' },
+    { title: 'Movement', id: 'priceMovementType' },
+    { title: 'Date/Time', id: 'valueDate' },
+  ]
+  const rows =
+    quote && quote.symbol
+      ? [
+          {
+            ...quote,
+            valueDate: DateTime.fromISO(quote.valueDate).toFormat('yyyy LLL dd / HH:mm:ss'),
+          },
+        ]
+      : []
 
   return quote && quote.symbol ? (
     <InlineIntent>
-      <InlineQuoteContainer>
-        1 {baseCcy} = {quote.mid} {counterCcy}
-      </InlineQuoteContainer>
+      <ResultsTable cols={colDefs} rows={rows} />
     </InlineIntent>
   ) : null
 }

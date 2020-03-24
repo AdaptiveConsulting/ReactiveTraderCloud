@@ -2,9 +2,9 @@ import React, { FC } from 'react'
 import numeral from 'numeral'
 import { DateTime } from 'luxon'
 import { BlotterFilters } from 'apps/MainRoute'
-import { TableRow, InlineIntent, Table } from './styles'
+import { InlineIntent } from './styles'
 import { useBlotterTrades } from './useBlotterTrades'
-
+import { ResultsTable } from './resultsTable'
 interface BlotterProps {
   readonly filters?: BlotterFilters
 }
@@ -15,31 +15,21 @@ export const InlineBlotter: FC<BlotterProps> = ({ filters }) => {
   if (!trades || (trades && trades.length === 0)) {
     return <InlineIntent>No last trades</InlineIntent>
   }
-
+  const colDefs = [
+    { title: 'Trade ID', id: 'tradeId' },
+    { title: 'Symbol', id: 'symbol' },
+    { title: 'Notional', id: 'notional' },
+    { title: 'Trade Date', id: 'tradeDate' },
+    { title: 'Status', id: 'status' },
+  ]
+  const rows = trades.map(trade => ({
+    ...trade,
+    notional: numeral(trade.notional).format(),
+    tradeDate: DateTime.fromJSDate(trade.tradeDate).toFormat('yyyy LLL dd'),
+  }))
   return (
     <InlineIntent>
-      <Table>
-        <thead>
-          <tr>
-            <th>Trade ID</th>
-            <th>Symbol</th>
-            <th>Notional</th>
-            <th>Trade Date</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {trades.map(trade => (
-            <TableRow status={trade.status} key={trade.tradeId}>
-              <td>{trade.tradeId}</td>
-              <td>{trade.symbol}</td>
-              <td>{numeral(trade.notional).format()}</td>
-              <td>{DateTime.fromJSDate(trade.tradeDate).toFormat('yyyy LLL dd')}</td>
-              <td>{trade.status}</td>
-            </TableRow>
-          ))}
-        </tbody>
-      </Table>
+      <ResultsTable cols={colDefs} rows={rows} />
     </InlineIntent>
   )
 }

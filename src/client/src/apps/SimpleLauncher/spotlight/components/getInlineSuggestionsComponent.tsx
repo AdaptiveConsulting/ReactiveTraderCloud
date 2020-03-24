@@ -31,7 +31,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
   const currencyPair = getCurrencyPair(response.queryResult)
   const currency = getCurrency(response.queryResult)
   const intent = mapIntent(response)
-  console.log(response, intent, platform)
+
   const quoteSuggestion =
     isSpotQuoteIntent(response) && currencyPair ? (
       <Suggestion>

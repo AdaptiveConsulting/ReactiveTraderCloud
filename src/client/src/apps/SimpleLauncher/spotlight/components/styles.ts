@@ -9,7 +9,6 @@ export const Table = styled.table`
   th,
   td {
     text-align: left;
-    width: 100px;
     padding: 0.5rem;
   }
 
@@ -28,7 +27,7 @@ export const Table = styled.table`
   }
 `
 
-export const TableRow = styled.tr<{ status: 'rejected' | 'done' | 'pending' }>`
+export const TableRow = styled.tr<{ status?: 'rejected' | 'done' | 'pending' }>`
   border-left: 0.125rem solid transparent;
   border-left-color: ${({ theme, status }) =>
     status === 'done' ? theme.accents.positive.base : 'transparent'};
