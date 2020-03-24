@@ -89,9 +89,7 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
     if (typeof notional !== 'undefined' && notional !== props.spotTileData.notional) {
       props.updateNotional({ currencyPair: id, notional })
     }
-
     clearNotionalsOnStorage()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

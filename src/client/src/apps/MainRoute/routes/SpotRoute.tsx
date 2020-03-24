@@ -19,7 +19,6 @@ const SpotTileStyle = styled.div`
 const getTileViewFromQueryStr: (queryStr: string) => TileView = queryStr => {
   const parsedQueryString = queryString.parse(queryStr)
   const tileView = parsedQueryString['tileView'] as TileView
-
   return !tileView
     ? TileView.Normal
     : Object.values(TileView).includes(tileView)
@@ -50,7 +49,6 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   }, [platform])
 
   const tileView = getTileViewFromQueryStr(search)
-
   const id = (ccyPairFromInterop && ccyPairFromInterop[0]) || match.params.symbol
 
   return (

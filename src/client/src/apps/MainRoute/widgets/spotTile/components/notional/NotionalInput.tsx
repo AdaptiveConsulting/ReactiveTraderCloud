@@ -7,7 +7,6 @@ import {
   MessagePlaceholder,
 } from './styled'
 import { ValidationMessage } from './types'
-import { setNotionalOnStorage } from 'rt-util'
 
 interface Props {
   currencyPairBase: string
@@ -35,16 +34,12 @@ export default class NotionalInput extends PureComponent<Props, State> {
     this.props.resetNotional()
   }
 
-  handleUpdateNotional = (currencyPairSymbol: string) => (value: number) => {
-    setNotionalOnStorage(currencyPairSymbol, value)
-    this.props.updateNotional(value)
-  }
-
   render() {
     const {
       currencyPairSymbol,
       currencyPairBase,
       notional,
+      updateNotional,
       validationMessage,
       showResetButton,
       disabled,
@@ -60,7 +55,7 @@ export default class NotionalInput extends PureComponent<Props, State> {
           ref={this.inputRef}
           numericValue={notional}
           onFocus={this.handleFocus}
-          onNumericValueChange={this.handleUpdateNotional(currencyPairSymbol)}
+          onNumericValueChange={updateNotional}
           validationMessage={validationMessage}
           disabled={disabled}
           data-qa-id={`notional-input__input-${currencyPairSymbol.toLowerCase()}`}
