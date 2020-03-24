@@ -55,7 +55,6 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
 
   beforeEach(async () => {
     await browser.refresh()
-    browser.executeScript('localStorage.clear();')
   })
 
   afterAll(async () => {
