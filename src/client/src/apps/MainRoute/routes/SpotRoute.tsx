@@ -50,6 +50,7 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
 
   const tileView = getTileViewFromQueryStr(search)
   const id = (ccyPairFromInterop && ccyPairFromInterop[0]) || match.params.symbol
+
   return (
     <SpotTileStyle>
       <SpotTileContainer id={id} tileView={tileView} />

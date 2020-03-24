@@ -2,6 +2,11 @@ import { ActionCreatorsMapObject } from 'redux'
 import * as actionHelper from './ActionHelper'
 import * as utilityTypes from './utilityTypes'
 export const { action } = actionHelper
+export {
+  getNotionalFromStorage,
+  setNotionalOnStorage,
+  clearNotionalsOnStorage,
+} from './stateStorageHelper'
 export { wait, getDeferredPromise } from './asyncUtils'
 export { useForceUpdate } from './hooks/useForceUpdate'
 export { useMultiTimeout } from './hooks/useMultiTimeout'
