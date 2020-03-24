@@ -56,6 +56,7 @@ export const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 1rem;
 `
 export const IntentWrapper = styled.div`
   display: flex;
