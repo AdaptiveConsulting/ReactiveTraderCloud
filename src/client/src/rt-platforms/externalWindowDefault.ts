@@ -1,4 +1,5 @@
 import { WindowConfig } from './'
+import { TileView } from '../apps/MainRoute/widgets/workspace'
 export interface ExternalWindow {
   title: string
   config: WindowConfig
@@ -28,7 +29,20 @@ const analyticsRegion: ExternalWindow = {
   },
 }
 
+const liveRatesRegion = (currency?: string, tileView?: TileView): ExternalWindow => ({
+  title: 'LiveRates',
+  config: {
+    name: 'LiveRates',
+    width: 664,
+    height: 617,
+    minWidth: 664,
+    minHeight: 617,
+    url: `/tiles/${currency ? currency : 'ALL'}/${tileView ? tileView : 'Analytics'}`,
+  },
+})
+
 export const externalWindowDefault = {
   blotterRegion,
   analyticsRegion,
+  liveRatesRegion,
 }

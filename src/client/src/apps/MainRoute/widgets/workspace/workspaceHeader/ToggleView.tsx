@@ -7,9 +7,10 @@ import { ChartIcon } from 'rt-components'
 interface Props {
   tileView: TileView
   currency: string
+  canPopout: boolean
 }
 
-const ToggleView: React.FC<Props> = ({ tileView, currency }) => {
+const ToggleView: React.FC<Props> = ({ tileView, currency, canPopout }) => {
   const isAnalyticsViewActive = TileView.Analytics === tileView
   const goToView = isAnalyticsViewActive ? TileView.Normal : TileView.Analytics
 
@@ -19,7 +20,7 @@ const ToggleView: React.FC<Props> = ({ tileView, currency }) => {
       data-qa="workspace-header__nav-item--view"
       data-qa-id={`workspace-view-${tileView.toLowerCase()}`}
     >
-      <NavLink to={`/${currency}/${goToView}`}>
+      <NavLink to={`${canPopout ? '' : '/tiles'}/${currency}/${goToView}`}>
         <ChartIcon active={isAnalyticsViewActive} />
       </NavLink>
     </NavItem>

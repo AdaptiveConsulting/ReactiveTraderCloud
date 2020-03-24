@@ -63,7 +63,4 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(AnalyticsContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(AnalyticsContainer)

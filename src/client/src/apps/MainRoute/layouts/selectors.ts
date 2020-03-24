@@ -1,14 +1,12 @@
-import { GlobalState } from 'StoreTypes'
 import { createSelector } from 'reselect'
+import { GlobalState } from 'StoreTypes'
 
-export const selectState = (state: GlobalState) => state.layoutService
+const selectState = (state: GlobalState) => state.layoutService
 
-export const blotterSelector = createSelector(
-  [selectState],
-  state => state.blotter,
-)
+const blotterSelector = createSelector([selectState], state => state.blotter)
 
-export const analyticsSelector = createSelector(
-  [selectState],
-  state => state.analytics,
-)
+const analyticsSelector = createSelector([selectState], state => state.analytics)
+
+const liveRatesSelector = createSelector([selectState], state => state.liveRates)
+
+export { blotterSelector, analyticsSelector, liveRatesSelector }

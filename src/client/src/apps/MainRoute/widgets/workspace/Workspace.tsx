@@ -27,11 +27,18 @@ interface SpotTile {
 interface Props {
   spotTiles: SpotTile[]
   currencyOptions: string[]
+  canPopout: boolean
+  onPopoutClick?: () => void
 }
 
 const ALL = 'ALL'
 
-const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
+const Workspace: React.FC<Props> = ({
+  spotTiles = [],
+  currencyOptions,
+  canPopout,
+  onPopoutClick,
+}) => {
   const { currency, tileView } = useParams()
 
   if (!currency || !tileView) {
@@ -41,9 +48,11 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
   return (
     <div data-qa="workspace__tiles-workspace">
       <WorkspaceHeader
+        canPopout={canPopout}
         currencyOptions={currencyOptions}
         currency={currency}
         defaultOption={ALL}
+        onPopoutClick={onPopoutClick}
         tileView={tileView as TileView}
       />
       <WorkspaceItems data-qa="workspace__tiles-workspace-items">
@@ -53,7 +62,7 @@ const Workspace: React.FC<Props> = ({ spotTiles = [], currencyOptions }) => {
             <TearOff
               id={key}
               key={key}
-              dragTearOff={true}
+              dragTearOff
               externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView as TileView)}
               render={(popOut, isTornOff) => (
                 <WorkspaceItem>

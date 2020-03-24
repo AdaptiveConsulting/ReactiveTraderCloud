@@ -4,7 +4,7 @@ import { styled } from 'rt-theme'
 
 const AnalyticsRouteStyle = styled.div`
   /*height offset is needed for openfin controls*/
-  height: calc(100% - 21px);
+  height: calc(100% - 24px);
   padding: 0 0.625rem 0rem 0.625rem;
   overflow-x: scroll;
   margin: auto;
@@ -13,7 +13,7 @@ const AnalyticsRouteStyle = styled.div`
 const AnalyticsRoute = () => {
   return (
     <AnalyticsRouteStyle>
-      <AnalyticsContainer inExternalWindow={true} />
+      <AnalyticsContainer inExternalWindow />
     </AnalyticsRouteStyle>
   )
 }
