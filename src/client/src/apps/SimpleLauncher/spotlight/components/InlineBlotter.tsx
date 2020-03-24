@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 import { BlotterFilters } from 'apps/MainRoute'
 import { InlineIntent } from './styles'
 import { useBlotterTrades } from './useBlotterTrades'
-import { ResultsTable } from './resultsTable'
+import { ResultsTable, Col } from './resultsTable'
 interface BlotterProps {
   readonly filters?: BlotterFilters
 }
@@ -15,7 +15,7 @@ export const InlineBlotter: FC<BlotterProps> = ({ filters }) => {
   if (!trades || (trades && trades.length === 0)) {
     return <InlineIntent>No last trades</InlineIntent>
   }
-  const colDefs = [
+  const colDefs: Col[] = [
     { title: 'Trade ID', id: 'tradeId' },
     { title: 'Symbol', id: 'symbol' },
     { title: 'Notional', id: 'notional' },

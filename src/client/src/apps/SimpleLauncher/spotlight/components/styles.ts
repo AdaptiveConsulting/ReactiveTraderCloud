@@ -8,7 +8,6 @@ export const Table = styled.table`
 
   th,
   td {
-    text-align: left;
     padding: 0.5rem;
   }
 
@@ -21,6 +20,10 @@ export const Table = styled.table`
   }
 
   tbody {
+    svg {
+      display: block;
+      margin: auto;
+    }
     tr:nth-child(odd) {
       background-color: #313131;
     }
@@ -48,6 +51,13 @@ export const TableRow = styled.tr<{ status?: 'rejected' | 'done' | 'pending' }>`
       };
     `}
   }
+`
+
+export const TableCell = styled.td<{ align?: 'center' | 'right' }>`
+  text-align: ${({ align }) => (align ? align : 'left')};
+`
+export const TableHeader = styled.th`
+  text-align: ${({ align }) => (align ? align : 'left')};
 `
 
 export const Suggestion = styled.div`
@@ -91,6 +101,7 @@ export const IntentActionWrapper = styled(IntentWrapper)`
   align-items: center;
 `
 export const IntentActions = styled(IntentActionWrapper)`
+  margin-bottom: 1rem;
   button {
     cursor: pointer;
     padding: 0.75rem 1.5rem;

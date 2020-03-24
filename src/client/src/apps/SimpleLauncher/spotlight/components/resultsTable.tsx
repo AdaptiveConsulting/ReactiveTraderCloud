@@ -1,9 +1,10 @@
 import React, { FC } from 'react'
-import { Table, TableRow } from './styles'
+import { Table, TableRow, TableCell, TableHeader } from './styles'
 
-interface Col {
+export interface Col {
   title: String
   id: String
+  align?: 'center' | 'right'
 }
 interface ResultsTableProps {
   cols: Col[]
@@ -15,8 +16,10 @@ export const ResultsTable: FC<ResultsTableProps> = ({ cols, rows }) => {
     <Table>
       <thead>
         <tr>
-          {cols.map(({ title }, index) => (
-            <th key={index}>{title}</th>
+          {cols.map(({ title, align }, index) => (
+            <TableHeader align={align} key={index}>
+              {title}
+            </TableHeader>
           ))}
         </tr>
       </thead>
@@ -26,7 +29,11 @@ export const ResultsTable: FC<ResultsTableProps> = ({ cols, rows }) => {
             return (
               <TableRow key={rowIndex} status={row.status}>
                 {cols.map((col: any, cellIndex: number) => {
-                  return <td key={cellIndex}>{row[col.id]}</td>
+                  return (
+                    <TableCell align={col.align} key={cellIndex}>
+                      {row[col.id]}
+                    </TableCell>
+                  )
                 })}
               </TableRow>
             )
