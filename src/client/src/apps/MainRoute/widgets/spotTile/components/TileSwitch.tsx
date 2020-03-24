@@ -56,7 +56,12 @@ const TileSwitch: React.FC<Props> = ({
     >
       {() => (
         <>
-          <TileControls canPopout={canPopout} onPopoutClick={onPopoutClick} />
+          <TileControls
+            canPopout={canPopout}
+            onPopoutClick={onPopoutClick}
+            currencyPair={currencyPair}
+            notional={spotTileData.notional}
+          />
           <NotificationContainer
             lastTradeExecutionStatus={spotTileData.lastTradeExecutionStatus}
             currencyPair={currencyPair}

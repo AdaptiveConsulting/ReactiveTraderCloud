@@ -18,7 +18,7 @@ import { TileView } from '../workspace/workspaceHeader'
 import { RfqCancel, RfqExpired, RfqReject, RfqRequest, RfqRequote } from './model/rfqRequest'
 import { TradingMode } from './components/types'
 import { CurrencyPairNotional } from './model/spotTileData'
-import { getNotionalFromStorage } from 'rt-util'
+import { getNotionalFromStorage, clearNotionalsOnStorage } from 'rt-util'
 
 export interface SpotTileContainerOwnProps {
   id: string
@@ -89,6 +89,9 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
     if (typeof notional !== 'undefined' && notional !== props.spotTileData.notional) {
       props.updateNotional({ currencyPair: id, notional })
     }
+
+    clearNotionalsOnStorage()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
