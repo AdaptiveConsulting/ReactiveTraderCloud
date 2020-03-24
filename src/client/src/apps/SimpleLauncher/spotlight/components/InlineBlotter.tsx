@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import numeral from 'numeral'
 import { DateTime } from 'luxon'
 import { BlotterFilters } from 'apps/MainRoute'
-import { InlineIntent, Table } from './styles'
+import { TableRow, InlineIntent, Table } from './styles'
 import { useBlotterTrades } from './useBlotterTrades'
 
 interface BlotterProps {
@@ -30,13 +30,13 @@ export const InlineBlotter: FC<BlotterProps> = ({ filters }) => {
         </thead>
         <tbody>
           {trades.map(trade => (
-            <tr key={trade.tradeId}>
+            <TableRow status={trade.status} key={trade.tradeId}>
               <td>{trade.tradeId}</td>
               <td>{trade.symbol}</td>
               <td>{numeral(trade.notional).format()}</td>
               <td>{DateTime.fromJSDate(trade.tradeDate).toFormat('yyyy LLL dd')}</td>
               <td>{trade.status}</td>
-            </tr>
+            </TableRow>
           ))}
         </tbody>
       </Table>

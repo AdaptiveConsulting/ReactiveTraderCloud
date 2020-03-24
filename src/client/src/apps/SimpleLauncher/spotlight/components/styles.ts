@@ -4,6 +4,7 @@ import { rules } from 'rt-styleguide'
 export const Table = styled.table`
   font-size: 0.6875rem;
   width: 100%;
+  border-collapse: collapse;
 
   th,
   td {
@@ -24,6 +25,29 @@ export const Table = styled.table`
     tr:nth-child(odd) {
       background-color: #313131;
     }
+  }
+`
+
+export const TableRow = styled.tr<{ status: 'rejected' | 'done' | 'pending' }>`
+  border-left: 0.125rem solid transparent;
+  border-left-color: ${({ theme, status }) =>
+    status === 'done' ? theme.accents.positive.base : 'transparent'};
+
+  td {
+    position: relative;
+    color: ${({ status }) => (status === 'rejected' ? '#7f7f7f' : 'white')};
+    ${({ status }) =>
+      status === 'rejected' &&
+      `
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        border-bottom: 0.0625rem solid #7f7f7f;
+        width: 100%;
+      };
+    `}
   }
 `
 
