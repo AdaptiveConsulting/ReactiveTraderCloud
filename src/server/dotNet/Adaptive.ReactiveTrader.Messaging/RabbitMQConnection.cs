@@ -1,6 +1,7 @@
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Subjects;
+using System.Threading;
 using Adaptive.ReactiveTrader.Common;
 using RabbitMQ.Client;
 using Serilog;
@@ -25,7 +26,24 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public void Start()
         {
-            _connection = _connectionFactory.CreateConnection();
+            var brokerStartingTime = 4;
+            while (brokerStartingTime-- > 0 && _connection == null)
+            {
+                try
+                {
+                    _connection = _connectionFactory.CreateConnection();
+                }
+                catch (RabbitMQ.Client.Exceptions.BrokerUnreachableException)
+                {
+                    Thread.Sleep(2000);
+                }
+            }
+
+            if (_connection == null)
+            {
+                throw new RabbitMQ.Client.Exceptions.BrokerUnreachableException(null);
+            }
+
             _channel = _connection.CreateModel();
             _sessionDispose.Add(_connection);
             _sessionDispose.Add(_channel);

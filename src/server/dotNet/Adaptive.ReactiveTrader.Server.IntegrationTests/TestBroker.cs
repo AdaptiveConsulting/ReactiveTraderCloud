@@ -4,6 +4,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Text;
+using System.Threading;
 
 namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
@@ -14,8 +15,19 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
         public TestBroker()
         {
+            IConnection connection = null;
             var connectionFactory = new ConnectionFactory { HostName = TestAddress.BrokerHost, Port = TestAddress.BrokerPort, AutomaticRecoveryEnabled = true };
-            var connection = connectionFactory.CreateConnection();
+            while (connection == null)
+            {
+                try
+                {
+                    connection = connectionFactory.CreateConnection();
+                }
+                catch (RabbitMQ.Client.Exceptions.BrokerUnreachableException)
+                {
+                    Thread.Sleep(1000);
+                }
+            }
             _channel = connection.CreateModel();
             _broker = new Broker(_channel);
         }
