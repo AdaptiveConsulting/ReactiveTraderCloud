@@ -13,10 +13,9 @@ import { SymphonyClient } from './symphony'
 config()
 
 const host = process.env.BROKER_HOST || 'localhost'
-const realm = process.env.WAMP_REALM || 'com.weareadaptive.reactivetrader'
-const port = process.env.BROKER_PORT || `8000`
+const port = process.env.BROKER_PORT || `15674`
 
-const services = createApplicationServices(host, realm, port)
+const services = createApplicationServices(host, port)
 
 /* 
   Setup symphony streams

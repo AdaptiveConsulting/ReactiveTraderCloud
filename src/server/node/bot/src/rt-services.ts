@@ -20,8 +20,8 @@ function getPriceMovementType(prevItem: Price, newItem: Price) {
   }
   return prevPriceMove
 }
-export function createApplicationServices(host: string, realm: string, port: string) {
-  logger.info(`Started bot-service for ${host}:${port} on realm ${realm}`)
+export function createApplicationServices(host: string, port: string) {
+  logger.info(`Started bot-service for ${host}:${port}`)
 
   const broker = new WsConnectionProxy(host, +port)
   const connection$ = connectionStream$(broker).pipe(shareReplay(1))
