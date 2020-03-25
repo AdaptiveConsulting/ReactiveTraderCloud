@@ -41,7 +41,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
         setFromLauncher(isLauncher)
       })
       .catch(() => {
-        console.error('Can not find parent window')
+        console.error('Cannot find parent window')
       })
   }, [])
 

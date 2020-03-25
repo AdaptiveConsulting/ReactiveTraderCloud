@@ -13,15 +13,11 @@ const defaultConfig: WindowConfig = {
 }
 
 export interface ExternalWindowProps {
-  title?: string
-  onBlock?: () => void
   onUnload: () => void
   config?: WindowConfig
 }
 
 const ExternalWindow: FC<ExternalWindowProps> = ({
-  title = '',
-  onBlock = () => undefined,
   onUnload = () => undefined,
   config = defaultConfig,
 }) => {

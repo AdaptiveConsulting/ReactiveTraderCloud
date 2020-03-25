@@ -18,6 +18,7 @@ import { TileView } from '../workspace/workspaceHeader'
 import { RfqCancel, RfqExpired, RfqReject, RfqRequest, RfqRequote } from './model/rfqRequest'
 import { TradingMode } from './components/types'
 import { CurrencyPairNotional } from './model/spotTileData'
+import { getNotionalFromStorage, clearNotionalsOnStorage } from 'rt-util'
 
 export interface SpotTileContainerOwnProps {
   id: string
@@ -82,6 +83,15 @@ const SpotTileContainer: React.FC<SpotTileContainerProps> = ({
   ...props
 }) => {
   const { allowTearOff } = usePlatform()
+
+  useEffect(() => {
+    const notional = getNotionalFromStorage(id)
+    if (typeof notional !== 'undefined' && notional !== props.spotTileData.notional) {
+      props.updateNotional({ currencyPair: id, notional })
+    }
+    clearNotionalsOnStorage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // watch currency pair changes when component is mounted
   useEffect(() => {

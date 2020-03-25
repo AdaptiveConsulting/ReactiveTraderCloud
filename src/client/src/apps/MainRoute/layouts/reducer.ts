@@ -1,16 +1,13 @@
 import { LAYOUT_ACTION_TYPES, LayoutAction } from 'rt-actions'
 import { ContainerVisibility } from 'rt-actions/layoutActions'
-import { externalWindowDefault, WindowPosition } from 'rt-platforms'
+import { externalWindowDefault, WindowPosition, TilesLayout } from 'rt-platforms'
 import { ActionWithPayload } from 'rt-util/ActionHelper'
-
-interface TilesLayout {
-  [key: string]: WindowPosition
-}
 
 export interface LayoutState {
   blotter: WindowPosition
   analytics: WindowPosition
   spotTiles: TilesLayout
+  liveRates: WindowPosition
 }
 
 const INITIAL_STATE: LayoutState = {
@@ -21,6 +18,9 @@ const INITIAL_STATE: LayoutState = {
     visible: true,
   },
   spotTiles: {},
+  liveRates: {
+    visible: true,
+  },
 }
 
 export const layoutReducer = (
@@ -39,6 +39,11 @@ export const layoutReducer = (
           return {
             ...state,
             analytics: getWindowPosition(action),
+          }
+        case externalWindowDefault.liveRatesRegion().config.name:
+          return {
+            ...state,
+            liveRates: getWindowPosition(action),
           }
         default:
           // this is a spot tile

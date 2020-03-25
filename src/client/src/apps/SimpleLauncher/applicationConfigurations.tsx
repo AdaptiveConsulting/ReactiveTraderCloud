@@ -1,11 +1,8 @@
+import React from 'react'
 import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
 import { getEnvironment } from 'rt-util'
-import {
-  excelIcon,
-  limitCheckerIcon,
-  reactiveAnalyticsIcon,
-  reactiveTraderIcon,
-} from './icons/index'
+import { LogoIcon } from 'rt-components'
+import { excelIcon, limitCheckerIcon, reactiveAnalyticsIcon } from './icons'
 
 // Safer than location.origin due to browser support
 const ORIGIN = `${location.protocol}//${location.host}`
@@ -112,14 +109,15 @@ const baseAppConfigs: ApplicationConfig[] = [
     tooltipName: 'Launch Reactive Trader',
     uuid: `reactive-trader-cloud-web-${env}`,
     url: `${ORIGIN}`,
-    icon: reactiveTraderIcon,
+    icon: <LogoIcon width={1.2} height={1.2} />,
+    iconhovercolor: '#28588d',
     provider: {
       platformName: 'openfin',
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
         preloadScripts: excelPreloadScripts,
-        icon: `${ORIGIN}/static/media/rt-icon.ico`,
+        icon: `${ORIGIN}/static/media/icon.ico`,
       },
     },
   },

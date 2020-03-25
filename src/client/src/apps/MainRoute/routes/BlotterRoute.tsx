@@ -7,7 +7,7 @@ import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
 import { Subscription } from 'rxjs'
 
 const BlotterContainerStyle = styled('div')`
-  height: calc(100% - 21px);
+  height: calc(100% - 25px);
   width: 100%;
   padding: 0.625rem;
   margin: auto;
@@ -66,6 +66,7 @@ const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   }, [platform])
 
   const filters = (filtersFromInterop && filtersFromInterop[0]) || getFiltersFromQueryStr(search)
+
   return (
     <BlotterContainerStyle>
       <BlotterContainer filters={filters} />

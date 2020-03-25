@@ -120,9 +120,9 @@ const Blotter: React.FC<BlotterProps> = props => {
           columnDefs={columnDefinitions}
           defaultColDef={DEFAULT_COLUMN_DEFINITION}
           rowData={rows}
-          suppressMovableColumns={true}
+          suppressMovableColumns
           rowSelection="multiple"
-          suppressDragLeaveHidesColumns={true}
+          suppressDragLeaveHidesColumns
           getRowClass={getRowClass}
           onRowClicked={params => broadcastContext(params.data.symbol)}
           headerHeight={38}
