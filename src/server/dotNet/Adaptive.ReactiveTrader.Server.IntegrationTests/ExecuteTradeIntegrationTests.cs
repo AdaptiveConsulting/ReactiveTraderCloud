@@ -39,9 +39,9 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                 }
             }
 
-            _broker.RpcCall<dynamic, NothingDto>("blotter.getTradesStream", new NothingDto(), BlotterCallbackAssertion);
+            await _broker.RpcCall<dynamic, NothingDto>(ServiceTypes.Blotter, "getTradesStream", new NothingDto(), BlotterCallbackAssertion);
 
-            CallExecuteTrade(testCcyPair);
+            await CallExecuteTrade(testCcyPair);
 
             var pass = await asyncAssertion.Task.ToObservable().Timeout(ResponseTimeout, Observable.Return(false)).Take(1);
 
@@ -69,18 +69,18 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
                 }
             }
 
-            _broker.RpcCall<dynamic, NothingDto>("analytics.getAnalytics", new NothingDto(), AnalyticsCallbackAssertion);
+            await _broker.RpcCall<dynamic, NothingDto>(ServiceTypes.Analytics, "getAnalytics", new NothingDto(), AnalyticsCallbackAssertion);
 
-            CallExecuteTrade(testCcyPair);
+            await CallExecuteTrade(testCcyPair);
 
             var pass = await asyncAssertion.Task.ToObservable().Timeout(ResponseTimeout, Observable.Return(false)).Take(1);
 
             Assert.True(pass);
         }
         
-        private void CallExecuteTrade(string testCcyPair)
+        private async Task CallExecuteTrade(string testCcyPair)
         {
-            _broker.RpcCall<ExecuteTradeRequestDto, dynamic>("execution.executeTrade",  new ExecuteTradeRequestDto
+            await _broker.RpcCall<ExecuteTradeRequestDto, dynamic>(ServiceTypes.Execution, "executeTrade",  new ExecuteTradeRequestDto
                         {
                             CurrencyPair = testCcyPair,
                             DealtCurrency = "XXX",

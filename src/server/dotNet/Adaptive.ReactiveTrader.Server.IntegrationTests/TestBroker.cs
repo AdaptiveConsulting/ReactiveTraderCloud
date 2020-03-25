@@ -1,10 +1,13 @@
 using Adaptive.ReactiveTrader.Messaging;
+using Adaptive.ReactiveTrader.Common;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 {
@@ -37,8 +40,10 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             return _broker.SubscribeToTopic<T>(topic);
         }
 
-        internal void RpcCall<TResult, TPayload>(string methodName, TPayload payload, Action<TResult> callback)
+        internal async Task RpcCall<TResult, TPayload>(string serviceName, string methodName, TPayload payload, Action<TResult> callback)
         {
+            await WaitForServiceHeartbeat(serviceName);
+
             var replyQueueName = _channel.QueueDeclare().QueueName;
 
             var consumer = new EventingBasicConsumer(_channel);
@@ -51,7 +56,6 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
             _channel.BasicConsume(replyQueueName, true, consumer);
             
-
             dynamic dto = new
             {
                 ReplyTo = replyQueueName,
@@ -61,7 +65,22 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             props.ReplyTo = replyQueueName;
             props.CorrelationId = Guid.NewGuid().ToString();
             var message = JsonConvert.SerializeObject(dto);
-            _channel.BasicPublish(string.Empty, methodName, false, props, Encoding.UTF8.GetBytes(message));
+            var procedure = $"{serviceName}.{methodName}";
+            _channel.BasicPublish(string.Empty, procedure, false, props, Encoding.UTF8.GetBytes(message));
+        }
+
+        public async Task WaitForServiceHeartbeat(string service)
+        {
+            var status = await SubscribeToTopic<dynamic>("status")
+                .Where(heartbeat => heartbeat.Type == service)
+                .Timeout(TimeSpan.FromSeconds(5))
+                .Take(1);
+
+            if (status == null)
+            {
+                Console.WriteLine($"Service {service} is unreachable.");
+                throw new SystemException();
+            }
         }
     }
 }

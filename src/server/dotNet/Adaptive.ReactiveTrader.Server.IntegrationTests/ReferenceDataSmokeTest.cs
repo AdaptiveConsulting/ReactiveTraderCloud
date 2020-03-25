@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
 using Xunit;
 using Xunit.Abstractions;
@@ -25,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
             var broker = new TestBroker();
 
-            broker.RpcCall<CurrencyPairUpdatesDto, NothingDto>("reference.getCurrencyPairUpdatesStream", new NothingDto(), dto =>
+            await broker.RpcCall<CurrencyPairUpdatesDto, NothingDto>(ServiceTypes.Reference, "getCurrencyPairUpdatesStream", new NothingDto(), dto =>
             {
                 foreach (var x in dto.Updates)
                 {
