@@ -31,13 +31,14 @@ interface BarProps {
   moveDistance: number
   speed: number
   type: LoaderType
+  color?: string
 }
 
 const Bar = styled('rect')<BarProps>`
   animation: ${({ moveDistance }: BarProps) => getBounce(moveDistance)} ${({ speed }) => speed}s
     infinite;
   animation-delay: ${({ order, speed }) => order * (speed / 1.3 / BAR_NUMBER) - speed * 0.6}s;
-  fill: ${({ theme }) => theme.core.textColor};
+  fill: ${({ theme, color }) => color ?? theme.core.textColor};
   will-change: transform;
 `
 
@@ -47,10 +48,11 @@ interface Props {
   type?: LoaderType
   seperation?: number
   speed?: number
+  color?: string
 }
 
 const AdaptiveLoader: React.FC<Props> = React.memo(
-  ({ size, type, seperation, speed, children }) => {
+  ({ size, type, seperation, speed, children, color }) => {
     const sizeNum = Number(size)
     const barHeight = sizeNum * 0.75
     const barWidth = barHeight / 4
@@ -71,6 +73,7 @@ const AdaptiveLoader: React.FC<Props> = React.memo(
             order={i}
             moveDistance={moveDistance}
             speed={speed || ANIMATION_SPEED}
+            color={color}
           />
         ))}
         {children}
