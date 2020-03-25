@@ -11,6 +11,7 @@ import { WorkspaceContainer, TileView } from '../widgets/workspace'
 import ReconnectModal from '../components/reconnect-modal'
 import { analyticsSelector, blotterSelector, liveRatesSelector, DefaultLayout } from '../layouts'
 import { BlotterWrapper, AnalyticsWrapper, OverflowScroll, WorkspaceWrapper } from './styled'
+import UsersModal from '../components/users-modal'
 
 interface Props {
   header?: React.ReactChild
@@ -111,15 +112,14 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
     </StatusBar>
   )
 
-  return (
-    <DefaultLayout
-      header={header}
-      body={body}
-      aside={aside}
-      footer={footer}
-      after={<ReconnectModal />}
-    />
+  const modals = (
+    <>
+      <UsersModal />
+      <ReconnectModal />
+    </>
   )
+
+  return <DefaultLayout header={header} body={body} aside={aside} footer={footer} after={modals} />
 }
 
 export default ShellRoute
