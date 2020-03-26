@@ -9,7 +9,7 @@ const waitForConnected = async (browser: ProtractorBrowser) => {
   const mainPage = new MainPage(browser)
   browser.wait(
     () => mainPage.isConnected(),
-    20_000,
+    30_000,
     'Application failed to connect to the services.',
   )
 }
