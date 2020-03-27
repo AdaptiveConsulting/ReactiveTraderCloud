@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
-import { styled, ThemeName, useTheme } from 'rt-theme'
+import { styled } from 'rt-theme'
+import LoginControls from './LoginControls'
 import Logo from './Logo'
 
 const Header: React.FC = ({ children }) => {
@@ -9,7 +10,7 @@ const Header: React.FC = ({ children }) => {
     <Root>
       <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
       <Fill />
-      <ThemeControl />
+      <LoginControls />
       {children == null ? null : (
         <React.Fragment>
           <Division />
@@ -17,15 +18,6 @@ const Header: React.FC = ({ children }) => {
         </React.Fragment>
       )}
     </Root>
-  )
-}
-
-const ThemeControl = () => {
-  const { themeName, toggleTheme } = useTheme()
-  return (
-    <IconButton onClick={toggleTheme} data-qa="header__toggle-theme-button">
-      <i className={`fa${themeName === ThemeName.Light ? 'r' : 's'} fa-lightbulb`} />
-    </IconButton>
   )
 }
 
@@ -59,29 +51,6 @@ const Fill = styled.div`
   */
   -webkit-app-region: drag;
   cursor: -webkit-grab;
-`
-
-const IconButton = styled.button`
-  width: 2rem;
-  height: 2rem;
-  font-size: 1rem;
-  line-height: 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  cursor: pointer;
-
-  transition: background-color ${({ theme }) => theme.motion.duration}ms
-    ${({ theme }) => theme.motion.easing};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.button.secondary.active.backgroundColor};
-    color: ${({ theme }) => theme.button.secondary.textColor};
-  }
 `
 
 const Division = styled.div`

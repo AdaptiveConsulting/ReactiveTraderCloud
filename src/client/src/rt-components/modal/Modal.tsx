@@ -31,9 +31,9 @@ const ModalOverlay = styled.div`
 const ModalPanel = styled.div`
   padding: 1rem 1.5rem;
 
-  width: 100%;
+  width: max-content;
   min-width: 16rem;
-  max-width: 22rem;
+  max-width: 40rem;
 
   position: relative;
   z-index: 1;
