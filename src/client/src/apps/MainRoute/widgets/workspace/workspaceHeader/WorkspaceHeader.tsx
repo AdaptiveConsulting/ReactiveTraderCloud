@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
 import { TileView } from './types'
 import ToggleView from './ToggleView'
@@ -12,6 +11,8 @@ interface Props {
   defaultOption: string
   canPopout: boolean
   onPopoutClick?: (x: number, y: number) => void
+  onCurrencyChange: (currency: string) => void
+  onTileViewChange: (tileView: TileView) => void
 }
 
 const WorkspaceHeader: React.FC<Props> = ({
@@ -21,6 +22,8 @@ const WorkspaceHeader: React.FC<Props> = ({
   currencyOptions,
   canPopout,
   onPopoutClick,
+  onCurrencyChange,
+  onTileViewChange,
 }) => {
   const options = [defaultOption, ...currencyOptions]
 
@@ -34,15 +37,14 @@ const WorkspaceHeader: React.FC<Props> = ({
             active={currencyOption === currency}
             data-qa="workspace-header__nav-item"
             data-qa-id={`currency-option-${currencyOption.toLowerCase()}`}
+            onClick={() => onCurrencyChange(currencyOption)}
           >
-            <NavLink to={`${canPopout ? '' : '/tiles'}/${currencyOption}/${tileView}`}>
-              {currencyOption}
-            </NavLink>
+            {currencyOption}
           </NavItem>
         ))}
       </LeftNav>
       <RightNav>
-        <ToggleView canPopout={canPopout} currency={currency} tileView={tileView} />
+        <ToggleView tileView={tileView} onTileViewChange={onTileViewChange} />
         {canPopout && (
           <WorkspaceControl onPopoutClick={onPopoutClick} data-qa="tiles-header__pop-out-button" />
         )}

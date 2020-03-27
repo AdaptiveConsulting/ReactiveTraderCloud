@@ -8,10 +8,14 @@ import { Provider as InteropProvider, getProvider } from 'rt-interop'
 import { Router } from './data'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
 import { createStore } from './store'
+import { AsyncReturnType } from 'rt-util/utilityTypes'
 
 const MainRoute = () => {
-  const [platform, setPlatform] = useState()
-  const [store, setStore] = useState()
+  type Platform = AsyncReturnType<typeof getPlatformAsync>
+  type Store = AsyncReturnType<typeof createStore>
+
+  const [platform, setPlatform] = useState<Platform>()
+  const [store, setStore] = useState<Store>()
   const intentsProvider = getProvider()
 
   useEffect(() => {
