@@ -101,7 +101,7 @@
     "@storybook/addon-links": "^5.2.8",
     "@storybook/addon-notes": "^5.2.8",
     "@storybook/addons": "^5.2.8",
-    "@storybook/react": "^5.2.8",
+    "@storybook/react": "^5.3.17",
     "@types/autobahn": "18.10.0",
     "@types/d3": "3.5.40",
     "@types/dialogflow": "^0.11.0",
