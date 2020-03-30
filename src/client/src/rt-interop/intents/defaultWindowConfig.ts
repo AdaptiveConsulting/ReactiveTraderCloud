@@ -6,8 +6,6 @@ export const defaultConfig: WindowConfig = {
   width: 600,
   height: 400,
   center: 'parent',
-  x: 0,
-  y: 0,
 }
 
 // Safer than location.origin due to browser support
