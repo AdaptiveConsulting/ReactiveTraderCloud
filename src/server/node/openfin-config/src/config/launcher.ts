@@ -48,7 +48,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
     },
     shortcut: {
       company: 'Adaptive Consulting',
-      icon: `https://web-${env}.adaptivecluster.com/static/media/icon.ico`,
+      icon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
       name,
     },
     appAssets: [

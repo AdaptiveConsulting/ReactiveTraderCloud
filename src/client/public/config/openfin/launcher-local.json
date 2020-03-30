@@ -48,7 +48,7 @@
   },
   "shortcut": {
     "company": "Adaptive Consulting",
-    "icon": "http://localhost:3000/static/media/icon.ico",
+    "icon": "http://localhost:3000/static/media/launcher-icon.ico",
     "name": "Reactive Ecosystem Launcher (LOCAL)"
   },
   "appAssets": [
