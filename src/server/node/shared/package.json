@@ -9,7 +9,9 @@
   "types": "src/index.js",
   "dependencies": {
     "@stomp/rx-stomp": "^0.3.4",
+    "bufferutil": "^4.0.1",
     "rxjs": "^6.5.3",
+    "utf-8-validate": "^5.0.2",
     "winston": "^3.2.1",
     "ws": "^7.2.3"
   },

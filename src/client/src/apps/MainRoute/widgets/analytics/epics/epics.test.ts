@@ -44,7 +44,7 @@ describe('Analytics epics', () => {
       const state$ = {} as StateObservable<GlobalState>
 
       const epics$ = analyticsServiceEpic(action$, state$, { serviceStub }).pipe(
-        map(x => x.type === serviceType),
+        map(service => service.type === serviceType),
       )
       expectObservable(epics$).toBe(expecteLifetime, { a: true })
     })
@@ -78,7 +78,7 @@ describe('Analytics epics', () => {
       const state$ = {} as StateObservable<GlobalState>
 
       const epics$ = analyticsServiceEpic(action$, state$, { serviceStub }).pipe(
-        map(x => x.type === serviceType),
+        map(service => service.type === serviceType),
       )
       expectObservable(epics$).toBe(expecteLifetime, { a: true })
     })

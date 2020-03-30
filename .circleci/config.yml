@@ -1,8 +1,7 @@
 version: 2.1
 
 references:
-  push_images_list: &push_images_list
-    client pricehistory bot nlp openfinconfig servers broker eventstore nginx
+  push_images_list: &push_images_list client pricehistory bot nlp openfinconfig servers broker eventstore nginx
 
 commands:
   setup_env:
@@ -25,10 +24,10 @@ commands:
       - add_ssh_keys:
           # For push commands pack to github
           fingerprints:
-            - "79:e8:92:e2:cb:49:2b:26:2d:d5:f9:6f:7b:f7:46:b6"
+            - '79:e8:92:e2:cb:49:2b:26:2d:d5:f9:6f:7b:f7:46:b6'
 
   set_version:
-    description: "Set the version for this release by using git describe"
+    description: 'Set the version for this release by using git describe'
     steps:
       - run:
           name: Set version
@@ -38,7 +37,7 @@ commands:
             echo "export BUILD_VERSION=$GIT_VERSION" >> $BASH_ENV
 
   build_images:
-    description: "Build the deployable container images"
+    description: 'Build the deployable container images'
     steps:
       - run:
           name: Build Images
@@ -54,7 +53,7 @@ commands:
             docker commit eventstore_base ${DOCKER_USER}/eventstore:${BUILD_VERSION}
 
   run_tests:
-    description: "Runs the integration tests"
+    description: 'Runs the integration tests'
     steps:
       - run:
           name: Integration Tests
@@ -83,7 +82,7 @@ commands:
               push << parameters.images >>
 
   deploy_to_environment:
-    description: "Deploy the specific version to gcloud"
+    description: 'Deploy the specific version to gcloud'
     parameters:
       version:
         description: The environment variable specifiying the version to deploy. Must already be hosted on dockerhub
@@ -93,7 +92,7 @@ commands:
         type: env_var_name
     steps:
       - run:
-          name: "Deployment information"
+          name: 'Deployment information'
           command: |
             echo "Deploying $BUILD_VERSION -> $DEPLOY_TARGET"
       - run:
@@ -107,18 +106,27 @@ commands:
       - run:
           name: Downscale all deployments
           command: |
-            kubectl -n ${<< parameters.environment >>} scale deploy --replicas=0 --all
+            kubectl -n ${DEPLOY_TARGET} scale deploy --replicas=0 --all
       - run:
           name: Updating deployment definition to new images
           command: |
-            # TODO: create new environment automatically
+            # Create namespace if it does not exist
+            ns=`kubectl get namespace ${<< parameters.environment >>} --ignore-not-found`
+            if [ -z "${ns}" ]; then
+              echo "Creating namespace (${<< parameters.environment >>})"
+              kubectl create namespace ${<< parameters.environment >>}
+            fi
+            # Update/create each service file in src/services/kubernetes
+            for f in ./src/services/kubernetes/*-service.yaml; do
+                cat $f | /usr/bin/envsubst | kubectl --namespace=${<< parameters.environment >>} apply -f -
+            done
             # Update/create each deployment file in src/services/kubernetes
             for f in ./src/services/kubernetes/*-deployment.yaml; do
                 cat $f | /usr/bin/envsubst | kubectl --namespace=${<< parameters.environment >>} apply -f -
             done
 
   main_pipeline:
-    description: "Main pipeline"
+    description: 'Main pipeline'
     parameters:
       environment:
         type: string
@@ -143,11 +151,14 @@ commands:
 
 jobs:
   release_build:
+    parameters:
+      environment:
+        type: string
     docker:
       - image: circleci/node:latest
     steps:
       - main_pipeline:
-          environment: dev
+          environment: << parameters.environment >>
       - push_images:
           images: *push_images_list
 
@@ -175,11 +186,11 @@ jobs:
           at: ~/
       - checkout
       - run:
-          name: "Install required OS dependencies"
+          name: 'Install required OS dependencies'
           command: |
             apt-get install gettext -qy
       - run:
-          name: "Retrieve deployment parameters"
+          name: 'Retrieve deployment parameters'
           command: |
             source ~/vars/env
             echo "Loaded deploy params from last release_build."
@@ -197,11 +208,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install required OS dependencies"
+          name: 'Install required OS dependencies'
           command: |
             apt-get install gettext -qy
       - run:
-          name: "Parse tags"
+          name: 'Parse tags'
           command: |
             echo "Parsing current commit tags. Looking for version and requested environment."
 
@@ -237,6 +248,7 @@ workflows:
               only: /^release\/.*/
 
       - release_build:
+          environment: dev
           filters:
             branches:
               only: master
@@ -258,10 +270,26 @@ workflows:
               ignore:
                 - master
                 - /^release\/.*/
+                - ARTP-861-Rabbitmq
 
       - deploy_version_from_env_tag:
           filters:
             branches:
-              ignore: /.*/  # only run on matching tag
+              ignore: /.*/ # only run on matching tag
             tags:
               only: /^env-.*/
+
+  rabbit:
+    jobs:
+      - release_build:
+          environment: rabbit
+          filters:
+            branches:
+              only: ARTP-861-Rabbitmq
+
+      - deploy_last_build:
+          requires:
+            - release_build
+          filters:
+            branches:
+              only: ARTP-861-Rabbitmq

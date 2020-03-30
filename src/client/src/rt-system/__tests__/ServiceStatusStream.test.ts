@@ -34,30 +34,14 @@ describe('ServiceStatusStream', () => {
     })
   })
 
-  it('gets the service instance with the minimum load', () => {
-    new MockScheduler().run(({ cold, expectObservable }) => {
-      const serviceType = 'Blotter'
-      const variables = {
-        1: mockRawServiceStatus({ Type: serviceType, Instance: 'blotter1', Load: 100 }),
-        2: mockRawServiceStatus({ Type: serviceType, Instance: 'blotter2', Load: 50 }),
-        3: mockRawServiceStatus({ Type: serviceType, Instance: 'blotter3', Load: 0 }),
-      }
-      const input = '123'
-      const source$ = cold<RawServiceStatus>(input, variables)
-      const expected = 'abc'
-
-      const serviceStatus$ = serviceStatusStream$(source$, 3000).pipe(
-        map(serviceStatus => serviceStatus.get(serviceType)!.getServiceWithMinLoad().serviceId),
-      )
-      expectObservable(serviceStatus$, '---!').toBe(expected, { a: 'blotter1', b: 'blotter2', c: 'blotter3' })
-    })
-  })
-
   it('should mark a service as disconnected if an update has not been received for 3 secs', () => {
     new MockScheduler().run(({ cold, expectObservable }) => {
       const serviceType = 'Analytics'
       const instanceName = 'Analytics01'
-      const connectedServiceUpdate = mockRawServiceStatus({ Type: serviceType, Instance: instanceName })
+      const connectedServiceUpdate = mockRawServiceStatus({
+        Type: serviceType,
+        Instance: instanceName,
+      })
 
       const HEART_BEAT_TIME = 3000
       const input = `a ${HEART_BEAT_TIME}ms `
@@ -65,7 +49,10 @@ describe('ServiceStatusStream', () => {
       const expected = `c ${HEART_BEAT_TIME - 1}ms e`
 
       const serviceStatus$ = serviceStatusStream$(source$, HEART_BEAT_TIME).pipe(
-        map(instanceStatus => instanceStatus.getServiceInstanceStatus(serviceType, instanceName)!.isConnected),
+        map(
+          instanceStatus =>
+            instanceStatus.getServiceInstanceStatus(serviceType, instanceName)!.isConnected,
+        ),
       )
       expectObservable(serviceStatus$).toBe(expected, { c: true, e: false })
     })
@@ -75,7 +62,10 @@ describe('ServiceStatusStream', () => {
     new MockScheduler().run(({ cold, expectObservable }) => {
       const serviceType = 'Analytics'
       const instanceName = 'Analytics01'
-      const connectedServiceUpdate = mockRawServiceStatus({ Type: serviceType, Instance: instanceName })
+      const connectedServiceUpdate = mockRawServiceStatus({
+        Type: serviceType,
+        Instance: instanceName,
+      })
       const HEART_BEAT_TIME = 100
 
       const input = `a ${HEART_BEAT_TIME}ms a`

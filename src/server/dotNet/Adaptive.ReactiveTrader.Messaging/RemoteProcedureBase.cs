@@ -36,7 +36,6 @@ namespace Adaptive.ReactiveTrader.Messaging
         {
             try
             {
-                
                 var requestContext = DeserializeMessage(args.Body, args.BasicProperties);
                 await HandleMessage(requestContext, args.BasicProperties);
                 Channel.BasicAck(args.DeliveryTag, false);

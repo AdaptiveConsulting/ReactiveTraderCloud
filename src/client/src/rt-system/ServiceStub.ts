@@ -31,10 +31,9 @@ export class ServiceStub {
    * @returns {Observable}
    */
   subscribeToTopic<TResponse>(topic: string): Observable<TResponse> {
-    return this.connection.streamEndpoint.watch(`/exchange/${topic}`).pipe(
-      //tap(x => this.logResponse(topic, { headers: x.headers, body: x.body })),
-      map(x => JSON.parse(x.body) as TResponse),
-    )
+    return this.connection.streamEndpoint
+      .watch(`/exchange/${topic}`)
+      .pipe(map(message => JSON.parse(message.body) as TResponse))
   }
 
   /**
@@ -59,8 +58,10 @@ export class ServiceStub {
         body: JSON.stringify(dto),
       })
       .pipe(
-        tap(x => this.logResponse(remoteProcedure, { headers: x.headers, body: x.body })),
-        map(x => JSON.parse(x.body) as TResponse),
+        tap(message =>
+          this.logResponse(remoteProcedure, { headers: message.headers, body: message.body }),
+        ),
+        map(message => JSON.parse(message.body) as TResponse),
       )
   }
 
@@ -75,8 +76,8 @@ export class ServiceStub {
       const replyTo = request.headers['reply-to']
       const correlationId = request.headers['correlation-id']
       const payload = JSON.parse(request.body) as TPayload
-      handler(payload).then(x => {
-        const response = JSON.stringify(x)
+      handler(payload).then(result => {
+        const response = JSON.stringify(result)
         this.logResponse(
           remoteProcedure,
           'RPC Server: Response: ' + response + ' for ' + request.body,
@@ -96,7 +97,7 @@ export class ServiceStub {
     payload: TPayload,
   ): Observable<TResponse> {
     const remoteProcedure = `${service}.${operationName}`
-    console.log(`subscriping to RPC stream ${remoteProcedure}`)
+    console.log(`subscribing to RPC stream ${remoteProcedure}`)
     const dto: SubscriptionDTO<TPayload> = {
       payload,
       Username: this.userName,
@@ -108,8 +109,10 @@ export class ServiceStub {
         body: JSON.stringify(dto),
       })
       .pipe(
-        tap(x => this.logResponse(remoteProcedure, { headers: x.headers, body: x.body })),
-        map(x => JSON.parse(x.body) as TResponse),
+        tap(message =>
+          this.logResponse(remoteProcedure, { headers: message.headers, body: message.body }),
+        ),
+        map(message => JSON.parse(message.body) as TResponse),
       )
   }
 }
