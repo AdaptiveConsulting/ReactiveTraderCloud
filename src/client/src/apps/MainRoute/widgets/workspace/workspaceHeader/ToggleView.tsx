@@ -1,29 +1,52 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { NavItem } from './styled'
-import { TileView } from './types'
+import { styled } from 'rt-theme'
 import { ChartIcon } from 'rt-components'
+import { TileView } from './types'
+import { NavItem } from './styled'
 
 interface Props {
   tileView: TileView
-  currency: string
-  canPopout: boolean
+  onTileViewChange: (tileView: TileView) => void
 }
 
-const ToggleView: React.FC<Props> = ({ tileView, currency, canPopout }) => {
-  const isAnalyticsViewActive = TileView.Analytics === tileView
-  const goToView = isAnalyticsViewActive ? TileView.Normal : TileView.Analytics
+const ToggleItem = styled(NavItem)<{ active: boolean }>`
+  list-style-type: none;
+  margin-left: 15px;
+
+  svg {
+    color: ${({ theme }) => theme.secondary.base};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    height: 34px;
+    line-height: 34px;
+    opacity: ${({ active }) => (active ? '1' : '0.52')};
+    background: ${({ active, theme }) => (active ? theme.core.lightBackground : 'none')};
+    text-decoration: none;
+    padding: 5px;
+    min-width: 34px;
+    min-height: 34px;
+    text-align: center;
+    border-radius: 2px;
+  }
+`
+
+const ToggleView: React.FC<Props> = ({ tileView, onTileViewChange }) => {
+  const handleToggleView = () => {
+    const newView = TileView.Analytics === tileView ? TileView.Normal : TileView.Analytics
+    onTileViewChange(newView)
+  }
 
   return (
-    <NavItem
-      active={isAnalyticsViewActive}
+    <ToggleItem
+      active={TileView.Analytics === tileView}
       data-qa="workspace-header__nav-item--view"
       data-qa-id={`workspace-view-${tileView.toLowerCase()}`}
+      onClick={handleToggleView}
     >
-      <NavLink to={`${canPopout ? '' : '/tiles'}/${currency}/${goToView}`}>
-        <ChartIcon active={isAnalyticsViewActive} />
-      </NavLink>
-    </NavItem>
+      <ChartIcon active={TileView.Analytics === tileView} />
+    </ToggleItem>
   )
 }
 

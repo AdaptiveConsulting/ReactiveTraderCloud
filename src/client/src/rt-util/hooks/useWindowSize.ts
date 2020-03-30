@@ -10,7 +10,14 @@ export interface WindowSize {
 const RESIZE_EVENT = 'resize'
 
 export function useWindowSize(): WindowSize {
-  const [windowSize, setWindowSize] = useState()
+  const initialWindowSize = {
+    innerHeight: 0,
+    innerWidth: 0,
+    outerHeight: 0,
+    outerWidth: 0,
+  }
+
+  const [windowSize, setWindowSize] = useState<WindowSize>(initialWindowSize)
 
   function handleResize() {
     setWindowSize({

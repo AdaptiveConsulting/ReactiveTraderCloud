@@ -26,7 +26,7 @@ export const RootLauncherContainer = styled(RootContainer)`
 `
 
 export const RootResultsContainer = styled.div`
-  padding: 5px;
+  padding: 0;
 `
 
 export const LauncherContainer = styled.div<{ showResponsePanel: boolean }>`

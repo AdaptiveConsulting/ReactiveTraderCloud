@@ -1,7 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
 import { usePriceService } from './usePriceService'
 import { SpotPriceTick } from 'apps/MainRoute'
-import { InlineIntent, InlineQuoteContainer } from './styles'
+import { InlineIntent, LoadingWrapper } from './styles'
+import { DateTime } from 'luxon'
+import { ResultsTable, Col } from './resultsTable'
+import { MovementIcon } from '../../icons'
+import { AdaptiveLoader } from 'rt-components'
 
 interface InlineQuoteProps {
   currencyPair: string
@@ -28,14 +32,34 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
     }
   }, [priceService, currencyPair])
 
-  const baseCcy = quote && quote.symbol.substring(0, 3)
-  const counterCcy = quote && quote.symbol.substring(3)
+  const colDefs: Col[] = [
+    { title: 'Symbol', id: 'symbol' },
+    { title: 'Ask', id: 'ask', align: 'right' },
+    { title: 'Mid', id: 'mid', align: 'right' },
+    { title: 'Bid', id: 'bid', align: 'right' },
+    { title: 'Movement', id: 'priceMovementType', align: 'center' },
+    { title: 'Date/Time', id: 'valueDate' },
+  ]
 
-  return quote && quote.symbol ? (
+  const rows =
+    quote && quote.symbol
+      ? [
+          {
+            ...quote,
+            priceMovementType: <MovementIcon direction={quote.priceMovementType} />,
+            valueDate: DateTime.fromISO(quote.valueDate).toFormat('yyyy LLL dd / HH:mm:ss'),
+          },
+        ]
+      : []
+
+  return (
     <InlineIntent>
-      <InlineQuoteContainer>
-        1 {baseCcy} = {quote.mid} {counterCcy}
-      </InlineQuoteContainer>
+      {!quote && (
+        <LoadingWrapper>
+          <AdaptiveLoader size={25} speed={1.4} />
+        </LoadingWrapper>
+      )}
+      {quote && quote.symbol && <ResultsTable cols={colDefs} rows={rows} />}
     </InlineIntent>
-  ) : null
+  )
 }

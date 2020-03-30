@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TearOff } from 'rt-components'
-import { useParams } from 'react-router'
 import { styled } from 'rt-theme'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileView } from './workspaceHeader'
@@ -39,11 +38,8 @@ const Workspace: React.FC<Props> = ({
   canPopout,
   onPopoutClick,
 }) => {
-  const { currency, tileView } = useParams()
-
-  if (!currency || !tileView) {
-    return null
-  }
+  const [currency, setCurrencyOption] = useState(ALL)
+  const [tileView, setTileView] = useState(TileView.Analytics)
 
   return (
     <div data-qa="workspace__tiles-workspace">
@@ -53,11 +49,13 @@ const Workspace: React.FC<Props> = ({
         currency={currency}
         defaultOption={ALL}
         onPopoutClick={onPopoutClick}
+        onCurrencyChange={setCurrencyOption}
+        onTileViewChange={setTileView}
         tileView={tileView as TileView}
       />
       <WorkspaceItems data-qa="workspace__tiles-workspace-items">
         {spotTiles
-          .filter(({ key }) => key.includes(currency) || currency === 'ALL')
+          .filter(({ key }) => key.includes(currency) || currency === ALL)
           .map(({ key, externalWindowProps, tornOff }) => (
             <TearOff
               id={key}
