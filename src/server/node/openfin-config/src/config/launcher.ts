@@ -32,8 +32,8 @@ export default (env: string): OpenFinApplicationConfiguration => {
       shadow: true,
       frame: false,
       alwaysOnTop: true,
-      icon: `https://web-${env}.adaptivecluster.com/static/media/icon.ico`,
-      applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-mark-large.png`,
+      icon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
+      applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
       contextMenu: true,
       accelerator: {
         devtools: true,
