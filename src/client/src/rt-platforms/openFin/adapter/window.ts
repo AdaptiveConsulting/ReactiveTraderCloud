@@ -101,6 +101,7 @@ async function getOpenfinWindowPosition(
 export const openDesktopWindow = async (
   config: DesktopWindowProps,
   onClose?: () => void,
+  onUpdatePosition?: (event: any) => void,
   position?: {},
 ): Promise<PlatformWindow> => {
   const { url, width: defaultWidth, height: defaultHeight, maxHeight, maxWidth } = config
@@ -136,14 +137,30 @@ export const openDesktopWindow = async (
       } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
       () => {
         console.info(`Openfin window created: ${windowName}`)
+
+        const updatePositionListener = (event: any) => {
+          console.log(`Received 'bounds-changing' event for Openfin window: ${windowName}`)
+          onUpdatePosition && onUpdatePosition(event)
+        }
+
         if (onClose) {
           const closeListener = () => {
             console.log(`Received 'close' event for Openfin window: ${windowName}`)
             win.removeEventListener('closed', closeListener)
+
+            if (onUpdatePosition) {
+              win.removeEventListener('bounds-changing', updatePositionListener)
+            }
             onClose && onClose()
           }
+
           win.addEventListener('closed', closeListener)
         }
+
+        if (onUpdatePosition) {
+          win.addEventListener('bounds-changing', updatePositionListener)
+        }
+
         resolve(win)
       },
       error => {
