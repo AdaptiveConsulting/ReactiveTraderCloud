@@ -46,6 +46,7 @@ async function appRestoreHandler(
             display: true,
           })
         },
+        () => {},
         { defaultLeft: win.bounds.left, defaultTop: win.bounds.top },
       )
 

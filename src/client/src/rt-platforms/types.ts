@@ -23,6 +23,7 @@ export interface WindowConfig {
   center?: 'parent' | 'screen'
   x?: number
   y?: number
+  saveWindowState?: boolean
 }
 
 export interface AppConfig {
