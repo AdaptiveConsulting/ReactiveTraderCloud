@@ -134,7 +134,7 @@ const baseAppConfigs: ApplicationConfig[] = [
       windowOptions: {
         ...defaultWindowOptions,
         frame: false,
-        icon: `${ORIGIN}/static/media/ra-icon-color.ico`,
+        icon: `${ORIGIN}/static/media/logo-ra.png`,
       },
     },
   },
