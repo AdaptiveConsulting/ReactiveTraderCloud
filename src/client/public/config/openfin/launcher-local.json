@@ -32,8 +32,8 @@
       }
     ],
     "alwaysOnTop": true,
-    "icon": "http://localhost:3000/static/media/icon.ico",
-    "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
+    "icon": "http://localhost:3000/static/media/launcher-icon.ico",
+    "applicationIcon": "http://localhost:3000/static/media/launcher-icon.ico",
     "contextMenu": true,
     "accelerator": {
       "devtools": true,
@@ -48,7 +48,7 @@
   },
   "shortcut": {
     "company": "Adaptive Consulting",
-    "icon": "http://localhost:3000/static/media/icon.ico",
+    "icon": "http://localhost:3000/static/media/launcher-icon.ico",
     "name": "Reactive Ecosystem Launcher (LOCAL)"
   },
   "appAssets": [
