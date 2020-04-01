@@ -1,71 +1,107 @@
 [![CircleCI](https://circleci.com/gh/AdaptiveConsulting/ReactiveTraderCloud/tree/master.svg?style=svg&circle-token=801547883329d22e505634493b58b26fbb742e46)](https://app.circleci.com/pipelines/github/AdaptiveConsulting/ReactiveTraderCloud?branch=master)
 
-# Reactive Trader Cloud
-
-## Overview
-
 [![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/adaptive-logo.png)](http://weareadaptive.com/)
 
-Reactive Trader Cloud is a real-time FX trading platform demo showcasing reactive programming principles applied across the full application stack.
+# Reactive Trader Cloud
 
-All frameworks and libraries used are entirely open source, and each component can be run on either Windows, Linux or Mac OS X.
+Reactive Trader Cloud is a real-time FX trading platform designed to showcase reactive programming principles across the full application stack.
 
-The services are distributed and can be recovered from disconnections - this is similar to the approach that major financial institutions use for trading systems.
+Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/ReactiveTrader), and now in React/Redux, .Net and Node.js, we continue to evolve the platform to use the latest technologies.
+
+Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full list of the latest features.
 
 ![image](docs/reactive-trader.gif)
 
-### Live demo
+## Demo
+- [Web & Mobile](https://web-demo.adaptivecluster.com/)
+- [OpenFin](https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fweb-demo.adaptivecluster.com%2Fopenfin%2Fapp.json) - downloads OpenFin installer (zip)
+ - [Finsemble](https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsembleSetup.exe) - downloads Finsemble installer (exe)
+ - [Storybook](https://web-demo.adaptivecluster.com/storybook?path=/story/header--header) - to explore individual components developed from our [living styleguide](https://web-demo.adaptivecluster.com/styleguide)
 
-For a live demo, see [web-demo.adaptivecluster.com/](https://web-demo.adaptivecluster.com/)
 
-### Live demo in OpenFin
+## Installation
 
-For live demo in OpenFin download [Reactive Trader App](src/client/install)
+<details>
+<summary>With Docker</summary>
 
-### Reactive Trader Excel
+1. Install Docker ([from the Docker website](https://www.docker.com/get-started))
+2. Fork and clone the ReactiveTraderCloud repo ([see Contributing page](CONTRIBUTING.md))
+3. From the src folder run: `docker-compose up`
+4. Open a browser and navigate to http://localhost to see the application running
+5. To shutdown the application run: `docker-compose down`
+</details>
 
-You can use Reactive Trader Excel in integration with Reactive Trader, you can find the instructions for setting it up [here](docs/setup/reactive-trader-excel.md)
+<details>
+<summary>With Docker and Kubernetes</summary>
 
-## Architecture
+1. Follow the steps to run with Docker
+2. From the src directory run `docker-compose build`
+3. Set the environment variables:
+```
+export DOCKER_USER=localuser
+export BUILD_VERSION=0.0.0
+```
+4. Run the following command: 
+```
+docker stack deploy --orchestrator kubernetes --compose-file ./docker-compose.yml rtcstack
+```
+5. To see your services and pods running, run:
+```
+kubectl get services
+kubectl get pods
+```
+6. Open a browser and navigate to http://localhost to see the application running
+7. To shutdown / remove stacK, run: `kubectl delete stack rtcstack`
+</details>
 
-The backend is made up of distributed services written in .NET using the cross-platform capabilities provided by [.NET Core](https://dotnet.github.io).
+<details>
+<summary>Without Docker (for development/debugging)</summary>
 
-You can deploy server components via Docker containers. This means you can manage clusters using tools such as [Kubernetes](http://kubernetes.io/) for better resiliency and ease of deployment.
+1. Fork and clone the ReactiveTraderCloud repo ([see Contributing page](CONTRIBUTING.md))
+2. Install dependencies & add them to your path:
+ - [Node.js and npm](https://www.npmjs.com/get-npm)
+ - [Git](https://git-scm.com/downloads)
+ - [.Net Core SDK](https://www.microsoft.com/net)
+ - [Event store](https://eventstore.com/downloads/)
+ - [Crossbar](http://crossbar.io/docs/Installation-on-Windows/)
+3. Start the server .Net components - from the folder: /src/server/dotNet, run:
+```
+dotnet restore
+dotnet run -p Adaptive.ReactiveTrader.Server.Launcher --populate-eventstore
+crossbar start
+dotnet run -p Adaptive.ReactiveTrader.Server.Launcher all
+```
+4. Start the server Node components - from the srce/server/node directory run:
+```
+npm install
+npm start
+```
+5. Install & start the client against the local server components - from the src/client folder run:
+ ```
+ npm install
+ npm start:local-backend
+ ```
+6. Alternative commands:
+- `npm run build:demo-backend` - to run the client against a demo backend running in the cloud
+- `npm run test` - to run tests using Jest
+</details>
 
-Client-side implementations are available for all major platforms, including desktop and mobile browser as well as OpenFin.
+## CI/CD
+We practice continuous integration and deployment. Every merge to master causes a build and deployment to occur as follows:
+![image](docs/CICD.jpg)
 
-![Architecture Overview](docs/ArchitectureOverview.png)
-
-### Front end
-
-The front end is written with Typescript, React, Redux and Styled components. For more details on the client-side infrastructure, see [here](docs/client.md).
-
-### Back end
-
-The back-end services are cross-platform. For more details on the back-end infrastructure, see [here](docs/server.md).
-
-## Getting started
-
-You can go to the [How to](docs/deployment/readme.md) page to follow build and deployment
-
-## Talks and podcasts
-
-- [Reactive, Event Driven User Interfaces](https://vimeo.com/113716036) by Ray Booysen at NDC London 2014
-- [Event Driven User Interfaces](https://youtu.be/Tp5mRlHwZ7M) by Lee Campbell & Matt Barrett at React London 2014
-- [It's all messages now; where are my abstractions?](http://www.codesleuth.co.uk/notes/ndcoslo2015/Its-all-messages-now;-where-are-my-absractions.html) by Matt Barrett at NDC Oslo 2015
-- [The Hanselminutes: Creating Reactive User Interfaces](http://hanselminutes.com/428/creating-reactive-user-interfaces-with-adaptive-consultings-reactive-trader) with Matt Barrett
-- [Full-stack ReactiveX](http://dotnetrocks.com/?show=1333) with Qiming Liu on .NET Rocks!
-- [Developing Modern Applications in .NET core with Docker and Kubernetes](https://www.youtube.com/watch?v=70hcZO3zpnc) with Qiming Liu and James Watson
-
-## Blog posts
-
-To read about aspects of Reactive Trader in greater depth, check out the following blogs:
-
-- [Asynchrony and concurrency](http://weareadaptive.com/blog/2014/04/18/asynchrony-concurrency/) in which we discuss embracing asynchrony and concurrency at all levels of your application.
-- [Everything is a stream](http://weareadaptive.com/blog/2014/05/05/everything-is-a-stream/), in which we point out that all service calls from Reactive Trader result in streams of responses, not just a single response - and why this is so powerful.
-- [System health & failures](http://weareadaptive.com/blog/2014/06/16/system-health-failures/), in which we dig more into models of system health so you can easily respond to failures in your application, and how to use heart beating to detect component failure.
-- [John's series of blog posts on web messaging and abstractions](http://weareadaptive.com/blog/2015/06/15/series-of-blog-posts/)
+## Contributing
+Please see our [contrubtion guidlines](./CONTRIBUTING.md).
 
 ## Who are we?
 
-Reactive Trader was written by the team at [Adaptive](http://weareadaptive.com/), a consultancy that specialises in building real-time trading systems. We have many years of experience in building trading systems for clients with highly demanding latency and reliability requirements. Over the years we have learnt quite a few lessons, and wanted to talk about and point to examples of how we solve technical problems related to real-time delivery of messages.
+Reactive Trader was written by the team at [Adaptive](http://weareadaptive.com/), a consultancy that specialises in building real-time trading systems.
+
+Please [contact us](https://weareadaptive.com/contact/) of you'd like to learn more, or follow us via our, [blog](https://weareadaptive.com/category/blog/), [Twitter](https://twitter.com/WeAreAdaptive), or [LinkedIn](https://www.linkedin.com/company/adaptive-consulting-ltd/)
+
+
+## Our partners
+OpenFin, Finsemble, Symphony, Glue42, ChartIQ, ag-grid, Google Cloud Platform
+
+## License
+This application is made available under the [Apache license v2.0](./LICENSE).
