@@ -41,6 +41,16 @@ export const DropdownButton = styled(Button)`
     color: ${({ theme }) => theme.white};
   }
 `
+export const UserWrapper = styled.div`
+  position: relative;
+`
+export const UserContainer = styled(Button)`
+  color: ${({ theme }) => theme.textColor};
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`
+
 export const UserAvatar = styled.img`
   width: 24px;
   height: 24px;
