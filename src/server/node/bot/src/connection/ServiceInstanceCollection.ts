@@ -1,5 +1,5 @@
 import { ServiceInstanceStatus } from './serviceInstanceStatus'
-import { ServiceConnectionStatus, ServiceStatus } from './serviceStatus'
+import { ServiceStatus, ServiceConnectionStatus } from './serviceStatus'
 
 export class ServiceInstanceCollection {
   private readonly serviceMap: Map<string, ServiceInstanceStatus> = new Map()
@@ -15,16 +15,20 @@ export class ServiceInstanceCollection {
     return Array.from(this.serviceMap.values())
   }
 
+  getServiceNumberOfInstances() {
+    return this.getServiceInstances().filter(x => x.isConnected).length
+  }
+
   get(serviceInstance: string) {
     return this.serviceMap.get(serviceInstance)
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
-export interface IServiceStatusCollection {
+export interface ServiceStatusCollection {
+  getServiceNumberOfInstances: (serviceType: string) => number | undefined
   getServiceInstanceStatus: (type: string, instance: string) => ServiceInstanceStatus | undefined
 }
-export class ServiceCollectionMap implements IServiceStatusCollection {
+export class ServiceCollectionMap implements ServiceStatusCollection {
   private readonly serviceInstanceCollections = new Map<string, ServiceInstanceCollection>()
 
   add(service: string, serviceInstanceCollection: ServiceInstanceCollection) {
@@ -48,12 +52,22 @@ export class ServiceCollectionMap implements IServiceStatusCollection {
     return undefined
   }
 
+  getServiceNumberOfInstances(serviceType: string) {
+    const x = this.serviceInstanceCollections.get(serviceType)
+
+    if (x) {
+      return x.getServiceNumberOfInstances()
+    }
+
+    return undefined
+  }
+
   getStatusOfServices(): ServiceConnectionInfo {
     return Array.from(this.serviceInstanceCollections.values()).reduce<ServiceConnectionInfo>((acc, next) => {
       acc[next.serviceType] = {
         serviceType: next.serviceType,
-        connectedInstanceCount: next.getServiceInstances().filter(instance => instance.isConnected === true).length,
-        connectionStatus: next.getServiceInstances()
+        connectedInstanceCount: next.getServiceNumberOfInstances(),
+        connectionStatus: next.getServiceNumberOfInstances()
           ? ServiceConnectionStatus.CONNECTED
           : ServiceConnectionStatus.DISCONNECTED,
       }

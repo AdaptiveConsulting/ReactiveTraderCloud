@@ -26,7 +26,7 @@ namespace Adaptive.ReactiveTrader.Messaging
                 .Enrich.FromLogContext()
                 .MinimumLevel.Debug()
                 .WriteTo.ColoredConsole(outputTemplate:
-                "{Timestamp:yyyy-mm-dd HH:mm:ss} {Level:u3} [{InstanceId}] {Message:lj}{NewLine}{Exception}")
+                "{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3} [{InstanceId}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
 
             LogContext.PushProperty("InstanceId", InstanceId);

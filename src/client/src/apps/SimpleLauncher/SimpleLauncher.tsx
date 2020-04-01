@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components'
 import { Observable, ReplaySubject } from 'rxjs'
 import { Provider as InteropProvider, getProvider } from 'rt-interop'
 import { getPlatformAsync, Platform, PlatformProvider } from 'rt-platforms'
-import { WsConnectionProxy, ServiceStub } from 'rt-system'
+import { WsConnectionProxy, ServiceClient } from 'rt-system'
 import { themes } from 'rt-theme'
 import { BlotterService, TradesUpdate, PricingService } from 'apps/MainRoute'
 import { Launcher } from './Launcher'
@@ -23,7 +23,7 @@ type Dependencies = {
   platform: Platform
   pricingService: PricingService
   tradeUpdatesStream: Observable<TradesUpdate>
-  serviceStub: ServiceStub
+  serviceClient: ServiceClient
 }
 
 export const SimpleLauncher: React.FC = () => {
@@ -32,19 +32,19 @@ export const SimpleLauncher: React.FC = () => {
 
   useEffect(() => {
     ;(async () => {
-      const serviceStub = createServiceStub(broker)
+      const serviceClient = createServiceStub(broker)
       const platformResult = await getPlatformAsync()
 
       // blotter service
-      const blotterService = new BlotterService(serviceStub)
+      const blotterService = new BlotterService(serviceClient)
       const blotterUpdates$ = blotterService.getTradesStream()
       const tradesUpdates$ = new ReplaySubject<TradesUpdate>()
       blotterUpdates$.subscribe(tradesUpdates$)
 
       setDependencies({
-        pricingService: new PricingService(serviceStub),
+        pricingService: new PricingService(serviceClient),
         tradeUpdatesStream: tradesUpdates$,
-        serviceStub,
+        serviceClient,
         platform: platformResult,
       })
     })()
@@ -54,16 +54,16 @@ export const SimpleLauncher: React.FC = () => {
     return <></>
   }
 
-  const { platform, pricingService, serviceStub, tradeUpdatesStream } = dependencies
+  const { platform, pricingService, serviceClient, tradeUpdatesStream } = dependencies
 
-  if (!platform || !serviceStub) {
+  if (!platform || !serviceClient) {
     return <></>
   }
 
   return (
     <ThemeProvider theme={themes.dark}>
       <InteropProvider value={intentsProvider}>
-        <ServiceStubProvider value={serviceStub}>
+        <ServiceStubProvider value={serviceClient}>
           <TradeUpdatesProvider value={tradeUpdatesStream}>
             <PricingServiceProvider value={pricingService}>
               <PlatformProvider value={platform}>

@@ -19,10 +19,10 @@ export interface ConnectionEvent {
 
 export function connectionStream$(broker: WsConnection): Observable<ConnectionEvent> {
   return broker.streamEndpoint.connectionState$.pipe(
-    tap(x => console.debug('', `Received response on topic status: ${x}`)),
-    map(x => {
+    tap(status => console.debug('', `Received response on topic status: ${status}`)),
+    map(status => {
       let type: ConnectionEventType
-      switch (x) {
+      switch (status) {
         case RxStompState.CONNECTING:
           type = ConnectionEventType.CONNECTING
           break

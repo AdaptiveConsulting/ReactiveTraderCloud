@@ -27,4 +27,4 @@ async function handleNlpRequest(request: NlpIntentRequest): Promise<DetectIntent
   return await detectIntent(request.payload)
 }
 
-stub.replyToRequestResponseOperation('nlp', 'getNlpIntent', handleNlpRequest)
+stub.replyToRequestResponse('nlp.getNlpIntent', handleNlpRequest)

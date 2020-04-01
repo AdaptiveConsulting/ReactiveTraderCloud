@@ -1,4 +1,4 @@
-import { retryWithBackOff, ServiceStub as ServiceClient } from 'rt-system'
+import { retryWithBackOff, ServiceClient } from 'rt-system'
 import { CurrencyPairMap, UpdateType } from 'rt-types'
 import { map, publishReplay, refCount, retryWhen, scan } from 'rxjs/operators'
 import { CurrencyPairUpdates } from './currencyPairUpdates'

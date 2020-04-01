@@ -7,6 +7,7 @@ import {
   ServiceCollectionMap,
   retryWithBackOff,
   RawServiceStatus,
+  ServiceClient,
 } from 'rt-system'
 import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
@@ -48,14 +49,15 @@ export function createApplicationServices({
     refCount(),
   )
 
-  const referenceDataService$ = referenceDataService(serviceStub)
+  const serviceClient = new ServiceClient(serviceStub, serviceStatus$)
+  const referenceDataService$ = referenceDataService(serviceClient)
 
   return {
     referenceDataService$,
     platform,
     limitChecker,
     excelApp,
-    serviceStub,
+    serviceClient,
     serviceStatus$,
     connection$,
   }

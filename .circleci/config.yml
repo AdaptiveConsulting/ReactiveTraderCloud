@@ -104,10 +104,6 @@ commands:
             gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
             gcloud container clusters get-credentials cluster
       - run:
-          name: Downscale all deployments
-          command: |
-            kubectl -n ${DEPLOY_TARGET} scale deploy --replicas=0 --all
-      - run:
           name: Updating deployment definition to new images
           command: |
             # Create namespace if it does not exist

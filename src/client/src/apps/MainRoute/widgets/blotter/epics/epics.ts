@@ -5,15 +5,15 @@ import { combineLatest, map, switchMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 import BlotterService from '../blotterService'
-import { ServiceStub } from 'rt-system'
+import { ServiceClient } from 'rt-system'
 type SubscribeToBlotterAction = ReturnType<typeof BlotterActions.subscribeToBlotterAction>
 
 const { createNewTradesAction } = BlotterActions
 
 export const blotterServiceEpic: ApplicationEpic<{
-  serviceStub: ServiceStub
-}> = (action$, state$, { serviceStub }) => {
-  const blotterService = new BlotterService(serviceStub)
+  serviceClient: ServiceClient
+}> = (action$, state$, { serviceClient }) => {
+  const blotterService = new BlotterService(serviceClient)
 
   const connectAction$ = action$.pipe(applicationConnected)
 

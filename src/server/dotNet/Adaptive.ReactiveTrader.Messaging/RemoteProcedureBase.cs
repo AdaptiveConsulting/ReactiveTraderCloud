@@ -64,7 +64,10 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         public void Dispose()
         {
-            Channel.BasicCancel(_consumerTag);
+            if (Channel.IsOpen)
+            {
+                Channel.BasicCancel(_consumerTag);
+            }
         }
     }
 }

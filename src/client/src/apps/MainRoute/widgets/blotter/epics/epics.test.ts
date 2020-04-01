@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators'
 import { Direction } from 'rt-types'
 import { MockScheduler } from 'rt-testing'
 import { ConnectionActions } from 'rt-actions'
-import { ServiceStub } from 'rt-system'
+import { ServiceClient } from 'rt-system'
 import { GlobalState } from '../../../../../StoreTypes'
 
 const rawTrades = {
@@ -44,14 +44,14 @@ describe('blotterServiceEpic', () => {
     const scheduler = new MockScheduler()
     scheduler.run(({ cold, expectObservable, flush }) => {
       const actionReference = { a: { type: `${randomAction}1` }, b: { type: `${randomAction}2` } }
-      const serviceStub: ServiceStub = (new MockServiceClient(() =>
+      const serviceClient: ServiceClient = (new MockServiceClient(() =>
         of(rawTrades),
-      ) as any) as ServiceStub
+      ) as any) as ServiceClient
       const action$ = cold(actionLifetime, actionReference)
       const state$ = {} as StateObservable<GlobalState>
 
       const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), state$, {
-        serviceStub,
+        serviceClient,
       })
       expectObservable(epics$).toBe(expectLifetime)
     })
@@ -68,14 +68,14 @@ describe('blotterServiceEpic', () => {
       const actionLifetime = '--(cs)-r'
       const expectLifetime = '--a--'
 
-      const serviceStub: ServiceStub = (new MockServiceClient(() =>
+      const serviceClient: ServiceClient = (new MockServiceClient(() =>
         of(rawTrades),
-      ) as any) as ServiceStub
+      ) as any) as ServiceClient
       const action$ = cold(actionLifetime, actionReference)
       const state$ = {} as StateObservable<GlobalState>
 
       const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), state$, {
-        serviceStub,
+        serviceClient,
       }).pipe(map(r => r.type === newTradesType))
 
       expectObservable(epics$).toBe(expectLifetime, expectReference)
@@ -94,14 +94,14 @@ describe('blotterServiceEpic', () => {
       const actionLifetime = '--(cs)-r--d-r-r'
       const expectLifetime = '--a------'
 
-      const serviceStub: ServiceStub = (new MockServiceClient(() =>
+      const serviceClient: ServiceClient = (new MockServiceClient(() =>
         of(rawTrades),
-      ) as any) as ServiceStub
+      ) as any) as ServiceClient
       const action$ = cold(actionLifetime, actionReference)
       const state$ = {} as StateObservable<GlobalState>
 
       const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), state$, {
-        serviceStub,
+        serviceClient,
       }).pipe(map(r => r.type === newTradesType))
 
       expectObservable(epics$).toBe(expectLifetime, expectReference)

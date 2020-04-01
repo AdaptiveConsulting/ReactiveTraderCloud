@@ -14,7 +14,7 @@ type ExecutionAction = ReturnType<typeof executeTrade>
 
 export type ExecutedTradeAction = ReturnType<typeof tradeExecuted>
 
-const executeTradeEpic: ApplicationEpic = (action$, state$, { serviceStub, limitChecker }) => {
+const executeTradeEpic: ApplicationEpic = (action$, state$, { serviceClient, limitChecker }) => {
   const limitCheck = (executeTradeRequest: ExecuteTradeRequest) =>
     limitChecker.rpc({
       tradedCurrencyPair: executeTradeRequest.CurrencyPair,
@@ -22,7 +22,7 @@ const executeTradeEpic: ApplicationEpic = (action$, state$, { serviceStub, limit
       rate: executeTradeRequest.SpotRate,
     })
 
-  const executionService = new ExecutionService(serviceStub, limitCheck)
+  const executionService = new ExecutionService(serviceClient, limitCheck)
 
   return action$.pipe(
     ofType<Action, ExecutionAction>(TILE_ACTION_TYPES.EXECUTE_TRADE),

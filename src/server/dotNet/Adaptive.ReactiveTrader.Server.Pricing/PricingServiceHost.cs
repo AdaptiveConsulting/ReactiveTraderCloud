@@ -51,6 +51,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
                 var disposable = _service.GetPriceUpdates(context, spotStreamRequest)
                                          .TakeUntil(endpoint.TerminationSignal)
+                                         .Finally(() => Log.Debug("Tidying up subscription from {replyTo}.", replyTo))
                                          .Subscribe(endpoint);
 
                 _cleanup.Add(disposable);

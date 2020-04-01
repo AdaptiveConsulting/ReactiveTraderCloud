@@ -2,7 +2,7 @@ import AnalyticsService from './analyticsService'
 import { MockScheduler } from 'rt-testing'
 import { PositionsRaw } from './model'
 import { map } from 'rxjs/operators'
-import { ServiceStub } from 'rt-system'
+import { ServiceClient } from 'rt-system'
 import { Observable } from 'rxjs'
 
 const positionRaw = {
@@ -25,7 +25,7 @@ describe('AnalyticsService getAnalyticsStream', () => {
         cold<PositionsRaw>(actionLifetime, actionReference),
       )
       const serviceClient = new MockServiceStub(createStreamOperation$)
-      const analyticsService = new AnalyticsService(serviceClient as ServiceStub)
+      const analyticsService = new AnalyticsService(serviceClient as ServiceClient)
       const epics$ = analyticsService
         .getAnalyticsStream('USD')
         .pipe(
@@ -55,7 +55,7 @@ describe('AnalyticsService getAnalyticsStream', () => {
       )
 
       const serviceClient = new MockServiceStub(createStreamOperation$)
-      const analyticsService = new AnalyticsService(serviceClient as ServiceStub)
+      const analyticsService = new AnalyticsService(serviceClient as ServiceClient)
       const epics$ = analyticsService
         .getAnalyticsStream('USD')
         .pipe(map(({ currentPositions }) => currentPositions[0].basePnlName === 'basePnl'))
@@ -70,6 +70,6 @@ const implementation = (
 ) => ({
   createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
 })
-const MockServiceStub = jest.fn<Partial<ServiceStub>, Parameters<typeof implementation>>(
+const MockServiceStub = jest.fn<Partial<ServiceClient>, Parameters<typeof implementation>>(
   implementation,
 )

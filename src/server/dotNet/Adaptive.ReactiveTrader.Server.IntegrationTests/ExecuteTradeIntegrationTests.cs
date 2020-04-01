@@ -77,7 +77,42 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
             Assert.True(pass);
         }
-        
+
+        [Fact]
+        public async void ShouldNotUnsubscribeAllOnChannelReturn()
+        {
+            const string testCcyPair = "XXXXXB";
+            var asyncAssertion = new TaskCompletionSource<bool>();
+
+            // this is the callback when the blotter receives the executed trade notification
+            void BlotterCallbackAssertion(dynamic d)
+            {
+                if (d.IsStateOfTheWorld == "False")
+                {
+                    foreach (var trade in d.Trades)
+                    {
+                        if (trade.CurrencyPair == testCcyPair && trade.Status == "Done")
+                        {
+                            Console.WriteLine(d);
+                            // set the assertion
+                            asyncAssertion.SetResult(true);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            await _broker.RpcCall<dynamic, NothingDto>(ServiceTypes.Blotter, "getTradesStream", new NothingDto(), BlotterCallbackAssertion);
+
+            var secondQueue = await _broker.RpcCall<dynamic, NothingDto>(ServiceTypes.Blotter, "getTradesStream", new NothingDto(), BlotterCallbackAssertion);
+            _broker.DeleteQueue(secondQueue);
+
+            await CallExecuteTrade(testCcyPair);
+            var pass = await asyncAssertion.Task.ToObservable().Timeout(ResponseTimeout, Observable.Return(false)).Take(3);
+
+            Assert.True(pass);
+        }
+
         private async Task CallExecuteTrade(string testCcyPair)
         {
             await _broker.RpcCall<ExecuteTradeRequestDto, dynamic>(ServiceTypes.Execution, "executeTrade",  new ExecuteTradeRequestDto

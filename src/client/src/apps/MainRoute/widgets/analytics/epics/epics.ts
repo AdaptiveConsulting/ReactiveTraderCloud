@@ -5,7 +5,7 @@ import { combineLatest, map, mergeMapTo, takeUntil } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from '../actions'
 import AnalyticsService from '../analyticsService'
-import { ServiceStub } from 'rt-system'
+import { ServiceClient } from 'rt-system'
 
 const CURRENCY: string = 'USD'
 
@@ -16,9 +16,9 @@ type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
 type SubscribeToAnalyticsAction = ReturnType<typeof subcribeToAnalytics>
 
 export const analyticsServiceEpic: ApplicationEpic<{
-  serviceStub: ServiceStub
-}> = (action$, $state, { serviceStub }) => {
-  const analyticsService = new AnalyticsService(serviceStub)
+  serviceClient: ServiceClient
+}> = (action$, $state, { serviceClient }) => {
+  const analyticsService = new AnalyticsService(serviceClient)
 
   const refAction$ = action$.pipe(
     ofType<Action, ReferenceServiceAction>(REF_ACTION_TYPES.REFERENCE_SERVICE),

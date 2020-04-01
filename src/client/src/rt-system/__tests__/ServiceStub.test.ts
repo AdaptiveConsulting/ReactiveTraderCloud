@@ -19,9 +19,7 @@ describe('ServiceStub', () => {
     it('invokes a remote procedure with the correct payload', () => {
       const rpcEndpoint = new MockRpcEndpoint()
       const stub = new ServiceStub(Username, createMockConnection(rpcEndpoint))
-      const rpc = stub
-        .createRequestResponseOperation<string, string>(service, operationName, payload)
-        .subscribe()
+      const rpc = stub.requestResponse<string, string>(procedure, payload).subscribe()
 
       expect(rpcEndpoint.rpc).lastCalledWith({
         destination: `/amq/queue/${procedure}`,
@@ -43,9 +41,7 @@ describe('ServiceStub', () => {
     it('invokes a remote procedure with the correct payload', () => {
       const rpcEndpoint = new MockRpcEndpoint()
       const stub = new ServiceStub(Username, createMockConnection(rpcEndpoint))
-      const rpc = stub
-        .createStreamOperation<string, string>(service, operationName, payload)
-        .subscribe()
+      const rpc = stub.requestStream<string, string>(procedure, payload).subscribe()
 
       expect(rpcEndpoint.stream).lastCalledWith({
         destination: `/amq/queue/${procedure}`,
@@ -73,7 +69,7 @@ const createMockConnection: (rpcEndpoint?: RxStompRPC, streamEndpoint?: RxStomp)
   rpcEndpoint: RxStompRPC = new MockRpcEndpoint(),
   streamEndpoint: RxStomp = new MockStreamEndpoint(),
 ) => ({
-  config: { brokerURL: 'FAKE', connectionType: 'websocket', reconnectDelay: 500 },
+  config: { brokerURL: 'FAKE', connectionType: 'websocket', reconnectDelay: 100 },
   rpcEndpoint: rpcEndpoint,
   streamEndpoint: streamEndpoint,
   open: jest.fn().mockReturnValue(true),

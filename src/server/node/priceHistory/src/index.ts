@@ -69,11 +69,7 @@ async function handlePriceRequest(priceHistoryRequest: PriceHistoryRequest): Pro
   return latest.get(symbol)
 }
 
-const priceRequestsSubsription$ = stub.replyToRequestResponseOperation(
-  'priceHistory',
-  'getPriceHistory',
-  handlePriceRequest,
-)
+const priceRequestsSubsription$ = stub.replyToRequestResponse('priceHistory.getPriceHistory', handlePriceRequest)
 
 process.on('exit', () => {
   heartbeat$.unsubscribe()

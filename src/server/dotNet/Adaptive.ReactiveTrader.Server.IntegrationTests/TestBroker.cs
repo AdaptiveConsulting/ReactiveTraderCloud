@@ -1,5 +1,4 @@
 using Adaptive.ReactiveTrader.Messaging;
-using Adaptive.ReactiveTrader.Common;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -40,22 +39,12 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             return _broker.SubscribeToTopic<T>(topic);
         }
 
-        internal async Task RpcCall<TResult, TPayload>(string serviceName, string methodName, TPayload payload, Action<TResult> callback)
+        internal async Task<string> RpcCall<TResult, TPayload>(string serviceName, string methodName, TPayload payload, Action<TResult> callback)
         {
             await WaitForServiceHeartbeat(serviceName);
 
             var replyQueueName = _channel.QueueDeclare().QueueName;
 
-            var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (_, args) =>
-            {
-                var body = Encoding.UTF8.GetString(args.Body);
-                var result = JsonConvert.DeserializeObject<TResult>(body);
-                callback(result);
-            };
-
-            _channel.BasicConsume(replyQueueName, true, consumer);
-            
             dynamic dto = new
             {
                 ReplyTo = replyQueueName,
@@ -67,6 +56,23 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
             var message = JsonConvert.SerializeObject(dto);
             var procedure = $"{serviceName}.{methodName}";
             _channel.BasicPublish(string.Empty, procedure, false, props, Encoding.UTF8.GetBytes(message));
+
+            var consumer = new EventingBasicConsumer(_channel);
+            consumer.Received += (_, args) =>
+            {
+                var body = Encoding.UTF8.GetString(args.Body);
+                var result = JsonConvert.DeserializeObject<TResult>(body);
+                callback(result);
+            };
+
+            _channel.BasicConsume(replyQueueName, true, consumer);
+
+            return replyQueueName;
+        }
+
+        internal void DeleteQueue(string queueToDelelete)
+        {
+            _channel.QueueDelete(queueToDelelete);
         }
 
         public async Task WaitForServiceHeartbeat(string service)

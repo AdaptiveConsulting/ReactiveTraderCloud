@@ -1,10 +1,11 @@
 import { ReplaySubject } from 'rxjs'
-import { map, multicast, refCount, scan, share, shareReplay } from 'rxjs/operators'
-import { WsConnectionProxy, connectionStream$, ServiceStub } from './connection'
+import { map, multicast, refCount, scan, share } from 'rxjs/operators'
+import { WsConnectionProxy, ServiceStub } from './connection'
 import { ServiceCollectionMap } from './connection/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './connection/serviceStatusStream'
 import { convertToPrice, Price, RawPrice, RawServiceStatus, TradeUpdate } from './domain'
 import logger from './logger'
+import ServiceStubWrapper from 'connection/ServiceStubWrapper'
 
 const HEARTBEAT_TIMEOUT = 3000
 
@@ -24,7 +25,6 @@ export function createApplicationServices(host: string, port: string) {
   logger.info(`Started bot-service for ${host}:${port}`)
 
   const broker = new WsConnectionProxy(host, +port)
-  const connection$ = connectionStream$(broker).pipe(shareReplay(1))
   const stub = new ServiceStub('RT-Bot', broker)
 
   const statusUpdates$ = stub.subscribeToTopic<RawServiceStatus>('status')
@@ -34,9 +34,11 @@ export function createApplicationServices(host: string, port: string) {
     }),
     refCount(),
   )
-  //const loadBalancedServiceStub = new ServiceStubWithLoadBalancer(stub, serviceStatus$)
+  const serviceStubWrapper = new ServiceStubWrapper(stub, serviceStatus$)
 
-  const tradeStream$ = stub.createStreamOperation<TradeUpdate>('blotter', 'getTradesStream', {}).pipe(share())
+  const tradeStream$ = serviceStubWrapper
+    .createStreamOperation<TradeUpdate>('blotter', 'getTradesStream', {})
+    .pipe(share())
 
   const priceSubsription$ = stub.subscribeToTopic<RawPrice>('prices').pipe(
     map(price => convertToPrice(price)),
