@@ -1,35 +1,23 @@
-import * as currencyPair from './currencyPair'
-import * as currencyPairPosition from './currencyPairPosition'
-import * as serviceStatus from './serviceStatus'
-import * as trade from './trade'
-import * as user from './user'
-import * as collectionUpdate from './CollectionUpdate'
-import * as tradeMapper from './tradeMapper'
+import type { CurrencyPairPosition } from './currencyPairPosition'
+export type { CurrencyPair, CurrencyPairMap } from './currencyPair'
 
-export type CurrencyPair = currencyPair.CurrencyPair
-export type CurrencyPairMap = currencyPair.CurrencyPairMap
-
-export type CurrencyPairPosition = currencyPairPosition.CurrencyPairPosition
-export type CurrencyPairPositionWithPrice = currencyPairPosition.CurrencyPairPosition & {
+export type { CurrencyPairPosition }
+export type CurrencyPairPositionWithPrice = CurrencyPairPosition & {
   latestAsk?: number
   latestBid?: number
 }
 export { Direction } from './direction'
 
-export const { ServiceConnectionStatus } = serviceStatus
-export type ServiceConnectionStatus = serviceStatus.ServiceConnectionStatus
-export type ServiceStatus = serviceStatus.ServiceStatus
+export { ServiceConnectionStatus } from './serviceStatus'
+export type { ServiceStatus } from './serviceStatus'
 
-export type Trade = trade.Trade
-export type Trades = trade.Trades
+export type { Trade, Trades } from './trade'
 export { TradeStatus } from './tradeStatus'
 export { UpdateType } from './updateType'
 
-export type User = user.User
+export type { User } from './user'
 
-export type CollectionUpdate = collectionUpdate.CollectionUpdate
-export type CollectionUpdates = collectionUpdate.CollectionUpdates
+export type { CollectionUpdate, CollectionUpdates } from './CollectionUpdate'
 
-export const { mapFromTradeDto } = tradeMapper
-export type TradeRaw = tradeMapper.TradeRaw
-export type RawTradeUpdate = tradeMapper.RawTradeUpdate
+export { mapFromTradeDto } from './tradeMapper'
+export type { TradeRaw, RawTradeUpdate } from './tradeMapper'

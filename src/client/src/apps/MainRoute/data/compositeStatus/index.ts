@@ -1,5 +1,4 @@
-import * as reducer from './reducer'
-export const compositeStatusServiceReducer = reducer.compositeStatusServiceReducer
-export type CompositeStatusServiceState = reducer.CompositeStatusServiceState
+export { compositeStatusServiceReducer } from './reducer'
+export type { CompositeStatusServiceState } from './reducer'
 export { compositeStatusServiceEpic } from './epics'
 export * from './selectors'

@@ -1,10 +1,5 @@
-import * as types from './types'
-import * as externalWindowDefault from './externalWindowDefault'
-
-export type WindowConfig = types.WindowConfig
-export type WindowPosition = types.WindowPosition
-export type TilesLayout = types.TilesLayout
-export type PlatformName = types.PlatformName
+export type { WindowConfig, WindowPosition, TilesLayout, PlatformName } from './types'
+export type { ExternalWindow } from './externalWindowDefault'
 
 export { InteropTopics } from './types'
 export * from './platformWindow'
@@ -14,5 +9,4 @@ export { PlatformProvider, usePlatform } from './context'
 export { externalWindowDefault } from './externalWindowDefault'
 export * from './excelApp'
 export * from './limitChecker'
-export type ExternalWindow = externalWindowDefault.ExternalWindow
 export { isParentAppLauncher } from './openFin'
