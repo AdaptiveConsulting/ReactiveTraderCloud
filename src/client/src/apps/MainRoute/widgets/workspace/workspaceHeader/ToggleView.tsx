@@ -45,7 +45,7 @@ const ToggleView: React.FC<Props> = ({ tileView, onTileViewChange }) => {
       data-qa-id={`workspace-view-${tileView.toLowerCase()}`}
       onClick={handleToggleView}
     >
-      <ChartIcon active={TileView.Analytics === tileView} />
+      <ChartIcon />
     </ToggleItem>
   )
 }
