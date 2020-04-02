@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga'
 import { Platform } from '../platform'
 import { AppConfig, WindowConfig } from '../types'
 import { fromEventPattern } from 'rxjs'
@@ -21,6 +22,11 @@ export class Finsemble implements Platform {
   window = {
     ...createDefaultPlatformWindow(window),
     open: (config: WindowConfig, onClose?: () => void) => {
+      ReactGA.event({
+        category: 'RT - Window',
+        action: 'open',
+        label: config.name,
+      })
       const createdWindow = window.open()
       return Promise.resolve(createdWindow ? createDefaultPlatformWindow(createdWindow) : undefined)
     },

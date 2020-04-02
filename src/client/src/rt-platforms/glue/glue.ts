@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga'
 import Glue, { Glue42 as GlueInterface } from '@glue42/desktop'
 import Glue4Office, { Glue42Office as Glue42OfficeInterface } from '@glue42/office'
 import { WindowConfig } from '../types'
@@ -36,9 +37,23 @@ export class Glue42 implements Platform {
   }
 
   window = {
-    close: () => Promise.resolve(window.close()),
+    close: () => {
+      ReactGA.event({
+        category: 'RT - Window',
+        action: 'close',
+        label: window.name,
+      })
+      return Promise.resolve(window.close())
+    },
 
-    open: (config: WindowConfig, onClose?: () => void) => openGlueWindow(config, onClose),
+    open: (config: WindowConfig, onClose?: () => void) => {
+      ReactGA.event({
+        category: 'RT - Window',
+        action: 'open',
+        label: config.name,
+      })
+      return openGlueWindow(config, onClose)
+    },
 
     /**
      * In order to integrate Glue42 with channels the clicked symbol needs to be published to the channel.
