@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import ReactGA from 'react-ga'
 import Helmet from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
 import { ThemeProvider } from 'rt-theme'
@@ -6,8 +7,11 @@ import { Router } from './data'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
 import { getPlatformAsync, PlatformProvider } from 'rt-platforms'
 import { createStore } from './store'
+import { useHistory } from 'react-router-dom'
 
 const MainRoute = () => {
+  const routeHistory = useHistory()
+
   const [platform, setPlatform] = useState()
   const [store, setStore] = useState()
 
@@ -20,6 +24,25 @@ const MainRoute = () => {
     }
     getPlatform()
   }, [])
+
+  useEffect(() => {
+    if (platform) {
+      ReactGA.set({
+        dimension1: platform.type,
+        dimension2: platform.name,
+        page: window.location.pathname,
+      })
+      ReactGA.pageview(window.location.pathname)
+    }
+  }, [platform])
+
+  useEffect(() => {
+    const stopListening = routeHistory.listen(location => {
+      ReactGA.set({ page: location.pathname })
+      ReactGA.pageview(location.pathname)
+    })
+    return stopListening
+  }, [routeHistory])
 
   if (!store || !platform) {
     return <></>

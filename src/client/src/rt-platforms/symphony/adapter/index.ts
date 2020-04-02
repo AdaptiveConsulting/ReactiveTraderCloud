@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga'
 import { Platform } from '../../platform'
 import { WindowConfig } from '../../types'
 import { createTileMessage, FX_ENTITY_TYPE, SYMPHONY_APP_ID, SymphonyClient } from '../index'
@@ -41,6 +42,11 @@ export default class Symphony implements Platform {
   window = {
     ...createDefaultPlatformWindow(window),
     open: (config: WindowConfig, onClose?: () => void) => {
+      ReactGA.event({
+        category: 'RT - Window',
+        action: 'open',
+        label: config.name,
+      })
       return Promise.resolve(undefined)
     },
   }
