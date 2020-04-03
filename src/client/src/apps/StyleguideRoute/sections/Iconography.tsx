@@ -106,7 +106,7 @@ export const FontFamilies: React.FC = () => (
           <ChartIcon height={20} width={20} />
         </ActiveIcon>
         <ActiveIcon>
-          <ChartIcon active height={20} width={20} />
+          <ChartIcon height={20} width={20} />
         </ActiveIcon>
         <DisabledIcon>
           <ChartIcon height={20} width={20} />

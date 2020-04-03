@@ -4,6 +4,15 @@ import { defaultConfig, windowOrigin } from './defaultWindowConfig'
 import { BlotterFilters, validateFilters } from 'apps/MainRoute/widgets/blotter/blotterTradesFilter'
 
 let openedWindow: PlatformWindow | undefined
+let updatedPosition: { x: number | undefined; y: number | undefined } = {
+  x: undefined,
+  y: undefined,
+}
+
+const updatePosition = ({ left, top }: { left: number; top: number }) => {
+  updatedPosition.x = left
+  updatedPosition.y = top
+}
 
 function updatedOpenedWindow(
   blotterWindow: PlatformWindow,
@@ -32,8 +41,11 @@ async function openNewWindow(
       ...defaultConfig,
       width: 1100,
       url,
+      name: 'blotter',
+      ...updatedPosition,
     },
     () => (openedWindow = undefined),
+    updatePosition,
   )
 }
 
