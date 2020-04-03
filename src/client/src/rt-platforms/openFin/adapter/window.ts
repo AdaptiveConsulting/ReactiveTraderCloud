@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import ReactGA from 'react-ga'
 import { WindowConfig } from '../../types'
 import { get as _get, last as _last } from 'lodash'
 import { PlatformWindow } from '../../platformWindow'
@@ -113,6 +114,12 @@ export const openDesktopWindow = async (
   const centered = (!hasChildWindows && !configHasXYCoordinates) || config.center === 'screen'
 
   console.info(`Creating Openfin window: ${windowName}`)
+
+  ReactGA.event({
+    category: 'RT - Window',
+    action: 'open',
+    label: windowName,
+  })
 
   //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
   // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
