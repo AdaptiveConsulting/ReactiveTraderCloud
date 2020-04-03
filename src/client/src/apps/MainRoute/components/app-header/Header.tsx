@@ -1,11 +1,20 @@
 import React, { useCallback } from 'react'
+import ReactGA from 'react-ga'
 import { styled } from 'rt-theme'
 import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'
 
 const Header: React.FC = ({ children }) => {
-  const onLogoClick = useCallback(() => window.open('https://weareadaptive.com/'), [])
+  const onLogoClick = useCallback(() => {
+    ReactGA.event({
+      category: 'RT - Outbound',
+      action: 'click',
+      label: 'https://weareadaptive.com',
+      transport: 'beacon',
+    })
+    window.open('https://weareadaptive.com/')
+  }, [])
 
   return (
     <Root>
