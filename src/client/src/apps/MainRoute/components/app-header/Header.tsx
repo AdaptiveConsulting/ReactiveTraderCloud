@@ -16,7 +16,6 @@ const Header: React.FC = ({ children }) => {
     window.open('https://weareadaptive.com/')
   }, [])
 
-  console.log(children)
   return (
     <Root>
       <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
