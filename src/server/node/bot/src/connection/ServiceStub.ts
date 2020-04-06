@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import { map, tap } from 'rxjs/operators'
-import { WsConnection } from './WsConnection'
+import WsConnection from './WsConnection'
 
 const LOG_NAME = 'Connection:'
 
@@ -31,21 +31,19 @@ export class ServiceStub {
    * @returns {Observable}
    */
   subscribeToTopic<TResponse>(topic: string): Observable<TResponse> {
-    return this.connection.streamEndpoint
-      .watch(`/exchange/${topic}`)
-      .pipe(map(message => JSON.parse(message.body) as TResponse))
+    return this.connection.streamEndpoint.watch(`/exchange/${topic}`).pipe(map(message => JSON.parse(message.body)))
   }
 
   /**
    * wraps a RPC up as an observable stream
    */
   requestResponse<TResponse, TPayload>(remoteProcedure: string, payload: TPayload): Observable<TResponse> {
-    console.info(LOG_NAME, `Creating request response operation for [${remoteProcedure}]`)
-
     const dto: SubscriptionDTO<TPayload> = {
       payload,
       Username: this.userName,
     }
+
+    console.info(LOG_NAME, `Creating request response operation for [${remoteProcedure}]`)
 
     return this.connection.rpcEndpoint
       .rpc({
@@ -54,16 +52,17 @@ export class ServiceStub {
       })
       .pipe(
         tap(message => this.logResponse(remoteProcedure, { headers: message.headers, body: message.body })),
-        map(message => JSON.parse(message.body) as TResponse),
+        map(message => JSON.parse(message.body)),
       )
   }
 
   requestStream<TResponse, TPayload = {}>(remoteProcedure: string, payload: TPayload): Observable<TResponse> {
-    console.log(`subscribing to RPC stream ${remoteProcedure}`)
     const dto: SubscriptionDTO<TPayload> = {
       payload,
       Username: this.userName,
     }
+
+    console.info(`subscribing to RPC stream ${remoteProcedure}`)
 
     return this.connection.rpcEndpoint
       .stream({
@@ -77,7 +76,7 @@ export class ServiceStub {
             body: message.body,
           }),
         ),
-        map(message => JSON.parse(message.body) as TResponse),
+        map(message => JSON.parse(message.body)),
       )
   }
 }

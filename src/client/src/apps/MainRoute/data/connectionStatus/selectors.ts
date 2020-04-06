@@ -11,6 +11,4 @@ const selectIsConnected = createSelector(
 
 const selectUrl = createSelector([selectState], state => state.url)
 
-const selectTransportType = createSelector([selectState], state => state.transportType)
-
-export { selectIsConnected, selectUrl, selectTransportType }
+export { selectIsConnected, selectUrl }

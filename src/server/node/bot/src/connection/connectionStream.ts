@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs'
-import { WsConnection } from './WsConnection'
-import { ConnectionType } from './connectionType'
+import WsConnection from './WsConnection'
 import { RxStompState } from '@stomp/rx-stomp'
 import { map, tap } from 'rxjs/operators'
 
@@ -14,7 +13,6 @@ export enum ConnectionEventType {
 export interface ConnectionEvent {
   type: ConnectionEventType
   url: string
-  transportType: ConnectionType
 }
 
 export function connectionStream$(broker: WsConnection): Observable<ConnectionEvent> {
@@ -40,8 +38,7 @@ export function connectionStream$(broker: WsConnection): Observable<ConnectionEv
       return {
         type: type,
         url: broker.config.brokerURL,
-        transportType: broker.config.connectionType,
-      } as ConnectionEvent
+      }
     }),
   )
 }

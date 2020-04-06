@@ -1,14 +1,14 @@
-import { WsConnectionProxy } from 'rt-system'
 import FakeUserRepository from '../fakeUserRepository'
 import { createApplicationServices } from './applicationServices'
 import configureStore from './configureStore'
 import { ConnectionActions, SetupActions } from 'rt-actions'
 import { createExcelApp, createLimitChecker, Platform } from 'rt-platforms'
+import { WsConnection } from 'rt-system'
 
 export const createStore = async (platform: Platform) => {
   const store = configureStore(
     createApplicationServices({
-      broker: new WsConnectionProxy(
+      broker: new WsConnection(
         process.env.REACT_APP_BROKER_HOST || location.hostname,
         +(process.env.REACT_APP_BROKER_PORT || location.port),
       ),

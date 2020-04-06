@@ -3,7 +3,6 @@ import {
   ConnectionEventType,
   ConnectionStatusType,
   ConnectionStatus,
-  ConnectionType,
 } from 'rt-system'
 import { Observable } from 'rxjs'
 import { map, publishBehavior, refCount } from 'rxjs/operators'
@@ -11,7 +10,6 @@ import { map, publishBehavior, refCount } from 'rxjs/operators'
 export interface ConnectionInfo {
   status: ConnectionStatusType
   url: string
-  transportType: ConnectionType
 }
 
 export class ConnectionStatusService {
@@ -24,20 +22,17 @@ export class ConnectionStatusService {
           return {
             status: ConnectionStatus.connected,
             url: connectionUpdate.url,
-            transportType: connectionUpdate.transportType,
           }
         } else {
           return {
             status: ConnectionStatus.disconnected,
             url: 'Disconnected',
-            transportType: 'unknown',
           }
         }
       }),
       publishBehavior({
         status: ConnectionStatus.init,
         url: 'Starting',
-        transportType: 'unknown',
       } as ConnectionInfo),
 
       refCount(),

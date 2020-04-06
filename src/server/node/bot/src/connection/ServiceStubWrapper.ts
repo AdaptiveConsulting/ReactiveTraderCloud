@@ -8,7 +8,7 @@ import { ServiceStub } from './ServiceStub'
  * Offers functionality to perform request-response and stream operations against a service instance.
  * Exposes a connection status stream that gives a summary of all service instances of available for this ServiceClient.
  */
-const LOG_NAME = 'ServiceClient: Initiated'
+const LOG_NAME = 'ServiceClient: '
 
 export default class ServiceStubWrapper {
   constructor(
@@ -28,7 +28,6 @@ export default class ServiceStubWrapper {
    *
    */
   createRequestResponseOperation<TResponse, TRequest>(service: string, operationName: string, request: TRequest) {
-    console.info(LOG_NAME, `Creating request response operation for [${operationName}]`)
     const remoteProcedure = service + '.' + operationName
 
     return this.connection.requestResponse<TResponse, TRequest>(remoteProcedure, request).pipe(share())
@@ -38,8 +37,6 @@ export default class ServiceStubWrapper {
    * Gets a request-responses observable that will act against a service which currently has the min load
    */
   createStreamOperation<TResponse, TRequest = {}>(service: string, operationName: string, request: TRequest) {
-    console.info(LOG_NAME, `Call [${service}] for stream operation [${operationName}]`)
-
     // The backend has a different contract for streams (i.e. request-> n responses) as it does with request-response (request->single response) thus
     // the different method here to support this.
     // It works like this: client creates a temp topic, we perform a RPC to then tell the backend to push to this topic.
@@ -52,7 +49,7 @@ export default class ServiceStubWrapper {
     return this.getServiceNumberOfInstances$(service).pipe(
       filter(numberOfInstances => numberOfInstances > 0),
       tap(numberOfInstances =>
-        console.log(`serviceStatus received ${service} is connected with ${numberOfInstances} nodes`),
+        console.log(`${LOG_NAME} serviceStatus received ${service} is connected with ${numberOfInstances} nodes`),
       ),
       switchMap(() => {
         const remoteProcedure = `${service}.${operationName}`

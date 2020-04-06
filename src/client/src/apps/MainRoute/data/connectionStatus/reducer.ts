@@ -4,7 +4,6 @@ import { CONNECTION_STATUS_ACTION_TYPES, ConnectionStatusActions } from './conne
 
 const INITIAL_STATE: ConnectionState = {
   status: ConnectionStatus.disconnected,
-  transportType: 'unknown',
   url: '',
 }
 
@@ -18,7 +17,6 @@ export const connectionStatusReducer = (
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
       return {
         status: ConnectionStatus.sessionExpired,
-        transportType: 'unknown',
         url: '',
       }
     default:

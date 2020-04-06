@@ -33,7 +33,7 @@ export class ServiceStub {
   subscribeToTopic<TResponse>(topic: string): Observable<TResponse> {
     return this.connection.streamEndpoint
       .watch(`/exchange/${topic}`)
-      .pipe(map(message => JSON.parse(message.body) as TResponse))
+      .pipe(map(message => JSON.parse(message.body)))
   }
 
   /**
@@ -59,7 +59,7 @@ export class ServiceStub {
         tap(message =>
           this.logResponse(remoteProcedure, { headers: message.headers, body: message.body }),
         ),
-        map(message => JSON.parse(message.body) as TResponse),
+        map(message => JSON.parse(message.body)),
       )
   }
 
@@ -108,7 +108,7 @@ export class ServiceStub {
             body: message.body,
           }),
         ),
-        map(message => JSON.parse(message.body) as TResponse),
+        map(message => JSON.parse(message.body)),
       )
   }
 }

@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components'
 import { Observable, ReplaySubject } from 'rxjs'
 import { Provider as InteropProvider, getProvider } from 'rt-interop'
 import { getPlatformAsync, Platform, PlatformProvider } from 'rt-platforms'
-import { WsConnectionProxy, ServiceClient } from 'rt-system'
+import { WsConnection, ServiceClient } from 'rt-system'
 import { themes } from 'rt-theme'
 import { BlotterService, TradesUpdate, PricingService } from 'apps/MainRoute'
 import { Launcher } from './Launcher'
@@ -14,7 +14,7 @@ import {
   TradeUpdatesProvider,
 } from './spotlight'
 
-const broker = new WsConnectionProxy(
+const broker = new WsConnection(
   process.env.REACT_APP_BROKER_HOST || location.hostname,
   +(process.env.REACT_APP_BROKER_PORT || location.port),
 )

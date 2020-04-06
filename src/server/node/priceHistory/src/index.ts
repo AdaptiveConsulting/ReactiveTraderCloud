@@ -1,6 +1,6 @@
 import { map, scan } from 'rxjs/operators'
 import uuid from 'uuid/v1'
-import { WsConnectionProxy, Heartbeat, ServiceStub, logger } from 'shared'
+import { WsConnection, Heartbeat, ServiceStub, logger } from 'shared'
 import { convertToPrice, Price, RawPrice } from './domain'
 
 const host = process.env.BROKER_HOST || 'localhost'
@@ -8,7 +8,7 @@ const port = process.env.BROKER_PORT || 15674
 
 logger.info(`Started priceHistory service for ${host}:${port}`)
 
-const broker = new WsConnectionProxy(host, +port)
+const broker = new WsConnection(host, +port)
 const stub = new ServiceStub('BHA', broker)
 
 const HISTORY_LENGTH = 1000

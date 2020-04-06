@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import { WsConnectionProxy, Heartbeat, logger, ServiceStub } from 'shared'
+import { WsConnection, Heartbeat, logger, ServiceStub } from 'shared'
 import uuid from 'uuid/v1'
 import { NlpIntentRequest } from './types'
 import { detectIntent } from './dialogFlowClient'
@@ -15,7 +15,7 @@ const hostInstance = `${HOST_TYPE}.${uuid().substring(0, 4)}`
 
 logger.info(`Starting NLP service for ${host}:${port}`)
 
-const broker = new WsConnectionProxy(host, +port)
+const broker = new WsConnection(host, +port)
 const heartbeat = new Heartbeat(broker, HOST_TYPE, hostInstance)
 heartbeat.StartHeartbeat()
 

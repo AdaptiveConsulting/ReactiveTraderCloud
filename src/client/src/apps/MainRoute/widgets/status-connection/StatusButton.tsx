@@ -19,10 +19,7 @@ interface Props {
   services: ServiceStatus[]
 }
 
-export const StatusButton: React.FC<Props> = ({
-  connectionStatus: { url, transportType },
-  services,
-}) => {
+export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, services }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [appStatus, setAppStatus] = useState<ServiceConnectionStatus>()
 
@@ -52,7 +49,7 @@ export const StatusButton: React.FC<Props> = ({
     }
   }, [services])
 
-  const appUrl = `${url} (${transportType})`
+  const appUrl = `${url}`
   return (
     <Root>
       <Button onClick={toggleOpen} data-qa="status-button__toggle-button">

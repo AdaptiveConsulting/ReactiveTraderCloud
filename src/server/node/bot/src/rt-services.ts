@@ -1,11 +1,12 @@
 import { ReplaySubject } from 'rxjs'
 import { map, multicast, refCount, scan, share } from 'rxjs/operators'
-import { WsConnectionProxy, ServiceStub } from './connection'
+import { ServiceStub } from './connection'
 import { ServiceCollectionMap } from './connection/ServiceInstanceCollection'
 import { serviceStatusStream$ } from './connection/serviceStatusStream'
 import { convertToPrice, Price, RawPrice, RawServiceStatus, TradeUpdate } from './domain'
 import logger from './logger'
 import ServiceStubWrapper from 'connection/ServiceStubWrapper'
+import WsConnection from 'connection/WsConnection'
 
 const HEARTBEAT_TIMEOUT = 3000
 
@@ -24,7 +25,7 @@ function getPriceMovementType(prevItem: Price, newItem: Price) {
 export function createApplicationServices(host: string, port: string) {
   logger.info(`Started bot-service for ${host}:${port}`)
 
-  const broker = new WsConnectionProxy(host, +port)
+  const broker = new WsConnection(host, +port)
   const stub = new ServiceStub('RT-Bot', broker)
 
   const statusUpdates$ = stub.subscribeToTopic<RawServiceStatus>('status')

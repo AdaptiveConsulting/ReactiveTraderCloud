@@ -1,5 +1,3 @@
-import { ConnectionType } from './connectionType'
-
 export enum ConnectionStatus {
   connected = 'connected',
   disconnected = 'disconnected',
@@ -10,5 +8,4 @@ export enum ConnectionStatus {
 export interface ConnectionState {
   status: ConnectionStatus
   url: string
-  transportType: ConnectionType
 }

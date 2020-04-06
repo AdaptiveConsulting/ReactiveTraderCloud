@@ -1,16 +1,25 @@
-import { RxStomp, RxStompRPC } from '@stomp/rx-stomp'
+import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
 import StompConfig from './StompConfig'
 
-export interface WsConnection {
-  config: StompConfig
-  rpcEndpoint: RxStompRPC
-  streamEndpoint: RxStomp
+/**
+ * BrokerProxy: makes the broker connection api more explicit, aids testing
+ */
+export class WsConnection {
+  public config: StompConfig
+  public rpcEndpoint: RxStompRPC
+  public streamEndpoint: RxStomp
 
-  open(): boolean
+  constructor(url: string, port?: number) {
+    /* eslint-disable-next-line */
+    this.config = new StompConfig(url, port)
 
-  close(): void
+    this.streamEndpoint = new RxStomp()
+    this.streamEndpoint.configure({
+      brokerURL: this.config.brokerURL,
+      reconnectDelay: this.config.reconnectDelay,
+    })
+    this.rpcEndpoint = new RxStompRPC(this.streamEndpoint)
 
-  onopen(callback: () => void): void
-
-  onclose(callback: () => void): void
+    this.streamEndpoint.activate()
+  }
 }
