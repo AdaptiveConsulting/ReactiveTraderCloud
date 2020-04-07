@@ -1,6 +1,8 @@
 import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
 import StompConfig from './StompConfig'
 
+Object.assign(global, { WebSocket: require('ws') })
+
 /**
  * BrokerProxy: makes the broker connection api more explicit, aids testing
  */
