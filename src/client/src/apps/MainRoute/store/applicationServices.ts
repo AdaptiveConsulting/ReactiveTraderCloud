@@ -1,7 +1,6 @@
 import {
   WsConnection,
   connectionStream$,
-  ServiceStub,
   serviceStatusStream$,
   ConnectionEvent,
   ServiceCollectionMap,
@@ -39,9 +38,9 @@ export function createApplicationServices({
     refCount(),
   )
 
-  const serviceStub = new ServiceStub(user.code, broker)
+  const serviceClient = new ServiceClient(user.code, broker)
 
-  const statusUpdates$ = serviceStub.subscribeToTopic<RawServiceStatus>('status')
+  const statusUpdates$ = serviceClient.subscribeToTopic<RawServiceStatus>('status')
   const serviceStatus$ = serviceStatusStream$(statusUpdates$, HEARTBEAT_TIMEOUT).pipe(
     multicast(() => {
       return new ReplaySubject<ServiceCollectionMap>(1)
@@ -49,7 +48,6 @@ export function createApplicationServices({
     refCount(),
   )
 
-  const serviceClient = new ServiceClient(serviceStub, serviceStatus$)
   const referenceDataService$ = referenceDataService(serviceClient)
 
   return {
