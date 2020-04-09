@@ -16,8 +16,8 @@ export default (Component: React.FC<Props>) => {
     (state: GlobalState) => ({
       connected: state.connectionStatus.status === 'connected',
       loaded: Object.keys(state.compositeStatusService).length >= 3,
-      sessionExpired: state.connectionStatus.status === ConnectionStatus.disconnected,
-      shouldShow: state.connectionStatus.status === ConnectionStatus.disconnected,
+      sessionExpired: state.connectionStatus.status === ConnectionStatus.sessionExpired,
+      shouldShow: state.connectionStatus.status === ConnectionStatus.sessionExpired,
     }),
     (dispatch: Dispatch) => ({
       reconnect: () => dispatch(ConnectionActions.connect()),
