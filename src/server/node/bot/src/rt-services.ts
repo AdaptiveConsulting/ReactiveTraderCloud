@@ -1,14 +1,8 @@
-import { ReplaySubject } from 'rxjs'
-import { map, multicast, refCount, scan, share } from 'rxjs/operators'
+import { map, scan, share } from 'rxjs/operators'
 import { ServiceStub } from './connection'
-import { ServiceCollectionMap } from './connection/ServiceInstanceCollection'
-import { serviceStatusStream$ } from './connection/serviceStatusStream'
-import { convertToPrice, Price, RawPrice, RawServiceStatus, TradeUpdate } from './domain'
+import { convertToPrice, Price, RawPrice, TradeUpdate } from './domain'
 import logger from './logger'
-import ServiceStubWrapper from 'connection/ServiceStubWrapper'
 import WsConnection from 'connection/WsConnection'
-
-const HEARTBEAT_TIMEOUT = 3000
 
 function getPriceMovementType(prevItem: Price, newItem: Price) {
   const prevPriceMove = prevItem.lastMove
@@ -28,18 +22,7 @@ export function createApplicationServices(host: string, port: string) {
   const broker = new WsConnection(host, +port)
   const stub = new ServiceStub('RT-Bot', broker)
 
-  const statusUpdates$ = stub.subscribeToTopic<RawServiceStatus>('status')
-  const serviceStatus$ = serviceStatusStream$(statusUpdates$, HEARTBEAT_TIMEOUT).pipe(
-    multicast(() => {
-      return new ReplaySubject<ServiceCollectionMap>(1)
-    }),
-    refCount(),
-  )
-  const serviceStubWrapper = new ServiceStubWrapper(stub, serviceStatus$)
-
-  const tradeStream$ = serviceStubWrapper
-    .createStreamOperation<TradeUpdate>('blotter', 'getTradesStream', {})
-    .pipe(share())
+  const tradeStream$ = stub.createStreamOperation<TradeUpdate>('blotter', 'getTradesStream', {}).pipe(share())
 
   const priceSubsription$ = stub.subscribeToTopic<RawPrice>('prices').pipe(
     map(price => convertToPrice(price)),

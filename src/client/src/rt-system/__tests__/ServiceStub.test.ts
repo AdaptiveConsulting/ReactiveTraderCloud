@@ -1,4 +1,4 @@
-import { ServiceStub, WsConnection } from 'rt-system'
+import { ServiceClient, WsConnection } from 'rt-system'
 import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
 import { IMessage } from '@stomp/stompjs'
 import { Observable } from 'rxjs'
@@ -18,8 +18,10 @@ describe('ServiceStub', () => {
 
     it('invokes a remote procedure with the correct payload', () => {
       const rpcEndpoint = new MockRpcEndpoint()
-      const stub = new ServiceStub(Username, createMockConnection(rpcEndpoint))
-      const rpc = stub.requestResponse<string, string>(procedure, payload).subscribe()
+      const stub = new ServiceClient(Username, createMockConnection(rpcEndpoint))
+      const rpc = stub
+        .createRequestResponseOperation<string, string>(service, operationName, payload)
+        .subscribe()
 
       expect(rpcEndpoint.rpc).lastCalledWith({
         destination: `/amq/queue/${procedure}`,
@@ -40,8 +42,10 @@ describe('ServiceStub', () => {
 
     it('invokes a remote procedure with the correct payload', () => {
       const rpcEndpoint = new MockRpcEndpoint()
-      const stub = new ServiceStub(Username, createMockConnection(rpcEndpoint))
-      const rpc = stub.requestStream<string, string>(procedure, payload).subscribe()
+      const stub = new ServiceClient(Username, createMockConnection(rpcEndpoint))
+      const rpc = stub
+        .createStreamOperation<string, string>(service, operationName, payload)
+        .subscribe()
 
       expect(rpcEndpoint.stream).lastCalledWith({
         destination: `/amq/queue/${procedure}`,
@@ -58,7 +62,7 @@ describe('ServiceStub', () => {
     const topic = 'someTopic'
     it('subscribes to the correct topic name', () => {
       const streamEndpoint = new MockStreamEndpoint()
-      const stub = new ServiceStub(Username, createMockConnection(undefined, streamEndpoint))
+      const stub = new ServiceClient(Username, createMockConnection(undefined, streamEndpoint))
       stub.subscribeToTopic(topic).subscribe()
       expect(streamEndpoint.watch).lastCalledWith(`/exchange/${topic}`)
     })

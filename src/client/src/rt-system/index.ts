@@ -12,8 +12,7 @@ export const { ConnectionStatus } = connectionStatus
 export type ConnectionState = connectionStatus.ConnectionState
 export type IServiceStatusCollection = serviceInstanceCollection.IServiceStatusCollection
 export { retryWithBackOff, retryConstantly } from './retryPolicy'
-export { ServiceStub } from './ServiceStub'
-export { default as ServiceClient } from './ServiceStubWrapper'
+export { ServiceStub as ServiceClient } from './ServiceStub'
 export const { ConnectionEventType } = connectionStream
 export { default as WsConnection } from './WsConnection'
 

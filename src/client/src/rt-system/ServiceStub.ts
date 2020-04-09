@@ -39,14 +39,16 @@ export class ServiceStub {
   /**
    * wraps a RPC up as an observable stream
    */
-  requestResponse<TResponse, TPayload>(
-    remoteProcedure: string,
+  createRequestResponseOperation<TResponse, TPayload>(
+    service: string,
+    operationName: string,
     payload: TPayload,
   ): Observable<TResponse> {
     const dto: SubscriptionDTO<TPayload> = {
       payload,
       Username: this.userName,
     }
+    const remoteProcedure = service + '.' + operationName
 
     console.info(LOG_NAME, `Creating request response operation for [${remoteProcedure}]`)
 
@@ -63,14 +65,16 @@ export class ServiceStub {
       )
   }
 
-  requestStream<TResponse, TPayload = {}>(
-    remoteProcedure: string,
+  createStreamOperation<TResponse, TPayload = {}>(
+    service: string,
+    operationName: string,
     payload: TPayload,
   ): Observable<TResponse> {
     const dto: SubscriptionDTO<TPayload> = {
       payload,
       Username: this.userName,
     }
+    const remoteProcedure = `${service}.${operationName}`
 
     console.info(`subscribing to RPC stream ${remoteProcedure}`)
 
