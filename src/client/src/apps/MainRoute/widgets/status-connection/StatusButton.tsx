@@ -1,6 +1,6 @@
 import React, { useState, useCallback, SyntheticEvent, useEffect } from 'react'
 
-import { ConnectionState } from 'rt-system'
+import { ConnectionInfo } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import {
   Button,
@@ -15,7 +15,7 @@ import Service from './Service'
 import FooterVersion from '../footer-version'
 
 interface Props {
-  connectionStatus: ConnectionState
+  connectionStatus: ConnectionInfo
   services: ServiceStatus[]
 }
 
