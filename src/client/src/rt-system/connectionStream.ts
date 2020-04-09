@@ -3,41 +3,52 @@ import WsConnection from './WsConnection'
 import { RxStompState } from '@stomp/rx-stomp'
 import { map, tap } from 'rxjs/operators'
 
-export enum ConnectionEventType {
-  CONNECTING = 'CONNECTING',
-  CONNECTED = 'CONNECTED',
-  CLOSING = 'CLOSING',
-  DISCONNECTED = 'DISCONNECTED',
+export enum ConnectionStatus {
+  connecting = 'connecting',
+  connected = 'connected',
+  disconnecting = 'disconnecting',
+  disconnected = 'disconnected',
+  sessionExpired = 'sessionExpired',
+  init = '',
 }
 
-export interface ConnectionEvent {
-  type: ConnectionEventType
+export interface ConnectionState {
+  status: ConnectionStatus
   url: string
 }
 
-export function connectionStream$(broker: WsConnection): Observable<ConnectionEvent> {
+export interface ConnectionInfo {
+  status: ConnectionStatus
+  url: string
+}
+
+export function connectionStream$(broker: WsConnection): Observable<ConnectionInfo> {
   return broker.streamEndpoint.connectionState$.pipe(
-    tap(status => console.debug('', `Received response on topic status: ${status}`)),
-    map(status => {
-      let type: ConnectionEventType
-      switch (status) {
+    tap((state) => console.debug('', `Received response on topic status: ${state}`)),
+    map((state) => {
+      let status: ConnectionStatus
+      let url: string = broker.config.brokerURL
+
+      switch (state) {
         case RxStompState.CONNECTING:
-          type = ConnectionEventType.CONNECTING
+          status = ConnectionStatus.connecting
+          url = 'Starting'
           break
         case RxStompState.OPEN:
-          type = ConnectionEventType.CONNECTED
+          status = ConnectionStatus.connected
           break
         case RxStompState.CLOSING:
-          type = ConnectionEventType.CLOSING
+          status = ConnectionStatus.disconnecting
           break
         case RxStompState.CLOSED:
-          type = ConnectionEventType.DISCONNECTED
+          status = ConnectionStatus.disconnected
+          url = 'Disconnected'
           break
       }
 
       return {
-        type: type,
-        url: broker.config.brokerURL,
+        status: status,
+        url: url,
       }
     }),
   )

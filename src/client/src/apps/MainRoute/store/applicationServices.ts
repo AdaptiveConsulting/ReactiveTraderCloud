@@ -2,7 +2,7 @@ import {
   WsConnection,
   connectionStream$,
   serviceStatusStream$,
-  ConnectionEvent,
+  ConnectionInfo,
   ServiceCollectionMap,
   retryWithBackOff,
   RawServiceStatus,
@@ -33,7 +33,7 @@ export function createApplicationServices({
   const connection$ = connectionStream$(broker).pipe(
     retryWhen(retryWithBackOff()),
     multicast(() => {
-      return new ReplaySubject<ConnectionEvent>(1)
+      return new ReplaySubject<ConnectionInfo>(1)
     }),
     refCount(),
   )
