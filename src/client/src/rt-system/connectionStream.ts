@@ -8,6 +8,7 @@ export enum ConnectionStatus {
   connected = 'connected',
   disconnecting = 'disconnecting',
   disconnected = 'disconnected',
+  sessionExpired = 'sessionExpired',
 }
 
 export interface ConnectionInfo {

@@ -16,7 +16,7 @@ export const connectionStatusReducer = (
       return action.payload
     case CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES:
       return {
-        status: ConnectionStatus.disconnected,
+        status: ConnectionStatus.sessionExpired,
         url: '',
       }
     default:
