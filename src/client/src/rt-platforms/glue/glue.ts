@@ -9,6 +9,8 @@ import DefaultRoute from 'rt-platforms/defaultRoute'
 import { ApplicationEpic } from 'StoreTypes'
 import { GlueHeader, GlueLogoLink } from './'
 
+import '@glue42/web'
+import { useGlueInit } from '@glue42/react-hooks'
 /**
  * Glue implementation of the base platform adapter.
  * Glue4Office is an optional library for working with excel.

@@ -4,6 +4,7 @@ const isFinsemble = 'FSBL' in window
 const isOpenFin = 'fin' in window
 const isGlue42 = 'glue42gd' in window
 const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYMPHONY'
+const isGlueCore = urlParams.has('waitFor') && urlParams.get('waitFor') === 'GLUE_CORE'
 
 export const getSymphonyPlatform = () => import(/* webpackChunkName: "symphony" */ './symphony')
 
@@ -14,7 +15,7 @@ export const getOpenFinPlatform = () => import(/* webpackChunkName: "openfin" */
 export const getGlue42Platform = () => import(/* webpackChunkName: "glue" */ './glue')
 
 export const getBrowserPlatform = () => import(/* webpackChunkName: "browser" */ './browser')
-
+console.log(window)
 export const getPlatformAsync = async () => {
   if (isSymphony) {
     const { Symphony } = await getSymphonyPlatform()
@@ -37,6 +38,11 @@ export const getPlatformAsync = async () => {
     console.info('Using Glue42 API')
     const { Glue42 } = await getGlue42Platform()
     return new Glue42()
+  }
+
+  if (isGlueCore) {
+    console.log('Using Glue42 Core')
+    debugger
   }
 
   console.info('Using Browser API')
