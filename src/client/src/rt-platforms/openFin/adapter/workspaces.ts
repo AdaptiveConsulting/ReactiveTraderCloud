@@ -10,7 +10,7 @@ interface WinProps {
 }
 
 export function setupWorkspaces() {
-  return new Observable<WinProps>(observer => {
+  return new Observable<WinProps>((observer) => {
     workspaces
       .setRestoreHandler((workspace: workspaces.WorkspaceApp) => {
         console.log('settingRestoreHandler')
@@ -31,7 +31,7 @@ async function appRestoreHandler(
   const openWindows = await ofApp.getChildWindows()
 
   const opened = workspaceApp.childWindows.map(async (win: workspaces.WorkspaceWindow) => {
-    if (!openWindows.some(w => w.identity.name === win.name)) {
+    if (!openWindows.some((w) => w.identity.name === win.name)) {
       const config: WindowConfig = {
         name: win.name,
         url: win.url,
@@ -46,6 +46,7 @@ async function appRestoreHandler(
             display: true,
           })
         },
+        () => {},
         { defaultLeft: win.bounds.left, defaultTop: win.bounds.top },
       )
 

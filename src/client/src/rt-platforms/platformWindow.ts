@@ -1,7 +1,11 @@
 import { WindowConfig } from './types'
 
 export type PlatformWindowApi = {
-  open: (config: WindowConfig, onClose?: () => void) => Promise<PlatformWindow | undefined>
+  open: (
+    config: WindowConfig,
+    onClose?: () => void,
+    onUpdatePosition?: (event: any) => void,
+  ) => Promise<PlatformWindow | undefined>
 }
 
 export type PlatformWindow = {

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Flex, Modal } from 'rt-components'
 import { User as UserType } from 'rt-types'
-import { fakeUsers } from './fakeUsers'
 import {
   Header,
   SubHeader,
@@ -13,6 +12,7 @@ import {
   CancelButton,
   UserName,
 } from './styled'
+import FakeUserRepository from 'apps/MainRoute/fakeUserRepository'
 
 interface props {
   shouldShow: boolean
@@ -26,9 +26,9 @@ export const UsersModal: React.FC<props> = ({ shouldShow, closeModal, selectUser
       <Header>Select an account</Header>
       <SubHeader>You can sign in to any of the following trading accounts. </SubHeader>
       <UserList>
-        {fakeUsers.map(user => (
+        {FakeUserRepository.userList.map((user) => (
           <User>
-            <Avatar src={require(`./fakeAvatars/${user.avatar}`)} />
+            <Avatar src={user.avatar} />
             <div>
               <UserName>
                 {user.firstName} {user.lastName}

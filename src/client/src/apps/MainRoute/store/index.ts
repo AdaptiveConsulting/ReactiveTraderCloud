@@ -1,9 +1,11 @@
 import FakeUserRepository from '../fakeUserRepository'
 import { createApplicationServices } from './applicationServices'
 import configureStore from './configureStore'
-import { ConnectionActions, SetupActions } from 'rt-actions'
+import { ConnectionActions, SetupActions, UserActions } from 'rt-actions'
 import { createExcelApp, createLimitChecker, Platform } from 'rt-platforms'
 import { WsConnection } from 'rt-system'
+
+const selectedUser = FakeUserRepository.currentUser
 
 export const createStore = async (platform: Platform) => {
   const store = configureStore(
@@ -15,11 +17,13 @@ export const createStore = async (platform: Platform) => {
       limitChecker: await createLimitChecker(platform.name),
       excelApp: await createExcelApp(platform.name),
       platform,
-      user: FakeUserRepository.currentUser,
+      user: selectedUser,
     }),
   )
 
   store.dispatch(SetupActions.setup())
   store.dispatch(ConnectionActions.connect())
+  store.dispatch(UserActions.selected(selectedUser))
+
   return store
 }

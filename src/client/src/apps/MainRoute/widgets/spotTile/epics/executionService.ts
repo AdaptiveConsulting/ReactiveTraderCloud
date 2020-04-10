@@ -8,6 +8,7 @@ import {
   ExecuteTradeRequest,
 } from '../model/executeTradeRequest'
 import numeral from 'numeral'
+import ReactGA from 'react-ga'
 
 interface RawTradeReponse {
   Trade: TradeRaw
@@ -35,9 +36,17 @@ export default class ExecutionService {
     const executeTradeRequest = this.formatTradeRequest(rawExecuteTradeRequest)
 
     return this.limitChecker(executeTradeRequest).pipe(
-      tap(() => console.info(LOG_NAME, 'executing: ', executeTradeRequest)),
+      tap(() => {
+        console.info(LOG_NAME, 'executing: ', executeTradeRequest)
+        ReactGA.event({
+          category: `RT - Trade Attempt`,
+          action: executeTradeRequest.Direction,
+          label: `${executeTradeRequest.CurrencyPair} - ${executeTradeRequest.SpotRate}`,
+          value: Math.round(executeTradeRequest.Notional),
+        })
+      }),
       take(1),
-      mergeMap(tradeWithinLimit => {
+      mergeMap((tradeWithinLimit) => {
         if (!tradeWithinLimit) {
           return of(
             createExecuteTradeResponseForError('Credit limit exceeded', executeTradeRequest),
@@ -50,7 +59,7 @@ export default class ExecutionService {
             executeTradeRequest,
           )
           .pipe(
-            tap(dto =>
+            tap((dto) => {
               console.info(
                 LOG_NAME,
                 `execute response received for ${executeTradeRequest.CurrencyPair}. Status: ${dto.Trade.Status}`,
@@ -58,12 +67,18 @@ export default class ExecutionService {
                   Request: executeTradeRequest,
                   Response: dto,
                 },
-              ),
-            ),
-            map(dto => mapFromTradeDto(dto.Trade)),
-            map(trade => createExecuteTradeResponse(trade, executeTradeRequest)),
+              )
+              ReactGA.event({
+                category: `RT - Trade ${dto.Trade.Status}`,
+                action: executeTradeRequest.Direction,
+                label: `${executeTradeRequest.CurrencyPair} - ${dto.Trade.SpotRate}`,
+                value: Math.round(dto.Trade.Notional),
+              })
+            }),
+            map((dto) => mapFromTradeDto(dto.Trade)),
+            map((trade) => createExecuteTradeResponse(trade, executeTradeRequest)),
             takeUntil(timer(EXECUTION_REQUEST_TIMEOUT_MS)),
-            publish(request =>
+            publish((request) =>
               merge(
                 request,
 
