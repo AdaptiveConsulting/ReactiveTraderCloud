@@ -32,11 +32,29 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
     }
   }, [priceService, currencyPair])
 
+  const highlightPip = (value: number, bidAsk: 'bid' | 'ask') => {
+    const array = String(value).split('')
+    return array.map((char: string, index: number) => {
+      const style =
+        index === array.length - 2 || index === array.length - 1
+          ? {
+              color: bidAsk === 'ask' ? '#ff274b' : '#2d95ff',
+              fontSize: '1rem',
+            }
+          : {}
+      return (
+        <span style={style} key={`${char}-${index}`}>
+          {char}
+        </span>
+      )
+    })
+  }
+
   const colDefs: Col[] = [
     { title: 'Symbol', id: 'symbol' },
-    { title: 'Ask', id: 'ask', align: 'right' },
+    { title: 'Ask', id: 'ask', align: 'right', formatter: value => highlightPip(value, 'ask') },
     { title: 'Mid', id: 'mid', align: 'right' },
-    { title: 'Bid', id: 'bid', align: 'right' },
+    { title: 'Bid', id: 'bid', align: 'right', formatter: value => highlightPip(value, 'bid') },
     { title: 'Movement', id: 'priceMovementType', align: 'center' },
     { title: 'Date/Time', id: 'valueDate' },
   ]

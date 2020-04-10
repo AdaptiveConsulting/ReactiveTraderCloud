@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { useContext } from 'react'
 import NoopPlatformAdapter from './noopAdapter'
 import { Platform } from './platform'

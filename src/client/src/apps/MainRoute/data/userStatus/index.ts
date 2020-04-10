@@ -1,4 +1,3 @@
-import * as reducer from './reducer'
-export const userStatusReducer = reducer.userStatus
-export type UserState = reducer.UserState
+export { userStatus as userStatusReducer } from './reducer'
+export type { UserState } from './reducer'
 export * from './selectors'
