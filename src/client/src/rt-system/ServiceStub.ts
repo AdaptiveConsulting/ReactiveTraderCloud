@@ -33,7 +33,7 @@ export class ServiceStub {
   subscribeToTopic<TResponse>(topic: string): Observable<TResponse> {
     return this.connection.streamEndpoint
       .watch(`/exchange/${topic}`)
-      .pipe(map(message => JSON.parse(message.body)))
+      .pipe(map((message) => JSON.parse(message.body)))
   }
 
   /**
@@ -48,7 +48,7 @@ export class ServiceStub {
       payload,
       Username: this.userName,
     }
-    const remoteProcedure = service + '.' + operationName
+    const remoteProcedure = `${service}.${operationName}`
 
     console.info(LOG_NAME, `Creating request response operation for [${remoteProcedure}]`)
 
@@ -58,10 +58,10 @@ export class ServiceStub {
         body: JSON.stringify(dto),
       })
       .pipe(
-        tap(message =>
+        tap((message) =>
           this.logResponse(remoteProcedure, { headers: message.headers, body: message.body }),
         ),
-        map(message => JSON.parse(message.body)),
+        map((message) => JSON.parse(message.body)),
       )
   }
 
@@ -84,13 +84,13 @@ export class ServiceStub {
         body: JSON.stringify(dto),
       })
       .pipe(
-        tap(message =>
+        tap((message) =>
           this.logResponse(remoteProcedure, {
             headers: message.headers,
             body: message.body,
           }),
         ),
-        map(message => JSON.parse(message.body)),
+        map((message) => JSON.parse(message.body)),
       )
   }
 }

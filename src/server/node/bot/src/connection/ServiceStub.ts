@@ -46,7 +46,7 @@ export class ServiceStub {
       payload,
       Username: this.userName,
     }
-    const remoteProcedure = service + '.' + operationName
+    const remoteProcedure = `${service}.${operationName}`
 
     console.info(LOG_NAME, `Creating request response operation for [${remoteProcedure}]`)
 

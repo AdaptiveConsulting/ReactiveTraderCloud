@@ -44,7 +44,7 @@ const Loadable: React.FC<Props> = ({
   minHeight,
 }) => {
   useEffect(() => {
-    if (status === ServiceConnectionStatus.CONNECTED) onMount && onMount()
+    if (status === ServiceConnectionStatus.CONNECTED && onMount) onMount()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status])
 
