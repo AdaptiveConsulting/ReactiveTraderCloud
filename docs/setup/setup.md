@@ -42,8 +42,8 @@ Alternatively on Windows, you can run `Populate Event Store.bat` to add some dum
 
 RabbitMQ is required for RTC to properly run. If not installed, the server cannot communicate with the client.
 
-- [Download RabbitMQ](https://www.rabbitmq.com/download.html): Follow the instructions to download and start RabbitMQ according to your OS and preferred method.
-- However, before starting it [enable Web Stomp Pluggin](https://www.rabbitmq.com/web-stomp.html): The client uses Stomp library to communicate with RabbitMQ via a websocket, run the following command to enable the pluggin:
+- [Download and install RabbitMQ](https://www.rabbitmq.com/download.html): Follow the instructions to download, install and start RabbitMQ according to your OS and preferred method.
+- However before starting it, [enable Web Stomp Pluggin](https://www.rabbitmq.com/web-stomp.html): The client uses Stomp library to communicate with RabbitMQ via a websocke. Run the following command to enable the pluggin:
 
 ```bash
 $ rabbitmq-plugins enable rabbitmq_web_stomp
