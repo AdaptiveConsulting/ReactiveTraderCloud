@@ -281,11 +281,11 @@ workflows:
           environment: rabbit
           filters:
             branches:
-              only: ARTP-861-Rabbitmq
+              only: ARTP-861-Rabbitmq-Client
 
       - deploy_last_build:
           requires:
             - release_build
           filters:
             branches:
-              only: ARTP-861-Rabbitmq
+              only: ARTP-861-Rabbitmq-Client
