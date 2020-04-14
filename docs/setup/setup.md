@@ -38,18 +38,18 @@ $ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher --populate-eventstore
 
 Alternatively on Windows, you can run `Populate Event Store.bat` to add some dummy data
 
-#### Run Broker (Rabbitmq)
+#### Run Broker (RabbitMQ)
 
-Rabbitmq is required for RTC to properly run. If not installed, the server cannot communicate with the client.
+RabbitMQ is required for RTC to properly run. If not installed, the server cannot communicate with the client.
 
-- [Download Rabbitmq](https://www.rabbitmq.com/download.html): Follow the instructions to download and start Rabbitmq according to your OS and your preferred method.
-- However, before starting it [enable Web stomp pluggin](https://www.rabbitmq.com/web-stomp.html): The client uses Stomp library to communicate with Rabbitmq via a websocket, run the following command to enable web stomp pluggin:
+- [Download RabbitMQ](https://www.rabbitmq.com/download.html): Follow the instructions to download and start RabbitMQ according to your OS and preferred method.
+- However, before starting it [enable Web Stomp Pluggin](https://www.rabbitmq.com/web-stomp.html): The client uses Stomp library to communicate with RabbitMQ via a websocket, run the following command to enable the pluggin:
 
 ```bash
 $ rabbitmq-plugins enable rabbitmq_web_stomp
 ```
 
-- [Browse Rabbitmq management](https://www.rabbitmq.com/management.html): If management pluggin was installed browse [Rabbitmq](http://localhost:15672/) and provide login `guest` and password `guess` to monitor the running exchanges and the queues.
+- [Browse RabbitMQ management](https://www.rabbitmq.com/management.html): If the management pluggin was installed, browse [RabbitMQ](http://localhost:15672/) and provide login `guest` and password `guess` to monitor the running exchanges and queues.
 
 #### Start Services
 
