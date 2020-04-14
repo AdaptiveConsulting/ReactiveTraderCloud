@@ -11,22 +11,17 @@ export class ServiceInstanceCollection {
     return this
   }
 
-  getServiceInstances() {
+  private getServiceInstances() {
     return Array.from(this.serviceMap.values())
   }
 
   getServiceNumberOfInstances() {
-    return this.getServiceInstances().filter(x => x.isConnected).length
-  }
-
-  get(serviceInstance: string) {
-    return this.serviceMap.get(serviceInstance)
+    return this.getServiceInstances().filter((x) => x.isConnected).length
   }
 }
 
 export interface IServiceStatusCollection {
   getServiceNumberOfInstances: (serviceType: string) => number | undefined
-  getServiceInstanceStatus: (type: string, instance: string) => ServiceInstanceStatus | undefined
 }
 export class ServiceCollectionMap implements IServiceStatusCollection {
   private readonly serviceInstanceCollections = new Map<string, ServiceInstanceCollection>()
@@ -34,22 +29,6 @@ export class ServiceCollectionMap implements IServiceStatusCollection {
   add(service: string, serviceInstanceCollection: ServiceInstanceCollection) {
     this.serviceInstanceCollections.set(service, serviceInstanceCollection)
     return this
-  }
-
-  has(service: string) {
-    return this.serviceInstanceCollections.has(service)
-  }
-
-  get(service: string) {
-    return this.serviceInstanceCollections.get(service)
-  }
-
-  getServiceInstanceStatus(type: string, instance: string) {
-    if (this.serviceInstanceCollections.has(type)) {
-      return this.serviceInstanceCollections.get(type)!.get(instance)
-    }
-
-    return undefined
   }
 
   getServiceNumberOfInstances(serviceType: string) {

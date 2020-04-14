@@ -44,9 +44,9 @@ const Loadable: React.FC<Props> = ({
   minHeight,
 }) => {
   useEffect(() => {
-    onMount && onMount()
+    if (status === ServiceConnectionStatus.CONNECTED && onMount) onMount()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [status])
 
   return status === ServiceConnectionStatus.CONNECTED ? (
     <Content minWidth={`${minWidth}rem`}>{render()}</Content>

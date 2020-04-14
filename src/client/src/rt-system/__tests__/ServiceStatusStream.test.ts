@@ -1,6 +1,7 @@
 import { serviceStatusStream$, RawServiceStatus } from 'rt-system'
 import { MockScheduler } from 'rt-testing'
 import { map } from 'rxjs/operators'
+import { ServiceConnectionStatus } from 'rt-types'
 
 const mockRawServiceStatus = (overrides: Partial<RawServiceStatus> = {}): RawServiceStatus => ({
   Type: 'Analytics',
@@ -28,7 +29,9 @@ describe('ServiceStatusStream', () => {
       const expected = 'abc'
 
       const serviceStatus$ = serviceStatusStream$(source$, 3000).pipe(
-        map(serviceStatus => serviceStatus.get('Blotter')!.getServiceInstances().length),
+        map(
+          (serviceStatus) => serviceStatus.getStatusOfServices()['Blotter'].connectedInstanceCount,
+        ),
       )
       expectObservable(serviceStatus$, '---!').toBe(expected, { a: 1, b: 2, c: 3 })
     })
@@ -49,12 +52,12 @@ describe('ServiceStatusStream', () => {
       const expected = `c ${HEART_BEAT_TIME - 1}ms e`
 
       const serviceStatus$ = serviceStatusStream$(source$, HEART_BEAT_TIME).pipe(
-        map(
-          instanceStatus =>
-            instanceStatus.getServiceInstanceStatus(serviceType, instanceName)!.isConnected,
-        ),
+        map((x) => x.getStatusOfServices()[serviceType].connectionStatus),
       )
-      expectObservable(serviceStatus$).toBe(expected, { c: true, e: false })
+      expectObservable(serviceStatus$).toBe(expected, {
+        c: ServiceConnectionStatus.CONNECTED,
+        e: ServiceConnectionStatus.DISCONNECTED,
+      })
     })
   })
 
@@ -73,9 +76,12 @@ describe('ServiceStatusStream', () => {
 
       const source$ = cold<RawServiceStatus>(input, { a: connectedServiceUpdate })
       const serviceStatus$ = serviceStatusStream$(source$, 100).pipe(
-        map(x => x.getServiceInstanceStatus(serviceType, instanceName)!.isConnected),
+        map((x) => x.getStatusOfServices()[serviceType].connectionStatus),
       )
-      expectObservable(serviceStatus$).toBe(expected, { c: true, e: false })
+      expectObservable(serviceStatus$).toBe(expected, {
+        c: ServiceConnectionStatus.CONNECTED,
+        e: ServiceConnectionStatus.DISCONNECTED,
+      })
     })
   })
 })
