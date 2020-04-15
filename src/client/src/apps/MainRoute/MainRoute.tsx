@@ -45,7 +45,7 @@ const MainRoute = () => {
   }, [platform])
 
   useEffect(() => {
-    const stopListening = routeHistory.listen(location => {
+    const stopListening = routeHistory.listen((location) => {
       ReactGA.set({ page: location.pathname })
       ReactGA.pageview(location.pathname)
     })
@@ -56,6 +56,21 @@ const MainRoute = () => {
     return <></>
   }
 
+  // If we want to offer a custom install button, the code below
+  // will allow us to trigger it.
+  // N.B. In the current version of chrome you have to enable: #bypass-app-banner-engagement-checks
+  // For desktop PWA installs to work from the URL bar.
+  // let deferredPrompt;
+  // if (platform.type === 'browser') {
+  //   window.addEventListener('beforeinstallprompt', (e: any) => {
+  //     // Prevent the mini-infobar from appearing on mobile
+  //     e.preventDefault();
+  //     // Stash the event so it can be triggered later.
+  //     deferredPrompt = e;
+  //     // Update UI notify the user they can install the PWA
+  //     console.log('before install')
+  //   });
+  // }
   return (
     <React.Fragment>
       <Helmet>
