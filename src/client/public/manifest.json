@@ -6,6 +6,10 @@
       "src": "/favicon.ico",
       "sizes": "192x192",
       "type": "image/x-icon"
+    },
+    {
+      "src": "/static/media/adaptive-mark-large.png",
+      "sizes": "16x16 24x24 32x32 48x48 64x64 96x96 128x128 192x192 256x256"
     }
   ],
   "start_url": "/",
