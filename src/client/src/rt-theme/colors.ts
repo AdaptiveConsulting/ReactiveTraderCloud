@@ -118,8 +118,8 @@ export interface CorePaletteMap {
 // New color definition based on custom rgb colors, not from colorPalettes generated before
 const darkPrimary = {
   base: rgb(40, 46, 57),
-  1: rgb(52, 58, 71),
-  2: rgb(61, 66, 76),
+  1: rgb(47, 53, 66),
+  2: rgb(61, 68, 85),
   3: rgb(83, 87, 96),
   4: rgb(104, 109, 116),
   5: rgb(126, 129, 136),
@@ -143,7 +143,7 @@ export const dark: CorePaletteMap = {
     alternateBackground: darkPrimary[3],
     offBackground: darkPrimary[3],
     textColor: darkSecondary.base,
-    backgroundHoverColor: darkPrimary.base,
+    backgroundHoverColor: darkPrimary[2],
     primaryStyleGuideBackground: rgb(32, 36, 45),
     secondaryStyleGuideBackground: rgb(40, 45, 57),
   },

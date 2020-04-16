@@ -276,7 +276,7 @@ exports[`NotionalInput show reset button 1`] = `
 }
 
 .c3 {
-  background-color: #343a47;
+  background-color: #2f3542;
   border: 2px solid #282e39;
   border-radius: 3px;
   margin-left: 8px;
