@@ -28,7 +28,10 @@ export const LineChartWrapper = styled.div<{ isTimerOn: boolean }>`
 export const AnalyticsTileStyle = styled(SpotTileStyle)`
   background-color: ${({ theme }) => theme.core.lightBackground};
   &:hover {
-    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
+    background-color: ${({ theme }) =>
+      theme.name === 'dark' ? theme.core.backgroundHoverColor : theme.core.lightBackground};
+    box-shadow: ${({ theme }) =>
+      theme.name === 'light' ? '0 0 10px 0 rgba(0, 0, 0, 0.1)' : 'none'};
   }
 `
 export const AnalyticsTileWrapper = styled(TileWrapperBase)<{ platform: Platform }>`
