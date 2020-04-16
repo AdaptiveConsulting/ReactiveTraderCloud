@@ -1,8 +1,7 @@
 import { map, scan, share } from 'rxjs/operators'
-import { ServiceStub } from './connection'
+import { ServiceStub, WsConnection } from './connection'
 import { convertToPrice, Price, RawPrice, TradeUpdate } from './domain'
 import logger from './logger'
-import WsConnection from 'connection/WsConnection'
 
 function getPriceMovementType(prevItem: Price, newItem: Price) {
   const prevPriceMove = prevItem.lastMove

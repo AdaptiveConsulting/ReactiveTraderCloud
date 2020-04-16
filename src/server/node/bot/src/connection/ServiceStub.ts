@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import { map, tap } from 'rxjs/operators'
-import WsConnection from './WsConnection'
+import { WsConnection } from './WsConnection'
 
 const LOG_NAME = 'Connection:'
 

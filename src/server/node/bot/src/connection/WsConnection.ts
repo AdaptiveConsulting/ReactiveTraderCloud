@@ -1,10 +1,12 @@
 import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
 import StompConfig from './StompConfig'
 
+Object.assign(global, { WebSocket: require('ws') })
+
 /**
  * BrokerProxy: makes the broker connection api more explicit, aids testing
  */
-export default class WsConnection {
+export class WsConnection {
   public config: StompConfig
   public rpcEndpoint: RxStompRPC
   public streamEndpoint: RxStomp

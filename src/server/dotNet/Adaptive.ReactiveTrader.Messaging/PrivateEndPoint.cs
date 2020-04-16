@@ -36,8 +36,6 @@ namespace Adaptive.ReactiveTrader.Messaging
                 props.CorrelationId = _correlationId;
                 props.ReplyTo = _topic;
                 _channel.BasicPublish(string.Empty, _topic, true, props, body);
-
-                Log.Debug("Publish message to queue {topic} with correlationId {correlationId}", _topic, _correlationId);
             }
             catch (Exception e)
             {
