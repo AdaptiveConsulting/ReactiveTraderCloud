@@ -34,7 +34,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
 
   const lastRemainingService = useMemo(() => {
     const numberOfVisibleService = [blotter.visible, analytics.visible, liveRates.visible].filter(
-      visible => visible === true,
+      (visible) => visible === true,
     ).length
 
     return numberOfVisibleService === 1
@@ -61,6 +61,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
         </BlotterWrapper>
       )}
       disabled={!blotter.visible}
+      isLiveRatesVisible={liveRates.visible}
     >
       <TearOff
         id="liveRates"
