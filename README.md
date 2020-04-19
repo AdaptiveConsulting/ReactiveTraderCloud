@@ -120,6 +120,7 @@ Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full 
 
 ## CI/CD
 We practice continuous integration and deployment. Every merge to master causes a build and deployment to our [development environment](https://web-dev.adaptivecluster.com) to occur as follows:
+
 ![image](docs/CICD.jpg)
 
 ## Contributing
