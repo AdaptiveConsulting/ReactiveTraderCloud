@@ -1,6 +1,6 @@
 
 # Architecture
-![image](../docs/architecture.JPG)
+![image](../docs/architecture.jpg)
 
 Taken from: https://weareadaptive.com/wp-content/uploads/2018/06/Real-Time-Streaming-UIs.pdf
 
