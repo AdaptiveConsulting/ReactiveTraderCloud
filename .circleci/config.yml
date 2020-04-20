@@ -42,7 +42,7 @@ commands:
     steps:
       - run:
           name: Build Images
-          command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
+          command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build --parallel
 
   setup_initial_currency_data:
     steps:
