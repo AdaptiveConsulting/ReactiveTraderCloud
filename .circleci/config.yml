@@ -22,7 +22,7 @@ jobs:
             echo "export DOCKER_USER=${DOCKER_USER:-adaptive}" >> $BASH_ENV
       - run:
           name: Build images
-          command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
+          command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build --parallel
     
 
 # references:
