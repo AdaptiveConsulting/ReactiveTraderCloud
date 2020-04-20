@@ -10,10 +10,10 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - run:
-        name: Default docker user
-        command: |
-          # For fork PRs set the docker user to adaptive
-          echo "export DOCKER_USER=${DOCKER_USER:-adaptive}" >> $BASH_ENV
+          name: Default docker user
+          command: |
+            # For fork PRs set the docker user to adaptive
+            echo "export DOCKER_USER=${DOCKER_USER:-adaptive}" >> $BASH_ENV
       - run:
           name: Set build version
           command: |
