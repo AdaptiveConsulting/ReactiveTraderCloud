@@ -1,7 +1,7 @@
 version: '3'
 services:
   eventstore:
-    container_name: eventstore_base
+    container_name: eventstore
     image: ${DOCKER_USER}/eventstore:${BUILD_VERSION}
     build:
       dockerfile: Dockerfile
@@ -13,6 +13,11 @@ services:
       context: ./services/broker
     ports:
       - '8000:8000'
+  dotnetbase:
+    image: ${DOCKER_USER}/dotnetbase:${BUILD_VERSION}
+    build:
+      dockerfile: Dockerfile
+      context: ./server/dotNet
   servers:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     build:
@@ -44,11 +49,6 @@ services:
         - REACT_APP_BUILD_VERSION=${BUILD_VERSION}
     depends_on:
       - servers
-  e2ebase:
-    image: ${DOCKER_USER}/e2ebase:${BUILD_VERSION}
-    build:
-      dockerfile: Dockerfile
-      context: ./e2e
   analytics:
     image: ${DOCKER_USER}/analytics:${BUILD_VERSION}
     build:
