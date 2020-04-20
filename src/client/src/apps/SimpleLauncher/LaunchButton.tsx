@@ -19,8 +19,9 @@ const StyledButton = styled.button<{ fill?: string; active?: boolean }>`
   &:hover {
     height: 45px;
     background-color: ${({ fill }) => fill};
-    justify-content: start;
-    padding-top: 8px;
+    justify-content: ${({ title }) => (title === 'Search ecosystem' ? 'center' : 'start')};
+    padding-top: ${({ title }) =>
+      title === 'Search ecosystem' ? '0' : title === 'Launch Excel' ? '2.5px' : '6px'};
   }
 `
 
