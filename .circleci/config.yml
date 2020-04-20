@@ -5,10 +5,11 @@ jobs:
     # docker: 
     #   - image: circleci/node:latest
     machine: # executor type
-      image: ubuntu-1604:201903-01
-      steps:
-        - checkout # check out the code in the project directory
-        - run: echo "hello world" # run the `echo` command
+      - image: ubuntu-1604:201903-01
+      
+    steps:
+      - checkout # check out the code in the project directory
+      - run: echo "hello world" # run the `echo` command
 
 # references:
 #   push_images_list: &push_images_list
