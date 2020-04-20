@@ -6,6 +6,7 @@ export interface Col {
   id: String
   align?: 'center' | 'right'
   formatter?: (value: any) => void
+  fixedWidth?: boolean
 }
 interface ResultsTableProps {
   cols: Col[]
@@ -33,7 +34,7 @@ export const ResultsTable: FC<ResultsTableProps> = ({ cols, rows }) => {
                   const value = row[col.id]
                   const formattedValue = col.formatter ? col.formatter(value) : value
                   return (
-                    <TableCell align={col.align} key={cellIndex}>
+                    <TableCell align={col.align} key={cellIndex} fixedWidth={col.fixedWidth}>
                       {formattedValue}
                     </TableCell>
                   )
