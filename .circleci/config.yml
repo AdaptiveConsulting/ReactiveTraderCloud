@@ -23,7 +23,7 @@ jobs:
       - run:
           name: Build images
           command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build --parallel
-       - run:
+      - run:
           name: List images
           command: docker images
       - run:
