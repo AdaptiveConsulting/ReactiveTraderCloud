@@ -23,7 +23,21 @@ jobs:
       - run:
           name: Build images
           command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build --parallel
-    
+       - run:
+          name: List images
+          command: docker images
+      - run:
+          name: Set up test data
+          command: |
+            # The eventstore should have a clean set of data, which is populated via the servers
+            docker-compose -f src/docker-compose.yml run servers
+            docker commit eventstore ${DOCKER_USER}/eventstore:${BUILD_VERSION}
+      - run:
+          name: Run integration tests
+          command: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
+      - run:
+          name: Run end-to-end tests
+          command: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run e2e
 
 # references:
 #   push_images_list: &push_images_list
