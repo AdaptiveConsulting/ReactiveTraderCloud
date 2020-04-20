@@ -26,10 +26,6 @@ services:
     depends_on:
       - broker
       - eventstore
-      - referencedataread
-      - pricing
-      - blotter
-      - tradeexecution
     command: dotnet ./Adaptive.ReactiveTrader.Server.Launcher.dll config.prod.json --populate-eventstore
   nginx:
     image: ${DOCKER_USER}/nginx:${BUILD_VERSION}
