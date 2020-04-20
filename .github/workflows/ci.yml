@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Fetch tags
+        run: git fetch origin +refs/tags/*:refs/tags/*
+
+      - name: Get build version
+        run: echo ::set-env name=GIT_VERSION::$(git describe)
+
+      - name: Print build version
+        run: echo $GIT_VERSION
+
+      # - name: Setup node
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: '12.x'
+
+      # - name: Test client code
+      #   working-directory: src/client
+      #   run: |
+      #     npm install
+      #     npm run test -- --coverage
+
+      - name: Build Docker images
+        run: docker-compose -f ./src/docker-compose.yml build --parallel
+        env:
+          BUILD_VERSION: ${{ env.GIT_VERSION }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+
+      - name: Set up test data
+        run: |
+          # The eventstore should be initialised with a clean set of data
+          docker-compose -f src/docker-compose.yml run initialise
+          docker commit eventstore ${DOCKER_USER}/eventstore:${BUILD_VERSION}
+        env:
+          BUILD_VERSION: ${{ env.GIT_VERSION }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+
+      - name: Run integration tests
+        run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
+        env:
+          BUILD_VERSION: ${{ env.GIT_VERSION }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+
+      - name: Run end-to-end tests
+        run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run e2e
+        env:
+          BUILD_VERSION: ${{ env.GIT_VERSION }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+
+      - name: Push Docker images
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker-compose -f src/docker-compose.yml -f push
+        env:
+          DOCKER_USER: ${DOCKER_USER}
+          DOCKER_PASS: ${DOCKER_PASS}
