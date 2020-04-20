@@ -8,14 +8,22 @@ jobs:
       image: ubuntu-1604:201903-01
 
     steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+      - checkout
       - run:
           name: Set build version
           command: |
             GIT_VERSION="$(git describe)"
             echo "Build version based on git describe: $GIT_VERSION"
             echo "export BUILD_VERSION=$GIT_VERSION" >> $BASH_ENV
+      - run:
+          name: Default docker user
+          command: |
+            # For fork PRs set the docker user to adaptive
+            echo "export DOCKER_USER=${DOCKER_USER:-adaptive}" >> $BASH_ENV
+      - run:
+          name: Build images
+          command: docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose.deploy.yml build
+    
 
 # references:
 #   push_images_list: &push_images_list
