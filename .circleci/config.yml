@@ -161,8 +161,10 @@ jobs:
           images: *push_images_list
 
   feature_build:
-    docker:
-      - image: circleci/node:latest
+    # docker:
+    #   - image: circleci/node:latest
+    build:
+      machine: true
     steps:
       - main_pipeline:
           environment: none
