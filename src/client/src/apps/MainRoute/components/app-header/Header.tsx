@@ -19,16 +19,13 @@ const Header: React.FC = ({ children }) => {
   return (
     <Root>
       <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
-      <Fill>Reactive Trader</Fill>
+      <Fill>
+        <TitleContainer>Reactive Trader</TitleContainer>
+      </Fill>
       <LoginControls />
       <ThemeSwitcher />
 
-      {children == null ? null : (
-        <React.Fragment>
-          <Division />
-          {children}
-        </React.Fragment>
-      )}
+      {children == null ? null : <React.Fragment>{children}</React.Fragment>}
     </Root>
   )
 }
@@ -73,22 +70,16 @@ const Fill = styled.div`
   cursor: -webkit-grab;
 `
 
-const Division = styled.div`
-  height: 100%;
-  padding: 0 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &::before {
-    content: '';
-    display: block;
-    width: 0.125rem;
-    height: 100%;
-    margin-right: -0.125rem;
-    background-color: ${props => props.theme.secondary.base};
-  }
+const TitleContainer = styled.div`
+  position: absolute;
+  top: 20px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  width: 100%;
+  font-size: 0.625rem;
+  font-weight: normal;
 `
 
 export default Header
