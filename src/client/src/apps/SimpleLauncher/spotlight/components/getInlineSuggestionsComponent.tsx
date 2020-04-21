@@ -8,6 +8,7 @@ import {
   handleIntent,
   isSpotQuoteIntent,
   isTradeIntent,
+  isMarketIntent,
   mapIntent,
 } from 'rt-interop'
 import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from 'apps/MainRoute'
@@ -50,7 +51,9 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
     </Suggestion>
   ) : null
 
-  const otherSuggestion = !quoteSuggestion && !blotterSuggestion && (
+  const marketSuggestion = isMarketIntent(response) ? <Suggestion>{intent}</Suggestion> : null
+
+  const otherSuggestion = !quoteSuggestion && !blotterSuggestion && !isMarketIntent && (
     <Suggestion>
       <Intent>{intent}</Intent>
     </Suggestion>
@@ -80,6 +83,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
       </IntentActions>
       {quoteSuggestion}
       {blotterSuggestion}
+      {marketSuggestion}
       {otherSuggestion}
     </IntentWrapper>
   )

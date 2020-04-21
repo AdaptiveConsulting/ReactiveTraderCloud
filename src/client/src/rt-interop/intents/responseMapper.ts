@@ -29,3 +29,7 @@ export const isSpotQuoteIntent = (response: DetectIntentResponse) => {
 export const isTradeIntent = (response: DetectIntentResponse) => {
   return response && response.queryResult.intent.displayName === TRADES_INFO_INTENT
 }
+
+export const isMarketIntent = (response: DetectIntentResponse) => {
+  return response && response.queryResult.intent.displayName === MARKET_INFO_INTENT
+}
