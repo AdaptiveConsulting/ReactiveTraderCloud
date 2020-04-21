@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [build]
 
+env:
+    DOCKER_USER: ${{ secrets.DOCKER_USER }}
+    DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,7 +44,6 @@ jobs:
         run: docker-compose -f ./src/docker-compose.yml build --parallel
         env:
           BUILD_VERSION: ${{ env.GIT_VERSION }}
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
 
       - name: Set up test data
         run: |
@@ -49,25 +52,59 @@ jobs:
           docker commit eventstore ${DOCKER_USER}/eventstore:${BUILD_VERSION}
         env:
           BUILD_VERSION: ${{ env.GIT_VERSION }}
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
 
       - name: Run integration tests
         run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
         env:
           BUILD_VERSION: ${{ env.GIT_VERSION }}
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
 
       - name: Run end-to-end tests
         run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run e2e
         env:
           BUILD_VERSION: ${{ env.GIT_VERSION }}
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
 
       - name: Push Docker images
         if: github.ref == 'refs/heads/master'
         run: |
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
           docker-compose -f src/docker-compose.yml -f push
+
+  deploy:
+    runs-on: ubuntu-latest
+    
+    needs: build
+    
+    #if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Fetch tags
+        run: git fetch origin +refs/tags/*:refs/tags/*
+
+      - name: Get build version
+        run: echo ::set-env name=GIT_VERSION::$(git describe)
+
+      - name: Print build version
+        run: echo $GIT_VERSION
+
+      - name: Downscale GCP deployments
+        uses: ameydev/gke-kubectl-action@master
         env:
-          DOCKER_USER: ${DOCKER_USER}
-          DOCKER_PASS: ${DOCKER_PASS}
+          PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_SERVICE_KEY }}
+          ZONE_NAME: us-central1-c
+        with:
+          args: scale deploy --replicas=0 --all -n dev
+
+      - name: Upscale GCP deployments
+        uses: ameydev/gke-kubectl-action@master
+        env:
+          PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_SERVICE_KEY }}
+          ZONE_NAME: us-central1-c
+        with:
+          args: scale deploy --replicas=1 --all -n dev
