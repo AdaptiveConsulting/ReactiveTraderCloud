@@ -1,11 +1,36 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
 import { currencyFormatter } from 'rt-util'
 import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
+import { GlueProvider, GlueContext } from "@glue42/react-hooks";
+
+const CoreApp = (props: any) => {
+  const glue = useContext(GlueContext);
+  console.log(glue, props)
+  return (
+    <div>
+      hi this is clue 42 core
+      <button onClick={() => glue.windows.open('Test', 'http://localhost:3000/analytics')}>open</button>
+    </div>
+  )
+}
+
+const Core = () => {
+  return (
+    <GlueProvider fallback={<h2>Loading G42 Core...</h2>}>
+      <CoreApp />
+    </GlueProvider>
+  )
+}
+
 
 export const Router: FC = () => (
   <Switch>
+    <Route
+      path="/core"
+      render={() => <Core />}
+    />
     <Route
       path="/analytics"
       render={() => (

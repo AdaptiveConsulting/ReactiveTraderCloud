@@ -1,9 +1,9 @@
 import ReactGA from 'react-ga'
-import Glue, { Glue42 as GlueInterface } from '@glue42/desktop'
-import Glue4Office, { Glue42Office as Glue42OfficeInterface } from '@glue42/office'
+// import Glue, { Glue42 as GlueInterface } from '@glue42/desktop'
+import GlueWeb from '@glue42/web'
 import { WindowConfig } from '../types'
 import { Platform } from '../platform'
-import { openGlueWindow, registerWindowMethods } from './window'
+import { registerWindowMethods } from './window'
 import { sendNotification, NotifyPermission } from './utils/sendNotification'
 import DefaultRoute from 'rt-platforms/defaultRoute'
 import { ApplicationEpic } from 'StoreTypes'
@@ -13,23 +13,19 @@ import { GlueHeader, GlueLogoLink } from './'
  * Glue implementation of the base platform adapter.
  * Glue4Office is an optional library for working with excel.
  */
-export class Glue42 implements Platform {
+export class Glue42Core implements Platform {
   allowTearOff = true
-  readonly name = 'glue'
-  readonly type = 'desktop'
+  readonly name = 'glue-core'
+  readonly type = 'browser'
   style = {
     height: '100%',
   }
 
   constructor() {
-    Glue({ channels: true })
-      .then((glue: GlueInterface.Glue) => {
+    GlueWeb()
+      .then((glue: any) => {
         window.glue = glue
         registerWindowMethods()
-        return Glue4Office()
-      })
-      .then((glue4office: Glue42OfficeInterface.Glue4Office) => {
-        window.glue4office = glue4office
       })
       .catch((err: any) => {
         console.error(err)
@@ -52,7 +48,11 @@ export class Glue42 implements Platform {
         action: 'open',
         label: config.name,
       })
-      return openGlueWindow(config, onClose)
+      console.log(config)
+      return window.glue.windows.open(config.name, config.url).then((window: any) => {
+        Promise.resolve(window)
+      })
+      // return openGlueWindow(config, onClose)
     },
 
     /**

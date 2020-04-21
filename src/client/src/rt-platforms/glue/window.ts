@@ -55,7 +55,7 @@ export const registerWindowMethods = () => {
 
   window.glue.interop.register('openWorkspace', (args: { symbol: string }) => {
     // canvas typings are currently external
-    ;(window.glue42gd as GDObject & {
+    ; (window.glue42gd as GDObject & {
       canvas: CanvasAPI
     }).canvas.openWorkspace('Reactive Trader Workspace', { context: args })
   })
@@ -103,7 +103,7 @@ export const openGlueWindow = async (config: BrowserWindowProps, onClose?: () =>
   }
 
   if (win) {
-    if (onClose) {
+    if (onClose && win.onClose) {
       win.onClose(onClose)
     }
     if (isTabWindow) {

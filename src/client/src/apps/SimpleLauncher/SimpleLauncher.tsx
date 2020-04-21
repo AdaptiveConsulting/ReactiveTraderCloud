@@ -32,7 +32,7 @@ export const SimpleLauncher: React.FC = () => {
   const intentsProvider = getProvider()
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const serviceStub = createServiceStub(autobahn)
       const platformResult = await getPlatformAsync()
 

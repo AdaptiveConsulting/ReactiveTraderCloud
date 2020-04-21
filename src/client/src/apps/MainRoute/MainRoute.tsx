@@ -55,7 +55,7 @@ const MainRoute = () => {
   if (!store || !platform) {
     return <></>
   }
-
+  console.log(platform)
   return (
     <React.Fragment>
       <Helmet>

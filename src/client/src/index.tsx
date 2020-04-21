@@ -40,6 +40,10 @@ const appTitles = {
   [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader',
 }
 
+
+
+
+
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
 
@@ -51,6 +55,8 @@ async function init() {
     dimension3: env,
     page: window.location.pathname,
   })
+
+  console.log(window.location)
 
   if (urlParams.has('startAsSymphonyController')) {
     const { initiateSymphony } = await getSymphonyPlatform()
