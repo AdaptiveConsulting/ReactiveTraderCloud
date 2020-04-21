@@ -91,7 +91,7 @@ jobs:
       - name: Print build version
         run: echo $GIT_VERSION
 
-      - name: Authenticate with Google Cloud
+      - name: Set up Google Cloud
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '285.0.0'
@@ -109,12 +109,3 @@ jobs:
 
       - name: Upscale GKE deployments
         run: kubectl scale deploy --replicas=1 --all -n dev
-
-      # - name: Upscale GCP deployments
-      #   uses: ameydev/gke-kubectl-action@master
-      #   env:
-      #     PROJECT_ID: ${{ secrets.GOOGLE_PROJECT_ID }}
-      #     APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_SERVICE_KEY }}
-      #     ZONE_NAME: us-central1-c
-      #   with:
-      #     args: scale deploy --replicas=1 --all -n dev
