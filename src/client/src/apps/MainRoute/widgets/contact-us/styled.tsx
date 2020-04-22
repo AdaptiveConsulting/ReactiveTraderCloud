@@ -34,6 +34,9 @@ export const LogoWrapper = styled.div`
   padding: 1rem 0.5rem 0 0.5rem;
 `
 
-export const Link = styled.a`
+export const Link = styled.span`
   color: ${({ theme }) => theme.accents.primary.lighter};
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 1rem;
 `
