@@ -4,9 +4,10 @@ import { styled } from 'rt-theme'
 interface Props extends SVGAttributes<Element> {
   fill?: string
   size?: number
+  active?: boolean
 }
 
-const MailLogo: React.FC<Props> = ({ fill = '#000', size = 2, style, ...props }) => {
+const MailLogo: React.FC<Props> = ({ fill = '#000', size = 2, style, active, ...props }) => {
   return (
     <svg
       height={size + 'rem'}
@@ -27,7 +28,7 @@ const MailLogo: React.FC<Props> = ({ fill = '#000', size = 2, style, ...props })
 
 export default styled(MailLogo)`
   [fill] {
-    fill: ${(props) => props.theme.core.textColor};
+    fill: ${(props) => (props.active ? props.theme.accents.primary.base : props.theme.textColor)};
   }
   margin-right: 0.3rem;
 `

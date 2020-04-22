@@ -16,7 +16,7 @@ const ContactUsButton: React.FC = () => {
   return (
     <Root>
       <Button onClick={toggleOpen} data-qa="contact-us-button" margin={'0 0.7rem 0 0'}>
-        <MailLogo size={1} />
+        <MailLogo size={1} active={isOpen} />
         Get in touch
       </Button>
 
