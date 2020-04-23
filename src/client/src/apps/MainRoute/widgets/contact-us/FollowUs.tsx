@@ -33,7 +33,7 @@ const FollowUs: React.FC = () => {
         <span>Twitter</span>
         <Link
           onClick={onClick(
-            { category: 'RT - Social', action: 'click', label: 'LinkedIn (url)' },
+            { category: 'RT - Social', action: 'click', label: 'Twitter (url)' },
             TWITTER_URL,
           )}
         >
