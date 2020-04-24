@@ -15,10 +15,7 @@ export const referenceServiceEpic: ApplicationEpic<{
     applicationConnected,
     switchMapTo<ReferenceServiceAction>(
       referenceDataService$.pipe(
-        map((x) => {
-          console.log(x)
-          return createReferenceServiceAction(x)
-        }),
+        map(createReferenceServiceAction),
         takeUntil(action$.pipe(applicationDisconnected)),
       ),
     ),

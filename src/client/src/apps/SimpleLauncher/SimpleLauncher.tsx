@@ -56,7 +56,7 @@ export const SimpleLauncher: React.FC = () => {
       })
     })()
   }, [])
-  console.log(dependencies)
+
   if (!dependencies) {
     return <></>
   }
