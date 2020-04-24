@@ -16,3 +16,6 @@ export const TradeUpdatesContext = React.createContext<Observable<TradesUpdate> 
   undefined,
 )
 export const { Provider: TradeUpdatesProvider } = TradeUpdatesContext
+
+export const ReferenceDataContext = React.createContext<Observable<any> | undefined>(undefined)
+export const { Provider: ReferenceDataProvider } = ReferenceDataContext

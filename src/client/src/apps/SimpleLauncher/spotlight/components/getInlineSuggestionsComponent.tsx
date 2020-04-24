@@ -21,7 +21,8 @@ import {
   IntentActionWrapper,
 } from './styles'
 import { InlineBlotter } from './InlineBlotter'
-import { InlineQuote } from './InlineQuote'
+import { InlineQuoteTable } from './InlineQuote'
+import { InlineMarketResults } from './InlineMarketResults'
 import Logo from 'apps/MainRoute/components/app-header/Logo'
 import { appConfigs } from '../../applicationConfigurations'
 import { open } from '../../tools'
@@ -36,7 +37,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
   const quoteSuggestion =
     isSpotQuoteIntent(response) && currencyPair ? (
       <Suggestion>
-        <InlineQuote currencyPair={currencyPair} />
+        <InlineQuoteTable currencyPair={currencyPair} />
       </Suggestion>
     ) : null
 
@@ -51,7 +52,11 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
     </Suggestion>
   ) : null
 
-  const marketSuggestion = isMarketIntent(response) ? <Suggestion>{intent}</Suggestion> : null
+  const marketSuggestion = isMarketIntent(response) ? (
+    <Suggestion>
+      <InlineMarketResults />
+    </Suggestion>
+  ) : null
 
   const otherSuggestion = !quoteSuggestion && !blotterSuggestion && !isMarketIntent && (
     <Suggestion>

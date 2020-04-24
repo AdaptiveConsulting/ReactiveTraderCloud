@@ -14,6 +14,9 @@ import {
   TradeUpdatesProvider,
 } from './spotlight'
 
+import { ReferenceDataProvider } from './spotlight/context'
+import { referenceDataService } from 'apps/MainRoute/data/referenceData/referenceDataService'
+
 const autobahn = new AutobahnConnectionProxy(
   process.env.REACT_APP_BROKER_HOST || location.hostname,
   'com.weareadaptive.reactivetrader',
@@ -25,6 +28,7 @@ type Dependencies = {
   pricingService: PricingService
   tradeUpdatesStream: Observable<TradesUpdate>
   serviceStub: ServiceStubWithLoadBalancer
+  referenceData: any
 }
 
 export const SimpleLauncher: React.FC = () => {
@@ -40,6 +44,7 @@ export const SimpleLauncher: React.FC = () => {
       const blotterService = new BlotterService(serviceStub)
       const blotterUpdates$ = blotterService.getTradesStream()
       const tradesUpdates$ = new ReplaySubject<TradesUpdate>()
+      const referenceDataService$ = referenceDataService(serviceStub)
       blotterUpdates$.subscribe(tradesUpdates$)
 
       setDependencies({
@@ -47,15 +52,16 @@ export const SimpleLauncher: React.FC = () => {
         tradeUpdatesStream: tradesUpdates$,
         serviceStub,
         platform: platformResult,
+        referenceData: referenceDataService$,
       })
     })()
   }, [])
-
+  console.log(dependencies)
   if (!dependencies) {
     return <></>
   }
 
-  const { platform, pricingService, serviceStub, tradeUpdatesStream } = dependencies
+  const { platform, pricingService, serviceStub, tradeUpdatesStream, referenceData } = dependencies
 
   if (!platform || !serviceStub) {
     return <></>
@@ -67,9 +73,11 @@ export const SimpleLauncher: React.FC = () => {
         <ServiceStubProvider value={serviceStub}>
           <TradeUpdatesProvider value={tradeUpdatesStream}>
             <PricingServiceProvider value={pricingService}>
-              <PlatformProvider value={platform}>
-                <Launcher />
-              </PlatformProvider>
+              <ReferenceDataProvider value={referenceData}>
+                <PlatformProvider value={platform}>
+                  <Launcher />
+                </PlatformProvider>
+              </ReferenceDataProvider>
             </PricingServiceProvider>
           </TradeUpdatesProvider>
         </ServiceStubProvider>

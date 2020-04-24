@@ -8,16 +8,17 @@ import { CurrencyPairMap } from 'rt-types'
 const { createReferenceServiceAction } = ReferenceActions
 type ReferenceServiceAction = ReturnType<typeof createReferenceServiceAction>
 
-export const referenceServiceEpic: ApplicationEpic<{ referenceDataService$: Observable<CurrencyPairMap> }> = (
-  action$,
-  _,
-  { referenceDataService$ },
-) =>
+export const referenceServiceEpic: ApplicationEpic<{
+  referenceDataService$: Observable<CurrencyPairMap>
+}> = (action$, _, { referenceDataService$ }) =>
   action$.pipe(
     applicationConnected,
     switchMapTo<ReferenceServiceAction>(
       referenceDataService$.pipe(
-        map(createReferenceServiceAction),
+        map((x) => {
+          console.log(x)
+          return createReferenceServiceAction(x)
+        }),
         takeUntil(action$.pipe(applicationDisconnected)),
       ),
     ),
