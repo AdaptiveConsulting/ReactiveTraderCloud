@@ -7,7 +7,7 @@ import { ServiceConnectionStatus } from 'rt-types'
 
 const buttonHeight = '2rem'
 
-export const Button = styled.div`
+export const Button = styled.div<{ margin?: string }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 15rem;
   user-select: none;
@@ -19,6 +19,7 @@ export const Button = styled.div`
   height: 1.6rem;
   font-size: 0.65rem;
   font-weight: 350;
+  margin: ${({ margin }) => (margin ? margin : 'unset')};
 `
 
 const StatusCircleCore: FunctionComponent<{ className?: string }> = ({ className }) => {
@@ -62,7 +63,7 @@ export const Root = styled.div`
 
   font-size: 0.75rem;
 
-  color: ${props => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
 `
 
 export const ServiceListPopup = styled(Popup)`
@@ -98,7 +99,7 @@ export const ServiceRoot = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  color: ${props => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
 `
 
 export const ServiceList = styled.div`
