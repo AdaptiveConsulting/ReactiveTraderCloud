@@ -49,7 +49,7 @@ jobs:
         run: |
           # The eventstore should be initialised with a clean set of data
           docker-compose -f src/docker-compose.yml run initialise
-          docker commit eventstore ${DOCKER_USER}/eventstore:${BUILD_VERSION}
+          docker commit eventstore_base ${DOCKER_USER}/eventstore:${BUILD_VERSION}
         env:
           BUILD_VERSION: ${{ env.GIT_VERSION }}
 
@@ -72,9 +72,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     
-    # needs: build
+    needs: build
     
-    # if: github.event_name == 'push'
+    if: github.event_name == 'push'
 
     steps:
       - name: Checkout code
@@ -107,5 +107,10 @@ jobs:
       - name: Downscale GKE deployments
         run: kubectl scale deploy --replicas=0 --all -n dev
 
-      - name: Upscale GKE deployments
-        run: kubectl scale deploy --replicas=1 --all -n dev
+      - name: Update GKE deployment definitions to new images
+        run: |
+            # TODO: create new environment automatically
+            # Update/create each deployment file in src/services/kubernetes
+            for f in ./src/services/kubernetes/*-deployment.yaml; do
+                cat $f | /usr/bin/envsubst | kubectl --namespace=dev apply -f -
+            done
