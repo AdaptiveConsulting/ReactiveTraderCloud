@@ -77,7 +77,7 @@ const TitleContainer = styled.div`
   left: 0;
   right: 0;
   text-align: center;
-  width: 100%;
+  width: 80%;
   font-size: 0.625rem;
   font-weight: normal;
 `

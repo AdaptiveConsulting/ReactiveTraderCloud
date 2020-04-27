@@ -11,6 +11,7 @@ import ReconnectModal from '../components/reconnect-modal'
 import { analyticsSelector, blotterSelector, liveRatesSelector, DefaultLayout } from '../layouts'
 import { BlotterWrapper, AnalyticsWrapper, OverflowScroll, WorkspaceWrapper } from './styled'
 import UsersModal from '../components/users-modal'
+import ContactUsButton from '../widgets/contact-us'
 
 interface Props {
   header?: React.ReactChild
@@ -103,6 +104,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
 
   const footer = (
     <StatusBar>
+      <ContactUsButton />
       <StatusButton />
     </StatusBar>
   )
