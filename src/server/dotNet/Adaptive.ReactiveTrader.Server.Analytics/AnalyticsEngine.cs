@@ -116,8 +116,7 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
 
         private CurrencyPairTracker GetTrackerFor(string currencyPair)
         {
-            CurrencyPairTracker currencyPairTracker;
-            if (!_ccyPairTracker.TryGetValue(currencyPair, out currencyPairTracker))
+            if (!_ccyPairTracker.TryGetValue(currencyPair, out CurrencyPairTracker currencyPairTracker))
             {
                 currencyPairTracker = new CurrencyPairTracker(currencyPair);
                 _ccyPairTracker.Add(currencyPair, currencyPairTracker);
