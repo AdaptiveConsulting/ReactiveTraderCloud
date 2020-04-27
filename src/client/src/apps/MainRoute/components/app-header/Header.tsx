@@ -43,7 +43,7 @@ const Root = styled.div`
   align-items: center;
 
   background-color: ${({ theme }) => theme.core.darkBackground};
-  border-bottom: 1px solid ${({ theme }) => theme.core.lightBackground};
+  border-bottom: 1px solid ${({ theme }) => theme.core.dividerColor};
   color: ${({ theme }) => theme.core.textColor};
 
   position: relative;

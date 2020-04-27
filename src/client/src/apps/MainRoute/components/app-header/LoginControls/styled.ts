@@ -1,5 +1,4 @@
 import { styled } from 'rt-theme'
-import { dark } from 'rt-theme/colors'
 
 interface DropdownMenuProps {
   showMenu: boolean
@@ -50,8 +49,9 @@ export const UserContainer = styled(Button)`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border-right: 2px solid
-    ${({ theme }) => (theme.name === 'dark' ? theme.core.lightBackground : dark.secondary[4])};
+  border-right: 1px solid ${({ theme }) => theme.core.dividerColor};
+  border-radius: 0;
+  height: 24px;
 `
 
 export const UserAvatar = styled.img`
