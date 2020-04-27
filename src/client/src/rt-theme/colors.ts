@@ -107,6 +107,7 @@ interface SemanticColors {
   backgroundHoverColor: Color
   primaryStyleGuideBackground: Color
   secondaryStyleGuideBackground: Color
+  dividerColor: Color
 }
 
 export interface CorePaletteMap {
@@ -123,6 +124,7 @@ const darkPrimary = {
   3: rgb(83, 87, 96),
   4: rgb(104, 109, 116),
   5: rgb(126, 129, 136),
+  6: rgb(52, 58, 71),
 }
 
 const darkSecondary = {
@@ -146,6 +148,7 @@ export const dark: CorePaletteMap = {
     backgroundHoverColor: darkPrimary[2],
     primaryStyleGuideBackground: rgb(32, 36, 45),
     secondaryStyleGuideBackground: rgb(40, 45, 57),
+    dividerColor: darkPrimary[6],
   },
 }
 
@@ -161,6 +164,7 @@ export const light: CorePaletteMap = {
     backgroundHoverColor: darkSecondary[1],
     primaryStyleGuideBackground: rgb(253, 253, 253),
     secondaryStyleGuideBackground: rgb(243, 243, 243),
+    dividerColor: darkSecondary[3],
   },
 }
 
