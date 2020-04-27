@@ -15,8 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+      DOCKER_USER: reactivetradercloud
 
     steps:
       - name: Checkout code
@@ -47,8 +46,11 @@ jobs:
 
       - name: Push Docker images
         if: github.event_name == 'push'
+        env:
+            DOCKER_LOGIN: ${{ secrets.DOCKER_USER }}
+            DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
         run: |
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          echo $DOCKER_PASS | docker login -u $DOCKER_LOGIN --password-stdin
           docker-compose -f src/docker-compose.yml push
 
       - name: Set deployment environment (dev)
