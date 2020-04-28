@@ -1,9 +1,9 @@
 const urlParams = new URLSearchParams(window.location.search)
 
-const isFinsemble = 'FSBL' in window
-const isOpenFin = 'fin' in window
-const isGlue42 = 'glue42gd' in window
-const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYMPHONY'
+export const isFinsemble = 'FSBL' in window
+export const isOpenFin = 'fin' in window
+export const isGlue42 = 'glue42gd' in window
+export const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYMPHONY'
 
 export const getSymphonyPlatform = () => import(/* webpackChunkName: "symphony" */ './symphony')
 

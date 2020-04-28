@@ -4,6 +4,9 @@ import { styled } from 'rt-theme'
 import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'
+import { isFinsemble, isOpenFin, isGlue42, isSymphony } from 'rt-platforms/getPlatformAsync'
+
+const isBrowser = !isFinsemble && !isOpenFin && !isGlue42 && !isSymphony
 
 const Header: React.FC = ({ children }) => {
   const onLogoClick = useCallback(() => {
@@ -19,9 +22,7 @@ const Header: React.FC = ({ children }) => {
   return (
     <Root>
       <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
-      <Fill>
-        <TitleContainer>Reactive Trader</TitleContainer>
-      </Fill>
+      <Fill>{isBrowser ? null : <TitleContainer>Reactive Trader</TitleContainer>}</Fill>
       <LoginControls />
       <ThemeSwitcher />
 
