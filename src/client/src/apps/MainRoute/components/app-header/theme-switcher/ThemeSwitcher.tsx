@@ -5,7 +5,7 @@ import { withTheme } from 'styled-components'
 import DarkThemeIcon from './DarkThemeIcon'
 import LightThemeIcon from './LightThemeIcon'
 
-export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
+export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> { }
 const iconSize = 18
 
 const SwitcherContainer = styled.div`
@@ -29,10 +29,27 @@ const ThemeStorageSwitch: React.FC<ThemeStorageSwitchProps & { theme: Theme }> =
   const [hover, setHover] = useState<boolean>(false)
   const { themeName, toggleTheme } = useTheme()
   const isDarkTheme = themeName === ThemeName.Dark
+  const isTouchDevice = 'ontouchstart' in document.documentElement;
   const Icon = isDarkTheme ? DarkThemeIcon : LightThemeIcon
 
+  const handleTouchThemeSwitch = () => {
+    setHover(true);
+    setTimeout(() => {
+      toggleTheme();
+    }, 400)
+    setTimeout(() => {
+      setHover(false);
+    }, 1200)
+  }
+
+  const eventHandlers = {
+    ...(!isTouchDevice && { onMouseEnter: () => setHover(true) }),
+    ...(!isTouchDevice && { onMouseLeave: () => setHover(false) }),
+    ...(isTouchDevice && { onTouchStart: handleTouchThemeSwitch })
+  };
+
   return (
-    <SwitcherContainer onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <SwitcherContainer {...eventHandlers}>
       {hover ? (
         <Switch
           onChange={toggleTheme}
@@ -55,10 +72,10 @@ const ThemeStorageSwitch: React.FC<ThemeStorageSwitchProps & { theme: Theme }> =
           {...props}
         />
       ) : (
-        <IconContainer hover={hover}>
-          <Icon height={iconSize} width={iconSize} />
-        </IconContainer>
-      )}
+          <IconContainer hover={hover}>
+            <Icon height={iconSize} width={iconSize} />
+          </IconContainer>
+        )}
     </SwitcherContainer>
   )
 }
