@@ -5,15 +5,22 @@ services:
     hostname: integration
     container_name: integration
     depends_on:
-      - servers
+      - initialise
+      - analytics
+      - referencedataread
+      - pricing
+      - blotter
+      - tradeexecution
     command: dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll
   e2e:
-    image: ${DOCKER_USER}/e2ebase:${BUILD_VERSION}
+    image: ${DOCKER_USER}/e2e:${BUILD_VERSION}
+    build:
+      dockerfile: Dockerfile
+      context: ./e2e
     hostname: e2e
     container_name: e2e
     command: 'npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx'
     depends_on:
-      - e2ebase
       - client
       - nginx
       - openfinconfig

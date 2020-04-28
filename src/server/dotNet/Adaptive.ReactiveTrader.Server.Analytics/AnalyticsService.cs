@@ -31,5 +31,11 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
         {
             _analyticsEngine.OnPrice(price);
         }
+
+        public void OnReset()
+        {
+            Log.Information("State Of The World reset");
+            _analyticsEngine.Reset();
+        }
     }
 }

@@ -48,6 +48,11 @@ namespace Adaptive.ReactiveTrader.Server.Analytics
                                               .Where(t => t.Status == TradeStatusDto.Done)
                                               .Subscribe(t => _service.OnTrade(t)));
 
+                _subscriptions.Add(_tradeCache.GetTrades()
+                                              .SkipWhile(t => t.IsStale)
+                                              .Where(t => t.IsStale && t.IsStateOfTheWorld && t.Trades.Count == 0)
+                                              .Subscribe(t => _service.OnReset()));
+
                 Log.Information("Subscribed to trades");
             }
         }

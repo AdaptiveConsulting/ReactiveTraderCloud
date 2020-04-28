@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/AdaptiveConsulting/ReactiveTraderCloud/tree/master.svg?style=svg&circle-token=801547883329d22e505634493b58b26fbb742e46)](https://app.circleci.com/pipelines/github/AdaptiveConsulting/ReactiveTraderCloud?branch=master)
+[![CI](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/workflows/CI/badge.svg)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/actions?query=workflow%3ACI)
 
 [![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/adaptive-logo.png)](http://weareadaptive.com/)
 

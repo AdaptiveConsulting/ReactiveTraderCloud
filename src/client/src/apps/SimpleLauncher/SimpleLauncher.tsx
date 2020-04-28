@@ -14,6 +14,9 @@ import {
   TradeUpdatesProvider,
 } from './spotlight'
 
+import { ReferenceDataProvider } from './spotlight/context'
+import { referenceDataService } from 'apps/MainRoute/data/referenceData/referenceDataService'
+
 const broker = new WsConnection(
   process.env.REACT_APP_BROKER_HOST || location.hostname,
   +(process.env.REACT_APP_BROKER_PORT || location.port),
@@ -24,6 +27,7 @@ type Dependencies = {
   pricingService: PricingService
   tradeUpdatesStream: Observable<TradesUpdate>
   serviceClient: ServiceClient
+  referenceData: any
 }
 
 export const SimpleLauncher: React.FC = () => {
@@ -39,6 +43,7 @@ export const SimpleLauncher: React.FC = () => {
       const blotterService = new BlotterService(serviceClient)
       const blotterUpdates$ = blotterService.getTradesStream()
       const tradesUpdates$ = new ReplaySubject<TradesUpdate>()
+      const referenceDataService$ = referenceDataService(serviceClient)
       blotterUpdates$.subscribe(tradesUpdates$)
 
       setDependencies({
@@ -46,6 +51,7 @@ export const SimpleLauncher: React.FC = () => {
         tradeUpdatesStream: tradesUpdates$,
         serviceClient,
         platform: platformResult,
+        referenceData: referenceDataService$,
       })
     })()
   }, [])
@@ -54,7 +60,13 @@ export const SimpleLauncher: React.FC = () => {
     return <></>
   }
 
-  const { platform, pricingService, serviceClient, tradeUpdatesStream } = dependencies
+  const {
+    platform,
+    pricingService,
+    serviceClient,
+    tradeUpdatesStream,
+    referenceData,
+  } = dependencies
 
   if (!platform || !serviceClient) {
     return <></>
@@ -66,9 +78,11 @@ export const SimpleLauncher: React.FC = () => {
         <ServiceStubProvider value={serviceClient}>
           <TradeUpdatesProvider value={tradeUpdatesStream}>
             <PricingServiceProvider value={pricingService}>
-              <PlatformProvider value={platform}>
-                <Launcher />
-              </PlatformProvider>
+              <ReferenceDataProvider value={referenceData}>
+                <PlatformProvider value={platform}>
+                  <Launcher />
+                </PlatformProvider>
+              </ReferenceDataProvider>
             </PricingServiceProvider>
           </TradeUpdatesProvider>
         </ServiceStubProvider>
