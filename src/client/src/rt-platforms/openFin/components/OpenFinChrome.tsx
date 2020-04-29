@@ -20,6 +20,21 @@ export interface ControlProps {
   isBlotterOrTrade?: boolean
 }
 
+const TitleContainer = styled.div`
+  position: absolute;
+  top: 20px;
+  margin-top: 20px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  width: 80%;
+  font-size: 0.625rem;
+  font-weight: normal;
+  z-index: 100;
+  text-transform: uppercase;
+`
+
 export const OpenFinChrome: React.FC = ({ children }) => (
   <React.Fragment>
     <Helmet>
@@ -33,7 +48,10 @@ export const OpenFinChrome: React.FC = ({ children }) => (
         }
     `}</style>
     </Helmet>
-    <Root>{children}</Root>
+    <Root>
+      <TitleContainer>Reactive Trader</TitleContainer>
+      {children}
+    </Root>
   </React.Fragment>
 )
 
@@ -92,7 +110,7 @@ const OpenFinUndockControl: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    isCurrentWindowDocked().then(isDocked => {
+    isCurrentWindowDocked().then((isDocked) => {
       setIsWindowDocked(isDocked)
     })
   }, [])
@@ -121,6 +139,7 @@ const Header = styled.div<{ hasBottomBorder?: boolean }>`
   padding: 0 0.625rem;
   border-bottom: ${({ hasBottomBorder, theme }) =>
     hasBottomBorder ? `1px solid ${theme.primary[1]}` : 0};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 const DragRegion = styled.div`
@@ -164,8 +183,8 @@ const UndockControl = styled(HeaderControl)<{ isWindowDocked: boolean }>`
 `
 
 export const Root = styled.div`
-  background-color: ${props => props.theme.core.darkBackground};
-  color: ${props => props.theme.core.textColor};
+  background-color: ${(props) => props.theme.core.darkBackground};
+  color: ${(props) => props.theme.core.textColor};
 
   height: 100%;
   width: 100%;

@@ -4,10 +4,6 @@ import { styled } from 'rt-theme'
 import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'
-import { isFinsemble, isOpenFin, isGlue42, isSymphony } from 'rt-platforms/getPlatformAsync'
-
-const isBrowser = !isFinsemble && !isOpenFin && !isGlue42 && !isSymphony
-
 const Header: React.FC = ({ children }) => {
   const onLogoClick = useCallback(() => {
     ReactGA.event({
@@ -22,11 +18,12 @@ const Header: React.FC = ({ children }) => {
   return (
     <Root>
       <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
-      <Fill>{isBrowser ? null : <TitleContainer>Reactive Trader</TitleContainer>}</Fill>
-      <LoginControls />
-      <ThemeSwitcher />
-
-      {children == null ? null : <React.Fragment>{children}</React.Fragment>}
+      <Fill />
+      <HeaderNav>
+        <LoginControls />
+        <ThemeSwitcher />
+        {children == null ? null : <React.Fragment>{children}</React.Fragment>}
+      </HeaderNav>
     </Root>
   )
 }
@@ -41,6 +38,7 @@ const Root = styled.div`
   margin: 0.25rem 1rem;
 
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
   background-color: ${({ theme }) => theme.core.darkBackground};
@@ -51,6 +49,11 @@ const Root = styled.div`
   z-index: 10;
 
   box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
+`
+
+const HeaderNav = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
 
 const Fill = styled.div`
@@ -69,18 +72,6 @@ const Fill = styled.div`
   */
   -webkit-app-region: drag;
   cursor: -webkit-grab;
-`
-
-const TitleContainer = styled.div`
-  position: absolute;
-  top: 20px;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
-  text-align: center;
-  width: 80%;
-  font-size: 0.625rem;
-  font-weight: normal;
 `
 
 export default Header
