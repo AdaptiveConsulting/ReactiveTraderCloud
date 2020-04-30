@@ -81,11 +81,11 @@ export const ButtonContainer = styled(IconContainer)`
   ${rules.appRegionNoDrag};
 `
 
-export const SearchButtonContainer = styled(ButtonContainer)<{ isSearchVisible: boolean }>`
+export const SearchButtonContainer = styled(ButtonContainer) <{ isSearchVisible: boolean }>`
   height: auto;
   width: 40px;
   border-radius: 0 3px 3px 0;
-  background-color: ${({ isSearchVisible }) => (isSearchVisible ? '#8c7ae6' : '')};
+  background-color: ${({ isSearchVisible }) => (isSearchVisible ? '#5f94f5' : '')};
   ${rules.appRegionNoDrag};
 `
 

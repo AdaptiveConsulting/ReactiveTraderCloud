@@ -1,8 +1,6 @@
-import React from 'react'
 import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
 import { getEnvironment } from 'rt-util'
-import { LogoIcon } from 'rt-components'
-import { excelIcon, limitCheckerIcon, reactiveAnalyticsIcon } from './icons'
+import { excelIcon, limitCheckerIcon, reactiveAnalyticsIcon, reactiveTraderIcon } from './icons'
 
 // Safer than location.origin due to browser support
 const ORIGIN = `${location.protocol}//${location.host}`
@@ -23,11 +21,11 @@ const defaultWindowOptions: OpenFinWindowOptions = {
     process.env.NODE_ENV !== 'development'
       ? {}
       : {
-          devtools: true,
-          reload: true,
-          reloadIgnoringCache: true,
-          zoom: true,
-        },
+        devtools: true,
+        reload: true,
+        reloadIgnoringCache: true,
+        zoom: true,
+      },
 }
 
 const excelPreloadScripts: fin.DownloadPreloadOption[] = [
@@ -55,7 +53,9 @@ export interface ApplicationConfig {
   uuid?: string
   url?: string
   icon: JSX.Element
-  iconhovercolor?: string
+  iconFillColor: string,
+  iconHoverFillColor?: string,
+  iconHoverBackgroundColor?: string
   provider?: ApplicationProvider
 }
 
@@ -64,6 +64,7 @@ const excelJSAppConfig: ApplicationConfig = {
   displayName: 'EX',
   tooltipName: 'Launch Excel',
   icon: excelIcon,
+  iconFillColor: '#CFCFCF',
   provider: {
     platformName: 'openfin',
     applicationType: 'excel',
@@ -79,6 +80,7 @@ const excelLegacyAppConfig: ApplicationConfig = {
   displayName: 'EX',
   tooltipName: 'Launch Excel',
   icon: excelIcon,
+  iconFillColor: '#CFCFCF',
   url: `${ORIGIN}/static/excel/instructions.html`,
   provider: {
     platformName: 'openfin',
@@ -109,8 +111,10 @@ const baseAppConfigs: ApplicationConfig[] = [
     tooltipName: 'Launch Reactive Trader',
     uuid: `reactive-trader-cloud-web-${env}`,
     url: `${ORIGIN}`,
-    icon: <LogoIcon width={1.2} height={1.2} />,
-    iconhovercolor: '#28588d',
+    icon: reactiveTraderIcon,
+    iconFillColor: '#CFCFCF',
+    iconHoverFillColor: '#ffffff',
+    iconHoverBackgroundColor: '#28588d',
     provider: {
       platformName: 'openfin',
       applicationType: 'application',
@@ -127,7 +131,9 @@ const baseAppConfigs: ApplicationConfig[] = [
     tooltipName: 'Launch Reactive Analytics',
     url: `http://${env === 'dev' ? env : 'demo'}-reactive-analytics.adaptivecluster.com/`,
     icon: reactiveAnalyticsIcon,
-    iconhovercolor: '#AAABD1',
+    iconFillColor: '#CFCFCF',
+    iconHoverFillColor: '#ffffff',
+    iconHoverBackgroundColor: '#AAABD1',
     provider: {
       platformName: 'openfin',
       applicationType: 'application',
@@ -143,6 +149,8 @@ const baseAppConfigs: ApplicationConfig[] = [
     displayName: 'LC',
     tooltipName: 'Launch Limit Checker',
     icon: limitCheckerIcon,
+    iconFillColor: '#CFCFCF',
+    iconHoverFillColor: '#ffffff',
     provider: {
       platformName: 'openfin',
       applicationType: 'download',

@@ -39,8 +39,8 @@ export const TableRow = styled.tr<{ status?: 'rejected' | 'done' | 'pending' }>`
     position: relative;
     color: ${({ status }) => (status === 'rejected' ? '#7f7f7f' : 'white')};
     ${({ status }) =>
-      status === 'rejected' &&
-      `
+    status === 'rejected' &&
+    `
       &:after {
         content: '';
         position: absolute;
@@ -122,7 +122,7 @@ export const IntentActions = styled(IntentActionWrapper)`
       border-radius: 0 3px 3px 0;
     }
     &:hover {
-      background-color: #8c7ae6;
+      background-color: #5f94f5;
     }
   }
 `
@@ -181,7 +181,7 @@ export const SearchContainer = styled.div`
     right: 83px;
 
     > input {
-      caret-color: #8c7ae6;
+      caret-color: #5f94f5;
       padding-left: 9px;
     }
   }

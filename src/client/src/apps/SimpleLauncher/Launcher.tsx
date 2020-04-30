@@ -42,7 +42,7 @@ const SearchButton: React.FC<{
   isSearchVisible: boolean
 }> = ({ onClick, isSearchVisible }) => (
   <SearchButtonContainer isSearchVisible={isSearchVisible}>
-    <LaunchButton title="Search ecosystem" onClick={onClick}>
+    <LaunchButton iconFill="#CFCFCF" iconHoverFill="#FFFFFF" title="Search ecosystem" onClick={onClick}>
       {SearchIcon}
     </LaunchButton>
   </SearchButtonContainer>
