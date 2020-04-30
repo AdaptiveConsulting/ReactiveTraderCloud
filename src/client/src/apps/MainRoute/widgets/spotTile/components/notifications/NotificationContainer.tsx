@@ -35,7 +35,7 @@ export default class NotificationContainer extends PureComponent<Props> {
     }
     if (lastTradeExecutionStatus.hasError) {
       return (style: React.CSSProperties) => (
-        <TileNotification style={style} symbols={symbols} type={NotificationType.Warning}>
+        <TileNotification style={style} symbols={symbols} type={NotificationType.Error}>
           {lastTradeExecutionStatus.error}
         </TileNotification>
       )
