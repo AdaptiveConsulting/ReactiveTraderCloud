@@ -63,7 +63,7 @@
     "@types/uuid": "^3.4.4",
     "dialogflow": "^0.10.3",
     "dotenv": "^8.0.0",
-    "moment": "^2.24.0",
+    "moment": "2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "rxjs": "^6.4.0",
