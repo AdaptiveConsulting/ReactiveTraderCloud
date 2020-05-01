@@ -5,7 +5,7 @@ ARG CI
 ARG REACT_APP_BUILD_VERSION
 
 COPY ./package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 
 ENV CI=$CI
