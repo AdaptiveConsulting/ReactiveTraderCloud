@@ -30,7 +30,7 @@ jobs:
         run: echo ::set-env name=BUILD_VERSION::$(git describe)
 
       - name: Build Docker images
-        run: docker-compose -f ./src/docker-compose.yml build --parallel
+        run: docker-compose -f ./src/docker-compose.yml build
 
       - name: Set up test data
         run: |
