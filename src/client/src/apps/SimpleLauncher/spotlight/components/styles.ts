@@ -25,7 +25,7 @@ export const Table = styled.table`
       margin: auto;
     }
     tr:nth-child(odd) {
-      background-color: #313131;
+      background-color: ${({ theme }) => theme.core.lightBackground};
     }
   }
 `
@@ -39,8 +39,8 @@ export const TableRow = styled.tr<{ status?: 'rejected' | 'done' | 'pending' }>`
     position: relative;
     color: ${({ status }) => (status === 'rejected' ? '#7f7f7f' : 'white')};
     ${({ status }) =>
-      status === 'rejected' &&
-      `
+    status === 'rejected' &&
+    `
       &:after {
         content: '';
         position: absolute;
@@ -70,7 +70,7 @@ export const Suggestion = styled.div`
 
 export const Response = styled.div`
   font-size: 1rem;
-  background: #2b2b2b;
+  background: ${({ theme }) => theme.core.darkBackground};
   padding: 0.75rem;
   ${rules.appRegionNoDrag};
 `
@@ -114,7 +114,7 @@ export const IntentActions = styled(IntentActionWrapper)`
   button {
     cursor: pointer;
     padding: 0.75rem 1.5rem;
-    background-color: #313131;
+    background-color: ${({ theme }) => theme.core.lightBackground};
     &:first-of-type {
       border-radius: 3px 0 0 3px;
     }
@@ -122,7 +122,7 @@ export const IntentActions = styled(IntentActionWrapper)`
       border-radius: 0 3px 3px 0;
     }
     &:hover {
-      background-color: #8c7ae6;
+      background-color: #5f94f5;
     }
   }
 `
@@ -130,7 +130,7 @@ export const IntentActions = styled(IntentActionWrapper)`
 export const Input = styled.input`
   width: 100%;
   height: 45px;
-  background: #2b2b2b;
+  background: ${({ theme }) => theme.core.darkBackground};
   outline: none;
   border-radius: 3px 0 0 3px;
   font-size: 1rem;
@@ -151,7 +151,7 @@ export const CancelButton = styled.button`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: #3f3f3f;
+  background-color: ${({ theme }) => theme.core.lightBackground};
   cursor: pointer;
   z-index: 2;
 
@@ -163,7 +163,6 @@ export const CancelButton = styled.button`
 `
 
 export const SearchContainer = styled.div`
-  background-color: #313131;
   position: absolute;
   left: 350px;
   right: 75px;
@@ -181,7 +180,7 @@ export const SearchContainer = styled.div`
     right: 83px;
 
     > input {
-      caret-color: #8c7ae6;
+      caret-color: #5f94f5;
       padding-left: 9px;
     }
   }
