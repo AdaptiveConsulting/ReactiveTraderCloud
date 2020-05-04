@@ -2,13 +2,17 @@ FROM node:11.10-alpine as builder
 WORKDIR '/app'
 
 ARG CI
+ARG NPM_TOKEN
 ARG REACT_APP_BUILD_VERSION
 
+COPY .npmrc .npmrc
 COPY ./package*.json ./
 RUN npm ci
+RUN rm -f .npmrc
 COPY . .
 
 ENV CI=$CI
+ENV NPM_TOKEN=$NPM_TOKEN
 ENV REACT_APP_BUILD_VERSION=$REACT_APP_BUILD_VERSION
 
 RUN npm run test -- --coverage
