@@ -14,8 +14,8 @@ export const LauncherGlobalStyle = createGlobalStyle`
 export const RootContainer = styled.div`
   height: 100%;
   width: 100%;
-  background-color: #313131;
   overflow: hidden;
+  background-color: ${({ theme }) => theme.core.darkBackground};
   color: ${({ theme }) => theme.core.textColor};
 `
 
@@ -33,7 +33,7 @@ export const LauncherContainer = styled.div<{ showResponsePanel: boolean }>`
   max-height: 56px;
   height: 100%;
   width: 100%;
-  background-color: #313131;
+  background-color: ${({ theme }) => theme.core.lightBackground};
   display: flex;
   align-items: center;
   border-radius: ${({ showResponsePanel }) => showResponsePanel && '3px 3px 0 0'};
@@ -85,7 +85,7 @@ export const SearchButtonContainer = styled(ButtonContainer)<{ isSearchVisible: 
   height: auto;
   width: 40px;
   border-radius: 0 3px 3px 0;
-  background-color: ${({ isSearchVisible }) => (isSearchVisible ? '#8c7ae6' : '')};
+  background-color: ${({ isSearchVisible }) => (isSearchVisible ? '#5f94f5' : '')};
   ${rules.appRegionNoDrag};
 `
 

@@ -5,10 +5,10 @@ import LauncherIcon from './LauncherIcon'
 
 const fillChangeKeyframes = (path?: number) => keyframes`
   0% {
-    fill: ${path === 2 ? '#8C7AE6' : '#FFF'};
+    fill: ${path === 2 ? '#5f94f5' : '#FFF'};
   }
   50% {
-    fill: ${path === 2 ? '#FFF' : '#8C7AE6'};
+    fill: ${path === 2 ? '#FFF' : '#5f94f5'};
   }
 `
 

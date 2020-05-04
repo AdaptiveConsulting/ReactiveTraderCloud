@@ -1,7 +1,6 @@
 import { Action } from 'redux'
 import { combineEpics, ofType } from 'redux-observable'
-// import { REF_ACTION_TYPES, ReferenceActions } from 'rt-actions'
-import { delay, map, mergeMap, filter } from 'rxjs/operators'
+import { delay, map, mergeMap } from 'rxjs/operators'
 import { ApplicationEpic } from 'StoreTypes'
 import { SpotTileActions, TILE_ACTION_TYPES } from '../actions'
 import { ExecuteTradeRequest, ExecuteTradeResponse } from '../model/executeTradeRequest'
@@ -37,7 +36,6 @@ const executeTradeEpic: ApplicationEpic = (action$, state$, { serviceClient, lim
 export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     ofType<Action, ExecutedTradeAction>(TILE_ACTION_TYPES.TRADE_EXECUTED),
-    filter((action: ExecutedTradeAction) => !action.payload.hasError),
     delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
     map((action: ExecutedTradeAction) => ({
       currencyPair: action.payload.request.CurrencyPair,

@@ -42,7 +42,9 @@ export const LauncherApps: React.FC = () => {
           <LaunchButton
             title={app.tooltipName}
             onClick={() => handleOpen(app)}
-            fill={app.iconhovercolor}
+            iconFill={app.iconFillColor}
+            iconHoverFill={app.iconHoverFillColor}
+            iconHoverBackground={app.iconHoverBackgroundColor}
             active={isActive(app.name)}
           >
             {app.icon}
