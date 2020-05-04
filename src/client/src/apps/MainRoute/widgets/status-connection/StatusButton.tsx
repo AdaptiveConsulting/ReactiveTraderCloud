@@ -1,6 +1,6 @@
 import React, { useState, useCallback, SyntheticEvent, useEffect } from 'react'
 
-import { ConnectionState } from 'rt-system'
+import { ConnectionInfo } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import {
   Button,
@@ -15,14 +15,11 @@ import Service from './Service'
 import FooterVersion from '../footer-version'
 
 interface Props {
-  connectionStatus: ConnectionState
+  connectionStatus: ConnectionInfo
   services: ServiceStatus[]
 }
 
-export const StatusButton: React.FC<Props> = ({
-  connectionStatus: { url, transportType },
-  services,
-}) => {
+export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, services }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [appStatus, setAppStatus] = useState<ServiceConnectionStatus>()
 
@@ -52,7 +49,7 @@ export const StatusButton: React.FC<Props> = ({
     }
   }, [services])
 
-  const appUrl = `${url} (${transportType})`
+  const appUrl = `${url}`
   return (
     <Root>
       <Button onClick={toggleOpen} data-qa="status-button__toggle-button">

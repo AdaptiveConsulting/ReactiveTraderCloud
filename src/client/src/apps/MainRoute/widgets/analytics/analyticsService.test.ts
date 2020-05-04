@@ -2,7 +2,7 @@ import AnalyticsService from './analyticsService'
 import { MockScheduler } from 'rt-testing'
 import { PositionsRaw } from './model'
 import { map } from 'rxjs/operators'
-import { ServiceStubWithLoadBalancer } from 'rt-system'
+import { ServiceClient } from 'rt-system'
 import { Observable } from 'rxjs'
 
 const positionRaw = {
@@ -24,8 +24,8 @@ describe('AnalyticsService getAnalyticsStream', () => {
       const createStreamOperation$ = jest.fn((s: string, o: string, r: any) =>
         cold<PositionsRaw>(actionLifetime, actionReference),
       )
-      const serviceClient = new MockServiceStubWithLoadBalancer(createStreamOperation$)
-      const analyticsService = new AnalyticsService(serviceClient as ServiceStubWithLoadBalancer)
+      const serviceClient = new MockServiceStub(createStreamOperation$)
+      const analyticsService = new AnalyticsService(serviceClient as ServiceClient)
       const epics$ = analyticsService
         .getAnalyticsStream('USD')
         .pipe(
@@ -54,8 +54,8 @@ describe('AnalyticsService getAnalyticsStream', () => {
         cold<PositionsRaw>(actionLifetime, actionReference),
       )
 
-      const serviceClient = new MockServiceStubWithLoadBalancer(createStreamOperation$)
-      const analyticsService = new AnalyticsService(serviceClient as ServiceStubWithLoadBalancer)
+      const serviceClient = new MockServiceStub(createStreamOperation$)
+      const analyticsService = new AnalyticsService(serviceClient as ServiceClient)
       const epics$ = analyticsService
         .getAnalyticsStream('USD')
         .pipe(map(({ currentPositions }) => currentPositions[0].basePnlName === 'basePnl'))
@@ -70,7 +70,6 @@ const implementation = (
 ) => ({
   createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
 })
-const MockServiceStubWithLoadBalancer = jest.fn<
-  Partial<ServiceStubWithLoadBalancer>,
-  Parameters<typeof implementation>
->(implementation)
+const MockServiceStub = jest.fn<Partial<ServiceClient>, Parameters<typeof implementation>>(
+  implementation,
+)

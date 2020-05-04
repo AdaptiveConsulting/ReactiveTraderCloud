@@ -1,18 +1,17 @@
-import { AutobahnConnectionProxy } from 'rt-system'
 import FakeUserRepository from '../fakeUserRepository'
 import { createApplicationServices } from './applicationServices'
 import configureStore from './configureStore'
 import { ConnectionActions, SetupActions, UserActions } from 'rt-actions'
 import { createExcelApp, createLimitChecker, Platform } from 'rt-platforms'
+import { WsConnection } from 'rt-system'
 
 const selectedUser = FakeUserRepository.currentUser
 
 export const createStore = async (platform: Platform) => {
   const store = configureStore(
     createApplicationServices({
-      autobahn: new AutobahnConnectionProxy(
+      broker: new WsConnection(
         process.env.REACT_APP_BROKER_HOST || location.hostname,
-        'com.weareadaptive.reactivetrader',
         +(process.env.REACT_APP_BROKER_PORT || location.port),
       ),
       limitChecker: await createLimitChecker(platform.name),

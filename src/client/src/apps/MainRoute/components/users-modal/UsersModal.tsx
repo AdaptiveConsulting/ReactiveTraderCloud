@@ -26,7 +26,7 @@ export const UsersModal: React.FC<props> = ({ shouldShow, closeModal, selectUser
       <Header>Select an account</Header>
       <SubHeader>You can sign in to any of the following trading accounts. </SubHeader>
       <UserList>
-        {FakeUserRepository.userList.map(user => (
+        {FakeUserRepository.userList.map((user) => (
           <User key={`${user.firstName}-${user.lastName}`}>
             <Avatar src={user.avatar} />
             <div>

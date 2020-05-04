@@ -25,6 +25,6 @@ const LightThemeIcon: React.FC<LightThemeIconProps> = ({
 
 export default styled(LightThemeIcon)`
   [fill] {
-    fill: ${props => props.theme.core.textColor};
+    fill: ${(props) => props.theme.core.textColor};
   }
 `

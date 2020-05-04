@@ -31,7 +31,7 @@ spec:
             - name: BROKER_HOST
               value: broker
             - name: BROKER_PORT
-              value: '8000'
+              value: '15674'
             - name: BOT_NAME
               valueFrom:
                 configMapKeyRef:

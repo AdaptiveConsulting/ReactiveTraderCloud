@@ -17,14 +17,18 @@ function addHeartBeatToServiceInstanceStatus(
           ),
           distinctUntilChanged<ServiceInstanceStatus>(
             (status, statusNew) =>
-              status.isConnected === statusNew.isConnected && status.serviceLoad === statusNew.serviceLoad,
+              status.isConnected === statusNew.isConnected &&
+              status.serviceLoad === statusNew.serviceLoad,
           ),
         ),
       ),
     )
 }
 
-export function serviceStatusStream$(statusUpdate$: Observable<RawServiceStatus>, heartBeatTimeout: number) {
+export function serviceStatusStream$(
+  statusUpdate$: Observable<RawServiceStatus>,
+  heartBeatTimeout: number,
+) {
   return statusUpdate$.pipe(
     map(convertFromRawMessage),
     groupBy(serviceInstanceStatus => serviceInstanceStatus.serviceType),
@@ -37,9 +41,15 @@ export function serviceStatusStream$(statusUpdate$: Observable<RawServiceStatus>
         ),
       ),
     ),
-    scan<ServiceInstanceCollection, ServiceCollectionMap>((serviceCollectionMap, serviceInstanceCollection) => {
-      return serviceCollectionMap.add(serviceInstanceCollection.serviceType, serviceInstanceCollection)
-    }, new ServiceCollectionMap()),
+    scan<ServiceInstanceCollection, ServiceCollectionMap>(
+      (serviceCollectionMap, serviceInstanceCollection) => {
+        return serviceCollectionMap.add(
+          serviceInstanceCollection.serviceType,
+          serviceInstanceCollection,
+        )
+      },
+      new ServiceCollectionMap(),
+    ),
   )
 }
 
@@ -53,7 +63,10 @@ function convertFromRawMessage(serviceStatus: RawServiceStatus): ServiceInstance
   }
 }
 
-function createServiceInstanceForDisconnected(serviceType: string, serviceId: string): ServiceInstanceStatus {
+function createServiceInstanceForDisconnected(
+  serviceType: string,
+  serviceId: string,
+): ServiceInstanceStatus {
   return {
     serviceType,
     serviceId,

@@ -1,45 +1,47 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: "nsgate"
-  namespace: "nsgate"
+  name: 'nsgate'
+  namespace: 'nsgate'
   labels:
-    name: "nsgate__MAJOR__"
-    minor: "__MINOR__"
-    build: "__BUILD__"
+    name: 'nsgate__MAJOR__'
+    minor: '__MINOR__'
+    build: '__BUILD__'
 spec:
   replicas: 2
   selector:
-    name: "nsgate__MAJOR__"
-    minor: "__MINOR__"
-    build: "__BUILD__"
+    name: 'nsgate__MAJOR__'
+    minor: '__MINOR__'
+    build: '__BUILD__'
   template:
     metadata:
       labels:
-        name: "nsgate__MAJOR__"
-        minor: "__MINOR__"
-        build: "__BUILD__"
+        name: 'nsgate__MAJOR__'
+        minor: '__MINOR__'
+        build: '__BUILD__'
     spec:
       containers:
-      - name: "nsgate__MAJOR__"
-        image: "__DOCKERIMAGE__"
-        imagePullPolicy: IfNotPresent
-        ports:
-          - containerPort: 80
-            name: "http"
-          - containerPort: 443
-            name: "https"
-          - containerPort: 8000
-            name: "broker"
-          - containerPort: 1113
-            name: "eventstore-tcp"
-          - containerPort: 2113
-            name: "eventstore"
-        volumeMounts:
-        - name: web-ssl
-          readOnly: true
-          mountPath: /etc/ssl
+        - name: 'nsgate__MAJOR__'
+          image: '__DOCKERIMAGE__'
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: 'http'
+            - containerPort: 443
+              name: 'https'
+            - containerPort: 5672
+              name: 'broker'
+            - containerPort: 15674
+              name: 'broker-ws'
+            - containerPort: 1113
+              name: 'eventstore-tcp'
+            - containerPort: 2113
+              name: 'eventstore'
+          volumeMounts:
+            - name: web-ssl
+              readOnly: true
+              mountPath: /etc/ssl
       volumes:
-      - name: web-ssl
-        secret:
-          secretName: web-ssl
+        - name: web-ssl
+          secret:
+            secretName: web-ssl

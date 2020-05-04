@@ -7,5 +7,12 @@ spec:
   selector:
     component: broker
   ports:
-    - port: 8000
-      targetPort: 8000
+    - port: 5672
+      name: tcp
+      targetPort: 5672
+    - port: 15672
+      name: management
+      targetPort: 15672
+    - port: 15674
+      name: ws
+      targetPort: 15674

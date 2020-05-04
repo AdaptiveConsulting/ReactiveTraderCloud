@@ -1,6 +1,5 @@
 using System;
 using System.Reactive.Disposables;
-using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
 using Serilog;
@@ -25,9 +24,9 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
             Log.Information("Stopped price publishing to 'prices'");
         }
 
-        public async Task Start()
+        public void Start()
         {
-            var endpoint = await _broker.GetPublicEndPoint<SpotPriceDto>("prices");
+            var endpoint = _broker.GetPublicEndPoint<SpotPriceDto>("prices");
 
             _disp = _priceStream.Subscribe(endpoint);
 

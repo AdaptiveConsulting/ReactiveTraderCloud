@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators'
 import { Direction } from 'rt-types'
 import { MockScheduler } from 'rt-testing'
 import { ConnectionActions } from 'rt-actions'
-import { ServiceStubWithLoadBalancer } from 'rt-system'
+import { ServiceClient } from 'rt-system'
 import { GlobalState } from '../../../../../StoreTypes'
 
 const rawTrades = {
@@ -44,15 +44,14 @@ describe('blotterServiceEpic', () => {
     const scheduler = new MockScheduler()
     scheduler.run(({ cold, expectObservable, flush }) => {
       const actionReference = { a: { type: `${randomAction}1` }, b: { type: `${randomAction}2` } }
-      // TODO: remove this 'as any as ServiceStubWithLoadBalancer' horror - it is there temporary to fix types
-      const loadBalancedServiceStub: ServiceStubWithLoadBalancer = (new MockServiceClient(() =>
+      const serviceClient: ServiceClient = (new MockServiceClient(() =>
         of(rawTrades),
-      ) as any) as ServiceStubWithLoadBalancer
+      ) as any) as ServiceClient
       const action$ = cold(actionLifetime, actionReference)
       const state$ = {} as StateObservable<GlobalState>
 
       const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), state$, {
-        loadBalancedServiceStub,
+        serviceClient,
       })
       expectObservable(epics$).toBe(expectLifetime)
     })
@@ -69,15 +68,14 @@ describe('blotterServiceEpic', () => {
       const actionLifetime = '--(cs)-r'
       const expectLifetime = '--a--'
 
-      // TODO: remove this 'as any as ServiceStubWithLoadBalancer' horror - it is there temporary to fix types
-      const loadBalancedServiceStub: ServiceStubWithLoadBalancer = (new MockServiceClient(() =>
+      const serviceClient: ServiceClient = (new MockServiceClient(() =>
         of(rawTrades),
-      ) as any) as ServiceStubWithLoadBalancer
+      ) as any) as ServiceClient
       const action$ = cold(actionLifetime, actionReference)
       const state$ = {} as StateObservable<GlobalState>
 
       const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), state$, {
-        loadBalancedServiceStub,
+        serviceClient,
       }).pipe(map(r => r.type === newTradesType))
 
       expectObservable(epics$).toBe(expectLifetime, expectReference)
@@ -96,15 +94,14 @@ describe('blotterServiceEpic', () => {
       const actionLifetime = '--(cs)-r--d-r-r'
       const expectLifetime = '--a------'
 
-      // TODO: remove this 'as any as ServiceStubWithLoadBalancer' horror - it is there temporary to fix types
-      const loadBalancedServiceStub: ServiceStubWithLoadBalancer = (new MockServiceClient(() =>
+      const serviceClient: ServiceClient = (new MockServiceClient(() =>
         of(rawTrades),
-      ) as any) as ServiceStubWithLoadBalancer
+      ) as any) as ServiceClient
       const action$ = cold(actionLifetime, actionReference)
       const state$ = {} as StateObservable<GlobalState>
 
       const epics$ = blotterServiceEpic(ActionsObservable.from(action$, scheduler), state$, {
-        loadBalancedServiceStub,
+        serviceClient,
       }).pipe(map(r => r.type === newTradesType))
 
       expectObservable(epics$).toBe(expectLifetime, expectReference)

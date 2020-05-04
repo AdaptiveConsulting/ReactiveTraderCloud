@@ -47,11 +47,6 @@ namespace Adaptive.ReactiveTrader.Server.Launcher
                     Stop();
                 };
 
-                Serilog.Log.Logger = new LoggerConfiguration()
-                    .MinimumLevel.Information()
-                    .WriteTo.ColoredConsole()
-                    .CreateLogger();
-
                 if (_config.PopulateEventStore)
                     _launcher.InitializeEventStore(_config.EventStoreParameters);
 

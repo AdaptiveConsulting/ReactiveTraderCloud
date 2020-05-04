@@ -5,7 +5,6 @@
   },
   "broker": {
     "host": "broker",
-    "port": 8000,
-    "realm": "com.weareadaptive.reactivetrader"
+    "port": 5672
   }
 }

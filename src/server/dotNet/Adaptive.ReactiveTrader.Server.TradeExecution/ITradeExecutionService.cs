@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
+using Adaptive.ReactiveTrader.Messaging;
 
 namespace Adaptive.ReactiveTrader.Server.TradeExecution
 {

@@ -2,8 +2,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Newtonsoft.Json;
+using Serilog.Context;
 
 namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 {
@@ -25,17 +25,23 @@ namespace Adaptive.ReactiveTrader.Server.ReferenceDataWrite
 
         private Task ActivateCurrencyPair(IRequestContext context, IMessage message)
         {
-            var payload =
+            using (LogContext.PushProperty("InstanceId", InstanceId))
+            {
+                var payload =
                 JsonConvert.DeserializeObject<ActivateCurrencyPairRequestDto>(Encoding.UTF8.GetString(message.Payload));
 
-            return _service.ActivateCurrencyPair(context, payload);
+                return _service.ActivateCurrencyPair(context, payload);
+            }
         }
 
         private Task DeactivateCurrencyPair(IRequestContext context, IMessage message)
         {
-            var payload =
+            using (LogContext.PushProperty("InstanceId", InstanceId))
+            {
+                var payload =
                 JsonConvert.DeserializeObject<DeactivateCurrencyPairRequestDto>(Encoding.UTF8.GetString(message.Payload));
-            return _service.DeactivateCurrencyPair(context, payload);
+                return _service.DeactivateCurrencyPair(context, payload);
+            }
         }
     }
 }

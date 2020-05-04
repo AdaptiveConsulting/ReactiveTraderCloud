@@ -1,30 +1,20 @@
-export type {
-  ConnectionEvent,
-  ConnectionOpenEvent,
-  ConnectionClosedEvent,
-} from './connectionStream'
-export { ConnectionEventType, createConnection$ } from './connectionStream'
+import * as serviceInstanceCollection from './ServiceInstanceCollection'
+import * as serviceInstanceStatus from './serviceInstanceStatus'
+import * as connectionStream from './connectionStream'
 
-export type { ConnectionStatus as ConnectionStatusType, ConnectionState } from './connectionStatus'
-export { ConnectionStatus } from './connectionStatus'
-
-export type {
-  ServiceCollectionMap,
-  ServiceConnectionInfo,
-  IServiceStatusCollection,
-} from './ServiceInstanceCollection'
-export { ServiceInstanceCollection } from './ServiceInstanceCollection'
-
-export type { RawServiceStatus } from './serviceInstanceStatus'
-
-export type { ConnectionType } from './connectionType'
-export type { AutobahnConnection } from './AutoBahnConnection'
-export { default as AutobahnConnectionProxy } from './AutobahnConnectionProxy'
-export { default as AutobahnSessionProxy } from './AutobahnSessionProxy'
-
+export type RawServiceStatus = serviceInstanceStatus.RawServiceStatus
+export const { ServiceInstanceCollection } = serviceInstanceCollection
+export type ServiceCollectionMap = serviceInstanceCollection.ServiceCollectionMap
+export type ServiceConnectionInfo = serviceInstanceCollection.ServiceConnectionInfo
+export const { ConnectionStatus } = connectionStream
+export type ConnectionStatusType = connectionStream.ConnectionStatus
+export type IServiceStatusCollection = serviceInstanceCollection.IServiceStatusCollection
 export { retryWithBackOff, retryConstantly } from './retryPolicy'
-export { ServiceStub } from './ServiceStub'
-export { default as ServiceClient } from './ServiceStubWithLoadBalancer'
-export { default as ServiceStubWithLoadBalancer } from './ServiceStubWithLoadBalancer'
+export { ServiceStub as ServiceClient } from './ServiceStub'
+export { default as WsConnection } from './WsConnection'
+
+export const { connectionStream$ } = connectionStream
+export type ConnectionInfo = connectionStream.ConnectionInfo
+
 export { serviceStatusStream$ } from './serviceStatusStream'
 export { debounceWithSelector } from './debounceOnMissedHeartbeat'

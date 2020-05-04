@@ -1,6 +1,6 @@
 version: '3'
 services:
-# infrastructure
+  # infrastructure
   eventstore:
     container_name: eventstore_base
     image: ${DOCKER_USER}/eventstore:${BUILD_VERSION}
@@ -13,8 +13,8 @@ services:
       dockerfile: Dockerfile
       context: ./services/broker
     ports:
-      - '8000:8000'
-# dotnet services
+      - '5672:5672'
+      - '15674:15674'
   servers:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     build:
@@ -34,6 +34,7 @@ services:
     depends_on:
       - broker
       - eventstore
+    restart: always
   pricing:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     hostname: pricing
@@ -43,6 +44,7 @@ services:
       - broker
       - eventstore
       - analytics
+    restart: always
   referencedataread:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     hostname: referencedataread
@@ -52,6 +54,7 @@ services:
       - broker
       - eventstore
       - pricing
+    restart: always
   tradeexecution:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     hostname: tradeexecution
@@ -61,6 +64,7 @@ services:
       - broker
       - eventstore
       - referencedataread
+    restart: always
   blotter:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
     hostname: blotter
@@ -70,18 +74,19 @@ services:
       - broker
       - eventstore
       - tradeexecution
-# node services
+    restart: always
+  # node services
   pricehistory:
     image: ${DOCKER_USER}/pricehistory:${BUILD_VERSION}
     build:
-      dockerfile: Dockerfile.dev
-      context: ./server/node/priceHistory
+      dockerfile: PriceHistory.Dockerfile
+      context: ./server/node
     depends_on:
       - broker
       - pricing
     environment:
-     - BROKER_HOST=broker
-     - BROKER_PORT=8000
+      - BROKER_HOST=broker
+      - BROKER_PORT=15674
   nlp:
     image: ${DOCKER_USER}/nlp:${BUILD_VERSION}
     hostname: nlp
@@ -92,7 +97,7 @@ services:
       - broker
     environment:
       - BROKER_HOST=broker
-      - BROKER_PORT=8000
+      - BROKER_PORT=15674
   openfinconfig:
     image: ${DOCKER_USER}/openfinconfig:${BUILD_VERSION}
     hostname: openfinconfig
@@ -104,7 +109,7 @@ services:
     image: ${DOCKER_USER}/bot:${BUILD_VERSION}
     build:
       context: ./server/node/bot
-# web client
+  # web client
   nginx:
     image: ${DOCKER_USER}/nginx:${BUILD_VERSION}
     restart: always
