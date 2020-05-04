@@ -5,6 +5,7 @@ import { map, mapTo, mergeMap, take, takeUntil, tap, publish } from 'rxjs/operat
 import {
   createExecuteTradeResponse,
   createExecuteTradeResponseForError,
+  createExecuteTradeResponseForWarning,
   ExecuteTradeRequest,
 } from '../model/executeTradeRequest'
 import numeral from 'numeral'
@@ -85,8 +86,8 @@ export default class ExecutionService {
                 // When the execution has taken a few seconds but we cannot assume its not going to go through
                 timer(EXECUTION_CLIENT_TIMEOUT_MS).pipe(
                   mapTo(
-                    createExecuteTradeResponseForError(
-                      'Trade Execution taking longer then Expected',
+                    createExecuteTradeResponseForWarning(
+                      'Trade execution taking longer than expected',
                       executeTradeRequest,
                     ),
                   ),
