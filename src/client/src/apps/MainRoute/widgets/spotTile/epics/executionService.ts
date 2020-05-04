@@ -5,6 +5,7 @@ import { map, mapTo, mergeMap, take, takeUntil, tap, publish } from 'rxjs/operat
 import {
   createExecuteTradeResponse,
   createExecuteTradeResponseForError,
+  createExecuteTradeResponseForWarning,
   ExecuteTradeRequest,
 } from '../model/executeTradeRequest'
 import numeral from 'numeral'
@@ -49,7 +50,7 @@ export default class ExecutionService {
       mergeMap(tradeWithinLimit => {
         if (!tradeWithinLimit) {
           return of(
-            createExecuteTradeResponseForError('Credit limit exceeded', executeTradeRequest),
+            createExecuteTradeResponseForWarning('Credit limit exceeded', executeTradeRequest),
           )
         }
         return this.serviceClient
