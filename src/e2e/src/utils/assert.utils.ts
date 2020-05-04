@@ -21,13 +21,13 @@ export async function confirmationMessageAsserts(
   let tradeText: string = await tradeSuccessElement.getText()
   // Assert timeout message
   if (timeout === true) {
-    expect(tradeText).toEqual(`Trade Execution taking longer then Expected`)
+    expect(tradeText).toEqual(`Trade execution taking longer than expected`)
 
     await browser.wait(async () => {
       try {
         await waitForElementToBeVisible(browser, tradeSuccessElement)
         tradeText = await tradeSuccessElement.getText()
-        return tradeText !== `Trade Execution taking longer then Expected`
+        return tradeText !== `Trade execution taking longer than expected`
       } catch (ex) {
         // swallow
         return false

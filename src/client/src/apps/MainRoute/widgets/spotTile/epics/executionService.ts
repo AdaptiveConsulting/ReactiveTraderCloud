@@ -87,7 +87,7 @@ export default class ExecutionService {
                 timer(EXECUTION_CLIENT_TIMEOUT_MS).pipe(
                   mapTo(
                     createExecuteTradeResponseForWarning(
-                      'Trade Execution taking longer then Expected',
+                      'Trade execution taking longer than expected',
                       executeTradeRequest,
                     ),
                   ),
