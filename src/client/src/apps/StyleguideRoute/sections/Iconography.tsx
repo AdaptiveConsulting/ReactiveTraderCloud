@@ -11,6 +11,7 @@ import {
   ChevronIcon,
   UndockIcon,
   ChartIcon,
+  MailIcon,
 } from 'rt-components'
 
 import { H2, H3, H5 } from '../elements'
@@ -110,6 +111,20 @@ export const FontFamilies: React.FC = () => (
         </ActiveIcon>
         <DisabledIcon>
           <ChartIcon height={20} width={20} />
+        </DisabledIcon>
+
+        <H5>Mail</H5>
+        <div>
+          <MailIcon size={1} />
+        </div>
+        <ActiveIcon>
+          <MailIcon size={1} />
+        </ActiveIcon>
+        <ActiveIcon>
+          <MailIcon size={1} />
+        </ActiveIcon>
+        <DisabledIcon>
+          <MailIcon size={1} />
         </DisabledIcon>
       </IconGrid>
     </SectionBlock>

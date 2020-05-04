@@ -23,7 +23,8 @@ import {
   useAppBoundReset,
 } from './windowUtils'
 import { SearchControl, Response, getInlineSuggestionsComponent, useNlpService } from './spotlight'
-import { ExitIcon, minimiseNormalIcon, DynamicLauncherLogo, SearchIcon } from './icons'
+import { ExitIcon, minimiseNormalIcon, SearchIcon } from './icons'
+import { AdaptiveLoader, LogoIcon } from 'rt-components'
 
 const expandedLauncherWidth = 600
 
@@ -41,7 +42,12 @@ const SearchButton: React.FC<{
   isSearchVisible: boolean
 }> = ({ onClick, isSearchVisible }) => (
   <SearchButtonContainer isSearchVisible={isSearchVisible}>
-    <LaunchButton title="Search ecosystem" onClick={onClick}>
+    <LaunchButton
+      iconFill="#CFCFCF"
+      iconHoverFill="#FFFFFF"
+      title="Search ecosystem"
+      onClick={onClick}
+    >
       {SearchIcon}
     </LaunchButton>
   </SearchButtonContainer>
@@ -49,9 +55,14 @@ const SearchButton: React.FC<{
 
 const Logo: React.FC<{
   isMoving: boolean
-}> = ({ isMoving }) => (
+  active: boolean
+}> = ({ isMoving, active }) => (
   <LogoLauncherContainer>
-    <DynamicLauncherLogo isMoving={isMoving} />
+    {isMoving ? (
+      <AdaptiveLoader size={21} speed={isMoving ? 0.8 : 0} seperation={1} type="secondary" />
+    ) : (
+      <LogoIcon width={1.2} height={1.2} active={active} />
+    )}
   </LogoLauncherContainer>
 )
 
@@ -125,7 +136,7 @@ export const Launcher: React.FC = () => {
     <RootLauncherContainer>
       <LauncherContainer showResponsePanel={showResponsePanel}>
         <LauncherGlobalStyle />
-        <Logo isMoving={isSearchBusy || contacting} />
+        <Logo isMoving={isSearchBusy || contacting} active={isSearchVisible} />
         <LauncherApps />
         <SearchControl
           ref={searchInputRef}

@@ -4,7 +4,7 @@ import { ContactUsPopup, LogoWrapper } from './styled'
 import ContactUs from './ContactUs'
 import FollowUs from './FollowUs'
 import Logo from '../../components/app-header/Logo'
-import MailLogo from './MailLogo'
+import { MailIcon } from 'rt-components'
 
 const ContactUsButton: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -16,7 +16,7 @@ const ContactUsButton: React.FC = () => {
   return (
     <Root>
       <Button onClick={toggleOpen} data-qa="contact-us-button" margin={'0 0.7rem 0 0'}>
-        <MailLogo size={1} active={isOpen} />
+        <MailIcon size={1} active={isOpen} />
         Get in touch
       </Button>
 

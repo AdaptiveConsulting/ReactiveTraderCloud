@@ -1,5 +1,6 @@
 import React, { SVGAttributes } from 'react'
 import { styled } from 'rt-theme'
+import { dark } from 'rt-theme/colors'
 
 interface Props extends SVGAttributes<Element> {
   fill?: string
@@ -7,7 +8,7 @@ interface Props extends SVGAttributes<Element> {
   active?: boolean
 }
 
-const MailLogo: React.FC<Props> = ({ fill = '#000', size = 2, style, active, ...props }) => {
+const MailIcon: React.FC<Props> = ({ fill = '#000', size = 2, style, active, ...props }) => {
   return (
     <svg
       height={size + 'rem'}
@@ -26,9 +27,9 @@ const MailLogo: React.FC<Props> = ({ fill = '#000', size = 2, style, active, ...
   )
 }
 
-export default styled(MailLogo)`
+export default styled(MailIcon)`
   [fill] {
-    fill: ${(props) => (props.active ? props.theme.accents.primary.base : props.theme.textColor)};
+    fill: ${props => (props.active ? props.theme.accents.primary.base : dark.primary[5])};
   }
   margin-right: 0.3rem;
 `

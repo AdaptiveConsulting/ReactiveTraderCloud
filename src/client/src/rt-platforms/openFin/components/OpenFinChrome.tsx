@@ -47,6 +47,7 @@ export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
 
 export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close, popIn }) => (
   <React.Fragment>
+    {popIn ? null : <TitleContainer>Reactive Trader</TitleContainer>}
     {minimize ? (
       <HeaderControl onClick={minimize} data-qa="openfin-chrome__minimize">
         {minimiseNormalIcon}
@@ -113,6 +114,21 @@ const OpenFinUndockControl: React.FC = () => {
   )
 }
 
+const TitleContainer = styled.div`
+  position: absolute;
+  top: 20px;
+  margin-top: 20px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  width: 80%;
+  font-size: 0.625rem;
+  font-weight: normal;
+  z-index: 100;
+  text-transform: uppercase;
+`
+
 const Header = styled.div<{ hasBottomBorder?: boolean }>`
   display: flex;
   width: 100%;
@@ -121,6 +137,7 @@ const Header = styled.div<{ hasBottomBorder?: boolean }>`
   padding: 0 0.625rem;
   border-bottom: ${({ hasBottomBorder, theme }) =>
     hasBottomBorder ? `1px solid ${theme.primary[1]}` : 0};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 const DragRegion = styled.div`

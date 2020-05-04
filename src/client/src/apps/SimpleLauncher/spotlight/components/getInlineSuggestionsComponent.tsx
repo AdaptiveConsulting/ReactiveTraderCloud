@@ -23,11 +23,19 @@ import {
 import { InlineBlotter } from './InlineBlotter'
 import { InlineQuoteTable } from './InlineQuote'
 import { InlineMarketResults } from './InlineMarketResults'
-import Logo from 'apps/MainRoute/components/app-header/Logo'
 import { appConfigs } from '../../applicationConfigurations'
 import { open } from '../../tools'
 
+import { reactiveTraderIcon } from 'apps/SimpleLauncher/icons'
+import styled from 'styled-components'
+
 const RTC_CONFIG = appConfigs[0]
+
+const PlatformLogoWrapper = styled.div`
+  svg {
+    fill: #ffffff;
+  }
+`
 
 export function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: Platform) {
   const currencyPair = getCurrencyPair(response.queryResult)
@@ -73,7 +81,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
       <IntentActions>
         <IntentActionWrapper>
           <LogoWrapper>
-            <Logo size={1.5} withText={false} />
+            <PlatformLogoWrapper>{reactiveTraderIcon}</PlatformLogoWrapper>
           </LogoWrapper>
           <span>Reactive Trader</span>
         </IntentActionWrapper>
