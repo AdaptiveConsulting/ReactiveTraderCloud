@@ -1,18 +1,17 @@
 name: Deploy
 
-on:
-  deployment
+on: deployment
 
 env:
-    DOCKER_USER: ${{ secrets.DOCKER_USER }}
-    DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Checkout code: ${{ github.event.deployment.ref }}"
+      - name: 'Checkout code: ${{ github.event.deployment.ref }}'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -50,11 +49,11 @@ jobs:
         env:
           DEPLOY_ENV: ${{ github.event.deployment.environment }}
         run: |
-            # TODO: create new environment automatically
-            # Update/create each deployment file in src/services/kubernetes
-            for f in ./src/services/kubernetes/*-deployment.yaml; do
-                cat $f | /usr/bin/envsubst | kubectl --namespace=$DEPLOY_ENV apply -f -
-            done
+          # TODO: create new environment automatically
+          # Update/create each deployment file in src/services/kubernetes
+          for f in ./src/services/kubernetes/*.yaml; do
+              cat $f | /usr/bin/envsubst | kubectl --namespace=$DEPLOY_ENV apply -f -
+          done
 
       - name: Update deployment status (success)
         if: success()
