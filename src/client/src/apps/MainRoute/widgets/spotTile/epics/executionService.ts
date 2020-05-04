@@ -50,7 +50,7 @@ export default class ExecutionService {
       mergeMap(tradeWithinLimit => {
         if (!tradeWithinLimit) {
           return of(
-            createExecuteTradeResponseForWarning('Credit limit exceeded', executeTradeRequest),
+            createExecuteTradeResponseForError('Credit limit exceeded', executeTradeRequest),
           )
         }
         return this.serviceClient
@@ -86,7 +86,7 @@ export default class ExecutionService {
                 // When the execution has taken a few seconds but we cannot assume its not going to go through
                 timer(EXECUTION_CLIENT_TIMEOUT_MS).pipe(
                   mapTo(
-                    createExecuteTradeResponseForError(
+                    createExecuteTradeResponseForWarning(
                       'Trade Execution taking longer then Expected',
                       executeTradeRequest,
                     ),
