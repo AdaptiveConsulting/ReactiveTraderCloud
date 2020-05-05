@@ -5,6 +5,7 @@ import { fromEventPattern } from 'rxjs'
 import DefaultRoute from '../defaultRoute'
 import Logo from '../logo'
 import { createDefaultPlatformWindow } from '../defaultPlatformWindow'
+import { FinsembleClient } from './finsembleClient'
 
 export class Finsemble implements Platform {
   readonly name = 'finsemble'
@@ -30,6 +31,7 @@ export class Finsemble implements Platform {
       const createdWindow = window.open()
       return Promise.resolve(createdWindow ? createDefaultPlatformWindow(createdWindow) : undefined)
     },
+    FSBL: FinsembleClient,
   }
 
   app = {
@@ -37,29 +39,27 @@ export class Finsemble implements Platform {
       new Promise<string>(
         (resolve, reject) =>
           window.FSBL &&
-          window.FSBL.Clients.LauncherClient.getActiveDescriptors(
-            (error: string, activeWindows: object) => {
-              const isRunning = config.uuid && config.uuid in activeWindows
-              if (isRunning) {
-                this.publish(config)
-                return
-              }
-              window.FSBL.Clients.LauncherClient.spawn(
-                config.uuid,
-                {
-                  url: config.url,
-                  name: config.uuid,
-                  options: {
-                    icon: config.icon,
-                    autoShow: true,
-                    frame: false,
-                  },
-                  addToWorkspace: true,
+          window.FSBL.getActiveDescriptors((error: string, activeWindows: object) => {
+            const isRunning = config.uuid && config.uuid in activeWindows
+            if (isRunning) {
+              this.publish(config)
+              return
+            }
+            window.FSBL.spawn(
+              config.uuid,
+              {
+                url: config.url,
+                name: config.uuid,
+                options: {
+                  icon: config.icon,
+                  autoShow: true,
+                  frame: false,
                 },
-                (err: string) => (err ? reject(err) : resolve()),
-              )
-            },
-          ),
+                addToWorkspace: true,
+              },
+              (err: string) => (err ? reject(err) : resolve()),
+            )
+          }),
       ),
   }
 
@@ -78,21 +78,20 @@ export class Finsemble implements Platform {
   interop = {
     subscribe$: (topic: string) =>
       fromEventPattern(
-        (handler: Function) =>
-          window.FSBL && window.FSBL.Clients.RouterClient.addListener(topic, handler),
+        (handler: Function) => window.FSBL && window.FSBL.addListener(topic, handler),
       ),
 
     publish: (topic: string, message: string | object) =>
-      window.FSBL && window.FSBL.Clients.RouterClient.transmit(topic, message),
+      window.FSBL && window.FSBL.transmit(topic, message),
 
     query: (topic: string, message: string | object, handler: Function) =>
-      window.FSBL && window.FSBL.Clients.RouterClient.query(topic, message, handler),
+      window.FSBL && window.FSBL.query(topic, message, handler),
   }
 
   notification = {
     notify: (message: object) =>
       window.FSBL &&
-      window.FSBL.UserNotification.alert('trade', 'ALWAYS', 'trade-excecuted', message, {
+      window.FSBL.alert('trade', 'ALWAYS', 'trade-executed', message, {
         url: '/notification',
         duration: 1000 * 50,
       }),
