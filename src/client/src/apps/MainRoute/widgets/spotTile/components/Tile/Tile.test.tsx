@@ -16,7 +16,7 @@ const prevState: TileState = {
 
 const defaultParams: Parameters<typeof getDerivedStateFromUserInput>[0] = {
   actions: {
-    setTradingMode: (tradingMode: TradingMode) => {},
+    setTradingMode: (tradingMode: TradingMode) => { },
   },
   prevState,
   spotTileData: {
@@ -44,20 +44,20 @@ const defaultParams: Parameters<typeof getDerivedStateFromUserInput>[0] = {
 const defaultTileProps: TileProps = {
   children: jest.fn(),
   currencyPair,
-  executeTrade: () => {},
-  setTradingMode: () => {},
+  executeTrade: () => { },
+  setTradingMode: () => { },
   executionStatus: 'CONNECTED' as ServiceConnectionStatus,
   rfq: {
-    cancel: () => {},
-    expired: () => {},
-    reject: () => {},
-    request: () => {},
-    requote: () => {},
-    reset: () => {},
+    cancel: () => { },
+    expired: () => { },
+    reject: () => { },
+    request: () => { },
+    requote: () => { },
+    reset: () => { },
   },
   spotTileData: defaultParams.spotTileData,
   tileView: 'Normal' as TileView,
-  updateNotional: () => {},
+  updateNotional: () => { },
 }
 
 test('Snapshot, state derived from props, defaults, RFQ none, should be able to excute', () => {
@@ -115,7 +115,7 @@ test('Snapshot, state derived from props, RFQ received', () => {
         mid: 1.48357,
         priceMovementType: 'Down' as PriceMovementTypes,
         symbol: 'EURCAD',
-        valueDate: '2019-04-07T00:00:00Z',
+        valueDate: '2019-04-06T00:00:00Z',
       },
     },
   }
@@ -150,7 +150,7 @@ test('Snapshot, state derived from props, RFQ expired', () => {
         mid: 1.48357,
         priceMovementType: 'Down' as PriceMovementTypes,
         symbol: 'EURCAD',
-        valueDate: '2019-04-07T00:00:00Z',
+        valueDate: '2019-04-06T00:00:00Z',
       },
     },
   }
