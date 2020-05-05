@@ -1,4 +1,5 @@
-export { OpenFin, openDesktopWindow, isParentAppLauncher } from './adapter'
+export { OpenFin, openDesktopWindow } from './adapter'
+export { isParentAppOpenfinLauncher } from './adapter/launcherUtils'
 export { OpenFinLimitChecker } from './limitChecker/openFin'
 export { OpenFinHeader } from './components'
 export * from './excel'
