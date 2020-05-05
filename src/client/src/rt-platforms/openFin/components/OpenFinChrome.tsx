@@ -145,7 +145,7 @@ const DragRegion = styled.div`
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  color: rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.58);
   font-size: 0.625rem;
   letter-spacing: 0.2px;
   text-transform: uppercase;
