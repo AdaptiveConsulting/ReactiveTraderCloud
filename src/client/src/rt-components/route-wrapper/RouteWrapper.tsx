@@ -1,8 +1,8 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 import { styled } from 'rt-theme'
-import { Platform, usePlatform, isParentAppLauncher } from 'rt-platforms'
+import { Platform, usePlatform, isParentAppOpenfinLauncher } from 'rt-platforms'
 
-const RouteStyle = styled('div')<{ platform: Platform }>`
+const RouteStyle = styled('div') <{ platform: Platform }>`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
@@ -36,7 +36,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
 
   useEffect(() => {
-    isParentAppLauncher()
+    isParentAppOpenfinLauncher()
       .then(isLauncher => {
         setFromLauncher(isLauncher)
       })

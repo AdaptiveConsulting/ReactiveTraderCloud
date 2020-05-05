@@ -215,13 +215,3 @@ export async function isCurrentWindowDocked() {
     return hasIdentity
   }, false)
 }
-
-export async function isParentAppLauncher() {
-  const app = await fin.Window.getCurrent()
-
-  const {
-    identity: { uuid },
-  } = await app.getParentApplication()
-
-  return uuid.split('-').includes('launcher')
-}
