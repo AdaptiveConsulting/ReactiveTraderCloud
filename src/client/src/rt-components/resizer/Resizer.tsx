@@ -17,7 +17,8 @@ const ResizableContent = styled.div`
   width: 100%;
 `
 
-const Bar = styled.div`
+const Bar = styled.div<{ show?: boolean }>`
+  display: ${({ show }) => (show ? 'block' : 'none')};
   background-color: ${({ theme }) => theme.core.textColor};
   box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
     0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
@@ -82,6 +83,15 @@ const Resizer: React.FC<Props> = ({
     return () => setHeight(defaultHeight)
   }, [disabled, defaultHeight])
 
+  useEffect(() => {
+    if (!isLiveRatesVisible) {
+      setHeight(100)
+    }
+
+    return () => setHeight(height)
+    // eslint-disable-next-line
+  }, [isLiveRatesVisible])
+
   const handleStart = useCallback(() => setDragging(true), [setDragging])
 
   const setClientHeight = (clientY: number) => {
@@ -117,7 +127,7 @@ const Resizer: React.FC<Props> = ({
       </ResizableSection>
       <ResizableSection height={height}>
         <ResizableContent>
-          <Bar onMouseDown={handleStart} onTouchStart={handleStart} />
+          <Bar onMouseDown={handleStart} onTouchStart={handleStart} show={isLiveRatesVisible} />
           {component()}
         </ResizableContent>
       </ResizableSection>
