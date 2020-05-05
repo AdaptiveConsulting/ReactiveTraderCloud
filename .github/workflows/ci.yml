@@ -5,6 +5,8 @@ on:
     branches: 
       - master
       - release/**
+    tags:
+      - v*
   pull_request:
     branches:
       - master
@@ -58,7 +60,7 @@ jobs:
         run: echo "::set-env name=DEPLOY_ENV::dev"
 
       - name: Set deployment environment (uat)
-        if: (github.event_name == 'push') && (startsWith(github.ref, 'refs/heads/release/'))
+        if: (github.event_name == 'push') && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/'))
         run: |
           echo "::set-env name=DEPLOY_ENV::uat"
 
