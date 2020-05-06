@@ -123,7 +123,7 @@ export const openDesktopWindow = async (
 
   //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
   // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
-  const ofWindowPromise = new Promise<fin.OpenFinWindow>(resolve => {
+  const ofWindowPromise = new Promise<fin.OpenFinWindow>((resolve) => {
     const win = new fin.desktop.Window(
       {
         name: windowName,
@@ -170,7 +170,7 @@ export const openDesktopWindow = async (
 
         resolve(win)
       },
-      error => {
+      (error) => {
         console.error(`Error creating Openfin window: ${windowName}`, error)
       },
     )
@@ -214,14 +214,4 @@ export async function isCurrentWindowDocked() {
 
     return hasIdentity
   }, false)
-}
-
-export async function isParentAppLauncher() {
-  const app = await fin.Window.getCurrent()
-
-  const {
-    identity: { uuid },
-  } = await app.getParentApplication()
-
-  return uuid.split('-').includes('launcher')
 }

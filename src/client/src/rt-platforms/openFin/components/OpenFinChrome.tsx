@@ -47,7 +47,7 @@ export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
 
 export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close, popIn }) => (
   <React.Fragment>
-    {popIn ? null : <TitleContainer>Reactive Trader</TitleContainer>}
+    {maximize ? <TitleContainer>Reactive Trader</TitleContainer> : null}
     {minimize ? (
       <HeaderControl onClick={minimize} data-qa="openfin-chrome__minimize">
         {minimiseNormalIcon}
@@ -93,7 +93,7 @@ const OpenFinUndockControl: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    isCurrentWindowDocked().then(isDocked => {
+    isCurrentWindowDocked().then((isDocked) => {
       setIsWindowDocked(isDocked)
     })
   }, [])
@@ -145,7 +145,6 @@ const DragRegion = styled.div`
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  color: rgba(255, 255, 255, 0.58);
   font-size: 0.625rem;
   letter-spacing: 0.2px;
   text-transform: uppercase;
@@ -181,8 +180,8 @@ const UndockControl = styled(HeaderControl)<{ isWindowDocked: boolean }>`
 `
 
 export const Root = styled.div`
-  background-color: ${props => props.theme.core.darkBackground};
-  color: ${props => props.theme.core.textColor};
+  background-color: ${(props) => props.theme.core.darkBackground};
+  color: ${(props) => props.theme.core.textColor};
 
   height: 100%;
   width: 100%;

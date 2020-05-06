@@ -5,6 +5,7 @@ import { map, mapTo, mergeMap, take, takeUntil, tap, publish } from 'rxjs/operat
 import {
   createExecuteTradeResponse,
   createExecuteTradeResponseForError,
+  createExecuteTradeResponseForWarning,
   ExecuteTradeRequest,
 } from '../model/executeTradeRequest'
 import numeral from 'numeral'
@@ -46,7 +47,7 @@ export default class ExecutionService {
         })
       }),
       take(1),
-      mergeMap(tradeWithinLimit => {
+      mergeMap((tradeWithinLimit) => {
         if (!tradeWithinLimit) {
           return of(
             createExecuteTradeResponseForError('Credit limit exceeded', executeTradeRequest),
@@ -59,7 +60,7 @@ export default class ExecutionService {
             executeTradeRequest,
           )
           .pipe(
-            tap(dto => {
+            tap((dto) => {
               console.info(
                 LOG_NAME,
                 `execute response received for ${executeTradeRequest.CurrencyPair}. Status: ${dto.Trade.Status}`,
@@ -75,18 +76,18 @@ export default class ExecutionService {
                 value: Math.round(dto.Trade.Notional),
               })
             }),
-            map(dto => mapFromTradeDto(dto.Trade)),
-            map(trade => createExecuteTradeResponse(trade, executeTradeRequest)),
+            map((dto) => mapFromTradeDto(dto.Trade)),
+            map((trade) => createExecuteTradeResponse(trade, executeTradeRequest)),
             takeUntil(timer(EXECUTION_REQUEST_TIMEOUT_MS)),
-            publish(request =>
+            publish((request) =>
               merge(
                 request,
 
                 // When the execution has taken a few seconds but we cannot assume its not going to go through
                 timer(EXECUTION_CLIENT_TIMEOUT_MS).pipe(
                   mapTo(
-                    createExecuteTradeResponseForError(
-                      'Trade Execution taking longer then Expected',
+                    createExecuteTradeResponseForWarning(
+                      'Trade execution taking longer than expected',
                       executeTradeRequest,
                     ),
                   ),

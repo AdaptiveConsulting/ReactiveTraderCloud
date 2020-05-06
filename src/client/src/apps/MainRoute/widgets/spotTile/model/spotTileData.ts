@@ -6,6 +6,8 @@ import { RfqState } from '../components/types'
 export interface LastTradeExecutionStatus {
   request: ExecuteTradeRequest
   hasError: boolean
+  hasWarning: boolean
+  warning?: string
   error?: string
   trade?: Trade
 }
