@@ -1,27 +1,33 @@
 import FSBL from '@chartiq/finsemble'
 
-export class FinsembleClient {
-  addListener(channel, callback) {
-    FSBL.Clients.RouterClient.addListener(channel, callback)
-  }
+const LOG_NAME = 'FSBL:'
 
-  transmit(topic, message) {
-    FSBL.Clients.RouterClient.transmit(topic, message)
-  }
+export function addListener(channel, callback) {
+  console.log(`${LOG_NAME} listen on channel ${channel}`)
+  FSBL.Clients.RouterClient.addListener(channel, callback)
+}
 
-  query(channel, payload, callback) {
-    FSBL.Clients.RouterClient.query(channel, payload, callback)
-  }
+export function transmit(channel, message) {
+  console.log(`${LOG_NAME} transmit message ${message} on channel ${channel}`)
+  FSBL.Clients.RouterClient.transmit(channel, message)
+}
 
-  getActiveDescriptors() {
-    FSBL.Clients.LauncherCLient.getActiveDescriptors((error, activeWindows) => {})
-  }
+export function query(channel, payload, callback) {
+  console.log(`${LOG_NAME} query with payload ${payload} on channel ${channel}`)
+  FSBL.Clients.RouterClient.query(channel, payload, callback)
+}
 
-  spawn(command, args, callback) {
-    FSBL.Clients.LauncherCLient.spawn(command, args, { addToWorkspace: true }, callback)
-  }
+export function getActiveDescriptors(callback) {
+  console.log(`${LOG_NAME} get active descriptors`)
+  FSBL.Clients.LauncherCLient.getActiveDescriptors(callback)
+}
 
-  alert(topic, frequency, identifier, message, params) {
-    FSBL.UserNotification.alert(topic, frequency, identifier, message, params)
-  }
+export function spawn(command, args, callback) {
+  console.log(`${LOG_NAME} spawn command ${command} with args ${args}`)
+  FSBL.Clients.LauncherCLient.spawn(command, args, { addToWorkspace: true }, callback)
+}
+
+export function alert(topic, frequency, identifier, message, params) {
+  console.log(`${LOG_NAME} alert on ${topic} message ${message}`)
+  FSBL.UserNotification.alert(topic, frequency, identifier, message, params)
 }
