@@ -56,8 +56,8 @@
     "@fortawesome/react-fontawesome": "^0.1.2",
     "@glue42/desktop": "^4.7.1",
     "@glue42/office": "^1.6.1",
-    "@types/react-measure": "^2.0.5",
     "@stomp/rx-stomp": "^0.3.4",
+    "@types/react-measure": "^2.0.5",
     "ag-grid-community": "^21.2.2",
     "ag-grid-react": "^21.2.2",
     "audio-recorder-polyfill": "^0.1.6",
@@ -139,7 +139,8 @@
     "typescript": "^3.8.3"
   },
   "optionalDependencies": {
-    "openfin-cli": "^2.0.12"
+    "openfin-cli": "^2.0.12",
+    "@chartiq/finsemble": "4.0.*"
   },
   "browserslist": [
     "> 1%",

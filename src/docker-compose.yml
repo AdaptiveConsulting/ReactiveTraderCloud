@@ -125,4 +125,5 @@ services:
       context: ./client
       args:
         - CI=true
+        - NPM_TOKEN=${NPM_TOKEN}
         - REACT_APP_BUILD_VERSION=${BUILD_VERSION}
