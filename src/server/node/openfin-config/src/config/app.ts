@@ -14,7 +14,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
       name,
       url: `https://web-${env}.adaptivecluster.com/`,
       uuid: `reactive-trader-cloud-web-${env}`,
-      applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-mark-large.png`,
+      applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png`,
       defaultWidth: 1280,
       defaultHeight: 900,
       minWidth: 800,

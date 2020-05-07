@@ -5,7 +5,7 @@
     "name": "Reactive Trader Cloud",
     "url": "https://web-demo.adaptivecluster.com/",
     "uuid": "reactive-trader-cloud-web-demo",
-    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png",
+    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png",
     "autoShow": true,
     "defaultWidth": 1280,
     "defaultHeight": 900,
@@ -29,7 +29,7 @@
   },
   "shortcut": {
     "company": "Adaptive Consulting",
-    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
+    "icon": "https://web-demo.adaptivecluster.com/static/media/reactive_trader.ico",
     "name": "Reactive Trader Cloud"
   },
   "appAssets": [
