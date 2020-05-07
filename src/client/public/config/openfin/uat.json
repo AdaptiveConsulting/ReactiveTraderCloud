@@ -5,7 +5,7 @@
     "name": "Reactive Trader Cloud (UAT)",
     "url": "https://web-uat.adaptivecluster.com",
     "uuid": "reactive-trader-cloud-web-uat",
-    "applicationIcon": "https://web-uat.adaptivecluster.com/static/media/adaptive-mark-large.png",
+    "applicationIcon": "https://web-uat.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png",
     "autoShow": true,
     "defaultWidth": 1280,
     "defaultHeight": 900,

@@ -33,7 +33,7 @@
     ],
     "alwaysOnTop": true,
     "icon": "http://localhost:3000/static/media/launcher-icon.ico",
-    "applicationIcon": "http://localhost:3000/static/media/launcher-icon.ico",
+    "applicationIcon": "http://localhost:3000/static/media/adaptive-icon-256x256.png",
     "contextMenu": true,
     "accelerator": {
       "devtools": true,

@@ -21,7 +21,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
       cornerRounding: {
         width: 4,
         height: 4
-      },  
+      },
       permissions: {
         System: {
           launchExternalProcess: true,
@@ -32,8 +32,8 @@ export default (env: string): OpenFinApplicationConfiguration => {
       shadow: true,
       frame: false,
       alwaysOnTop: true,
-      icon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
-      applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
+      icon: `https://web-${env}.adaptivecluster.com/static/media/icon.ico`,
+      applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-icon-256x256.png`,
       contextMenu: true,
       accelerator: {
         devtools: true,
