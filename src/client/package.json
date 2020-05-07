@@ -51,7 +51,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@chartiq/finsemble": "^4.1.1",
+    "@chartiq/finsemble": "4.0.*",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.2",
