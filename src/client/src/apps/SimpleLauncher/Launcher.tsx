@@ -42,7 +42,12 @@ const SearchButton: React.FC<{
   isSearchVisible: boolean
 }> = ({ onClick, isSearchVisible }) => (
   <SearchButtonContainer isSearchVisible={isSearchVisible}>
-    <LaunchButton iconFill="#CFCFCF" iconHoverFill="#FFFFFF" title="Search ecosystem" onClick={onClick}>
+    <LaunchButton
+      iconFill="#CFCFCF"
+      iconHoverFill="#FFFFFF"
+      title="Search ecosystem"
+      onClick={onClick}
+    >
       {SearchIcon}
     </LaunchButton>
   </SearchButtonContainer>
@@ -54,15 +59,10 @@ const Logo: React.FC<{
 }> = ({ isMoving, active }) => (
   <LogoLauncherContainer>
     {isMoving ? (
-      <AdaptiveLoader
-        size={21}
-        speed={isMoving ? 0.8 : 0}
-        seperation={1}
-        type="secondary"
-      />
+      <AdaptiveLoader size={21} speed={isMoving ? 0.8 : 0} seperation={1} type="secondary" />
     ) : (
-        <LogoIcon width={1.2} height={1.2} active={active} />
-      )}
+      <LogoIcon width={1.2} height={1.2} active={active} />
+    )}
   </LogoLauncherContainer>
 )
 
@@ -73,14 +73,12 @@ export const Launcher: React.FC = () => {
   const [isSearchBusy, setIsSearchBusy] = useState<boolean>(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const platform = usePlatform()
-  const [contacting, response, sendRequest] = useNlpService()
+  const [contacting, response, sendRequest, resetResponse] = useNlpService()
 
   useAppBoundReset(initialBounds)
 
   useEffect(() => {
-    getCurrentWindowBounds()
-      .then(setInitialBounds)
-      .catch(console.error)
+    getCurrentWindowBounds().then(setInitialBounds).catch(console.error)
   }, [])
 
   useEffect(() => {
@@ -145,6 +143,7 @@ export const Launcher: React.FC = () => {
           sendRequest={sendRequest}
           platform={platform}
           isSearchVisible={isSearchVisible}
+          resetResponse={resetResponse}
         />
         <SearchButton onClick={showSearch} isSearchVisible={isSearchVisible} />
         <MinExitContainer>
