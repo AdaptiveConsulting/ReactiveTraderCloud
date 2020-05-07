@@ -24,7 +24,7 @@ export async function showMarket({ window }: Platform) {
     {
       ...defaultConfig,
       name: 'market',
-      height: 900,
+      height: 600,
       url: `${windowOrigin}/tiles`,
       saveWindowState: true,
       ...updatedPosition,
