@@ -32,7 +32,7 @@
     "resizable": false,
     "shadow": true,
     "alwaysOnTop": true,
-    "icon": "https://web-uat.adaptivecluster.com/static/media/icon.ico",
+    "icon": "https://web-uat.adaptivecluster.com/static/media/adaptive.ico",
     "applicationIcon": "https://web-uat.adaptivecluster.com/static/media/adaptive-icon-256x256.png",
     "contextMenu": true,
     "accelerator": {
@@ -69,7 +69,7 @@
   ],
   "shortcut": {
     "company": "Adaptive Consulting",
-    "icon": "https://web-uat.adaptivecluster.com/static/media/icon.ico",
+    "icon": "https://web-uat.adaptivecluster.com/static/media/adaptive.ico",
     "name": "Reactive Ecosystem Launcher (UAT)"
   },
   "appAssets": [

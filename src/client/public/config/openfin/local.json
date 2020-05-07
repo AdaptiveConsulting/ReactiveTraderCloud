@@ -38,7 +38,7 @@
   "shortcut": {
     "company": "Adaptive Consulting",
     "description": "Desktop Reactive Trader Cloud",
-    "icon": "http://localhost:3000/static/media/icon.ico",
+    "icon": "http://localhost:3000/static/media/reactive_trader.ico",
     "name": "Reactive Trader Cloud (LOCAL)"
   },
   "appAssets": [

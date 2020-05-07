@@ -32,7 +32,7 @@
     "resizable": false,
     "shadow": true,
     "alwaysOnTop": true,
-    "icon": "https://web-dev.adaptivecluster.com/static/media/icon.ico",
+    "icon": "https://web-dev.adaptivecluster.com/static/media/adaptive.ico",
     "applicationIcon": "https://web-dev.adaptivecluster.com/static/media/adaptive-icon-256x256.png",
     "contextMenu": true,
     "accelerator": {
