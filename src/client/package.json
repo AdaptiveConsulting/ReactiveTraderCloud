@@ -51,7 +51,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@chartiq/finsemble": "4.0.*",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.2",
@@ -140,7 +139,8 @@
     "typescript": "^3.8.3"
   },
   "optionalDependencies": {
-    "openfin-cli": "^2.0.12"
+    "openfin-cli": "^2.0.12",
+    "@chartiq/finsemble": "4.0.*"
   },
   "browserslist": [
     "> 1%",
