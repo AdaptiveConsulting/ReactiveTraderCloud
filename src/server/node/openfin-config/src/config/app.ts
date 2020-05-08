@@ -9,7 +9,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
 
   return merge(baseConfig, {
     devtools_port: 9090,
-    splashScreenImage: `https://web-${env}.adaptivecluster.com/static/media/splash-screen.jpg`,
+    splashScreenImage: `https://web-${env}.adaptivecluster.com/static/media/splash-screen.png`,
     startup_app: {
       name,
       url: `https://web-${env}.adaptivecluster.com/`,
@@ -24,7 +24,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
     },
     shortcut: {
       company: 'Adaptive Consulting',
-      icon: `https://web-${env}.adaptivecluster.com/static/media/icon.ico`,
+      icon: `https://web-${env}.adaptivecluster.com/static/media/reactive-trader.ico`,
       name,
     },
     appAssets: [

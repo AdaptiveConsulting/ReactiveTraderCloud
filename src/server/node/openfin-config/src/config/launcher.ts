@@ -32,7 +32,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
       shadow: true,
       frame: false,
       alwaysOnTop: true,
-      icon: `https://web-${env}.adaptivecluster.com/static/media/icon.ico`,
+      icon: `https://web-${env}.adaptivecluster.com/static/media/adaptive.ico`,
       applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-icon-256x256.png`,
       contextMenu: true,
       accelerator: {
@@ -48,7 +48,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
     },
     shortcut: {
       company: 'Adaptive Consulting',
-      icon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
+      icon: `https://web-${env}.adaptivecluster.com/static/media/adaptive.ico`,
       name,
     },
     appAssets: [
