@@ -10,12 +10,12 @@ export const mapIntent = (response: DetectIntentResponse): string => {
   switch (response.queryResult.intent.displayName) {
     case SPOT_QUOTE_INTENT:
       const currencyPair = response.queryResult.parameters.fields.CurrencyPairs.stringValue
-      result = `Open ${currencyPair}`
+      result = `Open ${currencyPair} Tile`
       break
     case MARKET_INFO_INTENT:
-      return `Open market view`
+      return `Open Live Rates`
     case TRADES_INFO_INTENT:
-      return `Open blotter`
+      return `Open Trades`
     default:
   }
 
