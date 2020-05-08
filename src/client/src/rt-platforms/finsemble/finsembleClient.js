@@ -1,4 +1,8 @@
-import FSBL from '@chartiq/finsemble'
+try {
+  var FSBL = require('@chartiq/finsemble')
+} catch (er) {
+  FSBL = null
+}
 
 const LOG_NAME = 'FSBL:'
 

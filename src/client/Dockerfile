@@ -7,11 +7,11 @@ ARG REACT_APP_BUILD_VERSION
 
 COPY .npmrc .npmrc
 COPY ./package*.json ./
-RUN npm ci
+RUN npm install
 RUN rm -f .npmrc
 COPY . .
 
-ENV CI=$CI
+ENV CI=false
 ENV NPM_TOKEN=$NPM_TOKEN
 ENV REACT_APP_BUILD_VERSION=$REACT_APP_BUILD_VERSION
 
