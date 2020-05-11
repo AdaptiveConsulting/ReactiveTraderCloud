@@ -16,7 +16,7 @@ const defaultWindowOptions: OpenFinWindowOptions = {
   defaultCentered: true,
   frame: false,
   shadow: true,
-  icon: `${ORIGIN}/static/media/icon.ico`,
+  icon: `${ORIGIN}/static/media/adaptive.ico`,
   accelerator:
     process.env.NODE_ENV !== 'development'
       ? {}
@@ -121,7 +121,7 @@ const baseAppConfigs: ApplicationConfig[] = [
       windowOptions: {
         ...defaultWindowOptions,
         preloadScripts: excelPreloadScripts,
-        icon: `${ORIGIN}/static/media/icon.ico`,
+        icon: `${ORIGIN}/static/media/reactive-trader.ico`,
       },
     },
   },
@@ -140,7 +140,7 @@ const baseAppConfigs: ApplicationConfig[] = [
       windowOptions: {
         ...defaultWindowOptions,
         frame: false,
-        icon: `${ORIGIN}/static/media/logo-ra.png`,
+        icon: `${ORIGIN}/static/media/reactive-analytics.ico`,
       },
     },
   },

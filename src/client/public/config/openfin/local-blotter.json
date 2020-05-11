@@ -1,11 +1,11 @@
 {
   "devtools_port": 9090,
-  "splashScreenImage": "http://localhost:3000/static/media/splash-screen.jpg",
+  "splashScreenImage": "http://localhost:3000/static/media/splash-screen.png",
   "startup_app": {
     "name": "Reactive Trader Cloud Blotter (LOCAL)",
     "url": "http://localhost:3000/blotter",
     "uuid": "reactive-trader-cloud-blotter-local",
-    "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
+    "applicationIcon": "http://localhost:3000/static/media/adaptive-icon-256x256.png",
     "autoShow": true,
     "defaultWidth": 1280,
     "defaultHeight": 900,
@@ -24,7 +24,7 @@
     }
   },
   "runtime": {
-    "version": "13.76.44.21"
+    "version": "15.80.49.30"
   },
   "services": [
     {

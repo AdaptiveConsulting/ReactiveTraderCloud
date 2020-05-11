@@ -21,7 +21,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
       cornerRounding: {
         width: 4,
         height: 4
-      },  
+      },
       permissions: {
         System: {
           launchExternalProcess: true,
@@ -32,8 +32,8 @@ export default (env: string): OpenFinApplicationConfiguration => {
       shadow: true,
       frame: false,
       alwaysOnTop: true,
-      icon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
-      applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
+      icon: `https://web-${env}.adaptivecluster.com/static/media/adaptive.ico`,
+      applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-icon-256x256.png`,
       contextMenu: true,
       accelerator: {
         devtools: true,
@@ -44,11 +44,11 @@ export default (env: string): OpenFinApplicationConfiguration => {
     },
     runtime: {
       arguments: '--remote-debugging-port=9222',
-      version: '13.76.44.21',
+      version: '15.80.49.30',
     },
     shortcut: {
       company: 'Adaptive Consulting',
-      icon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
+      icon: `https://web-${env}.adaptivecluster.com/static/media/adaptive.ico`,
       name,
     },
     appAssets: [

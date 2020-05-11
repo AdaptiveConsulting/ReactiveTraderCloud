@@ -73,14 +73,12 @@ export const Launcher: React.FC = () => {
   const [isSearchBusy, setIsSearchBusy] = useState<boolean>(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const platform = usePlatform()
-  const [contacting, response, sendRequest] = useNlpService()
+  const [contacting, response, sendRequest, resetResponse] = useNlpService()
 
   useAppBoundReset(initialBounds)
 
   useEffect(() => {
-    getCurrentWindowBounds()
-      .then(setInitialBounds)
-      .catch(console.error)
+    getCurrentWindowBounds().then(setInitialBounds).catch(console.error)
   }, [])
 
   useEffect(() => {
@@ -145,6 +143,7 @@ export const Launcher: React.FC = () => {
           sendRequest={sendRequest}
           platform={platform}
           isSearchVisible={isSearchVisible}
+          resetResponse={resetResponse}
         />
         <SearchButton onClick={showSearch} isSearchVisible={isSearchVisible} />
         <MinExitContainer>
