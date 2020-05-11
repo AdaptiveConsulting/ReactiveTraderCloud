@@ -10,7 +10,7 @@
     "defaultWidth": 500
   },
   "runtime": {
-    "version": "13.76.44.21"
+    "version": "15.80.49.30"
   },
   "serviceConfiguration": {
     "applicationDirectory": "http://localhost:3000/config/openfin/local-app-directory.json"
