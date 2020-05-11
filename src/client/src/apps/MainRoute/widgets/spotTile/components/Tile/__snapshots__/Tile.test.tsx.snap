@@ -253,6 +253,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 
 .c1:hover {
   background-color: #3d4455;
+  box-shadow: none;
 }
 
 .c18 {
@@ -742,6 +743,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
 
 .c1:hover {
   background-color: #3d4455;
+  box-shadow: none;
 }
 
 .c21 {
@@ -1272,6 +1274,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 
 .c1:hover {
   background-color: #3d4455;
+  box-shadow: none;
 }
 
 .c22 {
@@ -1801,6 +1804,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
 
 .c1:hover {
   background-color: #3d4455;
+  box-shadow: none;
 }
 
 .c19 {
@@ -2283,6 +2287,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 
 .c1:hover {
   background-color: #3d4455;
+  box-shadow: none;
 }
 
 .c20 {
@@ -2817,6 +2822,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 
 .c1:hover {
   background-color: #3d4455;
+  box-shadow: none;
 }
 
 .c19 {
@@ -3348,6 +3354,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
 
 .c1:hover {
   background-color: #3d4455;
+  box-shadow: none;
 }
 
 .c26 {
