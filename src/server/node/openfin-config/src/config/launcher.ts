@@ -44,7 +44,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
     },
     runtime: {
       arguments: '--remote-debugging-port=9222',
-      version: '13.76.44.21',
+      version: '15.80.49.30',
     },
     shortcut: {
       company: 'Adaptive Consulting',

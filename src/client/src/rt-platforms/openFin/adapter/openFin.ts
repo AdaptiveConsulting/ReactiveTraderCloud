@@ -95,12 +95,11 @@ export default class OpenFin implements Platform {
       create({
         body: this.getNotificationBody(message as NotificationMessage),
         title: this.getNotificationTitle(message as NotificationMessage),
-        icon: `${location.protocol}//${location.host}/static/media/adaptive.ico`,
+        icon: `${location.protocol}//${location.host}/static/media/reactive-trader.ico`,
         customData: message,
         buttons: [
           {
             title: 'Highlight trade in blotter',
-            iconUrl: `${location.protocol}//${location.host}/static/media/adaptive.ico`,
             onClick: { task: 'highlight-trade' },
           },
         ],
