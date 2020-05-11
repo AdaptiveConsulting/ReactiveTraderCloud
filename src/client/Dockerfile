@@ -16,7 +16,7 @@ RUN if [[ -n "$NPM_TOKEN" ]] ; then echo "Installing all packages" && npm ci ; e
 COPY . .
 
 RUN npm run test -- --coverage
-RUN npm run build
+RUN if [[ -n "$NPM_TOKEN" ]] ; then npm run build:finsemble ; else npm run build ; fi
 RUN npm run storybook:build
 
 FROM nginx
