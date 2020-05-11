@@ -66,7 +66,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
     >
       <TearOff
         id="liveRates"
-        dragTearOff
+        dragTearOff={false}
         externalWindowProps={addLayoutToConfig(externalWindowDefault.liveRatesRegion(), liveRates)}
         render={(popOut, tornOff) => (
           <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
