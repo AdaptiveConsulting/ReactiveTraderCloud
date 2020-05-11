@@ -34,12 +34,12 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
   const row =
     quote && quote.symbol
       ? [
-          {
-            ...quote,
-            priceMovementType: <MovementIcon direction={quote.priceMovementType} />,
-            valueDate: DateTime.fromISO(quote.valueDate).toFormat('yyyy LLL dd / HH:mm:ss'),
-          },
-        ]
+        {
+          ...quote,
+          priceMovementType: <MovementIcon direction={quote.priceMovementType} />,
+          valueDate: DateTime.fromISO(quote.valueDate).toFormat('dd LLL yyyy / HH:mm:ss'),
+        },
+      ]
       : []
 
   if (!quote) {
