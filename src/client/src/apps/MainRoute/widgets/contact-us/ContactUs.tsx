@@ -24,9 +24,7 @@ const ContactUs: React.FC = () => {
         <span>+1 929 205 4900</span>
       </div>
 
-
       <Input value="sales@weareadaptive.com" />
-
 
       <Link
         onClick={onClick(
