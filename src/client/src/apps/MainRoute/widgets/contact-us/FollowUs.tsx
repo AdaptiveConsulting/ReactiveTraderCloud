@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { ContactUsContent, Link } from './styled'
-import ReactGA from 'react-ga'
+import { handleBrowserLink } from './utils'
+import { EventArgs } from 'react-ga'
 
 const LINKEDIN_URL = 'https://www.linkedin.com/company/adaptive-consulting-ltd/'
 const TWITTER_URL = 'https://twitter.com/WeAreAdaptive'
@@ -8,13 +9,11 @@ const GITHUB_URL = 'https://github.com/adaptiveConsulting/'
 
 const FollowUs: React.FC = () => {
   const onClick = useCallback(
-    (args: ReactGA.EventArgs, href: string) => () => {
-      ReactGA.event(args)
-      window.open(href)
+    (args: EventArgs, href: string) => () => {
+      handleBrowserLink(args, href);
     },
     [],
   )
-
   return (
     <ContactUsContent>
       <span className="header">Follow us on</span>

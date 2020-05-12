@@ -3,6 +3,8 @@ import { Popup } from 'rt-components'
 
 const buttonHeight = '2rem'
 
+
+
 export const ContactUsPopup = styled(Popup)`
   box-shadow: 0 7px 26px 0 rgba(23, 24, 25, 0.5);
   bottom: calc(${buttonHeight} + 0.25rem);
@@ -39,4 +41,9 @@ export const Link = styled.span`
   text-decoration: underline;
   cursor: pointer;
   margin-bottom: 1rem;
+`
+
+export const Input = styled.input`
+  margin-bottom: 1rem;
+  width: 100%;
 `

@@ -1,15 +1,14 @@
 import React, { useCallback } from 'react'
-import { ContactUsContent, Link } from './styled'
-import ReactGA from 'react-ga'
+import { ContactUsContent, Link, Input } from './styled'
+import { handleBrowserLink } from './utils';
+import { EventArgs } from 'react-ga'
 
-const SALES_EMAIL = 'mailto:sales@weareadaptive.com'
 const WEBSITE = 'https://weareadaptive.com'
 
 const ContactUs: React.FC = () => {
   const onClick = useCallback(
-    (args: ReactGA.EventArgs, href: string) => () => {
-      ReactGA.event(args)
-      window.open(href)
+    (args: EventArgs, href: string) => () => {
+      handleBrowserLink(args, href);
     },
     [],
   )
@@ -25,18 +24,10 @@ const ContactUs: React.FC = () => {
         <span>+1 929 205 4900</span>
       </div>
 
-      <Link
-        onClick={onClick(
-          {
-            category: 'Contact Link',
-            action: 'click',
-            label: 'Sales Email Link',
-          },
-          SALES_EMAIL,
-        )}
-      >
-        sales@weareadaptive.com
-      </Link>
+
+      <Input value="sales@weareadaptive.com" />
+
+
       <Link
         onClick={onClick(
           {
