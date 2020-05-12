@@ -42,8 +42,8 @@ export default class OpenFin implements Platform {
     exit: () => fin.desktop.Application.getCurrent().close(),
     open: (id: string, config: AppConfig) =>
       new Promise<string>((resolve, reject) => {
-        fin.desktop.System.getAllApplications(apps => {
-          const isRunning = apps.find(app => app.isRunning && app.uuid === id)
+        fin.desktop.System.getAllApplications((apps) => {
+          const isRunning = apps.find((app) => app.isRunning && app.uuid === id)
           if (isRunning) {
             // tslint:disable-next-line:no-unused-expression
             if (typeof config.topic === 'undefined') {
@@ -69,9 +69,9 @@ export default class OpenFin implements Platform {
             () =>
               app.run(
                 () => setTimeout(() => resolve(id), 1000),
-                err => reject(err),
+                (err) => reject(err),
               ),
-            err => reject(err),
+            (err) => reject(err),
           )
         })
       }),
@@ -95,12 +95,11 @@ export default class OpenFin implements Platform {
       create({
         body: this.getNotificationBody(message as NotificationMessage),
         title: this.getNotificationTitle(message as NotificationMessage),
-        icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
+        icon: `${location.protocol}//${location.host}/static/media/reactive-trader.ico`,
         customData: message,
         buttons: [
           {
             title: 'Highlight trade in blotter',
-            iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
             onClick: { task: 'highlight-trade' },
           },
         ],

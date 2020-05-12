@@ -19,7 +19,7 @@ export default (env: string): OpenFinApplicationConfiguration => ({
     ],
   },
   runtime: {
-    version: '13.76.44.21',
+    version: '15.80.49.30',
   },
   services: [
     {

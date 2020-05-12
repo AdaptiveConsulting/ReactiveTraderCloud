@@ -8,6 +8,7 @@ export const useNlpService = (): [
   boolean,
   DetectIntentResponse | undefined,
   (requestString: string) => void,
+  () => void,
 ] => {
   const [response, setResponse] = useState<DetectIntentResponse>()
   const [contacting, setContacting] = useState(false)
@@ -35,7 +36,7 @@ export const useNlpService = (): [
         )
         .pipe(timeout(10000), take(1))
         .subscribe(
-          result => {
+          (result) => {
             setContacting(false)
             setResponse(result[0])
           },
@@ -50,5 +51,7 @@ export const useNlpService = (): [
     [serviceStub],
   )
 
-  return [contacting, response, sendRequest]
+  const resetResponse = () => setResponse(undefined)
+
+  return [contacting, response, sendRequest, resetResponse]
 }

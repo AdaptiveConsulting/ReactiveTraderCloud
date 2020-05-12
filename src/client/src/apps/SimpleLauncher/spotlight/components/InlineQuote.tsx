@@ -37,7 +37,7 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
           {
             ...quote,
             priceMovementType: <MovementIcon direction={quote.priceMovementType} />,
-            valueDate: DateTime.fromISO(quote.valueDate).toFormat('yyyy LLL dd / HH:mm:ss'),
+            valueDate: DateTime.fromISO(quote.valueDate).toFormat('dd LLL yyyy / HH:mm:ss'),
           },
         ]
       : []

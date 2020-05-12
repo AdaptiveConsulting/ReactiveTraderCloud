@@ -28,7 +28,7 @@ interface RouteWrapperProps {
   title?: string | SymbolParamObject
 }
 
-const RouteWrapper: React.FC<RouteWrapperProps> = props => {
+const RouteWrapper: React.FC<RouteWrapperProps> = (props) => {
   const { children, windowType = 'main', title } = props
   const [fromLauncher, setFromLauncher] = useState<boolean>(false)
   const platform = usePlatform()
@@ -37,7 +37,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
 
   useEffect(() => {
     isParentAppOpenfinLauncher()
-      .then(isLauncher => {
+      .then((isLauncher) => {
         setFromLauncher(isLauncher)
       })
       .catch(() => {
