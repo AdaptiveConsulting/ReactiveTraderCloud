@@ -40,14 +40,14 @@ const notionalList = [
 ]
 
 const envTitles = [
-  'Reactive Trader Cloud',
-  'Reactive Trader Cloud (DEV)',
-  'Reactive Trader Cloud (LOCAL)',
-  'Reactive Trader Cloud (UAT)',
-  'Reactive Trader Cloud (UNKNOWN)',
+  'Reactive Trader',
+  'Reactive Trader (Dev)',
+  'Reactive Trader (Local)',
+  'Reactive Trader (UAT)',
+  'Reactive Trader (Unknown)',
 ]
 
-describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
+describe('UI Tests for Reactive Trader Web Application', async () => {
   beforeAll(async () => {
     browser = await getBrowser()
     mainPage = new MainPage(browser)

@@ -5,7 +5,7 @@ import base from './base'
 /* eslint-disable @typescript-eslint/camelcase */
 export default (env: string): OpenFinApplicationConfiguration => {
   const baseConfig = base(env)
-  const name = `Reactive Ecosystem Launcher${env !== 'demo' ? ` (${env.toUpperCase()})` : ''}`
+  const name = `Reactive Launcher${env !== 'demo' ? ` (${env.toUpperCase()})` : ''}`
 
   return merge(baseConfig, {
     startup_app: {
@@ -32,7 +32,6 @@ export default (env: string): OpenFinApplicationConfiguration => {
       shadow: true,
       frame: false,
       alwaysOnTop: true,
-      icon: `https://web-${env}.adaptivecluster.com/static/media/adaptive.ico`,
       applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-icon-256x256.png`,
       contextMenu: true,
       accelerator: {
@@ -44,7 +43,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
     },
     runtime: {
       arguments: '--remote-debugging-port=9222',
-      version: '15.80.49.30',
+      version: '13.76.44.21',
     },
     shortcut: {
       company: 'Adaptive Consulting',
