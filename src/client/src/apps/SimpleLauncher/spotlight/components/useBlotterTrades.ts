@@ -28,24 +28,26 @@ export const useBlotterTrades = (filters?: BlotterFilters) => {
           }),
         ),
         scan<ReadonlyArray<Trade>, Map<number, Trade>>((acc, trades) => {
-          trades.forEach(trade => acc.set(trade.tradeId, trade))
+          trades.forEach((trade) => acc.set(trade.tradeId, trade))
           return acc
         }, new Map<number, Trade>()),
         map((trades: TradeLookup) => Array.from(trades.values()).reverse()),
       )
       .subscribe(
-        result => {
+        (result) => {
           const newTradeCount = result.length
-          const newTrades = result.slice(
-            0,
-            filters && typeof filters.count !== 'undefined' ? filters.count : MAX_TRADES,
-          )
-
+          const newTrades = result
+            .filter(
+              (t) =>
+                filters?.dealtCurrency?.includes(t.dealtCurrency) ||
+                filters?.symbol?.includes(t.symbol),
+            )
+            .slice(0, filters && typeof filters.count !== 'undefined' ? filters.count : MAX_TRADES)
           setTrades(newTrades)
 
           console.info(`Showing ${newTrades.length} of ${newTradeCount} trades.`)
         },
-        error => {
+        (error) => {
           console.error(`Error subscribing to inline blotter service: ${error}`)
         },
       )
