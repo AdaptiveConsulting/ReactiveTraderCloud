@@ -19,8 +19,7 @@
     "frame": false,
     "backgroundColor": "#444C5F",
     "alwaysOnTop": true,
-    "icon": "https://web-demo.adaptivecluster.com/static/media/adaptive.ico",
-    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-icon-256x256.png",
+    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png",
     "contextMenu": true,
     "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
     "preload": [
@@ -40,11 +39,11 @@
   },
   "runtime": {
     "arguments": "--remote-debugging-port=9222",
-    "version": "15.80.49.30"
+    "version": "13.76.44.21"
   },
   "shortcut": {
     "company": "Adaptive Consulting",
-    "icon": "https://web-demo.adaptivecluster.com/static/media/adaptive.ico",
+    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
     "name": "Reactive Ecosystem Launcher"
   },
   "appAssets": [
