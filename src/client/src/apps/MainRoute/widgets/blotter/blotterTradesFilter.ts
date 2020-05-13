@@ -53,14 +53,14 @@ export function filterBlotterTrades(
   trades: ReadonlyArray<Trade>,
   filters: BlotterFilters,
 ): ReadonlyArray<Trade> {
-  if (!filters || typeof filters.count === 'undefined') {
+  if (!filters) {
     return trades
   }
 
   const { count } = filters
   filters = validateFilters(filters || {})
-  trades = trades.filter(trade =>
-    tradeFilterFields.every(filterField =>
+  trades = trades.filter((trade) =>
+    tradeFilterFields.every((filterField) =>
       tradeMatchesFilter(trade, filterField, filters[filterField]),
     ),
   )
