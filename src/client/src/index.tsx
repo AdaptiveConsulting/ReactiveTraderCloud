@@ -6,6 +6,7 @@ import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
 import { getSymphonyPlatform } from 'rt-platforms'
 import { getEnvironment } from 'rt-util/getEnvironment'
+import { getAppName } from 'rt-util'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -26,17 +27,9 @@ const APP_PATHS = {
   STYLEGUIDE: '/styleguide',
 }
 
-const envTitles = {
-  localhost: '(LOCAL)',
-  dev: '(DEV)',
-  uat: '(UAT)',
-  demo: '',
-  unknown: '(UNKNOWN)',
-}
-
 const appTitles = {
-  [APP_PATHS.LAUNCHER]: 'Reactive Ecosystem Launcher',
-  [APP_PATHS.TRADER]: 'Reactive Trader Cloud',
+  [APP_PATHS.LAUNCHER]: 'Reactive Launcher',
+  [APP_PATHS.TRADER]: 'Reactive Trader',
   [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader',
 }
 
@@ -45,7 +38,7 @@ async function init() {
 
   const env = getEnvironment()
 
-  document.title = `${appTitles[pathname] || document.title} ${envTitles[env || 'unknown']}`
+  document.title = getAppName(appTitles[pathname] || document.title)
 
   ReactGA.set({
     dimension3: env,

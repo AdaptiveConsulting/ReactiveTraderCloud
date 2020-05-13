@@ -5,7 +5,7 @@ import base from './base'
 /* eslint-disable @typescript-eslint/camelcase */
 export default (env: string): OpenFinApplicationConfiguration => {
   const baseConfig = base(env)
-  const name = `Reactive Trader Cloud${env !== 'demo' ? ` (${env.toUpperCase()})` : ''}`
+  const name = `Reactive Trader${env !== 'demo' ? ` (${env.toUpperCase()})` : ''}`
 
   return merge(baseConfig, {
     devtools_port: 9090,
@@ -13,7 +13,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
     startup_app: {
       name,
       url: `https://web-${env}.adaptivecluster.com/`,
-      uuid: `reactive-trader-cloud-web-${env}`,
+      uuid: `reactive-trader-${env}`,
       applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png`,
       defaultWidth: 1280,
       defaultHeight: 900,

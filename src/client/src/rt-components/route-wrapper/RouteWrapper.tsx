@@ -1,8 +1,9 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 import { styled } from 'rt-theme'
 import { Platform, usePlatform, isParentAppOpenfinLauncher } from 'rt-platforms'
+import { getAppName } from 'rt-util'
 
-const RouteStyle = styled('div') <{ platform: Platform }>`
+const RouteStyle = styled('div')<{ platform: Platform }>`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
@@ -54,7 +55,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
         close={fromLauncher && window.close}
         popIn={!fromLauncher && window.close}
         minimize={window.minimize}
-        title={`Reactive Trader - ${title}`}
+        title={`${getAppName()} - ${title}`}
         isBlotterOrTrade={isBlotterOrTrade}
       />
     ) : null

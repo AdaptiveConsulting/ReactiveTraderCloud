@@ -10,6 +10,7 @@ import {
 } from 'apps/SimpleLauncher/icons'
 import { isCurrentWindowDocked } from '../adapter'
 import { UndockIcon } from '../../../rt-components'
+import { getAppName } from 'rt-util'
 
 export interface ControlProps {
   minimize?: () => void
@@ -47,7 +48,7 @@ export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
 
 export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close, popIn }) => (
   <React.Fragment>
-    {maximize ? <TitleContainer>Reactive Trader</TitleContainer> : null}
+    {maximize ? <TitleContainer>{getAppName()}</TitleContainer> : null}
     {minimize ? (
       <HeaderControl onClick={minimize} data-qa="openfin-chrome__minimize">
         {minimiseNormalIcon}
@@ -93,7 +94,7 @@ const OpenFinUndockControl: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    isCurrentWindowDocked().then((isDocked) => {
+    isCurrentWindowDocked().then(isDocked => {
       setIsWindowDocked(isDocked)
     })
   }, [])
@@ -180,8 +181,8 @@ const UndockControl = styled(HeaderControl)<{ isWindowDocked: boolean }>`
 `
 
 export const Root = styled.div`
-  background-color: ${(props) => props.theme.core.darkBackground};
-  color: ${(props) => props.theme.core.textColor};
+  background-color: ${props => props.theme.core.darkBackground};
+  color: ${props => props.theme.core.textColor};
 
   height: 100%;
   width: 100%;
