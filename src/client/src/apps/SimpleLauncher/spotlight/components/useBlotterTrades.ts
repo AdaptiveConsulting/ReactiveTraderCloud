@@ -8,6 +8,8 @@ type TradeLookup = Map<number, Trade>
 
 const MAX_TRADES = 20
 
+const isArrayFilterEmpty = (arr?: any) => arr?.length === 1 && arr[0] === ''
+
 export const useBlotterTrades = (filters?: BlotterFilters) => {
   const [trades, setTrades] = useState<Trade[]>([])
   const trades$ = useContext(TradeUpdatesContext)
@@ -36,13 +38,19 @@ export const useBlotterTrades = (filters?: BlotterFilters) => {
       .subscribe(
         (result) => {
           const newTradeCount = result.length
-          const newTrades = result
-            .filter(
+          let newTrades = result.slice(
+            0,
+            filters && typeof filters.count !== 'undefined' ? filters.count : MAX_TRADES,
+          )
+
+          if (!isArrayFilterEmpty(filters?.dealtCurrency) || !isArrayFilterEmpty(filters?.symbol)) {
+            newTrades = newTrades.filter(
               (t) =>
                 filters?.dealtCurrency?.includes(t.dealtCurrency) ||
                 filters?.symbol?.includes(t.symbol),
             )
-            .slice(0, filters && typeof filters.count !== 'undefined' ? filters.count : MAX_TRADES)
+          }
+
           setTrades(newTrades)
 
           console.info(`Showing ${newTrades.length} of ${newTradeCount} trades.`)
