@@ -17,7 +17,9 @@ const Header: React.FC = ({ children }) => {
 
   return (
     <Root>
-      <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
+      <LogoWrapper>
+        <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
+      </LogoWrapper>
       <Fill />
       <HeaderNav>
         <LoginControls />
@@ -27,6 +29,12 @@ const Header: React.FC = ({ children }) => {
     </Root>
   )
 }
+
+const LogoWrapper = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`
 
 const Root = styled.div`
   width: calc(100% - 2rem);
