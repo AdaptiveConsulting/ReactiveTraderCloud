@@ -46,7 +46,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
       })
   }, [])
 
-  const isBlotterOrTrade = title === 'trades' || title === 'live - rates'
+  const isBlotterOrTrade = title === 'trades' || title === 'live rates'
 
   const Header = windowType === 'main' ? PlatformControls : null
   const subheader =
