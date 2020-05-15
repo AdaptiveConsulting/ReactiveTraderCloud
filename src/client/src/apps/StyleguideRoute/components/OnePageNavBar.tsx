@@ -9,11 +9,11 @@ import { mapMarginPaddingProps } from '../styled/mapMarginPaddingProps'
 
 export type NavSection =
   | {
-      path: string
-      title: string
-      Section: React.ComponentType
-      ref: React.RefObject<HTMLDivElement>
-    }
+    path: string
+    title: string
+    Section: React.ComponentType
+    ref: React.RefObject<HTMLDivElement>
+  }
   | undefined
 
 export interface OnePageNavBar {
@@ -21,7 +21,7 @@ export interface OnePageNavBar {
 }
 
 const MAX_SCROLL_HEIGHT = 100000000
-const DEFAULT_OFFSET = 120
+const DEFAULT_OFFSET = 130
 const isActive = (to: string): string => (window.location.hash === `#${to}` ? 'active' : '')
 
 const OnePageNavBar: React.FC<OnePageNavBar> = props => {
@@ -152,9 +152,9 @@ const OnePageNavLink = styled(Link)`
   &.active {
     border-bottom: 3px solid white;
     ${({ theme }) =>
-      css({
-        borderBottom: `3px solid ${theme.accents.primary.base}`,
-      })};
+    css({
+      borderBottom: `3px solid ${theme.accents.primary.base}`,
+    })};
   }
 `
 
