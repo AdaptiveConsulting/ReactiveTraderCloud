@@ -25,7 +25,7 @@ export const Router: FC = () => (
     <Route
       path="/tiles"
       render={() => (
-        <RouteWrapper windowType="sub" title="live - rates">
+        <RouteWrapper windowType="sub" title="live rates">
           <TileRoute />
         </RouteWrapper>
       )}
