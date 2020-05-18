@@ -3,12 +3,10 @@ const getJSON = require('get-json')
 const fs = require('fs')
 
 const getInstallerGeneratorUrl = async (fileName, appJSONUrl, os) => {
-  // replace https with http as the SSL certificate causes issues currently
-  const appJsonHttp = appJSONUrl.replace('https','http')
-  const installerGeneratorUrl = `https://install.openfin.co/download/?config=${appJsonHttp}&os=${os}`;
+  const installerGeneratorUrl = `https://install.openfin.co/download/?config=${appJSONUrl}&os=${os}`;
 
   if (os === 'osx') {
-    const appJSON = await getJSON(appJsonHttp)
+    const appJSON = await getJSON(appJSONUrl)
     const appName = appJSON.startup_app ? appJSON.startup_app.name : appJSON.shortcut.name
     const iconFile = appJSON.startup_app ? appJSON.startup_app.applicationIcon : appJSON.snapshot.windows[0].applicationIcon
     return `${installerGeneratorUrl}&internal=true&appName=${appName}&iconFile=${iconFile}`

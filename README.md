@@ -1,4 +1,7 @@
-[![CI](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/workflows/CI/badge.svg)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/actions?query=workflow%3ACI)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AdaptiveConsulting/ReactiveTraderCloud/CI)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/actions?query=workflow%3ACI)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/AdaptiveConsulting/ReactiveTraderCloud)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/latest)
+[![GitHub](https://img.shields.io/github/license/AdaptiveConsulting/ReactiveTraderCloud)](https://opensource.org/licenses/Apache-2.0
+)
 
 [![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/adaptive-logo.png)](http://weareadaptive.com/)
 
@@ -14,19 +17,27 @@ Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full 
 
 ## Demo
 
-- [Web & Mobile][rt-web]
-- [OpenFin OS] installer: [Windows][openfin-installer-win], [Mac][openfin-installer-mac]
-- [Finsemble] smart desktop installer: [Windows][finsemble-installer-win]
-- [Storybook]: To explore individual components from our living [style guide]
+- [Web & Mobile]
+- [OpenFin OS] installer: [Windows][openfin-win], [Mac][openfin-mac]
+- [Finsemble] smart desktop installer: [Windows][finsemble-win]
+- [Style guide]: Colours, iconography, typography, atoms and molecules
+- [Storybook]: Explore individual React components
 
-[rt-web]: https://web-demo.adaptivecluster.com\
+[web & mobile]: https://web-demo.adaptivecluster.com
+
 [openfin os]: https://openfin.co/
-[openfin-installer-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fweb-demo.adaptivecluster.com%2Fopenfin%2Fapp.json&fileName=reactive-trader-installer
-[openfin-installer-mac]: https://install.openfin.co/download/?os=osx&config=http%3A%2F%2Fweb-demo.adaptivecluster.com%2Fopenfin%2Fapp.json&fileName=reactive-trader-installer&internal=true&iconFile=https%3A%2F%2Fweb-demo.adaptivecluster.com%2Fstatic%2Fmedia%2Fadaptive-mark-large.png&appName=Reactive%20Trader%20Cloud
+
 [finsemble]: https://www.chartiq.com/finsemble
-[finsemble-installer-win]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsembleSetup.exe
+
 [storybook]: https://web-demo.adaptivecluster.com/storybook
+
 [style guide]: https://web-demo.adaptivecluster.com/styleguide
+
+[openfin-win]: https://install.openfin.co/download/?fileName=Reactive-Launcher-Demo&config=https://web-demo.adaptivecluster.com/openfin/launcher.json
+
+[openfin-mac]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Launcher-Demo&config=http://web-demo.adaptivecluster.com/openfin/launcher.json&internal=true&iconFile=https://web-demo.adaptivecluster.com/static/media/adaptive-icon-256x256.png&appName=Reactive%20Launcher
+
+[finsemble-win]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsembleSetup.exe
 
 ## Installation
 

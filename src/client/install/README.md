@@ -39,19 +39,19 @@ It installs the Finsemble toolbar and launches it on your desktop, including Rea
 
 [of-win-dev-app]: https://install.openfin.co/download/?fileName=Reactive-Trader-Dev&config=https://web-dev.adaptivecluster.com/openfin/app.json
 
-[of-mac-dev-app]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Trader-Dev&config=http://web-dev.adaptivecluster.com/openfin/app.json&internal=true&iconFile=https://web-dev.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png&appName=Reactive%20Trader%20(Dev)
+[of-mac-dev-app]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Trader-Dev&config=https://web-dev.adaptivecluster.com/openfin/app.json&internal=true&iconFile=https://web-dev.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png&appName=Reactive%20Trader%20(Dev)
 
 [of-win-uat-app]: https://install.openfin.co/download/?fileName=Reactive-Trader-UAT&config=https://web-uat.adaptivecluster.com/openfin/app.json
 
-[of-mac-uat-app]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Trader-UAT&config=http://web-uat.adaptivecluster.com/openfin/app.json&internal=true&iconFile=https://web-uat.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png&appName=Reactive%20Trader%20(UAT)
+[of-mac-uat-app]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Trader-UAT&config=https://web-uat.adaptivecluster.com/openfin/app.json&internal=true&iconFile=https://web-uat.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png&appName=Reactive%20Trader%20(UAT)
 
-[of-win-demo-app]: https://install.openfin.co/download/?fileName=Reactive-Trader-Dev&config=https://web-demo.adaptivecluster.com/openfin/app.json
+[of-win-demo-app]: https://install.openfin.co/download/?fileName=Reactive-Trader-Demo&config=https://web-demo.adaptivecluster.com/openfin/app.json
 
-[of-mac-demo-app]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Trader-Demo&config=http://web-demo.adaptivecluster.com/openfin/app.json&internal=true&iconFile=https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png&appName=Reactive%20Trader%20Cloud
+[of-mac-demo-app]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Trader-Demo&config=https://web-demo.adaptivecluster.com/openfin/app.json&internal=true&iconFile=https://web-demo.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png&appName=Reactive%20Trader
 
 [of-win-platform-app]: https://install.openfin.co/download/?fileName=Reactive-Trader-Platform&config=https://web-openfin.adaptivecluster.com/openfin/platform.json
 
-[of-mac-platform-app]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Trader-Platform&config=http://web-openfin.adaptivecluster.com/openfin/platform.json&internal=true&iconFile=https://web-openfin.adaptivecluster.com/static/media/adaptive-mark-large.png&appName=Reactive%20Trader%20Cloud%20(Platform)
+[of-mac-platform-app]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Trader-Platform&config=https://web-openfin.adaptivecluster.com/openfin/platform.json&internal=true&iconFile=https://web-openfin.adaptivecluster.com/static/media/adaptive-mark-large.png&appName=Reactive%20Trader%20Cloud%20(Platform)
 
 [of-win-dev-launcher]: https://install.openfin.co/download/?fileName=Reactive-Launcher-Dev&config=https://web-dev.adaptivecluster.com/openfin/launcher.json
 
@@ -63,4 +63,4 @@ It installs the Finsemble toolbar and launches it on your desktop, including Rea
 
 [of-win-demo-launcher]: https://install.openfin.co/download/?fileName=Reactive-Launcher-Demo&config=https://web-demo.adaptivecluster.com/openfin/launcher.json
 
-[of-mac-demo-launcher]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Launcher-Demo&config=http://web-demo.adaptivecluster.com/openfin/launcher.json&internal=true&iconFile=https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png&appName=Reactive%20Ecosystem%20Launcher
+[of-mac-demo-launcher]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Launcher-Demo&config=http://web-demo.adaptivecluster.com/openfin/launcher.json&internal=true&iconFile=https://web-demo.adaptivecluster.com/static/media/adaptive-icon-256x256.png&appName=Reactive%20Launcher
