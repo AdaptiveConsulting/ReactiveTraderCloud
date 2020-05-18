@@ -56,6 +56,7 @@ export const TableRow = styled.tr<{ status?: 'rejected' | 'done' | 'pending' }>`
 export const TableCell = styled.td<{ align?: 'center' | 'right'; fixedWidth?: boolean }>`
   text-align: ${({ align }) => (align ? align : 'left')};
   width: ${({ fixedWidth }) => (fixedWidth ? '4rem' : 'unset')};
+  text-transform: capitalize;
 `
 export const TableHeader = styled.th`
   text-align: ${({ align }) => (align ? align : 'left')};

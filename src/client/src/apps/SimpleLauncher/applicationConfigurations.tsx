@@ -1,5 +1,5 @@
 import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
-import { getEnvironment } from 'rt-util'
+import { getEnvironment, getAppName } from 'rt-util'
 import { excelIcon, limitCheckerIcon, reactiveAnalyticsIcon, reactiveTraderIcon } from './icons'
 
 // Safer than location.origin due to browser support
@@ -100,16 +100,14 @@ const excelLegacyAppConfig: ApplicationConfig = {
 
 const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
 
-const prodEnvs = ['demo']
-const env = getEnvironment() || 'unknown'
-const envFormatted = prodEnvs.includes(env) ? '' : `(${env.toUpperCase()})`
+const env = getEnvironment()
 
 const baseAppConfigs: ApplicationConfig[] = [
   {
-    name: `Reactive Trader Cloud ${envFormatted}`,
+    name: getAppName(),
     displayName: 'RT',
     tooltipName: 'Launch Reactive Trader',
-    uuid: `reactive-trader-cloud-web-${env}`,
+    uuid: `reactive-trader-${env}`,
     url: `${ORIGIN}`,
     icon: reactiveTraderIcon,
     iconFillColor: '#CFCFCF',

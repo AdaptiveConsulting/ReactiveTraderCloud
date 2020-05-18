@@ -23,10 +23,10 @@ export const InlineBlotter: FC<BlotterProps> = ({ filters }) => {
     { title: 'Trade Date', id: 'tradeDate' },
     { title: 'Status', id: 'status' },
   ]
-  const rows = trades.map((trade) => ({
+  const rows = trades.map(trade => ({
     ...trade,
     notional: numeral(trade.notional).format(),
-    tradeDate: DateTime.fromJSDate(trade.tradeDate).toFormat('yyyy LLL dd'),
+    tradeDate: DateTime.fromJSDate(trade.tradeDate).toFormat('dd-LLL-yyyy'),
   }))
 
   return (

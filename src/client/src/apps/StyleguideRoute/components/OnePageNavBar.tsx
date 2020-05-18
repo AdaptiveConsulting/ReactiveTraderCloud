@@ -21,7 +21,7 @@ export interface OnePageNavBar {
 }
 
 const MAX_SCROLL_HEIGHT = 100000000
-const DEFAULT_OFFSET = 120
+const DEFAULT_OFFSET = 130
 const isActive = (to: string): string => (window.location.hash === `#${to}` ? 'active' : '')
 
 const OnePageNavBar: React.FC<OnePageNavBar> = props => {

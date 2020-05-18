@@ -40,3 +40,8 @@ export const Link = styled.span`
   cursor: pointer;
   margin-bottom: 1rem;
 `
+
+export const Input = styled.input`
+  margin-bottom: 1rem;
+  width: 100%;
+`

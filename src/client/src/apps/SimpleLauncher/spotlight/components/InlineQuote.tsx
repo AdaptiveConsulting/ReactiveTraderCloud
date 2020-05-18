@@ -20,7 +20,7 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
     }
     const subscription = priceService
       .getSpotPriceStream({ symbol: currencyPair })
-      .subscribe((result) => {
+      .subscribe(result => {
         setQuote(result)
       }, console.error)
 
@@ -37,7 +37,7 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
           {
             ...quote,
             priceMovementType: <MovementIcon direction={quote.priceMovementType} />,
-            valueDate: DateTime.fromISO(quote.valueDate).toFormat('dd LLL yyyy / HH:mm:ss'),
+            valueDate: DateTime.fromISO(quote.valueDate).toFormat('dd-LLL-yyyy / HH:mm:ss'),
           },
         ]
       : []
