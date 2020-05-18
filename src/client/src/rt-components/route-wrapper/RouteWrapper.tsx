@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 import { styled } from 'rt-theme'
 import { Platform, usePlatform, isParentAppOpenfinLauncher } from 'rt-platforms'
+import { getAppName } from 'rt-util'
 
 const RouteStyle = styled('div')<{ platform: Platform }>`
   width: 100%;
@@ -28,7 +29,7 @@ interface RouteWrapperProps {
   title?: string | SymbolParamObject
 }
 
-const RouteWrapper: React.FC<RouteWrapperProps> = (props) => {
+const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const { children, windowType = 'main', title } = props
   const [fromLauncher, setFromLauncher] = useState<boolean>(false)
   const platform = usePlatform()
@@ -37,7 +38,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = (props) => {
 
   useEffect(() => {
     isParentAppOpenfinLauncher()
-      .then((isLauncher) => {
+      .then(isLauncher => {
         setFromLauncher(isLauncher)
       })
       .catch(() => {
@@ -45,7 +46,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = (props) => {
       })
   }, [])
 
-  const isBlotterOrTrade = title === 'trades' || title === 'live - rates'
+  const isBlotterOrTrade = title === 'trades' || title === 'live rates'
 
   const Header = windowType === 'main' ? PlatformControls : null
   const subheader =
@@ -54,7 +55,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = (props) => {
         close={fromLauncher && window.close}
         popIn={!fromLauncher && window.close}
         minimize={window.minimize}
-        title={`Reactive Trader - ${title}`}
+        title={`${getAppName()} - ${title}`}
         isBlotterOrTrade={isBlotterOrTrade}
       />
     ) : null

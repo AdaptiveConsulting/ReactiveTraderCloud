@@ -19,7 +19,7 @@ export default (env: string): OpenFinApplicationConfiguration => ({
     ],
   },
   runtime: {
-    version: '15.80.49.30',
+    version: '13.76.44.21',
   },
   services: [
     {
@@ -31,7 +31,7 @@ export default (env: string): OpenFinApplicationConfiguration => ({
           tab: false,
         },
       },
-      manifestUrl: 'https://cdn.openfin.co/services/openfin/layouts/1.1.0/app.json',
+      manifestUrl: 'https://cdn.openfin.co/services/openfin/layouts/1.2.0/app.json',
     },
     {
       name: 'fdc3',

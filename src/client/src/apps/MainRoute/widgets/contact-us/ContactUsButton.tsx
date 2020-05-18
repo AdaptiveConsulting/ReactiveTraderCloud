@@ -20,7 +20,7 @@ const ContactUsButton: React.FC = () => {
         Get in touch
       </Button>
 
-      <ContactUsPopup open={isOpen} onClick={toggleOpen} minWidth={'14rem'}>
+      <ContactUsPopup open={isOpen} minWidth={'14rem'}>
         <ContactUs />
         <FollowUs />
         <LogoWrapper>

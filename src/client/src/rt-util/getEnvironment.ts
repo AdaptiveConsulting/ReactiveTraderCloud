@@ -1,8 +1,8 @@
-export function getEnvironment(): string | undefined {
-    const serviceUrl = process.env.REACT_APP_BROKER_HOST || window.location.host;
+export function getEnvironment(): string {
+  const serviceUrl = window.location.host
 
-    if (serviceUrl.includes('localhost')) return 'localhost';
+  if (serviceUrl.includes('localhost')) return 'local'
 
-    const envMatch = /web-(?<env>[a-zA-Z]+)\.adaptivecluster\.com/.exec(serviceUrl)
-    return envMatch ? envMatch['groups'].env : undefined
+  const envMatch = /web-(?<env>[a-zA-Z]+)\.adaptivecluster\.com/.exec(serviceUrl)
+  return envMatch ? envMatch['groups'].env : 'unknown'
 }
