@@ -26,7 +26,7 @@ export const InlineBlotter: FC<BlotterProps> = ({ filters }) => {
   const rows = trades.map((trade) => ({
     ...trade,
     notional: numeral(trade.notional).format(),
-    tradeDate: DateTime.fromJSDate(trade.tradeDate).toFormat('yyyy LLL dd'),
+    tradeDate: DateTime.fromJSDate(trade.tradeDate).toFormat('dd-LLL-yyyy'),
   }))
 
   return (
