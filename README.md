@@ -22,11 +22,11 @@ Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full 
 - [Style guide]: Colours, iconography, typography, atoms and molecules
 - [Storybook]: Explore individual React components
 
-[web & mobile]: https://web-demo.adaptivecluster.com
-[openfin os]: https://openfin.co/
-[finsemble]: https://www.chartiq.com/finsemble
-[storybook]: https://web-demo.adaptivecluster.com/storybook
-[style guide]: https://web-demo.adaptivecluster.com/styleguide
+[Web & Mobile]: https://web-demo.adaptivecluster.com
+[Openfin OS]: https://openfin.co/
+[Finsemble]: https://www.chartiq.com/finsemble
+[Storybook]: https://web-demo.adaptivecluster.com/storybook
+[Style guide]: https://web-demo.adaptivecluster.com/styleguide
 [openfin-win]: https://install.openfin.co/download/?fileName=Reactive-Launcher-Demo&config=https://web-demo.adaptivecluster.com/openfin/launcher.json
 [openfin-mac]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Launcher-Demo&config=http://web-demo.adaptivecluster.com/openfin/launcher.json&internal=true&iconFile=https://web-demo.adaptivecluster.com/static/media/adaptive-icon-256x256.png&appName=Reactive%20Launcher
 [finsemble-win]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsembleSetup.exe
