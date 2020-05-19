@@ -11,7 +11,7 @@ export interface ExternalWindowProps {
 
 const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => ExternalWindowProps = (
   key: string,
-  tileLayout?: WindowPosition,
+  tileLayout?: WindowPosition
 ) => ({
   title: `${key} Spot`,
   config: {
@@ -24,9 +24,9 @@ const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => Ext
     maxHeight: 202,
     url: `/spot/${key}`,
     x: tileLayout ? tileLayout.x : undefined,
-    y: tileLayout ? tileLayout.y : undefined,
+    y: tileLayout ? tileLayout.y : undefined
   },
-  browserConfig: { center: 'screen' },
+  browserConfig: { center: 'screen' }
 })
 
 const getSpotTiles = (state: GlobalState) => state.currencyPairs
@@ -40,12 +40,12 @@ export const selectSpotTiles = createSelector(
     Object.keys(spotTileKeys).map(key => ({
       key,
       externalWindowProps: makeExternalWindowProps(key, tilesLayout[key]),
-      tornOff: tilesLayout[key] === undefined ? false : !tilesLayout[key].visible,
-    })),
+      tornOff: tilesLayout[key] === undefined ? false : !tilesLayout[key].visible
+    }))
 )
 
 export const selectSpotCurrencies = createSelector([getSpotTiles], spotTileKeys =>
-  Array.from(new Set(Object.keys(spotTileKeys).map(key => spotTileKeys[key].base))),
+  Array.from(new Set(Object.keys(spotTileKeys).map(key => spotTileKeys[key].base)))
 )
 
 const getExecutionStatus = ({ compositeStatusService }: GlobalState) =>

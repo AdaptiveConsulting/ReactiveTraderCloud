@@ -60,7 +60,7 @@ const QuickFilterClearIcon = styled('i')`
 const QuickFilter: React.FC<QuickFilterProps> = ({
   isFilterApplied,
   removeQuickFilter,
-  quickFilterChangeHandler,
+  quickFilterChangeHandler
 }) => {
   const quickFilterInput = useRef<HTMLInputElement>(null)
   const [quickFilterText, setQuickFilterText] = useState<string>('')
@@ -71,7 +71,7 @@ const QuickFilter: React.FC<QuickFilterProps> = ({
       setQuickFilterText(target.value)
       quickFilterChangeHandler(event)
     },
-    [quickFilterChangeHandler],
+    [quickFilterChangeHandler]
   )
 
   const clearQuickFilter = useCallback(() => {

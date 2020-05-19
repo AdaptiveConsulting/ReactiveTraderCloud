@@ -6,7 +6,7 @@ import {
   SwimlaneLayout,
   LayoutData,
   SwimlaneCanvas,
-  CanvasLayoutState,
+  CanvasLayoutState
 } from '../../../schemas/app/main'
 import Layout from '../../layouts/layout'
 
@@ -28,14 +28,14 @@ export interface CanvasAPI {
     title: string,
     context: object,
     success?: () => void,
-    error?: () => void,
+    error?: () => void
   ): void
 
   openWorkspace2(
     workspaceName: string,
     options?: LegacyRestoreOptions,
     success?: (workspaceData: WorkspaceData) => void,
-    error?: (errorMessage?: string) => void,
+    error?: (errorMessage?: string) => void
   ): Promise<WorkspaceData>
 
   /**
@@ -53,7 +53,7 @@ export interface CanvasAPI {
     lanes: number,
     horizontal: boolean,
     success?: () => void,
-    error?: () => void,
+    error?: () => void
   ): Promise<WorkspaceData>
 
   addTabWithApps(
@@ -62,7 +62,7 @@ export interface CanvasAPI {
     horizontal: boolean,
     apps: CanvasApplicationConfig[],
     success?: () => void,
-    error?: () => void,
+    error?: () => void
   ): Promise<WorkspaceData>
 
   addWindow(app: CanvasApplicationConfig, success?: () => void, error?: () => void): void
@@ -70,7 +70,7 @@ export interface CanvasAPI {
   addCanvas(
     args: InnerCanvas,
     success: (canvasId: string) => void,
-    error: (err: string) => void,
+    error: (err: string) => void
   ): Promise<string>
 
   getCurrentTab(): WorkspaceTabInfo
@@ -100,26 +100,26 @@ export interface CanvasAPI {
     frameId?: string,
     closeOptions?: FrameCloseOptions,
     success?: () => void,
-    error?: (errorMessage?: string) => void,
+    error?: (errorMessage?: string) => void
   ): Promise<void>
 
   getCanvasId(
     properties: CanvasProperties,
     success: (canvasId: string) => void,
-    error: (err: string) => void,
+    error: (err: string) => void
   ): any
 
   saveLayout(
     name: string,
     options: SaveOptions,
     success: () => void,
-    error: () => void,
+    error: () => void
   ): Promise<SwimlaneLayout | Layout>
 
   restoreLayout(
     name: string,
     success: (layout: WorkspaceData) => void,
-    error: () => void,
+    error: () => void
   ): Promise<WorkspaceData>
 
   deleteLayout(name: string, success: () => void, error: (error?: string) => void): Promise<void>
@@ -129,7 +129,7 @@ export interface CanvasAPI {
   focusWindow(
     options: { windowId?: string; activityId?: string; applicatioName?: string },
     success: () => void,
-    error: (error?: string) => void,
+    error: (error?: string) => void
   ): Promise<void>
 
   exportLayouts(): SwimlaneLayout[] | LayoutData[]
@@ -144,7 +144,7 @@ export interface CanvasAPI {
   closeWorkspace(
     workspaceId?: string,
     success?: () => void,
-    error?: (errorMessage: string) => void,
+    error?: (errorMessage: string) => void
   ): Promise<void>
 
   closeWindow(
@@ -155,7 +155,7 @@ export interface CanvasAPI {
       workspaceId?: string
     },
     success?: () => void,
-    error?: (errorMessage: string) => void,
+    error?: (errorMessage: string) => void
   ): Promise<void>
 
   serializeWorkspace(workspaceId?: string): SwimlaneCanvas
@@ -167,7 +167,7 @@ export interface CanvasAPI {
   serializeFrameAsync(
     extraInfo: boolean,
     frameId: string,
-    success?: () => void,
+    success?: () => void
   ): Promise<SwimlaneCanvas>
 
   serializeFrameGtf(frameId?: string): Promise<CanvasLayoutState>
@@ -177,19 +177,19 @@ export interface CanvasAPI {
   setWindowTitle(
     options: string | (LazyLoadedWindowInfo & { title?: string; windowId?: string }),
     success?: () => void,
-    error?: (err: string) => void,
+    error?: (err: string) => void
   ): Promise<void>
 
   setSize(
     settings: SizeSettings,
     success?: (args: ResizeSuccessData) => void,
-    error?: (err: string) => void,
+    error?: (err: string) => void
   ): Promise<ResizeSuccessData>
 
   configure(
     settings: CanvasWindowOptions,
     success?: () => void,
-    error?: (err: string) => void,
+    error?: (err: string) => void
   ): Promise<void>
 
   setWindowMaximized(isMaximized: boolean): Promise<void>
@@ -202,7 +202,7 @@ export interface CanvasAPI {
 
   subscribe(
     eventName: CanvasEventType,
-    eventCallback: (eventData?: any) => void,
+    eventCallback: (eventData?: any) => void
   ): UnsubscribeFunction
 
   subscribeLayoutEvents(eventCallback: () => void): UnsubscribeFunction

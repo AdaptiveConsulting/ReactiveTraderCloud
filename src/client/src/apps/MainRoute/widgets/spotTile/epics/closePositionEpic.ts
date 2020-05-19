@@ -30,7 +30,7 @@ function createTrade(msg: Msg, priceData: SpotTileData, currencyPair: CurrencyPa
     SpotRate: spotRate,
     Direction: direction,
     Notional: notional,
-    DealtCurrency: currencyPair.base,
+    DealtCurrency: currencyPair.base
   }
 }
 
@@ -56,12 +56,12 @@ export const closePositionEpic: ApplicationEpic = (action$, state$, { platform }
       const trade = createTrade(
         msg,
         getSpotTilesDataFromMessage(message, state)!, // we know that spot tile data exists as we have filtered it out above
-        state.currencyPairs[msg.symbol],
+        state.currencyPairs[msg.symbol]
       )
       return SpotTileActions.executeTrade(trade, {
         uuid,
-        correlationId: msg.correlationId,
+        correlationId: msg.correlationId
       })
-    }),
+    })
   )
 }

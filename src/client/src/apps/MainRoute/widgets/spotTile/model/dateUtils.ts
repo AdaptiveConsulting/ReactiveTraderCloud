@@ -5,7 +5,7 @@ import { SPOT_DATE_FORMAT } from './spotTileUtils'
 export function spotDateFormatter(
   date: string,
   tenorRequired: boolean = true,
-  localZoneName: string = 'utc',
+  localZoneName: string = 'utc'
 ) {
   const dt = DateTime.fromISO(date, { zone: localZoneName })
 

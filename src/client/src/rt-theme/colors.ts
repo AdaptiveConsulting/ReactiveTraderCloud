@@ -70,7 +70,7 @@ const offblack = createPalette(OFFBLACK, {
   // We are overriding these values due to insuffcient contrast ratiobes
   // and inconsistency with the designers intent.
   D3: rgb(46, 53, 67),
-  D4: rgb(39, 45, 58),
+  D4: rgb(39, 45, 58)
 })
 const blue = createPalette(rgb(81, 147, 253), { L95: OFFWHITE })
 
@@ -80,7 +80,7 @@ const yellow = createPalette(
   rgb(255, 184, 40),
   // We are overriding the value for L1 due to insuffcient contrast
   // and inconsistency with the designers intent.
-  { L1: rgb(241, 193, 109) },
+  { L1: rgb(241, 193, 109) }
 )
 
 const green = createPalette(rgb(0, 205, 130))
@@ -124,7 +124,7 @@ const darkPrimary = {
   3: rgb(83, 87, 96),
   4: rgb(104, 109, 116),
   5: rgb(126, 129, 136),
-  6: rgb(52, 58, 71),
+  6: rgb(52, 58, 71)
 }
 
 const darkSecondary = {
@@ -133,7 +133,7 @@ const darkSecondary = {
   2: rgb(243, 243, 244),
   3: rgb(228, 229, 230),
   4: rgb(207, 208, 211),
-  5: rgb(189, 190, 195),
+  5: rgb(189, 190, 195)
 }
 
 export const dark: CorePaletteMap = {
@@ -148,8 +148,8 @@ export const dark: CorePaletteMap = {
     backgroundHoverColor: darkPrimary[2],
     primaryStyleGuideBackground: rgb(32, 36, 45),
     secondaryStyleGuideBackground: rgb(40, 45, 57),
-    dividerColor: darkPrimary[6],
-  },
+    dividerColor: darkPrimary[6]
+  }
 }
 
 export const light: CorePaletteMap = {
@@ -164,8 +164,8 @@ export const light: CorePaletteMap = {
     backgroundHoverColor: darkSecondary[1],
     primaryStyleGuideBackground: rgb(253, 253, 253),
     secondaryStyleGuideBackground: rgb(243, 243, 243),
-    dividerColor: darkSecondary[3],
-  },
+    dividerColor: darkSecondary[3]
+  }
 }
 
 /*--------------------------- 2.3 Accent palettes ----------------------------*/
@@ -193,38 +193,38 @@ const accents: AccentPaletteMap = {
   primary: {
     base: rgb(95, 148, 245),
     darker: rgb(76, 118, 196),
-    lighter: rgb(127, 169, 247),
+    lighter: rgb(127, 169, 247)
   },
   positive: {
     base: rgb(1, 195, 141),
     darker: rgb(3, 160, 119),
     lighter: rgb(12, 150, 116),
-    medium: rgb(153, 231, 209),
+    medium: rgb(153, 231, 209)
   },
   aware: {
     base: rgb(255, 141, 0),
     darker: rgb(229, 126, 0),
     lighter: rgb(255, 232, 204),
-    medium: rgb(255, 197, 127),
+    medium: rgb(255, 197, 127)
   },
   negative: {
     base: rgb(255, 39, 75),
     darker: rgb(230, 35, 67),
     lighter: rgb(255, 211, 219),
-    medium: rgb(255, 146, 164),
-  },
+    medium: rgb(255, 146, 164)
+  }
 }
 
 export type TradingPaletteMap = { [direction in Direction]: TradingAccentPalette }
 const uniqueCollections: TradingPaletteMap = {
   [Direction.Sell]: {
     base: rgb(255, 39, 75),
-    lighter: rgb(255, 211, 219),
+    lighter: rgb(255, 211, 219)
   },
   [Direction.Buy]: {
     base: rgb(45, 149, 255),
-    lighter: rgb(191, 222, 255),
-  },
+    lighter: rgb(191, 222, 255)
+  }
 }
 
 const spectrum = {
@@ -234,7 +234,7 @@ const spectrum = {
   green,
   yellow,
   blue,
-  uniqueCollections,
+  uniqueCollections
 }
 
 export const colors = {
@@ -242,7 +242,7 @@ export const colors = {
   spectrum,
   accents,
   light,
-  dark,
+  dark
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -255,7 +255,7 @@ type CreatePaletteParams = {
 } & Partial<PaletteShadeSet>
 function createPalette(
   base: Color,
-  { whitePoint = WHITE, blackPoint = BLACK, ...shadeOverrides }: CreatePaletteParams = {},
+  { whitePoint = WHITE, blackPoint = BLACK, ...shadeOverrides }: CreatePaletteParams = {}
 ): ColorPalette {
   return {
     // Light shades
@@ -313,6 +313,6 @@ function createPalette(
     //
     // So we may have to override specific values to achieve a
     // consistent color and color contrast ratio across the shades.
-    ...shadeOverrides,
+    ...shadeOverrides
   }
 }

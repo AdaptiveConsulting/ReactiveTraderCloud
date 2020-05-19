@@ -1,1 +1,1 @@
-export {default as SymphonyClient} from './SymphonyClient'
+export { default as SymphonyClient } from './SymphonyClient'

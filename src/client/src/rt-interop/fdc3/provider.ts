@@ -45,9 +45,9 @@ export default class FDC3 implements InteropProvider {
         ({ appId, title }) =>
           ({
             id: appId,
-            name: title,
-          } as Application),
-      ),
+            name: title
+          } as Application)
+      )
     )
   }
 

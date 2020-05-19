@@ -5,7 +5,7 @@ const LOG_NAME = 'Retry: '
 
 export const retryWithBackOff = ({
   maxRetryAttempts = Number.POSITIVE_INFINITY,
-  scalingDuration = 1000,
+  scalingDuration = 1000
 }: {
   maxRetryAttempts?: number
   scalingDuration?: number
@@ -18,17 +18,20 @@ export const retryWithBackOff = ({
       if (retryAttempt > maxRetryAttempts) {
         return throwError(error)
       }
-      console.info(LOG_NAME, `Attempt ${retryAttempt}: retrying in ${retryAttempt * scalingDuration}ms`)
+      console.info(
+        LOG_NAME,
+        `Attempt ${retryAttempt}: retrying in ${retryAttempt * scalingDuration}ms`
+      )
       // retry after 1s, 2s, etc...
       return timer(retryAttempt * scalingDuration)
     }),
-    finalize(() => console.log('We are done!')),
+    finalize(() => console.log('We are done!'))
   )
 }
 
 export const retryConstantly = ({
   maxRetryAttempts = Number.POSITIVE_INFINITY,
-  interval = 1000,
+  interval = 1000
 }: {
   maxRetryAttempts?: number
   interval?: number
@@ -46,6 +49,6 @@ export const retryConstantly = ({
 
       return timer(interval)
     }),
-    finalize(() => console.log('We are done!')),
+    finalize(() => console.log('We are done!'))
   )
 }

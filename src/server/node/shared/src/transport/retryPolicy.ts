@@ -19,11 +19,14 @@ export const retryWithBackOff = ({
       if (retryAttempt > maxRetryAttempts) {
         return throwError(error)
       }
-      logger.info(LOG_NAME, `Attempt ${retryAttempt}: retrying in ${retryAttempt * scalingDuration}ms`)
+      logger.info(
+        LOG_NAME,
+        `Attempt ${retryAttempt}: retrying in ${retryAttempt * scalingDuration}ms`
+      )
       // retry after 1s, 2s, etc...
       return timer(retryAttempt * scalingDuration)
     }),
-    finalize(() => logger.info('We are done!')),
+    finalize(() => logger.info('We are done!'))
   )
 }
 
@@ -47,6 +50,6 @@ export const retryConstantly = ({
 
       return timer(interval)
     }),
-    finalize(() => logger.info('We are done!')),
+    finalize(() => logger.info('We are done!'))
   )
 }

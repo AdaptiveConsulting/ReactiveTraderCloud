@@ -8,7 +8,7 @@ const mockRawServiceStatus = (overrides: Partial<RawServiceStatus> = {}): RawSer
   Instance: 'b356',
   TimeStamp: 4500,
   Load: 4,
-  ...overrides,
+  ...overrides
 })
 
 describe('ServiceStatusStream', () => {
@@ -21,7 +21,7 @@ describe('ServiceStatusStream', () => {
       const variables = {
         1: mockRawServiceStatus({ Type: 'Blotter', Instance: 'blotter1' }),
         2: mockRawServiceStatus({ Type: 'Blotter', Instance: 'blotter2' }),
-        3: mockRawServiceStatus({ Type: 'Blotter', Instance: 'blotter3' }),
+        3: mockRawServiceStatus({ Type: 'Blotter', Instance: 'blotter3' })
       }
 
       const input = '123'
@@ -29,9 +29,7 @@ describe('ServiceStatusStream', () => {
       const expected = 'abc'
 
       const serviceStatus$ = serviceStatusStream$(source$, 3000).pipe(
-        map(
-          (serviceStatus) => serviceStatus.getStatusOfServices()['Blotter'].connectedInstanceCount,
-        ),
+        map(serviceStatus => serviceStatus.getStatusOfServices()['Blotter'].connectedInstanceCount)
       )
       expectObservable(serviceStatus$, '---!').toBe(expected, { a: 1, b: 2, c: 3 })
     })
@@ -43,7 +41,7 @@ describe('ServiceStatusStream', () => {
       const instanceName = 'Analytics01'
       const connectedServiceUpdate = mockRawServiceStatus({
         Type: serviceType,
-        Instance: instanceName,
+        Instance: instanceName
       })
 
       const HEART_BEAT_TIME = 3000
@@ -52,11 +50,11 @@ describe('ServiceStatusStream', () => {
       const expected = `c ${HEART_BEAT_TIME - 1}ms e`
 
       const serviceStatus$ = serviceStatusStream$(source$, HEART_BEAT_TIME).pipe(
-        map((x) => x.getStatusOfServices()[serviceType].connectionStatus),
+        map(x => x.getStatusOfServices()[serviceType].connectionStatus)
       )
       expectObservable(serviceStatus$).toBe(expected, {
         c: ServiceConnectionStatus.CONNECTED,
-        e: ServiceConnectionStatus.DISCONNECTED,
+        e: ServiceConnectionStatus.DISCONNECTED
       })
     })
   })
@@ -67,7 +65,7 @@ describe('ServiceStatusStream', () => {
       const instanceName = 'Analytics01'
       const connectedServiceUpdate = mockRawServiceStatus({
         Type: serviceType,
-        Instance: instanceName,
+        Instance: instanceName
       })
       const HEART_BEAT_TIME = 100
 
@@ -76,11 +74,11 @@ describe('ServiceStatusStream', () => {
 
       const source$ = cold<RawServiceStatus>(input, { a: connectedServiceUpdate })
       const serviceStatus$ = serviceStatusStream$(source$, 100).pipe(
-        map((x) => x.getStatusOfServices()[serviceType].connectionStatus),
+        map(x => x.getStatusOfServices()[serviceType].connectionStatus)
       )
       expectObservable(serviceStatus$).toBe(expected, {
         c: ServiceConnectionStatus.CONNECTED,
-        e: ServiceConnectionStatus.DISCONNECTED,
+        e: ServiceConnectionStatus.DISCONNECTED
       })
     })
   })

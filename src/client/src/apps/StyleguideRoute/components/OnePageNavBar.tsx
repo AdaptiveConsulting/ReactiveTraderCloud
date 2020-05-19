@@ -109,7 +109,7 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
                     >
                       {section.title}
                     </OnePageNavLink>
-                  ),
+                  )
               )}
             </FlexWrapper>
           </div>
@@ -129,7 +129,7 @@ const OnePageNavBar: React.FC<OnePageNavBar> = props => {
 const TextHeader = styled.p`
   ${({ theme }) =>
     css({
-      color: theme.secondary.base,
+      color: theme.secondary.base
     })};
   margin: 0;
 `
@@ -141,7 +141,7 @@ const LogoContainer = styled.div`
 const OnePageNavLink = styled(Link)`
   ${({ theme }) =>
     css({
-      color: theme.secondary.base,
+      color: theme.secondary.base
     })};
   text-decoration: none;
   padding: 9px 0;
@@ -153,7 +153,7 @@ const OnePageNavLink = styled(Link)`
     border-bottom: 3px solid white;
     ${({ theme }) =>
       css({
-        borderBottom: `3px solid ${theme.accents.primary.base}`,
+        borderBottom: `3px solid ${theme.accents.primary.base}`
       })};
   }
 `
@@ -175,7 +175,7 @@ const NavBarBleed = styled(NavBar)`
     css({
       transition: 'background-color ease-out 0.15s',
       backgroundColor: theme.core.secondaryStyleGuideBackground,
-      borderBottom: `2px solid ${theme.core.primaryStyleGuideBackground}`,
+      borderBottom: `2px solid ${theme.core.primaryStyleGuideBackground}`
     })};
 
   display: flex;
@@ -230,7 +230,7 @@ const TitleHeading = styled(H2)`
   margin: 0.5rem 0;
   ${({ theme }) =>
     css({
-      color: theme.accents.primary.base,
+      color: theme.accents.primary.base
     })};
 `
 

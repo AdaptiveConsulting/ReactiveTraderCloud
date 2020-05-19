@@ -11,7 +11,7 @@ export async function confirmationMessageAsserts(
   transaction: string,
   expectedResult: string,
   notional: string,
-  timeout: boolean,
+  timeout: boolean
 ) {
   browser = await getBrowser()
   mainPage = new MainPage(browser)
@@ -53,7 +53,7 @@ export async function confirmationMessageAsserts(
         tradeWord +
         ' ' +
         currency +
-        ' )(\\d{1,3}(,\\d{1,3})?(,\\d{1,3})?(,\\d{1,3})?)+(\\.\\d{2})?',
+        ' )(\\d{1,3}(,\\d{1,3})?(,\\d{1,3})?(,\\d{1,3})?)+(\\.\\d{2})?'
     )
     const confirmationNotional = tradeText.match(regularExpression)[0]
     expect(notional).toEqual(confirmationNotional)
@@ -77,7 +77,7 @@ export async function assertDisplayedCurrencies(expectedCurrencies: string[]) {
     'NZD/USD',
     'EUR/AUD',
     'EUR/CAD',
-    'EUR/JPY',
+    'EUR/JPY'
   ]
   for (const index in currencyPairs) {
     const convertedCurrency = currencyPairs[index].replace(/\//gi, 'To')
@@ -91,7 +91,7 @@ export async function assertDisplayedCurrencies(expectedCurrencies: string[]) {
 export async function assertblotter(
   currencies: string,
   transaction: string,
-  expectedResult: string,
+  expectedResult: string
 ) {
   // Assert trade id tile component with blotter component
   const tradeIdTile = await mainPage.tile.tradeType.confirmationScreen.labelTradeId

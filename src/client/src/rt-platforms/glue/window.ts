@@ -39,7 +39,7 @@ export const registerWindowMethods = () => {
       if (index > 0) {
         await wnd.detachTab({
           relativeTo: listOfOpenedWindows[index - 1],
-          relativeDirection: 'bottom',
+          relativeDirection: 'bottom'
         })
       }
     })
@@ -63,7 +63,7 @@ export const registerWindowMethods = () => {
   window.glue.windows.onWindowRemoved((removedWnd: GDWindow) => {
     listOfOpenedWindows = listOfOpenedWindows.filter(wnd => wnd.id !== removedWnd.id)
     window.glue.interop.invoke('toggleHeaderButtons', {
-      numberOfOpenedWindows: listOfOpenedWindows.length,
+      numberOfOpenedWindows: listOfOpenedWindows.length
     })
   })
 }
@@ -77,7 +77,7 @@ export const openGlueWindow = async (config: BrowserWindowProps, onClose?: () =>
     modifiedWidth,
     modifiedHeight,
     relativeTo,
-    relativeDirection,
+    relativeDirection
   } = calculatePosition(myWindow, width, height, url)
   const fullUrl = `${location.origin}${url}`
   const isTabWindow = isSpot(url)
@@ -92,13 +92,13 @@ export const openGlueWindow = async (config: BrowserWindowProps, onClose?: () =>
     relativeDirection,
     allowCollapse: false,
     mode: 'tab',
-    tabGroupId: isTabWindow ? 'reactiveTraderCloudSpot' : name,
+    tabGroupId: isTabWindow ? 'reactiveTraderCloudSpot' : name
   })
 
   if (isTabWindow) {
     listOfOpenedWindows.push(win)
     window.glue.interop.invoke('toggleHeaderButtons', {
-      numberOfOpenedWindows: listOfOpenedWindows.length,
+      numberOfOpenedWindows: listOfOpenedWindows.length
     })
   }
 
@@ -120,7 +120,7 @@ const calculatePosition = (
   myWindow: GDWindow,
   width: number,
   height: number,
-  url: string,
+  url: string
 ): {
   left: number
   top: number
@@ -160,7 +160,7 @@ const addFrameButton = (win: GDWindow) => {
       buttonId: `${win.id}-collapse`,
       order: 2,
       tooltip: 'Collapse',
-      imageBase64: frameButtonBase64,
+      imageBase64: frameButtonBase64
     },
     () => {
       win.onFrameButtonClicked((buttonInfo: ButtonInfo, wnd: GDWindow) => {
@@ -177,6 +177,6 @@ const addFrameButton = (win: GDWindow) => {
         })
       })
     },
-    console.error,
+    console.error
   )
 }

@@ -11,7 +11,7 @@ export const { Provider: PricingServiceProvider } = PricingServiceContext
 
 // stream of trade updates
 export const TradeUpdatesContext = React.createContext<Observable<TradesUpdate> | undefined>(
-  undefined,
+  undefined
 )
 export const { Provider: TradeUpdatesProvider } = TradeUpdatesContext
 

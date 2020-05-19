@@ -12,13 +12,13 @@ export const createStore = async (platform: Platform) => {
     createApplicationServices({
       broker: new WsConnection(
         process.env.REACT_APP_BROKER_HOST || location.hostname,
-        +(process.env.REACT_APP_BROKER_PORT || location.port),
+        +(process.env.REACT_APP_BROKER_PORT || location.port)
       ),
       limitChecker: await createLimitChecker(platform.name),
       excelApp: await createExcelApp(platform.name),
       platform,
-      user: selectedUser,
-    }),
+      user: selectedUser
+    })
   )
 
   store.dispatch(SetupActions.setup())

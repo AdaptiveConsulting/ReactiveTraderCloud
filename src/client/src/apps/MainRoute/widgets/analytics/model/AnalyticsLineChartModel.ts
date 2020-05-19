@@ -12,11 +12,11 @@ export interface AnalyticsLineChartModel {
 
 const DEFAULT_PNL: AnalyticsLineChartModel = {
   lastPos: 0,
-  seriesData: [],
+  seriesData: []
 }
 
 export const getModel: (positions: HistoricPosition[]) => AnalyticsLineChartModel = (
-  positions = [],
+  positions = []
 ) => {
   if (positions.length === 0) {
     return DEFAULT_PNL
@@ -30,7 +30,7 @@ export const getModel: (positions: HistoricPosition[]) => AnalyticsLineChartMode
   if (lastPosition) {
     return {
       seriesData,
-      lastPos: parseInt(lastPosition.usdPnl.toFixed(2), 10),
+      lastPos: parseInt(lastPosition.usdPnl.toFixed(2), 10)
     }
   }
   return DEFAULT_PNL

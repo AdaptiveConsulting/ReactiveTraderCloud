@@ -19,6 +19,6 @@ export const publishTradeExecutedEpic: ApplicationEpic = (action$, state$, { pla
         platform.interop.publish(InteropTopics.PositionClosed, action.meta.correlationId)
       }
     }),
-    ignoreElements(),
+    ignoreElements()
   )
 }

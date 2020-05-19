@@ -20,7 +20,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
       backgroundColor: '#313131',
       cornerRounding: {
         width: 4,
-        height: 4
+        height: 4,
       },
       permissions: {
         System: {
@@ -55,7 +55,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
         src: `https://web-${env}.adaptivecluster.com/plugin/add-in.zip`,
         alias: 'excel-api-addin',
         version: '2.0.0',
-        forceDownload: true
+        forceDownload: true,
       },
       {
         src: `https://web-${env}.adaptivecluster.com/plugin/LimitChecker.zip`,

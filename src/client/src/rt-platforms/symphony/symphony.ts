@@ -16,7 +16,7 @@ interface UIService {
       icon?: string
       label?: string
       data?: any
-    },
+    }
   ) => void
 }
 
@@ -35,7 +35,7 @@ interface ModuleService {
     title: string | { title: string; icon: string },
     serviceName: string,
     iframe: string,
-    options: { canFloat?: boolean; parentModuleId?: string },
+    options: { canFloat?: boolean; parentModuleId?: string }
   ) => void
 }
 
@@ -96,12 +96,12 @@ interface Application {
   register: (
     name: string,
     symphonyModules: SymphonyServices[],
-    appModules?: string[],
+    appModules?: string[]
   ) => Promise<{ userReferenceId: string }>
   connect: (
     name: string,
     symphonyModules: SymphonyServices[],
-    appModules?: string[],
+    appModules?: string[]
   ) => Promise<{ userReferenceId: string }>
 }
 

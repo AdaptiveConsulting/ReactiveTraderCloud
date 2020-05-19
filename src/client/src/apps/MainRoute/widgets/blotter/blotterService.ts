@@ -17,11 +17,11 @@ export interface HighlightRow {
 }
 
 function mapFromDto(dto: RawTradeUpdate): TradesUpdate {
-  const trades = dto.Trades.map<Trade>((trade) => mapFromTradeDto(trade))
+  const trades = dto.Trades.map<Trade>(trade => mapFromTradeDto(trade))
   return {
     trades,
     isStateOfTheWorld: dto.IsStateOfTheWorld,
-    isStale: dto.IsStale,
+    isStale: dto.IsStale
   }
 }
 
@@ -34,7 +34,7 @@ export default class BlotterService {
       .createStreamOperation<RawTradeUpdate>('blotter', 'getTradesStream', {})
       .pipe(
         retryWhen(retryWithBackOff()),
-        map((dto) => mapFromDto(dto)),
+        map(dto => mapFromDto(dto))
       )
   }
 }

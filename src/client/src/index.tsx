@@ -15,7 +15,7 @@ const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 //TODO: Move to environment variables / config.
 const trackingId = 'UA-46320965-5'
 ReactGA.initialize(trackingId, {
-  debug: process.env.NODE_ENV === 'development',
+  debug: process.env.NODE_ENV === 'development'
 })
 
 const { pathname } = new URL(window.location.href)
@@ -24,13 +24,13 @@ const urlParams = new URLSearchParams(window.location.search)
 const APP_PATHS = {
   LAUNCHER: '/launcher',
   TRADER: '/',
-  STYLEGUIDE: '/styleguide',
+  STYLEGUIDE: '/styleguide'
 }
 
 const appTitles = {
   [APP_PATHS.LAUNCHER]: 'Reactive Launcher',
   [APP_PATHS.TRADER]: 'Reactive Trader',
-  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader',
+  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader'
 }
 
 async function init() {
@@ -42,7 +42,7 @@ async function init() {
 
   ReactGA.set({
     dimension3: env,
-    page: window.location.pathname,
+    page: window.location.pathname
   })
 
   if (urlParams.has('startAsSymphonyController')) {
@@ -62,7 +62,7 @@ async function init() {
           </Suspense>
         </BrowserRouter>
       </React.Fragment>,
-      document.getElementById('root'),
+      document.getElementById('root')
     )
 
     // If you want your app to work offline and load faster, you can change

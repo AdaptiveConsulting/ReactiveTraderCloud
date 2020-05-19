@@ -24,5 +24,5 @@ export const referenceDataService = (serviceClient: ServiceClient) =>
         return acc
       }, {}),
       publishReplay(1),
-      refCount(),
+      refCount()
     )

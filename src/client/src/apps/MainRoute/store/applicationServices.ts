@@ -6,7 +6,7 @@ import {
   ServiceCollectionMap,
   retryWithBackOff,
   RawServiceStatus,
-  ServiceClient,
+  ServiceClient
 } from 'rt-system'
 import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
@@ -28,14 +28,14 @@ export function createApplicationServices({
   limitChecker,
   excelApp,
   user,
-  platform,
+  platform
 }: ApplicationProps) {
   const connection$ = connectionStream$(broker).pipe(
     retryWhen(retryWithBackOff()),
     multicast(() => {
       return new ReplaySubject<ConnectionInfo>(1)
     }),
-    refCount(),
+    refCount()
   )
 
   const serviceClient = new ServiceClient(user.code, broker)
@@ -45,7 +45,7 @@ export function createApplicationServices({
     multicast(() => {
       return new ReplaySubject<ServiceCollectionMap>(1)
     }),
-    refCount(),
+    refCount()
   )
 
   const referenceDataService$ = referenceDataService(serviceClient)
@@ -57,7 +57,7 @@ export function createApplicationServices({
     excelApp,
     serviceClient,
     serviceStatus$,
-    connection$,
+    connection$
   }
 }
 

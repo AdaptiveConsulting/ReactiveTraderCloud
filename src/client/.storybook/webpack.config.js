@@ -1,13 +1,13 @@
 const path = require('path')
 
-module.exports = ({config}) => {
+module.exports = ({ config }) => {
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
     loader: require.resolve('babel-loader'),
     options: {
-      plugins: ["babel-plugin-styled-components"],
-      presets: [['react-app', { flow: false, typescript: true }]]
-    }
+      plugins: ['babel-plugin-styled-components'],
+      presets: [['react-app', { flow: false, typescript: true }]],
+    },
   })
   config.resolve.extensions.push('.ts', '.tsx', '.js')
   config.resolve.alias = {
@@ -21,7 +21,7 @@ module.exports = ({config}) => {
     'rt-system': path.resolve(__dirname, '../src', 'rt-system'),
     ui: path.resolve(__dirname, '../src', 'ui'),
     system: path.resolve(__dirname, '../src', 'system'),
-    shell: path.resolve(__dirname, '../src', 'shell')
+    shell: path.resolve(__dirname, '../src', 'shell'),
   }
 
   return config

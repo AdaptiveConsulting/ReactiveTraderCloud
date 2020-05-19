@@ -13,7 +13,7 @@ const WorkspaceControl: FC<WorkspaceControlProps> = props => {
     (e: MouseEvent) => {
       onPopoutClick && onPopoutClick(e.screenX, e.screenY)
     },
-    [onPopoutClick],
+    [onPopoutClick]
   )
 
   return <PopoutButton onClick={handlePopoutClick}>{PopoutIcon}</PopoutButton>

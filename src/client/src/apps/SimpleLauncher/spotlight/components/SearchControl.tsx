@@ -4,7 +4,7 @@ import React, {
   KeyboardEventHandler,
   useCallback,
   useEffect,
-  useState,
+  useState
 } from 'react'
 import { DetectIntentResponse } from 'dialogflow'
 import throttle from 'lodash/throttle'
@@ -39,25 +39,25 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
     }, [inputValue, isTyping, resetResponse])
 
     const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
-      (e) => {
+      e => {
         if (e.key === 'Enter' && response) {
           handleIntent(response, platform)
         }
       },
-      [response, platform],
+      [response, platform]
     )
 
-    const handleFocus: FocusEventHandler<HTMLInputElement> = useCallback((e) => {
+    const handleFocus: FocusEventHandler<HTMLInputElement> = useCallback(e => {
       e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
     }, [])
 
     const handleBlur: FocusEventHandler<HTMLInputElement> = useCallback(
-      (e) => {
+      e => {
         if (isSearchVisible) {
           e.target.focus({ preventScroll: true })
         }
       },
-      [isSearchVisible],
+      [isSearchVisible]
     )
 
     const handleCancelButtonClick = useCallback(() => {
@@ -69,18 +69,18 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
     const throttledSendRequest = useCallback(
       throttle((requestString: string) => sendRequest(requestString), 250, {
         leading: false,
-        trailing: true,
+        trailing: true
       }),
-      [],
+      []
     )
 
     // if not called again within 350ms, set isTyping to false
     const debouncedStopTyping = useCallback(
       debounce(() => setIsTyping(false), 300, {
         leading: false,
-        trailing: true,
+        trailing: true
       }),
-      [],
+      []
     )
 
     const handleChange = useCallback(
@@ -91,7 +91,7 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
 
         setInputValue(e.target.value)
       },
-      [debouncedStopTyping],
+      [debouncedStopTyping]
     )
 
     useEffect(() => {
@@ -117,5 +117,5 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
         )}
       </SearchContainer>
     )
-  },
+  }
 )

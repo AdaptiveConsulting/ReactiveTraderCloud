@@ -38,14 +38,14 @@ const MainRoute = () => {
       ReactGA.set({
         dimension1: platform.type,
         dimension2: platform.name,
-        page: window.location.pathname,
+        page: window.location.pathname
       })
       ReactGA.pageview(window.location.pathname)
     }
   }, [platform])
 
   useEffect(() => {
-    const stopListening = routeHistory.listen((location) => {
+    const stopListening = routeHistory.listen(location => {
       ReactGA.set({ page: location.pathname })
       ReactGA.pageview(location.pathname)
     })

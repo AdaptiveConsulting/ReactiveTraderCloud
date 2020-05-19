@@ -21,7 +21,7 @@ export const useMarketService = (): any | undefined => {
       return
     }
 
-    const subscription = currencyPairs$.pipe().subscribe((result) => {
+    const subscription = currencyPairs$.pipe().subscribe(result => {
       setCurrencyPairs(result)
     })
 

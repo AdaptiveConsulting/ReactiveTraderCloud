@@ -7,7 +7,7 @@ const getBlotterStatus = ({ compositeStatusService }: GlobalState) =>
   compositeStatusService.blotter && compositeStatusService.blotter.connectionStatus
 
 export const selectBlotterRows = createSelector(getBlotterTrades, trades =>
-  Object.values(trades).reverse(),
+  Object.values(trades).reverse()
 )
 
 export const selectBlotterStatus = createSelector(getBlotterStatus, status => status)

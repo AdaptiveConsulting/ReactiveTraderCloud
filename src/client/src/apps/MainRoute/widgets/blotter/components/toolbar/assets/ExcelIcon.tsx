@@ -1,7 +1,13 @@
 import React from 'react'
 
 export default () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="25" viewBox="0 0 16 25" className="svg-size">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="25"
+    viewBox="0 0 16 25"
+    className="svg-size"
+  >
     <g fill="none" fillRule="evenodd">
       <g fill="#FFF" className="svg-fill">
         <path d="M11.278 9.198c.334.256.4.732.15 1.07l-4.713 6.374a.745.745 0 0 1-1.052.148.772.772 0 0 1-.15-1.072l4.713-6.373a.745.745 0 0 1 1.052-.147z" />

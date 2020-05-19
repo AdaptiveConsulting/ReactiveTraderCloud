@@ -9,7 +9,7 @@ import {
   Root,
   AppUrl,
   ServiceListPopup,
-  ServiceList,
+  ServiceList
 } from './styled'
 import Service from './Service'
 import FooterVersion from '../footer-version'
@@ -31,7 +31,7 @@ export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, servi
         setIsOpen(!isOpen)
       }
     },
-    [isOpen, setIsOpen],
+    [isOpen, setIsOpen]
   )
 
   const selectAll = useCallback((event: SyntheticEvent) => {

@@ -28,11 +28,11 @@ const IconButton = styled.button`
 export const GlueHeader: React.FC<any> = () => {
   const [
     { isStackAllButtonVisible, isTabAllButtonVisible, isToggleCollapseButtonVisible },
-    setButtonsVisibility,
+    setButtonsVisibility
   ] = useState({
     isStackAllButtonVisible: false,
     isTabAllButtonVisible: false,
-    isToggleCollapseButtonVisible: false,
+    isToggleCollapseButtonVisible: false
   })
 
   useEffect(() => {
@@ -44,9 +44,9 @@ export const GlueHeader: React.FC<any> = () => {
           setButtonsVisibility({
             isStackAllButtonVisible: args.numberOfOpenedWindows > 1,
             isTabAllButtonVisible: args.numberOfOpenedWindows > 1,
-            isToggleCollapseButtonVisible: args.numberOfOpenedWindows > 0,
+            isToggleCollapseButtonVisible: args.numberOfOpenedWindows > 0
           })
-        },
+        }
       )
     }
     waitForGlue()

@@ -18,7 +18,7 @@ const executeTradeEpic: ApplicationEpic = (action$, state$, { serviceClient, lim
     limitChecker.rpc({
       tradedCurrencyPair: executeTradeRequest.CurrencyPair,
       notional: executeTradeRequest.Notional,
-      rate: executeTradeRequest.SpotRate,
+      rate: executeTradeRequest.SpotRate
     })
 
   const executionService = new ExecutionService(serviceClient, limitCheck)
@@ -28,8 +28,8 @@ const executeTradeEpic: ApplicationEpic = (action$, state$, { serviceClient, lim
     mergeMap((request: ExecutionAction) =>
       executionService
         .executeTrade(request.payload)
-        .pipe(map((result: ExecuteTradeResponse) => tradeExecuted(result, request.meta))),
-    ),
+        .pipe(map((result: ExecuteTradeResponse) => tradeExecuted(result, request.meta)))
+    )
   )
 }
 
@@ -39,9 +39,9 @@ export const onTradeExecuted: ApplicationEpic = (action$, state$) =>
     delay(DISMISS_NOTIFICATION_AFTER_X_IN_MS),
     map((action: ExecutedTradeAction) => ({
       currencyPair: action.payload.request.CurrencyPair,
-      id: action.payload.request.id,
+      id: action.payload.request.id
     })),
-    map(SpotTileActions.dismissNotification),
+    map(SpotTileActions.dismissNotification)
   )
 
 export const spotTileEpic = combineEpics(executeTradeEpic, onTradeExecuted)

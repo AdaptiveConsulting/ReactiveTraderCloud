@@ -44,7 +44,7 @@ const icons = {
   menu: '<i class="fas fa-filter" aria-hidden="true" />',
   filter: '<i class="fas fa-filter" aria-hidden="true" />',
   sortAscending: '<i class="fas fa-long-arrow-alt-up" aria-hidden="true" />',
-  sortDescending: '<i class="fas fa-long-arrow-alt-down" aria-hidden="true" />',
+  sortDescending: '<i class="fas fa-long-arrow-alt-down" aria-hidden="true" />'
 }
 
 const getRowClass = ({ data }: { data: Trade }) => {
@@ -68,7 +68,7 @@ const Blotter: React.FC<BlotterProps> = props => {
   const [gridApi, setGridApi] = useState<GridApi>()
   const onModelUpdated = useCallback(
     () => gridApi && setDisplayedRows(gridApi.getDisplayedRowCount()),
-    [gridApi],
+    [gridApi]
   )
   const interop = useInterop()
 
@@ -88,7 +88,7 @@ const Blotter: React.FC<BlotterProps> = props => {
       onModelUpdated()
       api.sizeColumnsToFit()
     },
-    [onModelUpdated],
+    [onModelUpdated]
   )
 
   const exportToExcel = useCallback(() => {
@@ -99,12 +99,12 @@ const Blotter: React.FC<BlotterProps> = props => {
 
   const onPopoutClick = useCallback(
     (x: number, y: number) => props.onPopoutClick && props.onPopoutClick(x, y),
-    [props],
+    [props]
   )
 
   const getDocument = useCallback(
     () => (gridDoc.current && gridDoc.current.ownerDocument) || document,
-    [gridDoc],
+    [gridDoc]
   )
 
   return (

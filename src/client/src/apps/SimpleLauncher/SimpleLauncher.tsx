@@ -11,7 +11,7 @@ import {
   createServiceStub,
   PricingServiceProvider,
   ServiceStubProvider,
-  TradeUpdatesProvider,
+  TradeUpdatesProvider
 } from './spotlight'
 
 import { ReferenceDataProvider } from './spotlight/context'
@@ -19,7 +19,7 @@ import { referenceDataService } from 'apps/MainRoute/data/referenceData/referenc
 
 const broker = new WsConnection(
   process.env.REACT_APP_BROKER_HOST || location.hostname,
-  +(process.env.REACT_APP_BROKER_PORT || location.port),
+  +(process.env.REACT_APP_BROKER_PORT || location.port)
 )
 
 type Dependencies = {
@@ -51,7 +51,7 @@ export const SimpleLauncher: React.FC = () => {
         tradeUpdatesStream: tradesUpdates$,
         serviceClient,
         platform: platformResult,
-        referenceData: referenceDataService$,
+        referenceData: referenceDataService$
       })
     })()
   }, [])
@@ -65,7 +65,7 @@ export const SimpleLauncher: React.FC = () => {
     pricingService,
     serviceClient,
     tradeUpdatesStream,
-    referenceData,
+    referenceData
   } = dependencies
 
   if (!platform || !serviceClient) {

@@ -19,7 +19,7 @@ const RTExcelConfig = {
   ClosePositionButton: 'F',
   ClosePositionButtonColumn: 6, // Index of 'F'
   ClosePositionPlaceholder: 'M',
-  ClosePositionPlaceholderColumn: 13, // Index of 'M'
+  ClosePositionPlaceholderColumn: 13 // Index of 'M'
 }
 
 class JSExcelAdapter implements ExcelApp {
@@ -77,7 +77,7 @@ class JSExcelAdapter implements ExcelApp {
         this.positionsSheet.removeEventListener('sheetChanged', this.onWorkbookClosed)
         this.positionsSheet.removeEventListener(
           'selectionChanged',
-          this.onPositionsSheetSelectionChanged,
+          this.onPositionsSheetSelectionChanged
         )
       }
       this.blotterSheet = undefined
@@ -112,7 +112,7 @@ class JSExcelAdapter implements ExcelApp {
 
     await this.positionsSheet.setCells(
       [['Closing']],
-      `${RTExcelConfig.ClosePositionPlaceholder}${data.row}`,
+      `${RTExcelConfig.ClosePositionPlaceholder}${data.row}`
     )
     const [positionData] = await this.positionsSheet.getCells(`A${data.row}`, 4, 0)
     const symbol = positionData[0].value
@@ -123,7 +123,7 @@ class JSExcelAdapter implements ExcelApp {
       await delay(5000)
       await this.positionsSheet.setCells(
         [['']],
-        `${RTExcelConfig.ClosePositionPlaceholder}${data.row}`,
+        `${RTExcelConfig.ClosePositionPlaceholder}${data.row}`
       )
     }
   }

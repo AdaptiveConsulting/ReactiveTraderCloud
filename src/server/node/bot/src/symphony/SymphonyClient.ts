@@ -47,7 +47,7 @@ class SymphonyClient {
     return this.botConnnection$.pipe(
       switchMap(() => SymphonyClient.wrapDataFeed()),
       concatMap<Symphony.Message[], Observable<Symphony.Message>>(event => from(event)),
-      share(),
+      share()
     )
   }
 
@@ -55,12 +55,12 @@ class SymphonyClient {
     streamId: string,
     message: string,
     data: string | null = null,
-    format: Symphony.MessageFormat = Symphony.MESSAGEML_FORMAT,
+    format: Symphony.MessageFormat = Symphony.MESSAGEML_FORMAT
   ) {
     logger.info('Sending message to symphony:', streamId)
     return this.botConnnection$.pipe(
       mergeMap(() => from(Symphony.sendMessage(streamId, message, data, format))),
-      take(1),
+      take(1)
     )
   }
 }

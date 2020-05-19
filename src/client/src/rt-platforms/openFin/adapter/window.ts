@@ -19,7 +19,7 @@ type WindowState = WindowStateArr[keyof WindowStateArr]
 export const openfinWindowStates: { readonly [key: string]: WindowState } = {
   Normal: 'normal',
   Minimized: 'minimized',
-  Maximized: 'maximized',
+  Maximized: 'maximized'
 }
 
 function generateRandomName() {
@@ -41,7 +41,7 @@ const getChildWindows = () => {
       },
       (error: string) => {
         reject(error)
-      },
+      }
     )
   })
 }
@@ -68,7 +68,7 @@ export function createPlatformWindow(getWindow: () => Promise<fin.OpenFinWindow>
         }
       })
     },
-    restore: async () => (await getWindow()).restore(),
+    restore: async () => (await getWindow()).restore()
   }
 }
 
@@ -76,12 +76,12 @@ type OpenfinWindowPosition = Pick<fin.WindowOption, 'defaultLeft' | 'defaultTop'
 
 async function getOpenfinWindowPosition(
   config: DesktopWindowProps,
-  childWindows?: fin.OpenFinWindow[],
+  childWindows?: fin.OpenFinWindow[]
 ): Promise<OpenfinWindowPosition> {
   if (typeof config.x !== 'undefined' || typeof config.y !== 'undefined') {
     return {
       defaultLeft: config.x,
-      defaultTop: config.y,
+      defaultTop: config.y
     }
   }
 
@@ -89,13 +89,13 @@ async function getOpenfinWindowPosition(
     const lastWindow = _last(childWindows)
     return {
       defaultLeft: _get(lastWindow, 'nativeWindow.screenLeft') + TEAR_OUT_OFFSET_LEFT,
-      defaultTop: _get(lastWindow, 'nativeWindow.screenTop') + TEAR_OUT_OFFSET_TOP,
+      defaultTop: _get(lastWindow, 'nativeWindow.screenTop') + TEAR_OUT_OFFSET_TOP
     }
   }
 
   return {
     defaultLeft: undefined,
-    defaultTop: undefined,
+    defaultTop: undefined
   }
 }
 
@@ -103,7 +103,7 @@ export const openDesktopWindow = async (
   config: DesktopWindowProps,
   onClose?: () => void,
   onUpdatePosition?: (event: any) => void,
-  position?: {},
+  position?: {}
 ): Promise<PlatformWindow> => {
   const { url, width: defaultWidth, height: defaultHeight, maxHeight, maxWidth } = config
   const childWindows = await getChildWindows()
@@ -118,7 +118,7 @@ export const openDesktopWindow = async (
   ReactGA.event({
     category: 'RT - Window',
     action: 'open',
-    label: windowName,
+    label: windowName
   })
 
   //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
@@ -140,7 +140,7 @@ export const openDesktopWindow = async (
         saveWindowState: false,
         shadow: true,
         ...position,
-        ...updatedPosition,
+        ...updatedPosition
       } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
       () => {
         console.info(`Openfin window created: ${windowName}`)
@@ -172,7 +172,7 @@ export const openDesktopWindow = async (
       },
       error => {
         console.error(`Error creating Openfin window: ${windowName}`, error)
-      },
+      }
     )
   })
 

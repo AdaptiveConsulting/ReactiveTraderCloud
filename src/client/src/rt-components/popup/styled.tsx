@@ -10,7 +10,7 @@ export const PopupContainer = styled.div<{ open: boolean }>`
   border-radius: 0.25rem;
   background: ${({ theme }) => theme.core.alternateBackground};
   box-shadow: 0 0.05rem 0.05rem rgba(0, 0, 0, 0.05),
-    0 1rem 3rem -1rem ${(props) => props.theme.overlay.backgroundColor};
+    0 1rem 3rem -1rem ${props => props.theme.overlay.backgroundColor};
 `
 
 export const PopupPanel = styled.div<{ minWidth?: string }>`

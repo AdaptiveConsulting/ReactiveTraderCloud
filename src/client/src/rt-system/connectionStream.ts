@@ -8,7 +8,7 @@ export enum ConnectionStatus {
   connected = 'connected',
   disconnecting = 'disconnecting',
   disconnected = 'disconnected',
-  sessionExpired = 'sessionExpired',
+  sessionExpired = 'sessionExpired'
 }
 
 export interface ConnectionInfo {
@@ -18,8 +18,8 @@ export interface ConnectionInfo {
 
 export function connectionStream$(broker: WsConnection): Observable<ConnectionInfo> {
   return broker.streamEndpoint.connectionState$.pipe(
-    tap((state) => console.debug('', `Received response on topic status: ${state}`)),
-    map((state) => {
+    tap(state => console.debug('', `Received response on topic status: ${state}`)),
+    map(state => {
       let status: ConnectionStatus
       let url: string = broker.config.brokerURL
 
@@ -42,8 +42,8 @@ export function connectionStream$(broker: WsConnection): Observable<ConnectionIn
 
       return {
         status: status,
-        url: url,
+        url: url
       }
-    }),
+    })
   )
 }

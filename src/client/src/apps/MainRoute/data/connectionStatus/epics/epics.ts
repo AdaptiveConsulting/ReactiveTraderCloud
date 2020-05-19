@@ -13,8 +13,8 @@ export const connectionStatusEpic: ApplicationEpic = (action$, state$, { connect
     switchMapTo<CreateConnectionAction>(
       connection$.pipe(
         map(ConnectionStatusActions.createConnectionStatusUpdateAction),
-        takeUntil(action$.pipe(applicationDisconnected)),
-      ),
-    ),
+        takeUntil(action$.pipe(applicationDisconnected))
+      )
+    )
   )
 }

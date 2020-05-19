@@ -22,7 +22,7 @@ const MockWsConnection = jest.fn(
     return {
       config: { brokerURL: 'FAKE', reconnectDelay: 200 },
       rpcEndpoint: {} as RxStompRPC,
-      streamEndpoint: new RxStomp(),
+      streamEndpoint: new RxStomp()
     }
-  },
+  }
 )

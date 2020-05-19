@@ -13,16 +13,56 @@ export class BlotterComponent {
   constructor(private browser: ProtractorBrowser, public root: ElementFinder) {
     this.tradesTable = {
       executedTrades: {
-        tradeID: root.element(by.css('[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="tradeId"]')),
-        tradeStatus: root.element(by.css('[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="status"]')),
-        tradeDate: root.element(by.css('[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="tradeDate"]')),
-        tradeDirection: root.element(by.css('[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="direction"]')),
-        tradeCCYCCY: root.element(by.css('[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="symbol"]')),
-        tradeDealtCCY: root.element(by.css('[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="dealtCurrency"]')),
-        tradeNotional: root.element(by.css('[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="notional"]')),
-        tradeRate: root.element(by.css('[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="spotRate"]')),
-        tradeValueDate: root.element(by.css('[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="valueDate"]')),
-        tradeBackGroundColour: root.element(by.css('[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="statusIndicator"]'))
+        tradeID: root.element(
+          by.css(
+            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="tradeId"]'
+          )
+        ),
+        tradeStatus: root.element(
+          by.css(
+            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="status"]'
+          )
+        ),
+        tradeDate: root.element(
+          by.css(
+            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="tradeDate"]'
+          )
+        ),
+        tradeDirection: root.element(
+          by.css(
+            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="direction"]'
+          )
+        ),
+        tradeCCYCCY: root.element(
+          by.css(
+            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="symbol"]'
+          )
+        ),
+        tradeDealtCCY: root.element(
+          by.css(
+            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="dealtCurrency"]'
+          )
+        ),
+        tradeNotional: root.element(
+          by.css(
+            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="notional"]'
+          )
+        ),
+        tradeRate: root.element(
+          by.css(
+            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="spotRate"]'
+          )
+        ),
+        tradeValueDate: root.element(
+          by.css(
+            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="valueDate"]'
+          )
+        ),
+        tradeBackGroundColour: root.element(
+          by.css(
+            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="statusIndicator"]'
+          )
+        )
       }
     }
   }
@@ -37,9 +77,9 @@ export class BlotterComponent {
       async (cell): Promise<BlotterHeader> => {
         return {
           id: await cell.getAttribute('col-id'),
-          label: await cell.element(by.css('.ag-header-cell-text')).getAttribute('textContent'),
+          label: await cell.element(by.css('.ag-header-cell-text')).getAttribute('textContent')
         }
-      },
+      }
     )
   }
 }

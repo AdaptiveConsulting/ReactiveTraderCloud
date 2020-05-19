@@ -31,7 +31,9 @@ export class ServiceStub {
    * @returns {Observable}
    */
   subscribeToTopic<TResponse>(topic: string): Observable<TResponse> {
-    return this.connection.streamEndpoint.watch(`/exchange/${topic}`).pipe(map(message => JSON.parse(message.body)))
+    return this.connection.streamEndpoint
+      .watch(`/exchange/${topic}`)
+      .pipe(map(message => JSON.parse(message.body)))
   }
 
   /**
@@ -40,7 +42,7 @@ export class ServiceStub {
   createRequestResponseOperation<TResponse, TPayload>(
     service: string,
     operationName: string,
-    payload: TPayload,
+    payload: TPayload
   ): Observable<TResponse> {
     const dto: SubscriptionDTO<TPayload> = {
       payload,
@@ -56,15 +58,17 @@ export class ServiceStub {
         body: JSON.stringify(dto),
       })
       .pipe(
-        tap(message => this.logResponse(remoteProcedure, { headers: message.headers, body: message.body })),
-        map(message => JSON.parse(message.body)),
+        tap(message =>
+          this.logResponse(remoteProcedure, { headers: message.headers, body: message.body })
+        ),
+        map(message => JSON.parse(message.body))
       )
   }
 
   createStreamOperation<TResponse, TPayload = {}>(
     service: string,
     operationName: string,
-    payload: TPayload,
+    payload: TPayload
   ): Observable<TResponse> {
     const dto: SubscriptionDTO<TPayload> = {
       payload,
@@ -84,9 +88,9 @@ export class ServiceStub {
           this.logResponse(remoteProcedure, {
             headers: message.headers,
             body: message.body,
-          }),
+          })
         ),
-        map(message => JSON.parse(message.body)),
+        map(message => JSON.parse(message.body))
       )
   }
 }

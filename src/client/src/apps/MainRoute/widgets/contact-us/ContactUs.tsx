@@ -10,7 +10,7 @@ const ContactUs: React.FC = () => {
     (args: EventArgs, href: string) => () => {
       handleBrowserLink(args, href)
     },
-    [],
+    []
   )
   return (
     <ContactUsContent>
@@ -32,9 +32,9 @@ const ContactUs: React.FC = () => {
             category: 'RT - Outbound',
             action: 'click',
             label: WEBSITE,
-            transport: 'beacon',
+            transport: 'beacon'
           },
-          WEBSITE,
+          WEBSITE
         )}
       >
         www.weareadaptive.com

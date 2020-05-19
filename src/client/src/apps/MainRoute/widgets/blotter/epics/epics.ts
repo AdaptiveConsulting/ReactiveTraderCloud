@@ -18,7 +18,7 @@ export const blotterServiceEpic: ApplicationEpic<{
   const connectAction$ = action$.pipe(applicationConnected)
 
   const subscribeAction$ = action$.pipe(
-    ofType<Action, SubscribeToBlotterAction>(BLOTTER_ACTION_TYPES.SUBSCRIBE_TO_BLOTTER_ACTION),
+    ofType<Action, SubscribeToBlotterAction>(BLOTTER_ACTION_TYPES.SUBSCRIBE_TO_BLOTTER_ACTION)
   )
 
   const combined$ = connectAction$.pipe(combineLatest(subscribeAction$))
@@ -27,7 +27,7 @@ export const blotterServiceEpic: ApplicationEpic<{
     switchMapTo(
       blotterService
         .getTradesStream()
-        .pipe(map(createNewTradesAction), takeUntil(action$.pipe(applicationDisconnected))),
-    ),
+        .pipe(map(createNewTradesAction), takeUntil(action$.pipe(applicationDisconnected)))
+    )
   )
 }

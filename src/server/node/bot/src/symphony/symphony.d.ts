@@ -24,7 +24,7 @@ declare module 'symphony-api-client-node' {
     readOnly: boolean,
     copyProtected: boolean,
     crossPod: boolean,
-    viewHistory: boolean,
+    viewHistory: boolean
   ): Promise<{ code: number; roomSystemInfo: { id: string } }>
 
   export type MessageFormat = 'presentationML' | 'messageML'
@@ -32,7 +32,7 @@ declare module 'symphony-api-client-node' {
     conversationId: string,
     message: string,
     data: string | null,
-    format: MessageFormat,
+    format: MessageFormat
   ): Promise<{ code: number }>
   export const MESSAGEML_FORMAT: 'messageML'
   export const PRESENTATIONML_FORMAT: 'presentationML'
@@ -45,5 +45,7 @@ declare module 'symphony-api-client-node' {
     onCreated?: (id: string) => void
     feedId?: string
   }
-  export function getDatafeedEventsService(config: ((event: string, messages: Message[]) => void) | FeedParams)
+  export function getDatafeedEventsService(
+    config: ((event: string, messages: Message[]) => void) | FeedParams
+  )
 }

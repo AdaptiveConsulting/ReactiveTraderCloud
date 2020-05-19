@@ -7,7 +7,11 @@ import CompositeStatusService from '../compositeStatusService'
 const { createCompositeStatusServiceAction } = CompositeStatusServiceActions
 type CreateStatusServiceAction = ReturnType<typeof createCompositeStatusServiceAction>
 
-export const compositeStatusServiceEpic: ApplicationEpic = (action$, state$, { serviceStatus$ }) => {
+export const compositeStatusServiceEpic: ApplicationEpic = (
+  action$,
+  state$,
+  { serviceStatus$ }
+) => {
   const compositeStatusService = new CompositeStatusService(serviceStatus$)
 
   return action$.pipe(

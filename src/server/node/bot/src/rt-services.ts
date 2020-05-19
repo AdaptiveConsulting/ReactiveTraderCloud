@@ -21,7 +21,9 @@ export function createApplicationServices(host: string, port: string) {
   const broker = new WsConnection(host, +port)
   const stub = new ServiceStub('RT-Bot', broker)
 
-  const tradeStream$ = stub.createStreamOperation<TradeUpdate>('blotter', 'getTradesStream', {}).pipe(share())
+  const tradeStream$ = stub
+    .createStreamOperation<TradeUpdate>('blotter', 'getTradesStream', {})
+    .pipe(share())
 
   const priceSubsription$ = stub.subscribeToTopic<RawPrice>('prices').pipe(
     map(price => convertToPrice(price)),
@@ -31,7 +33,7 @@ export function createApplicationServices(host: string, port: string) {
       }
       return acc.set(price.symbol, price)
     }, new Map<string, Price>()),
-    share(),
+    share()
   )
 
   return { tradeStream$, priceSubsription$ }

@@ -11,7 +11,7 @@ export const disconnectAfterAWhile = ({ dispatch }: MiddlewareAPI) => (next: Dis
     dispatch(ConnectionActions.disconnect())
     console.warn(
       LOG_NAME,
-      `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`,
+      `Application has reached disconnection time at ${APPLICATION_DISCONNECT}`
     )
   })
 

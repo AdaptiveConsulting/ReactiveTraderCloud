@@ -10,7 +10,7 @@ let openPopoutWindows: Window[] = []
 
 export function openBrowserWindow(
   config: BrowserWindowProps,
-  onClose?: () => void,
+  onClose?: () => void
 ): Promise<PlatformWindow | undefined> {
   const { name, width, height, center, url } = config
   const prevWindow = openPopoutWindows[openPopoutWindows.length - 1]
@@ -31,8 +31,8 @@ export function openBrowserWindow(
       width,
       height,
       left,
-      top,
-    }),
+      top
+    })
   )
 
   if (onClose && win) {
@@ -62,7 +62,7 @@ function calculatePosition(
   center: string = 'parent',
   width: number,
   height: number,
-  reference?: { top: number; left: number },
+  reference?: { top: number; left: number }
 ) {
   let left = 0
   let top = 0
