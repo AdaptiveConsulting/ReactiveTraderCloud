@@ -9,7 +9,7 @@ import {
   SETUP_ACTION_TYPES,
   WORKSPACE_ACTION_TYPES,
   LAYOUT_ACTION_TYPES,
-  LayoutAction,
+  LayoutAction
 } from 'rt-actions'
 import { setupWorkspaces, restoreWorkspace, saveWorkspace } from './workspaces'
 import { isMainWindow, addApplicationEventHandler } from './window'
@@ -27,7 +27,7 @@ const workspacesHandler = setupWorkspaces()
 const initWorkspaceEpic = (action$: ActionsObservable<Action>) =>
   action$.pipe(
     ofType<Action, SetupAction>(SETUP_ACTION_TYPES.SETUP),
-    switchMapTo(workspacesHandler.pipe(map(LayoutActions.updateContainerVisibilityAction))),
+    switchMapTo(workspacesHandler.pipe(map(LayoutActions.updateContainerVisibilityAction)))
   )
 
 /**
@@ -42,7 +42,7 @@ const restoreWorkspaceEpic = (action$: ActionsObservable<Action>) =>
       }
 
       return WorkspaceActions.restored()
-    }),
+    })
   )
 
 const saveWorkspaceEpic = (action$: ActionsObservable<Action>) =>
@@ -59,7 +59,7 @@ const saveWorkspaceEpic = (action$: ActionsObservable<Action>) =>
       }
 
       return WorkspaceActions.saved()
-    }),
+    })
   )
 
 /**
@@ -70,7 +70,7 @@ const applicationEvents = [
   'window-bounds-changed',
   'window-minimized',
   'window-maximized',
-  'window-restored',
+  'window-restored'
 ]
 const workspaceHandlersEpic = (action$: ActionsObservable<Action>) =>
   action$.pipe(
@@ -78,10 +78,10 @@ const workspaceHandlersEpic = (action$: ActionsObservable<Action>) =>
     switchMapTo(
       merge(
         ...applicationEvents.map(event =>
-          flowRight(fromEventPattern, addApplicationEventHandler)(event),
-        ),
-      ).pipe(map(WorkspaceActions.save)),
-    ),
+          flowRight(fromEventPattern, addApplicationEventHandler)(event)
+        )
+      ).pipe(map(WorkspaceActions.save))
+    )
   )
 
 /**
@@ -90,7 +90,7 @@ const workspaceHandlersEpic = (action$: ActionsObservable<Action>) =>
 const workspaceWindowsEpic = (action$: ActionsObservable<Action>) =>
   action$.pipe(
     ofType<Action, LayoutAction>(LAYOUT_ACTION_TYPES.CONTAINER_VISIBILITY_UPDATE),
-    map(WorkspaceActions.save),
+    map(WorkspaceActions.save)
   )
 
 export const platformEpics: Array<ApplicationEpic> = [
@@ -98,5 +98,5 @@ export const platformEpics: Array<ApplicationEpic> = [
   restoreWorkspaceEpic,
   saveWorkspaceEpic,
   workspaceHandlersEpic,
-  workspaceWindowsEpic,
+  workspaceWindowsEpic
 ]

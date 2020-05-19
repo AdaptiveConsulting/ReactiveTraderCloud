@@ -41,7 +41,7 @@ export class ServiceStub {
    */
   requestResponse<TResponse, TPayload>(
     remoteProcedure: string,
-    payload: TPayload,
+    payload: TPayload
   ): Observable<TResponse> {
     console.info(LOG_NAME, `Creating request response operation for [${remoteProcedure}]`)
 
@@ -57,15 +57,15 @@ export class ServiceStub {
       })
       .pipe(
         tap(message =>
-          this.logResponse(remoteProcedure, { headers: message.headers, body: message.body }),
+          this.logResponse(remoteProcedure, { headers: message.headers, body: message.body })
         ),
-        map(message => JSON.parse(message.body)),
+        map(message => JSON.parse(message.body))
       )
   }
 
   replyToRequestResponse<TResponse, TPayload>(
     remoteProcedure: string,
-    handler: (payload: TPayload) => Promise<TResponse>,
+    handler: (payload: TPayload) => Promise<TResponse>
   ): Subscription {
     return this.connection.streamEndpoint.watch(`/queue/${remoteProcedure}`).subscribe(request => {
       const replyTo = request.headers['reply-to']
@@ -75,7 +75,7 @@ export class ServiceStub {
         const response = JSON.stringify(result)
         this.logResponse(
           remoteProcedure,
-          'RPC Server: Response: ' + response + ' for ' + request.body,
+          'RPC Server: Response: ' + response + ' for ' + request.body
         )
         this.connection.streamEndpoint.publish({
           destination: replyTo,
@@ -88,7 +88,7 @@ export class ServiceStub {
 
   requestStream<TResponse, TPayload = {}>(
     remoteProcedure: string,
-    payload: TPayload,
+    payload: TPayload
   ): Observable<TResponse> {
     console.log(`subscribing to RPC stream ${remoteProcedure}`)
     const dto: SubscriptionDTO<TPayload> = {
@@ -106,9 +106,9 @@ export class ServiceStub {
           this.logResponse(remoteProcedure, {
             headers: message.headers,
             body: message.body,
-          }),
+          })
         ),
-        map(message => JSON.parse(message.body)),
+        map(message => JSON.parse(message.body))
       )
   }
 }

@@ -25,7 +25,7 @@ function getSingleNumberFromQuery(count: string[] | string | null | undefined): 
 }
 
 function ensureArray(
-  item: ReadonlyArray<string> | string | null | undefined,
+  item: ReadonlyArray<string> | string | null | undefined
 ): ReadonlyArray<string> {
   if (!item) {
     return []
@@ -41,12 +41,12 @@ function getFiltersFromQueryStr(queryStr: string): BlotterFilters {
   return {
     [SYMBOL]: ensureArray(parsedQueryString[SYMBOL]),
     [DEALT_CURRENCY]: ensureArray(parsedQueryString[DEALT_CURRENCY]),
-    count: getSingleNumberFromQuery(parsedQueryString.count),
+    count: getSingleNumberFromQuery(parsedQueryString.count)
   }
 }
 
 const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
-  location: { search },
+  location: { search }
 }) => {
   const platform = usePlatform()
   const [filtersFromInterop, setFiltersFromInterop] = useState<ReadonlyArray<BlotterFilters>>()

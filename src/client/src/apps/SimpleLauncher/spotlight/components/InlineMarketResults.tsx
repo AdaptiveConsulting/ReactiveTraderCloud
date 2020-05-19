@@ -9,7 +9,7 @@ import { defaultColDefs } from './utils'
 export const InlineMarketResults: FC = () => {
   const currencyPairs = useMarketService()
   const rows = useMemo(() => {
-    return currencyPairs && Object.keys(currencyPairs).map((key) => key)
+    return currencyPairs && Object.keys(currencyPairs).map(key => key)
   }, [currencyPairs])
 
   if (!rows) {
@@ -23,7 +23,7 @@ export const InlineMarketResults: FC = () => {
   return (
     <InlineIntent>
       <ResultsTable cols={defaultColDefs}>
-        {rows.map((currencyPair) => (
+        {rows.map(currencyPair => (
           <InlineQuote currencyPair={currencyPair} />
         ))}
       </ResultsTable>

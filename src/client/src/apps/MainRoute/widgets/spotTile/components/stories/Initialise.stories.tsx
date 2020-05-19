@@ -18,7 +18,7 @@ export const stories = storiesOf('Spot Tile', module).addDecorator(withKnobs)
 export const priceStories = storiesOf('Spot Tile.Components.Price', module).addDecorator(withKnobs)
 export const rfqStories = storiesOf('Spot Tile.Components.RFQ', module).addDecorator(withKnobs)
 export const notionalStories = storiesOf('Spot Tile.Components.Notional', module).addDecorator(
-  withKnobs,
+  withKnobs
 )
 export const analyticsTileStories = storiesOf('Spot Tile.Vertical', module).addDecorator(withKnobs)
 export const spotTileStories = storiesOf('Spot Tile.Horizontal', module).addDecorator(withKnobs)

@@ -27,16 +27,16 @@ export default function configureStore(dependencies: ApplicationDependencies) {
     connectionStatusEpic,
     createBlotterEpic(dependencies),
     createAnalyticsServiceEpic(dependencies),
-    createSpotTileEpic(dependencies),
+    createSpotTileEpic(dependencies)
   ]
 
   const middleware = createEpicMiddleware<Action, Action, GlobalState, ApplicationDependencies>({
-    dependencies,
+    dependencies
   })
 
   const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(middleware, disconnectAfterAWhile)),
+    composeWithDevTools(applyMiddleware(middleware, disconnectAfterAWhile))
   )
   middleware.run(combineEpics(...epics))
 

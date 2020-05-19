@@ -15,12 +15,16 @@ interface TradeIntentFields {
 
 const INTENT_TRADES_NOTIFICATION = 'rt.trades.notification'
 
-export const tradeNotificationHandler: Handler = (symphony, { intentsFromDF$ }, { tradeStream$ }) => {
+export const tradeNotificationHandler: Handler = (
+  symphony,
+  { intentsFromDF$ },
+  { tradeStream$ }
+) => {
   const latestTrades$ = tradeStream$.pipe(
     filter(t => t.IsStateOfTheWorld === false),
     map(tradeUpdate => tradeUpdate.Trades),
     mergeMap(trades => from(trades)),
-    filter(trade => trade.Status === 'Done'),
+    filter(trade => trade.Status === 'Done')
   )
 
   const subscription$ = intentsFromDF$
@@ -33,41 +37,43 @@ export const tradeNotificationHandler: Handler = (symphony, { intentsFromDF$ }, 
 
         const ccy = fields.Currency ? fields.Currency.stringValue : undefined
 
-        const updateMessage = `Notification Setup: We will let you know when any ${ccyPair ||
-          ccy ||
-          ''} trade over ${formatNumber(notional)} is executed`
-        const notifcationMessage = `Notification: A ${ccyPair || ccy || ''} trade over ${formatNumber(
-          notional,
-        )} was executed`
-        return symphony.sendMessage(request.originalMessage.stream.streamId, standardMessage(updateMessage)).pipe(
-          concatMap(() =>
-            latestTrades$.pipe(
-              filter(trade => {
-                if (notional > trade.Notional) {
-                  return false
-                }
+        const updateMessage = `Notification Setup: We will let you know when any ${
+          ccyPair || ccy || ''
+        } trade over ${formatNumber(notional)} is executed`
+        const notifcationMessage = `Notification: A ${
+          ccyPair || ccy || ''
+        } trade over ${formatNumber(notional)} was executed`
+        return symphony
+          .sendMessage(request.originalMessage.stream.streamId, standardMessage(updateMessage))
+          .pipe(
+            concatMap(() =>
+              latestTrades$.pipe(
+                filter(trade => {
+                  if (notional > trade.Notional) {
+                    return false
+                  }
 
-                if (ccyPair) {
-                  return trade.CurrencyPair === ccyPair
-                }
+                  if (ccyPair) {
+                    return trade.CurrencyPair === ccyPair
+                  }
 
-                if (ccy) {
-                  return trade.CurrencyPair.substr(0, 3) === ccy
-                }
+                  if (ccy) {
+                    return trade.CurrencyPair.substr(0, 3) === ccy
+                  }
 
-                return true
-              }),
-              mergeMap(trade =>
-                symphony.sendMessage(
-                  request.originalMessage.stream.streamId,
-                  tradeUpdateMessage([trade], notifcationMessage, 'HIGH'),
+                  return true
+                }),
+                mergeMap(trade =>
+                  symphony.sendMessage(
+                    request.originalMessage.stream.streamId,
+                    tradeUpdateMessage([trade], notifcationMessage, 'HIGH')
+                  )
                 ),
-              ),
-              take(5),
-            ),
-          ),
-        )
-      }),
+                take(5)
+              )
+            )
+          )
+      })
     )
     .subscribe(
       value => {
@@ -75,7 +81,7 @@ export const tradeNotificationHandler: Handler = (symphony, { intentsFromDF$ }, 
       },
       error => {
         logger.error('Error processing trade reply', error)
-      },
+      }
     )
 
   return () => {

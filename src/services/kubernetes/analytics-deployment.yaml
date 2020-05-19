@@ -25,8 +25,4 @@ spec:
             - name: EVENTSTORE_PORT
               value: '1113'
           command:
-            [
-              'sh',
-              '-c',
-              'dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json',
-            ]
+            ['sh', '-c', 'dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json']

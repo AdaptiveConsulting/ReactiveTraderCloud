@@ -33,7 +33,7 @@ export interface BubbleChartNode extends layout.force.Node {
 
 export function getPositionsDataFromSeries(
   series: CurrencyPairPosition[] = [],
-  currencyPairs: CurrencyPairs,
+  currencyPairs: CurrencyPairs
 ): CCYPosition[] {
   const positionsPerCcyObj = series.reduce(
     (aggregatedPositionsObj, ccyPairPosition: CurrencyPairPosition) => {
@@ -49,12 +49,12 @@ export function getPositionsDataFromSeries(
 
       return aggregatedPositionsObj
     },
-    {},
+    {}
   )
 
   return _.map(positionsPerCcyObj, (val: number, key: string) => ({
     symbol: key,
-    baseTradedAmount: val,
+    baseTradedAmount: val
   })).filter((posPerCCY: CCYPosition) => posPerCCY.baseTradedAmount !== 0)
 }
 
@@ -80,7 +80,7 @@ export function createScales(props: PositionsBubbleChartProps): Scales {
     r: scale
       .sqrt()
       .domain([minValue, maxValue])
-      .range([minR, maxR]),
+      .range([minR, maxR])
   }
 }
 
@@ -96,7 +96,7 @@ export function updateNodes(nodeGroup: Selection<any>, nodes: BubbleChartNode[])
         return 'translate(0, 0)'
       }
     },
-    id: (d: BubbleChartNode) => d.id,
+    id: (d: BubbleChartNode) => d.id
   })
 
   nodes.forEach((node: BubbleChartNode) => {

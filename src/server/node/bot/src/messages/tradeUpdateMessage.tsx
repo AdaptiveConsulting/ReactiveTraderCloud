@@ -5,7 +5,10 @@ import '../extensions'
 
 type Prevalance = 'NORMAL' | 'HIGH'
 
-const prevelanceMap = new Map<Prevalance, string>([['NORMAL', 'tempo-bg-color--blue'], ['HIGH', 'tempo-bg-color--red']])
+const prevelanceMap = new Map<Prevalance, string>([
+  ['NORMAL', 'tempo-bg-color--blue'],
+  ['HIGH', 'tempo-bg-color--red'],
+])
 
 const numberCellStyle: React.CSSProperties = {
   textAlign: 'right',
@@ -19,7 +22,10 @@ interface Props {
 const TradesMessage: FC<Props> = ({ trades, label, prevalance }) => {
   return (
     <>
-      <card accent={prevelanceMap.get(prevalance)} iconSrc="https://web-demo.adaptivecluster.com/favicon.ico">
+      <card
+        accent={prevelanceMap.get(prevalance)}
+        iconSrc="https://web-demo.adaptivecluster.com/favicon.ico"
+      >
         <header>{label}</header>
         <body>
           <table>
@@ -58,5 +64,8 @@ const TradesMessage: FC<Props> = ({ trades, label, prevalance }) => {
   )
 }
 
-export const tradeUpdateMessage = (trades: Trade[], label: string, prevelance: Prevalance = 'NORMAL') =>
-  renderToStaticMarkup(<TradesMessage trades={trades} label={label} prevalance={prevelance} />)
+export const tradeUpdateMessage = (
+  trades: Trade[],
+  label: string,
+  prevelance: Prevalance = 'NORMAL'
+) => renderToStaticMarkup(<TradesMessage trades={trades} label={label} prevalance={prevelance} />)

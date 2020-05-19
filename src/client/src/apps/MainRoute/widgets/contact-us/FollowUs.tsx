@@ -12,7 +12,7 @@ const FollowUs: React.FC = () => {
     (args: EventArgs, href: string) => () => {
       handleBrowserLink(args, href)
     },
-    [],
+    []
   )
   return (
     <ContactUsContent>
@@ -22,7 +22,7 @@ const FollowUs: React.FC = () => {
         <Link
           onClick={onClick(
             { category: 'RT - Social', action: 'click', label: 'LinkedIn (url)' },
-            LINKEDIN_URL,
+            LINKEDIN_URL
           )}
         >
           linkedin.com/company/{<br />}adaptive-consulting-ltd/
@@ -33,7 +33,7 @@ const FollowUs: React.FC = () => {
         <Link
           onClick={onClick(
             { category: 'RT - Social', action: 'click', label: 'Twitter (url)' },
-            TWITTER_URL,
+            TWITTER_URL
           )}
         >
           @WeAreAdaptive
@@ -44,7 +44,7 @@ const FollowUs: React.FC = () => {
         <Link
           onClick={onClick(
             { category: 'RT - Social', action: 'click', label: 'Github (url)' },
-            GITHUB_URL,
+            GITHUB_URL
           )}
         >
           github.com/adaptiveConsulting

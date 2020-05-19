@@ -26,28 +26,28 @@ export const useBlotterTrades = (filters?: BlotterFilters) => {
           filterBlotterTrades(tradeUpdate.trades, {
             ...filters,
             // get all trades and then limit in the end (so that we can show user how many filtered out)
-            count: undefined,
-          }),
+            count: undefined
+          })
         ),
         scan<ReadonlyArray<Trade>, Map<number, Trade>>((acc, trades) => {
           trades.forEach(trade => acc.set(trade.tradeId, trade))
           return acc
         }, new Map<number, Trade>()),
-        map((trades: TradeLookup) => Array.from(trades.values()).reverse()),
+        map((trades: TradeLookup) => Array.from(trades.values()).reverse())
       )
       .subscribe(
         result => {
           const newTradeCount = result.length
           let newTrades = result.slice(
             0,
-            filters && typeof filters.count !== 'undefined' ? filters.count : MAX_TRADES,
+            filters && typeof filters.count !== 'undefined' ? filters.count : MAX_TRADES
           )
 
           if (!isArrayFilterEmpty(filters?.dealtCurrency) || !isArrayFilterEmpty(filters?.symbol)) {
             newTrades = newTrades.filter(
               t =>
                 filters?.dealtCurrency?.includes(t.dealtCurrency) ||
-                filters?.symbol?.includes(t.symbol),
+                filters?.symbol?.includes(t.symbol)
             )
           }
 
@@ -57,7 +57,7 @@ export const useBlotterTrades = (filters?: BlotterFilters) => {
         },
         error => {
           console.error(`Error subscribing to inline blotter service: ${error}`)
-        },
+        }
       )
 
     return () => {

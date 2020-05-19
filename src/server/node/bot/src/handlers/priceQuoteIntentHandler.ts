@@ -31,8 +31,12 @@ export const priceQuoteHandler: Handler = (symphony, { intentsFromDF$ }, { price
         const ccyPair = fields.CurrencyPairs.stringValue
 
         const messageMarkup = createPriceMessage(latestPrices.get(ccyPair)!)
-        return symphony.sendMessage(request.originalMessage.stream.streamId, messageMarkup, createDataPayload(ccyPair))
-      }),
+        return symphony.sendMessage(
+          request.originalMessage.stream.streamId,
+          messageMarkup,
+          createDataPayload(ccyPair)
+        )
+      })
     )
     .subscribe(
       () => {
@@ -40,7 +44,7 @@ export const priceQuoteHandler: Handler = (symphony, { intentsFromDF$ }, { price
       },
       error => {
         logger.error('Error processing Quote reply', error)
-      },
+      }
     )
 
   return () => {

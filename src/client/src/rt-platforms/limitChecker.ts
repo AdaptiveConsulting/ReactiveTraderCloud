@@ -7,7 +7,7 @@ export interface LimitChecker {
 
 class LimitCheckerImpl implements LimitChecker {
   rpc() {
-    return new Observable<boolean>((observer) => {
+    return new Observable<boolean>(observer => {
       observer.next(true)
       observer.complete()
     })

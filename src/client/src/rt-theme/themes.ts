@@ -70,7 +70,7 @@ export const getThemeColor = (theme: Theme, color: Color | ThemeSelector, fallba
 const createTheme = (
   name: string,
   { primary, secondary, core }: CorePaletteMap,
-  accents: AccentPaletteMap,
+  accents: AccentPaletteMap
 ) => ({
   name,
   core,
@@ -92,27 +92,27 @@ const createTheme = (
 
     fast: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.19, 1, 0.22, 1)',
+      easing: 'cubic-bezier(0.19, 1, 0.22, 1)'
     },
 
     normal: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
     },
 
     slow: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
-    },
+      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)'
+    }
   },
 
   overlay: {
     backgroundColor: darken(0.1, primary[1]),
-    textColor: secondary[2],
+    textColor: secondary[2]
   },
 
   tile: {
-    inputColor: secondary[4],
+    inputColor: secondary[4]
   },
 
   flash: keyframes`
@@ -133,11 +133,11 @@ const createTheme = (
       textColor: secondary.base,
 
       active: {
-        backgroundColor: primary[4],
+        backgroundColor: primary[4]
       },
       disabled: {
-        backgroundColor: primary[3],
-      },
+        backgroundColor: primary[3]
+      }
     },
 
     primary: {
@@ -146,12 +146,12 @@ const createTheme = (
 
       active: {
         backgroundColor: accents.primary.darker,
-        textColor: colors.static.white,
+        textColor: colors.static.white
       },
       disabled: {
         backgroundColor: primary[1],
-        textColor: secondary.base,
-      },
+        textColor: secondary.base
+      }
     },
 
     secondary: {
@@ -160,11 +160,11 @@ const createTheme = (
 
       active: {
         backgroundColor: accents.primary.darker,
-        textColor: colors.static.white,
+        textColor: colors.static.white
       },
       disabled: {
-        backgroundColor: primary[1],
-      },
+        backgroundColor: primary[1]
+      }
     },
 
     ...mapValues(accents, ({ base, darker }) => ({
@@ -172,13 +172,13 @@ const createTheme = (
       textColor: colors.static.white,
 
       active: {
-        backgroundColor: darker,
+        backgroundColor: darker
       },
       disabled: {
         backgroundColor: primary[1],
-        textColor: secondary.base,
-      },
-    })),
+        textColor: secondary.base
+      }
+    }))
   } as TouchableStyleSet,
 
   dropdown: {
@@ -186,14 +186,14 @@ const createTheme = (
     textColor: secondary.base,
 
     active: {
-      backgroundColor: primary[2],
+      backgroundColor: primary[2]
     },
 
     disabled: {
       backgroundColor: primary[1],
-      textColor: primary[2],
-    },
-  },
+      textColor: primary[2]
+    }
+  }
 })
 
 const lightTheme = createTheme('light', colors.light, colors.accents)
@@ -201,5 +201,5 @@ const darkTheme = createTheme('dark', colors.dark, colors.accents)
 
 export const themes = {
   light: lightTheme,
-  dark: darkTheme,
+  dark: darkTheme
 }

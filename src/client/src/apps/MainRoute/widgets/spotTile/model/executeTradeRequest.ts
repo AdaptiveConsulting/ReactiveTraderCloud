@@ -34,30 +34,30 @@ export type ExecuteTradeResponse = TradeErrorResponse | TradeSuccessResponse | T
 
 export const createExecuteTradeResponseForWarning = (
   warning: string,
-  request: ExecuteTradeRequest,
+  request: ExecuteTradeRequest
 ): TradeWarningResponse => ({
   warning,
   request,
   hasError: false,
-  hasWarning: true,
+  hasWarning: true
 })
 
 export const createExecuteTradeResponseForError = (
   error: string,
-  request: ExecuteTradeRequest,
+  request: ExecuteTradeRequest
 ): TradeErrorResponse => ({
   error,
   request,
   hasError: true,
-  hasWarning: false,
+  hasWarning: false
 })
 
 export const createExecuteTradeResponse = (
   trade: Trade,
-  request: ExecuteTradeRequest,
+  request: ExecuteTradeRequest
 ): TradeSuccessResponse => ({
   trade,
   request,
   hasError: false,
-  hasWarning: false,
+  hasWarning: false
 })

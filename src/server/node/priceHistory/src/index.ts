@@ -42,10 +42,10 @@ let latest: ReadonlyMap<string, Price[]>
 const heartbeat$ = stub
   .subscribeToTopic<RawPrice>('prices')
   .pipe(
-    map(price => convertToPrice(price)),
+    map((price) => convertToPrice(price)),
     savePrices,
   )
-  .subscribe(newPrices => {
+  .subscribe((newPrices) => {
     latest = newPrices
   })
 

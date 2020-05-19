@@ -15,18 +15,18 @@ const DEFAULT_TILE_DATA: SpotTileData = {
     symbol: '',
     valueDate: '',
     priceMovementType: PriceMovementTypes.None,
-    priceStale: false,
+    priceStale: false
   },
   lastTradeExecutionStatus: null,
   rfqState: 'none',
   rfqPrice: null,
   rfqReceivedTime: null,
-  rfqTimeout: null,
+  rfqTimeout: null
 }
 
 const getCurrencyPair = (
   state: GlobalState,
-  currencyPairId: string | undefined,
+  currencyPairId: string | undefined
 ): CurrencyPair | undefined =>
   typeof currencyPairId === 'undefined' ? undefined : state.currencyPairs[currencyPairId]
 
@@ -34,13 +34,13 @@ const selectCurrencyPair = createSelector([getCurrencyPair], currencyPair => cur
 
 const getSpotTileData = (
   state: GlobalState,
-  currencyPairId: string | undefined,
+  currencyPairId: string | undefined
 ): SpotTileData | undefined =>
   typeof currencyPairId === 'undefined' ? undefined : state.spotTilesData[currencyPairId]
 
 const selectSpotTileData = createSelector(
   getSpotTileData,
-  (spotTileData: SpotTileData | undefined) => spotTileData || DEFAULT_TILE_DATA,
+  (spotTileData: SpotTileData | undefined) => spotTileData || DEFAULT_TILE_DATA
 )
 
 const getPricingStatus = (state: GlobalState) =>

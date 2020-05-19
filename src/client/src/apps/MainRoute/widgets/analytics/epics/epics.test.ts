@@ -11,7 +11,7 @@ import { GlobalState } from '../../../../../StoreTypes'
 
 const position = {
   CurrentPositions: [] as any[],
-  History: [] as any[],
+  History: [] as any[]
 }
 const serviceType = '@ReactiveTraderCloud/ANALYTICS_SERVICE'
 
@@ -29,7 +29,7 @@ describe('Analytics epics', () => {
     const actionsReference = {
       r: referenceAction,
       s: subscribeAction,
-      a: position,
+      a: position
     }
     const createStreamOperation$ = jest.fn((s: string, o: string, r: any) => of(position))
 
@@ -38,7 +38,7 @@ describe('Analytics epics', () => {
       const expecteLifetime = '-----a--'
 
       const serviceClient: ServiceClient = new MockServiceClient(
-        createStreamOperation$,
+        createStreamOperation$
       ) as ServiceClient
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
@@ -46,7 +46,7 @@ describe('Analytics epics', () => {
       const state$ = {} as StateObservable<GlobalState>
 
       const epics$ = analyticsServiceEpic(action$, state$, { serviceClient }).pipe(
-        map(service => service.type === serviceType),
+        map(service => service.type === serviceType)
       )
       expectObservable(epics$).toBe(expecteLifetime, { a: true })
     })
@@ -62,7 +62,7 @@ describe('Analytics epics', () => {
       r: referenceAction,
       s: subscribeAction,
       d: disconnectAction,
-      a: position,
+      a: position
     }
     const createStreamOperation$ = jest.fn((s: string, o: string, r: any) => of(position))
 
@@ -73,14 +73,14 @@ describe('Analytics epics', () => {
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
 
       const serviceClient: ServiceClient = (new MockServiceClient(
-        createStreamOperation$,
+        createStreamOperation$
       ) as any) as ServiceClient
 
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
       const state$ = {} as StateObservable<GlobalState>
 
       const epics$ = analyticsServiceEpic(action$, state$, { serviceClient }).pipe(
-        map(service => service.type === serviceType),
+        map(service => service.type === serviceType)
       )
       expectObservable(epics$).toBe(expecteLifetime, { a: true })
     })
@@ -88,10 +88,10 @@ describe('Analytics epics', () => {
 })
 
 const implementation = (
-  getResponses: (service: string, operationName: string, request: any) => Observable<any>,
+  getResponses: (service: string, operationName: string, request: any) => Observable<any>
 ) => ({
-  createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
+  createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r)
 })
 const MockServiceClient = jest.fn<Partial<ServiceClient>, Parameters<typeof implementation>>(
-  implementation,
+  implementation
 )

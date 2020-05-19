@@ -6,7 +6,7 @@ import { BlotterFilters, validateFilters } from 'apps/MainRoute/widgets/blotter/
 let openedWindow: PlatformWindow | undefined
 let updatedPosition: { x: number | undefined; y: number | undefined } = {
   x: undefined,
-  y: undefined,
+  y: undefined
 }
 
 const updatePosition = ({ left, top }: { left: number; top: number }) => {
@@ -17,7 +17,7 @@ const updatePosition = ({ left, top }: { left: number; top: number }) => {
 function updatedOpenedWindow(
   blotterWindow: PlatformWindow,
   filters: BlotterFilters,
-  platform: Platform,
+  platform: Platform
 ) {
   if (platformHasFeature(platform, 'interop')) {
     platform.interop.publish(InteropTopics.FilterBlotter, filters)
@@ -30,7 +30,7 @@ function updatedOpenedWindow(
 
 async function openNewWindow(
   filters: BlotterFilters,
-  platform: Platform,
+  platform: Platform
 ): Promise<PlatformWindow | undefined> {
   const baseUrl = `${windowOrigin}/blotter`
   const queryString = stringify(validateFilters(filters))
@@ -42,10 +42,10 @@ async function openNewWindow(
       width: 1100,
       url,
       name: 'blotter',
-      ...updatedPosition,
+      ...updatedPosition
     },
     () => (openedWindow = undefined),
-    updatePosition,
+    updatePosition
   )
 }
 

@@ -63,7 +63,7 @@ export const Root = styled.div`
 
   font-size: 0.75rem;
 
-  color: ${(props) => props.theme.textColor};
+  color: ${props => props.theme.textColor};
 `
 
 export const ServiceListPopup = styled(Popup)`
@@ -99,7 +99,7 @@ export const ServiceRoot = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  color: ${(props) => props.theme.textColor};
+  color: ${props => props.theme.textColor};
 `
 
 export const ServiceList = styled.div`

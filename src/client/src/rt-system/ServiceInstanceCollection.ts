@@ -16,7 +16,7 @@ export class ServiceInstanceCollection {
   }
 
   getServiceNumberOfInstances() {
-    return this.getServiceInstances().filter((x) => x.isConnected).length
+    return this.getServiceInstances().filter(x => x.isConnected).length
   }
 }
 
@@ -49,11 +49,11 @@ export class ServiceCollectionMap implements IServiceStatusCollection {
           connectedInstanceCount: next.getServiceNumberOfInstances(),
           connectionStatus: next.getServiceNumberOfInstances()
             ? ServiceConnectionStatus.CONNECTED
-            : ServiceConnectionStatus.DISCONNECTED,
+            : ServiceConnectionStatus.DISCONNECTED
         }
         return acc
       },
-      {},
+      {}
     )
   }
 }

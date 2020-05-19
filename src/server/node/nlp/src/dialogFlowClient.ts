@@ -1,7 +1,7 @@
-import uuid from "uuid/v1"
-import DialogFlow from "dialogflow"
+import uuid from 'uuid/v1'
+import DialogFlow from 'dialogflow'
 
-const PROJECT_ID = "adaptive-trader"
+const PROJECT_ID = 'adaptive-trader'
 
 const sessionClient = new DialogFlow.SessionsClient()
 
@@ -14,9 +14,9 @@ const createRequest = (text: string) => {
     queryInput: {
       text: {
         text,
-        languageCode: "en-US"
-      }
-    }
+        languageCode: 'en-US',
+      },
+    },
   }
 }
 

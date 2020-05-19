@@ -19,5 +19,5 @@ spec:
             [
               'sh',
               '-c',
-              'npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx'
+              'npm run e2e -- --chromeDriver=/usr/bin/chromedriver --baseUrl=http://nginx',
             ]

@@ -2,10 +2,10 @@ module.exports = {
   extends: ['@commitlint/config-conventional'],
   parserPreset: {
     parserOpts: {
-      issuePrefixes: ['ARTP-']
-    }
+      issuePrefixes: ['ARTP-'],
+    },
   },
   rules: {
-    'references-empty': [1, 'never']
-  }
-};
+    'references-empty': [1, 'never'],
+  },
+}

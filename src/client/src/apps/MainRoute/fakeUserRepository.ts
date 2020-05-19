@@ -7,32 +7,32 @@ export const fakeUserDetails: User[] = [
     code: 'LMO',
     firstName: 'Lorretta',
     lastName: 'Moe',
-    avatar: `${window.location.origin}/static/media/mockedAvatars/one.png`,
+    avatar: `${window.location.origin}/static/media/mockedAvatars/one.png`
   },
   {
     code: 'WMO',
     firstName: 'Wenona',
     lastName: 'Moshier',
-    avatar: `${window.location.origin}/static/media/mockedAvatars/two.png`,
+    avatar: `${window.location.origin}/static/media/mockedAvatars/two.png`
   },
   {
     code: 'NGA',
     firstName: 'Nita',
     lastName: 'Garica',
-    avatar: `${window.location.origin}/static/media/mockedAvatars/three.png`,
+    avatar: `${window.location.origin}/static/media/mockedAvatars/three.png`
   },
   {
     code: 'HHA',
     firstName: 'Hyun',
     lastName: 'Havlik',
-    avatar: `${window.location.origin}/static/media/mockedAvatars/four.png`,
+    avatar: `${window.location.origin}/static/media/mockedAvatars/four.png`
   },
   {
     code: 'EDO',
     firstName: 'Elizebeth',
     lastName: 'Doverspike',
-    avatar: `${window.location.origin}/static/media/mockedAvatars/five.png`,
-  },
+    avatar: `${window.location.origin}/static/media/mockedAvatars/five.png`
+  }
 ]
 
 const userDetails = fakeUserDetails[Math.floor(Math.random() * fakeUserDetails.length)]
@@ -41,12 +41,12 @@ const currentUser: User = {
   firstName: userDetails.firstName,
   lastName: userDetails.lastName,
   code: userDetails.code,
-  avatar: userDetails.avatar,
+  avatar: userDetails.avatar
 }
 
 console.info(
   LOG_NAME,
-  `Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`,
+  `Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`
 )
 
 export default class FakeUserRepository {

@@ -25,7 +25,7 @@ export function setupWorkspaces() {
 
 async function appRestoreHandler(
   workspaceApp: workspaces.WorkspaceApp,
-  callback: (data: WinProps) => void,
+  callback: (data: WinProps) => void
 ) {
   const ofApp = await fin.Application.getCurrent()
   const openWindows = await ofApp.getChildWindows()
@@ -36,24 +36,24 @@ async function appRestoreHandler(
         name: win.name,
         url: win.url,
         width: win.bounds.width,
-        height: win.bounds.height,
+        height: win.bounds.height
       }
       await openDesktopWindow(
         config,
         () => {
           callback({
             name: win.name,
-            display: true,
+            display: true
           })
         },
         () => {},
-        { defaultLeft: win.bounds.left, defaultTop: win.bounds.top },
+        { defaultLeft: win.bounds.left, defaultTop: win.bounds.top }
       )
 
       // 'remove' the child window from the main window
       callback({
         name: win.name,
-        display: false,
+        display: false
       })
     } else {
       await positionWindow(win)

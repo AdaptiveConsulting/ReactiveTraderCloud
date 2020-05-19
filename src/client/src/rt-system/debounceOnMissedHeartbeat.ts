@@ -6,7 +6,7 @@ import { mapTo, switchMap } from 'rxjs/operators'
  */
 export function debounceWithSelector<T>(
   dueTime: number,
-  itemSelector: (lastValue: T) => T,
+  itemSelector: (lastValue: T) => T
 ): (source: Observable<T>) => Observable<T> {
   return source$ => {
     const timeout$ = source$.pipe(switchMap(last => timer(dueTime).pipe(mapTo(itemSelector(last)))))

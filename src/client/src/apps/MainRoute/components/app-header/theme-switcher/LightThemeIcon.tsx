@@ -10,7 +10,7 @@ interface LightThemeIconProps extends SVGAttributes<Element> {
 const LightThemeIcon: React.FC<LightThemeIconProps> = ({
   fill = '#FF8D00',
   height = 24,
-  width = 24,
+  width = 24
 }) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 14 14">
@@ -25,6 +25,6 @@ const LightThemeIcon: React.FC<LightThemeIconProps> = ({
 
 export default styled(LightThemeIcon)`
   [fill] {
-    fill: ${(props) => props.theme.core.textColor};
+    fill: ${props => props.theme.core.textColor};
   }
 `

@@ -48,7 +48,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
     (event: MouseEvent) => {
       onPopoutClick(event.screenX, event.screenY)
     },
-    [onPopoutClick],
+    [onPopoutClick]
   )
 
   const [quickFilterText, setQuickFilterText] = useState('')
@@ -58,7 +58,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
       setQuickFilterText(event.currentTarget.value)
       return gridApi && gridApi.setQuickFilter(event.currentTarget.value)
     },
-    [setQuickFilterText, gridApi],
+    [setQuickFilterText, gridApi]
   )
 
   const removeQuickFilter = useCallback(() => {
@@ -73,7 +73,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
   const removeAllFilters = useCallback(() => gridApi && gridApi.setFilterModel(null), [gridApi])
 
   const removeFilter = useCallback((key: string) => gridApi && gridApi.destroyFilter(key), [
-    gridApi,
+    gridApi
   ])
 
   return (

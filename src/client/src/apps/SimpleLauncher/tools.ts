@@ -20,7 +20,7 @@ function handleApplication(
   provider: ApplicationProvider,
   name: string,
   uuid?: string,
-  url?: string,
+  url?: string
 ) {
   if (!provider.windowOptions) {
     console.error(`Error opening app - windowOptions object is missing`)
@@ -34,12 +34,12 @@ function handleApplication(
     name,
     url,
     uuid,
-    windowOptions: provider.windowOptions,
+    windowOptions: provider.windowOptions
   })
 }
 
 export async function open(
-  config: ApplicationConfig,
+  config: ApplicationConfig
 ): Promise<Window | fin.OpenFinWindow | Application | void | null> {
   const { provider, url, name, uuid } = config
 
@@ -83,14 +83,14 @@ async function launchLimitChecker(config: ApplicationConfig) {
       alias: 'LimitChecker',
       listener: result => {
         console.log('the exit code', result.exitCode)
-      },
+      }
     },
     data => {
       console.info('Process launched: ' + data)
     },
     e => {
       console.error('Process launch failed: ' + e)
-    },
+    }
   )
   return app
 }

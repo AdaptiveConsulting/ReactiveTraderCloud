@@ -10,15 +10,15 @@ const updateNotional = jest.fn()
 const resetNotional = jest.fn()
 const inputValidationMessageError: ValidationMessage = {
   type: 'error',
-  content: 'Some error',
+  content: 'Some error'
 }
 const inputValidationMessageWarning: ValidationMessage = {
   type: 'warning',
-  content: 'Some warning',
+  content: 'Some warning'
 }
 const inputValidationMessageInfo: ValidationMessage = {
   type: 'info',
-  content: 'Some information',
+  content: 'Some information'
 }
 
 // Dark theme version
@@ -32,7 +32,7 @@ test('NotionalInput default', () => {
       resetNotional={resetNotional}
       showResetButton={false}
       disabled={false}
-    />,
+    />
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -49,7 +49,7 @@ test('NotionalInput with error', () => {
       validationMessage={inputValidationMessageError}
       showResetButton={false}
       disabled={false}
-    />,
+    />
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -66,7 +66,7 @@ test('NotionalInput with warning', () => {
       validationMessage={inputValidationMessageWarning}
       showResetButton={false}
       disabled={false}
-    />,
+    />
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -83,7 +83,7 @@ test('NotionalInput with info', () => {
       validationMessage={inputValidationMessageInfo}
       showResetButton={false}
       disabled={false}
-    />,
+    />
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -99,7 +99,7 @@ test('NotionalInput disabled', () => {
       resetNotional={resetNotional}
       showResetButton={false}
       disabled={true}
-    />,
+    />
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -115,7 +115,7 @@ test('NotionalInput show reset button', () => {
       resetNotional={resetNotional}
       showResetButton={true}
       disabled={false}
-    />,
+    />
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -133,7 +133,7 @@ test('NotionalInput default', () => {
       showResetButton={false}
       disabled={false}
     />,
-    'light',
+    'light'
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -151,7 +151,7 @@ test('NotionalInput with error', () => {
       showResetButton={false}
       disabled={false}
     />,
-    'light',
+    'light'
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -169,7 +169,7 @@ test('NotionalInput with warning', () => {
       showResetButton={false}
       disabled={false}
     />,
-    'light',
+    'light'
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -187,7 +187,7 @@ test('NotionalInput with info', () => {
       showResetButton={false}
       disabled={false}
     />,
-    'light',
+    'light'
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -204,7 +204,7 @@ test('NotionalInput disabled', () => {
       showResetButton={false}
       disabled={true}
     />,
-    'light',
+    'light'
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()
@@ -221,7 +221,7 @@ test('NotionalInput show reset button', () => {
       showResetButton={true}
       disabled={false}
     />,
-    'light',
+    'light'
   )
   const tree = component.toJSON()
   expect(tree).toMatchSnapshot()

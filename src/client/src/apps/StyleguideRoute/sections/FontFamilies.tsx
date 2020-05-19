@@ -11,7 +11,7 @@ const SIZES: Array<[
   string,
   string,
   TextProps['fontSize'],
-  TextProps['lineHeight'],
+  TextProps['lineHeight']
 ]> = [
   ['H1', 'Regular', 'Left', '19px', 'Sentence', 1.25, 1.25],
   ['H2', 'Regular', 'Left', '16px', 'Sentence', 1, 1],
@@ -22,14 +22,14 @@ const SIZES: Array<[
   ['Body 1', 'Multiple*', 'Mutiple', '12px', 'Sentence', 0.75, 1],
   ['Body 2', 'Multiple*', 'Mutiple', '11px', 'Sentence', 0.6875, 1],
   ['Button', 'Medium', 'Mutiple', '11px', 'Sentence', 0.6875, 1],
-  ['Caption', 'Light italic', 'Left', '11px', 'Sentence', 0.6875, 1],
+  ['Caption', 'Light italic', 'Left', '11px', 'Sentence', 0.6875, 1]
 ]
 
 const CHARACTERS = [
   `ABCĆDEFGHIJKLMNOPQRSŠTUVWXYZŽ`,
   `abcćdefghijklmnopqrsštuvwxyzž`,
   `1234567890`,
-  `‘?’“!”(%)[#]{@}/&<-+÷×=>®©$€£¥¢:;,.*`,
+  `‘?’“!”(%)[#]{@}/&<-+÷×=>®©$€£¥¢:;,.*`
 ].map(line => line.split('').join(' '))
 
 const LATO = {
@@ -39,8 +39,8 @@ const LATO = {
     { fontWeight: 200, advised: true, name: 'Light' },
     { fontWeight: 500, advised: true, name: 'Regular' },
     { fontWeight: 700, advised: true, name: 'Bold' },
-    { fontWeight: 900, advised: true, name: 'Black' },
-  ],
+    { fontWeight: 900, advised: true, name: 'Black' }
+  ]
 }
 
 const ROBOTO = {
@@ -54,8 +54,8 @@ const ROBOTO = {
     { fontWeight: 600, advised: true, name: 'Semi Bold' },
     { fontWeight: 700, advised: true, name: 'Bold' },
     { fontWeight: 800, advised: true, name: 'Extra Bold' },
-    { fontWeight: 900, advised: true, name: 'Black' },
-  ],
+    { fontWeight: 900, advised: true, name: 'Black' }
+  ]
 }
 
 export const FontFamilies: React.FC = () => (
@@ -125,7 +125,7 @@ const FontFamilySample: React.FC<{
                 <CharacterLine>{line.slice(line.length / 2)}</CharacterLine>
                 {'\n'}
               </React.Fragment>
-            ),
+            )
         )}
       </CharacterMap>
     </div>

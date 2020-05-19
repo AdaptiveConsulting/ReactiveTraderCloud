@@ -5,15 +5,21 @@ import { Handler } from './handlers'
 
 export const INTENT_MARKET_INFO = 'rt.market.info'
 
-export const marketMessageHandler: Handler = (symphony, { intentsFromDF$ }, { priceSubsription$ }) => {
+export const marketMessageHandler: Handler = (
+  symphony,
+  { intentsFromDF$ },
+  { priceSubsription$ }
+) => {
   const subscription$ = intentsFromDF$
     .pipe(
-      filter(({ intentResponse }) => intentResponse.queryResult.intent.displayName === INTENT_MARKET_INFO),
+      filter(
+        ({ intentResponse }) => intentResponse.queryResult.intent.displayName === INTENT_MARKET_INFO
+      ),
       withLatestFrom(priceSubsription$),
       mergeMap(([request, latestPrices]) => {
         const messageMarkup = marketUpdateMessage(Array.from(latestPrices.values()))
         return symphony.sendMessage(request.originalMessage.stream.streamId, messageMarkup)
-      }),
+      })
     )
     .subscribe(
       value => {
@@ -21,7 +27,7 @@ export const marketMessageHandler: Handler = (symphony, { intentsFromDF$ }, { pr
       },
       error => {
         logger.error('Error processing markey data', error)
-      },
+      }
     )
 
   return () => {

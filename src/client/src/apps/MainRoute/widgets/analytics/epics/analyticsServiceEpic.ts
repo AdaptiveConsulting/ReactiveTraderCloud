@@ -12,7 +12,7 @@ type FetchAnalyticsAction = ReturnType<typeof fetchAnalytics>
 export const publishPositionToExcelEpic: ApplicationEpic<{ excelApp: ExcelApp }> = (
   action$,
   state$,
-  { excelApp },
+  { excelApp }
 ) =>
   action$.pipe(
     ofType<Action, FetchAnalyticsAction>(ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE),
@@ -20,23 +20,23 @@ export const publishPositionToExcelEpic: ApplicationEpic<{ excelApp: ExcelApp }>
     tap((action: FetchAnalyticsAction) => {
       const currentPositions = combineWithLatestPrices(
         action.payload.currentPositions,
-        state$.value,
+        state$.value
       )
       excelApp.publishPositions(currentPositions)
     }),
-    ignoreElements(),
+    ignoreElements()
   )
 
 function combineWithLatestPrices(
   positions: CurrencyPairPosition[],
-  globalState: GlobalState,
+  globalState: GlobalState
 ): CurrencyPairPositionWithPrice[] {
   return positions.map(position => {
     const tileData = globalState.spotTilesData[position.symbol]
     return {
       ...position,
       latestAsk: tileData && tileData.price.ask ? tileData.price.ask : undefined,
-      latestBid: tileData && tileData.price.bid ? tileData.price.bid : undefined,
+      latestBid: tileData && tileData.price.bid ? tileData.price.bid : undefined
     }
   })
 }

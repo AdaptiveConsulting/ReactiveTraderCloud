@@ -8,7 +8,7 @@ export interface ApplicationConfig {
 }
 
 export async function getExistingOpenFinApplication(
-  uuid: string,
+  uuid: string
 ): Promise<Application | undefined> {
   const allApps = await fin.System.getAllApplications()
   const targetApp = allApps.some(app => app.uuid === uuid)
@@ -33,7 +33,7 @@ export async function createOrBringToFrontOpenFinApplication({
   name,
   url,
   uuid,
-  windowOptions,
+  windowOptions
 }: ApplicationConfig): Promise<Application> {
   const existingApp = await getExistingOpenFinApplication(name)
   if (existingApp) {
@@ -47,14 +47,14 @@ export async function createAndRunOpenFinApplication({
   name,
   url,
   uuid,
-  windowOptions,
+  windowOptions
 }: ApplicationConfig): Promise<Application> {
   const appOptions: fin.ApplicationOption = {
     name,
     url,
     uuid: uuid || name,
     nonPersistent: true,
-    mainWindowOptions: windowOptions,
+    mainWindowOptions: windowOptions
   }
 
   return fin.Application.start(appOptions)
@@ -63,17 +63,17 @@ export async function createAndRunOpenFinApplication({
 export function createOpenFinWindow({
   name,
   url,
-  windowOptions,
+  windowOptions
 }: ApplicationConfig): Promise<fin.OpenFinWindow> {
   return new Promise((resolve, reject) => {
     const window: fin.OpenFinWindow = new fin.desktop.Window(
       {
         url,
         name,
-        ...windowOptions,
+        ...windowOptions
       },
       () => resolve(window),
-      reject,
+      reject
     )
   })
 }

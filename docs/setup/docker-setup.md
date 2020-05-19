@@ -1,12 +1,13 @@
 # Running on Docker
 
 You will updated documentation here:
+
 - [docker setup page](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/docker-setup.md)
 - [build locally with docker](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/build-rtc-locally.md)
 - [run with docker](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/docs/deployment/run-rtc-with-docker.md)
 
+The following instructions have been tested on:
 
-The following instructions have been tested on: 
 - Windows 7 / 10
 - Ubuntu 14.04.3 / 15.10
 - OS X 10.11.2 (15C50) / kernel 15.2.0
@@ -18,7 +19,9 @@ If you have any issues with this process, please have a look [here](docker-issue
 Follow the steps [here](https://docs.docker.com/engine/installation/) for instructions for your specific OS/distribution.
 
 ### Check your docker installation
+
 #### Start toolbox for Windows/Mac user:
+
 Launch `Docker Quickstart Terminal` - this will start a default virtual machine on which your containers will run. You'll see something like
 
 ```
@@ -33,24 +36,24 @@ Launch `Docker Quickstart Terminal` - this will start a default virtual machine 
 
 docker is configured to use the default machine with IP 192.168.99.100
 For help getting started, check out the docs at https://docs.docker.com
-``` 
+```
 
 Note the IP address as we'll use it to load the client later.
 
-
 #### Linux users
+
 Just check that docker is running with:
 
 ```bash
 docker ps
 ```
+
 This should output:
 
 ```bash
 CONTAINER ID     IMAGE            COMMAND          CREATED          STATUS           PORTS            NAMES
 
 ```
-
 
 ## Clone the repository
 
@@ -62,6 +65,7 @@ If you are running on Windows, note that the OS line ending is `CRLF`. Since scr
 Therefore ensure that your checkout maintains `LF` line endings when cloning the repository.
 
 Before cloning :
+
 ```bash
 git config --global core.autocrlf false
 ```

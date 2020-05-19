@@ -14,13 +14,13 @@ type PriceUpdateAction = ReturnType<typeof priceUpdateAction>
 
 const addRatePrecisionToPrice = (currencyData: CurrencyPairMap, price: SpotPriceTick) => ({
   ...price,
-  ratePrecision: currencyData[price.symbol].ratePrecision,
+  ratePrecision: currencyData[price.symbol].ratePrecision
 })
 
 export const publishPriceUpdateEpic: ApplicationEpic = (
   action$,
   _,
-  { referenceDataService$, platform },
+  { referenceDataService$, platform }
 ) => {
   if (!platformHasFeature(platform, 'interop')) {
     return EMPTY
@@ -33,6 +33,6 @@ export const publishPriceUpdateEpic: ApplicationEpic = (
     tap(enhancedPrice => {
       platform.interop.publish(InteropTopics.PriceUpdate, enhancedPrice)
     }),
-    ignoreElements(),
+    ignoreElements()
   )
 }

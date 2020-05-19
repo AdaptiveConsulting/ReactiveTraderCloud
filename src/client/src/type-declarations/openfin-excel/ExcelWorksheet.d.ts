@@ -18,7 +18,7 @@ export declare class ExcelWorksheet extends RpcDispatcher {
     start: string,
     offsetWidth: number,
     offsetHeight: number,
-    callback?: Function,
+    callback?: Function
   ): Promise<any[][]>
   getRow(start: string, width: number, callback: Function): Promise<any>
   getColumn(start: string, offsetHeight: number, callback: Function): Promise<any>
@@ -33,7 +33,7 @@ export declare class ExcelWorksheet extends RpcDispatcher {
     criteria1: string,
     op: string,
     criteria2: string,
-    visibleDropDown: string,
+    visibleDropDown: string
   ): Promise<any>
   formatRange(rangeCode: string, format: any, callback: Function): Promise<any>
   clearRange(rangeCode: string, callback: Function): Promise<any>

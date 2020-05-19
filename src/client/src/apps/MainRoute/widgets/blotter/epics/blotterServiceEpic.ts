@@ -23,7 +23,7 @@ const formatTradeNotification = (trade: Trade, currencyPair: CurrencyPair) => ({
   dealtCurrency: trade.dealtCurrency,
   termsCurrency: currencyPair.terms,
   valueDate: DateTime.fromJSDate(trade.valueDate, { zone: 'utc' }).toFormat('dd MMM'),
-  traderName: trade.traderName,
+  traderName: trade.traderName
 })
 
 function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
@@ -31,7 +31,7 @@ function parseBlotterData(blotterData: Trades, currencyPairs: CurrencyPairMap) {
     return []
   }
   return Object.keys(blotterData).map(x =>
-    formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol]),
+    formatTradeNotification(blotterData[x], currencyPairs[blotterData[x].symbol])
   )
 }
 
@@ -45,14 +45,14 @@ export const publishBlotterToExcelEpic: ApplicationEpic = (action$, state$, { ex
           if (excelApp.isOpen()) {
             const parsedData = parseBlotterData(
               state$.value.blotterService.trades,
-              state$.value.currencyPairs,
+              state$.value.currencyPairs
             )
             excelApp.publishBlotter(parsedData)
           }
         }),
-        ignoreElements(),
-      ),
-    ),
+        ignoreElements()
+      )
+    )
   )
 
 export const connectBlotterToNotifications: ApplicationEpic = (action$, state$, { platform }) =>
@@ -65,13 +65,13 @@ export const connectBlotterToNotifications: ApplicationEpic = (action$, state$, 
     filter(trade => trade.status === TradeStatus.Done || trade.status === TradeStatus.Rejected),
     map(trade => formatTradeNotification(trade, state$.value.currencyPairs[trade.symbol])),
     tap(tradeNotification => platform.notification.notify({ tradeNotification })),
-    ignoreElements(),
+    ignoreElements()
   )
 
 export const requestBrowserNotificationPermission: ApplicationEpic = (
   action$,
   state$,
-  { platform },
+  { platform }
 ) =>
   action$.pipe(
     applicationConnected,
@@ -80,5 +80,5 @@ export const requestBrowserNotificationPermission: ApplicationEpic = (
         Notification.requestPermission()
       }
     }),
-    ignoreElements(),
+    ignoreElements()
   )

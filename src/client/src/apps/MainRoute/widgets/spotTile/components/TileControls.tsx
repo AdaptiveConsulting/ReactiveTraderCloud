@@ -35,7 +35,7 @@ const TileControls: React.FC<Props> = ({ onPopoutClick, canPopout, currencyPair,
       }
       onPopoutClick && onPopoutClick(event.screenX, event.screenY)
     },
-    [currencyPair.symbol, notional, onPopoutClick],
+    [currencyPair.symbol, notional, onPopoutClick]
   )
 
   const popinClickHandler = () => {

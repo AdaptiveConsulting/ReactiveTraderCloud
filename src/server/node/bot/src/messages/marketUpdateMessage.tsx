@@ -74,4 +74,5 @@ const MarketMessage: FC<{ prices: Price[] }> = ({ prices }) => {
   )
 }
 
-export const marketUpdateMessage = (prices: Price[]) => renderToStaticMarkup(<MarketMessage prices={prices} />)
+export const marketUpdateMessage = (prices: Price[]) =>
+  renderToStaticMarkup(<MarketMessage prices={prices} />)

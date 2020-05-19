@@ -4,7 +4,7 @@ import { defaultConfig, windowOrigin } from './defaultWindowConfig'
 let openedWindow: PlatformWindow | undefined
 let updatedPosition: { x: number | undefined; y: number | undefined } = {
   x: undefined,
-  y: undefined,
+  y: undefined
 }
 
 const updatePosition = ({ left, top }: { left: number; top: number }) => {
@@ -27,10 +27,10 @@ export async function showMarket({ window }: Platform) {
       height: 600,
       url: `${windowOrigin}/tiles`,
       saveWindowState: true,
-      ...updatedPosition,
+      ...updatedPosition
     },
     () => (openedWindow = undefined),
-    updatePosition,
+    updatePosition
   )
   if (!openedWindow) {
     console.log(`Error opening new window`)

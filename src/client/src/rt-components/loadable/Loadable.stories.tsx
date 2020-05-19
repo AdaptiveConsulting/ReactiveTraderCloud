@@ -12,7 +12,7 @@ const stories = storiesOf('Loadable', module)
 const LoadableStatuses = [
   ServiceConnectionStatus.CONNECTING,
   ServiceConnectionStatus.CONNECTED,
-  ServiceConnectionStatus.DISCONNECTED,
+  ServiceConnectionStatus.DISCONNECTED
 ]
 
 LoadableStatuses.map(status =>
@@ -24,5 +24,5 @@ LoadableStatuses.map(status =>
         </div>
       </Centered>
     </Story>
-  )),
+  ))
 )

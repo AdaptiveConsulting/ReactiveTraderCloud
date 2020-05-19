@@ -8,13 +8,13 @@ import {
   LineChart,
   ReferenceLine,
   Tooltip,
-  Line,
+  Line
 } from 'recharts'
 import {
   AnalyticsLineChartStyle,
   ToolTipStyle,
   ToolTipChildRight,
-  ToolTipChildLeft,
+  ToolTipChildLeft
 } from './styled'
 import { AnalyticsLineChartModel, PricePoint } from '../../model/AnalyticsLineChartModel'
 
@@ -29,7 +29,7 @@ interface DataPoint {
 
 const formatDataPoint: (dataPoint: PricePoint) => DataPoint = ({ x, y }) => ({
   x: DateTime.fromJSDate(x).toFormat('hh:mm:ss a'),
-  y,
+  y
 })
 
 const tickFormatYAxis: (x: string) => string = x => numeral(x).format('0.0a')
@@ -71,7 +71,7 @@ const lineProps = {
   strokeDasharray: '4 3',
   stroke: '#444C5F',
   strokeOpacity: 0.9,
-  strokeWidth: 0.8,
+  strokeWidth: 0.8
 }
 
 const LineCharts: React.FC<LineChartProps> = React.memo(props => {
@@ -86,7 +86,7 @@ const LineCharts: React.FC<LineChartProps> = React.memo(props => {
   const getDataPoint = useCallback(
     (dataPoints: DataPoint[]) =>
       dataPoints.filter((value, index) => (index + offsetState) % intervalWidth === 0),
-    [offsetState],
+    [offsetState]
   )
 
   const { seriesData } = props.model

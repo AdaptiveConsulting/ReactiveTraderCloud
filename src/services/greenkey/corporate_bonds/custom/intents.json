@@ -3,20 +3,18 @@
     {
       "label": "corporate_bonds",
       "domain": "sales_trader",
-      "examples": [
-        "{product} {quantity} {client}"
-      ],
+      "examples": ["{product} {quantity} {client}"],
       "composite_entities": [
         {
           "label": "quantity",
           "spacing_threshold": 1,
           "spacing": "",
           "component_entity_patterns": [
-						["value", "million"],
+            ["value", "million"],
             ["value", "fraction", "million"]
           ]
         }
-			],
+      ],
       "structure_enforcement": "True"
     }
   ]

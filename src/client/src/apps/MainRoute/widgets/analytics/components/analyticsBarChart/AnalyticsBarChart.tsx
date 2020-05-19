@@ -29,5 +29,5 @@ const getMinMax = (chartData: CurrencyPairPosition[]) =>
       prev.min = Math.min(prev.min, basePnl)
       return prev
     },
-    { max: 0, min: 0 },
+    { max: 0, min: 0 }
   )

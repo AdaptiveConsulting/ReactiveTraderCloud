@@ -12,7 +12,7 @@ const AnalyticsWindowControls: React.FC<AnalyticsHeaderProps> = ({ canPopout, on
     event => {
       onPopoutClick && onPopoutClick(event.screenX, event.screenY)
     },
-    [onPopoutClick],
+    [onPopoutClick]
   )
 
   return canPopout ? (

@@ -23,8 +23,8 @@ const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition)
     config: {
       ...windowConfig.config,
       x: layout.x,
-      y: layout.y,
-    },
+      y: layout.y
+    }
   }
 }
 
@@ -35,7 +35,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
 
   const lastRemainingService = useMemo(() => {
     const numberOfVisibleService = [blotter.visible, analytics.visible, liveRates.visible].filter(
-      (visible) => visible === true,
+      visible => visible === true
     ).length
 
     return numberOfVisibleService === 1

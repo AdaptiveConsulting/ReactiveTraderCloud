@@ -8,7 +8,7 @@ export const useNlpService = (): [
   boolean,
   DetectIntentResponse | undefined,
   (requestString: string) => void,
-  () => void,
+  () => void
 ] => {
   const [response, setResponse] = useState<DetectIntentResponse>()
   const [contacting, setContacting] = useState(false)
@@ -32,23 +32,23 @@ export const useNlpService = (): [
         .createRequestResponseOperation<DetectIntentResponse[], string>(
           'nlp', // TODO: change to generic service before merging
           'getNlpIntent',
-          requestString,
+          requestString
         )
         .pipe(timeout(10000), take(1))
         .subscribe(
-          (result) => {
+          result => {
             setContacting(false)
             setResponse(result[0])
           },
           (err: any) => {
             console.error(`Error in NLP request: ${err}`)
             setContacting(false)
-          },
+          }
         )
 
       return () => subscription && subscription.unsubscribe()
     },
-    [serviceStub],
+    [serviceStub]
   )
 
   const resetResponse = () => setResponse(undefined)

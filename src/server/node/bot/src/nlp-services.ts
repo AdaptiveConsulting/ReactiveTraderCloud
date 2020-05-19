@@ -39,9 +39,9 @@ export function createNlpStream(symphony: SymphonyClient) {
     .pipe(
       mergeMap(originalMessage =>
         from(sessionClient.detectIntent(createNLPRequest(originalMessage.messageText))).pipe(
-          map(x => ({ originalMessage, intentResponse: x[0] })),
-        ),
-      ),
+          map(x => ({ originalMessage, intentResponse: x[0] }))
+        )
+      )
     )
 
   return {

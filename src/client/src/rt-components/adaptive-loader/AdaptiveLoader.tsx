@@ -23,7 +23,7 @@ const getBounce = memoize(
   100% {
     transform: translate(0px,0px);
   }
-`,
+`
 )
 
 interface BarProps {
@@ -79,7 +79,7 @@ const AdaptiveLoader: React.FC<Props> = React.memo(
         {children}
       </svg>
     )
-  },
+  }
 )
 
 export default AdaptiveLoader

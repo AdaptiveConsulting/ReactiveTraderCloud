@@ -20,7 +20,7 @@ export class FinsembleLimitChecker implements LimitChecker {
   }
 
   rpc(message: object) {
-    return new Observable<boolean>((observer) => {
+    return new Observable<boolean>(observer => {
       if (this.limitCheckSubscriber !== 'ALIVE') {
         console.info(LOG_NAME, 'client side limit check not up, will delegate to server')
         observer.next(true)
@@ -38,12 +38,12 @@ export class FinsembleLimitChecker implements LimitChecker {
 
       const payload = {
         ...message,
-        id: this.limitCheckId++,
+        id: this.limitCheckId++
       }
 
-      this.finsemble.interop.query(REQUEST_LIMIT_CHECK_CHANNEL, payload, function (
+      this.finsemble.interop.query(REQUEST_LIMIT_CHECK_CHANNEL, payload, function(
         error: {},
-        response: { data: { result: boolean } },
+        response: { data: { result: boolean } }
       ) {
         if (!error) {
           const result = response.data.result
@@ -60,9 +60,9 @@ export class FinsembleLimitChecker implements LimitChecker {
    */
   private initializeLimitChecker(setLimitCheckSubscriber: Function) {
     this.finsemble.interop.publish(CLIENT_STATUS_CHANNEL, 'ALIVE')
-    this.finsemble.interop.subscribe(LIMIT_CHECKER_STATUS_CHANNEL, function (
+    this.finsemble.interop.subscribe(LIMIT_CHECKER_STATUS_CHANNEL, function(
       error: {},
-      response: {data: string},
+      response: { data: string }
     ) {
       if (error) {
         console.error(LOG_NAME, 'Finsemble Channel error: ' + JSON.stringify(error))

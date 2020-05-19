@@ -4,7 +4,11 @@ export interface BotConfig {
   botEmailAddress: string
 }
 
-export function createConfig(botConfig: BotConfig, botPrivateKeyPath: string, botPrivateKeyName: string) {
+export function createConfig(
+  botConfig: BotConfig,
+  botPrivateKeyPath: string,
+  botPrivateKeyName: string
+) {
   return {
     sessionAuthHost: `${botConfig.subdomain}-api.symphony.com`,
     sessionAuthPort: 443,
