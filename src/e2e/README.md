@@ -1,9 +1,31 @@
-# e2e
+# e2e test pack
 
-Collection of tests to be run to verify the application.
+A collection of e2e tests based on protractor and jasmine frameworks.
 
-## Debug instructions
+## Execution
 
+### Docker mode
+The easiest way to run the tests is in docker mode:
+1. From /src folder run:
+`docker-compose build`
+2. Then to start the system and the tests:
+`docker-compose -f docker-compose.e2e.yml -f docker-compose.yml up`
+
+### Local run mode
+1. Pre-requisites
+1.1 Install protractor
+`npm install -g protractor`
+1.2 Install jasmine
+`npm install jasmine`
+1.3 Install jasmine-spec-reporter
+2. To run the tests navigate to e2e folder and run:
+`npm run e2e`
+
+## How to contribute
+You can contribute to our test code same way as for our prod code: [Contributing page](../../CONTRIBUTING.md)
+
+## Debugging
+You can debug e2e tests in VSCode via creating the following run configuration:
 ```json
 // vscode
 {
