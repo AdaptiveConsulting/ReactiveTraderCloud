@@ -12,13 +12,10 @@ The easiest way to run the tests is in docker mode:
 `docker-compose -f docker-compose.e2e.yml -f docker-compose.yml up`
 
 ### Local run mode
-1. Pre-requisites
-1.1 Install protractor
-`npm install -g protractor`
-1.2 Install jasmine
-`npm install jasmine`
-1.3 Install jasmine-spec-reporter
-2. To run the tests navigate to e2e folder and run:
+1. Pre-requisite: navigate to e2e folder and install all the needed dependencies
+`npm install`
+2. Start RT locally one of the ways described [here](../../README.md##installation)
+3. To run the tests navigate to e2e folder and run:
 `npm run e2e`
 
 ## How to contribute
