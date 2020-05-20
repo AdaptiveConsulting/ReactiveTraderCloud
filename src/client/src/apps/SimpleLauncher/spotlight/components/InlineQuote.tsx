@@ -6,6 +6,8 @@ import { DateTime } from 'luxon'
 import { ResultsTable, ResultsTableRow, LoadingRow } from './resultsTable'
 import { MovementIcon } from '../../icons'
 import { defaultColDefs } from './utils'
+import { showCurrencyPair } from 'rt-interop/intents'
+import { usePlatform } from 'rt-platforms'
 interface InlineQuoteProps {
   currencyPair: string
 }
@@ -13,6 +15,7 @@ interface InlineQuoteProps {
 export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
   const [quote, setQuote] = useState<SpotPriceTick>()
   const priceService = usePriceService()
+  const platform = usePlatform()
 
   useEffect(() => {
     if (!priceService) {
@@ -38,6 +41,9 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
             ...quote,
             priceMovementType: <MovementIcon direction={quote.priceMovementType} />,
             valueDate: DateTime.fromISO(quote.valueDate).toFormat('dd-LLL-yyyy / HH:mm:ss'),
+            openTileBtn: (
+              <button onClick={() => showCurrencyPair(quote.symbol, platform)}>Open Tile</button>
+            ),
           },
         ]
       : []
