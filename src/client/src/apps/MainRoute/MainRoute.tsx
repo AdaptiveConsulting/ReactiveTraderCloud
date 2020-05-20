@@ -34,6 +34,15 @@ const MainRoute = () => {
   }, [])
 
   useEffect(() => {
+    // TODO: this should be set as config in the app manifest
+    intentsProvider.context.getSystemChannels()
+      .then(channels => console.log('system channel', channels))
+
+    intentsProvider.joinChannel('red')
+      .then(() => console.log('channel joined'))
+  }, [intentsProvider])
+
+  useEffect(() => {
     if (platform) {
       ReactGA.set({
         dimension1: platform.type,

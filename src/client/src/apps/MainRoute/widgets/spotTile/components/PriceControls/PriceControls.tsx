@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CurrencyPair, Direction } from 'rt-types'
 import { SpotPriceTick } from '../../model/spotPriceTick'
 import { getSpread, toRate, getConstsFromRfqState } from '../../model/spotTileUtils'
@@ -15,6 +15,7 @@ import {
 import { ValidationMessage } from '../notional'
 import TileBookingSwitch from './TileBookingSwitch'
 import { LastTradeExecutionStatus } from '../../model/spotTileData'
+import { useInterop } from 'rt-interop'
 
 interface Props {
   currencyPair: CurrencyPair
@@ -50,6 +51,9 @@ const PriceControls: React.FC<Props> = ({
   inputValidationMessage,
   lastTradeExecutionStatus,
 }) => {
+  const intentsProvider = useInterop()
+  const [intentRaised, setIntentRaised] = useState(false)
+
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const spread = getSpread(
@@ -74,6 +78,31 @@ const PriceControls: React.FC<Props> = ({
   const spreadValue = hasPrice ? spread.formattedValue : '-'
   const showPriceMovement =
     (isRfqStateNone || isRfqStateCanRequest || isRfqStateRequested) && !isTradeExecutionInFlight
+
+  useEffect(() => {
+    if (intentRaised) {
+      // TODO: fix replay-subject loop in desktop agent
+      return
+    }
+
+    const listener = intentsProvider
+      ? intentsProvider.getContext().addIntentListener('ExecuteTrade', context => {
+        if (context.type === 'fdc3.instrument' && context.id!.ticker === currencyPair.symbol) {
+          const direction = context.direction as unknown as Direction
+          const price = direction === Direction.Buy
+            ? priceData.ask
+            : priceData.bid
+          executeTrade(direction, price)
+          setIntentRaised(true)
+        }
+      }) : null
+
+    return () => {
+      if (listener) {
+        listener.unsubscribe()
+      }
+    }
+  }, [intentsProvider, currencyPair, priceData, executeTrade, intentRaised, setIntentRaised])
 
   const showPriceButton = (
     btnDirection: Direction,

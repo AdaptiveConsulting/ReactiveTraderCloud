@@ -41,10 +41,10 @@ export default class FDC3 implements InteropProvider {
 
     return this.context.findIntent(fdc3Intent).then(({ apps }) =>
       apps.map(
-        ({ appId, title }) =>
+        ({ name }) =>
           ({
-            id: appId,
-            name: title,
+            appId: name,
+            name,
           } as Application),
       ),
     )
@@ -53,4 +53,10 @@ export default class FDC3 implements InteropProvider {
   open = (appId: string): Promise<void> => {
     return this.context.open(appId)
   }
+
+  joinChannel = (channelId: string): Promise<void> => {
+    return this.context.joinChannel(channelId)
+  }
+
+  getContext = () => this.context
 }

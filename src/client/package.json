@@ -52,9 +52,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@adaptive/fdc3-types": "*",
-    "@adaptive/openfin-fdc3-desktop-agent": "*",
-    "@adaptive/sandbox-fdc3-desktop-agent": "*",
+    "@adaptive/fdc3-types": "1.1.0",
+    "@adaptive/openfin-fdc3-desktop-agent": "1.1.0",
+    "@adaptive/sandbox-fdc3-desktop-agent": "1.1.0-1",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.2",
