@@ -8,7 +8,7 @@ export const highlightPip = (value: number, bidAsk: 'bid' | 'ask') => {
       index === array.length - 2 || index === array.length - 1
         ? {
             color: bidAsk === 'ask' ? '#ff274b' : '#2d95ff',
-            fontSize: '1rem'
+            fontSize: '1rem',
           }
         : {}
     return (
@@ -26,7 +26,7 @@ export const defaultColDefs: Col[] = [
     id: 'ask',
     align: 'right',
     formatter: value => highlightPip(value, 'ask'),
-    fixedWidth: true
+    fixedWidth: true,
   },
   { title: 'Mid', id: 'mid', align: 'right', fixedWidth: true },
   {
@@ -34,8 +34,9 @@ export const defaultColDefs: Col[] = [
     id: 'bid',
     align: 'right',
     formatter: value => highlightPip(value, 'bid'),
-    fixedWidth: true
+    fixedWidth: true,
   },
   { title: 'Movement', id: 'priceMovementType', align: 'center' },
-  { title: 'Date/Time', id: 'valueDate' }
+  { title: 'Date/Time', id: 'valueDate' },
+  { title: '', id: 'openTileBtn', align: 'center', fixedWidth: true },
 ]

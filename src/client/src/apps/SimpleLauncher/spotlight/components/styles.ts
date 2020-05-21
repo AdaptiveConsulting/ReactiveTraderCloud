@@ -24,8 +24,25 @@ export const Table = styled.table`
       display: block;
       margin: auto;
     }
-    tr:nth-child(odd) {
-      background-color: ${({ theme }) => theme.core.lightBackground};
+
+    tr {
+      button {
+        opacity: 0;
+        padding: 0.5rem;
+        width: 5rem;
+      }
+
+      &:nth-child(odd) {
+        background-color: ${({ theme }) => theme.core.lightBackground};
+      }
+
+      &:hover {
+        background-color: ${({ theme }) => theme.core.alternateBackground};
+
+        button {
+          opacity: 1;
+        }
+      }
     }
   }
 `
@@ -50,6 +67,10 @@ export const TableRow = styled.tr<{ status?: 'rejected' | 'done' | 'pending' }>`
         width: 100%;
       };
     `}
+
+    button:hover {
+      background-color: #5f94f5;
+    }
   }
 `
 

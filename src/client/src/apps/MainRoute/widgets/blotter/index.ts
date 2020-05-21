@@ -1,5 +1,5 @@
-export type { TradesUpdate } from './blotterService'
-export type { BlotterFilters } from './blotterTradesFilter'
+export * from './blotterService'
+export * from './blotterTradesFilter'
 
 export { filterBlotterTrades, validateFilters } from './blotterTradesFilter'
 export { default as BlotterContainer } from './BlotterContainer'
