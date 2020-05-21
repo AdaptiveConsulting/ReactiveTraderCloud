@@ -1,4 +1,5 @@
 FROM node:12.16-alpine as builder
+RUN apk add g++ make python
 WORKDIR '/app'
 
 ARG CI
@@ -27,10 +28,19 @@ RUN if [[ -n "$NPM_TOKEN" ]] ; \
         npm run storybook:build ; \
     fi
 
-FROM nginx
+# We use openresty to make use of the lua scripting for nginx
+FROM openresty/openresty:alpine-fat
 EXPOSE 3000
+
+# Copy website resourcees
+COPY --from=builder /app/storybook/build /usr/local/openresty/nginx/html
+RUN mkdir /usr/local/openresty/nginx/html/storyhtml && \
+    cp /usr/local/openresty/nginx/html/index.html /usr/local/openresty/nginx/html/storyhtml/index.html
+COPY --from=builder /app/build /usr/local/openresty/nginx/html
+
+# Install lua template engine
+RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-template
+
+# Copy nginx config
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/storybook/build /usr/share/nginx/html
-RUN mkdir /usr/share/nginx/html/storyhtml && \
-    cp /usr/share/nginx/html/index.html /usr/share/nginx/html/storyhtml/index.html
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY ./nginx/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf

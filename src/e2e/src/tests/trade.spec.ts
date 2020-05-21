@@ -41,10 +41,10 @@ const notionalList = [
 
 const envTitles = [
   'Reactive Trader',
-  'Reactive Trader (Dev)',
-  'Reactive Trader (Local)',
+  'Reactive Trader (DEV)',
+  'Reactive Trader (LOCAL)',
   'Reactive Trader (UAT)',
-  'Reactive Trader (Unknown)'
+  'Reactive Trader (UNKNOWN)'
 ]
 
 describe('UI Tests for Reactive Trader Web Application', async () => {
