@@ -127,3 +127,5 @@ services:
         - CI=true
         - NPM_TOKEN=${NPM_TOKEN}
         - REACT_APP_BUILD_VERSION=${BUILD_VERSION}
+    environment:
+      - ENVIRONMENT_NAME=${ENVIRONMENT_NAME}
