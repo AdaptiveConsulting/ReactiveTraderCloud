@@ -1,8 +1,8 @@
 using System;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Serilog;
+using Serilog.Context;
 
 namespace Adaptive.ReactiveTrader.Messaging
 {
@@ -21,6 +21,15 @@ namespace Adaptive.ReactiveTrader.Messaging
             _broker = broker;
             InstanceId = type + "." + Guid.NewGuid().ToString().Substring(0, 4);
             _heartbeat = new Heartbeat(this, broker);
+
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .MinimumLevel.Debug()
+                .WriteTo.ColoredConsole(outputTemplate:
+                "{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3} [{InstanceId}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            LogContext.PushProperty("InstanceId", InstanceId);
         }
 
         public virtual void Dispose()
@@ -31,12 +40,12 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         protected void RegisterCall(string procName, Func<IRequestContext, IMessage, Task> procedure)
         {
-            var instanceProcedureName = $"{InstanceId}.{procName}";
-            var call = _broker.RegisterCall(instanceProcedureName, procedure);
+            var procedureName = $"{ServiceType}.{procName}";
+            var call = _broker.RegisterCall(procedureName, procedure);
             _registedCalls.Add(Disposable.Create(() =>
             {
                 Log.Information("unregistering from {procName}", procName);
-                call.Result.DisposeAsync().Wait(TimeSpan.FromSeconds(5));
+                call.Dispose();
                 Log.Information("unregistered from {procName}", procName);
             }));
             Log.Information("procedure {procName}() registered", procName);
@@ -44,12 +53,12 @@ namespace Adaptive.ReactiveTrader.Messaging
 
         protected void RegisterCallResponse<T>(string procName, Func<IRequestContext, IMessage, Task<T>> procedure)
         {
-            var instanceProcedureName = $"{InstanceId}.{procName}";
-            var call = _broker.RegisterCallResponse(instanceProcedureName, procedure);
+            var procedureName = $"{ServiceType}.{procName}";
+            var call = _broker.RegisterCallResponse(procedureName, procedure);
             _registedCalls.Add(Disposable.Create(() =>
             {
                 Log.Information("unregistering from {procName}", procName);
-                call.Result.DisposeAsync().Wait(TimeSpan.FromSeconds(5));
+                call.Dispose();
                 Log.Information("unregistered from {procName}", procName);
             }));
             Log.Information("procedure {procName}() registered", procName);

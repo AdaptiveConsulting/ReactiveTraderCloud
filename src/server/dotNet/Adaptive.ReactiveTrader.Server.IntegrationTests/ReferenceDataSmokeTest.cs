@@ -1,10 +1,8 @@
 using System;
-using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Common;
 using Adaptive.ReactiveTrader.Contract;
-using WampSharp.V2.Core.Contracts;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -24,49 +22,20 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         public async void ShouldContainSomeReferenceData()
         {
             var pass = false;
-            var testReplyTo = "referenceDataSmokeTest";
-
-            var channel = await new TestBroker().OpenChannel();
-
-            var serviceInstance = await channel.RealmProxy.Services.GetSubject<dynamic>("status")
-                                               .Where(hb => hb.Type == ServiceTypes.Reference)
-                                               .Select(hb => hb.Instance)
-                                               .Take(1)
-                                               .Timeout(ResponseTimeout);
-
             var timeoutCancellationTokenSource = new CancellationTokenSource();
 
-            Action<dynamic> callback = d =>
+            var broker = new TestBroker();
+
+            await broker.RpcCall<CurrencyPairUpdatesDto, NothingDto>(ServiceTypes.Reference, "getCurrencyPairUpdatesStream", new NothingDto(), dto =>
             {
-                var updates = d as dynamic[];
-
-                if (updates == null || updates.Length == 0)
-                    return;
-
-                foreach (var x in updates)
+                foreach (var x in dto.Updates)
                 {
                     Console.WriteLine(x);
                 }
 
                 pass = true;
                 timeoutCancellationTokenSource.Cancel(false);
-            };
-
-            dynamic dto = new
-            {
-                ReplyTo = testReplyTo,
-                Payload = new NothingDto()
-            };
-
-            await channel.RealmProxy.TopicContainer
-                         .GetTopicByUri(testReplyTo)
-                         .Subscribe(new WampSubscriber(callback), new SubscribeOptions());
-
-            channel.RealmProxy.RpcCatalog.Invoke(
-                new RpcCallback(() => { }),
-                new CallOptions(),
-                $"{serviceInstance}.getCurrencyPairUpdatesStream",
-                new object[] {dto});
+            });
 
             try
             {
@@ -79,5 +48,12 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
 
             Assert.True(pass);
         }
+    }
+
+    public class CurrencyPairUpdatesDto
+    {
+        public CurrencyPairUpdateDto[] Updates { get; set; }
+        public bool IsStateOfTheWorld { get; set; }
+        public bool IsStale { get; set; }
     }
 }

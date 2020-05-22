@@ -19,8 +19,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "outDir": "dist",
-    "types": ["node", "jasmine"],
-
+    "types": ["node", "jasmine"]
   },
   "exclude": ["node_modules"],
   "include": ["./src/**/*"]

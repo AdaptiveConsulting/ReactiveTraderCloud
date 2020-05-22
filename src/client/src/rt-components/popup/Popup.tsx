@@ -5,16 +5,17 @@ interface Props {
   className?: string
   open?: boolean
   onClick?: (e: MouseEvent<HTMLDivElement>) => void
+  minWidth?: string
 }
 
-const Popup: React.FC<Props> = ({ className, open = false, onClick, children }) => {
+const Popup: React.FC<Props> = ({ className, open = false, onClick, children, minWidth }) => {
   const onPopupClick = useCallback((e: MouseEvent<HTMLDivElement>) => onClick && onClick(e), [
     onClick,
   ])
 
   return (
     <PopupContainer className={className} open={open} onClick={onPopupClick}>
-      <PopupPanel>
+      <PopupPanel minWidth={minWidth}>
         <Body>{children}</Body>
       </PopupPanel>
     </PopupContainer>

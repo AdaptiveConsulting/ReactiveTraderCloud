@@ -8,7 +8,7 @@
       "publisher": "Adaptive Financial Consulting",
       "url": "https://localhost:3000/?symphony=true&startAsSymphonyController=true",
       "domain": "localhost",
-      "icon":"https://localhost:3000/symphony/symphony/logo.png"
+      "icon": "https://localhost:3000/symphony/symphony/logo.png"
     }
   ]
 }

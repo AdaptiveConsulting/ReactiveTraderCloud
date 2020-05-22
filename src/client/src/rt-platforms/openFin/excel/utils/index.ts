@@ -7,17 +7,14 @@ export const formTable = {
       item.latestBid,
       item.latestAsk,
       item.baseTradedAmount,
-      item.basePnl,
+      item.basePnl
     ]),
   ccy: (data: CurrencyPairPosition[]) => {
-    const positionsMap = data.reduce(
-      (acc, item) => {
-        const base = item.symbol.slice(0, 3)
-        const prevPosition = acc[base] || 0
-        return { ...acc, [base]: prevPosition + item.baseTradedAmount }
-      },
-      {} as { [ccy: string]: number },
-    )
+    const positionsMap = data.reduce((acc, item) => {
+      const base = item.symbol.slice(0, 3)
+      const prevPosition = acc[base] || 0
+      return { ...acc, [base]: prevPosition + item.baseTradedAmount }
+    }, {} as { [ccy: string]: number })
     return Object.keys(positionsMap).map(ccy => [ccy, positionsMap[ccy]] as [string, number])
   },
   blotter: (data: Array<Partial<Trade>>) => {
@@ -38,9 +35,9 @@ export const formTable = {
         item.spotRate,
         item.status,
         item.valueDate,
-        item.traderName,
+        item.traderName
       ])
-  },
+  }
 }
 
 export const delay = (ms: number) => new Promise(res => setTimeout(res, ms))

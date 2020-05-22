@@ -4,7 +4,6 @@ const { EOL } = require('os')
 const { SpecReporter } = require('jasmine-spec-reporter')
 const colors = require('colors')
 
-
 const CHROME_CAPABILITIES = {
   browserName: 'chrome',
   chromeOptions: {
@@ -15,14 +14,20 @@ const CHROME_CAPABILITIES = {
 const CHROME_CAPABILITIES_HEADLESS = {
   browserName: 'chrome',
   chromeOptions: {
-    args: [ ...CHROME_CAPABILITIES.chromeOptions.args, '---headless']
+    args: [...CHROME_CAPABILITIES.chromeOptions.args, '---headless', `--log-level=2`]
   }
 }
 
 const FIREFOX_CAPABILITIES = {
   browserName: 'firefox',
   'moz:firefoxOptions': {
-    args: ['--start-maximized', '--disable-infobars', '--disable-notifications', '--headless', '--no-sandbox']
+    args: [
+      '--start-maximized',
+      '--disable-infobars',
+      '--disable-notifications',
+      '--headless',
+      '--no-sandbox'
+    ]
   }
 }
 
@@ -33,7 +38,7 @@ function getBrowserCapabilities() {
     case 'chrome':
       return CHROME_CAPABILITIES
     case 'chromeheadless':
-        return CHROME_CAPABILITIES_HEADLESS
+      return CHROME_CAPABILITIES_HEADLESS
     case 'firefox':
       return FIREFOX_CAPABILITIES
     default:
@@ -54,42 +59,44 @@ const config = {
     showColors: true,
     includeStackTrace: true,
     defaultTimeoutInterval: 300000,
-    print: () => { },
+    print: () => {}
   },
-  onPrepare: function () {
-    setUpCustomLocators();
+  onPrepare: function() {
+    setUpCustomLocators()
     require('ts-node').register()
-    jasmine.getEnv().addReporter(new SpecReporter({
-      spec: {
-        displayDuration: true,
-        displaySuccessful: true,
-        displayFailed: true,
-        displayErrorMessages: true,
-        displayStacktrace: true
-      },
-      summary: {
-        displayStacktrace: true,
-        displaySuccessful: false,
-        displayFailed: true,
-        displayPending: true,
-      },
-      colors: {
-        successful: 'green',
-        failed: 'red',
-        pending: 'yellow'
-      },
-      prefixes: {
-        successful: '✓ ',
-        failed: '✗ ',
-        pending: '* '
-      },
-      customProcessors: []
-    }));
+    jasmine.getEnv().addReporter(
+      new SpecReporter({
+        spec: {
+          displayDuration: true,
+          displaySuccessful: true,
+          displayFailed: true,
+          displayErrorMessages: true,
+          displayStacktrace: true
+        },
+        summary: {
+          displayStacktrace: true,
+          displaySuccessful: false,
+          displayFailed: true,
+          displayPending: true
+        },
+        colors: {
+          successful: 'green',
+          failed: 'red',
+          pending: 'yellow'
+        },
+        prefixes: {
+          successful: '✓ ',
+          failed: '✗ ',
+          pending: '* '
+        },
+        customProcessors: []
+      })
+    )
   },
   baseUrl: 'http://localhost:3000'
 }
 
-module.exports.config = config;
+module.exports.config = config
 
 function setUpCustomLocators() {
   by.addLocator('qaTag', (qaTag, parentElement) => {
@@ -125,12 +132,10 @@ function setupBrowserErrorsLogging() {
             !l.message.includes('/polyfills') &&
             !l.message.includes('401 (Unauthorized)') &&
             !l.message.includes('HttpErrorResponse')
-        );
+        )
 
         if (filteredLogs.length > 0) {
-          const prettyPrint = filteredLogs
-            .map(log => JSON.stringify(log, null, 2))
-            .join(`;${EOL}`)
+          const prettyPrint = filteredLogs.map(log => JSON.stringify(log, null, 2)).join(`;${EOL}`)
 
           console.warn(colors.blue('BROWSER LOGS RETRIEVED'))
           console.warn(colors.grey(prettyPrint))

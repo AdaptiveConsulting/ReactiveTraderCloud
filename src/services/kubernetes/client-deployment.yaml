@@ -17,3 +17,9 @@ spec:
           image: reactivetradercloud/client:${BUILD_VERSION}
           ports:
             - containerPort: 3000
+          env:
+            - name: ENVIRONMENT_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: client-config
+                  key: environment-name

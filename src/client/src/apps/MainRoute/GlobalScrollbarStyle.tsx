@@ -14,7 +14,7 @@ export const css = memoize(
       scrollbar-color: ${color} transparent;
     }
 `,
-  color => color,
+  color => color
 )
 
 const ScrollbarGlobal = createGlobalStyle`

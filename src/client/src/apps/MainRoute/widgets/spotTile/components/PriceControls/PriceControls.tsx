@@ -10,7 +10,7 @@ import {
   PriceControlsStyle,
   PriceButtonDisabledPlaceholder,
   AdaptiveLoaderWrapper,
-  Icon,
+  Icon
 } from './styled'
 import { ValidationMessage } from '../notional'
 import TileBookingSwitch from './TileBookingSwitch'
@@ -48,7 +48,7 @@ const PriceControls: React.FC<Props> = ({
   rfq,
   notional,
   inputValidationMessage,
-  lastTradeExecutionStatus,
+  lastTradeExecutionStatus
 }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
@@ -56,7 +56,7 @@ const PriceControls: React.FC<Props> = ({
     priceData.bid,
     priceData.ask,
     currencyPair.pipsPosition,
-    currencyPair.ratePrecision,
+    currencyPair.ratePrecision
   )
   const hasUserError = Boolean(inputValidationMessage)
 
@@ -65,7 +65,7 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateExpired,
     isRfqStateRequested,
     isRfqStateNone,
-    isRfqStateCanRequest,
+    isRfqStateCanRequest
   } = getConstsFromRfqState(rfqState)
 
   const { priceStale } = priceData
@@ -78,7 +78,7 @@ const PriceControls: React.FC<Props> = ({
   const showPriceButton = (
     btnDirection: Direction,
     price: number,
-    rate: ReturnType<typeof toRate>,
+    rate: ReturnType<typeof toRate>
   ) => {
     return priceStale ? (
       <PriceButtonDisabledBanIcon>Pricing unavailable</PriceButtonDisabledBanIcon>

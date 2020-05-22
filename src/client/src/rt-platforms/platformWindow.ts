@@ -4,7 +4,7 @@ export type PlatformWindowApi = {
   open: (
     config: WindowConfig,
     onClose?: () => void,
-    onUpdatePosition?: (event: any) => void,
+    onUpdatePosition?: (event: any) => void
   ) => Promise<PlatformWindow | undefined>
 }
 

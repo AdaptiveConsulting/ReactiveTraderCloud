@@ -36,15 +36,15 @@ export const isInvalidTradingValue = (value: number) =>
 export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileState) => {
   const {
     spotTileData: { rfqState, price, isTradeExecutionInFlight },
-    executionStatus,
+    executionStatus
   } = nextProps
 
   const isInTrade = !Boolean(
-    executionStatus === ServiceConnectionStatus.CONNECTED && !isTradeExecutionInFlight && price,
+    executionStatus === ServiceConnectionStatus.CONNECTED && !isTradeExecutionInFlight && price
   )
 
   const { isRfqStateRequested, isRfqStateReceived, isRfqStateNone } = getConstsFromRfqState(
-    rfqState,
+    rfqState
   )
 
   const canExecute = !isInTrade && (isRfqStateReceived || isRfqStateNone)
@@ -54,7 +54,7 @@ export const getDerivedStateFromProps = (nextProps: TileProps, prevState: TileSt
   return {
     ...prevState,
     inputDisabled,
-    canExecute,
+    canExecute
   }
 }
 
@@ -63,7 +63,7 @@ export const getDerivedStateFromUserInput = ({
   prevState,
   spotTileData,
   actions,
-  currencyPair,
+  currencyPair
 }: {
   prevState: TileState
   spotTileData: SpotTileData
@@ -79,7 +79,7 @@ export const getDerivedStateFromUserInput = ({
 
   const defaultNextState: TileState = {
     ...prevState,
-    inputValidationMessage: undefined,
+    inputValidationMessage: undefined
   }
 
   const { isRfqStateNone } = getConstsFromRfqState(rfqState)
@@ -96,8 +96,8 @@ export const getDerivedStateFromUserInput = ({
       canExecute: false,
       inputValidationMessage: {
         type: 'error',
-        content: '',
-      },
+        content: ''
+      }
     }
   }
 
@@ -106,8 +106,8 @@ export const getDerivedStateFromUserInput = ({
         ...defaultNextState,
         inputValidationMessage: {
           type: 'error',
-          content: 'Max exceeded',
-        },
+          content: 'Max exceeded'
+        }
       }
     : { ...defaultNextState }
 }

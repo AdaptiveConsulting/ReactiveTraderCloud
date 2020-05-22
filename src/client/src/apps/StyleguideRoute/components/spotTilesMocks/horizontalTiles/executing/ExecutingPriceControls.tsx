@@ -8,13 +8,13 @@ import { LastTradeExecutionStatus } from 'apps/MainRoute/widgets/spotTile/model/
 import {
   PriceButtonDisabledPlaceholder,
   AdaptiveLoaderWrapper,
-  PriceControlsStyle,
+  PriceControlsStyle
 } from 'apps/MainRoute/widgets/spotTile/components/PriceControls/styled'
 import { Icon } from 'apps/MainRoute/widgets/spotTile/components/styled'
 import {
   toRate,
   getSpread,
-  getConstsFromRfqState,
+  getConstsFromRfqState
 } from 'apps/MainRoute/widgets/spotTile/model/spotTileUtils'
 import { AdaptiveLoader } from 'rt-components'
 import PriceMovement from 'apps/MainRoute/widgets/spotTile/components/PriceMovement'
@@ -52,7 +52,7 @@ const PriceControls: React.FC<Props> = ({
   rfq,
   notional,
   inputValidationMessage,
-  lastTradeExecutionStatus,
+  lastTradeExecutionStatus
 }) => {
   const bidRate = toRate(priceData.bid, currencyPair.ratePrecision, currencyPair.pipsPosition)
   const askRate = toRate(priceData.ask, currencyPair.ratePrecision, currencyPair.pipsPosition)
@@ -60,7 +60,7 @@ const PriceControls: React.FC<Props> = ({
     priceData.bid,
     priceData.ask,
     currencyPair.pipsPosition,
-    currencyPair.ratePrecision,
+    currencyPair.ratePrecision
   )
   const hasUserError = Boolean(inputValidationMessage)
 
@@ -69,7 +69,7 @@ const PriceControls: React.FC<Props> = ({
     isRfqStateExpired,
     isRfqStateRequested,
     isRfqStateNone,
-    isRfqStateCanRequest,
+    isRfqStateCanRequest
   } = getConstsFromRfqState(rfqState)
 
   const { priceStale } = priceData
@@ -82,7 +82,7 @@ const PriceControls: React.FC<Props> = ({
   const showPriceButton = (
     btnDirection: Direction,
     price: number,
-    rate: ReturnType<typeof toRate>,
+    rate: ReturnType<typeof toRate>
   ) => {
     return priceStale ? (
       <PriceButtonDisabledBanIcon>Pricing unavailable</PriceButtonDisabledBanIcon>

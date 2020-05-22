@@ -17,37 +17,37 @@ const currencyList: [string, string[]][] = [
       'GBP/JPY',
       'GBP/USD',
       'NZD/USD',
-      'USD/JPY',
-    ],
+      'USD/JPY'
+    ]
   ],
   ['eur', ['EUR/USD', 'EUR/AUD', 'EUR/CAD', 'EUR/JPY']],
   ['usd', ['EUR/USD', 'USD/JPY', 'GBP/USD', 'AUD/USD', 'NZD/USD']],
   ['gbp', ['GBP/USD', 'GBP/JPY']],
   ['aud', ['AUD/USD', 'EUR/AUD']],
-  ['nzd', ['NZD/USD']],
+  ['nzd', ['NZD/USD']]
 ]
 const tradeList: [string, string, string, string, boolean][] = [
   ['eur', 'EUR/JPY', 'buy', 'Success', true],
   ['usd', 'USD/JPY', 'buy', 'Success', false],
-  ['gbp', 'GBP/JPY', 'sell', 'Rejected', false],
+  ['gbp', 'GBP/JPY', 'sell', 'Rejected', false]
 ]
 
 const notionalList = [
   ['999999', '999,999'],
   ['2345678.99', '2,345,678.99'],
   ['2m', '2,000,000'],
-  ['45k', '45,000'],
+  ['45k', '45,000']
 ]
 
 const envTitles = [
-  'Reactive Trader Cloud',
-  'Reactive Trader Cloud (DEV)',
-  'Reactive Trader Cloud (LOCAL)',
-  'Reactive Trader Cloud (UAT)',
-  'Reactive Trader Cloud (UNKNOWN)',
+  'Reactive Trader',
+  'Reactive Trader (DEV)',
+  'Reactive Trader (LOCAL)',
+  'Reactive Trader (UAT)',
+  'Reactive Trader (UNKNOWN)'
 ]
 
-describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
+describe('UI Tests for Reactive Trader Web Application', async () => {
   beforeAll(async () => {
     browser = await getBrowser()
     mainPage = new MainPage(browser)
@@ -117,7 +117,7 @@ describe('UI Tests for Reactive Trader Cloud Web Application', async () => {
           direction,
           expectedResult,
           notional.getAttribute('value'),
-          timeout,
+          timeout
         )
       })
     })

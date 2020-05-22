@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   mode: 'development',
@@ -13,21 +13,19 @@ module.exports = {
         test: /\.ts?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      }
+      },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.ts', '.js', '.json'],
   },
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  plugins: [
-    new webpack.ContextReplacementPlugin(/any-promise/)
-  ],
+  plugins: [new webpack.ContextReplacementPlugin(/any-promise/)],
   node: {
     __filename: false,
-    __dirname: false
-  }
-};
+    __dirname: false,
+  },
+}

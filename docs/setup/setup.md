@@ -38,27 +38,18 @@ $ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher --populate-eventstore
 
 Alternatively on Windows, you can run `Populate Event Store.bat` to add some dummy data
 
-#### Run Broker (Crossbar)
+#### Run Broker (RabbitMQ)
 
-Crossbar.io is required for RTC to properly run. If not installed, the server cannot communicate with the client.
-To install crossbar.io on Windows:
+RabbitMQ is required for RTC to properly run. If not installed, the server cannot communicate with the client.
 
-- [Download Crossbar](http://crossbar.io/docs/Installation-on-Windows/): At the time of writing, the download instructions for Crossbar on Windows aren't perfect. The following should work:
-  - [Install Python 3.x 32bit](https://www.python.org/), tick the 'Add Python to PATH' checkbox in the installer
-  - [Install PyWin](https://github.com/mhammond/pywin32/releases)
-  - The dependency 'snappy' doesn't build on Windows, so use a pre-built version:
-    - [Download snappy binary](https://www.lfd.uci.edu/~gohlke/pythonlibs/#python-snappy) (choose the appropriate binary for your version of Python)
-    - Install it: `pip install python_snappy-0.5.4-cp37-cp37m-win32.whl` (or whichever `whl` file you downloaded in the previous step)
-  - Install Crossbar: `pip install crossbar`
-- Run `crossbar start` from the `\src\services\broker\.crossbar` working directory on the command line
-
-To install crossbar.io on another OS, follow the instructions provided for [Linux](https://crossbar.io/docs/Installation-on-Linux/) or for [MacOS](http://crossbar.io/docs/Installation-on-Mac-OS-X/)
-
-In a separate terminal, start Crossbar from the `/src/server/dotNet` folder or from the `\src\services\broker\.crossbar` folder (Windows) by running:
+- [Download and install RabbitMQ](https://www.rabbitmq.com/download.html): Follow the instructions to download, install and start RabbitMQ according to your OS and preferred method.
+- However before starting it, [enable Web Stomp Pluggin](https://www.rabbitmq.com/web-stomp.html): The client uses Stomp library to communicate with RabbitMQ via a websocket. Run the following command to enable the pluggin:
 
 ```bash
-$ crossbar start
+$ rabbitmq-plugins enable rabbitmq_web_stomp
 ```
+
+- [Browse RabbitMQ management](https://www.rabbitmq.com/management.html): If the management pluggin was installed, browse [RabbitMQ](http://localhost:15672/) and provide login `guest` and password `guess` to monitor the running exchanges and queues.
 
 #### Start Services
 
@@ -68,11 +59,11 @@ To start the backend services, run the following command from the`/src/server/do
 $ dotnet run -p Adaptive.ReactiveTrader.Server.Launcher all
 ```
 
-The services should now run and connect to Crossbar and Event Store.
+The services should now run and connect to Rabbitmq and Event Store.
 
 To run each service individually, cd into each of the services (analytics, blotter, pricing, referenceDataRead, tradeExecution) and run `dotnet run`
 
-On Windows, once the stand-alone Event Store and Crossbar are running, you can fire up the services by running `StartServices.bat`
+On Windows, once the stand-alone Event Store and Rabbitmq are running, you can fire up the services by running `StartServices.bat`
 
 This calls the Launcher console application and will start all the services, the messaging broker and Event Store.
 

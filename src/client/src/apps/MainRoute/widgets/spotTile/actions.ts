@@ -8,7 +8,7 @@ import {
   RfqExpired,
   RfqCancel,
   RfqReject,
-  RfqReset,
+  RfqReset
 } from './model/rfqRequest'
 import { TradingMode } from './components/types'
 import { CurrencyPairNotional } from './model/spotTileData'
@@ -29,16 +29,16 @@ export enum TILE_ACTION_TYPES {
   SPOT_TILE_SUBSCRIBE = '@ReactiveTraderCloud/SPOT_TILE_SUBSCRIBE',
   SPOT_TILE_UNSUBSCRIBE = '@ReactiveTraderCloud/SPOT_TILE_UNSUBSCRIBE',
   SPOT_PRICES_UPDATE = '@ReactiveTraderCloud/SPOT_PRICES_UPDATE',
-  PRICE_HISTORY_RECEIVED = '@ReactiveTraderCloud/PRICE_HISTORY_RECEIVED',
+  PRICE_HISTORY_RECEIVED = '@ReactiveTraderCloud/PRICE_HISTORY_RECEIVED'
 }
 
 export const SpotTileActions = {
   setNotional: action<TILE_ACTION_TYPES.SET_NOTIONAL, CurrencyPairNotional>(
-    TILE_ACTION_TYPES.SET_NOTIONAL,
+    TILE_ACTION_TYPES.SET_NOTIONAL
   ),
 
   setTradingMode: action<TILE_ACTION_TYPES.SET_TRADING_MODE, TradingMode>(
-    TILE_ACTION_TYPES.SET_TRADING_MODE,
+    TILE_ACTION_TYPES.SET_TRADING_MODE
   ),
 
   rfqRequest: action<TILE_ACTION_TYPES.RFQ_REQUEST, RfqRequest>(TILE_ACTION_TYPES.RFQ_REQUEST),
@@ -70,17 +70,17 @@ export const SpotTileActions = {
     { currencyPair: string; id?: string }
   >(TILE_ACTION_TYPES.DISMISS_NOTIFICATION),
   subscribeToSpotTile: action<TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE, string>(
-    TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE,
+    TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE
   ),
   unsubscribeToSpotTile: action<TILE_ACTION_TYPES.SPOT_TILE_UNSUBSCRIBE, string>(
-    TILE_ACTION_TYPES.SPOT_TILE_UNSUBSCRIBE,
+    TILE_ACTION_TYPES.SPOT_TILE_UNSUBSCRIBE
   ),
   priceUpdateAction: action<TILE_ACTION_TYPES.SPOT_PRICES_UPDATE, SpotPriceTick>(
-    TILE_ACTION_TYPES.SPOT_PRICES_UPDATE,
+    TILE_ACTION_TYPES.SPOT_PRICES_UPDATE
   ),
   priceHistoryReceived: action<TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED, SpotPriceTick[], string>(
-    TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED,
-  ),
+    TILE_ACTION_TYPES.PRICE_HISTORY_RECEIVED
+  )
 }
 
 export type SpotTileActions = ActionUnion<typeof SpotTileActions>

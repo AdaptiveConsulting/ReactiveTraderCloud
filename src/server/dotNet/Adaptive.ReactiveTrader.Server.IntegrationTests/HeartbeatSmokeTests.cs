@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reactive.Linq;
 using Adaptive.ReactiveTrader.Common;
 using Xunit;
@@ -15,14 +15,16 @@ namespace Adaptive.ReactiveTrader.Server.IntegrationTests
         [InlineData(ServiceTypes.Analytics)]
         public async void ShouldReceiveHeartbeatForServices(string serviceType)
         {
-            var channel = await new TestBroker().OpenChannel();
+            var broker = new TestBroker();
 
-            var heartbeat = await channel.RealmProxy.Services.GetSubject<dynamic>("status")
+            var heartbeat = await broker.SubscribeToTopic<dynamic>("status")
                                          .Where(hb => hb.Type == serviceType)
-                                         .Timeout(TimeSpan.FromSeconds(2))
+                                         .Timeout(TimeSpan.FromSeconds(10))
                                          .Take(1);
 
             Assert.NotNull(heartbeat.Instance);
+
         }
     }
 }
+

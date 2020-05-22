@@ -5,7 +5,8 @@ import { map, mapTo, mergeMap, take, takeUntil, tap, publish } from 'rxjs/operat
 import {
   createExecuteTradeResponse,
   createExecuteTradeResponseForError,
-  ExecuteTradeRequest,
+  createExecuteTradeResponseForWarning,
+  ExecuteTradeRequest
 } from '../model/executeTradeRequest'
 import numeral from 'numeral'
 import ReactGA from 'react-ga'
@@ -22,9 +23,7 @@ const EXECUTION_REQUEST_TIMEOUT_MS = 30000
 export default class ExecutionService {
   constructor(
     private readonly serviceClient: ServiceClient,
-    private readonly limitChecker: (
-      executeTradeRequest: ExecuteTradeRequest,
-    ) => Observable<boolean>,
+    private readonly limitChecker: (executeTradeRequest: ExecuteTradeRequest) => Observable<boolean>
   ) {}
 
   formatTradeRequest(rawTradeRequest: ExecuteTradeRequest) {
@@ -42,21 +41,21 @@ export default class ExecutionService {
           category: `RT - Trade Attempt`,
           action: executeTradeRequest.Direction,
           label: `${executeTradeRequest.CurrencyPair} - ${executeTradeRequest.SpotRate}`,
-          value: Math.round(executeTradeRequest.Notional),
+          value: Math.round(executeTradeRequest.Notional)
         })
       }),
       take(1),
       mergeMap(tradeWithinLimit => {
         if (!tradeWithinLimit) {
           return of(
-            createExecuteTradeResponseForError('Credit limit exceeded', executeTradeRequest),
+            createExecuteTradeResponseForError('Credit limit exceeded', executeTradeRequest)
           )
         }
         return this.serviceClient
           .createRequestResponseOperation<RawTradeReponse, ExecuteTradeRequest>(
             'execution',
             'executeTrade',
-            executeTradeRequest,
+            executeTradeRequest
           )
           .pipe(
             tap(dto => {
@@ -65,14 +64,14 @@ export default class ExecutionService {
                 `execute response received for ${executeTradeRequest.CurrencyPair}. Status: ${dto.Trade.Status}`,
                 {
                   Request: executeTradeRequest,
-                  Response: dto,
-                },
+                  Response: dto
+                }
               )
               ReactGA.event({
                 category: `RT - Trade ${dto.Trade.Status}`,
                 action: executeTradeRequest.Direction,
                 label: `${executeTradeRequest.CurrencyPair} - ${dto.Trade.SpotRate}`,
-                value: Math.round(dto.Trade.Notional),
+                value: Math.round(dto.Trade.Notional)
               })
             }),
             map(dto => mapFromTradeDto(dto.Trade)),
@@ -85,12 +84,12 @@ export default class ExecutionService {
                 // When the execution has taken a few seconds but we cannot assume its not going to go through
                 timer(EXECUTION_CLIENT_TIMEOUT_MS).pipe(
                   mapTo(
-                    createExecuteTradeResponseForError(
-                      'Trade Execution taking longer then Expected',
-                      executeTradeRequest,
-                    ),
+                    createExecuteTradeResponseForWarning(
+                      'Trade execution taking longer than expected',
+                      executeTradeRequest
+                    )
                   ),
-                  takeUntil(request),
+                  takeUntil(request)
                 ),
 
                 // After a longer period of time we know a trade is not coming back
@@ -98,15 +97,15 @@ export default class ExecutionService {
                   mapTo(
                     createExecuteTradeResponseForError(
                       'Trade execution timeout exceeded',
-                      executeTradeRequest,
-                    ),
+                      executeTradeRequest
+                    )
                   ),
-                  takeUntil(request),
-                ),
-              ),
-            ),
+                  takeUntil(request)
+                )
+              )
+            )
           )
-      }),
+      })
     )
   }
 }

@@ -4,7 +4,7 @@ import {
   createTileMessage,
   FX_ENTITY_TYPE,
   pausedPlaceholderMessage,
-  SYMPHONY_APP_ID,
+  SYMPHONY_APP_ID
 } from './constants'
 import { waitForObject } from 'rt-util'
 import uuid from 'uuid'
@@ -27,7 +27,7 @@ export const initiateSymphony = async (env?: string) => {
   const registerResult = await SYMPHONY.application.register(
     SYMPHONY_APP_ID,
     ['modules', 'applications-nav', 'entity'],
-    [ENTITY_CONTROLLER, MENU_CONTROLLER],
+    [ENTITY_CONTROLLER, MENU_CONTROLLER]
   )
 
   console.info('Adaptive: Symphony has been registered', registerResult)
@@ -47,14 +47,14 @@ export const initiateSymphony = async (env?: string) => {
       entityService.update(id, pausedPlaceholderMessage, {
         symbol: map[id],
         version: VERSION,
-        type: FX_ENTITY_TYPE,
+        type: FX_ENTITY_TYPE
       })
     },
     resume(id) {
       entityService.update(id, createTemplate(map[id]), {
         symbol: map[id],
         version: VERSION,
-        type: FX_ENTITY_TYPE,
+        type: FX_ENTITY_TYPE
       })
     },
 
@@ -65,9 +65,9 @@ export const initiateSymphony = async (env?: string) => {
       return {
         template: isValidFxData ? createTemplate(data.symbol) : createPlaceholderMessage(''),
         data,
-        entityInstanceId,
+        entityInstanceId
       }
-    },
+    }
   })
 
   const createNavItem = (id: string, title: string) =>
@@ -75,9 +75,9 @@ export const initiateSymphony = async (env?: string) => {
       id,
       {
         title,
-        icon: `${host}/symphony/logo.png`,
+        icon: `${host}/symphony/logo.png`
       },
-      MENU_CONTROLLER,
+      MENU_CONTROLLER
     )
 
   const PRIMARY_NAV_ID = 'rt-nav'
@@ -96,7 +96,7 @@ export const initiateSymphony = async (env?: string) => {
     [BLOTTER_ID]: `${host}/blotter`,
     [ANALYTICS_NAV_ID]: `${host}/analytics`,
     [TILES_NAV_ID]: `${host}/tiles`,
-    [PRIMARY_NAV_ID]: `${host}`,
+    [PRIMARY_NAV_ID]: `${host}`
   }
 
   menuController.implement({
@@ -112,11 +112,11 @@ export const initiateSymphony = async (env?: string) => {
         MENU_CONTROLLER,
         `${symphonyMap[id]}/?symphony=true&waitFor=SYMPHONY`,
         {
-          canFloat: true,
-        },
+          canFloat: true
+        }
       )
 
       modulesService.focus(SYMPHONY_APP_ID)
-    },
+    }
   })
 }

@@ -4,9 +4,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Adaptive.ReactiveTrader.Contract;
 using Adaptive.ReactiveTrader.Messaging;
-using Adaptive.ReactiveTrader.Messaging.Abstraction;
 using Newtonsoft.Json;
 using Serilog;
+using Serilog.Context;
 
 namespace Adaptive.ReactiveTrader.Server.Pricing
 {
@@ -31,27 +31,33 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
         {
             var priceTrunkStream = _service.GetAllPriceUpdates(); // TODO dispose this when service host goes down
             var priceTrunk = new PricePublisher(priceTrunkStream, _broker);
-            priceTrunk.Start().Wait();
+            priceTrunk.Start();
         }
 
-        public async Task GetPriceUpdates(IRequestContext context, IMessage message)
+        public Task GetPriceUpdates(IRequestContext context, IMessage message)
         {
-            Log.Debug("{host} Received GetPriceUpdates from [{user}] for replyTo {replyTo}",
+            using (LogContext.PushProperty("InstanceId", InstanceId))
+            {
+                Log.Debug("{host} Received GetPriceUpdates from [{user}] for replyTo {replyTo}",
                             this,
-                            context.UserSession.Username ?? "Unknown User",
-                            message.ReplyTo);
+                            context.Username ?? "Unknown User",
+                            context.ReplyTo);
 
-            var spotStreamRequest = JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
+                var spotStreamRequest = JsonConvert.DeserializeObject<GetSpotStreamRequestDto>(Encoding.UTF8.GetString(message.Payload));
 
-            var replyTo = message.ReplyTo;
+                var replyTo = context.ReplyTo;
 
-            var endpoint = await _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo);
+                var endpoint = _broker.GetPrivateEndPoint<SpotPriceDto>(replyTo, context.CorrelationId);
 
-            var disposable = _service.GetPriceUpdates(context, spotStreamRequest)
-                                     .TakeUntil(endpoint.TerminationSignal)
-                                     .Subscribe(endpoint);
+                var disposable = _service.GetPriceUpdates(context, spotStreamRequest)
+                                         .TakeUntil(endpoint.TerminationSignal)
+                                         .Finally(() => Log.Debug("Tidying up subscription from {replyTo}.", replyTo))
+                                         .Subscribe(endpoint);
 
-            _cleanup.Add(disposable);
+                _cleanup.Add(disposable);
+
+                return Task.CompletedTask;
+            }
         }
 
         public override void Dispose()

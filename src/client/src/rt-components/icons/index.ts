@@ -10,5 +10,6 @@ export { default as MaximizeIcon } from './MaximizeIcon'
 export { default as MinimizeIcon } from './MinimizeIcon'
 export { default as ChevronIcon } from './ChevronIcon'
 export { default as ChartIcon } from './ChartIcon'
+export { default as MailIcon } from './MailIcon'
 
 export { IconStateTypes } from './types'

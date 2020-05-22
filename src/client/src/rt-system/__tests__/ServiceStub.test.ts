@@ -1,13 +1,7 @@
-import {
-  AutobahnSessionProxy,
-  ConnectionEvent,
-  ConnectionEventType,
-  ConnectionOpenEvent,
-  ServiceStub,
-} from 'rt-system'
-import { MockScheduler } from 'rt-testing'
-import { of } from 'rxjs'
-import { ISubscription, Session } from 'autobahn'
+import { ServiceClient, WsConnection } from 'rt-system'
+import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
+import { IMessage } from '@stomp/stompjs'
+import { Observable } from 'rxjs'
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -17,153 +11,86 @@ describe('ServiceStub', () => {
   const Username = 'USER'
 
   describe('Request Response method', () => {
-    const procedure = 'procedure'
+    const service = 'service'
+    const operationName = 'operation'
     const payload = 'payload'
-    const replyTo = 'responseTopic'
+    const procedure = service + '.' + operationName
 
     it('invokes a remote procedure with the correct payload', () => {
-      const session = new MockSession()
-      const stub = new ServiceStub(Username, of(createMockConnection(session)))
-      const rpc = stub.requestResponse<string, string>(procedure, payload, replyTo).subscribe()
-      expect(session.call).lastCalledWith(procedure, [{ payload, replyTo, Username }])
+      const rpcEndpoint = new MockRpcEndpoint()
+      const stub = new ServiceClient(Username, createMockConnection(rpcEndpoint))
+      const rpc = stub
+        .createRequestResponseOperation<string, string>(service, operationName, payload)
+        .subscribe()
+
+      expect(rpcEndpoint.rpc).lastCalledWith({
+        destination: `/amq/queue/${procedure}`,
+        body: JSON.stringify({
+          payload,
+          Username: Username
+        })
+      })
       rpc.unsubscribe()
     })
+  })
 
-    it('does not make a request until a connection is established', () => {
-      new MockScheduler().run(({ cold, expectObservable }) => {
-        const connection$ = cold<ConnectionEvent>('-')
-        const stub = new ServiceStub(Username, connection$)
-        const expected = '-'
-        const request$ = stub.requestResponse<string, string>(procedure, payload, replyTo)
-        expectObservable(request$).toBe(expected)
+  describe('Request Stream method', () => {
+    const service = 'service'
+    const operationName = 'operation'
+    const payload = 'payload'
+    const procedure = service + '.' + operationName
+
+    it('invokes a remote procedure with the correct payload', () => {
+      const rpcEndpoint = new MockRpcEndpoint()
+      const stub = new ServiceClient(Username, createMockConnection(rpcEndpoint))
+      const rpc = stub
+        .createStreamOperation<string, string>(service, operationName, payload)
+        .subscribe()
+
+      expect(rpcEndpoint.stream).lastCalledWith({
+        destination: `/amq/queue/${procedure}`,
+        body: JSON.stringify({
+          payload,
+          Username: Username
+        })
       })
-    })
-
-    it('returns a result via an observable that completes after a getting a result', () => {
-      new MockScheduler().run(({ cold, expectObservable }) => {
-        const variables = { c: createMockConnection(new MockSession()), r: requestReplyResult }
-
-        //emit connection event after two frames
-        const connection$ = cold<ConnectionEvent>('--c', variables)
-        const stub = new ServiceStub(Username, connection$)
-        const expected = '--(r|)'
-        const request$ = stub.requestResponse<string, string>(procedure, payload, replyTo)
-        expectObservable(request$).toBe(expected, variables)
-      })
+      rpc.unsubscribe()
     })
   })
 
   describe('Subscribe To Topic method', () => {
-    let variables: {}
-
-    beforeEach(() => {
-      variables = {
-        c: createMockConnection(),
-        1: 'result1',
-        2: 'result2',
-        3: 'result3',
-      }
-    })
-
     const topic = 'someTopic'
     it('subscribes to the correct topic name', () => {
-      const stub = new ServiceStub(Username, of(createMockConnection()))
+      const streamEndpoint = new MockStreamEndpoint()
+      const stub = new ServiceClient(Username, createMockConnection(undefined, streamEndpoint))
       stub.subscribeToTopic(topic).subscribe()
-      expect(SubscribeMock.mock.calls[0][0]).toBe(topic)
-    })
-
-    it('allows observation of Autobahn acknowlegement', () => {
-      const stub = new ServiceStub(Username, of(createMockConnection()))
-      const mockNextObserver = {
-        next: jest.fn(),
-      }
-      stub
-        .subscribeToTopic(topic, mockNextObserver)
-        .subscribe()
-        .unsubscribe()
-      expect(mockNextObserver.next).toHaveBeenCalled()
-    })
-
-    it('streams topic results', () => {
-      new MockScheduler().run(({ cold, expectObservable }) => {
-        const connection$ = cold<ConnectionEvent>('--c', variables)
-        const stub = new ServiceStub(Username, connection$)
-        const expected = '--(123)'
-        const topicSubscription$ = stub.subscribeToTopic(topic)
-        expectObservable(topicSubscription$).toBe(expected, variables)
-      })
-    })
-
-    it('Unsubsribes to the autobahn session on dispose', () => {
-      new MockScheduler().run(({ cold, expectObservable, flush }) => {
-        const connection$ = cold<ConnectionEvent>('c', variables)
-        const stub = new ServiceStub(Username, connection$)
-        const topicSubscription$ = stub.subscribeToTopic(topic)
-        expectObservable(topicSubscription$, '---!')
-        flush()
-        expect(UnsubscribeMock).toHaveBeenCalled()
-      })
-    })
-
-    it('Observable topic errors when an acknowledgement fails', () => {
-      new MockScheduler().run(({ cold, expectObservable }) => {
-        const connection$ = cold<ConnectionEvent>('--c', variables)
-        const stub = new ServiceStub(Username, connection$)
-        const topicSubscription$ = stub.subscribeToTopic(FAILURE_TOPIC)
-        expectObservable(topicSubscription$).toBe('--#', variables, topicError)
-      })
+      expect(streamEndpoint.watch).lastCalledWith(`/exchange/${topic}`)
     })
   })
 })
 
-const createMockConnection: (session?: AutobahnSessionProxy) => ConnectionOpenEvent = (
-  session: AutobahnSessionProxy = new MockSession(),
+const createMockConnection: (rpcEndpoint?: RxStompRPC, streamEndpoint?: RxStomp) => WsConnection = (
+  rpcEndpoint: RxStompRPC = new MockRpcEndpoint(),
+  streamEndpoint: RxStomp = new MockStreamEndpoint()
 ) => ({
-  type: ConnectionEventType.CONNECTED,
-  session,
-  url: 'FAKE',
-  transportType: 'longpoll',
+  config: { brokerURL: 'FAKE', connectionType: 'websocket', reconnectDelay: 100 },
+  rpcEndpoint: rpcEndpoint,
+  streamEndpoint: streamEndpoint,
+  open: jest.fn().mockReturnValue(true),
+  close: jest.fn(),
+  onopen: jest.fn(),
+  onclose: jest.fn()
 })
 
-const FAILURE_TOPIC = 'FAILURE_TOPIC'
-const topicError = new Error('failure')
-const topicResults = ['result1', 'result2', 'result3']
-
-const SubscribeMock = jest.fn((topic: string, responseCB: (response: string[]) => void) => {
-  if (topic !== FAILURE_TOPIC) {
-    topicResults.forEach(result => responseCB([result]))
-  }
+const MockRpcEndpoint = jest.fn<any, any>(() => {
   return {
-    then: (cb: (result: ISubscription) => void, err: (error: Error) => void) => {
-      if (topic === FAILURE_TOPIC) {
-        err(topicError)
-      } else {
-        cb(new SubscriptionMock())
-      }
-    },
+    rpc: jest.fn().mockReturnValue(new Observable<IMessage>()),
+    stream: jest.fn().mockReturnValue(new Observable<IMessage>())
   }
 })
 
-const requestReplyResult = 'result'
-
-const CallMock = jest.fn().mockReturnValue({
-  then: (cb: (result: string) => {}) => cb(requestReplyResult),
-})
-
-const UnsubscribeMock = jest.fn().mockReturnValue({
-  then: (cb: () => {}) => cb(),
-})
-
-// TODO: fix types, replace any with actual types
-const SubscriptionMock = jest.fn<any, any>()
-
-// TODO: fix types, replace any with actual types
-const MockSession = jest.fn<any, any>(() => {
+const MockStreamEndpoint = jest.fn<any, any>(() => {
   return {
-    session: ({} as any) as Session,
-    isOpen: jest.fn().mockReturnValue(true),
-    subscribe: SubscribeMock,
-    unsubscribe: UnsubscribeMock,
-    call: CallMock,
+    watch: jest.fn().mockReturnValue(new Observable<IMessage>())
   }
 })

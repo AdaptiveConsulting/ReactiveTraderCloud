@@ -8,6 +8,8 @@ type TradeLookup = Map<number, Trade>
 
 const MAX_TRADES = 20
 
+const isArrayFilterEmpty = (arr?: any) => arr?.length === 1 && arr[0] === ''
+
 export const useBlotterTrades = (filters?: BlotterFilters) => {
   const [trades, setTrades] = useState<Trade[]>([])
   const trades$ = useContext(TradeUpdatesContext)
@@ -24,22 +26,30 @@ export const useBlotterTrades = (filters?: BlotterFilters) => {
           filterBlotterTrades(tradeUpdate.trades, {
             ...filters,
             // get all trades and then limit in the end (so that we can show user how many filtered out)
-            count: undefined,
-          }),
+            count: undefined
+          })
         ),
         scan<ReadonlyArray<Trade>, Map<number, Trade>>((acc, trades) => {
           trades.forEach(trade => acc.set(trade.tradeId, trade))
           return acc
         }, new Map<number, Trade>()),
-        map((trades: TradeLookup) => Array.from(trades.values()).reverse()),
+        map((trades: TradeLookup) => Array.from(trades.values()).reverse())
       )
       .subscribe(
         result => {
           const newTradeCount = result.length
-          const newTrades = result.slice(
+          let newTrades = result.slice(
             0,
-            filters && typeof filters.count !== 'undefined' ? filters.count : MAX_TRADES,
+            filters && typeof filters.count !== 'undefined' ? filters.count : MAX_TRADES
           )
+
+          if (!isArrayFilterEmpty(filters?.dealtCurrency) || !isArrayFilterEmpty(filters?.symbol)) {
+            newTrades = newTrades.filter(
+              t =>
+                filters?.dealtCurrency?.includes(t.dealtCurrency) ||
+                filters?.symbol?.includes(t.symbol)
+            )
+          }
 
           setTrades(newTrades)
 
@@ -47,7 +57,7 @@ export const useBlotterTrades = (filters?: BlotterFilters) => {
         },
         error => {
           console.error(`Error subscribing to inline blotter service: ${error}`)
-        },
+        }
       )
 
     return () => {

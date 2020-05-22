@@ -10,7 +10,7 @@ import {
   NotificationActionEvent,
   removeEventListener,
   addEventListener,
-  create,
+  create
 } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
@@ -25,7 +25,7 @@ export default class OpenFin implements Platform {
   readonly allowTearOff = true
 
   style = {
-    height: '100%',
+    height: '100%'
   }
 
   constructor() {
@@ -35,7 +35,7 @@ export default class OpenFin implements Platform {
 
   window = {
     ...createPlatformWindow(() => Promise.resolve(fin.desktop.Window.getCurrent())),
-    open: openDesktopWindow,
+    open: openDesktopWindow
   }
 
   app = {
@@ -64,17 +64,17 @@ export default class OpenFin implements Platform {
               name: config.uuid,
               uuid: config.uuid,
               url: config.url,
-              mainWindowOptions: { icon: config.icon, autoShow: true, frame: true },
+              mainWindowOptions: { icon: config.icon, autoShow: true, frame: true }
             },
             () =>
               app.run(
                 () => setTimeout(() => resolve(id), 1000),
-                err => reject(err),
+                err => reject(err)
               ),
-            err => reject(err),
+            err => reject(err)
           )
         })
-      }),
+      })
   }
 
   interop = {
@@ -83,11 +83,11 @@ export default class OpenFin implements Platform {
         (handler: Function) =>
           fin.desktop.InterApplicationBus.subscribe('*', topic, handler as () => void),
         (handler: Function) =>
-          fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void),
+          fin.desktop.InterApplicationBus.unsubscribe('*', topic, handler as () => void)
       ),
 
     publish: (topic: string, message: string | object) =>
-      fin.desktop.InterApplicationBus.publish(topic, message),
+      fin.desktop.InterApplicationBus.publish(topic, message)
   }
 
   notification = {
@@ -95,16 +95,15 @@ export default class OpenFin implements Platform {
       create({
         body: this.getNotificationBody(message as NotificationMessage),
         title: this.getNotificationTitle(message as NotificationMessage),
-        icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
+        icon: `${location.protocol}//${location.host}/static/media/reactive-trader.ico`,
         customData: message,
         buttons: [
           {
             title: 'Highlight trade in blotter',
-            iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
-            onClick: { task: 'highlight-trade' },
-          },
+            onClick: { task: 'highlight-trade' }
+          }
         ],
-        category: 'Trade Executed',
+        category: 'Trade Executed'
       })
         .then((successVal: Notification) => {
           console.info('Notification success', successVal)
@@ -112,7 +111,7 @@ export default class OpenFin implements Platform {
         .catch((err: any) => {
           console.error('Notification error', err)
         })
-    },
+    }
   }
 
   Logo: React.FC = Logo

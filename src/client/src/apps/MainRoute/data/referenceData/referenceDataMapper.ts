@@ -44,7 +44,11 @@ const referenceDataMapper = {
 
 export default referenceDataMapper
 
-function createCurrencyPair(symbol: string, ratePrecision: number, pipsPosition: number): CurrencyPair {
+function createCurrencyPair(
+  symbol: string,
+  ratePrecision: number,
+  pipsPosition: number
+): CurrencyPair {
   return {
     symbol,
     ratePrecision,

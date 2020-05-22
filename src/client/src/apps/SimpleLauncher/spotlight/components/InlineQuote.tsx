@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
 import { usePriceService } from './usePriceService'
 import { SpotPriceTick } from 'apps/MainRoute'
-import { InlineIntent, LoadingWrapper } from './styles'
+import { InlineIntent } from './styles'
 import { DateTime } from 'luxon'
-import { ResultsTable, Col } from './resultsTable'
+import { ResultsTable, ResultsTableRow, LoadingRow } from './resultsTable'
 import { MovementIcon } from '../../icons'
-import { AdaptiveLoader } from 'rt-components'
-
+import { defaultColDefs } from './utils'
+import { showCurrencyPair } from 'rt-interop/intents'
+import { usePlatform } from 'rt-platforms'
 interface InlineQuoteProps {
   currencyPair: string
 }
@@ -14,6 +15,7 @@ interface InlineQuoteProps {
 export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
   const [quote, setQuote] = useState<SpotPriceTick>()
   const priceService = usePriceService()
+  const platform = usePlatform()
 
   useEffect(() => {
     if (!priceService) {
@@ -21,7 +23,7 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
     }
     const subscription = priceService
       .getSpotPriceStream({ symbol: currencyPair })
-      .subscribe((result) => {
+      .subscribe(result => {
         setQuote(result)
       }, console.error)
 
@@ -32,52 +34,37 @@ export const InlineQuote: FC<InlineQuoteProps> = ({ currencyPair }) => {
     }
   }, [priceService, currencyPair])
 
-  const highlightPip = (value: number, bidAsk: 'bid' | 'ask') => {
-    const array = String(value).split('')
-    return array.map((char: string, index: number) => {
-      const style =
-        index === array.length - 2 || index === array.length - 1
-          ? {
-              color: bidAsk === 'ask' ? '#ff274b' : '#2d95ff',
-              fontSize: '1rem',
-            }
-          : {}
-      return (
-        <span style={style} key={`${char}-${index}`}>
-          {char}
-        </span>
-      )
-    })
-  }
-
-  const colDefs: Col[] = [
-    { title: 'Symbol', id: 'symbol' },
-    { title: 'Ask', id: 'ask', align: 'right', formatter: (value) => highlightPip(value, 'ask') },
-    { title: 'Mid', id: 'mid', align: 'right' },
-    { title: 'Bid', id: 'bid', align: 'right', formatter: (value) => highlightPip(value, 'bid') },
-    { title: 'Movement', id: 'priceMovementType', align: 'center' },
-    { title: 'Date/Time', id: 'valueDate' },
-  ]
-
-  const rows =
+  const row =
     quote && quote.symbol
       ? [
           {
             ...quote,
             priceMovementType: <MovementIcon direction={quote.priceMovementType} />,
-            valueDate: DateTime.fromISO(quote.valueDate).toFormat('yyyy LLL dd / HH:mm:ss'),
+            valueDate: DateTime.fromISO(quote.valueDate).toFormat('dd-LLL-yyyy / HH:mm:ss'),
+            openTileBtn: (
+              <button onClick={() => showCurrencyPair(quote.symbol, platform)}>Open Tile</button>
+            ),
           },
         ]
       : []
 
+  if (!quote) {
+    return <LoadingRow cols={defaultColDefs} />
+  }
+
+  if (quote && quote?.symbol) {
+    return <ResultsTableRow row={row[0]} cols={defaultColDefs} />
+  }
+
+  return null
+}
+
+export const InlineQuoteTable: FC<InlineQuoteProps> = ({ currencyPair }) => {
   return (
     <InlineIntent>
-      {!quote && (
-        <LoadingWrapper>
-          <AdaptiveLoader size={25} speed={1.4} />
-        </LoadingWrapper>
-      )}
-      {quote && quote.symbol && <ResultsTable cols={colDefs} rows={rows} />}
+      <ResultsTable cols={defaultColDefs}>
+        <InlineQuote currencyPair={currencyPair} />
+      </ResultsTable>
     </InlineIntent>
   )
 }

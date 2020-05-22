@@ -30,7 +30,10 @@ type ActionFn<T extends string> = () => Action<T>
 
 type ActionWithPayloadFn<T extends string, P> = (payload: P) => ActionWithPayload<T, P>
 
-type ActionWithPayloadAndMetaFn<T extends string, P, M> = (payload: P, meta: M) => ActionWithPayloadAndMeta<T, P, M>
+type ActionWithPayloadAndMetaFn<T extends string, P, M> = (
+  payload: P,
+  meta: M
+) => ActionWithPayloadAndMeta<T, P, M>
 
 export function action<T extends string>(type: T): ActionFn<T>
 export function action<T extends string, P>(type: T): ActionWithPayloadFn<T, P>

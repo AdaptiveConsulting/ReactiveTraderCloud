@@ -1,4 +1,3 @@
-
 export interface Price {
   ask: number
   bid: number
@@ -26,11 +25,4 @@ export interface RawPrice {
   CreationTimestamp: number
   Symbol: string
   ValueDate: string
-}
-
-export interface RawServiceStatus {
-  Type: string
-  Instance: string
-  TimeStamp: number
-  Load: number
 }

@@ -63,7 +63,7 @@ stories.add('Warning: Execution longer', () => (
   <Story>
     <Centered>
       <TileNotification style={style} symbols={symbols} type={NotificationType.Warning}>
-        Trade Execution taking longer then Expected
+        Trade execution taking longer than expected
       </TileNotification>
     </Centered>
   </Story>

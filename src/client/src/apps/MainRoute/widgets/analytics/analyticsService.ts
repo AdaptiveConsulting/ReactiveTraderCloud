@@ -6,7 +6,7 @@ import {
   HistoricPosition,
   HistoryRaw,
   PositionsRaw,
-  PositionUpdates,
+  PositionUpdates
 } from './model'
 
 const LOG_NAME = 'Analytics Service:'
@@ -16,7 +16,7 @@ function mapFromDto(dto: PositionsRaw): PositionUpdates {
   const history = mapHistoricPositionFromDto(dto.History)
   return {
     history,
-    currentPositions: positions,
+    currentPositions: positions
   }
 }
 
@@ -27,14 +27,14 @@ function mapPositionsFromDto(dtos: CurrencyPairPositionRaw[]): CurrencyPairPosit
     baseTradedAmount: dto.BaseTradedAmount,
     counterTradedAmount: dto.CounterTradedAmount,
     basePnlName: 'basePnl',
-    baseTradedAmountName: 'baseTradedAmount',
+    baseTradedAmountName: 'baseTradedAmount'
   }))
 }
 
 function mapHistoricPositionFromDto(dtos: HistoryRaw[]): HistoricPosition[] {
   return dtos.map<HistoricPosition>(dto => ({
     timestamp: new Date(dto.Timestamp),
-    usdPnl: dto.UsdPnl,
+    usdPnl: dto.UsdPnl
   }))
 }
 
@@ -46,7 +46,7 @@ export default class AnalyticsService {
       .createStreamOperation<PositionsRaw, string>('analytics', 'getAnalytics', analyticsRequest)
       .pipe(
         retryWhen(retryWithBackOff()),
-        map(dto => mapFromDto(dto)),
+        map(dto => mapFromDto(dto))
       )
   }
 }

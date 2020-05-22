@@ -14,7 +14,7 @@ import {
   Notification,
   Status,
   Top,
-  Traded,
+  Traded
 } from './styled'
 library.add(faShare)
 export interface Props {

@@ -1,90 +1,49 @@
 import { Observable } from 'rxjs'
-import { AutobahnSessionProxy } from '.'
-import { AutobahnConnection } from './AutoBahnConnection'
-import { ConnectionType } from './connectionType'
-import { DisconnectionReason } from './DisconnectionReason'
+import WsConnection from './WsConnection'
+import { RxStompState } from '@stomp/rx-stomp'
+import { map, tap } from 'rxjs/operators'
 
-const LOG_NAME = 'Service Broker: '
-
-export enum ConnectionEventType {
-  CONNECTED = 'CONNECTED',
-  DISCONNECTED = 'DISCONNECTED',
+export enum ConnectionStatus {
+  connecting = 'connecting',
+  connected = 'connected',
+  disconnecting = 'disconnecting',
+  disconnected = 'disconnected',
+  sessionExpired = 'sessionExpired'
 }
 
-export interface ConnectionOpenEvent {
-  type: ConnectionEventType.CONNECTED
-  session: AutobahnSessionProxy
+export interface ConnectionInfo {
+  status: ConnectionStatus
   url: string
-  transportType: ConnectionType
 }
 
-export interface ConnectionClosedEvent {
-  type: ConnectionEventType.DISCONNECTED
-  reason: string
-  details?: string
-}
+export function connectionStream$(broker: WsConnection): Observable<ConnectionInfo> {
+  return broker.streamEndpoint.connectionState$.pipe(
+    tap(state => console.debug('', `Received response on topic status: ${state}`)),
+    map(state => {
+      let status: ConnectionStatus
+      let url: string = broker.config.brokerURL
 
-export type ConnectionEvent = ConnectionOpenEvent | ConnectionClosedEvent
+      switch (state) {
+        case RxStompState.CONNECTING:
+          status = ConnectionStatus.connecting
+          url = 'Starting'
+          break
+        case RxStompState.OPEN:
+          status = ConnectionStatus.connected
+          break
+        case RxStompState.CLOSING:
+          status = ConnectionStatus.disconnecting
+          break
+        case RxStompState.CLOSED:
+          status = ConnectionStatus.disconnected
+          url = 'Disconnected'
+          break
+      }
 
-export function createConnection$(autobahn: AutobahnConnection): Observable<ConnectionEvent> {
-  return new Observable(obs => {
-    console.info(LOG_NAME, 'Connection Subscribing')
-
-    let unsubscribed = false
-
-    autobahn.onopen(session => {
-      if (!unsubscribed) {
-        console.info(LOG_NAME, 'Connected')
-
-        const connection = autobahn.getConnection()
-        if (!connection.transport.info.url) {
-          console.error('No URL in transport')
-          return
-        }
-
-        obs.next({
-          type: ConnectionEventType.CONNECTED,
-          session,
-          url: connection.transport.info.url,
-          transportType: connection.transport.info.type as ConnectionType,
-        })
+      return {
+        status: status,
+        url: url
       }
     })
-
-    autobahn.onclose((reason, details, willRetry) => {
-      if (!unsubscribed) {
-        switch (reason) {
-          case DisconnectionReason.Closed:
-            console.info(LOG_NAME, `Connection ${reason}`, details)
-            obs.complete()
-            break
-          default:
-            if (willRetry) {
-              console.warn(LOG_NAME, `Connection ${reason}`, details)
-              obs.next({
-                type: ConnectionEventType.DISCONNECTED,
-                reason: details.reason || reason,
-                details: details.message,
-              })
-            } else {
-              console.error(LOG_NAME, `Connection ${reason}`, details)
-              obs.error({ reason, details })
-            }
-            break
-        }
-      }
-    })
-
-    autobahn.open()
-
-    return () => {
-      unsubscribed = true
-      console.warn(LOG_NAME, 'Connection Unsubscribed')
-
-      // NOTE: It seems that once AutoBahn enters its automatic retry-loop, calling close does not stop it. While the service
-      //       remains unreachable, it will continue to attempt to connect until the connection has succeeded. Thus, there is
-      //       a race condition bug in AutoBahn.
-      autobahn.close()
-    }
-  })
+  )
 }

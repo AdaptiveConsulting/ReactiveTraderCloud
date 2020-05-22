@@ -17,7 +17,8 @@ const ResizableContent = styled.div`
   width: 100%;
 `
 
-const Bar = styled.div`
+const Bar = styled.div<{ show?: boolean }>`
+  display: ${({ show }) => (show ? 'block' : 'none')};
   background-color: ${({ theme }) => theme.core.textColor};
   box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
     0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
@@ -42,9 +43,16 @@ interface Props {
   minHeight?: number
   defaultHeight: number
   disabled?: boolean
+  isLiveRatesVisible?: boolean
 }
 
-const Resizer: React.FC<Props> = ({ component, defaultHeight, children, disabled }) => {
+const Resizer: React.FC<Props> = ({
+  component,
+  defaultHeight,
+  children,
+  disabled,
+  isLiveRatesVisible,
+}) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(defaultHeight)
   const [dragging, setDragging] = useState<Boolean>(false)
@@ -74,6 +82,15 @@ const Resizer: React.FC<Props> = ({ component, defaultHeight, children, disabled
 
     return () => setHeight(defaultHeight)
   }, [disabled, defaultHeight])
+
+  useEffect(() => {
+    if (!isLiveRatesVisible) {
+      setHeight(100)
+    }
+
+    return () => setHeight(height)
+    // eslint-disable-next-line
+  }, [isLiveRatesVisible])
 
   const handleStart = useCallback(() => setDragging(true), [setDragging])
 
@@ -105,12 +122,12 @@ const Resizer: React.FC<Props> = ({ component, defaultHeight, children, disabled
 
   return (
     <ResizerStyle ref={wrapperRef}>
-      <ResizableSection height={100 - height}>
+      <ResizableSection height={isLiveRatesVisible ? 100 - height : 0}>
         <ResizableContent>{children}</ResizableContent>
       </ResizableSection>
       <ResizableSection height={height}>
         <ResizableContent>
-          <Bar onMouseDown={handleStart} onTouchStart={handleStart} />
+          <Bar onMouseDown={handleStart} onTouchStart={handleStart} show={isLiveRatesVisible} />
           {component()}
         </ResizableContent>
       </ResizableSection>

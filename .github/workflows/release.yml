@@ -1,0 +1,17 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deployment
+        uses: chrnorm/deployment-action@releases/v1
+        with:
+          token: ${{ secrets.DEPLOY_TOKEN }}
+          environment: demo
+          target_url: 'https://web-demo.adaptivecluster.com'
+          ref: ${{ github.event.release.tag_name }}

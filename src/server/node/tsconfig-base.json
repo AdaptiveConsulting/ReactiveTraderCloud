@@ -7,9 +7,7 @@
     "strict": true,
     "esModuleInterop": true,
     "sourceMap": true,
-    "rootDir":  "."
+    "rootDir": "."
   },
-  "references": [
-    {"path": "shared"}
-  ]
+  "references": [{ "path": "shared" }]
 }

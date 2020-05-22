@@ -6,11 +6,9 @@ const selectState = (state: GlobalState) => state.connectionStatus
 
 const selectIsConnected = createSelector(
   [selectState],
-  state => state.status === ConnectionStatus.connected,
+  state => state.status === ConnectionStatus.connected
 )
 
 const selectUrl = createSelector([selectState], state => state.url)
 
-const selectTransportType = createSelector([selectState], state => state.transportType)
-
-export { selectIsConnected, selectUrl, selectTransportType }
+export { selectIsConnected, selectUrl }

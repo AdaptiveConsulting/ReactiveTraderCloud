@@ -11,7 +11,7 @@ namespace Adaptive.ReactiveTrader.Common.Config
     {
         private const string ConfigFolderName = "configs";
         private readonly IConfigurationRoot _config;
-        private readonly string[] searchPaths =
+        private readonly string[] _searchPaths =
         {
             Path.Combine(Directory.GetCurrentDirectory(), ConfigFolderName),
             Path.Combine(Directory.GetCurrentDirectory(), "..", ConfigFolderName),
@@ -24,7 +24,7 @@ namespace Adaptive.ReactiveTrader.Common.Config
 
         private ServiceConfiguration(string configFile)
         {
-            var physicalLocation = searchPaths.Select(p => Path.Combine(p, configFile))
+            var physicalLocation = _searchPaths.Select(p => Path.Combine(p, configFile))
                                               .FirstOrDefault(File.Exists);
 
             if (physicalLocation == null) throw new FileNotFoundException("Cannot find file config", configFile);

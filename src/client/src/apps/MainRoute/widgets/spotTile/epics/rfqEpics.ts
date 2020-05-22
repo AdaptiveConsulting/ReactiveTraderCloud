@@ -19,7 +19,7 @@ const {
   rfqReset,
   rfqRequote,
   setNotional,
-  setTradingMode,
+  setTradingMode
 } = SpotTileActions
 
 type RfqRequestActionType = ReturnType<typeof rfqRequest>
@@ -43,7 +43,7 @@ export const IDLE_TIME_MS = 60000
 const rfqService = (
   request: RfqRequest,
   currencyPairs: CurrencyPairState,
-  spotTilesData: SpotTileData,
+  spotTilesData: SpotTileData
 ): Observable<RfqReceived> => {
   const randomNumber = 0.3
   const { currencyPair, notional } = request
@@ -61,11 +61,11 @@ const rfqService = (
       price: {
         ...currentEspPrice,
         ask: ask + addSubNumber,
-        bid: bid - addSubNumber,
+        bid: bid - addSubNumber
       },
       time: Date.now(),
-      timeout: EXPIRATION_TIMEOUT_MS,
-    })),
+      timeout: EXPIRATION_TIMEOUT_MS
+    }))
   )
 }
 
@@ -78,19 +78,19 @@ export const rfqRequestEpic: ApplicationEpic<{}> = (action$, state$) =>
   action$.pipe(
     ofType<Action, RfqRequestActionType | RfqRequoteActionType>(
       TILE_ACTION_TYPES.RFQ_REQUEST,
-      TILE_ACTION_TYPES.RFQ_REQUOTE,
+      TILE_ACTION_TYPES.RFQ_REQUOTE
     ),
     filter(action => !!getSpotTilesDataByCurrency(action.payload.currencyPair, state$.value)),
     mergeMap(action => {
       const cancel$ = action$.pipe(
         ofType<Action, RfqCancelActionType | RfqRejectActionType>(
           TILE_ACTION_TYPES.RFQ_CANCEL,
-          TILE_ACTION_TYPES.RFQ_REJECT,
+          TILE_ACTION_TYPES.RFQ_REJECT
         ),
         filter(
           cancelAction =>
-            cancelAction.payload.currencyPair.symbol === action.payload.currencyPair.symbol,
-        ),
+            cancelAction.payload.currencyPair.symbol === action.payload.currencyPair.symbol
+        )
       )
 
       // TODO Subscribe to Pricing service instead of passing the current price
@@ -98,9 +98,9 @@ export const rfqRequestEpic: ApplicationEpic<{}> = (action$, state$) =>
       return rfqService(
         action.payload,
         state$.value.currencyPairs,
-        getSpotTilesDataByCurrency(action.payload.currencyPair, state$.value)!, // we know price exists since we filtered out that case upsteam
+        getSpotTilesDataByCurrency(action.payload.currencyPair, state$.value)! // we know price exists since we filtered out that case upsteam
       ).pipe(map(rfqReceived), takeUntil(cancel$))
-    }),
+    })
   )
 
 export const rfqReceivedEpic: ApplicationEpic<{}> = action$ =>
@@ -113,9 +113,9 @@ export const rfqReceivedEpic: ApplicationEpic<{}> = action$ =>
           TILE_ACTION_TYPES.RFQ_RESET,
           TILE_ACTION_TYPES.RFQ_CANCEL,
           TILE_ACTION_TYPES.RFQ_REQUEST,
-          TILE_ACTION_TYPES.RFQ_REQUOTE,
+          TILE_ACTION_TYPES.RFQ_REQUOTE
         ),
-        filter(cancelAction => cancelAction.payload.currencyPair.symbol === currencyPair.symbol),
+        filter(cancelAction => cancelAction.payload.currencyPair.symbol === currencyPair.symbol)
       )
 
       return concat(
@@ -125,16 +125,16 @@ export const rfqReceivedEpic: ApplicationEpic<{}> = action$ =>
             from([
               setNotional({
                 currencyPair: currencyPair.symbol,
-                notional: getDefaultNotionalValue(currencyPair),
+                notional: getDefaultNotionalValue(currencyPair)
               }),
               setTradingMode({
                 symbol: currencyPair.symbol,
-                mode: 'esp',
+                mode: 'esp'
               }),
-              rfqReset({ currencyPair }),
-            ]),
-          ),
-        ),
+              rfqReset({ currencyPair })
+            ])
+          )
+        )
       ).pipe(takeUntil(cancel$))
-    }),
+    })
   )

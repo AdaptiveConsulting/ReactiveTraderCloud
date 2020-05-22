@@ -21,10 +21,10 @@ const TileBookingSwitch: FC<Props> = ({
   currencyPair,
   hasUserError,
   rfq,
-  isAnalyticsView,
+  isAnalyticsView
 }) => {
   const { isRfqStateExpired, isRfqStateCanRequest, isRfqStateRequested } = getConstsFromRfqState(
-    rfqState,
+    rfqState
   )
 
   return (

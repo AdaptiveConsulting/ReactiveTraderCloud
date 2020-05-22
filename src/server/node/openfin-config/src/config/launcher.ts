@@ -5,7 +5,7 @@ import base from './base'
 /* eslint-disable @typescript-eslint/camelcase */
 export default (env: string): OpenFinApplicationConfiguration => {
   const baseConfig = base(env)
-  const name = `Reactive Ecosystem Launcher${env !== 'demo' ? ` (${env.toUpperCase()})` : ''}`
+  const name = `Reactive Launcher${env !== 'demo' ? ` (${env.toUpperCase()})` : ''}`
 
   return merge(baseConfig, {
     startup_app: {
@@ -20,8 +20,8 @@ export default (env: string): OpenFinApplicationConfiguration => {
       backgroundColor: '#313131',
       cornerRounding: {
         width: 4,
-        height: 4
-      },  
+        height: 4,
+      },
       permissions: {
         System: {
           launchExternalProcess: true,
@@ -32,8 +32,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
       shadow: true,
       frame: false,
       alwaysOnTop: true,
-      icon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
-      applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
+      applicationIcon: `https://web-${env}.adaptivecluster.com/static/media/adaptive-icon-256x256.png`,
       contextMenu: true,
       accelerator: {
         devtools: true,
@@ -48,7 +47,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
     },
     shortcut: {
       company: 'Adaptive Consulting',
-      icon: `https://web-${env}.adaptivecluster.com/static/media/launcher-icon.ico`,
+      icon: `https://web-${env}.adaptivecluster.com/static/media/adaptive.ico`,
       name,
     },
     appAssets: [
@@ -56,7 +55,7 @@ export default (env: string): OpenFinApplicationConfiguration => {
         src: `https://web-${env}.adaptivecluster.com/plugin/add-in.zip`,
         alias: 'excel-api-addin',
         version: '2.0.0',
-        forceDownload: true
+        forceDownload: true,
       },
       {
         src: `https://web-${env}.adaptivecluster.com/plugin/LimitChecker.zip`,

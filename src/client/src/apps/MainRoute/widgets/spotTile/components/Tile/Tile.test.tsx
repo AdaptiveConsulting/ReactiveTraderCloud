@@ -115,7 +115,7 @@ test('Snapshot, state derived from props, RFQ received', () => {
         mid: 1.48357,
         priceMovementType: 'Down' as PriceMovementTypes,
         symbol: 'EURCAD',
-        valueDate: '2019-04-07T00:00:00Z',
+        valueDate: '2019-04-06T00:00:00Z',
       },
     },
   }
@@ -150,7 +150,7 @@ test('Snapshot, state derived from props, RFQ expired', () => {
         mid: 1.48357,
         priceMovementType: 'Down' as PriceMovementTypes,
         symbol: 'EURCAD',
-        valueDate: '2019-04-07T00:00:00Z',
+        valueDate: '2019-04-06T00:00:00Z',
       },
     },
   }

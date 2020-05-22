@@ -8,16 +8,18 @@
   "main": "src/index.js",
   "types": "src/index.js",
   "dependencies": {
-    "autobahn": "^18.10.2",
+    "@stomp/rx-stomp": "^0.3.4",
+    "bufferutil": "^4.0.1",
     "rxjs": "^6.5.3",
-    "winston": "^3.2.1"
+    "utf-8-validate": "^5.0.2",
+    "winston": "^3.2.1",
+    "ws": "^7.2.3"
   },
   "scripts": {
     "precommit": "lint-staged",
     "lint": "eslint --ext .ts ./src"
   },
   "devDependencies": {
-    "@types/autobahn": "^0.9.42",
     "@types/node": "^12.7.12"
   }
 }

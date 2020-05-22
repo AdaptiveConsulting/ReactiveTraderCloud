@@ -44,16 +44,19 @@ export default class PricingService {
         }),
         debounceWithSelector<SpotPriceTick>(MS_FOR_LAST_PRICE_TO_BECOME_STALE, item => ({
           ...item,
-          priceStale: true,
+          priceStale: true
         })),
-        share(),
+        share()
       )
   }
 
   getSpotPriceStream(request: Request) {
     const { symbol } = request
     if (!this.cachedSpotStreamBySymbol.has(symbol)) {
-      this.cachedSpotStreamBySymbol.set(symbol, PricingService.createSpotPriceStream(this.serviceClient, request))
+      this.cachedSpotStreamBySymbol.set(
+        symbol,
+        PricingService.createSpotPriceStream(this.serviceClient, request)
+      )
     }
     return this.cachedSpotStreamBySymbol.get(symbol)!
   }
@@ -75,6 +78,6 @@ function adaptDTO(dto: RawPrice): SpotPriceTick {
     mid: dto.Mid,
     creationTimestamp: dto.CreationTimestamp,
     symbol: dto.Symbol,
-    valueDate: dto.ValueDate,
+    valueDate: dto.ValueDate
   }
 }

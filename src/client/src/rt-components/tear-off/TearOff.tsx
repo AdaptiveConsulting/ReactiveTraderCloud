@@ -80,16 +80,16 @@ const TearOff: React.FC<TearOffProps> = ({ render, externalWindowProps, tornOff,
           name: windowName,
           display: false,
           x: popOutX,
-          y: popOutY,
-        }),
+          y: popOutY
+        })
       )
     },
-    [windowName, dispatch],
+    [windowName, dispatch]
   )
   const popIn = useCallback(
     () =>
       dispatch(LayoutActions.updateContainerVisibilityAction({ name: windowName, display: true })),
-    [windowName, dispatch],
+    [windowName, dispatch]
   )
 
   const onMouseDownCapture = (event: React.MouseEvent<HTMLDivElement>) => {

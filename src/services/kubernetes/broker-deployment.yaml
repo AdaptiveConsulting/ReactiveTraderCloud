@@ -16,4 +16,6 @@ spec:
         - name: broker
           image: reactivetradercloud/broker:${BUILD_VERSION}
           ports:
-            - containerPort: 8000
+            - containerPort: 5672
+            - containerPort: 15672
+            - containerPort: 15674

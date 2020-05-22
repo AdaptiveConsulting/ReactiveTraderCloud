@@ -5,9 +5,9 @@
   "main": "lib/index",
   "types": "lib/index",
   "scripts": {
-    "start:dev": "npm run build:live",
-    "start": "cross-env NODE_ENV=production node lib/index.js",
-    "build": "cross-env NODE_ENV=production tsc -p .",
+    "start:dev": "nodemon --watch 'src/**/*.ts' --exec \"node -r ts-node/register -r tsconfig-paths/register --inspect\" src/index.ts",
+    "start": "node dist/index.js",
+    "build": "webpack",
     "build:live": "nodemon --watch 'src/**/*.ts' --exec 'node -r ts-node/register --inspect' src/index.ts",
     "prettier:base": "prettier --parser typescript --single-quote",
     "prettier:check": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
@@ -35,7 +35,7 @@
   "author": "Bhavesh Desai",
   "license": "MIT",
   "devDependencies": {
-    "autobahn": "^18.10.2",
+    "copy-webpack-plugin": "^5.1.0",
     "cross-env": "^5.2.0",
     "husky": "^1.3.1",
     "jest": "^24.1.0",
@@ -43,13 +43,16 @@
     "nodemon": "^1.18.10",
     "prettier": "1.16.4",
     "ts-jest": "^23.10.5",
+    "ts-loader": "^6.2.1",
     "ts-node": "^8.0.2",
+    "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
     "tslint": "^5.13.0",
     "typescript": "^3.3.3",
-    "ws": "^3.3.3"
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
   },
   "dependencies": {
-    "@types/autobahn": "^0.9.42",
     "@types/debug": "^4.1.2",
     "@types/dotenv": "^6.1.0",
     "@types/jest": "^24.0.4",

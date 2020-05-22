@@ -21,7 +21,7 @@ function mapFromDto(dto: RawTradeUpdate): TradesUpdate {
   return {
     trades,
     isStateOfTheWorld: dto.IsStateOfTheWorld,
-    isStale: dto.IsStale,
+    isStale: dto.IsStale
   }
 }
 
@@ -30,9 +30,11 @@ export default class BlotterService {
 
   getTradesStream() {
     console.info(LOG_NAME, 'Subscribing to blotter stream')
-    return this.serviceClient.createStreamOperation<RawTradeUpdate>('blotter', 'getTradesStream', {}).pipe(
-      retryWhen(retryWithBackOff()),
-      map(dto => mapFromDto(dto)),
-    )
+    return this.serviceClient
+      .createStreamOperation<RawTradeUpdate>('blotter', 'getTradesStream', {})
+      .pipe(
+        retryWhen(retryWithBackOff()),
+        map(dto => mapFromDto(dto))
+      )
   }
 }

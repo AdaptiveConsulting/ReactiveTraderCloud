@@ -1,1 +1,1 @@
-export type NlpIntentRequest = [{ payload: string }];
+export type NlpIntentRequest = { payload: string }

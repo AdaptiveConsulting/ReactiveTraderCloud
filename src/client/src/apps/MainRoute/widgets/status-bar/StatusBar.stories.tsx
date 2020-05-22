@@ -7,7 +7,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 
 import { Story } from 'rt-storybook'
-import { ConnectionStatus, ConnectionStatusType, ConnectionType } from 'rt-system'
+import { ConnectionStatus, ConnectionStatusType } from 'rt-system'
 import { styled } from 'rt-theme'
 
 import { ServiceConnectionStatus } from 'rt-types'
@@ -18,32 +18,31 @@ const stories = storiesOf('Status Bar', module)
 stories.addDecorator(withKnobs)
 const generateConnectionStatus = (status: ConnectionStatusType) => ({
   status,
-  url: 'wss://web-demo.adaptivecluster.com:443/ws',
-  transportType: 'websocket' as ConnectionType,
+  url: 'wss://web-demo.adaptivecluster.com:443/ws'
 })
 
 const generateServiceStatuses = (status: ServiceConnectionStatus) =>
   ['blotter', 'reference', 'execution', 'pricing', 'analytics'].map(serviceType => ({
     serviceType,
     connectionStatus: status,
-    connectedInstanceCount: 1,
+    connectedInstanceCount: 1
   }))
 
 const connectionState = {
   connected: {
     status: generateConnectionStatus(ConnectionStatus.connected),
-    services: generateServiceStatuses(ServiceConnectionStatus.CONNECTED),
+    services: generateServiceStatuses(ServiceConnectionStatus.CONNECTED)
   },
 
   disconnected: {
     status: generateConnectionStatus(ConnectionStatus.disconnected),
-    services: generateServiceStatuses(ServiceConnectionStatus.DISCONNECTED),
+    services: generateServiceStatuses(ServiceConnectionStatus.DISCONNECTED)
   },
 
   connecting: {
     status: generateConnectionStatus(ConnectionStatus.connected),
-    services: generateServiceStatuses(ServiceConnectionStatus.CONNECTING),
-  },
+    services: generateServiceStatuses(ServiceConnectionStatus.CONNECTING)
+  }
 }
 
 Object.entries(connectionState).forEach(([key, state]) =>
@@ -55,7 +54,7 @@ Object.entries(connectionState).forEach(([key, state]) =>
         </StatusBar>
       </Root>
     )
-  }),
+  })
 )
 
 const Centered = styled('div')`

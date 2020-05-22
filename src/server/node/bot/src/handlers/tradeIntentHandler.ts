@@ -25,7 +25,7 @@ export const tradeMessageHandler: Handler = (symphony, { intentsFromDF$ }, { tra
       trades.forEach(trade => acc.set(trade.TradeId, trade))
       return acc
     }, new Map<number, Trade>()),
-    map(trades => Array.from(trades.values()).reverse()),
+    map(trades => Array.from(trades.values()).reverse())
   )
 
   const subscription$ = intentsFromDF$
@@ -52,10 +52,15 @@ export const tradeMessageHandler: Handler = (symphony, { intentsFromDF$ }, { tra
 
         filteredTrades = filteredTrades.slice(0, count)
 
-        const label = `Here are your last ${count} ${field || ''} trades as of ${formatDateTime(new Date())}`
+        const label = `Here are your last ${count} ${field || ''} trades as of ${formatDateTime(
+          new Date()
+        )}`
 
-        return symphony.sendMessage(request.originalMessage.stream.streamId, tradeUpdateMessage(filteredTrades, label))
-      }),
+        return symphony.sendMessage(
+          request.originalMessage.stream.streamId,
+          tradeUpdateMessage(filteredTrades, label)
+        )
+      })
     )
     .subscribe(
       value => {
@@ -63,7 +68,7 @@ export const tradeMessageHandler: Handler = (symphony, { intentsFromDF$ }, { tra
       },
       error => {
         logger.error('Error processing trade reply', error)
-      },
+      }
     )
 
   return () => {

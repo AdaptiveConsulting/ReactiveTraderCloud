@@ -1,7 +1,7 @@
-const path = require('path');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const webpack = require('webpack');
-const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const webpack = require('webpack')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -14,14 +14,14 @@ module.exports = {
         test: /\.ts?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      }
+      },
     ],
   },
   resolve: {
     extensions: ['.ts', '.js', '.json'],
     plugins: [new TsconfigPathsPlugin()],
     alias: {
-      'rxjs': path.resolve(path.join(__dirname, 'node_modules', 'rxjs'))
+      rxjs: path.resolve(path.join(__dirname, 'node_modules', 'rxjs')),
     },
   },
   output: {
@@ -30,15 +30,23 @@ module.exports = {
   },
   plugins: [
     new webpack.IgnorePlugin({
-      resourceRegExp: /vertx/
+      resourceRegExp: /vertx/,
     }),
     new CopyPlugin([
-      { from:  path.resolve(path.join(__dirname, 'node_modules', 'protobufjs', 'google', 'protobuf')), to: path.join(__dirname, '../protos')},
-      { from:  path.resolve(path.join(__dirname, 'node_modules', 'dialogflow', 'protos')), to: path.join(__dirname, '../protos')},
+      {
+        from: path.resolve(
+          path.join(__dirname, 'node_modules', 'protobufjs', 'google', 'protobuf')
+        ),
+        to: path.join(__dirname, '../protos'),
+      },
+      {
+        from: path.resolve(path.join(__dirname, 'node_modules', 'dialogflow', 'protos')),
+        to: path.join(__dirname, '../protos'),
+      },
     ]),
   ],
   node: {
     __filename: false,
-    __dirname: false
-  }
-};
+    __dirname: false,
+  },
+}

@@ -58,11 +58,6 @@ namespace Adaptive.ReactiveTrader.Server.Host
                 Reset.Set();
             };
 
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .WriteTo.ColoredConsole()
-                .CreateLogger();
-
             try
             {
                 using (var connectionFactory = BrokerConnectionFactory.Create(Config.Broker))

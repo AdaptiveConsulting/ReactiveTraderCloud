@@ -11,44 +11,53 @@ export interface ExecuteTradeRequest extends Object {
 
 export interface TradeSuccessResponse {
   hasError: false
+  hasWarning: false
   trade: Trade
   request: ExecuteTradeRequest
 }
 
 export interface TradeErrorResponse {
   hasError: true
+  hasWarning: false
   error: string
   request: ExecuteTradeRequest
 }
 
-export function tradeSuccesful(response: ExecuteTradeResponse): response is TradeSuccessResponse {
-  return !response.hasError
+export interface TradeWarningResponse {
+  hasError: false
+  hasWarning: true
+  warning: string
+  request: ExecuteTradeRequest
 }
 
-export function tradeError(response: ExecuteTradeResponse): response is TradeErrorResponse {
-  return response.hasError
-}
+export type ExecuteTradeResponse = TradeErrorResponse | TradeSuccessResponse | TradeWarningResponse
 
-export type ExecuteTradeResponse = TradeErrorResponse | TradeSuccessResponse
+export const createExecuteTradeResponseForWarning = (
+  warning: string,
+  request: ExecuteTradeRequest
+): TradeWarningResponse => ({
+  warning,
+  request,
+  hasError: false,
+  hasWarning: true
+})
 
-export function createExecuteTradeResponseForError(
+export const createExecuteTradeResponseForError = (
   error: string,
-  request: ExecuteTradeRequest,
-): TradeErrorResponse {
-  return {
-    error,
-    request,
-    hasError: true,
-  }
-}
+  request: ExecuteTradeRequest
+): TradeErrorResponse => ({
+  error,
+  request,
+  hasError: true,
+  hasWarning: false
+})
 
-export function createExecuteTradeResponse(
+export const createExecuteTradeResponse = (
   trade: Trade,
-  request: ExecuteTradeRequest,
-): TradeSuccessResponse {
-  return {
-    trade,
-    hasError: false,
-    request,
-  }
-}
+  request: ExecuteTradeRequest
+): TradeSuccessResponse => ({
+  trade,
+  request,
+  hasError: false,
+  hasWarning: false
+})

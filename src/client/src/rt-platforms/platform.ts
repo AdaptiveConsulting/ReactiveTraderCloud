@@ -54,7 +54,7 @@ export type Platform = Partial<PlatformFeatures> & {
  */
 export function platformHasFeature<FeatureName extends keyof PlatformFeatures>(
   platform: Platform,
-  feature: FeatureName,
+  feature: FeatureName
 ): platform is Platform & Pick<PlatformFeatures, FeatureName> {
   return !!(platform as any)[feature]
 }

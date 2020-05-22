@@ -4,7 +4,6 @@ import { styled } from 'rt-theme'
 import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'
-
 const Header: React.FC = ({ children }) => {
   const onLogoClick = useCallback(() => {
     ReactGA.event({
@@ -18,20 +17,24 @@ const Header: React.FC = ({ children }) => {
 
   return (
     <Root>
-      <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
-      <Fill>Reactive Trader</Fill>
-      <LoginControls />
-      <ThemeSwitcher />
-
-      {children == null ? null : (
-        <React.Fragment>
-          <Division />
-          {children}
-        </React.Fragment>
-      )}
+      <LogoWrapper>
+        <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
+      </LogoWrapper>
+      <Fill />
+      <HeaderNav>
+        <LoginControls />
+        <ThemeSwitcher />
+        {children == null ? null : <React.Fragment>{children}</React.Fragment>}
+      </HeaderNav>
     </Root>
   )
 }
+
+const LogoWrapper = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`
 
 const Root = styled.div`
   width: calc(100% - 2rem);
@@ -43,16 +46,22 @@ const Root = styled.div`
   margin: 0.25rem 1rem;
 
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
   background-color: ${({ theme }) => theme.core.darkBackground};
-  border-bottom: 1px solid ${({ theme }) => theme.core.lightBackground};
+  border-bottom: 1px solid ${({ theme }) => theme.core.dividerColor};
   color: ${({ theme }) => theme.core.textColor};
 
   position: relative;
   z-index: 10;
 
   box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
+`
+
+const HeaderNav = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `
 
 const Fill = styled.div`
@@ -71,24 +80,6 @@ const Fill = styled.div`
   */
   -webkit-app-region: drag;
   cursor: -webkit-grab;
-`
-
-const Division = styled.div`
-  height: 100%;
-  padding: 0 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &::before {
-    content: '';
-    display: block;
-    width: 0.125rem;
-    height: 100%;
-    margin-right: -0.125rem;
-    background-color: ${props => props.theme.secondary.base};
-  }
 `
 
 export default Header

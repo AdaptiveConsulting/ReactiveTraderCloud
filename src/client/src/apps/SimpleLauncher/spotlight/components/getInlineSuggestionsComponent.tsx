@@ -8,6 +8,7 @@ import {
   handleIntent,
   isSpotQuoteIntent,
   isTradeIntent,
+  isMarketIntent,
   mapIntent,
 } from 'rt-interop'
 import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from 'apps/MainRoute'
@@ -20,12 +21,21 @@ import {
   IntentActionWrapper,
 } from './styles'
 import { InlineBlotter } from './InlineBlotter'
-import { InlineQuote } from './InlineQuote'
-import Logo from 'apps/MainRoute/components/app-header/Logo'
+import { InlineQuoteTable } from './InlineQuote'
+import { InlineMarketResults } from './InlineMarketResults'
 import { appConfigs } from '../../applicationConfigurations'
 import { open } from '../../tools'
 
+import { reactiveTraderIcon } from 'apps/SimpleLauncher/icons'
+import styled from 'styled-components'
+
 const RTC_CONFIG = appConfigs[0]
+
+const PlatformLogoWrapper = styled.div`
+  svg {
+    fill: #ffffff;
+  }
+`
 
 export function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: Platform) {
   const currencyPair = getCurrencyPair(response.queryResult)
@@ -35,7 +45,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
   const quoteSuggestion =
     isSpotQuoteIntent(response) && currencyPair ? (
       <Suggestion>
-        <InlineQuote currencyPair={currencyPair} />
+        <InlineQuoteTable currencyPair={currencyPair} />
       </Suggestion>
     ) : null
 
@@ -50,7 +60,13 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
     </Suggestion>
   ) : null
 
-  const otherSuggestion = !quoteSuggestion && !blotterSuggestion && (
+  const marketSuggestion = isMarketIntent(response) ? (
+    <Suggestion>
+      <InlineMarketResults />
+    </Suggestion>
+  ) : null
+
+  const otherSuggestion = !quoteSuggestion && !blotterSuggestion && !isMarketIntent && (
     <Suggestion>
       <Intent>{intent}</Intent>
     </Suggestion>
@@ -65,7 +81,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
       <IntentActions>
         <IntentActionWrapper>
           <LogoWrapper>
-            <Logo size={1.5} withText={false} />
+            <PlatformLogoWrapper>{reactiveTraderIcon}</PlatformLogoWrapper>
           </LogoWrapper>
           <span>Reactive Trader</span>
         </IntentActionWrapper>
@@ -80,6 +96,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
       </IntentActions>
       {quoteSuggestion}
       {blotterSuggestion}
+      {marketSuggestion}
       {otherSuggestion}
     </IntentWrapper>
   )

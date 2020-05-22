@@ -12,7 +12,7 @@ interface Props {
 }
 
 const hasNotification = (tradeStatus: LastTradeExecutionStatus) =>
-  tradeStatus.hasError || tradeStatus.trade
+  tradeStatus.hasWarning || tradeStatus.hasError || tradeStatus.trade
 
 export default class NotificationContainer extends PureComponent<Props> {
   render() {
@@ -33,10 +33,17 @@ export default class NotificationContainer extends PureComponent<Props> {
     if (!lastTradeExecutionStatus || !hasNotification(lastTradeExecutionStatus)) {
       return () => null
     }
-    if (lastTradeExecutionStatus.hasError) {
+
+    if (lastTradeExecutionStatus.hasError || lastTradeExecutionStatus.hasWarning) {
+      const isError = lastTradeExecutionStatus.hasError
+
       return (style: React.CSSProperties) => (
-        <TileNotification style={style} symbols={symbols} type={NotificationType.Warning}>
-          {lastTradeExecutionStatus.error}
+        <TileNotification
+          style={style}
+          symbols={symbols}
+          type={isError ? NotificationType.Error : NotificationType.Warning}
+        >
+          {isError ? lastTradeExecutionStatus.error : lastTradeExecutionStatus.warning}
         </TileNotification>
       )
     }

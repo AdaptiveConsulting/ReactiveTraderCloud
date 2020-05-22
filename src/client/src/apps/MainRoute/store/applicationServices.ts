@@ -1,13 +1,12 @@
 import {
-  AutobahnConnection,
-  createConnection$,
-  ServiceStubWithLoadBalancer,
+  WsConnection,
+  connectionStream$,
   serviceStatusStream$,
-  ServiceStub,
-  ConnectionEvent,
+  ConnectionInfo,
   ServiceCollectionMap,
   retryWithBackOff,
   RawServiceStatus,
+  ServiceClient
 } from 'rt-system'
 import { User } from 'rt-types'
 import { ReplaySubject } from 'rxjs'
@@ -17,7 +16,7 @@ import { LimitChecker, ExcelApp, Platform } from 'rt-platforms'
 const HEARTBEAT_TIMEOUT = 3000
 
 export interface ApplicationProps {
-  autobahn: AutobahnConnection
+  broker: WsConnection
   platform: Platform
   limitChecker: LimitChecker
   excelApp: ExcelApp
@@ -25,42 +24,40 @@ export interface ApplicationProps {
 }
 
 export function createApplicationServices({
-  autobahn,
+  broker,
   limitChecker,
   excelApp,
   user,
-  platform,
+  platform
 }: ApplicationProps) {
-  const connection$ = createConnection$(autobahn).pipe(
+  const connection$ = connectionStream$(broker).pipe(
     retryWhen(retryWithBackOff()),
     multicast(() => {
-      return new ReplaySubject<ConnectionEvent>(1)
+      return new ReplaySubject<ConnectionInfo>(1)
     }),
-    refCount(),
+    refCount()
   )
 
-  const serviceStub = new ServiceStub(user.code, connection$)
+  const serviceClient = new ServiceClient(user.code, broker)
 
-  const statusUpdates$ = serviceStub.subscribeToTopic<RawServiceStatus>('status')
+  const statusUpdates$ = serviceClient.subscribeToTopic<RawServiceStatus>('status')
   const serviceStatus$ = serviceStatusStream$(statusUpdates$, HEARTBEAT_TIMEOUT).pipe(
     multicast(() => {
       return new ReplaySubject<ServiceCollectionMap>(1)
     }),
-    refCount(),
+    refCount()
   )
 
-  const loadBalancedServiceStub = new ServiceStubWithLoadBalancer(serviceStub, serviceStatus$)
-
-  const referenceDataService$ = referenceDataService(loadBalancedServiceStub)
+  const referenceDataService$ = referenceDataService(serviceClient)
 
   return {
     referenceDataService$,
     platform,
     limitChecker,
     excelApp,
-    loadBalancedServiceStub,
+    serviceClient,
     serviceStatus$,
-    connection$,
+    connection$
   }
 }
 

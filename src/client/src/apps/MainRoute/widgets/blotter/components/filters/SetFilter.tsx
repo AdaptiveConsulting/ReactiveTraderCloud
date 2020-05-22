@@ -4,7 +4,7 @@ import {
   Column,
   GridApi,
   ProcessRowParams,
-  RowNode,
+  RowNode
 } from 'ag-grid-community'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -32,7 +32,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
   state = {
     text: '',
     selectedFreeText: '',
-    selectedValueSet: { [ALL]: true },
+    selectedValueSet: { [ALL]: true }
   }
 
   componentDidMount() {
@@ -42,7 +42,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
         resultObj[value] = true
         return resultObj
       },
-      { [ALL]: true },
+      { [ALL]: true }
     )
 
     this.setState({ selectedValueSet: initialSelection })
@@ -127,7 +127,7 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     })
 
     this.setState({ selectedFreeText: newValue, selectedValueSet: setFilterOptions }, () =>
-      this.updateFilter(),
+      this.updateFilter()
     )
   }
 
@@ -158,11 +158,11 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     if (!this.isListSelectionModified()) {
       this.setState(
         {
-          text: '',
+          text: ''
         },
         () => {
           this.props.filterChangedCallback()
-        },
+        }
       )
       return
     }
@@ -179,11 +179,11 @@ export default class SetFilter extends React.Component<SetFilterProps, SetFilter
     const newFilterText = newSelectedValueSet.join(' ')
     this.setState(
       {
-        text: newFilterText,
+        text: newFilterText
       },
       () => {
         this.props.filterChangedCallback()
-      },
+      }
     )
   }
 

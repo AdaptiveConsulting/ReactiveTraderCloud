@@ -29,7 +29,9 @@ const directionLabelStyle: React.CSSProperties = {
   color: SECODARY_TEXT_COLOR,
 }
 
-const DirectionLabel: FC<{ label: string }> = ({ label }) => <span style={directionLabelStyle}>{label}</span>
+const DirectionLabel: FC<{ label: string }> = ({ label }) => (
+  <span style={directionLabelStyle}>{label}</span>
+)
 
 const ccyPairStyle: React.CSSProperties = {
   backgroundColor: TILE_COLOR,
@@ -114,4 +116,5 @@ const PriceMessage: FC<{ price: Price }> = ({ price }) => {
   )
 }
 
-export const createPriceMessage = (price: Price) => renderToStaticMarkup(<PriceMessage price={price} />)
+export const createPriceMessage = (price: Price) =>
+  renderToStaticMarkup(<PriceMessage price={price} />)

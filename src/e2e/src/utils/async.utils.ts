@@ -6,7 +6,7 @@ export function wait(ms: number): Promise<void> {
 
 export async function mapAsync<TIn, TOut>(
   items: TIn[],
-  mapper: (item: TIn, index?: number) => Promise<TOut>,
+  mapper: (item: TIn, index?: number) => Promise<TOut>
 ): Promise<TOut[]> {
   const results: TOut[] = []
 
@@ -19,7 +19,10 @@ export async function mapAsync<TIn, TOut>(
   return results
 }
 
-export async function findAsync<T>(items: T[], predicate: (item: T, index?: number) => Promise<boolean>): Promise<T> {
+export async function findAsync<T>(
+  items: T[],
+  predicate: (item: T, index?: number) => Promise<boolean>
+): Promise<T> {
   for (let i = 0; i < items.length; i++) {
     const item = items[i]
     const matches = await predicate(item, i)

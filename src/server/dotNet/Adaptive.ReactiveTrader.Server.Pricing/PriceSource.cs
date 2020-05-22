@@ -17,17 +17,15 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     public const int HourlyMarketRateUpdateFrequency = 1;
 
     private static readonly Random Random = new Random();
-    private static readonly Dictionary<string, IPriceGenerator> _priceGenerators;
+    private static readonly Dictionary<string, IPriceGenerator> PriceGenerators;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
-    private readonly Timer _priceWalkTimer;
-    private readonly Timer _marketRatesTimer;
     private readonly List<IMarketDataAdapter> _marketAdapters = new List<IMarketDataAdapter>();
 
     private DateTime _lastMarketUpdate = GetThisHour().AddHours(-2);
 
     static PriceSource()
     {
-      _priceGenerators = (new[] {
+      PriceGenerators = (new[] {
             CreatePriceGenerator("EUR","USD", 1.09443m, 5),
             CreatePriceGenerator("USD","JPY", 121.656m, 3),
             CreatePriceGenerator("GBP","USD", 1.51746m, 5),
@@ -59,22 +57,20 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
       _marketAdapters.Add(new FinancialModelingPrepAdapter());
       _marketAdapters.Add(new YahooFinanceCurrencyAdapter());
 
-      var keys = _priceGenerators.Keys.ToArray();
-      _priceWalkTimer = new Timer();
-      _priceWalkTimer.Interval = 50;
-      _priceWalkTimer.Elapsed += delegate (object sender, ElapsedEventArgs e) { _priceGenerators[keys[Random.Next(_priceGenerators.Count)]].UpdateWalkPrice(); };
-      _disposables.Add(_priceWalkTimer);
+      var keys = PriceGenerators.Keys.ToArray();
+      var priceWalkTimer = new Timer {Interval = 50};
+      priceWalkTimer.Elapsed += delegate { PriceGenerators[keys[Random.Next(PriceGenerators.Count)]].UpdateWalkPrice(); };
+      _disposables.Add(priceWalkTimer);
 
-      _marketRatesTimer = new Timer();
-      _marketRatesTimer.Interval = 1000;
-      _marketRatesTimer.Elapsed += async delegate (object sender, ElapsedEventArgs e)
+      var marketRatesTimer = new Timer {Interval = 1000};
+      marketRatesTimer.Elapsed += async delegate
       {
         var now = GetThisHour();
         if ((now - _lastMarketUpdate).TotalHours > HourlyMarketRateUpdateFrequency)
         {
           try
           {
-            _marketRatesTimer.Enabled = false;
+            marketRatesTimer.Enabled = false;
             await RefreshMarketRates(now);
             Log.Information("Market Rates update succeeded");
           }
@@ -84,14 +80,14 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
           }
           finally
           {
-            _marketRatesTimer.Enabled = true;
+            marketRatesTimer.Enabled = true;
           }
         }
       };
-      _disposables.Add(_marketRatesTimer);
+      _disposables.Add(marketRatesTimer);
 
-      _priceWalkTimer.Enabled = true;
-      _marketRatesTimer.Enabled = true;
+      priceWalkTimer.Enabled = true;
+      marketRatesTimer.Enabled = true;
     }
 
     public void Dispose()
@@ -115,7 +111,7 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
           {
             //Any item older than 10 minutes is considered available to update, this way if the preceeding adapters did not update the rate then perhaps the next adapter will
             if (
-              _priceGenerators.TryGetValue(item.CurrencyPair.Symbol, out IPriceGenerator priceGenerator) &&
+              PriceGenerators.TryGetValue(item.CurrencyPair.Symbol, out IPriceGenerator priceGenerator) &&
               (DateTime.UtcNow - priceGenerator.EffectiveDate).TotalMinutes > 10)
             {
               priceGenerator.UpdateInitialValue(item.SampleRate, item.Date, item.Source);
@@ -136,10 +132,10 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
     /// </summary>
     private void ComputeMissingReciprocals()
     {
-      var missing = _priceGenerators.Values.Where(x => x.SourceName == HardCodedSourceName || x.SourceName.Contains("1/")).ToArray();
+      var missing = PriceGenerators.Values.Where(x => x.SourceName == HardCodedSourceName || x.SourceName.Contains("1/")).ToArray();
       foreach (var item in missing)
       {
-        if (_priceGenerators.TryGetValue(item.CurrencyPair.ReciprocalSymbol, out IPriceGenerator other) && other.SourceName != HardCodedSourceName)
+        if (PriceGenerators.TryGetValue(item.CurrencyPair.ReciprocalSymbol, out IPriceGenerator other) && other.SourceName != HardCodedSourceName)
         {
           item.UpdateInitialValue(1m / other.SampleRate, other.EffectiveDate, $"1/ {other.SourceName}");
         }
@@ -149,16 +145,16 @@ namespace Adaptive.ReactiveTrader.Server.Pricing
 
     public IObservable<SpotPriceDto> GetPriceStream(string symbol)
     {
-      return _priceGenerators[symbol].PriceChanges;
+      return PriceGenerators[symbol].PriceChanges;
     }
 
     public IObservable<SpotPriceDto> GetAllPricesStream()
     {
-      return _priceGenerators.Values.Select(x => x.PriceChanges).Merge();
+      return PriceGenerators.Values.Select(x => x.PriceChanges).Merge();
     }
 
-    public static IEnumerable<string> GetAllBaseCurrencies() => _priceGenerators.Values.Select(x => x.CurrencyPair.BaseCcy).Distinct();
-    public static IEnumerable<string> GetAllQuoteCurrencies(string forBaseCcy) => _priceGenerators.Values
+    public static IEnumerable<string> GetAllBaseCurrencies() => PriceGenerators.Values.Select(x => x.CurrencyPair.BaseCcy).Distinct();
+    public static IEnumerable<string> GetAllQuoteCurrencies(string forBaseCcy) => PriceGenerators.Values
       .Where(x=>x.CurrencyPair.BaseCcy == forBaseCcy)
       .Select(x => x.CurrencyPair.QuoteCcy).Distinct();
 

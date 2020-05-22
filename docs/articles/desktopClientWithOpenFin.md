@@ -36,6 +36,5 @@ The `-l` argument launches OpenFin in addition to updating `app.json` and creati
 You may find you need to clear up the OpenFin cache, which includes localStorage and app window sizes and positions of tear-offs.
 Cache can be deleted manually by removing files from these folders:
 
- - For Windows Vista, 7, or 8: `%LOCALAPPDATA%\OpenFin\cache`
- - For Windows XP: `\Local Settings\Application Data\OpenFin\cache`
-
+- For Windows Vista, 7, or 8: `%LOCALAPPDATA%\OpenFin\cache`
+- For Windows XP: `\Local Settings\Application Data\OpenFin\cache`

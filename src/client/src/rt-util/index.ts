@@ -8,11 +8,10 @@ export {
   clearNotionalsOnStorage,
 } from './stateStorageHelper'
 export { wait, getDeferredPromise } from './asyncUtils'
-export { useForceUpdate } from './hooks/useForceUpdate'
-export { useMultiTimeout } from './hooks/useMultiTimeout'
-export { useWindowSize } from './hooks/useWindowSize'
+export { useForceUpdate, useMultiTimeout, useWindowSize, usePopUpMenu } from './hooks'
 export { waitForObject } from './waitForObject'
 export { getEnvironment } from './getEnvironment'
+export { getAppName } from './getAppName'
 export { currencyFormatter } from './url-utils'
 export type ActionUnion<A extends ActionCreatorsMapObject> = actionHelper.ActionUnion<A>
 export type Extends<T, U extends T> = utilityTypes.Extends<T, U>

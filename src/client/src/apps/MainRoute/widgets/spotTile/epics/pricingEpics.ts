@@ -13,7 +13,7 @@ const {
   priceUpdateAction,
   subscribeToSpotTile,
   priceHistoryReceived,
-  unsubscribeToSpotTile,
+  unsubscribeToSpotTile
 } = SpotTileActions
 
 type SubscribeToSpotTileAction = ReturnType<typeof subscribeToSpotTile>
@@ -21,49 +21,41 @@ type UnsubscribeToSpotTileAction = ReturnType<typeof unsubscribeToSpotTile>
 
 const takePriceUpdatesUntil = (
   action$: ActionsObservable<Action>,
-  currencyPair: string,
+  currencyPair: string
 ): MonoTypeOperatorFunction<Action> =>
   takeUntil(
     merge(
       action$.pipe(ofType<Action, DisconnectAction>(CONNECTION_ACTION_TYPES.DISCONNECT_SERVICES)),
       action$.pipe(
         ofType<Action, UnsubscribeToSpotTileAction>(TILE_ACTION_TYPES.SPOT_TILE_UNSUBSCRIBE),
-        filter(({ payload }) => payload === currencyPair),
-      ),
-    ),
+        filter(({ payload }) => payload === currencyPair)
+      )
+    )
   )
 
-export const pricingServiceEpic: ApplicationEpic = (
-  action$,
-  _state$,
-  { loadBalancedServiceStub },
-) => {
-  const pricingService = new PricingService(loadBalancedServiceStub)
+export const pricingServiceEpic: ApplicationEpic = (action$, _state$, { serviceClient }) => {
+  const pricingService = new PricingService(serviceClient)
 
   return action$.pipe(
     ofType<Action, SubscribeToSpotTileAction>(TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE),
     mergeMap((action: SubscribeToSpotTileAction) =>
       pricingService
         .getSpotPriceStream({
-          symbol: action.payload,
+          symbol: action.payload
         })
-        .pipe(map(priceUpdateAction), takePriceUpdatesUntil(action$, action.payload)),
-    ),
+        .pipe(map(priceUpdateAction), takePriceUpdatesUntil(action$, action.payload))
+    )
   )
 }
 
-export const pricingHistoryEpic: ApplicationEpic = (
-  action$,
-  _state$,
-  { loadBalancedServiceStub },
-) => {
+export const pricingHistoryEpic: ApplicationEpic = (action$, _state$, { serviceClient }) => {
   return action$.pipe(
     ofType<Action, SubscribeToSpotTileAction>(TILE_ACTION_TYPES.SPOT_TILE_SUBSCRIBE),
     mergeMap((action: SubscribeToSpotTileAction) =>
-      getHistoricPrices(loadBalancedServiceStub, action.payload).pipe(
+      getHistoricPrices(serviceClient, action.payload).pipe(
         map(priceData => priceHistoryReceived(priceData, action.payload)),
-        takePriceUpdatesUntil(action$, action.payload),
-      ),
-    ),
+        takePriceUpdatesUntil(action$, action.payload)
+      )
+    )
   )
 }

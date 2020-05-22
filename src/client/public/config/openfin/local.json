@@ -1,11 +1,11 @@
 {
   "devtools_port": 9090,
-  "splashScreenImage": "http://localhost:3000/static/media/splash-screen.jpg",
+  "splashScreenImage": "http://localhost:3000/static/media/splash-screen.png",
   "startup_app": {
-    "name": "Reactive Trader Cloud (LOCAL)",
+    "name": "Reactive Trader (Local)",
     "url": "http://localhost:3000/",
-    "uuid": "reactive-trader-cloud-local",
-    "applicationIcon": "http://localhost:3000/static/media/adaptive-mark-large.png",
+    "uuid": "reactive-trader-local",
+    "applicationIcon": "http://localhost:3000/static/media/reactive-trader-icon-256x256.png",
     "autoShow": true,
     "defaultWidth": 1280,
     "defaultHeight": 900,
@@ -37,9 +37,9 @@
   },
   "shortcut": {
     "company": "Adaptive Consulting",
-    "description": "Desktop Reactive Trader Cloud",
-    "icon": "http://localhost:3000/static/media/icon.ico",
-    "name": "Reactive Trader Cloud (LOCAL)"
+    "description": "Desktop Reactive Trader",
+    "icon": "http://localhost:3000/static/media/reactive-trader.ico",
+    "name": "Reactive Trader (Local)"
   },
   "appAssets": [
     {
@@ -59,7 +59,7 @@
           "tab": false
         }
       },
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.1.0/app.json"
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.2.0/app.json"
     },
     {
       "name": "fdc3",

@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - release/**
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+      - release/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_USER: reactivetradercloud
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Fetch tags
+        run: git fetch origin +refs/tags/*:refs/tags/*
+
+      - name: Get build version
+        run: echo ::set-env name=BUILD_VERSION::$(git describe)
+
+      - name: 'Build Docker images: ${{ env.BUILD_VERSION }}'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: docker-compose -f ./src/docker-compose.yml build --parallel
+
+      - name: Set up test data
+        run: |
+          # The eventstore should be initialised with a clean set of data
+          docker-compose -f src/docker-compose.yml run initialise
+          docker commit eventstore_base ${DOCKER_USER}/eventstore:${BUILD_VERSION}
+
+      - name: Run integration tests
+        run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
+
+      - name: Run end-to-end tests
+        run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run e2e
+
+      - name: Push Docker images
+        if: github.event_name == 'push'
+        env:
+          DOCKER_LOGIN: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+        run: |
+          echo $DOCKER_PASS | docker login -u $DOCKER_LOGIN --password-stdin
+          docker-compose -f src/docker-compose.yml push
+
+      - name: Set deployment environment (dev)
+        if: (github.event_name == 'push') && (github.ref == 'refs/heads/master')
+        run: echo "::set-env name=DEPLOY_ENV::dev"
+
+      - name: Set deployment environment (uat)
+        if: (github.event_name == 'push') && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/'))
+        run: |
+          echo "::set-env name=DEPLOY_ENV::uat"
+
+      - name: Trigger deployment
+        if: github.event_name == 'push'
+        uses: chrnorm/deployment-action@releases/v1
+        with:
+          token: ${{ secrets.DEPLOY_TOKEN }}
+          environment: ${{ env.DEPLOY_ENV }}
+          target_url: 'https://web-${{ env.DEPLOY_ENV }}.adaptivecluster.com'
+          description: 'Deploy ${{ env.BUILD_VERSION }} to ${{ env.DEPLOY_ENV }}'

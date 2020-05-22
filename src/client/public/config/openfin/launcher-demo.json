@@ -1,6 +1,10 @@
 {
+  "//___README___1": "-------------------------------------------------------------------------------------",
+  "//___README___2": "This manifest exists for backwards compatibility purposes only: ",
+  "//___README___3": "use https://web-demo.adaptivecluster.com/openfin/launcher.json instead",
+  "//___README___4": "-------------------------------------------------------------------------------------",
   "startup_app": {
-    "name": "Reactive Ecosystem Launcher",
+    "name": "Reactive Launcher",
     "url": "https://web-demo.adaptivecluster.com/launcher",
     "uuid": "reactive-launcher-demo",
     "defaultWidth": 650,
@@ -19,8 +23,7 @@
     "frame": false,
     "backgroundColor": "#444C5F",
     "alwaysOnTop": true,
-    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
-    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png",
+    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-icon-256x256.png",
     "contextMenu": true,
     "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
     "preload": [
@@ -44,8 +47,8 @@
   },
   "shortcut": {
     "company": "Adaptive Consulting",
-    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
-    "name": "Reactive Ecosystem Launcher"
+    "icon": "https://web-demo.adaptivecluster.com/static/media/adaptive.ico",
+    "name": "Reactive Launcher"
   },
   "appAssets": [
     {
@@ -71,7 +74,7 @@
           "tab": false
         }
       },
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.1.0/app.json"
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.2.0/app.json"
     },
     {
       "name": "fdc3",

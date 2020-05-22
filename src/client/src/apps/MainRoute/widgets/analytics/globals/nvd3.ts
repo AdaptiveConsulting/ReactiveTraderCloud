@@ -1,6 +1,13 @@
 import { createGlobalStyle } from 'styled-components'
 
-import { barBgColor, gray, negativeColor, positiveColor, strokeColor, transitionDuration } from './variables'
+import {
+  barBgColor,
+  gray,
+  negativeColor,
+  positiveColor,
+  strokeColor,
+  transitionDuration
+} from './variables'
 
 export default createGlobalStyle`
   .nvtooltip {

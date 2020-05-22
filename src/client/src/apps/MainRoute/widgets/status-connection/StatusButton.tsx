@@ -1,6 +1,5 @@
-import React, { useState, useCallback, SyntheticEvent, useEffect } from 'react'
-
-import { ConnectionState } from 'rt-system'
+import React, { useState, useCallback, SyntheticEvent, useEffect, useRef } from 'react'
+import { ConnectionInfo } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import {
   Button,
@@ -13,29 +12,21 @@ import {
 } from './styled'
 import Service from './Service'
 import FooterVersion from '../footer-version'
+import { usePopUpMenu } from 'rt-util'
 
 interface Props {
-  connectionStatus: ConnectionState
+  connectionStatus: ConnectionInfo
   services: ServiceStatus[]
 }
 
-export const StatusButton: React.FC<Props> = ({
-  connectionStatus: { url, transportType },
-  services,
-}) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, services }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
   const [appStatus, setAppStatus] = useState<ServiceConnectionStatus>()
 
-  const toggleOpen = useCallback(
-    (event: SyntheticEvent) => {
-      const isAppUrl = (element: any) => element instanceof HTMLInputElement
-
-      if (!isAppUrl(event.target)) {
-        setIsOpen(!isOpen)
-      }
-    },
-    [isOpen, setIsOpen],
-  )
+  const toggleMenu = useCallback(() => {
+    setDisplayMenu(!displayMenu)
+  }, [displayMenu, setDisplayMenu])
 
   const selectAll = useCallback((event: SyntheticEvent) => {
     const input = event.target as HTMLInputElement
@@ -52,15 +43,15 @@ export const StatusButton: React.FC<Props> = ({
     }
   }, [services])
 
-  const appUrl = `${url} (${transportType})`
+  const appUrl = `${url}`
   return (
-    <Root>
-      <Button onClick={toggleOpen} data-qa="status-button__toggle-button">
+    <Root ref={ref}>
+      <Button onClick={toggleMenu} data-qa="status-button__toggle-button">
         <StatusCircle status={appStatus} />
         <StatusLabel status={appStatus} />
       </Button>
 
-      <ServiceListPopup open={isOpen} onClick={toggleOpen}>
+      <ServiceListPopup open={displayMenu}>
         <ServiceList>
           <AppUrl title={appUrl} readOnly value={appUrl} onFocus={selectAll} onClick={selectAll} />
 

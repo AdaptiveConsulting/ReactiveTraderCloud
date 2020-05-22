@@ -15,9 +15,12 @@ spec:
     -   port: 443
         targetPort: 443
         name: "https"
-    -   port: 8000
-        targetPort: 8000
+    -   port: 5672
+        targetPort: 5672
         name: "broker"
+    -   port: 15674
+        targetPort: 15674
+        name: "broker-ws"
     -   port: 1113
         targetPort: 1113
         name: "eventstore-tcp"

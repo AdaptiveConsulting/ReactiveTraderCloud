@@ -12,7 +12,7 @@ export const logger = createLogger({
         format.timestamp({
           format: 'YYYY-MM-DD HH:mm:ss',
         }),
-        format.simple(),
+        format.simple()
       ),
     }),
   ],

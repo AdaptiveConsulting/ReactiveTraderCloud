@@ -13,25 +13,25 @@ spec:
         component: bot
     spec:
       volumes:
-      - name: google-cloud-key
-        secret:
-          secretName: nlp-key
-      - name: symphony-cloud-key
-        secret:
-          secretName: symphony-key
+        - name: google-cloud-key
+          secret:
+            secretName: nlp-key
+        - name: symphony-cloud-key
+          secret:
+            secretName: symphony-key
       containers:
         - name: bot
           image: reactivetradercloud/bot:${BUILD_VERSION}
           volumeMounts:
-          - name: google-cloud-key
-            mountPath: /var/secrets/google
-          - name:  symphony-cloud-key
-            mountPath: /var/secrets/symphony
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+            - name: symphony-cloud-key
+              mountPath: /var/secrets/symphony
           env:
             - name: BROKER_HOST
               value: broker
             - name: BROKER_PORT
-              value: '8000'
+              value: '15674'
             - name: BOT_NAME
               valueFrom:
                 configMapKeyRef:

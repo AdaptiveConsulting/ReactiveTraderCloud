@@ -6,12 +6,12 @@ export default (
       <path d="M-11-14h44v44h-44z" />
       <path
         className="svg-fill"
-        fill="#FFF"
+        fill="#CFCFCF"
         d="M0 1.23C0 .552.551 0 1.23 0h19.54a1.23 1.23 0 0 1 0 2.462H1.23A1.23 1.23 0 0 1 0 1.23z"
       />
       <path
         className="svg-stroke"
-        stroke="#FFF"
+        stroke="#CFCFCF"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2.16"

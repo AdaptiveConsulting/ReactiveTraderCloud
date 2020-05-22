@@ -11,6 +11,7 @@ import ReconnectModal from '../components/reconnect-modal'
 import { analyticsSelector, blotterSelector, liveRatesSelector, DefaultLayout } from '../layouts'
 import { BlotterWrapper, AnalyticsWrapper, OverflowScroll, WorkspaceWrapper } from './styled'
 import UsersModal from '../components/users-modal'
+import ContactUsButton from '../widgets/contact-us'
 
 interface Props {
   header?: React.ReactChild
@@ -22,8 +23,8 @@ const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition)
     config: {
       ...windowConfig.config,
       x: layout.x,
-      y: layout.y,
-    },
+      y: layout.y
+    }
   }
 }
 
@@ -34,7 +35,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
 
   const lastRemainingService = useMemo(() => {
     const numberOfVisibleService = [blotter.visible, analytics.visible, liveRates.visible].filter(
-      visible => visible === true,
+      visible => visible === true
     ).length
 
     return numberOfVisibleService === 1
@@ -61,10 +62,11 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
         </BlotterWrapper>
       )}
       disabled={!blotter.visible}
+      isLiveRatesVisible={liveRates.visible}
     >
       <TearOff
         id="liveRates"
-        dragTearOff
+        dragTearOff={false}
         externalWindowProps={addLayoutToConfig(externalWindowDefault.liveRatesRegion(), liveRates)}
         render={(popOut, tornOff) => (
           <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
@@ -102,6 +104,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
 
   const footer = (
     <StatusBar>
+      <ContactUsButton />
       <StatusButton />
     </StatusBar>
   )

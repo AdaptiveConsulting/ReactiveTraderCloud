@@ -1,11 +1,15 @@
 {
+  "//___README___1": "-------------------------------------------------------------------------------------",
+  "//___README___2": "This manifest exists for backwards compatibility purposes only: ",
+  "//___README___3": "use https://web-demo.adaptivecluster.com/openfin/app.json instead",
+  "//___README___4": "-------------------------------------------------------------------------------------",
   "devtools_port": 9090,
-  "splashScreenImage": "https://web-demo.adaptivecluster.com/static/media/splash-screen.jpg",
+  "splashScreenImage": "https://web-demo.adaptivecluster.com/static/media/splash-screen.png",
   "startup_app": {
-    "name": "Reactive Trader Cloud",
+    "name": "Reactive Trader",
     "url": "https://web-demo.adaptivecluster.com/",
-    "uuid": "reactive-trader-cloud-web-demo",
-    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-mark-large.png",
+    "uuid": "reactive-trader-demo",
+    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png",
     "autoShow": true,
     "defaultWidth": 1280,
     "defaultHeight": 900,
@@ -29,8 +33,8 @@
   },
   "shortcut": {
     "company": "Adaptive Consulting",
-    "icon": "https://web-demo.adaptivecluster.com/static/media/icon.ico",
-    "name": "Reactive Trader Cloud"
+    "icon": "https://web-demo.adaptivecluster.com/static/media/reactive-trader.ico",
+    "name": "Reactive Trader"
   },
   "appAssets": [
     {
@@ -50,7 +54,7 @@
           "tab": false
         }
       },
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.1.0/app.json"
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.2.0/app.json"
     },
     {
       "name": "fdc3",

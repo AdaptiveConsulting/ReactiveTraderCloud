@@ -3,7 +3,7 @@ import React, {
   ChangeEventHandler,
   useState,
   useEffect,
-  FocusEventHandler,
+  FocusEventHandler
 } from 'react'
 import numeral from 'numeral'
 import { ValidationMessage } from './types'
@@ -69,7 +69,7 @@ export const FormattedNumericInput = forwardRef<HTMLInputElement, FormattedNumer
     }
 
     return <input ref={ref} {...props} value={value} onChange={handleChange} onBlur={handleBlur} />
-  },
+  }
 )
 
 function stringifyNumericValue(numericValue: number) {

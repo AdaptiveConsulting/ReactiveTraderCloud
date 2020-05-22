@@ -39,26 +39,26 @@ export class OpenFinLimitChecker implements LimitChecker {
       fin.desktop.InterApplicationBus.subscribe(
         this.limitCheckSubscriber,
         topic,
-        limitCheckResponse,
+        limitCheckResponse
       )
 
       const payload = {
         ...message,
         id: this.limitCheckId,
-        responseTopic: topic,
+        responseTopic: topic
       }
 
       fin.desktop.InterApplicationBus.send(
         this.limitCheckSubscriber,
         REQUEST_LIMIT_CHECK_TOPIC,
-        payload,
+        payload
       )
 
       return () => {
         fin.desktop.InterApplicationBus.unsubscribe(
           this.limitCheckSubscriber!,
           topic,
-          limitCheckResponse,
+          limitCheckResponse
         )
       }
     })
@@ -82,7 +82,7 @@ export class OpenFinLimitChecker implements LimitChecker {
           if (message === 'ALIVE') {
             this.setLimitCheckSubscriber(LIMIT_CHECKER_UUID, REQUEST_LIMIT_CHECK_TOPIC)
           }
-        },
+        }
       )
       fin.desktop.InterApplicationBus.send(LIMIT_CHECKER_UUID, LIMIT_CHECKER_STATUS_TOPIC, null)
     })

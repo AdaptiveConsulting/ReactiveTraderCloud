@@ -13,17 +13,18 @@ import {
   RootLauncherContainer,
   LauncherContainer,
   SearchButtonContainer,
-  RootResultsContainer,
+  RootResultsContainer
 } from './styles'
 import {
   animateCurrentWindowSize,
   closeCurrentWindow,
   getCurrentWindowBounds,
   minimiseCurrentWindow,
-  useAppBoundReset,
+  useAppBoundReset
 } from './windowUtils'
 import { SearchControl, Response, getInlineSuggestionsComponent, useNlpService } from './spotlight'
-import { ExitIcon, minimiseNormalIcon, DynamicLauncherLogo, SearchIcon } from './icons'
+import { ExitIcon, minimiseNormalIcon, SearchIcon } from './icons'
+import { AdaptiveLoader, LogoIcon } from 'rt-components'
 
 const expandedLauncherWidth = 600
 
@@ -41,7 +42,12 @@ const SearchButton: React.FC<{
   isSearchVisible: boolean
 }> = ({ onClick, isSearchVisible }) => (
   <SearchButtonContainer isSearchVisible={isSearchVisible}>
-    <LaunchButton title="Search ecosystem" onClick={onClick}>
+    <LaunchButton
+      iconFill="#CFCFCF"
+      iconHoverFill="#FFFFFF"
+      title="Search ecosystem"
+      onClick={onClick}
+    >
       {SearchIcon}
     </LaunchButton>
   </SearchButtonContainer>
@@ -49,9 +55,14 @@ const SearchButton: React.FC<{
 
 const Logo: React.FC<{
   isMoving: boolean
-}> = ({ isMoving }) => (
+  active: boolean
+}> = ({ isMoving, active }) => (
   <LogoLauncherContainer>
-    <DynamicLauncherLogo isMoving={isMoving} />
+    {isMoving ? (
+      <AdaptiveLoader size={21} speed={isMoving ? 0.8 : 0} seperation={1} type="secondary" />
+    ) : (
+      <LogoIcon width={1.2} height={1.2} active={active} />
+    )}
   </LogoLauncherContainer>
 )
 
@@ -62,7 +73,7 @@ export const Launcher: React.FC = () => {
   const [isSearchBusy, setIsSearchBusy] = useState<boolean>(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const platform = usePlatform()
-  const [contacting, response, sendRequest] = useNlpService()
+  const [contacting, response, sendRequest, resetResponse] = useNlpService()
 
   useAppBoundReset(initialBounds)
 
@@ -80,7 +91,7 @@ export const Launcher: React.FC = () => {
         animateCurrentWindowSize({
           ...initialBounds,
           width: expandedLauncherWidth,
-          height: responseHeight ? responseHeight + initialBounds.height : initialBounds.height,
+          height: responseHeight ? responseHeight + initialBounds.height : initialBounds.height
         })
 
         return
@@ -113,19 +124,19 @@ export const Launcher: React.FC = () => {
         setResponseHeight(contentRect.bounds.height)
       }
     },
-    [responseHeight],
+    [responseHeight]
   )
 
   const showResponsePanel = useMemo(() => Boolean(isSearchVisible && response), [
     response,
-    isSearchVisible,
+    isSearchVisible
   ])
 
   return (
     <RootLauncherContainer>
       <LauncherContainer showResponsePanel={showResponsePanel}>
         <LauncherGlobalStyle />
-        <Logo isMoving={isSearchBusy || contacting} />
+        <Logo isMoving={isSearchBusy || contacting} active={isSearchVisible} />
         <LauncherApps />
         <SearchControl
           ref={searchInputRef}
@@ -134,6 +145,7 @@ export const Launcher: React.FC = () => {
           sendRequest={sendRequest}
           platform={platform}
           isSearchVisible={isSearchVisible}
+          resetResponse={resetResponse}
         />
         <SearchButton onClick={showSearch} isSearchVisible={isSearchVisible} />
         <MinExitContainer>
