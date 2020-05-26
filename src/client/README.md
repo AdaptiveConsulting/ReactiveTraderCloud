@@ -14,13 +14,13 @@ The settings for the PWA are configured in [`manifest.json`](public/manifest.jso
 
 ## Token replacement
 
-The [`manifest.json`](public/manifest.json) file contains tokens in the form `{{token}}` that can be replaced at build or run time with environment-specific values (e.g. the application name may have an environment suffix).
+The PWA [`manifest.json`](public/manifest.json) file and the [OpenFin manifests](public/openfin) contain tokens in the form `{{token}}` that can be replaced at build or run time with environment-specific values (e.g. the application name may have an environment suffix).
 
 ### Local token replacement
 
 When running the client locally with `npm start`, the tokens are replaced with [`copy-webpack-plugin`](https://webpack.js.org/plugins/copy-webpack-plugin/).
 
-This happens in [`config-overrides.js`](config-overrides.js), which is used by [`react-app-rewired`](https://github.com/timarney/react-app-rewired) to replace the tokens while copying the manifest file.
+This happens in [`config-overrides.js`](config-overrides.js), which is used by [`react-app-rewired`](https://github.com/timarney/react-app-rewired) to replace the tokens while copying the manifest files.
 
 It only takes place when `NODE_ENV === development`, i.e. when `npm start` is used, and it uses environment variables defined in the `.env.development` file, e.g. `ENVIRONMENT_NAME`.
 
@@ -37,7 +37,7 @@ The file [`nginx/ngnix.conf`](nginx/nginx.conf) declares the environment variabl
 env ENVIRONMENT_NAME;
 ```
 
-The file [`nginx/default.conf`](nginx/default.conf) uses a [resty template](https://github.com/bungle/lua-resty-template) to do the token replacement with environment variables, as `manifest.json` is being served.
+The file [`nginx/default.conf`](nginx/default.conf) uses a [resty template](https://github.com/bungle/lua-resty-template) to do the token replacement with environment variables, as files like `manifest.json` and `openfin/app.json` are being served.
 
 For more info, see the [`Dockerfile`](Dockerfile).
 
@@ -55,4 +55,4 @@ metadata:
 data:
   environment-name: uat
 ```
-For more info, see [`client-deployment.yaml`](../services/kubernetes/client-deployment.yaml).
+To see how the config is mapped, refer to [`client-deployment.yaml`](../services/kubernetes/client-deployment.yaml).
