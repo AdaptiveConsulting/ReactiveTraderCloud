@@ -15,7 +15,7 @@ const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 //TODO: Move to environment variables / config.
 const trackingId = 'UA-46320965-5'
 ReactGA.initialize(trackingId, {
-  debug: process.env.NODE_ENV === 'development'
+  debug: process.env.NODE_ENV === 'development',
 })
 
 const { pathname } = new URL(window.location.href)
@@ -24,13 +24,19 @@ const urlParams = new URLSearchParams(window.location.search)
 const APP_PATHS = {
   LAUNCHER: '/launcher',
   TRADER: '/',
-  STYLEGUIDE: '/styleguide'
+  STYLEGUIDE: '/styleguide',
+  BLOTTER: '/blotter',
+  ANALYTICS: '/analytics',
+  TILES: '/tiles',
 }
 
-const appTitles = {
+export const appTitles = {
   [APP_PATHS.LAUNCHER]: 'Reactive Launcher',
   [APP_PATHS.TRADER]: 'Reactive Trader',
-  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader'
+  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader',
+  [APP_PATHS.BLOTTER]: 'Blotter',
+  [APP_PATHS.ANALYTICS]: 'Analytics',
+  [APP_PATHS.TILES]: 'Live Rates',
 }
 
 async function init() {
@@ -38,11 +44,11 @@ async function init() {
 
   const env = getEnvironment()
 
-  document.title = getAppName(appTitles[pathname] || document.title)
+  document.title = getAppName(pathname || document.title)
 
   ReactGA.set({
     dimension3: env,
-    page: window.location.pathname
+    page: window.location.pathname,
   })
 
   if (urlParams.has('startAsSymphonyController')) {
