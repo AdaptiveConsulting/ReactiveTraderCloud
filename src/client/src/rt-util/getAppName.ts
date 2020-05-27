@@ -1,9 +1,27 @@
 import { getEnvironment } from 'rt-util'
 import { currencyFormatter } from './'
-import { appTitles } from '../index'
 
 const name = 'Reactive Trader'
 const prodEnvs = ['demo']
+
+export const APP_PATHS = {
+  LAUNCHER: '/launcher',
+  TRADER: '/',
+  STYLEGUIDE: '/styleguide',
+  BLOTTER: '/blotter',
+  ANALYTICS: '/analytics',
+  TILES: '/tiles',
+}
+
+export const appTitles = {
+  [APP_PATHS.LAUNCHER]: 'Reactive Launcher',
+  [APP_PATHS.TRADER]: 'Reactive Trader',
+  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader',
+  [APP_PATHS.BLOTTER]: 'Blotter',
+  [APP_PATHS.ANALYTICS]: 'Analytics',
+  [APP_PATHS.TILES]: 'Live Rates',
+}
+
 const currencyPairs = [
   'EURUSD',
   'USDJPY',

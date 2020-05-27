@@ -6,7 +6,7 @@ import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
 import { getSymphonyPlatform } from 'rt-platforms'
 import { getEnvironment } from 'rt-util/getEnvironment'
-import { getAppName } from 'rt-util'
+import { APP_PATHS, getAppName } from 'rt-util'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -20,24 +20,6 @@ ReactGA.initialize(trackingId, {
 
 const { pathname } = new URL(window.location.href)
 const urlParams = new URLSearchParams(window.location.search)
-
-const APP_PATHS = {
-  LAUNCHER: '/launcher',
-  TRADER: '/',
-  STYLEGUIDE: '/styleguide',
-  BLOTTER: '/blotter',
-  ANALYTICS: '/analytics',
-  TILES: '/tiles',
-}
-
-export const appTitles = {
-  [APP_PATHS.LAUNCHER]: 'Reactive Launcher',
-  [APP_PATHS.TRADER]: 'Reactive Trader',
-  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader',
-  [APP_PATHS.BLOTTER]: 'Blotter',
-  [APP_PATHS.ANALYTICS]: 'Analytics',
-  [APP_PATHS.TILES]: 'Live Rates',
-}
 
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
