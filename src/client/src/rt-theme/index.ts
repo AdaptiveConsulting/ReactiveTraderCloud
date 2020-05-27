@@ -1,8 +1,15 @@
-import { Theme } from './themes'
+import type { Theme } from './themes'
 import baseStyled, { ThemedStyledInterface } from 'styled-components'
-export * from './colors'
-export * from './themes'
-export * from './themes'
+export type {
+  LightShade,
+  DarkShade,
+  ColorPalette,
+  AccentName,
+  AccentPaletteMap,
+  Color,
+} from './colors'
+export { themes, getThemeColor } from './themes'
+export type { Theme, TouchableIntentName, ColorProps, ThemeSelector } from './themes'
 export { colors } from './colors'
 export { default as GlobalStyle } from './globals'
 
