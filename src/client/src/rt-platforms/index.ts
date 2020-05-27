@@ -1,5 +1,5 @@
-export * from './types'
-export * from './externalWindowDefault'
+export type { WindowConfig, WindowPosition, TilesLayout, PlatformName } from './types'
+export type { ExternalWindow } from './externalWindowDefault'
 
 export { InteropTopics } from './types'
 export * from './platformWindow'
