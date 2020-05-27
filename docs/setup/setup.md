@@ -75,7 +75,7 @@ The console process started via `dotnet run dev` from the Launcher project is in
 
 #### Client
 
-For the web client follow these [instructions](../client.md)
+For the web client follow these [instructions](../../src/client/README.md)
 
 ### Problem running the app?
 
