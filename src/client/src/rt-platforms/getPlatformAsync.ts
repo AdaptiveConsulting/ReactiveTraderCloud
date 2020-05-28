@@ -20,9 +20,7 @@ export const getGlue42CorePlatform = () => import(/* webpackChunkName: "browser"
 
 export const getPlatformAsync = async () => {
   if (true) {
-    console.log('Using Glue42 Core')
     const { Glue42Core } = await getGlue42CorePlatform();
-    console.log(Glue42Core)
     return new Glue42Core();
   }
 

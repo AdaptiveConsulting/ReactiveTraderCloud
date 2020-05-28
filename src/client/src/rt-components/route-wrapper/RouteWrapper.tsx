@@ -3,7 +3,7 @@ import { styled } from 'rt-theme'
 import { Platform, usePlatform, isParentAppOpenfinLauncher } from 'rt-platforms'
 import { getAppName } from 'rt-util'
 
-const RouteStyle = styled('div')<{ platform: Platform }>`
+const RouteStyle = styled('div') <{ platform: Platform }>`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
