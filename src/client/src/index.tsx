@@ -6,7 +6,7 @@ import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
 import { getSymphonyPlatform } from 'rt-platforms'
 import { getEnvironment } from 'rt-util/getEnvironment'
-import { getAppName } from 'rt-util'
+import { APP_PATHS, getAppName } from 'rt-util'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -15,34 +15,22 @@ const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 //TODO: Move to environment variables / config.
 const trackingId = 'UA-46320965-5'
 ReactGA.initialize(trackingId, {
-  debug: process.env.NODE_ENV === 'development'
+  debug: process.env.NODE_ENV === 'development',
 })
 
 const { pathname } = new URL(window.location.href)
 const urlParams = new URLSearchParams(window.location.search)
-
-const APP_PATHS = {
-  LAUNCHER: '/launcher',
-  TRADER: '/',
-  STYLEGUIDE: '/styleguide'
-}
-
-const appTitles = {
-  [APP_PATHS.LAUNCHER]: 'Reactive Launcher',
-  [APP_PATHS.TRADER]: 'Reactive Trader',
-  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader'
-}
 
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
 
   const env = getEnvironment()
 
-  document.title = getAppName(appTitles[pathname] || document.title)
+  document.title = getAppName(pathname || document.title)
 
   ReactGA.set({
     dimension3: env,
-    page: window.location.pathname
+    page: window.location.pathname,
   })
 
   if (urlParams.has('startAsSymphonyController')) {
