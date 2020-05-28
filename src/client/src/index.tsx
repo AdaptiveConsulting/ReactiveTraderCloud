@@ -21,38 +21,6 @@ ReactGA.initialize(trackingId, {
 const { pathname } = new URL(window.location.href)
 const urlParams = new URLSearchParams(window.location.search)
 
-<<<<<<< HEAD
-const APP_PATHS = {
-  LAUNCHER: '/launcher',
-  TRADER: '/',
-  STYLEGUIDE: '/styleguide'
-}
-
-const appTitles = {
-  [APP_PATHS.LAUNCHER]: 'Reactive Launcher',
-  [APP_PATHS.TRADER]: 'Reactive Trader',
-  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader'
-}
-
-
-
-
-
-||||||| merged common ancestors
-const APP_PATHS = {
-  LAUNCHER: '/launcher',
-  TRADER: '/',
-  STYLEGUIDE: '/styleguide'
-}
-
-const appTitles = {
-  [APP_PATHS.LAUNCHER]: 'Reactive Launcher',
-  [APP_PATHS.TRADER]: 'Reactive Trader',
-  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader'
-}
-
-=======
->>>>>>> be0027f71ece8b443a2c2bd8ae2061e2e3bde119
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
 
