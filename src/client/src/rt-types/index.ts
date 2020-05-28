@@ -1,7 +1,7 @@
-import { CurrencyPairPosition } from './currencyPairPosition'
-export * from './currencyPairPosition'
-export * from './currencyPair'
+import type { CurrencyPairPosition } from './currencyPairPosition'
+export type { CurrencyPair, CurrencyPairMap } from './currencyPair'
 
+export type { CurrencyPairPosition }
 export type CurrencyPairPositionWithPrice = CurrencyPairPosition & {
   latestAsk?: number
   latestBid?: number
@@ -9,15 +9,15 @@ export type CurrencyPairPositionWithPrice = CurrencyPairPosition & {
 export { Direction } from './direction'
 
 export { ServiceConnectionStatus } from './serviceStatus'
-export * from './serviceStatus'
+export type { ServiceStatus } from './serviceStatus'
 
-export * from './trade'
+export type { Trade, Trades } from './trade'
 export { TradeStatus } from './tradeStatus'
 export { UpdateType } from './updateType'
 
-export * from './user'
+export type { User } from './user'
 
-export * from './CollectionUpdate'
+export type { CollectionUpdate, CollectionUpdates } from './CollectionUpdate'
 
 export { mapFromTradeDto } from './tradeMapper'
-export * from './tradeMapper'
+export type { TradeRaw, RawTradeUpdate } from './tradeMapper'

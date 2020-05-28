@@ -1,0 +1,63 @@
+{
+    "startup_app": {
+      "autoShow": true,
+      "frame": false,
+      "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+      "preload": [
+        {
+          "url": "{*host_url*}/plugin/service-loader.js"
+        },
+        {
+          "url": "{*host_url*}/plugin/fin.desktop.Excel.js"
+        }
+      ],
+      "name": "Reactive Trader{{environment_suffix}}",
+      "url": "{*host_url*}",
+      "uuid": "reactive-trader-{{environment}}",
+      "applicationIcon": "{*host_url*}/static/media/reactive-trader-icon-256x256.png",
+      "defaultWidth": 1280,
+      "defaultHeight": 900,
+      "minWidth": 800,
+      "minHeight": 600,
+      "resizable": true,
+      "maximizable": true
+    },
+    "runtime": {
+      "version": "13.76.44.21"
+    },
+    "services": [
+      {
+        "name": "layouts",
+        "config": {
+          "features": {
+            "snap": true,
+            "dock": true,
+            "tab": false
+          }
+        },
+        "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.2.0/app.json"
+      },
+      {
+        "name": "fdc3",
+        "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json"
+      },
+      {
+        "name": "notifications",
+        "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json"
+      }
+    ],
+    "devtools_port": 9090,
+    "splashScreenImage": "{*host_url*}/static/media/splash-screen.png",
+    "shortcut": {
+      "company": "Adaptive Consulting",
+      "icon": "{*host_url*}/static/media/reactive-trader.ico",
+      "name": "Reactive Trader{{environment_suffix}}"
+    },
+    "appAssets": [
+      {
+        "src": "{*host_url*}/plugin/add-in.zip",
+        "alias": "excel-api-addin",
+        "version": "2.0.0"
+      }
+    ]
+  }

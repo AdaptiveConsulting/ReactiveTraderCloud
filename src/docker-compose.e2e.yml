@@ -23,6 +23,5 @@ services:
     depends_on:
       - client
       - nginx
-      - openfinconfig
       - nlp
       - servers

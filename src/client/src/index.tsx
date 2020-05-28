@@ -6,7 +6,7 @@ import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
 import { getSymphonyPlatform } from 'rt-platforms'
 import { getEnvironment } from 'rt-util/getEnvironment'
-import { getAppName } from 'rt-util'
+import { APP_PATHS, getAppName } from 'rt-util'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -15,12 +15,13 @@ const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 //TODO: Move to environment variables / config.
 const trackingId = 'UA-46320965-5'
 ReactGA.initialize(trackingId, {
-  debug: process.env.NODE_ENV === 'development'
+  debug: process.env.NODE_ENV === 'development',
 })
 
 const { pathname } = new URL(window.location.href)
 const urlParams = new URLSearchParams(window.location.search)
 
+<<<<<<< HEAD
 const APP_PATHS = {
   LAUNCHER: '/launcher',
   TRADER: '/',
@@ -37,16 +38,31 @@ const appTitles = {
 
 
 
+||||||| merged common ancestors
+const APP_PATHS = {
+  LAUNCHER: '/launcher',
+  TRADER: '/',
+  STYLEGUIDE: '/styleguide'
+}
+
+const appTitles = {
+  [APP_PATHS.LAUNCHER]: 'Reactive Launcher',
+  [APP_PATHS.TRADER]: 'Reactive Trader',
+  [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader'
+}
+
+=======
+>>>>>>> be0027f71ece8b443a2c2bd8ae2061e2e3bde119
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
 
   const env = getEnvironment()
 
-  document.title = getAppName(appTitles[pathname] || document.title)
+  document.title = getAppName(pathname || document.title)
 
   ReactGA.set({
     dimension3: env,
-    page: window.location.pathname
+    page: window.location.pathname,
   })
 
   console.log(window.location)

@@ -58,7 +58,7 @@ Patches are not automatically deployed at this stage, so this will have to be do
       2. Follow the [run rtc with docker instructions](./run-rtc-with-docker.md)
     - without docker
       1. [server](../server.md)
-      2. [client](../client.md)
+      2. [client](../../src/client/README.md)
     - with kubernetes
       1. Enable kubernetes on your docker desktop for [windows] or [mac]
       2. Follow the [run rtc with kubernetes instructions](./run-rtc-with-kubernetes.md)

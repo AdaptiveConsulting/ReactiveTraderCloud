@@ -9,9 +9,10 @@ Running RTC with docker is extremely easy
 
 ## Start RTC
 
-In terminal go to ../../src folder and execute the following command:
+In terminal go to ../../src folder and execute the following commands:
 
 ```bash
+docker-compose build #this may take some time
 docker-compose up
 ```
 

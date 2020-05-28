@@ -17,14 +17,14 @@ const isRunningInIE = () => {
   return browser && browser.indexOf('IE') !== -1
 }
 
-const isPWA = () =>
+export const isPWA = () =>
   (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
   (window.navigator as Navigator).standalone
 
 export default class Browser implements Platform {
   readonly name = 'browser'
   readonly type = 'browser'
-  readonly allowTearOff = !isRunningInIE() && !isPWA()
+  readonly allowTearOff = !isRunningInIE()
 
   style = {
     height: '100%',
