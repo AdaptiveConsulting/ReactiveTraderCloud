@@ -40,7 +40,7 @@ export function getAppName(pathname?: string): string {
 
   const ccy = pathname ? pathname.slice(6, 12) : ``
   const areaTitle = currencyPairs.includes(ccy)
-    ? currencyFormatter(ccy)
+    ? `- ${currencyFormatter(ccy)}`
     : pathname && pathname !== '/'
     ? ` - ${appTitles[pathname]}`
     : ``
