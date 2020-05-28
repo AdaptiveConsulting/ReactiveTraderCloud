@@ -17,7 +17,7 @@ export const appTitles = {
   [APP_PATHS.LAUNCHER]: 'Reactive Launcher',
   [APP_PATHS.TRADER]: 'Reactive Trader',
   [APP_PATHS.STYLEGUIDE]: 'Style Guide for Reactive Trader',
-  [APP_PATHS.BLOTTER]: 'Blotter',
+  [APP_PATHS.BLOTTER]: 'Trades',
   [APP_PATHS.ANALYTICS]: 'Analytics',
   [APP_PATHS.TILES]: 'Live Rates',
 }
