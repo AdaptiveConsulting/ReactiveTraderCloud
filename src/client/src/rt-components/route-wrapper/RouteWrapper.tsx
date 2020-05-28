@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import { styled } from 'rt-theme'
 import { Platform, usePlatform, isParentAppOpenfinLauncher } from 'rt-platforms'
 import { getAppName } from 'rt-util'
+import { useTheme, ThemeName } from 'rt-theme'
 
 const RouteStyle = styled('div')<{ platform: Platform }>`
   width: 100%;
@@ -33,6 +34,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const { children, windowType = 'main', title } = props
   const [fromLauncher, setFromLauncher] = useState<boolean>(false)
   const platform = usePlatform()
+  const theme = useTheme()
 
   const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
 
@@ -45,6 +47,15 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
         console.error('Cannot find parent window')
       })
   }, [])
+
+  useEffect(() => {
+    const head = document.getElementById('themeColor')
+    head &&
+      head.setAttribute(
+        'content',
+        theme.themeName === ThemeName.Dark ? 'rgb(47, 53, 66)' : 'rgb(249, 249, 249)'
+      )
+  }, [theme])
 
   const isBlotterOrTrade = title === 'trades' || title === 'live rates'
 
