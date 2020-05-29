@@ -53,7 +53,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
     head &&
       head.setAttribute(
         'content',
-        theme.themeName === ThemeName.Dark ? 'rgb(47, 53, 66)' : 'rgb(249, 249, 249)'
+        theme.themeName === ThemeName.Dark ? 'rgb(40, 46, 57)' : 'rgb(249, 249, 249)'
       )
   }, [theme])
 
