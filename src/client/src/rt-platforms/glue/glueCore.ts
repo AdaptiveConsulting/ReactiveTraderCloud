@@ -4,9 +4,8 @@ import { WindowConfig } from '../types'
 import { Platform } from '../platform'
 import { registerWindowMethods } from './window'
 import { sendNotification, NotifyPermission } from './utils/sendNotification'
-import DefaultRoute from 'rt-platforms/defaultRoute'
 import { ApplicationEpic } from 'StoreTypes'
-import { GlueHeader, GlueLogoLink } from './'
+import { GlueHeader, GlueLogoLink, GlueCoreRoute } from './'
 
 
 export class Glue42Core implements Platform {
@@ -24,9 +23,11 @@ export class Glue42Core implements Platform {
         window.glue = glue;
         registerWindowMethods()
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e)
         throw new Error('Failed to init Glue42Web')
       })
+
   }
 
   window = {
@@ -45,11 +46,15 @@ export class Glue42Core implements Platform {
         action: 'open',
         label: config.name,
       })
-      window.glue.windows.onWindowRemoved(() => {
+      window.glue.windows.onWindowRemoved((windowRemoved: any) => {
         onClose && onClose()
       })
-      console.log(config)
-      return window.glue.windows.open(config.name, config.url, config).then((createdWindow: any) => {
+
+      //TODO: See if there is a better way of doing this. 
+      const paramType = config.url.includes('?') ? '&' : '?';
+      const url = `${config.url}${paramType}waitFor=GLUE_CORE`
+      return window.glue.windows.open(config.name, url, config).then((createdWindow: any) => {
+        console.log(createdWindow)
         Promise.resolve(createdWindow)
       })
     },
@@ -82,7 +87,7 @@ export class Glue42Core implements Platform {
 
   PlatformControls: React.FC<any> = GlueHeader
 
-  PlatformRoute: React.FC = DefaultRoute
+  PlatformRoute: React.FC = GlueCoreRoute
 
   Logo = GlueLogoLink
 }

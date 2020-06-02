@@ -33,8 +33,6 @@ async function init() {
     page: window.location.pathname,
   })
 
-  console.log(window.location)
-
   if (urlParams.has('startAsSymphonyController')) {
     const { initiateSymphony } = await getSymphonyPlatform()
     await initiateSymphony(urlParams.get('env') || undefined)
