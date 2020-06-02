@@ -55,28 +55,7 @@ export class Glue42Core implements Platform {
       return window.glue.windows
         .open(config.name, url, config)
         .then((createdWindow: any) => createdWindow)
-    },
-
-    /**
-     * In order to integrate Glue42 with channels the clicked symbol needs to be published to the channel.
-     */
-    publishToChannel: (symbol: string) => {
-      try {
-        window.glue.channels.publish({ symbol: symbol.replace('/', '') })
-      } catch (err) {
-        console.warn(err.message)
-      }
-    },
-  }
-
-  notification = {
-    notify: (message: object) => {
-      if ('Notification' in window) {
-        if (Notification.permission === NotifyPermission.granted) {
-          sendNotification(message)
-        }
-      }
-    },
+    }
   }
 
   epics: Array<ApplicationEpic> = []
