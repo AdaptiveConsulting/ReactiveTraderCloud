@@ -27,7 +27,6 @@ export class Glue42Core implements Platform {
         console.log(e)
         throw new Error('Failed to init Glue42Web')
       })
-
   }
 
   window = {
@@ -50,13 +49,12 @@ export class Glue42Core implements Platform {
         onClose && onClose()
       })
 
-      //TODO: See if there is a better way of doing this. 
       const paramType = config.url.includes('?') ? '&' : '?';
-      const url = `${config.url}${paramType}waitFor=GLUE_CORE`
-      return window.glue.windows.open(config.name, url, config).then((createdWindow: any) => {
-        console.log(createdWindow)
-        Promise.resolve(createdWindow)
-      })
+      const url = `${config.url}${paramType}glue=CORE`;
+
+      return window.glue.windows
+        .open(config.name, url, config)
+        .then((createdWindow: any) => createdWindow)
     },
 
     /**

@@ -4,7 +4,7 @@ const isFinsemble = 'FSBL' in window
 const isOpenFin = 'fin' in window
 const isGlue42 = 'glue42gd' in window
 const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYMPHONY'
-const isGlueCore = urlParams.has('waitFor') && urlParams.get('waitFor') === 'GLUE_CORE'
+const isGlueCore = urlParams.has('glue') && urlParams.get('glue') === 'CORE'
 
 export const getSymphonyPlatform = () => import(/* webpackChunkName: "symphony" */ './symphony')
 
