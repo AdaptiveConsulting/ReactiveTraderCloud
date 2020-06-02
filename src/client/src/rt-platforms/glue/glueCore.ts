@@ -3,7 +3,6 @@ import GlueWeb from '@glue42/web'
 import { WindowConfig } from '../types'
 import { Platform } from '../platform'
 import { registerWindowMethods } from './window'
-import { sendNotification, NotifyPermission } from './utils/sendNotification'
 import { ApplicationEpic } from 'StoreTypes'
 import { GlueHeader, GlueLogoLink, GlueCoreRoute } from './'
 
@@ -55,7 +54,11 @@ export class Glue42Core implements Platform {
       return window.glue.windows
         .open(config.name, url, config)
         .then((createdWindow: any) => createdWindow)
-    }
+    },
+  }
+
+  notification = {
+    notify: () => null
   }
 
   epics: Array<ApplicationEpic> = []
