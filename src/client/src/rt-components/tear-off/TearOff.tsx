@@ -41,7 +41,7 @@ const createDragImage = (event: React.DragEvent<HTMLDivElement>) => {
     const offsetY = event.clientY - clientRect.top
 
     dt.setDragImage(node, offsetX, offsetY)
-    setTimeout(function() {
+    setTimeout(function () {
       node.remove()
     })
   }

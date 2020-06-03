@@ -4,7 +4,7 @@ import { Platform, usePlatform, isParentAppOpenfinLauncher } from 'rt-platforms'
 import { getAppName } from 'rt-util'
 import { useTheme, ThemeName } from 'rt-theme'
 
-const RouteStyle = styled('div')<{ platform: Platform }>`
+const RouteStyle = styled('div') <{ platform: Platform }>`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;

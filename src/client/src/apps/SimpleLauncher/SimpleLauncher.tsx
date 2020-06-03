@@ -35,7 +35,7 @@ export const SimpleLauncher: React.FC = () => {
   const intentsProvider = getProvider()
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const serviceClient = createServiceStub(broker)
       const platformResult = await getPlatformAsync()
 
