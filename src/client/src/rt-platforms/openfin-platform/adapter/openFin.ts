@@ -14,13 +14,11 @@ import {
 } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
-import { platformEpics } from './epics'
 import Logo from './logo'
-import { OpenFinControls, OpenFinHeader } from '../components'
-import { ApplicationEpic } from 'StoreTypes'
+import { OpenFinControls, OpenFinHeader, OpenFinFooter } from '../components'
 
 export default class OpenFin implements Platform {
-  readonly name = 'openfin'
+  readonly name = 'openfin-platform'
   readonly type = 'desktop'
   readonly allowTearOff = true
 
@@ -30,11 +28,12 @@ export default class OpenFin implements Platform {
 
   constructor() {
     window.addEventListener('beforeunload', this.handleWindowUnload)
+
     addEventListener('notification-action', this.handleNotificationAction)
   }
 
   window = {
-    ...createPlatformWindow(() => Promise.resolve(fin.desktop.Window.getCurrent())),
+    ...createPlatformWindow(() => Promise.resolve(fin.Window.getCurrent())),
     open: openDesktopWindow,
   }
 
@@ -95,11 +94,12 @@ export default class OpenFin implements Platform {
       create({
         body: this.getNotificationBody(message as NotificationMessage),
         title: this.getNotificationTitle(message as NotificationMessage),
-        icon: `${location.protocol}//${location.host}/static/media/reactive-trader.ico`,
+        icon: `${location.protocol}//${location.host}/static/media/icon.ico`,
         customData: message,
         buttons: [
           {
             title: 'Highlight trade in blotter',
+            iconUrl: `${location.protocol}//${location.host}/static/media/icon.ico`,
             onClick: { task: 'highlight-trade' },
           },
         ],
@@ -118,11 +118,11 @@ export default class OpenFin implements Platform {
 
   PlatformHeader: React.FC<any> = OpenFinHeader
 
-  PlatformFooter: React.FC<any> = () => null
-
   PlatformControls: React.FC<any> = OpenFinControls
 
   PlatformRoute: React.FC<any> = OpenFinRoute
+
+  PlatformFooter: React.FC<any> = OpenFinFooter
 
   getNotificationTitle({ tradeNotification }: NotificationMessage) {
     const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
@@ -141,8 +141,7 @@ export default class OpenFin implements Platform {
 
   handleWindowUnload = () => {
     removeEventListener('notification-action', this.handleNotificationAction)
-    window.removeEventListener('beforeunload', this.handleWindowUnload)
   }
 
-  epics: Array<ApplicationEpic> = platformEpics
+  epics = []
 }

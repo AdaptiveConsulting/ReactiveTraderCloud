@@ -31,6 +31,7 @@ export default class Browser implements Platform {
   }
   epics = []
   PlatformHeader = () => null
+  PlatformFooter = () => null
   PlatformControls = () => null
   PlatformRoute = DefaultRoute
   Logo = Logo

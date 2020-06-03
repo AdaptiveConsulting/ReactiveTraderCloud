@@ -15,6 +15,7 @@ export default class Symphony implements Platform {
   }
   epics = []
   PlatformHeader = () => null
+  PlatformFooter = () => null
   PlatformControls = () => null
   PlatformRoute = DefaultRoute
   Logo = Logo

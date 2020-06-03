@@ -4,7 +4,7 @@ import { Platform, usePlatform, isParentAppOpenfinLauncher } from 'rt-platforms'
 import { getAppName } from 'rt-util'
 import { useTheme, ThemeName } from 'rt-theme'
 
-const RouteStyle = styled('div') <{ platform: Platform }>`
+const RouteStyle = styled('div')<{ platform: Platform }>`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
@@ -30,13 +30,17 @@ interface RouteWrapperProps {
   title?: string | SymbolParamObject
 }
 
+// TODO Move to openfin-platform
+//@ts-ignore
+const isChildView = window.fin && window.fin.me && window.fin.me.isView
+
 const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const { children, windowType = 'main', title } = props
   const [fromLauncher, setFromLauncher] = useState<boolean>(false)
   const platform = usePlatform()
   const theme = useTheme()
 
-  const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
+  const { PlatformHeader, PlatformFooter, PlatformControls, PlatformRoute, window } = platform
 
   useEffect(() => {
     isParentAppOpenfinLauncher()
@@ -60,8 +64,9 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const isBlotterOrTrade = title === 'trades' || title === 'live rates'
 
   const Header = windowType === 'main' ? PlatformControls : null
+  const Footer = windowType === 'main' ? PlatformFooter : null
   const subheader =
-    windowType === 'sub' ? (
+    windowType === 'sub' && !isChildView ? (
       <PlatformHeader
         close={fromLauncher && window.close}
         popIn={!fromLauncher && window.close}
@@ -77,6 +82,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
         {subheader}
         {React.cloneElement(children as React.ReactElement, {
           header: Header ? <Header {...window} /> : null,
+          footer: Footer ? <Footer /> : null,
         })}
       </PlatformRoute>
     </RouteStyle>

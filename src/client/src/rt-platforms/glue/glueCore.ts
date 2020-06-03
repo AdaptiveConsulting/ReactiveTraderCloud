@@ -6,7 +6,6 @@ import { registerWindowMethods } from './window'
 import { ApplicationEpic } from 'StoreTypes'
 import { GlueHeader, GlueLogoLink, GlueCoreRoute } from './'
 
-
 export class Glue42Core implements Platform {
   allowTearOff = true
   allowPopIn = true
@@ -19,10 +18,10 @@ export class Glue42Core implements Platform {
   constructor() {
     GlueWeb()
       .then(glue => {
-        window.glue = glue;
+        window.glue = glue
         registerWindowMethods()
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e)
         throw new Error('Failed to init Glue42Web')
       })
@@ -48,8 +47,8 @@ export class Glue42Core implements Platform {
         onClose && onClose()
       })
 
-      const paramType = config.url.includes('?') ? '&' : '?';
-      const url = `${config.url}${paramType}glue=CORE`;
+      const paramType = config.url.includes('?') ? '&' : '?'
+      const url = `${config.url}${paramType}glue=CORE`
 
       return window.glue.windows
         .open(config.name, url, config)
@@ -58,12 +57,14 @@ export class Glue42Core implements Platform {
   }
 
   notification = {
-    notify: () => null
+    notify: () => null,
   }
 
   epics: Array<ApplicationEpic> = []
 
   PlatformHeader: React.FC<any> = () => null
+
+  PlatformFooter: React.FC<any> = () => null
 
   PlatformControls: React.FC<any> = GlueHeader
 

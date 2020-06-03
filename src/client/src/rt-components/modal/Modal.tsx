@@ -1,5 +1,5 @@
 import { darken } from 'polished'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 import { styled } from 'rt-theme'
 
@@ -57,18 +57,19 @@ const Body = styled.div`
 
 interface Props {
   shouldShow?: boolean
-  title?: string
+  title?: string | ReactNode | undefined
+  onOverlayClick?: Function
 }
 
 // TODO disable tabbing outside of the modal
 // tslint:disable-next-line:variable-name
-const Modal: React.FC<Props> = ({ shouldShow, title, children }) => {
+const Modal: React.FC<Props> = ({ shouldShow, title, children, onOverlayClick }) => {
   if (!shouldShow) {
     return <></>
   }
   return (
     <ModalContainer>
-      <ModalOverlay />
+      <ModalOverlay onClick={e => onOverlayClick && onOverlayClick(e)} />
       <ModalPanel>
         {title && <Header>{title}</Header>}
         <Body>{children}</Body>

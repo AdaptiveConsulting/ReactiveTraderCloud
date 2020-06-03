@@ -15,6 +15,7 @@ export default class NoopPlatformAdapter implements Platform {
   PlatformHeader = () => null
   PlatformControls = () => null
   PlatformRoute = DefaultRoute
+  PlatformFooter = () => null
   style = {}
 
   window = {
