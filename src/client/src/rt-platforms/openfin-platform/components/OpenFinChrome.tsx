@@ -167,7 +167,7 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
   min-width: 2.3rem;
   padding-top: 7px;
 
-  color: ${props => props.theme.button.secondary.backgroundColor};
+  color: ${props => props.theme.secondary.base};
   cursor: pointer;
 
   &:hover {
