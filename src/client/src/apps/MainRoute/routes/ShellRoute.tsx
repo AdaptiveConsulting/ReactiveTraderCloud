@@ -131,7 +131,7 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
       <TearOff
         id="liveRates"
         dragTearOff={false}
-        externalWindowProps={addLayoutToConfig(externalWindowDefault.liveRatesRegion(), liveRates)}
+        externalWindowProps={addLayoutToConfig(externalWindowDefault.liveRatesRegion, liveRates)}
         render={(popOut, tornOff) => (
           <WorkspaceWrapper data-qa="shell-route__workspace-wrapper">
             <OverflowScroll>

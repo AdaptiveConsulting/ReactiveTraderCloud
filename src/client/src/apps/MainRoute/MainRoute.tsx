@@ -11,6 +11,7 @@ import { Router } from './data'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
 import { createStore } from './store'
 import { AsyncReturnType } from 'rt-util/utilityTypes'
+import { getAppName } from 'rt-util'
 
 const MainRoute = () => {
   type Platform = AsyncReturnType<typeof getPlatformAsync>
@@ -38,7 +39,7 @@ const MainRoute = () => {
       ReactGA.set({
         dimension1: platform.type,
         dimension2: platform.name,
-        page: window.location.pathname
+        page: window.location.pathname,
       })
       ReactGA.pageview(window.location.pathname)
     }
@@ -73,7 +74,7 @@ const MainRoute = () => {
   // }
   return (
     <React.Fragment>
-      <Helmet>
+      <Helmet title={getAppName('Reactive Trader')}>
         <link
           rel="stylesheet"
           type="text/css"

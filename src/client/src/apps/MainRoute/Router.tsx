@@ -10,7 +10,7 @@ export const Router: FC = () => (
     <Route
       path="/analytics"
       render={() => (
-        <RouteWrapper windowType="sub" title="analytics">
+        <RouteWrapper windowType="sub" title="Analytics">
           <AnalyticsRoute />
         </RouteWrapper>
       )}
@@ -18,7 +18,7 @@ export const Router: FC = () => (
     <Route
       path="/blotter"
       render={routeProps => (
-        <RouteWrapper windowType="sub" title="trades">
+        <RouteWrapper windowType="sub" title="Trades">
           <BlotterRoute {...routeProps} />
         </RouteWrapper>
       )}
@@ -27,7 +27,7 @@ export const Router: FC = () => (
     <Route
       path="/tiles"
       render={() => (
-        <RouteWrapper windowType="sub" title="live rates">
+        <RouteWrapper windowType="sub" title="Live Rates">
           <TileRoute />
         </RouteWrapper>
       )}

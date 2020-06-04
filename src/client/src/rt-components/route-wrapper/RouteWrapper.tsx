@@ -3,6 +3,7 @@ import { styled } from 'rt-theme'
 import { Platform, usePlatform, isParentAppOpenfinLauncher } from 'rt-platforms'
 import { getAppName } from 'rt-util'
 import { useTheme, ThemeName } from 'rt-theme'
+import Helmet from 'react-helmet'
 
 const RouteStyle = styled('div')<{ platform: Platform }>`
   width: 100%;
@@ -61,10 +62,11 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
       )
   }, [theme])
 
-  const isBlotterOrTrade = title === 'trades' || title === 'live rates'
+  const isBlotterOrTrade = title === 'Trades' || title === 'Live Rates'
 
   const Header = windowType === 'main' ? PlatformControls : null
   const Footer = windowType === 'main' ? PlatformFooter : null
+
   const subheader =
     windowType === 'sub' && !isChildView ? (
       <PlatformHeader
@@ -76,8 +78,18 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
       />
     ) : null
 
+  const helmet =
+    windowType === 'sub' ? (
+      isChildView ? (
+        <Helmet title={`${title}`} />
+      ) : (
+        <Helmet title={`${getAppName()} - ${title}`} />
+      )
+    ) : null
+
   return (
     <RouteStyle platform={platform}>
+      {helmet}
       <PlatformRoute>
         {subheader}
         {React.cloneElement(children as React.ReactElement, {

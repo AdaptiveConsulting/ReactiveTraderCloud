@@ -11,7 +11,7 @@ export { wait, getDeferredPromise } from './asyncUtils'
 export { useForceUpdate, useMultiTimeout, useWindowSize, usePopUpMenu } from './hooks'
 export { waitForObject } from './waitForObject'
 export { getEnvironment } from './getEnvironment'
-export { APP_PATHS, getAppName } from './getAppName'
+export { getAppName } from './getAppName'
 export { currencyFormatter } from './url-utils'
 export type ActionUnion<A extends ActionCreatorsMapObject> = actionHelper.ActionUnion<A>
 export type Extends<T, U extends T> = utilityTypes.Extends<T, U>
