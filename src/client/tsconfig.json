@@ -17,7 +17,7 @@
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     "declaration": false,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

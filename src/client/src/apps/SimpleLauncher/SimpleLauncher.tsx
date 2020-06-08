@@ -11,7 +11,7 @@ import {
   createServiceStub,
   PricingServiceProvider,
   ServiceStubProvider,
-  TradeUpdatesProvider
+  TradeUpdatesProvider,
 } from './spotlight'
 
 import { ReferenceDataProvider } from './spotlight/context'
@@ -35,13 +35,12 @@ export const SimpleLauncher: React.FC = () => {
   const intentsProvider = getProvider()
 
   useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       const serviceClient = createServiceStub(broker)
       const platformResult = await getPlatformAsync()
 
       // blotter service
-      const blotterService = new BlotterService(serviceClient)
-      const blotterUpdates$ = blotterService.getTradesStream()
+      const blotterUpdates$ = BlotterService(serviceClient)
       const tradesUpdates$ = new ReplaySubject<TradesUpdate>()
       const referenceDataService$ = referenceDataService(serviceClient)
       blotterUpdates$.subscribe(tradesUpdates$)
@@ -51,7 +50,7 @@ export const SimpleLauncher: React.FC = () => {
         tradeUpdatesStream: tradesUpdates$,
         serviceClient,
         platform: platformResult,
-        referenceData: referenceDataService$
+        referenceData: referenceDataService$,
       })
     })()
   }, [])
@@ -65,7 +64,7 @@ export const SimpleLauncher: React.FC = () => {
     pricingService,
     serviceClient,
     tradeUpdatesStream,
-    referenceData
+    referenceData,
   } = dependencies
 
   if (!platform || !serviceClient) {

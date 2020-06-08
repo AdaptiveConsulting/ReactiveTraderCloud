@@ -5,7 +5,7 @@ import SpotTileContainer from '../widgets/spotTile/SpotTileContainer'
 import { TileView } from '../widgets/workspace/workspaceHeader'
 import { styled } from 'rt-theme'
 import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
-import { Subscription } from 'rxjs'
+import { Subscription, Observable } from 'rxjs'
 
 const SpotTileStyle = styled.div`
   min-width: 26rem;
@@ -41,7 +41,9 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
     let ccyPairSubscription: Subscription
 
     if (platformHasFeature(platform, 'interop')) {
-      const blotterFilters$ = platform.interop.subscribe$(InteropTopics.FilterCurrencyPair)
+      const blotterFilters$ = platform.interop.subscribe$(
+        InteropTopics.FilterCurrencyPair
+      ) as Observable<ReadonlyArray<string>>
       ccyPairSubscription = blotterFilters$.subscribe(setCcyPairFromInterop)
     }
 

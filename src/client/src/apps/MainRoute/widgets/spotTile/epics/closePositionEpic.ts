@@ -6,7 +6,7 @@ import { ApplicationEpic, GlobalState } from 'StoreTypes'
 import { SpotTileActions } from '../actions'
 import { SpotTileData } from '../model/spotTileData'
 import { InteropTopics, platformHasFeature } from 'rt-platforms'
-import { EMPTY } from 'rxjs'
+import { EMPTY, Observable } from 'rxjs'
 import uuid from 'uuid'
 
 interface Msg {
@@ -30,7 +30,7 @@ function createTrade(msg: Msg, priceData: SpotTileData, currencyPair: CurrencyPa
     SpotRate: spotRate,
     Direction: direction,
     Notional: notional,
-    DealtCurrency: currencyPair.base
+    DealtCurrency: currencyPair.base,
   }
 }
 
@@ -44,7 +44,9 @@ export const closePositionEpic: ApplicationEpic = (action$, state$, { platform }
     return EMPTY
   }
 
-  const interopSubscribe$ = platform.interop.subscribe$(InteropTopics.ClosePosition)
+  const interopSubscribe$ = platform.interop.subscribe$(InteropTopics.ClosePosition) as Observable<
+    Message
+  >
 
   return action$.pipe(
     applicationConnected,
@@ -60,7 +62,7 @@ export const closePositionEpic: ApplicationEpic = (action$, state$, { platform }
       )
       return SpotTileActions.executeTrade(trade, {
         uuid,
-        correlationId: msg.correlationId
+        correlationId: msg.correlationId,
       })
     })
   )

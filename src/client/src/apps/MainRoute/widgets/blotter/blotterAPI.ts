@@ -3,8 +3,7 @@ import { map, retryWhen } from 'rxjs/operators'
 import { ServiceClient, retryWithBackOff } from 'rt-system'
 import { Trade } from 'rt-types'
 import { mapFromTradeDto, RawTradeUpdate } from 'rt-types'
-
-const LOG_NAME = 'Blotter Service:'
+import { defer } from 'rxjs'
 
 export interface TradesUpdate {
   readonly isStateOfTheWorld: boolean
@@ -21,20 +20,21 @@ function mapFromDto(dto: RawTradeUpdate): TradesUpdate {
   return {
     trades,
     isStateOfTheWorld: dto.IsStateOfTheWorld,
-    isStale: dto.IsStale
+    isStale: dto.IsStale,
   }
 }
 
-export default class BlotterService {
-  constructor(private readonly serviceClient: ServiceClient) {}
+const LOG_NAME = 'Blotter Service:'
 
-  getTradesStream() {
+export default function (serviceClient: ServiceClient) {
+  return defer(() => {
     console.info(LOG_NAME, 'Subscribing to blotter stream')
-    return this.serviceClient
+
+    return serviceClient
       .createStreamOperation<RawTradeUpdate>('blotter', 'getTradesStream', {})
       .pipe(
         retryWhen(retryWithBackOff()),
         map(dto => mapFromDto(dto))
       )
-  }
+  })
 }

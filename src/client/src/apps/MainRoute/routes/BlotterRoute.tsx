@@ -4,7 +4,7 @@ import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router'
 import { BlotterContainer, BlotterFilters, DEALT_CURRENCY, SYMBOL } from '../widgets/blotter'
 import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
-import { Subscription } from 'rxjs'
+import { Subscription, Observable } from 'rxjs'
 
 const BlotterContainerStyle = styled('div')`
   height: calc(100% - 25px);
@@ -41,12 +41,12 @@ function getFiltersFromQueryStr(queryStr: string): BlotterFilters {
   return {
     [SYMBOL]: ensureArray(parsedQueryString[SYMBOL]),
     [DEALT_CURRENCY]: ensureArray(parsedQueryString[DEALT_CURRENCY]),
-    count: getSingleNumberFromQuery(parsedQueryString.count)
+    count: getSingleNumberFromQuery(parsedQueryString.count),
   }
 }
 
 const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
-  location: { search }
+  location: { search },
 }) => {
   const platform = usePlatform()
   const [filtersFromInterop, setFiltersFromInterop] = useState<ReadonlyArray<BlotterFilters>>()
@@ -58,7 +58,9 @@ const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
     let filterSubscription: Subscription
 
     if (platformHasFeature(platform, 'interop')) {
-      const blotterFilters$ = platform.interop.subscribe$(InteropTopics.FilterBlotter)
+      const blotterFilters$ = platform.interop.subscribe$(
+        InteropTopics.FilterBlotter
+      ) as Observable<ReadonlyArray<BlotterFilters>>
       filterSubscription = blotterFilters$.subscribe(setFiltersFromInterop)
     }
 

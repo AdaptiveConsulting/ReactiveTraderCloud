@@ -1,14 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
 import { Loadable } from 'rt-components'
-import { GlobalState } from 'StoreTypes'
-import { BlotterActions } from './actions'
-import Blotter from './components'
-import { selectBlotterStatus, selectBlotterRowsAndFilter } from './selectors'
 import { usePlatform } from 'rt-platforms'
-import { Trade } from 'rt-types'
-import { BlotterFilters } from './blotterTradesFilter'
+import { ServiceConnectionStatus } from 'rt-types'
+import { BlotterFilters, filterBlotterTrades } from './blotterTradesFilter'
+import Blotter from './components'
+import { useBlotter } from './blotterHooks'
 
 interface BlotterContainerOwnProps {
   filters?: BlotterFilters
@@ -16,39 +12,33 @@ interface BlotterContainerOwnProps {
   tornOff?: boolean
   tearable?: boolean
 }
-
-const mapStateToProps = (state: GlobalState, ownProps: BlotterContainerOwnProps) => ({
-  rows: selectBlotterRowsAndFilter(ownProps.filters || {})(state) as Trade[],
-  status: selectBlotterStatus(state),
-})
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onMount: () => dispatch(BlotterActions.subscribeToBlotterAction()),
-})
-
-type BlotterContainerStateProps = ReturnType<typeof mapStateToProps>
-type BlotterContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
-type BlotterContainerProps = BlotterContainerStateProps &
-  BlotterContainerDispatchProps &
-  BlotterContainerOwnProps
+type BlotterContainerProps = BlotterContainerOwnProps
 
 const BlotterContainer: React.FC<BlotterContainerProps> = ({
-  status,
-  onMount,
   tearable = false,
   tornOff,
-  ...props
+  filters,
+  onPopoutClick,
 }) => {
+  const rows = useBlotter()
+  console.log('render')
+  const filtered = filters ? filterBlotterTrades(rows, filters) : rows
+
   const { allowTearOff } = usePlatform()
 
   return (
     <Loadable
-      onMount={onMount}
-      status={status}
-      render={() => <Blotter {...props} canPopout={tearable && allowTearOff && !tornOff} />}
+      status={ServiceConnectionStatus.CONNECTED}
+      render={() => (
+        <Blotter
+          rows={filtered}
+          onPopoutClick={onPopoutClick}
+          canPopout={tearable && allowTearOff && !tornOff}
+        />
+      )}
       message="Blotter Disconnected"
     />
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BlotterContainer)
+export default BlotterContainer

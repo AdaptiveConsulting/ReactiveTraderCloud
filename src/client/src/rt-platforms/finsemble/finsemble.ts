@@ -1,7 +1,7 @@
 import ReactGA from 'react-ga'
 import { Platform } from '../platform'
 import { AppConfig, WindowConfig } from '../types'
-import { fromEventPattern } from 'rxjs'
+import { fromEventPattern, Observable } from 'rxjs'
 import DefaultRoute from '../defaultRoute'
 import Logo from '../logo'
 import { createDefaultPlatformWindow } from '../defaultPlatformWindow'
@@ -12,7 +12,7 @@ export class Finsemble implements Platform {
   readonly type = 'desktop'
   readonly allowTearOff = true
   style = {
-    height: 'calc(100% - 25px)'
+    height: 'calc(100% - 25px)',
   }
   epics = []
   PlatformHeader = () => null
@@ -26,11 +26,11 @@ export class Finsemble implements Platform {
       ReactGA.event({
         category: 'RT - Window',
         action: 'open',
-        label: config.name
+        label: config.name,
       })
       const createdWindow = window.open()
       return Promise.resolve(createdWindow ? createDefaultPlatformWindow(createdWindow) : undefined)
-    }
+    },
   }
 
   app = {
@@ -50,14 +50,14 @@ export class Finsemble implements Platform {
               options: {
                 icon: config.icon,
                 autoShow: true,
-                frame: false
+                frame: false,
               },
-              addToWorkspace: true
+              addToWorkspace: true,
             },
             (err: string) => (err ? reject(err) : resolve())
           )
         })
-      )
+      ),
   }
 
   private publish(config: AppConfig) {
@@ -74,21 +74,23 @@ export class Finsemble implements Platform {
 
   interop = {
     subscribe$: (topic: string) =>
-      fromEventPattern((handler: Function) => finsembleClient.addListener(topic, handler)),
+      fromEventPattern((handler: Function) =>
+        finsembleClient.addListener(topic, handler)
+      ) as Observable<any>,
 
     subscribe: (topic: string, callback: Function) => finsembleClient.addListener(topic, callback),
 
     publish: (topic: string, message: string | object) => finsembleClient.transmit(topic, message),
 
     query: (topic: string, message: string | object, handler: Function) =>
-      finsembleClient.query(topic, message, handler)
+      finsembleClient.query(topic, message, handler),
   }
 
   notification = {
     notify: (message: object) =>
       finsembleClient.alert('trade', 'ALWAYS', 'trade-executed', message, {
         url: '/notification',
-        duration: 1000 * 50
-      })
+        duration: 1000 * 50,
+      }),
   }
 }

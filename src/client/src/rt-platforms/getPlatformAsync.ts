@@ -1,3 +1,5 @@
+import { Platform } from './platform'
+
 const urlParams = new URLSearchParams(window.location.search)
 
 const isFinsemble = 'FSBL' in window
@@ -18,10 +20,10 @@ export const getBrowserPlatform = () => import(/* webpackChunkName: "browser" */
 
 export const getGlue42CorePlatform = () => import(/* webpackChunkName: "browser" */ './glue')
 
-export const getPlatformAsync = async () => {
+export const getPlatformAsync: () => Promise<Platform> = async () => {
   if (isGlueCore) {
-    const { Glue42Core } = await getGlue42CorePlatform();
-    return new Glue42Core();
+    const { Glue42Core } = await getGlue42CorePlatform()
+    return new Glue42Core()
   }
 
   if (isSymphony) {
@@ -46,7 +48,6 @@ export const getPlatformAsync = async () => {
     const { Glue42 } = await getGlue42Platform()
     return new Glue42()
   }
-
 
   console.info('Using Browser API')
   const { Browser } = await getBrowserPlatform()
