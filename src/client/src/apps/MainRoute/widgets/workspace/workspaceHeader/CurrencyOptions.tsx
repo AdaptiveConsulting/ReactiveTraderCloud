@@ -12,9 +12,14 @@ const CurrencyOptions: React.FC<Props> = ({ options, onSelectionChange }) => {
 
   return (
     <DropdownWrapper>
-      <select onChange={handleChange}>
+      <select onChange={handleChange} data-qa={`currency-dropdown`}>
         {options.map(currencyOption => (
-          <option key={currencyOption}>{currencyOption}</option>
+          <option
+            key={currencyOption}
+            data-qa={`currency-dropdown-${currencyOption.toLowerCase()}`}
+          >
+            {currencyOption}
+          </option>
         ))}
       </select>
       <i className="fa fa-chevron-down"></i>
