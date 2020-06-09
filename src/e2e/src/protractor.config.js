@@ -16,7 +16,7 @@ const CHROME_CAPABILITIES_HEADLESS = {
   chromeOptions: {
     args: [
       ...CHROME_CAPABILITIES.chromeOptions.args,
-      '--start-maximized',
+      '--window-size=1000,1000',
       '---headless',
       `--log-level=2`
     ]
