@@ -11,6 +11,10 @@ export const LeftNav = styled.ul`
   align-self: flex-start;
   flex-wrap: wrap;
   justify-content: space-between;
+
+  @media (max-width: 915px) {
+    display: none;
+  }
 `
 export const LiStyle = styled.li`
   display: flex;
@@ -55,11 +59,59 @@ export const NavItem = styled(LiStyle)<{ active: boolean }>`
   border-radius: 2px;
 `
 
+export const LeftNavTitle = styled.span`
+  margin: auto 0;
+  display: none;
+  text-align: center;
+
+  @media (max-width: 915px) {
+    display: block;
+  }
+`
+
+export const DropdownWrapper = styled.div`
+  display: none;
+  position: relative;
+  top: 2px;
+  font-size: 14px;
+
+  @media (max-width: 915px) {
+    display: block;
+    margin-top: 8px;
+  }
+
+  select {
+    display: block;
+    padding-right: 15px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  select + i.fa {
+    position: absolute;
+    float: right;
+    pointer-events: none;
+  }
+
+  i {
+    right: 0px;
+    top: 1px;
+  }
+
+  select option {
+    padding-right: 20px;
+  }
+`
+
 export const RightNav = styled.ul`
   align-self: flex-end;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  list-style-type: none;
+  list-style: none;
 `
 
 export const Rect = styled.div`

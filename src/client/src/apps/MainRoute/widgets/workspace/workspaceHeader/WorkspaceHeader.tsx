@@ -1,8 +1,9 @@
 import React from 'react'
-import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from './styled'
+import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav, LeftNavTitle } from './styled'
 import { TileView } from './types'
 import ToggleView from './ToggleView'
 import WorkspaceControl from './WorkspaceControl'
+import CurrencyOptions from './CurrencyOptions'
 
 interface Props {
   currencyOptions: string[]
@@ -43,7 +44,11 @@ const WorkspaceHeader: React.FC<Props> = ({
           </NavItem>
         ))}
       </LeftNav>
+
+      <LeftNavTitle>Live Rates</LeftNavTitle>
+
       <RightNav>
+        <CurrencyOptions options={options} onSelectionChange={onCurrencyChange} />
         <ToggleView tileView={tileView} onTileViewChange={onTileViewChange} />
         {canPopout && (
           <WorkspaceControl onPopoutClick={onPopoutClick} data-qa="tiles-header__pop-out-button" />
