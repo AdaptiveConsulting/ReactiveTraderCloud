@@ -94,6 +94,8 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     sortable: false,
     suppressMenu: true,
     headerClass: 'rt-status-indicator__header',
+    cellRenderer: ({ data }) =>
+      data ? `<span data-qa="${data.tradeId}-statusIndicator"></span>` : '',
   },
   {
     colId: TRADE_ID,
@@ -102,6 +104,8 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     width: 100,
     filter: 'agNumberColumnFilter',
     includeInCSVExport: true,
+    cellRenderer: ({ data }) =>
+      data ? `<span data-qa="${data.tradeId}-tradeId">${data.tradeId}</span>` : '',
   },
   {
     colId: STATUS,
@@ -112,15 +116,20 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     filterFramework: SetFilter,
     includeInCSVExport: true,
     csvCellValueFormatter: cell => capitalize(cell.value),
+    cellRenderer: ({ data }) =>
+      data ? `<span data-qa="${data.tradeId}-status">${capitalize(data.status)}</span>` : '',
   },
   {
     colId: TRADE_DATE,
     headerName: 'Trade Date',
     field: TRADE_DATE,
-    cellRenderer: ({ data }) => UtcFormatDate(data['tradeDate']),
     width: 130,
     includeInCSVExport: true,
     csvCellValueFormatter: cell => UtcFormatDate(cell.value),
+    cellRenderer: ({ data }) =>
+      data
+        ? `<span data-qa="${data.tradeId}-tradeDate">${UtcFormatDate(data.tradeDate)}</span>`
+        : '',
   },
   {
     colId: DIRECTION,
@@ -129,6 +138,8 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     width: 110,
     filterFramework: SetFilter,
     includeInCSVExport: true,
+    cellRenderer: ({ data }) =>
+      data ? `<span data-qa="${data.tradeId}-direction">${data.direction}</span>` : '',
   },
   {
     colId: SYMBOL,
@@ -137,6 +148,8 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     width: 110,
     filterFramework: SetFilter,
     includeInCSVExport: true,
+    cellRenderer: ({ data }) =>
+      data ? `<span data-qa="${data.tradeId}-symbol">${data.symbol}</span>` : '',
   },
   {
     colId: DEALT_CURRENCY,
@@ -145,6 +158,8 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     width: 90,
     filterFramework: SetFilter,
     includeInCSVExport: true,
+    cellRenderer: ({ data }) =>
+      data ? `<span data-qa="${data.tradeId}-dealtCurrency">${data.dealtCurrency}</span>` : '',
   },
   {
     colId: NOTIONAL,
@@ -154,9 +169,12 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     headerClass: 'rt-header__numeric',
     width: 110,
     filter: 'agNumberColumnFilter',
-    cellRenderer: ({ data }) => notionalRenderer(data['notional']),
     includeInCSVExport: true,
     csvCellValueFormatter: cell => notionalRenderer(cell.value),
+    cellRenderer: ({ data }) =>
+      data
+        ? `<span data-qa="${data.tradeId}-notional">${notionalRenderer(data.notional)}</span>`
+        : '',
   },
   {
     colId: SPOT_RATE,
@@ -167,15 +185,20 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     headerClass: 'rt-header__numeric',
     filter: 'agNumberColumnFilter',
     includeInCSVExport: true,
+    cellRenderer: ({ data }) =>
+      data ? `<span data-qa="${data.tradeId}-spotRate">${data.spotRate}</span>` : '',
   },
   {
     colId: VALUE_DATE,
     headerName: 'Value Date',
     field: VALUE_DATE,
-    cellRenderer: ({ data }) => UtcFormatDate(data['valueDate']),
     width: 120,
     includeInCSVExport: true,
     csvCellValueFormatter: cell => UtcFormatDate(cell.value),
+    cellRenderer: ({ data }) =>
+      data
+        ? `<span data-qa="${data.tradeId}-valueDate">${UtcFormatDate(data.valueDate)}</span>`
+        : '',
   },
   {
     colId: TRADER_NAME,
