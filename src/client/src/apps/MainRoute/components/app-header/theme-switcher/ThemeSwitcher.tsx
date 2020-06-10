@@ -10,13 +10,15 @@ const iconSize = 18
 
 const SwitcherContainer = styled.div`
   margin: 0 1rem;
+  padding-top: 1px;
 `
 
 const IconContainer = styled.div<{ hover: boolean }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 50%;
-  height: 1.7rem;
-  width: 1.7rem;
+  height: 1.8rem;
+  width: 100%;
+  padding: 4px 6px;
   display: flex;
   justify-content: ${({ hover }) => (hover ? 'flex-end' : 'center')};
   align-items: center;

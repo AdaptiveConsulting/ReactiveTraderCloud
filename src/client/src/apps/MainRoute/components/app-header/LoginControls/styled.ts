@@ -49,9 +49,10 @@ export const UserContainer = styled(Button)`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  border-right: 1px solid ${({ theme }) => theme.core.dividerColor};
+  border-left: 1px solid ${({ theme }) => theme.core.dividerColor};
   border-radius: 0;
   height: 24px;
+  padding-left: 5px;
 `
 
 export const UserAvatar = styled.img`

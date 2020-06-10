@@ -62,6 +62,8 @@ const Root = styled.div`
 const HeaderNav = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  height: 2rem;
 `
 
 const Fill = styled.div`
