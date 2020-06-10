@@ -22,8 +22,8 @@ const Header: React.FC = ({ children }) => {
       </LogoWrapper>
       <Fill />
       <HeaderNav>
-        <LoginControls />
         <ThemeSwitcher />
+        <LoginControls />
         {children == null ? null : <React.Fragment>{children}</React.Fragment>}
       </HeaderNav>
     </Root>

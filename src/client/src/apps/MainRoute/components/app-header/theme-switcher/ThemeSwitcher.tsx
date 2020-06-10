@@ -15,8 +15,8 @@ const SwitcherContainer = styled.div`
 const IconContainer = styled.div<{ hover: boolean }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 50%;
-  height: 1.8rem;
-  width: 1.8rem;
+  height: 1.7rem;
+  width: 1.7rem;
   display: flex;
   justify-content: ${({ hover }) => (hover ? 'flex-end' : 'center')};
   align-items: center;
