@@ -22,8 +22,8 @@ const Header: React.FC = ({ children }) => {
       </LogoWrapper>
       <Fill />
       <HeaderNav>
-        <LoginControls />
         <ThemeSwitcher />
+        <LoginControls />
         {children == null ? null : <React.Fragment>{children}</React.Fragment>}
       </HeaderNav>
     </Root>
@@ -62,6 +62,8 @@ const Root = styled.div`
 const HeaderNav = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  height: 2rem;
 `
 
 const Fill = styled.div`
