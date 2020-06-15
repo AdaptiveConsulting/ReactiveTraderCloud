@@ -4,6 +4,7 @@ import { styled } from 'rt-theme'
 import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'
+import { InstallBanner } from './InstallBanner/InstallBanner'
 const Header: React.FC = ({ children }) => {
   const onLogoClick = useCallback(() => {
     ReactGA.event({
@@ -16,17 +17,20 @@ const Header: React.FC = ({ children }) => {
   }, [])
 
   return (
-    <Root>
-      <LogoWrapper>
-        <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
-      </LogoWrapper>
-      <Fill />
-      <HeaderNav>
-        <ThemeSwitcher />
-        <LoginControls />
-        {children == null ? null : <React.Fragment>{children}</React.Fragment>}
-      </HeaderNav>
-    </Root>
+    <RootWrapper>
+      <Root>
+        <LogoWrapper>
+          <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
+        </LogoWrapper>
+        <Fill />
+        <HeaderNav>
+          <ThemeSwitcher />
+          <LoginControls />
+          {children == null ? null : <React.Fragment>{children}</React.Fragment>}
+        </HeaderNav>
+      </Root>
+      <InstallBanner />
+    </RootWrapper>
   )
 }
 
@@ -34,6 +38,10 @@ const LogoWrapper = styled.div`
   &:hover {
     cursor: pointer;
   }
+`
+
+const RootWrapper = styled.div`
+  position: relative;
 `
 
 const Root = styled.div`
