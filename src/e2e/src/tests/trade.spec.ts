@@ -66,8 +66,7 @@ describe('UI Tests for Reactive Trader Web Application', async () => {
     //finds out latest trade id
 
     for (let number = 1; number < 100; number++) {
-      //const blotterRow = mainPage.blotter.root.element(by.qa(`${number}-tradeId`));
-      const blotterRow = mainPage.blotter.tradesTable['7'].tradeID
+      const blotterRow = mainPage.blotter.tradesTable['16'].tradeID
       if (blotterRow) {
         latestTrade = number
       }
@@ -77,8 +76,8 @@ describe('UI Tests for Reactive Trader Web Application', async () => {
       await mainPage.workspace.selectCurrency('usd')
       await mainPage.tile.selectSpotTile('USDtoJPY', 'sell')
       latestTrade++
-      expect(mainPage.blotter.tradesTable[latestTrade].tradeID)
-      //expect(await mainPage.blotter.root.element(by.qa(`${latestTrade}-tradeId`)).contains(latestTrade))
+      //expect(mainPage.blotter.tradesTable.tradeID)
+      expect(await mainPage.blotter.tradesTable['17'].tradeId.contains(latestTrade))
     })
   })
 

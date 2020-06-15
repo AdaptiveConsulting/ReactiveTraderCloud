@@ -13,7 +13,7 @@ export class BlotterComponent {
   constructor(private browser: ProtractorBrowser, public root: ElementFinder, num?: number) {
     this.tradesTable = {
       executedTrades: {
-        tradeID: root.element(by.qa(`${num}-tradeId`)),
+        tradeID: root.element(by.qa('16-tradeId')),
         tradeStatus: root.element(by.qa(`${num}-status`)),
         tradeDate: root.element(by.qa(`${num}-tradedate`)),
         tradeDirection: root.element(by.qa(`${num}-direction`)),
