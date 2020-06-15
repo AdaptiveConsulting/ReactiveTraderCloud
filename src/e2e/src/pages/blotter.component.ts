@@ -10,7 +10,7 @@ export interface BlotterHeader {
 export class BlotterComponent {
   tradesTable: Record<string, Record<string, ElementFinder>>
 
-  constructor(private browser: ProtractorBrowser, public root: ElementFinder, public num: number) {
+  constructor(private browser: ProtractorBrowser, public root: ElementFinder) {
     this.tradesTable = {
       executedTrades: {
         tradeID: root.element(
