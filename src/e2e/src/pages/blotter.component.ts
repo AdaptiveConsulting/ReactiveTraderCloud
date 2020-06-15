@@ -10,54 +10,18 @@ export interface BlotterHeader {
 export class BlotterComponent {
   tradesTable: Record<string, Record<string, ElementFinder>>
 
-  constructor(private browser: ProtractorBrowser, public root: ElementFinder) {
+  constructor(private browser: ProtractorBrowser, public root: ElementFinder, num?: number) {
     this.tradesTable = {
       executedTrades: {
-        tradeID: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="tradeId"]'
-          )
-        ),
-        tradeStatus: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="status"]'
-          )
-        ),
-        tradeDate: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="tradeDate"]'
-          )
-        ),
-        tradeDirection: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="direction"]'
-          )
-        ),
-        tradeCCYCCY: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="symbol"]'
-          )
-        ),
-        tradeDealtCCY: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="dealtCurrency"]'
-          )
-        ),
-        tradeNotional: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="notional"]'
-          )
-        ),
-        tradeRate: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="spotRate"]'
-          )
-        ),
-        tradeValueDate: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="valueDate"]'
-          )
-        ),
+        tradeID: root.element(by.qa(`${num}-tradeId`)),
+        tradeStatus: root.element(by.qa(`${num}-status`)),
+        tradeDate: root.element(by.qa(`${num}-tradedate`)),
+        tradeDirection: root.element(by.qa(`${num}-direction`)),
+        tradeCCYCCY: root.element(by.qa(`${num}-symbol`)),
+        tradeDealtCCY: root.element(by.qa(`${num}-dealtCurrency`)),
+        tradeNotional: root.element(by.qa(`${num}-notional`)),
+        tradeRate: root.element(by.qa(`${num}-spotRate`)),
+        tradeValueDate: root.element(by.qa(`${num}-valueDate`)),
         tradeBackGroundColour: root.element(
           by.css(
             '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="statusIndicator"]'
