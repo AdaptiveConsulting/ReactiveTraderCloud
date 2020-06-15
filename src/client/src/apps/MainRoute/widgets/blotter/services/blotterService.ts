@@ -7,7 +7,8 @@ export const blotter$ = combineLatest(rows$, highlightedRows$).pipe(
     return rows.map(row => {
       if (highlighted.has(row.tradeId)) {
         return { ...row, highlight: true }
-      } else if (row.highlight) {
+      }
+      if (row.highlight) {
         return { ...row, highlight: false }
       }
       return row

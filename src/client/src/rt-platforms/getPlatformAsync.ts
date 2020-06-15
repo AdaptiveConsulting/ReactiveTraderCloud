@@ -48,7 +48,6 @@ export const getPlatformAsync: () => Promise<Platform> = async () => {
     const { Glue42 } = await getGlue42Platform()
     return new Glue42()
   }
-
   console.info('Using Browser API')
   const { Browser } = await getBrowserPlatform()
   return new Browser()

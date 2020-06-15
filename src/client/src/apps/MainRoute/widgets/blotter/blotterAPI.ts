@@ -4,7 +4,6 @@ import { ServiceClient, retryWithBackOff } from 'rt-system'
 import { Trade } from 'rt-types'
 import { mapFromTradeDto, RawTradeUpdate } from 'rt-types'
 import { defer } from 'rxjs'
-
 export interface TradesUpdate {
   readonly isStateOfTheWorld: boolean
   readonly isStale: boolean
