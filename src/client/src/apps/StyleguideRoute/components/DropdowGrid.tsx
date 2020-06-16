@@ -1,58 +1,44 @@
 import React from 'react'
 
-import { Dropdown, DropdownStyleProps } from 'rt-styleguide'
+import { Dropdown } from 'rt-styleguide'
 import { styled } from 'rt-theme'
 
 export default (() => (
   <Root>
     <LabelColumn>
       <div />
-      <label>Normal</label>
-      <label>Hover</label>
-      <label>Active</label>
-      <label>Disabled</label>
+      <label>Primary</label>
+      <label>Secondary</label>
     </LabelColumn>
     <DropdownColumn>
-      <ColumnTitle>Primary</ColumnTitle>
-      <DropdownVariants />
+      <div>Normal</div>
+      <Dropdown title="Action" />
+      <Dropdown title="Action" />
+    </DropdownColumn>
+    <DropdownColumn>
+      <div>Hover</div>
+      <Dropdown title="Action" active />
+      <Dropdown title="Action" active />
+    </DropdownColumn>
+    <DropdownColumn>
+      <div>Active</div>
+      <Dropdown title="Action" active />
+      <Dropdown title="Action" active />
+    </DropdownColumn>
+    <DropdownColumn>
+      <div>Disabled</div>
+      <Dropdown title="Action" disabled />
+      <Dropdown title="Action" disabled />
     </DropdownColumn>
   </Root>
 )) as React.FC
 
-const DropdownVariants: React.FC<DropdownStyleProps> = props => (
-  <React.Fragment>
-    {
-      // standard
-      <DropdownRow>
-        <Dropdown {...props} title="Primary" />
-      </DropdownRow>
-    }
-    {
-      // standard
-      <DropdownRow>
-        <Dropdown {...props} title="Hover" active />
-      </DropdownRow>
-    }
-    {
-      // standard
-      <DropdownRow>
-        <Dropdown {...props} title="Active" active />
-      </DropdownRow>
-    }
-    {
-      // standard
-      <DropdownRow>
-        <Dropdown {...props} title="Disabled" disabled />
-      </DropdownRow>
-    }
-  </React.Fragment>
-)
-
 const GridColumn = styled.div`
   display: grid;
-  grid-template-rows: 3rem repeat(4, 2rem);
+  grid-template-rows: autp;
   grid-row-gap: 0.5rem;
   align-items: center;
+  margin-bottom: 2rem;
 `
 
 const LabelColumn = styled(GridColumn)`
@@ -60,12 +46,6 @@ const LabelColumn = styled(GridColumn)`
   color: ${({ theme }) => theme.secondary.base};
 `
 
-const ColumnTitle = styled.div``
-const DropdownRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 0.5rem;
-`
 const DropdownColumn = styled(GridColumn)`
   min-width: 10rem;
 `
@@ -74,10 +54,8 @@ const Root = styled.div`
   max-width: 60rem;
 
   display: grid;
-  grid-template-columns: 5rem 1fr 1fr 1fr 1fr ;
+  grid-template-columns: repeat(5, 100px) ;
   grid-column-gap: 2rem;
-
-  padding-bottom: 2rem;
 
   ${DropdownColumn} + ${DropdownColumn} {
     position: relative;
