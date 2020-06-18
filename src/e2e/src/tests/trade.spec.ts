@@ -82,10 +82,13 @@ describe('UI Tests for Reactive Trader Web Application', async () => {
     // }
 
     fit('Validate blotter on successful trade', async () => {
-      const test = await mainPage.blotter.tradesTable.tradeID
-      console.log(test)
-      const returnedrow = test.getAttribute('value')
-      console.log(returnedrow)
+      const test = await mainPage.blotter.tradesTable.executedTrades.tradeID
+      console.log(test.getText())
+
+      // console.log(test.getText())
+      // console.log(test)
+      // const returnedrow = test.getAttribute('value')
+      // console.log(returnedrow)
       //await expect(test).toBe('41');
       // await mainPage.workspace.selectCurrency('usd')
       // await mainPage.tile.selectSpotTile('USDtoJPY', 'sell')
