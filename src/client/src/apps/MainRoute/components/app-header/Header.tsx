@@ -1,10 +1,24 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import ReactGA from 'react-ga'
 import { styled } from 'rt-theme'
 import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'
+import { PWABanner, InstallLaunchButton, PWAInstallBanner } from './PWAInstallBanner'
+
+const SESSION = 'PWABanner'
+
 const Header: React.FC = ({ children }) => {
+  const [banner, setBanner] = useState(sessionStorage.getItem(SESSION) || PWABanner.NotSet)
+
+  const updateBanner = useCallback(
+    (value: PWABanner) => {
+      setBanner(value)
+      sessionStorage.setItem(SESSION, value)
+    },
+    [setBanner]
+  )
+
   const onLogoClick = useCallback(() => {
     ReactGA.event({
       category: 'RT - Outbound',
@@ -16,17 +30,21 @@ const Header: React.FC = ({ children }) => {
   }, [])
 
   return (
-    <Root>
-      <LogoWrapper>
-        <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
-      </LogoWrapper>
-      <Fill />
-      <HeaderNav>
-        <ThemeSwitcher />
-        <LoginControls />
-        {children == null ? null : <React.Fragment>{children}</React.Fragment>}
-      </HeaderNav>
-    </Root>
+    <RootWrapper>
+      <Root>
+        <LogoWrapper>
+          <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
+        </LogoWrapper>
+        <Fill />
+        <HeaderNav>
+          <ThemeSwitcher />
+          <LoginControls />
+          <InstallLaunchButton bannerState={banner} />
+          {children}
+        </HeaderNav>
+      </Root>
+      <PWAInstallBanner banner={banner} updateBanner={updateBanner} />
+    </RootWrapper>
   )
 }
 
@@ -34,6 +52,10 @@ const LogoWrapper = styled.div`
   &:hover {
     cursor: pointer;
   }
+`
+
+const RootWrapper = styled.div`
+  position: relative;
 `
 
 const Root = styled.div`
