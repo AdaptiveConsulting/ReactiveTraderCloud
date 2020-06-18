@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react'
 import { usePlatform } from 'rt-platforms'
 import { isMobileDevice } from 'apps/utils'
 
-export const usePWABannerPrompt = (): [BeforeInstallPromptEvent | null, () => Promise<void>] => {
+export const usePWABannerPrompt = (): [
+  BeforeInstallPromptEvent | null,
+  () => Promise<void> | undefined
+] => {
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const platform = usePlatform()
 
   const promptToInstall = () => {
-    if (!isMobileDevice || platform.type !== 'browser') {
+    if (isMobileDevice || platform.type !== 'browser') {
       return
     }
     if (prompt) {
