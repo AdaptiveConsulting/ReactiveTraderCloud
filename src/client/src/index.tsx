@@ -7,7 +7,6 @@ import * as serviceWorker from './serviceWorker'
 import { getSymphonyPlatform } from 'rt-platforms'
 import { getEnvironment } from 'rt-util/getEnvironment'
 import { APP_PATHS, getAppName } from 'rt-util'
-import { InstallPromptEvent } from './apps/MainRoute/components/app-header/PWAInstallBanner/usePWABannerPrompt'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -15,7 +14,7 @@ const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault()
-  window.installPromptEvent = e as InstallPromptEvent
+  window.beforeInstallPromptEvent = e
 })
 
 //TODO: Move to environment variables / config.
