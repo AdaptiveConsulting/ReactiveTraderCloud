@@ -1,6 +1,6 @@
 import { by, ElementFinder, ProtractorBrowser } from 'protractor'
 import { mapAsync } from '../utils/async.utils'
-import { waitForElementToBePresent, waitForElementToBeVisible } from '../utils/browser.utils'
+import { waitForElementToBePresent } from '../utils/browser.utils'
 
 export interface BlotterHeader {
   id: string
@@ -25,15 +25,15 @@ export class BlotterComponent {
   constructor(private browser: ProtractorBrowser, public root: ElementFinder, num?: number) {
     this.tradesTable = {
       executedTrades: {
-        tradeID: root.element(by.qaTag('1-tradeId')),
-        tradeStatus: root.element(by.qaTag(`1-status`)),
-        tradeDate: root.element(by.qaTag(`1-tradedate`)),
-        tradeDirection: root.element(by.qaTag(`1-direction`)),
-        tradeCCYCCY: root.element(by.qaTag(`1-symbol`)),
-        tradeDealtCCY: root.element(by.qaTag(`1-dealtCurrency`)),
-        tradeNotional: root.element(by.qaTag(`1-notional`)),
-        tradeRate: root.element(by.qaTag(`1-spotRate`)),
-        tradeValueDate: root.element(by.qaTag(`1-valueDate`)),
+        tradeID: root.element(by.css('[data-qa="1-tradeId"]')),
+        tradeStatus: root.element(by.qa(`1-status`)),
+        tradeDate: root.element(by.qa(`1-tradedate`)),
+        tradeDirection: root.element(by.qa(`1-direction`)),
+        tradeCCYCCY: root.element(by.qa(`1-symbol`)),
+        tradeDealtCCY: root.element(by.qa(`1-dealtCurrency`)),
+        tradeNotional: root.element(by.qa(`1-notional`)),
+        tradeRate: root.element(by.qa(`1-spotRate`)),
+        tradeValueDate: root.element(by.qa(`1-valueDate`)),
         tradeBackGroundColour: root.element(
           by.css(
             '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="statusIndicator"]'
