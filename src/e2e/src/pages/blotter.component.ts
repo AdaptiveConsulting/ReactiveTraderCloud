@@ -1,6 +1,6 @@
 import { by, ElementFinder, ProtractorBrowser } from 'protractor'
 import { mapAsync } from '../utils/async.utils'
-import { waitForElementToBePresent } from '../utils/browser.utils'
+import { waitForElementToBePresent, waitForElementToBeVisible } from '../utils/browser.utils'
 
 export interface BlotterHeader {
   id: string
@@ -57,5 +57,13 @@ export class BlotterComponent {
         }
       }
     )
+  }
+
+  async toBeVisible(element: TradeProperties) {
+    const textElement = this.tradesTable.executedTrades[element]
+    if (!textElement) {
+      throw new Error(`could not find element with symbol ${element}`)
+    }
+    await waitForElementToBeVisible(this.browser, textElement)
   }
 }
