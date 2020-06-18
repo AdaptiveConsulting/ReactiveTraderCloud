@@ -10,9 +10,6 @@ export const usePWABannerPrompt = (): [
   const platform = usePlatform()
 
   const promptToInstall = () => {
-    if (isMobileDevice || platform.type !== 'browser') {
-      return
-    }
     if (prompt) {
       return prompt.prompt()
     }
@@ -22,7 +19,11 @@ export const usePWABannerPrompt = (): [
   useEffect(() => {
     const ready = (e: BeforeInstallPromptEvent) => {
       e.preventDefault()
-      setPrompt(e)
+      if (isMobileDevice || platform.type !== 'browser') {
+        setPrompt(null)
+      } else {
+        setPrompt(e)
+      }
     }
 
     if (typeof window.beforeInstallPromptEvent === 'undefined') {
