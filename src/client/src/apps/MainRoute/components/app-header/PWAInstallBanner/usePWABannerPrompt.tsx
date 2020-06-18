@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { usePlatform } from 'rt-platforms'
+import { isMobileDevice } from 'apps/utils'
 
 export interface InstallPromptEvent extends Event {
   readonly platforms: string[]
@@ -15,6 +16,9 @@ export const usePWABannerPrompt = (): [InstallPromptEvent | null, () => void] =>
   const platform = usePlatform()
 
   const promptToInstall = () => {
+    if (!isMobileDevice || platform.type !== 'browser') {
+      return
+    }
     if (prompt) {
       return prompt.prompt()
     }
@@ -24,9 +28,7 @@ export const usePWABannerPrompt = (): [InstallPromptEvent | null, () => void] =>
   useEffect(() => {
     const ready = (e: InstallPromptEvent) => {
       e.preventDefault()
-      if (platform.type === 'browser') {
-        setPrompt(e)
-      }
+      setPrompt(e)
     }
 
     if (typeof window.installPromptEvent === 'undefined') {

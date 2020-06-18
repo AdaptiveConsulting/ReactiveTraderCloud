@@ -40,7 +40,7 @@ const Header: React.FC = ({ children }) => {
           <ThemeSwitcher />
           <LoginControls />
           <InstallLaunchButton bannerState={banner} />
-          {children == null ? null : <React.Fragment>{children}</React.Fragment>}
+          {children}
         </HeaderNav>
       </Root>
       <PWAInstallBanner banner={banner} updateBanner={updateBanner} />
