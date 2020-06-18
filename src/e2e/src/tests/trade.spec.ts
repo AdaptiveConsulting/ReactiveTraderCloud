@@ -61,31 +61,36 @@ describe('UI Tests for Reactive Trader Web Application', async () => {
     await browser.close()
   })
 
-  describe('Blotter', () => {
-    let latestTrade: number
-    //finds out latest trade id
-
-    for (let number = 1; number < 100; number++) {
-      const blotterRow = mainPage.blotter.tradesTable['16'].tradeID
-      if (blotterRow) {
-        latestTrade = number
-      }
-    }
-
-    it('Validate blotter on successful trade', async () => {
-      await mainPage.workspace.selectCurrency('usd')
-      await mainPage.tile.selectSpotTile('USDtoJPY', 'sell')
-      latestTrade++
-      //expect(mainPage.blotter.tradesTable.tradeID)
-      expect(await mainPage.blotter.tradesTable['17'].tradeId.contains(latestTrade))
-    })
-  })
-
   describe('Page', () => {
     it('Verify page title', async () => {
       const title = await browser.getTitle()
       const isValid = envTitles.includes(title)
       expect(isValid).toBeTruthy()
+    })
+  })
+
+  describe('Blotter', () => {
+    //let latestTrade: number
+    //finds out latest trade id
+
+    // for (let number = 1; number < 100; number++) {
+
+    //   const blotterRow = mainPage.blotter.tradesTable[38].tradeID
+    //   if (blotterRow) {
+    //     latestTrade = number
+    //   }
+    // }
+
+    fit('Validate blotter on successful trade', async () => {
+      const test = await mainPage.blotter.tradesTable.tradeID
+      console.log(test)
+      const returnedrow = test.getAttribute('value')
+      console.log(returnedrow)
+      //await expect(test).toBe('41');
+      // await mainPage.workspace.selectCurrency('usd')
+      // await mainPage.tile.selectSpotTile('USDtoJPY', 'sell')
+      // latestTrade++
+      //expect(mainPage.blotter.tradesTable.tradeID)
     })
   })
 

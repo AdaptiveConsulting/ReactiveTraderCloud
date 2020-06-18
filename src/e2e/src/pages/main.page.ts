@@ -23,7 +23,7 @@ export class MainPage {
     )
   }
 
-  async isConnected() {
+  async isConnected(): Promise<boolean> {
     const connectionElement = this.browser.element(by.qa('status-button__toggle-button'))
     if (!connectionElement.isPresent()) {
       return false
