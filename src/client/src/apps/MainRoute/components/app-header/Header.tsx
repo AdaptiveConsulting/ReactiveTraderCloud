@@ -4,16 +4,23 @@ import { styled } from 'rt-theme'
 import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'
-import { PWABanner, InstallLaunchButton, PWAInstallBanner } from './PWAInstallBanner'
+import { PWABanner, InstallLaunchButton, PWAInstallBanner, Device } from './PWAInstallBanner'
 
 const SESSION = 'PWABanner'
 
+interface BannerProps {
+  state: string
+  device?: Device
+}
+
 const Header: React.FC = ({ children }) => {
-  const [banner, setBanner] = useState(sessionStorage.getItem(SESSION) || PWABanner.NotSet)
+  const [banner, setBanner] = useState<BannerProps>({
+    state: sessionStorage.getItem(SESSION) || PWABanner.NotSet,
+  })
 
   const updateBanner = useCallback(
-    (value: PWABanner) => {
-      setBanner(value)
+    (value: PWABanner, device?: Device) => {
+      setBanner({ state: value, device })
       sessionStorage.setItem(SESSION, value)
     },
     [setBanner]
@@ -39,11 +46,11 @@ const Header: React.FC = ({ children }) => {
         <HeaderNav>
           <ThemeSwitcher />
           <LoginControls />
-          <InstallLaunchButton bannerState={banner} />
+          <InstallLaunchButton bannerState={banner.state} />
           {children}
         </HeaderNav>
       </Root>
-      <PWAInstallBanner banner={banner} updateBanner={updateBanner} />
+      <PWAInstallBanner banner={banner.state} updateBanner={updateBanner} />
     </RootWrapper>
   )
 }

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CrossIcon } from 'rt-components'
 import { styled } from 'rt-theme'
+import { MobileInstallModal } from './MobileInstallModal'
 import { usePWABannerPrompt } from './usePWABannerPrompt'
 
 const MainBanner = styled.div<{ isHidden: boolean }>`
@@ -49,21 +50,30 @@ export enum PWABanner {
   Installed = 'installed',
 }
 
+export enum Device {
+  Desktop = 'desktop',
+  Android = 'android',
+  iOS = 'iOS',
+}
+
 interface InstallBannerProps {
   banner: string | null
-  updateBanner: (value: PWABanner) => void
+  updateBanner: (state: PWABanner, device?: Device) => void
 }
 
 export const PWAInstallBanner: React.FC<InstallBannerProps> = ({ banner, updateBanner }) => {
-  const [prompt, promptToInstall] = usePWABannerPrompt()
+  const [prompt, promptToInstall, device] = usePWABannerPrompt()
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   const isHidden = banner !== PWABanner.Shown
 
   useEffect(() => {
     if (prompt && banner === PWABanner.NotSet) {
       updateBanner(PWABanner.Shown)
+    } else if (device) {
+      updateBanner(PWABanner.Shown, device)
     }
-  }, [prompt, banner, updateBanner])
+  }, [prompt, banner, updateBanner, device])
 
   useEffect(() => {
     const handler = () => {
@@ -76,14 +86,31 @@ export const PWAInstallBanner: React.FC<InstallBannerProps> = ({ banner, updateB
   }, [updateBanner])
 
   const closeBanner = () => {
-    updateBanner(PWABanner.Hidden)
+    updateBanner(PWABanner.Hidden, undefined)
+  }
+
+  const installApp = (device: Device | null) => {
+    if (device) {
+      setModalOpen(true)
+    } else {
+      setModalOpen(true)
+      console.log(promptToInstall())
+    }
+  }
+
+  if (modalOpen) {
+    return <MobileInstallModal device={device} />
   }
 
   return (
     <MainBanner isHidden={isHidden}>
       <CrossButton onClick={closeBanner}>{CrossIcon}</CrossButton>
-      <BannerText>Experience Reactive Trader on your desktop!</BannerText>
-      <InstallButton onClick={promptToInstall}>Install</InstallButton>
+      <BannerText>
+        {device
+          ? 'Experience Reactive Trader as an app!'
+          : 'Experience Reactive Trader on your desktop!'}
+      </BannerText>
+      <InstallButton onClick={() => installApp(device)}>Install</InstallButton>
     </MainBanner>
   )
 }
