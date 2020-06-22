@@ -94,11 +94,11 @@ export const PWAInstallBanner: React.FC<InstallBannerProps> = ({
   }
 
   const installPWA = (device: MobileDevice | null) => {
-    // if (device) {
-    setIsModalOpen(true)
-    // } else {
-    promptToInstall()
-    // }
+    if (device) {
+      setIsModalOpen(true)
+    } else {
+      promptToInstall()
+    }
   }
 
   if (isModalOpen) {
