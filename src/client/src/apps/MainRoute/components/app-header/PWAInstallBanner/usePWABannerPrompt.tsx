@@ -18,7 +18,6 @@ export const usePWABannerPrompt = (): [
 
   useEffect(() => {
     const ready = (e: BeforeInstallPromptEvent) => {
-      e.preventDefault()
       if (isMobileDevice || platform.type !== 'browser') {
         setPrompt(null)
       } else {
