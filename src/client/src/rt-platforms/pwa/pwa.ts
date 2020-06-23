@@ -1,21 +1,26 @@
 import ReactGA from 'react-ga'
-import { WindowConfig } from '../types'
-import { openBrowserWindow } from './window'
-import { NotificationMessage, NotifyPermission, sendNotification } from './utils/sendNotification'
 import { Platform } from '../platform'
-import { createDefaultPlatformWindow } from '../defaultPlatformWindow'
 import DefaultRoute from '../defaultRoute'
+import { isRunningInIE } from 'rt-platforms'
 import Logo from '../logo'
-import { isRunningInIE } from '../helpers'
+import {
+  NotificationMessage,
+  NotifyPermission,
+  sendNotification,
+} from '../browser/utils/sendNotification'
+import { createDefaultPlatformWindow } from '../defaultPlatformWindow'
+import { WindowConfig } from '../types'
+import { openBrowserWindow } from '../browser/window'
 
-export default class Browser implements Platform {
-  readonly name = 'browser'
-  readonly type = 'browser'
+export default class PWA implements Platform {
+  readonly name = 'pwa'
+  readonly type = 'pwa'
   readonly allowTearOff = !isRunningInIE()
 
   style = {
     height: '100%',
   }
+
   epics = []
   PlatformHeader = () => null
   PlatformControls = () => null
@@ -45,13 +50,4 @@ export default class Browser implements Platform {
       }
     },
   }
-
-  /*
-    TODO: Browser can subscribe and publish via the web socket, so it would make sense to implement these methods.
-    In that case the interop object could be promoted as abstract to the base class
-  */
-  // interop?: {
-  //   subscribe$: (topic: string) => Observable<any>
-  //   publish: (topic: string, message: any) => void
-  // }
 }
