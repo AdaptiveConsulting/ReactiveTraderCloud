@@ -69,7 +69,7 @@ export const PWAInstallBanner: React.FC<InstallBannerProps> = ({
   setIsModalOpen,
 }) => {
   const [prompt, promptToInstall, device] = usePWABannerPrompt()
-  const isHidden = banner !== PWABanner.Shown
+  const isHidden = banner !== PWABanner.Shown || (!prompt && device !== MobileDevice.iOS)
 
   useEffect(() => {
     if (prompt && banner === PWABanner.NotSet) {
@@ -94,7 +94,7 @@ export const PWAInstallBanner: React.FC<InstallBannerProps> = ({
   }
 
   const installPWA = (device: MobileDevice | null) => {
-    if (device) {
+    if (device === MobileDevice.iOS) {
       setIsModalOpen(true)
     } else {
       promptToInstall()

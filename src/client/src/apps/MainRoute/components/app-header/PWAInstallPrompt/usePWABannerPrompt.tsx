@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { usePlatform } from 'rt-platforms'
-import { isMobileDevice, isAndroid, isiOS } from 'apps/utils'
+import { isAndroid, isiOS } from 'apps/utils'
 import { MobileDevice } from './PWAInstallPrompt'
 
 export const usePWABannerPrompt = (): [
@@ -21,17 +21,13 @@ export const usePWABannerPrompt = (): [
 
   useEffect(() => {
     const ready = (e: BeforeInstallPromptEvent) => {
-      if (isMobileDevice || platform.type !== 'browser') {
-        setPrompt(null)
-      } else {
-        setPrompt(e)
-        setDevice(null)
-      }
+      platform.type === 'browser' ? setPrompt(e) : setPrompt(null)
     }
 
     if (isAndroid) setDevice(MobileDevice.Android)
     else if (isiOS) setDevice(MobileDevice.iOS)
-    else if (typeof window.beforeInstallPromptEvent === 'undefined') {
+
+    if (typeof window.beforeInstallPromptEvent === 'undefined') {
       window.addEventListener('beforeinstallprompt', ready)
     } else {
       ready(window.beforeInstallPromptEvent)
@@ -40,7 +36,7 @@ export const usePWABannerPrompt = (): [
     return () => {
       window.removeEventListener('beforeinstallprompt', ready)
     }
-  }, [platform.type])
+  }, [platform.type, device])
 
   return [prompt, promptToInstall, device]
 }
