@@ -4,12 +4,13 @@ import { styled } from 'rt-theme'
 import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'
-import { PWABanner, InstallLaunchButton, PWAInstallBanner } from './PWAInstallBanner'
+import { PWABanner, PWALaunchButton, PWAInstallBanner } from './PWAInstallPrompt'
 
 const SESSION = 'PWABanner'
 
 const Header: React.FC = ({ children }) => {
-  const [banner, setBanner] = useState(sessionStorage.getItem(SESSION) || PWABanner.NotSet)
+  const [banner, setBanner] = useState<string>(sessionStorage.getItem(SESSION) || PWABanner.NotSet)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const updateBanner = useCallback(
     (value: PWABanner) => {
@@ -39,11 +40,16 @@ const Header: React.FC = ({ children }) => {
         <HeaderNav>
           <ThemeSwitcher />
           <LoginControls />
-          <InstallLaunchButton bannerState={banner} />
+          <PWALaunchButton state={banner} setIsModalOpen={setIsModalOpen} />
           {children}
         </HeaderNav>
       </Root>
-      <PWAInstallBanner banner={banner} updateBanner={updateBanner} />
+      <PWAInstallBanner
+        banner={banner}
+        updateBanner={updateBanner}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </RootWrapper>
   )
 }
@@ -76,7 +82,7 @@ const Root = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 
   position: relative;
-  z-index: 10;
+  z-index: 5;
 
   box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
 `
