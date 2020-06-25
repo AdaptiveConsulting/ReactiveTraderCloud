@@ -14,7 +14,7 @@ import { openBrowserWindow } from '../browser/window'
 
 export default class PWA implements Platform {
   readonly name = 'pwa'
-  readonly type = 'pwa'
+  readonly type = 'desktop'
   readonly allowTearOff = !isRunningInIE()
 
   style = {

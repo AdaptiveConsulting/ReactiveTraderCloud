@@ -1,5 +1,5 @@
 export type PlatformName = 'browser' | 'openfin' | 'finsemble'
-export type PlatformType = 'browser' | 'desktop' | 'pwa'
+export type PlatformType = 'browser' | 'desktop'
 
 export interface WindowPosition {
   visible: boolean
