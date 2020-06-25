@@ -1,3 +1,7 @@
+interface Navigator {
+  standalone?: boolean
+}
+
 const urlParams = new URLSearchParams(window.location.search)
 
 const isFinsemble = 'FSBL' in window
@@ -5,6 +9,9 @@ const isOpenFin = 'fin' in window
 const isGlue42 = 'glue42gd' in window
 const isSymphony = urlParams.has('waitFor') && urlParams.get('waitFor') === 'SYMPHONY'
 const isGlueCore = urlParams.has('glue') && urlParams.get('glue') === 'CORE'
+const isPWA = () =>
+  (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+  (window.navigator as Navigator).standalone
 
 export const getSymphonyPlatform = () => import(/* webpackChunkName: "symphony" */ './symphony')
 
@@ -18,10 +25,12 @@ export const getBrowserPlatform = () => import(/* webpackChunkName: "browser" */
 
 export const getGlue42CorePlatform = () => import(/* webpackChunkName: "browser" */ './glue')
 
+export const getPWAPlatform = () => import(/* webpackChunkName: "browser" */ './pwa')
+
 export const getPlatformAsync = async () => {
   if (isGlueCore) {
-    const { Glue42Core } = await getGlue42CorePlatform();
-    return new Glue42Core();
+    const { Glue42Core } = await getGlue42CorePlatform()
+    return new Glue42Core()
   }
 
   if (isSymphony) {
@@ -47,6 +56,11 @@ export const getPlatformAsync = async () => {
     return new Glue42()
   }
 
+  if (isPWA()) {
+    console.info('Using PWA API')
+    const { PWA } = await getPWAPlatform()
+    return new PWA()
+  }
 
   console.info('Using Browser API')
   const { Browser } = await getBrowserPlatform()
