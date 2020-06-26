@@ -84,7 +84,7 @@ describe('UI Tests for Reactive Trader Web Application', async () => {
     fit('Validate blotter on successful trade', async () => {
       await mainPage.blotter.toBeVisible('tradeID')
       const trade = await mainPage.blotter.tradesTable.executedTrades.tradeID
-      expect(trade.getText()).toEqual('1')
+      expect(trade.getText()).toEqual('103')
 
       // console.log(test.getText())
       // console.log(test)

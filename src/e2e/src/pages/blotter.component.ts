@@ -22,10 +22,10 @@ type TradeProperties =
 export class BlotterComponent {
   tradesTable: Record<'executedTrades', Record<TradeProperties, ElementFinder>>
 
-  constructor(private browser: ProtractorBrowser, public root: ElementFinder, num?: number) {
+  constructor(private browser: ProtractorBrowser, public root: ElementFinder, num?: string) {
     this.tradesTable = {
       executedTrades: {
-        tradeID: root.element(by.css('[data-qa="1-tradeId"]')),
+        tradeID: root.element(by.qa(`103-tradeId`)),
         tradeStatus: root.element(by.qa(`1-status`)),
         tradeDate: root.element(by.qa(`1-tradedate`)),
         tradeDirection: root.element(by.qa(`1-direction`)),

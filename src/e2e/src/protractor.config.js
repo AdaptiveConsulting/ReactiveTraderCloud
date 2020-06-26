@@ -116,7 +116,7 @@ function setUpCustomLocators() {
 
   by.addLocator('qa', (qa, parentElement) => {
     const parent = parentElement || document
-    return parent.querySelector(`[data-qa=${qa}]`)
+    return parent.querySelector(`[data-qa="${qa}"]`)
   })
 
   by.addLocator('qaAll', (qa, parentElement) => {
