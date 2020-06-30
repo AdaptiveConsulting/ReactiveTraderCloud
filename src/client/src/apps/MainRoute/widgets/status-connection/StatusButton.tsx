@@ -1,4 +1,4 @@
-import React, { useState, useCallback, SyntheticEvent, useEffect, useRef } from 'react'
+import React, { useCallback, SyntheticEvent, useRef } from 'react'
 import { ConnectionInfo } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import {
@@ -22,7 +22,6 @@ interface Props {
 export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, services }) => {
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
-  const [appStatus, setAppStatus] = useState<ServiceConnectionStatus>()
 
   const toggleMenu = useCallback(() => {
     setDisplayMenu(!displayMenu)
@@ -33,17 +32,18 @@ export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, servi
     input.select()
   }, [])
 
-  useEffect(() => {
+  const getApplicationStatus = (services: ServiceStatus[]) => {
     if (services.every(s => s.connectionStatus === ServiceConnectionStatus.CONNECTED)) {
-      setAppStatus(ServiceConnectionStatus.CONNECTED)
+      return ServiceConnectionStatus.CONNECTED
     } else if (services.some(s => s.connectionStatus === ServiceConnectionStatus.CONNECTING)) {
-      setAppStatus(ServiceConnectionStatus.CONNECTING)
+      return ServiceConnectionStatus.CONNECTING
     } else {
-      setAppStatus(ServiceConnectionStatus.DISCONNECTED)
+      return ServiceConnectionStatus.DISCONNECTED
     }
-  }, [services])
+  }
 
   const appUrl = `${url}`
+  const appStatus = getApplicationStatus(services)
   return (
     <Root ref={ref}>
       <Button onClick={toggleMenu} data-qa="status-button__toggle-button">
