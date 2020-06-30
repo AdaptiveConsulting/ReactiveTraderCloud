@@ -1,4 +1,4 @@
-import AnalyticsService from './analyticsService'
+import AnalyticsService from './analyticsAPI'
 import { MockScheduler } from 'rt-testing'
 import { PositionsRaw } from './model'
 import { map } from 'rxjs/operators'
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs'
 
 const positionRaw = {
   CurrentPositions: [] as any[],
-  History: [] as any[]
+  History: [] as any[],
 }
 
 describe('AnalyticsService getAnalyticsStream', () => {
@@ -17,7 +17,7 @@ describe('AnalyticsService getAnalyticsStream', () => {
 
   it('Should call createStreamOperation', () => {
     const actionReference = {
-      p: positionRaw
+      p: positionRaw,
     }
     new MockScheduler().run(({ cold, expectObservable }) => {
       const actionLifetime = '--p--'
@@ -44,8 +44,8 @@ describe('AnalyticsService getAnalyticsStream', () => {
     const actionReference = {
       p: {
         CurrentPositions: [{ Symbol: 'AAPL', BasePnl: 5, BaseTradedAmount: 5 }],
-        History: [{ Timestamp: '2019-02-20', UsdPnl: 5 }]
-      }
+        History: [{ Timestamp: '2019-02-20', UsdPnl: 5 }],
+      },
     }
     new MockScheduler().run(({ cold, expectObservable }) => {
       const actionLifetime = '--p--'
@@ -67,7 +67,7 @@ describe('AnalyticsService getAnalyticsStream', () => {
 const implementation = (
   getResponses: (service: string, operationName: string, request: any) => Observable<any>
 ) => ({
-  createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r)
+  createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r),
 })
 const MockServiceStub = jest.fn<Partial<ServiceClient>, Parameters<typeof implementation>>(
   implementation

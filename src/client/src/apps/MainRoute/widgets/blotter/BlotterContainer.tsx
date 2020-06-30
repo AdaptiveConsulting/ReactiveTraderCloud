@@ -1,10 +1,9 @@
 import React from 'react'
 import { Loadable } from 'rt-components'
 import { usePlatform } from 'rt-platforms'
-import { ServiceConnectionStatus } from 'rt-types'
 import { BlotterFilters, filterBlotterTrades } from './blotterTradesFilter'
 import Blotter from './components'
-import { useBlotter } from './blotterHooks'
+import { useBlotter, useBlotterConnection } from './blotterHooks'
 
 interface BlotterContainerOwnProps {
   filters?: BlotterFilters
@@ -21,6 +20,7 @@ const BlotterContainer: React.FC<BlotterContainerProps> = ({
   onPopoutClick,
 }) => {
   const rows = useBlotter()
+  const status = useBlotterConnection()
   console.log('render')
   const filtered = filters ? filterBlotterTrades(rows, filters) : rows
 
@@ -28,7 +28,7 @@ const BlotterContainer: React.FC<BlotterContainerProps> = ({
 
   return (
     <Loadable
-      status={ServiceConnectionStatus.CONNECTED}
+      status={status}
       render={() => (
         <Blotter
           rows={filtered}

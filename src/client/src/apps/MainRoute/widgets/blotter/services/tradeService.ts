@@ -1,4 +1,4 @@
-import blotterAPI, { TradesUpdate } from '../blotterAPI'
+import blotterAPI, { TradesUpdate } from './blotterAPI'
 import { serviceClient } from 'apps/MainRoute/store/singleServices'
 import { shareReplay, scan, map } from 'rxjs/operators'
 import { Trades, Trade } from 'rt-types'

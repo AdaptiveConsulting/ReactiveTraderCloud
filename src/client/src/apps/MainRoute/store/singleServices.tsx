@@ -14,6 +14,7 @@ import { ReplaySubject } from 'rxjs'
 import { retryWhen, multicast, refCount } from 'rxjs/operators'
 import { referenceDataService } from '../data/referenceData'
 import { getPlatformAsync, createExcelApp, Platform } from 'rt-platforms'
+import CompositeStatusService from '../data/compositeStatus/compositeStatusService'
 const HEARTBEAT_TIMEOUT = 3000
 
 export const broker = new WsConnection(
@@ -46,3 +47,5 @@ export const runningPlatform = getPlatformAsync() as Promise<Platform>
 export const excelApp = getPlatformAsync().then(runningPlatform =>
   createExcelApp(runningPlatform.name)
 )
+
+export const compositeStatusService = new CompositeStatusService(serviceStatus$)

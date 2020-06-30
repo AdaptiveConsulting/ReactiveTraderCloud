@@ -10,7 +10,6 @@ import { compositeStatusServiceEpic } from '../data/compositeStatus'
 import { connectionStatusEpic } from '../data/connectionStatus'
 import { referenceServiceEpic } from '../data/referenceData'
 
-import { createAnalyticsServiceEpic } from '../widgets/analytics/index'
 import { createSpotTileEpic } from '../widgets/spotTile/index'
 
 import rootReducer from './combineReducers'
@@ -24,7 +23,6 @@ export default function configureStore(dependencies: ApplicationDependencies) {
     referenceServiceEpic,
     compositeStatusServiceEpic,
     connectionStatusEpic,
-    createAnalyticsServiceEpic(dependencies),
     createSpotTileEpic(dependencies),
   ]
 

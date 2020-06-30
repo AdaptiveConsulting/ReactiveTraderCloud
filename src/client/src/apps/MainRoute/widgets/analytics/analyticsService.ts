@@ -1,52 +1,32 @@
-import { ServiceClient, retryWithBackOff } from 'rt-system'
-import { map, retryWhen } from 'rxjs/operators'
 import {
-  CurrencyPairPosition,
-  CurrencyPairPositionRaw,
-  HistoricPosition,
-  HistoryRaw,
-  PositionsRaw,
-  PositionUpdates
-} from './model'
+  compositeStatusService,
+  referenceDataService$,
+  serviceClient,
+} from 'apps/MainRoute/store/singleServices'
+import { ServiceConnectionStatus } from 'rt-types'
+import { filter, map, mergeMapTo, shareReplay, startWith } from 'rxjs/operators'
+import AnalyticsService from './analyticsAPI'
+import { getModel } from './model/AnalyticsLineChartModel'
+import { getPositionsChartModel } from './model/positionsChartModel'
 
-const LOG_NAME = 'Analytics Service:'
+const ANALYTICS = 'analytics'
+const CURRENCY: string = 'USD'
+export const analyticsConnection$ = compositeStatusService.serviceStatusStream.pipe(
+  filter(statusMap => !!statusMap[ANALYTICS]),
+  map(statusMap => statusMap[ANALYTICS].connectionStatus),
+  startWith(ServiceConnectionStatus.CONNECTING),
+  shareReplay(1)
+)
 
-function mapFromDto(dto: PositionsRaw): PositionUpdates {
-  const positions = mapPositionsFromDto(dto.CurrentPositions)
-  const history = mapHistoricPositionFromDto(dto.History)
-  return {
-    history,
-    currentPositions: positions
-  }
-}
+export const analyticsService$ = new AnalyticsService(serviceClient)
+  .getAnalyticsStream(CURRENCY)
+  .pipe(shareReplay(1))
 
-function mapPositionsFromDto(dtos: CurrencyPairPositionRaw[]): CurrencyPairPosition[] {
-  return dtos.map<CurrencyPairPosition>(dto => ({
-    symbol: dto.Symbol,
-    basePnl: dto.BasePnl,
-    baseTradedAmount: dto.BaseTradedAmount,
-    counterTradedAmount: dto.CounterTradedAmount,
-    basePnlName: 'basePnl',
-    baseTradedAmountName: 'baseTradedAmount'
-  }))
-}
-
-function mapHistoricPositionFromDto(dtos: HistoryRaw[]): HistoricPosition[] {
-  return dtos.map<HistoricPosition>(dto => ({
-    timestamp: new Date(dto.Timestamp),
-    usdPnl: dto.UsdPnl
-  }))
-}
-
-export default class AnalyticsService {
-  constructor(private readonly serviceClient: ServiceClient) {}
-  getAnalyticsStream(analyticsRequest: string) {
-    console.info(LOG_NAME, 'Subscribing to analytics stream')
-    return this.serviceClient
-      .createStreamOperation<PositionsRaw, string>('analytics', 'getAnalytics', analyticsRequest)
-      .pipe(
-        retryWhen(retryWithBackOff()),
-        map(dto => mapFromDto(dto))
-      )
-  }
-}
+export const history$ = referenceDataService$.pipe(
+  mergeMapTo(analyticsService$),
+  map(x => getModel(x.history))
+)
+export const positions$ = referenceDataService$.pipe(
+  mergeMapTo(analyticsService$),
+  map(x => getPositionsChartModel(x.currentPositions))
+)

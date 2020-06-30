@@ -1,3 +1,4 @@
-import { connectObservable } from '@josepot/react-rxjs'
-import { blotter$ } from './services/blotterService'
+import { connectObservable } from 'react-rxjs'
+import { blotter$, blotterConnection$ } from './services/blotterService'
 export const [useBlotter] = connectObservable(blotter$)
+export const [useBlotterConnection] = connectObservable(blotterConnection$)

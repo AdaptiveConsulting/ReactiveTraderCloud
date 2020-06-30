@@ -1,17 +1,8 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
 import { Loadable } from 'rt-components'
-import { GlobalState } from 'StoreTypes'
-import { AnalyticsActions } from './actions'
-import Analytics from './components'
-import {
-  selectAnalyticsStatus,
-  selectCurrencyPairs,
-  selectAnalyticsLineChartModel,
-  selectPositionsChartModel,
-} from './selectors'
 import { usePlatform } from 'rt-platforms'
+import { useAnalyticsConnection, useHistory, usePositions, useRefData } from './analyticsHooks'
+import Analytics from './components'
 
 interface AnalyticsContainerOwnProps {
   onPopoutClick?: () => void
@@ -20,40 +11,28 @@ interface AnalyticsContainerOwnProps {
   inExternalWindow?: boolean
 }
 
-const mapStateToProps = (state: GlobalState) => ({
-  analyticsLineChartModel: selectAnalyticsLineChartModel(state),
-  positionsChartModel: selectPositionsChartModel(state),
-  status: selectAnalyticsStatus(state),
-  currencyPairs: selectCurrencyPairs(state),
-})
+type AnalyticsContainerProps = AnalyticsContainerOwnProps
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onMount: () => dispatch(AnalyticsActions.subcribeToAnalytics()),
-})
-
-type AnalyticsContainerStateProps = ReturnType<typeof mapStateToProps>
-type AnalyticsContainerDispatchProps = ReturnType<typeof mapDispatchToProps>
-type AnalyticsContainerProps = AnalyticsContainerStateProps &
-  AnalyticsContainerDispatchProps &
-  AnalyticsContainerOwnProps
-
-const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
-  status,
-  onMount,
+export const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
   tearable = false,
   tornOff,
   inExternalWindow = false,
-  ...props
 }) => {
+  const history = useHistory()
+  const positions = usePositions()
+  const status = useAnalyticsConnection()
+  const pairs = useRefData()
+
   const { allowTearOff } = usePlatform()
   return (
     <Loadable
       minWidth={22}
-      onMount={onMount}
       status={status}
       render={() => (
         <Analytics
-          {...props}
+          currencyPairs={pairs}
+          positionsChartModel={positions}
+          analyticsLineChartModel={history}
           inExternalWindow={inExternalWindow}
           canPopout={tearable && allowTearOff && !tornOff}
         />
@@ -62,5 +41,3 @@ const AnalyticsContainer: React.FC<AnalyticsContainerProps> = ({
     />
   )
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(AnalyticsContainer)
