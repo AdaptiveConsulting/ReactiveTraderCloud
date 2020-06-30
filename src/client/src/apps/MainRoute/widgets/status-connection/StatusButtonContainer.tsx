@@ -1,14 +1,12 @@
-import { connect } from 'react-redux'
-
-import { GlobalState } from 'StoreTypes'
-import { selectServices } from './selectors'
+import React from 'react'
 import { StatusButton } from './StatusButton'
+import { useConnectionStatus, useServiceStatus } from './statusConnectionHooks'
 
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    connectionStatus: state.connectionStatus,
-    services: selectServices(state),
-  }
+//TODO - revisit redux container pattern
+const StatusButtonContainer: React.FC = () => {
+  const connectionStatus = useConnectionStatus()
+  const services = useServiceStatus()
+  return <StatusButton connectionStatus={connectionStatus} services={services}></StatusButton>
 }
 
-export default connect(mapStateToProps)(StatusButton)
+export default StatusButtonContainer

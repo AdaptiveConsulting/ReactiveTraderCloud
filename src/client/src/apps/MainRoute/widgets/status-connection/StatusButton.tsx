@@ -1,18 +1,18 @@
-import React, { useState, useCallback, SyntheticEvent, useEffect, useRef } from 'react'
+import React, { SyntheticEvent, useCallback, useRef } from 'react'
 import { ConnectionInfo } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
+import { usePopUpMenu } from 'rt-util'
+import FooterVersion from '../footer-version'
+import Service from './Service'
 import {
+  AppUrl,
   Button,
+  Root,
+  ServiceList,
+  ServiceListPopup,
   StatusCircle,
   StatusLabel,
-  Root,
-  AppUrl,
-  ServiceListPopup,
-  ServiceList,
 } from './styled'
-import Service from './Service'
-import FooterVersion from '../footer-version'
-import { usePopUpMenu } from 'rt-util'
 
 interface Props {
   connectionStatus: ConnectionInfo
@@ -22,8 +22,6 @@ interface Props {
 export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, services }) => {
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
-  const [appStatus, setAppStatus] = useState<ServiceConnectionStatus>()
-
   const toggleMenu = useCallback(() => {
     setDisplayMenu(!displayMenu)
   }, [displayMenu, setDisplayMenu])
@@ -33,15 +31,7 @@ export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, servi
     input.select()
   }, [])
 
-  useEffect(() => {
-    if (services.every(s => s.connectionStatus === ServiceConnectionStatus.CONNECTED)) {
-      setAppStatus(ServiceConnectionStatus.CONNECTED)
-    } else if (services.some(s => s.connectionStatus === ServiceConnectionStatus.CONNECTING)) {
-      setAppStatus(ServiceConnectionStatus.CONNECTING)
-    } else {
-      setAppStatus(ServiceConnectionStatus.DISCONNECTED)
-    }
-  }, [services])
+  const appStatus: ServiceConnectionStatus = getConnectionStatus(services)
 
   const appUrl = `${url}`
   return (
@@ -64,4 +54,16 @@ export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, servi
       </ServiceListPopup>
     </Root>
   )
+}
+
+function getConnectionStatus(services: ServiceStatus[]) {
+  let appStatus: ServiceConnectionStatus
+  if (services.every(s => s.connectionStatus === ServiceConnectionStatus.CONNECTED)) {
+    return ServiceConnectionStatus.CONNECTED
+  } else if (services.some(s => s.connectionStatus === ServiceConnectionStatus.CONNECTING)) {
+    appStatus = ServiceConnectionStatus.CONNECTING
+  } else {
+    appStatus = ServiceConnectionStatus.DISCONNECTED
+  }
+  return appStatus
 }
