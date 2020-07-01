@@ -42,7 +42,7 @@ export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, servi
     setDisplayMenu(!displayMenu)
   }, [displayMenu, setDisplayMenu])
 
-  const appUrl = `${url}`
+  const appUrl = url
   const appStatus = getApplicationStatus(services)
   return (
     <Root ref={ref}>
