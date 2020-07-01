@@ -1,4 +1,4 @@
-import React, { useState, useCallback, SyntheticEvent, useEffect, useRef } from 'react'
+import React, { useCallback, SyntheticEvent, useRef } from 'react'
 import { ConnectionInfo } from 'rt-system'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import {
@@ -19,31 +19,31 @@ interface Props {
   services: ServiceStatus[]
 }
 
+const getApplicationStatus = (services: ServiceStatus[]) => {
+  if (services.every(s => s.connectionStatus === ServiceConnectionStatus.CONNECTED)) {
+    return ServiceConnectionStatus.CONNECTED
+  }
+  if (services.some(s => s.connectionStatus === ServiceConnectionStatus.CONNECTING)) {
+    return ServiceConnectionStatus.CONNECTING
+  }
+  return ServiceConnectionStatus.DISCONNECTED
+}
+
+const selectAll = (event: SyntheticEvent) => {
+  const input = event.target as HTMLInputElement
+  input.select()
+}
+
 export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, services }) => {
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
-  const [appStatus, setAppStatus] = useState<ServiceConnectionStatus>()
 
   const toggleMenu = useCallback(() => {
     setDisplayMenu(!displayMenu)
   }, [displayMenu, setDisplayMenu])
 
-  const selectAll = useCallback((event: SyntheticEvent) => {
-    const input = event.target as HTMLInputElement
-    input.select()
-  }, [])
-
-  useEffect(() => {
-    if (services.every(s => s.connectionStatus === ServiceConnectionStatus.CONNECTED)) {
-      setAppStatus(ServiceConnectionStatus.CONNECTED)
-    } else if (services.some(s => s.connectionStatus === ServiceConnectionStatus.CONNECTING)) {
-      setAppStatus(ServiceConnectionStatus.CONNECTING)
-    } else {
-      setAppStatus(ServiceConnectionStatus.DISCONNECTED)
-    }
-  }, [services])
-
-  const appUrl = `${url}`
+  const appUrl = url
+  const appStatus = getApplicationStatus(services)
   return (
     <Root ref={ref}>
       <Button onClick={toggleMenu} data-qa="status-button__toggle-button">
