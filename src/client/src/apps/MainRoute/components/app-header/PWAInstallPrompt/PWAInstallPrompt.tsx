@@ -3,6 +3,8 @@ import { CrossIcon } from 'rt-components'
 import { styled } from 'rt-theme'
 import { PWAInstallModal } from './PWAInstallModal'
 import { usePWABannerPrompt } from './usePWABannerPrompt'
+import Environment from 'rt-system/environment'
+import { isiOS, isMobileDevice } from 'apps/utils'
 
 const MainBanner = styled.div<{ isHidden: boolean }>`
   display: ${({ isHidden }) => (isHidden ? 'none' : 'flex')};
@@ -50,14 +52,9 @@ export enum PWABanner {
   Installed = 'installed',
 }
 
-export enum MobileDevice {
-  Android = 'android',
-  iOS = 'iOS',
-}
-
 interface InstallBannerProps {
   banner: string | null
-  updateBanner: (state: PWABanner, device?: MobileDevice) => void
+  updateBanner: (state: PWABanner) => void
   isModalOpen: boolean
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -68,16 +65,17 @@ export const PWAInstallBanner: React.FC<InstallBannerProps> = ({
   isModalOpen,
   setIsModalOpen,
 }) => {
-  const [prompt, promptToInstall, device] = usePWABannerPrompt()
-  const isHidden = banner !== PWABanner.Shown || (!prompt && device !== MobileDevice.iOS)
+  const [prompt, promptToInstall] = usePWABannerPrompt()
+
+  const isHidden = banner !== PWABanner.Shown || (!prompt && !isiOS) || Environment.isPWA()
 
   useEffect(() => {
     if (prompt && banner === PWABanner.NotSet) {
       updateBanner(PWABanner.Shown)
-    } else if (device && banner === PWABanner.NotSet) {
-      updateBanner(PWABanner.Shown, device)
+    } else if (isiOS && banner === PWABanner.NotSet) {
+      updateBanner(PWABanner.Shown)
     }
-  }, [prompt, banner, updateBanner, device])
+  }, [prompt, banner, updateBanner])
 
   useEffect(() => {
     const handler = () => {
@@ -93,8 +91,8 @@ export const PWAInstallBanner: React.FC<InstallBannerProps> = ({
     updateBanner(PWABanner.Hidden)
   }
 
-  const installPWA = (device: MobileDevice | null) => {
-    if (device === MobileDevice.iOS) {
+  const installPWA = (isiOS: boolean) => {
+    if (isiOS) {
       setIsModalOpen(true)
     } else {
       promptToInstall()
@@ -102,18 +100,18 @@ export const PWAInstallBanner: React.FC<InstallBannerProps> = ({
   }
 
   if (isModalOpen) {
-    return <PWAInstallModal device={device} closeModal={() => setIsModalOpen(false)} />
+    return <PWAInstallModal closeModal={() => setIsModalOpen(false)} />
   }
 
   return (
     <MainBanner isHidden={isHidden}>
       <CrossButton onClick={closeBanner}>{CrossIcon}</CrossButton>
       <BannerText>
-        {device
+        {isMobileDevice
           ? 'Experience Reactive Trader as an app!'
           : 'Experience Reactive Trader on your desktop!'}
       </BannerText>
-      <InstallButton onClick={() => installPWA(device)}>Install</InstallButton>
+      <InstallButton onClick={() => installPWA(isiOS)}>Install</InstallButton>
     </MainBanner>
   )
 }

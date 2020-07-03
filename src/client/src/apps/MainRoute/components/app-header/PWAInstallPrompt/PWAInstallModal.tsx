@@ -1,7 +1,7 @@
 import React from 'react'
-import { MobileDevice, InstallButton } from './PWAInstallPrompt'
-import { Modal, AppleShareIcon } from 'rt-components'
+import { AppleShareIcon, Modal } from 'rt-components'
 import { styled } from 'rt-theme'
+import { InstallButton } from './PWAInstallPrompt'
 
 const MainTitle = styled.div`
   font-size: 1.19rem;
@@ -31,23 +31,17 @@ const Icon = styled.div`
 `
 
 interface InstallModalProps {
-  device: MobileDevice | null
   closeModal: () => void
 }
 
-export const PWAInstallModal: React.FC<InstallModalProps> = ({ device, closeModal }) => (
+export const PWAInstallModal: React.FC<InstallModalProps> = ({ closeModal }) => (
   <Modal shouldShow>
     <ModalWrapper>
       <MainTitle>Install Reactive Trader</MainTitle>
       <Text>This must be done manually</Text>
-      {device === MobileDevice.iOS ? (
-        <DeviceText>
-          Tap <Icon>{AppleShareIcon}</Icon> from the browsers bottom menu and select "Add to Home
-          Screen"
-        </DeviceText>
-      ) : (
-        <DeviceText>Go to your browser settings and select "Add to Home Screen"</DeviceText>
-      )}
+      <DeviceText>
+        Tap <Icon>{AppleShareIcon}</Icon> from the browsers menu and select "Add to Home Screen"
+      </DeviceText>
       <InstallButton onClick={closeModal}>Close</InstallButton>
     </ModalWrapper>
   </Modal>
