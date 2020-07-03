@@ -12,6 +12,5 @@ export { default as ChevronIcon } from './ChevronIcon'
 export { default as ChartIcon } from './ChartIcon'
 export { default as MailIcon } from './MailIcon'
 export { default as AppleShareIcon } from './AppleShareIcon'
-export { default as AndroidSettingsIcon } from './AndroidSettingsIcon'
 
 export { IconStateTypes } from './types'
