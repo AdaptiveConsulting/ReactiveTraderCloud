@@ -1,14 +1,15 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { PWABanner, InstallButton, MobileDevice } from './PWAInstallPrompt'
+import { PWABanner, InstallButton } from './PWAInstallPrompt'
 import { usePWABannerPrompt } from './usePWABannerPrompt'
+import { isiOS } from 'apps/utils'
 interface InstallLaunchProps {
   state: string | null
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 export const PWALaunchButton: React.FC<InstallLaunchProps> = ({ state, setIsModalOpen }) => {
-  const [prompt, promptToInstall, device] = usePWABannerPrompt()
+  const [prompt, promptToInstall] = usePWABannerPrompt()
 
-  if (!prompt && device === MobileDevice.iOS && state === PWABanner.Hidden) {
+  if (!prompt && isiOS && state === PWABanner.Hidden) {
     return <InstallButton onClick={() => setIsModalOpen(true)}>Install</InstallButton>
   } else if (prompt && state === PWABanner.Hidden) {
     return <InstallButton onClick={promptToInstall}>Install PWA</InstallButton>
