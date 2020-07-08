@@ -27,7 +27,7 @@ namespace Adaptive.ReactiveTrader.Server.TradeExecution
         public async Task<ExecuteTradeResponseDto> ExecuteAsync(ExecuteTradeRequestDto request, string user)
         {
             var id = await _tradeIdProvider.GetNextId();
-            var tradeDate = DateTimeOffset.UtcNow.Date;
+            var tradeDate = DateTimeOffset.UtcNow;
 
             DateTimeOffset valueDate;
             if (!DateTimeOffset.TryParse(request.ValueDate, out valueDate))
