@@ -44,7 +44,7 @@ const icons = {
   menu: '<i class="fas fa-filter" aria-hidden="true" />',
   filter: '<i class="fas fa-filter" aria-hidden="true" />',
   sortAscending: '<i class="fas fa-long-arrow-alt-up" aria-hidden="true" />',
-  sortDescending: '<i class="fas fa-long-arrow-alt-down" aria-hidden="true" />'
+  sortDescending: '<i class="fas fa-long-arrow-alt-down" aria-hidden="true" />',
 }
 
 const getRowClass = ({ data }: { data: Trade }) => {
@@ -62,7 +62,8 @@ const getRowClass = ({ data }: { data: Trade }) => {
 }
 
 const Blotter: React.FC<BlotterProps> = props => {
-  const { canPopout, rows } = props
+  let { canPopout, rows } = props
+  rows = rows.map((a, i) => (i === 0 ? { ...a, latest: true } : a))
   const [displayedRows, setDisplayedRows] = useState(0)
   const [gridDoc] = useState(React.createRef<HTMLDivElement>())
   const [gridApi, setGridApi] = useState<GridApi>()

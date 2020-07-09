@@ -105,7 +105,11 @@ export const columnDefinitions: Array<ColDef & ColCSVSettings> = [
     filter: 'agNumberColumnFilter',
     includeInCSVExport: true,
     cellRenderer: ({ data }) =>
-      data ? `<span data-qa="${data.tradeId}-tradeId">${data.tradeId}</span>` : '',
+      data
+        ? `<span data-qa="${data.tradeId}-tradeId" ${
+            data.latest ? 'data-qa-id="LatestTransaction"' : ''
+          }>${data.tradeId}</span>`
+        : '',
   },
   {
     colId: STATUS,

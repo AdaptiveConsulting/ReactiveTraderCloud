@@ -11,6 +11,7 @@ export interface Trade {
   valueDate: Date
   status: any
   highlight?: boolean
+  latest?: boolean
 }
 
 export interface Trades {
