@@ -62,8 +62,10 @@ const getRowClass = ({ data }: { data: Trade }) => {
 }
 
 const Blotter: React.FC<BlotterProps> = props => {
-  let { canPopout, rows } = props
-  rows = rows.map((a, i) => (i === 0 ? { ...a, latest: true } : a))
+  const { canPopout, rows } = props
+  if (rows.length >= 1) {
+    rows[0].latest = true
+  }
   const [displayedRows, setDisplayedRows] = useState(0)
   const [gridDoc] = useState(React.createRef<HTMLDivElement>())
   const [gridApi, setGridApi] = useState<GridApi>()
