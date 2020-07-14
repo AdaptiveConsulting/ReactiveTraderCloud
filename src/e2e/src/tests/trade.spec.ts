@@ -32,6 +32,11 @@ const tradeList: [string, string, string, string, boolean][] = [
   ['gbp', 'GBP/JPY', 'sell', 'Rejected', false]
 ]
 
+const blotterTradeList: [string, string, string, string][] = [
+  ['usd', 'USD/JPY', 'buy', 'Success'],
+  ['gbp', 'GBP/JPY', 'sell', 'Rejected']
+]
+
 const notionalList = [
   ['999999', '999,999'],
   ['2345678.99', '2,345,678.99'],
@@ -70,31 +75,36 @@ describe('UI Tests for Reactive Trader Web Application', async () => {
   })
 
   describe('Blotter', () => {
-    //let latestTrade: number
-    //finds out latest trade id
-
-    // for (let number = 1; number < 100; number++) {
-
-    //   const blotterRow = mainPage.blotter.tradesTable[38].tradeID
-    //   if (blotterRow) {
-    //     latestTrade = number
-    //   }
-    // }
-
-    fit('Validate blotter on successful trade', async () => {
-      await mainPage.blotter.toBeVisible('tradeID')
-      const trade = await mainPage.blotter.tradesTable.executedTrades.tradeID
-      expect(trade.getText()).toEqual('103')
-
-      // console.log(test.getText())
-      // console.log(test)
-      // const returnedrow = test.getAttribute('value')
-      // console.log(returnedrow)
-      //await expect(test).toBe('41');
-      // await mainPage.workspace.selectCurrency('usd')
-      // await mainPage.tile.selectSpotTile('USDtoJPY', 'sell')
-      // latestTrade++
-      //expect(mainPage.blotter.tradesTable.tradeID)
+    blotterTradeList.forEach(([selectedCurrency, currencyPair, direction, expectedResult]) => {
+      it(`Should validate blotter for ${currencyPair} ${expectedResult}`, async () => {
+        const today = new Date()
+        const dd = String(today.getDate()).padStart(2, '0')
+        const mm = today.toLocaleString('default', { month: 'short' })
+        const yyyy = today.getFullYear()
+        const todayBlotterDate = dd + '-' + mm + '-' + yyyy
+        const latestTrade = await mainPage.blotter.getLatestTrade()
+        const tradingCurrency = currencyPair.replace('/', 'To')
+        await mainPage.workspace.selectCurrency(selectedCurrency)
+        await mainPage.tile.selectSpotTile(tradingCurrency, direction)
+        const newLatestTrade = await mainPage.blotter.getLatestTrade()
+        expect(Number(newLatestTrade)).toEqual(Number(latestTrade) + 1)
+        const latestStatus = await (await mainPage.blotter.getTradeStatus(newLatestTrade)).getText()
+        if (expectedResult == 'Success') {
+          expect(latestStatus).toEqual('Done')
+        } else {
+          expect(latestStatus).toEqual('Rejected')
+        }
+        const latestDate = await (await mainPage.blotter.getTradeDate(newLatestTrade)).getText()
+        expect(latestDate).toEqual(todayBlotterDate)
+        const latestDirection = await (
+          await mainPage.blotter.getTradeDirection(newLatestTrade)
+        ).getText()
+        if (direction == 'buy') {
+          expect(latestDirection).toEqual('Buy')
+        } else {
+          expect(latestDirection).toEqual('Sell')
+        }
+      })
     })
   })
 
