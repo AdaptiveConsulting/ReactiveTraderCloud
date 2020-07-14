@@ -17,7 +17,7 @@ const CHROME_CAPABILITIES_HEADLESS = {
     args: [
       ...CHROME_CAPABILITIES.chromeOptions.args,
       '--window-size=1000,1000',
-      // '---headless',
+      '---headless',
       `--log-level=2`
     ]
   }
@@ -98,7 +98,7 @@ const config = {
       })
     )
   },
-  baseUrl: 'http://localhost'
+  baseUrl: 'http://localhost:3000'
 }
 
 module.exports.config = config
