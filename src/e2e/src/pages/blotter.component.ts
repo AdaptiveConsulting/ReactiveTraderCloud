@@ -23,7 +23,27 @@ type TradeProperties =
 export class BlotterComponent {
   tradesTable: Record<'executedTrades', Record<TradeProperties, ElementFinder>>
 
-  constructor(private browser: ProtractorBrowser, public root: ElementFinder) {}
+  constructor(private browser: ProtractorBrowser, public root: ElementFinder) {
+    // this.tradesTable = {
+    //   executedTrades: {
+    //     latestTrade: root.element(by.css("[col-id='tradeId']" + ".ag-cell")),
+    //     tradeID: root.element(by.qa(`306-tradeId`)),
+    //     tradeStatus: root.element(by.qa(`1-status`)),
+    //     tradeDate: root.element(by.qa(`1-tradedate`)),
+    //     tradeDirection: root.element(by.qa(`1-direction`)),
+    //     tradeCCYCCY: root.element(by.qa(`1-symbol`)),
+    //     tradeDealtCCY: root.element(by.qa(`1-dealtCurrency`)),
+    //     tradeNotional: root.element(by.qa(`1-notional`)),
+    //     tradeRate: root.element(by.qa(`1-spotRate`)),
+    //     tradeValueDate: root.element(by.qa(`1-valueDate`)),
+    //     tradeBackGroundColour: root.element(
+    //       by.css(
+    //         '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="statusIndicator"]'
+    //       )
+    //     )
+    //   }
+    // }
+  }
   async getTradeId(num: string): Promise<ElementFinder> {
     const trade = await this.root.element(by.qa(`${num}-tradeId`))
     return trade
@@ -41,6 +61,31 @@ export class BlotterComponent {
 
   async getTradeDirection(num: string): Promise<ElementFinder> {
     const trade = await this.root.element(by.qa(`${num}-direction`))
+    return trade
+  }
+
+  async getTradeCCYCCY(num: string): Promise<ElementFinder> {
+    const trade = await this.root.element(by.qa(`${num}-symbol`))
+    return trade
+  }
+
+  async getTradeDealtCCY(num: string): Promise<ElementFinder> {
+    const trade = await this.root.element(by.qa(`${num}-dealtCurrency`))
+    return trade
+  }
+
+  async getTradeNotional(num: string): Promise<ElementFinder> {
+    const trade = await this.root.element(by.qa(`${num}-notional`))
+    return trade
+  }
+
+  async getTradeRate(num: string): Promise<ElementFinder> {
+    const trade = await this.root.element(by.qa(`${num}-spotRate`))
+    return trade
+  }
+
+  async getTradeValueDate(num: string): Promise<ElementFinder> {
+    const trade = await this.root.element(by.qa(`${num}-valueDate`))
     return trade
   }
 
