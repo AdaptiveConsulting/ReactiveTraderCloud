@@ -1,70 +1,69 @@
 import { by, ElementFinder, ProtractorBrowser } from 'protractor'
 import { mapAsync } from '../utils/async.utils'
-import { waitForElementToBePresent } from '../utils/browser.utils'
+import { waitForElementToBePresent, waitForElementToBeVisible } from '../utils/browser.utils'
 
 export interface BlotterHeader {
   id: string
   label: string
 }
 
-export class BlotterComponent {
-  tradesTable: Record<string, Record<string, ElementFinder>>
+type TradeProperties =
+  | 'latestTrade'
+  | 'tradeID'
+  | 'tradeStatus'
+  | 'tradeDate'
+  | 'tradeDirection'
+  | 'tradeCCYCCY'
+  | 'tradeDealtCCY'
+  | 'tradeNotional'
+  | 'tradeRate'
+  | 'tradeValueDate'
+  | 'tradeBackGroundColour'
 
-  constructor(private browser: ProtractorBrowser, public root: ElementFinder) {
-    this.tradesTable = {
-      executedTrades: {
-        tradeID: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="tradeId"]'
-          )
-        ),
-        tradeStatus: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="status"]'
-          )
-        ),
-        tradeDate: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="tradeDate"]'
-          )
-        ),
-        tradeDirection: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="direction"]'
-          )
-        ),
-        tradeCCYCCY: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="symbol"]'
-          )
-        ),
-        tradeDealtCCY: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="dealtCurrency"]'
-          )
-        ),
-        tradeNotional: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="notional"]'
-          )
-        ),
-        tradeRate: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="spotRate"]'
-          )
-        ),
-        tradeValueDate: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="valueDate"]'
-          )
-        ),
-        tradeBackGroundColour: root.element(
-          by.css(
-            '[data-qa="shell-route__blotter-wrapper"] .ag-body .ag-row:nth-child(1) [col-id="statusIndicator"]'
-          )
-        )
-      }
-    }
+export class BlotterComponent {
+  tradesTable: Record<'executedTrades', Record<TradeProperties, ElementFinder>>
+
+  constructor(private browser: ProtractorBrowser, public root: ElementFinder) {}
+  async getTradeId(num: string): Promise<ElementFinder> {
+    return await this.root.element(by.qa(`${num}-tradeId`))
+  }
+
+  async getTradeStatus(num: string): Promise<ElementFinder> {
+    return await this.root.element(by.qa(`${num}-status`))
+  }
+
+  async getTradeDate(num: string): Promise<ElementFinder> {
+    return await this.root.element(by.qa(`${num}-tradeDate`))
+  }
+
+  async getTradeDirection(num: string): Promise<ElementFinder> {
+    return await this.root.element(by.qa(`${num}-direction`))
+  }
+
+  async getTradeCCYCCY(num: string): Promise<ElementFinder> {
+    return await this.root.element(by.qa(`${num}-symbol`))
+  }
+
+  async getTradeDealtCCY(num: string): Promise<ElementFinder> {
+    return await this.root.element(by.qa(`${num}-dealtCurrency`))
+  }
+
+  async getTradeNotional(num: string): Promise<ElementFinder> {
+    return await this.root.element(by.qa(`${num}-notional`))
+  }
+
+  async getTradeRate(num: string): Promise<ElementFinder> {
+    return await this.root.element(by.qa(`${num}-spotRate`))
+  }
+
+  async getTradeValueDate(num: string): Promise<ElementFinder> {
+    return await this.root.element(by.qa(`${num}-valueDate`))
+  }
+
+  async getLatestTrade() {
+    const latestTrade = this.root.element(by.css("[col-id='tradeId']" + '.ag-cell'))
+    await waitForElementToBePresent(this.browser, latestTrade)
+    return latestTrade.getText()
   }
 
   async getHeaders(): Promise<BlotterHeader[]> {
@@ -81,5 +80,13 @@ export class BlotterComponent {
         }
       }
     )
+  }
+
+  async toBeVisible(element: TradeProperties) {
+    const textElement = this.tradesTable.executedTrades[element]
+    if (!textElement) {
+      throw new Error(`could not find element with symbol ${element}`)
+    }
+    await waitForElementToBeVisible(this.browser, textElement)
   }
 }
