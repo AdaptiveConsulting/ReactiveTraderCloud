@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: referencedataread
-          image: reactivetradercloud/servers:${BUILD_VERSION}
+          image: ${DOCKER_USER}/servers:${BUILD_VERSION}
           env:
             - name: BROKER_HOST
               value: broker
