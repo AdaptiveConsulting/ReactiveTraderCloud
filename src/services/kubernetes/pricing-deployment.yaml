@@ -26,3 +26,7 @@ spec:
               value: '1113'
           command:
             ['sh', '-c', 'dotnet ./Adaptive.ReactiveTrader.Server.Pricing.dll config.prod.json']
+          resources:
+            requests:
+              memory: "100M"
+              cpu: "15m"

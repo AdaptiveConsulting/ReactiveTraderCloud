@@ -17,3 +17,7 @@ spec:
           image: ${DOCKER_USER}/nginx:${BUILD_VERSION}
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              memory: "10M"
+              cpu: "15m"

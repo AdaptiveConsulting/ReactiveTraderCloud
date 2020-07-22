@@ -20,3 +20,7 @@ spec:
               value: broker
             - name: BROKER_PORT
               value: '15674'
+          resources:
+            requests:
+              memory: "150M"
+              cpu: "15m"

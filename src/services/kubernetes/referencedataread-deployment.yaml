@@ -30,3 +30,7 @@ spec:
               '-c',
               'dotnet ./Adaptive.ReactiveTrader.Server.ReferenceDataRead.dll config.prod.json',
             ]
+          resources:
+            requests:
+              memory: "50M"
+              cpu: "5m"

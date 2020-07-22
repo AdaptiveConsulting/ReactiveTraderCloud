@@ -48,3 +48,7 @@ spec:
               value: rsa.pem
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
+          resources:
+            requests:
+              memory: "120M"
+              cpu: "15m"

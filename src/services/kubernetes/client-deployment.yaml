@@ -23,3 +23,7 @@ spec:
                 configMapKeyRef:
                   name: client-config
                   key: environment-name
+          resources:
+            requests:
+              memory: "20M"
+              cpu: "10m"
