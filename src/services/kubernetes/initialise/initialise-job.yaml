@@ -1,19 +1,15 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: analytics-deployment
+  name: initialise-job
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      component: analytics
   template:
     metadata:
       labels:
-        component: analytics
+        component: initialise
     spec:
       containers:
-        - name: analytics
+        - name: initialise
           image: ${DOCKER_USER}/servers:${BUILD_VERSION}
           env:
             - name: BROKER_HOST
@@ -25,4 +21,6 @@ spec:
             - name: EVENTSTORE_PORT
               value: '1113'
           command:
-            ['sh', '-c', 'dotnet ./Adaptive.ReactiveTrader.Server.Analytics.dll config.prod.json']
+            ['sh', '-c', 'dotnet ./Adaptive.ReactiveTrader.Server.Launcher.dll config.prod.json --populate-eventstore']
+      restartPolicy: Never
+      

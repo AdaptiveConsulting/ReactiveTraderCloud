@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: pricehistory
-          image: reactivetradercloud/pricehistory:${BUILD_VERSION}
+          image: ${DOCKER_USER}/pricehistory:${BUILD_VERSION}
           env:
             - name: BROKER_HOST
               value: broker
