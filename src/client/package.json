@@ -63,7 +63,7 @@
     "ag-grid-react": "^21.2.2",
     "audio-recorder-polyfill": "^0.1.6",
     "d3": "3.5.12",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "luxon": "^1.17.2",
     "numeral": "^2.0.6",
     "openfin-fdc3": "0.2.0",
