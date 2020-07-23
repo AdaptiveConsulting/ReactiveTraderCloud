@@ -29,3 +29,7 @@ spec:
               value: '15674'
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
+          resources:
+            requests:
+              memory: "100M"
+              cpu: "10m"

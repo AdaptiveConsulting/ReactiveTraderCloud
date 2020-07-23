@@ -18,3 +18,8 @@ spec:
           ports:
             - containerPort: 1113
             - containerPort: 2113
+          resources:
+            requests:
+              memory: "1G"
+              cpu: "80m"
+
