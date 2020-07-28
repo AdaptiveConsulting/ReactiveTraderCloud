@@ -42,8 +42,7 @@
     }
   },
   "runtime": {
-    "version": "13.76.44.21",
-    "arguments": "--remote-debugging-port=9222"
+    "version": "16.83.51.26"
   },
   "services": [
     {
@@ -59,7 +58,7 @@
     },
     {
       "name": "fdc3",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json"
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.2/app.json"
     },
     {
       "name": "notifications",
