@@ -1,4 +1,4 @@
-import { Bounds } from 'openfin/_v2/shapes'
+import { Bounds } from 'openfin/_v2/shapes/shapes'
 import { useEffect } from 'react'
 
 export async function animateCurrentWindowSize(bounds: Bounds, duration: number = 200) {
@@ -9,12 +9,12 @@ export async function animateCurrentWindowSize(bounds: Bounds, duration: number 
       size: {
         duration,
         height: bounds.height,
-        width: bounds.width
-      }
+        width: bounds.width,
+      },
     },
     {
       tween: 'ease-in-out',
-      interrupt: true
+      interrupt: true,
     }
   )
 }
@@ -42,7 +42,7 @@ export function useAppBoundReset(bounds: Bounds | undefined) {
 
     const resetAppBound = () => {
       animateCurrentWindowSize({
-        ...bounds
+        ...bounds,
       })
     }
     window.addEventListener('beforeunload', resetAppBound)

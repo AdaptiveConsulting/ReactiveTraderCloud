@@ -39,7 +39,8 @@
       "reload": true,
       "reloadIgnoringCache": true,
       "zoom": true
-    }
+    },
+    "fdc3Api": true
   },
   "runtime": {
     "version": "16.83.51.26"
@@ -55,10 +56,6 @@
         }
       },
       "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.2.0/app.json"
-    },
-    {
-      "name": "fdc3",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.2/app.json"
     },
     {
       "name": "notifications",
