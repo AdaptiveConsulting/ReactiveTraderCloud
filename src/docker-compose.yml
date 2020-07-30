@@ -34,6 +34,7 @@ services:
     depends_on:
       - broker
       - eventstore
+      - initialise
     restart: always
   pricing:
     image: ${DOCKER_USER}/servers:${BUILD_VERSION}
