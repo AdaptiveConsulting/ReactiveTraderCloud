@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import Measure, { ContentRect } from 'react-measure'
-import { Bounds } from 'openfin/_v2/shapes'
+import { Bounds } from 'openfin/_v2/shapes/shapes'
 import { usePlatform } from 'rt-platforms'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
@@ -13,14 +13,14 @@ import {
   RootLauncherContainer,
   LauncherContainer,
   SearchButtonContainer,
-  RootResultsContainer
+  RootResultsContainer,
 } from './styles'
 import {
   animateCurrentWindowSize,
   closeCurrentWindow,
   getCurrentWindowBounds,
   minimiseCurrentWindow,
-  useAppBoundReset
+  useAppBoundReset,
 } from './windowUtils'
 import { SearchControl, Response, getInlineSuggestionsComponent, useNlpService } from './spotlight'
 import { ExitIcon, minimiseNormalIcon, SearchIcon } from './icons'
@@ -78,9 +78,7 @@ export const Launcher: React.FC = () => {
   useAppBoundReset(initialBounds)
 
   useEffect(() => {
-    getCurrentWindowBounds()
-      .then(setInitialBounds)
-      .catch(console.error)
+    getCurrentWindowBounds().then(setInitialBounds).catch(console.error)
   }, [])
 
   useEffect(() => {
@@ -91,7 +89,7 @@ export const Launcher: React.FC = () => {
         animateCurrentWindowSize({
           ...initialBounds,
           width: expandedLauncherWidth,
-          height: responseHeight ? responseHeight + initialBounds.height : initialBounds.height
+          height: responseHeight ? responseHeight + initialBounds.height : initialBounds.height,
         })
 
         return
@@ -129,7 +127,7 @@ export const Launcher: React.FC = () => {
 
   const showResponsePanel = useMemo(() => Boolean(isSearchVisible && response), [
     response,
-    isSearchVisible
+    isSearchVisible,
   ])
 
   return (
