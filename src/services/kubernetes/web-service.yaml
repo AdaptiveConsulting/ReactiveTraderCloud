@@ -5,6 +5,8 @@ metadata:
   labels:
     name: web
     public: 'true'
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default": "web-backend-config"}'
 spec:
   selector:
     component: web
