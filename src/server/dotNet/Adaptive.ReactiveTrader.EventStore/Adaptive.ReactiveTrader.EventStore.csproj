@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EventStore.ClientAPI.DotNetCore" Version="2.0.0" />
+    <!-- <PackageReference Include="EventStore.ClientAPI.DotNetCore" Version="2.0.0" /> -->
+    <!-- <PackageReference Include="EventStore.ClientAPI.NetCore" Version="4.1.1-rc" /> -->
+    <PackageReference Include="EventStore.Client" Version="20.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 

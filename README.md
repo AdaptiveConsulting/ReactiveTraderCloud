@@ -87,6 +87,15 @@ Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full 
 
 4. Populate Event Store:
 
+   Command to start Event Store (dev mode, disable tls)
+   ```bash
+   EventStore.ClusterNode.exe --db ./db --log ./logs --dev --enable-external-tcp --disable-external-tcp-tls
+   ```
+   In client code, disable tls as well:
+   ```
+   ConnectionSettings.Create().DisableTls()
+   ```
+
    ```bash
    cd src/server/dotNet
    dotnet run -p Adaptive.ReactiveTrader.Server.Launcher --populate-eventstore
@@ -97,6 +106,11 @@ Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full 
    ```bash
    cd src/server/dotNet
    dotnet run -p Adaptive.ReactiveTrader.Server.Launcher all
+   ```
+
+   or use dev mode
+   ```bash
+   dotnet run -p Adaptive.ReactiveTrader.Server.Launcher dev
    ```
 
    To run individual services, `cd` into their folder, and type `dotnet run`.

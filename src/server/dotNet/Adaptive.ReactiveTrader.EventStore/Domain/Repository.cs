@@ -43,7 +43,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
                 Log.Information("Loading aggregate {streamName} from Event Store", streamName);
             }
 
-            var eventNumber = 0;
+            long eventNumber = 0;
             StreamEventsSlice currentSlice;
             do
             {
@@ -71,7 +71,7 @@ namespace Adaptive.ReactiveTrader.EventStore.Domain
             return aggregate;
         }
 
-        public async Task<int> SaveAsync(AggregateBase aggregate, params KeyValuePair<string, string>[] extraHeaders)
+        public async Task<long> SaveAsync(AggregateBase aggregate, params KeyValuePair<string, string>[] extraHeaders)
         {
             var streamName = aggregate.Identifier.ToString();
 

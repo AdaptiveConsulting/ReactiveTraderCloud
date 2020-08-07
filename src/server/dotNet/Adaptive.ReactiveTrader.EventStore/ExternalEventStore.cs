@@ -8,7 +8,7 @@ namespace Adaptive.ReactiveTrader.EventStore
     {
         public ExternalEventStore(Uri uri)
         {
-            Connection = EventStoreConnection.Create(EventStoreConnectionSettings.Default, uri).Result;
+            Connection = EventStoreConnection.Create(EventStoreConnectionSettings.Default, uri);
         }
 
         public IEventStoreConnection Connection { get; }

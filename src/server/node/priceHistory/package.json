@@ -61,6 +61,7 @@
     "rxjs": "^6.4.0",
     "tslint-config-prettier": "^1.18.0",
     "uuid": "^3.3.2",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.5.0"
   }
 }
