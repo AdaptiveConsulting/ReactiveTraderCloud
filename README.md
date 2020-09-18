@@ -131,7 +131,7 @@ We practice continuous integration and deployment. Every merge to master causes 
 
 ## Contributing
 
-Please see our [contrubtion guidelines](./CONTRIBUTING.md).
+Please see our [contribution guidelines](./CONTRIBUTING.md).
 
 ## Who are we?
 
