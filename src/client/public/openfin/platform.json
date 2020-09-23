@@ -3,7 +3,7 @@
     "splashScreenImage": "{*host_url*}/static/media/splash-screen.jpg",
     "runtime": {
       "arguments": "--v=1 --inspect",
-      "version": "14.78.48.3"
+      "version": "17.85.53.10"
     },
     "shortcut": {
       "company": "Adaptive Consulting",
