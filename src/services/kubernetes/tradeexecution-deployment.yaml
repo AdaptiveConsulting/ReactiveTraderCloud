@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: tradeexecution
-          image: reactivetradercloud/servers:${BUILD_VERSION}
+          image: ${DOCKER_USER}/servers:${BUILD_VERSION}
           env:
             - name: BROKER_HOST
               value: broker
@@ -30,3 +30,8 @@ spec:
               '-c',
               'dotnet ./Adaptive.ReactiveTrader.Server.TradeExecution.dll config.prod.json',
             ]
+          resources:
+            requests:
+              memory: "80M"
+              cpu: "5m"
+

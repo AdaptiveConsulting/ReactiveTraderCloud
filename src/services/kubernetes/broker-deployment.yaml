@@ -14,8 +14,13 @@ spec:
     spec:
       containers:
         - name: broker
-          image: reactivetradercloud/broker:${BUILD_VERSION}
+          image: ${DOCKER_USER}/broker:${BUILD_VERSION}
           ports:
             - containerPort: 5672
             - containerPort: 15672
             - containerPort: 15674
+          resources:
+            requests:
+              memory: "120M"
+              cpu: "100m"
+

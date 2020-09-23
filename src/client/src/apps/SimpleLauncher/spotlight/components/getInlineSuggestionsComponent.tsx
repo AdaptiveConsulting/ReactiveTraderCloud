@@ -54,6 +54,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
     [SYMBOL]: [currencyPair],
     count: getNumber(response.queryResult),
   }
+
   const blotterSuggestion = isTradeIntent(response) ? (
     <Suggestion>
       <InlineBlotter filters={blotterFilter} />

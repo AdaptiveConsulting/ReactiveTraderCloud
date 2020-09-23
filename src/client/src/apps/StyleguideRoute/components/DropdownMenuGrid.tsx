@@ -20,7 +20,7 @@ export default (() => (
       <DropdownMenuVariants options={options} hover />
     </DropdownMenuColumn>
     <DropdownMenuColumn>
-      <ColumnTitle>Active/Selected</ColumnTitle>
+      <ColumnTitle>Active</ColumnTitle>
       <DropdownMenuVariants options={options} active />
     </DropdownMenuColumn>
     <DropdownMenuColumn>
@@ -43,9 +43,10 @@ const DropdownMenuVariants: React.FC<DropdownMenuStyleProps> = props => (
 
 const GridColumn = styled.div`
   display: grid;
-  grid-template-rows: 3rem 1fr;
+  grid-template-rows: auto;
   grid-row-gap: 0.5rem;
   align-items: center;
+  margin-bottom: 2rem;
 `
 
 const LabelColumn = styled(GridColumn)`
@@ -56,7 +57,7 @@ const LabelColumn = styled(GridColumn)`
 const ColumnTitle = styled.div``
 const DropdownMenuRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 120px;
   grid-column-gap: 0.5rem;
 `
 const DropdownMenuColumn = styled(GridColumn)`
@@ -67,10 +68,8 @@ const Root = styled.div`
   max-width: 60rem;
 
   display: grid;
-  grid-template-columns: 5rem 1fr 1fr 1fr 1fr 1fr 1fr ;
+  grid-template-columns: repeat(5, 100px) ;
   grid-column-gap: 2rem;
-
-  padding-bottom: 2rem;
 
   ${DropdownMenuColumn} + ${DropdownMenuColumn} {
     position: relative;

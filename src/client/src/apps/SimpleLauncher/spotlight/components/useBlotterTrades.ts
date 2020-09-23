@@ -26,7 +26,7 @@ export const useBlotterTrades = (filters?: BlotterFilters) => {
           filterBlotterTrades(tradeUpdate.trades, {
             ...filters,
             // get all trades and then limit in the end (so that we can show user how many filtered out)
-            count: undefined
+            count: undefined,
           })
         ),
         scan<ReadonlyArray<Trade>, Map<number, Trade>>((acc, trades) => {
@@ -47,7 +47,8 @@ export const useBlotterTrades = (filters?: BlotterFilters) => {
             newTrades = newTrades.filter(
               t =>
                 filters?.dealtCurrency?.includes(t.dealtCurrency) ||
-                filters?.symbol?.includes(t.symbol)
+                filters?.symbol?.includes(t.symbol) ||
+                filters?.symbol?.some(value => t.dealtCurrency.includes(value))
             )
           }
 

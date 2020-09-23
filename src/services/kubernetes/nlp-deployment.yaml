@@ -18,7 +18,7 @@ spec:
             secretName: nlp-key
       containers:
         - name: nlp
-          image: reactivetradercloud/nlp:${BUILD_VERSION}
+          image: ${DOCKER_USER}/nlp:${BUILD_VERSION}
           volumeMounts:
             - name: google-cloud-key
               mountPath: /var/secrets/google
@@ -29,3 +29,7 @@ spec:
               value: '15674'
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
+          resources:
+            requests:
+              memory: "100M"
+              cpu: "10m"

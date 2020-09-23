@@ -21,9 +21,10 @@ const tradeMatchesFilter = (trade: Trade, filterField: string, filterValues: Fie
     return true
   }
 
+  const CONTAINS_SYMBOL = filterValues.some(value => trade.symbol.includes(value))
   const tradeFieldValue = trade[filterField]
 
-  return filterValues.includes(tradeFieldValue)
+  return filterValues.includes(tradeFieldValue) || CONTAINS_SYMBOL
 }
 
 /**
@@ -31,7 +32,7 @@ const tradeMatchesFilter = (trade: Trade, filterField: string, filterValues: Fie
  */
 const tradeFilterFields: ReadonlyArray<keyof Omit<BlotterFilters, 'count'>> = [
   DEALT_CURRENCY,
-  SYMBOL
+  SYMBOL,
 ]
 
 function isMeaningfullValue(value: any): boolean {
@@ -45,7 +46,7 @@ export function validateFilters(filters: BlotterFilters): BlotterFilters {
   return {
     count: filters.count,
     [DEALT_CURRENCY]: (filters[DEALT_CURRENCY] || []).filter(isMeaningfullValue),
-    [SYMBOL]: (filters[SYMBOL] || []).filter(isMeaningfullValue)
+    [SYMBOL]: (filters[SYMBOL] || []).filter(isMeaningfullValue),
   }
 }
 

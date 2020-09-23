@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: pricing
-          image: reactivetradercloud/servers:${BUILD_VERSION}
+          image: ${DOCKER_USER}/servers:${BUILD_VERSION}
           env:
             - name: BROKER_HOST
               value: broker
@@ -26,3 +26,7 @@ spec:
               value: '1113'
           command:
             ['sh', '-c', 'dotnet ./Adaptive.ReactiveTrader.Server.Pricing.dll config.prod.json']
+          resources:
+            requests:
+              memory: "100M"
+              cpu: "15m"

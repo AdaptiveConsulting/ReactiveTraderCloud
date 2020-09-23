@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: reactivetradercloud/client:${BUILD_VERSION}
+          image: ${DOCKER_USER}/client:${BUILD_VERSION}
           ports:
             - containerPort: 3000
           env:
@@ -23,3 +23,7 @@ spec:
                 configMapKeyRef:
                   name: client-config
                   key: environment-name
+          resources:
+            requests:
+              memory: "20M"
+              cpu: "10m"

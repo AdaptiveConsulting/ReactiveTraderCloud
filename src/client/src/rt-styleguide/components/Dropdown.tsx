@@ -28,8 +28,7 @@ const StyledDropdown = styled(Button)<DropdownStyleProps>`
       : disabled
       ? theme.dropdown.disabled.backgroundColor
       : theme.dropdown.backgroundColor};
-  color: ${({ theme, disabled }) =>
-    disabled ? theme.dropdown.disabled.textColor : theme.dropdown.textColor};}
+  color: ${({ theme }) => theme.dropdown.textColor};
   min-width: 80px;
 
   & > span {

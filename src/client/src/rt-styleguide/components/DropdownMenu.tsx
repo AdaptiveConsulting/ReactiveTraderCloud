@@ -31,15 +31,15 @@ export const DropdownMenu: React.FC<DropdownMenuStyleProps> = props => {
 
 const StyledBase = styled.div<DropdownOptionStyleProps>`
   width: 100%;
-  min-width: 120px;
+  min-width: 100px;
   font-size: 0.8rem;
   padding: 8px 15px;
   text-align: left;
   border-radius: 3px;
-  background-color: ${({ active, theme }) => (active ? theme.button.primary.backgroundColor : '')};
+  background-color: ${({ active, theme, hover }) =>
+    active ? theme.button.primary.backgroundColor : hover ? theme.primary.base : ''};
   text-decoration: ${({ hover }) => (hover ? 'underline' : 'none')};
-  color: ${({ disabled, theme }) =>
-    disabled ? theme.dropdown.disabled.textColor : theme.dropdown.textColor};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 const StyledButtonBase = StyledBase.withComponent('button')
@@ -51,8 +51,8 @@ const DropdownMenuContainer = styled.div`
   list-style: none;
   padding: 5px;
   border-radius: 3px;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-  background-color: ${({ theme }) => theme.primary.base};
+  box-shadow: 0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08);
+  background-color: ${({ theme }) => theme.core.dividerColor};
 `
 
 export default DropdownMenu

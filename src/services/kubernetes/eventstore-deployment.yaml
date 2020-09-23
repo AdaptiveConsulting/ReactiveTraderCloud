@@ -14,7 +14,12 @@ spec:
     spec:
       containers:
         - name: eventstore
-          image: reactivetradercloud/eventstore:${BUILD_VERSION}
+          image: ${DOCKER_USER}/eventstore:${BUILD_VERSION}
           ports:
             - containerPort: 1113
             - containerPort: 2113
+          resources:
+            requests:
+              memory: "1G"
+              cpu: "80m"
+

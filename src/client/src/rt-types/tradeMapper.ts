@@ -83,6 +83,6 @@ function createTrade(
     tradeDate,
     valueDate,
     status,
-    highlight
+    highlight,
   }
 }

@@ -1,10 +1,25 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import ReactGA from 'react-ga'
 import { styled } from 'rt-theme'
 import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'
+import { PWABanner, PWALaunchButton, PWAInstallBanner } from './PWAInstallPrompt'
+
+const SESSION = 'PWABanner'
+
 const Header: React.FC = ({ children }) => {
+  const [banner, setBanner] = useState<string>(sessionStorage.getItem(SESSION) || PWABanner.NotSet)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  const updateBanner = useCallback(
+    (value: PWABanner) => {
+      setBanner(value)
+      sessionStorage.setItem(SESSION, value)
+    },
+    [setBanner]
+  )
+
   const onLogoClick = useCallback(() => {
     ReactGA.event({
       category: 'RT - Outbound',
@@ -16,17 +31,26 @@ const Header: React.FC = ({ children }) => {
   }, [])
 
   return (
-    <Root>
-      <LogoWrapper>
-        <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
-      </LogoWrapper>
-      <Fill />
-      <HeaderNav>
-        <LoginControls />
-        <ThemeSwitcher />
-        {children == null ? null : <React.Fragment>{children}</React.Fragment>}
-      </HeaderNav>
-    </Root>
+    <RootWrapper>
+      <Root>
+        <LogoWrapper>
+          <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
+        </LogoWrapper>
+        <Fill />
+        <HeaderNav>
+          <ThemeSwitcher />
+          <LoginControls />
+          <PWALaunchButton state={banner} setIsModalOpen={setIsModalOpen} />
+          {children}
+        </HeaderNav>
+      </Root>
+      <PWAInstallBanner
+        banner={banner}
+        updateBanner={updateBanner}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
+    </RootWrapper>
   )
 }
 
@@ -34,6 +58,10 @@ const LogoWrapper = styled.div`
   &:hover {
     cursor: pointer;
   }
+`
+
+const RootWrapper = styled.div`
+  position: relative;
 `
 
 const Root = styled.div`
@@ -54,7 +82,7 @@ const Root = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 
   position: relative;
-  z-index: 10;
+  z-index: 5;
 
   box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
 `
@@ -62,6 +90,8 @@ const Root = styled.div`
 const HeaderNav = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  height: 2rem;
 `
 
 const Fill = styled.div`

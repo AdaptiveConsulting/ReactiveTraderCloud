@@ -4,7 +4,9 @@ import { WindowConfig } from '../types'
 import { Platform } from '../platform'
 import { registerWindowMethods } from './window'
 import { ApplicationEpic } from 'StoreTypes'
-import { GlueHeader, GlueLogoLink, GlueCoreRoute } from './'
+import { GlueHeader } from './'
+import DefaultRoute from 'rt-platforms/defaultRoute'
+import Logo from '../logo'
 
 export class Glue42Core implements Platform {
   allowTearOff = true
@@ -68,7 +70,7 @@ export class Glue42Core implements Platform {
 
   PlatformControls: React.FC<any> = GlueHeader
 
-  PlatformRoute: React.FC = GlueCoreRoute
+  PlatformRoute: React.FC = DefaultRoute
 
-  Logo = GlueLogoLink
+  Logo = Logo
 }

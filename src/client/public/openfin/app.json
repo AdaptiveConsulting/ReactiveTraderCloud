@@ -20,10 +20,11 @@
       "minWidth": 800,
       "minHeight": 600,
       "resizable": true,
-      "maximizable": true
+      "maximizable": true,
+      "fdc3Api": true
     },
     "runtime": {
-      "version": "13.76.44.21"
+      "version": "16.83.52.32"
     },
     "services": [
       {
@@ -36,10 +37,6 @@
           }
         },
         "manifestUrl": "https://cdn.openfin.co/services/openfin/layouts/1.2.0/app.json"
-      },
-      {
-        "name": "fdc3",
-        "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json"
       },
       {
         "name": "notifications",

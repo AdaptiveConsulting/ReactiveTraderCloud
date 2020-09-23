@@ -1,5 +1,5 @@
 import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
-import { getEnvironment, getAppName } from 'rt-util'
+import { getEnvironment } from 'rt-util'
 import { excelIcon, limitCheckerIcon, reactiveAnalyticsIcon, reactiveTraderIcon } from './icons'
 
 // Safer than location.origin due to browser support
@@ -101,12 +101,13 @@ const excelLegacyAppConfig: ApplicationConfig = {
 const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
 
 const env = getEnvironment()
+const envSuffix = env === 'demo' ? '' : ` (${env.toUpperCase()})`
 
 const baseAppConfigs: ApplicationConfig[] = [
   {
-    name: getAppName(),
+    name: `Reactive Trader${envSuffix}`,
     displayName: 'RT',
-    tooltipName: 'Launch Reactive Trader',
+    tooltipName: `Launch Reactive Trader${envSuffix}`,
     uuid: `reactive-trader-${env}`,
     url: `${ORIGIN}`,
     icon: reactiveTraderIcon,
@@ -124,10 +125,13 @@ const baseAppConfigs: ApplicationConfig[] = [
     },
   },
   {
-    name: 'Reactive Analytics',
+    name: `Reactive Analytics${envSuffix}`,
     displayName: 'RA',
-    tooltipName: 'Launch Reactive Analytics',
-    url: `http://${env === 'dev' ? env : 'demo'}-reactive-analytics.adaptivecluster.com/`,
+    tooltipName: `Launch Reactive Analytics${envSuffix}`,
+    uuid: `reactive-analytics-${env}`,
+    url:
+      process.env.REACT_APP_ANALYTICS_URL ??
+      `https://${env}-reactive-analytics.adaptivecluster.com/`,
     icon: reactiveAnalyticsIcon,
     iconFillColor: '#CFCFCF',
     iconHoverFillColor: '#ffffff',
@@ -137,7 +141,7 @@ const baseAppConfigs: ApplicationConfig[] = [
       applicationType: 'application',
       windowOptions: {
         ...defaultWindowOptions,
-        frame: false,
+        frame: true,
         icon: `${ORIGIN}/static/media/reactive-analytics.ico`,
       },
     },

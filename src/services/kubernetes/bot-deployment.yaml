@@ -21,7 +21,7 @@ spec:
             secretName: symphony-key
       containers:
         - name: bot
-          image: reactivetradercloud/bot:${BUILD_VERSION}
+          image: ${DOCKER_USER}/bot:${BUILD_VERSION}
           volumeMounts:
             - name: google-cloud-key
               mountPath: /var/secrets/google
@@ -48,3 +48,7 @@ spec:
               value: rsa.pem
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
+          resources:
+            requests:
+              memory: "120M"
+              cpu: "15m"

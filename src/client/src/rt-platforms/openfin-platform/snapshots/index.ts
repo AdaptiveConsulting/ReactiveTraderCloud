@@ -59,7 +59,7 @@ export const applySnapshotFromStorage = (snapshotName: string) => {
 
 export const applySnapshotFromStorageOnLoad = async () => {
   const platform = await fin.Platform.getCurrent()
-  const platformCtx = (await platform.getContext()) || {}
+  const platformCtx = (await platform.getWindowContext()) || {}
 
   const currentSnapshotName = getCurrentSnapshotName()
   const snapshots = getSnapshots()

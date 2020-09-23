@@ -123,10 +123,10 @@ const TitleContainer = styled.div`
   left: 0;
   right: 0;
   text-align: center;
-  width: 80%;
+  width: 100%;
   font-size: 0.625rem;
   font-weight: normal;
-  z-index: 100;
+  z-index: -1;
   text-transform: uppercase;
 `
 

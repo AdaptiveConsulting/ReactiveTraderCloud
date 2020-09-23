@@ -11,6 +11,11 @@ const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
 const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault()
+  window.beforeInstallPromptEvent = e
+})
+
 //TODO: Move to environment variables / config.
 const trackingId = 'UA-46320965-5'
 ReactGA.initialize(trackingId, {
