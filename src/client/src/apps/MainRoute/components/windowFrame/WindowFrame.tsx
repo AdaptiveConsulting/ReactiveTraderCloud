@@ -64,6 +64,7 @@ const WindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
         cancelable: true,
       })
     )
+    fin.Platform.Layout.init()
   }, [])
 
   return (

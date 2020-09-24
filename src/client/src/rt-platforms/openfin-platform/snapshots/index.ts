@@ -37,24 +37,24 @@ const setSnapshotNames = (snapshotNames: string[]) => {
 const setSnapshots = (snapshots: any) => {
   window.localStorage.setItem(OPENFIN_SNAPSHOTS, JSON.stringify(snapshots))
 }
-const setPlatformSnapshotName = async (platform: any, platformSnapshotName: string) => {
-  await platform.setContext({ platformSnapshotName })
+const setPlatformSnapshotName = async (platform: fin.Platform, platformSnapshotName: string) => {
+  await platform.setWindowContext({ platformSnapshotName })
   return platformSnapshotName
 }
 
-export const applySnapshotFromStorage = (snapshotName: string) => {
-  return fin.Platform.getCurrent().then((platform: any) => {
-    const snapshotNames = getSnapshotNames()
-    const snapshots = getSnapshots()
+export const applySnapshotFromStorage = async (snapshotName: string) => {
+  const platform = await fin.Platform.getCurrent()
+  const snapshotNames = getSnapshotNames()
+  const snapshots = getSnapshots()
 
-    if (snapshotNames.includes(snapshotName)) {
-      setCurrentSnapshotName(snapshotName)
-      return platform.applySnapshot(snapshots.snapshots[snapshotName], {
-        closeExistingWindows: true,
-      })
-    }
-    return false
-  })
+  if (snapshotNames.includes(snapshotName)) {
+    setCurrentSnapshotName(snapshotName)
+    await platform.applySnapshot(snapshots.snapshots[snapshotName], {
+      closeExistingWindows: true,
+    })
+    return true
+  }
+  return false
 }
 
 export const applySnapshotFromStorageOnLoad = async () => {
@@ -88,7 +88,7 @@ export const applySnapshotFromStorageOnLoad = async () => {
 
     platformSnapshotName = OPENFIN_SNAPSHOT_DEFAULT_NAME
     setCurrentSnapshotName(platformSnapshotName)
-    platform.applySnapshot(getSnapshots().snapshots[platformSnapshotName])
+    await platform.applySnapshot(getSnapshots().snapshots[platformSnapshotName])
   }
 
   if (platformSnapshotName !== currentSnapshotName) {

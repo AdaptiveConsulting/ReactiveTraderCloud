@@ -47,6 +47,9 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
     return numberOfVisibleService === 1
   }, [blotter.visible, analytics.visible, liveRates.visible])
 
+  // TODO: This information should come from the platform context
+  const isOpenFinTopWindow = window.fin?.me?.isWindow
+
   useEffect(() => {
     window.document.dispatchEvent(
       new Event('DOMContentLoaded', {
@@ -54,12 +57,20 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
         cancelable: true,
       })
     )
-  }, [])
+    if (isOpenFinTopWindow) {
+      async function run() {
+        try {
+          await applySnapshotFromStorageOnLoad()
+        } catch (ex) {
+          console.error(ex)
+        }
+        await fin.Platform.Layout.init()
+      }
+      run()
+    }
+  }, [isOpenFinTopWindow])
 
-  //@ts-ignore
-  if (window.fin && window.fin.me && window.fin.me.isWindow) {
-    applySnapshotFromStorageOnLoad().catch(ex => console.error(ex))
-
+  if (isOpenFinTopWindow) {
     const OfTabTheme = createGlobalStyle<{ theme: Theme }>`
       .lm_tabs {
         background-color: ${({ theme }) => theme.core.lightBackground};
