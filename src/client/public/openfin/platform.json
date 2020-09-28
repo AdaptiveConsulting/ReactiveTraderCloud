@@ -75,9 +75,9 @@
               "blockedPopoutsThrowError": false,
               "closePopoutsOnUnload": true,
               "constrainDragToContainer": false,
-              "hasHeaders": true,
+              "hasHeaders": false,
               "popoutWholeStack": false,
-              "reorderEnabled": true,
+              "reorderEnabled": false,
               "reorderOnTabMenuClick": true,
               "responsiveMode": "always",
               "selectionEnabled": true,
@@ -92,14 +92,12 @@
                 "type": "row",
                 "id": "mainRow",
                 "isClosable": true,
-                "reorderEnabled": true,
                 "contextMenu": true,
                 "title": "",
                 "content": [
                   {
                     "type": "column",
                     "isClosable": true,
-                    "reorderEnabled": true,
                     "title": "",
                     "width": 80,
                     "content": [
@@ -108,7 +106,6 @@
                         "width": 50,
                         "height": 50,
                         "isClosable": true,
-                        "reorderEnabled": true,
                         "title": "",
                         "activeItemIndex": 0,
                         "content": [
@@ -121,7 +118,6 @@
                               "name": "Tiles"
                             },
                             "isClosable": true,
-                            "reorderEnabled": true,
                             "title": "Spot Tiles"
                           }
                         ]
@@ -130,7 +126,6 @@
                         "type": "stack",
                         "header": {},
                         "isClosable": true,
-                        "reorderEnabled": true,
                         "title": "",
                         "activeItemIndex": 0,
                         "height": 50,
@@ -143,7 +138,6 @@
                               "name": "Blotter"
                             },
                             "isClosable": true,
-                            "reorderEnabled": true,
                             "title": "Blotter"
                           }
                         ]
@@ -155,7 +149,6 @@
                     "width": 30,
                     "height": 100,
                     "isClosable": true,
-                    "reorderEnabled": true,
                     "title": "",
                     "activeItemIndex": 0,
                     "content": [
@@ -167,7 +160,6 @@
                           "name": "Analytics"
                         },
                         "isClosable": true,
-                        "reorderEnabled": true,
                         "title": "Analytics"
                       }
                     ]
