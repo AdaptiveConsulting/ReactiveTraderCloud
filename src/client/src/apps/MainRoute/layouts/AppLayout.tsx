@@ -12,11 +12,15 @@ export interface Props {
 }
 
 const AppLayout: React.FC<Props> = ({ before, header, body, footer, after }) => {
+  // TODO - move to openfin-platform
+  //@ts-ignore
+  const isChildView = window.fin && window.fin.me && window.fin.me.isView
+
   return (
     <AppLayoutRoot data-qa="app-layout__root">
       {before}
 
-      {header !== null && <Header>{header}</Header>}
+      {!isChildView && header !== null && <Header>{header}</Header>}
 
       <Body>{body}</Body>
 

@@ -3,13 +3,14 @@ import { Route, Switch } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
 import { currencyFormatter } from 'rt-util'
 import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
+import WindowFrame from './components/windowFrame'
 
 export const Router: FC = () => (
   <Switch>
     <Route
       path="/analytics"
       render={() => (
-        <RouteWrapper windowType="sub" title="analytics">
+        <RouteWrapper windowType="sub" title="Analytics">
           <AnalyticsRoute />
         </RouteWrapper>
       )}
@@ -17,15 +18,16 @@ export const Router: FC = () => (
     <Route
       path="/blotter"
       render={routeProps => (
-        <RouteWrapper windowType="sub" title="trades">
+        <RouteWrapper windowType="sub" title="Trades">
           <BlotterRoute {...routeProps} />
         </RouteWrapper>
       )}
     />
+
     <Route
       path="/tiles"
       render={() => (
-        <RouteWrapper windowType="sub" title="live rates">
+        <RouteWrapper windowType="sub" title="Live Rates">
           <TileRoute />
         </RouteWrapper>
       )}
@@ -47,5 +49,7 @@ export const Router: FC = () => (
         </RouteWrapper>
       )}
     />
+
+    <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
   </Switch>
 )

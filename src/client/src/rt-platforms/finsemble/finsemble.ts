@@ -12,10 +12,11 @@ export class Finsemble implements Platform {
   readonly type = 'desktop'
   readonly allowTearOff = true
   style = {
-    height: 'calc(100% - 25px)'
+    height: 'calc(100% - 25px)',
   }
   epics = []
   PlatformHeader = () => null
+  PlatformFooter = () => null
   PlatformControls = () => null
   PlatformRoute = DefaultRoute
   Logo = Logo
@@ -26,11 +27,11 @@ export class Finsemble implements Platform {
       ReactGA.event({
         category: 'RT - Window',
         action: 'open',
-        label: config.name
+        label: config.name,
       })
       const createdWindow = window.open()
       return Promise.resolve(createdWindow ? createDefaultPlatformWindow(createdWindow) : undefined)
-    }
+    },
   }
 
   app = {
@@ -50,14 +51,14 @@ export class Finsemble implements Platform {
               options: {
                 icon: config.icon,
                 autoShow: true,
-                frame: false
+                frame: false,
               },
-              addToWorkspace: true
+              addToWorkspace: true,
             },
             (err: string) => (err ? reject(err) : resolve())
           )
         })
-      )
+      ),
   }
 
   private publish(config: AppConfig) {
@@ -81,14 +82,14 @@ export class Finsemble implements Platform {
     publish: (topic: string, message: string | object) => finsembleClient.transmit(topic, message),
 
     query: (topic: string, message: string | object, handler: Function) =>
-      finsembleClient.query(topic, message, handler)
+      finsembleClient.query(topic, message, handler),
   }
 
   notification = {
     notify: (message: object) =>
       finsembleClient.alert('trade', 'ALWAYS', 'trade-executed', message, {
         url: '/notification',
-        duration: 1000 * 50
-      })
+        duration: 1000 * 50,
+      }),
   }
 }

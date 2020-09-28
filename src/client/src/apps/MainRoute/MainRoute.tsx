@@ -11,6 +11,7 @@ import { Router } from './data'
 import GlobalScrollbarStyle from './GlobalScrollbarStyle'
 import { createStore } from './store'
 import { AsyncReturnType } from 'rt-util/utilityTypes'
+import { getAppName } from 'rt-util'
 
 const MainRoute = () => {
   type Platform = AsyncReturnType<typeof getPlatformAsync>
@@ -58,7 +59,7 @@ const MainRoute = () => {
 
   return (
     <React.Fragment>
-      <Helmet>
+      <Helmet title={getAppName('Reactive Trader')}>
         <link
           rel="stylesheet"
           type="text/css"

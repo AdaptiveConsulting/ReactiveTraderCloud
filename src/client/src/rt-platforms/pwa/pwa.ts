@@ -23,6 +23,7 @@ export default class PWA implements Platform {
 
   epics = []
   PlatformHeader = () => null
+  PlatformFooter = () => null
   PlatformControls = () => null
   PlatformRoute = DefaultRoute
   Logo = Logo

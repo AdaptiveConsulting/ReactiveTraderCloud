@@ -12,15 +12,15 @@ export interface LayoutState {
 
 const INITIAL_STATE: LayoutState = {
   blotter: {
-    visible: true
+    visible: true,
   },
   analytics: {
-    visible: true
+    visible: true,
   },
   spotTiles: {},
   liveRates: {
-    visible: true
-  }
+    visible: true,
+  },
 }
 
 export const layoutReducer = (
@@ -33,17 +33,17 @@ export const layoutReducer = (
         case externalWindowDefault.blotterRegion.config.name:
           return {
             ...state,
-            blotter: getWindowPosition(action)
+            blotter: getWindowPosition(action),
           }
         case externalWindowDefault.analyticsRegion.config.name:
           return {
             ...state,
-            analytics: getWindowPosition(action)
+            analytics: getWindowPosition(action),
           }
-        case externalWindowDefault.liveRatesRegion().config.name:
+        case externalWindowDefault.liveRatesRegion.config.name:
           return {
             ...state,
-            liveRates: getWindowPosition(action)
+            liveRates: getWindowPosition(action),
           }
         default:
           // this is a spot tile
@@ -51,8 +51,8 @@ export const layoutReducer = (
             ...state,
             spotTiles: {
               ...state.spotTiles,
-              [action.payload.name!]: getWindowPosition(action)
-            }
+              [action.payload.name!]: getWindowPosition(action),
+            },
           }
       }
     }
@@ -66,5 +66,5 @@ const getWindowPosition = (
 ): WindowPosition => ({
   visible: !!action.payload.display,
   x: action.payload.x,
-  y: action.payload.y
+  y: action.payload.y,
 })

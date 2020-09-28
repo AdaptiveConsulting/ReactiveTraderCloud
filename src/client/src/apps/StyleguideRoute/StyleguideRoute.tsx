@@ -11,6 +11,7 @@ import FontFamilies from './sections/FontFamilies'
 import Introduction from './sections/Introduction'
 import Iconography from './sections/Iconography'
 import Molecules from './sections/Molecules'
+import { getAppName } from 'rt-util'
 
 const sections: Array<{ path: string; Section: React.ComponentType; title: string }> = [
   { path: 'core-branding', Section: CoreBranding, title: 'Colour' },
@@ -26,7 +27,7 @@ const StyleguideRoute: React.FC = () => {
 
   return (
     <React.Fragment>
-      <Helmet>
+      <Helmet title={getAppName('Style Guide for Reactive Trader')}>
         <link
           rel="stylesheet"
           type="text/css"

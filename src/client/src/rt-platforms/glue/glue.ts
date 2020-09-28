@@ -81,6 +81,8 @@ export class Glue42 implements Platform {
 
   PlatformHeader: React.FC<any> = () => null
 
+  PlatformFooter: React.FC<any> = () => null
+
   PlatformControls: React.FC<any> = GlueHeader
 
   PlatformRoute: React.FC = DefaultRoute

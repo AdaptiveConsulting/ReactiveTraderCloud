@@ -10,7 +10,7 @@ import {
   NotificationActionEvent,
   removeEventListener,
   addEventListener,
-  create
+  create,
 } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
@@ -25,7 +25,7 @@ export default class OpenFin implements Platform {
   readonly allowTearOff = true
 
   style = {
-    height: '100%'
+    height: '100%',
   }
 
   constructor() {
@@ -35,7 +35,7 @@ export default class OpenFin implements Platform {
 
   window = {
     ...createPlatformWindow(() => Promise.resolve(fin.desktop.Window.getCurrent())),
-    open: openDesktopWindow
+    open: openDesktopWindow,
   }
 
   app = {
@@ -64,7 +64,7 @@ export default class OpenFin implements Platform {
               name: config.uuid,
               uuid: config.uuid,
               url: config.url,
-              mainWindowOptions: { icon: config.icon, autoShow: true, frame: true }
+              mainWindowOptions: { icon: config.icon, autoShow: true, frame: true },
             },
             () =>
               app.run(
@@ -74,7 +74,7 @@ export default class OpenFin implements Platform {
             err => reject(err)
           )
         })
-      })
+      }),
   }
 
   interop = {
@@ -87,7 +87,7 @@ export default class OpenFin implements Platform {
       ),
 
     publish: (topic: string, message: string | object) =>
-      fin.desktop.InterApplicationBus.publish(topic, message)
+      fin.desktop.InterApplicationBus.publish(topic, message),
   }
 
   notification = {
@@ -100,10 +100,10 @@ export default class OpenFin implements Platform {
         buttons: [
           {
             title: 'Highlight trade in blotter',
-            onClick: { task: 'highlight-trade' }
-          }
+            onClick: { task: 'highlight-trade' },
+          },
         ],
-        category: 'Trade Executed'
+        category: 'Trade Executed',
       })
         .then((successVal: Notification) => {
           console.info('Notification success', successVal)
@@ -111,12 +111,14 @@ export default class OpenFin implements Platform {
         .catch((err: any) => {
           console.error('Notification error', err)
         })
-    }
+    },
   }
 
   Logo: React.FC = Logo
 
   PlatformHeader: React.FC<any> = OpenFinHeader
+
+  PlatformFooter: React.FC<any> = () => null
 
   PlatformControls: React.FC<any> = OpenFinControls
 

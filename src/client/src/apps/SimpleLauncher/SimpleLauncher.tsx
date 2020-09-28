@@ -11,11 +11,13 @@ import {
   createServiceStub,
   PricingServiceProvider,
   ServiceStubProvider,
-  TradeUpdatesProvider
+  TradeUpdatesProvider,
 } from './spotlight'
 
 import { ReferenceDataProvider } from './spotlight/context'
 import { referenceDataService } from 'apps/MainRoute/data/referenceData/referenceDataService'
+import { getAppName } from 'rt-util'
+import Helmet from 'react-helmet'
 
 const broker = new WsConnection(
   process.env.REACT_APP_BROKER_HOST || location.hostname,
@@ -35,7 +37,7 @@ export const SimpleLauncher: React.FC = () => {
   const intentsProvider = getProvider()
 
   useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       const serviceClient = createServiceStub(broker)
       const platformResult = await getPlatformAsync()
 
@@ -51,7 +53,7 @@ export const SimpleLauncher: React.FC = () => {
         tradeUpdatesStream: tradesUpdates$,
         serviceClient,
         platform: platformResult,
-        referenceData: referenceDataService$
+        referenceData: referenceDataService$,
       })
     })()
   }, [])
@@ -65,7 +67,7 @@ export const SimpleLauncher: React.FC = () => {
     pricingService,
     serviceClient,
     tradeUpdatesStream,
-    referenceData
+    referenceData,
   } = dependencies
 
   if (!platform || !serviceClient) {
@@ -80,6 +82,7 @@ export const SimpleLauncher: React.FC = () => {
             <PricingServiceProvider value={pricingService}>
               <ReferenceDataProvider value={referenceData}>
                 <PlatformProvider value={platform}>
+                  <Helmet title={getAppName('Reactive Launcher')} />
                   <Launcher />
                 </PlatformProvider>
               </ReferenceDataProvider>

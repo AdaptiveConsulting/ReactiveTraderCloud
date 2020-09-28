@@ -3,8 +3,9 @@ import { styled } from 'rt-theme'
 import { Platform, usePlatform, isParentAppOpenfinLauncher } from 'rt-platforms'
 import { getAppName } from 'rt-util'
 import { useTheme, ThemeName } from 'rt-theme'
+import Helmet from 'react-helmet'
 
-const RouteStyle = styled('div') <{ platform: Platform }>`
+const RouteStyle = styled('div')<{ platform: Platform }>`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
@@ -30,13 +31,17 @@ interface RouteWrapperProps {
   title?: string | SymbolParamObject
 }
 
+// TODO Move to openfin-platform
+//@ts-ignore
+const isChildView = window.fin && window.fin.me && window.fin.me.isView
+
 const RouteWrapper: React.FC<RouteWrapperProps> = props => {
   const { children, windowType = 'main', title } = props
   const [fromLauncher, setFromLauncher] = useState<boolean>(false)
   const platform = usePlatform()
   const theme = useTheme()
 
-  const { PlatformHeader, PlatformControls, PlatformRoute, window } = platform
+  const { PlatformHeader, PlatformFooter, PlatformControls, PlatformRoute, window } = platform
 
   useEffect(() => {
     isParentAppOpenfinLauncher()
@@ -57,11 +62,13 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
       )
   }, [theme])
 
-  const isBlotterOrTrade = title === 'trades' || title === 'live rates'
+  const isBlotterOrTrade = title === 'Trades' || title === 'Live Rates'
 
   const Header = windowType === 'main' ? PlatformControls : null
+  const Footer = windowType === 'main' ? PlatformFooter : null
+
   const subheader =
-    windowType === 'sub' ? (
+    windowType === 'sub' && !isChildView ? (
       <PlatformHeader
         close={fromLauncher && window.close}
         popIn={!fromLauncher && window.close}
@@ -71,12 +78,23 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
       />
     ) : null
 
+  const helmet =
+    windowType === 'sub' ? (
+      isChildView ? (
+        <Helmet title={`${title}`} />
+      ) : (
+        <Helmet title={`${getAppName()} - ${title}`} />
+      )
+    ) : null
+
   return (
     <RouteStyle platform={platform}>
+      {helmet}
       <PlatformRoute>
         {subheader}
         {React.cloneElement(children as React.ReactElement, {
           header: Header ? <Header {...window} /> : null,
+          footer: Footer ? <Footer /> : null,
         })}
       </PlatformRoute>
     </RouteStyle>

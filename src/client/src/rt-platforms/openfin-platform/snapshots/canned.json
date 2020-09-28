@@ -1,0 +1,797 @@
+{
+  "version": 5,
+  "snapshots": {
+    "RTC - Default": {
+      "windows": [
+        {
+          "autoShow": true,
+          "defaultCentered": true,
+          "defaultHeight": 844,
+          "defaultLeft": 436,
+          "defaultTop": 0,
+          "defaultWidth": 1176,
+          "frame": false,
+          "height": 824,
+          "layout": {
+            "content": [
+              {
+                "content": [
+                  {
+                    "content": [
+                      {
+                        "activeItemIndex": 0,
+                        "content": [
+                          {
+                            "componentName": "view",
+                            "componentState": {
+                              "name": "Tiles",
+                              "url": "/tiles"
+                            },
+                            "contextMenu": true,
+                            "isClosable": true,
+                            "reorderEnabled": true,
+                            "title": "localhost",
+                            "type": "component"
+                          }
+                        ],
+                        "height": 50,
+                        "isClosable": true,
+                        "reorderEnabled": true,
+                        "title": "",
+                        "type": "stack",
+                        "width": 50
+                      },
+                      {
+                        "activeItemIndex": 0,
+                        "content": [
+                          {
+                            "componentName": "view",
+                            "componentState": {
+                              "name": "Blotter",
+                              "url": "/blotter"
+                            },
+                            "isClosable": true,
+                            "reorderEnabled": true,
+                            "title": "localhost",
+                            "type": "component"
+                          }
+                        ],
+                        "header": {},
+                        "height": 50,
+                        "isClosable": true,
+                        "reorderEnabled": true,
+                        "title": "",
+                        "type": "stack"
+                      }
+                    ],
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "",
+                    "type": "column",
+                    "width": 72.72727272727273
+                  },
+                  {
+                    "activeItemIndex": 0,
+                    "content": [
+                      {
+                        "componentName": "view",
+                        "componentState": {
+                          "name": "Analytics",
+                          "url": "/analytics"
+                        },
+                        "isClosable": true,
+                        "reorderEnabled": true,
+                        "title": "localhost",
+                        "type": "component"
+                      }
+                    ],
+                    "height": 100,
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "",
+                    "type": "stack",
+                    "width": 27.27272727272727
+                  }
+                ],
+                "contextMenu": true,
+                "id": "mainRow",
+                "isClosable": true,
+                "reorderEnabled": true,
+                "title": "",
+                "type": "row"
+              }
+            ],
+            "dimensions": {
+              "borderGrabWidth": 15,
+              "borderWidth": 5,
+              "dragProxyHeight": 200,
+              "dragProxyWidth": 300,
+              "headerHeight": 20,
+              "minItemHeight": 200,
+              "minItemWidth": 200
+            },
+            "isClosable": true,
+            "labels": {
+              "close": "close",
+              "maximise": "maximise",
+              "minimise": "minimise",
+              "popin": "pop in",
+              "popout": "open in new window",
+              "tabDropdown": "additional tabs"
+            },
+            "maximisedItemId": null,
+            "openPopouts": [],
+            "reorderEnabled": true,
+            "settings": {
+              "blockedPopoutsThrowError": false,
+              "closePopoutsOnUnload": true,
+              "constrainDragToContainer": true,
+              "hasHeaders": true,
+              "popoutWholeStack": false,
+              "reorderEnabled": true,
+              "reorderOnTabMenuClick": true,
+              "responsiveMode": "always",
+              "selectionEnabled": true,
+              "showCloseIcon": false,
+              "showMaximiseIcon": false,
+              "showPopoutIcon": false,
+              "tabControlOffset": 10,
+              "tabOverlapAllowance": 0
+            },
+            "title": ""
+          },
+          "maxHeight": -1,
+          "maxWidth": -1,
+          "maximizable": true,
+          "minHeight": 600,
+          "minWidth": 800,
+          "minimizable": true,
+          "name": "child-window-7e0be02e-729e-4c78-8581-67dfb87ecfa3",
+          "resizable": true,
+          "resizeRegion": {
+            "bottomRightCorner": 20,
+            "sides": {
+              "bottom": true,
+              "left": true,
+              "right": true,
+              "top": true
+            },
+            "size": 7
+          },
+          "saveWindowState": false,
+          "state": "normal",
+          "title": "child-window-7e0be02e-729e-4c78-8581-67dfb87ecfa3",
+          "url": "/",
+          "uuid": "reactive-trader-cloud-platform-demo",
+          "width": 1176,
+          "x": 436,
+          "y": 0
+        }
+      ]
+    },
+    "RTC - Tabbed": {
+      "windows": [
+        {
+          "autoShow": true,
+          "defaultCentered": true,
+          "defaultHeight": 824,
+          "defaultLeft": 436,
+          "defaultTop": 0,
+          "defaultWidth": 1176,
+          "frame": false,
+          "height": 824,
+          "layout": {
+            "content": [
+              {
+                "activeItemIndex": 0,
+                "content": [
+                  {
+                    "componentName": "view",
+                    "componentState": {
+                      "name": "Tiles",
+                      "url": "/tiles"
+                    },
+                    "contextMenu": true,
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "Pricing",
+                    "type": "component"
+                  },
+                  {
+                    "componentName": "view",
+                    "componentState": {
+                      "name": "Blotter",
+                      "url": "/blotter"
+                    },
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "Blotter",
+                    "type": "component"
+                  },
+                  {
+                    "componentName": "view",
+                    "componentState": {
+                      "name": "Analytics",
+                      "url": "/analytics"
+                    },
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "Analytics",
+                    "type": "component"
+                  }
+                ],
+                "height": 100,
+                "isClosable": true,
+                "reorderEnabled": true,
+                "title": "",
+                "type": "stack",
+                "width": 100
+              }
+            ],
+            "dimensions": {
+              "borderGrabWidth": 15,
+              "borderWidth": 5,
+              "dragProxyHeight": 200,
+              "dragProxyWidth": 300,
+              "headerHeight": 20,
+              "minItemHeight": 200,
+              "minItemWidth": 200
+            },
+            "isClosable": true,
+            "labels": {
+              "close": "close",
+              "maximise": "maximise",
+              "minimise": "minimise",
+              "popin": "pop in",
+              "popout": "open in new window",
+              "tabDropdown": "additional tabs"
+            },
+            "maximisedItemId": null,
+            "openPopouts": [],
+            "reorderEnabled": true,
+            "settings": {
+              "blockedPopoutsThrowError": false,
+              "closePopoutsOnUnload": true,
+              "constrainDragToContainer": true,
+              "hasHeaders": true,
+              "popoutWholeStack": false,
+              "reorderEnabled": true,
+              "reorderOnTabMenuClick": true,
+              "responsiveMode": "always",
+              "selectionEnabled": true,
+              "showCloseIcon": false,
+              "showMaximiseIcon": false,
+              "showPopoutIcon": false,
+              "tabControlOffset": 10,
+              "tabOverlapAllowance": 0
+            },
+            "title": ""
+          },
+          "maxHeight": -1,
+          "maxWidth": -1,
+          "maximizable": true,
+          "minHeight": 600,
+          "minWidth": 800,
+          "minimizable": true,
+          "name": "child-window-7e0be02e-729e-4c78-8581-67dfb87ecfa3",
+          "resizable": true,
+          "resizeRegion": {
+            "bottomRightCorner": 20,
+            "sides": {
+              "bottom": true,
+              "left": true,
+              "right": true,
+              "top": true
+            },
+            "size": 7
+          },
+          "saveWindowState": false,
+          "state": "normal",
+          "title": "child-window-7e0be02e-729e-4c78-8581-67dfb87ecfa3",
+          "url": "/",
+          "uuid": "reactive-trader-cloud-platform-demo",
+          "width": 1176,
+          "x": 436,
+          "y": 0
+        }
+      ]
+    },
+    "RTC - Windowed": {
+      "windows": [
+        {
+          "autoShow": true,
+          "defaultCentered": false,
+          "defaultHeight": 893,
+          "defaultLeft": 4,
+          "defaultTop": 10,
+          "defaultWidth": 801,
+          "frame": false,
+          "height": 893,
+          "layout": {
+            "content": [
+              {
+                "activeItemIndex": 0,
+                "content": [
+                  {
+                    "componentName": "view",
+                    "componentState": {
+                      "name": "Tiles",
+                      "url": "/tiles"
+                    },
+                    "contextMenu": true,
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "Pricing",
+                    "type": "component"
+                  }
+                ],
+                "height": 100,
+                "isClosable": true,
+                "reorderEnabled": true,
+                "title": "",
+                "type": "stack",
+                "width": 100
+              }
+            ],
+            "dimensions": {
+              "borderGrabWidth": 15,
+              "borderWidth": 5,
+              "dragProxyHeight": 200,
+              "dragProxyWidth": 300,
+              "headerHeight": 20,
+              "minItemHeight": 200,
+              "minItemWidth": 200
+            },
+            "isClosable": true,
+            "labels": {
+              "close": "close",
+              "maximise": "maximise",
+              "minimise": "minimise",
+              "popin": "pop in",
+              "popout": "open in new window",
+              "tabDropdown": "additional tabs"
+            },
+            "maximisedItemId": null,
+            "openPopouts": [],
+            "reorderEnabled": true,
+            "settings": {
+              "blockedPopoutsThrowError": false,
+              "closePopoutsOnUnload": true,
+              "constrainDragToContainer": true,
+              "hasHeaders": true,
+              "popoutWholeStack": false,
+              "reorderEnabled": true,
+              "reorderOnTabMenuClick": true,
+              "responsiveMode": "always",
+              "selectionEnabled": true,
+              "showCloseIcon": false,
+              "showMaximiseIcon": false,
+              "showPopoutIcon": false,
+              "tabControlOffset": 10,
+              "tabOverlapAllowance": 0
+            },
+            "title": ""
+          },
+          "maxHeight": -1,
+          "maxWidth": -1,
+          "maximizable": true,
+          "minHeight": 600,
+          "minWidth": 800,
+          "minimizable": true,
+          "name": "child-window-7e0be02e-729e-4c78-8581-67dfb87ecfa3",
+          "resizable": true,
+          "resizeRegion": {
+            "bottomRightCorner": 20,
+            "sides": {
+              "bottom": true,
+              "left": true,
+              "right": true,
+              "top": true
+            },
+            "size": 7
+          },
+          "saveWindowState": false,
+          "state": "normal",
+          "title": "child-window-7e0be02e-729e-4c78-8581-67dfb87ecfa3",
+          "url": "/",
+          "uuid": "reactive-trader-cloud-platform-demo",
+          "width": 801,
+          "x": 4,
+          "y": 10
+        },
+        {
+          "autoShow": true,
+          "defaultCentered": false,
+          "defaultHeight": 208,
+          "defaultLeft": 814,
+          "defaultTop": 11,
+          "defaultWidth": 367,
+          "frame": false,
+          "height": 208,
+          "layout": {
+            "content": [
+              {
+                "activeItemIndex": 0,
+                "content": [
+                  {
+                    "componentName": "view",
+                    "componentState": {
+                      "name": "EURUSD_view",
+                      "url": "/spot/EURUSD?tileView=Normal"
+                    },
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "EURUSD",
+                    "type": "component"
+                  }
+                ],
+                "isClosable": true,
+                "reorderEnabled": true,
+                "title": "",
+                "type": "stack"
+              }
+            ],
+            "dimensions": {
+              "borderGrabWidth": 15,
+              "borderWidth": 5,
+              "dragProxyHeight": 200,
+              "dragProxyWidth": 300,
+              "headerHeight": 20,
+              "minItemHeight": 200,
+              "minItemWidth": 200
+            },
+            "isClosable": true,
+            "labels": {
+              "close": "close",
+              "maximise": "maximise",
+              "minimise": "minimise",
+              "popin": "pop in",
+              "popout": "open in new window",
+              "tabDropdown": "additional tabs"
+            },
+            "maximisedItemId": null,
+            "openPopouts": [],
+            "reorderEnabled": true,
+            "settings": {
+              "blockedPopoutsThrowError": true,
+              "closePopoutsOnUnload": true,
+              "constrainDragToContainer": true,
+              "hasHeaders": true,
+              "popoutWholeStack": false,
+              "reorderEnabled": true,
+              "reorderOnTabMenuClick": true,
+              "responsiveMode": "onload",
+              "selectionEnabled": false,
+              "showCloseIcon": true,
+              "showMaximiseIcon": true,
+              "showPopoutIcon": true,
+              "tabControlOffset": 10,
+              "tabOverlapAllowance": 0
+            },
+            "title": ""
+          },
+          "maxHeight": 208,
+          "maxWidth": 366,
+          "maximizable": true,
+          "minHeight": 208,
+          "minWidth": 366,
+          "minimizable": true,
+          "name": "EURUSD",
+          "resizable": true,
+          "resizeRegion": {
+            "bottomRightCorner": 20,
+            "sides": {
+              "bottom": true,
+              "left": true,
+              "right": true,
+              "top": true
+            },
+            "size": 7
+          },
+          "saveWindowState": false,
+          "state": "normal",
+          "title": "EURUSD",
+          "url": "/openfin-window-frame",
+          "uuid": "reactive-trader-cloud-platform-demo",
+          "width": 367,
+          "x": 814,
+          "y": 11
+        },
+        {
+          "autoShow": true,
+          "defaultCentered": false,
+          "defaultHeight": 208,
+          "defaultLeft": 814,
+          "defaultTop": 251,
+          "defaultWidth": 368,
+          "frame": false,
+          "height": 208,
+          "layout": {
+            "content": [
+              {
+                "activeItemIndex": 0,
+                "content": [
+                  {
+                    "componentName": "view",
+                    "componentState": {
+                      "name": "AUDUSD_view",
+                      "url": "/spot/AUDUSD?tileView=Normal"
+                    },
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "AUDUSD",
+                    "type": "component"
+                  }
+                ],
+                "isClosable": true,
+                "reorderEnabled": true,
+                "title": "",
+                "type": "stack"
+              }
+            ],
+            "dimensions": {
+              "borderGrabWidth": 15,
+              "borderWidth": 5,
+              "dragProxyHeight": 200,
+              "dragProxyWidth": 300,
+              "headerHeight": 20,
+              "minItemHeight": 200,
+              "minItemWidth": 200
+            },
+            "isClosable": true,
+            "labels": {
+              "close": "close",
+              "maximise": "maximise",
+              "minimise": "minimise",
+              "popin": "pop in",
+              "popout": "open in new window",
+              "tabDropdown": "additional tabs"
+            },
+            "maximisedItemId": null,
+            "openPopouts": [],
+            "reorderEnabled": true,
+            "settings": {
+              "blockedPopoutsThrowError": true,
+              "closePopoutsOnUnload": true,
+              "constrainDragToContainer": true,
+              "hasHeaders": true,
+              "popoutWholeStack": false,
+              "reorderEnabled": true,
+              "reorderOnTabMenuClick": true,
+              "responsiveMode": "onload",
+              "selectionEnabled": false,
+              "showCloseIcon": true,
+              "showMaximiseIcon": true,
+              "showPopoutIcon": true,
+              "tabControlOffset": 10,
+              "tabOverlapAllowance": 0
+            },
+            "title": ""
+          },
+          "maxHeight": 208,
+          "maxWidth": 366,
+          "maximizable": true,
+          "minHeight": 208,
+          "minWidth": 366,
+          "minimizable": true,
+          "name": "AUDUSD",
+          "resizable": true,
+          "resizeRegion": {
+            "bottomRightCorner": 20,
+            "sides": {
+              "bottom": true,
+              "left": true,
+              "right": true,
+              "top": true
+            },
+            "size": 7
+          },
+          "saveWindowState": false,
+          "state": "normal",
+          "title": "AUDUSD",
+          "url": "/openfin-window-frame",
+          "uuid": "reactive-trader-cloud-platform-demo",
+          "width": 368,
+          "x": 814,
+          "y": 251
+        },
+        {
+          "autoShow": true,
+          "defaultCentered": false,
+          "defaultHeight": 445,
+          "defaultLeft": 1191,
+          "defaultTop": 15,
+          "defaultWidth": 480,
+          "frame": false,
+          "height": 445,
+          "layout": {
+            "content": [
+              {
+                "activeItemIndex": 0,
+                "content": [
+                  {
+                    "componentName": "view",
+                    "componentState": {
+                      "name": "Analytics",
+                      "url": "/analytics"
+                    },
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "Analytics",
+                    "type": "component"
+                  }
+                ],
+                "isClosable": true,
+                "reorderEnabled": true,
+                "title": "",
+                "type": "stack"
+              }
+            ],
+            "dimensions": {
+              "borderGrabWidth": 15,
+              "borderWidth": 5,
+              "dragProxyHeight": 200,
+              "dragProxyWidth": 300,
+              "headerHeight": 20,
+              "minItemHeight": 200,
+              "minItemWidth": 200
+            },
+            "isClosable": true,
+            "labels": {
+              "close": "close",
+              "maximise": "maximise",
+              "minimise": "minimise",
+              "popin": "pop in",
+              "popout": "open in new window",
+              "tabDropdown": "additional tabs"
+            },
+            "maximisedItemId": null,
+            "openPopouts": [],
+            "reorderEnabled": true,
+            "settings": {
+              "blockedPopoutsThrowError": true,
+              "closePopoutsOnUnload": true,
+              "constrainDragToContainer": true,
+              "hasHeaders": true,
+              "popoutWholeStack": false,
+              "reorderEnabled": true,
+              "reorderOnTabMenuClick": true,
+              "responsiveMode": "onload",
+              "selectionEnabled": false,
+              "showCloseIcon": true,
+              "showMaximiseIcon": true,
+              "showPopoutIcon": true,
+              "tabControlOffset": 10,
+              "tabOverlapAllowance": 0
+            },
+            "title": ""
+          },
+          "maxHeight": -1,
+          "maxWidth": -1,
+          "maximizable": true,
+          "minHeight": 0,
+          "minWidth": 0,
+          "minimizable": true,
+          "name": "child-window-bd46012c-0619-49c2-9891-f7e0f4ed14af",
+          "resizable": true,
+          "resizeRegion": {
+            "bottomRightCorner": 20,
+            "sides": {
+              "bottom": true,
+              "left": true,
+              "right": true,
+              "top": true
+            },
+            "size": 7
+          },
+          "saveWindowState": false,
+          "state": "normal",
+          "title": "child-window-bd46012c-0619-49c2-9891-f7e0f4ed14af",
+          "url": "/openfin-window-frame",
+          "uuid": "reactive-trader-cloud-platform-demo",
+          "width": 480,
+          "x": 1191,
+          "y": 15
+        },
+        {
+          "autoShow": true,
+          "defaultCentered": false,
+          "defaultHeight": 413,
+          "defaultLeft": 814,
+          "defaultTop": 492,
+          "defaultWidth": 860,
+          "frame": false,
+          "height": 413,
+          "layout": {
+            "content": [
+              {
+                "activeItemIndex": 0,
+                "content": [
+                  {
+                    "componentName": "view",
+                    "componentState": {
+                      "name": "Blotter",
+                      "url": "/blotter"
+                    },
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "Blotter",
+                    "type": "component"
+                  }
+                ],
+                "isClosable": true,
+                "reorderEnabled": true,
+                "title": "",
+                "type": "stack"
+              }
+            ],
+            "dimensions": {
+              "borderGrabWidth": 15,
+              "borderWidth": 5,
+              "dragProxyHeight": 200,
+              "dragProxyWidth": 300,
+              "headerHeight": 20,
+              "minItemHeight": 200,
+              "minItemWidth": 200
+            },
+            "isClosable": true,
+            "labels": {
+              "close": "close",
+              "maximise": "maximise",
+              "minimise": "minimise",
+              "popin": "pop in",
+              "popout": "open in new window",
+              "tabDropdown": "additional tabs"
+            },
+            "maximisedItemId": null,
+            "openPopouts": [],
+            "reorderEnabled": true,
+            "settings": {
+              "blockedPopoutsThrowError": true,
+              "closePopoutsOnUnload": true,
+              "constrainDragToContainer": true,
+              "hasHeaders": true,
+              "popoutWholeStack": false,
+              "reorderEnabled": true,
+              "reorderOnTabMenuClick": true,
+              "responsiveMode": "onload",
+              "selectionEnabled": false,
+              "showCloseIcon": true,
+              "showMaximiseIcon": true,
+              "showPopoutIcon": true,
+              "tabControlOffset": 10,
+              "tabOverlapAllowance": 0
+            },
+            "title": ""
+          },
+          "maxHeight": -1,
+          "maxWidth": -1,
+          "maximizable": true,
+          "minHeight": 0,
+          "minWidth": 0,
+          "minimizable": true,
+          "name": "child-window-c88b5a67-9c4a-47f3-b849-99c6d6ac87d6",
+          "resizable": true,
+          "resizeRegion": {
+            "bottomRightCorner": 20,
+            "sides": {
+              "bottom": true,
+              "left": true,
+              "right": true,
+              "top": true
+            },
+            "size": 7
+          },
+          "saveWindowState": false,
+          "state": "normal",
+          "title": "child-window-c88b5a67-9c4a-47f3-b849-99c6d6ac87d6",
+          "url": "/openfin-window-frame",
+          "uuid": "reactive-trader-cloud-platform-demo",
+          "width": 860,
+          "x": 814,
+          "y": 492
+        }
+      ]
+    }
+  }
+}

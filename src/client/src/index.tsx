@@ -6,7 +6,6 @@ import { GlobalStyle } from 'rt-theme'
 import * as serviceWorker from './serviceWorker'
 import { getSymphonyPlatform } from 'rt-platforms'
 import { getEnvironment } from 'rt-util/getEnvironment'
-import { APP_PATHS, getAppName } from 'rt-util'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
@@ -23,15 +22,12 @@ ReactGA.initialize(trackingId, {
   debug: process.env.NODE_ENV === 'development',
 })
 
-const { pathname } = new URL(window.location.href)
 const urlParams = new URLSearchParams(window.location.search)
 
 async function init() {
   console.info('BUILD_VERSION: ', process.env.REACT_APP_BUILD_VERSION)
 
   const env = getEnvironment()
-
-  document.title = getAppName(pathname || document.title)
 
   ReactGA.set({
     dimension3: env,
@@ -48,8 +44,8 @@ async function init() {
         <BrowserRouter>
           <Suspense fallback={<div />}>
             <Switch>
-              <Route path={APP_PATHS.LAUNCHER} render={() => <SimpleLauncher />} />
-              <Route path={APP_PATHS.STYLEGUIDE} render={() => <StyleguideRoute />} />
+              <Route path={'/launcher'} render={() => <SimpleLauncher />} />
+              <Route path={'/styleguide'} render={() => <StyleguideRoute />} />
               <Route render={() => <MainRoute />} />
             </Switch>
           </Suspense>

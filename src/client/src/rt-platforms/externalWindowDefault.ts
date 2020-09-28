@@ -29,7 +29,7 @@ const analyticsRegion: ExternalWindow = {
   },
 }
 
-const liveRatesRegion = (): ExternalWindow => ({
+const liveRatesRegion: ExternalWindow = {
   title: 'LiveRates',
   config: {
     name: 'LiveRates',
@@ -39,7 +39,7 @@ const liveRatesRegion = (): ExternalWindow => ({
     minHeight: 617,
     url: '/tiles',
   },
-})
+}
 
 export const externalWindowDefault = {
   blotterRegion,
