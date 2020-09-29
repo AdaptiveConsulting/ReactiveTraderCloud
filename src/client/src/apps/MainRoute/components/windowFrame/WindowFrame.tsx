@@ -47,6 +47,14 @@ const TitleBarRoot = styled.div`
   height: var(--title-bar-height);
   display: flex;
 `
+
+const TitleBarWindowName = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 const LayoutRoot = styled.div`
   height: calc(100% - var(--title-bar-height));
 `
@@ -56,6 +64,7 @@ const WindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
   const onMinimize = () => win.minimize()
   const onMaximize = async () =>
     win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize()))
+  const windowName = win.identity.name
 
   useEffect(() => {
     window.document.dispatchEvent(
@@ -70,7 +79,9 @@ const WindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
   return (
     <FrameRoot>
       <TitleBarRoot>
-        <div className="title-bar-draggable"></div>
+        <div className="title-bar-draggable">
+          <TitleBarWindowName>{windowName}</TitleBarWindowName>
+        </div>
         <OpenFinControls
           minimize={onMinimize}
           maximize={maximize ? onMaximize : undefined}
