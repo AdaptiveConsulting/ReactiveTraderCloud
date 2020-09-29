@@ -32,18 +32,20 @@ module.exports = {
     new webpack.IgnorePlugin({
       resourceRegExp: /vertx/,
     }),
-    new CopyPlugin([
-      {
-        from: path.resolve(
-          path.join(__dirname, 'node_modules', 'protobufjs', 'google', 'protobuf')
-        ),
-        to: path.join(__dirname, '../protos'),
-      },
-      {
-        from: path.resolve(path.join(__dirname, 'node_modules', 'dialogflow', 'protos')),
-        to: path.join(__dirname, '../protos'),
-      },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(
+            path.join(__dirname, 'node_modules', 'protobufjs', 'google', 'protobuf')
+          ),
+          to: path.join(__dirname, '../protos'),
+        },
+        {
+          from: path.resolve(path.join(__dirname, 'node_modules', 'dialogflow', 'protos')),
+          to: path.join(__dirname, '../protos'),
+        },
+      ]
+    }),
   ],
   node: {
     __filename: false,
