@@ -150,6 +150,10 @@ export const openDesktopWindow = async (
     ...position,
     ...updatedPosition,
     layout: {
+      settings: {
+        hasHeaders: false,
+        reorderEnabled: false,
+      },
       content: [
         {
           type: 'stack',
