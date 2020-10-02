@@ -1,6 +1,7 @@
 import React, { useEffect, FC } from 'react'
 import styled from 'styled-components/macro'
 import { OpenFinControls } from 'rt-platforms/openfin-platform/components'
+import { getAppName } from 'rt-util'
 
 const FrameRoot = styled.div`
   background-color: ${({ theme }) => theme.core.darkBackground};
@@ -14,10 +15,10 @@ const FrameRoot = styled.div`
 
   #layout-container {
     height: 100%;
-    width: 100%
+    width: 100%;
     padding: 0;
   }
-  
+
   .lm_tabs {
     background-color: ${({ theme }) => theme.core.lightBackground};
     border-radius: 0px;
@@ -58,13 +59,14 @@ const TitleBarWindowName = styled.div`
 const LayoutRoot = styled.div`
   height: calc(100% - var(--title-bar-height));
 `
-const WindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
+
+export const OpenFinWindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
   const win = fin.Window.getCurrentSync()
   const onClose = () => win.close()
   const onMinimize = () => win.minimize()
   const onMaximize = async () =>
     win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize()))
-  const windowName = win.identity.name
+  const windowName = getAppName()
 
   useEffect(() => {
     window.document.dispatchEvent(
@@ -75,6 +77,8 @@ const WindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
     )
     fin.Platform.Layout.init()
   }, [])
+
+  // if ()
 
   return (
     <FrameRoot>
@@ -96,5 +100,3 @@ const WindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
     </FrameRoot>
   )
 }
-
-export default WindowFrame
