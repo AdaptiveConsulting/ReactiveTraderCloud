@@ -14,8 +14,7 @@ import {
 } from 'openfin-notifications'
 import { NotificationMessage } from '../../browser/utils/sendNotification'
 import OpenFinRoute from './OpenFinRoute'
-import Logo from './logo'
-import { OpenFinControls, OpenFinHeader, OpenFinFooter } from '../components'
+import { OpenFinControls, OpenFinHeader, OpenFinFooter, OpenFinLogo } from '../components'
 
 export default class OpenFinPlatform implements Platform {
   readonly name = 'openfin-platform'
@@ -114,7 +113,7 @@ export default class OpenFinPlatform implements Platform {
     },
   }
 
-  Logo: React.FC = Logo
+  Logo: React.FC = OpenFinLogo
 
   PlatformHeader: React.FC<any> = OpenFinHeader
 
