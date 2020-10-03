@@ -153,8 +153,7 @@
     "styledComponents": {
       "pure": true,
       "displayName": true,
-      "fileName": false,
-      "namespace": "rt"
+      "fileName": false
     }
   },
   "browserslist": [
