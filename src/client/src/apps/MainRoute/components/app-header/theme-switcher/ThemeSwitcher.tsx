@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Switch, { ReactSwitchProps } from 'react-switch'
-import { ThemeName, Theme, useTheme, styled } from 'rt-theme'
-import { withTheme } from 'styled-components'
+import { ThemeName, Theme, useTheme } from 'rt-theme'
+import styled, { withTheme } from 'styled-components/macro'
 import DarkThemeIcon from './DarkThemeIcon'
 import LightThemeIcon from './LightThemeIcon'
 

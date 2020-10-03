@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import Button from './Button'
 
 export interface DropdownStyleProps {

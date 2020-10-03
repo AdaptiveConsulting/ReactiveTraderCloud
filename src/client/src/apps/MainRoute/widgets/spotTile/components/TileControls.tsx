@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { PopoutIcon, PopInIcon } from 'rt-components'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { usePlatform, platformHasFeature } from 'rt-platforms'
 import { CurrencyPair } from 'rt-types'
 import { setNotionalOnStorage } from 'rt-util'

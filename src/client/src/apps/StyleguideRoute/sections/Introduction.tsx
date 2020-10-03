@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import designTownPNGURL from '../assets/design-town.png'
 import Logo from '../../MainRoute/components/app-header/Logo'
 import { H1, H3 } from '../elements'

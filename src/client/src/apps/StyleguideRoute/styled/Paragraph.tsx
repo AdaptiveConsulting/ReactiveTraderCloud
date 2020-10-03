@@ -1,4 +1,4 @@
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 import { mapTextProps, TextProps } from './Text'

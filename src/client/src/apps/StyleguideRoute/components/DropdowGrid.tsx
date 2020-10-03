@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Dropdown } from 'rt-styleguide'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export default (() => (
   <Root>

@@ -3,7 +3,7 @@ import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router-dom'
 import SpotTileContainer from '../widgets/spotTile/SpotTileContainer'
 import { TileView } from '../widgets/workspace/workspaceHeader'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
 import { Subscription } from 'rxjs'
 

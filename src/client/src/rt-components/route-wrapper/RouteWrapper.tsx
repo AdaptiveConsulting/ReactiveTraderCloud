@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { Platform, usePlatform, isParentAppOpenfinLauncher } from 'rt-platforms'
 import { getAppName } from 'rt-util'
 import { useTheme, ThemeName } from 'rt-theme'

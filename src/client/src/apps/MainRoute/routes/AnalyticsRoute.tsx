@@ -1,6 +1,6 @@
 import React from 'react'
 import { AnalyticsContainer } from '../widgets/analytics'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 const AnalyticsRouteStyle = styled.div`
   /*height offset is needed for openfin controls*/

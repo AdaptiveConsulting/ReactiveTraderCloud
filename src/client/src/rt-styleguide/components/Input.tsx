@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 const inputColors = {
   error: 'error',

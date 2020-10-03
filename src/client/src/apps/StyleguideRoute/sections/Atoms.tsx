@@ -1,6 +1,6 @@
 import React from 'react'
 import FormGrid from '../components/FormGrid'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import PricingTilesGrid from '../components/PricingTilesGrid'
 import ChartingGrid from '../components/ChartingGrid'
 import { H2, H3 } from '../elements'

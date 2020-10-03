@@ -5,7 +5,7 @@ import React from 'react'
 // import { withKnobs } from '@storybook/addon-knobs'
 import { Story } from 'rt-storybook'
 
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { OpenFinChrome, OpenFinControls, OpenFinHeader } from './OpenFinChrome'
 
 const stories = storiesOf('Openfin', module)

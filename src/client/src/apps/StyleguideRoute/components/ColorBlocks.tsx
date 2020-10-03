@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { colors, styled, DarkShade, LightShade, ColorPalette } from 'rt-theme'
+import { colors, DarkShade, LightShade, ColorPalette } from 'rt-theme'
 
 import { Block, BlockProps } from '../styled'
 import { readableColor, transparentize } from 'polished'
-import { css } from 'styled-components'
+import styled, { css } from 'styled-components/macro'
 import ColorClipboard, { CopyToClipboardWrapper } from './ColorToClipboard'
 
 const { brand, offblack, blue, red, yellow, green } = colors.spectrum

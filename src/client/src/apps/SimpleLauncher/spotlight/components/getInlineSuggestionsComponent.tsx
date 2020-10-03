@@ -27,7 +27,7 @@ import { appConfigs } from '../../applicationConfigurations'
 import { open } from '../../tools'
 
 import { reactiveTraderIcon } from 'apps/SimpleLauncher/icons'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const RTC_CONFIG = appConfigs[0]
 

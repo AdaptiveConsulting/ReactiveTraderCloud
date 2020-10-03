@@ -1,5 +1,5 @@
 import React, { useEffect, FC } from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { OpenFinControls } from 'rt-platforms/openfin-platform/components'
 
 const FrameRoot = styled.div`

@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { Input } from 'rt-styleguide'
-import { styled } from 'rt-theme'
-import { keyframes } from 'styled-components'
+import styled from 'styled-components/macro'
+import { keyframes } from 'styled-components/macro'
 
 const Grid = styled.div`
   display: grid;

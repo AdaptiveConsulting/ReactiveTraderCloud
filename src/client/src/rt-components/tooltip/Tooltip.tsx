@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { css } from 'styled-components'
-import { styled } from 'rt-theme'
+import { css } from 'styled-components/macro'
+import styled from 'styled-components/macro'
 
 interface Props {
   position?: 'top' | 'bottom' | 'left' | 'right'

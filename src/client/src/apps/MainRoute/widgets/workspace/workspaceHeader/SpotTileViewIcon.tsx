@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { IconWrapper, Rect } from './styled'
 
 const FirstRect = styled(Rect)`

@@ -14,7 +14,7 @@ import {
 import TileHeader from 'apps/MainRoute/widgets/spotTile/components/TileHeader'
 import PriceControls from './PricedHoverPriceControls'
 import RfqTimer from './PricedHoverRfqTimer'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 //TODO: background-color = Core primary 1 on new color scheme
 export const SpotTileStyle = styled(TileBaseStyle)`

@@ -1,5 +1,5 @@
-import { css } from 'styled-components'
-import { styled, Theme, ThemeSelector } from 'rt-theme'
+import styled, { css } from 'styled-components/macro'
+import { Theme, ThemeSelector } from 'rt-theme'
 
 // Normalized font sizes are `rem` values corresponding to whole pixel values (i.e. rem*16 is integer)
 type NormalizedFontSize =

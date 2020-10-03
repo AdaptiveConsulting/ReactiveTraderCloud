@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider } from 'styled-components/macro'
 import { Observable, ReplaySubject } from 'rxjs'
 import { Provider as InteropProvider, getProvider } from 'rt-interop'
 import { getPlatformAsync, Platform, PlatformProvider } from 'rt-platforms'

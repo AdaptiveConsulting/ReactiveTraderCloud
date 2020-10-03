@@ -14,7 +14,7 @@ import {
 import TileHeader from 'apps/MainRoute/widgets/spotTile/components/TileHeader'
 import PriceControls from './HoveredPriceControls'
 import RfqTimer from 'apps/MainRoute/widgets/spotTile/components/RfqTimer'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { DeliveryDate } from 'apps/MainRoute/widgets/spotTile/components/styled'
 import { PopoutIcon } from 'rt-components'
 

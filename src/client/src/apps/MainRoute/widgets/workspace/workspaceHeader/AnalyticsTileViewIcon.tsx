@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChartLine } from '@fortawesome/free-solid-svg-icons'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { Rect, IconWrapper } from './styled'
 
 library.add(faChartLine)

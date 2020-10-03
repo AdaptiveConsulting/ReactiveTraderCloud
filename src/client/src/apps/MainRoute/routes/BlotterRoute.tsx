@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router'
 import { BlotterContainer, BlotterFilters, DEALT_CURRENCY, SYMBOL } from '../widgets/blotter'

@@ -1,7 +1,8 @@
 import React from 'react'
+import styled from 'styled-components/macro'
 import { PlatformProvider } from 'rt-platforms'
 import { Browser } from 'rt-platforms/browser'
-import { styled, ThemeName, ThemeProvider, GlobalStyle, useTheme } from 'rt-theme'
+import { ThemeName, ThemeProvider, GlobalStyle, useTheme } from 'rt-theme'
 
 const platform = new Browser()
 

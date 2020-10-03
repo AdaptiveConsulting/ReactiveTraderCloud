@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { waitForObject } from 'rt-util'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 const IconButton = styled.button`
   width: 2rem;

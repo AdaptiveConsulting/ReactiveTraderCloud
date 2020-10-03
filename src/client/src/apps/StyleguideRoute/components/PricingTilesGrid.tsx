@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import PriceButton from '../../MainRoute/widgets/spotTile/components/PriceButton'
 
 import { Direction } from 'rt-types'

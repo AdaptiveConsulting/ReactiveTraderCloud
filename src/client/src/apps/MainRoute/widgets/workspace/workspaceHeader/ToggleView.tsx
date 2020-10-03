@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { ChartIcon } from 'rt-components'
 import { TileView } from './types'
 import { NavItem } from './styled'

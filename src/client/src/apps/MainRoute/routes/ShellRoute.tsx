@@ -15,7 +15,7 @@ import ContactUsButton from '../widgets/contact-us'
 // TODO - move to openfin-platform
 import OpenFinStatusButton from 'rt-platforms/openfin-platform/components/OpenFinStatusConnection'
 import { applySnapshotFromStorageOnLoad } from 'rt-platforms/openfin-platform/snapshots'
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components/macro'
 import { Theme } from 'rt-theme'
 
 interface Props {

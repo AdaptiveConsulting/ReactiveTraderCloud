@@ -1,6 +1,6 @@
 import React from 'react'
-
-import { styled, ThemeName, ThemeStorageSwitch, useTheme } from 'rt-theme'
+import styled from 'styled-components/macro'
+import { ThemeName, ThemeStorageSwitch, useTheme } from 'rt-theme'
 
 import { Block } from '../styled'
 

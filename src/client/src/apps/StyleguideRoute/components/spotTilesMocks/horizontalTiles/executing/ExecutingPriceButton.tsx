@@ -9,7 +9,7 @@ import {
   Tenth,
   ExpiredPrice,
 } from 'apps/MainRoute/widgets/spotTile/components/PriceButton/styled'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 interface PriceButtonProps {
   big?: number

@@ -21,7 +21,7 @@ import { SpotTileProps } from 'apps/MainRoute/widgets/spotTile/components/types'
 import { getConstsFromRfqState } from 'apps/MainRoute/widgets/spotTile/model/spotTileUtils'
 import TileHeader from 'apps/MainRoute/widgets/spotTile/components/TileHeader'
 import { SpotTileStyle } from '../../horizontalTiles/hover/HoveredSpotTile'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export const AnalyticsTileStyle = styled(SpotTileStyle)`
   background-color: ${({ theme }) => theme.primary[1]};

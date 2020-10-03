@@ -1,4 +1,4 @@
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { TileWrapperBase, SpotTileStyle } from '../styled'
 import { Platform } from 'rt-platforms'
 

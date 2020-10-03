@@ -1,7 +1,7 @@
 import React, { ButtonHTMLAttributes, ReactChild } from 'react'
 import { userSelectButton, userSelectNone } from 'rt-styleguide'
-import { Theme, styled, TouchableIntentName } from 'rt-theme'
-import { css, ThemeProvider, withTheme } from 'styled-components'
+import { Theme, TouchableIntentName } from 'rt-theme'
+import styled, { css, ThemeProvider, withTheme } from 'styled-components/macro'
 
 export interface ButtonStyleProps {
   intent?: TouchableIntentName

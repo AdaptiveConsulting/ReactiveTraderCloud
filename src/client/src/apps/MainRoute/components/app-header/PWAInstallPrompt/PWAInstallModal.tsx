@@ -1,6 +1,6 @@
 import React from 'react'
 import { AppleShareIcon, Modal } from 'rt-components'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { InstallButton } from './PWAInstallPrompt'
 
 const MainTitle = styled.div`

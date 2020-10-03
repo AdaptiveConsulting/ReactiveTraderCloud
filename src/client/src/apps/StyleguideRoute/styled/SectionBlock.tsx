@@ -3,9 +3,9 @@ import React from 'react'
 import { rules } from 'rt-styleguide'
 import { Block, BlockProps } from '../styled'
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
-import { styled, ColorProps as ThemeSelectorPair } from 'rt-theme'
+import { ColorProps as ThemeSelectorPair } from 'rt-theme'
 import { H2 } from '../elements'
-import { css } from 'styled-components'
+import styled, { css } from 'styled-components/macro'
 
 type ColorSchemeName = 'primary' | 'secondary' | 'inverted'
 

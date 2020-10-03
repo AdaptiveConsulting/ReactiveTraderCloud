@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { LineChart, ResponsiveContainer, Line, YAxis, ReferenceLine } from 'recharts'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { SpotPriceTick } from '../../model'
 
 const AnalyticsTileChartWrapper = styled.div`

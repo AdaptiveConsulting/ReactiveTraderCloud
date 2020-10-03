@@ -1,4 +1,4 @@
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export const AnalyticsLineChartStyle = styled.div`
   width: 100%;
