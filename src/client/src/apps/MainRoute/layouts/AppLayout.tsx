@@ -20,7 +20,7 @@ const AppLayout: React.FC<Props> = ({ before, header, body, footer, after }) => 
     <AppLayoutRoot data-qa="app-layout__root">
       {before}
 
-      {!isChildView && header !== null && <Header>{header}</Header>}
+      {!isChildView && header !== null && <Header controls={header} />}
 
       <Body>{body}</Body>
 

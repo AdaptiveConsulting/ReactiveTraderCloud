@@ -8,7 +8,12 @@ import { PWABanner, PWALaunchButton, PWAInstallBanner } from './PWAInstallPrompt
 
 const SESSION = 'PWABanner'
 
-const Header: React.FC = ({ children }) => {
+interface Props {
+  filler?: React.ReactNode
+  controls?: React.ReactNode
+}
+
+const Header: React.FC<Props> = ({ filler, controls }) => {
   const [banner, setBanner] = useState<string>(sessionStorage.getItem(SESSION) || PWABanner.NotSet)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -31,26 +36,26 @@ const Header: React.FC = ({ children }) => {
   }, [])
 
   return (
-    <RootWrapper>
-      <Root>
+    <AppHeaderWrapper>
+      <AppHeaderRoot>
         <LogoWrapper>
           <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
         </LogoWrapper>
-        <Fill />
+        {filler === undefined ? <Fill /> : filler}
         <HeaderNav>
           <ThemeSwitcher />
           <LoginControls />
           <PWALaunchButton state={banner} setIsModalOpen={setIsModalOpen} />
-          {children}
+          {controls}
         </HeaderNav>
-      </Root>
+      </AppHeaderRoot>
       <PWAInstallBanner
         banner={banner}
         updateBanner={updateBanner}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
-    </RootWrapper>
+    </AppHeaderWrapper>
   )
 }
 
@@ -60,11 +65,11 @@ const LogoWrapper = styled.div`
   }
 `
 
-const RootWrapper = styled.div`
+const AppHeaderWrapper = styled.div`
   position: relative;
 `
 
-const Root = styled.div`
+const AppHeaderRoot = styled.div`
   width: calc(100% - 2rem);
   max-width: 100%;
 
