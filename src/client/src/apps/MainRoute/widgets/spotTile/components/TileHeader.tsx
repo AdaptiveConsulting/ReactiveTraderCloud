@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { platformHasFeature, usePlatform } from 'rt-platforms'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { TileHeader as Header, TileSymbol, DeliveryDate } from './styled'
 import { CurrencyPair } from 'rt-types'
 interface Props {

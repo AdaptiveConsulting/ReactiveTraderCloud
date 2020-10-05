@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { DropdownMenu, DropdownMenuStyleProps } from 'rt-styleguide'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 const options = ['option 2', 'option 3', 'option 4']
 

@@ -1,6 +1,7 @@
-import { AccentName, styled } from 'rt-theme'
+import { AccentName } from 'rt-theme'
 import { FunctionComponent } from 'react'
 import React from 'react'
+import styled from 'styled-components/macro'
 import { SnapshotActiveStatus } from 'rt-types'
 
 const buttonHeight = '2rem'

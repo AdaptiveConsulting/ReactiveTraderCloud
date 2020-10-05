@@ -1,4 +1,4 @@
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 interface DropdownMenuProps {
   showMenu: boolean

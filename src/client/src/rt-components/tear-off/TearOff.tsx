@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react'
 import ExternalWindow, { ExternalWindowProps } from './ExternalWindow'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { useDispatch } from 'react-redux'
 import { usePlatform } from 'rt-platforms'
 import { LayoutActions } from 'rt-actions'

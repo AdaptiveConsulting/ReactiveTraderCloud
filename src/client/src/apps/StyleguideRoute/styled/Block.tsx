@@ -1,9 +1,9 @@
-import { styled, getThemeColor, ColorProps } from 'rt-theme'
+import { getThemeColor, ColorProps } from 'rt-theme'
 
 import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
 import { mapTextProps, TextProps } from './Text'
 
-import { css } from 'styled-components'
+import styled, { css } from 'styled-components/macro'
 
 export interface BlockProps extends ColorProps, TextProps, MarginPaddingProps {}
 

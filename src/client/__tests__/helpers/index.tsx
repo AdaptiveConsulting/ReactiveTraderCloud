@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider } from 'styled-components/macro'
 import { themes } from '../../src/rt-theme'
 import { PlatformProvider } from 'rt-platforms'
 import { Browser } from 'rt-platforms/browser'

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import ReactGA from 'react-ga'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'

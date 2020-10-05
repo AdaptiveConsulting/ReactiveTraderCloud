@@ -19,7 +19,7 @@ exports[`NotionalInput default 1`] = `
   grid-template-rows: 23px 0;
 }
 
-.c2 {
+.c3 {
   grid-area: Input;
   background: none;
   text-align: center;
@@ -33,7 +33,7 @@ exports[`NotionalInput default 1`] = `
 }
 
 .spot-tile:hover .c2:focus,
-.c2:focus {
+.c3:focus {
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
@@ -47,7 +47,7 @@ exports[`NotionalInput default 1`] = `
     EUR
   </span>
   <input
-    className="c2"
+    className="c2 c3"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -78,7 +78,7 @@ exports[`NotionalInput default 2`] = `
   grid-template-rows: 23px 0;
 }
 
-.c2 {
+.c3 {
   grid-area: Input;
   background: none;
   text-align: center;
@@ -92,7 +92,7 @@ exports[`NotionalInput default 2`] = `
 }
 
 .spot-tile:hover .c2:focus,
-.c2:focus {
+.c3:focus {
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
@@ -106,7 +106,7 @@ exports[`NotionalInput default 2`] = `
     EUR
   </span>
   <input
-    className="c2"
+    className="c2 c3"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -137,7 +137,7 @@ exports[`NotionalInput disabled 1`] = `
   grid-template-rows: 23px 0;
 }
 
-.c2 {
+.c3 {
   grid-area: Input;
   background: none;
   text-align: center;
@@ -152,7 +152,7 @@ exports[`NotionalInput disabled 1`] = `
 }
 
 .spot-tile:hover .c2:focus,
-.c2:focus {
+.c3:focus {
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
@@ -166,7 +166,7 @@ exports[`NotionalInput disabled 1`] = `
     EUR
   </span>
   <input
-    className="c2"
+    className="c2 c3"
     data-qa-id="notional-input__input-eurusd"
     disabled={true}
     onBlur={[Function]}
@@ -197,7 +197,7 @@ exports[`NotionalInput disabled 2`] = `
   grid-template-rows: 23px 0;
 }
 
-.c2 {
+.c3 {
   grid-area: Input;
   background: none;
   text-align: center;
@@ -212,7 +212,7 @@ exports[`NotionalInput disabled 2`] = `
 }
 
 .spot-tile:hover .c2:focus,
-.c2:focus {
+.c3:focus {
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
@@ -226,7 +226,7 @@ exports[`NotionalInput disabled 2`] = `
     EUR
   </span>
   <input
-    className="c2"
+    className="c2 c3"
     data-qa-id="notional-input__input-eurusd"
     disabled={true}
     onBlur={[Function]}
@@ -257,7 +257,7 @@ exports[`NotionalInput show reset button 1`] = `
   grid-template-rows: 23px 0;
 }
 
-.c2 {
+.c3 {
   grid-area: Input;
   background: none;
   text-align: center;
@@ -271,11 +271,11 @@ exports[`NotionalInput show reset button 1`] = `
 }
 
 .spot-tile:hover .c2:focus,
-.c2:focus {
+.c3:focus {
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
-.c3 {
+.c4 {
   background-color: #2f3542;
   border: 2px solid #282e39;
   border-radius: 3px;
@@ -295,7 +295,7 @@ exports[`NotionalInput show reset button 1`] = `
     EUR
   </span>
   <input
-    className="c2"
+    className="c2 c3"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -305,7 +305,7 @@ exports[`NotionalInput show reset button 1`] = `
     value="1,000,000"
   />
   <button
-    className="c3"
+    className="c4"
     data-qa="notional-input__reset-input-value"
     onClick={[Function]}
   >
@@ -335,7 +335,7 @@ exports[`NotionalInput show reset button 2`] = `
   grid-template-rows: 23px 0;
 }
 
-.c2 {
+.c3 {
   grid-area: Input;
   background: none;
   text-align: center;
@@ -349,11 +349,11 @@ exports[`NotionalInput show reset button 2`] = `
 }
 
 .spot-tile:hover .c2:focus,
-.c2:focus {
+.c3:focus {
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
-.c3 {
+.c4 {
   background-color: #fff;
   border: 2px solid #f9f9f9;
   border-radius: 3px;
@@ -373,7 +373,7 @@ exports[`NotionalInput show reset button 2`] = `
     EUR
   </span>
   <input
-    className="c2"
+    className="c2 c3"
     data-qa-id="notional-input__input-eurusd"
     disabled={false}
     onBlur={[Function]}
@@ -383,7 +383,7 @@ exports[`NotionalInput show reset button 2`] = `
     value="1,000,000"
   />
   <button
-    className="c3"
+    className="c4"
     data-qa="notional-input__reset-input-value"
     onClick={[Function]}
   >

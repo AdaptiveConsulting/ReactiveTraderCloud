@@ -91,7 +91,7 @@
     "reselect": "4.0.0",
     "ress": "^1.2.2",
     "rxjs": "6.1.0",
-    "styled-components": "^5.0.1",
+    "styled-components": "^5.2.0",
     "typeface-lato": "^0.0.54",
     "typeface-montserrat": "^0.0.54",
     "typeface-roboto": "0.0.75",
@@ -124,7 +124,7 @@
     "@types/react-test-renderer": "^16.8.3",
     "@types/react-virtualized": "9.7.10",
     "@types/recharts": "^1.1.20",
-    "@types/styled-components": "^4.1.18",
+    "@types/styled-components": "^5.1.3",
     "@types/ua-parser-js": "^0.7.33",
     "@types/uuid": "^3.4.3",
     "concurrently": "^5.2.0",
@@ -148,6 +148,13 @@
   "optionalDependencies": {
     "openfin-cli": "^3.0.1",
     "@chartiq/finsemble": "4.0.*"
+  },
+  "babelMacros": {
+    "styledComponents": {
+      "pure": true,
+      "displayName": true,
+      "fileName": false
+    }
   },
   "browserslist": [
     "> 1%",

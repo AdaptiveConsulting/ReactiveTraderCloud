@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { ServiceConnectionStatus } from 'rt-types'
 import DisconnectIcon from '../icons/DisconnectIcon'
 import { AdaptiveLoader } from 'rt-components'

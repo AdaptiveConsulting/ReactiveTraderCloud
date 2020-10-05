@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import {
   InputWrapper,
   CurrencyPairSymbol,

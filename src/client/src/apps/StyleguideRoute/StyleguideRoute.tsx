@@ -1,6 +1,7 @@
 import React, { createRef } from 'react'
 import Helmet from 'react-helmet'
-import { styled, ThemeProvider } from 'rt-theme'
+import styled from 'styled-components/macro'
+import { ThemeProvider } from 'rt-theme'
 import FloatingTools from './components/FloatingsTools'
 import OnePageNavBar from './components/OnePageNavBar'
 import { Block } from './styled'

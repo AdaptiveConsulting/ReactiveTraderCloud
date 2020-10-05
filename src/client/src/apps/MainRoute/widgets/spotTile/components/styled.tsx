@@ -1,5 +1,5 @@
 import { RouteStyle } from 'rt-components'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { TopRightButton } from './TileControls'
 import { ActionButton } from './TileHeader'
 

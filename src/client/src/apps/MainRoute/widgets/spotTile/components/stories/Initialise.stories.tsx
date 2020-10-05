@@ -2,7 +2,7 @@ import React from 'react'
 import { withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import { Story as BaseStory } from 'rt-storybook'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export const Centered = styled('div')`
   height: 100%;

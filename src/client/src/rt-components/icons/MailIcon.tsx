@@ -1,5 +1,5 @@
 import React, { SVGAttributes } from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { dark } from 'rt-theme/colors'
 
 interface Props extends SVGAttributes<Element> {

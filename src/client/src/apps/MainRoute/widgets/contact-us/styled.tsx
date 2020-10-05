@@ -1,4 +1,4 @@
-import { styled } from '../../../../rt-theme'
+import styled from 'styled-components/macro'
 import { Popup } from 'rt-components'
 
 const buttonHeight = '2rem'

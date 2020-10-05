@@ -6,7 +6,7 @@ import {
 } from 'apps/MainRoute/widgets/spotTile/components/test-resources/spotTileProps'
 import { ServiceConnectionStatus } from 'rt-types/serviceStatus'
 import { action } from 'rt-util/ActionHelper'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import {
   BaseSpotTile,
   HoveredSpotTile,

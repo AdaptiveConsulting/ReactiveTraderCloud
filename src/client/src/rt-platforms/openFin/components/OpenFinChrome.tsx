@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { Helmet } from 'react-helmet'
 import { snapAndDock } from 'openfin-layouts'
-import { styled, AccentName } from 'rt-theme'
+import styled from 'styled-components/macro'
+import { AccentName } from 'rt-theme'
 import {
   minimiseNormalIcon,
   maximiseScreenIcon,

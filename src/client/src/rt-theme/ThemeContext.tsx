@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { themes } from './themes'
-import { ThemeProvider as StyledThemeProvider } from 'styled-components'
+import { ThemeProvider as StyledThemeProvider } from 'styled-components/macro'
 
 export enum ThemeName {
   Light = 'light',

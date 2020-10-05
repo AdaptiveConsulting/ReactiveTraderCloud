@@ -14,7 +14,7 @@ import { getConstsFromRfqState } from 'apps/MainRoute/widgets/spotTile/model/spo
 import { AdaptiveLoader } from 'rt-components'
 import PriceMovement from 'apps/MainRoute/widgets/spotTile/components/PriceMovement'
 import TileBookingSwitch from 'apps/MainRoute/widgets/spotTile/components/PriceControls/TileBookingSwitch'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 interface Props {
   currencyPair: CurrencyPair

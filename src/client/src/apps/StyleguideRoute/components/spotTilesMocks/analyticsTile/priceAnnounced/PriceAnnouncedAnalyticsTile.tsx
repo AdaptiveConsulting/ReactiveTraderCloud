@@ -19,7 +19,7 @@ import { SpotTileProps } from 'apps/MainRoute/widgets/spotTile/components/types'
 import { getConstsFromRfqState } from 'apps/MainRoute/widgets/spotTile/model/spotTileUtils'
 import TileHeader from 'apps/MainRoute/widgets/spotTile/components/TileHeader'
 import { SpotTileStyle } from '../../horizontalTiles/BaseSpotTile'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import RfqTimer from '../../horizontalTiles/priceAnnounced/PriceAnnouncedTimer'
 
 export const AnalyticsTileStyle = styled(SpotTileStyle)`

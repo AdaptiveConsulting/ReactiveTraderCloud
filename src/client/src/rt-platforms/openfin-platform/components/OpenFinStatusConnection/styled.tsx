@@ -1,5 +1,5 @@
 import { capitalize } from 'lodash'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { FunctionComponent } from 'react'
 import React from 'react'
 import { ServiceConnectionStatus } from 'rt-types'

@@ -1,6 +1,6 @@
-import { styled, Theme } from 'rt-theme'
+import styled, { keyframes, css } from 'styled-components/macro'
+import { Theme } from 'rt-theme'
 import { Direction } from 'rt-types'
-import { keyframes, css } from 'styled-components'
 
 const backgroundEffectKeyframes = ({
   direction,

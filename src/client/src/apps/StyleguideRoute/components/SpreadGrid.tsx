@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { PriceMovementTypes } from '../../MainRoute/widgets/spotTile/model/priceMovementTypes'
 import PriceMovement from '../../MainRoute/widgets/spotTile/components/PriceMovement'
 

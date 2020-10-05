@@ -1,6 +1,6 @@
 import React, { FC, useCallback, MouseEvent } from 'react'
 import { PopoutIcon } from 'rt-components'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 interface WorkspaceControlProps {
   onPopoutClick?: (x: number, y: number) => void

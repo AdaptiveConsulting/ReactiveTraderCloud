@@ -3,8 +3,8 @@ import React from 'react'
 
 import { H2, H3 } from '../elements'
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from '../styled'
-import { colors, styled, Theme, AccentName, useTheme, ThemeName } from 'rt-theme'
-import { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-components'
+import { colors, Theme, AccentName, useTheme, ThemeName } from 'rt-theme'
+import styled, { StyledComponent, css, FlattenSimpleInterpolation } from 'styled-components/macro'
 
 const { primary, ...others } = colors.accents
 

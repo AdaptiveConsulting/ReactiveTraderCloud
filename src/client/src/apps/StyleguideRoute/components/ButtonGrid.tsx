@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Button } from 'rt-styleguide'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 import { ButtonStyleProps } from 'rt-styleguide'
 

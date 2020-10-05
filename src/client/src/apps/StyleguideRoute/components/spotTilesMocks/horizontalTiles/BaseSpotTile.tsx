@@ -14,7 +14,7 @@ import {
 import TileHeader from 'apps/MainRoute/widgets/spotTile/components/TileHeader'
 import PriceControls from './BasePriceControls'
 import RfqTimer from 'apps/MainRoute/widgets/spotTile/components/RfqTimer'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export const SpotTileStyle = styled(TileBaseStyle)`
   background-color: ${({ theme }) => theme.primary[1]};

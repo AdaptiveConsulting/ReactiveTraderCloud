@@ -1,4 +1,4 @@
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export default styled('div')`
   height: calc(100% - 4.75rem);

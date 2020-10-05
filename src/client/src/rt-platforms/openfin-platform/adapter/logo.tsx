@@ -2,7 +2,7 @@ import React from 'react'
 import { OpenFinLogoLink } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
 import { OpenFinBrowserLink } from '../components'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 
 export default () => {
   const Logo = styled.div`

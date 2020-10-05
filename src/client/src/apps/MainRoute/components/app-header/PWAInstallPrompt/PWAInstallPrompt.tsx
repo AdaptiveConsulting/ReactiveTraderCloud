@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import { CrossIcon } from 'rt-components'
-import { styled } from 'rt-theme'
+import styled from 'styled-components/macro'
 import { PWAInstallModal } from './PWAInstallModal'
 import { usePWABannerPrompt } from './usePWABannerPrompt'
 import Environment from 'rt-system/environment'
