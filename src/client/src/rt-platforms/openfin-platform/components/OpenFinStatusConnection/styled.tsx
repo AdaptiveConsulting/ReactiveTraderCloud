@@ -52,8 +52,6 @@ export const StatusLabel = styled(StatusLabelCore)`
 `
 
 export const Root = styled.div`
-  position: relative;
-  float: right;
   backface-visibility: hidden;
   min-height: ${buttonHeight};
   max-height: ${buttonHeight};

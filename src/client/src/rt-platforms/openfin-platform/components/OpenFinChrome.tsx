@@ -1,10 +1,13 @@
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { FC, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { AccentName } from 'rt-theme'
 import styled from 'styled-components/macro'
+import Header from 'apps/MainRoute/components/app-header'
+import StatusBar from 'apps/MainRoute/widgets/status-bar'
+import { ExitIcon, maximiseScreenIcon, minimiseNormalIcon } from 'apps/SimpleLauncher/icons'
+import { getAppName } from 'rt-util'
 import OpenfinSnapshotSelection from './OpenfinSnapshotSelection'
+import OpenFinStatusButton from './OpenFinStatusConnection'
 import ReactGA from 'react-ga'
 
 export interface ControlProps {
@@ -107,84 +110,101 @@ export const OpenFinChrome: FC = ({ children }) => {
           min-height: 100%;
           max-height: 100vh;
         }
+        body, select, button, li, span, div {
+          font-family: inherit;
+          color: inherit;
+        }
     `}</style>
       </Helmet>
-      <Root>{children}</Root>
+      {children}
     </>
   )
 }
 
 export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
-  <Header>
-    <DragRegion />
-    <OpenFinControls {...props} />
-  </Header>
+  <Header
+    controls={<OpenFinControls {...props} />}
+    filler={<OpenFinTitleBar className="title-bar-draggable">{getAppName()}</OpenFinTitleBar>}
+  />
 )
 
 export const OpenFinFooter: React.FC = ({ ...props }) => (
-  <FooterControl>
-    <OpenfinSnapshotSelection />
-  </FooterControl>
+  <StatusBar>
+    <FooterControl>
+      <OpenfinSnapshotSelection />
+      <OpenFinStatusButton />
+    </FooterControl>
+  </StatusBar>
 )
 
 export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close }) => (
-  <React.Fragment>
+  <OpenFinControlsWrapper>
     {minimize ? (
       <HeaderControl accent="aware" onClick={minimize} data-qa="openfin-chrome__minimize">
-        <i className="fas fa-minus fa-set-position" />
+        {minimiseNormalIcon}
       </HeaderControl>
     ) : null}
     {maximize ? (
       <HeaderControl accent="primary" onClick={maximize} data-qa="openfin-chrome__maximize">
-        <i className="far fa-window-maximize" />
+        {maximiseScreenIcon}
       </HeaderControl>
     ) : null}
     <HeaderControl accent="negative" onClick={close} data-qa="openfin-chrome__close">
-      <FontAwesomeIcon icon={faTimes} />
+      <ExitIcon />
     </HeaderControl>
-  </React.Fragment>
+  </OpenFinControlsWrapper>
 )
 
-export const OPENFIN_CHROME_HEADER_HEIGHT = '21px'
-
-const Header = styled.div`
+const OpenFinTitleBar = styled.div`
   display: flex;
+  flex: 1;
   width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: normal;
   min-height: 1.5rem;
-  font-size: 1rem;
-  height: ${OPENFIN_CHROME_HEADER_HEIGHT};
+  margin: 0;
+  font-size: 0.625rem;
+  height: 3rem;
 `
 
-const DragRegion = styled.div`
+const OpenFinControlsWrapper = styled.div`
   display: flex;
-  flex-grow: 1;
-  -webkit-app-region: drag;
 `
 
 const HeaderControl = styled.div<{ accent?: AccentName }>`
   display: flex;
+  cursor: pointer;
   justify-content: center;
   align-self: center;
-  min-width: 2.3rem;
   padding-top: 7px;
 
   color: ${props => props.theme.secondary.base};
-  cursor: pointer;
 
   &:hover {
-    color: ${({ theme, accent = 'primary' }) => theme.button[accent].backgroundColor};
+    svg {
+      path:last-child {
+        fill: ${({ theme, accent = 'primary' }) => theme.button[accent].backgroundColor};
+      }
+    }
+  }
+
+  &:disabled {
+    svg {
+      path:nth-child(2) {
+        fill: #535760;
+      }
+      path:last-child {
+        fill: #535760;
+      }
+    }
   }
 `
 
 const FooterControl = styled.div`
   margin-right: 0.5rem;
-`
-
-export const Root = styled.div`
-  background-color: ${props => props.theme.core.darkBackground};
-  color: ${props => props.theme.core.textColor};
-  height: 100%;
-  width: 100%;
+  display: flex;
 `
 
 export default OpenFinChrome
