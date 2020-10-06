@@ -1,30 +1,28 @@
 {
   "platform": {
     "uuid": "reactive-trader-{{environment}}",
-    "applicationIcon": "{*host_url*}/static/media/icon.ico",
+    "name": "Reactive Trader{{environment_suffix}}",
+    "applicationIcon": "{*host_url*}/static/media/reactive-trader-icon-256x256.png",
     "url": "{*host_url*}",
+    "fdc3api": true,
     "defaultWindowOptions": {
       "contextMenu": true,
       "frame": false,
+      "applicationIcon": "{*host_url*}/static/media/reactive-trader-icon-256x256.png",
       "url": "{*host_url*}/openfin-window-frame"
     }
   },
   "runtime": {
-    "arguments": "--v=1 --inspect",
     "version": "17.85.53.10"
   },
   "services": [
-    {
-      "name": "fdc3",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/fdc3/0.2.0/app.json"
-    },
     {
       "name": "notifications",
       "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json"
     }
   ],
   "devtools_port": 9090,
-  "splashScreenImage": "{*host_url*}/static/media/splash-screen.png",
+  "splashScreenImage": "{*host_url*}/static/media/splash.png",
   "shortcut": {
     "company": "Adaptive Consulting",
     "icon": "{*host_url*}/static/media/reactive-trader.ico",
@@ -41,7 +39,7 @@
   "snapshot": {
     "windows": [
       {
-        "applicationIcon": "{*host_url*}/static/media/adaptive-mark-large.png",
+        "applicationIcon": "{*host_url*}/static/media/reactive-trader-icon-256x256.png",
         "autoShow": true,
         "defaultWidth": 1280,
         "defaultHeight": 900,
@@ -69,7 +67,7 @@
           "reloadIgnoringCache": true,
           "zoom": true
         },
-        "url": "{*host_url*}/",
+        "url": "{*host_url*}/openfin-window-frame",
         "layout": {
           "settings": {
             "blockedPopoutsThrowError": false,
