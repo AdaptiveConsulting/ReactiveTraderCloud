@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
 import { currencyFormatter } from 'rt-util'
 import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
-import WindowFrame from './components/windowFrame'
+import { OpenFinWindowFrame } from 'rt-platforms/openfin-platform/components/OpenFinWindowFrame'
 
 export const Router: FC = () => (
   <Switch>
@@ -50,6 +50,6 @@ export const Router: FC = () => (
       )}
     />
 
-    <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
+    <Route path="/openfin-window-frame" render={() => <OpenFinWindowFrame />} />
   </Switch>
 )
