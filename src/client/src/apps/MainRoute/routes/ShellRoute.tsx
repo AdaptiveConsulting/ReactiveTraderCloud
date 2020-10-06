@@ -12,11 +12,6 @@ import { analyticsSelector, blotterSelector, liveRatesSelector, DefaultLayout } 
 import { BlotterWrapper, AnalyticsWrapper, OverflowScroll, WorkspaceWrapper } from './styled'
 import UsersModal from '../components/users-modal'
 import ContactUsButton from '../widgets/contact-us'
-// TODO - move to openfin-platform
-import OpenFinStatusButton from 'rt-platforms/openfin-platform/components/OpenFinStatusConnection'
-import { applySnapshotFromStorageOnLoad } from 'rt-platforms/openfin-platform/snapshots'
-import { createGlobalStyle } from 'styled-components/macro'
-import { Theme } from 'rt-theme'
 
 interface Props {
   header?: React.ReactChild
@@ -47,9 +42,6 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
     return numberOfVisibleService === 1
   }, [blotter.visible, analytics.visible, liveRates.visible])
 
-  // TODO: This information should come from the platform context
-  const isOpenFinTopWindow = window.fin?.me?.isWindow
-
   useEffect(() => {
     window.document.dispatchEvent(
       new Event('DOMContentLoaded', {
@@ -57,64 +49,7 @@ const ShellRoute: React.FC<Props> = ({ header, footer }) => {
         cancelable: true,
       })
     )
-    if (isOpenFinTopWindow) {
-      async function run() {
-        try {
-          await applySnapshotFromStorageOnLoad()
-        } catch (ex) {
-          console.error(ex)
-        }
-        await fin.Platform.Layout.init()
-      }
-      run()
-    }
-  }, [isOpenFinTopWindow])
-
-  if (isOpenFinTopWindow) {
-    const OfTabTheme = createGlobalStyle<{ theme: Theme }>`
-      .lm_tabs {
-        background-color: ${({ theme }) => theme.core.lightBackground};
-        border-radius: 0px;
-      }
-      .lm_content {
-        background-color: ${({ theme }) => theme.core.lightBackground};
-      }
-      .lm_tab, .lm_tab.lm_active {
-        background-color: ${({ theme }) => theme.core.darkBackground} !important;
-        color: ${({ theme }) => theme.core.textColor} !important;
-      }
-      .lm_splitter {
-        background-color: ${({ theme }) => theme.core.offBackground} !important;
-      }
-      #layout-container {
-        max-height: calc(100vh - 5rem);
-        max-width: 100vw;
-      }
-    `
-
-    const OfBody = (
-      <React.Fragment>
-        <OfTabTheme />
-        <div id="layout-container" />
-      </React.Fragment>
-    )
-
-    const ofStatusBar = (
-      <StatusBar>
-        {footer}
-        <OpenFinStatusButton />
-      </StatusBar>
-    )
-
-    return (
-      <DefaultLayout
-        header={header}
-        body={OfBody}
-        footer={ofStatusBar}
-        after={<ReconnectModal />}
-      />
-    )
-  }
+  }, [])
 
   const body = (
     <Resizer

@@ -1,9 +1,9 @@
-import React, { useEffect, FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
+import { isParentAppOpenfinLauncher, usePlatform } from 'rt-platforms'
 import styled from 'styled-components/macro'
-import { OpenFinControls } from 'rt-platforms/openfin-platform/components'
-import { getAppName } from 'rt-util'
+import { OpenFinChrome, OpenFinHeader, OpenFinFooter } from './OpenFinChrome'
 
-const FrameRoot = styled.div`
+const OpenFinFrameRoot = styled.div`
   background-color: ${({ theme }) => theme.core.darkBackground};
   color: ${({ theme }) => theme.core.textColor};
   height: 100%;
@@ -12,6 +12,9 @@ const FrameRoot = styled.div`
   margin: 0;
   position: absolute;
   overflow: hidden;
+
+  --title-bar-height: 3.5rem;
+  --openfin-footer-height: 2.5rem;
 
   #layout-container {
     height: 100%;
@@ -43,30 +46,31 @@ const FrameRoot = styled.div`
   }
 `
 
-const TitleBarRoot = styled.div`
-  width: 100%;
-  height: var(--title-bar-height);
-  display: flex;
-`
-
-const TitleBarWindowName = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
 const LayoutRoot = styled.div`
-  height: calc(100% - var(--title-bar-height));
+  height: calc(100% - var(--title-bar-height) - var(--openfin-footer-height));
 `
 
-export const OpenFinWindowFrame: FC<{ maximize?: boolean }> = ({ maximize = false }) => {
+export const OpenFinWindowFrame: React.FC = () => {
+  const [fromLauncher, setFromLauncher] = useState<boolean>(false)
+  const platform = usePlatform()
+
   const win = fin.Window.getCurrentSync()
-  const onClose = () => win.close()
-  const onMinimize = () => win.minimize()
-  const onMaximize = async () =>
-    win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize()))
-  const windowName = getAppName()
+  const headerControlHandlers = {
+    close: () => win.close(),
+    minimize: () => win.minimize(),
+    maximize: () =>
+      win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize())),
+  }
+
+  useEffect(() => {
+    isParentAppOpenfinLauncher()
+      .then(isLauncher => {
+        setFromLauncher(isLauncher)
+      })
+      .catch(() => {
+        console.error('Cannot find parent window')
+      })
+  }, [])
 
   useEffect(() => {
     window.document.dispatchEvent(
@@ -78,25 +82,17 @@ export const OpenFinWindowFrame: FC<{ maximize?: boolean }> = ({ maximize = fals
     fin.Platform.Layout.init()
   }, [])
 
-  // if ()
-
   return (
-    <FrameRoot>
-      <TitleBarRoot>
-        <div className="title-bar-draggable">
-          <TitleBarWindowName>{windowName}</TitleBarWindowName>
-        </div>
-        <OpenFinControls
-          minimize={onMinimize}
-          maximize={maximize ? onMaximize : undefined}
-          close={onClose}
-        />
-      </TitleBarRoot>
+    <OpenFinFrameRoot>
+      <OpenFinChrome>
+        <OpenFinHeader {...headerControlHandlers} />
 
-      <LayoutRoot>
-        {/* This div and id is required by Openfin */}
-        <div id="layout-container"></div>
-      </LayoutRoot>
-    </FrameRoot>
+        <LayoutRoot>
+          {/* This div and id is required by Openfin */}
+          <div id="layout-container"></div>
+        </LayoutRoot>
+        <OpenFinFooter />
+      </OpenFinChrome>
+    </OpenFinFrameRoot>
   )
 }
