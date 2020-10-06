@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { isParentAppOpenfinLauncher, usePlatform } from 'rt-platforms'
 import styled from 'styled-components/macro'
 import { OpenFinChrome, OpenFinHeader, OpenFinFooter } from './OpenFinChrome'
@@ -52,7 +52,6 @@ const LayoutRoot = styled.div`
 
 export const OpenFinWindowFrame: React.FC = () => {
   const [fromLauncher, setFromLauncher] = useState<boolean>(false)
-  const platform = usePlatform()
 
   const win = fin.Window.getCurrentSync()
   const headerControlHandlers = {
