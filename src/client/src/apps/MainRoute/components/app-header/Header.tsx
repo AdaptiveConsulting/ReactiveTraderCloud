@@ -73,8 +73,7 @@ const AppHeaderRoot = styled.div`
   width: calc(100% - 2rem);
   max-width: 100%;
 
-  min-height: 3.5rem;
-  max-height: 3.5rem;
+  height: 3.5rem;
 
   margin: 0.25rem 1rem;
 

@@ -4,8 +4,12 @@ import { AccentName } from 'rt-theme'
 import styled from 'styled-components/macro'
 import Header from 'apps/MainRoute/components/app-header'
 import StatusBar from 'apps/MainRoute/widgets/status-bar'
-import { ExitIcon, maximiseScreenIcon, minimiseNormalIcon } from 'apps/SimpleLauncher/icons'
-import { getAppName } from 'rt-util'
+import {
+  ExitIcon,
+  maximiseScreenIcon,
+  minimiseNormalIcon,
+  popInIcon,
+} from 'apps/SimpleLauncher/icons'
 import OpenfinSnapshotSelection from './OpenfinSnapshotSelection'
 import OpenFinStatusButton from './OpenFinStatusConnection'
 import ReactGA from 'react-ga'
@@ -13,7 +17,12 @@ import ReactGA from 'react-ga'
 export interface ControlProps {
   minimize?: () => void
   maximize?: () => void
-  close: () => void
+  close?: () => void
+  popIn?: () => void
+}
+
+interface HeaderProps extends ControlProps {
+  title?: string
 }
 
 const LAYOUT_ITEMS = {
@@ -110,10 +119,6 @@ export const OpenFinChrome: FC = ({ children }) => {
           min-height: 100%;
           max-height: 100vh;
         }
-        body, select, button, li, span, div {
-          font-family: inherit;
-          color: inherit;
-        }
     `}</style>
       </Helmet>
       {children}
@@ -121,10 +126,10 @@ export const OpenFinChrome: FC = ({ children }) => {
   )
 }
 
-export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
+export const OpenFinHeader: React.FC<HeaderProps> = ({ title, ...props }) => (
   <Header
     controls={<OpenFinControls {...props} />}
-    filler={<OpenFinTitleBar className="title-bar-draggable">{getAppName()}</OpenFinTitleBar>}
+    filler={<OpenFinTitleBar className="title-bar-draggable">{title}</OpenFinTitleBar>}
   />
 )
 
@@ -137,21 +142,28 @@ export const OpenFinFooter: React.FC = ({ ...props }) => (
   </StatusBar>
 )
 
-export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close }) => (
+export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, popIn, close }) => (
   <OpenFinControlsWrapper>
-    {minimize ? (
+    {minimize && (
       <HeaderControl accent="aware" onClick={minimize} data-qa="openfin-chrome__minimize">
         {minimiseNormalIcon}
       </HeaderControl>
-    ) : null}
-    {maximize ? (
+    )}
+    {maximize && (
       <HeaderControl accent="primary" onClick={maximize} data-qa="openfin-chrome__maximize">
         {maximiseScreenIcon}
       </HeaderControl>
-    ) : null}
-    <HeaderControl accent="negative" onClick={close} data-qa="openfin-chrome__close">
-      <ExitIcon />
-    </HeaderControl>
+    )}
+    {popIn && (
+      <HeaderControl accent="primary" onClick={popIn} data-qa="openfin-chrome__popin">
+        {popInIcon}
+      </HeaderControl>
+    )}
+    {close && (
+      <HeaderControl accent="negative" onClick={close} data-qa="openfin-chrome__close">
+        <ExitIcon />
+      </HeaderControl>
+    )}
   </OpenFinControlsWrapper>
 )
 
@@ -166,7 +178,7 @@ const OpenFinTitleBar = styled.div`
   min-height: 1.5rem;
   margin: 0;
   font-size: 0.625rem;
-  height: 3rem;
+  height: 100%;
 `
 
 const OpenFinControlsWrapper = styled.div`
@@ -178,7 +190,6 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
   cursor: pointer;
   justify-content: center;
   align-self: center;
-  padding-top: 7px;
 
   color: ${props => props.theme.secondary.base};
 
@@ -205,6 +216,22 @@ const HeaderControl = styled.div<{ accent?: AccentName }>`
 const FooterControl = styled.div`
   margin-right: 0.5rem;
   display: flex;
+`
+
+export const OpenFinSubWindowHeader: React.FC<HeaderProps> = ({ title, ...props }) => (
+  <SubWindowHeader>
+    <OpenFinTitleBar className="title-bar-draggable">{title}</OpenFinTitleBar>
+    <OpenFinControls {...props} />
+  </SubWindowHeader>
+)
+
+const SubWindowHeader = styled.div`
+  display: flex;
+  width: 100%;
+  height: 1.5rem;
+  font-size: 1rem;
+  padding: 0 0.625rem;
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 export default OpenFinChrome

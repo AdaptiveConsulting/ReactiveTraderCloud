@@ -1,11 +1,12 @@
+import { getPlatformLayoutTitle } from 'apps/utils/openfin-utils'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { isParentAppOpenfinLauncher } from 'rt-platforms'
-import styled from 'styled-components/macro'
-import { OpenFinChrome, OpenFinHeader, OpenFinFooter } from './OpenFinChrome'
 import { getAppName } from 'rt-util'
+import styled from 'styled-components/macro'
+import { OpenFinChrome, OpenFinSubWindowHeader } from './OpenFinChrome'
 
-const OpenFinFrameRoot = styled.div`
+const OpenFinSubFrameRoot = styled.div`
   background-color: ${({ theme }) => theme.core.darkBackground};
   color: ${({ theme }) => theme.core.textColor};
   height: 100%;
@@ -15,8 +16,8 @@ const OpenFinFrameRoot = styled.div`
   position: absolute;
   overflow: hidden;
 
-  --title-bar-height: 3.5rem;
-  --openfin-footer-height: 2.5rem;
+  --title-bar-height: 1.5rem;
+  --openfin-footer-height: 0rem;
 
   #layout-container {
     height: 100%;
@@ -52,15 +53,14 @@ const LayoutRoot = styled.div`
   height: calc(100% - var(--title-bar-height) - var(--openfin-footer-height));
 `
 
-export const OpenFinWindowFrame: React.FC = () => {
-  const [, setFromLauncher] = useState<boolean>(false)
-
+export const OpenFinSubWindowFrame: React.FC = () => {
   const win = fin.Window.getCurrentSync()
+  const [, setFromLauncher] = useState<boolean>(false)
+  const [windowName, setWindowName] = useState('')
+
   const headerControlHandlers = {
-    close: () => win.close(),
     minimize: () => win.minimize(),
-    maximize: () =>
-      win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize())),
+    popIn: () => win.close(),
   }
 
   useEffect(() => {
@@ -80,11 +80,26 @@ export const OpenFinWindowFrame: React.FC = () => {
         cancelable: true,
       })
     )
-    fin.Platform.Layout.init()
+    async function init() {
+      async function updateWindowName() {
+        const windowTitle = await getPlatformLayoutTitle()
+        if (windowTitle) {
+          setWindowName(windowTitle)
+        }
+      }
+      await fin.Platform.Layout.init()
+
+      // This seems to be necessary to give OpenFin Platform enough time to initialise
+      // Otherwise the layout can't be found...
+      setTimeout(updateWindowName, 0)
+    }
+    init()
   }, [])
 
+  const title = `${getAppName()}${windowName ? ` - ${windowName}` : ''}`
+
   return (
-    <OpenFinFrameRoot>
+    <OpenFinSubFrameRoot>
       <Helmet>
         <style type="text/css">{`
         :root, body {
@@ -97,14 +112,13 @@ export const OpenFinWindowFrame: React.FC = () => {
     `}</style>
       </Helmet>
       <OpenFinChrome>
-        <OpenFinHeader {...headerControlHandlers} title={getAppName()} />
+        <OpenFinSubWindowHeader {...headerControlHandlers} title={title} />
 
         <LayoutRoot>
           {/* This div and id is required by Openfin */}
           <div id="layout-container"></div>
         </LayoutRoot>
-        <OpenFinFooter />
       </OpenFinChrome>
-    </OpenFinFrameRoot>
+    </OpenFinSubFrameRoot>
   )
 }
