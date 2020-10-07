@@ -132,7 +132,6 @@ export const openDesktopWindow = async (
 
   const platform = await fin.Platform.getCurrent()
 
-  //@ts-ignore
   const newWinIdentity = await platform.createWindow({
     autoShow: true,
     contextMenu: true,
@@ -146,6 +145,7 @@ export const openDesktopWindow = async (
     minWidth: config.minWidth ? config.minWidth : 100,
     name: windowName,
     saveWindowState: false,
+    icon: '/static/media/reactive-trader.ico',
     shadow: true,
     ...position,
     ...updatedPosition,
@@ -157,6 +157,7 @@ export const openDesktopWindow = async (
       content: [
         {
           type: 'stack',
+          title: config.displayName || windowName,
           content: [
             {
               type: 'component',
@@ -165,7 +166,7 @@ export const openDesktopWindow = async (
                 name: `${windowName}_view`,
                 url: `${window.location.origin}${url}`,
               },
-              title: windowName,
+              title: config.displayName || windowName,
             },
           ],
         },
