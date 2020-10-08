@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import { GlobalState } from 'StoreTypes'
 import { WindowConfig, WindowPosition } from 'rt-platforms'
+import { currencyFormatter } from 'rt-util'
 
 type Center = 'screen' | 'parent'
 export interface ExternalWindowProps {
@@ -16,10 +17,11 @@ const makeExternalWindowProps: (key: string, tileLayout?: WindowPosition) => Ext
   title: `${key} Spot`,
   config: {
     name: `${key}`,
+    displayName: `${currencyFormatter(key)}`,
     width: 366, // 346 content + 10 padding
-    height: 208,
+    height: 202,
     minWidth: 366,
-    minHeight: 208,
+    minHeight: 202,
     // TODO: If we are able to disable dropping other windows
     // on to the SpotTiles, we can re-enable the maxWidth and maxHeight properties
     // maxWidth: 366,

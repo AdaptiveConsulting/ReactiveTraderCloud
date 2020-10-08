@@ -9,7 +9,7 @@
       "contextMenu": true,
       "frame": false,
       "applicationIcon": "{*host_url*}/static/media/reactive-trader-icon-256x256.png",
-      "url": "{*host_url*}/openfin-window-frame"
+      "url": "{*host_url*}/openfin-sub-window-frame"
     }
   },
   "runtime": {

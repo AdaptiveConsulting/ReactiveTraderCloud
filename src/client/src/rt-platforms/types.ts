@@ -16,6 +16,7 @@ export interface WindowConfig {
   url: string
   width: number
   height: number
+  displayName?: string
   minHeight?: number
   minWidth?: number
   maxHeight?: number
