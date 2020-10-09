@@ -38,7 +38,7 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
     return () => ccyPairSubscription && ccyPairSubscription.unsubscribe()
   }, [platform])
 
-  const [tileView, setTileView] = useLocalStorage('tileView', TileView.Analytics)
+  const [tileView] = useLocalStorage('tileView', TileView.Analytics)
   const id = (ccyPairFromInterop && ccyPairFromInterop[0]) || match.params.symbol
 
   return (

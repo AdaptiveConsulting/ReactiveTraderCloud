@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 
 export const useLocalStorage = <T>(key: string, initialState: T) => {
     const [state, setState] = useState(() => {
@@ -10,6 +10,8 @@ export const useLocalStorage = <T>(key: string, initialState: T) => {
             setState(window.localStorage.getItem(key) ?? JSON.stringify(initialState))
         }
 
+        updateState()
+        
         window.addEventListener('storage', updateState)
 
         return () => {
@@ -22,7 +24,7 @@ export const useLocalStorage = <T>(key: string, initialState: T) => {
         window.localStorage.setItem(key, state)
     }, [key, state])
 
-    const value = JSON.parse(state)
+    const value = useMemo(() => JSON.parse(state), [state])
     const setter = useCallback((value: T) => {
         setState(JSON.stringify(value))
     }, [])
