@@ -5,6 +5,7 @@ import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileView } from './workspaceHeader'
 import { appendTileViewToUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
+import { useLocalStorage } from '../../../../rt-util/hooks/useLocalStorage'
 
 const WorkspaceItems = styled.div`
   display: grid;
@@ -39,7 +40,7 @@ const Workspace: React.FC<Props> = ({
   onPopoutClick,
 }) => {
   const [currency, setCurrencyOption] = useState(ALL)
-  const [tileView, setTileView] = useState(TileView.Analytics)
+  const [tileView, setTileView] = useLocalStorage('tileView', TileView.Analytics)
 
   return (
     <div data-qa="workspace__tiles-workspace">

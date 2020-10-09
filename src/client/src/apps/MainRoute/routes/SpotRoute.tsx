@@ -6,6 +6,7 @@ import { TileView } from '../widgets/workspace/workspaceHeader'
 import styled from 'styled-components/macro'
 import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
 import { Subscription } from 'rxjs'
+import { useLocalStorage } from '../../../rt-util/hooks/useLocalStorage'
 
 const SpotTileStyle = styled.div`
   min-width: 26rem;
@@ -48,7 +49,7 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
     return () => ccyPairSubscription && ccyPairSubscription.unsubscribe()
   }, [platform])
 
-  const tileView = getTileViewFromQueryStr(search)
+  const [tileView, setTileView] = useLocalStorage('tileView', TileView.Analytics)
   const id = (ccyPairFromInterop && ccyPairFromInterop[0]) || match.params.symbol
 
   return (
