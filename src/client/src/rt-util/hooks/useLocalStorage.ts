@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
 
-export const useLocalStorage = <T>(key: string, initialValue: T) => {
+export const useLocalStorage = <T>(key: string, initialState: T) => {
     const [state, setState] = useState(() => {
-        return window.localStorage.getItem(key) ?? JSON.stringify(initialValue)
+        return window.localStorage.getItem(key) ?? JSON.stringify(initialState)
     })
 
     useEffect(() => {
         const updateState = () => {
-            setState(window.localStorage.getItem(key) ?? JSON.stringify(initialValue))
+            setState(window.localStorage.getItem(key) ?? JSON.stringify(initialState))
         }
 
         window.addEventListener('storage', updateState)
@@ -16,7 +16,7 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
             window.removeEventListener('storage', updateState)
         }
 
-    }, [key, initialValue])
+    }, [key, initialState])
 
     useEffect(() => {
         window.localStorage.setItem(key, state)
