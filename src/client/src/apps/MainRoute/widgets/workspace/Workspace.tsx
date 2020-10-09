@@ -3,7 +3,7 @@ import { TearOff } from 'rt-components'
 import styled from 'styled-components/macro'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileView } from './workspaceHeader'
-import { appendTileViewToUrl } from './utils'
+import { createPopOutUrl } from './utils'
 import { ExternalWindowProps } from './selectors'
 import { useLocalStorage } from '../../../../rt-util/hooks/useLocalStorage'
 
@@ -62,7 +62,7 @@ const Workspace: React.FC<Props> = ({
               id={key}
               key={key}
               dragTearOff
-              externalWindowProps={appendTileViewToUrl(externalWindowProps, tileView as TileView)}
+              externalWindowProps={createPopOutUrl(externalWindowProps)}
               render={(popOut, isTornOff) => (
                 <WorkspaceItem>
                   <SpotTileContainer

@@ -1,12 +1,10 @@
 import { ExternalWindowProps } from './selectors'
-import { TileView } from './workspaceHeader'
 
-export const appendTileViewToUrl: (
+export const createPopOutUrl: (
   externalWindowProps: ExternalWindowProps,
-  tileView: TileView
-) => ExternalWindowProps = (externalWindowProps, tileView) => {
+) => ExternalWindowProps = (externalWindowProps) => {
   const { config } = externalWindowProps
-  const url = `${config.url}?tileView=${tileView}`
+  const url = `${config.url}`
   const newConfig = { ...config, url }
   return { ...externalWindowProps, config: newConfig }
 }
