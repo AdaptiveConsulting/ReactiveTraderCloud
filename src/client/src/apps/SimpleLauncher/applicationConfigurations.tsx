@@ -38,7 +38,7 @@ const excelPreloadScripts: fin.DownloadPreloadOption[] = [
   },
 ]
 
-type ApplicationType = 'window' | 'download' | 'application' | 'excel'
+type ApplicationType = 'window' | 'download' | 'application' | 'manifest' | 'excel'
 
 export interface ApplicationProvider {
   platformName: PlatformName
@@ -109,19 +109,14 @@ const baseAppConfigs: ApplicationConfig[] = [
     displayName: 'RT',
     tooltipName: `Launch Reactive Trader${envSuffix}`,
     uuid: `reactive-trader-${env}`,
-    url: `${ORIGIN}`,
+    url: `${ORIGIN}/openfin/app.json`,
     icon: reactiveTraderIcon,
     iconFillColor: '#CFCFCF',
     iconHoverFillColor: '#ffffff',
     iconHoverBackgroundColor: '#28588d',
     provider: {
       platformName: 'openfin',
-      applicationType: 'application',
-      windowOptions: {
-        ...defaultWindowOptions,
-        preloadScripts: excelPreloadScripts,
-        icon: `${ORIGIN}/static/media/reactive-trader.ico`,
-      },
+      applicationType: 'manifest',
     },
   },
   {

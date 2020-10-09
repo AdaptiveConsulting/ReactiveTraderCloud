@@ -1,7 +1,11 @@
 /* eslint-disable no-undef */
 import { ApplicationConfig, ApplicationProvider } from './applicationConfigurations'
 import { createExcelApp } from 'rt-platforms'
-import { createOpenFinWindow, createOrBringToFrontOpenFinApplication } from '../utils'
+import {
+  createOpenFinWindow,
+  bringToFrontOpenFinApplication,
+  createAndRunOpenFinApplication,
+} from '../utils'
 import { Application } from 'openfin/_v2/main'
 
 function openWindow(provider: ApplicationProvider, name: string, url?: string) {
@@ -13,16 +17,11 @@ function openWindow(provider: ApplicationProvider, name: string, url?: string) {
     console.error(`Error opening app - url is missing`)
     return
   }
-  return createOpenFinWindow({ name, url, windowOptions: provider.windowOptions })
+  return createOpenFinWindow(name, url, provider.windowOptions)
 }
 
-function handleApplication(
-  provider: ApplicationProvider,
-  name: string,
-  uuid?: string,
-  url?: string
-) {
-  if (!provider.windowOptions) {
+async function openApplication({ name, url, uuid, provider }: ApplicationConfig) {
+  if (!provider?.windowOptions) {
     console.error(`Error opening app - windowOptions object is missing`)
     return
   }
@@ -30,12 +29,23 @@ function handleApplication(
     console.error(`Error opening app - url is missing`)
     return
   }
-  return createOrBringToFrontOpenFinApplication({
-    name,
-    url,
-    uuid,
-    windowOptions: provider.windowOptions
-  })
+  const runningApp = await bringToFrontOpenFinApplication(uuid ?? name)
+  if (runningApp) {
+    return runningApp
+  }
+  return createAndRunOpenFinApplication(name, url, uuid, provider.windowOptions)
+}
+
+async function launchByManifestUrl(uuid: string, manifestUrl?: string) {
+  if (typeof manifestUrl === 'undefined') {
+    console.error(`Error opening app by manifest - url is missing`)
+    return
+  }
+  const runningApp = await bringToFrontOpenFinApplication(uuid)
+  if (runningApp) {
+    return runningApp
+  }
+  return fin.Application.startFromManifest(manifestUrl)
 }
 
 export async function open(
@@ -49,7 +59,7 @@ export async function open(
   }
 
   // open as url through openfin
-  if (provider && provider.platformName === 'browser') {
+  if (provider?.platformName === 'browser') {
     return new Promise((resolve, reject) => {
       if (typeof config.url !== 'string') {
         console.error(`Error opening with browser - url should be a string`)
@@ -60,7 +70,7 @@ export async function open(
   }
 
   // open new openfin application
-  if (provider && provider.platformName === 'openfin') {
+  if (provider?.platformName === 'openfin') {
     switch (provider.applicationType) {
       case 'window':
         return openWindow(provider, name, url)
@@ -70,8 +80,11 @@ export async function open(
         const excelApp = await createExcelApp(provider.platformName)
         return excelApp.open()
       case 'application':
+        return openApplication(config)
+      case 'manifest':
+        return launchByManifestUrl(uuid ?? name, url)
       default:
-        return handleApplication(provider, name, uuid, url)
+        throw new Error(`Unknown applicationType: ${provider.applicationType}`)
     }
   }
 }
@@ -83,13 +96,13 @@ async function launchLimitChecker(config: ApplicationConfig) {
       alias: 'LimitChecker',
       listener: result => {
         console.log('the exit code', result.exitCode)
-      }
+      },
     },
     data => {
-      console.info('Process launched: ' + data)
+      console.info('Process launched: ', data)
     },
     e => {
-      console.error('Process launch failed: ' + e)
+      console.error('Process launch failed: ', e)
     }
   )
   return app
