@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router-dom'
 import SpotTileContainer from '../widgets/spotTile/SpotTileContainer'
 import { TileView } from '../widgets/workspace/workspaceHeader'
@@ -16,16 +15,6 @@ const SpotTileStyle = styled.div`
   padding: 0 0.575rem 0.5rem 0.575rem;
   margin: 0 auto;
 `
-
-const getTileViewFromQueryStr: (queryStr: string) => TileView = queryStr => {
-  const parsedQueryString = queryString.parse(queryStr)
-  const tileView = parsedQueryString['tileView'] as TileView
-  return !tileView
-    ? TileView.Normal
-    : Object.values(TileView).includes(tileView)
-    ? tileView
-    : TileView.Normal
-}
 
 const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   location: { search },
