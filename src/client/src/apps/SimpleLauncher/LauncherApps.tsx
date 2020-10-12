@@ -20,19 +20,20 @@ export const LauncherApps: React.FC = () => {
   const removeFromOpenedList = (name: string) =>
     isActive(name) && setAppList(appsOpenedListRef.current.filter(item => name !== item))
 
-  const handleOpen = (app: ApplicationConfig) => {
-    open(app)
-      .then(opened => {
-        if (!opened) return
+  const handleOpen = async (app: ApplicationConfig) => {
+    try {
+      const opened = await open(app)
 
-        const currentApp = opened as Application
-        currentApp.addListener('closed', () => removeFromOpenedList(app.name))
-        addToOpenedList(app.name)
-      })
-      .catch(err => {
-        console.warn('Application already opened')
-        addToOpenedList(app.name)
-      })
+      if (!opened) return
+
+      const currentApp = opened as Application
+      currentApp.addListener('closed', () => removeFromOpenedList(app.name))
+      addToOpenedList(app.name)
+    } catch (err) {
+      // TODO: Is this message accurate? Couldn't there be other causes for errors?
+      console.warn('Application already opened')
+      addToOpenedList(app.name)
+    }
   }
 
   return (

@@ -1,12 +1,5 @@
 import { Application } from 'openfin/_v2/main'
 
-export interface ApplicationConfig {
-  name: string
-  url: string
-  uuid?: string
-  windowOptions?: OpenFinWindowOptions
-}
-
 export async function getExistingOpenFinApplication(
   uuid: string
 ): Promise<Application | undefined> {
@@ -29,26 +22,22 @@ async function restoreExistingApp(existingApp: Application): Promise<void> {
   await window.bringToFront()
 }
 
-export async function createOrBringToFrontOpenFinApplication({
-  name,
-  url,
-  uuid,
-  windowOptions,
-}: ApplicationConfig): Promise<Application> {
-  const existingApp = await getExistingOpenFinApplication(name)
+export async function bringToFrontOpenFinApplication(
+  uuid: string
+): Promise<Application | undefined> {
+  const existingApp = await getExistingOpenFinApplication(uuid)
   if (existingApp) {
     await restoreExistingApp(existingApp)
     return existingApp
   }
-  return createAndRunOpenFinApplication({ name, url, uuid, windowOptions })
 }
 
-export async function createAndRunOpenFinApplication({
-  name,
-  url,
-  uuid,
-  windowOptions,
-}: ApplicationConfig): Promise<Application> {
+export async function createAndRunOpenFinApplication(
+  name: string,
+  url: string,
+  uuid?: string,
+  windowOptions?: OpenFinWindowOptions
+): Promise<Application> {
   const appOptions: fin.ApplicationOption = {
     name,
     url,
@@ -61,11 +50,11 @@ export async function createAndRunOpenFinApplication({
   return fin.Application.start(appOptions)
 }
 
-export function createOpenFinWindow({
-  name,
-  url,
-  windowOptions,
-}: ApplicationConfig): Promise<fin.OpenFinWindow> {
+export function createOpenFinWindow(
+  name: string,
+  url: string,
+  windowOptions?: OpenFinWindowOptions
+): Promise<fin.OpenFinWindow> {
   return new Promise((resolve, reject) => {
     const window: fin.OpenFinWindow = new fin.desktop.Window(
       {
