@@ -8,7 +8,7 @@ export {
   clearNotionalsOnStorage,
 } from './stateStorageHelper'
 export { wait, getDeferredPromise } from './asyncUtils'
-export { useForceUpdate, useMultiTimeout, useWindowSize, usePopUpMenu } from './hooks'
+export { useForceUpdate, useMultiTimeout, useWindowSize, usePopUpMenu, useLocalStorage } from './hooks'
 export { waitForObject } from './waitForObject'
 export { getEnvironment } from './getEnvironment'
 export { getAppName } from './getAppName'

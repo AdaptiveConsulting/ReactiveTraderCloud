@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router-dom'
 import SpotTileContainer from '../widgets/spotTile/SpotTileContainer'
 import { TileView } from '../widgets/workspace/workspaceHeader'
 import styled from 'styled-components/macro'
 import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
 import { Subscription } from 'rxjs'
+import { useLocalStorage } from 'rt-util'
 
 const SpotTileStyle = styled.div`
   min-width: 26rem;
@@ -15,16 +15,6 @@ const SpotTileStyle = styled.div`
   padding: 0 0.575rem 0.5rem 0.575rem;
   margin: 0 auto;
 `
-
-const getTileViewFromQueryStr: (queryStr: string) => TileView = queryStr => {
-  const parsedQueryString = queryString.parse(queryStr)
-  const tileView = parsedQueryString['tileView'] as TileView
-  return !tileView
-    ? TileView.Normal
-    : Object.values(TileView).includes(tileView)
-    ? tileView
-    : TileView.Normal
-}
 
 const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   location: { search },
@@ -48,7 +38,7 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
     return () => ccyPairSubscription && ccyPairSubscription.unsubscribe()
   }, [platform])
 
-  const tileView = getTileViewFromQueryStr(search)
+  const [tileView] = useLocalStorage('tileView', TileView.Analytics)
   const id = (ccyPairFromInterop && ccyPairFromInterop[0]) || match.params.symbol
 
   return (
