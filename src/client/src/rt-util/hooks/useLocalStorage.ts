@@ -25,8 +25,10 @@ export const useLocalStorage = <T>(key: string, initialState: T) => {
     }, [key, state])
 
     const value = useMemo(() => JSON.parse(state), [state])
-    const setter = useCallback((value: T) => {
-        setState(JSON.stringify(value))
+    const setter = useCallback((valueOrCallback: T | ((value: T) => T)) => {
+            valueOrCallback instanceof Function 
+            ? setState((prev) => JSON.stringify(valueOrCallback(JSON.parse(prev))))
+            : setState(JSON.stringify(valueOrCallback))
     }, [])
 
     return [value, setter]
