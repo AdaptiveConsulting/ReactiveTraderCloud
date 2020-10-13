@@ -4,7 +4,7 @@ import { rules } from 'rt-styleguide'
 export const OverflowScroll = styled.div`
   overflow-y: scroll;
   ${rules.touchScroll};
-  height: 100vh;
+  height: 100%;
 `
 
 export const Wrapper = styled.div`
