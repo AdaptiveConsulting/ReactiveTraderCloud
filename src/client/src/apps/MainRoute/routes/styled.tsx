@@ -4,7 +4,7 @@ import { rules } from 'rt-styleguide'
 export const OverflowScroll = styled.div`
   overflow-y: scroll;
   ${rules.touchScroll};
-  height: 100%;
+  height: 100%
 `
 
 export const Wrapper = styled.div`
@@ -19,6 +19,7 @@ export const WorkspaceWrapper = styled(Wrapper)`
   @media (max-width: 480px) {
     padding-right: 1rem;
   }
+  overflow-y: auto
 `
 
 export const AnalyticsWrapper = styled(Wrapper)`
