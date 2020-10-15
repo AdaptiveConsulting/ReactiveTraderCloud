@@ -19,7 +19,7 @@ export const WorkspaceWrapper = styled(Wrapper)`
   @media (max-width: 480px) {
     padding-right: 1rem;
   }
-  overflow-y: auto
+  overflow-y: auto;
 `
 
 export const AnalyticsWrapper = styled(Wrapper)`
