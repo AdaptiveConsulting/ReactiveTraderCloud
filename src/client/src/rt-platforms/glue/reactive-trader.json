@@ -22,7 +22,7 @@
   {
     "title": "Reactive Trader™ Analytics",
     "type": "window",
-    "name": "reactive-trader-™-analytics",
+    "name": "reactive-trader-analytics",
     "hidden": true,
     "details": {
       "url": "http://localhost:3000/analytics",
@@ -35,7 +35,7 @@
   {
     "title": "Reactive Trader™ Blotter",
     "type": "window",
-    "name": "reactive-trader-™-blotter",
+    "name": "reactive-trader-blotter",
     "hidden": true,
     "details": {
       "url": "http://localhost:3000/blotter",
@@ -48,7 +48,7 @@
   {
     "title": "Reactive Trader™ Pre Trade Check",
     "type": "window",
-    "name": "reactive-trader-™-pre-trade-check",
+    "name": "reactive-trader-pre-trade-check",
     "hidden": false,
     "details": {
       "url": "http://localhost:3000/t42_fx_preTradeCheck.html",
@@ -60,7 +60,7 @@
   {
     "title": "Reactive Trader™ Spot GBP/JPY",
     "type": "window",
-    "name": "reactive-trader-™-spot-gbpjpy",
+    "name": "reactive-trader-spot-gbpjpy",
     "hidden": true,
     "details": {
       "url": "http://localhost:3000/spot/GBPJPY?tileView=Normal",
@@ -73,7 +73,7 @@
   {
     "title": "Reactive Trader™ Spot EUR/JPY",
     "type": "window",
-    "name": "reactive-trader-™-spot-eurjpy",
+    "name": "reactive-trader-spot-eurjpy",
     "hidden": true,
     "details": {
       "url": "http://localhost:3000/spot/EURJPY?tileView=Normal",
@@ -86,7 +86,7 @@
   {
     "title": "Reactive Trader™ Spot EUR/CAD",
     "type": "window",
-    "name": "reactive-trader-™-spot-eurcad",
+    "name": "reactive-trader-spot-eurcad",
     "hidden": true,
     "details": {
       "url": "http://localhost:3000/spot/EURCAD?tileView=Normal",
