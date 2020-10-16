@@ -1517,14 +1517,14 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 `;
 
 exports[`Snapshot, state derived from props, RFQ received 1`] = `
-.c26 {
+.c25 {
   grid-area: Currency;
   opacity: 0.59;
   font-size: 0.625rem;
   line-height: 1.2rem;
 }
 
-.c25 {
+.c24 {
   display: grid;
   grid-template-columns: 30px auto 30px;
   grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
@@ -1535,7 +1535,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   grid-template-rows: 23px 0;
 }
 
-.c28 {
+.c27 {
   grid-area: Input;
   background: none;
   text-align: center;
@@ -1549,12 +1549,12 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
-.spot-tile:hover .c27:focus,
-.c28:focus {
+.spot-tile:hover .c26:focus,
+.c27:focus {
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
-.c11 {
+.c10 {
   background-color: #2f3542;
   border-radius: 3px;
   color: #ff274b;
@@ -1571,21 +1571,12 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   animation: dnMAbE 5s;
 }
 
-.spot-tile:hover .c10 {
-  background-color: #282e39;
-}
-
-.spot-tile:hover .c10:hover {
+.c10:hover {
   background-color: #ff274b;
   color: #fff;
 }
 
-.c11:hover {
-  background-color: #ff274b;
-  color: #fff;
-}
-
-.c23 {
+.c22 {
   background-color: #2f3542;
   border-radius: 3px;
   color: #2d95ff;
@@ -1602,51 +1593,42 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   animation: dQmnms 5s;
 }
 
-.spot-tile:hover .c10 {
-  background-color: #282e39;
-}
-
-.spot-tile:hover .c10:hover {
+.c22:hover {
   background-color: #2d95ff;
   color: #fff;
 }
 
-.c23:hover {
-  background-color: #2d95ff;
-  color: #fff;
-}
-
-.c14 {
+.c13 {
   padding: 0;
   margin: 0;
 }
 
-.c15 {
+.c14 {
   opacity: 0.59;
   margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
   color: #fff;
 }
 
-.c16 {
+.c15 {
   font-size: 0.8125rem;
   line-height: 1rem;
 }
 
-.c17 {
+.c16 {
   font-size: 2.125rem;
   line-height: 2.5rem;
   margin: 0 0.125rem;
 }
 
-.c18 {
+.c17 {
   margin: 0.125rem 0;
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
 }
 
-.c12 {
+.c11 {
   height: 2.1rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1662,7 +1644,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   align-items: center;
 }
 
-.c13 {
+.c12 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1677,24 +1659,24 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   flex-direction: column;
 }
 
-.c20 {
+.c19 {
   text-align: center;
   color: #01c38d;
   visibility: hidden;
 }
 
-.c22 {
+.c21 {
   text-align: center;
   color: #ff274b;
   visibility: hidden;
 }
 
-.c21 {
+.c20 {
   font-size: 11px;
   opacity: 0.59;
 }
 
-.c19 {
+.c18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1819,7 +1801,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   box-shadow: none;
 }
 
-.c24 {
+.c23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1865,7 +1847,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
         className="c9"
       >
         <button
-          className="c10 c11"
+          className="c10"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -1873,32 +1855,32 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           onClick={[Function]}
         >
           <div
-            className="c12"
+            className="c11"
             disabled={false}
           >
             <div
-              className="c13"
+              className="c12"
             >
               <div
-                className="c14 c15"
+                className="c13 c14"
               >
                 SELL
               </div>
               <div
-                className="c14 c16"
+                className="c13 c15"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="c14 c17"
+              className="c13 c16"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="c14 c18"
+              className="c13 c17"
               data-qa="price-button__tenth"
             >
               4
@@ -1906,29 +1888,29 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           </div>
         </button>
         <div
-          className="c19"
+          className="c18"
         >
           <i
             aria-hidden="true"
-            className="c20 fas fa-caret-up"
+            className="c19 fas fa-caret-up"
             color="positive"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="c21"
+            className="c20"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="c22 fas fa-caret-down"
+            className="c21 fas fa-caret-down"
             color="negative"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <button
-          className="c10 c23"
+          className="c22"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -1936,32 +1918,32 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           onClick={[Function]}
         >
           <div
-            className="c12"
+            className="c11"
             disabled={false}
           >
             <div
-              className="c13"
+              className="c12"
             >
               <div
-                className="c14 c15"
+                className="c13 c14"
               >
                 BUY
               </div>
               <div
-                className="c14 c16"
+                className="c13 c15"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="c14 c17"
+              className="c13 c16"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="c14 c18"
+              className="c13 c17"
               data-qa="price-button__tenth"
             >
               4
@@ -1974,19 +1956,19 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
       className="ReserveSpaceGrouping-sc-1l7nogu-8"
     >
       <div
-        className="c24"
+        className="c23"
       >
         <div
-          className="c25"
+          className="c24"
         >
           <span
-            className="c26"
+            className="c25"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="c27 c28"
+            className="c26 c27"
             data-qa-id="notional-input__input-eurusd"
             disabled={true}
             onBlur={[Function]}
@@ -2549,14 +2531,14 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
 `;
 
 exports[`Snapshot, state derived from props, defaults, RFQ none, should be able to excute 1`] = `
-.c26 {
+.c25 {
   grid-area: Currency;
   opacity: 0.59;
   font-size: 0.625rem;
   line-height: 1.2rem;
 }
 
-.c25 {
+.c24 {
   display: grid;
   grid-template-columns: 30px auto 30px;
   grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
@@ -2567,7 +2549,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   grid-template-rows: 23px 0;
 }
 
-.c28 {
+.c27 {
   grid-area: Input;
   background: none;
   text-align: center;
@@ -2580,12 +2562,12 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
-.spot-tile:hover .c27:focus,
-.c28:focus {
+.spot-tile:hover .c26:focus,
+.c27:focus {
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
-.c11 {
+.c10 {
   background-color: #2f3542;
   border-radius: 3px;
   color: inherit;
@@ -2600,21 +2582,12 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   margin-bottom: 2px;
 }
 
-.spot-tile:hover .c10 {
-  background-color: #282e39;
-}
-
-.spot-tile:hover .c10:hover {
+.c10:hover {
   background-color: #ff274b;
   color: #fff;
 }
 
-.c11:hover {
-  background-color: #ff274b;
-  color: #fff;
-}
-
-.c23 {
+.c22 {
   background-color: #2f3542;
   border-radius: 3px;
   color: inherit;
@@ -2629,51 +2602,42 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   margin-bottom: 2px;
 }
 
-.spot-tile:hover .c10 {
-  background-color: #282e39;
-}
-
-.spot-tile:hover .c10:hover {
+.c22:hover {
   background-color: #2d95ff;
   color: #fff;
 }
 
-.c23:hover {
-  background-color: #2d95ff;
-  color: #fff;
-}
-
-.c14 {
+.c13 {
   padding: 0;
   margin: 0;
 }
 
-.c15 {
+.c14 {
   opacity: 0.59;
   margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
   color: #f9f9f9;
 }
 
-.c16 {
+.c15 {
   font-size: 0.8125rem;
   line-height: 1rem;
 }
 
-.c17 {
+.c16 {
   font-size: 2.125rem;
   line-height: 2.5rem;
   margin: 0 0.125rem;
 }
 
-.c18 {
+.c17 {
   margin: 0.125rem 0;
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
 }
 
-.c12 {
+.c11 {
   height: 2.1rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2689,7 +2653,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   align-items: center;
 }
 
-.c13 {
+.c12 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2704,24 +2668,24 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   flex-direction: column;
 }
 
-.c20 {
+.c19 {
   text-align: center;
   color: #01c38d;
   visibility: hidden;
 }
 
-.c22 {
+.c21 {
   text-align: center;
   color: #ff274b;
   visibility: visible;
 }
 
-.c21 {
+.c20 {
   font-size: 11px;
   opacity: 0.59;
 }
 
-.c19 {
+.c18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2846,7 +2810,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   box-shadow: none;
 }
 
-.c24 {
+.c23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2892,7 +2856,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
         className="c9"
       >
         <button
-          className="c10 c11"
+          className="c10"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -2900,32 +2864,32 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           onClick={[Function]}
         >
           <div
-            className="c12"
+            className="c11"
             disabled={false}
           >
             <div
-              className="c13"
+              className="c12"
             >
               <div
-                className="c14 c15"
+                className="c13 c14"
               >
                 SELL
               </div>
               <div
-                className="c14 c16"
+                className="c13 c15"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="c14 c17"
+              className="c13 c16"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="c14 c18"
+              className="c13 c17"
               data-qa="price-button__tenth"
             >
               4
@@ -2933,29 +2897,29 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           </div>
         </button>
         <div
-          className="c19"
+          className="c18"
         >
           <i
             aria-hidden="true"
-            className="c20 fas fa-caret-up"
+            className="c19 fas fa-caret-up"
             color="positive"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="c21"
+            className="c20"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="c22 fas fa-caret-down"
+            className="c21 fas fa-caret-down"
             color="negative"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <button
-          className="c10 c23"
+          className="c22"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -2963,32 +2927,32 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           onClick={[Function]}
         >
           <div
-            className="c12"
+            className="c11"
             disabled={false}
           >
             <div
-              className="c13"
+              className="c12"
             >
               <div
-                className="c14 c15"
+                className="c13 c14"
               >
                 BUY
               </div>
               <div
-                className="c14 c16"
+                className="c13 c15"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="c14 c17"
+              className="c13 c16"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="c14 c18"
+              className="c13 c17"
               data-qa="price-button__tenth"
             >
               4
@@ -3001,19 +2965,19 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
       className="ReserveSpaceGrouping-sc-1l7nogu-8"
     >
       <div
-        className="c24"
+        className="c23"
       >
         <div
-          className="c25"
+          className="c24"
         >
           <span
-            className="c26"
+            className="c25"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="c27 c28"
+            className="c26 c27"
             data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
