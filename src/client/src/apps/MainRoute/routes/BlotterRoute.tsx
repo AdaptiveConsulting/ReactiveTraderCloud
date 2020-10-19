@@ -11,6 +11,8 @@ const BlotterContainerStyle = styled('div')`
   width: 100%;
   padding: 0.625rem;
   margin: auto;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
 `
 
 function getSingleNumberFromQuery(count: string[] | string | null | undefined): number | undefined {
@@ -41,12 +43,12 @@ function getFiltersFromQueryStr(queryStr: string): BlotterFilters {
   return {
     [SYMBOL]: ensureArray(parsedQueryString[SYMBOL]),
     [DEALT_CURRENCY]: ensureArray(parsedQueryString[DEALT_CURRENCY]),
-    count: getSingleNumberFromQuery(parsedQueryString.count)
+    count: getSingleNumberFromQuery(parsedQueryString.count),
   }
 }
 
 const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
-  location: { search }
+  location: { search },
 }) => {
   const platform = usePlatform()
   const [filtersFromInterop, setFiltersFromInterop] = useState<ReadonlyArray<BlotterFilters>>()
