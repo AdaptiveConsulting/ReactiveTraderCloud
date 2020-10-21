@@ -31,7 +31,7 @@ You can download the Adaptive-branded Finsemble smart desktop platform [here][fs
 It installs the Finsemble toolbar and launches it on your desktop, including Reactive Trader components and workspaces.
 
 [openfin]: https://openfin.co
-[finsemble]: https://www.chartiq.com/finsemble/
+[finsemble]: https://cosaic.io/finsemble/
 [fsbl-win-exe]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsembleSetup.exe
 [of-win-dev-app]: https://install.openfin.co/download/?fileName=Reactive-Trader-Dev&config=https://web-dev.adaptivecluster.com/openfin/app.json
 [of-mac-dev-app]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Trader-Dev&config=https://web-dev.adaptivecluster.com/openfin/app.json&internal=true&iconFile=https://web-dev.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png&appName=Reactive%20Trader%20(Dev)
