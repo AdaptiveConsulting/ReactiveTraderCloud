@@ -82,7 +82,7 @@ export const SimpleLauncher: React.FC = () => {
             <PricingServiceProvider value={pricingService}>
               <ReferenceDataProvider value={referenceData}>
                 <PlatformProvider value={platform}>
-                  <Helmet title={getAppName('Reactive Launcher™')} />
+                  <Helmet title={getAppName('Reactive Launcher')} />
                   <Launcher />
                 </PlatformProvider>
               </ReferenceDataProvider>
