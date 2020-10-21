@@ -59,7 +59,7 @@ const MainRoute = () => {
 
   return (
     <React.Fragment>
-      <Helmet title={getAppName('Reactive Trader')}>
+      <Helmet title={getAppName('Reactive Trader™')}>
         <link
           rel="stylesheet"
           type="text/css"
