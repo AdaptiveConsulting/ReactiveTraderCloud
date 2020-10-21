@@ -28,7 +28,7 @@ const StyleguideRoute: React.FC = () => {
 
   return (
     <React.Fragment>
-      <Helmet title={getAppName('Style Guide for Reactive Trader')}>
+      <Helmet title={getAppName('Style Guide for Reactive Trader™')}>
         <link
           rel="stylesheet"
           type="text/css"
