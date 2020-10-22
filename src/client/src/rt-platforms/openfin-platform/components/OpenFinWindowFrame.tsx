@@ -44,7 +44,17 @@ const OpenFinFrameRoot = styled.div`
   }
 
   .lm_splitter {
-    background-color: ${({ theme }) => theme.core.offBackground} !important;
+    background-color: ${({ theme }) => theme.core.textColor};
+  }
+
+  .lm_item.lm_root {
+    background-color: ${({ theme }) => theme.core.textColor};
+    opacity: 0.1;
+    &:hover {
+      opacity: 0.3;
+      transition: all 200ms ease-in-out;
+      background-color: ${({ theme }) => theme.core.textColor};
+    }
   }
 `
 

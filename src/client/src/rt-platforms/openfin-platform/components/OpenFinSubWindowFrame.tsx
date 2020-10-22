@@ -45,8 +45,9 @@ const OpenFinSubFrameRoot = styled.div`
   }
 
   .lm_splitter {
-    background-color: ${({ theme }) => theme.core.offBackground} !important;
+    background-color: ${({ theme }) => theme.core.textColor};
   }
+
 `
 
 const LayoutRoot = styled.div`
