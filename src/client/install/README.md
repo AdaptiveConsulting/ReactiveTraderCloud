@@ -57,4 +57,4 @@ Download and run the exe below to install the integrated toolbar on your desktop
 |-------------|---------|
 | Demo | [Download][fsbl-win-exe] |
 
-[fsbl-win-exe]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsembleSetup.exe
+[fsbl-win-exe]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsemble.exe

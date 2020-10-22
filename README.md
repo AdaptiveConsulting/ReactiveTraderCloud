@@ -29,7 +29,7 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 [Style guide]: https://web-demo.adaptivecluster.com/styleguide
 [openfin-win]: ./src/client/install/Reactive-Launcher-Demo.exe?raw=true
 [openfin-mac]: ./src/client/install/Reactive-Launcher-Demo.dmg?raw=true
-[finsemble-win]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsembleSetup.exe
+[finsemble-win]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsemble.exe
 
 ## Development
 
@@ -37,13 +37,17 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 <summary>Web client</summary>
 
 1. Fork and clone the ReactiveTraderCloud repo ([see Contributing page](CONTRIBUTING.md))
+
 2. Install [Node.js and npm](https://nodejs.org/en/download/)
+
 3. Start the client:
    ```bash
     cd src/client
     npm install
     npm start
     ```
+   This will connect to the dev back-end in the cloud.
+
 4. Navigate to http://localhost:3000
 </details>
 
@@ -51,9 +55,13 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 <summary>With Docker</summary>
 
 1. Install Docker ([from the Docker website](https://www.docker.com/get-started))
+
 2. Fork and clone the ReactiveTraderCloud repo ([see Contributing page](CONTRIBUTING.md))
+
 3. From the src folder run: `docker-compose up`
+
 4. Open a browser and navigate to http://localhost to see the application running
+
 5. To shutdown the application run: `docker-compose down`
 </details>
 
