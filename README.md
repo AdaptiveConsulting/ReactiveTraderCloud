@@ -17,21 +17,35 @@ Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full 
 ## Demo
 
 - [Web & Mobile]
-- [OpenFin OS] installer: [Windows][openfin-win], [Mac][openfin-mac]
+- [OpenFin] installer: [Windows][openfin-win], [Mac][openfin-mac]
 - [Finsemble] smart desktop installer: [Windows][finsemble-win]
 - [Style guide]: Colours, iconography, typography, atoms and molecules
 - [Storybook]: Explore individual React components
 
 [Web & Mobile]: https://web-demo.adaptivecluster.com
-[Openfin OS]: https://openfin.co/
-[Finsemble]: https://www.chartiq.com/finsemble
+[Openfin]: https://openfin.co/
+[Finsemble]: https://cosaic.io/finsemble/
 [Storybook]: https://web-demo.adaptivecluster.com/storybook
 [Style guide]: https://web-demo.adaptivecluster.com/styleguide
-[openfin-win]: https://install.openfin.co/download/?fileName=Reactive-Launcher-Demo&config=https://web-demo.adaptivecluster.com/openfin/launcher.json
-[openfin-mac]: https://install.openfin.co/download/?os=osx&fileName=Reactive-Launcher-Demo&config=http://web-demo.adaptivecluster.com/openfin/launcher.json&internal=true&iconFile=https://web-demo.adaptivecluster.com/static/media/adaptive-icon-256x256.png&appName=Reactive%20Launcher
+[openfin-win]: ./src/client/install/Reactive-Launcher-Demo.exe?raw=true
+[openfin-mac]: ./src/client/install/Reactive-Launcher-Demo.dmg?raw=true
 [finsemble-win]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsembleSetup.exe
 
-## Installation
+## Development
+
+<details open>
+<summary>Web client</summary>
+
+1. Fork and clone the ReactiveTraderCloud repo ([see Contributing page](CONTRIBUTING.md))
+2. Install [Node.js and npm](https://nodejs.org/en/download/)
+3. Start the client:
+   ```bash
+    cd src/client
+    npm install
+    npm start
+    ```
+4. Navigate to http://localhost:3000
+</details>
 
 <details>
 <summary>With Docker</summary>
@@ -41,7 +55,7 @@ Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full 
 3. From the src folder run: `docker-compose up`
 4. Open a browser and navigate to http://localhost to see the application running
 5. To shutdown the application run: `docker-compose down`
-   </details>
+</details>
 
 <details>
 <summary>With Docker and Kubernetes</summary>
@@ -65,19 +79,18 @@ Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full 
 6. Open a browser and navigate to http://localhost to see the application running
 
 7. To shutdown / remove stack, run: `kubectl delete stack rtcstack`
-   </details>
+</details>
 
 <details>
-<summary>Without Docker (for development/debugging)</summary>
+<summary>Without Docker</summary>
 
 1. Fork and clone the ReactiveTraderCloud repo ([see Contributing page](CONTRIBUTING.md))
 
 2. Install dependencies & add them to your path:
-
-- [Node.js and npm](https://nodejs.org/en/download/)
-- [.Net Core SDK](https://dotnet.microsoft.com/download)
-- [Event Store](https://eventstore.com/downloads/)
-- [RabbitMQ](https://www.rabbitmq.com/download.html)
+   - [Node.js and npm](https://nodejs.org/en/download/)
+   - [.Net Core SDK](https://dotnet.microsoft.com/download)
+   - [Event Store](https://eventstore.com/downloads/)
+   - [RabbitMQ](https://www.rabbitmq.com/download.html)
 
 3. Enable RabbitMQ Web Stomp Pluggin
 
@@ -109,7 +122,7 @@ Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full 
    npm run start:dev
    ```
 
-7. Start the client against the local server components:
+7. Start the client against the local services:
 
    ```bash
    cd src/client
@@ -118,10 +131,9 @@ Please see [our Showcases page](https://weareadaptive.com/showcase/) for a full 
    ```
 
 8. Alternative commands:
-
-- `npm run build:demo-backend` - to run the client against a demo backend running in the cloud
-- `npm run test` - to run tests using Jest
-  </details>
+   - `npm run build:demo-backend` - to run the client against a demo backend running in the cloud
+   - `npm run test` - to run tests using Jest
+</details>
 
 ## CI/CD
 

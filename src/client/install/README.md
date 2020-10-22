@@ -19,9 +19,9 @@ Below you can find links to the installers for the various platforms.
 
 | Environment | Windows | Mac OS |
 |-------------|---------|--------|
-| Demo | [Download](./Reactive-Trader-Dev.exe) / [Generate][RT-Demo-Win] | [Download](./Reactive-Trader-Demo.exe) / [Generate][RT-Demo-Mac] |
-| UAT  | [Download](./Reactive-Trader-UAT.exe) / [Generate][RT-UAT-Win]  | [Download](./Reactive-Trader-UAT.exe)  / [Generate][RT-UAT-Mac]  |
-| Dev  | [Download](./Reactive-Trader-Dev.exe) / [Generate][RT-Dev-Win]  | [Download](./Reactive-Trader-Dev.exe)  / [Generate][RT-Dev-Mac]  |
+| Demo | [Download](./Reactive-Trader-Dev.exe?raw=true) / [Generate][RT-Demo-Win] | [Download](./Reactive-Trader-Demo.dmg?raw=true) / [Generate][RT-Demo-Mac] |
+| UAT  | [Download](./Reactive-Trader-UAT.exe?raw=true) / [Generate][RT-UAT-Win]  | [Download](./Reactive-Trader-UAT.dmg?raw=true)  / [Generate][RT-UAT-Mac]  |
+| Dev  | [Download](./Reactive-Trader-Dev.exe?raw=true) / [Generate][RT-Dev-Win]  | [Download](./Reactive-Trader-Dev.dmg?raw=true)  / [Generate][RT-Dev-Mac]  |
 
 [RT-Demo-Win]: https://install.openfin.co/download/?fileName=Reactive-Trader-Demo&config=https://web-demo.adaptivecluster.com/openfin/app.json&unzipped=true
 [RT-UAT-Win]: https://install.openfin.co/download/?fileName=Reactive-Trader-UAT&config=https://web-uat.adaptivecluster.com/openfin/app.json&unzipped=true
@@ -35,9 +35,9 @@ Below you can find links to the installers for the various platforms.
 
 | Environment | Windows | Mac OS |
 |-------------|---------|--------|
-| Demo | [Download](./Reactive-Launcher-Dev.exe) / [Generate][RL-Demo-Win] | [Download](./Reactive-Launcher-Demo.exe) / [Generate][RL-Demo-Mac] |
-| UAT  | [Download](./Reactive-Launcher-UAT.exe) / [Generate][RL-UAT-Win]  | [Download](./Reactive-Launcher-UAT.exe)  / [Generate][RL-UAT-Mac]  |
-| Dev  | [Download](./Reactive-Launcher-Dev.exe) / [Generate][RL-Dev-Win]  | [Download](./Reactive-Launcher-Dev.exe)  / [Generate][RL-Dev-Mac]  |
+| Demo | [Download](./Reactive-Launcher-Dev.exe?raw=true) / [Generate][RL-Demo-Win] | [Download](./Reactive-Launcher-Demo.dmg?raw=true) / [Generate][RL-Demo-Mac] |
+| UAT  | [Download](./Reactive-Launcher-UAT.exe?raw=true) / [Generate][RL-UAT-Win]  | [Download](./Reactive-Launcher-UAT.dmg?raw=true)  / [Generate][RL-UAT-Mac]  |
+| Dev  | [Download](./Reactive-Launcher-Dev.exe?raw=true) / [Generate][RL-Dev-Win]  | [Download](./Reactive-Launcher-Dev.dmg?raw=true)  / [Generate][RL-Dev-Mac]  |
 
 [RL-Demo-Win]: https://install.openfin.co/download/?fileName=Reactive-Launcher-Demo&config=https://web-demo.adaptivecluster.com/openfin/launcher.json&unzipped=true
 [RL-UAT-Win]: https://install.openfin.co/download/?fileName=Reactive-Launcher-UAT&config=https://web-uat.adaptivecluster.com/openfin/launcher.json&unzipped=true
