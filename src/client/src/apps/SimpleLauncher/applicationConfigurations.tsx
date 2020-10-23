@@ -102,6 +102,12 @@ const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLeg
 
 const env = getEnvironment()
 const envSuffix = env === 'demo' ? '' : ` (${env.toUpperCase()})`
+const reactiveAnalyticsBaseUrl =
+  process.env.REACT_APP_ANALYTICS_URL ?? `https://${env}-reactive-analytics.adaptivecluster.com/`
+const reactiveAnalyticsManifestUrl = new URL(
+  '/openfin/app.json',
+  reactiveAnalyticsBaseUrl
+).toString()
 
 const baseAppConfigs: ApplicationConfig[] = [
   {
@@ -124,21 +130,14 @@ const baseAppConfigs: ApplicationConfig[] = [
     displayName: 'RA',
     tooltipName: `Launch Reactive Analytics${envSuffix}`,
     uuid: `reactive-analytics-${env}`,
-    url:
-      process.env.REACT_APP_ANALYTICS_URL ??
-      `https://${env}-reactive-analytics.adaptivecluster.com/`,
+    url: reactiveAnalyticsManifestUrl,
     icon: reactiveAnalyticsIcon,
     iconFillColor: '#CFCFCF',
     iconHoverFillColor: '#ffffff',
     iconHoverBackgroundColor: '#AAABD1',
     provider: {
       platformName: 'openfin',
-      applicationType: 'application',
-      windowOptions: {
-        ...defaultWindowOptions,
-        frame: true,
-        icon: `${ORIGIN}/static/media/reactive-analytics.ico`,
-      },
+      applicationType: 'manifest',
     },
   },
   {

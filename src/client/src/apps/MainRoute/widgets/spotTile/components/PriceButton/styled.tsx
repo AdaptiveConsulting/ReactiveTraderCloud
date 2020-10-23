@@ -61,7 +61,6 @@ export const TradeButton = styled.button<{
   }
   `};
 `
-
 const Box = styled.div`
   padding: 0;
   margin: 0;
