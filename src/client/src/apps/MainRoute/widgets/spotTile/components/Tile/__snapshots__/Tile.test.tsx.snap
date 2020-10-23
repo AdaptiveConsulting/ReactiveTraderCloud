@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
-.c24 {
+.c25 {
   grid-area: Currency;
   opacity: 0.59;
   font-size: 0.625rem;
   line-height: 1.2rem;
 }
 
-.c23 {
+.c24 {
   display: grid;
   grid-template-columns: 30px auto 30px;
   grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
@@ -19,7 +19,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   grid-template-rows: 23px 0;
 }
 
-.c26 {
+.c27 {
   grid-area: Input;
   background: none;
   text-align: center;
@@ -33,12 +33,12 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
-.spot-tile:hover .c25:focus,
-.c26:focus {
+.spot-tile:hover .c26:focus,
+.c27:focus {
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
-.c10 {
+.c11 {
   background-color: #2f3542;
   border-radius: 3px;
   color: inherit;
@@ -55,37 +55,37 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   pointer-events: none;
 }
 
-.c13 {
+.c14 {
   padding: 0;
   margin: 0;
 }
 
-.c14 {
+.c15 {
   opacity: 0.59;
   margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
   color: #f9f9f9;
 }
 
-.c15 {
+.c16 {
   font-size: 0.8125rem;
   line-height: 1rem;
 }
 
-.c16 {
+.c17 {
   font-size: 2.125rem;
   line-height: 2.5rem;
   margin: 0 0.125rem;
 }
 
-.c17 {
+.c18 {
   margin: 0.125rem 0;
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
 }
 
-.c11 {
+.c12 {
   height: 2.1rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -102,7 +102,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   opacity: 0.3;
 }
 
-.c12 {
+.c13 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -117,24 +117,24 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   flex-direction: column;
 }
 
-.c19 {
+.c20 {
   text-align: center;
   color: #01c38d;
   visibility: hidden;
 }
 
-.c21 {
+.c22 {
   text-align: center;
   color: #ff274b;
   visibility: visible;
 }
 
-.c20 {
+.c21 {
   font-size: 11px;
   opacity: 0.59;
 }
 
-.c18 {
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -198,6 +198,10 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   box-sizing: border-box;
 }
 
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
 .RouteStyle-sc-9r1isi-0 .c2 {
   border-radius: 0px;
 }
@@ -259,7 +263,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
   box-shadow: none;
 }
 
-.c22 {
+.c23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -298,14 +302,14 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (07 APR)
+          SPT (06 APR)
         </div>
       </div>
       <div
         className="c9"
       >
         <button
-          className="c10"
+          className="c10 c11"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -313,32 +317,32 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           onClick={[Function]}
         >
           <div
-            className="c11"
+            className="c12"
             disabled={true}
           >
             <div
-              className="c12"
+              className="c13"
             >
               <div
-                className="c13 c14"
+                className="c14 c15"
               >
                 SELL
               </div>
               <div
-                className="c13 c15"
+                className="c14 c16"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="c13 c16"
+              className="c14 c17"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="c13 c17"
+              className="c14 c18"
               data-qa="price-button__tenth"
             >
               4
@@ -346,29 +350,29 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           </div>
         </button>
         <div
-          className="c18"
+          className="c19"
         >
           <i
             aria-hidden="true"
-            className="c19 fas fa-caret-up"
+            className="c20 fas fa-caret-up"
             color="positive"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="c20"
+            className="c21"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="c21 fas fa-caret-down"
+            className="c22 fas fa-caret-down"
             color="negative"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <button
-          className="c10"
+          className="c10 c11"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -376,32 +380,32 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           onClick={[Function]}
         >
           <div
-            className="c11"
+            className="c12"
             disabled={true}
           >
             <div
-              className="c12"
+              className="c13"
             >
               <div
-                className="c13 c14"
+                className="c14 c15"
               >
                 BUY
               </div>
               <div
-                className="c13 c15"
+                className="c14 c16"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="c13 c16"
+              className="c14 c17"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="c13 c17"
+              className="c14 c18"
               data-qa="price-button__tenth"
             >
               4
@@ -414,19 +418,19 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
       className="ReserveSpaceGrouping-sc-1l7nogu-8"
     >
       <div
-        className="c22"
+        className="c23"
       >
         <div
-          className="c23"
+          className="c24"
         >
           <span
-            className="c24"
+            className="c25"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="c25 c26"
+            className="c26 c27"
             data-qa-id="notional-input__input-eurusd"
             disabled={true}
             onBlur={[Function]}
@@ -443,534 +447,6 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
 `;
 
 exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
-.c27 {
-  grid-area: Currency;
-  opacity: 0.59;
-  font-size: 0.625rem;
-  line-height: 1.2rem;
-}
-
-.c26 {
-  display: grid;
-  grid-template-columns: 30px auto 30px;
-  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  grid-template-rows: 23px 0;
-}
-
-.c29 {
-  grid-area: Input;
-  background: none;
-  text-align: center;
-  outline: none;
-  border: none;
-  font-size: 0.75rem;
-  width: 80px;
-  padding: 2px 0;
-  caret-color: #282e39;
-  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
-}
-
-.spot-tile:hover .c28:focus,
-.c29:focus {
-  box-shadow: 0px 1px 0px #5f94f5;
-}
-
-.c10 {
-  background-color: #2f3542;
-  border-radius: 3px;
-  color: inherit;
-  -webkit-transition: background-color 0.2s ease;
-  transition: background-color 0.2s ease;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  height: 59px;
-  min-width: 125px;
-  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
-  margin-bottom: 2px;
-  cursor: initial;
-  pointer-events: none;
-}
-
-.c13 {
-  padding: 0;
-  margin: 0;
-}
-
-.c14 {
-  opacity: 0.59;
-  margin: 0 0 0.125rem 0;
-  font-size: 0.625rem;
-  color: #f9f9f9;
-}
-
-.c15 {
-  font-size: 0.8125rem;
-  line-height: 1rem;
-}
-
-.c16 {
-  font-size: 2.125rem;
-  line-height: 2.5rem;
-  margin: 0 0.125rem;
-}
-
-.c17 {
-  margin: 0.125rem 0;
-  -webkit-align-self: flex-end;
-  -ms-flex-item-align: end;
-  align-self: flex-end;
-}
-
-.c11 {
-  height: 2.1rem;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  opacity: 0.3;
-}
-
-.c12 {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c19 {
-  text-align: center;
-  color: #686d74;
-  visibility: hidden;
-}
-
-.c21 {
-  text-align: center;
-  color: #686d74;
-  visibility: visible;
-}
-
-.c20 {
-  font-size: 11px;
-  opacity: 0.59;
-}
-
-.c18 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-right: 0;
-  padding-left: 0;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-  z-index: 1;
-}
-
-.c9 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  margin-top: 15px;
-  position: relative;
-}
-
-.c22 {
-  position: absolute;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  pointer-events: none;
-  text-align: center;
-  z-index: 2;
-}
-
-.c23 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding-left: 9px;
-  padding-right: 10px;
-  padding-bottom: 8px;
-  padding-top: 8px;
-  position: absolute;
-  border-radius: 3px;
-  background: #5f94f5;
-  pointer-events: auto;
-  width: 58px;
-  cursor: pointer;
-}
-
-.c23 rect {
-  fill: #fff;
-}
-
-.c24 {
-  color: #fff;
-  font-size: 0.6875rem;
-}
-
-.c8 {
-  color: #fff;
-  font-size: 0.625rem;
-  line-height: 1rem;
-  opacity: 0.59;
-  margin-left: auto;
-  -webkit-transition: margin-right 0.2s;
-  transition: margin-right 0.2s;
-}
-
-.c6 {
-  color: #fff;
-  font-size: 0.8125rem;
-  line-height: 1rem;
-}
-
-.c3 {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  border-radius: 3px;
-  padding: 1.25rem;
-  box-sizing: border-box;
-}
-
-.RouteStyle-sc-9r1isi-0 .c2 {
-  border-radius: 0px;
-}
-
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c0 {
-  position: relative;
-  color: #fff;
-}
-
-.c0:hover .TopRightButton-sc-1v3ye6r-0 {
-  opacity: 0.75;
-}
-
-.c0:hover .c7 {
-  margin-right: 1.3rem;
-}
-
-.c0:hover .ActionButton-sc-1dxc2d7-0 {
-  opacity: 0.75;
-}
-
-.c1 {
-  position: relative;
-  min-height: 11rem;
-  height: 100%;
-}
-
-.c4 {
-  background-color: #2f3542;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 100%;
-  width: 100%;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.c4:hover {
-  background-color: #3d4455;
-  box-shadow: none;
-}
-
-.c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-@media (min-width:321px) {
-  .c23 {
-    width: 60px;
-  }
-}
-
-@media (min-width:401px) {
-  .c23 {
-    width: 64px;
-  }
-}
-
-<div
-  className="c0 c1"
->
-  <div
-    className="c2 c3 c4 spot-tile"
-    data-qa="spot-tile__tile"
-    data-qa-id="currency-pair-eurusd"
-  >
-    <div
-      className="ReserveSpaceGrouping-sc-1l7nogu-8"
-    >
-      <div
-        className="c5"
-      >
-        <div
-          className="c6"
-          data-qa="tile-header__tile-symbol"
-        >
-          EUR/USD
-        </div>
-        <div
-          className="c7 c8"
-          data-qa="tile-header__delivery-date"
-        >
-          SPT (07 APR)
-        </div>
-      </div>
-      <div
-        className="c9"
-      >
-        <button
-          className="c10"
-          data-qa="price-button__trade-button"
-          data-qa-id="direction-sell-eurusd"
-          direction="Sell"
-          disabled={true}
-          onClick={[Function]}
-        >
-          <div
-            className="c11"
-            disabled={true}
-          >
-            <div
-              className="c12"
-            >
-              <div
-                className="c13 c14"
-              >
-                SELL
-              </div>
-              <div
-                className="c13 c15"
-                data-qa="price-button__big"
-              >
-                1.
-              </div>
-            </div>
-            <div
-              className="c13 c16"
-              data-qa="price-button__pip"
-            >
-              48
-            </div>
-            <div
-              className="c13 c17"
-              data-qa="price-button__tenth"
-            >
-              4
-            </div>
-          </div>
-        </button>
-        <div
-          className="c18"
-        >
-          <i
-            aria-hidden="true"
-            className="c19 fas fa-caret-up"
-            color="none"
-            data-qa="price-movement__movement-icon--up"
-          />
-          <div
-            className="c20"
-            data-qa="price-movement__movement-value"
-          >
-            0.0
-          </div>
-          <i
-            aria-hidden="true"
-            className="c21 fas fa-caret-down"
-            color="none"
-            data-qa="price-movement__movement-icon--down"
-          />
-        </div>
-        <div
-          className="c22"
-          style={
-            Object {
-              "opacity": 0,
-            }
-          }
-        >
-          <div
-            className="c23"
-            color="primary"
-            data-qa="tile-booking__booking-pill"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="c24"
-              data-qa="tile-booking__booking-status"
-            >
-              Initiate RFQ
-            </span>
-          </div>
-        </div>
-        <button
-          className="c10"
-          data-qa="price-button__trade-button"
-          data-qa-id="direction-buy-eurusd"
-          direction="Buy"
-          disabled={true}
-          onClick={[Function]}
-        >
-          <div
-            className="c11"
-            disabled={true}
-          >
-            <div
-              className="c12"
-            >
-              <div
-                className="c13 c14"
-              >
-                BUY
-              </div>
-              <div
-                className="c13 c15"
-                data-qa="price-button__big"
-              >
-                1.
-              </div>
-            </div>
-            <div
-              className="c13 c16"
-              data-qa="price-button__pip"
-            >
-              48
-            </div>
-            <div
-              className="c13 c17"
-              data-qa="price-button__tenth"
-            >
-              4
-            </div>
-          </div>
-        </button>
-      </div>
-    </div>
-    <div
-      className="ReserveSpaceGrouping-sc-1l7nogu-8"
-    >
-      <div
-        className="c25"
-      >
-        <div
-          className="c26"
-        >
-          <span
-            className="c27"
-            data-qa="notional-input__currency-pair-symbol"
-          >
-            EUR
-          </span>
-          <input
-            className="c28 c29"
-            data-qa-id="notional-input__input-eurusd"
-            disabled={false}
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            type="text"
-            value="1,000,000"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Snapshot, state derived from props, RFQ expired 1`] = `
 .c28 {
   grid-area: Currency;
   opacity: 0.59;
@@ -1007,7 +483,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
-.c10 {
+.c11 {
   background-color: #2f3542;
   border-radius: 3px;
   color: inherit;
@@ -1018,43 +494,43 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   outline: none;
   height: 59px;
   min-width: 125px;
-  padding: 0.6rem 1.5rem 0.4rem 1.5rem;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
   margin-bottom: 2px;
   cursor: initial;
   pointer-events: none;
 }
 
-.c13 {
+.c14 {
   padding: 0;
   margin: 0;
 }
 
-.c14 {
+.c15 {
   opacity: 0.59;
   margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
   color: #f9f9f9;
 }
 
-.c15 {
+.c16 {
   font-size: 0.8125rem;
   line-height: 1rem;
 }
 
-.c16 {
+.c17 {
   font-size: 2.125rem;
   line-height: 2.5rem;
   margin: 0 0.125rem;
 }
 
-.c17 {
+.c18 {
   margin: 0.125rem 0;
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
 }
 
-.c11 {
+.c12 {
   height: 2.1rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1071,7 +547,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   opacity: 0.3;
 }
 
-.c12 {
+.c13 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1086,22 +562,16 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   flex-direction: column;
 }
 
-.c18 {
-  color: #ff274b;
-  font-size: 9px;
-  text-transform: uppercase;
-}
-
 .c20 {
   text-align: center;
-  color: #01c38d;
+  color: #686d74;
   visibility: hidden;
 }
 
 .c22 {
   text-align: center;
-  color: #ff274b;
-  visibility: hidden;
+  color: #686d74;
+  visibility: visible;
 }
 
 .c21 {
@@ -1225,6 +695,10 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
   box-sizing: border-box;
 }
 
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
 .RouteStyle-sc-9r1isi-0 .c2 {
   border-radius: 0px;
 }
@@ -1337,14 +811,14 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (07 APR)
+          SPT (06 APR)
         </div>
       </div>
       <div
         className="c9"
       >
         <button
-          className="c10"
+          className="c10 c11"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -1352,42 +826,36 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           onClick={[Function]}
         >
           <div
-            className="c11"
+            className="c12"
             disabled={true}
           >
             <div
-              className="c12"
+              className="c13"
             >
               <div
-                className="c13 c14"
+                className="c14 c15"
               >
                 SELL
               </div>
               <div
-                className="c13 c15"
+                className="c14 c16"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="c13 c16"
+              className="c14 c17"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="c13 c17"
+              className="c14 c18"
               data-qa="price-button__tenth"
             >
               4
             </div>
-          </div>
-          <div
-            className="c18"
-            data-qa="price-button__expired"
-          >
-            Expired
           </div>
         </button>
         <div
@@ -1396,7 +864,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           <i
             aria-hidden="true"
             className="c20 fas fa-caret-up"
-            color="positive"
+            color="none"
             data-qa="price-movement__movement-icon--up"
           />
           <div
@@ -1408,7 +876,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           <i
             aria-hidden="true"
             className="c22 fas fa-caret-down"
-            color="negative"
+            color="none"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
@@ -1431,12 +899,12 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
               className="c25"
               data-qa="tile-booking__booking-status"
             >
-              Requote
+              Initiate RFQ
             </span>
           </div>
         </div>
         <button
-          className="c10"
+          className="c10 c11"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -1444,42 +912,36 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           onClick={[Function]}
         >
           <div
-            className="c11"
+            className="c12"
             disabled={true}
           >
             <div
-              className="c12"
+              className="c13"
             >
               <div
-                className="c13 c14"
+                className="c14 c15"
               >
                 BUY
               </div>
               <div
-                className="c13 c15"
+                className="c14 c16"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="c13 c16"
+              className="c14 c17"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="c13 c17"
+              className="c14 c18"
               data-qa="price-button__tenth"
             >
               4
             </div>
-          </div>
-          <div
-            className="c18"
-            data-qa="price-button__expired"
-          >
-            Expired
           </div>
         </button>
       </div>
@@ -1501,6 +963,556 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           </span>
           <input
             className="c29 c30"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, RFQ expired 1`] = `
+.c29 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c28 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c31 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
+}
+
+.spot-tile:hover .c30:focus,
+.c31:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
+.c11 {
+  background-color: #2f3542;
+  border-radius: 3px;
+  color: inherit;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.6rem 1.5rem 0.4rem 1.5rem;
+  margin-bottom: 2px;
+  cursor: initial;
+  pointer-events: none;
+}
+
+.c14 {
+  padding: 0;
+  margin: 0;
+}
+
+.c15 {
+  opacity: 0.59;
+  margin: 0 0 0.125rem 0;
+  font-size: 0.625rem;
+  color: #f9f9f9;
+}
+
+.c16 {
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c17 {
+  font-size: 2.125rem;
+  line-height: 2.5rem;
+  margin: 0 0.125rem;
+}
+
+.c18 {
+  margin: 0.125rem 0;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.c12 {
+  height: 2.1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  opacity: 0.3;
+}
+
+.c13 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c19 {
+  color: #ff274b;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.c21 {
+  text-align: center;
+  color: #01c38d;
+  visibility: hidden;
+}
+
+.c23 {
+  text-align: center;
+  color: #ff274b;
+  visibility: hidden;
+}
+
+.c22 {
+  font-size: 11px;
+  opacity: 0.59;
+}
+
+.c20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  z-index: 1;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: 15px;
+  position: relative;
+}
+
+.c24 {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+  z-index: 2;
+}
+
+.c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 9px;
+  padding-right: 10px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  position: absolute;
+  border-radius: 3px;
+  background: #5f94f5;
+  pointer-events: auto;
+  width: 58px;
+  cursor: pointer;
+}
+
+.c25 rect {
+  fill: #fff;
+}
+
+.c26 {
+  color: #fff;
+  font-size: 0.6875rem;
+}
+
+.c8 {
+  color: #fff;
+  font-size: 0.625rem;
+  line-height: 1rem;
+  opacity: 0.59;
+  margin-left: auto;
+  -webkit-transition: margin-right 0.2s;
+  transition: margin-right 0.2s;
+}
+
+.c6 {
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c3 {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
+.RouteStyle-sc-9r1isi-0 .c2 {
+  border-radius: 0px;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 {
+  position: relative;
+  color: #fff;
+}
+
+.c0:hover .TopRightButton-sc-1v3ye6r-0 {
+  opacity: 0.75;
+}
+
+.c0:hover .c7 {
+  margin-right: 1.3rem;
+}
+
+.c0:hover .ActionButton-sc-1dxc2d7-0 {
+  opacity: 0.75;
+}
+
+.c1 {
+  position: relative;
+  min-height: 11rem;
+  height: 100%;
+}
+
+.c4 {
+  background-color: #2f3542;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.c4:hover {
+  background-color: #3d4455;
+  box-shadow: none;
+}
+
+.c27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+@media (min-width:321px) {
+  .c25 {
+    width: 60px;
+  }
+}
+
+@media (min-width:401px) {
+  .c25 {
+    width: 64px;
+  }
+}
+
+<div
+  className="c0 c1"
+>
+  <div
+    className="c2 c3 c4 spot-tile"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6"
+          data-qa="tile-header__tile-symbol"
+        >
+          EUR/USD
+        </div>
+        <div
+          className="c7 c8"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (06 APR)
+        </div>
+      </div>
+      <div
+        className="c9"
+      >
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={true}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                SELL
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+          <div
+            className="c19"
+            data-qa="price-button__expired"
+          >
+            Expired
+          </div>
+        </button>
+        <div
+          className="c20"
+        >
+          <i
+            aria-hidden="true"
+            className="c21 fas fa-caret-up"
+            color="positive"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="c22"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="c23 fas fa-caret-down"
+            color="negative"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <div
+          className="c24"
+          style={
+            Object {
+              "opacity": 0,
+            }
+          }
+        >
+          <div
+            className="c25"
+            color="primary"
+            data-qa="tile-booking__booking-pill"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="c26"
+              data-qa="tile-booking__booking-status"
+            >
+              Requote
+            </span>
+          </div>
+        </div>
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={true}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                BUY
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+          <div
+            className="c19"
+            data-qa="price-button__expired"
+          >
+            Expired
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c27"
+      >
+        <div
+          className="c28"
+        >
+          <span
+            className="c29"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="c30 c31"
             data-qa-id="notional-input__input-eurusd"
             disabled={false}
             onBlur={[Function]}
@@ -1571,17 +1583,8 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   animation: dnMAbE 5s;
 }
 
-.spot-tile:hover .c10 {
-  background-color: #282e39;
-}
-
-.spot-tile:hover .c10:hover {
-  background-color: #ff274b;
-  color: #fff;
-}
-
 .c11:hover {
-  background-color: #ff274b;
+  background-color: #ff274b !important;
   color: #fff;
 }
 
@@ -1602,17 +1605,8 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   animation: dQmnms 5s;
 }
 
-.spot-tile:hover .c10 {
-  background-color: #282e39;
-}
-
-.spot-tile:hover .c10:hover {
-  background-color: #2d95ff;
-  color: #fff;
-}
-
 .c23:hover {
-  background-color: #2d95ff;
+  background-color: #2d95ff !important;
   color: #fff;
 }
 
@@ -1758,6 +1752,10 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
   box-sizing: border-box;
 }
 
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
 .RouteStyle-sc-9r1isi-0 .c2 {
   border-radius: 0px;
 }
@@ -1858,7 +1856,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (07 APR)
+          SPT (06 APR)
         </div>
       </div>
       <div
@@ -2247,6 +2245,10 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
   box-sizing: border-box;
 }
 
+.c3:hover .TradeButton-sc-14olucf-0 {
+  background-color: #282e39;
+}
+
 .RouteStyle-sc-9r1isi-0 .c2 {
   border-radius: 0px;
 }
@@ -2359,7 +2361,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (07 APR)
+          SPT (06 APR)
         </div>
       </div>
       <div
@@ -2600,17 +2602,8 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   margin-bottom: 2px;
 }
 
-.spot-tile:hover .c10 {
-  background-color: #282e39;
-}
-
-.spot-tile:hover .c10:hover {
-  background-color: #ff274b;
-  color: #fff;
-}
-
 .c11:hover {
-  background-color: #ff274b;
+  background-color: #ff274b !important;
   color: #fff;
 }
 
@@ -2629,17 +2622,8 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   margin-bottom: 2px;
 }
 
-.spot-tile:hover .c10 {
-  background-color: #282e39;
-}
-
-.spot-tile:hover .c10:hover {
-  background-color: #2d95ff;
-  color: #fff;
-}
-
 .c23:hover {
-  background-color: #2d95ff;
+  background-color: #2d95ff !important;
   color: #fff;
 }
 
@@ -2785,6 +2769,10 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
   box-sizing: border-box;
 }
 
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
 .RouteStyle-sc-9r1isi-0 .c2 {
   border-radius: 0px;
 }
@@ -2885,7 +2873,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (07 APR)
+          SPT (06 APR)
         </div>
       </div>
       <div
@@ -3030,14 +3018,14 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
 `;
 
 exports[`Snapshot, state derived from props, in trade 1`] = `
-.c32 {
+.c33 {
   grid-area: Currency;
   opacity: 0.59;
   font-size: 0.625rem;
   line-height: 1.2rem;
 }
 
-.c31 {
+.c32 {
   display: grid;
   grid-template-columns: 30px auto 30px;
   grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
@@ -3048,7 +3036,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   grid-template-rows: 23px 0;
 }
 
-.c34 {
+.c35 {
   grid-area: Input;
   background: none;
   text-align: center;
@@ -3062,12 +3050,12 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
 }
 
-.spot-tile:hover .c33:focus,
-.c34:focus {
+.spot-tile:hover .c34:focus,
+.c35:focus {
   box-shadow: 0px 1px 0px #5f94f5;
 }
 
-.c10 {
+.c11 {
   background-color: #2f3542;
   border-radius: 3px;
   color: inherit;
@@ -3084,37 +3072,37 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   pointer-events: none;
 }
 
-.c13 {
+.c14 {
   padding: 0;
   margin: 0;
 }
 
-.c14 {
+.c15 {
   opacity: 0.59;
   margin: 0 0 0.125rem 0;
   font-size: 0.625rem;
   color: #f9f9f9;
 }
 
-.c15 {
+.c16 {
   font-size: 0.8125rem;
   line-height: 1rem;
 }
 
-.c16 {
+.c17 {
   font-size: 2.125rem;
   line-height: 2.5rem;
   margin: 0 0.125rem;
 }
 
-.c17 {
+.c18 {
   margin: 0.125rem 0;
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
   align-self: flex-end;
 }
 
-.c11 {
+.c12 {
   height: 2.1rem;
   display: -webkit-box;
   display: -webkit-flex;
@@ -3131,7 +3119,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   opacity: 0.3;
 }
 
-.c12 {
+.c13 {
   height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -3146,24 +3134,24 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   flex-direction: column;
 }
 
-.c19 {
+.c20 {
   text-align: center;
   color: #01c38d;
   visibility: hidden;
 }
 
-.c21 {
+.c22 {
   text-align: center;
   color: #ff274b;
   visibility: hidden;
 }
 
-.c20 {
+.c21 {
   font-size: 11px;
   opacity: 0.59;
 }
 
-.c18 {
+.c19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3185,7 +3173,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   z-index: 1;
 }
 
-.c25 {
+.c26 {
   -webkit-animation: jxicLy 0.8s infinite;
   animation: jxicLy 0.8s infinite;
   -webkit-animation-delay: -0.48s;
@@ -3194,7 +3182,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   will-change: transform;
 }
 
-.c26 {
+.c27 {
   -webkit-animation: jxicLy 0.8s infinite;
   animation: jxicLy 0.8s infinite;
   -webkit-animation-delay: -0.3261538461538461s;
@@ -3203,7 +3191,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   will-change: transform;
 }
 
-.c27 {
+.c28 {
   -webkit-animation: jxicLy 0.8s infinite;
   animation: jxicLy 0.8s infinite;
   -webkit-animation-delay: -0.17230769230769227s;
@@ -3212,7 +3200,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   will-change: transform;
 }
 
-.c28 {
+.c29 {
   -webkit-animation: jxicLy 0.8s infinite;
   animation: jxicLy 0.8s infinite;
   -webkit-animation-delay: -0.018461538461538418s;
@@ -3238,7 +3226,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   position: relative;
 }
 
-.c22 {
+.c23 {
   position: absolute;
   left: 0;
   height: 100%;
@@ -3260,7 +3248,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   z-index: 2;
 }
 
-.c23 {
+.c24 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3281,16 +3269,16 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   cursor: pointer;
 }
 
-.c23 rect {
+.c24 rect {
   fill: #fff;
 }
 
-.c29 {
+.c30 {
   color: #fff;
   font-size: 0.8125rem;
 }
 
-.c24 {
+.c25 {
   padding-right: 0.375rem;
   padding-top: 0.04rem;
 }
@@ -3318,6 +3306,10 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
+}
+
+.c3:hover .c10 {
+  background-color: #282e39;
 }
 
 .RouteStyle-sc-9r1isi-0 .c2 {
@@ -3381,7 +3373,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
   box-shadow: none;
 }
 
-.c30 {
+.c31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3397,13 +3389,13 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
 }
 
 @media (min-width:321px) {
-  .c23 {
+  .c24 {
     width: 125px;
   }
 }
 
 @media (min-width:401px) {
-  .c23 {
+  .c24 {
     width: 125px;
   }
 }
@@ -3432,14 +3424,14 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (07 APR)
+          SPT (06 APR)
         </div>
       </div>
       <div
         className="c9"
       >
         <button
-          className="c10"
+          className="c10 c11"
           data-qa="price-button__trade-button"
           data-qa-id="direction-sell-eurusd"
           direction="Sell"
@@ -3447,32 +3439,32 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           onClick={[Function]}
         >
           <div
-            className="c11"
+            className="c12"
             disabled={true}
           >
             <div
-              className="c12"
+              className="c13"
             >
               <div
-                className="c13 c14"
+                className="c14 c15"
               >
                 SELL
               </div>
               <div
-                className="c13 c15"
+                className="c14 c16"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="c13 c16"
+              className="c14 c17"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="c13 c17"
+              className="c14 c18"
               data-qa="price-button__tenth"
             >
               4
@@ -3480,29 +3472,29 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
         </button>
         <div
-          className="c18"
+          className="c19"
         >
           <i
             aria-hidden="true"
-            className="c19 fas fa-caret-up"
+            className="c20 fas fa-caret-up"
             color="positive"
             data-qa="price-movement__movement-icon--up"
           />
           <div
-            className="c20"
+            className="c21"
             data-qa="price-movement__movement-value"
           >
             0.0
           </div>
           <i
             aria-hidden="true"
-            className="c21 fas fa-caret-down"
+            className="c22 fas fa-caret-down"
             color="negative"
             data-qa="price-movement__movement-icon--down"
           />
         </div>
         <div
-          className="c22"
+          className="c23"
           style={
             Object {
               "opacity": 0,
@@ -3510,14 +3502,14 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           }
         >
           <div
-            className="c23"
+            className="c24"
             color="primary"
             data-qa="tile-booking__booking-pill"
             disabled={false}
             onClick={[Function]}
           >
             <span
-              className="c24"
+              className="c25"
             >
               <svg
                 data-qa="adaptive-loader__svg"
@@ -3525,7 +3517,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
                 width={14}
               >
                 <rect
-                  className="c25"
+                  className="c26"
                   height={10.5}
                   order={0}
                   speed={0.8}
@@ -3534,7 +3526,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
                   x={0.25}
                 />
                 <rect
-                  className="c26"
+                  className="c27"
                   height={10.5}
                   order={1}
                   speed={0.8}
@@ -3543,7 +3535,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
                   x={3.875}
                 />
                 <rect
-                  className="c27"
+                  className="c28"
                   height={10.5}
                   order={2}
                   speed={0.8}
@@ -3552,7 +3544,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
                   x={7.5}
                 />
                 <rect
-                  className="c28"
+                  className="c29"
                   height={10.5}
                   order={3}
                   speed={0.8}
@@ -3563,7 +3555,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
               </svg>
             </span>
             <span
-              className="c29"
+              className="c30"
               data-qa="tile-booking__booking-status"
             >
               Executing
@@ -3571,7 +3563,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           </div>
         </div>
         <button
-          className="c10"
+          className="c10 c11"
           data-qa="price-button__trade-button"
           data-qa-id="direction-buy-eurusd"
           direction="Buy"
@@ -3579,32 +3571,32 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           onClick={[Function]}
         >
           <div
-            className="c11"
+            className="c12"
             disabled={true}
           >
             <div
-              className="c12"
+              className="c13"
             >
               <div
-                className="c13 c14"
+                className="c14 c15"
               >
                 BUY
               </div>
               <div
-                className="c13 c15"
+                className="c14 c16"
                 data-qa="price-button__big"
               >
                 1.
               </div>
             </div>
             <div
-              className="c13 c16"
+              className="c14 c17"
               data-qa="price-button__pip"
             >
               48
             </div>
             <div
-              className="c13 c17"
+              className="c14 c18"
               data-qa="price-button__tenth"
             >
               4
@@ -3617,19 +3609,19 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
       className="ReserveSpaceGrouping-sc-1l7nogu-8"
     >
       <div
-        className="c30"
+        className="c31"
       >
         <div
-          className="c31"
+          className="c32"
         >
           <span
-            className="c32"
+            className="c33"
             data-qa="notional-input__currency-pair-symbol"
           >
             EUR
           </span>
           <input
-            className="c33 c34"
+            className="c34 c35"
             data-qa-id="notional-input__input-eurusd"
             disabled={true}
             onBlur={[Function]}
