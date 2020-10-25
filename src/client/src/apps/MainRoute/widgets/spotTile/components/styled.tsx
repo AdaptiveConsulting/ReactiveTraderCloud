@@ -2,7 +2,7 @@ import { RouteStyle } from 'rt-components'
 import styled from 'styled-components/macro'
 import { TopRightButton } from './TileControls'
 import { ActionButton } from './TileHeader'
-
+import { TradeButton } from './PriceButton/styled'
 export interface ColorProps {
   color?: string
   backgroundColor?: string
@@ -31,6 +31,9 @@ export const TileBaseStyle = styled.div`
   padding: 1.25rem;
   box-sizing: border-box;
 
+  &:hover ${TradeButton} {
+    background-color: ${({ theme }) => theme.core.darkBackground};
+  }
   ${RouteStyle} & {
     border-radius: 0px;
   }

@@ -56,7 +56,7 @@ export const TradeButton = styled.button<{
       : `
 
   &:hover {
-    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base} !important;
     color: ${theme.white};
   }
   `};
