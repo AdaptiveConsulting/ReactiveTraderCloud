@@ -15,6 +15,7 @@ interface Props {
   executionStatus: ServiceConnectionStatus
   executeTrade: (tradeRequestObj: ExecuteTradeRequest) => void
   onPopoutClick?: (x: number, y: number) => void
+  onPopInClick?: () => void
   onNotificationDismissed: () => void
   displayCurrencyChart?: () => void
   setTradingMode: (tradingMode: TradingMode) => void
@@ -29,6 +30,7 @@ const TileSwitch: React.FC<Props> = ({
   executeTrade,
   canPopout,
   onPopoutClick,
+  onPopInClick,
   onNotificationDismissed,
   displayCurrencyChart,
   executionStatus,
@@ -59,6 +61,7 @@ const TileSwitch: React.FC<Props> = ({
           <TileControls
             canPopout={canPopout}
             onPopoutClick={onPopoutClick}
+            onPopInClick={onPopInClick}
             currencyPair={currencyPair}
             notional={spotTileData.notional}
           />

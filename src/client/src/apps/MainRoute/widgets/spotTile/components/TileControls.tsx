@@ -21,11 +21,12 @@ export const TopRightButton = styled('button')`
 interface Props {
   canPopout?: boolean
   onPopoutClick?: (x: number, y: number) => void
+  onPopInClick?: () => void
   currencyPair: CurrencyPair
   notional?: number | undefined
 }
 
-const TileControls: React.FC<Props> = ({ onPopoutClick, canPopout, currencyPair, notional }) => {
+const TileControls: React.FC<Props> = ({ onPopoutClick, onPopInClick, canPopout, currencyPair, notional }) => {
   const platform = usePlatform()
 
   const popoutClickHandler = useCallback(
@@ -42,7 +43,7 @@ const TileControls: React.FC<Props> = ({ onPopoutClick, canPopout, currencyPair,
     if (typeof notional !== 'undefined') {
       setNotionalOnStorage(currencyPair.symbol, notional)
     }
-    platform.window.close()
+    onPopInClick && onPopInClick()
   }
 
   return (

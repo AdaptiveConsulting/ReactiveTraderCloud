@@ -24,6 +24,7 @@ export interface SpotTileContainerOwnProps {
   id: string
   tileView: TileView
   onPopoutClick?: (x: number, y: number) => void
+  onPopInClick?: () => void
   tornOff?: boolean
   tearable?: boolean
 }

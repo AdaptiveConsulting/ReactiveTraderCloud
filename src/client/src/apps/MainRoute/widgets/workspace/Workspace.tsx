@@ -4,7 +4,6 @@ import styled from 'styled-components/macro'
 import SpotTileContainer from '../spotTile/SpotTileContainer'
 import { WorkspaceHeader, TileView } from './workspaceHeader'
 import { ExternalWindowProps } from './selectors'
-import { useLocalStorage } from 'rt-util'
 
 const WorkspaceItems = styled.div`
   display: grid;
@@ -39,7 +38,7 @@ const Workspace: React.FC<Props> = ({
   onPopoutClick,
 }) => {
   const [currency, setCurrencyOption] = useState(ALL)
-  const [tileView, setTileView] = useLocalStorage('tileView', TileView.Analytics)
+  const [tileView, setTileView] = useState(TileView.Analytics)
 
   return (
     <div data-qa="workspace__tiles-workspace">
@@ -62,12 +61,13 @@ const Workspace: React.FC<Props> = ({
               key={key}
               dragTearOff
               externalWindowProps={externalWindowProps}
-              render={(popOut, isTornOff) => (
+              render={(popOut, isTornOff, popIn) => (
                 <WorkspaceItem>
                   <SpotTileContainer
                     id={key}
                     tileView={tileView as TileView}
                     onPopoutClick={popOut}
+                    onPopInClick={popIn}
                     tornOff={isTornOff}
                     tearable
                   />

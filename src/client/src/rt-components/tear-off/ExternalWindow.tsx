@@ -13,6 +13,7 @@ const defaultConfig: WindowConfig = {
 }
 
 export interface ExternalWindowProps {
+  title?: string
   onUnload: () => void
   config?: WindowConfig
 }
