@@ -190,8 +190,9 @@ const TearOff: React.FC<TearOffProps> = ({ render, externalWindowProps, tornOff,
   }
 
   if (tornOff) {
+    console.info('extWP', externalWindowProps!.config!.name!)
     // use portal only for browser tiles
-    if (['LiveRates', 'analytics'].includes(externalWindowProps!.config!.name!)
+    if (['LiveRates', 'analytics', 'blotter'].includes(externalWindowProps!.config!.name!)
       || platform.name !== 'browser') {
       return (
         <ExternalWindow onUnload={popIn} {...externalWindowProps} />
