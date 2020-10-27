@@ -8,9 +8,9 @@ import { analyticsSelector } from '../layouts'
 import { addLayoutToConfig } from './addLayoutToConfig'
 import { inExternalWindow } from './inExternalWindow'
 
-const AnalyticsRouteStyle = styled.div<{ showOpenFinControls : boolean }>`
+const AnalyticsRouteStyle = styled.div<{ useHeightOffset  : boolean }>`
   /*height offset is needed for openfin controls*/
-  height: ${({ showOpenFinControls }) => (showOpenFinControls ? 'calc(100% - 24px)' : '100%')};
+  height: ${({ useHeightOffset  }) => (useHeightOffset  ? 'calc(100% - 24px)' : '100%')};
   padding: 0.5rem 0.625rem 0.25rem 0.625rem;
   overflow-x: auto;
   margin: auto;
@@ -25,7 +25,7 @@ const AnalyticsRoute = () => {
       dragTearOff={false}
       externalWindowProps={addLayoutToConfig(externalWindowDefault.analyticsRegion, analytics)}
       render={(popOut, tornOff) => (
-        <AnalyticsRouteStyle showOpenFinControls={tornOff}>
+        <AnalyticsRouteStyle useHeightOffset={tornOff}>
           <AnalyticsContainer
             inExternalWindow={isExternalWindow}
             onPopoutClick={popOut}
