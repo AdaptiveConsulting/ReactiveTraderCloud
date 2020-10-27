@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/macro'
 import queryString from 'query-string'
 import { RouteComponentProps } from 'react-router'
 import { BlotterContainer, BlotterFilters, DEALT_CURRENCY, SYMBOL } from '../widgets/blotter'
-import { InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
+import { externalWindowDefault, InteropTopics, platformHasFeature, usePlatform } from 'rt-platforms'
 import { Subscription } from 'rxjs'
+import { TearOff } from 'rt-components'
+import { blotterSelector } from '../layouts'
+import { addLayoutToConfig } from './addLayoutToConfig'
+import { inExternalWindow } from './inExternalWindow'
 
 const BlotterContainerStyle = styled('div')`
-  height: calc(100% - 25px);
+  height: 100%;
   width: 100%;
   padding: 0.625rem;
   margin: auto;
@@ -50,7 +55,9 @@ function getFiltersFromQueryStr(queryStr: string): BlotterFilters {
 const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   location: { search },
 }) => {
+  const blotter = useSelector(blotterSelector)
   const platform = usePlatform()
+  const isExternalWindow = inExternalWindow
   const [filtersFromInterop, setFiltersFromInterop] = useState<ReadonlyArray<BlotterFilters>>()
 
   useEffect(() => {
@@ -70,9 +77,22 @@ const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
   const filters = (filtersFromInterop && filtersFromInterop[0]) || getFiltersFromQueryStr(search)
 
   return (
-    <BlotterContainerStyle>
-      <BlotterContainer filters={filters} />
-    </BlotterContainerStyle>
+    <TearOff
+      id="blotter"
+      dragTearOff={false}
+      externalWindowProps={addLayoutToConfig(externalWindowDefault.blotterRegion, blotter)}
+      render={(popOut, tornOff) => (
+        <BlotterContainerStyle>
+          <BlotterContainer
+            filters={filters} 
+            onPopoutClick={popOut}
+            tornOff={tornOff}
+            tearable={!isExternalWindow}
+          />
+        </BlotterContainerStyle>
+      )}
+      tornOff={!blotter.visible}
+    />
   )
 }
 
