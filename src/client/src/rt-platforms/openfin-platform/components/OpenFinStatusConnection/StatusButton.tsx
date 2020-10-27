@@ -1,12 +1,13 @@
 import React, { useState, useCallback, SyntheticEvent, useEffect } from 'react'
 
 import { ConnectionInfo } from 'rt-system'
+import { AccentName } from 'rt-theme'
 import { ServiceConnectionStatus, ServiceStatus } from 'rt-types'
 import { Button, StatusCircle, StatusLabel, Root, AppUrl, ServiceList } from './styled'
+import styled from 'styled-components/macro'
 import Service from './Service'
 import FooterVersion from '../../../../apps/MainRoute/widgets/footer-version'
 import { Flex, Modal } from 'rt-components'
-import { CloseButton } from '../OpenfinSnapshotSelection/styled'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
@@ -14,6 +15,14 @@ interface Props {
   connectionStatus: ConnectionInfo
   services: ServiceStatus[]
 }
+
+const CloseButton = styled.div<{ accent?: AccentName }>`
+  color: ${props => props.theme.button.secondary.backgroundColor};
+  cursor: pointer;
+  &:hover {
+    color: ${({ theme, accent = 'primary' }) => theme.button[accent].backgroundColor};
+  }
+`
 
 export const StatusButton: React.FC<Props> = ({ connectionStatus: { url }, services }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)

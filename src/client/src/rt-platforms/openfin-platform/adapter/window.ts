@@ -3,7 +3,6 @@ import { WindowConfig } from '../../types'
 import { get as _get, last as _last } from 'lodash'
 import { PlatformWindow } from '../../platformWindow'
 import { _Window } from 'openfin/_v2/api/window/window'
-import { resetCurrentSnapshotName } from '../snapshots'
 
 const TEAR_OUT_OFFSET_LEFT = 50
 const TEAR_OUT_OFFSET_TOP = 50
@@ -57,7 +56,6 @@ export function createPlatformWindow(
 ): PlatformWindow {
   return {
     close: async () => {
-      resetCurrentSnapshotName()
       return (await getWindow()).close()
     },
     bringToFront: async () => (await getWindow()).bringToFront(),
