@@ -10,7 +10,6 @@ import {
   minimiseNormalIcon,
   popInIcon,
 } from 'apps/SimpleLauncher/icons'
-import OpenfinSnapshotSelection from './OpenfinSnapshotSelection'
 import OpenFinStatusButton from './OpenFinStatusConnection'
 import ReactGA from 'react-ga'
 
@@ -136,7 +135,6 @@ export const OpenFinHeader: React.FC<HeaderProps> = ({ title, ...props }) => (
 export const OpenFinFooter: React.FC = ({ ...props }) => (
   <StatusBar>
     <FooterControl>
-      <OpenfinSnapshotSelection />
       <OpenFinStatusButton />
     </FooterControl>
   </StatusBar>
