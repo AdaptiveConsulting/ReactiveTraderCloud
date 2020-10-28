@@ -11,8 +11,6 @@ export { Direction } from './direction'
 export { ServiceConnectionStatus } from './serviceStatus'
 export type { ServiceStatus } from './serviceStatus'
 
-export { SnapshotActiveStatus } from './snapshotStatus'
-
 export type { Trade, Trades } from './trade'
 export { TradeStatus } from './tradeStatus'
 export { UpdateType } from './updateType'
