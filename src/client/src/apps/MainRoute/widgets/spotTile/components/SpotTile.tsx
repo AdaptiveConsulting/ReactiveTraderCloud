@@ -99,6 +99,7 @@ const SpotTile: React.FC<SpotTileProps> = props => {
             currencyPair={currencyPair}
             rfqState={rfqState}
             disabled={tradingDisabled}
+            inputValidationMessage={inputValidationMessage}
             rfq={rfq}
             notional={notional}
             lastTradeExecutionStatus={lastTradeExecutionStatus}
