@@ -16,7 +16,6 @@ interface Props {
 
 const ShellRoute: React.FC<Props> = ({ header }) => {
   const liveRates = useSelector(liveRatesSelector)
-  const isExternalWindow = inExternalWindow;
   return (
     <DefaultLayout
       header={header}
@@ -31,7 +30,7 @@ const ShellRoute: React.FC<Props> = ({ header }) => {
                 <WorkspaceContainer 
                   onPopoutClick={popOut}                
                   tornOff={tornOff}
-                  tearable={!isExternalWindow}
+                  tearable={!inExternalWindow}
                 />
               )}
               tornOff={!liveRates.visible}

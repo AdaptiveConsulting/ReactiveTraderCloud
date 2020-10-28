@@ -57,7 +57,6 @@ const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
 }) => {
   const blotter = useSelector(blotterSelector)
   const platform = usePlatform()
-  const isExternalWindow = inExternalWindow
   const [filtersFromInterop, setFiltersFromInterop] = useState<ReadonlyArray<BlotterFilters>>()
 
   useEffect(() => {
@@ -87,7 +86,7 @@ const BlotterRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
             filters={filters} 
             onPopoutClick={popOut}
             tornOff={tornOff}
-            tearable={!isExternalWindow}
+            tearable={!inExternalWindow}
           />
         </BlotterContainerStyle>
       )}

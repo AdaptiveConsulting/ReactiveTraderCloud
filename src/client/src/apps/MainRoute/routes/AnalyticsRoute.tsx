@@ -6,7 +6,7 @@ import { externalWindowDefault } from 'rt-platforms'
 import { TearOff } from 'rt-components'
 import { analyticsSelector } from '../layouts'
 import { addLayoutToConfig } from './addLayoutToConfig'
-import { inExternalWindow } from './inExternalWindow'
+import { inExternalWindow as isExternalWindow } from './inExternalWindow'
 
 const AnalyticsRouteStyle = styled.div<{ useHeightOffset  : boolean }>`
   /*height offset is needed for openfin controls*/
@@ -17,7 +17,6 @@ const AnalyticsRouteStyle = styled.div<{ useHeightOffset  : boolean }>`
 `
 const AnalyticsRoute = () => {
   const analytics = useSelector(analyticsSelector)
-  const isExternalWindow = inExternalWindow
 
   return (
     <TearOff
