@@ -6,7 +6,21 @@ export const Wrapper = styled.div`
   opacity: 0.59;
   font-size: 0.75rem;
 `
-
-const FooterVersion: FC = () => <Wrapper>{process.env.REACT_APP_BUILD_VERSION}</Wrapper>
+export const Link = styled.a`
+  color: inherit;
+  text-decoration: inherit;
+`
+const FooterVersion: FC = () => (
+  <Wrapper>
+    <Link
+      href={
+        'https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/' +
+        process.env.REACT_APP_ENV
+      }
+    >
+      {process.env.REACT_APP_ENV}
+    </Link>
+  </Wrapper>
+)
 
 export default FooterVersion
