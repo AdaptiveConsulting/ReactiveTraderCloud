@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Resizer, TearOff } from 'rt-components'
-import { externalWindowDefault, ExternalWindow, WindowPosition } from 'rt-platforms'
+import { externalWindowDefault } from 'rt-platforms'
 import { AnalyticsContainer } from '../widgets/analytics'
 import { BlotterContainer } from '../widgets/blotter'
 import StatusBar from '../widgets/status-bar'
@@ -12,21 +12,11 @@ import { analyticsSelector, blotterSelector, liveRatesSelector, DefaultLayout } 
 import { BlotterWrapper, AnalyticsWrapper, OverflowScroll, WorkspaceWrapper } from './styled'
 import UsersModal from '../components/users-modal'
 import ContactUsButton from '../widgets/contact-us'
+import { addLayoutToConfig } from './addLayoutToConfig'
 
 interface Props {
   header?: React.ReactChild
   footer?: React.ReactChild
-}
-
-const addLayoutToConfig = (windowConfig: ExternalWindow, layout: WindowPosition) => {
-  return {
-    ...windowConfig,
-    config: {
-      ...windowConfig.config,
-      x: layout.x,
-      y: layout.y,
-    },
-  }
 }
 
 const ShellRoute: React.FC<Props> = ({ header, footer }) => {
