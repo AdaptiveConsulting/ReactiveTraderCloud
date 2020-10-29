@@ -37,7 +37,7 @@ const BookingPill = styled.div<{
   top: ${({ isAnalyticsView, isExecutingStatus }) =>
     isAnalyticsView && !isExecutingStatus ? '2.8rem' : isAnalyticsView ? '2.3rem' : ''};
   border-radius: ${({ isExecutingStatus }) => (isExecutingStatus ? '17px' : '3px')};
-  background: ${({ theme, color, disabled }) => theme.accents[color][disabled ? 'dark' : 'base']};
+  background: ${({ theme, color, disabled }) => theme.accents[color][disabled ? 'darker' : 'base']};
   pointer-events: auto; /* restore the click on this child */
   width: ${({ isExecutingStatus, isAnalyticsView }) =>
     isAnalyticsView && !isExecutingStatus ? '82px' : isExecutingStatus ? '125px' : '58px'};
