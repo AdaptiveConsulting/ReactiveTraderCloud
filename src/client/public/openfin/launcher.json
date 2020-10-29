@@ -48,7 +48,8 @@
     "applicationIcon": "{*host_url*}/static/media/adaptive-icon-256x256.png",
     "defaultWindowOptions": {
       "contextMenu": true,
-      "frame": false
+      "frame": false,
+      "url": "{*host_url*}/openfin-sub-window-frame"
     },
     "fdc3Api": true
   },

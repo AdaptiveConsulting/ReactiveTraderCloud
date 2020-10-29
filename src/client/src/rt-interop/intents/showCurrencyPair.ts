@@ -1,6 +1,6 @@
 import { PlatformWindow, Platform } from 'rt-platforms'
 import { currencyFormatter } from 'rt-util'
-import { defaultConfig, windowOrigin } from './defaultWindowConfig'
+import { defaultConfig } from './defaultWindowConfig'
 
 let openedWindow: PlatformWindow | undefined
 let updatedPosition: { x: number | undefined; y: number | undefined } = {
@@ -25,7 +25,7 @@ async function openNewWindow(
       height: 200,
       name: currencyPair,
       displayName,
-      url: `${windowOrigin}/spot/${currencyPair}?tileView=Analytics`,
+      url: `/spot/${currencyPair}?tileView=Analytics`,
       ...updatedPosition,
     },
     () => (openedWindow = undefined),

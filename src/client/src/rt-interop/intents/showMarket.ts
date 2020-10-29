@@ -1,5 +1,5 @@
 import { Platform, PlatformWindow } from 'rt-platforms'
-import { defaultConfig, windowOrigin } from './defaultWindowConfig'
+import { defaultConfig } from './defaultWindowConfig'
 
 let openedWindow: PlatformWindow | undefined
 let updatedPosition: { x: number | undefined; y: number | undefined } = {
@@ -25,7 +25,7 @@ export async function showMarket({ window }: Platform) {
       ...defaultConfig,
       name: 'market',
       height: 600,
-      url: `${windowOrigin}/tiles`,
+      url: `/tiles`,
       saveWindowState: true,
       ...updatedPosition
     },
