@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
-import { isParentAppOpenfinLauncher } from 'rt-platforms'
 import styled from 'styled-components/macro'
 import { OpenFinChrome, OpenFinHeader, OpenFinFooter } from './OpenFinChrome'
 import { getAppName } from 'rt-util'
@@ -63,8 +62,6 @@ const LayoutRoot = styled.div`
 `
 
 export const OpenFinWindowFrame: React.FC = () => {
-  const [, setFromLauncher] = useState<boolean>(false)
-
   const win = fin.Window.getCurrentSync()
   const headerControlHandlers = {
     close: () => win.close(),
@@ -72,16 +69,6 @@ export const OpenFinWindowFrame: React.FC = () => {
     maximize: () =>
       win.getState().then(state => (state === 'maximized' ? win.restore() : win.maximize())),
   }
-
-  useEffect(() => {
-    isParentAppOpenfinLauncher()
-      .then(isLauncher => {
-        setFromLauncher(isLauncher)
-      })
-      .catch(() => {
-        console.error('Cannot find parent window')
-      })
-  }, [])
 
   useEffect(() => {
     window.document.dispatchEvent(

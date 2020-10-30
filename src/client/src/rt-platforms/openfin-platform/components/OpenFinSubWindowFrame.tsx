@@ -56,23 +56,14 @@ const LayoutRoot = styled.div`
 
 export const OpenFinSubWindowFrame: React.FC = () => {
   const win = fin.Window.getCurrentSync()
-  const [, setFromLauncher] = useState<boolean>(false)
+  const [fromLauncher] = useState<boolean>(isParentAppOpenfinLauncher())
   const [windowName, setWindowName] = useState('')
 
   const headerControlHandlers = {
     minimize: () => win.minimize(),
-    popIn: () => win.close(),
+    popIn: !fromLauncher ? () => win.close() : undefined,
+    close: fromLauncher ? () => win.close() : undefined,
   }
-
-  useEffect(() => {
-    isParentAppOpenfinLauncher()
-      .then(isLauncher => {
-        setFromLauncher(isLauncher)
-      })
-      .catch(() => {
-        console.error('Cannot find parent window')
-      })
-  }, [])
 
   useEffect(() => {
     window.document.dispatchEvent(

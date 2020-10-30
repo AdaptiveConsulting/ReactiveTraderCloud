@@ -1,10 +1,6 @@
-export async function isParentAppOpenfinLauncher() {
-  if (fin?.Window) {
-    const app = await fin.Window.getCurrent()
-    const {
-      identity: { uuid },
-    } = await app.getParentApplication()
-
+export function isParentAppOpenfinLauncher() {
+  if (window?.fin?.me) {
+    const uuid = window.fin.me.uuid
     return uuid.split('-').includes('launcher')
   }
   return false
