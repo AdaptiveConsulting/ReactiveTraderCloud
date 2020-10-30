@@ -15,10 +15,10 @@ const FooterVersion: FC = () => (
     <Link
       href={
         'https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/' +
-        process.env.REACT_APP_ENV
+        process.env.REACT_APP_VERSION
       }
     >
-      {process.env.REACT_APP_ENV}
+      {process.env.REACT_APP_VERSION}
     </Link>
   </Wrapper>
 )
