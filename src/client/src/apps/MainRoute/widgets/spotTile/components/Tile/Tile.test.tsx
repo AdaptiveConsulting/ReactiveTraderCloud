@@ -30,7 +30,7 @@ const defaultParams: Parameters<typeof getDerivedStateFromUserInput>[0] = {
       mid: 1.48357,
       priceMovementType: 'Down' as PriceMovementTypes,
       symbol: 'EURCAD',
-      valueDate: '2019-04-07T00:00:00Z',
+      valueDate: new Date(2019, 3, 7).toISOString(),
     },
     rfqPrice: null,
     rfqState: 'none',
