@@ -302,7 +302,7 @@ exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (06 APR)
+          SPT (07 APR)
         </div>
       </div>
       <div
@@ -811,7 +811,7 @@ exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (06 APR)
+          SPT (07 APR)
         </div>
       </div>
       <div
@@ -1349,7 +1349,7 @@ exports[`Snapshot, state derived from props, RFQ expired 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (06 APR)
+          SPT (07 APR)
         </div>
       </div>
       <div
@@ -1856,7 +1856,7 @@ exports[`Snapshot, state derived from props, RFQ received 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (06 APR)
+          SPT (07 APR)
         </div>
       </div>
       <div
@@ -2361,7 +2361,7 @@ exports[`Snapshot, state derived from props, RFQ requested 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (06 APR)
+          SPT (07 APR)
         </div>
       </div>
       <div
@@ -2873,7 +2873,7 @@ exports[`Snapshot, state derived from props, defaults, RFQ none, should be able 
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (06 APR)
+          SPT (07 APR)
         </div>
       </div>
       <div
@@ -3424,7 +3424,7 @@ exports[`Snapshot, state derived from props, in trade 1`] = `
           className="c7 c8"
           data-qa="tile-header__delivery-date"
         >
-          SPT (06 APR)
+          SPT (07 APR)
         </div>
       </div>
       <div
