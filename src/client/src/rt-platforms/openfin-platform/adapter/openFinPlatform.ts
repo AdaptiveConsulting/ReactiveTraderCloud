@@ -3,7 +3,7 @@
 
 import { Platform } from '../../platform'
 import { AppConfig, InteropTopics } from '../../types'
-import { createPlatformWindow, openDesktopWindow } from './window'
+import { createPlatformWindow, openDesktopWindow, showWindow } from './window'
 import { fromEventPattern } from 'rxjs'
 import {
   Notification,
@@ -34,6 +34,7 @@ export default class OpenFinPlatform implements Platform {
   window = {
     ...createPlatformWindow(() => Promise.resolve(fin.Window.getCurrent())),
     open: openDesktopWindow,
+    show: showWindow,
   }
 
   app = {

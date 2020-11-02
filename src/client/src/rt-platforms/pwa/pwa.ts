@@ -40,6 +40,7 @@ export default class PWA implements Platform {
       })
       return openBrowserWindow(config, onClose)
     },
+    show: () => {},
   }
 
   notification = {
