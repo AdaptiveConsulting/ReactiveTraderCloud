@@ -29,7 +29,7 @@ jobs:
         run: git fetch origin +refs/tags/*:refs/tags/*
 
       - name: Get build version
-        run: echo ::set-env name=BUILD_VERSION::$(git describe)
+        run: echo "BUILD_VERSION=$(git describe)" >> $GITHUB_ENV
 
       - name: 'Build Docker images: ${{ env.BUILD_VERSION }}'
         env:
@@ -60,12 +60,12 @@ jobs:
 
       - name: Set deployment environment (dev)
         if: (github.event_name == 'push') && (github.ref == 'refs/heads/master')
-        run: echo "::set-env name=DEPLOY_ENV::dev"
+        run: echo "DEPLOY_ENV=dev" >> $GITHUB_ENV
 
       - name: Set deployment environment (uat)
         if: (github.event_name == 'push') && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/'))
         run: |
-          echo "::set-env name=DEPLOY_ENV::uat"
+          echo "DEPLOY_ENV=uat" >> $GITHUB_ENV
 
       - name: Trigger deployment
         if: github.event_name == 'push'
