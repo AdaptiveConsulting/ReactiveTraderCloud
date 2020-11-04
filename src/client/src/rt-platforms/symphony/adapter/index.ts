@@ -50,6 +50,7 @@ export default class Symphony implements Platform {
       })
       return Promise.resolve(undefined)
     },
+    show: () => {},
   }
 
   notification = {

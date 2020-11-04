@@ -56,6 +56,7 @@ export class Glue42Core implements Platform {
         .open(config.name, url, config)
         .then((createdWindow: any) => createdWindow)
     },
+    show: () => {},
   }
 
   notification = {

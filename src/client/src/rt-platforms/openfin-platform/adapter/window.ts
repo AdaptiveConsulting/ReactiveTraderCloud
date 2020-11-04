@@ -185,3 +185,8 @@ export const openDesktopWindow = async (
 
   return createPlatformWindow(() => Promise.resolve(win))
 }
+
+export const showWindow = async () => {
+  const window = await fin.Window.getCurrent()
+  window.show();
+}
