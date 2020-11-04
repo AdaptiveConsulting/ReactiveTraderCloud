@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { ContactUsContent, Link } from './styled'
+import { ContactUsContentResolver, Link } from './styled'
 import { handleBrowserLink } from './utils'
 import { EventArgs } from 'react-ga'
 
@@ -15,7 +15,7 @@ const FollowUs: React.FC = () => {
     []
   )
   return (
-    <ContactUsContent>
+    <ContactUsContentResolver>
       <span className="header">Follow us on</span>
       <div>
         <span>LinkedIn</span>
@@ -50,7 +50,7 @@ const FollowUs: React.FC = () => {
           github.com/adaptiveConsulting
         </Link>
       </div>
-    </ContactUsContent>
+    </ContactUsContentResolver>
   )
 }
 

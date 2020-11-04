@@ -2,8 +2,10 @@ import React, { FC } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
 import { OpenFinWindowFrame, OpenFinSubWindowFrame } from 'rt-platforms/openfin-platform/components'
+import { StatusDisplayContainer } from 'rt-platforms/openfin-platform/components/OpenFinStatusConnection/StatusContainers'
 import { currencyFormatter } from 'rt-util'
 import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
+import { OpenFinContactDisplay } from 'rt-platforms/openfin-platform/components/OpenFinContactButton'
 
 export const Router: FC = () => (
   <Switch>
@@ -52,5 +54,7 @@ export const Router: FC = () => (
 
     <Route path="/openfin-window-frame" render={() => <OpenFinWindowFrame />} />
     <Route path="/openfin-sub-window-frame" render={() => <OpenFinSubWindowFrame />} />
+    <Route path="/status" render={() => <StatusDisplayContainer />}/>
+    <Route path="/contact" render={() => <OpenFinContactDisplay />}/>
   </Switch>
 )

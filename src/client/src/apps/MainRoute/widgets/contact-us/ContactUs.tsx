@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { ContactUsContent, Link, Input } from './styled'
+import { ContactUsContentResolver, Link, Input } from './styled'
 import { handleBrowserLink } from './utils'
 import { EventArgs } from 'react-ga'
 
@@ -13,7 +13,7 @@ const ContactUs: React.FC = () => {
     []
   )
   return (
-    <ContactUsContent>
+    <ContactUsContentResolver>
       <span className="header">Contact us</span>
       <div>
         <span>70 St. Mary Axe, London, EC3A 8BE</span>
@@ -39,7 +39,7 @@ const ContactUs: React.FC = () => {
       >
         www.weareadaptive.com
       </Link>
-    </ContactUsContent>
+    </ContactUsContentResolver>
   )
 }
 

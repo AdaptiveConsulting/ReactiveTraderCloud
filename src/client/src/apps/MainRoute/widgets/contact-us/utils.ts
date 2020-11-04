@@ -1,5 +1,5 @@
 import ReactGA from 'react-ga'
-const isOpenFin = 'fin' in window
+export const isOpenFin = 'fin' in window
 
 export const handleBrowserLink = (gaArgs: ReactGA.EventArgs, href: string) => {
   ReactGA.event(gaArgs)

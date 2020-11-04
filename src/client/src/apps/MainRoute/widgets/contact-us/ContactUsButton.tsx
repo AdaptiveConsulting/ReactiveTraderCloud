@@ -7,6 +7,19 @@ import Logo from '../../components/app-header/Logo'
 import { MailIcon } from 'rt-components'
 import { usePopUpMenu } from 'rt-util'
 
+interface Props {
+  logoSize: number;
+}
+
+export const ContactUsPopupContent: React.FC<Props> = ({ logoSize }) =>
+  <React.Fragment>
+    <ContactUs />
+    <FollowUs />
+    <LogoWrapper>
+      <Logo size={logoSize} />
+    </LogoWrapper>
+  </React.Fragment>
+
 const ContactUsButton: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
@@ -23,11 +36,7 @@ const ContactUsButton: React.FC = () => {
       </Button>
 
       <ContactUsPopup open={displayMenu} minWidth={'14rem'}>
-        <ContactUs />
-        <FollowUs />
-        <LogoWrapper>
-          <Logo size={1.25} />
-        </LogoWrapper>
+        <ContactUsPopupContent logoSize={1.25} />
       </ContactUsPopup>
     </Root>
   )
