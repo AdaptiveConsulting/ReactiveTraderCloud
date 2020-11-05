@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
 import { OpenFinWindowFrame, OpenFinSubWindowFrame } from 'rt-platforms/openfin-platform/components'

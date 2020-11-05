@@ -9,7 +9,7 @@ export interface NotificationMessage {
 }
 
 let registration: ServiceWorkerRegistration
-navigator.serviceWorker.ready.then(x => {
+navigator.serviceWorker && navigator.serviceWorker.ready.then(x => {
   registration = x;
 })
 
