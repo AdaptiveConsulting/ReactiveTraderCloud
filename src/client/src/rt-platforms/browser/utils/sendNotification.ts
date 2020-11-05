@@ -8,18 +8,26 @@ export interface NotificationMessage {
   tradeNotification: Trade
 }
 
+let registration: ServiceWorkerRegistration
+navigator.serviceWorker.ready.then(x => {
+  registration = x;
+})
+
 export const sendNotification = ({ tradeNotification }: NotificationMessage) => {
   const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
   const title = `Trade ${status}: ${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${tradeNotification.notional}`
   const body = `vs. ${tradeNotification.termsCurrency} \nRate ${tradeNotification.spotRate}    Trade ID ${tradeNotification.tradeId}`
 
   const options = {
-    body,
-    icon: './static/media/adaptive-logo-without-background.png',
+    body: body,
+    icon: './static/media/reactive-trader.ico',
     dir: 'ltr',
+    requireInteraction: true,
+    actions: [
+      {action: 'highlight-trade', title: 'Highlight in blotter'}
+    ],
+    data: tradeNotification
   }
-
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  // @ts-ignore
-  const notification = new Notification(title, options)
+  
+  registration.showNotification(title, options as NotificationOptions)
 }
