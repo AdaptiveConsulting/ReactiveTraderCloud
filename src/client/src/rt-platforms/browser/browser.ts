@@ -35,6 +35,7 @@ export default class Browser implements Platform {
       })
       return openBrowserWindow(config, onClose)
     },
+    show: () => {},
   }
 
   notification = {

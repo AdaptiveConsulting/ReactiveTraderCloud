@@ -41,6 +41,8 @@ export const SimpleLauncher: React.FC = () => {
       const serviceClient = createServiceStub(broker)
       const platformResult = await getPlatformAsync()
 
+      platformResult.window.show()
+
       // blotter service
       const blotterService = new BlotterService(serviceClient)
       const blotterUpdates$ = blotterService.getTradesStream()

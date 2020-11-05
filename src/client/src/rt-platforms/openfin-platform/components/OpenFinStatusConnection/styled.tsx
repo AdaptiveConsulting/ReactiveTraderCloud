@@ -64,7 +64,7 @@ export const Root = styled.div`
 export const ServiceName = styled.div`
   min-width: 5rem;
   text-transform: capitalize;
-  font-size: 0.75rem;
+  font-size: 1rem;
   line-height: 1rem;
   display: inline-block;
 `
@@ -109,4 +109,21 @@ export const ServiceList = styled.div`
 
 export const AppUrl = styled.input`
   border-style: none;
+`
+
+export const Background = styled.div`
+  background-color: ${({ theme }) => theme.core.alternateBackground};
+  color: ${({ theme }) => theme.core.textColor};
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  margin: 0;
+  position: absolute;
+  overflow: hidden;
+`
+export const Header = styled.div`
+  font-size: 1.25rem;
+  line-height: 3rem;
+  box-shadow: 0 1px 0 ${({ theme }) => theme.core.textColor};
+  margin-bottom: 1rem;
 `

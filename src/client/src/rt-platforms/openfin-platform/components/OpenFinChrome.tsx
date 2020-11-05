@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet'
 import { AccentName } from 'rt-theme'
 import styled from 'styled-components/macro'
 import Header from 'apps/MainRoute/components/app-header'
+import OpenFinContactButton from './OpenFinContactButton'
+import { StatusButtonContainer } from './OpenFinStatusConnection/StatusContainers'
 import StatusBar from 'apps/MainRoute/widgets/status-bar'
 import {
   ExitIcon,
@@ -10,7 +12,6 @@ import {
   minimiseNormalIcon,
   popInIcon,
 } from 'apps/SimpleLauncher/icons'
-import OpenFinStatusButton from './OpenFinStatusConnection'
 import ReactGA from 'react-ga'
 
 export interface ControlProps {
@@ -135,7 +136,8 @@ export const OpenFinHeader: React.FC<HeaderProps> = ({ title, ...props }) => (
 export const OpenFinFooter: React.FC = ({ ...props }) => (
   <StatusBar>
     <FooterControl>
-      <OpenFinStatusButton />
+      <OpenFinContactButton />
+      <StatusButtonContainer />
     </FooterControl>
   </StatusBar>
 )

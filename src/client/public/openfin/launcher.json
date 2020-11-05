@@ -2,7 +2,7 @@
   "snapshot": {
     "windows": [
       {
-        "autoShow": true,
+        "autoShow": false,
         "frame": false,
         "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
         "preload": [

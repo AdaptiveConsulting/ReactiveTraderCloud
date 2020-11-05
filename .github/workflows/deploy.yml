@@ -20,7 +20,7 @@ jobs:
         run: git fetch origin +refs/tags/*:refs/tags/*
 
       - name: Get build version
-        run: echo ::set-env name=BUILD_VERSION::$(git describe)
+        run: echo "BUILD_VERSION=$(git describe)" >> $GITHUB_ENV
 
       - name: Check if docker tag exists
         run: |

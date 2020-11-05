@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro'
 import { Popup } from 'rt-components'
+import { isOpenFin } from './utils'
 
 const buttonHeight = '2rem'
 
@@ -10,7 +11,7 @@ export const ContactUsPopup = styled(Popup)`
   border-radius: 0.5rem;
 `
 
-export const ContactUsContent = styled.div`
+const ContactUsContent = styled.div`
   font-size: 0.75rem;
   padding: 0.5rem;
 
@@ -45,3 +46,18 @@ export const Input = styled.input`
   margin-bottom: 1rem;
   width: 100%;
 `
+const ContactUsContentOpenFin = styled(ContactUsContent)`
+  &&& {
+    font-size: 1rem;
+
+    .header {
+      font-size: 1.25rem;
+    }
+
+    span {
+      line-height: 1.25;
+    }
+  }
+`
+
+export const ContactUsContentResolver = isOpenFin ? ContactUsContentOpenFin : ContactUsContent

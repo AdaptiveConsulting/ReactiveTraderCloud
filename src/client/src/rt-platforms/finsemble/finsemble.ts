@@ -32,6 +32,7 @@ export class Finsemble implements Platform {
       const createdWindow = window.open()
       return Promise.resolve(createdWindow ? createDefaultPlatformWindow(createdWindow) : undefined)
     },
+    show: () => {},
   }
 
   app = {
