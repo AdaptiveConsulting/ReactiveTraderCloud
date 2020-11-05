@@ -25,6 +25,7 @@ export default class NoopPlatformAdapter implements Platform {
     open: (config: WindowConfig, onClose?: () => void) => {
       throw new Error('NOT IMPLEMENTED')
     },
+    show: () => {},
   }
 
   notification = {

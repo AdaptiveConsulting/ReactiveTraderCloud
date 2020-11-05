@@ -65,6 +65,7 @@ export class Glue42 implements Platform {
         console.warn(err.message)
       }
     },
+    show: () => {},
   }
 
   notification = {
