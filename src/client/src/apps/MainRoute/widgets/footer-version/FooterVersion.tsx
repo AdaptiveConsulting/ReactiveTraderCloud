@@ -22,23 +22,23 @@ const gitTagExists = async (gitTag: string | undefined) => {
 
 const FooterVersion: FC = () => {
   const [versionExists, setVersionExists] = useState<boolean | void>(false)
-  const currentVersion: string | undefined = process.env.REACT_APP_VERSION
+
   const URL =
     'https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/' +
     process.env.REACT_APP_VERSION
 
   useEffect(() => {
-    gitTagExists(currentVersion).then(resolution => setVersionExists(resolution))
+    gitTagExists(process.env.REACT_APP_VERSION).then(resolution => setVersionExists(resolution))
   }, [])
 
   return (
     <Wrapper>
       {versionExists ? (
         <Link target="_blank" href={URL}>
-          {currentVersion}
+          {process.env.REACT_APP_VERSION}
         </Link>
       ) : (
-        <p>{currentVersion}</p>
+        <p>{process.env.REACT_APP_VERSION}</p>
       )}
     </Wrapper>
   )
