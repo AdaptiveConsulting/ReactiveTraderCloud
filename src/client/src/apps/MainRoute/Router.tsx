@@ -74,12 +74,9 @@ export const Router: FC = () => {
 
       <Route path="/openfin-window-frame" render={() => <OpenFinWindowFrame />} />
       <Route path="/openfin-sub-window-frame" render={() => <OpenFinSubWindowFrame />} />
+      <Route path="/status" render={() => <StatusDisplayContainer />} />
+      <Route path="/contact" render={() => <OpenFinContactDisplay />} />
     </Switch>
   )
 }
-    <Route path="/openfin-window-frame" render={() => <OpenFinWindowFrame />} />
-    <Route path="/openfin-sub-window-frame" render={() => <OpenFinSubWindowFrame />} />
-    <Route path="/status" render={() => <StatusDisplayContainer />}/>
-    <Route path="/contact" render={() => <OpenFinContactDisplay />}/>
-  </Switch>
-)
+
