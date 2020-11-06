@@ -7,7 +7,7 @@ import { Observable } from 'rxjs'
 
 const positionRaw = {
   CurrentPositions: [] as any[],
-  History: [] as any[]
+  History: [] as any[],
 }
 
 describe('AnalyticsService getAnalyticsStream', () => {
@@ -17,14 +17,14 @@ describe('AnalyticsService getAnalyticsStream', () => {
 
   it('Should call createStreamOperation', () => {
     const actionReference = {
-      p: positionRaw
+      p: positionRaw,
     }
     new MockScheduler().run(({ cold, expectObservable }) => {
       const actionLifetime = '--p--'
-      const createStreamOperation$ = jest.fn((s: string, o: string, r: any) =>
+      const createStreamOperation = jest.fn((s: string, o: string, r: any) =>
         cold<PositionsRaw>(actionLifetime, actionReference)
       )
-      const serviceClient = new MockServiceStub(createStreamOperation$)
+      const serviceClient = ({ createStreamOperation } as any) as ServiceClient
       const analyticsService = new AnalyticsService(serviceClient as ServiceClient)
       const epics$ = analyticsService
         .getAnalyticsStream('USD')
@@ -35,8 +35,8 @@ describe('AnalyticsService getAnalyticsStream', () => {
         )
 
       expectObservable(epics$).toBe('--p--', { p: true })
-      expect(createStreamOperation$).toHaveBeenCalled()
-      expect(createStreamOperation$).toHaveBeenCalledWith('analytics', 'getAnalytics', 'USD')
+      expect(createStreamOperation).toHaveBeenCalled()
+      expect(createStreamOperation).toHaveBeenCalledWith('analytics', 'getAnalytics', 'USD')
     })
   })
 
@@ -44,16 +44,16 @@ describe('AnalyticsService getAnalyticsStream', () => {
     const actionReference = {
       p: {
         CurrentPositions: [{ Symbol: 'AAPL', BasePnl: 5, BaseTradedAmount: 5 }],
-        History: [{ Timestamp: '2019-02-20', UsdPnl: 5 }]
-      }
+        History: [{ Timestamp: '2019-02-20', UsdPnl: 5 }],
+      },
     }
     new MockScheduler().run(({ cold, expectObservable }) => {
       const actionLifetime = '--p--'
-      const createStreamOperation$ = jest.fn((s: string, o: string, r: any) =>
+      const createStreamOperation = jest.fn((s: string, o: string, r: any) =>
         cold<PositionsRaw>(actionLifetime, actionReference)
       )
 
-      const serviceClient = new MockServiceStub(createStreamOperation$)
+      const serviceClient = ({ createStreamOperation } as any) as ServiceClient
       const analyticsService = new AnalyticsService(serviceClient as ServiceClient)
       const epics$ = analyticsService
         .getAnalyticsStream('USD')
@@ -63,12 +63,3 @@ describe('AnalyticsService getAnalyticsStream', () => {
     })
   })
 })
-
-const implementation = (
-  getResponses: (service: string, operationName: string, request: any) => Observable<any>
-) => ({
-  createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r)
-})
-const MockServiceStub = jest.fn<Partial<ServiceClient>, Parameters<typeof implementation>>(
-  implementation
-)

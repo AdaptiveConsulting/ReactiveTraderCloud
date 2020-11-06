@@ -9,7 +9,7 @@ import { ApplicationDependencies } from 'apps/MainRoute/store/applicationService
 import { blotterHighlightEpic } from './blotterHighlightEpic'
 import { platformHasFeature } from 'rt-platforms'
 
-export default ({ platform }: ApplicationDependencies) => {
+const doCombine = ({ platform }: ApplicationDependencies) => {
   const epics = [
     blotterServiceEpic,
     connectBlotterToNotifications,
@@ -23,3 +23,5 @@ export default ({ platform }: ApplicationDependencies) => {
 
   return combineEpics(...epics)
 }
+
+export default doCombine

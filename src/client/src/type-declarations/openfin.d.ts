@@ -13,9 +13,13 @@ declare interface OpenFinWindowOptions extends fin.WindowOption {
 }
 
 declare namespace fin {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   type ExcelWorksheet = import('./openfin-excel').ExcelWorksheet
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   type WorksheetChangedEventArgs = import('./openfin-excel').WorksheetChangedEventArgs
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   type WorksheetSelectionChangedEventArgs = import('./openfin-excel').WorksheetSelectionChangedEventArgs
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   type ExcelWorkbook = import('./openfin-excel').ExcelWorkbook
   type ExcelService = import('./openfin-excel').ExcelService
   type ExcelApplication = import('./openfin-excel').ExcelApplication

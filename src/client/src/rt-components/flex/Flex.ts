@@ -1,7 +1,7 @@
 import { css } from 'styled-components/macro'
 import styled from 'styled-components/macro'
 
-interface Flex {
+interface FlexProperties {
   height?: string
   width?: string
   direction?: 'column' | 'row'
@@ -10,7 +10,7 @@ interface Flex {
   alignItems?: 'center' | 'stretch' | 'flex-end' | 'flex-start'
 }
 
-export const flexStyle = ({ direction, wrap, justifyContent, alignItems }: Flex) =>
+export const flexStyle = ({ direction, wrap, justifyContent, alignItems }: FlexProperties) =>
   css`
     display: flex;
     flex-direction: ${direction};
@@ -19,11 +19,11 @@ export const flexStyle = ({ direction, wrap, justifyContent, alignItems }: Flex)
     align-items: ${alignItems};
   `
 
-interface Box {
+interface BoxDimentions {
   height?: string
   width?: string
 }
-export const boxStyle = ({ height, width }: Box) =>
+export const boxStyle = ({ height, width }: BoxDimentions) =>
   css`
     height: ${height};
     width: ${width};

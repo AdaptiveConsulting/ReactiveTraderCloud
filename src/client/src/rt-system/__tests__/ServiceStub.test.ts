@@ -17,7 +17,7 @@ describe('ServiceStub', () => {
     const procedure = service + '.' + operationName
 
     it('invokes a remote procedure with the correct payload', () => {
-      const rpcEndpoint = new MockRpcEndpoint()
+      const rpcEndpoint = mockRpcEndpoint()
       const stub = new ServiceClient(Username, createMockConnection(rpcEndpoint))
       const rpc = stub
         .createRequestResponseOperation<string, string>(service, operationName, payload)
@@ -27,8 +27,8 @@ describe('ServiceStub', () => {
         destination: `/amq/queue/${procedure}`,
         body: JSON.stringify({
           payload,
-          Username: Username
-        })
+          Username: Username,
+        }),
       })
       rpc.unsubscribe()
     })
@@ -41,7 +41,7 @@ describe('ServiceStub', () => {
     const procedure = service + '.' + operationName
 
     it('invokes a remote procedure with the correct payload', () => {
-      const rpcEndpoint = new MockRpcEndpoint()
+      const rpcEndpoint = mockRpcEndpoint()
       const stub = new ServiceClient(Username, createMockConnection(rpcEndpoint))
       const rpc = stub
         .createStreamOperation<string, string>(service, operationName, payload)
@@ -51,8 +51,8 @@ describe('ServiceStub', () => {
         destination: `/amq/queue/${procedure}`,
         body: JSON.stringify({
           payload,
-          Username: Username
-        })
+          Username: Username,
+        }),
       })
       rpc.unsubscribe()
     })
@@ -61,7 +61,7 @@ describe('ServiceStub', () => {
   describe('Subscribe To Topic method', () => {
     const topic = 'someTopic'
     it('subscribes to the correct topic name', () => {
-      const streamEndpoint = new MockStreamEndpoint()
+      const streamEndpoint = mockStreamEndpoint()
       const stub = new ServiceClient(Username, createMockConnection(undefined, streamEndpoint))
       stub.subscribeToTopic(topic).subscribe()
       expect(streamEndpoint.watch).lastCalledWith(`/exchange/${topic}`)
@@ -70,8 +70,8 @@ describe('ServiceStub', () => {
 })
 
 const createMockConnection: (rpcEndpoint?: RxStompRPC, streamEndpoint?: RxStomp) => WsConnection = (
-  rpcEndpoint: RxStompRPC = new MockRpcEndpoint(),
-  streamEndpoint: RxStomp = new MockStreamEndpoint()
+  rpcEndpoint: RxStompRPC = mockRpcEndpoint(),
+  streamEndpoint: RxStomp = mockStreamEndpoint()
 ) => ({
   config: { brokerURL: 'FAKE', connectionType: 'websocket', reconnectDelay: 100 },
   rpcEndpoint: rpcEndpoint,
@@ -79,18 +79,18 @@ const createMockConnection: (rpcEndpoint?: RxStompRPC, streamEndpoint?: RxStomp)
   open: jest.fn().mockReturnValue(true),
   close: jest.fn(),
   onopen: jest.fn(),
-  onclose: jest.fn()
+  onclose: jest.fn(),
 })
 
-const MockRpcEndpoint = jest.fn<any, any>(() => {
-  return {
+const mockRpcEndpoint = () => {
+  return ({
     rpc: jest.fn().mockReturnValue(new Observable<IMessage>()),
-    stream: jest.fn().mockReturnValue(new Observable<IMessage>())
-  }
-})
+    stream: jest.fn().mockReturnValue(new Observable<IMessage>()),
+  } as any) as RxStompRPC
+}
 
-const MockStreamEndpoint = jest.fn<any, any>(() => {
-  return {
-    watch: jest.fn().mockReturnValue(new Observable<IMessage>())
-  }
-})
+const mockStreamEndpoint = () => {
+  return ({
+    watch: jest.fn().mockReturnValue(new Observable<IMessage>()),
+  } as any) as RxStomp
+}

@@ -8,7 +8,7 @@ import { ApplicationDependencies } from 'apps/MainRoute/store/applicationService
 import { rfqRequestEpic, rfqReceivedEpic } from './rfqEpics'
 import { platformHasFeature } from 'rt-platforms'
 
-export default ({ platform }: ApplicationDependencies) => {
+const doCombine = ({ platform }: ApplicationDependencies) => {
   const epics = [
     spotTileEpic,
     rfqRequestEpic,
@@ -23,3 +23,5 @@ export default ({ platform }: ApplicationDependencies) => {
 
   return combineEpics(...epics)
 }
+
+export default doCombine

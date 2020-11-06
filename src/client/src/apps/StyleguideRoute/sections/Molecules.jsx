@@ -6,7 +6,7 @@ import SpotTilesGrid from '../components/SpotTilesGrid'
 export const layout = React.Fragment
 export const props = {}
 
-export default () => {
+const Molecules = () => {
   return (
     <React.Fragment>
       <SectionBlock colorScheme="secondary" py={0} pt={2} mh={0}>
@@ -22,3 +22,5 @@ export default () => {
     </React.Fragment>
   )
 }
+
+export default Molecules

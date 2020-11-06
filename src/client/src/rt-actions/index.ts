@@ -1,4 +1,5 @@
 export { ConnectionActions, CONNECTION_ACTION_TYPES } from './connectionActions'
+export type { ConnectionAction } from './connectionActions'
 export type { ConnectAction, DisconnectAction } from './connectionActions'
 export type { SetupAction } from './setupActions'
 export type { LayoutAction } from './layoutActions'
@@ -6,6 +7,7 @@ export type { WorkspaceAction } from './workspaceActions'
 export type { UserAction } from './userActions'
 
 export { ReferenceActions, REF_ACTION_TYPES } from './refDataActions'
+export type { ReferenceAction } from './refDataActions'
 export { SetupActions, SETUP_ACTION_TYPES } from './setupActions'
 export { WorkspaceActions, WORKSPACE_ACTION_TYPES } from './workspaceActions'
 export { LayoutActions, LAYOUT_ACTION_TYPES } from './layoutActions'

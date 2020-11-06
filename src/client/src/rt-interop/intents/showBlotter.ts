@@ -6,7 +6,7 @@ import { BlotterFilters, validateFilters } from 'apps/MainRoute/widgets/blotter/
 let openedWindow: PlatformWindow | undefined
 let updatedPosition: { x: number | undefined; y: number | undefined } = {
   x: undefined,
-  y: undefined
+  y: undefined,
 }
 
 const updatePosition = ({ left, top }: { left: number; top: number }) => {
@@ -33,7 +33,10 @@ async function openNewWindow(
   platform: Platform
 ): Promise<PlatformWindow | undefined> {
   const baseUrl = `/blotter`
-  const queryString = stringify(validateFilters(filters))
+  const validFilters = validateFilters(filters)
+  const queryString = stringify({
+    count: validFilters.count,
+  })
   const url = queryString ? `${baseUrl}/?${queryString}` : baseUrl
 
   return await platform.window.open(
@@ -42,7 +45,7 @@ async function openNewWindow(
       width: 1100,
       url,
       name: 'blotter',
-      ...updatedPosition
+      ...updatedPosition,
     },
     () => (openedWindow = undefined),
     updatePosition

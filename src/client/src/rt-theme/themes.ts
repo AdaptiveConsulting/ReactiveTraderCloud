@@ -138,20 +138,6 @@ const createTheme = (
       },
     },
 
-    primary: {
-      backgroundColor: accents.primary.base,
-      textColor: colors.static.white,
-
-      active: {
-        backgroundColor: accents.primary.darker,
-        textColor: colors.static.white,
-      },
-      disabled: {
-        backgroundColor: primary[1],
-        textColor: secondary.base,
-      },
-    },
-
     secondary: {
       backgroundColor: primary[1],
       textColor: secondary.base,

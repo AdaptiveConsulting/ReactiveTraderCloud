@@ -3,7 +3,7 @@ import { OpenFinLogoLink } from './styled'
 import { OpenFinLogo } from './assets/OpenFinLogo'
 import { OpenFinBrowserLink } from '../components'
 
-export default () => {
+const logo = () => {
   return (
     <div>
       <OpenFinLogoLink
@@ -16,3 +16,5 @@ export default () => {
     </div>
   )
 }
+
+export default logo
