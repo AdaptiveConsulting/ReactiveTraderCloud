@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import styled from 'styled-components/macro'
 
 export const Wrapper = styled.div`
@@ -6,7 +6,41 @@ export const Wrapper = styled.div`
   opacity: 0.59;
   font-size: 0.75rem;
 `
+export const Link = styled.a`
+  color: inherit;
+  text-decoration: inherit;
+`
 
-const FooterVersion: FC = () => <Wrapper>{process.env.REACT_APP_BUILD_VERSION}</Wrapper>
+const gitTagExists = async (gitTag: string | undefined) => {
+  const response = await fetch(
+    'https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/releases'
+  )
+  const data = await response.json()
+  const exists = data.find((element: any) => element.tag_name === gitTag)
+  return exists
+}
 
+const FooterVersion: FC = () => {
+  const [versionExists, setVersionExists] = useState<boolean | void>(false)
+  const currentVersion: string | undefined = process.env.REACT_APP_VERSION
+  const URL =
+    'https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/' +
+    process.env.REACT_APP_VERSION
+
+  useEffect(() => {
+    gitTagExists(currentVersion).then(resolution => setVersionExists(resolution))
+  }, [])
+
+  return (
+    <Wrapper>
+      {versionExists ? (
+        <Link target="_blank" href={URL}>
+          {currentVersion}
+        </Link>
+      ) : (
+        <p>{currentVersion}</p>
+      )}
+    </Wrapper>
+  )
+}
 export default FooterVersion
