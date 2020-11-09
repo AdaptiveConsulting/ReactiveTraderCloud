@@ -8,7 +8,7 @@ import styled, { StyledComponent, css, FlattenSimpleInterpolation } from 'styled
 
 const { primary, ...others } = colors.accents
 
-export default () => {
+const CoreBranding = () => {
   const { themeName } = useTheme()
 
   return (
@@ -92,6 +92,8 @@ export default () => {
     </React.Fragment>
   )
 }
+
+export default CoreBranding
 
 const Separator = styled.div`
   height: 2px;

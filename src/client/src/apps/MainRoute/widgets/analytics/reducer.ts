@@ -1,5 +1,5 @@
 import { CONNECTION_ACTION_TYPES, DisconnectAction } from 'rt-actions'
-import { ANALYTICS_ACTION_TYPES, AnalyticsActions } from './actions'
+import { ANALYTICS_ACTION_TYPES, AnalyticsAction } from './actions'
 import { CurrencyPairPosition, HistoricPosition } from './model'
 
 export interface AnalyticsState {
@@ -9,12 +9,12 @@ export interface AnalyticsState {
 
 const INITIAL_STATE: AnalyticsState = {
   currentPositions: [],
-  history: []
+  history: [],
 }
 
 export const analyticsReducer = (
   state: AnalyticsState = INITIAL_STATE,
-  action: AnalyticsActions | DisconnectAction
+  action: AnalyticsAction | DisconnectAction
 ): AnalyticsState => {
   switch (action.type) {
     case ANALYTICS_ACTION_TYPES.ANALYTICS_SERVICE:

@@ -62,7 +62,7 @@ const Separator = styled.hr`
   margin: 4rem 0;
 `
 
-export default () => (
+const SpotTilesGrid = () => (
   <>
     <H3>Trading Tiles - Horizontal</H3>
     <Grid>
@@ -396,3 +396,5 @@ export default () => (
     </Grid>
   </>
 )
+
+export default SpotTilesGrid

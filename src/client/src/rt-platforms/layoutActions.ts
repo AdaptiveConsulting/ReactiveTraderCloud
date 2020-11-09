@@ -18,4 +18,4 @@ export const LayoutActions = {
   >(LAYOUT_ACTION_TYPES.CONTAINER_VISIBILITY_UPDATE),
 }
 
-export type LayoutActions = ActionUnion<typeof LayoutActions>
+export type LayoutAction = ActionUnion<typeof LayoutActions>

@@ -4,7 +4,8 @@ import React, {
   KeyboardEventHandler,
   useCallback,
   useEffect,
-  useState
+  useMemo,
+  useState,
 } from 'react'
 import { DetectIntentResponse } from 'dialogflow'
 import throttle from 'lodash/throttle'
@@ -66,20 +67,22 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
       // eslint-disable-next-line
     }, [])
 
-    const throttledSendRequest = useCallback(
-      throttle((requestString: string) => sendRequest(requestString), 250, {
-        leading: false,
-        trailing: true
-      }),
-      []
+    const throttledSendRequest = useMemo(
+      () =>
+        throttle((requestString: string) => sendRequest(requestString), 250, {
+          leading: false,
+          trailing: true,
+        }),
+      [sendRequest]
     )
 
     // if not called again within 350ms, set isTyping to false
     const debouncedStopTyping = useCallback(
-      debounce(() => setIsTyping(false), 300, {
-        leading: false,
-        trailing: true
-      }),
+      () =>
+        debounce(() => setIsTyping(false), 300, {
+          leading: false,
+          trailing: true,
+        }),
       []
     )
 

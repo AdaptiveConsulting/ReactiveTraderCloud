@@ -6,20 +6,18 @@ import { AnalyticsActions } from '../actions'
 import { MockScheduler } from 'rt-testing'
 import { CurrencyPairPosition, CurrencyPairPositionWithPrice } from 'rt-types'
 import { GlobalState } from 'StoreTypes'
-import { ExcelApp } from 'rt-platforms'
-
-const MockExcelApp = jest.fn<ExcelApp, []>(() => ({
-  name: 'xxx',
-  isOpen: () => true,
-  open: () => Promise.resolve(),
-  publishPositions: jest.fn((data: any) => Promise.resolve()),
-  publishBlotter: jest.fn((data: any) => Promise.resolve()),
-}))
 
 describe('publishPositionToExcelEpic', () => {
   it('should ignore actions that are not FetchAnalytics', () => {
     const testScheduler = new MockScheduler()
-    const excelApp = new MockExcelApp()
+    const mockPublishPositions = jest.fn((data: any) => Promise.resolve())
+    const excelApp = {
+      name: 'xxx',
+      isOpen: () => true,
+      open: () => Promise.resolve(),
+      publishPositions: mockPublishPositions,
+      publishBlotter: jest.fn((data: any) => Promise.resolve()),
+    }
 
     const randomAction = 'random'
     const actionReference = {
@@ -41,13 +39,21 @@ describe('publishPositionToExcelEpic', () => {
       expectObservable(epics$).toBe(expectedAction)
       flush()
 
-      expect(excelApp.publishPositions).toHaveBeenCalledTimes(0)
+      expect(mockPublishPositions).toHaveBeenCalledTimes(0)
     })
   })
 
   it('should call platform publish on FetchAnalyticsAction with arguments publishUpdate and currentPositions', () => {
     const testScheduler = new MockScheduler()
-    const excelApp: ExcelApp = new MockExcelApp()
+    const mockPublishPositions = jest.fn((data: any) => Promise.resolve())
+    const excelApp = {
+      name: 'xxx',
+      isOpen: () => true,
+      open: () => Promise.resolve(),
+      publishPositions: mockPublishPositions,
+      publishBlotter: jest.fn((data: any) => Promise.resolve()),
+    }
+
     const currencyPairPos: CurrencyPairPosition = {
       symbol: 'AAPL',
       basePnl: 10,

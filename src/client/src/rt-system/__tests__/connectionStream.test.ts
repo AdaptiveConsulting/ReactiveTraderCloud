@@ -6,23 +6,21 @@ beforeEach(() => jest.clearAllMocks())
 describe('connectionStream$', () => {
   it('returns an observable object', () => {
     // arrange
-    const mockConnection = new MockWsConnection()
+    const mockConnection = jest.fn(
+      (): WsConnection => {
+        return {
+          config: { brokerURL: 'FAKE', reconnectDelay: 200 },
+          rpcEndpoint: {} as RxStompRPC,
+          streamEndpoint: new RxStomp(),
+        }
+      }
+    )
 
     // act
-    const connection = connectionStream$(mockConnection)
+    const connection = connectionStream$(mockConnection())
 
     // assert
     expect(connection).toBeDefined()
     expect(connection).toHaveProperty('subscribe')
   })
 })
-
-const MockWsConnection = jest.fn(
-  (): WsConnection => {
-    return {
-      config: { brokerURL: 'FAKE', reconnectDelay: 200 },
-      rpcEndpoint: {} as RxStompRPC,
-      streamEndpoint: new RxStomp()
-    }
-  }
-)

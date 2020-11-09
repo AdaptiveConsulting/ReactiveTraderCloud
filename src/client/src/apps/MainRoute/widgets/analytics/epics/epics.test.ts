@@ -11,7 +11,7 @@ import { GlobalState } from '../../../../../StoreTypes'
 
 const position = {
   CurrentPositions: [] as any[],
-  History: [] as any[]
+  History: [] as any[],
 }
 const serviceType = '@ReactiveTraderCloud/ANALYTICS_SERVICE'
 
@@ -29,17 +29,15 @@ describe('Analytics epics', () => {
     const actionsReference = {
       r: referenceAction,
       s: subscribeAction,
-      a: position
+      a: position,
     }
-    const createStreamOperation$ = jest.fn((s: string, o: string, r: any) => of(position))
+    const createStreamOperation = jest.fn((s: string, o: string, r: any) => of(position))
 
     testScheduler.run(({ cold, expectObservable }) => {
       const actionlifteTime = '-a-a-(rs)a--'
       const expecteLifetime = '-----a--'
 
-      const serviceClient: ServiceClient = new MockServiceClient(
-        createStreamOperation$
-      ) as ServiceClient
+      const serviceClient = ({ createStreamOperation } as any) as ServiceClient
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
@@ -62,19 +60,16 @@ describe('Analytics epics', () => {
       r: referenceAction,
       s: subscribeAction,
       d: disconnectAction,
-      a: position
+      a: position,
     }
-    const createStreamOperation$ = jest.fn((s: string, o: string, r: any) => of(position))
+    const createStreamOperation = jest.fn((s: string, o: string, r: any) => of(position))
 
     testScheduler.run(({ cold, expectObservable }) => {
       const actionlifteTime = '(rs)-a-d-aa-'
       const expecteLifetime = 'a-----'
 
       const coldAction$ = cold<Action<any>>(actionlifteTime, actionsReference)
-
-      const serviceClient: ServiceClient = (new MockServiceClient(
-        createStreamOperation$
-      ) as any) as ServiceClient
+      const serviceClient = ({ createStreamOperation } as any) as ServiceClient
 
       const action$ = ActionsObservable.from(coldAction$, testScheduler)
       const state$ = {} as StateObservable<GlobalState>
@@ -86,12 +81,3 @@ describe('Analytics epics', () => {
     })
   })
 })
-
-const implementation = (
-  getResponses: (service: string, operationName: string, request: any) => Observable<any>
-) => ({
-  createStreamOperation: (s: string, o: string, r: any) => getResponses(s, o, r)
-})
-const MockServiceClient = jest.fn<Partial<ServiceClient>, Parameters<typeof implementation>>(
-  implementation
-)

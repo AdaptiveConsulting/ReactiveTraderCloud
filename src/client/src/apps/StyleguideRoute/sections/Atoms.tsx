@@ -15,7 +15,7 @@ import ListItemGrid from '../components/ListItemGrid'
 export const layout = React.Fragment
 export const props = {}
 
-export default () => {
+const Atoms = () => {
   return (
     <React.Fragment>
       <SectionBlock py={0} pt={2} mh={0}>
@@ -58,6 +58,8 @@ export default () => {
     </React.Fragment>
   )
 }
+
+export default Atoms
 
 const AtomsContainer = styled.div`
   display: grid;

@@ -3,8 +3,10 @@ import { analyticsServiceEpic } from './epics'
 import { ApplicationDependencies } from 'apps/MainRoute/store/applicationServices'
 import { publishPositionToExcelEpic } from './analyticsServiceEpic'
 
-export default ({ platform }: ApplicationDependencies) => {
+const combine = ({ platform }: ApplicationDependencies) => {
   const epics = [analyticsServiceEpic, publishPositionToExcelEpic]
 
   return combineEpics(...epics)
 }
+
+export default combine

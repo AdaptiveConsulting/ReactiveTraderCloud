@@ -1,30 +1,32 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Root, Button } from '../../../apps/MainRoute/widgets/status-connection/styled'
 import { MailIcon } from 'rt-components'
-import { createOpenFinPopup, Offset, showOpenFinPopup } from './utils';
-import { ContactUsPopupContent } from 'apps/MainRoute/widgets/contact-us/ContactUsButton';
-import { Background } from './OpenFinStatusConnection/styled';
+import { createOpenFinPopup, showOpenFinPopup } from './utils'
+import { ContactUsPopupContent } from 'apps/MainRoute/widgets/contact-us/ContactUsButton'
+import { Background } from './OpenFinStatusConnection/styled'
 
-export const OpenFinContactDisplay = () =>
+export const OpenFinContactDisplay = () => (
   <Background>
     <ContactUsPopupContent logoSize={2} />
   </Background>
+)
 
 const OpenFinContactButton: React.FC = () => {
-  const [showing, setShowing] = React.useState(false);
+  const [showing, setShowing] = React.useState(false)
 
-  const baseWin = { name: 'openfin-contact-popup', height: 445, width: 245 }
-  const offset: Offset = [130, 40]
-  const URL = '/contact';
+  const baseWin = useMemo(() => ({ name: 'openfin-contact-popup', height: 445, width: 245 }), [])
+  const URL = '/contact'
 
   const showPopup = useCallback(() => {
     if (!showing) {
       setShowing(true)
-      showOpenFinPopup(baseWin, offset)
+      showOpenFinPopup(baseWin, [130, 40])
     }
-  }, [baseWin, offset, showing])
+  }, [baseWin, showing])
 
-  React.useEffect(() => { createOpenFinPopup(baseWin, URL, () => setShowing(false)) }, [baseWin]);
+  React.useEffect(() => {
+    createOpenFinPopup(baseWin, URL, () => setShowing(false))
+  }, [baseWin])
 
   return (
     <Root>

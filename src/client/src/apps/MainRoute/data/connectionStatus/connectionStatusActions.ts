@@ -12,4 +12,4 @@ export const ConnectionStatusActions = {
   >(CONNECTION_STATUS_ACTION_TYPES.CONNECTION_STATUS_UPDATE),
 }
 
-export type ConnectionStatusActions = ActionUnion<typeof ConnectionStatusActions>
+export type ConnectionStatusAction = ActionUnion<typeof ConnectionStatusActions>
