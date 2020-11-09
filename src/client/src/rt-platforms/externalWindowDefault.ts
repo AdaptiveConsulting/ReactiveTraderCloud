@@ -8,7 +8,7 @@ export interface ExternalWindow {
 const blotterRegion: ExternalWindow = {
   title: 'Blotter',
   config: {
-    name: 'blotter_ext',
+    name: 'blotter',
     width: 850,
     height: 450,
     minWidth: 300,
@@ -20,7 +20,7 @@ const blotterRegion: ExternalWindow = {
 const analyticsRegion: ExternalWindow = {
   title: 'Analytics',
   config: {
-    name: 'analytics_ext',
+    name: 'analytics',
     width: 352, // 332 content + 10 padding
     height: 800,
     minWidth: 360,
@@ -32,7 +32,7 @@ const analyticsRegion: ExternalWindow = {
 const liveRatesRegion: ExternalWindow = {
   title: 'LiveRates',
   config: {
-    name: 'LiveRates_ext',
+    name: 'LiveRates',
     width: 664,
     height: 617,
     minWidth: 664,
