@@ -20,9 +20,11 @@ self.addEventListener('notificationclick', e => {
       type: 'window',
     }).then((clients) => {
       if (clients && clients.length) {
-        clients[0].postMessage({
-          type: "highlight-trade",
-          payload: tradeNotification
+        clients.forEach(client => {
+          client.postMessage({
+            type: "highlight-trade",
+            payload: tradeNotification
+          })
         });
       }
     });

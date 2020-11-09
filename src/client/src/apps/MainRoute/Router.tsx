@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { RouteWrapper } from 'rt-components'
 import { OpenFinWindowFrame, OpenFinSubWindowFrame } from 'rt-platforms/openfin-platform/components'
@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Trade } from 'rt-types'
 import { GlobalState } from 'StoreTypes'
 import { OpenFinContactDisplay } from 'rt-platforms/openfin-platform/components/OpenFinContactButton'
+import { BlotterActions } from './widgets/blotter/actions'
+
+const { highlightTradeAction } = BlotterActions
 
 export const Router: FC = () => {
   const dispatch = useDispatch()
@@ -19,13 +22,26 @@ export const Router: FC = () => {
 
   const trades = useSelector((state: GlobalState) => state.blotterService.trades)
 
-  navigator.serviceWorker.addEventListener('message', (event) => {
+  const serviceWorkerMessageHandler = (event: MessageEvent) => {
     if (event.data && event.data.type === 'highlight-trade') {
       const tradeNotification = event.data.payload
       const trade = trades[parseInt(tradeNotification.tradeId)]
-      trade && dispatch({ type: '@ReactiveTraderCloud/BLOTTER_SERVICE_HIGHLIGHT_TRADE', payload: { trades: [switchHighlight(trade as Trade, true)] } })
+      trade && dispatch(highlightTradeAction({ trades: [switchHighlight(trade as Trade, true)] }))
     }
-  });
+  }
+
+  useEffect(() => {
+    if (!navigator.serviceWorker) {
+      return
+    }
+
+    navigator.serviceWorker.addEventListener('message', serviceWorkerMessageHandler)
+
+    return () => {
+      navigator.serviceWorker.removeEventListener('message', serviceWorkerMessageHandler)
+    }
+    // eslint-disable-next-line
+  }, [trades])
 
   return (
     <Switch>
@@ -79,4 +95,3 @@ export const Router: FC = () => {
     </Switch>
   )
 }
-
