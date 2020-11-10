@@ -46,7 +46,7 @@ export type Platform = Partial<PlatformFeatures> & {
 
   readonly PlatformFooter: React.FC<any>
 
-  readonly PlatformRoute: React.FC
+  readonly PlatformRoute: React.FC<{ title?: string }>
 }
 
 /**

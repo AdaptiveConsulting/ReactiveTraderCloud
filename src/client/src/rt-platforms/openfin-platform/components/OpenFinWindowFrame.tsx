@@ -23,6 +23,10 @@ const OpenFinFrameRoot = styled.div`
     padding: 0;
   }
 
+  .wrapper_title {
+    color: ${({ theme }) => theme.core.textColor};
+  }
+
   .lm_tabs {
     background-color: ${({ theme }) => theme.core.lightBackground};
     border-radius: 0px;
