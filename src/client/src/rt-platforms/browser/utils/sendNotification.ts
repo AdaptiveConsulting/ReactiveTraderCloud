@@ -16,15 +16,17 @@ navigator.serviceWorker &&
 
 export const sendNotification = ({ tradeNotification }: NotificationMessage) => {
   const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
-  const title = `Trade ${status}: ${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${tradeNotification.notional}`
-  const body = `vs. ${tradeNotification.termsCurrency} \nRate ${tradeNotification.spotRate}    Trade ID ${tradeNotification.tradeId}`
+  const title = `Trade ${status}: ID ${tradeNotification.tradeId}`
+  const body = `${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${tradeNotification.notional} vs ${tradeNotification.termsCurrency} @ ${tradeNotification.spotRate}`
+  const icon =
+    navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('Win') !== -1
+      ? './static/media/reactive-trader-icon-no-bkgd-256x256.png'
+      : './static/media/reactive-trader-icon-dark-256x256.png' // MacOS & Firefox notifications have white backgrounds, so use dark backgrounded icon
 
   const options: NotificationOptions = {
     body: body,
-    icon: './static/media/reactive-trader.ico',
+    icon: icon,
     dir: 'ltr',
-    requireInteraction: true,
-    actions: [{ action: 'highlight-trade', title: 'Highlight in blotter' }],
     data: tradeNotification,
   }
 
