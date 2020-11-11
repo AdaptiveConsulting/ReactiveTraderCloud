@@ -4,13 +4,22 @@ import { Action } from 'redux'
 import { ofType } from 'redux-observable'
 import { applicationConnected, applicationDisconnected } from 'rt-actions'
 import { CurrencyPair, CurrencyPairMap, Trade, Trades, TradeStatus } from 'rt-types'
-import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { filter, ignoreElements, map, skipWhile, switchMapTo, takeUntil, tap, delay } from 'rxjs/operators'
 
 import { ApplicationEpic } from 'StoreTypes'
 import { BLOTTER_ACTION_TYPES, BlotterActions } from '../actions'
 import { interval } from 'rxjs'
 
 type NewTradesAction = ReturnType<typeof BlotterActions.createNewTradesAction>
+const { highlightTradeAction, removeHighlightTradeAction } = BlotterActions
+type HighlightTradeAction = ReturnType<typeof highlightTradeAction>
+
+const TRADE_HIGHLIGHT_TIME_IN_MS = 3000
+
+const switchHighlight = (trade: Trade, on: boolean) => ({
+  ...trade,
+  highlight: on,
+})
 
 const formatTradeNotification = (trade: Trade, currencyPair: CurrencyPair) => ({
   symbol: trade.symbol,
@@ -82,3 +91,15 @@ export const requestBrowserNotificationPermission: ApplicationEpic = (
     }),
     ignoreElements()
   )
+
+  export const removeHighlightTradeEpic: ApplicationEpic = (action$, state$, { platform }) => {
+    return action$.pipe(
+      ofType<Action, HighlightTradeAction>(BLOTTER_ACTION_TYPES.BLOTTER_SERVICE_HIGHLIGHT_TRADE),
+      delay(TRADE_HIGHLIGHT_TIME_IN_MS),
+      map(({ payload }) => {
+        const trade = switchHighlight(payload.trades[0], false)
+        return removeHighlightTradeAction({ trades: [trade] })
+      }),
+      takeUntil(action$.pipe(applicationDisconnected))
+    )
+  }

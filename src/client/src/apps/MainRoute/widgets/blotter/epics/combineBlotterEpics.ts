@@ -4,6 +4,7 @@ import {
   connectBlotterToNotifications,
   publishBlotterToExcelEpic,
   requestBrowserNotificationPermission,
+  removeHighlightTradeEpic
 } from './blotterServiceEpic'
 import { ApplicationDependencies } from 'apps/MainRoute/store/applicationServices'
 import { blotterHighlightEpic } from './blotterHighlightEpic'
@@ -15,6 +16,7 @@ const doCombine = ({ platform }: ApplicationDependencies) => {
     connectBlotterToNotifications,
     requestBrowserNotificationPermission,
     publishBlotterToExcelEpic,
+    removeHighlightTradeEpic
   ]
 
   if (platformHasFeature(platform, 'interop')) {

@@ -8,18 +8,33 @@ export interface NotificationMessage {
   tradeNotification: Trade
 }
 
+let registration: ServiceWorkerRegistration
+navigator.serviceWorker &&
+  navigator.serviceWorker.ready.then(reg => {
+    registration = reg
+  })
+
 export const sendNotification = ({ tradeNotification }: NotificationMessage) => {
   const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
-  const title = `Trade ${status}: ${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${tradeNotification.notional}`
-  const body = `vs. ${tradeNotification.termsCurrency} \nRate ${tradeNotification.spotRate}    Trade ID ${tradeNotification.tradeId}`
+  const title = `Trade ${status}: ID ${tradeNotification.tradeId}`
+  const body = `${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${tradeNotification.notional} vs ${tradeNotification.termsCurrency} @ ${tradeNotification.spotRate}`
+  const icon =
+    navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('Win') !== -1
+      ? './static/media/reactive-trader-icon-no-bkgd-256x256.png'
+      : './static/media/reactive-trader-icon-dark-256x256.png' // MacOS & Firefox notifications have white backgrounds, so use dark backgrounded icon
 
-  const options = {
-    body,
-    icon: './static/media/adaptive-logo-without-background.png',
+  const options: NotificationOptions = {
+    body: body,
+    icon: icon,
     dir: 'ltr',
+    data: tradeNotification,
   }
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  // @ts-ignore
-  const notification = new Notification(title, options)
+  if (registration) {
+    registration.showNotification(title, options)
+  } else {
+    delete options.actions
+    // eslint-disable-next-line
+    const notification = new Notification(title, options)
+  }
 }
