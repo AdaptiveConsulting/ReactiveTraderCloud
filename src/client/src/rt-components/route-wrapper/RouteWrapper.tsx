@@ -19,18 +19,15 @@ const RouteStyle = styled('div')<{ platform: Platform }>`
 `
 
 type WindowRole = 'main' | 'sub'
-interface SymbolParamObject {
-  symbol: string
-}
 
 interface RouteWrapperProps {
   children: ReactNode
   windowType?: WindowRole
-  title?: string | SymbolParamObject
+  title?: string
 }
 
 const RouteWrapper: React.FC<RouteWrapperProps> = props => {
-  const { children, windowType = 'main' } = props
+  const { children, windowType = 'main', title } = props
   const platform = usePlatform()
   const theme = useTheme()
 
@@ -50,7 +47,7 @@ const RouteWrapper: React.FC<RouteWrapperProps> = props => {
 
   return (
     <RouteStyle platform={platform}>
-      <PlatformRoute>
+      <PlatformRoute title={title}>
         {React.cloneElement(children as React.ReactElement, {
           header: Header ? <Header {...window} /> : null,
           footer: Footer ? <Footer /> : null,

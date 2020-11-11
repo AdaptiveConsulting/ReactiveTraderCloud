@@ -41,7 +41,10 @@ const getEmptyContent = (key: string, useIcon: boolean = true) => {
   return key
 }
 
-export const OpenFinChrome: FC = ({ children }) => {
+interface Props {
+  title?: string
+}
+export const OpenFinChrome: FC<Props> = ({ children, title }) => {
   //TODO: Remove this HACK once OpenFin exposes content of "empty" layout containers...
   useEffect(() => {
     //@ts-ignore
@@ -110,7 +113,7 @@ export const OpenFinChrome: FC = ({ children }) => {
 
   return (
     <>
-      <Helmet>
+      <Helmet title={title}>
         <style type="text/css">{`
         :root,
         body,
