@@ -1,0 +1,3638 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot, state derived from props, DISCONNECTED 1`] = `
+.c25 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c24 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c27 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  caret-color: #282e39;
+  opacity: 0.3;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
+}
+
+.spot-tile:hover .c26:focus,
+.c27:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
+.c11 {
+  background-color: #2f3542;
+  border-radius: 3px;
+  color: inherit;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
+  margin-bottom: 2px;
+  cursor: initial;
+  pointer-events: none;
+}
+
+.c14 {
+  padding: 0;
+  margin: 0;
+}
+
+.c15 {
+  opacity: 0.59;
+  margin: 0 0 0.125rem 0;
+  font-size: 0.625rem;
+  color: #f9f9f9;
+}
+
+.c16 {
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c17 {
+  font-size: 2.125rem;
+  line-height: 2.5rem;
+  margin: 0 0.125rem;
+}
+
+.c18 {
+  margin: 0.125rem 0;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.c12 {
+  height: 2.1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  opacity: 0.3;
+}
+
+.c13 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c20 {
+  text-align: center;
+  color: #01c38d;
+  visibility: hidden;
+}
+
+.c22 {
+  text-align: center;
+  color: #ff274b;
+  visibility: visible;
+}
+
+.c21 {
+  font-size: 11px;
+  opacity: 0.59;
+}
+
+.c19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  z-index: 1;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: 15px;
+  position: relative;
+}
+
+.c8 {
+  color: #fff;
+  font-size: 0.625rem;
+  line-height: 1rem;
+  opacity: 0.59;
+  margin-left: auto;
+  -webkit-transition: margin-right 0.2s;
+  transition: margin-right 0.2s;
+}
+
+.c6 {
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c3 {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
+.RouteStyle-sc-9r1isi-0 .c2 {
+  border-radius: 0px;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 {
+  position: relative;
+  color: #fff;
+}
+
+.c0:hover .TopRightButton-sc-1v3ye6r-0 {
+  opacity: 0.75;
+}
+
+.c0:hover .c7 {
+  margin-right: 1.3rem;
+}
+
+.c0:hover .ActionButton-sc-1dxc2d7-0 {
+  opacity: 0.75;
+}
+
+.c1 {
+  position: relative;
+  min-height: 11rem;
+  height: 100%;
+}
+
+.c4 {
+  background-color: #2f3542;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.c4:hover {
+  background-color: #3d4455;
+  box-shadow: none;
+}
+
+.c23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+<div
+  className="c0 c1"
+>
+  <div
+    className="c2 c3 c4 spot-tile"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6"
+          data-qa="tile-header__tile-symbol"
+        >
+          EUR/USD
+        </div>
+        <div
+          className="c7 c8"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
+        </div>
+      </div>
+      <div
+        className="c9"
+      >
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={true}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                SELL
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+        <div
+          className="c19"
+        >
+          <i
+            aria-hidden="true"
+            className="c20 fas fa-caret-up"
+            color="positive"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="c21"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="c22 fas fa-caret-down"
+            color="negative"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={true}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                BUY
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c23"
+      >
+        <div
+          className="c24"
+        >
+          <span
+            className="c25"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="c26 c27"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={true}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, RFQ canRequest 1`] = `
+.c28 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c27 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c30 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
+}
+
+.spot-tile:hover .c29:focus,
+.c30:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
+.c11 {
+  background-color: #2f3542;
+  border-radius: 3px;
+  color: inherit;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
+  margin-bottom: 2px;
+  cursor: initial;
+  pointer-events: none;
+}
+
+.c14 {
+  padding: 0;
+  margin: 0;
+}
+
+.c15 {
+  opacity: 0.59;
+  margin: 0 0 0.125rem 0;
+  font-size: 0.625rem;
+  color: #f9f9f9;
+}
+
+.c16 {
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c17 {
+  font-size: 2.125rem;
+  line-height: 2.5rem;
+  margin: 0 0.125rem;
+}
+
+.c18 {
+  margin: 0.125rem 0;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.c12 {
+  height: 2.1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  opacity: 0.3;
+}
+
+.c13 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c20 {
+  text-align: center;
+  color: #686d74;
+  visibility: hidden;
+}
+
+.c22 {
+  text-align: center;
+  color: #686d74;
+  visibility: visible;
+}
+
+.c21 {
+  font-size: 11px;
+  opacity: 0.59;
+}
+
+.c19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  z-index: 1;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: 15px;
+  position: relative;
+}
+
+.c23 {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+  z-index: 2;
+}
+
+.c24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 9px;
+  padding-right: 10px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  position: absolute;
+  border-radius: 3px;
+  background: #5f94f5;
+  pointer-events: auto;
+  width: 58px;
+  cursor: pointer;
+}
+
+.c24 rect {
+  fill: #fff;
+}
+
+.c25 {
+  color: #fff;
+  font-size: 0.6875rem;
+}
+
+.c8 {
+  color: #fff;
+  font-size: 0.625rem;
+  line-height: 1rem;
+  opacity: 0.59;
+  margin-left: auto;
+  -webkit-transition: margin-right 0.2s;
+  transition: margin-right 0.2s;
+}
+
+.c6 {
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c3 {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
+.RouteStyle-sc-9r1isi-0 .c2 {
+  border-radius: 0px;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 {
+  position: relative;
+  color: #fff;
+}
+
+.c0:hover .TopRightButton-sc-1v3ye6r-0 {
+  opacity: 0.75;
+}
+
+.c0:hover .c7 {
+  margin-right: 1.3rem;
+}
+
+.c0:hover .ActionButton-sc-1dxc2d7-0 {
+  opacity: 0.75;
+}
+
+.c1 {
+  position: relative;
+  min-height: 11rem;
+  height: 100%;
+}
+
+.c4 {
+  background-color: #2f3542;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.c4:hover {
+  background-color: #3d4455;
+  box-shadow: none;
+}
+
+.c26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+@media (min-width:321px) {
+  .c24 {
+    width: 60px;
+  }
+}
+
+@media (min-width:401px) {
+  .c24 {
+    width: 64px;
+  }
+}
+
+<div
+  className="c0 c1"
+>
+  <div
+    className="c2 c3 c4 spot-tile"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6"
+          data-qa="tile-header__tile-symbol"
+        >
+          EUR/USD
+        </div>
+        <div
+          className="c7 c8"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
+        </div>
+      </div>
+      <div
+        className="c9"
+      >
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={true}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                SELL
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+        <div
+          className="c19"
+        >
+          <i
+            aria-hidden="true"
+            className="c20 fas fa-caret-up"
+            color="none"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="c21"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="c22 fas fa-caret-down"
+            color="none"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <div
+          className="c23"
+          style={
+            Object {
+              "opacity": 0,
+            }
+          }
+        >
+          <div
+            className="c24"
+            color="primary"
+            data-qa="tile-booking__booking-pill"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="c25"
+              data-qa="tile-booking__booking-status"
+            >
+              Initiate RFQ
+            </span>
+          </div>
+        </div>
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={true}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                BUY
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c26"
+      >
+        <div
+          className="c27"
+        >
+          <span
+            className="c28"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="c29 c30"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, RFQ expired 1`] = `
+.c29 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c28 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c31 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
+}
+
+.spot-tile:hover .c30:focus,
+.c31:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
+.c11 {
+  background-color: #2f3542;
+  border-radius: 3px;
+  color: inherit;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.6rem 1.5rem 0.4rem 1.5rem;
+  margin-bottom: 2px;
+  cursor: initial;
+  pointer-events: none;
+}
+
+.c14 {
+  padding: 0;
+  margin: 0;
+}
+
+.c15 {
+  opacity: 0.59;
+  margin: 0 0 0.125rem 0;
+  font-size: 0.625rem;
+  color: #f9f9f9;
+}
+
+.c16 {
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c17 {
+  font-size: 2.125rem;
+  line-height: 2.5rem;
+  margin: 0 0.125rem;
+}
+
+.c18 {
+  margin: 0.125rem 0;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.c12 {
+  height: 2.1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  opacity: 0.3;
+}
+
+.c13 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c19 {
+  color: #ff274b;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.c21 {
+  text-align: center;
+  color: #01c38d;
+  visibility: hidden;
+}
+
+.c23 {
+  text-align: center;
+  color: #ff274b;
+  visibility: hidden;
+}
+
+.c22 {
+  font-size: 11px;
+  opacity: 0.59;
+}
+
+.c20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  z-index: 1;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: 15px;
+  position: relative;
+}
+
+.c24 {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+  z-index: 2;
+}
+
+.c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 9px;
+  padding-right: 10px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  position: absolute;
+  border-radius: 3px;
+  background: #5f94f5;
+  pointer-events: auto;
+  width: 58px;
+  cursor: pointer;
+}
+
+.c25 rect {
+  fill: #fff;
+}
+
+.c26 {
+  color: #fff;
+  font-size: 0.6875rem;
+}
+
+.c8 {
+  color: #fff;
+  font-size: 0.625rem;
+  line-height: 1rem;
+  opacity: 0.59;
+  margin-left: auto;
+  -webkit-transition: margin-right 0.2s;
+  transition: margin-right 0.2s;
+}
+
+.c6 {
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c3 {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
+.RouteStyle-sc-9r1isi-0 .c2 {
+  border-radius: 0px;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 {
+  position: relative;
+  color: #fff;
+}
+
+.c0:hover .TopRightButton-sc-1v3ye6r-0 {
+  opacity: 0.75;
+}
+
+.c0:hover .c7 {
+  margin-right: 1.3rem;
+}
+
+.c0:hover .ActionButton-sc-1dxc2d7-0 {
+  opacity: 0.75;
+}
+
+.c1 {
+  position: relative;
+  min-height: 11rem;
+  height: 100%;
+}
+
+.c4 {
+  background-color: #2f3542;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.c4:hover {
+  background-color: #3d4455;
+  box-shadow: none;
+}
+
+.c27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+@media (min-width:321px) {
+  .c25 {
+    width: 60px;
+  }
+}
+
+@media (min-width:401px) {
+  .c25 {
+    width: 64px;
+  }
+}
+
+<div
+  className="c0 c1"
+>
+  <div
+    className="c2 c3 c4 spot-tile"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6"
+          data-qa="tile-header__tile-symbol"
+        >
+          EUR/USD
+        </div>
+        <div
+          className="c7 c8"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
+        </div>
+      </div>
+      <div
+        className="c9"
+      >
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={true}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                SELL
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+          <div
+            className="c19"
+            data-qa="price-button__expired"
+          >
+            Expired
+          </div>
+        </button>
+        <div
+          className="c20"
+        >
+          <i
+            aria-hidden="true"
+            className="c21 fas fa-caret-up"
+            color="positive"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="c22"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="c23 fas fa-caret-down"
+            color="negative"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <div
+          className="c24"
+          style={
+            Object {
+              "opacity": 0,
+            }
+          }
+        >
+          <div
+            className="c25"
+            color="primary"
+            data-qa="tile-booking__booking-pill"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="c26"
+              data-qa="tile-booking__booking-status"
+            >
+              Requote
+            </span>
+          </div>
+        </div>
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={true}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                BUY
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+          <div
+            className="c19"
+            data-qa="price-button__expired"
+          >
+            Expired
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c27"
+      >
+        <div
+          className="c28"
+        >
+          <span
+            className="c29"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="c30 c31"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, RFQ received 1`] = `
+.c26 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c25 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c28 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  caret-color: #282e39;
+  opacity: 0.3;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
+}
+
+.spot-tile:hover .c27:focus,
+.c28:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
+.c11 {
+  background-color: #2f3542;
+  border-radius: 3px;
+  color: #ff274b;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
+  margin-bottom: 2px;
+  -webkit-animation: dnMAbE 5s;
+  animation: dnMAbE 5s;
+}
+
+.c11:hover {
+  background-color: #ff274b !important;
+  color: #fff;
+}
+
+.c23 {
+  background-color: #2f3542;
+  border-radius: 3px;
+  color: #2d95ff;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
+  margin-bottom: 2px;
+  -webkit-animation: dQmnms 5s;
+  animation: dQmnms 5s;
+}
+
+.c23:hover {
+  background-color: #2d95ff !important;
+  color: #fff;
+}
+
+.c14 {
+  padding: 0;
+  margin: 0;
+}
+
+.c15 {
+  opacity: 0.59;
+  margin: 0 0 0.125rem 0;
+  font-size: 0.625rem;
+  color: #fff;
+}
+
+.c16 {
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c17 {
+  font-size: 2.125rem;
+  line-height: 2.5rem;
+  margin: 0 0.125rem;
+}
+
+.c18 {
+  margin: 0.125rem 0;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.c12 {
+  height: 2.1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c13 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c20 {
+  text-align: center;
+  color: #01c38d;
+  visibility: hidden;
+}
+
+.c22 {
+  text-align: center;
+  color: #ff274b;
+  visibility: hidden;
+}
+
+.c21 {
+  font-size: 11px;
+  opacity: 0.59;
+}
+
+.c19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  z-index: 1;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: 15px;
+  position: relative;
+}
+
+.c8 {
+  color: #fff;
+  font-size: 0.625rem;
+  line-height: 1rem;
+  opacity: 0.59;
+  margin-left: auto;
+  -webkit-transition: margin-right 0.2s;
+  transition: margin-right 0.2s;
+}
+
+.c6 {
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c3 {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
+.RouteStyle-sc-9r1isi-0 .c2 {
+  border-radius: 0px;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 {
+  position: relative;
+  color: #fff;
+}
+
+.c0:hover .TopRightButton-sc-1v3ye6r-0 {
+  opacity: 0.75;
+}
+
+.c0:hover .c7 {
+  margin-right: 1.3rem;
+}
+
+.c0:hover .ActionButton-sc-1dxc2d7-0 {
+  opacity: 0.75;
+}
+
+.c1 {
+  position: relative;
+  min-height: 11rem;
+  height: 100%;
+}
+
+.c4 {
+  background-color: #2f3542;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.c4:hover {
+  background-color: #3d4455;
+  box-shadow: none;
+}
+
+.c24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+<div
+  className="c0 c1"
+>
+  <div
+    className="c2 c3 c4 spot-tile"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6"
+          data-qa="tile-header__tile-symbol"
+        >
+          EUR/USD
+        </div>
+        <div
+          className="c7 c8"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
+        </div>
+      </div>
+      <div
+        className="c9"
+      >
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={false}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={false}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                SELL
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+        <div
+          className="c19"
+        >
+          <i
+            aria-hidden="true"
+            className="c20 fas fa-caret-up"
+            color="positive"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="c21"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="c22 fas fa-caret-down"
+            color="negative"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <button
+          className="c10 c23"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={false}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={false}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                BUY
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c24"
+      >
+        <div
+          className="c25"
+        >
+          <span
+            className="c26"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="c27 c28"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={true}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, RFQ requested 1`] = `
+.c25 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c24 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c27 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  caret-color: #282e39;
+  opacity: 0.3;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
+}
+
+.spot-tile:hover .c26:focus,
+.c27:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
+.c17 {
+  text-align: center;
+  color: #686d74;
+  visibility: hidden;
+}
+
+.c19 {
+  text-align: center;
+  color: #686d74;
+  visibility: visible;
+}
+
+.c18 {
+  font-size: 11px;
+  opacity: 0.59;
+}
+
+.c16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  z-index: 1;
+}
+
+.c12 {
+  -webkit-animation: jxicLy 0.8s infinite;
+  animation: jxicLy 0.8s infinite;
+  -webkit-animation-delay: -0.48s;
+  animation-delay: -0.48s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c13 {
+  -webkit-animation: jxicLy 0.8s infinite;
+  animation: jxicLy 0.8s infinite;
+  -webkit-animation-delay: -0.3261538461538461s;
+  animation-delay: -0.3261538461538461s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c14 {
+  -webkit-animation: jxicLy 0.8s infinite;
+  animation: jxicLy 0.8s infinite;
+  -webkit-animation-delay: -0.17230769230769227s;
+  animation-delay: -0.17230769230769227s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c15 {
+  -webkit-animation: jxicLy 0.8s infinite;
+  animation: jxicLy 0.8s infinite;
+  -webkit-animation-delay: -0.018461538461538418s;
+  animation-delay: -0.018461538461538418s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: 15px;
+  position: relative;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-flow: column;
+  -ms-flex-flow: column;
+  flex-flow: column;
+  border: 2px solid #282e39;
+  border-radius: 3px;
+  font-size: 10px;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  height: 58px;
+  min-height: 2rem;
+  max-height: 3.7rem;
+  margin-bottom: 1px;
+  min-width: 125px;
+  line-height: normal;
+  opacity: 0.5;
+  text-align: center;
+  text-transform: uppercase;
+  color: #7e8188;
+  font-weight: 400;
+}
+
+.c11 {
+  margin: 0 3px;
+}
+
+.c20 {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+  z-index: 2;
+}
+
+.c21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 9px;
+  padding-right: 10px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  position: absolute;
+  border-radius: 3px;
+  background: #5f94f5;
+  pointer-events: auto;
+  width: 58px;
+  cursor: pointer;
+}
+
+.c21 rect {
+  fill: #fff;
+}
+
+.c22 {
+  color: #fff;
+  font-size: 0.6875rem;
+}
+
+.c8 {
+  color: #fff;
+  font-size: 0.625rem;
+  line-height: 1rem;
+  opacity: 0.59;
+  margin-left: auto;
+  -webkit-transition: margin-right 0.2s;
+  transition: margin-right 0.2s;
+}
+
+.c6 {
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c3 {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.c3:hover .TradeButton-sc-14olucf-0 {
+  background-color: #282e39;
+}
+
+.RouteStyle-sc-9r1isi-0 .c2 {
+  border-radius: 0px;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 {
+  position: relative;
+  color: #fff;
+}
+
+.c0:hover .TopRightButton-sc-1v3ye6r-0 {
+  opacity: 0.75;
+}
+
+.c0:hover .c7 {
+  margin-right: 1.3rem;
+}
+
+.c0:hover .ActionButton-sc-1dxc2d7-0 {
+  opacity: 0.75;
+}
+
+.c1 {
+  position: relative;
+  min-height: 11rem;
+  height: 100%;
+}
+
+.c4 {
+  background-color: #2f3542;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.c4:hover {
+  background-color: #3d4455;
+  box-shadow: none;
+}
+
+.c23 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+@media (min-width:321px) {
+  .c21 {
+    width: 60px;
+  }
+}
+
+@media (min-width:401px) {
+  .c21 {
+    width: 64px;
+  }
+}
+
+<div
+  className="c0 c1"
+>
+  <div
+    className="c2 c3 c4 spot-tile"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6"
+          data-qa="tile-header__tile-symbol"
+        >
+          EUR/USD
+        </div>
+        <div
+          className="c7 c8"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
+        </div>
+      </div>
+      <div
+        className="c9"
+      >
+        <div
+          className="c10"
+          data-qa="price-controls__price-button-disabled--loading"
+        >
+          <div
+            className="c11"
+          >
+            <svg
+              data-qa="adaptive-loader__svg"
+              height={14}
+              width={14}
+            >
+              <rect
+                className="c12"
+                height={10.5}
+                order={0}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={0.25}
+              />
+              <rect
+                className="c13"
+                height={10.5}
+                order={1}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={3.875}
+              />
+              <rect
+                className="c14"
+                height={10.5}
+                order={2}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={7.5}
+              />
+              <rect
+                className="c15"
+                height={10.5}
+                order={3}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={11.125}
+              />
+            </svg>
+          </div>
+          Awaiting price
+        </div>
+        <div
+          className="c16"
+        >
+          <i
+            aria-hidden="true"
+            className="c17 fas fa-caret-up"
+            color="none"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="c18"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="c19 fas fa-caret-down"
+            color="none"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <div
+          className="c20"
+          style={
+            Object {
+              "opacity": 0,
+            }
+          }
+        >
+          <div
+            className="c21"
+            color="primary"
+            data-qa="tile-booking__booking-pill"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="c22"
+              data-qa="tile-booking__booking-status"
+            >
+              Cancel RFQ
+            </span>
+          </div>
+        </div>
+        <div
+          className="c10"
+          data-qa="price-controls__price-button-disabled--loading"
+        >
+          <div
+            className="c11"
+          >
+            <svg
+              data-qa="adaptive-loader__svg"
+              height={14}
+              width={14}
+            >
+              <rect
+                className="c12"
+                height={10.5}
+                order={0}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={0.25}
+              />
+              <rect
+                className="c13"
+                height={10.5}
+                order={1}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={3.875}
+              />
+              <rect
+                className="c14"
+                height={10.5}
+                order={2}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={7.5}
+              />
+              <rect
+                className="c15"
+                height={10.5}
+                order={3}
+                speed={0.8}
+                type="secondary"
+                width={2.625}
+                x={11.125}
+              />
+            </svg>
+          </div>
+          Awaiting price
+        </div>
+      </div>
+    </div>
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c23"
+      >
+        <div
+          className="c24"
+        >
+          <span
+            className="c25"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="c26 c27"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={true}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, defaults, RFQ none, should be able to excute 1`] = `
+.c26 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c25 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c28 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  caret-color: #282e39;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
+}
+
+.spot-tile:hover .c27:focus,
+.c28:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
+.c11 {
+  background-color: #2f3542;
+  border-radius: 3px;
+  color: inherit;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
+  margin-bottom: 2px;
+}
+
+.c11:hover {
+  background-color: #ff274b !important;
+  color: #fff;
+}
+
+.c23 {
+  background-color: #2f3542;
+  border-radius: 3px;
+  color: inherit;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
+  margin-bottom: 2px;
+}
+
+.c23:hover {
+  background-color: #2d95ff !important;
+  color: #fff;
+}
+
+.c14 {
+  padding: 0;
+  margin: 0;
+}
+
+.c15 {
+  opacity: 0.59;
+  margin: 0 0 0.125rem 0;
+  font-size: 0.625rem;
+  color: #f9f9f9;
+}
+
+.c16 {
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c17 {
+  font-size: 2.125rem;
+  line-height: 2.5rem;
+  margin: 0 0.125rem;
+}
+
+.c18 {
+  margin: 0.125rem 0;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.c12 {
+  height: 2.1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c13 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c20 {
+  text-align: center;
+  color: #01c38d;
+  visibility: hidden;
+}
+
+.c22 {
+  text-align: center;
+  color: #ff274b;
+  visibility: visible;
+}
+
+.c21 {
+  font-size: 11px;
+  opacity: 0.59;
+}
+
+.c19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  z-index: 1;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: 15px;
+  position: relative;
+}
+
+.c8 {
+  color: #fff;
+  font-size: 0.625rem;
+  line-height: 1rem;
+  opacity: 0.59;
+  margin-left: auto;
+  -webkit-transition: margin-right 0.2s;
+  transition: margin-right 0.2s;
+}
+
+.c6 {
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c3 {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
+.RouteStyle-sc-9r1isi-0 .c2 {
+  border-radius: 0px;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 {
+  position: relative;
+  color: #fff;
+}
+
+.c0:hover .TopRightButton-sc-1v3ye6r-0 {
+  opacity: 0.75;
+}
+
+.c0:hover .c7 {
+  margin-right: 1.3rem;
+}
+
+.c0:hover .ActionButton-sc-1dxc2d7-0 {
+  opacity: 0.75;
+}
+
+.c1 {
+  position: relative;
+  min-height: 11rem;
+  height: 100%;
+}
+
+.c4 {
+  background-color: #2f3542;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.c4:hover {
+  background-color: #3d4455;
+  box-shadow: none;
+}
+
+.c24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+<div
+  className="c0 c1"
+>
+  <div
+    className="c2 c3 c4 spot-tile"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6"
+          data-qa="tile-header__tile-symbol"
+        >
+          EUR/USD
+        </div>
+        <div
+          className="c7 c8"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
+        </div>
+      </div>
+      <div
+        className="c9"
+      >
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={false}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={false}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                SELL
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+        <div
+          className="c19"
+        >
+          <i
+            aria-hidden="true"
+            className="c20 fas fa-caret-up"
+            color="positive"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="c21"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="c22 fas fa-caret-down"
+            color="negative"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <button
+          className="c10 c23"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={false}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={false}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                BUY
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c24"
+      >
+        <div
+          className="c25"
+        >
+          <span
+            className="c26"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="c27 c28"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={false}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Snapshot, state derived from props, in trade 1`] = `
+.c33 {
+  grid-area: Currency;
+  opacity: 0.59;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+}
+
+.c32 {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'Currency Input ResetInputValue' '. Message .';
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-template-rows: 23px 0;
+}
+
+.c35 {
+  grid-area: Input;
+  background: none;
+  text-align: center;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  width: 80px;
+  padding: 2px 0;
+  caret-color: #282e39;
+  opacity: 0.3;
+  box-shadow: 0px 1px 0px rgba(255,255,255,0.41);
+}
+
+.spot-tile:hover .c34:focus,
+.c35:focus {
+  box-shadow: 0px 1px 0px #5f94f5;
+}
+
+.c11 {
+  background-color: #2f3542;
+  border-radius: 3px;
+  color: inherit;
+  -webkit-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  height: 59px;
+  min-width: 125px;
+  padding: 0.55rem 1.5rem 0.6rem 1.5rem;
+  margin-bottom: 2px;
+  cursor: initial;
+  pointer-events: none;
+}
+
+.c14 {
+  padding: 0;
+  margin: 0;
+}
+
+.c15 {
+  opacity: 0.59;
+  margin: 0 0 0.125rem 0;
+  font-size: 0.625rem;
+  color: #f9f9f9;
+}
+
+.c16 {
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c17 {
+  font-size: 2.125rem;
+  line-height: 2.5rem;
+  margin: 0 0.125rem;
+}
+
+.c18 {
+  margin: 0.125rem 0;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+}
+
+.c12 {
+  height: 2.1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  opacity: 0.3;
+}
+
+.c13 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c20 {
+  text-align: center;
+  color: #01c38d;
+  visibility: hidden;
+}
+
+.c22 {
+  text-align: center;
+  color: #ff274b;
+  visibility: hidden;
+}
+
+.c21 {
+  font-size: 11px;
+  opacity: 0.59;
+}
+
+.c19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 0;
+  padding-left: 0;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  z-index: 1;
+}
+
+.c26 {
+  -webkit-animation: jxicLy 0.8s infinite;
+  animation: jxicLy 0.8s infinite;
+  -webkit-animation-delay: -0.48s;
+  animation-delay: -0.48s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c27 {
+  -webkit-animation: jxicLy 0.8s infinite;
+  animation: jxicLy 0.8s infinite;
+  -webkit-animation-delay: -0.3261538461538461s;
+  animation-delay: -0.3261538461538461s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c28 {
+  -webkit-animation: jxicLy 0.8s infinite;
+  animation: jxicLy 0.8s infinite;
+  -webkit-animation-delay: -0.17230769230769227s;
+  animation-delay: -0.17230769230769227s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c29 {
+  -webkit-animation: jxicLy 0.8s infinite;
+  animation: jxicLy 0.8s infinite;
+  -webkit-animation-delay: -0.018461538461538418s;
+  animation-delay: -0.018461538461538418s;
+  fill: #fff;
+  will-change: transform;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-top: 15px;
+  position: relative;
+}
+
+.c23 {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+  z-index: 2;
+}
+
+.c24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 9px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  position: absolute;
+  border-radius: 17px;
+  background: #5f94f5;
+  pointer-events: auto;
+  width: 125px;
+  cursor: pointer;
+}
+
+.c24 rect {
+  fill: #fff;
+}
+
+.c30 {
+  color: #fff;
+  font-size: 0.8125rem;
+}
+
+.c25 {
+  padding-right: 0.375rem;
+  padding-top: 0.04rem;
+}
+
+.c8 {
+  color: #fff;
+  font-size: 0.625rem;
+  line-height: 1rem;
+  opacity: 0.59;
+  margin-left: auto;
+  -webkit-transition: margin-right 0.2s;
+  transition: margin-right 0.2s;
+}
+
+.c6 {
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1rem;
+}
+
+.c3 {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.c3:hover .c10 {
+  background-color: #282e39;
+}
+
+.RouteStyle-sc-9r1isi-0 .c2 {
+  border-radius: 0px;
+}
+
+.c5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c0 {
+  position: relative;
+  color: #fff;
+}
+
+.c0:hover .TopRightButton-sc-1v3ye6r-0 {
+  opacity: 0.75;
+}
+
+.c0:hover .c7 {
+  margin-right: 1.3rem;
+}
+
+.c0:hover .ActionButton-sc-1dxc2d7-0 {
+  opacity: 0.75;
+}
+
+.c1 {
+  position: relative;
+  min-height: 11rem;
+  height: 100%;
+}
+
+.c4 {
+  background-color: #2f3542;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.c4:hover {
+  background-color: #3d4455;
+  box-shadow: none;
+}
+
+.c31 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+@media (min-width:321px) {
+  .c24 {
+    width: 125px;
+  }
+}
+
+@media (min-width:401px) {
+  .c24 {
+    width: 125px;
+  }
+}
+
+<div
+  className="c0 c1"
+>
+  <div
+    className="c2 c3 c4 spot-tile"
+    data-qa="spot-tile__tile"
+    data-qa-id="currency-pair-eurusd"
+  >
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6"
+          data-qa="tile-header__tile-symbol"
+        >
+          EUR/USD
+        </div>
+        <div
+          className="c7 c8"
+          data-qa="tile-header__delivery-date"
+        >
+          SPT (07 APR)
+        </div>
+      </div>
+      <div
+        className="c9"
+      >
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-sell-eurusd"
+          direction="Sell"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={true}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                SELL
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+        <div
+          className="c19"
+        >
+          <i
+            aria-hidden="true"
+            className="c20 fas fa-caret-up"
+            color="positive"
+            data-qa="price-movement__movement-icon--up"
+          />
+          <div
+            className="c21"
+            data-qa="price-movement__movement-value"
+          >
+            0.0
+          </div>
+          <i
+            aria-hidden="true"
+            className="c22 fas fa-caret-down"
+            color="negative"
+            data-qa="price-movement__movement-icon--down"
+          />
+        </div>
+        <div
+          className="c23"
+          style={
+            Object {
+              "opacity": 0,
+            }
+          }
+        >
+          <div
+            className="c24"
+            color="primary"
+            data-qa="tile-booking__booking-pill"
+            disabled={false}
+            onClick={[Function]}
+          >
+            <span
+              className="c25"
+            >
+              <svg
+                data-qa="adaptive-loader__svg"
+                height={14}
+                width={14}
+              >
+                <rect
+                  className="c26"
+                  height={10.5}
+                  order={0}
+                  speed={0.8}
+                  type="secondary"
+                  width={2.625}
+                  x={0.25}
+                />
+                <rect
+                  className="c27"
+                  height={10.5}
+                  order={1}
+                  speed={0.8}
+                  type="secondary"
+                  width={2.625}
+                  x={3.875}
+                />
+                <rect
+                  className="c28"
+                  height={10.5}
+                  order={2}
+                  speed={0.8}
+                  type="secondary"
+                  width={2.625}
+                  x={7.5}
+                />
+                <rect
+                  className="c29"
+                  height={10.5}
+                  order={3}
+                  speed={0.8}
+                  type="secondary"
+                  width={2.625}
+                  x={11.125}
+                />
+              </svg>
+            </span>
+            <span
+              className="c30"
+              data-qa="tile-booking__booking-status"
+            >
+              Executing
+            </span>
+          </div>
+        </div>
+        <button
+          className="c10 c11"
+          data-qa="price-button__trade-button"
+          data-qa-id="direction-buy-eurusd"
+          direction="Buy"
+          disabled={true}
+          onClick={[Function]}
+        >
+          <div
+            className="c12"
+            disabled={true}
+          >
+            <div
+              className="c13"
+            >
+              <div
+                className="c14 c15"
+              >
+                BUY
+              </div>
+              <div
+                className="c14 c16"
+                data-qa="price-button__big"
+              >
+                1.
+              </div>
+            </div>
+            <div
+              className="c14 c17"
+              data-qa="price-button__pip"
+            >
+              48
+            </div>
+            <div
+              className="c14 c18"
+              data-qa="price-button__tenth"
+            >
+              4
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      className="ReserveSpaceGrouping-sc-1l7nogu-8"
+    >
+      <div
+        className="c31"
+      >
+        <div
+          className="c32"
+        >
+          <span
+            className="c33"
+            data-qa="notional-input__currency-pair-symbol"
+          >
+            EUR
+          </span>
+          <input
+            className="c34 c35"
+            data-qa-id="notional-input__input-eurusd"
+            disabled={true}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="text"
+            value="1,000,000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

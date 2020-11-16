@@ -1,0 +1,13 @@
+{
+  "extends": "react-app",
+  "globals": {
+    "fin": true
+  },
+  "rules": {
+    "no-restricted-globals": "off",
+    "jsx-a11y/anchor-has-content": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-angle-bracket-type-assertion": "off"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "snapshot": {
+    "windows": [
+      {
+        "autoShow": false,
+        "frame": false,
+        "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+        "preload": [
+          {
+            "url": "{*host_url*}/plugin/service-loader.js"
+          },
+          {
+            "url": "{*host_url*}/plugin/fin.desktop.Excel.js"
+          }
+        ],
+        "url": "{*host_url*}/launcher",
+        "defaultWidth": 350,
+        "defaultHeight": 56,
+        "defaultTop": 160,
+        "defaultLeft": 30,
+        "backgroundColor": "#313131",
+        "cornerRounding": {
+          "width": 4,
+          "height": 4
+        },
+        "permissions": {
+          "System": {
+            "launchExternalProcess": true
+          }
+        },
+        "saveWindowState": false,
+        "resizable": false,
+        "shadow": true,
+        "alwaysOnTop": true,
+        "contextMenu": true,
+        "accelerator": {
+          "devtools": true,
+          "reload": true,
+          "reloadIgnoringCache": true,
+          "zoom": true
+        }
+      }
+    ]
+  },
+  "platform": {
+    "uuid": "reactive-launcher-{{environment}}",
+    "name": "Reactive Launcher{{environment_suffix}}",
+    "applicationIcon": "{*host_url*}/static/media/adaptive-icon-256x256.png",
+    "defaultWindowOptions": {
+      "contextMenu": true,
+      "frame": false,
+      "url": "{*host_url*}/openfin-sub-window-frame"
+    },
+    "fdc3Api": true
+  },
+  "runtime": {
+    "version": "17.85.53.10"
+  },
+  "services": [
+    {
+      "name": "notifications",
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.11.1/app.json"
+    }
+  ],
+  "shortcut": {
+    "company": "Adaptive Consulting",
+    "icon": "{*host_url*}/static/media/adaptive.ico",
+    "name": "Reactive Launcher{{environment_suffix}}"
+  },
+  "appAssets": [
+    {
+      "src": "{*host_url*}/plugin/add-in.zip",
+      "alias": "excel-api-addin",
+      "version": "2.0.0",
+      "forceDownload": true
+    },
+    {
+      "src": "{*host_url*}/plugin/LimitChecker.zip",
+      "alias": "LimitChecker",
+      "version": "1.6.0",
+      "target": "LimitChecker.application"
+    }
+  ]
+}
