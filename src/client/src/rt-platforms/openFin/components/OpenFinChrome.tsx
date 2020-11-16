@@ -3,12 +3,7 @@ import { Helmet } from 'react-helmet'
 import { snapAndDock } from 'openfin-layouts'
 import styled from 'styled-components/macro'
 import { AccentName } from 'rt-theme'
-import {
-  minimiseNormalIcon,
-  maximiseScreenIcon,
-  ExitIcon,
-  popInIcon,
-} from 'apps/SimpleLauncher/icons'
+import { minimiseNormalIcon, maximiseScreenIcon, ExitIcon, popInIcon } from '../../icons'
 import { isCurrentWindowDocked } from '../adapter'
 import { UndockIcon } from '../../../rt-components'
 import { getAppName } from 'rt-util'

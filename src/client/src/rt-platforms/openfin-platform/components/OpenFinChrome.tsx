@@ -6,12 +6,7 @@ import Header from 'apps/MainRoute/components/app-header'
 import OpenFinContactButton from './OpenFinContactButton'
 import { StatusButtonContainer } from './OpenFinStatusConnection/StatusContainers'
 import StatusBar from 'apps/MainRoute/widgets/status-bar'
-import {
-  ExitIcon,
-  maximiseScreenIcon,
-  minimiseNormalIcon,
-  popInIcon,
-} from 'apps/SimpleLauncher/icons'
+import { ExitIcon, maximiseScreenIcon, minimiseNormalIcon, popInIcon } from '../../icons'
 import ReactGA from 'react-ga'
 
 export interface ControlProps {
