@@ -1,7 +1,7 @@
 import { getPlatformLayoutTitle } from 'apps/utils/openfin-utils'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { isParentAppOpenfinLauncher } from 'rt-platforms'
+import { isParentAppOpenfinLauncher } from '../adapter/launcherUtils'
 import { getAppName } from 'rt-util'
 import styled from 'styled-components/macro'
 import { OpenFinChrome, OpenFinSubWindowHeader } from './OpenFinChrome'
@@ -47,7 +47,6 @@ const OpenFinSubFrameRoot = styled.div`
   .lm_splitter {
     background-color: ${({ theme }) => theme.core.textColor};
   }
-
 `
 
 const LayoutRoot = styled.div`

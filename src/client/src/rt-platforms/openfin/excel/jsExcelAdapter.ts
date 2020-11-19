@@ -19,7 +19,7 @@ const RTExcelConfig = {
   ClosePositionButton: 'F',
   ClosePositionButtonColumn: 6, // Index of 'F'
   ClosePositionPlaceholder: 'M',
-  ClosePositionPlaceholderColumn: 13 // Index of 'M'
+  ClosePositionPlaceholderColumn: 13, // Index of 'M'
 }
 
 class JSExcelAdapter implements ExcelApp {

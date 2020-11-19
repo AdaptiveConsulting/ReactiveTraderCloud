@@ -188,5 +188,5 @@ export const openDesktopWindow = async (
 
 export const showWindow = async () => {
   const window = await fin.Window.getCurrent()
-  window.show();
+  window.show()
 }

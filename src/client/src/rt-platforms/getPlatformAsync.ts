@@ -19,10 +19,7 @@ export const getSymphonyPlatform = () => import(/* webpackChunkName: "symphony" 
 
 export const getFinsemblePlatform = () => import(/* webpackChunkName: "finsemble" */ './finsemble')
 
-export const getOpenFin = () => import(/* webpackChunkName: "openfin" */ './openFin')
-
-export const getOpenFinPlatform = () =>
-  import(/* webpackChunkName: "openfin-platform" */ './openfin-platform')
+export const getOpenFinPlatform = () => import(/* webpackChunkName: "openfin" */ './openfin')
 
 export const getGlue42Platform = () => import(/* webpackChunkName: "glue" */ './glue')
 
@@ -54,13 +51,11 @@ export const getPlatformAsync = async () => {
 
     if (appInfo.initialOptions.isPlatformController) {
       console.info('Using OpenFin Platform API')
-      const { OpenFinPlatform } = await getOpenFinPlatform()
-      return new OpenFinPlatform()
+      const { OpenFin } = await getOpenFinPlatform()
+      return new OpenFin()
     }
 
-    console.info('Using OpenFin Legacy API')
-    const { OpenFin } = await getOpenFin()
-    return new OpenFin()
+    console.error('OpenFin Legacy API is no longer supported')
   }
 
   if (isGlue42) {

@@ -85,7 +85,6 @@ const defaultParams: Parameters<typeof getDerivedStateFromUserInput>[0] = {
   },
   prevState,
   spotTileData: {
-    currencyChartIsOpening: false,
     historicPrices: [],
     isTradeExecutionInFlight: false,
     lastTradeExecutionStatus: null,

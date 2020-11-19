@@ -45,7 +45,7 @@ export class OpenFinLimitChecker implements LimitChecker {
       const payload = {
         ...message,
         id: this.limitCheckId,
-        responseTopic: topic
+        responseTopic: topic,
       }
 
       fin.desktop.InterApplicationBus.send(
