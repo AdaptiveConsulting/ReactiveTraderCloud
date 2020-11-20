@@ -1,6 +1,6 @@
 {
   "short_name": "RT{{environment_suffix}}",
-  "name": "Reactive Trader™{{environment_suffix}}",
+  "name": "Reactive Trader®{{environment_suffix}}",
   "description": "Real-time FX trading showcase by Adaptive.",
   "icons": [
     {

@@ -84,7 +84,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
           <LogoWrapper>
             <PlatformLogoWrapper>{reactiveTraderIcon}</PlatformLogoWrapper>
           </LogoWrapper>
-          <span>Reactive Trader™</span>
+          <span>Reactive Trader®</span>
         </IntentActionWrapper>
         <IntentActionWrapper>
           {intent && (

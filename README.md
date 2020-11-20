@@ -4,9 +4,9 @@
 
 [![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/adaptive-logo.png)](http://weareadaptive.com/)
 
-# Reactive Trader™
+# Reactive Trader®
 
-Reactive Trader™ is a real-time FX trading platform designed to showcase reactive programming principles across the full application stack.
+Reactive Trader® is a real-time FX trading platform designed to showcase reactive programming principles across the full application stack.
 
 Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/ReactiveTrader), and now in React/Redux, .Net and Node.js, we continue to evolve the platform to use the latest technologies.
 

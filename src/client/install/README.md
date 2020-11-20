@@ -1,6 +1,6 @@
 # Installers
 
-Reactive Trader™ supports multiple desktop platforms, including [OpenFin] and [Finsemble].
+Reactive Trader® supports multiple desktop platforms, including [OpenFin] and [Finsemble].
 
 Below you can find links to the installers for the various platforms.
 
@@ -15,7 +15,7 @@ Below you can find links to the installers for the various platforms.
 >
 > They should not be removed, in case there are external links to them.
 
-### Reactive Trader™
+### Reactive Trader®
 
 | Environment | Windows | Mac OS |
 |-------------|---------|--------|
@@ -51,7 +51,7 @@ Below you can find links to the installers for the various platforms.
 
 ## Finsemble Toolbar
 
-Download and run the exe below to install the integrated toolbar on your desktop, including Reactive Trader™ components and workspaces.
+Download and run the exe below to install the integrated toolbar on your desktop, including Reactive Trader® components and workspaces.
 
 | Environment | Windows |
 |-------------|---------|
