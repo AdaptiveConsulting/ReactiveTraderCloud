@@ -1,5 +1,5 @@
 {
-  "name": "Reactive Trader™ Workspace",
+  "name": "Reactive Trader® Workspace",
   "canvas": {
     "lanes": [
       {
@@ -16,7 +16,7 @@
                 "selected": true,
                 "type": "window",
                 "name": "reactive-trader-tile",
-                "tabTitle": "Reactive Trader™ Tile",
+                "tabTitle": "Reactive Trader® Tile",
                 "tabGroup": "e6fa4024-aa74-4985-a99b-2af1691d7a17",
                 "newItemButtonBounds": {
                   "left": 0,
@@ -78,7 +78,7 @@
                 "selected": true,
                 "type": "window",
                 "name": "reactive-trader-spot-eurcad",
-                "tabTitle": "Reactive Trader™ Spot EUR/CAD",
+                "tabTitle": "Reactive Trader® Spot EUR/CAD",
                 "tabGroup": "06420429-afe1-4652-b9c0-7dfd3a851a3a",
                 "newItemButtonBounds": {
                   "left": 0,
@@ -139,7 +139,7 @@
                 "selected": true,
                 "type": "window",
                 "name": "reactive-trader-spot-eurjpy",
-                "tabTitle": "Reactive Trader™ Spot EUR/JPY",
+                "tabTitle": "Reactive Trader® Spot EUR/JPY",
                 "tabGroup": "8e92ef60-650b-46ba-8f46-f39d9f39c958",
                 "newItemButtonBounds": {
                   "left": 0,
@@ -200,7 +200,7 @@
                 "selected": true,
                 "type": "window",
                 "name": "reactive-trader-spot-gbpjpy",
-                "tabTitle": "Reactive Trader™ Spot GBP/JPY",
+                "tabTitle": "Reactive Trader® Spot GBP/JPY",
                 "tabGroup": "58ec0ef5-2571-49a7-b20a-8504f421ae53",
                 "newItemButtonBounds": {
                   "left": 0,
@@ -274,7 +274,7 @@
                 "selected": true,
                 "type": "window",
                 "name": "reactive-trader-blotter",
-                "tabTitle": "Reactive Trader™ Blotter",
+                "tabTitle": "Reactive Trader® Blotter",
                 "tabGroup": "6fe2e6a1-b00f-4036-90b2-2747798900de",
                 "newItemButtonBounds": {
                   "left": 0,
@@ -335,7 +335,7 @@
                 "selected": true,
                 "type": "window",
                 "name": "reactive-trader",
-                "tabTitle": "Reactive Trader™",
+                "tabTitle": "Reactive Trader®",
                 "tabGroup": "3946003c-9554-4cdd-bf3c-cffbf99b87eb",
                 "newItemButtonBounds": {
                   "left": 0,
@@ -410,7 +410,7 @@
                 "selected": true,
                 "type": "window",
                 "name": "reactive-trader-analytics",
-                "tabTitle": "Reactive Trader™ Analytics",
+                "tabTitle": "Reactive Trader® Analytics",
                 "tabGroup": "f2420290-da62-4110-b9fa-0a34c4d14c28",
                 "newItemButtonBounds": {
                   "left": 0,

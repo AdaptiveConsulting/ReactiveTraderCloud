@@ -1,8 +1,8 @@
 [
   {
-    "title": "Reactive Trader™",
+    "title": "Reactive Trader®",
     "type": "window",
-    "name": "reactive-trader-™",
+    "name": "reactive-trader-®",
     "hidden": false,
     "details": {
       "url": "http://localhost:3000",
@@ -20,7 +20,7 @@
     }
   },
   {
-    "title": "Reactive Trader™ Analytics",
+    "title": "Reactive Trader® Analytics",
     "type": "window",
     "name": "reactive-trader-analytics",
     "hidden": true,
@@ -33,7 +33,7 @@
     }
   },
   {
-    "title": "Reactive Trader™ Blotter",
+    "title": "Reactive Trader® Blotter",
     "type": "window",
     "name": "reactive-trader-blotter",
     "hidden": true,
@@ -46,7 +46,7 @@
     }
   },
   {
-    "title": "Reactive Trader™ Pre Trade Check",
+    "title": "Reactive Trader® Pre Trade Check",
     "type": "window",
     "name": "reactive-trader-pre-trade-check",
     "hidden": false,
@@ -58,7 +58,7 @@
     }
   },
   {
-    "title": "Reactive Trader™ Spot GBP/JPY",
+    "title": "Reactive Trader® Spot GBP/JPY",
     "type": "window",
     "name": "reactive-trader-spot-gbpjpy",
     "hidden": true,
@@ -71,7 +71,7 @@
     }
   },
   {
-    "title": "Reactive Trader™ Spot EUR/JPY",
+    "title": "Reactive Trader® Spot EUR/JPY",
     "type": "window",
     "name": "reactive-trader-spot-eurjpy",
     "hidden": true,
@@ -84,7 +84,7 @@
     }
   },
   {
-    "title": "Reactive Trader™ Spot EUR/CAD",
+    "title": "Reactive Trader® Spot EUR/CAD",
     "type": "window",
     "name": "reactive-trader-spot-eurcad",
     "hidden": true,

@@ -108,8 +108,8 @@ export const PWAInstallBanner: React.FC<InstallBannerProps> = ({
       <CrossButton onClick={closeBanner}>{CrossIcon}</CrossButton>
       <BannerText>
         {isMobileDevice
-          ? 'Experience Reactive Trader™ as an app!'
-          : 'Experience Reactive Trader™ on your desktop!'}
+          ? 'Experience Reactive Trader® as an app!'
+          : 'Experience Reactive Trader® on your desktop!'}
       </BannerText>
       <InstallButton onClick={() => installPWA(isiOS)}>Install</InstallButton>
     </MainBanner>

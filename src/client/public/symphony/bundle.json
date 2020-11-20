@@ -3,8 +3,8 @@
     {
       "type": "sandbox",
       "id": "reactiveTrader-dev",
-      "name": "Reactive Trader™",
-      "blurb": "Symphony integration with Reactive Trader™",
+      "name": "Reactive Trader®",
+      "blurb": "Symphony integration with Reactive Trader®",
       "publisher": "Adaptive Financial Consulting",
       "url": "https://localhost:3000/?symphony=true&startAsSymphonyController=true",
       "domain": "localhost",

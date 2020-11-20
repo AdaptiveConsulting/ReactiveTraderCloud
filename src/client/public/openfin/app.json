@@ -1,7 +1,7 @@
 {
   "platform": {
     "uuid": "reactive-trader-{{environment}}",
-    "name": "Reactive Trader™{{environment_suffix}}",
+    "name": "Reactive Trader®{{environment_suffix}}",
     "applicationIcon": "{*host_url*}/static/media/reactive-trader-icon-256x256.png",
     "url": "{*host_url*}",
     "fdc3api": true,
@@ -26,7 +26,7 @@
   "shortcut": {
     "company": "Adaptive Consulting",
     "icon": "{*host_url*}/static/media/reactive-trader.ico",
-    "name": "Reactive Trader™{{environment_suffix}}"
+    "name": "Reactive Trader®{{environment_suffix}}"
   },
   "appAssets": [
     {
