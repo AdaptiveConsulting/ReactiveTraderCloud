@@ -7,7 +7,7 @@ export const formTable = {
       item.latestBid,
       item.latestAsk,
       item.baseTradedAmount,
-      item.basePnl
+      item.basePnl,
     ]),
   ccy: (data: CurrencyPairPosition[]) => {
     const positionsMap = data.reduce((acc, item) => {
@@ -35,9 +35,9 @@ export const formTable = {
         item.spotRate,
         item.status,
         item.valueDate,
-        item.traderName
+        item.traderName,
       ])
-  }
+  },
 }
 
 export const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
