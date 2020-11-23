@@ -111,9 +111,9 @@ const reactiveAnalyticsManifestUrl = new URL(
 
 const baseAppConfigs: ApplicationConfig[] = [
   {
-    name: `Reactive Trader™${envSuffix}`,
+    name: `Reactive Trader®${envSuffix}`,
     displayName: 'RT',
-    tooltipName: `Launch Reactive Trader™${envSuffix}`,
+    tooltipName: `Launch Reactive Trader®${envSuffix}`,
     uuid: `reactive-trader-${env}`,
     url: `${ORIGIN}/openfin/app.json`,
     icon: reactiveTraderIcon,
