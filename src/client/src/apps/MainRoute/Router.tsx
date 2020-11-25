@@ -6,6 +6,7 @@ import { StatusDisplayContainer } from 'rt-platforms/openfin/components/OpenFinS
 import { currencyFormatter } from 'rt-util'
 import { AnalyticsRoute, BlotterRoute, SpotRoute, ShellRoute, TileRoute } from './routes'
 import { OpenFinContactDisplay } from 'rt-platforms/openfin/components/OpenFinContactButton'
+import { OpenFinSnapshotList } from 'rt-platforms/openfin/components/OpenFinSnapshot'
 
 export const Router: FC = () => {
   return (
@@ -57,6 +58,7 @@ export const Router: FC = () => {
       <Route path="/openfin-sub-window-frame" render={() => <OpenFinSubWindowFrame />} />
       <Route path="/status" render={() => <StatusDisplayContainer />} />
       <Route path="/contact" render={() => <OpenFinContactDisplay />} />
+      <Route path="/snapshots" render={() => <OpenFinSnapshotList />} />
     </Switch>
   )
 }

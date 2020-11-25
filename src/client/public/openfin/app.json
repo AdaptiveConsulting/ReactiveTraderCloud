@@ -45,7 +45,7 @@
         "defaultHeight": 900,
         "minWidth": 800,
         "minHeight": 600,
-        "defaultCentered": true,
+        "defaultCentered": false,
         "resizable": true,
         "maximizable": true,
         "saveWindowState": true,
