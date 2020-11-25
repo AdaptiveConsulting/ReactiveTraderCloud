@@ -139,11 +139,3 @@ export const Controls = styled('div')`
   opacity: 1;
   transition: opacity 0.2s;
 `
-
-export const PopoutButton = styled('button')`
-  &:hover {
-    .hover-state {
-      fill: #5f94f5;
-    }
-  }
-`

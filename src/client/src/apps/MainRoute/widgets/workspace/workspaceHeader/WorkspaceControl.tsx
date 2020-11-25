@@ -1,6 +1,6 @@
 import React, { FC, useCallback, MouseEvent } from 'react'
 import { PopoutIcon } from 'rt-components'
-import styled from 'styled-components/macro'
+import { PopoutButton } from 'rt-components/styled'
 
 interface WorkspaceControlProps {
   onPopoutClick?: (x: number, y: number) => void
@@ -18,13 +18,5 @@ const WorkspaceControl: FC<WorkspaceControlProps> = props => {
 
   return <PopoutButton onClick={handlePopoutClick}>{PopoutIcon}</PopoutButton>
 }
-
-const PopoutButton = styled('button')`
-  &:hover {
-    .hover-state {
-      fill: #5f94f5;
-    }
-  }
-`
 
 export default WorkspaceControl
