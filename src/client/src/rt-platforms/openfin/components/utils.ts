@@ -90,4 +90,37 @@ async function createOpenFinPopup(
   }
 }
 
-export { showOpenFinPopup, createOpenFinPopup }
+/**
+ * Toggles the Platform controls
+ *
+ * https://developers.openfin.co/docs/recipes-platform
+ */
+async function toggleLockedLayout() {
+  const oldLayout = await fin.Platform.Layout.getCurrentSync().getConfig()
+  const { settings, dimensions } = oldLayout
+  if (settings && settings.hasHeaders && settings.reorderEnabled) {
+    fin.Platform.Layout.getCurrentSync().replace({
+      ...oldLayout,
+      settings: {
+        ...settings,
+        hasHeaders: false,
+        reorderEnabled: false,
+      },
+    })
+  } else {
+    fin.Platform.Layout.getCurrentSync().replace({
+      ...oldLayout,
+      settings: {
+        ...settings,
+        hasHeaders: true,
+        reorderEnabled: true,
+      },
+      dimensions: {
+        ...dimensions,
+        headerHeight: 25,
+      },
+    })
+  }
+}
+
+export { createOpenFinPopup, showOpenFinPopup, toggleLockedLayout }
