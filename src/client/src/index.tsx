@@ -9,6 +9,7 @@ import { getEnvironment } from 'rt-util/getEnvironment'
 
 const MainRoute = lazy(() => import('./apps/MainRoute'))
 const StyleguideRoute = lazy(() => import('./apps/StyleguideRoute'))
+const SimpleLauncher = lazy(() => import('./apps/SimpleLauncher'))
 
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault()
@@ -43,6 +44,7 @@ async function init() {
         <BrowserRouter>
           <Suspense fallback={<div />}>
             <Switch>
+              <Route path={'/launcher'} render={() => <SimpleLauncher />} />
               <Route path={'/styleguide'} render={() => <StyleguideRoute />} />
               <Route render={() => <MainRoute />} />
             </Switch>

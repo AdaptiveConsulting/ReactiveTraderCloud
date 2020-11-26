@@ -6,7 +6,7 @@
   "devtools_port": 9090,
   "splashScreenImage": "https://web-demo.adaptivecluster.com/static/media/splash-screen.png",
   "startup_app": {
-    "name": "Reactive Trader™",
+    "name": "Reactive Trader®",
     "url": "https://web-demo.adaptivecluster.com/",
     "uuid": "reactive-trader-demo",
     "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/reactive-trader-icon-256x256.png",
@@ -34,7 +34,7 @@
   "shortcut": {
     "company": "Adaptive Consulting",
     "icon": "https://web-demo.adaptivecluster.com/static/media/reactive-trader.ico",
-    "name": "Reactive Trader™"
+    "name": "Reactive Trader®"
   },
   "appAssets": [
     {
