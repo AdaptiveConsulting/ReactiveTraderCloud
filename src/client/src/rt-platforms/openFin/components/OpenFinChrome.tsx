@@ -1,26 +1,115 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
-import { snapAndDock } from 'openfin-layouts'
-import styled from 'styled-components/macro'
 import { AccentName } from 'rt-theme'
-import { minimiseNormalIcon, maximiseScreenIcon, ExitIcon, popInIcon } from '../../icons'
-import { isCurrentWindowDocked } from '../adapter'
-import { UndockIcon } from '../../../rt-components'
-import { getAppName } from 'rt-util'
+import styled from 'styled-components/macro'
+import Header from 'apps/MainRoute/components/app-header'
+import OpenFinContactButton from './OpenFinContactButton'
+import { StatusButtonContainer } from './OpenFinStatusConnection/StatusContainers'
+import StatusBar from 'apps/MainRoute/widgets/status-bar'
+import { ExitIcon, maximiseScreenIcon, minimiseNormalIcon, popInIcon } from '../../icons'
+import ReactGA from 'react-ga'
 
 export interface ControlProps {
   minimize?: () => void
   maximize?: () => void
-  popIn?: () => void
   close?: () => void
-  title?: string
-  isBlotterOrTrade?: boolean
+  popIn?: () => void
 }
 
-export const OpenFinChrome: React.FC = ({ children }) => (
-  <React.Fragment>
-    <Helmet>
-      <style type="text/css">{`
+interface HeaderProps extends ControlProps {
+  title?: string
+}
+
+const LAYOUT_ITEMS = {
+  Blotter: 'stream',
+  Analytics: 'chart-line',
+  Pricing: 'dollar-sign',
+}
+
+const getEmptyContent = (key: string, useIcon: boolean = true) => {
+  if (useIcon) {
+    const icon = LAYOUT_ITEMS[key]
+    if (icon) {
+      return `<i style="font-size: 6rem" class="fas fa-${icon} fa-set-position" />`
+    }
+  }
+  return key
+}
+
+interface Props {
+  title?: string
+}
+export const OpenFinChrome: FC<Props> = ({ children, title }) => {
+  //TODO: Remove this HACK once OpenFin exposes content of "empty" layout containers...
+  useEffect(() => {
+    //@ts-ignore
+    if (!window.fin.me.isView) {
+      const listenerViewAttached = (e: any) => {
+        const label: string = ((e || {}).viewIdentity || {}).name || 'unknown'
+        ReactGA.event({ category: 'RT - Tab', action: 'attach', label })
+      }
+      const listenerViewDetached = (e: any) => {
+        const label: string = ((e || {}).viewIdentity || {}).name || 'unknown'
+        ReactGA.event({ category: 'RT - Tab', action: 'detach', label })
+      }
+      const listenerViewHidden = (e: any) => {
+        const layoutItems: HTMLCollectionOf<Element> = document.getElementsByClassName('lm_item')
+        for (let idx in layoutItems) {
+          const layoutItem = layoutItems[idx]
+          if (layoutItem && layoutItem.querySelector) {
+            const placeholder = layoutItem.querySelector('.wrapper_title')
+            const tab = layoutItem.querySelector('.lm_tab.lm_active .lm_title')
+            if (placeholder && tab) {
+              placeholder.innerHTML = getEmptyContent(tab.innerHTML, false)
+            }
+          }
+        }
+      }
+      const listenerWindowCreated = (e: any) => {
+        const label: string = (e || {}).name || 'unknown'
+        ReactGA.event({ category: 'RT - Window', action: 'open', label })
+      }
+      const listenerWindowClosed = (e: any) => {
+        const label: string = (e || {}).name || 'unknown'
+        ReactGA.event({ category: 'RT - Window', action: 'close', label })
+      }
+
+      fin.Window.getCurrent()
+        .then(window => {
+          window.addListener('view-attached', listenerViewAttached)
+          window.addListener('view-detached', listenerViewDetached)
+        })
+        .catch(ex => console.warn(ex))
+      fin.Application.getCurrent()
+        .then(app => {
+          app.addListener('view-hidden', listenerViewHidden)
+          app.addListener('window-closed', listenerWindowClosed)
+          app.addListener('window-created', listenerWindowCreated)
+        })
+        .catch(ex => console.warn(ex))
+
+      return () => {
+        fin.Window.getCurrent()
+          .then(window => {
+            window.removeListener('view-attached', listenerViewAttached)
+            window.removeListener('view-detached', listenerViewDetached)
+          })
+          .catch(ex => console.warn(ex))
+        fin.Application.getCurrent()
+          .then(app => {
+            app.removeListener('view-hidden', listenerViewHidden)
+            app.removeListener('window-closed', listenerWindowClosed)
+            app.removeListener('window-created', listenerWindowCreated)
+          })
+          .catch(ex => console.warn(ex))
+      }
+    }
+  }, [])
+
+  return (
+    <>
+      <Helmet title={title}>
+        <style type="text/css">{`
         :root,
         body,
         #root {
@@ -29,134 +118,83 @@ export const OpenFinChrome: React.FC = ({ children }) => (
           max-height: 100vh;
         }
     `}</style>
-    </Helmet>
-    <Root>{children}</Root>
-  </React.Fragment>
-)
-
-export const OpenFinHeader: React.FC<ControlProps> = ({ ...props }) => (
-  <Header hasBottomBorder={props.isBlotterOrTrade}>
-    <OpenFinUndockControl />
-    <DragRegion>{props.title}</DragRegion>
-    <OpenFinControls {...props} />
-  </Header>
-)
-
-export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, close, popIn }) => (
-  <React.Fragment>
-    {maximize ? <TitleContainer>{getAppName()}</TitleContainer> : null}
-    {minimize ? (
-      <HeaderControl onClick={minimize} data-qa="openfin-chrome__minimize">
-        {minimiseNormalIcon}
-      </HeaderControl>
-    ) : null}
-    {maximize ? (
-      <HeaderControl onClick={maximize} data-qa="openfin-chrome__maximize">
-        {maximiseScreenIcon}
-      </HeaderControl>
-    ) : null}
-    {popIn ? (
-      <HeaderControl onClick={popIn} data-qa="openfin-chrome__maximize">
-        {popInIcon}
-      </HeaderControl>
-    ) : null}
-    {close ? (
-      <HeaderControl onClick={close} data-qa="openfin-chrome__close">
-        <ExitIcon />
-      </HeaderControl>
-    ) : null}
-  </React.Fragment>
-)
-
-const OpenFinUndockControl: React.FC = () => {
-  const [isWindowDocked, setIsWindowDocked] = useState(false)
-
-  useEffect(() => {
-    const handleWindowDocked = () => {
-      setIsWindowDocked(true)
-    }
-
-    const handleWindowUnDocked = () => {
-      setIsWindowDocked(false)
-    }
-
-    snapAndDock.addEventListener('window-docked', handleWindowDocked)
-    snapAndDock.addEventListener('window-undocked', handleWindowUnDocked)
-
-    return () => {
-      snapAndDock.removeEventListener('window-docked', handleWindowDocked)
-      snapAndDock.removeEventListener('window-undocked', handleWindowUnDocked)
-    }
-  }, [])
-
-  useEffect(() => {
-    isCurrentWindowDocked().then(isDocked => {
-      setIsWindowDocked(isDocked)
-    })
-  }, [])
-
-  const handleUndockClick = useCallback(() => {
-    snapAndDock.undockWindow()
-    setIsWindowDocked(false)
-  }, [])
-
-  return (
-    <UndockControl
-      disabled={!isWindowDocked}
-      onClick={handleUndockClick}
-      isWindowDocked={isWindowDocked}
-    >
-      <UndockIcon width={24} height={24} />
-    </UndockControl>
+      </Helmet>
+      {children}
+    </>
   )
 }
 
-const TitleContainer = styled.div`
-  position: absolute;
-  top: 20px;
-  margin-top: 20px;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
-  text-align: center;
-  width: 100%;
-  font-size: 0.625rem;
-  font-weight: normal;
-  z-index: -1;
-  text-transform: uppercase;
-`
+export const OpenFinHeader: React.FC<HeaderProps> = ({ title, ...props }) => (
+  <Header
+    controls={<OpenFinControls {...props} />}
+    filler={<OpenFinTitleBar className="title-bar-draggable">{title}</OpenFinTitleBar>}
+  />
+)
 
-const Header = styled.div<{ hasBottomBorder?: boolean }>`
-  display: flex;
-  width: 100%;
-  min-height: 1.5rem;
-  font-size: 1rem;
-  padding: 0 0.625rem;
-  border-bottom: ${({ hasBottomBorder, theme }) =>
-    hasBottomBorder ? `1px solid ${theme.primary[1]}` : 0};
-  color: ${({ theme }) => theme.core.textColor};
-`
+export const OpenFinFooter: React.FC = ({ ...props }) => (
+  <StatusBar>
+    <FooterControl>
+      <OpenFinContactButton />
+      <StatusButtonContainer />
+    </FooterControl>
+  </StatusBar>
+)
 
-const DragRegion = styled.div`
+export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, popIn, close }) => (
+  <OpenFinControlsWrapper>
+    {minimize && (
+      <HeaderControl accent="aware" onClick={minimize} data-qa="openfin-chrome__minimize">
+        {minimiseNormalIcon}
+      </HeaderControl>
+    )}
+    {maximize && (
+      <HeaderControl accent="primary" onClick={maximize} data-qa="openfin-chrome__maximize">
+        {maximiseScreenIcon}
+      </HeaderControl>
+    )}
+    {popIn && (
+      <HeaderControl accent="primary" onClick={popIn} data-qa="openfin-chrome__popin">
+        {popInIcon}
+      </HeaderControl>
+    )}
+    {close && (
+      <HeaderControl accent="negative" onClick={close} data-qa="openfin-chrome__close">
+        <ExitIcon />
+      </HeaderControl>
+    )}
+  </OpenFinControlsWrapper>
+)
+
+const OpenFinTitleBar = styled.div`
   display: flex;
+  flex: 1;
+  width: 100%;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
-  font-size: 0.625rem;
-  letter-spacing: 0.2px;
   text-transform: uppercase;
-
-  -webkit-app-region: drag;
+  font-weight: normal;
+  min-height: 1.5rem;
+  margin: 0;
+  font-size: 0.625rem;
+  height: 100%;
 `
 
-const HeaderControl = styled.button<{ accent?: AccentName }>`
+const OpenFinControlsWrapper = styled.div`
+  display: flex;
+`
+
+const HeaderControl = styled.div<{ accent?: AccentName }>`
   display: flex;
   cursor: pointer;
+  justify-content: center;
+  align-self: center;
+
+  color: ${props => props.theme.secondary.base};
 
   &:hover {
     svg {
       path:last-child {
-        fill: #5f94f5;
+        fill: ${({ theme, accent = 'primary' }) => theme.button[accent].backgroundColor};
       }
     }
   }
@@ -172,16 +210,26 @@ const HeaderControl = styled.button<{ accent?: AccentName }>`
     }
   }
 `
-const UndockControl = styled(HeaderControl)<{ isWindowDocked: boolean }>`
-  visibility: ${({ isWindowDocked }) => (isWindowDocked ? 'visible' : 'hidden')};
+
+const FooterControl = styled.div`
+  margin-right: 0.5rem;
+  display: flex;
 `
 
-export const Root = styled.div`
-  background-color: ${props => props.theme.core.darkBackground};
-  color: ${props => props.theme.core.textColor};
+export const OpenFinSubWindowHeader: React.FC<HeaderProps> = ({ title, ...props }) => (
+  <SubWindowHeader>
+    <OpenFinTitleBar className="title-bar-draggable">{title}</OpenFinTitleBar>
+    <OpenFinControls {...props} />
+  </SubWindowHeader>
+)
 
-  height: 100%;
+const SubWindowHeader = styled.div`
+  display: flex;
   width: 100%;
+  height: 1.5rem;
+  font-size: 1rem;
+  padding: 0 0.625rem;
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 export default OpenFinChrome

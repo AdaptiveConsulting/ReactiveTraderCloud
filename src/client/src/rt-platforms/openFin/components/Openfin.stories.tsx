@@ -44,7 +44,7 @@ stories.add('Openfin Header', () => (
 stories.add('Openfin SubHeader', () => (
   <Story>
     <SubHeaderContainer>
-      <OpenFinControls popIn={close} minimize={minimize} />
+      <OpenFinControls close={close} minimize={minimize} />
     </SubHeaderContainer>
   </Story>
 ))

@@ -1,9 +1,8 @@
 /* eslint-disable no-undef */
-import ReactGA from 'react-ga'
 import { WindowConfig } from '../../types'
 import { get as _get, last as _last } from 'lodash'
 import { PlatformWindow } from '../../platformWindow'
-import { snapAndDock } from 'openfin-layouts'
+import { _Window } from 'openfin/_v2/api/window/window'
 
 const TEAR_OUT_OFFSET_LEFT = 50
 const TEAR_OUT_OFFSET_TOP = 50
@@ -19,10 +18,10 @@ type WindowState = WindowStateArr[keyof WindowStateArr]
 export const openfinWindowStates: { readonly [key: string]: WindowState } = {
   Normal: 'normal',
   Minimized: 'minimized',
-  Maximized: 'maximized'
+  Maximized: 'maximized',
 }
 
-function generateRandomName() {
+const generateRandomName = function () {
   let text = ''
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
@@ -46,16 +45,26 @@ const getChildWindows = () => {
   })
 }
 
+const getWindowState = async (window: fin.OpenFinWindow | _Window) => {
+  return await window.getState()
+}
+
 //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
 // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
-export function createPlatformWindow(getWindow: () => Promise<fin.OpenFinWindow>): PlatformWindow {
+export function createPlatformWindow(
+  getWindow: () => Promise<fin.OpenFinWindow | _Window>
+): PlatformWindow {
   return {
-    close: async () => (await getWindow()).close(),
+    close: async () => {
+      return (await getWindow()).close()
+    },
     bringToFront: async () => (await getWindow()).bringToFront(),
-    minimize: async () => (await getWindow()).minimize(),
+    minimize: async () => {
+      ;(await getWindow()).minimize()
+    },
     maximize: async () => {
       const window = await getWindow()
-      window.getState((state: WindowState) => {
+      getWindowState(window).then(state => {
         switch (state) {
           case openfinWindowStates.Maximized:
           case openfinWindowStates.Minimized:
@@ -68,7 +77,7 @@ export function createPlatformWindow(getWindow: () => Promise<fin.OpenFinWindow>
         }
       })
     },
-    restore: async () => (await getWindow()).restore()
+    restore: async () => (await getWindow()).restore(),
   }
 }
 
@@ -81,7 +90,7 @@ async function getOpenfinWindowPosition(
   if (typeof config.x !== 'undefined' || typeof config.y !== 'undefined') {
     return {
       defaultLeft: config.x,
-      defaultTop: config.y
+      defaultTop: config.y,
     }
   }
 
@@ -89,129 +98,95 @@ async function getOpenfinWindowPosition(
     const lastWindow = _last(childWindows)
     return {
       defaultLeft: _get(lastWindow, 'nativeWindow.screenLeft') + TEAR_OUT_OFFSET_LEFT,
-      defaultTop: _get(lastWindow, 'nativeWindow.screenTop') + TEAR_OUT_OFFSET_TOP
+      defaultTop: _get(lastWindow, 'nativeWindow.screenTop') + TEAR_OUT_OFFSET_TOP,
     }
   }
 
   return {
     defaultLeft: undefined,
-    defaultTop: undefined
+    defaultTop: undefined,
   }
 }
 
 export const openDesktopWindow = async (
   config: DesktopWindowProps,
   onClose?: () => void,
-  onUpdatePosition?: (event: any) => void,
   position?: {}
 ): Promise<PlatformWindow> => {
+  //@ts-ignore
   const { url, width: defaultWidth, height: defaultHeight, maxHeight, maxWidth } = config
   const childWindows = await getChildWindows()
+  //@ts-ignore
   const hasChildWindows = childWindows && childWindows.length > 0
+  //@ts-ignore
   const configHasXYCoordinates = typeof config.x !== 'undefined' && typeof config.y !== 'undefined'
+  //@ts-ignore
   const updatedPosition = await getOpenfinWindowPosition(config, childWindows)
   const windowName = config.name || generateRandomName()
+  //@ts-ignore
   const centered = (!hasChildWindows && !configHasXYCoordinates) || config.center === 'screen'
 
   console.info(`Creating Openfin window: ${windowName}`)
 
-  ReactGA.event({
-    category: 'RT - Window',
-    action: 'open',
-    label: windowName
-  })
+  const platform = await fin.Platform.getCurrent()
 
-  //TODO: move to openfin V2 version (based on promises) once they fix their bug related to getting current window
-  // (in V2 call to ofWindow.getWebWindow() returns undefined - thus we are forced to use old callback APIs)
-  const ofWindowPromise = new Promise<fin.OpenFinWindow>(resolve => {
-    const win = new fin.desktop.Window(
-      {
-        name: windowName,
-        url,
-        defaultWidth,
-        defaultHeight,
-        minWidth: config.minWidth ? config.minWidth : 100,
-        minHeight: config.minHeight ? config.minHeight : 100,
-        maxHeight,
-        maxWidth,
-        defaultCentered: centered,
-        autoShow: true,
-        frame: false,
-        saveWindowState: false,
-        shadow: true,
-        ...position,
-        ...updatedPosition
-      } as any, // any needed because OpenFin does not have correct typings for WindowOptions @kdesai
-      () => {
-        console.info(`Openfin window created: ${windowName}`)
-
-        const updatePositionListener = (event: any) => {
-          console.log(`Received 'bounds-changing' event for Openfin window: ${windowName}`)
-          onUpdatePosition && onUpdatePosition(event)
-        }
-
-        if (onClose) {
-          const closeListener = () => {
-            console.log(`Received 'close' event for Openfin window: ${windowName}`)
-            win.removeEventListener('closed', closeListener)
-
-            if (onUpdatePosition) {
-              win.removeEventListener('bounds-changing', updatePositionListener)
-            }
-            onClose && onClose()
-          }
-
-          win.addEventListener('closed', closeListener)
-        }
-
-        if (onUpdatePosition) {
-          win.addEventListener('bounds-changing', updatePositionListener)
-        }
-
-        resolve(win)
+  const newWinIdentity = await platform.createWindow({
+    autoShow: true,
+    contextMenu: true,
+    defaultCentered: centered,
+    defaultHeight,
+    defaultWidth,
+    frame: false,
+    maxHeight,
+    maxWidth,
+    minHeight: config.minHeight ? config.minHeight : 100,
+    minWidth: config.minWidth ? config.minWidth : 100,
+    name: windowName,
+    saveWindowState: false,
+    icon: '/static/media/reactive-trader.ico',
+    shadow: true,
+    ...position,
+    ...updatedPosition,
+    layout: {
+      settings: {
+        hasHeaders: false,
+        reorderEnabled: false,
       },
-      error => {
-        console.error(`Error creating Openfin window: ${windowName}`, error)
-      }
-    )
+      content: [
+        {
+          type: 'stack',
+          title: config.displayName || windowName,
+          content: [
+            {
+              type: 'component',
+              componentName: 'view',
+              componentState: {
+                name: `${windowName}_view`,
+                url: `${window.location.origin}${url}`,
+              },
+              title: config.displayName || windowName,
+            },
+          ],
+        },
+      ],
+    },
   })
 
-  return createPlatformWindow(() => ofWindowPromise)
-}
+  const win = await window.fin.Window.wrap(newWinIdentity)
 
-export const isMainWindow = async () => {
-  const app = await fin.Application.getCurrent()
+  if (onClose) {
+    const closeListener = () => {
+      console.log(`Received 'close' event for Openfin window: ${windowName}`)
+      onClose && onClose()
+    }
 
-  const win = await app.getWindow()
-
-  return win.isMainWindow()
-}
-
-export const addApplicationEventHandler = (event: string) => (handler: Function) => {
-  const app = fin.Application.getCurrentSync()
-
-  app.addListener(event, handler as () => any)
-}
-
-export async function isCurrentWindowDocked() {
-  const currentWindow = await fin.Window.getCurrent()
-  const dockedWindows = await snapAndDock.getDockedWindows(currentWindow.identity)
-
-  const { name, uuid } = currentWindow.identity
-
-  if (!dockedWindows) {
-    return false
+    win.once('closed', closeListener)
   }
 
-  return dockedWindows.reduce((hasIdentity, window) => {
-    if (Array.isArray(window)) {
-      return false
-    }
+  return createPlatformWindow(() => Promise.resolve(win))
+}
 
-    if (window.name === name && window.uuid === uuid) {
-      hasIdentity = hasIdentity || true
-    }
-
-    return hasIdentity
-  }, false)
+export const showWindow = async () => {
+  const window = await fin.Window.getCurrent()
+  window.show()
 }
