@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import numeral from 'numeral'
 import { DateTime } from 'luxon'
-import { BlotterFilters } from 'apps/SimpleLauncher/MainRoute'
+import { BlotterFilters } from 'apps/MainRoute'
 import { InlineIntent } from './styles'
 import { useBlotterTrades } from './useBlotterTrades'
 import { ResultsTable, Col, ResultsTableRow } from './resultsTable'

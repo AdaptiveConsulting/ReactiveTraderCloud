@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { usePriceService } from './usePriceService'
-import { SpotPriceTick } from 'apps/SimpleLauncher/MainRoute'
+import { SpotPriceTick } from 'apps/MainRoute'
 import { InlineIntent } from './styles'
 import { DateTime } from 'luxon'
 import { ResultsTable, ResultsTableRow, LoadingRow } from './resultsTable'

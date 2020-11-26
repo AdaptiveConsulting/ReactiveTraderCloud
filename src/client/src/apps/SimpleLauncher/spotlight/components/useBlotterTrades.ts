@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { map, scan } from 'rxjs/operators'
 import { Trade } from 'rt-types'
-import { TradesUpdate, BlotterFilters, filterBlotterTrades } from 'apps/SimpleLauncher/MainRoute'
+import { TradesUpdate, BlotterFilters, filterBlotterTrades } from 'apps/MainRoute'
 import { TradeUpdatesContext } from '../context'
 
 type TradeLookup = Map<number, Trade>

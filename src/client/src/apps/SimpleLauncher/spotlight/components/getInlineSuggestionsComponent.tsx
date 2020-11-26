@@ -11,7 +11,7 @@ import {
   isMarketIntent,
   mapIntent,
 } from 'rt-interop'
-import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from 'apps/SimpleLauncher/MainRoute'
+import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from 'apps/MainRoute'
 import {
   LogoWrapper,
   Intent,
