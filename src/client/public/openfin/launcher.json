@@ -23,11 +23,6 @@
           "width": 4,
           "height": 4
         },
-        "permissions": {
-          "System": {
-            "launchExternalProcess": true
-          }
-        },
         "saveWindowState": false,
         "resizable": false,
         "shadow": true,
@@ -49,9 +44,19 @@
     "defaultWindowOptions": {
       "contextMenu": true,
       "frame": false,
-      "url": "{*host_url*}/openfin-sub-window-frame"
+      "url": "{*host_url*}/openfin-sub-window-frame",
+      "permissions": {
+        "System": {
+          "launchExternalProcess": true
+        }
+      }
     },
-    "fdc3Api": true
+    "fdc3Api": true,
+    "permissions": {
+      "System": {
+        "launchExternalProcess": true
+      }
+    }
   },
   "runtime": {
     "version": "17.85.53.10"
