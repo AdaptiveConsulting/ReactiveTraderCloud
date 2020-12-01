@@ -36,6 +36,9 @@ const StyledButton = styled.button<{
     svg {
       fill: ${({ iconHoverFill }) => iconHoverFill};
     }
+    span {
+      color: ${({ theme }) => theme.core.textColor};
+    }
   }
 `
 

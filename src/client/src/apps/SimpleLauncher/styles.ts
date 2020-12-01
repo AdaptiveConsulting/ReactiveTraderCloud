@@ -45,12 +45,6 @@ export const IconContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
-  &:hover {
-    span {
-      color: ${({ theme }) => theme.core.textColor};
-    }
-  }
 `
 
 export const LogoLauncherContainer = styled(IconContainer)`
