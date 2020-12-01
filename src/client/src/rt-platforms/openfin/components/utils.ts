@@ -84,6 +84,14 @@ async function createOpenFinPopup(
       e.message.startsWith('Trying to create a Window with name-uuid combination already in use')
     ) {
       console.log(`Attempted to recreate hidden window: ${name}`)
+      /**
+       * Restoring the OpenFin snapshot requires resetting the blurred listeners
+       * on each of the child windows
+       */
+      const uuid = fin.Application.getCurrentSync().identity.uuid
+      const duplicateWindow = fin.Window.wrapSync({ uuid, name })
+      await duplicateWindow.removeAllListeners('blurred')
+      await duplicateWindow.addListener('blurred', () => duplicateWindow.hide().then(callback))
     } else {
       console.error(e)
     }
