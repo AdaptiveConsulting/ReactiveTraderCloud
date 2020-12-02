@@ -5,7 +5,6 @@ import LoginControls from './LoginControls'
 import Logo from './Logo'
 import ThemeSwitcher from './theme-switcher'
 import { PWABanner, PWALaunchButton, PWAInstallBanner } from './PWAInstallPrompt'
-import { ToggleOpenFinLayoutLock } from 'rt-platforms/openfin/components'
 
 const SESSION = 'PWABanner'
 
@@ -44,7 +43,6 @@ const Header: React.FC<Props> = ({ filler, controls }) => {
         </LogoWrapper>
         {filler === undefined ? <Fill /> : filler}
         <HeaderNav>
-          <ToggleOpenFinLayoutLock />
           <ThemeSwitcher />
           <LoginControls />
           <PWALaunchButton state={banner} setIsModalOpen={setIsModalOpen} />

@@ -1,4 +1,5 @@
 import React, { KeyboardEventHandler, useCallback, useEffect, useState } from 'react'
+import ToggleOpenFinLayoutLock from './ToggleOpenFinLayoutLock'
 import {
   ErrorAlert,
   FormControl,
@@ -90,6 +91,8 @@ const OpenFinSnapshotList: React.FC = props => {
 
   return (
     <Background>
+      <ToggleOpenFinLayoutLock />
+      <HrBar />
       <SnapshotList>
         <SnapshotListTitle>Restore a snapshot</SnapshotListTitle>
         {snapshotListContent()}

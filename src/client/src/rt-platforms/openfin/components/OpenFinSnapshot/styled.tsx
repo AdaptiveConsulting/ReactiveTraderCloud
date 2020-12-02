@@ -118,4 +118,7 @@ export const Background = styled.div`
   margin: 0;
   position: absolute;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
