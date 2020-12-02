@@ -4,6 +4,7 @@ import { AccentName } from 'rt-theme'
 import styled from 'styled-components/macro'
 import Header from 'apps/MainRoute/components/app-header'
 import OpenFinContactButton from './OpenFinContactButton'
+import { OpenFinSnapshotButton } from './OpenFinSnapshot'
 import { StatusButtonContainer } from './OpenFinStatusConnection/StatusContainers'
 import StatusBar from 'apps/MainRoute/widgets/status-bar'
 import {
@@ -140,35 +141,68 @@ export const OpenFinFooter: React.FC = ({ ...props }) => (
   <StatusBar>
     <FooterControl>
       <OpenFinContactButton />
+      <OpenFinSnapshotButton />
       <StatusButtonContainer />
     </FooterControl>
   </StatusBar>
 )
 
-export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, popIn, close }) => (
-  <OpenFinControlsWrapper>
-    {minimize && (
-      <HeaderControl accent="aware" onClick={minimize} data-qa="openfin-chrome__minimize">
-        {minimiseNormalIcon}
-      </HeaderControl>
-    )}
-    {maximize && (
-      <HeaderControl accent="primary" onClick={maximize} data-qa="openfin-chrome__maximize">
-        {maximiseScreenIcon}
-      </HeaderControl>
-    )}
-    {popIn && (
-      <HeaderControl accent="primary" onClick={popIn} data-qa="openfin-chrome__popin">
-        {popInIcon}
-      </HeaderControl>
-    )}
-    {close && (
-      <HeaderControl accent="negative" onClick={close} data-qa="openfin-chrome__close">
-        <ExitIcon />
-      </HeaderControl>
-    )}
-  </OpenFinControlsWrapper>
-)
+/**
+ * We create our own popups for the OpenFin Chrome to get around the Platform
+ * Main Window controling Z ordering. These are closed when exiting the main
+ * window by default. However, saving & restoring a snapshot results in these
+ * staying open even after closing the main window. The user will think the app
+ * is closed, but it remains running in the background.
+ *
+ * This manually closes them before making the normal 'close' call.
+ */
+async function closeOpenFinChromePopups() {
+  const app = fin.Application.getCurrentSync()
+  const childWindows = await app.getChildWindows()
+
+  for (let i = 0; i < childWindows.length; i++) {
+    const winIdentity = childWindows[i].identity
+
+    if (winIdentity.name && winIdentity.name.includes('popup')) {
+      const wrapped = fin.Window.wrapSync({ uuid: winIdentity.uuid, name: winIdentity.name })
+      await wrapped.close()
+    }
+  }
+}
+
+export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, popIn, close }) => {
+  async function customClose() {
+    await closeOpenFinChromePopups()
+    if (close) {
+      close()
+    }
+  }
+
+  return (
+    <OpenFinControlsWrapper>
+      {minimize && (
+        <HeaderControl accent="aware" onClick={minimize} data-qa="openfin-chrome__minimize">
+          {minimiseNormalIcon}
+        </HeaderControl>
+      )}
+      {maximize && (
+        <HeaderControl accent="primary" onClick={maximize} data-qa="openfin-chrome__maximize">
+          {maximiseScreenIcon}
+        </HeaderControl>
+      )}
+      {popIn && (
+        <HeaderControl accent="primary" onClick={popIn} data-qa="openfin-chrome__popin">
+          {popInIcon}
+        </HeaderControl>
+      )}
+      {close && (
+        <HeaderControl accent="negative" onClick={customClose} data-qa="openfin-chrome__close">
+          <ExitIcon />
+        </HeaderControl>
+      )}
+    </OpenFinControlsWrapper>
+  )
+}
 
 const OpenFinTitleBar = styled.div`
   display: flex;

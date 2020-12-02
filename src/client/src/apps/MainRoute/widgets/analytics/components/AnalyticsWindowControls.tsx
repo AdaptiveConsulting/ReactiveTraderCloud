@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { PopoutIcon } from 'rt-components'
-import { Controls, PopoutButton } from './styled'
+import { PopoutButton } from 'rt-components/styled'
+import { Controls } from './styled'
 
 interface AnalyticsHeaderProps {
   canPopout: boolean

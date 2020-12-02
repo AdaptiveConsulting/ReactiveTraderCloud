@@ -5,6 +5,7 @@ import { isParentAppOpenfinLauncher } from '../adapter/launcherUtils'
 import { getAppName } from 'rt-util'
 import styled from 'styled-components/macro'
 import { OpenFinChrome, OpenFinSubWindowHeader } from './OpenFinChrome'
+import { exitIconString, popoutIconString } from './OpenFinWindowFrame'
 
 const OpenFinSubFrameRoot = styled.div`
   background-color: ${({ theme }) => theme.core.darkBackground};
@@ -25,8 +26,14 @@ const OpenFinSubFrameRoot = styled.div`
     padding: 0;
   }
 
-  .lm_tabs {
+  .lm_tab {
+    margin-left: 1rem;
     background-color: ${({ theme }) => theme.core.lightBackground};
+    font-size: 3rem;
+  }
+
+  .lm_tabs {
+    background-color: ${({ theme }) => theme.core.darkBackground};
     border-radius: 0px;
   }
 
@@ -40,12 +47,19 @@ const OpenFinSubFrameRoot = styled.div`
     color: ${({ theme }) => theme.core.textColor} !important;
   }
 
-  .lm_controls {
-    display: none;
-  }
-
   .lm_splitter {
     background-color: ${({ theme }) => theme.core.textColor};
+  }
+
+  .lm_close_tab {
+    background-image: url('data:image/svg+xml;utf8,${exitIconString}') !important;
+    background-size: 20px !important;
+  }
+
+  .lm_popout {
+    background-image: url('data:image/svg+xml;utf8,${popoutIconString}') !important;
+    background-size: 30px !important;
+    margin: 0.5rem 1.5rem 0 0;
   }
 `
 
@@ -60,8 +74,8 @@ export const OpenFinSubWindowFrame: React.FC = () => {
 
   const headerControlHandlers = {
     minimize: () => win.minimize(),
-    popIn: !fromLauncher ? () => win.close() : undefined,
-    close: fromLauncher ? () => win.close() : undefined,
+    popIn: !fromLauncher && windowName !== '' ? () => win.close() : undefined,
+    close: fromLauncher || windowName === '' ? () => win.close() : undefined,
   }
 
   useEffect(() => {

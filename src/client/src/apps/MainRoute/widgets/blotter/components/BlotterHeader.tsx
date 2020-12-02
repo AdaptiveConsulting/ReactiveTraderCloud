@@ -5,6 +5,7 @@ import styled from 'styled-components/macro'
 import { columnDefinitions } from './blotterUtils'
 import BlotterToolbar from './toolbar/BlotterToolbar'
 import ExcelButton from './toolbar/ExcelButton'
+import { PopoutButton } from 'rt-components/styled'
 
 interface Props {
   canPopout: boolean
@@ -20,14 +21,6 @@ const BlotterHeaderStyle = styled('div')`
   padding: 0 0.5rem;
   height: 2.5rem;
   background-color: ${({ theme }) => theme.core.darkBackground};
-`
-
-const BlotterControls = styled('button')`
-  &:hover {
-    .hover-state {
-      fill: #5f94f5;
-    }
-  }
 `
 
 const BlotterRight = styled('div')`
@@ -73,7 +66,7 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
   const removeAllFilters = useCallback(() => gridApi && gridApi.setFilterModel(null), [gridApi])
 
   const removeFilter = useCallback((key: string) => gridApi && gridApi.destroyFilter(key), [
-    gridApi
+    gridApi,
   ])
 
   return (
@@ -93,9 +86,9 @@ const BlotterHeader: FC<Props> = ({ gridApi, canPopout, onExportToExcelClick, on
         {canPopout && (
           <React.Fragment>
             <Fill />
-            <BlotterControls onClick={popoutClickHandler} data-qa="blotter-header__pop-out-button">
+            <PopoutButton onClick={popoutClickHandler} data-qa="blotter-header__pop-out-button">
               {PopoutIcon}
-            </BlotterControls>
+            </PopoutButton>
           </React.Fragment>
         )}
       </BlotterRight>

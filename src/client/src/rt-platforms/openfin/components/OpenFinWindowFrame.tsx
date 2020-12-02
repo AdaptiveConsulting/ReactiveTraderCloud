@@ -3,6 +3,12 @@ import { Helmet } from 'react-helmet'
 import styled from 'styled-components/macro'
 import { OpenFinChrome, OpenFinHeader, OpenFinFooter } from './OpenFinChrome'
 import { getAppName } from 'rt-util'
+import { ExitIcon } from 'apps/SimpleLauncher/icons'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { PopoutIcon } from 'rt-components'
+
+export const popoutIconString = encodeURIComponent(renderToStaticMarkup(PopoutIcon))
+export const exitIconString = encodeURIComponent(renderToStaticMarkup(<ExitIcon />))
 
 const OpenFinFrameRoot = styled.div`
   background-color: ${({ theme }) => theme.core.darkBackground};
@@ -27,37 +33,43 @@ const OpenFinFrameRoot = styled.div`
     color: ${({ theme }) => theme.core.textColor};
   }
 
-  .lm_tabs {
+  .lm_tab {
     background-color: ${({ theme }) => theme.core.lightBackground};
-    border-radius: 0px;
+    font-size: 3rem;
   }
 
-  .lm_content {
+  .lm_tabs {
+    background-color: ${({ theme }) => theme.core.darkBackground};
+    padding-left: 1rem;
+  }
+
+  .lm_header {
+    background-color: ${({ theme }) => theme.core.darkBackground};
+  }
+
+  .lm_goldenlayout {
     background-color: ${({ theme }) => theme.core.lightBackground};
   }
 
   .lm_tab,
   .lm_tab.lm_active {
-    background-color: ${({ theme }) => theme.core.darkBackground} !important;
+    background-color: ${({ theme }) => theme.core.darkBackground};
+    color: ${({ theme }) => theme.core.textColor};
+  }
+
+  .lm_title {
     color: ${({ theme }) => theme.core.textColor} !important;
   }
 
-  .lm_controls {
-    display: none;
+  .lm_close_tab {
+    background-image: url('data:image/svg+xml;utf8,${exitIconString}') !important;
+    background-size: 20px !important;
   }
 
-  .lm_splitter {
-    background-color: ${({ theme }) => theme.core.textColor};
-  }
-
-  .lm_item.lm_root {
-    background-color: ${({ theme }) => theme.core.textColor};
-    opacity: 0.1;
-    &:hover {
-      opacity: 0.3;
-      transition: all 200ms ease-in-out;
-      background-color: ${({ theme }) => theme.core.textColor};
-    }
+  .lm_popout {
+    background-image: url('data:image/svg+xml;utf8,${popoutIconString}') !important;
+    background-size: 30px !important;
+    margin: 0.5rem 1.5rem 0 0;
   }
 `
 

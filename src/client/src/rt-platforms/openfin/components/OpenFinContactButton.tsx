@@ -20,7 +20,7 @@ const OpenFinContactButton: React.FC = () => {
   const showPopup = useCallback(() => {
     if (!showing) {
       setShowing(true)
-      showOpenFinPopup(baseWin, [130, 40])
+      showOpenFinPopup(baseWin, [200, 40])
     }
   }, [baseWin, showing])
 
