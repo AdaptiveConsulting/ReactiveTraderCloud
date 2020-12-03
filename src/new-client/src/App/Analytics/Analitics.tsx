@@ -15,7 +15,7 @@ const AnalyticsWrapper = styled(Wrapper)`
 `
 export const Analytics: React.FC = () => (
   <AnalyticsWrapper>
-    <Loader />
+    <Loader minWidth="22rem" minHeight="22rem" />
   </AnalyticsWrapper>
 )
 

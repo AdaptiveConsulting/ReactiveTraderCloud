@@ -16,8 +16,15 @@ const WorkspaceWrapper = styled(Wrapper)`
   overflow-y: auto;
 `
 
+export const OverflowScroll = styled.div`
+  overflow-y: scroll;
+  height: 100%;
+`
+
 export const LiveRates: React.FC = () => (
   <WorkspaceWrapper>
-    <Loader />
+    <OverflowScroll>
+      <Loader />
+    </OverflowScroll>
   </WorkspaceWrapper>
 )

@@ -81,7 +81,7 @@ export const StatusButton: React.FC = () => {
     <Root ref={ref}>
       <Button onClick={toggleMenu} data-qa="status-button__toggle-button">
         <StatusCircle status={appStatus} />
-        <StatusLabel>{appStatus.toUpperCase()}</StatusLabel>
+        <StatusLabel>{appStatus[0].toUpperCase() + appStatus.slice(1).toLowerCase()}</StatusLabel>
       </Button>
 
       <ServiceListPopup open={displayMenu}>

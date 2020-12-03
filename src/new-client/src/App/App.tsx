@@ -29,6 +29,11 @@ const AppLayoutRoot = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 `
 
+const MainOutter = styled.div`
+  display: flex;
+  overflow: hidden;
+`
+
 const MainWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr auto;
@@ -36,11 +41,6 @@ const MainWrapper = styled.div`
     display: block;
   }
   width: 100%;
-`
-
-const MainOutter = styled.div`
-  display: flex;
-  overflow: hidden;
 `
 
 const Modals: React.FC = () => null
