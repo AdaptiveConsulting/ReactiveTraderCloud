@@ -1,0 +1,73 @@
+{
+  "name": "new-reactive-trader-cloud",
+  "description": "Reactive Trader® - Cloud edition. Example reactive currency pair trading app",
+  "keywords": [
+    "react",
+    "fx",
+    "spot",
+    "cloud",
+    "rxjs"
+  ],
+  "authors": [
+    {
+      "name": "Adaptive Consulting",
+      "email": "@AdaptiveLimited"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
+  },
+  "dependencies": {
+    "@react-rxjs/core": "^0.6.1",
+    "@react-rxjs/utils": "^0.3.0",
+    "@stomp/rx-stomp": "^1.0.1",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "polished": "^4.0.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.1",
+    "react-switch": "^5.0.1",
+    "ress": "^3.0.0",
+    "rxjs": "^6.6.3",
+    "styled-components": "^5.2.1",
+    "typeface-lato": "^1.1.13",
+    "typeface-montserrat": "^1.1.13",
+    "typeface-roboto": "^1.1.13",
+    "typescript": "^4.0.3",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.4"
+  }
+}

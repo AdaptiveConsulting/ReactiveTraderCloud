@@ -1,0 +1,172 @@
+{
+  "platform": {
+    "uuid": "reactive-trader-{{environment}}",
+    "name": "Reactive Trader®{{environment_suffix}}",
+    "applicationIcon": "{*host_url*}/static/media/reactive-trader-icon-256x256.png",
+    "url": "{*host_url*}",
+    "fdc3api": true,
+    "defaultWindowOptions": {
+      "contextMenu": true,
+      "frame": false,
+      "applicationIcon": "{*host_url*}/static/media/reactive-trader-icon-256x256.png",
+      "url": "{*host_url*}/openfin-sub-window-frame"
+    }
+  },
+  "runtime": {
+    "version": "17.85.53.10"
+  },
+  "services": [
+    {
+      "name": "notifications",
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.12.8/app.json"
+    }
+  ],
+  "devtools_port": 9090,
+  "splashScreenImage": "{*host_url*}/static/media/splash.png",
+  "shortcut": {
+    "company": "Adaptive Consulting",
+    "icon": "{*host_url*}/static/media/reactive-trader.ico",
+    "name": "Reactive Trader®{{environment_suffix}}"
+  },
+  "appAssets": [
+    {
+      "src": "{*host_url*}/plugin/add-in.zip",
+      "alias": "excel-api-addin",
+      "forceDownload": true,
+      "version": "2.0.0"
+    }
+  ],
+  "snapshot": {
+    "windows": [
+      {
+        "applicationIcon": "{*host_url*}/static/media/reactive-trader-icon-256x256.png",
+        "autoShow": true,
+        "defaultWidth": 1280,
+        "defaultHeight": 900,
+        "minWidth": 800,
+        "minHeight": 600,
+        "defaultCentered": true,
+        "resizable": true,
+        "maximizable": true,
+        "saveWindowState": true,
+        "frame": false,
+        "shadow": true,
+        "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+        "preload": [
+          {
+            "url": "{*host_url*}/plugin/service-loader.js"
+          },
+          {
+            "url": "{*host_url*}/plugin/fin.desktop.Excel.js"
+          }
+        ],
+        "contextMenu": true,
+        "accelerator": {
+          "devtools": true,
+          "reload": true,
+          "reloadIgnoringCache": true,
+          "zoom": true
+        },
+        "url": "{*host_url*}/openfin-window-frame",
+        "layout": {
+          "settings": {
+            "blockedPopoutsThrowError": false,
+            "closePopoutsOnUnload": true,
+            "constrainDragToContainer": false,
+            "hasHeaders": false,
+            "popoutWholeStack": false,
+            "reorderEnabled": false,
+            "reorderOnTabMenuClick": true,
+            "responsiveMode": "always",
+            "selectionEnabled": true,
+            "showCloseIcon": false,
+            "showMaximiseIcon": false,
+            "showPopoutIcon": false,
+            "tabControlOffset": 10,
+            "tabOverlapAllowance": 0
+          },
+          "content": [
+            {
+              "type": "row",
+              "id": "mainRow",
+              "isClosable": true,
+              "contextMenu": true,
+              "title": "",
+              "content": [
+                {
+                  "type": "column",
+                  "isClosable": true,
+                  "title": "",
+                  "width": 80,
+                  "content": [
+                    {
+                      "type": "stack",
+                      "width": 50,
+                      "height": 50,
+                      "isClosable": true,
+                      "title": "",
+                      "activeItemIndex": 0,
+                      "content": [
+                        {
+                          "type": "component",
+                          "componentName": "view",
+                          "contextMenu": true,
+                          "componentState": {
+                            "url": "{*host_url*}/tiles",
+                            "name": "Tiles"
+                          },
+                          "isClosable": true,
+                          "title": "Spot Tiles"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "stack",
+                      "header": {},
+                      "isClosable": true,
+                      "title": "",
+                      "activeItemIndex": 0,
+                      "height": 50,
+                      "content": [
+                        {
+                          "type": "component",
+                          "componentName": "view",
+                          "componentState": {
+                            "url": "{*host_url*}/blotter",
+                            "name": "Blotter"
+                          },
+                          "isClosable": true,
+                          "title": "Blotter"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "stack",
+                  "width": 30,
+                  "height": 100,
+                  "isClosable": true,
+                  "title": "",
+                  "activeItemIndex": 0,
+                  "content": [
+                    {
+                      "type": "component",
+                      "componentName": "view",
+                      "componentState": {
+                        "url": "{*host_url*}/analytics",
+                        "name": "Analytics"
+                      },
+                      "isClosable": true,
+                      "title": "Analytics"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
