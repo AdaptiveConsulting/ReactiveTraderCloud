@@ -10,12 +10,12 @@ interface Props {
   services: ServiceStatus[]
 }
 
-export const StatusButton: React.FC<Props> = ({ services }) => {
+const OpenFinStatusButton: React.FC<Props> = ({ services }) => {
   const [appStatus, setAppStatus] = useState<ServiceConnectionStatus>()
   const [showing, setShowing] = React.useState(false)
 
-  const baseWin = useMemo(() => ({ name: 'openfin-status-popup', height: 350, width: 260 }), [])
-  const URL = '/status'
+  const baseWin = useMemo(() => ({ name: 'status', height: 350, width: 260 }), [])
+  const pathname = '/status'
 
   const showPopup = useCallback(() => {
     if (!showing) {
@@ -25,7 +25,7 @@ export const StatusButton: React.FC<Props> = ({ services }) => {
   }, [baseWin, showing])
 
   React.useEffect(() => {
-    createOpenFinPopup(baseWin, URL, () => setShowing(false))
+    createOpenFinPopup(baseWin, pathname, () => setShowing(false))
   }, [baseWin])
 
   useEffect(() => {
@@ -47,3 +47,5 @@ export const StatusButton: React.FC<Props> = ({ services }) => {
     </Root>
   )
 }
+
+export default OpenFinStatusButton

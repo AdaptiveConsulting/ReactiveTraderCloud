@@ -4,6 +4,7 @@ import {
   OPENFIN_SNAPSHOT_NAMES,
   OPENFIN_SNAPSHOTS,
 } from 'rt-platforms/openfin/StorageItems'
+import { mainOpenFinWindowName } from '../utils'
 
 export const resetCurrentSnapshotName = () => {
   setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
@@ -42,9 +43,7 @@ export const applySnapshotFromStorage = async (snapshotName: string) => {
 
   if (snapshotNames.includes(snapshotName)) {
     setCurrentSnapshotName(snapshotName)
-    await platform.applySnapshot(snapshots.snapshots[snapshotName], {
-      closeExistingWindows: true,
-    })
+    await platform.applySnapshot(snapshots.snapshots[snapshotName])
     return true
   }
   return false
@@ -63,29 +62,11 @@ export const saveSnapshotToStorage = async (newSnapshotName: string) => {
   setSnapshots(snapshots)
 }
 
-/**
- * Toggles the Platform controls
- *
- * Manually created windows are not part of the layout. Layout windows all start
- * with 'internal-generated', so we find one of those windows to retrieve the
- * layout.
- *
- * https://developers.openfin.co/docs/recipes-platform
- *
- */
-export const toggleLockedLayout = async () => {
-  const thisApp = fin.Application.getCurrentSync()
-  const childWindows = await thisApp.getChildWindows()
-  const internallyGeneratedWindows = childWindows.filter(
-    w => w.identity.name && w.identity.name.startsWith('internal-generated')
-  )
-
-  if (internallyGeneratedWindows.length < 1) {
-    console.error('Attempting to toggle layout, but no layout windows found')
-    return
-  }
-
-  const layout = fin.Platform.Layout.wrapSync(internallyGeneratedWindows[0].identity)
+export const toggleLayoutLock = async () => {
+  const layout = fin.Platform.Layout.wrapSync({
+    name: mainOpenFinWindowName,
+    uuid: fin.me.uuid,
+  })
 
   const oldLayout = await layout.getConfig()
   const { settings, dimensions } = oldLayout

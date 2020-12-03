@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { selectServices } from './selectors'
-import { StatusButton } from './StatusButton'
+import OpenFinStatusButton from './OpenFinStatusButton'
 import StatusDisplay from './StatusDisplay'
 import { GlobalState } from 'StoreTypes'
 
@@ -11,7 +11,7 @@ export const mapStateToProps = (state: GlobalState) => {
   }
 }
 
-const StatusButtonContainer = connect(mapStateToProps)(StatusButton)
+const StatusButtonContainer = connect(mapStateToProps)(OpenFinStatusButton)
 const StatusDisplayContainer = connect(mapStateToProps)(StatusDisplay)
 
 export { StatusButtonContainer, StatusDisplayContainer }

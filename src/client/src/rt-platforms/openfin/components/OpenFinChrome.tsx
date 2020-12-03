@@ -14,6 +14,7 @@ import {
   popInIcon,
 } from 'apps/SimpleLauncher/icons'
 import ReactGA from 'react-ga'
+import { inMainOpenFinWindow, closeOtherWindows } from './utils'
 
 export interface ControlProps {
   minimize?: () => void
@@ -147,32 +148,12 @@ export const OpenFinFooter: React.FC = ({ ...props }) => (
   </StatusBar>
 )
 
-/**
- * We create our own popups for the OpenFin Chrome to get around the Platform
- * Main Window controling Z ordering. These are closed when exiting the main
- * window by default. However, saving & restoring a snapshot results in these
- * staying open even after closing the main window. The user will think the app
- * is closed, but it remains running in the background.
- *
- * This manually closes them before making the normal 'close' call.
- */
-async function closeOpenFinChromePopups() {
-  const app = fin.Application.getCurrentSync()
-  const childWindows = await app.getChildWindows()
-
-  for (let i = 0; i < childWindows.length; i++) {
-    const winIdentity = childWindows[i].identity
-
-    if (winIdentity.name && winIdentity.name.includes('popup')) {
-      const wrapped = fin.Window.wrapSync({ uuid: winIdentity.uuid, name: winIdentity.name })
-      await wrapped.close()
-    }
-  }
-}
-
 export const OpenFinControls: React.FC<ControlProps> = ({ minimize, maximize, popIn, close }) => {
   async function customClose() {
-    await closeOpenFinChromePopups()
+    if (inMainOpenFinWindow()) {
+      await closeOtherWindows()
+    }
+
     if (close) {
       close()
     }

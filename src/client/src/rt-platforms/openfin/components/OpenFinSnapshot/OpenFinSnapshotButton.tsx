@@ -6,12 +6,12 @@ const OpenFinSnapshotButton: React.FC = () => {
   const [showing, setShowing] = useState(false)
 
   const baseWin = useMemo(() => {
-    return { name: 'openfin-snapshot-popup', height: 249, width: 245 }
+    return { name: 'snapshots', height: 249, width: 245 }
   }, [])
 
   const offset: Offset = useMemo(() => [119, 40], [])
 
-  const URL = '/snapshots'
+  const pathname = '/snapshots'
 
   const showPopup = useCallback(() => {
     if (!showing) {
@@ -21,7 +21,7 @@ const OpenFinSnapshotButton: React.FC = () => {
   }, [baseWin, offset, showing])
 
   useEffect(() => {
-    createOpenFinPopup(baseWin, URL, () => setShowing(false))
+    createOpenFinPopup(baseWin, pathname, () => setShowing(false))
   }, [baseWin])
 
   return (

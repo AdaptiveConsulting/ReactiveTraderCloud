@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
-import { toggleLockedLayout } from './utils'
+import { toggleLayoutLock } from './utils'
 
 const Container = styled('div')`
   padding: 0.75rem 0.75rem 0 0.75rem;
@@ -17,7 +17,7 @@ const ToggleOpenFinLayoutLock = () => {
 
   const toggle = () => {
     setLocked(!locked)
-    toggleLockedLayout()
+    toggleLayoutLock()
   }
 
   return (

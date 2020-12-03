@@ -68,6 +68,7 @@
           "zoom": true
         },
         "url": "{*host_url*}/openfin-window-frame",
+        "name": "Reactive-Trader-MAIN",
         "layout": {
           "settings": {
             "blockedPopoutsThrowError": false,

@@ -1,3 +1,5 @@
+import { Identity } from 'openfin/_v2/identity'
+
 interface BasicWindow {
   name: string
   width: number
@@ -5,15 +7,21 @@ interface BasicWindow {
 }
 
 export type Offset = [number, number]
+const openFinPopupPrefix = 'user-generated-popup-'
+export const mainOpenFinWindowName = 'Reactive-Trader-MAIN' // set in the app.json
+
+function popupNameFor(name: string): string {
+  return `${openFinPopupPrefix}${name}`
+}
 
 /**
  * Shows an OpenFin Popup, offset from the bottom right corner of the parent window/full screen.
  */
-async function showOpenFinPopup(
+export async function showOpenFinPopup(
   { height, name, width }: BasicWindow,
   [rightOffset, bottomOffset]: Offset
 ) {
-  const popupWindow = await fin.Window.wrapSync({ uuid: fin.me.uuid, name })
+  const popupWindow = await fin.Window.wrapSync({ uuid: fin.me.uuid, name: popupNameFor(name) })
   let left = 0,
     top = 0
 
@@ -58,15 +66,15 @@ async function showOpenFinPopup(
 /**
  * An OpenFin Popup hides itself when blurred
  */
-async function createOpenFinPopup(
+export async function createOpenFinPopup(
   { height, name, width }: BasicWindow,
-  url: string,
+  pathname: string,
   callback: () => void
 ): Promise<void> {
   try {
-    const popupWindow = await fin.Window.create({
-      name,
-      url,
+    const popupWindow = await fin.Platform.getCurrentSync().createWindow({
+      name: popupNameFor(name),
+      url: `${location.origin}${pathname}`,
       defaultHeight: height,
       defaultWidth: width,
       autoShow: false,
@@ -83,18 +91,51 @@ async function createOpenFinPopup(
       e.message &&
       e.message.startsWith('Trying to create a Window with name-uuid combination already in use')
     ) {
-      console.log(`Attempted to recreate hidden window: ${name}`)
-      /**
-       * Restoring the OpenFin snapshot requires resetting the blurred listeners
-       * on each of the child windows
-       */
-      const uuid = fin.Application.getCurrentSync().identity.uuid
-      const duplicateWindow = fin.Window.wrapSync({ uuid, name })
-      await duplicateWindow.removeAllListeners('blurred')
-      await duplicateWindow.addListener('blurred', () => duplicateWindow.hide().then(callback))
+      console.log(`Attempted to recreate hidden window: ${popupNameFor(name)}`)
     } else {
       console.error(e)
     }
   }
 }
-export { createOpenFinPopup, showOpenFinPopup }
+
+function isInternalGeneratedWindow(windowIdentity: Identity): boolean {
+  // the 'internal-generated-window' string is set by OpenFin
+  return Boolean(windowIdentity.name && windowIdentity.name.startsWith('internal-generated-window'))
+}
+
+function isUserGeneratedPopup(windowIdentity: Identity): boolean {
+  return Boolean(windowIdentity.name && windowIdentity.name.startsWith(openFinPopupPrefix))
+}
+
+export function inMainOpenFinWindow(): boolean {
+  const currentWindowName = fin.Window.getCurrentSync().identity.name
+
+  // set in app.json
+  return currentWindowName === mainOpenFinWindowName
+}
+
+/**
+ * Windows created under the Platform controls are sibling windows - they persist
+ * even after the main window is closed. The app creates two types of windows:
+ * - Popups: manually created windows that serves as floating pieces of UI
+ * - Internal Generated: Platform created windows (contain the blotter, tiles,
+ *   and analytics Views when popped out). We use Platform windows to leverage
+ *   the smart popout & drag in functionality.
+ *
+ * The below closes all of these windows when the main app window is closed. Not
+ * closing the popups results in the application staying open with hidden popups.
+ * Not closing the internal generated results in the popped out pieces of the
+ * application persisting even after the main window is closed.
+ */
+export async function closeOtherWindows() {
+  const app = fin.Application.getCurrentSync()
+  const childWindows = await app.getChildWindows()
+
+  for (let i = 0; i < childWindows.length; i++) {
+    const winIdentity = childWindows[i].identity
+    if (isInternalGeneratedWindow(winIdentity) || isUserGeneratedPopup(winIdentity)) {
+      const wrapped = fin.Window.wrapSync({ uuid: winIdentity.uuid, name: winIdentity.name })
+      await wrapped.close()
+    }
+  }
+}
