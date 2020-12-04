@@ -1,13 +1,10 @@
-import React from 'react'
-import { AnalyticsBarChart } from './analyticsBarChart'
-import { CurrencyPairPosition } from '../model'
-import { Title } from './styled'
+import React from "react"
+import { useCurrentPositions, currentPositions$ } from "services/analytics"
+import { AnalyticsBarChart } from "./analyticsBarChart"
+import { Title } from "./styled"
 
-interface PnLProps {
-  chartData: CurrencyPairPosition[]
-}
-
-export const PnL: React.FC<PnLProps> = ({ chartData }) => {
+export const PnL: React.FC = () => {
+  const chartData = useCurrentPositions()
   return (
     <div>
       <Title>PnL</Title>
@@ -15,3 +12,5 @@ export const PnL: React.FC<PnLProps> = ({ chartData }) => {
     </div>
   )
 }
+
+export const pnL$ = currentPositions$

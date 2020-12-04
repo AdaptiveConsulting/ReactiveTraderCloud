@@ -1,3 +1,1 @@
-import AnalyticsBarChart from './AnalyticsBarChart'
-
-export { AnalyticsBarChart }
+export { AnalyticsBarChart } from "./AnalyticsBarChart"

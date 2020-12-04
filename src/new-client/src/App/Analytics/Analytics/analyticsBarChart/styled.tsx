@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from "styled-components/macro"
 
 const FlexDiv = styled.div`
   display: flex;
@@ -10,11 +10,13 @@ export const BarChart = styled.div`
   backface-visibility: hidden;
 `
 
-export const PriceContainer = styled(FlexDiv).attrs((props: { distance: number }) => ({
-  style: {
-    transform: `translate(${props.distance}%)`,
-  },
-}))<{ distance: number }>`
+export const PriceContainer = styled(FlexDiv).attrs(
+  (props: { distance: number }) => ({
+    style: {
+      transform: `translate(${props.distance}%)`,
+    },
+  }),
+)<{ distance: number }>`
   width: 100%;
   transition: transform 0.5s;
   font-size: 11px;
@@ -33,12 +35,14 @@ export const PriceLabel = styled.div<{ color: string; distance: number }>`
   align-self: center;
   height: 1.1rem;
   transition: transform 0.2s;
-  color: ${({ theme, color }) => theme.accents[color].base};
+  color: ${({ theme, color }) => (theme as any).accents[color].base};
   padding-bottom: 0px;
 
   &:hover {
     transform: scale(1.64);
-    transform-origin: ${({ distance }) => (distance > 35 ? 'calc(164% - 15px)' : 'center')} 12px;
+    transform-origin: ${({ distance }) =>
+        distance > 35 ? "calc(164% - 15px)" : "center"}
+      12px;
   }
 `
 export const DiamondShape = styled.div<{ color: string }>`
@@ -46,7 +50,7 @@ export const DiamondShape = styled.div<{ color: string }>`
   width: 6px;
   height: 6px;
   transform: rotate(45deg);
-  background-color: ${({ theme, color }) => theme.accents[color].base};
+  background-color: ${({ theme, color }) => (theme as any).accents[color].base};
 `
 export const Label = styled.div`
   flex: 0 0 60px;
@@ -58,7 +62,7 @@ export const Label = styled.div`
 export const BarPriceContainer = styled.div`
   width: 100%;
 `
-const bgColor = '#444c5f'
+const bgColor = "#444c5f"
 export const Bar = styled.div`
   background-color: ${bgColor};
   height: 0.125rem;

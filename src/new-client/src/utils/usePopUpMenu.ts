@@ -1,6 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react"
 
-const isParentOf = (parent: HTMLElement, child: HTMLElement | null): boolean => {
+const isParentOf = (
+  parent: HTMLElement,
+  child: HTMLElement | null,
+): boolean => {
   if (child === null) {
     return false
   }
@@ -15,7 +18,8 @@ export const usePopUpMenu = (ref: React.RefObject<HTMLDivElement>) => {
   const hidePopUpMenu = useRef<(e: MouseEvent) => void>()
   if (!hidePopUpMenu.current) {
     hidePopUpMenu.current = (e: MouseEvent) => {
-      const isClickInside = ref.current !== null && isParentOf(ref.current, e.target as HTMLElement)
+      const isClickInside =
+        ref.current !== null && isParentOf(ref.current, e.target as HTMLElement)
 
       if (!isClickInside) {
         setDisplayMenu(false)
@@ -25,14 +29,13 @@ export const usePopUpMenu = (ref: React.RefObject<HTMLDivElement>) => {
 
   useEffect(() => {
     if (displayMenu) {
-      document.addEventListener('click', hidePopUpMenu.current!)
+      document.addEventListener("click", hidePopUpMenu.current!)
     }
 
     return () => {
-      document.removeEventListener('click', hidePopUpMenu.current!)
+      document.removeEventListener("click", hidePopUpMenu.current!)
     }
   }, [displayMenu])
 
   return { displayMenu, setDisplayMenu }
 }
-

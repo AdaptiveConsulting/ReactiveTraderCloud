@@ -1,6 +1,6 @@
-import styled from 'styled-components/macro'
+import styled from "styled-components/macro"
 
-const buttonHeight = '2rem'
+const buttonHeight = "2rem"
 export const Root = styled.div`
   position: relative;
   float: right;
@@ -11,7 +11,7 @@ export const Root = styled.div`
 
   font-size: 0.75rem;
 
-  color: ${props => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
 `
 
 export const Button = styled.div<{ margin?: string }>`
@@ -26,5 +26,5 @@ export const Button = styled.div<{ margin?: string }>`
   height: 1.6rem;
   font-size: 0.65rem;
   font-weight: 350;
-  margin: ${({ margin }) => (margin ? margin : 'unset')};
+  margin: ${({ margin }) => (margin ? margin : "unset")};
 `

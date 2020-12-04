@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from "styled-components/macro"
 
 interface DropdownMenuProps {
   showMenu: boolean
@@ -65,7 +65,7 @@ export const UserAvatar = styled.img`
 `
 export const DropdownMenu = styled.div<DropdownMenuProps>`
   background: ${({ theme }) => theme.primary[1]};
-  display: ${({ showMenu }) => (showMenu ? 'flex' : 'none')};
+  display: ${({ showMenu }) => (showMenu ? "flex" : "none")};
   flex-direction: column;
   position: absolute;
   right: 0;
@@ -98,9 +98,10 @@ export const Circle = styled.div<CircleProps>`
   display: inline-block;
   width: 9px;
   height: 9px;
-  background-color: ${({ theme, full }) => (full ? theme.secondary.base : 'transparent')};
+  background-color: ${({ theme, full }) =>
+    full ? theme.secondary.base : "transparent"};
   border: ${({ theme, full }) =>
-    full ? '1px solid transparent' : `1px solid ${theme.primary[5]}`};
+    full ? "1px solid transparent" : `1px solid ${theme.primary[5]}`};
   border-radius: 50%;
   margin-right: 2px;
 `

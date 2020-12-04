@@ -1,3 +1,5 @@
+export {}
+/*
 import { select, layout, Selection, event as d3Event } from 'd3'
 import React, { Component, createRef } from 'react'
 import { colors } from 'rt-theme'
@@ -18,7 +20,7 @@ import {
   addShadow,
   Scales,
   CCYPosition,
-  BubbleChartNode
+  BubbleChartNode,
 } from './chartUtil'
 
 export interface PositionsBubbleChartProps {
@@ -48,7 +50,7 @@ export class PositionsBubbleChart extends Component<
   state: PositionsBubbleChartState = {
     nodes: [],
     prevPositionsData: [],
-    updateRequired: false
+    updateRequired: false,
   }
 
   constructor(props: PositionsBubbleChartProps) {
@@ -135,7 +137,7 @@ export class PositionsBubbleChart extends Component<
           color,
           id: dataObj.symbol,
           r: getRadius(dataObj, this.scales),
-          cx: this.scales.x(index)
+          cx: this.scales.x(index),
         }
         return newNode
       }
@@ -148,7 +150,7 @@ export class PositionsBubbleChart extends Component<
     this.setState({
       nodes: updatedNodes,
       prevPositionsData: positionsData,
-      updateRequired: true
+      updateRequired: true,
     })
   }
 
@@ -246,11 +248,7 @@ export class PositionsBubbleChart extends Component<
 
     const nodeGroup = svg.selectAll('g.node').data(nodes, (d: BubbleChartNode) => d.id)
 
-    nodeGroup
-      .enter()
-      .append('g')
-      .attr('class', 'node')
-      .call(this.force.drag)
+    nodeGroup.enter().append('g').attr('class', 'node').call(this.force.drag)
 
     if (nodeGroup.selectAll('circle').empty()) {
       const circleNodeGroup = nodeGroup.append('circle')
@@ -278,3 +276,4 @@ export class PositionsBubbleChart extends Component<
 }
 
 export default reactSizeme({ monitorHeight: true })(PositionsBubbleChart)
+  */

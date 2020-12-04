@@ -1,25 +1,30 @@
-import React from 'react'
-import { CurrencyPairPosition } from '../../model/index'
-import PNLBar from './PNLBar'
+import React from "react"
+import { CurrencyPairPosition } from "services/analytics"
+import PNLBar from "./PNLBar"
 
 export interface Props {
   chartData: CurrencyPairPosition[]
 }
 
-const AnalyticsBarChart: React.FC<Props> = ({ chartData }) => {
+export const AnalyticsBarChart: React.FC<Props> = ({ chartData }) => {
   const { max, min } = getMinMax(chartData)
   const maxWidth = Math.max(Math.abs(max), Math.abs(min))
   return (
     <React.Fragment>
       {chartData.map((chartItem, index) => {
         const { basePnl, symbol } = chartItem
-        return <PNLBar key={index} basePnl={basePnl} symbol={symbol} maxVal={maxWidth} />
+        return (
+          <PNLBar
+            key={index}
+            basePnl={basePnl}
+            symbol={symbol}
+            maxVal={maxWidth}
+          />
+        )
       })}
     </React.Fragment>
   )
 }
-
-export default AnalyticsBarChart
 
 const getMinMax = (chartData: CurrencyPairPosition[]) =>
   chartData.reduce(
@@ -29,5 +34,5 @@ const getMinMax = (chartData: CurrencyPairPosition[]) =>
       prev.min = Math.min(prev.min, basePnl)
       return prev
     },
-    { max: 0, min: 0 }
+    { max: 0, min: 0 },
   )

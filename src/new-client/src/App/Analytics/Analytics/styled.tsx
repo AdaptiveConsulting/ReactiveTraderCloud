@@ -1,5 +1,5 @@
-import styled from 'styled-components/macro'
-import { transparentColor } from '../globals/variables'
+import styled from "styled-components/macro"
+import { transparentColor } from "../globals/variables"
 
 export const AnalyticsWrapper = styled.div<{ inExternalWindow?: boolean }>`
   width: 100%;
@@ -11,7 +11,8 @@ export const AnalyticsWrapper = styled.div<{ inExternalWindow?: boolean }>`
   overflow-x: hidden;
   position: relative;
   display: grid;
-  grid-template-rows: ${({ inExternalWindow }) => (inExternalWindow ? '0 auto' : '46px auto')};
+  grid-template-rows: ${({ inExternalWindow }) =>
+    inExternalWindow ? "0 auto" : "46px auto"};
 `
 
 export const AnalyticsHeader = styled.header`
@@ -72,10 +73,10 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
 
   .new-chart-area {
     stroke-width: 2px !important;
-    fill: url('#areaGradient');
+    fill: url("#areaGradient");
   }
   .new-chart-stroke {
-    stroke: url('#chartStrokeLinearGradient');
+    stroke: url("#chartStrokeLinearGradient");
   }
 
   .stop1,
@@ -134,13 +135,13 @@ export const BubbleChart = styled.div`
   overflow: hidden;
 `
 
-export const Controls = styled('div')`
+export const Controls = styled("div")`
   text-align: right;
   opacity: 1;
   transition: opacity 0.2s;
 `
 
-export const PopoutButton = styled('button')`
+export const PopoutButton = styled("button")`
   &:hover {
     .hover-state {
       fill: #5f94f5;

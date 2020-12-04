@@ -1,9 +1,12 @@
-import React from 'react'
-import { ProfitAndLoss } from './ProfitAndLoss'
-import { AnalyticsStyle, AnalyticsWrapper, AnalyticsHeader } from './styled'
+import React from "react"
+import { ProfitAndLoss, profitAndLoss$ } from "./ProfitAndLoss"
+import { AnalyticsStyle, AnalyticsWrapper, AnalyticsHeader } from "./styled"
 
-import { Positions } from './Positions'
-import { PnL } from './PnL'
+import { Positions } from "./Positions"
+import { PnL, pnL$ } from "./PnL"
+import { merge } from "rxjs"
+
+export const analytics$ = merge(pnL$, profitAndLoss$)
 
 export const Analytics: React.FC = () => {
   return (

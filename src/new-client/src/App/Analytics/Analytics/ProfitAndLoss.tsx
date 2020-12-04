@@ -1,8 +1,9 @@
-import React, { FC } from 'react'
-import { Title, AnalyticsLineChartWrapper, ProfitAndLossHeader } from './styled'
-import { AnalyticsLineChart } from './analyticsLineChart'
-import LastPosition from './LastPosition'
-import styled from 'styled-components/macro'
+import React, { FC } from "react"
+import { Title, AnalyticsLineChartWrapper, ProfitAndLossHeader } from "./styled"
+import { LineCharts, lineCharts$ } from "./analyticsLineChart"
+import { LastPosition, lastPosition$ } from "./LastPosition"
+import styled from "styled-components/macro"
+import { merge } from "rxjs"
 
 export const ProfitAndLossStyle = styled.div`
   width: 100%;
@@ -18,7 +19,9 @@ export const ProfitAndLoss: FC = () => (
       <LastPosition />
     </ProfitAndLossHeader>
     <AnalyticsLineChartWrapper>
-      <AnalyticsLineChart />
+      <LineCharts />
     </AnalyticsLineChartWrapper>
   </ProfitAndLossStyle>
 )
+
+export const profitAndLoss$ = merge(lastPosition$, lineCharts$)

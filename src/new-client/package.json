@@ -46,10 +46,16 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "trailingComma": "all"
   },
   "eslintConfig": {
     "extends": [
@@ -71,6 +77,7 @@
   },
   "devDependencies": {
     "@types/recharts": "^1.8.17",
-    "@types/styled-components": "^5.1.4"
+    "@types/styled-components": "^5.1.4",
+    "prettier": "^2.2.1"
   }
 }

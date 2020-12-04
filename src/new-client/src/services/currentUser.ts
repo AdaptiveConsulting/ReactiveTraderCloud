@@ -1,6 +1,6 @@
-import { bind } from '@react-rxjs/core'
-import { Observable } from 'rxjs'
-import { shareReplay } from 'rxjs/operators'
+import { bind } from "@react-rxjs/core"
+import { Observable } from "rxjs"
+import { shareReplay } from "rxjs/operators"
 
 interface User {
   code: string
@@ -11,42 +11,42 @@ interface User {
 
 export const fakeUsers: User[] = [
   {
-    code: 'LMO',
-    firstName: 'Lorretta',
-    lastName: 'Moe',
+    code: "LMO",
+    firstName: "Lorretta",
+    lastName: "Moe",
     avatar: `${window.location.origin}/static/media/mockedAvatars/one.png`,
   },
   {
-    code: 'WMO',
-    firstName: 'Wenona',
-    lastName: 'Moshier',
+    code: "WMO",
+    firstName: "Wenona",
+    lastName: "Moshier",
     avatar: `${window.location.origin}/static/media/mockedAvatars/two.png`,
   },
   {
-    code: 'NGA',
-    firstName: 'Nita',
-    lastName: 'Garica',
+    code: "NGA",
+    firstName: "Nita",
+    lastName: "Garica",
     avatar: `${window.location.origin}/static/media/mockedAvatars/three.png`,
   },
   {
-    code: 'HHA',
-    firstName: 'Hyun',
-    lastName: 'Havlik',
+    code: "HHA",
+    firstName: "Hyun",
+    lastName: "Havlik",
     avatar: `${window.location.origin}/static/media/mockedAvatars/four.png`,
   },
   {
-    code: 'EDO',
-    firstName: 'Elizebeth',
-    lastName: 'Doverspike',
+    code: "EDO",
+    firstName: "Elizebeth",
+    lastName: "Doverspike",
     avatar: `${window.location.origin}/static/media/mockedAvatars/five.png`,
   },
 ]
 
-const _currentUser$ = new Observable<User>(observer => {
+const _currentUser$ = new Observable<User>((observer) => {
   const currentUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)]
   console.info(
-    'FakeUserRepository',
-    `Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`
+    "FakeUserRepository",
+    `Will use user ${currentUser.firstName} ${currentUser.lastName} (${currentUser.code}) for this session`,
   )
   observer.next(currentUser)
 }).pipe(shareReplay(1))

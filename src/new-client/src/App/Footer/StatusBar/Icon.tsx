@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components/macro'
+import React from "react"
+import styled from "styled-components/macro"
 
 const Icon: React.FC<{
   name: string
@@ -27,6 +27,6 @@ export default styled(Icon)<IconProps>`
   justify-content: center;
 
   border-radius: 50%;
-  background-color: ${props => props.theme.backgroundColor || 'inherit'};
-  color: ${props => props.theme.textColor || 'inherit'};
+  background-color: ${(props) => props.theme.backgroundColor || "inherit"};
+  color: ${(props) => props.theme.textColor || "inherit"};
 `

@@ -1,7 +1,7 @@
-import { Subscribe } from '@react-rxjs/core'
-import { AdaptiveLoader } from 'components/AdaptiveLoader'
-import { currentUser$, useUser } from 'services/currentUser'
-import { LoadingButton, UserWrapper, UserContainer, UserAvatar } from './styled'
+import { Subscribe } from "@react-rxjs/core"
+import { AdaptiveLoader } from "components/AdaptiveLoader"
+import { currentUser$, useUser } from "services/currentUser"
+import { LoadingButton, UserWrapper, UserContainer, UserAvatar } from "./styled"
 
 const User: React.FC = () => {
   const user = useUser()
@@ -20,7 +20,7 @@ const LoginControls: React.FC = () => (
     source$={currentUser$}
     fallback={
       <LoadingButton>
-        <AdaptiveLoader size={18} color={'white'} />
+        <AdaptiveLoader size={18} color={"white"} />
       </LoadingButton>
     }
   >

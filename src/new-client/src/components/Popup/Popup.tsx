@@ -1,5 +1,5 @@
-import React, { MouseEvent, useCallback } from 'react'
-import { PopupContainer, PopupPanel, Body } from './styled'
+import React, { MouseEvent, useCallback } from "react"
+import { PopupContainer, PopupPanel, Body } from "./styled"
 
 interface Props {
   className?: string
@@ -8,10 +8,17 @@ interface Props {
   minWidth?: string
 }
 
-const Popup: React.FC<Props> = ({ className, open = false, onClick, children, minWidth }) => {
-  const onPopupClick = useCallback((e: MouseEvent<HTMLDivElement>) => onClick && onClick(e), [
-    onClick,
-  ])
+const Popup: React.FC<Props> = ({
+  className,
+  open = false,
+  onClick,
+  children,
+  minWidth,
+}) => {
+  const onPopupClick = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => onClick && onClick(e),
+    [onClick],
+  )
 
   return (
     <PopupContainer className={className} open={open} onClick={onPopupClick}>

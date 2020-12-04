@@ -1,6 +1,6 @@
-import { Subscribe } from "@react-rxjs/core";
-import { memo, Suspense } from "react";
-import "./App.css";
+import { Subscribe } from "@react-rxjs/core"
+import { memo, Suspense } from "react"
+import "./App.css"
 import {
   ALL_CURRENCIES,
   onSelectCurrency,
@@ -8,29 +8,29 @@ import {
   useCurrencies,
   useFilteredSymbols,
   useSelectedCurrency,
-} from "./services/currencyPairs";
+} from "./services/currencyPairs"
 import {
   tilesSubscription$,
   useHistoricalPrices,
   usePrice,
-} from "./services/tiles";
-import { trades$, useTrades } from "./services/trades";
+} from "./services/tiles"
+import { trades$, useTrades } from "./services/trades"
 
 const TilePriceHistory: React.FC<{ symbol: string }> = ({ symbol }) => {
-  const historicalPrices = useHistoricalPrices(symbol);
+  const historicalPrices = useHistoricalPrices(symbol)
   return (
     <ul>
       {historicalPrices.slice(0, 10).map((price) => (
         <li key={price.creationTimestamp}>{price.mid}</li>
       ))}
     </ul>
-  );
-};
+  )
+}
 
 const TileCurrentPrice: React.FC<{ symbol: string }> = ({ symbol }) => {
-  const currentPrice = usePrice(symbol);
-  return <span>{currentPrice.mid}</span>;
-};
+  const currentPrice = usePrice(symbol)
+  return <span>{currentPrice.mid}</span>
+}
 
 const Tile: React.FC<{ symbol: string }> = memo(({ symbol }) => (
   <li key={symbol}>
@@ -44,7 +44,7 @@ const Tile: React.FC<{ symbol: string }> = memo(({ symbol }) => (
       </Suspense>
     </div>
   </li>
-));
+))
 
 const Tiles: React.FC = () => (
   <Subscribe source$={tilesSubscription$}>
@@ -54,10 +54,10 @@ const Tiles: React.FC = () => (
       ))}
     </ul>
   </Subscribe>
-);
+)
 
 const Currencies: React.FC = () => {
-  const selectedCurrency = useSelectedCurrency();
+  const selectedCurrency = useSelectedCurrency()
   return (
     <div>
       <span
@@ -80,8 +80,8 @@ const Currencies: React.FC = () => {
         </span>
       ))}
     </div>
-  );
-};
+  )
+}
 
 const BlotterRows: React.FC = () => (
   <ul>
@@ -89,7 +89,7 @@ const BlotterRows: React.FC = () => (
       <li key={trade.tradeId}>{JSON.stringify(trade)}</li>
     ))}
   </ul>
-);
+)
 
 function App() {
   return (
@@ -102,7 +102,7 @@ function App() {
         <BlotterRows />
       </Subscribe>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

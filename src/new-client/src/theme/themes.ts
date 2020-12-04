@@ -1,7 +1,14 @@
-import { darken } from 'polished'
-import { keyframes } from 'styled-components/macro'
+import { darken } from "polished"
+import { keyframes } from "styled-components/macro"
 
-import { colors, AccentPaletteMap, Color, CorePalette, CorePaletteMap, AccentName } from './colors'
+import {
+  colors,
+  AccentPaletteMap,
+  Color,
+  CorePalette,
+  CorePaletteMap,
+  AccentName,
+} from "./colors"
 
 interface BaseTheme {
   white: Color
@@ -38,7 +45,7 @@ interface Touchable {
   active: ColorPair
   disabled: ColorPair
 }
-export type TouchableIntentName = AccentName | 'primary' | 'secondary' | 'mute'
+export type TouchableIntentName = AccentName | "primary" | "secondary" | "mute"
 type TouchableStyleSet = { [style in TouchableIntentName]: Touchable }
 
 interface Motion {
@@ -59,15 +66,23 @@ export interface ColorProps {
 }
 
 function isColor(value: string | ThemeSelector): value is Color {
-  return typeof value === 'string' && /^(#|rgb|hsl)/.test(value)
+  return typeof value === "string" && /^(#|rgb|hsl)/.test(value)
 }
-export const getThemeColor = (theme: Theme, color: Color | ThemeSelector, fallback?: Color) =>
-  typeof color === 'function' ? color(theme) || fallback : isColor(color) ? color : fallback
+export const getThemeColor = (
+  theme: Theme,
+  color: Color | ThemeSelector,
+  fallback?: Color,
+) =>
+  typeof color === "function"
+    ? color(theme) || fallback
+    : isColor(color)
+    ? color
+    : fallback
 
 const createTheme = (
   name: string,
   { primary, secondary, core }: CorePaletteMap,
-  accents: AccentPaletteMap
+  accents: AccentPaletteMap,
 ) => ({
   name,
   core,
@@ -85,21 +100,21 @@ const createTheme = (
 
   motion: {
     duration: 16 * 16,
-    easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+    easing: "cubic-bezier(0.165, 0.84, 0.44, 1)",
 
     fast: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.19, 1, 0.22, 1)',
+      easing: "cubic-bezier(0.19, 1, 0.22, 1)",
     },
 
     normal: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+      easing: "cubic-bezier(0.165, 0.84, 0.44, 1)",
     },
 
     slow: {
       duration: 16 * 16,
-      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+      easing: "cubic-bezier(0.165, 0.84, 0.44, 1)",
     },
   },
 
@@ -165,7 +180,7 @@ const createTheme = (
             textColor: secondary.base,
           },
         },
-      ])
+      ]),
     ),
   } as TouchableStyleSet,
 
@@ -184,8 +199,8 @@ const createTheme = (
   },
 })
 
-const lightTheme: Theme = createTheme('light', colors.light, colors.accents)
-const darkTheme: Theme = createTheme('dark', colors.dark, colors.accents)
+const lightTheme: Theme = createTheme("light", colors.light, colors.accents)
+const darkTheme: Theme = createTheme("dark", colors.dark, colors.accents)
 
 export const themes = {
   light: lightTheme,

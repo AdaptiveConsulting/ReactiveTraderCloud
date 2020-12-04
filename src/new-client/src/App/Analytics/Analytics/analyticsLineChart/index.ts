@@ -1,3 +1,1 @@
-import AnalyticsLineChart from './AnalyticsLineChart'
-
-export { AnalyticsLineChart }
+export { LineCharts, lineCharts$ } from "./AnalyticsLineChart"

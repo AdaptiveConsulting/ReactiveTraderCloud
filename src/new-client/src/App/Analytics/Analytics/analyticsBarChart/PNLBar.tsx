@@ -1,5 +1,5 @@
-import numeral from 'numeral'
-import React, { useState } from 'react'
+import React, { useState } from "react"
+import { formatNumber } from "utils/formatNumber"
 import {
   BarChart,
   BarPriceContainer,
@@ -11,7 +11,7 @@ import {
   Bar,
   OriginTickWrapper,
   OriginTick,
-} from './styled'
+} from "./styled"
 interface PNLBarProps {
   basePnl: number
   maxVal: number
@@ -28,10 +28,11 @@ const getLogRatio: (max: number, numb: number) => number = (max, numb) => {
 
 const PNLBar: React.FC<PNLBarProps> = ({ symbol, basePnl, maxVal }) => {
   const [hovering, setHovering] = useState(false)
-  const color = basePnl >= 0 ? 'positive' : 'negative'
-  const distance = getLogRatio(maxVal, basePnl) * TRANSLATION_WIDTH * (basePnl >= 0 ? 1 : -1)
-  const price = numeral(Math.abs(basePnl)).format('0a')
-  const hoverPrice = numeral(basePnl).format('0,0.00')
+  const color = basePnl >= 0 ? "positive" : "negative"
+  const distance =
+    getLogRatio(maxVal, basePnl) * TRANSLATION_WIDTH * (basePnl >= 0 ? 1 : -1)
+  const price = formatNumber(Math.abs(basePnl))
+  const hoverPrice = formatNumber(basePnl)
   return (
     <BarChart>
       <Label>{symbol}</Label>

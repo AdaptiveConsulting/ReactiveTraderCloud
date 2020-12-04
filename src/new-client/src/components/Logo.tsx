@@ -1,5 +1,5 @@
-import React, { SVGAttributes } from 'react'
-import styled from 'styled-components/macro'
+import React, { SVGAttributes } from "react"
+import styled from "styled-components/macro"
 
 interface LogoProps extends SVGAttributes<Element> {
   fill?: string
@@ -8,18 +8,18 @@ interface LogoProps extends SVGAttributes<Element> {
 }
 
 const Logo: React.FC<LogoProps> = ({
-  fill = '#000',
+  fill = "#000",
   size = 2,
   style,
   withText = true,
   ...props
 }) => {
   const widthMultiplier = withText ? 4.375 : 1
-  const viewBox = withText ? '0 0 140 32' : '0 0 28 32'
+  const viewBox = withText ? "0 0 140 32" : "0 0 28 32"
 
   style = {
-    width: size * widthMultiplier + 'rem',
-    height: size + 'rem',
+    width: size * widthMultiplier + "rem",
+    height: size + "rem",
     ...style,
   }
 
@@ -34,9 +34,27 @@ const Logo: React.FC<LogoProps> = ({
     >
       <g fill={fill} fillRule="nonzero">
         <g>
-          <rect id="Rectangle-path" x="0.086" y="5.111" width="5.796" height="22.669" />
-          <rect id="Rectangle-path" x="7.025" y="6.937" width="5.796" height="22.668" />
-          <rect id="Rectangle-path" x="13.774" y="4.381" width="5.796" height="22.668" />
+          <rect
+            id="Rectangle-path"
+            x="0.086"
+            y="5.111"
+            width="5.796"
+            height="22.669"
+          />
+          <rect
+            id="Rectangle-path"
+            x="7.025"
+            y="6.937"
+            width="5.796"
+            height="22.668"
+          />
+          <rect
+            id="Rectangle-path"
+            x="13.774"
+            y="4.381"
+            width="5.796"
+            height="22.668"
+          />
           <rect id="Rectangle-path" x="20.522" width="5.797" height="22.668" />
         </g>
         {withText && (
@@ -58,6 +76,6 @@ const Logo: React.FC<LogoProps> = ({
 
 export default styled(Logo)`
   [fill] {
-    fill: ${props => props.theme.core.textColor};
+    fill: ${(props) => props.theme.core.textColor};
   }
 `
