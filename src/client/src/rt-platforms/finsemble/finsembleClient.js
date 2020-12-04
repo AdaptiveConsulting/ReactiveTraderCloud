@@ -1,9 +1,8 @@
+import { getTradeNotificationContents } from "rt-platforms/browser/utils/sendNotification"
+
 const LOG_NAME = 'FSBL:'
 
-let FSBL = null
-if (process.env.REACT_APP_FINSEMBLE === 'true') {
-  FSBL = require('@chartiq/finsemble')
-}
+let FSBL = window.FSBL
 
 export function addListener(channel, callback) {
   if (FSBL) {
@@ -40,9 +39,19 @@ export function spawn(command, args, callback) {
   }
 }
 
-export function alert(topic, frequency, identifier, message, params) {
+export function alert(message) {
+  const tradeNotification = message.tradeNotification;
+  const { title, body } = getTradeNotificationContents(tradeNotification);
+
   if (FSBL) {
-    console.log(`${LOG_NAME} alert on ${topic} message ${message}`)
-    FSBL.UserNotification.alert(topic, frequency, identifier, message, params)
+    console.log(`${LOG_NAME} alert with message ${message}`)
+
+    const notification = new FSBL.Clients.NotificationClient.Notification();
+    notification.title = title;
+    notification.details = body;
+    notification.type = 'trade';
+    notification.headerLogo = null;
+
+    FSBL.Clients.NotificationClient.notify([notification]);
   }
 }
