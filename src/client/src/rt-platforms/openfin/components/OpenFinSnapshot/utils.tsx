@@ -4,7 +4,6 @@ import {
   OPENFIN_SNAPSHOT_NAMES,
   OPENFIN_SNAPSHOTS,
 } from 'rt-platforms/openfin/StorageItems'
-import { mainOpenFinWindowName } from '../utils'
 
 export const resetCurrentSnapshotName = () => {
   setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
@@ -60,37 +59,4 @@ export const saveSnapshotToStorage = async (newSnapshotName: string) => {
   setCurrentSnapshotName(newSnapshotName)
   setSnapshotNames([...snapshotNames, newSnapshotName])
   setSnapshots(snapshots)
-}
-
-export const toggleLayoutLock = async () => {
-  const layout = fin.Platform.Layout.wrapSync({
-    name: mainOpenFinWindowName,
-    uuid: fin.me.uuid,
-  })
-
-  const oldLayout = await layout.getConfig()
-  const { settings, dimensions } = oldLayout
-  if (settings && settings.hasHeaders && settings.reorderEnabled) {
-    layout.replace({
-      ...oldLayout,
-      settings: {
-        ...settings,
-        hasHeaders: false,
-        reorderEnabled: false,
-      },
-    })
-  } else {
-    layout.replace({
-      ...oldLayout,
-      settings: {
-        ...settings,
-        hasHeaders: true,
-        reorderEnabled: true,
-      },
-      dimensions: {
-        ...dimensions,
-        headerHeight: 25,
-      },
-    })
-  }
 }

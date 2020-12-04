@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { createOpenFinPopup, Offset, showOpenFinPopup } from '../utils'
 import { Button, Root } from './styled'
+import PlatformLockedStatusIcon from '../PlatformLockedStatusIcon'
 
 const OpenFinSnapshotButton: React.FC = () => {
   const [showing, setShowing] = useState(false)
@@ -27,6 +28,8 @@ const OpenFinSnapshotButton: React.FC = () => {
   return (
     <Root>
       <Button onMouseDown={showPopup} data-qa="snapshots-button__toggle-button">
+        <PlatformLockedStatusIcon />
+        &nbsp;&nbsp;
         {'Snapshots'}
       </Button>
     </Root>

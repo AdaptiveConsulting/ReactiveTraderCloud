@@ -15,6 +15,7 @@ import {
 } from 'apps/SimpleLauncher/icons'
 import ReactGA from 'react-ga'
 import { inMainOpenFinWindow, closeOtherWindows } from './utils'
+import LayoutLockToggleSwitch from './LayoutLockToggleSwitch'
 
 export interface ControlProps {
   minimize?: () => void
@@ -135,6 +136,7 @@ export const OpenFinHeader: React.FC<HeaderProps> = ({ title, ...props }) => (
   <Header
     controls={<OpenFinControls {...props} />}
     filler={<OpenFinTitleBar className="title-bar-draggable">{title}</OpenFinTitleBar>}
+    switches={<LayoutLockToggleSwitch />}
   />
 )
 
