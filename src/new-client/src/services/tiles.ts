@@ -1,6 +1,6 @@
-import { bind } from "@react-rxjs/core";
-import { split } from "@react-rxjs/utils";
-import { concat, EMPTY, merge } from "rxjs";
+import { bind } from "@react-rxjs/core"
+import { split } from "@react-rxjs/utils"
+import { concat, EMPTY, merge } from "rxjs"
 import {
   distinctUntilChanged,
   map,
@@ -8,18 +8,18 @@ import {
   scan,
   switchMap,
   take,
-} from "rxjs/operators";
-import { getRemoteProcedureCall$, getStream$ } from "./client";
-import { currencyPairs$, currencyPairUpdates$ } from "./currencyPairs";
-import { CamelCase, UpdateType } from "./utils";
+} from "rxjs/operators"
+import { getRemoteProcedureCall$, getStream$ } from "./client"
+import { currencyPairs$, currencyPairUpdates$ } from "./currencyPairs"
+import { CamelCase, UpdateType } from "./utils"
 
 interface RawPrice {
-  Ask: number;
-  Bid: number;
-  Mid: number;
-  CreationTimestamp: number;
-  Symbol: string;
-  ValueDate: string;
+  Ask: number
+  Bid: number
+  Mid: number
+  CreationTimestamp: number
+  Symbol: string
+  ValueDate: string
 }
 
 enum PriceMovementType {
@@ -28,14 +28,14 @@ enum PriceMovementType {
   NONE,
 }
 
-type HistoryPrice = CamelCase<RawPrice>;
+type HistoryPrice = CamelCase<RawPrice>
 
 interface Price extends HistoryPrice {
-  movementType: PriceMovementType;
+  movementType: PriceMovementType
 }
 
 interface Request {
-  symbol: string;
+  symbol: string
 }
 
 export const [usePrice, getPrice$] = bind((symbol: string) =>
@@ -53,9 +53,9 @@ export const [usePrice, getPrice$] = bind((symbol: string) =>
           : price.Mid > acc.mid
           ? PriceMovementType.UP
           : PriceMovementType.DOWN,
-    }))
-  )
-);
+    })),
+  ),
+)
 
 export const [
   useHistoricalPrices,
@@ -64,17 +64,17 @@ export const [
   getRemoteProcedureCall$<HistoryPrice[], string>(
     "priceHistory",
     "getPriceHistory",
-    symbol
-  )
-);
+    symbol,
+  ),
+)
 
 export const tilesSubscription$ = concat(
   currencyPairs$.pipe(
     take(1),
     mergeMap((ccPairs) => Object.values(ccPairs)),
-    map((currencyPair) => ({ currencyPair, updateType: UpdateType.Added }))
+    map((currencyPair) => ({ currencyPair, updateType: UpdateType.Added })),
   ),
-  currencyPairUpdates$
+  currencyPairUpdates$,
 ).pipe(
   split(
     (update) => update.currencyPair.symbol,
@@ -84,8 +84,8 @@ export const tilesSubscription$ = concat(
         switchMap((update) =>
           update.updateType === UpdateType.Removed
             ? EMPTY
-            : merge(getPrice$(key), getHistoricalPrices$(key))
-        )
-      )
-  )
-);
+            : merge(getPrice$(key), getHistoricalPrices$(key)),
+        ),
+      ),
+  ),
+)

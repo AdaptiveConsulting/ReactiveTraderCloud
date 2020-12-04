@@ -29,11 +29,15 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "d3": "3.5.12",
+    "date-fns": "^2.16.1",
     "polished": "^4.0.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
     "react-switch": "^5.0.1",
+    "recharts": "^1.8.5",
+    "resize-observer": "^1.0.0",
     "ress": "^3.0.0",
     "rxjs": "^6.6.3",
     "styled-components": "^5.2.1",
@@ -44,10 +48,16 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "trailingComma": "all"
   },
   "eslintConfig": {
     "extends": [
@@ -68,6 +78,9 @@
     ]
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.4"
+    "@types/d3": "3.5.40",
+    "@types/recharts": "^1.8.17",
+    "@types/styled-components": "^5.1.4",
+    "prettier": "^2.2.1"
   }
 }

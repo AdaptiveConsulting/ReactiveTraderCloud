@@ -1,13 +1,19 @@
-import { useCallback, SyntheticEvent, useRef, useState, useEffect } from 'react'
-import styled from 'styled-components/macro'
-import { ServiceConnectionStatus, ServiceStatus } from 'services/connection'
-import { StatusCircle, StatusLabel, AppUrl, ServiceListPopup, ServiceList } from './styled'
-import { Root, Button } from '../common-styles'
-import Service from './Service'
-import { usePopUpMenu } from 'utils/usePopUpMenu'
+import { useCallback, SyntheticEvent, useRef, useState, useEffect } from "react"
+import styled from "styled-components/macro"
+import { ServiceConnectionStatus, ServiceStatus } from "services/connection"
+import {
+  StatusCircle,
+  StatusLabel,
+  AppUrl,
+  ServiceListPopup,
+  ServiceList,
+} from "./styled"
+import { Root, Button } from "../common-styles"
+import Service from "./Service"
+import { usePopUpMenu } from "utils/usePopUpMenu"
 
 export const Wrapper = styled.div`
-  color: ${props => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
   opacity: 0.59;
   font-size: 0.75rem;
 `
@@ -18,7 +24,7 @@ export const Link = styled.a`
 
 const gitTagExists = async (gitTag: string | undefined) => {
   const response = await fetch(
-    'https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/releases'
+    "https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/releases",
   )
   const data = await response.json()
   const exists = data.find((element: any) => element.tag_name === gitTag)
@@ -29,11 +35,13 @@ const FooterVersion: React.FC = () => {
   const [versionExists, setVersionExists] = useState<boolean | void>(false)
 
   const URL =
-    'https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/' +
+    "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/" +
     process.env.REACT_APP_VERSION
 
   useEffect(() => {
-    gitTagExists(process.env.REACT_APP_VERSION).then(resolution => setVersionExists(resolution))
+    gitTagExists(process.env.REACT_APP_VERSION).then((resolution) =>
+      setVersionExists(resolution),
+    )
   }, [])
 
   return (
@@ -51,10 +59,18 @@ const FooterVersion: React.FC = () => {
 export default FooterVersion
 
 const getApplicationStatus = (services: ServiceStatus[]) => {
-  if (services.every(s => s.connectionStatus === ServiceConnectionStatus.CONNECTED)) {
+  if (
+    services.every(
+      (s) => s.connectionStatus === ServiceConnectionStatus.CONNECTED,
+    )
+  ) {
     return ServiceConnectionStatus.CONNECTED
   }
-  if (services.some(s => s.connectionStatus === ServiceConnectionStatus.CONNECTING)) {
+  if (
+    services.some(
+      (s) => s.connectionStatus === ServiceConnectionStatus.CONNECTING,
+    )
+  ) {
     return ServiceConnectionStatus.CONNECTING
   }
   return ServiceConnectionStatus.DISCONNECTED
@@ -66,7 +82,7 @@ const selectAll = (event: SyntheticEvent) => {
 }
 
 export const StatusButton: React.FC = () => {
-  const url = 'https://web-demo.adaptivecluster.com'
+  const url = "https://web-demo.adaptivecluster.com"
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
   const services: ServiceStatus[] = []
@@ -81,14 +97,22 @@ export const StatusButton: React.FC = () => {
     <Root ref={ref}>
       <Button onClick={toggleMenu} data-qa="status-button__toggle-button">
         <StatusCircle status={appStatus} />
-        <StatusLabel>{appStatus[0].toUpperCase() + appStatus.slice(1).toLowerCase()}</StatusLabel>
+        <StatusLabel>
+          {appStatus[0].toUpperCase() + appStatus.slice(1).toLowerCase()}
+        </StatusLabel>
       </Button>
 
       <ServiceListPopup open={displayMenu}>
         <ServiceList>
-          <AppUrl title={appUrl} readOnly value={appUrl} onFocus={selectAll} onClick={selectAll} />
+          <AppUrl
+            title={appUrl}
+            readOnly
+            value={appUrl}
+            onFocus={selectAll}
+            onClick={selectAll}
+          />
 
-          {services.map(service => (
+          {services.map((service) => (
             <Service key={service.serviceType} service={service} />
           ))}
 

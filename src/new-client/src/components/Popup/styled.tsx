@@ -1,7 +1,7 @@
-import styled from 'styled-components/macro'
+import styled from "styled-components/macro"
 
 export const PopupContainer = styled.div<{ open: boolean }>`
-  display: ${({ open }) => (open ? 'flex' : 'none')};
+  display: ${({ open }) => (open ? "flex" : "none")};
   position: absolute;
   z-index: 5;
   align-items: center;
@@ -10,12 +10,12 @@ export const PopupContainer = styled.div<{ open: boolean }>`
   border-radius: 0.25rem;
   background: ${({ theme }) => theme.core.alternateBackground};
   box-shadow: 0 0.05rem 0.05rem rgba(0, 0, 0, 0.05),
-    0 1rem 3rem -1rem ${props => props.theme.overlay.backgroundColor};
+    0 1rem 3rem -1rem ${(props) => props.theme.overlay.backgroundColor};
 `
 
 export const PopupPanel = styled.div<{ minWidth?: string }>`
   width: 100%;
-  min-width: ${({ minWidth }) => (minWidth ? minWidth : '16rem')};
+  min-width: ${({ minWidth }) => (minWidth ? minWidth : "16rem")};
 
   position: relative;
   z-index: 1;

@@ -1,20 +1,21 @@
-import React from 'react'
+import React from "react"
 
-import { ServiceConnectionStatus, ServiceStatus } from 'services/connection'
-import { StatusCircle, NodeCount, ServiceName, ServiceRoot } from './styled'
+import { ServiceConnectionStatus, ServiceStatus } from "services/connection"
+import { StatusCircle, NodeCount, ServiceName, ServiceRoot } from "./styled"
 
 const Service: React.FC<{ service: ServiceStatus }> = ({
   service: { serviceType, connectionStatus, connectedInstanceCount },
 }) => (
   <ServiceRoot>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ display: "flex", alignItems: "center" }}>
       <StatusCircle status={connectionStatus} />
       <ServiceName>{serviceType}</ServiceName>
     </div>
 
     {connectionStatus === ServiceConnectionStatus.CONNECTED && (
       <NodeCount>
-        ({connectedInstanceCount} {connectedInstanceCount !== 1 ? 'Nodes' : 'Node'})
+        ({connectedInstanceCount}{" "}
+        {connectedInstanceCount !== 1 ? "Nodes" : "Node"})
       </NodeCount>
     )}
   </ServiceRoot>

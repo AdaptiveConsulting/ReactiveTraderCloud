@@ -1,7 +1,7 @@
-import React from 'react'
-import { ContactUsContentResolver, Link, Input } from './styled'
+import React from "react"
+import { ContactUsContentResolver, Link, Input } from "./styled"
 
-const WEBSITE = 'https://weareadaptive.com'
+const WEBSITE = "https://weareadaptive.com"
 
 export const ContactUs: React.FC = () => (
   <ContactUsContentResolver>

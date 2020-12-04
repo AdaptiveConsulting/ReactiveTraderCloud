@@ -1,32 +1,32 @@
-import { bind, shareLatest } from "@react-rxjs/core";
-import { createListener } from "@react-rxjs/utils";
-import { combineLatest, merge } from "rxjs";
-import { map, mergeAll, scan, share, startWith } from "rxjs/operators";
-import { getStream$ } from "./client";
+import { bind, shareLatest } from "@react-rxjs/core"
+import { createListener } from "@react-rxjs/utils"
+import { combineLatest, merge } from "rxjs"
+import { map, mergeAll, scan, share, startWith } from "rxjs/operators"
+import { getStream$ } from "./client"
 import {
   CamelCase,
   CollectionUpdate,
   CollectionUpdates,
   UpdateType,
-} from "./utils";
+} from "./utils"
 
 interface CurrencyRaw {
-  Symbol: string;
-  RatePrecission: number;
-  PipsPosition: number;
+  Symbol: string
+  RatePrecission: number
+  PipsPosition: number
 }
 
 interface RawCurrencyPairUpdate extends CollectionUpdate {
-  CurrencyPair: CurrencyRaw;
+  CurrencyPair: CurrencyRaw
 }
 
 interface RawCurrencyPairUpdates extends CollectionUpdates {
-  Updates: RawCurrencyPairUpdate[];
+  Updates: RawCurrencyPairUpdate[]
 }
 
 export interface CurrencyPair extends CamelCase<CurrencyRaw> {
-  base: string;
-  terms: string;
+  base: string
+  terms: string
 }
 
 const currencyPairMapper = (input: CurrencyRaw): CurrencyPair => ({
@@ -35,57 +35,57 @@ const currencyPairMapper = (input: CurrencyRaw): CurrencyPair => ({
   pipsPosition: input.PipsPosition,
   base: input.Symbol.substr(0, 3),
   terms: input.Symbol.substr(3, 3),
-});
+})
 
 export const currencyPairUpdates$ = getStream$<RawCurrencyPairUpdates>(
   "reference",
   "getCurrencyPairUpdatesStream",
-  {}
+  {},
 ).pipe(
   map(({ Updates }) =>
     Updates.map((update) => ({
       updateType: update.UpdateType,
       currencyPair: currencyPairMapper(update.CurrencyPair),
-    }))
+    })),
   ),
   mergeAll(),
-  share()
-);
+  share(),
+)
 
-export const ALL_CURRENCIES = Symbol("all");
-type AllCurrencies = typeof ALL_CURRENCIES;
+export const ALL_CURRENCIES = Symbol("all")
+type AllCurrencies = typeof ALL_CURRENCIES
 
 const [selectedCurrencyInput$, onSelectCurrency] = createListener<
   string | AllCurrencies
->();
+>()
 const [useSelectedCurrency, selectedCurrency$] = bind(
   selectedCurrencyInput$.pipe(startWith(ALL_CURRENCIES)),
-  ALL_CURRENCIES
-);
+  ALL_CURRENCIES,
+)
 
 export const currencyPairs$ = currencyPairUpdates$.pipe(
   scan((acc, { updateType, currencyPair }) => {
-    const { symbol } = currencyPair;
+    const { symbol } = currencyPair
     if (updateType === UpdateType.Removed) {
-      delete acc[symbol];
+      delete acc[symbol]
     } else {
-      acc[symbol] = currencyPair;
+      acc[symbol] = currencyPair
     }
-    return acc;
+    return acc
   }, {} as Record<string, CurrencyPair>),
-  shareLatest()
-);
+  shareLatest(),
+)
 
 const [useFilteredSymbols, filteredSymbols$] = bind(
   combineLatest([currencyPairs$, selectedCurrency$]).pipe(
     map(([currencyPairs, selectedCurrency]) => {
-      const allSymbols = Object.keys(currencyPairs);
+      const allSymbols = Object.keys(currencyPairs)
       return selectedCurrency === ALL_CURRENCIES
         ? allSymbols
-        : allSymbols.filter((symbol) => symbol.includes(selectedCurrency));
-    })
-  )
-);
+        : allSymbols.filter((symbol) => symbol.includes(selectedCurrency))
+    }),
+  ),
+)
 
 const [useCurrencies, currencies$] = bind(
   currencyPairs$.pipe(
@@ -93,16 +93,16 @@ const [useCurrencies, currencies$] = bind(
       ...new Set(
         Object.values(currencyPairs)
           .map((currencyPair) => [currencyPair.base, currencyPair.terms])
-          .flat()
+          .flat(),
       ),
-    ])
-  )
-);
+    ]),
+  ),
+)
 
 export {
   useSelectedCurrency,
   useFilteredSymbols,
   useCurrencies,
   onSelectCurrency,
-};
-export const subscriptions$ = merge(currencies$, filteredSymbols$);
+}
+export const subscriptions$ = merge(currencies$, filteredSymbols$)

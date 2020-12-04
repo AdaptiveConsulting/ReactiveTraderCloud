@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components/macro'
-import Icon from './Icon'
+import React from "react"
+import styled from "styled-components/macro"
+import Icon from "./Icon"
 
-const headerHeight = '2rem'
+const headerHeight = "2rem"
 
 export const Header = styled.div`
   display: flex;
@@ -19,19 +19,22 @@ export const Root = styled.div`
 
   font-size: 0.75rem;
 
-  color: ${props => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
 
   ${Icon} {
     margin-right: 0.5rem;
   }
 `
 
-export const ChevronIcon: React.FC<{ expand: boolean }> = ({ expand, ...props }) => (
-  <Icon name="chevron" {...props} />
-)
+export const ChevronIcon: React.FC<{ expand: boolean }> = ({
+  expand,
+  ...props
+}) => <Icon name="chevron" {...props} />
 
 export const ExpandToggle = styled(ChevronIcon)`
-  transform: rotate(${(props: { expand: boolean }) => (props.expand ? 180 : 0)}deg);
+  transform: rotate(
+    ${(props: { expand: boolean }) => (props.expand ? 180 : 0)}deg
+  );
   transition: transform ${({ theme }) => theme.motion.duration}ms ease;
 `
 

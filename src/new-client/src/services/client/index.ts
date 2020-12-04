@@ -1,1 +1,1 @@
-export { watch$, getRemoteProcedureCall$, getStream$ } from "./client";
+export { watch$, getRemoteProcedureCall$, getStream$ } from "./client"

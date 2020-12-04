@@ -1,12 +1,12 @@
-import Resizer from 'components/Resizer'
-import styled from 'styled-components/macro'
-import { Analytics } from './Analytics/Analitics'
-import Header from './Header'
-import { LiveRates } from './LiveRates/LiveRates'
-import { Trades } from './Trades/Trades'
-import { Footer } from './Footer'
+import Resizer from "components/Resizer"
+import styled from "styled-components/macro"
+import { Analytics } from "./Analytics"
+import Header from "./Header"
+import { LiveRates } from "./LiveRates/LiveRates"
+import { Trades } from "./Trades/Trades"
+import { Footer } from "./Footer"
 
-const Wrapper = styled('div')`
+const Wrapper = styled("div")`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;

@@ -1,12 +1,12 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react'
-import styled from 'styled-components/macro'
+import React, { useState, useCallback, useEffect, useRef } from "react"
+import styled from "styled-components/macro"
 
 const ResizerStyle = styled.div`
   height: 100%;
 `
 
 const ResizableSection = styled.div<{ height: number }>`
-  height: ${({ height }) => height + '%'};
+  height: ${({ height }) => height + "%"};
   overflow: hidden;
   position: relative;
 `
@@ -18,7 +18,7 @@ const ResizableContent = styled.div`
 `
 
 const Bar = styled.div<{ show?: boolean }>`
-  display: ${({ show }) => (show ? 'block' : 'none')};
+  display: ${({ show }) => (show ? "block" : "none")};
   background-color: ${({ theme }) => theme.core.textColor};
   box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
     0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
@@ -51,22 +51,24 @@ const Resizer: React.FC<Props> = ({ defaultHeight, children, disabled }) => {
   const [dragging, setDragging] = useState<Boolean>(false)
 
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => setClientHeight(event.clientY)
+    const handleMouseMove = (event: MouseEvent) =>
+      setClientHeight(event.clientY)
     const handleStop = () => (dragging ? setDragging(false) : null)
-    const handleTouchMove = (event: TouchEvent) => setClientHeight(event.touches[0].clientY)
+    const handleTouchMove = (event: TouchEvent) =>
+      setClientHeight(event.touches[0].clientY)
 
     // componentDidMount calls
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleStop)
-    document.addEventListener('touchmove', handleTouchMove)
-    document.addEventListener('touchend', handleStop)
+    document.addEventListener("mousemove", handleMouseMove)
+    document.addEventListener("mouseup", handleStop)
+    document.addEventListener("touchmove", handleTouchMove)
+    document.addEventListener("touchend", handleStop)
 
     return () => {
       // componentWillUnmount calls - for cleanup
-      document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', handleStop)
-      document.removeEventListener('touchmove', handleTouchMove)
-      document.removeEventListener('touchend', handleStop)
+      document.removeEventListener("mousemove", handleMouseMove)
+      document.removeEventListener("mouseup", handleStop)
+      document.removeEventListener("touchmove", handleTouchMove)
+      document.removeEventListener("touchend", handleStop)
     }
   })
 

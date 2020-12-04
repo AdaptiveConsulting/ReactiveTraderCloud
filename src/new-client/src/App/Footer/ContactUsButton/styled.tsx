@@ -1,7 +1,7 @@
-import styled from 'styled-components/macro'
-import Popup from 'components/Popup'
+import styled from "styled-components/macro"
+import Popup from "components/Popup"
 
-const buttonHeight = '2rem'
+const buttonHeight = "2rem"
 
 export const ContactUsPopup = styled(Popup)`
   box-shadow: 0 7px 26px 0 rgba(23, 24, 25, 0.5);
@@ -46,4 +46,3 @@ export const Input = styled.input`
   width: 100%;
 `
 export const ContactUsContentResolver = ContactUsContent
-

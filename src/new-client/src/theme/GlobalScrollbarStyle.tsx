@@ -1,8 +1,9 @@
-import { rgba } from 'polished'
-import { withTheme, createGlobalStyle } from 'styled-components/macro'
-import { Theme } from './themes'
+import { rgba } from "polished"
+import { withTheme, createGlobalStyle } from "styled-components/macro"
+import { Theme } from "./themes"
 
-const getColor = (props: { theme: Theme }) => rgba(props.theme.secondary[3], 0.2)
+const getColor = (props: { theme: Theme }) =>
+  rgba(props.theme.secondary[3], 0.2)
 
 export const GlobalScrollbarStyle = withTheme(createGlobalStyle`
 body, #root {

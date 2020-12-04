@@ -13,7 +13,7 @@
  *
  * Here we use "ress", a modern CSS reset based off normalize
  */
-import 'ress'
+import "ress"
 
 /**
  * Adding Typefaces
@@ -26,9 +26,9 @@ import 'ress'
  * benefit between maintainence, functional guarantees, and
  * trade offs in initial load times.
  */
-import 'typeface-lato'
-import 'typeface-montserrat'
-import 'typeface-roboto'
+import "typeface-lato"
+import "typeface-montserrat"
+import "typeface-roboto"
 
 /**
  * Establishing a Baseline
@@ -48,7 +48,7 @@ import 'typeface-roboto'
  * achieve a consistent vertical rhythm.
  */
 
-import { createGlobalStyle } from 'styled-components/macro'
+import { createGlobalStyle } from "styled-components/macro"
 
 // background-color needs to be hardcoded to dark theme for PWA otherwise we end up with a
 // white status bar with white text when switching to light theme

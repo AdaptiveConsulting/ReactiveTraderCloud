@@ -1,8 +1,8 @@
-import { ContactUsContentResolver, Link } from './styled'
+import { ContactUsContentResolver, Link } from "./styled"
 
-const LINKEDIN_URL = 'https://www.linkedin.com/company/adaptive-consulting-ltd/'
-const TWITTER_URL = 'https://twitter.com/WeAreAdaptive'
-const GITHUB_URL = 'https://github.com/adaptiveConsulting/'
+const LINKEDIN_URL = "https://www.linkedin.com/company/adaptive-consulting-ltd/"
+const TWITTER_URL = "https://twitter.com/WeAreAdaptive"
+const GITHUB_URL = "https://github.com/adaptiveConsulting/"
 
 export const FollowUs: React.FC = () => {
   const onClick = (href: string) => () => {

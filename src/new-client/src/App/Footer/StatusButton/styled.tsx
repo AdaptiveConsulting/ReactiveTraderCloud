@@ -1,23 +1,36 @@
-import styled from 'styled-components/macro'
-import { FunctionComponent } from 'react'
-import Popup from 'components/Popup'
-import { ServiceConnectionStatus } from 'services/connection'
+import styled from "styled-components/macro"
+import { FunctionComponent } from "react"
+import Popup from "components/Popup"
+import { ServiceConnectionStatus } from "services/connection"
 
-const buttonHeight = '2rem'
+const buttonHeight = "2rem"
 
-const StatusCircleCore: FunctionComponent<{ className?: string }> = ({ className }) => {
+const StatusCircleCore: FunctionComponent<{ className?: string }> = ({
+  className,
+}) => {
   return (
     <div
-      style={{ width: '0.65rem', height: '0.65rem', display: 'inline-block', marginTop: '-2px' }}
+      style={{
+        width: "0.65rem",
+        height: "0.65rem",
+        display: "inline-block",
+        marginTop: "-2px",
+      }}
     >
-      <svg className={className} viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        className={className}
+        viewBox="0 0 10 10"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <circle cx="5" cy="5" r="5" />
       </svg>
     </div>
   )
 }
 
-export const StatusCircle = styled(StatusCircleCore)<{ status?: ServiceConnectionStatus }>`
+export const StatusCircle = styled(StatusCircleCore)<{
+  status?: ServiceConnectionStatus
+}>`
   circle {
     fill: ${({ theme, status }) =>
       status === ServiceConnectionStatus.CONNECTED
@@ -69,7 +82,7 @@ export const ServiceRoot = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  color: ${props => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
 `
 
 export const ServiceList = styled.div`

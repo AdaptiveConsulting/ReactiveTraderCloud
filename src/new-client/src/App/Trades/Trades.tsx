@@ -1,5 +1,5 @@
-import { Loader } from 'components/Loader'
-import styled from 'styled-components/macro'
+import { Loader } from "components/Loader"
+import styled from "styled-components/macro"
 
 const Wrapper = styled.div`
   padding: 0.5rem 1rem;
