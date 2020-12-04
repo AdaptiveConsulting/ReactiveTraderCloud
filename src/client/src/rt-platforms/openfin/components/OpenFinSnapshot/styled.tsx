@@ -114,7 +114,7 @@ export const Background = styled.div`
   color: ${({ theme }) => theme.core.textColor};
   height: 100%;
   width: 100%;
-  padding: 1rem;
+  padding: 2rem 1rem;
   margin: 0;
   position: absolute;
   overflow: hidden;

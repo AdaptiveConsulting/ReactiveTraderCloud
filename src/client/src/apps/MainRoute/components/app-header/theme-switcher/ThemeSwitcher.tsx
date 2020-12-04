@@ -8,7 +8,7 @@ import LightThemeIcon from './LightThemeIcon'
 export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
 const iconSize = 18
 
-const SwitcherContainer = styled.div`
+export const SwitcherContainer = styled.div`
   margin: 0 1rem;
   padding-top: 1px;
   min-width: 3.5rem;
@@ -16,7 +16,7 @@ const SwitcherContainer = styled.div`
   justify-content: flex-end;
 `
 
-const IconContainer = styled.div<{ hover: boolean }>`
+export const IconContainer = styled.div<{ hover: boolean }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 50%;
   height: 1.8rem;

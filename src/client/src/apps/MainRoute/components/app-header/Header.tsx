@@ -11,9 +11,10 @@ const SESSION = 'PWABanner'
 interface Props {
   filler?: React.ReactNode
   controls?: React.ReactNode
+  switches?: React.ReactNode
 }
 
-const Header: React.FC<Props> = ({ filler, controls }) => {
+const Header: React.FC<Props> = ({ filler, controls, switches }) => {
   const [banner, setBanner] = useState<string>(sessionStorage.getItem(SESSION) || PWABanner.NotSet)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -44,6 +45,7 @@ const Header: React.FC<Props> = ({ filler, controls }) => {
         {filler === undefined ? <Fill /> : filler}
         <HeaderNav>
           <ThemeSwitcher />
+          {switches}
           <LoginControls />
           <PWALaunchButton state={banner} setIsModalOpen={setIsModalOpen} />
           {controls}

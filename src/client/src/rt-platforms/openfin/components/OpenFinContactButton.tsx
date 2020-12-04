@@ -14,8 +14,8 @@ export const OpenFinContactDisplay = () => (
 const OpenFinContactButton: React.FC = () => {
   const [showing, setShowing] = React.useState(false)
 
-  const baseWin = useMemo(() => ({ name: 'openfin-contact-popup', height: 445, width: 245 }), [])
-  const URL = '/contact'
+  const baseWin = useMemo(() => ({ name: 'contact', height: 445, width: 245 }), [])
+  const pathname = '/contact'
 
   const showPopup = useCallback(() => {
     if (!showing) {
@@ -25,7 +25,7 @@ const OpenFinContactButton: React.FC = () => {
   }, [baseWin, showing])
 
   React.useEffect(() => {
-    createOpenFinPopup(baseWin, URL, () => setShowing(false))
+    createOpenFinPopup(baseWin, pathname, () => setShowing(false))
   }, [baseWin])
 
   return (
