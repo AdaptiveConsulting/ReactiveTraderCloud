@@ -1,7 +1,7 @@
-import styled from 'styled-components/macro'
-import LoginControls from './LoginControls'
-import Logo from 'components/Logo'
-import ThemeSwitcher from './theme-switcher'
+import styled from "styled-components/macro"
+import LoginControls from "./LoginControls"
+import Logo from "components/Logo"
+import ThemeSwitcher from "./theme-switcher"
 
 const Header: React.FC = () => (
   <AppHeaderWrapper>
@@ -10,7 +10,7 @@ const Header: React.FC = () => (
         <Logo
           size={1.75}
           onClick={() => {
-            window.open('https://weareadaptive.com/')
+            window.open("https://weareadaptive.com/")
           }}
           data-qa="header__root-logo"
         />

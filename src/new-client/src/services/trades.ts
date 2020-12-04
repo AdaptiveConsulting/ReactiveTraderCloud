@@ -1,7 +1,7 @@
-import { bind } from "@react-rxjs/core";
-import { map, scan } from "rxjs/operators";
-import { getStream$ } from "./client";
-import { CamelCase, CollectionUpdates } from "./utils";
+import { bind } from "@react-rxjs/core"
+import { map, scan } from "rxjs/operators"
+import { getStream$ } from "./client"
+import { CamelCase, CollectionUpdates } from "./utils"
 
 export enum Direction {
   Buy = "Buy",
@@ -15,29 +15,29 @@ export enum TradeStatus {
 }
 
 interface TradeRaw {
-  TradeId: number;
-  CurrencyPair: string;
-  TraderName: string;
-  Notional: number;
-  DealtCurrency: string;
-  Direction: Direction;
-  Status: TradeStatus;
-  SpotRate: number;
-  TradeDate: string;
-  ValueDate: string;
+  TradeId: number
+  CurrencyPair: string
+  TraderName: string
+  Notional: number
+  DealtCurrency: string
+  Direction: Direction
+  Status: TradeStatus
+  SpotRate: number
+  TradeDate: string
+  ValueDate: string
 }
 
 interface RawTradeUpdate extends CollectionUpdates {
-  Trades: TradeRaw[];
+  Trades: TradeRaw[]
 }
 
 export interface Trade
   extends CamelCase<
     Omit<TradeRaw, "ValueDate" | "TradeDate" | "CurrencyPair">
   > {
-  symbol: string;
-  valueDate: Date;
-  tradeDate: Date;
+  symbol: string
+  valueDate: Date
+  tradeDate: Date
 }
 
 export const [useTrades, trades$] = bind<Trade[]>(
@@ -59,11 +59,11 @@ export const [useTrades, trades$] = bind<Trade[]>(
               tradeDate: new Date(rawTrade.TradeDate),
               valueDate: new Date(rawTrade.ValueDate),
             }))
-            .map((trade) => [trade.tradeId, trade] as const)
+            .map((trade) => [trade.tradeId, trade] as const),
         ),
       }),
-      {} as Record<number, Trade>
+      {} as Record<number, Trade>,
     ),
-    map((trades) => Object.values(trades).reverse())
-  )
-);
+    map((trades) => Object.values(trades).reverse()),
+  ),
+)

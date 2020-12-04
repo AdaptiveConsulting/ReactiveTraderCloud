@@ -1,8 +1,8 @@
-export type CamelCase<T> = { [P in keyof T & string as Uncapitalize<P>]: T[P] };
+export type CamelCase<T> = { [P in keyof T & string as Uncapitalize<P>]: T[P] }
 
 export interface CollectionUpdates {
-  IsStateOfTheWorld: boolean;
-  IsState: boolean;
+  IsStateOfTheWorld: boolean
+  IsState: boolean
 }
 
 export enum UpdateType {
@@ -11,5 +11,5 @@ export enum UpdateType {
 }
 
 export interface CollectionUpdate {
-  UpdateType: UpdateType;
+  UpdateType: UpdateType
 }

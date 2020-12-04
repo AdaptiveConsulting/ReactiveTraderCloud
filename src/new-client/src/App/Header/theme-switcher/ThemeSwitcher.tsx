@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import Switch, { ReactSwitchProps } from 'react-switch'
-import { ThemeName, Theme, useTheme } from 'theme'
-import styled, { withTheme } from 'styled-components/macro'
-import DarkThemeIcon from './DarkThemeIcon'
-import LightThemeIcon from './LightThemeIcon'
+import React, { useState } from "react"
+import Switch, { ReactSwitchProps } from "react-switch"
+import { ThemeName, Theme, useTheme } from "theme"
+import styled, { withTheme } from "styled-components/macro"
+import DarkThemeIcon from "./DarkThemeIcon"
+import LightThemeIcon from "./LightThemeIcon"
 
 export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
 const iconSize = 18
@@ -23,18 +23,17 @@ const IconContainer = styled.div<{ hover: boolean }>`
   width: 1.8rem;
   padding: 4px 6px;
   display: flex;
-  justify-content: ${({ hover }) => (hover ? 'flex-end' : 'center')};
+  justify-content: ${({ hover }) => (hover ? "flex-end" : "center")};
   align-items: center;
 `
 
-const ThemeStorageSwitch: React.FC<ThemeStorageSwitchProps & { theme: Theme }> = ({
-  theme,
-  ...props
-}) => {
+const ThemeStorageSwitch: React.FC<
+  ThemeStorageSwitchProps & { theme: Theme }
+> = ({ theme, ...props }) => {
   const [hover, setHover] = useState<boolean>(false)
   const { themeName, toggleTheme } = useTheme()
   const isDarkTheme = themeName === ThemeName.Dark
-  const isTouchDevice = 'ontouchstart' in document.documentElement
+  const isTouchDevice = "ontouchstart" in document.documentElement
   const Icon = isDarkTheme ? DarkThemeIcon : LightThemeIcon
 
   const handleTouchThemeSwitch = () => {
@@ -61,12 +60,20 @@ const ThemeStorageSwitch: React.FC<ThemeStorageSwitchProps & { theme: Theme }> =
           checked={isDarkTheme}
           checkedIcon={
             <IconContainer hover={hover}>
-              <DarkThemeIcon height={iconSize} width={iconSize} fill={theme.secondary.base} />
+              <DarkThemeIcon
+                height={iconSize}
+                width={iconSize}
+                fill={theme.secondary.base}
+              />
             </IconContainer>
           }
           uncheckedIcon={
             <IconContainer hover={hover}>
-              <LightThemeIcon height={iconSize} width={iconSize} fill={theme.secondary.base} />
+              <LightThemeIcon
+                height={iconSize}
+                width={iconSize}
+                fill={theme.secondary.base}
+              />
             </IconContainer>
           }
           handleDiameter={props.handleDiameter}

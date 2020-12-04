@@ -1,3 +1,3 @@
-import LoginControls from './LoginControls'
+import LoginControls from "./LoginControls"
 
 export default LoginControls

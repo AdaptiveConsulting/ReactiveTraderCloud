@@ -1,6 +1,6 @@
-import React, { SVGAttributes } from 'react'
-import styled from 'styled-components/macro'
-import { dark } from 'theme/colors'
+import React, { SVGAttributes } from "react"
+import styled from "styled-components/macro"
+import { dark } from "theme/colors"
 
 interface Props extends SVGAttributes<Element> {
   fill?: string
@@ -8,11 +8,17 @@ interface Props extends SVGAttributes<Element> {
   active?: boolean
 }
 
-const MailIconBase: React.FC<Props> = ({ fill = '#000', size = 2, style, active, ...props }) => {
+const MailIconBase: React.FC<Props> = ({
+  fill = "#000",
+  size = 2,
+  style,
+  active,
+  ...props
+}) => {
   return (
     <svg
-      height={size + 'rem'}
-      width={size + 'rem'}
+      height={size + "rem"}
+      width={size + "rem"}
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
       x="0px"
@@ -29,7 +35,8 @@ const MailIconBase: React.FC<Props> = ({ fill = '#000', size = 2, style, active,
 
 export const MailIcon = styled(MailIconBase)`
   [fill] {
-    fill: ${props => (props.active ? props.theme.accents.primary.base : dark.primary[5])};
+    fill: ${(props) =>
+      props.active ? props.theme.accents.primary.base : dark.primary[5]};
   }
   margin-right: 0.3rem;
 `

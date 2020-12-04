@@ -1,7 +1,7 @@
 export enum ServiceConnectionStatus {
-  CONNECTING = 'CONNECTING',
-  CONNECTED = 'CONNECTED',
-  DISCONNECTED = 'DISCONNECTED',
+  CONNECTING = "CONNECTING",
+  CONNECTED = "CONNECTED",
+  DISCONNECTED = "DISCONNECTED",
 }
 
 export interface ServiceStatus {
@@ -11,11 +11,11 @@ export interface ServiceStatus {
 }
 
 export enum ConnectionStatus {
-  connecting = 'connecting',
-  connected = 'connected',
-  disconnecting = 'disconnecting',
-  disconnected = 'disconnected',
-  sessionExpired = 'sessionExpired',
+  connecting = "connecting",
+  connected = "connected",
+  disconnecting = "disconnecting",
+  disconnected = "disconnected",
+  sessionExpired = "sessionExpired",
 }
 
 export interface ConnectionInfo {

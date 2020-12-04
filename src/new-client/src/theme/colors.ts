@@ -1,5 +1,5 @@
-import { mix, rgb, rgba } from 'polished'
-import { Side } from 'types'
+import { mix, rgb, rgba } from "polished"
+import { Side } from "types"
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// 1. Colors ///////////////////////////////////
@@ -48,9 +48,29 @@ interface BasePalette {
   base: Color
 }
 
-export type LightShade = 'L95' | 'L9' | 'L8' | 'L7' | 'L6' | 'L5' | 'L4' | 'L3' | 'L2' | 'L1'
+export type LightShade =
+  | "L95"
+  | "L9"
+  | "L8"
+  | "L7"
+  | "L6"
+  | "L5"
+  | "L4"
+  | "L3"
+  | "L2"
+  | "L1"
 type LightShadeSet = { [shade in LightShade]: Color }
-export type DarkShade = 'D1' | 'D2' | 'D3' | 'D4' | 'D5' | 'D6' | 'D7' | 'D8' | 'D9' | 'D95'
+export type DarkShade =
+  | "D1"
+  | "D2"
+  | "D3"
+  | "D4"
+  | "D5"
+  | "D6"
+  | "D7"
+  | "D8"
+  | "D9"
+  | "D95"
 type DarkShadeSet = { [shade in DarkShade]: Color }
 type PaletteShadeSet = LightShadeSet & DarkShadeSet
 /**
@@ -80,7 +100,7 @@ const yellow = createPalette(
   rgb(255, 184, 40),
   // We are overriding the value for L1 due to insuffcient contrast
   // and inconsistency with the designers intent.
-  { L1: rgb(241, 193, 109) }
+  { L1: rgb(241, 193, 109) },
 )
 
 const green = createPalette(rgb(0, 205, 130))
@@ -89,7 +109,7 @@ const brand = createPalette(BRAND)
 
 /*---------------------------- 2.2 Core palettes -----------------------------*/
 
-type CorePaletteVariant = 'base' | 1 | 2 | 3 | 4 | 5
+type CorePaletteVariant = "base" | 1 | 2 | 3 | 4 | 5
 
 /**
  * A palette consisting of a `base` and 5 variants
@@ -186,7 +206,7 @@ interface TradingAccentPalette extends BasePalette {
   lighter: Color
 }
 
-export type AccentName = 'primary' | 'positive' | 'aware' | 'negative'
+export type AccentName = "primary" | "positive" | "aware" | "negative"
 /**
  * A set of theme-agnostic palettes
  */
@@ -258,7 +278,11 @@ type CreatePaletteParams = {
 } & Partial<PaletteShadeSet>
 function createPalette(
   base: Color,
-  { whitePoint = WHITE, blackPoint = BLACK, ...shadeOverrides }: CreatePaletteParams = {}
+  {
+    whitePoint = WHITE,
+    blackPoint = BLACK,
+    ...shadeOverrides
+  }: CreatePaletteParams = {},
 ): ColorPalette {
   return {
     // Light shades
