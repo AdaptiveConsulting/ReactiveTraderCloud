@@ -50,7 +50,6 @@ export function alert(message) {
     notification.title = title;
     notification.details = body;
     notification.type = 'trade';
-    notification.headerLogo = null;
 
     FSBL.Clients.NotificationClient.notify([notification]);
   }
