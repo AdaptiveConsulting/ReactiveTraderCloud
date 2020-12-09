@@ -55,7 +55,7 @@ const LayoutLockToggleSwitch: React.FC<ThemeStorageSwitchProps & { theme: Theme 
             </IconContainer>
           }
           handleDiameter={15}
-          offColor={theme.primary.base}
+          offColor={theme.primary[1]}
           offHandleColor={theme.accents.primary.base}
           onColor={theme.primary[1]}
           onHandleColor={theme.accents.primary.base}
