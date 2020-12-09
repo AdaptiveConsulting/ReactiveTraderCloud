@@ -1,5 +1,5 @@
 import { mix, rgb, rgba } from "polished"
-import { Side } from "types"
+import { Direction } from "services/trades"
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// 1. Colors ///////////////////////////////////
@@ -238,13 +238,13 @@ const accents: AccentPaletteMap = {
   },
 }
 
-export type TradingPaletteMap = { [direction in Side]: TradingAccentPalette }
+export type TradingPaletteMap = { [direction in Direction]: TradingAccentPalette }
 const uniqueCollections: TradingPaletteMap = {
-  [Side.Sell]: {
+  [Direction.Sell]: {
     base: rgb(255, 39, 75),
     lighter: rgb(255, 211, 219),
   },
-  [Side.Buy]: {
+  [Direction.Buy]: {
     base: rgb(45, 149, 255),
     lighter: rgb(191, 222, 255),
   },
