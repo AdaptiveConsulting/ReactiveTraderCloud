@@ -31,10 +31,13 @@
     "@types/react-dom": "^16.9.8",
     "d3": "3.5.12",
     "date-fns": "^2.16.1",
+    "ag-grid-community": "^24.1.0",
+    "ag-grid-react": "^24.1.1",
     "polished": "^4.0.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-scripts": "4.0.1",
+    "react-error-boundary": "^3.1.0",
+    "react-scripts": "^4.0.1",
     "react-switch": "^5.0.1",
     "recharts": "^1.8.5",
     "resize-observer": "^1.0.0",
@@ -44,7 +47,7 @@
     "typeface-lato": "^1.1.13",
     "typeface-montserrat": "^1.1.13",
     "typeface-roboto": "^1.1.13",
-    "typescript": "^4.0.3",
+    "typescript": "^4.1.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
