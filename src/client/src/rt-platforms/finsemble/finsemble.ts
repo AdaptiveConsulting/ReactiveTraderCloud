@@ -88,9 +88,6 @@ export class Finsemble implements Platform {
 
   notification = {
     notify: (message: object) =>
-      finsembleClient.alert('trade', 'ALWAYS', 'trade-executed', message, {
-        url: '/notification',
-        duration: 1000 * 50,
-      }),
+      finsembleClient.alert(message),
   }
 }

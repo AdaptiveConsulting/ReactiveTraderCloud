@@ -14,10 +14,18 @@ navigator.serviceWorker &&
     registration = reg
   })
 
-export const sendNotification = ({ tradeNotification }: NotificationMessage) => {
+export const getTradeNotificationContents = (tradeNotification : Trade): { title: string, body: string } => {
   const status = tradeNotification.status === 'done' ? 'Accepted' : 'Rejected'
   const title = `Trade ${status}: ID ${tradeNotification.tradeId}`
   const body = `${tradeNotification.direction} ${tradeNotification.dealtCurrency} ${tradeNotification.notional} vs ${tradeNotification.termsCurrency} @ ${tradeNotification.spotRate}`
+  return {
+    title,
+    body
+  }
+}
+
+export const sendNotification = ({ tradeNotification }: NotificationMessage) => {
+  const { title, body } = getTradeNotificationContents(tradeNotification);
   const icon =
     navigator.userAgent.indexOf('Chrome') !== -1 && navigator.userAgent.indexOf('Win') !== -1
       ? './static/media/reactive-trader-icon-no-bkgd-256x256.png'
