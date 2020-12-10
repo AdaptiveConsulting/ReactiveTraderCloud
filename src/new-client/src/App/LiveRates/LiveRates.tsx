@@ -1,12 +1,12 @@
 import styled from "styled-components/macro"
-import { Loader } from "components/Loader"
+import { MainPanel } from "./MainPanel"
 
 const Wrapper = styled.div`
   padding: 0.5rem 1rem;
   user-select: none;
 `
 
-const WorkspaceWrapper = styled(Wrapper)`
+const LiveRateWrapper = styled(Wrapper)`
   padding-right: 0;
   height: 100%;
 
@@ -22,9 +22,9 @@ export const OverflowScroll = styled.div`
 `
 
 export const LiveRates: React.FC = () => (
-  <WorkspaceWrapper>
+  <LiveRateWrapper>
     <OverflowScroll>
-      <Loader />
+      <MainPanel />
     </OverflowScroll>
-  </WorkspaceWrapper>
+  </LiveRateWrapper>
 )
