@@ -22,9 +22,11 @@ export const SetFilter = forwardRef<unknown, IFilterParams>(
       })
       return options
     }, [rowModel, valueGetter])
-    
+
     const [filterSearchText, setFilterSearchText] = useState("")
-    const [selectedFilters, setSelectedFilters] = useState(() => new Set<string>())
+    const [selectedFilters, setSelectedFilters] = useState(
+      () => new Set<string>(),
+    )
     const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
