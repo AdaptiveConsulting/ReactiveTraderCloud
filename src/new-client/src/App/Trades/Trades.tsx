@@ -2,9 +2,9 @@ import styled from "styled-components/macro"
 import { Subscribe } from "@react-rxjs/core"
 import { Loader } from "components/Loader"
 import { trades$ } from "services/trades"
-import { BlotterGrid } from "./BlotterGrid"
-import { BlotterFooter } from "./BlotterFooter"
-import { BlotterHeader } from "./BlotterHeader"
+import { TradesGrid } from "./TradesGrid"
+import { TradesFooter } from "./TradesFooter"
+import { TradesHeader } from "./TradesHeader"
 
 const Wrapper = styled.div`
   padding: 0.5rem 1rem;
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 const TradesWrapper = styled(Wrapper)`
   height: 100%;
 `
-const BlotterStyle = styled("div")`
+const TradesStyle = styled("div")`
   height: 100%;
   width: 100%;
   min-height: 1.25rem;
@@ -23,11 +23,11 @@ const BlotterStyle = styled("div")`
 export const Trades: React.FC = () => (
   <TradesWrapper>
     <Subscribe source$={trades$} fallback={<Loader />}>
-      <BlotterStyle>
-        <BlotterHeader />
-        <BlotterGrid />
-        <BlotterFooter />
-      </BlotterStyle>
+      <TradesStyle>
+        <TradesHeader />
+        <TradesGrid />
+        <TradesFooter />
+      </TradesStyle>
     </Subscribe>
   </TradesWrapper>
 )

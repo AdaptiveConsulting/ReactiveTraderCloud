@@ -1,5 +1,5 @@
 export {
-  BlotterGrid,
+  TradesGrid,
   useDisplayRows,
   displayRows$,
   useGridApi,
@@ -7,4 +7,4 @@ export {
   useFilterChanges,
   filterChanges$,
   CSV_COL_FIELDS,
-} from "./BlotterGrid"
+} from "./TradesGrid"

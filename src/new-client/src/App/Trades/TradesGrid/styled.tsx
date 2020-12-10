@@ -1,7 +1,7 @@
 import styled from "styled-components/macro"
 import "ag-grid-community/dist/styles/ag-grid.css"
 
-export const BlotterGridStyle = styled("div")`
+export const TradesGridStyle = styled("div")`
   height: calc(100% - 4.75rem);
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 0.25rem 0.25rem 0 0;

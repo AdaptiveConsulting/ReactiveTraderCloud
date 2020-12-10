@@ -3,9 +3,9 @@ import { Subscribe } from "@react-rxjs/core"
 import { ExcelButton } from "./ExcelButton"
 import { AppliedFilters } from "./AppliedFilters"
 import { QuickFilter } from "./QuickFilter"
-import { gridApi$ } from "../BlotterGrid"
+import { gridApi$ } from "../TradesGrid"
 
-const BlotterHeaderStyle = styled("div")`
+const TradesHeaderStyle = styled("div")`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,12 +13,12 @@ const BlotterHeaderStyle = styled("div")`
   height: 2.5rem;
   background-color: ${({ theme }) => theme.core.darkBackground};
 `
-const BlotterRight = styled("div")`
+const HeaderRightGroup = styled("div")`
   display: flex;
   align-items: center;
 `
 
-const BlotterLeft = styled("div")`
+const HeaderLeftGroup = styled("div")`
   font-size: 0.9375rem;
 `
 
@@ -27,24 +27,24 @@ const Fill = styled.div`
   height: 1rem;
 `
 
-const BlotterToolbarStyle = styled("div")`
+const HeaderToolbar = styled("div")`
   display: flex;
   align-items: center;
-  justifycontent: flex-end;
+  justify-content: flex-end;
 `
 
-export const BlotterHeader: React.FC = () => (
-  <BlotterHeaderStyle>
-    <BlotterLeft>Trades</BlotterLeft>
+export const TradesHeader: React.FC = () => (
+  <TradesHeaderStyle>
+    <HeaderLeftGroup>Trades</HeaderLeftGroup>
     <Subscribe source$={gridApi$}>
-      <BlotterRight>
+      <HeaderRightGroup>
         <ExcelButton />
-        <BlotterToolbarStyle>
+        <HeaderToolbar>
           <AppliedFilters />
           <QuickFilter />
-        </BlotterToolbarStyle>
+        </HeaderToolbar>
         <Fill />
-      </BlotterRight>
+      </HeaderRightGroup>
     </Subscribe>
-  </BlotterHeaderStyle>
+  </TradesHeaderStyle>
 )
