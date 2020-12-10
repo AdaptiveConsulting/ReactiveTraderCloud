@@ -4,7 +4,7 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
-  LineChart,
+  LineChart as ReLineChart,
   ReferenceLine,
   Tooltip,
   Line,
@@ -47,8 +47,8 @@ const [useChartData, chartData$] = bind(
       const offset = min === 0 ? 1 : max / (max - min)
 
       const data = historical.map((entry) => ({
-        x: entry.usPnl.toFixed(2),
-        y: format(new Date(entry.timestamp), "HH:mm:ss aaaa"),
+        y: entry.usPnl.toFixed(2),
+        x: format(new Date(entry.timestamp), "HH:mm:ss aaaa"),
       }))
 
       return {
@@ -69,12 +69,12 @@ const lineProps = {
   strokeWidth: 0.8,
 }
 
-export const LineCharts: React.FC = () => {
+export const LineChart: React.FC = () => {
   const { offset, data, dataPoints, min, max } = useChartData()
   return (
     <AnalyticsLineChartStyle>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart
+        <ReLineChart
           data={data}
           margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         >
@@ -133,7 +133,7 @@ export const LineCharts: React.FC = () => {
           {[data[0], ...dataPoints].map(({ x }, i) => (
             <ReferenceLine key={i} x={x} {...lineProps} />
           ))}
-        </LineChart>
+        </ReLineChart>
       </ResponsiveContainer>
     </AnalyticsLineChartStyle>
   )
@@ -154,4 +154,4 @@ const CustomTooltip: React.FC<ToolTipProps> = ({ payload, label }) => {
   )
 }
 
-export const lineCharts$ = chartData$
+export const lineChart$ = chartData$

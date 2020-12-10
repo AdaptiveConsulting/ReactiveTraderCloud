@@ -9,7 +9,12 @@ interface CurrencyPairPositionRaw {
   BaseTradedAmount: number
   CounterTradedAmount: number
 }
-export type CurrencyPairPosition = CamelCase<CurrencyPairPositionRaw>
+
+export interface CurrencyPairPosition
+  extends CamelCase<CurrencyPairPositionRaw> {
+  basePnlName: "basePnl"
+  baseTradedAmountName: "baseTradedAmount"
+}
 
 interface HistoryRaw {
   Timestamp: string
@@ -27,7 +32,7 @@ interface PositionsRaw {
 
 const analytics$ = getStream$<PositionsRaw, string>(
   "analytics",
-  "getAnalitics",
+  "getAnalytics",
   "USD",
 ).pipe(shareLatest())
 
@@ -43,17 +48,24 @@ export const [useHistory, history$] = bind<HistoryEntry[]>(
 )
 
 export const [useCurrentPositions, currentPositions$] = bind<
-  CurrencyPairPosition[]
+  Record<string, CurrencyPairPosition>
 >(
   analytics$.pipe(
     map((analitics) =>
-      analitics.CurrentPositions.map(
-        ({ Symbol, BasePnl, BaseTradedAmount, CounterTradedAmount }) => ({
-          symbol: Symbol,
-          basePnl: BasePnl,
-          baseTradedAmount: BaseTradedAmount,
-          counterTradedAmount: CounterTradedAmount,
-        }),
+      Object.fromEntries(
+        analitics.CurrentPositions.map(
+          ({ Symbol, BasePnl, BaseTradedAmount, CounterTradedAmount }) => [
+            Symbol,
+            {
+              symbol: Symbol,
+              basePnl: BasePnl,
+              baseTradedAmount: BaseTradedAmount,
+              counterTradedAmount: CounterTradedAmount,
+              basePnlName: "basePnl",
+              baseTradedAmountName: "baseTradedAmount",
+            },
+          ],
+        ),
       ),
     ),
   ),
