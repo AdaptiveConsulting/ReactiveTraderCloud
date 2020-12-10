@@ -5,10 +5,9 @@ export const CellRenderer: React.FC<ICellRendererParams> = ({
   valueFormatted,
   value,
   data,
-}: ICellRendererParams) => (
+}: ICellRendererParams) =>
   data ? (
     <span data-qa={`${data.tradeId}-${colDef.field}`}>
-      { valueFormatted ?? value }
+      {valueFormatted ?? value}
     </span>
   ) : null
-)

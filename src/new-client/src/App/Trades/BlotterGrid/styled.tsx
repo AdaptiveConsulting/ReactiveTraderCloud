@@ -1,8 +1,7 @@
+import styled from "styled-components/macro"
+import "ag-grid-community/dist/styles/ag-grid.css"
 
-import styled from 'styled-components/macro'
-import 'ag-grid-community/dist/styles/ag-grid.css'
-
-export const BlotterGridStyle = styled('div')`
+export const BlotterGridStyle = styled("div")`
   height: calc(100% - 4.75rem);
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 0.25rem 0.25rem 0 0;
@@ -52,7 +51,7 @@ export const BlotterGridStyle = styled('div')`
   }
 
   .rt-blotter__row--rejected:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 50%;
     left: 0;
@@ -69,7 +68,7 @@ export const BlotterGridStyle = styled('div')`
     align-items: center;
   }
 
-  .ag-cell:focus, 
+  .ag-cell:focus,
   .ag-header-cell:focus {
     border: none !important;
     outline: none;
@@ -135,7 +134,7 @@ export const BlotterGridStyle = styled('div')`
       margin: 0.625rem;
       font-size: 0.6875rem;
       padding: 0.375rem;
-      color: ${({theme}) => theme.core.textColor};
+      color: ${({ theme }) => theme.core.textColor};
       background-color: ${({ theme }) => theme.core.darkBackground};
       border: none;
       border-bottom: 0.0625rem solid ${({ theme }) => theme.core.textColor};
@@ -143,7 +142,8 @@ export const BlotterGridStyle = styled('div')`
       outline: none;
 
       &:focus {
-        border-bottom: 0.0625rem solid ${({ theme }) => theme.accents.primary.base};
+        border-bottom: 0.0625rem solid
+          ${({ theme }) => theme.accents.primary.base};
       }
     }
 
@@ -155,7 +155,7 @@ export const BlotterGridStyle = styled('div')`
       background-color: ${({ theme }) => theme.core.alternateBackground};
     }
 
-    input[type='checkbox' i] {
+    input[type="checkbox" i] {
       margin-right: 0.5rem;
       cursor: pointer;
     }

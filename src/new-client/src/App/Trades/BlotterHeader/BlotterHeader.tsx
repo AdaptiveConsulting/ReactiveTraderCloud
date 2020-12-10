@@ -1,11 +1,11 @@
-import styled from 'styled-components/macro'
-import { Subscribe } from '@react-rxjs/core'
-import { ExcelButton } from './ExcelButton'
-import { AppliedFilters } from './AppliedFilters'
-import { QuickFilter } from './QuickFilter'
-import { gridApi$ } from '../BlotterGrid'
+import styled from "styled-components/macro"
+import { Subscribe } from "@react-rxjs/core"
+import { ExcelButton } from "./ExcelButton"
+import { AppliedFilters } from "./AppliedFilters"
+import { QuickFilter } from "./QuickFilter"
+import { gridApi$ } from "../BlotterGrid"
 
-const BlotterHeaderStyle = styled('div')`
+const BlotterHeaderStyle = styled("div")`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,12 +13,12 @@ const BlotterHeaderStyle = styled('div')`
   height: 2.5rem;
   background-color: ${({ theme }) => theme.core.darkBackground};
 `
-const BlotterRight = styled('div')`
+const BlotterRight = styled("div")`
   display: flex;
   align-items: center;
 `
 
-const BlotterLeft = styled('div')`
+const BlotterLeft = styled("div")`
   font-size: 0.9375rem;
 `
 
@@ -27,10 +27,10 @@ const Fill = styled.div`
   height: 1rem;
 `
 
-const BlotterToolbarStyle = styled('div')`
+const BlotterToolbarStyle = styled("div")`
   display: flex;
   align-items: center;
-  justifyContent: flex-end;
+  justifycontent: flex-end;
 `
 
 export const BlotterHeader: React.FC = () => (

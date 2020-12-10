@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components/macro'
-import { useGridApi } from '../BlotterGrid'
+import { useEffect, useRef, useState } from "react"
+import styled from "styled-components/macro"
+import { useGridApi } from "../BlotterGrid"
 
-const QuickFilterStyle = styled('div')`
+const QuickFilterStyle = styled("div")`
   width: 10rem;
   display: flex;
   align-items: center;
@@ -10,7 +10,7 @@ const QuickFilterStyle = styled('div')`
   position: relative;
 `
 
-const QuickFilterInput = styled('input')`
+const QuickFilterInput = styled("input")`
   opacity: 0.59;
   background: none;
   border: none;
@@ -33,14 +33,14 @@ const QuickFilterInput = styled('input')`
   }
 `
 
-const QuickFilterIcon = styled('div')`
+const QuickFilterIcon = styled("div")`
   width: 0.875rem;
   margin: 0 0.25rem;
   opacity: 0.59;
   cursor: pointer;
 `
 
-const QuickFilterClearIcon = styled('i')`
+const QuickFilterClearIcon = styled("i")`
   width: 0.6875rem;
   position: absolute;
   right: 0.75rem;
@@ -54,8 +54,8 @@ const QuickFilterClearIcon = styled('i')`
 
 export const QuickFilter: React.FC = () => {
   const quickFilterInput = useRef<HTMLInputElement>(null)
-  const [quickFilterText, setQuickFilterText] = useState<string>('')
-  const api = useGridApi();
+  const [quickFilterText, setQuickFilterText] = useState<string>("")
+  const api = useGridApi()
 
   useEffect(() => {
     api.setQuickFilter(quickFilterText.length ? quickFilterText : null)
@@ -63,8 +63,8 @@ export const QuickFilter: React.FC = () => {
 
   return (
     <QuickFilterStyle>
-      <QuickFilterIcon 
-        onClick={() => quickFilterInput.current?.focus() }
+      <QuickFilterIcon
+        onClick={() => quickFilterInput.current?.focus()}
         data-qa="quick-filter__filter-icon"
       >
         <i className="fas fa-filter" aria-hidden="true" />
@@ -77,14 +77,12 @@ export const QuickFilter: React.FC = () => {
         onChange={(event) => setQuickFilterText(event.target.value)}
         data-qa="quick-filer__filter-input"
       />
-      <QuickFilterClearIcon 
-        onClick={() => setQuickFilterText('') } 
+      <QuickFilterClearIcon
+        onClick={() => setQuickFilterText("")}
         data-qa="quick-filter__filter-clear-icon"
       >
-        { quickFilterText.length ? <i className="fas fa-times" /> : null }
+        {quickFilterText.length ? <i className="fas fa-times" /> : null}
       </QuickFilterClearIcon>
     </QuickFilterStyle>
   )
 }
-
-

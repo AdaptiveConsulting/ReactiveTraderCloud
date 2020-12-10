@@ -238,7 +238,9 @@ const accents: AccentPaletteMap = {
   },
 }
 
-export type TradingPaletteMap = { [direction in Direction]: TradingAccentPalette }
+export type TradingPaletteMap = {
+  [direction in Direction]: TradingAccentPalette
+}
 const uniqueCollections: TradingPaletteMap = {
   [Direction.Sell]: {
     base: rgb(255, 39, 75),
