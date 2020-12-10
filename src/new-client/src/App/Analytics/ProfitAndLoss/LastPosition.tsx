@@ -27,15 +27,14 @@ const [useLastPosition, lastPosition$] = bind(
 
 export const LastPosition: React.FC = () => {
   const lastPos = useLastPosition()
-
-  let lastPosition = formatNumber(lastPos)
-  lastPosition += lastPos >= 0 ? "+" : ""
-  const color: Accents = lastPos >= 0 ? "positive" : "negative"
+  const lastPosStr = `${lastPos >= 0 ? "+" : ""}${formatNumber(lastPos)}`
 
   return (
     <div>
       <USDspan>USD</USDspan>
-      <LastPositionStyle color={color}>{lastPosition}</LastPositionStyle>
+      <LastPositionStyle color={lastPos >= 0 ? "positive" : "negative"}>
+        {lastPosStr}
+      </LastPositionStyle>
     </div>
   )
 }

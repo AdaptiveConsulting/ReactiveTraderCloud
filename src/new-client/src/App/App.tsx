@@ -1,6 +1,6 @@
 import Resizer from "components/Resizer"
 import styled from "styled-components/macro"
-import { Analytics } from "./Analytics/Analitics"
+import { Analytics } from "./Analytics"
 import Header from "./Header"
 import { LiveRates } from "./LiveRates/LiveRates"
 import { Trades } from "./Trades/Trades"

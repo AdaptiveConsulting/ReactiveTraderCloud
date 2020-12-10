@@ -1,7 +1,20 @@
 import styled from "styled-components/macro"
-import { transparentColor } from "../globals/variables"
+import { transparentColor } from "./globals/variables"
 
-export const AnalyticsWrapper = styled.div<{ inExternalWindow?: boolean }>`
+const Wrapper = styled.div`
+  padding: 0.5rem 1rem;
+  user-select: none;
+`
+export const AnalyticsWrapper = styled(Wrapper)`
+  padding-left: 0;
+  overflow: hidden;
+
+  @media (max-width: 750px) {
+    display: none;
+  }
+`
+
+export const AnalyticsInnerWrapper = styled.div<{ inExternalWindow?: boolean }>`
   width: 100%;
   height: 100%;
   max-width: 60rem;

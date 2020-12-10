@@ -29,6 +29,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "d3": "3.5.12",
     "date-fns": "^2.16.1",
     "polished": "^4.0.5",
     "react": "^17.0.1",
@@ -36,6 +37,7 @@
     "react-scripts": "4.0.1",
     "react-switch": "^5.0.1",
     "recharts": "^1.8.5",
+    "resize-observer": "^1.0.0",
     "ress": "^3.0.0",
     "rxjs": "^6.6.3",
     "styled-components": "^5.2.1",
@@ -76,6 +78,7 @@
     ]
   },
   "devDependencies": {
+    "@types/d3": "3.5.40",
     "@types/recharts": "^1.8.17",
     "@types/styled-components": "^5.1.4",
     "prettier": "^2.2.1"
