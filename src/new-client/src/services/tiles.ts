@@ -30,7 +30,7 @@ enum PriceMovementType {
 
 type HistoryPrice = CamelCase<RawPrice>
 
-interface Price extends HistoryPrice {
+export interface Price extends HistoryPrice {
   movementType: PriceMovementType
 }
 

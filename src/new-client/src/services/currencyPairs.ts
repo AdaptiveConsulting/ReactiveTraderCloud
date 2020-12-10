@@ -12,7 +12,7 @@ import {
 
 interface CurrencyRaw {
   Symbol: string
-  RatePrecission: number
+  RatePrecision: number
   PipsPosition: number
 }
 
@@ -31,7 +31,7 @@ export interface CurrencyPair extends CamelCase<CurrencyRaw> {
 
 const currencyPairMapper = (input: CurrencyRaw): CurrencyPair => ({
   symbol: input.Symbol,
-  ratePrecission: input.RatePrecission,
+  ratePrecision: input.RatePrecision,
   pipsPosition: input.PipsPosition,
   base: input.Symbol.substr(0, 3),
   terms: input.Symbol.substr(3, 3),
@@ -63,7 +63,7 @@ const [useSelectedCurrency, selectedCurrency$] = bind(
   ALL_CURRENCIES,
 )
 
-export const currencyPairs$ = currencyPairUpdates$.pipe(
+const [useCurrencyPairs, currencyPairs$] = bind(currencyPairUpdates$.pipe(
   scan((acc, { updateType, currencyPair }) => {
     const { symbol } = currencyPair
     if (updateType === UpdateType.Removed) {
@@ -74,6 +74,7 @@ export const currencyPairs$ = currencyPairUpdates$.pipe(
     return acc
   }, {} as Record<string, CurrencyPair>),
   shareLatest(),
+  )
 )
 
 const [useFilteredSymbols, filteredSymbols$] = bind(
@@ -104,5 +105,9 @@ export {
   useFilteredSymbols,
   useCurrencies,
   onSelectCurrency,
+  useCurrencyPairs,
+  currencyPairs$,
+  filteredSymbols$,
+  currencies$
 }
 export const subscriptions$ = merge(currencies$, filteredSymbols$)
