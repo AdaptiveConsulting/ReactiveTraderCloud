@@ -34,6 +34,7 @@ export const NotionalInput: React.FC<Props> = ({
       <Input
         type="text"
         value={notional}
+        onChange={() => {}}
         onFocus={handleFocus}
         data-qa-id={`notional-input__input-${currencyPairSymbol.toLowerCase()}`}
       />
