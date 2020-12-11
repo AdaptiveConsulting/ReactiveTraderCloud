@@ -1,14 +1,9 @@
 import { Direction } from "services/trades"
 import { CurrencyPair } from "services/currencyPairs"
+import { PriceMovementType } from "services/tiles"
 export interface RfqRequest {
   notional: number
   currencyPair: CurrencyPair
-}
-
-export enum PriceMovementTypes {
-  Up = "Up",
-  Down = "Down",
-  None = "None",
 }
 
 export interface SpotPriceTick {
@@ -18,7 +13,7 @@ export interface SpotPriceTick {
   creationTimestamp: number
   symbol: string
   valueDate: string
-  priceMovementType?: PriceMovementTypes
+  priceMovementType?: PriceMovementType
   priceStale?: boolean
 }
 
@@ -157,9 +152,4 @@ export interface Rate {
   pipFraction: number
   pipPrecision: number
   pips: number
-}
-
-export enum TileView {
-  Normal = "Normal",
-  Analytics = "Analytics",
 }

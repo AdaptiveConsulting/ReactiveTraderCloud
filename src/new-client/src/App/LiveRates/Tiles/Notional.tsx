@@ -24,7 +24,7 @@ export const NotionalInput: React.FC<Props> = ({
 
   const handleResetNotional = () => {}
 
-  const updateNotional = () => {}
+  //const updateNotional = () => {}
 
   return (
     <InputWrapper>

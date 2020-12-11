@@ -1,9 +1,9 @@
 import React from "react"
 import styled from "styled-components/macro"
-import { PriceMovementTypes } from "../../types"
+import { PriceMovementType } from "services/tiles"
 
 interface Props {
-  priceMovementType?: string
+  priceMovementType?: PriceMovementType
   spread: string
   show: boolean
   isAnalyticsView: boolean
@@ -44,7 +44,7 @@ export const PriceMovement: React.FC<Props> = ({
   <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
     <MovementIcon
       data-qa="price-movement__movement-icon--up"
-      show={show && priceMovementType === PriceMovementTypes.Up}
+      show={show && priceMovementType === PriceMovementType.UP}
       color={isInitiateRFQ ? "none" : "positive"}
       className="fas fa-caret-up"
       aria-hidden="true"
@@ -54,7 +54,7 @@ export const PriceMovement: React.FC<Props> = ({
     </MovementValue>
     <MovementIcon
       data-qa="price-movement__movement-icon--down"
-      show={show && priceMovementType === PriceMovementTypes.Down}
+      show={show && priceMovementType === PriceMovementType.DOWN}
       color={isInitiateRFQ ? "none" : "negative"}
       className="fas fa-caret-down"
       aria-hidden="true"
