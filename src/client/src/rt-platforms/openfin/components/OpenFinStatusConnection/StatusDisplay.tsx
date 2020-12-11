@@ -1,5 +1,5 @@
 import React, { useCallback, SyntheticEvent } from 'react'
-import { Flex } from 'rt-components'
+import { Flex, FooterVersion } from 'rt-components'
 import { ConnectionInfo } from 'rt-system'
 import { ServiceStatus } from 'rt-types'
 import Service from './Service'
@@ -34,6 +34,7 @@ const StatusDisplay: React.FC<Props> = ({ connectionStatus: { url }, services })
             <Service key={service.serviceType} service={service} />
           ))}
         </ServiceList>
+        <FooterVersion />
       </Flex>
     </Background>
   )
