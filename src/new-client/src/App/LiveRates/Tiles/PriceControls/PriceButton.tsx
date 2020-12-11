@@ -7,8 +7,7 @@ import {
   DirectionLabel,
   Big,
   Pip,
-  Tenth,
-  ExpiredPrice,
+  Tenth
 } from "./styled"
 
 interface Props {
