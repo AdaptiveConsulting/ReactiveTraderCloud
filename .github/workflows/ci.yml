@@ -36,12 +36,6 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: docker-compose -f ./src/docker-compose.yml build --parallel
 
-      - name: Initialise currency data
-        run: |
-          # The eventstore should be initialised with a clean set of data
-          docker-compose -f src/docker-compose.yml run initialise
-          docker commit eventstore_base ${DOCKER_USER}/eventstore:${BUILD_VERSION}
-
       - name: Run integration tests
         run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
 
