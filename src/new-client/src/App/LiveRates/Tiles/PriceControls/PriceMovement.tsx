@@ -12,7 +12,11 @@ interface Props {
 
 const MovementIcon = styled("i")<{ show: boolean; color: string }>`
   text-align: center;
-  color: ${({ theme }) => theme.colors.light.secondary[4]};
+  color: ${({ theme, color }) => 
+    color === 'none' ? 
+      theme.colors.light.secondary[4] : 
+        (color === 'positive' ? 
+          theme.accents.positive.base: theme.accents.negative.base)};
   visibility: ${({ show }) => (show ? "visible" : "hidden")};
 `
 

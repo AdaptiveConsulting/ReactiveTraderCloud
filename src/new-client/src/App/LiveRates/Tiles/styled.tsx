@@ -148,7 +148,13 @@ export const Input = styled.input`
   font-size: 0.75rem;
   width: 80px;
   padding: 2px 0;
+  color: ${({ theme }) => theme.core.textColor};
+  border-bottom: 1.5px solid ${({ theme }) => theme.primary[5]};
   caret-color: ${({ theme }) => theme.primary.base};
+  &:focus {
+    outline: none !important;
+    border-color: ${({ theme }) => theme.accents.primary.base};
+  }
 `
 const RouteStyle = styled("div")`
   width: 100%;

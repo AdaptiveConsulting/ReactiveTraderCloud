@@ -27,7 +27,7 @@ export const PriceControls: React.FC<Props> = ({ currencyPair, priceData }) => {
   const isAnalyticsView = tileView === TileView.Analytics
   const priceStale = false
   const isRfqStateRequested = false
-  const isRfqStateCanRequest = true
+  const isRfqStateCanRequest = false
   const isTradeExecutionInFlight = false
   const spread = getSpread(
     priceData.bid,
