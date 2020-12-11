@@ -10,6 +10,7 @@ import {
 } from "./styled"
 import { useCurrencyPairs } from "services/currencyPairs"
 import { usePrice } from "services/tiles"
+import { format } from "date-fns"
 
 interface Props {
   id: string
@@ -23,7 +24,10 @@ export const SpotTile: React.FC<Props> = ({ id }) => {
 
   const notional = 100000
 
-  const date = "12-07-2020"
+  const spotDate = priceData.valueDate
+    ? format(new Date(priceData.valueDate), "ddMMM")
+    : ""
+  const date = spotDate && `SPT (${spotDate.toUpperCase()})`
 
   return (
     <SpotTileWrapper shouldMoveDate={false}>

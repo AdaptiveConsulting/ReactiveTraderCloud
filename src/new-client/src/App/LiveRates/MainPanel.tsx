@@ -4,7 +4,6 @@ import { Subscribe } from "@react-rxjs/core"
 import styled from "styled-components/macro"
 import { TileSwitch } from "./TileSwitch"
 import { MainHeader } from "./MainHeader"
-import { useLocalStorage } from "./util"
 import {
   filteredSymbols$,
   useFilteredSymbols,
@@ -12,7 +11,6 @@ import {
   currencyPairs$,
 } from "services/currencyPairs"
 import { tilesSubscription$ } from "services/tiles"
-import { TileView } from "./types"
 import { Loader } from "components/Loader"
 
 const PanelItems = styled.div`
@@ -46,18 +44,13 @@ const FilteredTiles = () => {
 }
 
 export const MainPanel: React.FC = () => {
-  const [tileView, setTileView] = useLocalStorage(
-    "tileView",
-    TileView.Analytics,
-  )
-
   return (
     <div data-qa="workspace__tiles-workspace">
       <Subscribe
         source$={LiveRates$}
         fallback={<Loader minWidth="22rem" minHeight="22rem" />}
       >
-        <MainHeader tileView={tileView as TileView} />
+        <MainHeader />
 
         <PanelItems data-qa="workspace__tiles-workspace-items">
           <FilteredTiles />

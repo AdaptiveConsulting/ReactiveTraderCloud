@@ -12,7 +12,7 @@ import {
   AnalyticsTileWrapper,
 } from "./styled"
 import { useCurrencyPairs } from "services/currencyPairs"
-import { usePrice } from "services/tiles"
+import { usePrice, useHistoricalPrices } from "services/tiles"
 import { format } from "date-fns"
 
 interface Props {
@@ -20,15 +20,15 @@ interface Props {
 }
 //const [useCurrencyPairs] = bind(currencyPairs$)
 export const AnalyticsTile: React.FC<Props> = ({ id }) => {
-  const localZoneName = Intl.DateTimeFormat().resolvedOptions().timeZone
-  //const dateFomatter = memoDateFormatter(valueDate => valueDate.slice(0, 10))
   const currencyPairs = useCurrencyPairs()
   const currencyPair = currencyPairs[id]
   const priceData = usePrice(id)
-  const spotDate = "04DEC" //format(new Date(priceData.valueDate), 'ddMMM')//dateFomatter(priceData.valueDate, false, localZoneName)
-  const date = spotDate && `SPT (${spotDate})`
+  const spotDate = priceData.valueDate
+    ? format(new Date(priceData.valueDate), "ddMMM")
+    : ""
+  const date = spotDate && `SPT (${spotDate.toUpperCase()})`
   const isTimerOn = false
-  const historicPrices = [
+  /*const historicPrices = [
     {
       ask: 0,
       bid: 0,
@@ -39,7 +39,8 @@ export const AnalyticsTile: React.FC<Props> = ({ id }) => {
       priceMovementType: undefined,
       priceStale: false,
     },
-  ]
+  ]*/
+  const historicPrices = useHistoricalPrices(id)
   const notional = 100000
   return (
     <AnalyticsTileWrapper shouldMoveDate={false}>
