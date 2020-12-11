@@ -19,16 +19,16 @@ import {
   ToolTipChildLeft,
 } from "./styled"
 
-const intervalWidth = 30
+const INTERVAL_WIDTH = 30
 const xAxisPointsIdxs$ = history$.pipe(
   scan(
     ({ lastTimestamp }, values) => {
       const idx = values.findIndex((entry) => entry.timestamp === lastTimestamp)
-      const currentOffset = idx === -1 ? 0 : idx % intervalWidth
+      const currentOffset = idx === -1 ? 0 : idx % INTERVAL_WIDTH
       const idxs = values
         .map((_, idx) => idx)
         .filter(
-          (idx) => (idx + currentOffset) % intervalWidth === 0 || idx === 0,
+          (idx) => idx === 0 || (idx - currentOffset) % INTERVAL_WIDTH === 0,
         )
       return { idxs, lastTimestamp: values[idxs[idxs.length - 1]].timestamp }
     },
