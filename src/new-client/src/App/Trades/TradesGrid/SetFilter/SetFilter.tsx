@@ -1,6 +1,7 @@
 import { IFilterParams, ProcessRowParams } from "ag-grid-community"
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useMemo,
@@ -10,6 +11,9 @@ import {
 import { Option } from "./Option"
 
 /**
+ *
+ * Guides used for constructing this component:
+ *
  * https://www.ag-grid.com/javascript-grid-filter-component/
  * https://www.ag-grid.com/react-hooks/
  */
@@ -25,31 +29,63 @@ export const SetFilter = forwardRef<unknown, IFilterParams>(
 
     const [filterSearchText, setFilterSearchText] = useState("")
     const [selectedFilters, setSelectedFilters] = useState(
-      () => new Set<string>(),
+      () => new Set<string>(filterOptions),
     )
     const inputRef = useRef<HTMLInputElement>(null)
 
+    const resetFilters = useCallback(
+      () => setSelectedFilters(new Set<string>(filterOptions)),
+      [setSelectedFilters, filterOptions],
+    )
+
     useEffect(() => {
-      setSelectedFilters(
-        new Set(
-          [...filterOptions].filter((filterOption) =>
-            filterOption.toLowerCase().includes(filterSearchText.toLowerCase()),
+      if (!filterSearchText.length) {
+        resetFilters()
+      } else {
+        setSelectedFilters(
+          new Set(
+            [...filterOptions].filter((filterOption) =>
+              filterOption
+                .toLowerCase()
+                .includes(filterSearchText.toLowerCase()),
+            ),
           ),
-        ),
-      )
-    }, [filterSearchText, filterOptions])
+        )
+      }
+    }, [filterSearchText, filterOptions, resetFilters])
 
     useEffect(() => {
       filterChangedCallback()
     }, [selectedFilters, filterChangedCallback])
 
-    useImperativeHandle(ref, () => ({
-      isFilterActive: () => selectedFilters.size > 0,
-      doesFilterPass: ({ node }: ProcessRowParams) =>
-        selectedFilters.has(valueGetter(node)),
-      getModel: () =>
-        filterSearchText.trim().length > 0 ? filterSearchText : undefined,
-    }))
+    useImperativeHandle(ref, () => {
+      const filterActive =
+        selectedFilters.size > 0 && selectedFilters.size < filterOptions.size
+      return {
+        isFilterActive: () => filterActive,
+        doesFilterPass: ({ node }: ProcessRowParams) =>
+          selectedFilters.has(valueGetter(node)),
+        getModel: () => (filterActive ? [...selectedFilters] : null),
+        /**
+         * Modelled on https://www.ag-grid.com/javascript-grid-filter-set-api/
+         *
+         * Since this method is called outside the component and updates internal
+         * state, make sure caller is using correct contract.
+         */
+        setModel: (model: { values: string[] } | null) => {
+          if (model == null) {
+            resetFilters()
+          } else if (
+            model.values.every((filter) => filterOptions.has(filter))
+          ) {
+            setSelectedFilters(new Set(model.values))
+          }
+        },
+        afterGuiAttached: () => {
+          inputRef.current?.focus()
+        },
+      }
+    })
 
     return (
       <div className="filter-container">
@@ -75,28 +111,33 @@ export const SetFilter = forwardRef<unknown, IFilterParams>(
               )}
               onChange={(event) => {
                 if (event.target.checked) {
-                  setSelectedFilters(new Set())
+                  resetFilters()
+                } else {
+                  setSelectedFilters(new Set<string>())
                 }
               }}
             />
           </div>
           <div className="filter_container__option-items-wrapper">
             <div className="filter_container__option-items-container">
-              {[...filterOptions].map((value) => (
+              {[...filterOptions].map((option) => (
                 <Option
-                  key={value}
-                  value={value}
-                  label={value}
-                  checked={selectedFilters.has(value)}
+                  key={option}
+                  value={option}
+                  label={option}
+                  checked={selectedFilters.has(option)}
                   onChange={(event) => {
                     const checked = event.target.checked
-                    setSelectedFilters((old) => {
+                    setSelectedFilters((previousSelectedFilters) => {
+                      const nextSelectedFilters = new Set(
+                        previousSelectedFilters,
+                      )
                       if (checked) {
-                        old.add(value)
+                        nextSelectedFilters.add(option)
                       } else {
-                        old.delete(value)
+                        nextSelectedFilters.delete(option)
                       }
-                      return new Set([...old])
+                      return nextSelectedFilters
                     })
                   }}
                 />

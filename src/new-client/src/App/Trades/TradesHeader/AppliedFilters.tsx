@@ -2,7 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { GridApi } from "ag-grid-community"
 import { map } from "rxjs/operators"
 import styled from "styled-components/macro"
-import { filterChanges$, useGridApi } from "../BlotterGrid"
+import { filterChanges$, useGridApi } from "../TradesGrid"
 
 const FilterButton = styled("button")`
   opacity: 0.59;

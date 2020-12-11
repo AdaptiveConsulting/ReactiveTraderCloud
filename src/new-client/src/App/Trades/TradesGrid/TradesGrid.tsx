@@ -1,6 +1,5 @@
 import { useRef } from "react"
 import {
-  ColDef,
   FilterChangedEvent,
   GridApi,
   ValueFormatterParams,
@@ -14,9 +13,9 @@ import { Trade, TradeStatus, useTrades } from "services/trades"
 import { formatDate, formatMoney, capitalize } from "utils/formatters"
 import { SetFilter } from "./SetFilter"
 import { CellRenderer } from "./CellRenderer"
-import { BlotterGridStyle } from "./styled"
+import { TradesGridStyle } from "./styled"
 
-type BlotterRow = {
+type TradesGridRow = {
   data: Trade
 }
 
@@ -51,32 +50,30 @@ export const [useFilterChanges, filterChanges$] = bind(filterChangesSubj$)
 const FaIcon = (faName: string) =>
   `<i class="fas fa-${faName}" aria-hidden="true" />`
 
-const DEFAULT_COL_DEF: ColDef = {
-  menuTabs: ["filterMenuTab"],
-  suppressSizeToFit: true,
-  filter: false,
-  minWidth: 40,
-  resizable: true,
-  sortable: true,
-}
-
 const StatusClassRules = (classSpecifier: string) => ({
-  [`rt-blotter__${classSpecifier}--rejected`]: ({ data }: BlotterRow) =>
+  [`rt-blotter__${classSpecifier}--rejected`]: ({ data }: TradesGridRow) =>
     data.status === TradeStatus.Rejected,
-  [`rt-blotter__${classSpecifier}--done`]: ({ data }: BlotterRow) =>
+  [`rt-blotter__${classSpecifier}--done`]: ({ data }: TradesGridRow) =>
     data.status === TradeStatus.Done,
-  [`rt-blotter__${classSpecifier}--pending`]: ({ data }: BlotterRow) =>
+  [`rt-blotter__${classSpecifier}--pending`]: ({ data }: TradesGridRow) =>
     data.status === TradeStatus.Pending,
 })
 
-export const BlotterGrid: React.FC = () => {
+export const TradesGrid: React.FC = () => {
   const trades = useTrades()
   const parentRef = useRef<HTMLDivElement>(null)
   return (
-    <BlotterGridStyle ref={parentRef}>
+    <TradesGridStyle ref={parentRef}>
       <AgGridReact
         rowData={trades ?? []}
-        defaultColDef={DEFAULT_COL_DEF}
+        defaultColDef={{
+          menuTabs: ["filterMenuTab"],
+          suppressSizeToFit: true,
+          filter: false,
+          minWidth: 40,
+          resizable: true,
+          sortable: true,
+        }}
         suppressMovableColumns={true}
         rowSelection={"multiple"}
         suppressDragLeaveHidesColumns={true}
@@ -219,6 +216,6 @@ export const BlotterGrid: React.FC = () => {
           filter
         />
       </AgGridReact>
-    </BlotterGridStyle>
+    </TradesGridStyle>
   )
 }
