@@ -73,8 +73,10 @@ export const LineChart: React.FC = () => {
   const { offset, data, dataPoints, min, max } = useChartData()
   return (
     <AnalyticsLineChartStyle>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer>
         <ReLineChart
+          width={100}
+          height={100}
           data={data}
           margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         >
