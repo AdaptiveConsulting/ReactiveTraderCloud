@@ -87,7 +87,7 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
   )
 
   const subscription = differentNodes$.subscribe((_nodes) => {
-    console.log("nodes", _nodes)
+    // console.log("nodes", _nodes)
     nodes = _nodes
     // svg.remove() // clear all child nodes
 
@@ -139,7 +139,7 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
   )
   subscription.add(
     nodesUpdates$.subscribe((_nodes) => {
-      console.log("updated nodes", _nodes)
+      // console.log("updated nodes", _nodes)
       nodes = _nodes
       const dataNode = nodeGroup.data(nodes, (d: BubbleChartNode) => d.id)
 
