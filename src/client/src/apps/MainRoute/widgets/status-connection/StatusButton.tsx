@@ -11,7 +11,7 @@ import {
   ServiceList,
 } from './styled'
 import Service from './Service'
-import FooterVersion from '../footer-version'
+import { FooterVersion } from 'rt-components'
 import { usePopUpMenu } from 'rt-util'
 
 interface Props {
