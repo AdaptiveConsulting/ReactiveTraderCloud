@@ -1,4 +1,3 @@
-import React from "react"
 import { merge } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
 import styled from "styled-components/macro"
@@ -21,11 +20,6 @@ const PanelItems = styled.div`
   grid-gap: 0.25rem;
 `
 
-const PanelItem = styled.div`
-  flex-grow: 1;
-  flex-basis: 20rem;
-`
-
 const LiveRates$ = merge(
   filteredSymbols$,
   currencies$,
@@ -37,9 +31,7 @@ const FilteredTiles = () => {
   return (
     <>
       {spotTiles.map((symbol) => (
-        <PanelItem>
-          <TileSwitch id={symbol} key={symbol} />
-        </PanelItem>
+        <TileSwitch key={symbol} id={symbol} />
       ))}
     </>
   )
