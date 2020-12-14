@@ -22,7 +22,7 @@ export const SpotTile: React.FC<Props> = ({ id }) => {
   const currencyPair = currencyPairs[id]
   const priceData = usePrice(id)
 
-  const notional = 100000
+  const notional = 100_000
 
   const spotDate = priceData.valueDate
     ? format(new Date(priceData.valueDate), "ddMMM")

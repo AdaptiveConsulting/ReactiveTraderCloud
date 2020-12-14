@@ -10,10 +10,15 @@ import { Subject } from "rxjs"
 import { take } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { Trade, TradeStatus, useTrades } from "services/trades"
-import { formatDate, formatMoney, capitalize } from "utils/formatters"
+import {
+  significantDigitsNumberFormatter,
+  formatAsWholeNumber,
+} from "utils/formatNumber"
+import { capitalize } from "utils/capitalize"
 import { SetFilter } from "./SetFilter"
 import { CellRenderer } from "./CellRenderer"
 import { TradesGridStyle } from "./styled"
+import { format as formatDate } from "date-fns"
 
 type TradesGridRow = {
   data: Trade
@@ -33,6 +38,10 @@ enum COL_FIELD {
   TRADER_NAME = "traderName",
   EMPTY = "empty",
 }
+
+const DATE_FORMAT = "dd-MMM-yyyy"
+
+const formatTo6Digits = significantDigitsNumberFormatter(6)
 
 export const CSV_COL_FIELDS = Object.values(COL_FIELD).filter(
   (field) => field !== COL_FIELD.EMPTY && field !== COL_FIELD.STATUS_INDICATOR,
@@ -139,7 +148,7 @@ export const TradesGrid: React.FC = () => {
           field={COL_FIELD.TRADE_DATE}
           width={130}
           valueFormatter={(params: ValueFormatterParams) =>
-            formatDate(params.value)
+            formatDate(params.value, DATE_FORMAT)
           }
           cellRendererFramework={CellRenderer}
         />
@@ -176,7 +185,7 @@ export const TradesGrid: React.FC = () => {
           width={110}
           filter="agNumberColumnFilter"
           valueFormatter={(params: ValueFormatterParams) =>
-            formatMoney(params.value)
+            formatAsWholeNumber(params.value)
           }
           cellRendererFramework={CellRenderer}
         />
@@ -188,6 +197,9 @@ export const TradesGrid: React.FC = () => {
           cellClass="rt-blotter__numeric-cell"
           headerClass="rt-header__numeric"
           filter="agNumberColumnFilter"
+          valueFormatter={(params: ValueFormatterParams) =>
+            formatTo6Digits(params.value)
+          }
           cellRendererFramework={CellRenderer}
         />
         <AgGridColumn
@@ -196,7 +208,7 @@ export const TradesGrid: React.FC = () => {
           field={COL_FIELD.VALUE_DATE}
           width={120}
           valueFormatter={(params: ValueFormatterParams) =>
-            formatDate(params.value)
+            formatDate(params.value, DATE_FORMAT)
           }
           cellRendererFramework={CellRenderer}
         />

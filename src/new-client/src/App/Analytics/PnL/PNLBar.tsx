@@ -1,5 +1,9 @@
 import React, { useState } from "react"
-import { formatNumber } from "utils/formatNumber"
+import {
+  formatAsWholeNumber,
+  formatWithScale,
+  precisionNumberFormatter,
+} from "utils/formatNumber"
 import {
   BarChart,
   BarPriceContainer,
@@ -20,6 +24,8 @@ interface PNLBarProps {
 
 const TRANSLATION_WIDTH: number = 50
 
+const formatToPrecision2 = precisionNumberFormatter(2)
+
 const getLogRatio: (max: number, numb: number) => number = (max, numb) => {
   const logMax = Math.log10(Math.abs(max)) + 1
   const logNumb = Math.log10(Math.abs(numb))
@@ -31,8 +37,8 @@ const PNLBar: React.FC<PNLBarProps> = ({ symbol, basePnl, maxVal }) => {
   const color = basePnl >= 0 ? "positive" : "negative"
   const distance =
     getLogRatio(maxVal, basePnl) * TRANSLATION_WIDTH * (basePnl >= 0 ? 1 : -1)
-  const price = formatNumber(Math.abs(basePnl))
-  const hoverPrice = formatNumber(basePnl)
+  const price = formatWithScale(basePnl, formatAsWholeNumber)
+  const hoverPrice = formatToPrecision2(basePnl)
   return (
     <BarChart>
       <Label>{symbol}</Label>

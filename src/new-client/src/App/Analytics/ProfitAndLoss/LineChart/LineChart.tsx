@@ -11,13 +11,15 @@ import {
 } from "recharts"
 import { map, pluck, scan, withLatestFrom } from "rxjs/operators"
 import { history$ } from "services/analytics"
-import { formatNumber } from "utils/formatNumber"
+import { formatWithScale, precisionNumberFormatter } from "utils/formatNumber"
 import {
   AnalyticsLineChartStyle,
   ToolTipStyle,
   ToolTipChildRight,
   ToolTipChildLeft,
 } from "./styled"
+
+const formatToPrecision1 = precisionNumberFormatter(1)
 
 const INTERVAL_WIDTH = 30
 const xAxisPointsIdxs$ = history$.pipe(
@@ -47,7 +49,7 @@ const [useChartData, chartData$] = bind(
       const offset = min === 0 ? 1 : max / (max - min)
 
       const data = historical.map((entry) => ({
-        y: entry.usPnl.toFixed(2),
+        y: entry.usPnl,
         x: format(new Date(entry.timestamp), "HH:mm:ss aaaa"),
       }))
 
@@ -111,6 +113,9 @@ export const LineChart: React.FC = () => {
           <YAxis
             width={40}
             tickLine={false}
+            tickFormatter={(value) =>
+              formatWithScale(value, formatToPrecision1)
+            }
             padding={{ top: 0, bottom: 0 }}
             axisLine={false}
             domain={[min, max]}
@@ -150,7 +155,8 @@ const CustomTooltip: React.FC<ToolTipProps> = ({ payload, label }) => {
     <ToolTipStyle>
       <ToolTipChildLeft>{label}</ToolTipChildLeft>
       <ToolTipChildRight>
-        {payload.length > 0 && formatNumber(Number(payload[0].value))}
+        {payload.length > 0 &&
+          formatWithScale(payload[0].value, formatToPrecision1)}
       </ToolTipChildRight>
     </ToolTipStyle>
   )

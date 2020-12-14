@@ -10,7 +10,7 @@ import {
 import { colors } from "theme"
 import { currentPositions$ } from "services/analytics"
 import { currencyPairs$ } from "services/currencyPairs"
-import { formatNumber } from "utils/formatNumber"
+import { formatAsWholeNumber } from "utils/formatNumber"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { mapObject } from "utils/mapObject"
 import { equals } from "utils/equals"
@@ -112,7 +112,7 @@ export const getNodes$ = (
           id: dataObj.symbol,
           r: getRadius(dataObj, scales),
           cx: scales.x(index),
-          text: formatNumber(dataObj.baseTradedAmount),
+          text: formatAsWholeNumber(dataObj.baseTradedAmount),
         })
         acc[dataObj.symbol] = node
       })
