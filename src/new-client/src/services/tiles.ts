@@ -1,5 +1,6 @@
 import { bind } from "@react-rxjs/core"
 import { split } from "@react-rxjs/utils"
+import { createListener } from "@react-rxjs/utils"
 import { concat, EMPTY, merge } from "rxjs"
 import {
   distinctUntilChanged,
@@ -8,6 +9,7 @@ import {
   scan,
   switchMap,
   take,
+  startWith,
 } from "rxjs/operators"
 import { getRemoteProcedureCall$, getStream$ } from "./client"
 import { currencyPairs$, currencyPairUpdates$ } from "./currencyPairs"
@@ -22,7 +24,7 @@ interface RawPrice {
   ValueDate: string
 }
 
-enum PriceMovementType {
+export enum PriceMovementType {
   UP,
   DOWN,
   NONE,
@@ -36,6 +38,11 @@ export interface Price extends HistoryPrice {
 
 interface Request {
   symbol: string
+}
+
+export enum TileView {
+  Normal = "Normal",
+  Analytics = "Analytics",
 }
 
 export const [usePrice, getPrice$] = bind((symbol: string) =>
@@ -89,3 +96,12 @@ export const tilesSubscription$ = concat(
       ),
   ),
 )
+
+const [selectedTileViewInput$, onSelectTileView] = createListener<TileView>()
+
+const [useSelectedTileView, selectedTileView$] = bind(
+  selectedTileViewInput$.pipe(startWith(TileView.Analytics)),
+  TileView.Analytics,
+)
+
+export { onSelectTileView, useSelectedTileView, selectedTileView$ }

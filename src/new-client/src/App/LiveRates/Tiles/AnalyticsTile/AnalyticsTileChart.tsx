@@ -40,12 +40,10 @@ export const AnalyticsTileChart: React.FC<Props> = ({
       onMouseEnter={handleMouseEvent}
       onMouseLeave={handleMouseEvent}
     >
-      <ResponsiveContainer
-        width="100%"
-        height="100%"
-        data-qa="analytics-tile-chart__recharts-container"
-      >
+      <ResponsiveContainer data-qa="analytics-tile-chart__recharts-container">
         <LineChart
+          width={100}
+          height={100}
           data={history}
           margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         >

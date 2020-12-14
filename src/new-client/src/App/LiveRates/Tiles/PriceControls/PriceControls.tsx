@@ -1,6 +1,6 @@
 import React from "react"
 import { Direction } from "services/trades"
-import { toRate } from "../../util"
+import { toRate, getSpread } from "../../util"
 import { PriceButton } from "./PriceButton"
 import { PriceMovement } from "./PriceMovement"
 import {
@@ -9,7 +9,7 @@ import {
   Icon,
 } from "./styled"
 import { CurrencyPair } from "services/currencyPairs"
-import { Price } from "services/tiles"
+import { Price, TileView, useSelectedTileView } from "services/tiles"
 
 interface Props {
   currencyPair: CurrencyPair
@@ -23,13 +23,21 @@ const PriceButtonDisabledBanIcon: React.FC = ({ children }) => (
 )
 
 export const PriceControls: React.FC<Props> = ({ currencyPair, priceData }) => {
-  const isAnalyticsView = true
+  const tileView = useSelectedTileView()
+  const isAnalyticsView = tileView === TileView.Analytics
   const priceStale = false
   const isRfqStateRequested = false
-  const isRfqStateCanRequest = true
+  const isRfqStateCanRequest = false
   const isTradeExecutionInFlight = false
-  const priceMovement = "Up"
-  const spreadValue = "3"
+  const spread = getSpread(
+    priceData.bid,
+    priceData.ask,
+    currencyPair.pipsPosition,
+    currencyPair.ratePrecision,
+  )
+
+  const priceMovement = priceData.movementType
+  const spreadValue = spread.formattedValue
   const showPriceMovement = true
   const bidRate = toRate(
     priceData.bid,

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import styled from "styled-components/macro"
-import { useGridApi } from "../BlotterGrid"
+import { useGridApi } from "../TradesGrid"
 
 const QuickFilterStyle = styled("div")`
   width: 10rem;

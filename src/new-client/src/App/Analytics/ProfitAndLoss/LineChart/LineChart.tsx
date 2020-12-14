@@ -19,16 +19,16 @@ import {
   ToolTipChildLeft,
 } from "./styled"
 
-const intervalWidth = 30
+const INTERVAL_WIDTH = 30
 const xAxisPointsIdxs$ = history$.pipe(
   scan(
     ({ lastTimestamp }, values) => {
       const idx = values.findIndex((entry) => entry.timestamp === lastTimestamp)
-      const currentOffset = idx === -1 ? 0 : idx % intervalWidth
+      const currentOffset = idx === -1 ? 0 : idx % INTERVAL_WIDTH
       const idxs = values
         .map((_, idx) => idx)
         .filter(
-          (idx) => (idx + currentOffset) % intervalWidth === 0 || idx === 0,
+          (idx) => idx === 0 || (idx - currentOffset) % INTERVAL_WIDTH === 0,
         )
       return { idxs, lastTimestamp: values[idxs[idxs.length - 1]].timestamp }
     },
@@ -73,8 +73,10 @@ export const LineChart: React.FC = () => {
   const { offset, data, dataPoints, min, max } = useChartData()
   return (
     <AnalyticsLineChartStyle>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer>
         <ReLineChart
+          width={100}
+          height={100}
           data={data}
           margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         >

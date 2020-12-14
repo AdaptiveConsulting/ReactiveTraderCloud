@@ -2,9 +2,9 @@ import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 import { trades$ } from "services/trades"
-import { useDisplayRows } from "./BlotterGrid"
+import { useDisplayRows } from "./TradesGrid"
 
-const BlotterStatusStyled = styled("div")`
+const TradesFooterStyled = styled("div")`
   height: 2rem;
   padding: 0.5rem 0 0.5rem 0.75rem;
   font-size: 0.625rem;
@@ -16,7 +16,7 @@ const BlotterStatusStyled = styled("div")`
   border-radius: 0 0 0.25rem 0.25rem;
 `
 
-const BlotterStatusText = styled.span`
+const TradesFooterText = styled.span`
   opacity: 0.6;
 `
 const [useTotalRows] = bind<number>(
@@ -24,14 +24,14 @@ const [useTotalRows] = bind<number>(
   0,
 )
 
-export const BlotterFooter: React.FC = () => {
+export const TradesFooter: React.FC = () => {
   const displayedRows = useDisplayRows()
   const totalRows = useTotalRows()
   return (
-    <BlotterStatusStyled>
-      <BlotterStatusText data-qa="blotter__blotter-status-text">
+    <TradesFooterStyled>
+      <TradesFooterText data-qa="blotter__blotter-status-text">
         Displaying rows {displayedRows} of {totalRows}
-      </BlotterStatusText>
-    </BlotterStatusStyled>
+      </TradesFooterText>
+    </TradesFooterStyled>
   )
 }

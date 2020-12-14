@@ -1,6 +1,6 @@
 import { ValueFormatterParams } from "ag-grid-community"
 import styled from "styled-components/macro"
-import { useGridApi, CSV_COL_FIELDS } from "../BlotterGrid"
+import { useGridApi, CSV_COL_FIELDS } from "../TradesGrid"
 
 const ExcelIcon = () => (
   <svg
