@@ -25,20 +25,22 @@ const FooterVersion: FC = () => {
 
   const URL =
     'https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/' +
-    process.env.REACT_APP_VERSION
+    process.env.REACT_APP_BUILD_VERSION
 
   useEffect(() => {
-    gitTagExists(process.env.REACT_APP_VERSION).then(resolution => setVersionExists(resolution))
+    gitTagExists(process.env.REACT_APP_BUILD_VERSION).then(resolution =>
+      setVersionExists(resolution)
+    )
   }, [])
 
   return (
     <Wrapper>
       {versionExists ? (
         <Link target="_blank" href={URL}>
-          {process.env.REACT_APP_VERSION}
+          {process.env.REACT_APP_BUILD_VERSION}
         </Link>
       ) : (
-        <p>{process.env.REACT_APP_VERSION}</p>
+        <p>{process.env.REACT_APP_BUILD_VERSION}</p>
       )}
     </Wrapper>
   )
