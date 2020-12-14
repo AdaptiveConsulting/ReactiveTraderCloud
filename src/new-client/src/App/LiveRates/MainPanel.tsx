@@ -1,7 +1,7 @@
 import { merge } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
 import styled from "styled-components/macro"
-import { TileSwitch } from "./TileSwitch"
+import { TilePanel } from "./Tiles/TilePanel"
 import { MainHeader } from "./MainHeader"
 import {
   filteredSymbols$,
@@ -29,7 +29,7 @@ const FilteredTiles = () => {
   return (
     <>
       {spotTiles.map((symbol) => (
-        <TileSwitch key={symbol} id={symbol} />
+        <TilePanel key={symbol} id={symbol} />
       ))}
     </>
   )

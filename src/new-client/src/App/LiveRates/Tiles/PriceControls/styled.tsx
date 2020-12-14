@@ -127,12 +127,30 @@ export const PriceControlsStyle = styled("div")<{
   isAnalyticsView: boolean
   isTradeExecutionInFlight?: boolean
 }>`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
   ${({ isAnalyticsView }) =>
-    isAnalyticsView ? `` : `align-items: center; margin-top: 15px;`}
+    isAnalyticsView
+      ? `
+      grid-template-columns: 20% 80%;
+      grid-template-rows: 50% 50%;
+      grid-template-areas: 
+      "movement sell"
+      "movement buy";
+    `
+      : `
+      grid-template-columns: 33% 33% 33%;
+      grid-template-rows: 100%;
+      grid-template-areas: 
+      "sell movement buy";
+    `}
   ${({ isTradeExecutionInFlight }) =>
     !isTradeExecutionInFlight && "position: relative"}
+`
+export const SellWrapper = styled.div`
+  grid-area: sell;
+`
+export const BuyWrapper = styled.div`
+  grid-area: buy;
 `
 
 export const PriceButtonDisabledPlaceholder = styled.div`

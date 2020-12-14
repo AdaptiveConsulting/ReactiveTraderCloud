@@ -112,16 +112,6 @@ export const TradeButton = styled.button<{
     `};
 `
 
-export const InputWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 30px auto 30px;
-  grid-template-areas: "Currency Input ResetInputValue" ". Message .";
-  align-items: center;
-
-  grid-template-rows: 23px 13px;
-  margin-bottom: -0.5rem;
-`
-
 export const CurrencyPairSymbol = styled("span")`
   grid-area: Currency;
   opacity: 0.59;
@@ -178,7 +168,6 @@ export const TileBaseStyle = styled.div`
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
-
   &:hover ${TradeButton} {
     background-color: ${({ theme }) => theme.core.darkBackground};
   }

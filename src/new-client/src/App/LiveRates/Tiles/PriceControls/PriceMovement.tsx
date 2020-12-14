@@ -12,11 +12,12 @@ interface Props {
 
 const MovementIcon = styled("i")<{ show: boolean; color: string }>`
   text-align: center;
-  color: ${({ theme, color }) => 
-    color === 'none' ? 
-      theme.colors.light.secondary[4] : 
-        (color === 'positive' ? 
-          theme.accents.positive.base: theme.accents.negative.base)};
+  color: ${({ theme, color }) =>
+    color === "none"
+      ? theme.colors.light.secondary[4]
+      : color === "positive"
+      ? theme.accents.positive.base
+      : theme.accents.negative.base};
   visibility: ${({ show }) => (show ? "visible" : "hidden")};
 `
 
@@ -36,6 +37,7 @@ const PriceMovementStyle = styled.div<{
   flex-direction: column;
   width: 100%;
   z-index: 1;
+  grid-area: movement;
 `
 
 export const PriceMovement: React.FC<Props> = ({

@@ -1,11 +1,7 @@
 import React from "react"
-import {
-  InputWrapper,
-  CurrencyPairSymbol,
-  Input,
-  ResetInputValue,
-} from "./styled"
-import { formatNumber } from 'utils/formatNumber'
+import { CurrencyPairSymbol, Input, ResetInputValue } from "./styled"
+import { InputWrapper } from "./responsiveWrappers"
+import { formatNumber } from "utils/formatNumber"
 interface Props {
   currencyPairBase: string
   currencyPairSymbol: string
