@@ -5,7 +5,7 @@ import {
   Input,
   ResetInputValue,
 } from "./styled"
-import { formatNumber } from 'utils/formatNumber'
+import { formatAsWholeNumber } from "utils/formatNumber"
 interface Props {
   currencyPairBase: string
   currencyPairSymbol: string
@@ -33,7 +33,7 @@ export const NotionalInput: React.FC<Props> = ({
       </CurrencyPairSymbol>
       <Input
         type="text"
-        value={formatNumber(notional)}
+        value={formatAsWholeNumber(notional)}
         onChange={() => {}}
         onFocus={handleFocus}
         data-qa-id={`notional-input__input-${currencyPairSymbol.toLowerCase()}`}

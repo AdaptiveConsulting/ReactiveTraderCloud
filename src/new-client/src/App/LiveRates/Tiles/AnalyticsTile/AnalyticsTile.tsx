@@ -32,9 +32,12 @@ export const AnalyticsTile: React.FC<Props> = ({ id }) => {
   const HISTORIC_PRICES_MAX_POINTS = 100
   const startIndexUpdatePrices = Math.max(
     1,
-    rawHistoryPrices.length - HISTORIC_PRICES_MAX_POINTS
+    rawHistoryPrices.length - HISTORIC_PRICES_MAX_POINTS,
   )
-  const historicPrices = rawHistoryPrices.slice(startIndexUpdatePrices, rawHistoryPrices.length)
+  const historicPrices = rawHistoryPrices.slice(
+    startIndexUpdatePrices,
+    rawHistoryPrices.length,
+  )
   const notional = 100000
   return (
     <AnalyticsTileWrapper shouldMoveDate={false}>

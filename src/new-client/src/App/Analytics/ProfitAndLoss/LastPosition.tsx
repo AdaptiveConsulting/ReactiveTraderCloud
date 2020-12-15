@@ -3,7 +3,7 @@ import { bind } from "@react-rxjs/core"
 import styled from "styled-components/macro"
 import { history$ } from "services/analytics"
 import { map } from "rxjs/operators"
-import { formatNumber } from "utils/formatNumber"
+import { formatAsWholeNumber } from "utils/formatNumber"
 
 type Accents = "positive" | "negative"
 
@@ -18,16 +18,12 @@ const LastPositionStyle = styled.span<{ color: Accents }>`
 `
 
 const [useLastPosition, lastPosition$] = bind(
-  history$.pipe(
-    map((history) =>
-      Number(history[history.length - 1]?.usPnl.toFixed(2) ?? 0),
-    ),
-  ),
+  history$.pipe(map((history) => history[history.length - 1]?.usPnl ?? 0)),
 )
 
 export const LastPosition: React.FC = () => {
   const lastPos = useLastPosition()
-  const lastPosStr = `${lastPos >= 0 ? "+" : ""}${formatNumber(lastPos)}`
+  const lastPosStr = `${lastPos >= 0 ? "+" : ""}${formatAsWholeNumber(lastPos)}`
 
   return (
     <div>

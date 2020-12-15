@@ -1,9 +1,8 @@
-  
 import { memo } from "react"
 import styled from "styled-components/macro"
 import { AnalyticsTile } from "./Tiles/AnalyticsTile/AnalyticsTile"
 import { SpotTile } from "./Tiles/SpotTile/SpotTile"
-import { TileView, useSelectedTileView } from 'services/tiles'
+import { TileView, useSelectedTileView } from "services/tiles"
 
 interface Props {
   id: string
