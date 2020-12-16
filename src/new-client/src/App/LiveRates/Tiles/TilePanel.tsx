@@ -37,16 +37,8 @@ export const TilePanel: React.FC<Props> = memo(({ id }) => {
     : ""
   const date = spotDate && `SPT (${spotDate.toUpperCase()})`
   const isTimerOn = false
-  const rawHistoryPrices = useHistoricalPrices(id)
-  const HISTORIC_PRICES_MAX_POINTS = 100
-  const startIndexUpdatePrices = Math.max(
-    1,
-    rawHistoryPrices.length - HISTORIC_PRICES_MAX_POINTS,
-  )
-  const historicPrices = rawHistoryPrices.slice(
-    startIndexUpdatePrices,
-    rawHistoryPrices.length,
-  )
+  const historicPrices = useHistoricalPrices(id)
+
   const notional = 100000
   return (
     <PanelItem>

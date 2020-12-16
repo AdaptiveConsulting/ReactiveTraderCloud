@@ -11,8 +11,6 @@ import {
   take,
   startWith,
   mergeAll,
-  skip,
-  debounce,
   debounceTime,
 } from "rxjs/operators"
 import { getRemoteProcedureCall$, getStream$ } from "./client"
@@ -79,7 +77,7 @@ export const [useHistoricalPrices, getHistoricalPrices$] = bind<
       "priceHistory",
       "getPriceHistory",
       symbol,
-    ).pipe(mergeAll()),
+    ).pipe(mergeAll(), take(100)),
     getPrice$(symbol),
   ).pipe(
     scan((acc, price) => {
@@ -87,9 +85,9 @@ export const [useHistoricalPrices, getHistoricalPrices$] = bind<
       const last = acc[acc.length - 1]
       const diff = price.creationTimestamp - last.creationTimestamp
       if (diff < HISTORY_TIMESTAMP_THRESHOLD) return acc
-      if (acc.length < HISTORY_SIZE) acc.concat(price)
+      if (acc.length < HISTORY_SIZE) return acc.concat(price)
       const result = acc.slice(1)
-      result.push(price)
+      if (price.symbol) result.push(price)
       return result
     }, [] as HistoryPrice[]),
     debounceTime(0),
