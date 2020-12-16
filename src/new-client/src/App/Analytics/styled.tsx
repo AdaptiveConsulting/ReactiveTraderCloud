@@ -146,6 +146,7 @@ export const BubbleChart = styled.div`
   text-anchor: middle;
   height: 18rem;
   overflow: hidden;
+  position: relative;
 `
 
 export const Controls = styled("div")`
