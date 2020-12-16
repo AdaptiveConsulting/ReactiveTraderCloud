@@ -1,27 +1,49 @@
 import styled from "styled-components/macro"
-import { TileBaseStyle, TileWrapperBase } from "../styled"
+import { TileBaseStyle, TileWrapperBase } from "./styled"
 
-export const AnalyticsTileContent = styled.div`
-  display: flex;
-  height: 90%;
-  justify-content: space-between;
+export const TileBodyWrapper = styled.div<{ isAnalyticsView: boolean }>`
+  display: grid;
+  ${({ isAnalyticsView }) =>
+    isAnalyticsView
+      ? `
+    grid-template-columns: 56% 7% 37%;
+    grid-template-rows: 50% 33% 17%;
+    grid-template-areas: 
+    "chart control control"
+    "chart control control"
+    "notional control control";
+  `
+      : `
+    grid-template-columns: auto;
+    grid-template-rows: 85% 15%;
+    grid-template-areas: 
+    "control"
+    "notional";
+  `}
 `
-export const GraphNotionalWrapper = styled.div<{ isTimerOn: boolean }>`
-  min-width: 0; //fixed bug with recharts resizing
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  z-index: 2;
-  max-height: ${({ isTimerOn }) => isTimerOn && "103px"};
-`
+
 export const PriceControlWrapper = styled.div`
-  display: flex;
-  width: 160px;
+  grid-area: control;
 `
+
 export const LineChartWrapper = styled.div<{ isTimerOn: boolean }>`
   width: 100%;
   height: ${({ isTimerOn }) => (isTimerOn ? "60%" : "80%")};
+  grid-area: chart;
+`
+
+export const NotionalInputWrapper = styled("div")<{
+  isAnalyticsView: boolean
+}>`
+  display: flex;
+  align-items: center;
+  grid-area: notional;
+  ${({ isAnalyticsView }) =>
+    isAnalyticsView
+      ? ``
+      : `
+      justify-content: center;
+    `}
 `
 
 export const SpotTileStyle = styled(TileBaseStyle)`
@@ -42,7 +64,7 @@ export const SpotTileStyle = styled(TileBaseStyle)`
   }
 `
 
-export const AnalyticsTileStyle = styled(SpotTileStyle)`
+export const MainTileStyle = styled(SpotTileStyle)`
   background-color: ${({ theme }) => theme.core.lightBackground};
   &:hover {
     background-color: ${({ theme }) =>
@@ -53,11 +75,20 @@ export const AnalyticsTileStyle = styled(SpotTileStyle)`
       theme.name === "light" ? "0 0 10px 0 rgba(0, 0, 0, 0.1)" : "none"};
   }
 `
-export const AnalyticsTileWrapper = styled(TileWrapperBase)`
+export const MainTileWrapper = styled(TileWrapperBase)`
   min-height: 11rem;
   position: relative;
   height: 100%;
   &:hover {
     background-color: ${({ theme }) => theme.core.backgroundHoverColor};
   }
+`
+export const InputWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: "Currency Input ResetInputValue" ". Message .";
+  align-items: center;
+
+  grid-template-rows: 23px 13px;
+  margin-bottom: -0.5rem;
 `

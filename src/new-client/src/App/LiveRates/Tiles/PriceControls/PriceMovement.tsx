@@ -37,6 +37,7 @@ const PriceMovementStyle = styled.div<{
   flex-direction: column;
   width: 100%;
   z-index: 1;
+  grid-area: movement;
 `
 
 export const PriceMovement: React.FC<Props> = ({

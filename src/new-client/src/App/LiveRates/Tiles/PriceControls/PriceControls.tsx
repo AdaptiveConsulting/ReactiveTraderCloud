@@ -28,7 +28,7 @@ export const PriceControls: React.FC<Props> = ({ currencyPair, priceData }) => {
   const priceStale = false
   const isRfqStateRequested = false
   const isRfqStateCanRequest = false
-  const isTradeExecutionInFlight = false
+  const isTradeExecutionInFlight = true
   const spread = getSpread(
     priceData.bid,
     priceData.ask,
@@ -70,7 +70,7 @@ export const PriceControls: React.FC<Props> = ({ currencyPair, priceData }) => {
     ) : null
   }
 
-  return isAnalyticsView ? (
+  return (
     <PriceControlsStyle
       data-qa="analytics-tile-price-control__header"
       isAnalyticsView={isAnalyticsView}
@@ -83,22 +83,8 @@ export const PriceControls: React.FC<Props> = ({ currencyPair, priceData }) => {
         isAnalyticsView={isAnalyticsView}
         isRequestRFQ={Boolean(isRfqStateCanRequest || isRfqStateRequested)}
       />
-      <div>
-        {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
-        {showPriceButton(Direction.Buy, priceData.ask, askRate)}
-      </div>
-    </PriceControlsStyle>
-  ) : (
-    <PriceControlsStyle isAnalyticsView={isAnalyticsView}>
-      {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
 
-      <PriceMovement
-        priceMovementType={priceMovement}
-        spread={spreadValue}
-        show={showPriceMovement}
-        isAnalyticsView={isAnalyticsView}
-        isRequestRFQ={Boolean(isRfqStateCanRequest || isRfqStateRequested)}
-      />
+      {showPriceButton(Direction.Sell, priceData.bid, bidRate)}
 
       {showPriceButton(Direction.Buy, priceData.ask, askRate)}
     </PriceControlsStyle>
