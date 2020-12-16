@@ -45,6 +45,11 @@ jobs:
           DEPLOY_ENV: ${{ github.event.deployment.environment }}
         run: kubectl scale deploy --replicas=0 --all --namespace $DEPLOY_ENV
 
+      - name: Delete GKE jobs
+        env:
+          DEPLOY_ENV: ${{ github.event.deployment.environment }}
+        run: kubectl delete jobs --all --namespace $DEPLOY_ENV
+
       - name: Update GKE deployment definitions
         env:
           DEPLOY_ENV: ${{ github.event.deployment.environment }}
