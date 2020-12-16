@@ -2,7 +2,6 @@ import React from "react"
 import { Direction } from "services/trades"
 import {
   customNumberFormatter,
-  formatNumber,
   significantDigitsNumberFormatter,
 } from "utils/formatNumber"
 import {
