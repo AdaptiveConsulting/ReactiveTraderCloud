@@ -1,4 +1,5 @@
 import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
+import logger from '../logger'
 import StompConfig from './StompConfig'
 
 Object.assign(global, { WebSocket: require('ws') })
@@ -15,13 +16,26 @@ export class WsConnection {
     /* eslint-disable-next-line */
     this.config = new StompConfig(url, port)
 
-    this.streamEndpoint = new RxStomp()
-    this.streamEndpoint.configure({
-      brokerURL: this.config.brokerURL,
-      reconnectDelay: this.config.reconnectDelay,
-    })
+    this.streamEndpoint = this.createStreamEndpoint()
     this.rpcEndpoint = new RxStompRPC(this.streamEndpoint)
 
     this.streamEndpoint.activate()
+  }
+
+  private createStreamEndpoint = () => {
+    const stompInstance = new RxStomp()
+
+    logger.info(`Broker URL: ${this.config.brokerURL}`)
+    logger.info(`Reconnect Delay: ${this.config.reconnectDelay}`)
+
+    stompInstance.configure({
+      brokerURL: this.config.brokerURL,
+      reconnectDelay: this.config.reconnectDelay
+    })
+
+    stompInstance.webSocketErrors$.subscribe(e => logger.error('WebSocket Error ', e))
+    stompInstance.stompErrors$.subscribe(e => logger.error('Stomp Error ', e))
+
+    return stompInstance
   }
 }
