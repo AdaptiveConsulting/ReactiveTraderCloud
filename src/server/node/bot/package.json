@@ -51,7 +51,7 @@
     "ws": "^3.3.3"
   },
   "dependencies": {
-    "@stomp/rx-stomp": "^0.3.4",
+    "@stomp/rx-stomp": "^1.0.1",
     "@types/debug": "^4.1.2",
     "@types/dialogflow": "^0.9.4",
     "@types/dotenv": "^6.1.1",
