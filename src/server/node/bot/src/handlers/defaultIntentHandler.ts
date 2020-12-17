@@ -1,8 +1,8 @@
 import { filter, mergeMap } from 'rxjs/operators'
 import logger from '../logger'
-import { Handler } from './handlers'
+import { Handler } from './'
 
-export const defaultIntentHander: Handler = (symphony, { intentsFromDF$ }) => {
+const defaultIntentHander: Handler = (symphony, { intentsFromDF$ }) => {
   const subscription$ = intentsFromDF$
     .pipe(
       filter(({ intentResponse }) =>
@@ -22,7 +22,7 @@ export const defaultIntentHander: Handler = (symphony, { intentsFromDF$ }) => {
         logger.info('Default message sent to Symphony user')
       },
       error => {
-        logger.error('Error processing market data', error)
+        logger.error('Error sending default response', error)
       }
     )
 
@@ -31,3 +31,5 @@ export const defaultIntentHander: Handler = (symphony, { intentsFromDF$ }) => {
     logger.info('disposed default handler')
   }
 }
+
+export default defaultIntentHander

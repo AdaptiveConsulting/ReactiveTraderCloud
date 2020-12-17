@@ -2,7 +2,7 @@ import { filter, mergeMap, withLatestFrom } from 'rxjs/operators'
 import logger from '../logger'
 import { createPriceMessage } from '../messages'
 import { IntentStringParameter } from '../nlp-services'
-import { Handler } from './handlers'
+import { Handler } from './'
 
 interface MarketIntentFields {
   CurrencyPairs: IntentStringParameter
@@ -20,7 +20,7 @@ const createDataPayload = (symbol: string) =>
     },
   })
 
-export const priceQuoteHandler: Handler = (symphony, { intentsFromDF$ }, { priceSubsription$ }) => {
+const priceQuoteIntentHandler: Handler = (symphony, { intentsFromDF$ }, { priceSubsription$ }) => {
   const subscription$ = intentsFromDF$
     .pipe(
       filter(x => x.intentResponse.queryResult.intent.displayName === INTENT_SPOT_QUOTE),
@@ -52,3 +52,5 @@ export const priceQuoteHandler: Handler = (symphony, { intentsFromDF$ }, { price
     logger.info('disposed quotes')
   }
 }
+
+export default priceQuoteIntentHandler

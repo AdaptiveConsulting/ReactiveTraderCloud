@@ -3,7 +3,7 @@ import { formatDateTime, Trade } from '../domain'
 import logger from '../logger'
 import { tradeUpdateMessage } from '../messages'
 import { IntentNumberParameter, IntentStringParameter } from '../nlp-services'
-import { Handler } from './handlers'
+import { Handler } from './'
 
 interface TradeIntentFields {
   number?: IntentNumberParameter
@@ -18,7 +18,7 @@ const sortPrices = (prices: Trade[]) =>
     return a.TradeDate < b.TradeDate ? -1 : a.TradeDate > b.TradeDate ? 1 : 0
   })
 
-export const tradeMessageHandler: Handler = (symphony, { intentsFromDF$ }, { tradeStream$ }) => {
+const tradeIntentHandler: Handler = (symphony, { intentsFromDF$ }, { tradeStream$ }) => {
   const latestTrades$ = tradeStream$.pipe(
     map(tradeUpdate => tradeUpdate.Trades),
     scan<Trade[], Map<number, Trade>>((acc, trades) => {
@@ -76,3 +76,5 @@ export const tradeMessageHandler: Handler = (symphony, { intentsFromDF$ }, { tra
     logger.info('disposed trades')
   }
 }
+
+export default tradeIntentHandler

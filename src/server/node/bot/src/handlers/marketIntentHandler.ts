@@ -1,11 +1,11 @@
 import { filter, mergeMap, withLatestFrom } from 'rxjs/operators'
 import logger from '../logger'
 import { marketUpdateMessage } from '../messages'
-import { Handler } from './handlers'
+import { Handler } from './'
 
 export const INTENT_MARKET_INFO = 'rt.market.info'
 
-export const marketMessageHandler: Handler = (
+const marketIntentHandler: Handler = (
   symphony,
   { intentsFromDF$ },
   { priceSubsription$ }
@@ -26,7 +26,7 @@ export const marketMessageHandler: Handler = (
         logger.info('Market Data sent to Symphony user')
       },
       error => {
-        logger.error('Error processing markey data', error)
+        logger.error('Error processing market data', error)
       }
     )
 
@@ -35,3 +35,5 @@ export const marketMessageHandler: Handler = (
     logger.info('disposed market dtata')
   }
 }
+
+export default marketIntentHandler
