@@ -48,7 +48,7 @@ For a detailed breakdown of Google Cloud Authentication see their [docs](https:/
 
 ## Debugging
 
-If the bot is not getting data from the broker, you can restart it from kubectl in the Google CLoudconsole
+If the bot is not getting data from the broker, you can restart it from kubectl in the Google Cloud console
 ```
 # NAMESPACE represents the bot-deployment you wish to update
 gcloud container clusters get-credentials cluster --zone europe-west1-c --project adaptive-trader \

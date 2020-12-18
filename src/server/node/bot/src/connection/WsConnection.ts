@@ -1,4 +1,4 @@
-import { RxStompRPC, RxStomp } from '@stomp/rx-stomp'
+import { RxStomp, RxStompRPC } from '@stomp/rx-stomp'
 import logger from '../logger'
 import StompConfig from './StompConfig'
 
@@ -13,7 +13,6 @@ export class WsConnection {
   public streamEndpoint: RxStomp
 
   constructor(url: string, port?: number) {
-    /* eslint-disable-next-line */
     this.config = new StompConfig(url, port)
 
     this.streamEndpoint = this.createStreamEndpoint()
@@ -24,9 +23,6 @@ export class WsConnection {
 
   private createStreamEndpoint = () => {
     const stompInstance = new RxStomp()
-
-    logger.info(`Broker URL: ${this.config.brokerURL}`)
-    logger.info(`Reconnect Delay: ${this.config.reconnectDelay}`)
 
     stompInstance.configure({
       brokerURL: this.config.brokerURL,
