@@ -1,3 +1,16 @@
+/**
+ * Provides functions that are thin wrappers around Intl.NumberFormat
+ * and a scaling function.  Because these formatters can be invoked
+ * by third-party libraries without strict type safety, returned formatters
+ * will no-op when passed something other than a number as an argument.
+ *
+ * Currently takes the default locale to format, which is based on the runtime:
+ *
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation
+ *
+ * See __tests__/formatNumber.test.ts for full usage and behavior.
+ */
+
 enum Scale {
   K = "k",
   M = "m",
@@ -43,28 +56,35 @@ const numberFormatter = (
   options?: Intl.NumberFormatOptions,
 ): NumberFormatter => {
   const nf = new Intl.NumberFormat("default", { ...options })
-  return nf.format.bind(nf)
+
+  return (num: number) => {
+    if (typeof num !== "number") {
+      return num
+    } else {
+      return nf.format(num)
+    }
+  }
 }
 
 /**
- * Returns a func that formats to set number of significant digits
+ * Returns a function that will format numbers to set number
+ * of significant digits passed as input, with rounding.
  *
- * const format = significantDigitsNumberFormatter(6)
- *
- * format(123.456789) => '123.456'
- * format(1.23456789) => '1.23456'
- * format(0.123456789) => '0.123456'
+ * See __tests__/formatNumber.test.ts for full usage and behavior.
  */
 export const significantDigitsNumberFormatter = (
   significantDigits: number,
 ): NumberFormatter =>
   numberFormatter({
-    maximumFractionDigits: significantDigits,
+    maximumSignificantDigits: significantDigits,
     minimumSignificantDigits: significantDigits,
   })
 
 /**
- * Returns a func that formats to set decimal precision
+ * Returns a function that will format numbers to set precision
+ * passed as input, with rounding.
+ *
+ * See __tests__/formatNumber.test.ts for full usage and behavior.
  */
 export const precisionNumberFormatter = (precision: number): NumberFormatter =>
   numberFormatter({
@@ -73,23 +93,35 @@ export const precisionNumberFormatter = (precision: number): NumberFormatter =>
   })
 
 /**
- * Takes any Intl.NumberFormatOptions to construct
- * a custom number formatting func
+ * Takes any Intl.NumberFormatOptions as input to construct and
+ * return a function that formats numbers as configured by options.
  *
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat
+ *
  */
 export const customNumberFormatter = numberFormatter
 
 /**
- * Default number formatter
+ * Returns a function that will format numbers with Intl.NumberFormat's
+ * defaults.
  *
- * Minimum fraction digits = 0
- * Maximum fraction digits = 3
+ * See __tests__/formatNumber.test.ts for full usage and behavior.
  */
 export const formatNumber = numberFormatter()
 
+/**
+ * Returns a function that will format numbers as wholes, with rounding.
+ *
+ * See __tests__/formatNumber.test.ts for full usage and behavior.
+ */
 export const formatAsWholeNumber = precisionNumberFormatter(0)
 
+/**
+ * Accepts a number and formatting function and applies internal scaling
+ * function before applying formatter.
+ *
+ * See __tests__/formatNumber.test.ts for full usage and behavior.
+ */
 export const formatWithScale = (num: number, format: NumberFormatter) => {
   const { value, scale } = scaleNumber(num)
   return format(value) + scale
