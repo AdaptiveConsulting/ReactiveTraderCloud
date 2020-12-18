@@ -1,15 +1,11 @@
 import { useRef } from "react"
-import {
-  FilterChangedEvent,
-  GridApi,
-  ValueFormatterParams,
-} from "ag-grid-community"
+import { ValueFormatterParams } from "ag-grid-community"
 import { AgGridReact } from "ag-grid-react"
 import { AgGridColumn } from "ag-grid-react/lib/agGridColumn"
 import { Subject } from "rxjs"
-import { take } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { Trade, TradeStatus, useTrades } from "services/trades"
+import { gridApiSubj$, filterChangesSubj$, COL_FIELD } from "../services"
 import {
   significantDigitsNumberFormatter,
   formatAsWholeNumber,
@@ -17,44 +13,19 @@ import {
 import { capitalize } from "utils/capitalize"
 import { SetFilter } from "./SetFilter"
 import { CellRenderer } from "./CellRenderer"
-import { TradesGridStyle } from "./styled"
+import { TradesGridWrapper } from "./styled"
 import { format as formatDate } from "date-fns"
 
 type TradesGridRow = {
   data: Trade
 }
 
-enum COL_FIELD {
-  STATUS_INDICATOR = "statusIndicator",
-  TRADE_ID = "tradeId",
-  STATUS = "status",
-  TRADE_DATE = "tradeDate",
-  DIRECTION = "direction",
-  SYMBOL = "symbol",
-  DEALT_CURRENCY = "dealtCurrency",
-  NOTIONAL = "notional",
-  SPOT_RATE = "spotRate",
-  VALUE_DATE = "valueDate",
-  TRADER_NAME = "traderName",
-  EMPTY = "empty",
-}
-
 const DATE_FORMAT = "dd-MMM-yyyy"
 
 const formatTo6Digits = significantDigitsNumberFormatter(6)
 
-export const CSV_COL_FIELDS = Object.values(COL_FIELD).filter(
-  (field) => field !== COL_FIELD.EMPTY && field !== COL_FIELD.STATUS_INDICATOR,
-)
-
-const gridApiSubj$ = new Subject<GridApi>()
-export const [useGridApi, gridApi$] = bind(gridApiSubj$.pipe(take(1)))
-
 const displayRowsSubj$ = new Subject<number>()
 export const [useDisplayRows, displayRows$] = bind(displayRowsSubj$, 0)
-
-const filterChangesSubj$ = new Subject<FilterChangedEvent>()
-export const [useFilterChanges, filterChanges$] = bind(filterChangesSubj$)
 
 const FaIcon = (faName: string) =>
   `<i class="fas fa-${faName}" aria-hidden="true" />`
@@ -72,7 +43,7 @@ export const TradesGrid: React.FC = () => {
   const trades = useTrades()
   const parentRef = useRef<HTMLDivElement>(null)
   return (
-    <TradesGridStyle ref={parentRef}>
+    <TradesGridWrapper ref={parentRef}>
       <AgGridReact
         rowData={trades ?? []}
         defaultColDef={{
@@ -228,6 +199,6 @@ export const TradesGrid: React.FC = () => {
           filter
         />
       </AgGridReact>
-    </TradesGridStyle>
+    </TradesGridWrapper>
   )
 }

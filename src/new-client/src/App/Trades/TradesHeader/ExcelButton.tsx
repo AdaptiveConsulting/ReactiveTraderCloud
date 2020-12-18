@@ -1,6 +1,6 @@
 import { ValueFormatterParams } from "ag-grid-community"
 import styled from "styled-components/macro"
-import { useGridApi, CSV_COL_FIELDS } from "../TradesGrid"
+import { useGridApi, CSV_COL_FIELDS } from "../services"
 
 const ExcelIcon = () => (
   <svg
@@ -26,7 +26,7 @@ const ExcelIcon = () => (
   </svg>
 )
 
-const Button = styled("button")`
+const Button = styled.button`
   opacity: 0.59;
   height: 100%;
   .svg-fill {

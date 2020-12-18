@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { trades$ } from "services/trades"
 import { useDisplayRows } from "./TradesGrid"
 
-const TradesFooterStyled = styled("div")`
+const TradesFooterStyled = styled.div`
   height: 2rem;
   padding: 0.5rem 0 0.5rem 0.75rem;
   font-size: 0.625rem;

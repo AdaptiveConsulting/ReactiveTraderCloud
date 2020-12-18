@@ -2,7 +2,6 @@ import { useLayoutEffect, useRef } from "react"
 import {
   D3DragEvent,
   drag,
-  DragBehavior,
   forceCollide,
   forceSimulation,
   forceX,

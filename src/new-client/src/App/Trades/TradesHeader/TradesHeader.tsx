@@ -1,11 +1,9 @@
 import styled from "styled-components/macro"
-import { Subscribe } from "@react-rxjs/core"
 import { ExcelButton } from "./ExcelButton"
 import { AppliedFilters } from "./AppliedFilters"
 import { QuickFilter } from "./QuickFilter"
-import { gridApi$ } from "../TradesGrid"
 
-const TradesHeaderStyle = styled("div")`
+const TradesHeaderStyle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,12 +11,12 @@ const TradesHeaderStyle = styled("div")`
   height: 2.5rem;
   background-color: ${({ theme }) => theme.core.darkBackground};
 `
-const HeaderRightGroup = styled("div")`
+const HeaderRightGroup = styled.div`
   display: flex;
   align-items: center;
 `
 
-const HeaderLeftGroup = styled("div")`
+const HeaderLeftGroup = styled.div`
   font-size: 0.9375rem;
 `
 
@@ -27,7 +25,7 @@ const Fill = styled.div`
   height: 1rem;
 `
 
-const HeaderToolbar = styled("div")`
+const HeaderToolbar = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -36,15 +34,13 @@ const HeaderToolbar = styled("div")`
 export const TradesHeader: React.FC = () => (
   <TradesHeaderStyle>
     <HeaderLeftGroup>Trades</HeaderLeftGroup>
-    <Subscribe source$={gridApi$}>
-      <HeaderRightGroup>
-        <ExcelButton />
-        <HeaderToolbar>
-          <AppliedFilters />
-          <QuickFilter />
-        </HeaderToolbar>
-        <Fill />
-      </HeaderRightGroup>
-    </Subscribe>
+    <HeaderRightGroup>
+      <ExcelButton />
+      <HeaderToolbar>
+        <AppliedFilters />
+        <QuickFilter />
+      </HeaderToolbar>
+      <Fill />
+    </HeaderRightGroup>
   </TradesHeaderStyle>
 )

@@ -2,13 +2,13 @@ import { bind } from "@react-rxjs/core"
 import { GridApi } from "ag-grid-community"
 import { map } from "rxjs/operators"
 import styled from "styled-components/macro"
-import { filterChanges$, useGridApi } from "../TradesGrid"
+import { filterChanges$, useGridApi } from "../services"
 
-const FilterButton = styled("button")`
+const FilterButton = styled.button`
   opacity: 0.59;
 `
 
-const FilterField = styled("div")`
+const FilterField = styled.div`
   display: flex;
   align-items: center;
   font-size: 0.6875rem;
@@ -28,11 +28,11 @@ const FilterField = styled("div")`
   }
 `
 
-const FilterName = styled("div")`
+const FilterName = styled.div`
   padding-right: 0.625rem;
 `
 
-const FilterIcon = styled("i")`
+const FilterIcon = styled.i`
   line-height: 1rem;
 `
 

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import styled from "styled-components/macro"
-import { useGridApi } from "../TradesGrid"
+import { useGridApi } from "../services"
 
-const QuickFilterStyle = styled("div")`
+const QuickFilterStyle = styled.div`
   width: 10rem;
   display: flex;
   align-items: center;
@@ -10,7 +10,7 @@ const QuickFilterStyle = styled("div")`
   position: relative;
 `
 
-const QuickFilterInput = styled("input")`
+const QuickFilterInput = styled.input`
   opacity: 0.59;
   background: none;
   border: none;
@@ -33,14 +33,14 @@ const QuickFilterInput = styled("input")`
   }
 `
 
-const QuickFilterIcon = styled("div")`
+const QuickFilterIcon = styled.div`
   width: 0.875rem;
   margin: 0 0.25rem;
   opacity: 0.59;
   cursor: pointer;
 `
 
-const QuickFilterClearIcon = styled("i")`
+const QuickFilterClearIcon = styled.i`
   width: 0.6875rem;
   position: absolute;
   right: 0.75rem;
