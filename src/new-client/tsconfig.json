@@ -22,6 +22,9 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "typeAcquisition": {
+    "include": ["jest"]
+  },
   "include": [
     "src"
   ]
