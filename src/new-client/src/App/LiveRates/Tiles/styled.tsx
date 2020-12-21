@@ -2,16 +2,6 @@ import styled, { keyframes, css } from "styled-components/macro"
 import { Direction } from "services/trades"
 import { Theme } from "theme/themes"
 
-export const TileHeader = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-export const TileSymbol = styled.div`
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 0.8125rem;
-  line-height: 1rem;
-`
 export const DeliveryDate = styled.div`
   color: ${({ theme }) => theme.core.textColor};
   font-size: 0.625rem;
@@ -112,13 +102,6 @@ export const TradeButton = styled.button<{
     `};
 `
 
-export const CurrencyPairSymbol = styled("span")`
-  grid-area: Currency;
-  opacity: 0.59;
-  font-size: 0.625rem;
-  line-height: 1.2rem;
-`
-
 export const ResetInputValue = styled.button`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border: 2px solid ${({ theme }) => theme.core.darkBackground};
@@ -129,23 +112,6 @@ export const ResetInputValue = styled.button`
   line-height: 1.2rem;
 `
 
-export const Input = styled.input`
-  grid-area: Input;
-  background: none;
-  text-align: center;
-  outline: none;
-  border: none;
-  font-size: 0.75rem;
-  width: 80px;
-  padding: 2px 0;
-  color: ${({ theme }) => theme.core.textColor};
-  border-bottom: 1.5px solid ${({ theme }) => theme.primary[5]};
-  caret-color: ${({ theme }) => theme.primary.base};
-  &:focus {
-    outline: none !important;
-    border-color: ${({ theme }) => theme.accents.primary.base};
-  }
-`
 const RouteStyle = styled("div")`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};

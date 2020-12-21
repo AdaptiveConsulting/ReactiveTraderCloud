@@ -1,5 +1,9 @@
+import { merge } from "rxjs"
+import { Subscribe } from "@react-rxjs/core"
 import styled from "styled-components/macro"
-import { MainPanel } from "./MainPanel"
+import { Loader } from "components/Loader"
+import { Tiles, tiles$ } from "./Tiles"
+import { MainHeader, mainHeader$ } from "./MainHeader"
 
 const Wrapper = styled.div`
   padding: 0.5rem 1rem;
@@ -16,15 +20,25 @@ const LiveRateWrapper = styled(Wrapper)`
   overflow-y: auto;
 `
 
-export const OverflowScroll = styled.div`
+const OverflowScroll = styled.div`
   overflow-y: scroll;
   height: 100%;
 `
 
+const liveRates$ = merge(tiles$, mainHeader$)
+
 export const LiveRates: React.FC = () => (
   <LiveRateWrapper>
     <OverflowScroll>
-      <MainPanel />
+      <div data-qa="workspace__tiles-workspace">
+        <Subscribe
+          source$={liveRates$}
+          fallback={<Loader minWidth="22rem" minHeight="22rem" />}
+        >
+          <MainHeader />
+          <Tiles />
+        </Subscribe>
+      </div>
     </OverflowScroll>
   </LiveRateWrapper>
 )

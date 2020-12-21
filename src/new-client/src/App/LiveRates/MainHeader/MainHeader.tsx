@@ -1,23 +1,18 @@
-import React from "react"
-import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from "./styled"
-import { useSelectedTileView, onSelectTileView } from "services/tiles"
+import { useCurrencies, currencies$ } from "services/currencyPairs"
+import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from "../styled"
 import {
   useSelectedCurrency,
-  useCurrencies,
-  onSelectCurrency,
+  AllCurrencies,
   ALL_CURRENCIES,
-} from "services/currencyPairs"
-import { ToggleView } from "./Tiles/ToggleView/ToggleView"
+  onSelectCurrency,
+} from "../selectedCurrency"
+import { ToggleView } from "./ToggleView"
 
 export const MainHeader: React.FC = () => {
   const currencies = useCurrencies()
-  const defaultOption: typeof ALL_CURRENCIES = ALL_CURRENCIES
   const currency = useSelectedCurrency()
-  const options: (string | typeof ALL_CURRENCIES)[] = [
-    defaultOption,
-    ...currencies,
-  ]
-  const tileView = useSelectedTileView()
+
+  const options = [ALL_CURRENCIES as AllCurrencies, ...currencies]
 
   return (
     <Header>
@@ -38,8 +33,10 @@ export const MainHeader: React.FC = () => {
         ))}
       </LeftNav>
       <RightNav>
-        <ToggleView tileView={tileView} onTileViewChange={onSelectTileView} />
+        <ToggleView />
       </RightNav>
     </Header>
   )
 }
+
+export const mainHeader$ = currencies$
