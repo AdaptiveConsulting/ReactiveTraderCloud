@@ -1,7 +1,11 @@
-import { bind, shareLatest } from "@react-rxjs/core"
-import { createListener } from "@react-rxjs/utils"
-import { combineLatest, merge } from "rxjs"
-import { map, mergeAll, scan, share, startWith } from "rxjs/operators"
+import { bind } from "@react-rxjs/core"
+import {
+  distinctUntilChanged,
+  map,
+  mergeAll,
+  scan,
+  share,
+} from "rxjs/operators"
 import { getStream$ } from "./client"
 import {
   CamelCase,
@@ -52,18 +56,7 @@ export const currencyPairUpdates$ = getStream$<RawCurrencyPairUpdates>(
   share(),
 )
 
-export const ALL_CURRENCIES = Symbol("all")
-type AllCurrencies = typeof ALL_CURRENCIES
-
-const [selectedCurrencyInput$, onSelectCurrency] = createListener<
-  string | AllCurrencies
->()
-const [useSelectedCurrency, selectedCurrency$] = bind(
-  selectedCurrencyInput$.pipe(startWith(ALL_CURRENCIES)),
-  ALL_CURRENCIES,
-)
-
-const [useCurrencyPairs, currencyPairs$] = bind(
+export const [useCurrencyPairs, currencyPairs$] = bind(
   currencyPairUpdates$.pipe(
     scan((acc, { updateType, currencyPair }) => {
       const { symbol } = currencyPair
@@ -74,22 +67,17 @@ const [useCurrencyPairs, currencyPairs$] = bind(
       }
       return acc
     }, {} as Record<string, CurrencyPair>),
-    shareLatest(),
   ),
 )
 
-const [useFilteredSymbols, filteredSymbols$] = bind(
-  combineLatest([currencyPairs$, selectedCurrency$]).pipe(
-    map(([currencyPairs, selectedCurrency]) => {
-      const allSymbols = Object.keys(currencyPairs)
-      return selectedCurrency === ALL_CURRENCIES
-        ? allSymbols
-        : allSymbols.filter((symbol) => symbol.includes(selectedCurrency))
-    }),
+export const [useCurrencyPair, getCurrencyPair$] = bind((symbol: string) =>
+  currencyPairs$.pipe(
+    map((currencyPairs) => currencyPairs[symbol]),
+    distinctUntilChanged(),
   ),
 )
 
-const [useCurrencies, currencies$] = bind(
+export const [useCurrencies, currencies$] = bind(
   currencyPairs$.pipe(
     map((currencyPairs) => [
       ...new Set(
@@ -100,15 +88,3 @@ const [useCurrencies, currencies$] = bind(
     ]),
   ),
 )
-
-export {
-  useSelectedCurrency,
-  useFilteredSymbols,
-  useCurrencies,
-  onSelectCurrency,
-  useCurrencyPairs,
-  currencyPairs$,
-  filteredSymbols$,
-  currencies$,
-}
-export const subscriptions$ = merge(currencies$, filteredSymbols$)

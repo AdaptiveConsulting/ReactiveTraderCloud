@@ -1,13 +1,12 @@
 import React from "react"
 import styled from "styled-components/macro"
-import { ChartIcon } from "./ChartIcon"
-import { TileView } from "services/tiles"
+import {
+  TileView,
+  onToggleSelectedView,
+  useSelectedTileView,
+} from "../../selectedView"
 import { NavItem } from "../../styled"
-
-interface Props {
-  tileView: TileView
-  onTileViewChange: (tileView: TileView) => void
-}
+import { ChartIcon } from "./ChartIcon"
 
 const ToggleItem = styled(NavItem)<{ active: boolean }>`
   list-style-type: none;
@@ -33,19 +32,14 @@ const ToggleItem = styled(NavItem)<{ active: boolean }>`
   }
 `
 
-export const ToggleView: React.FC<Props> = ({ tileView, onTileViewChange }) => {
-  const handleToggleView = () => {
-    const newView =
-      TileView.Analytics === tileView ? TileView.Normal : TileView.Analytics
-    onTileViewChange(newView)
-  }
-
+export const ToggleView: React.FC = () => {
+  const tileView = useSelectedTileView()
   return (
     <ToggleItem
       active={TileView.Analytics === tileView}
       data-qa="workspace-header__nav-item--view"
-      data-qa-id={`workspace-view-${tileView.toLowerCase()}`}
-      onClick={handleToggleView}
+      data-qa-id={`workspace-view-${tileView}`}
+      onClick={onToggleSelectedView}
     >
       <ChartIcon />
     </ToggleItem>
