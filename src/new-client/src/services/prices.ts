@@ -62,7 +62,7 @@ export const [useHistoricalPrices, getHistoricalPrices$] = bind<
       "priceHistory",
       "getPriceHistory",
       symbol,
-    ).pipe(mergeAll(), take(100)),
+    ).pipe(take(1), mergeAll()),
     getPrice$(symbol),
   ).pipe(
     scan((acc, price) => {
