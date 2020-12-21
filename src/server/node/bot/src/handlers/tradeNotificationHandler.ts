@@ -5,7 +5,7 @@ import logger from '../logger'
 import { tradeUpdateMessage } from '../messages'
 import { standardMessage } from '../messages/standardMessage'
 import { IntentNumberParameter, IntentStringParameter } from '../nlp-services'
-import { Handler } from './handlers'
+import { Handler } from './'
 
 interface TradeIntentFields {
   notional: IntentNumberParameter
@@ -15,7 +15,7 @@ interface TradeIntentFields {
 
 const INTENT_TRADES_NOTIFICATION = 'rt.trades.notification'
 
-export const tradeNotificationHandler: Handler = (
+const tradeNotificationHandler: Handler = (
   symphony,
   { intentsFromDF$ },
   { tradeStream$ }
@@ -89,3 +89,5 @@ export const tradeNotificationHandler: Handler = (
     logger.info('disposed trades')
   }
 }
+
+export default tradeNotificationHandler

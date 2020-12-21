@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs'
 import { map, tap } from 'rxjs/operators'
+import logger from '../logger'
 import { WsConnection } from './WsConnection'
 
 const LOG_NAME = 'Connection:'
@@ -16,13 +17,6 @@ interface SubscriptionDTO<TPayload> {
  */
 export class ServiceStub {
   constructor(private readonly userName: string, private connection: WsConnection) {}
-
-  private logResponse(topic: string, response: {}): void {
-    const payloadString = JSON.stringify(response)
-    if (topic !== 'status') {
-      console.debug(LOG_NAME, `Received response on topic [${topic}]. Payload[${payloadString}]`)
-    }
-  }
 
   /**
    * Get an observable subscription to a well known topic/stream
@@ -50,7 +44,7 @@ export class ServiceStub {
     }
     const remoteProcedure = `${service}.${operationName}`
 
-    console.info(LOG_NAME, `Creating request response operation for [${remoteProcedure}]`)
+    logger.info(LOG_NAME, `Creating request response operation for [${remoteProcedure}]`)
 
     return this.connection.rpcEndpoint
       .rpc({
@@ -76,7 +70,7 @@ export class ServiceStub {
     }
     const remoteProcedure = `${service}.${operationName}`
 
-    console.info(`subscribing to RPC stream ${remoteProcedure}`)
+    logger.info(`subscribing to RPC stream ${remoteProcedure}`)
 
     return this.connection.rpcEndpoint
       .stream({
@@ -92,5 +86,12 @@ export class ServiceStub {
         ),
         map(message => JSON.parse(message.body))
       )
+  }
+
+  private logResponse(topic: string, response: {}): void {
+    const payloadString = JSON.stringify(response)
+    if (topic !== 'status') {
+      logger.debug(LOG_NAME, `Received response on topic [${topic}]. Payload[${payloadString}]`)
+    }
   }
 }

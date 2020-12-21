@@ -8,7 +8,7 @@ import { BotConfig, createConfig } from './config'
 class SymphonyClient {
   /* 
         Writing the config from env variables.
-    
+   
         The symphony client only lets you read config from the file system. This is not good for docker setups where
         we want to pass config in via env variables.
     */
@@ -27,6 +27,10 @@ class SymphonyClient {
           onMessage: (messages: Symphony.Message[]) => {
             obs.next(messages)
           },
+          onError: (e) => {
+            logger.error('Symphony getDatafeedEventsService onError', e)
+            obs.error(e)
+          }
         })
       } catch (error) {
         logger.error('connection to symphony failed', error)

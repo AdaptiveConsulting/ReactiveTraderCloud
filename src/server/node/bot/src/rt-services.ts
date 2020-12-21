@@ -15,6 +15,7 @@ function getPriceMovementType(prevItem: Price, newItem: Price) {
   }
   return prevPriceMove
 }
+
 export function createApplicationServices(host: string, port: string) {
   logger.info(`Started bot-service for ${host}:${port}`)
 
