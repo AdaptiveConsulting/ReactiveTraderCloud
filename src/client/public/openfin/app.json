@@ -4,7 +4,7 @@
     "name": "Reactive Trader®{{environment_suffix}}",
     "applicationIcon": "{*host_url*}/static/media/reactive-trader-icon-256x256.png",
     "url": "{*host_url*}",
-    "fdc3api": true,
+    "fdc3Api": true,
     "defaultWindowOptions": {
       "contextMenu": true,
       "frame": false,
