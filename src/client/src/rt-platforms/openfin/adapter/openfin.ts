@@ -17,7 +17,7 @@ import OpenFinRoute from './OpenFinRoute'
 import { OpenFinControls, OpenFinHeader, OpenFinFooter, OpenFinLogo } from '../components'
 
 export default class OpenFin implements Platform {
-  readonly name = 'openfin-platform'
+  readonly name = 'openfin'
   readonly type = 'desktop'
   readonly allowTearOff = true
 
