@@ -1,4 +1,7 @@
-import { useCallback, SyntheticEvent, useRef, useState, useEffect } from "react"
+import { SyntheticEvent, useRef, useState, useEffect } from "react"
+import { of } from "rxjs"
+import { bind } from "@react-rxjs/core"
+import { map, timeoutWith } from "rxjs/operators"
 import styled from "styled-components/macro"
 import { ServiceConnectionStatus, ServiceStatus } from "services/connection"
 import {
@@ -7,10 +10,12 @@ import {
   AppUrl,
   ServiceListPopup,
   ServiceList,
+  Header,
 } from "./styled"
 import { Root, Button } from "../common-styles"
 import Service from "./Service"
 import { usePopUpMenu } from "utils/usePopUpMenu"
+import { status$, ServiceInstanceStatus } from "services/status"
 
 export const Wrapper = styled.div`
   color: ${(props) => props.theme.textColor};
@@ -31,7 +36,7 @@ const gitTagExists = async (gitTag: string | undefined) => {
   return exists
 }
 
-const FooterVersion: React.FC = () => {
+export const FooterVersion: React.FC = () => {
   const [versionExists, setVersionExists] = useState<boolean | void>(false)
 
   const URL =
@@ -56,7 +61,6 @@ const FooterVersion: React.FC = () => {
     </Wrapper>
   )
 }
-export default FooterVersion
 
 const getApplicationStatus = (services: ServiceStatus[]) => {
   if (
@@ -81,21 +85,73 @@ const selectAll = (event: SyntheticEvent) => {
   input.select()
 }
 
+const getInstanceNumber = (
+  record: Record<string, ServiceInstanceStatus>,
+  type: string,
+) => {
+  return Object.values(record).filter(
+    (x) => x.isConnected && x.serviceType === type,
+  ).length
+}
+
+const timeoutThreshold = 3000
+const requestTimeoutLogger$ = of(
+  ["blotter", "reference", "execution", "pricing", "analytics"].map(
+    (serviceType) =>
+      ({
+        serviceType,
+        connectionStatus: ServiceConnectionStatus.DISCONNECTED,
+        connectedInstanceCount: 0,
+      } as ServiceStatus),
+  ),
+)
+
+export const [useServiceStatus, serviceStatus$] = bind(
+  status$.pipe(
+    map((record) => {
+      const nameList: Set<string> = new Set()
+      const result: ServiceStatus[] = []
+      const recordValues = Object.values(record)
+      recordValues.forEach((next) => {
+        const newStatus = {
+          serviceType: next.serviceType,
+          connectedInstanceCount: getInstanceNumber(record, next.serviceType),
+          connectionStatus: getInstanceNumber(record, next.serviceType)
+            ? ServiceConnectionStatus.CONNECTED
+            : ServiceConnectionStatus.DISCONNECTED,
+        }
+        if (nameList.size !== nameList.add(newStatus.serviceType).size) {
+          result.push(newStatus)
+        }
+      })
+      return result
+    }),
+    timeoutWith(timeoutThreshold, requestTimeoutLogger$),
+  ),
+  [] as ServiceStatus[],
+)
+
+export const [useApplicationStatus, applicationStatus$] = bind(
+  serviceStatus$.pipe(map((status) => getApplicationStatus(status))),
+  ServiceConnectionStatus.CONNECTING,
+)
+
 export const StatusButton: React.FC = () => {
   const url = "https://web-demo.adaptivecluster.com"
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
-  const services: ServiceStatus[] = []
-
-  const toggleMenu = useCallback(() => {
-    setDisplayMenu(!displayMenu)
-  }, [displayMenu, setDisplayMenu])
+  const services: ServiceStatus[] = useServiceStatus()
 
   const appUrl = url
-  const appStatus = getApplicationStatus(services)
+  const appStatus = useApplicationStatus()
   return (
     <Root ref={ref}>
-      <Button onClick={toggleMenu} data-qa="status-button__toggle-button">
+      <Button
+        onClick={() => {
+          setDisplayMenu((prev) => !prev)
+        }}
+        data-qa="status-button__toggle-button"
+      >
         <StatusCircle status={appStatus} />
         <StatusLabel>
           {appStatus[0].toUpperCase() + appStatus.slice(1).toLowerCase()}
@@ -103,6 +159,7 @@ export const StatusButton: React.FC = () => {
       </Button>
 
       <ServiceListPopup open={displayMenu}>
+        <Header>Connections</Header>
         <ServiceList>
           <AppUrl
             title={appUrl}
