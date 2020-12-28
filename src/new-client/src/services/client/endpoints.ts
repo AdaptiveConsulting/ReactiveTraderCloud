@@ -15,11 +15,13 @@ export const endpoints$ = new Observable<{
     ? `wss://${url}:${securePort}/ws`
     : `ws://${url}:${defaultPort}/ws`
   const reconnectDelay = 500
+  const connectionTimeout = 0
 
   const streamEndpoint = new RxStomp()
   streamEndpoint.configure({
     brokerURL,
     reconnectDelay,
+    connectionTimeout,
   })
   const rpcEndpoint = new RxStompRPC(streamEndpoint)
   streamEndpoint.activate()
