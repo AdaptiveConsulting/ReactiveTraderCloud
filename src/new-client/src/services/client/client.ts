@@ -1,5 +1,5 @@
 import { combineLatest, Observable } from "rxjs"
-import { map, switchMap } from "rxjs/operators"
+import { map, switchMap, take } from "rxjs/operators"
 import { currentUser$ } from "../currentUser"
 import { endpoints$ } from "./endpoints"
 
@@ -24,6 +24,7 @@ export const getRemoteProcedureCall$ = <TResponse, TPayload>(
       }),
     ),
     map((message) => JSON.parse(message.body)),
+    take(1),
   )
 
 export const getStream$ = <TResponse, TPayload = {}>(

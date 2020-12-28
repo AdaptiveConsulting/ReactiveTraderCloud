@@ -1,6 +1,6 @@
 import { bind } from "@react-rxjs/core"
 import { concat } from "rxjs"
-import { scan, take, mergeAll, debounceTime } from "rxjs/operators"
+import { scan, mergeAll, debounceTime } from "rxjs/operators"
 import { getRemoteProcedureCall$, getStream$ } from "./client"
 import { CamelCase } from "./utils"
 
@@ -62,7 +62,7 @@ export const [useHistoricalPrices, getHistoricalPrices$] = bind<
       "priceHistory",
       "getPriceHistory",
       symbol,
-    ).pipe(take(1), mergeAll()),
+    ).pipe(mergeAll()),
     getPrice$(symbol),
   ).pipe(
     scan((acc, price) => {
