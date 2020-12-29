@@ -20,7 +20,7 @@ interface TradeRaw {
 
 // This is what is returned from the server
 interface ExecutionResponse {
-    Trade: TradeRaw;
+  Trade: TradeRaw;
 }
 
 interface ExecutionPayload {
@@ -109,7 +109,7 @@ const executionsMap$ = executionActions$.pipe(
       event$.pipe(
         scan(
           (state, action) => {
-            switch(action.type) {
+            switch (action.type) {
               case 'create':
                 const newExecution = { ...action.payload }
                 requestExecution(newExecution)
@@ -126,7 +126,7 @@ const executionsMap$ = executionActions$.pipe(
           },
           blankExecution()
         )
-      ) 
+      )
   ),
   collectValues()
 )
@@ -141,42 +141,42 @@ export const [useExecutions, executions$] = bind(executionsList$)
 export const [useExecution, execution$] = bind(
   // startWith was not returning a blank execution
   (currencyPair: string) => executions$.pipe(
-      map(executions => executions.filter(e => e.currencyPair === currencyPair)[0] || blankExecution(currencyPair)),
-    )
+    map(executions => executions.filter(e => e.currencyPair === currencyPair)[0] || blankExecution(currencyPair)),
+  )
 )
 
 const mapExecutiontoPayload = (e: Execution): ExecutionPayload => {
-    return {
-        CurrencyPair: e.currencyPair,
-        DealtCurrency: e.dealtCurrency,
-        Direction: e.direction,
-        Notional: e.notional,
-        SpotRate: e.spotRate,
-        id: e.id
-    }
+  return {
+    CurrencyPair: e.currencyPair,
+    DealtCurrency: e.dealtCurrency,
+    Direction: e.direction,
+    Notional: e.notional,
+    SpotRate: e.spotRate,
+    id: e.id
+  }
 }
 
 const mapResponseToExecution = (r: ExecutionResponse, id: string): Execution => {
-    const trade = r.Trade
-    return {
-        currencyPair: trade.CurrencyPair,
-        dealtCurrency: trade.DealtCurrency,
-        direction: trade.Direction,
-        notional: trade.Notional,
-        spotRate: trade.SpotRate,
-        status: trade.Status,
-        tradeId: trade.TradeId,
-        valueDate: trade.ValueDate,
-        id
-    }
+  const trade = r.Trade
+  return {
+    currencyPair: trade.CurrencyPair,
+    dealtCurrency: trade.DealtCurrency,
+    direction: trade.Direction,
+    notional: trade.Notional,
+    spotRate: trade.SpotRate,
+    status: trade.Status,
+    tradeId: trade.TradeId,
+    valueDate: trade.ValueDate,
+    id
+  }
 }
 
 const requestExecution = (p: Execution) => {
-    const payload = mapExecutiontoPayload(p)
-    getRemoteProcedureCall$<ExecutionResponse, ExecutionPayload>("execution", "executeTrade", payload)
-        .subscribe(response => {
-            const mapped = mapResponseToExecution(response, p.id)
-            onExecutionResponse(mapped)
-            setTimeout(() => onExecutionAcknowledge(mapped), 5000)
-        })
+  const payload = mapExecutiontoPayload(p)
+  getRemoteProcedureCall$<ExecutionResponse, ExecutionPayload>("execution", "executeTrade", payload)
+    .subscribe(response => {
+      const mapped = mapResponseToExecution(response, p.id)
+      onExecutionResponse(mapped)
+      setTimeout(() => onExecutionAcknowledge(mapped), 5000)
+    })
 }
