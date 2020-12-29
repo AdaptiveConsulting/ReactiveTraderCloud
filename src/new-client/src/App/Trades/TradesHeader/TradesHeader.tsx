@@ -1,9 +1,7 @@
 import styled from "styled-components/macro"
-import { Subscribe } from "@react-rxjs/core"
 import { ExcelButton } from "./ExcelButton"
 import { AppliedFilters } from "./AppliedFilters"
 import { QuickFilter } from "./QuickFilter"
-import { gridApi$ } from "../TradesGrid"
 
 const TradesHeaderStyle = styled("div")`
   display: flex;
@@ -36,15 +34,13 @@ const HeaderToolbar = styled("div")`
 export const TradesHeader: React.FC = () => (
   <TradesHeaderStyle>
     <HeaderLeftGroup>Trades</HeaderLeftGroup>
-    <Subscribe source$={gridApi$}>
-      <HeaderRightGroup>
-        <ExcelButton />
-        <HeaderToolbar>
-          <AppliedFilters />
-          <QuickFilter />
-        </HeaderToolbar>
-        <Fill />
-      </HeaderRightGroup>
-    </Subscribe>
+    <HeaderRightGroup>
+      <ExcelButton />
+      <HeaderToolbar>
+        <AppliedFilters />
+        <QuickFilter />
+      </HeaderToolbar>
+      <Fill />
+    </HeaderRightGroup>
   </TradesHeaderStyle>
 )

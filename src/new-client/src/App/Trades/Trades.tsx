@@ -6,17 +6,14 @@ import { TradesGrid } from "./TradesGrid"
 import { TradesFooter } from "./TradesFooter"
 import { TradesHeader } from "./TradesHeader"
 
-const Wrapper = styled.div`
+const TradesWrapper = styled.article`
+  height: 100%;
   padding: 0.5rem 1rem;
   user-select: none;
 `
-const TradesWrapper = styled(Wrapper)`
-  height: 100%;
-`
-const TradesStyle = styled("div")`
+const TradesStyle = styled.div`
   height: 100%;
   width: 100%;
-  min-height: 1.25rem;
   color: ${({ theme }) => theme.core.textColor};
   font-size: 0.8125rem;
 `

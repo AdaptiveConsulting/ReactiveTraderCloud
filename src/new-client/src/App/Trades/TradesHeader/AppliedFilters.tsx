@@ -1,8 +1,4 @@
-import { bind } from "@react-rxjs/core"
-import { GridApi } from "ag-grid-community"
-import { map } from "rxjs/operators"
 import styled from "styled-components/macro"
-import { filterChanges$, useGridApi } from "../TradesGrid"
 
 const FilterButton = styled("button")`
   opacity: 0.59;
@@ -36,20 +32,8 @@ const FilterIcon = styled("i")`
   line-height: 1rem;
 `
 
-const [useFilteredColDefs] = bind(
-  filterChanges$.pipe(
-    map(({ api }) =>
-      Object.keys(api.getFilterModel()).map((colKey) =>
-        api.getColumnDef(colKey),
-      ),
-    ),
-  ),
-  [],
-)
-
 export const AppliedFilters: React.FC = () => {
-  const api = useGridApi()
-  const filteredColDefs = useFilteredColDefs()
+  const filteredColDefs: any[] = []
   return (
     <>
       {filteredColDefs.map((colDef) => (
@@ -59,11 +43,8 @@ export const AppliedFilters: React.FC = () => {
             <FilterIcon
               className="fas fa-times"
               onClick={() => {
-                if (colDef.colId && api instanceof GridApi) {
-                  api.destroyFilter(colDef.colId)
-                }
+                console.log("TODO")
               }}
-              data-qa="applied-filters___remove-filter-button"
             />
           </FilterButton>
         </FilterField>
