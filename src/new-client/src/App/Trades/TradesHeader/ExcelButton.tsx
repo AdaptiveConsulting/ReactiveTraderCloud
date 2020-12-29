@@ -1,6 +1,4 @@
-import { ValueFormatterParams } from "ag-grid-community"
 import styled from "styled-components/macro"
-import { useGridApi, CSV_COL_FIELDS } from "../TradesGrid"
 
 const ExcelIcon = () => (
   <svg
@@ -44,23 +42,11 @@ const Button = styled("button")`
 `
 
 export const ExcelButton: React.FC = () => {
-  const api = useGridApi()
   return (
     <Button
-      onClick={() =>
-        api.exportDataAsCsv({
-          fileName: `RT-Blotter.csv`,
-          columnKeys: CSV_COL_FIELDS,
-          processCellCallback: ({ value, column }) => {
-            const { valueFormatter } = column.getUserProvidedColDef()
-            if (typeof valueFormatter === "function") {
-              return valueFormatter({ value } as ValueFormatterParams)
-            }
-            return value
-          },
-        })
-      }
-      data-qa="excel-button__button"
+      onClick={() => {
+        console.log("ToDo")
+      }}
     >
       <ExcelIcon />
     </Button>

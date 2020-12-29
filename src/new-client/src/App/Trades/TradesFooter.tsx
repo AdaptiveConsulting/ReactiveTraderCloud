@@ -2,7 +2,6 @@ import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 import { trades$ } from "services/trades"
-import { useDisplayRows } from "./TradesGrid"
 
 const TradesFooterStyled = styled("div")`
   height: 2rem;
@@ -25,12 +24,11 @@ const [useTotalRows] = bind<number>(
 )
 
 export const TradesFooter: React.FC = () => {
-  const displayedRows = useDisplayRows()
   const totalRows = useTotalRows()
   return (
     <TradesFooterStyled>
       <TradesFooterText data-qa="blotter__blotter-status-text">
-        Displaying rows {displayedRows} of {totalRows}
+        Displaying rows {totalRows} of {totalRows}
       </TradesFooterText>
     </TradesFooterStyled>
   )
