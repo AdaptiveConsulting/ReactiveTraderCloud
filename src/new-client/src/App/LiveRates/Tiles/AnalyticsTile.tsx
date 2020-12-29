@@ -1,13 +1,32 @@
-import { useState } from "react"
 import styled from "styled-components/macro"
-import {
-  LineChart,
-  ResponsiveContainer,
-  Line,
-  YAxis,
-  ReferenceLine,
-} from "recharts"
-import { useHistoricalPrices, getHistoricalPrices$ } from "services/prices"
+import { getHistoricalPrices$ } from "services/prices"
+import { curveCatmullRom, line, scaleLinear, scaleTime } from "d3"
+import { map } from "rxjs/operators"
+import { bind } from "@react-rxjs/core"
+
+const curvedLine = line<[Date, number]>().curve(curveCatmullRom)
+
+const VIEW_BOX_WIDTH = 200
+const VIEW_BOX_HEIGHT = 81
+
+export const xScale = scaleTime().range([0, VIEW_BOX_WIDTH])
+export const yScale = scaleLinear().range([0, VIEW_BOX_HEIGHT])
+
+const [useHistoricalPath, analyticsTile$] = bind((symbol: string) =>
+  getHistoricalPrices$(symbol).pipe(
+    map((prices) => {
+      const points = prices.map(
+        (price) => [new Date(price.valueDate), price.mid] as [Date, number],
+      )
+      const xRange = [points[0][0], points[points.length - 1][0]]
+      const yValues = points.map((p) => p[1])
+      const yRange = [Math.max(...yValues), Math.min(...yValues)] as const
+      const x = xScale.domain(xRange)
+      const y = yScale.domain(yRange)
+      return curvedLine.x((d) => x(d[0])).y((d) => y(d[1]))(points)!
+    }),
+  ),
+)
 
 const LineChartWrapper = styled.div<{ isTimerOn?: boolean }>`
   width: 100%;
@@ -20,53 +39,31 @@ const AnalyticsTileChartWrapper = styled.div`
   height: 100%;
 `
 
-interface Props {
-  symbol: string
-}
+const Path = styled.path``
+const Svg = styled.svg`
+  &:hover ${Path} {
+    stroke: #5f94f5;
+  }
+`
 
-const lineProps = {
-  strokeDasharray: "4 3",
-  stroke: "#737987",
-  strokeOpacity: 0.9,
-  strokeWidth: 0.8,
-}
-
-export const analyticsTile$ = getHistoricalPrices$
-export const AnalyticsTile: React.FC<Props> = ({ symbol: id }) => {
-  const history = useHistoricalPrices(id)
-  const [chartColor, setChartColor] = useState("#737987")
+export { analyticsTile$ }
+export const AnalyticsTile: React.FC<{ symbol: string }> = ({ symbol: id }) => {
+  const d = useHistoricalPath(id)
 
   return (
     <LineChartWrapper>
-      <AnalyticsTileChartWrapper
-        onMouseEnter={() => setChartColor("#5f94f5")}
-        onMouseLeave={() => setChartColor("#737987")}
-      >
-        <ResponsiveContainer data-qa="analytics-tile-chart__recharts-container">
-          <LineChart
-            width={100}
-            height={100}
-            data={history}
-            margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-          >
-            <Line
-              dataKey="mid"
-              dot={false}
-              stroke={chartColor}
-              strokeWidth={1.6}
-              isAnimationActive={false}
-            />
-            <YAxis
-              width={0}
-              domain={["dataMin", "dataMax"]}
-              axisLine={false}
-              tickLine={false}
-              padding={{ top: 0, bottom: 0 }}
-              tick={false}
-            />
-            <ReferenceLine y={0} {...lineProps} />
-          </LineChart>
-        </ResponsiveContainer>
+      <AnalyticsTileChartWrapper>
+        <Svg viewBox={`0 0 ${VIEW_BOX_WIDTH} ${VIEW_BOX_HEIGHT}`}>
+          <Path
+            stroke="#737987"
+            strokeOpacity={0.9}
+            strokeWidth={1.6}
+            fill="none"
+            width={VIEW_BOX_WIDTH}
+            height={VIEW_BOX_HEIGHT}
+            d={d}
+          />
+        </Svg>
       </AnalyticsTileChartWrapper>
     </LineChartWrapper>
   )
