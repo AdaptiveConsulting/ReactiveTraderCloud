@@ -16,6 +16,7 @@ import {
   Pip,
   Tenth,
 } from "./PriceButtonStyles"
+import { onNewExecution } from "services/executions"
 
 const formatTo3Digits = significantDigitsNumberFormatter(3)
 const formatToMin2IntDigits = customNumberFormatter({
@@ -54,6 +55,15 @@ const [usePriceButtonData, getPriceButtonData$] = bind(
 
 export const priceButton$ = (direction: Direction) => (symbol: string) =>
   getPriceButtonData$(direction, symbol)
+
+const getSpotRate = (pip: string, tenth: number, bigFigure: string): number => {
+  return parseFloat(`${bigFigure}${pip}${tenth.toString()}`)
+}
+
+export const [useDealtCurrency, getDealtCurrency$] = bind((symbol: string) =>
+  getCurrencyPair$(symbol).pipe(map(({ base, terms }) => `${base}`)),
+)
+
 export const PriceButton: React.FC<{
   direction: Direction
   symbol: string
@@ -62,10 +72,22 @@ export const PriceButton: React.FC<{
     direction,
     symbol,
   )
+  const dealtCurrency = useDealtCurrency(symbol)
+
+  const onClick = () => {
+    onNewExecution({
+      currencyPair: symbol,
+      dealtCurrency,
+      direction,
+      notional: 1000_000,
+      spotRate: getSpotRate(pip, tenth, bigFigure)
+    })
+  }
+
   return (
     <TradeButton
       direction={direction}
-      onClick={Function.prototype as () => void}
+      onClick={onClick}
       priceAnnounced
       disabled={disabled}
       data-qa="price-button__trade-button"

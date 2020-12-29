@@ -5,7 +5,7 @@ import { Direction } from "services/trades"
 import { PriceMovement, priceMovement$ } from "./PriceMovement"
 import { NotionalInput, notionalInput$ } from "./Notional"
 import { AnalyticsTile, analyticsTile$ } from "./AnalyticsTile"
-import { PriceButton, priceButton$ } from "./PriceButton"
+import { getDealtCurrency$, PriceButton, priceButton$ } from "./PriceButton"
 import { TileHeader, tileHeader$ } from "./TileHeader"
 import {
   MainTileStyle,
@@ -14,13 +14,16 @@ import {
   NotionalInputWrapper,
   TileBodyWrapper,
 } from "./responsiveWrappers"
+import { execution$ } from "services/executions"
+import ExecutionStatusAlert from "./ExecutionStatusAlert"
 
 const PanelItem = styled.div`
   flex-grow: 1;
   flex-basis: 20rem;
+  position: relative;
 `
 
-const PriceControlsStyle = styled("div")<{
+const PriceControlsStyle = styled("div") <{
   isAnalyticsView: boolean
 }>`
   display: grid;
@@ -50,6 +53,8 @@ export const tile$ = (symbol: string) =>
       priceButton$(Direction.Sell),
       priceButton$(Direction.Buy),
       notionalInput$,
+      execution$,
+      getDealtCurrency$
     ].map((fn) => fn(symbol)),
   )
 
@@ -57,36 +62,37 @@ export const Tile: React.FC<{
   symbol: string
   isAnalytics: boolean
 }> = memo(({ symbol, isAnalytics }) => {
-  return (
-    <PanelItem>
-      <MainTileWrapper shouldMoveDate={false}>
-        <MainTileStyle
-          className="spot-tile"
-          data-qa="analytics-tile__spot-tile"
-          data-qa-id={`currency-pair-${symbol.toLowerCase()}`}
-        >
-          <TileHeader symbol={symbol} />
+    return (
+      <PanelItem>
+        <MainTileWrapper shouldMoveDate={false}>
+          <MainTileStyle
+            className="spot-tile"
+            data-qa="analytics-tile__spot-tile"
+            data-qa-id={`currency-pair-${symbol.toLowerCase()}`}
+          >
+            <TileHeader symbol={symbol} />
 
-          <TileBodyWrapper isAnalyticsView={isAnalytics}>
-            {isAnalytics ? <AnalyticsTile symbol={symbol} /> : null}
+            <TileBodyWrapper isAnalyticsView={isAnalytics}>
+              {isAnalytics ? <AnalyticsTile symbol={symbol} /> : null}
 
-            <PriceControlWrapper>
-              <PriceControlsStyle
-                data-qa="analytics-tile-price-control__header"
-                isAnalyticsView={isAnalytics}
-              >
-                <PriceMovement isAnalyticsView={isAnalytics} symbol={symbol} />
-                <PriceButton direction={Direction.Sell} symbol={symbol} />
-                <PriceButton direction={Direction.Buy} symbol={symbol} />
-              </PriceControlsStyle>
-            </PriceControlWrapper>
+              <PriceControlWrapper>
+                <PriceControlsStyle
+                  data-qa="analytics-tile-price-control__header"
+                  isAnalyticsView={isAnalytics}
+                >
+                  <PriceMovement isAnalyticsView={isAnalytics} symbol={symbol} />
+                  <PriceButton direction={Direction.Sell} symbol={symbol} />
+                  <PriceButton direction={Direction.Buy} symbol={symbol} />
+                </PriceControlsStyle>
+              </PriceControlWrapper>
 
-            <NotionalInputWrapper isAnalyticsView={isAnalytics}>
-              <NotionalInput symbol={symbol} />
-            </NotionalInputWrapper>
-          </TileBodyWrapper>
-        </MainTileStyle>
-      </MainTileWrapper>
-    </PanelItem>
-  )
-})
+              <NotionalInputWrapper isAnalyticsView={isAnalytics}>
+                <NotionalInput symbol={symbol} />
+              </NotionalInputWrapper>
+            </TileBodyWrapper>
+          </MainTileStyle>
+        </MainTileWrapper>
+        <ExecutionStatusAlert symbol={symbol}/>
+      </PanelItem>
+    )
+  })
