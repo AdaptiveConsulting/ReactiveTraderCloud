@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
 import styled from "styled-components/macro"
-import { useGridApi } from "../TradesGrid"
 
 const QuickFilterStyle = styled("div")`
   width: 10rem;
@@ -55,11 +54,10 @@ const QuickFilterClearIcon = styled("i")`
 export const QuickFilter: React.FC = () => {
   const quickFilterInput = useRef<HTMLInputElement>(null)
   const [quickFilterText, setQuickFilterText] = useState<string>("")
-  const api = useGridApi()
 
   useEffect(() => {
-    api.setQuickFilter(quickFilterText.length ? quickFilterText : null)
-  }, [quickFilterText, api])
+    console.log("ToDo")
+  }, [quickFilterText])
 
   return (
     <QuickFilterStyle>
