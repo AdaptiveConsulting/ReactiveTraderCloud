@@ -1,4 +1,5 @@
 import { bind, shareLatest } from "@react-rxjs/core"
+import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
 import { CamelCase } from "services/utils"
 import { getStream$ } from "./client"
@@ -36,15 +37,14 @@ const analytics$ = getStream$<PositionsRaw, string>(
   "USD",
 ).pipe(shareLatest())
 
-export const [useHistory, history$] = bind<HistoryEntry[]>(
-  analytics$.pipe(
-    map((analitics) =>
-      analitics.History.filter(Boolean).map(({ Timestamp, UsdPnl }) => ({
-        usPnl: UsdPnl,
-        timestamp: new Date(Timestamp).getTime(),
-      })),
-    ),
+export const history$: Observable<HistoryEntry[]> = analytics$.pipe(
+  map((analitics) =>
+    analitics.History.filter(Boolean).map(({ Timestamp, UsdPnl }) => ({
+      usPnl: UsdPnl,
+      timestamp: new Date(Timestamp).getTime(),
+    })),
   ),
+  shareLatest(),
 )
 
 export const [useCurrentPositions, currentPositions$] = bind<

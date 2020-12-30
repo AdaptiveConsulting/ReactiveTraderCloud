@@ -2,7 +2,6 @@ import { bind } from "@react-rxjs/core"
 import { format } from "date-fns"
 import { map, pluck, scan, withLatestFrom } from "rxjs/operators"
 import { history$ } from "services/analytics"
-import { xScale } from "./MainLine"
 import { dataPoints$ } from "./dataPoints$"
 import { Text } from "./Text"
 import { LINE_CHART_HEIGHT, X_LEGENDS_HEIGHT } from "./constants"
@@ -31,7 +30,7 @@ const xAxisPointsIdxs$ = history$.pipe(
 const [useTimeMarks, timeLegends$] = bind(
   xAxisPointsIdxs$.pipe(
     withLatestFrom(dataPoints$),
-    map(([xAxisIdxs, { points }]) =>
+    map(([xAxisIdxs, { points, xScale }]) =>
       xAxisIdxs.map((idx) => ({
         x: xScale(points[idx][0]),
         text: format(points[idx][0], "HH:mm:ss aaaa"),
