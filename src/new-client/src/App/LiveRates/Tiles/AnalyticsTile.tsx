@@ -1,30 +1,23 @@
 import styled from "styled-components/macro"
 import { getHistoricalPrices$ } from "services/prices"
-import { curveCatmullRom, line, scaleLinear, scaleTime } from "d3"
 import { map } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-
-const curvedLine = line<[Date, number]>().curve(curveCatmullRom)
+import { getDataPoints, toSvgPath, withScales } from "utils/historicalChart"
+import { pipe } from "rxjs"
+import { curveBasis } from "d3"
 
 const VIEW_BOX_WIDTH = 200
 const VIEW_BOX_HEIGHT = 81
 
-export const xScale = scaleTime().range([0, VIEW_BOX_WIDTH])
-export const yScale = scaleLinear().range([0, VIEW_BOX_HEIGHT])
-
 const [useHistoricalPath, analyticsTile$] = bind((symbol: string) =>
   getHistoricalPrices$(symbol).pipe(
-    map((prices) => {
-      const points = prices.map(
-        (price) => [new Date(price.valueDate), price.mid] as [Date, number],
-      )
-      const xRange = [points[0][0], points[points.length - 1][0]]
-      const yValues = points.map((p) => p[1])
-      const yRange = [Math.max(...yValues), Math.min(...yValues)] as const
-      const x = xScale.domain(xRange)
-      const y = yScale.domain(yRange)
-      return curvedLine.x((d) => x(d[0])).y((d) => y(d[1]))(points)!
-    }),
+    map(
+      pipe(
+        getDataPoints((price) => [new Date(price.valueDate), price.mid]),
+        withScales([0, VIEW_BOX_WIDTH], [0, VIEW_BOX_HEIGHT]),
+        toSvgPath(curveBasis),
+      ),
+    ),
   ),
 )
 

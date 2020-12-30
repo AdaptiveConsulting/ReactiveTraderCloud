@@ -1,29 +1,21 @@
-import {
-  LINE_CHART_HEIGHT,
-  LINE_CHART_WIDTH,
-  TOTAL_WIDTH,
-  Y_LEGENDS_WIDTH,
-} from "./constants"
+import { LINE_CHART_HEIGHT, LINE_CHART_WIDTH } from "./constants"
 import { dataPoints$ } from "./dataPoints$"
-import { curveCatmullRom, line, scaleLinear, scaleTime } from "d3"
+import { scaleLinear } from "d3"
 import { map } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
+import { toSvgPath, Range } from "utils/historicalChart"
 
-const curvedLine = line<[Date, number]>().curve(curveCatmullRom)
-export const xScale = scaleTime().range([Y_LEGENDS_WIDTH, TOTAL_WIDTH])
-export const yScale = scaleLinear().range([0, LINE_CHART_HEIGHT])
+const getSvgPath = toSvgPath()
+
 const offsetScale = scaleLinear().range([0, 1])
+const getOffset = (yRange: Range<number>) => offsetScale.domain(yRange)(0)
 
 const [useMainLine, mainLine$] = bind(
   dataPoints$.pipe(
-    map(({ xRange, yRange, points }) => {
-      const x = xScale.domain(xRange)
-      const y = yScale.domain(yRange)
-      return {
-        d: curvedLine.x((d) => x(d[0])).y((d) => y(d[1]))(points)!,
-        offset: offsetScale.domain(yRange)(0),
-      }
-    }),
+    map(({ yRange, ...data }) => ({
+      d: getSvgPath(data),
+      offset: getOffset(yRange),
+    })),
   ),
 )
 
