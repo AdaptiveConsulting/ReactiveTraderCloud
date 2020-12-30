@@ -51,8 +51,7 @@ export const [usePrice, getPrice$] = bind((symbol: string) =>
   ),
 )
 
-const HISTORY_TIMESTAMP_THRESHOLD = 1000
-const HISTORY_SIZE = 100
+const HISTORY_SIZE = 50
 export const [useHistoricalPrices, getHistoricalPrices$] = bind<
   [string],
   HistoryPrice[]
@@ -66,14 +65,8 @@ export const [useHistoricalPrices, getHistoricalPrices$] = bind<
     getPrice$(symbol),
   ).pipe(
     scan((acc, price) => {
-      if (acc.length === 0) return [price]
-      const last = acc[acc.length - 1]
-      const diff = price.creationTimestamp - last.creationTimestamp
-      if (diff < HISTORY_TIMESTAMP_THRESHOLD) return acc
-      if (acc.length < HISTORY_SIZE) return acc.concat(price)
-      const result = acc.slice(1)
-      if (price.symbol) result.push(price)
-      return result
+      const result = acc.concat(price)
+      return result.length <= HISTORY_SIZE ? result : result.slice(1)
     }, [] as HistoryPrice[]),
     debounceTime(0),
   ),

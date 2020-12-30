@@ -7,13 +7,13 @@ import { pipe } from "rxjs"
 import { curveBasis } from "d3"
 
 const VIEW_BOX_WIDTH = 200
-const VIEW_BOX_HEIGHT = 81
+const VIEW_BOX_HEIGHT = 90
 
 const [useHistoricalPath, analyticsTile$] = bind((symbol: string) =>
   getHistoricalPrices$(symbol).pipe(
     map(
       pipe(
-        getDataPoints((price) => [new Date(price.valueDate), price.mid]),
+        getDataPoints((price, idx) => [new Date(idx), price.mid]),
         withScales([0, VIEW_BOX_WIDTH], [0, VIEW_BOX_HEIGHT]),
         toSvgPath(curveBasis),
       ),

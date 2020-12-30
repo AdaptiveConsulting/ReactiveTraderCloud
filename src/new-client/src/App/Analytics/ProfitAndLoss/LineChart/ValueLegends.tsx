@@ -14,7 +14,7 @@ const scale = scaleLinear().domain([0, N_LABELS - 1])
 
 const yScale = scale.range([10, LINE_CHART_HEIGHT])
 
-const xText = Y_LEGENDS_WIDTH / 2
+const xText = Y_LEGENDS_WIDTH / 2 - 2
 const labelPositions = Array(N_LABELS)
   .fill(null)
   .map((_, idx) => ({

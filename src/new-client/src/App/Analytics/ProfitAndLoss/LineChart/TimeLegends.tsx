@@ -6,7 +6,7 @@ import { dataPoints$ } from "./dataPoints$"
 import { Text } from "./Text"
 import { LINE_CHART_HEIGHT, X_LEGENDS_HEIGHT } from "./constants"
 
-const INTERVAL_WIDTH = 26
+const INTERVAL_WIDTH = 30
 
 const xAxisPointsIdxs$ = history$.pipe(
   scan(
@@ -63,10 +63,10 @@ export const TimeLegends = () => {
           y2={LINE_CHART_HEIGHT}
         ></line>
       ))}
-      <Text y={yText} x={first.x}>
+      <Text textAnchor="start" y={yText} x={first.x}>
         {first.text}
       </Text>
-      <Text y={yText} x={last.x}>
+      <Text textAnchor="end" y={yText} x={last.x}>
         {last.text}
       </Text>
     </>
