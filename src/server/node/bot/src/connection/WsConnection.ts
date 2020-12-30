@@ -24,10 +24,7 @@ export class WsConnection {
   private createStreamEndpoint = () => {
     const stompInstance = new RxStomp()
 
-    stompInstance.configure({
-      brokerURL: this.config.brokerURL,
-      reconnectDelay: this.config.reconnectDelay
-    })
+    stompInstance.configure({ ...this.config })
 
     stompInstance.webSocketErrors$.subscribe(e => logger.error('WebSocket Error ', e))
     stompInstance.stompErrors$.subscribe(e => logger.error('Stomp Error ', e))

@@ -3,6 +3,7 @@
  */
 export default class StompConfig {
   public brokerURL: string
+  public connectionTimeout = 500
   public reconnectDelay = 500
 
   constructor(url: string, port?: number) {
