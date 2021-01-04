@@ -1,5 +1,8 @@
 import { watch$ } from "services/client"
-import { scan } from "rxjs/operators"
+import { delay, map, mergeAll, scan, switchMap, take } from "rxjs/operators"
+import { split } from "@react-rxjs/utils"
+import { merge, of } from "rxjs"
+import { bind, shareLatest } from "@react-rxjs/core"
 
 export interface RawServiceStatus {
   Type: string
@@ -13,26 +16,46 @@ export interface ServiceInstanceStatus {
   serviceId: string
   timestamp: number
   serviceLoad: number
-  isConnected: boolean
 }
 
-const convertFromRawMessage = (
-  serviceStatus: RawServiceStatus,
-): ServiceInstanceStatus => {
-  return {
-    serviceType: serviceStatus.Type,
-    serviceId: serviceStatus.Instance,
-    timestamp: serviceStatus.TimeStamp,
-    serviceLoad: serviceStatus.Load,
-    isConnected: true,
-  }
-}
+const STATUS_TIMEOUT = 2000
 
-export const status$ = watch$<RawServiceStatus>("status").pipe(
-  scan((acc, raw) => {
-    const newAcc: Record<string, ServiceInstanceStatus> = acc
-    const newStatus = convertFromRawMessage(raw)
-    newAcc[newStatus.serviceId] = newStatus
-    return newAcc
-  }, {} as Record<string, ServiceInstanceStatus>),
+export const [useStatus, status$] = bind(
+  watch$<RawServiceStatus>("status").pipe(
+    split(
+      (raw) => raw.Instance,
+      (instance$) =>
+        merge(
+          instance$.pipe(
+            map((value) => ({ ...value, isAdded: true })),
+            take(1),
+          ),
+          instance$.pipe(
+            switchMap((info) =>
+              of({ ...info, isAdded: false }).pipe(delay(STATUS_TIMEOUT)),
+            ),
+          ),
+        ).pipe(take(2)),
+    ),
+    mergeAll(),
+    scan((acc, item) => {
+      const timestamp = Date.now()
+      const result = { ...acc }
+      if (item.isAdded) {
+        result[item.Type] = {
+          serviceType: item.Type,
+          serviceId: item.Instance,
+          timestamp,
+          serviceLoad: (result[item.Type]?.serviceLoad ?? 0) + 1,
+        }
+      } else {
+        result[item.Type] = {
+          ...result[item.Type],
+          serviceLoad: result[item.Type].serviceLoad - 1,
+        }
+      }
+      return result
+    }, {} as Record<string, ServiceInstanceStatus>),
+    shareLatest(),
+  ),
 )

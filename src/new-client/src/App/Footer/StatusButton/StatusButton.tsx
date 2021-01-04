@@ -1,7 +1,6 @@
 import { SyntheticEvent, useRef, useState, useEffect } from "react"
-import { of } from "rxjs"
 import { bind } from "@react-rxjs/core"
-import { map, timeoutWith } from "rxjs/operators"
+import { delay, map } from "rxjs/operators"
 import styled from "styled-components/macro"
 import { ServiceConnectionStatus, ServiceStatus } from "services/connection"
 import {
@@ -15,7 +14,8 @@ import {
 import { Root, Button } from "../common-styles"
 import Service from "./Service"
 import { usePopUpMenu } from "utils/usePopUpMenu"
-import { status$, ServiceInstanceStatus } from "services/status"
+import { ServiceInstanceStatus, status$ } from "services/status"
+import { of } from "rxjs"
 
 export const Wrapper = styled.div`
   color: ${(props) => props.theme.textColor};
@@ -85,54 +85,13 @@ const selectAll = (event: SyntheticEvent) => {
   input.select()
 }
 
-const getInstanceNumber = (
-  record: Record<string, ServiceInstanceStatus>,
-  type: string,
-) => {
-  return Object.values(record).filter(
-    (x) => x.isConnected && x.serviceType === type,
-  ).length
-}
-
-const timeoutThreshold = 3000
-const requestTimeoutLogger$ = of(
-  ["blotter", "reference", "execution", "pricing", "analytics"].map(
-    (serviceType) =>
-      ({
-        serviceType,
-        connectionStatus: ServiceConnectionStatus.DISCONNECTED,
-        connectedInstanceCount: 0,
-      } as ServiceStatus),
-  ),
-)
-
-export const [useServiceStatus, serviceStatus$] = bind(
-  status$.pipe(
-    map((record) => {
-      const nameList: Set<string> = new Set()
-      const result: ServiceStatus[] = []
-      const recordValues = Object.values(record)
-      recordValues.forEach((next) => {
-        const newStatus = {
-          serviceType: next.serviceType,
-          connectedInstanceCount: getInstanceNumber(record, next.serviceType),
-          connectionStatus: getInstanceNumber(record, next.serviceType)
-            ? ServiceConnectionStatus.CONNECTED
-            : ServiceConnectionStatus.DISCONNECTED,
-        }
-        if (nameList.size !== nameList.add(newStatus.serviceType).size) {
-          result.push(newStatus)
-        }
-      })
-      return result
-    }),
-    timeoutWith(timeoutThreshold, requestTimeoutLogger$),
-  ),
-  [] as ServiceStatus[],
+const [useServiceStatus, serviceStatus$] = bind<ServiceInstanceStatus[]>(
+  status$.pipe(map(Object.values)),
+  [],
 )
 
 export const [useApplicationStatus, applicationStatus$] = bind(
-  serviceStatus$.pipe(map((status) => getApplicationStatus(status))),
+  of(ServiceConnectionStatus.CONNECTED).pipe(delay(1500)),
   ServiceConnectionStatus.CONNECTING,
 )
 
@@ -140,7 +99,7 @@ export const StatusButton: React.FC = () => {
   const url = "https://web-demo.adaptivecluster.com"
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
-  const services: ServiceStatus[] = useServiceStatus()
+  const services = useServiceStatus()
 
   const appUrl = url
   const appStatus = useApplicationStatus()

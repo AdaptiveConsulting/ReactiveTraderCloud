@@ -1,23 +1,27 @@
 import React from "react"
 
-import { ServiceConnectionStatus, ServiceStatus } from "services/connection"
+import { ServiceConnectionStatus } from "services/connection"
+import { ServiceInstanceStatus } from "services/status"
 import { StatusCircle, NodeCount, ServiceName, ServiceRoot } from "./styled"
 
-const Service: React.FC<{ service: ServiceStatus }> = ({
-  service: { serviceType, connectionStatus, connectedInstanceCount },
+const Service: React.FC<{ service: ServiceInstanceStatus }> = ({
+  service: { serviceType, serviceLoad },
 }) => (
   <ServiceRoot>
     <div style={{ display: "flex", alignItems: "center" }}>
-      <StatusCircle status={connectionStatus} />
+      <StatusCircle
+        status={
+          serviceLoad > 0
+            ? ServiceConnectionStatus.CONNECTED
+            : ServiceConnectionStatus.DISCONNECTED
+        }
+      />
       <ServiceName>{serviceType}</ServiceName>
     </div>
 
-    {connectionStatus === ServiceConnectionStatus.CONNECTED && (
-      <NodeCount>
-        ({connectedInstanceCount}{" "}
-        {connectedInstanceCount !== 1 ? "Nodes" : "Node"})
-      </NodeCount>
-    )}
+    <NodeCount>
+      ({serviceLoad} {serviceLoad !== 1 ? "Nodes" : "Node"})
+    </NodeCount>
   </ServiceRoot>
 )
 export default Service
