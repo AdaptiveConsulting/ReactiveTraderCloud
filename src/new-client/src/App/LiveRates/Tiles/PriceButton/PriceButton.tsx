@@ -16,6 +16,9 @@ import {
   Pip,
   Tenth,
 } from "./PriceButtonStyles"
+import { onNewExecution } from "services/executions"
+import { SymbolContext } from "../Tile"
+import { useContext } from "react"
 
 const formatTo3Digits = significantDigitsNumberFormatter(3)
 const formatToMin2IntDigits = customNumberFormatter({
@@ -28,7 +31,7 @@ const [usePriceButtonData, getPriceButtonData$] = bind(
       map(({ bid, ask }) => (direction === Direction.Buy ? ask : bid)),
       distinctUntilChanged(),
       withLatestFrom(getCurrencyPair$(symbol)),
-      map(([value, { pipsPosition, ratePrecision }]) => {
+      map(([value, { base, pipsPosition, ratePrecision }]) => {
         const rateString = value.toFixed(ratePrecision)
         const [wholeNumber, fractions_] = rateString.split(".")
         const fractions = fractions_ || "00000"
@@ -47,25 +50,45 @@ const [usePriceButtonData, getPriceButtonData$] = bind(
         let bigFigure = formatTo3Digits(bigFigureNumber)
         if (bigFigureNumber === Math.floor(bigFigureNumber)) bigFigure += "."
 
-        return { disabled, pip, tenth, bigFigure }
+        return { base, disabled, pip, tenth, bigFigure }
       }),
     ),
 )
 
 export const priceButton$ = (direction: Direction) => (symbol: string) =>
   getPriceButtonData$(direction, symbol)
+
+const calculateSpotRate = (
+  pip: string,
+  tenth: number,
+  bigFigure: string,
+): number => {
+  return parseFloat(`${bigFigure}${pip}${tenth.toString()}`)
+}
+
 export const PriceButton: React.FC<{
   direction: Direction
-  symbol: string
-}> = ({ direction, symbol }) => {
-  const { disabled, pip, tenth, bigFigure } = usePriceButtonData(
+}> = ({ direction }) => {
+  const symbol = useContext(SymbolContext)
+  const { base, disabled, pip, tenth, bigFigure } = usePriceButtonData(
     direction,
     symbol,
   )
+
+  const onClick = () => {
+    onNewExecution({
+      currencyPair: symbol,
+      dealtCurrency: base,
+      direction,
+      notional: 1000_000,
+      spotRate: calculateSpotRate(pip, tenth, bigFigure),
+    })
+  }
+
   return (
     <TradeButton
       direction={direction}
-      onClick={Function.prototype as () => void}
+      onClick={onClick}
       priceAnnounced
       disabled={disabled}
       data-qa="price-button__trade-button"

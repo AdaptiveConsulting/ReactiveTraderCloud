@@ -4,6 +4,8 @@ import { bind } from "@react-rxjs/core"
 import { getCurrencyPair$ } from "services/currencyPairs"
 import { formatAsWholeNumber } from "utils/formatNumber"
 import { InputWrapper } from "./responsiveWrappers"
+import { SymbolContext } from "./Tile"
+import { useContext } from "react"
 
 export const Input = styled.input`
   grid-area: Input;
@@ -37,7 +39,8 @@ const [useBase, notionalInput$] = bind((symbol: string) =>
 const notional = 100_000
 
 export { notionalInput$ }
-export const NotionalInput: React.FC<{ symbol: string }> = ({ symbol }) => {
+export const NotionalInput: React.FC = () => {
+  const symbol = useContext(SymbolContext)
   const base = useBase(symbol)
   return (
     <InputWrapper>

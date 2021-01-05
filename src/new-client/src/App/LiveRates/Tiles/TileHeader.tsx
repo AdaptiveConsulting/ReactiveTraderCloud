@@ -6,8 +6,10 @@ import { format } from "date-fns"
 import { getCurrencyPair$ } from "services/currencyPairs"
 import { getPrice$ } from "services/prices"
 import { DeliveryDate } from "./styled"
+import { SymbolContext } from "./Tile"
+import { useContext } from "react"
 
-const [useBaseTerm, getBaseTerm$] = bind((symbol: string) =>
+export const [useBaseTerm, getBaseTerm$] = bind((symbol: string) =>
   getCurrencyPair$(symbol).pipe(map(({ base, terms }) => `${base}/${terms}`)),
 )
 
@@ -27,7 +29,8 @@ export const TileSymbol = styled.div`
   line-height: 1rem;
 `
 
-export const TileHeader: React.FC<{ symbol: string }> = ({ symbol }) => {
+export const TileHeader: React.FC = () => {
+  const symbol = useContext(SymbolContext)
   const baseTerm = useBaseTerm(symbol)
   const date = useDate(symbol)
   return (
