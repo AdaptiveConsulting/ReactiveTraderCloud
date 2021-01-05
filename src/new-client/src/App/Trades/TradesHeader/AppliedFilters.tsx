@@ -1,4 +1,5 @@
 import styled from "styled-components/macro"
+import { ColConfig } from "../TradesGrid"
 
 const FilterButton = styled("button")`
   opacity: 0.59;
@@ -33,19 +34,14 @@ const FilterIcon = styled("i")`
 `
 
 export const AppliedFilters: React.FC = () => {
-  const filteredColDefs: any[] = []
+  const filteredColDefs: ColConfig[] = []
   return (
     <>
       {filteredColDefs.map((colDef) => (
         <FilterField key={colDef.field}>
           <FilterName>{colDef.headerName}</FilterName>
           <FilterButton>
-            <FilterIcon
-              className="fas fa-times"
-              onClick={() => {
-                console.log("TODO")
-              }}
-            />
+            <FilterIcon className="fas fa-times" />
           </FilterButton>
         </FilterField>
       ))}

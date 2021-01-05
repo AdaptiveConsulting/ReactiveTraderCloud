@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import styled from "styled-components/macro"
 
 const QuickFilterStyle = styled("div")`
@@ -54,10 +54,6 @@ const QuickFilterClearIcon = styled("i")`
 export const QuickFilter: React.FC = () => {
   const quickFilterInput = useRef<HTMLInputElement>(null)
   const [quickFilterText, setQuickFilterText] = useState<string>("")
-
-  useEffect(() => {
-    console.log("ToDo")
-  }, [quickFilterText])
 
   return (
     <QuickFilterStyle>
