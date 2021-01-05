@@ -43,11 +43,7 @@ const Button = styled("button")`
 
 export const ExcelButton: React.FC = () => {
   return (
-    <Button
-      onClick={() => {
-        console.log("ToDo")
-      }}
-    >
+    <Button>
       <ExcelIcon />
     </Button>
   )

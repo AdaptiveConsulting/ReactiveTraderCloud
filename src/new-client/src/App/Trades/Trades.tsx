@@ -1,10 +1,10 @@
 import styled from "styled-components/macro"
 import { Subscribe } from "@react-rxjs/core"
 import { Loader } from "components/Loader"
-import { trades$ } from "services/trades"
 import { TradesGrid } from "./TradesGrid"
 import { TradesFooter } from "./TradesFooter"
 import { TradesHeader } from "./TradesHeader"
+import { tableTrades$ } from "./services"
 
 const TradesWrapper = styled.article`
   height: 100%;
@@ -19,7 +19,7 @@ const TradesStyle = styled.div`
 `
 export const Trades: React.FC = () => (
   <TradesWrapper>
-    <Subscribe source$={trades$} fallback={<Loader />}>
+    <Subscribe source$={tableTrades$} fallback={<Loader />}>
       <TradesStyle>
         <TradesHeader />
         <TradesGrid />
