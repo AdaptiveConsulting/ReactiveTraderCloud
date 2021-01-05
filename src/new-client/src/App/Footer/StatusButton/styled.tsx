@@ -103,4 +103,13 @@ export const ServiceList = styled.div`
 
 export const AppUrl = styled.input`
   border-style: none;
+  color: ${(props) => props.theme.textColor};
+`
+export const Header = styled.div`
+  font-size: 1rem;
+  line-height: 2rem;
+  box-shadow: 0 1px 0 ${({ theme }) => theme.core.textColor};
+  margin-bottom: 1rem;
+  margin-left: 5px;
+  margin-right: 5px;
 `
