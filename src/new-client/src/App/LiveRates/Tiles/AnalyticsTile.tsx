@@ -5,6 +5,8 @@ import { bind } from "@react-rxjs/core"
 import { getDataPoints, toSvgPath, withScales } from "utils/historicalChart"
 import { pipe } from "rxjs"
 import { curveBasis } from "d3"
+import { useContext } from "react"
+import { SymbolContext } from "./Tile"
 
 const VIEW_BOX_WIDTH = 200
 const VIEW_BOX_HEIGHT = 90
@@ -40,8 +42,9 @@ const Svg = styled.svg`
 `
 
 export { analyticsTile$ }
-export const AnalyticsTile: React.FC<{ symbol: string }> = ({ symbol: id }) => {
-  const d = useHistoricalPath(id)
+export const AnalyticsTile: React.FC = () => {
+  const symbol = useContext(SymbolContext)
+  const d = useHistoricalPath(symbol)
 
   return (
     <LineChartWrapper>

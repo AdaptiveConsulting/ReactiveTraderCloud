@@ -4,6 +4,8 @@ import { bind } from "@react-rxjs/core"
 import { getPrice$, PriceMovementType } from "services/prices"
 import { getCurrencyPair$ } from "services/currencyPairs"
 import { equals } from "utils/equals"
+import { useContext } from "react"
+import { SymbolContext } from "./Tile"
 
 const MovementIcon = styled("i")<{ show: boolean; color: string }>`
   text-align: center;
@@ -50,9 +52,9 @@ const [usePriceMovementData, priceMovement$] = bind((symbol: string) =>
 
 export { priceMovement$ }
 export const PriceMovement: React.FC<{
-  symbol: string
   isAnalyticsView: boolean
-}> = ({ symbol, isAnalyticsView }) => {
+}> = ({ isAnalyticsView }) => {
+  const symbol = useContext(SymbolContext)
   const { spread, movementType } = usePriceMovementData(symbol)
   return (
     <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
