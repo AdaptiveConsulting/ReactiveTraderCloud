@@ -61,7 +61,7 @@ export const TimeLegends = () => {
           x2={x}
           y1="0"
           y2={LINE_CHART_HEIGHT}
-        ></line>
+        />
       ))}
       <Text textAnchor="start" y={yText} x={first.x}>
         {first.text}
