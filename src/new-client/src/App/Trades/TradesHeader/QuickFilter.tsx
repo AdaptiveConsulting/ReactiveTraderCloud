@@ -1,6 +1,7 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { FaFilter, FaTimes } from "react-icons/fa"
 import styled from "styled-components/macro"
+import { quickFilterInputs$ } from "../services"
 
 const QuickFilterStyle = styled("div")`
   width: 10rem;
@@ -55,6 +56,10 @@ const QuickFilterClearIcon = styled("i")`
 export const QuickFilter: React.FC = () => {
   const quickFilterInput = useRef<HTMLInputElement>(null)
   const [quickFilterText, setQuickFilterText] = useState<string>("")
+
+  useEffect(() => {
+    quickFilterInputs$.next(quickFilterText.toLowerCase())
+  }, [quickFilterText])
 
   return (
     <QuickFilterStyle>
