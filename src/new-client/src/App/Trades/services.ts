@@ -60,8 +60,21 @@ const stringComparator = (direction: SortDirection, a: string, b: string) => {
   }
 }
 
+export const quickFilterInputs$ = new Subject<string>()
+
+const filteredTrades$ = combineLatest([trades$, quickFilterInputs$]).pipe(
+  map(([trades, quickFilterInput]) => {
+    const searchTerms = quickFilterInput.split(" ")
+    return trades.filter((trade) => {
+      return Object.values(trade).some((val) =>
+        searchTerms.some((term) => String(val).toLowerCase().includes(term)),
+      )
+    })
+  }),
+)
+
 export const [useTableTrades, tableTrades$] = bind(
-  combineLatest([trades$, tableSort$]).pipe(
+  combineLatest([filteredTrades$, tableSort$]).pipe(
     map(([trades, { field, direction }]) => {
       const sortedTrades = [...trades]
       if (field && direction) {
