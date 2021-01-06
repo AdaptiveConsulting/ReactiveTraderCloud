@@ -1,16 +1,22 @@
-import { useCallback, SyntheticEvent, useRef, useState, useEffect } from "react"
+import { SyntheticEvent, useRef, useState, useEffect } from "react"
+import { bind } from "@react-rxjs/core"
+import { map, switchMap } from "rxjs/operators"
 import styled from "styled-components/macro"
-import { ServiceConnectionStatus, ServiceStatus } from "services/connection"
+import { ServiceConnectionStatus } from "services/connection"
 import {
   StatusCircle,
   StatusLabel,
   AppUrl,
   ServiceListPopup,
   ServiceList,
+  Header,
 } from "./styled"
 import { Root, Button } from "../common-styles"
 import Service from "./Service"
 import { usePopUpMenu } from "utils/usePopUpMenu"
+import { ServiceInstanceStatus, status$ } from "services/status"
+import { endpoints$ } from "services/client/endpoints"
+import { RxStompState } from "@stomp/rx-stomp"
 
 export const Wrapper = styled.div`
   color: ${(props) => props.theme.textColor};
@@ -31,7 +37,7 @@ const gitTagExists = async (gitTag: string | undefined) => {
   return exists
 }
 
-const FooterVersion: React.FC = () => {
+export const FooterVersion: React.FC = () => {
   const [versionExists, setVersionExists] = useState<boolean | void>(false)
 
   const URL =
@@ -56,46 +62,51 @@ const FooterVersion: React.FC = () => {
     </Wrapper>
   )
 }
-export default FooterVersion
-
-const getApplicationStatus = (services: ServiceStatus[]) => {
-  if (
-    services.every(
-      (s) => s.connectionStatus === ServiceConnectionStatus.CONNECTED,
-    )
-  ) {
-    return ServiceConnectionStatus.CONNECTED
-  }
-  if (
-    services.some(
-      (s) => s.connectionStatus === ServiceConnectionStatus.CONNECTING,
-    )
-  ) {
-    return ServiceConnectionStatus.CONNECTING
-  }
-  return ServiceConnectionStatus.DISCONNECTED
-}
 
 const selectAll = (event: SyntheticEvent) => {
   const input = event.target as HTMLInputElement
   input.select()
 }
 
+export const [useServiceStatus, serviceStatus$] = bind<ServiceInstanceStatus[]>(
+  status$.pipe(map(Object.values)),
+  [],
+)
+
+export const [useApplicationStatus, applicationStatus$] = bind(
+  endpoints$.pipe(
+    switchMap(({ streamEndpoint }) => streamEndpoint.connectionState$),
+    map((currentState: RxStompState) => {
+      if (currentState === RxStompState.OPEN) {
+        return ServiceConnectionStatus.CONNECTED
+      }
+
+      if (currentState === RxStompState.CLOSED) {
+        return ServiceConnectionStatus.DISCONNECTED
+      }
+
+      return ServiceConnectionStatus.CONNECTING
+    }),
+  ),
+  ServiceConnectionStatus.CONNECTING,
+)
+
 export const StatusButton: React.FC = () => {
   const url = "https://web-demo.adaptivecluster.com"
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
-  const services: ServiceStatus[] = []
-
-  const toggleMenu = useCallback(() => {
-    setDisplayMenu(!displayMenu)
-  }, [displayMenu, setDisplayMenu])
+  const services = useServiceStatus()
 
   const appUrl = url
-  const appStatus = getApplicationStatus(services)
+  const appStatus = useApplicationStatus()
   return (
     <Root ref={ref}>
-      <Button onClick={toggleMenu} data-qa="status-button__toggle-button">
+      <Button
+        onClick={() => {
+          setDisplayMenu((prev) => !prev)
+        }}
+        data-qa="status-button__toggle-button"
+      >
         <StatusCircle status={appStatus} />
         <StatusLabel>
           {appStatus[0].toUpperCase() + appStatus.slice(1).toLowerCase()}
@@ -103,6 +114,7 @@ export const StatusButton: React.FC = () => {
       </Button>
 
       <ServiceListPopup open={displayMenu}>
+        <Header>Connections</Header>
         <ServiceList>
           <AppUrl
             title={appUrl}

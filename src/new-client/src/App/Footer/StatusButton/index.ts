@@ -1,1 +1,1 @@
-export { default } from "./StatusButton"
+export { StatusButton } from "./StatusButton"
