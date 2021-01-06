@@ -2,10 +2,10 @@ import React from "react"
 import styled from "styled-components/macro"
 
 const Icon: React.FC<{
-  name: string
-}> = ({ name, ...props }) => (
+  IconComponent: React.FC<{ expand: boolean }>
+}> = ({ IconComponent, ...props }) => (
   <div {...props}>
-    <i className={`fas fa-${name}`} />
+    <IconComponent expand={false} />
   </div>
 )
 
