@@ -1,4 +1,5 @@
 import { useRef, useState } from "react"
+import { FaFilter, FaTimes } from "react-icons/fa"
 import styled from "styled-components/macro"
 
 const QuickFilterStyle = styled("div")`
@@ -61,7 +62,7 @@ export const QuickFilter: React.FC = () => {
         onClick={() => quickFilterInput.current?.focus()}
         data-qa="quick-filter__filter-icon"
       >
-        <i className="fas fa-filter" aria-hidden="true" />
+        <FaFilter aria-hidden="true" />
       </QuickFilterIcon>
       <QuickFilterInput
         ref={quickFilterInput}
@@ -75,7 +76,7 @@ export const QuickFilter: React.FC = () => {
         onClick={() => setQuickFilterText("")}
         data-qa="quick-filter__filter-clear-icon"
       >
-        {quickFilterText.length ? <i className="fas fa-times" /> : null}
+        {quickFilterText.length ? <FaTimes /> : null}
       </QuickFilterClearIcon>
     </QuickFilterStyle>
   )
