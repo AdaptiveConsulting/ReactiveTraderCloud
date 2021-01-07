@@ -1,4 +1,7 @@
+import { map, take } from "rxjs/operators"
 import styled from "styled-components/macro"
+import { tableTrades$ } from "../services"
+import { colConfigs } from "../TradesGrid/TradesGrid"
 
 const ExcelIcon = () => (
   <svg
@@ -40,10 +43,45 @@ const Button = styled("button")`
     transform: scale(0.7);
   }
 `
+export const exportTable$ = tableTrades$.pipe(
+  map((trades) =>
+    trades.map((trade) =>
+      colConfigs.map(({ field, numeric, valueFormatter }) => {
+        let res = valueFormatter?.(trade[field]) ?? trade[field]
+        if (typeof res === "string" && res?.includes(",")) {
+          res = '"' + res + '"'
+        }
+        return res
+      }),
+    ),
+  ),
+  take(1),
+)
+
+const downloadCsv = () => {
+  exportTable$.subscribe((trades) => {
+    let csv = ""
+    colConfigs.forEach((col) => {
+      csv += col.headerName + ","
+    })
+    csv += "\n"
+
+    trades.forEach((row) => {
+      csv += row.join(",")
+      csv += "\n"
+    })
+
+    const hiddenElement = document.createElement("a")
+    hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv)
+    hiddenElement.target = "_blank"
+    hiddenElement.download = "RT-Blotter.csv"
+    hiddenElement.click()
+  })
+}
 
 export const ExcelButton: React.FC = () => {
   return (
-    <Button>
+    <Button onClick={downloadCsv}>
       <ExcelIcon />
     </Button>
   )

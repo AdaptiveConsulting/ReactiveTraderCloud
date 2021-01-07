@@ -19,7 +19,7 @@ export interface ColConfig {
 
 type CellConfig = Pick<ColConfig, "numeric">
 
-const colConfigs: ColConfig[] = [
+export const colConfigs: ColConfig[] = [
   {
     headerName: "Trade ID",
     field: "tradeId",
