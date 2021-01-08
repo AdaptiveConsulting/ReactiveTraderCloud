@@ -103,6 +103,8 @@ services:
     image: ${DOCKER_USER}/bot:${BUILD_VERSION}
     build:
       context: ./server/node/bot
+    depends_on:
+      - broker
   # web client
   nginx:
     image: ${DOCKER_USER}/nginx:${BUILD_VERSION}
