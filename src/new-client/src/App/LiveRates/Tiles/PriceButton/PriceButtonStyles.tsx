@@ -52,7 +52,7 @@ export const TradeButton = styled.button<{
   border: none;
   outline: none;
   height: 59px;
-  min-width: 125px;
+  min-width: 75px;
   padding: ${({ expired }) =>
     expired ? "0.6rem 1.5rem 0.4rem 1.5rem" : "0.55rem 1.5rem 0.6rem 1.5rem"};
   margin-bottom: 2px;

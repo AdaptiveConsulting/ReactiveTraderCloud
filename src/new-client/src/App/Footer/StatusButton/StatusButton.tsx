@@ -32,9 +32,14 @@ const gitTagExists = async (gitTag: string | undefined) => {
   const response = await fetch(
     "https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/releases",
   )
-  const data = await response.json()
-  const exists = data.find((element: any) => element.tag_name === gitTag)
-  return exists
+
+  try {
+    const data = await response.json()
+    return data.find((element: any) => element.tag_name === gitTag)
+  } catch (error) {
+    console.error(error)
+    return false
+  }
 }
 
 export const FooterVersion: React.FC = () => {
