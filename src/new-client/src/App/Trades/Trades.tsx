@@ -4,7 +4,12 @@ import { Loader } from "components/Loader"
 import { TradesGrid } from "./TradesGrid"
 import { TradesFooter } from "./TradesFooter"
 import { TradesHeader } from "./TradesHeader"
-import { tableTrades$ } from "./services"
+import {
+  appliedFilters$,
+  distinctFieldValues$,
+  tableTrades$,
+} from "./TradesState"
+import { merge } from "rxjs"
 
 const TradesWrapper = styled.article`
   height: 100%;
@@ -17,9 +22,16 @@ const TradesStyle = styled.div`
   color: ${({ theme }) => theme.core.textColor};
   font-size: 0.8125rem;
 `
+
+const dataDependencies$ = merge(
+  tableTrades$,
+  distinctFieldValues$,
+  appliedFilters$,
+)
+
 export const Trades: React.FC = () => (
   <TradesWrapper>
-    <Subscribe source$={tableTrades$} fallback={<Loader />}>
+    <Subscribe source$={dataDependencies$} fallback={<Loader />}>
       <TradesStyle>
         <TradesHeader />
         <TradesGrid />

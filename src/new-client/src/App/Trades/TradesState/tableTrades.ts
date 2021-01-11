@@ -1,49 +1,59 @@
 import { bind } from "@react-rxjs/core"
-import { combineLatest, Subject } from "rxjs"
-import { map, scan, startWith } from "rxjs/operators"
-import { trades$ } from "services/trades"
-import { ColField } from "./TradesGrid"
+import { combineLatest } from "rxjs"
+import { map } from "rxjs/operators"
+import { Trade, trades$ } from "services/trades"
+import { ColField } from "./colConfig"
+import { quickFilterInputs$, appliedFilterEntries$ } from "./filterState"
+import { SortDirection, tableSort$ } from "./sortState"
 
-type SortDirection = "ASC" | "DESC"
-
-class TableSort {
-  constructor(public direction?: SortDirection, public field?: ColField) {}
+const searchTrueOfTrade = (searchTerms: string[], tradeValues: unknown[]) => {
+  return searchTerms.every((term) =>
+    tradeValues.some((value) =>
+      (value instanceof Date ? value.toString() : String(value))
+        .toLowerCase()
+        .includes(term),
+    ),
+  )
 }
 
-export const sortFieldSelections$ = new Subject<ColField>()
+const filterTrueOfTrade = (
+  appliedFilters: [string, Set<unknown>][],
+  trade: Trade,
+) => {
+  return appliedFilters.every(([field, filterValues]) => {
+    return (filterValues as Set<unknown>).has(trade[field as ColField])
+  })
+}
 
-const descDefaultFields = new Set<ColField>([
-  "tradeDate",
-  "valueDate",
-  "tradeId",
-])
-
-export const [useTableSort, tableSort$] = bind(
-  sortFieldSelections$.pipe(
-    scan((tableSort, sortFieldSelection) => {
-      if (tableSort.field === sortFieldSelection) {
-        if (
-          descDefaultFields.has(sortFieldSelection) &&
-          tableSort.direction === "DESC"
-        ) {
-          return new TableSort("ASC", sortFieldSelection)
-        } else if (
-          !descDefaultFields.has(sortFieldSelection) &&
-          tableSort.direction === "ASC"
-        ) {
-          return new TableSort("DESC", sortFieldSelection)
-        } else {
-          return new TableSort()
-        }
-      }
-
-      return new TableSort(
-        descDefaultFields.has(sortFieldSelection) ? "DESC" : "ASC",
-        sortFieldSelection,
-      )
-    }, new TableSort()),
-    startWith(new TableSort()),
+const filteredTrades$ = combineLatest([
+  trades$,
+  quickFilterInputs$.pipe(
+    map((quickFilterInputs) => quickFilterInputs.split(" ")),
   ),
+  appliedFilterEntries$,
+]).pipe(
+  map(([trades, searchTerms, appliedFilters]) => {
+    const haveAppliedFilters = appliedFilters.length > 0
+    const haveSearchTerms = searchTerms.length > 0
+
+    if (!haveSearchTerms && !haveAppliedFilters) {
+      return trades
+    }
+
+    return trades.filter((trade) => {
+      const tradeValues = Object.values(trade)
+      if (!haveAppliedFilters) {
+        return searchTrueOfTrade(searchTerms, tradeValues)
+      } else if (!haveSearchTerms) {
+        return filterTrueOfTrade(appliedFilters, trade)
+      } else {
+        return (
+          searchTrueOfTrade(searchTerms, tradeValues) &&
+          filterTrueOfTrade(appliedFilters, trade)
+        )
+      }
+    })
+  }),
 )
 
 const numericComparator = (direction: SortDirection, a: number, b: number) => {
@@ -59,19 +69,6 @@ const stringComparator = (direction: SortDirection, a: string, b: string) => {
     return 0
   }
 }
-
-export const quickFilterInputs$ = new Subject<string>()
-
-const filteredTrades$ = combineLatest([trades$, quickFilterInputs$]).pipe(
-  map(([trades, quickFilterInput]) => {
-    const searchTerms = quickFilterInput.split(" ")
-    return trades.filter((trade) => {
-      return Object.values(trade).some((val) =>
-        searchTerms.some((term) => String(val).toLowerCase().includes(term)),
-      )
-    })
-  }),
-)
 
 export const [useTableTrades, tableTrades$] = bind(
   combineLatest([filteredTrades$, tableSort$]).pipe(

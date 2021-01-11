@@ -13,7 +13,9 @@ const isParentOf = (
   return isParentOf(parent, child.parentElement)
 }
 
-export const usePopUpMenu = (ref: React.RefObject<HTMLDivElement>) => {
+export const usePopUpMenu = <T extends HTMLElement>(
+  ref: React.RefObject<T>,
+) => {
   const [displayMenu, setDisplayMenu] = useState(false)
   const hidePopUpMenu = useRef<(e: MouseEvent) => void>()
   if (!hidePopUpMenu.current) {

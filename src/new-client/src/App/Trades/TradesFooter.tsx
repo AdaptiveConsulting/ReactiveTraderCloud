@@ -2,7 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 import { trades$ } from "services/trades"
-import { tableTrades$ } from "./services"
+import { tableTrades$ } from "./TradesState"
 
 const TradesFooterStyled = styled("div")`
   height: 2rem;
