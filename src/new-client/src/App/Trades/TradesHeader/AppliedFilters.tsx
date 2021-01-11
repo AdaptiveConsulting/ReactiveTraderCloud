@@ -1,5 +1,11 @@
+import { FaTimes } from "react-icons/fa"
 import styled from "styled-components/macro"
-import { ColConfig } from "../TradesGrid"
+import {
+  colConfigs,
+  ColField,
+  onColFilterSelect,
+  useAppliedFilterEntries,
+} from "../TradesState"
 
 const FilterButton = styled("button")`
   opacity: 0.59;
@@ -7,7 +13,7 @@ const FilterButton = styled("button")`
 
 const FilterField = styled("div")`
   display: flex;
-  align-items: center;
+  align-items: normal;
   font-size: 0.6875rem;
   text-transform: uppercase;
   background-color: ${({ theme }) => theme.core.lightBackground};
@@ -29,19 +35,17 @@ const FilterName = styled("div")`
   padding-right: 0.625rem;
 `
 
-const FilterIcon = styled("i")`
-  line-height: 1rem;
-`
-
 export const AppliedFilters: React.FC = () => {
-  const filteredColDefs: ColConfig[] = []
+  const filteredFields = useAppliedFilterEntries().map(
+    ([field]) => field,
+  ) as ColField[]
   return (
     <>
-      {filteredColDefs.map((colDef) => (
-        <FilterField key={colDef.field}>
-          <FilterName>{colDef.headerName}</FilterName>
+      {filteredFields.map((field) => (
+        <FilterField key={field}>
+          <FilterName>{colConfigs[field].headerName}</FilterName>
           <FilterButton>
-            <FilterIcon className="fas fa-times" />
+            <FaTimes onClick={() => onColFilterSelect([field, new Set()])} />
           </FilterButton>
         </FilterField>
       ))}

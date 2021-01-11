@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { FaFilter, FaTimes } from "react-icons/fa"
 import styled from "styled-components/macro"
-import { quickFilterInputs$ } from "../services"
+import { onQuickFilterInput } from "../TradesState"
 
 const QuickFilterStyle = styled("div")`
   width: 10rem;
@@ -15,6 +15,7 @@ const QuickFilterInput = styled("input")`
   opacity: 0.59;
   background: none;
   border: none;
+  color: ${({ theme }) => theme.core.textColor};
   box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.core.textColor};
   width: 100%;
   font-size: 0.75rem;
@@ -58,7 +59,7 @@ export const QuickFilter: React.FC = () => {
   const [quickFilterText, setQuickFilterText] = useState<string>("")
 
   useEffect(() => {
-    quickFilterInputs$.next(quickFilterText.toLowerCase())
+    onQuickFilterInput(quickFilterText.toLowerCase())
   }, [quickFilterText])
 
   return (
