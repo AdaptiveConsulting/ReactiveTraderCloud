@@ -2,9 +2,9 @@ import { watch$ } from "services/client"
 import { delay, map, mergeAll, scan, switchMap, take } from "rxjs/operators"
 import { split } from "@react-rxjs/utils"
 import { merge, of } from "rxjs"
-import { bind, shareLatest } from "@react-rxjs/core"
+import { bind } from "@react-rxjs/core"
 
-export interface RawServiceStatus {
+interface RawServiceStatus {
   Type: string
   Instance: string
   TimeStamp: number
@@ -56,6 +56,5 @@ export const [useStatus, status$] = bind(
       }
       return result
     }, {} as Record<string, ServiceInstanceStatus>),
-    shareLatest(),
   ),
 )

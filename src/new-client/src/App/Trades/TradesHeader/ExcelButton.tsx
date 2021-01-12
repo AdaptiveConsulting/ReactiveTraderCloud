@@ -43,7 +43,7 @@ const Button = styled("button")`
     transform: scale(0.7);
   }
 `
-export const exportTable$ = tableTrades$.pipe(
+const exportTable$ = tableTrades$.pipe(
   map((trades) =>
     trades.map((trade) =>
       colConfigs.map(({ field, numeric, valueFormatter }) => {

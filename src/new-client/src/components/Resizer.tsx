@@ -1,5 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from "react"
 import styled from "styled-components/macro"
+import { bind } from "@react-rxjs/core"
+import { createListener } from "@react-rxjs/utils"
+import { startWith } from "rxjs/operators"
 
 const ResizerStyle = styled.div`
   height: 100%;
@@ -44,6 +47,13 @@ interface Props {
   defaultHeight: number
   disabled?: boolean
 }
+
+const [selectedHeightInput$, onSelectHeight] = createListener<number>()
+
+export const [useSelectedHeight, selectedHeight$] = bind(
+  selectedHeightInput$.pipe(startWith(30)),
+  30,
+)
 
 const Resizer: React.FC<Props> = ({ defaultHeight, children, disabled }) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -104,6 +114,7 @@ const Resizer: React.FC<Props> = ({ defaultHeight, children, disabled }) => {
     if (height < 10) height = 10
 
     setHeight(height)
+    onSelectHeight(height)
   }
 
   return (
