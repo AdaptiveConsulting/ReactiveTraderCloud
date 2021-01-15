@@ -15,7 +15,10 @@ export const [useBaseTerm, getBaseTerm$] = bind((symbol: string) =>
 
 const [useDate, getDate$] = bind((symbol: string) =>
   getPrice$(symbol).pipe(
-    map(({ valueDate }) => `SPT (${format(new Date(valueDate), "ddMMM")})`),
+    map(
+      ({ valueDate }) =>
+        `SPT (${format(new Date(valueDate), "dd MMM").toUpperCase()})`,
+    ),
   ),
 )
 

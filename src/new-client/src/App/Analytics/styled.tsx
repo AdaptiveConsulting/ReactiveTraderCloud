@@ -18,7 +18,7 @@ export const AnalyticsInnerWrapper = styled.div<{ inExternalWindow?: boolean }>`
   width: 100%;
   height: 100%;
   max-width: 60rem;
-  min-width: 20rem;
+  min-width: 22rem;
   margin: auto;
   overflow-y: auto;
   overflow-x: hidden;

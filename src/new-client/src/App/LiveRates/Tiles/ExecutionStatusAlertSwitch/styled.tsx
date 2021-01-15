@@ -28,11 +28,14 @@ export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
   flex-direction: column;
   font-weight: bolder;
   justify-content: space-evenly;
+  color: ${({ theme }) => theme.white};
 `
 
 export const TradeIdDiv = styled.div`
   margin: 0 1.25rem;
   text-align: center;
+  font-weight: 900;
+  font-size: 0.9rem;
 `
 
 export const TradeMessageDiv = styled.div`
@@ -52,9 +55,12 @@ export const Button = styled("button")<{
   margin: 0 auto;
   padding: 0.5rem 0;
   text-align: center;
-  width: 33%;
+  width: 15%;
+  font-size: 0.8rem;
 `
 
 export const CurrencyPairDiv = styled.div`
   margin: 0 1.25rem;
+  font-weight: 900;
+  font-size: 0.9rem;
 `

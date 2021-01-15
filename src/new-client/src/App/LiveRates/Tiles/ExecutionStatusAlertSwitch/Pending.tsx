@@ -19,6 +19,7 @@ const PendingPill = styled("div")`
   padding: 1rem 2rem;
   border-radius: 2rem;
   font-size: 0.8rem;
+  color: ${({ theme }) => theme.white};
 `
 
 const Pending = () => {
@@ -30,6 +31,7 @@ const Pending = () => {
             size={14}
             speed={0.8}
             seperation={1.5}
+            color="white"
             type="secondary"
           />
           {"  Executing"}

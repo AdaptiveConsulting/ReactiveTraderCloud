@@ -89,7 +89,7 @@ export const PriceButton: React.FC<{
     <TradeButton
       direction={direction}
       onClick={onClick}
-      priceAnnounced
+      priceAnnounced={false}
       disabled={disabled}
       data-qa="price-button__trade-button"
     >

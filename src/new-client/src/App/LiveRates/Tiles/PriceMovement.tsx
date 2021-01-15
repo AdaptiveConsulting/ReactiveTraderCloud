@@ -6,15 +6,16 @@ import { getCurrencyPair$ } from "services/currencyPairs"
 import { equals } from "utils/equals"
 import { useContext } from "react"
 import { SymbolContext } from "./Tile"
+import { FaSortUp, FaSortDown } from "react-icons/fa"
 
-const MovementIcon = styled("i")<{ show: boolean; color: string }>`
+const MovementIconUP = styled(FaSortUp)<{ show: boolean }>`
   text-align: center;
-  color: ${({ theme, color }) =>
-    color === "none"
-      ? theme.colors.light.secondary[4]
-      : color === "positive"
-      ? theme.accents.positive.base
-      : theme.accents.negative.base};
+  color: ${({ theme }) => theme.accents.positive.base};
+  visibility: ${({ show }) => (show ? "visible" : "hidden")};
+`
+const MovementIconDown = styled(FaSortDown)<{ show: boolean }>`
+  text-align: center;
+  color: ${({ theme }) => theme.accents.negative.base};
   visibility: ${({ show }) => (show ? "visible" : "hidden")};
 `
 
@@ -58,20 +59,18 @@ export const PriceMovement: React.FC<{
   const { spread, movementType } = usePriceMovementData(symbol)
   return (
     <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
-      <MovementIcon
+      <MovementIconUP
         data-qa="price-movement__movement-icon--up"
         show={movementType === PriceMovementType.UP}
-        color="positive"
         className="fas fa-caret-up"
         aria-hidden="true"
       />
       <MovementValue data-qa="price-movement__movement-value">
         {spread}
       </MovementValue>
-      <MovementIcon
+      <MovementIconDown
         data-qa="price-movement__movement-icon--down"
         show={movementType === PriceMovementType.DOWN}
-        color="negative"
         className="fas fa-caret-down"
         aria-hidden="true"
       />
