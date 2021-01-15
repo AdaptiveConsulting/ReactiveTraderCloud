@@ -6,7 +6,8 @@ test("it should capitalize first and only first letter of string", () => {
   expect(capitalize(funcInput)).toBe(funcOutput)
 })
 
-test("it should no op on non-string input", () => {
+test("it should convert non-strings to strings, for downstream ops", () => {
   const funcInput = 134564
-  expect(capitalize(funcInput)).toBe(funcInput)
+  const funcOutput = '134564'
+  expect(capitalize(funcInput)).toBe(funcOutput)
 })

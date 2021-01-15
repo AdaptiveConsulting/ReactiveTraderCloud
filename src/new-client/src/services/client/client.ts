@@ -41,3 +41,5 @@ export const getStream$ = <TResponse, TPayload = {}>(
     ),
     map((message) => JSON.parse(message.body)),
   )
+
+console.log(getStream$.toString())

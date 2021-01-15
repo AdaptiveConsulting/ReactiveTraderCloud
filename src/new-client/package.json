@@ -38,6 +38,7 @@
     "react-icons": "^4.1.0",
     "react-scripts": "^4.0.1",
     "react-switch": "^5.0.1",
+    "react-test-renderer": "^17.0.1",
     "resize-observer": "^1.0.0",
     "ress": "^3.0.0",
     "rxjs": "^6.6.3",
@@ -79,6 +80,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^4.0.1",
     "@types/d3": "6.2.0",
     "@types/recharts": "^1.8.17",
     "@types/styled-components": "^5.1.4",

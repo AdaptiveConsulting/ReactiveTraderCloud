@@ -1,5 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { map, scan } from "rxjs/operators"
+import { map, scan, tap } from "rxjs/operators"
 import { getStream$ } from "./client"
 import { CamelCase, CollectionUpdates } from "./utils"
 
@@ -14,7 +14,7 @@ export enum TradeStatus {
   Rejected = "Rejected",
 }
 
-interface TradeRaw {
+export interface TradeRaw {
   TradeId: number
   CurrencyPair: string
   TraderName: string

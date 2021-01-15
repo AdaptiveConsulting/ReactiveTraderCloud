@@ -5,7 +5,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "es2019"
     ],
     "allowJs": true,
     "downlevelIteration": true,
