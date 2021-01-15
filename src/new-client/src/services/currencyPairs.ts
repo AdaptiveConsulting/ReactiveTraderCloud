@@ -81,9 +81,7 @@ export const [useCurrencies, currencies$] = bind(
   currencyPairs$.pipe(
     map((currencyPairs) => [
       ...new Set(
-        Object.values(currencyPairs)
-          .map((currencyPair) => [currencyPair.base, currencyPair.terms])
-          .flat(),
+        Object.values(currencyPairs).map((currencyPair) => currencyPair.base),
       ),
     ]),
   ),
