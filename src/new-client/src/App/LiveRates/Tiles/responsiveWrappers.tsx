@@ -1,12 +1,13 @@
 import styled from "styled-components/macro"
 import { TileBaseStyle, TileWrapperBase } from "./styled"
+import { TradeButton } from "./PriceButton/PriceButtonStyles"
 
 export const TileBodyWrapper = styled.div<{ isAnalyticsView: boolean }>`
   display: grid;
   ${({ isAnalyticsView }) =>
     isAnalyticsView
       ? `
-    grid-template-columns: 56% 7% 37%;
+    grid-template-columns: 52% 7% 41%;
     grid-template-rows: 50% 33% 17%;
     grid-template-areas: 
     "chart control control"
@@ -19,6 +20,7 @@ export const TileBodyWrapper = styled.div<{ isAnalyticsView: boolean }>`
     grid-template-areas: 
     "control"
     "notional";
+    height: 77%;
   `}
 `
 
@@ -73,6 +75,9 @@ export const MainTileStyle = styled(SpotTileStyle)`
         : theme.core.lightBackground};
     box-shadow: ${({ theme }) =>
       theme.name === "light" ? "0 0 10px 0 rgba(0, 0, 0, 0.1)" : "none"};
+    ${TradeButton} {
+      background-color: ${({ theme }) => theme.core.darkBackground};
+    }
   }
 `
 export const MainTileWrapper = styled(TileWrapperBase)`

@@ -36,7 +36,7 @@ const [useBase, notionalInput$] = bind((symbol: string) =>
   getCurrencyPair$(symbol).pipe(map(({ base }) => base)),
 )
 
-const notional = 100_000
+const notional = 1_000_000
 
 export { notionalInput$ }
 export const NotionalInput: React.FC = () => {

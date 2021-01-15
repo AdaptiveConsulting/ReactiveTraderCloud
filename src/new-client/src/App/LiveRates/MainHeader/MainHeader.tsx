@@ -1,5 +1,12 @@
 import { useCurrencies, currencies$ } from "services/currencyPairs"
-import { Header, LeftNav, LeftNavItemFirst, NavItem, RightNav } from "../styled"
+import {
+  Header,
+  LeftNav,
+  LeftNavItemFirst,
+  NavItem,
+  RightNav,
+  LeftNavTitle,
+} from "../styled"
 import {
   useSelectedCurrency,
   AllCurrencies,
@@ -7,6 +14,7 @@ import {
   onSelectCurrency,
 } from "../selectedCurrency"
 import { ToggleView } from "./ToggleView"
+import { CurrencyOptions } from "./CurrencyOptions"
 
 export const MainHeader: React.FC = () => {
   const currencies = useCurrencies()
@@ -32,7 +40,12 @@ export const MainHeader: React.FC = () => {
           </NavItem>
         ))}
       </LeftNav>
+      <LeftNavTitle>Live Rates</LeftNavTitle>
       <RightNav>
+        <CurrencyOptions
+          options={options}
+          onSelectionChange={onSelectCurrency}
+        />
         <ToggleView />
       </RightNav>
     </Header>

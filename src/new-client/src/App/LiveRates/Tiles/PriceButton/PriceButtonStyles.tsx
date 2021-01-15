@@ -43,10 +43,7 @@ export const TradeButton = styled.button<{
 }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
-  color: ${({ theme, priceAnnounced, direction }) =>
-    priceAnnounced
-      ? theme.colors.spectrum.uniqueCollections[direction].base
-      : "inherit"};
+  color: ${({ theme }) => theme.core.textColor};
   transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;

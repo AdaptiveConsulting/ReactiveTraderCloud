@@ -37,7 +37,7 @@ const PriceControlsStyle = styled("div")<{
       "movement buy";
     `
       : `
-      grid-template-columns: 33% 33% 33%;
+      grid-template-columns: 37% 26% 37%;
       grid-template-rows: 100%;
       grid-template-areas: 
       "sell movement buy";

@@ -44,5 +44,6 @@ export const Link = styled.span`
 export const Input = styled.input`
   margin-bottom: 1rem;
   width: 100%;
+  color: ${({ theme }) => theme.core.textColor};
 `
 export const ContactUsContentResolver = ContactUsContent

@@ -1,6 +1,4 @@
-import styled, { keyframes, css } from "styled-components/macro"
-import { Direction } from "services/trades"
-import { Theme } from "theme/themes"
+import styled from "styled-components/macro"
 
 export const DeliveryDate = styled.div`
   color: ${({ theme }) => theme.core.textColor};
@@ -29,77 +27,6 @@ export const ActionButton = styled("button")`
   margin-left: 8px;
   padding-left: 8px;
   border-left: 1px solid white;
-`
-const backgroundEffectKeyframes = ({
-  direction,
-  theme,
-}: {
-  direction: Direction
-  theme: Theme
-}) => keyframes`
-    5% {
-      background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
-      color: white;
-    }
-    80% {
-      background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
-      color: white;
-    }
-  `
-
-const getAnimationCSSProperty = (props: {
-  direction: Direction
-  theme: Theme
-}) => css`
-  animation: ${backgroundEffectKeyframes(props)} 5s;
-`
-
-const backgroundEffect = ({
-  priceAnnounced,
-  ...rest
-}: {
-  priceAnnounced: boolean
-}) =>
-  priceAnnounced
-    ? getAnimationCSSProperty(rest as { direction: Direction; theme: Theme })
-    : ""
-
-export const TradeButton = styled.button<{
-  direction: Direction
-  priceAnnounced: boolean
-  isAnalyticsView: boolean
-  expired?: boolean
-}>`
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  border-radius: 3px;
-  color: ${({ theme, priceAnnounced, direction }) =>
-    priceAnnounced
-      ? theme.colors.spectrum.uniqueCollections[direction].base
-      : "inherit"};
-  transition: background-color 0.2s ease;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  height: 59px;
-  min-width: 125px;
-  padding: ${({ expired }) =>
-    expired ? "0.6rem 1.5rem 0.4rem 1.5rem" : "0.55rem 1.5rem 0.6rem 1.5rem"};
-  margin-bottom: 2px;
-  ${backgroundEffect}
-
-  ${({ theme, direction, disabled, priceAnnounced }) =>
-    disabled && !priceAnnounced
-      ? `
-    cursor: initial;
-    pointer-events: none;
-      `
-      : `
-  
-    &:hover {
-      background-color: ${theme.colors.spectrum.uniqueCollections[direction].base} !important;
-      color: ${theme.white};
-    }
-    `};
 `
 
 export const ResetInputValue = styled.button`
@@ -134,9 +61,6 @@ export const TileBaseStyle = styled.div`
   border-radius: 3px;
   padding: 1.25rem;
   box-sizing: border-box;
-  &:hover ${TradeButton} {
-    background-color: ${({ theme }) => theme.core.darkBackground};
-  }
   ${RouteStyle} & {
     border-radius: 0px;
   }

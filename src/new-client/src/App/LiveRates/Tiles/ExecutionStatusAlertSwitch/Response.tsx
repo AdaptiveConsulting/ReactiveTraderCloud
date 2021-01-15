@@ -18,11 +18,27 @@ import { Direction } from "services/trades"
 import { useBaseTerm } from "../TileHeader"
 import { useContext } from "react"
 import { SymbolContext } from "../Tile"
+import { FaCheck, FaExclamationTriangle } from "react-icons/fa"
 
 export const BackgroundColored = styled.span`
-  background-color: ${({ theme }) => theme.textColor};
+  background-color: ${({ theme }) => theme.white};
   color: ${({ theme }) => theme.colors.accents.positive.base};
-  padding: 0.25rem;
+  font-weight: 900;
+`
+const BoldSpan = styled.span`
+  font-weight: 900;
+`
+const BoldItalicSpan = styled.span`
+  font-weight: 900;
+  font-style: italic;
+`
+
+const AlignedCheck = styled(FaCheck)`
+  padding-right: 2px;
+`
+
+const AlignedTriangle = styled(FaExclamationTriangle)`
+  padding-right: 2px;
 `
 
 const pastTenseDirection = (d: Direction): string => {
@@ -50,8 +66,13 @@ const buildTradeMessage = (
     <BackgroundColored>{`${base} ${formatNumber(notional)}`}</BackgroundColored>
     {` at a rate of `}
     <BackgroundColored>{`${spotRate}`}</BackgroundColored>
-    {` for ${terms} ${formatNumber(notional * spotRate)}`}
-    {` settling (SPT) ${format(new Date(valueDate), "dd-MMM")}`}
+    {` for `}
+    <br></br>
+    <BoldItalicSpan>
+      {terms} {formatNumber(notional * spotRate)}
+    </BoldItalicSpan>
+    {` settling (Spt) `}
+    <BoldSpan>{`${format(new Date(valueDate), "dd MMM")}.`}</BoldSpan>
   </TradeMessageDiv>
 )
 
@@ -66,11 +87,18 @@ const ResponseContainer = (props: any) => {
 
   return (
     <ExecutionStatusAlertContainer status={props.status}>
-      <CurrencyPairDiv>{baseTerm}</CurrencyPairDiv>
-      <TradeIdDiv>{`Trade Id: ${tradeId}`}</TradeIdDiv>
+      <CurrencyPairDiv>
+        {props.status === ExecutionStatus.Done ? (
+          <AlignedCheck />
+        ) : (
+          <AlignedTriangle />
+        )}
+        {baseTerm}
+      </CurrencyPairDiv>
+      <TradeIdDiv>{`Trade ID: ${tradeId}`}</TradeIdDiv>
       {props.children}
       <Button onClick={closeAlert} success={props.success}>
-        Dismiss
+        Close
       </Button>
     </ExecutionStatusAlertContainer>
   )
