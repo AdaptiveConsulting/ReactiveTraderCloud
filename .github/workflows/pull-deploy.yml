@@ -32,8 +32,9 @@ jobs:
       - name: Set build version
         id: build_version
         run: |
-          echo "BUILD_VERSION=$(git describe)-$DEPLOY_ENV" >> $GITHUB_ENV
-          echo "::set-output name=value::$BUILD_VERSION"
+          version=$(git describe)-$DEPLOY_ENV
+          echo "BUILD_VERSION=$version" >> $GITHUB_ENV
+          echo "::set-output name=value::$version"
 
       - name: Check if build already exists
         id: existing_build
