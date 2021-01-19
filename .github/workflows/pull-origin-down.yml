@@ -36,4 +36,4 @@ jobs:
         run: gcloud container clusters get-credentials "${{ secrets.GOOGLE_CLUSTER }}" --zone "${{ secrets.GOOGLE_COMPUTE_ZONE }}"
 
       - name: Delete GKE namespace and resources
-        run: kubectl delete namespace $DEPLOY_ENV --dry-run -o yaml | kubectl apply -f -
+        run: kubectl delete namespace $DEPLOY_ENV
