@@ -39,8 +39,11 @@ jobs:
         id: existing_build
         run: |
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $DOCKER_USER/client:$BUILD_VERSION > /dev/null; echo $?
-          echo "::set-output name=value::$?"
+          DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $DOCKER_USER/client:$BUILD_VERSION > /dev/null
+        if: success()
+          echo "::set-output name=value::1"
+        if: failure()
+          echo "::set-output name=value::0"
 
       - name: 'Build Docker images: ${{ env.BUILD_VERSION }}'
         if: steps.existing_build.outputs.value == '0'
