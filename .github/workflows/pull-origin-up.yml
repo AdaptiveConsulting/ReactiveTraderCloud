@@ -16,6 +16,8 @@ jobs:
   build:
     runs-on: ubuntu-20.04
 
+    if: github.event.repository.full_name == github.repository
+
     outputs:
       build_version: ${{ steps.build_version.outputs.value }}
 

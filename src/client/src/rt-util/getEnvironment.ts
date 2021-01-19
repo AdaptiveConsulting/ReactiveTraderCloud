@@ -3,6 +3,6 @@ export function getEnvironment(): string {
 
   if (serviceUrl.includes('localhost')) return 'local'
 
-  const envMatch = /web-(?<env>[a-zA-Z]+)\.adaptivecluster\.com/.exec(serviceUrl)
+  const envMatch = /web-(?<env>[^\.]+)\.adaptivecluster\.com/.exec(serviceUrl)
   return envMatch ? envMatch['groups'].env : 'unknown'
 }

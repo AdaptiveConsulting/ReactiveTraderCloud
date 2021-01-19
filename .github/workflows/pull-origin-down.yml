@@ -1,0 +1,39 @@
+name: Pull Request (origin, down)
+
+on:
+  pull_request:
+    types: [unlabeled, closed]
+    branches:
+      - master
+      - release/**
+
+env:
+  DEPLOY_ENV: 'pr${{ github.event.number }}'
+
+jobs:
+  destroy:
+    runs-on: ubuntu-20.04
+
+    if: |
+      github.event.repository.full_name == github.repository &&
+      !contains(github.event.pull_request.labels.*.name, 'preview')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Google Cloud
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          version: '285.0.0'
+          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+
+      - name: Get GKE credentials
+        run: gcloud container clusters get-credentials "${{ secrets.GOOGLE_CLUSTER }}" --zone "${{ secrets.GOOGLE_COMPUTE_ZONE }}"
+
+      - name: Delete GKE namespace and resources
+        run: kubectl delete namespace $DEPLOY_ENV --dry-run -o yaml | kubectl apply -f -
