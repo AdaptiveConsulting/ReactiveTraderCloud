@@ -20,6 +20,10 @@ export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
         return `${theme.colors.accents.positive.darker} `
       case "Rejected":
         return `${theme.colors.accents.negative.darker} `
+      case "TakingTooLong":
+        return `${theme.colors.accents.aware.darker} `
+      case "RequestTimeout":
+        return `${theme.colors.accents.negative.darker} `
       default:
         return ""
     }

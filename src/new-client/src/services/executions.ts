@@ -1,6 +1,6 @@
 import { bind } from "@react-rxjs/core"
 import { collect, split } from "@react-rxjs/utils"
-import { concat, race, Subject, timer } from "rxjs"
+import { concat, race, Subject, timer, OperatorFunction } from "rxjs"
 import {
   exhaustMap,
   filter,
@@ -9,6 +9,7 @@ import {
   startWith,
   take,
   takeWhile,
+  publish,
 } from "rxjs/operators"
 import { getRemoteProcedureCall$ } from "./client"
 import { Direction } from "./trades"
@@ -44,6 +45,8 @@ export enum ExecutionStatus {
   Ready = "Ready",
   Pending = "Pending",
   Done = "Done",
+  TakingTooLong = "TakingTooLong",
+  RequestTimeout = "RequestTimeout",
   Rejected = "Rejected",
 }
 
@@ -127,15 +130,33 @@ const exeuctionFromNew = (newExecution: NewExecution): Execution => {
   }
 }
 
+const REQEUST = 30000
+const TAKING_TOO_LONG = 2000
+
 const newExecution$ = new Subject<Execution>()
 export const onNewExecution = (i: NewExecution) =>
   newExecution$.next(exeuctionFromNew(i))
 
-const execute = (payload: ExecutionPayload) =>
-  getRemoteProcedureCall$<ExecutionResponse, ExecutionPayload>(
-    "execution",
-    "executeTrade",
-    payload,
+const execute = (execution: Execution) => {
+  const payload = mapExecutiontoPayload(execution)
+  return race([
+    getRemoteProcedureCall$<ExecutionResponse, ExecutionPayload>(
+      "execution",
+      "executeTrade",
+      payload,
+    ).pipe(map((response) => mapResponseToExecution(response, execution.id))),
+    timer(REQEUST).pipe(
+      mapTo({ ...execution, status: ExecutionStatus.RequestTimeout }),
+    ),
+  ])
+}
+
+const emitTooLongMessage = <M, T>(
+  ms: number,
+  message: M,
+): OperatorFunction<T, M | T> =>
+  publish((multicasted$) =>
+    race([multicasted$, concat(timer(ms).pipe(mapTo(message)), multicasted$)]),
   )
 
 const executionDismiss$ = new Subject<MinimalExecution>()
@@ -150,10 +171,12 @@ const executionsMap$ = newExecution$.pipe(
     (newExecution$, currencyPair) =>
       newExecution$.pipe(
         exhaustMap((execution) => {
-          const payload = mapExecutiontoPayload(execution)
           return concat(
-            execute(payload).pipe(
-              map((response) => mapResponseToExecution(response, execution.id)),
+            execute(execution).pipe(
+              emitTooLongMessage(TAKING_TOO_LONG, {
+                ...execution,
+                status: ExecutionStatus.TakingTooLong,
+              }),
               startWith({ ...execution, status: ExecutionStatus.Pending }),
             ),
             race([
