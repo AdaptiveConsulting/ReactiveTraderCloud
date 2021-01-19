@@ -1,0 +1,94 @@
+name: Deploy (Pull Request)
+
+on:
+  pull_request:
+    types: [labeled, opened, reopened, synchronize]
+    branches:
+      - master
+      - release/**
+
+env:
+  DEPLOY_ENV: 'pr${{ github.event.number }}'
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    outputs:
+      build_version: ${{ steps.build_version.outputs.value }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Fetch tags
+        run: git fetch origin +refs/tags/*:refs/tags/*
+
+      - name: Set build version
+        id: build_version
+        run: |
+          echo "BUILD_VERSION=$(git describe)-$DEPLOY_ENV" >> $GITHUB_ENV
+          echo "::set-output name=value::$BUILD_VERSION"
+
+      - name: Check if build already exists
+        id: existing_build
+        run: |
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          echo "::set-output name=value::$(DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $DOCKER_USER/client:$BUILD_VERSION > /dev/null; echo $?)"
+
+      - name: 'Build Docker images: ${{ env.BUILD_VERSION }}'
+        if: steps.existing_build.outputs.value == '0'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: docker-compose -f ./src/docker-compose.yml build --parallel
+
+      - name: Run integration tests
+        if: steps.existing_build.outputs.value == '0'
+        run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
+
+      - name: Push Docker images
+        if: steps.existing_build.outputs.value == '0'
+        run: |
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker-compose -f ./src/docker-compose.yml push
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    if: contains(github.event.pull_request.labels.*.name, 'preview')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Google Cloud
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          version: '285.0.0'
+          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+
+      - name: Get GKE credentials
+        run: gcloud container clusters get-credentials "${{ secrets.GOOGLE_CLUSTER }}" --zone "${{ secrets.GOOGLE_COMPUTE_ZOME }}"
+
+      - name: Downscale GKE deployments
+        run: kubectl scale deploy --replicas=0 --all --namespace $DEPLOY_ENV
+
+      - name: Delete GKE jobs
+        run: kubectl delete jobs --all --namespace $DEPLOY_ENV
+
+      - name: Update GKE deployments
+        run: |
+          for f in $(find ./src/services/kubernetes -type f -name "*.yaml"); do
+            cat $f | /usr/bin/envsubst | kubectl --namespace=$DEPLOY_ENV apply -f -
+          done
