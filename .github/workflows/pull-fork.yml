@@ -1,0 +1,34 @@
+name: Pull Request (fork)
+
+on:
+  pull_request:
+    branches:
+      - master
+      - release/**
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    if: github.event.repository.full_name != github.repository
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Fetch tags
+        run: git fetch origin +refs/tags/*:refs/tags/*
+
+      - name: Set build version
+        run: echo "BUILD_VERSION=$(git describe)" >> $GITHUB_ENV
+
+      - name: 'Build Docker images: ${{ env.BUILD_VERSION }}'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: docker-compose -f ./src/docker-compose.yml build --parallel
+
+      - name: Run integration tests
+        run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
