@@ -96,6 +96,9 @@ jobs:
         run: kubectl delete jobs --all --namespace $DEPLOY_ENV
         continue-on-error: true
 
+      - name: Create client configmap if not exists
+        run: kubectl create configmap client-config --from-literal=environment-name=$DEPLOY_ENV --namespace $DEPLOY_ENV --dry-run -o yaml | kubectl apply -f -
+
       - name: Update GKE deployments
         env:
           BUILD_VERSION: ${{ needs.build.outputs.build_version }}
