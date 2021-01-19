@@ -1,4 +1,4 @@
-name: Pull Request
+name: Pull Request (origin, up)
 
 on:
   pull_request:
@@ -86,9 +86,11 @@ jobs:
 
       - name: Downscale GKE deployments
         run: kubectl scale deploy --replicas=0 --all --namespace $DEPLOY_ENV
+        continue-on-error: true
 
       - name: Delete GKE jobs
         run: kubectl delete jobs --all --namespace $DEPLOY_ENV
+        continue-on-error: true
 
       - name: Update GKE deployments
         run: |
