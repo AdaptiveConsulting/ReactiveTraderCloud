@@ -1,4 +1,4 @@
-name: Deploy (Pull Request)
+name: Pull Request
 
 on:
   pull_request:
@@ -14,7 +14,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     outputs:
       build_version: ${{ steps.build_version.outputs.value }}
