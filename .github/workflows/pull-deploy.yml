@@ -82,7 +82,7 @@ jobs:
           service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
 
       - name: Get GKE credentials
-        run: gcloud container clusters get-credentials "${{ secrets.GOOGLE_CLUSTER }}" --zone "${{ secrets.GOOGLE_COMPUTE_ZOME }}"
+        run: gcloud container clusters get-credentials "${{ secrets.GOOGLE_CLUSTER }}" --zone "${{ secrets.GOOGLE_COMPUTE_ZONE }}"
 
       - name: Downscale GKE deployments
         run: kubectl scale deploy --replicas=0 --all --namespace $DEPLOY_ENV
