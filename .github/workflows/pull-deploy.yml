@@ -85,6 +85,9 @@ jobs:
       - name: Get GKE credentials
         run: gcloud container clusters get-credentials "${{ secrets.GOOGLE_CLUSTER }}" --zone "${{ secrets.GOOGLE_COMPUTE_ZONE }}"
 
+      - name: Create namespace if not exists
+        run: kubectl create namespace $DEPLOY_ENV --dry-run -o yaml | kubectl apply -f -
+
       - name: Downscale GKE deployments
         run: kubectl scale deploy --replicas=0 --all --namespace $DEPLOY_ENV
         continue-on-error: true
