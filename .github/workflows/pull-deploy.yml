@@ -93,6 +93,8 @@ jobs:
         continue-on-error: true
 
       - name: Update GKE deployments
+        env:
+          BUILD_VERSION: ${{ needs.build.outputs.build_version }}
         run: |
           for f in $(find ./src/services/kubernetes -type f -name "*.yaml"); do
             cat $f | /usr/bin/envsubst | kubectl --namespace=$DEPLOY_ENV apply -f -
