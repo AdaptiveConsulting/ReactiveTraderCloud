@@ -15,7 +15,7 @@ import {
   TileBodyWrapper,
 } from "./responsiveWrappers"
 import { execution$ } from "services/executions"
-import ExecutionStatusAlertSwitch from "./ExecutionStatusAlertSwitch"
+import ExecutionResponse from "./ExecutionResponse"
 
 const PanelItem = styled.div`
   flex-grow: 1;
@@ -94,7 +94,7 @@ export const Tile: React.FC<{
             </TileBodyWrapper>
           </MainTileStyle>
         </MainTileWrapper>
-        <ExecutionStatusAlertSwitch />
+        <ExecutionResponse />
       </PanelItem>
     </SymbolContext.Provider>
   )

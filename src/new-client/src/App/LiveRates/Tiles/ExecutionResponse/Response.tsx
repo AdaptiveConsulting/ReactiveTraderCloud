@@ -19,6 +19,7 @@ import { useBaseTerm } from "../TileHeader"
 import { useContext } from "react"
 import { SymbolContext } from "../Tile"
 import { FaCheck, FaExclamationTriangle } from "react-icons/fa"
+import Pending from "./Pending"
 
 export const BackgroundColored = styled.span`
   background-color: ${({ theme }) => theme.white};
@@ -76,81 +77,69 @@ const buildTradeMessage = (
   </TradeMessageDiv>
 )
 
-const ResponseContainer = (props: any) => {
+export const ExecutionResponse = () => {
   const symbol = useContext(SymbolContext)
-  const { currencyPair, id, tradeId } = useExecution(symbol)
+  const {
+    currencyPair,
+    id,
+    tradeId,
+    direction,
+    notional,
+    spotRate,
+    valueDate,
+    status,
+  } = useExecution(symbol)
   const baseTerm = useBaseTerm(symbol)
-
+  const { base, terms } = useCurrencyPair(symbol)
+  const successOrReject =
+    status === ExecutionStatus.Done || status === ExecutionStatus.Rejected
   const closeAlert = () => {
     onExecutionDismiss({ currencyPair, id })
   }
 
-  return (
-    <ExecutionStatusAlertContainer status={props.status}>
-      <CurrencyPairDiv>
-        {props.status === ExecutionStatus.Done ? (
-          <AlignedCheck />
-        ) : (
-          <AlignedTriangle />
+  return status !== ExecutionStatus.Ready ? (
+    status !== ExecutionStatus.Pending ? (
+      <ExecutionStatusAlertContainer status={status}>
+        <CurrencyPairDiv>
+          {status === ExecutionStatus.Done ? (
+            <AlignedCheck />
+          ) : (
+            <AlignedTriangle />
+          )}
+          {baseTerm}
+        </CurrencyPairDiv>
+        {successOrReject && <TradeIdDiv>{`Trade ID: ${tradeId}`}</TradeIdDiv>}
+        {status === ExecutionStatus.Done &&
+          buildTradeMessage(
+            base,
+            direction,
+            notional,
+            spotRate,
+            terms,
+            valueDate,
+          )}
+        {status === ExecutionStatus.Rejected && (
+          <TradeMessageDiv>Your trade has been rejected.</TradeMessageDiv>
         )}
-        {baseTerm}
-      </CurrencyPairDiv>
-      <TradeIdDiv>{`Trade ID: ${tradeId}`}</TradeIdDiv>
-      {props.children}
-      <Button onClick={closeAlert} success={props.success}>
-        Close
-      </Button>
-    </ExecutionStatusAlertContainer>
-  )
+        {status === ExecutionStatus.TakingTooLong && (
+          <TradeMessageDiv>
+            Trade execution taking longer than expected
+          </TradeMessageDiv>
+        )}
+        {status === ExecutionStatus.RequestTimeout && (
+          <TradeMessageDiv>Trade execution timeout exceeded</TradeMessageDiv>
+        )}
+        {successOrReject && (
+          <Button
+            onClick={closeAlert}
+            success={status === ExecutionStatus.Done}
+          >
+            Close
+          </Button>
+        )}
+      </ExecutionStatusAlertContainer>
+    ) : (
+      <Pending />
+    )
+  ) : null
 }
-
-const Done = () => {
-  const symbol = useContext(SymbolContext)
-  const { direction, notional, spotRate, valueDate } = useExecution(symbol)
-
-  const { base, terms } = useCurrencyPair(symbol)
-
-  return (
-    <ResponseContainer status={ExecutionStatus.Done} success={true}>
-      {buildTradeMessage(base, direction, notional, spotRate, terms, valueDate)}
-    </ResponseContainer>
-  )
-}
-
-const Rejected = () => (
-  <ResponseContainer status={ExecutionStatus.Rejected} success={false}>
-    <TradeMessageDiv>Your trade has been rejected.</TradeMessageDiv>
-  </ResponseContainer>
-)
-
-const TakingTooLong = () => {
-  const symbol = useContext(SymbolContext)
-  const baseTerm = useBaseTerm(symbol)
-  return (
-    <ExecutionStatusAlertContainer status={ExecutionStatus.TakingTooLong}>
-      <CurrencyPairDiv>
-        <AlignedTriangle />
-        {baseTerm}
-      </CurrencyPairDiv>
-      <TradeMessageDiv>
-        Trade execution taking longer than expected
-      </TradeMessageDiv>
-    </ExecutionStatusAlertContainer>
-  )
-}
-
-const RequestTimeout = () => {
-  const symbol = useContext(SymbolContext)
-  const baseTerm = useBaseTerm(symbol)
-  return (
-    <ExecutionStatusAlertContainer status={ExecutionStatus.RequestTimeout}>
-      <CurrencyPairDiv>
-        <AlignedTriangle />
-        {baseTerm}
-      </CurrencyPairDiv>
-      <TradeMessageDiv>Trade execution timeout exceeded</TradeMessageDiv>
-    </ExecutionStatusAlertContainer>
-  )
-}
-
-export { Done, Rejected, TakingTooLong, RequestTimeout }
