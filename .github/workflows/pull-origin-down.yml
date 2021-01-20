@@ -54,6 +54,6 @@ jobs:
         with:
           comment-id: ${{ steps.find_comment.outputs.comment-id }}
           body: |
-            "(auto-deploy) The deployment for this Pull Request has been destroyed."
+            (auto-deploy) The deployment for this Pull Request has been destroyed.
           edit-mode: "replace"
 
