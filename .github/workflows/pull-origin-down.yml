@@ -16,7 +16,7 @@ jobs:
 
     if: >-
       (!github.event.pull_request.head.repo.fork) && (
-        (github.event.action == 'unlabled' && (!contains(github.event.pull_request.labels.*.name, 'preview'))) ||
+        (github.event.action == 'unlabeled' && (!contains(github.event.pull_request.labels.*.name, 'preview'))) ||
         (github.event.action == 'closed')
       )
 
