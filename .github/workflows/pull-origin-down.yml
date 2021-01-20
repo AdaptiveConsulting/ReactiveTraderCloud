@@ -14,9 +14,11 @@ jobs:
   destroy:
     runs-on: ubuntu-20.04
 
-    if: |
-      "!github.event.pull_request.head.repo.fork &&
-      !contains(github.event.pull_request.labels.*.name, 'preview')"
+    if: >-
+      (!github.event.pull_request.head.repo.fork) && (
+        (github.event.action == 'unlabled' && (!contains(github.event.pull_request.labels.*.name, 'preview'))) ||
+        (github.event.action == 'closed')
+      )
 
     steps:
       - name: Checkout code
