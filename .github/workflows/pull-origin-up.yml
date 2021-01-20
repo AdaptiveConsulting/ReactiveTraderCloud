@@ -133,6 +133,6 @@ jobs:
           comment-id: ${{ steps.find_comment.outputs.comment-id }}
           body: |
             (auto-deploy) A deployment has been created for this Pull Request.
-            http://web-$DEPLOY_ENV.adaptivecluster.com
+            http://web-${{ env.DEPLOY_ENV }}.adaptivecluster.com
           edit-mode: "replace"
 
