@@ -123,4 +123,34 @@ const Rejected = () => (
   </ResponseContainer>
 )
 
-export { Done, Rejected }
+const TakingTooLong = () => {
+  const symbol = useContext(SymbolContext)
+  const baseTerm = useBaseTerm(symbol)
+  return (
+    <ExecutionStatusAlertContainer status={ExecutionStatus.TakingTooLong}>
+      <CurrencyPairDiv>
+        <AlignedTriangle />
+        {baseTerm}
+      </CurrencyPairDiv>
+      <TradeMessageDiv>
+        Trade execution taking longer than expected
+      </TradeMessageDiv>
+    </ExecutionStatusAlertContainer>
+  )
+}
+
+const RequestTimeout = () => {
+  const symbol = useContext(SymbolContext)
+  const baseTerm = useBaseTerm(symbol)
+  return (
+    <ExecutionStatusAlertContainer status={ExecutionStatus.RequestTimeout}>
+      <CurrencyPairDiv>
+        <AlignedTriangle />
+        {baseTerm}
+      </CurrencyPairDiv>
+      <TradeMessageDiv>Trade execution timeout exceeded</TradeMessageDiv>
+    </ExecutionStatusAlertContainer>
+  )
+}
+
+export { Done, Rejected, TakingTooLong, RequestTimeout }
