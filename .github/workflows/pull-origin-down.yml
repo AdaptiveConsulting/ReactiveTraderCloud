@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-20.04
 
     if: |
-      !github.event.pull_request.head.repo.fork &&
-      !contains(github.event.pull_request.labels.*.name, 'preview')
+      "!github.event.pull_request.head.repo.fork &&
+      !contains(github.event.pull_request.labels.*.name, 'preview')"
 
     steps:
       - name: Checkout code
