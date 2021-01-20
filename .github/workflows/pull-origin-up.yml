@@ -108,3 +108,31 @@ jobs:
           for f in $(find ./src/services/kubernetes -type f -name "*.yaml"); do
             cat $f | /usr/bin/envsubst | kubectl --namespace=$DEPLOY_ENV apply -f -
           done
+
+      - name: Find deployment comment
+        uses: peter-evans/find-comment@v1
+        id: find_comment
+        with:
+          issue-number: ${{ github.event.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '(auto-deploy)'
+
+      - name: Create deployment comment if not exists
+        if: ${{ steps.find_comment.outputs.comment-id == 0 }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.number }}
+          body: |
+            (auto-deploy) A deployment has been created for this Pull Request.
+            http://web-$DEPLOY_ENV.adaptivecluster.com
+
+      - name: Update deployment comment if exists
+        if: ${{ steps.find_comment.outputs.comment-id != 0 }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.find_comment.outputs.comment-id }}
+          body: |
+            (auto-deploy) A deployment has been created for this Pull Request.
+            http://web-${{ env.DEPLOY_ENV }}.adaptivecluster.com
+          edit-mode: "replace"
+
