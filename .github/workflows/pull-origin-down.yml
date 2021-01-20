@@ -52,7 +52,7 @@ jobs:
         if: ${{ steps.find_comment.outputs.comment-id != 0 }}
         uses: peter-evans/create-or-update-comment@v1
         with:
-          comment-id: ${{ step.find_comment.outputs.comment-id }}
+          comment-id: ${{ steps.find_comment.outputs.comment-id }}
           body: |
             "(auto-deploy) The deployment for this Pull Request has been destroyed."
           edit-mode: "replace"
