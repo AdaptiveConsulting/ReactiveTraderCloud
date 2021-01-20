@@ -123,16 +123,16 @@ jobs:
         with:
           issue-number: ${{ github.event.number }}
           body: |
-            "(auto-deploy) A deployment has been created for this Pull Request."
-            "http://web-$DEPLOY_ENV.adaptivecluster.com"
+            (auto-deploy) A deployment has been created for this Pull Request.
+            http://web-$DEPLOY_ENV.adaptivecluster.com
 
       - name: Update deployment comment if exists
-        if: ${{ steps.find_comment.outputs.comment-id == 0 }}
+        if: ${{ steps.find_comment.outputs.comment-id != 0 }}
         uses: peter-evans/create-or-update-comment@v1
         with:
           comment-id: ${{ steps.find_comment.outputs.comment-id }}
           body: |
-            "(auto-deploy) A deployment has been created for this Pull Request."
-            "http://web-$DEPLOY_ENV.adaptivecluster.com"
+            (auto-deploy) A deployment has been created for this Pull Request.
+            http://web-$DEPLOY_ENV.adaptivecluster.com
           edit-mode: "replace"
 
