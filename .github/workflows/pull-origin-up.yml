@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
 
-    if: github.event.repository.full_name == github.repository
+    if: !github.event.pull_request.head.repo.fork
 
     outputs:
       build_version: ${{ steps.build_version.outputs.value }}
