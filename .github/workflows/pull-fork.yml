@@ -6,6 +6,9 @@ on:
       - master
       - release/**
 
+env:
+  DOCKER_USER: reactivetradercloud
+
 jobs:
   build:
     runs-on: ubuntu-20.04
