@@ -1,6 +1,6 @@
 import { distinctUntilChanged, map, withLatestFrom } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import { getCurrencyPair$ } from "services/currencyPairs"
+import { getCurrencyPair$, useNotional } from "services/currencyPairs"
 import { getPrice$ } from "services/prices"
 import { Direction } from "services/trades"
 import {
@@ -74,13 +74,14 @@ export const PriceButton: React.FC<{
     direction,
     symbol,
   )
-
+  const notionalValue = useNotional(symbol)
+  const DEFAULT_NOTIONAL = 1_000_000
   const onClick = () => {
     onNewExecution({
       currencyPair: symbol,
       dealtCurrency: base,
       direction,
-      notional: 1000_000,
+      notional: notionalValue ? notionalValue : DEFAULT_NOTIONAL,
       spotRate: calculateSpotRate(pip, tenth, bigFigure),
     })
   }

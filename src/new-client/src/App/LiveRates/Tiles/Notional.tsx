@@ -1,11 +1,11 @@
 import styled from "styled-components/macro"
 import { map } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import { getCurrencyPair$ } from "services/currencyPairs"
+import { getCurrencyPair$, updateNotional } from "services/currencyPairs"
 import { formatAsWholeNumber } from "utils/formatNumber"
 import { InputWrapper } from "./responsiveWrappers"
 import { SymbolContext } from "./Tile"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 
 export const Input = styled.input`
   grid-area: Input;
@@ -36,12 +36,19 @@ const [useBase, notionalInput$] = bind((symbol: string) =>
   getCurrencyPair$(symbol).pipe(map(({ base }) => base)),
 )
 
-const notional = 1_000_000
-
+const DEFAULT_NOTIONAL = 1_000_000
 export { notionalInput$ }
 export const NotionalInput: React.FC = () => {
   const symbol = useContext(SymbolContext)
   const base = useBase(symbol)
+  const [notional, setNotional] = useState(
+    formatAsWholeNumber(DEFAULT_NOTIONAL),
+  )
+  const onChange = (symbol: string, notional: string) => {
+    updateNotional(symbol, parseInt(notional.replace(/,/g, ""), 10))
+    setNotional(formatAsWholeNumber(parseInt(notional.replace(/,/g, ""), 10)))
+  }
+
   return (
     <InputWrapper>
       <CurrencyPairSymbol data-qa="notional-input__currency-pair-symbol">
@@ -49,8 +56,8 @@ export const NotionalInput: React.FC = () => {
       </CurrencyPairSymbol>
       <Input
         type="text"
-        value={formatAsWholeNumber(notional)}
-        onChange={() => {}}
+        value={notional}
+        onChange={(e) => onChange(symbol, e.target.value)}
         onFocus={(event) => event.target.select()}
         data-qa-id={`notional-input__input-${symbol.toLowerCase()}`}
       />

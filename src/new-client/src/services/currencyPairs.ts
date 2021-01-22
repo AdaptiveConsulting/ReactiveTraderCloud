@@ -1,3 +1,4 @@
+import { BehaviorSubject } from "rxjs"
 import { bind } from "@react-rxjs/core"
 import {
   distinctUntilChanged,
@@ -86,3 +87,16 @@ export const [useCurrencies, currencies$] = bind(
     ]),
   ),
 )
+
+const notionalInput$ = new BehaviorSubject<Record<string, number>>({})
+
+export const [useNotional, notional$] = bind(
+  (symbol: string) => notionalInput$.pipe(map((list) => list[symbol])),
+  1_000_000,
+)
+
+export const updateNotional = (symbol: string, notional: number) => {
+  const newNotional = notionalInput$.getValue()
+  newNotional[symbol] = notional
+  notionalInput$.next(newNotional)
+}
