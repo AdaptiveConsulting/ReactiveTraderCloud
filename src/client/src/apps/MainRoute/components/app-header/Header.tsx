@@ -41,6 +41,7 @@ const Header: React.FC<Props> = ({ filler, controls, switches }) => {
       <AppHeaderRoot>
         <LogoWrapper>
           <Logo size={1.75} onClick={onLogoClick} data-qa="header__root-logo" />
+          Pull Request Deployment
         </LogoWrapper>
         {filler === undefined ? <Fill /> : filler}
         <HeaderNav>
@@ -62,6 +63,10 @@ const Header: React.FC<Props> = ({ filler, controls, switches }) => {
 }
 
 const LogoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
   &:hover {
     cursor: pointer;
   }
