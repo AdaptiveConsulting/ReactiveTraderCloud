@@ -18,4 +18,4 @@ microk8s kubectl delete --all jobs -n ${DEPLOY_ENV}
 # Removing the services will change the IP adresses
 #microk8s kubectl delete --all services -n ${DEPLOY_ENV}
 
-for f in $(find ./services/kubernetes -type f -name "*.yaml"); do cat $f | /usr/bin/envsubst | microk8s kubectl apply -n ${DEPLOY_ENV} -f -; done
+for f in $(find ./services/kubernetes/per-deployment -type f -name "*.yaml"); do cat $f | /usr/bin/envsubst | microk8s kubectl apply -n ${DEPLOY_ENV} -f -; done

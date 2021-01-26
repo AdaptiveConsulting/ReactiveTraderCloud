@@ -44,4 +44,4 @@ microk8s kubectl -n reactive-trader-local create configmap bot-config --from-lit
 ```
 
 ### Deployment
-You can now run the script `deploy_locally.sh` under `src/services/kubernetes`
+You can now run the script `deploy_locally.sh` under `src/services/kubernetes/per-deployment`

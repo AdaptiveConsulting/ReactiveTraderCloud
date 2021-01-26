@@ -154,4 +154,4 @@ metadata:
 data:
   environment-name: uat
 ```
-To see how the config is mapped, refer to [`client-deployment.yaml`](../services/kubernetes/client-deployment.yaml).
+To see how the config is mapped, refer to [`client-deployment.yaml`](../services/kubernetes/per-deployment/client-deployment.yaml).
