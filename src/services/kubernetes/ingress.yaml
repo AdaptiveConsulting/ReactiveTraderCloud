@@ -7,7 +7,7 @@ metadata:
     ingress.gcp.kubernetes.io/pre-shared-cert: "web-ssl-shared"
 spec:
   rules:
-    - host: web-${DEPLOY_ENV}.adaptivecluster.com
+    - host: ${DEPLOY_ENV}.lb.adaptivecluster.com
       http:
         paths:
           - path:
