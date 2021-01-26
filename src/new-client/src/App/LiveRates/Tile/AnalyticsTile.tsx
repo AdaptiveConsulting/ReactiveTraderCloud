@@ -1,17 +1,15 @@
 import styled from "styled-components/macro"
 import { getHistoricalPrices$ } from "services/prices"
 import { map } from "rxjs/operators"
-import { bind } from "@react-rxjs/core"
 import { getDataPoints, toSvgPath, withScales } from "utils/historicalChart"
 import { pipe } from "rxjs"
 import { curveBasis } from "d3"
-import { useContext } from "react"
-import { SymbolContext } from "./Tile"
+import { symbolBind } from "./context"
 
 const VIEW_BOX_WIDTH = 200
 const VIEW_BOX_HEIGHT = 90
 
-const [useHistoricalPath, analyticsTile$] = bind((symbol: string) =>
+const [useHistoricalPath, analyticsTile$] = symbolBind((symbol: string) =>
   getHistoricalPrices$(symbol).pipe(
     map(
       pipe(
@@ -43,8 +41,7 @@ const Svg = styled.svg`
 
 export { analyticsTile$ }
 export const AnalyticsTile: React.FC = () => {
-  const symbol = useContext(SymbolContext)
-  const d = useHistoricalPath(symbol)
+  const d = useHistoricalPath()
 
   return (
     <LineChartWrapper>

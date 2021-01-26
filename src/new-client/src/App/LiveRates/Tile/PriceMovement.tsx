@@ -1,12 +1,10 @@
 import styled from "styled-components/macro"
 import { distinctUntilChanged, map, withLatestFrom } from "rxjs/operators"
-import { bind } from "@react-rxjs/core"
 import { getPrice$, PriceMovementType } from "services/prices"
 import { getCurrencyPair$ } from "services/currencyPairs"
 import { equals } from "utils/equals"
-import { useContext } from "react"
-import { SymbolContext } from "./Tile"
 import { FaSortUp, FaSortDown } from "react-icons/fa"
+import { symbolBind } from "./context"
 
 const MovementIconUP = styled(FaSortUp)<{ show: boolean }>`
   text-align: center;
@@ -38,7 +36,7 @@ const PriceMovementStyle = styled.div<{
   grid-area: movement;
 `
 
-const [usePriceMovementData, priceMovement$] = bind((symbol: string) =>
+const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
   getPrice$(symbol).pipe(
     withLatestFrom(getCurrencyPair$(symbol)),
     map(([{ bid, ask, movementType }, { pipsPosition, ratePrecision }]) => {
@@ -55,8 +53,7 @@ export { priceMovement$ }
 export const PriceMovement: React.FC<{
   isAnalyticsView: boolean
 }> = ({ isAnalyticsView }) => {
-  const symbol = useContext(SymbolContext)
-  const { spread, movementType } = usePriceMovementData(symbol)
+  const { spread, movementType } = usePriceMovementData()
   return (
     <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
       <MovementIconUP

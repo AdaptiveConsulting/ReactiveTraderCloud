@@ -1,5 +1,6 @@
-import { ExecutionStatus } from "services/executions"
 import styled, { DefaultTheme } from "styled-components/macro"
+import { ExecutionStatus } from "services/executions"
+import { TileState, TileStates } from "../state"
 
 export const OverlayDiv = styled.div`
   position: absolute;
@@ -11,19 +12,18 @@ export const OverlayDiv = styled.div`
 `
 
 export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
-  status: ExecutionStatus
-  theme: DefaultTheme
+  state: TileState
 }>`
-  background-color: ${({ status, theme }) => {
-    switch (status) {
-      case "Done":
-        return `${theme.colors.accents.positive.darker} `
-      case "Rejected":
-        return `${theme.colors.accents.negative.darker} `
-      case "TakingTooLong":
-        return `${theme.colors.accents.aware.darker} `
-      case "RequestTimeout":
-        return `${theme.colors.accents.negative.darker} `
+  background-color: ${({ state, theme }) => {
+    switch (state.status) {
+      case TileStates.Finished:
+        return state.trade.status === ExecutionStatus.Done
+          ? theme.colors.accents.positive.darker
+          : theme.colors.accents.negative.darker
+      case TileStates.TooLong:
+        return theme.colors.accents.aware.darker
+      case TileStates.Timeout:
+        return theme.colors.accents.negative.darker
       default:
         return ""
     }
