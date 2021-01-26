@@ -3,7 +3,7 @@ import { merge } from "rxjs"
 import styled from "styled-components/macro"
 import { Direction } from "services/trades"
 import { PriceMovement, priceMovement$ } from "./PriceMovement"
-import { NotionalInput, notionalInput$ } from "./Notional"
+import { NotionalInput } from "./Notional"
 import { AnalyticsTile, analyticsTile$ } from "./AnalyticsTile"
 import { PriceButton, priceButton$ } from "./PriceButton"
 import { TileHeader, tileHeader$ } from "./TileHeader"
@@ -14,8 +14,9 @@ import {
   NotionalInputWrapper,
   TileBodyWrapper,
 } from "./responsiveWrappers"
-import { execution$ } from "services/executions"
-import ExecutionStatusAlertSwitch from "./ExecutionStatusAlertSwitch"
+import ExecutionResponse from "./ExecutionResponse"
+import { CurrencyPair } from "services/currencyPairs"
+import { Provider } from "./context"
 
 const PanelItem = styled.div`
   flex-grow: 1;
@@ -52,36 +53,24 @@ export const tile$ = (symbol: string) =>
       priceMovement$,
       priceButton$(Direction.Sell),
       priceButton$(Direction.Buy),
-      notionalInput$,
-      execution$,
     ].map((fn) => fn(symbol)),
   )
 
-export const SymbolContext = React.createContext("")
-
 export const Tile: React.FC<{
-  symbol: string
+  currencyPair: CurrencyPair
   isAnalytics: boolean
-}> = memo(({ symbol, isAnalytics }) => {
+}> = memo(({ currencyPair, isAnalytics }) => {
   return (
-    <SymbolContext.Provider value={symbol}>
+    <Provider value={currencyPair}>
       <PanelItem>
-        <MainTileWrapper shouldMoveDate={false}>
-          <MainTileStyle
-            className="spot-tile"
-            data-qa="analytics-tile__spot-tile"
-            data-qa-id={`currency-pair-${symbol.toLowerCase()}`}
-          >
+        <MainTileWrapper>
+          <MainTileStyle>
             <TileHeader />
-
             <TileBodyWrapper isAnalyticsView={isAnalytics}>
               {isAnalytics ? <AnalyticsTile /> : null}
 
               <PriceControlWrapper>
-                <PriceControlsStyle
-                  data-qa="analytics-tile-price-control__header"
-                  isAnalyticsView={isAnalytics}
-                >
+                <PriceControlsStyle isAnalyticsView={isAnalytics}>
                   <PriceMovement isAnalyticsView={isAnalytics} />
                   <PriceButton direction={Direction.Sell} />
                   <PriceButton direction={Direction.Buy} />
@@ -94,8 +83,8 @@ export const Tile: React.FC<{
             </TileBodyWrapper>
           </MainTileStyle>
         </MainTileWrapper>
-        <ExecutionStatusAlertSwitch />
+        <ExecutionResponse />
       </PanelItem>
-    </SymbolContext.Provider>
+    </Provider>
   )
 })

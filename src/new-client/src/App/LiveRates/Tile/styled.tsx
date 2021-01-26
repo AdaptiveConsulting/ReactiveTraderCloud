@@ -66,7 +66,7 @@ export const TileBaseStyle = styled.div`
   }
 `
 
-export const TileWrapperBase = styled.div<{ shouldMoveDate: boolean }>`
+export const TileWrapperBase = styled.div<{ shouldMoveDate?: boolean }>`
   position: relative;
   &:hover ${TopRightButton} {
     opacity: 0.75;
