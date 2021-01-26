@@ -1445,15 +1445,15 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@react-rxjs/core@^0.6.1":
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/@react-rxjs/core/-/core-0.6.1.tgz#d2d401bdcb72baf7b5ecdf59d4b809bd044d2f0e"
-  integrity sha512-E2LXU+udZpaoy528IKVaIzuwcB7IEcBL9caWdnPx25B7SaoBo5BTVnuLNdTVZjjwExCBBeg0NO3Nmj408lMLvw==
+"@react-rxjs/core@0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@react-rxjs/core/-/core-0.6.4.tgz#26d8007692d9e4c959cc83ae2df4378c07ab71eb"
+  integrity sha512-CZdtxzjbiGA6D0+DU5aw/x6gk8dm8uCPCeXfvqVfzKpjjphZbT2GjsZG7tYbCB4zENy/VuzOwZYkO3SaLiadnA==
 
-"@react-rxjs/utils@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@react-rxjs/utils/-/utils-0.3.0.tgz#1fe49d9fe581ce3b00bad12512a222c8f342f16a"
-  integrity sha512-cJwSuxUnnbAkliBlxsbu414El2IVIJrrnXcIKYBQvNllcLZJpNUKKosW1GedoO1fHD5HKwDSnllBW7O1jCAMHQ==
+"@react-rxjs/utils@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@react-rxjs/utils/-/utils-0.4.0.tgz#3dda3e98e327a9cfab9c7e4295e9b03ec4ab6a78"
+  integrity sha512-8IkViygC1h+3CoxbmquCnRbxchgf8w8jaT9YyLoiAu9nEwt+RkrZzz0MvVSa/SlqqmRgOxxDQ7tcZ3guEkMI5w==
 
 "@rollup/plugin-node-resolve@^7.1.1":
   version "7.1.3"
