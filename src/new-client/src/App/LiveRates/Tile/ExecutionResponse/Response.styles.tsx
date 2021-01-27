@@ -1,6 +1,6 @@
 import styled, { DefaultTheme } from "styled-components/macro"
 import { ExecutionStatus } from "services/executions"
-import { TileState, TileStates } from "../state"
+import { TileState, TileStates } from "../Tile.state"
 
 export const OverlayDiv = styled.div`
   position: absolute;

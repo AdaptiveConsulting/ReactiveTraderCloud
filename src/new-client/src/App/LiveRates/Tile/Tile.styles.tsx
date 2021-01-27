@@ -1,8 +1,33 @@
 import styled from "styled-components/macro"
-import { TileBaseStyle, TileWrapperBase } from "./styled"
-import { TradeButton } from "./PriceButton/PriceButtonStyles"
+import { TradeButton } from "./PriceButton/PriceButton.styles"
 
-export const TileBodyWrapper = styled.div<{ isAnalyticsView: boolean }>`
+export const PriceControlsStyle = styled("div")<{
+  isAnalyticsView: boolean
+}>`
+  display: grid;
+  ${({ isAnalyticsView }) =>
+    isAnalyticsView
+      ? `
+      grid-template-columns: 20% 80%;
+      grid-template-rows: 50% 50%;
+      grid-template-areas: 
+      "movement sell"
+      "movement buy";
+    `
+      : `
+      grid-template-columns: 37% 26% 37%;
+      grid-template-rows: 100%;
+      grid-template-areas: 
+      "sell movement buy";
+    `}
+`
+
+export const PanelItem = styled.div`
+  flex-grow: 1;
+  flex-basis: 20rem;
+  position: relative;
+`
+export const Body = styled.div<{ isAnalyticsView: boolean }>`
   display: grid;
   ${({ isAnalyticsView }) =>
     isAnalyticsView
@@ -34,21 +59,11 @@ export const LineChartWrapper = styled.div<{ isTimerOn: boolean }>`
   grid-area: chart;
 `
 
-export const NotionalInputWrapper = styled("div")<{
-  isAnalyticsView: boolean
-}>`
-  display: flex;
-  align-items: center;
-  grid-area: notional;
-  ${({ isAnalyticsView }) =>
-    isAnalyticsView
-      ? ``
-      : `
-      justify-content: center;
-    `}
-`
-
-export const SpotTileStyle = styled(TileBaseStyle)`
+export const SpotTileStyle = styled.div`
+  position: absolute;
+  border-radius: 3px;
+  padding: 1.25rem;
+  box-sizing: border-box;
   background-color: ${({ theme }) => theme.core.lightBackground};
   display: flex;
   height: 100%;
@@ -66,7 +81,7 @@ export const SpotTileStyle = styled(TileBaseStyle)`
   }
 `
 
-export const MainTileStyle = styled(SpotTileStyle)`
+const MainTileStyle = styled(SpotTileStyle)`
   background-color: ${({ theme }) => theme.core.lightBackground};
   &:hover {
     background-color: ${({ theme }) =>
@@ -80,20 +95,18 @@ export const MainTileStyle = styled(SpotTileStyle)`
     }
   }
 `
-export const MainTileWrapper = styled(TileWrapperBase)`
+const MainTileWrapper = styled.div`
   min-height: 11rem;
   position: relative;
   height: 100%;
+  color: ${({ theme }) => theme.core.textColor};
   &:hover {
     background-color: ${({ theme }) => theme.core.backgroundHoverColor};
   }
 `
-export const InputWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 30px auto 30px;
-  grid-template-areas: "Currency Input ResetInputValue" ". Message .";
-  align-items: center;
 
-  grid-template-rows: 23px 13px;
-  margin-bottom: -0.5rem;
-`
+export const Main: React.FC = ({ children }) => (
+  <MainTileWrapper>
+    <MainTileStyle>{children}</MainTileStyle>
+  </MainTileWrapper>
+)

@@ -6,17 +6,22 @@ import {
   ExecutionStatusAlertContainer,
   TradeIdDiv,
   TradeMessageDiv,
-} from "./styled"
+} from "./Response.styles"
 import styled from "styled-components/macro"
 import { Direction } from "services/trades"
 import { ExecutionStatus } from "services/executions"
 import { FaCheck, FaExclamationTriangle } from "react-icons/fa"
 import Pending from "./Pending"
-import { useTileCurrencyPair } from "../context"
-import { onDismissMessage, TileState, TileStates, useTileState } from "../state"
+import { useTileCurrencyPair } from "../Tile.context"
+import {
+  onDismissMessage,
+  TileState,
+  TileStates,
+  useTileState,
+} from "../Tile.state"
 import { CurrencyPair } from "services/currencyPairs"
 
-export const BackgroundColored = styled.span`
+const BackgroundColored = styled.span`
   background-color: ${({ theme }) => theme.white};
   color: ${({ theme }) => theme.colors.accents.positive.base};
   font-weight: 900;

@@ -1,6 +1,6 @@
 import { AdaptiveLoader } from "components/AdaptiveLoader"
 import styled from "styled-components/macro"
-import { OverlayDiv } from "./styled"
+import { OverlayDiv } from "./Response.styles"
 
 const PendingContainer = styled(OverlayDiv)`
   display: table;
