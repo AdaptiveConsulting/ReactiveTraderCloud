@@ -1,7 +1,4 @@
 import styled from "styled-components/macro"
-import { InputWrapper } from "./responsiveWrappers"
-import { useTileCurrencyPair } from "./context"
-import { onChangeNotionalValue, useNotional } from "./state"
 
 export const Input = styled.input`
   grid-area: Input;
@@ -28,21 +25,26 @@ export const CurrencyPairSymbol = styled("span")`
   line-height: 1.2rem;
 `
 
-export const NotionalInput: React.FC = () => {
-  const { base, symbol } = useTileCurrencyPair()
-  const notional = useNotional(symbol)
+export const InputWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: "Currency Input ResetInputValue" ". Message .";
+  align-items: center;
 
-  return (
-    <InputWrapper>
-      <CurrencyPairSymbol>{base}</CurrencyPairSymbol>
-      <Input
-        type="text"
-        value={notional}
-        onChange={({ target: { value } }) => {
-          onChangeNotionalValue({ symbol, value })
-        }}
-        onFocus={(event) => event.target.select()}
-      />
-    </InputWrapper>
-  )
-}
+  grid-template-rows: 23px 13px;
+  margin-bottom: -0.5rem;
+`
+
+export const NotionalInputWrapper = styled("div")<{
+  isAnalyticsView: boolean
+}>`
+  display: flex;
+  align-items: center;
+  grid-area: notional;
+  ${({ isAnalyticsView }) =>
+    isAnalyticsView
+      ? ``
+      : `
+      justify-content: center;
+    `}
+`

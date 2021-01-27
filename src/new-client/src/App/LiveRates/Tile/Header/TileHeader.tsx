@@ -2,15 +2,23 @@ import styled from "styled-components/macro"
 import { map } from "rxjs/operators"
 import { format } from "date-fns"
 import { getPrice$ } from "services/prices"
-import { DeliveryDate } from "./styled"
-import { useTileCurrencyPair } from "./context"
 import { bind } from "@react-rxjs/core"
+import { useTileCurrencyPair } from "../Tile.context"
 
-export const Header = styled.div`
+const DeliveryDate = styled.div`
+  color: ${({ theme }) => theme.core.textColor};
+  font-size: 0.625rem;
+  line-height: 1rem;
+  opacity: 0.59;
+  margin-left: auto;
+  transition: margin-right 0.2s;
+`
+
+const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
 `
-export const TileSymbol = styled.div`
+const TileSymbol = styled.div`
   color: ${({ theme }) => theme.core.textColor};
   font-size: 0.8125rem;
   line-height: 1rem;
@@ -25,17 +33,18 @@ const [useDate, getDate$] = bind((symbol: string) =>
   ),
 )
 
-export const TileHeader: React.FC = () => {
+export const Header: React.FC = () => {
   const { base, terms, symbol } = useTileCurrencyPair()
   const date = useDate(symbol)
+  console.log("date", symbol, date)
   return (
-    <Header>
+    <HeaderWrapper>
       <TileSymbol data-qa="tile-header__tile-symbol">
         {base}/{terms}
       </TileSymbol>
       <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
-    </Header>
+    </HeaderWrapper>
   )
 }
 
-export const tileHeader$ = getDate$
+export const header$ = getDate$

@@ -1,3 +1,4 @@
+import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 import { getPrice$ } from "services/prices"
 import { Direction } from "services/trades"
@@ -5,6 +6,8 @@ import {
   customNumberFormatter,
   significantDigitsNumberFormatter,
 } from "utils/formatNumber"
+import { useTileCurrencyPair } from "../Tile.context"
+import { sendExecution } from "../Tile.state"
 import {
   TradeButton,
   Price,
@@ -13,10 +16,7 @@ import {
   Big,
   Pip,
   Tenth,
-} from "./PriceButtonStyles"
-import { useTileCurrencyPair } from "../context"
-import { sendExecution } from "../state"
-import { bind } from "@react-rxjs/core"
+} from "./PriceButton.styles"
 
 const formatTo3Digits = significantDigitsNumberFormatter(3)
 const formatToMin2IntDigits = customNumberFormatter({

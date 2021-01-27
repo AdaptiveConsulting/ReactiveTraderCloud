@@ -4,7 +4,7 @@ import { getPrice$, PriceMovementType } from "services/prices"
 import { getCurrencyPair$ } from "services/currencyPairs"
 import { equals } from "utils/equals"
 import { FaSortUp, FaSortDown } from "react-icons/fa"
-import { symbolBind } from "./context"
+import { symbolBind } from "../Tile.context"
 
 const MovementIconUP = styled(FaSortUp)<{ show: boolean }>`
   text-align: center;

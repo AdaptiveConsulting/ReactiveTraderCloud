@@ -4,12 +4,12 @@ import { map } from "rxjs/operators"
 import { getDataPoints, toSvgPath, withScales } from "utils/historicalChart"
 import { pipe } from "rxjs"
 import { curveBasis } from "d3"
-import { symbolBind } from "./context"
+import { symbolBind } from "../Tile.context"
 
 const VIEW_BOX_WIDTH = 200
 const VIEW_BOX_HEIGHT = 90
 
-const [useHistoricalPath, analyticsTile$] = symbolBind((symbol: string) =>
+const [useHistoricalPath, historicalGraph$] = symbolBind((symbol: string) =>
   getHistoricalPrices$(symbol).pipe(
     map(
       pipe(
@@ -39,8 +39,8 @@ const Svg = styled.svg`
   }
 `
 
-export { analyticsTile$ }
-export const AnalyticsTile: React.FC = () => {
+export { historicalGraph$ }
+export const HistoricalGraph: React.FC = () => {
   const d = useHistoricalPath()
 
   return (
