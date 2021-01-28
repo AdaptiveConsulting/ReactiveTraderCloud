@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useTileCurrencyPair } from "../Tile.context"
 import { onChangeNotionalValue, useNotional } from "../Tile.state"
 import {
@@ -6,12 +7,14 @@ import {
   Input,
   NotionalInputWrapper,
 } from "./Notional.styles"
+import { formatAsWholeNumber } from "utils/formatNumber"
 
 export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
   isAnalytics,
 }) => {
   const { base, symbol } = useTileCurrencyPair()
   const notional = useNotional(symbol)
+  const [isFocused, setIsFocused] = useState(false)
 
   return (
     <NotionalInputWrapper isAnalyticsView={isAnalytics}>
@@ -19,11 +22,17 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
         <CurrencyPairSymbol>{base}</CurrencyPairSymbol>
         <Input
           type="text"
-          value={notional}
+          value={isFocused ? notional : formatAsWholeNumber(parseInt(notional))}
           onChange={({ target: { value } }) => {
             onChangeNotionalValue({ symbol, value })
           }}
-          onFocus={(event) => event.target.select()}
+          onFocus={(event) => {
+            event.target.select()
+            setIsFocused(true)
+          }}
+          onBlur={() => {
+            setIsFocused(false)
+          }}
         />
       </InputWrapper>
     </NotionalInputWrapper>
