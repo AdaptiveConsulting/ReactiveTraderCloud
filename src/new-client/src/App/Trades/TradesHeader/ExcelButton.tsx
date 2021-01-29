@@ -1,7 +1,6 @@
 import { map, take } from "rxjs/operators"
 import styled from "styled-components/macro"
-import { tableTrades$ } from "../services"
-import { colConfigs } from "../TradesGrid/TradesGrid"
+import { tableTrades$, colConfigs, colFields } from "../TradesState"
 
 const ExcelIcon = () => (
   <svg
@@ -46,8 +45,9 @@ const Button = styled("button")`
 export const exportTable$ = tableTrades$.pipe(
   map((trades) =>
     trades.map((trade) =>
-      colConfigs.map(({ field, numeric, valueFormatter }) => {
-        let res = valueFormatter?.(trade[field]) ?? trade[field]
+      colFields.map((field) => {
+        let res =
+          colConfigs[field].valueFormatter?.(trade[field]) ?? trade[field]
         if (typeof res === "string" && res?.includes(",")) {
           res = '"' + res + '"'
         }
@@ -61,8 +61,8 @@ export const exportTable$ = tableTrades$.pipe(
 const downloadCsv = () => {
   exportTable$.subscribe((trades) => {
     let csv = ""
-    colConfigs.forEach((col) => {
-      csv += col.headerName + ","
+    colFields.forEach((field) => {
+      csv += colConfigs[field].headerName + ","
     })
     csv += "\n"
 
