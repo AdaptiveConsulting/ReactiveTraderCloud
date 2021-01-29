@@ -56,7 +56,7 @@ jobs:
         run: |
           # TODO: create new environment automatically
           # Update/create each deployment file in src/services/kubernetes
-          for f in $(find ./src/services/kubernetes -type f -name "*.yaml"); do
+          for f in $(find ./src/services/kubernetes/per-deployment -type f -name "*.yaml"); do
               cat $f | /usr/bin/envsubst | kubectl --namespace=$DEPLOY_ENV apply -f -
           done
 
