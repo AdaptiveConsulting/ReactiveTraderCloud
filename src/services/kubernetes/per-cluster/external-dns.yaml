@@ -6,6 +6,8 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  annotations:
+    iam.gke.io/gcp-service-account: k8s-external-dns@adaptive-trader.iam.gserviceaccount.com
   name: external-dns
   namespace: external-dns
 ---

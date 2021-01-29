@@ -124,7 +124,7 @@ jobs:
           issue-number: ${{ github.event.number }}
           body: |
             (auto-deploy) A deployment has been created for this Pull Request.
-            http://web-${{ env.DEPLOY_ENV }}.adaptivecluster.com
+            http://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com
 
       - name: Update deployment comment if exists
         if: ${{ steps.find_comment.outputs.comment-id != 0 }}
@@ -133,6 +133,6 @@ jobs:
           comment-id: ${{ steps.find_comment.outputs.comment-id }}
           body: |
             (auto-deploy) A deployment has been created for this Pull Request.
-            http://web-${{ env.DEPLOY_ENV }}.adaptivecluster.com
+            http://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com
           edit-mode: "replace"
 
