@@ -1,13 +1,6 @@
 import styled from "styled-components/macro"
 import { TradeStatus } from "services/trades"
-import {
-  useTableTrades,
-  useTableSort,
-  useDistinctFieldValues as useFilterOptions,
-  useAppliedFilters,
-  colFields,
-  colConfigs,
-} from "../TradesState"
+import { useTableTrades, colFields, colConfigs } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
 
 const TableWrapper = styled.div`
@@ -65,9 +58,7 @@ const StatusIndicatorSpacer = styled.th`
 
 export const TradesGrid: React.FC = () => {
   const trades = useTableTrades()
-  const tableSort = useTableSort()
-  const filterOptions = useFilterOptions()
-  const appliedFilters = useAppliedFilters()
+
   return (
     <TableWrapper>
       <Table>
@@ -75,13 +66,7 @@ export const TradesGrid: React.FC = () => {
           <TableHeadRow>
             <StatusIndicatorSpacer />
             {colFields.map((field) => (
-              <TableHeadCellContainer
-                {...colConfigs[field]}
-                field={field}
-                tableSort={tableSort}
-                appliedFilters={appliedFilters}
-                filterOptions={filterOptions}
-              ></TableHeadCellContainer>
+              <TableHeadCellContainer field={field}></TableHeadCellContainer>
             ))}
           </TableHeadRow>
         </TableHead>

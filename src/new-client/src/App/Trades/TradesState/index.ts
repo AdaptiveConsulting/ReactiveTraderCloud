@@ -4,11 +4,12 @@ export type { DistinctValues } from "./filterState"
 export {
   useDistinctFieldValues,
   onQuickFilterInput,
-  onColFilterSelect,
+  onColFilterToggle,
   useAppliedFilterEntries,
-  useAppliedFilters,
-  appliedFilters$,
-  distinctFieldValues$,
+  useAppliedFieldFilters,
+  onFilterReset,
+  ColFieldToggle,
+  FilterReset,
 } from "./filterState"
 export { useTableSort, TableSort, onSortFieldSelect } from "./sortState"
 export { tableTrades$, useTableTrades } from "./tableTrades"

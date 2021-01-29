@@ -2,15 +2,13 @@ import styled from "styled-components/macro"
 import { FaFilter, FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa"
 import {
   onSortFieldSelect,
-  TableSort,
-  ColConfig,
-  DistinctValues,
+  colConfigs,
   ColField,
+  useTableSort,
 } from "../TradesState"
 import { SetFilter } from "./SetFilter"
 import { useRef, useState } from "react"
 import { usePopUpMenu } from "utils"
-import { Trade } from "services/trades"
 
 const TableHeadCell = styled.th`
   text-align: left;
@@ -37,43 +35,21 @@ const TableHeadCell = styled.th`
   }
 `
 
-export const TableHeadCellContainer: React.FC<
-  ColConfig & {
-    field: ColField
-    tableSort: TableSort
-    filterOptions: DistinctValues
-    appliedFilters: DistinctValues
-  }
-> = ({
-  field,
-  filterType,
-  tableSort,
-  headerName,
-  valueFormatter,
-  filterOptions,
-  appliedFilters,
-}) => {
+export const TableHeadCellContainer: React.FC<{
+  field: ColField
+}> = ({ field }) => {
   const [showFilter, setShowFilter] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
+  const tableSort = useTableSort()
+  const { headerName, filterType } = colConfigs[field]
   return (
     <TableHeadCell
       onClick={() => onSortFieldSelect(field)}
       onMouseEnter={() => filterType === "set" && setShowFilter(true)}
       onMouseLeave={() => setShowFilter(false)}
     >
-      {displayMenu && (
-        <SetFilter
-          field={field}
-          selected={appliedFilters[field as keyof Trade]}
-          ref={ref}
-          options={
-            [...filterOptions[field as keyof Trade]].map((value) =>
-              valueFormatter === undefined ? value : valueFormatter(value),
-            ) as string[]
-          }
-        />
-      )}
+      {displayMenu && <SetFilter field={field} parentRef={ref} />}
       {headerName}
       {tableSort.field === field ? (
         tableSort.direction === "ASC" ? (

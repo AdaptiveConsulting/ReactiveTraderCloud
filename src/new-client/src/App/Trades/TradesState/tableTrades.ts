@@ -42,15 +42,18 @@ const filteredTrades$ = combineLatest([
 
     return trades.filter((trade) => {
       const tradeValues = Object.values(trade)
-      if (!haveAppliedFilters) {
+
+      if (haveSearchTerms && !haveAppliedFilters) {
         return searchTrueOfTrade(searchTerms, tradeValues)
-      } else if (!haveSearchTerms) {
+      } else if (!haveSearchTerms && haveAppliedFilters) {
         return filterTrueOfTrade(appliedFilters, trade)
-      } else {
+      } else if (haveSearchTerms && haveAppliedFilters) {
         return (
           searchTrueOfTrade(searchTerms, tradeValues) &&
           filterTrueOfTrade(appliedFilters, trade)
         )
+      } else {
+        throw new Error("Never")
       }
     })
   }),
