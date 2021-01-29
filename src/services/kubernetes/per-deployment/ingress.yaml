@@ -5,6 +5,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "gce"
     ingress.gcp.kubernetes.io/pre-shared-cert: "web-ssl-shared"
+    external-dns.alpha.kubernetes.io/ttl: "1"
 spec:
   rules:
     - host: web-${DEPLOY_ENV}.adaptivecluster.com
