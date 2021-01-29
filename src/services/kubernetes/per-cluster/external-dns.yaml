@@ -67,4 +67,3 @@ spec:
         - --provider=google
         - --registry=txt
         - --txt-owner-id=adaptive-trader
-        - --log-level=debug
