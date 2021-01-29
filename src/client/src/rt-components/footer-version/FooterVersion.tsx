@@ -12,12 +12,16 @@ export const Link = styled.a`
 `
 
 const gitTagExists = async (gitTag: string | undefined) => {
-  const response = await fetch(
-    'https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/releases'
-  )
-  const data = await response.json()
-  const exists = data.find((element: any) => element.tag_name === gitTag)
-  return exists
+  try {
+    const response = await fetch(
+      'https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/releases'
+    )
+    const data = await response.json()
+    const exists = data.find((element: any) => element.tag_name === gitTag)
+    return exists
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 const FooterVersion: FC = () => {

@@ -1,4 +1,6 @@
+import { ExecuteTradeRequest } from 'apps/MainRoute/widgets/spotTile/model'
 import { QueryResult } from 'dialogflow'
+import { Direction } from 'rt-types'
 
 export function getCurrencyPair(queryResult: QueryResult): string | undefined {
   try {
@@ -27,6 +29,32 @@ export function getNumber(queryResult: QueryResult): number | undefined {
 export function getIntentDisplayName(queryResult: QueryResult): string | undefined {
   try {
     return queryResult.intent.displayName
+  } catch (e) {
+    return undefined
+  }
+}
+
+export function getTradeRequest(
+  queryResult: QueryResult
+): Partial<ExecuteTradeRequest> | undefined {
+  try {
+    const currencyPair = queryResult.parameters.fields.CurrencyPairs.stringValue
+    const direction =
+      queryResult.parameters.fields.TradeType.stringValue === 'buy' ? Direction.Buy : Direction.Sell
+    const notional = queryResult.parameters.fields.number.numberValue
+
+    if (!currencyPair || !direction || !notional) {
+      return
+    }
+
+    return {
+      CurrencyPair: queryResult.parameters.fields.CurrencyPairs.stringValue,
+      Direction:
+        queryResult.parameters.fields.TradeType.stringValue === 'buy'
+          ? Direction.Buy
+          : Direction.Sell,
+      Notional: queryResult.parameters.fields.number.numberValue,
+    }
   } catch (e) {
     return undefined
   }

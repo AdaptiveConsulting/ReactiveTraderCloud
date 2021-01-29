@@ -1,8 +1,14 @@
 import { DetectIntentResponse } from 'dialogflow'
-import { MARKET_INFO_INTENT, SPOT_QUOTE_INTENT, TRADES_INFO_INTENT } from './intents'
+import {
+  MARKET_INFO_INTENT,
+  SPOT_QUOTE_INTENT,
+  TRADES_INFO_INTENT,
+  TRADES_EXECUTE_INTENT,
+} from './intents'
 
 export const mapIntent = (response: DetectIntentResponse): string => {
   let result = ''
+
   if (!response) {
     return result
   }
@@ -16,6 +22,7 @@ export const mapIntent = (response: DetectIntentResponse): string => {
       return `Open Live Rates`
     case TRADES_INFO_INTENT:
       return `Open Trades`
+
     default:
   }
 
@@ -32,4 +39,8 @@ export const isTradeIntent = (response: DetectIntentResponse) => {
 
 export const isMarketIntent = (response: DetectIntentResponse) => {
   return response && response.queryResult.intent.displayName === MARKET_INFO_INTENT
+}
+
+export const isTradeExecutionIntent = (response: DetectIntentResponse) => {
+  return response && response.queryResult.intent.displayName === TRADES_EXECUTE_INTENT
 }

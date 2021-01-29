@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components/macro'
 import { Observable, ReplaySubject } from 'rxjs'
 import { Provider as InteropProvider, getProvider } from 'rt-interop'
-import { getPlatformAsync, Platform, PlatformProvider } from 'rt-platforms'
+import { getPlatformAsync, Platform, PlatformProvider, createLimitChecker } from 'rt-platforms'
 import { WsConnection, ServiceClient } from 'rt-system'
 import { themes } from 'rt-theme'
-import { BlotterService, TradesUpdate, PricingService } from 'apps/MainRoute'
+import { BlotterService, TradesUpdate, PricingService, ExecutionService } from 'apps/MainRoute'
 import { Launcher } from './Launcher'
 import {
   createServiceStub,
   PricingServiceProvider,
   ServiceStubProvider,
   TradeUpdatesProvider,
+  TradeExecutionProvider,
 } from './spotlight'
 
 import { ReferenceDataProvider } from './spotlight/context'
@@ -30,6 +31,7 @@ type Dependencies = {
   tradeUpdatesStream: Observable<TradesUpdate>
   serviceClient: ServiceClient
   referenceData: any
+  executionService: ExecutionService
 }
 
 export const SimpleLauncher: React.FC = () => {
@@ -40,6 +42,7 @@ export const SimpleLauncher: React.FC = () => {
     ;(async () => {
       const serviceClient = createServiceStub(broker)
       const platformResult = await getPlatformAsync()
+      const limitChecker = await createLimitChecker('openfin')
 
       platformResult.window.show()
 
@@ -48,6 +51,14 @@ export const SimpleLauncher: React.FC = () => {
       const blotterUpdates$ = blotterService.getTradesStream()
       const tradesUpdates$ = new ReplaySubject<TradesUpdate>()
       const referenceDataService$ = referenceDataService(serviceClient)
+      const executionService = new ExecutionService(serviceClient, (test: any) => {
+        console.log('ABC', test)
+        return limitChecker.rpc({
+          tradedCurrencyPair: test.CurrencyPair,
+          notional: test.Notional,
+          rate: test.SpotRate,
+        })
+      })
       blotterUpdates$.subscribe(tradesUpdates$)
 
       setDependencies({
@@ -56,6 +67,7 @@ export const SimpleLauncher: React.FC = () => {
         serviceClient,
         platform: platformResult,
         referenceData: referenceDataService$,
+        executionService: executionService,
       })
     })()
   }, [])
@@ -70,6 +82,7 @@ export const SimpleLauncher: React.FC = () => {
     serviceClient,
     tradeUpdatesStream,
     referenceData,
+    executionService,
   } = dependencies
 
   if (!platform || !serviceClient) {
@@ -83,10 +96,12 @@ export const SimpleLauncher: React.FC = () => {
           <TradeUpdatesProvider value={tradeUpdatesStream}>
             <PricingServiceProvider value={pricingService}>
               <ReferenceDataProvider value={referenceData}>
-                <PlatformProvider value={platform}>
-                  <Helmet title={getAppName('Reactive Launcher')} />
-                  <Launcher />
-                </PlatformProvider>
+                <TradeExecutionProvider value={executionService}>
+                  <PlatformProvider value={platform}>
+                    <Helmet title={getAppName('Reactive Launcher')} />
+                    <Launcher />
+                  </PlatformProvider>
+                </TradeExecutionProvider>
               </ReferenceDataProvider>
             </PricingServiceProvider>
           </TradeUpdatesProvider>

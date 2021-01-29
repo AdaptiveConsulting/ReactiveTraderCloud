@@ -74,6 +74,7 @@ class RfqTimer extends PureComponent<RfqTimerProps, RfqTimerState> {
   }
 
   componentDidMount() {
+    //@ts-ignore
     this.intervalId = setInterval(this.updateTimeLeft, UPDATE_FREQ_MS)
   }
 

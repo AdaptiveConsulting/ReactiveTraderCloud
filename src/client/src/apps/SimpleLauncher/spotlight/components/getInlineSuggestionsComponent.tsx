@@ -5,8 +5,10 @@ import {
   getCurrency,
   getCurrencyPair,
   getNumber,
+  getTradeRequest,
   handleIntent,
   isSpotQuoteIntent,
+  isTradeExecutionIntent,
   isTradeIntent,
   isMarketIntent,
   mapIntent,
@@ -23,6 +25,7 @@ import {
 import { InlineBlotter } from './InlineBlotter'
 import { InlineQuoteTable } from './InlineQuote'
 import { InlineMarketResults } from './InlineMarketResults'
+import { InlineTradeExecution } from './InlineTradeExecution'
 import { appConfigs } from '../../applicationConfigurations'
 import { open } from '../../tools'
 
@@ -37,10 +40,36 @@ const PlatformLogoWrapper = styled.div`
   }
 `
 
+export function getInlineTradeExecutionComponent(
+  response: DetectIntentResponse,
+  handleReset: () => void
+) {
+  const tradeRequest = getTradeRequest(response.queryResult)
+
+  return isTradeExecutionIntent(response) &&
+    tradeRequest?.CurrencyPair &&
+    tradeRequest.Notional &&
+    tradeRequest.Direction ? (
+    <InlineTradeExecution
+      handleReset={handleReset}
+      partialTradeRequest={{
+        currencyPair: tradeRequest.CurrencyPair,
+        notional: tradeRequest.Notional,
+        direction: tradeRequest.Direction,
+      }}
+    />
+  ) : null
+}
+
 export function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: Platform) {
   const currencyPair = getCurrencyPair(response.queryResult)
   const currency = getCurrency(response.queryResult)
+
   const intent = mapIntent(response)
+
+  if (isTradeExecutionIntent(response)) {
+    return null
+  }
 
   const quoteSuggestion =
     isSpotQuoteIntent(response) && currencyPair ? (

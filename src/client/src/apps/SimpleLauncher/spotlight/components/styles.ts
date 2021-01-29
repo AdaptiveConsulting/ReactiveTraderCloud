@@ -211,3 +211,23 @@ export const SearchContainer = styled.div`
 export const InlineQuoteContainer = styled.div`
   font-size: 0.6875rem;
 `
+
+export const InlineTradeExecutionContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  background-color: ${({ theme }) => theme.core.darkBackground};
+  padding-top: 4px; // top loading bar
+`
+
+export const InlineTradeResponseContainer = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0.25rem;
+  font-size: 0.8rem;
+`

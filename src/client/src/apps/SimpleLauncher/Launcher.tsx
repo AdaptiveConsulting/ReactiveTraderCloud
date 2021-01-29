@@ -4,6 +4,7 @@ import { Bounds } from 'openfin/_v2/shapes/shapes'
 import { usePlatform } from 'rt-platforms'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
+
 import {
   LauncherGlobalStyle,
   MinExitContainer,
