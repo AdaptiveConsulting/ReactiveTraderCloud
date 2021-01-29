@@ -1,7 +1,14 @@
 import React from "react"
 import styled from "styled-components/macro"
 import { FaCheck } from "react-icons/fa"
-import { ColField, onColFilterSelect } from "../TradesState"
+import {
+  colConfigs,
+  ColField,
+  onColFilterToggle,
+  useAppliedFieldFilters,
+  useDistinctFieldValues,
+  ColFieldToggle,
+} from "../TradesState"
 
 export const MultiSelectWrapper = styled.span`
   position: absolute;
@@ -59,38 +66,30 @@ const AlignedChecked = styled.span`
 `
 
 interface SetFilterProps {
-  options: unknown[]
   field: ColField
-  selected: Set<unknown>
-  ref: React.RefObject<HTMLDivElement>
+  parentRef: React.RefObject<HTMLDivElement>
 }
 
-export const SetFilter: React.FC<SetFilterProps> = ({
-  options,
-  field,
-  selected,
-  ref,
-}) => {
+export const SetFilter: React.FC<SetFilterProps> = ({ field, parentRef }) => {
+  const selected = useAppliedFieldFilters(field)
+  const options = useDistinctFieldValues(field)
+  const { valueFormatter } = colConfigs[field]
   return (
     <MultiSelectWrapper>
-      <MultiSelectMenu ref={ref}>
-        {options.map((option) => {
+      <MultiSelectMenu ref={parentRef}>
+        {[...options].map((option) => {
           const isSelected = selected.has(option)
           return (
             <MultiSelectOption
               key={`${option}-filter`}
-              onClick={() => {
-                const nextSelections = new Set(selected)
-                if (isSelected) {
-                  nextSelections.delete(option)
-                } else {
-                  nextSelections.add(option)
-                }
-                onColFilterSelect([field, nextSelections])
-              }}
+              onClick={() =>
+                onColFilterToggle(
+                  new ColFieldToggle(field, option, !isSelected),
+                )
+              }
               selected={isSelected}
             >
-              {option}
+              {valueFormatter?.(option) ?? option}
               <AlignedChecked>{isSelected && <FaCheck />}</AlignedChecked>
             </MultiSelectOption>
           )
