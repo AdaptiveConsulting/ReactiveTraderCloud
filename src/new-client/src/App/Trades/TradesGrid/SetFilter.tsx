@@ -10,6 +10,8 @@ import {
   useAppliedFieldFilters,
   ColFieldToggle,
   distinctFieldValues$,
+  onFilterReset,
+  FilterReset,
 } from "../TradesState"
 import { map, startWith } from "rxjs/operators"
 import { combineLatest } from "rxjs"
@@ -122,6 +124,18 @@ export const SetFilter: React.FC<SetFilterProps> = ({ field, parentRef }) => {
           placeholder="Search"
           onChange={(e) => onSearchInput(e.target.value)}
         />
+        <MultiSelectOption
+          key={`select-all-filter`}
+          onClick={() => {
+            if (selected.size > 0) {
+              onFilterReset(new FilterReset(field))
+            }
+          }}
+          selected={selected.size === 0}
+        >
+          Select All
+          <AlignedChecked>{selected.size === 0 && <FaCheck />}</AlignedChecked>
+        </MultiSelectOption>
         {options.map((option) => {
           const isSelected = selected.has(option)
           return (
