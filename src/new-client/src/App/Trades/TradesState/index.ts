@@ -2,7 +2,7 @@ export type { ColField, ColConfig } from "./colConfig"
 export { colConfigs, colFields } from "./colConfig"
 export type { DistinctValues } from "./filterState"
 export {
-  useDistinctFieldValues,
+  distinctFieldValues$,
   onQuickFilterInput,
   onColFilterToggle,
   useAppliedFilterEntries,

@@ -35,7 +35,7 @@ const distinctValues$ = trades$.pipe(
   ),
 )
 
-export const [useDistinctFieldValues, distinctFieldValues$] = bind(
+export const [_, distinctFieldValues$] = bind(
   (field: ColField) =>
     distinctValues$.pipe(map((distinctValues) => distinctValues[field])),
   new Set(),
