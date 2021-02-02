@@ -8,10 +8,8 @@ import {
   ColField,
   onColFilterToggle,
   useAppliedFieldFilters,
-  ColFieldToggle,
   distinctFieldValues$,
   onFilterReset,
-  FilterReset,
 } from "../TradesState"
 import { map, startWith } from "rxjs/operators"
 import { combineLatest } from "rxjs"
@@ -128,7 +126,7 @@ export const SetFilter: React.FC<SetFilterProps> = ({ field, parentRef }) => {
           key={`select-all-filter`}
           onClick={() => {
             if (selected.size > 0) {
-              onFilterReset(new FilterReset(field))
+              onFilterReset(field)
             }
           }}
           selected={selected.size === 0}
@@ -141,11 +139,7 @@ export const SetFilter: React.FC<SetFilterProps> = ({ field, parentRef }) => {
           return (
             <MultiSelectOption
               key={`${option}-filter`}
-              onClick={() =>
-                onColFilterToggle(
-                  new ColFieldToggle(field, option, !isSelected),
-                )
-              }
+              onClick={() => onColFilterToggle(field, option)}
               selected={isSelected}
             >
               {valueFormatter?.(option) ?? option}

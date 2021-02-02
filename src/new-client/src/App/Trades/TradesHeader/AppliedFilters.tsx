@@ -6,7 +6,6 @@ import {
   ColField,
   onFilterReset,
   useAppliedFilterEntries,
-  FilterReset,
 } from "../TradesState"
 
 const FilterButton = styled("button")`
@@ -47,7 +46,7 @@ export const AppliedFilters: React.FC = () => {
         <FilterField key={field}>
           <FilterName>{colConfigs[field].headerName}</FilterName>
           <FilterButton>
-            <FaTimes onClick={() => onFilterReset(new FilterReset(field))} />
+            <FaTimes onClick={() => onFilterReset(field)} />
           </FilterButton>
         </FilterField>
       ))}
