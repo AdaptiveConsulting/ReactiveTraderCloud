@@ -40,11 +40,13 @@ export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({
   }, [currencyPairs])
 
   useEffect(() => {
-    let interval: NodeJS.Timer
+    let interval: Number
     if (countdownTimer) {
+      //@ts-ignore
       interval = setInterval(() => {
         setCountDisplay(prev => {
           if (prev === 1) {
+            //@ts-ignore
             clearInterval(interval)
             setCountDisplay(COUNTDOWN / 1000)
           }
@@ -55,6 +57,7 @@ export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({
 
     return () => {
       setCountDisplay(COUNTDOWN / 1000)
+      //@ts-ignore
       clearInterval(interval)
     }
   }, [countdownTimer])
