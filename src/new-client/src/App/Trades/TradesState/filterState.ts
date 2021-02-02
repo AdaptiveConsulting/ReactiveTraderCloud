@@ -3,8 +3,7 @@ import { map, scan, startWith } from "rxjs/operators"
 import { mapObject } from "utils"
 import { Trade, trades$ } from "services/trades"
 import { ColField, colFields } from "./colConfig"
-import { createListener } from "@react-rxjs/utils"
-import { merge } from "rxjs"
+import { createListener, mergeWithKey } from "@react-rxjs/utils"
 
 export type DistinctValues = {
   [K in ColField]: Set<Trade[K]>
@@ -41,44 +40,39 @@ export const [_, distinctFieldValues$] = bind(
   new Set(),
 )
 
-abstract class FilterEvent {
-  constructor(public colField: ColField) {}
-}
-export class ColFieldToggle extends FilterEvent {
-  constructor(
-    colField: ColField,
-    public fieldValue: unknown,
-    public set: boolean,
-  ) {
-    super(colField)
-  }
+interface FilterEvent {
+  field: ColField
 }
 
-export const [
-  colFilterToggle$,
-  onColFilterToggle,
-] = createListener<ColFieldToggle>()
+interface ColFieldToggle extends FilterEvent {
+  value: unknown
+}
+export const [colFilterToggle$, onColFilterToggle] = createListener(
+  (field: ColField, value: unknown) => ({ field, value } as ColFieldToggle),
+)
 
-export class FilterReset extends FilterEvent {}
+export const [filterResets$, onFilterReset] = createListener(
+  (field: ColField) => ({ field } as FilterEvent),
+)
 
-export const [filterResets$, onFilterReset] = createListener<FilterReset>()
-
-const appliedFilters$ = merge(colFilterToggle$, filterResets$).pipe(
-  scan((appliedFilters, nextFilterEvent) => {
+const appliedFilters$ = mergeWithKey({
+  toggle: colFilterToggle$,
+  reset: filterResets$,
+}).pipe(
+  scan((appliedFilters, event) => {
     let newValues: Set<unknown>
-    let field: ColField = nextFilterEvent.colField
-
-    if (nextFilterEvent instanceof FilterReset) {
+    const field: ColField = event.payload.field
+    if (event.type === "reset") {
       newValues = new Set()
-    } else if (nextFilterEvent instanceof ColFieldToggle) {
-      newValues = new Set(appliedFilters[field] as Iterable<string>)
-      newValues[nextFilterEvent.set ? "add" : "delete"](
-        nextFilterEvent.fieldValue,
-      )
     } else {
-      throw new Error(`Unexpected FilterEvent: ${nextFilterEvent}`)
+      newValues = new Set(appliedFilters[field] as Iterable<string>)
+      const value = event.payload.value as any
+      if (newValues.has(value)) {
+        newValues.delete(value)
+      } else {
+        newValues.add(value)
+      }
     }
-
     return {
       ...appliedFilters,
       [field]: newValues,
