@@ -37,6 +37,9 @@ export function getIntentDisplayName(queryResult: QueryResult): string | undefin
 export function getTradeRequest(
   queryResult: QueryResult
 ): Partial<ExecuteTradeRequest> | undefined {
+  if (!queryResult) {
+    return
+  }
   try {
     const currencyPair = queryResult.parameters.fields.CurrencyPairs.stringValue
     const direction =
@@ -48,14 +51,11 @@ export function getTradeRequest(
     }
 
     return {
-      CurrencyPair: queryResult.parameters.fields.CurrencyPairs.stringValue,
-      Direction:
-        queryResult.parameters.fields.TradeType.stringValue === 'buy'
-          ? Direction.Buy
-          : Direction.Sell,
-      Notional: queryResult.parameters.fields.number.numberValue,
+      CurrencyPair: currencyPair,
+      Direction: direction,
+      Notional: notional,
     }
   } catch (e) {
-    return undefined
+    return
   }
 }

@@ -1,16 +1,13 @@
-import React, { FC } from 'react'
+import React from 'react'
 import styled, { DefaultTheme, keyframes } from 'styled-components/macro'
 
-type Props = {
-  status: 'rejected' | 'accepted' | undefined
-  loading: boolean
-}
+export type IndeterminateLoadingBarStatus = 'success' | 'failure' | 'loading' | undefined
 
-const getBarColor = (status: Props['status'], theme: DefaultTheme) => {
-  if (status === 'accepted') {
+const getBarColor = (status: IndeterminateLoadingBarStatus, theme: DefaultTheme) => {
+  if (status === 'success') {
     return theme.colors.accents.positive.base
   }
-  if (status === 'rejected') {
+  if (status === 'failure') {
     return theme.colors.accents.negative.base
   }
   return theme.colors.accents.primary.base
@@ -23,14 +20,14 @@ const Slider = styled.div`
   overflow: hidden;
   top: 0;
 `
-const Line = styled.div<{ status: Props['status']; loading: boolean }>`
+const Line = styled.div<{ status: IndeterminateLoadingBarStatus }>`
   position: absolute;
-  opacity: ${({ loading }) => (loading ? '0.4' : '1.0')};
+  opacity: ${({ status }) => (status === 'loading' ? '0.4' : '1.0')};
   background: ${({ theme, status }) => getBarColor(status, theme)};
   width: 150%;
   height: 3px;
 `
-const SubLine = styled.div<{ status: Props['status'] }>`
+const SubLine = styled.div<{ status: IndeterminateLoadingBarStatus }>`
   position: absolute;
   background: ${({ theme, status }) => getBarColor(status, theme)};
   height: 3px;
@@ -52,11 +49,11 @@ const Dec = styled(SubLine)`
   animation: ${Decrease} 2s 0.5s infinite;
 `
 
-export const IndeterminateLoadingBar: FC<Props> = ({ status, loading }) => {
+export function IndeterminateLoadingBar({ status }: { status: IndeterminateLoadingBarStatus }) {
   return (
     <Slider>
-      <Line status={status} loading={loading} />
-      {loading && (
+      <Line status={status} />
+      {status === 'loading' && (
         <>
           <Inc status={status} />
           <Dec status={status} />

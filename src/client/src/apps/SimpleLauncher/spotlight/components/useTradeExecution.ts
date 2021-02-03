@@ -1,10 +1,12 @@
 import { createTradeRequest, SpotPriceTick } from 'apps/MainRoute/widgets/spotTile/model'
-import { ExecuteTradeResponse } from 'apps/MainRoute/widgets/spotTile/model/executeTradeRequest'
+import {
+  ExecuteTradeRequest,
+  ExecuteTradeResponse,
+} from 'apps/MainRoute/widgets/spotTile/model/executeTradeRequest'
 import { useContext, useState } from 'react'
-import { CurrencyPair, Direction } from 'rt-types'
+import { CurrencyPair } from 'rt-types'
 import { take } from 'rxjs/operators'
 import { TradeExecutionContext } from '../context'
-import { InlinePartialTradeRequest } from './InlineTradeExecution'
 
 import { usePriceService } from './usePriceService'
 
@@ -23,22 +25,27 @@ export function useTradeExecution() {
     partialTradeRequest,
     currencyPairs,
   }: {
-    partialTradeRequest: InlinePartialTradeRequest
+    partialTradeRequest: Partial<ExecuteTradeRequest>
     currencyPairs: CurrencyPair
   }) => {
-    const { direction, currencyPair, notional } = partialTradeRequest
+    const { Direction, CurrencyPair, Notional } = partialTradeRequest
+    console.log(Direction, CurrencyPair, Notional)
+    if (!Direction || !CurrencyPair || !Notional) {
+      return
+    }
+
     setError(undefined)
     setLoading(true)
 
     try {
-      const spotPrice = await getSpotRate(currencyPair)
+      const spotPrice = await getSpotRate(CurrencyPair)
 
       if (!spotPrice) {
         setError('Unable to get Spot Price.')
         return
       }
 
-      const spotRate = direction === Direction.Buy ? spotPrice.ask : spotPrice.bid
+      const spotRate = Direction === 'Buy' ? spotPrice.ask : spotPrice.bid
       const completeCurrencyPair = currencyPairs?.[spotPrice.symbol]
 
       if (!completeCurrencyPair) {
@@ -47,10 +54,10 @@ export function useTradeExecution() {
       }
 
       const tradeRequestObj = createTradeRequest({
-        direction,
+        direction: Direction,
         currencyBase: completeCurrencyPair.base,
         symbol: spotPrice.symbol,
-        notional,
+        notional: Notional,
         rawSpotRate: spotRate,
       })
 

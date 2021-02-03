@@ -26,6 +26,7 @@ import {
 import { SearchControl, Response, getInlineSuggestionsComponent, useNlpService } from './spotlight'
 import { ExitIcon, minimiseNormalIcon, SearchIcon } from './icons'
 import { AdaptiveLoader, LogoIcon } from 'rt-components'
+import { InlineTradeExecution } from './spotlight/components/InlineTradeExecution'
 
 const expandedLauncherWidth = 600
 
@@ -147,6 +148,9 @@ export const Launcher: React.FC = () => {
           resetResponse={resetResponse}
         />
         <SearchButton onClick={showSearch} isSearchVisible={isSearchVisible} />
+
+        {response && <InlineTradeExecution response={response} handleReset={resetResponse} />}
+
         <MinExitContainer>
           <LauncherMinimiseAndExit />
         </MinExitContainer>

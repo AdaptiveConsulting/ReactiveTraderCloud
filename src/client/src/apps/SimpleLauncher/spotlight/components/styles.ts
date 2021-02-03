@@ -216,10 +216,27 @@ export const InlineTradeExecutionContainer = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 2;
+  z-index: 9;
   top: 0;
   background-color: ${({ theme }) => theme.core.darkBackground};
   padding-top: 4px; // top loading bar
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  button {
+    cursor: pointer;
+    padding: 0.75rem 1.5rem;
+    background-color: ${({ theme }) => theme.core.lightBackground};
+    border-radius: 3px;
+    &:hover {
+      background-color: #5f94f5;
+    }
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
 `
 
 export const InlineTradeResponseContainer = styled.div`
@@ -228,6 +245,6 @@ export const InlineTradeResponseContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 0.25rem;
-  font-size: 0.8rem;
+  padding: 0.5rem;
+  /* font-size: 0.8rem; */
 `

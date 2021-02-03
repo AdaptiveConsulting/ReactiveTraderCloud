@@ -14,7 +14,7 @@ import { Platform } from 'rt-platforms'
 import { handleIntent } from 'rt-interop'
 import { Input, SearchContainer, CancelButton } from './styles'
 import { ExitIcon } from '../../icons'
-import { getInlineTradeExecutionComponent } from './getInlineSuggestionsComponent'
+// import { getInlineTradeExecutionComponent } from './getInlineSuggestionsComponent'
 
 export interface SearchControlsProps {
   onStateChange: (isTyping: boolean) => void
@@ -103,13 +103,12 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
       throttledSendRequest(inputValue)
     }, [throttledSendRequest, inputValue])
 
-    const inlineTradeExecutionComponent = response
-      ? getInlineTradeExecutionComponent(response, handleCancelButtonClick)
-      : null
+    // const inlineTradeExecutionComponent = response
+    //   ? getInlineTradeExecutionComponent(response, handleCancelButtonClick)
+    //   : null
 
     return (
       <SearchContainer className={isSearchVisible ? 'search-container--active' : ''}>
-        {inlineTradeExecutionComponent}
         <Input
           value={inputValue}
           onChange={handleChange}
