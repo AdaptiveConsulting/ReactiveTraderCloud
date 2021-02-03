@@ -1,19 +1,26 @@
+import React, { useRef, useState } from "react"
 import styled from "styled-components/macro"
 import { FaFilter, FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa"
+import { Subscribe } from "@react-rxjs/core"
+import { usePopUpMenu } from "utils"
+import type {
+  ColField,
+  NumColField,
+  SetColField,
+  DateColField,
+  SortDirection,
+} from "../TradesState"
 import {
   onSortFieldSelect,
   colConfigs,
-  ColField,
   useTableSort,
-  appliedFieldFilters$,
+  appliedDateFilters$,
+  appliedSetFieldFilters$,
   appliedNumFilters$,
 } from "../TradesState"
 import { SetFilter } from "./SetFilter"
 import { NumFilter } from "./NumFilter"
-import { useRef, useState } from "react"
-import { usePopUpMenu } from "utils"
-import { Subscribe } from "@react-rxjs/core"
-import { NumColField, SetColField } from "../TradesState/colConfig"
+import { DateFilter } from "./DateFilter"
 
 const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
@@ -58,6 +65,10 @@ const AlignedDownArrow = styled(FaLongArrowAltDown)`
   margin-top: 0.1rem;
 `
 
+const AlignedArrow: React.FC<{ sortDirection: SortDirection }> = ({
+  sortDirection,
+}) => (sortDirection === "ASC" ? <AlignedUpArrow /> : <AlignedDownArrow />)
+
 export const TableHeadCellContainer: React.FC<{
   field: ColField
 }> = ({ field }) => {
@@ -66,13 +77,12 @@ export const TableHeadCellContainer: React.FC<{
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
   const tableSort = useTableSort()
   const { headerName, filterType } = colConfigs[field]
-  const numeric = filterType === "number"
 
   return (
     <TableHeadCell
       onMouseEnter={() => setShowFilter(true)}
       onMouseLeave={() => setShowFilter(false)}
-      numeric={numeric && field !== "tradeId"}
+      numeric={filterType === "number" && field !== "tradeId"}
       width={colConfigs[field].width}
       ref={ref}
     >
@@ -82,15 +92,11 @@ export const TableHeadCellContainer: React.FC<{
             onSortFieldSelect(field)
           }
         }}
-        headerFirst={!numeric || field === "tradeId"}
+        headerFirst={filterType !== "number" || field === "tradeId"}
       >
         {headerName}
-        {tableSort.field === field ? (
-          tableSort.direction === "ASC" ? (
-            <AlignedUpArrow />
-          ) : (
-            <AlignedDownArrow />
-          )
+        {tableSort.field === field && tableSort.direction !== undefined ? (
+          <AlignedArrow sortDirection={tableSort.direction} />
         ) : (
           <span className="spacer" />
         )}
@@ -105,13 +111,17 @@ export const TableHeadCellContainer: React.FC<{
           <span className="spacer" />
         )}
         {displayMenu &&
-          (numeric ? (
+          (filterType === "number" ? (
             <Subscribe source$={appliedNumFilters$(field as NumColField)}>
               <NumFilter field={field as NumColField} parentRef={ref} />
             </Subscribe>
-          ) : (
-            <Subscribe source$={appliedFieldFilters$(field as SetColField)}>
+          ) : filterType === "set" ? (
+            <Subscribe source$={appliedSetFieldFilters$(field as SetColField)}>
               <SetFilter field={field as SetColField} parentRef={ref} />
+            </Subscribe>
+          ) : (
+            <Subscribe source$={appliedDateFilters$(field as DateColField)}>
+              <DateFilter field={field as DateColField} parentRef={ref} />
             </Subscribe>
           ))}
       </FlexWrapper>

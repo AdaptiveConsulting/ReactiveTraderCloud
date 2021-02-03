@@ -1,20 +1,28 @@
-export type { ColField, ColConfig, NumColField, SetColField } from "./colConfig"
+export type { ColField, ColConfig, FilterType } from "./colConfig"
 export { colConfigs, colFields } from "./colConfig"
-export type { DistinctValues, NumFilterContent } from "./filterState"
+export type {
+  DistinctValues,
+  NumFilterContent,
+  NumColField,
+  SetColField,
+  DateColField,
+} from "./filterState"
 export {
-  distinctFieldValues$,
+  distinctSetFieldValues$,
   onQuickFilterInput,
   onColFilterToggle,
-  useAppliedFilterEntries,
-  useAppliedFieldFilters,
-  appliedFieldFilters$,
+  useAppliedSetFieldFilters,
+  appliedSetFieldFilters$,
   onFilterReset,
   onColFilterEnterNum,
   numberFilters$,
   ComparatorType,
   useAppliedNumFilters,
   appliedNumFilters$,
-  useNumFilterEntries,
+  useAppliedDateFilters,
+  appliedDateFilters$,
+  onColFilterDateSelect,
 } from "./filterState"
-export { useTableSort, TableSort, onSortFieldSelect } from "./sortState"
-export { tableTrades$, useTableTrades } from "./tableTrades"
+export type { SortDirection, TableSort } from "./sortState"
+export { useTableSort, onSortFieldSelect } from "./sortState"
+export { tableTrades$, useTableTrades, useFilterFields } from "./tableTrades"

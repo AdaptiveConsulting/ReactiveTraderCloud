@@ -1,16 +1,25 @@
-import { bind } from "@react-rxjs/core"
+import { startOfDay } from "date-fns"
 import { combineLatest } from "rxjs"
-import { map } from "rxjs/operators"
-import { Trade, trades$ } from "services/trades"
-import { ColField } from "./colConfig"
+import { map, startWith } from "rxjs/operators"
+import { bind } from "@react-rxjs/core"
+import type { Trade } from "services/trades"
+import { trades$ } from "services/trades"
+import type { ColField } from "./colConfig"
+import type {
+  NumColField,
+  DateColField,
+  DateFilterContent,
+  NumFilterContent,
+} from "./filterState"
 import {
   quickFilterInputs$,
-  appliedFilterEntries$,
-  NumFilterContent,
+  appliedSetFilterEntries$,
   numFilterEntries$,
   ComparatorType,
+  dateFilterEntries$,
 } from "./filterState"
-import { SortDirection, tableSort$ } from "./sortState"
+import type { SortDirection } from "./sortState"
+import { tableSort$ } from "./sortState"
 
 const searchTrueOfTrade = (searchTerms: string[], tradeValues: unknown[]) => {
   return searchTerms.every((term) =>
@@ -22,7 +31,7 @@ const searchTrueOfTrade = (searchTerms: string[], tradeValues: unknown[]) => {
   )
 }
 
-const filterTrueOfTrade = (
+const setFiltersTrueOfTrade = (
   appliedFilters: [string, Set<unknown>][],
   trade: Trade,
 ) => {
@@ -35,7 +44,48 @@ const numIsSet = (val: number | undefined | null): val is number => {
   return val != null
 }
 
-const filterNumOfTrade = (
+const dateIsSet = (val: Date | undefined | null): val is Date => {
+  return val != null
+}
+
+const dateFiltersTrueOfTrade = (
+  dateFilters: [string, DateFilterContent][],
+  trade: Trade,
+) => {
+  return dateFilters.every(([field, filterContent]) => {
+    if (!dateIsSet(filterContent.value1)) {
+      return true
+    }
+
+    const tradeDate = startOfDay(trade[field as DateColField]).valueOf()
+    const filterDate = startOfDay(filterContent.value1).valueOf()
+
+    switch (filterContent.comparator) {
+      case ComparatorType.Equals:
+        return tradeDate === filterDate
+      case ComparatorType.NotEqual:
+        return tradeDate !== filterDate
+      case ComparatorType.Less:
+        return tradeDate < filterDate
+      case ComparatorType.LessOrEqual:
+        return tradeDate <= filterDate
+      case ComparatorType.Greater:
+        return tradeDate > filterDate
+      case ComparatorType.GreaterOrEqual:
+        return tradeDate >= filterDate
+      case ComparatorType.InRange:
+        return (
+          dateIsSet(filterContent.value2) &&
+          tradeDate >= filterDate &&
+          tradeDate <= startOfDay(filterContent.value2).valueOf()
+        )
+      default:
+        return true
+    }
+  })
+}
+
+const numFiltersTrueOfTrade = (
   numFilters: [string, NumFilterContent][],
   trade: Trade,
 ) => {
@@ -44,24 +94,27 @@ const filterNumOfTrade = (
       return true
     }
 
+    const tradeNumber = trade[field as NumColField]
+    const filterNumber = filterContent.value1
+
     switch (filterContent.comparator) {
       case ComparatorType.Equals:
-        return trade[field as ColField] === filterContent.value1
+        return tradeNumber === filterNumber
       case ComparatorType.NotEqual:
-        return trade[field as ColField] !== filterContent.value1
+        return tradeNumber !== filterNumber
       case ComparatorType.Less:
-        return trade[field as ColField] < filterContent.value1
+        return tradeNumber < filterNumber
       case ComparatorType.LessOrEqual:
-        return trade[field as ColField] <= filterContent.value1
+        return tradeNumber <= filterNumber
       case ComparatorType.Greater:
-        return trade[field as ColField] > filterContent.value1
+        return tradeNumber > filterNumber
       case ComparatorType.GreaterOrEqual:
-        return trade[field as ColField] >= filterContent.value1
+        return tradeNumber >= filterNumber
       case ComparatorType.InRange:
         return (
           numIsSet(filterContent.value2) &&
-          trade[field as ColField] >= filterContent.value1 &&
-          trade[field as ColField] <= filterContent.value2
+          tradeNumber >= filterNumber &&
+          tradeNumber <= filterContent.value2
         )
       default:
         return true
@@ -74,33 +127,35 @@ const filteredTrades$ = combineLatest([
   quickFilterInputs$.pipe(
     map((quickFilterInputs) => quickFilterInputs.split(" ")),
   ),
-  appliedFilterEntries$,
+  appliedSetFilterEntries$,
   numFilterEntries$,
+  dateFilterEntries$,
 ]).pipe(
-  map(([trades, searchTerms, appliedFilters, numFilters]) => {
-    const haveAppliedFilters = appliedFilters.length > 0
+  map(([trades, searchTerms, setFilters, numFilters, dateFilters]) => {
+    const haveSetFilters = setFilters.length > 0
     const haveSearchTerms = searchTerms.length > 0
     const haveNumFilters = numFilters.length > 0
+    const haveDateFilters = dateFilters.length > 0
 
-    if (!haveSearchTerms && !haveAppliedFilters && !haveNumFilters) {
+    if (
+      !haveSearchTerms &&
+      !haveSetFilters &&
+      !haveNumFilters &&
+      !haveDateFilters
+    ) {
       return trades
     }
 
     return trades.filter((trade) => {
-      const tradeValues = Object.values(trade)
-      let searchSelected = true
-      let setSelected = true
-      let numSelected = true
-      if (haveNumFilters) {
-        numSelected = filterNumOfTrade(numFilters, trade)
-      }
-      if (haveAppliedFilters) {
-        setSelected = filterTrueOfTrade(appliedFilters, trade)
-      }
-      if (haveSearchTerms) {
-        searchSelected = searchTrueOfTrade(searchTerms, tradeValues)
-      }
-      return setSelected && searchSelected && numSelected
+      const numFiltersTrue =
+        !haveNumFilters || numFiltersTrueOfTrade(numFilters, trade)
+      const setFiltersTrue =
+        !haveSetFilters || setFiltersTrueOfTrade(setFilters, trade)
+      const searchTrue =
+        !haveSearchTerms || searchTrueOfTrade(searchTerms, Object.values(trade))
+      const dateFiltersTrue =
+        !haveDateFilters || dateFiltersTrueOfTrade(dateFilters, trade)
+      return numFiltersTrue && setFiltersTrue && searchTrue && dateFiltersTrue
     })
   }),
 )
@@ -169,4 +224,17 @@ export const [useTableTrades, tableTrades$] = bind(
       return sortedTrades
     }),
   ),
+)
+export const [useFilterFields] = bind(
+  combineLatest([
+    appliedSetFilterEntries$.pipe(startWith([])),
+    numFilterEntries$.pipe(startWith([])),
+    dateFilterEntries$.pipe(startWith([])),
+  ]).pipe(
+    map(
+      ([set, num, date]) =>
+        [...set, ...num, ...date].map(([field]) => field) as ColField[],
+    ),
+  ),
+  [] as ColField[],
 )
