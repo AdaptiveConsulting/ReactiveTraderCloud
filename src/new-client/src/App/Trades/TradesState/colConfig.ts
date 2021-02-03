@@ -1,21 +1,15 @@
-import { Trade } from "services/trades"
-import { capitalize } from "utils/capitalize"
+import type { Trade } from "services/trades"
 import { format as formatDate } from "date-fns"
 import {
+  mapObject,
   significantDigitsNumberFormatter,
   formatAsWholeNumber,
-} from "utils/formatNumber"
+  capitalize,
+} from "utils"
 
 export type ColField = keyof Trade
-export type NumColField = keyof Pick<Trade, "tradeId" | "notional" | "spotRate">
-export type SetColField = keyof Pick<
-  Trade,
-  "status" | "direction" | "symbol" | "dealtCurrency" | "traderName"
->
-export type DateColField = keyof Pick<Trade, "tradeDate" | "valueDate">
 
-type FilterType = "set" | "date" | "number"
-
+export type FilterType = "set" | "date" | "number"
 export interface ColConfig {
   headerName: string
   filterType: FilterType
@@ -84,5 +78,7 @@ export const colConfigs: Record<ColField, ColConfig> = {
     width: 110,
   },
 }
+
+export const colFilterMap = mapObject(colConfigs, (val) => val.filterType)
 
 export const colFields: ColField[] = Object.keys(colConfigs) as ColField[]
