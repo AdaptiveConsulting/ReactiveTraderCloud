@@ -5,10 +5,12 @@ import {
   colConfigs,
   ColField,
   useTableSort,
+  appliedFieldFilters$,
 } from "../TradesState"
 import { SetFilter } from "./SetFilter"
 import { useRef, useState } from "react"
 import { usePopUpMenu } from "utils"
+import { Subscribe } from "@react-rxjs/core"
 
 const TableHeadCell = styled.th`
   text-align: left;
@@ -49,7 +51,11 @@ export const TableHeadCellContainer: React.FC<{
       onMouseEnter={() => filterType === "set" && setShowFilter(true)}
       onMouseLeave={() => setShowFilter(false)}
     >
-      {displayMenu && <SetFilter field={field} parentRef={ref} />}
+      {displayMenu && (
+        <Subscribe source$={appliedFieldFilters$(field)}>
+          <SetFilter field={field} parentRef={ref} />
+        </Subscribe>
+      )}
       {headerName}
       {tableSort.field === field ? (
         tableSort.direction === "ASC" ? (

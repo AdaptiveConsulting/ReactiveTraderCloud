@@ -111,7 +111,7 @@ const [useFilterOptions] = bind(
 )
 
 export const SetFilter: React.FC<SetFilterProps> = ({ field, parentRef }) => {
-  const selected = useAppliedFieldFilters(field)
+  const selected = useAppliedFieldFilters(field) as Set<string>
   const options = useFilterOptions(field)
   const { valueFormatter } = colConfigs[field]
   return (

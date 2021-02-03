@@ -7,6 +7,7 @@ export {
   onColFilterToggle,
   useAppliedFilterEntries,
   useAppliedFieldFilters,
+  appliedFieldFilters$,
   onFilterReset,
 } from "./filterState"
 export { useTableSort, TableSort, onSortFieldSelect } from "./sortState"

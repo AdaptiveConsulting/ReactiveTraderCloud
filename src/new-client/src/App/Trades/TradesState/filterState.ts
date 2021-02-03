@@ -1,5 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { map, scan, startWith } from "rxjs/operators"
+import { map, scan, shareReplay, startWith } from "rxjs/operators"
 import { mapObject } from "utils"
 import { Trade, trades$ } from "services/trades"
 import { ColField, colFields } from "./colConfig"
@@ -79,12 +79,14 @@ const appliedFilters$ = mergeWithKey({
     }
   }, ClonedFieldValuesContainer()),
   startWith(ClonedFieldValuesContainer()),
+  shareReplay(),
 )
 
-export const [useAppliedFieldFilters] = bind(
-  (field: ColField) =>
-    appliedFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
-  new Set(),
+export const [
+  useAppliedFieldFilters,
+  appliedFieldFilters$,
+] = bind((field: ColField) =>
+  appliedFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
 )
 
 export const [quickFilterInputs$, onQuickFilterInput] = createListener<string>()
