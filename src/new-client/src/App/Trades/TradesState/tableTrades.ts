@@ -3,7 +3,12 @@ import { combineLatest } from "rxjs"
 import { map } from "rxjs/operators"
 import { Trade, trades$ } from "services/trades"
 import { ColField } from "./colConfig"
-import { quickFilterInputs$, appliedFilterEntries$ } from "./filterState"
+import {
+  quickFilterInputs$,
+  appliedFilterEntries$,
+  NumFilterContent,
+  numFilterEntries$,
+} from "./filterState"
 import { SortDirection, tableSort$ } from "./sortState"
 
 const searchTrueOfTrade = (searchTerms: string[], tradeValues: unknown[]) => {
@@ -25,36 +30,87 @@ const filterTrueOfTrade = (
   })
 }
 
+const filterNumOfTrade = (
+  numFilters: [string, NumFilterContent][],
+  trade: Trade,
+) => {
+  return numFilters.every(([field, filterContent]) => {
+    switch (filterContent.comparator) {
+      case "Equals":
+        return (
+          filterContent.value1 &&
+          trade[field as ColField] === filterContent.value1
+        )
+      case "NotEqual":
+        return (
+          filterContent.value1 &&
+          trade[field as ColField] !== filterContent.value1
+        )
+      case "Less":
+        return (
+          filterContent.value1 &&
+          trade[field as ColField] < filterContent.value1
+        )
+      case "LessOrEqual":
+        return (
+          filterContent.value1 &&
+          trade[field as ColField] <= filterContent.value1
+        )
+      case "Greater":
+        return (
+          filterContent.value1 &&
+          trade[field as ColField] > filterContent.value1
+        )
+      case "GreaterOrEqual":
+        return (
+          filterContent.value1 &&
+          trade[field as ColField] >= filterContent.value1
+        )
+      case "InRange":
+        return (
+          filterContent.value1 &&
+          filterContent.value2 &&
+          trade[field as ColField] >= filterContent.value1 &&
+          trade[field as ColField] <= filterContent.value2
+        )
+      default:
+        return true
+    }
+  })
+}
+
 const filteredTrades$ = combineLatest([
   trades$,
   quickFilterInputs$.pipe(
     map((quickFilterInputs) => quickFilterInputs.split(" ")),
   ),
   appliedFilterEntries$,
+  numFilterEntries$,
 ]).pipe(
-  map(([trades, searchTerms, appliedFilters]) => {
+  map(([trades, searchTerms, appliedFilters, numFilters]) => {
     const haveAppliedFilters = appliedFilters.length > 0
     const haveSearchTerms = searchTerms.length > 0
+    const haveNumFilters = numFilters.length > 0
 
-    if (!haveSearchTerms && !haveAppliedFilters) {
+    if (!haveSearchTerms && !haveAppliedFilters && !haveNumFilters) {
       return trades
     }
 
     return trades.filter((trade) => {
       const tradeValues = Object.values(trade)
-
-      if (haveSearchTerms && !haveAppliedFilters) {
-        return searchTrueOfTrade(searchTerms, tradeValues)
-      } else if (!haveSearchTerms && haveAppliedFilters) {
-        return filterTrueOfTrade(appliedFilters, trade)
-      } else if (haveSearchTerms && haveAppliedFilters) {
-        return (
-          searchTrueOfTrade(searchTerms, tradeValues) &&
-          filterTrueOfTrade(appliedFilters, trade)
-        )
-      } else {
-        throw new Error("Never")
+      let searchSelected = true
+      let setSelected = true
+      let numSelected = true
+      if (haveNumFilters) {
+        numSelected = filterNumOfTrade(numFilters, trade)
       }
+      if (haveAppliedFilters) {
+        setSelected = filterTrueOfTrade(appliedFilters, trade)
+      }
+      if (haveSearchTerms) {
+        searchSelected = searchTrueOfTrade(searchTerms, tradeValues)
+      }
+      return setSelected && searchSelected && numSelected
     })
   }),
 )

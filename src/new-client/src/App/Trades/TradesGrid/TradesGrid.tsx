@@ -34,9 +34,9 @@ const TableBodyRow = styled.tr`
   height: 2rem;
 `
 
-const TableBodyCell = styled.td`
-  padding-right: 0.1rem;
-  text-align: left;
+const TableBodyCell = styled.td<{ numeric: boolean }>`
+  text-align: ${({ numeric }) => (numeric ? "right" : "left")};
+  ${({ numeric }) => (numeric ? "padding-right: 1.6rem;" : "0.1rem;")};
 `
 const StatusIndicator = styled.td<{ status: TradeStatus }>`
   width: 18px;
@@ -75,7 +75,13 @@ export const TradesGrid: React.FC = () => {
             <TableBodyRow key={trade.tradeId}>
               <StatusIndicator status={trade.status} />
               {colFields.map((field) => (
-                <TableBodyCell key={field}>
+                <TableBodyCell
+                  key={field}
+                  numeric={
+                    colConfigs[field].filterType === "number" &&
+                    field !== "tradeId"
+                  }
+                >
                   {colConfigs[field].valueFormatter?.(trade[field]) ??
                     trade[field]}
                 </TableBodyCell>

@@ -6,6 +6,7 @@ import {
   ColField,
   onFilterReset,
   useAppliedFilterEntries,
+  useNumFilterEntries,
 } from "../TradesState"
 
 const FilterButton = styled("button")`
@@ -37,9 +38,12 @@ const FilterName = styled("div")`
 `
 
 export const AppliedFilters: React.FC = () => {
-  const filteredFields = useAppliedFilterEntries().map(
+  const numFilters = useNumFilterEntries()
+  const setFilters = useAppliedFilterEntries()
+  const filteredFields = [...numFilters, ...setFilters].map(
     ([field]) => field,
   ) as ColField[]
+
   return (
     <>
       {filteredFields.map((field) => (
