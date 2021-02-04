@@ -5,11 +5,11 @@ import { createListener } from "@react-rxjs/utils"
 import { bind } from "@react-rxjs/core"
 import {
   colConfigs,
-  ColField,
+  SetColField,
   onColFilterToggle,
-  useAppliedFieldFilters,
   distinctFieldValues$,
   onFilterReset,
+  useAppliedFieldFilters,
 } from "../TradesState"
 import { map, startWith } from "rxjs/operators"
 import { combineLatest } from "rxjs"
@@ -38,7 +38,7 @@ export const MultiSelectMenu = styled.div`
   max-height: 8rem;
   overflow-y: scroll;
   top: 0px;
-  right: 0px;
+  right: 10px;
   background-color: ${({ theme }) => theme.primary.base};
   padding: 6px;
   box-shadow: ${({ theme }) => theme.core.textColor} 0px 0px 0.3125rem 0px;
@@ -84,14 +84,14 @@ const SearchInput = styled.input`
 `
 
 interface SetFilterProps {
-  field: ColField
+  field: SetColField
   parentRef: React.RefObject<HTMLDivElement>
 }
 
 const [searchInputs$, onSearchInput] = createListener<string>()
 
 const [useFilterOptions] = bind(
-  (key: ColField) =>
+  (key: SetColField) =>
     combineLatest([
       searchInputs$.pipe(startWith("")),
       distinctFieldValues$(key),
