@@ -12,8 +12,8 @@ const response = {
 describe("utils/emitTooLong", () => {
   it("should emit normal response if response is faster than timer", () => {
     testScheduler().run(({ expectObservable, cold }) => {
-      const input = cold("    ---(a|)", { a: response })
-      const expectedOutput = "---(b|)"
+      const input = cold("    2s (a|)", { a: response })
+      const expectedOutput = "2s (b|)"
       const result = input.pipe(emitTooLongMessage(TAKING_TOO_LONG, TOO_LONG))
       expectObservable(result).toBe(expectedOutput, {
         b: response,
