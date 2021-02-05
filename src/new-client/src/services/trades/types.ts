@@ -36,4 +36,3 @@ export interface Trade
   valueDate: Date
   tradeDate: Date
 }
-

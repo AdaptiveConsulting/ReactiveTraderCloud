@@ -1,7 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 import { getStream$ } from "../client"
-import {Trade, RawTradeUpdate} from './types'
+import { Trade, RawTradeUpdate } from "./types"
 
 export const [useTrades, trades$] = bind<Trade[]>(
   getStream$<RawTradeUpdate>("blotter", "getTradesStream", {}).pipe(

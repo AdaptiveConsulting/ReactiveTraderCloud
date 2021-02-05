@@ -1,10 +1,6 @@
 export type { ColField, ColConfig, NumColField, SetColField } from "./colConfig"
 export { colConfigs, colFields } from "./colConfig"
-export type {
-  DistinctValues,
-  ComparatorType,
-  NumFilterContent,
-} from "./filterState"
+export type { DistinctValues, NumFilterContent } from "./filterState"
 export {
   distinctFieldValues$,
   onQuickFilterInput,
@@ -13,9 +9,9 @@ export {
   useAppliedFieldFilters,
   appliedFieldFilters$,
   onFilterReset,
-  comparatorConfigs,
   onColFilterEnterNum,
   numberFilters$,
+  ComparatorType,
   useAppliedNumFilters,
   useNumFilterEntries,
 } from "./filterState"

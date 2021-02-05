@@ -83,11 +83,6 @@ const SearchInput = styled.input`
   }
 `
 
-interface SetFilterProps {
-  field: SetColField
-  parentRef: React.RefObject<HTMLDivElement>
-}
-
 const [searchInputs$, onSearchInput] = createListener<string>()
 
 const [useFilterOptions] = bind(
@@ -110,7 +105,10 @@ const [useFilterOptions] = bind(
   [],
 )
 
-export const SetFilter: React.FC<SetFilterProps> = ({ field, parentRef }) => {
+export const SetFilter: React.FC<{
+  field: SetColField
+  parentRef: React.RefObject<HTMLDivElement>
+}> = ({ field, parentRef }) => {
   const selected = useAppliedFieldFilters(field) as Set<string>
   const options = useFilterOptions(field)
   const { valueFormatter } = colConfigs[field]

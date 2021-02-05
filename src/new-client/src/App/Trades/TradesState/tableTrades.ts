@@ -8,6 +8,7 @@ import {
   appliedFilterEntries$,
   NumFilterContent,
   numFilterEntries$,
+  ComparatorType,
 } from "./filterState"
 import { SortDirection, tableSort$ } from "./sortState"
 
@@ -30,46 +31,35 @@ const filterTrueOfTrade = (
   })
 }
 
+const numIsSet = (val: number | undefined | null): val is number => {
+  return val != null
+}
+
 const filterNumOfTrade = (
   numFilters: [string, NumFilterContent][],
   trade: Trade,
 ) => {
   return numFilters.every(([field, filterContent]) => {
+    if (!numIsSet(filterContent.value1)) {
+      return true
+    }
+
     switch (filterContent.comparator) {
-      case "Equals":
+      case ComparatorType.Equals:
+        return trade[field as ColField] === filterContent.value1
+      case ComparatorType.NotEqual:
+        return trade[field as ColField] !== filterContent.value1
+      case ComparatorType.Less:
+        return trade[field as ColField] < filterContent.value1
+      case ComparatorType.LessOrEqual:
+        return trade[field as ColField] <= filterContent.value1
+      case ComparatorType.Greater:
+        return trade[field as ColField] > filterContent.value1
+      case ComparatorType.GreaterOrEqual:
+        return trade[field as ColField] >= filterContent.value1
+      case ComparatorType.InRange:
         return (
-          filterContent.value1 &&
-          trade[field as ColField] === filterContent.value1
-        )
-      case "NotEqual":
-        return (
-          filterContent.value1 &&
-          trade[field as ColField] !== filterContent.value1
-        )
-      case "Less":
-        return (
-          filterContent.value1 &&
-          trade[field as ColField] < filterContent.value1
-        )
-      case "LessOrEqual":
-        return (
-          filterContent.value1 &&
-          trade[field as ColField] <= filterContent.value1
-        )
-      case "Greater":
-        return (
-          filterContent.value1 &&
-          trade[field as ColField] > filterContent.value1
-        )
-      case "GreaterOrEqual":
-        return (
-          filterContent.value1 &&
-          trade[field as ColField] >= filterContent.value1
-        )
-      case "InRange":
-        return (
-          filterContent.value1 &&
-          filterContent.value2 &&
+          numIsSet(filterContent.value2) &&
           trade[field as ColField] >= filterContent.value1 &&
           trade[field as ColField] <= filterContent.value2
         )

@@ -56,4 +56,3 @@ export interface ExecutionTrade extends ExecutionRequest {
 export interface TimeoutExecution extends ExecutionRequest {
   status: ExecutionStatus.Timeout
 }
-
