@@ -6,6 +6,7 @@ import {
   ColField,
   useTableSort,
   appliedFieldFilters$,
+  appliedNumFilters$,
 } from "../TradesState"
 import { SetFilter } from "./SetFilter"
 import { NumFilter } from "./NumFilter"
@@ -40,9 +41,21 @@ const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
     display: inline-block;
   }
 `
+const FlexWrapper = styled.div<{ headerFirst: boolean }>`
+  display: flex;
+  flex-direction: ${({ headerFirst }) => (headerFirst ? "row" : "row-reverse")};
+`
+
 const AlignedFilterIcon = styled(FaFilter)`
-  margin-left: 0.2rem;
-  margin-right: 0.1rem;
+  margin-top: 0.1rem;
+`
+
+const AlignedUpArrow = styled(FaLongArrowAltUp)`
+  margin-top: 0.1rem;
+`
+
+const AlignedDownArrow = styled(FaLongArrowAltDown)`
+  margin-top: 0.1rem;
 `
 
 export const TableHeadCellContainer: React.FC<{
@@ -57,70 +70,51 @@ export const TableHeadCellContainer: React.FC<{
 
   return (
     <TableHeadCell
-      onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          onSortFieldSelect(field)
-        }
-      }}
       onMouseEnter={() => setShowFilter(true)}
       onMouseLeave={() => setShowFilter(false)}
       numeric={numeric && field !== "tradeId"}
       width={colConfigs[field].width}
       ref={ref}
     >
-      {numeric ? (
-        <>
-          {showFilter ? (
-            <AlignedFilterIcon
-              onClick={(e) => {
-                e.stopPropagation()
-                setDisplayMenu((current) => !current)
-              }}
-            />
+      <FlexWrapper
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            onSortFieldSelect(field)
+          }
+        }}
+        headerFirst={!numeric || field === "tradeId"}
+      >
+        {headerName}
+        {tableSort.field === field ? (
+          tableSort.direction === "ASC" ? (
+            <AlignedUpArrow />
           ) : (
-            <span className="spacer" />
-          )}
-          {tableSort.direction === "ASC" ? (
-            <FaLongArrowAltUp />
-          ) : (
-            <FaLongArrowAltDown />
-          )}
-          {headerName}
-          {displayMenu && (
-            <Subscribe source$={appliedFieldFilters$(field as any)}>
+            <AlignedDownArrow />
+          )
+        ) : (
+          <span className="spacer" />
+        )}
+        {showFilter ? (
+          <AlignedFilterIcon
+            onClick={(e) => {
+              e.stopPropagation()
+              setDisplayMenu((current) => !current)
+            }}
+          />
+        ) : (
+          <span className="spacer" />
+        )}
+        {displayMenu &&
+          (numeric ? (
+            <Subscribe source$={appliedNumFilters$(field as NumColField)}>
               <NumFilter field={field as NumColField} parentRef={ref} />
             </Subscribe>
-          )}
-        </>
-      ) : (
-        <>
-          {headerName}
-          {tableSort.field === field ? (
-            tableSort.direction === "ASC" ? (
-              <FaLongArrowAltUp />
-            ) : (
-              <FaLongArrowAltDown />
-            )
           ) : (
-            <span className="spacer" />
-          )}
-          {showFilter ? (
-            <FaFilter
-              onClick={(e) => {
-                e.stopPropagation()
-                setDisplayMenu((current) => !current)
-              }}
-            />
-          ) : (
-            <span className="spacer" />
-          )}
-          {displayMenu && (
             <Subscribe source$={appliedFieldFilters$(field as SetColField)}>
               <SetFilter field={field as SetColField} parentRef={ref} />
             </Subscribe>
-          )}
-        </>
-      )}
+          ))}
+      </FlexWrapper>
     </TableHeadCell>
   )
 }
