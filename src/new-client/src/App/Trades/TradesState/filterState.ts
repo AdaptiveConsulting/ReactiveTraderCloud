@@ -117,12 +117,14 @@ export const numberFilters$ = mergeWithKey({
     }
   }, fieldNumContainer),
   startWith(fieldNumContainer),
+  shareReplay(),
 )
 
-export const [useAppliedNumFilters] = bind(
-  (field: NumColField) =>
-    numberFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
-  initialNumFilter,
+export const [
+  useAppliedNumFilters,
+  appliedNumFilters$,
+] = bind((field: NumColField) =>
+  numberFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
 )
 
 export const [useNumFilterEntries, numFilterEntries$] = bind(

@@ -64,7 +64,7 @@ export const colConfigs: Record<ColField, ColConfig> = {
     headerName: "Notional",
     filterType: "number",
     valueFormatter: (v) => formatAsWholeNumber(v as number),
-    width: 110,
+    width: 120,
   },
   spotRate: {
     headerName: "Rate",

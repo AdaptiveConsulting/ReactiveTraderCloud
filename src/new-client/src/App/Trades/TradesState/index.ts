@@ -13,6 +13,7 @@ export {
   numberFilters$,
   ComparatorType,
   useAppliedNumFilters,
+  appliedNumFilters$,
   useNumFilterEntries,
 } from "./filterState"
 export { useTableSort, TableSort, onSortFieldSelect } from "./sortState"
