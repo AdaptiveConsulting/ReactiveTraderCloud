@@ -3,9 +3,9 @@ import { usePopUpMenu } from "utils/usePopUpMenu"
 import styled from "styled-components/macro"
 import {
   NumColField,
-  comparatorConfigs,
   ComparatorType,
   onColFilterEnterNum,
+  useAppliedNumFilters,
 } from "../TradesState"
 
 export const FilterPopupWrapper = styled.span`
@@ -62,11 +62,9 @@ export const FilterOptionMenuWrapper = styled.div`
   }
 `
 
-export const FilterOptionMenu = styled.div<{
-  visible: boolean
-}>`
-  display: ${({ visible }) => (visible ? "block" : "none")};
+export const FilterOptionMenu = styled.div<{ visible: boolean }>`
   border-radius: 4px;
+  display: ${({ visible }) => (visible ? "block" : "none")};
   position: absolute;
   top: 40px;
   left: 0px;
@@ -112,96 +110,70 @@ const FilterValueInput = styled.input`
   }
 `
 
-interface NumFilterProps {
+export const NumFilter: React.FC<{
   field: NumColField
-  comparator: string
-  setComparator: React.Dispatch<React.SetStateAction<string>>
-  value1: React.MutableRefObject<string | null>
-  value2: React.MutableRefObject<string | null>
-}
+  parentRef: React.RefObject<HTMLDivElement>
+}> = ({ field, parentRef }) => {
+  const selected = useAppliedNumFilters(field)
 
-export const NumFilter: React.FC<NumFilterProps> = ({
-  field,
-  comparator,
-  setComparator,
-  value1,
-  value2,
-}) => {
   const innerRef = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(innerRef)
-
   const toggle = () => setDisplayMenu(!displayMenu)
-  const changeComparator = (comparator: string) => {
-    setComparator(comparator)
-    if (value1.current) {
-      const filterDetails = {
-        comparator: comparator as ComparatorType,
-        value1: parseInt(value1.current),
-      }
-      if (comparator !== "InRange") {
-        onColFilterEnterNum(field, filterDetails)
-      } else {
-        if (value2.current) {
-          const filterDetails = {
-            comparator: comparator as ComparatorType,
-            value1: parseInt(value1.current),
-            value2: parseInt(value2.current),
-          }
-          onColFilterEnterNum(field, filterDetails)
-        }
-      }
-    }
-  }
 
-  const changeValue1 = (value: string) => {
-    value1.current = value
-    const filterDetails = {
-      comparator: comparator as ComparatorType,
-      value1: value1.current ? parseInt(value1.current) : null,
-    }
-    if (comparator !== "InRange") {
-      onColFilterEnterNum(field, filterDetails)
-    }
-  }
-
-  const changeValue2 = (value: string) => {
-    value2.current = value
-    const filterDetails = {
-      comparator: comparator as ComparatorType,
-      value1: value1.current ? parseInt(value1.current) : null,
-      value2: value2.current ? parseInt(value2.current) : null,
-    }
-    onColFilterEnterNum(field, filterDetails)
-  }
   return (
     <FilterPopupWrapper>
-      <FilterPopup>
-        <FilterOptionMenuWrapper onClick={toggle} ref={innerRef}>
-          <div>{comparatorConfigs[comparator as ComparatorType]}</div>
-
-          <FilterOptionMenu visible={displayMenu}>
-            {Object.keys(comparatorConfigs).map((comparator) => {
-              return (
-                <FilterOption
-                  key={comparator}
-                  className="compare-option"
-                  onClick={() => changeComparator(comparator)}
-                >
-                  {comparatorConfigs[comparator as ComparatorType]}
-                </FilterOption>
-              )
-            })}
-          </FilterOptionMenu>
+      <FilterPopup ref={parentRef}>
+        <FilterOptionMenuWrapper>
+          <div
+            onClick={() => {
+              toggle()
+            }}
+          >
+            {selected.comparator}
+          </div>
+          {
+            <FilterOptionMenu visible={displayMenu} ref={innerRef}>
+              {Object.values(ComparatorType).map((comparator) => {
+                return (
+                  <FilterOption
+                    key={comparator}
+                    className="compare-option"
+                    onClick={() => {
+                      onColFilterEnterNum(field, {
+                        ...selected,
+                        comparator,
+                      })
+                      setDisplayMenu(false)
+                    }}
+                  >
+                    {comparator}
+                  </FilterOption>
+                )
+              })}
+            </FilterOptionMenu>
+          }
         </FilterOptionMenuWrapper>
-        <br></br>
+        <br />
         <FilterValueInput
-          onChange={({ target: { value } }) => changeValue1(value)}
-          value={value1.current ? value1.current : undefined}
+          onClick={(e) => e.stopPropagation()}
+          onChange={({ target: { value } }) => {
+            onColFilterEnterNum(field, {
+              ...selected,
+              value1: value ? parseInt(value) : null,
+            })
+          }}
+          value={selected.value1 ?? undefined}
         />
-        {comparator === "InRange" && (
+        {selected.comparator === ComparatorType.InRange && (
           <FilterValueInput
-            onChange={({ target: { value } }) => changeValue2(value)}
-            value={value2.current ? value2.current : undefined}
+            onClick={(e) => e.stopPropagation()}
+            onChange={({ target: { value } }) => {
+              onColFilterEnterNum(field, {
+                ...selected,
+                value2: value ? parseInt(value) : null,
+              })
+            }}
+            value={selected.value2 ?? undefined}
           />
         )}
       </FilterPopup>

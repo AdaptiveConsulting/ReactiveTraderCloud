@@ -5,23 +5,14 @@ import { Trade, trades$ } from "services/trades"
 import { ColField, colFields, NumColField, SetColField } from "./colConfig"
 import { createListener, mergeWithKey } from "@react-rxjs/utils"
 
-export type ComparatorType =
-  | "Equals"
-  | "NotEqual"
-  | "Less"
-  | "LessOrEqual"
-  | "Greater"
-  | "GreaterOrEqual"
-  | "InRange"
-
-export const comparatorConfigs: Record<ComparatorType, string> = {
-  Equals: "Equals",
-  NotEqual: "Not equal",
-  Less: "Less than",
-  LessOrEqual: "Less than or equals",
-  Greater: "Greater than",
-  GreaterOrEqual: "Greater than or equals",
-  InRange: "In range",
+export enum ComparatorType {
+  Equals = "Equals",
+  NotEqual = "Not equal",
+  Less = "Less than",
+  LessOrEqual = "Less than or equals",
+  Greater = "Greater than",
+  GreaterOrEqual = "Greater than or equals",
+  InRange = "In range",
 }
 
 export interface NumFilterContent {
@@ -30,12 +21,12 @@ export interface NumFilterContent {
   value2?: number | null
 }
 
-export type DistinctNums = {
+export type NumFilters = {
   [K in NumColField]: NumFilterContent
 }
 
 const initialNumFilter: NumFilterContent = {
-  comparator: "Equals",
+  comparator: ComparatorType.Equals,
   value1: null,
   value2: null,
 }
@@ -45,7 +36,7 @@ export const fieldNumContainer = colFields.reduce((valuesContainer, field) => {
     ...valuesContainer,
     [field]: initialNumFilter,
   }
-}, {} as DistinctNums)
+}, {} as NumFilters)
 
 export type DistinctValues = {
   [K in SetColField]: Set<Trade[K]>
