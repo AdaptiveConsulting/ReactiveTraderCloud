@@ -1,7 +1,18 @@
 import React from "react"
 import styled from "styled-components/macro"
 import { FaCheck } from "react-icons/fa"
-import { ColField, onColFilterSelect } from "../TradesState"
+import { createListener } from "@react-rxjs/utils"
+import { bind } from "@react-rxjs/core"
+import {
+  colConfigs,
+  ColField,
+  onColFilterToggle,
+  useAppliedFieldFilters,
+  distinctFieldValues$,
+  onFilterReset,
+} from "../TradesState"
+import { map, startWith } from "rxjs/operators"
+import { combineLatest } from "rxjs"
 
 export const MultiSelectWrapper = styled.span`
   position: absolute;
@@ -22,10 +33,10 @@ export const MultiSelectWrapper = styled.span`
 
 export const MultiSelectMenu = styled.div`
   position: absolute;
-  width: fit-content;
+  width: calc(fit-content + 1rem);
   min-height: 100%;
   max-height: 8rem;
-  overflow-y: auto;
+  overflow-y: scroll;
   top: 0px;
   right: 0px;
   background-color: ${({ theme }) => theme.primary.base};
@@ -58,39 +69,80 @@ const AlignedChecked = styled.span`
   min-width: 0.675rem;
 `
 
+const SearchInput = styled.input`
+  font-size: 0.6875;
+  padding: 8px 8px 5px 8px;
+  border: none;
+  color: ${({ theme }) => theme.core.textColor};
+  border-bottom: 0.0625rem solid ${({ theme }) => theme.core.dividerColor};
+  outline: none;
+
+  &:focus {
+    color: ${({ theme }) => theme.core.activeColor};
+    border-bottom: 0.0625rem solid ${({ theme }) => theme.core.activeColor};
+  }
+`
+
 interface SetFilterProps {
-  options: unknown[]
   field: ColField
-  selected: Set<unknown>
-  ref: React.RefObject<HTMLDivElement>
+  parentRef: React.RefObject<HTMLDivElement>
 }
 
-export const SetFilter: React.FC<SetFilterProps> = ({
-  options,
-  field,
-  selected,
-  ref,
-}) => {
+const [searchInputs$, onSearchInput] = createListener<string>()
+
+const [useFilterOptions] = bind(
+  (key: ColField) =>
+    combineLatest([
+      searchInputs$.pipe(startWith("")),
+      distinctFieldValues$(key),
+    ]).pipe(
+      map(([searchInput, distinctFieldValues]) => {
+        const distinctValuesArray = [...distinctFieldValues] as string[]
+        if (!searchInput.length) {
+          return distinctValuesArray
+        } else {
+          return distinctValuesArray.filter((fieldValue) =>
+            fieldValue.toLowerCase().includes(searchInput.toLowerCase()),
+          )
+        }
+      }),
+    ),
+  [],
+)
+
+export const SetFilter: React.FC<SetFilterProps> = ({ field, parentRef }) => {
+  const selected = useAppliedFieldFilters(field) as Set<string>
+  const options = useFilterOptions(field)
+  const { valueFormatter } = colConfigs[field]
   return (
     <MultiSelectWrapper>
-      <MultiSelectMenu ref={ref}>
+      <MultiSelectMenu ref={parentRef}>
+        <SearchInput
+          type="text"
+          placeholder="Search"
+          onChange={(e) => onSearchInput(e.target.value)}
+        />
+        <MultiSelectOption
+          key={`select-all-filter`}
+          onClick={() => {
+            if (selected.size > 0) {
+              onFilterReset(field)
+            }
+          }}
+          selected={selected.size === 0}
+        >
+          Select All
+          <AlignedChecked>{selected.size === 0 && <FaCheck />}</AlignedChecked>
+        </MultiSelectOption>
         {options.map((option) => {
           const isSelected = selected.has(option)
           return (
             <MultiSelectOption
               key={`${option}-filter`}
-              onClick={() => {
-                const nextSelections = new Set(selected)
-                if (isSelected) {
-                  nextSelections.delete(option)
-                } else {
-                  nextSelections.add(option)
-                }
-                onColFilterSelect([field, nextSelections])
-              }}
+              onClick={() => onColFilterToggle(field, option)}
               selected={isSelected}
             >
-              {option}
+              {valueFormatter?.(option) ?? option}
               <AlignedChecked>{isSelected && <FaCheck />}</AlignedChecked>
             </MultiSelectOption>
           )

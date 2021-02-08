@@ -2,15 +2,15 @@ import styled from "styled-components/macro"
 import { FaFilter, FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa"
 import {
   onSortFieldSelect,
-  TableSort,
-  ColConfig,
-  DistinctValues,
+  colConfigs,
   ColField,
+  useTableSort,
+  appliedFieldFilters$,
 } from "../TradesState"
 import { SetFilter } from "./SetFilter"
 import { useRef, useState } from "react"
 import { usePopUpMenu } from "utils"
-import { Trade } from "services/trades"
+import { Subscribe } from "@react-rxjs/core"
 
 const TableHeadCell = styled.th`
   text-align: left;
@@ -37,25 +37,14 @@ const TableHeadCell = styled.th`
   }
 `
 
-export const TableHeadCellContainer: React.FC<
-  ColConfig & {
-    field: ColField
-    tableSort: TableSort
-    filterOptions: DistinctValues
-    appliedFilters: DistinctValues
-  }
-> = ({
-  field,
-  filterType,
-  tableSort,
-  headerName,
-  valueFormatter,
-  filterOptions,
-  appliedFilters,
-}) => {
+export const TableHeadCellContainer: React.FC<{
+  field: ColField
+}> = ({ field }) => {
   const [showFilter, setShowFilter] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
+  const tableSort = useTableSort()
+  const { headerName, filterType } = colConfigs[field]
   return (
     <TableHeadCell
       onClick={() => onSortFieldSelect(field)}
@@ -63,16 +52,9 @@ export const TableHeadCellContainer: React.FC<
       onMouseLeave={() => setShowFilter(false)}
     >
       {displayMenu && (
-        <SetFilter
-          field={field}
-          selected={appliedFilters[field as keyof Trade]}
-          ref={ref}
-          options={
-            [...filterOptions[field as keyof Trade]].map((value) =>
-              valueFormatter === undefined ? value : valueFormatter(value),
-            ) as string[]
-          }
-        />
+        <Subscribe source$={appliedFieldFilters$(field)}>
+          <SetFilter field={field} parentRef={ref} />
+        </Subscribe>
       )}
       {headerName}
       {tableSort.field === field ? (

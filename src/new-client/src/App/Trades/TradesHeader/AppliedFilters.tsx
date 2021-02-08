@@ -1,9 +1,10 @@
+//import { createListener } from "@react-rxjs/utils"
 import { FaTimes } from "react-icons/fa"
 import styled from "styled-components/macro"
 import {
   colConfigs,
   ColField,
-  onColFilterSelect,
+  onFilterReset,
   useAppliedFilterEntries,
 } from "../TradesState"
 
@@ -45,7 +46,7 @@ export const AppliedFilters: React.FC = () => {
         <FilterField key={field}>
           <FilterName>{colConfigs[field].headerName}</FilterName>
           <FilterButton>
-            <FaTimes onClick={() => onColFilterSelect([field, new Set()])} />
+            <FaTimes onClick={() => onFilterReset(field)} />
           </FilterButton>
         </FilterField>
       ))}
