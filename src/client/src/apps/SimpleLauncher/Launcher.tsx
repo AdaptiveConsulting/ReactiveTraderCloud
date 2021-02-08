@@ -76,6 +76,7 @@ export const Launcher: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null)
   const platform = usePlatform()
   const [contacting, response, sendRequest, resetResponse] = useNlpService()
+  const [searchValue, setSearchValue] = useState('')
 
   useAppBoundReset(initialBounds)
 
@@ -112,6 +113,14 @@ export const Launcher: React.FC = () => {
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [])
 
+  const handleSearchInput = (value: string) => {
+    setSearchValue(value)
+  }
+
+  const handleClearSeachInput = () => {
+    setSearchValue('')
+  }
+
   const showSearch = useCallback(() => {
     setIsSearchVisible(!isSearchVisible)
   }, [isSearchVisible])
@@ -146,10 +155,19 @@ export const Launcher: React.FC = () => {
           platform={platform}
           isSearchVisible={isSearchVisible}
           resetResponse={resetResponse}
+          handleSearchInput={handleSearchInput}
+          handleClearSearchInput={handleClearSeachInput}
+          searchInput={searchValue}
         />
         <SearchButton onClick={showSearch} isSearchVisible={isSearchVisible} />
 
-        {response && <InlineTradeExecution response={response} handleReset={resetResponse} />}
+        {response && (
+          <InlineTradeExecution
+            response={response}
+            handleReset={resetResponse}
+            handleClearSearchInput={handleClearSeachInput}
+          />
+        )}
 
         <MinExitContainer>
           <LauncherMinimiseAndExit />

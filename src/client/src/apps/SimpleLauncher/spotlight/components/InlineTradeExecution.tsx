@@ -1,5 +1,9 @@
 import React, { FC, useEffect, useMemo, useState } from 'react'
-import { InlineTradeExecutionContainer, InlineTradeResponseContainer } from './styles'
+import {
+  InlineTradeExecutionActionContainer,
+  InlineTradeExecutionContainer,
+  InlineTradeResponseContainer,
+} from './styles'
 
 import { useTradeExecution } from './useTradeExecution'
 import { useMarketService } from './useMarketService'
@@ -7,52 +11,31 @@ import { IndeterminateLoadingBar, IndeterminateLoadingBarStatus } from './Indete
 import { DetectIntentResponse } from 'dialogflow'
 import { getTradeRequest } from 'rt-interop'
 import { TradeSuccessResponse } from 'apps/MainRoute/widgets/spotTile/model/executeTradeRequest'
-
-const COUNTDOWN = 5000
-const COUNTDOWN_DISPLAY = COUNTDOWN / 1000
+import { Direction } from 'rt-types'
 
 type InlineTradeExecutionRequestStatus = 'incomplete' | 'complete'
 export type InlineTradeExecutionStatus = 'waiting' | 'executing' | 'success' | 'failure' | undefined
 
 export type InlineTradeExecutionProps = {
   handleReset: () => void
+  handleClearSearchInput: () => void
   response: DetectIntentResponse
 }
 
-export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({ response, handleReset }) => {
+export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({
+  response,
+  handleReset,
+  handleClearSearchInput,
+}) => {
   const [requestStatus, setRequestStatus] = useState<InlineTradeExecutionRequestStatus>(
     'incomplete'
   )
   const [tradeStatus, setTradeStatus] = useState<InlineTradeExecutionStatus>()
-  const [countdownDisplay, setCountdownDisplay] = useState<number>(COUNTDOWN_DISPLAY)
   const [loadingBarStatus, setLoadingBarStatus] = useState<IndeterminateLoadingBarStatus>()
   const { executeTrade, tradeResponse, loading, error } = useTradeExecution()
 
   const currencyPairs = useMarketService()
   const partialTradeRequest = getTradeRequest(response.queryResult)
-
-  const startTimers = (): { interval: number; timeout: number } => {
-    setTradeStatus('waiting')
-    setLoadingBarStatus('loading')
-
-    const intervalId = setInterval(() => {
-      setCountdownDisplay(prev => {
-        if (prev === 1) {
-          clearInterval(intervalId)
-          return COUNTDOWN_DISPLAY
-        }
-        return prev - 1
-      })
-    }, 1000)
-
-    const timeoutId = setTimeout(() => {
-      executeTradeRequest()
-      clearTimeout(timeoutId)
-    }, COUNTDOWN)
-
-    // @ts-ignore
-    return { interval: intervalId, timeout: timeoutId }
-  }
 
   const executeTradeRequest = () => {
     if (partialTradeRequest && currencyPairs && requestStatus === 'complete') {
@@ -61,10 +44,11 @@ export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({ response, 
     }
   }
 
-  const cancelTradeRequest = () => {
+  const resetAll = () => {
     setLoadingBarStatus(undefined)
     setRequestStatus('incomplete')
     handleReset()
+    handleClearSearchInput()
   }
 
   useEffect(() => {
@@ -76,30 +60,22 @@ export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({ response, 
   }, [currencyPairs, partialTradeRequest])
 
   useEffect(() => {
-    let intervalId: number | undefined
-    let timeoutId: number | undefined
-
-    const clearTimers = () => {
-      if (intervalId) {
-        clearInterval(intervalId)
-      }
-      if (timeoutId) {
-        clearTimeout(timeoutId)
-      }
+    const reset = () => {
+      setTradeStatus(undefined)
+      setLoadingBarStatus(undefined)
     }
 
     if (requestStatus === 'complete') {
-      const { interval, timeout } = startTimers()
-      intervalId = interval
-      timeoutId = timeout
+      setTradeStatus('waiting')
+      setLoadingBarStatus('loading')
     }
 
     if (requestStatus === 'incomplete') {
-      clearTimers()
+      reset()
     }
 
     return () => {
-      clearTimers()
+      reset()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestStatus])
@@ -158,6 +134,12 @@ export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({ response, 
   }, [tradeResponse])
 
   const tradeSuccessContent = useMemo(() => {
+    if (error) {
+      setLoadingBarStatus('failure')
+      setTradeStatus('failure')
+      return tradeRejectedContent
+    }
+
     if (tradeResponse && 'trade' in tradeResponse) {
       if (tradeResponse.trade.status === 'done') {
         setLoadingBarStatus('success')
@@ -167,7 +149,7 @@ export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({ response, 
         return tradeRejectedContent
       }
     }
-  }, [tradeAcceptedContent, tradeRejectedContent, tradeResponse])
+  }, [tradeAcceptedContent, tradeRejectedContent, tradeResponse, error])
 
   const tradeErrorContent = useMemo(() => {
     return (
@@ -183,6 +165,24 @@ export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({ response, 
     )
   }, [error, tradeResponse])
 
+  const confirmTradeContent = useMemo(() => {
+    const directionString = partialTradeRequest?.Direction === Direction.Buy ? 'buying' : 'selling'
+
+    return (
+      <>
+        <p>
+          <strong>Are You Sure?</strong>
+        </p>
+        <p>
+          <small>
+            You are {directionString} {partialTradeRequest?.Notional}{' '}
+            {partialTradeRequest?.CurrencyPair}
+          </small>
+        </p>
+      </>
+    )
+  }, [partialTradeRequest])
+
   if (requestStatus === 'incomplete') {
     return null
   }
@@ -193,17 +193,17 @@ export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({ response, 
         <IndeterminateLoadingBar status={loadingBarStatus} />
       )}
       <InlineTradeResponseContainer>
-        {tradeStatus === 'waiting' && <p>Trading in {countdownDisplay} seconds</p>}
+        {tradeStatus === 'waiting' && confirmTradeContent}
         {tradeStatus === 'executing' && <p>Executing Trade...</p>}
         {tradeResponse && tradeStatus === 'success' && tradeSuccessContent}
         {error || (tradeResponse && tradeStatus === 'failure' && tradeErrorContent)}
       </InlineTradeResponseContainer>
-      <button
-        disabled={tradeStatus === 'executing'}
-        onClick={tradeStatus === 'waiting' ? cancelTradeRequest : handleReset}
-      >
-        {tradeStatus === 'waiting' ? 'Cancel Request' : 'Close'}
-      </button>
+      <InlineTradeExecutionActionContainer>
+        {tradeStatus === 'waiting' && <button onClick={executeTradeRequest}>Execute</button>}
+        <button disabled={tradeStatus === 'executing'} onClick={resetAll}>
+          {tradeStatus === 'waiting' ? 'Cancel Request' : 'Close'}
+        </button>
+      </InlineTradeExecutionActionContainer>
     </InlineTradeExecutionContainer>
   )
 }

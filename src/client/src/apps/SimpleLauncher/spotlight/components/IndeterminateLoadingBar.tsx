@@ -19,6 +19,7 @@ const Slider = styled.div`
   height: 3px;
   overflow: hidden;
   top: 0;
+  left: 0;
 `
 const Line = styled.div<{ status: IndeterminateLoadingBarStatus }>`
   position: absolute;

@@ -52,13 +52,13 @@ export const SimpleLauncher: React.FC = () => {
       const tradesUpdates$ = new ReplaySubject<TradesUpdate>()
       const referenceDataService$ = referenceDataService(serviceClient)
       const executionService = new ExecutionService(serviceClient, (test: any) => {
-        console.log('ABC', test)
         return limitChecker.rpc({
           tradedCurrencyPair: test.CurrencyPair,
           notional: test.Notional,
           rate: test.SpotRate,
         })
       })
+      
       blotterUpdates$.subscribe(tradesUpdates$)
 
       setDependencies({

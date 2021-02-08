@@ -23,22 +23,38 @@ export interface SearchControlsProps {
   platform: Platform
   isSearchVisible: boolean
   resetResponse: () => void
+  handleSearchInput: (searchValue: string) => void
+  handleClearSearchInput: () => void
+  searchInput: string
 }
 
 export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsProps>(
-  ({ onStateChange, response, sendRequest, platform, isSearchVisible, resetResponse }, ref) => {
+  (
+    {
+      onStateChange,
+      response,
+      sendRequest,
+      platform,
+      isSearchVisible,
+      resetResponse,
+      handleClearSearchInput,
+      handleSearchInput,
+      searchInput,
+    },
+    ref
+  ) => {
     const [isTyping, setIsTyping] = useState(false)
-    const [inputValue, setInputValue] = useState('')
+    // const [inputValue, setInputValue] = useState('')
 
     useEffect(() => {
       onStateChange(isTyping)
     }, [isTyping, onStateChange])
 
     useEffect(() => {
-      if (inputValue === '' && !isTyping) {
+      if (searchInput === '' && !isTyping) {
         resetResponse()
       }
-    }, [inputValue, isTyping, resetResponse])
+    }, [searchInput, isTyping, resetResponse])
 
     const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
       e => {
@@ -63,7 +79,7 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
     )
 
     const handleCancelButtonClick = useCallback(() => {
-      setInputValue('')
+      handleClearSearchInput()
       resetResponse()
       // eslint-disable-next-line
     }, [])
@@ -93,15 +109,15 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
         // when typing stops, we want to change the state after a bit of delay
         debouncedStopTyping()
 
-        setInputValue(e.target.value)
+        handleSearchInput(e.target.value)
       },
-      [debouncedStopTyping]
+      [debouncedStopTyping, handleSearchInput]
     )
 
     useEffect(() => {
       // don't send requests on each keystroke - send the last one in given 250ms
-      throttledSendRequest(inputValue)
-    }, [throttledSendRequest, inputValue])
+      throttledSendRequest(searchInput)
+    }, [throttledSendRequest, searchInput])
 
     // const inlineTradeExecutionComponent = response
     //   ? getInlineTradeExecutionComponent(response, handleCancelButtonClick)
@@ -110,7 +126,7 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
     return (
       <SearchContainer className={isSearchVisible ? 'search-container--active' : ''}>
         <Input
-          value={inputValue}
+          value={searchInput}
           onChange={handleChange}
           ref={ref}
           onFocus={handleFocus}
@@ -119,7 +135,7 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
           placeholder="Type something"
         />
 
-        {inputValue && (
+        {searchInput && (
           <CancelButton onClick={handleCancelButtonClick}>
             <ExitIcon />
           </CancelButton>
