@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import Measure, { ContentRect } from 'react-measure'
 import { Bounds } from 'openfin/_v2/shapes/shapes'
+import { handleIntent } from 'rt-interop'
 import { usePlatform } from 'rt-platforms'
 import { LaunchButton } from './LaunchButton'
 import { LauncherApps } from './LauncherApps'
@@ -27,6 +28,7 @@ import { SearchControl, Response, getInlineSuggestionsComponent, useNlpService }
 import { ExitIcon, minimiseNormalIcon, SearchIcon } from './icons'
 import { AdaptiveLoader, LogoIcon } from 'rt-components'
 import { InlineTradeExecution } from './spotlight/components/InlineTradeExecution'
+import { isTradeExecutionIntent } from 'rt-interop'
 
 const expandedLauncherWidth = 600
 
@@ -77,6 +79,17 @@ export const Launcher: React.FC = () => {
   const platform = usePlatform()
   const [contacting, response, sendRequest, resetResponse] = useNlpService()
   const [searchValue, setSearchValue] = useState('')
+  const [showTradeExecutionFlow, setShowTradeExecutionFlow] = useState(false)
+
+  const handleResolvedIntent = () => {
+    if (response && platform) {
+      if (isTradeExecutionIntent(response)) {
+        setShowTradeExecutionFlow(true)
+      } else {
+        handleIntent(response, platform)
+      }
+    }
+  }
 
   useAppBoundReset(initialBounds)
 
@@ -106,12 +119,14 @@ export const Launcher: React.FC = () => {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setIsSearchVisible(false)
+        if (!response || !isTradeExecutionIntent(response)) {
+          setIsSearchVisible(false)
+        }
       }
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [])
+  }, [response])
 
   const handleSearchInput = (value: string) => {
     setSearchValue(value)
@@ -124,8 +139,6 @@ export const Launcher: React.FC = () => {
   const showSearch = useCallback(() => {
     setIsSearchVisible(!isSearchVisible)
   }, [isSearchVisible])
-
-  const handleSearchStateChange = useCallback((isTyping: boolean) => setIsSearchBusy(isTyping), [])
 
   const handleSearchSizeChange = useCallback(
     (contentRect: ContentRect) => {
@@ -141,6 +154,9 @@ export const Launcher: React.FC = () => {
     isSearchVisible,
   ])
 
+  const inlineSuggestions =
+    response && isSearchVisible ? getInlineSuggestionsComponent(response, platform) : null
+
   return (
     <RootLauncherContainer>
       <LauncherContainer showResponsePanel={showResponsePanel}>
@@ -149,10 +165,10 @@ export const Launcher: React.FC = () => {
         <LauncherApps />
         <SearchControl
           ref={searchInputRef}
-          onStateChange={handleSearchStateChange}
+          onStateChange={setIsSearchBusy}
+          onSubmit={handleResolvedIntent}
           response={response}
           sendRequest={sendRequest}
-          platform={platform}
           isSearchVisible={isSearchVisible}
           resetResponse={resetResponse}
           handleSearchInput={handleSearchInput}
@@ -161,11 +177,14 @@ export const Launcher: React.FC = () => {
         />
         <SearchButton onClick={showSearch} isSearchVisible={isSearchVisible} />
 
-        {response && (
+        {response && showTradeExecutionFlow && (
           <InlineTradeExecution
             response={response}
-            handleReset={resetResponse}
             handleClearSearchInput={handleClearSeachInput}
+            handleReset={() => {
+              setShowTradeExecutionFlow(false)
+              resetResponse()
+            }}
           />
         )}
 
@@ -176,9 +195,9 @@ export const Launcher: React.FC = () => {
       <Measure bounds onResize={handleSearchSizeChange}>
         {({ measureRef }) => (
           <div ref={measureRef}>
-            {isSearchVisible && response && (
+            {inlineSuggestions && !showTradeExecutionFlow && (
               <RootResultsContainer>
-                <Response>{getInlineSuggestionsComponent(response, platform)}</Response>
+                <Response>{inlineSuggestions}</Response>
               </RootResultsContainer>
             )}
           </div>

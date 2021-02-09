@@ -29,7 +29,7 @@ export function useTradeExecution() {
     currencyPairs: CurrencyPair
   }) => {
     const { Direction, CurrencyPair, Notional } = partialTradeRequest
-    console.log(Direction, CurrencyPair, Notional)
+
     if (!Direction || !CurrencyPair || !Notional) {
       return
     }

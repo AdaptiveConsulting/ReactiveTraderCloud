@@ -251,6 +251,5 @@ export const InlineTradeResponseContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 0.5rem;
-  /* font-size: 0.8rem; */
+  gap: 0.2rem;
 `

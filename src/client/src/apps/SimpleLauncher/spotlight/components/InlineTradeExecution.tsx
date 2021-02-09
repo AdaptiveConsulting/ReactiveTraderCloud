@@ -189,7 +189,7 @@ export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({
 
   return (
     <InlineTradeExecutionContainer className="search-container--active">
-      {(requestStatus === 'complete' || loading) && (
+      {(requestStatus === 'complete' || loading) && tradeStatus !== 'waiting' && (
         <IndeterminateLoadingBar status={loadingBarStatus} />
       )}
       <InlineTradeResponseContainer>
@@ -201,7 +201,7 @@ export const InlineTradeExecution: FC<InlineTradeExecutionProps> = ({
       <InlineTradeExecutionActionContainer>
         {tradeStatus === 'waiting' && <button onClick={executeTradeRequest}>Execute</button>}
         <button disabled={tradeStatus === 'executing'} onClick={resetAll}>
-          {tradeStatus === 'waiting' ? 'Cancel Request' : 'Close'}
+          {tradeStatus === 'waiting' ? 'Cancel' : 'Close'}
         </button>
       </InlineTradeExecutionActionContainer>
     </InlineTradeExecutionContainer>

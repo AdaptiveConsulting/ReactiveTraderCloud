@@ -7,10 +7,10 @@ import {
   getNumber,
   handleIntent,
   isSpotQuoteIntent,
-  isTradeExecutionIntent,
   isTradeIntent,
   isMarketIntent,
   mapIntent,
+  isTradeExecutionIntent,
 } from 'rt-interop'
 import { BlotterFilters, DEALT_CURRENCY, SYMBOL } from 'apps/MainRoute'
 import {
@@ -37,14 +37,40 @@ const PlatformLogoWrapper = styled.div`
     fill: #ffffff;
   }
 `
+
+const HelpText = styled.div`
+  font-size: 0.9rem;
+`
+
+const Pill = styled.div`
+  padding: 0.2rem 0.4rem;
+  display: inline-block;
+  background-color: #5f94f5;
+  color: ${({ theme }) => theme.core.lightBackground};
+  border-radius: 0.2rem;
+`
+
 export function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: Platform) {
   const currencyPair = getCurrencyPair(response.queryResult)
   const currency = getCurrency(response.queryResult)
+  const number = getNumber(response.queryResult)
 
   const intent = mapIntent(response)
 
   if (isTradeExecutionIntent(response)) {
-    return null
+    if (!number || !currencyPair) {
+      return (
+        <HelpText>
+          Usage: <Pill>buy/sell</Pill> <Pill>quantity</Pill> <Pill>instrument</Pill>
+        </HelpText>
+      )
+    }
+
+    return (
+      <HelpText>
+        Press <Pill>ENTER</Pill> to continue
+      </HelpText>
+    )
   }
 
   const quoteSuggestion =
@@ -79,7 +105,7 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
   )
 
   if (!intent) {
-    return <div>No results</div>
+    return <HelpText>No results</HelpText>
   }
 
   return (

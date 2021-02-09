@@ -10,17 +10,14 @@ import React, {
 import { DetectIntentResponse } from 'dialogflow'
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
-import { Platform } from 'rt-platforms'
-import { handleIntent } from 'rt-interop'
 import { Input, SearchContainer, CancelButton } from './styles'
 import { ExitIcon } from '../../icons'
-// import { getInlineTradeExecutionComponent } from './getInlineSuggestionsComponent'
 
 export interface SearchControlsProps {
   onStateChange: (isTyping: boolean) => void
+  onSubmit: () => void
   response: DetectIntentResponse | undefined
   sendRequest: (requestString: string) => void
-  platform: Platform
   isSearchVisible: boolean
   resetResponse: () => void
   handleSearchInput: (searchValue: string) => void
@@ -32,9 +29,8 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
   (
     {
       onStateChange,
-      response,
+      onSubmit,
       sendRequest,
-      platform,
       isSearchVisible,
       resetResponse,
       handleClearSearchInput,
@@ -56,14 +52,11 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
       }
     }, [searchInput, isTyping, resetResponse])
 
-    const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
-      e => {
-        if (e.key === 'Enter' && response) {
-          handleIntent(response, platform)
-        }
-      },
-      [response, platform]
-    )
+    const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = e => {
+      if (e.key === 'Enter') {
+        onSubmit()
+      }
+    }
 
     const handleFocus: FocusEventHandler<HTMLInputElement> = useCallback(e => {
       e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
@@ -95,11 +88,10 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
 
     // if not called again within 350ms, set isTyping to false
     const debouncedStopTyping = useCallback(
-      () =>
-        debounce(() => setIsTyping(false), 300, {
-          leading: false,
-          trailing: true,
-        }),
+      debounce(() => setIsTyping(false), 500, {
+        leading: false,
+        trailing: true,
+      }),
       []
     )
 
@@ -118,10 +110,6 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
       // don't send requests on each keystroke - send the last one in given 250ms
       throttledSendRequest(searchInput)
     }, [throttledSendRequest, searchInput])
-
-    // const inlineTradeExecutionComponent = response
-    //   ? getInlineTradeExecutionComponent(response, handleCancelButtonClick)
-    //   : null
 
     return (
       <SearchContainer className={isSearchVisible ? 'search-container--active' : ''}>
