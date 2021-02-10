@@ -211,3 +211,45 @@ export const SearchContainer = styled.div`
 export const InlineQuoteContainer = styled.div`
   font-size: 0.6875rem;
 `
+
+export const InlineTradeExecutionContainer = styled.div`
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 9;
+  top: 0;
+  background-color: ${({ theme }) => theme.core.darkBackground};
+  padding-top: 4px; // top loading bar
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const InlineTradeExecutionActionContainer = styled.div`
+  button {
+    cursor: pointer;
+    padding: 0.75rem 1.5rem;
+    background-color: ${({ theme }) => theme.core.lightBackground};
+    &:first-of-type {
+      border-radius: 3px 0 0 3px;
+    }
+    &:last-of-type {
+      border-radius: 0 3px 3px 0;
+    }
+    &:hover {
+      background-color: #5f94f5;
+    }
+  }
+`
+
+export const InlineTradeResponseContainer = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.2rem;
+`
