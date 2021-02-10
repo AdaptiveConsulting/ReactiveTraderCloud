@@ -87,12 +87,13 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
     )
 
     // if not called again within 350ms, set isTyping to false
+    // eslint-disable-next-line
     const debouncedStopTyping = useCallback(
       debounce(() => setIsTyping(false), 500, {
         leading: false,
         trailing: true,
       }),
-      []
+      [setIsTyping]
     )
 
     const handleChange = useCallback(
