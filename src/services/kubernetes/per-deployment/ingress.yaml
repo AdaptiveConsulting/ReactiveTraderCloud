@@ -6,8 +6,14 @@ metadata:
     kubernetes.io/ingress.class: "gce"
     external-dns.alpha.kubernetes.io/ttl: "1"
     networking.gke.io/v1beta1.FrontendConfig: "ingress-frontend-config"
-    cert-manger.io/cluster-issuer: reactive-trader-issuer
+    cert-manager.io/cluster-issuer: reactive-trader-issuer
 spec:
+  tls:
+  - hosts:
+    - web-${DEPLOY_ENV}.adaptivecluster.com
+    - ${DEPLOY_ENV}.lb.adaptivecluster.com
+    secretName: reactive-trader-tls
+
   rules:
     - host: web-${DEPLOY_ENV}.adaptivecluster.com
       http:
@@ -23,8 +29,3 @@ spec:
             backend:
               serviceName: web
               servicePort: 80
-  tls:
-  - hosts:
-    - web-${DEPLOY_ENV}.adaptivecluster.com
-    - ${DEPLOY_ENV}.lb.adaptivecluster.com
-    secretName: ingress-cert

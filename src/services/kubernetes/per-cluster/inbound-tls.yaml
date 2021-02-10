@@ -5,26 +5,10 @@ metadata:
 spec:
   acme:
     email: adaptive-hosting+reactive-trader-certs@weareadaptive.com
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: tls-key
     solvers:
     - dns01:
         cloudDNS:
           project: adaptive-trader
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: reactive-trader
-  namespace: default
-spec:
-  secretName: reactive-trader-tls
-  issuerRef:
-    name: reactive-trader-issuer
-  dnsNames:
-    - "reactivetrader.com"
-    - "*.reactivetrader.com"
-    - "*.adaptivecluster.com"
-    - "*.lb.adaptivecluster.com"
-
