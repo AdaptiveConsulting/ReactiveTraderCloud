@@ -1,33 +1,14 @@
 import { bind } from "@react-rxjs/core"
 import { concat } from "rxjs"
 import { scan, mergeAll, debounceTime } from "rxjs/operators"
-import { getRemoteProcedureCall$, getStream$ } from "./client"
-import { CamelCase } from "./utils"
-
-interface RawPrice {
-  Ask: number
-  Bid: number
-  Mid: number
-  CreationTimestamp: number
-  Symbol: string
-  ValueDate: string
-}
-
-export enum PriceMovementType {
-  UP,
-  DOWN,
-  NONE,
-}
-
-type HistoryPrice = CamelCase<RawPrice>
-
-export interface Price extends HistoryPrice {
-  movementType: PriceMovementType
-}
-
-interface Request {
-  symbol: string
-}
+import { getRemoteProcedureCall$, getStream$ } from "../client"
+import {
+  RawPrice,
+  PriceMovementType,
+  HistoryPrice,
+  Price,
+  Request,
+} from "./types"
 
 export const [usePrice, getPrice$] = bind((symbol: string) =>
   getStream$<RawPrice, Request>("pricing", "getPriceUpdates", { symbol }).pipe(
