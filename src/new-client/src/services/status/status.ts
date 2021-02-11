@@ -3,20 +3,7 @@ import { delay, map, mergeAll, scan, switchMap, take } from "rxjs/operators"
 import { split } from "@react-rxjs/utils"
 import { merge, of } from "rxjs"
 import { bind, shareLatest } from "@react-rxjs/core"
-
-export interface RawServiceStatus {
-  Type: string
-  Instance: string
-  TimeStamp: number
-  Load: number
-}
-
-export interface ServiceInstanceStatus {
-  serviceType: string
-  serviceId: string
-  timestamp: number
-  serviceLoad: number
-}
+import { RawServiceStatus, ServiceInstanceStatus } from "./types"
 
 const STATUS_TIMEOUT = 2000
 
