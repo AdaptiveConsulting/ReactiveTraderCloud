@@ -46,12 +46,26 @@ data:
       server_name www.reactivetrader.com ~^(?<namespace>(dev|uat))\.reactivetrader.com ~^web-(?<namespace>(demo|uat|dev))\.adaptivecluster.com ~^(?<namespace>.+?)\.lb.adaptivecluster.com$;
       resolver kube-dns.kube-system.svc.cluster.local valid=5s;
 
-      if ($host = 'www.reactivetrader.com') {
-        set $namespace 'demo';
+      if ($host = "www.reactivetrader.com") {
+        set $namespace "demo";
+      }
+
+      set $upstream "web.$namespace.svc.cluster.local";
+
+      proxy_http_version 1.1;
+      proxy_set_header Host $host;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+      location /ws {
+        proxy_pass http://$upstream/ws;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
       }
 
       location / {
-        proxy_pass http://web.$namespace.svc.cluster.local;
+        proxy_pass http://$upstream$request_uri;
       }
     }
 
@@ -66,12 +80,20 @@ data:
         return 200;
       }
     }
-
+---
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: gateway-backend-config
+spec:
+  timeoutSec: 86400
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: gateway
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default": "gateway-backend-config"}'
 spec:
   selector:
     component: gateway
