@@ -51,7 +51,7 @@ jobs:
         if: steps.existing_build.outputs.value == '0'
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: docker-compose -f ./src/docker-compose.yml build --parallel
+        run: DOCKER_BUILDKIT=1 docker-compose -f ./src/docker-compose.yml build --parallel
 
       - name: Run integration tests
         if: steps.existing_build.outputs.value == '0'
@@ -64,7 +64,7 @@ jobs:
           docker-compose -f ./src/docker-compose.yml push
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     needs: build
 
