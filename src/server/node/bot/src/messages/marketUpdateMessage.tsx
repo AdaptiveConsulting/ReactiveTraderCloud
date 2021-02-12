@@ -36,7 +36,7 @@ const MarketMessage: FC<{ prices: Price[] }> = ({ prices }) => {
   const sorted = sortPrices(prices)
 
   return (
-    <card accent="tempo-bg-color--blue" iconSrc="https://web-demo.adaptivecluster.com/favicon.ico">
+    <card accent="tempo-bg-color--blue" iconSrc="https://www.reactivetrader.com/favicon.ico">
       <header>
         <b>Market Snapshot as of {formatDateTime(new Date())}</b>
       </header>

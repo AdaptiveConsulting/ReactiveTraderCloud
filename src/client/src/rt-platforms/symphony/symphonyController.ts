@@ -12,7 +12,11 @@ import uuid from 'uuid'
 export const initiateSymphony = async (env?: string) => {
   const SYMPHONY = await waitForObject<SymphonyClient>('SYMPHONY')
 
-  const host = !env ? 'https://localhost:3000' : `https://web-${env}.adaptivecluster.com`
+  const host = !env
+    ? 'https://localhost:3000'
+    : env === 'demo'
+    ? 'https://www.reactivetrader.com'
+    : `https://${env}.reactivetrader.com`
 
   const MENU_CONTROLLER = 'menu:controller'
   const menuController = SYMPHONY.services.register(MENU_CONTROLLER)

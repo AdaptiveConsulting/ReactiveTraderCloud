@@ -93,7 +93,7 @@ const MovementIndicator: FC<{ price: Price }> = ({ price }) => {
 
 const PriceMessage: FC<{ price: Price }> = ({ price }) => {
   return (
-    <card accent="tempo-bg-color--blue" iconSrc="https://web-demo.adaptivecluster.com/favicon.ico">
+    <card accent="tempo-bg-color--blue" iconSrc="https://www.reactivetrader.com/favicon.ico">
       <header>
         Latest Prices for <cash tag={price.symbol} />
       </header>

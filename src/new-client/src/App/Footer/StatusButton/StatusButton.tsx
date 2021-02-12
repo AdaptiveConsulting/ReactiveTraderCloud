@@ -97,7 +97,7 @@ export const [useApplicationStatus, applicationStatus$] = bind(
 )
 
 export const StatusButton: React.FC = () => {
-  const url = "https://web-demo.adaptivecluster.com"
+  const url = "https://www.reactivetrader.com"
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
   const services = useServiceStatus()

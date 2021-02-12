@@ -24,7 +24,7 @@ const TradesMessage: FC<Props> = ({ trades, label, prevalance }) => {
     <>
       <card
         accent={prevelanceMap.get(prevalance)}
-        iconSrc="https://web-demo.adaptivecluster.com/favicon.ico"
+        iconSrc="https://www.reactivetrader.com/favicon.ico"
       >
         <header>{label}</header>
         <body>

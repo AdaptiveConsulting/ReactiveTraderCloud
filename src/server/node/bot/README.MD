@@ -17,8 +17,8 @@ BOT_NAME=rt-bot
 BOT_ADDRESS=rt-bot@weareadaptive.com
 
 # RT trader host and port you want your bot to use 
-BROKER_HOST=web-demo.adaptivecluster.com
-BROKER_PORT=80
+BROKER_HOST=www.reactivetrader.com
+BROKER_PORT=443
 
 # The path and name of the private key
 #   The public key is copied and stored in the Public Key field of the bot
