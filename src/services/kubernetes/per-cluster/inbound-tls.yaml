@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: reactive-trader-issuer
+spec:
+  acme:
+    email: adaptive-hosting+reactive-trader-certs@weareadaptive.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: tls-key
+    solvers:
+    - dns01:
+        cloudDNS:
+          project: adaptive-trader

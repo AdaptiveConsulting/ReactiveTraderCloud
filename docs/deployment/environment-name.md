@@ -8,11 +8,16 @@ When we deploy in the cluster, we need to define a unique id that we name **envi
 
 ## Cloud deployment
 
-This **environment name** can be found with the uri to RTC. For example, <https://web-demo.adaptivecluster.com> is written in this pattern: **<PROTOCOL_NAME>://<SERVICE_NAME>-<ENVIRONMENT_NAME>.<CLUSTER_NAME>** where:
+This **environment name** can be found with the uri to RTC. For example, <https://demo.lb.adaptivecluster.com> is written in this pattern: **<PROTOCOL_NAME>://<ENVIRONMENT_NAME>.lb.<CLUSTER_NAME>** where:
 
-- <SERVICE_NAME> is **web**
 - <ENVIRONMENT_NAME> is **demo**
 - <CLUSTER_NAME>> is **adaptivecluster.com**
+
+In addition, we have specialized domains for our persistent deployments:
+
+- www.reactivetrader.com -> demo.lb.adaptivecluster.com
+- uat.reactivetrader.com -> uat.lb.adaptivecluster.com
+- dev.reactivetrader.com -> dev.lb.adaptivecluster.com
 
 If you are going to [deploy a new environment][rtc-deployment], you need to define its name yourself.  
 The criteria are:

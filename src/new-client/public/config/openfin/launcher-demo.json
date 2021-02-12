@@ -1,11 +1,11 @@
 {
   "//___README___1": "-------------------------------------------------------------------------------------",
   "//___README___2": "This manifest exists for backwards compatibility purposes only: ",
-  "//___README___3": "use https://web-demo.adaptivecluster.com/openfin/launcher.json instead",
+  "//___README___3": "use https://www.reactivetrader.com/openfin/launcher.json instead",
   "//___README___4": "-------------------------------------------------------------------------------------",
   "startup_app": {
     "name": "Reactive Launcher",
-    "url": "https://web-demo.adaptivecluster.com/launcher",
+    "url": "https://www.reactivetrader.com/launcher",
     "uuid": "reactive-launcher-demo",
     "defaultWidth": 650,
     "defaultHeight": 52,
@@ -23,15 +23,15 @@
     "frame": false,
     "backgroundColor": "#444C5F",
     "alwaysOnTop": true,
-    "applicationIcon": "https://web-demo.adaptivecluster.com/static/media/adaptive-icon-256x256.png",
+    "applicationIcon": "https://www.reactivetrader.com/static/media/adaptive-icon-256x256.png",
     "contextMenu": true,
     "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
     "preload": [
       {
-        "url": "https://web-demo.adaptivecluster.com/plugin/service-loader.js"
+        "url": "https://www.reactivetrader.com/plugin/service-loader.js"
       },
       {
-        "url": "https://web-demo.adaptivecluster.com/plugin/fin.desktop.Excel.js"
+        "url": "https://www.reactivetrader.com/plugin/fin.desktop.Excel.js"
       }
     ],
     "accelerator": {
@@ -47,18 +47,18 @@
   },
   "shortcut": {
     "company": "Adaptive Consulting",
-    "icon": "https://web-demo.adaptivecluster.com/static/media/adaptive.ico",
+    "icon": "https://www.reactivetrader.com/static/media/adaptive.ico",
     "name": "Reactive Launcher"
   },
   "appAssets": [
     {
-      "src": "https://web-demo.adaptivecluster.com/plugin/add-in.zip",
+      "src": "https://www.reactivetrader.com/plugin/add-in.zip",
       "alias": "excel-api-addin",
       "version": "2.0.0",
       "forceDownload": true
     },
     {
-      "src": "https://web-demo.adaptivecluster.com/plugin/LimitChecker.zip",
+      "src": "https://www.reactivetrader.com/plugin/LimitChecker.zip",
       "alias": "LimitChecker",
       "version": "1.6.0",
       "target": "LimitChecker.application"

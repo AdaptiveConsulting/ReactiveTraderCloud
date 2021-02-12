@@ -1,0 +1,144 @@
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: root-ingress-frontend-config
+spec:
+  redirectToHttps:
+    enabled: true
+    responseCodeName: MOVED_PERMANENTLY_DEFAULT
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: root-ingress
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    cert-manager.io/cluster-issuer: reactive-trader-issuer
+    external-dns.alpha.kubernetes.io/hostname: "*.lb.adaptivecluster.com"
+    networking.gke.io/v1beta1.FrontendConfig: "root-ingress-frontend-config"
+spec:
+  tls:
+  - hosts:
+    - reactivetrader.com
+    - "*.reactivetrader.com"
+    - "*.adaptivecluster.com"
+    - "*.lb.adaptivecluster.com"
+    secretName: reactive-trader-tls
+
+  backend:
+    serviceName: gateway
+    servicePort: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+data:
+  default.conf: |
+    server {
+      listen 8080;
+      server_name reactivetrader.com;
+      return 301 $scheme://www.reactivetrader.com$request_uri;
+    }
+
+    server {
+      listen 8080;
+      server_name www.reactivetrader.com ~^(?<namespace>(dev|uat))\.reactivetrader.com ~^web-(?<namespace>(demo|uat|dev))\.adaptivecluster.com ~^(?<namespace>.+?)\.lb.adaptivecluster.com$;
+      resolver kube-dns.kube-system.svc.cluster.local valid=5s;
+
+      if ($host = "www.reactivetrader.com") {
+        set $namespace "demo";
+      }
+
+      set $upstream "web.$namespace.svc.cluster.local";
+
+      proxy_http_version 1.1;
+      proxy_set_header Host $host;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+      location /ws {
+        proxy_pass http://$upstream/ws;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      }
+
+      location / {
+        proxy_pass http://$upstream$request_uri;
+      }
+    }
+
+    server {
+      listen 8080 default_server;
+
+      location /healthz {
+        return 200;
+      }
+
+      location / {
+        return 200;
+      }
+    }
+---
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: gateway-backend-config
+spec:
+  timeoutSec: 86400
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default": "gateway-backend-config"}'
+spec:
+  selector:
+    component: gateway
+  ports:
+  - name: gateway
+    port: 80
+    targetPort: 8080
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: gateway
+  template:
+    metadata:
+      labels:
+        component: gateway
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.19.6
+        ports:
+          - containerPort: 8080
+        resources:
+          requests:
+            memory: "10M"
+            cpu: "15m"
+        volumeMounts:
+        - name: gateway-config
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+        readinessProbe:
+          httpGet:
+            port: 8080
+            path: /healthz
+        livenessProbe:
+          httpGet:
+            port: 8080
+            path: /healthz
+      volumes:
+      - name: gateway-config
+        configMap: 
+          name: gateway-config
