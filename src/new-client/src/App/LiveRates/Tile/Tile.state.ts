@@ -46,7 +46,7 @@ const [useNotional, getNotional$] = bind(
   DEFAULT_NOTIONAL.toString(10),
 )
 
-export { onChangeNotionalValue, useNotional }
+export { onChangeNotionalValue, useNotional, getNotional$ }
 
 // Dismiss Message
 const DISMISS_TIMEOUT = 5_000

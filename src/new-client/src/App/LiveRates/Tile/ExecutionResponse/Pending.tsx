@@ -1,16 +1,7 @@
 import { AdaptiveLoader } from "components/AdaptiveLoader"
 import styled from "styled-components/macro"
-import { OverlayDiv } from "./Response.styles"
-
-const PendingContainer = styled(OverlayDiv)`
-  display: table;
-`
-
-const PendingPopUp = styled("div")`
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-`
+import { OverlayDiv } from "components/OverlayDiv"
+import { CenteringContainer } from "components/CenteringContainer"
 
 const PendingPill = styled("div")`
   background-color: ${({ theme }) => theme.accents.primary.base};
@@ -24,8 +15,8 @@ const PendingPill = styled("div")`
 
 const Pending = () => {
   return (
-    <PendingContainer>
-      <PendingPopUp>
+    <OverlayDiv>
+      <CenteringContainer>
         <PendingPill>
           <AdaptiveLoader
             size={14}
@@ -36,8 +27,8 @@ const Pending = () => {
           />
           {"  Executing"}
         </PendingPill>
-      </PendingPopUp>
-    </PendingContainer>
+      </CenteringContainer>
+    </OverlayDiv>
   )
 }
 

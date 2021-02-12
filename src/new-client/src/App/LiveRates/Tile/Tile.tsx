@@ -17,6 +17,7 @@ import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
 
 import { CurrencyPair } from "services/currencyPairs"
 import { Provider } from "./Tile.context"
+import { RFQButton } from "./RFQ/RFQButton"
 
 export const tile$ = (symbol: string) =>
   merge(
@@ -51,6 +52,7 @@ export const Tile: React.FC<{
             <NotionalInput isAnalytics={isAnalytics} />
           </Body>
         </Main>
+        <RFQButton />
         <ExecutionResponse />
       </PanelItem>
     </Provider>
