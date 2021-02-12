@@ -48,7 +48,7 @@ const [useNotional, getNotional$] = bind(
   DEFAULT_NOTIONAL.toString(10),
 )
 
-export { onChangeNotionalValue, useNotional }
+export { onChangeNotionalValue, useNotional, getNotional$ }
 
 // Dismiss Message
 const DISMISS_TIMEOUT = 5_000
@@ -66,7 +66,7 @@ const [tileExecutions$, sendExecution] = createListener<{
   symbol: string
   direction: Direction
 }>()
-export { sendExecution }
+export { tileExecutions$, sendExecution }
 
 // TileState
 export enum TileStates {

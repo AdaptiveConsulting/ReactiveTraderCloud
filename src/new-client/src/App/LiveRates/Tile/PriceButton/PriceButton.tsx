@@ -1,27 +1,27 @@
-import { bind } from "@react-rxjs/core"
-import { map } from "rxjs/operators"
+import React from "react"
 import { getPrice$ } from "services/prices"
 import { Direction } from "services/trades"
 import {
   customNumberFormatter,
   significantDigitsNumberFormatter,
 } from "utils/formatNumber"
-import { useTileCurrencyPair } from "../Tile.context"
 import { sendExecution } from "../Tile.state"
 import {
   TradeButton,
   Price,
-  BigWrapper,
   DirectionLabel,
   Big,
   Pip,
   Tenth,
+  PriceLoading,
 } from "./PriceButton.styles"
-
-const formatTo3Digits = significantDigitsNumberFormatter(3)
-const formatToMin2IntDigits = customNumberFormatter({
-  minimumIntegerDigits: 2,
-})
+import { useTileCurrencyPair } from "../Tile.context"
+import { map } from "rxjs/operators"
+import { bind } from "@react-rxjs/core"
+import { CenteringContainer } from "components/CenteringContainer"
+import { AdaptiveLoader } from "components/AdaptiveLoader"
+import { useRfqState } from "../Rfq"
+import { QuoteState } from "services/rfqs"
 
 const [
   usePrice,
@@ -35,12 +35,18 @@ const [
 export const priceButton$ = (direction: Direction) => (symbol: string) =>
   getPriceDirection$(symbol, direction)
 
-export const PriceButton: React.FC<{
-  direction: Direction
-}> = ({ direction }) => {
-  const { pipsPosition, ratePrecision, symbol } = useTileCurrencyPair()
-  const price = usePrice(symbol, direction)
+const formatTo3Digits = significantDigitsNumberFormatter(3)
+const formatToMin2IntDigits = customNumberFormatter({
+  minimumIntegerDigits: 2,
+})
 
+const PriceButtonInner: React.FC<{
+  direction: Direction
+  price: number
+  ratePrecision: number
+  symbol: string
+  pipsPosition: number
+}> = ({ direction, price, ratePrecision, symbol, pipsPosition }) => {
   const disabled = price === 0
 
   const rateString = price.toFixed(ratePrecision)
@@ -68,10 +74,10 @@ export const PriceButton: React.FC<{
       disabled={disabled}
     >
       <Price disabled={disabled}>
-        <BigWrapper>
+        <CenteringContainer>
           <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
           <Big>{disabled ? "-" : bigFigure}</Big>
-        </BigWrapper>
+        </CenteringContainer>
         {!disabled && (
           <>
             <Pip>{pip}</Pip>
@@ -80,5 +86,46 @@ export const PriceButton: React.FC<{
         )}
       </Price>
     </TradeButton>
+  )
+}
+
+export const PriceButton: React.FC<{
+  direction: Direction
+}> = ({ direction }) => {
+  const { pipsPosition, ratePrecision, symbol } = useTileCurrencyPair()
+  const streamingPrice = usePrice(symbol, direction)
+  const rfqState = useRfqState()
+
+  if (!rfqState || !rfqState.quoteState) {
+    return (
+      <PriceButtonInner
+        direction={direction}
+        symbol={symbol}
+        ratePrecision={ratePrecision}
+        pipsPosition={pipsPosition}
+        price={streamingPrice}
+      />
+    )
+  }
+
+  if (!rfqState.rfqResponse) {
+    return (
+      <PriceLoading>
+        <AdaptiveLoader size={16} />
+        Awaiting Price
+      </PriceLoading>
+    )
+  }
+
+  return (
+    <PriceButtonInner
+      direction={direction}
+      symbol={symbol}
+      ratePrecision={ratePrecision}
+      pipsPosition={pipsPosition}
+      price={
+        rfqState.rfqResponse.price[direction === Direction.Buy ? "ask" : "bid"]
+      }
+    />
   )
 }

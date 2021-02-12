@@ -5,6 +5,7 @@ import { getCurrencyPair$ } from "services/currencyPairs"
 import { equals } from "utils/equals"
 import { FaSortUp, FaSortDown } from "react-icons/fa"
 import { symbolBind } from "../Tile.context"
+import { useRfqState } from "../Rfq/Rfq.state"
 
 const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
   text-align: center;
@@ -36,40 +37,61 @@ const PriceMovementStyle = styled.div<{
   grid-area: movement;
 `
 
+const calculateSpread = (
+  ask: number,
+  bid: number,
+  ratePrecision: number,
+  pipsPosition: number,
+) =>
+  ((ask - bid) * Math.pow(10, pipsPosition)).toFixed(
+    ratePrecision - pipsPosition,
+  )
+
 const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
   getPrice$(symbol).pipe(
     withLatestFrom(getCurrencyPair$(symbol)),
-    map(([{ bid, ask, movementType }, { pipsPosition, ratePrecision }]) => {
-      const spread = ((ask - bid) * Math.pow(10, pipsPosition)).toFixed(
-        ratePrecision - pipsPosition,
-      )
-      return { spread, movementType }
-    }),
+    map(
+      ([
+        { bid, ask, movementType, symbol },
+        { pipsPosition, ratePrecision },
+      ]) => {
+        const spread = calculateSpread(ask, bid, ratePrecision, pipsPosition)
+        return { spread, movementType, symbol }
+      },
+    ),
     distinctUntilChanged(equals),
   ),
 )
-
 export { priceMovement$ }
 
 export const PriceMovement: React.FC<{
   isAnalyticsView: boolean
 }> = ({ isAnalyticsView }) => {
   const { spread, movementType } = usePriceMovementData()
+  const rfqState = useRfqState()
+
+  if (rfqState?.quoteState && rfqState.rfqResponse) {
+    const {
+      price: { bid, ask },
+      currencyPair: { ratePrecision, pipsPosition },
+    } = rfqState.rfqResponse
+    const spread = calculateSpread(ask, bid, ratePrecision, pipsPosition)
+    return (
+      <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
+        <MovementValue>{spread}</MovementValue>
+      </PriceMovementStyle>
+    )
+  }
+
   return (
     <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
       <MovementIconUP
-        data-qa="price-movement__movement-icon--up"
         $show={movementType === PriceMovementType.UP}
-        className="fas fa-caret-up"
         aria-hidden="true"
       />
-      <MovementValue data-qa="price-movement__movement-value">
-        {spread}
-      </MovementValue>
+      <MovementValue>{spread}</MovementValue>
       <MovementIconDown
-        data-qa="price-movement__movement-icon--down"
         $show={movementType === PriceMovementType.DOWN}
-        className="fas fa-caret-down"
         aria-hidden="true"
       />
     </PriceMovementStyle>

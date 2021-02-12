@@ -44,18 +44,18 @@ type LoaderType = "primary" | "secondary"
 export const AdaptiveLoader: React.FC<{
   size: number | string
   type?: LoaderType
-  seperation?: number
+  separation?: number
   speed?: number
   color?: string
-}> = memo(({ size, type, seperation, speed, children, color }) => {
+}> = memo(({ size, type, separation, speed, children, color }) => {
   const sizeNum = Number(size)
   const barHeight = sizeNum * 0.75
   const barWidth = barHeight / 4
-  const seperationDistance =
-    (seperation !== undefined ? seperation : sizeNum / 25) - 0.5
+  const separationDistance =
+    (separation !== undefined ? separation : sizeNum / 25) - 0.5
   const moveDistance = barHeight / 3
   const totalBarWidth =
-    barWidth * BAR_NUMBER + seperationDistance * (BAR_NUMBER - 1)
+    barWidth * BAR_NUMBER + separationDistance * (BAR_NUMBER - 1)
   const extraWidth = sizeNum - totalBarWidth
 
   return (
@@ -66,7 +66,7 @@ export const AdaptiveLoader: React.FC<{
           key={idx}
           height={barHeight}
           width={barWidth}
-          x={extraWidth / 2 + idx * (barWidth + seperationDistance)}
+          x={extraWidth / 2 + idx * (barWidth + separationDistance)}
           order={idx}
           moveDistance={moveDistance}
           speed={speed || ANIMATION_SPEED}
