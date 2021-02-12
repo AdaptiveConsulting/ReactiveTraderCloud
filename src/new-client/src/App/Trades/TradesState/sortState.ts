@@ -1,7 +1,7 @@
+import { scan, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createListener } from "@react-rxjs/utils"
-import { scan, startWith } from "rxjs/operators"
-import { ColField } from "./colConfig"
+import type { ColField } from "./colConfig"
 
 export type SortDirection = "ASC" | "DESC"
 

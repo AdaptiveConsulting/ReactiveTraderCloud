@@ -1,18 +1,10 @@
-//import { createListener } from "@react-rxjs/utils"
 import { FaTimes } from "react-icons/fa"
 import styled from "styled-components/macro"
-import {
-  colConfigs,
-  ColField,
-  onFilterReset,
-  useAppliedFilterEntries,
-  useNumFilterEntries,
-} from "../TradesState"
+import { colConfigs, onFilterReset, useFilterFields } from "../TradesState"
 
 const FilterButton = styled("button")`
   opacity: 0.59;
 `
-
 const FilterField = styled("div")`
   display: flex;
   align-items: normal;
@@ -38,15 +30,10 @@ const FilterName = styled("div")`
 `
 
 export const AppliedFilters: React.FC = () => {
-  const numFilters = useNumFilterEntries()
-  const setFilters = useAppliedFilterEntries()
-  const filteredFields = [...numFilters, ...setFilters].map(
-    ([field]) => field,
-  ) as ColField[]
-
+  const filterFields = useFilterFields()
   return (
     <>
-      {filteredFields.map((field) => (
+      {filterFields.map((field) => (
         <FilterField key={field}>
           <FilterName>{colConfigs[field].headerName}</FilterName>
           <FilterButton>

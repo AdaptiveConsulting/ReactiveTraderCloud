@@ -29,7 +29,7 @@ const AppLayoutRoot = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 `
 
-const MainOutter = styled.div`
+const MainOuter = styled.div`
   display: flex;
   overflow: hidden;
 `
@@ -50,7 +50,7 @@ export const App: React.FC = () => {
     <Wrapper>
       <AppLayoutRoot data-qa="app-layout__root">
         <Header />
-        <MainOutter>
+        <MainOuter>
           <MainWrapper>
             <Resizer defaultHeight={30}>
               <LiveRates />
@@ -58,7 +58,7 @@ export const App: React.FC = () => {
             </Resizer>
             <Analytics />
           </MainWrapper>
-        </MainOutter>
+        </MainOuter>
         <Footer />
         <Modals />
       </AppLayoutRoot>

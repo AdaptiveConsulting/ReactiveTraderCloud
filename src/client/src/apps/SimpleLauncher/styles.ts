@@ -38,6 +38,7 @@ export const LauncherContainer = styled.div<{ showResponsePanel: boolean }>`
   align-items: center;
   border-radius: ${({ showResponsePanel }) => showResponsePanel && '3px 3px 0 0'};
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  position: relative;
 `
 
 export const IconContainer = styled.div`
