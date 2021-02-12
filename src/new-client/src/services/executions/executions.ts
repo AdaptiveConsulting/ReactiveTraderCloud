@@ -10,7 +10,7 @@ import {
   TimeoutExecution,
 } from "./types"
 
-const mapExecutiontoPayload = (e: ExecutionRequest): ExecutionPayload => {
+const mapExecutionToPayload = (e: ExecutionRequest): ExecutionPayload => {
   return {
     CurrencyPair: e.currencyPair,
     DealtCurrency: e.dealtCurrency,
@@ -42,7 +42,7 @@ export const execute$ = (execution: ExecutionRequest) =>
     getRemoteProcedureCall$<ExecutionResponse, ExecutionPayload>(
       "execution",
       "executeTrade",
-      mapExecutiontoPayload(execution),
+      mapExecutionToPayload(execution),
     ).pipe(map(mapResponseToTrade(execution.id))),
     timer(30_000).pipe(
       mapTo({
