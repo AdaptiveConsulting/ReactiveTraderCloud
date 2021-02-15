@@ -50,6 +50,11 @@ jobs:
           DEPLOY_ENV: ${{ github.event.deployment.environment }}
         run: kubectl delete jobs --all --namespace $DEPLOY_ENV
 
+      - name: Delete persistent volumes
+        env:
+          DEPLOY_ENV: ${{ github.event.deployment.environment }}
+        run: kubectl delete persistentvolumeclaims --all --namespace $DEPLOY_ENV
+
       - name: Update GKE deployment definitions
         env:
           DEPLOY_ENV: ${{ github.event.deployment.environment }}

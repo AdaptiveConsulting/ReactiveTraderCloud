@@ -64,7 +64,7 @@ jobs:
           docker-compose -f ./src/docker-compose.yml push
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     needs: build
 
@@ -96,6 +96,10 @@ jobs:
 
       - name: Delete GKE jobs
         run: kubectl delete jobs --all --namespace $DEPLOY_ENV
+        continue-on-error: true
+
+      - name: Delete persistent volumes
+        run: kubectl delete persistentvolumeclaims --all --namespace $DEPLOY_ENV
         continue-on-error: true
 
       - name: Create client configmap if not exists
