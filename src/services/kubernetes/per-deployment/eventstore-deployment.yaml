@@ -20,9 +20,9 @@ spec:
             - containerPort: 2113
           env:
           - name: EVENTSTORE_DB
-            value: /db
+            value: "/db"
           - name: EVENTSTORE_WRITE_STATS_TO_DB
-            value: false
+            value: "false"
           resources:
             requests:
               memory: "1G"
