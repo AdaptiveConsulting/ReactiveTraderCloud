@@ -2,10 +2,10 @@ version: '3'
 services:
   # infrastructure
   eventstore:
-    image: ${DOCKER_USER}/eventstore:${BUILD_VERSION}
-    build:
-      dockerfile: Dockerfile
-      context: ./services/eventstore
+    image: eventstore/eventstore:release-5.0.9
+    environment:
+    - EVENTSTORE_DB=/db
+    - EVENTSTORE_WRITE_STATS_TO_DB=false
   broker:
     image: ${DOCKER_USER}/broker:${BUILD_VERSION}
     build:
@@ -107,13 +107,12 @@ services:
       - broker
   # web client
   nginx:
-    image: ${DOCKER_USER}/nginx:${BUILD_VERSION}
+    image: nginx:1.19.6
     restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./services/nginx
     ports:
       - '80:80'
+    volumes:
+      - ./services/nginx/default.conf:/etc/nginx/conf.d/default.conf
   client:
     image: ${DOCKER_USER}/client:${BUILD_VERSION}
     build:

@@ -14,10 +14,15 @@ spec:
     spec:
       containers:
         - name: eventstore
-          image: ${DOCKER_USER}/eventstore:${BUILD_VERSION}
+          image: eventstore/eventstore:release-5.0.9
           ports:
             - containerPort: 1113
             - containerPort: 2113
+          env:
+          - name: EVENTSTORE_DB
+            value: /db
+          - name: EVENTSTORE_WRITE_STATS_TO_DB
+            value: false
           resources:
             requests:
               memory: "1G"
