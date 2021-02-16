@@ -36,7 +36,6 @@ const [useDate, getDate$] = bind((symbol: string) =>
 export const Header: React.FC = () => {
   const { base, terms, symbol } = useTileCurrencyPair()
   const date = useDate(symbol)
-  console.log("date", symbol, date)
   return (
     <HeaderWrapper>
       <TileSymbol data-qa="tile-header__tile-symbol">

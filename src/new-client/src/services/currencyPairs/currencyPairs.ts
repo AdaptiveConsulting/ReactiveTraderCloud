@@ -6,32 +6,9 @@ import {
   scan,
   share,
 } from "rxjs/operators"
-import { getStream$ } from "./client"
-import {
-  CamelCase,
-  CollectionUpdate,
-  CollectionUpdates,
-  UpdateType,
-} from "./utils"
-
-interface CurrencyRaw {
-  Symbol: string
-  RatePrecision: number
-  PipsPosition: number
-}
-
-interface RawCurrencyPairUpdate extends CollectionUpdate {
-  CurrencyPair: CurrencyRaw
-}
-
-interface RawCurrencyPairUpdates extends CollectionUpdates {
-  Updates: RawCurrencyPairUpdate[]
-}
-
-export interface CurrencyPair extends CamelCase<CurrencyRaw> {
-  base: string
-  terms: string
-}
+import { getStream$ } from "../client"
+import { UpdateType } from "../utils"
+import { CurrencyRaw, CurrencyPair, RawCurrencyPairUpdates } from "./types"
 
 const currencyPairMapper = (input: CurrencyRaw): CurrencyPair => ({
   symbol: input.Symbol,
