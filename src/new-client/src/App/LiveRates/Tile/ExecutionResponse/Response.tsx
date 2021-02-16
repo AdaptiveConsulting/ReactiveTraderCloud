@@ -18,6 +18,7 @@ import {
   TileState,
   TileStates,
   useTileState,
+  getTileState$,
 } from "../Tile.state"
 import { CurrencyPair } from "services/currencyPairs"
 
@@ -100,13 +101,13 @@ const ExecutionMessage: React.FC<{
     tileState.trade.status === ExecutionStatus.Done
 
   return (
-    <ExecutionStatusAlertContainer state={tileState}>
+    <ExecutionStatusAlertContainer state={tileState} role="dialog">
       <CurrencyPairDiv>
         {isSuccessful ? <AlignedCheck /> : <AlignedTriangle />}
         {base}/{terms}
       </CurrencyPairDiv>
       <TradeIdDiv>{tradeId && `Trade ID: ${tradeId}`}</TradeIdDiv>
-      <TradeMessageDiv>
+      <TradeMessageDiv role="alert">
         {getExecutionMessage(tileState, base, terms)}
       </TradeMessageDiv>
       {!isWaiting && (
@@ -123,6 +124,7 @@ const ExecutionMessage: React.FC<{
   )
 }
 
+export const executionResponse$ = getTileState$
 export const ExecutionResponse = () => {
   const currencyPair = useTileCurrencyPair()
   const tileState = useTileState(currencyPair.symbol)
