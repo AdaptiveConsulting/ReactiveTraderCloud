@@ -22,5 +22,5 @@ spec:
               value: '1113'
           command:
             ['sh', '-c', 'dotnet ./Adaptive.ReactiveTrader.Server.Launcher.dll config.prod.json --populate-eventstore']
-      restartPolicy: Never
+      restartPolicy: OnFailure
       

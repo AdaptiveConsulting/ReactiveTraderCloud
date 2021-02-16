@@ -22,4 +22,11 @@ spec:
             requests:
               memory: "1G"
               cpu: "80m"
+          volumeMounts:
+            - mountPath: /db
+              name: eventstore-data
+      volumes:
+        - name: eventstore-data
+          persistentVolumeClaim:
+            claimName: eventstore-volume
 
