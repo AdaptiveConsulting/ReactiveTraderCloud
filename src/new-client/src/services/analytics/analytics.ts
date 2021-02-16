@@ -1,35 +1,8 @@
 import { bind, shareLatest } from "@react-rxjs/core"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
-import { CamelCase } from "services/utils"
-import { getStream$ } from "./client"
-
-interface CurrencyPairPositionRaw {
-  Symbol: string
-  BasePnl: number
-  BaseTradedAmount: number
-  CounterTradedAmount: number
-}
-
-export interface CurrencyPairPosition
-  extends CamelCase<CurrencyPairPositionRaw> {
-  basePnlName: "basePnl"
-  baseTradedAmountName: "baseTradedAmount"
-}
-
-interface HistoryRaw {
-  Timestamp: string
-  UsdPnl: number
-}
-export interface HistoryEntry {
-  timestamp: number
-  usPnl: number
-}
-
-interface PositionsRaw {
-  CurrentPositions: CurrencyPairPositionRaw[]
-  History: HistoryRaw[]
-}
+import { getStream$ } from "../client"
+import { CurrencyPairPosition, HistoryEntry, PositionsRaw } from "./types"
 
 const analytics$ = getStream$<PositionsRaw, string>(
   "analytics",
