@@ -2,10 +2,6 @@ import { Subscribe } from "@react-rxjs/core"
 import { render, screen, act, waitFor, fireEvent } from "@testing-library/react"
 import { BehaviorSubject, Subject } from "rxjs"
 
-jest.mock("services/executions/executions")
-jest.mock("services/prices/prices")
-jest.mock("services/currencyPairs/currencyPairs")
-
 import { CurrencyPair } from "services/currencyPairs"
 import {
   ExecutionRequest,
@@ -17,6 +13,11 @@ import { HistoryPrice, Price, PriceMovementType } from "services/prices"
 import { Direction } from "services/trades"
 import { TestThemeProvider } from "utils/testUtils"
 import { Tile, tile$ } from "./Tile"
+import * as sinon from "sinon"
+
+jest.mock("services/executions/executions")
+jest.mock("services/prices/prices")
+jest.mock("services/currencyPairs/currencyPairs")
 
 const currencyPairMock: CurrencyPair = {
   symbol: "EURUSD",
@@ -53,6 +54,7 @@ const _ccpp = require("services/currencyPairs/currencyPairs")
 const _exec = require("services/executions/executions")
 
 describe("Tile", () => {
+  let clock: sinon.SinonFakeTimers
   beforeEach(() => {
     _prices.__resetMocks()
     _ccpp.__resetMocks()
@@ -180,6 +182,87 @@ describe("Tile", () => {
     expect(screen.getAllByRole("button")[0].textContent).toBe(
       `SELL${priceMock.bid}`,
     )
+  })
+
+  it("should render alert when execution takes too long", async () => {
+    clock = sinon.useFakeTimers()
+    const priceMock$ = new BehaviorSubject<Price>(priceMock)
+    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+
+    const hPriceMock$ = new Subject<HistoryPrice>()
+    _prices.__setHistoricalPricesMock(hPriceMock$)
+
+    const ccPairMock$ = new BehaviorSubject<CurrencyPair>(currencyPairMock)
+    _ccpp.__setCurrencyPairMock(currencyPairMock.symbol, ccPairMock$)
+
+    const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
+
+    const executeFn = jest.fn(() => response$)
+    _exec.__setExecute$(executeFn)
+
+    renderComponent()
+
+    expect(executeFn).not.toHaveBeenCalled()
+    expect(screen.queryByText("Executing")).toBeNull()
+
+    act(() => {
+      fireEvent.click(screen.getAllByRole("button")[0])
+    })
+
+    expect(executeFn.mock.calls.length).toBe(1)
+
+    const originalRequest: ExecutionRequest = (executeFn.mock
+      .calls[0] as any)[0]
+    const request: Partial<ExecutionRequest> = {
+      ...originalRequest,
+    }
+    delete request.id
+
+    expect(request).toEqual({
+      currencyPair: "EURUSD",
+      dealtCurrency: "USD",
+      direction: Direction.Sell,
+      notional: 1000000,
+      spotRate: 1.53816,
+    })
+
+    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
+
+    act(() => {
+      clock.tick(2000)
+    })
+    await waitFor(() => {
+      expect(screen.queryByText("Executing")).toBeNull()
+      expect(screen.queryByRole("alert")!.textContent).toEqual(
+        "Trade execution taking longer than expected.",
+      )
+    })
+
+    const tradeId = 200
+    act(() => {
+      response$.next({
+        ...originalRequest,
+        valueDate: "2021-02-04T13:17:28.040711+00:00",
+        tradeId,
+        status: ExecutionStatus.Done,
+      })
+      response$.complete()
+    })
+
+    expect(screen.queryByRole("alert")!.textContent).toEqual(
+      "You sold EUR 1,000,000 at a rate of 1.53816 for USD 1,538,160 settling (Spt) 04 Feb.",
+    )
+
+    act(() => {
+      fireEvent.click(screen.getByText("Close"))
+    })
+
+    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
+
+    expect(screen.getAllByRole("button")[0].textContent).toBe(
+      `SELL${priceMock.bid}`,
+    )
+    clock.restore()
   })
 
   it("should not re-trigger executions after remounting", async () => {
