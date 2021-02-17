@@ -1,13 +1,17 @@
 import { collect, createListener, split } from "@react-rxjs/utils"
 import { Direction } from "services/trades"
 import {
+  concatAll,
+  concatMap,
   exhaustMap,
   filter,
   map,
   mapTo,
   pluck,
+  scan,
   startWith,
   take,
+  tap,
   withLatestFrom,
 } from "rxjs/operators"
 import { concat, EMPTY, of, race, timer } from "rxjs"
@@ -16,6 +20,7 @@ import { ExecutionTrade, execute$, ExecutionStatus } from "services/executions"
 import { getCurrencyPair$ } from "services/currencyPairs"
 import { emitTooLongMessage } from "utils/emitTooLong"
 import { bind } from "@react-rxjs/core"
+import { QuoteStatus, rfq$ } from "services/rfqs"
 
 // Notional
 const DEFAULT_NOTIONAL = 1_000_000
@@ -147,3 +152,50 @@ export const [useTileState, getTileState$] = bind((symbol: string) =>
     exhaustMap((map) => (map.has(symbol) ? map.get(symbol)! : of(READY))),
   ),
 )
+
+const [
+  rfqButtonClicks$,
+  onRfqButtonClick,
+] = createListener((symbol: string) => ({ symbol }))
+export { onRfqButtonClick }
+
+const [
+  rfqStateUpdates$,
+  onRfqStateUpdate,
+] = createListener((symbol: string, quoteState: QuoteStatus) => ({
+  symbol,
+  quoteState,
+}))
+
+const rfqTileStateMap$ = rfqStateUpdates$.pipe(
+  scan((stateMap, { symbol, quoteState }) => {
+    console.log({ stateMap })
+    return { ...stateMap, [symbol]: quoteState }
+  }, {} as Record<string, QuoteStatus>),
+)
+
+const [useRfqState] = bind(
+  (symbol: string) =>
+    rfqTileStateMap$.pipe(map((stateMap) => stateMap[symbol])),
+  undefined,
+)
+
+export { useRfqState }
+
+const [useRfqResponses] = bind(
+  rfqButtonClicks$.pipe(
+    tap(({ symbol }) => {
+      onRfqStateUpdate(symbol, QuoteStatus.Requested)
+    }),
+    withLatestFrom(({ symbol }) => getNotional$(symbol)),
+    concatAll(),
+    concatMap(([symbol, notional]) =>
+      rfq$({ symbol, notional: parseInt(notional) }),
+    ),
+    tap(({ price: { symbol } }) => {
+      onRfqStateUpdate(symbol, QuoteStatus.Received)
+    }),
+  ),
+)
+
+export { useRfqResponses }
