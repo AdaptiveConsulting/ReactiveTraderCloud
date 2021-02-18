@@ -21,6 +21,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
       <InputWrapper>
         <CurrencyPairSymbol>{base}</CurrencyPairSymbol>
         <Input
+          role={"input"}
           type="text"
           value={isFocused ? notional : formatAsWholeNumber(parseInt(notional))}
           onChange={({ target: { value } }) => {

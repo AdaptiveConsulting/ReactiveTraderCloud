@@ -265,6 +265,147 @@ describe("Tile", () => {
     clock.restore()
   })
 
+  it("should render alert when execution timeout", async () => {
+    const priceMock$ = new BehaviorSubject<Price>(priceMock)
+    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+
+    const hPriceMock$ = new Subject<HistoryPrice>()
+    _prices.__setHistoricalPricesMock(hPriceMock$)
+
+    const ccPairMock$ = new BehaviorSubject<CurrencyPair>(currencyPairMock)
+    _ccpp.__setCurrencyPairMock(currencyPairMock.symbol, ccPairMock$)
+
+    const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
+
+    const executeFn = jest.fn(() => response$)
+    _exec.__setExecute$(executeFn)
+
+    renderComponent()
+
+    expect(executeFn).not.toHaveBeenCalled()
+    expect(screen.queryByText("Executing")).toBeNull()
+
+    act(() => {
+      fireEvent.click(screen.getAllByRole("button")[0])
+    })
+
+    expect(executeFn.mock.calls.length).toBe(1)
+
+    const originalRequest: ExecutionRequest = (executeFn.mock
+      .calls[0] as any)[0]
+    const request: Partial<ExecutionRequest> = {
+      ...originalRequest,
+    }
+    delete request.id
+
+    expect(request).toEqual({
+      currencyPair: "EURUSD",
+      dealtCurrency: "USD",
+      direction: Direction.Sell,
+      notional: 1000000,
+      spotRate: 1.53816,
+    })
+
+    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
+
+    act(() => {
+      response$.next({
+        ...originalRequest,
+        status: ExecutionStatus.Timeout,
+      })
+      response$.complete()
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText("Executing")).toBeNull()
+      expect(screen.queryByRole("alert")!.textContent).toEqual(
+        "Trade execution timeout exceeded.",
+      )
+    })
+
+    act(() => {
+      fireEvent.click(screen.getByText("Close"))
+    })
+
+    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
+
+    expect(screen.getAllByRole("button")[0].textContent).toBe(
+      `SELL${priceMock.bid}`,
+    )
+  })
+
+  it("should render alert when execution rejected", async () => {
+    const priceMock$ = new BehaviorSubject<Price>(priceMock)
+    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+
+    const hPriceMock$ = new Subject<HistoryPrice>()
+    _prices.__setHistoricalPricesMock(hPriceMock$)
+
+    const ccPairMock$ = new BehaviorSubject<CurrencyPair>(currencyPairMock)
+    _ccpp.__setCurrencyPairMock(currencyPairMock.symbol, ccPairMock$)
+
+    const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
+
+    const executeFn = jest.fn(() => response$)
+    _exec.__setExecute$(executeFn)
+
+    renderComponent()
+
+    expect(executeFn).not.toHaveBeenCalled()
+    expect(screen.queryByText("Executing")).toBeNull()
+
+    act(() => {
+      fireEvent.click(screen.getAllByRole("button")[0])
+    })
+
+    expect(executeFn.mock.calls.length).toBe(1)
+
+    const originalRequest: ExecutionRequest = (executeFn.mock
+      .calls[0] as any)[0]
+    const request: Partial<ExecutionRequest> = {
+      ...originalRequest,
+    }
+    delete request.id
+
+    expect(request).toEqual({
+      currencyPair: "EURUSD",
+      dealtCurrency: "USD",
+      direction: Direction.Sell,
+      notional: 1000000,
+      spotRate: 1.53816,
+    })
+
+    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
+
+    const tradeId = 200
+    act(() => {
+      response$.next({
+        ...originalRequest,
+        valueDate: "2021-02-04T13:17:28.040711+00:00",
+        tradeId,
+        status: ExecutionStatus.Rejected,
+      })
+      response$.complete()
+    })
+
+    await waitFor(() => {
+      expect(screen.queryByText("Executing")).toBeNull()
+      expect(screen.queryByRole("alert")!.textContent).toEqual(
+        "Your trade has been rejected",
+      )
+    })
+
+    act(() => {
+      fireEvent.click(screen.getByText("Close"))
+    })
+
+    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
+
+    expect(screen.getAllByRole("button")[0].textContent).toBe(
+      `SELL${priceMock.bid}`,
+    )
+  })
+
   it("should not re-trigger executions after remounting", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
@@ -295,5 +436,41 @@ describe("Tile", () => {
     renderComponent()
 
     expect(executeFn.mock.calls.length).toBe(1)
+  })
+
+  it("should unformat the notional number when focused", async () => {
+    renderComponent()
+    const input = screen.getAllByRole("input")[0] as HTMLInputElement
+    act(() => {
+      fireEvent.change(input, { target: { value: "1000000" } })
+    })
+    expect(input.value).toBe("1,000,000")
+
+    act(() => {
+      fireEvent.focus(input)
+    })
+    expect(input.value).toBe("1000000")
+  })
+
+  it("should not allow letters in the notional input", async () => {
+    renderComponent()
+    const input = screen.getAllByRole("input")[0] as HTMLInputElement
+    expect(input.value).toBe("1,000,000")
+    act(() => {
+      fireEvent.change(input, { target: { value: "Hello" } })
+    })
+    expect(input.value).toBe("1,000,000")
+  })
+
+  it("should reformat the notional input after got new value", async () => {
+    renderComponent()
+    const input = screen.getAllByRole("input")[0] as HTMLInputElement
+
+    expect(input.value).toBe("1,000,000")
+
+    act(() => {
+      fireEvent.change(input, { target: { value: "10000000" } })
+    })
+    expect(input.value).toBe("10,000,000")
   })
 })
