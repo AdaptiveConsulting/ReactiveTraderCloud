@@ -41,7 +41,6 @@ export const currencyPairMapper = (input: CurrencyRaw): CurrencyPair => ({
   terms: input.Symbol.substr(3, 3),
 })
 
-// No tests needed
 export const currencyPairUpdates$ = getStream$<RawCurrencyPairUpdates>(
   "reference",
   "getCurrencyPairUpdatesStream",
@@ -57,7 +56,6 @@ export const currencyPairUpdates$ = getStream$<RawCurrencyPairUpdates>(
   share(),
 )
 
-// Export only these from index.ts
 export const [useCurrencyPairs, currencyPairs$] = bind(
   currencyPairUpdates$.pipe(
     scan((acc, { updateType, currencyPair }) => {
