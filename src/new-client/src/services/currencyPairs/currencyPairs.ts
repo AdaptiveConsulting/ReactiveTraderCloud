@@ -37,8 +37,8 @@ export const currencyPairMapper = (input: CurrencyRaw): CurrencyPair => ({
   symbol: input.Symbol,
   ratePrecision: input.RatePrecision,
   pipsPosition: input.PipsPosition,
-  base: input.Symbol.substr(0, 3),
-  terms: input.Symbol.substr(3, 3),
+  base: input?.Symbol?.substr(0, 3),
+  terms: input?.Symbol?.substr(3, 3),
 })
 
 export const currencyPairUpdates$ = getStream$<RawCurrencyPairUpdates>(

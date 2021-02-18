@@ -41,6 +41,22 @@ const mockUpdates = {
   ],
 }
 
+const renderUseCurrencyPairWithCount = (symbol: string) =>
+  renderHook(
+    () => {
+      const ref = useRef(0)
+      useEffect(() => {
+        ref.current++
+      })
+      return { value: useCurrencyPair(symbol), updates: ref.current }
+    },
+    {
+      wrapper: ({ children }) => (
+        <Subscribe source$={getCurrencyPair$(symbol)}>{children}</Subscribe>
+      ),
+    },
+  )
+
 describe("services/currencyPairs", () => {
   describe("useCurrencyPairs", () => {
     beforeEach(() => {
@@ -92,26 +108,13 @@ describe("services/currencyPairs", () => {
         mockStream.next(mockUpdates)
       })
 
-      const renderUseCurrencyPair = (symbol: string) =>
-        renderHook(
-          () => {
-            const ref = useRef(0)
-            useEffect(() => {
-              ref.current++
-            })
-            return { value: useCurrencyPair(symbol), updates: ref.current }
-          },
-          {
-            wrapper: ({ children }) => (
-              <Subscribe source$={getCurrencyPair$(symbol)}>
-                {children}
-              </Subscribe>
-            ),
-          },
-        )
+      const eurUsd = renderUseCurrencyPairWithCount(
+        mockCurrencyPairsRaw[0].Symbol,
+      )
 
-      const eurUsd = renderUseCurrencyPair(mockCurrencyPairsRaw[0].Symbol)
-      const gbpJpy = renderUseCurrencyPair(mockCurrencyPairsRaw[1].Symbol)
+      const gbpJpy = renderUseCurrencyPairWithCount(
+        mockCurrencyPairsRaw[1].Symbol,
+      )
 
       expect(gbpJpy.result.current.value).toBe(undefined)
       expect(eurUsd.result.current.value).toStrictEqual(
@@ -134,6 +137,102 @@ describe("services/currencyPairs", () => {
       )
 
       expect(eurUsd.result.current.updates).toBe(0)
+      expect(gbpJpy.result.current.updates).toBe(1)
+    })
+
+    it("should correctly add and remove currency pairs", () => {
+      const mockStream = new Subject<any>()
+      whenStream("reference", "getCurrencyPairUpdatesStream", {}, mockStream)
+
+      const TestHook: React.FC = () => {
+        useCurrencyPairs()
+        return <div id="data">There is data</div>
+      }
+      render(
+        <Subscribe source$={currencyPairs$} fallback="No data">
+          <TestHook />
+        </Subscribe>,
+      )
+
+      reactAct(() => {
+        mockStream.next(mockUpdates)
+      })
+
+      const gbpJpy = renderUseCurrencyPairWithCount(
+        mockCurrencyPairsRaw[1].Symbol,
+      )
+
+      const eurUsd = renderUseCurrencyPairWithCount(
+        mockCurrencyPairsRaw[0].Symbol,
+      )
+
+      expect(eurUsd.result.current.value).toStrictEqual(
+        currencyPairMapper(mockCurrencyPairsRaw[0]),
+      )
+
+      reactAct(() => {
+        mockStream.next({
+          Updates: [
+            {
+              UpdateType: "Removed",
+              CurrencyPair: mockCurrencyPairsRaw[0],
+            },
+          ],
+        })
+      })
+
+      expect(gbpJpy.result.current.value).toStrictEqual(
+        currencyPairMapper(mockCurrencyPairsRaw[1]),
+      )
+      expect(eurUsd.result.current.value).toBe(undefined)
+
+      reactAct(() => {
+        mockStream.next({
+          Updates: [
+            {
+              UpdateType: "Added",
+              CurrencyPair: mockCurrencyPairsRaw[0],
+            },
+            {
+              UpdateType: "Added",
+              CurrencyPair: mockCurrencyPairsRaw[1],
+            },
+          ],
+        })
+      })
+
+      expect(gbpJpy.result.current.value).toStrictEqual(
+        currencyPairMapper(mockCurrencyPairsRaw[1]),
+      )
+      expect(eurUsd.result.current.value).toStrictEqual(
+        currencyPairMapper(mockCurrencyPairsRaw[0]),
+      )
+
+      reactAct(() => {
+        mockStream.next({
+          Updates: [
+            {
+              UpdateType: "Removed",
+              CurrencyPair: mockCurrencyPairsRaw[0],
+            },
+            {
+              UpdateType: "Removed",
+              CurrencyPair: mockCurrencyPairsRaw[0],
+            },
+            {
+              UpdateType: "Removed",
+              CurrencyPair: "INVALID",
+            },
+          ],
+        })
+      })
+
+      expect(eurUsd.result.current.value).toBe(undefined)
+      expect(eurUsd.result.current.updates).toBe(3)
+
+      expect(gbpJpy.result.current.value).toStrictEqual(
+        currencyPairMapper(mockCurrencyPairsRaw[1]),
+      )
       expect(gbpJpy.result.current.updates).toBe(1)
     })
   })
