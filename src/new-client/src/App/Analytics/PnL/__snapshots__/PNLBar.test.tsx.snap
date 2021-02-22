@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tile renders the bar correctly 1`] = `
+<div
+  className="styled__BarChart-sc-3sau7y-1 fLKfIL"
+>
+  <div
+    className="styled__Label-sc-3sau7y-7 IDAmG"
+    data-testid="symbolLabel"
+  >
+    EURAUD
+  </div>
+  <div
+    className="styled__Offset-sc-3sau7y-3 bbLujG"
+  />
+  <div
+    className="styled__BarPriceContainer-sc-3sau7y-8 bsBpLt"
+  >
+    <div
+      className="styled__FlexDiv-sc-3sau7y-0 styled__PriceContainer-sc-3sau7y-2 glNClZ llriux"
+      style={
+        Object {
+          "transform": "translate(-31.125428646769944%)",
+        }
+      }
+    >
+      <div
+        className="styled__PriceLabel-sc-3sau7y-5 hqeAlp"
+        color="negative"
+        data-testid="priceLabel"
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+      >
+        -26k
+      </div>
+      <div
+        className="styled__DiamondShape-sc-3sau7y-6 Usval"
+        color="negative"
+      />
+    </div>
+    <div
+      className="styled__Bar-sc-3sau7y-9 eBLUMA"
+    />
+    <div
+      className="styled__FlexDiv-sc-3sau7y-0 styled__OriginTickWrapper-sc-3sau7y-4 glNClZ eGNFGg"
+    >
+      <div
+        className="styled__OriginTick-sc-3sau7y-10 hFQYTC"
+      />
+    </div>
+  </div>
+</div>
+`;
