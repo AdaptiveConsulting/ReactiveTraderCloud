@@ -11,9 +11,7 @@ export class Finsemble implements Platform {
   readonly name = 'finsemble'
   readonly type = 'desktop'
   readonly allowTearOff = true
-  style = {
-    height: 'calc(100% - 25px)',
-  }
+  style = {}
   epics = []
   PlatformHeader = () => null
   PlatformFooter = () => null
@@ -87,7 +85,6 @@ export class Finsemble implements Platform {
   }
 
   notification = {
-    notify: (message: object) =>
-      finsembleClient.alert(message),
+    notify: (message: object) => finsembleClient.alert(message),
   }
 }
