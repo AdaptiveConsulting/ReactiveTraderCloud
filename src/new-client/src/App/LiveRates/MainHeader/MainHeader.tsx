@@ -28,6 +28,7 @@ export const MainHeader: React.FC = () => {
         <LeftNavItemFirst>Live Rates</LeftNavItemFirst>
         {options.map((currencyOption) => (
           <NavItem
+            data-testid={`menuButton-${currencyOption.toString()}`}
             key={currencyOption.toString()}
             active={currencyOption === currency}
             data-qa="workspace-header__nav-item"
