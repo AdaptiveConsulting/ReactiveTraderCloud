@@ -64,7 +64,7 @@ const renderComponent = () =>
 
 const _analytics = require("services/analytics/analytics")
 
-describe("Tile", () => {
+describe("LastPositions", () => {
   beforeEach(() => {
     _analytics.__resetMocks()
   })

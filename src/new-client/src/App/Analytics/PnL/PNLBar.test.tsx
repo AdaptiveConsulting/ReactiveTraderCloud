@@ -10,7 +10,7 @@ const renderComponent = (symbol: string, basePnl: number, maxVal: number) =>
     </TestThemeProvider>,
   )
 
-describe("Tile", () => {
+describe("PNLBar", () => {
   it("should display the symbol name correctly", () => {
     renderComponent("EURAUD", -26043.691207338878, 1239939.1231111237)
     expect(screen.getByTestId("symbolLabel").textContent).toBe(`EURAUD`)
