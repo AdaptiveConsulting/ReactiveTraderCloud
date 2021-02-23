@@ -25,7 +25,7 @@ const OverflowScroll = styled.div`
   height: 100%;
 `
 
-const liveRates$ = merge(tiles$, mainHeader$)
+export const liveRates$ = merge(tiles$, mainHeader$)
 
 export const LiveRates: React.FC = () => (
   <LiveRateWrapper>
