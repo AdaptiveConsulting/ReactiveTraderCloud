@@ -25,7 +25,7 @@ spec:
             value: "false"
           resources:
             requests:
-              memory: "1G"
+              memory: "256Mi"
               cpu: "80m"
           volumeMounts:
             - mountPath: /db

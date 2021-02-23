@@ -13,7 +13,7 @@ import {
   PriceControlWrapper,
   Body,
 } from "./Tile.styles"
-import { ExecutionResponse } from "./ExecutionResponse"
+import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
 
 import { CurrencyPair } from "services/currencyPairs"
 import { Provider } from "./Tile.context"
@@ -26,6 +26,7 @@ export const tile$ = (symbol: string) =>
       priceMovement$,
       priceButton$(Direction.Sell),
       priceButton$(Direction.Buy),
+      executionResponse$,
     ].map((fn) => fn(symbol)),
   )
 

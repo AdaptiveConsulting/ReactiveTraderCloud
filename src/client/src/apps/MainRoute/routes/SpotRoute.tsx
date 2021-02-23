@@ -22,6 +22,7 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
 }) => {
   const platform = usePlatform()
   const [ccyPairFromInterop, setCcyPairFromInterop] = useState<ReadonlyArray<string>>()
+  const queryParams = new URLSearchParams(search)
 
   // TODO: ccyPair from interop has to be in the hook or in the  store, same for BlotterRoute, but don't leave them here (side-effects)
   useEffect(() => {
@@ -38,7 +39,12 @@ const SpotRoute: React.FC<RouteComponentProps<{ symbol: string }>> = ({
     return () => ccyPairSubscription && ccyPairSubscription.unsubscribe()
   }, [platform])
 
-  const [tileView] = useLocalStorage('tileView', TileView.Analytics)
+  let [tileView] = useLocalStorage('tileView', TileView.Analytics)
+
+  if (queryParams.has('tileView')) {
+    tileView = queryParams.get('tileView')
+  }
+
   const id = (ccyPairFromInterop && ccyPairFromInterop[0]) || match.params.symbol
 
   return (

@@ -6,15 +6,15 @@ import { equals } from "utils/equals"
 import { FaSortUp, FaSortDown } from "react-icons/fa"
 import { symbolBind } from "../Tile.context"
 
-const MovementIconUP = styled(FaSortUp)<{ show: boolean }>`
+const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
   text-align: center;
   color: ${({ theme }) => theme.accents.positive.base};
-  visibility: ${({ show }) => (show ? "visible" : "hidden")};
+  visibility: ${({ $show: show }) => (show ? "visible" : "hidden")};
 `
-const MovementIconDown = styled(FaSortDown)<{ show: boolean }>`
+const MovementIconDown = styled(FaSortDown)<{ $show: boolean }>`
   text-align: center;
   color: ${({ theme }) => theme.accents.negative.base};
-  visibility: ${({ show }) => (show ? "visible" : "hidden")};
+  visibility: ${({ $show: show }) => (show ? "visible" : "hidden")};
 `
 
 const MovementValue = styled.div`
@@ -58,7 +58,7 @@ export const PriceMovement: React.FC<{
     <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
       <MovementIconUP
         data-qa="price-movement__movement-icon--up"
-        show={movementType === PriceMovementType.UP}
+        $show={movementType === PriceMovementType.UP}
         className="fas fa-caret-up"
         aria-hidden="true"
       />
@@ -67,7 +67,7 @@ export const PriceMovement: React.FC<{
       </MovementValue>
       <MovementIconDown
         data-qa="price-movement__movement-icon--down"
-        show={movementType === PriceMovementType.DOWN}
+        $show={movementType === PriceMovementType.DOWN}
         className="fas fa-caret-down"
         aria-hidden="true"
       />

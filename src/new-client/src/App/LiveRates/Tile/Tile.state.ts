@@ -10,14 +10,9 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
-import { concat, EMPTY, Observable, pipe, race, timer } from "rxjs"
+import { concat, EMPTY, of, race, timer } from "rxjs"
 import { getPrice$ } from "services/prices"
-import {
-  ExecutionTrade,
-  execute$,
-  ExecutionStatus,
-  ExecutionRequest,
-} from "services/executions"
+import { ExecutionTrade, execute$, ExecutionStatus } from "services/executions"
 import { getCurrencyPair$ } from "services/currencyPairs"
 import { emitTooLongMessage } from "utils/emitTooLong"
 import { bind } from "@react-rxjs/core"
@@ -71,33 +66,6 @@ const [tileExecutions$, sendExecution] = createListener<{
 }>()
 export { sendExecution }
 
-const executionsMap$ = tileExecutions$.pipe(
-  split((e) => e.symbol),
-  collect(),
-)
-executionsMap$.subscribe()
-
-let nextId = 1
-const getId = () => (nextId++).toString()
-
-const getExecutionRequests$ = (symbol: string): Observable<ExecutionRequest> =>
-  executionsMap$.pipe(
-    exhaustMap((map) => (map.has(symbol) ? map.get(symbol)! : EMPTY)),
-    withLatestFrom(
-      getNotional$(symbol),
-      getPrice$(symbol),
-      getCurrencyPair$(symbol),
-    ),
-    map(([{ direction }, notional, price, { base, terms, symbol }]) => ({
-      id: getId(),
-      currencyPair: symbol,
-      dealtCurrency: direction === Direction.Buy ? base : terms,
-      direction,
-      notional: Number(notional),
-      spotRate: direction === Direction.Buy ? price.ask : price.bid,
-    })),
-  )
-
 // TileState
 export enum TileStates {
   Ready,
@@ -128,26 +96,54 @@ const STARTED: NoTradeState = { status: TileStates.Started }
 const TOO_LONG: NoTradeState = { status: TileStates.TooLong }
 const TIMEOUT: NoTradeState = { status: TileStates.Timeout }
 
+const executionsMap$ = tileExecutions$.pipe(
+  split(
+    (e) => e.symbol,
+    (execution$, symbol) =>
+      execution$.pipe(
+        withLatestFrom(
+          getNotional$(symbol),
+          getPrice$(symbol),
+          getCurrencyPair$(symbol),
+        ),
+        map(([{ direction }, notional, price, { base, terms, symbol }]) => ({
+          id: getId(),
+          currencyPair: symbol,
+          dealtCurrency: direction === Direction.Buy ? base : terms,
+          direction,
+          notional: Number(notional),
+          spotRate: direction === Direction.Buy ? price.ask : price.bid,
+        })),
+        exhaustMap((request) =>
+          concat(
+            execute$(request).pipe(
+              map((trade) =>
+                trade.status === ExecutionStatus.Timeout
+                  ? TIMEOUT
+                  : { status: TileStates.Finished as const, trade },
+              ),
+              emitTooLongMessage(TAKING_TOO_LONG, TOO_LONG),
+              startWith(STARTED),
+            ),
+            race([
+              waitForDismissal$(request.currencyPair),
+              timer(DISMISS_TIMEOUT),
+            ]).pipe(mapTo(READY)),
+          ),
+        ),
+      ),
+  ),
+  collect(),
+)
+executionsMap$.subscribe()
+
+let nextId = 1
+const getId = () => (nextId++).toString()
+
 const TAKING_TOO_LONG = 2_000
 
-const getExecutionState$ = (request: ExecutionRequest): Observable<TileState> =>
-  concat(
-    execute$(request).pipe(
-      map((trade) =>
-        trade.status === ExecutionStatus.Timeout
-          ? TIMEOUT
-          : { status: TileStates.Finished as const, trade },
-      ),
-      emitTooLongMessage(TAKING_TOO_LONG, TOO_LONG),
-      startWith(STARTED),
-    ),
-    race([
-      waitForDismissal$(request.currencyPair),
-      timer(DISMISS_TIMEOUT),
-    ]).pipe(mapTo(READY)),
-  )
-
-export const [useTileState] = bind(
-  pipe(getExecutionRequests$, exhaustMap(getExecutionState$)),
-  READY,
+export const [useTileState, getTileState$] = bind((symbol: string) =>
+  executionsMap$.pipe(
+    exhaustMap((map) => (map.has(symbol) ? map.get(symbol)! : of(READY))),
+  ),
 )
