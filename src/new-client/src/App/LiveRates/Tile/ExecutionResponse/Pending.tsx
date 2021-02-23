@@ -21,7 +21,7 @@ const Pending = () => {
           <AdaptiveLoader
             size={14}
             speed={0.8}
-            seperation={1.5}
+            separation={1.5}
             color="white"
             type="secondary"
           />

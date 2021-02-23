@@ -1,12 +1,10 @@
 import React from "react"
 import styled from "styled-components/macro"
-import { map } from "rxjs/operators"
-import { bind, Subscribe } from "@react-rxjs/core"
 import { OverlayDiv } from "components/OverlayDiv"
 import { CenteringContainer } from "components/CenteringContainer"
+import { QuoteState } from "services/rfqs"
 import { useTileCurrencyPair } from "../Tile.context"
-import { getNotional$, onRfqButtonClick, useRfqState } from "../Tile.state"
-import { QuoteStatus } from "services/rfqs"
+import { useRfqState, onRfqButtonClick, useIsRfq } from "./Rfq.state"
 
 const RFQButtonInner = styled("button")`
   background-color: ${({ theme }) => theme.accents.primary.base};
@@ -24,40 +22,40 @@ const RFQButtonInner = styled("button")`
   color: ${({ theme }) => theme.white};
 `
 
-const [useIsRFQ, isRFQ$] = bind((symbol: string) =>
-  getNotional$(symbol).pipe(
-    map((newNotional) => parseFloat(newNotional) >= 10_000_000),
-  ),
-)
+export enum RfqButtonActions {
+  InitiateRfq = "Initiate RFQ",
+  Cancel = "Cancel",
+  Requote = "Requote",
+}
 
-const RFQButton: React.FC<{ symbol: string }> = ({ symbol }) => {
-  const isRFQ = useIsRFQ(symbol)
-  const rfqState = useRfqState(symbol)
-  console.log({
-    rfqState,
-  })
-  return isRFQ && rfqState !== QuoteStatus.Received ? (
+const buttonText = (quoteState: QuoteState | undefined) => {
+  switch (quoteState) {
+    case undefined:
+      return RfqButtonActions.InitiateRfq
+    case QuoteState.Requested:
+      return RfqButtonActions.Cancel
+    default:
+      return RfqButtonActions.Requote
+  }
+}
+
+const RfqButton: React.FC = () => {
+  const isRfq = useIsRfq()
+  const quoteState = useRfqState()?.quoteState
+  const symbol = useTileCurrencyPair().symbol
+  return isRfq && quoteState !== QuoteState.Received ? (
     <OverlayDiv>
       <CenteringContainer>
-        <RFQButtonInner onClick={() => onRfqButtonClick(symbol)}>
-          {!rfqState
-            ? "Initiate RFQ"
-            : rfqState === QuoteStatus.Requested
-            ? "Cancel"
-            : "Requote"}
+        <RFQButtonInner
+          onClick={() => {
+            onRfqButtonClick(symbol)
+          }}
+        >
+          {buttonText(quoteState)}
         </RFQButtonInner>
       </CenteringContainer>
     </OverlayDiv>
   ) : null
 }
 
-const RFQButtonWrapper: React.FC = () => {
-  const { symbol } = useTileCurrencyPair()
-  return (
-    <Subscribe source$={isRFQ$(symbol)}>
-      <RFQButton symbol={symbol} />
-    </Subscribe>
-  )
-}
-
-export { RFQButtonWrapper as RFQButton }
+export { RfqButton }

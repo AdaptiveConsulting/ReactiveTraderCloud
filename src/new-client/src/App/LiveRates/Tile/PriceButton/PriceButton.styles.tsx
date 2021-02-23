@@ -107,10 +107,24 @@ export const Price = styled.div<{ disabled: boolean }>`
 
   ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
 `
-
-export const BigWrapper = styled.div`
-  height: 100%;
+export const PriceLoading = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
-  flex-direction: column;
+  flex-flow: column;
+  border: 2px solid ${({ theme }) => theme.core.darkBackground};
+  border-radius: 3px;
+  font-size: 10px;
+  transition: background-color 0.2s ease;
+  height: 58px;
+  min-height: 2rem;
+  max-height: 3.7rem;
+  margin-bottom: 1px;
+  min-width: 125px;
+  line-height: normal;
+  opacity: 0.5;
+  text-align: center;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.primary[5]};
+  font-weight: 400;
 `

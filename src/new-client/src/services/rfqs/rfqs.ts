@@ -1,11 +1,15 @@
 import { forkJoin } from "rxjs"
-import { delay, map } from "rxjs/operators"
+import { delay, map, take } from "rxjs/operators"
 import { getCurrencyPair$ } from "../currencyPairs"
 import { getPrice$ } from "../prices"
-import type { RfqRequest } from "./types"
+import type { RfqRequest, RfqResponse } from "./types"
 
-const mockQuoteBackend = ({ symbol, notional }: RfqRequest) => {
-  return forkJoin([getPrice$(symbol), getCurrencyPair$(symbol)]).pipe(
+const mockRfqBackendCommunication = ({ symbol, notional }: RfqRequest) =>
+  forkJoin([
+    getPrice$(symbol).pipe(take(1)),
+    getCurrencyPair$(symbol).pipe(take(1)),
+  ]).pipe(
+    delay(500 + Math.floor(Math.random() * 500)),
     map(([{ ask, bid, ...prices }, currencyPair]) => {
       const priceChange = 0.3 / Math.pow(10, currencyPair.pipsPosition)
       return {
@@ -18,10 +22,9 @@ const mockQuoteBackend = ({ symbol, notional }: RfqRequest) => {
         },
         time: Date.now(),
         timeout: 10_000,
-      }
+      } as RfqResponse
     }),
-    delay(500 + Math.floor(Math.random() * 500)),
   )
-}
 
-export const rfq$ = (rfqRequest: RfqRequest) => mockQuoteBackend(rfqRequest)
+export const rfq$ = (rfqRequest: RfqRequest) =>
+  mockRfqBackendCommunication(rfqRequest)

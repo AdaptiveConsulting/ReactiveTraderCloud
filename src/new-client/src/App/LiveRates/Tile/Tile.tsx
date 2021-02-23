@@ -17,7 +17,8 @@ import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
 
 import { CurrencyPair } from "services/currencyPairs"
 import { Provider } from "./Tile.context"
-import { RFQButton } from "./RFQ/RFQButton"
+import { isRfq$, RfqButton, getRfqState$ } from "./Rfq"
+import { RfqTimer } from "./Rfq/RfqTimer"
 
 export const tile$ = (symbol: string) =>
   merge(
@@ -28,6 +29,8 @@ export const tile$ = (symbol: string) =>
       priceButton$(Direction.Sell),
       priceButton$(Direction.Buy),
       executionResponse$,
+      getRfqState$,
+      isRfq$,
     ].map((fn) => fn(symbol)),
   )
 
@@ -50,9 +53,10 @@ export const Tile: React.FC<{
               </PriceControlsStyle>
             </PriceControlWrapper>
             <NotionalInput isAnalytics={isAnalytics} />
+            <RfqTimer isAnalyticsView={isAnalytics} />
           </Body>
         </Main>
-        <RFQButton />
+        <RfqButton />
         <ExecutionResponse />
       </PanelItem>
     </Provider>

@@ -1,2 +1,3 @@
 export { rfq$ } from "./rfqs"
-export { QuoteStatus } from "./types"
+export { QuoteState } from "./types"
+export type { RfqResponse } from "./types"
