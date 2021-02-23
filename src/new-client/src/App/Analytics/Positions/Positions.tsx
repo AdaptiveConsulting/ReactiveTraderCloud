@@ -29,9 +29,12 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
     .append("div")
     .style("visibility", "hidden")
     .attr("class", "analytics__positions-tooltip")
+    .attr("data-testid", "tooltip")
 
   // const svg: Selection<SVGElement> = select(chartDiv).select("svg")
-  const { width, height } = chartDiv.getBoundingClientRect()
+  const { width, height } = chartDiv
+    ? chartDiv.getBoundingClientRect()
+    : { width: 0, height: 0 }
   const svg = select(chartDiv)
     .append("svg")
     .attr("width", width)
@@ -153,6 +156,7 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
     labelGroup
       .attr("text-anchor", "middle")
       .attr("class", "analytics__positions-label")
+      .attr("data-testid", (d: BubbleChartNode) => `positions-label-${d.id}`)
       .text((d: BubbleChartNode) => d.id)
 
     force = forceSimulation(nodes)
