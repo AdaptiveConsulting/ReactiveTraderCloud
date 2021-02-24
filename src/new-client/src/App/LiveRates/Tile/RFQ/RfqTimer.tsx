@@ -1,10 +1,11 @@
 import React from "react"
 import styled from "styled-components/macro"
-import { interval } from "rxjs"
-import { finalize, map, take } from "rxjs/operators"
+import { interval, race, timer } from "rxjs"
+import { filter, finalize, map, takeUntil, tap } from "rxjs/operators"
 import { onRejection, useRfqState } from "./Rfq.state"
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
 import { QuoteState } from "services/rfqs"
+import { createListener } from "@react-rxjs/utils"
 
 const TimeLeft = styled.div<{ isAnalyticsView: boolean }>`
   font-size: 10px;
@@ -57,37 +58,48 @@ const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
       : "'TimeLeft ProgressBar . RejectQuoteButton'"};
   margin-bottom: -12px;
 `
+const [rejectButtonClicks$, onRejectButtonClick] = createListener<string>()
+
 const durationSecs = 10
 const intervalsPerSecond = 10
+const oneSecond = 1_000
 const [useTimerProgress] = symbolBind(
   (symbol) => {
-    return interval(1_000 / intervalsPerSecond).pipe(
+    return interval(oneSecond / intervalsPerSecond).pipe(
       map((intervals) => {
         const fractionSecondsElapsed = intervals / intervalsPerSecond
         const timeLeftSecs = Math.ceil(
           durationSecs - fractionSecondsElapsed - 1,
         )
-        const percentageComplete =
+        const percentageLeft =
           100 - (100 * fractionSecondsElapsed) / durationSecs
         return {
           timeLeftSecs,
-          percentageComplete,
+          percentageLeft,
         }
       }),
-      take(durationSecs * intervalsPerSecond),
+      takeUntil(
+        race(
+          timer(durationSecs * oneSecond),
+          rejectButtonClicks$.pipe(
+            tap((e) => console.log(e)),
+            filter((eventSymbol) => eventSymbol === symbol),
+          ),
+        ),
+      ),
       finalize(() => onRejection(symbol)),
     )
   },
   {
     timeLeftSecs: durationSecs,
-    percentageComplete: 100,
+    percentageLeft: 100,
   },
 )
 
 const RfqTimer: React.FC<{ isAnalyticsView: boolean }> = ({
   isAnalyticsView,
 }) => {
-  const { timeLeftSecs, percentageComplete } = useTimerProgress()
+  const { timeLeftSecs, percentageLeft } = useTimerProgress()
   const { symbol } = useTileCurrencyPair()
   return (
     <TimerWrapper isAnalyticsView={isAnalyticsView}>
@@ -95,11 +107,11 @@ const RfqTimer: React.FC<{ isAnalyticsView: boolean }> = ({
         {timeLeftSecs} sec{timeLeftSecs > 1 ? "s" : ""}
       </TimeLeft>
       <ProgressBarWrapper isAnalyticsView={isAnalyticsView}>
-        <ProgressBar style={{ width: `${percentageComplete}%` }} />
+        <ProgressBar style={{ width: `${percentageLeft}%` }} />
       </ProgressBarWrapper>
       <RejectQuoteButton
         isAnalyticsView={isAnalyticsView}
-        onClick={() => onRejection(symbol)}
+        onClick={() => onRejectButtonClick(symbol)}
       >
         Reject
       </RejectQuoteButton>

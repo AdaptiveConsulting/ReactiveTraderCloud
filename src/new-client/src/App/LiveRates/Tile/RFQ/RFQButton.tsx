@@ -22,20 +22,14 @@ const RFQButtonInner = styled("button")`
   color: ${({ theme }) => theme.white};
 `
 
-export enum RfqButtonActions {
-  InitiateRfq = "Initiate RFQ",
-  Cancel = "Cancel",
-  Requote = "Requote",
-}
-
 const buttonText = (quoteState: QuoteState | undefined) => {
   switch (quoteState) {
     case undefined:
-      return RfqButtonActions.InitiateRfq
+      return "Initiate RFQ"
     case QuoteState.Requested:
-      return RfqButtonActions.Cancel
+      return "Cancel"
     default:
-      return RfqButtonActions.Requote
+      return "Requote"
   }
 }
 
@@ -44,17 +38,15 @@ const RfqButton: React.FC = () => {
   const quoteState = useRfqState()?.quoteState
   const symbol = useTileCurrencyPair().symbol
   return isRfq && quoteState !== QuoteState.Received ? (
-    <OverlayDiv>
-      <CenteringContainer>
-        <RFQButtonInner
-          onClick={() => {
-            onRfqButtonClick(symbol)
-          }}
-        >
-          {buttonText(quoteState)}
-        </RFQButtonInner>
-      </CenteringContainer>
-    </OverlayDiv>
+    <CenteringContainer>
+      <RFQButtonInner
+        onClick={() => {
+          onRfqButtonClick(symbol)
+        }}
+      >
+        {buttonText(quoteState)}
+      </RFQButtonInner>
+    </CenteringContainer>
   ) : null
 }
 

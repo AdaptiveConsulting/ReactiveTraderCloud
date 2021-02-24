@@ -5,7 +5,7 @@ import { getCurrencyPair$ } from "services/currencyPairs"
 import { equals } from "utils/equals"
 import { FaSortUp, FaSortDown } from "react-icons/fa"
 import { symbolBind } from "../Tile.context"
-import { useRfqState } from "../Rfq/Rfq.state"
+import { useRfqState } from "../Rfq"
 
 const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
   text-align: center;

@@ -21,7 +21,6 @@ import { bind } from "@react-rxjs/core"
 import { CenteringContainer } from "components/CenteringContainer"
 import { AdaptiveLoader } from "components/AdaptiveLoader"
 import { useRfqState } from "../Rfq"
-import { QuoteState } from "services/rfqs"
 
 const [
   usePrice,

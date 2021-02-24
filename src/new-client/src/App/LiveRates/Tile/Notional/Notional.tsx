@@ -8,6 +8,7 @@ import {
   NotionalInputWrapper,
 } from "./Notional.styles"
 import { formatAsWholeNumber } from "utils/formatNumber"
+import { NotionalReset } from "../Rfq"
 
 export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
   isAnalytics,
@@ -35,6 +36,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
             setIsFocused(false)
           }}
         />
+        <NotionalReset symbol={symbol} />
       </InputWrapper>
     </NotionalInputWrapper>
   )

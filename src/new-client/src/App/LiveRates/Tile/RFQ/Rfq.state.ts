@@ -5,7 +5,6 @@ import {
   map,
   scan,
   take,
-  tap,
   withLatestFrom,
 } from "rxjs/operators"
 import { QuoteState, rfq$, RfqResponse } from "services/rfqs"
@@ -28,9 +27,6 @@ interface RfqState {
 const [quoteRequests$, dispatchQuoteRequest] = createListener<string>()
 
 const quoteResponses$ = quoteRequests$.pipe(
-  tap((symbol) => {
-    console.log("Called: ", symbol)
-  }),
   withLatestFrom((symbol) =>
     getNotional$(symbol).pipe(
       take(1),
