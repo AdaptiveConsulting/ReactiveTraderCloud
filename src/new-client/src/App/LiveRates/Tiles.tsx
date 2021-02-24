@@ -1,18 +1,9 @@
-import { combineLatest, concat, EMPTY, merge } from "rxjs"
+import { combineLatest, merge } from "rxjs"
 import styled from "styled-components/macro"
-import { currencyPairs$, currencyPairUpdates$ } from "services/currencyPairs"
+import { currencyPairDependant$, currencyPairs$ } from "services/currencyPairs"
 import { TileView, useSelectedTileView } from "./selectedView"
 import { Tile, tile$ } from "./Tile"
-import {
-  distinctUntilChanged,
-  map,
-  mergeAll,
-  mergeMap,
-  switchMap,
-  take,
-} from "rxjs/operators"
-import { UpdateType } from "services/utils"
-import { split } from "@react-rxjs/utils"
+import { map } from "rxjs/operators"
 import { selectedCurrency$, ALL_CURRENCIES } from "./selectedCurrency"
 import { bind } from "@react-rxjs/core"
 
@@ -40,26 +31,7 @@ const [useFilteredCurrencyPairs, filteredCurrencyPairs$] = bind(
 
 export const tiles$ = merge(
   filteredCurrencyPairs$,
-  concat(
-    currencyPairs$.pipe(
-      take(1),
-      mergeMap((ccPairs) => Object.values(ccPairs)),
-      map((currencyPair) => ({ currencyPair, updateType: UpdateType.Added })),
-    ),
-    currencyPairUpdates$,
-  ).pipe(
-    split(
-      (update) => update.currencyPair.symbol,
-      (update$, key) =>
-        update$.pipe(
-          distinctUntilChanged((a, b) => a.updateType === b.updateType),
-          switchMap((update) =>
-            update.updateType === UpdateType.Removed ? EMPTY : tile$(key),
-          ),
-        ),
-    ),
-    mergeAll(),
-  ),
+  currencyPairDependant$(tile$),
 )
 
 export const Tiles = () => {

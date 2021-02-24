@@ -4,7 +4,7 @@ import { map } from "rxjs/operators"
 import { getStream$ } from "../client"
 import { CurrencyPairPosition, HistoryEntry, PositionsRaw } from "./types"
 
-const analytics$ = getStream$<PositionsRaw, string>(
+export const analytics$ = getStream$<PositionsRaw, string>(
   "analytics",
   "getAnalytics",
   "USD",

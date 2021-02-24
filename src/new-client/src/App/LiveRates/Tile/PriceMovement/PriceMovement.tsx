@@ -50,6 +50,7 @@ const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
 )
 
 export { priceMovement$ }
+
 export const PriceMovement: React.FC<{
   isAnalyticsView: boolean
 }> = ({ isAnalyticsView }) => {

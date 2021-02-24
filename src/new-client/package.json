@@ -1,6 +1,7 @@
 {
   "name": "new-reactive-trader-cloud",
   "description": "Reactive Trader® - Cloud edition. Example reactive currency pair trading app",
+  "sideEffects": false,
   "keywords": [
     "react",
     "fx",
@@ -44,6 +45,7 @@
     "ress": "^3.0.0",
     "rxjs": "^6.6.3",
     "sinon": "^9.2.4",
+    "source-map-explorer": "^2.5.2",
     "styled-components": "^5.2.1",
     "typeface-lato": "^1.1.13",
     "typeface-montserrat": "^1.1.13",
@@ -52,6 +54,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
