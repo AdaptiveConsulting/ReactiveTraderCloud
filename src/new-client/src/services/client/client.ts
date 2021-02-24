@@ -3,12 +3,28 @@ import { map, switchMap, take } from "rxjs/operators"
 import { currentUser$ } from "../currentUser"
 import { endpoints$ } from "./endpoints"
 
+import { unstable_batchedUpdates } from "react-dom"
+
+const batchUpdates = <T>() => (source$: Observable<T>): Observable<T> =>
+  new Observable<T>((observer) =>
+    source$.subscribe(
+      (v) => {
+        unstable_batchedUpdates(() => {
+          observer.next(v)
+        })
+      },
+      observer.error.bind(observer),
+      observer.complete.bind(observer),
+    ),
+  )
+
 export const watch$ = <TResponse>(topic: string): Observable<TResponse> =>
   endpoints$.pipe(
     switchMap(({ streamEndpoint }) =>
       streamEndpoint.watch(`/exchange/${topic}`),
     ),
     map((message) => JSON.parse(message.body)),
+    batchUpdates(),
   )
 
 export const getRemoteProcedureCall$ = <TResponse, TPayload>(
@@ -25,6 +41,7 @@ export const getRemoteProcedureCall$ = <TResponse, TPayload>(
     ),
     map((message) => JSON.parse(message.body)),
     take(1),
+    batchUpdates(),
   )
 
 export const getStream$ = <TResponse, TPayload = {}>(
@@ -40,4 +57,5 @@ export const getStream$ = <TResponse, TPayload = {}>(
       }),
     ),
     map((message) => JSON.parse(message.body)),
+    batchUpdates(),
   )

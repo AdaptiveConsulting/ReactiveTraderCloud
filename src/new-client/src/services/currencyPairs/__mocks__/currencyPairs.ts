@@ -1,5 +1,15 @@
 import { bind } from "@react-rxjs/core"
-import { defer, Observable, of } from "rxjs"
+import { split } from "@react-rxjs/utils"
+import { concat, defer, Observable, of } from "rxjs"
+import {
+  distinctUntilChanged,
+  map,
+  mergeAll,
+  mergeMap,
+  switchMap,
+  take,
+} from "rxjs/operators"
+import { UpdateType } from "services/utils"
 import { CurrencyPair } from "../types"
 
 let ccMocks$: Record<string, Observable<CurrencyPair>> = {}
@@ -56,10 +66,35 @@ export const __resetCurrencyUpdateMocks = () => {
   currencyUpdateMocks$ = {}
 }
 
-export const currencyPairUpdates$ = of(defer(() => of(currencyUpdateMocks$)))
+export const currencyPairUpdates$ = defer(() => of(currencyUpdateMocks$))
 
 export const __resetMocks = () => {
   __resetCurrencyPairMocks()
   __resetCurrenciesMocks()
   __resetCurrencyPairsMocks()
 }
+
+export const currencyPairDependant$ = (
+  input: (symbol: string) => Observable<any>,
+) =>
+  concat(
+    currencyPairs$.pipe(
+      take(1),
+      mergeMap((ccPairs) => Object.values(ccPairs)),
+      map((currencyPair) => ({ currencyPair, updateType: UpdateType.Added })),
+    ),
+    currencyPairUpdates$,
+  ).pipe(
+    split(
+      (update) => update.currencyPair.symbol,
+      (update$, key) =>
+        update$.pipe(
+          distinctUntilChanged((a, b) => a.updateType === b.updateType),
+          take(2),
+          switchMap((update) =>
+            update.updateType === UpdateType.Removed ? [] : input(key),
+          ),
+        ),
+    ),
+    mergeAll(),
+  )
