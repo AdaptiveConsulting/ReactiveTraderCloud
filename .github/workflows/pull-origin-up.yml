@@ -47,6 +47,10 @@ jobs:
           echo "::set-output name=value::1"
         continue-on-error: true
 
+      - name: Enable Docker caching
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
+
       - name: 'Build Docker images: ${{ env.BUILD_VERSION }}'
         if: steps.existing_build.outputs.value == '0'
         env:
