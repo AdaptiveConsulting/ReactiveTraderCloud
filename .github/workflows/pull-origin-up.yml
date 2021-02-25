@@ -49,6 +49,10 @@ jobs:
 
       - name: Enable Docker caching
         uses: satackey/action-docker-layer-caching@v0.0.11
+        with:
+          key: docker-cache-{hash}
+          restore-keys: |
+            docker-cache-
         continue-on-error: true
 
       - name: 'Build Docker images: ${{ env.BUILD_VERSION }}'
