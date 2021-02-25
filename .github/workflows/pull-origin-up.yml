@@ -48,6 +48,7 @@ jobs:
         continue-on-error: true
 
       - name: Enable Docker caching
+        if: steps.existing_build.outputs.value == '0'
         uses: satackey/action-docker-layer-caching@v0.0.11
         with:
           key: docker-cache-{hash}
