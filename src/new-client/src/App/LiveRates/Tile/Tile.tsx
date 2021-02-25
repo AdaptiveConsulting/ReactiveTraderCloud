@@ -17,8 +17,14 @@ import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
 
 import { CurrencyPair } from "services/currencyPairs"
 import { Provider } from "./Tile.context"
-import { isRfq$, RfqButton, getRfqState$ } from "./Rfq"
-import { RfqTimer } from "./Rfq/RfqTimer"
+import {
+  isRfq$,
+  RfqButton,
+  getRfqState$,
+  useRfqState,
+  QuoteState,
+  RfqTimer,
+} from "./Rfq"
 
 export const tile$ = (symbol: string) =>
   merge(
@@ -34,31 +40,41 @@ export const tile$ = (symbol: string) =>
     ].map((fn) => fn(symbol)),
   )
 
-export const Tile: React.FC<{
+const Tile: React.FC<{
+  isAnalytics: boolean
+}> = ({ isAnalytics }) => {
+  const showTimer = useRfqState().quoteState === QuoteState.Received
+  return (
+    <PanelItem>
+      <Main>
+        <Header />
+        <Body isAnalyticsView={isAnalytics} showTimer={showTimer}>
+          {isAnalytics ? <HistoricalGraph /> : null}
+          <PriceControlWrapper>
+            <PriceControlsStyle isAnalyticsView={isAnalytics}>
+              <PriceMovement isAnalyticsView={isAnalytics} />
+              <PriceButton direction={Direction.Sell} />
+              <PriceButton direction={Direction.Buy} />
+              <RfqButton isAnalytics={isAnalytics} />
+            </PriceControlsStyle>
+          </PriceControlWrapper>
+          <NotionalInput isAnalytics={isAnalytics} />
+          {showTimer ? <RfqTimer isAnalyticsView={isAnalytics} /> : null}
+        </Body>
+      </Main>
+      <ExecutionResponse />
+    </PanelItem>
+  )
+}
+const TileContext: React.FC<{
   currencyPair: CurrencyPair
   isAnalytics: boolean
 }> = memo(({ currencyPair, isAnalytics }) => {
   return (
     <Provider value={currencyPair}>
-      <PanelItem>
-        <Main>
-          <Header />
-          <Body isAnalyticsView={isAnalytics}>
-            {isAnalytics ? <HistoricalGraph /> : null}
-            <PriceControlWrapper>
-              <PriceControlsStyle isAnalyticsView={isAnalytics}>
-                <PriceMovement isAnalyticsView={isAnalytics} />
-                <PriceButton direction={Direction.Sell} />
-                <PriceButton direction={Direction.Buy} />
-              </PriceControlsStyle>
-            </PriceControlWrapper>
-            <NotionalInput isAnalytics={isAnalytics} />
-            <RfqTimer isAnalyticsView={isAnalytics} />
-          </Body>
-        </Main>
-        <RfqButton />
-        <ExecutionResponse />
-      </PanelItem>
+      <Tile isAnalytics={isAnalytics} />
     </Provider>
   )
 })
+
+export { TileContext as Tile }

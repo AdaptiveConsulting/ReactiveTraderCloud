@@ -16,6 +16,9 @@ export const Input = styled.input`
     outline: none !important;
     border-color: ${({ theme }) => theme.accents.primary.base};
   }
+  &:disabled {
+    opacity: 0.3;
+  }
 `
 
 export const CurrencyPairSymbol = styled("span")`
