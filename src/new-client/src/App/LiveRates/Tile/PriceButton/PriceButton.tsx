@@ -1,11 +1,18 @@
 import React from "react"
-import {getPrice$} from "services/prices"
-import {Direction} from "services/trades"
+import { getPrice$ } from "services/prices"
+import { Direction } from "services/trades"
+import type { RfqResponse } from "services/rfqs"
 import {
   customNumberFormatter,
   significantDigitsNumberFormatter,
 } from "utils/formatNumber"
-import {sendExecution} from "../Tile.state"
+import { map } from "rxjs/operators"
+import { bind } from "@react-rxjs/core"
+import { CenteringContainer } from "components/CenteringContainer"
+import { AdaptiveLoader } from "components/AdaptiveLoader"
+import { sendExecution } from "../Tile.state"
+import { useTileCurrencyPair } from "../Tile.context"
+import { useRfqState, QuoteState } from "../Rfq"
 import {
   TradeButton,
   Price,
@@ -13,22 +20,16 @@ import {
   Big,
   Pip,
   Tenth,
-  PriceLoading,
+  QuotePriceLoading,
+  ExpiredPrice,
 } from "./PriceButton.styles"
-import {useTileCurrencyPair} from "../Tile.context"
-import {map} from "rxjs/operators"
-import {bind} from "@react-rxjs/core"
-import {CenteringContainer} from "components/CenteringContainer"
-import {AdaptiveLoader} from "components/AdaptiveLoader"
-import {useRfqState} from "../Rfq"
-import {QuoteState} from "services/rfqs"
 
 const [
   usePrice,
   getPriceDirection$,
 ] = bind((symbol: string, direction: Direction) =>
   getPrice$(symbol).pipe(
-    map(({bid, ask}) => (direction === Direction.Buy ? ask : bid)),
+    map(({ bid, ask }) => (direction === Direction.Buy ? ask : bid)),
   ),
 )
 
@@ -46,7 +47,8 @@ const PriceButtonInner: React.FC<{
   ratePrecision: number
   symbol: string
   pipsPosition: number
-}> = ({direction, price, ratePrecision, symbol, pipsPosition}) => {
+  isExpired?: boolean
+}> = ({ direction, price, ratePrecision, symbol, pipsPosition, isExpired }) => {
   const disabled = price === 0
 
   const rateString = price.toFixed(ratePrecision)
@@ -68,7 +70,7 @@ const PriceButtonInner: React.FC<{
     <TradeButton
       direction={direction}
       onClick={() => {
-        sendExecution({symbol, direction})
+        sendExecution({ symbol, direction })
       }}
       priceAnnounced={false}
       disabled={disabled}
@@ -85,47 +87,75 @@ const PriceButtonInner: React.FC<{
           </>
         )}
       </Price>
+      {isExpired && <ExpiredPrice>Expired</ExpiredPrice>}
     </TradeButton>
   )
 }
 
-export const PriceButton: React.FC<{
+const PriceFromStreamButton: React.FC<{
   direction: Direction
-}> = ({direction}) => {
-  const {pipsPosition, ratePrecision, symbol} = useTileCurrencyPair()
+}> = ({ direction }) => {
+  const { pipsPosition, ratePrecision, symbol } = useTileCurrencyPair()
   const streamingPrice = usePrice(symbol, direction)
-  const rfqState = useRfqState()
-
-  if (rfqState.quoteState === QuoteState.Init) {
-    return (
-      <PriceButtonInner
-        direction={direction}
-        symbol={symbol}
-        ratePrecision={ratePrecision}
-        pipsPosition={pipsPosition}
-        price={streamingPrice}
-      />
-    )
-  }
-
-  if (rfqState.quoteState === QuoteState.Requested) {
-    return (
-      <PriceLoading>
-        <AdaptiveLoader size={16} />
-        Awaiting Price
-      </PriceLoading>
-    )
-  }
-
   return (
     <PriceButtonInner
       direction={direction}
       symbol={symbol}
       ratePrecision={ratePrecision}
       pipsPosition={pipsPosition}
-      price={
-        rfqState.rfqResponse!.price[direction === Direction.Buy ? "ask" : "bid"]
-      }
+      price={streamingPrice}
     />
   )
+}
+
+const PriceFromQuote: React.FC<{
+  direction: Direction
+  rfqResponse: RfqResponse
+  isExpired: boolean
+}> = ({ direction, rfqResponse, isExpired }) => {
+  const {
+    currencyPair: { symbol, ratePrecision, pipsPosition },
+    price,
+  } = rfqResponse
+  return (
+    <PriceButtonInner
+      direction={direction}
+      symbol={symbol}
+      ratePrecision={ratePrecision}
+      pipsPosition={pipsPosition}
+      isExpired={isExpired}
+      price={price[direction === Direction.Buy ? "ask" : "bid"]}
+    />
+  )
+}
+
+export const PriceButton: React.FC<{
+  direction: Direction
+}> = ({ direction }) => {
+  const rfqState = useRfqState()
+
+  if (rfqState.quoteState === QuoteState.Init) {
+    return <PriceFromStreamButton direction={direction} />
+  }
+
+  if (rfqState.quoteState === QuoteState.Requested) {
+    return (
+      <QuotePriceLoading>
+        <AdaptiveLoader size={16} />
+        Awaiting Price
+      </QuotePriceLoading>
+    )
+  }
+
+  if (rfqState.rfqResponse) {
+    return (
+      <PriceFromQuote
+        direction={direction}
+        isExpired={rfqState.quoteState === QuoteState.Rejected}
+        rfqResponse={rfqState.rfqResponse}
+      />
+    )
+  }
+
+  throw new Error()
 }

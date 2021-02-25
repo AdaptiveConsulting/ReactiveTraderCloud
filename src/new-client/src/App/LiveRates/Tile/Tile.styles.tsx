@@ -1,14 +1,17 @@
 import styled from "styled-components/macro"
 import { TradeButton } from "./PriceButton/PriceButton.styles"
 
+export const AnalyticsPricesFirstCol = "20%"
+
 export const PriceControlsStyle = styled("div")<{
   isAnalyticsView: boolean
 }>`
   display: grid;
+  position: relative;
   ${({ isAnalyticsView }) =>
     isAnalyticsView
       ? `
-      grid-template-columns: 20% 80%;
+      grid-template-columns: ${AnalyticsPricesFirstCol} 80%;
       grid-template-rows: 50% 50%;
       grid-template-areas: 
       "movement sell"
@@ -27,13 +30,17 @@ export const PanelItem = styled.div`
   flex-basis: 20rem;
   position: relative;
 `
-export const Body = styled.div<{ isAnalyticsView: boolean }>`
+export const Body = styled.div<{
+  isAnalyticsView: boolean
+  showTimer: boolean
+}>`
   display: grid;
-  ${({ isAnalyticsView }) =>
+  ${({ isAnalyticsView, showTimer }) =>
     isAnalyticsView
       ? `
     grid-template-columns: 52% 7% 41%;
-    grid-template-rows: 50% 33% 17%;
+    grid-template-rows: ${showTimer ? "50% 10% 15%" : "50% 35% 15%"}
+    ;
     grid-template-areas: 
     "chart control control"
     "chart control control"
@@ -41,7 +48,7 @@ export const Body = styled.div<{ isAnalyticsView: boolean }>`
   `
       : `
     grid-template-columns: auto;
-    grid-template-rows: 85% 15%;
+    grid-template-rows: ${showTimer ? "60% 40" : "85% 15%"};
     grid-template-areas: 
     "control"
     "notional";

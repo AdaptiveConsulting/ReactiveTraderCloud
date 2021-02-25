@@ -23,7 +23,7 @@ import { emitTooLongMessage } from "utils/emitTooLong"
 import { bind } from "@react-rxjs/core"
 
 // Notional
-const DEFAULT_NOTIONAL = 1_000_000
+export const DEFAULT_NOTIONAL = 1_000_000
 
 const [rawNotional$, onChangeNotionalValue] = createListener<{
   symbol: string

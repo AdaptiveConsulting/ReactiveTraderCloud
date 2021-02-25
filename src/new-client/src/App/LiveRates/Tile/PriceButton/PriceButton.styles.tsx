@@ -107,7 +107,7 @@ export const Price = styled.div<{ disabled: boolean }>`
 
   ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
 `
-export const PriceLoading = styled.div`
+export const QuotePriceLoading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,4 +127,10 @@ export const PriceLoading = styled.div`
   text-transform: uppercase;
   color: ${({ theme }) => theme.primary[5]};
   font-weight: 400;
+`
+
+export const ExpiredPrice = styled.div`
+  color: ${({ theme }) => theme.colors.spectrum.uniqueCollections.Sell.base};
+  font-size: 9px;
+  text-transform: uppercase;
 `

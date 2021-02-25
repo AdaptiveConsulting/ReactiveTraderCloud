@@ -1,11 +1,12 @@
 import styled from "styled-components/macro"
+import { FaSortUp, FaSortDown } from "react-icons/fa"
 import { distinctUntilChanged, map, withLatestFrom } from "rxjs/operators"
 import { getPrice$, PriceMovementType } from "services/prices"
 import { getCurrencyPair$ } from "services/currencyPairs"
+import type { RfqResponse } from "services/rfqs"
 import { equals } from "utils/equals"
-import { FaSortUp, FaSortDown } from "react-icons/fa"
 import { symbolBind } from "../Tile.context"
-import { useRfqState } from "../Rfq/Rfq.state"
+import { useRfqState } from "../Rfq"
 
 const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
   text-align: center;
@@ -64,25 +65,10 @@ const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
 )
 export { priceMovement$ }
 
-export const PriceMovement: React.FC<{
+const PriceMovementFromStream: React.FC<{
   isAnalyticsView: boolean
 }> = ({ isAnalyticsView }) => {
   const { spread, movementType } = usePriceMovementData()
-  const rfqState = useRfqState()
-
-  if (rfqState?.quoteState && rfqState.rfqResponse) {
-    const {
-      price: { bid, ask },
-      currencyPair: { ratePrecision, pipsPosition },
-    } = rfqState.rfqResponse
-    const spread = calculateSpread(ask, bid, ratePrecision, pipsPosition)
-    return (
-      <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
-        <MovementValue>{spread}</MovementValue>
-      </PriceMovementStyle>
-    )
-  }
-
   return (
     <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
       <MovementIconUP
@@ -96,4 +82,37 @@ export const PriceMovement: React.FC<{
       />
     </PriceMovementStyle>
   )
+}
+
+const PriceFromQuote: React.FC<{
+  isAnalyticsView: boolean
+  rfqResponse: RfqResponse
+}> = ({ isAnalyticsView: isAnalytics, rfqResponse }) => {
+  const {
+    price: { bid, ask },
+    currencyPair: { ratePrecision, pipsPosition },
+  } = rfqResponse
+  const spread = calculateSpread(ask, bid, ratePrecision, pipsPosition)
+  return (
+    <PriceMovementStyle isAnalyticsView={isAnalytics}>
+      <MovementValue>{spread}</MovementValue>
+    </PriceMovementStyle>
+  )
+}
+
+export const PriceMovement: React.FC<{
+  isAnalyticsView: boolean
+}> = ({ isAnalyticsView }) => {
+  const { rfqResponse } = useRfqState()
+
+  if (rfqResponse) {
+    return (
+      <PriceFromQuote
+        isAnalyticsView={isAnalyticsView}
+        rfqResponse={rfqResponse}
+      />
+    )
+  }
+
+  return <PriceMovementFromStream isAnalyticsView={isAnalyticsView} />
 }

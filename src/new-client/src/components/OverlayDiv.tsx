@@ -1,9 +1,12 @@
 import styled from "styled-components/macro"
 
-export const OverlayDiv = styled.div`
+export const OverlayDiv = styled.div<{
+  top?: number | string
+  left?: number | string
+}>`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: ${({ top }) => top ?? 0};
+  left: ${({ left }) => left ?? 0};
   z-index: 2;
   width: 100%;
   height: 100%;

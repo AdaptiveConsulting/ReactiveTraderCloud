@@ -1,5 +1,5 @@
-import {CurrencyPair} from "services/currencyPairs"
-import {PriceMovementType} from "services/prices"
+import { CurrencyPair } from "services/currencyPairs"
+import { PriceMovementType } from "services/prices"
 
 export interface RfqRequest {
   symbol: string
@@ -20,11 +20,4 @@ export interface RfqResponse {
   }
   time: number
   timeout: number
-}
-
-export enum QuoteState {
-  Init = "Init",
-  Requested = "Requested",
-  Received = "Received",
-  Rejected = "Rejected",
 }
