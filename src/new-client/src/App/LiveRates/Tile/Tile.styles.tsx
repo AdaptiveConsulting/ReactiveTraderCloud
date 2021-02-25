@@ -4,6 +4,7 @@ import { TradeButton } from "./PriceButton/PriceButton.styles"
 export const PriceControlsStyle = styled("div")<{
   isAnalyticsView: boolean
 }>`
+  position: relative;
   display: grid;
   ${({ isAnalyticsView }) =>
     isAnalyticsView

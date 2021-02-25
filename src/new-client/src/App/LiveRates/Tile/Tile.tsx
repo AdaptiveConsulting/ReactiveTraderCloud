@@ -50,13 +50,13 @@ export const Tile: React.FC<{
                 <PriceMovement isAnalyticsView={isAnalytics} />
                 <PriceButton direction={Direction.Sell} />
                 <PriceButton direction={Direction.Buy} />
+                <RfqButton />
               </PriceControlsStyle>
             </PriceControlWrapper>
             <NotionalInput isAnalytics={isAnalytics} />
             <RfqTimer isAnalyticsView={isAnalytics} />
           </Body>
         </Main>
-        <RfqButton />
         <ExecutionResponse />
       </PanelItem>
     </Provider>

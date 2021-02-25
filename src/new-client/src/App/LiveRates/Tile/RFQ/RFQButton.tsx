@@ -6,7 +6,7 @@ import { QuoteState } from "services/rfqs"
 import { useTileCurrencyPair } from "../Tile.context"
 import { useRfqState, onRfqButtonClick, useIsRfq } from "./Rfq.state"
 
-const RFQButtonInner = styled("button")`
+const RfqButtonInner = styled("button")`
   background-color: ${({ theme }) => theme.accents.primary.base};
   display: flex;
   flex-direction: column;
@@ -38,15 +38,17 @@ const RfqButton: React.FC = () => {
   const quoteState = useRfqState()?.quoteState
   const symbol = useTileCurrencyPair().symbol
   return isRfq && quoteState !== QuoteState.Received ? (
-    <CenteringContainer>
-      <RFQButtonInner
-        onClick={() => {
-          onRfqButtonClick(symbol)
-        }}
-      >
-        {buttonText(quoteState)}
-      </RFQButtonInner>
-    </CenteringContainer>
+    <OverlayDiv>
+      <CenteringContainer>
+        <RfqButtonInner
+          onClick={() => {
+            onRfqButtonClick(symbol)
+          }}
+        >
+          {buttonText(quoteState)}
+        </RfqButtonInner>
+      </CenteringContainer>
+    </OverlayDiv>
   ) : null
 }
 

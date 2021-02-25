@@ -1,3 +1,4 @@
+import { createListener } from "@react-rxjs/utils"
 import React from "react"
 import { FaRedo } from "react-icons/fa"
 import styled from "styled-components/macro"
@@ -19,16 +20,24 @@ const ResetInputValue = styled.button`
   }
 `
 
+const [notionalResets$, onNotionalReset] = createListener<string>()
+
+notionalResets$.subscribe((symbol) => {
+  onChangeNotionalValue({
+    symbol,
+    value: DEFAULT_NOTIONAL.toString(),
+  })
+})
+
+export { notionalResets$ }
+
 export const NotionalReset: React.FC<{ symbol: string }> = ({ symbol }) => {
   const isRfq = useIsRfq()
   return isRfq ? (
     <ResetInputValue
       onClick={(e) => {
         e.stopPropagation()
-        onChangeNotionalValue({
-          symbol,
-          value: DEFAULT_NOTIONAL.toString(),
-        })
+        onNotionalReset(symbol)
       }}
     >
       <FaRedo className="flipHorizontal" />

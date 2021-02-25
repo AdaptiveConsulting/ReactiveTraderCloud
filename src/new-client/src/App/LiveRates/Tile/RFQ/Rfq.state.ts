@@ -1,4 +1,4 @@
-import { createListener, mergeWithKey } from "@react-rxjs/utils"
+import { merge } from "rxjs"
 import {
   concatAll,
   concatMap,
@@ -7,9 +7,11 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
+import { createListener, mergeWithKey } from "@react-rxjs/utils"
 import { QuoteState, rfq$, RfqResponse } from "services/rfqs"
 import { getNotional$, tileExecutions$ } from "../Tile.state"
 import { symbolBind } from "../Tile.context"
+import { notionalResets$ } from "./NotionalReset"
 
 const [rfqButtonClicks$, onRfqButtonClick] = createListener<string>()
 
@@ -26,6 +28,8 @@ interface RfqState {
 
 const [quoteRequests$, dispatchQuoteRequest] = createListener<string>()
 
+const [notionalDrops$, onNotionalDrop] = createListener<string>()
+
 const quoteResponses$ = quoteRequests$.pipe(
   withLatestFrom((symbol) =>
     getNotional$(symbol).pipe(
@@ -39,8 +43,14 @@ const quoteResponses$ = quoteRequests$.pipe(
   ),
 )
 
+const quoteStateResets$ = merge(
+  tileExecutions$.pipe(map((e) => ({ symbol: e.symbol }))),
+  notionalResets$.pipe(map((symbol) => ({ symbol }))),
+  notionalDrops$.pipe(map((symbol) => ({ symbol }))),
+)
+
 const rfqTileStateMap$ = mergeWithKey({
-  executions: tileExecutions$.pipe(map((e) => ({ symbol: e.symbol }))),
+  resets: quoteStateResets$,
   rfqButtonClicks: rfqButtonClicks$.pipe(map((symbol) => ({ symbol }))),
   rejections: rejections$.pipe(map((symbol) => ({ symbol }))),
   quoteResponses: quoteResponses$.pipe(
@@ -89,7 +99,13 @@ export { useRfqState, getRfqState$ }
 
 const [useIsRfq, isRfq$] = symbolBind((symbol: string) =>
   getNotional$(symbol).pipe(
-    map((newNotional) => parseFloat(newNotional) >= 10_000_000),
+    scan((lastIsRfq, newNotional) => {
+      const nextIsRfq = parseFloat(newNotional) >= 10_000_000
+      if (!nextIsRfq && lastIsRfq) {
+        onNotionalDrop(symbol)
+      }
+      return nextIsRfq
+    }, false),
   ),
 )
 
