@@ -74,7 +74,7 @@ export const TradeExecutionOverlay: FC<TradeExecutionProps> = ({
     return () => {
       subscription.unsubscribe()
     }
-  }, [tradeStatus])
+  }, [tradeStatus, resetAll, executeTradeRequest])
 
   useEffect(() => {
     if (currencyPairs && partialTradeRequest) {
