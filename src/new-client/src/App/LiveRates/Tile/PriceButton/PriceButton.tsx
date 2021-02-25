@@ -1,11 +1,11 @@
 import React from "react"
-import { getPrice$ } from "services/prices"
-import { Direction } from "services/trades"
+import {getPrice$} from "services/prices"
+import {Direction} from "services/trades"
 import {
   customNumberFormatter,
   significantDigitsNumberFormatter,
 } from "utils/formatNumber"
-import { sendExecution } from "../Tile.state"
+import {sendExecution} from "../Tile.state"
 import {
   TradeButton,
   Price,
@@ -15,20 +15,20 @@ import {
   Tenth,
   PriceLoading,
 } from "./PriceButton.styles"
-import { useTileCurrencyPair } from "../Tile.context"
-import { map } from "rxjs/operators"
-import { bind } from "@react-rxjs/core"
-import { CenteringContainer } from "components/CenteringContainer"
-import { AdaptiveLoader } from "components/AdaptiveLoader"
-import { useRfqState } from "../Rfq"
-import { QuoteState } from "services/rfqs"
+import {useTileCurrencyPair} from "../Tile.context"
+import {map} from "rxjs/operators"
+import {bind} from "@react-rxjs/core"
+import {CenteringContainer} from "components/CenteringContainer"
+import {AdaptiveLoader} from "components/AdaptiveLoader"
+import {useRfqState} from "../Rfq"
+import {QuoteState} from "services/rfqs"
 
 const [
   usePrice,
   getPriceDirection$,
 ] = bind((symbol: string, direction: Direction) =>
   getPrice$(symbol).pipe(
-    map(({ bid, ask }) => (direction === Direction.Buy ? ask : bid)),
+    map(({bid, ask}) => (direction === Direction.Buy ? ask : bid)),
   ),
 )
 
@@ -46,7 +46,7 @@ const PriceButtonInner: React.FC<{
   ratePrecision: number
   symbol: string
   pipsPosition: number
-}> = ({ direction, price, ratePrecision, symbol, pipsPosition }) => {
+}> = ({direction, price, ratePrecision, symbol, pipsPosition}) => {
   const disabled = price === 0
 
   const rateString = price.toFixed(ratePrecision)
@@ -68,7 +68,7 @@ const PriceButtonInner: React.FC<{
     <TradeButton
       direction={direction}
       onClick={() => {
-        sendExecution({ symbol, direction })
+        sendExecution({symbol, direction})
       }}
       priceAnnounced={false}
       disabled={disabled}
@@ -91,12 +91,12 @@ const PriceButtonInner: React.FC<{
 
 export const PriceButton: React.FC<{
   direction: Direction
-}> = ({ direction }) => {
-  const { pipsPosition, ratePrecision, symbol } = useTileCurrencyPair()
+}> = ({direction}) => {
+  const {pipsPosition, ratePrecision, symbol} = useTileCurrencyPair()
   const streamingPrice = usePrice(symbol, direction)
   const rfqState = useRfqState()
 
-  if (!rfqState || !rfqState.quoteState) {
+  if (rfqState.quoteState === QuoteState.Init) {
     return (
       <PriceButtonInner
         direction={direction}
@@ -108,7 +108,7 @@ export const PriceButton: React.FC<{
     )
   }
 
-  if (!rfqState.rfqResponse) {
+  if (rfqState.quoteState === QuoteState.Requested) {
     return (
       <PriceLoading>
         <AdaptiveLoader size={16} />
@@ -124,7 +124,7 @@ export const PriceButton: React.FC<{
       ratePrecision={ratePrecision}
       pipsPosition={pipsPosition}
       price={
-        rfqState.rfqResponse.price[direction === Direction.Buy ? "ask" : "bid"]
+        rfqState.rfqResponse!.price[direction === Direction.Buy ? "ask" : "bid"]
       }
     />
   )
