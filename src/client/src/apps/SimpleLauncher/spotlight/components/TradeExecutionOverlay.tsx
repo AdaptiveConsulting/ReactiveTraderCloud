@@ -74,7 +74,8 @@ export const TradeExecutionOverlay: FC<TradeExecutionProps> = ({
     return () => {
       subscription.unsubscribe()
     }
-  }, [tradeStatus, resetAll, executeTradeRequest])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tradeStatus])
 
   useEffect(() => {
     if (currencyPairs && partialTradeRequest) {
