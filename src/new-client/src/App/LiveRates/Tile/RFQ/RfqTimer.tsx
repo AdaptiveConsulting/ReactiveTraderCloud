@@ -68,9 +68,7 @@ const [useTimerProgress] = symbolBind(
     return interval(oneSecond / intervalsPerSecond).pipe(
       map((intervals) => {
         const fractionSecondsElapsed = intervals / intervalsPerSecond
-        const timeLeftSecs = Math.ceil(
-          durationSecs - fractionSecondsElapsed - 1,
-        )
+        const timeLeftSecs = Math.ceil(durationSecs - fractionSecondsElapsed)
         const percentageLeft =
           100 - (100 * fractionSecondsElapsed) / durationSecs
         return {
