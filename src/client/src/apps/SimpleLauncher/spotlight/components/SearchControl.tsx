@@ -98,13 +98,15 @@ export const SearchControl = React.forwardRef<HTMLInputElement, SearchControlsPr
 
     const handleChange = useCallback(
       (e: ChangeEvent<HTMLInputElement>) => {
-        setIsTyping(true)
-        // when typing stops, we want to change the state after a bit of delay
-        debouncedStopTyping()
+        if (isSearchVisible) {
+          setIsTyping(true)
+          // when typing stops, we want to change the state after a bit of delay
+          debouncedStopTyping()
 
-        handleSearchInput(e.target.value)
+          handleSearchInput(e.target.value)
+        }
       },
-      [debouncedStopTyping, handleSearchInput]
+      [debouncedStopTyping, handleSearchInput, isSearchVisible]
     )
 
     useEffect(() => {

@@ -1,5 +1,7 @@
 import numeral from 'numeral'
 import React, { FC, useEffect, useMemo, useState } from 'react'
+import { Subscription, fromEvent } from 'rxjs'
+import { first } from 'rxjs/operators'
 import {
   TradeExecutionActionContainer,
   TradeExecutionContainer,
@@ -49,6 +51,30 @@ export const TradeExecutionOverlay: FC<TradeExecutionProps> = ({
     handleReset()
     handleClearSearchInput()
   }
+
+  useEffect(() => {
+    const subscription = new Subscription()
+
+    if (tradeStatus === 'waiting') {
+      subscription.add(
+        fromEvent<KeyboardEvent>(document, 'keydown')
+          .pipe(first(evt => evt.key === 'Enter' && !evt.repeat))
+          .subscribe(executeTradeRequest)
+      )
+    }
+
+    if (tradeStatus !== 'executing') {
+      subscription.add(
+        fromEvent<KeyboardEvent>(document, 'keydown')
+          .pipe(first(evt => evt.key === 'Escape' && !evt.repeat))
+          .subscribe(resetAll)
+      )
+    }
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [tradeStatus])
 
   useEffect(() => {
     if (currencyPairs && partialTradeRequest) {
