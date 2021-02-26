@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import numeral from 'numeral'
 import React, { FC, useEffect, useMemo, useState } from 'react'
 import { Subscription, fromEvent } from 'rxjs'
@@ -127,7 +128,7 @@ export const TradeExecutionOverlay: FC<TradeExecutionProps> = ({
     const directionString = direction.toLowerCase() === 'buy' ? 'bought' : 'sold'
     const tradeAcceptedMessage = `You ${directionString} ${symbol} for ${dealtCurrency}${numeral(
       notional
-    ).format()} @ ${spotRate} settling ${tradeDate.toLocaleDateString()}`
+    ).format()} @ ${spotRate} settling ${DateTime.fromJSDate(tradeDate).toFormat('dd-LLL-yyyy / HH:mm:ss')}`
 
     return (
       <>
