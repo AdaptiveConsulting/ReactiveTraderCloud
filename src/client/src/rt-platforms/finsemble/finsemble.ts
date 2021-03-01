@@ -11,7 +11,9 @@ export class Finsemble implements Platform {
   readonly name = 'finsemble'
   readonly type = 'desktop'
   readonly allowTearOff = true
-  style = {}
+  style = {
+    height: '100%',
+  }
   epics = []
   PlatformHeader = () => null
   PlatformFooter = () => null
