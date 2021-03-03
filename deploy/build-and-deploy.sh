@@ -96,7 +96,7 @@ before_deploy () {
 
   # Downscale existing deployment
   for deployment in $(kubectl get deployments --no-headers --ignore-not-found=true -o name --namespace $DEPLOY_ENV); do
-    kubectl scale deploy --replicas=0 --namespace $DEPLOY_ENV $deployment
+    kubectl scale --replicas=0 --namespace $DEPLOY_ENV $deployment
   done
 
   # Delete batch jobs
