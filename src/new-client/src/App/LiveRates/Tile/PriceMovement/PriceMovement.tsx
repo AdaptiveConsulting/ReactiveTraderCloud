@@ -1,10 +1,12 @@
 import styled from "styled-components/macro"
+import { FaSortUp, FaSortDown } from "react-icons/fa"
 import { distinctUntilChanged, map, withLatestFrom } from "rxjs/operators"
 import { getPrice$, PriceMovementType } from "services/prices"
 import { getCurrencyPair$ } from "services/currencyPairs"
+import type { RfqResponse } from "services/rfqs"
 import { equals } from "utils/equals"
-import { FaSortUp, FaSortDown } from "react-icons/fa"
 import { symbolBind } from "../Tile.context"
+import { useRfqState } from "../Rfq"
 
 const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
   text-align: center;
@@ -36,41 +38,81 @@ const PriceMovementStyle = styled.div<{
   grid-area: movement;
 `
 
+const calculateSpread = (
+  ask: number,
+  bid: number,
+  ratePrecision: number,
+  pipsPosition: number,
+) =>
+  ((ask - bid) * Math.pow(10, pipsPosition)).toFixed(
+    ratePrecision - pipsPosition,
+  )
+
 const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
   getPrice$(symbol).pipe(
     withLatestFrom(getCurrencyPair$(symbol)),
-    map(([{ bid, ask, movementType }, { pipsPosition, ratePrecision }]) => {
-      const spread = ((ask - bid) * Math.pow(10, pipsPosition)).toFixed(
-        ratePrecision - pipsPosition,
-      )
-      return { spread, movementType }
-    }),
+    map(
+      ([
+        { bid, ask, movementType, symbol },
+        { pipsPosition, ratePrecision },
+      ]) => {
+        const spread = calculateSpread(ask, bid, ratePrecision, pipsPosition)
+        return { spread, movementType, symbol }
+      },
+    ),
     distinctUntilChanged(equals),
   ),
 )
-
 export { priceMovement$ }
-export const PriceMovement: React.FC<{
+
+const PriceMovementFromStream: React.FC<{
   isAnalyticsView: boolean
 }> = ({ isAnalyticsView }) => {
   const { spread, movementType } = usePriceMovementData()
   return (
     <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
       <MovementIconUP
-        data-qa="price-movement__movement-icon--up"
         $show={movementType === PriceMovementType.UP}
-        className="fas fa-caret-up"
         aria-hidden="true"
       />
-      <MovementValue data-qa="price-movement__movement-value">
-        {spread}
-      </MovementValue>
+      <MovementValue>{spread}</MovementValue>
       <MovementIconDown
-        data-qa="price-movement__movement-icon--down"
         $show={movementType === PriceMovementType.DOWN}
-        className="fas fa-caret-down"
         aria-hidden="true"
       />
     </PriceMovementStyle>
   )
+}
+
+const PriceFromQuote: React.FC<{
+  isAnalyticsView: boolean
+  rfqResponse: RfqResponse
+}> = ({ isAnalyticsView: isAnalytics, rfqResponse }) => {
+  const {
+    price: { bid, ask },
+    currencyPair: { ratePrecision, pipsPosition },
+  } = rfqResponse
+  const spread = calculateSpread(ask, bid, ratePrecision, pipsPosition)
+  return (
+    <PriceMovementStyle isAnalyticsView={isAnalytics}>
+      <MovementValue>{spread}</MovementValue>
+    </PriceMovementStyle>
+  )
+}
+
+export const PriceMovement: React.FC<{
+  isAnalyticsView: boolean
+}> = ({ isAnalyticsView }) => {
+  const { rfqResponse } = useRfqState()
+
+  if (rfqResponse) {
+    return (
+      <PriceFromQuote
+        isAnalyticsView={isAnalyticsView}
+        rfqResponse={rfqResponse}
+      />
+    )
+  }
+
+  return <PriceMovementFromStream isAnalyticsView={isAnalyticsView} />
 }

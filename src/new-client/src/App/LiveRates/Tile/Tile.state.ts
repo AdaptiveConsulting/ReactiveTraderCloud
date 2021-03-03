@@ -1,4 +1,9 @@
-import { collect, createListener, split } from "@react-rxjs/utils"
+import {
+  collect,
+  createListener,
+  getGroupedObservable,
+  split,
+} from "@react-rxjs/utils"
 import { Direction } from "services/trades"
 import {
   exhaustMap,
@@ -10,7 +15,7 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
-import { concat, EMPTY, of, race, timer } from "rxjs"
+import { concat, race, timer } from "rxjs"
 import { getPrice$ } from "services/prices"
 import { ExecutionTrade, execute$, ExecutionStatus } from "services/executions"
 import { getCurrencyPair$ } from "services/currencyPairs"
@@ -18,7 +23,7 @@ import { emitTooLongMessage } from "utils/emitTooLong"
 import { bind } from "@react-rxjs/core"
 
 // Notional
-const DEFAULT_NOTIONAL = 1_000_000
+export const DEFAULT_NOTIONAL = 1_000_000
 
 const [rawNotional$, onChangeNotionalValue] = createListener<{
   symbol: string
@@ -39,14 +44,11 @@ const mapNotionals$ = rawNotional$.pipe(
 mapNotionals$.subscribe()
 
 const [useNotional, getNotional$] = bind(
-  (symbol: string) =>
-    mapNotionals$.pipe(
-      exhaustMap((map) => (map.has(symbol) ? map.get(symbol)! : EMPTY)),
-    ),
+  (symbol: string) => getGroupedObservable(mapNotionals$, symbol),
   DEFAULT_NOTIONAL.toString(10),
 )
 
-export { onChangeNotionalValue, useNotional }
+export { onChangeNotionalValue, useNotional, getNotional$ }
 
 // Dismiss Message
 const DISMISS_TIMEOUT = 5_000
@@ -64,7 +66,7 @@ const [tileExecutions$, sendExecution] = createListener<{
   symbol: string
   direction: Direction
 }>()
-export { sendExecution }
+export { tileExecutions$, sendExecution }
 
 // TileState
 export enum TileStates {
@@ -142,8 +144,7 @@ const getId = () => (nextId++).toString()
 
 const TAKING_TOO_LONG = 2_000
 
-export const [useTileState, getTileState$] = bind((symbol: string) =>
-  executionsMap$.pipe(
-    exhaustMap((map) => (map.has(symbol) ? map.get(symbol)! : of(READY))),
-  ),
+export const [useTileState, getTileState$] = bind(
+  (symbol: string) => getGroupedObservable(executionsMap$, symbol),
+  READY,
 )

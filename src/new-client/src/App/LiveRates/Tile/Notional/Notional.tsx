@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { formatAsWholeNumber } from "utils/formatNumber"
+import { useRfqState, QuoteState } from "../Rfq"
 import { useTileCurrencyPair } from "../Tile.context"
 import { onChangeNotionalValue, useNotional } from "../Tile.state"
 import {
@@ -7,7 +9,7 @@ import {
   Input,
   NotionalInputWrapper,
 } from "./Notional.styles"
-import { formatAsWholeNumber } from "utils/formatNumber"
+import { NotionalReset } from "./NotionalReset"
 
 export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
   isAnalytics,
@@ -15,6 +17,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
   const { base, symbol } = useTileCurrencyPair()
   const notional = useNotional(symbol)
   const [isFocused, setIsFocused] = useState(false)
+  const { quoteState } = useRfqState()
 
   return (
     <NotionalInputWrapper isAnalyticsView={isAnalytics}>
@@ -23,6 +26,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
         <Input
           role={"input"}
           type="text"
+          disabled={quoteState === QuoteState.Received}
           value={isFocused ? notional : formatAsWholeNumber(parseInt(notional))}
           onChange={({ target: { value } }) => {
             onChangeNotionalValue({ symbol, value })
@@ -35,6 +39,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
             setIsFocused(false)
           }}
         />
+        <NotionalReset symbol={symbol} />
       </InputWrapper>
     </NotionalInputWrapper>
   )

@@ -17,6 +17,7 @@ import {
   LogoWrapper,
   Intent,
   Suggestion,
+  HelpText,
   IntentWrapper,
   IntentActions,
   IntentActionWrapper,
@@ -29,6 +30,7 @@ import { open } from '../../tools'
 
 import { reactiveTraderIcon } from 'apps/SimpleLauncher/icons'
 import styled from 'styled-components/macro'
+import { InlineTradeExecution } from './InlineTradeExecution'
 
 const RTC_CONFIG = appConfigs[0]
 
@@ -38,19 +40,11 @@ const PlatformLogoWrapper = styled.div`
   }
 `
 
-const HelpText = styled.div`
-  font-size: 0.9rem;
-`
-
-const Pill = styled.div`
-  padding: 0.2rem 0.4rem;
-  display: inline-block;
-  background-color: #5f94f5;
-  color: ${({ theme }) => theme.core.lightBackground};
-  border-radius: 0.2rem;
-`
-
-export function getInlineSuggestionsComponent(response: DetectIntentResponse, platform: Platform) {
+export function getInlineSuggestionsComponent(
+  response: DetectIntentResponse,
+  showTradeExecutionFlow: boolean,
+  platform: Platform
+) {
   const currencyPair = getCurrencyPair(response.queryResult)
   const currency = getCurrency(response.queryResult)
   const number = getNumber(response.queryResult)
@@ -58,18 +52,14 @@ export function getInlineSuggestionsComponent(response: DetectIntentResponse, pl
   const intent = mapIntent(response)
 
   if (isTradeExecutionIntent(response)) {
-    if (!number || !currencyPair) {
-      return (
-        <HelpText>
-          Usage: <Pill>buy/sell</Pill> <Pill>quantity</Pill> <Pill>instrument</Pill>
-        </HelpText>
-      )
-    }
-
     return (
-      <HelpText>
-        Press <Pill>ENTER</Pill> to continue
-      </HelpText>
+      <Suggestion>
+        <InlineTradeExecution
+          currencyPair={currencyPair}
+          number={number}
+          hasOverlay={showTradeExecutionFlow}
+        />
+      </Suggestion>
     )
   }
 

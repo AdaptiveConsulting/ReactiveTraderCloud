@@ -1,17 +1,18 @@
-import { merge } from "rxjs"
-import { Subscribe } from "@react-rxjs/core"
-import styled from "styled-components/macro"
 import { Loader } from "components/Loader"
-import { Tiles, tiles$ } from "./Tiles"
-import { MainHeader, mainHeader$ } from "./MainHeader"
+import { lazy, Suspense } from "react"
+import { merge } from "rxjs"
+import { currencyPairDependant$ } from "services/currencyPairs"
+import { getHistoricalPrices$, getPrice$ } from "services/prices"
+import styled from "styled-components/macro"
+const LiveRatesCore = lazy(() => import("./LiveRatesCore"))
 
-const Wrapper = styled.div`
-  padding: 0.5rem 1rem;
+currencyPairDependant$((symbol: string) =>
+  merge(getHistoricalPrices$(symbol), getPrice$(symbol)),
+).subscribe()
+
+const LiveRateWrapper = styled.div`
+  padding: 0.5rem 0 0.5rem 1rem;
   user-select: none;
-`
-
-const LiveRateWrapper = styled(Wrapper)`
-  padding-right: 0;
   height: 100%;
 
   @media (max-width: 480px) {
@@ -25,19 +26,14 @@ const OverflowScroll = styled.div`
   height: 100%;
 `
 
-const liveRates$ = merge(tiles$, mainHeader$)
-
+const loader = <Loader minWidth="22rem" minHeight="22rem" />
 export const LiveRates: React.FC = () => (
   <LiveRateWrapper>
     <OverflowScroll>
       <div data-qa="workspace__tiles-workspace">
-        <Subscribe
-          source$={liveRates$}
-          fallback={<Loader minWidth="22rem" minHeight="22rem" />}
-        >
-          <MainHeader />
-          <Tiles />
-        </Subscribe>
+        <Suspense fallback={loader}>
+          <LiveRatesCore>{loader}</LiveRatesCore>
+        </Suspense>
       </div>
     </OverflowScroll>
   </LiveRateWrapper>

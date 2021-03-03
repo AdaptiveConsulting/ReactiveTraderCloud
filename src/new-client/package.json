@@ -1,6 +1,7 @@
 {
   "name": "new-reactive-trader-cloud",
   "description": "Reactive Trader® - Cloud edition. Example reactive currency pair trading app",
+  "sideEffects": false,
   "keywords": [
     "react",
     "fx",
@@ -19,38 +20,41 @@
     "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
   },
   "dependencies": {
-    "@react-rxjs/core": "0.6.4",
-    "@react-rxjs/utils": "0.4.0",
-    "@stomp/rx-stomp": "^1.0.1",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
+    "@react-rxjs/core": "0.6.6",
+    "@react-rxjs/utils": "0.6.0",
+    "@stomp/rx-stomp": "^1.0.2",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.8.1",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.31",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
     "@types/sinon": "^9.0.10",
-    "d3": "6.3.1",
-    "date-fns": "^2.16.1",
-    "polished": "^4.0.5",
+    "d3": "6.5.0",
+    "date-fns": "^2.18.0",
+    "polished": "^4.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-error-boundary": "^3.1.0",
-    "react-icons": "^4.1.0",
-    "react-scripts": "^4.0.1",
+    "react-icons": "^4.2.0",
+    "react-scripts": "^4.0.3",
     "react-switch": "^5.0.1",
+    "react-test-renderer": "^17.0.1",
     "resize-observer": "^1.0.0",
     "ress": "^3.0.0",
-    "rxjs": "^6.6.3",
+    "rxjs": "^6.6.6",
     "sinon": "^9.2.4",
+    "source-map-explorer": "^2.5.2",
     "styled-components": "^5.2.1",
     "typeface-lato": "^1.1.13",
     "typeface-montserrat": "^1.1.13",
     "typeface-roboto": "^1.1.13",
     "typescript": "^4.1.2",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^1.1.0"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -68,25 +72,18 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "devDependencies": {
-    "@testing-library/react-hooks": "^5.0.3",
-    "@types/d3": "6.2.0",
-    "@types/recharts": "^1.8.17",
-    "@types/styled-components": "^5.1.4",
+    "@testing-library/react-hooks": "^5.1.0",
+    "@types/d3": "6.3.0",
+    "@types/recharts": "^1.8.19",
+    "@types/styled-components": "^5.1.7",
     "husky": "^4.3.5",
-    "lint-staged": "^10.5.3",
+    "lint-staged": "^10.5.4",
     "prettier": "^2.2.1"
   },
   "lint-staged": {

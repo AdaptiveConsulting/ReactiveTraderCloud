@@ -1,15 +1,7 @@
 import styled, { DefaultTheme } from "styled-components/macro"
 import { ExecutionStatus } from "services/executions"
 import { TileState, TileStates } from "../Tile.state"
-
-export const OverlayDiv = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-`
+import { OverlayDiv } from "components/OverlayDiv"
 
 export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
   state: TileState

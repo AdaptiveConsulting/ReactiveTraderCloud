@@ -1,10 +1,10 @@
 import Resizer from "components/Resizer"
 import styled from "styled-components/macro"
-import { Analytics } from "./Analytics"
 import Header from "./Header"
-import { LiveRates } from "./LiveRates/LiveRates"
-import { Trades } from "./Trades/Trades"
 import { Footer } from "./Footer"
+import { LiveRates } from "./LiveRates"
+import { Trades } from "./Trades"
+import { Analytics } from "./Analytics"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -43,25 +43,20 @@ const MainWrapper = styled.div`
   width: 100%;
 `
 
-const Modals: React.FC = () => null
-
-export const App: React.FC = () => {
-  return (
-    <Wrapper>
-      <AppLayoutRoot data-qa="app-layout__root">
-        <Header />
-        <MainOuter>
-          <MainWrapper>
-            <Resizer defaultHeight={30}>
-              <LiveRates />
-              <Trades />
-            </Resizer>
-            <Analytics />
-          </MainWrapper>
-        </MainOuter>
-        <Footer />
-        <Modals />
-      </AppLayoutRoot>
-    </Wrapper>
-  )
-}
+export const App: React.FC = () => (
+  <Wrapper>
+    <AppLayoutRoot data-qa="app-layout__root">
+      <Header />
+      <MainOuter>
+        <MainWrapper>
+          <Resizer defaultHeight={30}>
+            <LiveRates />
+            <Trades />
+          </Resizer>
+          <Analytics />
+        </MainWrapper>
+      </MainOuter>
+      <Footer />
+    </AppLayoutRoot>
+  </Wrapper>
+)

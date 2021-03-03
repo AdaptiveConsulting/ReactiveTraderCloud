@@ -27,7 +27,7 @@ import {
 import { SearchControl, Response, getInlineSuggestionsComponent, useNlpService } from './spotlight'
 import { ExitIcon, minimiseNormalIcon, SearchIcon } from './icons'
 import { AdaptiveLoader, LogoIcon } from 'rt-components'
-import { InlineTradeExecution } from './spotlight/components/InlineTradeExecution'
+import { TradeExecutionOverlay } from './spotlight/components/TradeExecutionOverlay'
 import { isTradeExecutionIntent } from 'rt-interop'
 
 const expandedLauncherWidth = 600
@@ -155,7 +155,9 @@ export const Launcher: React.FC = () => {
   ])
 
   const inlineSuggestions =
-    response && isSearchVisible ? getInlineSuggestionsComponent(response, platform) : null
+    response && isSearchVisible
+      ? getInlineSuggestionsComponent(response, showTradeExecutionFlow, platform)
+      : null
 
   return (
     <RootLauncherContainer>
@@ -177,8 +179,12 @@ export const Launcher: React.FC = () => {
         />
         <SearchButton onClick={showSearch} isSearchVisible={isSearchVisible} />
 
+        <MinExitContainer>
+          <LauncherMinimiseAndExit />
+        </MinExitContainer>
+
         {response && showTradeExecutionFlow && (
-          <InlineTradeExecution
+          <TradeExecutionOverlay
             response={response}
             handleClearSearchInput={handleClearSeachInput}
             handleReset={() => {
@@ -187,15 +193,12 @@ export const Launcher: React.FC = () => {
             }}
           />
         )}
-
-        <MinExitContainer>
-          <LauncherMinimiseAndExit />
-        </MinExitContainer>
       </LauncherContainer>
+
       <Measure bounds onResize={handleSearchSizeChange}>
         {({ measureRef }) => (
           <div ref={measureRef}>
-            {inlineSuggestions && !showTradeExecutionFlow && (
+            {inlineSuggestions && (
               <RootResultsContainer>
                 <Response>{inlineSuggestions}</Response>
               </RootResultsContainer>

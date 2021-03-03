@@ -158,7 +158,6 @@ const mockHistoryResult = {
       mid: 1.53825,
       symbol: "EURCAD",
       valueDate: "2021-02-10T19:10:28.4919591+00:00",
-      movementType: PriceMovementType.NONE,
     },
   ] as HistoryPrice[],
 }

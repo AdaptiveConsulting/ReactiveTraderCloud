@@ -212,7 +212,7 @@ export const InlineQuoteContainer = styled.div`
   font-size: 0.6875rem;
 `
 
-export const InlineTradeExecutionContainer = styled.div`
+export const TradeExecutionContainer = styled.div`
   width: 100%;
   max-width: 100%;
   height: 100%;
@@ -228,7 +228,7 @@ export const InlineTradeExecutionContainer = styled.div`
   align-items: center;
 `
 
-export const InlineTradeExecutionActionContainer = styled.div`
+export const TradeExecutionActionContainer = styled.div`
   button {
     cursor: pointer;
     padding: 0.75rem 1.5rem;
@@ -245,11 +245,23 @@ export const InlineTradeExecutionActionContainer = styled.div`
   }
 `
 
-export const InlineTradeResponseContainer = styled.div`
+export const TradeResponseContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: 0.2rem;
+`
+
+export const HelpText = styled.div`
+  font-size: 0.9rem;
+`
+
+export const Pill = styled.div`
+  padding: 0.2rem 0.4rem;
+  display: inline-block;
+  background-color: #5f94f5;
+  color: ${({ theme }) => theme.core.lightBackground};
+  border-radius: 0.2rem;
 `
