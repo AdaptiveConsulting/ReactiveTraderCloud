@@ -1,145 +1,118 @@
-import { merge } from "rxjs"
+import { concat, merge, of, race, timer } from "rxjs"
 import {
+  distinctUntilChanged,
+  exhaustMap,
   filter,
+  groupBy,
   map,
+  mapTo,
   mergeMap,
-  scan,
+  switchMap,
   take,
-  takeUntil,
-  tap,
+  withLatestFrom,
 } from "rxjs/operators"
 import {
   collect,
   createListener,
   getGroupedObservable,
-  mergeWithKey,
-  split,
 } from "@react-rxjs/utils"
-import type { RfqResponse } from "services/rfqs"
-import { rfq$ } from "services/rfqs"
-import { getNotional$, tileExecutions$ } from "../Tile.state"
+import { rfq$, RfqResponse } from "services/rfqs"
+import { getNotional$, getTileState$, TileStates } from "../Tile.state"
 import { symbolBind } from "../Tile.context"
+import { equals } from "utils"
+
+export const [useIsRfq, isRfq$] = symbolBind(
+  (symbol: string) =>
+    getNotional$(symbol).pipe(
+      map((notional) => Number(notional) >= 10_000_000),
+      distinctUntilChanged(),
+    ),
+  false,
+)
 
 export enum QuoteState {
-  Init = "Init",
-  Requested = "Requested",
-  Received = "Received",
-  Rejected = "Rejected",
-}
-interface RfqState {
-  quoteState: QuoteState
-  rfqResponse?: RfqResponse
+  Init,
+  Requested,
+  Received,
+  Rejected,
 }
 
-const [rejections$, onRejection] = createListener<string>()
-const [rfqThresholdDrops$, onRfqThresholdDrop] = createListener<string>()
-const [requestCancellations$, onCancelRequest] = createListener<string>()
-const [quoteRequestClicks$, onQuoteRequest] = createListener<string>()
+const createSymbolSignal = () => {
+  const [input$, onInput] = createListener<string>()
+  const source$ = input$.pipe(
+    groupBy((x) => x),
+    collect(),
+  )
+  return [
+    (key: string, nTake?: number) =>
+      getGroupedObservable(source$, key).pipe(nTake ? take(nTake) : (x) => x),
+    onInput,
+  ] as const
+}
+
+const [getQuoteRequested$, onQuoteRequest] = createSymbolSignal()
+const [getRequestCancellation$, onCancelRequest] = createSymbolSignal()
+const [getRejection$, onRejection] = createSymbolSignal()
+
 export { onRejection, onCancelRequest, onQuoteRequest }
 
-const [quoteRequests$, dispatchQuoteRequest] = createListener<string>()
-const quoteResponses$ = quoteRequests$.pipe(
-  mergeMap((symbol) =>
-    getNotional$(symbol).pipe(
-      take(1),
-      mergeMap((notional) => rfq$({ symbol, notional: parseInt(notional) })),
-      takeUntil(requestCancellations$.pipe(filter((key) => key === symbol))),
+const INIT = { state: QuoteState.Init as const }
+const REQUESTED = { state: QuoteState.Requested as const }
+
+const [, _getRfqState$] = symbolBind((symbol) =>
+  getQuoteRequested$(symbol).pipe(
+    withLatestFrom(getNotional$(symbol).pipe(map(Number))),
+    exhaustMap(([, notional]) =>
+      concat(
+        of(REQUESTED),
+        race([
+          getRequestCancellation$(symbol, 1).pipe(mapTo(INIT)),
+          rfq$({ symbol, notional }).pipe(
+            mergeMap((payload) =>
+              concat(
+                of({ state: QuoteState.Received as const, payload }),
+                race([
+                  getTileState$(symbol).pipe(
+                    filter((x) => x.status === TileStates.Started),
+                    take(1),
+                    mapTo(INIT),
+                  ),
+                  race([getRejection$(symbol, 1), timer(payload.timeout)]).pipe(
+                    mapTo({
+                      state: QuoteState.Rejected as const,
+                      payload,
+                    }),
+                  ),
+                ]),
+              ),
+            ),
+          ),
+        ]),
+      ),
     ),
   ),
 )
 
-export const resets$ = merge(
-  tileExecutions$.pipe(map((e) => e.symbol)),
-  rfqThresholdDrops$,
-).pipe(map((symbol) => ({ symbol })))
+export const [useRfqState, getRfqState$] = symbolBind(
+  (symbol) =>
+    isRfq$(symbol).pipe(
+      switchMap((isRfq) => (isRfq ? _getRfqState$(symbol) : of(INIT))),
+    ),
+  INIT,
+)
 
-const rfqTileStateMap$ = mergeWithKey({
-  reset: resets$,
-  requestCancellations: requestCancellations$.pipe(
-    map((symbol) => ({ symbol })),
-  ),
-  quoteRequestClicks: quoteRequestClicks$.pipe(map((symbol) => ({ symbol }))),
-  rejections: rejections$.pipe(map((symbol) => ({ symbol }))),
-  quoteResponses: quoteResponses$.pipe(
-    map((response) => ({
-      symbol: response.price.symbol,
-      quoteResponse: response,
-    })),
-  ),
-}).pipe(
-  split(
-    (event) => event.payload.symbol,
-    (event$, symbol) =>
-      event$.pipe(
-        scan(
-          (acc, event) => {
-            if (event.type === "reset") {
-              return {
-                quoteState: QuoteState.Init,
-              }
-            }
-
-            if (event.type === "quoteResponses") {
-              return {
-                quoteState: QuoteState.Received,
-                rfqResponse: event.payload.quoteResponse,
-              }
-            }
-
-            if (event.type === "rejections") {
-              return {
-                quoteState: QuoteState.Rejected,
-                rfqResponse: acc.rfqResponse,
-              }
-            }
-
-            if (event.type === "quoteRequestClicks") {
-              return {
-                quoteState: QuoteState.Requested,
-                rfqResponse: acc.rfqResponse,
-              }
-            }
-
-            if (event.type === "requestCancellations") {
-              return {
-                quoteState: acc.rfqResponse
-                  ? QuoteState.Rejected
-                  : QuoteState.Init,
-                rfqResponse: acc.rfqResponse,
-              }
-            }
-
-            throw new Error()
-          },
-          { quoteState: QuoteState.Init } as RfqState,
-        ),
-        tap((state) => {
-          if (state.quoteState === QuoteState.Requested) {
-            dispatchQuoteRequest(symbol)
-          }
-        }),
+export const [useRfqPayload, getRfqPayload$] = symbolBind(
+  (symbol) =>
+    getRfqState$(symbol).pipe(
+      map((rfq) =>
+        rfq.state === QuoteState.Init || rfq.state === QuoteState.Requested
+          ? null
+          : {
+              isExpired: rfq.state === QuoteState.Rejected,
+              rfqResponse: rfq.payload,
+            },
       ),
-  ),
-  collect(),
+      distinctUntilChanged(equals),
+    ),
+  null as null | { isExpired: boolean; rfqResponse: RfqResponse },
 )
-
-const [useRfqState, getRfqState$] = symbolBind(
-  (symbol: string) => getGroupedObservable(rfqTileStateMap$, symbol),
-  { quoteState: QuoteState.Init },
-)
-
-export { useRfqState, getRfqState$ }
-
-const [useIsRfq, isRfq$] = symbolBind((symbol: string) =>
-  getNotional$(symbol).pipe(
-    scan((wasRfq, newNotional) => {
-      const isRfq = parseFloat(newNotional) >= 10_000_000
-      if (wasRfq && !isRfq) {
-        onRfqThresholdDrop(symbol)
-      }
-      return isRfq
-    }, false),
-  ),
-)
-
-export { useIsRfq, isRfq$ }

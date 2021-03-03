@@ -6,7 +6,7 @@ import { getCurrencyPair$ } from "services/currencyPairs"
 import type { RfqResponse } from "services/rfqs"
 import { equals } from "utils/equals"
 import { symbolBind } from "../Tile.context"
-import { useRfqState } from "../Rfq"
+import { useRfqPayload } from "../Rfq/Rfq.state"
 
 const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
   text-align: center;
@@ -103,16 +103,14 @@ const PriceFromQuote: React.FC<{
 export const PriceMovement: React.FC<{
   isAnalyticsView: boolean
 }> = ({ isAnalyticsView }) => {
-  const { rfqResponse } = useRfqState()
+  const payload = useRfqPayload()
 
-  if (rfqResponse) {
-    return (
-      <PriceFromQuote
-        isAnalyticsView={isAnalyticsView}
-        rfqResponse={rfqResponse}
-      />
-    )
-  }
-
-  return <PriceMovementFromStream isAnalyticsView={isAnalyticsView} />
+  return payload ? (
+    <PriceFromQuote
+      isAnalyticsView={isAnalyticsView}
+      rfqResponse={payload.rfqResponse}
+    />
+  ) : (
+    <PriceMovementFromStream isAnalyticsView={isAnalyticsView} />
+  )
 }
