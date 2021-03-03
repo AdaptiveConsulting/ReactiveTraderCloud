@@ -1,9 +1,7 @@
-import React from "react"
+import React, { useLayoutEffect, useState } from "react"
 import styled from "styled-components/macro"
-import { interval, race, timer } from "rxjs"
-import { filter, map, takeUntil, tap } from "rxjs/operators"
-import { onRejection, resets$ } from "./Rfq.state"
-import { symbolBind, useTileCurrencyPair } from "../Tile.context"
+import { onRejection } from "./Rfq.state"
+import { useTileCurrencyPair } from "../Tile.context"
 
 const TimeLeft = styled.div<{ isAnalyticsView: boolean }>`
   font-size: 10px;
@@ -23,12 +21,46 @@ const ProgressBarWrapper = styled.div<{ isAnalyticsView: boolean }>`
     isAnalyticsView ? "margin-bottom: 4.5px" : "margin-top: 1px"};
 `
 
-const ProgressBar = styled.div`
+const ProgressBar = styled.div<{
+  transitionTime: number
+  width: number
+}>`
   background-color: ${({ theme }) => theme.accents.primary.base};
   border-radius: 3px;
-  transition: width 200ms linear;
+  transition: ${({ transitionTime }) => `width ${transitionTime}ms linear`};
   height: 100%;
+  width: ${(p) => p.width}%;
 `
+
+const getInitialState = (start: number, end: number) => ({
+  transitionTime: 0,
+  width: ((end - Date.now()) / (end - start)) * 100,
+  start,
+  end,
+})
+
+const TimeProgress: React.FC<{
+  start: number
+  end: number
+}> = ({ start, end }) => {
+  const [state, setState] = useState(() => getInitialState(start, end))
+
+  if (start !== state.start || end !== state.end)
+    setState(getInitialState(start, end))
+
+  useLayoutEffect(() => {
+    const token = requestAnimationFrame(() => {
+      setState((prev) => ({
+        ...prev,
+        transitionTime: end - Date.now(),
+        width: 0,
+      }))
+    })
+    return () => cancelAnimationFrame(token)
+  }, [start, end])
+
+  return <ProgressBar {...state} />
+}
 
 const RejectQuoteButton = styled.button<{ isAnalyticsView: boolean }>`
   background-color: ${({ theme }) => `${theme.core.lightBackground}`};
@@ -57,50 +89,41 @@ const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   margin-bottom: -12px;
   z-index: 3;
 `
-const durationSecs = 10
-const intervalsPerSecond = 10
-const oneSecond = 1_000
-const [useTimerProgress] = symbolBind(
-  (symbol) => {
-    return interval(oneSecond / intervalsPerSecond).pipe(
-      map((intervals) => {
-        const fractionSecondsElapsed = intervals / intervalsPerSecond
-        const timeLeftSecs = Math.ceil(durationSecs - fractionSecondsElapsed)
-        const percentageLeft =
-          100 - (100 * fractionSecondsElapsed) / durationSecs
-        return {
-          timeLeftSecs,
-          percentageLeft,
-        }
-      }),
-      takeUntil(
-        race(
-          timer(oneSecond * durationSecs).pipe(tap(() => onRejection(symbol))),
-          resets$.pipe(
-            filter(({ symbol: resetSymbol }) => resetSymbol === symbol),
-          ),
-        ),
-      ),
-    )
-  },
-  {
-    timeLeftSecs: durationSecs,
-    percentageLeft: 100,
-  },
-)
 
-const RfqTimer: React.FC<{ isAnalyticsView: boolean }> = ({
-  isAnalyticsView,
-}) => {
-  const { timeLeftSecs, percentageLeft } = useTimerProgress()
+const SecsTimer: React.FC<{ end: number }> = ({ end }) => {
+  const [timeLeftSecs, setTimeLeftSecs] = useState(() =>
+    Math.round((end - Date.now()) / 1000),
+  )
+  useLayoutEffect(() => {
+    if (timeLeftSecs === 0) return
+    const token = setTimeout(
+      () => setTimeLeftSecs((x) => x - 1),
+      end - (timeLeftSecs - 1) * 1000 - Date.now(),
+    )
+    return () => clearTimeout(token)
+  }, [timeLeftSecs, end])
+
+  return (
+    <>
+      {timeLeftSecs} sec{timeLeftSecs > 1 ? "s" : ""}
+    </>
+  )
+}
+
+export const RfqTimer: React.FC<{
+  isAnalyticsView: boolean
+  start: number
+  end: number
+}> = ({ isAnalyticsView, ...props }) => {
   const { symbol } = useTileCurrencyPair()
+
   return (
     <TimerWrapper isAnalyticsView={isAnalyticsView}>
       <TimeLeft isAnalyticsView={isAnalyticsView}>
-        {timeLeftSecs} sec{timeLeftSecs > 1 ? "s" : ""}
+        <SecsTimer {...props} />
       </TimeLeft>
       <ProgressBarWrapper isAnalyticsView={isAnalyticsView}>
-        <ProgressBar style={{ width: `${percentageLeft}%` }} />
+        <TimeProgress {...props} />
       </ProgressBarWrapper>
       <RejectQuoteButton
         isAnalyticsView={isAnalyticsView}
@@ -111,5 +134,3 @@ const RfqTimer: React.FC<{ isAnalyticsView: boolean }> = ({
     </TimerWrapper>
   )
 }
-
-export { RfqTimer }

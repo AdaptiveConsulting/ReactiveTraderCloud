@@ -43,12 +43,16 @@ export const tile$ = (symbol: string) =>
 const Tile: React.FC<{
   isAnalytics: boolean
 }> = ({ isAnalytics }) => {
-  const showTimer = useRfqState().quoteState === QuoteState.Received
+  const rfq = useRfqState()
+  const timerData =
+    rfq.state === QuoteState.Received
+      ? { start: rfq.payload.time, end: rfq.payload.time + rfq.payload.timeout }
+      : null
   return (
     <PanelItem>
       <Main>
         <Header />
-        <Body isAnalyticsView={isAnalytics} showTimer={showTimer}>
+        <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
           {isAnalytics ? <HistoricalGraph /> : null}
           <PriceControlWrapper>
             <PriceControlsStyle isAnalyticsView={isAnalytics}>
@@ -59,7 +63,9 @@ const Tile: React.FC<{
             </PriceControlsStyle>
           </PriceControlWrapper>
           <NotionalInput isAnalytics={isAnalytics} />
-          {showTimer ? <RfqTimer isAnalyticsView={isAnalytics} /> : null}
+          {timerData ? (
+            <RfqTimer {...timerData} isAnalyticsView={isAnalytics} />
+          ) : null}
         </Body>
       </Main>
       <ExecutionResponse />

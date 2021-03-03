@@ -24,7 +24,7 @@ const ResetInputValue = styled.button`
 
 export const NotionalReset: React.FC<{ symbol: string }> = ({ symbol }) => {
   const notional = useNotional(symbol)
-  const { quoteState } = useRfqState()
+  const { state: quoteState } = useRfqState()
   return quoteState !== QuoteState.Received &&
     notional !== String(DEFAULT_NOTIONAL) ? (
     <ResetInputValue
