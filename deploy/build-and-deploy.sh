@@ -92,8 +92,12 @@ before_deploy () {
   # Create environment namespace if not exists
   kubectl create namespace $DEPLOY_ENV --dry-run=client -o yaml | kubectl apply -f -
   
+  local deployments=
+
   # Downscale existing deployment
-  kubectl scale deploy --replicas=0 --all --namespace $DEPLOY_ENV --dry-run=client -o yaml | kubectl apply -f -
+  for deployment in $(kubectl get deployments --no-headers --ignore-not-found=true -o name --namespace $DEPLOY_ENV); do
+    kubectl scale deploy --replicas=0 --namespace $DEPLOY_ENV $deployment
+  done
 
   # Delete batch jobs
   kubectl delete jobs --all --namespace $DEPLOY_ENV
