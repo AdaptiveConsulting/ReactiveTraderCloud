@@ -73,7 +73,7 @@ before_build () {
 }
 
 deploy_service () {
-  local version=$(${2:-} && build_version $2)
+  local version=${2:+$(build_version $2)}
 
   echo "Deploying \"$1\" (version: $version)"
 
