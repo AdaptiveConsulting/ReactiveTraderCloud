@@ -1,27 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Positions should display the correct bubble chart 1`] = `
-<div>
-  <div
-    className="styled__Title-ue8xs5-7 guZNan"
-  >
-    Positions
-  </div>
-  <div
-    className="styled__BubbleChart-ue8xs5-9 bQXwdc"
-  />
-</div>
-`;
+exports[`Positions should display the correct bubble chart 1`] = `"No data"`;
 
-exports[`Positions should display the correct bubble chart 2`] = `
-<div>
-  <div
-    className="styled__Title-ue8xs5-7 guZNan"
-  >
-    Positions
-  </div>
-  <div
-    className="styled__BubbleChart-ue8xs5-9 bQXwdc"
-  />
-</div>
-`;
+exports[`Positions should display the correct bubble chart 2`] = `"No data"`;

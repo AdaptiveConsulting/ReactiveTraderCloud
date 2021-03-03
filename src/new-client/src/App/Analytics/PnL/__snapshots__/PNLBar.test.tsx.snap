@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Tile renders the bar correctly 1`] = `
+exports[`PNLBar renders the bar correctly 1`] = `
 <div
   className="styled__BarChart-sc-3sau7y-1 fLKfIL"
 >
