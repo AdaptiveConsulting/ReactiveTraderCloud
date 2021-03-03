@@ -9,72 +9,18 @@ on:
 
 env:
   DEPLOY_ENV: 'pr${{ github.event.number }}'
-  DOCKER_USER: ${{ secrets.DOCKER_USER }}
-  DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-20.04
 
     if: "!github.event.pull_request.head.repo.fork"
-
-    outputs:
-      build_version: ${{ steps.build_version.outputs.value }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Fetch tags
-        run: git fetch origin +refs/tags/*:refs/tags/*
-
-      - name: Set build version
-        id: build_version
-        run: |
-          version=$(git describe)-$DEPLOY_ENV
-          echo "BUILD_VERSION=$version" >> $GITHUB_ENV
-          echo "::set-output name=value::$version"
-
-      - name: Check if build already exists
-        id: existing_build
-        run: |
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          echo "::set-output name=value::0"
-          DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $DOCKER_USER/client:$BUILD_VERSION > /dev/null
-          echo "::set-output name=value::1"
-        continue-on-error: true
-
-      - name: 'Build Docker images: ${{ env.BUILD_VERSION }}'
-        if: steps.existing_build.outputs.value == '0'
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: DOCKER_BUILDKIT=1 docker-compose -f ./src/docker-compose.yml build --parallel
-
-      - name: Run integration tests
-        if: steps.existing_build.outputs.value == '0'
-        run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
-
-      - name: Push Docker images
-        if: steps.existing_build.outputs.value == '0'
-        run: |
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker-compose -f ./src/docker-compose.yml push
-
-  deploy:
-    runs-on: ubuntu-20.04
-
-    needs: build
-
-    if: contains(github.event.pull_request.labels.*.name, 'preview')
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Set up Google Cloud
@@ -87,31 +33,13 @@ jobs:
       - name: Get GKE credentials
         run: gcloud container clusters get-credentials "${{ secrets.GOOGLE_CLUSTER }}" --zone "${{ secrets.GOOGLE_COMPUTE_ZONE }}"
 
-      - name: Create namespace if not exists
-        run: kubectl create namespace $DEPLOY_ENV --dry-run -o yaml | kubectl apply -f -
-
-      - name: Downscale GKE deployments
-        run: kubectl scale deploy --replicas=0 --all --namespace $DEPLOY_ENV
-        continue-on-error: true
-
-      - name: Delete GKE jobs
-        run: kubectl delete jobs --all --namespace $DEPLOY_ENV
-        continue-on-error: true
-
-      - name: Delete persistent volumes
-        run: kubectl delete persistentvolumeclaims --all --namespace $DEPLOY_ENV
-        continue-on-error: true
-
-      - name: Create client configmap if not exists
-        run: kubectl create configmap client-config --from-literal=environment-name=$DEPLOY_ENV --namespace $DEPLOY_ENV --dry-run -o yaml | kubectl apply -f -
-
-      - name: Update GKE deployments
+      - name: 'Build, push & deploy'
         env:
-          BUILD_VERSION: ${{ needs.build.outputs.build_version }}
-        run: |
-          for f in $(find ./src/services/kubernetes/per-deployment -type f -name "*.yaml"); do
-            cat $f | /usr/bin/envsubst '${DOCKER_USER},${BUILD_VERSION}' | kubectl --namespace=$DEPLOY_ENV apply -f -
-          done
+          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+          GKE_CLUSTER: ${{ secrets.GOOGLE_CLUSTER }}
+          GCP_COMPUTE_ZONE: ${{ secrets.GOOGLE_COMPUTE_ZONE }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: ./.github/worflows/pull/build-and-deploy.sh ${{ env.DEPLOY_ENV }}
 
       - name: Find deployment comment
         uses: peter-evans/find-comment@v1
@@ -128,7 +56,7 @@ jobs:
           issue-number: ${{ github.event.number }}
           body: |
             (auto-deploy) A deployment has been created for this Pull Request.
-            http://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com
+            https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com
 
       - name: Update deployment comment if exists
         if: ${{ steps.find_comment.outputs.comment-id != 0 }}
@@ -137,6 +65,6 @@ jobs:
           comment-id: ${{ steps.find_comment.outputs.comment-id }}
           body: |
             (auto-deploy) A deployment has been created for this Pull Request.
-            http://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com
+            https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com
           edit-mode: "replace"
 

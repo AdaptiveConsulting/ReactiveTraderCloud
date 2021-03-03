@@ -61,7 +61,7 @@ spec:
       - name: web
         image: nginx:1.19.6
         ports:
-          - containerPort: 3000
+        - containerPort: 3000
         resources:
           requests:
             memory: "10M"
@@ -74,3 +74,25 @@ spec:
       - name: web-nginx-config
         configMap:
           name: web-nginx-config
+---
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: web-backend-config
+spec:
+  timeoutSec: 86400
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default": "web-backend-config"}'
+spec:
+  selector:
+    component: web
+  ports:
+  - name: web
+    port: 80
+    targetPort: 80
+  type: NodePort
