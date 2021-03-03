@@ -38,6 +38,7 @@ pricehistory ./src/server/node
 nlp          ./src/server/node
 bot          ./src/server/node/bot
 client       ./src/client
+new-client   ./src/new-client
 END
 )
 
