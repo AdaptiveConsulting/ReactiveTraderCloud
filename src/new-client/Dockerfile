@@ -15,7 +15,7 @@ COPY . .
 RUN yarn test
 RUN yarn build
 
-FROM openresty/openresty:alpine-apk
+FROM openresty/openresty:alpine-fat
 RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-template
 EXPOSE 3000
 
