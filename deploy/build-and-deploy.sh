@@ -90,10 +90,10 @@ before_deploy () {
   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GCP_COMPUTE_ZONE
 
   # Create environment namespace if not exists
-  kubectl create namespace $DEPLOY_ENV --dry-run -o yaml | kubectl apply -f -
+  kubectl create namespace $DEPLOY_ENV --dry-run=client -o yaml | kubectl apply -f -
   
   # Downscale existing deployment
-  kubectl scale deploy --replicas=0 --all --namespace $DEPLOY_ENV
+  kubectl scale deploy --replicas=0 --all --namespace $DEPLOY_ENV --dry-run=client -o yaml | kubectl apply -f -
 
   # Delete batch jobs
   kubectl delete jobs --all --namespace $DEPLOY_ENV
