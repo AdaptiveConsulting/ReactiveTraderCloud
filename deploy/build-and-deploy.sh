@@ -106,6 +106,9 @@ before_deploy () {
 }
 
 after_deploy () {
+  # Wait for eventstore deployment to be ready
+  kubectl rollout status deployment eventstore-deployment --namespace $DEPLOY_ENV
+
   # Run initialisation batch job
   deploy_dotnet_service seed
 }

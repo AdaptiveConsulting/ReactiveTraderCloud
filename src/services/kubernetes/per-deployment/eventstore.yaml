@@ -41,6 +41,18 @@ spec:
         volumeMounts:
         - mountPath: /db
           name: eventstore-data
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 2113
+          initialDelaySeconds: 30
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 2113
+          initialDelaySeconds: 5
+          periodSeconds: 5
       volumes:
       - name: eventstore-data
         persistentVolumeClaim:
