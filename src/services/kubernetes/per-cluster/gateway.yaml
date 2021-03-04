@@ -61,7 +61,7 @@ data:
         set $namespace "demo";
       }
 
-      if ($host ~ "^$namespace.beta\.") {
+      if ($host ~ "^[^\.]+\.beta\.") {
         set $client_upstream "new-client";
       }
 
