@@ -55,7 +55,7 @@ jobs:
             (auto-deploy) A deployment has been created for this Pull Request.
 
             | Web client | URL |
-            | --- | --- |
+            | :-- | :-- |
             | Old | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
             | New | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
 
@@ -68,7 +68,7 @@ jobs:
             (auto-deploy) A deployment has been created for this Pull Request.
 
             | Web client | URL |
-            | --- | --- |
+            | :-- | :-- |
             | Old | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
             | New | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
           edit-mode: "replace"
