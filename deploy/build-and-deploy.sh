@@ -135,6 +135,5 @@ deploy_service bot ./src/server/node/bot
 
 deploy_service client ./src/client
 deploy_service new-client ./src/new-client
-deploy_service web
 
 after_deploy
