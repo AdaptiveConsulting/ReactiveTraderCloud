@@ -1,12 +1,11 @@
 import React from "react"
 import { getPrice$ } from "services/prices"
 import { Direction } from "services/trades"
-import type { RfqResponse } from "services/rfqs"
 import {
   customNumberFormatter,
   significantDigitsNumberFormatter,
 } from "utils/formatNumber"
-import { map } from "rxjs/operators"
+import { map, switchMap } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { CenteringContainer } from "components/CenteringContainer"
 import { AdaptiveLoader } from "components/AdaptiveLoader"
@@ -23,14 +22,30 @@ import {
   QuotePriceLoading,
   ExpiredPrice,
 } from "./PriceButton.styles"
+import { of } from "rxjs"
+import { getRfqPayload$ } from "../Rfq/Rfq.state"
 
-const [
-  usePrice,
-  getPriceDirection$,
-] = bind((symbol: string, direction: Direction) =>
+const getPriceByDirection$ = (symbol: string, direction: Direction) =>
   getPrice$(symbol).pipe(
     map(({ bid, ask }) => (direction === Direction.Buy ? ask : bid)),
-  ),
+    map((price) => ({ isExpired: false, price })),
+  )
+
+const [usePrice, getPriceDirection$] = bind(
+  (symbol: string, direction: Direction) =>
+    getRfqPayload$(symbol).pipe(
+      switchMap((payload) =>
+        payload
+          ? of({
+              ...payload,
+              price:
+                direction === Direction.Buy
+                  ? payload.rfqResponse.price.ask
+                  : payload.rfqResponse.price.bid,
+            })
+          : getPriceByDirection$(symbol, direction),
+      ),
+    ),
 )
 
 export const priceButton$ = (direction: Direction) => (symbol: string) =>
@@ -43,12 +58,9 @@ const formatToMin2IntDigits = customNumberFormatter({
 
 const PriceButtonInner: React.FC<{
   direction: Direction
-  price: number
-  ratePrecision: number
-  symbol: string
-  pipsPosition: number
-  isExpired?: boolean
-}> = ({ direction, price, ratePrecision, symbol, pipsPosition, isExpired }) => {
+}> = ({ direction }) => {
+  const { pipsPosition, ratePrecision, symbol } = useTileCurrencyPair()
+  const { price, isExpired } = usePrice(symbol, direction)
   const disabled = price === 0
 
   const rateString = price.toFixed(ratePrecision)
@@ -92,70 +104,17 @@ const PriceButtonInner: React.FC<{
   )
 }
 
-const PriceFromStreamButton: React.FC<{
-  direction: Direction
-}> = ({ direction }) => {
-  const { pipsPosition, ratePrecision, symbol } = useTileCurrencyPair()
-  const streamingPrice = usePrice(symbol, direction)
-  return (
-    <PriceButtonInner
-      direction={direction}
-      symbol={symbol}
-      ratePrecision={ratePrecision}
-      pipsPosition={pipsPosition}
-      price={streamingPrice}
-    />
-  )
-}
-
-const PriceFromQuote: React.FC<{
-  direction: Direction
-  rfqResponse: RfqResponse
-  isExpired: boolean
-}> = ({ direction, rfqResponse, isExpired }) => {
-  const {
-    currencyPair: { symbol, ratePrecision, pipsPosition },
-    price,
-  } = rfqResponse
-  return (
-    <PriceButtonInner
-      direction={direction}
-      symbol={symbol}
-      ratePrecision={ratePrecision}
-      pipsPosition={pipsPosition}
-      isExpired={isExpired}
-      price={price[direction === Direction.Buy ? "ask" : "bid"]}
-    />
-  )
-}
-
 export const PriceButton: React.FC<{
   direction: Direction
 }> = ({ direction }) => {
   const rfqState = useRfqState()
 
-  if (rfqState.quoteState === QuoteState.Init) {
-    return <PriceFromStreamButton direction={direction} />
-  }
-
-  if (rfqState.quoteState === QuoteState.Requested) {
-    return (
-      <QuotePriceLoading>
-        <AdaptiveLoader size={16} />
-        Awaiting Price
-      </QuotePriceLoading>
-    )
-  }
-
-  if (rfqState.rfqResponse) {
-    return (
-      <PriceFromQuote
-        direction={direction}
-        isExpired={rfqState.quoteState === QuoteState.Rejected}
-        rfqResponse={rfqState.rfqResponse}
-      />
-    )
-  }
-
-  throw new Error()
+  return rfqState.state === QuoteState.Requested ? (
+    <QuotePriceLoading>
+      <AdaptiveLoader size={16} />
+      Awaiting Price
+    </QuotePriceLoading>
+  ) : (
+    <PriceButtonInner direction={direction} />
+  )
 }

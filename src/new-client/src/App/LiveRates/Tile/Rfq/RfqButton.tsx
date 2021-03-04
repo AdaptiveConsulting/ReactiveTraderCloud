@@ -57,14 +57,14 @@ const buttonState = (quoteState: QuoteState, isAnalytics: boolean) => {
 
 const RfqButton: React.FC<{ isAnalytics: boolean }> = ({ isAnalytics }) => {
   const isRfq = useIsRfq()
-  const { quoteState } = useRfqState()
+  const { state } = useRfqState()
   const { symbol } = useTileCurrencyPair()
   const { buttonText, buttonClickHandler, textWrap } = buttonState(
-    quoteState,
+    state,
     isAnalytics,
   )
   const isExecuting = useTileState(symbol).status === TileStates.Started
-  return isRfq && quoteState !== QuoteState.Received && !isExecuting ? (
+  return isRfq && state !== QuoteState.Received && !isExecuting ? (
     <OverlayDiv left={isAnalytics ? `calc(${AnalyticsPricesFirstCol} / 2)` : 0}>
       <CenteringContainer>
         <RFQButtonInner

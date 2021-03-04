@@ -66,7 +66,7 @@ const [tileExecutions$, sendExecution] = createListener<{
   symbol: string
   direction: Direction
 }>()
-export { tileExecutions$, sendExecution }
+export { sendExecution }
 
 // TileState
 export enum TileStates {
