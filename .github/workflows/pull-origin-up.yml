@@ -54,8 +54,10 @@ jobs:
           body: |
             (auto-deploy) A deployment has been created for this Pull Request.
 
-            | Old Client | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
-            | New Client | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
+            | Web client | URL |
+            | --- | --- |
+            | Old | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
+            | New | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
 
       - name: Update deployment comment if exists
         if: ${{ steps.find_comment.outputs.comment-id != 0 }}
@@ -65,7 +67,9 @@ jobs:
           body: |
             (auto-deploy) A deployment has been created for this Pull Request.
 
-            | Old Client | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
-            | New Client | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
+            | Web client | URL |
+            | --- | --- |
+            | Old | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
+            | New | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
           edit-mode: "replace"
 
