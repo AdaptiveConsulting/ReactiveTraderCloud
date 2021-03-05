@@ -22,6 +22,7 @@ jobs:
 
       - name: Autheticate with Docker Hub
         env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
         run: |
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
