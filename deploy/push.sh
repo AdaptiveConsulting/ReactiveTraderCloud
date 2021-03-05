@@ -31,21 +31,30 @@ remote_tag_exists () {
   curl --silent -f -lL https://hub.docker.com/v2/repositories/$1/tags/$2 > /dev/null
 }
 
-build_image () {
+local_tag_exists () {
+  docker image inspect $1:$2 > /dev/null 2>&1
+}
+
+push_image () {
   local version=$(build_version $2)
 
   if [ -v TAG ] || [ ! remote_tag_exists $DOCKER_USER/$1 $version ]; then
-    echo "Building \"$1\" (version: $version)"
+    if ! local_tag_exists $DOCKER_USER/$1 $version; then
+      echo "Error pushing image. Could not find $DOCKER_USER/$1:$version."
+      echo "Did you forget to run ./deploy/build.sh first?"
+      exit 1
+    fi
+
+    echo "Pushing \"$1\" (version: $version)"
 
     BUILD_VERSION=$version \
-    DOCKER_BUILDKIT=1 \
-    docker-compose -f ./src/docker-compose.yml build $1
+    docker-compose -f ./src/docker-compose.yml push $1
   fi
 }
 
 while IFS= read -r image; do
   name=$(echo $image | awk '{print $1}')
   context=$(echo $image | awk '{print $2}')
-  build_image $name $context
+  push_image $name $context
 done <<< "$images"
 

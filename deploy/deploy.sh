@@ -26,9 +26,41 @@ echo "Preparing deployment to \"$DEPLOY_ENV\""
 
 kuberoot="./src/services/kubernetes/per-deployment"
 
+# TODO: parse docker-compose manifest for these values
+images=$(cat <<-END
+broker       ./src/services/broker
+servers      ./src/server
+pricehistory ./src/server/node
+nlp          ./src/server/node
+bot          ./src/server/node/bot
+client       ./src/client
+new-client   ./src/new-client
+END
+)
+
 build_version () {
-  local version=$(git ls-tree HEAD -- $1 | awk '{print $3}')
-  echo $version
+  if [ -v TAG ]; then
+    echo $TAG
+  else
+    git ls-tree HEAD -- $1 | awk '{print $3}'
+  fi
+}
+
+remote_tag_exists () {
+  curl --silent -f -lL https://hub.docker.com/v2/repositories/$1/tags/$2 > /dev/null
+}
+
+check_images_exist () {
+  while IFS= read -r image; do
+    local name=$(echo $image | awk '{print $1}')
+    local context=$(echo $image | awk '{print $2}')
+    local version=$(build_version $context)
+
+    if ! remote_tag_exists $DOCKER_USER/$name $version; then
+      echo "Preflight failed: could not find remote image $name:$version."
+      exit 1
+    fi
+  done <<< "$images"
 }
 
 deploy_service () {
@@ -46,6 +78,8 @@ deploy_dotnet_service () {
 }
 
 before_deploy () {
+  check_images_exist
+
   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GCP_COMPUTE_ZONE
 
   # Create environment namespace if not exists

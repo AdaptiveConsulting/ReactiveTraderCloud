@@ -4,8 +4,8 @@ on:
   pull_request:
     types: [labeled, opened, reopened, synchronize]
     branches:
-      - master
-      - release/**
+    - master
+    - release/**
 
 jobs:
   build:
@@ -14,25 +14,30 @@ jobs:
     if: "!github.event.pull_request.head.repo.fork"
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Autheticate with Docker Hub
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-        run: |
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+    - name: Build
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: ./deploy/build.sh
 
-      - name: Build and push
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: ./deploy/build.sh
+    - name: Autheticate with Docker Hub
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+      run: |
+        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+
+    - name: Push
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+      run: ./deploy/push.sh
 
   deploy:
     runs-on: ubuntu-20.04
@@ -45,58 +50,58 @@ jobs:
       DEPLOY_ENV: 'pr${{ github.event.number }}'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Set up Google Cloud
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          version: '285.0.0'
-          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
-          service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    - name: Set up Google Cloud
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: '285.0.0'
+        project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+        service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
 
-      - name: Deploy
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          GKE_CLUSTER: ${{ secrets.GOOGLE_CLUSTER }}
-          GCP_COMPUTE_ZONE: ${{ secrets.GOOGLE_COMPUTE_ZONE }}
-        run: ./deploy/deploy.sh
+    - name: Deploy
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        GKE_CLUSTER: ${{ secrets.GOOGLE_CLUSTER }}
+        GCP_COMPUTE_ZONE: ${{ secrets.GOOGLE_COMPUTE_ZONE }}
+      run: ./deploy/deploy.sh
 
-      - name: Find deployment comment
-        uses: peter-evans/find-comment@v1
-        id: find_comment
-        with:
-          issue-number: ${{ github.event.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: '(auto-deploy)'
+    - name: Find deployment comment
+      uses: peter-evans/find-comment@v1
+      id: find_comment
+      with:
+        issue-number: ${{ github.event.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: '(auto-deploy)'
 
-      - name: Create deployment comment if not exists
-        if: ${{ steps.find_comment.outputs.comment-id == 0 }}
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.number }}
-          body: |
-            (auto-deploy) A deployment has been created for this Pull Request.
+    - name: Create deployment comment if not exists
+      if: ${{ steps.find_comment.outputs.comment-id == 0 }}
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        issue-number: ${{ github.event.number }}
+        body: |
+          (auto-deploy) A deployment has been created for this Pull Request.
 
-            | Web client | URL |
-            | :-- | :-- |
-            | Old | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
-            | New | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
+          | Web client | URL |
+          | :-- | :-- |
+          | Old | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
+          | New | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
 
-      - name: Update deployment comment if exists
-        if: ${{ steps.find_comment.outputs.comment-id != 0 }}
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          comment-id: ${{ steps.find_comment.outputs.comment-id }}
-          body: |
-            (auto-deploy) A deployment has been created for this Pull Request.
+    - name: Update deployment comment if exists
+      if: ${{ steps.find_comment.outputs.comment-id != 0 }}
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        comment-id: ${{ steps.find_comment.outputs.comment-id }}
+        body: |
+          (auto-deploy) A deployment has been created for this Pull Request.
 
-            | Web client | URL |
-            | :-- | :-- |
-            | Old | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
-            | New | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
-          edit-mode: "replace"
+          | Web client | URL |
+          | :-- | :-- |
+          | Old | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
+          | New | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
+        edit-mode: "replace"
 
