@@ -35,6 +35,8 @@ jobs:
   deploy:
     runs-on: ubuntu-20.04
 
+    needs: build
+
     if: "!github.event.pull_request.head.repo.fork"
 
     env:
