@@ -34,7 +34,7 @@ remote_tag_exists () {
 build_image () {
   local version=$(build_version $2)
 
-  if [[ -v TAG || ! remote_tag_exists $DOCKER_USER/$1 $version ]]; then
+  if [ -v TAG ] || ! remote_tag_exists $DOCKER_USER/$1 $version; then
     echo "Building \"$1\" (version: $version)"
 
     BUILD_VERSION=$version \

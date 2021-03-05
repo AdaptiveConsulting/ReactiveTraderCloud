@@ -38,7 +38,7 @@ local_tag_exists () {
 push_image () {
   local version=$(build_version $2)
 
-  if [[ -v TAG || ! remote_tag_exists $DOCKER_USER/$1 $version ]]; then
+  if [ -v TAG ] || ! remote_tag_exists $DOCKER_USER/$1 $version; then
     if ! local_tag_exists $DOCKER_USER/$1 $version; then
       echo "Error pushing image. Could not find $DOCKER_USER/$1:$version."
       echo "Did you forget to run ./deploy/build.sh first?"
