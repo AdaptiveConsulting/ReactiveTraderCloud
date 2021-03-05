@@ -2,7 +2,10 @@
 
 set -euo pipefail
 
-export DOCKER_USER=reactivetradercloud
+if [ ! -v DOCKER_USER ]; then
+  echo "Docker registry user must be specifed in DOCKER_USER variable."
+  exit 1
+fi
 
 if [ ! -v DOCKER_PASS ]; then
   echo "Docker registry password must be specified in DOCKER_PASS variable."

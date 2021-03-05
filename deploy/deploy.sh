@@ -2,7 +2,10 @@
 
 set -euo pipefail
 
-export DOCKER_USER=reactivetradercloud
+if [ ! -v DOCKER_USER ]; then
+  echo "Docker registry user must be specifed in DOCKER_USER variable."
+  exit 1
+fi
 
 if [ ! -v DEPLOY_ENV ]; then
   echo "Deployment environment must be specified in DEPLOY_ENV variable."
