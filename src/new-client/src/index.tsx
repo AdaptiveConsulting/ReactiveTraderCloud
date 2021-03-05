@@ -4,6 +4,8 @@ import { App } from "./App/App"
 import reportWebVitals from "./reportWebVitals"
 import { GlobalScrollbarStyle, ThemeProvider } from "theme"
 
+console.log("Demo deployment!")
+
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider>
