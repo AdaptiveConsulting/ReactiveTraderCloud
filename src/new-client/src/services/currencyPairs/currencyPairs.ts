@@ -41,13 +41,14 @@ export const currencyPairUpdates$ = getStream$<RawCurrencyPairUpdates>(
 export const [useCurrencyPairs, currencyPairs$] = bind(
   currencyPairUpdates$.pipe(
     scan((acc, { updateType, currencyPair }) => {
+      const result = { ...acc }
       const { symbol } = currencyPair
       if (updateType === UpdateType.Removed) {
-        delete acc[symbol]
+        delete result[symbol]
       } else {
-        acc[symbol] = currencyPair
+        result[symbol] = currencyPair
       }
-      return acc
+      return result
     }, {} as Record<string, CurrencyPair>),
   ),
 )

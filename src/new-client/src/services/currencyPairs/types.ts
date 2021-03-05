@@ -10,7 +10,7 @@ export interface RawCurrencyPairUpdate extends CollectionUpdate {
   CurrencyPair: CurrencyRaw
 }
 
-export interface RawCurrencyPairUpdates extends CollectionUpdates {
+export interface RawCurrencyPairUpdates {
   Updates: RawCurrencyPairUpdate[]
 }
 
