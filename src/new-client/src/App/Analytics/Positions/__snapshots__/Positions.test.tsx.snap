@@ -1,27 +1,224 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Positions should display the correct bubble chart 1`] = `
+.c0 {
+  margin-bottom: 1rem;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.c1 {
+  text-anchor: middle;
+  height: 18rem;
+  overflow: hidden;
+  position: relative;
+}
+
+@media all and (max-width:400px) {
+
+}
+
+@media all and (max-width:320px) {
+
+}
+
 <div>
   <div
-    className="styled__Title-ue8xs5-7 guZNan"
+    class="c0"
   >
     Positions
   </div>
   <div
-    className="styled__BubbleChart-ue8xs5-9 bQXwdc"
-  />
+    class="c1"
+  >
+    <div
+      class="analytics__positions-tooltip"
+      data-testid="tooltip"
+      style="visibility: hidden;"
+    />
+    <svg
+      height="0"
+      width="0"
+    >
+      <defs>
+        <filter
+          height="130%"
+          id="drop-shadow"
+        >
+          <fegaussianblur
+            in="SourceAlpha"
+            result="blur"
+            stdDeviation="1.5"
+          />
+          <feoffset
+            dx="1"
+            dy="1"
+            in="blur"
+            result="offsetBlur"
+          />
+          <femerge>
+            <femergenode
+              in="offsetBlur"
+            />
+            <femergenode
+              in="SourceGraphic"
+            />
+          </femerge>
+        </filter>
+      </defs>
+      <g
+        class="node"
+      >
+        <circle
+          cx="0"
+          cy="0"
+          r="17.048166533483364"
+          style="fill: #ff274b; filter: url(#drop-shadow);"
+        />
+        <text
+          class="analytics__positions-label"
+          data-testid="positions-label-EUR"
+          text-anchor="middle"
+        >
+          EUR
+        </text>
+      </g>
+      <g
+        class="node"
+      >
+        <circle
+          cx="0"
+          cy="0"
+          r="15"
+          style="fill: #ff274b; filter: url(#drop-shadow);"
+        />
+        <text
+          class="analytics__positions-label"
+          data-testid="positions-label-AUD"
+          text-anchor="middle"
+        >
+          AUD
+        </text>
+      </g>
+      <g
+        class="node"
+      >
+        <circle
+          cx="0"
+          cy="0"
+          r="60"
+          style="fill: #01c38d; filter: url(#drop-shadow);"
+        />
+        <text
+          class="analytics__positions-label"
+          data-testid="positions-label-JPY"
+          text-anchor="middle"
+        >
+          JPY
+        </text>
+      </g>
+    </svg>
+  </div>
 </div>
 `;
 
 exports[`Positions should display the correct bubble chart 2`] = `
 <div>
   <div
-    className="styled__Title-ue8xs5-7 guZNan"
+    class="styled__Title-ue8xs5-5 bKMWht"
   >
     Positions
   </div>
   <div
-    className="styled__BubbleChart-ue8xs5-9 bQXwdc"
-  />
+    class="styled__BubbleChart-ue8xs5-7 kdbyZu"
+  >
+    <div
+      class="analytics__positions-tooltip"
+      data-testid="tooltip"
+      style="visibility: hidden;"
+    />
+    <svg
+      height="0"
+      width="0"
+    >
+      <defs>
+        <filter
+          height="130%"
+          id="drop-shadow"
+        >
+          <fegaussianblur
+            in="SourceAlpha"
+            result="blur"
+            stdDeviation="1.5"
+          />
+          <feoffset
+            dx="1"
+            dy="1"
+            in="blur"
+            result="offsetBlur"
+          />
+          <femerge>
+            <femergenode
+              in="offsetBlur"
+            />
+            <femergenode
+              in="SourceGraphic"
+            />
+          </femerge>
+        </filter>
+      </defs>
+      <g
+        class="node"
+      >
+        <circle
+          cx="0"
+          cy="0"
+          r="17.048166533483364"
+          style="fill: #ff274b; filter: url(#drop-shadow);"
+        />
+        <text
+          class="analytics__positions-label"
+          data-testid="positions-label-EUR"
+          text-anchor="middle"
+        >
+          EUR
+        </text>
+      </g>
+      <g
+        class="node"
+      >
+        <circle
+          cx="0"
+          cy="0"
+          r="15"
+          style="fill: #ff274b; filter: url(#drop-shadow);"
+        />
+        <text
+          class="analytics__positions-label"
+          data-testid="positions-label-AUD"
+          text-anchor="middle"
+        >
+          AUD
+        </text>
+      </g>
+      <g
+        class="node"
+      >
+        <circle
+          cx="0"
+          cy="0"
+          r="60"
+          style="fill: #01c38d; filter: url(#drop-shadow);"
+        />
+        <text
+          class="analytics__positions-label"
+          data-testid="positions-label-JPY"
+          text-anchor="middle"
+        >
+          JPY
+        </text>
+      </g>
+    </svg>
+  </div>
 </div>
 `;

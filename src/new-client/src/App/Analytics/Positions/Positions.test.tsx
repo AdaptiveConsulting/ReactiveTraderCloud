@@ -5,7 +5,7 @@ import { TestThemeProvider } from "utils/testUtils"
 import { Positions, positions$ } from "./Positions"
 import { CurrencyPairPosition } from "services/analytics"
 import { CurrencyPair } from "services/currencyPairs"
-import renderer from "react-test-renderer"
+// import renderer from "react-test-renderer"
 
 jest.mock("services/analytics/analytics")
 jest.mock("services/currencyPairs/currencyPairs")
@@ -122,22 +122,23 @@ describe("Positions", () => {
     >(positionMock)
     _analytics.__setPositionMock(positionMock$)
 
-    const tree = renderer
-      .create(
-        <TestThemeProvider>
-          <Subscribe source$={positions$} fallback="No data">
-            <Positions />
-          </Subscribe>
-        </TestThemeProvider>,
-      )
-      .toJSON()
+    const subscription = positions$.subscribe()
+    const { container } = render(
+      <TestThemeProvider>
+        <Subscribe source$={positions$} fallback="No data">
+          <Positions />
+        </Subscribe>
+      </TestThemeProvider>,
+    )
 
-    expect(tree).toMatchSnapshot()
+    expect(container.firstChild).toMatchSnapshot()
 
     act(() => {
       positionMock$.next(positionMock2)
     })
 
-    expect(tree).toMatchSnapshot()
+    expect(container.firstChild).toMatchSnapshot()
+
+    subscription.unsubscribe()
   })
 })
