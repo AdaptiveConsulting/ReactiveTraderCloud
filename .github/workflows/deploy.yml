@@ -30,6 +30,7 @@ jobs:
 
       - name: Deploy
         env:
+          DEPLOY_ENV: ${{ github.event.deployment.environment }}
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
         run: ./deploy/deploy.sh
 
