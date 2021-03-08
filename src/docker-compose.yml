@@ -106,13 +106,6 @@ services:
     depends_on:
       - broker
   # web client
-  nginx:
-    image: nginx:1.19.6
-    restart: always
-    ports:
-      - '80:80'
-    volumes:
-      - ./services/nginx/default.conf:/etc/nginx/conf.d/default.conf
   client:
     image: ${DOCKER_USER}/client:${BUILD_VERSION}
     build:
