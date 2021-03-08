@@ -17,6 +17,6 @@ export const useHasItBeenVisible = <T extends HTMLElement>(
     return () => {
       window.removeEventListener("resize", onResize)
     }
-  }, [])
+  }, [ref])
   return isVisible
 }

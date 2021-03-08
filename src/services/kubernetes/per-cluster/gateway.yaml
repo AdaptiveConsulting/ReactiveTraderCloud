@@ -23,6 +23,7 @@ spec:
     - "*.reactivetrader.com"
     - "*.adaptivecluster.com"
     - "*.lb.adaptivecluster.com"
+    - "*.beta.lb.adaptivecluster.com"
     secretName: reactive-trader-tls
 
   backend:
@@ -35,6 +36,13 @@ metadata:
   name: gateway-config
 data:
   default.conf: |
+    map $sent_http_content_type $expires {
+      default                off;
+      text/html              epoch;
+      text/css               max;
+      application/javascript max;
+    }
+
     server {
       listen 8080;
       server_name reactivetrader.com;
@@ -43,14 +51,19 @@ data:
 
     server {
       listen 8080;
-      server_name www.reactivetrader.com ~^(?<namespace>(dev|uat))\.reactivetrader.com ~^web-(?<namespace>(demo|uat|dev))\.adaptivecluster.com ~^(?<namespace>.+?)\.lb.adaptivecluster.com$;
+      expires $expires;
+      server_name www.reactivetrader.com ~^(?<namespace>(dev|uat))\.reactivetrader.com ~^web-(?<namespace>(demo|uat|dev))\.adaptivecluster.com ~^(?<namespace>[^\.]+?)\.(beta\.)?lb.adaptivecluster.com$;
       resolver kube-dns.kube-system.svc.cluster.local valid=5s;
+
+      set $client_upstream "client";
 
       if ($host = "www.reactivetrader.com") {
         set $namespace "demo";
       }
 
-      set $upstream "web.$namespace.svc.cluster.local";
+      if ($host ~ "^[^\.]+\.beta\.") {
+        set $client_upstream "new-client";
+      }
 
       proxy_http_version 1.1;
       proxy_set_header Host $host;
@@ -59,13 +72,13 @@ data:
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
       location /ws {
-        proxy_pass http://$upstream/ws;
+        proxy_pass http://broker.$namespace.svc.cluster.local:15674/ws;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
       }
 
       location / {
-        proxy_pass http://$upstream$request_uri;
+        proxy_pass http://$client_upstream.$namespace.svc.cluster.local:3000$request_uri;
       }
     }
 

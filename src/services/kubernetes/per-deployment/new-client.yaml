@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: new-client-config
+data:
+  environment-name: ${DEPLOY_ENV}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: new-client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: new-client
+  template:
+    metadata:
+      labels:
+        component: new-client
+    spec:
+      containers:
+      - name: new-client
+        image: ${DOCKER_USER}/new-client:${BUILD_VERSION}
+        ports:
+        - containerPort: 3000
+        env:
+        - name: ENVIRONMENT_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: new-client-config
+              key: environment-name
+        resources:
+          requests:
+            memory: "20M"
+            cpu: "10m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: new-client
+spec:
+  type: ClusterIP
+  selector:
+    component: new-client
+  ports:
+  - port: 3000
+    targetPort: 3000

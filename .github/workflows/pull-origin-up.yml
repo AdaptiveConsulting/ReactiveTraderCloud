@@ -2,15 +2,10 @@ name: Pull Request (origin, up)
 
 on:
   pull_request:
-    types: [labeled, opened, reopened, synchronize]
+    types: [opened, reopened, synchronize]
     branches:
-      - master
-      - release/**
-
-env:
-  DEPLOY_ENV: 'pr${{ github.event.number }}'
-  DOCKER_USER: ${{ secrets.DOCKER_USER }}
-  DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+    - master
+    - release/**
 
 jobs:
   build:
@@ -18,125 +13,96 @@ jobs:
 
     if: "!github.event.pull_request.head.repo.fork"
 
-    outputs:
-      build_version: ${{ steps.build_version.outputs.value }}
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Fetch tags
-        run: git fetch origin +refs/tags/*:refs/tags/*
+    - name: Build
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: ./deploy/build.sh
 
-      - name: Set build version
-        id: build_version
-        run: |
-          version=$(git describe)-$DEPLOY_ENV
-          echo "BUILD_VERSION=$version" >> $GITHUB_ENV
-          echo "::set-output name=value::$version"
+    - name: Autheticate with Docker Hub
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+      run: |
+        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
-      - name: Check if build already exists
-        id: existing_build
-        run: |
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          echo "::set-output name=value::0"
-          DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $DOCKER_USER/client:$BUILD_VERSION > /dev/null
-          echo "::set-output name=value::1"
-        continue-on-error: true
-
-      - name: 'Build Docker images: ${{ env.BUILD_VERSION }}'
-        if: steps.existing_build.outputs.value == '0'
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: docker-compose -f ./src/docker-compose.yml build --parallel
-
-      - name: Run integration tests
-        if: steps.existing_build.outputs.value == '0'
-        run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
-
-      - name: Push Docker images
-        if: steps.existing_build.outputs.value == '0'
-        run: |
-          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-          docker-compose -f ./src/docker-compose.yml push
+    - name: Push
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+      run: ./deploy/push.sh
 
   deploy:
     runs-on: ubuntu-20.04
 
     needs: build
 
-    if: contains(github.event.pull_request.labels.*.name, 'preview')
+    if: "!github.event.pull_request.head.repo.fork"
+
+    env:
+      DEPLOY_ENV: 'pr${{ github.event.number }}'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-          ref: ${{ github.event.pull_request.head.sha }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Set up Google Cloud
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          version: '285.0.0'
-          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
-          service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+    - name: Set up Google Cloud
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: '285.0.0'
+        project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+        service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
 
-      - name: Get GKE credentials
-        run: gcloud container clusters get-credentials "${{ secrets.GOOGLE_CLUSTER }}" --zone "${{ secrets.GOOGLE_COMPUTE_ZONE }}"
+    - name: Get GKE credentials
+      run: gcloud container clusters get-credentials "${{ secrets.GOOGLE_CLUSTER }}" --zone "${{ secrets.GOOGLE_COMPUTE_ZONE }}"
 
-      - name: Create namespace if not exists
-        run: kubectl create namespace $DEPLOY_ENV --dry-run -o yaml | kubectl apply -f -
+    - name: Deploy
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+      run: ./deploy/deploy.sh
 
-      - name: Downscale GKE deployments
-        run: kubectl scale deploy --replicas=0 --all --namespace $DEPLOY_ENV
-        continue-on-error: true
+    - name: Find deployment comment
+      uses: peter-evans/find-comment@v1
+      id: find_comment
+      with:
+        issue-number: ${{ github.event.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: '(auto-deploy)'
 
-      - name: Delete GKE jobs
-        run: kubectl delete jobs --all --namespace $DEPLOY_ENV
-        continue-on-error: true
+    - name: Create deployment comment if not exists
+      if: ${{ steps.find_comment.outputs.comment-id == 0 }}
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        issue-number: ${{ github.event.number }}
+        body: |
+          (auto-deploy) A deployment has been created for this Pull Request.
 
-      - name: Delete persistent volumes
-        run: kubectl delete persistentvolumeclaims --all --namespace $DEPLOY_ENV
-        continue-on-error: true
+          | Web client | URL |
+          | :-- | :-- |
+          | Old | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
+          | New | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
 
-      - name: Create client configmap if not exists
-        run: kubectl create configmap client-config --from-literal=environment-name=$DEPLOY_ENV --namespace $DEPLOY_ENV --dry-run -o yaml | kubectl apply -f -
+    - name: Update deployment comment if exists
+      if: ${{ steps.find_comment.outputs.comment-id != 0 }}
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        comment-id: ${{ steps.find_comment.outputs.comment-id }}
+        body: |
+          (auto-deploy) A deployment has been created for this Pull Request.
 
-      - name: Update GKE deployments
-        env:
-          BUILD_VERSION: ${{ needs.build.outputs.build_version }}
-        run: |
-          for f in $(find ./src/services/kubernetes/per-deployment -type f -name "*.yaml"); do
-            cat $f | /usr/bin/envsubst | kubectl --namespace=$DEPLOY_ENV apply -f -
-          done
-
-      - name: Find deployment comment
-        uses: peter-evans/find-comment@v1
-        id: find_comment
-        with:
-          issue-number: ${{ github.event.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: '(auto-deploy)'
-
-      - name: Create deployment comment if not exists
-        if: ${{ steps.find_comment.outputs.comment-id == 0 }}
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.number }}
-          body: |
-            (auto-deploy) A deployment has been created for this Pull Request.
-            http://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com
-
-      - name: Update deployment comment if exists
-        if: ${{ steps.find_comment.outputs.comment-id != 0 }}
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          comment-id: ${{ steps.find_comment.outputs.comment-id }}
-          body: |
-            (auto-deploy) A deployment has been created for this Pull Request.
-            http://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com
-          edit-mode: "replace"
+          | Web client | URL |
+          | :-- | :-- |
+          | Old | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
+          | New | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
+        edit-mode: "replace"
 

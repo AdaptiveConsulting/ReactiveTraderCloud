@@ -2,10 +2,10 @@ version: '3'
 services:
   # infrastructure
   eventstore:
-    image: ${DOCKER_USER}/eventstore:${BUILD_VERSION}
-    build:
-      dockerfile: Dockerfile
-      context: ./services/eventstore
+    image: eventstore/eventstore:release-5.0.9
+    environment:
+    - EVENTSTORE_DB=/db
+    - EVENTSTORE_WRITE_STATS_TO_DB=false
   broker:
     image: ${DOCKER_USER}/broker:${BUILD_VERSION}
     build:
@@ -106,14 +106,6 @@ services:
     depends_on:
       - broker
   # web client
-  nginx:
-    image: ${DOCKER_USER}/nginx:${BUILD_VERSION}
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./services/nginx
-    ports:
-      - '80:80'
   client:
     image: ${DOCKER_USER}/client:${BUILD_VERSION}
     build:
@@ -122,6 +114,16 @@ services:
       args:
         - CI=true
         - NPM_TOKEN=${NPM_TOKEN}
+        - REACT_APP_BUILD_VERSION=${BUILD_VERSION}
+    environment:
+      - ENVIRONMENT_NAME=${ENVIRONMENT_NAME}
+  new-client:
+    image: ${DOCKER_USER}/new-client:${BUILD_VERSION}
+    build:
+      dockerfile: Dockerfile
+      context: ./new-client
+      args:
+        - CI=true
         - REACT_APP_BUILD_VERSION=${BUILD_VERSION}
     environment:
       - ENVIRONMENT_NAME=${ENVIRONMENT_NAME}
