@@ -2,7 +2,7 @@ name: Pull Request (origin, down)
 
 on:
   pull_request:
-    types: [unlabeled, closed]
+    types: [closed]
     branches:
       - master
       - release/**
@@ -14,11 +14,7 @@ jobs:
   destroy:
     runs-on: ubuntu-20.04
 
-    if: >-
-      (!github.event.pull_request.head.repo.fork) && (
-        (github.event.action == 'unlabeled' && (!contains(github.event.pull_request.labels.*.name, 'preview'))) ||
-        (github.event.action == 'closed')
-      )
+    if: "!github.event.pull_request.head.repo.fork"
 
     steps:
       - name: Checkout code
@@ -37,8 +33,8 @@ jobs:
       - name: Get GKE credentials
         run: gcloud container clusters get-credentials "${{ secrets.GOOGLE_CLUSTER }}" --zone "${{ secrets.GOOGLE_COMPUTE_ZONE }}"
 
-      - name: Delete GKE namespace and resources
-        run: kubectl delete namespace $DEPLOY_ENV
+      - name: Delete GKE resources
+        run: ./deploy/destroy.sh
 
       - name: Find deployment comment
         uses: peter-evans/find-comment@v1
