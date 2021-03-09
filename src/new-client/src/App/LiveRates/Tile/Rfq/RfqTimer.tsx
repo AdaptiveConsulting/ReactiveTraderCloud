@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from "react"
 import styled from "styled-components/macro"
 import { onRejection } from "./Rfq.state"
 import { useTileCurrencyPair } from "../Tile.context"
+import { DEFAULT_NOTIONAL, onChangeNotionalValue } from "../Tile.state"
 
 const TimeLeft = styled.div<{ isAnalyticsView: boolean }>`
   font-size: 10px;
@@ -127,7 +128,14 @@ export const RfqTimer: React.FC<{
       </ProgressBarWrapper>
       <RejectQuoteButton
         isAnalyticsView={isAnalyticsView}
-        onClick={() => onRejection(symbol)}
+        onClick={(e) => {
+          onRejection(symbol)
+          e.stopPropagation()
+          onChangeNotionalValue({
+            symbol,
+            value: DEFAULT_NOTIONAL.toString(),
+          })
+        }}
       >
         Reject
       </RejectQuoteButton>
