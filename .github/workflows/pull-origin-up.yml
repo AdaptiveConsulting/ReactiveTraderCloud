@@ -9,6 +9,8 @@ on:
 
 jobs:
   build:
+    name: Build & push images
+
     runs-on: ubuntu-20.04
 
     if: "!github.event.pull_request.head.repo.fork"
@@ -40,6 +42,8 @@ jobs:
       run: ./deploy/push.sh
 
   test:
+    name: Run unit tests
+
     runs-on: ubuntu-20.04
 
     if: "!github.event.pull_request.head.repo.fork"
@@ -67,6 +71,8 @@ jobs:
       run: yarn test
 
   deploy:
+    name: Create new deployment
+
     runs-on: ubuntu-20.04
 
     needs: build
