@@ -39,6 +39,33 @@ jobs:
         DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
       run: ./deploy/push.sh
 
+  test:
+    runs-on: ubuntu-20.04
+
+    if: "!github.event.pull_request.head.repo.fork"
+
+    defaults:
+      run:
+        working-directory: ./src/new-client
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    - name: Set up node binaries
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Run unit tests
+      run: yarn test
+
   deploy:
     runs-on: ubuntu-20.04
 

@@ -12,7 +12,6 @@ COPY yarn.lock .
 RUN yarn install --frozen-lockfile
 
 COPY . .
-RUN yarn test
 RUN yarn build
 
 FROM openresty/openresty:alpine-fat
