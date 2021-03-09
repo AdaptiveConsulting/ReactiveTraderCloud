@@ -37,10 +37,8 @@ metadata:
 data:
   default.conf: |
     map $sent_http_content_type $expires {
-      default                off;
-      text/html              epoch;
-      text/css               max;
-      application/javascript max;
+      default   max;
+      text/html epoch;
     }
 
     server {
@@ -51,7 +49,6 @@ data:
 
     server {
       listen 8080;
-      expires $expires;
       server_name www.reactivetrader.com ~^(?<namespace>(dev|uat))\.reactivetrader.com ~^web-(?<namespace>(demo|uat|dev))\.adaptivecluster.com ~^(?<namespace>[^\.]+?)\.(beta\.)?lb.adaptivecluster.com$;
       resolver kube-dns.kube-system.svc.cluster.local valid=5s;
 
@@ -64,6 +61,13 @@ data:
       if ($host ~ "^[^\.]+\.beta\.") {
         set $client_upstream "new-client";
       }
+
+      expires $expires;
+
+      gzip on;
+      gzip_buffers 16 8k;
+      gzip_comp_level 6;
+      gzip_types text/plain text/html text/css application/javascript application/json;
 
       proxy_http_version 1.1;
       proxy_set_header Host $host;
