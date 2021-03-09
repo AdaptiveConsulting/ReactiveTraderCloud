@@ -19,6 +19,7 @@ const Pending = () => {
       <CenteringContainer>
         <PendingPill>
           <AdaptiveLoader
+            ariaLabel="execution-response-loader"
             size={14}
             speed={0.8}
             separation={1.5}

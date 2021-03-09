@@ -110,7 +110,7 @@ export const PriceButton: React.FC<{
 
   return rfqState.state === QuoteState.Requested ? (
     <QuotePriceLoading>
-      <AdaptiveLoader size={16} />
+      <AdaptiveLoader size={16} ariaLabel="price-quote-loader" />
       Awaiting Price
     </QuotePriceLoading>
   ) : (
