@@ -2,7 +2,6 @@ import styled from "styled-components"
 import { TradeStatus } from "@/services/trades"
 import { useTableTrades, colFields, colConfigs } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
-import './TradeStyles.css'
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -35,9 +34,19 @@ const TableBodyRow = styled.tr`
   height: 2rem;
 `
 
-const TableBodyCell = styled.td<{ numeric: boolean }>`
+const TableBodyCell = styled.td<{ numeric: boolean, status: boolean }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
   ${({ numeric }) => (numeric ? "padding-right: 1.6rem;" : "0.1rem;")};
+  position: relative;
+  &:before {
+    content: " ";
+    display: ${({ status }) => (status ? "display;" : "none;")};
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-bottom: 1px solid red;
+    width: 100%;
+  }
 `
 const StatusIndicator = styled.td<{ status: TradeStatus }>`
   width: 18px;
@@ -74,7 +83,7 @@ export const TradesGrid: React.FC = () => {
         </TableHead>
         <tbody>
           {trades.map((trade) => (
-            <TableBodyRow key={trade.tradeId} className={(trade.status === 'Rejected' ? 'strikethrough' : '')}>
+            <TableBodyRow key={trade.tradeId}>
               <StatusIndicator status={trade.status} />
               {colFields.map((field) => (
                 <TableBodyCell
@@ -83,6 +92,7 @@ export const TradesGrid: React.FC = () => {
                     colConfigs[field].filterType === "number" &&
                     field !== "tradeId"
                   }
+                  status={trade.status === 'Rejected'}
                 >
                   {colConfigs[field].valueFormatter?.(trade[field]) ??
                     trade[field]}
