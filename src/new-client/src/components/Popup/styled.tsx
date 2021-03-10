@@ -1,4 +1,4 @@
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 export const PopupContainer = styled.div<{ open: boolean }>`
   display: ${({ open }) => (open ? "flex" : "none")};

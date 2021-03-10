@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { formatAsWholeNumber } from "utils/formatNumber"
+import { formatAsWholeNumber } from "@/utils/formatNumber"
 import { useRfqState, QuoteState } from "../Rfq"
 import { useTileCurrencyPair } from "../Tile.context"
 import { onChangeNotionalValue, useNotional } from "../Tile.state"

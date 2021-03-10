@@ -1,6 +1,6 @@
 import { Subscribe } from "@react-rxjs/core"
-import { AdaptiveLoader } from "components/AdaptiveLoader"
-import { currentUser$, useUser } from "services/currentUser"
+import { AdaptiveLoader } from "@/components/AdaptiveLoader"
+import { currentUser$, useUser } from "@/services/currentUser"
 import { LoadingButton, UserWrapper, UserContainer, UserAvatar } from "./styled"
 
 const User: React.FC = () => {

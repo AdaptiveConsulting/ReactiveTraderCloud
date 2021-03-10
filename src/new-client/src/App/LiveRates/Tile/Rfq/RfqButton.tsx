@@ -1,7 +1,6 @@
-import React from "react"
-import styled from "styled-components/macro"
-import { OverlayDiv } from "components/OverlayDiv"
-import { CenteringContainer } from "components/CenteringContainer"
+import styled from "styled-components"
+import { OverlayDiv } from "@/components/OverlayDiv"
+import { CenteringContainer } from "@/components/CenteringContainer"
 import { useTileCurrencyPair } from "../Tile.context"
 import {
   useRfqState,

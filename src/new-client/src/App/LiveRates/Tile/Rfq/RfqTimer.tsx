@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useState } from "react"
-import styled from "styled-components/macro"
+import { useLayoutEffect, useState } from "react"
+import styled from "styled-components"
 import { onRejection } from "./Rfq.state"
 import { useTileCurrencyPair } from "../Tile.context"
 

@@ -1,6 +1,6 @@
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import LoginControls from "./LoginControls"
-import Logo from "components/Logo"
+import Logo from "@/components/Logo"
 import ThemeSwitcher from "./theme-switcher"
 
 const Header: React.FC = () => (

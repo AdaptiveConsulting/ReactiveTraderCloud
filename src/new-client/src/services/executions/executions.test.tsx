@@ -1,4 +1,4 @@
-import { whenRpc, getRemoteProcedureCall$, reset } from "utils/mockClient"
+import { whenRpc, getRemoteProcedureCall$, reset } from "@/utils/mockClient"
 
 import {
   ExecutionTrade,
@@ -10,7 +10,7 @@ import {
 } from "./types"
 import { Direction } from "../trades"
 import { execute$ } from "./executions"
-import { testScheduler } from "utils/testScheduler"
+import { testScheduler } from "@/utils/testScheduler"
 
 const inputRequest: ExecutionRequest = {
   currencyPair: "EURUSD",

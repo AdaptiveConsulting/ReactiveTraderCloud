@@ -1,5 +1,5 @@
 import { FaTimes } from "react-icons/fa"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { colConfigs, onFilterReset, useFilterFields } from "../TradesState"
 
 const FilterButton = styled("button")`

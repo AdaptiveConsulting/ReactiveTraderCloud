@@ -1,6 +1,6 @@
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { Subscribe } from "@react-rxjs/core"
-import { Loader } from "components/Loader"
+import { Loader } from "@/components/Loader"
 import { TradesGrid } from "./TradesGrid"
 import { TradesFooter } from "./TradesFooter"
 import { TradesHeader } from "./TradesHeader"

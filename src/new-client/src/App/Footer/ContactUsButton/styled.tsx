@@ -1,5 +1,5 @@
-import styled from "styled-components/macro"
-import Popup from "components/Popup"
+import styled from "styled-components"
+import Popup from "@/components/Popup"
 
 const buttonHeight = "2rem"
 

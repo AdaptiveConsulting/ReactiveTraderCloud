@@ -1,4 +1,4 @@
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { Colors, colors$ } from "./Colors"
 import { MainLine, mainLine$ } from "./MainLine"
 import { Tooltip } from "./Tooltip"

@@ -7,8 +7,7 @@ import {
   SetStateAction,
 } from "react"
 import { themes } from "./themes"
-import { ThemeProvider as StyledThemeProvider } from "styled-components/macro"
-import GlobalStyle from "./globals"
+import { ThemeProvider as StyledThemeProvider } from "styled-components"
 
 export enum ThemeName {
   Light = "light",
@@ -60,14 +59,11 @@ export const ThemeProvider: React.FC<Props> = ({
   }, [storage, themeName])
 
   return (
-    <>
-      <GlobalStyle />
-      <ThemeContext.Provider value={{ themeName, setThemeName }}>
-        <StyledThemeProvider theme={themes[themeName]}>
-          {children}
-        </StyledThemeProvider>
-      </ThemeContext.Provider>
-    </>
+    <ThemeContext.Provider value={{ themeName, setThemeName }}>
+      <StyledThemeProvider theme={themes[themeName]}>
+        {children}
+      </StyledThemeProvider>
+    </ThemeContext.Provider>
   )
 }
 

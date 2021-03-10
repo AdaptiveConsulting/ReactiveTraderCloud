@@ -1,5 +1,5 @@
 import { Component, ErrorInfo } from "react"
-import { ThemeProvider } from "theme"
+import { ThemeProvider } from "@/theme"
 
 class LocalStorageMock {
   store: Record<string, string>

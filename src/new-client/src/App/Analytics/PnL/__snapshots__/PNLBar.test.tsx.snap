@@ -104,14 +104,6 @@ exports[`PNLBar renders the bar correctly 1`] = `
   border: 1px solid #444c5f;
 }
 
-@media all and (max-width:400px) {
-
-}
-
-@media all and (max-width:320px) {
-
-}
-
 <div
   className="c0"
 >

@@ -1,11 +1,11 @@
 import { Subscribe } from "@react-rxjs/core"
 import { render, screen, act } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
-import { TestThemeProvider } from "utils/testUtils"
+import { TestThemeProvider } from "@/utils/testUtils"
 import { LastPosition, lastPosition$ } from "./LastPosition"
-import { HistoryEntry } from "services/analytics"
+import { HistoryEntry } from "@/services/analytics"
 
-jest.mock("services/analytics/analytics")
+jest.mock("@/services/analytics/analytics")
 
 const historyMock1: HistoryEntry[] = [
   {
@@ -62,7 +62,7 @@ const renderComponent = () =>
     </TestThemeProvider>,
   )
 
-const _analytics = require("services/analytics/analytics")
+const _analytics = require("@/services/analytics/analytics")
 
 describe("LastPositions", () => {
   beforeEach(() => {

@@ -1,11 +1,11 @@
-import type { Trade } from "services/trades"
+import type { Trade } from "@/services/trades"
 import { format as formatDate } from "date-fns"
 import {
   mapObject,
   significantDigitsNumberFormatter,
   formatAsWholeNumber,
   capitalize,
-} from "utils"
+} from "@/utils"
 
 export type ColField = keyof Trade
 

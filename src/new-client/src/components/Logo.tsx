@@ -1,5 +1,5 @@
-import React, { SVGAttributes } from "react"
-import styled from "styled-components/macro"
+import { SVGAttributes } from "react"
+import styled from "styled-components"
 
 interface LogoProps extends SVGAttributes<Element> {
   fill?: string

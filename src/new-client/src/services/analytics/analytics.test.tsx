@@ -1,4 +1,4 @@
-import { whenStream, reset } from "utils/mockClient"
+import { whenStream, reset } from "@/utils/mockClient"
 
 import { history$, useCurrentPositions, currentPositions$ } from "./analytics"
 import { CurrencyPairPosition, HistoryEntry, PositionsRaw } from "./types"
@@ -6,7 +6,7 @@ import { BehaviorSubject } from "rxjs"
 import { waitFor } from "@testing-library/react"
 import { renderHook } from "@testing-library/react-hooks"
 import { Subscribe } from "@react-rxjs/core"
-import { testScheduler } from "utils/testScheduler"
+import { testScheduler } from "@/utils/testScheduler"
 
 const mockSource = {
   a: {

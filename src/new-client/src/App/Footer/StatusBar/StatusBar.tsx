@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import { FC } from "react"
 import { Fill, Header, Root } from "./styled"
 
 const StatusBar: FC = ({ children }) => (

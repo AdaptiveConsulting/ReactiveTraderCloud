@@ -3,11 +3,11 @@ import { render, screen, act, fireEvent } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 import { MainHeader } from "./MainHeader"
 import { liveRates$ } from "../LiveRatesCore"
-import { CurrencyPair } from "services/currencyPairs"
-import { TestThemeProvider } from "utils/testUtils"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { TestThemeProvider } from "@/utils/testUtils"
 import { Tiles } from "../Tiles"
 
-jest.mock("services/currencyPairs/currencyPairs")
+jest.mock("@/services/currencyPairs/currencyPairs")
 jest.mock("../Tile/Tile.tsx")
 
 const currenciesMock: string[] = ["EUR", "USD"]
@@ -38,7 +38,7 @@ const renderComponent = () =>
     </TestThemeProvider>,
   )
 
-const _ccpp = require("services/currencyPairs/currencyPairs")
+const _ccpp = require("@/services/currencyPairs/currencyPairs")
 
 describe("MainHeader", () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import { watch$ } from "services/client"
+import { watch$ } from "../client"
 import { delay, map, mergeAll, scan, switchMap, take } from "rxjs/operators"
 import { split } from "@react-rxjs/utils"
 import { merge, of } from "rxjs"

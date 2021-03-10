@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react"
-import styled from "styled-components/macro"
+import { useRef, useState } from "react"
+import styled from "styled-components"
 import { FaFilter, FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa"
 import { Subscribe } from "@react-rxjs/core"
-import { usePopUpMenu } from "utils"
+import { usePopUpMenu } from "@/utils"
 import type {
   ColField,
   NumColField,

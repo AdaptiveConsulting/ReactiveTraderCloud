@@ -2,8 +2,8 @@ import { startOfDay } from "date-fns"
 import { combineLatest } from "rxjs"
 import { map, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import type { Trade } from "services/trades"
-import { trades$ } from "services/trades"
+import type { Trade } from "@/services/trades"
+import { trades$ } from "@/services/trades"
 import type { ColField } from "./colConfig"
 import type {
   NumColField,

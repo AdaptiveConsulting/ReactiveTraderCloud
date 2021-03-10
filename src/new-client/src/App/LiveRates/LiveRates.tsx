@@ -1,11 +1,15 @@
-import { Loader } from "components/Loader"
+import { Loader } from "@/components/Loader"
 import { lazy, Suspense } from "react"
 import { merge } from "rxjs"
-import { currencyPairDependant$ } from "services/currencyPairs"
-import { getHistoricalPrices$, getPrice$ } from "services/prices"
-import styled from "styled-components/macro"
+import {
+  currencyPairDependant$,
+  currencyPairs$,
+} from "@/services/currencyPairs"
+import { getHistoricalPrices$, getPrice$ } from "@/services/prices"
+import styled from "styled-components"
 const LiveRatesCore = lazy(() => import("./LiveRatesCore"))
 
+currencyPairs$.subscribe()
 currencyPairDependant$((symbol: string) =>
   merge(getHistoricalPrices$(symbol), getPrice$(symbol)),
 ).subscribe()

@@ -1,13 +1,13 @@
 import { bind } from "@react-rxjs/core"
 import { createListener } from "@react-rxjs/utils"
-import { LINE_CHART_HEIGHT } from "App/Analytics/ProfitAndLoss/LineChart/constants"
-import { dataPoints$ } from "App/Analytics/ProfitAndLoss/LineChart/dataPoints$"
+import { LINE_CHART_HEIGHT } from "./constants"
+import { dataPoints$ } from "./dataPoints$"
 import { format } from "date-fns"
 import { RefObject, useEffect, useLayoutEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 import { map, switchMap } from "rxjs/operators"
-import styled from "styled-components/macro"
-import { formatWithScale, precisionNumberFormatter } from "utils/formatNumber"
+import styled from "styled-components"
+import { formatWithScale, precisionNumberFormatter } from "@/utils/formatNumber"
 
 const ToolTipStyle = styled.div`
   pointer-events: none;

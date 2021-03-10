@@ -1,11 +1,8 @@
 import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 import { dataPoints$ } from "./dataPoints$"
-import {
-  LINE_CHART_HEIGHT,
-  Y_LEGENDS_WIDTH,
-} from "App/Analytics/ProfitAndLoss/LineChart/constants"
-import { formatWithScale, precisionNumberFormatter } from "utils/formatNumber"
+import { LINE_CHART_HEIGHT, Y_LEGENDS_WIDTH } from "./constants"
+import { formatWithScale, precisionNumberFormatter } from "@/utils/formatNumber"
 import { scaleLinear } from "d3"
 import { Text } from "./Text"
 

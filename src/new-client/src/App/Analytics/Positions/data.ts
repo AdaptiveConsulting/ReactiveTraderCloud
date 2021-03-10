@@ -7,13 +7,13 @@ import {
   scan,
   withLatestFrom,
 } from "rxjs/operators"
-import { colors } from "theme"
-import { currentPositions$ } from "services/analytics"
-import { currencyPairs$ } from "services/currencyPairs"
-import { formatAsWholeNumber } from "utils/formatNumber"
+import { colors } from "@/theme"
+import { currentPositions$ } from "@/services/analytics"
+import { currencyPairs$ } from "@/services/currencyPairs"
+import { formatAsWholeNumber } from "@/utils/formatNumber"
 import { bind, shareLatest } from "@react-rxjs/core"
-import { mapObject } from "utils/mapObject"
-import { equals } from "utils/equals"
+import { mapObject } from "@/utils/mapObject"
+import { equals } from "@/utils/equals"
 
 interface Scales {
   r: ScalePower<number, number>
