@@ -1,5 +1,4 @@
-import React from "react"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { FaCheck } from "react-icons/fa"
 import { createListener } from "@react-rxjs/utils"
 import { bind } from "@react-rxjs/core"

@@ -1,4 +1,4 @@
-import { whenRpc, whenStream, reset } from "utils/mockClient"
+import { whenRpc, whenStream, reset } from "@/utils/mockClient"
 
 import {
   getPrice$,
@@ -8,8 +8,7 @@ import {
 } from "./prices"
 import { PriceMovementType, RawPrice, Price, HistoryPrice } from "./types"
 import { BehaviorSubject, Subject } from "rxjs"
-import { act as reactAct } from "@testing-library/react"
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook, act } from "@testing-library/react-hooks"
 import { Subscribe } from "@react-rxjs/core"
 
 const wait = (ms: number) => new Promise((res) => setTimeout(res, ms))
@@ -212,7 +211,7 @@ describe("services/prices", () => {
 
       expect(result.current).toEqual(mockResult.a)
 
-      reactAct(() => {
+      act(() => {
         mockStream.next(mockSource.b)
       })
       expect(result.current).toEqual(mockResult.b)
@@ -229,7 +228,7 @@ describe("services/prices", () => {
 
       expect(result.current).toEqual(mockResult.a)
 
-      reactAct(() => {
+      act(() => {
         mockStream.next(mockSource.c)
       })
       expect(result.current).toEqual(mockResult.c)
@@ -253,7 +252,7 @@ describe("services/prices", () => {
 
       const { result } = renderUseHistoricalPrices(sampleSymbol)
 
-      await reactAct(async () => {
+      await act(async () => {
         await wait(10)
       })
 
@@ -273,13 +272,13 @@ describe("services/prices", () => {
 
       const { result } = renderUseHistoricalPrices(sampleSymbol)
 
-      await reactAct(async () => {
+      await act(async () => {
         await wait(10)
       })
 
       expect(result.current).toEqual(mockHistoryResult.a)
 
-      await reactAct(async () => {
+      await act(async () => {
         mockHistory$.complete()
         priceUpdates$.next(mockSource.a)
         await wait(10)

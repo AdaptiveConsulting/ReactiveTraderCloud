@@ -9,7 +9,7 @@ import {
   switchMap,
   take,
 } from "rxjs/operators"
-import { UpdateType } from "services/utils"
+import { UpdateType } from "@/services/utils"
 import { CurrencyPair } from "../types"
 
 let ccMocks$: Record<string, Observable<CurrencyPair>> = {}

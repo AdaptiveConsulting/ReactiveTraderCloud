@@ -1,8 +1,8 @@
-import { DateFilterContent } from "App/Trades/TradesState/filterState/dateFilterState"
-import React, { useRef } from "react"
-import styled from "styled-components/macro"
-import { usePopUpMenu } from "utils"
+import { useRef } from "react"
+import styled from "styled-components"
+import { usePopUpMenu } from "@/utils"
 import type { NumFilterContent } from "../../TradesState"
+import { DateFilterContent } from "../../TradesState/filterState/dateFilterState"
 import { ComparatorType } from "../../TradesState"
 
 export const ComparatorSelectOuter = styled.div`

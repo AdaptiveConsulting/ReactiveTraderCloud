@@ -13,20 +13,15 @@ const mockModule = () => {
       )?.[1] ?? NEVER
     return result
   }
-
-  const toJestMock = (fn: any) => {
-    const mockFn = jest.fn()
-    const enhancedFn = ((...args: any[]) => {
-      ;(mockFn as any)(...args)
-      return fn(...args)
-    }).bind(mockFn)
-    const proxy = new Proxy(enhancedFn, {
-      get: function (_, prop) {
-        return (mockFn as any)[prop]
-      },
-    })
-    return proxy as jest.Mock<any, any>
-  }
+  const watch$ = jest.fn((...args: any[]) =>
+    defer(() => getMatch("watch", args)),
+  )
+  const getRemoteProcedureCall$ = jest.fn((...args: any[]) =>
+    defer(() => getMatch("rpc", args)),
+  )
+  const getStream$ = jest.fn((...args: any[]) =>
+    defer(() => getMatch("stream", args)),
+  )
 
   return {
     whenWatch: (topic: string, stream: Observable<any>) => {
@@ -51,16 +46,13 @@ const mockModule = () => {
     ) => {
       registeredStreams.push([["rpc", service, operationName, payload], stream])
     },
-    watch$: toJestMock((...args: any[]) =>
-      defer(() => getMatch("watch", args)),
-    ),
-    getRemoteProcedureCall$: toJestMock((...args: any[]) =>
-      defer(() => getMatch("rpc", args)),
-    ),
-    getStream$: toJestMock((...args: any[]) =>
-      defer(() => getMatch("stream", args)),
-    ),
+    watch$,
+    getRemoteProcedureCall$,
+    getStream$,
     reset: () => {
+      watch$.mockClear()
+      getRemoteProcedureCall$.mockClear()
+      getStream$.mockClear()
       registeredStreams = []
     },
   }
@@ -68,9 +60,9 @@ const mockModule = () => {
 
 type MockedClient = ReturnType<typeof mockModule>
 
-jest.mock("services/client", () => mockModule())
+jest.mock("@/services/client", () => mockModule())
 
-const mock = require("services/client") as MockedClient
+const mock = require("@/services/client") as MockedClient
 
 export const {
   watch$,

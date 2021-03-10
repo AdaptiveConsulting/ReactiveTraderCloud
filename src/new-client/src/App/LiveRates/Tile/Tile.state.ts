@@ -4,7 +4,7 @@ import {
   getGroupedObservable,
   split,
 } from "@react-rxjs/utils"
-import { Direction } from "services/trades"
+import { Direction } from "@/services/trades"
 import {
   exhaustMap,
   filter,
@@ -16,10 +16,14 @@ import {
   withLatestFrom,
 } from "rxjs/operators"
 import { concat, race, timer } from "rxjs"
-import { getPrice$ } from "services/prices"
-import { ExecutionTrade, execute$, ExecutionStatus } from "services/executions"
-import { getCurrencyPair$ } from "services/currencyPairs"
-import { emitTooLongMessage } from "utils/emitTooLong"
+import { getPrice$ } from "@/services/prices"
+import {
+  ExecutionTrade,
+  execute$,
+  ExecutionStatus,
+} from "@/services/executions"
+import { getCurrencyPair$ } from "@/services/currencyPairs"
+import { emitTooLongMessage } from "@/utils/emitTooLong"
 import { bind } from "@react-rxjs/core"
 
 // Notional

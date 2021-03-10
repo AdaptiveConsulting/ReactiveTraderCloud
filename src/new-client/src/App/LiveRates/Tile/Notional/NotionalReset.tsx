@@ -1,6 +1,5 @@
-import React from "react"
 import { FaRedo } from "react-icons/fa"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { useRfqState, QuoteState } from "../Rfq"
 import {
   DEFAULT_NOTIONAL,

@@ -1,4 +1,4 @@
-import { useCurrencies, currencies$ } from "services/currencyPairs"
+import { useCurrencies, currencies$ } from "@/services/currencyPairs"
 import {
   Header,
   LeftNav,

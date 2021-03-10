@@ -1,14 +1,13 @@
-import React from "react"
-import { getPrice$ } from "services/prices"
-import { Direction } from "services/trades"
+import { getPrice$ } from "@/services/prices"
+import { Direction } from "@/services/trades"
 import {
   customNumberFormatter,
   significantDigitsNumberFormatter,
-} from "utils/formatNumber"
+} from "@/utils/formatNumber"
 import { map, switchMap } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import { CenteringContainer } from "components/CenteringContainer"
-import { AdaptiveLoader } from "components/AdaptiveLoader"
+import { CenteringContainer } from "@/components/CenteringContainer"
+import { AdaptiveLoader } from "@/components/AdaptiveLoader"
 import { sendExecution } from "../Tile.state"
 import { useTileCurrencyPair } from "../Tile.context"
 import { useRfqState, QuoteState } from "../Rfq"

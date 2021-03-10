@@ -1,4 +1,4 @@
-import { capitalize } from "utils/capitalize"
+import { capitalize } from "@/utils/capitalize"
 
 test("it should capitalize first and only first letter of string", () => {
   const funcInput = "the greatest story ever told in America"

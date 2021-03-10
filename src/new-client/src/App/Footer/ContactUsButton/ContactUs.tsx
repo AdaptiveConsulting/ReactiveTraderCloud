@@ -1,4 +1,3 @@
-import React from "react"
 import { ContactUsContentResolver, Link, Input } from "./styled"
 
 const WEBSITE = "https://weareadaptive.com"

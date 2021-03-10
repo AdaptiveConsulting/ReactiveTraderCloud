@@ -1,7 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createListener, mergeWithKey } from "@react-rxjs/utils"
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
-import { Trade } from "services/trades"
+import { Trade } from "@/services/trades"
 import { colConfigs, colFields } from "../colConfig"
 import type { FilterEvent } from "./filterCommon"
 import {

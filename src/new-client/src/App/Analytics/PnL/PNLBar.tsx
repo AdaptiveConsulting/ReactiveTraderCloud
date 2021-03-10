@@ -1,9 +1,9 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import {
   formatAsWholeNumber,
   formatWithScale,
   precisionNumberFormatter,
-} from "utils/formatNumber"
+} from "@/utils/formatNumber"
 import {
   BarChart,
   BarPriceContainer,

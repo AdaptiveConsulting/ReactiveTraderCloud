@@ -48,7 +48,7 @@ import "typeface-roboto"
  * achieve a consistent vertical rhythm.
  */
 
-import { createGlobalStyle } from "styled-components/macro"
+import { createGlobalStyle } from "styled-components"
 
 // background-color needs to be hardcoded to dark theme for PWA otherwise we end up with a
 // white status bar with white text when switching to light theme

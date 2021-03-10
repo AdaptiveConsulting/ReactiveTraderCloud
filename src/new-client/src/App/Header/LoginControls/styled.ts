@@ -1,4 +1,4 @@
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 interface DropdownMenuProps {
   showMenu: boolean

@@ -1,5 +1,5 @@
 import { darken } from "polished"
-import { keyframes } from "styled-components/macro"
+import { keyframes } from "styled-components"
 
 import {
   colors,

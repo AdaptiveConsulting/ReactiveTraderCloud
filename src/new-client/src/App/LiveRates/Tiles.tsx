@@ -1,6 +1,9 @@
 import { combineLatest, merge } from "rxjs"
-import styled from "styled-components/macro"
-import { currencyPairDependant$, currencyPairs$ } from "services/currencyPairs"
+import styled from "styled-components"
+import {
+  currencyPairDependant$,
+  currencyPairs$,
+} from "@/services/currencyPairs"
 import { TileView, useSelectedTileView } from "./selectedView"
 import { Tile, tile$ } from "./Tile"
 import { map } from "rxjs/operators"

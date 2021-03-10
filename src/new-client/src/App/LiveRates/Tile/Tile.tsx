@@ -1,6 +1,6 @@
-import React, { memo } from "react"
+import { memo } from "react"
 import { merge } from "rxjs"
-import { Direction } from "services/trades"
+import { Direction } from "@/services/trades"
 import { PriceMovement, priceMovement$ } from "./PriceMovement"
 import { NotionalInput } from "./Notional"
 import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"

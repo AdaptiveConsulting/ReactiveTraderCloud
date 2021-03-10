@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect, useRef } from "react"
-import styled from "styled-components/macro"
+import { useState, useCallback, useEffect, useRef } from "react"
+import styled from "styled-components"
 
 const ResizerStyle = styled.div`
   height: 100%;

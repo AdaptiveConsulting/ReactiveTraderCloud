@@ -1,5 +1,5 @@
-import Resizer from "components/Resizer"
-import styled from "styled-components/macro"
+import Resizer from "@/components/Resizer"
+import styled from "styled-components"
 import Header from "./Header"
 import { Footer } from "./Footer"
 import { LiveRates } from "./LiveRates"

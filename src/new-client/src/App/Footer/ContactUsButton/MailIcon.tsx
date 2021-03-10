@@ -1,6 +1,6 @@
-import React, { SVGAttributes } from "react"
-import styled from "styled-components/macro"
-import { dark } from "theme/colors"
+import { SVGAttributes } from "react"
+import styled from "styled-components"
+import { dark } from "@/theme/colors"
 
 interface Props extends SVGAttributes<Element> {
   fill?: string

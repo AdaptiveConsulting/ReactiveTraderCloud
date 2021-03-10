@@ -1,7 +1,7 @@
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { map } from "rxjs/operators"
 import { format } from "date-fns"
-import { getPrice$ } from "services/prices"
+import { getPrice$ } from "@/services/prices"
 import { bind } from "@react-rxjs/core"
 import { useTileCurrencyPair } from "../Tile.context"
 

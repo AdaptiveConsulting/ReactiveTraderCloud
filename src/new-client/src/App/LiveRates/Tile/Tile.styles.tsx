@@ -1,4 +1,4 @@
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { TradeButton } from "./PriceButton/PriceButton.styles"
 
 export const AnalyticsPricesFirstCol = "20%"

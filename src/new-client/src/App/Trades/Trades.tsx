@@ -1,7 +1,7 @@
-import { Loader } from "components/Loader"
+import { Loader } from "@/components/Loader"
 import { lazy, Suspense } from "react"
-import { trades$ } from "services/trades"
-import styled from "styled-components/macro"
+import { trades$ } from "@/services/trades"
+import styled from "styled-components"
 const TradesCore = lazy(() => import("./TradesCore"))
 
 const TradesWrapper = styled.article`

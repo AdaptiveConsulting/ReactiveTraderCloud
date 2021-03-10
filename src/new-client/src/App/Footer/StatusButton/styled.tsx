@@ -1,7 +1,7 @@
-import styled from "styled-components/macro"
 import { FunctionComponent } from "react"
-import Popup from "components/Popup"
-import { ServiceConnectionStatus } from "services/connection"
+import styled from "styled-components"
+import Popup from "@/components/Popup"
+import { ServiceConnectionStatus } from "@/services/connection"
 
 const buttonHeight = "2rem"
 

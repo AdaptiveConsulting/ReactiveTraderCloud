@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Subscribe } from "@react-rxjs/core"
-import { whenStream, reset } from "utils/mockClient"
-import { BehaviorSubject, defer, Observable, Subject } from "rxjs"
+import { whenStream, reset } from "@/utils/mockClient"
+import { BehaviorSubject, Subject } from "rxjs"
 import {
   render,
   screen,
@@ -18,7 +18,7 @@ import {
   useCurrencyPair,
   getCurrencyPair$,
 } from "./currencyPairs"
-import { UpdateType } from "services/utils"
+import { UpdateType } from "@/services/utils"
 
 enum MockSymbols {
   EURUSD = "EURUSD",

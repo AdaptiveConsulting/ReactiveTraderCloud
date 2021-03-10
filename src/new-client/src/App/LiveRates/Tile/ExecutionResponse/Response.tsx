@@ -1,5 +1,5 @@
 import { format } from "date-fns"
-import { formatNumber } from "utils"
+import { formatNumber } from "@/utils"
 import {
   Button,
   CurrencyPairDiv,
@@ -7,9 +7,9 @@ import {
   TradeIdDiv,
   TradeMessageDiv,
 } from "./Response.styles"
-import styled from "styled-components/macro"
-import { Direction } from "services/trades"
-import { ExecutionStatus } from "services/executions"
+import styled from "styled-components"
+import { Direction } from "@/services/trades"
+import { ExecutionStatus } from "@/services/executions"
 import { FaCheck, FaExclamationTriangle } from "react-icons/fa"
 import Pending from "./Pending"
 import { useTileCurrencyPair } from "../Tile.context"
@@ -20,7 +20,7 @@ import {
   useTileState,
   getTileState$,
 } from "../Tile.state"
-import { CurrencyPair } from "services/currencyPairs"
+import { CurrencyPair } from "@/services/currencyPairs"
 
 const BackgroundColored = styled.span`
   background-color: ${({ theme }) => theme.white};

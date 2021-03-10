@@ -16,10 +16,10 @@ import {
   createListener,
   getGroupedObservable,
 } from "@react-rxjs/utils"
-import { rfq$, RfqResponse } from "services/rfqs"
+import { rfq$, RfqResponse } from "@/services/rfqs"
 import { getNotional$, getTileState$, TileStates } from "../Tile.state"
 import { symbolBind } from "../Tile.context"
-import { equals } from "utils"
+import { equals } from "@/utils"
 
 export const [useIsRfq, isRfq$] = symbolBind(
   (symbol: string) =>

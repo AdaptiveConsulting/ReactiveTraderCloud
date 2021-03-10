@@ -1,9 +1,8 @@
+import { unstable_batchedUpdates } from "react-dom"
 import { combineLatest, Observable } from "rxjs"
 import { map, switchMap, take } from "rxjs/operators"
 import { currentUser$ } from "../currentUser"
 import { endpoints$ } from "./endpoints"
-
-import { unstable_batchedUpdates } from "react-dom"
 
 const batchUpdates = <T>() => (source$: Observable<T>): Observable<T> =>
   new Observable<T>((observer) =>
