@@ -37,6 +37,8 @@ export enum QuoteState {
   Rejected,
 }
 
+export const REJECT_TIMEOUT = 2_000
+
 const createSymbolSignal = () => {
   const [input$, onInput] = createListener<string>()
   const source$ = input$.pipe(
@@ -78,10 +80,15 @@ const [, _getRfqState$] = symbolBind((symbol) =>
                     mapTo(INIT),
                   ),
                   race([getRejection$(symbol, 1), timer(payload.timeout)]).pipe(
-                    mapTo({
-                      state: QuoteState.Rejected as const,
-                      payload,
-                    }),
+                    mergeMap(() =>
+                      concat(
+                        of({
+                          state: QuoteState.Rejected as const,
+                          payload,
+                        }),
+                        timer(REJECT_TIMEOUT).pipe(mapTo(INIT)),
+                      ),
+                    ),
                   ),
                 ]),
               ),
