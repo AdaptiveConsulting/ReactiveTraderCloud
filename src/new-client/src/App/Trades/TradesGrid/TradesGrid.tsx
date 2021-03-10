@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { TradeStatus } from "@/services/trades"
 import { useTableTrades, colFields, colConfigs } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
+import './TradeStyles.css'
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -83,7 +84,7 @@ export const TradesGrid: React.FC = () => {
         </TableHead>
         <tbody>
           {trades.map((trade) => (
-            <TableBodyRow key={trade.tradeId}>
+            <TableBodyRow key={trade.tradeId} className={(trade.status === 'Rejected' ? 'strikethrough' : '')}>
               <StatusIndicator status={trade.status} />
               {colFields.map((field) => (
                 <TableBodyCell
