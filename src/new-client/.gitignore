@@ -1,5 +1,15 @@
-node_modules
-.DS_Store
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# production
 dist
 dist-ssr
+
+# misc
+.DS_Store
 *.local
+.eslintcache
+npm-debug.log*
