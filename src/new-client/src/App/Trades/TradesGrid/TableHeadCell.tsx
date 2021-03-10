@@ -32,6 +32,7 @@ const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
   cursor: pointer;
+  z-index: 1;
 
   svg {
     width: 0.675rem;
