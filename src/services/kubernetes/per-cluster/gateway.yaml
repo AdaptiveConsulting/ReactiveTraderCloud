@@ -70,6 +70,10 @@ data:
       gzip_types text/plain text/html text/css application/javascript application/json;
       gzip_proxied any;
 
+      brotli on;
+      brotli_comp_level 6;
+      brotli_types text/plain text/html text/css application/javascript application/json;
+
       proxy_http_version 1.1;
       proxy_set_header Host $host;
       proxy_set_header X-Forwarded-Proto $scheme;
@@ -137,7 +141,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.19.6
+        image: macbre/nginx-brotli:1.19.7
         ports:
           - containerPort: 8080
         resources:
