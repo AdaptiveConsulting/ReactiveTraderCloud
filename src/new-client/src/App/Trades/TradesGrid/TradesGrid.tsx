@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { TradeStatus } from "@/services/trades"
 import { useTableTrades, colFields, colConfigs } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
+import './TradeStyles.css'
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -54,6 +55,7 @@ const StatusIndicatorSpacer = styled.th`
   position: sticky;
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
+  z-index: 1;
 `
 
 export const TradesGrid: React.FC = () => {
@@ -66,13 +68,13 @@ export const TradesGrid: React.FC = () => {
           <TableHeadRow>
             <StatusIndicatorSpacer />
             {colFields.map((field) => (
-              <TableHeadCellContainer field={field}></TableHeadCellContainer>
+              <TableHeadCellContainer key={field} field={field}></TableHeadCellContainer>
             ))}
           </TableHeadRow>
         </TableHead>
         <tbody>
           {trades.map((trade) => (
-            <TableBodyRow key={trade.tradeId}>
+            <TableBodyRow key={trade.tradeId} className={(trade.status === 'Rejected' ? 'strikethrough' : '')}>
               <StatusIndicator status={trade.status} />
               {colFields.map((field) => (
                 <TableBodyCell

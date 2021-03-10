@@ -1,0 +1,11 @@
+
+tr.strikethrough td:before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-bottom: 1px solid red;
+  width: 100%;
+}
+
+td { position: relative; }
