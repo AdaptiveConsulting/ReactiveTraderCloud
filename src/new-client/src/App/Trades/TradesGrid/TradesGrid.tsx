@@ -36,7 +36,7 @@ const TableBodyRow = styled.tr`
 
 const TableBodyCell = styled.td<{ numeric: boolean, rejected: boolean }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
-  ${({ numeric }) => (numeric ? "padding-right: 1.6rem;" : "0.1rem;")};
+  padding-right: ${({ numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
   position: relative;
   &:before {
     content: " ";
