@@ -7,22 +7,14 @@ import {
   forceX,
   forceY,
   select,
-  Selection,
-  Simulation,
 } from "d3"
-import { distinctUntilChanged, skip } from "rxjs/operators"
-import {
-  BubbleChartNode,
-  redrawCircles,
-  getNodes$,
-  useData,
-  data$,
-} from "./data"
+import { BubbleChartNode, nodes$, useData, data$ } from "./data"
 import { BubbleChart, Title } from "../styled"
 
 // extra pixel amount that nodes in the chart repel each other within
 // for collision detection purposes, a nodes radius is r + COLLIDE_BORDER_WIDTH pixels
 const COLLIDE_BORDER_WIDTH = 2
+const getId = (x: any) => x.id
 
 const d3Effect = (chartDiv: HTMLDivElement) => {
   const tooltip = select(chartDiv)
@@ -64,11 +56,7 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
   feMerge.append("feMergeNode").attr("in", "offsetBlur")
   feMerge.append("feMergeNode").attr("in", "SourceGraphic")
 
-  let force: Simulation<BubbleChartNode, undefined>
-  let nodeGroup: Selection<any, any, any, any>
-  let nodes: BubbleChartNode[]
-
-  const positionTooltip = (node: BubbleChartNode, event: MouseEvent): void => {
+  const positionTooltip = (event: MouseEvent, node: BubbleChartNode): void => {
     if (typeof node.x === "undefined" || typeof node.y === "undefined") {
       return
     }
@@ -80,86 +68,55 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
     tooltip.text(`${id} ${node.text}`)
   }
 
-  const nodes$ = getNodes$()
-
-  const differentNodes$ = nodes$.pipe(
-    distinctUntilChanged((a, b) => a.length === b.length),
-  )
-
   // setup that happens on mount and when nodes are added/removed
-  const subscription = differentNodes$.subscribe((_nodes) => {
-    nodes = _nodes
-
+  const subscription = nodes$.subscribe(({ nodes, isAddRemove }) => {
     const { width, height } = chartDiv.getBoundingClientRect()
 
     const svg = select(chartDiv).select("svg")
+    const children = () => svg.selectAll("g").data(nodes, getId)
 
-    const dataNode: Selection<any, BubbleChartNode, any, any> = svg
-      .selectAll("g")
-      .data(nodes)
-      .enter()
-      .append("g")
-      .attr("class", "node")
+    if (isAddRemove) {
+      children().exit().remove()
 
-    dataNode
-      .append("circle")
-      .attr("r", (d) => d.r)
-      .attr("cx", width / 2)
-      .attr("cy", height / 2)
-      .style("fill", (d: BubbleChartNode) => d.color)
-      .style("filter", "url(#drop-shadow)")
+      children()
+        .enter()
+        .append("g")
+        .attr("class", "node")
+        .append("circle")
+        .attr("r", (d) => d.r)
+        .attr("cx", width / 2)
+        .attr("cy", height / 2)
+        .style("fill", (d: BubbleChartNode) => d.color)
+        .style("filter", "url(#drop-shadow)")
 
-    svg.selectAll("g").data(nodes).exit().remove()
+      children()
+        .append("text")
+        .attr("text-anchor", "middle")
+        .attr("class", "analytics__positions-label")
+        .attr("data-testid", (d: BubbleChartNode) => `positions-label-${d.id}`)
+        .text(getId)
 
-    nodeGroup = dataNode
-
-    // on drag, restart the simulation with a moderate amount of entropy
-    // to start the system ticking again, which allows for visual updates
-    const started = (
-      event: D3DragEvent<any, BubbleChartNode, any>,
-      d: BubbleChartNode,
-    ) => {
-      force.alpha(0.5).restart()
-      positionTooltip(d, event.sourceEvent)
-      d.fx = event.x
-      d.fy = event.y
+      children()
+        .on("mouseover", (e, d) => {
+          tooltip.style("visibility", "visible")
+          positionTooltip(e, d)
+        })
+        .on("mousemove", positionTooltip)
+        .on("mouseout", () => {
+          tooltip.style("visibility", "hidden")
+        })
+    } else {
+      children()
+        .selectAll("circle")
+        .data(nodes, getId)
+        .transition()
+        .duration(800)
+        .attr("r", (d: BubbleChartNode) => d.r)
+        .style("filter", "url(#drop-shadow)")
+        .style("fill", (d: BubbleChartNode) => d.color)
     }
 
-    function dragged(
-      event: D3DragEvent<any, BubbleChartNode, any>,
-      d: BubbleChartNode,
-    ) {
-      force.alpha(0.5).restart()
-      positionTooltip(d, event.sourceEvent)
-      d.fx = event.x
-      d.fy = event.y
-    }
-
-    function ended(
-      event: D3DragEvent<any, BubbleChartNode, any>,
-      d: BubbleChartNode,
-    ) {
-      force.alphaTarget(0)
-      positionTooltip(d, event.sourceEvent)
-      d.fx = null
-      d.fy = null
-    }
-
-    nodeGroup.call(
-      drag<any, BubbleChartNode>()
-        .on("start", started)
-        .on("drag", dragged)
-        .on("end", ended),
-    )
-
-    const labelGroup = nodeGroup.append("text")
-    labelGroup
-      .attr("text-anchor", "middle")
-      .attr("class", "analytics__positions-label")
-      .attr("data-testid", (d: BubbleChartNode) => `positions-label-${d.id}`)
-      .text((d: BubbleChartNode) => d.id)
-
-    force = forceSimulation(nodes)
+    const force = forceSimulation(nodes)
       // forces that pull all nodes toward the center of the simulation
       .force(
         "forceX",
@@ -205,34 +162,30 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
           })
       })
 
-    nodeGroup
-      .on("mouseover", (e: MouseEvent, d: BubbleChartNode) => {
-        tooltip.style("visibility", "visible")
-        positionTooltip(d, e as MouseEvent)
-      })
-      .on("mousemove", (e: MouseEvent, d: BubbleChartNode) => {
-        positionTooltip(d, e)
-      })
-      .on("mouseout", () => {
-        tooltip.style("visibility", "hidden")
-      })
+    const onMove = (
+      event: D3DragEvent<any, BubbleChartNode, any>,
+      d: BubbleChartNode,
+    ) => {
+      force.alpha(0.5).restart()
+      positionTooltip(event.sourceEvent, d)
+      d.fx = event.x
+      d.fy = event.y
+    }
+
+    // on drag, restart the simulation with a moderate amount of entropy
+    // to start the system ticking again, which allows for visual updates
+    children().call(
+      drag<any, BubbleChartNode>()
+        .on("start", onMove)
+        .on("drag", onMove)
+        .on("end", (event, d) => {
+          force.alphaTarget(0)
+          positionTooltip(event.sourceEvent, d)
+          d.fx = null
+          d.fy = null
+        }),
+    )
   })
-
-  const nodesUpdates$ = nodes$.pipe(
-    distinctUntilChanged((a, b) => a.length !== b.length),
-    skip(1),
-  )
-
-  // listens for changes not directly changing the number of nodes,
-  // such as changes in traded amount that would change the radius size
-  subscription.add(
-    nodesUpdates$.subscribe((_nodes) => {
-      nodes = _nodes
-
-      const circle = nodeGroup.selectAll("circle")
-      redrawCircles(circle)
-    }),
-  )
 
   return () => subscription.unsubscribe()
 }
@@ -240,9 +193,7 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
 export const Positions: React.FC = () => {
   useData()
   const wrapperRef = useRef<HTMLDivElement>(null)
-  useLayoutEffect(() => {
-    return d3Effect(wrapperRef.current!)
-  }, [])
+  useLayoutEffect(() => d3Effect(wrapperRef.current!), [])
 
   return (
     <div>
