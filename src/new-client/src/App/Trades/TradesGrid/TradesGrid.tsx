@@ -34,7 +34,6 @@ const TableBodyRow = styled.tr`
   height: 2rem;
 `
 
-<<<<<<< HEAD
 const TableBodyCell = styled.td<{ numeric: boolean, rejected: boolean }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
   padding-right: ${({ numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
@@ -42,15 +41,6 @@ const TableBodyCell = styled.td<{ numeric: boolean, rejected: boolean }>`
   &:before {
     content: " ";
     display: ${({ rejected }) => (rejected ? "block;" : "none;")};
-=======
-const TableBodyCell = styled.td<{ numeric: boolean, status: boolean }>`
-  text-align: ${({ numeric }) => (numeric ? "right" : "left")};
-  ${({ numeric }) => (numeric ? "padding-right: 1.6rem;" : "0.1rem;")};
-  position: relative;
-  &:before {
-    content: " ";
-    display: ${({ status }) => (status ? "display;" : "none;")};
->>>>>>> 92f94d1c2... fix: moved css class, conditional to styled component
     position: absolute;
     top: 50%;
     left: 0;
@@ -102,11 +92,7 @@ export const TradesGrid: React.FC = () => {
                     colConfigs[field].filterType === "number" &&
                     field !== "tradeId"
                   }
-<<<<<<< HEAD
                   rejected={trade.status === 'Rejected'}
-=======
-                  status={trade.status === 'Rejected'}
->>>>>>> 92f94d1c2... fix: moved css class, conditional to styled component
                 >
                   {colConfigs[field].valueFormatter?.(trade[field]) ??
                     trade[field]}
