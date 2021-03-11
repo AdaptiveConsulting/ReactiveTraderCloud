@@ -40,7 +40,7 @@ const TableBodyCell = styled.td<{ numeric: boolean, rejected: boolean }>`
   position: relative;
   &:before {
     content: " ";
-    display: ${({ rejected }) => (rejected ? "display;" : "none;")};
+    display: ${({ rejected }) => (rejected ? "block;" : "none;")};
     position: absolute;
     top: 50%;
     left: 0;
