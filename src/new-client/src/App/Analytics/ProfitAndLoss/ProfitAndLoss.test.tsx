@@ -1,11 +1,11 @@
 import { Subscribe } from "@react-rxjs/core"
 import { BehaviorSubject } from "rxjs"
-import { TestThemeProvider } from "utils/testUtils"
-import { HistoryEntry } from "services/analytics"
-import renderer from "react-test-renderer"
+import { TestThemeProvider } from "@/utils/testUtils"
+import { HistoryEntry } from "@/services/analytics"
 import { LineChart, lineChart$ } from "./LineChart"
+const renderer = require("react-test-renderer")
 
-jest.mock("services/analytics/analytics")
+jest.mock("@/services/analytics/analytics")
 
 const historyMock1: HistoryEntry[] = [
   {
@@ -41,7 +41,7 @@ const historyMock2: HistoryEntry[] = [
   },
 ]
 
-const _analytics = require("services/analytics/analytics")
+const _analytics = require("@/services/analytics/analytics")
 
 describe("Profit and Loss", () => {
   beforeEach(() => {

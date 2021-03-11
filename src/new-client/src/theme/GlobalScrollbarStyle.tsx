@@ -1,5 +1,5 @@
 import { rgba } from "polished"
-import { withTheme, createGlobalStyle } from "styled-components/macro"
+import { withTheme, createGlobalStyle } from "styled-components"
 import { Theme } from "./themes"
 
 const getColor = (props: { theme: Theme }) =>

@@ -1,8 +1,8 @@
-import { Loader } from "components/Loader"
+import { Loader } from "@/components/Loader"
 import { lazy, Suspense, useRef } from "react"
-import { analytics$ } from "services/analytics"
-import styled from "styled-components/macro"
-import { useHasItBeenVisible } from "utils/useHasItBeenVisible"
+import { analytics$ } from "@/services/analytics"
+import styled from "styled-components"
+import { useHasItBeenVisible } from "@/utils/useHasItBeenVisible"
 const AnalyticsCore = lazy(() => import("./AnalyticsCore"))
 
 const AnalyticsWrapper = styled.div`

@@ -1,4 +1,4 @@
-import { CamelCase } from "services/utils"
+import { CamelCase } from "@/services/utils"
 
 export interface CurrencyPairPositionRaw {
   Symbol: string

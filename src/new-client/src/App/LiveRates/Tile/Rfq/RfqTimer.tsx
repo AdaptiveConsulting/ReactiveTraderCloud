@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useState } from "react"
-import styled from "styled-components/macro"
+import { useLayoutEffect, useState } from "react"
+import styled from "styled-components"
 import { onRejection } from "./Rfq.state"
 import { useTileCurrencyPair } from "../Tile.context"
 
@@ -35,7 +35,6 @@ const ProgressBar = styled.div<{
 const getInitialState = (start: number, end: number) => ({
   transitionTime: 0,
   width: ((end - Date.now()) / (end - start)) * 100,
-  start,
   end,
 })
 
@@ -45,19 +44,22 @@ const TimeProgress: React.FC<{
 }> = ({ start, end }) => {
   const [state, setState] = useState(() => getInitialState(start, end))
 
-  if (start !== state.start || end !== state.end)
-    setState(getInitialState(start, end))
-
   useLayoutEffect(() => {
+    if (state.transitionTime > 0 && state.width === 0) return
     const token = requestAnimationFrame(() => {
-      setState((prev) => ({
-        ...prev,
-        transitionTime: end - Date.now(),
-        width: 0,
-      }))
+      setState((prev) => {
+        return {
+          ...prev,
+          ...(prev.transitionTime > 0
+            ? { width: 0 }
+            : { transitionTime: prev.end - Date.now() }),
+        }
+      })
     })
-    return () => cancelAnimationFrame(token)
-  }, [start, end])
+    return () => {
+      cancelAnimationFrame(token)
+    }
+  }, [state])
 
   return <ProgressBar {...state} />
 }

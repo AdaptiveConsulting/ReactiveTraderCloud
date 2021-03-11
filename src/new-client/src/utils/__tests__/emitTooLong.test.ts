@@ -1,5 +1,5 @@
-import { emitTooLongMessage } from "utils/emitTooLong"
-import { testScheduler } from "utils/testScheduler"
+import { emitTooLongMessage } from "@/utils/emitTooLong"
+import { testScheduler } from "@/utils/testScheduler"
 
 const TOO_LONG = { status: "too long" }
 

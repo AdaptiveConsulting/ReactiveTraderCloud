@@ -1,7 +1,7 @@
 import { render, screen, act, fireEvent } from "@testing-library/react"
-import { TestThemeProvider } from "utils/testUtils"
-import renderer from "react-test-renderer"
+import { TestThemeProvider } from "@/utils/testUtils"
 import PNLBar from "./PNLBar"
+const renderer = require("react-test-renderer")
 
 const renderComponent = (symbol: string, basePnl: number, maxVal: number) =>
   render(

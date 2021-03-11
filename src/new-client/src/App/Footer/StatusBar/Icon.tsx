@@ -1,5 +1,4 @@
-import React from "react"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 const Icon: React.FC<{
   IconComponent: React.FC<{ expand: boolean }>

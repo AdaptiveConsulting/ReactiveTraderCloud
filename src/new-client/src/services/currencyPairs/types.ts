@@ -1,4 +1,4 @@
-import { CamelCase, CollectionUpdate, CollectionUpdates } from "../utils"
+import { CamelCase, CollectionUpdate } from "../utils"
 
 export interface CurrencyRaw {
   Symbol: string

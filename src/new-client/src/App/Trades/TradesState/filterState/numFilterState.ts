@@ -1,4 +1,4 @@
-import { Trade } from "services/trades"
+import { Trade } from "@/services/trades"
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createListener, mergeWithKey } from "@react-rxjs/utils"

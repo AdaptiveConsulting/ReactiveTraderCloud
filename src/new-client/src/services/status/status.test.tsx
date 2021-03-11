@@ -1,7 +1,6 @@
-import { whenWatch, reset } from "utils/mockClient"
+import { whenWatch, reset } from "@/utils/mockClient"
 import { useStatus, status$ } from "./status"
-import { renderHook } from "@testing-library/react-hooks"
-import { act as reactAct } from "@testing-library/react"
+import { renderHook, act } from "@testing-library/react-hooks"
 import { BehaviorSubject } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
 import * as sinon from "sinon"
@@ -100,7 +99,7 @@ describe("service/status", () => {
       const { result } = renderUseStatus()
       expect(result.current).toEqual(mockResult.a)
 
-      reactAct(() => {
+      act(() => {
         mockStream.next(mockSource.b)
         clock.tick(1999)
       })
@@ -113,7 +112,7 @@ describe("service/status", () => {
       const { result } = renderUseStatus()
       expect(result.current).toEqual(mockResult.a)
 
-      reactAct(() => {
+      act(() => {
         clock.tick(2001)
         mockStream.next(mockSource.b)
       })
@@ -126,13 +125,13 @@ describe("service/status", () => {
       const { result } = renderUseStatus()
       expect(result.current).toEqual(mockResult.a)
 
-      reactAct(() => {
+      act(() => {
         clock.tick(2001)
         mockStream.next(mockSource.b)
       })
       expect(result.current).toEqual(mockResult.c)
 
-      reactAct(() => {
+      act(() => {
         clock.tick(1000)
         mockStream.next(mockSource.a)
       })

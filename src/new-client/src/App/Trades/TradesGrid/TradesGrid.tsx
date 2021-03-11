@@ -1,5 +1,5 @@
-import styled from "styled-components/macro"
-import { TradeStatus } from "services/trades"
+import styled from "styled-components"
+import { TradeStatus } from "@/services/trades"
 import { useTableTrades, colFields, colConfigs } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
 

@@ -34,20 +34,21 @@ export const currencyPairUpdates$ = getStream$<RawCurrencyPairUpdates>(
       currencyPair: currencyPairMapper(update.CurrencyPair),
     })),
   ),
-  mergeAll(),
   share(),
 )
 
 export const [useCurrencyPairs, currencyPairs$] = bind(
   currencyPairUpdates$.pipe(
-    scan((acc, { updateType, currencyPair }) => {
+    scan((acc, updates) => {
       const result = { ...acc }
-      const { symbol } = currencyPair
-      if (updateType === UpdateType.Removed) {
-        delete result[symbol]
-      } else {
-        result[symbol] = currencyPair
-      }
+      updates.forEach(({ updateType, currencyPair }) => {
+        const { symbol } = currencyPair
+        if (updateType === UpdateType.Removed) {
+          delete result[symbol]
+        } else {
+          result[symbol] = currencyPair
+        }
+      })
       return result
     }, {} as Record<string, CurrencyPair>),
   ),
@@ -79,7 +80,7 @@ export const currencyPairDependant$ = (
       mergeMap((ccPairs) => Object.values(ccPairs)),
       map((currencyPair) => ({ currencyPair, updateType: UpdateType.Added })),
     ),
-    currencyPairUpdates$,
+    currencyPairUpdates$.pipe(mergeAll()),
   ).pipe(
     split(
       (update) => update.currencyPair.symbol,

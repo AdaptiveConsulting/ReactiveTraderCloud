@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react"
-import { usePopUpMenu } from "utils/usePopUpMenu"
-import styled from "styled-components/macro"
+import { useRef, useState } from "react"
+import { usePopUpMenu } from "@/utils/usePopUpMenu"
+import styled from "styled-components"
 import { AllCurrencies, ALL_CURRENCIES } from "../selectedCurrency"
 import { FaCheck, FaChevronDown, FaChevronUp } from "react-icons/fa"
 

@@ -1,6 +1,5 @@
-import React from "react"
 import { Subscribe } from "@react-rxjs/core"
-import { whenStream, reset } from "utils/mockClient"
+import { whenStream, reset } from "@/utils/mockClient"
 import { BehaviorSubject, of, Subject } from "rxjs"
 import { render, screen, act as reactAct } from "@testing-library/react"
 import { act, renderHook } from "@testing-library/react-hooks"

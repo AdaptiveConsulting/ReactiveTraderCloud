@@ -6,8 +6,10 @@ export const endpoints$ = new Observable<{
   rpcEndpoint: RxStompRPC
   streamEndpoint: RxStomp
 }>((observer) => {
-  const url = process.env.REACT_APP_BROKER_HOST || globalThis.location.hostname
-  const port = +(process.env.REACT_APP_BROKER_PORT || globalThis.location.port)
+  const HOST = import.meta.env.VITE_BROKER_HOST as string
+  const PORT = import.meta.env.VITE_BROKER_PORT as string
+  const url = HOST || globalThis.location.hostname
+  const port = +(PORT || globalThis.location.port)
   const useSecure = globalThis.location.protocol === "https:"
   const securePort = 443
   const defaultPort = port ? port : 80

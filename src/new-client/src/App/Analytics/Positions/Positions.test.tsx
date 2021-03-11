@@ -1,14 +1,13 @@
 import { Subscribe } from "@react-rxjs/core"
 import { render, screen, act, fireEvent } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
-import { TestThemeProvider } from "utils/testUtils"
+import { TestThemeProvider } from "@/utils/testUtils"
 import { Positions, positions$ } from "./Positions"
-import { CurrencyPairPosition } from "services/analytics"
-import { CurrencyPair } from "services/currencyPairs"
-// import renderer from "react-test-renderer"
+import { CurrencyPairPosition } from "@/services/analytics"
+import { CurrencyPair } from "@/services/currencyPairs"
 
-jest.mock("services/analytics/analytics")
-jest.mock("services/currencyPairs/currencyPairs")
+jest.mock("@/services/analytics/analytics")
+jest.mock("@/services/currencyPairs/currencyPairs")
 
 const currencyPairMock1: CurrencyPair = {
   symbol: "EURAUD",
@@ -73,8 +72,8 @@ const renderComponent = () =>
     </TestThemeProvider>,
   )
 
-const _analytics = require("services/analytics/analytics")
-const _ccpp = require("services/currencyPairs/currencyPairs")
+const _analytics = require("@/services/analytics/analytics")
+const _ccpp = require("@/services/currencyPairs/currencyPairs")
 
 describe("Positions", () => {
   beforeEach(() => {

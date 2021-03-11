@@ -1,12 +1,18 @@
-import React, { useState } from "react"
-import Switch, { ReactSwitchProps } from "react-switch"
-import { ThemeName, Theme, useTheme } from "theme"
-import styled, { withTheme } from "styled-components/macro"
+import { useState } from "react"
+import SwitchO, { ReactSwitchProps } from "react-switch"
+import { ThemeName, Theme, useTheme } from "@/theme"
+import { withTheme } from "styled-components"
+import styled from "styled-components"
 import DarkThemeIcon from "./DarkThemeIcon"
 import LightThemeIcon from "./LightThemeIcon"
 
 export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
 const iconSize = 18
+
+// TODO: Get rid of this library or open an issue/PR to fix their build
+const Switch: typeof SwitchO = (SwitchO as any).default
+  ? (SwitchO as any).default
+  : SwitchO
 
 const SwitcherContainer = styled.div`
   margin: 0 1rem;

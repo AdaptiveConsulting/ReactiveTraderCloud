@@ -1,6 +1,6 @@
 import { race, timer } from "rxjs"
 import { map, mapTo } from "rxjs/operators"
-import { getRemoteProcedureCall$ } from "services/client"
+import { getRemoteProcedureCall$ } from "@/services/client"
 import {
   ExecutionRequest,
   ExecutionPayload,

@@ -1,7 +1,5 @@
-import React from "react"
-
-import { ServiceConnectionStatus } from "services/connection"
-import { ServiceInstanceStatus } from "services/status"
+import { ServiceConnectionStatus } from "@/services/connection"
+import { ServiceInstanceStatus } from "@/services/status"
 import { StatusCircle, NodeCount, ServiceName, ServiceRoot } from "./styled"
 
 const Service: React.FC<{ service: ServiceInstanceStatus }> = ({

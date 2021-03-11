@@ -1,6 +1,6 @@
 import { contextBinder } from "@react-rxjs/utils"
 import { createContext, useContext } from "react"
-import { CurrencyPair } from "services/currencyPairs"
+import { CurrencyPair } from "@/services/currencyPairs"
 
 const CurrencyPairContext = createContext<CurrencyPair>(null as any)
 

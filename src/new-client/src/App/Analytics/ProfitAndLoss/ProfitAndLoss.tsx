@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import { FC } from "react"
 import {
   Title,
   AnalyticsLineChartWrapper,
@@ -6,7 +6,7 @@ import {
 } from "../styled"
 import { LineChart, lineChart$ } from "./LineChart"
 import { LastPosition, lastPosition$ } from "./LastPosition"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { merge } from "rxjs"
 
 export const ProfitAndLossStyle = styled.div`

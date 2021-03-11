@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { FaFilter, FaTimes } from "react-icons/fa"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { onQuickFilterInput } from "../TradesState"
 
 const QuickFilterStyle = styled("div")`

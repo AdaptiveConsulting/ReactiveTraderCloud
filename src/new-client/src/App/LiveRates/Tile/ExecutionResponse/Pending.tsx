@@ -1,7 +1,7 @@
-import { AdaptiveLoader } from "components/AdaptiveLoader"
-import styled from "styled-components/macro"
-import { OverlayDiv } from "components/OverlayDiv"
-import { CenteringContainer } from "components/CenteringContainer"
+import { AdaptiveLoader } from "@/components/AdaptiveLoader"
+import styled from "styled-components"
+import { OverlayDiv } from "@/components/OverlayDiv"
+import { CenteringContainer } from "@/components/CenteringContainer"
 
 const PendingPill = styled("div")`
   background-color: ${({ theme }) => theme.accents.primary.base};

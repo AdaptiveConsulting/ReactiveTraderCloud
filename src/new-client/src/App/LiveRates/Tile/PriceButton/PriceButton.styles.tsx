@@ -1,6 +1,7 @@
-import styled, { keyframes, css } from "styled-components/macro"
-import { Theme } from "theme/themes"
-import { Direction } from "services/trades"
+import { keyframes, css } from "styled-components"
+import styled from "styled-components"
+import { Theme } from "@/theme/themes"
+import { Direction } from "@/services/trades"
 
 const backgroundEffectKeyframes = ({
   direction,
@@ -48,7 +49,7 @@ export const TradeButton = styled.button<{
   cursor: pointer;
   border: none;
   outline: none;
-  height: 59px;
+  height: 62px;
   min-width: 75px;
   padding: ${({ expired }) =>
     expired ? "0.6rem 1.5rem 0.4rem 1.5rem" : "0.55rem 1.5rem 0.6rem 1.5rem"};
@@ -129,8 +130,23 @@ export const QuotePriceLoading = styled.div`
   font-weight: 400;
 `
 
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+`
+
 export const ExpiredPrice = styled.div`
   color: ${({ theme }) => theme.colors.spectrum.uniqueCollections.Sell.base};
-  font-size: 9px;
+  font-size: 8px;
   text-transform: uppercase;
+  height: 0;
+  animation: ${fadeOut} 1s linear;
+  transition: visibility 1s linear;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
 `

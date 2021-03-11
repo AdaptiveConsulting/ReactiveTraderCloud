@@ -1,8 +1,8 @@
 import { SyntheticEvent, useRef, useState, useEffect } from "react"
 import { bind } from "@react-rxjs/core"
 import { map, switchMap } from "rxjs/operators"
-import styled from "styled-components/macro"
-import { ServiceConnectionStatus } from "services/connection"
+import styled from "styled-components"
+import { ServiceConnectionStatus } from "@/services/connection"
 import {
   StatusCircle,
   StatusLabel,
@@ -13,10 +13,12 @@ import {
 } from "./styled"
 import { Root, Button } from "../common-styles"
 import Service from "./Service"
-import { usePopUpMenu } from "utils/usePopUpMenu"
-import { ServiceInstanceStatus, status$ } from "services/status"
-import { endpoints$ } from "services/client/endpoints"
+import { usePopUpMenu } from "@/utils/usePopUpMenu"
+import { ServiceInstanceStatus, status$ } from "@/services/status"
+import { endpoints$ } from "@/services/client/endpoints"
 import { RxStompState } from "@stomp/rx-stomp"
+
+const APP_VERSION = import.meta.env.VITE_APP_VERSION as string
 
 export const Wrapper = styled.div`
   color: ${(props) => props.theme.textColor};
@@ -47,22 +49,20 @@ export const FooterVersion: React.FC = () => {
 
   const URL =
     "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/" +
-    process.env.REACT_APP_VERSION
+    APP_VERSION
 
   useEffect(() => {
-    gitTagExists(process.env.REACT_APP_VERSION).then((resolution) =>
-      setVersionExists(resolution),
-    )
+    gitTagExists(APP_VERSION).then((resolution) => setVersionExists(resolution))
   }, [])
 
   return (
     <Wrapper>
       {versionExists ? (
         <Link target="_blank" href={URL}>
-          {process.env.REACT_APP_VERSION}
+          {APP_VERSION}
         </Link>
       ) : (
-        <p>{process.env.REACT_APP_VERSION}</p>
+        <p>{APP_VERSION}</p>
       )}
     </Wrapper>
   )

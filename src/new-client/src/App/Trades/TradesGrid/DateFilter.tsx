@@ -1,5 +1,4 @@
-import React from "react"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { parseISO, format } from "date-fns"
 import type { DateColField } from "../TradesState"
 import {

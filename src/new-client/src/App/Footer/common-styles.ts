@@ -1,4 +1,4 @@
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 const buttonHeight = "2rem"
 export const Root = styled.div`

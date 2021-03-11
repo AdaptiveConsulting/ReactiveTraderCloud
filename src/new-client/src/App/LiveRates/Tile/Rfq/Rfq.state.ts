@@ -16,10 +16,10 @@ import {
   createListener,
   getGroupedObservable,
 } from "@react-rxjs/utils"
-import { rfq$, RfqResponse } from "services/rfqs"
+import { rfq$, RfqResponse } from "@/services/rfqs"
 import { getNotional$, getTileState$, TileStates } from "../Tile.state"
 import { symbolBind } from "../Tile.context"
-import { equals } from "utils"
+import { equals } from "@/utils"
 
 export const [useIsRfq, isRfq$] = symbolBind(
   (symbol: string) =>
@@ -36,6 +36,8 @@ export enum QuoteState {
   Received,
   Rejected,
 }
+
+export const REJECT_TIMEOUT = 2_000
 
 const createSymbolSignal = () => {
   const [input$, onInput] = createListener<string>()
@@ -78,10 +80,15 @@ const [, _getRfqState$] = symbolBind((symbol) =>
                     mapTo(INIT),
                   ),
                   race([getRejection$(symbol, 1), timer(payload.timeout)]).pipe(
-                    mapTo({
-                      state: QuoteState.Rejected as const,
-                      payload,
-                    }),
+                    mergeMap(() =>
+                      concat(
+                        of({
+                          state: QuoteState.Rejected as const,
+                          payload,
+                        }),
+                        timer(REJECT_TIMEOUT).pipe(mapTo(INIT)),
+                      ),
+                    ),
                   ),
                 ]),
               ),
