@@ -34,13 +34,13 @@ const TableBodyRow = styled.tr`
   height: 2rem;
 `
 
-const TableBodyCell = styled.td<{ numeric: boolean, status: boolean }>`
+const TableBodyCell = styled.td<{ numeric: boolean, rejected: boolean }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
   ${({ numeric }) => (numeric ? "padding-right: 1.6rem;" : "0.1rem;")};
   position: relative;
   &:before {
     content: " ";
-    display: ${({ status }) => (status ? "display;" : "none;")};
+    display: ${({ rejected }) => (rejected ? "display;" : "none;")};
     position: absolute;
     top: 50%;
     left: 0;
@@ -92,7 +92,7 @@ export const TradesGrid: React.FC = () => {
                     colConfigs[field].filterType === "number" &&
                     field !== "tradeId"
                   }
-                  status={trade.status === 'Rejected'}
+                  rejected={trade.status === 'Rejected'}
                 >
                   {colConfigs[field].valueFormatter?.(trade[field]) ??
                     trade[field]}
