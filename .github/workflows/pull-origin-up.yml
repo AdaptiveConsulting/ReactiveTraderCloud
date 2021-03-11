@@ -87,13 +87,20 @@ jobs:
         body: |
           (auto-deploy) A deployment has been created for this Pull Request.
 
-          | Web client | URL |
-          | :-- | :-- |
-          | Legacy client       | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
-          | New client          | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
-          | New client (master) | https://dev.beta.lb.adaptivecluster.com |
+          ### Preview links
 
-          \*Lighthouse performance\*
+          As part of the code review process, please ensure that you test against the following three environments. The "master" build refers to the current state of the master branch and should be used as a reference. Where necessary, test the behavior in the legacy client to avoid regressions.
+
+          |        | Web client          | URL                                                       |
+          | ---    | :--                 | :--                                                       |
+          | :star: | New client          | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
+          |        | New client (master) | https://dev.beta.lb.adaptivecluster.com                   |
+          |        | Legacy client       | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com      |
+
+          ### Lighthouse performance
+
+          Please ensure that this PR does not degrade the performance of the UI. We should maintain a performance score of 95+.
+
           https://developers.google.com/speed/pagespeed/insights/?url=https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com
 
     - name: Update deployment comment if exists
@@ -104,13 +111,20 @@ jobs:
         body: |
           (auto-deploy) A deployment has been created for this Pull Request.
 
-          | Web client | URL |
-          | :-- | :-- |
-          | Legacy client       | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com |
-          | New client          | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
-          | New client (master) | https://dev.beta.lb.adaptivecluster.com |
+          ### Preview links
 
-          \*Lighthouse performance\*
+          As part of the code review process, please ensure that you test against the following three environments. The "master" build refers to the current state of the master branch and should be used as a reference. Where necessary, test the behavior in the legacy client to avoid regressions.
+
+          |        | Web client          | URL                                                       |
+          | ---    | :--                 | :--                                                       |
+          | :star: | New client          | https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com |
+          |        | New client (master) | https://dev.beta.lb.adaptivecluster.com                   |
+          |        | Legacy client       | https://${{ env.DEPLOY_ENV }}.lb.adaptivecluster.com      |
+
+          ### Lighthouse performance
+
+          Please ensure that this PR does not degrade the performance of the UI. We should maintain a performance score of 95+.
+
           https://developers.google.com/speed/pagespeed/insights/?url=https://${{ env.DEPLOY_ENV }}.beta.lb.adaptivecluster.com
         edit-mode: "replace"
 
