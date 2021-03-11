@@ -13,7 +13,7 @@ const TradesWrapper = styled.article`
 trades$.subscribe()
 export const Trades: React.FC = () => (
   <TradesWrapper>
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<Loader ariaLabel="trades-loader" />}>
       <TradesCore />
     </Suspense>
   </TradesWrapper>

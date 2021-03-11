@@ -20,7 +20,11 @@ const LoginControls: React.FC = () => (
     source$={currentUser$}
     fallback={
       <LoadingButton>
-        <AdaptiveLoader size={18} color={"white"} />
+        <AdaptiveLoader
+          ariaLabel="user-info-loader"
+          size={18}
+          color={"white"}
+        />
       </LoadingButton>
     }
   >

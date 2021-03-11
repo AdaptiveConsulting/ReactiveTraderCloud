@@ -30,7 +30,9 @@ const OverflowScroll = styled.div`
   height: 100%;
 `
 
-const loader = <Loader minWidth="22rem" minHeight="22rem" />
+const loader = (
+  <Loader ariaLabel="live-rates-loader" minWidth="22rem" minHeight="22rem" />
+)
 export const LiveRates: React.FC = () => (
   <LiveRateWrapper>
     <OverflowScroll>
