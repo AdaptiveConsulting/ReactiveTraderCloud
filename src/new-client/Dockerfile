@@ -9,10 +9,9 @@ ENV VITE_BUILD_VERSION=$REACT_APP_BUILD_VERSION
 
 COPY package.json .
 COPY package-lock.json .
-RUN npm install
+RUN npm ci
 
 COPY . .
-RUN npm test
 RUN npm run build
 
 FROM openresty/openresty:alpine-fat
