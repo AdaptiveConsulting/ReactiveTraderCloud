@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import styled from "styled-components"
 
 const ResizerStyle = styled.div`
@@ -42,68 +42,52 @@ interface Props {
   children: [React.ReactNode, React.ReactNode]
   minHeight?: number
   defaultHeight: number
-  disabled?: boolean
 }
 
-const Resizer: React.FC<Props> = ({ defaultHeight, children, disabled }) => {
+const Resizer: React.FC<Props> = ({ defaultHeight, children }) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(defaultHeight)
-  const [dragging, setDragging] = useState<Boolean>(false)
 
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) =>
-      setClientHeight(event.clientY)
-    const handleStop = () => (dragging ? setDragging(false) : null)
-    const handleTouchMove = (event: TouchEvent) =>
-      setClientHeight(event.touches[0].clientY)
+  const startDragging = useRef<() => void>()
+  if (!startDragging.current) {
+    startDragging.current = () => {
+      const setClientHeight = (clientY: number) => {
+        const wrapperElement = wrapperRef.current
+        if (!wrapperElement) return
 
-    // componentDidMount calls
-    document.addEventListener("mousemove", handleMouseMove)
-    document.addEventListener("mouseup", handleStop)
-    document.addEventListener("touchmove", handleTouchMove)
-    document.addEventListener("touchend", handleStop)
+        // Calculate the height of the bottom div based on cursor position
+        const wrapperHeight = wrapperElement.offsetHeight
+        const wrapperTop = wrapperElement.offsetTop
+        const wrapperOffset = clientY - wrapperTop
+        const rawHeight = wrapperHeight - wrapperOffset
+        // Calculate height as a percentage of parent
+        let height = Math.round((rawHeight / wrapperHeight) * 100)
 
-    return () => {
-      // componentWillUnmount calls - for cleanup
-      document.removeEventListener("mousemove", handleMouseMove)
-      document.removeEventListener("mouseup", handleStop)
-      document.removeEventListener("touchmove", handleTouchMove)
-      document.removeEventListener("touchend", handleStop)
+        // Block heights that would completely overlap top div
+        if (height > 90) height = 90
+
+        // Block heights that would hide bottom div
+        if (height < 10) height = 10
+
+        setHeight(height)
+      }
+
+      const handleMouseMove = (event: MouseEvent) =>
+        setClientHeight(event.clientY)
+      const handleTouchMove = (event: TouchEvent) =>
+        setClientHeight(event.touches[0].clientY)
+      const handleStop = () => {
+        document.removeEventListener("mousemove", handleMouseMove)
+        document.removeEventListener("touchmove", handleTouchMove)
+        document.removeEventListener("mouseup", handleStop)
+        document.removeEventListener("touchend", handleStop)
+      }
+
+      document.addEventListener("mousemove", handleMouseMove)
+      document.addEventListener("touchmove", handleTouchMove)
+      document.addEventListener("mouseup", handleStop, { once: true })
+      document.addEventListener("touchend", handleStop, { once: true })
     }
-  })
-
-  useEffect(() => {
-    if (disabled) setHeight(0)
-
-    return () => setHeight(defaultHeight)
-  }, [disabled, defaultHeight])
-
-  const handleStart = useCallback(() => setDragging(true), [setDragging])
-
-  const setClientHeight = (clientY: number) => {
-    // If we're not dragging the resize bar, don't do anything
-    if (!dragging) return
-
-    const wrapperElement = wrapperRef.current
-
-    if (!wrapperElement) return
-
-    // Calculate the height of the bottom div based on cursor position
-    const wrapperHeight = wrapperElement.offsetHeight
-    const wrapperTop = wrapperElement.offsetTop
-    const wrapperOffset = clientY - wrapperTop
-    const rawHeight = wrapperHeight - wrapperOffset
-
-    // Calculate height as a percentage of parent
-    let height = Math.round((rawHeight / wrapperHeight) * 100)
-
-    // Block heights that would completely overlap top div
-    if (height > 90) height = 90
-
-    // Block heights that would hide bottom div
-    if (height < 10) height = 10
-
-    setHeight(height)
   }
 
   return (
@@ -113,7 +97,11 @@ const Resizer: React.FC<Props> = ({ defaultHeight, children, disabled }) => {
       </ResizableSection>
       <ResizableSection height={height}>
         <ResizableContent>
-          <Bar onMouseDown={handleStart} onTouchStart={handleStart} show />
+          <Bar
+            onMouseDown={startDragging.current!}
+            onTouchStart={startDragging.current!}
+            show
+          />
           {children[1]}
         </ResizableContent>
       </ResizableSection>
