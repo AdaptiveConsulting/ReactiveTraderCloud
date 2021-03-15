@@ -29,33 +29,23 @@ const AppLayoutRoot = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 `
 
-const MainOuter = styled.div`
-  display: flex;
-  overflow: hidden;
-`
-
 const MainWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr auto;
-  @media (max-width: 750px) {
-    display: block;
-  }
+  display: flex;
   width: 100%;
+  overflow: hidden;
 `
 
 export const App: React.FC = () => (
   <Wrapper>
     <AppLayoutRoot data-qa="app-layout__root">
       <Header />
-      <MainOuter>
-        <MainWrapper>
-          <Resizer defaultHeight={30}>
-            <LiveRates />
-            <Trades />
-          </Resizer>
-          <Analytics />
-        </MainWrapper>
-      </MainOuter>
+      <MainWrapper>
+        <Resizer defaultHeight={30}>
+          <LiveRates />
+          <Trades />
+        </Resizer>
+        <Analytics />
+      </MainWrapper>
       <Footer />
     </AppLayoutRoot>
   </Wrapper>
