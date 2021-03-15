@@ -1,7 +1,6 @@
 import { concat, of, race, timer } from "rxjs"
 import {
   distinctUntilChanged,
-  exhaustMap,
   filter,
   groupBy,
   map,
@@ -64,7 +63,7 @@ const REQUESTED = { state: QuoteState.Requested as const }
 const [, _getRfqState$] = symbolBind((symbol) =>
   getQuoteRequested$(symbol).pipe(
     withLatestFrom(getNotional$(symbol).pipe(map(Number))),
-    exhaustMap(([, notional]) =>
+    switchMap(([, notional]) =>
       concat(
         of(REQUESTED),
         race([
