@@ -21,6 +21,7 @@ const currencyPairMapper = (input: CurrencyRaw): CurrencyPair => ({
   pipsPosition: input.PipsPosition,
   base: input.Symbol.substr(0, 3),
   terms: input.Symbol.substr(3, 3),
+  defaultNotional: input.Symbol === "NZDUSD" ? 10_000_000 : 1_000_000,
 })
 
 export const currencyPairUpdates$ = getStream$<RawCurrencyPairUpdates>(

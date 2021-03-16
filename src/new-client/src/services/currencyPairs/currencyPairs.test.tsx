@@ -45,6 +45,7 @@ const mockCurrencyPairs: Record<MockSymbols, CurrencyPair> = {
     pipsPosition: 4,
     base: "EUR",
     terms: "USD",
+    defaultNotional: 1_000_000,
   },
   [MockSymbols.GBPJPY]: {
     symbol: "GBPJPY",
@@ -52,6 +53,7 @@ const mockCurrencyPairs: Record<MockSymbols, CurrencyPair> = {
     pipsPosition: 1,
     base: "GBP",
     terms: "JPY",
+    defaultNotional: 1_000_000,
   },
 }
 

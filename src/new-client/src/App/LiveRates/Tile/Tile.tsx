@@ -2,7 +2,7 @@ import { memo } from "react"
 import { merge } from "rxjs"
 import { Direction } from "@/services/trades"
 import { PriceMovement, priceMovement$ } from "./PriceMovement"
-import { NotionalInput } from "./Notional"
+import { NotionalInput, notionalInput$ } from "./Notional"
 import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"
 import { PriceButton, priceButton$ } from "./PriceButton"
 import { Header, header$ } from "./Header"
@@ -37,6 +37,7 @@ export const tile$ = (symbol: string) =>
       executionResponse$,
       getRfqState$,
       isRfq$,
+      notionalInput$,
     ].map((fn) => fn(symbol)),
   )
 
