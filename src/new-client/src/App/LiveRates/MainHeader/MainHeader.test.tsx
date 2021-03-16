@@ -16,6 +16,7 @@ const currencyPairMock1: CurrencyPair = {
   terms: "USD",
   ratePrecision: 5,
   pipsPosition: 4,
+  defaultNotional: 1_000_000,
 }
 
 const currencyPairMock2: CurrencyPair = {
@@ -24,6 +25,7 @@ const currencyPairMock2: CurrencyPair = {
   terms: "JPY",
   ratePrecision: 5,
   pipsPosition: 2,
+  defaultNotional: 1_000_000,
 }
 
 const renderComponent = () =>

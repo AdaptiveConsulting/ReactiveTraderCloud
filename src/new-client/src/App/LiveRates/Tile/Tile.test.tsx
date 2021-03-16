@@ -25,6 +25,7 @@ const currencyPairMock: CurrencyPair = {
   terms: "USD",
   ratePrecision: 5,
   pipsPosition: 4,
+  defaultNotional: 1_000_000,
 }
 
 const priceMock: Price = {

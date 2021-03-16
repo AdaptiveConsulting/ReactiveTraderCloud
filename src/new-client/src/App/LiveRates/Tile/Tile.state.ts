@@ -10,48 +10,59 @@ import {
   filter,
   map,
   mapTo,
+  mergeMap,
   pluck,
   startWith,
   take,
   withLatestFrom,
 } from "rxjs/operators"
-import { concat, race, timer } from "rxjs"
+import { concat, merge, race, timer } from "rxjs"
 import { getPrice$ } from "@/services/prices"
 import {
   ExecutionTrade,
   execute$,
   ExecutionStatus,
 } from "@/services/executions"
-import { getCurrencyPair$ } from "@/services/currencyPairs"
+import { currencyPairs$, getCurrencyPair$ } from "@/services/currencyPairs"
 import { emitTooLongMessage } from "@/utils/emitTooLong"
 import { bind } from "@react-rxjs/core"
+import { symbolBind } from "./Tile.context"
 
 // Notional
-export const DEFAULT_NOTIONAL = 1_000_000
-
 const [rawNotional$, onChangeNotionalValue] = createListener<{
   symbol: string
   value: string
 }>()
 
-const mapNotionals$ = rawNotional$.pipe(
+const initialNotionals$ = currencyPairs$.pipe(
+  mergeMap((pairs) =>
+    Object.values(pairs).map(({ symbol, defaultNotional: value }) => ({
+      symbol,
+      value,
+    })),
+  ),
+)
+
+const mapNotionals$ = merge(rawNotional$, initialNotionals$).pipe(
   split(
     (e) => e.symbol,
     (rawNotional$) =>
       rawNotional$.pipe(
         pluck("value"),
         filter((value) => !Number.isNaN(Number(value))),
+        map(Number),
       ),
   ),
   collect(),
 )
-mapNotionals$.subscribe()
 
-const [useNotional, getNotional$] = bind(
-  (symbol: string) => getGroupedObservable(mapNotionals$, symbol),
-  DEFAULT_NOTIONAL.toString(10),
+const [useNotional, getNotional$] = symbolBind((symbol) =>
+  getGroupedObservable(mapNotionals$, symbol),
 )
 
+export const [useDefaultNotional, defaultNotional$] = symbolBind((symbol) =>
+  currencyPairs$.pipe(map((pairs) => pairs[symbol]?.defaultNotional ?? 0)),
+)
 export { onChangeNotionalValue, useNotional, getNotional$ }
 
 // Dismiss Message

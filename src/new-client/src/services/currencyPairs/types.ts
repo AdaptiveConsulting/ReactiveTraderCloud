@@ -17,4 +17,5 @@ export interface RawCurrencyPairUpdates {
 export interface CurrencyPair extends CamelCase<CurrencyRaw> {
   base: string
   terms: string
+  defaultNotional: number
 }
