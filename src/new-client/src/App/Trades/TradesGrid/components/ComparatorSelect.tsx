@@ -2,7 +2,7 @@ import { useRef } from "react"
 import styled from "styled-components"
 import { usePopUpMenu } from "@/utils"
 import type { NumFilterContent } from "../../TradesState"
-import { DateFilterContent } from "@/App/Trades/TradesState/filterState"
+import { DateFilterContent } from "../../TradesState/filterState/dateFilterState"
 import { ComparatorType } from "../../TradesState"
 import { colors } from "@/theme";
 
