@@ -4,6 +4,8 @@ import { colConfigs, onFilterReset, useFilterFields } from "../TradesState"
 
 const FilterButton = styled("button")`
   opacity: 0.59;
+  height: 1em;
+  line-height: 1em;
 `
 const FilterField = styled("div")`
   display: flex;
@@ -16,6 +18,7 @@ const FilterField = styled("div")`
   height: 1.25rem;
   padding: 0 0.375rem;
   cursor: default;
+  align-items: center;
 
   &:hover {
     background-color: ${({ theme }) => theme.core.alternateBackground};
