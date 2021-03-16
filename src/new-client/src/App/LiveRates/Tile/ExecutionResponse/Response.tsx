@@ -1,6 +1,7 @@
 import { format } from "date-fns"
 import { formatNumber } from "@/utils"
 import {
+  AssetText,
   Button,
   CurrencyPairDiv,
   ExecutionStatusAlertContainer,
@@ -10,7 +11,7 @@ import {
 import styled from "styled-components"
 import { Direction } from "@/services/trades"
 import { ExecutionStatus } from "@/services/executions"
-import { FaCheck, FaExclamationTriangle } from "react-icons/fa"
+import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"
 import Pending from "./Pending"
 import { useTileCurrencyPair } from "../Tile.context"
 import {
@@ -35,12 +36,16 @@ const BoldItalicSpan = styled.span`
   font-style: italic;
 `
 
-const AlignedCheck = styled(FaCheck)`
-  padding-right: 2px;
+const AlignedCheck = styled(FaCheckCircle)`
+  padding-right: 4px;
+  vertical-align: middle;
+  font-size: 1.5em;
 `
 
 const AlignedTriangle = styled(FaExclamationTriangle)`
-  padding-right: 2px;
+  padding-right: 4px;
+  vertical-align: middle;
+  font-size: 1.5em;
 `
 
 const pastTenseDirection: Record<Direction, string> = {
@@ -104,7 +109,7 @@ const ExecutionMessage: React.FC<{
     <ExecutionStatusAlertContainer state={tileState} role="dialog">
       <CurrencyPairDiv>
         {isSuccessful ? <AlignedCheck /> : <AlignedTriangle />}
-        {base}/{terms}
+        <AssetText>{base}/{terms}</AssetText>
       </CurrencyPairDiv>
       <TradeIdDiv>{tradeId && `Trade ID: ${tradeId}`}</TradeIdDiv>
       <TradeMessageDiv role="alert">

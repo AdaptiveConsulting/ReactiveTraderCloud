@@ -60,3 +60,7 @@ export const CurrencyPairDiv = styled.div`
   font-weight: 900;
   font-size: 0.9rem;
 `
+
+export const AssetText = styled.span`
+  vertical-align: middle;
+`
