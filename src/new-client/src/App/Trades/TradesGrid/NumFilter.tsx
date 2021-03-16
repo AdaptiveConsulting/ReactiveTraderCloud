@@ -11,18 +11,17 @@ import { ComparatorSelect } from "./components/ComparatorSelect"
 const FilterValueInputInner = styled.input`
   grid-area: Input;
   background: none;
-  text-align: center;
   outline: none;
   border: none;
   font-size: 0.75rem;
   width: 100%;
-  padding: 2px 0;
+  padding: 2px 10px;
   color: ${({ theme }) => theme.core.textColor};
   border-bottom: 1.5px solid ${({ theme }) => theme.primary[5]};
   caret-color: ${({ theme }) => theme.primary.base};
   &:focus {
     outline: none !important;
-    border-color: ${({ theme }) => theme.accents.primary.base};
+    border-color: ${({ theme }) => theme.core.textColor};
   }
 `
 
@@ -32,6 +31,7 @@ const FilterValueInput: React.FC<{
   fieldValueName: "value1" | "value2"
 }> = ({ field, selected, fieldValueName }) => (
   <FilterValueInputInner
+    placeholder="Filter..."
     defaultValue={selected[fieldValueName] ?? undefined}
     onClick={(e) => e.stopPropagation()}
     onChange={({ target: { value } }) => {

@@ -2,15 +2,15 @@ import { useRef } from "react"
 import styled from "styled-components"
 import { usePopUpMenu } from "@/utils"
 import type { NumFilterContent } from "../../TradesState"
-import { DateFilterContent } from "../../TradesState/filterState/dateFilterState"
+import { DateFilterContent } from "@/App/Trades/TradesState/filterState"
 import { ComparatorType } from "../../TradesState"
+import { colors } from "@/theme";
 
 export const ComparatorSelectOuter = styled.div`
   display: block;
   position: relative;
   width: 10rem;
   background-color: ${({ theme }) => theme.core.lightBackground};
-  border-radius: 4px;
   color: ${({ theme }) => theme.core.textColor};
   font-size: 12px;
   outline: none;
@@ -19,6 +19,7 @@ export const ComparatorSelectOuter = styled.div`
   transition: all 200ms ease;
   text-transform: none;
   text-align: left;
+  border-bottom: 1px solid ${colors.spectrum.blue.base};
 `
 
 export const ComparatorSelectInner = styled.div<{ visible: boolean }>`
