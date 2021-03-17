@@ -37,7 +37,7 @@ const FilterValueInput: React.FC<{
     onChange={({ target: { value } }) => {
       onColFilterEnterNum(field, {
         ...selected,
-        [fieldValueName]: value ? parseInt(value) : null,
+        [fieldValueName]: value ? parseFloat(value) : null,
       })
     }}
   />
