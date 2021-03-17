@@ -34,7 +34,7 @@ const TableBodyRow = styled.tr`
   height: 2rem;
 `
 
-const TableBodyCell = styled.td<{ numeric: boolean, rejected: boolean }>`
+const TableBodyCell = styled.td<{ numeric?: boolean; rejected?: boolean }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
   padding-right: ${({ numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
   position: relative;
@@ -48,7 +48,7 @@ const TableBodyCell = styled.td<{ numeric: boolean, rejected: boolean }>`
     width: 100%;
   }
 `
-const StatusIndicator = styled.td<{ status: TradeStatus }>`
+const StatusIndicator = styled.td<{ status?: TradeStatus }>`
   width: 18px;
   border-left: 6px solid
     ${({ status, theme: { accents } }) =>
@@ -76,29 +76,41 @@ export const TradesGrid: React.FC = () => {
           <TableHeadRow>
             <StatusIndicatorSpacer />
             {colFields.map((field) => (
-              <TableHeadCellContainer key={field} field={field}></TableHeadCellContainer>
+              <TableHeadCellContainer
+                key={field}
+                field={field}
+              ></TableHeadCellContainer>
             ))}
           </TableHeadRow>
         </TableHead>
-        <tbody>
-          {trades.map((trade) => (
-            <TableBodyRow key={trade.tradeId}>
-              <StatusIndicator status={trade.status} />
-              {colFields.map((field) => (
-                <TableBodyCell
-                  key={field}
-                  numeric={
-                    colConfigs[field].filterType === "number" &&
-                    field !== "tradeId"
-                  }
-                  rejected={trade.status === 'Rejected'}
-                >
-                  {colConfigs[field].valueFormatter?.(trade[field]) ??
-                    trade[field]}
-                </TableBodyCell>
-              ))}
+        <tbody role="grid">
+          {trades.length ? (
+            trades.map((trade) => (
+              <TableBodyRow key={trade.tradeId}>
+                <StatusIndicator status={trade.status} />
+                {colFields.map((field) => (
+                  <TableBodyCell
+                    key={field}
+                    numeric={
+                      colConfigs[field].filterType === "number" &&
+                      field !== "tradeId"
+                    }
+                    rejected={trade.status === "Rejected"}
+                  >
+                    {colConfigs[field].valueFormatter?.(trade[field]) ??
+                      trade[field]}
+                  </TableBodyCell>
+                ))}
+              </TableBodyRow>
+            ))
+          ) : (
+            <TableBodyRow>
+              <StatusIndicatorSpacer />
+              <TableBodyCell colSpan={colFields.length}>
+                No trades to show
+              </TableBodyCell>
             </TableBodyRow>
-          ))}
+          )}
         </tbody>
       </Table>
     </TableWrapper>

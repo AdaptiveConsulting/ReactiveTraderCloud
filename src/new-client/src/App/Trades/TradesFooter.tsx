@@ -32,6 +32,7 @@ const [useDisplayRows] = bind<number>(
 export const TradesFooter: React.FC = () => {
   const totalRows = useTotalRows()
   const displayRows = useDisplayRows()
+
   return (
     <TradesFooterStyled>
       <TradesFooterText data-qa="blotter__blotter-status-text">

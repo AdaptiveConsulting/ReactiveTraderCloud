@@ -10,9 +10,11 @@ export enum TileView {
 const [toggleSelectedView$, onToggleSelectedView] = createListener()
 export { onToggleSelectedView }
 
-const SELECTED_VIEW_KEY = 'selectedView'
+const SELECTED_VIEW_KEY = "selectedView"
 
-const initView = (window.localStorage.getItem(SELECTED_VIEW_KEY) as TileView) || TileView.Normal
+const initView =
+  (window.localStorage.getItem(SELECTED_VIEW_KEY) as TileView) ||
+  TileView.Normal
 
 export const [useSelectedTileView] = bind(
   toggleSelectedView$.pipe(
@@ -22,7 +24,7 @@ export const [useSelectedTileView] = bind(
     ),
     tap((newView) => {
       window.localStorage.setItem(SELECTED_VIEW_KEY, newView)
-    })
+    }),
   ),
   initView,
 )

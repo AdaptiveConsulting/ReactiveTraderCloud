@@ -4,6 +4,7 @@ import { AdaptiveLoader } from "./AdaptiveLoader"
 interface Props {
   minWidth?: string
   minHeight?: string
+  ariaLabel?: string
 }
 
 const LoadableStyle = styled.div<Props>`
@@ -24,6 +25,6 @@ const LoadableStyle = styled.div<Props>`
 
 export const Loader: React.FC<Props> = (props) => (
   <LoadableStyle {...props}>
-    <AdaptiveLoader size={50} speed={1.4} />
+    <AdaptiveLoader size={50} speed={1.4} ariaLabel={props.ariaLabel} />
   </LoadableStyle>
 )
