@@ -104,7 +104,6 @@ export const TableHeadCellContainer: React.FC<{
         {showFilter ? (
           <AlignedFilterIcon
             onClick={(e) => {
-              e.stopPropagation()
               setDisplayMenu((current) => !current)
             }}
           />

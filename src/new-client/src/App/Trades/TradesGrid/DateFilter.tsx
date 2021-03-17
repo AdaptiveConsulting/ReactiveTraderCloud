@@ -31,7 +31,6 @@ const DateFilterInput: React.FC<{
       }
       onClick={(e) => e.stopPropagation()}
       onChange={({ target: { value } }) => {
-        // onColFilterDateSelect(field, fieldValueName, newValue)
         onColFilterDateSelect(field, {
           ...selected,
           [fieldValueName]: value ? parseISO(value) : null,
