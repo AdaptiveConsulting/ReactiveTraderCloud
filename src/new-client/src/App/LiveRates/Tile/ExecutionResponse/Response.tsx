@@ -109,7 +109,9 @@ const ExecutionMessage: React.FC<{
     <ExecutionStatusAlertContainer state={tileState} role="dialog">
       <CurrencyPairDiv>
         {isSuccessful ? <AlignedCheck /> : <AlignedTriangle />}
-        <AssetText>{base}/{terms}</AssetText>
+        <AssetText>
+          {base}/{terms}
+        </AssetText>
       </CurrencyPairDiv>
       <TradeIdDiv>{tradeId && `Trade ID: ${tradeId}`}</TradeIdDiv>
       <TradeMessageDiv role="alert">

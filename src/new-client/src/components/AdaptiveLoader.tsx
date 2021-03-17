@@ -42,12 +42,13 @@ const Bar = styled("rect")<BarProps>`
 type LoaderType = "primary" | "secondary"
 
 export const AdaptiveLoader: React.FC<{
+  ariaLabel?: string
   size: number | string
   type?: LoaderType
   separation?: number
   speed?: number
   color?: string
-}> = memo(({ size, type, separation, speed, children, color }) => {
+}> = memo(({ size, type, separation, speed, children, color, ariaLabel }) => {
   const sizeNum = Number(size)
   const barHeight = sizeNum * 0.75
   const barWidth = barHeight / 4
@@ -59,7 +60,12 @@ export const AdaptiveLoader: React.FC<{
   const extraWidth = sizeNum - totalBarWidth
 
   return (
-    <svg width={sizeNum} height={sizeNum} data-qa="adaptive-loader__svg">
+    <svg
+      width={sizeNum}
+      height={sizeNum}
+      role="progressbar"
+      aria-label={ariaLabel}
+    >
       {bars.map((idx) => (
         <Bar
           type={type || "primary"}

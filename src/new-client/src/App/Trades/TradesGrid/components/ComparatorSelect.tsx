@@ -4,7 +4,7 @@ import { usePopUpMenu } from "@/utils"
 import type { NumFilterContent } from "../../TradesState"
 import { DateFilterContent } from "../../TradesState/filterState/dateFilterState"
 import { ComparatorType } from "../../TradesState"
-import { colors } from "@/theme";
+import { colors } from "@/theme"
 
 export const ComparatorSelectOuter = styled.div`
   display: block;

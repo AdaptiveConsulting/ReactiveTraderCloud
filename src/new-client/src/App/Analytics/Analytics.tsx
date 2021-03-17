@@ -18,7 +18,13 @@ const AnalyticsWrapper = styled.div`
 
 analytics$.subscribe()
 
-const loader = <Loader minWidth="22rem" minHeight="22rem" />
+const loader = (
+  <Loader
+    ariaLabel="Loading price and trade analytics"
+    minWidth="22rem"
+    minHeight="22rem"
+  />
+)
 export const Analytics: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null)
   const shouldMountAnalytics = useHasItBeenVisible(ref)

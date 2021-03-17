@@ -14,7 +14,10 @@ const TradesStyle = styled.div`
 `
 
 const Trades: React.FC = () => (
-  <Subscribe source$={tableTrades$} fallback={<Loader />}>
+  <Subscribe
+    source$={tableTrades$}
+    fallback={<Loader ariaLabel="Loading trades blotter" />}
+  >
     <TradesStyle>
       <TradesHeader />
       <TradesGrid />
