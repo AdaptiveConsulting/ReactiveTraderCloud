@@ -1,4 +1,3 @@
-import { useCurrencies, currencies$ } from "@/services/currencyPairs"
 import {
   Header,
   LeftNav,
@@ -15,7 +14,21 @@ import {
 } from "../selectedCurrency"
 import { ToggleView } from "./ToggleView"
 import { CurrencyOptions } from "./CurrencyOptions"
+import { currencyPairs$ } from "@/services/currencyPairs"
+import { bind } from "@react-rxjs/core"
+import { map } from "rxjs/operators"
 
+const [useCurrencies, mainHeader$] = bind(
+  currencyPairs$.pipe(
+    map((currencyPairs) => [
+      ...new Set(
+        Object.values(currencyPairs).map((currencyPair) => currencyPair.base),
+      ),
+    ]),
+  ),
+)
+
+export { mainHeader$ }
 export const MainHeader: React.FC = () => {
   const currencies = useCurrencies()
   const currency = useSelectedCurrency()
@@ -52,5 +65,3 @@ export const MainHeader: React.FC = () => {
     </Header>
   )
 }
-
-export const mainHeader$ = currencies$

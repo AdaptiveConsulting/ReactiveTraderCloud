@@ -32,7 +32,7 @@ const priceMock: Price = {
   bid: 1.53816,
   creationTimestamp: 5318479648168,
   mid: 1.53825,
-  symbol: "EURCAD",
+  symbol: "EURUSD",
   valueDate: "2021-02-10T19:10:28.4919591+00:00",
   movementType: PriceMovementType.NONE,
 }
@@ -56,7 +56,7 @@ const _exec = require("@/services/executions/executions")
 describe("Tile", () => {
   beforeEach(() => {
     _prices.__resetMocks()
-    _ccpp.__resetMocks()
+    _ccpp.__resetMock()
     _exec.__resetMocks()
   })
 
@@ -67,8 +67,10 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
-    const ccPairMock$ = new BehaviorSubject<CurrencyPair>(currencyPairMock)
-    _ccpp.__setCurrencyPairMock(currencyPairMock.symbol, ccPairMock$)
+    const ccPairMock$ = new BehaviorSubject({
+      [currencyPairMock.symbol]: currencyPairMock,
+    })
+    _ccpp.__setMock(ccPairMock$)
 
     renderComponent()
 
@@ -88,8 +90,10 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
-    const ccPairMock$ = new BehaviorSubject<CurrencyPair>(currencyPairMock)
-    _ccpp.__setCurrencyPairMock(currencyPairMock.symbol, ccPairMock$)
+    const ccPairMock$ = new BehaviorSubject({
+      [currencyPairMock.symbol]: currencyPairMock,
+    })
+    _ccpp.__setMock(ccPairMock$)
 
     renderComponent()
 
@@ -120,8 +124,10 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
-    const ccPairMock$ = new BehaviorSubject<CurrencyPair>(currencyPairMock)
-    _ccpp.__setCurrencyPairMock(currencyPairMock.symbol, ccPairMock$)
+    const ccPairMock$ = new BehaviorSubject({
+      [currencyPairMock.symbol]: currencyPairMock,
+    })
+    _ccpp.__setMock(ccPairMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
@@ -191,8 +197,10 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
-    const ccPairMock$ = new BehaviorSubject<CurrencyPair>(currencyPairMock)
-    _ccpp.__setCurrencyPairMock(currencyPairMock.symbol, ccPairMock$)
+    const ccPairMock$ = new BehaviorSubject({
+      [currencyPairMock.symbol]: currencyPairMock,
+    })
+    _ccpp.__setMock(ccPairMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
@@ -271,8 +279,10 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
-    const ccPairMock$ = new BehaviorSubject<CurrencyPair>(currencyPairMock)
-    _ccpp.__setCurrencyPairMock(currencyPairMock.symbol, ccPairMock$)
+    const ccPairMock$ = new BehaviorSubject({
+      [currencyPairMock.symbol]: currencyPairMock,
+    })
+    _ccpp.__setMock(ccPairMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
@@ -340,8 +350,10 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
-    const ccPairMock$ = new BehaviorSubject<CurrencyPair>(currencyPairMock)
-    _ccpp.__setCurrencyPairMock(currencyPairMock.symbol, ccPairMock$)
+    const ccPairMock$ = new BehaviorSubject({
+      [currencyPairMock.symbol]: currencyPairMock,
+    })
+    _ccpp.__setMock(ccPairMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
@@ -412,8 +424,10 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
-    const ccPairMock$ = new BehaviorSubject<CurrencyPair>(currencyPairMock)
-    _ccpp.__setCurrencyPairMock(currencyPairMock.symbol, ccPairMock$)
+    const ccPairMock$ = new BehaviorSubject({
+      [currencyPairMock.symbol]: currencyPairMock,
+    })
+    _ccpp.__setMock(ccPairMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 

@@ -61,16 +61,6 @@ export const [useCurrencyPair, getCurrencyPair$] = bind((symbol: string) =>
   ),
 )
 
-export const [useCurrencies, currencies$] = bind(
-  currencyPairs$.pipe(
-    map((currencyPairs) => [
-      ...new Set(
-        Object.values(currencyPairs).map((currencyPair) => currencyPair.base),
-      ),
-    ]),
-  ),
-)
-
 export const currencyPairDependant$ = (
   input: (symbol: string) => Observable<any>,
 ) =>
