@@ -78,13 +78,16 @@ const _ccpp = require("@/services/currencyPairs/currencyPairs")
 describe("Positions", () => {
   beforeEach(() => {
     _analytics.__resetMocks()
-    _ccpp.__resetMocks()
+    _ccpp.__resetMock()
+    _ccpp.__setMock(
+      new BehaviorSubject({
+        [currencyPairMock1.symbol]: currencyPairMock1,
+        [currencyPairMock2.symbol]: currencyPairMock2,
+      }),
+    )
   })
 
   it("should render the correct price tag", () => {
-    _ccpp.__setCurrencyPairsMock(currencyPairMock1.symbol, currencyPairMock1)
-    _ccpp.__setCurrencyPairsMock(currencyPairMock2.symbol, currencyPairMock2)
-
     const positionMock$ = new BehaviorSubject<
       Record<string, CurrencyPairPosition>
     >(positionMock)
@@ -113,9 +116,6 @@ describe("Positions", () => {
   })
 
   it("should display the correct bubble chart", () => {
-    _ccpp.__setCurrencyPairsMock(currencyPairMock1.symbol, currencyPairMock1)
-    _ccpp.__setCurrencyPairsMock(currencyPairMock2.symbol, currencyPairMock2)
-
     const positionMock$ = new BehaviorSubject<
       Record<string, CurrencyPairPosition>
     >(positionMock)
