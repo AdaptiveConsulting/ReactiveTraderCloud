@@ -5,6 +5,7 @@ import type { NumFilterContent } from "../../TradesState"
 import { DateFilterContent } from "../../TradesState/filterState/dateFilterState"
 import { ComparatorType } from "../../TradesState"
 import { colors } from "@/theme"
+import { FaChevronDown, FaChevronUp } from "react-icons/fa"
 
 export const ComparatorSelectOuter = styled.div`
   display: block;
@@ -22,7 +23,7 @@ export const ComparatorSelectOuter = styled.div`
   border-bottom: 1px solid ${colors.spectrum.blue.base};
 `
 
-export const ComparatorSelectInner = styled.div<{ visible: boolean }>`
+const ComparatorSelectInner = styled.div<{ visible: boolean }>`
   border-radius: 4px;
   display: ${({ visible }) => (visible ? "block" : "none")};
   position: absolute;
@@ -35,7 +36,7 @@ export const ComparatorSelectInner = styled.div<{ visible: boolean }>`
   width: 100%;
 `
 
-export const ComparatorOption = styled.div`
+const ComparatorOption = styled.div`
   padding: 8px 8px 5px 8px;
   font-weight: normal;
   background-color: inherit;
@@ -49,6 +50,22 @@ export const ComparatorOption = styled.div`
   }
 `
 
+const ComparatorSelected = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position relative;
+`
+
+const AlignedUp = styled(FaChevronUp)`
+  position: relative;
+  top: 2px;
+`
+const AlignedDown = styled(FaChevronDown)`
+  position: relative;
+  top: 2px;
+`
+
 export const ComparatorSelect: React.FC<{
   selected: DateFilterContent | NumFilterContent
   onSelection: (comparator: ComparatorType) => void
@@ -58,13 +75,15 @@ export const ComparatorSelect: React.FC<{
   const toggle = () => setDisplayMenu(!displayMenu)
   return (
     <ComparatorSelectOuter>
-      <div
-        onClick={() => {
+      <ComparatorSelected
+        onClick={(e) => {
+          e.stopPropagation()
           toggle()
         }}
       >
         {selected.comparator}
-      </div>
+        {displayMenu ? <AlignedUp /> : <AlignedDown />}
+      </ComparatorSelected>
       <ComparatorSelectInner visible={displayMenu} ref={innerRef}>
         {Object.values(ComparatorType).map((comparator) => (
           <ComparatorOption
