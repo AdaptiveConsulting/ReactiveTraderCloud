@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import type { NumColField, NumFilterContent } from "../TradesState"
+import { colConfigs, NumColField, NumFilterContent } from "../TradesState"
 import {
   ComparatorType,
   onColFilterEnterNum,
@@ -32,7 +32,13 @@ const FilterValueInput: React.FC<{
 }> = ({ field, selected, fieldValueName }) => (
   <FilterValueInputInner
     placeholder="Filter..."
+    role="textbox"
     defaultValue={selected[fieldValueName] ?? undefined}
+    aria-label={
+      fieldValueName === "value1"
+        ? "Primary filter value"
+        : "Secondary filter value"
+    }
     onClick={(e) => e.stopPropagation()}
     onChange={({ target: { value } }) => {
       onColFilterEnterNum(field, {
@@ -49,7 +55,10 @@ export const NumFilter: React.FC<{
 }> = ({ field, parentRef }) => {
   const selected = useAppliedNumFilters(field)
   return (
-    <FilterPopup parentRef={parentRef}>
+    <FilterPopup
+      parentRef={parentRef}
+      ariaLabel={`Filter trades by ${colConfigs[field].headerName} field value`}
+    >
       <ComparatorSelect
         selected={selected}
         onSelection={(comparator: ComparatorType) => {

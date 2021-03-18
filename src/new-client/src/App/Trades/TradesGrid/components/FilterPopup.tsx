@@ -31,9 +31,12 @@ export const FilterPopupInner = styled.div`
 `
 
 export const FilterPopup: React.FC<{
+  ariaLabel?: string
   parentRef: React.RefObject<HTMLDivElement>
-}> = ({ parentRef, children }) => (
+}> = ({ parentRef, ariaLabel, children }) => (
   <FilterPopupOuter>
-    <FilterPopupInner ref={parentRef}>{children}</FilterPopupInner>
+    <FilterPopupInner role="search" aria-label={ariaLabel} ref={parentRef}>
+      {children}
+    </FilterPopupInner>
   </FilterPopupOuter>
 )
