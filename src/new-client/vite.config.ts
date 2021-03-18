@@ -2,6 +2,7 @@ import { resolve } from "path"
 import { defineConfig } from "vite"
 import reactRefresh from "@vitejs/plugin-react-refresh"
 import eslint from "@rollup/plugin-eslint"
+import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
 
 // TODO: This is a workaround until the following issue gets
@@ -37,6 +38,10 @@ export default defineConfig(({ mode }) => ({
       ? [
           {
             ...eslint({ include: "src/**/*.+(js|jsx|ts|tsx)" }),
+            enforce: "pre",
+          },
+          {
+            ...typescript(),
             enforce: "pre",
           },
           reactRefresh(),
