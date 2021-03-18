@@ -63,19 +63,20 @@ export const QuickFilter: React.FC = () => {
   }, [quickFilterText])
 
   return (
-    <QuickFilterStyle>
-      <QuickFilterIcon
-        onClick={() => quickFilterInput.current?.focus()}
-        data-qa="quick-filter__filter-icon"
-      >
+    <QuickFilterStyle
+      role="search"
+      aria-label="Search by text across all trade fields"
+    >
+      <QuickFilterIcon onClick={() => quickFilterInput.current?.focus()}>
         <FaFilter aria-hidden="true" />
       </QuickFilterIcon>
       <QuickFilterInput
         ref={quickFilterInput}
-        type="text"
+        type="search"
         placeholder="Filter"
         value={quickFilterText}
         onChange={(event) => setQuickFilterText(event.target.value)}
+        role="textbox"
         data-qa="quick-filer__filter-input"
       />
       <QuickFilterClearIcon

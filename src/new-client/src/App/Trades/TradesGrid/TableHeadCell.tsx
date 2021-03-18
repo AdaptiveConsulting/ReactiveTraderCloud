@@ -54,7 +54,10 @@ const FlexWrapper = styled.div<{ headerFirst: boolean }>`
   flex-direction: ${({ headerFirst }) => (headerFirst ? "row" : "row-reverse")};
 `
 
-const AlignedFilterIcon = styled(FaFilter)`
+const AlignedFilterIcon = styled(FaFilter)<{
+  "aria-label"?: string
+  role?: string
+}>`
   margin-top: 0.1rem;
 `
 
@@ -66,9 +69,15 @@ const AlignedDownArrow = styled(FaLongArrowAltDown)`
   margin-top: 0.1rem;
 `
 
-const AlignedArrow: React.FC<{ sortDirection: SortDirection }> = ({
-  sortDirection,
-}) => (sortDirection === "ASC" ? <AlignedUpArrow /> : <AlignedDownArrow />)
+const AlignedArrow: React.FC<{
+  sortDirection: SortDirection
+  ariaLabel: string
+}> = ({ sortDirection, ariaLabel }) =>
+  sortDirection === "ASC" ? (
+    <AlignedUpArrow role="sort" aria-label={ariaLabel} />
+  ) : (
+    <AlignedDownArrow role="button" aria-label={ariaLabel} />
+  )
 
 export const TableHeadCellContainer: React.FC<{
   field: ColField
@@ -97,16 +106,23 @@ export const TableHeadCellContainer: React.FC<{
       >
         {headerName}
         {tableSort.field === field && tableSort.direction !== undefined ? (
-          <AlignedArrow sortDirection={tableSort.direction} />
+          <AlignedArrow
+            sortDirection={tableSort.direction}
+            ariaLabel={`Update trades blotter sort on ${colConfigs[field]} field`}
+          />
         ) : (
           <span className="spacer" />
         )}
         {showFilter ? (
-          <AlignedFilterIcon
-            onClick={(e) => {
+          <span
+            aria-label={`Open ${colConfigs[field]} field filter pop up`}
+            role="button"
+            onClick={() => {
               setDisplayMenu((current) => !current)
             }}
-          />
+          >
+            <AlignedFilterIcon />
+          </span>
         ) : (
           <span className="spacer" />
         )}
