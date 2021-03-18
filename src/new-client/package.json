@@ -83,8 +83,10 @@
     "prettier": "^2.2.1",
     "react-test-renderer": "^17.0.1",
     "rollup-plugin-modulepreload": "^1.2.3",
+    "rollup-plugin-typescript2": "^0.30.0",
     "sinon": "^9.2.4",
     "ts-jest": "^26.5.3",
+    "tslib": "^1.14.1",
     "typescript": "^4.1.2",
     "vite": "^2.0.5"
   },
