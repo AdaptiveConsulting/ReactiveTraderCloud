@@ -16,14 +16,15 @@ import {
   getGroupedObservable,
 } from "@react-rxjs/utils"
 import { rfq$, RfqResponse } from "@/services/rfqs"
-import { getNotional$, getTileState$, TileStates } from "../Tile.state"
+import { getTileState$, TileStates } from "../Tile.state"
 import { symbolBind } from "../Tile.context"
 import { equals } from "@/utils"
+import { getNotionalValue$ } from "../Notional"
 
 export const [useIsRfq, isRfq$] = symbolBind(
   (symbol: string) =>
-    getNotional$(symbol).pipe(
-      map((notional) => Number(notional) >= 10_000_000),
+    getNotionalValue$(symbol).pipe(
+      map((value) => value >= 10_000_000),
       distinctUntilChanged(),
     ),
   false,
@@ -62,7 +63,7 @@ const REQUESTED = { state: QuoteState.Requested as const }
 
 const [, _getRfqState$] = symbolBind((symbol) =>
   getQuoteRequested$(symbol).pipe(
-    withLatestFrom(getNotional$(symbol).pipe(map(Number))),
+    withLatestFrom(getNotionalValue$(symbol)),
     switchMap(([, notional]) =>
       concat(
         of(REQUESTED),

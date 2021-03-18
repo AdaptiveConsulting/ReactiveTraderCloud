@@ -10,60 +10,21 @@ import {
   filter,
   map,
   mapTo,
-  mergeMap,
-  pluck,
   startWith,
   take,
   withLatestFrom,
 } from "rxjs/operators"
-import { concat, merge, race, timer } from "rxjs"
+import { concat, race, timer } from "rxjs"
 import { getPrice$ } from "@/services/prices"
 import {
   ExecutionTrade,
   execute$,
   ExecutionStatus,
 } from "@/services/executions"
-import { currencyPairs$, getCurrencyPair$ } from "@/services/currencyPairs"
+import { getCurrencyPair$ } from "@/services/currencyPairs"
 import { emitTooLongMessage } from "@/utils/emitTooLong"
 import { bind } from "@react-rxjs/core"
-import { symbolBind } from "./Tile.context"
-
-// Notional
-const [rawNotional$, onChangeNotionalValue] = createListener<{
-  symbol: string
-  value: string
-}>()
-
-const initialNotionals$ = currencyPairs$.pipe(
-  mergeMap((pairs) =>
-    Object.values(pairs).map(({ symbol, defaultNotional: value }) => ({
-      symbol,
-      value,
-    })),
-  ),
-)
-
-const mapNotionals$ = merge(rawNotional$, initialNotionals$).pipe(
-  split(
-    (e) => e.symbol,
-    (rawNotional$) =>
-      rawNotional$.pipe(
-        pluck("value"),
-        filter((value) => !Number.isNaN(Number(value))),
-        map(Number),
-      ),
-  ),
-  collect(),
-)
-
-const [useNotional, getNotional$] = symbolBind((symbol) =>
-  getGroupedObservable(mapNotionals$, symbol),
-)
-
-export const [useDefaultNotional, defaultNotional$] = symbolBind((symbol) =>
-  currencyPairs$.pipe(map((pairs) => pairs[symbol]?.defaultNotional ?? 0)),
-)
-export { onChangeNotionalValue, useNotional, getNotional$ }
+import { getNotionalValue$ } from "./Notional"
 
 // Dismiss Message
 const DISMISS_TIMEOUT = 5_000
@@ -119,7 +80,7 @@ const executionsMap$ = tileExecutions$.pipe(
     (execution$, symbol) =>
       execution$.pipe(
         withLatestFrom(
-          getNotional$(symbol),
+          getNotionalValue$(symbol),
           getPrice$(symbol),
           getCurrencyPair$(symbol),
         ),
@@ -128,7 +89,7 @@ const executionsMap$ = tileExecutions$.pipe(
           currencyPair: symbol,
           dealtCurrency: direction === Direction.Buy ? base : terms,
           direction,
-          notional: Number(notional),
+          notional,
           spotRate: direction === Direction.Buy ? price.ask : price.bid,
         })),
         exhaustMap((request) =>
