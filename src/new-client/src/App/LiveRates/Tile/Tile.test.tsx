@@ -59,6 +59,11 @@ describe("Tile", () => {
     _prices.__resetMocks()
     _ccpp.__resetMock()
     _exec.__resetMocks()
+
+    const ccPairMock$ = new BehaviorSubject({
+      [currencyPairMock.symbol]: currencyPairMock,
+    })
+    _ccpp.__setMock(ccPairMock$)
   })
 
   it("should trigger Suspense before it receives the first update", async () => {
@@ -67,11 +72,6 @@ describe("Tile", () => {
 
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
-
-    const ccPairMock$ = new BehaviorSubject({
-      [currencyPairMock.symbol]: currencyPairMock,
-    })
-    _ccpp.__setMock(ccPairMock$)
 
     renderComponent()
 
@@ -90,11 +90,6 @@ describe("Tile", () => {
 
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
-
-    const ccPairMock$ = new BehaviorSubject({
-      [currencyPairMock.symbol]: currencyPairMock,
-    })
-    _ccpp.__setMock(ccPairMock$)
 
     renderComponent()
 
@@ -124,11 +119,6 @@ describe("Tile", () => {
 
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
-
-    const ccPairMock$ = new BehaviorSubject({
-      [currencyPairMock.symbol]: currencyPairMock,
-    })
-    _ccpp.__setMock(ccPairMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
@@ -280,11 +270,6 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
-    const ccPairMock$ = new BehaviorSubject({
-      [currencyPairMock.symbol]: currencyPairMock,
-    })
-    _ccpp.__setMock(ccPairMock$)
-
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
     const executeFn = jest.fn(() => response$)
@@ -351,11 +336,6 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
-    const ccPairMock$ = new BehaviorSubject({
-      [currencyPairMock.symbol]: currencyPairMock,
-    })
-    _ccpp.__setMock(ccPairMock$)
-
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
     const executeFn = jest.fn(() => response$)
@@ -418,17 +398,12 @@ describe("Tile", () => {
     )
   })
 
-  it("should not re-trigger executions after remounting", async () => {
+  it("should not re-trigger executions after remounting", () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
     _prices.__setHistoricalPricesMock(hPriceMock$)
-
-    const ccPairMock$ = new BehaviorSubject({
-      [currencyPairMock.symbol]: currencyPairMock,
-    })
-    _ccpp.__setMock(ccPairMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
@@ -452,7 +427,7 @@ describe("Tile", () => {
     expect(executeFn.mock.calls.length).toBe(1)
   })
 
-  it("should unformat the notional number when focused", async () => {
+  it("should not unformat the notional number when focused", () => {
     renderComponent()
     const input = screen.getAllByRole("input")[0] as HTMLInputElement
     act(() => {
@@ -463,10 +438,27 @@ describe("Tile", () => {
     act(() => {
       fireEvent.focus(input)
     })
-    expect(input.value).toBe("1000000")
+    expect(input.value).toBe("1,000,000")
   })
 
-  it("should not allow letters in the notional input", async () => {
+  it("should automatically selected the text of the input when focused", () => {
+    const priceMock$ = new BehaviorSubject<Price>(priceMock)
+    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+
+    const hPriceMock$ = new Subject<HistoryPrice>()
+    _prices.__setHistoricalPricesMock(hPriceMock$)
+
+    renderComponent()
+    const input = screen.getAllByRole("input")[0] as HTMLInputElement
+    act(() => {
+      fireEvent.focus(input)
+    })
+
+    expect(input.selectionStart).toBe(0)
+    expect(input.selectionEnd).toBe("1,000,000".length)
+  })
+
+  it("should not allow letters in the notional input", () => {
     renderComponent()
     const input = screen.getAllByRole("input")[0] as HTMLInputElement
     expect(input.value).toBe("1,000,000")
@@ -476,7 +468,7 @@ describe("Tile", () => {
     expect(input.value).toBe("1,000,000")
   })
 
-  it("should reformat the notional input after got new value", async () => {
+  it("should reformat the notional input after got new value", () => {
     renderComponent()
     const input = screen.getAllByRole("input")[0] as HTMLInputElement
 
