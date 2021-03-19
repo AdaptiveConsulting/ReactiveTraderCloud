@@ -8,7 +8,6 @@ export type {
   DateColField,
 } from "./filterState"
 export {
-  distinctSetFieldValues$,
   onQuickFilterInput,
   onColFilterToggle,
   useAppliedSetFieldFilters,
@@ -20,6 +19,7 @@ export {
   useAppliedNumFilters,
   appliedNumFilters$,
   useAppliedDateFilters,
+  useDistinctSetFieldValues,
   appliedDateFilters$,
   onColFilterDateSelect,
 } from "./filterState"
