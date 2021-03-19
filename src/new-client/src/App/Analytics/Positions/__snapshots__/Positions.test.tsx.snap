@@ -58,57 +58,6 @@ exports[`Positions should display the correct bubble chart 1`] = `
           </femerge>
         </filter>
       </defs>
-      <g
-        class="node"
-      >
-        <circle
-          cx="0"
-          cy="0"
-          r="17.048166533483364"
-          style="fill: #ff274b; filter: url(#drop-shadow);"
-        />
-        <text
-          class="analytics__positions-label"
-          data-testid="positions-label-EUR"
-          text-anchor="middle"
-        >
-          EUR
-        </text>
-      </g>
-      <g
-        class="node"
-      >
-        <circle
-          cx="0"
-          cy="0"
-          r="15"
-          style="fill: #ff274b; filter: url(#drop-shadow);"
-        />
-        <text
-          class="analytics__positions-label"
-          data-testid="positions-label-AUD"
-          text-anchor="middle"
-        >
-          AUD
-        </text>
-      </g>
-      <g
-        class="node"
-      >
-        <circle
-          cx="0"
-          cy="0"
-          r="60"
-          style="fill: #01c38d; filter: url(#drop-shadow);"
-        />
-        <text
-          class="analytics__positions-label"
-          data-testid="positions-label-JPY"
-          text-anchor="middle"
-        >
-          JPY
-        </text>
-      </g>
     </svg>
   </div>
 </div>
@@ -161,27 +110,31 @@ exports[`Positions should display the correct bubble chart 2`] = `
       </defs>
       <g
         class="node"
+        style="visibility: visible;"
       >
         <circle
-          cx="0"
-          cy="0"
-          r="17.048166533483364"
+          cx="22.366362534396142"
+          cy="65.17120150536171"
+          r="15.240588068460097"
           style="fill: #ff274b; filter: url(#drop-shadow);"
         />
         <text
           class="analytics__positions-label"
           data-testid="positions-label-EUR"
           text-anchor="middle"
+          x="22.366362534396142"
+          y="69.17120150536171"
         >
           EUR
         </text>
       </g>
       <g
         class="node"
+        style="visibility: visible;"
       >
         <circle
-          cx="0"
-          cy="0"
+          cx="-24.09298211184919"
+          cy="64.28187563887715"
           r="15"
           style="fill: #ff274b; filter: url(#drop-shadow);"
         />
@@ -189,16 +142,19 @@ exports[`Positions should display the correct bubble chart 2`] = `
           class="analytics__positions-label"
           data-testid="positions-label-AUD"
           text-anchor="middle"
+          x="-24.09298211184919"
+          y="68.28187563887715"
         >
           AUD
         </text>
       </g>
       <g
         class="node"
+        style="visibility: visible;"
       >
         <circle
-          cx="0"
-          cy="0"
+          cx="0.13455356501548343"
+          cy="-10.50968065293873"
           r="60"
           style="fill: #01c38d; filter: url(#drop-shadow);"
         />
@@ -206,6 +162,8 @@ exports[`Positions should display the correct bubble chart 2`] = `
           class="analytics__positions-label"
           data-testid="positions-label-JPY"
           text-anchor="middle"
+          x="0.13455356501548343"
+          y="-6.50968065293873"
         >
           JPY
         </text>

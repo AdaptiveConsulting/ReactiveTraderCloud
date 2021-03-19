@@ -1,5 +1,5 @@
 import { Subscribe } from "@react-rxjs/core"
-import { render, screen, act, fireEvent } from "@testing-library/react"
+import { render, screen, act, fireEvent, waitFor } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 import { TestThemeProvider } from "@/utils/testUtils"
 import { Positions, positions$ } from "./Positions"
@@ -89,13 +89,17 @@ describe("Positions", () => {
     )
   })
 
-  it("should render the correct price tag", () => {
+  it("should render the correct price tag", async () => {
     const positionMock$ = new BehaviorSubject<
       Record<string, CurrencyPairPosition>
     >(positionMock)
     _analytics.__setPositionMock(positionMock$)
 
     renderComponent()
+
+    await waitFor(() =>
+      expect(screen.getByTestId("positions-label-JPY")).not.toBeNull(),
+    )
 
     act(() => {
       fireEvent.mouseOver(screen.getByTestId("positions-label-JPY"))
@@ -111,13 +115,19 @@ describe("Positions", () => {
 
     act(() => {
       positionMock$.next(positionMock2)
+    })
+    await waitFor(() =>
+      expect(screen.getByTestId("positions-label-AUD")).not.toBeNull(),
+    )
+
+    act(() => {
       fireEvent.mouseOver(screen.getByTestId("positions-label-AUD"))
     })
 
     expect(screen.getByTestId("tooltip").textContent).toBe("AUD -1,557,031")
   })
 
-  it("should display the correct bubble chart", () => {
+  it("should display the correct bubble chart", async () => {
     const positionMock$ = new BehaviorSubject<
       Record<string, CurrencyPairPosition>
     >(positionMock)
@@ -137,6 +147,8 @@ describe("Positions", () => {
     act(() => {
       positionMock$.next(positionMock2)
     })
+
+    await new Promise((res) => setTimeout(res, 2200))
 
     expect(container.firstChild).toMatchSnapshot()
 

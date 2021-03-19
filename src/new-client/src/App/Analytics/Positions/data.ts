@@ -1,10 +1,11 @@
-import { scaleSqrt, SimulationNodeDatum } from "d3"
+import { scaleLinear, SimulationNodeDatum } from "d3"
 import { combineLatest, Observable } from "rxjs"
 import {
   distinctUntilChanged,
   filter,
   map,
   scan,
+  throttleTime,
   withLatestFrom,
 } from "rxjs/operators"
 import { colors } from "@/theme"
@@ -33,10 +34,7 @@ export const [useData, data$] = bind(
   ),
 )
 
-export const nodes$: Observable<{
-  isAddRemove: boolean
-  nodes: BubbleChartNode[]
-}> = currentPositions$.pipe(
+export const nodes$: Observable<BubbleChartNode[]> = currentPositions$.pipe(
   map((positions) =>
     mapObject(positions, ({ baseTradedAmount, counterTradedAmount }) => ({
       baseTradedAmount,
@@ -76,7 +74,7 @@ export const nodes$: Observable<{
     return [
       positionData,
       {
-        r: scaleSqrt().domain([minValue, maxValue]).range([minR, maxR]),
+        r: scaleLinear().domain([minValue, maxValue]).range([minR, maxR]),
       },
     ] as const
   }),
@@ -89,35 +87,17 @@ export const nodes$: Observable<{
           ? colors.accents.positive.base
           : colors.accents.negative.base
 
-      const node = acc[dataObj.symbol] || { id: dataObj.symbol }
-      Object.assign(node, {
-        color,
-        r: scales.r(Math.abs(dataObj.baseTradedAmount)),
-        text: formatAsWholeNumber(dataObj.baseTradedAmount),
-      })
-      newAcc[dataObj.symbol] = node
+      newAcc[dataObj.symbol] = Object.assign(
+        acc[dataObj.symbol] || { id: dataObj.symbol },
+        {
+          color,
+          r: scales.r(Math.abs(dataObj.baseTradedAmount)),
+          text: formatAsWholeNumber(dataObj.baseTradedAmount),
+        },
+      )
     })
     return newAcc
   }, {} as Record<string, BubbleChartNode>),
-  scan<
-    Record<string, BubbleChartNode>,
-    {
-      prev: Record<string, BubbleChartNode> | null
-      current: Record<string, BubbleChartNode>
-    }
-  >(
-    (acc, current) => ({
-      prev: acc.current,
-      current,
-    }),
-    { prev: null, current: null } as any,
-  ),
-  map(({ prev, current }) => {
-    const nodes = Object.values(current)
-    return {
-      isAddRemove: prev === null || Object.keys(prev).length !== nodes.length,
-      nodes,
-    }
-  }),
+  map(Object.values),
   shareLatest(),
 )
