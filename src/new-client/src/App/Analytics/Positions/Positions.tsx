@@ -68,123 +68,108 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
     tooltip.text(`${id} ${node.text}`)
   }
 
-  // setup that happens on mount and when nodes are added/removed
-  const subscription = nodes$.subscribe(({ nodes, isAddRemove }) => {
-    const { width, height } = chartDiv.getBoundingClientRect()
+  const onMove = (
+    event: D3DragEvent<any, BubbleChartNode, any>,
+    d: BubbleChartNode,
+  ) => {
+    force.alpha(0.5).restart()
+    positionTooltip(event.sourceEvent, d)
+    d.fx = event.x
+    d.fy = event.y
+  }
 
-    const svg = select(chartDiv).select("svg")
-    const children = () => svg.selectAll("g").data(nodes, getId)
-
-    if (isAddRemove) {
-      children().exit().remove()
-
-      children()
-        .enter()
-        .append("g")
-        .attr("class", "node")
-        .append("circle")
-        .attr("r", (d) => d.r)
-        .attr("cx", width / 2)
-        .attr("cy", height / 2)
-        .style("fill", (d: BubbleChartNode) => d.color)
-        .style("filter", "url(#drop-shadow)")
-
-      children()
-        .append("text")
-        .attr("text-anchor", "middle")
-        .attr("class", "analytics__positions-label")
-        .attr("data-testid", (d: BubbleChartNode) => `positions-label-${d.id}`)
-        .text(getId)
-
-      children()
-        .on("mouseover", (e, d) => {
-          tooltip.style("visibility", "visible")
-          positionTooltip(e, d)
-        })
-        .on("mousemove", positionTooltip)
-        .on("mouseout", () => {
-          tooltip.style("visibility", "hidden")
-        })
-    } else {
-      children()
-        .selectAll("circle")
-        .data(nodes, getId)
-        .transition()
-        .duration(800)
-        .attr("r", (d: BubbleChartNode) => d.r)
-        .style("filter", "url(#drop-shadow)")
-        .style("fill", (d: BubbleChartNode) => d.color)
-    }
-
-    const force = forceSimulation(nodes)
-      // forces that pull all nodes toward the center of the simulation
-      .force(
-        "forceX",
-        forceX<BubbleChartNode>()
-          .strength(0.1)
-          .x(width * 0.5),
-      )
-      .force(
-        "forceY",
-        forceY<BubbleChartNode>()
-          .strength(0.1)
-          .y(height * 0.5),
-      )
-      // force that pushes nodes away from each other when they are
-      // within each other's collision radius
-      .force(
-        "collide",
-        forceCollide<BubbleChartNode>()
-          .strength(0.5)
-          .radius(function (d) {
-            return d.r + COLLIDE_BORDER_WIDTH
-          }),
-      )
-      // on each tick, take the x and y values calculated by d3
-      // and set the circle and circle text coordinates to those values
-      .on("tick", () => {
-        svg
-          .selectAll("circle")
-          .attr("cx", function (d: any) {
-            return d.x
-          })
-          .attr("cy", function (d: any) {
-            return d.y
-          })
-        svg
-          .selectAll("text")
-          .attr("x", function (d: any) {
-            return d.x
-          })
-          .attr("y", function (d: any) {
-            // add a few pixels for better center alignment
-            return d.y + 4
-          })
-      })
-
-    const onMove = (
-      event: D3DragEvent<any, BubbleChartNode, any>,
-      d: BubbleChartNode,
-    ) => {
-      force.alpha(0.5).restart()
-      positionTooltip(event.sourceEvent, d)
-      d.fx = event.x
-      d.fy = event.y
-    }
-
-    // on drag, restart the simulation with a moderate amount of entropy
-    // to start the system ticking again, which allows for visual updates
-    children().call(
-      drag<any, BubbleChartNode>()
-        .on("start", onMove)
-        .on("drag", onMove)
-        .on("end", (event, d) => {
-          force.alphaTarget(0)
-          positionTooltip(event.sourceEvent, d)
-          d.fx = null
-          d.fy = null
+  const force = forceSimulation<BubbleChartNode>()
+    // forces that pull all nodes toward the center of the simulation
+    .force(
+      "forceX",
+      forceX<BubbleChartNode>()
+        .strength(0.1)
+        .x(width * 0.5),
+    )
+    .force(
+      "forceY",
+      forceY<BubbleChartNode>()
+        .strength(0.1)
+        .y(height * 0.5),
+    )
+    // force that pushes nodes away from each other when they are
+    // within each other's collision radius
+    .force(
+      "collide",
+      forceCollide<BubbleChartNode>()
+        .strength(0.5)
+        .radius(function (d) {
+          return d.r + COLLIDE_BORDER_WIDTH
         }),
     )
+    .alphaMin(0.05)
+
+  force.on("tick", () => {
+    svg
+      .selectAll("g:not(.exit)")
+      .data(force.nodes(), getId)
+      .join(
+        (enter) =>
+          enter
+            .append("g")
+            .style("visibility", "hidden")
+            .call(
+              drag<any, BubbleChartNode>()
+                .on("start", onMove)
+                .on("drag", onMove)
+                .on("end", (event, d) => {
+                  force.alphaTarget(0)
+                  positionTooltip(event.sourceEvent, d)
+                  d.fx = null
+                  d.fy = null
+                }),
+            )
+            .on("mouseover", (e, d) => {
+              tooltip.style("visibility", "visible")
+              positionTooltip(e, d)
+            })
+            .on("mousemove", positionTooltip)
+            .on("mouseout", () => {
+              tooltip.style("visibility", "hidden")
+            })
+            .attr("class", "node")
+            .append("circle")
+            .attr("r", (d) => d.r)
+            .attr("cx", width / 2)
+            .attr("cy", height / 2)
+            .style("fill", (d: BubbleChartNode) => d.color)
+            .style("filter", "url(#drop-shadow)")
+            .select(function () {
+              return this.parentNode as any
+            })
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("class", "analytics__positions-label")
+            .attr(
+              "data-testid",
+              (d: BubbleChartNode) => `positions-label-${d.id}`,
+            )
+            .text(getId),
+        (update) =>
+          update
+            .style("visibility", "visible")
+            .select("circle")
+            .attr("cx", (d: any) => d.x)
+            .attr("cy", (d: any) => d.y)
+            .style("fill", (d: BubbleChartNode) => d.color)
+            .attr("r", (d: BubbleChartNode) => d.r)
+            .select(function () {
+              return (this as any).parentNode as any
+            })
+            .select("text")
+            .attr("x", (d: any) => d.x)
+            .attr("y", (d: any) => d.y + 4),
+        (exit) => exit.classed("exit", true).remove(),
+      )
+  })
+
+  const subscription = nodes$.subscribe((nodes) => {
+    force.restart().alpha(0.5).nodes(nodes)
   })
 
   return () => subscription.unsubscribe()
