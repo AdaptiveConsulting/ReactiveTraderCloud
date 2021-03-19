@@ -1,18 +1,17 @@
 import styled from "styled-components"
 import { FaCheck } from "react-icons/fa"
-import { createListener } from "@react-rxjs/utils"
-import { bind } from "@react-rxjs/core"
+import { bind, Subscribe } from "@react-rxjs/core"
 import {
   colConfigs,
   SetColField,
   onColFilterToggle,
-  distinctSetFieldValues$,
   onFilterReset,
   useAppliedSetFieldFilters,
+  useDistinctSetFieldValues,
 } from "../TradesState"
-import { map, startWith } from "rxjs/operators"
-import { combineLatest } from "rxjs"
 import { FilterPopup } from "./components/FilterPopup"
+import { onSearchInput, searchInputs$ } from "../TradesState/filterState"
+import { filter, map, startWith } from "rxjs/operators"
 
 const MultiSelectOption = styled.div<{
   selected: boolean
@@ -51,42 +50,30 @@ const SearchInput = styled.input`
     border-bottom: 0.0625rem solid ${({ theme }) => theme.core.activeColor};
   }
 `
-
-const [searchInputs$, onSearchInput] = createListener<string>()
-
-const [useFilterOptions] = bind(
-  (key: SetColField) =>
-    combineLatest([
-      searchInputs$.pipe(startWith("")),
-      distinctSetFieldValues$(key),
-    ]).pipe(
-      map(([searchInput, distinctFieldValues]) => {
-        const distinctValuesArray = [...distinctFieldValues] as string[]
-        if (!searchInput.length) {
-          return distinctValuesArray
-        } else {
-          return distinctValuesArray.filter((fieldValue) =>
-            fieldValue.toLowerCase().includes(searchInput.toLowerCase()),
-          )
-        }
-      }),
-    ),
-  [],
+const [useInputText, inputText$] = bind((propsField) =>
+  searchInputs$.pipe(
+    filter(({ field: eventField }) => propsField === eventField),
+    map(({ value }) => value),
+    startWith(""),
+  ),
 )
 
-export const SetFilter: React.FC<{
+const SetFilterInner: React.FC<{
   field: SetColField
   parentRef: React.RefObject<HTMLDivElement>
 }> = ({ field, parentRef }) => {
   const selected = useAppliedSetFieldFilters(field) as Set<string>
-  const options = useFilterOptions(field)
+  const options = useDistinctSetFieldValues(field) as Set<string>
+  const inputValue = useInputText(field)
   const { valueFormatter } = colConfigs[field]
+
   return (
     <FilterPopup parentRef={parentRef}>
       <SearchInput
         type="text"
         placeholder="Search"
-        onChange={(e) => onSearchInput(e.target.value)}
+        value={inputValue}
+        onChange={(e) => onSearchInput(field, e.target.value)}
       />
       <MultiSelectOption
         key={`select-all-filter`}
@@ -100,7 +87,7 @@ export const SetFilter: React.FC<{
         Select All
         <AlignedChecked>{selected.size === 0 && <FaCheck />}</AlignedChecked>
       </MultiSelectOption>
-      {options.map((option) => {
+      {[...options].map((option) => {
         const isSelected = selected.has(option)
         return (
           <MultiSelectOption
@@ -116,3 +103,12 @@ export const SetFilter: React.FC<{
     </FilterPopup>
   )
 }
+
+export const SetFilter: React.FC<{
+  field: SetColField
+  parentRef: React.RefObject<HTMLDivElement>
+}> = ({ field, parentRef }) => (
+  <Subscribe source$={inputText$(field)}>
+    <SetFilterInner field={field} parentRef={parentRef} />
+  </Subscribe>
+)

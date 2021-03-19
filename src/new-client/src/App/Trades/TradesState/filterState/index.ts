@@ -28,10 +28,11 @@ export {
 } from "./numFilterState"
 export type { SetColField, DistinctValues } from "./setFilterState"
 export {
-  colFilterToggle$,
+  onSearchInput,
+  searchInputs$,
   onColFilterToggle,
   setFieldValuesContainer,
-  distinctSetFieldValues$,
+  useDistinctSetFieldValues,
   useAppliedSetFieldFilters,
   appliedSetFieldFilters$,
   useAppliedSetFilterEntries,

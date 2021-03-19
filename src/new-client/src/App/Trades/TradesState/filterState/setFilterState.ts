@@ -1,4 +1,4 @@
-import { map, scan, shareReplay, startWith } from "rxjs/operators"
+import { map, mergeMap, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createListener, mergeWithKey } from "@react-rxjs/utils"
 import { mapObject } from "@/utils"
@@ -20,10 +20,23 @@ interface ColFieldToggle<T extends SetColField> extends FilterEvent {
   value: Trade[T]
 }
 
-export const [colFilterToggle$, onColFilterToggle] = createListener(
+interface SearchInput extends FilterEvent {
+  value: string
+}
+
+const [colFilterToggle$, onColFilterToggle] = createListener(
   <T extends SetColField>(field: T, value: Trade[T]) =>
     ({ field, value } as ColFieldToggle<T>),
 )
+
+const [_si$, onSearchInput] = createListener(
+  <T extends SetColField>(field: T, value: string) =>
+    ({ field, value } as SearchInput),
+)
+
+const searchInputs$ = _si$.pipe(shareReplay())
+
+export { onColFilterToggle, onSearchInput, searchInputs$ }
 
 const setFields = colFields.filter(
   (field) => colConfigs[field].filterType === "set",
@@ -57,21 +70,41 @@ const distinctValues$ = trades$.pipe(
   ),
 )
 
-export const [_, distinctSetFieldValues$] = bind(
+export const [useDistinctSetFieldValues, distinctSetFieldValues$] = bind(
   <T extends SetColField>(field: T) =>
     distinctValues$.pipe(map((distinctValues) => distinctValues[field])),
   new Set(),
 )
 
 const appliedSetFilters$ = mergeWithKey({
+  searchInput: searchInputs$,
   toggle: colFilterToggle$,
   reset: filterResets$,
 }).pipe(
-  scan((appliedFilters, event) => {
+  mergeMap((event) =>
+    distinctSetFieldValues$(event.payload.field as SetColField).pipe(
+      map((distinctSetFieldValues) => ({
+        event,
+        distinctSetFieldValues,
+      })),
+    ),
+  ),
+  scan((appliedFilters, { event, distinctSetFieldValues }) => {
     let newValues: Set<unknown>
     const field = event.payload.field
     if (event.type === "reset") {
       newValues = new Set()
+    } else if (event.type === "searchInput") {
+      const { value: searchTerm } = event.payload
+      if (searchTerm.length === 0) {
+        newValues = new Set()
+      } else {
+        newValues = new Set(
+          [...distinctSetFieldValues].filter((fieldValue) =>
+            String(fieldValue).toLowerCase().includes(searchTerm.toLowerCase()),
+          ),
+        )
+      }
     } else {
       newValues = new Set(
         appliedFilters[field as SetColField] as Iterable<string>,
