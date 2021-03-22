@@ -1,6 +1,6 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { TradeStatus } from "@/services/trades"
-import { useTableTrades, colFields, colConfigs } from "../TradesState"
+import { colConfigs, colFields, useTableTrades } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
 
 const TableWrapper = styled.div`
@@ -24,7 +24,12 @@ const TableHeadRow = styled.tr`
   vertical-align: center;
   height: 2rem;
 `
-const TableBodyRow = styled.tr`
+
+const pendingBackgroundColor = css`
+  background-color: ${({ theme }) => theme.core.alternateBackground};
+`
+
+const TableBodyRow = styled.tr<{ pending?: boolean }>`
   &:nth-child(even) {
     background-color: ${({ theme }) => theme.core.darkBackground};
   }
@@ -32,6 +37,7 @@ const TableBodyRow = styled.tr`
     background-color: ${({ theme }) => theme.core.alternateBackground};
   }
   height: 2rem;
+  ${({ pending }) => pending && pendingBackgroundColor}
 `
 
 const TableBodyCell = styled.td<{ numeric?: boolean; rejected?: boolean }>`
@@ -76,17 +82,17 @@ export const TradesGrid: React.FC = () => {
           <TableHeadRow>
             <StatusIndicatorSpacer />
             {colFields.map((field) => (
-              <TableHeadCellContainer
-                key={field}
-                field={field}
-              ></TableHeadCellContainer>
+              <TableHeadCellContainer key={field} field={field} />
             ))}
           </TableHeadRow>
         </TableHead>
         <tbody role="grid">
           {trades.length ? (
             trades.map((trade) => (
-              <TableBodyRow key={trade.tradeId}>
+              <TableBodyRow
+                key={trade.tradeId}
+                pending={trade.status === TradeStatus.Pending}
+              >
                 <StatusIndicator status={trade.status} />
                 {colFields.map((field) => (
                   <TableBodyCell
