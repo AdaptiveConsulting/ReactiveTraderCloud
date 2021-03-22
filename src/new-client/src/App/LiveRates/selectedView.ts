@@ -14,7 +14,7 @@ const SELECTED_VIEW_KEY = "selectedView"
 
 const initView =
   (window.localStorage.getItem(SELECTED_VIEW_KEY) as TileView) ||
-  TileView.Normal
+  TileView.Analytics
 
 export const [useSelectedTileView] = bind(
   toggleSelectedView$.pipe(

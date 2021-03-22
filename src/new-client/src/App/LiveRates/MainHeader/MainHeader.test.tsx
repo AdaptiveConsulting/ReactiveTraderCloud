@@ -88,10 +88,6 @@ describe("MainHeader", () => {
   it("should show the charts in tiles once click toggle view button", async () => {
     renderComponent()
 
-    act(() => {
-      fireEvent.click(screen.getByTestId("toggleButton"))
-    })
-
     expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
       "IsAnalytics: true",
     )
@@ -102,6 +98,14 @@ describe("MainHeader", () => {
 
     expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
       "IsAnalytics: false",
+    )
+
+    act(() => {
+      fireEvent.click(screen.getByTestId("toggleButton"))
+    })
+
+    expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
+      "IsAnalytics: true",
     )
   })
 })
