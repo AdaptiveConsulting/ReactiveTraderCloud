@@ -99,7 +99,7 @@ npm run openfin
 npm run openfin:launcher
 ```
 
-## Pogressive Web App (PWA)
+## Progressive Web App (PWA)
 
 Reactive Trader can be installed as a progressive web application.
 
