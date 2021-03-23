@@ -24,9 +24,9 @@ const getFileName = (type, env) => {
 
 const createInstaller = async (type, env, os = 'win') => {
   const fileName = getFileName(type, env)
-  const appJSONUrl = env === 'demo'
-    ? `https://www.reactivetrader.com/openfin/${type}.json`
-    : `https://${env.toLowerCase()}.reactivetrader.com/openfin/${type}.json`
+  const appJSONUrl = env === 'Demo'
+    ? `https://classic.reactivetrader.com/openfin/${type}.json`
+    : `https://${env.toLowerCase()}.classic.lb.adaptivecluster.com/openfin/${type}.json`
   const installerGeneratorUrl = await getInstallerGeneratorUrl(fileName, appJSONUrl, os)
   const extension = os === 'win' ? 'exe' : 'dmg'
 

@@ -24,6 +24,7 @@ spec:
     - "*.adaptivecluster.com"
     - "*.lb.adaptivecluster.com"
     - "*.beta.lb.adaptivecluster.com"
+    - "*.classic.lb.adaptivecluster.com"
     secretName: reactive-trader-tls
 
   backend:
@@ -49,17 +50,37 @@ data:
 
     server {
       listen 8080;
-      server_name www.reactivetrader.com ~^(?<namespace>(dev|uat))\.reactivetrader.com ~^web-(?<namespace>(demo|uat|dev))\.adaptivecluster.com ~^(?<namespace>[^\.]+?)\.(beta\.)?lb.adaptivecluster.com$;
+      server_name ~^web-(?<namespace>(demo|uat|dev))\.adaptivecluster.com;
+
+      if ($namespace = "demo") {
+        set $namespace "www";
+      }
+
+      return 301 $scheme://$namespace.reactivetrader.com$request_uri;
+    }
+
+    server {
+      listen 8080;
+      server_name ~^(?<namespace>(www|classic|dev|uat))\.reactivetrader.com ~^(?<namespace>[^\.]+?)\.((beta|classic)\.)?lb.adaptivecluster.com$;
       resolver kube-dns.kube-system.svc.cluster.local valid=5s;
 
       set $client_upstream "client";
 
-      if ($host = "www.reactivetrader.com") {
+      if ($namespace = "www") {
         set $namespace "demo";
+      }
+
+      if ($namespace = "classic") {
+        set $namespace "demo";
+        set $client_upstream "client";
       }
 
       if ($host ~ "^[^\.]+\.beta\.") {
         set $client_upstream "new-client";
+      }
+
+      if ($host ~ "^[^\.]+\.classic\.") {
+        set $client_upstream "client";
       }
 
       expires $expires;
