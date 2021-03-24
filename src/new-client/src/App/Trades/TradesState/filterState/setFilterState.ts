@@ -1,6 +1,6 @@
 import { map, mergeMap, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import { createListener, mergeWithKey } from "@react-rxjs/utils"
+import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { mapObject } from "@/utils"
 import type { Trade } from "@/services/trades"
 import { trades$ } from "@/services/trades"
@@ -24,12 +24,12 @@ interface SearchInput extends FilterEvent {
   value: string
 }
 
-const [colFilterToggle$, onColFilterToggle] = createListener(
+const [colFilterToggle$, onColFilterToggle] = createSignal(
   <T extends SetColField>(field: T, value: Trade[T]) =>
     ({ field, value } as ColFieldToggle<T>),
 )
 
-const [_si$, onSearchInput] = createListener(
+const [_si$, onSearchInput] = createSignal(
   <T extends SetColField>(field: T, value: string) =>
     ({ field, value } as SearchInput),
 )

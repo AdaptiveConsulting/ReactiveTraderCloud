@@ -1,4 +1,4 @@
-import { createListener } from "@react-rxjs/utils"
+import { createSignal } from "@react-rxjs/utils"
 import type { ColField } from "../colConfig"
 
 export enum ComparatorType {
@@ -14,11 +14,11 @@ export interface FilterEvent {
   field: ColField
 }
 
-export const [filterResets$, onFilterReset] = createListener(
+export const [filterResets$, onFilterReset] = createSignal(
   (field: ColField) => ({ field } as FilterEvent),
 )
 
-export const [quickFilterInputs$, onQuickFilterInput] = createListener<string>()
+export const [quickFilterInputs$, onQuickFilterInput] = createSignal<string>()
 
 export const initialFilterContent = {
   comparator: ComparatorType.Equals,
