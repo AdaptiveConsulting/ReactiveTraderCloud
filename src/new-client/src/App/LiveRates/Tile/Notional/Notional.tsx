@@ -8,15 +8,10 @@ import {
   Input,
   NotionalInputWrapper,
 } from "./Notional.styles"
-import { merge, pipe } from "rxjs"
+import { concat, merge, pipe } from "rxjs"
 import { currencyPairs$ } from "@/services/currencyPairs"
-import { filter, map, mergeMap, pluck } from "rxjs/operators"
-import {
-  collect,
-  createListener,
-  getGroupedObservable,
-  split,
-} from "@react-rxjs/utils"
+import { filter, map, pluck, take } from "rxjs/operators"
+import { createKeyedSignal } from "@react-rxjs/utils"
 
 const ResetInputValue = styled.button<{ isVisible: boolean }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
@@ -33,20 +28,11 @@ const ResetInputValue = styled.button<{ isVisible: boolean }>`
   }
 `
 
-const [rawNotional$, onChangeNotionalValue] = createListener<{
-  symbol: string
-  rawVal: string
-}>()
-export { onChangeNotionalValue }
-
-const initialNotionals$ = currencyPairs$.pipe(
-  mergeMap((pairs) =>
-    Object.values(pairs).map(({ symbol, defaultNotional: value }) => ({
-      symbol,
-      rawVal: value.toString(10),
-    })),
-  ),
+const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
+  (x) => x.symbol,
+  (symbol: string, rawVal: string) => ({ symbol, rawVal }),
 )
+export { onChangeNotionalValue }
 
 const multipliers: Record<string, number> = {
   k: 1_000,
@@ -54,29 +40,29 @@ const multipliers: Record<string, number> = {
 }
 const formatter = new Intl.NumberFormat("default")
 
-const mapNotionals$ = merge(rawNotional$, initialNotionals$).pipe(
-  split(
-    (e) => e.symbol,
-    (rawNotional$) =>
-      rawNotional$.pipe(
-        map(({ rawVal }) => {
-          const lastChar = rawVal.slice(-1).toLowerCase()
-          const value =
-            Number(rawVal.replace(/,|k$|m$|K$|M$/g, "")) *
-            (multipliers[lastChar] || 1)
-          return {
-            value,
-            inputValue: formatter.format(value) + (lastChar === "." ? "." : ""),
-          }
-        }),
-        filter(({ value }) => !Number.isNaN(value)),
-      ),
-  ),
-  collect(),
-)
-
 const [useNotional, getNotional$] = symbolBind((symbol) =>
-  getGroupedObservable(mapNotionals$, symbol),
+  concat(
+    currencyPairs$.pipe(
+      take(1),
+      map((ccPairs) => ({
+        symbol,
+        rawVal: ccPairs[symbol].defaultNotional.toString(),
+      })),
+    ),
+    rawNotional$(symbol),
+  ).pipe(
+    map(({ rawVal }) => {
+      const lastChar = rawVal.slice(-1).toLowerCase()
+      const value =
+        Number(rawVal.replace(/,|k$|m$|K$|M$/g, "")) *
+        (multipliers[lastChar] || 1)
+      return {
+        value,
+        inputValue: formatter.format(value) + (lastChar === "." ? "." : ""),
+      }
+    }),
+    filter(({ value }) => !Number.isNaN(value)),
+  ),
 )
 export const [, getNotionalValue$] = symbolBind(
   pipe(getNotional$, pluck("value")),
@@ -109,7 +95,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
           )}
           value={notional.inputValue}
           onChange={(e) => {
-            onChangeNotionalValue({ symbol, rawVal: e.target.value })
+            onChangeNotionalValue(symbol, e.target.value)
           }}
           onFocus={(event) => {
             event.target.select()
@@ -118,10 +104,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
         <ResetInputValue
           isVisible={notional.value !== defaultNotional}
           onClick={() => {
-            onChangeNotionalValue({
-              symbol,
-              rawVal: defaultNotional.toString(10),
-            })
+            onChangeNotionalValue(symbol, defaultNotional.toString(10))
           }}
         >
           <FaRedo className="flipHorizontal" />

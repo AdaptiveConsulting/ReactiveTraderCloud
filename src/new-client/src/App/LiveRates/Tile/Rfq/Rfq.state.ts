@@ -1,8 +1,8 @@
-import { concat, of, race, timer } from "rxjs"
+import { concat, EMPTY, of, race, timer } from "rxjs"
 import {
   distinctUntilChanged,
+  exhaustMap,
   filter,
-  groupBy,
   map,
   mapTo,
   mergeMap,
@@ -10,11 +10,7 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
-import {
-  collect,
-  createListener,
-  getGroupedObservable,
-} from "@react-rxjs/utils"
+import { createKeyedSignal } from "@react-rxjs/utils"
 import { rfq$, RfqResponse } from "@/services/rfqs"
 import { getTileState$, TileStates } from "../Tile.state"
 import { symbolBind } from "../Tile.context"
@@ -37,38 +33,24 @@ export enum QuoteState {
   Rejected,
 }
 
-export const REJECT_TIMEOUT = 2_000
-
-const createSymbolSignal = () => {
-  const [input$, onInput] = createListener<string>()
-  const source$ = input$.pipe(
-    groupBy((x) => x),
-    collect(),
-  )
-  return [
-    (key: string, nTake?: number) =>
-      getGroupedObservable(source$, key).pipe(nTake ? take(nTake) : (x) => x),
-    onInput,
-  ] as const
-}
-
-const [getQuoteRequested$, onQuoteRequest] = createSymbolSignal()
-const [getRequestCancellation$, onCancelRequest] = createSymbolSignal()
-const [getRejection$, onRejection] = createSymbolSignal()
+const [getQuoteRequested$, onQuoteRequest] = createKeyedSignal<string>()
+const [getRequestCancellation$, onCancelRequest] = createKeyedSignal<string>()
+const [getRejection$, onRejection] = createKeyedSignal<string>()
 
 export { onRejection, onCancelRequest, onQuoteRequest }
 
 const INIT = { state: QuoteState.Init as const }
 const REQUESTED = { state: QuoteState.Requested as const }
+export const REJECT_TIMEOUT = 2_000
 
 const [, _getRfqState$] = symbolBind((symbol) =>
   getQuoteRequested$(symbol).pipe(
     withLatestFrom(getNotionalValue$(symbol)),
-    switchMap(([, notional]) =>
+    exhaustMap(([, notional]) =>
       concat(
         of(REQUESTED),
         race([
-          getRequestCancellation$(symbol, 1).pipe(mapTo(INIT)),
+          getRequestCancellation$(symbol).pipe(take(1), mapTo(INIT)),
           rfq$({ symbol, notional }).pipe(
             mergeMap((payload) =>
               concat(
@@ -76,25 +58,27 @@ const [, _getRfqState$] = symbolBind((symbol) =>
                 race([
                   getTileState$(symbol).pipe(
                     filter((x) => x.status === TileStates.Started),
-                    take(1),
                     mapTo(INIT),
                   ),
-                  race([getRejection$(symbol, 1), timer(payload.timeout)]).pipe(
-                    mergeMap(() =>
-                      concat(
-                        of({
-                          state: QuoteState.Rejected as const,
-                          payload,
-                        }),
-                        timer(REJECT_TIMEOUT).pipe(mapTo(INIT)),
-                      ),
-                    ),
+                  race([getRejection$(symbol), timer(payload.timeout)]).pipe(
+                    mapTo({
+                      state: QuoteState.Rejected as const,
+                      payload,
+                    }),
                   ),
-                ]),
+                ]).pipe(take(1)),
               ),
             ),
           ),
         ]),
+      ),
+    ),
+    switchMap((state) =>
+      concat(
+        of(state),
+        state.state === QuoteState.Rejected
+          ? timer(REJECT_TIMEOUT).pipe(mapTo(INIT))
+          : EMPTY,
       ),
     ),
   ),
