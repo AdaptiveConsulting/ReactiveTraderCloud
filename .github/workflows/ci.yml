@@ -30,11 +30,11 @@ jobs:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: ./deploy/build.sh
 
-    # - name: Run integration tests
-    #   env:
-    #     DOCKER_USER: ${{ secrets.DOCKER_USER }}
-    #     BUILD_VERSION: ${{ env.TAG }}
-    #   run: docker-compose -f ./src/docker-compose.e2e.yml -f ./src/docker-compose.yml run integration
+    - name: Run integration tests
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: ./deploy/test.sh
 
     - name: Autheticate with Docker Hub
       env:
