@@ -1,11 +1,8 @@
-import { useRef } from "react"
 import styled from "styled-components"
-import { usePopUpMenu } from "@/utils"
 import type { NumFilterContent } from "../../TradesState"
-import { DateFilterContent } from "../../TradesState/filterState/dateFilterState"
 import { ComparatorType } from "../../TradesState"
-import { colors } from "@/theme"
-import { FaChevronDown, FaChevronUp } from "react-icons/fa"
+import { DateFilterContent } from "../../TradesState/filterState/dateFilterState"
+import { colors, Theme } from "@/theme"
 
 export const ComparatorSelectOuter = styled.div`
   display: block;
@@ -15,86 +12,48 @@ export const ComparatorSelectOuter = styled.div`
   color: ${({ theme }) => theme.core.textColor};
   font-size: 12px;
   outline: none;
-  padding: 8px 15px 5px 15px;
+  padding: 8px 15px 5px 10px;
   cursor: pointer;
   transition: all 200ms ease;
   text-transform: none;
   text-align: left;
   border-bottom: 1px solid ${colors.spectrum.blue.base};
 `
+const textColor = ({ theme }: { theme: Theme }) => theme.textColor
 
-const ComparatorSelectInner = styled.div<{ visible: boolean }>`
-  border-radius: 4px;
-  display: ${({ visible }) => (visible ? "block" : "none")};
-  position: absolute;
-  top: 40px;
-  left: 0px;
-  background-color: ${({ theme }) => theme.primary.base};
-  padding: 6px;
-  box-shadow: 0 7px 26px 0 rgba(23, 24, 25, 0.5);
-  z-index: 100;
-  width: 100%;
-`
-
-const ComparatorOption = styled.div`
-  padding: 8px 8px 5px 8px;
-  font-weight: normal;
-  background-color: inherit;
-  border-radius: 2px;
-  margin-bottom: 5px;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
-    font-weight: normal;
-    text-decoration: underline;
+const ComparatorSelectInner = styled.select`
+  color: ${textColor};
+  &:focus {
+    outline: none;
   }
-`
+  &:hover {
+    cursor: pointer;
+  }
+  display: inline-block;
+  padding: 0.2em 0;
+  width: 105%;
 
-const ComparatorSelected = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position relative;
-`
-
-const AlignedUp = styled(FaChevronUp)`
-  position: relative;
-  top: 2px;
-`
-const AlignedDown = styled(FaChevronDown)`
-  position: relative;
-  top: 2px;
+  /* caret */
+  background-image: linear-gradient(45deg, transparent 50%, ${textColor} 50%),
+    linear-gradient(135deg, ${textColor} 50%, transparent 50%);
+  background-position: calc(100% - 5px) center, calc(100%) center;
+  background-size: 5px 5px, 5px 5px;
 `
 
 export const ComparatorSelect: React.FC<{
   selected: DateFilterContent | NumFilterContent
   onSelection: (comparator: ComparatorType) => void
 }> = ({ selected, onSelection }) => {
-  const innerRef = useRef<HTMLDivElement>(null)
-  const { displayMenu, setDisplayMenu } = usePopUpMenu(innerRef)
-  const toggle = () => setDisplayMenu(!displayMenu)
   return (
     <ComparatorSelectOuter>
-      <ComparatorSelected
-        onClick={(e) => {
-          e.stopPropagation()
-          toggle()
+      <ComparatorSelectInner
+        onChange={(e) => {
+          onSelection(e.target.value as ComparatorType)
         }}
+        value={selected.comparator}
       >
-        {selected.comparator}
-        {displayMenu ? <AlignedUp /> : <AlignedDown />}
-      </ComparatorSelected>
-      <ComparatorSelectInner visible={displayMenu} ref={innerRef}>
         {Object.values(ComparatorType).map((comparator) => (
-          <ComparatorOption
-            key={comparator}
-            onClick={() => {
-              onSelection(comparator)
-              setDisplayMenu(false)
-            }}
-          >
-            {comparator}
-          </ComparatorOption>
+          <option key={comparator}>{comparator}</option>
         ))}
       </ComparatorSelectInner>
     </ComparatorSelectOuter>
