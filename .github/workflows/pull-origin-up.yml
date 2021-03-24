@@ -41,7 +41,7 @@ jobs:
         DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
       run: ./deploy/push.sh
 
-  test:
+  unit-test:
     name: Run unit tests
 
     runs-on: ubuntu-20.04
@@ -69,6 +69,28 @@ jobs:
 
     - name: Run unit tests
       run: npm test
+
+  integration-test:
+    name: Run integration tests
+
+    runs-on: ubuntu-20.04
+
+    needs: build
+
+    if: "!github.event.pull_request.head.repo.fork"
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    - name: Test
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: ./deploy/test.sh
 
   deploy:
     name: Create new deployment

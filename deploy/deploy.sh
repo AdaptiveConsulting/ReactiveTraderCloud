@@ -50,7 +50,7 @@ check_images_exist () {
       echo "Preflight failed: could not find remote image $name:$version."
       exit 1
     fi
-  done <<< "$images"
+  done < <(echo "$images")
 }
 
 deploy_service () {

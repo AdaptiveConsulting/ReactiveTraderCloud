@@ -1,17 +1,5 @@
 version: '3'
 services:
-  integration:
-    image: ${DOCKER_USER}/servers:${BUILD_VERSION}
-    hostname: integration
-    container_name: integration
-    depends_on:
-      - initialise
-      - analytics
-      - referencedataread
-      - pricing
-      - blotter
-      - tradeexecution
-    command: dotnet vstest ./Adaptive.ReactiveTrader.Server.IntegrationTests.dll
   e2e:
     image: ${DOCKER_USER}/e2e:${BUILD_VERSION}
     build:
