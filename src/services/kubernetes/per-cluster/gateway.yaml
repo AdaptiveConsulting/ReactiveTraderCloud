@@ -50,18 +50,7 @@ data:
 
     server {
       listen 8080;
-      server_name ~^web-(?<namespace>(demo|uat|dev))\.adaptivecluster.com;
-
-      if ($namespace = "demo") {
-        set $namespace "www";
-      }
-
-      return 301 $scheme://$namespace.reactivetrader.com$request_uri;
-    }
-
-    server {
-      listen 8080;
-      server_name ~^(?<namespace>(www|classic|dev|uat))\.reactivetrader.com ~^(?<namespace>[^\.]+?)\.((beta|classic)\.)?lb.adaptivecluster.com$;
+      server_name ~^(?<namespace>(www|classic|dev|uat))\.reactivetrader.com ~^(?<namespace>[^\.]+?)\.((beta|classic)\.)?lb.adaptivecluster.com$ ~^web-(?<namespace>(demo|uat|dev))\.adaptivecluster.com;
       resolver kube-dns.kube-system.svc.cluster.local valid=5s;
 
       set $client_upstream "client";
