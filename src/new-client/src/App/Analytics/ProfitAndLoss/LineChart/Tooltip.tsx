@@ -1,5 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { createListener } from "@react-rxjs/utils"
+import { createSignal } from "@react-rxjs/utils"
 import { LINE_CHART_HEIGHT } from "./constants"
 import { dataPoints$ } from "./dataPoints$"
 import { format } from "date-fns"
@@ -36,7 +36,7 @@ const ToolTipChildRight = styled.div`
 
 const formatToPrecision1 = precisionNumberFormatter(1)
 
-const [hoverX$, onHover] = createListener<number | null>()
+const [hoverX$, onHover] = createSignal<number | null>()
 
 const getScaledPoint$ = (mouseX: number) =>
   dataPoints$.pipe(

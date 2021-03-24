@@ -1,5 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { createListener, mergeWithKey } from "@react-rxjs/utils"
+import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
 import { Trade } from "@/services/trades"
 import { colConfigs, colFields } from "../colConfig"
@@ -39,7 +39,7 @@ export const fieldDDateContainer = dateFields.reduce(
   {} as DateFilters,
 )
 
-export const [colFilterDateSelects$, onColFilterDateSelect] = createListener(
+export const [colFilterDateSelects$, onColFilterDateSelect] = createSignal(
   (field: DateColField, value: DateFilterContent) =>
     ({ field, value } as DateFilterSet),
 )

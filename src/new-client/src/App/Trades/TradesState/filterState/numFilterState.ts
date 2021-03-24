@@ -1,7 +1,7 @@
 import { Trade } from "@/services/trades"
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import { createListener, mergeWithKey } from "@react-rxjs/utils"
+import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import type { FilterEvent } from "./filterCommon"
 import {
   ComparatorType,
@@ -35,7 +35,7 @@ export const fieldNumContainer = numFields.reduce((valuesContainer, field) => {
   }
 }, {} as NumFilters)
 
-export const [colFilterNum$, onColFilterEnterNum] = createListener(
+export const [colFilterNum$, onColFilterEnterNum] = createSignal(
   (field: NumColField, value: NumFilterContent) =>
     ({ field, value } as NumFilterSet),
 )

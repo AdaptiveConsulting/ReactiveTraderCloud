@@ -1,5 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { createListener } from "@react-rxjs/utils"
+import { createSignal } from "@react-rxjs/utils"
 import { scan, tap } from "rxjs/operators"
 
 export enum TileView {
@@ -7,7 +7,7 @@ export enum TileView {
   Analytics = "analytics",
 }
 
-const [toggleSelectedView$, onToggleSelectedView] = createListener()
+const [toggleSelectedView$, onToggleSelectedView] = createSignal()
 export { onToggleSelectedView }
 
 const SELECTED_VIEW_KEY = "selectedView"

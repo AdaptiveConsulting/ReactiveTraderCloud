@@ -1,6 +1,6 @@
 import { scan, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import { createListener } from "@react-rxjs/utils"
+import { createSignal } from "@react-rxjs/utils"
 import type { ColField } from "./colConfig"
 
 export type SortDirection = "ASC" | "DESC"
@@ -12,7 +12,7 @@ export class TableSort {
 export const [
   sortFieldSelections$,
   onSortFieldSelect,
-] = createListener<ColField>()
+] = createSignal<ColField>()
 
 const descDefaultFields = new Set<ColField>([
   "tradeDate",
