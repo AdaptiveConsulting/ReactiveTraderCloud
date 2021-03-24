@@ -428,6 +428,9 @@ describe("Tile", () => {
   })
 
   it("should not unformat the notional number when focused", () => {
+    const priceMock$ = new BehaviorSubject<Price>(priceMock)
+    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+
     renderComponent()
     const input = screen.getAllByRole("input")[0] as HTMLInputElement
     act(() => {
@@ -459,6 +462,9 @@ describe("Tile", () => {
   })
 
   it("should not allow letters in the notional input", () => {
+    const priceMock$ = new BehaviorSubject<Price>(priceMock)
+    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+
     renderComponent()
     const input = screen.getAllByRole("input")[0] as HTMLInputElement
     expect(input.value).toBe("1,000,000")
@@ -469,6 +475,9 @@ describe("Tile", () => {
   })
 
   it("should reformat the notional input after got new value", () => {
+    const priceMock$ = new BehaviorSubject<Price>(priceMock)
+    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+
     renderComponent()
     const input = screen.getAllByRole("input")[0] as HTMLInputElement
 

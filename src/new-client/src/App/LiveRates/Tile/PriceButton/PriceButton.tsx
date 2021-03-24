@@ -81,7 +81,7 @@ const PriceButtonInner: React.FC<{
     <TradeButton
       direction={direction}
       onClick={() => {
-        sendExecution({ symbol, direction })
+        sendExecution(symbol, direction)
       }}
       priceAnnounced={false}
       disabled={disabled}
