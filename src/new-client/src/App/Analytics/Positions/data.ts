@@ -5,7 +5,6 @@ import {
   filter,
   map,
   scan,
-  throttleTime,
   withLatestFrom,
 } from "rxjs/operators"
 import { colors } from "@/theme"
