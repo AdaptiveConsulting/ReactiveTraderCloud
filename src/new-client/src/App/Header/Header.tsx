@@ -4,18 +4,19 @@ import Logo from "@/components/Logo"
 import ThemeSwitcher from "./theme-switcher"
 
 const Header: React.FC = () => (
-  <AppHeaderWrapper>
+  <AppHeaderWrapper role="banner" aria-label="Reactive Trader Header">
     <AppHeaderRoot>
       <LogoWrapper>
         <Logo
           size={1.75}
+          role="button"
           onClick={() => {
             window.open("https://weareadaptive.com/")
           }}
           data-qa="header__root-logo"
         />
       </LogoWrapper>
-      <Fill />
+      <Fill aria-hidden={true} />
       <HeaderNav>
         <ThemeSwitcher />
         <LoginControls />

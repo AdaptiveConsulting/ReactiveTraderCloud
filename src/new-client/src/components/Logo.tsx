@@ -32,6 +32,7 @@ const Logo: React.FC<LogoProps> = ({
       style={style}
       {...props}
     >
+      <title>Adaptive Financial Consulting Logo</title>
       <g fill={fill} fillRule="nonzero">
         <g>
           <rect

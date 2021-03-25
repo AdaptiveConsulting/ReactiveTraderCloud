@@ -18,7 +18,7 @@ const Trades: React.FC = () => (
     source$={tableTrades$}
     fallback={<Loader ariaLabel="Loading trades blotter" />}
   >
-    <TradesStyle>
+    <TradesStyle role="region" aria-labelledby="trades-table-heading">
       <TradesHeader />
       <TradesGrid />
       <TradesFooter />
