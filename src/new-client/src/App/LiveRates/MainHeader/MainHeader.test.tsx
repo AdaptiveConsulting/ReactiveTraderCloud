@@ -63,7 +63,7 @@ describe("MainHeader", () => {
     renderComponent()
 
     expect(
-      screen.getByTestId("workspace__tiles-workspace-items").children.length,
+      screen.getByRole("region", { name: "Lives Rates Tiles" }).children.length,
     ).toBe(2)
 
     act(() => {
@@ -71,7 +71,7 @@ describe("MainHeader", () => {
     })
 
     expect(
-      screen.getByTestId("workspace__tiles-workspace-items").children.length,
+      screen.getByRole("region", { name: "Lives Rates Tiles" }).children.length,
     ).toBe(1)
     expect(screen.getByTestId("tile-EURUSD")).not.toBeNull()
 
@@ -80,7 +80,7 @@ describe("MainHeader", () => {
     })
 
     expect(
-      screen.getByTestId("workspace__tiles-workspace-items").children.length,
+      screen.getByRole("region", { name: "Lives Rates Tiles" }).children.length,
     ).toBe(1)
     expect(screen.getByTestId("tile-GBPJPY")).not.toBeNull()
   })

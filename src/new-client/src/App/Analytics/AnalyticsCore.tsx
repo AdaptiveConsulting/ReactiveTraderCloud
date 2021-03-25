@@ -16,7 +16,11 @@ const Analytics: React.FC = ({ children }) => {
     <Subscribe source$={analytics$} fallback={children}>
       <AnalyticsInnerWrapper>
         <AnalyticsHeader>Analytics</AnalyticsHeader>
-        <AnalyticsStyle data-qa="analytics__analytics-content">
+        <AnalyticsStyle
+          role="region"
+          aria-label="Trade and position analytics"
+          data-qa="analytics__analytics-content"
+        >
           <ProfitAndLoss />
           <Positions />
           <PnL />

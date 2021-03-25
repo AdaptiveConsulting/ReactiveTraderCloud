@@ -41,7 +41,7 @@ export const Tiles = () => {
   const currencyPairs = useFilteredCurrencyPairs()
   const selectedView = useSelectedTileView()
   return (
-    <PanelItems data-testid="workspace__tiles-workspace-items">
+    <PanelItems role="region" aria-label="Lives Rates Tiles">
       {currencyPairs.map((currencyPair) => (
         <Tile
           key={currencyPair.symbol}

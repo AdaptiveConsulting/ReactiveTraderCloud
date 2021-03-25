@@ -76,7 +76,7 @@ const AlignedArrow: React.FC<{
   sortDirection === "ASC" ? (
     <AlignedUpArrow role="sort" aria-label={ariaLabel} />
   ) : (
-    <AlignedDownArrow role="button" aria-label={ariaLabel} />
+    <AlignedDownArrow role="sort" aria-label={ariaLabel} />
   )
 
 export const TableHeadCellContainer: React.FC<{
@@ -94,6 +94,7 @@ export const TableHeadCellContainer: React.FC<{
       onMouseLeave={() => setShowFilter(false)}
       numeric={filterType === "number" && field !== "tradeId"}
       width={colConfigs[field].width}
+      scope="col"
       ref={ref}
     >
       <FlexWrapper
@@ -111,20 +112,18 @@ export const TableHeadCellContainer: React.FC<{
             ariaLabel={`Update trades blotter sort on ${colConfigs[field].headerName} field`}
           />
         ) : (
-          <span className="spacer" />
+          <span className="spacer" aria-hidden={true} />
         )}
         {showFilter ? (
-          <span
+          <AlignedFilterIcon
             aria-label={`Open ${colConfigs[field].headerName} field filter pop up`}
             role="button"
             onClick={() => {
               setDisplayMenu((current) => !current)
             }}
-          >
-            <AlignedFilterIcon />
-          </span>
+          />
         ) : (
-          <span className="spacer" />
+          <span className="spacer" aria-hidden={true} />
         )}
         {displayMenu &&
           (filterType === "number" ? (

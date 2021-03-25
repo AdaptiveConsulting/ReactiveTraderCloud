@@ -15,6 +15,10 @@ const Table = styled.table`
   min-width: 60rem;
   border-collapse: separate;
   border-spacing: 0;
+
+  .visually-hidden {
+    display: none;
+  }
 `
 const TableHead = styled.thead`
   font-size: 0.675rem;
@@ -78,9 +82,12 @@ export const TradesGrid: React.FC = () => {
   return (
     <TableWrapper>
       <Table>
+        <caption id="trades-table-heading" className="visually-hidden">
+          Reactive Trader FX Trades Table
+        </caption>
         <TableHead>
           <TableHeadRow>
-            <StatusIndicatorSpacer />
+            <StatusIndicatorSpacer scope="col" aria-label="Trade Status" />
             {colFields.map((field) => (
               <TableHeadCellContainer key={field} field={field} />
             ))}
@@ -93,8 +100,11 @@ export const TradesGrid: React.FC = () => {
                 key={trade.tradeId}
                 pending={trade.status === TradeStatus.Pending}
               >
-                <StatusIndicator status={trade.status} />
-                {colFields.map((field) => (
+                <StatusIndicator
+                  status={trade.status}
+                  aria-label={trade.status}
+                />
+                {colFields.map((field, i) => (
                   <TableBodyCell
                     key={field}
                     numeric={
@@ -111,7 +121,7 @@ export const TradesGrid: React.FC = () => {
             ))
           ) : (
             <TableBodyRow>
-              <StatusIndicatorSpacer />
+              <StatusIndicatorSpacer aria-hidden={true} />
               <TableBodyCell colSpan={colFields.length}>
                 No trades to show
               </TableBodyCell>
