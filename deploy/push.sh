@@ -56,5 +56,5 @@ while IFS= read -r image; do
   name=$(echo $image | awk '{print $1}')
   context=$(echo $image | awk '{print $2}')
   push_image $name $context
-done <<< "$images"
+done < <(echo "$images")
 
