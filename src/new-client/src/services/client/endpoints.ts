@@ -7,10 +7,8 @@ export const endpoints$ = new Observable<{
   streamEndpoint: RxStomp
 }>((observer) => {
   const HOST = import.meta.env.VITE_BROKER_HOST as string
-  const PORT = import.meta.env.VITE_BROKER_PORT as string
   const url = HOST || globalThis.location.hostname
-  const port = +(PORT || globalThis.location.port)
-  const brokerURL = `wss://${url}:${port}/ws`
+  const brokerURL = `wss://${url}/ws`
   const reconnectDelay = 500
   const connectionTimeout = 0
 
