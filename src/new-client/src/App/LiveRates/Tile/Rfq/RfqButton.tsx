@@ -6,8 +6,8 @@ import {
   useRfqState,
   useIsRfq,
   onQuoteRequest,
-  onCancelRequest,
-  QuoteState,
+  onCancelRfq,
+  QuoteStateStage,
 } from "./Rfq.state"
 import { AnalyticsPricesFirstCol } from "../Tile.styles"
 import { TileStates, useTileState } from "../Tile.state"
@@ -31,18 +31,18 @@ const RFQButtonInner = styled.button<{
   color: ${({ theme }) => theme.white};
 `
 
-const buttonState = (quoteState: QuoteState, isAnalytics: boolean) => {
+const buttonState = (quoteState: QuoteStateStage, isAnalytics: boolean) => {
   switch (quoteState) {
-    case QuoteState.Init:
+    case QuoteStateStage.Init:
       return {
         buttonText: "Initiate RFQ",
         buttonClickHandler: onQuoteRequest,
         textWrap: !isAnalytics,
       }
-    case QuoteState.Requested:
+    case QuoteStateStage.Requested:
       return {
         buttonText: "Cancel RFQ",
-        buttonClickHandler: onCancelRequest,
+        buttonClickHandler: onCancelRfq,
         textWrap: !isAnalytics,
       }
     default:
@@ -56,14 +56,14 @@ const buttonState = (quoteState: QuoteState, isAnalytics: boolean) => {
 
 const RfqButton: React.FC<{ isAnalytics: boolean }> = ({ isAnalytics }) => {
   const isRfq = useIsRfq()
-  const { state } = useRfqState()
+  const { stage } = useRfqState()
   const { symbol } = useTileCurrencyPair()
   const { buttonText, buttonClickHandler, textWrap } = buttonState(
-    state,
+    stage,
     isAnalytics,
   )
   const isExecuting = useTileState(symbol).status === TileStates.Started
-  return isRfq && state !== QuoteState.Received && !isExecuting ? (
+  return isRfq && stage !== QuoteStateStage.Received && !isExecuting ? (
     <OverlayDiv left={isAnalytics ? `calc(${AnalyticsPricesFirstCol} / 2)` : 0}>
       <CenteringContainer>
         <RFQButtonInner

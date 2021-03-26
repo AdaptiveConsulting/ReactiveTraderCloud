@@ -10,7 +10,7 @@ import { CenteringContainer } from "@/components/CenteringContainer"
 import { AdaptiveLoader } from "@/components/AdaptiveLoader"
 import { sendExecution } from "../Tile.state"
 import { useTileCurrencyPair } from "../Tile.context"
-import { useRfqState, QuoteState } from "../Rfq"
+import { useRfqState, QuoteStateStage } from "../Rfq"
 import {
   TradeButton,
   Price,
@@ -108,7 +108,7 @@ export const PriceButton: React.FC<{
 }> = ({ direction }) => {
   const rfqState = useRfqState()
 
-  return rfqState.state === QuoteState.Requested ? (
+  return rfqState.stage === QuoteStateStage.Requested ? (
     <QuotePriceLoading>
       <AdaptiveLoader size={16} />
       Awaiting Price

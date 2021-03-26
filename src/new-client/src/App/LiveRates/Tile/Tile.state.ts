@@ -28,11 +28,10 @@ export { onDismissMessage }
 const waitForDismissal$ = (symbol: string) => dismiss$(symbol).pipe(take(1))
 
 // Executions
-const [tileExecutions$, sendExecution] = createKeyedSignal(
+export const [tileExecutions$, sendExecution] = createKeyedSignal(
   (x) => x.symbol,
   (symbol: string, direction: Direction) => ({ symbol, direction }),
 )
-export { sendExecution }
 
 // TileState
 export enum TileStates {

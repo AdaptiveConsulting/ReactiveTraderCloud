@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from "react"
 import styled from "styled-components"
-import { onRejection } from "./Rfq.state"
+import { onRejectQuote } from "./Rfq.state"
 import { useTileCurrencyPair } from "../Tile.context"
 
 const TimeLeft = styled.div<{ isAnalyticsView: boolean }>`
@@ -129,7 +129,7 @@ export const RfqTimer: React.FC<{
       </ProgressBarWrapper>
       <RejectQuoteButton
         isAnalyticsView={isAnalyticsView}
-        onClick={() => onRejection(symbol)}
+        onClick={() => onRejectQuote(symbol)}
       >
         Reject
       </RejectQuoteButton>
