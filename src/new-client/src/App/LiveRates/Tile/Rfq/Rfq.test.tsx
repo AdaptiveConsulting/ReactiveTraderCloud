@@ -25,12 +25,12 @@ describe("RFQ/buttons", () => {
     rfqStateSpy = jest.spyOn(rs, "useRfqState")
     isRfqSpy = jest.spyOn(rs, "useIsRfq")
     onQuoteRequestSpy = jest.spyOn(rs, "onQuoteRequest")
-    onCancelRequest = jest.spyOn(rs, "onCancelRequest")
+    onCancelRequest = jest.spyOn(rs, "onCancelRfq")
   })
 
   it("should not display rfq button", () => {
     isRfqSpy.mockReturnValue(false)
-    rfqStateSpy.mockReturnValue({ state: rs.QuoteState.Init })
+    rfqStateSpy.mockReturnValue({ stage: rs.QuoteStateStage.Init })
     renderComponent(false)
 
     expect(screen.queryByText("Initiate RFQ")).toBeNull()
@@ -40,7 +40,7 @@ describe("RFQ/buttons", () => {
 
   it("should display 'Initiate RFQ' and call the onClickHandler", () => {
     isRfqSpy.mockReturnValue(true)
-    rfqStateSpy.mockReturnValue({ state: rs.QuoteState.Init })
+    rfqStateSpy.mockReturnValue({ stage: rs.QuoteStateStage.Init })
     renderComponent(false)
 
     const buttonText = "Initiate RFQ"
@@ -54,7 +54,7 @@ describe("RFQ/buttons", () => {
 
   it("should display 'Cancel RFQ'", () => {
     isRfqSpy.mockReturnValue(true)
-    rfqStateSpy.mockReturnValue({ state: rs.QuoteState.Requested })
+    rfqStateSpy.mockReturnValue({ stage: rs.QuoteStateStage.Requested })
     renderComponent(false)
 
     const buttonText = "Cancel RFQ"
@@ -68,7 +68,7 @@ describe("RFQ/buttons", () => {
 
   it("should display 'Requote'", () => {
     isRfqSpy.mockReturnValue(true)
-    rfqStateSpy.mockReturnValue({ state: rs.QuoteState.Rejected })
+    rfqStateSpy.mockReturnValue({ stage: rs.QuoteStateStage.Rejected })
     renderComponent(false)
 
     const buttonText = "Requote"

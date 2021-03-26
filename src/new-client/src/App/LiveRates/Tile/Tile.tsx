@@ -22,7 +22,7 @@ import {
   RfqButton,
   getRfqState$,
   useRfqState,
-  QuoteState,
+  QuoteStateStage,
   RfqTimer,
 } from "./Rfq"
 
@@ -46,7 +46,7 @@ const Tile: React.FC<{
 }> = ({ isAnalytics }) => {
   const rfq = useRfqState()
   const timerData =
-    rfq.state === QuoteState.Received
+    rfq.stage === QuoteStateStage.Received
       ? { start: rfq.payload.time, end: rfq.payload.time + rfq.payload.timeout }
       : null
   return (

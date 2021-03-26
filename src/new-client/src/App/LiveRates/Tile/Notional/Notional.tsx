@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { FaRedo } from "react-icons/fa"
-import { useRfqState, QuoteState } from "../Rfq"
+import { useRfqState, QuoteStateStage } from "../Rfq"
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
 import {
   InputWrapper,
@@ -81,7 +81,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
   const { base, symbol } = useTileCurrencyPair()
   const defaultNotional = useDefaultNotional()
   const notional = useNotional()
-  const { state: quoteState } = useRfqState()
+  const { stage: quoteStage } = useRfqState()
 
   return (
     <NotionalInputWrapper isAnalyticsView={isAnalytics}>
@@ -90,9 +90,10 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
         <Input
           role={"input"}
           type="text"
-          disabled={[QuoteState.Received, QuoteState.Requested].includes(
-            quoteState,
-          )}
+          disabled={[
+            QuoteStateStage.Received,
+            QuoteStateStage.Requested,
+          ].includes(quoteStage)}
           value={notional.inputValue}
           onChange={(e) => {
             onChangeNotionalValue(symbol, e.target.value)

@@ -2,9 +2,9 @@ export { RfqButton } from "./RfqButton"
 export { RfqTimer } from "./RfqTimer"
 
 export {
-  onRejection,
+  onRejectQuote,
   useRfqState,
   getRfqState$,
   isRfq$,
-  QuoteState,
+  QuoteStateStage,
 } from "./Rfq.state"
