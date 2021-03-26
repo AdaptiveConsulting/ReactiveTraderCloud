@@ -108,14 +108,14 @@ export const TableHeadCellContainer: React.FC<{
         {tableSort.field === field && tableSort.direction !== undefined ? (
           <AlignedArrow
             sortDirection={tableSort.direction}
-            ariaLabel={`Update trades blotter sort on ${colConfigs[field]} field`}
+            ariaLabel={`Update trades blotter sort on ${colConfigs[field].headerName} field`}
           />
         ) : (
           <span className="spacer" />
         )}
         {showFilter ? (
           <span
-            aria-label={`Open ${colConfigs[field]} field filter pop up`}
+            aria-label={`Open ${colConfigs[field].headerName} field filter pop up`}
             role="button"
             onClick={() => {
               setDisplayMenu((current) => !current)
