@@ -99,6 +99,7 @@ export const TableHeadCellContainer: React.FC<{
     >
       <FlexWrapper
         onClick={(e) => {
+          // Don't trigger sort on events bubbling from FilterPopup
           if (e.target === e.currentTarget) {
             onSortFieldSelect(field)
           }

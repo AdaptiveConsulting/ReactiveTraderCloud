@@ -1,7 +1,6 @@
 import type { Trade } from "@/services/trades"
 import { format as formatDate } from "date-fns"
 import {
-  mapObject,
   significantDigitsNumberFormatter,
   formatAsWholeNumber,
   capitalize,
@@ -10,6 +9,18 @@ import {
 export type ColField = keyof Trade
 
 export type FilterType = "set" | "date" | "number"
+
+/**
+ * All of these values are configured centrally because
+ * they are used together in multiple places:
+ *
+ * grid body, grid header, grid export
+ *
+ * headerName - display name for the column field / trade key
+ * filterType - type of filter predicate that applies to the column
+ * valueFormatter - how to display the field values in the column
+ * width - needed to keep header/body cells same width
+ */
 export interface ColConfig {
   headerName: string
   filterType: FilterType
@@ -79,6 +90,8 @@ export const colConfigs: Record<ColField, ColConfig> = {
   },
 }
 
-export const colFilterMap = mapObject(colConfigs, (val) => val.filterType)
-
+/**
+ * Values of the Trade keys.  Used for dynamically constructing maps that
+ * concern each key.
+ */
 export const colFields: ColField[] = Object.keys(colConfigs) as ColField[]
