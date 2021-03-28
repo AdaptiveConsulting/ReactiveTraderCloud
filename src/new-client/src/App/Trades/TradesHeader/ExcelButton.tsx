@@ -42,6 +42,10 @@ const Button = styled("button")`
     transform: scale(0.7);
   }
 `
+/**
+ * Format trades data for CSV file, including escaping
+ * inner commas.
+ */
 export const exportTable$ = tableTrades$.pipe(
   map((trades) =>
     trades.map((trade) =>
@@ -61,21 +65,26 @@ export const exportTable$ = tableTrades$.pipe(
 const downloadCsv = () => {
   exportTable$.subscribe((trades) => {
     let csv = ""
+
+    // CSV header
     colFields.forEach((field) => {
       csv += colConfigs[field].headerName + ","
     })
     csv += "\n"
 
+    // CSV body
     trades.forEach((row) => {
       csv += row.join(",")
       csv += "\n"
     })
 
+    // Create and cleanup hidden element to trigger download in browser
     const hiddenElement = document.createElement("a")
     hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv)
     hiddenElement.target = "_blank"
     hiddenElement.download = "RT-Blotter.csv"
     hiddenElement.click()
+    hiddenElement.parentElement?.removeChild(hiddenElement)
   })
 }
 
