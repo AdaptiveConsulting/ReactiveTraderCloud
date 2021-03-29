@@ -13,7 +13,6 @@ import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
 import { Direction } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
 import { Tile, tile$ } from "./Tile"
-import * as sinon from "sinon"
 
 jest.mock("@/services/executions/executions")
 jest.mock("@/services/prices/prices")
@@ -56,6 +55,7 @@ const _exec = require("@/services/executions/executions")
 
 describe("Tile", () => {
   beforeEach(() => {
+    jest.useFakeTimers()
     _prices.__resetMocks()
     _ccpp.__resetMock()
     _exec.__resetMocks()
@@ -180,8 +180,7 @@ describe("Tile", () => {
     )
   })
 
-  it.skip("should render alert when execution takes too long", async () => {
-    const clock = sinon.useFakeTimers()
+  it("should render alert when execution takes too long", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
@@ -227,14 +226,12 @@ describe("Tile", () => {
     await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
 
     act(() => {
-      clock.tick(2000)
+      jest.advanceTimersByTime(2000)
     })
-    await waitFor(() => {
-      expect(screen.queryByText("Executing")).toBeNull()
-      expect(screen.queryByRole("alert")!.textContent).toEqual(
-        "Trade execution taking longer than expected.",
-      )
-    })
+    expect(screen.queryByText("Executing")).toBeNull()
+    expect(screen.queryByRole("alert")!.textContent).toEqual(
+      "Trade execution taking longer than expected.",
+    )
 
     const tradeId = 200
     act(() => {
@@ -260,7 +257,6 @@ describe("Tile", () => {
     expect(screen.getAllByRole("button")[0].textContent).toBe(
       `SELL${priceMock.bid}`,
     )
-    clock.restore()
   })
 
   it("should render alert when execution timeout", async () => {
