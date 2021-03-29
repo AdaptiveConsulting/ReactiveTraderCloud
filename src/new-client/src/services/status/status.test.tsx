@@ -3,8 +3,8 @@ import { useStatus, status$ } from "./status"
 import { renderHook, act } from "@testing-library/react-hooks"
 import { BehaviorSubject } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
-import * as sinon from "sinon"
 import { RawServiceStatus, ServiceInstanceStatus } from "./types"
+import { mapObject } from "@/utils"
 
 const mockSource = {
   a: {
@@ -82,60 +82,74 @@ const renderUseStatus = () => {
   })
 }
 
+const trimTimestamps = (input: Record<string, { timestamp: number }>) =>
+  mapObject(input, ({ timestamp, ...rest }) => rest)
+
 describe("service/status", () => {
   describe("useStatus", () => {
-    let clock: sinon.SinonFakeTimers
     beforeEach(() => {
+      jest.useFakeTimers("modern")
       reset()
-      clock = sinon.useFakeTimers()
-    })
-    afterEach(() => {
-      clock.restore()
     })
 
     it("should indicate all the service health when services are connected at beginning", () => {
       const mockStream = new BehaviorSubject(mockSource.a)
       whenWatch("status", mockStream)
       const { result } = renderUseStatus()
-      expect(result.current).toEqual(mockResult.a)
+      expect(trimTimestamps(result.current)).toEqual(
+        trimTimestamps(mockResult.a),
+      )
 
       act(() => {
         mockStream.next(mockSource.b)
-        clock.tick(1999)
+        jest.advanceTimersByTime(1999)
       })
-      expect(result.current).toEqual(mockResult.b)
+
+      expect(trimTimestamps(result.current)).toEqual(
+        trimTimestamps(mockResult.b),
+      )
     })
 
     it("should show the unhealthy service when one of them are disconnected", () => {
       const mockStream = new BehaviorSubject(mockSource.a)
       whenWatch("status", mockStream)
       const { result } = renderUseStatus()
-      expect(result.current).toEqual(mockResult.a)
+      expect(trimTimestamps(result.current)).toEqual(
+        trimTimestamps(mockResult.a),
+      )
 
       act(() => {
-        clock.tick(2001)
+        jest.advanceTimersByTime(2001)
         mockStream.next(mockSource.b)
       })
-      expect(result.current).toEqual(mockResult.c)
+      expect(trimTimestamps(result.current)).toEqual(
+        trimTimestamps(mockResult.c),
+      )
     })
 
     it("should show the service health again once the service is reconnected", () => {
       const mockStream = new BehaviorSubject(mockSource.a)
       whenWatch("status", mockStream)
       const { result } = renderUseStatus()
-      expect(result.current).toEqual(mockResult.a)
+      expect(trimTimestamps(result.current)).toEqual(
+        trimTimestamps(mockResult.a),
+      )
 
       act(() => {
-        clock.tick(2001)
+        jest.advanceTimersByTime(2001)
         mockStream.next(mockSource.b)
       })
-      expect(result.current).toEqual(mockResult.c)
+      expect(trimTimestamps(result.current)).toEqual(
+        trimTimestamps(mockResult.c),
+      )
 
       act(() => {
-        clock.tick(1000)
+        jest.advanceTimersByTime(1000)
         mockStream.next(mockSource.a)
       })
-      expect(result.current).toEqual(mockResult.d)
+      expect(trimTimestamps(result.current)).toEqual(
+        trimTimestamps(mockResult.d),
+      )
     })
   })
 })
