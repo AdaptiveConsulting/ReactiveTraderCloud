@@ -14,3 +14,22 @@ ReactDOM.render(
   </StrictMode>,
   document.getElementById("root"),
 )
+
+declare global {
+  interface Window {
+    ga: any
+  }
+}
+
+const { ga } = window
+ga("create", {
+  trackingId: "UA-46320965-5",
+  transport: "beacon",
+})
+ga("set", {
+  dimension1: "browser",
+  dimension2: "browser",
+  dimension3: import.meta.env,
+  page: window.location.pathname,
+})
+ga("send", "pageview")

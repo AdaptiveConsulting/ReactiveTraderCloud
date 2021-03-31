@@ -10,6 +10,13 @@ const Header: React.FC = () => (
         <Logo
           size={1.75}
           onClick={() => {
+            window.ga(
+              "send",
+              "event",
+              "RT - Outbound",
+              "click",
+              "https://weareadaptive.com",
+            )
             window.open("https://weareadaptive.com/")
           }}
           data-qa="header__root-logo"
