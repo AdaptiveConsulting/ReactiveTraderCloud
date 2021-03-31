@@ -11,6 +11,13 @@ const Header: React.FC = () => (
           size={1.75}
           role="button"
           onClick={() => {
+            window.ga(
+              "send",
+              "event",
+              "RT - Outbound",
+              "click",
+              "https://weareadaptive.com",
+            )
             window.open("https://weareadaptive.com/")
           }}
           data-qa="header__root-logo"

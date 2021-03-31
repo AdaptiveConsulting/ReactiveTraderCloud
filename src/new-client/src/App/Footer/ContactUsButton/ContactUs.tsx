@@ -18,6 +18,7 @@ export const ContactUs: React.FC = () => (
 
     <Link
       onClick={() => {
+        window.ga("send", "event", "RT - Outbound", "click", WEBSITE)
         window.open(WEBSITE)
       }}
     >

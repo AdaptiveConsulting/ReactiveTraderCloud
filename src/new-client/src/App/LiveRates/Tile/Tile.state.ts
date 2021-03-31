@@ -6,6 +6,7 @@ import {
   mapTo,
   startWith,
   take,
+  tap,
   withLatestFrom,
 } from "rxjs/operators"
 import { concat, race, timer } from "rxjs"
@@ -84,6 +85,16 @@ export const [useTileState, getTileState$] = bind(
         notional,
         spotRate: direction === Direction.Buy ? price.ask : price.bid,
       })),
+      tap(({ direction, currencyPair, spotRate, notional }) => {
+        window.ga(
+          "send",
+          "event",
+          "RT - Trade Attempt",
+          direction,
+          `${currencyPair} - ${spotRate}`,
+          notional,
+        )
+      }),
       exhaustMap((request) =>
         concat(
           execute$(request).pipe(

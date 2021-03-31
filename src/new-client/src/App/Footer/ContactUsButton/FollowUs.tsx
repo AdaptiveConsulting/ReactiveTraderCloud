@@ -1,12 +1,16 @@
 import { ContactUsContentResolver, Link } from "./styled"
 
-const LINKEDIN_URL = "https://www.linkedin.com/company/adaptive-consulting-ltd/"
-const TWITTER_URL = "https://twitter.com/WeAreAdaptive"
-const GITHUB_URL = "https://github.com/adaptiveConsulting/"
+type Social = "Twitter" | "LinkedIn" | "Github"
+const config: Record<Social, string> = {
+  Twitter: "https://twitter.com/WeAreAdaptive",
+  LinkedIn: "https://www.linkedin.com/company/adaptive-consulting-ltd/",
+  Github: "https://github.com/adaptiveConsulting/",
+}
 
 export const FollowUs: React.FC = () => {
-  const onClick = (href: string) => () => {
-    window.open(href)
+  const onClick = (social: Social) => () => {
+    window.ga("send", "event", "RT - Social", "click", `${social} (url)`)
+    window.open(config[social])
   }
 
   return (
@@ -14,17 +18,17 @@ export const FollowUs: React.FC = () => {
       <span className="header">Follow us on</span>
       <div>
         <span>LinkedIn</span>
-        <Link onClick={onClick(LINKEDIN_URL)}>
+        <Link onClick={onClick("LinkedIn")}>
           linkedin.com/company/{<br />}adaptive-consulting-ltd/
         </Link>
       </div>
       <div>
         <span>Twitter</span>
-        <Link onClick={onClick(TWITTER_URL)}>@WeAreAdaptive</Link>
+        <Link onClick={onClick("Twitter")}>@WeAreAdaptive</Link>
       </div>
       <div>
         <span>Github</span>
-        <Link onClick={onClick(GITHUB_URL)}>github.com/adaptiveConsulting</Link>
+        <Link onClick={onClick("Github")}>github.com/adaptiveConsulting</Link>
       </div>
     </ContactUsContentResolver>
   )
