@@ -1,16 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { split } from "@react-rxjs/utils"
-import { concat, Observable } from "rxjs"
-import {
-  distinctUntilChanged,
-  map,
-  mergeAll,
-  mergeMap,
-  scan,
-  share,
-  switchMap,
-  take,
-} from "rxjs/operators"
+import { distinctUntilChanged, map, scan, share } from "rxjs/operators"
 import { getStream$ } from "../client"
 import { UpdateType } from "../utils"
 import { CurrencyRaw, CurrencyPair, RawCurrencyPairUpdates } from "./types"
@@ -61,28 +50,3 @@ export const [useCurrencyPair, getCurrencyPair$] = bind((symbol: string) =>
     distinctUntilChanged(),
   ),
 )
-
-export const currencyPairDependant$ = (
-  input: (symbol: string) => Observable<any>,
-) =>
-  concat(
-    currencyPairs$.pipe(
-      take(1),
-      mergeMap((ccPairs) => Object.values(ccPairs)),
-      map((currencyPair) => ({ currencyPair, updateType: UpdateType.Added })),
-    ),
-    currencyPairUpdates$.pipe(mergeAll()),
-  ).pipe(
-    split(
-      (update) => update.currencyPair.symbol,
-      (update$, key) =>
-        update$.pipe(
-          distinctUntilChanged((a, b) => a.updateType === b.updateType),
-          take(2),
-          switchMap((update) =>
-            update.updateType === UpdateType.Removed ? [] : input(key),
-          ),
-        ),
-    ),
-    mergeAll(),
-  )
