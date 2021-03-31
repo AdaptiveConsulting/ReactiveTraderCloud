@@ -41,12 +41,12 @@ const PNLBar: React.FC<PNLBarProps> = ({ symbol, basePnl, maxVal }) => {
   const hoverPrice = formatToPrecision2(basePnl)
   return (
     <BarChart>
-      <Label data-testid={"symbolLabel"}>{symbol}</Label>
+      <Label data-testid="symbolLabel">{symbol}</Label>
       <Offset />
       <BarPriceContainer>
         <PriceContainer distance={distance}>
           <PriceLabel
-            data-testid={"priceLabel"}
+            data-testid="priceLabel"
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
             distance={distance}

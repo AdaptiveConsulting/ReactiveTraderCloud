@@ -67,6 +67,7 @@ const RfqButton: React.FC<{ isAnalytics: boolean }> = ({ isAnalytics }) => {
     <OverlayDiv left={isAnalytics ? `calc(${AnalyticsPricesFirstCol} / 2)` : 0}>
       <CenteringContainer>
         <RFQButtonInner
+          data-testid="rfqButton"
           textWrap={textWrap}
           isAnalytics={isAnalytics}
           onClick={() => {
