@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 
 metadata:
@@ -48,7 +48,7 @@ spec:
 
 ---
 
-apiVersion: networking.k8s.io/v1beta
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 
 metadata:
