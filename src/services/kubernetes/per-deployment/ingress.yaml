@@ -16,7 +16,7 @@ spec:
   - hosts:
     - ${DEPLOY_ENV}.lb.adaptivecluster.com
     - ${DEPLOY_ENV}.classic.lb.adaptivecluster.com
-    secretName: reactive-trader-tls
+    secretName: reactive-trader-classic-tls
 
   rules:
   - host: ${DEPLOY_ENV}.classic.lb.adaptivecluster.com
@@ -47,7 +47,7 @@ spec:
   tls:
   - hosts:
     - ${DEPLOY_ENV}.beta.lb.adaptivecluster.com
-    secretName: reactive-trader-tls
+    secretName: reactive-trader-beta-tls
 
   rules:
   - host: ${DEPLOY_ENV}.beta.lb.adaptivecluster.com
