@@ -113,4 +113,6 @@ deploy_service client ./src/client
 deploy_service storybook ./src/client
 deploy_service new-client ./src/new-client
 
+deploy_service ingress
+
 after_deploy
