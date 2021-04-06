@@ -1,0 +1,92 @@
+apiVersion: networking.k8s.io/v1beta
+kind: Ingress
+
+metadata:
+  name: reactive-trader-ingress-classic
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: reactive-trader-issuer
+
+    # Note: these hosts should be moved to the 'beta' ingress for go-live
+    external-dns.alpha.kubernetes.io/hostname: "${DEPLOY_ENV}.lb.adaptivecluster.com"
+    nginx.ingress.kubernetes.io/server-alias: "${DEPLOY_ENV}.lb.adaptivecluster.com" 
+
+spec:
+  tls:
+  - hosts:
+    - ${DEPLOY_ENV}.lb.adaptivecluster.com
+    - ${DEPLOY_ENV}.classic.lb.adaptivecluster.com
+    secretName: reactive-trader-tls
+
+  rules:
+  - host: ${DEPLOY_ENV}.classic.lb.adaptivecluster.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: client
+            port:
+              number: 3000
+
+      - pathType: Exact
+        path: /ws
+        backend:
+          service:
+            name: broker
+            port:
+              number: 15674
+
+      - pathType: Prefix
+        path: /storybook
+        backend:
+          service:
+            name: storybook
+            port:
+              number: 80
+
+---
+
+apiVersion: networking.k8s.io/v1beta
+kind: Ingress
+
+metadata:
+  name: reactive-trader-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: reactive-trader-issuer
+
+spec:
+  tls:
+  - hosts:
+    - ${DEPLOY_ENV}.beta.lb.adaptivecluster.com
+    secretName: reactive-trader-tls
+
+  rules:
+  - host: ${DEPLOY_ENV}.beta.lb.adaptivecluster.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: new-client
+            port:
+              number: 3000
+
+      - pathType: Exact
+        path: /ws
+        backend:
+          service:
+            name: broker
+            port:
+              number: 15674
+
+      - pathType: Prefix
+        path: /storybook
+        backend:
+          service:
+            name: storybook
+            port:
+              number: 80
