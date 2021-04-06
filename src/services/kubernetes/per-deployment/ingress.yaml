@@ -22,20 +22,17 @@ spec:
   - host: ${DEPLOY_ENV}.classic.lb.adaptivecluster.com
     http:
       paths:
-      - pathType: Prefix
-        path: /
+      - path: /
         backend:
           serviceName: client
           servicePort: 3000
 
-      - pathType: Exact
-        path: /ws
+      - path: /ws
         backend:
           serviceName: broker
           servicePort: 15674
 
-      - pathType: Prefix
-        path: /storybook
+      - path: /storybook
         backend:
           serviceName: storybook
           servicePort: 80
@@ -61,20 +58,17 @@ spec:
   - host: ${DEPLOY_ENV}.beta.lb.adaptivecluster.com
     http:
       paths:
-      - pathType: Prefix
-        path: /
+      - path: /
         backend:
           serviceName: new-client
           servicePort: 3000
 
-      - pathType: Exact
-        path: /ws
+      - path: /ws
         backend:
           serviceName: broker
           servicePort: 15674
 
-      - pathType: Prefix
-        path: /storybook
+      - path: /storybook
         backend:
           serviceName: storybook
           servicePort: 80
