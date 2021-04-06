@@ -8,6 +8,15 @@ metadata:
     cert-manager.io/cluster-issuer: reactive-trader-issuer
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      brotli on;
+      brotli_comp_level 6;
+      brotli_types text/plain text/html text/css application/javascript application/json;
+      gzip on;
+      gzip_buffers 16 8k;
+      gzip_comp_level 6;
+      gzip_types text/plain text/html text/css application/javascript application/json;
+      gzip_proxied any;
 
     # Note: these hosts should be moved to the 'beta' ingress for go-live
     external-dns.alpha.kubernetes.io/hostname: "${DEPLOY_ENV}.lb.adaptivecluster.com"
@@ -51,6 +60,15 @@ metadata:
     cert-manager.io/cluster-issuer: reactive-trader-issuer
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      brotli on;
+      brotli_comp_level 6;
+      brotli_types text/plain text/html text/css application/javascript application/json;
+      gzip on;
+      gzip_buffers 16 8k;
+      gzip_comp_level 6;
+      gzip_types text/plain text/html text/css application/javascript application/json;
+      gzip_proxied any;
 
 spec:
   tls:
@@ -76,16 +94,3 @@ spec:
         backend:
           serviceName: new-client
           servicePort: 3000
-
----
-
-apiVersion: v1
-kind: ConfigMap
-
-metadata:
-  name: ingress-nginx-configuration
-data:
-  use-gzip: "true"
-  gzip-level: "6"
-  enable-brotli: "true"
-  brotli-level: "6"
