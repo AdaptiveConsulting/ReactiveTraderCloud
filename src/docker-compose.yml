@@ -117,6 +117,13 @@ services:
         - REACT_APP_BUILD_VERSION=${BUILD_VERSION}
     environment:
       - ENVIRONMENT_NAME=${ENVIRONMENT_NAME}
+  storybook:
+    image: ${DOCKER_USER}/storybook:${BUILD_VERSION}
+    build:
+      dockerfile: Storybook.Dockerfile
+      context: ./client
+      args:
+        - CI=true
   new-client:
     image: ${DOCKER_USER}/new-client:${BUILD_VERSION}
     build:
