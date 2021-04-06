@@ -29,7 +29,6 @@
     "start:openfin": "concurrently npm:start npm:openfin",
     "start:launcher": "concurrently npm:start npm:openfin:launcher",
     "build": "react-app-rewired build",
-    "build:finsemble": "cross-env REACT_APP_FINSEMBLE=true react-app-rewired build",
     "build:dev-backend": "cross-env REACT_APP_BROKER_HOST=dev.reactivetrader.com REACT_APP_BROKER_PORT=443 npm run build",
     "build:demo-backend": "cross-env REACT_APP_BROKER_HOST=www.reactivetrader.com REACT_APP_BROKER_PORT=443 npm run build",
     "test": "react-scripts test --verbose=false",
@@ -39,7 +38,6 @@
     "openfin:launcher": "wait-on -l http://localhost:3000/openfin/launcher.json && openfin -c http://localhost:3000/openfin/launcher.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "storybook": "start-storybook -p 6006 -c .storybook",
-    "storybook:build": "build-storybook -c .storybook -o storybook/build",
     "lint": "eslint --ext .ts,.tsx ./src",
     "lint:fix": "eslint --fix --ext .ts,.tsx ./src"
   },
@@ -147,8 +145,7 @@
     "wait-on": "^5.1.0"
   },
   "optionalDependencies": {
-    "openfin-cli": "^3.0.1",
-    "@chartiq/finsemble": "4.0.*"
+    "openfin-cli": "^3.0.1"
   },
   "babelMacros": {
     "styledComponents": {

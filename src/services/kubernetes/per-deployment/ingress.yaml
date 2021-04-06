@@ -27,6 +27,11 @@ spec:
           serviceName: broker
           servicePort: 15674
 
+      - path: /storybook
+        backend:
+          serviceName: storybook
+          servicePort: 80
+
       - path: /
         backend:
           serviceName: client
