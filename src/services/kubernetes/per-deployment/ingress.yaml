@@ -25,26 +25,20 @@ spec:
       - pathType: Prefix
         path: /
         backend:
-          service:
-            name: client
-            port:
-              number: 3000
+          serviceName: client
+          servicePort: 3000
 
       - pathType: Exact
         path: /ws
         backend:
-          service:
-            name: broker
-            port:
-              number: 15674
+          serviceName: broker
+          servicePort: 15674
 
       - pathType: Prefix
         path: /storybook
         backend:
-          service:
-            name: storybook
-            port:
-              number: 80
+          serviceName: storybook
+          servicePort: 80
 
 ---
 
@@ -70,23 +64,17 @@ spec:
       - pathType: Prefix
         path: /
         backend:
-          service:
-            name: new-client
-            port:
-              number: 3000
+          serviceName: new-client
+          servicePort: 3000
 
       - pathType: Exact
         path: /ws
         backend:
-          service:
-            name: broker
-            port:
-              number: 15674
+          serviceName: broker
+          servicePort: 15674
 
       - pathType: Prefix
         path: /storybook
         backend:
-          service:
-            name: storybook
-            port:
-              number: 80
+          serviceName: storybook
+          servicePort: 80
