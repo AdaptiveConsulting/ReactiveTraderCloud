@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 
 metadata:
-  name: ingress-nginx-configuration
+  name: ingress-nginx-controller
   namespace: ingress-nginx
 
 data:
