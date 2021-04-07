@@ -27,11 +27,6 @@ const LineChartWrapper = styled.div<{ isTimerOn?: boolean }>`
   grid-area: chart;
 `
 
-const AnalyticsTileChartWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-`
-
 const Path = styled.path``
 const Svg = styled.svg`
   &:hover ${Path} {
@@ -45,19 +40,17 @@ export const HistoricalGraph: React.FC = () => {
 
   return (
     <LineChartWrapper>
-      <AnalyticsTileChartWrapper>
-        <Svg viewBox={`0 0 ${VIEW_BOX_WIDTH} ${VIEW_BOX_HEIGHT}`}>
-          <Path
-            stroke="#737987"
-            strokeOpacity={0.9}
-            strokeWidth={1.6}
-            fill="none"
-            width={VIEW_BOX_WIDTH}
-            height={VIEW_BOX_HEIGHT}
-            d={d}
-          />
-        </Svg>
-      </AnalyticsTileChartWrapper>
+      <Svg>
+        <Path
+          stroke="#737987"
+          strokeOpacity={0.9}
+          strokeWidth={1.6}
+          fill="none"
+          width={VIEW_BOX_WIDTH}
+          height={VIEW_BOX_HEIGHT}
+          d={d}
+        />
+      </Svg>
     </LineChartWrapper>
   )
 }

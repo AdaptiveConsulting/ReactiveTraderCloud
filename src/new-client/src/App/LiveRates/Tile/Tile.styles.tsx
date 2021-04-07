@@ -13,14 +13,14 @@ export const PriceControlsStyle = styled("div")<{
       ? `
       grid-template-columns: ${AnalyticsPricesFirstCol} 80%;
       grid-template-rows: 50% 50%;
-      grid-template-areas: 
+      grid-template-areas:
       "movement sell"
       "movement buy";
     `
       : `
       grid-template-columns: 37% 26% 37%;
       grid-template-rows: 100%;
-      grid-template-areas: 
+      grid-template-areas:
       "sell movement buy";
     `}
 `
@@ -35,21 +35,21 @@ export const Body = styled.div<{
   showTimer: boolean
 }>`
   display: grid;
+  height: 100%;
   ${({ isAnalyticsView, showTimer }) =>
     isAnalyticsView
       ? `
     grid-template-columns: 52% 7% 41%;
-    grid-template-rows: ${showTimer ? "50% 10% 15%" : "50% 35% 15%"}
+    grid-template-rows: ${showTimer ? "60% 15%" : "80% 15%"}
     ;
-    grid-template-areas: 
-    "chart control control"
+    grid-template-areas:
     "chart control control"
     "notional control control";
   `
       : `
     grid-template-columns: auto;
     grid-template-rows: ${showTimer ? "60% 40" : "85% 15%"};
-    grid-template-areas: 
+    grid-template-areas:
     "control"
     "notional";
     height: 77%;
@@ -58,12 +58,6 @@ export const Body = styled.div<{
 
 export const PriceControlWrapper = styled.div`
   grid-area: control;
-`
-
-export const LineChartWrapper = styled.div<{ isTimerOn: boolean }>`
-  width: 100%;
-  height: ${({ isTimerOn }) => (isTimerOn ? "60%" : "80%")};
-  grid-area: chart;
 `
 
 export const SpotTileStyle = styled.div`
