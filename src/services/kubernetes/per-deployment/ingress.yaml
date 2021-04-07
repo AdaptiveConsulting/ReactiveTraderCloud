@@ -1,0 +1,89 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+
+metadata:
+  name: rt-ingress-ns-classic
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: reactive-trader-issuer
+
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+
+    # Note: these hosts should be moved to the 'beta' ingress for go-live
+    external-dns.alpha.kubernetes.io/hostname: "${DEPLOY_ENV}.lb.adaptivecluster.com"
+    nginx.ingress.kubernetes.io/server-alias: "${DEPLOY_ENV}.lb.adaptivecluster.com" 
+
+spec:
+  tls:
+  - hosts:
+    - ${DEPLOY_ENV}.lb.adaptivecluster.com
+    - ${DEPLOY_ENV}.classic.lb.adaptivecluster.com
+    secretName: reactive-trader-classic-tls
+
+  rules:
+  - host: ${DEPLOY_ENV}.classic.lb.adaptivecluster.com
+    http:
+      paths:
+      - path: /ws
+        backend:
+          serviceName: broker
+          servicePort: 15674
+
+      - path: /storybook
+        backend:
+          serviceName: storybook
+          servicePort: 80
+
+      - path: /styleguide
+        backend:
+          serviceName: styleguide
+          servicePort: 80
+
+      - path: /
+        backend:
+          serviceName: client
+          servicePort: 3000
+
+---
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+
+metadata:
+  name: rt-ingress-ns
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: reactive-trader-issuer
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+
+spec:
+  tls:
+  - hosts:
+    - ${DEPLOY_ENV}.beta.lb.adaptivecluster.com
+    secretName: reactive-trader-beta-tls
+
+  rules:
+  - host: ${DEPLOY_ENV}.beta.lb.adaptivecluster.com
+    http:
+      paths:
+      - path: /ws
+        backend:
+          serviceName: broker
+          servicePort: 15674
+
+      - path: /storybook
+        backend:
+          serviceName: storybook
+          servicePort: 80
+
+      - path: /styleguide
+        backend:
+          serviceName: styleguide
+          servicePort: 80
+
+      - path: /
+        backend:
+          serviceName: new-client
+          servicePort: 3000

@@ -24,6 +24,8 @@ pricehistory ./src/server/node
 nlp          ./src/server/node
 bot          ./src/server/node/bot
 client       ./src/client
+storybook    ./src/client
+styleguide   ./src/client
 new-client   ./src/new-client
 END
 )
@@ -109,6 +111,10 @@ deploy_service pricehistory ./src/server/node
 deploy_service bot ./src/server/node/bot
 
 deploy_service client ./src/client
+deploy_service storybook ./src/client
+deploy_service styleguide ./src/client
 deploy_service new-client ./src/new-client
+
+deploy_service ingress
 
 after_deploy
