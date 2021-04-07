@@ -98,7 +98,9 @@ const PriceButtonInner: React.FC<{
           </>
         )}
       </Price>
-      {isExpired && <ExpiredPrice>Expired</ExpiredPrice>}
+      {isExpired && (
+        <ExpiredPrice data-testid="expireLabel">Expired</ExpiredPrice>
+      )}
     </TradeButton>
   )
 }

@@ -120,7 +120,7 @@ export const RfqTimer: React.FC<{
   const { symbol } = useTileCurrencyPair()
 
   return (
-    <TimerWrapper isAnalyticsView={isAnalyticsView}>
+    <TimerWrapper isAnalyticsView={isAnalyticsView} data-testid="rfqTimer">
       <TimeLeft isAnalyticsView={isAnalyticsView}>
         <SecsTimer {...props} />
       </TimeLeft>
@@ -128,6 +128,7 @@ export const RfqTimer: React.FC<{
         <TimeProgress {...props} />
       </ProgressBarWrapper>
       <RejectQuoteButton
+        data-testid="rfqReject"
         isAnalyticsView={isAnalyticsView}
         onClick={() => onRejectQuote(symbol)}
       >

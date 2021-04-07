@@ -35,7 +35,7 @@ export const ToggleView: React.FC = () => {
   const tileView = useSelectedTileView()
   return (
     <ToggleItem
-      data-testid={"toggleButton"}
+      data-testid="toggleButton"
       active={TileView.Analytics === tileView}
       data-qa="workspace-header__nav-item--view"
       data-qa-id={`workspace-view-${tileView}`}
