@@ -1,14 +1,12 @@
 import { combineLatest, merge } from "rxjs"
 import styled from "styled-components"
-import {
-  currencyPairDependant$,
-  currencyPairs$,
-} from "@/services/currencyPairs"
+import { currencyPairs$ } from "@/services/currencyPairs"
 import { TileView, useSelectedTileView } from "./selectedView"
 import { Tile, tile$ } from "./Tile"
 import { map } from "rxjs/operators"
 import { selectedCurrency$, ALL_CURRENCIES } from "./selectedCurrency"
 import { bind } from "@react-rxjs/core"
+import { combineKeys } from "@react-rxjs/utils"
 
 const PanelItems = styled.div`
   display: grid;
@@ -34,7 +32,7 @@ const [useFilteredCurrencyPairs, filteredCurrencyPairs$] = bind(
 
 export const tiles$ = merge(
   filteredCurrencyPairs$,
-  currencyPairDependant$(tile$),
+  combineKeys(currencyPairs$.pipe(map(Object.keys)), tile$),
 )
 
 export const Tiles = () => {

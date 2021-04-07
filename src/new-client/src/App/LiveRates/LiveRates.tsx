@@ -1,16 +1,15 @@
 import { Loader } from "@/components/Loader"
 import { lazy, Suspense } from "react"
 import { merge } from "rxjs"
-import {
-  currencyPairDependant$,
-  currencyPairs$,
-} from "@/services/currencyPairs"
+import { currencyPairs$ } from "@/services/currencyPairs"
 import { getHistoricalPrices$, getPrice$ } from "@/services/prices"
 import styled from "styled-components"
+import { combineKeys } from "@react-rxjs/utils"
+import { map } from "rxjs/operators"
 const LiveRatesCore = lazy(() => import("./LiveRatesCore"))
 
 currencyPairs$.subscribe()
-currencyPairDependant$((symbol: string) =>
+combineKeys(currencyPairs$.pipe(map(Object.keys)), (symbol: string) =>
   merge(getHistoricalPrices$(symbol), getPrice$(symbol)),
 ).subscribe()
 
