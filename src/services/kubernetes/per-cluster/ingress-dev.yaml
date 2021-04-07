@@ -9,6 +9,7 @@ metadata:
     cert-manager.io/cluster-issuer: reactive-trader-issuer
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/server-alias: "web-dev.adaptivecluster.com"
 
 spec:
   tls:
@@ -19,24 +20,6 @@ spec:
 
   rules:
   - host: dev.reactivetrader.com
-    http:
-      paths:
-      - path: /ws
-        backend:
-          serviceName: broker
-          servicePort: 15674
-
-      - path: /storybook
-        backend:
-          serviceName: storybook
-          servicePort: 80
-
-      - path: /
-        backend:
-          serviceName: client
-          servicePort: 3000
-
-  - host: web-dev.adaptivecluster.com
     http:
       paths:
       - path: /ws
