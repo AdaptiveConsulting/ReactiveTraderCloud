@@ -16,6 +16,7 @@ nlp          ./src/server/node
 bot          ./src/server/node/bot
 client       ./src/client
 storybook    ./src/client
+styleguide   ./src/client
 new-client   ./src/new-client
 END
 )

@@ -124,6 +124,13 @@ services:
       context: ./client
       args:
         - CI=true
+  styleguide:
+    image: ${DOCKER_USER}/styleguide:${BUILD_VERSION}
+    build:
+      dockerfile: Styleguide.Dockerfile
+      context: ./client
+      args:
+        - CI=true
   new-client:
     image: ${DOCKER_USER}/new-client:${BUILD_VERSION}
     build:

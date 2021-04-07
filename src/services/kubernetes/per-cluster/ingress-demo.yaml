@@ -34,6 +34,11 @@ spec:
           serviceName: storybook
           servicePort: 80
 
+      - path: /styleguide
+        backend:
+          serviceName: styleguide
+          servicePort: 80
+
       - path: /
         backend:
           serviceName: client
@@ -52,6 +57,11 @@ spec:
           serviceName: storybook
           servicePort: 80
 
+      - path: /styleguide
+        backend:
+          serviceName: styleguide
+          servicePort: 80
+
       - path: /
         backend:
           serviceName: client
@@ -68,6 +78,11 @@ spec:
       - path: /storybook
         backend:
           serviceName: storybook
+          servicePort: 80
+
+      - path: /styleguide
+        backend:
+          serviceName: styleguide
           servicePort: 80
 
       - path: /
