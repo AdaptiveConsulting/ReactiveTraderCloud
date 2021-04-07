@@ -2,24 +2,24 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 
 metadata:
-  name: dev-ingress
-  namespace: dev
+  name: rt-ingress-uat
+  namespace: uat
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: reactive-trader-issuer
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.ingress.kubernetes.io/server-alias: "web-dev.adaptivecluster.com"
+    nginx.ingress.kubernetes.io/server-alias: "web-uat.adaptivecluster.com"
 
 spec:
   tls:
   - hosts:
-    - dev.reactivetrader.com
-    - web-dev.adaptivecluster.com
-    secretName: reactive-trader-tls
+    - uat.reactivetrader.com
+    - web-uat.adaptivecluster.com
+    secretName: uat-tls
 
   rules:
-  - host: dev.reactivetrader.com
+  - host: uat.reactivetrader.com
     http:
       paths:
       - path: /ws

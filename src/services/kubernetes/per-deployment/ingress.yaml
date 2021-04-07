@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 
 metadata:
-  name: reactive-trader-ingress-classic
+  name: rt-ingress-ns-classic
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: reactive-trader-issuer
@@ -51,7 +51,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 
 metadata:
-  name: reactive-trader-ingress
+  name: rt-ingress-ns
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: reactive-trader-issuer
