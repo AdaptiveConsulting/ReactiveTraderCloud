@@ -39,5 +39,5 @@ spec:
 
       - path: /
         backend:
-          serviceName: client
+          serviceName: new-client
           servicePort: 3000

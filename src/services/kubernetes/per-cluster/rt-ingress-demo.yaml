@@ -41,7 +41,7 @@ spec:
 
       - path: /
         backend:
-          serviceName: client
+          serviceName: new-client
           servicePort: 3000
 
   - host: web-demo.adaptivecluster.com
@@ -64,7 +64,7 @@ spec:
 
       - path: /
         backend:
-          serviceName: client
+          serviceName: new-client
           servicePort: 3000
 
   - host: classic.reactivetrader.com
