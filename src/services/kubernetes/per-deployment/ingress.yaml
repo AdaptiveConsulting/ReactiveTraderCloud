@@ -2,11 +2,10 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 
 metadata:
-  name: rt-ingress-ns-classic
+  name: rt-ingress-ns
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: reactive-trader-issuer
-
+    cert-manager.io/cluster-issuer: rt-ns-issuer
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 
@@ -14,7 +13,8 @@ spec:
   tls:
   - hosts:
     - ${DEPLOY_ENV}.classic.lb.adaptivecluster.com
-    secretName: reactive-trader-classic-tls
+    - ${DEPLOY_ENV}.lb.adaptivecluster.com
+    secretName: reactive-trader-tls
 
   rules:
   - host: ${DEPLOY_ENV}.classic.lb.adaptivecluster.com
@@ -40,26 +40,6 @@ spec:
           serviceName: client
           servicePort: 3000
 
----
-
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-
-metadata:
-  name: rt-ingress-ns
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: reactive-trader-issuer
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-
-spec:
-  tls:
-  - hosts:
-    - ${DEPLOY_ENV}.lb.adaptivecluster.com
-    secretName: reactive-trader-beta-tls
-
-  rules:
   - host: ${DEPLOY_ENV}.lb.adaptivecluster.com
     http:
       paths:
