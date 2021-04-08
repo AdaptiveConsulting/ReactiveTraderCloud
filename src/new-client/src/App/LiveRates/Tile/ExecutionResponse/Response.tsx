@@ -95,7 +95,7 @@ const ExecutionMessage: React.FC<{
   tileState: TileState
   currencyPair: CurrencyPair
 }> = ({ tileState, currencyPair: { terms, base, symbol } }) => {
-  const tradeId = tileState.trade?.id
+  const tradeId = tileState.trade?.tradeId
 
   const isWaiting =
     tileState.status === TileStates.Started ||
