@@ -40,7 +40,7 @@ export const HistoricalGraph: React.FC = () => {
 
   return (
     <LineChartWrapper>
-      <Svg>
+      <Svg viewBox={`0 0 ${VIEW_BOX_WIDTH} ${VIEW_BOX_HEIGHT}`}>
         <Path
           stroke="#737987"
           strokeOpacity={0.9}

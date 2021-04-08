@@ -7,23 +7,25 @@ import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"
 import { PriceButton, priceButton$ } from "./PriceButton"
 import { Header, header$ } from "./Header"
 import {
-  PriceControlsStyle,
-  PanelItem,
-  Main,
-  PriceControlWrapper,
   Body,
+  InputTimerStyle,
+  Main,
+  PanelItem,
+  PriceControlsStyle,
+  PriceControlWrapper,
+  TestBody,
 } from "./Tile.styles"
 import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
 
 import { CurrencyPair } from "services/currencyPairs"
 import { Provider } from "./Tile.context"
 import {
-  isRfq$,
-  RfqButton,
   getRfqState$,
-  useRfqState,
+  isRfq$,
   QuoteStateStage,
+  RfqButton,
   RfqTimer,
+  useRfqState,
 } from "./Rfq"
 
 export const tile$ = (symbol: string) =>
@@ -49,12 +51,31 @@ const Tile: React.FC<{
     rfq.stage === QuoteStateStage.Received
       ? { start: rfq.payload.time, end: rfq.payload.time + rfq.payload.timeout }
       : null
+
+  const InputTimerWrapper: React.FC<{ isAnalytics: boolean }> = ({
+    isAnalytics,
+  }) => {
+    return (
+      <InputTimerStyle>
+        <NotionalInput isAnalytics={isAnalytics} />
+        {timerData ? (
+          <RfqTimer {...timerData} isAnalyticsView={isAnalytics} />
+        ) : null}
+      </InputTimerStyle>
+    )
+  }
+
   return (
     <PanelItem>
       <Main>
         <Header />
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
-          {isAnalytics ? <HistoricalGraph /> : null}
+          {isAnalytics ? (
+            <TestBody>
+              <HistoricalGraph />
+              <InputTimerWrapper isAnalytics />
+            </TestBody>
+          ) : null}
           <PriceControlWrapper>
             <PriceControlsStyle isAnalyticsView={isAnalytics}>
               <PriceMovement isAnalyticsView={isAnalytics} />
@@ -63,10 +84,7 @@ const Tile: React.FC<{
               <RfqButton isAnalytics={isAnalytics} />
             </PriceControlsStyle>
           </PriceControlWrapper>
-          <NotionalInput isAnalytics={isAnalytics} />
-          {timerData ? (
-            <RfqTimer {...timerData} isAnalyticsView={isAnalytics} />
-          ) : null}
+          {!isAnalytics ? <InputTimerWrapper isAnalytics /> : null}
         </Body>
       </Main>
       <ExecutionResponse />

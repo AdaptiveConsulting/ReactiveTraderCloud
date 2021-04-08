@@ -25,6 +25,11 @@ export const PriceControlsStyle = styled("div")<{
     `}
 `
 
+export const InputTimerStyle = styled("div")`
+  display: flex;
+  flex-direction: column;
+`
+
 export const PanelItem = styled.div`
   flex-grow: 1;
   flex-basis: 20rem;
@@ -34,26 +39,22 @@ export const Body = styled.div<{
   isAnalyticsView: boolean
   showTimer: boolean
 }>`
-  display: grid;
   height: 100%;
+  display: flex;
+  justify-content: space-between;
   ${({ isAnalyticsView, showTimer }) =>
     isAnalyticsView
       ? `
-    grid-template-columns: 52% 7% 41%;
-    grid-template-rows: ${showTimer ? "60% 15%" : "80% 15%"}
-    ;
-    grid-template-areas:
-    "chart control control"
-    "notional control control";
   `
       : `
-    grid-template-columns: auto;
-    grid-template-rows: ${showTimer ? "60% 40" : "85% 15%"};
-    grid-template-areas:
-    "control"
-    "notional";
+    flex-direction: column;
     height: 77%;
   `}
+`
+export const TestBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
 `
 
 export const PriceControlWrapper = styled.div`

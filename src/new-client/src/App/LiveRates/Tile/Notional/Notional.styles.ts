@@ -29,25 +29,7 @@ export const CurrencyPairSymbol = styled("span")`
 `
 
 export const InputWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 30px auto 30px;
-  grid-template-areas: "Currency Input ResetInputValue" ". Message .";
-  align-items: center;
-
-  grid-template-rows: 23px 13px;
-  margin-bottom: -0.5rem;
-`
-
-export const NotionalInputWrapper = styled("div")<{
-  isAnalyticsView: boolean
-}>`
   display: flex;
-  align-items: center;
-  grid-area: notional;
-  ${({ isAnalyticsView }) =>
-    isAnalyticsView
-      ? ``
-      : `
-      justify-content: center;
-    `}
+  justify-content: center;
+  padding-right: 1.3rem;
 `
