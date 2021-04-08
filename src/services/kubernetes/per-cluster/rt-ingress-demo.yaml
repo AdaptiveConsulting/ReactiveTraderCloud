@@ -64,7 +64,7 @@ spec:
 
       - path: /
         backend:
-          serviceName: new-client
+          serviceName: client
           servicePort: 3000
 
   - host: classic.reactivetrader.com
