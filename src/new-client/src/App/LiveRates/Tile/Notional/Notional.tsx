@@ -2,12 +2,7 @@ import styled from "styled-components"
 import { FaRedo } from "react-icons/fa"
 import { useRfqState, QuoteStateStage } from "../Rfq"
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
-import {
-  InputWrapper,
-  CurrencyPairSymbol,
-  Input,
-  NotionalInputWrapper,
-} from "./Notional.styles"
+import { InputWrapper, CurrencyPairSymbol, Input } from "./Notional.styles"
 import { concat, merge, pipe } from "rxjs"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { filter, map, pluck, take } from "rxjs/operators"
@@ -84,7 +79,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
   const { stage: quoteStage } = useRfqState()
 
   return (
-    <NotionalInputWrapper isAnalyticsView={isAnalytics}>
+    <>
       <InputWrapper>
         <CurrencyPairSymbol>{base}</CurrencyPairSymbol>
         <Input
@@ -111,6 +106,6 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
           <FaRedo className="flipHorizontal" />
         </ResetInputValue>
       </InputWrapper>
-    </NotionalInputWrapper>
+    </>
   )
 }

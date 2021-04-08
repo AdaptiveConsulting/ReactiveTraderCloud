@@ -7,18 +7,14 @@ const TimeLeft = styled.div<{ isAnalyticsView: boolean }>`
   font-size: 10px;
   opacity: 0.6;
   grid-area: TimeLeft;
-  ${({ isAnalyticsView }) =>
-    isAnalyticsView ? "margin-top: 4.5px" : "margin-bottom: 1px"};
+  white-space: nowrap;
+  margin-right: 0.5rem;
 `
 
 const ProgressBarWrapper = styled.div<{ isAnalyticsView: boolean }>`
   background-color: ${({ theme }) => theme.core.darkBackground};
   height: 6px;
   width: 100%;
-  grid-area: ProgressBar;
-  align-self: ${({ isAnalyticsView }) => (isAnalyticsView ? "end" : "center")};
-  ${({ isAnalyticsView }) =>
-    isAnalyticsView ? "margin-bottom: 4.5px" : "margin-top: 1px"};
 `
 
 const ProgressBar = styled.div<{
@@ -71,24 +67,11 @@ const RejectQuoteButton = styled.button<{ isAnalyticsView: boolean }>`
   font-size: 11px;
   padding: 2px 5px 3px 5px;
   margin-left: 9px;
-  grid-area: RejectQuoteButton;
-  align-self: ${({ isAnalyticsView }) => (isAnalyticsView ? "end" : "center")};
 `
 
 const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
-  display: grid;
-  width: ${({ isAnalyticsView }) =>
-    isAnalyticsView ? "calc(100% + 23.09px)" : "100%"};
+  display: flex;
   align-items: center;
-  grid-template-columns: ${({ isAnalyticsView }) =>
-    isAnalyticsView ? "35px auto 55px" : "35px auto 7px 55px"};
-  grid-template-rows: ${({ isAnalyticsView }) =>
-    isAnalyticsView ? "5px 20px" : "auto"};
-  grid-template-areas: ${({ isAnalyticsView }) =>
-    isAnalyticsView
-      ? "'TimeLeft . .' 'ProgressBar ProgressBar RejectQuoteButton'"
-      : "'TimeLeft ProgressBar . RejectQuoteButton'"};
-  margin-bottom: -12px;
   z-index: 3;
 `
 
