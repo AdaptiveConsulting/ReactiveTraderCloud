@@ -11,6 +11,8 @@ export const PriceControlsStyle = styled("div")<{
   ${({ isAnalyticsView }) =>
     isAnalyticsView
       ? `
+      height: 7rem;
+      width: 10rem;
       grid-template-columns: ${AnalyticsPricesFirstCol} 80%;
       grid-template-rows: 50% 50%;
       grid-template-areas:
@@ -18,6 +20,7 @@ export const PriceControlsStyle = styled("div")<{
       "movement buy";
     `
       : `
+      height: 4rem;
       grid-template-columns: 37% 26% 37%;
       grid-template-rows: 100%;
       grid-template-areas:
