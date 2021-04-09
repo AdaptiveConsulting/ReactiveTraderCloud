@@ -117,9 +117,7 @@ export const QuotePriceLoading = styled.div`
   border-radius: 3px;
   font-size: 10px;
   transition: background-color 0.2s ease;
-  height: 58px;
-  min-height: 2rem;
-  max-height: 3.7rem;
+  height: 100%;
   margin-bottom: 1px;
   min-width: 125px;
   line-height: normal;

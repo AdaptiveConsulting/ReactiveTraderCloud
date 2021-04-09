@@ -6,6 +6,7 @@ export const AnalyticsPricesFirstCol = "20%"
 export const PriceControlsStyle = styled("div")<{
   isAnalyticsView: boolean
 }>`
+  height: 4rem;
   display: grid;
   position: relative;
   ${({ isAnalyticsView }) =>
