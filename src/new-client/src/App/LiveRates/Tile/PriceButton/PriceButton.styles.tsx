@@ -49,11 +49,10 @@ export const TradeButton = styled.button<{
   cursor: pointer;
   border: none;
   outline: none;
-  height: 62px;
+  height: 100%;
   min-width: 75px;
   padding: ${({ expired }) =>
     expired ? "0.6rem 1.5rem 0.4rem 1.5rem" : "0.55rem 1.5rem 0.6rem 1.5rem"};
-  margin-bottom: 2px;
   ${backgroundEffect}
 
   ${({ theme, direction, disabled, priceAnnounced }) =>
@@ -117,10 +116,7 @@ export const QuotePriceLoading = styled.div`
   border-radius: 3px;
   font-size: 10px;
   transition: background-color 0.2s ease;
-  height: 58px;
-  min-height: 2rem;
-  max-height: 3.7rem;
-  margin-bottom: 1px;
+  height: 100%;
   min-width: 125px;
   line-height: normal;
   opacity: 0.5;
