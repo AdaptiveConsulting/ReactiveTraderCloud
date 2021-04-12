@@ -11,6 +11,7 @@ export const PriceControlsStyle = styled("div")<{
   ${({ isAnalyticsView }) =>
     isAnalyticsView
       ? `
+      grid-row-gap: 3px;
       height: 7rem;
       width: 10rem;
       grid-template-columns: ${AnalyticsPricesFirstCol} 80%;
