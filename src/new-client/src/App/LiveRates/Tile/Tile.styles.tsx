@@ -55,7 +55,7 @@ export const Body = styled.div<{
     height: 77%;
   `}
 `
-export const TestBody = styled.div`
+export const GraphNotionalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
