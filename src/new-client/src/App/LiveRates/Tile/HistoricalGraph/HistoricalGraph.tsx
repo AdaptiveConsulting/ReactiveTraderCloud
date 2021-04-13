@@ -1,29 +1,54 @@
 import styled from "styled-components"
-import { getHistoricalPrices$ } from "@/services/prices"
-import { map } from "rxjs/operators"
+import { getHistoricalPrices$, HistoryPrice } from "@/services/prices"
+import { distinctUntilChanged, map, startWith } from "rxjs/operators"
 import { getDataPoints, toSvgPath, withScales } from "@/utils/historicalChart"
-import { pipe } from "rxjs"
+import { combineLatest } from "rxjs"
 import { curveBasis } from "d3"
-import { symbolBind } from "../Tile.context"
+import { symbolBind, useTileCurrencyPair } from "../Tile.context"
+import { useEffect, useRef } from "react"
+import { createKeyedSignal } from "@react-rxjs/utils"
+import { equals } from "@/utils"
 
 const VIEW_BOX_WIDTH = 200
 const VIEW_BOX_HEIGHT = 90
 
+interface HistoricalGraphProps {
+  showTimer: boolean
+}
+
+const [size$, setSize] = createKeyedSignal<
+  string,
+  { width: number; height: number }
+>()
+
 const [useHistoricalPath, historicalGraph$] = symbolBind((symbol: string) =>
-  getHistoricalPrices$(symbol).pipe(
-    map(
-      pipe(
-        getDataPoints((price, idx) => [new Date(idx), price.mid]),
-        withScales([0, VIEW_BOX_WIDTH], [0, VIEW_BOX_HEIGHT]),
-        toSvgPath(curveBasis),
-      ),
+  combineLatest([
+    getHistoricalPrices$(symbol),
+    size$(symbol).pipe(
+      startWith({
+        width: VIEW_BOX_WIDTH,
+        height: VIEW_BOX_HEIGHT,
+      }),
+      distinctUntilChanged(equals),
     ),
+  ]).pipe(
+    map(([historicalPrices, { width, height }]) => {
+      const dataPoints = getDataPoints<HistoryPrice>((price, idx) => [
+        new Date(idx),
+        price.mid,
+      ])(historicalPrices)
+
+      const scales = withScales([0, width], [0, height])(dataPoints)
+      return toSvgPath(curveBasis)(scales)
+    }),
   ),
 )
 
-const LineChartWrapper = styled.div<{ isTimerOn?: boolean }>`
+const LineChartWrapper = styled.div<{ showTimer?: boolean }>`
   width: 100%;
-  height: ${({ isTimerOn }) => (isTimerOn ? "60%" : "80%")};
+  height: ${({ showTimer }) => {
+    return showTimer ? "60%" : "75%"
+  }};
   grid-area: chart;
 `
 
@@ -35,19 +60,38 @@ const Svg = styled.svg`
 `
 
 export { historicalGraph$ }
-export const HistoricalGraph: React.FC = () => {
+
+export const HistoricalGraph: React.FC<HistoricalGraphProps> = ({
+  showTimer,
+}) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const { symbol } = useTileCurrencyPair()
+  useEffect(() => {
+    const element = ref.current!
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const { width, height } = entries[0].contentRect
+      setSize(symbol, { width, height })
+    })
+
+    resizeObserver.observe(element)
+
+    return () => {
+      resizeObserver.unobserve(element)
+    }
+  }, [symbol])
+
   const d = useHistoricalPath()
 
+  console.log(showTimer)
   return (
-    <LineChartWrapper>
-      <Svg viewBox={`0 0 ${VIEW_BOX_WIDTH} ${VIEW_BOX_HEIGHT}`}>
+    <LineChartWrapper showTimer={showTimer} ref={ref}>
+      <Svg>
         <Path
           stroke="#737987"
           strokeOpacity={0.9}
           strokeWidth={1.6}
           fill="none"
-          width={VIEW_BOX_WIDTH}
-          height={VIEW_BOX_HEIGHT}
           d={d}
         />
       </Svg>

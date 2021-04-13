@@ -13,7 +13,7 @@ import {
   PanelItem,
   PriceControlsStyle,
   PriceControlWrapper,
-  TestBody,
+  GraphNotionalWrapper,
 } from "./Tile.styles"
 import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
 
@@ -71,10 +71,10 @@ const Tile: React.FC<{
         <Header />
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
           {isAnalytics ? (
-            <TestBody>
-              <HistoricalGraph />
+            <GraphNotionalWrapper>
+              <HistoricalGraph showTimer={!!timerData} />
               <InputTimerWrapper isAnalytics />
-            </TestBody>
+            </GraphNotionalWrapper>
           ) : null}
           <PriceControlWrapper>
             <PriceControlsStyle isAnalyticsView={isAnalytics}>
