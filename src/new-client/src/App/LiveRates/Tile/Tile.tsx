@@ -57,7 +57,7 @@ const Tile: React.FC<{
   }) => {
     return (
       <InputTimerStyle>
-        <NotionalInput isAnalytics={isAnalytics} />
+        <NotionalInput />
         {timerData ? (
           <RfqTimer {...timerData} isAnalyticsView={isAnalytics} />
         ) : null}

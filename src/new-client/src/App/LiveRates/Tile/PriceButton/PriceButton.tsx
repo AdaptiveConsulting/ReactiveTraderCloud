@@ -22,6 +22,7 @@ import {
   ExpiredPrice,
 } from "./PriceButton.styles"
 import { of } from "rxjs"
+import { isNotionalValid, useNotional } from "../Notional/Notional"
 import { getRfqPayload$ } from "../Rfq/Rfq.state"
 
 const getPriceByDirection$ = (symbol: string, direction: Direction) =>
@@ -60,7 +61,8 @@ const PriceButtonInner: React.FC<{
 }> = ({ direction }) => {
   const { pipsPosition, ratePrecision, symbol } = useTileCurrencyPair()
   const { price, isExpired } = usePrice(symbol, direction)
-  const disabled = price === 0
+  const notional = useNotional()
+  const disabled = price === 0 || !isNotionalValid(notional.value)
 
   const rateString = price.toFixed(ratePrecision)
   const [wholeNumber, fractions_] = rateString.split(".")
@@ -89,9 +91,9 @@ const PriceButtonInner: React.FC<{
       <Price disabled={disabled}>
         <CenteringContainer>
           <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
-          <Big>{disabled ? "-" : bigFigure}</Big>
+          <Big>{price ? bigFigure : "-"}</Big>
         </CenteringContainer>
-        {!disabled && (
+        {price && (
           <>
             <Pip>{pip}</Pip>
             <Tenth>{tenth}</Tenth>

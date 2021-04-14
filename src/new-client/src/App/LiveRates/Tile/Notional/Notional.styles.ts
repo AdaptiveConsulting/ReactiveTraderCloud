@@ -19,17 +19,43 @@ export const Input = styled.input`
   &:disabled {
     opacity: 0.3;
   }
+  &.is-invalid {
+    border-bottom-color: ${({ theme }) => theme.accents.negative.base};
+  }
 `
 
 export const CurrencyPairSymbol = styled("span")`
-  grid-area: Currency;
+  display: inline-block;
+  width: 24px;
   opacity: 0.59;
   font-size: 0.625rem;
   line-height: 1.2rem;
 `
 
 export const InputWrapper = styled.div`
-  display: flex;
-  justify-content: center;
   padding-right: 1.3rem;
+`
+
+export const ErrorMessage = styled.div`
+  margin-left: 24px;
+  margin-top: 2px;
+  padding-top: 2px;
+  color: ${({ theme }) => theme.accents.negative.base};
+  font-size: 0.6rem;
+  line-height: 1;
+`
+
+export const ResetInputValue = styled.button<{ isVisible: boolean }>`
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  border: 2px solid ${({ theme }) => theme.core.darkBackground};
+  display: ${({ isVisible }) => (isVisible ? "inline-flex" : "none")};
+  border-radius: 3px;
+  margin-left: 8px;
+  padding: 2px;
+  cursor: pointer;
+  font-size: 0.625rem;
+  line-height: 1.2rem;
+  .flipHorizontal {
+    transform: scaleX(-1);
+  }
 `
