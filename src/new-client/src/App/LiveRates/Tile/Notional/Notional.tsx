@@ -54,6 +54,14 @@ export const [, getNotionalValue$] = symbolBind(
   pipe(getNotional$, pluck("value")),
 )
 
+export const [useIsNotionalValid] = symbolBind(
+  pipe(
+    getNotionalValue$,
+    map((value) => value <= MAX_NOTIONAL),
+  ),
+  true,
+)
+
 const [useDefaultNotional, defaultNotional$] = symbolBind((symbol) =>
   currencyPairs$.pipe(map((pairs) => pairs[symbol].defaultNotional)),
 )
@@ -63,17 +71,12 @@ export const notionalInput$ = (symbol: string) =>
 
 const MAX_NOTIONAL = 1_000_000_000
 
-export const isNotionalValid = (value: number) => {
-  return value <= MAX_NOTIONAL
-}
-
 export const NotionalInput: React.FC = () => {
   const { base, symbol } = useTileCurrencyPair()
   const defaultNotional = useDefaultNotional()
   const notional = useNotional()
+  const valid = useIsNotionalValid()
   const { stage: quoteStage } = useRfqState()
-
-  const valid = isNotionalValid(notional.value)
 
   return (
     <>
