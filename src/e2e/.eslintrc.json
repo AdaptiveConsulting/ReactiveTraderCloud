@@ -4,6 +4,7 @@
   "extends": ["plugin:@typescript-eslint/recommended", "prettier", "prettier/@typescript-eslint"],
   "rules": {
     "no-restricted-globals": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-angle-bracket-type-assertion": "off"
   },
   "parserOptions": { "ecmaVersion": 2018 }
