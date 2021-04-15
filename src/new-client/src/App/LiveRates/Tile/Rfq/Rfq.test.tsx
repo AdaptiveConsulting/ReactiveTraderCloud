@@ -1,3 +1,4 @@
+import * as notionalModule from "../Notional/Notional"
 import * as rs from "./Rfq.state"
 import { act, fireEvent, render, screen } from "@testing-library/react"
 import { TestThemeProvider } from "@/utils/testUtils"
@@ -8,6 +9,7 @@ jest.mock("../Tile.context", () => ({
   useTileCurrencyPair: jest.fn().mockReturnValue("USD"),
 }))
 
+let useNotionalSpy: jest.SpyInstance
 let rfqStateSpy: jest.SpyInstance
 let isRfqSpy: jest.SpyInstance
 let onQuoteRequestSpy: jest.SpyInstance
@@ -22,6 +24,7 @@ const renderComponent = (isAnalytics = false) =>
 
 describe("RFQ/buttons", () => {
   beforeEach(() => {
+    useNotionalSpy = jest.spyOn(notionalModule, "useNotional")
     rfqStateSpy = jest.spyOn(rs, "useRfqState")
     isRfqSpy = jest.spyOn(rs, "useIsRfq")
     onQuoteRequestSpy = jest.spyOn(rs, "onQuoteRequest")
@@ -29,6 +32,7 @@ describe("RFQ/buttons", () => {
   })
 
   it("should not display rfq button", () => {
+    useNotionalSpy.mockReturnValue({ value: 1000, inputValue: "1,000" })
     isRfqSpy.mockReturnValue(false)
     rfqStateSpy.mockReturnValue({ stage: rs.QuoteStateStage.Init })
     renderComponent(false)
@@ -39,6 +43,7 @@ describe("RFQ/buttons", () => {
   })
 
   it("should display 'Initiate RFQ' and call the onClickHandler", () => {
+    useNotionalSpy.mockReturnValue({ value: 1000, inputValue: "1,000" })
     isRfqSpy.mockReturnValue(true)
     rfqStateSpy.mockReturnValue({ stage: rs.QuoteStateStage.Init })
     renderComponent(false)
@@ -53,6 +58,7 @@ describe("RFQ/buttons", () => {
   })
 
   it("should display 'Cancel RFQ'", () => {
+    useNotionalSpy.mockReturnValue({ value: 1000, inputValue: "1,000" })
     isRfqSpy.mockReturnValue(true)
     rfqStateSpy.mockReturnValue({ stage: rs.QuoteStateStage.Requested })
     renderComponent(false)
@@ -67,6 +73,7 @@ describe("RFQ/buttons", () => {
   })
 
   it("should display 'Requote'", () => {
+    useNotionalSpy.mockReturnValue({ value: 1000, inputValue: "1,000" })
     isRfqSpy.mockReturnValue(true)
     rfqStateSpy.mockReturnValue({ stage: rs.QuoteStateStage.Rejected })
     renderComponent(false)
@@ -78,5 +85,19 @@ describe("RFQ/buttons", () => {
       fireEvent.click(screen.getByText(buttonText))
     })
     expect(onQuoteRequestSpy).toHaveBeenCalled()
+  })
+
+  it("should disable the button when the notional exceeds max value", () => {
+    useNotionalSpy.mockReturnValue({
+      value: 1_000_000_001,
+      inputValue: "1,000,000,001",
+    })
+    isRfqSpy.mockReturnValue(true)
+    rfqStateSpy.mockReturnValue({ stage: rs.QuoteStateStage.Init })
+    renderComponent(false)
+
+    expect(
+      screen.queryByText("Initiate RFQ")?.hasAttribute("disabled"),
+    ).toEqual(true)
   })
 })
