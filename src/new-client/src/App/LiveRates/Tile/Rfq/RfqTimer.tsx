@@ -72,6 +72,7 @@ const RejectQuoteButton = styled.button<{ isAnalyticsView: boolean }>`
 const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   display: flex;
   align-items: center;
+  align-self: stretch;
   z-index: 3;
 `
 

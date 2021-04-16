@@ -29,9 +29,11 @@ export const PriceControlsStyle = styled("div")<{
     `}
 `
 
-export const InputTimerStyle = styled("div")`
+export const InputTimerStyle = styled.div<{ isAnalyticsView: boolean }>`
   display: flex;
   flex-direction: column;
+  align-items: ${({ isAnalyticsView }) =>
+    isAnalyticsView ? "flex-start" : "center"};
 `
 
 export const PanelItem = styled.div`
