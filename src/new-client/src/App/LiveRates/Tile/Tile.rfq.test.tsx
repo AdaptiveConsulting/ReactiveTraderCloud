@@ -232,4 +232,15 @@ describe("Tile/rfq", () => {
       "Initiate RFQ",
     )
   })
+
+  it("RFQ button should be disabled where notional is not valid", async () => {
+    act(() => {
+      const input = screen.getAllByRole("input")[0] as HTMLInputElement
+      fireEvent.change(input, { target: { value: "1000000001" } })
+    })
+
+    expect(
+      screen.queryByText("Initiate RFQ")?.hasAttribute("disabled"),
+    ).toEqual(true)
+  })
 })

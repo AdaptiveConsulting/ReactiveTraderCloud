@@ -1,27 +1,17 @@
-import styled from "styled-components"
 import { FaRedo } from "react-icons/fa"
 import { useRfqState, QuoteStateStage } from "../Rfq"
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
-import { InputWrapper, CurrencyPairSymbol, Input } from "./Notional.styles"
+import {
+  InputWrapper,
+  CurrencyPairSymbol,
+  Input,
+  ResetInputValue,
+  ErrorMessage,
+} from "./Notional.styles"
 import { concat, merge, pipe } from "rxjs"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { filter, map, pluck, take } from "rxjs/operators"
 import { createKeyedSignal } from "@react-rxjs/utils"
-
-const ResetInputValue = styled.button<{ isVisible: boolean }>`
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  border: 2px solid ${({ theme }) => theme.core.darkBackground};
-  display: ${({ isVisible }) => (isVisible ? "inline" : "none")};
-  border-radius: 3px;
-  margin-left: 8px;
-  grid-area: ResetInputValue;
-  cursor: pointer;
-  font-size: 0.625rem;
-  line-height: 1.2rem;
-  .flipHorizontal {
-    transform: scaleX(-1);
-  }
-`
 
 const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
   (x) => x.symbol,
@@ -33,9 +23,10 @@ const multipliers: Record<string, number> = {
   k: 1_000,
   m: 1_000_000,
 }
+
 const formatter = new Intl.NumberFormat("default")
 
-const [useNotional, getNotional$] = symbolBind((symbol) =>
+export const [useNotional, getNotional$] = symbolBind((symbol) =>
   concat(
     currencyPairs$.pipe(
       take(1),
@@ -63,6 +54,14 @@ export const [, getNotionalValue$] = symbolBind(
   pipe(getNotional$, pluck("value")),
 )
 
+export const [useIsNotionalValid] = symbolBind(
+  pipe(
+    getNotionalValue$,
+    map((value) => value <= MAX_NOTIONAL),
+  ),
+  true,
+)
+
 const [useDefaultNotional, defaultNotional$] = symbolBind((symbol) =>
   currencyPairs$.pipe(map((pairs) => pairs[symbol].defaultNotional)),
 )
@@ -70,12 +69,13 @@ const [useDefaultNotional, defaultNotional$] = symbolBind((symbol) =>
 export const notionalInput$ = (symbol: string) =>
   merge(...[defaultNotional$, getNotional$].map((fn) => fn(symbol)))
 
-export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
-  isAnalytics,
-}) => {
+const MAX_NOTIONAL = 1_000_000_000
+
+export const NotionalInput: React.FC = () => {
   const { base, symbol } = useTileCurrencyPair()
   const defaultNotional = useDefaultNotional()
   const notional = useNotional()
+  const valid = useIsNotionalValid()
   const { stage: quoteStage } = useRfqState()
 
   return (
@@ -85,6 +85,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
         <Input
           role={"input"}
           type="text"
+          className={!valid ? `is-invalid` : undefined}
           disabled={[
             QuoteStateStage.Received,
             QuoteStateStage.Requested,
@@ -105,6 +106,7 @@ export const NotionalInput: React.FC<{ isAnalytics: boolean }> = ({
         >
           <FaRedo className="flipHorizontal" />
         </ResetInputValue>
+        {!valid && <ErrorMessage>Max exceeded</ErrorMessage>}
       </InputWrapper>
     </>
   )
