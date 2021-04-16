@@ -4,6 +4,7 @@ import reactRefresh from "@vitejs/plugin-react-refresh"
 import eslint from "@rollup/plugin-eslint"
 import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
+import { injectManifest } from "rollup-plugin-workbox"
 
 // TODO: This is a workaround until the following issue gets
 // confirmed/resolved: https://github.com/vitejs/vite/issues/2460
@@ -46,5 +47,18 @@ export default defineConfig(({ mode }) => ({
           },
           reactRefresh(),
         ]
-      : [customPreloadPlugin()],
+      : [
+          customPreloadPlugin(),
+          injectManifest(
+            {
+              swSrc: "./src/sw.js",
+              swDest: "./dist/sw.js",
+              dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
+              globDirectory: "dist",
+              mode,
+              modifyURLPrefix: { assets: "/assets" },
+            },
+            () => {},
+          ) as any,
+        ],
 }))
