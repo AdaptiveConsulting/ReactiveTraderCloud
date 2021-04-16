@@ -52,14 +52,14 @@ const Tile: React.FC<{
       ? { start: rfq.payload.time, end: rfq.payload.time + rfq.payload.timeout }
       : null
 
-  const InputTimerWrapper: React.FC<{ isAnalytics: boolean }> = ({
+  const InputTimerWrapper: React.FC<{ isAnalytics?: boolean }> = ({
     isAnalytics,
   }) => {
     return (
-      <InputTimerStyle>
+      <InputTimerStyle isAnalyticsView={!!isAnalytics}>
         <NotionalInput />
         {timerData ? (
-          <RfqTimer {...timerData} isAnalyticsView={isAnalytics} />
+          <RfqTimer {...timerData} isAnalyticsView={!!isAnalytics} />
         ) : null}
       </InputTimerStyle>
     )
@@ -84,7 +84,7 @@ const Tile: React.FC<{
               <RfqButton isAnalytics={isAnalytics} />
             </PriceControlsStyle>
           </PriceControlWrapper>
-          {!isAnalytics ? <InputTimerWrapper isAnalytics /> : null}
+          {!isAnalytics ? <InputTimerWrapper /> : null}
         </Body>
       </Main>
       <ExecutionResponse />
