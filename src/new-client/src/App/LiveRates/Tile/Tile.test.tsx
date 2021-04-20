@@ -17,6 +17,7 @@ import { Tile, tile$ } from "./Tile"
 jest.mock("@/services/executions/executions")
 jest.mock("@/services/prices/prices")
 jest.mock("@/services/currencyPairs/currencyPairs")
+jest.mock("@/utils/sendNotification")
 
 const currencyPairMock: CurrencyPair = {
   symbol: "EURUSD",

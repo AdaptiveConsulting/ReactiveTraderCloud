@@ -50,6 +50,14 @@ export function register(config?: Config) {
   }
 }
 
+export function requestNotificationPermission() {
+  Notification.requestPermission().then((permission) => {
+    if (permission !== "granted") {
+      throw new Error("Notification permission was not granted.")
+    }
+  })
+}
+
 function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
