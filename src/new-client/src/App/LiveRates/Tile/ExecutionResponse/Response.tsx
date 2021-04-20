@@ -15,13 +15,18 @@ import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"
 import Pending from "./Pending"
 import { useTileCurrencyPair } from "../Tile.context"
 import {
+  getTileState$,
   onDismissMessage,
   TileState,
   TileStates,
   useTileState,
-  getTileState$,
 } from "../Tile.state"
 import { CurrencyPair } from "@/services/currencyPairs"
+import { useEffect } from "react"
+import {
+  formatTradeNotification,
+  sendNotification,
+} from "@/utils/sendNotification"
 
 const BackgroundColored = styled.span`
   background-color: ${({ theme }) => theme.white};
@@ -104,6 +109,19 @@ const ExecutionMessage: React.FC<{
   const isSuccessful =
     tileState.status === TileStates.Finished &&
     tileState.trade.status === ExecutionStatus.Done
+
+  const currencyPair = useTileCurrencyPair()
+
+  useEffect(() => {
+    if (tileState.trade) {
+      if (isSuccessful || tileState.trade.status === ExecutionStatus.Rejected) {
+        const formatted =
+          tileState.trade &&
+          formatTradeNotification(tileState.trade, currencyPair)
+        sendNotification(formatted)
+      }
+    }
+  }, [tileState, isSuccessful, currencyPair])
 
   return (
     <ExecutionStatusAlertContainer state={tileState} role="dialog">
