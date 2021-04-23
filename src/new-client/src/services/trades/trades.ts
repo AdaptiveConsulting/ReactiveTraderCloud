@@ -1,5 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { map, mergeAll, scan, share, skip } from "rxjs/operators"
+import { map, scan } from "rxjs/operators"
 import { getStream$ } from "../client"
 import { Trade, RawTradeUpdate } from "./types"
 
@@ -22,10 +22,7 @@ const tradesStream$ = getStream$<RawTradeUpdate>(
       valueDate: new Date(rawTrade.ValueDate),
     })),
   ),
-  share(),
 )
-
-export const newTrades$ = tradesStream$.pipe(skip(1), mergeAll())
 
 export const [useTrades, trades$] = bind<Trade[]>(
   tradesStream$.pipe(

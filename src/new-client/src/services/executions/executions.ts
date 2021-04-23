@@ -1,5 +1,5 @@
-import { race, timer } from "rxjs"
-import { map, mapTo } from "rxjs/operators"
+import { race, Subject, timer } from "rxjs"
+import { map, mapTo, tap } from "rxjs/operators"
 import { getRemoteProcedureCall$ } from "@/services/client"
 import {
   ExecutionRequest,
@@ -37,13 +37,20 @@ const mapResponseToTrade = (id: string) => ({
   }
 }
 
+const executionsSubject = new Subject<ExecutionTrade>()
+
 export const execute$ = (execution: ExecutionRequest) =>
   race([
     getRemoteProcedureCall$<ExecutionResponse, ExecutionPayload>(
       "execution",
       "executeTrade",
       mapExecutionToPayload(execution),
-    ).pipe(map(mapResponseToTrade(execution.id))),
+    ).pipe(
+      map(mapResponseToTrade(execution.id)),
+      tap((value) => {
+        executionsSubject.next(value)
+      }),
+    ),
     timer(30_000).pipe(
       mapTo({
         ...execution,
@@ -51,3 +58,5 @@ export const execute$ = (execution: ExecutionRequest) =>
       } as TimeoutExecution),
     ),
   ])
+
+export const executions$ = executionsSubject.asObservable()
