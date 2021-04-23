@@ -1,28 +1,39 @@
 import { bind } from "@react-rxjs/core"
-import { map, scan } from "rxjs/operators"
+import { map, mergeAll, scan, share, skip } from "rxjs/operators"
 import { getStream$ } from "../client"
 import { Trade, RawTradeUpdate } from "./types"
 
+const tradesStream$ = getStream$<RawTradeUpdate>(
+  "blotter",
+  "getTradesStream",
+  {},
+).pipe(
+  map(({ Trades: rawTrades }) =>
+    rawTrades.map((rawTrade) => ({
+      tradeId: rawTrade.TradeId,
+      symbol: rawTrade.CurrencyPair,
+      traderName: rawTrade.TraderName,
+      notional: rawTrade.Notional,
+      dealtCurrency: rawTrade.DealtCurrency,
+      direction: rawTrade.Direction,
+      status: rawTrade.Status,
+      spotRate: rawTrade.SpotRate,
+      tradeDate: new Date(rawTrade.TradeDate),
+      valueDate: new Date(rawTrade.ValueDate),
+    })),
+  ),
+  share(),
+)
+
+export const newTrades$ = tradesStream$.pipe(skip(1), mergeAll())
+
 export const [useTrades, trades$] = bind<Trade[]>(
-  getStream$<RawTradeUpdate>("blotter", "getTradesStream", {}).pipe(
+  tradesStream$.pipe(
     scan(
-      (acc, { Trades: rawTrades }) => ({
+      (acc, trades) => ({
         ...acc,
         ...Object.fromEntries(
-          rawTrades
-            .map((rawTrade) => ({
-              tradeId: rawTrade.TradeId,
-              symbol: rawTrade.CurrencyPair,
-              traderName: rawTrade.TraderName,
-              notional: rawTrade.Notional,
-              dealtCurrency: rawTrade.DealtCurrency,
-              direction: rawTrade.Direction,
-              status: rawTrade.Status,
-              spotRate: rawTrade.SpotRate,
-              tradeDate: new Date(rawTrade.TradeDate),
-              valueDate: new Date(rawTrade.ValueDate),
-            }))
-            .map((trade) => [trade.tradeId, trade] as const),
+          trades.map((trade) => [trade.tradeId, trade] as const),
         ),
       }),
       {} as Record<number, Trade>,
