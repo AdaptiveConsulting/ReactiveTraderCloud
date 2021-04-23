@@ -58,6 +58,12 @@ export const ThemeProvider: React.FC<Props> = ({
     storage.setItem(STORAGE_KEY, themeName)
   }, [storage, themeName])
 
+  // set themeColor in index.html (used for PWA title bar)
+  useEffect(() => {
+    const head = document.getElementById("themeColor")
+    head && head.setAttribute("content", themes[themeName].backgroundColor)
+  }, [themeName])
+
   return (
     <ThemeContext.Provider value={{ themeName, setThemeName }}>
       <StyledThemeProvider theme={themes[themeName]}>
