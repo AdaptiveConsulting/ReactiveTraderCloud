@@ -1,1 +1,1 @@
-export { Trades } from "./Trades"
+export * from "./Trades"

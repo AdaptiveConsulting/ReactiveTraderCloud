@@ -3,7 +3,9 @@ import { lazy, Suspense, useRef } from "react"
 import { analytics$ } from "@/services/analytics"
 import styled from "styled-components"
 import { useHasItBeenVisible } from "@/utils/useHasItBeenVisible"
-const AnalyticsCore = lazy(() => import("./AnalyticsCore"))
+
+export const AnalyticsCoreDeferred = import("./AnalyticsCore")
+const AnalyticsCore = lazy(() => AnalyticsCoreDeferred)
 
 const AnalyticsWrapper = styled.div`
   flex: 0 0 371px;

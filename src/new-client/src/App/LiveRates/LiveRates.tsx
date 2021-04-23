@@ -6,7 +6,9 @@ import { getHistoricalPrices$, getPrice$ } from "@/services/prices"
 import styled from "styled-components"
 import { combineKeys } from "@react-rxjs/utils"
 import { map } from "rxjs/operators"
-const LiveRatesCore = lazy(() => import("./LiveRatesCore"))
+
+export const LiveRatesCoreDeferred = import("./LiveRatesCore")
+const LiveRatesCore = lazy(() => LiveRatesCoreDeferred)
 
 currencyPairs$.subscribe()
 combineKeys(currencyPairs$.pipe(map(Object.keys)), (symbol: string) =>
