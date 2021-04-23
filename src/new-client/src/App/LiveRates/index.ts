@@ -1,1 +1,1 @@
-export { LiveRates } from "./LiveRates"
+export * from "./LiveRates"
