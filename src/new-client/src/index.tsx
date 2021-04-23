@@ -3,14 +3,12 @@ import ReactDOM from "react-dom"
 import { App } from "./App/App"
 import GlobalStyle from "./theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "./theme"
-import {
-  register,
-  requestNotificationPermission,
-} from "./serviceWorkerRegistration"
+import { register } from "./serviceWorkerRegistration"
+import { registerSwNotifications } from "./sw-notifications"
 
 if (import.meta.env.PROD) {
   register()
-  requestNotificationPermission()
+  registerSwNotifications()
 }
 
 ReactDOM.render(
