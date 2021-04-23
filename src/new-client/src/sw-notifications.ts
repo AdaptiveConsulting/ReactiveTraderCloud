@@ -1,25 +1,22 @@
-import { newTrades$, Trade, TradeStatus } from "@/services/trades"
-import { filter } from "rxjs/operators"
+import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
+import { executions$ } from "./services/executions/executions"
+import { formatNumber } from "./utils"
 
-const sendNotification = (
-  trade: Trade,
-  registration?: ServiceWorkerRegistration,
-) => {
-  const tradeNotification = {
-    ...trade,
-    valueDate: trade.valueDate.toString(),
-    tradeDate: trade.tradeDate.toString(),
-    notional: trade.notional.toPrecision(2),
+const sendNotification = (executionTrade: ExecutionTrade) => {
+  const notification = {
+    ...executionTrade,
+    valueDate: executionTrade.valueDate.toString(),
+    tradeDate: executionTrade.valueDate.toString(),
   }
 
   const status =
-    tradeNotification.status === TradeStatus.Done ? "Accepted" : "Rejected"
-  const title = `Trade ${status}: ID ${tradeNotification.tradeId}`
-  const body = `${tradeNotification.direction} ${
-    tradeNotification.dealtCurrency
-  } ${tradeNotification.notional} vs ${tradeNotification.symbol.substr(3)} @ ${
-    tradeNotification.spotRate
-  }`
+    notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
+  const title = `Trade ${status}: ID ${notification.tradeId}`
+  const body = `${notification.direction} ${
+    notification.dealtCurrency
+  } ${formatNumber(
+    notification.notional,
+  )} vs ${notification.currencyPair.substr(3)} @ ${notification.spotRate}`
 
   const icon =
     navigator.userAgent.indexOf("Chrome") !== -1 &&
@@ -31,20 +28,12 @@ const sendNotification = (
     body: body,
     icon: icon,
     dir: "ltr",
-    data: tradeNotification,
-    tag: "trade",
+    data: notification,
+    // tag: "trade", TODO: investigate why this field causes malfunctions on certain versions of chrome
   }
 
-  if (registration) {
-    registration.showNotification(title, options)
-  } else {
-    new Notification(title, options)
-  }
+  new Notification(title, options)
 }
-
-const relevantTrades$ = newTrades$.pipe(
-  filter((trade) => trade.status !== TradeStatus.Pending),
-)
 
 const notificationsGranted = () =>
   new Promise<void>((res, rej) => {
@@ -70,13 +59,10 @@ const notificationsGranted = () =>
 export async function registerSwNotifications() {
   try {
     await notificationsGranted()
-    const registration = await ("serviceWorker" in navigator
-      ? navigator.serviceWorker.ready
-      : Promise.resolve(undefined))
 
-    relevantTrades$.subscribe(
-      (trade) => {
-        sendNotification(trade, registration)
+    executions$.subscribe(
+      (executionTrade) => {
+        sendNotification(executionTrade)
       },
       (e) => {
         console.error(e)
