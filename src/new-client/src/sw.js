@@ -34,6 +34,14 @@ registerRoute(
       return false
     }
 
+    if (url.pathname.startsWith("/storybook")) {
+      return false
+    }
+
+    if (url.pathname.startsWith("/styleguide")) {
+      return false
+    }
+
     // If this is a URL that starts with /_, skip.
     if (url.pathname.startsWith("/_")) {
       return false
