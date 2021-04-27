@@ -15,7 +15,7 @@ spec:
   - hosts:
     - uat.reactivetrader.com
     - web-uat.adaptivecluster.com
-    secretName: uat-tls
+    secretName: rt-uat-tls
 
   rules:
   - host: uat.reactivetrader.com

@@ -15,7 +15,7 @@ spec:
   - hosts:
     - dev.reactivetrader.com
     - web-dev.adaptivecluster.com
-    secretName: reactive-trader-tls
+    secretName: rt-dev-tls
 
   rules:
   - host: dev.reactivetrader.com

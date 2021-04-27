@@ -18,7 +18,7 @@ spec:
     - www.reactivetrader.com
     - classic.reactivetrader.com
     - web-demo.adaptivecluster.com
-    secretName: reactive-trader-tls
+    secretName: rt-demo-tls
 
   rules:
   - host: www.reactivetrader.com
