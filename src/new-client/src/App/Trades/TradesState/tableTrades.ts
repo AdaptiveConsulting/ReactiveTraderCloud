@@ -190,6 +190,7 @@ const numFiltersTrueOfTrade = (
 const filteredTrades$ = combineLatest([
   trades$,
   quickFilterInputs$.pipe(
+    startWith(""),
     map((quickFilterInputs) => quickFilterInputs.split(" ")),
   ),
   appliedSetFilterEntries$,
