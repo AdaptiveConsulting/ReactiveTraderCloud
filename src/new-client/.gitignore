@@ -4,6 +4,9 @@
 # testing
 /coverage
 
+# hydragen
+/generated
+
 # production
 dist
 dist-ssr
