@@ -13,6 +13,9 @@ import { AnalyticsPricesFirstCol } from "../Tile.styles"
 import { TileStates, useTileState } from "../Tile.state"
 import { useIsNotionalValid } from "../Notional/Notional"
 
+const RfqButtonContainer = styled(OverlayDiv)`
+  position: absolute;
+`
 const RFQButtonInner = styled.button<{
   textWrap: boolean
   isAnalytics: boolean
@@ -70,7 +73,9 @@ const RfqButton: React.FC<{ isAnalytics: boolean }> = ({ isAnalytics }) => {
   const isExecuting = useTileState(symbol).status === TileStates.Started
   const validNotional = useIsNotionalValid()
   return isRfq && stage !== QuoteStateStage.Received && !isExecuting ? (
-    <OverlayDiv left={isAnalytics ? `calc(${AnalyticsPricesFirstCol} / 2)` : 0}>
+    <RfqButtonContainer
+      left={isAnalytics ? `calc(${AnalyticsPricesFirstCol} / 2)` : 0}
+    >
       <CenteringContainer>
         <RFQButtonInner
           disabled={!validNotional}
@@ -86,7 +91,7 @@ const RfqButton: React.FC<{ isAnalytics: boolean }> = ({ isAnalytics }) => {
           {buttonText}
         </RFQButtonInner>
       </CenteringContainer>
-    </OverlayDiv>
+    </RfqButtonContainer>
   ) : null
 }
 

@@ -37,9 +37,8 @@ export const InputTimerStyle = styled.div<{ isAnalyticsView: boolean }>`
 `
 
 export const PanelItem = styled.div`
-  flex-grow: 1;
-  flex-basis: 20rem;
   position: relative;
+  display: flex;
 `
 export const Body = styled.div<{
   isAnalyticsView: boolean
@@ -107,6 +106,7 @@ const MainTileWrapper = styled.div`
   min-height: 11rem;
   position: relative;
   height: 100%;
+  width: 100%;
   color: ${({ theme }) => theme.core.textColor};
   &:hover {
     background-color: ${({ theme }) => theme.core.backgroundHoverColor};
