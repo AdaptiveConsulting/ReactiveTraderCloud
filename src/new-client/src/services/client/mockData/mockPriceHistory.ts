@@ -1,0 +1,42 @@
+export const mockPriceHistory = [
+  {
+    ask: 109.353,
+    bid: 109.337,
+    mid: 109.345,
+    creationTimestamp: 584638575143576,
+    symbol: "USDJPY",
+    valueDate: "2021-05-04T20:40:56.4118186+00:00",
+  },
+  {
+    ask: 109.359,
+    bid: 109.343,
+    mid: 109.351,
+    creationTimestamp: 584639375776692,
+    symbol: "USDJPY",
+    valueDate: "2021-05-04T20:40:57.2124564+00:00",
+  },
+  {
+    ask: 109.363,
+    bid: 109.347,
+    mid: 109.355,
+    creationTimestamp: 584642375473056,
+    symbol: "USDJPY",
+    valueDate: "2021-05-04T20:41:00.2121536+00:00",
+  },
+  {
+    ask: 109.361,
+    bid: 109.345,
+    mid: 109.353,
+    creationTimestamp: 584644325831815,
+    symbol: "USDJPY",
+    valueDate: "2021-05-04T20:41:02.1625135+00:00",
+  },
+  {
+    ask: 109.366,
+    bid: 109.35,
+    mid: 109.358,
+    creationTimestamp: 584644975311707,
+    symbol: "USDJPY",
+    valueDate: "2021-05-04T20:41:02.8119936+00:00",
+  },
+]
