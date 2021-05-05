@@ -1,23 +1,8 @@
 import { Observable } from "rxjs"
-
-const mockTrade = {
-  Trades: [
-    {
-      TradeId: 1,
-      TraderName: "EDO",
-      CurrencyPair: "EURUSD",
-      Notional: 1000000.0,
-      DealtCurrency: "USD",
-      Direction: "Sell",
-      SpotRate: 1.2082,
-      TradeDate: "2021-04-27T03:22:09.6095015+00:00",
-      ValueDate: "2021-04-29T03:22:09.6098209+00:00",
-      Status: "Done",
-    },
-  ],
-  IsStateOfTheWorld: true,
-  IsStale: false,
-}
+import { mockAnalytics } from "./mockData/mockAnalytics"
+import { mockPriceHistory } from "./mockData/mockPriceHistory"
+import { mockCurrencyPair } from "./mockData/mockCurrencyPair"
+import { mockTrade } from "./mockData/mockTrade"
 
 export const getStream$ = <TResponse, TPayload = {}>(
   service: string,
@@ -28,6 +13,29 @@ export const getStream$ = <TResponse, TPayload = {}>(
     case "getTradesStream":
       return new Observable<any>((observable) => {
         observable.next(mockTrade)
+      })
+    case "getAnalytics":
+      return new Observable<any>((observable) => {
+        observable.next(mockAnalytics)
+      })
+    case "getCurrencyPairUpdatesStream":
+      return new Observable<any>((observable) => {
+        observable.next(mockCurrencyPair)
+      })
+    default:
+      return new Observable<TResponse>()
+  }
+}
+
+export const getRemoteProcedureCall$ = <TResponse, TPayload>(
+  service: string,
+  operationName: string,
+  payload: TPayload,
+): Observable<TResponse> => {
+  switch (operationName) {
+    case "getPriceHistory":
+      return new Observable<any>((observable) => {
+        observable.next(mockPriceHistory)
       })
     default:
       return new Observable<TResponse>()
