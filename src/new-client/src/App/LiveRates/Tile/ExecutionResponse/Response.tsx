@@ -104,7 +104,6 @@ const ExecutionMessage: React.FC<{
   const isSuccessful =
     tileState.status === TileStates.Finished &&
     tileState.trade.status === ExecutionStatus.Done
-
   return (
     <ExecutionStatusAlertContainer state={tileState} role="dialog">
       <CurrencyPairDiv>
@@ -135,8 +134,16 @@ export const executionResponse$ = getTileState$
 export const ExecutionResponse = () => {
   const currencyPair = useTileCurrencyPair()
   const tileState = useTileState(currencyPair.symbol)
+  const props = { currencyPair, tileState }
 
+  return <StatelessExecutionResponse {...props} />
+}
+export const StatelessExecutionResponse: React.FC<{
+  currencyPair: CurrencyPair
+  tileState: TileState
+}> = ({ currencyPair, tileState }) => {
   if (tileState.status === TileStates.Ready) return null
+
   return tileState.status === TileStates.Started ? (
     <Pending />
   ) : (
