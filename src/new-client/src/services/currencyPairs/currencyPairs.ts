@@ -1,42 +1,24 @@
+import { ReferenceDataService } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
-import { distinctUntilChanged, map, scan, share } from "rxjs/operators"
-import { getStream$ } from "../client"
-import { UpdateType } from "../utils"
-import { CurrencyRaw, CurrencyPair, RawCurrencyPairUpdates } from "./types"
-
-const currencyPairMapper = (input: CurrencyRaw): CurrencyPair => ({
-  symbol: input.Symbol,
-  ratePrecision: input.RatePrecision,
-  pipsPosition: input.PipsPosition,
-  base: input.Symbol.substr(0, 3),
-  terms: input.Symbol.substr(3, 3),
-  defaultNotional: input.Symbol === "NZDUSD" ? 10_000_000 : 1_000_000,
-})
-
-export const currencyPairUpdates$ = getStream$<RawCurrencyPairUpdates>(
-  "reference",
-  "getCurrencyPairUpdatesStream",
-  {},
-).pipe(
-  map(({ Updates }) =>
-    Updates.map((update) => ({
-      updateType: update.UpdateType,
-      currencyPair: currencyPairMapper(update.CurrencyPair),
-    })),
-  ),
-  share(),
-)
+import { distinctUntilChanged, map, scan } from "rxjs/operators"
+import { CurrencyPair } from "./types"
 
 export const [useCurrencyPairs, currencyPairs$] = bind(
-  currencyPairUpdates$.pipe(
-    scan((acc, updates) => {
+  ReferenceDataService.getCcyPairs().pipe(
+    scan((acc, data) => {
+      const { updates } = data
       const result = { ...acc }
-      updates.forEach(({ updateType, currencyPair }) => {
-        const { symbol } = currencyPair
-        if (updateType === UpdateType.Removed) {
+      updates.forEach(({ type, payload }) => {
+        const { symbol } = payload
+        if (type === "removed") {
           delete result[symbol]
         } else {
-          result[symbol] = currencyPair
+          result[symbol] = {
+            ...payload,
+            base: symbol.substr(0, 3), // TODO: talk with hydra team about this
+            terms: symbol.substr(3, 3),
+            defaultNotional: symbol === "NZDUSD" ? 10_000_000 : 1_000_000, // TODO: talk with hydra team about this
+          }
         }
       })
       return result

@@ -1,25 +1,21 @@
+import { BlotterService } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
-import { getStream$ } from "../client"
-import { Trade, RawTradeUpdate } from "./types"
+import { Trade } from "./types"
 
-const tradesStream$ = getStream$<RawTradeUpdate>(
-  "blotter",
-  "getTradesStream",
-  {},
-).pipe(
-  map(({ Trades: rawTrades }) =>
-    rawTrades.map((rawTrade) => ({
-      tradeId: rawTrade.TradeId,
-      symbol: rawTrade.CurrencyPair,
-      traderName: rawTrade.TraderName,
-      notional: rawTrade.Notional,
-      dealtCurrency: rawTrade.DealtCurrency,
-      direction: rawTrade.Direction,
-      status: rawTrade.Status,
-      spotRate: rawTrade.SpotRate,
-      tradeDate: new Date(rawTrade.TradeDate),
-      valueDate: new Date(rawTrade.ValueDate),
+const tradesStream$ = BlotterService.getTradeStream().pipe(
+  map(({ updates }) =>
+    updates.map((rawTrade) => ({
+      tradeId: rawTrade.tradeId.toString(10),
+      symbol: rawTrade.currencyPair, // TODO: talk with hydra team about this
+      traderName: rawTrade.tradeName,
+      notional: rawTrade.notional,
+      dealtCurrency: rawTrade.dealtCurrency,
+      direction: rawTrade.direction,
+      status: rawTrade.status,
+      spotRate: rawTrade.spotRate,
+      tradeDate: new Date(rawTrade.tradeDate), // TODO: talk with hydra team about this
+      valueDate: new Date(rawTrade.valueDate), // TODO: talk with hydra team about this
     })),
   ),
 )

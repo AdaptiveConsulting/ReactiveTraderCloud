@@ -14,14 +14,14 @@ export const Root = styled.div`
   color: ${(props) => props.theme.textColor};
 `
 
-export const Button = styled.div<{ margin?: string }>`
+export const Button = styled.div<{ margin?: string; disabled?: boolean }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 15rem;
   user-select: none;
   display: flex;
   align-items: center;
   justify-items: center;
-  cursor: pointer;
+  ${({ disabled }) => (disabled ? "" : "cursor: pointer;")}
   padding: 0 0.7rem;
   height: 1.6rem;
   font-size: 0.65rem;

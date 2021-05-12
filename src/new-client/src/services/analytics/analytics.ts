@@ -1,20 +1,18 @@
+import { AnalyticsService } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
-import { getStream$ } from "../client"
-import { CurrencyPairPosition, HistoryEntry, PositionsRaw } from "./types"
+import { CurrencyPairPosition, HistoryEntry } from "./types"
 
-export const analytics$ = getStream$<PositionsRaw, string>(
-  "analytics",
-  "getAnalytics",
-  "USD",
-).pipe(shareLatest())
+export const analytics$ = AnalyticsService.getAnalytics({
+  currency: "USD",
+}).pipe(shareLatest())
 
 export const history$: Observable<HistoryEntry[]> = analytics$.pipe(
   map((analitics) =>
-    analitics.History.filter(Boolean).map(({ Timestamp, UsdPnl }) => ({
-      usPnl: UsdPnl,
-      timestamp: new Date(Timestamp).getTime(),
+    analitics.history.filter(Boolean).map((data) => ({
+      usPnl: data.usdPnl,
+      timestamp: new Date(data.timestamp).getTime(), // TODO: talk with hydra team about this
     })),
   ),
   shareLatest(),
@@ -26,19 +24,7 @@ export const [useCurrentPositions, currentPositions$] = bind<
   analytics$.pipe(
     map((analitics) =>
       Object.fromEntries(
-        analitics.CurrentPositions.map(
-          ({ Symbol, BasePnl, BaseTradedAmount, CounterTradedAmount }) => [
-            Symbol,
-            {
-              symbol: Symbol,
-              basePnl: BasePnl,
-              baseTradedAmount: BaseTradedAmount,
-              counterTradedAmount: CounterTradedAmount,
-              basePnlName: "basePnl",
-              baseTradedAmountName: "baseTradedAmount",
-            },
-          ],
-        ),
+        analitics.currentPositions.map((data) => [data.symbol, data]),
       ),
     ),
   ),

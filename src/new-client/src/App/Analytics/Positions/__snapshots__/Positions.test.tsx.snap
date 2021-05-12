@@ -66,12 +66,12 @@ exports[`Positions should display the correct bubble chart 1`] = `
 exports[`Positions should display the correct bubble chart 2`] = `
 <div>
   <div
-    class="sc-jSpqJA hMRuQA"
+    class="sc-jSFjdj eBlbsr"
   >
     Positions
   </div>
   <div
-    class="sc-iCEByO kCPRbB"
+    class="sc-iCoGMd jKUYqm"
   >
     <div
       class="analytics__positions-tooltip"

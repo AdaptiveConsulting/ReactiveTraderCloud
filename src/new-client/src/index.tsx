@@ -10,6 +10,14 @@ import { AnalyticsCoreDeferred } from "./App/Analytics"
 import { LiveRatesCoreDeferred } from "./App/LiveRates"
 import { TradesCoreDeferred } from "./App/Trades"
 
+import { connectToGateway } from "@adaptive/hydra-platform"
+import { noop } from "rxjs"
+
+connectToGateway({
+  url: import.meta.env.VITE_HYDRA_URL as string,
+  interceptor: noop,
+})
+
 if (import.meta.env.PROD) {
   register({
     onUpdate: (registration) => {
