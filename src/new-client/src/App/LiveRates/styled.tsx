@@ -5,6 +5,7 @@ export const Header = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 6px;
+  color: ${({ theme }) => theme.core.textColor};
 `
 export const LeftNav = styled.ul`
   display: flex;

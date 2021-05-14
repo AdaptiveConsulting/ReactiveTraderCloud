@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+BASE_URL="http://localhost:3000"
+ENV_NAME="local"
+SERVE=false
+SCRIPTS_ROOT=$(realpath $(dirname $0))
+PROJECT_ROOT=$(realpath $SCRIPTS_ROOT/..)
+PUBLIC_ROOT=$PROJECT_ROOT/public-openfin
+BUILD_ROOT=$PROJECT_ROOT/dist
+
+while getopts "b:e:s" param; do
+  case "$param" in
+    b) BASE_URL="$OPTARG";;
+    e) ENV_NAME="$OPTARG";;
+    s) SERVE=true;;
+    [?]) echo "Usage: $0 [-b base_url] [-e env_name] [-s]"; exit 1;;
+  esac
+done
+
+ENV_SUFFIX=$(echo -n " $ENV_NAME" | awk '{print toupper($0)}')
+
+mkdir -p $BUILD_ROOT/config
+
+cat $PUBLIC_ROOT/app.json \
+  | sed "s|<BASE_URL>|$BASE_URL|g" \
+  | sed "s|<ENV_NAME>|$ENV_NAME|g" \
+  | sed "s|<ENV_SUFFIX>|$ENV_SUFFIX|g" \
+  > $BUILD_ROOT/config/app.json
+
+if [ "$SERVE" = true ]; then
+  npx http-server -p 8080 $BUILD_ROOT
+fi
