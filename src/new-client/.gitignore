@@ -7,6 +7,7 @@
 # production
 dist
 dist-ssr
+openfin-dist
 
 # misc
 .DS_Store
