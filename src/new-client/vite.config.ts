@@ -34,6 +34,9 @@ export default defineConfig(({ mode }) => ({
       "@": resolve(__dirname, "src"),
     },
   },
+  server: {
+    port: 1917,
+  },
   plugins:
     mode === "development"
       ? [
