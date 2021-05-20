@@ -9,6 +9,7 @@ import { registerSwNotifications } from "./sw-notifications"
 import { AnalyticsCoreDeferred } from "./App/Analytics"
 import { LiveRatesCoreDeferred } from "./App/LiveRates"
 import { TradesCoreDeferred } from "./App/Trades"
+import { GA_TRACKING_ID } from "./constants"
 
 if (import.meta.env.PROD) {
   register({
@@ -53,7 +54,7 @@ declare global {
 
 const { ga } = window
 ga("create", {
-  trackingId: "UA-46320965-5",
+  trackingId: GA_TRACKING_ID,
   transport: "beacon",
 })
 ga("set", {
