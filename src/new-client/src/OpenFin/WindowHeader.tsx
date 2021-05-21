@@ -1,3 +1,5 @@
+import Header from "@/App/Header"
+
 interface Props {
   title: string
   close?: () => void
@@ -6,4 +8,4 @@ interface Props {
   popIn?: () => void
 }
 
-export const WindowHeader: React.FC<Props> = () => <div />
+export const WindowHeader: React.FC<Props> = () => <Header />

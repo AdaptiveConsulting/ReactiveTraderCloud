@@ -10,7 +10,7 @@ import modulepreload from "rollup-plugin-modulepreload"
 const customPreloadPlugin = () => {
   const result: any = {
     ...((modulepreload as any)({
-      index: resolve(__dirname, "dist", "index.html"),
+      index: resolve(__dirname, "openfin-dist", "index.html"),
       prefix: "",
     }) as any),
     enforce: "post",
@@ -24,6 +24,11 @@ const customPreloadPlugin = () => {
 export default defineConfig(({ mode }) => ({
   esbuild: {
     jsxInject: `import React from 'react'`,
+  },
+  server: {
+    proxy: {
+      "/config": "http://localhost:8080",
+    },
   },
   build: {
     outDir: "openfin-dist",
