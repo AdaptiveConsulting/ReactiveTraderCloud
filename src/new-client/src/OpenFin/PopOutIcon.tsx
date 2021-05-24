@@ -3,7 +3,7 @@ interface Props {
   height?: number
 }
 
-export const PopoutIcon: React.FC<Props> = ({ width = 24, height = 24 }) => (
+export const PopOutIcon: React.FC<Props> = ({ width = 24, height = 24 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={width}

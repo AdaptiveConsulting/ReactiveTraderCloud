@@ -1,9 +1,11 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
+import { TileView } from "@/App/LiveRates/selectedView"
 import { Trades } from "@/App/Trades"
 import { FloatingTile } from "./FloatingTile"
-import { TileView } from "@/App/LiveRates/selectedView"
+import { ChildWindowFrame } from "./ChildWindowFrame"
+import { WindowFrame } from "./WindowFrame"
 
 export const OpenFinApp: React.FC = () => (
   <BrowserRouter>
@@ -31,8 +33,11 @@ export const OpenFinApp: React.FC = () => (
         }}
       />
 
-      <Route path="/openfin-window-frame" render={() => <div />} />
-      <Route path="/openfin-sub-window-frame" render={() => <div />} />
+      <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
+      <Route
+        path="/openfin-sub-window-frame"
+        render={() => <ChildWindowFrame />}
+      />
       <Route path="/status" render={() => <div />} />
       <Route path="/contact" render={() => <div />} />
       <Route path="/snapshots" render={() => <div />} />

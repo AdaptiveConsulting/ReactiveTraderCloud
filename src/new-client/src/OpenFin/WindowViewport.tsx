@@ -1,5 +1,4 @@
 import { useEffect } from "react"
-import ReactGA from "react-ga"
 import { Helmet } from "react-helmet"
 
 const LAYOUT_ITEMS = {

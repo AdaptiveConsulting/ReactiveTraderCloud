@@ -1,11 +1,94 @@
 import Header from "@/App/Header"
+import ThemeSwitcher from "@/App/Header/theme-switcher"
+import { ExitIcon } from "./ExitIcon"
+import { LayoutLock } from "./LayoutLock"
+import { MaximizeIcon } from "./MaximizeIcon"
+import { MinimizeIcon } from "./MinimizeIcon"
+import { PopInIcon } from "./PopInIcon"
+import { closeOtherWindows, inMainOpenFinWindow } from "./window-utils"
+import { Control, ControlsWrapper, TitleBar } from "./WindowHeader.styles"
 
-interface Props {
-  title: string
+interface ControlsProps {
   close?: () => void
   minimize?: () => void
   maximize?: () => void
   popIn?: () => void
 }
 
-export const WindowHeader: React.FC<Props> = () => <Header />
+interface Props extends ControlsProps {
+  title: string
+}
+
+export const WindowHeader: React.FC<Props> = () => (
+  <Header
+    controls={<Controls />}
+    filler={<TitleBar />}
+    switches={
+      <>
+        <LayoutLock />
+        <ThemeSwitcher />
+      </>
+    }
+  />
+)
+
+const Controls: React.FC<ControlsProps> = ({
+  close,
+  minimize,
+  maximize,
+  popIn,
+}) => {
+  async function wrappedClose() {
+    if (inMainOpenFinWindow()) {
+      await closeOtherWindows()
+    }
+
+    if (close) {
+      close()
+    }
+  }
+
+  return (
+    <ControlsWrapper>
+      {minimize && (
+        <Control
+          accent="aware"
+          onClick={minimize}
+          data-qa="openfin-chrome__minimize"
+        >
+          <MinimizeIcon />
+        </Control>
+      )}
+
+      {maximize && (
+        <Control
+          accent="primary"
+          onClick={maximize}
+          data-qa="openfin-chrome__maximize"
+        >
+          <MaximizeIcon />
+        </Control>
+      )}
+
+      {popIn && (
+        <Control
+          accent="primary"
+          onClick={popIn}
+          data-qa="openfin-chrome__popin"
+        >
+          <PopInIcon />
+        </Control>
+      )}
+
+      {close && (
+        <Control
+          accent="aware"
+          onClick={wrappedClose}
+          data-qa="openfin-chrome__close"
+        >
+          <ExitIcon />
+        </Control>
+      )}
+    </ControlsWrapper>
+  )
+}

@@ -1,11 +1,11 @@
 import { renderToStaticMarkup } from "react-dom/server"
 import styled from "styled-components"
 import { ExitIcon } from "./ExitIcon"
-import { PopoutIcon } from "./PopoutIcon"
+import { PopOutIcon } from "./PopOutIcon"
 
 const exitIconString = encodeURIComponent(renderToStaticMarkup(<ExitIcon />))
 const popoutIconString = encodeURIComponent(
-  renderToStaticMarkup(<PopoutIcon />),
+  renderToStaticMarkup(<PopOutIcon />),
 )
 
 export const FrameRoot = styled.div`

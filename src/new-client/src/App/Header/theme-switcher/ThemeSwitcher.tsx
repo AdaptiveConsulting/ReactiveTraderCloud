@@ -2,8 +2,8 @@ import { useState } from "react"
 import SwitchO, { ReactSwitchProps } from "react-switch"
 import { ThemeName, Theme, useTheme } from "@/theme"
 import { withTheme } from "styled-components"
-import styled from "styled-components"
 import DarkThemeIcon from "./DarkThemeIcon"
+import { IconContainer, SwitchContainer } from "@/components/Switch"
 import LightThemeIcon from "./LightThemeIcon"
 
 export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
@@ -13,25 +13,6 @@ const iconSize = 18
 const Switch: typeof SwitchO = (SwitchO as any).default
   ? (SwitchO as any).default
   : SwitchO
-
-const SwitcherContainer = styled.div`
-  margin: 0 1rem;
-  padding-top: 1px;
-  min-width: 3.5rem;
-  display: flex;
-  justify-content: flex-end;
-`
-
-const IconContainer = styled.div<{ hover: boolean }>`
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  border-radius: 50%;
-  height: 1.8rem;
-  width: 1.8rem;
-  padding: 4px 6px;
-  display: flex;
-  justify-content: ${({ hover }) => (hover ? "flex-end" : "center")};
-  align-items: center;
-`
 
 const ThemeStorageSwitch: React.FC<
   ThemeStorageSwitchProps & { theme: Theme }
@@ -59,7 +40,7 @@ const ThemeStorageSwitch: React.FC<
   }
 
   return (
-    <SwitcherContainer {...eventHandlers}>
+    <SwitchContainer {...eventHandlers}>
       {hover ? (
         <Switch
           onChange={toggleTheme}
@@ -94,7 +75,7 @@ const ThemeStorageSwitch: React.FC<
           <Icon height={iconSize} width={iconSize} />
         </IconContainer>
       )}
-    </SwitcherContainer>
+    </SwitchContainer>
   )
 }
 
