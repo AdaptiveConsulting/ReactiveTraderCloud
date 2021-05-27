@@ -26,11 +26,11 @@ export const WindowViewport: React.FC = ({ children }) => {
     if (!window.fin.me.isView) {
       const listenerViewAttached = (e: any) => {
         const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
-        ReactGA.event({ category: "RT - Tab", action: "attach", label })
+        // ReactGA.event({ category: "RT - Tab", action: "attach", label })
       }
       const listenerViewDetached = (e: any) => {
         const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
-        ReactGA.event({ category: "RT - Tab", action: "detach", label })
+        // ReactGA.event({ category: "RT - Tab", action: "detach", label })
       }
       const listenerViewHidden = (e: any) => {
         const layoutItems: HTMLCollectionOf<Element> = document.getElementsByClassName(
@@ -52,11 +52,11 @@ export const WindowViewport: React.FC = ({ children }) => {
       }
       const listenerWindowCreated = (e: any) => {
         const label: string = (e || {}).name || "unknown"
-        ReactGA.event({ category: "RT - Window", action: "open", label })
+        // ReactGA.event({ category: "RT - Window", action: "open", label })
       }
       const listenerWindowClosed = (e: any) => {
         const label: string = (e || {}).name || "unknown"
-        ReactGA.event({ category: "RT - Window", action: "close", label })
+        // ReactGA.event({ category: "RT - Window", action: "close", label })
       }
 
       fin.Window.getCurrent()

@@ -9,57 +9,47 @@ const popoutIconString = encodeURIComponent(
 )
 
 export const FrameRoot = styled.div`
-  position: absolute;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
   background-color: ${({ theme }) => theme.core.darkBackground};
   color: ${({ theme }) => theme.core.textColor};
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  margin: 0;
+  position: absolute;
+  overflow: hidden;
 
-  --title-bar-height: 3.5rem;
-  --openfin-footer-height: 2.5rem;
-  --color-behind-views: ${({ theme }) => theme.core.darkBackground};
+  --title-bar-height: 1.5rem;
+  --openfin-footer-height: 0rem;
 
   #layout-container {
     height: 100%;
     width: 100%;
     padding: 0;
-    background-color: ${({ theme }) => theme.core.darkBackground};
-  }
-
-  .wrapper_title {
-    color: ${({ theme }) => theme.core.textColor};
   }
 
   .lm_tab {
+    margin-left: 1rem;
     background-color: ${({ theme }) => theme.core.lightBackground};
     font-size: 3rem;
   }
 
   .lm_tabs {
     background-color: ${({ theme }) => theme.core.darkBackground};
-    box-sizing: border-box !important;
-    padding-left: 1rem;
+    border-radius: 0px;
   }
 
-  .lm_header {
-    background-color: ${({ theme }) => theme.core.darkBackground};
-  }
-
-  .lm_goldenlayout {
+  .lm_content {
     background-color: ${({ theme }) => theme.core.lightBackground};
   }
 
   .lm_tab,
   .lm_tab.lm_active {
-    background-color: ${({ theme }) => theme.core.darkBackground};
-    color: ${({ theme }) => theme.core.textColor};
+    background-color: ${({ theme }) => theme.core.darkBackground} !important;
+    color: ${({ theme }) => theme.core.textColor} !important;
   }
 
-  .lm_title {
-    color: ${({ theme }) => theme.core.textColor} !important;
+  .lm_splitter {
+    background-color: ${({ theme }) => theme.core.textColor};
   }
 
   .lm_close_tab {

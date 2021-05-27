@@ -1,3 +1,4 @@
+import fs from "fs/promises"
 import { resolve } from "path"
 import { defineConfig } from "vite"
 import reactRefresh from "@vitejs/plugin-react-refresh"
@@ -20,6 +21,16 @@ const customPreloadPlugin = () => {
   return result
 }
 
+const customIndexPlugin = () => ({
+  name: "custom-index-plugin",
+  async transformIndexHtml() {
+    return await fs.readFile(
+      resolve(__dirname, "openfin", "index.html"),
+      "utf8",
+    )
+  },
+})
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   esbuild: {
@@ -33,9 +44,6 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: "openfin-dist",
     sourcemap: true,
-    rollupOptions: {
-      input: "openfin/index.html",
-    },
   },
   resolve: {
     alias: {
@@ -45,6 +53,7 @@ export default defineConfig(({ mode }) => ({
   plugins:
     mode === "development"
       ? [
+          customIndexPlugin(),
           {
             ...eslint({ include: "src/**/*.+(js|jsx|ts|tsx)" }),
             enforce: "pre",
@@ -55,5 +64,5 @@ export default defineConfig(({ mode }) => ({
           },
           reactRefresh(),
         ]
-      : [customPreloadPlugin()],
+      : [customIndexPlugin(), customPreloadPlugin()],
 }))

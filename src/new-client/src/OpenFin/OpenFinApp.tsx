@@ -10,10 +10,11 @@ import { WindowFrame } from "./WindowFrame"
 export const OpenFinApp: React.FC = () => (
   <BrowserRouter>
     <Switch>
-      <Route path="/analytics" render={() => <Analytics />} />
-
+      <Route
+        path="/analytics"
+        render={() => <Analytics hideIfMatches={null} />}
+      />
       <Route path="/blotter" render={() => <Trades />} />
-
       <Route path="/tiles" render={() => <LiveRates />} />
 
       <Route

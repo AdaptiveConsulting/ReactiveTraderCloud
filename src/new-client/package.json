@@ -26,7 +26,7 @@
     "start": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "dev:openfin": "vite --config vite.openfin.config.ts",
+    "dev:openfin": "concurrently \"./openfin/build_manifest -s\" \"vite --config vite.openfin.config.ts\"",
     "start:openfin": "concurrently \"./openfin/build_manifest -s\" \"vite --config vite.openfin.config.ts\"",
     "build:openfin": "vite build --config vite.openfin.config.ts",
     "serve:openfin": "vite preview --config vite.openin.config.ts",

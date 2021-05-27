@@ -69,10 +69,12 @@ export const HistoricalGraph: React.FC<HistoricalGraphProps> = ({
   useEffect(() => {
     const element = ref.current!
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      const { width, height } = entries[0].contentRect
-      setSize(symbol, { width, height })
-    })
+    const resizeObserver = new ResizeObserver(
+      (entries: Array<ResizeObserverEntry>) => {
+        const { width, height } = entries[0].contentRect
+        setSize(symbol, { width, height })
+      },
+    )
 
     resizeObserver.observe(element)
 
