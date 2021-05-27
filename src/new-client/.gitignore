@@ -14,3 +14,4 @@ openfin-dist
 *.local
 .eslintcache
 npm-debug.log*
+/OpenFin

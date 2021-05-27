@@ -46,4 +46,9 @@ export const TitleBar = styled.div`
   margin: 0;
   font-size: 0.625rem;
   height: 100%;
+  user-select: none;
+
+  // Required to make application draggable
+  // See: https://www.electronjs.org/docs/api/frameless-window#draggable-region
+  -webkit-app-region: drag;
 `
