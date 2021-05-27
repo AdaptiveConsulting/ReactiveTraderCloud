@@ -8,6 +8,7 @@ export const AnalyticsCoreDeferred = import("./AnalyticsCore")
 const AnalyticsCore = lazy(() => AnalyticsCoreDeferred)
 
 const AnalyticsWrapper = styled.div<{ hideIfMatches?: string | null }>`
+  height: 100%;
   flex: 0 0 371px;
   padding: 0.5rem 1rem 0.5rem 0;
   user-select: none;
