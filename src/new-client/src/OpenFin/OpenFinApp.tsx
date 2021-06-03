@@ -8,7 +8,7 @@ import { ChildWindowFrame } from "./ChildWindowFrame"
 import { WindowFrame } from "./WindowFrame"
 
 export const OpenFinApp: React.FC = () => (
-  <BrowserRouter>
+  <BrowserRouter basename={import.meta.env.BASE_URL}>
     <Switch>
       <Route
         path="/analytics"
