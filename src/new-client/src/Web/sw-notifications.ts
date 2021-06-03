@@ -1,6 +1,6 @@
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
-import { executions$ } from "./services/executions/executions"
-import { formatNumber } from "./utils"
+import { executions$ } from "@/services/executions/executions"
+import { formatNumber } from "@/utils"
 
 const sendNotification = (executionTrade: ExecutionTrade) => {
   const notification = {

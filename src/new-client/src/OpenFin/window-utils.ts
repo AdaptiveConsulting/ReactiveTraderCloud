@@ -78,7 +78,7 @@ export async function createOpenFinPopup(
   try {
     const popupWindow = await fin.Platform.getCurrentSync().createWindow({
       name: popupNameFor(name),
-      url: `${location.origin}${pathname}`,
+      url: `${window.location.origin}${pathname}`,
       defaultHeight: height,
       defaultWidth: width,
       autoShow: false,

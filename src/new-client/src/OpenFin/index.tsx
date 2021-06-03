@@ -1,9 +1,9 @@
 import { StrictMode } from "react"
 import ReactDOM from "react-dom"
-import { GA_TRACKING_ID } from "./constants"
-import { OpenFinApp } from "./OpenFin/OpenFinApp"
-import GlobalStyle from "./theme/globals"
-import { GlobalScrollbarStyle, ThemeProvider } from "./theme"
+import { GA_TRACKING_ID } from "@/constants"
+import GlobalStyle from "@/theme/globals"
+import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
+import { OpenFinApp } from "./OpenFinApp"
 
 ReactDOM.render(
   <StrictMode>

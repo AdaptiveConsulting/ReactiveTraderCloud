@@ -6,6 +6,8 @@ import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 
+const TARGET = process.env.TARGET || "web"
+
 // TODO: This is a workaround until the following issue gets
 // confirmed/resolved: https://github.com/vitejs/vite/issues/2460
 const customPreloadPlugin = () => {
@@ -21,13 +23,42 @@ const customPreloadPlugin = () => {
   return result
 }
 
+const eslintPlugin = {
+  ...eslint({ include: "src/**/*.+(js|jsx|ts|tsx)" }),
+  enforce: "pre",
+}
+
+const typescriptPlugin = {
+  ...typescript(),
+  enforce: "pre",
+}
+
+const webManifestPlugin = (mode: string) =>
+  injectManifest(
+    {
+      swSrc: "./src/Web/sw.js",
+      swDest: "./dist/sw.js",
+      dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
+      globDirectory: "dist",
+      mode,
+      modifyURLPrefix: { assets: "/assets" },
+    },
+    () => {},
+  )
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  define: {
+    __TARGET__: JSON.stringify(TARGET),
+  },
   esbuild: {
     jsxInject: `import React from 'react'`,
   },
   build: {
     sourcemap: true,
+  },
+  server: {
+    proxy: TARGET === "openfin" ? { "/config": "http://localhost:8080" } : {},
   },
   resolve: {
     alias: {
@@ -36,29 +67,6 @@ export default defineConfig(({ mode }) => ({
   },
   plugins:
     mode === "development"
-      ? [
-          {
-            ...eslint({ include: "src/**/*.+(js|jsx|ts|tsx)" }),
-            enforce: "pre",
-          },
-          {
-            ...typescript(),
-            enforce: "pre",
-          },
-          reactRefresh(),
-        ]
-      : [
-          customPreloadPlugin(),
-          injectManifest(
-            {
-              swSrc: "./src/sw.js",
-              swDest: "./dist/sw.js",
-              dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
-              globDirectory: "dist",
-              mode,
-              modifyURLPrefix: { assets: "/assets" },
-            },
-            () => {},
-          ) as any,
-        ],
+      ? [eslintPlugin, typescriptPlugin, reactRefresh()]
+      : [customPreloadPlugin(), webManifestPlugin(mode)],
 }))

@@ -1,10 +1,10 @@
 import Resizer from "@/components/Resizer"
 import styled from "styled-components"
-import Header from "./Header"
-import { Footer } from "./Footer"
-import { LiveRates } from "./LiveRates"
-import { Trades } from "./Trades"
-import { Analytics } from "./Analytics"
+import Header from "@/App/Header"
+import { Footer } from "@/App/Footer"
+import { LiveRates } from "@/App/LiveRates"
+import { Trades } from "@/App/Trades"
+import { Analytics } from "@/App/Analytics"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -35,7 +35,7 @@ const MainWrapper = styled.div`
   overflow: hidden;
 `
 
-export const App: React.FC = () => (
+export const WebApp: React.FC = () => (
   <Wrapper>
     <AppLayoutRoot data-qa="app-layout__root">
       <Header />

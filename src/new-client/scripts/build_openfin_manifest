@@ -5,9 +5,10 @@ set -euo pipefail
 BASE_URL="http://localhost:3000"
 ENV_NAME="local"
 SERVE=false
-MANIFEST_ROOT=$(realpath $(dirname $0))
-PROJECT_ROOT=$(realpath $MANIFEST_ROOT/..)
-BUILD_ROOT=$PROJECT_ROOT/openfin-dist
+SCRIPTS_ROOT=$(realpath $(dirname $0))
+PROJECT_ROOT=$(realpath $SCRIPTS_ROOT/..)
+PUBLIC_ROOT=$PROJECT_ROOT/public-openfin
+BUILD_ROOT=$PROJECT_ROOT/dist
 
 while getopts "b:e:s" param; do
   case "$param" in
@@ -22,7 +23,7 @@ ENV_SUFFIX=$(echo -n " $ENV_NAME" | awk '{print toupper($0)}')
 
 mkdir -p $BUILD_ROOT/config
 
-cat $MANIFEST_ROOT/app.json \
+cat $PUBLIC_ROOT/app.json \
   | sed "s|<BASE_URL>|$BASE_URL|g" \
   | sed "s|<ENV_NAME>|$ENV_NAME|g" \
   | sed "s|<ENV_SUFFIX>|$ENV_SUFFIX|g" \
