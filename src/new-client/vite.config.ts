@@ -58,6 +58,7 @@ export default defineConfig(({ mode }) => ({
     sourcemap: true,
   },
   server: {
+    port: 1917,
     proxy: TARGET === "openfin" ? { "/config": "http://localhost:8080" } : {},
   },
   resolve: {
@@ -65,11 +66,8 @@ export default defineConfig(({ mode }) => ({
       "@": resolve(__dirname, "src"),
     },
   },
-  server: {
-    port: 1917,
-  },
   plugins:
     mode === "development"
       ? [eslintPlugin, typescriptPlugin, reactRefresh()]
-      : [customPreloadPlugin(), webManifestPlugin(mode)],
+      : [customPreloadPlugin(), TARGET === "web" && webManifestPlugin(mode)],
 }))
