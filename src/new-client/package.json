@@ -30,7 +30,7 @@
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated"
   },
   "dependencies": {
-    "@adaptive/hydra-platform": "^2.29.0",
+    "@adaptive/hydra-platform": "^2.36.0",
     "@react-rxjs/core": "^0.6.6",
     "@react-rxjs/utils": "^0.8.2",
     "axios": "^0.21.1",
