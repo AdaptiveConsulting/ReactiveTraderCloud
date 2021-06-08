@@ -20,7 +20,7 @@ const mapExecutionToPayload = (e: ExecutionRequest): ExecuteTradeRequest => {
     direction: e.direction,
     notional: e.notional,
     dealtCurrency: e.dealtCurrency,
-    valueDate: new Date().toISOString(), // TODO: talk with hydra team about this
+    valueDate: new Date().toISOString().substr(0, 10), // TODO: talk with hydra team about this
   }
 }
 

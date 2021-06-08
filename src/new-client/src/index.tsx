@@ -16,6 +16,7 @@ import { noop } from "rxjs"
 connectToGateway({
   url: import.meta.env.VITE_HYDRA_URL as string,
   interceptor: noop,
+  useJson: true,
 })
 
 if (import.meta.env.PROD) {
