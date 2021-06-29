@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server"
 import styled from "styled-components"
-import { ExitIcon } from "./ExitIcon"
-import { PopOutIcon } from "./PopOutIcon"
+import { ExitIcon } from "../icons/ExitIcon"
+import { PopOutIcon } from "../icons/PopOutIcon"
 
 const exitIconString = encodeURIComponent(renderToStaticMarkup(<ExitIcon />))
 const popoutIconString = encodeURIComponent(
@@ -18,8 +18,8 @@ export const FrameRoot = styled.div`
   background-color: ${({ theme }) => theme.core.darkBackground};
   color: ${({ theme }) => theme.core.textColor};
 
-  --title-bar-height: 3.5rem;
-  --openfin-footer-height: 2.5rem;
+  --header-height: 3.5rem;
+  --footer-height: 2.5rem;
   --color-behind-views: ${({ theme }) => theme.core.darkBackground};
 
   #layout-container {

@@ -24,7 +24,7 @@ const TileSymbol = styled.div`
   line-height: 1rem;
 `
 
-const [useDate, header$] = bind((symbol: string) =>
+export const [useDate, header$] = bind((symbol: string) =>
   getPrice$(symbol).pipe(
     map(
       ({ valueDate }) =>
@@ -32,8 +32,6 @@ const [useDate, header$] = bind((symbol: string) =>
     ),
   ),
 )
-
-export { header$ }
 
 export const Header: React.FC = () => {
   const { base, terms, symbol } = useTileCurrencyPair()
