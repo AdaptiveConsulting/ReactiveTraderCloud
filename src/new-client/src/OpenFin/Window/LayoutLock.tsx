@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import Switch from "react-switch"
 import { useTheme } from "styled-components"
 import { IconContainer, SwitchContainer } from "@/components/Switch"
-import { LockedIcon } from "./LockedIcon"
-import { PlatformLockedStatusIcon } from "./PlatformLockedStatusIcon"
-import { UnlockedIcon } from "./UnlockedIcon"
-import { isLayoutLocked, toggleLayoutLock } from "./window-utils"
+import { LockedIcon } from "../icons/LockedIcon"
+import { PlatformLockedStatusIcon } from "../icons/PlatformLockedStatusIcon"
+import { UnlockedIcon } from "../icons/UnlockedIcon"
+import { isLayoutLocked, toggleLayoutLock } from "../utils/layout"
 
 export const LayoutLock: React.FC = () => {
   const [locked, setLocked] = useState(false)

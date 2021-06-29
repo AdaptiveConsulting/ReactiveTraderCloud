@@ -3,8 +3,8 @@ import { createSignal } from "@react-rxjs/utils"
 import { scan, tap } from "rxjs/operators"
 
 export enum TileView {
-  Normal = "normal",
-  Analytics = "analytics",
+  Normal = "Normal",
+  Analytics = "Analytics",
 }
 
 const [toggleSelectedView$, onToggleSelectedView] = createSignal()

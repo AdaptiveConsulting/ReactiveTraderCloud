@@ -120,7 +120,7 @@ function isUserGeneratedPopup(windowIdentity: Identity): boolean {
   )
 }
 
-export function inMainOpenFinWindow(): boolean {
+export function inMainOpenFinWindow() {
   const currentWindowName = fin.Window.getCurrentSync().identity.name
 
   // set in app.json
@@ -140,6 +140,7 @@ export function inMainOpenFinWindow(): boolean {
  * Not closing the internal generated results in the popped out pieces of the
  * application persisting even after the main window is closed.
  */
+
 export async function closeOtherWindows() {
   const app = fin.Application.getCurrentSync()
   const childWindows = await app.getChildWindows()
@@ -159,41 +160,122 @@ export async function closeOtherWindows() {
   }
 }
 
-export const isLayoutLocked = async (): Promise<boolean> => {
-  const { settings } = await fin.Platform.Layout.getCurrentSync().getConfig()
+function generateRandomName() {
+  let text = ""
+  const possible =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
-  return Boolean(settings && !settings.hasHeaders && !settings.reorderEnabled)
+  for (let i = 0; i < 15; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+  }
+
+  return text
 }
 
-export const toggleLayoutLock = async () => {
-  const layout = fin.Platform.Layout.wrapSync({
-    name: mainOpenFinWindowName,
-    uuid: fin.me.uuid,
+function getChildWindows() {
+  return new Promise<fin.OpenFinWindow[]>((resolve, reject) => {
+    fin.desktop.Application.getCurrent().getChildWindows(
+      (children: fin.OpenFinWindow[]) => resolve(children),
+      (error: string) => reject(error),
+    )
   })
+}
 
-  const oldLayout = await layout.getConfig()
-  const { settings, dimensions } = oldLayout
-  if (settings && settings.hasHeaders && settings.reorderEnabled) {
-    layout.replace({
-      ...oldLayout,
+export interface WindowConfig {
+  name: string
+  url: string
+  width: number
+  height: number
+  displayName?: string
+  minHeight?: number
+  minWidth?: number
+  maxHeight?: number
+  maxWidth?: number
+  center?: "parent" | "screen"
+  x?: number
+  y?: number
+  saveWindowState?: boolean
+}
+
+export async function openWindow(
+  config: WindowConfig,
+  onClose?: () => void,
+): Promise<fin._Window> {
+  const {
+    url,
+    width: defaultWidth,
+    height: defaultHeight,
+    displayName,
+    maxHeight,
+    maxWidth,
+    minHeight = 100,
+    minWidth = 100,
+  } = config
+
+  const childWindows = await getChildWindows()
+  const hasChildWindows = childWindows && childWindows.length
+  const hasCoordinates = config.x !== undefined && config.y !== undefined
+  const windowName = config.name || generateRandomName()
+  const centered =
+    (!hasChildWindows && !hasCoordinates) || config.center === "screen"
+
+  const platform = await fin.Platform.getCurrent()
+  const windowIdentity = await platform.createWindow({
+    autoShow: true,
+    contextMenu: true,
+    defaultCentered: centered,
+    defaultHeight,
+    defaultWidth,
+    frame: false,
+    icon: "/static/media/reactive-trader.ico",
+    maxHeight,
+    maxWidth,
+    minHeight,
+    minWidth,
+    name: windowName,
+    saveWindowState: false,
+    shadow: true,
+
+    layout: {
       settings: {
-        ...settings,
         hasHeaders: false,
         reorderEnabled: false,
       },
-    })
-  } else {
-    layout.replace({
-      ...oldLayout,
-      settings: {
-        ...settings,
-        hasHeaders: true,
-        reorderEnabled: true,
-      },
-      dimensions: {
-        ...dimensions,
-        headerHeight: 25,
-      },
-    })
+      content: [
+        {
+          type: "stack",
+          title: displayName || windowName,
+          content: [
+            {
+              type: "component",
+              title: displayName || windowName,
+              componentName: "view",
+              componentState: {
+                name: `${windowName}_view`,
+                url: `${window.location.origin}${url}`,
+              },
+            },
+          ],
+        },
+      ],
+    },
+  })
+
+  const win = await fin.Window.wrap(windowIdentity)
+
+  if (onClose) {
+    const closeListener = () => {
+      console.log(`Received 'close' event for OpenFin window: ${windowName}`)
+      onClose && onClose()
+    }
+
+    win.once("closed", closeListener)
   }
+
+  return win
+}
+
+export function closeWindow() {
+  const win = fin.Window.getCurrentSync()
+  win.close()
 }

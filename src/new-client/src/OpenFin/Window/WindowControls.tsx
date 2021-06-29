@@ -1,8 +1,8 @@
-import { ExitIcon } from "./ExitIcon"
-import { MaximizeIcon } from "./MaximizeIcon"
-import { MinimizeIcon } from "./MinimizeIcon"
-import { PopInIcon } from "./PopInIcon"
-import { closeOtherWindows, inMainOpenFinWindow } from "./window-utils"
+import { ExitIcon } from "../icons/ExitIcon"
+import { MaximizeIcon } from "../icons/MaximizeIcon"
+import { MinimizeIcon } from "../icons/MinimizeIcon"
+import { PopInIcon } from "../icons/PopInIcon"
+import { closeOtherWindows, inMainOpenFinWindow } from "../utils/window"
 import { Control, ControlsWrapper } from "./WindowHeader.styles"
 
 export interface Props {

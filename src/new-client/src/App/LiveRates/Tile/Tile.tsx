@@ -53,9 +53,12 @@ const [useIsSymbolDataStale] = symbolBind(
   ),
 )
 
-const Tile: React.FC<{
+interface Props {
+  HeaderComponent?: React.ComponentType
   isAnalytics: boolean
-}> = ({ isAnalytics }) => {
+}
+
+const Tile: React.FC<Props> = ({ isAnalytics, HeaderComponent = Header }) => {
   useIsSymbolDataStale()
   const rfq = useRfqState()
   const timerData =
@@ -79,7 +82,7 @@ const Tile: React.FC<{
   return (
     <PanelItem>
       <Main>
-        <Header />
+        <HeaderComponent />
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
           {isAnalytics ? (
             <GraphNotionalWrapper>
@@ -103,12 +106,13 @@ const Tile: React.FC<{
   )
 }
 const TileContext: React.FC<{
+  HeaderComponent?: React.ComponentType
   currencyPair: CurrencyPair
   isAnalytics: boolean
-}> = memo(({ currencyPair, isAnalytics }) => {
+}> = memo(({ HeaderComponent = Header, currencyPair, isAnalytics }) => {
   return (
     <Provider value={currencyPair}>
-      <Tile isAnalytics={isAnalytics} />
+      <Tile isAnalytics={isAnalytics} HeaderComponent={HeaderComponent} />
     </Provider>
   )
 })

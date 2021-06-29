@@ -14,7 +14,7 @@ export const AppHeaderRoot = styled.div`
   width: calc(100% - 2rem);
   max-width: 100%;
 
-  height: 3.5rem;
+  height: var(--header-height, 3.5rem);
 
   margin: 0.25rem 1rem;
 

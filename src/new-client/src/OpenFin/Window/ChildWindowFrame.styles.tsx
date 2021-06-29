@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server"
 import styled from "styled-components"
-import { ExitIcon } from "./ExitIcon"
-import { PopOutIcon } from "./PopOutIcon"
+import { ExitIcon } from "../icons/ExitIcon"
+import { PopOutIcon } from "../icons/PopOutIcon"
 
 const exitIconString = encodeURIComponent(renderToStaticMarkup(<ExitIcon />))
 const popoutIconString = encodeURIComponent(
@@ -18,8 +18,8 @@ export const FrameRoot = styled.div`
   position: absolute;
   overflow: hidden;
 
-  --title-bar-height: 1.5rem;
-  --openfin-footer-height: 0rem;
+  --header-height: 1.5rem;
+  --footer-height: 0rem;
 
   #layout-container {
     height: 100%;

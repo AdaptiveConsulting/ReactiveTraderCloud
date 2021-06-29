@@ -1,11 +1,13 @@
+import { Subscribe } from "@react-rxjs/core"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { Analytics } from "@/App/Analytics"
-import { LiveRates } from "@/App/LiveRates"
 import { TileView } from "@/App/LiveRates/selectedView"
 import { Trades } from "@/App/Trades"
-import { FloatingTile } from "./FloatingTile"
-import { ChildWindowFrame } from "./ChildWindowFrame"
-import { WindowFrame } from "./WindowFrame"
+import { Loader } from "@/components/Loader"
+import { DetachableLiveRates } from "./DetachableTile/DetachableLiveRates"
+import { DetachableTile } from "./DetachableTile/DetachableTile"
+import { ChildWindowFrame } from "./Window/ChildWindowFrame"
+import { WindowFrame } from "./Window/WindowFrame"
 
 export const OpenFinApp: React.FC = () => (
   <BrowserRouter basename={import.meta.env.BASE_URL}>
@@ -14,8 +16,9 @@ export const OpenFinApp: React.FC = () => (
         path="/analytics"
         render={() => <Analytics hideIfMatches={null} />}
       />
+
       <Route path="/blotter" render={() => <Trades />} />
-      <Route path="/tiles" render={() => <LiveRates />} />
+      <Route path="/tiles" render={() => <DetachableLiveRates />} />
 
       <Route
         path="/spot/:symbol"
@@ -30,7 +33,19 @@ export const OpenFinApp: React.FC = () => (
             ? (query.get("tileView") as TileView)
             : TileView.Analytics
 
-          return <FloatingTile symbol={symbol} view={view} />
+          const loader = (
+            <Loader
+              ariaLabel="Loading live FX exchange rates"
+              minWidth="22rem"
+              minHeight="22rem"
+            />
+          )
+
+          return (
+            <Subscribe fallback={loader}>
+              <DetachableTile symbol={symbol} view={view} isTornOut={true} />
+            </Subscribe>
+          )
         }}
       />
 
