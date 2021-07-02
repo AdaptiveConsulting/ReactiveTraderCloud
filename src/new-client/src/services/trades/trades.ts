@@ -1,11 +1,15 @@
 import { BlotterService } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
+import { withIsStaleData } from "../connection"
+import { withConnection } from "../withConnection"
 import { Trade } from "./types"
 
 const tradesStream$ = BlotterService.getTradeStream().pipe(
-  map(({ updates }) =>
-    updates.map((rawTrade) => ({
+  withConnection(),
+  map(({ isStateOfTheWorld, updates }) => ({
+    isStateOfTheWorld,
+    updates: updates.map((rawTrade) => ({
       tradeId: rawTrade.tradeId.toString(10),
       symbol: rawTrade.currencyPair, // TODO: talk with hydra team about this
       traderName: rawTrade.tradeName,
@@ -17,16 +21,16 @@ const tradesStream$ = BlotterService.getTradeStream().pipe(
       tradeDate: new Date(rawTrade.tradeDate), // TODO: talk with hydra team about this
       valueDate: new Date(rawTrade.valueDate), // TODO: talk with hydra team about this
     })),
-  ),
+  })),
 )
 
 export const [useTrades, trades$] = bind<Trade[]>(
   tradesStream$.pipe(
     scan(
-      (acc, trades) => ({
-        ...acc,
+      (acc, { isStateOfTheWorld, updates }) => ({
+        ...(isStateOfTheWorld ? {} : acc),
         ...Object.fromEntries(
-          trades.map((trade) => [trade.tradeId, trade] as const),
+          updates.map((trade) => [trade.tradeId, trade] as const),
         ),
       }),
       {} as Record<number, Trade>,
@@ -34,3 +38,5 @@ export const [useTrades, trades$] = bind<Trade[]>(
     map((trades) => Object.values(trades).reverse()),
   ),
 )
+
+export const isBlotterDataStale$ = withIsStaleData(trades$)

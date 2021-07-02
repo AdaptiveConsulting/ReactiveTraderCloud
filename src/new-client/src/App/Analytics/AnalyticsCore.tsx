@@ -8,12 +8,17 @@ import {
   AnalyticsHeader,
   AnalyticsInnerWrapper,
 } from "./styled"
+import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
+import { isAnalyticsDataStale$ } from "@/services/analytics"
 
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
+
+const SuspenseOnStaleData = createSuspenseOnStale(isAnalyticsDataStale$)
 
 const Analytics: React.FC = ({ children }) => {
   return (
     <Subscribe source$={analytics$} fallback={children}>
+      <SuspenseOnStaleData />
       <AnalyticsInnerWrapper>
         <AnalyticsHeader>Analytics</AnalyticsHeader>
         <AnalyticsStyle

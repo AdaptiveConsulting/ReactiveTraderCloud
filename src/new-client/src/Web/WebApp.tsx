@@ -5,6 +5,7 @@ import { Footer } from "@/App/Footer"
 import { LiveRates } from "@/App/LiveRates"
 import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
+import { DisconnectionOverlay } from "@/App/DisconnectionOverlay"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -37,6 +38,7 @@ const MainWrapper = styled.div`
 
 export const WebApp: React.FC = () => (
   <Wrapper>
+    <DisconnectionOverlay />
     <AppLayoutRoot data-qa="app-layout__root">
       <Header />
       <MainWrapper>

@@ -1,8 +1,10 @@
 import { PriceTick, PricingService } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { mergeWithKey } from "@react-rxjs/utils"
-import { concat, race } from "rxjs"
-import { scan, map, take } from "rxjs/operators"
+import { combineLatest, concat, race } from "rxjs"
+import { scan, map, take, distinctUntilChanged } from "rxjs/operators"
+import { withIsStaleData } from "../connection"
+import { withConnection } from "../withConnection"
 import { PriceMovementType, HistoryPrice, Price } from "./types"
 
 const priceMappper = (input: PriceTick): HistoryPrice => ({
@@ -16,6 +18,7 @@ const priceMappper = (input: PriceTick): HistoryPrice => ({
 
 const [, getPriceHistory$] = bind((symbol: string) =>
   PricingService.getPriceHistory({ symbol }).pipe(
+    withConnection(),
     map(({ prices }) =>
       prices.slice(prices.length - HISTORY_SIZE).map(priceMappper),
     ),
@@ -23,7 +26,20 @@ const [, getPriceHistory$] = bind((symbol: string) =>
 )
 
 const [, getPriceUpdates$] = bind((symbol: string) =>
-  PricingService.getPriceUpdates({ symbol }).pipe(map(priceMappper)),
+  PricingService.getPriceUpdates({ symbol }).pipe(
+    withConnection(),
+    map(priceMappper),
+  ),
+)
+
+export const [, getIsSymbolDataStale$] = bind((symbol: string) =>
+  combineLatest([
+    withIsStaleData(getPriceHistory$(symbol)),
+    withIsStaleData(getPriceUpdates$(symbol)),
+  ]).pipe(
+    map(([a, b]) => a || b),
+    distinctUntilChanged(),
+  ),
 )
 
 export const [usePrice, getPrice$] = bind((symbol: string) =>
