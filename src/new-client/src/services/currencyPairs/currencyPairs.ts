@@ -1,10 +1,12 @@
 import { ReferenceDataService } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { distinctUntilChanged, map, scan } from "rxjs/operators"
+import { withConnection } from "../withConnection"
 import { CurrencyPair } from "./types"
 
 export const [useCurrencyPairs, currencyPairs$] = bind(
   ReferenceDataService.getCcyPairs().pipe(
+    withConnection(),
     scan((acc, data) => {
       const { updates } = data
       const result = { ...acc }

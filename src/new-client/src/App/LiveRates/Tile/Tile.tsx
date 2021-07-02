@@ -1,5 +1,5 @@
 import { memo } from "react"
-import { merge } from "rxjs"
+import { merge, pipe } from "rxjs"
 import { Direction } from "@/services/trades"
 import { PriceMovement, priceMovement$ } from "./PriceMovement"
 import { NotionalInput, notionalInput$ } from "./Notional"
@@ -18,7 +18,7 @@ import {
 import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
 
 import { CurrencyPair } from "services/currencyPairs"
-import { Provider } from "./Tile.context"
+import { Provider, symbolBind } from "./Tile.context"
 import {
   getRfqState$,
   isRfq$,
@@ -27,6 +27,9 @@ import {
   RfqTimer,
   useRfqState,
 } from "./Rfq"
+import { getIsSymbolDataStale$ } from "@/services/prices"
+import { SUSPENSE } from "@react-rxjs/core"
+import { map } from "rxjs/operators"
 
 export const tile$ = (symbol: string) =>
   merge(
@@ -43,9 +46,17 @@ export const tile$ = (symbol: string) =>
     ].map((fn) => fn(symbol)),
   )
 
+const [useIsSymbolDataStale] = symbolBind(
+  pipe(
+    getIsSymbolDataStale$,
+    map((isStale) => (isStale ? SUSPENSE : null)),
+  ),
+)
+
 const Tile: React.FC<{
   isAnalytics: boolean
 }> = ({ isAnalytics }) => {
+  useIsSymbolDataStale()
   const rfq = useRfqState()
   const timerData =
     rfq.stage === QuoteStateStage.Received
