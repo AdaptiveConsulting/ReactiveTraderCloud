@@ -104,8 +104,8 @@
     }
   },
   "home": {
-    "appDirectoryUrl": "{*host_url*}/config/apps.json",
-    "workspacesUrl": "{*host_url*}/config/workspaces.json",
+    "appDirectoryUrl": "{*host_url*}/openfin/workspace/apps.json",
+    "workspacesUrl": "{*host_url*}/openfin/workspace/workspaces.json",
     "browserWindowTitle": "Reactive Trader",
     "style": {
       "iconUrl": "https://www.reactivetrader.com/favicon.ico"
