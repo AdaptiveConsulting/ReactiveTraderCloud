@@ -1,0 +1,24 @@
+[
+  {
+    "name": "rt-app",
+    "title": "Reactive Trader",
+    "manifest": "https://classic.reactivetrader.com/manifest.json",
+    "manifestType": "view",
+    "icons": [
+      {
+        "icon": "https://www.reactivetrader.com/static/media/reactive-trader.ico"
+      }
+    ]
+  },
+  {
+    "name": "rt-analytics",
+    "title": "Reactive Analytics",
+    "manifest": "https://demo-reactive-analytics.adaptivecluster.com/manifest.json",
+    "manifestType": "view",
+    "icons": [
+      {
+        "icon": "https://demo-reactive-analytics.adaptivecluster.com/static/media/reactive-analytics.ico"
+      }
+    ]
+  }
+]

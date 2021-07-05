@@ -35,6 +35,7 @@
     "test:ci": "react-scripts test --ci --coverage --reporters=default --reporters=jest-junit",
     "analyze": "source-map-explorer build/static/js/*.chunk.js",
     "openfin": "wait-on -l http://localhost:3000/openfin/app.json && openfin -c http://localhost:3000/openfin/app.json -l",
+    "openfin:workspace": "wait-on -l http://localhost:3000/openfin/workspace/app.json && openfin -c http://localhost:3000/openfin/workspace/app.json -l",
     "openfin:launcher": "wait-on -l http://localhost:3000/openfin/launcher.json && openfin -c http://localhost:3000/openfin/launcher.json -l",
     "openfin-build-installer": "node ./lib/downloadInstaller.js",
     "storybook": "start-storybook -p 6006 -c .storybook",

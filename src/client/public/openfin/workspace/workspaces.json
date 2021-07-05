@@ -1,0 +1,203 @@
+[
+  {
+    "workspaceId": "analytics",
+    "title": "Analytics Trader",
+    "snapshot": {
+      "windows": [
+        {
+          "minWidth": 1000,
+          "defaultCentered": true,
+          "state": "maximized",
+          "backgroundColor": "#111214",
+          "layout": {
+            "content": [
+              {
+                "type": "row",
+                "isClosable": true,
+                "reorderEnabled": true,
+                "content": [
+                  {
+                    "type": "stack",
+                    "width": 50,
+                    "content": [
+                      {
+                        "type": "component",
+                        "componentName": "view",
+                        "componentState": {
+                          "url": "https://classic.reactivetrader.com/analytics",
+                          "componentName": "view"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "stack",
+                    "width": 50,
+                    "content": [
+                      {
+                        "type": "component",
+                        "componentName": "view",
+                        "componentState": {
+                          "url": "https://demo-reactive-analytics.adaptivecluster.com/",
+                          "componentName": "view"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "description": "Study analytics and trends",
+    "tooltip": "Study analytics and trends"
+  },
+  {
+    "workspaceId": "operational RT",
+    "title": "Operational RT",
+    "snapshot": {
+      "windows": [
+        {
+          "minWidth": 1000,
+          "defaultCentered": true,
+          "state": "maximized",
+          "backgroundColor": "#111214",
+          "layout": {
+            "content": [
+              {
+                "type": "row",
+                "isClosable": true,
+                "reorderEnabled": true,
+                "content": [
+                  {
+                    "type": "column",
+                    "reorderEnabled": false,
+                    "width": 50,
+                    "content": [
+                      {
+                        "type": "component",
+                        "componentName": "view",
+                        "componentState": {
+                          "url": "https://classic.reactivetrader.com/tiles",
+                          "componentName": "view"
+                        }
+                      },
+                      {
+                        "type": "component",
+                        "componentName": "view",
+                        "componentState": {
+                          "url": "https://classic.reactivetrader.com/blotter",
+                          "componentName": "view"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "column",
+                    "width": 50,
+                    "content": [
+                      {
+                        "type": "component",
+                        "componentName": "view",
+                        "componentState": {
+                          "url": "https://demo-reactive-analytics.adaptivecluster.com/",
+                          "componentName": "view"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "description": "Side by side your analytics and operational tools",
+    "tooltip": "Side by side your analytics and operational tools."
+  },
+  {
+    "workspaceId": "operational separated",
+    "title": "Operational Windows RT",
+    "snapshot": {
+      "windows": [
+        {
+          "minWidth": 700,
+          "defaultLeft": 0,
+          "defaultWidth": 700,
+          "state": "maximized",
+          "backgroundColor": "#111214",
+          "layout": {
+            "content": [
+              {
+                "type": "row",
+                "isClosable": true,
+                "reorderEnabled": true,
+                "content": [
+                  {
+                    "type": "column",
+                    "reorderEnabled": false,
+                    "width": 50,
+                    "content": [
+                      {
+                        "type": "component",
+                        "componentName": "view",
+                        "componentState": {
+                          "url": "https://classic.reactivetrader.com/tiles",
+                          "componentName": "view"
+                        }
+                      },
+                      {
+                        "type": "component",
+                        "componentName": "view",
+                        "componentState": {
+                          "url": "https://classic.reactivetrader.com/blotter",
+                          "componentName": "view"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "defaultLeft": 800,
+          "defaultWidth": 400,
+          "minWidth": 400,
+          "backgroundColor": "#111214",
+          "layout": {
+            "content": [
+              {
+                "type": "row",
+                "isClosable": true,
+                "reorderEnabled": true,
+                "content": [
+                  {
+                    "type": "column",
+                    "width": 50,
+                    "content": [
+                      {
+                        "type": "component",
+                        "componentName": "view",
+                        "componentState": {
+                          "url": "https://demo-reactive-analytics.adaptivecluster.com/",
+                          "componentName": "view"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "description": "Side by side your analytics and operational tools",
+    "tooltip": "Side by side your analytics and operational tools."
+  }
+]

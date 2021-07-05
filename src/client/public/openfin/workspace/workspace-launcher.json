@@ -1,0 +1,114 @@
+{
+  "runtime": {
+    "arguments": "--v=1 --inspect",
+    "version": "19.89.60.5"
+  },
+  "shortcut": {
+    "company": "OpenFin",
+    "description": "OpenFin Home",
+    "icon": "https://home-staging.openfin.co/favicon.ico",
+    "name": "OpenFin Home"
+  },
+  "startup_app": {
+    "url": "https://home-staging.openfin.co/"
+  },
+  "platform": {
+    "fdc3Api": true,
+    "permissions": {
+      "System": {
+        "openUrlWithBrowser": true,
+        "getAllExternalWindows": true,
+        "launchExternalProcess": true,
+        "readRegistryValue": false,
+        "terminateExternalProcess": true
+      },
+      "ExternalWindow": {
+        "wrap": true
+      }
+    },
+    "apiDiagnostics": "true",
+    "uuid": "openfin-browser",
+    "providerUrl": "https://home-staging.openfin.co/provider/",
+    "applicationIcon": "https://home-staging.openfin.co/favicon.ico",
+    "autoShow": false,
+    "maxViewPoolSize": 20,
+    "commands": [
+      {
+        "command": "stack.nextTab",
+        "keys": "Ctrl+Tab"
+      }
+    ],
+    "defaultWindowOptions": {
+      "url": "https://home-staging.openfin.co/browser/",
+      "contextMenu": true,
+      "waitForPageLoad": true,
+      "cornerRounding": {
+        "height": 8,
+        "width": 8
+      },
+      "layout": {
+        "dimensions": {
+          "borderWidth": 3,
+          "headerHeight": 30
+        }
+      },
+      "experimental": {
+        "showFavicons": true
+      }
+    },
+    "interopBrokerConfiguration": {
+      "contextGroups": [
+        {
+          "id": "green",
+          "displayMetadata": {
+            "color": "#00CC88",
+            "name": "green"
+          }
+        },
+        {
+          "id": "purple",
+          "displayMetadata": {
+            "color": "#8C61FF",
+            "name": "purple"
+          }
+        },
+        {
+          "id": "orange",
+          "displayMetadata": {
+            "color": "#FF8C4C",
+            "name": "orange"
+          }
+        },
+        {
+          "id": "red",
+          "displayMetadata": {
+            "color": "#FF5E60",
+            "name": "red"
+          }
+        },
+        {
+          "id": "pink",
+          "displayMetadata": {
+            "color": "#FF8FB8",
+            "name": "pink"
+          }
+        },
+        {
+          "id": "yellow",
+          "displayMetadata": {
+            "color": "#E9FF8F",
+            "name": "yellow"
+          }
+        }
+      ]
+    }
+  },
+  "home": {
+    "appDirectoryUrl": "{*host_url*}/config/apps.json",
+    "workspacesUrl": "{*host_url*}/config/workspaces.json",
+    "browserWindowTitle": "Reactive Trader",
+    "style": {
+      "iconUrl": "https://www.reactivetrader.com/favicon.ico"
+    }
+  }
+}
