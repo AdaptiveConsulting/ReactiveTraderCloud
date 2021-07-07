@@ -6,14 +6,11 @@
   "shortcut": {
     "company": "OpenFin",
     "description": "OpenFin Home",
-    "icon": "https://home-staging.openfin.co/favicon.ico",
+    "icon": "https://home.openfin.co/favicon.ico",
     "name": "OpenFin Home"
   },
   "startup_app": {
-    "url": "https://home-staging.openfin.co/"
-  },
-  "platform": {
-    "fdc3Api": true,
+    "url": "https://home.openfin.co/",
     "permissions": {
       "System": {
         "openUrlWithBrowser": true,
@@ -25,11 +22,13 @@
       "ExternalWindow": {
         "wrap": true
       }
-    },
+    }
+  },
+  "platform": {
     "apiDiagnostics": "true",
     "uuid": "openfin-browser",
-    "providerUrl": "https://home-staging.openfin.co/provider/",
-    "applicationIcon": "https://home-staging.openfin.co/favicon.ico",
+    "providerUrl": "https://home.openfin.co/provider/",
+    "applicationIcon": "https://home.openfin.co/favicon.ico",
     "autoShow": false,
     "maxViewPoolSize": 20,
     "commands": [
@@ -39,7 +38,7 @@
       }
     ],
     "defaultWindowOptions": {
-      "url": "https://home-staging.openfin.co/browser/",
+      "url": "https://home.openfin.co/browser/",
       "contextMenu": true,
       "waitForPageLoad": true,
       "cornerRounding": {

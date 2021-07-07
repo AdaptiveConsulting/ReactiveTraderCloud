@@ -38,6 +38,18 @@ module.exports = function override(config, env) {
                 .replaceAll('{*host_url*}', host_url)
             },
           },
+          {
+            from: 'public/openfin/workspace/*.json',
+            to: 'openfin/workspace',
+            flatten: true,
+            transform(content) {
+              return content
+                .toString()
+                .replaceAll('{{environment}}', environment)
+                .replaceAll('{{environment_suffix}}', environment_suffix)
+                .replaceAll('{*host_url*}', host_url)
+            },
+          },
         ],
       })
     )
