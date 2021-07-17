@@ -14,11 +14,14 @@ export const OpenFinApp: React.FC = () => (
     <Switch>
       <Route
         path="/analytics"
-        render={() => <Analytics hideIfMatches={null} />}
+        render={() => <Analytics hideIfMatches={null} title="Analytics" />}
       />
 
-      <Route path="/blotter" render={() => <Trades />} />
-      <Route path="/tiles" render={() => <DetachableLiveRates />} />
+      <Route path="/blotter" render={() => <Trades title="Trades" />} />
+      <Route
+        path="/tiles"
+        render={() => <DetachableLiveRates title="Live Rates" />}
+      />
 
       <Route
         path="/spot/:symbol"
