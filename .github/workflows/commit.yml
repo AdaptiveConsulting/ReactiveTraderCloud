@@ -12,6 +12,7 @@ defaults:
 env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
+  VITE_HYDRA_URL: wss://trading-web-gateway-rt.demo.hydra.weareadaptive.com:8929
 
 jobs:
   build:
