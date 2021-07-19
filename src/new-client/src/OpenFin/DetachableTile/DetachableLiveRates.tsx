@@ -3,7 +3,6 @@ import styled from "styled-components"
 import { MainHeader } from "@/App/LiveRates/MainHeader"
 import { Loader } from "@/components/Loader"
 import { DetachableTiles } from "./DetachableTiles"
-import { useEffect } from "react"
 
 const loader = (
   <Loader
@@ -13,24 +12,15 @@ const loader = (
   />
 )
 
-export const DetachableLiveRates: React.FC<{ title?: string }> = ({
-  title,
-}) => {
-  useEffect(() => {
-    if (title) {
-      document.title = title
-    }
-  }, [title])
+export const DetachableLiveRates: React.FC = () => (
+  <Subscribe fallback={loader}>
+    <Wrapper>
+      <MainHeader />
+      <DetachableTiles />
+    </Wrapper>
+  </Subscribe>
+)
 
-  return (
-    <Subscribe fallback={loader}>
-      <Wrapper>
-        <MainHeader />
-        <DetachableTiles />
-      </Wrapper>
-    </Subscribe>
-  )
-}
 const Wrapper = styled.div`
   padding: 0.5rem 0 0.5rem 1rem;
   user-select: none;

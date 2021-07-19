@@ -1,5 +1,5 @@
 import { Loader } from "@/components/Loader"
-import { lazy, Suspense, useEffect, useRef } from "react"
+import { lazy, Suspense, useRef } from "react"
 import { analytics$ } from "@/services/analytics"
 import styled from "styled-components"
 import { useHasItBeenVisible } from "@/utils/useHasItBeenVisible"
@@ -36,21 +36,13 @@ const loader = (
 
 interface Props {
   hideIfMatches?: string | null
-  title?: string
 }
 
 export const Analytics: React.FC<Props> = ({
   hideIfMatches = "(max-width: 750px)",
-  title,
 }) => {
   const ref = useRef<HTMLDivElement>(null)
   const shouldMountAnalytics = useHasItBeenVisible(ref)
-
-  useEffect(() => {
-    if (title) {
-      document.title = title
-    }
-  }, [title])
 
   return (
     <AnalyticsWrapper ref={ref} hideIfMatches={hideIfMatches}>
