@@ -9,6 +9,10 @@ defaults:
   run:
     working-directory: src/new-client
 
+env:
+  BUCKET_WEB: reactive-trader-web-builds
+  BUCKET_OPENFIN: reactive-trader-openfin-builds
+
 jobs:
   build:
     name: Build & deploy
