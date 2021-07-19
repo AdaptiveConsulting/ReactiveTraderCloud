@@ -1,0 +1,98 @@
+name: Pull request build
+
+on:
+  pull_request:
+    types:
+    - opened
+    - synchronize
+    paths:
+    - 'src/new-client/**'
+
+defaults:
+  run:
+    working-directory: src/new-client
+
+jobs:
+  build:
+    name: Build & deploy
+
+    runs-on: ubuntu-20.04
+
+    if: "!github.event.pull_request.header.repo.fork"
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up GCloud
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+        service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+
+    - name: Decrypt NPM credentials
+      run: |
+        gcloud kms decrypt \
+          --ciphertext-file=npmrc.enc \
+          --plaintext-file=.npmrc \
+          --location=global \
+          --keyring=rt-keyring \
+          --key=npmrc-key
+
+    - name: Install
+      run: npm ci
+
+    - name: Build (web)
+      run: |
+        npm run build -- \
+          --base /pull/${{ github.event.number }} \
+          --mode development
+
+    - name: Deploy (web)
+      run: |
+        gsutil -m rsync -d -r dist \
+          gs://$BUCKET_WEB/pull/${{ github.event.number }}
+
+    - name: Build (OpenFin)
+      run: |
+        npm run openfin:build -- \
+          --base /pull/${{ github.event.number }} \
+          --mode development
+
+    - name: Deploy (OpenFin)
+      run: |
+        gsutil -m rsync -d -r dist \
+          gs://$BUCKET_OPENFIN/pull/${{ github.event.number }}
+
+    - name: Find comment
+      uses: peter-evans/find-comment@v1
+      id: comment
+      with:
+        issue-number: ${{ github.event.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: '(auto-deploy)'
+
+    - name: Create comment (if not exists)
+      if: ${{ steps.comment.outputs.comment-id == 0 }}
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        issue-number: ${{ github.event.number }}
+        body: |
+          (auto-deploy) A deployment has been created for this Pull Request
+
+          ### Preview links
+
+          As part of the code review process, please ensure that you test against the following
+
+          | Version | URL                                                            |
+          | :--     | :--                                                            |
+          | Web     | https://env.reactivetrader.com/pull/${{ github.event.number }} |
+          | OpenFin | fins://openfin.env.reactivetrader.com/openfin/app.json         |
+
+          ### Performance
+
+          Please ensure that this PR does not degrade the performance of the UI. We should maintain a performance score of 95+.
+
+          https://developers.google.com/speed/pagespeed/insights/?url=https://env.reactivetrader.com/pull/${{ github.event.number }}

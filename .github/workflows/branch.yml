@@ -1,0 +1,66 @@
+name: Branch build
+
+on:
+  push:
+    paths:
+    - 'src/new-client/**'
+
+defaults:
+  run:
+    working-directory: src/new-client
+
+jobs:
+  build:
+    name: Build & deploy
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set variables
+      id: vars
+      run: echo "::set-output name=branch::$(git branch --show-current | sed 's/\//_/g')"
+
+    - name: Set up GCloud
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+        service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+
+    - name: Decrypt NPM credentials
+      run: |
+        gcloud kms decrypt \
+          --ciphertext-file=npmrc.enc \
+          --plaintext-file=.npmrc \
+          --location=global \
+          --keyring=rt-keyring \
+          --key=npmrc-key
+
+    - name: Install
+      run: npm ci
+
+    - name: Build (web)
+      run: |
+        npm run build -- \
+          --base /branch/${{ steps.vars.outputs.branch }} \
+          --mode development
+
+    - name: Deploy (web)
+      run: |
+        gsutil -m rsync -d -r dist \
+          gs://$BUCKET_WEB/branch/${{ steps.vars.outputs.branch }}
+
+    - name: Build (OpenFin)
+      run: |
+        npm run openfin:build -- \
+          --base /branch/${{ steps.vars.outputs.branch }} \
+          --mode development
+
+    - name: Deploy (OpenFin)
+      run: |
+        gsutil -m rsync -d -r dist \
+          gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.branch }}
