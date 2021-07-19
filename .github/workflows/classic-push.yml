@@ -1,4 +1,4 @@
-name: CI
+name: Commit build (classic)
 
 on:
   push:
@@ -7,6 +7,8 @@ on:
     - release/**
     tags:
     - v*
+    paths-ignore:
+    - 'src/new-client/**'
 
 jobs:
   build:

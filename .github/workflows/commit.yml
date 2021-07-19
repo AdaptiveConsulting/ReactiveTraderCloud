@@ -1,0 +1,70 @@
+name: Commit build
+
+on:
+  push:
+    paths:
+    - 'src/new-client/**'
+
+defaults:
+  run:
+    working-directory: src/new-client
+
+env:
+  BUCKET_WEB: reactive-trader-web-builds
+  BUCKET_OPENFIN: reactive-trader-openfin-builds
+
+jobs:
+  build:
+    name: Build & deploy
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set variables
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD | cut -c1-8)"
+
+    - name: Set up GCloud
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+        service_account_key: ${{ secrets.GOOGLE_PRIVATE_KEY }}
+
+    - name: Decrypt NPM credentials
+      run: |
+        gcloud kms decrypt \
+          --ciphertext-file=npmrc.enc \
+          --plaintext-file=.npmrc \
+          --location=global \
+          --keyring=rt-keyring \
+          --key=npmrc-key
+
+    - name: Install
+      run: npm ci
+
+    - name: Build (web)
+      run: |
+        npm run build -- \
+          --base /commit/${{ steps.vars.outputs.sha_short }} \
+          --mode development
+
+    - name: Deploy (web)
+      run: |
+        gsutil -m rsync -d -r dist \
+          gs://$BUCKET_WEB/commit/${{ steps.vars.outputs.sha_short }}
+
+    - name: Build (OpenFin)
+      run: |
+        npm run openfin:build -- \
+          --base /commit/${{ steps.vars.outputs.sha_short }} \
+          --mode development
+
+    - name: Deploy (OpenFin)
+      run: |
+        gsutil -m rsync -d -r dist \
+          gs://$BUCKET_OPENFIN/commit/${{ steps.vars.outputs.sha_short }}

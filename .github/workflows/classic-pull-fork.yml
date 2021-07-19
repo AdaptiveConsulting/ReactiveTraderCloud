@@ -1,10 +1,12 @@
-name: Pull Request (fork)
+name: Pull Request (classic - fork)
 
 on:
   pull_request:
     branches:
       - master
       - release/**
+    paths-ignore:
+      - 'src/new-client/**'
 
 env:
   DOCKER_USER: reactivetradercloud
