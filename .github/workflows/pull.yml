@@ -30,7 +30,7 @@ jobs:
       uses: google-github-actions/setup-gcloud@master
       with:
         project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
-        service_account_key: ${{ secrets.GOOGLE_SERVICE_KEY }}
+        service_account_key: ${{ secrets.GOOGLE_PRIVATE_KEY }}
 
     - name: Decrypt NPM credentials
       run: |
