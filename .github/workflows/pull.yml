@@ -90,10 +90,10 @@ jobs:
 
           As part of the code review process, please ensure that you test against the following
 
-          | Version | URL                                                            |
-          | :--     | :--                                                            |
-          | Web     | https://env.reactivetrader.com/pull/${{ github.event.number }} |
-          | OpenFin | fins://openfin.env.reactivetrader.com/openfin/app.json         |
+          | Version | URL                                                                                     |
+          | :--     | :--                                                                                     |
+          | Web     | https://env.reactivetrader.com/pull/${{ github.event.number }}                          |
+          | OpenFin | https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/openfin/app.json |
 
           ### Performance
 
