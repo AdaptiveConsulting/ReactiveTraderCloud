@@ -27,7 +27,7 @@ jobs:
 
     - name: Set variables
       id: vars
-      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD | cut -c1-8)"
 
     - name: Set up GCloud
       uses: google-github-actions/setup-gcloud@master
