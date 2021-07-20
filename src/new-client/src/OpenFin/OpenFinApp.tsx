@@ -8,17 +8,36 @@ import { DetachableLiveRates } from "./DetachableTile/DetachableLiveRates"
 import { DetachableTile } from "./DetachableTile/DetachableTile"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
+import { DocTitle } from "@/components/DocTitle"
 
 export const OpenFinApp: React.FC = () => (
   <BrowserRouter basename={import.meta.env.BASE_URL}>
     <Switch>
       <Route
         path="/analytics"
-        render={() => <Analytics hideIfMatches={null} />}
+        render={() => (
+          <DocTitle title="Analytics">
+            <Analytics hideIfMatches={null} />
+          </DocTitle>
+        )}
       />
 
-      <Route path="/blotter" render={() => <Trades />} />
-      <Route path="/tiles" render={() => <DetachableLiveRates />} />
+      <Route
+        path="/blotter"
+        render={() => (
+          <DocTitle title="Trades">
+            <Trades />
+          </DocTitle>
+        )}
+      />
+      <Route
+        path="/tiles"
+        render={() => (
+          <DocTitle title="Live Rates">
+            <DetachableLiveRates />
+          </DocTitle>
+        )}
+      />
 
       <Route
         path="/spot/:symbol"
