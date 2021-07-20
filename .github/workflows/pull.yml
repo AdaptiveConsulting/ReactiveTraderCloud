@@ -15,6 +15,7 @@ defaults:
 env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
+  VITE_HYDRA_URL: wss://trading-web-gateway-rt.demo.hydra.weareadaptive.com
 
 jobs:
   build:
@@ -49,25 +50,27 @@ jobs:
       run: npm ci
 
     - name: Build (web)
-      run: |
-        npm run build -- \
-          --base /pull/${{ github.event.number }} \
-          --mode development
+      env:
+        BASE_URL: /pull/${{ github.event.number }}
+      run: npm run build
 
     - name: Deploy (web)
       run: |
-        gsutil -m rsync -d -r dist \
+        gsutil -m \
+          -h "Cache-Control: no-cache" \
+          rsync -d -r dist \
           gs://$BUCKET_WEB/pull/${{ github.event.number }}
 
     - name: Build (OpenFin)
-      run: |
-        npm run openfin:build -- \
-          --base /pull/${{ github.event.number }} \
-          --mode development
+      env:
+        BASE_URL: /pull/${{ github.event.number }}
+      run: npm run openfin:build
 
     - name: Deploy (OpenFin)
       run: |
-        gsutil -m rsync -d -r dist \
+        gsutil -m \
+          -h "Cache-Control: no-cache" \
+          rsync -d -r dist \
           gs://$BUCKET_OPENFIN/pull/${{ github.event.number }}
 
     - name: Find comment
