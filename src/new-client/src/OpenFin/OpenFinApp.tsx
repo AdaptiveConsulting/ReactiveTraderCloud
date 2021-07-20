@@ -9,6 +9,7 @@ import { DetachableTile } from "./DetachableTile/DetachableTile"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
 import { DocTitle } from "@/components/DocTitle"
+import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
 
 export const OpenFinApp: React.FC = () => (
   <BrowserRouter basename={import.meta.env.BASE_URL}>
@@ -21,7 +22,6 @@ export const OpenFinApp: React.FC = () => (
           </DocTitle>
         )}
       />
-
       <Route
         path="/blotter"
         render={() => (
@@ -38,7 +38,7 @@ export const OpenFinApp: React.FC = () => (
           </DocTitle>
         )}
       />
-
+      <Route path="/contact" render={() => <OpenFinContactDisplay />} />
       <Route
         path="/spot/:symbol"
         render={({
@@ -74,7 +74,6 @@ export const OpenFinApp: React.FC = () => (
         render={() => <ChildWindowFrame />}
       />
       <Route path="/status" render={() => <div />} />
-      <Route path="/contact" render={() => <div />} />
       <Route path="/snapshots" render={() => <div />} />
     </Switch>
   </BrowserRouter>

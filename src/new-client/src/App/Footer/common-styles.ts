@@ -28,3 +28,14 @@ export const Button = styled.div<{ margin?: string; disabled?: boolean }>`
   font-weight: 350;
   margin: ${({ margin }) => (margin ? margin : "unset")};
 `
+
+export const Background = styled.div`
+  background-color: ${({ theme }) => theme.core.alternateBackground};
+  color: ${({ theme }) => theme.core.textColor};
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  margin: 0;
+  position: absolute;
+  overflow: hidden;
+`
