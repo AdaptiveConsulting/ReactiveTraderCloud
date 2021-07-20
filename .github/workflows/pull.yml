@@ -57,7 +57,9 @@ jobs:
 
     - name: Deploy (web)
       run: |
-        gsutil -m rsync -d -r dist \
+        gsutil -m \
+          -h "Cache-Control: no-cache" \
+          rsync -d -r dist \
           gs://$BUCKET_WEB/pull/${{ github.event.number }}
 
     - name: Build (OpenFin)
@@ -68,7 +70,9 @@ jobs:
 
     - name: Deploy (OpenFin)
       run: |
-        gsutil -m rsync -d -r dist \
+        gsutil -m \
+          -h "Cache-Control: no-cache" \
+          rsync -d -r dist \
           gs://$BUCKET_OPENFIN/pull/${{ github.event.number }}
 
     - name: Find comment

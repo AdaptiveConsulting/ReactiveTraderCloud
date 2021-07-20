@@ -56,7 +56,9 @@ jobs:
 
     - name: Deploy (web)
       run: |
-        gsutil -m rsync -d -r dist \
+        gsutil -m \
+          -h "Cache-Control: no-cache" \
+          rsync -d -r dist \
           gs://$BUCKET_WEB/branch/${{ steps.vars.outputs.branch }}
 
     - name: Build (OpenFin)
@@ -67,5 +69,7 @@ jobs:
 
     - name: Deploy (OpenFin)
       run: |
-        gsutil -m rsync -d -r dist \
+        gsutil -m \
+          -h "Cache-Control: no-cache" \
+          rsync -d -r dist \
           gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.branch }}
