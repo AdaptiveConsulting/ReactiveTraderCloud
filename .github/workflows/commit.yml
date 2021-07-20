@@ -49,9 +49,9 @@ jobs:
       run: npm ci
 
     - name: Build (web)
-      run: |
-        npm run build -- \
-          --base /commit/${{ steps.vars.outputs.sha_short }}
+      env:
+        BASE_URL: /commit/${{ steps.vars.outputs.sha_short }}
+      run: npm run build
 
     - name: Deploy (web)
       run: |
@@ -61,9 +61,9 @@ jobs:
           gs://$BUCKET_WEB/commit/${{ steps.vars.outputs.sha_short }}
 
     - name: Build (OpenFin)
-      run: |
-        npm run openfin:build -- \
-          --base /commit/${{ steps.vars.outputs.sha_short }}
+      env:
+        BASE_URL: /commit/${{ steps.vars.outputs.sha_short }}
+      run: npm run openfin:build
 
     - name: Deploy (OpenFin)
       run: |

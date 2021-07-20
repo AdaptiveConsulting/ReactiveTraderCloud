@@ -49,9 +49,9 @@ jobs:
       run: npm ci
 
     - name: Build (web)
-      run: |
-        npm run build -- \
-          --base /branch/${{ steps.vars.outputs.branch }}
+      env:
+        BASE_URL: /branch/${{ steps.vars.outputs.branch }}
+      run: npm run build
 
     - name: Deploy (web)
       run: |
@@ -61,9 +61,9 @@ jobs:
           gs://$BUCKET_WEB/branch/${{ steps.vars.outputs.branch }}
 
     - name: Build (OpenFin)
-      run: |
-        npm run openfin:build -- \
-          --base /branch/${{ steps.vars.outputs.branch }}
+      env:
+        BASE_URL: /branch/${{ steps.vars.outputs.branch }}
+      run: npm run openfin:build
 
     - name: Deploy (OpenFin)
       run: |

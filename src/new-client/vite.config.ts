@@ -14,7 +14,7 @@ const customPreloadPlugin = () => {
   const result: any = {
     ...((modulepreload as any)({
       index: resolve(__dirname, "dist", "index.html"),
-      prefix: "",
+      prefix: process.env.BASE_URL || "/",
     }) as any),
     enforce: "post",
   }
@@ -48,6 +48,7 @@ const webManifestPlugin = (mode: string) =>
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: process.env.BASE_URL || "/",
   define: {
     __TARGET__: JSON.stringify(TARGET),
   },

@@ -50,9 +50,9 @@ jobs:
       run: npm ci
 
     - name: Build (web)
-      run: |
-        npm run build -- \
-          --base /pull/${{ github.event.number }}
+      env:
+        BASE_URL: /pull/${{ github.event.number }}
+      run: npm run build
 
     - name: Deploy (web)
       run: |
@@ -62,9 +62,9 @@ jobs:
           gs://$BUCKET_WEB/pull/${{ github.event.number }}
 
     - name: Build (OpenFin)
-      run: |
-        npm run openfin:build -- \
-          --base /pull/${{ github.event.number }}
+      env:
+        BASE_URL: /pull/${{ github.event.number }}
+      run: npm run openfin:build
 
     - name: Deploy (OpenFin)
       run: |
