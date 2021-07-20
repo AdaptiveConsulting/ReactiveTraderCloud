@@ -51,8 +51,7 @@ jobs:
     - name: Build (web)
       run: |
         npm run build -- \
-          --base /commit/${{ steps.vars.outputs.sha_short }} \
-          --mode development
+          --base /commit/${{ steps.vars.outputs.sha_short }}
 
     - name: Deploy (web)
       run: |
@@ -64,8 +63,7 @@ jobs:
     - name: Build (OpenFin)
       run: |
         npm run openfin:build -- \
-          --base /commit/${{ steps.vars.outputs.sha_short }} \
-          --mode development
+          --base /commit/${{ steps.vars.outputs.sha_short }}
 
     - name: Deploy (OpenFin)
       run: |

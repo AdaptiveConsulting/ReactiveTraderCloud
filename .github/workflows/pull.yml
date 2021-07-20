@@ -52,8 +52,7 @@ jobs:
     - name: Build (web)
       run: |
         npm run build -- \
-          --base /pull/${{ github.event.number }} \
-          --mode development
+          --base /pull/${{ github.event.number }}
 
     - name: Deploy (web)
       run: |
@@ -65,8 +64,7 @@ jobs:
     - name: Build (OpenFin)
       run: |
         npm run openfin:build -- \
-          --base /pull/${{ github.event.number }} \
-          --mode development
+          --base /pull/${{ github.event.number }}
 
     - name: Deploy (OpenFin)
       run: |

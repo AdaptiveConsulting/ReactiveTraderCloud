@@ -51,8 +51,7 @@ jobs:
     - name: Build (web)
       run: |
         npm run build -- \
-          --base /branch/${{ steps.vars.outputs.branch }} \
-          --mode development
+          --base /branch/${{ steps.vars.outputs.branch }}
 
     - name: Deploy (web)
       run: |
@@ -64,8 +63,7 @@ jobs:
     - name: Build (OpenFin)
       run: |
         npm run openfin:build -- \
-          --base /branch/${{ steps.vars.outputs.branch }} \
-          --mode development
+          --base /branch/${{ steps.vars.outputs.branch }}
 
     - name: Deploy (OpenFin)
       run: |
