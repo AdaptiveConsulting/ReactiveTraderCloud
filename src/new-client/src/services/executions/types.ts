@@ -50,7 +50,8 @@ export enum ExecutionStatus {
 export interface ExecutionTrade extends ExecutionRequest {
   status: ExecutionStatus.Done | ExecutionStatus.Rejected
   tradeId: number
-  valueDate: string
+  valueDate: Date
+  tradeDate: Date
 }
 
 export interface TimeoutExecution extends ExecutionRequest {

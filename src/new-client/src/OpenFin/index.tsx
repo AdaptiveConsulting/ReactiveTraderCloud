@@ -8,11 +8,13 @@ import { OpenFinApp } from "./OpenFinApp"
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
 
-connectToGateway({
-  url: import.meta.env.VITE_HYDRA_URL as string,
-  interceptor: noop,
-  useJson: true,
-})
+if (!import.meta.env.VITE_MOCKS) {
+  connectToGateway({
+    url: import.meta.env.VITE_HYDRA_URL as string,
+    interceptor: noop,
+    useJson: true,
+  })
+}
 
 ReactDOM.render(
   <StrictMode>

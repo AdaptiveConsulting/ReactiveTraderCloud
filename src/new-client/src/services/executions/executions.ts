@@ -37,7 +37,8 @@ const mapResponseToTrade =
       spotRate: trade.spotRate,
       status: ExecutionStatus[trade.status],
       tradeId: Number(trade.tradeId), // TODO: talk with hydra team
-      valueDate: trade.valueDate,
+      tradeDate: new Date(),
+      valueDate: new Date(trade.valueDate),
       id,
     }
   }
