@@ -3,7 +3,7 @@ import {
   ConnectionStatus as HConnectionStatus,
 } from "@adaptive/hydra-platform"
 import { bind } from "@react-rxjs/core"
-import { combineLatest, Observable } from "rxjs"
+import { combineLatest, Observable, of } from "rxjs"
 import { distinctUntilChanged, filter, map, startWith } from "rxjs/operators"
 
 export enum ConnectionStatus {
@@ -23,7 +23,9 @@ const connectionMapper = (input: HConnectionStatus): ConnectionStatus =>
   mapper[input]
 
 export const [useConnectionStatus, connectionStatus$] = bind(
-  hConnectionStatus$().pipe(map(connectionMapper)),
+  import.meta.env.VITE_MOCKS
+    ? of(ConnectionStatus.CONNECTED)
+    : hConnectionStatus$().pipe(map(connectionMapper)),
   ConnectionStatus.CONNECTING,
 )
 

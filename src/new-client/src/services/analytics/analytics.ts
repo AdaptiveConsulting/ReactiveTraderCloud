@@ -1,7 +1,7 @@
 import { AnalyticsService } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { combineLatest, Observable } from "rxjs"
-import { filter, map, tap } from "rxjs/operators"
+import { filter, map } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
 import { withConnection } from "../withConnection"
 import { CurrencyPairPosition, HistoryEntry } from "./types"
@@ -37,9 +37,4 @@ export const [useCurrentPositions, currentPositions$] = bind<
 export const isAnalyticsDataStale$ = combineLatest([
   withIsStaleData(currentPositions$),
   withIsStaleData(history$),
-]).pipe(
-  tap((x) => {
-    console.log("isAnalyticsDataStale$", x)
-  }),
-  map(([current, historyPos]) => current || historyPos),
-)
+]).pipe(map(([current, historyPos]) => current || historyPos))

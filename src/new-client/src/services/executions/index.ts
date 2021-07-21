@@ -1,4 +1,4 @@
-export { execute$ } from "./executions"
+export * from "./executions"
 export { ExecutionStatus, RawExecutionStatus } from "./types"
 export type {
   ExecutionRequest,
