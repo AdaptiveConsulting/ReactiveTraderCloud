@@ -10,6 +10,17 @@ import { onTearOut } from "./tornOutTiles"
 
 export { tile$ }
 
+const Wrapper = styled.div`
+  .pop-out-icon {
+    visibility: hidden;
+  }
+
+  &:hover .pop-out-icon {
+    visibility: visible;
+  }
+}
+`
+
 interface Props {
   symbol: string
   view: TileView
@@ -25,11 +36,13 @@ export const DetachableTile: React.FC<Props> = ({
 
   return (
     <TearOutContext.Provider value={isTornOut}>
-      <Tile
-        HeaderComponent={Header}
-        currencyPair={currencyPair}
-        isAnalytics={view === TileView.Analytics}
-      />
+      <Wrapper>
+        <Tile
+          HeaderComponent={Header}
+          currencyPair={currencyPair}
+          isAnalytics={view === TileView.Analytics}
+        />
+      </Wrapper>
     </TearOutContext.Provider>
   )
 }
@@ -69,7 +82,10 @@ const Header: React.FC = () => {
       <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
 
       {!isTornOut && (
-        <HeaderAction onClick={() => onTearOut(symbol)}>
+        <HeaderAction
+          onClick={() => onTearOut(symbol)}
+          className="pop-out-icon"
+        >
           <PopOutIcon />
         </HeaderAction>
       )}
