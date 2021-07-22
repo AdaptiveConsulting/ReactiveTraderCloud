@@ -13,8 +13,7 @@ const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
 
 const OpenFinBrowserLink: FC<Props> = ({ children, ...props }) => (
   <a {...props} onClick={handleClick}>
-    {" "}
-    {children}{" "}
+    {children}
   </a>
 )
 
