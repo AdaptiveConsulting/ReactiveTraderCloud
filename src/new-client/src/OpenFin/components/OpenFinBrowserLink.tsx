@@ -11,8 +11,10 @@ const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
   fin.System.openUrlWithBrowser(e.currentTarget.href)
 }
 
-const OpenFinBrowserLink: FC<Props> = (props) => (
-  <a {...props} onClick={handleClick} />
+const OpenFinBrowserLink: FC<Props> = ({ children, ...props }) => (
+  <a {...props} onClick={handleClick}>
+    {children}
+  </a>
 )
 
 export default OpenFinBrowserLink

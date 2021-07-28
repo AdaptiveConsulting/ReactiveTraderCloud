@@ -25,11 +25,11 @@ export const WindowViewport: React.FC = ({ children }) => {
     //@ts-ignore
     if (!window.fin.me.isView) {
       const listenerViewAttached = (e: any) => {
-        const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "attach", label })
       }
       const listenerViewDetached = (e: any) => {
-        const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "detach", label })
       }
       const listenerViewHidden = (e: any) => {
