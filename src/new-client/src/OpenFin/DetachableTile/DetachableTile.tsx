@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react"
+import { createContext, useContext, useRef, FC, RefObject } from "react"
 import styled from "styled-components"
 import { TileView } from "@/App/LiveRates/selectedView"
 import { Tile, tile$ } from "@/App/LiveRates/Tile"
@@ -7,6 +7,7 @@ import { useTileCurrencyPair } from "@/App/LiveRates/Tile/Tile.context"
 import { useCurrencyPair } from "@/services/currencyPairs"
 import { PopOutIcon } from "../icons/PopOutIcon"
 import { onTearOut } from "./tornOutTiles"
+import { calculate } from "@/utils"
 
 export { tile$ }
 
@@ -27,16 +28,18 @@ interface Props {
   isTornOut: boolean
 }
 
-export const DetachableTile: React.FC<Props> = ({
-  symbol,
-  view,
-  isTornOut,
-}) => {
+export const DetachableTile: FC<Props> = ({ symbol, view, isTornOut }) => {
   const currencyPair = useCurrencyPair(symbol)
+  const ref = useRef<HTMLDivElement>(null)
 
   return (
-    <TearOutContext.Provider value={isTornOut}>
-      <Wrapper>
+    <TearOutContext.Provider
+      value={{
+        isTornOut,
+        ref,
+      }}
+    >
+      <Wrapper ref={ref}>
         <Tile
           HeaderComponent={Header}
           currencyPair={currencyPair}
@@ -71,7 +74,7 @@ const HeaderAction = styled.div``
 const Header: React.FC = () => {
   const { base, terms, symbol } = useTileCurrencyPair()
   const date = useDate(symbol)
-  const isTornOut = useContext(TearOutContext)
+  const { isTornOut, ref } = useContext(TearOutContext)
 
   return (
     <HeaderWrapper>
@@ -83,7 +86,7 @@ const Header: React.FC = () => {
 
       {!isTornOut && (
         <HeaderAction
-          onClick={() => onTearOut(symbol)}
+          onClick={() => onTearOut(symbol, calculate(ref))}
           className="pop-out-icon"
         >
           <PopOutIcon />
@@ -93,4 +96,10 @@ const Header: React.FC = () => {
   )
 }
 
-const TearOutContext = createContext(false)
+const TearOutContext = createContext<{
+  isTornOut: boolean
+  ref: RefObject<HTMLDivElement | null>
+}>({
+  isTornOut: false,
+  ref: { current: null },
+})
