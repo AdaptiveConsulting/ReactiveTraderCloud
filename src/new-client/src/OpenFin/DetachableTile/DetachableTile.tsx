@@ -7,7 +7,7 @@ import { useTileCurrencyPair } from "@/App/LiveRates/Tile/Tile.context"
 import { useCurrencyPair } from "@/services/currencyPairs"
 import { PopOutIcon } from "../icons/PopOutIcon"
 import { onTearOut } from "./tornOutTiles"
-import { calculate } from "@/utils"
+import { calculateWindowCoordinates } from "@/utils"
 
 export { tile$ }
 
@@ -86,7 +86,7 @@ const Header: React.FC = () => {
 
       {!isTornOut && (
         <HeaderAction
-          onClick={() => onTearOut(symbol, calculate(ref))}
+          onClick={() => onTearOut(symbol, calculateWindowCoordinates(ref))}
           className="pop-out-icon"
         >
           <PopOutIcon />
