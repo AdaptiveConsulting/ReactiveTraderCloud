@@ -195,6 +195,7 @@ export interface WindowConfig {
   x?: number
   y?: number
   saveWindowState?: boolean
+  includeInSnapshots?: boolean
 }
 
 export async function openWindow(
@@ -210,6 +211,9 @@ export async function openWindow(
     maxWidth,
     minHeight = 100,
     minWidth = 100,
+    x,
+    y,
+    includeInSnapshots,
   } = config
 
   const childWindows = await getChildWindows()
@@ -220,7 +224,7 @@ export async function openWindow(
     (!hasChildWindows && !hasCoordinates) || config.center === "screen"
 
   const platform = await fin.Platform.getCurrent()
-  const windowIdentity = await platform.createWindow({
+  const options = {
     autoShow: true,
     contextMenu: true,
     defaultCentered: centered,
@@ -232,10 +236,12 @@ export async function openWindow(
     maxWidth,
     minHeight,
     minWidth,
+    defaultLeft: x,
+    defaultTop: y,
     name: windowName,
     saveWindowState: false,
+    includeInSnapshots,
     shadow: true,
-
     layout: {
       settings: {
         hasHeaders: false,
@@ -259,8 +265,9 @@ export async function openWindow(
         },
       ],
     },
-  })
+  }
 
+  const windowIdentity = await platform.createWindow(options)
   const win = await fin.Window.wrap(windowIdentity)
 
   if (onClose) {

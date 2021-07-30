@@ -10,17 +10,39 @@ import {
 } from "rxjs/operators"
 import { CurrencyPair, currencyPairs$ } from "@/services/currencyPairs"
 import { closeWindow, openWindow } from "../utils/window"
+import { Offset } from "@/utils"
 
 type TearOutEntry = [string, boolean]
 
 const [tearOutEntry$, tearOut] = createSignal<TearOutEntry>()
 
-export const onTearOut = (symbol: string) => {
+const calculateOpeningWindowCoords = async (coords: Offset) => {
+  if (fin) {
+    const view = await fin.View.getCurrent()
+    const window = await view.getCurrentWindow()
+    const [viewBounds, windowBounds] = await Promise.all([
+      view.getBounds(),
+      window.getBounds(),
+    ])
+
+    return {
+      x: coords.x + viewBounds.left + windowBounds.left - 20,
+      y: coords.y + viewBounds.top + windowBounds.top - 20,
+    }
+  }
+
+  return coords
+}
+
+export const onTearOut = async (symbol: string, coords: Offset) => {
+  const position = await calculateOpeningWindowCoords(coords)
   const options = {
     name: symbol,
     url: `/spot/${symbol}?tileView=Analytics`,
     width: 380,
     height: 200,
+    includeInSnapshots: false,
+    ...position,
   }
 
   openWindow(options, () => {

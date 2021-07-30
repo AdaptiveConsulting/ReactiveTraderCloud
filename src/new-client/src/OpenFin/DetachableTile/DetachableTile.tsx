@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react"
+import { createContext, useContext, useRef, FC } from "react"
 import styled from "styled-components"
 import { TileView } from "@/App/LiveRates/selectedView"
 import { Tile, tile$ } from "@/App/LiveRates/Tile"
@@ -7,6 +7,7 @@ import { useTileCurrencyPair } from "@/App/LiveRates/Tile/Tile.context"
 import { useCurrencyPair } from "@/services/currencyPairs"
 import { PopOutIcon } from "../icons/PopOutIcon"
 import { onTearOut } from "./tornOutTiles"
+import { calculateWindowCoordinates } from "@/utils"
 
 export { tile$ }
 
@@ -27,11 +28,7 @@ interface Props {
   isTornOut: boolean
 }
 
-export const DetachableTile: React.FC<Props> = ({
-  symbol,
-  view,
-  isTornOut,
-}) => {
+export const DetachableTile: FC<Props> = ({ symbol, view, isTornOut }) => {
   const currencyPair = useCurrencyPair(symbol)
 
   return (
@@ -68,13 +65,14 @@ const TileSymbol = styled.div`
 
 const HeaderAction = styled.div``
 
-const Header: React.FC = () => {
+const Header: FC = () => {
   const { base, terms, symbol } = useTileCurrencyPair()
   const date = useDate(symbol)
+  const ref = useRef<HTMLDivElement>(null)
   const isTornOut = useContext(TearOutContext)
 
   return (
-    <HeaderWrapper>
+    <HeaderWrapper ref={ref}>
       <TileSymbol data-qa="tile-header__tile-symbol">
         {base}/{terms}
       </TileSymbol>
@@ -83,7 +81,7 @@ const Header: React.FC = () => {
 
       {!isTornOut && (
         <HeaderAction
-          onClick={() => onTearOut(symbol)}
+          onClick={() => onTearOut(symbol, calculateWindowCoordinates(ref))}
           className="pop-out-icon"
         >
           <PopOutIcon />
@@ -93,4 +91,4 @@ const Header: React.FC = () => {
   )
 }
 
-const TearOutContext = createContext(false)
+const TearOutContext = createContext<boolean>(false)
