@@ -20,8 +20,11 @@ const calculateOpeningWindowCoords = async (coords: Offset) => {
   if (fin) {
     const view = await fin.View.getCurrent()
     const window = await view.getCurrentWindow()
-    const viewBounds = await view.getBounds()
-    const windowBounds = await window.getBounds()
+    const [viewBounds, windowBounds] = await Promise.all([
+      view.getBounds(),
+      window.getBounds(),
+    ])
+
     return {
       x: coords.x + viewBounds.left + windowBounds.left - 20,
       y: coords.y + viewBounds.top + windowBounds.top - 20,

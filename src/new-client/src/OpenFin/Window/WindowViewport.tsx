@@ -50,11 +50,11 @@ export const WindowViewport: React.FC = ({ children }) => {
         }
       }
       const listenerWindowCreated = (e: any) => {
-        const label: string = (e || {}).name || "unknown"
+        //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "open", label })
       }
       const listenerWindowClosed = (e: any) => {
-        const label: string = (e || {}).name || "unknown"
+        //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "close", label })
       }
 
