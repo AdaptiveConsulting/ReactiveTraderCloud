@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, FC, RefObject } from "react"
+import { createContext, useContext, useRef, FC } from "react"
 import styled from "styled-components"
 import { TileView } from "@/App/LiveRates/selectedView"
 import { Tile, tile$ } from "@/App/LiveRates/Tile"
@@ -30,16 +30,10 @@ interface Props {
 
 export const DetachableTile: FC<Props> = ({ symbol, view, isTornOut }) => {
   const currencyPair = useCurrencyPair(symbol)
-  const ref = useRef<HTMLDivElement>(null)
 
   return (
-    <TearOutContext.Provider
-      value={{
-        isTornOut,
-        ref,
-      }}
-    >
-      <Wrapper ref={ref}>
+    <TearOutContext.Provider value={isTornOut}>
+      <Wrapper>
         <Tile
           HeaderComponent={Header}
           currencyPair={currencyPair}
@@ -71,13 +65,14 @@ const TileSymbol = styled.div`
 
 const HeaderAction = styled.div``
 
-const Header: React.FC = () => {
+const Header: FC = () => {
   const { base, terms, symbol } = useTileCurrencyPair()
   const date = useDate(symbol)
-  const { isTornOut, ref } = useContext(TearOutContext)
+  const ref = useRef<HTMLDivElement>(null)
+  const isTornOut = useContext(TearOutContext)
 
   return (
-    <HeaderWrapper>
+    <HeaderWrapper ref={ref}>
       <TileSymbol data-qa="tile-header__tile-symbol">
         {base}/{terms}
       </TileSymbol>
@@ -96,10 +91,4 @@ const Header: React.FC = () => {
   )
 }
 
-const TearOutContext = createContext<{
-  isTornOut: boolean
-  ref: RefObject<HTMLDivElement | null>
-}>({
-  isTornOut: false,
-  ref: { current: null },
-})
+const TearOutContext = createContext<boolean>(false)

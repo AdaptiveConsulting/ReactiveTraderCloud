@@ -16,15 +16,15 @@ type TearOutEntry = [string, boolean]
 
 const [tearOutEntry$, tearOut] = createSignal<TearOutEntry>()
 
-const calculateWindowCoords = async (coords: Offset) => {
+const calculateOpeningWindowCoords = async (coords: Offset) => {
   if (fin) {
     const view = await fin.View.getCurrent()
     const window = await view.getCurrentWindow()
     const viewBounds = await view.getBounds()
     const windowBounds = await window.getBounds()
     return {
-      x: coords.x + viewBounds.left + windowBounds.left,
-      y: coords.y + viewBounds.top + windowBounds.top,
+      x: coords.x + viewBounds.left + windowBounds.left - 20,
+      y: coords.y + viewBounds.top + windowBounds.top - 20,
     }
   }
 
@@ -32,7 +32,7 @@ const calculateWindowCoords = async (coords: Offset) => {
 }
 
 export const onTearOut = async (symbol: string, coords: Offset) => {
-  const position = await calculateWindowCoords(coords)
+  const position = await calculateOpeningWindowCoords(coords)
   const options = {
     name: symbol,
     url: `/spot/${symbol}?tileView=Analytics`,
