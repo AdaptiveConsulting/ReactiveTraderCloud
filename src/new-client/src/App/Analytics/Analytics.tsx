@@ -13,6 +13,7 @@ const AnalyticsWrapper = styled.div<{ hideIfMatches?: string | null }>`
   padding: 0.5rem 1rem 0.5rem 0;
   user-select: none;
   overflow: hidden;
+  background: ${({ theme }) => theme.core.darkBackground};
 
   ${({ hideIfMatches }) =>
     hideIfMatches
