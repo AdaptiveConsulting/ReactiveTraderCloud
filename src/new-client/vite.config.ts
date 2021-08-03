@@ -1,5 +1,5 @@
 import path, { resolve } from "path"
-import { readdirSync } from "fs"
+import { readdirSync, statSync } from "fs"
 import { defineConfig, loadEnv } from "vite"
 import reactRefresh from "@vitejs/plugin-react-refresh"
 import copy from "rollup-plugin-copy"
@@ -7,8 +7,6 @@ import eslint from "@rollup/plugin-eslint"
 import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
-
-const TARGET = process.env.TARGET || "web"
 
 function apiMockReplacerPlugin(): Plugin {
   return {
@@ -27,6 +25,34 @@ function apiMockReplacerPlugin(): Plugin {
       // so we can load it in the load hook below
       const mockPath = `${file.dir}/${file.name}.service-mock.ts`
       return this.resolve(mockPath, importer)
+    },
+  }
+}
+
+function indexSwitchPlugin(target: string): Plugin {
+  return {
+    name: "indexSwitchPlugin",
+    enforce: "pre",
+    resolveId: function (source: string, importer) {
+      if (!source.startsWith("./main")) {
+        return null
+      }
+
+      const importedFile = path.parse(source)
+      const importerFile = path.parse(importer)
+
+      const candidate = path.join(
+        importerFile.dir,
+        importedFile.dir,
+        `${importedFile.name}.${target.toLowerCase()}.ts`,
+      )
+
+      try {
+        statSync(candidate)
+        return candidate
+      } catch (e) {
+        return null
+      }
     },
   }
 }
@@ -101,15 +127,23 @@ const setConfig = ({ mode }) => {
   const plugins =
     mode === "development"
       ? [eslintPlugin, typescriptPlugin, reactRefresh()]
-      : [customPreloadPlugin(), TARGET === "web" && webManifestPlugin(mode)]
+      : [customPreloadPlugin()]
 
-  if (process.env.VITE_MOCKS) {
-    plugins.unshift(apiMockReplacerPlugin())
+  const TARGET = process.env.TARGET || "web"
+
+  if (TARGET === "web") {
+    plugins.push(webManifestPlugin(mode))
   }
 
   if (TARGET === "openfin") {
     plugins.push(copyOpenfinPlugin(mode === "development"))
   }
+
+  if (process.env.VITE_MOCKS) {
+    plugins.unshift(apiMockReplacerPlugin())
+  }
+
+  plugins.unshift(indexSwitchPlugin(TARGET))
 
   return defineConfig({
     base: process.env.BASE_URL || "/",
