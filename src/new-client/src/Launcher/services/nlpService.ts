@@ -4,19 +4,25 @@ import { getRemoteProcedureCall$ } from "../services/client"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import {
-  debounceTime,
   distinctUntilChanged,
   map,
-  skip,
-  startWith,
+  mapTo,
+  pluck,
   switchMap,
 } from "rxjs/operators"
 import { equals } from "@/utils"
+import { concat, merge, timer } from "rxjs"
 
 const [input$, setInput] = createSignal<string>()
 export { setInput }
 
-const [useNlpInput, nlpInput$] = bind(input$, "")
+const [resetInput$, onResetInput] = createSignal()
+export { onResetInput }
+
+const [useNlpInput, nlpInput$] = bind(
+  merge(input$, resetInput$.pipe(mapTo(""))),
+  "",
+)
 export { useNlpInput }
 
 export enum NlpIntentType {
@@ -26,7 +32,7 @@ export enum NlpIntentType {
   MarketInfo,
 }
 
-interface TradeExecutionIntent {
+export interface TradeExecutionIntent {
   type: NlpIntentType.TradeExecution
   payload: {
     symbol?: string
@@ -35,14 +41,14 @@ interface TradeExecutionIntent {
   }
 }
 
-interface SpotQuoteIntent {
+export interface SpotQuoteIntent {
   type: NlpIntentType.SpotQuote
   payload: {
     symbol: string
   }
 }
 
-interface TradesInfoIntent {
+export interface TradesInfoIntent {
   type: NlpIntentType.TradeInfo
   payload: {
     count?: number
@@ -51,12 +57,12 @@ interface TradesInfoIntent {
   }
 }
 
-interface MarketInfoIntent {
+export interface MarketInfoIntent {
   type: NlpIntentType.MarketInfo
   payload: {}
 }
 
-type NlpIntent =
+export type NlpIntent =
   | TradeExecutionIntent
   | SpotQuoteIntent
   | TradesInfoIntent
@@ -76,18 +82,21 @@ const directionMapper: Record<string, Direction> = {
 
 export type Loading = "loading"
 
-const [useNlpIntent, nlpIntent$] = bind<NlpIntent | null | Loading>(
+export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | null | Loading>(
   nlpInput$.pipe(
-    skip(1),
-    debounceTime(250),
     switchMap((request) =>
-      getRemoteProcedureCall$<[DetectIntentResponse], string>(
-        "nlp",
-        "getNlpIntent",
-        request,
-      ).pipe(startWith(["loading"] as [Loading])),
+      request.length === 0
+        ? [null]
+        : concat(
+            timer(250).pipe(mapTo("loading" as Loading)),
+            getRemoteProcedureCall$<[DetectIntentResponse], string>(
+              "nlp",
+              "getNlpIntent",
+              request,
+            ).pipe(pluck(0)),
+          ),
     ),
-    map(([response]) => {
+    map((response) => {
       if (response === "loading") return "loading"
       if (!response) return null
 
@@ -98,8 +107,8 @@ const [useNlpIntent, nlpIntent$] = bind<NlpIntent | null | Loading>(
         response.queryResult?.parameters?.fields?.number?.numberValue
 
       switch (intent) {
-        case NlpIntentType.TradeExecution:
-          return {
+        case NlpIntentType.TradeExecution: {
+          const result = {
             type: NlpIntentType.TradeExecution,
             payload: {
               symbol,
@@ -110,6 +119,8 @@ const [useNlpIntent, nlpIntent$] = bind<NlpIntent | null | Loading>(
               notional: number,
             },
           }
+          return result
+        }
 
         case NlpIntentType.MarketInfo:
           return {
@@ -146,8 +157,6 @@ const [useNlpIntent, nlpIntent$] = bind<NlpIntent | null | Loading>(
   ),
   null,
 )
-
-export { useNlpIntent }
 
 export const [useIsNlpIntentLoading] = bind(
   nlpIntent$.pipe(map((intent) => intent === "loading")),

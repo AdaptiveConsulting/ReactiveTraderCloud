@@ -36,8 +36,8 @@ export default function main() {
   })
 
   ga("set", {
-    dimension1: "openfin",
-    dimension2: "openfin",
+    dimension1: "launcher",
+    dimension2: "launcher",
     dimension3: import.meta.env,
     page: window.location.pathname,
   })
