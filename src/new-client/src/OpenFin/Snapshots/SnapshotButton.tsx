@@ -25,7 +25,9 @@ export const SnapshotButton: React.FC = () => {
   const [showing, setShowing] = useState(false)
 
   useEffect(() => {
-    createOpenFinPopup(WINDOW, "/snapshots", () => setShowing(false))
+    createOpenFinPopup(WINDOW, import.meta.env.BASE_URL + "/snapshots", () =>
+      setShowing(false),
+    )
   }, [])
 
   const handleShowPopup = () => {
