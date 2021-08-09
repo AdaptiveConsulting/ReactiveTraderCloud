@@ -43,7 +43,7 @@ export const OpenFinContactDisplay = () => (
 )
 
 const baseWin = { name: "contact", height: 445, width: 245 }
-const pathname = "/contact"
+const pathname = import.meta.env.BASE_URL + "contact"
 
 const ContactUsButton: React.FC = () => {
   const [showing, setShowing] = useState(false)

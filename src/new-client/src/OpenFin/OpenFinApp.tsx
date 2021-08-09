@@ -6,6 +6,7 @@ import { Trades } from "@/App/Trades"
 import { Loader } from "@/components/Loader"
 import { DetachableLiveRates } from "./DetachableTile/DetachableLiveRates"
 import { DetachableTile } from "./DetachableTile/DetachableTile"
+import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
 import { DocTitle } from "@/components/DocTitle"
@@ -69,12 +70,13 @@ export const OpenFinApp: React.FC = () => (
       />
 
       <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
+
       <Route
         path="/openfin-sub-window-frame"
         render={() => <ChildWindowFrame />}
       />
       <Route path="/status" render={() => <div />} />
-      <Route path="/snapshots" render={() => <div />} />
+      <Route path="/snapshots" render={() => <Snapshots />} />
     </Switch>
   </BrowserRouter>
 )
