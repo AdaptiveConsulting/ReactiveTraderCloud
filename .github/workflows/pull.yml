@@ -104,7 +104,7 @@ jobs:
           | Version | URL                                                                                     |
           | :--     | :--                                                                                     |
           | Web     | https://env.reactivetrader.com/pull/${{ github.event.number }}                          |
-          | OpenFin | https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/openfin/app.json |
+          | OpenFin | https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/app.json |
 
           ### Performance
 
