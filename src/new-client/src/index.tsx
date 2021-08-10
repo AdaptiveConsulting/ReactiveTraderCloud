@@ -5,13 +5,15 @@ async function main() {
     await import("@/Web")
   } else if (__TARGET__ === "openfin") {
     await import("@/OpenFin")
+  } else if (__TARGET__ === "finsemble") {
+    await import("@/Finsemble")
   }
 }
 
 main()
 
 declare global {
-  const __TARGET__: "web" | "openfin"
+  const __TARGET__: "web" | "openfin" | "finsemble"
 
   interface Window {
     ga: any

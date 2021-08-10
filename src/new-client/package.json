@@ -30,6 +30,8 @@
     "openfin:build": "TARGET=openfin vite build",
     "openfin:start": "concurrently \"./scripts/build_openfin_manifest -s\" \"npm:openfin:dev\" \"npm:openfin:run\"",
     "openfin:run": "wait-on -l http://localhost:1917/config/app.json && openfin -c http://localhost:1917/config/app.json -l",
+    "finsemble:dev": "TARGET=finsemble vite",
+    "finsemble:build": "TARGET=finsemble vite build",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated"
   },
