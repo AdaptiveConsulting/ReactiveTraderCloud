@@ -2,6 +2,7 @@ import path, { resolve } from "path"
 import { readdirSync } from "fs"
 import { defineConfig, loadEnv } from "vite"
 import reactRefresh from "@vitejs/plugin-react-refresh"
+import copy from "rollup-plugin-copy"
 import eslint from "@rollup/plugin-eslint"
 import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
@@ -57,6 +58,31 @@ const typescriptPlugin = {
   enforce: "pre",
 }
 
+const copyOpenfinPlugin = (dev: boolean) => ({
+  ...copy({
+    targets: [
+      {
+        src: "./public-openfin/*",
+        dest: "./dist/config",
+        transform: (contents) =>
+          contents
+            .toString()
+            .replace(
+              /<BASE_URL>/g,
+              process.env.BASE_URL || "http://localhost:1917",
+            )
+            .replace(/<ENV_NAME>/g, process.env.ENV_NAME || "local")
+            .replace(/<ENV_SUFFIX>/g, process.env.ENV_SUFFIX || "LOCAL"),
+      },
+    ],
+    verbose: true,
+    // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
+    // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
+    // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
+    hook: dev ? "buildStart" : "writeBundle",
+  }),
+})
+
 const webManifestPlugin = (mode: string) =>
   injectManifest(
     {
@@ -83,6 +109,10 @@ const setConfig = ({ mode }) => {
     plugins.unshift(apiMockReplacerPlugin())
   }
 
+  if (TARGET === "openfin") {
+    plugins.push(copyOpenfinPlugin(mode === "development"))
+  }
+
   return defineConfig({
     base: process.env.BASE_URL || "/",
     define: {
@@ -96,7 +126,6 @@ const setConfig = ({ mode }) => {
     },
     server: {
       port: 1917,
-      proxy: TARGET === "openfin" ? { "/config": "http://localhost:8080" } : {},
     },
     resolve: {
       alias: {
