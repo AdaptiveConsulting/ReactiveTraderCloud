@@ -93,7 +93,11 @@ const copyOpenfinPlugin = (dev: boolean) => ({
             .toString()
             .replace(
               /<BASE_URL>/g,
-              process.env.BASE_URL || "http://localhost:1917",
+              process.env.OPENFIN_DOMAIN && process.env.BASE_URL
+                ? `${process.env.OPENFIN_DOMAIN}${process.env.BASE_URL}`
+                : process.env.PORT
+                ? `http://localhost:${process.env.PORT}`
+                : "http://localhost:1917",
             )
             .replace(/<ENV_NAME>/g, process.env.ENV_NAME || "local")
             .replace(/<ENV_SUFFIX>/g, process.env.ENV_SUFFIX || "LOCAL"),
@@ -135,7 +139,7 @@ const setConfig = ({ mode }) => {
     plugins.push(webManifestPlugin(mode))
   }
 
-  if (TARGET === "openfin") {
+  if (TARGET === "openfin" || TARGET === "launcher") {
     plugins.push(copyOpenfinPlugin(mode === "development"))
   }
 
@@ -157,7 +161,7 @@ const setConfig = ({ mode }) => {
       sourcemap: true,
     },
     server: {
-      port: 1917,
+      port: Number(process.env.PORT) || 1917,
     },
     resolve: {
       alias: [

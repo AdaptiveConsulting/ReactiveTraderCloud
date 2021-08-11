@@ -61,15 +61,8 @@ jobs:
       - name: Build (OpenFin)
         env:
           BASE_URL: /branch/${{ steps.vars.outputs.branch }}
-        run: npm run openfin:build
-
-      - name: Generate manifest (OpenFin)
-        env:
           OPENFIN_DOMAIN: https://openfin.env.reactivetrader.com
-        run: |
-          ./scripts/build_openfin_manifest \
-            -b ${{ env.OPENFIN_DOMAIN }}/branch/${{ steps.vars.outputs.branch }} \
-            -e ""
+        run: npm run openfin:build
 
       - name: Deploy (OpenFin)
         run: |

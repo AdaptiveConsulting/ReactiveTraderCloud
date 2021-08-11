@@ -62,8 +62,7 @@ export const IconContainer = styled.div`
 `
 
 export const LogoLauncherContainer = styled(IconContainer)`
-  width: 50%;
-  min-width: 56px;
+  min-width: 170px;
   border-right: 1px solid rgba(216, 216, 216, 0.15);
   height: 70%;
 
