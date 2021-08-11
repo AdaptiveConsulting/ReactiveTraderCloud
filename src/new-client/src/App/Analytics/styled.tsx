@@ -104,7 +104,7 @@ export const AnalyticsStyle = styled.div<{ inExternalWindow?: boolean }>`
 
 export const AnalyticsLineChartWrapper = styled.div`
   width: 100%;
-  height: 12.5rem;
+  min-height: 12.5rem;
   margin-top: 20px;
   margin-bottom: 20px;
 `

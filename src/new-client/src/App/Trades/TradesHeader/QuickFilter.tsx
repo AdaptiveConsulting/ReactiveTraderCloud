@@ -33,6 +33,11 @@ const QuickFilterInput = styled("input")`
     color: ${({ theme }) => theme.core.textColor};
     opacity: 1;
   }
+
+  //Removes default clear icon
+  ::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
 `
 
 const QuickFilterIcon = styled("div")`
