@@ -18,6 +18,7 @@ const Wrapper = styled.div`
 
   &:hover .pop-out-icon {
     visibility: visible;
+    cursor: pointer;
   }
 }
 `

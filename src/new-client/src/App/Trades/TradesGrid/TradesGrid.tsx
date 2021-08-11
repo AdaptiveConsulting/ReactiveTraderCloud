@@ -50,7 +50,6 @@ const TableBodyCell = styled.td<{ numeric?: boolean; rejected?: boolean }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
   padding-right: ${({ numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
   position: relative;
-  border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
   &:before {
     content: " ";
     display: ${({ rejected }) => (rejected ? "block;" : "none;")};
