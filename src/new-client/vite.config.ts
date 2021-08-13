@@ -126,9 +126,13 @@ const setConfig = ({ mode }) => {
       port: 1917,
     },
     resolve: {
-      alias: {
-        "@/": resolve(__dirname, "src"),
-      },
+      alias: [
+        {
+          // see https://github.com/vitejs/vite/issues/279#issuecomment-773454743
+          find: "@",
+          replacement: "/src",
+        },
+      ],
     },
     plugins,
   })
