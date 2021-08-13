@@ -25,10 +25,8 @@ function apiMockReplacerPlugin(): Plugin {
 
       // Set the id of this file to the one importing it marked with our suffix
       // so we can load it in the load hook below
-      return this.resolve(
-        path.join(file.dir, `${file.name}.service-mock.ts`),
-        importer,
-      )
+      const mockPath = `${file.dir}/${file.name}.service-mock.ts`
+      return this.resolve(mockPath, importer)
     },
   }
 }
@@ -129,7 +127,7 @@ const setConfig = ({ mode }) => {
     },
     resolve: {
       alias: {
-        "@": resolve(__dirname, "src"),
+        "@/": resolve(__dirname, "src"),
       },
     },
     plugins,
