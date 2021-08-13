@@ -1,9 +1,6 @@
 name: Branch build
 
-on:
-  push:
-    paths:
-      - 'src/new-client/**'
+on: [push]
 
 defaults:
   run:
