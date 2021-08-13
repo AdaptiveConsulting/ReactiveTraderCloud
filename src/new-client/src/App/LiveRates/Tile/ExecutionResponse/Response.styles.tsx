@@ -25,6 +25,7 @@ export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
   font-weight: bolder;
   justify-content: space-evenly;
   color: ${({ theme }) => theme.white};
+  margin-left: -100%;
 `
 
 export const TradeIdDiv = styled.div`
@@ -38,7 +39,9 @@ export const TradeMessageDiv = styled.div`
   font-size: 0.8rem;
   line-height: 1.5rem;
   margin: 0 1.25rem;
-  text-align: center;
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
 `
 
 export const Button = styled("button")<{

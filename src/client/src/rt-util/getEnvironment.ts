@@ -6,7 +6,7 @@ export function getEnvironment(): string {
     return 'local'
   }
 
-  if (serviceUrl === 'www.reactivetrader.com') {
+  if (serviceUrl === 'www.reactivetrader.com' || serviceUrl === 'classic.reactivetrader.com') {
     return 'demo'
   }
 
@@ -22,7 +22,7 @@ export function getEnvironment(): string {
     return envMatch['groups'].env
   }
 
-  envMatch = /^(?<env>\w+)\.lb\.adaptivecluster\.com/.exec(serviceUrl)
+  envMatch = /^(?<env>\w+)(:?\.classic)?\.lb\.adaptivecluster\.com/.exec(serviceUrl)
 
   if (envMatch) {
     return envMatch['groups'].env

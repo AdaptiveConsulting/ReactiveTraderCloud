@@ -22,8 +22,8 @@ export {
   ThemeConsumer,
   useTheme,
 } from "./ThemeContext"
-export { default as ThemeStorageSwitch } from "./ThemeStorageSwitch"
 export { GlobalScrollbarStyle } from "./GlobalScrollbarStyle"
+export { default as GlobalStyle } from "./globals"
 
 // Make all styled-component functions (e.g. `styled`, `css`) typed with Theme
 // See https://github.com/styled-components/styled-components-website/issues/447

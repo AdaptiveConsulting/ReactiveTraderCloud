@@ -3,6 +3,10 @@ import styled from "styled-components"
 import { OverlayDiv } from "@/components/OverlayDiv"
 import { CenteringContainer } from "@/components/CenteringContainer"
 
+const PendingContainer = styled(OverlayDiv)`
+  margin-left: -100%;
+`
+
 const PendingPill = styled("div")`
   background-color: ${({ theme }) => theme.accents.primary.base};
   margin-auto;
@@ -15,7 +19,7 @@ const PendingPill = styled("div")`
 
 const Pending = () => {
   return (
-    <OverlayDiv>
+    <PendingContainer>
       <CenteringContainer>
         <PendingPill>
           <AdaptiveLoader
@@ -28,7 +32,7 @@ const Pending = () => {
           {"  Executing"}
         </PendingPill>
       </CenteringContainer>
-    </OverlayDiv>
+    </PendingContainer>
   )
 }
 

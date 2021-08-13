@@ -33,6 +33,8 @@ class LocalStorageMock {
 
 const mockedLocalStorage = new LocalStorageMock()
 
+jest.mock("@/theme/globals", () => {})
+
 export const TestThemeProvider: React.FC = ({ children }) => (
   <ThemeProvider storage={mockedLocalStorage}>{children}</ThemeProvider>
 )
