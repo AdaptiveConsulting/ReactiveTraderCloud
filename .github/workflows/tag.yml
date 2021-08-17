@@ -2,10 +2,11 @@ name: Tag build
 
 on:
   push:
+    branches:
+      - hydra-integration
+      - master
     tags:
       - v*
-    tags-ignore:
-      - v*-classic
 
 defaults:
   run:
