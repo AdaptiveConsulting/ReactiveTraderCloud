@@ -2,9 +2,6 @@ name: Tag build
 
 on:
   push:
-    branches:
-      - hydra-integration
-      - master
     tags:
       - v*
 
