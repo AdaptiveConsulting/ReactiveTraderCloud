@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  <!-- NEW STUFF -->
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
@@ -8,7 +9,10 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no"
     />
     <meta id="themeColor" name="theme-color" content="#2e3543" />
-    <meta name="description" content="Reactive Trader® - Cloud edition. Example reactive currency pair trading app" />
+    <meta
+      name="description"
+      content="Reactive Trader® - Cloud edition. Example reactive currency pair trading app"
+    />
     <link rel="apple-touch-icon" href="/touch-icon-iphone.png" />
     <link rel="manifest" href="/manifest.json" />
     <title>Reactive Trader®</title>
@@ -16,14 +20,17 @@
 
   <body>
     <div id="root"></div>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
+    <noscript> You need to enable JavaScript to run this app. </noscript>
     <!-- Google Analytics -->
     <script>
-    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      window.ga =
+        window.ga ||
+        function () {
+          ;(ga.q = ga.q || []).push(arguments)
+        }
+      ga.l = +new Date()
     </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
     <!-- End Google Analytics -->
     <script type="module" src="/src/index.tsx"></script>
   </body>
