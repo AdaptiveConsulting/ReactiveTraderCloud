@@ -2,7 +2,8 @@ name: Branch build
 
 on:
   push:
-    tags-ignore: '*'
+    branches:
+      - '**'
 
 defaults:
   run:
