@@ -10,7 +10,7 @@ import { noop } from "rxjs"
 
 if (!import.meta.env.VITE_MOCKS) {
   connectToGateway({
-    url: import.meta.env.VITE_HYDRA_URL as string,
+    url: `${window.location.origin}/ws`,
     interceptor: noop,
     useJson: true,
   })

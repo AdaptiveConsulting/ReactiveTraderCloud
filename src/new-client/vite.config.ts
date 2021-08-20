@@ -124,6 +124,15 @@ const setConfig = ({ mode }) => {
     },
     server: {
       port: 1917,
+      proxy: !process.env.VITE_MOCKS && {
+        "/ws": {
+          // To test local execution of nginx gateway in Docker,
+          // use e.g.target: "http://localhost:55000", (no need for changeOrigin in that case)
+          target: "wss://trading-web-gateway-rt.demo.hydra.weareadaptive.com",
+          changeOrigin: true,
+          ws: true,
+        },
+      },
     },
     resolve: {
       alias: [
