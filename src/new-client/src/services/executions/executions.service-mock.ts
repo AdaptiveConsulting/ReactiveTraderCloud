@@ -6,6 +6,11 @@ import {
   ExecutionStatus,
   TimeoutExecution,
 } from "./types"
+import {
+  DELAYED_CURRENCY,
+  EXECUTION_TIMEOUT_VALUE,
+  REJECTED_CURRENCY,
+} from "@/services/executions/constants"
 
 const executionsSubject = new Subject<ExecutionTrade>()
 
@@ -15,9 +20,9 @@ export const execute$ = (
   execution: ExecutionRequest,
 ): Observable<ExecutionTrade | TimeoutExecution> => {
   const time =
-    execution.currencyPair === "EURJPY" ? 4_000 : Math.random() * 2_000
+    execution.currencyPair === DELAYED_CURRENCY ? 4_000 : Math.random() * 2_000
   const status: ExecutionStatus.Done | ExecutionStatus.Rejected =
-    execution.currencyPair === "GBPJPY"
+    execution.currencyPair === REJECTED_CURRENCY
       ? ExecutionStatus.Rejected
       : ExecutionStatus.Done
 
@@ -34,7 +39,7 @@ export const execute$ = (
     }),
   )
 
-  const timeout$ = timer(30_000).pipe(
+  const timeout$ = timer(EXECUTION_TIMEOUT_VALUE).pipe(
     mapTo({
       ...execution,
       status: ExecutionStatus.Timeout,
