@@ -9,7 +9,7 @@ on:
         default: 'demo'
 
 jobs:
-  build:
+  restart:
     runs-on: ubuntu-20.04
 
     steps:
@@ -30,16 +30,16 @@ jobs:
 
     - name: Restart deployments
       run: |
-        kubectl rollout restart deployments/broker --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/analytics --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/blotter --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/bot --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/client --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/new-client --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/nlp --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/pricehistory --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/pricing --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/referencedataread --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/storybook --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/styleguide --namespace ${{ github.events.inputs.namespace }}
-        kubectl rollout restart deployments/tradeexecution --namespace ${{ github.events.inputs.namespace }}
+        kubectl rollout restart deployments/broker --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/analytics --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/blotter --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/bot --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/client --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/new-client --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/nlp --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/pricehistory --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/pricing --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/referencedataread --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/storybook --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/styleguide --namespace ${{ github.event.inputs.namespace }}
+        kubectl rollout restart deployments/tradeexecution --namespace ${{ github.event.inputs.namespace }}
