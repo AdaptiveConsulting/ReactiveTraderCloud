@@ -8,37 +8,39 @@ import { OpenFinApp } from "./OpenFinApp"
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
 
-if (!import.meta.env.VITE_MOCKS) {
-  connectToGateway({
-    url: `${window.location.origin}/ws`,
-    interceptor: noop,
-    useJson: true,
+export default function main() {
+  if (!import.meta.env.VITE_MOCKS) {
+    connectToGateway({
+      url: `${window.location.origin}/ws`,
+      interceptor: noop,
+      useJson: true,
+    })
+  }
+
+  ReactDOM.render(
+    <StrictMode>
+      <GlobalStyle />
+      <ThemeProvider>
+        <GlobalScrollbarStyle />
+        <OpenFinApp />
+      </ThemeProvider>
+    </StrictMode>,
+    document.getElementById("root"),
+  )
+
+  const { ga } = window
+
+  ga("create", {
+    trackingId: GA_TRACKING_ID,
+    transport: "beacon",
   })
+
+  ga("set", {
+    dimension1: "openfin",
+    dimension2: "openfin",
+    dimension3: import.meta.env,
+    page: window.location.pathname,
+  })
+
+  ga("send", "pageview")
 }
-
-ReactDOM.render(
-  <StrictMode>
-    <GlobalStyle />
-    <ThemeProvider>
-      <GlobalScrollbarStyle />
-      <OpenFinApp />
-    </ThemeProvider>
-  </StrictMode>,
-  document.getElementById("root"),
-)
-
-const { ga } = window
-
-ga("create", {
-  trackingId: GA_TRACKING_ID,
-  transport: "beacon",
-})
-
-ga("set", {
-  dimension1: "openfin",
-  dimension2: "openfin",
-  dimension3: import.meta.env,
-  page: window.location.pathname,
-})
-
-ga("send", "pageview")

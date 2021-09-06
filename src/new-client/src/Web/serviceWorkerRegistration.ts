@@ -28,7 +28,8 @@ type Config = {
 export function register(config?: Config) {
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      const swUrl = `${window.location.origin}/sw.js`
+      // This url can be changed back to using window.locationi.origin once we have fixed the env gateway url pathing
+      const swUrl = `${window.location.href}/sw.js`
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.

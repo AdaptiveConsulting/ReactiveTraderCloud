@@ -1,5 +1,5 @@
 import path, { resolve } from "path"
-import { readdirSync } from "fs"
+import { readdirSync, statSync } from "fs"
 import { defineConfig, loadEnv } from "vite"
 import reactRefresh from "@vitejs/plugin-react-refresh"
 import copy from "rollup-plugin-copy"
@@ -7,8 +7,6 @@ import eslint from "@rollup/plugin-eslint"
 import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
-
-const TARGET = process.env.TARGET || "web"
 
 function apiMockReplacerPlugin(): Plugin {
   return {
@@ -27,6 +25,34 @@ function apiMockReplacerPlugin(): Plugin {
       // so we can load it in the load hook below
       const mockPath = `${file.dir}/${file.name}.service-mock.ts`
       return this.resolve(mockPath, importer)
+    },
+  }
+}
+
+function indexSwitchPlugin(target: string): Plugin {
+  return {
+    name: "indexSwitchPlugin",
+    enforce: "pre",
+    resolveId: function (source: string, importer) {
+      if (!source.startsWith("./main")) {
+        return null
+      }
+
+      const importedFile = path.parse(source)
+      const importerFile = path.parse(importer)
+
+      const candidate = path.join(
+        importerFile.dir,
+        importedFile.dir,
+        `${importedFile.name}.${target.toLowerCase()}.ts`,
+      )
+
+      try {
+        statSync(candidate)
+        return candidate
+      } catch (e) {
+        return null
+      }
     },
   }
 }
@@ -81,7 +107,27 @@ const copyOpenfinPlugin = (dev: boolean) => ({
   }),
 })
 
-const webManifestPlugin = (mode: string) =>
+const copyWebManifestPlugin = (dev: boolean) => ({
+  ...copy({
+    targets: [
+      {
+        src: "./public/manifest.json",
+        dest: "./dist",
+        transform: (contents) =>
+          contents
+            .toString()
+            .replace(/<BASE_URL>/g, process.env.BASE_URL || ""),
+      },
+    ],
+    verbose: true,
+    // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
+    // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
+    // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
+    hook: dev ? "buildStart" : "writeBundle",
+  }),
+})
+
+const injectWebServiceWorkerPlugin = (mode: string) =>
   injectManifest(
     {
       swSrc: "./src/Web/sw.js",
@@ -89,7 +135,7 @@ const webManifestPlugin = (mode: string) =>
       dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
       globDirectory: "dist",
       mode,
-      modifyURLPrefix: { assets: "/assets" },
+      modifyURLPrefix: { assets: `${process.env.BASE_URL || ""}/assets` },
     },
     () => {},
   )
@@ -101,15 +147,24 @@ const setConfig = ({ mode }) => {
   const plugins =
     mode === "development"
       ? [eslintPlugin, typescriptPlugin, reactRefresh()]
-      : [customPreloadPlugin(), TARGET === "web" && webManifestPlugin(mode)]
+      : [customPreloadPlugin()]
 
-  if (process.env.VITE_MOCKS) {
-    plugins.unshift(apiMockReplacerPlugin())
+  const TARGET = process.env.TARGET || "web"
+
+  if (TARGET === "web") {
+    plugins.push(injectWebServiceWorkerPlugin(mode))
+    plugins.push(copyWebManifestPlugin(mode === "development"))
   }
 
   if (TARGET === "openfin") {
     plugins.push(copyOpenfinPlugin(mode === "development"))
   }
+
+  if (process.env.VITE_MOCKS) {
+    plugins.unshift(apiMockReplacerPlugin())
+  }
+
+  plugins.unshift(indexSwitchPlugin(TARGET))
 
   return defineConfig({
     base: process.env.BASE_URL || "/",
