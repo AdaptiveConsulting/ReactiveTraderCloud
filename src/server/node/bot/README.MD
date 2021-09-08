@@ -2,21 +2,22 @@
 
 This NodeJS bot allows users to access Reactive Trader features via Symphony, an enteprise chat application.
 
-![alt text]( /img/chat.png "Logo Title Text 1")
+![alt text](/img/chat.png 'Logo Title Text 1')
 
 ## Running the bot
 
 ### Symphony Authentication
 
-* Generate a public/private key pair
+- Generate a public/private key pair
 
-* Copy the `.env.example` to `.env` and configure accordingly
+- Copy the `.env.example` to `.env` and configure accordingly
+
 ```bash
 # Name and email of your bot in Symphony
-BOT_NAME=rt-bot 
+BOT_NAME=rt-bot
 BOT_ADDRESS=rt-bot@weareadaptive.com
 
-# RT trader host and port you want your bot to use 
+# RT trader host and port you want your bot to use
 BROKER_HOST=www.reactivetrader.com
 BROKER_PORT=443
 
@@ -32,9 +33,9 @@ For a detailed breakdown of Symphony Auhentication see their [docs](https://deve
 
 ### Google Cloud Authentication
 
-* DialogFlow requires a GC service account key which you can create [here](https://console.cloud.google.com/apis/credentials/serviceaccountkey).
+- DialogFlow requires a GC service account key which you can create [here](https://console.cloud.google.com/apis/credentials/serviceaccountkey).
 
-* Set the environment variable `GOOGLE_APPLICATION_CREDENTIALS=/your/service-account/key.json` (not read by dotenv)
+- Set the environment variable `GOOGLE_APPLICATION_CREDENTIALS=/your/service-account/key.json` (not read by dotenv)
 
 For a detailed breakdown of Google Cloud Authentication see their [docs](https://cloud.google.com/docs/authentication/getting-started)
 
@@ -48,9 +49,11 @@ For a detailed breakdown of Google Cloud Authentication see their [docs](https:/
 
 ## Debugging
 
-If the bot is not getting data from the broker, you can restart it from kubectl in the Google Cloud console
+If the bot is not getting data from the broker, you can restart it from kubectl in the Google Cloud console, or run the command from a shell window, if you have Google Cloud tools installed.
+
+NAMESPACE represents the bot-deployment you wish to update e.g. `demo`
+
 ```
-# NAMESPACE represents the bot-deployment you wish to update
 gcloud container clusters get-credentials cluster --zone europe-west1-c --project adaptive-trader \
 && kubectl rollout restart deployment bot-deployment --namespace NAMESPACE
 ```
