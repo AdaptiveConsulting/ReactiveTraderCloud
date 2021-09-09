@@ -1,16 +1,5 @@
 import { GA_TRACKING_ID } from "./constants"
-
-async function main() {
-  if (__TARGET__ === "web") {
-    await import("@/Web")
-  } else if (__TARGET__ === "openfin") {
-    await import("@/OpenFin")
-  } else if (__TARGET__ === "finsemble") {
-    await import("@/Finsemble")
-  }
-}
-
-main()
+import main from "./main"
 
 declare global {
   const __TARGET__: "web" | "openfin" | "finsemble"
@@ -19,6 +8,8 @@ declare global {
     ga: any
   }
 }
+
+main()
 
 const { ga } = window
 
