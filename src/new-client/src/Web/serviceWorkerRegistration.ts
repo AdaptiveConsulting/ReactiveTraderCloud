@@ -25,11 +25,15 @@ type Config = {
   onUpdate?: (registration: ServiceWorkerRegistration) => void
 }
 
+const doubleSlashesInURLRegex = /([^:])(\/{2,})/g
 export function register(config?: Config) {
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       // This url can be changed back to using window.locationi.origin once we have fixed the env gateway url pathing
-      const swUrl = `${window.location.href}/sw.js`
+      const swUrl = `${window.location.href}/sw.js`.replace(
+        doubleSlashesInURLRegex,
+        "$1/",
+      )
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
