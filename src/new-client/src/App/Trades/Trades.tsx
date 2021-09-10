@@ -10,6 +10,7 @@ const TradesWrapper = styled.article`
   height: 100%;
   padding: 0.5rem 1rem;
   user-select: none;
+  background: ${({ theme }) => theme.core.darkBackground};
 `
 
 trades$.subscribe()

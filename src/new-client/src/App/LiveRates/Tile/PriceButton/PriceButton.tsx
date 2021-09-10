@@ -23,7 +23,7 @@ import {
 } from "./PriceButton.styles"
 import { of } from "rxjs"
 import { useIsNotionalValid } from "../Notional/Notional"
-import { getRfqPayload$ } from "../Rfq/Rfq.state"
+import { getRfqPayload$, QuoteState } from "../Rfq/Rfq.state"
 
 const getPriceByDirection$ = (symbol: string, direction: Direction) =>
   getPrice$(symbol).pipe(
@@ -58,7 +58,8 @@ const formatToMin2IntDigits = customNumberFormatter({
 
 const PriceButtonInner: React.FC<{
   direction: Direction
-}> = ({ direction }) => {
+  rfqQuoteState: QuoteState
+}> = ({ direction, rfqQuoteState }) => {
   const { pipsPosition, ratePrecision, symbol } = useTileCurrencyPair()
   const { price, isExpired } = usePrice(symbol, direction)
   const isNotionalValid = useIsNotionalValid()
@@ -85,7 +86,7 @@ const PriceButtonInner: React.FC<{
       onClick={() => {
         sendExecution(symbol, direction)
       }}
-      priceAnnounced={false}
+      priceAnnounced={rfqQuoteState.stage === QuoteStateStage.Received}
       disabled={disabled}
     >
       <Price disabled={disabled}>
@@ -118,6 +119,6 @@ export const PriceButton: React.FC<{
       Awaiting Price
     </QuotePriceLoading>
   ) : (
-    <PriceButtonInner direction={direction} />
+    <PriceButtonInner direction={direction} rfqQuoteState={rfqState} />
   )
 }

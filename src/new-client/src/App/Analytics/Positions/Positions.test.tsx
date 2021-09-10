@@ -33,16 +33,12 @@ const positionMock: Record<string, CurrencyPairPosition> = {
     basePnl: 5505.700507776323,
     baseTradedAmount: 1000000,
     counterTradedAmount: -1557030,
-    basePnlName: "basePnl",
-    baseTradedAmountName: "baseTradedAmount",
   },
   EURJPY: {
     symbol: "EURJPY",
     basePnl: -28767.690451584618,
     baseTradedAmount: -7975223,
     counterTradedAmount: 1014984843.778,
-    basePnlName: "basePnl",
-    baseTradedAmountName: "baseTradedAmount",
   },
 }
 
@@ -52,16 +48,12 @@ const positionMock2: Record<string, CurrencyPairPosition> = {
     basePnl: 5505.700507776323,
     baseTradedAmount: 1000000,
     counterTradedAmount: -1557031,
-    basePnlName: "basePnl",
-    baseTradedAmountName: "baseTradedAmount",
   },
   EURJPY: {
     symbol: "EURJPY",
     basePnl: -28767.690451584618,
     baseTradedAmount: -7975223,
     counterTradedAmount: 1014984843.778,
-    basePnlName: "basePnl",
-    baseTradedAmountName: "baseTradedAmount",
   },
 }
 

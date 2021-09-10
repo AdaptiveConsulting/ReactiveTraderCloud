@@ -1,36 +1,36 @@
+import { BlotterService } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
-import { getStream$ } from "../client"
-import { Trade, RawTradeUpdate } from "./types"
+import { withIsStaleData } from "../connection"
+import { withConnection } from "../withConnection"
+import { Trade } from "./types"
 
-const tradesStream$ = getStream$<RawTradeUpdate>(
-  "blotter",
-  "getTradesStream",
-  {},
-).pipe(
-  map(({ Trades: rawTrades }) =>
-    rawTrades.map((rawTrade) => ({
-      tradeId: rawTrade.TradeId,
-      symbol: rawTrade.CurrencyPair,
-      traderName: rawTrade.TraderName,
-      notional: rawTrade.Notional,
-      dealtCurrency: rawTrade.DealtCurrency,
-      direction: rawTrade.Direction,
-      status: rawTrade.Status,
-      spotRate: rawTrade.SpotRate,
-      tradeDate: new Date(rawTrade.TradeDate),
-      valueDate: new Date(rawTrade.ValueDate),
+const tradesStream$ = BlotterService.getTradeStream().pipe(
+  withConnection(),
+  map(({ isStateOfTheWorld, updates }) => ({
+    isStateOfTheWorld,
+    updates: updates.map((rawTrade) => ({
+      tradeId: rawTrade.tradeId.toString(10),
+      symbol: rawTrade.currencyPair, // TODO: talk with hydra team about this
+      traderName: rawTrade.tradeName,
+      notional: rawTrade.notional,
+      dealtCurrency: rawTrade.dealtCurrency,
+      direction: rawTrade.direction,
+      status: rawTrade.status,
+      spotRate: rawTrade.spotRate,
+      tradeDate: new Date(rawTrade.tradeDate), // TODO: talk with hydra team about this
+      valueDate: new Date(rawTrade.valueDate), // TODO: talk with hydra team about this
     })),
-  ),
+  })),
 )
 
 export const [useTrades, trades$] = bind<Trade[]>(
   tradesStream$.pipe(
     scan(
-      (acc, trades) => ({
-        ...acc,
+      (acc, { isStateOfTheWorld, updates }) => ({
+        ...(isStateOfTheWorld ? {} : acc),
         ...Object.fromEntries(
-          trades.map((trade) => [trade.tradeId, trade] as const),
+          updates.map((trade) => [trade.tradeId, trade] as const),
         ),
       }),
       {} as Record<number, Trade>,
@@ -38,3 +38,5 @@ export const [useTrades, trades$] = bind<Trade[]>(
     map((trades) => Object.values(trades).reverse()),
   ),
 )
+
+export const isBlotterDataStale$ = withIsStaleData(trades$)

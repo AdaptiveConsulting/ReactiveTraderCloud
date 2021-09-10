@@ -1,3 +1,4 @@
+import { broadcast } from "@finos/fdc3"
 import styled, { css } from "styled-components"
 import { TradeStatus } from "@/services/trades"
 import { colConfigs, colFields, useTableTrades } from "../TradesState"
@@ -15,6 +16,7 @@ const Table = styled.table`
   min-width: 60rem;
   border-collapse: separate;
   border-spacing: 0;
+  height: 100%;
 
   .visually-hidden {
     display: none;
@@ -79,6 +81,15 @@ const StatusIndicatorSpacer = styled.th`
 export const TradesGrid: React.FC = () => {
   const trades = useTableTrades()
 
+  const tryBroadcastContext = (symbol: string) => {
+    if (window.fdc3) {
+      broadcast({
+        type: "fdc3.instrument",
+        id: { ticker: symbol },
+      })
+    }
+  }
+
   return (
     <TableWrapper>
       <Table>
@@ -99,6 +110,7 @@ export const TradesGrid: React.FC = () => {
               <TableBodyRow
                 key={trade.tradeId}
                 pending={trade.status === TradeStatus.Pending}
+                onClick={() => tryBroadcastContext(trade.symbol)}
               >
                 <StatusIndicator
                   status={trade.status}

@@ -23,7 +23,7 @@ export {
   useTheme,
 } from "./ThemeContext"
 export { GlobalScrollbarStyle } from "./GlobalScrollbarStyle"
-export { default as GlobalStyle } from './globals'
+export { default as GlobalStyle } from "./globals"
 
 // Make all styled-component functions (e.g. `styled`, `css`) typed with Theme
 // See https://github.com/styled-components/styled-components-website/issues/447

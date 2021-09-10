@@ -1,34 +1,44 @@
+import { PriceTick, PricingService } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { mergeWithKey } from "@react-rxjs/utils"
-import { concat, race } from "rxjs"
-import { scan, map, take } from "rxjs/operators"
-import { getRemoteProcedureCall$, getStream$ } from "../client"
-import {
-  RawPrice,
-  PriceMovementType,
-  HistoryPrice,
-  Price,
-  Request,
-} from "./types"
+import { combineLatest, concat, race } from "rxjs"
+import { scan, map, take, distinctUntilChanged } from "rxjs/operators"
+import { withIsStaleData } from "../connection"
+import { withConnection } from "../withConnection"
+import { PriceMovementType, HistoryPrice, Price } from "./types"
+
+const priceMappper = (input: PriceTick): HistoryPrice => ({
+  ask: input.ask,
+  bid: input.bid,
+  mid: input.mid,
+  creationTimestamp: Number(input.creationTimestamp), // TODO: talk with hydra team about this
+  symbol: input.symbol,
+  valueDate: input.valueDate, // TODO: talk with hydra team about this
+})
 
 const [, getPriceHistory$] = bind((symbol: string) =>
-  getRemoteProcedureCall$<Price[], string>(
-    "priceHistory",
-    "getPriceHistory",
-    symbol,
-  ).pipe(map((x) => x.slice(x.length - HISTORY_SIZE))),
+  PricingService.getPriceHistory({ symbol }).pipe(
+    withConnection(),
+    map(({ prices }) =>
+      prices.slice(prices.length - HISTORY_SIZE).map(priceMappper),
+    ),
+  ),
 )
 
 const [, getPriceUpdates$] = bind((symbol: string) =>
-  getStream$<RawPrice, Request>("pricing", "getPriceUpdates", { symbol }).pipe(
-    map((rawPrice) => ({
-      ask: rawPrice.Ask,
-      bid: rawPrice.Bid,
-      mid: rawPrice.Mid,
-      creationTimestamp: rawPrice.CreationTimestamp,
-      symbol: rawPrice.Symbol,
-      valueDate: rawPrice.ValueDate,
-    })),
+  PricingService.getPriceUpdates({ symbol }).pipe(
+    withConnection(),
+    map(priceMappper),
+  ),
+)
+
+export const [, getIsSymbolDataStale$] = bind((symbol: string) =>
+  combineLatest([
+    withIsStaleData(getPriceHistory$(symbol)),
+    withIsStaleData(getPriceUpdates$(symbol)),
+  ]).pipe(
+    map(([a, b]) => a || b),
+    distinctUntilChanged(),
   ),
 )
 
@@ -52,7 +62,7 @@ export const [usePrice, getPrice$] = bind((symbol: string) =>
             ? PriceMovementType.UP
             : PriceMovementType.DOWN,
       }),
-      (undefined as any) as Price,
+      undefined as any as Price,
     ),
   ),
 )

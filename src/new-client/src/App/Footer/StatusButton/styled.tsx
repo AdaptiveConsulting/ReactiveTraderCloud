@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react"
 import styled from "styled-components"
 import Popup from "@/components/Popup"
-import { ServiceConnectionStatus } from "@/services/connection"
+import { ConnectionStatus } from "@/services/connection"
 
 const buttonHeight = "2rem"
 
@@ -29,13 +29,13 @@ const StatusCircleCore: FunctionComponent<{ className?: string }> = ({
 }
 
 export const StatusCircle = styled(StatusCircleCore)<{
-  status?: ServiceConnectionStatus
+  status?: ConnectionStatus
 }>`
   circle {
     fill: ${({ theme, status }) =>
-      status === ServiceConnectionStatus.CONNECTED
+      status === ConnectionStatus.CONNECTED
         ? theme.accents.positive.base
-        : status === ServiceConnectionStatus.CONNECTING
+        : status === ConnectionStatus.CONNECTING
         ? theme.accents.aware.base
         : theme.accents.negative.base};
   }

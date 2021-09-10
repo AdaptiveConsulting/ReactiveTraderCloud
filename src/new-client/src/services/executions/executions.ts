@@ -1,57 +1,67 @@
 import { race, Subject, timer } from "rxjs"
-import { map, mapTo, tap } from "rxjs/operators"
-import { getRemoteProcedureCall$ } from "@/services/client"
+import { delay, map, mapTo, tap } from "rxjs/operators"
 import {
   ExecutionRequest,
-  ExecutionPayload,
-  ExecutionResponse,
   ExecutionTrade,
   ExecutionStatus,
   TimeoutExecution,
 } from "./types"
+import {
+  ExecuteTradeRequest,
+  ExecutionService,
+  ExecutionResponse,
+} from "@/generated/TradingGateway"
+import { TradeStatus } from "../trades"
+import {
+  EXECUTION_DELAY_VALUE,
+  DELAYED_CURRENCY,
+  EXECUTION_TIMEOUT_VALUE,
+} from "@/services/executions/constants"
 
-const mapExecutionToPayload = (e: ExecutionRequest): ExecutionPayload => {
+const mapExecutionToPayload = (e: ExecutionRequest): ExecuteTradeRequest => {
   return {
-    CurrencyPair: e.currencyPair,
-    DealtCurrency: e.dealtCurrency,
-    Direction: e.direction,
-    Notional: e.notional,
-    SpotRate: e.spotRate,
-    id: e.id,
+    currencyPair: e.currencyPair,
+    spotRate: e.spotRate,
+    direction: e.direction,
+    notional: e.notional,
+    dealtCurrency: e.dealtCurrency,
+    valueDate: new Date().toISOString().substr(0, 10), // TODO: talk with hydra team about this
   }
 }
 
-const mapResponseToTrade = (id: string) => ({
-  Trade,
-}: ExecutionResponse): ExecutionTrade => {
-  return {
-    currencyPair: Trade.CurrencyPair,
-    dealtCurrency: Trade.DealtCurrency,
-    direction: Trade.Direction,
-    notional: Trade.Notional,
-    spotRate: Trade.SpotRate,
-    status: ExecutionStatus[Trade.Status],
-    tradeId: Trade.TradeId,
-    valueDate: Trade.ValueDate,
-    id,
+const mapResponseToTrade =
+  (id: string) =>
+  ({ trade }: ExecutionResponse): ExecutionTrade => {
+    if (trade.status === TradeStatus.Pending) throw new Error("wait what?!") // TODO: talk with hydra team
+
+    return {
+      currencyPair: trade.currencyPair,
+      dealtCurrency: trade.dealtCurrency,
+      direction: trade.direction,
+      notional: trade.notional,
+      spotRate: trade.spotRate,
+      status: ExecutionStatus[trade.status],
+      tradeId: Number(trade.tradeId), // TODO: talk with hydra team
+      tradeDate: new Date(),
+      valueDate: new Date(trade.valueDate),
+      id,
+    }
   }
-}
 
 const executionsSubject = new Subject<ExecutionTrade>()
 
 export const execute$ = (execution: ExecutionRequest) =>
   race([
-    getRemoteProcedureCall$<ExecutionResponse, ExecutionPayload>(
-      "execution",
-      "executeTrade",
-      mapExecutionToPayload(execution),
-    ).pipe(
+    ExecutionService.executeTrade(mapExecutionToPayload(execution)).pipe(
+      delay(
+        execution.currencyPair === DELAYED_CURRENCY ? EXECUTION_DELAY_VALUE : 0,
+      ),
       map(mapResponseToTrade(execution.id)),
       tap((value) => {
         executionsSubject.next(value)
       }),
     ),
-    timer(30_000).pipe(
+    timer(EXECUTION_TIMEOUT_VALUE).pipe(
       mapTo({
         ...execution,
         status: ExecutionStatus.Timeout,

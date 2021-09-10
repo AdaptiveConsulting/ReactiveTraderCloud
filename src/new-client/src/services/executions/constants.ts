@@ -1,0 +1,4 @@
+export const DELAYED_CURRENCY = "EURJPY"
+export const REJECTED_CURRENCY = "GBPJPY"
+export const EXECUTION_DELAY_VALUE = 4_000
+export const EXECUTION_TIMEOUT_VALUE = 30_000

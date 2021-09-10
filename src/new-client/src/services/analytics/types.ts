@@ -8,10 +8,7 @@ export interface CurrencyPairPositionRaw {
 }
 
 export interface CurrencyPairPosition
-  extends CamelCase<CurrencyPairPositionRaw> {
-  basePnlName: "basePnl"
-  baseTradedAmountName: "baseTradedAmount"
-}
+  extends CamelCase<CurrencyPairPositionRaw> {}
 
 export interface HistoryRaw {
   Timestamp: string
