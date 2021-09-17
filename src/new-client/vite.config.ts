@@ -183,7 +183,9 @@ const setConfig = ({ mode }) => {
         "/ws": {
           // To test local execution of nginx gateway in Docker,
           // use e.g.target: "http://localhost:55000", (no need for changeOrigin in that case)
-          target: "wss://trading-web-gateway-rt.demo.hydra.weareadaptive.com",
+          target:
+            process.env.VITE_HYDRA_URL ||
+            "wss://trading-web-gateway-rt.demo.hydra.weareadaptive.com",
           changeOrigin: true,
           ws: true,
         },
