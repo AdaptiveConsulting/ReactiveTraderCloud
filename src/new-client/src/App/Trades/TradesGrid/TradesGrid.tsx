@@ -16,7 +16,6 @@ const Table = styled.table`
   min-width: 60rem;
   border-collapse: separate;
   border-spacing: 0;
-  height: 100%;
 
   .visually-hidden {
     display: none;
