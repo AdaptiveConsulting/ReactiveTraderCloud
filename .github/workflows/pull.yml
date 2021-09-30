@@ -15,6 +15,7 @@ env:
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
   VITE_HYDRA_URL: wss://trading-web-gateway-rt.demo.hydra.weareadaptive.com
+  VITE_BUILD_VERSION: $GITHUB_SHA
 
 jobs:
   build:
