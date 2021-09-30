@@ -1,47 +1,68 @@
 import { FC, useState, useEffect } from "react"
 import { Wrapper, Link } from "./styled"
 
-const gitTagExists = async (gitTag: string | undefined) => {
+type IdentifierType = "release" | "commit"
+
+const getGitResource = async (
+  identifier: string,
+  type: IdentifierType,
+): Promise<string | undefined> => {
   try {
     const response = await fetch(
-      "https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/releases",
+      type === "release"
+        ? "https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/releases"
+        : `https://api.github.com/repos/AdaptiveConsulting/ReactiveTraderCloud/commits/${identifier}`,
     )
     const data = await response.json()
-    const exists = data.find((element: any) => element.tag_name === gitTag)
-    return exists
+
+    if (type === "release") {
+      const exists = data.find(
+        (element: any) => element.tag_name === identifier,
+      )
+      return exists
+        ? `https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/${identifier}`
+        : undefined
+    } else {
+      return data.html_url
+    }
   } catch (error) {
     console.error(error)
   }
 }
 
 export const Version: FC = () => {
-  const [versionExists, setVersionExists] = useState<boolean | void>(false)
+  const [gitResource, setGitResource] = useState<string>()
 
-  const buildVersion = import.meta.env.VITE_BUILD_VERSION as string
-  const URL =
-    "https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/" +
-    buildVersion
+  const rawBuildIdentifier = import.meta.env.VITE_BUILD_VERSION as string
+  const identifierType: IdentifierType =
+    rawBuildIdentifier.startsWith("v") && rawBuildIdentifier.length !== 40
+      ? "release"
+      : "commit"
+  const buildIdentifier =
+    identifierType === "commit"
+      ? rawBuildIdentifier.substr(0, 7)
+      : rawBuildIdentifier
 
   useEffect(() => {
-    if (buildVersion) {
-      gitTagExists(buildVersion).then((resolution) =>
-        setVersionExists(resolution),
+    if (buildIdentifier && identifierType) {
+      getGitResource(buildIdentifier, identifierType).then((resource) =>
+        setGitResource(resource),
       )
     }
-  }, [buildVersion])
+  }, [buildIdentifier, identifierType])
 
-  if (!buildVersion) {
+  if (!buildIdentifier) {
     return null
   }
 
   return (
     <Wrapper>
-      {versionExists ? (
-        <Link target="_blank" href={URL}>
-          {buildVersion}
+      {gitResource ? (
+        <Link target="_blank" href={gitResource}>
+          {buildIdentifier}
         </Link>
       ) : (
-        <p>{buildVersion}</p>
+        <p>{buildIdentifier}</p>
       )}
     </Wrapper>
   )
