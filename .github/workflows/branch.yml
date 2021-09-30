@@ -13,7 +13,7 @@ env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
-  VITE_HYDRA_URL: wss://trading-web-gateway-rt.demo.hydra.weareadaptive.com
+  VITE_HYDRA_URL: wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com
 
 jobs:
   build:
@@ -52,6 +52,7 @@ jobs:
       - name: Build (web)
         env:
           BASE_URL: /branch/${{ steps.vars.outputs.branch }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
         run: npm run build
 
       - name: Deploy (web)
@@ -64,6 +65,7 @@ jobs:
       - name: Build (OpenFin)
         env:
           BASE_URL: /branch/${{ steps.vars.outputs.branch }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
         run: npm run openfin:build
 
       - name: Generate manifest (OpenFin)
@@ -84,6 +86,7 @@ jobs:
       - name: Build (Finsemble)
         env:
           BASE_URL: /branch/${{ steps.vars.outputs.branch }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
         run: npm run finsemble:build
 
       - name: Deploy (Finsemble)

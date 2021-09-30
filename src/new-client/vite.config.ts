@@ -185,7 +185,7 @@ const setConfig = ({ mode }) => {
           // use e.g.target: "http://localhost:55000", (no need for changeOrigin in that case)
           target:
             process.env.VITE_HYDRA_URL ||
-            "wss://trading-web-gateway-rt.demo.hydra.weareadaptive.com",
+            "wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com",
           changeOrigin: true,
           ws: true,
         },
