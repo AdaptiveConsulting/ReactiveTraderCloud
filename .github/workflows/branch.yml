@@ -33,7 +33,7 @@ jobs:
       
       - name: Set environment suffic
         id: envsuffix
-        run: echo "::set-output name=ENV_SUFFIX::[[ $(git branch --show-current) = env/uat ]] && 'uat' || 'dev'"
+        run: echo "::set-output name=ENV_SUFFIX::$([[ $(git branch --show-current) = env/uat ]] && 'uat' || 'dev')"
       
       - name: Echo env
         run: echo ${{ steps.envsuffix.outputs.ENV_SUFFIX }}
