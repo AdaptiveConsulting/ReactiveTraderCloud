@@ -107,26 +107,32 @@ const copyOpenfinPlugin = (dev: boolean) => ({
   }),
 })
 
-const copyWebManifestPlugin = (dev: boolean) => ({
-  ...copy({
-    targets: [
-      {
-        src: "./public/manifest.json",
-        dest: "./dist",
-        transform: (contents) =>
-          contents
-            .toString()
-            .replace(/<BASE_URL>/g, process.env.BASE_URL || "")
-            .replace(/{{environment_suffix}}/g, process.env.ENV_SUFFIX),
-      },
-    ],
-    verbose: true,
-    // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
-    // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
-    // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
-    hook: dev ? "buildStart" : "writeBundle",
-  }),
-})
+const copyWebManifestPlugin = (dev: boolean) => {
+  const envSuffix = (process.env.ENV_SUFFIX || "local").toUpperCase()
+  return {
+    ...copy({
+      targets: [
+        {
+          src: "./public/manifest.json",
+          dest: "./dist",
+          transform: (contents) =>
+            contents
+              .toString()
+              // We don't want to show PROD in the PWA name
+              .replace(
+                /{{environment_suffix}}/g,
+                envSuffix === "RROD" ? "" : envSuffix,
+              ),
+        },
+      ],
+      verbose: true,
+      // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
+      // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
+      // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
+      hook: dev ? "buildStart" : "writeBundle",
+    }),
+  }
+}
 
 const injectWebServiceWorkerPlugin = (mode: string) =>
   injectManifest(
