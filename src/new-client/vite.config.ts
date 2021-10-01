@@ -116,7 +116,8 @@ const copyWebManifestPlugin = (dev: boolean) => ({
         transform: (contents) =>
           contents
             .toString()
-            .replace(/<BASE_URL>/g, process.env.BASE_URL || ""),
+            .replace(/<BASE_URL>/g, process.env.BASE_URL || "")
+            .replace(/{{environment_suffix}}/g, process.env.ENV_SUFFIX),
       },
     ],
     verbose: true,

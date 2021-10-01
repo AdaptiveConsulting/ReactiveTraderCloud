@@ -4,7 +4,7 @@ import { GA_TRACKING_ID } from "@/constants"
 import GlobalStyle from "@/theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import { OpenFinApp } from "./OpenFinApp"
-
+import { PlatformContext } from "@/platform"
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
 
@@ -19,11 +19,13 @@ export default function main() {
 
   ReactDOM.render(
     <StrictMode>
-      <GlobalStyle />
-      <ThemeProvider>
-        <GlobalScrollbarStyle />
-        <OpenFinApp />
-      </ThemeProvider>
+      <PlatformContext.Provider value={{ type: "openfin" }}>
+        <GlobalStyle />
+        <ThemeProvider>
+          <GlobalScrollbarStyle />
+          <OpenFinApp />
+        </ThemeProvider>
+      </PlatformContext.Provider>
     </StrictMode>,
     document.getElementById("root"),
   )

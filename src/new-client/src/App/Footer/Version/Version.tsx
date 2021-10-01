@@ -33,7 +33,8 @@ const getGitResource = async (
 export const Version: FC = () => {
   const [gitResource, setGitResource] = useState<string>()
 
-  const rawBuildIdentifier = import.meta.env.VITE_BUILD_VERSION as string
+  const rawBuildIdentifier =
+    (import.meta.env.VITE_BUILD_VERSION as string) || ""
   const identifierType: IdentifierType =
     rawBuildIdentifier.startsWith("v") && rawBuildIdentifier.length !== 40
       ? "release"
