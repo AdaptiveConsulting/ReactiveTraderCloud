@@ -14,7 +14,7 @@ main()
 const reloadAfter1Hour = () => {
   setTimeout(() => {
     window.location.reload()
-  }, 60 * 1000)
+  }, 60 * 60 * 1000)
 }
 
 reloadAfter1Hour()
