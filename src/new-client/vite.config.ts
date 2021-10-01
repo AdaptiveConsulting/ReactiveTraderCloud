@@ -96,7 +96,7 @@ const copyOpenfinPlugin = (dev: boolean) => ({
               process.env.BASE_URL || "http://localhost:1917",
             )
             .replace(/<ENV_NAME>/g, process.env.ENV_NAME || "local")
-            .replace(/<ENV_SUFFIX>/g, process.env.ENV_SUFFIX || "LOCAL"),
+            .replace(/<ENV_SUFFIX>/g, process.env.ENVIRONMENT || "LOCAL"),
       },
     ],
     verbose: true,
@@ -108,7 +108,7 @@ const copyOpenfinPlugin = (dev: boolean) => ({
 })
 
 const copyWebManifestPlugin = (dev: boolean) => {
-  const envSuffix = (process.env.ENV_SUFFIX || "local").toUpperCase()
+  const envSuffix = (process.env.ENVIRONMENT || "local").toUpperCase()
   return {
     ...copy({
       targets: [
