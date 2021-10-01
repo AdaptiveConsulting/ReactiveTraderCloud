@@ -33,10 +33,10 @@ jobs:
       
       - name: Set environment suffic
         id: envsuffix
-        run: echo "::set-output name=ENV_SUFFIX::[[ $(git branch --show-current) = env/uat ]] && a="uat" || a="dev""
+        run: echo "::set-output name=ENV_SUFFIX::$([[ $(git branch --show-current) = env/uat ]] && a='uat' || a='dev')"
       
       - name: Echo env
-        run: echo $ENV_SUFFIX
+        run: echo ${{ steps.envsuffix.outputs.ENV_SUFFIX }}
 
       - name: Set up GCloud
         uses: google-github-actions/setup-gcloud@master
