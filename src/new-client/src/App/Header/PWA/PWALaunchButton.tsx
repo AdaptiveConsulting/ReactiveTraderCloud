@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction, FC } from "react"
-import { PWABanner, InstallButton } from "./PWAInstallPrompt"
+import { PWABanner } from "./PWAInstallPrompt"
 import { usePWABannerPrompt } from "./usePWABannerPrompt"
 import { isiOS } from "@/utils"
+import { InstallButton } from "./PWAInstallPrompt.styles"
 
 interface InstallLaunchProps {
   state: string | null

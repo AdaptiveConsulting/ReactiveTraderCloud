@@ -1,48 +1,14 @@
 import { Dispatch, SetStateAction, useEffect, FC } from "react"
 import { CrossIcon } from "@/components/icons"
-import styled from "styled-components"
 import { PWAInstallModal } from "./PWAInstallModal"
 import { usePWABannerPrompt } from "./usePWABannerPrompt"
 import { isPWA, isiOS, isMobileDevice } from "@/utils"
-
-const MainBanner = styled.div<{ isHidden: boolean }>`
-  display: ${({ isHidden }) => (isHidden ? "none" : "flex")};
-  align-items: center;
-  padding: 0 10px;
-  width: 100%;
-  height: 32px;
-  background-color: ${({ theme }) => theme.core.textColor};
-  color: ${({ theme }) => theme.core.darkBackground};
-  z-index: 100;
-`
-
-const CrossButton = styled.div`
-  width: 24px;
-  height: 24px;
-  svg path:last-child {
-    fill: ${({ theme }) => theme.core.darkBackground};
-  }
-  &:hover {
-    cursor: pointer;
-  }
-`
-
-const BannerText = styled.p`
-  font-size: 0.8125rem;
-  font-weight: 600;
-`
-
-export const InstallButton = styled.button`
-  background-color: ${({ theme }) => theme.accents.primary.base};
-  color: #ffffff;
-  padding: 5px 9px;
-  margin: 0 10px;
-  border-radius: 4px;
-  font-size: 0.6875rem;
-  &:hover {
-    background-color: ${({ theme }) => theme.accents.primary.darker};
-  }
-`
+import {
+  MainBanner,
+  BannerText,
+  CrossButton,
+  InstallButton,
+} from "./PWAInstallPrompt.styles"
 
 export enum PWABanner {
   Shown = "shown",
@@ -87,19 +53,6 @@ export const PWAInstallBanner: FC<InstallBannerProps> = ({
 
     return () => window.removeEventListener("appinstalled", handler)
   }, [updateBanner])
-
-  useEffect(() => {
-    // @ts-ignore
-    console.log("nav", navigator.getInstalledRelatedApps)
-    // @ts-ignore
-    if (navigator.getInstalledRelatedApps) {
-      navigator
-        // @ts-ignore
-        .getInstalledRelatedApps()
-        .then((apps: any) => console.log("apps", apps))
-        .catch((e: any) => console.log("Error getting installed apps", e))
-    }
-  }, [])
 
   const closeBanner = () => {
     updateBanner(PWABanner.Hidden)

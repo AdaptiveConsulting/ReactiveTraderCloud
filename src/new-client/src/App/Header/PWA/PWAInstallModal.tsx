@@ -1,35 +1,14 @@
 import { FC } from "react"
-import styled from "styled-components"
-import { InstallButton } from "./PWAInstallPrompt"
 import { AppleShareIcon } from "@/components/icons"
 import { Modal } from "@/components/Modal"
-
-const MainTitle = styled.div`
-  font-size: 1.19rem;
-  line-height: 2rem;
-`
-
-const Text = styled.div`
-  font-size: 0.81rem;
-  color: rgb(187, 187, 187);
-`
-
-const DeviceText = styled.div`
-  margin: 10px 0 30px;
-  font-size: 0.81rem;
-  color: rgb(187, 187, 187);
-  line-height: 2px;
-`
-
-const ModalWrapper = styled.div`
-  text-align: center;
-`
-
-const Icon = styled.div`
-  display: inline-flex;
-  vertical-align: middle;
-  margin-bottom: 4px;
-`
+import {
+  ModalWrapper,
+  DeviceText,
+  Icon,
+  MainTitle,
+  Text,
+} from "./PWAInstallModal.styles"
+import { InstallButton } from "./PWAInstallPrompt.styles"
 
 interface InstallModalProps {
   closeModal: () => void
