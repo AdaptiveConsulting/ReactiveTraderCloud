@@ -30,12 +30,13 @@ jobs:
       - name: Set variables
         id: vars
         run: echo "::set-output name=branch::$(git branch --show-current | sed 's/\//_/g')"
-        if: endsWith(github.ref, 'env/uat')
-        run: |
-          echo "::set-output name=ENV_SUFFIX::uat"
-        if: false == endsWith(github.ref, 'env/uat')
-        run: |
-          echo "::set-output name=ENV_SUFFIX::dev"
+      
+      - name: Set environment suffic
+        id: envsuffix
+        run: echo "::set-output name=ENV_SUFFIX::[[ $(git branch --show-current) = env/uat ]] && a="uat" || a="dev""
+      
+      - name: Echo env
+        run: echo $ENV_SUFFIX
 
       - name: Set up GCloud
         uses: google-github-actions/setup-gcloud@master
@@ -59,7 +60,7 @@ jobs:
         env:
           BASE_URL: /branch/${{ steps.vars.outputs.branch }}
           VITE_BUILD_VERSION: ${{ github.sha }}
-          ENV_SUFFIX: ${{ steps.vars.outputs.ENV_SUFFIX }}
+          ENV_SUFFIX: ${{ steps.envsuffix.outputs.ENV_SUFFIX }}
         run: npm run build
 
       - name: Deploy (web)
