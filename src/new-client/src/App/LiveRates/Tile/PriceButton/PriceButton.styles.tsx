@@ -54,8 +54,7 @@ export const TradeButton = styled.button<{
   outline: none;
   height: 100%;
   min-width: 75px;
-  padding: ${({ expired }) =>
-    expired ? "0.6rem 1.5rem 0.4rem 1.5rem" : "0.55rem 1.5rem 0.6rem 1.5rem"};
+  padding: 0.6rem 1.5rem 0.9rem 1.5rem;
   ${backgroundEffect}
 
   ${({ theme, direction, disabled, priceAnnounced }) =>
