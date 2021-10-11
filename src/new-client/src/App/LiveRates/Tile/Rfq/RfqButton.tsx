@@ -26,7 +26,7 @@ const RFQButtonInner = styled.button<{
   align-items: center;
   justify-content: center;
   font-size: 0.6875rem;
-  padding: 8px 10px;
+  padding: 7px 10px;
   width: ${({ isAnalytics }) => (isAnalytics ? "82px" : "64px")};
   max-height: ${({ textWrap }) => (textWrap ? "48px" : "32px")};
   border-radius: 3px;
