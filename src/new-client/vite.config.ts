@@ -91,10 +91,7 @@ const copyOpenfinPlugin = (dev: boolean) => ({
         transform: (contents) =>
           contents
             .toString()
-            .replace(
-              /<BASE_URL>/g,
-              process.env.BASE_URL || "http://localhost:1917",
-            )
+            .replace(/<BASE_URL>/g, process.env.BASE_URL || "")
             .replace(/<ENV_NAME>/g, process.env.ENV_NAME || "local")
             .replace(/<ENV_SUFFIX>/g, process.env.ENVIRONMENT || "LOCAL"),
       },
@@ -113,15 +110,17 @@ const copyWebManifestPlugin = (dev: boolean) => {
     ...copy({
       targets: [
         {
-          src: "./public/manifest.json",
-          dest: "./dist",
+          src: "./public/.manifest.json",
+          dest: dev ? "./public" : "./dist",
+          rename: "manifest.json",
           transform: (contents) =>
             contents
               .toString()
+              .replace(/<BASE_URL>/g, process.env.BASE_URL || "")
               // We don't want to show PROD in the PWA name
               .replace(
                 /{{environment_suffix}}/g,
-                envSuffix === "RROD" ? "" : envSuffix,
+                envSuffix === "PROD" ? "" : envSuffix,
               ),
         },
       ],
