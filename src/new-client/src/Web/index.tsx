@@ -1,3 +1,4 @@
+import { GA_TRACKING_ID } from "../constants"
 import { StrictMode } from "react"
 import ReactDOM from "react-dom"
 import GlobalStyle from "@/theme/globals"
@@ -59,4 +60,20 @@ export default function main() {
     </StrictMode>,
     document.getElementById("root"),
   )
+
+  const { ga } = window
+
+  ga("create", {
+    trackingId: GA_TRACKING_ID,
+    transport: "beacon",
+  })
+
+  ga("set", {
+    dimension1: "browser",
+    dimension2: "browser",
+    dimension3: import.meta.env,
+    page: window.location.pathname,
+  })
+
+  ga("send", "pageview")
 }
