@@ -65,6 +65,7 @@ jobs:
         env:
           BASE_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run openfin:build
 
       - name: Deploy (OpenFin)
