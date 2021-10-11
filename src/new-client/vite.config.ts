@@ -8,6 +8,8 @@ import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 
+const BASE_URL = "http://localhost:1917"
+
 function apiMockReplacerPlugin(): Plugin {
   return {
     name: "apiMockReplacerPlugin",
@@ -91,7 +93,7 @@ const copyOpenfinPlugin = (dev: boolean) => ({
         transform: (contents) =>
           contents
             .toString()
-            .replace(/<BASE_URL>/g, process.env.BASE_URL || "")
+            .replace(/<BASE_URL>/g, process.env.BASE_URL || BASE_URL)
             .replace(/<ENV_NAME>/g, process.env.ENV_NAME || "local")
             .replace(/<ENV_SUFFIX>/g, process.env.ENVIRONMENT || "LOCAL"),
       },
@@ -116,7 +118,7 @@ const copyWebManifestPlugin = (dev: boolean) => {
           transform: (contents) =>
             contents
               .toString()
-              .replace(/<BASE_URL>/g, process.env.BASE_URL || "")
+              .replace(/<BASE_URL>/g, process.env.BASE_URL || BASE_URL)
               // We don't want to show PROD in the PWA name
               .replace(
                 /{{environment_suffix}}/g,
@@ -133,6 +135,18 @@ const copyWebManifestPlugin = (dev: boolean) => {
   }
 }
 
+const htmlPlugin = () => {
+  return {
+    name: "html-transform",
+    transformIndexHtml(html) {
+      return html.replace(
+        /href="\/manifest.json"/,
+        `href="${process.env.BASE_URL || BASE_URL}/manifest.json"`,
+      )
+    },
+  }
+}
+
 const injectWebServiceWorkerPlugin = (mode: string) =>
   injectManifest(
     {
@@ -141,7 +155,7 @@ const injectWebServiceWorkerPlugin = (mode: string) =>
       dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
       globDirectory: "dist",
       mode,
-      modifyURLPrefix: { assets: `${process.env.BASE_URL || ""}/assets` },
+      modifyURLPrefix: { assets: `${process.env.BASE_URL || BASE_URL}/assets` },
     },
     () => {},
   )
@@ -171,6 +185,7 @@ const setConfig = ({ mode }) => {
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
+  plugins.push(htmlPlugin())
 
   return defineConfig({
     base: process.env.BASE_URL || "/",
