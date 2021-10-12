@@ -158,7 +158,6 @@ const setConfig = ({ mode }) => {
 
   if (TARGET === "web") {
     plugins.push(injectWebServiceWorkerPlugin(mode))
-    plugins.push(copyWebManifestPlugin(mode === "development"))
   }
 
   if (TARGET === "openfin") {
@@ -170,6 +169,7 @@ const setConfig = ({ mode }) => {
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
+  plugins.push(copyWebManifestPlugin(mode === "development"))
 
   return defineConfig({
     base: process.env.BASE_URL || "/",
