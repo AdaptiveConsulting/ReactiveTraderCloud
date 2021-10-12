@@ -8,6 +8,8 @@ import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 
+const BASE_URL = "http://localhost:1917"
+
 function apiMockReplacerPlugin(): Plugin {
   return {
     name: "apiMockReplacerPlugin",
@@ -91,10 +93,7 @@ const copyOpenfinPlugin = (dev: boolean) => ({
         transform: (contents) =>
           contents
             .toString()
-            .replace(
-              /<BASE_URL>/g,
-              process.env.BASE_URL || "http://localhost:1917",
-            )
+            .replace(/<BASE_URL>/g, process.env.BASE_URL || BASE_URL)
             .replace(/<ENV_NAME>/g, process.env.ENVIRONMENT || "local")
             .replace(
               /<ENV_SUFFIX>/g,
@@ -112,25 +111,46 @@ const copyOpenfinPlugin = (dev: boolean) => ({
   }),
 })
 
-const copyWebManifestPlugin = (dev: boolean) => ({
-  ...copy({
-    targets: [
-      {
-        src: "./public/manifest.json",
-        dest: "./dist",
-        transform: (contents) =>
-          contents
-            .toString()
-            .replace(/<BASE_URL>/g, process.env.BASE_URL || ""),
-      },
-    ],
-    verbose: true,
-    // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
-    // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
-    // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
-    hook: dev ? "buildStart" : "writeBundle",
-  }),
-})
+const copyWebManifestPlugin = (dev: boolean) => {
+  const envSuffix = (process.env.ENVIRONMENT || "local").toUpperCase()
+  return {
+    ...copy({
+      targets: [
+        {
+          src: "./public/.manifest.json",
+          dest: dev ? "./public" : "./dist",
+          rename: "manifest.json",
+          transform: (contents) =>
+            contents
+              .toString()
+              .replace(/<BASE_URL>/g, process.env.BASE_URL || BASE_URL)
+              // We don't want to show PROD in the PWA name
+              .replace(
+                /{{environment_suffix}}/g,
+                envSuffix === "PROD" ? "" : envSuffix,
+              ),
+        },
+      ],
+      verbose: true,
+      // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
+      // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
+      // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
+      hook: dev ? "buildStart" : "writeBundle",
+    }),
+  }
+}
+
+const htmlPlugin = () => {
+  return {
+    name: "html-transform",
+    transformIndexHtml(html) {
+      return html.replace(
+        /href="\/manifest.json"/,
+        `href="${process.env.BASE_URL || BASE_URL}/manifest.json"`,
+      )
+    },
+  }
+}
 
 const injectWebServiceWorkerPlugin = (mode: string) =>
   injectManifest(
@@ -140,7 +160,7 @@ const injectWebServiceWorkerPlugin = (mode: string) =>
       dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
       globDirectory: "dist",
       mode,
-      modifyURLPrefix: { assets: `${process.env.BASE_URL || ""}/assets` },
+      modifyURLPrefix: { assets: `${process.env.BASE_URL || BASE_URL}/assets` },
     },
     () => {},
   )
@@ -170,6 +190,7 @@ const setConfig = ({ mode }) => {
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
+  plugins.push(htmlPlugin())
 
   return defineConfig({
     base: process.env.BASE_URL || "/",

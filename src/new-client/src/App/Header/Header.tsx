@@ -1,3 +1,4 @@
+import { FC, useState, ReactNode } from "react"
 import LoginControls from "./LoginControls"
 import Logo from "@/components/Logo"
 import ThemeSwitcher from "./theme-switcher"
@@ -8,12 +9,13 @@ import {
   HeaderNav,
   Fill,
 } from "./Header.styles"
+import { PWABanner, PWAInstallBanner, PWALaunchButton } from "./PWA"
 
 interface Props {
-  logo?: React.ReactNode
-  filler?: React.ReactNode
-  controls?: React.ReactNode
-  switches?: React.ReactNode
+  logo?: ReactNode
+  filler?: ReactNode
+  controls?: ReactNode
+  switches?: ReactNode
 }
 
 const defaultLogo = (
@@ -42,18 +44,39 @@ const defaultSwitches = <ThemeSwitcher />
 
 const defaultControls = <LoginControls />
 
-const Header: React.FC<Props> = ({ logo, filler, controls, switches }) => (
-  <AppHeaderWrapper role="banner" aria-label="Reactive Trader Header">
-    <AppHeaderRoot>
-      {logo || defaultLogo}
-      {filler || defaultFiller}
+const SESSION = "PWABanner"
 
-      <HeaderNav>
-        {switches || defaultSwitches}
-        {controls || defaultControls}
-      </HeaderNav>
-    </AppHeaderRoot>
-  </AppHeaderWrapper>
-)
+const Header: FC<Props> = ({ logo, filler, controls, switches }) => {
+  const [banner, setBanner] = useState<string>(
+    sessionStorage.getItem(SESSION) || PWABanner.NotSet,
+  )
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  const updateBanner = (value: PWABanner) => {
+    setBanner(value)
+    sessionStorage.setItem(SESSION, value)
+  }
+
+  return (
+    <AppHeaderWrapper role="banner" aria-label="Reactive Trader Header">
+      <AppHeaderRoot>
+        {logo || defaultLogo}
+        {filler || defaultFiller}
+
+        <HeaderNav>
+          {switches || defaultSwitches}
+          {controls || defaultControls}
+          <PWALaunchButton state={banner} setIsModalOpen={setIsModalOpen} />
+        </HeaderNav>
+      </AppHeaderRoot>
+      <PWAInstallBanner
+        banner={banner}
+        updateBanner={updateBanner}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
+    </AppHeaderWrapper>
+  )
+}
 
 export default Header

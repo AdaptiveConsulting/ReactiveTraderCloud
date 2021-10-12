@@ -13,6 +13,7 @@ import { TradesCoreDeferred } from "@/App/Trades"
 
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
+import { PlatformContext } from "@/platform"
 
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
@@ -50,11 +51,13 @@ export default function main() {
 
   ReactDOM.render(
     <StrictMode>
-      <GlobalStyle />
-      <ThemeProvider>
-        <GlobalScrollbarStyle />
-        <WebApp />
-      </ThemeProvider>
+      <PlatformContext.Provider value={{ type: "web" }}>
+        <GlobalStyle />
+        <ThemeProvider>
+          <GlobalScrollbarStyle />
+          <WebApp />
+        </ThemeProvider>
+      </PlatformContext.Provider>
     </StrictMode>,
     document.getElementById("root"),
   )
