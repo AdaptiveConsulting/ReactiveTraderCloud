@@ -94,8 +94,13 @@ const copyOpenfinPlugin = (dev: boolean) => ({
           contents
             .toString()
             .replace(/<BASE_URL>/g, process.env.BASE_URL || BASE_URL)
-            .replace(/<ENV_NAME>/g, process.env.ENV_NAME || "local")
-            .replace(/<ENV_SUFFIX>/g, process.env.ENVIRONMENT || "LOCAL"),
+            .replace(/<ENV_NAME>/g, process.env.ENVIRONMENT || "local")
+            .replace(
+              /<ENV_SUFFIX>/g,
+              process.env.ENVIRONMENT
+                ? process.env.ENVIRONMENT.toUpperCase()
+                : "LOCAL",
+            ),
       },
     ],
     verbose: true,

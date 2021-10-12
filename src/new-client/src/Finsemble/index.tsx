@@ -15,6 +15,7 @@ export default function main() {
       url: `${window.location.origin}/ws`,
       interceptor: noop,
       useJson: true,
+      autoReconnect: true,
     })
   }
 
