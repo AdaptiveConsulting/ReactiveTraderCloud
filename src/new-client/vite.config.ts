@@ -93,7 +93,7 @@ const copyOpenfinPlugin = (dev: boolean) => ({
         transform: (contents) =>
           contents
             .toString()
-            .replace(/<BASE_URL>/g, process.env.BASE_URL || BASE_URL)
+            .replace(/<BASE_URL>/g, dev ? BASE_URL : process.env.BASE_URL || "")
             .replace(/<ENV_NAME>/g, process.env.ENVIRONMENT || "local")
             .replace(
               /<ENV_SUFFIX>/g,
@@ -123,7 +123,10 @@ const copyWebManifestPlugin = (dev: boolean) => {
           transform: (contents) =>
             contents
               .toString()
-              .replace(/<BASE_URL>/g, process.env.BASE_URL || BASE_URL)
+              .replace(
+                /<BASE_URL>/g,
+                dev ? BASE_URL : process.env.BASE_URL || "",
+              )
               // We don't want to show PROD in the PWA name
               .replace(
                 /{{environment_suffix}}/g,
