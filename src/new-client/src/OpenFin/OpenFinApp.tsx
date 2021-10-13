@@ -13,6 +13,8 @@ import { DocTitle } from "@/components/DocTitle"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
 
 export const OpenFinApp: React.FC = () => {
+  // BASE_URL is either a full url injected by GH workflow, or empty on localhost
+  // basename needs to be a path, not url
   const basename = import.meta.env.BASE_URL
     ? new URL(import.meta.env.BASE_URL).pathname
     : ""
