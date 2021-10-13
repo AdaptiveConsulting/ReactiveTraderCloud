@@ -13,10 +13,10 @@ import { DocTitle } from "@/components/DocTitle"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
 
 export const OpenFinApp: React.FC = () => {
-  const [_, basename] = (import.meta.env.BASE_URL || ".com")
-    .replace(/\/$/, "")
-    .split(".com")
-  console.log("basename", basename)
+  const basename = import.meta.env.BASE_URL
+    ? new URL(import.meta.env.BASE_URL).pathname
+    : ""
+
   return (
     <BrowserRouter basename={basename}>
       <Switch>
@@ -82,7 +82,6 @@ export const OpenFinApp: React.FC = () => {
         />
         <Route path="/status" render={() => <div />} />
         <Route path="/snapshots" render={() => <Snapshots />} />
-        <Route path="*" render={() => <div>Testing</div>} />
       </Switch>
     </BrowserRouter>
   )
