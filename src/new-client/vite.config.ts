@@ -67,7 +67,7 @@ const customPreloadPlugin = () => {
   const result: any = {
     ...((modulepreload as any)({
       index: resolve(__dirname, "dist", "index.html"),
-      prefix: process.env.BASE_URL || "/",
+      prefix: process.env.BASE_URL || "",
     }) as any),
     enforce: "post",
   }
