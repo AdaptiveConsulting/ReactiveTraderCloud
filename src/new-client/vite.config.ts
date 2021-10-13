@@ -8,7 +8,9 @@ import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 
-const BASE_URL = "http://localhost:1917"
+function getBaseUrl(dev: boolean) {
+  return dev ? "http://localhost:1917" : process.env.BASE_URL || ""
+}
 
 function apiMockReplacerPlugin(): Plugin {
   return {
@@ -93,7 +95,7 @@ const copyOpenfinPlugin = (dev: boolean) => ({
         transform: (contents) =>
           contents
             .toString()
-            .replace(/<BASE_URL>/g, dev ? BASE_URL : process.env.BASE_URL || "")
+            .replace(/<BASE_URL>/g, getBaseUrl(dev))
             .replace(/<ENV_NAME>/g, process.env.ENVIRONMENT || "local")
             .replace(
               /<ENV_SUFFIX>/g,
@@ -123,10 +125,7 @@ const copyWebManifestPlugin = (dev: boolean) => {
           transform: (contents) =>
             contents
               .toString()
-              .replace(
-                /<BASE_URL>/g,
-                dev ? BASE_URL : process.env.BASE_URL || "",
-              )
+              .replace(/<BASE_URL>/g, getBaseUrl(dev))
               // We don't want to show PROD in the PWA name
               .replace(
                 /{{environment_suffix}}/g,
@@ -143,13 +142,13 @@ const copyWebManifestPlugin = (dev: boolean) => {
   }
 }
 
-const htmlPlugin = () => {
+const htmlPlugin = (dev: boolean) => {
   return {
     name: "html-transform",
     transformIndexHtml(html) {
       return html.replace(
         /href="\/manifest.json"/,
-        `href="${process.env.BASE_URL || BASE_URL}/manifest.json"`,
+        `href="${getBaseUrl(dev)}/manifest.json"`,
       )
     },
   }
@@ -163,7 +162,9 @@ const injectWebServiceWorkerPlugin = (mode: string) =>
       dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
       globDirectory: "dist",
       mode,
-      modifyURLPrefix: { assets: `${process.env.BASE_URL || BASE_URL}/assets` },
+      modifyURLPrefix: {
+        assets: `${getBaseUrl(mode === "development")}/assets`,
+      },
     },
     () => {},
   )
@@ -172,20 +173,20 @@ const injectWebServiceWorkerPlugin = (mode: string) =>
 const setConfig = ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
-  const plugins =
-    mode === "development"
-      ? [eslintPlugin, typescriptPlugin, reactRefresh()]
-      : [customPreloadPlugin()]
+  const isDev = mode === "development"
+  const plugins = isDev
+    ? [eslintPlugin, typescriptPlugin, reactRefresh()]
+    : [customPreloadPlugin()]
 
   const TARGET = process.env.TARGET || "web"
 
   if (TARGET === "web") {
     plugins.push(injectWebServiceWorkerPlugin(mode))
-    plugins.push(copyWebManifestPlugin(mode === "development"))
+    plugins.push(copyWebManifestPlugin(isDev))
   }
 
   if (TARGET === "openfin") {
-    plugins.push(copyOpenfinPlugin(mode === "development"))
+    plugins.push(copyOpenfinPlugin(isDev))
   }
 
   if (process.env.VITE_MOCKS) {
@@ -193,7 +194,7 @@ const setConfig = ({ mode }) => {
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
-  plugins.push(htmlPlugin())
+  plugins.push(htmlPlugin(isDev))
 
   return defineConfig({
     base: process.env.BASE_URL || "/",
