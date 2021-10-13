@@ -13,10 +13,12 @@ import { DocTitle } from "@/components/DocTitle"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
 
 export const OpenFinApp: React.FC = () => {
-  const basename = (import.meta.env.BASE_URL || "").replace(/\/$/, "")
+  const [_, basename] = (import.meta.env.BASE_URL || ".com")
+    .replace(/\/$/, "")
+    .split(".com")
   console.log("basename", basename)
   return (
-    <BrowserRouter basename={"/branch/fix_openfin-env"}>
+    <BrowserRouter basename={basename}>
       <Switch>
         <Route
           path="/analytics"
@@ -72,11 +74,7 @@ export const OpenFinApp: React.FC = () => {
           }}
         />
 
-        <Route
-          exact
-          path="/openfin-window-frame"
-          render={() => <WindowFrame />}
-        />
+        <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
 
         <Route
           path="/openfin-sub-window-frame"
