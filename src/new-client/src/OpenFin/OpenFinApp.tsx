@@ -16,7 +16,7 @@ export const OpenFinApp: React.FC = () => {
   const basename = (import.meta.env.BASE_URL || "").replace(/\/$/, "")
   console.log("basename", basename)
   return (
-    <BrowserRouter basename={basename}>
+    <BrowserRouter basename={"/branch/fix_openfin-env"}>
       <Switch>
         <Route
           path="/analytics"
