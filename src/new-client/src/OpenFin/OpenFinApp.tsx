@@ -72,7 +72,11 @@ export const OpenFinApp: React.FC = () => {
           }}
         />
 
-        <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
+        <Route
+          exact
+          path="/openfin-window-frame"
+          render={() => <WindowFrame />}
+        />
 
         <Route
           path="/openfin-sub-window-frame"
