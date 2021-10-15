@@ -10,7 +10,7 @@ export enum TileView {
 const [toggleSelectedView$, onToggleSelectedView] = createSignal()
 export { onToggleSelectedView }
 
-const SELECTED_VIEW_KEY = "selectedView"
+export const SELECTED_VIEW_KEY = "selectedView"
 
 const initView =
   (window.localStorage.getItem(SELECTED_VIEW_KEY) as TileView) ||
