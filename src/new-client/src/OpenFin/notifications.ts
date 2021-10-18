@@ -52,7 +52,7 @@ export async function registerNotifications() {
   fin.InterApplicationBus.subscribe(
     { uuid: "*" },
     "highlight-blotter",
-    (message: any) => onRowHighlight(message.tradeId),
+    (message: { tradeId: number }) => onRowHighlight(message.tradeId),
   )
 
   addEventListener("notification-action", handleNotificationAction)

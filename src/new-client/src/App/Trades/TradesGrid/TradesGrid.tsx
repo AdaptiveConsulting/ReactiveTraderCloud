@@ -84,8 +84,8 @@ const StatusIndicatorSpacer = styled.th`
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
 `
 
-export const [rowHighlight$, onRowHighlight] = createSignal<string>()
-const [useRowHighlight] = bind<string>(rowHighlight$, "")
+export const [rowHighlight$, onRowHighlight] = createSignal<number>()
+const [useRowHighlight] = bind(rowHighlight$, null)
 
 export const TradesGrid: React.FC = () => {
   const trades = useTableTrades()
@@ -120,8 +120,7 @@ export const TradesGrid: React.FC = () => {
               <TableBodyRow
                 key={trade.tradeId}
                 pending={trade.status === TradeStatus.Pending}
-                //@ts-ignore
-                highlight={trade.tradeId === highlightRow.toString()}
+                highlight={trade.tradeId === highlightRow}
                 onClick={() => tryBroadcastContext(trade.symbol)}
               >
                 <StatusIndicator
