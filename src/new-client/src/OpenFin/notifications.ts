@@ -48,15 +48,15 @@ const handleNotificationAction = (event: NotificationActionEvent) => {
   }
 }
 
-fin.InterApplicationBus.subscribe(
-  { uuid: "*" },
-  "highlight-blotter",
-  (message: any) => onRowHighlight(message.tradeId),
-)
-
-addEventListener("notification-action", handleNotificationAction)
-
 export async function registerNotifications() {
+  fin.InterApplicationBus.subscribe(
+    { uuid: "*" },
+    "highlight-blotter",
+    (message: any) => onRowHighlight(message.tradeId),
+  )
+
+  addEventListener("notification-action", handleNotificationAction)
+
   executions$.subscribe(
     (executionTrade) => {
       sendNotification(executionTrade)
