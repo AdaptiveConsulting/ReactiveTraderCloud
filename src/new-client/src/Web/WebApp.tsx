@@ -5,7 +5,7 @@ import { TornOutTile } from "./Tiles"
 import { TearOutRouteWrapper } from "./Web.styles"
 
 export const WebApp: React.FC = () => (
-  <BrowserRouter>
+  <BrowserRouter basename={import.meta.env.BASE_URL}>
     <Switch>
       <Route exact path="/" render={() => <MainRoute />} />
       <Route
