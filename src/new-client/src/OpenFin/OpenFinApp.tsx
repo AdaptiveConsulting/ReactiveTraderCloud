@@ -8,7 +8,7 @@ import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
 import { DocTitle } from "@/components/DocTitle"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
-import { TearOutTile, Tiles } from "./Tiles"
+import { TornOutTile, Tiles } from "./Tiles"
 import { TileView } from "@/App/LiveRates/selectedView"
 
 export const OpenFinApp: React.FC = () => (
@@ -62,7 +62,7 @@ export const OpenFinApp: React.FC = () => (
             ? (query.get("tileView") as TileView)
             : TileView.Analytics
 
-          return <TearOutTile symbol={symbol} view={view} />
+          return <TornOutTile symbol={symbol} view={view} />
         }}
       />
       <Route path="/contact" render={() => <OpenFinContactDisplay />} />

@@ -1,9 +1,9 @@
 import { TileView } from "@/App/LiveRates/selectedView"
 import { tearOutEntry$ } from "@/App/LiveRates/Tile/TearOut/state"
-import { TearOutTile as BaseTearOutTile } from "@/App/LiveRates/Tile/TearOut/TearOutTile"
+import { TornOutTile as BaseTornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 import { useObservableSubscription } from "@/utils/useObservableSubscription"
 
-export const TearOutTile: React.FC<{ symbol: string; view: TileView }> = ({
+export const TornOutTile: React.FC<{ symbol: string; view: TileView }> = ({
   symbol,
   view,
 }) => {
@@ -23,5 +23,5 @@ export const TearOutTile: React.FC<{ symbol: string; view: TileView }> = ({
     ),
   )
 
-  return <BaseTearOutTile symbol={symbol} view={view} />
+  return <BaseTornOutTile symbol={symbol} view={view} />
 }

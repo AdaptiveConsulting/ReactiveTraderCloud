@@ -10,7 +10,7 @@ const Wrapper = styled("div")`
   margin: 8px;
 `
 
-export const TearOutTile = withSubscriber<{
+export const TornOutTile = withSubscriber<{
   symbol: string
   view: TileView
   supportsTearOut?: boolean

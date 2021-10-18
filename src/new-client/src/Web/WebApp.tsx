@@ -1,7 +1,7 @@
 import { TileView } from "@/App/LiveRates/selectedView"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { MainRoute } from "./MainRoute"
-import { TearOutTile } from "./Tiles"
+import { TornOutTile } from "./Tiles"
 import { TearOutRouteWrapper } from "./Web.styles"
 
 export const WebApp: React.FC = () => (
@@ -23,7 +23,7 @@ export const WebApp: React.FC = () => (
 
           return (
             <TearOutRouteWrapper>
-              <TearOutTile symbol={symbol} view={view} />
+              <TornOutTile symbol={symbol} view={view} />
             </TearOutRouteWrapper>
           )
         }}
