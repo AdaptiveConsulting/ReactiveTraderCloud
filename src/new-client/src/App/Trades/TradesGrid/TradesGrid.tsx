@@ -3,6 +3,8 @@ import styled, { css } from "styled-components"
 import { TradeStatus } from "@/services/trades"
 import { colConfigs, colFields, useTableTrades } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
+import { createSignal } from "@react-rxjs/utils"
+import { bind } from "@react-rxjs/core"
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -34,7 +36,11 @@ const pendingBackgroundColor = css`
   background-color: ${({ theme }) => theme.core.alternateBackground};
 `
 
-const TableBodyRow = styled.tr<{ pending?: boolean }>`
+const highlightBackgroundColor = css`
+  animation: ${({ theme }) => theme.flash} 1s ease-in-out 3;
+`
+
+const TableBodyRow = styled.tr<{ pending?: boolean; highlight?: boolean }>`
   &:nth-child(even) {
     background-color: ${({ theme }) => theme.core.darkBackground};
   }
@@ -43,6 +49,7 @@ const TableBodyRow = styled.tr<{ pending?: boolean }>`
   }
   height: 2rem;
   ${({ pending }) => pending && pendingBackgroundColor}
+  ${({ highlight }) => highlight && highlightBackgroundColor}
 `
 
 const TableBodyCell = styled.td<{ numeric?: boolean; rejected?: boolean }>`
@@ -77,8 +84,12 @@ const StatusIndicatorSpacer = styled.th`
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
 `
 
+export const [rowHighlight$, onRowHighlight] = createSignal<string>()
+const [useRowHighlight] = bind<string>(rowHighlight$, "")
+
 export const TradesGrid: React.FC = () => {
   const trades = useTableTrades()
+  const highlightRow = useRowHighlight()
 
   const tryBroadcastContext = (symbol: string) => {
     if (window.fdc3) {
@@ -109,6 +120,8 @@ export const TradesGrid: React.FC = () => {
               <TableBodyRow
                 key={trade.tradeId}
                 pending={trade.status === TradeStatus.Pending}
+                //@ts-ignore
+                highlight={trade.tradeId === highlightRow.toString()}
                 onClick={() => tryBroadcastContext(trade.symbol)}
               >
                 <StatusIndicator
