@@ -1,7 +1,12 @@
 import { broadcast } from "@finos/fdc3"
 import styled, { css } from "styled-components"
 import { TradeStatus } from "@/services/trades"
-import { colConfigs, colFields, useTableTrades } from "../TradesState"
+import {
+  colConfigs,
+  colFields,
+  useTradeRowHighlight,
+  useTableTrades,
+} from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
 import { createSignal } from "@react-rxjs/utils"
 import { bind } from "@react-rxjs/core"
@@ -84,12 +89,10 @@ const StatusIndicatorSpacer = styled.th`
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
 `
 
-export const [rowHighlight$, onRowHighlight] = createSignal<number>()
-const [useRowHighlight] = bind(rowHighlight$, null)
-
 export const TradesGrid: React.FC = () => {
   const trades = useTableTrades()
-  const highlightRow = useRowHighlight()
+  const highlightedRow = useTradeRowHighlight()
+  console.log("highlightedRow", highlightedRow)
 
   const tryBroadcastContext = (symbol: string) => {
     if (window.fdc3) {
@@ -120,7 +123,7 @@ export const TradesGrid: React.FC = () => {
               <TableBodyRow
                 key={trade.tradeId}
                 pending={trade.status === TradeStatus.Pending}
-                highlight={trade.tradeId === highlightRow}
+                highlight={trade.tradeId === highlightedRow}
                 onClick={() => tryBroadcastContext(trade.symbol)}
               >
                 <StatusIndicator

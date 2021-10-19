@@ -7,7 +7,7 @@ import {
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { executions$ } from "@/services/executions/executions"
 import { formatNumber } from "@/utils"
-import { onRowHighlight } from "@/App/Trades/TradesGrid/TradesGrid"
+import { onTradeRowHighlight } from "@/App/Trades/TradesState"
 
 const sendNotification = (executionTrade: ExecutionTrade) => {
   const notification = {
@@ -52,7 +52,8 @@ export async function registerNotifications() {
   fin.InterApplicationBus.subscribe(
     { uuid: "*" },
     "highlight-blotter",
-    (message: { tradeId: number }) => onRowHighlight(message.tradeId),
+    (message: { tradeId: number }) =>
+      onTradeRowHighlight(message.tradeId.toString()),
   )
 
   addEventListener("notification-action", handleNotificationAction)

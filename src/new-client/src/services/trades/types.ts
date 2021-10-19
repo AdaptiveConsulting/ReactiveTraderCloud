@@ -30,8 +30,9 @@ export interface RawTradeUpdate extends CollectionUpdates {
 
 export interface Trade
   extends CamelCase<
-    Omit<TradeRaw, "ValueDate" | "TradeDate" | "CurrencyPair">
+    Omit<TradeRaw, "TradeId" | "ValueDate" | "TradeDate" | "CurrencyPair">
   > {
+  tradeId: string
   symbol: string
   valueDate: Date
   tradeDate: Date
