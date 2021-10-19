@@ -18,7 +18,7 @@ export const PopOutIcon: React.FC<Props> = ({ width = 24, height = 24 }) => (
       />
       <path
         fill="#7E8188"
-        className="hover-state"
+        className="tear-out-hover-state"
         d="M17.351 10.324a.54.54 0 00.54-.54V6.54a.54.54 0 00-.54-.541h-3.243a.54.54 0 000 1.081h1.935l-3.398 3.402a.54.54 0 00.764.764l3.402-3.399v1.936c0 .298.242.54.54.54z"
       />
     </g>

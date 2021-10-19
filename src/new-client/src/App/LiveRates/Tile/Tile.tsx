@@ -18,7 +18,7 @@ import {
 import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
 
 import { CurrencyPair } from "services/currencyPairs"
-import { Provider, symbolBind } from "./Tile.context"
+import { Provider, symbolBind, useTileContext } from "./Tile.context"
 import {
   getRfqState$,
   isRfq$,
@@ -30,6 +30,7 @@ import {
 import { getIsSymbolDataStale$ } from "@/services/prices"
 import { SUSPENSE } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
+import { isMobileDevice } from "@/utils"
 
 export const tile$ = (symbol: string) =>
   merge(
@@ -54,13 +55,13 @@ const [useIsSymbolDataStale] = symbolBind(
 )
 
 interface Props {
-  HeaderComponent?: React.ComponentType
   isAnalytics: boolean
 }
 
-const Tile: React.FC<Props> = ({ isAnalytics, HeaderComponent = Header }) => {
+const Tile: React.FC<Props> = ({ isAnalytics }) => {
   useIsSymbolDataStale()
   const rfq = useRfqState()
+  const { supportsTearOut } = useTileContext()
   const timerData =
     rfq.stage === QuoteStateStage.Received
       ? { start: rfq.payload.time, end: rfq.payload.time + rfq.payload.timeout }
@@ -80,9 +81,9 @@ const Tile: React.FC<Props> = ({ isAnalytics, HeaderComponent = Header }) => {
   }
 
   return (
-    <PanelItem>
+    <PanelItem shouldMoveDate={supportsTearOut}>
       <Main>
-        <HeaderComponent />
+        <Header />
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
           {isAnalytics ? (
             <GraphNotionalWrapper>
@@ -106,15 +107,29 @@ const Tile: React.FC<Props> = ({ isAnalytics, HeaderComponent = Header }) => {
   )
 }
 const TileContext: React.FC<{
-  HeaderComponent?: React.ComponentType
   currencyPair: CurrencyPair
   isAnalytics: boolean
-}> = memo(({ HeaderComponent = Header, currencyPair, isAnalytics }) => {
-  return (
-    <Provider value={currencyPair}>
-      <Tile isAnalytics={isAnalytics} HeaderComponent={HeaderComponent} />
-    </Provider>
-  )
-})
+  isTornOut?: boolean
+  supportsTearOut?: boolean
+}> = memo(
+  ({
+    currencyPair,
+    isAnalytics,
+    isTornOut = false,
+    supportsTearOut = true,
+  }) => {
+    return (
+      <Provider
+        value={{
+          currencyPair,
+          isTornOut,
+          supportsTearOut: supportsTearOut && !isMobileDevice,
+        }}
+      >
+        <Tile isAnalytics={isAnalytics} />
+      </Provider>
+    )
+  },
+)
 
 export { TileContext as Tile }

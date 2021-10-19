@@ -1,90 +1,79 @@
 import { Subscribe } from "@react-rxjs/core"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { Analytics } from "@/App/Analytics"
-import { TileView } from "@/App/LiveRates/selectedView"
 import { Trades } from "@/App/Trades"
 import { Loader } from "@/components/Loader"
-import { DetachableLiveRates } from "./DetachableTile/DetachableLiveRates"
-import { DetachableTile } from "./DetachableTile/DetachableTile"
 import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
 import { DocTitle } from "@/components/DocTitle"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
+import { TornOutTile, Tiles } from "./Tiles"
+import { TileView } from "@/App/LiveRates/selectedView"
+import { BASE_URL } from "@/constants"
 
-export const OpenFinApp: React.FC = () => {
-  // BASE_URL is either a full url injected by GH workflow, or empty on localhost
-  // basename needs to be a path, not url
-  const basename = import.meta.env.BASE_URL
-    ? new URL(import.meta.env.BASE_URL).pathname
-    : ""
-
-  return (
-    <BrowserRouter basename={basename}>
-      <Switch>
-        <Route
-          path="/analytics"
-          render={() => (
-            <DocTitle title="Analytics">
-              <Analytics hideIfMatches={null} />
-            </DocTitle>
-          )}
-        />
-        <Route
-          path="/blotter"
-          render={() => (
-            <DocTitle title="Trades">
-              <Trades />
-            </DocTitle>
-          )}
-        />
-        <Route
-          path="/tiles"
-          render={() => (
+export const OpenFinApp: React.FC = () => (
+  <BrowserRouter basename={BASE_URL}>
+    <Switch>
+      <Route
+        path="/analytics"
+        render={() => (
+          <DocTitle title="Analytics">
+            <Analytics hideIfMatches={null} />
+          </DocTitle>
+        )}
+      />
+      <Route
+        path="/blotter"
+        render={() => (
+          <DocTitle title="Trades">
+            <Trades />
+          </DocTitle>
+        )}
+      />
+      <Route
+        path="/tiles"
+        render={() => {
+          const loader = (
+            <Loader
+              ariaLabel="Loading live FX exchange rates"
+              minWidth="22rem"
+              minHeight="22rem"
+            />
+          )
+          return (
             <DocTitle title="Live Rates">
-              <DetachableLiveRates />
-            </DocTitle>
-          )}
-        />
-        <Route path="/contact" render={() => <OpenFinContactDisplay />} />
-        <Route
-          path="/spot/:symbol"
-          render={({
-            location: { search },
-            match: {
-              params: { symbol },
-            },
-          }) => {
-            const query = new URLSearchParams(search)
-            const view = query.has("tileView")
-              ? (query.get("tileView") as TileView)
-              : TileView.Analytics
-
-            const loader = (
-              <Loader
-                ariaLabel="Loading live FX exchange rates"
-                minWidth="22rem"
-                minHeight="22rem"
-              />
-            )
-
-            return (
               <Subscribe fallback={loader}>
-                <DetachableTile symbol={symbol} view={view} isTornOut={true} />
+                <Tiles />
               </Subscribe>
-            )
-          }}
-        />
+            </DocTitle>
+          )
+        }}
+      />
+      <Route
+        path="/spot/:symbol"
+        render={({
+          location: { search },
+          match: {
+            params: { symbol },
+          },
+        }) => {
+          const query = new URLSearchParams(search)
+          const view = query.has("tileView")
+            ? (query.get("tileView") as TileView)
+            : TileView.Analytics
 
-        <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
-
-        <Route
-          path="/openfin-sub-window-frame"
-          render={() => <ChildWindowFrame />}
-        />
-        <Route path="/status" render={() => <div />} />
-        <Route path="/snapshots" render={() => <Snapshots />} />
-      </Switch>
-    </BrowserRouter>
-  )
-}
+          return <TornOutTile symbol={symbol} view={view} />
+        }}
+      />
+      <Route path="/contact" render={() => <OpenFinContactDisplay />} />
+      <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
+      <Route
+        path="/openfin-sub-window-frame"
+        render={() => <ChildWindowFrame />}
+      />
+      <Route path="/status" render={() => <div />} />
+      <Route path="/snapshots" render={() => <Snapshots />} />
+    </Switch>
+  </BrowserRouter>
+)

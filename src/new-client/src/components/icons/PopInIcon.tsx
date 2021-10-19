@@ -13,7 +13,7 @@ export const PopInIcon: React.FC = () => (
       />
       <path
         fill="#7E8188"
-        className="pop-in-hover-state"
+        className="tear-out-hover-state"
         d="M13.027 7.081a.54.54 0 00-.54.54v3.244c0 .298.241.54.54.54h3.243a.54.54 0 000-1.08h-1.935l3.399-3.402a.54.54 0 00-.765-.765l-3.401 3.4V7.621a.54.54 0 00-.541-.54z"
       />
     </g>
