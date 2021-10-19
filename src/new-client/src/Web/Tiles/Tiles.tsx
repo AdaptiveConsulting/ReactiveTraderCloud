@@ -1,5 +1,6 @@
 import { LiveRates } from "@/App/LiveRates"
 import { tearOut, tearOutEntry$ } from "@/App/LiveRates/Tile/TearOut/state"
+import { constructUrl } from "@/utils/url"
 import { useObservableSubscription } from "@/utils/useObservableSubscription"
 import { openWindow } from "../utils/window"
 
@@ -8,9 +9,10 @@ export const Tiles = () => {
     tearOutEntry$.subscribe(
       async ([symbol, tornOut]) => {
         if (tornOut) {
+          console.log("url", constructUrl(`/spot/${symbol}`))
           openWindow(
             {
-              url: `/spot/${symbol}`,
+              url: constructUrl(`/spot/${symbol}`),
               name: symbol,
               width: 380,
               height: 170,

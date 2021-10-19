@@ -10,77 +10,70 @@ import { DocTitle } from "@/components/DocTitle"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
 import { TornOutTile, Tiles } from "./Tiles"
 import { TileView } from "@/App/LiveRates/selectedView"
+import { BASE_URL } from "@/constants"
 
-export const OpenFinApp: React.FC = () => {
-  // BASE_URL is either a full url injected by GH workflow, or / on localhost
-  // basename needs to be a path, not url
-  const basename =
-    import.meta.env.BASE_URL && !import.meta.env.BASE_URL.startsWith("/")
-      ? new URL(import.meta.env.BASE_URL).pathname
-      : import.meta.env.BASE_URL
-  return (
-    <BrowserRouter basename={basename}>
-      <Switch>
-        <Route
-          path="/analytics"
-          render={() => (
-            <DocTitle title="Analytics">
-              <Analytics hideIfMatches={null} />
+export const OpenFinApp: React.FC = () => (
+  <BrowserRouter basename={BASE_URL}>
+    <Switch>
+      <Route
+        path="/analytics"
+        render={() => (
+          <DocTitle title="Analytics">
+            <Analytics hideIfMatches={null} />
+          </DocTitle>
+        )}
+      />
+      <Route
+        path="/blotter"
+        render={() => (
+          <DocTitle title="Trades">
+            <Trades />
+          </DocTitle>
+        )}
+      />
+      <Route
+        path="/tiles"
+        render={() => {
+          const loader = (
+            <Loader
+              ariaLabel="Loading live FX exchange rates"
+              minWidth="22rem"
+              minHeight="22rem"
+            />
+          )
+          return (
+            <DocTitle title="Live Rates">
+              <Subscribe fallback={loader}>
+                <Tiles />
+              </Subscribe>
             </DocTitle>
-          )}
-        />
-        <Route
-          path="/blotter"
-          render={() => (
-            <DocTitle title="Trades">
-              <Trades />
-            </DocTitle>
-          )}
-        />
-        <Route
-          path="/tiles"
-          render={() => {
-            const loader = (
-              <Loader
-                ariaLabel="Loading live FX exchange rates"
-                minWidth="22rem"
-                minHeight="22rem"
-              />
-            )
-            return (
-              <DocTitle title="Live Rates">
-                <Subscribe fallback={loader}>
-                  <Tiles />
-                </Subscribe>
-              </DocTitle>
-            )
-          }}
-        />
-        <Route
-          path="/spot/:symbol"
-          render={({
-            location: { search },
-            match: {
-              params: { symbol },
-            },
-          }) => {
-            const query = new URLSearchParams(search)
-            const view = query.has("tileView")
-              ? (query.get("tileView") as TileView)
-              : TileView.Analytics
+          )
+        }}
+      />
+      <Route
+        path="/spot/:symbol"
+        render={({
+          location: { search },
+          match: {
+            params: { symbol },
+          },
+        }) => {
+          const query = new URLSearchParams(search)
+          const view = query.has("tileView")
+            ? (query.get("tileView") as TileView)
+            : TileView.Analytics
 
-            return <TornOutTile symbol={symbol} view={view} />
-          }}
-        />
-        <Route path="/contact" render={() => <OpenFinContactDisplay />} />
-        <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
-        <Route
-          path="/openfin-sub-window-frame"
-          render={() => <ChildWindowFrame />}
-        />
-        <Route path="/status" render={() => <div />} />
-        <Route path="/snapshots" render={() => <Snapshots />} />
-      </Switch>
-    </BrowserRouter>
-  )
-}
+          return <TornOutTile symbol={symbol} view={view} />
+        }}
+      />
+      <Route path="/contact" render={() => <OpenFinContactDisplay />} />
+      <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
+      <Route
+        path="/openfin-sub-window-frame"
+        render={() => <ChildWindowFrame />}
+      />
+      <Route path="/status" render={() => <div />} />
+      <Route path="/snapshots" render={() => <Snapshots />} />
+    </Switch>
+  </BrowserRouter>
+)
