@@ -182,7 +182,6 @@ const setConfig = ({ mode }) => {
 
   if (TARGET === "web") {
     plugins.push(injectWebServiceWorkerPlugin(mode))
-    plugins.push(copyWebManifestPlugin(isDev))
   }
 
   if (TARGET === "openfin") {
@@ -194,6 +193,7 @@ const setConfig = ({ mode }) => {
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
+  plugins.push(copyWebManifestPlugin(mode === "development"))
   plugins.push(htmlPlugin(isDev))
 
   return defineConfig({
