@@ -8,8 +8,6 @@ import {
   useTableTrades,
 } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
-import { createSignal } from "@react-rxjs/utils"
-import { bind } from "@react-rxjs/core"
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -37,10 +35,6 @@ const TableHeadRow = styled.tr`
   height: 2rem;
 `
 
-const pendingBackgroundColor = css`
-  background-color: ${({ theme }) => theme.core.alternateBackground};
-`
-
 const highlightBackgroundColor = css`
   animation: ${({ theme }) => theme.flash} 1s ease-in-out 3;
 `
@@ -53,7 +47,6 @@ const TableBodyRow = styled.tr<{ pending?: boolean; highlight?: boolean }>`
     background-color: ${({ theme }) => theme.core.alternateBackground};
   }
   height: 2rem;
-  ${({ pending }) => pending && pendingBackgroundColor}
   ${({ highlight }) => highlight && highlightBackgroundColor}
 `
 
@@ -92,7 +85,6 @@ const StatusIndicatorSpacer = styled.th`
 export const TradesGrid: React.FC = () => {
   const trades = useTableTrades()
   const highlightedRow = useTradeRowHighlight()
-  console.log("highlightedRow", highlightedRow)
 
   const tryBroadcastContext = (symbol: string) => {
     if (window.fdc3) {
@@ -122,7 +114,6 @@ export const TradesGrid: React.FC = () => {
             trades.map((trade) => (
               <TableBodyRow
                 key={trade.tradeId}
-                pending={trade.status === TradeStatus.Pending}
                 highlight={trade.tradeId === highlightedRow}
                 onClick={() => tryBroadcastContext(trade.symbol)}
               >
