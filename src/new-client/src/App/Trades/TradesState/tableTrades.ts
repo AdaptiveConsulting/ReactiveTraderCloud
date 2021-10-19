@@ -1,9 +1,22 @@
 import { startOfDay } from "date-fns"
-import { combineLatest } from "rxjs"
-import { map, startWith } from "rxjs/operators"
+import { combineLatest, interval, merge } from "rxjs"
+import {
+  combineAll,
+  delay,
+  distinctUntilChanged,
+  map,
+  mapTo,
+  mergeMap,
+  scan,
+  skipWhile,
+  startWith,
+  takeUntil,
+  takeWhile,
+  tap,
+  withLatestFrom,
+} from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import type { Trade } from "@/services/trades"
-import { trades$ } from "@/services/trades"
+import { Trade, trades$ } from "@/services/trades"
 import type { ColField } from "./colConfig"
 import type {
   NumColField,
@@ -20,6 +33,8 @@ import {
 } from "./filterState"
 import type { SortDirection, TableSort } from "./sortState"
 import { tableSort$ } from "./sortState"
+import { createSignal } from "@react-rxjs/utils"
+import { executions$ } from "@/services/executions"
 
 /**
  *
@@ -325,4 +340,49 @@ export const [useFilterFields] = bind(
     ),
   ),
   [] as ColField[],
+)
+
+/**
+ * Signal to capture a tradeId of row to highlight
+ */
+export const [tradeRowHighlight$, onTradeRowHighlight] = createSignal<string>()
+
+/**
+ * Emit tradeId of new trades after the initial load
+ */
+const newTradeId$ = trades$.pipe(
+  scan(
+    (acc, trades) => {
+      return {
+        stateOfWorld: acc.stateOfWorld && acc.trades.length === 0,
+        trades: trades,
+      }
+    },
+    { stateOfWorld: true, trades: [] } as {
+      stateOfWorld: boolean
+      trades: Trade[]
+    },
+  ),
+  skipWhile(({ stateOfWorld }) => stateOfWorld),
+  map(({ trades }) => trades[0].tradeId),
+)
+
+/**
+ * State hook that emits tradeId of row to highlight for 3 seconds
+ * highlighted row will be either from manually updating tradeRowHighlight$ or a new trade
+ */
+export const [useTradeRowHighlight] = bind(
+  merge([
+    tradeRowHighlight$,
+    tradeRowHighlight$.pipe(
+      delay(3000),
+      map(() => undefined),
+    ),
+    newTradeId$,
+    newTradeId$.pipe(
+      delay(3000),
+      map(() => undefined),
+    ),
+  ]).pipe(mergeMap((tradeId) => tradeId)),
+  null,
 )

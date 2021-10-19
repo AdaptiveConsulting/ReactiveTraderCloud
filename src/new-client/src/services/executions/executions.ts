@@ -32,7 +32,8 @@ const mapExecutionToPayload = (e: ExecutionRequest): ExecuteTradeRequest => {
 const mapResponseToTrade =
   (id: string) =>
   ({ trade }: ExecutionResponse): ExecutionTrade => {
-    if (trade.status === TradeStatus.Pending) throw new Error("wait what?!") // TODO: talk with hydra team
+    // Decision was taken not to have a pending state from Hydra
+    if (trade.status === TradeStatus.Pending) throw new Error("wait what?!")
 
     return {
       currencyPair: trade.currencyPair,
