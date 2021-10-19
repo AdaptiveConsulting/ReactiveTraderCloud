@@ -1,19 +1,12 @@
 import { startOfDay } from "date-fns"
-import { combineLatest, interval, merge } from "rxjs"
+import { combineLatest, merge } from "rxjs"
 import {
-  combineAll,
   delay,
-  distinctUntilChanged,
   map,
-  mapTo,
   mergeMap,
   scan,
   skipWhile,
   startWith,
-  takeUntil,
-  takeWhile,
-  tap,
-  withLatestFrom,
 } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { Trade, trades$ } from "@/services/trades"
@@ -34,7 +27,6 @@ import {
 import type { SortDirection, TableSort } from "./sortState"
 import { tableSort$ } from "./sortState"
 import { createSignal } from "@react-rxjs/utils"
-import { executions$ } from "@/services/executions"
 
 /**
  *
@@ -368,7 +360,7 @@ const newTradeId$ = trades$.pipe(
 )
 
 /**
- * State hook that emits tradeId of row to highlight for 3 seconds
+ * State hook that emits tradeId of row to highlight for x seconds
  * highlighted row will be either from manually updating tradeRowHighlight$ or a new trade
  */
 export const [useTradeRowHighlight] = bind(
@@ -380,7 +372,7 @@ export const [useTradeRowHighlight] = bind(
     ),
     newTradeId$,
     newTradeId$.pipe(
-      delay(3000),
+      delay(1000),
       map(() => undefined),
     ),
   ]).pipe(mergeMap((tradeId) => tradeId)),
