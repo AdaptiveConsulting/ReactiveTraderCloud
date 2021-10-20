@@ -11,6 +11,7 @@ import { Block } from "@/styleguide/styled/Block"
 // import Atoms fr∫om './sections/Atoms'
 import CoreBranding from "@/styleguide/sections/CoreBranding"
 import FontFamilies from "@/styleguide/sections/FontFamilies"
+import Iconography from "@/styleguide/sections/Iconography"
 // import Iconography from './sections/Iconography'
 // import Molecules from './sections/Molecules'
 // import { getAppName } from '@/utils'
@@ -22,7 +23,7 @@ const sections: Array<{
 }> = [
   { path: "core-branding", Section: CoreBranding, title: "Colour" },
   { path: "font-families", Section: FontFamilies, title: "Typography" },
-  // { path: 'icons-family', Section: Iconography, title: 'Iconography' },
+  { path: "icons-family", Section: Iconography, title: "Iconography" },
   // { path: 'atoms-components', Section: Atoms, title: 'Atoms' },
   // { path: 'molecules-components', Section: Molecules, title: 'Molecules' },
 ]
