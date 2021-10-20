@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server"
 import styled from "styled-components"
 import { ExitIcon } from "../icons/ExitIcon"
-import { PopOutIcon } from "../icons/PopOutIcon"
+import { PopOutIcon } from "../../components/icons/PopOutIcon"
 
 const exitIconString = encodeURIComponent(renderToStaticMarkup(<ExitIcon />))
 const popoutIconString = encodeURIComponent(
