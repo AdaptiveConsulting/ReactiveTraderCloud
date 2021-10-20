@@ -4,7 +4,9 @@ import { OverlayDiv } from "@/components/OverlayDiv"
 import { CenteringContainer } from "@/components/CenteringContainer"
 
 const PendingContainer = styled(OverlayDiv)`
-  margin-left: -100%;
+  // Solution to stack flex child ontop of another, height is not respected in safari
+  // margin-left: -100%;
+  position: absolute;
 `
 
 const PendingPill = styled("div")`

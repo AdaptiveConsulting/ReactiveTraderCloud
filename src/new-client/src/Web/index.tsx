@@ -1,10 +1,11 @@
+import { GA_TRACKING_ID } from "../constants"
 import { StrictMode } from "react"
 import ReactDOM from "react-dom"
 import GlobalStyle from "@/theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import { register } from "./serviceWorkerRegistration"
 import { registerSwNotifications } from "./sw-notifications"
-import { WebApp } from ".//WebApp"
+import { WebApp } from "./WebApp"
 
 import { AnalyticsCoreDeferred } from "@/App/Analytics"
 import { LiveRatesCoreDeferred } from "@/App/LiveRates"
@@ -12,13 +13,15 @@ import { TradesCoreDeferred } from "@/App/Trades"
 
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
+import { PlatformContext } from "@/platform"
 
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
     connectToGateway({
-      url: import.meta.env.VITE_HYDRA_URL as string,
+      url: `${window.location.origin}/ws`,
       interceptor: noop,
-      // useJson: true,
+      useJson: true,
+      autoReconnect: true,
     })
   }
 
@@ -48,12 +51,30 @@ export default function main() {
 
   ReactDOM.render(
     <StrictMode>
-      <GlobalStyle />
-      <ThemeProvider>
-        <GlobalScrollbarStyle />
-        <WebApp />
-      </ThemeProvider>
+      <PlatformContext.Provider value={{ type: "web" }}>
+        <GlobalStyle />
+        <ThemeProvider>
+          <GlobalScrollbarStyle />
+          <WebApp />
+        </ThemeProvider>
+      </PlatformContext.Provider>
     </StrictMode>,
     document.getElementById("root"),
   )
+
+  const { ga } = window
+
+  ga("create", {
+    trackingId: GA_TRACKING_ID,
+    transport: "beacon",
+  })
+
+  ga("set", {
+    dimension1: "browser",
+    dimension2: "browser",
+    dimension3: import.meta.env,
+    page: window.location.pathname,
+  })
+
+  ga("send", "pageview")
 }

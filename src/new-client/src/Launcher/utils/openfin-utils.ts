@@ -76,3 +76,13 @@ export async function getPlatformLayoutTitle(): Promise<string | undefined> {
   const config = await layout.getConfig()
   return config.content?.[0].title
 }
+
+export const closeCurrentWindow = async () => {
+  const window = await fin.Window.getCurrent()
+  window.close()
+}
+
+export const minimiseCurrentWindow = async () => {
+  const window = await fin.Window.getCurrent()
+  window.minimize()
+}

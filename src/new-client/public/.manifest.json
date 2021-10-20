@@ -1,0 +1,52 @@
+{
+  "short_name": "RT {{environment_suffix}}",
+  "name": "Reactive Trader® {{environment_suffix}}",
+  "description": "Real-time FX trading showcase by Adaptive.",
+  "icons": [
+    {
+      "src": "<BASE_URL>/static/media/reactive-trader.ico",
+      "sizes": "256x256 128x128 64x64 32x32 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "<BASE_URL>/static/media/reactive-trader-icon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "<BASE_URL>/static/media/reactive-trader-icon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "<BASE_URL>/static/media/reactive-trader-icon-64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "<BASE_URL>/static/media/reactive-trader-icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "<BASE_URL>/static/media/reactive-trader-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "<BASE_URL>/static/media/maskable_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "<BASE_URL>/",
+  "display": "standalone",
+  "theme_color": "#2e3543",
+  "background_color": "#2e3543"
+}

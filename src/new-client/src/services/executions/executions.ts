@@ -1,5 +1,5 @@
 import { race, Subject, timer } from "rxjs"
-import { map, mapTo, tap } from "rxjs/operators"
+import { delay, map, mapTo, tap } from "rxjs/operators"
 import {
   ExecutionRequest,
   ExecutionTrade,
@@ -12,6 +12,11 @@ import {
   ExecutionResponse,
 } from "@/generated/TradingGateway"
 import { TradeStatus } from "../trades"
+import {
+  EXECUTION_DELAY_VALUE,
+  DELAYED_CURRENCY,
+  EXECUTION_TIMEOUT_VALUE,
+} from "@/services/executions/constants"
 
 const mapExecutionToPayload = (e: ExecutionRequest): ExecuteTradeRequest => {
   return {
@@ -27,7 +32,8 @@ const mapExecutionToPayload = (e: ExecutionRequest): ExecuteTradeRequest => {
 const mapResponseToTrade =
   (id: string) =>
   ({ trade }: ExecutionResponse): ExecutionTrade => {
-    if (trade.status === TradeStatus.Pending) throw new Error("wait what?!") // TODO: talk with hydra team
+    // Decision was taken not to have a pending state from Hydra
+    if (trade.status === TradeStatus.Pending) throw new Error("wait what?!")
 
     return {
       currencyPair: trade.currencyPair,
@@ -48,12 +54,15 @@ const executionsSubject = new Subject<ExecutionTrade>()
 export const execute$ = (execution: ExecutionRequest) =>
   race([
     ExecutionService.executeTrade(mapExecutionToPayload(execution)).pipe(
+      delay(
+        execution.currencyPair === DELAYED_CURRENCY ? EXECUTION_DELAY_VALUE : 0,
+      ),
       map(mapResponseToTrade(execution.id)),
       tap((value) => {
         executionsSubject.next(value)
       }),
     ),
-    timer(30_000).pipe(
+    timer(EXECUTION_TIMEOUT_VALUE).pipe(
       mapTo({
         ...execution,
         status: ExecutionStatus.Timeout,

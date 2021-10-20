@@ -1,0 +1,91 @@
+name: Tag build
+
+on:
+  push:
+    tags:
+      - v*
+
+defaults:
+  run:
+    working-directory: src/new-client
+
+env:
+  BUCKET_WEB: reactive-trader-web-builds
+  BUCKET_OPENFIN: reactive-trader-openfin-builds
+  BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
+  VITE_HYDRA_URL: wss://trading-web-gateway-rt-prod.demo.hydra.weareadaptive.com
+  ENVIRONMENT: prod
+
+jobs:
+  build:
+    name: Build & deploy
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set variables
+        id: vars
+        run: echo "::set-output name=tag::$(git describe --tag --abbrev=0)"
+
+      - name: Set up GCloud
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+          service_account_key: ${{ secrets.GOOGLE_PRIVATE_KEY }}
+
+      - name: Decrypt NPM credentials
+        run: |
+          gcloud kms decrypt \
+            --ciphertext-file=npmrc.enc \
+            --plaintext-file=.npmrc \
+            --location=global \
+            --keyring=rt-keyring \
+            --key=npmrc-key
+
+      - name: Install
+        run: npm ci
+
+      - name: Build (web)
+        env:
+          BASE_URL: /tag/${{ steps.vars.outputs.tag }}
+          VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
+        run: npm run build
+
+      - name: Deploy (web)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_WEB/tag/${{ steps.vars.outputs.tag }}
+
+      - name: Build (OpenFin)
+        env:
+          BASE_URL: https://openfin.prod.reactivetrader.com
+          VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
+          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
+        run: npm run openfin:build
+
+      - name: Deploy (OpenFin)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_OPENFIN/tag/${{ steps.vars.outputs.tag }}
+
+      - name: Build (Finsemble)
+        env:
+          BASE_URL: /tag/${{ steps.vars.outputs.tag }}
+          VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
+        run: npm run finsemble:build
+
+      - name: Deploy (Finsemble)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_FINSEMBLE/tag/${{ steps.vars.outputs.tag }}

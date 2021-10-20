@@ -1,149 +1,38 @@
+import { Application } from "openfin/_v2/main"
+import { useState } from "react"
 import { appConfigs, ApplicationConfig } from "./applicationConfigurations"
-import { ButtonContainer, IconTitle, StyledButton } from "./styles"
+import { LaunchButton } from "./components/LaunchButton"
+import { ButtonContainer, IconTitle } from "./styles"
 import { open } from "./tools"
 
-interface LaunchButtonProps {
-  onClick: () => void
-  iconFill?: string
-  iconHoverFill?: string
-  iconHoverBackground?: string
-  children: JSX.Element[] | JSX.Element
-  title?: string
-  active?: boolean
-}
-
-export const LaunchButton = (props: LaunchButtonProps) => (
-  <StyledButton
-    title={props.title}
-    onClick={props.onClick}
-    iconFill={props.iconFill}
-    iconHoverFill={props.iconHoverFill}
-    iconHoverBackground={props.iconHoverBackground}
-    active={props.active}
-  >
-    {props.children}
-  </StyledButton>
-)
-
-// interface ApplicationProvider {
-//   platformName: string
-//   applicationType: string
-//   windowOptions?: any
-// }
-
-// interface ApplicationConfig {
-//   name: string
-//   displayName: string
-//   tooltipName?: string
-//   uuid?: string
-//   url?: string
-//   icon: JSX.Element
-//   iconFillColor: string
-//   iconHoverFillColor?: string
-//   iconHoverBackgroundColor?: string
-//   provider?: ApplicationProvider
-// }
-
-// const defaultWindowOptions = {
-//   autoShow: true,
-//   defaultWidth: 1280,
-//   defaultHeight: 900,
-//   minWidth: 800,
-//   minHeight: 600,
-//   resizable: true,
-//   maximizable: true,
-//   defaultCentered: true,
-//   frame: false,
-//   shadow: true,
-//   icon: `/static/media/adaptive.ico`,
-//   accelerator:
-//     process.env.NODE_ENV !== "development"
-//       ? {}
-//       : {
-//           devtools: true,
-//           reload: true,
-//           reloadIgnoringCache: true,
-//           zoom: true,
-//         },
-// }
-
-// const appConfigs: ApplicationConfig[] = [
-//   {
-//     name: `Reactive Trader®`,
-//     displayName: "RT",
-//     tooltipName: `Launch Reactive Trader®`,
-//     uuid: `reactive-trader`,
-//     url: "",
-//     icon: reactiveTraderIcon,
-//     iconFillColor: "#CFCFCF",
-//     iconHoverFillColor: "#ffffff",
-//     iconHoverBackgroundColor: "#28588d",
-//     provider: {
-//       platformName: "openfin",
-//       applicationType: "manifest",
-//     },
-//   },
-//   {
-//     name: `Reactive Analytics`,
-//     displayName: "RA",
-//     tooltipName: `Launch Reactive Analytics`,
-//     uuid: `reactive-analytics`,
-//     url: "",
-//     icon: reactiveAnalyticsIcon,
-//     iconFillColor: "#CFCFCF",
-//     iconHoverFillColor: "#ffffff",
-//     iconHoverBackgroundColor: "#AAABD1",
-//     provider: {
-//       platformName: "openfin",
-//       applicationType: "manifest",
-//     },
-//   },
-//   {
-//     name: "Limit Checker",
-//     displayName: "LC",
-//     tooltipName: "Launch Limit Checker",
-//     icon: limitCheckerIcon,
-//     iconFillColor: "#CFCFCF",
-//     iconHoverFillColor: "#ffffff",
-//     provider: {
-//       platformName: "openfin",
-//       applicationType: "download",
-//       windowOptions: {
-//         ...defaultWindowOptions,
-//         icon: `/static/media/limit-checker-icon.ico`,
-//       },
-//     },
-//   },
-//   {
-//     name: "Excel",
-//     displayName: "EX",
-//     tooltipName: "Launch Excel",
-//     icon: excelIcon,
-//     iconFillColor: "#CFCFCF",
-//     provider: {
-//       platformName: "openfin",
-//       applicationType: "excel",
-//     },
-//   },
-// ]
-
-const handleOpen = async (app: ApplicationConfig) => {
-  try {
-    const opened = await open(app)
-
-    if (!opened) return
-
-    // const currentApp = opened as Application
-    // currentApp.addListener("closed", () => removeFromOpenedList(app.name))
-    // addToOpenedList(app.name)
-  } catch (err) {
-    // TODO: Is this message accurate? Couldn't there be other causes for errors?
-    console.warn("Error on app open: already opened?")
-    // addToOpenedList(app.name)
-  }
-}
-
 export const LauncherApps: React.FC = () => {
+  const [openedApps, setOpenedApps] = useState<string[]>([])
+
+  const addToOpenedList = (name: string) => {
+    setOpenedApps([...openedApps, name])
+  }
+
+  const removeFromOpenedList = (name: string) => {
+    const newState = [...openedApps].filter((item) => item !== name)
+    setOpenedApps(newState)
+  }
+
+  const handleOpen = async (app: ApplicationConfig) => {
+    try {
+      const opened = await open(app)
+
+      if (!opened) return
+
+      const currentApp = opened as Application
+      currentApp.addListener("closed", () => removeFromOpenedList(app.name))
+      addToOpenedList(app.name)
+    } catch (err) {
+      // TODO: Is this message accurate? Couldn't there be other causes for errors?
+      console.warn("Error on app open: already opened?")
+      addToOpenedList(app.name)
+    }
+  }
+
   return (
     <>
       {appConfigs.map((app) => (
@@ -154,7 +43,7 @@ export const LauncherApps: React.FC = () => {
             iconFill={app.iconFillColor}
             iconHoverFill={app.iconHoverFillColor}
             iconHoverBackground={app.iconHoverBackgroundColor}
-            active={false}
+            active={openedApps.includes(app.name)}
           >
             {app.icon}
             <IconTitle>{app.displayName}</IconTitle>

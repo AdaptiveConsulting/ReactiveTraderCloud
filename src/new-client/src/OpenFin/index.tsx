@@ -4,26 +4,32 @@ import { GA_TRACKING_ID } from "@/constants"
 import GlobalStyle from "@/theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import { OpenFinApp } from "./OpenFinApp"
-
+import { PlatformContext } from "@/platform"
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
+import { registerNotifications } from "./notifications"
 
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
     connectToGateway({
-      url: import.meta.env.VITE_HYDRA_URL as string,
+      url: `${window.location.origin}/ws`,
       interceptor: noop,
       useJson: true,
+      autoReconnect: true,
     })
   }
 
+  registerNotifications()
+
   ReactDOM.render(
     <StrictMode>
-      <GlobalStyle />
-      <ThemeProvider>
-        <GlobalScrollbarStyle />
-        <OpenFinApp />
-      </ThemeProvider>
+      <PlatformContext.Provider value={{ type: "openfin" }}>
+        <GlobalStyle />
+        <ThemeProvider>
+          <GlobalScrollbarStyle />
+          <OpenFinApp />
+        </ThemeProvider>
+      </PlatformContext.Provider>
     </StrictMode>,
     document.getElementById("root"),
   )

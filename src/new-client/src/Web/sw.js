@@ -56,7 +56,7 @@ registerRoute(
     // Return true to signal that we want to use the handler.
     return true
   },
-  createHandlerBoundToURL("/index.html"),
+  createHandlerBoundToURL(`${self.registration.scope}index.html`),
 )
 
 // An example runtime caching route for requests that aren't handled by the

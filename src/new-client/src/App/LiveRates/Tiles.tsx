@@ -7,6 +7,7 @@ import { map } from "rxjs/operators"
 import { selectedCurrency$, ALL_CURRENCIES } from "./selectedCurrency"
 import { bind } from "@react-rxjs/core"
 import { combineKeys } from "@react-rxjs/utils"
+import { tearOutState$ } from "./Tile/TearOut/state"
 
 const PanelItems = styled.div`
   display: grid;
@@ -14,17 +15,27 @@ const PanelItems = styled.div`
   grid-gap: 0.25rem;
 `
 
-const [useFilteredCurrencyPairs, filteredCurrencyPairs$] = bind(
-  combineLatest([currencyPairs$, selectedCurrency$]).pipe(
-    map(([currencyPairs, selectedCurrency]) => {
-      if (selectedCurrency === ALL_CURRENCIES)
-        return Object.values(currencyPairs)
+export const [useFilteredCurrencyPairs, filteredCurrencyPairs$] = bind(
+  combineLatest([currencyPairs$, selectedCurrency$, tearOutState$]).pipe(
+    map(([currencyPairs, selectedCurrency, tearOutState]) => {
       const result = { ...currencyPairs }
+
+      for (const symbol of Object.keys(result)) {
+        if (tearOutState[symbol]) {
+          delete result[symbol]
+        }
+      }
+
+      if (selectedCurrency === ALL_CURRENCIES) {
+        return Object.values(result)
+      }
+
       Object.keys(currencyPairs)
         .filter((symbol) => !symbol.includes(selectedCurrency as string))
         .forEach((symbol) => {
           delete result[symbol]
         })
+
       return Object.values(result)
     }),
   ),

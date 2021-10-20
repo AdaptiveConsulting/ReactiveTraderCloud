@@ -8,6 +8,12 @@ import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 
+const PORT = Number(process.env.PORT) || 1917
+
+function getBaseUrl(dev: boolean) {
+  return dev ? `http://localhost:${PORT}` : process.env.BASE_URL || ""
+}
+
 function apiMockReplacerPlugin(): Plugin {
   return {
     name: "apiMockReplacerPlugin",
@@ -63,7 +69,7 @@ const customPreloadPlugin = () => {
   const result: any = {
     ...((modulepreload as any)({
       index: resolve(__dirname, "dist", "index.html"),
-      prefix: process.env.BASE_URL || "/",
+      prefix: process.env.BASE_URL || "",
     }) as any),
     enforce: "post",
   }
@@ -82,25 +88,25 @@ const typescriptPlugin = {
   enforce: "pre",
 }
 
-const copyOpenfinPlugin = (dev: boolean) => ({
+const copyOpenfinPlugin = (dev: boolean, target: "openfin" | "launcher") => ({
   ...copy({
     targets: [
       {
-        src: "./public-openfin/*",
+        src: `./public-openfin/${
+          target === "launcher" ? "launcher.json" : "app.json"
+        }`,
         dest: "./dist/config",
         transform: (contents) =>
           contents
             .toString()
+            .replace(/<BASE_URL>/g, getBaseUrl(dev))
+            .replace(/<ENV_NAME>/g, process.env.ENVIRONMENT || "local")
             .replace(
-              /<BASE_URL>/g,
-              process.env.OPENFIN_DOMAIN && process.env.BASE_URL
-                ? `${process.env.OPENFIN_DOMAIN}${process.env.BASE_URL}`
-                : process.env.PORT
-                ? `http://localhost:${process.env.PORT}`
-                : "http://localhost:1917",
-            )
-            .replace(/<ENV_NAME>/g, process.env.ENV_NAME || "local")
-            .replace(/<ENV_SUFFIX>/g, process.env.ENV_SUFFIX || "LOCAL"),
+              /<ENV_SUFFIX>/g,
+              process.env.ENVIRONMENT
+                ? process.env.ENVIRONMENT.toUpperCase()
+                : "LOCAL",
+            ),
       },
     ],
     verbose: true,
@@ -111,7 +117,48 @@ const copyOpenfinPlugin = (dev: boolean) => ({
   }),
 })
 
-const webManifestPlugin = (mode: string) =>
+const copyWebManifestPlugin = (dev: boolean) => {
+  const envSuffix = (process.env.ENVIRONMENT || "local").toUpperCase()
+  return {
+    ...copy({
+      targets: [
+        {
+          src: "./public/.manifest.json",
+          dest: dev ? "./public" : "./dist",
+          rename: "manifest.json",
+          transform: (contents) =>
+            contents
+              .toString()
+              .replace(/<BASE_URL>/g, getBaseUrl(dev))
+              // We don't want to show PROD in the PWA name
+              .replace(
+                /{{environment_suffix}}/g,
+                envSuffix === "PROD" ? "" : envSuffix,
+              ),
+        },
+      ],
+      verbose: true,
+      // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
+      // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
+      // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
+      hook: dev ? "buildStart" : "writeBundle",
+    }),
+  }
+}
+
+const htmlPlugin = (dev: boolean) => {
+  return {
+    name: "html-transform",
+    transformIndexHtml(html) {
+      return html.replace(
+        /href="\/manifest.json"/,
+        `href="${getBaseUrl(dev)}/manifest.json"`,
+      )
+    },
+  }
+}
+
+const injectWebServiceWorkerPlugin = (mode: string) =>
   injectManifest(
     {
       swSrc: "./src/Web/sw.js",
@@ -119,7 +166,9 @@ const webManifestPlugin = (mode: string) =>
       dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
       globDirectory: "dist",
       mode,
-      modifyURLPrefix: { assets: "/assets" },
+      modifyURLPrefix: {
+        assets: `${getBaseUrl(mode === "development")}/assets`,
+      },
     },
     () => {},
   )
@@ -128,19 +177,19 @@ const webManifestPlugin = (mode: string) =>
 const setConfig = ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
-  const plugins =
-    mode === "development"
-      ? [eslintPlugin, typescriptPlugin, reactRefresh()]
-      : [customPreloadPlugin()]
+  const isDev = mode === "development"
+  const plugins = isDev
+    ? [eslintPlugin, typescriptPlugin, reactRefresh()]
+    : [customPreloadPlugin()]
 
   const TARGET = process.env.TARGET || "web"
 
   if (TARGET === "web") {
-    plugins.push(webManifestPlugin(mode))
+    plugins.push(injectWebServiceWorkerPlugin(mode))
   }
 
   if (TARGET === "openfin" || TARGET === "launcher") {
-    plugins.push(copyOpenfinPlugin(mode === "development"))
+    plugins.push(copyOpenfinPlugin(isDev, TARGET))
   }
 
   if (process.env.VITE_MOCKS) {
@@ -148,6 +197,8 @@ const setConfig = ({ mode }) => {
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
+  plugins.push(copyWebManifestPlugin(mode === "development"))
+  plugins.push(htmlPlugin(isDev))
 
   return defineConfig({
     base: process.env.BASE_URL || "/",
@@ -161,7 +212,18 @@ const setConfig = ({ mode }) => {
       sourcemap: true,
     },
     server: {
-      port: Number(process.env.PORT) || 1917,
+      port: PORT,
+      proxy: !process.env.VITE_MOCKS && {
+        "/ws": {
+          // To test local execution of nginx gateway in Docker,
+          // use e.g.target: "http://localhost:55000", (no need for changeOrigin in that case)
+          target:
+            process.env.VITE_HYDRA_URL ||
+            "wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com",
+          changeOrigin: true,
+          ws: true,
+        },
+      },
     },
     resolve: {
       alias: [

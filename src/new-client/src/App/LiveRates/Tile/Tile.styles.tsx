@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { DeliveryDate, HeaderAction } from "./Header/TileHeader"
 import { TradeButton } from "./PriceButton/PriceButton.styles"
 
 export const AnalyticsPricesFirstCol = "20%"
@@ -12,7 +13,7 @@ export const PriceControlsStyle = styled("div")<{
     isAnalyticsView
       ? `
       grid-row-gap: 3px;
-      height: 7rem;
+      height: 90%;
       width: 10rem;
       grid-template-columns: ${AnalyticsPricesFirstCol} 80%;
       grid-template-rows: 50% 50%;
@@ -36,9 +37,20 @@ export const InputTimerStyle = styled.div<{ isAnalyticsView: boolean }>`
     isAnalyticsView ? "flex-start" : "center"};
 `
 
-export const PanelItem = styled.div`
+export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
   position: relative;
   display: flex;
+
+  &:hover {
+    ${HeaderAction} {
+      opacity: 1;
+    }
+
+    ${DeliveryDate} {
+      margin-right: ${({ shouldMoveDate }) =>
+        shouldMoveDate ? "1.3rem" : "0"};
+    }
+  }
 `
 export const Body = styled.div<{
   isAnalyticsView: boolean

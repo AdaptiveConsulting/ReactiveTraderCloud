@@ -55,13 +55,7 @@ export interface PriceTick {
   creationTimestamp: bigint
 }
 
-interface _RAW_LocalDate {
-  year: number
-  month: number
-  day: number
-}
-
-export type LocalDate = LocalDateConverter.Transform<_RAW_LocalDate>
+export type LocalDate = LocalDateConverter.ConvertedType
 
 export interface PriceStreamRequest {
   symbol: string
@@ -135,30 +129,632 @@ export interface AnalyticsRequest {
   currency: string
 }
 
-const environment = JSON.parse(
-    '{"QuoteResponse":{"type":"record","encodedLength":{"bitLength":608,"byteLength":76},"fields":{"notional":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"Quantity"}},"currencyPair":{"location":{"bitOffset":64,"byteOffset":8,"mask":0},"type":{"typeName":"CurrencyPair"}},"price":{"location":{"bitOffset":160,"byteOffset":20,"mask":0},"type":{"typeName":"PriceTick"}},"time":{"location":{"bitOffset":480,"byteOffset":60,"mask":0},"type":{"typeName":"float64"}},"timeout":{"location":{"bitOffset":544,"byteOffset":68,"mask":0},"type":{"typeName":"float64"}}}},"float64":"Float64","CurrencyPair":{"type":"record","encodedLength":{"bitLength":96,"byteLength":12},"fields":{"symbol":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"SymbolRef"}},"ratePrecision":{"location":{"bitOffset":32,"byteOffset":4,"mask":0},"type":{"typeName":"int32"}},"pipsPosition":{"location":{"bitOffset":64,"byteOffset":8,"mask":0},"type":{"typeName":"int32"}}}},"int32":"Int32","SymbolRef":{"type":"pointer","elementType":{"typeName":"Symbol"}},"Symbol":{"type":"string","count":{"encodingType":"Int32","location":{"bitOffset":0,"byteOffset":0,"mask":0}},"encoding":"Utf16"},"Quantity":"Float64","QuoteRequest":{"type":"record","encodedLength":{"bitLength":96,"byteLength":12},"fields":{"symbol":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"SymbolRef_41"}},"notional":{"location":{"bitOffset":32,"byteOffset":4,"mask":0},"type":{"typeName":"Quantity"}}}},"SymbolRef_41":{"type":"pointer","elementType":{"typeName":"Symbol"}},"CurrencyPairUpdates":{"type":"record","encodedLength":{"bitLength":40,"byteLength":5},"fields":{"updates":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"CurrencyPairUpdateListRef"}},"isStateOfTheWorld":{"location":{"bitOffset":32,"byteOffset":4,"mask":1},"type":{"typeName":"bool"}},"isStale":{"location":{"bitOffset":33,"byteOffset":4,"mask":2},"type":{"typeName":"bool"}}}},"bool":"Bool","CurrencyPairUpdateListRef":{"type":"pointer","elementType":{"typeName":"CurrencyPairUpdateList"}},"CurrencyPairUpdateList":{"type":"list","count":{"encodingType":"Int16","location":{"bitOffset":0,"byteOffset":0,"mask":0}},"elementLength":{"bitLength":40,"byteLength":5},"elementType":{"typeName":"CurrencyPairUpdate"},"firstElementOffset":2},"CurrencyPairUpdate":{"type":"union","cases":{"added":{"tag":1,"payload":{"location":{"bitOffset":8,"byteOffset":1,"mask":0},"type":{"typeName":"CurrencyPairRef"}}},"removed":{"tag":2,"payload":{"location":{"bitOffset":8,"byteOffset":1,"mask":0},"type":{"typeName":"CurrencyPairRef_9"}}}},"encodedLength":{"bitLength":40,"byteLength":5}},"CurrencyPairRef_9":{"type":"pointer","elementType":{"typeName":"CurrencyPair"}},"CurrencyPairRef":{"type":"pointer","elementType":{"typeName":"CurrencyPair"}},"PriceTickHistory":{"type":"record","encodedLength":{"bitLength":32,"byteLength":4},"fields":{"prices":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"PriceTickListRef"}}}},"PriceTickListRef":{"type":"pointer","elementType":{"typeName":"PriceTickList"}},"PriceTickList":{"type":"list","count":{"encodingType":"Int16","location":{"bitOffset":0,"byteOffset":0,"mask":0}},"elementLength":{"bitLength":320,"byteLength":40},"elementType":{"typeName":"PriceTick"},"firstElementOffset":2},"PriceTick":{"type":"record","encodedLength":{"bitLength":320,"byteLength":40},"fields":{"symbol":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"SymbolRef_39"}},"bid":{"location":{"bitOffset":32,"byteOffset":4,"mask":0},"type":{"typeName":"Price"}},"ask":{"location":{"bitOffset":96,"byteOffset":12,"mask":0},"type":{"typeName":"Price"}},"mid":{"location":{"bitOffset":160,"byteOffset":20,"mask":0},"type":{"typeName":"Price"}},"valueDate":{"location":{"bitOffset":224,"byteOffset":28,"mask":0},"type":{"typeName":"LocalDate"}},"creationTimestamp":{"location":{"bitOffset":256,"byteOffset":32,"mask":0},"type":{"typeName":"int64"}}}},"int64":"Int64","LocalDate":{"type":"record","encodedLength":{"bitLength":32,"byteLength":4},"fields":{"year":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"int16"}},"month":{"location":{"bitOffset":16,"byteOffset":2,"mask":0},"type":{"typeName":"int8"}},"day":{"location":{"bitOffset":24,"byteOffset":3,"mask":0},"type":{"typeName":"int8"}}},"jsonConverter":"LocalDateConverter"},"int8":"Int8","int16":"Int16","Price":"Float64","SymbolRef_39":{"type":"pointer","elementType":{"typeName":"Symbol"}},"PriceStreamRequest":{"type":"record","encodedLength":{"bitLength":32,"byteLength":4},"fields":{"symbol":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"SymbolRef_38"}}}},"SymbolRef_38":{"type":"pointer","elementType":{"typeName":"Symbol"}},"ExecutionResponse":{"type":"record","encodedLength":{"bitLength":384,"byteLength":48},"fields":{"trade":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"Trade"}}}},"Trade":{"type":"record","encodedLength":{"bitLength":384,"byteLength":48},"fields":{"tradeId":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"int64"}},"tradeName":{"location":{"bitOffset":64,"byteOffset":8,"mask":0},"type":{"typeName":"stringRef"}},"currencyPair":{"location":{"bitOffset":96,"byteOffset":12,"mask":0},"type":{"typeName":"stringRef_58"}},"notional":{"location":{"bitOffset":128,"byteOffset":16,"mask":0},"type":{"typeName":"Quantity"}},"dealtCurrency":{"location":{"bitOffset":192,"byteOffset":24,"mask":0},"type":{"typeName":"stringRef_59"}},"direction":{"location":{"bitOffset":224,"byteOffset":28,"mask":0},"type":{"typeName":"Direction"}},"spotRate":{"location":{"bitOffset":232,"byteOffset":29,"mask":0},"type":{"typeName":"Price"}},"status":{"location":{"bitOffset":296,"byteOffset":37,"mask":0},"type":{"typeName":"TradeStatus"}},"tradeDate":{"location":{"bitOffset":320,"byteOffset":40,"mask":0},"type":{"typeName":"LocalDate"}},"valueDate":{"location":{"bitOffset":352,"byteOffset":44,"mask":0},"type":{"typeName":"LocalDate"}}}},"TradeStatus":{"type":"enum","cases":[{"name":"Pending","value":"_bigint_1"},{"name":"Done","value":"_bigint_2"},{"name":"Rejected","value":"_bigint_3"}],"description":"","encoding":"Int8"},"Direction":{"type":"enum","cases":[{"name":"Buy","value":"_bigint_1"},{"name":"Sell","value":"_bigint_2"}],"description":"","encoding":"Int8"},"stringRef_59":{"type":"pointer","elementType":{"typeName":"string"}},"string":{"type":"string","count":{"encodingType":"Int32","location":{"bitOffset":0,"byteOffset":0,"mask":0}},"encoding":"Utf16"},"stringRef_58":{"type":"pointer","elementType":{"typeName":"string"}},"stringRef":{"type":"pointer","elementType":{"typeName":"string"}},"ExecuteTradeRequest":{"type":"record","encodedLength":{"bitLength":256,"byteLength":32},"fields":{"currencyPair":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"SymbolRef_37"}},"spotRate":{"location":{"bitOffset":32,"byteOffset":4,"mask":0},"type":{"typeName":"Price"}},"valueDate":{"location":{"bitOffset":96,"byteOffset":12,"mask":0},"type":{"typeName":"LocalDate"}},"direction":{"location":{"bitOffset":128,"byteOffset":16,"mask":0},"type":{"typeName":"Direction"}},"notional":{"location":{"bitOffset":136,"byteOffset":17,"mask":0},"type":{"typeName":"Quantity"}},"dealtCurrency":{"location":{"bitOffset":224,"byteOffset":28,"mask":0},"type":{"typeName":"CurrencyRef"}}}},"CurrencyRef":{"type":"pointer","elementType":{"typeName":"Currency"}},"Currency":{"type":"string","count":{"encodingType":"Int32","location":{"bitOffset":0,"byteOffset":0,"mask":0}},"encoding":"Utf16"},"SymbolRef_37":{"type":"pointer","elementType":{"typeName":"Symbol"}},"LoginRequest":{"type":"record","encodedLength":{"bitLength":32,"byteLength":4},"fields":{"username":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"stringRef_63"}}}},"stringRef_63":{"type":"pointer","elementType":{"typeName":"string"}},"TradeUpdates":{"type":"record","encodedLength":{"bitLength":40,"byteLength":5},"fields":{"updates":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"TradeListRef"}},"isStateOfTheWorld":{"location":{"bitOffset":32,"byteOffset":4,"mask":1},"type":{"typeName":"bool"}},"isStale":{"location":{"bitOffset":33,"byteOffset":4,"mask":2},"type":{"typeName":"bool"}}}},"TradeListRef":{"type":"pointer","elementType":{"typeName":"TradeList"}},"TradeList":{"type":"list","count":{"encodingType":"Int16","location":{"bitOffset":0,"byteOffset":0,"mask":0}},"elementLength":{"bitLength":384,"byteLength":48},"elementType":{"typeName":"Trade"},"firstElementOffset":2},"PositionUpdates":{"type":"record","encodedLength":{"bitLength":64,"byteLength":8},"fields":{"currentPositions":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"CurrencyPairPositionListRef"}},"history":{"location":{"bitOffset":32,"byteOffset":4,"mask":0},"type":{"typeName":"HistoricPositionListRef"}}}},"HistoricPositionListRef":{"type":"pointer","elementType":{"typeName":"HistoricPositionList"}},"HistoricPositionList":{"type":"list","count":{"encodingType":"Int16","location":{"bitOffset":0,"byteOffset":0,"mask":0}},"elementLength":{"bitLength":96,"byteLength":12},"elementType":{"typeName":"HistoricPosition"},"firstElementOffset":2},"HistoricPosition":{"type":"record","encodedLength":{"bitLength":96,"byteLength":12},"fields":{"timestamp":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"stringRef_56"}},"usdPnl":{"location":{"bitOffset":32,"byteOffset":4,"mask":0},"type":{"typeName":"float64"}}}},"stringRef_56":{"type":"pointer","elementType":{"typeName":"string"}},"CurrencyPairPositionListRef":{"type":"pointer","elementType":{"typeName":"CurrencyPairPositionList"}},"CurrencyPairPositionList":{"type":"list","count":{"encodingType":"Int16","location":{"bitOffset":0,"byteOffset":0,"mask":0}},"elementLength":{"bitLength":224,"byteLength":28},"elementType":{"typeName":"CurrencyPairPosition"},"firstElementOffset":2},"CurrencyPairPosition":{"type":"record","encodedLength":{"bitLength":224,"byteLength":28},"fields":{"symbol":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"SymbolRef_36"}},"basePnl":{"location":{"bitOffset":32,"byteOffset":4,"mask":0},"type":{"typeName":"float64"}},"baseTradedAmount":{"location":{"bitOffset":96,"byteOffset":12,"mask":0},"type":{"typeName":"float64"}},"counterTradedAmount":{"location":{"bitOffset":160,"byteOffset":20,"mask":0},"type":{"typeName":"float64"}}}},"SymbolRef_36":{"type":"pointer","elementType":{"typeName":"Symbol"}},"AnalyticsRequest":{"type":"record","encodedLength":{"bitLength":32,"byteLength":4},"fields":{"currency":{"location":{"bitOffset":0,"byteOffset":0,"mask":0},"type":{"typeName":"CurrencyRef_14"}}}},"CurrencyRef_14":{"type":"pointer","elementType":{"typeName":"Currency"}}}',
-    (key, value) =>
-      typeof value === "string" && value.startsWith("_bigint_")
-        ? BigInt(value.replace("_bigint_", ""))
-        : value,
-  ),
-  converters = { LocalDateConverter }
-const allocators = HydraPlatform.createOtfAllocators(environment, converters)
+const converters = { LocalDateConverter }
+const allocators = HydraPlatform.createOtfAllocators(converters)
+
+function QuoteResponseTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 608, byteLength: 76 },
+    fields: {
+      notional: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: QuantityTypeDefinition,
+      },
+      currencyPair: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: CurrencyPairTypeDefinition,
+      },
+      price: {
+        location: { bitOffset: 160, byteOffset: 20, mask: 0 },
+        type: PriceTickTypeDefinition,
+      },
+      time: {
+        location: { bitOffset: 480, byteOffset: 60, mask: 0 },
+        type: float64TypeDefinition,
+      },
+      timeout: {
+        location: { bitOffset: 544, byteOffset: 68, mask: 0 },
+        type: float64TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function float64TypeDefinition() {
+  return "Float64" as const
+}
+
+function CurrencyPairTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 96, byteLength: 12 },
+    fields: {
+      symbol: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: SymbolRefTypeDefinition,
+      },
+      ratePrecision: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: int32TypeDefinition,
+      },
+      pipsPosition: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: int32TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function int32TypeDefinition() {
+  return "Int32" as const
+}
+
+function SymbolRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: SymbolTypeDefinition }
+}
+
+function SymbolTypeDefinition() {
+  return {
+    type: "string" as const,
+    count: {
+      encodingType: "Int32" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    encoding: "Utf16" as const,
+  }
+}
+
+function QuantityTypeDefinition() {
+  return "Float64" as const
+}
+
+function QuoteRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 96, byteLength: 12 },
+    fields: {
+      symbol: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: SymbolRefTypeDefinition,
+      },
+      notional: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: QuantityTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function CurrencyPairUpdatesTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 40, byteLength: 5 },
+    fields: {
+      updates: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: CurrencyPairUpdateListRefTypeDefinition,
+      },
+      isStateOfTheWorld: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 1 },
+        type: boolTypeDefinition,
+      },
+      isStale: {
+        location: { bitOffset: 33, byteOffset: 4, mask: 2 },
+        type: boolTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function boolTypeDefinition() {
+  return "Bool" as const
+}
+
+function CurrencyPairUpdateListRefTypeDefinition() {
+  return {
+    type: "pointer" as const,
+    elementType: CurrencyPairUpdateListTypeDefinition,
+  }
+}
+
+function CurrencyPairUpdateListTypeDefinition() {
+  return {
+    type: "list" as const,
+    count: {
+      encodingType: "Int16" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    elementLength: { bitLength: 40, byteLength: 5 },
+    elementType: CurrencyPairUpdateTypeDefinition,
+    firstElementOffset: 2,
+  }
+}
+
+function CurrencyPairUpdateTypeDefinition() {
+  return {
+    type: "union" as const,
+    cases: {
+      added: {
+        tag: 1,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: CurrencyPairRefTypeDefinition,
+        },
+      },
+      removed: {
+        tag: 2,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: CurrencyPairRefTypeDefinition,
+        },
+      },
+    },
+    encodedLength: { bitLength: 40, byteLength: 5 },
+  }
+}
+
+function CurrencyPairRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: CurrencyPairTypeDefinition }
+}
+
+function PriceTickHistoryTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      prices: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: PriceTickListRefTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function PriceTickListRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: PriceTickListTypeDefinition }
+}
+
+function PriceTickListTypeDefinition() {
+  return {
+    type: "list" as const,
+    count: {
+      encodingType: "Int16" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    elementLength: { bitLength: 320, byteLength: 40 },
+    elementType: PriceTickTypeDefinition,
+    firstElementOffset: 2,
+  }
+}
+
+function PriceTickTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 320, byteLength: 40 },
+    fields: {
+      symbol: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: SymbolRefTypeDefinition,
+      },
+      bid: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: PriceTypeDefinition,
+      },
+      ask: {
+        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
+        type: PriceTypeDefinition,
+      },
+      mid: {
+        location: { bitOffset: 160, byteOffset: 20, mask: 0 },
+        type: PriceTypeDefinition,
+      },
+      valueDate: {
+        location: { bitOffset: 224, byteOffset: 28, mask: 0 },
+        type: LocalDateTypeDefinition,
+      },
+      creationTimestamp: {
+        location: { bitOffset: 256, byteOffset: 32, mask: 0 },
+        type: int64TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function int64TypeDefinition() {
+  return "Int64" as const
+}
+
+function LocalDateTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      year: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: int16TypeDefinition,
+      },
+      month: {
+        location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+        type: int8TypeDefinition,
+      },
+      day: {
+        location: { bitOffset: 24, byteOffset: 3, mask: 0 },
+        type: int8TypeDefinition,
+      },
+    },
+    jsonConverter: "LocalDateConverter" as const,
+  }
+}
+
+function int8TypeDefinition() {
+  return "Int8" as const
+}
+
+function int16TypeDefinition() {
+  return "Int16" as const
+}
+
+function PriceTypeDefinition() {
+  return "Float64" as const
+}
+
+function PriceStreamRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      symbol: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: SymbolRefTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function ExecutionResponseTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 384, byteLength: 48 },
+    fields: {
+      trade: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: TradeTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function TradeTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 384, byteLength: 48 },
+    fields: {
+      tradeId: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: int64TypeDefinition,
+      },
+      tradeName: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+      currencyPair: {
+        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+      notional: {
+        location: { bitOffset: 128, byteOffset: 16, mask: 0 },
+        type: QuantityTypeDefinition,
+      },
+      dealtCurrency: {
+        location: { bitOffset: 192, byteOffset: 24, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+      direction: {
+        location: { bitOffset: 224, byteOffset: 28, mask: 0 },
+        type: DirectionTypeDefinition,
+      },
+      spotRate: {
+        location: { bitOffset: 232, byteOffset: 29, mask: 0 },
+        type: PriceTypeDefinition,
+      },
+      status: {
+        location: { bitOffset: 296, byteOffset: 37, mask: 0 },
+        type: TradeStatusTypeDefinition,
+      },
+      tradeDate: {
+        location: { bitOffset: 320, byteOffset: 40, mask: 0 },
+        type: LocalDateTypeDefinition,
+      },
+      valueDate: {
+        location: { bitOffset: 352, byteOffset: 44, mask: 0 },
+        type: LocalDateTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function TradeStatusTypeDefinition() {
+  return {
+    type: "enum" as const,
+    cases: [
+      { name: "Pending" as const, value: BigInt("1") },
+      { name: "Done" as const, value: BigInt("2") },
+      { name: "Rejected" as const, value: BigInt("3") },
+    ],
+    description: "" as const,
+    encoding: "Int8" as const,
+  }
+}
+
+function DirectionTypeDefinition() {
+  return {
+    type: "enum" as const,
+    cases: [
+      { name: "Buy" as const, value: BigInt("1") },
+      { name: "Sell" as const, value: BigInt("2") },
+    ],
+    description: "" as const,
+    encoding: "Int8" as const,
+  }
+}
+
+function stringRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: stringTypeDefinition }
+}
+
+function stringTypeDefinition() {
+  return {
+    type: "string" as const,
+    count: {
+      encodingType: "Int32" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    encoding: "Utf16" as const,
+  }
+}
+
+function ExecuteTradeRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 256, byteLength: 32 },
+    fields: {
+      currencyPair: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: SymbolRefTypeDefinition,
+      },
+      spotRate: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: PriceTypeDefinition,
+      },
+      valueDate: {
+        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
+        type: LocalDateTypeDefinition,
+      },
+      direction: {
+        location: { bitOffset: 128, byteOffset: 16, mask: 0 },
+        type: DirectionTypeDefinition,
+      },
+      notional: {
+        location: { bitOffset: 136, byteOffset: 17, mask: 0 },
+        type: QuantityTypeDefinition,
+      },
+      dealtCurrency: {
+        location: { bitOffset: 224, byteOffset: 28, mask: 0 },
+        type: CurrencyRefTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function CurrencyRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: CurrencyTypeDefinition }
+}
+
+function CurrencyTypeDefinition() {
+  return {
+    type: "string" as const,
+    count: {
+      encodingType: "Int32" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    encoding: "Utf16" as const,
+  }
+}
+
+function LoginRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      username: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function TradeUpdatesTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 40, byteLength: 5 },
+    fields: {
+      updates: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: TradeListRefTypeDefinition,
+      },
+      isStateOfTheWorld: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 1 },
+        type: boolTypeDefinition,
+      },
+      isStale: {
+        location: { bitOffset: 33, byteOffset: 4, mask: 2 },
+        type: boolTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function TradeListRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: TradeListTypeDefinition }
+}
+
+function TradeListTypeDefinition() {
+  return {
+    type: "list" as const,
+    count: {
+      encodingType: "Int16" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    elementLength: { bitLength: 384, byteLength: 48 },
+    elementType: TradeTypeDefinition,
+    firstElementOffset: 2,
+  }
+}
+
+function PositionUpdatesTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 64, byteLength: 8 },
+    fields: {
+      currentPositions: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: CurrencyPairPositionListRefTypeDefinition,
+      },
+      history: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: HistoricPositionListRefTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function HistoricPositionListRefTypeDefinition() {
+  return {
+    type: "pointer" as const,
+    elementType: HistoricPositionListTypeDefinition,
+  }
+}
+
+function HistoricPositionListTypeDefinition() {
+  return {
+    type: "list" as const,
+    count: {
+      encodingType: "Int16" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    elementLength: { bitLength: 96, byteLength: 12 },
+    elementType: HistoricPositionTypeDefinition,
+    firstElementOffset: 2,
+  }
+}
+
+function HistoricPositionTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 96, byteLength: 12 },
+    fields: {
+      timestamp: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+      usdPnl: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: float64TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function CurrencyPairPositionListRefTypeDefinition() {
+  return {
+    type: "pointer" as const,
+    elementType: CurrencyPairPositionListTypeDefinition,
+  }
+}
+
+function CurrencyPairPositionListTypeDefinition() {
+  return {
+    type: "list" as const,
+    count: {
+      encodingType: "Int16" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    elementLength: { bitLength: 224, byteLength: 28 },
+    elementType: CurrencyPairPositionTypeDefinition,
+    firstElementOffset: 2,
+  }
+}
+
+function CurrencyPairPositionTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 224, byteLength: 28 },
+    fields: {
+      symbol: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: SymbolRefTypeDefinition,
+      },
+      basePnl: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: float64TypeDefinition,
+      },
+      baseTradedAmount: {
+        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
+        type: float64TypeDefinition,
+      },
+      counterTradedAmount: {
+        location: { bitOffset: 160, byteOffset: 20, mask: 0 },
+        type: float64TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function AnalyticsRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      currency: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: CurrencyRefTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
 export const AnalyticsService = {
   getAnalytics: (input: AnalyticsRequest): Observable<PositionUpdates> => {
     return HydraPlatform.requestStream$(
       {
         serviceName: "AnalyticsService",
         methodName: "getAnalytics",
-        methodSignatureHash: -1114508534,
         inboundStream: "one",
         outboundStream: "many",
-        requestRouteId: -642094529,
-        responseRouteId: -1285796373,
+        requestRouteKey: BigInt("7517728295732766976"),
+        responseRouteKey: BigInt("-2041959541056357120"),
         annotations: [],
       },
-      allocators.responseAllocator("PositionUpdates"),
-      allocators.requestAllocator(input, "AnalyticsRequest"),
+      allocators.responseAllocator(PositionUpdatesTypeDefinition),
+      allocators.requestAllocator(input, AnalyticsRequestTypeDefinition),
     )
   },
 }
@@ -168,14 +764,13 @@ export const BlotterService = {
       {
         serviceName: "BlotterService",
         methodName: "getTradeStream",
-        methodSignatureHash: 34777264,
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteId: -1383080335,
-        responseRouteId: 45070941,
+        requestRouteKey: BigInt("-2567578599433564416"),
+        responseRouteKey: BigInt("-1445164197769796352"),
         annotations: [],
       },
-      allocators.responseAllocator("TradeUpdates"),
+      allocators.responseAllocator(TradeUpdatesTypeDefinition),
     )
   },
 }
@@ -185,15 +780,14 @@ export const LoginService = {
       {
         serviceName: "LoginService",
         methodName: "login",
-        methodSignatureHash: 49034275,
         inboundStream: "one",
         outboundStream: "empty",
-        requestRouteId: 740260733,
-        responseRouteId: 793953459,
+        requestRouteKey: BigInt("-8896809152677510144"),
+        responseRouteKey: BigInt("-3072407376829816320"),
         annotations: [],
       },
       undefined,
-      allocators.requestAllocator(input, "LoginRequest"),
+      allocators.requestAllocator(input, LoginRequestTypeDefinition),
     )
   },
 }
@@ -203,15 +797,14 @@ export const ExecutionService = {
       {
         serviceName: "ExecutionService",
         methodName: "executeTrade",
-        methodSignatureHash: 211232270,
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteId: 535373836,
-        responseRouteId: 577139768,
+        requestRouteKey: BigInt("6017150178173448704"),
+        responseRouteKey: BigInt("8923535530135201280"),
         annotations: [],
       },
-      allocators.responseAllocator("ExecutionResponse"),
-      allocators.requestAllocator(input, "ExecuteTradeRequest"),
+      allocators.responseAllocator(ExecutionResponseTypeDefinition),
+      allocators.requestAllocator(input, ExecuteTradeRequestTypeDefinition),
     )
   },
 }
@@ -221,15 +814,14 @@ export const PricingService = {
       {
         serviceName: "PricingService",
         methodName: "getPriceUpdates",
-        methodSignatureHash: -1075832783,
         inboundStream: "one",
         outboundStream: "many",
-        requestRouteId: 1962523176,
-        responseRouteId: 143171678,
+        requestRouteKey: BigInt("7269914111010260480"),
+        responseRouteKey: BigInt("6961240174832290048"),
         annotations: [],
       },
-      allocators.responseAllocator("PriceTick"),
-      allocators.requestAllocator(input, "PriceStreamRequest"),
+      allocators.responseAllocator(PriceTickTypeDefinition),
+      allocators.requestAllocator(input, PriceStreamRequestTypeDefinition),
     )
   },
   getPriceHistory: (
@@ -239,15 +831,14 @@ export const PricingService = {
       {
         serviceName: "PricingService",
         methodName: "getPriceHistory",
-        methodSignatureHash: 25663784,
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteId: -1171079694,
-        responseRouteId: -804373976,
+        requestRouteKey: BigInt("-6576860580212776192"),
+        responseRouteKey: BigInt("-7763015742788736768"),
         annotations: [],
       },
-      allocators.responseAllocator("PriceTickHistory"),
-      allocators.requestAllocator(input, "PriceStreamRequest"),
+      allocators.responseAllocator(PriceTickHistoryTypeDefinition),
+      allocators.requestAllocator(input, PriceStreamRequestTypeDefinition),
     )
   },
 }
@@ -257,14 +848,13 @@ export const ReferenceDataService = {
       {
         serviceName: "ReferenceDataService",
         methodName: "getCcyPairs",
-        methodSignatureHash: -1619823652,
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteId: 1608024822,
-        responseRouteId: 905829996,
+        requestRouteKey: BigInt("4705086749971869952"),
+        responseRouteKey: BigInt("-7233137923248246528"),
         annotations: [],
       },
-      allocators.responseAllocator("CurrencyPairUpdates"),
+      allocators.responseAllocator(CurrencyPairUpdatesTypeDefinition),
     )
   },
 }
@@ -274,15 +864,14 @@ export const RfqService = {
       {
         serviceName: "RfqService",
         methodName: "requestQuote",
-        methodSignatureHash: -2124174778,
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteId: -1705529915,
-        responseRouteId: -1975840591,
+        requestRouteKey: BigInt("-6462865791245223680"),
+        responseRouteKey: BigInt("-7982566380619983104"),
         annotations: [],
       },
-      allocators.responseAllocator("QuoteResponse"),
-      allocators.requestAllocator(input, "QuoteRequest"),
+      allocators.responseAllocator(QuoteResponseTypeDefinition),
+      allocators.requestAllocator(input, QuoteRequestTypeDefinition),
     )
   },
 }

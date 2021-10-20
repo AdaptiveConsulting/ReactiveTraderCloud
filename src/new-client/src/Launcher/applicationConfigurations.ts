@@ -1,7 +1,6 @@
-// import { EXCEL_ADAPTER_NAME, PlatformName } from 'rt-platforms'
-// import { getEnvironment } from 'rt-util'
+import { BASE_URL, ENVIRONMENT } from "@/constants"
 import {
-  /* excelIcon,  */ limitCheckerIcon,
+  limitCheckerIcon,
   reactiveAnalyticsIcon,
   reactiveTraderIcon,
 } from "./icons"
@@ -60,70 +59,11 @@ export interface ApplicationConfig {
   provider?: ApplicationProvider
 }
 
-// const excelPreloadScripts: fin.DownloadPreloadOption[] = [
-//   // OpenFin Excel API not included here (not included in standard package)
-//   {
-//     url: `${ORIGIN}/plugin/service-loader.js`,
-//   },
-//   {
-//     url: `${ORIGIN}/plugin/fin.desktop.Excel.js`,
-//   },
-// ]
-
-// const excelJSAppConfig: ApplicationConfig = {
-//   name: 'Excel',
-//   displayName: 'EX',
-//   tooltipName: 'Launch Excel',
-//   icon: excelIcon,
-//   iconFillColor: '#CFCFCF',
-//   provider: {
-//     platformName: 'openfin',
-//     applicationType: 'excel',
-//     windowOptions: {
-//       preloadScripts: excelPreloadScripts,
-//       icon: `${ORIGIN}/static/media/excel-icon.ico`,
-//     },
-//   },
-// }
-
-// const excelLegacyAppConfig: ApplicationConfig = {
-//   name: 'Excel',
-//   displayName: 'EX',
-//   tooltipName: 'Launch Excel',
-//   icon: excelIcon,
-//   iconFillColor: '#CFCFCF',
-//   url: `${ORIGIN}/static/excel/instructions.html`,
-//   provider: {
-//     platformName: 'openfin',
-//     applicationType: 'application',
-//     windowOptions: {
-//       ...defaultWindowOptions,
-//       defaultWidth: 800,
-//       defaultHeight: 600,
-//       minWidth: 520,
-//       minHeight: 260,
-//       frame: true,
-//       alwaysOnTop: false,
-//       icon: `${ORIGIN}/static/media/excel-icon.ico`,
-//     },
-//   },
-// }
-
-// const excelAppConfig = EXCEL_ADAPTER_NAME === 'JS' ? excelJSAppConfig : excelLegacyAppConfig
-
-// const env = getEnvironment()
-// const envSuffix = env === 'demo' ? '' : ` (${env.toUpperCase()})`
-// const reactiveAnalyticsBaseUrl =
-//   process.env.REACT_APP_ANALYTICS_URL ?? `https://${env}-reactive-analytics.adaptivecluster.com/`
-// const reactiveAnalyticsManifestUrl = new URL(
-//   '/openfin/app.json',
-//   reactiveAnalyticsBaseUrl
-// ).toString()
-
-const env = "tbd-env"
-const envSuffix = "TBD-ENV"
-const reactiveTraderManifestUrl = "http://localhost:1917/dist/openfin/app.json"
-const reactiveAnalyticsManifestUrl = "http://localhost:3005/openfin/app.json"
+const env = ENVIRONMENT
+const envSuffix = ENVIRONMENT.toUpperCase()
+const reactiveTraderManifestUrl = `${BASE_URL}/dist/config/app.json`
+// TODO
+const reactiveAnalyticsManifestUrl = "http://localhost:3005/config/app.json"
 // const reactiveAnalyticsManifestUrl =
 //   "https://demo-reactive-analytics.adaptivecluster.com/openfin/app.json"
 
@@ -174,7 +114,17 @@ const baseAppConfigs: ApplicationConfig[] = [
       },
     },
   },
-  // excelAppConfig,
+  // {
+  //   name: "Excel",
+  //   displayName: "EX",
+  //   tooltipName: "Launch Excel",
+  //   icon: excelIcon,
+  //   iconFillColor: "#CFCFCF",
+  //   provider: {
+  //     platformName: "openfin",
+  //     applicationType: "excel",
+  //   },
+  // },
 ]
 
 export const appConfigs = baseAppConfigs

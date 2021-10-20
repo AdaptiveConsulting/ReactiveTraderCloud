@@ -1,19 +1,19 @@
 import { Subscribe } from "@react-rxjs/core"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { Analytics } from "@/App/Analytics"
-import { TileView } from "@/App/LiveRates/selectedView"
 import { Trades } from "@/App/Trades"
 import { Loader } from "@/components/Loader"
-import { DetachableLiveRates } from "./DetachableTile/DetachableLiveRates"
-import { DetachableTile } from "./DetachableTile/DetachableTile"
 import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
 import { DocTitle } from "@/components/DocTitle"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
+import { TornOutTile, Tiles } from "./Tiles"
+import { TileView } from "@/App/LiveRates/selectedView"
+import { BASE_URL } from "@/constants"
 
 export const OpenFinApp: React.FC = () => (
-  <BrowserRouter basename={import.meta.env.BASE_URL}>
+  <BrowserRouter basename={BASE_URL}>
     <Switch>
       <Route
         path="/analytics"
@@ -33,13 +33,23 @@ export const OpenFinApp: React.FC = () => (
       />
       <Route
         path="/tiles"
-        render={() => (
-          <DocTitle title="Live Rates">
-            <DetachableLiveRates />
-          </DocTitle>
-        )}
+        render={() => {
+          const loader = (
+            <Loader
+              ariaLabel="Loading live FX exchange rates"
+              minWidth="22rem"
+              minHeight="22rem"
+            />
+          )
+          return (
+            <DocTitle title="Live Rates">
+              <Subscribe fallback={loader}>
+                <Tiles />
+              </Subscribe>
+            </DocTitle>
+          )
+        }}
       />
-      <Route path="/contact" render={() => <OpenFinContactDisplay />} />
       <Route
         path="/spot/:symbol"
         render={({
@@ -53,24 +63,11 @@ export const OpenFinApp: React.FC = () => (
             ? (query.get("tileView") as TileView)
             : TileView.Analytics
 
-          const loader = (
-            <Loader
-              ariaLabel="Loading live FX exchange rates"
-              minWidth="22rem"
-              minHeight="22rem"
-            />
-          )
-
-          return (
-            <Subscribe fallback={loader}>
-              <DetachableTile symbol={symbol} view={view} isTornOut={true} />
-            </Subscribe>
-          )
+          return <TornOutTile symbol={symbol} view={view} />
         }}
       />
-
+      <Route path="/contact" render={() => <OpenFinContactDisplay />} />
       <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
-
       <Route
         path="/openfin-sub-window-frame"
         render={() => <ChildWindowFrame />}
