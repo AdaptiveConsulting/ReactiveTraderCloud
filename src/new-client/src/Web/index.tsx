@@ -1,11 +1,12 @@
 import { GA_TRACKING_ID } from "../constants"
-import { StrictMode } from "react"
+import { StrictMode, Suspense } from "react"
 import ReactDOM from "react-dom"
 import GlobalStyle from "@/theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import { register } from "./serviceWorkerRegistration"
 import { registerSwNotifications } from "./sw-notifications"
 import { WebApp } from ".//WebApp"
+import { StyleguideRoute } from ".//StyleguideRoute"
 
 import { AnalyticsCoreDeferred } from "@/App/Analytics"
 import { LiveRatesCoreDeferred } from "@/App/LiveRates"
@@ -14,6 +15,8 @@ import { TradesCoreDeferred } from "@/App/Trades"
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
 import { PlatformContext } from "@/platform"
+
+import { BrowserRouter, Route, Switch } from "react-router-dom"
 
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
@@ -53,10 +56,20 @@ export default function main() {
     <StrictMode>
       <PlatformContext.Provider value={{ type: "web" }}>
         <GlobalStyle />
-        <ThemeProvider>
-          <GlobalScrollbarStyle />
-          <WebApp />
-        </ThemeProvider>
+        <BrowserRouter>
+          <ThemeProvider>
+            <GlobalScrollbarStyle />
+            <Suspense fallback={<div />}>
+              <Switch>
+                <Route
+                  path={"/styleguide"}
+                  render={() => <StyleguideRoute />}
+                />
+                <Route render={() => <WebApp />} />
+              </Switch>
+            </Suspense>
+          </ThemeProvider>
+        </BrowserRouter>
       </PlatformContext.Provider>
     </StrictMode>,
     document.getElementById("root"),

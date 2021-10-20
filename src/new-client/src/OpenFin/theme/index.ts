@@ -7,23 +7,21 @@ export type {
   AccentPaletteMap,
   Color,
 } from "./colors"
+export { themes, getThemeColor } from "./themes"
 export type {
   Theme,
   TouchableIntentName,
   ColorProps,
   ThemeSelector,
 } from "./themes"
-
 export { colors } from "./colors"
-export { themes, getThemeColor } from "./themes"
+export { default as GlobalStyle } from "./globals"
 export {
   ThemeName,
   ThemeProvider,
   ThemeConsumer,
   useTheme,
 } from "./ThemeContext"
-export { GlobalScrollbarStyle } from "./GlobalScrollbarStyle"
-export { default as GlobalStyle } from "./globals"
 export { default as ThemeStorageSwitch } from "./ThemeStorageSwitch"
 
 // Make all styled-component functions (e.g. `styled`, `css`) typed with Theme

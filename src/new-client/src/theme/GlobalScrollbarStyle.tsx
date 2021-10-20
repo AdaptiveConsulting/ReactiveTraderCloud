@@ -6,9 +6,7 @@ const getColor = (props: { theme: Theme }) =>
   rgba(props.theme.secondary[3], 0.2)
 
 export const GlobalScrollbarStyle = withTheme(createGlobalStyle`
-body, #root {
-  overflow: hidden;
-}
+
 
 body ::-webkit-scrollbar {
   width: 14px;
