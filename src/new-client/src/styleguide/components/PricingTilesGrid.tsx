@@ -31,8 +31,8 @@ export default (() => (
     {/* <PricingTilesColumn>
       <ColumnTitle>Sell Side</ColumnTitle>
       <PriceButtonVariants direction={Direction.Sell} />
-    </PricingTilesColumn>
-    <PricingTilesColumn>
+    </PricingTilesColumn> */}
+    {/* <PricingTilesColumn>
       <ColumnTitle>Buy Side</ColumnTitle>
       <PriceButtonVariants direction={Direction.Buy} />
     </PricingTilesColumn> */}
@@ -46,11 +46,11 @@ const PriceButtonVariants: React.FC<{ direction: Direction }> = ({
     {
       //Price Announced
       <PricingTilesRow>
-        {/* TODO investigate why TS says that the property does not exist 
-        // @ts-ignore */}
         <PriceButton
           direction={direction}
           {...values}
+          /* TODO investigate why TS says that the property does not exist 
+          // @ts-ignore */
           priceAnnounced
           readOnly
         />
@@ -88,7 +88,8 @@ const PriceButtonVariants: React.FC<{ direction: Direction }> = ({
         <PriceButton
           direction={direction}
           {...values}
-          disabled
+          /* TODO investigate why TS says that the property does not exist 
+          // @ts-ignore */
           expired
           readOnly
         />

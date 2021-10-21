@@ -2,11 +2,11 @@ import React from "react"
 import FormGrid from "../components/FormGrid"
 import styled from "styled-components"
 import PricingTilesGrid from "../components/PricingTilesGrid"
-// import ChartingGrid from '../components/ChartingGrid'
+import ChartingGrid from "../components/ChartingGrid"
 import { H2, H3 } from "../elements"
 import { Paragraph, SectionBlock } from "../styled"
 import ButtonGrid from "../components/ButtonGrid"
-// import SpreadGrid from '../components/SpreadGrid'
+import SpreadGrid from "../components/SpreadGrid"
 import ConfirmationGrid from "../components/ConfirmationGrid"
 import DropdownGrid from "../components/DropdowGrid"
 import DropdownMenuGrid from "../components/DropdownMenuGrid"
@@ -49,9 +49,9 @@ const Atoms = () => {
         <Separator />
         <H3>Pricing Tiles</H3>
         <AtomsContainer>
-          {/* <PricingTilesGrid /> */}
-          {/* <SpreadGrid /> */}
-          {/* <ChartingGrid /> */}
+          <PricingTilesGrid />
+          <SpreadGrid />
+          <ChartingGrid />
           <ConfirmationGrid />
         </AtomsContainer>
       </SectionBlock>
