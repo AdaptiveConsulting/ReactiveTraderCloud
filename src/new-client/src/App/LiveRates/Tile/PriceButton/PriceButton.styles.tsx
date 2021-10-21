@@ -148,3 +148,10 @@ export const ExpiredPrice = styled.div`
   animation-fill-mode: forwards;
   animation-delay: 1s;
 `
+
+export const ExpiredPersist = styled.div`
+  color: ${({ theme }) => theme.colors.spectrum.uniqueCollections.Sell.base};
+  font-size: 9px;
+  text-transform: uppercase;
+  height: 0;
+`

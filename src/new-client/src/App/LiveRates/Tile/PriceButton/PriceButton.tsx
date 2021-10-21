@@ -20,6 +20,7 @@ import {
   Tenth,
   QuotePriceLoading,
   ExpiredPrice,
+  ExpiredPersist,
 } from "./PriceButton.styles"
 import { of } from "rxjs"
 import { useIsNotionalValid } from "../Notional/Notional"
@@ -85,6 +86,45 @@ const PriceButtonInner: React.FC<{
   if (bigFigureNumber === Math.floor(bigFigureNumber)) bigFigure += "."
 
   return (
+    <PriceButtonInnerComponent
+      direction={direction}
+      rfqQuoteState={rfqQuoteState}
+      symbol={symbol}
+      disabled={disabled}
+      price={price}
+      bigFigure={bigFigure}
+      pip={pip}
+      tenth={tenth}
+      isExpired={isExpired}
+      persist={false}
+    />
+  )
+}
+
+export const PriceButtonInnerComponent: React.FC<{
+  direction: Direction
+  rfqQuoteState: QuoteState
+  symbol: any
+  disabled: boolean
+  price: any
+  bigFigure: any
+  pip: any
+  tenth: any
+  isExpired: any
+  persist: boolean
+}> = ({
+  direction,
+  rfqQuoteState,
+  symbol,
+  disabled,
+  price,
+  bigFigure,
+  pip,
+  tenth,
+  isExpired,
+  persist,
+}) => {
+  return (
     <TradeButton
       direction={direction}
       onClick={() => {
@@ -105,8 +145,11 @@ const PriceButtonInner: React.FC<{
           </>
         )}
       </Price>
-      {isExpired && (
+      {isExpired && !persist && (
         <ExpiredPrice data-testid="expireLabel">Expired</ExpiredPrice>
+      )}
+      {isExpired && persist && (
+        <ExpiredPersist data-testid="expireLabel">Expired</ExpiredPersist>
       )}
     </TradeButton>
   )

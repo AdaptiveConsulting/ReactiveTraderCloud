@@ -1,18 +1,37 @@
 import React from "react"
 import styled from "styled-components"
 // import { PriceButton } from "@/App/LiveRates/Tile/PriceButton/PriceButton"
-import { PriceButton } from "@/App/LiveRates/Tile/PriceButton"
+import { PriceButtonInnerComponent } from "@/App/LiveRates/Tile/PriceButton"
 import { Direction } from "@/services/trades"
+import { QuoteStateStage } from "@/App/LiveRates/Tile/Rfq"
+
+const rfqStateReceived = {
+  stage: QuoteStateStage.Received,
+}
+
+const rfqStateRejected = {
+  stage: QuoteStateStage.Rejected,
+}
+
+const rfqStateRequested = {
+  stage: QuoteStateStage.Requested,
+}
 
 const values = {
-  big: 0.45,
-  pip: 12,
-  tenth: 3,
-  rawRate: 33.0122,
-  handleClick: () => {},
-  isAnalyticsView: false,
-  currencyPairSymbol: "eurusd",
-  onChaneg: () => {},
+  bigFigure: "0.45",
+  pip: "12",
+  tenth: "3",
+  symbol: "eurusd",
+  price: true,
+  persist: true,
+}
+
+const currencyPair = {
+  symbol: "USDYAN",
+  ratePrecision: 1.5,
+  pipsPosition: 1.0,
+  base: "USD",
+  terms: "YAN",
 }
 
 export default (() => (
@@ -28,14 +47,14 @@ export default (() => (
       <label>RFQ Expired</label>
       <label>RFQ Expired Tradable</label>
     </LabelColumn>
-    {/* <PricingTilesColumn>
+    <PricingTilesColumn>
       <ColumnTitle>Sell Side</ColumnTitle>
       <PriceButtonVariants direction={Direction.Sell} />
-    </PricingTilesColumn> */}
-    {/* <PricingTilesColumn>
+    </PricingTilesColumn>
+    <PricingTilesColumn>
       <ColumnTitle>Buy Side</ColumnTitle>
       <PriceButtonVariants direction={Direction.Buy} />
-    </PricingTilesColumn> */}
+    </PricingTilesColumn>
   </Root>
 )) as React.FC
 
@@ -46,61 +65,86 @@ const PriceButtonVariants: React.FC<{ direction: Direction }> = ({
     {
       //Price Announced
       <PricingTilesRow>
-        <PriceButton
+        <PriceButtonInnerComponent
           direction={direction}
-          {...values}
+          disabled={false}
+          isExpired={false}
           /* TODO investigate why TS says that the property does not exist 
           // @ts-ignore */
-          priceAnnounced
-          readOnly
+          rfqQuoteState={rfqStateReceived}
+          {...values}
         />
       </PricingTilesRow>
     }
     {
       // Priced
       <PricingTilesRow>
-        {/* TODO investigate why TS says that the property does not exist 
-        // @ts-ignore */}
-        <PriceButton direction={direction} {...values} readOnly />
+        <PriceButtonInnerComponent
+          direction={direction}
+          disabled={false}
+          isExpired={false}
+          /* TODO investigate why TS says that the property does not exist 
+          // @ts-ignore */
+          rfqQuoteState={rfqStateRequested}
+          {...values}
+        />
       </PricingTilesRow>
     }
+
     {
       //Trading disabled
       <PricingTilesRow>
-        {/* TODO investigate why TS says that the property does not exist 
-        // @ts-ignore */}
-        <PriceButton direction={direction} {...values} disabled readOnly />
+        <PriceButtonInnerComponent
+          direction={direction}
+          disabled={true}
+          isExpired={false}
+          /* TODO investigate why TS says that the property does not exist 
+          // @ts-ignore */
+          rfqQuoteState={rfqStateRequested}
+          {...values}
+        />
       </PricingTilesRow>
     }
     {
       //Executing
       <PricingTilesRow>
-        {/* TODO investigate why TS says that the property does not exist 
-        // @ts-ignore */}
-        <PriceButton direction={direction} {...values} disabled readOnly />
+        <PriceButtonInnerComponent
+          direction={direction}
+          disabled={true}
+          isExpired={false}
+          /* TODO investigate why TS says that the property does not exist 
+          // @ts-ignore */
+          rfqQuoteState={rfqStateRequested}
+          {...values}
+        />
       </PricingTilesRow>
     }
     {
       //RFQ Expired
       <PricingTilesRow>
-        {/* TODO investigate why TS says that the property does not exist 
-        // @ts-ignore */}
-        <PriceButton
+        <PriceButtonInnerComponent
           direction={direction}
-          {...values}
+          disabled={true}
+          isExpired={true}
           /* TODO investigate why TS says that the property does not exist 
           // @ts-ignore */
-          expired
-          readOnly
+          rfqQuoteState={rfqStateRequested}
+          {...values}
         />
       </PricingTilesRow>
     }
     {
       //RFQ Expired Tradable
       <PricingTilesRow>
-        {/* TODO investigate why TS says that the property does not exist 
-        // @ts-ignore */}
-        <PriceButton direction={direction} {...values} expired readOnly />
+        <PriceButtonInnerComponent
+          direction={direction}
+          disabled={false}
+          isExpired={true}
+          /* TODO investigate why TS says that the property does not exist 
+          // @ts-ignore */
+          rfqQuoteState={rfqStateRequested}
+          {...values}
+        />
       </PricingTilesRow>
     }
   </>
