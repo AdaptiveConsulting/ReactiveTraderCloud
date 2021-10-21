@@ -1,15 +1,21 @@
 import { useEffect, useRef } from "react"
-import { setInput, useNlpInput, onResetInput } from "./services/nlpService"
+import { setInput, onResetInput } from "./services/nlpService"
 import { SearchContainer, Input, CancelButton } from "./styles"
 import { ExitIcon } from "./icons"
 
-export const Search: React.FC<{ visible?: boolean }> = ({ visible }) => {
-  const value = useNlpInput()
+type Props = {
+  value: string
+  visible?: boolean
+  onHide: () => void
+}
+
+export const Search: React.FC<Props> = ({ value, visible, onHide }) => {
   const inputRef = useRef<HTMLInputElement>(null)
+
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape" && !e.repeat) {
-        onResetInput()
+        onHide()
       }
     }
     window.addEventListener("keydown", onKeyDown)
@@ -26,7 +32,7 @@ export const Search: React.FC<{ visible?: boolean }> = ({ visible }) => {
   }, [visible])
 
   return (
-    <SearchContainer className={visible ? "search-container--active" : ""}>
+    <SearchContainer visible={visible}>
       <Input
         ref={inputRef}
         value={value}
@@ -36,8 +42,13 @@ export const Search: React.FC<{ visible?: boolean }> = ({ visible }) => {
         placeholder="Type something"
       />
 
-      {false && (
-        <CancelButton onClick={() => {}}>
+      {value && (
+        <CancelButton
+          onClick={() => {
+            onResetInput()
+            inputRef.current!.focus()
+          }}
+        >
           <ExitIcon />
         </CancelButton>
       )}

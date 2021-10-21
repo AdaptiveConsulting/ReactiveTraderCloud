@@ -5,6 +5,8 @@ interface Props {
   minWidth?: string
   minHeight?: string
   ariaLabel?: string
+  size?: number
+  opacity?: number
 }
 
 const LoadableStyle = styled.div<Props>`
@@ -19,12 +21,12 @@ const LoadableStyle = styled.div<Props>`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  opacity: 0.59;
+  opacity: ${({ opacity }) => opacity ?? "0.59"};
   fill: ${({ theme }) => theme.core.textColor};
 `
 
-export const Loader: React.FC<Props> = (props) => (
+export const Loader: React.FC<Props> = ({ size, ...props }) => (
   <LoadableStyle {...props}>
-    <AdaptiveLoader size={50} speed={1.4} ariaLabel={props.ariaLabel} />
+    <AdaptiveLoader size={size || 50} speed={1.4} ariaLabel={props.ariaLabel} />
   </LoadableStyle>
 )

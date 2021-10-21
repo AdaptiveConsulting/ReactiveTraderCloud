@@ -60,12 +60,12 @@ export interface ApplicationConfig {
 }
 
 const env = ENVIRONMENT
-const envSuffix = ENVIRONMENT.toUpperCase()
+const envSuffix = `(${ENVIRONMENT.toUpperCase()})`
 const reactiveTraderManifestUrl = `${BASE_URL}/dist/config/app.json`
 // TODO
-const reactiveAnalyticsManifestUrl = "http://localhost:3005/config/app.json"
-// const reactiveAnalyticsManifestUrl =
-//   "https://demo-reactive-analytics.adaptivecluster.com/openfin/app.json"
+// const reactiveAnalyticsManifestUrl = "http://localhost:3005/config/app.json"
+const reactiveAnalyticsManifestUrl =
+  "https://demo-reactive-analytics.adaptivecluster.com/openfin/app.json"
 
 const baseAppConfigs: ApplicationConfig[] = [
   {

@@ -11,7 +11,7 @@ import { noop } from "rxjs"
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
     connectToGateway({
-      url: import.meta.env.VITE_HYDRA_URL as string,
+      url: `${window.location.origin}/ws`,
       interceptor: noop,
       useJson: true,
     })

@@ -39,6 +39,8 @@ export const RootLauncherContainer = styled(RootContainer)`
 
 export const RootResultsContainer = styled.div`
   padding: 0;
+
+  ${appRegionNoDrag}
 `
 
 export const LauncherContainer = styled.div<{ showResponsePanel: boolean }>`
@@ -62,9 +64,11 @@ export const IconContainer = styled.div`
 `
 
 export const LogoLauncherContainer = styled(IconContainer)`
-  min-width: 170px;
+  min-width: 56px;
   border-right: 1px solid rgba(216, 216, 216, 0.15);
   height: 70%;
+  flex-shrink: 0;
+  flex-grow: 0;
 
   ${appRegionDrag};
 `
@@ -134,7 +138,7 @@ export const MinExitContainer = styled(ButtonContainer)`
   margin-right: 4px;
 `
 
-export const SearchContainer = styled.div`
+export const SearchContainer = styled.div<{ visible?: boolean }>`
   position: absolute;
   left: 350px;
   right: 75px;
@@ -146,16 +150,19 @@ export const SearchContainer = styled.div`
   transition: left 0.3s, right 0.3s, opacity 0.1s ease;
   will-change: opacity;
 
-  &.search-container--active {
-    left: 55px;
-    opacity: 1;
-    right: 83px;
+  ${({ visible }) =>
+    visible
+      ? `
+  left: 55px;
+  opacity: 1;
+  right: 93px;
 
-    > input {
-      caret-color: #5f94f5;
-      padding-left: 9px;
-    }
+  > input {
+    caret-color: #5f94f5;
+    padding-left: 9px;
   }
+  `
+      : ``}
 `
 
 export const Input = styled.input`
@@ -168,9 +175,9 @@ export const Input = styled.input`
   font-weight: 400;
   caret-color: transparent;
   transition: all 0.3s ease;
+  color: ${({ theme }) => theme.textColor};
 
   &::placeholder {
-    color: ${({ theme }) => theme.textColor};
     opacity: 0.6;
   }
 `

@@ -4,6 +4,7 @@ import { ResultsTable, ResultsTableRow, defaultColDefs } from "./resultsTable"
 import { MovementIcon } from "../icons"
 import { format } from "date-fns"
 import { useCurrencyPairs } from "@/services/currencyPairs"
+import { showCurrencyPairWindow } from "./intents"
 
 export const InlineQuote: FC<{ symbol: string }> = ({ symbol }) => {
   const quote = usePrice(symbol)
@@ -12,7 +13,9 @@ export const InlineQuote: FC<{ symbol: string }> = ({ symbol }) => {
     ...quote,
     priceMovementType: <MovementIcon direction={quote.movementType} />,
     valueDate: format(new Date(quote.valueDate), "dd-MM-yyyy HH:mm:ss aaaa"),
-    openTileBtn: <button onClick={() => {}}>Open Tile</button>,
+    openTileBtn: (
+      <button onClick={() => showCurrencyPairWindow(symbol)}>Open Tile</button>
+    ),
   }
 
   return <ResultsTableRow row={row} cols={defaultColDefs} />

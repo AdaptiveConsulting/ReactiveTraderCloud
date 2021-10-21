@@ -1,6 +1,6 @@
-import styled from "styled-components"
 import { Loader } from "@/components/Loader"
-import LogoIcon from "@/components/Logo"
+import LogoIcon from "@/components/LogoIcon"
+import Measure, { ContentRect } from "react-measure"
 import {
   RootLauncherContainer,
   LauncherContainer,
@@ -17,22 +17,33 @@ import {
 import { ExitIcon, SearchIcon, minimiseNormalIcon } from "./icons"
 import { LauncherApps } from "./LauncherApps"
 import { Search } from "./Search"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { NlpSuggestions } from "./NlpSuggestions/NlpSuggestions"
-import { useIsNlpIntentLoading } from "./services/nlpService"
+import {
+  onResetInput,
+  useIsNlpIntentLoading,
+  useNlpInput,
+  useNlpIntent,
+} from "./services/nlpService"
 import { OverlayProvider } from "./overlayContext"
 import {
   closeCurrentWindow,
   minimiseCurrentWindow,
+  getCurrentWindowBounds,
+  animateCurrentWindowSize,
+  useAppBoundReset,
 } from "./utils/openfin-utils"
 import { LaunchButton } from "./components/LaunchButton"
+import { Bounds } from "openfin/_v2/shapes/shapes"
 
-const Logo: React.FC = () => (
+const expandedLauncherWidth = 600
+
+const Logo: React.FC<{ active: boolean }> = ({ active }) => (
   <LogoLauncherContainer>
     {useIsNlpIntentLoading() ? (
-      <Loader minWidth="20" />
+      <Loader size={21} opacity={1} />
     ) : (
-      <LogoIcon width={1.2} height={1.2} />
+      <LogoIcon width={1.2} height={1.2} active={active} />
     )}
   </LogoLauncherContainer>
 )
@@ -66,36 +77,91 @@ const LauncherMinimiseAndExit: React.FC = () => (
 
 export function LauncherApp() {
   const [isSearchVisible, setIsSearchVisible] = useState(false)
-
+  const [initialBounds, setInitialBounds] = useState<Bounds>()
+  const [responseHeight, setResponseHeight] = useState<number>()
   const overlayRef = useRef<HTMLDivElement>(null)
   const [overlay, setOverlay] = useState<HTMLDivElement | null>(null)
+  const intent = useNlpIntent()
+  const searchValue = useNlpInput()
+
+  useAppBoundReset(initialBounds)
 
   useEffect(() => {
     setOverlay(overlayRef.current)
+    getCurrentWindowBounds().then(setInitialBounds).catch(console.error)
   }, [])
+
+  useEffect(() => {
+    if (initialBounds) {
+      if (isSearchVisible) {
+        // searchInputRef.current && searchInputRef.current.focus({ preventScroll: true })
+
+        animateCurrentWindowSize({
+          ...initialBounds,
+          width: expandedLauncherWidth,
+          height: responseHeight
+            ? responseHeight + initialBounds.height
+            : initialBounds.height,
+        })
+
+        return
+      }
+
+      animateCurrentWindowSize(initialBounds)
+    }
+  }, [isSearchVisible, initialBounds, responseHeight])
+
+  const onHideSearch = () => {
+    setIsSearchVisible(false)
+    onResetInput()
+  }
+
+  const handleSearchSizeChange = useCallback(
+    (contentRect: ContentRect) => {
+      if (contentRect.bounds && contentRect.bounds.height !== responseHeight) {
+        setResponseHeight(contentRect.bounds.height)
+      }
+    },
+    [responseHeight],
+  )
 
   return (
     <OverlayProvider value={overlay}>
       <RootLauncherContainer>
         <LauncherContainer showResponsePanel={false}>
           <LauncherGlobalStyle />
-          <Logo />
+          <Logo active={isSearchVisible} />
           <LauncherApps />
-          <Search visible={isSearchVisible} />
+          <Search
+            value={searchValue}
+            visible={isSearchVisible}
+            onHide={onHideSearch}
+          />
           <SearchButton
             isSearchVisible={isSearchVisible}
             onClick={() => {
-              setIsSearchVisible(true)
+              if (isSearchVisible) {
+                onResetInput()
+              }
+              setIsSearchVisible(!isSearchVisible)
             }}
           />
           <LauncherMinimiseAndExit />
           <OverlayContainer ref={overlayRef} />
         </LauncherContainer>
-        <RootResultsContainer>
-          <Response>
-            <NlpSuggestions />
-          </Response>
-        </RootResultsContainer>
+        <Measure bounds onResize={handleSearchSizeChange}>
+          {({ measureRef }) => (
+            <div ref={measureRef}>
+              {intent !== "loading" && searchValue && (
+                <RootResultsContainer>
+                  <Response>
+                    <NlpSuggestions intent={intent} />
+                  </Response>
+                </RootResultsContainer>
+              )}
+            </div>
+          )}
+        </Measure>
       </RootLauncherContainer>
     </OverlayProvider>
   )

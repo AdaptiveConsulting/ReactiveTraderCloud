@@ -11,11 +11,42 @@ import {
   InlineIntent,
 } from "./styles"
 import { reactiveTraderIcon } from "../icons"
+import { NlpIntent, NlpIntentType } from "../services/nlpService"
+import { openWindow } from "@/OpenFin/utils/window"
+import { constructUrl } from "@/utils/url"
 
-export const SuggestionWrapper: React.FC<{ intent: string }> = ({
-  children,
-  intent,
-}) => {
+const handleIntent = (intent: NlpIntent) => {
+  switch (intent.type) {
+    case NlpIntentType.SpotQuote: {
+      const currencyPair = intent.payload.symbol
+
+      if (!currencyPair) {
+        console.error(`No currency pair in queryResult`)
+        return
+      }
+
+      const options = {
+        name: currencyPair,
+        url: constructUrl(`/spot/${currencyPair}`),
+        width: 380,
+        height: 200,
+        includeInSnapshots: false,
+      }
+
+      openWindow(options)
+
+      return
+    }
+
+    default:
+      console.log("TODO")
+  }
+}
+
+export const SuggestionWrapper: React.FC<{
+  intent: NlpIntent
+  intentButtonText: string
+}> = ({ children, intent, intentButtonText }) => {
   return (
     <IntentWrapper>
       <IntentActions>
@@ -27,7 +58,9 @@ export const SuggestionWrapper: React.FC<{ intent: string }> = ({
         </IntentActionWrapper>
         <IntentActionWrapper>
           <button onClick={() => {}}>Launch Platform</button>
-          <button onClick={() => {}}>{intent}</button>
+          <button onClick={() => handleIntent(intent)}>
+            {intentButtonText}
+          </button>
         </IntentActionWrapper>
       </IntentActions>
       <Suggestion>
