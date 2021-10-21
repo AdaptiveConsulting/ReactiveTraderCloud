@@ -1,7 +1,7 @@
-import React, { ButtonHTMLAttributes, ReactChild } from "react"
-import { userSelectButton, userSelectNone } from "rt-styleguide"
-import { Theme, TouchableIntentName } from "rt-theme"
-import styled, { css, ThemeProvider, withTheme } from "styled-components/macro"
+import { ButtonHTMLAttributes, ReactChild } from "react"
+import { userSelectButton, userSelectNone } from "@/styleguide/rules"
+import { Theme, TouchableIntentName } from "@/theme"
+import styled, { css, ThemeProvider, withTheme } from "styled-components"
 
 export interface ButtonStyleProps {
   intent?: TouchableIntentName
@@ -66,6 +66,8 @@ const bgColor = (props: ButtonStyleProps & { theme: Theme }) =>
 const fgColor = (props: ButtonStyleProps & { theme: Theme }) =>
   getButtonColors(props).fg
 
+//TODO investigate why TS doesn't accept objects here
+//@ts-ignore
 class BaseButtonThemeProvider extends React.Component<
   ButtonStyleProps & { theme: Theme }
 > {
@@ -81,6 +83,8 @@ class BaseButtonThemeProvider extends React.Component<
 
 const ButtonThemeProvider = withTheme(BaseButtonThemeProvider)
 
+//TODO investigate why TS doesn't accept objects here
+//@ts-ignore
 export class Button extends React.Component<
   ButtonStyleProps & ButtonHTMLAttributes<Element>
 > {
@@ -118,7 +122,8 @@ export class Button extends React.Component<
     )
   }
 }
-
+//TODO investigate why TS doesn't accept objects here
+//@ts-ignore
 export class ButtonGroup extends React.Component<ButtonStyleProps> {
   render() {
     const { children, intent, active, disabled, outline, pill, size, ...rest } =

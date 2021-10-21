@@ -1,5 +1,5 @@
 import React, { useRef } from "react"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 const inputColors = {
   error: "error",
@@ -36,7 +36,9 @@ const StyledInput = styled.input<InputStyleProps>`
   border-bottom: ${({ status, theme }) =>
     `1px solid ${
       status
-        ? theme.accents[inputColors[status]].darker
+        ? /* TODO investigate why TS doesn't accept objects here
+        // @ts-ignore */
+          theme.accents[inputColors[status]].darker
         : theme.name === "light"
         ? theme.primary[1]
         : theme.primary[2]
@@ -55,7 +57,9 @@ const StyledInput = styled.input<InputStyleProps>`
     border-bottom: ${({ status, theme }) =>
       `1px solid ${
         status
-          ? theme.accents[inputColors[status]].base
+          ? /* TODO investigate why TS doesn't accept objects here
+          // @ts-ignore */
+            theme.accents[inputColors[status]].base
           : theme.name === "light"
           ? "#beccdc"
           : theme.colors.light.secondary[1]
@@ -65,20 +69,26 @@ const StyledInput = styled.input<InputStyleProps>`
     caret-color: ${({ status, theme }) =>
       `${
         status
-          ? theme.accents[inputColors[status]].darker
+          ? /* TODO investigate why TS doesn't accept objects here
+          // @ts-ignore */
+            theme.accents[inputColors[status]].darker
           : theme.accents.primary.darker
       }`};
     outline: none;
     border-bottom: ${({ status, theme }) =>
       `1px solid ${
         status
-          ? theme.accents[inputColors[status]].darker
+          ? /* TODO investigate why TS doesn't accept objects here
+          // @ts-ignore */
+            theme.accents[inputColors[status]].darker
           : theme.accents.primary.darker
       }`};
   }
   &:disabled {
     border-bottom: ${({ status, theme }) =>
       `1px solid ${
+        /* TODO investigate why TS doesn't accept objects here
+        // @ts-ignore */
         status ? theme.accents[inputColors[status]].darker : theme.primary[2]
       }`};
     color: ${({ theme, disabled }) =>
