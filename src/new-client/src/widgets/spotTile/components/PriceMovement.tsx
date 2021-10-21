@@ -14,10 +14,11 @@ const MovementIcon = styled("i")<{ show: boolean; color: string }>`
   text-align: center;
   color: ${({ theme, color }) =>
     /*TODO Investigate why TS complains about these objects
-  //@ts-ignore */
+    //@ts-ignore */
     color === "none"
       ? theme.colors.light.secondary[4]
-      : theme.accents[color].base};
+      : //@ts-ignore */
+        theme.accents[color].base};
   visibility: ${({ show }) => (show ? "visible" : "hidden")};
 `
 
