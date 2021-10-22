@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { TileBooking } from "../notifications"
-import { CurrencyPair } from "rt-types"
+import { CurrencyPair } from "@/services/currencyPairs"
 import { RfqActions, RfqState } from "../types"
 import { getConstsFromRfqState } from "../../model/spotTileUtils"
 

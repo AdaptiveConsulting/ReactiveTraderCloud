@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Loadable } from "rt-components"
-import { usePlatform } from "rt-platforms"
+import { usePlatform } from "@/platform"
 import { GlobalState } from "StoreTypes"
 import {
   selectExecutionStatus,

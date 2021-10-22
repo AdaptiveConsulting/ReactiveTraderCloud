@@ -1,5 +1,5 @@
-import { RouteStyle } from "rt-components"
-import styled from "styled-components/macro"
+// import { RouteStyle } from "rt-components"
+import styled from "styled-components"
 import { TopRightButton } from "./TileControls"
 import { ActionButton } from "./TileHeader"
 import { TradeButton } from "./PriceButton/styled"
@@ -34,11 +34,11 @@ export const TileBaseStyle = styled.div`
   &:hover ${TradeButton} {
     background-color: ${({ theme }) => theme.core.darkBackground};
   }
-  ${RouteStyle} & {
-    border-radius: 0px;
-  }
 `
 
+// ${RouteStyle} & {
+//   border-radius: 0px;
+// }
 export const Icon = styled("i")`
   color: ${({ theme }) => theme.white};
 `

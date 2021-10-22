@@ -1,6 +1,5 @@
-import styled from "styled-components"
 // import React from 'react'
-// import styled from 'styled-components/macro'
+import styled from "styled-components"
 import designTownPNGURL from "../assets/design-town.png"
 import Logo from "../../components/Logo"
 import { H1, H3 } from "../elements"

@@ -1,5 +1,5 @@
 import { Component } from "react"
-
+import { H2 } from "./elements"
 import { rules } from "../rules"
 import { Block, BlockProps } from "."
 import {
@@ -139,12 +139,8 @@ export const SectionBody = styled.div`
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
+  ${H2} {
+    font-weight: normal;
+    color: ${({ theme }) => theme.accents.primary.base};
+  }
 `
-
-//TODO, fix "cannot acess H2 before initialization
-//import { H2 } from '../elements'
-
-// ${H2} {
-//    font-weight: normal;
-//    color: ${({ theme }) => theme.accents.primary.base}
-//  }

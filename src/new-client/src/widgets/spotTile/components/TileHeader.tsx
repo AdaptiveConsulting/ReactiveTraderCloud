@@ -1,8 +1,9 @@
-import React, { useCallback } from "react"
-import { platformHasFeature, usePlatform } from "rt-platforms"
-import styled from "styled-components/macro"
+import { useCallback } from "react"
+import { usePlatform, platformHasFeature } from "@/platform"
+
+import styled from "styled-components"
 import { TileHeader as Header, TileSymbol, DeliveryDate } from "./styled"
-import { CurrencyPair } from "rt-types"
+import { CurrencyPair } from "@/services/currencyPairs"
 interface Props {
   ccyPair: CurrencyPair
   date: string
@@ -43,5 +44,5 @@ const TileHeader: React.FC<Props> = ({
     </Header>
   )
 }
-
+//@ts-ignore
 export default React.memo(TileHeader)

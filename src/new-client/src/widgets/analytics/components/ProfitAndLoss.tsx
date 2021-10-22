@@ -3,7 +3,7 @@ import { Title, AnalyticsLineChartWrapper, ProfitAndLossHeader } from "./styled"
 import { AnalyticsLineChart } from "./analyticsLineChart"
 import LastPosition from "./LastPosition"
 import { AnalyticsLineChartModel } from "../model/AnalyticsLineChartModel"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 interface ProfitAndLossProps {
   analyticsLineChartModel: AnalyticsLineChartModel

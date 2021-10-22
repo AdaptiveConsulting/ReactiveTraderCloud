@@ -1,6 +1,8 @@
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { TileWrapperBase, SpotTileStyle } from "../styled"
-import { Platform } from "rt-platforms"
+import { Platform } from "@/platform"
+
+// readonly name: string
 
 export const AnalyticsTileContent = styled.div`
   display: flex;

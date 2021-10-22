@@ -1,5 +1,7 @@
 import numeral from "numeral"
-import { CurrencyPair, ServiceConnectionStatus } from "rt-types"
+import { ServiceConnectionStatus } from "@/styleguide/serviceStatus"
+import { CurrencyPair } from "@/services/currencyPairs"
+
 import { TileProps, TileState } from "./Tile"
 import { getConstsFromRfqState } from "../../model/spotTileUtils"
 import { SpotTileData } from "../../model"

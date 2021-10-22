@@ -1,9 +1,10 @@
 import React, { useCallback } from "react"
-import { PopoutIcon, PopInIcon } from "rt-components"
-import styled from "styled-components/macro"
-import { usePlatform, platformHasFeature } from "rt-platforms"
-import { CurrencyPair } from "rt-types"
-import { setNotionalOnStorage } from "rt-util"
+import { PopInIcon } from "@/components/icons/PopInIcon"
+import { PopOutIcon } from "@/components/icons/PopOutIcon"
+import styled from "styled-components"
+import { usePlatform, platformHasFeature } from "@/platform"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { setNotionalOnStorage } from "@/styleguide/utils"
 
 export const TopRightButton = styled("button")`
   position: absolute;
@@ -47,17 +48,18 @@ const TileControls: React.FC<Props> = ({
     if (typeof notional !== "undefined") {
       setNotionalOnStorage(currencyPair.symbol, notional)
     }
+    //@ts-ignore
     platform.window.close()
   }
 
   return (
-    <React.Fragment>
+    <>
       {canPopout ? (
         <TopRightButton
           onClick={popoutClickHandler}
           data-qa="tile-controls__popout-button"
         >
-          {PopoutIcon}
+          {PopOutIcon}
         </TopRightButton>
       ) : platformHasFeature(platform, "allowPopIn") ? (
         <TopRightButton
@@ -67,7 +69,7 @@ const TileControls: React.FC<Props> = ({
           {PopInIcon}
         </TopRightButton>
       ) : null}
-    </React.Fragment>
+    </>
   )
 }
 export default TileControls

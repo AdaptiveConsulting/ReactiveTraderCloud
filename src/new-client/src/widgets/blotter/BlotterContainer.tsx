@@ -6,7 +6,7 @@ import { GlobalState } from "StoreTypes"
 import { BlotterActions } from "./actions"
 import Blotter from "./components"
 import { selectBlotterStatus, selectBlotterRowsAndFilter } from "./selectors"
-import { usePlatform } from "rt-platforms"
+import { usePlatform } from "@/platform"
 import { Trade } from "rt-types"
 import { BlotterFilters } from "./blotterTradesFilter"
 

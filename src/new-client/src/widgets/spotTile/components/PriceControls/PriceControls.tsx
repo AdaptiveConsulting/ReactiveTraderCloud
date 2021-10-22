@@ -9,7 +9,7 @@ import {
 import PriceButton from "../PriceButton/index"
 import PriceMovement from "../PriceMovement"
 import { RfqState, RfqActions } from "../types"
-import { AdaptiveLoader } from "rt-components"
+import { AdaptiveLoader } from "@/components/AdaptiveLoader"
 import {
   PriceControlsStyle,
   PriceButtonDisabledPlaceholder,

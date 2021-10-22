@@ -1,6 +1,6 @@
 import { applicationConnected } from "rt-actions"
 import { Direction } from "@/services/trades"
-import { CurrencyPair } from "rt-types"
+import { CurrencyPair } from "@/services/currencyPairs"
 import { filter, map, switchMapTo, withLatestFrom } from "rxjs/operators"
 import { ApplicationEpic, GlobalState } from "StoreTypes"
 import { SpotTileActions } from "../actions"

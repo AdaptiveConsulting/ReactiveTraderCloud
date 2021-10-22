@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import { PureComponent } from "react"
 import {
   InputWrapper,
   CurrencyPairSymbol,
@@ -24,6 +24,7 @@ interface State {
 }
 
 export default class NotionalInput extends PureComponent<Props, State> {
+  //@ts-ignore
   private inputRef = React.createRef<HTMLInputElement>()
 
   handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {

@@ -1,7 +1,6 @@
-import React from "react"
 import { Transition } from "react-spring"
-import { AdaptiveLoader } from "rt-components"
-import styled from "styled-components/macro"
+import { AdaptiveLoader } from "@/components/AdaptiveLoader"
+import styled from "styled-components"
 
 const TileBookingStyle = styled.div<{ isAnalyticsView: boolean }>`
   position: absolute;
@@ -51,6 +50,7 @@ const BookingPill = styled.div<{
   border-radius: ${({ isExecutingStatus }) =>
     isExecutingStatus ? "17px" : "3px"};
   background: ${({ theme, color, disabled }) =>
+    //@ts-ignore
     theme.accents[color][disabled ? "darker" : "base"]};
   pointer-events: auto; /* restore the click on this child */
   width: ${({ isExecutingStatus, isAnalyticsView }) =>
@@ -121,9 +121,11 @@ const TileBooking: React.FC<TileBookingProps> = ({
     enter={{ opacity: 1 }}
     leave={{ opacity: 0 }}
   >
+    {/* PENDING INVESTIGATE WHY ANIMATION DOESN'T HAPPEN
+    //@ts-ignore */}
     {show &&
       ((styles) => (
-        <TileBookingStyle isAnalyticsView={isAnalyticsView} style={styles}>
+        <TileBookingStyle isAnalyticsView={isAnalyticsView}>
           <BookingPill
             color={color}
             onClick={(e) => {
@@ -141,7 +143,7 @@ const TileBooking: React.FC<TileBookingProps> = ({
                 <AdaptiveLoader
                   size={14}
                   speed={0.8}
-                  seperation={1.5}
+                  separation={1.5}
                   type="secondary"
                 />
               </AdaptiveLoaderWrapper>

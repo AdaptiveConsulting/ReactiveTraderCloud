@@ -12,7 +12,7 @@ import Atoms from "@/styleguide/sections/Atoms"
 import CoreBranding from "@/styleguide/sections/CoreBranding"
 import FontFamilies from "@/styleguide/sections/FontFamilies"
 import Iconography from "@/styleguide/sections/Iconography"
-// import Molecules from './sections/Molecules'
+import Molecules from "@/styleguide/sections/Molecules"
 // import { getAppName } from '@/utils'
 
 const sections: Array<{
@@ -24,7 +24,7 @@ const sections: Array<{
   { path: "font-families", Section: FontFamilies, title: "Typography" },
   { path: "icons-family", Section: Iconography, title: "Iconography" },
   { path: "atoms-components", Section: Atoms, title: "Atoms" },
-  // { path: 'molecules-components', Section: Molecules, title: 'Molecules' },
+  { path: "molecules-components", Section: Molecules, title: "Molecules" },
 ]
 
 const StyleguideRoute: React.FC = () => {

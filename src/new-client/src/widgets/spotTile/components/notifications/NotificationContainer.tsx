@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react"
 import { Transition } from "react-spring"
-import { CurrencyPair, TradeStatus } from "rt-types"
+import { TradeStatus } from "@/services/trades"
+import { CurrencyPair } from "@/services/currencyPairs"
+
 import { LastTradeExecutionStatus } from "../../model/spotTileData"
 import TileExecuted from "./TileExecuted"
 import TileNotification, { NotificationType } from "./TileNotification"
@@ -17,6 +19,7 @@ const hasNotification = (tradeStatus: LastTradeExecutionStatus) =>
 export default class NotificationContainer extends PureComponent<Props> {
   render() {
     return (
+      //@ts-ignore
       <Transition
         from={{ opacity: 0 }}
         enter={{ opacity: 1 }}

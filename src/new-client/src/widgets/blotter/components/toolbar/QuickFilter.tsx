@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from "react"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 interface QuickFilterProps {
   isFilterApplied: boolean

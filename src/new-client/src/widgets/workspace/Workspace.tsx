@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { TearOff } from "rt-components"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import SpotTileContainer from "../spotTile/SpotTileContainer"
 import { WorkspaceHeader, TileView } from "./workspaceHeader"
 import { ExternalWindowProps } from "./selectors"

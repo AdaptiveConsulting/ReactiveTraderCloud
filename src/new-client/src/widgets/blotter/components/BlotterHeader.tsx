@@ -1,7 +1,7 @@
 import React, { useCallback, useState, FC, MouseEvent } from "react"
 import { GridApi } from "ag-grid-community"
 import { flexStyle, PopoutIcon } from "rt-components"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { columnDefinitions } from "./blotterUtils"
 import BlotterToolbar from "./toolbar/BlotterToolbar"
 import ExcelButton from "./toolbar/ExcelButton"

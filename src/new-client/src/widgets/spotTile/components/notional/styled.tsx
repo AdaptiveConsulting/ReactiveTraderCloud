@@ -1,5 +1,5 @@
-import styled from "styled-components/macro"
-import { Theme } from "rt-theme"
+import styled from "styled-components"
+import { Theme } from "@/theme/themes"
 import { FormattedNumericInput } from "./FormattedNumericInput"
 import { ValidationMessage } from "./types"
 import { transparentize } from "polished"

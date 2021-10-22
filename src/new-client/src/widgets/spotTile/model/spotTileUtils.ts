@@ -1,7 +1,7 @@
 import { Direction } from "@/services/trades"
 import { Rate } from "./rate"
 import { RfqState } from "../components/types"
-import uuid from "uuid"
+// import uuid from "uuid"
 
 export const DEFAULT_NOTIONAL = 1000000
 
@@ -58,7 +58,8 @@ export interface TradeExectionMeta {
 
 export const createTradeRequest = (tradeRequestObj: TradeRequest) => {
   return {
-    id: uuid(),
+    //@ts-ignore
+    id: 0,
     CurrencyPair: tradeRequestObj.symbol,
     SpotRate: tradeRequestObj.rawSpotRate,
     Direction: tradeRequestObj.direction,

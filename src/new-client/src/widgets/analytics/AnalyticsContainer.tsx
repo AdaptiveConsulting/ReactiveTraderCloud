@@ -11,7 +11,7 @@ import {
   selectAnalyticsLineChartModel,
   selectPositionsChartModel,
 } from "./selectors"
-import { usePlatform } from "rt-platforms"
+import { usePlatform } from "@/platform"
 
 interface AnalyticsContainerOwnProps {
   onPopoutClick?: () => void

@@ -55,6 +55,7 @@ export const FormattedNumericInput = forwardRef<
         (enteredValue.match(/^([0-9],?){0,11}(\.[0-9]{2})?$/) ||
           enteredValue.match(/^([0-9],?){0,6}(\.[0-9]{0,3})?[km]$/))
       ) {
+        //@ts-ignore
         onNumericValueChange(numeral(enteredValue).value())
       }
     }
@@ -72,6 +73,7 @@ export const FormattedNumericInput = forwardRef<
       ) {
         const newNumericValue = numeral(enteredValue).value()
         if (newNumericValue !== numericValue) {
+          //@ts-ignore
           onNumericValueChange(newNumericValue)
           return
         }

@@ -2,7 +2,7 @@ import { DateTime } from "luxon"
 import numeral from "numeral"
 import React from "react"
 import { Direction } from "@/services/trades"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 const HeavyFont = styled("span")`
   font-weight: 900;

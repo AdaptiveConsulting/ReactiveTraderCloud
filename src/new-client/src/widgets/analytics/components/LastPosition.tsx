@@ -1,6 +1,6 @@
 import React from "react"
 import numeral from "numeral"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 type Accents = "positive" | "negative"
 

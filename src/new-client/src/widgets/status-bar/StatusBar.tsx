@@ -1,7 +1,6 @@
 import React, { FC } from "react"
 import { Fill, Header, Root } from "./styled"
-import { usePlatform } from "rt-platforms"
-
+import { usePlatform } from "@/platform"
 const LogoWithPlatform = () => {
   const { Logo } = usePlatform()
   return <Logo />

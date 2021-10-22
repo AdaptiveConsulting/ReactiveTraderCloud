@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react"
 import React from "react"
 import { Story } from "rt-storybook"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import ContactUsButton from "./ContactUsButton"
 
 const stories = storiesOf("Contact Us", module)

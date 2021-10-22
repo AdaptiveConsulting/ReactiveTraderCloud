@@ -1,5 +1,5 @@
 import { capitalize } from "lodash"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 import { FunctionComponent } from "react"
 import React from "react"
 import { Popup } from "rt-components"
