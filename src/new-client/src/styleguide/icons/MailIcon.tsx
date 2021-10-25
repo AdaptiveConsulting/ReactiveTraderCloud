@@ -1,4 +1,4 @@
-import React, { SVGAttributes } from "react"
+import { SVGAttributes } from "react"
 import styled from "styled-components"
 import { dark } from "@/theme/colors"
 

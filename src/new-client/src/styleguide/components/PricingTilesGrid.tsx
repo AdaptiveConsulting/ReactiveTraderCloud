@@ -1,4 +1,3 @@
-import React from "react"
 import styled from "styled-components"
 // import { PriceButton } from "@/App/LiveRates/Tile/PriceButton/PriceButton"
 import { PriceButtonInnerComponent } from "@/App/LiveRates/Tile/PriceButton"

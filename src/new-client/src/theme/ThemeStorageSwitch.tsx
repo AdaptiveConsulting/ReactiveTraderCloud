@@ -1,4 +1,3 @@
-import React from "react"
 import Switch, { ReactSwitchProps } from "react-switch"
 import { ThemeName, Theme, useTheme } from "@/theme"
 import { withTheme } from "styled-components"

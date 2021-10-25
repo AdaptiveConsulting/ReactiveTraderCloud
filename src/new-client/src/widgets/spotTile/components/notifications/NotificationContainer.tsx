@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import { PureComponent } from "react"
 import { Transition } from "react-spring"
 import { TradeStatus } from "@/services/trades"
 import { CurrencyPair } from "@/services/currencyPairs"

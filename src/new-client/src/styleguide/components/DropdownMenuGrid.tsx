@@ -1,5 +1,3 @@
-import React from "react"
-
 import { DropdownMenu, DropdownMenuStyleProps } from "./DropdownMenu"
 import styled from "styled-components"
 

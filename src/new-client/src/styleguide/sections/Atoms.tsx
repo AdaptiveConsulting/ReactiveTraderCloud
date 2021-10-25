@@ -1,4 +1,3 @@
-import React from "react"
 import FormGrid from "../components/FormGrid"
 import styled from "styled-components"
 import PricingTilesGrid from "../components/PricingTilesGrid"

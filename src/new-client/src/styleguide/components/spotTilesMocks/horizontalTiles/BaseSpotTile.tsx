@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import { PureComponent } from "react"
 import { DateTime, Info } from "luxon"
 import NotionalInput from "@/widgets/spotTile/components/notional"
 import { memoDateFormatter } from "@/widgets/spotTile/model/dateUtils"

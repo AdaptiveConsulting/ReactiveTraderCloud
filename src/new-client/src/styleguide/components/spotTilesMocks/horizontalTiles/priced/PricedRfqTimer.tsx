@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import { PureComponent } from "react"
 import styled from "styled-components"
 
 interface RfqTimerProps {

@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import { FC } from "react"
 import { DateTime, Info } from "luxon"
 import { usePlatform, platformHasFeature } from "rt-platforms"
 import { memoDateFormatter } from "../../model/dateUtils"

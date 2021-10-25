@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import { useCallback } from "react"
 import { PopInIcon } from "@/components/icons/PopInIcon"
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import styled from "styled-components"

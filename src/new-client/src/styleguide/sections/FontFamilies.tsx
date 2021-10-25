@@ -1,4 +1,3 @@
-import React from "react"
 import styled from "styled-components"
 
 import { H2, H3, H5 } from "../elements"

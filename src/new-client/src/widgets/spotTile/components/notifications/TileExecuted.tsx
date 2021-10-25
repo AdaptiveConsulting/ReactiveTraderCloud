@@ -1,6 +1,5 @@
 import { DateTime } from "luxon"
 import numeral from "numeral"
-import React from "react"
 import { Direction } from "@/services/trades"
 import styled from "styled-components"
 

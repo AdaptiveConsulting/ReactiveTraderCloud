@@ -1,4 +1,3 @@
-import React from "react"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { Direction } from "@/services/trades"
 import { SpotPriceTick } from "@/widgets/spotTile/model/spotPriceTick"

@@ -1,4 +1,3 @@
-import React from "react"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { Direction } from "@/services/trades"
 import PriceButton from "./ExecutingPriceButton"

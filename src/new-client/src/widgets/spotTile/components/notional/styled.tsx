@@ -90,6 +90,7 @@ export const Input = styled(FormattedNumericInput)`
   caret-color: ${({ theme }) => theme.primary.base};
   ${({ disabled }) => disabled && "opacity: 0.3;"};
   ${getInputBoxShadowStyles};
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 export const ResetInputValue = styled.button`

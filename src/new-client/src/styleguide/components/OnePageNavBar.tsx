@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from "react"
+import { useRef, useEffect, useState, useCallback } from "react"
 import { HashLink as Link } from "react-router-hash-link"
 import { css } from "styled-components"
 import styled from "styled-components"

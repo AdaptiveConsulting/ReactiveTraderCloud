@@ -1,4 +1,3 @@
-import React from "react"
 import { Direction } from "@/services/trades"
 import { CurrencyPair } from "@/services/currencyPairs"
 

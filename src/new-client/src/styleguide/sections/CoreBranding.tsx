@@ -1,5 +1,4 @@
 import { rgba } from "polished"
-import React from "react"
 
 import { H2, H3 } from "../elements"
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from "../styled"

@@ -1,4 +1,3 @@
-import React from "react"
 import { CurrencyPair, ServiceConnectionStatus } from "rt-types"
 import { ExecuteTradeRequest, SpotTileData } from "../model"
 import NotificationContainer from "./notifications"

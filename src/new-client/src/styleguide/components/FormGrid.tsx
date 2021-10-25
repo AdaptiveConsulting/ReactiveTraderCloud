@@ -1,5 +1,3 @@
-import React from "react"
-
 import { Input } from "./Input"
 import styled from "styled-components"
 import { keyframes } from "styled-components"

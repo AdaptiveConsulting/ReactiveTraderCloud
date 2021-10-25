@@ -1,4 +1,3 @@
-import React from "react"
 import { DateTime, Info } from "luxon"
 import { memoDateFormatter } from "../model/dateUtils"
 import NotionalInput from "./notional"

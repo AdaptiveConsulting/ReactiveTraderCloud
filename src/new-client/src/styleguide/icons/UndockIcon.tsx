@@ -1,4 +1,3 @@
-import React from "react"
 interface Props {
   width: number
   height: number

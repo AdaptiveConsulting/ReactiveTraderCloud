@@ -1,4 +1,3 @@
-import React from "react"
 import { CurrencyPair, Direction } from "rt-types"
 import { SpotPriceTick } from "../../model/spotPriceTick"
 import {

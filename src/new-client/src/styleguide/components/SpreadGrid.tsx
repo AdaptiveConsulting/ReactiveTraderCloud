@@ -1,4 +1,3 @@
-import React from "react"
 import styled from "styled-components"
 import { PriceMovementTypes } from "@/widgets/spotTile/model/priceMovementTypes"
 import PriceMovement from "@/widgets/spotTile/components/PriceMovement"

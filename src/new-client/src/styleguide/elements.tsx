@@ -39,9 +39,10 @@ export const H1 = styled(Header)`
 export const H2 = styled(Header)`
   line-height: 2rem;
   font-size: 1.5rem;
-  font-weight: 300;
   text-transform: uppercase;
   letter-spacing: -0.66px;
+  font-weight: normal;
+  color: ${({ theme }) => theme.accents.primary.base};
 `
 export const H3 = styled(Header)`
   line-height: 1.5rem;
