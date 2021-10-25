@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import { FC } from "react"
 import { DateTime, Info } from "luxon"
 import { usePlatform } from "@/platform"
 import PriceControls from "../../horizontalTiles/priceUnavailable/PriceControls"
@@ -12,28 +12,30 @@ import {
   AnalyticsTileWrapper,
   PriceControlWrapper,
 } from "../styled"
-import RfqTimer from "apps/MainRoute/widgets/spotTile/components/RfqTimer"
+import RfqTimer from "@/widgets/spotTile/components/RfqTimer"
 
-import { memoDateFormatter } from "apps/MainRoute/widgets/spotTile/model/dateUtils"
-import { getDefaultNotionalValue } from "apps/MainRoute/widgets/spotTile/components/Tile/TileBusinessLogic"
-import { SpotTileProps } from "apps/MainRoute/widgets/spotTile/components/types"
-import { getConstsFromRfqState } from "apps/MainRoute/widgets/spotTile/model/spotTileUtils"
-import TileHeader from "apps/MainRoute/widgets/spotTile/components/TileHeader"
+import { memoDateFormatter } from "@/widgets/spotTile/model/dateUtils"
+import { getDefaultNotionalValue } from "@/widgets/spotTile/components/Tile/TileBusinessLogic"
+import { SpotTileProps } from "@/widgets/spotTile/components/types"
+import { getConstsFromRfqState } from "@/widgets/spotTile/model/spotTileUtils"
+import TileHeader from "@/widgets/spotTile/components/TileHeader"
 import { SpotTileStyle } from "../../horizontalTiles/BaseSpotTile"
 import styled from "styled-components"
 
 export const AnalyticsTileStyle = styled(SpotTileStyle)`
   background-color: ${({ theme }) => theme.primary[1]};
 `
-
+//@ts-ignore
 const localZoneName = Info.features().zones ? DateTime.local().zoneName : "utc"
 const dateFomatter = memoDateFormatter((valueDate) => valueDate.slice(0, 10))
 const AnalyticsWrapperWithPlatform: FC<{ shouldMoveDate: boolean }> = (
   props,
 ) => {
   const platform = usePlatform()
+  //@ts-ignore
   return <AnalyticsTileWrapper {...props} platform={platform} />
 }
+//@ts-ignore
 class AnalyticsTile extends React.PureComponent<SpotTileProps> {
   private handleRfqRejected = () =>
     this.props.rfq.reject({ currencyPair: this.props.currencyPair })

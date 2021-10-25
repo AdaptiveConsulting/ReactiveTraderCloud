@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { Introduction } from "@/styleguide/Introduction/Introduction"
 
-import React, { createRef } from "react"
+import { createRef } from "react"
 import Helmet from "react-helmet"
 import { ThemeProvider } from "@/theme"
 import FloatingTools from "@/styleguide/components/FloatingsTools"

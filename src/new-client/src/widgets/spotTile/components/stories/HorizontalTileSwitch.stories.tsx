@@ -1,9 +1,8 @@
-import React from "react"
 import { action } from "@storybook/addon-actions"
 import { boolean, select } from "@storybook/addon-knobs"
 import { Story, Centered, spotTileStories } from "./Initialise.stories"
 import SpotTile from "../SpotTile"
-import { ServiceConnectionStatus } from "rt-types"
+import { ServiceConnectionStatus } from "@/styleguide/serviceStatus"
 import {
   currencyPair,
   spotTileDataWithRfq,

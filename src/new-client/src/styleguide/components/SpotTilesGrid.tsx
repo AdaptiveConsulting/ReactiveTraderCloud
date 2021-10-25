@@ -17,11 +17,11 @@ import {
   PricedHoverSpotTile,
   BaseAnalyticsTile,
   HoveredAnalyticsTile,
-  // PriceUnavailableAnalyticsTile,
-  // ExecutingAnalyticsTile,
-  // PriceAnnouncedAnalyticsTile,
-  // PricedAnalyticsTile,
-  // PricedHoverAnalyticsTile,
+  PriceUnavailableAnalyticsTile,
+  ExecutingAnalyticsTile,
+  PriceAnnouncedAnalyticsTile,
+  PricedAnalyticsTile,
+  PricedHoverAnalyticsTile,
 } from "./spotTilesMocks"
 import { H3 } from "../elements"
 
@@ -261,7 +261,7 @@ const SpotTilesGrid = () => (
           rfq={rfqActions}
         />
       </Cell>
-      {/* <Cell>
+      <Cell>
         <span>Price Unavailable</span>
         <PriceUnavailableAnalyticsTile
           currencyPair={currencyPair}
@@ -279,7 +279,10 @@ const SpotTilesGrid = () => (
         <span>Executing</span>
         <ExecutingAnalyticsTile
           currencyPair={currencyPair}
-          spotTileData={{ ...spotTileDataWithRfq, isTradeExecutionInFlight: true }}
+          spotTileData={{
+            ...spotTileDataWithRfq,
+            isTradeExecutionInFlight: true,
+          }}
           executeTrade={executeTrade}
           executionStatus={ServiceConnectionStatus.CONNECTED}
           updateNotional={updateNotional}
@@ -296,7 +299,7 @@ const SpotTilesGrid = () => (
         <span>Begin Price Request</span>
         <ExecutingAnalyticsTile
           currencyPair={currencyPair}
-          spotTileData={{ ...spotTileDataWithRfq, rfqState: 'canRequest' }}
+          spotTileData={{ ...spotTileDataWithRfq, rfqState: "canRequest" }}
           executeTrade={executeTrade}
           executionStatus={ServiceConnectionStatus.CONNECTED}
           updateNotional={updateNotional}
@@ -310,7 +313,7 @@ const SpotTilesGrid = () => (
         <span>Awaiting Price</span>
         <ExecutingAnalyticsTile
           currencyPair={currencyPair}
-          spotTileData={{ ...spotTileDataWithRfq, rfqState: 'requested' }}
+          spotTileData={{ ...spotTileDataWithRfq, rfqState: "requested" }}
           executeTrade={executeTrade}
           executionStatus={ServiceConnectionStatus.CONNECTED}
           updateNotional={updateNotional}
@@ -326,7 +329,7 @@ const SpotTilesGrid = () => (
           currencyPair={currencyPair}
           spotTileData={{
             ...spotTileData,
-            rfqState: 'received',
+            rfqState: "received",
             rfqTimeout: 60000,
             rfqReceivedTime: Date.now(),
           }}
@@ -345,7 +348,7 @@ const SpotTilesGrid = () => (
           currencyPair={currencyPair}
           spotTileData={{
             ...spotTileData,
-            rfqState: 'received',
+            rfqState: "received",
             rfqTimeout: 60000,
             rfqReceivedTime: Date.now(),
           }}
@@ -364,7 +367,7 @@ const SpotTilesGrid = () => (
           currencyPair={currencyPair}
           spotTileData={{
             ...spotTileData,
-            rfqState: 'received',
+            rfqState: "received",
             rfqTimeout: 60000,
             rfqReceivedTime: Date.now(),
           }}
@@ -383,7 +386,7 @@ const SpotTilesGrid = () => (
           currencyPair={currencyPair}
           spotTileData={{
             ...spotTileData,
-            rfqState: 'expired',
+            rfqState: "expired",
           }}
           executeTrade={executeTrade}
           executionStatus={ServiceConnectionStatus.CONNECTED}
@@ -393,7 +396,7 @@ const SpotTilesGrid = () => (
           inputDisabled={false}
           rfq={rfqActions}
         />
-      </Cell> */}
+      </Cell>
     </Grid>
   </>
 )

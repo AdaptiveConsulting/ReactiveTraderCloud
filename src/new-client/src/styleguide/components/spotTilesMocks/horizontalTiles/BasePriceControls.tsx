@@ -124,7 +124,7 @@ const PriceControls: React.FC<Props> = ({
         <AdaptiveLoader
           size={14}
           speed={0.8}
-          seperation={1.5}
+          separation={1.5}
           type="secondary"
         />
       </AdaptiveLoaderWrapper>

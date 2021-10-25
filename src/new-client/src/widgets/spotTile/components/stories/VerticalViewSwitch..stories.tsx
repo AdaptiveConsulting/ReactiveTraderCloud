@@ -1,4 +1,3 @@
-import React from "react"
 import { action } from "@storybook/addon-actions"
 import { boolean, select } from "@storybook/addon-knobs"
 import { Story, Centered, analyticsTileStories } from "./Initialise.stories"
@@ -9,7 +8,7 @@ import {
 } from "../test-resources/spotTileProps"
 import { AnalyticsTile } from "../analyticsTile"
 import { SpotTileData } from "../../model"
-import { ServiceConnectionStatus } from "rt-types"
+import { ServiceConnectionStatus } from "@/styleguide/serviceStatus"
 
 const executeTrade = action("executeTrade")
 const updateNotional = action("update notional")

@@ -5,7 +5,7 @@ import styled from "styled-components"
 const TileBookingStyle = styled.div<{ isAnalyticsView: boolean }>`
   position: absolute;
   left: 0;
-  ${({ isAnalyticsView }) => isAnalyticsView && "top: 0"}
+  ${({ isAnalyticsView }) => !isAnalyticsView && "top: 0"}
   height: 100%;
   width: 100%;
   display: flex;
@@ -116,48 +116,43 @@ const TileBooking: React.FC<TileBookingProps> = ({
   children,
   isAnalyticsView,
 }) => (
-  <Transition
-    from={{ opacity: 0 }}
-    enter={{ opacity: 1 }}
-    leave={{ opacity: 0 }}
-  >
+  <div>
     {/* PENDING INVESTIGATE WHY ANIMATION DOESN'T HAPPEN
     //@ts-ignore */}
-    {show &&
-      ((styles) => (
-        <TileBookingStyle isAnalyticsView={isAnalyticsView}>
-          <BookingPill
-            color={color}
-            onClick={(e) => {
-              if (!disabled && typeof onBookingPillClick === "function") {
-                onBookingPillClick()
-              }
-            }}
+    {show && (
+      <TileBookingStyle isAnalyticsView={isAnalyticsView}>
+        <BookingPill
+          color={color}
+          onClick={(e) => {
+            if (!disabled && typeof onBookingPillClick === "function") {
+              onBookingPillClick()
+            }
+          }}
+          isExecutingStatus={showLoader}
+          disabled={!!disabled}
+          isAnalyticsView={isAnalyticsView}
+          data-qa="tile-booking__booking-pill"
+        >
+          {showLoader && (
+            <AdaptiveLoaderWrapper>
+              <AdaptiveLoader
+                size={14}
+                speed={0.8}
+                separation={1.5}
+                type="secondary"
+              />
+            </AdaptiveLoaderWrapper>
+          )}
+          <BookingStatus
+            data-qa="tile-booking__booking-status"
             isExecutingStatus={showLoader}
-            disabled={!!disabled}
-            isAnalyticsView={isAnalyticsView}
-            data-qa="tile-booking__booking-pill"
           >
-            {showLoader && (
-              <AdaptiveLoaderWrapper>
-                <AdaptiveLoader
-                  size={14}
-                  speed={0.8}
-                  separation={1.5}
-                  type="secondary"
-                />
-              </AdaptiveLoaderWrapper>
-            )}
-            <BookingStatus
-              data-qa="tile-booking__booking-status"
-              isExecutingStatus={showLoader}
-            >
-              {children}
-            </BookingStatus>
-          </BookingPill>
-        </TileBookingStyle>
-      ))}
-  </Transition>
+            {children}
+          </BookingStatus>
+        </BookingPill>
+      </TileBookingStyle>
+    )}
+  </div>
 )
 
 export default TileBooking

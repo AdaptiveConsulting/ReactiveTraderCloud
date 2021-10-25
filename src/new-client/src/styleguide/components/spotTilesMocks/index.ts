@@ -7,11 +7,11 @@ import PricedSpotTile from "./horizontalTiles/priced/PricedSpotTile"
 import PricedHoverSpotTile from "./horizontalTiles/pricedHover/PricedHoverSpotTile"
 import BaseAnalyticsTile from "./analyticsTile/BaseAnalyticsTile"
 import HoveredAnalyticsTile from "./analyticsTile/hover/HoveredAnalyticsTile"
-// import PriceUnavailableAnalyticsTile from './analyticsTile/priceUnavailable/PriceUnavailableAnalyticsTile'
-// import ExecutingAnalyticsTile from './analyticsTile/executing/ExecutingAnalyticsTile'
-// import PriceAnnouncedAnalyticsTile from './analyticsTile/priceAnnounced/PriceAnnouncedAnalyticsTile'
-// import PricedAnalyticsTile from './analyticsTile/priced/PricedAnalyticsTile'
-// import PricedHoverAnalyticsTile from './analyticsTile/pricedHover/PricedHoverAnalyticsTile'
+import PriceUnavailableAnalyticsTile from "./analyticsTile/priceUnavailable/PriceUnavailableAnalyticsTile"
+import ExecutingAnalyticsTile from "./analyticsTile/executing/ExecutingAnalyticsTile"
+import PriceAnnouncedAnalyticsTile from "./analyticsTile/priceAnnounced/PriceAnnouncedAnalyticsTile"
+import PricedAnalyticsTile from "./analyticsTile/priced/PricedAnalyticsTile"
+import PricedHoverAnalyticsTile from "./analyticsTile/pricedHover/PricedHoverAnalyticsTile"
 
 export {
   BaseSpotTile,
@@ -23,9 +23,9 @@ export {
   PricedHoverSpotTile,
   BaseAnalyticsTile,
   HoveredAnalyticsTile,
-  // PriceUnavailableAnalyticsTile,
-  // ExecutingAnalyticsTile,
-  // PriceAnnouncedAnalyticsTile,
-  // PricedAnalyticsTile,
-  // PricedHoverAnalyticsTile,
+  PriceUnavailableAnalyticsTile,
+  ExecutingAnalyticsTile,
+  PriceAnnouncedAnalyticsTile,
+  PricedAnalyticsTile,
+  PricedHoverAnalyticsTile,
 }
