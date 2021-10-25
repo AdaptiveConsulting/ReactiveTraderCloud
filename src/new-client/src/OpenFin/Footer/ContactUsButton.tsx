@@ -7,6 +7,7 @@ import { FollowUs } from "@/App/Footer/ContactUsButton/FollowUs"
 import { LogoWrapper } from "@/App/Footer/ContactUsButton/styled"
 import Logo from "@/components/Logo"
 import styled from "styled-components"
+import { constructUrl } from "@/utils/url"
 
 const Wrapper = styled(Background)`
   &&& {
@@ -43,7 +44,7 @@ export const OpenFinContactDisplay = () => (
 )
 
 const baseWin = { name: "contact", height: 445, width: 245 }
-const pathname = import.meta.env.BASE_URL + "contact"
+const pathname = constructUrl("/contact")
 
 const ContactUsButton: React.FC = () => {
   const [showing, setShowing] = useState(false)
