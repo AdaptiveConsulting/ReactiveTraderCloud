@@ -1,20 +1,5 @@
 /* eslint-disable no-restricted-globals */
-
-export interface WindowConfig {
-  name: string
-  url: string
-  width: number
-  height: number
-  displayName?: string
-  minHeight?: number
-  minWidth?: number
-  maxHeight?: number
-  maxWidth?: number
-  center?: "parent" | "screen"
-  x?: number
-  y?: number
-  saveWindowState?: boolean
-}
+import { WindowConfig } from "./openWindow"
 
 let openPopoutWindows: Window[] = []
 

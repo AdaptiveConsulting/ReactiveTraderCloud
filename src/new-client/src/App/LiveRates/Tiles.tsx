@@ -7,7 +7,9 @@ import { map } from "rxjs/operators"
 import { selectedCurrency$, ALL_CURRENCIES } from "./selectedCurrency"
 import { bind } from "@react-rxjs/core"
 import { combineKeys } from "@react-rxjs/utils"
-import { tearOutState$ } from "./Tile/TearOut/state"
+import { tearOutEntry$, tearOutState$ } from "./Tile/TearOut/state"
+import { useEffect } from "react"
+import { handleTearOut } from "./Tile/TearOut/handleTearOut"
 
 const PanelItems = styled.div`
   display: grid;
@@ -49,6 +51,29 @@ export const tiles$ = merge(
 export const Tiles = () => {
   const currencyPairs = useFilteredCurrencyPairs()
   const selectedView = useSelectedTileView()
+
+  useEffect(() => {
+    const subscription = tearOutEntry$.subscribe(
+      async ([symbol, tornOut, tileRef]) => {
+        if (tornOut) {
+          handleTearOut(symbol, tileRef!)
+        }
+      },
+      (e) => {
+        console.error(e)
+      },
+      () => {
+        console.error("tear out entry stream completed!?")
+      },
+    )
+
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe()
+      }
+    }
+  }, [])
+
   return (
     <PanelItems role="region" aria-label="Lives Rates Tiles">
       {currencyPairs.map((currencyPair) => (

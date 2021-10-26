@@ -5,7 +5,7 @@ import { Footer } from "@/App/Footer"
 import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
 import { DisconnectionOverlay } from "@/App/DisconnectionOverlay"
-import { Tiles } from "./Tiles"
+import { LiveRates } from "@/App/LiveRates"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -43,7 +43,7 @@ export const MainRoute: React.FC = () => (
       <Header />
       <MainWrapper>
         <Resizer defaultHeight={30}>
-          <Tiles />
+          <LiveRates />
           <Trades />
         </Resizer>
         <Analytics />

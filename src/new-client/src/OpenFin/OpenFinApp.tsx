@@ -1,16 +1,15 @@
-import { Subscribe } from "@react-rxjs/core"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { Analytics } from "@/App/Analytics"
 import { Trades } from "@/App/Trades"
-import { Loader } from "@/components/Loader"
 import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
 import { DocTitle } from "@/components/DocTitle"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
-import { TornOutTile, Tiles } from "./Tiles"
 import { TileView } from "@/App/LiveRates/selectedView"
 import { BASE_URL } from "@/constants"
+import { LiveRates } from "@/App/LiveRates"
+import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 
 export const OpenFinApp: React.FC = () => (
   <BrowserRouter basename={BASE_URL}>
@@ -33,22 +32,11 @@ export const OpenFinApp: React.FC = () => (
       />
       <Route
         path="/tiles"
-        render={() => {
-          const loader = (
-            <Loader
-              ariaLabel="Loading live FX exchange rates"
-              minWidth="22rem"
-              minHeight="22rem"
-            />
-          )
-          return (
-            <DocTitle title="Live Rates">
-              <Subscribe fallback={loader}>
-                <Tiles />
-              </Subscribe>
-            </DocTitle>
-          )
-        }}
+        render={() => (
+          <DocTitle title="Live Rates">
+            <LiveRates />
+          </DocTitle>
+        )}
       />
       <Route
         path="/spot/:symbol"
@@ -63,7 +51,9 @@ export const OpenFinApp: React.FC = () => (
             ? (query.get("tileView") as TileView)
             : TileView.Analytics
 
-          return <TornOutTile symbol={symbol} view={view} />
+          return (
+            <TornOutTile symbol={symbol} view={view} supportsTearOut={false} />
+          )
         }}
       />
       <Route path="/contact" render={() => <OpenFinContactDisplay />} />

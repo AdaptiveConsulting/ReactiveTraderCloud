@@ -33,6 +33,27 @@ function apiMockReplacerPlugin(): Plugin {
   }
 }
 
+function targetBuildPlugin(target: string): Plugin {
+  return {
+    name: "targetBuildPlugin",
+    enforce: "pre",
+    resolveId: function (source, importer) {
+      if (!source.endsWith(".ts")) return null
+
+      const file = path.parse(source)
+      const files = readdirSync("." + file.dir)
+
+      // Only continue if we can find a .openfin.ts file available.
+      if (!files.includes(`${file.name}.${target}.ts`)) return null
+
+      // Set the id of this file to the one importing it marked with our suffix
+      // so we can load it in the load hook below
+      const mockPath = `${file.dir}/${file.name}.${target}.ts`
+      return this.resolve(mockPath, importer)
+    },
+  }
+}
+
 function indexSwitchPlugin(target: string): Plugin {
   return {
     name: "indexSwitchPlugin",
@@ -193,6 +214,7 @@ const setConfig = ({ mode }) => {
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
+  plugins.unshift(targetBuildPlugin(TARGET))
   plugins.push(copyWebManifestPlugin(mode === "development"))
   plugins.push(htmlPlugin(isDev))
 
