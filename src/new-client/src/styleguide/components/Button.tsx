@@ -1,7 +1,6 @@
-import { ButtonHTMLAttributes, ReactChild } from "react"
-import { userSelectButton, userSelectNone } from "@/styleguide/rules"
+import { userSelectButton } from "@/styleguide/rules"
 import { Theme, TouchableIntentName } from "@/theme"
-import styled, { css, ThemeProvider, withTheme } from "styled-components"
+import styled, { css } from "styled-components"
 
 export interface ButtonStyleProps {
   intent?: TouchableIntentName
@@ -66,85 +65,12 @@ const bgColor = (props: ButtonStyleProps & { theme: Theme }) =>
 const fgColor = (props: ButtonStyleProps & { theme: Theme }) =>
   getButtonColors(props).fg
 
-//TODO investigate why TS doesn't accept objects here
-//@ts-ignore
-class BaseButtonThemeProvider extends React.Component<
-  ButtonStyleProps & { theme: Theme }
-> {
-  static defaultProps = {
-    intent: "primary",
-  }
-
-  render() {
-    const { children, theme } = this.props
-    return <ThemeProvider theme={theme}>{children as ReactChild}</ThemeProvider>
-  }
-}
-
-const ButtonThemeProvider = withTheme(BaseButtonThemeProvider)
-
-//TODO investigate why TS doesn't accept objects here
-//@ts-ignore
-export class Button extends React.Component<
-  ButtonStyleProps & ButtonHTMLAttributes<Element>
-> {
-  static defaultProps = {
-    intent: "primary",
-  }
-  render() {
-    const {
-      children,
-      intent,
-      active,
-      disabled,
-      outline,
-      invert,
-      pill,
-      size,
-      ...rest
-    } = this.props
-    const props = {
-      intent,
-      active,
-      outline,
-      disabled,
-      pill,
-      size,
-      invert,
-    }
-
-    return (
-      <ButtonThemeProvider {...props}>
-        <StyledButton {...props} {...rest}>
-          <span>{children}</span>
-        </StyledButton>
-      </ButtonThemeProvider>
-    )
-  }
-}
-//TODO investigate why TS doesn't accept objects here
-//@ts-ignore
-export class ButtonGroup extends React.Component<ButtonStyleProps> {
-  render() {
-    const { children, intent, active, disabled, outline, pill, size, ...rest } =
-      this.props
-    const props = {
-      intent,
-      active,
-      outline,
-      disabled,
-      pill,
-      size,
-    }
-
-    return (
-      <ButtonThemeProvider {...props}>
-        <StyledButtonGroup {...props} {...rest}>
-          {children}
-        </StyledButtonGroup>
-      </ButtonThemeProvider>
-    )
-  }
+export const Button: React.FC<ButtonStyleProps> = (props) => {
+  return (
+    <StyledButton {...props}>
+      <span>{props.children}</span>
+    </StyledButton>
+  )
 }
 
 const StyledBase = styled.div<ButtonStyleProps>`
@@ -255,75 +181,6 @@ const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
 `
 StyledButton.defaultProps = {
   role: "button",
-}
-
-const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
-  ${StyledButton} {
-    min-width: 1rem;
-    padding-left: 0.625rem;
-    padding-right: 0.625rem;
-    border-radius: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    box-shadow: none;
-    background-color: ${bgColor};
-    color: ${fgColor};
-
-    &:active ${({ active }) => (active ? ", &" : "")} {
-      background-color: ${(props) => bgColor({ ...props, active: true })};
-      box-shadow: none;
-      * {
-        color: ${(props) => fgColor({ ...props, active: true })};
-      }
-    }
-  }
-
-  ${StyledButton}:first-child {
-    border-radius: 0.25rem 0 0 0.25rem;
-    padding-left: 0.6875rem;
-  }
-  ${StyledButton} + ${StyledButton}:last-child {
-    border-radius: 0 0.25rem 0.25rem 0;
-    padding-right: 0.6875rem;
-  }
-
-  ${({ pill }) =>
-    pill &&
-    css`
-      ${StyledButton}:first-child {
-        border-radius: 2rem 0 0 2rem;
-        padding-left: 0.875rem;
-      }
-      ${StyledButton} + ${StyledButton}:last-child {
-        border-radius: 0 2rem 2rem 0;
-        padding-right: 0.875rem;
-      }
-    `};
-
-  ${({ outline }) =>
-    outline &&
-    css`
-      box-shadow: ${boxShadow}, 0 0 0 0.125rem currentColor inset;
-
-      ${StyledButton} {
-        box-shadow: -0.0625rem 0 0 currentColor inset;
-      }
-      ${StyledButton} + ${StyledButton} {
-        box-shadow: -0.0625rem 0 0 currentColor inset,
-          0.0625rem 0 0 currentColor inset;
-      }
-    `};
-
-  ${({ disabled }) =>
-    disabled &&
-    css`
-      opacity: 0.5;
-      ${userSelectNone};
-    `};
-`
-
-StyledButtonGroup.defaultProps = {
-  role: "group",
 }
 
 export default Button

@@ -114,3 +114,23 @@ export const PriceMovement: React.FC<{
     <PriceMovementFromStream isAnalyticsView={isAnalyticsView} />
   )
 }
+
+export const PriceMovementComponent: React.FC<{
+  isAnalyticsView: boolean
+  spread: string
+  movementType: PriceMovementType
+}> = ({ isAnalyticsView, spread, movementType }) => {
+  return (
+    <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
+      <MovementIconUP
+        $show={movementType === PriceMovementType.UP}
+        aria-hidden="true"
+      />
+      <MovementValue>{spread}</MovementValue>
+      <MovementIconDown
+        $show={movementType === PriceMovementType.DOWN}
+        aria-hidden="true"
+      />
+    </PriceMovementStyle>
+  )
+}

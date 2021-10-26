@@ -3,10 +3,53 @@ import {
   LineChartWrapper,
   GraphNotionalWrapperDummy,
 } from "@/App/LiveRates/Tile/Tile.styles"
+import { HistoricalGraphComponent } from "@/App/LiveRates/Tile/HistoricalGraph/HistoricalGraph"
+import { PriceMovementType } from "@/services/prices"
+import { getDataPoints, toSvgPath, withScales } from "@/utils/historicalChart"
+import { HistoryPrice } from "@/services/prices"
+import { curveBasis } from "d3"
 
-// import { LineChartWrapper, GraphNotionalWrapper } from '@/widgets/spotTile/components/analyticsTile/styled'
-import AnalyticsTileChart from "@/widgets/spotTile/components/analyticsTile/AnalyticsTileChart"
-import { spotTileData } from "@/widgets/spotTile/components/test-resources/spotTileProps"
+interface SpotPriceTick {
+  ask: number
+  bid: number
+  mid: number
+  creationTimestamp: number
+  symbol: string
+  valueDate: string
+  priceMovementType?: PriceMovementType
+  priceStale?: boolean
+}
+
+const priceTick: SpotPriceTick = {
+  ask: 12.5,
+  bid: 14.0,
+  mid: 13.0,
+  creationTimestamp: 20052,
+  symbol: "EURCAD",
+  valueDate: "2018-08-04T00:00:00Z",
+  priceMovementType: PriceMovementType.UP,
+  priceStale: true,
+}
+const generateHistoricPrices: (totalPricePrick: number) => SpotPriceTick[] = (
+  totalPricePrick,
+) => {
+  const historicPrices = []
+  for (let counter = 0; counter < totalPricePrick; counter++) {
+    const mid = Math.random() * priceTick.mid
+    const finalMid = Math.random() < 0.3 ? mid * -1 + 0.5 : mid
+    historicPrices.push({ ...priceTick, mid: finalMid })
+  }
+
+  return historicPrices
+}
+
+const history = generateHistoricPrices(30)
+const dataPoints = getDataPoints<HistoryPrice>((price, idx) => [
+  new Date(idx),
+  price.mid,
+])(history)
+const scales = withScales([0, 200], [0, 90])(dataPoints)
+const HistoryMockSvgPath = toSvgPath(curveBasis)(scales)
 
 export default (() => (
   <Root>
@@ -21,20 +64,21 @@ export default (() => (
         <ChartsVariants />
       </ChartingRow>
       <ChartingRow>
-        <ChartsVariants over />
+        <ChartsVariants active />
       </ChartingRow>
     </ChartingColumn>
   </Root>
 )) as React.FC
 
-const ChartsVariants: React.FC<{ over?: boolean }> = ({ over }) => (
+const ChartsVariants: React.FC<{ active?: boolean }> = ({ active = false }) => (
   <>
     <ChartingContainer>
       <GraphNotionalWrapperDummy isTimerOn={true}>
         <LineChartWrapper isTimerOn={true}>
-          <AnalyticsTileChart
-            history={spotTileData.historicPrices}
-            over={over}
+          <HistoricalGraphComponent
+            history={HistoryMockSvgPath}
+            showTimer={true}
+            active={active}
           />
         </LineChartWrapper>
       </GraphNotionalWrapperDummy>

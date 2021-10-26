@@ -1,6 +1,6 @@
 import styled from "styled-components"
-import { PriceMovementTypes } from "@/widgets/spotTile/model/priceMovementTypes"
-import PriceMovement from "@/widgets/spotTile/components/PriceMovement"
+import { PriceMovementType } from "@/services/prices"
+import { PriceMovementComponent } from "@/App/LiveRates/Tile/PriceMovement/PriceMovement"
 
 export default (() => (
   <Root>
@@ -12,26 +12,26 @@ export default (() => (
     <SpreadTilesColumn>
       <SpreadTilesRow />
       <SpreadTilesRow>
-        <PriceMovementVariants direction={PriceMovementTypes.Down} />
+        {/*
+        //@ts-ignore */}
+        <PriceMovementComponent
+          movementType={PriceMovementType.DOWN}
+          spread="3.0"
+          isAnalyticsView={false}
+        />
       </SpreadTilesRow>
       <SpreadTilesRow>
-        <PriceMovementVariants direction={PriceMovementTypes.Up} />
+        {/*
+        //@ts-ignore */}
+        <PriceMovementComponent
+          movementType={PriceMovementType.UP}
+          spread="3.0"
+          isAnalyticsView={false}
+        />
       </SpreadTilesRow>
     </SpreadTilesColumn>
   </Root>
 )) as React.FC
-
-const PriceMovementVariants: React.FC<{ direction: PriceMovementTypes }> = ({
-  direction,
-}) => (
-  <PriceMovement
-    priceMovementType={direction}
-    spread="3.0"
-    show
-    isAnalyticsView={false}
-    isRequestRFQ={false}
-  />
-)
 
 const GridColumn = styled.div`
   display: grid;

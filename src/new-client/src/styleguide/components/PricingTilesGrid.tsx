@@ -1,5 +1,4 @@
 import styled from "styled-components"
-// import { PriceButton } from "@/App/LiveRates/Tile/PriceButton/PriceButton"
 import { PriceButtonInnerComponent } from "@/App/LiveRates/Tile/PriceButton"
 import { Direction } from "@/services/trades"
 import { QuoteStateStage } from "@/App/LiveRates/Tile/Rfq"
@@ -8,15 +7,11 @@ const rfqStateReceived = {
   stage: QuoteStateStage.Received,
 }
 
-const rfqStateRejected = {
-  stage: QuoteStateStage.Rejected,
-}
-
 const rfqStateRequested = {
   stage: QuoteStateStage.Requested,
 }
 
-const values = {
+const mockValues = {
   bigFigure: "0.45",
   pip: "12",
   tenth: "3",
@@ -25,13 +20,38 @@ const values = {
   persist: true,
 }
 
-const currencyPair = {
-  symbol: "USDYAN",
-  ratePrecision: 1.5,
-  pipsPosition: 1.0,
-  base: "USD",
-  terms: "YAN",
-}
+const mockVariants = [
+  {
+    disabled: false,
+    isExpired: false,
+    rfqQuoteState: rfqStateReceived,
+  },
+  {
+    disabled: false,
+    isExpired: false,
+    rfqQuoteState: rfqStateRequested,
+  },
+  {
+    disabled: true,
+    isExpired: false,
+    rfqQuoteState: rfqStateRequested,
+  },
+  {
+    disabled: true,
+    isExpired: false,
+    rfqQuoteState: rfqStateRequested,
+  },
+  {
+    disabled: true,
+    isExpired: true,
+    rfqQuoteState: rfqStateRequested,
+  },
+  {
+    disabled: false,
+    isExpired: true,
+    rfqQuoteState: rfqStateRequested,
+  },
+]
 
 export default (() => (
   <Root>
@@ -61,91 +81,21 @@ const PriceButtonVariants: React.FC<{ direction: Direction }> = ({
   direction,
 }) => (
   <>
-    {
-      //Price Announced
-      <PricingTilesRow>
-        <PriceButtonInnerComponent
-          direction={direction}
-          disabled={false}
-          isExpired={false}
-          /* TODO investigate why TS says that the property does not exist 
-          // @ts-ignore */
-          rfqQuoteState={rfqStateReceived}
-          {...values}
-        />
-      </PricingTilesRow>
-    }
-    {
-      // Priced
-      <PricingTilesRow>
-        <PriceButtonInnerComponent
-          direction={direction}
-          disabled={false}
-          isExpired={false}
-          /* TODO investigate why TS says that the property does not exist 
-          // @ts-ignore */
-          rfqQuoteState={rfqStateRequested}
-          {...values}
-        />
-      </PricingTilesRow>
-    }
-
-    {
-      //Trading disabled
-      <PricingTilesRow>
-        <PriceButtonInnerComponent
-          direction={direction}
-          disabled={true}
-          isExpired={false}
-          /* TODO investigate why TS says that the property does not exist 
-          // @ts-ignore */
-          rfqQuoteState={rfqStateRequested}
-          {...values}
-        />
-      </PricingTilesRow>
-    }
-    {
-      //Executing
-      <PricingTilesRow>
-        <PriceButtonInnerComponent
-          direction={direction}
-          disabled={true}
-          isExpired={false}
-          /* TODO investigate why TS says that the property does not exist 
-          // @ts-ignore */
-          rfqQuoteState={rfqStateRequested}
-          {...values}
-        />
-      </PricingTilesRow>
-    }
-    {
-      //RFQ Expired
-      <PricingTilesRow>
-        <PriceButtonInnerComponent
-          direction={direction}
-          disabled={true}
-          isExpired={true}
-          /* TODO investigate why TS says that the property does not exist 
-          // @ts-ignore */
-          rfqQuoteState={rfqStateRequested}
-          {...values}
-        />
-      </PricingTilesRow>
-    }
-    {
-      //RFQ Expired Tradable
-      <PricingTilesRow>
-        <PriceButtonInnerComponent
-          direction={direction}
-          disabled={false}
-          isExpired={true}
-          /* TODO investigate why TS says that the property does not exist 
-          // @ts-ignore */
-          rfqQuoteState={rfqStateRequested}
-          {...values}
-        />
-      </PricingTilesRow>
-    }
+    {mockVariants.map((variant, index) => {
+      return (
+        <PricingTilesRow key={index}>
+          <PriceButtonInnerComponent
+            direction={direction}
+            disabled={variant.disabled}
+            isExpired={variant.isExpired}
+            /* TODO investigate why TS says that the property does not exist 
+            // @ts-ignore */
+            rfqQuoteState={variant.rfqQuoteState}
+            {...mockValues}
+          />
+        </PricingTilesRow>
+      )
+    })}
   </>
 )
 

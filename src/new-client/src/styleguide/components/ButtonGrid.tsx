@@ -1,4 +1,4 @@
-import { Button } from "./Button"
+import Button from "./Button"
 import styled from "styled-components"
 
 import { ButtonStyleProps } from "./Button"
@@ -40,7 +40,9 @@ const ButtonVariants: React.FC<ButtonStyleProps & TitleButtonProp> = (
     {
       // primary
       <ButtonRow>
-        <Button {...props}>Action</Button>
+        <Button intent="primary" {...props}>
+          Action
+        </Button>
       </ButtonRow>
     }
     {

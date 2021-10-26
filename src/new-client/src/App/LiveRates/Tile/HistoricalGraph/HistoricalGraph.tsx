@@ -97,3 +97,24 @@ export const HistoricalGraph: React.FC<HistoricalGraphProps> = ({
     </LineChartWrapper>
   )
 }
+
+export const HistoricalGraphComponent: React.FC<{
+  showTimer: any
+  history: any
+  active: boolean
+}> = ({ showTimer, history, active }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  return (
+    <LineChartWrapper showTimer={showTimer} ref={ref}>
+      <Svg>
+        <Path
+          stroke={active ? "#5f94f5" : "#737987"}
+          strokeOpacity={0.9}
+          strokeWidth={1.6}
+          fill="none"
+          d={history}
+        />
+      </Svg>
+    </LineChartWrapper>
+  )
+}
