@@ -1,9 +1,10 @@
 import { ExitIcon } from "../icons/ExitIcon"
 import { MaximizeIcon } from "../icons/MaximizeIcon"
 import { MinimizeIcon } from "../icons/MinimizeIcon"
-import { PopInIcon } from "../icons/PopInIcon"
+import { PopInIcon } from "@/components/icons/PopInIcon"
 import { closeOtherWindows, inMainOpenFinWindow } from "../utils/window"
 import { Control, ControlsWrapper } from "./WindowHeader.styles"
+import { useEffect } from "react"
 
 export interface Props {
   close?: () => void
@@ -18,6 +19,25 @@ export const WindowControls: React.FC<Props> = ({
   maximize,
   popIn,
 }) => {
+  // Close other windows when page is refreshed to avoid recreating popups
+  useEffect(() => {
+    const inMainWindow = inMainOpenFinWindow()
+
+    const cb = async () => {
+      await closeOtherWindows()
+    }
+
+    if (inMainWindow) {
+      window.addEventListener("beforeunload", cb)
+    }
+
+    return () => {
+      if (inMainWindow) {
+        window.removeEventListener("beforeunload", cb)
+      }
+    }
+  }, [])
+
   async function wrappedClose() {
     if (inMainOpenFinWindow()) {
       await closeOtherWindows()

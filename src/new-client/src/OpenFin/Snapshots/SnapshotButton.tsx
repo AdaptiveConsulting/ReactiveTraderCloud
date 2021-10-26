@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { Button } from "@/App/Footer/common-styles"
 import { PlatformLockedStatusIcon } from "../icons/PlatformLockedStatusIcon"
 import { createOpenFinPopup, Offset, showOpenFinPopup } from "../utils/window"
+import { constructUrl } from "@/utils/url"
 
 const IconContainer = styled.div`
   display: flex;
@@ -25,7 +26,7 @@ export const SnapshotButton: React.FC = () => {
   const [showing, setShowing] = useState(false)
 
   useEffect(() => {
-    createOpenFinPopup(WINDOW, import.meta.env.BASE_URL + "snapshots", () =>
+    createOpenFinPopup(WINDOW, constructUrl("/snapshots"), () =>
       setShowing(false),
     )
   }, [])

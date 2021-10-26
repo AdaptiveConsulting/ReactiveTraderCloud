@@ -5,7 +5,7 @@ import GlobalStyle from "@/theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import { register } from "./serviceWorkerRegistration"
 import { registerSwNotifications } from "./sw-notifications"
-import { WebApp } from ".//WebApp"
+import { WebApp } from "./WebApp"
 
 import { AnalyticsCoreDeferred } from "@/App/Analytics"
 import { LiveRatesCoreDeferred } from "@/App/LiveRates"

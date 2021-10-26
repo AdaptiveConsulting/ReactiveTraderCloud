@@ -7,6 +7,7 @@ import { OpenFinApp } from "./OpenFinApp"
 import { PlatformContext } from "@/platform"
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
+import { registerNotifications } from "./notifications"
 
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
@@ -17,6 +18,8 @@ export default function main() {
       autoReconnect: true,
     })
   }
+
+  registerNotifications()
 
   ReactDOM.render(
     <StrictMode>

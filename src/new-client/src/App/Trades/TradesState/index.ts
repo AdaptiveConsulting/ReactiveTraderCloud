@@ -25,4 +25,10 @@ export {
 } from "./filterState"
 export type { SortDirection, TableSort } from "./sortState"
 export { useTableSort, onSortFieldSelect } from "./sortState"
-export { tableTrades$, useTableTrades, useFilterFields } from "./tableTrades"
+export {
+  tableTrades$,
+  useTableTrades,
+  useFilterFields,
+  onTradeRowHighlight,
+  useTradeRowHighlight,
+} from "./tableTrades"

@@ -1,54 +1,34 @@
-import Resizer from "@/components/Resizer"
-import styled from "styled-components"
-import Header from "@/App/Header"
-import { Footer } from "@/App/Footer"
-import { LiveRates } from "@/App/LiveRates"
-import { Trades } from "@/App/Trades"
-import { Analytics } from "@/App/Analytics"
-import { DisconnectionOverlay } from "@/App/DisconnectionOverlay"
-
-const Wrapper = styled("div")`
-  width: 100%;
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  overflow: hidden;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-`
-const AppLayoutRoot = styled.div`
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
-  max-height: 100vh;
-  overflow: hidden;
-
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  color: ${({ theme }) => theme.core.textColor};
-`
-
-const MainWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  overflow: hidden;
-`
+import { TileView } from "@/App/LiveRates/selectedView"
+import { BASE_URL } from "@/constants"
+import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { MainRoute } from "./MainRoute"
+import { TornOutTile } from "./Tiles"
+import { TearOutRouteWrapper } from "./Web.styles"
 
 export const WebApp: React.FC = () => (
-  <Wrapper>
-    <DisconnectionOverlay />
-    <AppLayoutRoot data-qa="app-layout__root">
-      <Header />
-      <MainWrapper>
-        <Resizer defaultHeight={30}>
-          <LiveRates />
-          <Trades />
-        </Resizer>
-        <Analytics />
-      </MainWrapper>
-      <Footer />
-    </AppLayoutRoot>
-  </Wrapper>
+  <BrowserRouter basename={BASE_URL}>
+    <Switch>
+      <Route exact path="/" render={() => <MainRoute />} />
+      <Route
+        path="/spot/:symbol"
+        render={({
+          location: { search },
+          match: {
+            params: { symbol },
+          },
+        }) => {
+          const query = new URLSearchParams(search)
+          const view = query.has("tileView")
+            ? (query.get("tileView") as TileView)
+            : TileView.Analytics
+
+          return (
+            <TearOutRouteWrapper>
+              <TornOutTile symbol={symbol} view={view} />
+            </TearOutRouteWrapper>
+          )
+        }}
+      />
+    </Switch>
+  </BrowserRouter>
 )
