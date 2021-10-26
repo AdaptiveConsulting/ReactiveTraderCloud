@@ -135,7 +135,7 @@ const allocators = HydraPlatform.createOtfAllocators(converters)
 function QuoteResponseTypeDefinition() {
   return {
     type: "record" as const,
-    encodedLength: { bitLength: 608, byteLength: 76 },
+    encodedLength: { bitLength: 256, byteLength: 32 },
     fields: {
       notional: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
@@ -143,18 +143,18 @@ function QuoteResponseTypeDefinition() {
       },
       currencyPair: {
         location: { bitOffset: 64, byteOffset: 8, mask: 0 },
-        type: CurrencyPairTypeDefinition,
+        type: CurrencyPairRefTypeDefinition,
       },
       price: {
-        location: { bitOffset: 160, byteOffset: 20, mask: 0 },
-        type: PriceTickTypeDefinition,
+        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
+        type: PriceTickRefTypeDefinition,
       },
       time: {
-        location: { bitOffset: 480, byteOffset: 60, mask: 0 },
+        location: { bitOffset: 128, byteOffset: 16, mask: 0 },
         type: float64TypeDefinition,
       },
       timeout: {
-        location: { bitOffset: 544, byteOffset: 68, mask: 0 },
+        location: { bitOffset: 192, byteOffset: 24, mask: 0 },
         type: float64TypeDefinition,
       },
     },
@@ -164,6 +164,14 @@ function QuoteResponseTypeDefinition() {
 
 function float64TypeDefinition() {
   return "Float64" as const
+}
+
+function PriceTickRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: PriceTickTypeDefinition }
+}
+
+function CurrencyPairRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: CurrencyPairTypeDefinition }
 }
 
 function CurrencyPairTypeDefinition() {
@@ -298,10 +306,6 @@ function CurrencyPairUpdateTypeDefinition() {
   }
 }
 
-function CurrencyPairRefTypeDefinition() {
-  return { type: "pointer" as const, elementType: CurrencyPairTypeDefinition }
-}
-
 function PriceTickHistoryTypeDefinition() {
   return {
     type: "record" as const,
@@ -329,7 +333,7 @@ function PriceTickListTypeDefinition() {
     },
     elementLength: { bitLength: 320, byteLength: 40 },
     elementType: PriceTickTypeDefinition,
-    firstElementOffset: 2,
+    firstElementOffset: 5,
   }
 }
 
@@ -422,15 +426,19 @@ function PriceStreamRequestTypeDefinition() {
 function ExecutionResponseTypeDefinition() {
   return {
     type: "record" as const,
-    encodedLength: { bitLength: 384, byteLength: 48 },
+    encodedLength: { bitLength: 32, byteLength: 4 },
     fields: {
       trade: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: TradeTypeDefinition,
+        type: TradeRefTypeDefinition,
       },
     },
     jsonConverter: undefined,
   }
+}
+
+function TradeRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: TradeTypeDefinition }
 }
 
 function TradeTypeDefinition() {
@@ -621,7 +629,7 @@ function TradeListTypeDefinition() {
     },
     elementLength: { bitLength: 384, byteLength: 48 },
     elementType: TradeTypeDefinition,
-    firstElementOffset: 2,
+    firstElementOffset: 5,
   }
 }
 
@@ -659,7 +667,7 @@ function HistoricPositionListTypeDefinition() {
     },
     elementLength: { bitLength: 96, byteLength: 12 },
     elementType: HistoricPositionTypeDefinition,
-    firstElementOffset: 2,
+    firstElementOffset: 5,
   }
 }
 
@@ -697,7 +705,7 @@ function CurrencyPairPositionListTypeDefinition() {
     },
     elementLength: { bitLength: 224, byteLength: 28 },
     elementType: CurrencyPairPositionTypeDefinition,
-    firstElementOffset: 2,
+    firstElementOffset: 5,
   }
 }
 
@@ -749,8 +757,8 @@ export const AnalyticsService = {
         methodName: "getAnalytics",
         inboundStream: "one",
         outboundStream: "many",
-        requestRouteKey: BigInt("7517728295732766976"),
-        responseRouteKey: BigInt("-2041959541056357120"),
+        requestRouteKey: BigInt("7193047013647582464"),
+        responseRouteKey: BigInt("-5366938992238658560"),
         annotations: [],
       },
       allocators.responseAllocator(PositionUpdatesTypeDefinition),
@@ -766,8 +774,8 @@ export const BlotterService = {
         methodName: "getTradeStream",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("-2567578599433564416"),
-        responseRouteKey: BigInt("-1445164197769796352"),
+        requestRouteKey: BigInt("516767086541627392"),
+        responseRouteKey: BigInt("-1282749241317622016"),
         annotations: [],
       },
       allocators.responseAllocator(TradeUpdatesTypeDefinition),
@@ -782,8 +790,8 @@ export const LoginService = {
         methodName: "login",
         inboundStream: "one",
         outboundStream: "empty",
-        requestRouteKey: BigInt("-8896809152677510144"),
-        responseRouteKey: BigInt("-3072407376829816320"),
+        requestRouteKey: BigInt("4665269211409501952"),
+        responseRouteKey: BigInt("4822501354577487872"),
         annotations: [],
       },
       undefined,
@@ -799,8 +807,8 @@ export const ExecutionService = {
         methodName: "executeTrade",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("6017150178173448704"),
-        responseRouteKey: BigInt("8923535530135201280"),
+        requestRouteKey: BigInt("1075788347945614336"),
+        responseRouteKey: BigInt("619083084394464000"),
         annotations: [],
       },
       allocators.responseAllocator(ExecutionResponseTypeDefinition),
@@ -816,8 +824,8 @@ export const PricingService = {
         methodName: "getPriceUpdates",
         inboundStream: "one",
         outboundStream: "many",
-        requestRouteKey: BigInt("7269914111010260480"),
-        responseRouteKey: BigInt("6961240174832290048"),
+        requestRouteKey: BigInt("8413700287026779648"),
+        responseRouteKey: BigInt("3800867469029228800"),
         annotations: [],
       },
       allocators.responseAllocator(PriceTickTypeDefinition),
@@ -833,8 +841,8 @@ export const PricingService = {
         methodName: "getPriceHistory",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("-6576860580212776192"),
-        responseRouteKey: BigInt("-7763015742788736768"),
+        requestRouteKey: BigInt("1528078832124954880"),
+        responseRouteKey: BigInt("-4186857408412338688"),
         annotations: [],
       },
       allocators.responseAllocator(PriceTickHistoryTypeDefinition),
@@ -850,8 +858,8 @@ export const ReferenceDataService = {
         methodName: "getCcyPairs",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("4705086749971869952"),
-        responseRouteKey: BigInt("-7233137923248246528"),
+        requestRouteKey: BigInt("3148703404362059776"),
+        responseRouteKey: BigInt("3559278686880111616"),
         annotations: [],
       },
       allocators.responseAllocator(CurrencyPairUpdatesTypeDefinition),
@@ -866,8 +874,8 @@ export const RfqService = {
         methodName: "requestQuote",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("-6462865791245223680"),
-        responseRouteKey: BigInt("-7982566380619983104"),
+        requestRouteKey: BigInt("8143068223263718656"),
+        responseRouteKey: BigInt("4897793398437933312"),
         annotations: [],
       },
       allocators.responseAllocator(QuoteResponseTypeDefinition),
