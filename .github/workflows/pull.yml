@@ -14,6 +14,7 @@ env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
+  BUCKET_LAUNCHER: reactive-launcher-builds
   VITE_HYDRA_URL: wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com
   ENVIRONMENT: env
 
@@ -89,6 +90,20 @@ jobs:
             rsync -d -r dist \
             gs://$BUCKET_FINSEMBLE/pull/${{ github.event.number }}
 
+      - name: Build (Launcher)
+        env:
+          BASE_URL: https://launcher.env.reactivetrader.com/pull/${{ github.event.number }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
+        run: npm run launcher:build
+
+      - name: Deploy (Launcher)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_LAUNCHER/pull/${{ github.event.number }}
+
       - name: Find comment
         uses: peter-evans/find-comment@v1
         id: comment
@@ -114,6 +129,7 @@ jobs:
             | Web       | https://web.env.reactivetrader.com/pull/${{ github.event.number }}                      |
             | OpenFin   | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/app.json   |
             | Finsemble | https://finsemble.env.reactivetrader.com/pull/${{ github.event.number }}                |
+            | Launcher  | https://launcher.env.reactivetrader.com/pull/${{ github.event.number }}                 |
 
             ### Performance
 

@@ -7,9 +7,6 @@ import {
 
 type PlatformName = "browser" | "openfin" | "finsemble"
 
-// Safer than location.origin due to browser support
-const ORIGIN = `${window.location.protocol}//${window.location.host}`
-
 const defaultWindowOptions: fin.WindowOption = {
   autoShow: true,
   defaultWidth: 1280,
@@ -21,7 +18,7 @@ const defaultWindowOptions: fin.WindowOption = {
   defaultCentered: true,
   frame: false,
   shadow: true,
-  icon: `${ORIGIN}/static/media/adaptive.ico`,
+  icon: `${BASE_URL}/static/media/adaptive.ico`,
   accelerator:
     process.env.NODE_ENV !== "development"
       ? {}
@@ -60,12 +57,15 @@ export interface ApplicationConfig {
 }
 
 const env = ENVIRONMENT
+const isLocal = env === "local"
 const envSuffix = `(${ENVIRONMENT.toUpperCase()})`
-const reactiveTraderManifestUrl = `${BASE_URL}/dist/config/app.json`
-// TODO
-// const reactiveAnalyticsManifestUrl = "http://localhost:3005/config/app.json"
-const reactiveAnalyticsManifestUrl =
-  "https://demo-reactive-analytics.adaptivecluster.com/openfin/app.json"
+const reactiveTraderManifestUrl = `${
+  isLocal ? "http://localhost:1917" : BASE_URL.replace("launcher", "openfin")
+}/dist/config/app.json`
+const reactiveAnalyticsManifestUrl = isLocal
+  ? "http://localhost:3005/openfin/app.json"
+  : // TODO
+    "https://demo-reactive-analytics.adaptivecluster.com/openfin/app.json"
 
 const baseAppConfigs: ApplicationConfig[] = [
   {
@@ -110,7 +110,7 @@ const baseAppConfigs: ApplicationConfig[] = [
       applicationType: "download",
       windowOptions: {
         ...defaultWindowOptions,
-        icon: `${ORIGIN}/static/media/limit-checker-icon.ico`,
+        icon: `${BASE_URL}/static/media/limit-checker-icon.ico`,
       },
     },
   },
