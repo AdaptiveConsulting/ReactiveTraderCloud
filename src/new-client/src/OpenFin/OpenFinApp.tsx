@@ -10,10 +10,10 @@ import { DocTitle } from "@/components/DocTitle"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
 import { TornOutTile, Tiles } from "./Tiles"
 import { TileView } from "@/App/LiveRates/selectedView"
-import { BASE_URL } from "@/constants"
+import { BASE_PATH } from "@/constants"
 
 export const OpenFinApp: React.FC = () => (
-  <BrowserRouter basename={BASE_URL}>
+  <BrowserRouter basename={BASE_PATH}>
     <Switch>
       <Route
         path="/analytics"

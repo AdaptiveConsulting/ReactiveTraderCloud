@@ -1,4 +1,4 @@
-import { BASE_URL, DOMAIN } from "@/constants"
+import { BASE_URL } from "@/constants"
 
 export const constructUrl = (path: string): string =>
-  `${DOMAIN}${BASE_URL}${path}`
+  BASE_URL === "/" ? path : `${BASE_URL}${path}`
