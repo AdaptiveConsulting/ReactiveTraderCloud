@@ -127,7 +127,7 @@ jobs:
             | Web       | https://web.env.reactivetrader.com/pull/${{ github.event.number }}                      |
             | OpenFin   | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/app.json   |
             | Finsemble | https://finsemble.env.reactivetrader.com/pull/${{ github.event.number }}                |
-            | Launcher  | https://launcher.env.reactivetrader.com/pull/${{ github.event.number }}                 |
+            | Launcher  | fins://launcher.env.reactivetrader.com/pull/${{ github.event.number }}/config/launcher.json   |
 
             ### Performance
 
