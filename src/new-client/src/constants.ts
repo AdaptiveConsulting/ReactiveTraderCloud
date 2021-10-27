@@ -5,3 +5,8 @@ export const BASE_URL =
   import.meta.env.BASE_URL && import.meta.env.BASE_URL.startsWith("http")
     ? new URL(import.meta.env.BASE_URL).pathname
     : import.meta.env.BASE_URL || ""
+
+console.log("ENVIRONMENT", ENVIRONMENT)
+console.log("import.meta.env.ENVIRONMENT ", import.meta.env.ENVIRONMENT)
+console.log("BASE_URL", BASE_URL)
+console.log("import.meta.env.BASE_URL", import.meta.env.BASE_UR)
