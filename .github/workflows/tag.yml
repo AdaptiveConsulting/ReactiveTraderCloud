@@ -68,7 +68,6 @@ jobs:
         env:
           BASE_URL: https://openfin.prod.reactivetrader.com
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
-          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run openfin:build
 
       - name: Deploy (OpenFin)
@@ -95,7 +94,6 @@ jobs:
         env:
           BASE_URL: https://launcher.prod.reactivetrader.com
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
-          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run launcher:build
 
       - name: Deploy (Launcher)
