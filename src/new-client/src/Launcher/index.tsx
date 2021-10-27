@@ -13,7 +13,6 @@ export default function main() {
     connectToGateway({
       url: `${window.location.origin}/ws`,
       interceptor: noop,
-      useJson: true,
     })
   }
 
