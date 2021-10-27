@@ -52,7 +52,7 @@ jobs:
       - name: Build (web)
         env:
           DOMAIN: https://web.env.reactivetrader.com
-          PATH: /pull/${{ github.event.number }}
+          URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: env
         run: npm run build
@@ -67,7 +67,7 @@ jobs:
       - name: Build (OpenFin)
         env:
           DOMAIN: https://openfin.env.reactivetrader.com
-          PATH: /pull/${{ github.event.number }}
+          URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: env
         run: npm run openfin:build
@@ -82,7 +82,7 @@ jobs:
       - name: Build (Finsemble)
         env:
           DOMAIN: https://finsemble.env.reactivetrader.com
-          PATH: /pull/${{ github.event.number }}
+          URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: env
         run: npm run finsemble:build
@@ -97,7 +97,7 @@ jobs:
       - name: Build (Launcher)
         env:
           DOMAIN: https://launcher.env.reactivetrader.com
-          PATH: /pull/${{ github.event.number }}
+          URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: env
         run: npm run launcher:build
