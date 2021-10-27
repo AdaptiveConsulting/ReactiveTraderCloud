@@ -12,11 +12,7 @@ import {
   ExecutionResponse,
 } from "@/generated/TradingGateway"
 import { TradeStatus } from "../trades"
-import {
-  EXECUTION_DELAY_VALUE,
-  DELAYED_CURRENCY,
-  EXECUTION_TIMEOUT_VALUE,
-} from "@/services/executions/constants"
+import { EXECUTION_TIMEOUT_VALUE } from "@/services/executions/constants"
 
 const mapExecutionToPayload = (e: ExecutionRequest): ExecuteTradeRequest => {
   return {
@@ -54,9 +50,6 @@ const executionsSubject = new Subject<ExecutionTrade>()
 export const execute$ = (execution: ExecutionRequest) =>
   race([
     ExecutionService.executeTrade(mapExecutionToPayload(execution)).pipe(
-      delay(
-        execution.currencyPair === DELAYED_CURRENCY ? EXECUTION_DELAY_VALUE : 0,
-      ),
       map(mapResponseToTrade(execution.id)),
       tap((value) => {
         executionsSubject.next(value)

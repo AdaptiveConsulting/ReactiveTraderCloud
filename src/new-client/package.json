@@ -42,7 +42,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
-    "@adaptive/hydra-platform": "^3.24.0",
+    "@adaptive/hydra-platform": "^3.32.0",
     "@finos/fdc3": "^1.2.0",
     "@react-rxjs/core": "^0.8.2",
     "@react-rxjs/utils": "^0.8.2",
