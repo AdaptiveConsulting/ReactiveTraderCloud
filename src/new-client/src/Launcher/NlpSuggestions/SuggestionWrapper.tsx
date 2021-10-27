@@ -11,37 +11,10 @@ import {
   InlineIntent,
 } from "./styles"
 import { reactiveTraderIcon } from "../icons"
-import { NlpIntent, NlpIntentType } from "../services/nlpService"
-import { openWindow } from "@/OpenFin/utils/window"
-import { constructUrl } from "@/utils/url"
-
-const handleIntent = (intent: NlpIntent) => {
-  switch (intent.type) {
-    case NlpIntentType.SpotQuote: {
-      const currencyPair = intent.payload.symbol
-
-      if (!currencyPair) {
-        console.error(`No currency pair in queryResult`)
-        return
-      }
-
-      const options = {
-        name: currencyPair,
-        url: constructUrl(`/spot/${currencyPair}`),
-        width: 380,
-        height: 200,
-        includeInSnapshots: false,
-      }
-
-      openWindow(options)
-
-      return
-    }
-
-    default:
-      console.log("TODO")
-  }
-}
+import { NlpIntent } from "../services/nlpService"
+import { handleIntent } from "./intents"
+import { open } from "../tools"
+import { appConfigs } from "../applicationConfigurations"
 
 export const SuggestionWrapper: React.FC<{
   intent: NlpIntent
@@ -57,7 +30,8 @@ export const SuggestionWrapper: React.FC<{
           <span>Reactive Trader®</span>
         </IntentActionWrapper>
         <IntentActionWrapper>
-          <button onClick={() => {}}>Launch Platform</button>
+          {/* TODO - Open and opened state should be a hook so opening here would set RT as opened in the launcher */}
+          <button onClick={() => open(appConfigs[0])}>Launch Platform</button>
           <button onClick={() => handleIntent(intent)}>
             {intentButtonText}
           </button>

@@ -4,6 +4,7 @@ import {
   reactiveAnalyticsIcon,
   reactiveTraderIcon,
 } from "./icons"
+import { getReactiveTraderUrl } from "./utils/url"
 
 type PlatformName = "browser" | "openfin" | "finsemble"
 
@@ -59,9 +60,9 @@ export interface ApplicationConfig {
 const env = ENVIRONMENT
 const isLocal = env === "local"
 const envSuffix = `(${ENVIRONMENT.toUpperCase()})`
-const reactiveTraderManifestUrl = `${
-  isLocal ? "http://localhost:1917/" : BASE_URL.replace("launcher", "openfin")
-}config/app.json`
+const reactiveTraderManifestUrl = getReactiveTraderUrl(
+  `${isLocal ? "/dist" : ""}/config/app.json`,
+)
 const reactiveAnalyticsManifestUrl = isLocal
   ? "http://localhost:3005/openfin/app.json"
   : // TODO

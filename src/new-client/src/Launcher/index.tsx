@@ -11,7 +11,7 @@ import { noop } from "rxjs"
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
     connectToGateway({
-      url: `${window.location.origin}/ws`,
+      url: `wss://launcher.env.reactivetrader.com/ws`,
       interceptor: noop,
     })
   }

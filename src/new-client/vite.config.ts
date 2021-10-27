@@ -201,7 +201,7 @@ const setConfig = ({ mode }) => {
   plugins.unshift(indexSwitchPlugin(TARGET))
   plugins.push(copyWebManifestPlugin(mode === "development"))
   plugins.push(htmlPlugin(isDev))
-
+  console.log(process.env.VITE_HYDRA_URL)
   return defineConfig({
     base: isDev ? "/" : getBaseUrl(false),
     define: {
