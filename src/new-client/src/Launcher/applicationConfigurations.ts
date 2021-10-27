@@ -1,4 +1,4 @@
-import { BASE_URL, ENVIRONMENT } from "@/constants"
+import { BASE_URL, DOMAIN, ENVIRONMENT } from "@/constants"
 import {
   limitCheckerIcon,
   reactiveAnalyticsIcon,
@@ -59,9 +59,9 @@ export interface ApplicationConfig {
 const env = ENVIRONMENT
 const isLocal = env === "local"
 const envSuffix = `(${ENVIRONMENT.toUpperCase()})`
-const reactiveTraderManifestUrl = `${
-  isLocal ? "http://localhost:1917" : BASE_URL.replace("launcher", "openfin")
-}/dist/config/app.json`
+const reactiveTraderManifestUrl = isLocal
+  ? "http://localhost:1917"
+  : `${DOMAIN.replace("launcher", "openfin")}${BASE_URL}/dist/config/app.json`
 const reactiveAnalyticsManifestUrl = isLocal
   ? "http://localhost:3005/openfin/app.json"
   : // TODO

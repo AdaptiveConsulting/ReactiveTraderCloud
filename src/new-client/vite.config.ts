@@ -11,7 +11,9 @@ import { injectManifest } from "rollup-plugin-workbox"
 const PORT = Number(process.env.PORT) || 1917
 
 function getBaseUrl(dev: boolean) {
-  return dev ? `http://localhost:${PORT}` : process.env.BASE_URL || ""
+  return dev
+    ? `http://localhost:${PORT}`
+    : `${process.env.DOMAIN}${process.env.PATH || ""}` || ""
 }
 
 function apiMockReplacerPlugin(): Plugin {
@@ -69,7 +71,7 @@ const customPreloadPlugin = () => {
   const result: any = {
     ...((modulepreload as any)({
       index: resolve(__dirname, "dist", "index.html"),
-      prefix: process.env.BASE_URL || "",
+      prefix: getBaseUrl(false) || "",
     }) as any),
     enforce: "post",
   }
@@ -201,7 +203,7 @@ const setConfig = ({ mode }) => {
   plugins.push(htmlPlugin(isDev))
 
   return defineConfig({
-    base: process.env.BASE_URL || "/",
+    base: isDev ? "/" : getBaseUrl(false),
     define: {
       __TARGET__: JSON.stringify(TARGET),
     },

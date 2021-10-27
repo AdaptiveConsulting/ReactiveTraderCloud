@@ -16,7 +16,7 @@ env:
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
   BUCKET_LAUNCHER: reactive-trader-launcher-builds
   VITE_HYDRA_URL: wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com
-
+  
 jobs:
   build:
     name: Build & deploy
@@ -51,7 +51,8 @@ jobs:
 
       - name: Build (web)
         env:
-          BASE_URL: /pull/${{ github.event.number }}
+          DOMAIN: https://web.env.reactivetrader.com
+          PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: env
         run: npm run build
@@ -65,7 +66,8 @@ jobs:
 
       - name: Build (OpenFin)
         env:
-          BASE_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
+          DOMAIN: https://openfin.env.reactivetrader.com
+          PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: env
         run: npm run openfin:build
@@ -79,7 +81,8 @@ jobs:
 
       - name: Build (Finsemble)
         env:
-          BASE_URL: /pull/${{ github.event.number }}
+          DOMAIN: https://finsemble.env.reactivetrader.com
+          PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: env
         run: npm run finsemble:build
@@ -93,9 +96,10 @@ jobs:
 
       - name: Build (Launcher)
         env:
-          BASE_URL: https://launcher.env.reactivetrader.com/pull/${{ github.event.number }}
+          DOMAIN: https://launcher.env.reactivetrader.com
+          PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
-          THE_ENVIRON: env
+          ENVIRONMENT: env
         run: npm run launcher:build
 
       - name: Deploy (Launcher)

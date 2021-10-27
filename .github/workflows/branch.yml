@@ -59,7 +59,8 @@ jobs:
 
       - name: Build (web)
         env:
-          BASE_URL: ${{ steps.vars.outputs.URL_SUFFIX }}
+          DOMAIN: https://web.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run build
@@ -73,7 +74,8 @@ jobs:
 
       - name: Build (OpenFin)
         env:
-          BASE_URL: https://openfin.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com${{ steps.vars.outputs.URL_SUFFIX }}
+          DOMAIN: https://openfin.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run openfin:build
@@ -87,7 +89,8 @@ jobs:
 
       - name: Build (Finsemble)
         env:
-          BASE_URL: ${{ steps.vars.outputs.URL_SUFFIX }}
+          DOMAIN: https://finsemble.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run finsemble:build
@@ -101,7 +104,8 @@ jobs:
 
       - name: Build (Launcher)
         env:
-          BASE_URL: https://launcher.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com${{ steps.vars.outputs.URL_SUFFIX }}
+          DOMAIN: https://launcher.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run launcher:build
