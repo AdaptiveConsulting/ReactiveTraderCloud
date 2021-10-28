@@ -1,5 +1,5 @@
 import path, { resolve } from "path"
-import { readdirSync, statSync } from "fs"
+import { fstat, readdirSync, statSync } from "fs"
 import { defineConfig, loadEnv } from "vite"
 import reactRefresh from "@vitejs/plugin-react-refresh"
 import copy from "rollup-plugin-copy"
@@ -33,7 +33,7 @@ function apiMockReplacerPlugin(): Plugin {
   }
 }
 
-function targetBuildPlugin(target: string): Plugin {
+function targetBuildPlugin(dev: boolean, target: string): Plugin {
   return {
     name: "targetBuildPlugin",
     enforce: "pre",
@@ -43,7 +43,7 @@ function targetBuildPlugin(target: string): Plugin {
       const file = path.parse(source)
       const files = readdirSync("." + file.dir)
 
-      // Only continue if we can find a .openfin.ts file available.
+      // Only continue if we can find a .<target>.ts file
       if (!files.includes(`${file.name}.${target}.ts`)) return null
 
       // Set the id of this file to the one importing it marked with our suffix
@@ -51,6 +51,7 @@ function targetBuildPlugin(target: string): Plugin {
       const mockPath = `${file.dir}/${file.name}.${target}.ts`
       return this.resolve(mockPath, importer)
     },
+    hook: dev ? "buildStart" : "writeBundle",
   }
 }
 
@@ -215,7 +216,7 @@ const setConfig = ({ mode }) => {
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
-  plugins.unshift(targetBuildPlugin(TARGET))
+  plugins.unshift(targetBuildPlugin(isDev, TARGET))
   plugins.push(copyWebManifestPlugin(mode === "development"))
   plugins.push(htmlPlugin(isDev))
 
