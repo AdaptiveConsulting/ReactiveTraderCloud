@@ -107,32 +107,33 @@ const typescriptPlugin = {
   enforce: "pre",
 }
 
-const copyOpenfinPlugin = (dev: boolean) => ({
-  ...copy({
-    targets: [
-      {
-        src: "./public-openfin/*",
-        dest: "./dist/config",
-        transform: (contents) =>
-          contents
-            .toString()
-            .replace(/<BASE_URL>/g, getBaseUrl(dev))
-            .replace(/<ENV_NAME>/g, process.env.ENVIRONMENT || "local")
-            .replace(
-              /<ENV_SUFFIX>/g,
-              process.env.ENVIRONMENT
-                ? process.env.ENVIRONMENT.toUpperCase()
-                : "LOCAL",
-            ),
-      },
-    ],
-    verbose: true,
-    // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
-    // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
-    // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
-    hook: dev ? "buildStart" : "writeBundle",
-  }),
-})
+const copyOpenfinPlugin = (dev: boolean) => {
+  const env = process.env.ENVIRONMENT || "local"
+  return {
+    ...copy({
+      targets: [
+        {
+          src: "./public-openfin/*",
+          dest: "./dist/config",
+          transform: (contents) =>
+            contents
+              .toString()
+              .replace(/<BASE_URL>/g, getBaseUrl(dev))
+              .replace(/<ENV_NAME>/g, env)
+              .replace(
+                /<ENV_SUFFIX>/g,
+                env === "prod" ? "" : env.toUpperCase(),
+              ),
+        },
+      ],
+      verbose: true,
+      // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
+      // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
+      // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
+      hook: dev ? "buildStart" : "writeBundle",
+    }),
+  }
+}
 
 const copyWebManifestPlugin = (dev: boolean) => {
   const envSuffix = (process.env.ENVIRONMENT || "local").toUpperCase()
