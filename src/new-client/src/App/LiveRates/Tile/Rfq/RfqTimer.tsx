@@ -60,8 +60,12 @@ const TimeProgress: React.FC<{
   return <ProgressBar {...state} />
 }
 
-const RejectQuoteButton = styled.button<{ isAnalyticsView: boolean }>`
+const RejectQuoteButton = styled.button<{
+  isAnalyticsView: boolean
+  canReject?: boolean
+}>`
   background-color: ${({ theme }) => `${theme.core.lightBackground}`};
+  ${({ canReject }) => (!canReject ? `background-color: unset` : "")}
   border: ${({ theme }) => `2px solid ${theme.core.darkBackground}`};
   border-radius: 3px;
   font-size: 11px;
@@ -74,6 +78,9 @@ const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   align-items: center;
   align-self: stretch;
   z-index: 3;
+  width: ${({ isAnalyticsView }) =>
+    isAnalyticsView ? "calc(100% + 23.09px)" : "100%"};
+  height: ${({ isAnalyticsView }) => (isAnalyticsView ? "10px" : "")};
 `
 
 const SecsTimer: React.FC<{ end: number }> = ({ end }) => {
@@ -119,5 +126,42 @@ export const RfqTimer: React.FC<{
         Reject
       </RejectQuoteButton>
     </TimerWrapper>
+  )
+}
+
+export const RfqTimerComponent: React.FC<{
+  isAnalyticsView: boolean
+  start: number
+  end: number
+}> = ({ isAnalyticsView, ...props }) => {
+  return (
+    <>
+      {isAnalyticsView && (
+        <TimeLeft isAnalyticsView={isAnalyticsView}>
+          {props.start} secs
+        </TimeLeft>
+      )}
+      <TimerWrapper isAnalyticsView={isAnalyticsView} data-testid="rfqTimer">
+        {!isAnalyticsView && (
+          <TimeLeft isAnalyticsView={isAnalyticsView}>
+            {props.start} secs
+          </TimeLeft>
+        )}
+        <ProgressBarWrapper isAnalyticsView={isAnalyticsView}>
+          {/* <TimeProgress {...props} /> */}
+          <ProgressBar
+            width={(props.start / props.end) * 100}
+            transitionTime={props.end}
+          />
+        </ProgressBarWrapper>
+        <RejectQuoteButton
+          data-testid="rfqReject"
+          isAnalyticsView={isAnalyticsView}
+          canReject={props.start !== props.end}
+        >
+          Reject
+        </RejectQuoteButton>
+      </TimerWrapper>
+    </>
   )
 }

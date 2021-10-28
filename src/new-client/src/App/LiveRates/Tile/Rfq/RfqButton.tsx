@@ -95,4 +95,37 @@ const RfqButton: React.FC<{ isAnalytics: boolean }> = ({ isAnalytics }) => {
   ) : null
 }
 
+const RfqButtonComponent: React.FC<{
+  isAnalytics: boolean
+  buttonText: string
+}> = ({ isAnalytics, buttonText }) => {
+  // const isRfq = useIsRfq()
+  // const { stage } = useRfqState()
+  // const { symbol } = useTileCurrencyPair()
+  // const { buttonText, buttonClickHandler, textWrap } = buttonState(
+  //   stage,
+  //   isAnalytics,
+  // )
+  // const isExecuting = useTileState(symbol).status === TileStates.Started
+  // const validNotional = useIsNotionalValid()
+  // return isRfq && stage !== QuoteStateStage.Received && !isExecuting ? (
+  return (
+    <RfqButtonContainer
+      left={isAnalytics ? `calc(${AnalyticsPricesFirstCol} / 2)` : 0}
+    >
+      <CenteringContainer>
+        <RFQButtonInner
+          disabled={false}
+          data-testid="rfqButton"
+          textWrap={false}
+          isAnalytics={isAnalytics}
+        >
+          {buttonText}
+        </RFQButtonInner>
+      </CenteringContainer>
+    </RfqButtonContainer>
+  )
+}
+
 export { RfqButton }
+export { RfqButtonComponent }

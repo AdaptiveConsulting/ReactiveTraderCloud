@@ -71,7 +71,7 @@ export const Body = styled.div<{
 export const GraphNotionalWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 40%;
 `
 
 export const GraphNotionalWrapperDummy = styled.div<{ isTimerOn: boolean }>`
@@ -143,4 +143,34 @@ export const Main: React.FC = ({ children }) => (
   <MainTileWrapper>
     <MainTileStyle>{children}</MainTileStyle>
   </MainTileWrapper>
+)
+
+export const SpotTileStyleComponent = styled.div`
+  position: absolute;
+  border-radius: 3px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: column;
+  overflow: hidden;
+`
+
+const MainTileStyleComponent = styled(SpotTileStyleComponent)`
+  background-color: ${({ theme }) => theme.core.lightBackground};
+`
+const MainTileWrapperComponent = styled.div`
+  min-height: 11rem;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  color: ${({ theme }) => theme.core.textColor};
+`
+export const MainComponent: React.FC = ({ children }) => (
+  <MainTileWrapperComponent>
+    <MainTileStyleComponent>{children}</MainTileStyleComponent>
+  </MainTileWrapperComponent>
 )

@@ -119,14 +119,15 @@ export const PriceMovementComponent: React.FC<{
   isAnalyticsView: boolean
   spread: string
   movementType: PriceMovementType
-}> = ({ isAnalyticsView, spread, movementType }) => {
+  isStale?: boolean
+}> = ({ isAnalyticsView, spread, movementType, isStale = false }) => {
   return (
     <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
       <MovementIconUP
         $show={movementType === PriceMovementType.UP}
         aria-hidden="true"
       />
-      <MovementValue>{spread}</MovementValue>
+      <MovementValue>{isStale ? "- -" : spread}</MovementValue>
       <MovementIconDown
         $show={movementType === PriceMovementType.DOWN}
         aria-hidden="true"

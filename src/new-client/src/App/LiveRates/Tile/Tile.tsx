@@ -2,10 +2,20 @@ import { memo } from "react"
 import { merge, pipe } from "rxjs"
 import { Direction } from "@/services/trades"
 import { PriceMovement, priceMovement$ } from "./PriceMovement"
-import { NotionalInput, notionalInput$ } from "./Notional"
+import {
+  NotionalInput,
+  notionalInput$,
+  NotionalInputComponent,
+} from "./Notional"
 import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"
 import { PriceButton, priceButton$ } from "./PriceButton"
-import { Header, header$ } from "./Header"
+import { Header, header$, HeaderComponent } from "./Header"
+import { PriceMovementComponent } from "@/App/LiveRates/Tile/PriceMovement/PriceMovement"
+import {
+  PriceButtonInnerComponent,
+  PriceButtonDisabledBanIcon,
+  PriceButtonAwaitingIcon,
+} from "@/App/LiveRates/Tile/PriceButton"
 import {
   Body,
   InputTimerStyle,
@@ -14,6 +24,7 @@ import {
   PriceControlsStyle,
   PriceControlWrapper,
   GraphNotionalWrapper,
+  MainComponent,
 } from "./Tile.styles"
 import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
 
@@ -25,12 +36,25 @@ import {
   QuoteStateStage,
   RfqButton,
   RfqTimer,
+  RfqTimerComponent,
+  RfqButtonComponent,
   useRfqState,
 } from "./Rfq"
-import { getIsSymbolDataStale$ } from "@/services/prices"
+import { getIsSymbolDataStale$, PriceMovementType } from "@/services/prices"
+import Pending from "@/App/LiveRates/Tile/ExecutionResponse/Pending"
 import { SUSPENSE } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 import { isMobileDevice } from "@/utils"
+
+import { HistoricalGraphComponent } from "@/App/LiveRates/Tile/HistoricalGraph/HistoricalGraph"
+import { getDataPoints, toSvgPath, withScales } from "@/utils/historicalChart"
+import { HistoryPrice } from "@/services/prices"
+import { curveBasis } from "d3"
+
+import {
+  MockProps,
+  generateHistoricPrices,
+} from "@/styleguide/components/SpotTilesMockData"
 
 export const tile$ = (symbol: string) =>
   merge(
@@ -131,5 +155,188 @@ const TileContext: React.FC<{
     )
   },
 )
+
+const history = generateHistoricPrices(30)
+const dataPoints = getDataPoints<HistoryPrice>((price, idx) => [
+  new Date(idx),
+  price.mid,
+])(history)
+const scales = withScales([0, 125], [0, 75])(dataPoints)
+const HistoryMockSvgPath = toSvgPath(curveBasis)(scales)
+
+export const TileComponent: React.FC<MockProps> = ({
+  spotTileData,
+  isAnalytics = false,
+  currencyPair,
+  supportsTearOut = false,
+  hover = false,
+  activeColorLeft = false,
+  activeColorRight = false,
+  disabledInput = false,
+  isStale = false,
+  isExecuting = false,
+  faded = false,
+  resetInput = false,
+  buttonText = "",
+  awaiting = false,
+  startTimer = 0,
+  rfqStateRight = { stage: QuoteStateStage.Requested },
+  rfqStateLeft = { stage: QuoteStateStage.Requested },
+  isExpired = false,
+}) => {
+  const InputTimerWrapper: React.FC<{
+    isAnalytics?: boolean
+    spotTile: any
+    currencyPair: any
+    disabledInput: boolean
+    resetInput: boolean
+    startTimer: number
+  }> = ({ isAnalytics, spotTile, currencyPair, resetInput, startTimer }) => {
+    return (
+      <InputTimerStyle isAnalyticsView={!!isAnalytics}>
+        <NotionalInputComponent
+          resetInput={resetInput}
+          spotTile={spotTile}
+          currencyPair={currencyPair}
+          disabled={disabledInput}
+          isAnalytics={isAnalytics}
+        />
+        {startTimer !== 0 ? (
+          <RfqTimerComponent
+            start={startTimer}
+            end={60}
+            isAnalyticsView={!!isAnalytics}
+          />
+        ) : null}
+      </InputTimerStyle>
+    )
+  }
+
+  const mockValues = {
+    bigFigure: "184.",
+    pip: "76",
+    tenth: "7",
+    symbol: "eurusd",
+    price: true,
+    persist: true,
+  }
+
+  // const rfqState = {
+  //   stage: QuoteStateStage.Requested,
+  // }
+  const noPriceMovement =
+    isStale ||
+    startTimer !== 0 ||
+    (!isAnalytics && buttonText !== "") ||
+    isExecuting
+  const movementType = isAnalytics
+    ? PriceMovementType.UP
+    : PriceMovementType.DOWN
+  return (
+    <PanelItem shouldMoveDate={false}>
+      <MainComponent>
+        <HeaderComponent
+          currencyPair={currencyPair}
+          supportsTearOut={supportsTearOut}
+        />
+        <Body isAnalyticsView={isAnalytics} showTimer={false}>
+          {isAnalytics ? (
+            <GraphNotionalWrapper>
+              <HistoricalGraphComponent
+                history={HistoryMockSvgPath}
+                showTimer={startTimer !== 0}
+                active={false}
+              />
+              <InputTimerWrapper
+                spotTile={spotTileData}
+                currencyPair={currencyPair}
+                disabledInput={disabledInput}
+                resetInput={resetInput}
+                startTimer={startTimer}
+                isAnalytics={isAnalytics}
+              />
+            </GraphNotionalWrapper>
+          ) : null}
+          <PriceControlWrapper>
+            <PriceControlsStyle isAnalyticsView={isAnalytics}>
+              <PriceMovementComponent
+                isAnalyticsView={isAnalytics}
+                movementType={
+                  noPriceMovement ? PriceMovementType.NONE : movementType
+                }
+                spread="0.8"
+                isStale={isStale}
+              />
+
+              {!isStale && !awaiting && (
+                <PriceButtonInnerComponent
+                  direction={Direction.Sell}
+                  disabled={false}
+                  isExpired={isExpired}
+                  /* TODO investigate why TS says that the property does not exist 
+                // @ts-ignore */
+                  rfqQuoteState={rfqStateLeft}
+                  disabledHover={true}
+                  activeColor={activeColorLeft}
+                  hover={hover}
+                  faded={faded}
+                  {...mockValues}
+                />
+              )}
+              {isStale && (
+                <PriceButtonDisabledBanIcon>
+                  Pricing unavailable
+                </PriceButtonDisabledBanIcon>
+              )}
+
+              {awaiting && <PriceButtonAwaitingIcon />}
+
+              {!isStale && !awaiting && (
+                <PriceButtonInnerComponent
+                  direction={Direction.Buy}
+                  disabled={false}
+                  isExpired={isExpired}
+                  /* TODO investigate why TS says that the property does not exist 
+                // @ts-ignore */
+                  rfqQuoteState={rfqStateRight}
+                  disabledHover={true}
+                  activeColor={activeColorRight}
+                  hover={hover}
+                  faded={faded}
+                  {...mockValues}
+                />
+              )}
+
+              {isStale && (
+                <PriceButtonDisabledBanIcon>
+                  Pricing unavailable
+                </PriceButtonDisabledBanIcon>
+              )}
+
+              {awaiting && <PriceButtonAwaitingIcon />}
+
+              {buttonText !== "" && (
+                <RfqButtonComponent
+                  isAnalytics={isAnalytics}
+                  buttonText={buttonText}
+                />
+              )}
+            </PriceControlsStyle>
+          </PriceControlWrapper>
+          {!isAnalytics ? (
+            <InputTimerWrapper
+              spotTile={spotTileData}
+              currencyPair={currencyPair}
+              disabledInput={disabledInput}
+              resetInput={resetInput}
+              startTimer={startTimer}
+            />
+          ) : null}
+        </Body>
+      </MainComponent>
+      {isExecuting && <Pending />}
+    </PanelItem>
+  )
+}
 
 export { TileContext as Tile }

@@ -16,10 +16,11 @@ export const DeliveryDate = styled.div`
   margin-left: auto;
   transition: margin-right 0.2s;
 `
-const HeaderWrapper = styled.div`
+const HeaderWrapper = styled.div<{ supportsTearOut?: boolean }>`
   display: flex;
   align-items: center;
   position: relative;
+  margin-right: ${({ supportsTearOut }) => (supportsTearOut ? "1.3rem" : "")};
 `
 const TileSymbol = styled.div`
   color: ${({ theme }) => theme.core.textColor};
@@ -38,6 +39,12 @@ export const HeaderAction = styled.button`
       fill: #5f94f5;
     }
   }
+`
+
+const PopOutIconContainer = styled.div`
+  position: absolute;
+  right: -25px;
+  top: -5px;
 `
 
 export const [useDate, header$] = bind((symbol: string) =>
@@ -72,6 +79,28 @@ export const Header: React.FC = () => {
         >
           {isTornOut ? <PopInIcon /> : <PopOutIcon />}
         </HeaderAction>
+      )}
+    </HeaderWrapper>
+  )
+}
+
+export const HeaderComponent: React.FC<{
+  supportsTearOut: boolean
+  currencyPair: any
+}> = ({ currencyPair, supportsTearOut }) => {
+  const dateVal = `SPT (${format(new Date("08/04"), "dd MMM").toUpperCase()})`
+  return (
+    <HeaderWrapper supportsTearOut={supportsTearOut}>
+      <TileSymbol data-qa="tile-header__tile-symbol">
+        {currencyPair.base}/{currencyPair.terms}
+      </TileSymbol>
+      <DeliveryDate data-qa="tile-header__delivery-date">
+        {dateVal}
+      </DeliveryDate>
+      {supportsTearOut && (
+        <PopOutIconContainer>
+          <PopOutIcon />
+        </PopOutIconContainer>
       )}
     </HeaderWrapper>
   )

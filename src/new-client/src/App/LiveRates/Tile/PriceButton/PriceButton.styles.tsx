@@ -41,6 +41,10 @@ export const TradeButton = styled.button<{
   direction: Direction
   priceAnnounced: boolean
   expired?: boolean
+  disabledHover?: boolean
+  activeColor?: boolean
+  hover?: boolean
+  faded?: boolean
 }>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
@@ -70,6 +74,33 @@ export const TradeButton = styled.button<{
     color: ${theme.white};
   }
   `};
+
+  ${({ theme, direction, disabledHover, activeColor }) =>
+    disabledHover
+      ? activeColor
+        ? `
+            background-color: ${theme.colors.spectrum.uniqueCollections[direction].base} !important;
+            color: ${theme.white};
+          `
+        : `
+          pointer-events: none;
+          cursor: initial;
+        `
+      : ""};
+
+  ${({ theme, hover }) =>
+    hover
+      ? `
+    background-color: ${theme.core.darkBackground} !important;
+    `
+      : ""};
+
+  ${({ theme, faded }) =>
+    faded
+      ? `
+    color: ${theme.primary[5]};
+    `
+      : ""};
 `
 const Box = styled.div`
   padding: 0;
@@ -154,4 +185,35 @@ export const ExpiredPersist = styled.div`
   font-size: 9px;
   text-transform: uppercase;
   height: 0;
+`
+
+export const PriceButtonDisabledPlaceholder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  border: 2px solid ${({ theme }) => theme.core.darkBackground};
+  border-radius: 3px;
+  font-size: 10px;
+  transition: background-color 0.2s ease;
+  height: 58px;
+  min-height: 2rem;
+  max-height: 3.7rem;
+  margin-bottom: 1px;
+  min-width: 100px;
+  line-height: normal;
+  opacity: 0.5;
+  text-align: center;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.primary[5]};
+  font-weight: 400;
+`
+
+export const Icon = styled.i`
+  font-size: 20px;
+  margin: 3px 0;
+`
+
+export const AdaptiveLoaderWrapper = styled.div`
+  margin: 0 3px;
 `

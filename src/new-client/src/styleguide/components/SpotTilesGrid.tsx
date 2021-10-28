@@ -1,8 +1,4 @@
-import {
-  currencyPair,
-  spotTileData,
-  spotTileDataWithRfq,
-} from "@/widgets/spotTile/components/test-resources/spotTileProps"
+import { spotTileDataWithRfq } from "@/widgets/spotTile/components/test-resources/spotTileProps"
 import { ServiceConnectionStatus } from "../serviceStatus"
 import { action } from "../ActionHelper"
 import styled from "styled-components"
@@ -23,6 +19,14 @@ import {
   PricedHoverAnalyticsTile,
 } from "./spotTilesMocks"
 import { H3 } from "../elements"
+import {
+  spotTileData,
+  currencyPair,
+  rfqStateReceived,
+} from "./SpotTilesMockData"
+
+import { TileComponent } from "@/App/LiveRates/Tile/Tile"
+import { PriceMovementType } from "@/services/prices"
 
 const executeTrade = () => action("executeTrade")
 const updateNotional = () => action("updateNotional")
@@ -61,7 +65,10 @@ const Separator = styled.hr`
     `2px solid ${theme.core.primaryStyleGuideBackground}`};
   margin: 4rem 0;
 `
-
+const genericProps = {
+  spotTileData: spotTileData,
+  currencyPair: currencyPair,
+}
 const SpotTilesGrid = () => (
   <>
     <H3>Trading Tiles - Horizontal</H3>
@@ -69,331 +76,200 @@ const SpotTilesGrid = () => (
       <FxSpot>FX Spot</FxSpot>
       <Cell>
         <span>Normal</span>
-        <BaseSpotTile
-          currencyPair={currencyPair}
-          spotTileData={spotTileData}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={false}
-          rfq={rfqActions}
-        />
+        <TileComponent {...genericProps} />
       </Cell>
       <Cell>
         <span>Hover</span>
-        <HoveredSpotTile
-          currencyPair={currencyPair}
-          spotTileData={spotTileData}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={false}
-          rfq={rfqActions}
-        />
+        <TileComponent {...genericProps} supportsTearOut={true} hover={true} />
       </Cell>
       <Cell>
         <span>Price Unavailable</span>
-        <PriceUnavailableSpotTile
-          currencyPair={currencyPair}
-          spotTileData={spotTileData}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={true}
-          inputDisabled={true}
-          rfq={rfqActions}
-        />
+        <TileComponent {...genericProps} disabledInput={true} isStale={true} />
       </Cell>
       <Cell>
         <span>Executing</span>
-        <ExecutingSpotTile
-          currencyPair={currencyPair}
-          spotTileData={{ ...spotTileData, isTradeExecutionInFlight: true }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={true}
-          inputDisabled={true}
-          rfq={rfqActions}
+        <TileComponent
+          {...genericProps}
+          disabledInput={true}
+          hover={true}
+          isExecuting={true}
+          faded={true}
         />
       </Cell>
       <Separator />
       <FxRfq>FX RFQ</FxRfq>
       <Cell>
         <span>Begin Price Request</span>
-        <ExecutingSpotTile
-          currencyPair={currencyPair}
-          spotTileData={{ ...spotTileDataWithRfq, rfqState: "canRequest" }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={false}
-          rfq={rfqActions}
+        <TileComponent
+          {...genericProps}
+          hover={true}
+          faded={true}
+          resetInput={true}
+          buttonText={"Initiate RFQ"}
         />
       </Cell>
       <Cell>
         <span>Awaiting Price</span>
-        <ExecutingSpotTile
-          currencyPair={currencyPair}
-          spotTileData={{ ...spotTileDataWithRfq, rfqState: "requested" }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={false}
-          rfq={rfqActions}
+        <TileComponent
+          {...genericProps}
+          hover={true}
+          awaiting={true}
+          disabledInput={true}
+          buttonText={"Cancel RFQ"}
         />
       </Cell>
       <Cell>
         <span>Price Announced</span>
-        <PriceAnnouncedSpotTile
-          currencyPair={currencyPair}
-          spotTileData={{
-            ...spotTileData,
-            rfqState: "received",
-            rfqTimeout: 60000,
-            rfqReceivedTime: Date.now(),
-          }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={true}
-          rfq={rfqActions}
+        <TileComponent
+          {...genericProps}
+          hover={false}
+          activeColorLeft={true}
+          activeColorRight={true}
+          disabledInput={true}
+          startTimer={60}
         />
       </Cell>
-
       <Cell>
         <span>Priced</span>
-        <PricedSpotTile
-          currencyPair={currencyPair}
-          spotTileData={{
-            ...spotTileData,
-            rfqState: "received",
-            rfqTimeout: 60000,
-            rfqReceivedTime: Date.now(),
-          }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={true}
-          rfq={rfqActions}
+        <TileComponent
+          {...genericProps}
+          hover={false}
+          disabledInput={true}
+          startTimer={49}
+          rfqStateLeft={rfqStateReceived}
+          rfqStateRight={rfqStateReceived}
         />
       </Cell>
-
       <Cell>
         <span>Priced Hover</span>
-        <PricedHoverSpotTile
-          currencyPair={currencyPair}
-          spotTileData={{
-            ...spotTileData,
-            rfqState: "received",
-            rfqTimeout: 60000,
-            rfqReceivedTime: Date.now(),
-          }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={true}
-          rfq={rfqActions}
+        <TileComponent
+          {...genericProps}
+          hover={false}
+          disabledInput={true}
+          startTimer={49}
+          activeColorLeft={true}
+          rfqStateRight={rfqStateReceived}
         />
       </Cell>
       <Cell>
         <span>Price Expired</span>
-        <ExecutingSpotTile
-          currencyPair={currencyPair}
-          spotTileData={{ ...spotTileDataWithRfq, rfqState: "expired" }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={false}
-          rfq={rfqActions}
+        <TileComponent
+          {...genericProps}
+          hover={true}
+          buttonText={"Requote"}
+          faded={true}
+          resetInput={true}
+          isExpired={true}
         />
       </Cell>
     </Grid>
     <Separator />
     <H3>Trading Tiles - Vertical</H3>
-
     <Grid>
       <FxSpot>FX Spot</FxSpot>
       <Cell>
         <span>Normal</span>
-        <BaseAnalyticsTile
-          currencyPair={currencyPair}
-          spotTileData={spotTileData}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={false}
-          rfq={rfqActions}
-        />
+        <TileComponent isAnalytics={true} {...genericProps} />
       </Cell>
       <Cell>
         <span>Hover</span>
-        <HoveredAnalyticsTile
-          currencyPair={currencyPair}
-          spotTileData={spotTileData}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={false}
-          rfq={rfqActions}
+        <TileComponent
+          isAnalytics={true}
+          {...genericProps}
+          supportsTearOut={true}
+          hover={true}
         />
       </Cell>
       <Cell>
         <span>Price Unavailable</span>
-        <PriceUnavailableAnalyticsTile
-          currencyPair={currencyPair}
-          spotTileData={spotTileData}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={true}
-          rfq={rfqActions}
+        <TileComponent
+          isAnalytics={true}
+          {...genericProps}
+          disabledInput={true}
+          isStale={true}
         />
       </Cell>
       <Cell>
         <span>Executing</span>
-        <ExecutingAnalyticsTile
-          currencyPair={currencyPair}
-          spotTileData={{
-            ...spotTileDataWithRfq,
-            isTradeExecutionInFlight: true,
-          }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={true}
-          inputDisabled={true}
-          rfq={rfqActions}
+        <TileComponent
+          isAnalytics={true}
+          {...genericProps}
+          disabledInput={true}
+          hover={true}
+          isExecuting={true}
+          faded={true}
         />
       </Cell>
       <Separator />
-
       <FxRfq>FX RFQ</FxRfq>
       <Cell>
         <span>Begin Price Request</span>
-        <ExecutingAnalyticsTile
-          currencyPair={currencyPair}
-          spotTileData={{ ...spotTileDataWithRfq, rfqState: "canRequest" }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={true}
-          inputDisabled={false}
-          rfq={rfqActions}
+        <TileComponent
+          isAnalytics={true}
+          {...genericProps}
+          hover={true}
+          faded={true}
+          resetInput={true}
+          buttonText={"Initiate RFQ"}
         />
       </Cell>
       <Cell>
         <span>Awaiting Price</span>
-        <ExecutingAnalyticsTile
-          currencyPair={currencyPair}
-          spotTileData={{ ...spotTileDataWithRfq, rfqState: "requested" }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={true}
-          inputDisabled={true}
-          rfq={rfqActions}
+        <TileComponent
+          isAnalytics={true}
+          {...genericProps}
+          hover={true}
+          awaiting={true}
+          disabledInput={true}
+          buttonText={"Cancel RFQ"}
         />
       </Cell>
       <Cell>
         <span>Price Announced</span>
-        <PriceAnnouncedAnalyticsTile
-          currencyPair={currencyPair}
-          spotTileData={{
-            ...spotTileData,
-            rfqState: "received",
-            rfqTimeout: 60000,
-            rfqReceivedTime: Date.now(),
-          }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={true}
-          rfq={rfqActions}
+        <TileComponent
+          isAnalytics={true}
+          {...genericProps}
+          hover={false}
+          activeColorLeft={true}
+          activeColorRight={true}
+          disabledInput={true}
+          startTimer={60}
         />
       </Cell>
       <Cell>
         <span>Priced</span>
-        <PricedAnalyticsTile
-          currencyPair={currencyPair}
-          spotTileData={{
-            ...spotTileData,
-            rfqState: "received",
-            rfqTimeout: 60000,
-            rfqReceivedTime: Date.now(),
-          }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={true}
-          rfq={rfqActions}
+        <TileComponent
+          isAnalytics={true}
+          {...genericProps}
+          hover={false}
+          disabledInput={true}
+          startTimer={49}
+          rfqStateLeft={rfqStateReceived}
+          rfqStateRight={rfqStateReceived}
         />
       </Cell>
       <Cell>
         <span>Priced Hover</span>
-        <PricedHoverAnalyticsTile
-          currencyPair={currencyPair}
-          spotTileData={{
-            ...spotTileData,
-            rfqState: "received",
-            rfqTimeout: 60000,
-            rfqReceivedTime: Date.now(),
-          }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={true}
-          rfq={rfqActions}
+        <TileComponent
+          isAnalytics={true}
+          {...genericProps}
+          hover={false}
+          disabledInput={true}
+          startTimer={49}
+          activeColorLeft={true}
+          rfqStateRight={rfqStateReceived}
         />
       </Cell>
       <Cell>
         <span>Price Expired</span>
-        <ExecutingAnalyticsTile
-          currencyPair={currencyPair}
-          spotTileData={{
-            ...spotTileData,
-            rfqState: "expired",
-          }}
-          executeTrade={executeTrade}
-          executionStatus={ServiceConnectionStatus.CONNECTED}
-          updateNotional={updateNotional}
-          resetNotional={resetNotional}
-          tradingDisabled={false}
-          inputDisabled={false}
-          rfq={rfqActions}
+        <TileComponent
+          isAnalytics={true}
+          {...genericProps}
+          hover={true}
+          buttonText={"Requote"}
+          faded={true}
+          resetInput={true}
+          isExpired={true}
         />
       </Cell>
     </Grid>

@@ -111,3 +111,39 @@ export const NotionalInput: React.FC = () => {
     </>
   )
 }
+
+export const NotionalInputComponent: React.FC<{
+  spotTile: any
+  currencyPair: any
+  disabled: boolean
+  resetInput: boolean
+  isAnalytics?: boolean
+}> = ({
+  spotTile,
+  currencyPair,
+  disabled,
+  resetInput,
+  isAnalytics = false,
+}) => {
+  return (
+    <>
+      <InputWrapper isAnalytics={isAnalytics}>
+        <CurrencyPairSymbol>{currencyPair.base}</CurrencyPairSymbol>
+        <Input
+          role={"input"}
+          type="text"
+          isAnalytics={isAnalytics && resetInput}
+          className={undefined}
+          disabled={disabled}
+          value={spotTile.notional}
+          onFocus={(event) => {
+            event.target.select()
+          }}
+        />
+        <ResetInputValue isVisible={resetInput}>
+          <FaRedo className="flipHorizontal" />
+        </ResetInputValue>
+      </InputWrapper>
+    </>
+  )
+}

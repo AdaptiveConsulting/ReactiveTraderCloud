@@ -21,6 +21,9 @@ import {
   QuotePriceLoading,
   ExpiredPrice,
   ExpiredPersist,
+  PriceButtonDisabledPlaceholder,
+  Icon,
+  AdaptiveLoaderWrapper,
 } from "./PriceButton.styles"
 import { of } from "rxjs"
 import { useIsNotionalValid } from "../Notional/Notional"
@@ -112,6 +115,10 @@ export const PriceButtonInnerComponent: React.FC<{
   tenth: any
   isExpired: any
   persist: boolean
+  disabledHover?: boolean
+  activeColor?: boolean
+  hover?: boolean
+  faded?: boolean
 }> = ({
   direction,
   rfqQuoteState,
@@ -123,6 +130,10 @@ export const PriceButtonInnerComponent: React.FC<{
   tenth,
   isExpired,
   persist,
+  disabledHover = false,
+  activeColor = false,
+  hover = false,
+  faded = false,
 }) => {
   return (
     <TradeButton
@@ -132,6 +143,10 @@ export const PriceButtonInnerComponent: React.FC<{
       }}
       priceAnnounced={rfqQuoteState.stage === QuoteStateStage.Received}
       disabled={disabled}
+      disabledHover={disabledHover}
+      activeColor={activeColor}
+      hover={hover}
+      faded={faded}
     >
       <Price disabled={disabled}>
         <CenteringContainer>
@@ -169,3 +184,19 @@ export const PriceButton: React.FC<{
     <PriceButtonInner direction={direction} rfqQuoteState={rfqState} />
   )
 }
+
+export const PriceButtonDisabledBanIcon: React.FC = ({ children }) => (
+  <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled">
+    <Icon className="fas fa-ban fa-flip-horizontal" />
+    {children}
+  </PriceButtonDisabledPlaceholder>
+)
+
+export const PriceButtonAwaitingIcon: React.FC = () => (
+  <PriceButtonDisabledPlaceholder data-qa="price-controls__price-button-disabled--loading">
+    <AdaptiveLoaderWrapper>
+      <AdaptiveLoader size={14} speed={0.8} separation={1.5} type="secondary" />
+    </AdaptiveLoaderWrapper>
+    Awaiting price
+  </PriceButtonDisabledPlaceholder>
+)

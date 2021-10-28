@@ -1,13 +1,13 @@
 import styled from "styled-components"
 
-export const Input = styled.input`
+export const Input = styled.input<{ isAnalytics?: boolean }>`
   grid-area: Input;
   background: none;
   text-align: center;
   outline: none;
   border: none;
   font-size: 0.75rem;
-  width: 80px;
+  width: ${({ isAnalytics }) => (isAnalytics ? "60px" : "80px")};
   padding: 2px 0;
   color: ${({ theme }) => theme.core.textColor};
   border-bottom: 1.5px solid ${({ theme }) => theme.primary[5]};
@@ -32,8 +32,8 @@ export const CurrencyPairSymbol = styled("span")`
   line-height: 1.2rem;
 `
 
-export const InputWrapper = styled.div`
-  padding-right: 1.3rem;
+export const InputWrapper = styled.div<{ isAnalytics?: boolean }>`
+  padding-right: ${({ isAnalytics }) => (!isAnalytics ? "1.3rem" : "unset")};
 `
 
 export const ErrorMessage = styled.div`
