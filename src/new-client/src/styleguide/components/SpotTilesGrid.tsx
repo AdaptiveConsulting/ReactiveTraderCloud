@@ -1,45 +1,11 @@
-import { spotTileDataWithRfq } from "@/widgets/spotTile/components/test-resources/spotTileProps"
-import { ServiceConnectionStatus } from "../serviceStatus"
-import { action } from "../ActionHelper"
 import styled from "styled-components"
-import {
-  BaseSpotTile,
-  HoveredSpotTile,
-  PriceUnavailableSpotTile,
-  ExecutingSpotTile,
-  PriceAnnouncedSpotTile,
-  PricedSpotTile,
-  PricedHoverSpotTile,
-  BaseAnalyticsTile,
-  HoveredAnalyticsTile,
-  PriceUnavailableAnalyticsTile,
-  ExecutingAnalyticsTile,
-  PriceAnnouncedAnalyticsTile,
-  PricedAnalyticsTile,
-  PricedHoverAnalyticsTile,
-} from "./spotTilesMocks"
 import { H3 } from "../elements"
 import {
   spotTileData,
   currencyPair,
   rfqStateReceived,
 } from "./SpotTilesMockData"
-
 import { TileComponent } from "@/App/LiveRates/Tile/Tile"
-import { PriceMovementType } from "@/services/prices"
-
-const executeTrade = () => action("executeTrade")
-const updateNotional = () => action("updateNotional")
-const resetNotional = () => action("resetNotional")
-
-const rfqActions = {
-  request: action("request"),
-  cancel: action("cancel"),
-  reject: action("reject"),
-  requote: action("requote"),
-  expired: action("expired"),
-  reset: action("reset"),
-}
 
 const Grid = styled.div`
   display: grid;
