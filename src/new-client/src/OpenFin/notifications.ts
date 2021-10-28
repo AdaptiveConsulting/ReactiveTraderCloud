@@ -20,6 +20,13 @@ const sendNotification = (executionTrade: ExecutionTrade) => {
   const status =
     notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
 
+  // TODO - Get from constants from the ongiong launcher work
+  const host =
+    import.meta.env.BASE_URL === "/"
+      ? "http://localhost:1917"
+      : import.meta.env.BASE_URL
+  const iconUrl = `${host}/static/media/reactive-trader-icon-dark.ico`
+  console.log(iconUrl)
   create({
     title: `Trade ${status}: ID ${notification.tradeId}`,
     body: `${notification.direction} ${
@@ -27,12 +34,12 @@ const sendNotification = (executionTrade: ExecutionTrade) => {
     } ${formatNumber(
       notification.notional,
     )} vs ${notification.currencyPair.substr(3)} @ ${notification.spotRate}`,
-    icon: `${location.protocol}//${location.host}/static/media/reactive-trader-icon-dark.ico`,
+    icon: iconUrl,
     customData: { tradeId: notification.tradeId },
     buttons: [
       {
         title: "Highlight trade in blotter",
-        iconUrl: `${location.protocol}//${location.host}/static/media/reactive-trader-icon-dark.ico`,
+        iconUrl: iconUrl,
         onClick: { task: "highlight-trade" },
       },
     ],
