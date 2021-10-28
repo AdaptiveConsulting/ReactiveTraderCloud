@@ -69,7 +69,6 @@ export const spotTileData = {
     symbol: "GBPJPY",
     valueDate: "2018-08-04T00:00:00Z",
   },
-  // historicPrices: generateHistoricPrices(20),
   rfqState: "none",
   rfqPrice: null,
   rfqReceivedTime: null,
@@ -88,3 +87,194 @@ export const currencyPair = {
 export const rfqStateReceived = {
   stage: QuoteStateStage.Received,
 }
+
+export const mockValues = {
+  bigFigure: "184.",
+  pip: "76",
+  tenth: "7",
+  symbol: "eurusd",
+  price: true,
+  persist: true,
+}
+
+export const FXSpotHoritzontalVariants = [
+  {
+    title: "Normal",
+    props: {},
+  },
+  {
+    title: "Hover",
+    props: {
+      supportsTearOut: true,
+      hover: true,
+    },
+  },
+  {
+    title: "Price Unavailable",
+    props: {
+      disabledInput: true,
+      isStale: true,
+    },
+  },
+  {
+    title: "Executing",
+    props: {
+      disabledInput: true,
+      hover: true,
+      isExecuting: true,
+      faded: true,
+    },
+  },
+]
+
+export const FXRFQHoritzontalVariants = [
+  {
+    title: "Begin Price Request",
+    props: {
+      hover: true,
+      faded: true,
+      resetInput: true,
+      buttonText: "Initiate RFQ",
+    },
+  },
+  {
+    title: "Awaiting Price",
+    props: {
+      hover: true,
+      awaiting: true,
+      disabledInput: true,
+      buttonText: "Cancel RFQ",
+    },
+  },
+  {
+    title: "Price Announced",
+    props: {
+      hover: false,
+      activeColorLeft: true,
+      activeColorRight: true,
+      disabledInput: true,
+      startTImer: 60,
+    },
+  },
+  {
+    title: "Priced",
+    props: {
+      disabledInput: true,
+      hover: false,
+      startTimer: 49,
+      rfqStateLeft: rfqStateReceived,
+      rfqStateRight: rfqStateReceived,
+    },
+  },
+  {
+    title: "Priced Hover",
+    props: {
+      disabledInput: true,
+      hover: false,
+      startTimer: 49,
+      activeColorLeft: true,
+      rfqStateRight: rfqStateReceived,
+    },
+  },
+  {
+    title: "Priced Expired",
+    props: {
+      hover: true,
+      faded: true,
+      buttonText: "Requote",
+      resetInput: true,
+      isExpired: true,
+    },
+  },
+]
+
+export const FXSpotVerticalVariants = [
+  {
+    title: "Normal",
+    props: {},
+  },
+  {
+    title: "Hover",
+    props: {
+      supportsTearOut: true,
+      hover: true,
+    },
+  },
+  {
+    title: "Price Unavailable",
+    props: {
+      disabledInput: true,
+      isStale: true,
+    },
+  },
+  {
+    title: "Executing",
+    props: {
+      disabledInput: true,
+      hover: true,
+      isExecuting: true,
+      faded: true,
+    },
+  },
+]
+
+export const FXRFQVerticalVariants = [
+  {
+    title: "Begin Price Request",
+    props: {
+      hover: true,
+      faded: true,
+      resetInput: true,
+      buttonText: "Initiate RFQ",
+    },
+  },
+  {
+    title: "Awaiting Price",
+    props: {
+      hover: true,
+      awaiting: true,
+      disabledInput: true,
+      buttonText: "Cancel RFQ",
+    },
+  },
+  {
+    title: "Price Announced",
+    props: {
+      hover: false,
+      activeColorLeft: true,
+      activeColorRight: true,
+      disabledInput: true,
+      startTImer: 60,
+    },
+  },
+  {
+    title: "Priced",
+    props: {
+      disabledInput: true,
+      hover: false,
+      startTimer: 49,
+      rfqStateLeft: rfqStateReceived,
+      rfqStateRight: rfqStateReceived,
+    },
+  },
+  {
+    title: "Priced Hover",
+    props: {
+      disabledInput: true,
+      hover: false,
+      startTimer: 49,
+      activeColorLeft: true,
+      rfqStateRight: rfqStateReceived,
+    },
+  },
+  {
+    title: "Priced Expired",
+    props: {
+      hover: true,
+      faded: true,
+      buttonText: "Requote",
+      resetInput: true,
+      isExpired: true,
+    },
+  },
+]

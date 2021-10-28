@@ -54,6 +54,7 @@ import { curveBasis } from "d3"
 import {
   MockProps,
   generateHistoricPrices,
+  mockValues,
 } from "@/styleguide/components/SpotTilesMockData"
 
 export const tile$ = (symbol: string) =>
@@ -164,7 +165,7 @@ const dataPoints = getDataPoints<HistoryPrice>((price, idx) => [
 const scales = withScales([0, 125], [0, 75])(dataPoints)
 const HistoryMockSvgPath = toSvgPath(curveBasis)(scales)
 
-export const TileComponent: React.FC<MockProps> = ({
+export const TileMockComponent: React.FC<MockProps> = ({
   spotTileData,
   isAnalytics = false,
   currencyPair,
@@ -212,18 +213,6 @@ export const TileComponent: React.FC<MockProps> = ({
     )
   }
 
-  const mockValues = {
-    bigFigure: "184.",
-    pip: "76",
-    tenth: "7",
-    symbol: "eurusd",
-    price: true,
-    persist: true,
-  }
-
-  // const rfqState = {
-  //   stage: QuoteStateStage.Requested,
-  // }
   const noPriceMovement =
     isStale ||
     startTimer !== 0 ||
@@ -232,6 +221,13 @@ export const TileComponent: React.FC<MockProps> = ({
   const movementType = isAnalytics
     ? PriceMovementType.UP
     : PriceMovementType.DOWN
+  const buttonProps = {
+    disabled: false,
+    isExpired: isExpired,
+    disabledHover: true,
+    hover: hover,
+    faded: faded,
+  }
   return (
     <PanelItem shouldMoveDate={false}>
       <MainComponent>
@@ -271,21 +267,16 @@ export const TileComponent: React.FC<MockProps> = ({
               {!isStale && !awaiting && (
                 <PriceButtonInnerComponent
                   direction={Direction.Sell}
-                  disabled={false}
-                  isExpired={isExpired}
-                  /* TODO investigate why TS says that the property does not exist 
-                // @ts-ignore */
                   rfqQuoteState={rfqStateLeft}
-                  disabledHover={true}
                   activeColor={activeColorLeft}
-                  hover={hover}
-                  faded={faded}
+                  {...buttonProps}
                   {...mockValues}
                 />
               )}
+
               {isStale && (
                 <PriceButtonDisabledBanIcon>
-                  Pricing unavailable
+                  Pricing unavailable{" "}
                 </PriceButtonDisabledBanIcon>
               )}
 
@@ -294,15 +285,9 @@ export const TileComponent: React.FC<MockProps> = ({
               {!isStale && !awaiting && (
                 <PriceButtonInnerComponent
                   direction={Direction.Buy}
-                  disabled={false}
-                  isExpired={isExpired}
-                  /* TODO investigate why TS says that the property does not exist 
-                // @ts-ignore */
                   rfqQuoteState={rfqStateRight}
-                  disabledHover={true}
                   activeColor={activeColorRight}
-                  hover={hover}
-                  faded={faded}
+                  {...buttonProps}
                   {...mockValues}
                 />
               )}
