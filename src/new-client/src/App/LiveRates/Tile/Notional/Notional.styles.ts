@@ -32,9 +32,7 @@ export const CurrencyPairSymbol = styled("span")`
   line-height: 1.2rem;
 `
 
-export const InputWrapper = styled.div`
-  padding-right: 1.3rem;
-`
+export const InputWrapper = styled.div``
 
 export const ErrorMessage = styled.div`
   margin-left: 24px;
