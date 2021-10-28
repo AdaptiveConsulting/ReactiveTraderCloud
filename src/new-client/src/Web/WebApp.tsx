@@ -1,8 +1,8 @@
 import { TileView } from "@/App/LiveRates/selectedView"
 import { BASE_PATH } from "@/constants"
+import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { MainRoute } from "./MainRoute"
-import { TornOutTile } from "./Tiles"
 import { TearOutRouteWrapper } from "./Web.styles"
 
 export const WebApp: React.FC = () => (

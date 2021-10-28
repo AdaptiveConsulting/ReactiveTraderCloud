@@ -35,6 +35,15 @@ export const InputTimerStyle = styled.div<{ isAnalyticsView: boolean }>`
   flex-direction: column;
   align-items: ${({ isAnalyticsView }) =>
     isAnalyticsView ? "flex-start" : "center"};
+
+  ${({ isAnalyticsView }) =>
+    !isAnalyticsView
+      ? `
+    > div:first-child {
+      padding-right: 1.3rem;
+    }
+  `
+      : ""}
 `
 
 export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`

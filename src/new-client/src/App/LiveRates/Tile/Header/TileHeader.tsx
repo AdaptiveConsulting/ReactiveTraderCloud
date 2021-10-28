@@ -7,6 +7,7 @@ import { useTileContext } from "../Tile.context"
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import { tearOut } from "../TearOut/state"
 import { PopInIcon } from "@/components/icons/PopInIcon"
+import { useRef } from "react"
 
 export const DeliveryDate = styled.div`
   color: ${({ theme }) => theme.core.textColor};
@@ -50,6 +51,7 @@ export const [useDate, header$] = bind((symbol: string) =>
 )
 
 export const Header: React.FC = () => {
+  const ref = useRef<HTMLDivElement>(null)
   const {
     currencyPair: { base, terms, symbol },
     isTornOut,
@@ -59,7 +61,7 @@ export const Header: React.FC = () => {
   const canTearOut = supportsTearOut
 
   return (
-    <HeaderWrapper>
+    <HeaderWrapper ref={ref}>
       <TileSymbol data-qa="tile-header__tile-symbol">
         {base}/{terms}
       </TileSymbol>
@@ -67,7 +69,7 @@ export const Header: React.FC = () => {
       {canTearOut && (
         <HeaderAction
           onClick={() => {
-            tearOut(symbol, !isTornOut)
+            tearOut(symbol, !isTornOut, ref.current!)
           }}
         >
           {isTornOut ? <PopInIcon /> : <PopOutIcon />}
