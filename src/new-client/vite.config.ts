@@ -61,6 +61,7 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
 
       return {
         id: candidate,
+        moduleSideEffects: "no-treeshake",
       }
     },
   }
