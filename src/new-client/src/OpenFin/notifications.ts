@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import {
   create,
   addEventListener,
@@ -26,12 +27,12 @@ const sendNotification = (executionTrade: ExecutionTrade) => {
     } ${formatNumber(
       notification.notional,
     )} vs ${notification.currencyPair.substr(3)} @ ${notification.spotRate}`,
-    icon: "./static/media/reactive-trader-icon-dark.ico",
+    icon: `${location.protocol}//${location.host}/static/media/reactive-trader-icon-dark.ico`,
     customData: { tradeId: notification.tradeId },
     buttons: [
       {
         title: "Highlight trade in blotter",
-        iconUrl: "./static/media/reactive-trader-icon-dark.ico",
+        iconUrl: `${location.protocol}//${location.host}/static/media/reactive-trader-icon-dark.ico`,
         onClick: { task: "highlight-trade" },
       },
     ],
