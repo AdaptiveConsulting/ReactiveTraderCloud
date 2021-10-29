@@ -47,37 +47,38 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
         // Only continue if we can find a .<target>.ts file
         if (!files.includes(`${file.name}.${target}.ts`)) return null
 
-        // Set the id of this file to the one importing it marked with our suffix
-        // so we can load it in the load hook below
         const mockPath = `${file.dir}/${file.name}.${target}.ts`
         return this.resolve(mockPath, importer)
       } else {
+        const rootPrefix = "new-client/src/"
         const thisImporter = (importer || "").replace(/\\/g, "/")
-        if (!importer || !thisImporter.includes("/new-client/src/")) {
+        if (!importer || !thisImporter.includes(rootPrefix)) {
           return null
         }
 
         const importedFile = path.parse(source)
         const importerFile = path.parse(thisImporter)
         const candidate = path.join(
+          // If imported file starts with /src we can not append it to importer dir
+          // so we need to strip the path by the rootPrefix first
           importedFile.dir.startsWith("/src") &&
-            importerFile.dir.includes("new-client/src/")
-            ? `${importerFile.dir.split("new-client/src/")[0]}/new-client`
+            importerFile.dir.includes(rootPrefix)
+            ? `${importerFile.dir.split(rootPrefix)[0]}/new-client`
             : importerFile.dir,
           importedFile.dir,
           `${importedFile.name}.${target.toLowerCase()}.ts`,
         )
 
-        if (source.includes("openWindow") || source.includes("handleTear")) {
-          console.log(source)
-          console.log("importedFile", importedFile)
-          console.log("importerFile", importerFile)
-          console.log("candidate", candidate)
-        }
+        // if (source.includes("openWindow") || source.includes("handleTear")) {
+        //   console.log(source)
+        //   console.log("importedFile", importedFile)
+        //   console.log("importerFile", importerFile)
+        //   console.log("candidate", candidate)
+        // }
 
         try {
           statSync(candidate)
-          console.log("candidate good", candidate)
+          // console.log("candidate good", candidate)
           return candidate
         } catch (e) {
           // console.log("Error with candidate", candidate, e)
@@ -108,7 +109,7 @@ function indexSwitchPlugin(target: string): Plugin {
 
       try {
         statSync(candidate)
-        console.log("main candidate good", candidate)
+        // console.log("main candidate good", candidate)
         return candidate
       } catch (e) {
         // console.log("Error with main candidate", candidate, e)
