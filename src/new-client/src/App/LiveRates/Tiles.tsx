@@ -57,6 +57,7 @@ export const Tiles = () => {
     if (tearOutEntry) {
       const [symbol, tornOut, tileRef] = tearOutEntry
       if (tornOut) {
+        console.log("Should handleTearOut", handleTearOut)
         handleTearOut(symbol, tileRef!)
       }
     }
