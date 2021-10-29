@@ -48,24 +48,24 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
 
       // Set the id of this file to the one importing it marked with our suffix
       // so we can load it in the load hook below
-      const mockPath = `${file.dir}/${file.name}.${target}.ts`
-      return this.resolve(mockPath, importer, {
-        ...options,
-      })
+      // const mockPath = `${file.dir}/${file.name}.${target}.ts`
+      // return this.resolve(mockPath, importer, {
+      //   ...options,
+      // })
 
-      // const importerFile = path.parse(importer)
+      const importerFile = path.parse(importer)
 
-      // const candidate = path.join(
-      //   importerFile.dir,
-      //   file.dir,
-      //   `${file.name}.${target.toLowerCase()}.ts`,
-      // )
+      const candidate = path.join(
+        importerFile.dir,
+        file.dir,
+        `${file.name}.${target.toLowerCase()}.ts`,
+      )
 
-      // return {
-      //   id: candidate,
-      //   external: false,
-      //   moduleSideEffects: "no-treeshake",
-      // }
+      return {
+        id: candidate,
+        external: false,
+        moduleSideEffects: "no-treeshake",
+      }
     },
   }
 }
