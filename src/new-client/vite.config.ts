@@ -38,33 +38,51 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
     name: "targetBuildPlugin",
     enforce: "pre",
     resolveId: function (source, importer, options) {
-      if (!source.endsWith(".ts")) return null
+      if (dev) {
+        if (!source.endsWith(".ts")) return null
 
-      const file = path.parse(source)
-      const files = readdirSync("." + file.dir)
+        const file = path.parse(source)
+        const files = readdirSync("." + file.dir)
 
-      // Only continue if we can find a .<target>.ts file
-      if (!files.includes(`${file.name}.${target}.ts`)) return null
+        // Only continue if we can find a .<target>.ts file
+        if (!files.includes(`${file.name}.${target}.ts`)) return null
 
-      // Set the id of this file to the one importing it marked with our suffix
-      // so we can load it in the load hook below
-      // const mockPath = `${file.dir}/${file.name}.${target}.ts`
-      // return this.resolve(mockPath, importer, {
-      //   ...options,
-      // })
+        // Set the id of this file to the one importing it marked with our suffix
+        // so we can load it in the load hook below
+        const mockPath = `${file.dir}/${file.name}.${target}.ts`
+        return this.resolve(mockPath, importer)
+      } else {
+        const thisImporter = (importer || "").replace(/\\/g, "/")
+        if (!importer || !thisImporter.includes("/new-client/src/")) {
+          return null
+        }
 
-      const importerFile = path.parse(importer)
+        const importedFile = path.parse(source)
+        const importerFile = path.parse(thisImporter)
+        const candidate = path.join(
+          importedFile.dir.startsWith("/src") &&
+            importerFile.dir.includes("new-client/src/")
+            ? `${importerFile.dir.split("new-client/src/")[0]}/new-client`
+            : importerFile.dir,
+          importedFile.dir,
+          `${importedFile.name}.${target.toLowerCase()}.ts`,
+        )
 
-      const candidate = path.join(
-        importerFile.dir,
-        file.dir,
-        `${file.name}.${target.toLowerCase()}.ts`,
-      )
+        if (source.includes("openWindow") || source.includes("handleTear")) {
+          console.log(source)
+          console.log("importedFile", importedFile)
+          console.log("importerFile", importerFile)
+          console.log("candidate", candidate)
+        }
 
-      return {
-        id: candidate,
-        external: false,
-        moduleSideEffects: "no-treeshake",
+        try {
+          statSync(candidate)
+          console.log("candidate good", candidate)
+          return candidate
+        } catch (e) {
+          // console.log("Error with candidate", candidate, e)
+          return null
+        }
       }
     },
   }
@@ -90,8 +108,10 @@ function indexSwitchPlugin(target: string): Plugin {
 
       try {
         statSync(candidate)
+        console.log("main candidate good", candidate)
         return candidate
       } catch (e) {
+        // console.log("Error with main candidate", candidate, e)
         return null
       }
     },
