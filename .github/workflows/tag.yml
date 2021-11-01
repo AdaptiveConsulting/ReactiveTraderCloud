@@ -15,6 +15,7 @@ env:
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
   BUCKET_LAUNCHER: reactive-trader-launcher-builds
   VITE_HYDRA_URL: wss://trading-web-gateway-rt-prod.demo.hydra.weareadaptive.com
+  ENVIRONMENT: prod
 
 jobs:
   build:
@@ -54,7 +55,6 @@ jobs:
         env:
           DOMAIN: https://web.prod.reactivetrader.com
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
-          ENVIRONMENT: prod
         run: npm run build
 
       - name: Deploy (web)
@@ -68,7 +68,6 @@ jobs:
         env:
           DOMAIN: https://openfin.prod.reactivetrader.com
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
-          ENVIRONMENT: prod
         run: npm run openfin:build
 
       - name: Deploy (OpenFin)
@@ -82,7 +81,6 @@ jobs:
         env:
           DOMAIN: https://finsemble.prod.reactivetrader.com
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
-          ENVIRONMENT: prod
         run: npm run finsemble:build
 
       - name: Deploy (Finsemble)
@@ -96,7 +94,6 @@ jobs:
         env:
           DOMAIN: https://launcher.prod.reactivetrader.com
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
-          ENVIRONMENT: prod
         run: npm run launcher:build
 
       - name: Deploy (Launcher)
