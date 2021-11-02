@@ -60,7 +60,11 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
       } else {
         const rootPrefix = "new-client/src/"
         const thisImporter = (importer || "").replace(/\\/g, "/")
-        if (!importer || !thisImporter.includes(rootPrefix)) {
+        if (
+          !importer ||
+          !thisImporter.includes(rootPrefix) ||
+          source === "./main"
+        ) {
           return null
         }
 
@@ -79,7 +83,7 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
 
         try {
           statSync(candidate)
-          // console.log("candidate good", candidate)
+          console.log("candidate good", candidate)
           return candidate
         } catch (e) {
           // console.log("Error with candidate", candidate, e)
