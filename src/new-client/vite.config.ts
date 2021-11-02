@@ -33,6 +33,9 @@ function apiMockReplacerPlugin(): Plugin {
   }
 }
 
+// Replace files with .<target> if they exist
+// Note - resolveId source and importer args are different between dev and build
+// Some more investigation and work should be done to improve this when possible
 function targetBuildPlugin(dev: boolean, target: string): Plugin {
   return {
     name: "targetBuildPlugin",
@@ -69,13 +72,6 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
           `${importedFile.name}.${target.toLowerCase()}.ts`,
         )
 
-        // if (source.includes("openWindow") || source.includes("handleTear")) {
-        //   console.log(source)
-        //   console.log("importedFile", importedFile)
-        //   console.log("importerFile", importerFile)
-        //   console.log("candidate", candidate)
-        // }
-
         try {
           statSync(candidate)
           // console.log("candidate good", candidate)
@@ -109,10 +105,8 @@ function indexSwitchPlugin(target: string): Plugin {
 
       try {
         statSync(candidate)
-        // console.log("main candidate good", candidate)
         return candidate
       } catch (e) {
-        // console.log("Error with main candidate", candidate, e)
         return null
       }
     },
