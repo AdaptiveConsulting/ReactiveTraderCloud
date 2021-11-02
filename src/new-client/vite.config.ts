@@ -1,5 +1,5 @@
 import path, { resolve } from "path"
-import { readdirSync, statSync } from "fs"
+import { fstat, readdirSync, statSync } from "fs"
 import { defineConfig, loadEnv } from "vite"
 import reactRefresh from "@vitejs/plugin-react-refresh"
 import copy from "rollup-plugin-copy"
@@ -37,25 +37,55 @@ function apiMockReplacerPlugin(): Plugin {
   }
 }
 
-function targetBuildPlugin(preTarget: string): Plugin {
+// Replace files with .<target> if they exist
+// Note - resolveId source and importer args are different between dev and build
+// Some more investigation and work should be done to improve this when possible
+function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
+  const target = preTarget === "launcher" ? "openfin" : preTarget
   return {
     name: "targetBuildPlugin",
     enforce: "pre",
-    resolveId: function (source, importer) {
-      if (!source.endsWith(".ts")) return null
+    resolveId: function (source, importer, options) {
+      if (dev) {
+        if (!source.endsWith(".ts")) return null
 
-      const target = preTarget === "launcher" ? "openfin" : preTarget
+        const file = path.parse(source)
+        const files = readdirSync("." + file.dir)
 
-      const file = path.parse(source)
-      const files = readdirSync("." + file.dir)
+        // Only continue if we can find a .<target>.ts file
+        if (!files.includes(`${file.name}.${target}.ts`)) return null
 
-      // Only continue if we can find a .openfin.ts file available.
-      if (!files.includes(`${file.name}.${target}.ts`)) return null
+        const mockPath = `${file.dir}/${file.name}.${target}.ts`
+        return this.resolve(mockPath, importer)
+      } else {
+        const rootPrefix = "new-client/src/"
+        const thisImporter = (importer || "").replace(/\\/g, "/")
+        if (!importer || !thisImporter.includes(rootPrefix)) {
+          return null
+        }
 
-      // Set the id of this file to the one importing it marked with our suffix
-      // so we can load it in the load hook below
-      const mockPath = `${file.dir}/${file.name}.${target}.ts`
-      return this.resolve(mockPath, importer)
+        const importedFile = path.parse(source)
+        const importerFile = path.parse(thisImporter)
+        const candidate = path.join(
+          // If imported file starts with /src we can not append it to importer dir
+          // so we need to strip the path by the rootPrefix first
+          importedFile.dir.startsWith("/src") &&
+            importerFile.dir.includes(rootPrefix)
+            ? `${importerFile.dir.split(rootPrefix)[0]}/new-client`
+            : importerFile.dir,
+          importedFile.dir,
+          `${importedFile.name}.${target.toLowerCase()}.ts`,
+        )
+
+        try {
+          statSync(candidate)
+          // console.log("candidate good", candidate)
+          return candidate
+        } catch (e) {
+          // console.log("Error with candidate", candidate, e)
+          return null
+        }
+      }
     },
   }
 }
@@ -223,7 +253,7 @@ const setConfig = ({ mode }) => {
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
-  plugins.unshift(targetBuildPlugin(TARGET))
+  plugins.unshift(targetBuildPlugin(isDev, TARGET))
   plugins.push(copyWebManifestPlugin(mode === "development"))
   plugins.push(htmlPlugin(isDev))
   console.log(process.env.VITE_HYDRA_URL)
