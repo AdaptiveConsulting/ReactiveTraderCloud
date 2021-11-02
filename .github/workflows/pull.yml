@@ -14,9 +14,9 @@ env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
+  BUCKET_LAUNCHER: reactive-trader-launcher-builds
   VITE_HYDRA_URL: wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com
-  ENVIRONMENT: env
-
+  
 jobs:
   build:
     name: Build & deploy
@@ -51,8 +51,10 @@ jobs:
 
       - name: Build (web)
         env:
-          BASE_URL: /pull/${{ github.event.number }}
+          DOMAIN: https://web.env.reactivetrader.com
+          URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: env
         run: npm run build
 
       - name: Deploy (web)
@@ -64,9 +66,10 @@ jobs:
 
       - name: Build (OpenFin)
         env:
-          BASE_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
+          DOMAIN: https://openfin.env.reactivetrader.com
+          URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
-          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
+          ENVIRONMENT: env
         run: npm run openfin:build
 
       - name: Deploy (OpenFin)
@@ -78,8 +81,10 @@ jobs:
 
       - name: Build (Finsemble)
         env:
-          BASE_URL: /pull/${{ github.event.number }}
+          DOMAIN: https://finsemble.env.reactivetrader.com
+          URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: env
         run: npm run finsemble:build
 
       - name: Deploy (Finsemble)
@@ -88,6 +93,21 @@ jobs:
             -h "Cache-Control: no-cache" \
             rsync -d -r dist \
             gs://$BUCKET_FINSEMBLE/pull/${{ github.event.number }}
+
+      - name: Build (Launcher)
+        env:
+          DOMAIN: https://launcher.env.reactivetrader.com
+          URL_PATH: /pull/${{ github.event.number }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: env
+        run: npm run launcher:build
+
+      - name: Deploy (Launcher)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_LAUNCHER/pull/${{ github.event.number }}
 
       - name: Find comment
         uses: peter-evans/find-comment@v1
@@ -114,6 +134,7 @@ jobs:
             | Web       | https://web.env.reactivetrader.com/pull/${{ github.event.number }}                      |
             | OpenFin   | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/app.json   |
             | Finsemble | https://finsemble.env.reactivetrader.com/pull/${{ github.event.number }}                |
+            | Launcher  | fins://launcher.env.reactivetrader.com/pull/${{ github.event.number }}/config/launcher.json   |
 
             ### Performance
 

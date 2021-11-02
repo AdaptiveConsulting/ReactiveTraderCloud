@@ -7,12 +7,12 @@ import { WindowFrame } from "./Window/WindowFrame"
 import { DocTitle } from "@/components/DocTitle"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
 import { TileView } from "@/App/LiveRates/selectedView"
-import { BASE_URL } from "@/constants"
+import { BASE_PATH } from "@/constants"
 import { LiveRates } from "@/App/LiveRates"
 import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 
 export const OpenFinApp: React.FC = () => (
-  <BrowserRouter basename={BASE_URL}>
+  <BrowserRouter basename={BASE_PATH}>
     <Switch>
       <Route
         path="/analytics"

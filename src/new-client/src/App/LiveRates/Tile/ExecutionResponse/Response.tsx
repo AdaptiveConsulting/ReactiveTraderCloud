@@ -59,11 +59,15 @@ const getExecutionMessage = (
   terms: string,
 ) => {
   if (tileState.status === TileStates.TooLong) {
-    return "Trade execution taking longer than expected."
+    return "Trade execution taking longer than expected"
   }
 
   if (tileState.status === TileStates.Timeout) {
-    return "Trade execution timeout exceeded."
+    return "Trade execution timeout exceeded"
+  }
+
+  if (tileState.status === TileStates.CreditExceeded) {
+    return "Credit limit exceeded"
   }
 
   if (tileState.status !== TileStates.Finished) return null

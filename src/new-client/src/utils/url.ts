@@ -1,9 +1,11 @@
 import { BASE_URL } from "@/constants"
 
-// Construct a url with path appended to application's base url
-export const constructUrl = (path: string): string => {
-  const base = BASE_URL.endsWith("/")
-    ? BASE_URL.slice(0, BASE_URL.length - 1)
-    : BASE_URL
+export const constructUrl = (path: string, base = BASE_URL): string => {
+  if (base === "/") {
+    return path
+  }
+  if (base.endsWith("/") && path.startsWith("/")) {
+    return `${base}${path.slice(1)}`
+  }
   return `${base}${path}`
 }

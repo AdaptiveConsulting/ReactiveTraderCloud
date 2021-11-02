@@ -8,8 +8,12 @@ import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 
+const PORT = Number(process.env.PORT) || 1917
+
 function getBaseUrl(dev: boolean) {
-  return dev ? "http://localhost:1917" : process.env.BASE_URL || ""
+  return dev
+    ? `http://localhost:${PORT}`
+    : `${process.env.DOMAIN}${process.env.URL_PATH || ""}` || ""
 }
 
 function apiMockReplacerPlugin(): Plugin {
@@ -36,7 +40,8 @@ function apiMockReplacerPlugin(): Plugin {
 // Replace files with .<target> if they exist
 // Note - resolveId source and importer args are different between dev and build
 // Some more investigation and work should be done to improve this when possible
-function targetBuildPlugin(dev: boolean, target: string): Plugin {
+function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
+  const target = preTarget === "launcher" ? "openfin" : preTarget
   return {
     name: "targetBuildPlugin",
     enforce: "pre",
@@ -55,7 +60,11 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
       } else {
         const rootPrefix = "new-client/src/"
         const thisImporter = (importer || "").replace(/\\/g, "/")
-        if (!importer || !thisImporter.includes(rootPrefix)) {
+        if (
+          !importer ||
+          !thisImporter.includes(rootPrefix) ||
+          source === "./main"
+        ) {
           return null
         }
 
@@ -74,7 +83,7 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
 
         try {
           statSync(candidate)
-          // console.log("candidate good", candidate)
+          console.log("candidate good", candidate)
           return candidate
         } catch (e) {
           // console.log("Error with candidate", candidate, e)
@@ -119,7 +128,7 @@ const customPreloadPlugin = () => {
   const result: any = {
     ...((modulepreload as any)({
       index: resolve(__dirname, "dist", "index.html"),
-      prefix: process.env.BASE_URL || "",
+      prefix: getBaseUrl(false) || "",
     }) as any),
     enforce: "post",
   }
@@ -138,13 +147,15 @@ const typescriptPlugin = {
   enforce: "pre",
 }
 
-const copyOpenfinPlugin = (dev: boolean) => {
+const copyOpenfinPlugin = (dev: boolean, target: "openfin" | "launcher") => {
   const env = process.env.ENVIRONMENT || "local"
   return {
     ...copy({
       targets: [
         {
-          src: "./public-openfin/*",
+          src: `./public-openfin/${
+            target === "launcher" ? "launcher.json" : "app.json"
+          }`,
           dest: "./dist/config",
           transform: (contents) =>
             contents
@@ -237,8 +248,8 @@ const setConfig = ({ mode }) => {
     plugins.push(injectWebServiceWorkerPlugin(mode))
   }
 
-  if (TARGET === "openfin") {
-    plugins.push(copyOpenfinPlugin(isDev))
+  if (TARGET === "openfin" || TARGET === "launcher") {
+    plugins.push(copyOpenfinPlugin(isDev, TARGET))
   }
 
   if (process.env.VITE_MOCKS) {
@@ -249,9 +260,9 @@ const setConfig = ({ mode }) => {
   plugins.unshift(targetBuildPlugin(isDev, TARGET))
   plugins.push(copyWebManifestPlugin(mode === "development"))
   plugins.push(htmlPlugin(isDev))
-
+  console.log(process.env.VITE_HYDRA_URL)
   return defineConfig({
-    base: process.env.BASE_URL || "/",
+    base: isDev ? "/" : getBaseUrl(false),
     define: {
       __TARGET__: JSON.stringify(TARGET),
     },
@@ -262,7 +273,7 @@ const setConfig = ({ mode }) => {
       sourcemap: true,
     },
     server: {
-      port: 1917,
+      port: PORT,
       proxy: !process.env.VITE_MOCKS && {
         "/ws": {
           // To test local execution of nginx gateway in Docker,
