@@ -1,9 +1,8 @@
-/* eslint-disable no-undef */
+// TODO - Revisit if/when launcher is cross platform
 import {
   ApplicationConfig,
   ApplicationProvider,
 } from "./applicationConfigurations"
-// import { createExcelApp } from 'rt-platforms'
 import {
   createOpenFinWindow,
   bringToFrontOpenFinApplication,
@@ -84,9 +83,6 @@ export async function open(
         return openWindow(provider, name, url)
       case "download":
         return launchLimitChecker(config)
-      // case "excel":
-      //   const excelApp = await createExcelApp(provider.platformName)
-      //   return excelApp.open()
       case "application":
         return openApplication(config)
       case "manifest":

@@ -83,7 +83,9 @@ export async function openWindow(
               componentName: "view",
               componentState: {
                 name: `${windowName}_view`,
-                url: `${window.location.origin}${url}`,
+                url: `${
+                  url.includes("http") ? "" : window.location.origin
+                }${url}`,
               },
             },
           ],

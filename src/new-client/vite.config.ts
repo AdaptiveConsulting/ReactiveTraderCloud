@@ -37,12 +37,14 @@ function apiMockReplacerPlugin(): Plugin {
   }
 }
 
-function targetBuildPlugin(target: string): Plugin {
+function targetBuildPlugin(preTarget: string): Plugin {
   return {
     name: "targetBuildPlugin",
     enforce: "pre",
     resolveId: function (source, importer) {
       if (!source.endsWith(".ts")) return null
+
+      const target = preTarget === "launcher" ? "openfin" : preTarget
 
       const file = path.parse(source)
       const files = readdirSync("." + file.dir)

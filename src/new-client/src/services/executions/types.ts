@@ -45,6 +45,7 @@ export enum ExecutionStatus {
   Done = "Done",
   Rejected = "Rejected",
   Timeout = "Timeout",
+  CreditExceeded = "CreditExceeded",
 }
 
 export interface ExecutionTrade extends ExecutionRequest {
@@ -56,4 +57,8 @@ export interface ExecutionTrade extends ExecutionRequest {
 
 export interface TimeoutExecution extends ExecutionRequest {
   status: ExecutionStatus.Timeout
+}
+
+export interface CreditExceededExecution extends ExecutionRequest {
+  status: ExecutionStatus.CreditExceeded
 }

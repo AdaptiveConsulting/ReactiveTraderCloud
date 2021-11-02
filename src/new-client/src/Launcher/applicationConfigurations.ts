@@ -115,17 +115,6 @@ const baseAppConfigs: ApplicationConfig[] = [
       },
     },
   },
-  // {
-  //   name: "Excel",
-  //   displayName: "EX",
-  //   tooltipName: "Launch Excel",
-  //   icon: excelIcon,
-  //   iconFillColor: "#CFCFCF",
-  //   provider: {
-  //     platformName: "openfin",
-  //     applicationType: "excel",
-  //   },
-  // },
 ]
 
 export const appConfigs = baseAppConfigs

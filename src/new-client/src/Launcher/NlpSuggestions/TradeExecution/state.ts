@@ -144,18 +144,22 @@ const nlpExecutionState$: Observable<NlpExecutionState> = nlpIntent$.pipe(
             spotRate: direction === Direction.Buy ? price.ask : price.bid,
           }).pipe(
             map((trade) => {
-              if (trade.status !== ExecutionStatus.Timeout)
-                return {
-                  type: NlpExecutionStatus.Done as const,
-                  payload: {
-                    requestData,
-                    response: {
-                      type: "ok" as const,
-                      trade,
-                    },
+              if (trade.status === ExecutionStatus.CreditExceeded) {
+                throw new Error("Credit limit exceeded!")
+              }
+              if (trade.status === ExecutionStatus.Timeout) {
+                throw new Error("Request timed out!")
+              }
+              return {
+                type: NlpExecutionStatus.Done as const,
+                payload: {
+                  requestData,
+                  response: {
+                    type: "ok" as const,
+                    trade,
                   },
-                }
-              throw new Error("Request timed out!")
+                },
+              }
             }),
             catchError((e) => [
               {

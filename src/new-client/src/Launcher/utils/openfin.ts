@@ -1,3 +1,4 @@
+// TODO - Revisit if/when launcher is cross platform
 import { Application } from "openfin/_v2/main"
 import { Bounds } from "openfin/_v2/shapes/shapes"
 import { useEffect } from "react"
@@ -70,20 +71,6 @@ export function createOpenFinWindow(
   })
 }
 
-/**
- * Gets the title of the first `content` element of the current Platform Layout
- */
-export async function getPlatformLayoutTitle(): Promise<string | undefined> {
-  const layout = fin.Platform.Layout.getCurrentSync()
-  const config = await layout.getConfig()
-  return config.content?.[0].title
-}
-
-export const closeCurrentWindow = async () => {
-  const window = await fin.Window.getCurrent()
-  window.close()
-}
-
 export const minimiseCurrentWindow = async () => {
   const window = await fin.Window.getCurrent()
   window.minimize()
@@ -126,6 +113,7 @@ export function useAppBoundReset(bounds: Bounds | undefined) {
         ...bounds,
       })
     }
+
     window.addEventListener("beforeunload", resetAppBound)
 
     return () => {

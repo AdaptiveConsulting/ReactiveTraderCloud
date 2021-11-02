@@ -27,14 +27,14 @@ import {
 } from "./services/nlpService"
 import { OverlayProvider } from "./overlayContext"
 import {
-  closeCurrentWindow,
   minimiseCurrentWindow,
   getCurrentWindowBounds,
   animateCurrentWindowSize,
   useAppBoundReset,
-} from "./utils/openfin-utils"
+} from "./utils/openfin"
 import { LaunchButton } from "./components/LaunchButton"
 import { Bounds } from "openfin/_v2/shapes/shapes"
+import { closeWindow } from "@/utils/window/closeWindow"
 
 const expandedLauncherWidth = 600
 
@@ -66,7 +66,7 @@ const SearchButton: React.FC<{
 
 const LauncherMinimiseAndExit: React.FC = () => (
   <MinExitContainer>
-    <ExitButton onClick={closeCurrentWindow}>
+    <ExitButton onClick={closeWindow}>
       <ExitIcon />
     </ExitButton>
     <MinimiseButton onClick={minimiseCurrentWindow}>
@@ -94,8 +94,6 @@ export function LauncherApp() {
   useEffect(() => {
     if (initialBounds) {
       if (isSearchVisible) {
-        // searchInputRef.current && searchInputRef.current.focus({ preventScroll: true })
-
         animateCurrentWindowSize({
           ...initialBounds,
           width: expandedLauncherWidth,
@@ -103,11 +101,9 @@ export function LauncherApp() {
             ? responseHeight + initialBounds.height
             : initialBounds.height,
         })
-
-        return
+      } else {
+        animateCurrentWindowSize(initialBounds)
       }
-
-      animateCurrentWindowSize(initialBounds)
     }
   }, [isSearchVisible, initialBounds, responseHeight])
 

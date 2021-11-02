@@ -1,2 +1,1 @@
-export * from "./openfin-utils"
-export * from "./isMobile"
+export * from "./openfin"

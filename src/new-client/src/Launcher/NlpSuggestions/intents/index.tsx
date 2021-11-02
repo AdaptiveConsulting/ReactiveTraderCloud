@@ -1,6 +1,6 @@
 import { NlpIntent, NlpIntentType } from "@/Launcher/services/nlpService"
 import { getReactiveTraderUrl } from "@/Launcher/utils/url"
-import { openWindow } from "@/OpenFin/utils/window"
+import { openWindow } from "@/utils/window/openWindow"
 
 export const showCurrencyPairWindow = (currencyPair: string) => {
   const options = {
@@ -22,7 +22,6 @@ export const showTilesWindow = () => {
     height: 500,
     includeInSnapshots: false,
   }
-  console.log(options.url)
 
   return openWindow(options)
 }
