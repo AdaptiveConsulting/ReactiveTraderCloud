@@ -13,11 +13,11 @@ import { ChildWindowFrame } from "@/OpenFin/Window/ChildWindowFrame"
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
     connectToGateway({
-      url: `wss://launcher.env.reactivetrader.com/ws`,
+      url: `${window.location.origin}/ws`,
       interceptor: noop,
     })
   }
-
+  console.log("BASE_PATH", BASE_PATH)
   ReactDOM.render(
     <StrictMode>
       <GlobalStyle />
@@ -25,11 +25,12 @@ export default function main() {
         <GlobalScrollbarStyle />
         <BrowserRouter basename={BASE_PATH}>
           <Switch>
-            <Route path="/" exact render={() => <LauncherApp />} />
             <Route
               path="/openfin-sub-window-frame"
+              exact
               render={() => <ChildWindowFrame />}
             />
+            <Route path="/" render={() => <LauncherApp />} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>
