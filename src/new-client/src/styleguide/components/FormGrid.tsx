@@ -69,27 +69,53 @@ const FormGrid = () => {
   return (
     <Grid>
       <div>Figures</div>
-      <Input type="number" placeholder="Prompt" label="" />
-      <HoveredInput type="number" placeholder="Value" label="" />
+      <Input type="number" placeholder="Prompt" label="" onChange={() => {}} />
+      <HoveredInput
+        type="number"
+        placeholder="Value"
+        label=""
+        onChange={() => {}}
+      />
       <ActiveNumberInput
         type="number"
         placeholder="Prompt"
         value="10"
         label=""
+        onChange={() => {}}
       />
-      <Input type="number" placeholder="Prompt" value="10" disabled label="" />
+      <Input
+        type="number"
+        placeholder="Prompt"
+        value="10"
+        disabled
+        label=""
+        onChange={() => {}}
+      />
 
       <div>Text</div>
-      <Input type="text" placeholder="Text" label="" />
-      <HoveredInput type="text" placeholder="Text" status="info" label="" />
+      <Input type="text" placeholder="Text" label="" onChange={() => {}} />
+      <HoveredInput
+        type="text"
+        placeholder="Text"
+        status="info"
+        label=""
+        onChange={() => {}}
+      />
       <ActiveNumberInput
         type="text"
         placeholder="Prompt"
         status="info"
         value="Text"
         label=""
+        onChange={() => {}}
       />
-      <Input type="text" placeholder="Text" label="" disabled />
+      <Input
+        type="text"
+        placeholder="Text"
+        label=""
+        disabled
+        onChange={() => {}}
+      />
     </Grid>
   )
 }

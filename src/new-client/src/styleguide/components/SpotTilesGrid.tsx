@@ -18,9 +18,9 @@ const SpotTilesGrid = () => (
     <H3>Trading Tiles - Horizontal</H3>
     <Grid>
       <FxSpot>FX Spot</FxSpot>
-      {FXSpotVariants.map((element) => {
+      {FXSpotVariants.map((element, index) => {
         return (
-          <Cell>
+          <Cell key={index}>
             <span>{element.title}</span>
             <TileMockComponent {...genericProps} {...element.props} />
           </Cell>
@@ -28,9 +28,9 @@ const SpotTilesGrid = () => (
       })}
       <Separator />
       <FxRfq>FX RFQ</FxRfq>
-      {FXRFQVariants.map((element) => {
+      {FXRFQVariants.map((element, index) => {
         return (
-          <Cell>
+          <Cell key={index}>
             <span>{element.title}</span>
             <TileMockComponent {...genericProps} {...element.props} />
           </Cell>
@@ -41,9 +41,9 @@ const SpotTilesGrid = () => (
     <H3>Trading Tiles - Vertical</H3>
     <Grid>
       <FxSpot>FX Spot</FxSpot>
-      {FXSpotVariants.map((element) => {
+      {FXSpotVariants.map((element, index) => {
         return (
-          <Cell>
+          <Cell key={index}>
             <span>{element.title}</span>
             <TileMockComponent
               {...genericProps}
@@ -55,9 +55,9 @@ const SpotTilesGrid = () => (
       })}
       <Separator />
       <FxRfq>FX RFQ</FxRfq>
-      {FXRFQVariants.map((element) => {
+      {FXRFQVariants.map((element, index) => {
         return (
-          <Cell>
+          <Cell key={index}>
             <span>{element.title}</span>
             <TileMockComponent
               {...genericProps}

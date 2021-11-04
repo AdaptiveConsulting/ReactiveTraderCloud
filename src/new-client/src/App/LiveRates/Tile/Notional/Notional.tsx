@@ -136,6 +136,7 @@ export const NotionalInputComponent: React.FC<{
           className={undefined}
           disabled={disabled}
           value={spotTile.notional}
+          onChange={() => {}}
           onFocus={(event) => {
             event.target.select()
           }}
