@@ -46,7 +46,6 @@
     "@finos/fdc3": "^1.2.0",
     "@react-rxjs/core": "^0.8.2",
     "@react-rxjs/utils": "^0.8.2",
-    "@stomp/rx-stomp": "^1.1.2",
     "axios": "^0.21.1",
     "d3": "^6.6.2",
     "date-fns": "^2.19.0",
