@@ -16,11 +16,11 @@ export const DeliveryDate = styled.div`
   margin-left: auto;
   transition: margin-right 0.2s;
 `
-const HeaderWrapper = styled.div<{ supportsTearOut?: boolean }>`
+const HeaderWrapper = styled.div<{ tearOutMock?: boolean }>`
   display: flex;
   align-items: center;
   position: relative;
-  margin-right: ${({ supportsTearOut }) => (supportsTearOut ? "1.3rem" : "")};
+  margin-right: ${({ tearOutMock }) => (tearOutMock ? "1.3rem" : "")};
 `
 const TileSymbol = styled.div`
   color: ${({ theme }) => theme.core.textColor};
@@ -64,40 +64,50 @@ export const Header: React.FC = () => {
   } = useTileContext()
   const date = useDate(symbol)
   const canTearOut = supportsTearOut
-
+  const onClick = () => {
+    tearOut(symbol, !isTornOut)
+  }
   return (
-    <HeaderWrapper>
-      <TileSymbol data-qa="tile-header__tile-symbol">
-        {base}/{terms}
-      </TileSymbol>
-      <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
-      {canTearOut && (
-        <HeaderAction
-          onClick={() => {
-            tearOut(symbol, !isTornOut)
-          }}
-        >
-          {isTornOut ? <PopInIcon /> : <PopOutIcon />}
-        </HeaderAction>
-      )}
-    </HeaderWrapper>
+    <HeaderComponent
+      canTearOut={canTearOut}
+      date={date}
+      base={base}
+      terms={terms}
+      isTornOut={isTornOut}
+      onClick={onClick}
+    />
   )
 }
 
 export const HeaderComponent: React.FC<{
-  supportsTearOut: boolean
-  currencyPair: any
-}> = ({ currencyPair, supportsTearOut }) => {
-  const dateVal = `SPT (${format(new Date("08/04"), "dd MMM").toUpperCase()})`
+  canTearOut?: boolean
+  date: any
+  base: any
+  terms: any
+  isTornOut?: boolean
+  onClick?: () => void
+  tearOutMock?: boolean
+}> = ({
+  canTearOut,
+  base,
+  terms,
+  date,
+  isTornOut,
+  onClick,
+  tearOutMock = false,
+}) => {
   return (
-    <HeaderWrapper supportsTearOut={supportsTearOut}>
+    <HeaderWrapper tearOutMock={tearOutMock}>
       <TileSymbol data-qa="tile-header__tile-symbol">
-        {currencyPair.base}/{currencyPair.terms}
+        {base}/{terms}
       </TileSymbol>
-      <DeliveryDate data-qa="tile-header__delivery-date">
-        {dateVal}
-      </DeliveryDate>
-      {supportsTearOut && (
+      <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
+      {canTearOut && !tearOutMock && (
+        <HeaderAction onClick={onClick ? onClick : () => {}}>
+          {isTornOut ? <PopInIcon /> : <PopOutIcon />}
+        </HeaderAction>
+      )}
+      {tearOutMock && (
         <PopOutIconContainer>
           <PopOutIcon />
         </PopOutIconContainer>

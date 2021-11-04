@@ -47,15 +47,15 @@ import { map } from "rxjs/operators"
 import { isMobileDevice } from "@/utils"
 
 import { HistoricalGraphComponent } from "@/App/LiveRates/Tile/HistoricalGraph/HistoricalGraph"
-import { getDataPoints, toSvgPath, withScales } from "@/utils/historicalChart"
-import { HistoryPrice } from "@/services/prices"
-import { curveBasis } from "d3"
 
 import {
   MockProps,
   generateHistoricPrices,
   mockValues,
+  HistoryMockSvgPath,
 } from "@/styleguide/components/SpotTilesMockData"
+
+import { format } from "date-fns"
 
 export const tile$ = (symbol: string) =>
   merge(
@@ -157,14 +157,6 @@ const TileContext: React.FC<{
   },
 )
 
-const history = generateHistoricPrices(30)
-const dataPoints = getDataPoints<HistoryPrice>((price, idx) => [
-  new Date(idx),
-  price.mid,
-])(history)
-const scales = withScales([0, 125], [0, 75])(dataPoints)
-const HistoryMockSvgPath = toSvgPath(curveBasis)(scales)
-
 export const TileMockComponent: React.FC<MockProps> = ({
   spotTileData,
   isAnalytics = false,
@@ -228,12 +220,15 @@ export const TileMockComponent: React.FC<MockProps> = ({
     hover: hover,
     faded: faded,
   }
+  const dateVal = `SPT (${format(new Date("08/04"), "dd MMM").toUpperCase()})`
   return (
     <PanelItem shouldMoveDate={false}>
       <MainComponent>
         <HeaderComponent
-          currencyPair={currencyPair}
-          supportsTearOut={supportsTearOut}
+          date={dateVal}
+          base={currencyPair.base}
+          terms={currencyPair.terms}
+          tearOutMock={supportsTearOut}
         />
         <Body isAnalyticsView={isAnalytics} showTimer={false}>
           {isAnalytics ? (
@@ -304,6 +299,8 @@ export const TileMockComponent: React.FC<MockProps> = ({
                 <RfqButtonComponent
                   isAnalytics={isAnalytics}
                   buttonText={buttonText}
+                  textWrap={false}
+                  validNotional={true}
                 />
               )}
             </PriceControlsStyle>

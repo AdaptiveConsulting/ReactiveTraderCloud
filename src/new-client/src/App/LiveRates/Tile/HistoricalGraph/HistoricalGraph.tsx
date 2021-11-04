@@ -83,27 +83,14 @@ export const HistoricalGraph: React.FC<HistoricalGraphProps> = ({
 
   const d = useHistoricalPath()
 
-  return (
-    <LineChartWrapper showTimer={showTimer} ref={ref}>
-      <Svg>
-        <Path
-          stroke="#737987"
-          strokeOpacity={0.9}
-          strokeWidth={1.6}
-          fill="none"
-          d={d}
-        />
-      </Svg>
-    </LineChartWrapper>
-  )
+  return <HistoricalGraphComponent showTimer={showTimer} history={d} />
 }
 
 export const HistoricalGraphComponent: React.FC<{
   showTimer: any
   history: any
-  active: boolean
-  isAtom?: boolean
-}> = ({ showTimer, history, active, isAtom }) => {
+  active?: boolean
+}> = ({ showTimer, history, active = false }) => {
   const ref = useRef<HTMLDivElement>(null)
   return (
     <LineChartWrapper showTimer={showTimer} ref={ref}>
@@ -111,45 +98,67 @@ export const HistoricalGraphComponent: React.FC<{
         <Path
           stroke={active ? "#5f94f5" : "#737987"}
           strokeOpacity={0.9}
-          strokeWidth={1}
+          strokeWidth={1.6}
           fill="none"
           d={history}
         />
-        {!isAtom && (
-          <g>
-            <line
-              y="0"
-              stroke-dasharray="4 3"
-              stroke="#737987"
-              stroke-opacity="0.9"
-              stroke-width="0.8"
-              fill="none"
-              fill-opacity="1"
-              x1="0"
-              y1="40"
-              x2="122"
-              y2="40"
-            ></line>
-          </g>
-        )}
-        {isAtom && (
-          <g>
-            <line
-              y="0"
-              stroke-dasharray="4 3"
-              stroke="#737987"
-              stroke-opacity="0.9"
-              stroke-width="0.8"
-              fill="none"
-              fill-opacity="1"
-              x1="0"
-              y1="40"
-              x2="200"
-              y2="40"
-            ></line>
-          </g>
-        )}
       </Svg>
     </LineChartWrapper>
   )
 }
+
+// export const HistoricalGraphComponent: React.FC<{
+//   showTimer: any
+//   history: any
+//   active: boolean
+//   isAtom?: boolean
+// }> = ({ showTimer, history, active, isAtom }) => {
+//   const ref = useRef<HTMLDivElement>(null)
+//   return (
+//     <LineChartWrapper showTimer={showTimer} ref={ref}>
+//       <Svg>
+//         <Path
+//           stroke={active ? "#5f94f5" : "#737987"}
+//           strokeOpacity={0.9}
+//           strokeWidth={1}
+//           fill="none"
+//           d={history}
+//         />
+//         {!isAtom && (
+//           <g>
+//             <line
+//               y="0"
+//               stroke-dasharray="4 3"
+//               stroke="#737987"
+//               stroke-opacity="0.9"
+//               stroke-width="0.8"
+//               fill="none"
+//               fill-opacity="1"
+//               x1="0"
+//               y1="40"
+//               x2="122"
+//               y2="40"
+//             ></line>
+//           </g>
+//         )}
+//         {isAtom && (
+//           <g>
+//             <line
+//               y="0"
+//               stroke-dasharray="4 3"
+//               stroke="#737987"
+//               stroke-opacity="0.9"
+//               stroke-width="0.8"
+//               fill="none"
+//               fill-opacity="1"
+//               x1="0"
+//               y1="40"
+//               x2="200"
+//               y2="40"
+//             ></line>
+//           </g>
+//         )}
+//       </Svg>
+//     </LineChartWrapper>
+//   )
+// }

@@ -1,5 +1,10 @@
 import { PriceMovementType } from "@/services/prices"
 import { QuoteStateStage } from "@/App/LiveRates/Tile/Rfq"
+
+import { getDataPoints, toSvgPath, withScales } from "@/utils/historicalChart"
+import { HistoryPrice } from "@/services/prices"
+import { curveBasis } from "d3"
+
 export interface MockProps {
   isAnalytics?: boolean
   spotTileData: any
@@ -97,37 +102,7 @@ export const mockValues = {
   persist: true,
 }
 
-export const FXSpotHoritzontalVariants = [
-  {
-    title: "Normal",
-    props: {},
-  },
-  {
-    title: "Hover",
-    props: {
-      supportsTearOut: true,
-      hover: true,
-    },
-  },
-  {
-    title: "Price Unavailable",
-    props: {
-      disabledInput: true,
-      isStale: true,
-    },
-  },
-  {
-    title: "Executing",
-    props: {
-      disabledInput: true,
-      hover: true,
-      isExecuting: true,
-      faded: true,
-    },
-  },
-]
-
-export const FXRFQHoritzontalVariants = [
+export const FXRFQVariants = [
   {
     title: "Begin Price Request",
     props: {
@@ -188,7 +163,7 @@ export const FXRFQHoritzontalVariants = [
   },
 ]
 
-export const FXSpotVerticalVariants = [
+export const FXSpotVariants = [
   {
     title: "Normal",
     props: {},
@@ -218,63 +193,10 @@ export const FXSpotVerticalVariants = [
   },
 ]
 
-export const FXRFQVerticalVariants = [
-  {
-    title: "Begin Price Request",
-    props: {
-      hover: true,
-      faded: true,
-      resetInput: true,
-      buttonText: "Initiate RFQ",
-    },
-  },
-  {
-    title: "Awaiting Price",
-    props: {
-      hover: true,
-      awaiting: true,
-      disabledInput: true,
-      buttonText: "Cancel RFQ",
-    },
-  },
-  {
-    title: "Price Announced",
-    props: {
-      hover: false,
-      activeColorLeft: true,
-      activeColorRight: true,
-      disabledInput: true,
-      startTImer: 60,
-    },
-  },
-  {
-    title: "Priced",
-    props: {
-      disabledInput: true,
-      hover: false,
-      startTimer: 49,
-      rfqStateLeft: rfqStateReceived,
-      rfqStateRight: rfqStateReceived,
-    },
-  },
-  {
-    title: "Priced Hover",
-    props: {
-      disabledInput: true,
-      hover: false,
-      startTimer: 49,
-      activeColorLeft: true,
-      rfqStateRight: rfqStateReceived,
-    },
-  },
-  {
-    title: "Priced Expired",
-    props: {
-      hover: true,
-      faded: true,
-      buttonText: "Requote",
-      resetInput: true,
-      isExpired: true,
-    },
-  },
-]
+const history = generateHistoricPrices(30)
+const dataPoints = getDataPoints<HistoryPrice>((price, idx) => [
+  new Date(idx),
+  price.mid,
+])(history)
+const scales = withScales([0, 125], [0, 75])(dataPoints)
+export const HistoryMockSvgPath = toSvgPath(curveBasis)(scales)

@@ -16,6 +16,17 @@ import {
 import { H2, H3, H5 } from "../elements"
 import { Paragraph, SectionBlock, Text, TextProps } from "../styled"
 
+const icons = [
+  { name: "Download", icon: DownloadIcon },
+  { name: "Filter", icon: FilterIcon },
+  { name: "Pop Out", icon: PopoutIcon },
+  { name: "Pop In", icon: PopInIcon },
+  { name: "Cross", icon: CrossIcon },
+  { name: "Minimize-Screen", icon: MinimizeIcon },
+  { name: "Maximize-Screen", icon: MaximizeIcon },
+  { name: "Chevron", icon: ChevronIcon },
+]
+
 export const FontFamilies: React.FC = () => (
   <>
     <SectionBlock colorScheme="secondary" py={0} pt={2} mh={0}>
@@ -36,53 +47,17 @@ export const FontFamilies: React.FC = () => (
         <H5>Active</H5>
         <H5>Disabled</H5>
 
-        <H5>Download</H5>
-        <div>{DownloadIcon}</div>
-        <ActiveIcon>{DownloadIcon}</ActiveIcon>
-        <ActiveIcon>{DownloadIcon}</ActiveIcon>
-        <DisabledIcon>{DownloadIcon}</DisabledIcon>
-
-        <H5>Filter</H5>
-        <div>{FilterIcon}</div>
-        <ActiveIcon>{FilterIcon}</ActiveIcon>
-        <ActiveIcon>{FilterIcon}</ActiveIcon>
-        <DisabledIcon>{FilterIcon}</DisabledIcon>
-
-        <H5>Pop Out</H5>
-        <div>{PopoutIcon}</div>
-        <ActiveIcon>{PopoutIcon}</ActiveIcon>
-        <ActiveIcon>{PopoutIcon}</ActiveIcon>
-        <DisabledIcon>{PopoutIcon}</DisabledIcon>
-
-        <H5>Pop In</H5>
-        <div>{PopInIcon}</div>
-        <ActiveIcon>{PopInIcon}</ActiveIcon>
-        <ActiveIcon>{PopInIcon}</ActiveIcon>
-        <DisabledIcon>{PopInIcon}</DisabledIcon>
-
-        <H5>Cross</H5>
-        <div>{CrossIcon}</div>
-        <ActiveIcon>{CrossIcon}</ActiveIcon>
-        <ActiveIcon>{CrossIcon}</ActiveIcon>
-        <DisabledIcon>{CrossIcon}</DisabledIcon>
-
-        <H5>Minimize-Screen</H5>
-        <div>{MinimizeIcon}</div>
-        <ActiveIcon>{MinimizeIcon}</ActiveIcon>
-        <ActiveIcon>{MinimizeIcon}</ActiveIcon>
-        <DisabledIcon>{MinimizeIcon}</DisabledIcon>
-
-        <H5>Maximize-Screen</H5>
-        <div>{MaximizeIcon}</div>
-        <ActiveIcon>{MaximizeIcon}</ActiveIcon>
-        <ActiveIcon>{MaximizeIcon}</ActiveIcon>
-        <DisabledIcon>{MaximizeIcon}</DisabledIcon>
-
-        <H5>Chevron</H5>
-        <div>{ChevronIcon}</div>
-        <ActiveIcon>{ChevronIcon}</ActiveIcon>
-        <ActiveIcon>{ChevronIcon}</ActiveIcon>
-        <DisabledWholeIcon>{ChevronIcon}</DisabledWholeIcon>
+        {icons.map((element) => {
+          return (
+            <>
+              <H5>{element.name}</H5>
+              <div>{element.icon}</div>
+              <ActiveIcon>{element.icon}</ActiveIcon>
+              <ActiveIcon>{element.icon}</ActiveIcon>
+              <DisabledIcon>{element.icon}</DisabledIcon>
+            </>
+          )
+        })}
 
         <H5>Undock</H5>
         <div>

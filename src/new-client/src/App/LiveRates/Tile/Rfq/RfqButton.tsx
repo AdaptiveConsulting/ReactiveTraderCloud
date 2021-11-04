@@ -17,7 +17,7 @@ const RfqButtonContainer = styled(OverlayDiv)`
   position: absolute;
 `
 const RFQButtonInner = styled.button<{
-  textWrap: boolean
+  textWrap?: boolean
   isAnalytics: boolean
 }>`
   background-color: ${({ theme }) => theme.accents.primary.base};
@@ -72,53 +72,42 @@ const RfqButton: React.FC<{ isAnalytics: boolean }> = ({ isAnalytics }) => {
   )
   const isExecuting = useTileState(symbol).status === TileStates.Started
   const validNotional = useIsNotionalValid()
+  const onClick = () => {
+    buttonClickHandler(symbol)
+  }
   return isRfq && stage !== QuoteStateStage.Received && !isExecuting ? (
-    <RfqButtonContainer
-      left={isAnalytics ? `calc(${AnalyticsPricesFirstCol} / 2)` : 0}
-    >
-      <CenteringContainer>
-        <RFQButtonInner
-          disabled={!validNotional}
-          data-testid="rfqButton"
-          textWrap={textWrap}
-          isAnalytics={isAnalytics}
-          onClick={() => {
-            if (validNotional) {
-              buttonClickHandler(symbol)
-            }
-          }}
-        >
-          {buttonText}
-        </RFQButtonInner>
-      </CenteringContainer>
-    </RfqButtonContainer>
+    <RfqButtonComponent
+      textWrap={textWrap}
+      isAnalytics={isAnalytics}
+      buttonText={buttonText}
+      validNotional={validNotional}
+      onClick={onClick}
+    />
   ) : null
 }
 
 const RfqButtonComponent: React.FC<{
   isAnalytics: boolean
   buttonText: string
-}> = ({ isAnalytics, buttonText }) => {
-  // const isRfq = useIsRfq()
-  // const { stage } = useRfqState()
-  // const { symbol } = useTileCurrencyPair()
-  // const { buttonText, buttonClickHandler, textWrap } = buttonState(
-  //   stage,
-  //   isAnalytics,
-  // )
-  // const isExecuting = useTileState(symbol).status === TileStates.Started
-  // const validNotional = useIsNotionalValid()
-  // return isRfq && stage !== QuoteStateStage.Received && !isExecuting ? (
+  textWrap?: boolean
+  validNotional?: boolean
+  onClick?: () => void
+}> = ({ isAnalytics, buttonText, textWrap, validNotional, onClick }) => {
   return (
     <RfqButtonContainer
       left={isAnalytics ? `calc(${AnalyticsPricesFirstCol} / 2)` : 0}
     >
       <CenteringContainer>
         <RFQButtonInner
-          disabled={false}
+          textWrap={textWrap}
+          disabled={!validNotional}
           data-testid="rfqButton"
-          textWrap={false}
           isAnalytics={isAnalytics}
+          onClick={() => {
+            if (validNotional) {
+              onClick ? onClick : () => {}
+            }
+          }}
         >
           {buttonText}
         </RFQButtonInner>
