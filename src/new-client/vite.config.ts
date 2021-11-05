@@ -13,7 +13,7 @@ const PORT = Number(process.env.PORT) || 1917
 function getBaseUrl(dev: boolean) {
   return dev
     ? `http://localhost:${PORT}`
-    : `${process.env.DOMAIN}${process.env.URL_PATH || ""}` || ""
+    : `${process.env.DOMAIN || ""}${process.env.URL_PATH || ""}` || ""
 }
 
 function apiMockReplacerPlugin(): Plugin {
