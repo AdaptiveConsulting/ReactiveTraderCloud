@@ -40,6 +40,7 @@ export default function main() {
           TradesCoreDeferred,
         ]).then(() => {
           registration.waiting?.postMessage({ type: "SKIP_WAITING" })
+
           showCacheUpdateModal()
         })
       },
