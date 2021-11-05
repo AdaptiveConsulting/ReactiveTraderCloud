@@ -2,6 +2,7 @@ import Resizer from "@/components/Resizer"
 import styled from "styled-components"
 import Header from "@/App/Header"
 import { Footer } from "@/App/Footer"
+import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
 import { DisconnectionOverlay } from "@/App/DisconnectionOverlay"
 import { LiveRates } from "@/App/LiveRates"
@@ -43,7 +44,7 @@ export const MainRoute: React.FC = () => (
       <MainWrapper>
         <Resizer defaultHeight={30}>
           <LiveRates />
-          <div>Hello world</div>
+          <Trades />
         </Resizer>
         <Analytics />
       </MainWrapper>
