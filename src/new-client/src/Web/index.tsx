@@ -31,7 +31,7 @@ export default function main() {
       onUpdate: (registration) => {
         // If the SW got updated, then we have to be careful. We can't immediately
         // skip the waiting phase, because if there are requests on the fly that
-        // could be a disaster.
+        // could be a disaster
         // Wait for our async chunks to be loaded, then skip waiting phase and show
         // the user a modal informing them that there are new updates available
         Promise.all([
@@ -40,7 +40,6 @@ export default function main() {
           TradesCoreDeferred,
         ]).then(() => {
           registration.waiting?.postMessage({ type: "SKIP_WAITING" })
-
           showCacheUpdateModal()
         })
       },
