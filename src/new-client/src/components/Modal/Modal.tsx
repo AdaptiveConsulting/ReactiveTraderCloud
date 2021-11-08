@@ -21,7 +21,7 @@ export const Modal: FC<Props> = ({
   onOverlayClick,
 }) => {
   if (!shouldShow) {
-    return <></>
+    return null
   }
   return (
     <ModalContainer>
