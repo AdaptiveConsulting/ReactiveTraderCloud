@@ -222,13 +222,14 @@ export const TileMockComponent: React.FC<MockProps> = ({
   }
   const dateVal = `SPT (${format(new Date("08/04"), "dd MMM").toUpperCase()})`
   return (
-    <PanelItem shouldMoveDate={false}>
+    <PanelItem shouldMoveDate={supportsTearOut}>
       <MainComponent>
         <HeaderComponent
           date={dateVal}
           base={currencyPair.base}
           terms={currencyPair.terms}
-          tearOutMock={supportsTearOut}
+          supportsTearOut={supportsTearOut}
+          canTearOut={supportsTearOut}
         />
         <Body isAnalyticsView={isAnalytics} showTimer={false}>
           {isAnalytics ? (
@@ -237,6 +238,7 @@ export const TileMockComponent: React.FC<MockProps> = ({
                 history={HistoryMockSvgPath}
                 showTimer={startTimer !== 0}
                 active={false}
+                showCenterLine={true}
               />
               <InputTimerWrapper
                 spotTile={spotTileData}

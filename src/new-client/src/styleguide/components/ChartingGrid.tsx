@@ -79,7 +79,8 @@ const ChartsVariants: React.FC<{ active?: boolean }> = ({ active = false }) => (
             history={HistoryMockSvgPath}
             showTimer={true}
             active={active}
-            // isAtom={true}
+            showCenterLine={true}
+            centerLineShort={false}
           />
         </LineChartWrapper>
       </GraphNotionalWrapperDummy>

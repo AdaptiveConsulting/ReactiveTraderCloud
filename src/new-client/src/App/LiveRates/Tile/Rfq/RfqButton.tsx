@@ -105,7 +105,7 @@ const RfqButtonComponent: React.FC<{
           isAnalytics={isAnalytics}
           onClick={() => {
             if (validNotional) {
-              onClick ? onClick : () => {}
+              onClick
             }
           }}
         >

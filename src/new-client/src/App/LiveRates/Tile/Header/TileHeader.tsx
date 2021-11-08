@@ -16,11 +16,10 @@ export const DeliveryDate = styled.div`
   margin-left: auto;
   transition: margin-right 0.2s;
 `
-const HeaderWrapper = styled.div<{ tearOutMock?: boolean }>`
+const HeaderWrapper = styled.div<{ supportsTearOut?: boolean }>`
   display: flex;
   align-items: center;
   position: relative;
-  margin-right: ${({ tearOutMock }) => (tearOutMock ? "1.3rem" : "")};
 `
 const TileSymbol = styled.div`
   color: ${({ theme }) => theme.core.textColor};
@@ -86,7 +85,7 @@ export const HeaderComponent: React.FC<{
   terms: any
   isTornOut?: boolean
   onClick?: () => void
-  tearOutMock?: boolean
+  supportsTearOut?: boolean
 }> = ({
   canTearOut,
   base,
@@ -94,23 +93,18 @@ export const HeaderComponent: React.FC<{
   date,
   isTornOut,
   onClick,
-  tearOutMock = false,
+  supportsTearOut = false,
 }) => {
   return (
-    <HeaderWrapper tearOutMock={tearOutMock}>
+    <HeaderWrapper supportsTearOut={supportsTearOut}>
       <TileSymbol data-qa="tile-header__tile-symbol">
         {base}/{terms}
       </TileSymbol>
       <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
-      {canTearOut && !tearOutMock && (
-        <HeaderAction onClick={onClick ? onClick : () => {}}>
+      {canTearOut && (
+        <HeaderAction onClick={onClick}>
           {isTornOut ? <PopInIcon /> : <PopOutIcon />}
         </HeaderAction>
-      )}
-      {tearOutMock && (
-        <PopOutIconContainer>
-          <PopOutIcon />
-        </PopOutIconContainer>
       )}
     </HeaderWrapper>
   )
