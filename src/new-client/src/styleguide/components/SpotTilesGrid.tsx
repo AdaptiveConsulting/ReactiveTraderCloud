@@ -1,18 +1,11 @@
-import styled from "styled-components"
 import { H3 } from "../elements"
 import {
-  spotTileData,
-  currencyPair,
-  rfqStateReceived,
   FXSpotVariants,
   FXRFQVariants,
+  genericTileProps,
 } from "./SpotTilesMockData"
 import { TileMockComponent } from "@/App/LiveRates/Tile/Tile"
 import { Grid, FxRfq, Separator, Cell, FxSpot } from "./Styles"
-const genericProps = {
-  spotTileData: spotTileData,
-  currencyPair: currencyPair,
-}
 const SpotTilesGrid = () => (
   <>
     <H3>Trading Tiles - Horizontal</H3>
@@ -22,7 +15,7 @@ const SpotTilesGrid = () => (
         return (
           <Cell key={index}>
             <span>{element.title}</span>
-            <TileMockComponent {...genericProps} {...element.props} />
+            <TileMockComponent {...genericTileProps} {...element.props} />
           </Cell>
         )
       })}
@@ -32,7 +25,7 @@ const SpotTilesGrid = () => (
         return (
           <Cell key={index}>
             <span>{element.title}</span>
-            <TileMockComponent {...genericProps} {...element.props} />
+            <TileMockComponent {...genericTileProps} {...element.props} />
           </Cell>
         )
       })}
@@ -46,7 +39,7 @@ const SpotTilesGrid = () => (
           <Cell key={index}>
             <span>{element.title}</span>
             <TileMockComponent
-              {...genericProps}
+              {...genericTileProps}
               {...element.props}
               isAnalytics
             />
@@ -60,7 +53,7 @@ const SpotTilesGrid = () => (
           <Cell key={index}>
             <span>{element.title}</span>
             <TileMockComponent
-              {...genericProps}
+              {...genericTileProps}
               {...element.props}
               isAnalytics
             />

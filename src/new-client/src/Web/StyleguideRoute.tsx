@@ -13,7 +13,6 @@ import CoreBranding from "@/styleguide/sections/CoreBranding"
 import FontFamilies from "@/styleguide/sections/FontFamilies"
 import Iconography from "@/styleguide/sections/Iconography"
 import Molecules from "@/styleguide/sections/Molecules"
-// import { getAppName } from '@/utils'
 
 const sections: Array<{
   path: string

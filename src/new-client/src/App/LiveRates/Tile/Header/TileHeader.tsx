@@ -39,13 +39,6 @@ export const HeaderAction = styled.button`
     }
   }
 `
-
-const PopOutIconContainer = styled.div`
-  position: absolute;
-  right: -25px;
-  top: -5px;
-`
-
 export const [useDate, header$] = bind((symbol: string) =>
   getPrice$(symbol).pipe(
     map(

@@ -89,6 +89,11 @@ export const currencyPair = {
   terms: "USD",
 }
 
+export const genericTileProps = {
+  spotTileData: spotTileData,
+  currencyPair: currencyPair,
+}
+
 export const rfqStateReceived = {
   stage: QuoteStateStage.Received,
 }

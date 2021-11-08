@@ -50,7 +50,6 @@ import { HistoricalGraphComponent } from "@/App/LiveRates/Tile/HistoricalGraph/H
 
 import {
   MockProps,
-  generateHistoricPrices,
   mockValues,
   HistoryMockSvgPath,
 } from "@/styleguide/components/SpotTilesMockData"
