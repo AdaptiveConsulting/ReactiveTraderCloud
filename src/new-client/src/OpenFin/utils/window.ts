@@ -72,13 +72,15 @@ export async function showOpenFinPopup(
  */
 export async function createOpenFinPopup(
   { height, name, width }: BasicWindow,
-  pathname: string,
+  urlOrPath: string,
   callback: () => void,
 ): Promise<void> {
   try {
     const popupWindow = await fin.Platform.getCurrentSync().createWindow({
       name: popupNameFor(name),
-      url: `${window.location.origin}${pathname}`,
+      url: `${
+        urlOrPath.includes("http") ? "" : window.location.origin
+      }${urlOrPath}`,
       defaultHeight: height,
       defaultWidth: width,
       autoShow: false,
