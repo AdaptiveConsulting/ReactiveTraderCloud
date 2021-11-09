@@ -229,6 +229,7 @@ export const TileMockComponent: React.FC<MockProps> = ({
           terms={currencyPair.terms}
           supportsTearOut={supportsTearOut}
           canTearOut={supportsTearOut}
+          hover={supportsTearOut}
         />
         <Body isAnalyticsView={isAnalytics} showTimer={false}>
           {isAnalytics ? (

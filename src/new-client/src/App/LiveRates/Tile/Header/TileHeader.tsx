@@ -8,13 +8,14 @@ import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import { tearOut } from "../TearOut/state"
 import { PopInIcon } from "@/components/icons/PopInIcon"
 
-export const DeliveryDate = styled.div`
+export const DeliveryDate = styled.div<{ hover?: boolean }>`
   color: ${({ theme }) => theme.core.textColor};
   font-size: 0.625rem;
   line-height: 1rem;
   opacity: 0.59;
   margin-left: auto;
-  transition: margin-right 0.2s;
+  margin-right: ${({ hover }) => (hover ? "1.3rem" : "")};
+  transition: ${({ hover }) => (hover ? "" : "margin-right 0.2s")};
 `
 const HeaderWrapper = styled.div<{ supportsTearOut?: boolean }>`
   display: flex;
@@ -26,12 +27,11 @@ const TileSymbol = styled.div`
   font-size: 0.8125rem;
   line-height: 1rem;
 `
-export const HeaderAction = styled.button`
+export const HeaderAction = styled.button<{ hover?: boolean }>`
   position: absolute;
   right: -4px;
   top: -5px;
-  opacity: 0;
-  transition: opacity 0.2s;
+  opacity: ${({ hover }) => (hover ? "1" : "0")};
 
   &:hover {
     .tear-out-hover-state {
@@ -79,6 +79,7 @@ export const HeaderComponent: React.FC<{
   isTornOut?: boolean
   onClick?: () => void
   supportsTearOut?: boolean
+  hover?: boolean
 }> = ({
   canTearOut,
   base,
@@ -87,15 +88,18 @@ export const HeaderComponent: React.FC<{
   isTornOut,
   onClick,
   supportsTearOut = false,
+  hover = false,
 }) => {
   return (
     <HeaderWrapper supportsTearOut={supportsTearOut}>
       <TileSymbol data-qa="tile-header__tile-symbol">
         {base}/{terms}
       </TileSymbol>
-      <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
+      <DeliveryDate hover={hover} data-qa="tile-header__delivery-date">
+        {date}
+      </DeliveryDate>
       {canTearOut && (
-        <HeaderAction onClick={onClick}>
+        <HeaderAction hover={hover} onClick={onClick}>
           {isTornOut ? <PopInIcon /> : <PopOutIcon />}
         </HeaderAction>
       )}
