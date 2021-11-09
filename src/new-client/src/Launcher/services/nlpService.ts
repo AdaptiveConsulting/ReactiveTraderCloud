@@ -1,9 +1,10 @@
 import { Direction } from "@/services/trades"
 import { DetectIntentResponse } from "dialogflow"
-import { getRemoteProcedureCall$ } from "../services/client"
+import { ajax, AjaxResponse } from "rxjs/ajax"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import {
+  catchError,
   distinctUntilChanged,
   map,
   mapTo,
@@ -11,7 +12,7 @@ import {
   switchMap,
 } from "rxjs/operators"
 import { equals } from "@/utils"
-import { concat, merge, timer } from "rxjs"
+import { concat, merge, of, timer } from "rxjs"
 
 const [input$, setInput] = createSignal<string>()
 export { setInput }
@@ -89,11 +90,18 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | null | Loading>(
         ? [null]
         : concat(
             timer(250).pipe(mapTo("loading" as Loading)),
-            getRemoteProcedureCall$<[DetectIntentResponse], string>(
-              "nlp",
-              "getNlpIntent",
-              request,
-            ).pipe(pluck(0)),
+            ajax(
+              `${import.meta.env.VITE_CLOUD_FUNCTION_HOST}/nlp?term=${request}`,
+            ).pipe(
+              map<AjaxResponse, DetectIntentResponse[]>(
+                ({ response }) => response,
+              ),
+              pluck(0),
+              catchError((e) => {
+                console.error("Error getting nlp response", e)
+                return of(null)
+              }),
+            ),
           ),
     ),
     map((response) => {

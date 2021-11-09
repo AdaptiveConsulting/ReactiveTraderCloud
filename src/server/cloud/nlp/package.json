@@ -1,0 +1,36 @@
+{
+  "name": "reactive-launcher-nlp",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/src/index.js",
+  "types": "build/src/index.d.ts",
+  "files": [
+    "build/src"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [],
+  "scripts": {
+    "start": "functions-framework --source=build/src/ --target=nlp --port=7869",
+    "watch": "concurrently \"tsc -w\" \"nodemon --watch ./build/ --exec npm run start\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "gts lint",
+    "fix": "gts fix",
+    "clean": "gts clean",
+    "compile": "npm run lint && npm run clean && tsc",
+    "deploy": "npm run compile && gcloud functions deploy nlp --entry-point nlp --project adaptive-trader --trigger-http --allow-unauthenticated --runtime nodejs14"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^14.11.2",
+    "@types/uuid": "^8.3.1",
+    "concurrently": "^6.3.0",
+    "gts": "^3.1.0",
+    "nodemon": "^2.0.14",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "@google-cloud/dialogflow": "^4.5.0",
+    "@google-cloud/functions-framework": "^1.9.0",
+    "uuid": "^8.3.2"
+  }
+}
