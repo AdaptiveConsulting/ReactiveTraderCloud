@@ -90,7 +90,7 @@ const downloadCsv = () => {
 
 export const ExcelButton: React.FC = () => {
   return (
-    <Button onClick={downloadCsv}>
+    <Button onClick={downloadCsv} aria-label="Export to CSV">
       <ExcelIcon />
     </Button>
   )
