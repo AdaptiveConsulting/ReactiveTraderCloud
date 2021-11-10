@@ -26,7 +26,7 @@ export const LastPosition: React.FC = () => {
 
   return (
     <div>
-      <USDspan>USDf</USDspan>
+      <USDspan>USD</USDspan>
       <LastPositionStyle color={lastPos >= 0 ? "positive" : "negative"}>
         {lastPosStr}
       </LastPositionStyle>
