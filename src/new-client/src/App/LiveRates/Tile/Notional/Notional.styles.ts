@@ -24,7 +24,7 @@ export const Input = styled.input`
   }
 `
 
-export const CurrencyPairSymbol = styled("span")`
+export const CurrencyPairSymbol = styled("label")`
   display: inline-block;
   width: 24px;
   opacity: 0.59;

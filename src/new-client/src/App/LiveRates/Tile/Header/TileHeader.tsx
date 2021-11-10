@@ -71,6 +71,11 @@ export const Header: React.FC = () => {
           onClick={() => {
             tearOut(symbol, !isTornOut, ref.current!)
           }}
+          aria-label={
+            isTornOut
+              ? "Return window to application"
+              : "Tear out into standalone window"
+          }
         >
           {isTornOut ? <PopInIcon /> : <PopOutIcon />}
         </HeaderAction>

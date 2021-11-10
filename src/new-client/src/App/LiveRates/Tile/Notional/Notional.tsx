@@ -77,13 +77,14 @@ export const NotionalInput: React.FC = () => {
   const notional = useNotional()
   const valid = useIsNotionalValid()
   const { stage: quoteStage } = useRfqState()
+  const id = `notional-input-${symbol}`
 
   return (
     <InputWrapper>
-      <CurrencyPairSymbol>{base}</CurrencyPairSymbol>
+      <CurrencyPairSymbol htmlFor={id}>{base}</CurrencyPairSymbol>
       <Input
-        role={"input"}
         type="text"
+        id={id}
         className={!valid ? `is-invalid` : undefined}
         disabled={[
           QuoteStateStage.Received,
