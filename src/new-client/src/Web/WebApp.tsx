@@ -4,7 +4,9 @@ import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { MainRoute } from "./MainRoute"
 import { TornOutTile } from "./Tiles"
 import { TearOutRouteWrapper } from "./Web.styles"
-
+import { Tiles } from "./Tiles"
+import { Trades } from "@/App/Trades"
+import { Analytics } from "@/App/Analytics"
 export const WebApp: React.FC = () => (
   <BrowserRouter basename={BASE_URL}>
     <Switch>
@@ -29,6 +31,9 @@ export const WebApp: React.FC = () => (
           )
         }}
       />
+      <Route path="/tiles" render={() => <Tiles />} />
+      <Route path="/trades" render={() => <Trades />} />
+      <Route path="/analytics" render={() => <Analytics />} />
     </Switch>
   </BrowserRouter>
 )

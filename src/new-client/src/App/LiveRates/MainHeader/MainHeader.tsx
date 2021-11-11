@@ -5,6 +5,7 @@ import {
   NavItem,
   RightNav,
   LeftNavTitle,
+  HeaderAction,
 } from "../styled"
 import {
   useSelectedCurrency,
@@ -18,6 +19,16 @@ import { currencyPairs$ } from "@/services/currencyPairs"
 import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 
+import { PopOutIcon } from "@/components/icons/PopOutIcon"
+import { tearOutTiles, tearOutEntryTiles$ } from "@/Web/tearoutSections"
+import { useObservableSubscription } from "@/utils/useObservableSubscription"
+import { openWindow } from "@/Web/utils/window"
+import { constructUrl } from "@/utils/url"
+import {
+  useTearOutTradeState,
+  useTearOutAnalyticsState,
+} from "@/Web/tearoutSections"
+
 const [useCurrencies, mainHeader$] = bind(
   currencyPairs$.pipe(
     map((currencyPairs) => [
@@ -28,8 +39,32 @@ const [useCurrencies, mainHeader$] = bind(
   ),
 )
 
+var isTornOut = false
 export { mainHeader$ }
 export const MainHeader: React.FC = () => {
+  const tearOutTradeState = useTearOutTradeState("Trade")
+  const tearOutAnalyticsState = useTearOutAnalyticsState("Analytics")
+
+  useObservableSubscription(
+    tearOutEntryTiles$.subscribe(async ([tornOut]) => {
+      if (tornOut && !isTornOut) {
+        isTornOut = true
+        openWindow(
+          {
+            url: constructUrl("/tiles"),
+            width: window.innerWidth * 0.85,
+            name: "",
+            height: window.innerHeight * 0.65,
+          },
+          () => {
+            isTornOut = false
+            tearOutTiles(false)
+          },
+        )
+      }
+    }),
+  )
+
   const currencies = useCurrencies()
   const currency = useSelectedCurrency()
 
@@ -61,6 +96,11 @@ export const MainHeader: React.FC = () => {
           onSelectionChange={onSelectCurrency}
         />
         <ToggleView />
+        {!isTornOut && !(tearOutTradeState && tearOutAnalyticsState) && (
+          <HeaderAction onClick={() => tearOutTiles(true)}>
+            <PopOutIcon />
+          </HeaderAction>
+        )}
       </RightNav>
     </Header>
   )

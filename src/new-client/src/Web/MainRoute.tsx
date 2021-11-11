@@ -6,6 +6,11 @@ import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
 import { DisconnectionOverlay } from "@/App/DisconnectionOverlay"
 import { Tiles } from "./Tiles"
+import {
+  useTearOutTileState,
+  useTearOutAnalyticsState,
+  useTearOutTradeState,
+} from "@/Web/tearoutSections"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -36,19 +41,25 @@ const MainWrapper = styled.div`
   overflow: hidden;
 `
 
-export const MainRoute: React.FC = () => (
-  <Wrapper>
-    <DisconnectionOverlay />
-    <AppLayoutRoot data-qa="app-layout__root">
-      <Header />
-      <MainWrapper>
-        <Resizer defaultHeight={30}>
-          <Tiles />
-          <Trades />
-        </Resizer>
-        <Analytics />
-      </MainWrapper>
-      <Footer />
-    </AppLayoutRoot>
-  </Wrapper>
-)
+export const MainRoute: React.FC = () => {
+  const tearOutTileState = useTearOutTileState("Tiles")
+  const tearOutAnalyticsState = useTearOutAnalyticsState("Analytics")
+  const tearOutTradeState = useTearOutTradeState("Trade")
+
+  return (
+    <Wrapper>
+      <DisconnectionOverlay />
+      <AppLayoutRoot data-qa="app-layout__root">
+        <Header />
+        <MainWrapper>
+          <Resizer defaultHeight={30}>
+            {!tearOutTileState && <Tiles />}
+            {!tearOutTradeState && <Trades />}
+          </Resizer>
+          {!tearOutAnalyticsState && <Analytics />}
+        </MainWrapper>
+        <Footer />
+      </AppLayoutRoot>
+    </Wrapper>
+  )
+}

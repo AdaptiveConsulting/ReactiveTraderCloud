@@ -3,6 +3,23 @@ import { ExcelButton } from "./ExcelButton"
 import { AppliedFilters } from "./AppliedFilters"
 import { QuickFilter } from "./QuickFilter"
 
+import { PopOutIcon } from "@/components/icons/PopOutIcon"
+import { tearOutTrades, tearOutEntryTrades$ } from "@/Web/tearoutSections"
+import { useObservableSubscription } from "@/utils/useObservableSubscription"
+import { openWindow } from "@/Web/utils/window"
+import { constructUrl } from "@/utils/url"
+import {
+  useTearOutTileState,
+  useTearOutAnalyticsState,
+} from "@/Web/tearoutSections"
+export const HeaderAction = styled.button`
+  &:hover {
+    .tear-out-hover-state {
+      fill: #5f94f5;
+    }
+  }
+`
+
 const TradesHeaderStyle = styled("div")`
   display: flex;
   justify-content: space-between;
@@ -30,17 +47,49 @@ const HeaderToolbar = styled("div")`
   align-items: center;
   justify-content: flex-end;
 `
-
-export const TradesHeader: React.FC = () => (
-  <TradesHeaderStyle>
-    <HeaderLeftGroup>Trades</HeaderLeftGroup>
-    <HeaderRightGroup>
-      <ExcelButton />
-      <HeaderToolbar>
-        <AppliedFilters />
-        <QuickFilter />
-      </HeaderToolbar>
-      <Fill />
-    </HeaderRightGroup>
-  </TradesHeaderStyle>
-)
+var isTornOut = false
+export const TradesHeader: React.FC = () => {
+  const tearOutTileState = useTearOutTileState("Tiles")
+  const tearOutAnalyticsState = useTearOutAnalyticsState("Analytics")
+  useObservableSubscription(
+    tearOutEntryTrades$.subscribe(async ([tornOut]) => {
+      if (tornOut && !isTornOut) {
+        isTornOut = true
+        openWindow(
+          {
+            url: constructUrl("/trades"),
+            width: window.innerWidth * 0.85,
+            name: "",
+            height: window.innerHeight * 0.25,
+          },
+          () => {
+            isTornOut = false
+            tearOutTrades(false)
+          },
+        )
+      }
+    }),
+  )
+  return (
+    <TradesHeaderStyle>
+      <HeaderLeftGroup>Trades</HeaderLeftGroup>
+      <HeaderRightGroup>
+        <ExcelButton />
+        <HeaderToolbar>
+          <AppliedFilters />
+          <QuickFilter />
+        </HeaderToolbar>
+        {!isTornOut && !(tearOutTileState && tearOutAnalyticsState) && (
+          <HeaderAction
+            onClick={() => {
+              tearOutTrades(true)
+            }}
+          >
+            <PopOutIcon />
+          </HeaderAction>
+        )}
+        <Fill />
+      </HeaderRightGroup>
+    </TradesHeaderStyle>
+  )
+}

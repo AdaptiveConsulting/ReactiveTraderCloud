@@ -148,3 +148,20 @@ export const PopoutButton = styled("button")`
     }
   }
 `
+
+export const RightNav = styled.ul`
+  align-self: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style-type: none;
+  list-style: none;
+`
+
+export const HeaderAction = styled.button`
+  &:hover {
+    .tear-out-hover-state {
+      fill: #5f94f5;
+    }
+  }
+`

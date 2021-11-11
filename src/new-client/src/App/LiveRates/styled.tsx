@@ -153,3 +153,11 @@ export const DropdownOption = styled.div<{ selected: boolean }>`
     padding-left: 20px;
   }
 `
+
+export const HeaderAction = styled.button`
+  &:hover {
+    .tear-out-hover-state {
+      fill: #5f94f5;
+    }
+  }
+`
