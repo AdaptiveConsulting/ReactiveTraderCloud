@@ -40,7 +40,7 @@ const Analytics: React.FC = ({ children }) => {
         openWindow(
           {
             url: constructUrl("/analytics"),
-            width: 770,
+            width: window.innerWidth * 0.15,
             name: "",
             height: window.innerHeight,
             center: "screen",

@@ -33,7 +33,10 @@ export const WebApp: React.FC = () => (
       />
       <Route path="/tiles" render={() => <Tiles />} />
       <Route path="/trades" render={() => <Trades />} />
-      <Route path="/analytics" render={() => <Analytics />} />
+      <Route
+        path="/analytics"
+        render={() => <Analytics hideIfMatches={""} />}
+      />
     </Switch>
   </BrowserRouter>
 )
