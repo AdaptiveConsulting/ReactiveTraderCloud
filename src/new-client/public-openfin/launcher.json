@@ -1,0 +1,90 @@
+{
+  "platform": {
+    "uuid": "reactive-launcher-<ENV_NAME>",
+    "name": "Reactive Launcher<ENV_SUFFIX>",
+    "applicationIcon": "<BASE_URL>/static/media/adaptive-icon-256x256.png",
+    "defaultWindowOptions": {
+      "contextMenu": true,
+      "frame": false,
+      "url": "<BASE_URL>/openfin-sub-window-frame",
+      "permissions": {
+        "System": {
+          "launchExternalProcess": true
+        }
+      }
+    },
+    "fdc3Api": true,
+    "permissions": {
+      "System": {
+        "launchExternalProcess": true
+      }
+    }
+  },
+  "runtime": {
+    "version": "17.85.53.10",
+    "arguments": "--remote-debugging-port=9091"
+  },
+  "services": [
+    {
+      "name": "notifications",
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.12.10/app.json"
+    }
+  ],
+  "shortcut": {
+    "company": "Adaptive Consulting",
+    "icon": "<BASE_URL>/static/media/adaptive.ico",
+    "name": "Reactive Launcher<ENV_SUFFIX>"
+  },
+  "appAssets": [
+    {
+      "src": "<BASE_URL>/plugin/add-in.zip",
+      "alias": "excel-api-addin",
+      "version": "2.0.0",
+      "forceDownload": true
+    },
+    {
+      "src": "<BASE_URL>/plugin/LimitChecker.zip",
+      "alias": "LimitChecker",
+      "version": "1.6.0",
+      "target": "LimitChecker.application"
+    }
+  ],
+  "snapshot": {
+    "windows": [
+      {
+        "autoShow": true,
+        "frame": false,
+        "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
+        "preload": [
+          {
+            "url": "<BASE_URL>/plugin/service-loader.js"
+          },
+          {
+            "url": "<BASE_URL>/plugin/fin.desktop.Excel.js"
+          }
+        ],
+        "url": "<BASE_URL>/",
+        "defaultWidth": 350,
+        "defaultHeight": 56,
+        "defaultTop": 160,
+        "defaultLeft": 30,
+        "backgroundColor": "#313131",
+        "cornerRounding": {
+          "width": 4,
+          "height": 4
+        },
+        "saveWindowState": false,
+        "resizable": false,
+        "shadow": true,
+        "alwaysOnTop": true,
+        "contextMenu": true,
+        "accelerator": {
+          "devtools": true,
+          "reload": true,
+          "reloadIgnoringCache": true,
+          "zoom": true
+        }
+      }
+    ]
+  }
+}

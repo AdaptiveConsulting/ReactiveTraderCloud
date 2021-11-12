@@ -1,5 +1,5 @@
 import path, { resolve } from "path"
-import { readdirSync, statSync } from "fs"
+import { fstat, readdirSync, statSync } from "fs"
 import { defineConfig, loadEnv } from "vite"
 import reactRefresh from "@vitejs/plugin-react-refresh"
 import copy from "rollup-plugin-copy"
@@ -8,8 +8,12 @@ import typescript from "rollup-plugin-typescript2"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 
+const PORT = Number(process.env.PORT) || 1917
+
 function getBaseUrl(dev: boolean) {
-  return dev ? "http://localhost:1917" : process.env.BASE_URL || ""
+  return dev
+    ? `http://localhost:${PORT}`
+    : `${process.env.DOMAIN || ""}${process.env.URL_PATH || ""}` || ""
 }
 
 function apiMockReplacerPlugin(): Plugin {
@@ -29,6 +33,63 @@ function apiMockReplacerPlugin(): Plugin {
       // so we can load it in the load hook below
       const mockPath = `${file.dir}/${file.name}.service-mock.ts`
       return this.resolve(mockPath, importer)
+    },
+  }
+}
+
+// Replace files with .<target> if they exist
+// Note - resolveId source and importer args are different between dev and build
+// Some more investigation and work should be done to improve this when possible
+function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
+  const target = preTarget === "launcher" ? "openfin" : preTarget
+  return {
+    name: "targetBuildPlugin",
+    enforce: "pre",
+    resolveId: function (source, importer, options) {
+      if (dev) {
+        if (!source.endsWith(".ts")) return null
+
+        const file = path.parse(source)
+        const files = readdirSync("." + file.dir)
+
+        // Only continue if we can find a .<target>.ts file
+        if (!files.includes(`${file.name}.${target}.ts`)) return null
+
+        const mockPath = `${file.dir}/${file.name}.${target}.ts`
+        return this.resolve(mockPath, importer)
+      } else {
+        const rootPrefix = "new-client/src/"
+        const thisImporter = (importer || "").replace(/\\/g, "/")
+        if (
+          !importer ||
+          !thisImporter.includes(rootPrefix) ||
+          source === "./main"
+        ) {
+          return null
+        }
+
+        const importedFile = path.parse(source)
+        const importerFile = path.parse(thisImporter)
+        const candidate = path.join(
+          // If imported file starts with /src we can not append it to importer dir
+          // so we need to strip the path by the rootPrefix first
+          importedFile.dir.startsWith("/src") &&
+            importerFile.dir.includes(rootPrefix)
+            ? `${importerFile.dir.split(rootPrefix)[0]}/new-client`
+            : importerFile.dir,
+          importedFile.dir,
+          `${importedFile.name}.${target.toLowerCase()}.ts`,
+        )
+
+        try {
+          statSync(candidate)
+          console.log("candidate good", candidate)
+          return candidate
+        } catch (e) {
+          // console.log("Error with candidate", candidate, e)
+          return null
+        }
+      }
     },
   }
 }
@@ -67,7 +128,7 @@ const customPreloadPlugin = () => {
   const result: any = {
     ...((modulepreload as any)({
       index: resolve(__dirname, "dist", "index.html"),
-      prefix: process.env.BASE_URL || "",
+      prefix: getBaseUrl(false) || "",
     }) as any),
     enforce: "post",
   }
@@ -86,32 +147,35 @@ const typescriptPlugin = {
   enforce: "pre",
 }
 
-const copyOpenfinPlugin = (dev: boolean) => ({
-  ...copy({
-    targets: [
-      {
-        src: "./public-openfin/*",
-        dest: "./dist/config",
-        transform: (contents) =>
-          contents
-            .toString()
-            .replace(/<BASE_URL>/g, getBaseUrl(dev))
-            .replace(/<ENV_NAME>/g, process.env.ENVIRONMENT || "local")
-            .replace(
-              /<ENV_SUFFIX>/g,
-              process.env.ENVIRONMENT
-                ? process.env.ENVIRONMENT.toUpperCase()
-                : "LOCAL",
-            ),
-      },
-    ],
-    verbose: true,
-    // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
-    // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
-    // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
-    hook: dev ? "buildStart" : "writeBundle",
-  }),
-})
+const copyOpenfinPlugin = (dev: boolean, target: "openfin" | "launcher") => {
+  const env = process.env.ENVIRONMENT || "local"
+  return {
+    ...copy({
+      targets: [
+        {
+          src: `./public-openfin/${
+            target === "launcher" ? "launcher.json" : "app.json"
+          }`,
+          dest: "./dist/config",
+          transform: (contents) =>
+            contents
+              .toString()
+              .replace(/<BASE_URL>/g, getBaseUrl(dev))
+              .replace(/<ENV_NAME>/g, env)
+              .replace(
+                /<ENV_SUFFIX>/g,
+                env === "prod" ? "" : env.toUpperCase(),
+              ),
+        },
+      ],
+      verbose: true,
+      // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
+      // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
+      // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
+      hook: dev ? "buildStart" : "writeBundle",
+    }),
+  }
+}
 
 const copyWebManifestPlugin = (dev: boolean) => {
   const envSuffix = (process.env.ENVIRONMENT || "local").toUpperCase()
@@ -184,8 +248,8 @@ const setConfig = ({ mode }) => {
     plugins.push(injectWebServiceWorkerPlugin(mode))
   }
 
-  if (TARGET === "openfin") {
-    plugins.push(copyOpenfinPlugin(isDev))
+  if (TARGET === "openfin" || TARGET === "launcher") {
+    plugins.push(copyOpenfinPlugin(isDev, TARGET))
   }
 
   if (process.env.VITE_MOCKS) {
@@ -193,11 +257,12 @@ const setConfig = ({ mode }) => {
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
+  plugins.unshift(targetBuildPlugin(isDev, TARGET))
   plugins.push(copyWebManifestPlugin(mode === "development"))
   plugins.push(htmlPlugin(isDev))
 
   return defineConfig({
-    base: process.env.BASE_URL || "/",
+    base: isDev ? "/" : getBaseUrl(false),
     define: {
       __TARGET__: JSON.stringify(TARGET),
     },
@@ -208,7 +273,7 @@ const setConfig = ({ mode }) => {
       sourcemap: true,
     },
     server: {
-      port: 1917,
+      port: PORT,
       proxy: !process.env.VITE_MOCKS && {
         "/ws": {
           // To test local execution of nginx gateway in Docker,

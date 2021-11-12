@@ -8,7 +8,7 @@ const User: React.FC = () => {
   return (
     <UserWrapper>
       <UserContainer>
-        <UserAvatar src={user.avatar} />
+        <UserAvatar src={user.avatar} alt={`${user.code}'s avatar`} />
         {user.code}
       </UserContainer>
     </UserWrapper>

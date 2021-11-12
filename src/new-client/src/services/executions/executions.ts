@@ -1,10 +1,11 @@
-import { race, Subject, timer } from "rxjs"
-import { delay, map, mapTo, tap } from "rxjs/operators"
+import { of, race, Subject, timer } from "rxjs"
+import { delay, map, mapTo, mergeMap, tap } from "rxjs/operators"
 import {
   ExecutionRequest,
   ExecutionTrade,
   ExecutionStatus,
   TimeoutExecution,
+  CreditExceededExecution,
 } from "./types"
 import {
   ExecuteTradeRequest,
@@ -12,11 +13,8 @@ import {
   ExecutionResponse,
 } from "@/generated/TradingGateway"
 import { TradeStatus } from "../trades"
-import {
-  EXECUTION_DELAY_VALUE,
-  DELAYED_CURRENCY,
-  EXECUTION_TIMEOUT_VALUE,
-} from "@/services/executions/constants"
+import { EXECUTION_TIMEOUT_VALUE } from "@/services/executions/constants"
+import { checkLimit$ } from "../limitChecker/limitChecker"
 
 const mapExecutionToPayload = (e: ExecutionRequest): ExecuteTradeRequest => {
   return {
@@ -53,13 +51,27 @@ const executionsSubject = new Subject<ExecutionTrade>()
 
 export const execute$ = (execution: ExecutionRequest) =>
   race([
-    ExecutionService.executeTrade(mapExecutionToPayload(execution)).pipe(
-      delay(
-        execution.currencyPair === DELAYED_CURRENCY ? EXECUTION_DELAY_VALUE : 0,
-      ),
-      map(mapResponseToTrade(execution.id)),
-      tap((value) => {
-        executionsSubject.next(value)
+    checkLimit$({
+      tradedCurrencyPair: execution.currencyPair,
+      notional: execution.notional,
+      rate: execution.spotRate,
+    }).pipe(
+      mergeMap((tradeWithinLimit) => {
+        if (!tradeWithinLimit) {
+          return of({
+            ...execution,
+            status: ExecutionStatus.CreditExceeded,
+          } as CreditExceededExecution)
+        }
+
+        return ExecutionService.executeTrade(
+          mapExecutionToPayload(execution),
+        ).pipe(
+          map(mapResponseToTrade(execution.id)),
+          tap((value) => {
+            executionsSubject.next(value)
+          }),
+        )
       }),
     ),
     timer(EXECUTION_TIMEOUT_VALUE).pipe(

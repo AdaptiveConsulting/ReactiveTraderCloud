@@ -1,14 +1,14 @@
 import { TileView } from "@/App/LiveRates/selectedView"
-import { BASE_URL } from "@/constants"
+import { BASE_PATH } from "@/constants"
+import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { MainRoute } from "./MainRoute"
-import { TornOutTile } from "./Tiles"
 import { TearOutRouteWrapper } from "./Web.styles"
-import { Tiles } from "./Tiles"
 import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
+import { LiveRates } from "@/App/LiveRates"
 export const WebApp: React.FC = () => (
-  <BrowserRouter basename={BASE_URL}>
+  <BrowserRouter basename={BASE_PATH}>
     <Switch>
       <Route exact path="/" render={() => <MainRoute />} />
       <Route
@@ -31,7 +31,7 @@ export const WebApp: React.FC = () => (
           )
         }}
       />
-      <Route path="/tiles" render={() => <Tiles />} />
+      <Route path="/liverates" render={() => <LiveRates />} />
       <Route path="/trades" render={() => <Trades />} />
       <Route
         path="/analytics"

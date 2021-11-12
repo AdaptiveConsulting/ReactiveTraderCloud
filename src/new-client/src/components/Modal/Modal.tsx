@@ -14,7 +14,6 @@ interface Props {
 }
 
 // TODO disable tabbing outside of the modal
-// tslint:disable-next-line:variable-name
 export const Modal: FC<Props> = ({
   shouldShow,
   title,
@@ -22,7 +21,7 @@ export const Modal: FC<Props> = ({
   onOverlayClick,
 }) => {
   if (!shouldShow) {
-    return <></>
+    return null
   }
   return (
     <ModalContainer>

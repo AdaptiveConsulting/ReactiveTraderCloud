@@ -59,7 +59,7 @@ export const Version: FC = () => {
   return (
     <Wrapper>
       {gitResource ? (
-        <Link target="_blank" href={gitResource}>
+        <Link target="_blank" href={gitResource} rel="noreferrer">
           {buildIdentifier}
         </Link>
       ) : (

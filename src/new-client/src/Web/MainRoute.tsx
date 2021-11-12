@@ -5,12 +5,15 @@ import { Footer } from "@/App/Footer"
 import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
 import { DisconnectionOverlay } from "@/App/DisconnectionOverlay"
-import { Tiles } from "./Tiles"
+import { LiveRates } from "@/App/LiveRates"
+import { useEffect } from "react"
+
 import {
-  useTearOutTileState,
-  useTearOutAnalyticsState,
-  useTearOutTradeState,
-} from "@/Web/tearoutSections"
+  useTearOutSectionEntry,
+  useTearOutTileState$,
+} from "@/Web/TearOutSection/state"
+
+import { handleTearOutSection } from "@/Web/TearOutSection/handleTearOutSection"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -42,9 +45,24 @@ const MainWrapper = styled.div`
 `
 
 export const MainRoute: React.FC = () => {
-  const tearOutTileState = useTearOutTileState("Tiles")
-  const tearOutAnalyticsState = useTearOutAnalyticsState("Analytics")
-  const tearOutTradeState = useTearOutTradeState("Trade")
+  const tearOutTileState = useTearOutTileState$("liverates")
+  const tearOutAnalyticsState = useTearOutTileState$("analytics")
+  const tearOutTradeState = useTearOutTileState$("trades")
+
+  useEffect(() => {
+    console.log("tile", tearOutTileState)
+  }, [tearOutTileState])
+
+  const tearOutEntry = useTearOutSectionEntry()
+
+  useEffect(() => {
+    if (tearOutEntry) {
+      const [tornOut, section] = tearOutEntry
+      if (tornOut) {
+        handleTearOutSection(section)
+      }
+    }
+  }, [tearOutEntry])
 
   return (
     <Wrapper>
@@ -53,7 +71,7 @@ export const MainRoute: React.FC = () => {
         <Header />
         <MainWrapper>
           <Resizer defaultHeight={30}>
-            {!tearOutTileState && <Tiles />}
+            {!tearOutTileState && <LiveRates />}
             {!tearOutTradeState && <Trades />}
           </Resizer>
           {!tearOutAnalyticsState && <Analytics />}

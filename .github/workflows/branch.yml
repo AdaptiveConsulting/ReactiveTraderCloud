@@ -13,6 +13,7 @@ env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
+  BUCKET_LAUNCHER: reactive-trader-launcher-builds
   VITE_HYDRA_URL: wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com
 
 jobs:
@@ -58,7 +59,8 @@ jobs:
 
       - name: Build (web)
         env:
-          BASE_URL: ${{ steps.vars.outputs.URL_SUFFIX }}
+          DOMAIN: https://web.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run build
@@ -72,7 +74,8 @@ jobs:
 
       - name: Build (OpenFin)
         env:
-          BASE_URL: https://openfin.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com${{ steps.vars.outputs.URL_SUFFIX }}
+          DOMAIN: https://openfin.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run openfin:build
@@ -86,7 +89,8 @@ jobs:
 
       - name: Build (Finsemble)
         env:
-          BASE_URL: ${{ steps.vars.outputs.URL_SUFFIX }}
+          DOMAIN: https://finsemble.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run finsemble:build
@@ -97,3 +101,18 @@ jobs:
             -h "Cache-Control: no-cache" \
             rsync -d -r dist \
             gs://$BUCKET_FINSEMBLE/branch/${{ steps.vars.outputs.branch }}
+
+      - name: Build (Launcher)
+        env:
+          DOMAIN: https://launcher.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
+        run: npm run launcher:build
+
+      - name: Deploy (Launcher)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_LAUNCHER/branch/${{ steps.vars.outputs.branch }}

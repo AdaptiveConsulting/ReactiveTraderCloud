@@ -41,6 +41,7 @@ export enum TileStates {
   TooLong,
   Timeout,
   Finished,
+  CreditExceeded,
 }
 
 interface NoTradeState {
@@ -49,6 +50,7 @@ interface NoTradeState {
     | TileStates.Started
     | TileStates.TooLong
     | TileStates.Timeout
+    | TileStates.CreditExceeded
   trade?: undefined
 }
 
@@ -63,6 +65,7 @@ const READY: NoTradeState = { status: TileStates.Ready }
 const STARTED: NoTradeState = { status: TileStates.Started }
 const TOO_LONG: NoTradeState = { status: TileStates.TooLong }
 const TIMEOUT: NoTradeState = { status: TileStates.Timeout }
+const CREDIT_EXCEEDED: NoTradeState = { status: TileStates.CreditExceeded }
 
 let nextId = 1
 const getId = () => (nextId++).toString()
@@ -101,6 +104,8 @@ export const [useTileState, getTileState$] = bind(
             map((trade) =>
               trade.status === ExecutionStatus.Timeout
                 ? TIMEOUT
+                : trade.status === ExecutionStatus.CreditExceeded
+                ? CREDIT_EXCEEDED
                 : { status: TileStates.Finished as const, trade },
             ),
             emitTooLongMessage(TAKING_TOO_LONG, TOO_LONG),

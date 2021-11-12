@@ -13,6 +13,7 @@ env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
+  BUCKET_LAUNCHER: reactive-trader-launcher-builds
   VITE_HYDRA_URL: wss://trading-web-gateway-rt-prod.demo.hydra.weareadaptive.com
   ENVIRONMENT: prod
 
@@ -52,7 +53,7 @@ jobs:
 
       - name: Build (web)
         env:
-          BASE_URL: /tag/${{ steps.vars.outputs.tag }}
+          DOMAIN: https://web.prod.reactivetrader.com
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
         run: npm run build
 
@@ -65,9 +66,8 @@ jobs:
 
       - name: Build (OpenFin)
         env:
-          BASE_URL: https://openfin.prod.reactivetrader.com
+          DOMAIN: https://openfin.prod.reactivetrader.com
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
-          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run openfin:build
 
       - name: Deploy (OpenFin)
@@ -79,7 +79,7 @@ jobs:
 
       - name: Build (Finsemble)
         env:
-          BASE_URL: /tag/${{ steps.vars.outputs.tag }}
+          DOMAIN: https://finsemble.prod.reactivetrader.com
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
         run: npm run finsemble:build
 
@@ -89,3 +89,16 @@ jobs:
             -h "Cache-Control: no-cache" \
             rsync -d -r dist \
             gs://$BUCKET_FINSEMBLE/tag/${{ steps.vars.outputs.tag }}
+
+      - name: Build (Launcher)
+        env:
+          DOMAIN: https://launcher.prod.reactivetrader.com
+          VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
+        run: npm run launcher:build
+
+      - name: Deploy (Launcher)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_LAUNCHER/tag/${{ steps.vars.outputs.tag }}

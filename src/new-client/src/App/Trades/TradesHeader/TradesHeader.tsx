@@ -4,14 +4,10 @@ import { AppliedFilters } from "./AppliedFilters"
 import { QuickFilter } from "./QuickFilter"
 
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
-import { tearOutTrades, tearOutEntryTrades$ } from "@/Web/tearoutSections"
-import { useObservableSubscription } from "@/utils/useObservableSubscription"
-import { openWindow } from "@/Web/utils/window"
+
+import { tearOutSection } from "@/Web/TearOutSection/state"
+
 import { constructUrl } from "@/utils/url"
-import {
-  useTearOutTileState,
-  useTearOutAnalyticsState,
-} from "@/Web/tearoutSections"
 export const HeaderAction = styled.button`
   &:hover {
     .tear-out-hover-state {
@@ -49,27 +45,6 @@ const HeaderToolbar = styled("div")`
 `
 var isTornOut = false
 export const TradesHeader: React.FC = () => {
-  const tearOutTileState = useTearOutTileState("Tiles")
-  const tearOutAnalyticsState = useTearOutAnalyticsState("Analytics")
-  useObservableSubscription(
-    tearOutEntryTrades$.subscribe(async ([tornOut]) => {
-      if (tornOut && !isTornOut) {
-        isTornOut = true
-        openWindow(
-          {
-            url: constructUrl("/trades"),
-            width: window.innerWidth * 0.85,
-            name: "",
-            height: window.innerHeight * 0.25,
-          },
-          () => {
-            isTornOut = false
-            tearOutTrades(false)
-          },
-        )
-      }
-    }),
-  )
   return (
     <TradesHeaderStyle>
       <HeaderLeftGroup>Trades</HeaderLeftGroup>
@@ -79,10 +54,10 @@ export const TradesHeader: React.FC = () => {
           <AppliedFilters />
           <QuickFilter />
         </HeaderToolbar>
-        {!isTornOut && !(tearOutTileState && tearOutAnalyticsState) && (
+        {!isTornOut && (
           <HeaderAction
             onClick={() => {
-              tearOutTrades(true)
+              tearOutSection(true, "trades")
             }}
           >
             <PopOutIcon />

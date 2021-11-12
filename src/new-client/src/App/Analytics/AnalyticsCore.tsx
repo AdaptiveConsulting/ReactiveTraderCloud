@@ -15,15 +15,10 @@ import { isAnalyticsDataStale$ } from "@/services/analytics"
 
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import styled from "styled-components"
-import { tearOutAnalytics, tearOutEntryAnalytics$ } from "@/Web/tearoutSections"
-import { useObservableSubscription } from "@/utils/useObservableSubscription"
-import { openWindow } from "@/Web/utils/window"
+// import { useObservableSubscription } from "@/utils/useObservableSubscription"
+// import { openWindow } from "@/Web/utils/window"
 import { constructUrl } from "@/utils/url"
-
-import {
-  useTearOutTileState,
-  useTearOutTradeState,
-} from "@/Web/tearoutSections"
+import { tearOutSection } from "@/Web/TearOutSection/state"
 
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 
@@ -31,29 +26,6 @@ const SuspenseOnStaleData = createSuspenseOnStale(isAnalyticsDataStale$)
 
 var isTornOut = false
 const Analytics: React.FC = ({ children }) => {
-  const tearOutTradeState = useTearOutTradeState("Trade")
-  const tearOutTileState = useTearOutTileState("Analytics")
-  useObservableSubscription(
-    tearOutEntryAnalytics$.subscribe(async ([tornOut]) => {
-      if (tornOut && !isTornOut) {
-        isTornOut = true
-        openWindow(
-          {
-            url: constructUrl("/analytics"),
-            width: window.innerWidth * 0.15,
-            name: "",
-            height: window.innerHeight,
-            center: "screen",
-          },
-          () => {
-            isTornOut = false
-            tearOutAnalytics(false)
-          },
-        )
-      }
-    }),
-  )
-
   return (
     <Subscribe source$={analytics$} fallback={children}>
       <SuspenseOnStaleData />
@@ -61,10 +33,10 @@ const Analytics: React.FC = ({ children }) => {
         <AnalyticsHeader>
           Analytics
           <RightNav>
-            {!isTornOut && !(tearOutTileState && tearOutTradeState) && (
+            {!isTornOut && (
               <HeaderAction
                 onClick={() => {
-                  tearOutAnalytics(true)
+                  tearOutSection(true, "analytics")
                 }}
               >
                 <PopOutIcon />
