@@ -8,17 +8,16 @@ import {
   AnalyticsHeader,
   AnalyticsInnerWrapper,
   RightNav,
-  HeaderAction,
 } from "./styled"
 import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 import { isAnalyticsDataStale$ } from "@/services/analytics"
 
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import styled from "styled-components"
-// import { useObservableSubscription } from "@/utils/useObservableSubscription"
-// import { openWindow } from "@/Web/utils/window"
-import { constructUrl } from "@/utils/url"
+import { supportsTearOut } from "@/Web/TearOutSection/supportsTearOut"
+import { PopInIcon } from "@/components/icons/PopInIcon"
 import { tearOutSection } from "@/Web/TearOutSection/state"
+import { HeaderAction } from "@/components/styled"
 
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 
@@ -33,13 +32,13 @@ const Analytics: React.FC = ({ children }) => {
         <AnalyticsHeader>
           Analytics
           <RightNav>
-            {!isTornOut && (
+            {supportsTearOut && !isTornOut && (
               <HeaderAction
                 onClick={() => {
                   tearOutSection(true, "analytics")
                 }}
               >
-                <PopOutIcon />
+                {isTornOut ? <PopInIcon /> : <PopOutIcon />}
               </HeaderAction>
             )}
           </RightNav>

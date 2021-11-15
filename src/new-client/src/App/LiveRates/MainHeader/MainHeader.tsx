@@ -5,7 +5,6 @@ import {
   NavItem,
   RightNav,
   LeftNavTitle,
-  HeaderAction,
 } from "../styled"
 import {
   useSelectedCurrency,
@@ -22,8 +21,15 @@ import { map } from "rxjs/operators"
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import { tearOutSection } from "@/Web/TearOutSection/state"
 
-import { constructUrl } from "@/utils/url"
+import { supportsTearOut } from "@/Web/TearOutSection/supportsTearOut"
+import { PopInIcon } from "@/components/icons/PopInIcon"
+import { HeaderAction } from "@/components/styled"
 
+import {
+  useTearOutSectionEntry,
+  useTearOutSectionState$,
+} from "@/Web/TearOutSection/state"
+import { useEffect } from "react"
 const [useCurrencies, mainHeader$] = bind(
   currencyPairs$.pipe(
     map((currencyPairs) => [
@@ -41,6 +47,11 @@ export const MainHeader: React.FC = () => {
   const currency = useSelectedCurrency()
 
   const options = [ALL_CURRENCIES as AllCurrencies, ...currencies]
+  const tearOutTileState = useTearOutSectionState$("liverates")
+
+  useEffect(() => {
+    console.log("component", tearOutTileState)
+  }, [tearOutTileState])
 
   return (
     <Header>
@@ -68,9 +79,10 @@ export const MainHeader: React.FC = () => {
           onSelectionChange={onSelectCurrency}
         />
         <ToggleView />
-        {!isTornOut && (
+        {supportsTearOut && !isTornOut && (
           <HeaderAction onClick={() => tearOutSection(true, "liverates")}>
-            <PopOutIcon />
+            {/*en comptes de true !isTOrnOut2 */}
+            {isTornOut ? <PopInIcon /> : <PopOutIcon />}
           </HeaderAction>
         )}
       </RightNav>

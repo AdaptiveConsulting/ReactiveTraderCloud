@@ -6,15 +6,10 @@ import { QuickFilter } from "./QuickFilter"
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
 
 import { tearOutSection } from "@/Web/TearOutSection/state"
-
+import { supportsTearOut } from "@/Web/TearOutSection/supportsTearOut"
+import { PopInIcon } from "@/components/icons/PopInIcon"
 import { constructUrl } from "@/utils/url"
-export const HeaderAction = styled.button`
-  &:hover {
-    .tear-out-hover-state {
-      fill: #5f94f5;
-    }
-  }
-`
+import { HeaderAction } from "@/components/styled"
 
 const TradesHeaderStyle = styled("div")`
   display: flex;
@@ -54,13 +49,13 @@ export const TradesHeader: React.FC = () => {
           <AppliedFilters />
           <QuickFilter />
         </HeaderToolbar>
-        {!isTornOut && (
+        {supportsTearOut && !isTornOut && (
           <HeaderAction
             onClick={() => {
               tearOutSection(true, "trades")
             }}
           >
-            <PopOutIcon />
+            {isTornOut ? <PopInIcon /> : <PopOutIcon />}
           </HeaderAction>
         )}
         <Fill />

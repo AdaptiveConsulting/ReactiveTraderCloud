@@ -10,7 +10,7 @@ import { useEffect } from "react"
 
 import {
   useTearOutSectionEntry,
-  useTearOutTileState$,
+  useTearOutSectionState$,
 } from "@/Web/TearOutSection/state"
 
 import { handleTearOutSection } from "@/Web/TearOutSection/handleTearOutSection"
@@ -45,14 +45,9 @@ const MainWrapper = styled.div`
 `
 
 export const MainRoute: React.FC = () => {
-  const tearOutTileState = useTearOutTileState$("liverates")
-  const tearOutAnalyticsState = useTearOutTileState$("analytics")
-  const tearOutTradeState = useTearOutTileState$("trades")
-
-  useEffect(() => {
-    console.log("tile", tearOutTileState)
-  }, [tearOutTileState])
-
+  const tearOutTileState = useTearOutSectionState$("liverates")
+  const tearOutAnalyticsState = useTearOutSectionState$("analytics")
+  const tearOutTradeState = useTearOutSectionState$("trades")
   const tearOutEntry = useTearOutSectionEntry()
 
   useEffect(() => {
