@@ -25,10 +25,7 @@ import { supportsTearOut } from "@/Web/TearOutSection/supportsTearOut"
 import { PopInIcon } from "@/components/icons/PopInIcon"
 import { HeaderAction } from "@/components/styled"
 
-import {
-  useTearOutSectionEntry,
-  useTearOutSectionState$,
-} from "@/Web/TearOutSection/state"
+import { useTearOutSectionState$ } from "@/Web/TearOutSection/state"
 import { useEffect } from "react"
 const [useCurrencies, mainHeader$] = bind(
   currencyPairs$.pipe(
@@ -47,11 +44,10 @@ export const MainHeader: React.FC = () => {
   const currency = useSelectedCurrency()
 
   const options = [ALL_CURRENCIES as AllCurrencies, ...currencies]
-  const tearOutTileState = useTearOutSectionState$("liverates")
 
-  useEffect(() => {
-    console.log("component", tearOutTileState)
-  }, [tearOutTileState])
+  const tearOutTileState = useTearOutSectionState$("liverates")
+  const tearOutAnalyticsState = useTearOutSectionState$("analytics")
+  const tearOutTradeState = useTearOutSectionState$("trades")
 
   return (
     <Header>

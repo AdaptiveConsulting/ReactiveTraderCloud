@@ -8,8 +8,9 @@ import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import { tearOutSection } from "@/Web/TearOutSection/state"
 import { supportsTearOut } from "@/Web/TearOutSection/supportsTearOut"
 import { PopInIcon } from "@/components/icons/PopInIcon"
-import { constructUrl } from "@/utils/url"
+import { useTearOutSectionState$ } from "@/Web/TearOutSection/state"
 import { HeaderAction } from "@/components/styled"
+import { useEffect } from "react"
 
 const TradesHeaderStyle = styled("div")`
   display: flex;
@@ -40,6 +41,14 @@ const HeaderToolbar = styled("div")`
 `
 var isTornOut = false
 export const TradesHeader: React.FC = () => {
+  const tearOutTileState = useTearOutSectionState$("liverates")
+  const tearOutAnalyticsState = useTearOutSectionState$("analytics")
+  const tearOutTradeState = useTearOutSectionState$("trades")
+
+  useEffect(() => {
+    console.log("trade tearout in mainroute", tearOutTradeState)
+  }, [tearOutTradeState])
+
   return (
     <TradesHeaderStyle>
       <HeaderLeftGroup>Trades</HeaderLeftGroup>
