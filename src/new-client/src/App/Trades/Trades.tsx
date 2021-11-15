@@ -14,7 +14,7 @@ const TradesWrapper = styled.article`
 `
 
 trades$.subscribe()
-export const Trades: React.FC = () => (
+export const Trades: React.FC = (tornOut) => (
   <TradesWrapper>
     <Suspense fallback={<Loader />}>
       <TradesCore />

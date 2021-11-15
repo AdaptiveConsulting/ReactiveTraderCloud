@@ -59,12 +59,6 @@ export const MainRoute: React.FC = () => {
     }
   }, [tearOutEntry])
 
-  useEffect(() => {
-    // console.log("tile tearout in mainroute",tearOutTileState)
-    // console.log("analytics tearout in mainroute",tearOutAnalyticsState)
-    console.log("trade tearout in mainroute", tearOutTradeState)
-  }, [tearOutTileState, tearOutAnalyticsState, tearOutTradeState])
-
   return (
     <Wrapper>
       <DisconnectionOverlay />

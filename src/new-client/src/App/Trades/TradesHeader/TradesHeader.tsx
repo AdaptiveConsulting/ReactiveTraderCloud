@@ -2,15 +2,8 @@ import styled from "styled-components"
 import { ExcelButton } from "./ExcelButton"
 import { AppliedFilters } from "./AppliedFilters"
 import { QuickFilter } from "./QuickFilter"
-
-import { PopOutIcon } from "@/components/icons/PopOutIcon"
-
-import { tearOutSection } from "@/Web/TearOutSection/state"
 import { supportsTearOut } from "@/Web/TearOutSection/supportsTearOut"
-import { PopInIcon } from "@/components/icons/PopInIcon"
-import { useTearOutSectionState$ } from "@/Web/TearOutSection/state"
-import { HeaderAction } from "@/components/styled"
-import { useEffect } from "react"
+import { TearOutComponent } from "@/Web/TearOutSection/TearOutComponent"
 
 const TradesHeaderStyle = styled("div")`
   display: flex;
@@ -39,16 +32,7 @@ const HeaderToolbar = styled("div")`
   align-items: center;
   justify-content: flex-end;
 `
-var isTornOut = false
 export const TradesHeader: React.FC = () => {
-  const tearOutTileState = useTearOutSectionState$("liverates")
-  const tearOutAnalyticsState = useTearOutSectionState$("analytics")
-  const tearOutTradeState = useTearOutSectionState$("trades")
-
-  useEffect(() => {
-    console.log("trade tearout in mainroute", tearOutTradeState)
-  }, [tearOutTradeState])
-
   return (
     <TradesHeaderStyle>
       <HeaderLeftGroup>Trades</HeaderLeftGroup>
@@ -58,15 +42,7 @@ export const TradesHeader: React.FC = () => {
           <AppliedFilters />
           <QuickFilter />
         </HeaderToolbar>
-        {supportsTearOut && !isTornOut && (
-          <HeaderAction
-            onClick={() => {
-              tearOutSection(true, "trades")
-            }}
-          >
-            {isTornOut ? <PopInIcon /> : <PopOutIcon />}
-          </HeaderAction>
-        )}
+        {supportsTearOut && <TearOutComponent section="trades" />}
         <Fill />
       </HeaderRightGroup>
     </TradesHeaderStyle>

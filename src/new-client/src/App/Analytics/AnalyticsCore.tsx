@@ -11,24 +11,13 @@ import {
 } from "./styled"
 import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 import { isAnalyticsDataStale$ } from "@/services/analytics"
-
-import { PopOutIcon } from "@/components/icons/PopOutIcon"
-import { useTearOutSectionState$ } from "@/Web/TearOutSection/state"
 import { supportsTearOut } from "@/Web/TearOutSection/supportsTearOut"
-import { PopInIcon } from "@/components/icons/PopInIcon"
-import { tearOutSection } from "@/Web/TearOutSection/state"
-import { HeaderAction } from "@/components/styled"
-
+import { TearOutComponent } from "@/Web/TearOutSection/TearOutComponent"
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 
 const SuspenseOnStaleData = createSuspenseOnStale(isAnalyticsDataStale$)
 
-var isTornOut = false
 const Analytics: React.FC = ({ children }) => {
-  const tearOutTileState = useTearOutSectionState$("liverates")
-  const tearOutAnalyticsState = useTearOutSectionState$("analytics")
-  const tearOutTradeState = useTearOutSectionState$("trades")
-
   return (
     <Subscribe source$={analytics$} fallback={children}>
       <SuspenseOnStaleData />
@@ -36,15 +25,7 @@ const Analytics: React.FC = ({ children }) => {
         <AnalyticsHeader>
           Analytics
           <RightNav>
-            {supportsTearOut && !isTornOut && (
-              <HeaderAction
-                onClick={() => {
-                  tearOutSection(true, "analytics")
-                }}
-              >
-                {isTornOut ? <PopInIcon /> : <PopOutIcon />}
-              </HeaderAction>
-            )}
+            {supportsTearOut && <TearOutComponent section="analytics" />}
           </RightNav>
         </AnalyticsHeader>
         <AnalyticsStyle

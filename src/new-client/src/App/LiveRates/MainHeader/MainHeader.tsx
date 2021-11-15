@@ -17,16 +17,9 @@ import { CurrencyOptions } from "./CurrencyOptions"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
-
-import { PopOutIcon } from "@/components/icons/PopOutIcon"
-import { tearOutSection } from "@/Web/TearOutSection/state"
-
 import { supportsTearOut } from "@/Web/TearOutSection/supportsTearOut"
-import { PopInIcon } from "@/components/icons/PopInIcon"
-import { HeaderAction } from "@/components/styled"
+import { TearOutComponent } from "@/Web/TearOutSection/TearOutComponent"
 
-import { useTearOutSectionState$ } from "@/Web/TearOutSection/state"
-import { useEffect } from "react"
 const [useCurrencies, mainHeader$] = bind(
   currencyPairs$.pipe(
     map((currencyPairs) => [
@@ -37,17 +30,12 @@ const [useCurrencies, mainHeader$] = bind(
   ),
 )
 
-var isTornOut = false
 export { mainHeader$ }
 export const MainHeader: React.FC = () => {
   const currencies = useCurrencies()
   const currency = useSelectedCurrency()
 
   const options = [ALL_CURRENCIES as AllCurrencies, ...currencies]
-
-  const tearOutTileState = useTearOutSectionState$("liverates")
-  const tearOutAnalyticsState = useTearOutSectionState$("analytics")
-  const tearOutTradeState = useTearOutSectionState$("trades")
 
   return (
     <Header>
@@ -75,12 +63,7 @@ export const MainHeader: React.FC = () => {
           onSelectionChange={onSelectCurrency}
         />
         <ToggleView />
-        {supportsTearOut && !isTornOut && (
-          <HeaderAction onClick={() => tearOutSection(true, "liverates")}>
-            {/*en comptes de true !isTOrnOut2 */}
-            {isTornOut ? <PopInIcon /> : <PopOutIcon />}
-          </HeaderAction>
-        )}
+        {supportsTearOut && <TearOutComponent section="liverates" />}
       </RightNav>
     </Header>
   )
