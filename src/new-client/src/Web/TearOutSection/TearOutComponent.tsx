@@ -14,7 +14,7 @@ export const TearOutComponent: React.FC<{ section: string }> = ({
   var context = TornOutTileContext
   if (section === "trades") {
     context = TornOutTradeContext
-  } else {
+  } else if (section === "analytics") {
     context = TornOutAnalyticsContext
   }
   return (
