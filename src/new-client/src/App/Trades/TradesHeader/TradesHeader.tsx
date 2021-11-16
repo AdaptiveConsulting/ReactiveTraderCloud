@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { ExcelButton } from "./ExcelButton"
 import { AppliedFilters } from "./AppliedFilters"
 import { QuickFilter } from "./QuickFilter"
-import { supportsTearOut } from "@/App/supportsTearOut"
+import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
 
 const TradesHeaderStyle = styled("div")`

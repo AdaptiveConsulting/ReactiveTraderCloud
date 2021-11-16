@@ -11,7 +11,7 @@ import {
 } from "./styled"
 import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 import { isAnalyticsDataStale$ } from "@/services/analytics"
-import { supportsTearOut } from "@/App/supportsTearOut"
+import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 
