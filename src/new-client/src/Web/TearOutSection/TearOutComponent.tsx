@@ -2,10 +2,12 @@ import { HeaderTearOutAction } from "@/components/headerActionStyles"
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import { tearOutSection } from "@/Web/TearOutSection/state"
 import { PopInIcon } from "@/components/icons/PopInIcon"
-import { TearOutContext } from "@/components/tearOutContext"
+import { TearOutContext } from "@/App/TearOutSection/tearOutContext"
 import { useContext } from "react"
+import { closeWindow } from "@/utils/window/closeWindow"
+import { Section } from "./state"
 
-export const TearOutComponent: React.FC<{ section: string }> = ({
+export const TearOutComponent: React.FC<{ section: Section }> = ({
   section,
 }) => {
   const tearOutContext = useContext(TearOutContext)
@@ -13,7 +15,7 @@ export const TearOutComponent: React.FC<{ section: string }> = ({
     <HeaderTearOutAction
       onClick={() =>
         tearOutContext.isTornOut
-          ? window.close()
+          ? closeWindow()
           : tearOutSection(!tearOutContext.isTornOut, section)
       }
     >

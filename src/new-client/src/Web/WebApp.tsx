@@ -7,7 +7,7 @@ import { TearOutRouteWrapper } from "./Web.styles"
 import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
-import { TearOutContext } from "../components/tearOutContext"
+import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 
 export const WebApp: React.FC = () => (
   <BrowserRouter basename={BASE_PATH}>
