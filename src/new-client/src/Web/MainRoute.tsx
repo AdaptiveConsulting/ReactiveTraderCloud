@@ -43,7 +43,6 @@ const MainWrapper = styled.div`
 
 export const MainRoute: React.FC = () => {
   const tearOutEntry = useTearOutSectionEntry()
-
   const [tornOutSectionState, setTornOutSectionState] = useState({
     liverates: false,
     trades: false,
