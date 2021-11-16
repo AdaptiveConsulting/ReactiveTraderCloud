@@ -17,15 +17,15 @@ export const [useTearOutSectionEntry] = bind<TearOutSectionEntry | null>(
 
 export const sectionConfig = {
   liverates: {
-    width: 1600,
-    height: 800,
+    width: window.innerWidth - window.innerWidth * 0.15,
+    height: window.innerHeight - window.innerHeight * 0.5,
   },
   trades: {
-    width: 1600,
-    height: 500,
+    width: window.innerWidth - window.innerWidth * 0.15,
+    height: window.innerHeight - window.innerHeight * 0.75,
   },
   analytics: {
-    width: 500,
-    height: 1500,
+    width: window.innerWidth - window.innerWidth * 0.7,
+    height: window.innerHeight,
   },
 }
