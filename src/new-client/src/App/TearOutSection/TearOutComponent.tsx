@@ -1,6 +1,6 @@
 import { HeaderTearOutAction } from "@/components/headerActionStyles"
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
-import { tearOutSection } from "@/Web/TearOutSection/state"
+import { tearOutSection } from "@/App/TearOutSection/state"
 import { PopInIcon } from "@/components/icons/PopInIcon"
 import { TearOutContext } from "@/App/TearOutSection/tearOutContext"
 import { useContext } from "react"

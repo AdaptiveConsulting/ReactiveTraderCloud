@@ -1,6 +1,10 @@
 import { createContext } from "react"
 
-export const sectionsTornOut = {
+type sectionTornOut = {
+  isTornOut: boolean
+}
+
+export const sectionsTornOut: sectionTornOut = {
   isTornOut: false,
 }
 

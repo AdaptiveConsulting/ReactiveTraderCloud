@@ -8,9 +8,12 @@ import { DisconnectionOverlay } from "@/App/DisconnectionOverlay"
 import { LiveRates } from "@/App/LiveRates"
 import { useEffect, useState } from "react"
 
-import { useTearOutSectionEntry } from "@/Web/TearOutSection/state"
+import {
+  useTearOutSectionEntry,
+  TornOutSection,
+} from "@/App/TearOutSection/state"
 
-import { handleTearOutSection } from "@/Web/TearOutSection/handleTearOutSection"
+import { handleTearOutSection } from "@/App/TearOutSection/handleTearOutSection"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -43,11 +46,12 @@ const MainWrapper = styled.div`
 
 export const MainRoute: React.FC = () => {
   const tearOutEntry = useTearOutSectionEntry()
-  const [tornOutSectionState, setTornOutSectionState] = useState({
-    liverates: false,
-    trades: false,
-    analytics: false,
-  })
+  const [tornOutSectionState, setTornOutSectionState] =
+    useState<TornOutSection>({
+      liverates: false,
+      trades: false,
+      analytics: false,
+    })
 
   useEffect(() => {
     if (tearOutEntry) {
