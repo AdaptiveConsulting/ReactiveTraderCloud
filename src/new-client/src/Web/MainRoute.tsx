@@ -17,7 +17,7 @@ const Wrapper = styled("div")`
   background-color: ${({ theme }) => theme.core.darkBackground};
   overflow: hidden;
   margin: 0 auto;
-  display: flex;
+  display: flex;,
   align-items: center;
   justify-content: center;
   user-select: none;
