@@ -9,7 +9,7 @@ interface Props {
   onSelectionChange: (selection: string | AllCurrencies) => void
 }
 
-export const DropdownWrapper = styled.div`
+export const DropdownWrapper = styled.li`
   display: none;
   position: relative;
   background-color: ${({ theme }) => theme.core.lightBackground};

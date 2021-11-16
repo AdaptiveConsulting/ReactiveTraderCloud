@@ -14,5 +14,5 @@ export function publish<T>(topic: Topic, message: T) {
 }
 
 export enum Topic {
-  TearOutWindow = "TearOutWindow",
+  TODO = "TODO",
 }

@@ -8,9 +8,10 @@ import { Trades } from "@/App/Trades"
 import { Loader } from "@/components/Loader"
 import { DocTitle } from "@/components/DocTitle"
 import { TileContent } from "./TileContent"
+import { BASE_URL } from "@/constants"
 
 export const FinsembleApp: React.FC = () => (
-  <BrowserRouter basename={import.meta.env.BASE_URL}>
+  <BrowserRouter basename={BASE_URL}>
     <Switch>
       <Route
         path="/analytics"

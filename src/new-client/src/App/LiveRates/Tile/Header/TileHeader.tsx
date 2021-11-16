@@ -7,6 +7,7 @@ import { useTileContext } from "../Tile.context"
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import { tearOut } from "../TearOut/state"
 import { PopInIcon } from "@/components/icons/PopInIcon"
+import { useRef } from "react"
 
 export const DeliveryDate = styled.div<{ hover?: boolean }>`
   color: ${({ theme }) => theme.core.textColor};
@@ -49,6 +50,7 @@ export const [useDate, header$] = bind((symbol: string) =>
 )
 
 export const Header: React.FC = () => {
+  const ref = useRef<HTMLDivElement>(null)
   const {
     currencyPair: { base, terms, symbol },
     isTornOut,

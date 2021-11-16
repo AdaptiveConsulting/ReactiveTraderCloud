@@ -77,38 +77,37 @@ export const NotionalInput: React.FC = () => {
   const notional = useNotional()
   const valid = useIsNotionalValid()
   const { stage: quoteStage } = useRfqState()
+  const id = `notional-input-${symbol}`
 
   return (
-    <>
-      <InputWrapper>
-        <CurrencyPairSymbol>{base}</CurrencyPairSymbol>
-        <Input
-          role={"input"}
-          type="text"
-          className={!valid ? `is-invalid` : undefined}
-          disabled={[
-            QuoteStateStage.Received,
-            QuoteStateStage.Requested,
-          ].includes(quoteStage)}
-          value={notional.inputValue}
-          onChange={(e) => {
-            onChangeNotionalValue(symbol, e.target.value)
-          }}
-          onFocus={(event) => {
-            event.target.select()
-          }}
-        />
-        <ResetInputValue
-          isVisible={notional.value !== defaultNotional}
-          onClick={() => {
-            onChangeNotionalValue(symbol, defaultNotional.toString(10))
-          }}
-        >
-          <FaRedo className="flipHorizontal" />
-        </ResetInputValue>
-        {!valid && <ErrorMessage>Max exceeded</ErrorMessage>}
-      </InputWrapper>
-    </>
+    <InputWrapper>
+      <CurrencyPairSymbol htmlFor={id}>{base}</CurrencyPairSymbol>
+      <Input
+        type="text"
+        id={id}
+        className={!valid ? `is-invalid` : undefined}
+        disabled={[
+          QuoteStateStage.Received,
+          QuoteStateStage.Requested,
+        ].includes(quoteStage)}
+        value={notional.inputValue}
+        onChange={(e) => {
+          onChangeNotionalValue(symbol, e.target.value)
+        }}
+        onFocus={(event) => {
+          event.target.select()
+        }}
+      />
+      <ResetInputValue
+        isVisible={notional.value !== defaultNotional}
+        onClick={() => {
+          onChangeNotionalValue(symbol, defaultNotional.toString(10))
+        }}
+      >
+        <FaRedo className="flipHorizontal" />
+      </ResetInputValue>
+      {!valid && <ErrorMessage>Max exceeded</ErrorMessage>}
+    </InputWrapper>
   )
 }
 

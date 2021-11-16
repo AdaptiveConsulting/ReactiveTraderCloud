@@ -40,3 +40,5 @@ export const [useTearOutState, tearOutState$] = bind<TearOutState>(
     tearOutEntry$,
   ).pipe(scan((acc, [key, tornOut]) => ({ ...acc, [key]: tornOut }), {})),
 )
+
+export const [useTearOutEntry] = bind<TearOutEntry | null>(tearOutEntry$, null)

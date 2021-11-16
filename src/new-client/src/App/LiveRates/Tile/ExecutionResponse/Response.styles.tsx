@@ -15,6 +15,7 @@ export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
       case TileStates.TooLong:
         return theme.colors.accents.aware.darker
       case TileStates.Timeout:
+      case TileStates.CreditExceeded:
         return theme.colors.accents.negative.darker
       default:
         return ""
