@@ -7,12 +7,8 @@ import { TearOutRouteWrapper } from "./Web.styles"
 import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
+import { TearOutContext } from "../components/context"
 
-import {
-  TornOutTileContext,
-  TornOutTradeContext,
-  TornOutAnalyticsContext,
-} from "./context"
 export const WebApp: React.FC = () => (
   <BrowserRouter basename={BASE_PATH}>
     <Switch>
@@ -41,9 +37,9 @@ export const WebApp: React.FC = () => (
         path="/liverates"
         render={() => {
           return (
-            <TornOutTileContext.Provider value={{ isTornOut: true }}>
-              <LiveRates />{" "}
-            </TornOutTileContext.Provider>
+            <TearOutContext.Provider value={{ isTornOut: true }}>
+              <LiveRates />
+            </TearOutContext.Provider>
           )
         }}
       />
@@ -51,9 +47,9 @@ export const WebApp: React.FC = () => (
         path="/trades"
         render={() => {
           return (
-            <TornOutTradeContext.Provider value={{ isTornOut: true }}>
-              <Trades />{" "}
-            </TornOutTradeContext.Provider>
+            <TearOutContext.Provider value={{ isTornOut: true }}>
+              <Trades />
+            </TearOutContext.Provider>
           )
         }}
       />
@@ -61,9 +57,9 @@ export const WebApp: React.FC = () => (
         path="/analytics"
         render={() => {
           return (
-            <TornOutAnalyticsContext.Provider value={{ isTornOut: true }}>
-              <Analytics hideIfMatches={""} />{" "}
-            </TornOutAnalyticsContext.Provider>
+            <TearOutContext.Provider value={{ isTornOut: true }}>
+              <Analytics hideIfMatches={""} />
+            </TearOutContext.Provider>
           )
         }}
       />

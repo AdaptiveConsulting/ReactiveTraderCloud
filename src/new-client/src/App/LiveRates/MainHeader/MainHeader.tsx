@@ -17,7 +17,7 @@ import { CurrencyOptions } from "./CurrencyOptions"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
-import { supportsTearOut } from "@/Web/TearOutSection/supportsTearOut"
+import { supportsTearOut } from "@/App/supportsTearOut"
 import { TearOutComponent } from "@/Web/TearOutSection/TearOutComponent"
 
 const [useCurrencies, mainHeader$] = bind(

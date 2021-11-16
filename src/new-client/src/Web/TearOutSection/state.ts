@@ -12,13 +12,3 @@ export const [useTearOutSectionEntry] = bind<TearOutSectionEntry | null>(
   tearOutSectionEntry$,
   null,
 )
-export const [useTearOutSectionState$] = bind(
-  (id: string) =>
-    tearOutSectionEntry$.pipe(
-      filter((val) => val[1] === id),
-      map((val) => {
-        return val[0]
-      }),
-    ),
-  false,
-)
