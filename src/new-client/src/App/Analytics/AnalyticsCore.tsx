@@ -7,10 +7,12 @@ import {
   AnalyticsStyle,
   AnalyticsHeader,
   AnalyticsInnerWrapper,
+  RightNav,
 } from "./styled"
 import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 import { isAnalyticsDataStale$ } from "@/services/analytics"
-
+import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
+import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 
 const SuspenseOnStaleData = createSuspenseOnStale(isAnalyticsDataStale$)
@@ -20,7 +22,12 @@ const Analytics: React.FC = ({ children }) => {
     <Subscribe source$={analytics$} fallback={children}>
       <SuspenseOnStaleData />
       <AnalyticsInnerWrapper>
-        <AnalyticsHeader>Analytics</AnalyticsHeader>
+        <AnalyticsHeader>
+          Analytics
+          <RightNav>
+            {supportsTearOut && <TearOutComponent section="analytics" />}
+          </RightNav>
+        </AnalyticsHeader>
         <AnalyticsStyle
           role="region"
           aria-label="Trade and position analytics"
