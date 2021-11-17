@@ -1,4 +1,4 @@
-import { HeaderTearOutAction } from "@/components/headerActionStyles"
+import { HeaderTearOutAction } from "./TearOutComponent.styles"
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import { tearOutSection } from "@/App/TearOutSection/state"
 import { PopInIcon } from "@/components/icons/PopInIcon"

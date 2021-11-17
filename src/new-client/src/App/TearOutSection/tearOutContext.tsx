@@ -1,11 +1,13 @@
 import { createContext } from "react"
 
-type sectionTornOut = {
+type TearOutContextType = {
   isTornOut: boolean
 }
 
-export const sectionsTornOut: sectionTornOut = {
+export const initialTearOutContext: TearOutContextType = {
   isTornOut: false,
 }
 
-export const TearOutContext = createContext(sectionsTornOut)
+export const TearOutContext = createContext<TearOutContextType>(
+  initialTearOutContext,
+)
