@@ -9,6 +9,7 @@ import { Flex } from "@/Web/Web.styles"
 import { defaultLogo } from "./Header"
 import { PWAInstallModal } from "./PWA/PWAInstallModal"
 import { PWAInstallBanner } from "./PWA/PWAInstallPrompt"
+import { InstallButton } from "./PWA/PWAInstallPrompt.styles"
 
 const stories = storiesOf("Header", module)
 const currentUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)]
@@ -65,6 +66,14 @@ stories.add("PWA Install Banner", () => (
         setIsModalOpen={() => {}}
         mocked={true}
       />
+    </Flex>
+  </Story>
+))
+
+stories.add("PWA Launch Banner", () => (
+  <Story>
+    <Flex>
+      <InstallButton>Install PWA</InstallButton>
     </Flex>
   </Story>
 ))

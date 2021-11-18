@@ -69,9 +69,3 @@ storiesButton.add("Disconnected", () => (
     </Flex>
   </Story>
 ))
-
-// export enum ConnectionStatus {
-//   CONNECTING = "CONNECTING",
-//   CONNECTED = "CONNECTED",
-//   DISCONNECTED = "DISCONNECTED",
-// }

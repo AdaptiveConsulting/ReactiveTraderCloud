@@ -2,19 +2,6 @@ import { storiesOf } from "@storybook/react"
 import Story from "@/stories/Story"
 import { AdaptiveLoader } from "./AdaptiveLoader"
 import styled from "styled-components"
-// const stories = storiesOf("AdaptiveLoader", module)
-
-// stories.add("Interactive", () => (
-//   <Story>
-//     <AdaptiveLoader size={50}/>
-//   </Story>
-// ))
-
-// stories.add("Loadable", () => (
-//   <Story>
-//     <AdaptiveLoader size={50} speed={1.4}/>
-//   </Story>
-// ))
 import { number, withKnobs } from "@storybook/addon-knobs"
 import React from "react"
 

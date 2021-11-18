@@ -5,6 +5,7 @@ import { Flex } from "@/Web/Web.styles"
 import { AppleShareIcon, CrossIcon } from "./index"
 import { PopInIcon } from "./PopInIcon"
 import { PopOutIcon } from "./PopOutIcon"
+import { ToggleView } from "@/App/LiveRates/MainHeader/ToggleView/ToggleView"
 
 const stories = storiesOf("Icons", module)
 
@@ -32,6 +33,14 @@ stories.add("PopOutIcon", () => (
   <Story>
     <Flex>
       <PopOutIcon />
+    </Flex>
+  </Story>
+))
+
+stories.add("ToggleView", () => (
+  <Story>
+    <Flex>
+      <ToggleView />
     </Flex>
   </Story>
 ))
