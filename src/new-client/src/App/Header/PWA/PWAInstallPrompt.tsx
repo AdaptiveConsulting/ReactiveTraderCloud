@@ -22,6 +22,7 @@ interface InstallBannerProps {
   updateBanner: (state: PWABanner) => void
   isModalOpen: boolean
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
+  mocked?: boolean
 }
 
 export const PWAInstallBanner: FC<InstallBannerProps> = ({
@@ -29,11 +30,12 @@ export const PWAInstallBanner: FC<InstallBannerProps> = ({
   updateBanner,
   isModalOpen,
   setIsModalOpen,
+  mocked = false,
 }) => {
   const [prompt, promptToInstall] = usePWABannerPrompt()
 
-  const isHidden = banner !== PWABanner.Shown || (!prompt && !isiOS) || isPWA()
-
+  const isHidden =
+    (banner !== PWABanner.Shown || (!prompt && !isiOS) || isPWA()) && !mocked
   useEffect(() => {
     if (prompt && banner === PWABanner.NotSet) {
       updateBanner(PWABanner.Shown)

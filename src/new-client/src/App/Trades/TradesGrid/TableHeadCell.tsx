@@ -144,3 +144,22 @@ export const TableHeadCellContainer: React.FC<{
     </TableHeadCell>
   )
 }
+
+export const TableHeadCellContainerMocked: React.FC<{
+  field: ColField
+}> = ({ field }) => {
+  const { headerName, filterType } = colConfigs[field]
+
+  return (
+    <TableHeadCell
+      numeric={filterType === "number" && field !== "tradeId"}
+      width={colConfigs[field].width}
+    >
+      <FlexWrapper headerFirst={filterType !== "number" || field === "tradeId"}>
+        {headerName}
+        <span className="spacer" aria-hidden={true} />
+        <span className="spacer" aria-hidden={true} />
+      </FlexWrapper>
+    </TableHeadCell>
+  )
+}

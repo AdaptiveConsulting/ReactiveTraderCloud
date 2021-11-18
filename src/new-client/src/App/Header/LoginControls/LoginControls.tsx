@@ -1,10 +1,10 @@
 import { Subscribe } from "@react-rxjs/core"
 import { AdaptiveLoader } from "@/components/AdaptiveLoader"
 import { currentUser$, useUser } from "@/services/currentUser"
+import { User as UserProps } from "@/services/currentUser"
 import { LoadingButton, UserWrapper, UserContainer, UserAvatar } from "./styled"
 
-const User: React.FC = () => {
-  const user = useUser()
+export const User: React.FC<{ user?: UserProps }> = ({ user = useUser() }) => {
   return (
     <UserWrapper>
       <UserContainer>

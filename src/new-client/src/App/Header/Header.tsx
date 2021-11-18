@@ -18,7 +18,7 @@ interface Props {
   switches?: ReactNode
 }
 
-const defaultLogo = (
+export const defaultLogo = (
   <LogoWrapper>
     <Logo
       size={1.75}

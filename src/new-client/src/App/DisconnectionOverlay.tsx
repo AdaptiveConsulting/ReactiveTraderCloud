@@ -5,7 +5,7 @@ import { map, scan } from "rxjs/operators"
 
 import styled from "styled-components"
 
-const ModalContainer = styled.div`
+export const ModalContainer = styled.div`
   position: fixed;
   z-index: 5;
   top: 0;
@@ -18,7 +18,7 @@ const ModalContainer = styled.div`
   font-size: 0.75rem;
 `
 
-const ModalOverlay = styled.div`
+export const ModalOverlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -30,7 +30,7 @@ const ModalOverlay = styled.div`
   background: ${({ theme }) => theme.overlay.backgroundColor};
 `
 
-const ModalPanel = styled.div`
+export const ModalPanel = styled.div`
   padding: 1rem 1.5rem;
   margin: 0 1rem;
 
@@ -48,7 +48,7 @@ const ModalPanel = styled.div`
     0 1rem 3rem -1rem ${(props) => darken(0.1, props.theme.overlay.backgroundColor)};
 `
 
-const Body = styled.div`
+export const Body = styled.div`
   margin: 1rem 0;
 `
 

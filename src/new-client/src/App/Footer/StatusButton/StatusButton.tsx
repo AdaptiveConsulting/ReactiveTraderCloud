@@ -1,9 +1,10 @@
-import { useConnectionStatus } from "@/services/connection"
+import { useConnectionStatus, ConnectionStatus } from "@/services/connection"
 import { StatusCircle, StatusLabel } from "./styled"
 import { Root, Button } from "../common-styles"
 
-export const StatusButton: React.FC = () => {
-  const appStatus = useConnectionStatus()
+export const StatusButton: React.FC<{ appStatus?: ConnectionStatus }> = ({
+  appStatus = useConnectionStatus(),
+}) => {
   return (
     <Root>
       <Button disabled>

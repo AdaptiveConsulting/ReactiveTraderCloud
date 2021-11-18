@@ -2,7 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { Observable } from "rxjs"
 import { shareReplay } from "rxjs/operators"
 
-interface User {
+export interface User {
   code: string
   firstName: string
   lastName: string
