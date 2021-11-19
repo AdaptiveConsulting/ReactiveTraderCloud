@@ -6,7 +6,7 @@ import { NotionalInput, notionalInput$ } from "./Notional"
 import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"
 import { PriceButton, priceButton$ } from "./PriceButton"
 import { Header, header$ } from "./Header"
-import { DraggableComponent } from "@/components/DraggableComponent"
+import { DraggableTearOut } from "@/components/DraggableTearOut"
 import { useRef } from "react"
 import {
   Body,
@@ -88,12 +88,12 @@ const Tile: React.FC<Props> = ({ isAnalytics }) => {
   }
 
   return (
-    <DraggableComponent
+    <DraggableTearOut
       isTile={true}
       section="liverates"
       symbol={symbol}
       ref={ref}
-      isTornOut={isTornOut}
+      disabled={isTornOut}
     >
       <PanelItem shouldMoveDate={supportsTearOut}>
         <Main>
@@ -118,7 +118,7 @@ const Tile: React.FC<Props> = ({ isAnalytics }) => {
         </Main>
         <ExecutionResponse />
       </PanelItem>
-    </DraggableComponent>
+    </DraggableTearOut>
   )
 }
 const TileContext: React.FC<{

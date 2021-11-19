@@ -7,7 +7,7 @@ import { TradesHeader } from "./TradesHeader"
 import { tableTrades$ } from "./TradesState"
 import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 import { isBlotterDataStale$ } from "@/services/trades"
-import { DraggableComponent } from "@/components/DraggableComponent"
+import { DraggableTearOut } from "@/components/DraggableTearOut"
 
 const TradesStyle = styled.div`
   height: 100%;
@@ -24,13 +24,13 @@ const Trades: React.FC = () => (
     fallback={<Loader ariaLabel="Loading trades blotter" />}
   >
     <SuspenseOnStaleData />
-    <DraggableComponent section="trades">
+    <DraggableTearOut section="trades">
       <TradesStyle role="region" aria-labelledby="trades-table-heading">
         <TradesHeader />
         <TradesGrid />
         <TradesFooter />
       </TradesStyle>
-    </DraggableComponent>
+    </DraggableTearOut>
   </Subscribe>
 )
 

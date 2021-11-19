@@ -13,7 +13,7 @@ import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 import { isAnalyticsDataStale$ } from "@/services/analytics"
 import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
-import { DraggableComponent } from "@/components/DraggableComponent"
+import { DraggableTearOut } from "@/components/DraggableTearOut"
 
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 
@@ -23,7 +23,7 @@ const Analytics: React.FC = ({ children }) => {
   return (
     <Subscribe source$={analytics$} fallback={children}>
       <SuspenseOnStaleData />
-      <DraggableComponent section="analytics">
+      <DraggableTearOut section="analytics">
         <AnalyticsInnerWrapper>
           <AnalyticsHeader>
             Analytics
@@ -41,7 +41,7 @@ const Analytics: React.FC = ({ children }) => {
             <PnL />
           </AnalyticsStyle>
         </AnalyticsInnerWrapper>
-      </DraggableComponent>
+      </DraggableTearOut>
     </Subscribe>
   )
 }

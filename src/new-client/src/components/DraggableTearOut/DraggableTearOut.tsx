@@ -2,38 +2,43 @@ import styled from "styled-components"
 import { RefObject, useContext, useState } from "react"
 import { TearOutContext } from "@/App/TearOutSection/tearOutContext"
 import { tearOutSection, Section } from "@/App/TearOutSection/state"
-import { canDrag } from "@/components/DraggableComponent/canDrag"
+import { canDrag } from "@/components/DraggableTearOut/canDrag"
 import { tearOut } from "@/App/LiveRates/Tile/TearOut/state"
 
-interface DraggableComponentProps {
+interface DraggableTearOutProps {
   children: JSX.Element[] | JSX.Element
   section: Section
   isTile?: boolean
   ref?: RefObject<HTMLDivElement>
   isTornOut?: boolean
   symbol?: string
+  disabled?: boolean
 }
 
-export const DraggableComponent: React.FC<DraggableComponentProps> = (
-  props: DraggableComponentProps,
+export const DraggableTearOut: React.FC<DraggableTearOutProps> = (
+  props: DraggableTearOutProps,
 ) => {
   //stopPropagation() is not enough to avoid the parent (in case we are dragging a Tile) also tearing out
   //this state makes sure that the drag event started and finished succesfully
   const [finishedDrag, setFinishedDrag] = useState(false)
-
   const tearOutContext = useContext(TearOutContext)
-  const symbol = props.symbol ? props.symbol : ""
+  let disabled = false
+  if (props.isTile) {
+    disabled = props.disabled!
+  } else {
+    disabled = tearOutContext.isTornOut
+  }
   const ref = props.ref ? props.ref : { current: null }
-
+  //@ts-ignore
   const eventHandler = (event: React.DragEvent) => {
     props.isTile
-      ? tearOut(symbol, !props.isTornOut, ref.current!)
-      : tearOutSection(!tearOutContext.isTornOut, props.section)
+      ? tearOut(props.symbol!, true, ref.current!)
+      : tearOutSection(true, props.section)
   }
 
   return (
     <DragWrapper
-      draggable={canDrag}
+      draggable={canDrag && !disabled}
       onDragStart={(event: React.DragEvent<HTMLDivElement>) =>
         createDragImage(event, setFinishedDrag)
       }
