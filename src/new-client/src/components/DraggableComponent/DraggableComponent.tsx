@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import React, { RefObject, useContext, useState } from "react"
+import { RefObject, useContext, useState } from "react"
 import { TearOutContext } from "@/App/TearOutSection/tearOutContext"
 import { tearOutSection, Section } from "@/App/TearOutSection/state"
 import { canDrag } from "@/components/DraggableComponent/canDrag"
