@@ -1,10 +1,10 @@
-import { concat, from } from 'rxjs'
-import { concatMap, filter, map, mergeMap, switchMap, take } from 'rxjs/operators'
-import { formatNumber } from '../domain/priceFormatting'
+import { EMPTY, from } from 'rxjs'
+import { catchError, concatMap, filter, map, mergeMap, switchMap, take } from 'rxjs/operators'
+import { trades$, IntentNumberParameter, IntentStringParameter } from '../services'
+import { formatNumber } from '../utils/priceFormatting'
 import logger from '../logger'
 import { tradeUpdateMessage } from '../messages'
 import { standardMessage } from '../messages/standardMessage'
-import { IntentNumberParameter, IntentStringParameter } from '../nlp-services'
 import { Handler } from './'
 
 interface TradeIntentFields {
@@ -15,16 +15,12 @@ interface TradeIntentFields {
 
 const INTENT_TRADES_NOTIFICATION = 'rt.trades.notification'
 
-const tradeNotificationHandler: Handler = (
-  symphony,
-  { intentsFromDF$ },
-  { tradeStream$ }
-) => {
-  const latestTrades$ = tradeStream$.pipe(
-    filter(t => t.IsStateOfTheWorld === false),
-    map(tradeUpdate => tradeUpdate.Trades),
+const tradeNotificationHandler: Handler = (symphony, { intentsFromDF$ }) => {
+  const latestTrades$ = trades$.pipe(
+    filter(t => t.isStateOfTheWorld === false),
+    map(tradeUpdate => tradeUpdate.updates),
     mergeMap(trades => from(trades)),
-    filter(trade => trade.Status === 'Done')
+    filter(trade => trade.status === 'Done')
   )
 
   const subscription$ = intentsFromDF$
@@ -37,28 +33,28 @@ const tradeNotificationHandler: Handler = (
 
         const ccy = fields.Currency ? fields.Currency.stringValue : undefined
 
-        const updateMessage = `Notification Setup: We will let you know when any ${
-          ccyPair || ccy || ''
-        } trade over ${formatNumber(notional)} is executed`
-        const notifcationMessage = `Notification: A ${
-          ccyPair || ccy || ''
-        } trade over ${formatNumber(notional)} was executed`
+        const updateMessage = `Notification Setup: We will let you know when any ${ccyPair ||
+          ccy ||
+          ''} trade over ${formatNumber(notional)} is executed`
+        const notifcationMessage = `Notification: A ${ccyPair ||
+          ccy ||
+          ''} trade over ${formatNumber(notional)} was executed`
         return symphony
           .sendMessage(request.originalMessage.stream.streamId, standardMessage(updateMessage))
           .pipe(
             concatMap(() =>
               latestTrades$.pipe(
                 filter(trade => {
-                  if (notional > trade.Notional) {
+                  if (notional > trade.notional) {
                     return false
                   }
 
                   if (ccyPair) {
-                    return trade.CurrencyPair === ccyPair
+                    return trade.currencyPair === ccyPair
                   }
 
                   if (ccy) {
-                    return trade.CurrencyPair.substr(0, 3) === ccy
+                    return trade.currencyPair.substr(0, 3) === ccy
                   }
 
                   return true
@@ -73,6 +69,10 @@ const tradeNotificationHandler: Handler = (
               )
             )
           )
+      }),
+      catchError(e => {
+        logger.error('Error processing trade reply', e)
+        return EMPTY
       })
     )
     .subscribe(

@@ -32,6 +32,6 @@ export function createConfig(
     proxyURL: '',
     proxyUsername: '',
     proxyPassword: '',
-    authTokenRefreshPeriod: '30',
+    authTokenRefreshPeriod: '30'
   }
 }

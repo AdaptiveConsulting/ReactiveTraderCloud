@@ -24,7 +24,7 @@ export function toRate(
     pipPrecision,
     bigFigure: Number(wholeNumber + '.' + fractions.substring(0, pipPrecision - 2)),
     pips: Number(fractions.substring(pipPrecision - 2, pipPrecision)),
-    pipFraction: Number(fractions.substring(pipPrecision, pipPrecision + 1)),
+    pipFraction: Number(fractions.substring(pipPrecision, pipPrecision + 1))
   }
 }
 
@@ -38,7 +38,7 @@ export function getSpread(
   const toFixedPrecision = spread.toFixed(ratePrecision - pipsPosition)
   return {
     value: Number(toFixedPrecision),
-    formattedValue: toFixedPrecision,
+    formattedValue: toFixedPrecision
   }
 }
 

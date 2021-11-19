@@ -27,7 +27,7 @@ class SymphonyClient {
           onMessage: (messages: Symphony.Message[]) => {
             obs.next(messages)
           },
-          onError: (e) => {
+          onError: e => {
             logger.error('Symphony getDatafeedEventsService onError', e)
             obs.error(e)
           }

@@ -1,17 +1,19 @@
 import React, { FC } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { formatDate, formatNumber, Trade } from '../domain'
+import { formatDate, formatNumber } from '../utils'
 import '../extensions'
+import { Card } from '../components/Card'
+import { Trade } from 'generated/TradingGateway'
 
 type Prevalance = 'NORMAL' | 'HIGH'
 
 const prevelanceMap = new Map<Prevalance, string>([
   ['NORMAL', 'tempo-bg-color--blue'],
-  ['HIGH', 'tempo-bg-color--red'],
+  ['HIGH', 'tempo-bg-color--red']
 ])
 
 const numberCellStyle: React.CSSProperties = {
-  textAlign: 'right',
+  textAlign: 'right'
 }
 interface Props {
   trades: Trade[]
@@ -22,10 +24,7 @@ interface Props {
 const TradesMessage: FC<Props> = ({ trades, label, prevalance }) => {
   return (
     <>
-      <card
-        accent={prevelanceMap.get(prevalance)}
-        iconSrc="https://www.reactivetrader.com/favicon.ico"
-      >
+      <Card accent={prevelanceMap.get(prevalance)}>
         <header>{label}</header>
         <body>
           <table>
@@ -44,22 +43,22 @@ const TradesMessage: FC<Props> = ({ trades, label, prevalance }) => {
             </thead>
             <tbody>
               {trades.map(trade => (
-                <tr>
-                  <td>{trade.TradeId}</td>
-                  <td>{trade.Status}</td>
-                  <td>{formatDate(trade.TradeDate)}</td>
-                  <td>{trade.Direction}</td>
-                  <td>{trade.CurrencyPair}</td>
-                  <td>{trade.DealtCurrency}</td>
-                  <td style={numberCellStyle}>{formatNumber(trade.Notional)}</td>
-                  <td style={numberCellStyle}>{trade.SpotRate}</td>
-                  <td>{trade.TraderName}</td>
+                <tr key={Number(trade.tradeId)}>
+                  <td>{Number(trade.tradeId)}</td>
+                  <td>{trade.status}</td>
+                  <td>{formatDate(trade.tradeDate)}</td>
+                  <td>{trade.direction}</td>
+                  <td>{trade.currencyPair}</td>
+                  <td>{trade.dealtCurrency}</td>
+                  <td style={numberCellStyle}>{formatNumber(trade.notional)}</td>
+                  <td style={numberCellStyle}>{trade.spotRate}</td>
+                  <td>{trade.tradeName}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </body>
-      </card>
+      </Card>
     </>
   )
 }

@@ -1,9 +1,10 @@
 import moment from 'moment'
 import React, { FC } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { Price } from '../domain'
-import { getSpread, toRate } from '../domain'
+import { getSpread, toRate } from '../utils'
+import { Card } from '../components/Card'
 import { downArrow, upArrow } from './data-images'
+import { Price } from '../services'
 
 const BG_COLOR = '#2f3542'
 const TEXT_PRIMARY_COLOR = '#FFFFFF'
@@ -13,7 +14,7 @@ const FONT_SIZE_MEDIUM = '13px'
 
 const mediumTextStyle: React.CSSProperties = {
   fontSize: FONT_SIZE_MEDIUM,
-  color: TEXT_PRIMARY_COLOR,
+  color: TEXT_PRIMARY_COLOR
 }
 
 const CCYPairLabel: FC<{ pair: string }> = ({ pair }) => {
@@ -26,7 +27,7 @@ const CCYPairLabel: FC<{ pair: string }> = ({ pair }) => {
 const directionLabelStyle: React.CSSProperties = {
   fontSize: '10px',
   marginLeft: '18px',
-  color: SECODARY_TEXT_COLOR,
+  color: SECODARY_TEXT_COLOR
 }
 
 const DirectionLabel: FC<{ label: string }> = ({ label }) => (
@@ -38,14 +39,14 @@ const ccyPairStyle: React.CSSProperties = {
   color: TEXT_PRIMARY_COLOR,
   display: 'inline-block',
   padding: '15px',
-  width: '122px',
+  width: '122px'
 }
 
 const innerTileStyle: React.CSSProperties = {
   backgroundColor: TILE_COLOR,
   textAlign: 'center',
   color: TEXT_PRIMARY_COLOR,
-  marginTop: '-21px',
+  marginTop: '-21px'
 }
 const CCYTile: FC<{ price: number; side: 'Bid' | 'Ask' }> = ({ side, price }) => {
   const rate = toRate(price, 5, 4)
@@ -66,17 +67,17 @@ const spotTileMessageStyle: React.CSSProperties = {
   backgroundColor: BG_COLOR,
   color: TEXT_PRIMARY_COLOR,
   padding: '20px',
-  width: '330px',
+  width: '330px'
 }
 
 const midStyle: React.CSSProperties = {
   display: 'inline-block',
   backgroundColor: BG_COLOR,
-  margin: '10px',
+  margin: '10px'
 }
 
 const imgStyle: React.CSSProperties = {
-  paddingLeft: '2px',
+  paddingLeft: '2px'
 }
 
 const MovementIndicator: FC<{ price: Price }> = ({ price }) => {
@@ -93,7 +94,7 @@ const MovementIndicator: FC<{ price: Price }> = ({ price }) => {
 
 const PriceMessage: FC<{ price: Price }> = ({ price }) => {
   return (
-    <card accent="tempo-bg-color--blue" iconSrc="https://www.reactivetrader.com/favicon.ico">
+    <Card>
       <header>
         Latest Prices for <cash tag={price.symbol} />
       </header>
@@ -112,7 +113,7 @@ const PriceMessage: FC<{ price: Price }> = ({ price }) => {
           </div>
         </div>
       </body>
-    </card>
+    </Card>
   )
 }
 

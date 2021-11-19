@@ -8,16 +8,13 @@ import {
   tradeNotificationHandler
 } from './handlers'
 import logger from './logger'
-import { createNlpStream } from './nlp-services'
-import { createApplicationServices } from './rt-services'
+import { createNlpStream, initApplicationServices } from './services'
 import { SymphonyClient } from './symphony'
 
 config()
 
 const host = process.env.BROKER_HOST || 'localhost'
-const port = process.env.BROKER_PORT || `15674`
-
-const services = createApplicationServices(host, port)
+initApplicationServices(host)
 
 /* 
   Setup symphony streams
@@ -58,7 +55,7 @@ const symphony = new SymphonyClient(symphonyConfig, false, privateKeyPath, priva
 const nlp$ = createNlpStream(symphony)
 
 const registerIntentHandlers = (handlers: Handler[]) => {
-  return handlers.map(handler => handler.call(null, symphony, nlp$, services))
+  return handlers.map(handler => handler.call(null, symphony, nlp$))
 }
 
 const disposables = registerIntentHandlers([
@@ -66,7 +63,7 @@ const disposables = registerIntentHandlers([
   tradeNotificationHandler,
   marketIntentHandler,
   priceQuoteHandler,
-  defaultIntentHander,
+  defaultIntentHander
 ])
 
 process.on('exit', () => {

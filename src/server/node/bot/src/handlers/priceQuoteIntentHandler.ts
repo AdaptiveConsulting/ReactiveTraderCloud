@@ -1,7 +1,8 @@
-import { filter, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { EMPTY } from 'rxjs'
+import { catchError, filter, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { prices$, IntentStringParameter } from '../services'
 import logger from '../logger'
 import { createPriceMessage } from '../messages'
-import { IntentStringParameter } from '../nlp-services'
 import { Handler } from './'
 
 interface MarketIntentFields {
@@ -16,15 +17,15 @@ const createDataPayload = (symbol: string) =>
     entityIdentifier: {
       type: ENTITY_TYPE,
       version: 0.2,
-      symbol,
-    },
+      symbol
+    }
   })
 
-const priceQuoteIntentHandler: Handler = (symphony, { intentsFromDF$ }, { priceSubsription$ }) => {
+const priceQuoteIntentHandler: Handler = (symphony, { intentsFromDF$ }) => {
   const subscription$ = intentsFromDF$
     .pipe(
       filter(x => x.intentResponse.queryResult.intent.displayName === INTENT_SPOT_QUOTE),
-      withLatestFrom(priceSubsription$),
+      withLatestFrom(prices$),
       mergeMap(([request, latestPrices]) => {
         const fields: MarketIntentFields = request.intentResponse.queryResult.parameters.fields!
 
@@ -36,6 +37,10 @@ const priceQuoteIntentHandler: Handler = (symphony, { intentsFromDF$ }, { priceS
           messageMarkup,
           createDataPayload(ccyPair)
         )
+      }),
+      catchError(e => {
+        logger.error('Error processing Quote reply', e)
+        return EMPTY
       })
     )
     .subscribe(

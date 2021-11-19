@@ -16,9 +16,8 @@ This NodeJS bot allows users to access Reactive Trader features via Symphony, an
 BOT_NAME=rt-bot 
 BOT_ADDRESS=rt-bot@weareadaptive.com
 
-# RT trader host and port you want your bot to use 
-BROKER_HOST=www.reactivetrader.com
-BROKER_PORT=443
+# RT Hydra host you want your bot to use 
+BROKER_HOST=dev.reactivetrader.com
 
 # The path and name of the private key
 #   The public key is copied and stored in the Public Key field of the bot

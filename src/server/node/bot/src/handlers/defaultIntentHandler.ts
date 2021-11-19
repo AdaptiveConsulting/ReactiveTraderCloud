@@ -1,4 +1,5 @@
-import { filter, mergeMap } from 'rxjs/operators'
+import { EMPTY } from 'rxjs'
+import { catchError, filter, mergeMap } from 'rxjs/operators'
 import logger from '../logger'
 import { Handler } from './'
 
@@ -15,6 +16,10 @@ const defaultIntentHander: Handler = (symphony, { intentsFromDF$ }) => {
           originalMessage.stream.streamId,
           intentResponse.queryResult.fulfillmentText
         )
+      }),
+      catchError(e => {
+        logger.error('Error sending default response', e)
+        return EMPTY
       })
     )
     .subscribe(

@@ -13,7 +13,8 @@
     "prettier:write": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\"",
     "lint": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "precommit": "lint-staged",
-    "debug": "node --inspect-brk --require ts-node/register src/index.ts"
+    "debug": "node --inspect-brk --require ts-node/register src/index.ts",
+    "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated"
   },
   "keywords": [
     "RFQ"
@@ -35,6 +36,7 @@
   "author": "Bhavesh Desai",
   "license": "MIT",
   "devDependencies": {
+    "@adaptive/hydra-platform": "^3.38.0",
     "@types/numeral": "0.0.25",
     "cross-env": "^5.2.0",
     "husky": "^1.3.1",
@@ -51,6 +53,7 @@
     "ws": "^3.3.3"
   },
   "dependencies": {
+    "@peculiar/webcrypto": "^1.2.2",
     "@stomp/rx-stomp": "^1.0.1",
     "@types/debug": "^4.1.2",
     "@types/dialogflow": "^0.9.4",

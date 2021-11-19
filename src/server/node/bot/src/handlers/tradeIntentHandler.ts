@@ -1,8 +1,10 @@
-import { filter, map, mergeMap, scan, withLatestFrom } from 'rxjs/operators'
-import { formatDateTime, Trade } from '../domain'
+import { Trade } from 'generated/TradingGateway'
+import { EMPTY } from 'rxjs'
+import { catchError, filter, map, mergeMap, scan, withLatestFrom } from 'rxjs/operators'
+import { trades$, IntentNumberParameter, IntentStringParameter } from '../services'
+import { formatDateTime } from '../utils'
 import logger from '../logger'
 import { tradeUpdateMessage } from '../messages'
-import { IntentNumberParameter, IntentStringParameter } from '../nlp-services'
 import { Handler } from './'
 
 interface TradeIntentFields {
@@ -15,14 +17,14 @@ const INTENT_TRADES_INFO = 'rt.trades.info'
 
 const sortPrices = (prices: Trade[]) =>
   prices.sort((a, b) => {
-    return a.TradeDate < b.TradeDate ? -1 : a.TradeDate > b.TradeDate ? 1 : 0
+    return a.tradeDate < b.tradeDate ? -1 : a.tradeDate > b.tradeDate ? 1 : 0
   })
 
-const tradeIntentHandler: Handler = (symphony, { intentsFromDF$ }, { tradeStream$ }) => {
-  const latestTrades$ = tradeStream$.pipe(
-    map(tradeUpdate => tradeUpdate.Trades),
+const tradeIntentHandler: Handler = (symphony, { intentsFromDF$ }) => {
+  const latestTrades$ = trades$.pipe(
+    map(tradeUpdate => tradeUpdate.updates),
     scan<Trade[], Map<number, Trade>>((acc, trades) => {
-      trades.forEach(trade => acc.set(trade.TradeId, trade))
+      trades.forEach(trade => acc.set(Number(trade.tradeId), trade))
       return acc
     }, new Map<number, Trade>()),
     map(trades => Array.from(trades.values()).reverse())
@@ -41,11 +43,11 @@ const tradeIntentHandler: Handler = (symphony, { intentsFromDF$ }, { tradeStream
         let filteredTrades = trades
 
         if (ccyPair) {
-          filteredTrades = filteredTrades.filter(x => x.CurrencyPair === ccyPair)
+          filteredTrades = filteredTrades.filter(x => x.currencyPair === ccyPair)
         }
 
         if (ccy) {
-          filteredTrades = filteredTrades.filter(x => x.CurrencyPair.substr(0, 3) === ccy)
+          filteredTrades = filteredTrades.filter(x => x.currencyPair.substr(0, 3) === ccy)
         }
 
         const field = ccyPair || ccy
@@ -60,6 +62,10 @@ const tradeIntentHandler: Handler = (symphony, { intentsFromDF$ }, { tradeStream
           request.originalMessage.stream.streamId,
           tradeUpdateMessage(filteredTrades, label)
         )
+      }),
+      catchError(e => {
+        logger.error('Error processing trade reply', e)
+        return EMPTY
       })
     )
     .subscribe(

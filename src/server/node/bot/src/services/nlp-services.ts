@@ -29,9 +29,9 @@ export function createNlpStream(symphony: SymphonyClient) {
     queryInput: {
       text: {
         text,
-        languageCode: 'en-US',
-      },
-    },
+        languageCode: 'en-US'
+      }
+    }
   })
 
   const intentsFromDF$: Observable<DFResultWithOriginalMessage> = symphony
@@ -45,7 +45,7 @@ export function createNlpStream(symphony: SymphonyClient) {
     )
 
   return {
-    intentsFromDF$,
+    intentsFromDF$
   }
 }
 

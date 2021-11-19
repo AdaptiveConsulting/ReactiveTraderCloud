@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import { Card } from '../components/Card'
 
 const Message: FC<{ text: string }> = ({ text }) => {
   return (
-    <card iconSrc="https://www.reactivetrader.com/favicon.ico" accent="tempo-bg-color--blue">
+    <Card>
       <header>{text}</header>
-    </card>
+    </Card>
   )
 }
 

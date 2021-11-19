@@ -1,24 +1,26 @@
-import { filter, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { EMPTY } from 'rxjs'
+import { catchError, filter, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { currencyPairs$, prices$ } from '../services'
 import logger from '../logger'
 import { marketUpdateMessage } from '../messages'
 import { Handler } from './'
 
 export const INTENT_MARKET_INFO = 'rt.market.info'
 
-const marketIntentHandler: Handler = (
-  symphony,
-  { intentsFromDF$ },
-  { priceSubsription$ }
-) => {
+const marketIntentHandler: Handler = (symphony, { intentsFromDF$ }) => {
   const subscription$ = intentsFromDF$
     .pipe(
       filter(
         ({ intentResponse }) => intentResponse.queryResult.intent.displayName === INTENT_MARKET_INFO
       ),
-      withLatestFrom(priceSubsription$),
-      mergeMap(([request, latestPrices]) => {
-        const messageMarkup = marketUpdateMessage(Array.from(latestPrices.values()))
+      withLatestFrom(prices$, currencyPairs$),
+      mergeMap(([request, latestPrices, currencyPairs]) => {
+        const messageMarkup = marketUpdateMessage(Array.from(latestPrices.values()), currencyPairs)
         return symphony.sendMessage(request.originalMessage.stream.streamId, messageMarkup)
+      }),
+      catchError(e => {
+        logger.error('Error processing market data', e)
+        return EMPTY
       })
     )
     .subscribe(
