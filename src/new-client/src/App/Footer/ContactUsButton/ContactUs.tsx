@@ -15,13 +15,13 @@ export const ContactUs: React.FC = () => (
       <span>+1 929 205 4900</span>
     </div>
 
-    <Input
-      value={EMAIL}
+    <Link
       onClick={() => {
         window.open(`mailto:${EMAIL}`)
       }}
-      readOnly
-    />
+    >
+      {EMAIL}
+    </Link>
 
     <Link
       onClick={() => {
