@@ -1,6 +1,5 @@
 import styled from "styled-components"
-import { RefObject, useContext, useState } from "react"
-import { TearOutContext } from "@/App/TearOutSection/tearOutContext"
+import React, { RefObject, useContext, useState } from "react"
 import { tearOutSection, Section } from "@/App/TearOutSection/state"
 import { canDrag } from "@/components/DraggableTearOut/canDrag"
 import { tearOut } from "@/App/LiveRates/Tile/TearOut/state"
@@ -8,38 +7,74 @@ import { tearOut } from "@/App/LiveRates/Tile/TearOut/state"
 export const DragWrapper = styled.div`
   height: 100%;
 `
-interface DraggableTearOutProps {
-  children: JSX.Element[] | JSX.Element
+
+type DraggableSectionTearOutProps = React.PropsWithChildren<{
   section: Section
-  isTile?: boolean
-  ref?: RefObject<HTMLDivElement>
-  symbol?: string
   disabled?: boolean
+}>
+
+type DraggableTileTearOutProps = React.PropsWithChildren<{
+  symbol: string
+  tileRef: RefObject<HTMLDivElement>
+  disabled?: boolean
+}>
+
+type DraggableTearOutGenericProps = React.PropsWithChildren<{
+  dragHandler: () => void
+}>
+
+export const DraggableSectionTearOut: React.FC<DraggableSectionTearOutProps> = (
+  props: DraggableSectionTearOutProps,
+) => {
+  const draggable = canDrag && !props.disabled
+  const dragHandler = () => {
+    tearOutSection(true, props.section)
+  }
+  return (
+    <>
+      {draggable ? (
+        <DraggableTearOut dragHandler={dragHandler}>
+          {props.children}
+        </DraggableTearOut>
+      ) : (
+        props.children
+      )}
+    </>
+  )
 }
 
-export const DraggableTearOut: React.FC<DraggableTearOutProps> = (
-  props: DraggableTearOutProps,
+export const DraggableTileTearOut: React.FC<DraggableTileTearOutProps> = (
+  props: DraggableTileTearOutProps,
 ) => {
-  //stopPropagation() is not enough to avoid the parent (in case we are dragging a Tile) also tearing out
-  //this state makes sure that the drag event started and finished succesfully
-  const [finishedDrag, setFinishedDrag] = useState(false)
-  const tearOutContext = useContext(TearOutContext)
-  const disabled = props.isTile ? props.disabled! : tearOutContext.isTornOut
-
+  const draggable = canDrag && !props.disabled
   const dragHandler = () => {
-    props.isTile
-      ? tearOut(props.symbol!, true, props.ref?.current!)
-      : tearOutSection(true, props.section)
+    tearOut(props.symbol!, true, props.tileRef?.current!)
   }
+  return (
+    <>
+      {draggable ? (
+        <DraggableTearOut dragHandler={dragHandler}>
+          {props.children}
+        </DraggableTearOut>
+      ) : (
+        props.children
+      )}
+    </>
+  )
+}
 
+export const DraggableTearOut: React.FC<DraggableTearOutGenericProps> = (
+  props: DraggableTearOutGenericProps,
+) => {
+  const [finishedDrag, setFinishedDrag] = useState(false)
   return (
     <DragWrapper
-      draggable={canDrag && !disabled}
+      draggable={true}
       onDragStart={(event: React.DragEvent<HTMLDivElement>) =>
         createDragImage(event, setFinishedDrag)
       }
       onDragEnd={(event: React.DragEvent<HTMLDivElement>) =>
-        finishedDrag && dragHandler()
+        finishedDrag && props.dragHandler()
       }
       data-qa="tear-off__drag-wrapper"
     >
@@ -47,6 +82,7 @@ export const DraggableTearOut: React.FC<DraggableTearOutProps> = (
     </DragWrapper>
   )
 }
+
 const createDragImage = (
   event: React.DragEvent<HTMLDivElement>,
   callback: any,
