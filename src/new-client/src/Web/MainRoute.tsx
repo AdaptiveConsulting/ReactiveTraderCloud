@@ -71,27 +71,18 @@ export const MainRoute: React.FC = () => {
         <MainWrapper>
           <Resizer defaultHeight={30}>
             {!tornOutSectionState.liverates && (
-              <DraggableSectionTearOut
-                section="liverates"
-                disabled={tornOutSectionState.liverates}
-              >
+              <DraggableSectionTearOut section="liverates">
                 <LiveRates />
               </DraggableSectionTearOut>
             )}
             {!tornOutSectionState.trades && (
-              <DraggableSectionTearOut
-                section="trades"
-                disabled={tornOutSectionState.trades}
-              >
+              <DraggableSectionTearOut section="trades">
                 <Trades />
               </DraggableSectionTearOut>
             )}
           </Resizer>
           {!tornOutSectionState.analytics && (
-            <DraggableSectionTearOut
-              section="analytics"
-              disabled={tornOutSectionState.analytics}
-            >
+            <DraggableSectionTearOut section="analytics">
               <Analytics />
             </DraggableSectionTearOut>
           )}

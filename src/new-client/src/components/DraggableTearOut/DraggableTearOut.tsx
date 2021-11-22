@@ -24,47 +24,39 @@ type DraggableTearOutGenericProps = React.PropsWithChildren<{
 }>
 
 export const DraggableSectionTearOut: React.FC<DraggableSectionTearOutProps> = (
-  props: DraggableSectionTearOutProps,
+  props,
 ) => {
   const draggable = canDrag && !props.disabled
   const dragHandler = () => {
     tearOutSection(true, props.section)
   }
-  return (
-    <>
-      {draggable ? (
-        <DraggableTearOut dragHandler={dragHandler}>
-          {props.children}
-        </DraggableTearOut>
-      ) : (
-        props.children
-      )}
-    </>
+  return draggable ? (
+    <DraggableTearOut dragHandler={dragHandler}>
+      {props.children}
+    </DraggableTearOut>
+  ) : (
+    <>props.children</>
   )
 }
 
 export const DraggableTileTearOut: React.FC<DraggableTileTearOutProps> = (
-  props: DraggableTileTearOutProps,
+  props,
 ) => {
   const draggable = canDrag && !props.disabled
   const dragHandler = () => {
-    tearOut(props.symbol!, true, props.tileRef?.current!)
+    tearOut(props.symbol, true, props.tileRef.current!)
   }
-  return (
-    <>
-      {draggable ? (
-        <DraggableTearOut dragHandler={dragHandler}>
-          {props.children}
-        </DraggableTearOut>
-      ) : (
-        props.children
-      )}
-    </>
+  return draggable ? (
+    <DraggableTearOut dragHandler={dragHandler}>
+      {props.children}
+    </DraggableTearOut>
+  ) : (
+    <>{props.children}</>
   )
 }
 
 export const DraggableTearOut: React.FC<DraggableTearOutGenericProps> = (
-  props: DraggableTearOutGenericProps,
+  props,
 ) => {
   const [finishedDrag, setFinishedDrag] = useState(false)
   return (
