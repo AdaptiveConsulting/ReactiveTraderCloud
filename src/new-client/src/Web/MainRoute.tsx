@@ -75,7 +75,6 @@ export const MainRoute: React.FC = () => {
                 section="liverates"
                 disabled={tornOutSectionState.liverates}
               >
-                {" "}
                 <LiveRates />
               </DraggableSectionTearOut>
             )}
