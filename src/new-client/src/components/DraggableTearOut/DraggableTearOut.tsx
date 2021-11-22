@@ -5,12 +5,14 @@ import { tearOutSection, Section } from "@/App/TearOutSection/state"
 import { canDrag } from "@/components/DraggableTearOut/canDrag"
 import { tearOut } from "@/App/LiveRates/Tile/TearOut/state"
 
+export const DragWrapper = styled.div`
+  height: 100%;
+`
 interface DraggableTearOutProps {
   children: JSX.Element[] | JSX.Element
   section: Section
   isTile?: boolean
   ref?: RefObject<HTMLDivElement>
-  isTornOut?: boolean
   symbol?: string
   disabled?: boolean
 }
@@ -22,17 +24,11 @@ export const DraggableTearOut: React.FC<DraggableTearOutProps> = (
   //this state makes sure that the drag event started and finished succesfully
   const [finishedDrag, setFinishedDrag] = useState(false)
   const tearOutContext = useContext(TearOutContext)
-  let disabled = false
-  if (props.isTile) {
-    disabled = props.disabled!
-  } else {
-    disabled = tearOutContext.isTornOut
-  }
-  const ref = props.ref ? props.ref : { current: null }
-  //@ts-ignore
-  const eventHandler = (event: React.DragEvent) => {
+  const disabled = props.isTile ? props.disabled! : tearOutContext.isTornOut
+
+  const dragHandler = () => {
     props.isTile
-      ? tearOut(props.symbol!, true, ref.current!)
+      ? tearOut(props.symbol!, true, props.ref?.current!)
       : tearOutSection(true, props.section)
   }
 
@@ -43,7 +39,7 @@ export const DraggableTearOut: React.FC<DraggableTearOutProps> = (
         createDragImage(event, setFinishedDrag)
       }
       onDragEnd={(event: React.DragEvent<HTMLDivElement>) =>
-        finishedDrag && eventHandler(event)
+        finishedDrag && dragHandler()
       }
       data-qa="tear-off__drag-wrapper"
     >
@@ -86,7 +82,3 @@ const createDragImage = (
     })
   }
 }
-
-export const DragWrapper = styled.div`
-  height: 100%;
-`
