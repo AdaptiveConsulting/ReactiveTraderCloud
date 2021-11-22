@@ -7,7 +7,7 @@ import { trades$ } from "@/services/trades"
 import { colConfigs, colFields } from "../colConfig"
 import type { FilterEvent } from "./filterCommon"
 import { filterResets$ } from "./filterCommon"
-
+import _ from "lodash"
 /**
  * Subset of column fields (as type) that take set/multi-select filter-value
  * options.
@@ -174,6 +174,9 @@ const appliedSetFilters$ = mergeWithKey({
       } else {
         newValues.add(value)
       }
+      if (_.isEqual(newValues, distinctSetFieldValues)) {
+        newValues = new Set()
+      }
     }
     return {
       ...appliedFilters,
@@ -201,9 +204,7 @@ export const appliedSetFilterEntries$ = appliedSetFilters$.pipe(
  * State hook and parametric stream of applied filter-value options
  *  used by SetFilter component to render options.
  */
-export const [
-  useAppliedSetFieldFilters,
-  appliedSetFieldFilters$,
-] = bind((field: SetColField) =>
-  appliedSetFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
+export const [useAppliedSetFieldFilters, appliedSetFieldFilters$] = bind(
+  (field: SetColField) =>
+    appliedSetFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
 )
