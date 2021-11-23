@@ -7,7 +7,7 @@ import { Analytics } from "@/App/Analytics"
 import { DisconnectionOverlay } from "@/App/DisconnectionOverlay"
 import { LiveRates } from "@/App/LiveRates"
 import { useEffect, useState } from "react"
-
+import { DraggableSectionTearOut } from "@/components/DraggableTearOut"
 import {
   useTearOutSectionEntry,
   TornOutSection,
@@ -70,10 +70,22 @@ export const MainRoute: React.FC = () => {
         <Header />
         <MainWrapper>
           <Resizer defaultHeight={30}>
-            {!tornOutSectionState.liverates && <LiveRates />}
-            {!tornOutSectionState.trades && <Trades />}
+            {!tornOutSectionState.liverates && (
+              <DraggableSectionTearOut section="liverates">
+                <LiveRates />
+              </DraggableSectionTearOut>
+            )}
+            {!tornOutSectionState.trades && (
+              <DraggableSectionTearOut section="trades">
+                <Trades />
+              </DraggableSectionTearOut>
+            )}
           </Resizer>
-          {!tornOutSectionState.analytics && <Analytics />}
+          {!tornOutSectionState.analytics && (
+            <DraggableSectionTearOut section="analytics">
+              <Analytics />
+            </DraggableSectionTearOut>
+          )}
         </MainWrapper>
         <Footer />
       </AppLayoutRoot>

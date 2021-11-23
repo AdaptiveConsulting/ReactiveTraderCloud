@@ -6,6 +6,8 @@ import { NotionalInput, notionalInput$ } from "./Notional"
 import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"
 import { PriceButton, priceButton$ } from "./PriceButton"
 import { Header, header$ } from "./Header"
+import { DraggableTileTearOut } from "@/components/DraggableTearOut"
+import { useRef } from "react"
 import {
   Body,
   InputTimerStyle,
@@ -61,7 +63,12 @@ interface Props {
 const Tile: React.FC<Props> = ({ isAnalytics }) => {
   useIsSymbolDataStale()
   const rfq = useRfqState()
-  const { supportsTearOut } = useTileContext()
+  const ref = useRef<HTMLDivElement>(null)
+  const {
+    currencyPair: { symbol },
+    isTornOut,
+    supportsTearOut,
+  } = useTileContext()
   const timerData =
     rfq.stage === QuoteStateStage.Received
       ? { start: rfq.payload.time, end: rfq.payload.time + rfq.payload.timeout }
@@ -81,29 +88,31 @@ const Tile: React.FC<Props> = ({ isAnalytics }) => {
   }
 
   return (
-    <PanelItem shouldMoveDate={supportsTearOut}>
-      <Main>
-        <Header />
-        <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
-          {isAnalytics ? (
-            <GraphNotionalWrapper>
-              <HistoricalGraph showTimer={!!timerData} />
-              <InputTimerWrapper isAnalytics />
-            </GraphNotionalWrapper>
-          ) : null}
-          <PriceControlWrapper>
-            <PriceControlsStyle isAnalyticsView={isAnalytics}>
-              <PriceMovement isAnalyticsView={isAnalytics} />
-              <PriceButton direction={Direction.Sell} />
-              <PriceButton direction={Direction.Buy} />
-              <RfqButton isAnalytics={isAnalytics} />
-            </PriceControlsStyle>
-          </PriceControlWrapper>
-          {!isAnalytics ? <InputTimerWrapper /> : null}
-        </Body>
-      </Main>
-      <ExecutionResponse />
-    </PanelItem>
+    <DraggableTileTearOut symbol={symbol} tileRef={ref} disabled={isTornOut}>
+      <PanelItem shouldMoveDate={supportsTearOut}>
+        <Main>
+          <Header />
+          <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
+            {isAnalytics ? (
+              <GraphNotionalWrapper>
+                <HistoricalGraph showTimer={!!timerData} />
+                <InputTimerWrapper isAnalytics />
+              </GraphNotionalWrapper>
+            ) : null}
+            <PriceControlWrapper>
+              <PriceControlsStyle isAnalyticsView={isAnalytics}>
+                <PriceMovement isAnalyticsView={isAnalytics} />
+                <PriceButton direction={Direction.Sell} />
+                <PriceButton direction={Direction.Buy} />
+                <RfqButton isAnalytics={isAnalytics} />
+              </PriceControlsStyle>
+            </PriceControlWrapper>
+            {!isAnalytics ? <InputTimerWrapper /> : null}
+          </Body>
+        </Main>
+        <ExecutionResponse />
+      </PanelItem>
+    </DraggableTileTearOut>
   )
 }
 const TileContext: React.FC<{
