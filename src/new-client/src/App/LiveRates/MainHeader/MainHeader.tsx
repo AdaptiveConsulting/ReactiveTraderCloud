@@ -17,6 +17,8 @@ import { CurrencyOptions } from "./CurrencyOptions"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
+import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
+import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
 
 const [useCurrencies, mainHeader$] = bind(
   currencyPairs$.pipe(
@@ -61,6 +63,7 @@ export const MainHeader: React.FC = () => {
           onSelectionChange={onSelectCurrency}
         />
         <ToggleView />
+        {supportsTearOut && <TearOutComponent section="liverates" />}
       </RightNav>
     </Header>
   )

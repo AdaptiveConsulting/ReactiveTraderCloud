@@ -50,7 +50,6 @@ export const [useDate, header$] = bind((symbol: string) =>
 )
 
 export const Header: React.FC = () => {
-  const ref = useRef<HTMLDivElement>(null)
   const {
     currencyPair: { base, terms, symbol },
     isTornOut,
@@ -92,8 +91,9 @@ export const HeaderComponent: React.FC<{
   supportsTearOut = false,
   hover = false,
 }) => {
+  const ref = useRef<HTMLDivElement>(null)
   return (
-    <HeaderWrapper supportsTearOut={supportsTearOut}>
+    <HeaderWrapper ref={ref} supportsTearOut={supportsTearOut}>
       <TileSymbol data-qa="tile-header__tile-symbol">
         {base}/{terms}
       </TileSymbol>
@@ -101,7 +101,15 @@ export const HeaderComponent: React.FC<{
         {date}
       </DeliveryDate>
       {canTearOut && (
-        <HeaderAction hover={hover} onClick={onClick}>
+        <HeaderAction
+          hover={hover}
+          onClick={onClick}
+          aria-label={
+            isTornOut
+              ? "Return window to application"
+              : "Tear out into standalone window"
+          }
+        >
           {isTornOut ? <PopInIcon /> : <PopOutIcon />}
         </HeaderAction>
       )}

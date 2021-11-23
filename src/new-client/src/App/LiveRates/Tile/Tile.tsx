@@ -6,7 +6,7 @@ import {
   NotionalInput,
   notionalInput$,
   NotionalInputComponent,
-} from "./Notional"
+} from "@/App/LiveRates/Tile/Notional/Notional"
 import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"
 import { PriceButton, priceButton$ } from "./PriceButton"
 import { Header, header$, HeaderComponent } from "./Header"

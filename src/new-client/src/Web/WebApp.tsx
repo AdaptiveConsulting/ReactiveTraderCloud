@@ -4,6 +4,10 @@ import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { MainRoute } from "./MainRoute"
 import { TearOutRouteWrapper } from "./Web.styles"
+import { Trades } from "@/App/Trades"
+import { Analytics } from "@/App/Analytics"
+import { LiveRates } from "@/App/LiveRates"
+import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 
 export const WebApp: React.FC = () => (
   <BrowserRouter basename={BASE_PATH}>
@@ -29,6 +33,26 @@ export const WebApp: React.FC = () => (
           )
         }}
       />
+      <TearOutContext.Provider value={{ isTornOut: true }}>
+        <Route
+          path="/liverates"
+          render={() => {
+            return <LiveRates />
+          }}
+        />
+        <Route
+          path="/trades"
+          render={() => {
+            return <Trades />
+          }}
+        />
+        <Route
+          path="/analytics"
+          render={() => {
+            return <Analytics hideIfMatches={""} />
+          }}
+        />
+      </TearOutContext.Provider>
     </Switch>
   </BrowserRouter>
 )

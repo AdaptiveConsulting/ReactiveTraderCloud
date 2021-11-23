@@ -93,19 +93,23 @@ const Resizer: React.FC<Props> = ({ defaultHeight, children }) => {
 
   return (
     <ResizerStyle ref={wrapperRef}>
-      <ResizableSection height={100 - height}>
-        <ResizableContent>{children[0]}</ResizableContent>
-      </ResizableSection>
-      <ResizableSection height={height}>
-        <ResizableContent>
-          <Bar
-            onMouseDown={startDragging.current!}
-            onTouchStart={startDragging.current!}
-            show
-          />
-          {children[1]}
-        </ResizableContent>
-      </ResizableSection>
+      {children[0] && (
+        <ResizableSection height={children[1] ? 100 - height : 100}>
+          <ResizableContent>{children[0]}</ResizableContent>
+        </ResizableSection>
+      )}
+      {children[1] && (
+        <ResizableSection height={children[0] ? height : 100}>
+          <ResizableContent>
+            <Bar
+              onMouseDown={startDragging.current!}
+              onTouchStart={startDragging.current!}
+              show
+            />
+            {children[1]}
+          </ResizableContent>
+        </ResizableSection>
+      )}
     </ResizerStyle>
   )
 }

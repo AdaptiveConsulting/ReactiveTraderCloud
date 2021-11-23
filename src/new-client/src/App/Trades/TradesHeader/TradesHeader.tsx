@@ -2,6 +2,8 @@ import styled from "styled-components"
 import { ExcelButton } from "./ExcelButton"
 import { AppliedFilters } from "./AppliedFilters"
 import { QuickFilter } from "./QuickFilter"
+import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
+import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
 
 const TradesHeaderStyle = styled("div")`
   display: flex;
@@ -30,17 +32,19 @@ const HeaderToolbar = styled("div")`
   align-items: center;
   justify-content: flex-end;
 `
-
-export const TradesHeader: React.FC = () => (
-  <TradesHeaderStyle>
-    <HeaderLeftGroup>Trades</HeaderLeftGroup>
-    <HeaderRightGroup>
-      <ExcelButton />
-      <HeaderToolbar>
-        <AppliedFilters />
-        <QuickFilter />
-      </HeaderToolbar>
-      <Fill />
-    </HeaderRightGroup>
-  </TradesHeaderStyle>
-)
+export const TradesHeader: React.FC = () => {
+  return (
+    <TradesHeaderStyle>
+      <HeaderLeftGroup>Trades</HeaderLeftGroup>
+      <HeaderRightGroup>
+        <ExcelButton />
+        <HeaderToolbar>
+          <AppliedFilters />
+          <QuickFilter />
+        </HeaderToolbar>
+        {supportsTearOut && <TearOutComponent section="trades" />}
+        <Fill />
+      </HeaderRightGroup>
+    </TradesHeaderStyle>
+  )
+}

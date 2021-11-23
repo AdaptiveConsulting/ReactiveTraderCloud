@@ -19,6 +19,7 @@ body ::-webkit-scrollbar-thumb {
 
 body {
   scrollbar-color: ${getColor} transparent;
+  background-color: ${({ theme }) => theme.core.darkBackground};
 }
 
 body ::-webkit-scrollbar-thumb {

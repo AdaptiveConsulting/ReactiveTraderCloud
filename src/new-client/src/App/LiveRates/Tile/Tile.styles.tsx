@@ -80,7 +80,7 @@ export const Body = styled.div<{
 export const GraphNotionalWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 40%;
+  width: 50%;
 `
 
 export const GraphNotionalWrapperDummy = styled.div<{ isTimerOn: boolean }>`

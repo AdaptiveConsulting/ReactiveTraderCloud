@@ -16,7 +16,6 @@ import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
 import { PlatformContext } from "@/platform"
 import { showCacheUpdateModal } from "./cacheUpdateModal"
-
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 
 export default function main() {

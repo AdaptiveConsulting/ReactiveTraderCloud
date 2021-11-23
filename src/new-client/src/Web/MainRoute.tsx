@@ -6,6 +6,14 @@ import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
 import { DisconnectionOverlay } from "@/App/DisconnectionOverlay"
 import { LiveRates } from "@/App/LiveRates"
+import { useEffect, useState } from "react"
+
+import {
+  useTearOutSectionEntry,
+  TornOutSection,
+} from "@/App/TearOutSection/state"
+
+import { handleTearOutSection } from "@/App/TearOutSection/handleTearOutSection"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -36,19 +44,39 @@ const MainWrapper = styled.div`
   overflow: hidden;
 `
 
-export const MainRoute: React.FC = () => (
-  <Wrapper>
-    <DisconnectionOverlay />
-    <AppLayoutRoot data-qa="app-layout__root">
-      <Header />
-      <MainWrapper>
-        <Resizer defaultHeight={30}>
-          <LiveRates />
-          <Trades />
-        </Resizer>
-        <Analytics />
-      </MainWrapper>
-      <Footer />
-    </AppLayoutRoot>
-  </Wrapper>
-)
+export const MainRoute: React.FC = () => {
+  const tearOutEntry = useTearOutSectionEntry()
+  const [tornOutSectionState, setTornOutSectionState] =
+    useState<TornOutSection>({
+      liverates: false,
+      trades: false,
+      analytics: false,
+    })
+
+  useEffect(() => {
+    if (tearOutEntry) {
+      const [tornOut, section] = tearOutEntry
+      setTornOutSectionState({ ...tornOutSectionState, [section]: tornOut })
+      if (tornOut) {
+        handleTearOutSection(section)
+      }
+    }
+  }, [tearOutEntry])
+
+  return (
+    <Wrapper>
+      <DisconnectionOverlay />
+      <AppLayoutRoot data-qa="app-layout__root">
+        <Header />
+        <MainWrapper>
+          <Resizer defaultHeight={30}>
+            {!tornOutSectionState.liverates && <LiveRates />}
+            {!tornOutSectionState.trades && <Trades />}
+          </Resizer>
+          {!tornOutSectionState.analytics && <Analytics />}
+        </MainWrapper>
+        <Footer />
+      </AppLayoutRoot>
+    </Wrapper>
+  )
+}
