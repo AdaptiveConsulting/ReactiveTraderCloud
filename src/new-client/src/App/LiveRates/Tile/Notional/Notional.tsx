@@ -39,9 +39,10 @@ export const [useNotional, getNotional$] = symbolBind((symbol) =>
   ).pipe(
     map(({ rawVal }) => {
       const lastChar = rawVal.slice(-1).toLowerCase()
-      const value =
+      const value = Math.abs(
         Number(rawVal.replace(/,|k$|m$|K$|M$/g, "")) *
-        (multipliers[lastChar] || 1)
+          (multipliers[lastChar] || 1),
+      )
       return {
         value,
         inputValue: formatter.format(value) + (lastChar === "." ? "." : ""),
