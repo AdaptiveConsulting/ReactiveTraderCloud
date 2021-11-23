@@ -23,6 +23,7 @@ type DraggableTearOutGenericProps = React.PropsWithChildren<{
   dragHandler: () => void
 }>
 
+//@ts-ignore
 export const DraggableSectionTearOut: React.FC<DraggableSectionTearOutProps> = (
   props,
 ) => {
@@ -35,10 +36,11 @@ export const DraggableSectionTearOut: React.FC<DraggableSectionTearOutProps> = (
       {props.children}
     </DraggableTearOut>
   ) : (
-    <>props.children</>
+    props.children
   )
 }
 
+//@ts-ignore
 export const DraggableTileTearOut: React.FC<DraggableTileTearOutProps> = (
   props,
 ) => {
@@ -51,7 +53,7 @@ export const DraggableTileTearOut: React.FC<DraggableTileTearOutProps> = (
       {props.children}
     </DraggableTearOut>
   ) : (
-    <>{props.children}</>
+    props.children
   )
 }
 
