@@ -4,7 +4,6 @@ import ReactDOM from "react-dom"
 import GlobalStyle from "@/theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import { register } from "./serviceWorkerRegistration"
-import { registerSwNotifications } from "./sw-notifications"
 import { WebApp } from "./WebApp"
 
 import { AnalyticsCoreDeferred } from "@/App/Analytics"
@@ -13,8 +12,8 @@ import { TradesCoreDeferred } from "@/App/Trades"
 
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
-import { PlatformContext } from "@/platform"
 import { showCacheUpdateModal } from "./cacheUpdateModal"
+import { registerNotifications } from "@/notifications"
 
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
@@ -44,18 +43,17 @@ export default function main() {
         })
       },
     })
-    registerSwNotifications()
   }
+
+  registerNotifications()
 
   ReactDOM.render(
     <StrictMode>
-      <PlatformContext.Provider value={{ type: "web" }}>
-        <GlobalStyle />
-        <ThemeProvider>
-          <GlobalScrollbarStyle />
-          <WebApp />
-        </ThemeProvider>
-      </PlatformContext.Provider>
+      <GlobalStyle />
+      <ThemeProvider>
+        <GlobalScrollbarStyle />
+        <WebApp />
+      </ThemeProvider>
     </StrictMode>,
     document.getElementById("root"),
   )

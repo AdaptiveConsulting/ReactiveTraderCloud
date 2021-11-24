@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
-import { usePlatform } from "@/platform"
+import { isPWA } from "@/utils"
 
 export const usePWABannerPrompt = (): [
   BeforeInstallPromptEvent | null,
   () => Promise<void> | undefined,
 ] => {
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent | null>(null)
-  const platform = usePlatform()
 
   const promptToInstall = () => {
     if (prompt) {
@@ -19,7 +18,7 @@ export const usePWABannerPrompt = (): [
 
   useEffect(() => {
     const ready = (e: BeforeInstallPromptEvent) => {
-      platform.type === "web" ? setPrompt(e) : setPrompt(null)
+      isPWA() ? setPrompt(e) : setPrompt(null)
     }
 
     if (typeof window.beforeInstallPromptEvent === "undefined") {
@@ -31,7 +30,7 @@ export const usePWABannerPrompt = (): [
     return () => {
       window.removeEventListener("beforeinstallprompt", ready)
     }
-  }, [platform.type])
+  }, [isPWA])
 
   return [prompt, promptToInstall]
 }

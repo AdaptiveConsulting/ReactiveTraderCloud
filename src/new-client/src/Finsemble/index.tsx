@@ -4,10 +4,9 @@ import { GA_TRACKING_ID } from "@/constants"
 import GlobalStyle from "@/theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import { FinsembleApp } from "./FinsembleApp"
-import { PlatformContext } from "@/platform"
-
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
+import { registerNotifications } from "@/notifications"
 
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
@@ -19,15 +18,15 @@ export default function main() {
     })
   }
 
+  registerNotifications()
+
   ReactDOM.render(
     <StrictMode>
-      <PlatformContext.Provider value={{ type: "finsemble" }}>
-        <GlobalStyle />
-        <ThemeProvider>
-          <GlobalScrollbarStyle />
-          <FinsembleApp />
-        </ThemeProvider>
-      </PlatformContext.Provider>
+      <GlobalStyle />
+      <ThemeProvider>
+        <GlobalScrollbarStyle />
+        <FinsembleApp />
+      </ThemeProvider>
     </StrictMode>,
     document.getElementById("root"),
   )

@@ -9,6 +9,7 @@ import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { executions$ } from "@/services/executions/executions"
 import { formatNumber } from "@/utils"
 import { onTradeRowHighlight } from "@/App/Trades/TradesState"
+import { BASE_URL } from "./constants"
 
 const sendNotification = (executionTrade: ExecutionTrade) => {
   const notification = {
@@ -20,13 +21,9 @@ const sendNotification = (executionTrade: ExecutionTrade) => {
   const status =
     notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
 
-  // TODO - Get from constants from the ongiong launcher work
-  const host =
-    import.meta.env.BASE_URL === "/"
-      ? "http://localhost:1917"
-      : import.meta.env.BASE_URL
+  const host = BASE_URL === "/" ? "http://localhost:1917" : BASE_URL
   const iconUrl = `${host}/static/media/reactive-trader-icon-dark.ico`
-  console.log(iconUrl)
+
   create({
     title: `Trade ${status}: ID ${notification.tradeId}`,
     body: `${notification.direction} ${

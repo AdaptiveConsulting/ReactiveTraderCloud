@@ -4,10 +4,9 @@ import { GA_TRACKING_ID } from "@/constants"
 import GlobalStyle from "@/theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import { OpenFinApp } from "./OpenFinApp"
-import { PlatformContext } from "@/platform"
 import { connectToGateway } from "@adaptive/hydra-platform"
 import { noop } from "rxjs"
-import { registerNotifications } from "./notifications"
+import { registerNotifications } from "@/notifications"
 
 export default function main() {
   if (!import.meta.env.VITE_MOCKS) {
@@ -23,13 +22,11 @@ export default function main() {
 
   ReactDOM.render(
     <StrictMode>
-      <PlatformContext.Provider value={{ type: "openfin" }}>
-        <GlobalStyle />
-        <ThemeProvider>
-          <GlobalScrollbarStyle />
-          <OpenFinApp />
-        </ThemeProvider>
-      </PlatformContext.Provider>
+      <GlobalStyle />
+      <ThemeProvider>
+        <GlobalScrollbarStyle />
+        <OpenFinApp />
+      </ThemeProvider>
     </StrictMode>,
     document.getElementById("root"),
   )
