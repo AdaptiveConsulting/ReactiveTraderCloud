@@ -1,5 +1,5 @@
 import { of, race, Subject, timer } from "rxjs"
-import { delay, map, mapTo, mergeMap, tap } from "rxjs/operators"
+import { map, mapTo, mergeMap, tap } from "rxjs/operators"
 import {
   ExecutionRequest,
   ExecutionTrade,

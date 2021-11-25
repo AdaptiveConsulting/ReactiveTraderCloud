@@ -48,8 +48,8 @@ export const MainRoute: React.FC = () => {
   const tearOutEntry = useTearOutSectionEntry()
   const [tornOutSectionState, setTornOutSectionState] =
     useState<TornOutSection>({
-      liverates: false,
-      trades: false,
+      tiles: false,
+      blotter: false,
       analytics: false,
     })
 
@@ -70,13 +70,13 @@ export const MainRoute: React.FC = () => {
         <Header />
         <MainWrapper>
           <Resizer defaultHeight={30}>
-            {!tornOutSectionState.liverates && (
-              <DraggableSectionTearOut section="liverates">
+            {!tornOutSectionState.tiles && (
+              <DraggableSectionTearOut section="tiles">
                 <LiveRates />
               </DraggableSectionTearOut>
             )}
-            {!tornOutSectionState.trades && (
-              <DraggableSectionTearOut section="trades">
+            {!tornOutSectionState.blotter && (
+              <DraggableSectionTearOut section="blotter">
                 <Trades />
               </DraggableSectionTearOut>
             )}

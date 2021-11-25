@@ -1,76 +1,58 @@
-import { GA_TRACKING_ID } from "../constants"
-import { StrictMode } from "react"
-import ReactDOM from "react-dom"
-import GlobalStyle from "@/theme/globals"
-import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
-import { register } from "./serviceWorkerRegistration"
-import { WebApp } from "./WebApp"
+import { TileView } from "@/App/LiveRates/selectedView"
+import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
+import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
+import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { MainRoute } from "./MainRoute"
+import { TearOutRouteWrapper } from "./Web.styles"
+import { Trades } from "@/App/Trades"
+import { Analytics } from "@/App/Analytics"
+import { LiveRates } from "@/App/LiveRates"
+import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 
-import { AnalyticsCoreDeferred } from "@/App/Analytics"
-import { LiveRatesCoreDeferred } from "@/App/LiveRates"
-import { TradesCoreDeferred } from "@/App/Trades"
+export const WebApp: React.FC = () => (
+  <BrowserRouter basename={BASE_PATH}>
+    <Switch>
+      <Route exact path="/" render={() => <MainRoute />} />
+      <Route
+        path={ROUTES_CONFIG.tile}
+        render={({
+          location: { search },
+          match: {
+            params: { symbol },
+          },
+        }) => {
+          const query = new URLSearchParams(search)
+          const view = query.has("tileView")
+            ? (query.get("tileView") as TileView)
+            : TileView.Analytics
 
-import { connectToGateway } from "@adaptive/hydra-platform"
-import { noop } from "rxjs"
-import { showCacheUpdateModal } from "./cacheUpdateModal"
-import { registerNotifications } from "@/notifications"
-
-export default function main() {
-  if (!import.meta.env.VITE_MOCKS) {
-    connectToGateway({
-      url: `${window.location.origin}/ws`,
-      interceptor: noop,
-      useJson: false,
-      autoReconnect: true,
-    })
-  }
-
-  if (import.meta.env.PROD) {
-    register({
-      onUpdate: (registration) => {
-        // If the SW got updated, then we have to be careful. We can't immediately
-        // skip the waiting phase, because if there are requests on the fly that
-        // could be a disaster
-        // Wait for our async chunks to be loaded, then skip waiting phase and show
-        // the user a modal informing them that there are new updates available
-        Promise.all([
-          AnalyticsCoreDeferred,
-          LiveRatesCoreDeferred,
-          TradesCoreDeferred,
-        ]).then(() => {
-          registration.waiting?.postMessage({ type: "SKIP_WAITING" })
-          showCacheUpdateModal()
-        })
-      },
-    })
-  }
-
-  registerNotifications()
-
-  ReactDOM.render(
-    <StrictMode>
-      <GlobalStyle />
-      <ThemeProvider>
-        <GlobalScrollbarStyle />
-        <WebApp />
-      </ThemeProvider>
-    </StrictMode>,
-    document.getElementById("root"),
-  )
-
-  const { ga } = window
-
-  ga("create", {
-    trackingId: GA_TRACKING_ID,
-    transport: "beacon",
-  })
-
-  ga("set", {
-    dimension1: "browser",
-    dimension2: "browser",
-    dimension3: import.meta.env,
-    page: window.location.pathname,
-  })
-
-  ga("send", "pageview")
-}
+          return (
+            <TearOutRouteWrapper>
+              <TornOutTile symbol={symbol!} view={view} />
+            </TearOutRouteWrapper>
+          )
+        }}
+      />
+      <TearOutContext.Provider value={{ isTornOut: true }}>
+        <Route
+          path={ROUTES_CONFIG.tiles}
+          render={() => {
+            return <LiveRates />
+          }}
+        />
+        <Route
+          path={ROUTES_CONFIG.blotter}
+          render={() => {
+            return <Trades />
+          }}
+        />
+        <Route
+          path={ROUTES_CONFIG.analytics}
+          render={() => {
+            return <Analytics hideIfMatches={""} />
+          }}
+        />
+      </TearOutContext.Provider>
+    </Switch>
+  </BrowserRouter>
+)

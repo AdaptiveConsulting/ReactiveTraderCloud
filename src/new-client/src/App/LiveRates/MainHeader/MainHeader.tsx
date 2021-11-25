@@ -63,7 +63,7 @@ export const MainHeader: React.FC = () => {
           onSelectionChange={onSelectCurrency}
         />
         <ToggleView />
-        {supportsTearOut && <TearOutComponent section="liverates" />}
+        {supportsTearOut && <TearOutComponent section="tiles" />}
       </RightNav>
     </Header>
   )
