@@ -355,7 +355,7 @@ const newTradeId$ = trades$.pipe(
       trades: Trade[]
     },
   ),
-  skipWhile(({ stateOfWorld }) => stateOfWorld),
+  skipWhile(({ stateOfWorld, trades }) => stateOfWorld || trades.length === 0),
   map(({ trades }) => trades[0].tradeId),
 )
 
