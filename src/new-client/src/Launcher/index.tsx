@@ -17,7 +17,7 @@ export default function main() {
       interceptor: noop,
     })
   }
-  console.log("BASE_PATH", BASE_PATH)
+
   ReactDOM.render(
     <StrictMode>
       <GlobalStyle />

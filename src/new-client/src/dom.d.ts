@@ -5,6 +5,7 @@ declare global {
     beforeInstallPromptEvent: BeforeInstallPromptEvent
     // TODO
     FSBL: any
+    ga: any
   }
 
   interface WindowEventMap {

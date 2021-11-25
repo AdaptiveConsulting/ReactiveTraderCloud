@@ -1,5 +1,5 @@
-import { BehaviorSubject, of, Subject } from "rxjs"
-import { switchMap, take, tap } from "rxjs/operators"
+import { BehaviorSubject, of, race, Subject, timer } from "rxjs"
+import { map, switchMap, take, tap } from "rxjs/operators"
 import { checkLimitFn } from "./types"
 
 const limitCheckSubscriptionUuid$ = new BehaviorSubject<string | null>(null)
@@ -65,8 +65,21 @@ export const checkLimit$: checkLimitFn = (message: {
         payload,
       )
 
-      return obs.pipe(
-        take(1),
+      // If limit checker hasn't responded in 3 seconds it has likely been closed, remove the subscription
+      // An alternative would be to establish a heartbeat connection with the limit checker
+      return race([
+        obs.pipe(take(1)),
+        timer(3000).pipe(
+          map(() => {
+            console.info(
+              LOG_NAME,
+              "limit check timed out, removing subscription",
+            )
+            limitCheckSubscriptionUuid$.next(null)
+            return true
+          }),
+        ),
+      ]).pipe(
         tap(() => {
           fin.desktop.InterApplicationBus.unsubscribe(
             uuid,
