@@ -75,7 +75,7 @@ const LauncherMinimiseAndExit: React.FC = () => (
   </MinExitContainer>
 )
 
-export function LauncherApp() {
+export function MainRoute() {
   const [isSearchVisible, setIsSearchVisible] = useState(false)
   const [initialBounds, setInitialBounds] = useState<Bounds>()
   const [responseHeight, setResponseHeight] = useState<number>()

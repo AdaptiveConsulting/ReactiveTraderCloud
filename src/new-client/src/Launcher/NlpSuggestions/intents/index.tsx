@@ -1,3 +1,4 @@
+import { ROUTES_CONFIG } from "@/constants"
 import { NlpIntent, NlpIntentType } from "@/Launcher/services/nlpService"
 import { getReactiveTraderUrl } from "@/Launcher/utils/url"
 import { openWindow } from "@/utils/window/openWindow"
@@ -5,7 +6,9 @@ import { openWindow } from "@/utils/window/openWindow"
 export const showCurrencyPairWindow = (currencyPair: string) => {
   const options = {
     name: currencyPair,
-    url: getReactiveTraderUrl(`/spot/${currencyPair}`),
+    url: getReactiveTraderUrl(
+      ROUTES_CONFIG.tile.replace(":symbol", currencyPair),
+    ),
     width: 380,
     height: 200,
     includeInSnapshots: false,
@@ -17,7 +20,7 @@ export const showCurrencyPairWindow = (currencyPair: string) => {
 export const showTilesWindow = () => {
   const options = {
     name: "Live Rates",
-    url: getReactiveTraderUrl("/tiles"),
+    url: getReactiveTraderUrl(ROUTES_CONFIG.tiles),
     width: 1000,
     height: 500,
     includeInSnapshots: false,
@@ -29,7 +32,7 @@ export const showTilesWindow = () => {
 export const showBlotterWindow = () => {
   const options = {
     name: "Trades",
-    url: getReactiveTraderUrl("/blotter"),
+    url: getReactiveTraderUrl(ROUTES_CONFIG.blotter),
     width: 1000,
     height: 500,
     includeInSnapshots: false,

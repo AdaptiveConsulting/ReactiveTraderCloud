@@ -1,52 +1,69 @@
-import { StrictMode } from "react"
-import ReactDOM from "react-dom"
-import { GA_TRACKING_ID } from "@/constants"
-import GlobalStyle from "@/theme/globals"
-import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
-import { OpenFinApp } from "./OpenFinApp"
-import { PlatformContext } from "@/platform"
-import { connectToGateway } from "@adaptive/hydra-platform"
-import { noop } from "rxjs"
-import { registerNotifications } from "./notifications"
+import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { Analytics } from "@/App/Analytics"
+import { Trades } from "@/App/Trades"
+import { Snapshots } from "./Snapshots/Snapshots"
+import { ChildWindowFrame } from "./Window/ChildWindowFrame"
+import { WindowFrame } from "./Window/WindowFrame"
+import { DocTitle } from "@/components/DocTitle"
+import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
+import { TileView } from "@/App/LiveRates/selectedView"
+import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
+import { LiveRates } from "@/App/LiveRates"
+import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 
-export default function main() {
-  if (!import.meta.env.VITE_MOCKS) {
-    connectToGateway({
-      url: `${window.location.origin}/ws`,
-      interceptor: noop,
-      useJson: true,
-      autoReconnect: true,
-    })
-  }
+export const OpenFinApp: React.FC = () => (
+  <BrowserRouter basename={BASE_PATH}>
+    <Switch>
+      <Route
+        path={ROUTES_CONFIG.analytics}
+        render={() => (
+          <DocTitle title="Analytics">
+            <Analytics hideIfMatches={null} />
+          </DocTitle>
+        )}
+      />
+      <Route
+        path={ROUTES_CONFIG.blotter}
+        render={() => (
+          <DocTitle title="Trades">
+            <Trades />
+          </DocTitle>
+        )}
+      />
+      <Route
+        path={ROUTES_CONFIG.tiles}
+        render={() => (
+          <DocTitle title="Live Rates">
+            <LiveRates />
+          </DocTitle>
+        )}
+      />
+      <Route
+        path={ROUTES_CONFIG.tile}
+        render={({
+          location: { search },
+          match: {
+            params: { symbol },
+          },
+        }) => {
+          const query = new URLSearchParams(search)
+          const view = query.has("tileView")
+            ? (query.get("tileView") as TileView)
+            : TileView.Analytics
 
-  registerNotifications()
-
-  ReactDOM.render(
-    <StrictMode>
-      <PlatformContext.Provider value={{ type: "openfin" }}>
-        <GlobalStyle />
-        <ThemeProvider>
-          <GlobalScrollbarStyle />
-          <OpenFinApp />
-        </ThemeProvider>
-      </PlatformContext.Provider>
-    </StrictMode>,
-    document.getElementById("root"),
-  )
-
-  const { ga } = window
-
-  ga("create", {
-    trackingId: GA_TRACKING_ID,
-    transport: "beacon",
-  })
-
-  ga("set", {
-    dimension1: "openfin",
-    dimension2: "openfin",
-    dimension3: import.meta.env,
-    page: window.location.pathname,
-  })
-
-  ga("send", "pageview")
-}
+          return (
+            <TornOutTile symbol={symbol!} view={view} supportsTearOut={false} />
+          )
+        }}
+      />
+      <Route path="/contact" render={() => <OpenFinContactDisplay />} />
+      <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
+      <Route
+        path="/openfin-sub-window-frame"
+        render={() => <ChildWindowFrame />}
+      />
+      <Route path="/status" render={() => <div />} />
+      <Route path="/snapshots" render={() => <Snapshots />} />
+    </Switch>
+  </BrowserRouter>
+)

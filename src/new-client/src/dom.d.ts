@@ -3,6 +3,9 @@ export {}
 declare global {
   interface Window {
     beforeInstallPromptEvent: BeforeInstallPromptEvent
+    // TODO
+    FSBL: any
+    ga: any
   }
 
   interface WindowEventMap {

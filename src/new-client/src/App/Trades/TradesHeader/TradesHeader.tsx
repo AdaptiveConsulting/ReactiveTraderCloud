@@ -42,7 +42,7 @@ export const TradesHeader: React.FC = () => {
           <AppliedFilters />
           <QuickFilter />
         </HeaderToolbar>
-        {supportsTearOut && <TearOutComponent section="trades" />}
+        {supportsTearOut && <TearOutComponent section="blotter" />}
         <Fill />
       </HeaderRightGroup>
     </TradesHeaderStyle>

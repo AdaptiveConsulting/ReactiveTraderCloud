@@ -56,9 +56,10 @@ const notificationsGranted = () =>
     }
   })
 
-export async function registerSwNotifications() {
+export async function registerNotifications() {
   try {
     await notificationsGranted()
+    console.log("Notifications permission granted.")
 
     executions$.subscribe(
       (executionTrade) => {

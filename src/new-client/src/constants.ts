@@ -8,3 +8,10 @@ export const ENVIRONMENT: Environment =
   (["env", "dev", "uat", "prod"].find((env) =>
     BASE_URL.includes(`.${env}.`),
   ) as Environment) || "local"
+
+export const ROUTES_CONFIG = {
+  tile: "/spot/:symbol",
+  tiles: "/tiles",
+  blotter: "/blotter",
+  analytics: "/analytics"
+}

@@ -5,7 +5,7 @@ type TearOutSectionEntry = [boolean, Section]
 
 type tornOutSize = { width: number; height: number }
 
-export type Section = "liverates" | "trades" | "analytics"
+export type Section = "tiles" | "blotter" | "analytics"
 
 export type SectionConfig = { [section in Section]: tornOutSize }
 
@@ -21,13 +21,13 @@ export const [useTearOutSectionEntry] = bind<TearOutSectionEntry | null>(
 )
 
 export const sectionConfig: SectionConfig = {
-  liverates: {
+  blotter: {
     width: window.innerWidth - window.innerWidth * 0.15,
     height: window.innerHeight - window.innerHeight * 0.5,
   },
-  trades: {
+  tiles: {
     width: window.innerWidth - window.innerWidth * 0.15,
-    height: window.innerHeight - window.innerHeight * 0.75,
+    height: window.innerHeight - window.innerHeight * 0.5,
   },
   analytics: {
     width: window.innerWidth - window.innerWidth * 0.7,

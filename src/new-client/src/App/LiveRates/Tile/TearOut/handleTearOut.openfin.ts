@@ -1,3 +1,4 @@
+import { ROUTES_CONFIG } from "@/constants"
 import { calculateWindowCoordinates, Offset } from "@/utils"
 import { constructUrl } from "@/utils/url"
 import { openWindow } from "@/utils/window/openWindow"
@@ -24,7 +25,7 @@ export async function handleTearOut(symbol: string, tileRef: HTMLDivElement) {
   openWindow(
     {
       name: symbol,
-      url: constructUrl(`/spot/${symbol}`),
+      url: constructUrl(ROUTES_CONFIG.tile.replace(":symbol", symbol)),
       width: 380,
       height: 200,
       includeInSnapshots: false,
