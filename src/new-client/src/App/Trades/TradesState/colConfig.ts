@@ -36,57 +36,57 @@ export const colConfigs: Record<ColField, ColConfig> = {
   tradeId: {
     headerName: "Trade ID",
     filterType: "number",
-    width: 100,
+    width: 8,
   },
   status: {
     headerName: "Status",
     filterType: "set",
     valueFormatter: capitalize,
-    width: 110,
+    width: 8.8,
   },
   tradeDate: {
     headerName: "Trade Date",
     filterType: "date",
     valueFormatter: (v) => formatDate(v as Date, DATE_FORMAT),
-    width: 130,
+    width: 10.4,
   },
   direction: {
     headerName: "Direction",
     filterType: "set",
-    width: 110,
+    width: 8.8,
   },
   symbol: {
     headerName: "CCYCCY",
     filterType: "set",
-    width: 110,
+    width: 8.8,
   },
   dealtCurrency: {
     headerName: "Deal CCY",
     filterType: "set",
-    width: 90,
+    width: 7.2,
   },
   notional: {
     headerName: "Notional",
     filterType: "number",
     valueFormatter: (v) => formatAsWholeNumber(v as number),
-    width: 120,
+    width: 9.6,
   },
   spotRate: {
     headerName: "Rate",
     filterType: "number",
     valueFormatter: (v) => formatTo6Digits(v as number),
-    width: 100,
+    width: 8,
   },
   valueDate: {
     headerName: "Value Date",
     filterType: "date",
     valueFormatter: (v) => formatDate(v as Date, DATE_FORMAT),
-    width: 120,
+    width: 9.6,
   },
   traderName: {
     headerName: "Trader",
     filterType: "set",
-    width: 110,
+    width: 8.8,
   },
 }
 

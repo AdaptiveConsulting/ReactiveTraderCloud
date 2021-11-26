@@ -8,6 +8,8 @@ import {
   useTableTrades,
 } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
+import { Virtuoso } from "react-virtuoso"
+import { useRef } from "react"
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -40,20 +42,20 @@ const highlightBackgroundColor = css`
 `
 
 const TableBodyRow = styled.tr<{ pending?: boolean; highlight?: boolean }>`
-  &:nth-child(even) {
-    background-color: ${({ theme }) => theme.core.darkBackground};
-  }
-  &:hover {
-    background-color: ${({ theme }) => theme.core.alternateBackground};
-  }
   height: 2rem;
   ${({ highlight }) => highlight && highlightBackgroundColor}
 `
 
-const TableBodyCell = styled.td<{ numeric?: boolean; rejected?: boolean }>`
+const TableBodyCell = styled.td<{
+  numeric?: boolean
+  rejected?: boolean
+  relativeWidth?: number
+}>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
   padding-right: ${({ numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
   position: relative;
+  width: ${({ relativeWidth }) => `${relativeWidth}vw`};
+  vertical-align: middle;
   &:before {
     content: " ";
     display: ${({ rejected }) => (rejected ? "block;" : "none;")};
@@ -82,10 +84,23 @@ const StatusIndicatorSpacer = styled.th`
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
 `
 
-export const TradesGrid: React.FC = () => {
-  const trades = useTableTrades()
-  const highlightedRow = useTradeRowHighlight()
+const VirtuosoTable = styled.div`
+  [data-test-id] > div {
+    &:nth-child(even) {
+      background-color: ${({ theme }) => theme.core.darkBackground};
+    }
+    &:hover {
+      background-color: ${({ theme }) => theme.core.alternateBackground};
+    }
+    height: 2rem;
+  }
+`
 
+export const TradeGridRow: React.FC<any> = ({
+  trade,
+  highlightedRow,
+  externalRef,
+}) => {
   const tryBroadcastContext = (symbol: string) => {
     if (window.fdc3) {
       broadcast({
@@ -96,56 +111,76 @@ export const TradesGrid: React.FC = () => {
   }
 
   return (
-    <TableWrapper>
+    <TableBodyRow
+      key={trade.tradeId}
+      highlight={trade.tradeId === highlightedRow}
+      onClick={() => tryBroadcastContext(trade.symbol)}
+    >
+      <StatusIndicator status={trade.status} aria-label={trade.status} />
+      {colFields.map((field, i) => (
+        <TableBodyCell
+          key={field}
+          numeric={
+            colConfigs[field].filterType === "number" && field !== "tradeId"
+          }
+          rejected={trade.status === "Rejected"}
+          relativeWidth={colConfigs[field].width}
+        >
+          {colConfigs[field].valueFormatter?.(trade[field]) ?? trade[field]}
+        </TableBodyCell>
+      ))}
+    </TableBodyRow>
+  )
+}
+
+export const TradesGrid: React.FC<any> = ({ currentHeight }) => {
+  const trades = useTableTrades()
+  const highlightedRow = useTradeRowHighlight()
+  const ref = useRef(null)
+
+  return (
+    <>
       <Table>
         <caption id="trades-table-heading" className="visually-hidden">
           Reactive Trader FX Trades Table
         </caption>
-        <TableHead>
-          <TableHeadRow>
-            <StatusIndicatorSpacer scope="col" aria-label="Trade Status" />
-            {colFields.map((field) => (
-              <TableHeadCellContainer key={field} field={field} />
-            ))}
-          </TableHeadRow>
-        </TableHead>
-        <tbody role="grid">
-          {trades.length ? (
-            trades.map((trade) => (
-              <TableBodyRow
-                key={trade.tradeId}
-                highlight={trade.tradeId === highlightedRow}
-                onClick={() => tryBroadcastContext(trade.symbol)}
-              >
-                <StatusIndicator
-                  status={trade.status}
-                  aria-label={trade.status}
+        <VirtuosoTable role="grid">
+          <TableHead>
+            <TableHeadRow>
+              <StatusIndicatorSpacer scope="col" aria-label="Trade Status" />
+              {colFields.map((field) => (
+                <TableHeadCellContainer key={field} field={field} />
+              ))}
+            </TableHeadRow>
+          </TableHead>
+          {trades.length !== 0 && (
+            //Pending to handle the height in order to
+            //@ts-ignore
+            <Virtuoso
+              ref={ref}
+              style={{ height: "200px", overflowY: "overlay" }}
+              totalCount={trades.length}
+              itemContent={(index) => (
+                <TradeGridRow
+                  trade={trades[index]}
+                  highlightedRow={highlightedRow}
+                  externalRef={ref}
                 />
-                {colFields.map((field, i) => (
-                  <TableBodyCell
-                    key={field}
-                    numeric={
-                      colConfigs[field].filterType === "number" &&
-                      field !== "tradeId"
-                    }
-                    rejected={trade.status === "Rejected"}
-                  >
-                    {colConfigs[field].valueFormatter?.(trade[field]) ??
-                      trade[field]}
-                  </TableBodyCell>
-                ))}
-              </TableBodyRow>
-            ))
-          ) : (
-            <TableBodyRow>
-              <StatusIndicatorSpacer aria-hidden={true} />
-              <TableBodyCell colSpan={colFields.length}>
-                No trades to show
-              </TableBodyCell>
-            </TableBodyRow>
+              )}
+            />
           )}
-        </tbody>
+          {trades.length === 0 && (
+            <tbody role="grid">
+              <TableBodyRow>
+                <StatusIndicatorSpacer aria-hidden={true} />
+                <TableBodyCell colSpan={colFields.length}>
+                  No trades to show
+                </TableBodyCell>
+              </TableBodyRow>
+            </tbody>
+          )}
+        </VirtuosoTable>
       </Table>
-    </TableWrapper>
+    </>
   )
 }

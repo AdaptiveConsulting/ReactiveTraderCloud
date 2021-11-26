@@ -22,10 +22,10 @@ import { SetFilter } from "./SetFilter"
 import { NumFilter } from "./NumFilter"
 import { DateFilter } from "./DateFilter"
 
-const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
+const TableHeadCell = styled.th<{ numeric: boolean; relativeWidth: number }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
   ${({ numeric }) => (numeric ? "padding-right: 1.5rem;" : null)};
-  width: ${({ width }) => `${width} px`};
+  width: ${({ relativeWidth }) => `${relativeWidth}vw`};
   font-weight: unset;
   top: 0;
   position: sticky;
@@ -93,7 +93,7 @@ export const TableHeadCellContainer: React.FC<{
       onMouseEnter={() => setShowFilter(true)}
       onMouseLeave={() => setShowFilter(false)}
       numeric={filterType === "number" && field !== "tradeId"}
-      width={colConfigs[field].width}
+      relativeWidth={colConfigs[field].width}
       scope="col"
       ref={ref}
     >

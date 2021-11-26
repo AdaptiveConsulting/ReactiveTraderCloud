@@ -17,18 +17,20 @@ const TradesStyle = styled.div`
 
 const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
 
-const Trades: React.FC = () => (
-  <Subscribe
-    source$={tableTrades$}
-    fallback={<Loader ariaLabel="Loading trades blotter" />}
-  >
-    <SuspenseOnStaleData />
-    <TradesStyle role="region" aria-labelledby="trades-table-heading">
-      <TradesHeader />
-      <TradesGrid />
-      <TradesFooter />
-    </TradesStyle>
-  </Subscribe>
-)
+const Trades: React.FC = () => {
+  return (
+    <Subscribe
+      source$={tableTrades$}
+      fallback={<Loader ariaLabel="Loading trades blotter" />}
+    >
+      <SuspenseOnStaleData />
+      <TradesStyle role="region" aria-labelledby="trades-table-heading">
+        <TradesHeader />
+        <TradesGrid />
+        <TradesFooter />
+      </TradesStyle>
+    </Subscribe>
+  )
+}
 
 export default Trades
