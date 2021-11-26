@@ -158,6 +158,7 @@ export const TradesGrid: React.FC<any> = ({ currentHeight }) => {
             //@ts-ignore
             <Virtuoso
               ref={ref}
+              //@ts-ignore
               style={{ height: "200px", overflowY: "overlay" }}
               totalCount={trades.length}
               itemContent={(index) => (
