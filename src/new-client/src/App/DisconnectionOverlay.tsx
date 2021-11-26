@@ -1,4 +1,9 @@
-import { ConnectionStatus, connectionStatus$ } from "@/services/connection"
+import {
+  initConnection,
+  ConnectionStatus,
+  connectionStatus$,
+  useConnectionStatus,
+} from "@/services/connection"
 import { bind } from "@react-rxjs/core"
 import { darken } from "polished"
 import { map, scan } from "rxjs/operators"
@@ -70,11 +75,21 @@ const [useHideOverlay] = bind(
 )
 
 export const DisconnectionOverlay: React.FC = () => {
+  const connectionStatus = useConnectionStatus()
   return useHideOverlay() ? null : (
     <ModalContainer>
       <ModalOverlay />
       <ModalPanel>
-        <Body>Trying to re-connect to the server...</Body>
+        <Body>
+          {connectionStatus === ConnectionStatus.DISCONNECTED ? (
+            "Trying to re-connect to the server..."
+          ) : (
+            <>
+              You have been disconnected due to inactivity.{" "}
+              <button onClick={initConnection}>Reconnect</button>
+            </>
+          )}
+        </Body>
       </ModalPanel>
     </ModalContainer>
   )
