@@ -7,7 +7,7 @@ import { TradesHeader } from "./TradesHeader"
 import { tableTrades$ } from "./TradesState"
 import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 import { isBlotterDataStale$ } from "@/services/trades"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 const TradesStyle = styled.div`
   height: 100%;
@@ -18,16 +18,16 @@ const TradesStyle = styled.div`
 
 const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
 const Trades: React.FC = () => {
-  const ref = useRef(null)
-  const [height, setHeight] = useState()
-
-  useEffect(() => {
-    if (ref.current) {
-      //@ts-ignore
-      setHeight(ref.current.offsetHeight)
+  const [height, setHeight] = useState(0)
+  const ref = useCallback((node) => {
+    if (node) {
+      const resizeObserver = new ResizeObserver((entry) => {
+        const { height } = entry[0].contentRect
+        setHeight(height)
+      })
+      resizeObserver.observe(node)
     }
-    console.log(height)
-  }, [ref])
+  }, [])
 
   return (
     <Subscribe
@@ -41,7 +41,7 @@ const Trades: React.FC = () => {
         aria-labelledby="trades-table-heading"
       >
         <TradesHeader />
-        <TradesGrid />
+        <TradesGrid height={height} />
         <TradesFooter />
       </TradesStyle>
     </Subscribe>

@@ -133,7 +133,7 @@ export const TradeGridRow: React.FC<any> = ({
   )
 }
 
-export const TradesGrid: React.FC<any> = ({ currentHeight }) => {
+export const TradesGrid: React.FC<any> = ({ height = 200 }) => {
   const trades = useTableTrades()
   const highlightedRow = useTradeRowHighlight()
   const ref = useRef(null)
@@ -159,7 +159,7 @@ export const TradesGrid: React.FC<any> = ({ currentHeight }) => {
             <Virtuoso
               ref={ref}
               //@ts-ignore
-              style={{ height: "200px", overflowY: "overlay" }}
+              style={{ height: height - 100 + "px", overflowY: "overlay" }}
               totalCount={trades.length}
               itemContent={(index) => (
                 <TradeGridRow
