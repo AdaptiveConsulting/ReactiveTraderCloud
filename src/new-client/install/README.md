@@ -44,3 +44,17 @@ Below you can find links to the installers for the various platforms.
 [rl-demo-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Flauncher.prod.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-Demo&internal=true&iconFile=https%3A%2F%2Flauncher.prod.reactivetrader.com%2Fstatic%2Fmedia%2Fadaptive-icon-256x256.png&appName=Reactive%20Launcher
 [rl-uat-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Flauncher.uat.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-UAT&internal=true&iconFile=https%3A%2F%2Flauncher.uat.reactivetrader.com%2Fstatic%2Fmedia%2Fadaptive-icon-256x256.png&appName=Reactive%20Launcher%20(UAT)
 [rl-dev-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Flauncher.dev.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-Dev&internal=true&iconFile=https%3A%2F%2Flauncher.dev.reactivetrader.com%2Fstatic%2Fmedia%2Fadaptive-icon-256x256.png&appName=Reactive%20Launcher%20(Dev)
+
+---
+
+## Finsemble Toolbar
+
+Download and run the exe below to install the integrated toolbar on your desktop, including Reactive Trader® components and workspaces.
+
+| Environment | Windows |
+|-------------|---------|
+| Demo | [Download][fsbl-win-demo-exe] |
+| UAT | [Download][fsbl-win-uat-exe] |
+
+[fsbl-win-demo-exe]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsemble.exe
+[fsbl-win-uat-exe]: https://storage.googleapis.com/reactive-trader-finsemble-uat/pkg/ReactiveTraderFinsemble.exe
