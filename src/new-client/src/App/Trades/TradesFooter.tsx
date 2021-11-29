@@ -16,6 +16,9 @@ const TradesFooterStyled = styled("div")`
   border-radius: 0 0 0.25rem 0.25rem;
   margin-top: 5px;
   border-top: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
+  position: absolute;
+  width: inherit;
+  bottom: 0;
 `
 
 const TradesFooterText = styled.span`

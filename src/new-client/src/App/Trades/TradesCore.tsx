@@ -14,6 +14,7 @@ const TradesStyle = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.core.textColor};
   font-size: 0.8125rem;
+  position: relative;
 `
 
 const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
