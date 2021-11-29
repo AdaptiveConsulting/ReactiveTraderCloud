@@ -10,6 +10,7 @@ import {
 import { TableHeadCellContainer } from "./TableHeadCell"
 import { Virtuoso } from "react-virtuoso"
 import { useRef } from "react"
+import { TradesFooter } from "../TradesFooter"
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -84,7 +85,8 @@ const StatusIndicatorSpacer = styled.th`
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
 `
 
-const VirtuosoTable = styled.div`
+const VirtuosoTable = styled.div<{ width?: number }>`
+  width: ${({ width }) => (width ? width + "px" : "")};
   [data-test-id] > div {
     &:nth-child(even) {
       background-color: ${({ theme }) => theme.core.darkBackground};
@@ -159,7 +161,7 @@ export const TradesGrid: React.FC<any> = ({ height = 200 }) => {
             <Virtuoso
               ref={ref}
               //@ts-ignore
-              style={{ height: height - 100 + "px", overflowY: "overlay" }}
+              style={{ height: height - 112 + "px", overflow: "auto" }}
               totalCount={trades.length}
               itemContent={(index) => (
                 <TradeGridRow
@@ -173,7 +175,7 @@ export const TradesGrid: React.FC<any> = ({ height = 200 }) => {
           {trades.length === 0 && (
             <tbody role="grid">
               <TableBodyRow>
-                <StatusIndicatorSpacer aria-hidden={true} />
+                <StatusIndicator aria-hidden={true} />
                 <TableBodyCell colSpan={colFields.length}>
                   No trades to show
                 </TableBodyCell>
@@ -181,6 +183,7 @@ export const TradesGrid: React.FC<any> = ({ height = 200 }) => {
             </tbody>
           )}
         </VirtuosoTable>
+        <TradesFooter />
       </Table>
     </>
   )

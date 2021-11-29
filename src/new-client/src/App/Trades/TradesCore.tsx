@@ -14,16 +14,20 @@ const TradesStyle = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.core.textColor};
   font-size: 0.8125rem;
+  overflow-x: scroll;
+  overflow-y: ;
 `
 
 const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
 const Trades: React.FC = () => {
   const [height, setHeight] = useState(0)
+  const [width, setWidth] = useState(0)
   const ref = useCallback((node) => {
     if (node) {
       const resizeObserver = new ResizeObserver((entry) => {
-        const { height } = entry[0].contentRect
+        const { height, width } = entry[0].contentRect
         setHeight(height)
+        setWidth(width)
       })
       resizeObserver.observe(node)
     }
@@ -41,11 +45,12 @@ const Trades: React.FC = () => {
         aria-labelledby="trades-table-heading"
       >
         <TradesHeader />
-        <TradesGrid height={height} />
-        <TradesFooter />
+        <TradesGrid height={height} width={width} />
       </TradesStyle>
     </Subscribe>
   )
 }
 
 export default Trades
+
+//100vw
