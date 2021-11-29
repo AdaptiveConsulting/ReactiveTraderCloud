@@ -33,8 +33,7 @@ export const initConnection = async () => {
   const dispose = await connectToGateway({
     url: `${window.location.origin}/ws`,
     interceptor: noop,
-    useJson: false,
-    // autoReconnect: true,
+    autoReconnect: true,
   })
 
   connectionDisposable$.next(dispose)
@@ -60,7 +59,8 @@ const connectionMapper = (input: HConnectionStatus): ConnectionStatus =>
 // Stream of mapped (Hydra - RT) connection status
 const mappedConnectionStatus$ = hConnectionStatus$().pipe(map(connectionMapper))
 
-const IDLE_TIMEOUT = 3000
+const IDLE_TIMEOUT = 15 * 60000
+
 // Dispose of connection and emit when idle for IDLE_TIMEOUT ms
 const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
   fromEvent(document, "mousemove").pipe(
