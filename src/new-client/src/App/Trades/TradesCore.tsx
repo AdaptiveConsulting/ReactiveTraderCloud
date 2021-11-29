@@ -15,7 +15,6 @@ const TradesStyle = styled.div`
   color: ${({ theme }) => theme.core.textColor};
   font-size: 0.8125rem;
   overflow-x: scroll;
-  overflow-y: ;
 `
 
 const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
@@ -46,6 +45,7 @@ const Trades: React.FC = () => {
       >
         <TradesHeader />
         <TradesGrid height={height} width={width} />
+        <TradesFooter />
       </TradesStyle>
     </Subscribe>
   )

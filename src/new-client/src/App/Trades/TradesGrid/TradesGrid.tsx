@@ -10,7 +10,6 @@ import {
 import { TableHeadCellContainer } from "./TableHeadCell"
 import { Virtuoso } from "react-virtuoso"
 import { useRef } from "react"
-import { TradesFooter } from "../TradesFooter"
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -50,12 +49,13 @@ const TableBodyRow = styled.tr<{ pending?: boolean; highlight?: boolean }>`
 const TableBodyCell = styled.td<{
   numeric?: boolean
   rejected?: boolean
-  relativeWidth?: number
+  relativeWidth: number
 }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
   padding-right: ${({ numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
   position: relative;
   width: ${({ relativeWidth }) => `${relativeWidth}vw`};
+  min-width: ${({ relativeWidth }) => `${relativeWidth * 12.5}px`};
   vertical-align: middle;
   &:before {
     content: " ";
@@ -86,7 +86,6 @@ const StatusIndicatorSpacer = styled.th`
 `
 
 const VirtuosoTable = styled.div<{ width?: number }>`
-  width: ${({ width }) => (width ? width + "px" : "")};
   [data-test-id] > div {
     &:nth-child(even) {
       background-color: ${({ theme }) => theme.core.darkBackground};
@@ -135,7 +134,7 @@ export const TradeGridRow: React.FC<any> = ({
   )
 }
 
-export const TradesGrid: React.FC<any> = ({ height = 200 }) => {
+export const TradesGrid: React.FC<any> = ({ height = 200, width = 200 }) => {
   const trades = useTableTrades()
   const highlightedRow = useTradeRowHighlight()
   const ref = useRef(null)
@@ -146,7 +145,7 @@ export const TradesGrid: React.FC<any> = ({ height = 200 }) => {
         <caption id="trades-table-heading" className="visually-hidden">
           Reactive Trader FX Trades Table
         </caption>
-        <VirtuosoTable role="grid">
+        <VirtuosoTable role="grid" width={width}>
           <TableHead>
             <TableHeadRow>
               <StatusIndicatorSpacer scope="col" aria-label="Trade Status" />
@@ -161,7 +160,11 @@ export const TradesGrid: React.FC<any> = ({ height = 200 }) => {
             <Virtuoso
               ref={ref}
               //@ts-ignore
-              style={{ height: height - 112 + "px", overflow: "auto" }}
+              style={{
+                height: height - 112 + "px",
+                overflowY: "overlay",
+                overflowX: "hidden",
+              }}
               totalCount={trades.length}
               itemContent={(index) => (
                 <TradeGridRow
@@ -176,14 +179,13 @@ export const TradesGrid: React.FC<any> = ({ height = 200 }) => {
             <tbody role="grid">
               <TableBodyRow>
                 <StatusIndicator aria-hidden={true} />
-                <TableBodyCell colSpan={colFields.length}>
+                <TableBodyCell colSpan={colFields.length} relativeWidth={width}>
                   No trades to show
                 </TableBodyCell>
               </TableBodyRow>
             </tbody>
           )}
         </VirtuosoTable>
-        <TradesFooter />
       </Table>
     </>
   )
