@@ -162,7 +162,6 @@ export const TradesGrid: React.FC<any> = ({ height = 200, width = 200 }) => {
               //@ts-ignore
               style={{
                 height: height - 112 + "px",
-                overflowY: "overlay",
                 overflowX: "hidden",
               }}
               totalCount={trades.length}
