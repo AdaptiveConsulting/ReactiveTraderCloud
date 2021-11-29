@@ -14,7 +14,6 @@ const TradesStyle = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.core.textColor};
   font-size: 0.8125rem;
-  overflow-x: scroll;
 `
 
 const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
@@ -52,5 +51,3 @@ const Trades: React.FC = () => {
 }
 
 export default Trades
-
-//100vw

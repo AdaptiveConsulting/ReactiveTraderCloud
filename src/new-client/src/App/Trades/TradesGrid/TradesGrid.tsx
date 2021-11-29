@@ -14,7 +14,10 @@ import { useRef } from "react"
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
   overflow-x: scroll;
-  overflow-y: scroll;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  overflow-x: scroll;
 `
 const Table = styled.table`
   background-color: ${({ theme }) => theme.core.lightBackground};
@@ -140,7 +143,7 @@ export const TradesGrid: React.FC<any> = ({ height = 200, width = 200 }) => {
   const ref = useRef(null)
 
   return (
-    <>
+    <TableWrapper>
       <Table>
         <caption id="trades-table-heading" className="visually-hidden">
           Reactive Trader FX Trades Table
@@ -186,6 +189,6 @@ export const TradesGrid: React.FC<any> = ({ height = 200, width = 200 }) => {
           )}
         </VirtuosoTable>
       </Table>
-    </>
+    </TableWrapper>
   )
 }
