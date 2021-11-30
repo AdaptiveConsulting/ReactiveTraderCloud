@@ -73,6 +73,7 @@ export const TradesGrid: React.FC<any> = ({ height = 200, width = 200 }) => {
 
   return (
     <VirtuosoTableWrapper>
+      {height}
       <VirtuosoTable role="grid">
         <TableWrapper relativeWidth={width}>
           <Table>
@@ -92,6 +93,10 @@ export const TradesGrid: React.FC<any> = ({ height = 200, width = 200 }) => {
           {trades.length !== 0 && (
             <Virtuoso
               style={{
+                /*We substract 120px since the height we get it's from the entire trades component
+                  In order to get the exact height for only the rows, we have the 120 that comes
+                  from the values of the footer+header+margins
+                */
                 height: height - 120 + "px",
                 overflow: "hidden overlay",
               }}
