@@ -22,13 +22,12 @@ const Trades: React.FC = () => {
   const [height, setHeight] = useState<number>(0)
   const [width, setWidth] = useState<number>(0)
   const ref = useCallback((node) => {
-    let resizeObserver = new ResizeObserver(() => {})
+    const resizeObserver = new ResizeObserver((entry) => {
+      const { height, width } = entry[0].contentRect
+      setHeight(height)
+      setWidth(width)
+    })
     if (node) {
-      resizeObserver = new ResizeObserver((entry) => {
-        const { height, width } = entry[0].contentRect
-        setHeight(height)
-        setWidth(width)
-      })
       resizeObserver.observe(node)
     } else {
       resizeObserver.disconnect()
