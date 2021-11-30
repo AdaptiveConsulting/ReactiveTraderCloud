@@ -55,6 +55,24 @@ const ModalPanel = styled.div`
 
 const Body = styled.div`
   margin: 1rem 0;
+
+  p {
+    margin-bottom: 20px;
+  }
+`
+
+// TODO - Use component from styleguide when available
+const Button = styled.button`
+  background-color: ${({ theme }) =>
+    theme.button.primary.backgroundColor};
+  color: #ffffff;
+  padding: 5px 9px;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.accents.primary.darker};
+  }
 `
 
 const [useHideOverlay] = bind(
@@ -81,13 +99,13 @@ export const DisconnectionOverlay: React.FC = () => {
       <ModalOverlay />
       <ModalPanel>
         <Body>
-          {connectionStatus === ConnectionStatus.DISCONNECTED ? (
-            "Trying to re-connect to the server..."
-          ) : (
+          {connectionStatus === ConnectionStatus.IDLE_DISCONNECTED ? (
             <>
-              You have been disconnected due to inactivity.{" "}
-              <button onClick={initConnection}>Reconnect</button>
+              <p>You have been disconnected due to inactivity.</p>
+              <Button onClick={initConnection}>Reconnect</Button>
             </>
+          ) : (
+            "Trying to re-connect to the server..."
           )}
         </Body>
       </ModalPanel>

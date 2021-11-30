@@ -8,7 +8,7 @@ const Buttons = styled.button`
   margin-top: 20px;
 `
 
-// TODO - Use component from styleguide when
+// TODO - Use component from styleguide when available
 const Button = styled.button<{ intent: TouchableIntentName }>`
   background-color: ${({ theme, intent }) =>
     theme.button[intent].backgroundColor};
