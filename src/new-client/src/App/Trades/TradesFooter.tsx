@@ -14,11 +14,10 @@ const TradesFooterStyled = styled("div")`
   color: ${({ theme }) => theme.core.textColor};
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 0 0 0.25rem 0.25rem;
-  margin-top: 5px;
   border-top: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
   position: absolute;
   width: inherit;
-  bottom: 0;
+  bottom: 5px;
 `
 
 const TradesFooterText = styled.span`

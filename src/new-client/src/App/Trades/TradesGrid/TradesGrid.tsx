@@ -73,7 +73,6 @@ export const TradesGrid: React.FC<any> = ({ height = 200, width = 200 }) => {
 
   return (
     <VirtuosoTableWrapper>
-      {height}
       <VirtuosoTable role="grid">
         <TableWrapper relativeWidth={width}>
           <Table>
