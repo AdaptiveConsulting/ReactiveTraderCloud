@@ -91,7 +91,6 @@ export const TradesGrid: React.FC<any> = ({ height = 200, width = 200 }) => {
           </Table>
           {trades.length !== 0 && (
             <Virtuoso
-              ref={ref}
               style={{
                 height: height - 120 + "px",
                 overflow: "hidden overlay",
