@@ -1,2 +1,2 @@
 import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
-export const canDrag = false && supportsTearOut
+export const canDrag = true && supportsTearOut
