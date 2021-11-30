@@ -26,7 +26,6 @@ const TableHeadCell = styled.th<{ numeric: boolean; relativeWidth: number }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
   ${({ numeric }) => (numeric ? "padding-right: 1.5rem;" : null)};
   width: ${({ relativeWidth }) => `${relativeWidth}vw`};
-  min-width: ${({ relativeWidth }) => `${relativeWidth * 11.5}px`};
   font-weight: unset;
   top: 0;
   position: sticky;
