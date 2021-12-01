@@ -1,3 +1,4 @@
+import { constructUrl } from "@/utils/url"
 import { bind } from "@react-rxjs/core"
 import { Observable } from "rxjs"
 import { shareReplay } from "rxjs/operators"
@@ -14,31 +15,31 @@ export const fakeUsers: User[] = [
     code: "LMO",
     firstName: "Lorretta",
     lastName: "Moe",
-    avatar: `${window.location.origin}/static/media/mockedAvatars/one.png`,
+    avatar: constructUrl(`/static/media/mockedAvatars/one.png`),
   },
   {
     code: "WMO",
     firstName: "Wenona",
     lastName: "Moshier",
-    avatar: `${window.location.origin}/static/media/mockedAvatars/two.png`,
+    avatar: constructUrl(`/static/media/mockedAvatars/two.png`),
   },
   {
     code: "NGA",
     firstName: "Nita",
     lastName: "Garica",
-    avatar: `${window.location.origin}/static/media/mockedAvatars/three.png`,
+    avatar: constructUrl(`/static/media/mockedAvatars/three.png`),
   },
   {
     code: "HHA",
     firstName: "Hyun",
     lastName: "Havlik",
-    avatar: `${window.location.origin}/static/media/mockedAvatars/four.png`,
+    avatar: constructUrl(`/static/media/mockedAvatars/four.png`),
   },
   {
     code: "EDO",
     firstName: "Elizebeth",
     lastName: "Doverspike",
-    avatar: `${window.location.origin}/static/media/mockedAvatars/five.png`,
+    avatar: constructUrl(`/static/media/mockedAvatars/five.png`),
   },
 ]
 

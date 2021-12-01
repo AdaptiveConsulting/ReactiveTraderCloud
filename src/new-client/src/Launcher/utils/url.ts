@@ -6,5 +6,5 @@ export const getReactiveTraderUrl = (path: string) =>
     path,
     ENVIRONMENT !== "local"
       ? window.location.origin.replace("launcher", "openfin")
-      : "http://localhost:1917",
+      : window.location.origin,
   )
