@@ -6,4 +6,5 @@ export const SwitchContainer = styled.div`
   min-width: 3.5rem;
   display: flex;
   justify-content: flex-end;
+  transition: all 2s ease-in-out;
 `

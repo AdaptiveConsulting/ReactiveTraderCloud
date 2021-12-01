@@ -1,4 +1,5 @@
-import Resizer from "@/components/Resizer"
+import HResizer from "@/components/HResizer"
+import VResizer from "@/components/VResizer"
 import styled from "styled-components"
 import Header from "@/App/Header"
 import { Footer } from "@/App/Footer"
@@ -69,23 +70,25 @@ export const MainRoute: React.FC = () => {
       <AppLayoutRoot data-qa="app-layout__root">
         <Header />
         <MainWrapper>
-          <Resizer defaultHeight={30}>
-            {!tornOutSectionState.tiles && (
-              <DraggableSectionTearOut section="tiles">
-                <LiveRates />
+          <HResizer defaultWidth={20}>
+            <VResizer defaultHeight={30}>
+              {!tornOutSectionState.tiles && (
+                <DraggableSectionTearOut section="tiles">
+                  <LiveRates />
+                </DraggableSectionTearOut>
+              )}
+              {!tornOutSectionState.blotter && (
+                <DraggableSectionTearOut section="blotter">
+                  <Trades />
+                </DraggableSectionTearOut>
+              )}
+            </VResizer>
+            {!tornOutSectionState.analytics && (
+              <DraggableSectionTearOut section="analytics">
+                <Analytics />
               </DraggableSectionTearOut>
             )}
-            {!tornOutSectionState.blotter && (
-              <DraggableSectionTearOut section="blotter">
-                <Trades />
-              </DraggableSectionTearOut>
-            )}
-          </Resizer>
-          {!tornOutSectionState.analytics && (
-            <DraggableSectionTearOut section="analytics">
-              <Analytics />
-            </DraggableSectionTearOut>
-          )}
+          </HResizer>
         </MainWrapper>
         <Footer />
       </AppLayoutRoot>

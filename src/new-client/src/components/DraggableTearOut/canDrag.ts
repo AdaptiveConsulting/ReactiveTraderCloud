@@ -1,1 +1,1 @@
-export const canDrag = true
+export const canDrag = false

@@ -1,43 +1,10 @@
 import { useState, useRef } from "react"
-import styled from "styled-components"
-
-const ResizerStyle = styled.div`
-  width: 100%;
-  height: 100%;
-`
-
-const ResizableSection = styled.div<{ height: number }>`
-  height: ${({ height }) => height + "%"};
-  overflow: hidden;
-  position: relative;
-`
-
-const ResizableContent = styled.div`
-  position: absolute;
-  height: 100%;
-  width: 100%;
-`
-
-const Bar = styled.div<{ show?: boolean }>`
-  display: ${({ show }) => (show ? "block" : "none")};
-  background-color: ${({ theme }) => theme.core.textColor};
-  box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
-    0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
-  cursor: row-resize;
-  opacity: 0.1;
-  z-index: 1;
-  height: 0.25rem;
-  width: 100%;
-
-  &:hover {
-    box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
-      0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
-    opacity: 0.3;
-    transition: all 200ms ease-in-out;
-  }
-
-  user-select: none;
-`
+import {
+  ResizableSection,
+  ResizerStyle,
+  ResizableContent,
+  Bar,
+} from "./Resizer.styles"
 
 interface Props {
   children: [React.ReactNode, React.ReactNode]
@@ -45,7 +12,7 @@ interface Props {
   defaultHeight: number
 }
 
-const Resizer: React.FC<Props> = ({ defaultHeight, children }) => {
+const VResizer: React.FC<Props> = ({ defaultHeight, children }) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(defaultHeight)
 
@@ -101,11 +68,13 @@ const Resizer: React.FC<Props> = ({ defaultHeight, children }) => {
       {children[1] && (
         <ResizableSection height={children[0] ? height : 100}>
           <ResizableContent>
-            <Bar
-              onMouseDown={startDragging.current!}
-              onTouchStart={startDragging.current!}
-              show
-            />
+            {children[0] && (
+              <Bar
+                onMouseDown={startDragging.current!}
+                onTouchStart={startDragging.current!}
+                show
+              />
+            )}
             {children[1]}
           </ResizableContent>
         </ResizableSection>
@@ -114,4 +83,4 @@ const Resizer: React.FC<Props> = ({ defaultHeight, children }) => {
   )
 }
 
-export default Resizer
+export default VResizer
