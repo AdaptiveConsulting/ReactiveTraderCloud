@@ -348,14 +348,19 @@ const newTradeId$ = trades$.pipe(
       return {
         stateOfWorld: acc.stateOfWorld && acc.trades.length === 0,
         trades: trades,
+        skip: acc.trades.length === trades.length,
       }
     },
-    { stateOfWorld: true, trades: [] } as {
+    { stateOfWorld: true, trades: [], skip: false } as {
       stateOfWorld: boolean
       trades: Trade[]
+      skip: boolean
     },
   ),
-  skipWhile(({ stateOfWorld, trades }) => stateOfWorld || trades.length === 0),
+  skipWhile(
+    ({ stateOfWorld, trades, skip }) =>
+      stateOfWorld || trades.length === 0 || skip,
+  ),
   map(({ trades }) => trades[0].tradeId),
 )
 
