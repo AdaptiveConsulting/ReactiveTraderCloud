@@ -7,7 +7,6 @@ import {
 } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
 import { Virtuoso } from "react-virtuoso"
-import { useRef } from "react"
 import { Trade } from "@/services/trades"
 
 import {
@@ -69,7 +68,6 @@ export const TradeGridRow: React.FC<TradeGridProps> = ({
 export const TradesGrid: React.FC<any> = ({ height = 200, width = 200 }) => {
   const trades = useTableTrades()
   const highlightedRow = useTradeRowHighlight()
-  const ref = useRef(null)
 
   return (
     <VirtuosoTableWrapper>
