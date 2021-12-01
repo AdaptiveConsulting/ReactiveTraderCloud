@@ -1,4 +1,4 @@
-import { ContactUsContentResolver, Link, Input } from "./styled"
+import { ContactUsContentResolver, Link } from "./styled"
 
 const WEBSITE = "https://weareadaptive.com"
 const EMAIL = "sales@weareadaptive.com"
