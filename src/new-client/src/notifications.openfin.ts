@@ -9,7 +9,7 @@ import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { executions$ } from "@/services/executions/executions"
 import { formatNumber } from "@/utils"
 import { onTradeRowHighlight } from "@/App/Trades/TradesState"
-import { BASE_URL } from "./constants"
+import { ENVIRONMENT } from "./constants"
 
 const sendNotification = (executionTrade: ExecutionTrade) => {
   const notification = {
@@ -21,7 +21,8 @@ const sendNotification = (executionTrade: ExecutionTrade) => {
   const status =
     notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
 
-  const host = BASE_URL === "/" ? "http://localhost:1917" : BASE_URL
+  const host =
+    ENVIRONMENT === "local" ? "http://localhost:1917" : window.location.origin
   const iconUrl = `${host}/static/media/reactive-trader-icon-dark.ico`
 
   create({

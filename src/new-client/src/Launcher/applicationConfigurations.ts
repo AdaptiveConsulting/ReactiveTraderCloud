@@ -1,4 +1,4 @@
-import { BASE_URL, ENVIRONMENT } from "@/constants"
+import { ENVIRONMENT } from "@/constants"
 import {
   limitCheckerIcon,
   reactiveAnalyticsIcon,
@@ -19,7 +19,7 @@ const defaultWindowOptions: fin.WindowOption = {
   defaultCentered: true,
   frame: false,
   shadow: true,
-  icon: `${BASE_URL}/static/media/adaptive.ico`,
+  icon: `${window.location.origin}/static/media/adaptive.ico`,
   accelerator:
     process.env.NODE_ENV !== "development"
       ? {}
@@ -111,7 +111,7 @@ const baseAppConfigs: ApplicationConfig[] = [
       applicationType: "download",
       windowOptions: {
         ...defaultWindowOptions,
-        icon: `${BASE_URL}/static/media/limit-checker-icon.ico`,
+        icon: `${window.location.origin}/static/media/limit-checker-icon.ico`,
       },
     },
   },
