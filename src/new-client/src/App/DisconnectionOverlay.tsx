@@ -17,11 +17,27 @@ const Button = styled.button`
   border-radius: 4px;
   font-size: 0.6875rem;
   margin-top: 20px;
-  
+
   &:hover {
     background-color: ${({ theme }) => theme.accents.primary.darker};
   }
 `
+
+export const DisconnectionOverlayInner: React.FC<{
+  connectionStatus: ConnectionStatus
+  onReconnect: () => void
+}> = ({ connectionStatus, onReconnect }) => (
+  <Modal shouldShow>
+    {connectionStatus === ConnectionStatus.IDLE_DISCONNECTED ? (
+      <>
+        <p>You have been disconnected due to inactivity.</p>
+        <Button onClick={onReconnect}>Reconnect</Button>
+      </>
+    ) : (
+      "Trying to re-connect to the server..."
+    )}
+  </Modal>
+)
 
 const [useHideOverlay] = bind(
   connectionStatus$.pipe(
@@ -43,15 +59,9 @@ const [useHideOverlay] = bind(
 export const DisconnectionOverlay: React.FC = () => {
   const connectionStatus = useConnectionStatus()
   return useHideOverlay() ? null : (
-    <Modal shouldShow>
-      {connectionStatus === ConnectionStatus.IDLE_DISCONNECTED ? (
-        <>
-          <p>You have been disconnected due to inactivity.</p>
-          <Button onClick={initConnection}>Reconnect</Button>
-        </>
-      ) : (
-        "Trying to re-connect to the server..."
-      )}
-    </Modal>
+    <DisconnectionOverlayInner
+      connectionStatus={connectionStatus}
+      onReconnect={initConnection}
+    />
   )
 }
