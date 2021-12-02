@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { RefObject, useState } from "react"
 import { tearOutSection, Section } from "@/App/TearOutSection/state"
-import { canDrag } from "@/components/DraggableTearOut/canDrag"
+import { supportsDragToTearOut } from "@/components/DraggableTearOut/supportsDragToTearOut"
 import { tearOut } from "@/App/LiveRates/Tile/TearOut/state"
 
 export const DragWrapper = styled.div`
@@ -26,7 +26,7 @@ type DraggableTearOutGenericProps = React.PropsWithChildren<{
 export const DraggableSectionTearOut: React.FC<DraggableSectionTearOutProps> = (
   props,
 ) => {
-  const draggable = canDrag && !props.disabled
+  const draggable = supportsDragToTearOut && !props.disabled
   const dragHandler = () => {
     tearOutSection(true, props.section)
   }
@@ -42,7 +42,7 @@ export const DraggableSectionTearOut: React.FC<DraggableSectionTearOutProps> = (
 export const DraggableTileTearOut: React.FC<DraggableTileTearOutProps> = (
   props,
 ) => {
-  const draggable = canDrag && !props.disabled
+  const draggable = supportsDragToTearOut && !props.disabled
   const dragHandler = () => {
     tearOut(props.symbol, true, props.tileRef.current!)
   }
