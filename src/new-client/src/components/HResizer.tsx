@@ -7,6 +7,8 @@ import {
   Bar,
 } from "./Resizer.styles"
 
+import { HResizerEnabled } from "./ResizerEnabled"
+
 interface Props {
   children: [React.ReactNode, React.ReactNode]
   minwidth?: number
@@ -60,7 +62,7 @@ const HResizer: React.FC<Props> = ({ defaultWidth, children }) => {
   }
   return (
     <ResizerStyle horitzontalResize={true} ref={wrapperRef}>
-      {children[0] && (
+      {children[0] && HResizerEnabled && (
         <ResizableSection
           horitzontalResize={true}
           width={children[1] ? 100 - width : 100}
@@ -78,7 +80,7 @@ const HResizer: React.FC<Props> = ({ defaultWidth, children }) => {
           )}
         </ResizableSection>
       )}
-      {children[1] && (
+      {children[1] && HResizerEnabled && (
         <ResizableSection
           horitzontalResize={true}
           width={children[0] ? width : 100}
@@ -88,6 +90,8 @@ const HResizer: React.FC<Props> = ({ defaultWidth, children }) => {
           </ResizableContentHoritzontal>
         </ResizableSection>
       )}
+      <>{!HResizerEnabled && children[0]}</>
+      <>{!HResizerEnabled && children[1]}</>
     </ResizerStyle>
   )
 }

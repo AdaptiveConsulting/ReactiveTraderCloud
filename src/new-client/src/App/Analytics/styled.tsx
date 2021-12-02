@@ -4,7 +4,6 @@ import { transparentColor } from "./globals/variables"
 export const AnalyticsInnerWrapper = styled.div<{ inExternalWindow?: boolean }>`
   width: 100%;
   height: 100%;
-  width: 320px;
   margin: auto;
   overflow-y: auto;
   overflow-x: hidden;
