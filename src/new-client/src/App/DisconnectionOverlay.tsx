@@ -23,8 +23,12 @@ const Button = styled.button`
   }
 `
 
+type DisconnectedStatus =
+  | ConnectionStatus.DISCONNECTED
+  | ConnectionStatus.IDLE_DISCONNECTED
+
 export const DisconnectionOverlayInner: React.FC<{
-  connectionStatus: ConnectionStatus
+  connectionStatus: DisconnectedStatus
   onReconnect: () => void
 }> = ({ connectionStatus, onReconnect }) => (
   <Modal shouldShow>
@@ -60,7 +64,7 @@ export const DisconnectionOverlay: React.FC = () => {
   const connectionStatus = useConnectionStatus()
   return useHideOverlay() ? null : (
     <DisconnectionOverlayInner
-      connectionStatus={connectionStatus}
+      connectionStatus={connectionStatus as DisconnectedStatus}
       onReconnect={initConnection}
     />
   )

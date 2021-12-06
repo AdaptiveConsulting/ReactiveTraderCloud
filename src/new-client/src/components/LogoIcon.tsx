@@ -13,8 +13,6 @@ const LogoIcon: React.FC<Props> = ({ width, height, active }) => (
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
   >
-    <title>logo-bars-only</title>
-    <desc>Created with Sketch.</desc>
     <defs />
     <g
       className={active ? "svg-icon--active" : "svg-icon"}
