@@ -20,7 +20,6 @@ import {
   map,
   scan,
   startWith,
-  tap,
   withLatestFrom,
 } from "rxjs/operators"
 
@@ -34,7 +33,6 @@ export const initConnection = async () => {
     url: `${window.location.origin}/ws`,
     interceptor: noop,
     autoReconnect: true,
-    useJson: true,
   })
 
   connectionDisposable$.next(dispose)
@@ -88,24 +86,12 @@ const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
   }),
 )
 
-const online$ = merge(
-  fromEvent(window, "offline"),
-  fromEvent(window, "online"),
-).pipe(
-  map(({ type }) =>
-    type === "offline"
-      ? ConnectionStatus.DISCONNECTED
-      : ConnectionStatus.CONNECTED,
-  ),
-)
-
 export const [useConnectionStatus, connectionStatus$] = bind(
   import.meta.env.VITE_MOCKS
     ? of(ConnectionStatus.CONNECTED)
     : merge<ConnectionStatus, ConnectionStatus>(
         mappedConnectionStatus$,
         idleDisconnect$,
-        online$,
       ).pipe(
         scan((acc, value) => {
           // Keep IDLE_DISCONNECTED when gateway immediately follows with DISCONNECTED
