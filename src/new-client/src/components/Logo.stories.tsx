@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react"
 import Logo from "./Logo"
 
 export default {
-  title: "Logo",
+  title: "Components/Logo",
   component: Logo,
   args: {
     fill: "#000",

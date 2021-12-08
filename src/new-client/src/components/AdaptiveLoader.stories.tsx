@@ -1,9 +1,8 @@
-import { ConnectionStatus } from "@/services/connection"
 import { ComponentStory, ComponentMeta } from "@storybook/react"
 import { AdaptiveLoader } from "./AdaptiveLoader"
 
 export default {
-  title: "AdaptiveLoader",
+  title: "Components/Loading/AdaptiveLoader",
   component: AdaptiveLoader,
   args: {
     size: 40,

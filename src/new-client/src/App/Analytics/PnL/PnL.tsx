@@ -28,11 +28,23 @@ const [usePnL, pnL$] = bind(
 
 export { pnL$ }
 
-export const PnL: React.FC = () => (
+export const PnLInner: React.FC<{
+  data: {
+    key: string
+    symbol: string
+    basePnl: number
+    maxVal: number
+  }[]
+}> = ({ data }) => (
   <div>
     <Title>PnL</Title>
-    {usePnL().map((pnlItem) => (
+    {data.map((pnlItem) => (
       <PNLBar {...pnlItem} />
     ))}
   </div>
 )
+
+export const PnL: React.FC = () => {
+  const data = usePnL()
+  return <PnLInner data={data} />
+}

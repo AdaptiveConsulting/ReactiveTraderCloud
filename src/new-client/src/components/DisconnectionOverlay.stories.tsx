@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react"
 import { DisconnectionOverlayInner } from "./DisconnectionOverlay"
 
 export default {
-  title: "DisconnectionOverlay",
+  title: "Components/DisconnectionOverlay",
   component: DisconnectionOverlayInner
 } as ComponentMeta<typeof DisconnectionOverlayInner>
 

@@ -63,7 +63,9 @@ jobs:
           URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
-        run: npm run build
+        run: |
+          npm run build
+          npm run build-storybook
 
       - name: Deploy (web)
         run: |

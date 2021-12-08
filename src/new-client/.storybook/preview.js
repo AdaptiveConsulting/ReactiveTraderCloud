@@ -45,9 +45,6 @@ const StyledStory = styled.div`
   padding: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   background-color: ${(p) => p.theme.core.darkBackground};
   color: ${(p) => p.theme.core.textColor};
   transition: background-color ${(p) => p.theme.motion.duration}ms
@@ -56,8 +53,9 @@ const StyledStory = styled.div`
 `
 
 const Content = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex: 1;
-  position: relative;
-  overflow-y: hidden;
+  align-items: center;
+  justify-content: center;
 `
