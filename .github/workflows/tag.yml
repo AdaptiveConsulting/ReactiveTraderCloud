@@ -55,7 +55,9 @@ jobs:
         env:
           DOMAIN: https://web.prod.reactivetrader.com
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
-        run: npm run build
+        run: |
+          npm run build
+          npm run build-storybook
 
       - name: Deploy (web)
         run: |

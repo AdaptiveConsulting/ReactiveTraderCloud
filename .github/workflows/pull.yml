@@ -55,7 +55,9 @@ jobs:
           URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: env
-        run: npm run build
+        run: |
+          npm run build
+          npm run build-storybook
 
       - name: Deploy (web)
         run: |
