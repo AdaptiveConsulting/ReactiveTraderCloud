@@ -18,7 +18,6 @@ module.exports = {
       "@/theme": path.resolve(__dirname, "../src", "theme"),
       "@/generated": path.resolve(__dirname, "../src", "generated"),
       "@/utils": path.resolve(__dirname, "../src", "utils"),
-      "@/services/analytics/analytics.ts": path.resolve(__dirname, "../src", "services", 'analytics', 'analytics.service-mock.ts'),
     }
     return config
   },
