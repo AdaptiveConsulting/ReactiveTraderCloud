@@ -11,6 +11,8 @@ module.exports = {
       type: "javascript/auto",
     })
 
+    config.output.publicPath = '/storybook/';
+
     config.resolve.alias = {
       "@/components": path.resolve(__dirname, "../src", "components"),
       "@/constants": path.resolve(__dirname, "../src", "constants"),
@@ -20,5 +22,9 @@ module.exports = {
       "@/utils": path.resolve(__dirname, "../src", "utils"),
     }
     return config
+  },
+  managerWebpack: async (config) => {
+    config.output.publicPath = '/storybook/';
+    return config;
   },
 }
