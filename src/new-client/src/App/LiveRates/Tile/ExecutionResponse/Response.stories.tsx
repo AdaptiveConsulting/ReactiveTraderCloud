@@ -1,87 +1,92 @@
-import React from "react"
-import { storiesOf } from "@storybook/react"
-import Story from "@/stories/Story"
-import { StatelessExecutionResponse } from "@/App/LiveRates/Tile/ExecutionResponse/Response"
-import { TileStates } from "@/App/LiveRates/Tile/Tile.state"
-import { CurrencyPair } from "@/services/currencyPairs"
-import { Direction } from "@/services/trades"
 import { ExecutionStatus } from "@/services/executions"
-
-const stories = storiesOf("Trade Notification", module)
-
-const mockStyle = {
-  height: "200px",
-  width: "400px",
-  marginLeft: "60%",
-  marginTop: "10%",
-}
-
-const mockCurrencyPair: CurrencyPair = {
-  symbol: "EURUSD",
-  ratePrecision: 5,
-  pipsPosition: 4,
-  base: "EUR",
-  terms: "USD",
-  defaultNotional: 1000000,
-}
+import { ComponentStory, ComponentMeta } from "@storybook/react"
+import styled from "styled-components"
+import { TileStates } from "../Tile.state"
+import { StatelessExecutionResponse } from "./Response"
 
 const mockTrade = {
-  currencyPair: "NZDUSD",
-  dealtCurrency: "NZD",
-  direction: Direction.Buy,
-  notional: 10000000,
-  spotRate: 0.67466,
-  tradeId: 42,
-  valueDate: "2021-05-07T03:48:08.5368797+00:00",
-  id: "5",
+  tradeId: 1111111111,
+  traderName: "LMO",
+  currencyPair: "GBPUSD",
+  notional: 1_000_000,
+  dealtCurrency: "GBP",
+  direction: "Buy",
+  spotRate: 1.36665,
+  tradeDate: new Date(),
+  valueDate: new Date(),
+  status: ExecutionStatus.Done,
 }
 
-stories.add("Executed", () => (
-  <Story>
-    <div style={mockStyle}>
-      <StatelessExecutionResponse
-        currencyPair={mockCurrencyPair}
-        tileState={{
-          status: TileStates.Finished,
-          trade: { ...mockTrade, status: ExecutionStatus.Done },
-        }}
-      />
-    </div>
-  </Story>
-))
+export default {
+  title: "LiveRates/ExecutionResponse",
+  component: StatelessExecutionResponse,
+  args: {
+    currencyPair: {
+      symbol: "EURUSD",
+      ratePrecision: 5,
+      pipsPosition: 4,
+      base: "EUR",
+      terms: "USD",
+      defaultNotional: 1000000,
+    },
+  },
+} as ComponentMeta<typeof StatelessExecutionResponse>
 
-stories.add("Rejected", () => (
-  <Story>
-    <div style={mockStyle}>
-      <StatelessExecutionResponse
-        currencyPair={mockCurrencyPair}
-        tileState={{
-          status: TileStates.Finished,
-          trade: { ...mockTrade, status: ExecutionStatus.Rejected },
-        }}
-      />
-    </div>
-  </Story>
-))
+const TileContainer = styled.div`
+  width: 360px;
+  height: 180px;
+  position: relative;
+`
 
-stories.add("Warning: Execution Longer", () => (
-  <Story>
-    <div style={mockStyle}>
-      <StatelessExecutionResponse
-        currencyPair={mockCurrencyPair}
-        tileState={{ status: TileStates.TooLong }}
-      />
-    </div>
-  </Story>
-))
+const Template: ComponentStory<typeof StatelessExecutionResponse> = (args) => (
+  <TileContainer>
+    <StatelessExecutionResponse {...args} />
+  </TileContainer>
+)
 
-stories.add("Warning: Timeout", () => (
-  <Story>
-    <div style={mockStyle}>
-      <StatelessExecutionResponse
-        currencyPair={mockCurrencyPair}
-        tileState={{ status: TileStates.Timeout }}
-      />
-    </div>
-  </Story>
-))
+export const Pending = Template.bind({})
+Pending.args = {
+  tileState: {
+    status: TileStates.Started,
+  } as any,
+}
+
+export const Executed = Template.bind({})
+Executed.args = {
+  tileState: {
+    status: TileStates.Finished,
+    trade: mockTrade,
+  } as any,
+}
+
+export const TooLong = Template.bind({})
+TooLong.args = {
+  tileState: {
+    status: TileStates.TooLong,
+  },
+}
+
+export const Timeout = Template.bind({})
+Timeout.args = {
+  tileState: {
+    status: TileStates.Timeout,
+  },
+}
+
+export const Rejected = Template.bind({})
+Rejected.args = {
+  tileState: {
+    status: TileStates.Finished,
+    trade: {
+      ...mockTrade,
+      status: ExecutionStatus.Rejected,
+    },
+  } as any,
+}
+
+export const CreditExceeded = Template.bind({})
+CreditExceeded.args = {
+  tileState: {
+    status: TileStates.CreditExceeded,
+  },
+}

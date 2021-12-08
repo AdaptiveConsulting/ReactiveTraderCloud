@@ -23,7 +23,7 @@ interface ContextValue {
   setThemeName: Dispatch<SetStateAction<ThemeName>>
 }
 
-const ThemeContext = createContext<ContextValue>({
+export const ThemeContext = createContext<ContextValue>({
   setThemeName: () => console.warn("Missing StorageThemeProvider"),
 })
 

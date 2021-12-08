@@ -1,35 +1,24 @@
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin")
-const fs = require("fs")
-const webpack = require("webpack")
-
-function toMock(pathStr) {
-  const [, name, extension] = pathStr.match(/^(.*)\.(ts|tsx|js|jsx)$/)
-  return [name, "mock", extension].join(".")
-}
+const path = require("path")
 
 module.exports = {
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
+  framework: "@storybook/react",
   webpackFinal: async (config) => {
-    config.resolve.plugins.push(new TsconfigPathsPlugin({}))
+    config.module.rules.push({
+      test: /\.mjs$/,
+      include: /node_modules/,
+      type: "javascript/auto",
+    })
 
-    return {
-      ...config,
-      plugins: [
-        new webpack.NormalModuleReplacementPlugin(
-          /\.(ts|tsx|js|jsx)$/,
-          (resource) => {
-            if (!resource.resource) return
-
-            const resourceMock = toMock(resource.resource)
-            if (fs.existsSync(resourceMock)) {
-              resource.request = toMock(resource.request)
-              resource.resource = resourceMock
-            }
-          },
-        ),
-        ...config.plugins,
-      ],
+    config.resolve.alias = {
+      "@/components": path.resolve(__dirname, "../src", "components"),
+      "@/constants": path.resolve(__dirname, "../src", "constants"),
+      "@/services": path.resolve(__dirname, "../src", "services"),
+      "@/theme": path.resolve(__dirname, "../src", "theme"),
+      "@/generated": path.resolve(__dirname, "../src", "generated"),
+      "@/utils": path.resolve(__dirname, "../src", "utils"),
     }
+    return config
   },
 }

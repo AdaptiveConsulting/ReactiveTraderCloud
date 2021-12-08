@@ -41,7 +41,6 @@ const Bar = styled.div<{ show?: boolean }>`
 
 interface Props {
   children: [React.ReactNode, React.ReactNode]
-  minHeight?: number
   defaultHeight: number
 }
 

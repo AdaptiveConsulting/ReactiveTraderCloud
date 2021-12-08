@@ -98,7 +98,8 @@ const getExecutionMessage = (
 const ExecutionMessage: React.FC<{
   tileState: TileState
   currencyPair: CurrencyPair
-}> = ({ tileState, currencyPair: { terms, base, symbol } }) => {
+  onClose: () => void
+}> = ({ tileState, currencyPair: { terms, base }, onClose }) => {
   const tradeId = tileState.trade?.tradeId
 
   const isWaiting =
@@ -121,12 +122,7 @@ const ExecutionMessage: React.FC<{
         {getExecutionMessage(tileState, base, terms)}
       </TradeMessageDiv>
       {!isWaiting && (
-        <Button
-          onClick={() => {
-            onDismissMessage(symbol)
-          }}
-          success={isSuccessful}
-        >
+        <Button onClick={onClose} success={isSuccessful}>
           Close
         </Button>
       )}
@@ -138,19 +134,31 @@ export const executionResponse$ = getTileState$
 export const ExecutionResponse = () => {
   const currencyPair = useTileCurrencyPair()
   const tileState = useTileState(currencyPair.symbol)
-  const props = { currencyPair, tileState }
+  const props = {
+    currencyPair,
+    tileState,
+    onClose: () => {
+      onDismissMessage(currencyPair.symbol)
+    },
+  }
 
   return <StatelessExecutionResponse {...props} />
 }
+
 export const StatelessExecutionResponse: React.FC<{
   currencyPair: CurrencyPair
   tileState: TileState
-}> = ({ currencyPair, tileState }) => {
+  onClose: () => void
+}> = ({ currencyPair, tileState, onClose }) => {
   if (tileState.status === TileStates.Ready) return null
 
   return tileState.status === TileStates.Started ? (
     <Pending />
   ) : (
-    <ExecutionMessage currencyPair={currencyPair} tileState={tileState} />
+    <ExecutionMessage
+      currencyPair={currencyPair}
+      tileState={tileState}
+      onClose={onClose}
+    />
   )
 }
