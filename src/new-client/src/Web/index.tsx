@@ -25,7 +25,7 @@ export const WebApp: React.FC = () => (
           const view = query.has("tileView")
             ? (query.get("tileView") as TileView)
             : TileView.Analytics
-
+console.log('Query', query, view);
           return (
             <TearOutRouteWrapper>
               <TornOutTile symbol={symbol!} view={view} />

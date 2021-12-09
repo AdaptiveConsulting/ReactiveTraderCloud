@@ -29,7 +29,7 @@ export const TornOutTile = withSubscriber<{
       }
     }
   }, [tearOutEntry])
-
+  console.log('view', view)
   return (
     <Wrapper>
       <Tile
