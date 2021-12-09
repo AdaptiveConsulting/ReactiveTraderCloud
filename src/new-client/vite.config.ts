@@ -87,7 +87,8 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
         const extensions = ['ts', 'tsx'];
         for(let i = 0; i < extensions.length - 1; i++) {
           try {
-            candidate = statSync(`${candidatePath}.${extensions[i]}`)
+            candidate = `${candidatePath}.${extensions[i]}`;
+            statSync(candidate)
             console.log("candidate good", candidate)
           } catch (e) {
             // console.log("Error with candidate", candidate, e)
