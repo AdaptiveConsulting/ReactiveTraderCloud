@@ -85,7 +85,7 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
         // Source doesn't have file extension, so try all extensions 
         let candidate = null;
         const extensions = ['ts', 'tsx'];
-        for(let i = 0; i < extensions.length - 1; i++) {
+        for(let i = 0; i < extensions.length; i++) {
           try {
             candidate = `${candidatePath}.${extensions[i]}`;
             statSync(candidate)
