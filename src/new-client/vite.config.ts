@@ -47,15 +47,16 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
     enforce: "pre",
     resolveId: function (source, importer, options) {
       if (dev) {
-        if (!source.endsWith(".ts")) return null
+        const extension = source.split('.')[1];
+        if (extension !== 'ts' && extension !== 'tsx') return null
 
         const file = path.parse(source)
         const files = readdirSync("." + file.dir)
 
-        // Only continue if we can find a .<target>.ts file
-        if (!files.includes(`${file.name}.${target}.ts`)) return null
+        // Only continue if we can find a .<target>.<extension> file
+        if (!files.includes(`${file.name}.${target}.${extension}`)) return null
 
-        const mockPath = `${file.dir}/${file.name}.${target}.ts`
+        const mockPath = `${file.dir}/${file.name}.${target}.${extension}`
         return this.resolve(mockPath, importer)
       } else {
         const rootPrefix = "new-client/src/"
@@ -70,7 +71,7 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
 
         const importedFile = path.parse(source)
         const importerFile = path.parse(thisImporter)
-        const candidate = path.join(
+        const candidatePath = path.join(
           // If imported file starts with /src we can not append it to importer dir
           // so we need to strip the path by the rootPrefix first
           importedFile.dir.startsWith("/src") &&
@@ -78,17 +79,28 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
             ? `${importerFile.dir.split(rootPrefix)[0]}/new-client`
             : importerFile.dir,
           importedFile.dir,
-          `${importedFile.name}.${target.toLowerCase()}.ts`,
+          `${importedFile.name}.${target.toLowerCase()}`,
         )
 
-        try {
-          statSync(candidate)
-          console.log("candidate good", candidate)
-          return candidate
-        } catch (e) {
-          // console.log("Error with candidate", candidate, e)
-          return null
+        // Source doesn't have file extension, so try all extensions 
+        let candidate = null;
+        const extensions = ['ts', 'tsx'];
+        for(let i = 0; i < extensions.length - 1; i++) {
+          try {
+            candidate = `${candidatePath}.${extensions[i]}`;
+            statSync(candidate)
+            console.log("candidate good", candidate)
+          } catch (e) {
+            // console.log("Error with candidate", candidate, e)
+            candidate = null
+          }
+
+          if (candidate) {
+            break;
+          }
         }
+        
+        return candidate
       }
     },
   }
