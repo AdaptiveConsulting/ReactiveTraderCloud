@@ -4,7 +4,6 @@ import Header from "@/App/Header"
 import { Footer } from "@/App/Footer"
 import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
-import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { LiveRates } from "@/App/LiveRates"
 import { useEffect, useState } from "react"
 import { DraggableSectionTearOut } from "@/components/DraggableTearOut"
@@ -65,7 +64,6 @@ export const MainRoute: React.FC = () => {
 
   return (
     <Wrapper>
-      <DisconnectionOverlay />
       <AppLayoutRoot data-qa="app-layout__root">
         <Header />
         <MainWrapper>

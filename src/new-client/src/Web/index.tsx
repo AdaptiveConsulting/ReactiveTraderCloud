@@ -8,51 +8,55 @@ import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
 import { TearOutContext } from "../App/TearOutSection/tearOutContext"
+import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 
 export const WebApp: React.FC = () => (
-  <BrowserRouter basename={BASE_PATH}>
-    <Switch>
-      <Route exact path="/" render={() => <MainRoute />} />
-      <Route
-        path={ROUTES_CONFIG.tile}
-        render={({
-          location: { search },
-          match: {
-            params: { symbol },
-          },
-        }) => {
-          const query = new URLSearchParams(search)
-          const view = query.has("tileView")
-            ? (query.get("tileView") as TileView)
-            : TileView.Analytics
-console.log('Query', query, view);
-          return (
-            <TearOutRouteWrapper>
-              <TornOutTile symbol={symbol!} view={view} />
-            </TearOutRouteWrapper>
-          )
-        }}
-      />
-      <TearOutContext.Provider value={{ isTornOut: true }}>
+  <>
+    <BrowserRouter basename={BASE_PATH}>
+      <Switch>
+        <Route exact path="/" render={() => <MainRoute />} />
         <Route
-          path={ROUTES_CONFIG.tiles}
-          render={() => {
-            return <LiveRates />
+          path={ROUTES_CONFIG.tile}
+          render={({
+            location: { search },
+            match: {
+              params: { symbol },
+            },
+          }) => {
+            const query = new URLSearchParams(search)
+            const view = query.has("tileView")
+              ? (query.get("tileView") as TileView)
+              : TileView.Analytics
+
+            return (
+              <TearOutRouteWrapper>
+                <TornOutTile symbol={symbol!} view={view} />
+              </TearOutRouteWrapper>
+            )
           }}
         />
-        <Route
-          path={ROUTES_CONFIG.blotter}
-          render={() => {
-            return <Trades />
-          }}
-        />
-        <Route
-          path={ROUTES_CONFIG.analytics}
-          render={() => {
-            return <Analytics hideIfMatches={""} />
-          }}
-        />
-      </TearOutContext.Provider>
-    </Switch>
-  </BrowserRouter>
+        <TearOutContext.Provider value={{ isTornOut: true }}>
+          <Route
+            path={ROUTES_CONFIG.tiles}
+            render={() => {
+              return <LiveRates />
+            }}
+          />
+          <Route
+            path={ROUTES_CONFIG.blotter}
+            render={() => {
+              return <Trades />
+            }}
+          />
+          <Route
+            path={ROUTES_CONFIG.analytics}
+            render={() => {
+              return <Analytics hideIfMatches={""} />
+            }}
+          />
+        </TearOutContext.Provider>
+      </Switch>
+    </BrowserRouter>
+    <DisconnectionOverlay />
+  </>
 )
