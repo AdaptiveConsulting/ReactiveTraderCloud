@@ -10,6 +10,7 @@ import { TileView } from "@/App/LiveRates/selectedView"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { LiveRates } from "@/App/LiveRates"
 import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
+import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 
 export const OpenFinApp: React.FC = () => (
   <BrowserRouter basename={BASE_PATH}>
@@ -19,6 +20,7 @@ export const OpenFinApp: React.FC = () => (
         render={() => (
           <DocTitle title="Analytics">
             <Analytics hideIfMatches={null} />
+            <DisconnectionOverlay />
           </DocTitle>
         )}
       />
@@ -27,6 +29,7 @@ export const OpenFinApp: React.FC = () => (
         render={() => (
           <DocTitle title="Trades">
             <Trades />
+            <DisconnectionOverlay />
           </DocTitle>
         )}
       />
@@ -35,6 +38,7 @@ export const OpenFinApp: React.FC = () => (
         render={() => (
           <DocTitle title="Live Rates">
             <LiveRates />
+            <DisconnectionOverlay />
           </DocTitle>
         )}
       />
@@ -52,7 +56,14 @@ export const OpenFinApp: React.FC = () => (
             : TileView.Analytics
 
           return (
-            <TornOutTile symbol={symbol!} view={view} supportsTearOut={false} />
+            <>
+              <TornOutTile
+                symbol={symbol!}
+                view={view}
+                supportsTearOut={false}
+              />
+              <DisconnectionOverlay />
+            </>
           )
         }}
       />

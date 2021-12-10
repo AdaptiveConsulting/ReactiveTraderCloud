@@ -14,9 +14,8 @@ export const TornOutTile = withSubscriber<{
   symbol: string
   view: TileView
   supportsTearOut?: boolean
-}>(({ symbol, view, supportsTearOut }) => {
-  console.log('finsemble view', view)
-  return (
+}>(
+  ({ symbol, view, supportsTearOut }) => (
     <Wrapper>
       <Tile
         currencyPair={useCurrencyPair(symbol)}
@@ -25,6 +24,7 @@ export const TornOutTile = withSubscriber<{
         supportsTearOut={supportsTearOut}
       />
     </Wrapper>
-  )
-}
-, <Loader ariaLabel="Loading live FX exchange rates" />)
+  ),
+
+  <Loader ariaLabel="Loading live FX exchange rates" />,
+)
