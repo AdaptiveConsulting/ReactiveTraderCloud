@@ -16,6 +16,8 @@ import {
 
 import { handleTearOutSection } from "@/App/TearOutSection/handleTearOutSection"
 
+import { defaultWidth } from "@/components/resizeState"
+
 const Wrapper = styled("div")`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
@@ -70,7 +72,7 @@ export const MainRoute: React.FC = () => {
       <AppLayoutRoot data-qa="app-layout__root">
         <Header />
         <MainWrapper>
-          <HResizer defaultWidth={20}>
+          <HResizer defaultWidth={defaultWidth}>
             <VResizer defaultHeight={30}>
               {!tornOutSectionState.tiles && (
                 <DraggableSectionTearOut section="tiles">

@@ -14,15 +14,24 @@ import { isAnalyticsDataStale$ } from "@/services/analytics"
 import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
 
+import { useHoritzontalResizeValues } from "@/components/resizeState"
+import { TearOutContext } from "@/App/TearOutSection/tearOutContext"
+import { useContext } from "react"
+
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 
 const SuspenseOnStaleData = createSuspenseOnStale(isAnalyticsDataStale$)
 
 const Analytics: React.FC = ({ children }) => {
+  const resizeHSize = useHoritzontalResizeValues()
+  const tearOutContext = useContext(TearOutContext)
+
   return (
     <Subscribe source$={analytics$} fallback={children}>
       <SuspenseOnStaleData />
-      <AnalyticsInnerWrapper>
+      <AnalyticsInnerWrapper
+        width={!tearOutContext.isTornOut ? resizeHSize : null}
+      >
         <AnalyticsHeader>
           Analytics
           <RightNav>

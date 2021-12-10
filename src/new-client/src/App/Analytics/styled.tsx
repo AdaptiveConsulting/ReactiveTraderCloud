@@ -1,8 +1,10 @@
 import styled from "styled-components"
 import { transparentColor } from "./globals/variables"
 
-export const AnalyticsInnerWrapper = styled.div<{ inExternalWindow?: boolean }>`
-  width: 100%;
+export const AnalyticsInnerWrapper = styled.div<{
+  inExternalWindow?: boolean
+  width?: number | null
+}>`
   height: 100%;
   margin: auto;
   overflow-y: auto;
@@ -11,6 +13,8 @@ export const AnalyticsInnerWrapper = styled.div<{ inExternalWindow?: boolean }>`
   display: grid;
   grid-template-rows: ${({ inExternalWindow }) =>
     inExternalWindow ? "0 auto" : "46px auto"};
+  width: ${({ width }) => (width ? width * 0.95 + "vw" : "372px")};
+  min-width: 372px;
 `
 
 export const AnalyticsHeader = styled.header`

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import {
   ResizableSection,
   ResizerStyle,
@@ -8,6 +8,7 @@ import {
 } from "./Resizer.styles"
 
 import { HResizerEnabled } from "./ResizerEnabled"
+import { horitzontalResize } from "./resizeState"
 
 interface Props {
   children: [React.ReactNode, React.ReactNode]
@@ -18,6 +19,11 @@ interface Props {
 const HResizer: React.FC<Props> = ({ defaultWidth, children }) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [width, setwidth] = useState(defaultWidth)
+
+  useEffect(() => {
+    //Whenever we tear out, we reset the width values
+    setwidth(defaultWidth)
+  }, [children])
 
   const startDragging = useRef<() => void>()
   if (!startDragging.current) {
@@ -41,6 +47,7 @@ const HResizer: React.FC<Props> = ({ defaultWidth, children }) => {
         if (width < 20) width = 20
 
         setwidth(width)
+        horitzontalResize(width)
       }
 
       const handleMouseMove = (event: MouseEvent) =>

@@ -27,6 +27,7 @@ export const ResizableSection = styled.div<{
   display: ${({ horitzontalResize }) => (horitzontalResize ? "flex" : "")};
   justify-content: ${({ horitzontalResize }) =>
     horitzontalResize ? "center" : ""};
+  min-width: 372px;
 `
 
 export const Bar = styled.div<{ show?: boolean; horitzontalResize?: boolean }>`

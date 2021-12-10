@@ -9,7 +9,7 @@ const AnalyticsCore = lazy(() => AnalyticsCoreDeferred)
 
 const AnalyticsWrapper = styled.div<{ hideIfMatches?: string | null }>`
   height: 100%;
-  flex: 0 0 371px;
+  flex: 0 0 100%;
   padding: 0.5rem 1rem 0.5rem 0;
   user-select: none;
   overflow: hidden;
