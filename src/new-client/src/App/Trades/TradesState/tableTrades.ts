@@ -2,6 +2,7 @@ import { startOfDay } from "date-fns"
 import { combineLatest, merge } from "rxjs"
 import {
   delay,
+  filter,
   map,
   mergeMap,
   scan,
@@ -357,9 +358,9 @@ const newTradeId$ = trades$.pipe(
       skip: boolean
     },
   ),
-  skipWhile(
+  filter(
     ({ stateOfWorld, trades, skip }) =>
-      stateOfWorld || trades.length === 0 || skip,
+      !stateOfWorld && trades.length > 0 && !skip,
   ),
   map(({ trades }) => trades[0].tradeId),
 )
