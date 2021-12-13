@@ -1,6 +1,11 @@
 import styled from "styled-components"
 import { transparentColor } from "./globals/variables"
 
+export const BubbleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
 export const AnalyticsInnerWrapper = styled.div<{
   inExternalWindow?: boolean
   width?: number | null
@@ -136,6 +141,7 @@ export const BubbleChart = styled.div`
   height: 18rem;
   overflow: hidden;
   position: relative;
+  width: 382px;
 `
 
 export const Controls = styled("div")`

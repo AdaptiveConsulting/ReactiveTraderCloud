@@ -9,7 +9,7 @@ import {
   select,
 } from "d3"
 import { BubbleChartNode, nodes$, useData, data$ } from "./data"
-import { BubbleChart, Title } from "../styled"
+import { BubbleChart, Title, BubbleContainer } from "../styled"
 
 // extra pixel amount that nodes in the chart repel each other within
 // for collision detection purposes, a nodes radius is r + COLLIDE_BORDER_WIDTH pixels
@@ -183,7 +183,9 @@ export const Positions: React.FC = () => {
   return (
     <div>
       <Title>Positions</Title>
-      <BubbleChart ref={wrapperRef} />
+      <BubbleContainer>
+        <BubbleChart ref={wrapperRef} />
+      </BubbleContainer>
     </div>
   )
 }
