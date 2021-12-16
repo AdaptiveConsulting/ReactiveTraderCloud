@@ -72,6 +72,47 @@ export const notionalInput$ = (symbol: string) =>
 
 const MAX_NOTIONAL = 1_000_000_000
 
+type Props = {
+  id: string
+  value: string
+  onChange: (e: any) => void
+  base: string
+  valid: boolean
+  disabled: boolean
+  canReset: boolean
+  onReset: () => void
+}
+
+export const NotionalInputInner: React.FC<Props> = ({
+  id,
+  base,
+  valid,
+  disabled,
+  value,
+  onChange,
+  canReset,
+  onReset,
+}) => (
+  <InputWrapper>
+    <CurrencyPairSymbol htmlFor={id}>{base}</CurrencyPairSymbol>
+    <Input
+      type="text"
+      id={id}
+      className={!valid ? `is-invalid` : undefined}
+      disabled={disabled}
+      value={value}
+      onChange={onChange}
+      onFocus={(event) => {
+        event.target.select()
+      }}
+    />
+    <ResetInputValue isVisible={canReset} onClick={onReset}>
+      <FaRedo className="flipHorizontal" />
+    </ResetInputValue>
+    {!valid && <ErrorMessage>Max exceeded</ErrorMessage>}
+  </InputWrapper>
+)
+
 export const NotionalInput: React.FC = () => {
   const { base, symbol } = useTileCurrencyPair()
   const defaultNotional = useDefaultNotional()
@@ -81,33 +122,21 @@ export const NotionalInput: React.FC = () => {
   const id = `notional-input-${symbol}`
 
   return (
-    <InputWrapper>
-      <CurrencyPairSymbol htmlFor={id}>{base}</CurrencyPairSymbol>
-      <Input
-        type="text"
-        id={id}
-        className={!valid ? `is-invalid` : undefined}
-        disabled={[
-          QuoteStateStage.Received,
-          QuoteStateStage.Requested,
-        ].includes(quoteStage)}
-        value={notional.inputValue}
-        onChange={(e) => {
-          onChangeNotionalValue(symbol, e.target.value)
-        }}
-        onFocus={(event) => {
-          event.target.select()
-        }}
-      />
-      <ResetInputValue
-        isVisible={notional.value !== defaultNotional}
-        onClick={() => {
-          onChangeNotionalValue(symbol, defaultNotional.toString(10))
-        }}
-      >
-        <FaRedo className="flipHorizontal" />
-      </ResetInputValue>
-      {!valid && <ErrorMessage>Max exceeded</ErrorMessage>}
-    </InputWrapper>
+    <NotionalInputInner
+      id={id}
+      base={base}
+      valid={valid}
+      disabled={[QuoteStateStage.Received, QuoteStateStage.Requested].includes(
+        quoteStage,
+      )}
+      value={notional.inputValue}
+      onChange={(e) => {
+        onChangeNotionalValue(symbol, e.target.value)
+      }}
+      canReset={notional.value !== defaultNotional}
+      onReset={() => {
+        onChangeNotionalValue(symbol, defaultNotional.toString(10))
+      }}
+    />
   )
 }

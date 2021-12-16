@@ -9,9 +9,12 @@ import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
 import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
+import { lazy, Suspense } from "react"
+
+const StyleguideRoute = lazy(() => import('@/styleguide'))
 
 export const WebApp: React.FC = () => (
-  <>
+  <Suspense fallback={<div />}>
     <BrowserRouter basename={BASE_PATH}>
       <Switch>
         <Route exact path="/" render={() => <MainRoute />} />
@@ -54,9 +57,13 @@ export const WebApp: React.FC = () => (
               return <Analytics hideIfMatches={""} />
             }}
           />
+          <Route
+            path={ROUTES_CONFIG.styleguide}
+            render={() => <StyleguideRoute />}
+          />
         </TearOutContext.Provider>
       </Switch>
     </BrowserRouter>
     <DisconnectionOverlay />
-  </>
+  </Suspense>
 )

@@ -65,24 +65,46 @@ const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
 )
 export { priceMovement$ }
 
+export const PriceMovementInner: React.FC<{
+  spread: string
+  movementType?: PriceMovementType
+  isAnalyticsView: boolean
+}> = ({ spread, movementType, isAnalyticsView }) => (
+  <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
+    <MovementIconUP
+      $show={movementType === PriceMovementType.UP}
+      aria-hidden="true"
+    />
+    <MovementValue>{spread}</MovementValue>
+    <MovementIconDown
+      $show={movementType === PriceMovementType.DOWN}
+      aria-hidden="true"
+    />
+  </PriceMovementStyle>
+)
+
 const PriceMovementFromStream: React.FC<{
   isAnalyticsView: boolean
 }> = ({ isAnalyticsView }) => {
   const { spread, movementType } = usePriceMovementData()
+
   return (
-    <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
-      <MovementIconUP
-        $show={movementType === PriceMovementType.UP}
-        aria-hidden="true"
-      />
-      <MovementValue>{spread}</MovementValue>
-      <MovementIconDown
-        $show={movementType === PriceMovementType.DOWN}
-        aria-hidden="true"
-      />
-    </PriceMovementStyle>
+    <PriceMovementInner
+      spread={spread}
+      movementType={movementType}
+      isAnalyticsView={isAnalyticsView}
+    />
   )
 }
+
+export const PriceFromQuoteInner: React.FC<{
+  isAnalytics: boolean
+  spread: string
+}> = ({ isAnalytics, spread }) => (
+  <PriceMovementStyle isAnalyticsView={isAnalytics}>
+    <MovementValue>{spread}</MovementValue>
+  </PriceMovementStyle>
+)
 
 const PriceFromQuote: React.FC<{
   isAnalyticsView: boolean
