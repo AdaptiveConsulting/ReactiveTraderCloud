@@ -50,6 +50,10 @@ export const WebApp: React.FC = () => (
             )
           }}
         />
+        <Route
+          path={ROUTES_CONFIG.styleguide}
+          render={() => <StyleguideRoute />}
+        />
         <TearOutContext.Provider value={{ isTornOut: true }}>
           <Route
             path={ROUTES_CONFIG.tiles}
@@ -85,10 +89,6 @@ export const WebApp: React.FC = () => (
             }}
           />
         </TearOutContext.Provider>
-        <Route
-          path={ROUTES_CONFIG.styleguide}
-          render={() => <StyleguideRoute />}
-        />
       </Switch>
     </BrowserRouter>
   </Suspense>
