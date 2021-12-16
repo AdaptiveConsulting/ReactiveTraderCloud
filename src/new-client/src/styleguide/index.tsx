@@ -1,9 +1,9 @@
 import { createRef, FC } from "react"
 import Helmet from "react-helmet"
 import styled from "styled-components"
-import FloatingTools from "./components/FloatingsTools"
-import OnePageNavBar from "./components/OnePageNavBar"
-import Introduction from "./sections/Introduction"
+// import FloatingTools from "./components/FloatingsTools"
+// import OnePageNavBar from "./components/OnePageNavBar"
+// import Introduction from "./sections/Introduction"
 import { Block } from "./styled"
 
 // import CoreBranding from "./sections/CoreBranding"
@@ -43,9 +43,10 @@ const Styleguide: FC = () => {
         />
       </Helmet>
       <Root>
-        <FloatingTools />
+        {/* <FloatingTools />
         <Introduction key="introduction" />
-        <OnePageNavBar sections={navSections} />
+        <OnePageNavBar sections={navSections} /> */}
+        Styleguide
         <>
           {navSections.map(({ path, Section, ref }) => (
             <ScrollableContainer id={path} key={path} ref={ref}>
