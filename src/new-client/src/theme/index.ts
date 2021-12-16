@@ -14,7 +14,7 @@ export type {
   ThemeSelector,
 } from "./themes"
 
-export { colors } from "./colors"
+export { colors, dark } from "./colors"
 export { themes, getThemeColor } from "./themes"
 export {
   ThemeName,
@@ -24,6 +24,7 @@ export {
 } from "./ThemeContext"
 export { GlobalScrollbarStyle } from "./GlobalScrollbarStyle"
 export { default as GlobalStyle } from "./globals"
+export { default as ThemeStorageSwitch } from "./ThemeStorageSwitch"
 
 // Make all styled-component functions (e.g. `styled`, `css`) typed with Theme
 // See https://github.com/styled-components/styled-components-website/issues/447

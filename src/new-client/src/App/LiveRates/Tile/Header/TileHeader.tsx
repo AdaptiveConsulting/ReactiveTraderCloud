@@ -7,7 +7,8 @@ import { useTileContext } from "../Tile.context"
 import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import { tearOut } from "../TearOut/state"
 import { PopInIcon } from "@/components/icons/PopInIcon"
-import { useRef } from "react"
+import { forwardRef, useRef } from "react"
+import { CurrencyPair } from "@/services/currencyPairs"
 
 export const DeliveryDate = styled.div`
   color: ${({ theme }) => theme.core.textColor};
@@ -50,36 +51,58 @@ export const [useDate, header$] = bind((symbol: string) =>
   ),
 )
 
+type HeaderProps = {
+  currencyPair: CurrencyPair
+  isTornOut?: boolean
+  supportsTearOut?: boolean
+  date: string
+  onClick: () => void
+}
+
+export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
+  ({ currencyPair, isTornOut, supportsTearOut, date, onClick }, ref) => {
+    const { base, terms } = currencyPair
+    const canTearOut = supportsTearOut
+
+    return (
+      <HeaderWrapper ref={ref}>
+        <TileSymbol data-qa="tile-header__tile-symbol">
+          {base}/{terms}
+        </TileSymbol>
+        <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
+        {canTearOut && (
+          <HeaderAction
+            onClick={onClick}
+            aria-label={
+              isTornOut
+                ? "Return window to application"
+                : "Tear out into standalone window"
+            }
+          >
+            {isTornOut ? <PopInIcon /> : <PopOutIcon />}
+          </HeaderAction>
+        )}
+      </HeaderWrapper>
+    )
+  },
+)
+
 export const Header: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null)
-  const {
-    currencyPair: { base, terms, symbol },
-    isTornOut,
-    supportsTearOut,
-  } = useTileContext()
-  const date = useDate(symbol)
-  const canTearOut = supportsTearOut
+  const { currencyPair, isTornOut, supportsTearOut } = useTileContext()
+  const date = useDate(currencyPair.symbol)
+  const onClick = () => {
+    tearOut(currencyPair.symbol, !isTornOut, ref.current!)
+  }
 
   return (
-    <HeaderWrapper ref={ref}>
-      <TileSymbol data-qa="tile-header__tile-symbol">
-        {base}/{terms}
-      </TileSymbol>
-      <DeliveryDate data-qa="tile-header__delivery-date">{date}</DeliveryDate>
-      {canTearOut && (
-        <HeaderAction
-          onClick={() => {
-            tearOut(symbol, !isTornOut, ref.current!)
-          }}
-          aria-label={
-            isTornOut
-              ? "Return window to application"
-              : "Tear out into standalone window"
-          }
-        >
-          {isTornOut ? <PopInIcon /> : <PopOutIcon />}
-        </HeaderAction>
-      )}
-    </HeaderWrapper>
+    <HeaderInner
+      ref={ref}
+      currencyPair={currencyPair}
+      date={date}
+      isTornOut={isTornOut}
+      supportsTearOut={supportsTearOut}
+      onClick={onClick}
+    />
   )
 }

@@ -1,7 +1,5 @@
 import { useLayoutEffect, useState } from "react"
 import styled from "styled-components"
-import { onRejectQuote } from "./Rfq.state"
-import { useTileCurrencyPair } from "../Tile.context"
 
 const TimeLeft = styled.div<{ isAnalyticsView: boolean }>`
   font-size: 10px;
@@ -76,45 +74,49 @@ const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   z-index: 3;
 `
 
-const SecsTimer: React.FC<{ end: number }> = ({ end }) => {
-  const [timeLeftSecs, setTimeLeftSecs] = useState(() =>
-    Math.round((end - Date.now()) / 1000),
-  )
-  useLayoutEffect(() => {
-    if (timeLeftSecs === 0) return
-    const token = setTimeout(
-      () => setTimeLeftSecs((x) => x - 1),
-      end - (timeLeftSecs - 1) * 1000 - Date.now(),
+const SecsTimer: React.FC<{ start: number; end: number; isStatic?: boolean }> =
+  ({ start, end, isStatic }) => {
+    const [timeLeftSecs, setTimeLeftSecs] = useState(() =>
+      Math.round((end - Date.now()) / 1000),
     )
-    return () => clearTimeout(token)
-  }, [timeLeftSecs, end])
+    useLayoutEffect(() => {
+      if (timeLeftSecs === 0) return
+      const token = setTimeout(
+        () => setTimeLeftSecs((x) => x - 1),
+        end - (timeLeftSecs - 1) * 1000 - Date.now(),
+      )
+      return () => clearTimeout(token)
+    }, [timeLeftSecs, end])
 
-  return (
-    <>
-      {timeLeftSecs} sec{timeLeftSecs > 1 ? "s" : ""}
-    </>
-  )
-}
+    return isStatic ? (
+      <>{end - start} secs</>
+    ) : (
+      <>
+        {timeLeftSecs} sec{timeLeftSecs > 1 ? "s" : ""}
+      </>
+    )
+  }
 
 export const RfqTimer: React.FC<{
   isAnalyticsView: boolean
+  onReject: () => void
   start: number
   end: number
-}> = ({ isAnalyticsView, ...props }) => {
-  const { symbol } = useTileCurrencyPair()
-
+  isStatic?: boolean
+  staticProgressWidth?: number
+}> = ({ isAnalyticsView, onReject, staticProgressWidth, ...props }) => {
   return (
     <TimerWrapper isAnalyticsView={isAnalyticsView} data-testid="rfqTimer">
       <TimeLeft isAnalyticsView={isAnalyticsView}>
         <SecsTimer {...props} />
       </TimeLeft>
       <ProgressBarWrapper isAnalyticsView={isAnalyticsView}>
-        <TimeProgress {...props} />
+        {staticProgressWidth ? <ProgressBar width={staticProgressWidth} transitionTime={0} /> : <TimeProgress {...props} />}
       </ProgressBarWrapper>
       <RejectQuoteButton
         data-testid="rfqReject"
         isAnalyticsView={isAnalyticsView}
-        onClick={() => onRejectQuote(symbol)}
+        onClick={onReject}
       >
         Reject
       </RejectQuoteButton>

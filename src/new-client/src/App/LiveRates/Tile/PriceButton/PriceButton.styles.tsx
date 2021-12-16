@@ -27,21 +27,29 @@ const getAnimationCSSProperty = (props: {
   animation: ${backgroundEffectKeyframes(props)} 5s;
 `
 
-const backgroundEffect = ({
-  priceAnnounced,
-  ...rest
-}: {
-  priceAnnounced: boolean
-}) =>
-  priceAnnounced
-    ? getAnimationCSSProperty(rest as { direction: Direction; theme: Theme })
-    : ""
-
-export const TradeButton = styled.button<{
+type TradeButtonProps = {
   direction: Direction
   priceAnnounced: boolean
+  isStatic?: boolean
   expired?: boolean
-}>`
+}
+
+const backgroundEffect = ({
+  priceAnnounced,
+  isStatic,
+  direction,
+  // @ts-ignore
+  theme,
+}: TradeButtonProps) =>
+  priceAnnounced && !isStatic
+    ? getAnimationCSSProperty({ direction, theme })
+    : isStatic
+    ? `
+    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    color: white;`
+    : ""
+
+export const TradeButton = styled.button<TradeButtonProps>`
   background-color: ${({ theme }) => theme.core.lightBackground};
   border-radius: 3px;
   color: ${({ theme, priceAnnounced, direction }) =>
@@ -56,6 +64,12 @@ export const TradeButton = styled.button<{
   min-width: 75px;
   padding: 0.6rem 1.5rem 0.9rem 1.5rem;
   ${backgroundEffect}
+  ${({ isStatic, theme, direction }) =>
+    isStatic
+      ? `
+    background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+    color: white;`
+      : ``}
 
   ${({ theme, direction, disabled, priceAnnounced }) =>
     disabled && !priceAnnounced
@@ -143,8 +157,35 @@ export const ExpiredPrice = styled.div`
   font-size: 8px;
   text-transform: uppercase;
   height: 0;
-  animation: ${fadeOut} 1s linear;
-  transition: visibility 1s linear;
-  animation-fill-mode: forwards;
-  animation-delay: 1s;
+  // animation: ${fadeOut} 1s linear;
+  // transition: visibility 1s linear;
+  // animation-fill-mode: forwards;
+  // animation-delay: 1s;
+`
+
+export const Icon = styled.i`
+  font-size: 20px;
+  margin: 3px 0;
+`
+
+export const PriceButtonDisabledPlaceholder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  border: 2px solid ${({ theme }) => theme.core.darkBackground};
+  border-radius: 3px;
+  font-size: 10px;
+  transition: background-color 0.2s ease;
+  height: 58px;
+  min-height: 2rem;
+  max-height: 3.7rem;
+  margin-bottom: 1px;
+  min-width: 100px;
+  line-height: normal;
+  opacity: 0.5;
+  text-align: center;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.primary[5]};
+  font-weight: 400;
 `

@@ -50,7 +50,8 @@ export const PanelItem = styled.div<{ shouldMoveDate: boolean }>`
   position: relative;
   display: flex;
 
-  &:hover {
+  &:hover,
+  &.tile-hover {
     ${HeaderAction} {
       opacity: 1;
     }
@@ -99,7 +100,8 @@ export const SpotTileStyle = styled.div`
   justify-content: space-between;
   flex-direction: column;
   overflow: hidden;
-  &:hover {
+  &:hover,
+  .tile-hover & {
     background-color: ${({ theme }) =>
       theme.name === "dark"
         ? theme.core.backgroundHoverColor
@@ -111,7 +113,8 @@ export const SpotTileStyle = styled.div`
 
 const MainTileStyle = styled(SpotTileStyle)`
   background-color: ${({ theme }) => theme.core.lightBackground};
-  &:hover {
+  &:hover,
+  .tile-hover & {
     background-color: ${({ theme }) =>
       theme.name === "dark"
         ? theme.core.backgroundHoverColor
@@ -129,7 +132,8 @@ const MainTileWrapper = styled.div`
   height: 100%;
   width: 100%;
   color: ${({ theme }) => theme.core.textColor};
-  &:hover {
+  &:hover,
+  .tile-hover & {
     background-color: ${({ theme }) => theme.core.backgroundHoverColor};
   }
 `

@@ -9,12 +9,24 @@ import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
 import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
+import { lazy, Suspense } from "react"
+
+const StyleguideRoute = lazy(() => import("@/styleguide"))
 
 export const WebApp: React.FC = () => (
-  <>
+  <Suspense fallback={<div />}>
     <BrowserRouter basename={BASE_PATH}>
       <Switch>
-        <Route exact path="/" render={() => <MainRoute />} />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <>
+              <DisconnectionOverlay />
+              <MainRoute />
+            </>
+          )}
+        />
         <Route
           path={ROUTES_CONFIG.tile}
           render={({
@@ -29,34 +41,55 @@ export const WebApp: React.FC = () => (
               : TileView.Analytics
 
             return (
-              <TearOutRouteWrapper>
-                <TornOutTile symbol={symbol!} view={view} />
-              </TearOutRouteWrapper>
+              <>
+                <DisconnectionOverlay />
+                <TearOutRouteWrapper>
+                  <TornOutTile symbol={symbol!} view={view} />
+                </TearOutRouteWrapper>
+              </>
             )
           }}
+        />
+        <Route
+          path={ROUTES_CONFIG.styleguide}
+          render={() => <StyleguideRoute />}
         />
         <TearOutContext.Provider value={{ isTornOut: true }}>
           <Route
             path={ROUTES_CONFIG.tiles}
             render={() => {
-              return <LiveRates />
+              return (
+                <>
+                  <LiveRates />
+                  <DisconnectionOverlay />
+                </>
+              )
             }}
           />
           <Route
             path={ROUTES_CONFIG.blotter}
             render={() => {
-              return <Trades />
+              return (
+                <>
+                  <Trades />
+                  <DisconnectionOverlay />
+                </>
+              )
             }}
           />
           <Route
             path={ROUTES_CONFIG.analytics}
             render={() => {
-              return <Analytics hideIfMatches={""} />
+              return (
+                <>
+                  <Analytics hideIfMatches={""} />
+                  <DisconnectionOverlay />
+                </>
+              )
             }}
           />
         </TearOutContext.Provider>
       </Switch>
     </BrowserRouter>
-    <DisconnectionOverlay />
-  </>
+  </Suspense>
 )

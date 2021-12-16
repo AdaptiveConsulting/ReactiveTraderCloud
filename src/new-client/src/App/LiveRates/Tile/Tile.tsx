@@ -24,6 +24,7 @@ import { Provider, symbolBind, useTileContext } from "./Tile.context"
 import {
   getRfqState$,
   isRfq$,
+  onRejectQuote,
   QuoteStateStage,
   RfqButton,
   RfqTimer,
@@ -81,7 +82,11 @@ const Tile: React.FC<Props> = ({ isAnalytics }) => {
       <InputTimerStyle isAnalyticsView={!!isAnalytics}>
         <NotionalInput />
         {timerData ? (
-          <RfqTimer {...timerData} isAnalyticsView={!!isAnalytics} />
+          <RfqTimer
+            {...timerData}
+            isAnalyticsView={!!isAnalytics}
+            onReject={() => onRejectQuote(symbol)}
+          />
         ) : null}
       </InputTimerStyle>
     )
@@ -115,6 +120,7 @@ const Tile: React.FC<Props> = ({ isAnalytics }) => {
     </DraggableTileTearOut>
   )
 }
+
 const TileContext: React.FC<{
   currencyPair: CurrencyPair
   isAnalytics: boolean
