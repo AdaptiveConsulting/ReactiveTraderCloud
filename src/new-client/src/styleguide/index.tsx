@@ -6,22 +6,22 @@ import styled from "styled-components"
 // import Introduction from "./sections/Introduction"
 import { Block } from "./styled"
 
-// import CoreBranding from "./sections/CoreBranding"
-// import FontFamilies from "./sections/FontFamilies"
-// import Iconography from "./sections/Iconography"
-// import Atoms from "./sections/Atoms"
-// import Molecules from "./sections/Molecules"
+import CoreBranding from "./sections/CoreBranding"
+import FontFamilies from "./sections/FontFamilies"
+import Iconography from "./sections/Iconography"
+import Atoms from "./sections/Atoms"
+import Molecules from "./sections/Molecules"
 
 const sections: Array<{
   path: string
   Section: React.ComponentType
   title: string
 }> = [
-  // { path: "core-branding", Section: CoreBranding, title: "Colour" },
-  // { path: "font-families", Section: FontFamilies, title: "Typography" },
-  // { path: "icons-family", Section: Iconography, title: "Iconography" },
-  // { path: "atoms-components", Section: Atoms, title: "Atoms" },
-  // { path: "molecules-components", Section: Molecules, title: "Molecules" },
+  { path: "core-branding", Section: CoreBranding, title: "Colour" },
+  { path: "font-families", Section: FontFamilies, title: "Typography" },
+  { path: "icons-family", Section: Iconography, title: "Iconography" },
+  { path: "atoms-components", Section: Atoms, title: "Atoms" },
+  { path: "molecules-components", Section: Molecules, title: "Molecules" },
 ]
 
 const Styleguide: FC = () => {
@@ -46,7 +46,6 @@ const Styleguide: FC = () => {
         {/* <FloatingTools />
         <Introduction key="introduction" />
         <OnePageNavBar sections={navSections} /> */}
-        Styleguide
         <>
           {navSections.map(({ path, Section, ref }) => (
             <ScrollableContainer id={path} key={path} ref={ref}>
