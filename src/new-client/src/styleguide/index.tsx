@@ -6,8 +6,8 @@ import OnePageNavBar from "./components/OnePageNavBar"
 import Introduction from "./sections/Introduction"
 import { Block } from "./styled"
 
-import CoreBranding from "./sections/CoreBranding"
-import FontFamilies from "./sections/FontFamilies"
+// import CoreBranding from "./sections/CoreBranding"
+// import FontFamilies from "./sections/FontFamilies"
 // import Iconography from "./sections/Iconography"
 // import Atoms from "./sections/Atoms"
 // import Molecules from "./sections/Molecules"
@@ -17,8 +17,8 @@ const sections: Array<{
   Section: React.ComponentType
   title: string
 }> = [
-  { path: "core-branding", Section: CoreBranding, title: "Colour" },
-  { path: "font-families", Section: FontFamilies, title: "Typography" },
+  // { path: "core-branding", Section: CoreBranding, title: "Colour" },
+  // { path: "font-families", Section: FontFamilies, title: "Typography" },
   // { path: "icons-family", Section: Iconography, title: "Iconography" },
   // { path: "atoms-components", Section: Atoms, title: "Atoms" },
   // { path: "molecules-components", Section: Molecules, title: "Molecules" },
