@@ -1,7 +1,12 @@
 import { FC } from "react"
-import Switch, { ReactSwitchProps } from "react-switch"
+import SwitchO, { ReactSwitchProps } from "react-switch"
 import { withTheme } from "styled-components"
 import { Theme, ThemeName, useTheme } from "."
+
+// TODO: Get rid of this library or open an issue/PR to fix their build
+const Switch: typeof SwitchO = (SwitchO as any).default
+  ? (SwitchO as any).default
+  : SwitchO
 
 export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
 
