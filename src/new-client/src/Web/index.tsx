@@ -1,3 +1,4 @@
+import { FC, PropsWithChildren } from "react"
 import { TileView } from "@/App/LiveRates/selectedView"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
@@ -11,13 +12,28 @@ import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { lazy, Suspense } from "react"
 
-const StyleguideRoute = lazy(() => import('@/styleguide'))
+const StyleguideRoute = lazy(() => import("@/styleguide"))
+
+const WithDisconnectionOverlay: FC<PropsWithChildren<{}>> = ({ children }) => (
+  <>
+    {children}
+    <DisconnectionOverlay />
+  </>
+)
 
 export const WebApp: React.FC = () => (
   <Suspense fallback={<div />}>
     <BrowserRouter basename={BASE_PATH}>
       <Switch>
-        <Route exact path="/" render={() => <MainRoute />} />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <WithDisconnectionOverlay>
+              <MainRoute />
+            </WithDisconnectionOverlay>
+          )}
+        />
         <Route
           path={ROUTES_CONFIG.tile}
           render={({
@@ -32,38 +48,45 @@ export const WebApp: React.FC = () => (
               : TileView.Analytics
 
             return (
-              <TearOutRouteWrapper>
-                <TornOutTile symbol={symbol!} view={view} />
-              </TearOutRouteWrapper>
+              <WithDisconnectionOverlay>
+                <TearOutRouteWrapper>
+                  <TornOutTile symbol={symbol!} view={view} />
+                </TearOutRouteWrapper>
+              </WithDisconnectionOverlay>
             )
           }}
         />
         <TearOutContext.Provider value={{ isTornOut: true }}>
           <Route
             path={ROUTES_CONFIG.tiles}
-            render={() => {
-              return <LiveRates />
-            }}
+            render={() => (
+              <WithDisconnectionOverlay>
+                <LiveRates />
+              </WithDisconnectionOverlay>
+            )}
           />
           <Route
             path={ROUTES_CONFIG.blotter}
-            render={() => {
-              return <Trades />
-            }}
+            render={() => (
+              <WithDisconnectionOverlay>
+                <Trades />
+              </WithDisconnectionOverlay>
+            )}
           />
           <Route
             path={ROUTES_CONFIG.analytics}
-            render={() => {
-              return <Analytics hideIfMatches={""} />
-            }}
-          />
-          <Route
-            path={ROUTES_CONFIG.styleguide}
-            render={() => <StyleguideRoute />}
+            render={() => (
+              <WithDisconnectionOverlay>
+                <Analytics hideIfMatches={""} />
+              </WithDisconnectionOverlay>
+            )}
           />
         </TearOutContext.Provider>
+        <Route
+          path={ROUTES_CONFIG.styleguide}
+          render={() => <StyleguideRoute />}
+        />
       </Switch>
     </BrowserRouter>
-    <DisconnectionOverlay />
   </Suspense>
 )
