@@ -9,7 +9,7 @@ import { initConnection } from "./services/connection"
 
 const MainApp = getMainApp()
 
-export async function init() {
+export async function initApp() {
   if (!import.meta.env.VITE_MOCKS) {
     initConnection()
   }
@@ -43,5 +43,3 @@ export async function init() {
 
   ga("send", "pageview")
 }
-
-init()

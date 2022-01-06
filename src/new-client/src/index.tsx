@@ -1,8 +1,8 @@
-import { init } from "./App"
+import { initApp } from "./App"
 import { browserUnsupported } from "./BrowserUnsupported"
 
 if (!window.supportsBigInt) {
   browserUnsupported()
 } else {
-  init()
+  initApp()
 }
