@@ -1,7 +1,8 @@
 import path, { resolve } from "path"
-import { fstat, readdirSync, statSync } from "fs"
+import { readdirSync, statSync } from "fs"
 import { defineConfig, loadEnv } from "vite"
 import reactRefresh from "@vitejs/plugin-react-refresh"
+import { injectHtml } from "vite-plugin-html"
 import copy from "rollup-plugin-copy"
 import eslint from "@rollup/plugin-eslint"
 import typescript from "rollup-plugin-typescript2"
@@ -47,8 +48,8 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
     enforce: "pre",
     resolveId: function (source, importer, options) {
       if (dev) {
-        const extension = source.split('.')[1];
-        if (extension !== 'ts' && extension !== 'tsx') return null
+        const extension = source.split(".")[1]
+        if (extension !== "ts" && extension !== "tsx") return null
 
         const file = path.parse(source)
         const files = readdirSync("." + file.dir)
@@ -82,12 +83,12 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
           `${importedFile.name}.${target.toLowerCase()}`,
         )
 
-        // Source doesn't have file extension, so try all extensions 
-        let candidate = null;
-        const extensions = ['ts', 'tsx'];
-        for(let i = 0; i < extensions.length; i++) {
+        // Source doesn't have file extension, so try all extensions
+        let candidate = null
+        const extensions = ["ts", "tsx"]
+        for (let i = 0; i < extensions.length; i++) {
           try {
-            candidate = `${candidatePath}.${extensions[i]}`;
+            candidate = `${candidatePath}.${extensions[i]}`
             statSync(candidate)
             console.log("candidate good", candidate)
           } catch (e) {
@@ -96,10 +97,10 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
           }
 
           if (candidate) {
-            break;
+            break
           }
         }
-        
+
         return candidate
       }
     },
@@ -230,6 +231,21 @@ const htmlPlugin = (dev: boolean) => {
   }
 }
 
+const injectScriptIntoHtml = () =>
+  injectHtml({
+    data: {
+      injectScript: `
+      <script>
+        // Hydra dependency references BigInt at run time even when the application isn't explicitly started
+        // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
+        // Set BigInt to an anon function to prevent the runtime error 
+        window.supportsBigInt = typeof BigInt !== 'undefined';
+        window.BigInt = supportsBigInt ? BigInt : function(){};
+      </script>
+    `,
+    },
+  })
+
 const injectWebServiceWorkerPlugin = (mode: string) =>
   injectManifest(
     {
@@ -271,6 +287,7 @@ const setConfig = ({ mode }) => {
   plugins.unshift(indexSwitchPlugin(TARGET))
   plugins.unshift(targetBuildPlugin(isDev, TARGET))
   plugins.push(copyWebManifestPlugin(mode === "development"))
+  plugins.push(injectScriptIntoHtml())
   plugins.push(htmlPlugin(isDev))
 
   return defineConfig({
