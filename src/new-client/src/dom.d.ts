@@ -3,6 +3,8 @@ export {}
 declare global {
   interface Window {
     beforeInstallPromptEvent: BeforeInstallPromptEvent
+    // Set in index.html
+    supportsBigInt: boolean
     // TODO
     FSBL: any
     ga: any
