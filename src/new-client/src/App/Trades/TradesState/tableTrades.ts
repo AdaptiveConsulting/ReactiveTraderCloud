@@ -1,13 +1,6 @@
 import { startOfDay } from "date-fns"
 import { combineLatest, merge } from "rxjs"
-import {
-  delay,
-  filter,
-  map,
-  mergeMap,
-  scan,
-  startWith,
-} from "rxjs/operators"
+import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { Trade, trades$ } from "@/services/trades"
 import type { ColField } from "./colConfig"
@@ -162,7 +155,9 @@ const numFiltersTrueOfTrade = (
       return true
     }
 
-    const tradeNumber = trade[field as NumColField]
+    const tradeValue = trade[field as NumColField]
+    const tradeNumber =
+      typeof tradeValue === "number" ? tradeValue : parseFloat(tradeValue)
     const filterNumber = filterContent.value1
 
     switch (filterContent.comparator) {
