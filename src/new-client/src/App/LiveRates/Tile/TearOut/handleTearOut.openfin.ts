@@ -18,9 +18,13 @@ const calculateOpeningWindowCoords = async (coords: Offset) => {
   }
 }
 
-export async function handleTearOut(symbol: string, tileRef: HTMLDivElement) {
-  const coords = calculateWindowCoordinates(tileRef)
-  const position = await calculateOpeningWindowCoords(coords)
+export async function handleTearOut(symbol: string, tileRef?: HTMLDivElement) {
+  let position = {}
+  
+  if (tileRef) {
+    const coords = calculateWindowCoordinates(tileRef)
+    position = await calculateOpeningWindowCoords(coords)
+  }
 
   openWindow(
     {

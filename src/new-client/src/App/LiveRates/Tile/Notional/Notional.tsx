@@ -1,3 +1,4 @@
+import { useCallback } from "react"
 import { FaRedo } from "react-icons/fa"
 import { useRfqState, QuoteStateStage } from "../Rfq"
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
@@ -92,26 +93,38 @@ export const NotionalInputInner: React.FC<Props> = ({
   onChange,
   canReset,
   onReset,
-}) => (
-  <InputWrapper>
-    <CurrencyPairSymbol htmlFor={id}>{base}</CurrencyPairSymbol>
-    <Input
-      type="text"
-      id={id}
-      className={!valid ? `is-invalid` : undefined}
-      disabled={disabled}
-      value={value}
-      onChange={onChange}
-      onFocus={(event) => {
-        event.target.select()
-      }}
-    />
-    <ResetInputValue isVisible={canReset} onClick={onReset}>
-      <FaRedo className="flipHorizontal" />
-    </ResetInputValue>
-    {!valid && <ErrorMessage>Max exceeded</ErrorMessage>}
-  </InputWrapper>
-)
+}) => {
+  const ref = useCallback((node: HTMLInputElement | null) => {
+    if (node) {
+      setTimeout(() => {
+        console.log('Focussing input', node)
+        node.focus()
+      }, 3000)
+    }
+  }, [])
+
+  return (
+    <InputWrapper>
+      <CurrencyPairSymbol htmlFor={id}>{base}</CurrencyPairSymbol>
+      <Input
+        ref={ref}
+        type="text"
+        id={id}
+        className={!valid ? `is-invalid` : undefined}
+        disabled={disabled}
+        value={value}
+        onChange={onChange}
+        onFocus={(event) => {
+          event.target.select()
+        }}
+      />
+      <ResetInputValue isVisible={canReset} onClick={onReset}>
+        <FaRedo className="flipHorizontal" />
+      </ResetInputValue>
+      {!valid && <ErrorMessage>Max exceeded</ErrorMessage>}
+    </InputWrapper>
+  )
+}
 
 export const NotionalInput: React.FC = () => {
   const { base, symbol } = useTileCurrencyPair()

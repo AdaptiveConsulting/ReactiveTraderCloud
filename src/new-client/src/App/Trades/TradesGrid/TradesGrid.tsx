@@ -146,11 +146,16 @@ export const TradesGrid: React.FC = () => {
   const highlightedRow = useTradeRowHighlight()
 
   const tryBroadcastContext = (symbol: string) => {
+    const context = {
+      type: "fdc3.instrument",
+      id: { ticker: symbol },
+    };
+
     if (window.fdc3) {
-      broadcast({
-        type: "fdc3.instrument",
-        id: { ticker: symbol },
-      })
+      broadcast(context)
+    } else if (window.fin) {
+      // @ts-ignore
+      fin.me.interop.setContext(context)
     }
   }
 
