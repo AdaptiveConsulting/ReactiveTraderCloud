@@ -38,6 +38,10 @@ const ComparatorSelectInner = styled.select`
     linear-gradient(135deg, ${textColor} 50%, transparent 50%);
   background-position: calc(100% - 5px) center, calc(100%) center;
   background-size: 5px 5px, 5px 5px;
+
+  option {
+    background-color: ${({ theme }) => theme.core.lightBackground};
+  }
 `
 
 export const ComparatorSelect: React.FC<{
