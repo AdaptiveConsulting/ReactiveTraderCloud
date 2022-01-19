@@ -92,14 +92,17 @@ const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
   }),
 )
 
+/**
+ * Observable that fires when user's network connection status changes
+ * "true" for user is connected to the network, "false" for not connected to the network
+ * Note - Network connection does not guarantee internet connection
+ * The user's network might lose connection to the internet even though the device is connected to the network
+ * In this scenario $online will not fire that the user went offline (false positive for internet connection status)
+ */
 const online$: Observable<Boolean> = merge(
   of(navigator.onLine),
   fromEvent(window, "online").pipe(mapTo(true)),
   fromEvent(window, "offline").pipe(mapTo(false)),
-).pipe(
-  map((status) => {
-    return status
-  }),
 )
 
 // Update connection status when use goes offline
