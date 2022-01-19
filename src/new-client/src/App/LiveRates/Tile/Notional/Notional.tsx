@@ -9,10 +9,10 @@ import {
   ErrorMessage,
 } from "./Notional.styles"
 import { concat, merge, pipe } from "rxjs"
+import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { filter, map, pluck, take } from "rxjs/operators"
 import { createKeyedSignal } from "@react-rxjs/utils"
-import { nonDraggableChildProps } from "@/components/DraggableTearOut"
 
 const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
   (x) => x.symbol,
