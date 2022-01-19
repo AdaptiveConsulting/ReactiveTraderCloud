@@ -89,6 +89,23 @@ jobs:
             rsync -d -r dist \
             gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.branch }}
 
+      - name: Build (OpenFin - Workspace)
+        env:
+          DOMAIN: https://openfin.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
+        run: npm run build
+        working-directory: src/workspace
+
+      - name: Deploy (OpenFin - Workspace)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.branch }}/workspace
+        working-directory: src/workspace
+
       - name: Build (Finsemble)
         env:
           DOMAIN: https://finsemble.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
