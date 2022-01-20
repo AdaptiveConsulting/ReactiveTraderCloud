@@ -6,7 +6,8 @@ export const StatusButtonInner: React.FC<{ status: ConnectionStatus }> = ({
   status,
 }) => {
   const appStatus =
-    status === ConnectionStatus.IDLE_DISCONNECTED
+    status === ConnectionStatus.IDLE_DISCONNECTED ||
+    status === ConnectionStatus.OFFLINE_DISCONNECTED
       ? ConnectionStatus.DISCONNECTED
       : status
 

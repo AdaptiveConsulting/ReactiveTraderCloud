@@ -26,6 +26,7 @@ const Button = styled.button`
 type DisconnectedStatus =
   | ConnectionStatus.DISCONNECTED
   | ConnectionStatus.IDLE_DISCONNECTED
+  | ConnectionStatus.OFFLINE_DISCONNECTED
 
 export const DisconnectionOverlayInner: React.FC<{
   connectionStatus: DisconnectedStatus
@@ -37,6 +38,8 @@ export const DisconnectionOverlayInner: React.FC<{
         <p>You have been disconnected due to inactivity.</p>
         <Button onClick={onReconnect}>Reconnect</Button>
       </>
+    ) : connectionStatus === ConnectionStatus.OFFLINE_DISCONNECTED ? (
+      "This device has been detected to be offline.  Connection to the server will resume when a stable internet connection is established."
     ) : (
       "Trying to re-connect to the server..."
     )}

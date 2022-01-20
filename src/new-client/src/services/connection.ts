@@ -18,6 +18,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  mapTo,
   scan,
   startWith,
   withLatestFrom,
@@ -27,6 +28,22 @@ type Disposable = () => void
 
 const connectionDisposable$ = new Subject<Disposable>()
 
+export enum ConnectionStatus {
+  CONNECTING = "CONNECTING",
+  CONNECTED = "CONNECTED",
+  DISCONNECTED = "DISCONNECTED",
+  IDLE_DISCONNECTED = "IDLE_DISCONNECTED",
+  OFFLINE_DISCONNECTED = "OFFLINE_DISCONNECTED",
+}
+
+const connectionExists = (status: ConnectionStatus, dispose: Disposable) => {
+  return (
+    [ConnectionStatus.CONNECTING, ConnectionStatus.CONNECTED].includes(
+      status,
+    ) && !!dispose
+  )
+}
+
 // Connect to Hydra gateway and store the disposable
 export const initConnection = async () => {
   const dispose = await connectToGateway({
@@ -34,15 +51,7 @@ export const initConnection = async () => {
     interceptor: noop,
     autoReconnect: true,
   })
-
   connectionDisposable$.next(dispose)
-}
-
-export enum ConnectionStatus {
-  CONNECTING = "CONNECTING",
-  CONNECTED = "CONNECTED",
-  DISCONNECTED = "DISCONNECTED",
-  IDLE_DISCONNECTED = "IDLE_DISCONNECTED",
 }
 
 const mapper: Record<HConnectionStatus, ConnectionStatus> = {
@@ -70,12 +79,9 @@ const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
   connectionDisposable$,
 ]).pipe(
   withLatestFrom(mappedConnectionStatus$),
-  filter(
-    ([[_, dispose], status]) =>
-      // Only when we are connecting/ed and there is a disposable
-      [ConnectionStatus.CONNECTING, ConnectionStatus.CONNECTED].includes(
-        status,
-      ) && !!dispose,
+  filter(([[_, dispose], status]) =>
+    // Only when we are connecting/ed and there is a disposable
+    connectionExists(status, dispose),
   ),
   debounceTime(IDLE_TIMEOUT),
   map(([[_, dispose]]) => {
@@ -86,12 +92,56 @@ const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
   }),
 )
 
+/**
+ * Observable that fires when user's network connection status changes
+ * "true" for user is connected to the network, "false" for not connected to the network
+ * Note - Network connection does not guarantee internet connection
+ * The user's network might lose connection to the internet even though the device is connected to the network
+ * In this scenario $online will not fire that the user went offline (false positive for internet connection status)
+ */
+const online$: Observable<Boolean> = merge(
+  of(navigator.onLine),
+  fromEvent(window, "online").pipe(mapTo(true)),
+  fromEvent(window, "offline").pipe(mapTo(false)),
+)
+
+// Update connection status when use goes offline
+const offlineDisconnect$: Observable<ConnectionStatus> = online$.pipe(
+  withLatestFrom(connectionDisposable$, mappedConnectionStatus$),
+  filter(
+    ([online, dispose, status]) => !online && connectionExists(status, dispose),
+  ),
+  map(() => {
+    console.log(`User went offline, setting status to disconnecting`)
+    return ConnectionStatus.OFFLINE_DISCONNECTED
+  }),
+)
+
+// Init connection when user goes online
+const onlineConnect$: Observable<ConnectionStatus> = online$.pipe(
+  withLatestFrom(mappedConnectionStatus$),
+  filter(([online, status]) => !!online),
+  map(([online, status]) => {
+    console.log(
+      `User came online, updated with latest mapped connection status`,
+    )
+    return status
+  }),
+)
+
 export const [useConnectionStatus, connectionStatus$] = bind(
   import.meta.env.VITE_MOCKS
     ? of(ConnectionStatus.CONNECTED)
-    : merge<ConnectionStatus, ConnectionStatus>(
+    : merge<
+        ConnectionStatus,
+        ConnectionStatus,
+        ConnectionStatus,
+        ConnectionStatus
+      >(
         mappedConnectionStatus$,
         idleDisconnect$,
+        offlineDisconnect$,
+        onlineConnect$,
       ).pipe(
         scan((acc, value) => {
           // Keep IDLE_DISCONNECTED when gateway immediately follows with DISCONNECTED
