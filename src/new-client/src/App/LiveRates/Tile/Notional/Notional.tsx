@@ -9,6 +9,7 @@ import {
   ErrorMessage,
 } from "./Notional.styles"
 import { concat, merge, pipe } from "rxjs"
+import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { filter, map, pluck, take } from "rxjs/operators"
 import { createKeyedSignal } from "@react-rxjs/utils"
@@ -96,6 +97,7 @@ export const NotionalInputInner: React.FC<Props> = ({
   <InputWrapper>
     <CurrencyPairSymbol htmlFor={id}>{base}</CurrencyPairSymbol>
     <Input
+      {...nonDraggableChildProps}
       type="text"
       id={id}
       className={!valid ? `is-invalid` : undefined}
