@@ -12,19 +12,21 @@ export { onToggleSelectedView }
 
 export const SELECTED_VIEW_KEY = "selectedView"
 
-const initView =
+export const getInitView = () =>
   (window.localStorage.getItem(SELECTED_VIEW_KEY) as TileView) ||
   TileView.Analytics
 
 export const [useSelectedTileView] = bind(
-  toggleSelectedView$.pipe(
-    scan(
-      (acc) => (acc === TileView.Normal ? TileView.Analytics : TileView.Normal),
-      initView,
+  (initView: TileView) =>
+    toggleSelectedView$.pipe(
+      scan(
+        (acc) =>
+          acc === TileView.Normal ? TileView.Analytics : TileView.Normal,
+        initView,
+      ),
+      tap((newView) => {
+        window.localStorage.setItem(SELECTED_VIEW_KEY, newView)
+      }),
     ),
-    tap((newView) => {
-      window.localStorage.setItem(SELECTED_VIEW_KEY, newView)
-    }),
-  ),
-  initView,
+  (initView: TileView) => initView,
 )
