@@ -1,7 +1,7 @@
 import { combineLatest, merge } from "rxjs"
 import styled from "styled-components"
 import { currencyPairs$ } from "@/services/currencyPairs"
-import { TileView, useSelectedTileView } from "./selectedView"
+import { getInitView, TileView, useSelectedTileView } from "./selectedView"
 import { Tile, tile$ } from "./Tile"
 import { map } from "rxjs/operators"
 import { selectedCurrency$, ALL_CURRENCIES } from "./selectedCurrency"
@@ -50,7 +50,7 @@ export const tiles$ = merge(
 
 export const Tiles = () => {
   const currencyPairs = useFilteredCurrencyPairs()
-  const selectedView = useSelectedTileView()
+  const selectedView = useSelectedTileView(getInitView())
   const tearOutEntry = useTearOutEntry()
 
   useEffect(() => {

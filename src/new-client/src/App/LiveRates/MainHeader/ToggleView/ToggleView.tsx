@@ -3,6 +3,7 @@ import {
   TileView,
   onToggleSelectedView,
   useSelectedTileView,
+  getInitView,
 } from "../../selectedView"
 import { NavItem } from "../../styled"
 import { ChartIcon } from "./ChartIcon"
@@ -32,7 +33,7 @@ const ToggleItem = styled(NavItem)<{ active: boolean }>`
 `
 
 export const ToggleView: React.FC = () => {
-  const tileView = useSelectedTileView()
+  const tileView = useSelectedTileView(getInitView())
   return (
     <ToggleItem
       data-testid="toggleButton"
