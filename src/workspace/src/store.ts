@@ -19,6 +19,7 @@ import {
   reactiveWorkspace,
   tradesView,
 } from "./apps";
+import { BASE_URL } from "./utils";
 
 const providerId = "adaptive-store-provider";
 
@@ -36,7 +37,7 @@ export async function registerStore() {
   }
 }
 
-export async function deregister() {
+export async function deregisterStore() {
   return Storefront.deregister(providerId);
 }
 
@@ -56,7 +57,7 @@ async function getStoreProvider(): Promise<StorefrontProvider> {
   return {
     id: providerId,
     title: "Adaptive Store",
-    icon: "http://localhost:8080/favicon.ico",
+    icon: `${BASE_URL}/favicon.ico`,
     getNavigation: getNavigation,
     getLandingPage: getLandingPage,
     getFooter: getFooter,
@@ -157,7 +158,7 @@ async function getLandingPage(): Promise<StorefrontLandingPage> {
         },
       },
       image: {
-        src: "http://localhost:8080/images/previews/reactive-trader.PNG",
+        src: `${BASE_URL}/images/previews/reactive-trader.PNG`,
       },
     },
     topRow: {
@@ -168,7 +169,7 @@ async function getLandingPage(): Promise<StorefrontLandingPage> {
           title: "Research",
           description: "Applications to research the current market data, trends etc...",
           image: {
-            src: "http://localhost:8080/images/coding-1-unsplash.jpg",
+            src: `${BASE_URL}/images/coding-1-unsplash.jpg`,
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
@@ -180,7 +181,7 @@ async function getLandingPage(): Promise<StorefrontLandingPage> {
           title: "Tools",
           description: "Tools to help day to day operations",
           image: {
-            src: "http://localhost:8080/images/coding-2-unsplash.jpg",
+            src: `${BASE_URL}/images/coding-2-unsplash.jpg`,
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
@@ -202,7 +203,7 @@ async function getLandingPage(): Promise<StorefrontLandingPage> {
           title: "Web Apps",
           description: "A collection of web apps built using OpenFin.",
           image: {
-            src: "http://localhost:8080/images/coding-5-unsplash.jpg",
+            src: `${BASE_URL}/images/coding-5-unsplash.jpg`,
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
@@ -215,7 +216,7 @@ async function getLandingPage(): Promise<StorefrontLandingPage> {
           description:
             "A collection of views made available through our catalog.",
           image: {
-            src: "http://localhost:8080/images/coding-4-unsplash.jpg",
+            src: `${BASE_URL}/images/coding-4-unsplash.jpg`,
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
@@ -237,8 +238,8 @@ async function getLandingPage(): Promise<StorefrontLandingPage> {
 async function getFooter(): Promise<StorefrontFooter> {
   console.log("Getting the store footer.");
   return {
-    logo: { src: "http://localhost:8080/favicon.ico", size: "32" },
-    text: "Welcome to the OpenFin Sample Footer",
+    logo: { src: `${BASE_URL}/favicon.ico`, size: "32" },
+    text: "Powered by Adaptive",
     links: [
       {
         title: "Adaptive",

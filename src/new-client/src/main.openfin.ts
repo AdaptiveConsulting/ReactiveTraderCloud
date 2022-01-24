@@ -10,7 +10,6 @@ import {
   CLITemplate,
 } from "@openfin/workspace"
 import { map, take } from "rxjs/operators"
-import { handleTearOut } from "./App/LiveRates/Tile/TearOut/handleTearOut"
 import { tearOut } from "./App/LiveRates/Tile/TearOut/state"
 import { ROUTES_CONFIG } from "./constants"
 import { CurrencyPair, currencyPairs$ } from "./services/currencyPairs"

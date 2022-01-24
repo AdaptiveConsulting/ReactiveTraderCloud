@@ -204,10 +204,10 @@
       "spellCheck": false,
       "state": "maximized",
       "taskbarIcon": "",
-      "taskbarIconGroup": "register-with-home-basic",
+      "taskbarIconGroup": "adaptive-workspace-provider",
       "transparent": false,
       "url": "https://cdn.openfin.co/workspace/5.0.0/browser/",
-      "uuid": "register-with-home-basic",
+      "uuid": "adaptive-workspace-provider",
       "waitForPageLoad": true,
       "backgroundColor": "#FFF",
       "fdc3InteropApi": "",
@@ -423,9 +423,9 @@
                                 "height": false
                               },
                               "name": "internal-generated-view-878aa0f6-edcc-421f-bf9e-2ac3b7fa20cf",
-                              "uuid": "register-with-home-basic",
+                              "uuid": "adaptive-workspace-provider",
                               "initialUrl": "<RT_URL>/tiles",
-                              "processAffinity": "register-with-home-basic",
+                              "processAffinity": "adaptive-workspace-provider",
                               "zoomLevel": 0
                             },
                             "title": "Live Rates",
@@ -587,9 +587,9 @@
                                     "height": false
                                   },
                                   "name": "internal-generated-view-e61f0941-fb7e-477d-abba-141fd2e9ca93",
-                                  "uuid": "register-with-home-basic",
+                                  "uuid": "adaptive-workspace-provider",
                                   "initialUrl": "<RT_URL>/blotter",
-                                  "processAffinity": "register-with-home-basic",
+                                  "processAffinity": "adaptive-workspace-provider",
                                   "zoomLevel": 0
                                 },
                                 "title": "Trades",
@@ -752,9 +752,9 @@
                                 "height": false
                               },
                               "name": "internal-generated-view-4b33837c-1592-4258-8839-a984c4ea2a0e",
-                              "uuid": "register-with-home-basic",
+                              "uuid": "adaptive-workspace-provider",
                               "initialUrl": "http://localhost:3005/",
-                              "processAffinity": "register-with-home-basic",
+                              "processAffinity": "adaptive-workspace-provider",
                               "zoomLevel": 0
                             },
                             "title": "Reactive Analytics (LOCAL)",
@@ -1061,9 +1061,9 @@
                                       "height": false
                                     },
                                     "name": "internal-generated-view-878aa0f6-edcc-421f-bf9e-2ac3b7fa20cf",
-                                    "uuid": "register-with-home-basic",
+                                    "uuid": "adaptive-workspace-provider",
                                     "initialUrl": "<RT_URL>/tiles",
-                                    "processAffinity": "register-with-home-basic",
+                                    "processAffinity": "adaptive-workspace-provider",
                                     "zoomLevel": 0
                                   },
                                   "title": "Live Rates",
@@ -1225,9 +1225,9 @@
                                           "height": false
                                         },
                                         "name": "internal-generated-view-e61f0941-fb7e-477d-abba-141fd2e9ca93",
-                                        "uuid": "register-with-home-basic",
+                                        "uuid": "adaptive-workspace-provider",
                                         "initialUrl": "<RT_URL>/blotter",
-                                        "processAffinity": "register-with-home-basic",
+                                        "processAffinity": "adaptive-workspace-provider",
                                         "zoomLevel": 0
                                       },
                                       "title": "Trades",
@@ -1394,9 +1394,9 @@
                                       "height": false
                                     },
                                     "name": "internal-generated-view-4b33837c-1592-4258-8839-a984c4ea2a0e",
-                                    "uuid": "register-with-home-basic",
+                                    "uuid": "adaptive-workspace-provider",
                                     "initialUrl": "http://localhost:3005/",
-                                    "processAffinity": "register-with-home-basic",
+                                    "processAffinity": "adaptive-workspace-provider",
                                     "zoomLevel": 0
                                   },
                                   "title": "Reactive Analytics (LOCAL)",

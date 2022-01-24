@@ -6,7 +6,7 @@
     "version": "23.96.67.7"
   },
   "platform": {
-    "uuid": "reactive-trader-openfin-workspace",
+    "uuid": "adaptive-workspace-provider",
     "icon": "<BASE_URL>/favicon.ico",
     "autoShow": true,
     "providerUrl": "<BASE_URL>/index.html",
@@ -62,10 +62,10 @@
     "windows": []
   },
   "shortcut": {
-    "company": "OpenFin",
-    "description": "An way of showing examples of what OpenFin can do.",
-    "icon": "<BASE_URL>/favicon.ico",
-    "name": "Register With Home - Basic - v5",
+    "company": "Adaptive Financial Consulting",
+    "description": "Adaptive workspace provider",
+    "icon": "http://localhost:2017/favicon.ico",
+    "name": "Adaptive Workspace Provider",
     "target": ["desktop", "start-menu"]
   },
   "appAssets": [

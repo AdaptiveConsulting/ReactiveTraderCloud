@@ -20,5 +20,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["./src", "./node_modules/@openfin"]
+  "include": ["./src"]
 }

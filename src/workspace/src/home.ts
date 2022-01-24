@@ -10,8 +10,9 @@ import {
   CLIDispatchedSearchResult,
 } from "@openfin/workspace";
 import { getApps } from "./apps";
+import { BASE_URL } from "./utils";
 
-const providerId = "adaptive-workspace-provider";
+const providerId = "adaptive-home-provider";
 
 async function getResults(query?: string): Promise<CLISearchResponse> {
   let apps = await getApps();
@@ -133,14 +134,14 @@ export async function registerHome(): Promise<void> {
       if (result.data.manifestType === "external") {
         fin.System.launchExternalProcess({
           alias: result.data.manifest,
-          listener: (result) => {
+          listener: (result: any) => {
             console.log("the exit code", result.exitCode);
           },
         })
-          .then((data) => {
+          .then((data: any) => {
             console.info("Process launched: ", data);
           })
-          .catch((e) => {
+          .catch((e: any) => {
             console.error("Process launch failed: ", e);
           });
       } else {
@@ -155,7 +156,7 @@ export async function registerHome(): Promise<void> {
   const cliProvider: CLIProvider = {
     title: "Adaptive Workspace",
     id: providerId,
-    icon: "https://launcher.prod.reactivetrader.com/static/media/adaptive-icon-256x256.png",
+    icon: `${BASE_URL}/images/icons/adaptive.png`,
     onUserInput: onUserInput,
     onResultDispatch: onSelection,
   };
@@ -167,4 +168,8 @@ export async function registerHome(): Promise<void> {
 
 export async function showHome() {
   return Home.show();
+}
+
+export async function deregisterHome() {
+  return Home.deregister(providerId);
 }

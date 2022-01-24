@@ -50,7 +50,7 @@ const setConfig = ({ mode }) => {
 
   // @ts-ignore
   plugins.push(copyOpenfinPlugin(isDev))
-console.log(getBaseUrl(isDev))
+  
   return defineConfig({
     base: getBaseUrl(isDev),
     build: {

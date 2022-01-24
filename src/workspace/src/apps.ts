@@ -1,9 +1,7 @@
 import { App } from '@openfin/workspace'
+import { BASE_URL } from './utils'
 
 const { VITE_RT_URL, VITE_RA_URL } = import.meta.env as Record<string, string>
-const BASE_URL =
-  import.meta.env.BASE_URL === '/' ? window.location.origin : import.meta.env.BASE_URL
-console.log('BASE_URL', BASE_URL)
 
 export async function getApps(): Promise<App[]> {
   return [
@@ -18,35 +16,17 @@ export async function getApps(): Promise<App[]> {
   ]
 }
 
-export const reactiveWorkspace: App = {
-  appId: 'reactive-workspace',
-  title: 'Trading Workspace',
-  manifestType: 'snapshot',
-  description: 'Live rates, blotter and analytics',
-  manifest: `${BASE_URL}/config/snapshot.json`,
-  icons: [
-    {
-      src: `${VITE_RT_URL}/static/media/reactive-trader-icon-256x256.png`
-    }
-  ],
-  publisher: 'OpenFin',
-  tags: ['Trading', 'Market Data', 'Research'],
-  images: [
-    {
-      src: `${BASE_URL}/images/previews/reactive-trader-snapshot.PNG`
-    }
-  ]
-}
+const reactiveTraderManifestUrl = `${VITE_RT_URL}${VITE_RT_URL.includes('localhost') ? '/dist' : ''}/config/app.json`
 
 export const reactiveTrader: App = {
   appId: 'reactive-trader',
   title: 'Reactive Trader',
   manifestType: 'manifest',
   description: 'Desktop Reactive Trader',
-  manifest: `${VITE_RT_URL}${VITE_RT_URL.includes('localhost') ? '/dist' : ''}/config/app.json`,
+  manifest: reactiveTraderManifestUrl,
   icons: [
     {
-      src: `${VITE_RT_URL}/static/media/reactive-trader-icon-256x256.png`
+      src: `${BASE_URL}/images/icons/reactive-trader.png`
     }
   ],
   publisher: 'Adaptive Financial Consulting',
@@ -62,7 +42,7 @@ export const reactiveAnalytics: App = {
   manifest: `${VITE_RA_URL}/openfin/app.json`,
   icons: [
     {
-      src: `${VITE_RA_URL}/static/media/reactive-analytics-icon-256x256.png`
+      src: `${BASE_URL}/images/icons/reactive-analytics.png`
     }
   ],
   publisher: 'Adaptive Financial Consulting',
@@ -80,12 +60,32 @@ export const limitChecker: App = {
     'LimitChecker',
   icons: [
     {
-      src: `${VITE_RT_URL}/static/media/limit-checker-icon.ico`
+      src: `${BASE_URL}/images/icons/limit-checker.ico`
     }
   ],
   publisher: 'Adaptive Financial Consulting',
   tags: ['Trading', 'Tools'],
   images: [{ src: `${BASE_URL}/images/previews/limit-checker.PNG` }]
+}
+
+export const reactiveWorkspace: App = {
+  appId: 'reactive-workspace',
+  title: 'Trading Workspace',
+  manifestType: 'snapshot',
+  description: 'Live rates, blotter and analytics',
+  manifest: `${BASE_URL}/config/snapshot.json`,
+  icons: [
+    {
+      src: `${BASE_URL}/images/icons/reactive-trader.png`
+    }
+  ],
+  publisher: 'OpenFin',
+  tags: ['Trading', 'Market Data', 'Research'],
+  images: [
+    {
+      src: `${BASE_URL}/images/previews/reactive-trader-snapshot.PNG`
+    }
+  ]
 }
 
 export const liveRatesView: App = {
@@ -96,7 +96,7 @@ export const liveRatesView: App = {
   manifest: `${BASE_URL}/config/live-rates.json`,
   icons: [
     {
-      src: `${VITE_RT_URL}/static/media/reactive-trader-icon-256x256.png`
+      src: `${BASE_URL}/images/icons/reactive-trader.png`
     }
   ],
   publisher: 'Adaptive Financial Consulting',
@@ -112,7 +112,7 @@ export const tradesView: App = {
   manifest: `${BASE_URL}/config/trades.json`,
   icons: [
     {
-      src: `${VITE_RT_URL}/static/media/reactive-trader-icon-256x256.png`
+      src: `${BASE_URL}/images/icons/reactive-trader.png`
     }
   ],
   publisher: 'Adaptive Financial Consulting',
@@ -128,7 +128,7 @@ export const analyticsView: App = {
   manifest: `${BASE_URL}/config/analytics.json`,
   icons: [
     {
-      src: `${VITE_RT_URL}/static/media/reactive-trader-icon-256x256.png`
+      src: `${BASE_URL}/images/icons/reactive-trader.png`
     }
   ],
   publisher: 'Adaptive Financial Consulting',
@@ -144,7 +144,7 @@ export const reactiveAnalyticsView: App = {
   manifest: `${BASE_URL}/config/reactive-analytics.json`,
   icons: [
     {
-      src: `${VITE_RA_URL}/static/media/reactive-analytics-icon-256x256.png`
+      src: `${BASE_URL}/images/icons/reactive-analytics.png`
     }
   ],
   publisher: 'Adaptive Financial Consulting',
