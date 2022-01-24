@@ -1,1 +1,0 @@
-export { getProvider } from './getProvider'
