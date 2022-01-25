@@ -5,6 +5,8 @@ import {
   precisionNumberFormatter,
   significantDigitsNumberFormatter,
   customNumberFormatter,
+  getThousandsSeparator,
+  getDecimalSeparator,
 } from "../formatNumber"
 
 describe("all number formatters", () => {
@@ -146,5 +148,24 @@ describe("formatWithScale", () => {
     const input = 123.456
     const expectedOutput = "123.5"
     expect(formatWithScale(input, formatToPrecision1)).toBe(expectedOutput)
+  })
+})
+
+// Note - these tests are dependent on the Intl values for the provided languages
+describe("thousands and decimal formatters", () => {
+  describe("getThousandsSeparator", () => {
+    it("should find ',' for English, '\u00A0' for Russian, and '.' for German", () => {
+      expect(getThousandsSeparator("EN")).toEqual(",")
+      expect(getThousandsSeparator("RU")).toEqual("\u00A0")
+      expect(getThousandsSeparator("DE")).toEqual(".")
+    })
+  })
+
+  describe("getDecimalSeparator", () => {
+    it("should find '.' for English, ',' for Russian, and ',' for German", () => {
+      expect(getDecimalSeparator("EN")).toEqual(".")
+      expect(getDecimalSeparator("RU")).toEqual(",")
+      expect(getDecimalSeparator("DE")).toEqual(",")
+    })
   })
 })
