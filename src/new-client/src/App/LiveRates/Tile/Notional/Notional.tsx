@@ -33,6 +33,12 @@ const multipliers: Record<string, number> = {
 
 const formatter = customNumberFormatter()
 
+const filterRegExp = new RegExp(
+  `${THOUSANDS_SEPARATOR_REGEXP}|k$|m$|K$|M$`,
+  "g",
+)
+const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
+
 export const [useNotional, getNotional$] = symbolBind((symbol) =>
   concat(
     currencyPairs$.pipe(
@@ -46,11 +52,6 @@ export const [useNotional, getNotional$] = symbolBind((symbol) =>
   ).pipe(
     map(({ rawVal }) => {
       const lastChar = rawVal.slice(-1).toLowerCase()
-      const filterRegExp = new RegExp(
-        `${THOUSANDS_SEPARATOR_REGEXP}|k$|m$|K$|M$`,
-        "g",
-      )
-      const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
       const value = Math.abs(
         Number(rawVal.replace(filterRegExp, "").replace(decimalRegExp, ".")) *
           (multipliers[lastChar] || 1),
