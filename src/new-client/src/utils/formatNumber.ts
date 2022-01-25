@@ -8,8 +8,12 @@
  *
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation
  *
+ * Also exports raw and RegExp friendly variables for a locale's thousands and decimal separator values
+ *
  * See __tests__/formatNumber.test.ts for full usage and behavior.
  */
+
+import escapeRegExp from "lodash/fp/escapeRegExp"
 
 enum Scale {
   K = "k",
@@ -27,6 +31,8 @@ const k = 1_000
 const m = k * k
 const b = m * k
 const t = b * k
+
+const locale = "default"
 
 export const scaleNumber: (v: number) => ScaledNumber = (val: number) => {
   const magnitude = Math.abs(val)
@@ -55,7 +61,7 @@ type NumberFormatter = (n: number) => string
 const numberFormatter = (
   options?: Intl.NumberFormatOptions,
 ): NumberFormatter => {
-  const nf = new Intl.NumberFormat("default", { ...options })
+  const nf = new Intl.NumberFormat(locale, { ...options })
 
   return (num: number) => {
     if (typeof num !== "number") {
@@ -126,3 +132,39 @@ export const formatWithScale = (num: number, format: NumberFormatter) => {
   const { value, scale } = scaleNumber(num)
   return format(value) + scale
 }
+
+// The following code deals with finding the thousands and decimal separators for the current locale
+// Functions were chosen in order to write unit tests that would not be depended on driver default locale
+// "Magic Number" 1000.5 was chosen to accessing the thousands/decimal values
+// Assumes that for this number, for all locales, the thousands and decimal separators will occur at the provided indices
+// Preference would have been given to a native Intl function for finding these values, but none appear to be exposed at this time
+
+type SeparatorGetter = (_locale: string) => string
+
+export const getThousandsSeparator: SeparatorGetter = (_locale) => {
+  return new Intl.NumberFormat(_locale).formatToParts(1000.5)[1].value
+}
+
+export const getDecimalSeparator: SeparatorGetter = (_locale) => {
+  return new Intl.NumberFormat(_locale).formatToParts(1000.5)[3].value
+}
+
+/**
+ * Thousands separator for numbers in current locale
+ */
+export const THOUSANDS_SEPARATOR = getThousandsSeparator(locale)
+
+/**
+ * Decimal separator for numbers in current locale
+ */
+export const DECIMAL_SEPARATOR = getDecimalSeparator(locale)
+
+/**
+ * Thousands separator for numbers in current locale, for use in regular expressions
+ */
+export const THOUSANDS_SEPARATOR_REGEXP = escapeRegExp(THOUSANDS_SEPARATOR)
+
+/**
+ * Decimal separator for numbers in current locale, for use in regular expressions
+ */
+export const DECIMAL_SEPARATOR_REGEXP = escapeRegExp(DECIMAL_SEPARATOR)

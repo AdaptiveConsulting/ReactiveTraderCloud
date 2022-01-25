@@ -13,6 +13,12 @@ import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggab
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { filter, map, pluck, take } from "rxjs/operators"
 import { createKeyedSignal } from "@react-rxjs/utils"
+import {
+  customNumberFormatter,
+  THOUSANDS_SEPARATOR_REGEXP,
+  DECIMAL_SEPARATOR,
+  DECIMAL_SEPARATOR_REGEXP,
+} from "@/utils/formatNumber"
 
 const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
   (x) => x.symbol,
@@ -25,7 +31,13 @@ const multipliers: Record<string, number> = {
   m: 1_000_000,
 }
 
-const formatter = new Intl.NumberFormat("default")
+const formatter = customNumberFormatter()
+
+const filterRegExp = new RegExp(
+  `${THOUSANDS_SEPARATOR_REGEXP}|k$|m$|K$|M$`,
+  "g",
+)
+const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
 
 export const [useNotional, getNotional$] = symbolBind((symbol) =>
   concat(
@@ -41,12 +53,14 @@ export const [useNotional, getNotional$] = symbolBind((symbol) =>
     map(({ rawVal }) => {
       const lastChar = rawVal.slice(-1).toLowerCase()
       const value = Math.abs(
-        Number(rawVal.replace(/,|k$|m$|K$|M$/g, "")) *
+        Number(rawVal.replace(filterRegExp, "").replace(decimalRegExp, ".")) *
           (multipliers[lastChar] || 1),
       )
       return {
         value,
-        inputValue: formatter.format(value) + (lastChar === "." ? "." : ""),
+        inputValue:
+          formatter(value) +
+          (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
       }
     }),
     filter(({ value }) => !Number.isNaN(value)),
