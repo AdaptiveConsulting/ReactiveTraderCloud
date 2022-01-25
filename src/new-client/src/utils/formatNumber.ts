@@ -13,7 +13,7 @@
  * See __tests__/formatNumber.test.ts for full usage and behavior.
  */
 
-import escapeRegExp from "lodash/fp/escapeRegexp"
+import escapeRegExp from "lodash/fp/escapeRegExp"
 
 enum Scale {
   K = "k",
