@@ -159,16 +159,6 @@ export const THOUSANDS_SEPARATOR = getThousandsSeparator(locale)
  */
 export const DECIMAL_SEPARATOR = getDecimalSeparator(locale)
 
-type EscapeRegExp = (n: string) => string
-
-/**
- * Function to escape special RegExp character that could appear in a formatted number
- */
-export const escapeRegExp: EscapeRegExp = (c) => {
-  const specialChars = "."
-  return specialChars.includes(c) ? `\\${c}` : c
-}
-
 /**
  * Thousands separator for numbers in current locale, for use in regular expressions
  */
