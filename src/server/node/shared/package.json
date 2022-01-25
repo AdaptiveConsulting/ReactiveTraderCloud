@@ -13,7 +13,7 @@
     "rxjs": "^6.5.3",
     "utf-8-validate": "^5.0.2",
     "winston": "^3.2.1",
-    "ws": "^7.2.3"
+    "ws": "^7.4.6"
   },
   "scripts": {
     "precommit": "lint-staged",
