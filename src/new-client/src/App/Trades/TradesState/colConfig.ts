@@ -4,11 +4,14 @@ import {
   significantDigitsNumberFormatter,
   formatAsWholeNumber,
   capitalize,
+  THOUSANDS_SEPARATOR,
 } from "@/utils"
 
 export type ColField = keyof Trade
 
 export type FilterType = "set" | "date" | "number"
+
+type ValueFormatter = (val: unknown) => string
 
 /**
  * All of these values are configured centrally because
@@ -19,18 +22,23 @@ export type FilterType = "set" | "date" | "number"
  * headerName - display name for the column field / trade key
  * filterType - type of filter predicate that applies to the column
  * valueFormatter - how to display the field values in the column
+ * excelValueFormatter - if defined, overwrites valueFormatter when exporting to Excel/CSV
  * width - needed to keep header/body cells same width
  */
 export interface ColConfig {
   headerName: string
   filterType: FilterType
-  valueFormatter?: (val: unknown) => string
+  valueFormatter?: ValueFormatter
+  excelValueFormatter?: ValueFormatter
   width: number
 }
 
 export const DATE_FORMAT = "dd-MMM-yyyy"
 
 const formatTo6Digits = significantDigitsNumberFormatter(6)
+
+const notionalExcelValueFormatter: ValueFormatter = (v) =>
+  formatAsWholeNumber(v as number).replaceAll(THOUSANDS_SEPARATOR, "")
 
 export const colConfigs: Record<ColField, ColConfig> = {
   tradeId: {
@@ -69,6 +77,7 @@ export const colConfigs: Record<ColField, ColConfig> = {
     headerName: "Notional",
     filterType: "number",
     valueFormatter: (v) => formatAsWholeNumber(v as number),
+    excelValueFormatter: notionalExcelValueFormatter,
     width: 120,
   },
   spotRate: {
