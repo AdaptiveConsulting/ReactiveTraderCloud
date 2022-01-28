@@ -3,6 +3,11 @@ export {}
 declare global {
   interface Window {
     beforeInstallPromptEvent: BeforeInstallPromptEvent
+    // Set in index.html
+    supportsBigInt: boolean
+    // TODO
+    FSBL: any
+    ga: any
   }
 
   interface WindowEventMap {
@@ -12,7 +17,7 @@ declare global {
   interface BeforeInstallPromptEvent extends Event {
     readonly platforms: string[]
     readonly userChoice: Promise<{
-      outcome: 'accepted' | 'dismissed'
+      outcome: "accepted" | "dismissed"
       platform: string
     }>
     prompt(): Promise<void>

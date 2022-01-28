@@ -8,14 +8,13 @@ on:
 
 defaults:
   run:
-    working-directory: src/new-client
+    working-directory: src/client
 
 env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
   BUCKET_LAUNCHER: reactive-trader-launcher-builds
-  VITE_HYDRA_URL: wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com
   
 jobs:
   build:

@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Adaptive.ReactiveTrader.Server.Launcher": {
-      "commandName": "Project",
-      "commandLineArgs": "dev"
-    }
-  }
-}
