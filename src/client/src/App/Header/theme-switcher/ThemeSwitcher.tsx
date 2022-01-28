@@ -38,11 +38,15 @@ const ThemeStorageSwitch: React.FC<ThemeStorageSwitchProps & { theme: Theme }> =
       ...(isTouchDevice && { onTouchStart: handleTouchThemeSwitch }),
     }
 
+    const handleChange = () => {
+      !isTouchDevice && toggleTheme()
+    }
+
     return (
       <SwitchContainer {...eventHandlers}>
         {hover ? (
           <Switch
-            onChange={toggleTheme}
+            onChange={handleChange}
             checked={isDarkTheme}
             checkedIcon={
               <IconContainer hover={hover}>

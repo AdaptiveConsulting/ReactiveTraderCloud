@@ -51,7 +51,9 @@ export const exportTable$ = tableTrades$.pipe(
     trades.map((trade) =>
       colFields.map((field) => {
         let res =
-          colConfigs[field].valueFormatter?.(trade[field]) ?? trade[field]
+          colConfigs[field].excelValueFormatter?.(trade[field]) ??
+          colConfigs[field].valueFormatter?.(trade[field]) ??
+          trade[field]
         if (typeof res === "string" && res?.includes(",")) {
           res = '"' + res + '"'
         }

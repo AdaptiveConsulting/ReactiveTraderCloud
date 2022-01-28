@@ -3,6 +3,7 @@ import { Direction } from "@/services/trades"
 import {
   customNumberFormatter,
   significantDigitsNumberFormatter,
+  DECIMAL_SEPARATOR,
 } from "@/utils/formatNumber"
 import { map, switchMap } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
@@ -54,6 +55,8 @@ const [usePrice, getPriceDirection$] = bind(
 export const priceButton$ = (direction: Direction) => (symbol: string) =>
   getPriceDirection$(symbol, direction)
 
+const formatSimple = customNumberFormatter()
+const formatTo2Digits = significantDigitsNumberFormatter(2)
 const formatTo3Digits = significantDigitsNumberFormatter(3)
 const formatToMin2IntDigits = customNumberFormatter({
   minimumIntegerDigits: 2,
@@ -88,13 +91,19 @@ export const PriceButtonInner: React.FC<PriceButtonProps> = ({
   const pip = formatToMin2IntDigits(
     Number(fractions.substring(pipsPosition - 2, pipsPosition)),
   )
-  const tenth = Number(fractions.substring(pipsPosition, pipsPosition + 1))
+  const tenth = formatSimple(
+    Number(fractions.substring(pipsPosition, pipsPosition + 1)),
+  )
 
   const bigFigureNumber = Number(
     wholeNumber + "." + fractions.substring(0, pipsPosition - 2),
   )
-  let bigFigure = formatTo3Digits(bigFigureNumber)
-  if (bigFigureNumber === Math.floor(bigFigureNumber)) bigFigure += "."
+  let bigFigure =
+    bigFigureNumber < 1 && pipsPosition === 4
+      ? formatTo2Digits(bigFigureNumber)
+      : formatTo3Digits(bigFigureNumber)
+  if (bigFigureNumber === Math.floor(bigFigureNumber))
+    bigFigure += DECIMAL_SEPARATOR
 
   return (
     <TradeButton
