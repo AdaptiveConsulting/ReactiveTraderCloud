@@ -37,20 +37,20 @@ const copyOpenfinPlugin = (dev: boolean) => {
       // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
       // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
       // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
-      hook: dev ? 'buildStart' : 'writeBundle',
+      hook: dev ? 'buildStart' : 'writeBundle'
     })
   }
 }
 
 const setConfig = ({ mode }) => {
-  require('dotenv').config({ path: `./.env` });
+  require('dotenv').config({ path: `./.env` })
 
   const isDev = mode === 'development'
   const plugins = isDev ? [typescriptPlugin] : []
 
   // @ts-ignore
   plugins.push(copyOpenfinPlugin(isDev))
-  
+
   return defineConfig({
     base: getBaseUrl(isDev),
     build: {
@@ -58,6 +58,15 @@ const setConfig = ({ mode }) => {
     },
     server: {
       port: PORT,
+      proxy: {
+        '/ws': {
+          target:
+            process.env.VITE_HYDRA_URL ||
+            'wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com',
+          changeOrigin: true,
+          ws: true
+        }
+      }
     },
     // @ts-ignore
     plugins

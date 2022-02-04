@@ -1,33 +1,13 @@
+import { init as workspacePlatformInit } from '@openfin/workspace-platform'
 import {
-  BrowserOverrideCallback,
-  CreateSavedPageRequest,
-  init as workspacePlatformInit,
-  UpdateSavedPageRequest
-} from '@openfin/workspace-platform'
+  connectToGateway,
+} from "@adaptive/hydra-platform"
 import { registerHome, showHome, deregisterHome } from './home'
 import { registerStore, deregisterStore } from './store'
 
-// TODO - Revisit when we can launch a page from config (at the moment we can only do so with a manifestUrl)
-const overrideCallback: BrowserOverrideCallback = async WorkspacePlatformProvider => {
-  class Override extends WorkspacePlatformProvider {
-    createSavedPage = async (req: CreateSavedPageRequest): Promise<void> => {
-      localStorage.setItem(`page-${req.page.pageId}`, JSON.stringify(req.page))
-    }
-
-    updateSavedPage = async (req: UpdateSavedPageRequest): Promise<void> => {
-      console.log(`saving page ${req.page.pageId}`)
-      localStorage.setItem(`page-${req.page.pageId}`, JSON.stringify(req.page))
-    }
-  }
-
-  return new Override()
-}
-
 async function init() {
   await workspacePlatformInit({
-    browser: {
-      overrideCallback
-    },
+    browser: {},
     // TODO - home and store not themeable at the moment
     theme: [
       {
@@ -44,6 +24,12 @@ async function init() {
   await registerHome()
   await registerStore()
   await showHome()
+
+  await connectToGateway({
+    url: `${window.location.origin}/ws`,
+    interceptor: () => null,
+    autoReconnect: true,
+  })
 
   const providerWindow = fin.Window.getCurrentSync()
   providerWindow.once('close-requested', async () => {

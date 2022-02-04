@@ -1,7 +1,5 @@
 import { App } from '@openfin/workspace'
-import { BASE_URL } from './utils'
-
-const { VITE_RT_URL, VITE_RA_URL } = import.meta.env as Record<string, string>
+import { BASE_URL, VITE_RA_URL, VITE_RT_URL } from './consts'
 
 export async function getApps(): Promise<App[]> {
   return [

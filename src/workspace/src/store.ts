@@ -19,7 +19,7 @@ import {
   reactiveWorkspace,
   tradesView,
 } from "./apps";
-import { BASE_URL } from "./utils";
+import { BASE_URL } from "./consts";
 
 const providerId = "adaptive-store-provider";
 

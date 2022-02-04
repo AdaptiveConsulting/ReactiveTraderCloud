@@ -5,7 +5,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "openfin:run": "wait-on -l fin://localhost:2017/config/workspace.json && start fin://localhost:2017/config/workspace.json",
+    "openfin:run": "start fin://localhost:2017/config/workspace.json",
     "openfin:start": "concurrently \"npm:start\" \"npm:openfin:run\"",
     "kill": "(npm run -s kill:fin || true) && (npm run -s kill:rvm || true)",
     "kill:fin": "cmd.exe /c taskkill /F /IM OpenFin.exe /T",
@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/dialogflow": "^4.0.4",
     "@types/express": "^4.17.11",
     "@types/node": "^14.14.33",
     "concurrently": "^7.0.0",
@@ -30,7 +31,11 @@
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
-    "@openfin/workspace": "^5.0.0",
-    "@openfin/workspace-platform": "^5.0.0"
+    "@adaptive/hydra-platform": "^3.61.0",
+    "@google-cloud/dialogflow": "^4.6.0",
+    "@openfin/workspace": "^5.5.0",
+    "@openfin/workspace-platform": "^5.5.0",
+    "dialogflow": "^1.2.0",
+    "rxjs": "^7.5.2"
   }
 }
