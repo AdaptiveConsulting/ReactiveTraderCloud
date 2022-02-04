@@ -1,11 +1,20 @@
-import { CLISearchResponse, CLISearchResult, CLITemplate } from '@openfin/workspace'
+import {
+  CLISearchListenerRequest,
+  CLISearchListenerResponse,
+  CLISearchResponse,
+  CLISearchResult,
+  CLITemplate
+} from '@openfin/workspace'
 import { App, Page } from '@openfin/workspace-platform'
+import { filter, Subscription, take, takeUntil } from 'rxjs'
 import { getApps } from '../apps'
 import { getPages } from '../browser'
 import { VITE_RT_URL } from '../consts'
-import { PriceTick } from '../generated/TradingGateway'
+import { Direction, PriceTick } from '../generated/TradingGateway'
+import { executing$, executionResponse$ } from '../services/executions'
 import { getNlpIntent, NlpIntentType } from '../services/nlpService'
-import { getMarket, getPriceForSymbol } from '../services/prices'
+import { getPriceForSymbol$, prices$ } from '../services/prices'
+import { tradesStream$ } from '../services/trades'
 
 export const HOME_ACTION_DELETE_PAGE = 'Delete Page'
 export const HOME_ACTION_LAUNCH_PAGE = 'Launch Page'
@@ -117,13 +126,16 @@ export const getAppsAndPages = async (query?: string): Promise<CLISearchResponse
 const constructSpotResult = ({ symbol, bid, ask, mid }: PriceTick) => ({
   key: `spot-${symbol}`,
   title: symbol,
+  label: 'Currency Pair',
   data: {
     symbol,
     manifestType: 'url',
     manifest: `${VITE_RT_URL}/spot/${symbol}`
   },
-  actions: [{ name: `Trade ${symbol}`, hotkey: 'enter' }],
-  // @ts-ignore
+  actions: [
+    { name: `Launch ${symbol} tile`, hotkey: 'enter' },
+    { name: `Trade ${symbol}`, hotkey: 'CmdOrCtrl+T' }
+  ],
   template: CLITemplate.List,
   templateContent: [
     ['Symbol', symbol],
@@ -133,47 +145,219 @@ const constructSpotResult = ({ symbol, bid, ask, mid }: PriceTick) => ({
   ]
 })
 
-export const getNlpResults = async (query: string): Promise<CLISearchResponse> => {
+export const getNlpResults = async (
+  query: string,
+  request: CLISearchListenerRequest,
+  response: CLISearchListenerResponse
+) => {
+  let loadingRevoked = false
   const intent = await getNlpIntent(query)
-  const noResults = {
-    results: []
+
+  const revokeLoading = () => {
+    if (!loadingRevoked) {
+      response.revoke('loading')
+      loadingRevoked = true
+    }
   }
 
   if (!intent) {
-    return noResults
+    return revokeLoading()
   }
+
+  console.log('Intent', intent)
 
   switch (intent.type) {
     case NlpIntentType.SpotQuote: {
       const { symbol } = intent.payload
 
       if (!symbol) {
-        return noResults
+        return revokeLoading()
       }
 
-      const priceTick = await getPriceForSymbol(symbol)
+      let sub = getPriceForSymbol$(symbol).subscribe(priceTick => {
+        const result = constructSpotResult(priceTick)
+        revokeLoading()
+        response.respond([result])
+      })
 
-      return {
-        results: [constructSpotResult(priceTick)]
-      }
+      request.onClose(() => {
+        if (sub) {
+          sub.unsubscribe()
+        }
+      })
+
+      break
     }
 
     case NlpIntentType.MarketInfo: {
-      const market = await getMarket()
-      return {
-        results: market.map(priceTick => constructSpotResult(priceTick))
+      const result = {
+        key: `market`,
+        title: 'Market',
+        label: 'Live Rates',
+        data: {
+          manifestType: 'url',
+          manifest: `${VITE_RT_URL}/liverates`
+        },
+        actions: [{ name: `Launch Live Rates`, hotkey: 'enter' }],
+        template: CLITemplate.List,
+        templateContent: [] as any
       }
+
+      let sub = prices$.subscribe(priceTicks => {
+        result.templateContent = priceTicks.map(priceTick => [priceTick.symbol, priceTick.mid])
+
+        revokeLoading()
+        response.respond([result])
+      })
+
+      request.onClose(() => {
+        if (sub) {
+          sub.unsubscribe()
+        }
+      })
+
+      break
     }
 
     case NlpIntentType.TradeInfo: {
-      return {
-        results: []
+      let sub = tradesStream$.subscribe(trades => {
+        trades.reverse()
+        // @ts-ignore
+        const trimmedTrades = intent.payload.count ? trades.splice(0, intent.payload.count) : trades
+        const results = trimmedTrades.map(trade => ({
+          key: `trade-${trade.tradeId}`,
+          title: `${trade.tradeId}`,
+          label: 'Trade',
+          data: {
+            manifestType: 'url',
+            manifest: `${VITE_RT_URL}/trades`
+          },
+          actions: [{ name: `Launch trades`, hotkey: 'enter' }],
+          template: CLITemplate.List,
+          templateContent: [
+            ['Trade ID', trade.tradeId],
+            ['Status', trade.status],
+            ['Trade Date', trade.tradeDate],
+            ['Direction', trade.direction],
+            ['CCYCCY', trade.currencyPair],
+            ['Deal CCY', trade.dealtCurrency],
+            ['Notional', trade.notional],
+            ['Rate', trade.spotRate],
+            ['Value Date', trade.valueDate],
+            ['Trade', trade.tradeName]
+          ]
+        }))
+
+        revokeLoading()
+        response.respond(results)
+      })
+
+      request.onClose(() => {
+        if (sub) {
+          sub.unsubscribe()
+        }
+      })
+
+      break
+    }
+
+    case NlpIntentType.TradeExecution: {
+      const { direction, notional, symbol } = intent.payload as any
+
+      if (!symbol) {
+        return revokeLoading()
       }
+
+      let subs: Subscription[] = []
+
+      subs.push(
+        getPriceForSymbol$(symbol)
+          .pipe(takeUntil(executing$.pipe(filter(value => !!value))))
+          .subscribe(({ bid, ask, mid }) => {
+            const data = {
+              manifestType: 'trade-execution',
+              currencyPair: symbol,
+              spotRate: direction === Direction.Buy ? ask : bid,
+              valueDate: new Date().toISOString().substr(0, 10),
+              direction,
+              notional,
+              dealtCurrency: direction === Direction.Buy ? symbol.substr(0, 3) : symbol.substr(3, 3)
+            }
+            const result = {
+              key: `trade-execution-${symbol}`,
+              title: `${direction} ${notional} ${symbol}`,
+              label: 'Trade Execution',
+              data,
+              actions: [{ name: `Execute`, hotkey: 'enter' }],
+              template: CLITemplate.List,
+              templateContent: [
+                ['Symbol', symbol],
+                ['Notional', notional],
+                ['Bid', bid],
+                ['Ask', ask],
+                ['Mid', mid]
+              ]
+            }
+
+            revokeLoading()
+            response.respond([result])
+          })
+      )
+
+      subs.push(
+        executing$.pipe(take(1)).subscribe(execution => {
+          response.respond([
+            {
+              key: `trade-execution-${symbol}`,
+              title: `Executing...`,
+              label: 'Trade Execution',
+              data: {},
+              actions: [],
+              // @ts-ignore
+              template: CLITemplate.List,
+              templateContent: [
+                ['Symbol', execution.currencyPair],
+                ['Notional', execution.notional],
+                [direction, execution.spotRate]
+              ]
+            }
+          ])
+        })
+      )
+
+      subs.push(
+        executionResponse$.pipe(take(1)).subscribe(({ trade }) => {
+          response.respond([
+            {
+              key: `trade-execution-${symbol}`,
+              title: `Trade response`,
+              label: 'Trade Execution',
+              data: {},
+              actions: [],
+              // @ts-ignore
+              template: CLITemplate.List,
+              templateContent: [
+                [trade.tradeId, trade.status],
+                ['Symbol', trade.currencyPair],
+                ['Notional', trade.notional],
+                [trade.direction, trade.spotRate],
+                ['Date', new Date(trade.tradeDate)]
+              ]
+            }
+          ])
+        })
+      )
+
+      request.onClose(() => {
+        if (subs.length) {
+          subs.forEach(sub => sub.unsubscribe())
+        }
+      })
+
+      break
     }
 
     default:
-      return {
-        results: []
-      }
+      return revokeLoading()
   }
 }

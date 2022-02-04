@@ -11,6 +11,7 @@ import {
 import { BASE_URL } from '../consts'
 import { deletePage, getPage, launchPage } from '../browser'
 import { getAppsAndPages, getNlpResults, HOME_ACTION_DELETE_PAGE } from './utils'
+import { execute } from '../services/executions'
 
 const PROVIDER_ID = 'adaptive-home-provider'
 
@@ -52,9 +53,7 @@ export async function registerHome(): Promise<void> {
     const appsAndPages = await getAppsAndPages(query)
     response.respond([loadingResult, ...appsAndPages.results])
 
-    const nlpResults = await getNlpResults(query)
-    response.respond(nlpResults.results)
-    response.revoke(loadingResult.key)
+    await getNlpResults(query, request, response)
 
     request.onClose(() => {
       response.close()
@@ -91,8 +90,28 @@ export async function registerHome(): Promise<void> {
         .catch((e: any) => {
           console.error('Process launch failed: ', e)
         })
-    }
-    if (appEntry.manifestType === 'url') {
+    } else if (appEntry.manifestType === 'trade-execution') {
+      if (lastResponse !== undefined && lastResponse !== null) {
+        const {
+          currencyPair,
+          spotRate,
+          valueDate,
+          direction,
+          notional,
+          dealtCurrency
+        } = appEntry as any
+        console.log('Action on execute', appEntry)
+
+        await execute({
+          currencyPair,
+          spotRate,
+          valueDate,
+          direction,
+          notional,
+          dealtCurrency
+        })
+      }
+    } else if (appEntry.manifestType === 'url') {
       let platform = getCurrentSync()
       platform.createView({ url: appEntry.manifest, bounds: { width: 320, height: 180 } } as any)
     } else {

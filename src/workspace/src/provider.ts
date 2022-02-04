@@ -1,7 +1,5 @@
 import { init as workspacePlatformInit } from '@openfin/workspace-platform'
-import {
-  connectToGateway,
-} from "@adaptive/hydra-platform"
+import { connectToGateway } from '@adaptive/hydra-platform'
 import { registerHome, showHome, deregisterHome } from './home'
 import { registerStore, deregisterStore } from './store'
 
@@ -29,6 +27,7 @@ async function init() {
     url: `${window.location.origin}/ws`,
     interceptor: () => null,
     autoReconnect: true,
+    useJson: true
   })
 
   const providerWindow = fin.Window.getCurrentSync()

@@ -31,7 +31,7 @@
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
-    "@adaptive/hydra-platform": "^3.61.0",
+    "@adaptive/hydra-platform": "3.40.0",
     "@google-cloud/dialogflow": "^4.6.0",
     "@openfin/workspace": "^5.5.0",
     "@openfin/workspace-platform": "^5.5.0",
