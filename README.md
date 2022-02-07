@@ -8,7 +8,7 @@
 
 Reactive Trader® is a real-time FX trading platform designed to showcase reactive programming principles across the full application stack.
 
-Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/ReactiveTrader), and now in React/Redux, .Net and Node.js, we continue to evolve the platform to use the latest technologies.
+Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/ReactiveTrader), and now in React, React-RxJS, Node.js and running on [Hyrda](https://weareadaptive.com/platform-solutions/), we continue to evolve the platform to use the latest technologies.
 
 Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full list of the latest features.
 
@@ -48,106 +48,13 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
     ```
    This will connect to the dev back-end in the cloud.
 
-4. Navigate to http://localhost:3000
+4. Navigate to http://localhost:1917
 </details>
 
-<details>
-<summary>With Docker</summary>
-
-1. Install Docker ([from the Docker website](https://www.docker.com/get-started))
-
-2. Fork and clone the ReactiveTraderCloud repo ([see Contributing page](CONTRIBUTING.md))
-
-3. From the src folder run: `docker-compose up`
-
-4. Open a browser and navigate to http://localhost to see the application running
-
-5. To shutdown the application run: `docker-compose down`
-</details>
-
-<details>
-<summary>With Docker and Kubernetes</summary>
-
-1. Follow the steps to run with Docker
-2. From the src directory run `docker-compose build`
-3. Set the environment variables:
-   ```bash
-   export DOCKER_USER=localuser
-   export BUILD_VERSION=0.0.0
-   ```
-4. Run the following command:
-   ```bash
-   docker stack deploy --orchestrator kubernetes --compose-file ./docker-compose.yml rtcstack
-   ```
-5. To see your services and pods running, run:
-   ```bash
-   kubectl get services
-   kubectl get pods
-   ```
-6. Open a browser and navigate to http://localhost to see the application running
-
-7. To shutdown / remove stack, run: `kubectl delete stack rtcstack`
-</details>
-
-<details>
-<summary>Without Docker</summary>
-
-1. Fork and clone the ReactiveTraderCloud repo ([see Contributing page](CONTRIBUTING.md))
-
-2. Install dependencies & add them to your path:
-   - [Node.js and npm](https://nodejs.org/en/download/)
-   - [.Net Core SDK](https://dotnet.microsoft.com/download)
-   - [Event Store](https://eventstore.com/downloads/)
-   - [RabbitMQ](https://www.rabbitmq.com/download.html)
-
-3. Enable RabbitMQ Web Stomp Pluggin
-
-   ```bash
-   rabbitmq-plugins enable rabbitmq_web_stomp
-   ```
-
-4. Populate Event Store:
-
-   ```bash
-   cd src/server/dotNet
-   dotnet run -p Adaptive.ReactiveTrader.Server.Launcher --populate-eventstore
-   ```
-
-5. Start the .NET services:
-
-   ```bash
-   cd src/server/dotNet
-   dotnet run -p Adaptive.ReactiveTrader.Server.Launcher all
-   ```
-
-   To run individual services, `cd` into their folder, and type `dotnet run`.
-
-6. (Optional) Start Node services by running `npm run start:dev` from their respective folders, e.g.:
-
-   ```bash
-   cd src/server/node/priceHistory
-   npm install
-   npm run start:dev
-   ```
-
-7. Start the client against the local services:
-
-   ```bash
-   cd src/client
-   npm install
-   npm run start:local-backend
-   ```
-
-8. Alternative commands:
-   - `npm run build:demo-backend` - to run the client against a demo backend running in the cloud
-   - `npm run test` - to run tests using Jest
-</details>
 
 ## CI/CD
 
-We practice continuous integration and deployment. Every merge to master causes a build and deployment to our [development environment](https://dev.reactivetrader.com) to occur as follows:
-
-![image](docs/CICD.jpg)
+We practice continuous integration and deployment. Every branch and pull request triggers a build and deployment to an ephemeral environment. Merging to master causes a build and deployment to our [development environment](https://web.dev.reactivetrader.com).
 
 ## Contributing
 
