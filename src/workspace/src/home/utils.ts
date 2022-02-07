@@ -268,6 +268,7 @@ export const getNlpResults = async (
         return revokeLoading()
       }
 
+      const key = `trade-execution-${symbol}`;
       let subs: Subscription[] = []
 
       subs.push(
@@ -284,7 +285,7 @@ export const getNlpResults = async (
               dealtCurrency: direction === Direction.Buy ? symbol.substr(0, 3) : symbol.substr(3, 3)
             }
             const result = {
-              key: `trade-execution-${symbol}`,
+              key,
               title: `${direction} ${notional} ${symbol}`,
               label: 'Trade Execution',
               data,
@@ -308,7 +309,7 @@ export const getNlpResults = async (
         executing$.pipe(take(1)).subscribe(execution => {
           response.respond([
             {
-              key: `trade-execution-${symbol}`,
+              key,
               title: `Executing...`,
               label: 'Trade Execution',
               data: {},
@@ -329,8 +330,8 @@ export const getNlpResults = async (
         executionResponse$.pipe(take(1)).subscribe(({ trade }) => {
           response.respond([
             {
-              key: `trade-execution-${symbol}`,
-              title: `Trade response`,
+              key,
+              title: `Trade ${trade.status}`,
               label: 'Trade Execution',
               data: {},
               actions: [],

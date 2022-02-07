@@ -1,31 +1,21 @@
-import { delay, of, Subject, switchMap } from 'rxjs'
+import { delay, firstValueFrom, of, Subject, switchMap, tap } from 'rxjs'
 import {
   ExecuteTradeRequest,
   ExecutionResponse,
   ExecutionService
 } from '../generated/TradingGateway'
 
-// const mapExecutionToPayload = (e: any): ExecuteTradeRequest => {
-//   return {
-//     currencyPair: e.currencyPair,
-//     spotRate: e.spotRate,
-//     direction: e.direction,
-//     notional: e.notional,
-//     dealtCurrency: e.dealtCurrency,
-//     valueDate: new Date().toISOString().substr(0, 10) // TODO: talk with hydra team about this
-//   }
-// }
-
 export const executing$ = new Subject<ExecuteTradeRequest>()
 export const executionResponse$ = new Subject<ExecutionResponse>()
 
+// Must return a promise to execute properly from the context of CLIProvider.onSelection
 export const execute = async (execution: ExecuteTradeRequest) => {
   executing$.next(execution)
-  return of(null)
-    .pipe(
+  return firstValueFrom(
+    of(null).pipe(
       delay(2000),
-      switchMap(() => ExecutionService.executeTrade(execution))
+      switchMap(() => ExecutionService.executeTrade(execution)),
+      tap(response => executionResponse$.next(response!))
     )
-    .toPromise()
-    .then(response => executionResponse$.next(response!))
+  )
 }
