@@ -12,6 +12,7 @@ import { BASE_URL } from '../consts'
 import { deletePage, getPage, launchPage } from '../browser'
 import { getAppsAndPages, getNlpResults, HOME_ACTION_DELETE_PAGE } from './utils'
 import { execute } from '../services/executions'
+import { getUserResult, getUserToSwitch, switchUser } from '../user'
 
 const PROVIDER_ID = 'adaptive-home-provider'
 
@@ -32,20 +33,26 @@ export async function registerHome(): Promise<void> {
   ): Promise<CLISearchResponse> => {
     let query = request.query.toLowerCase()
 
-    if (query.indexOf('/') === 0) {
-      return { results: [] }
-    }
-
-    if (query.length < queryMinLength) {
-      return getAppsAndPages()
-    }
-
     // Keep reference to lastResponseso we can revoke a page if user deletes it from search results
     if (lastResponse !== undefined) {
       lastResponse.close()
     }
     lastResponse = response
     lastResponse.open()
+
+    if (query.indexOf('/') === 0) {
+      return { results: [] }
+    }
+
+    if (query.toLowerCase().trim() === 'switch user') {
+      return {
+        results: [getUserResult(getUserToSwitch())]
+      }
+    }
+
+    if (query.length < queryMinLength) {
+      return getAppsAndPages()
+    }
 
     // Open this response so we can start pushing results
     response.open()
@@ -110,6 +117,12 @@ export async function registerHome(): Promise<void> {
           notional,
           dealtCurrency
         })
+      }
+    } else if (appEntry.manifestType === 'switch-user') {
+      switchUser()
+      const userToSwitch = getUserToSwitch()
+      if (lastResponse !== undefined && lastResponse !== null) {
+        lastResponse.respond([getUserResult(userToSwitch)])
       }
     } else if (appEntry.manifestType === 'url') {
       let platform = getCurrentSync()

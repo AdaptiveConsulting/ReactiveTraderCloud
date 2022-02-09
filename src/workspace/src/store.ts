@@ -5,9 +5,9 @@ import {
   StorefrontNavigationSection,
   StorefrontFooter,
   StorefrontProvider,
-  StorefrontTemplate,
-} from "@openfin/workspace";
-import { getCurrentSync } from "@openfin/workspace-platform";
+  StorefrontTemplate
+} from '@openfin/workspace'
+import { getCurrentSync } from '@openfin/workspace-platform'
 import {
   analyticsView,
   getApps,
@@ -17,238 +17,241 @@ import {
   reactiveAnalyticsView,
   reactiveTrader,
   reactiveWorkspace,
-  tradesView,
-} from "./apps";
-import { BASE_URL } from "./consts";
+  tradesView
+} from './apps'
+import { BASE_URL } from './consts'
+import { getSpotTileApps } from './utils'
 
-const providerId = "adaptive-store-provider";
+const PROVIDER_ID = 'adaptive-store-provider'
 
 export async function registerStore() {
-  console.log("Initialising the storefront provider.");
-  let provider = await getStoreProvider();
+  console.log('Initialising the storefront provider.')
+  let provider = await getStoreProvider()
   try {
-    await Storefront.register(provider);
-    console.log("Storefront provider initialised.");
+    await Storefront.register(provider)
+    console.log('Storefront provider initialised.')
   } catch (err) {
     console.error(
-      "An error was encountered while trying to register the content store provider",
+      'An error was encountered while trying to register the content store provider',
       err
-    );
+    )
   }
 }
 
 export async function deregisterStore() {
-  return Storefront.deregister(providerId);
+  return Storefront.deregister(PROVIDER_ID)
 }
 
 export async function showStore() {
-  console.log("Showing the store.");
-  return Storefront.show();
+  console.log('Showing the store.')
+  return Storefront.show()
 }
 
 export async function hideStore() {
-  console.log("Hiding the store.");
-  return Storefront.hide();
+  console.log('Hiding the store.')
+  return Storefront.hide()
 }
 
 async function getStoreProvider(): Promise<StorefrontProvider> {
-  console.log("Getting the store provider.");
+  console.log('Getting the store provider.')
 
   return {
-    id: providerId,
-    title: "Adaptive Store",
+    id: PROVIDER_ID,
+    title: 'Adaptive Store',
     icon: `${BASE_URL}/favicon.ico`,
     getNavigation: getNavigation,
     getLandingPage: getLandingPage,
     getFooter: getFooter,
     getApps,
     launchApp: async (app: App) => {
-      if (app.manifestType === "external") {
+      if (app.manifestType === 'external') {
         fin.System.launchExternalProcess({
           alias: app.manifest,
-          listener: (result) => {
-            console.log("the exit code", result.exitCode);
-          },
+          listener: result => {
+            console.log('the exit code', result.exitCode)
+          }
         })
-          .then((data) => {
-            console.info("Process launched: ", data);
+          .then(data => {
+            console.info('Process launched: ', data)
           })
-          .catch((e) => {
-            console.error("Process launch failed: ", e);
-          });
+          .catch(e => {
+            console.error('Process launch failed: ', e)
+          })
+      } else if (app.manifestType === 'url') {
+        let platform = getCurrentSync()
+        platform.createView({ url: app.manifest, bounds: { width: 320, height: 180 } } as any)
       } else {
-        let platform = getCurrentSync();
-        await platform.launchApp({ app });
+        let platform = getCurrentSync()
+        await platform.launchApp({ app })
       }
-    },
-  };
+    }
+  }
 }
 
 async function getNavigation(): Promise<
   [StorefrontNavigationSection?, StorefrontNavigationSection?]
 > {
-  console.log("Showing the store navigation.");
+  console.log('Showing the store navigation.')
+  const spotTileApps = await getSpotTileApps()
 
-  let navigationSections: [
-    StorefrontNavigationSection?,
-    StorefrontNavigationSection?
-  ] = [
+  let navigationSections: [StorefrontNavigationSection?, StorefrontNavigationSection?] = [
     {
-      id: "apps",
-      title: "Apps",
+      id: 'apps',
+      title: 'Apps',
       items: [
         {
-          id: "manifest",
-          title: "Apps",
+          id: 'manifest',
+          title: 'Apps',
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [reactiveTrader, reactiveAnalytics],
-          },
+            apps: [reactiveTrader, reactiveAnalytics]
+          }
         },
         {
-          id: "external",
-          title: "Native Apps",
+          id: 'external',
+          title: 'Native Apps',
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [limitChecker],
-          },
+            apps: [limitChecker]
+          }
         },
         {
-          id: "view",
-          title: "Views",
+          id: 'view',
+          title: 'Views',
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [
-              liveRatesView,
-              tradesView,
-              analyticsView,
-              reactiveAnalyticsView,
-            ],
-          },
+            apps: [liveRatesView, tradesView, analyticsView, reactiveAnalyticsView]
+          }
         },
         {
-          id: "snapshot",
-          title: "Snapshots",
+          id: 'snapshot',
+          title: 'Snapshots',
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [reactiveWorkspace],
-          },
-        },
-      ],
+            apps: [reactiveWorkspace]
+          }
+        }
+      ]
     },
-  ];
+    {
+      id: 'fx',
+      title: 'FX',
+      items: [
+        {
+          id: 'spot-tiles',
+          title: 'Spot Tiles',
+          templateId: StorefrontTemplate.AppGrid,
+          templateData: {
+            apps: spotTileApps
+          }
+        }
+      ]
+    }
+  ]
 
-  return navigationSections;
+  return navigationSections
 }
 
 async function getLandingPage(): Promise<StorefrontLandingPage> {
-  console.log("Getting the store landing page.");
+  console.log('Getting the store landing page.')
 
   let landingPage: StorefrontLandingPage = {
     hero: {
-      title: "Reactive Trader",
-      description:
-        "Reactive Trader® is our real-time, fully open-source showcase trading platform",
+      title: 'Reactive Trader',
+      description: 'Reactive Trader® is our real-time, fully open-source showcase trading platform',
       cta: {
-        id: "hero-1",
-        title: "Explore",
+        id: 'hero-1',
+        title: 'Explore',
         templateId: StorefrontTemplate.AppGrid,
         templateData: {
-          apps: [reactiveTrader, reactiveAnalytics, limitChecker],
-        },
+          apps: [reactiveTrader, reactiveAnalytics, limitChecker]
+        }
       },
       image: {
-        src: `${BASE_URL}/images/previews/reactive-trader.PNG`,
-      },
+        src: `${BASE_URL}/images/previews/reactive-trader.PNG`
+      }
     },
     topRow: {
-      title: "Collections",
+      title: 'Collections',
       items: [
         {
-          id: "top-row-item-1",
-          title: "Research",
-          description: "Applications to research the current market data, trends etc...",
+          id: 'top-row-item-1',
+          title: 'Research',
+          description: 'Applications to research the current market data, trends etc...',
           image: {
-            src: `${BASE_URL}/images/coding-1-unsplash.jpg`,
+            src: `${BASE_URL}/images/coding-1-unsplash.jpg`
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [reactiveAnalytics],
-          },
+            apps: [reactiveAnalytics]
+          }
         },
         {
-          id: "top-row-item-2",
-          title: "Tools",
-          description: "Tools to help day to day operations",
+          id: 'top-row-item-2',
+          title: 'Tools',
+          description: 'Tools to help day to day operations',
           image: {
-            src: `${BASE_URL}/images/coding-2-unsplash.jpg`,
+            src: `${BASE_URL}/images/coding-2-unsplash.jpg`
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [limitChecker],
-          },
-        },
-      ],
+            apps: [limitChecker]
+          }
+        }
+      ]
     },
     middleRow: {
-      title:
-        "A collection of simple views that show how to share context using the Interop API.",
-      apps: [tradesView, reactiveAnalyticsView],
+      title: 'A collection of simple views that show how to share context using the Interop API.',
+      apps: [tradesView, reactiveAnalyticsView]
     },
     bottomRow: {
-      title: "Quick Access",
+      title: 'Quick Access',
       items: [
         {
-          id: "bottom-row-item-2",
-          title: "Web Apps",
-          description: "A collection of web apps built using OpenFin.",
+          id: 'bottom-row-item-2',
+          title: 'Web Apps',
+          description: 'A collection of web apps built using OpenFin.',
           image: {
-            src: `${BASE_URL}/images/coding-5-unsplash.jpg`,
+            src: `${BASE_URL}/images/coding-5-unsplash.jpg`
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [reactiveTrader, reactiveAnalyticsView],
-          },
+            apps: [reactiveTrader, reactiveAnalyticsView]
+          }
         },
         {
-          id: "bottom-row-item-1",
-          title: "Views",
-          description:
-            "A collection of views made available through our catalog.",
+          id: 'bottom-row-item-1',
+          title: 'Views',
+          description: 'A collection of views made available through our catalog.',
           image: {
-            src: `${BASE_URL}/images/coding-4-unsplash.jpg`,
+            src: `${BASE_URL}/images/coding-4-unsplash.jpg`
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [
-              liveRatesView,
-              tradesView,
-              analyticsView,
-              reactiveAnalyticsView,
-            ],
-          },
-        },
-      ],
-    },
-  };
+            apps: [liveRatesView, tradesView, analyticsView, reactiveAnalyticsView]
+          }
+        }
+      ]
+    }
+  }
 
-  return landingPage;
+  return landingPage
 }
 
 async function getFooter(): Promise<StorefrontFooter> {
-  console.log("Getting the store footer.");
+  console.log('Getting the store footer.')
   return {
-    logo: { src: `${BASE_URL}/favicon.ico`, size: "32" },
-    text: "Powered by Adaptive",
+    logo: { src: `${BASE_URL}/favicon.ico`, size: '32' },
+    text: 'Powered by Adaptive',
     links: [
       {
-        title: "Adaptive",
-        url: "https://weareadaptive.com",
+        title: 'Adaptive',
+        url: 'https://weareadaptive.com'
       },
       {
-        title: "Github",
-        url: "https://github.com/AdaptiveConsulting",
-      },
-    ],
-  };
+        title: 'Github',
+        url: 'https://github.com/AdaptiveConsulting'
+      }
+    ]
+  }
 }

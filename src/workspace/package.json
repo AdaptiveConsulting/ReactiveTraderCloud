@@ -36,6 +36,7 @@
     "@openfin/workspace": "^5.5.0",
     "@openfin/workspace-platform": "^5.5.0",
     "dialogflow": "^1.2.0",
+    "openfin-notifications": "^1.11.0",
     "rxjs": "^7.5.2"
   }
 }
