@@ -8,6 +8,3 @@ Then trade is success
 Examples:
 |symbol| direction | notional|
 |USD/JPY| Buy | 1000|
-
-|EUR/USD| BUY | 30000|
-|AUD/USD| Sell | 1000|

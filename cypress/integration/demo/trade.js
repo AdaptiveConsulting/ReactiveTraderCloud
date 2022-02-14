@@ -5,7 +5,7 @@ import { Given, When, Then, And} from 'cypress-cucumber-preprocessor/steps'
 Given('Reactive Trader is open', () => {
 
     //cy.visit("https://web.prod.reactivetrader.com/")
-    cy.visit("http://localhost:1925")
+    cy.visit("http://localhost:1917")
 
 
 
