@@ -18,7 +18,7 @@
  */
  const cucumber = require('cypress-cucumber-preprocessor').default
  let tradedetails
- let position
+
 // eslint-disable-next-line no-unused-vars
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
@@ -29,14 +29,7 @@ module.exports = (on, config) => {
     },
     getListTrade: () => { 
       return tradedetails
-    },
-
-    setPosition: (val) => { 
-      return (position = val)
-    },
-    getPosition: () => { 
-      return position
-    },
+    }
   })
   on('file:preprocessor',cucumber())
 

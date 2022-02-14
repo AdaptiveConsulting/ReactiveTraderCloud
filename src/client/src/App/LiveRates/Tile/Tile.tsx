@@ -94,7 +94,7 @@ const Tile: React.FC<Props> = ({ isAnalytics }) => {
 
   return (
     <DraggableTileTearOut symbol={symbol} tileRef={ref} disabled={isTornOut}>
-      <PanelItem shouldMoveDate={supportsTearOut}>
+      <PanelItem shouldMoveDate={supportsTearOut} data-testid={`tile-${symbol}`}>
         <Main>
           <Header />
           <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>

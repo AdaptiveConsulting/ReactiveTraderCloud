@@ -20,13 +20,11 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 
 1. Fork and clone the ReactiveTraderCloud repo
 
-2. Navigate to `/src/client` and install Cypress ([from the Cypress website](https://docs.cypress.io/guides/getting-started/installing-cypress))
+2. Start the application on localhost by hitting `npm run start`
 
-3. Start the application on localhost by hitting `npm run start`
+4. Open a browser and navigate to http://localhost:1917 to see the application running. 
 
-4. Open a browser and navigate to http://localhost to see the application running. 
-
-5. Navigate to `/src/client` to see the list of feature files
+5. Navigate to `/src/cypress` to see the list of feature files
 
 6. Now hit the command in different terminal `npx cypress open` to open the cypress interactive window.
 
@@ -34,23 +32,7 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 
 8. If you want to run the test in terminal, please hit `npx cypress run --spec <path to feature file> --browser chrome`
 
-9. Cucmber Report Integration is in progress currently.
+9. To run test using command line, please use `npm run test`
 
+9. Cucumber Report Integration is in progress currently.
 
-## Setting up Cucmber Framework: 
-
-1. Folow the steps from Cucumber official Readme. ```https://github.com/TheBrainFamily/cypress-cucumber-preprocessor#readme```
-
-## Contributing
-
-Please see our [contribution guidelines](./CONTRIBUTING.md).
-
-## Who are we?
-
-Reactive Trader was written by the team at [Adaptive](http://weareadaptive.com/), a consultancy that specialises in building real-time trading systems.
-
-Please [contact us](https://weareadaptive.com/contact/) if you'd like to learn more, or follow us via our [blog](https://weareadaptive.com/category/blog/), [Twitter](https://twitter.com/WeAreAdaptive), or [LinkedIn](https://www.linkedin.com/company/adaptive-consulting-ltd/).
-
-## License
-
-This application is made available under the [Apache license v2.0](./LICENSE).
