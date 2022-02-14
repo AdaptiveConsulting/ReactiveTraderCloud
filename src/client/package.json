@@ -38,8 +38,16 @@
     "finsemble:build": "cross-env TARGET=finsemble vite build",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated",
+<<<<<<< Updated upstream
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -o ./dist/storybook"
+=======
+    "storybook": "start-storybook -s ./public -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+>>>>>>> Stashed changes
   },
   "dependencies": {
     "@adaptive/hydra-platform": "^3.40.0",

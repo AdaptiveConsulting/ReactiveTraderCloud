@@ -1,0 +1,5 @@
+{
+    "chromeWebSecurity": false,
+    "testFiles": "**/*.*"
+    
+}

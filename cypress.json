@@ -1,0 +1,6 @@
+{
+    "chromeWebSecurity": false,
+    "testFiles": "**/*.*",
+    "retries" :1,
+    "integrationFolder":"./cypress/integration"    
+}
