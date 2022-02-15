@@ -8,9 +8,15 @@
   },
   "scripts": {
     "lint": "lerna run --concurrency 1 lint",
-    "postinstall": "lerna bootstrap"
+    "postinstall": "lerna bootstrap",
+    "tests": "npx cypress run --spec 'cypress/integration/demo.feature' --browser=chrome"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
   },
   "devDependencies": {
+    "cypress": "^8.7.0",
+    "cypress-cucumber-preprocessor": "^4.3.1",
     "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^2.13.0",
@@ -23,5 +29,8 @@
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",
     "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "cypress-configuration-builder": "^1.2.4"
   }
 }

@@ -4,8 +4,7 @@ import { Given, When, Then, And} from 'cypress-cucumber-preprocessor/steps'
 
 Given('Reactive Trader is open', () => {
 
-    //cy.visit("https://web.prod.reactivetrader.com/")
-    cy.visit("http://localhost:1917")
+    cy.visit(Cypress.env('base_url'))
 
 
 
@@ -23,10 +22,6 @@ When('user performs {string} trade for {string} of {string}', (direction, notion
 
 Then('trade is success', () => {
 
-    cy.task('getListTrade').then((trade) => {
-        cy.log('list if trade ' + trade)
-        cy.verifyBlotterAfterTrade(trade);
-      })  
- 
+    cy.verifySuccess();
 
 })
