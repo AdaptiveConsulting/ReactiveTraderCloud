@@ -1,14 +1,8 @@
 {
-  "private": true,
-  "husky": {
-    "hooks": {
-      "pre-commit": "lerna run --concurrency 1 --stream precommit",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
+ 
+
   "scripts": {
-    "lint": "lerna run --concurrency 1 lint",
-    "postinstall": "lerna bootstrap",
+  
     "tests": "npx cypress run --spec 'cypress/integration/demo.feature' --browser=chrome"
   },
   "cypress-cucumber-preprocessor": {
@@ -16,19 +10,8 @@
   },
   "devDependencies": {
     "cypress": "^8.7.0",
-    "cypress-cucumber-preprocessor": "^4.3.1",
-    "@commitlint/cli": "^9.1.2",
-    "@commitlint/config-conventional": "^11.0.0",
-    "@typescript-eslint/eslint-plugin": "^2.13.0",
-    "@typescript-eslint/parser": "^2.13.0",
-    "eslint": "^7.12.1",
-    "eslint-config-prettier": "^6.9.0",
-    "husky": "^5.1.3",
-    "jest-styled-components": "^7.0.0",
-    "lerna": "^4.0.0",
-    "lint-staged": "^9.5.0",
-    "prettier": "^1.19.1",
-    "typescript": "^3.7.4"
+    "cypress-cucumber-preprocessor": "^4.3.1"
+   
   },
   "dependencies": {
     "cypress-configuration-builder": "^1.2.4"

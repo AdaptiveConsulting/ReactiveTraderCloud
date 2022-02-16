@@ -25,5 +25,5 @@ deploy/**/docker-compose.yml
 *.sln
 lerna-debug.log
 .DS_Store
-cypress/videos/
-cypress/screenshots/
+/src/cypress/videos/
+/src/cypress/screenshots/

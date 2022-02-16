@@ -1,5 +1,5 @@
 {
-    "env": {"base_url":"http://localhost:1919"},
+    "env": {"base_url":"http://localhost:1924"},
     "chromeWebSecurity": false,
     "testFiles": "**/*.*",
     "retries" :1,

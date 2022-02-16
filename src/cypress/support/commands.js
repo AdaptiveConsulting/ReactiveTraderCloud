@@ -24,11 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-import { isExportDeclaration } from "typescript"
-import BlotterPage from '../integration/pages/BlotterPage'
 
-
-const blotterPage = new BlotterPage();
 let currentPrice = ''
 let textList
 let notional1
@@ -129,79 +125,6 @@ Cypress.Commands.add('verifySuccess', () => {
 
 })
 
-
-
-
-
-Cypress.Commands.add('VerifyRejectedTradeExecution', (currency, notional, direction) => {
-
-  let finalList = []
-  const dayjs = require('dayjs')
-  let currentYear = dayjs().subtract(1, 'day').format('DD-MMM-YYYY')
-  let currentPrice = ''
-
-  cy.get('div[data-testid="tile-' + currency + '"] > div > div > div:nth-child(2) div:nth-child(2) input').clear().type(notional)
-  cy.get('div[data-testid="tile-' + currency + '"] > div > div > div:nth-child(2)  > div:nth-child(2) > div > button[direction=' + direction + '] > div > div').each((el, index, list) => {
-    if (index == 0) {
-      currentPrice = el.find('div:nth-child(2)').text()
-    }
-    else {
-
-      currentPrice = currentPrice + el.text()
-    }
-
-
-  })
-
-  cy.get('div[data-testid="tile-' + currency + '"] > div > div > div:nth-child(2)  > div:nth-child(2) > div > button[direction=' + direction + ']').click({ force: true })
-  cy.wait(2000)
-
-
-  cy.get('div[data-testid=tile-' + currency + '] div[role=dialog] > div:nth-child(1)').then((el) => {
-
-
-
-    //  finalList.push(el.text().replace('/', ''))
-
-  })
-  cy.get('div[data-testid=tile-' + currency + '] div[role=dialog] > div:nth-child(2)').then((el) => {
-
-
-    let tradeIDList = el.text().split(' ')
-    finalList.push(tradeIDList[2])
-
-  })
-  cy.get('div[data-testid=tile-' + currency + '] div[role=dialog] > div[role=alert]').then((el) => {
-
-    let confirmationText = el.text()
-    cy.log("Confirmation text " + confirmationText)
-    //Your trade has been rejected
-
-    let textList = confirmationText.split(' ')
-    finalList.push(textList[4])
-
-    finalList.push(currentYear)
-    finalList.push(direction)
-    finalList.push(currency)
-    if (direction.toLowerCase() == 'buy') {
-      finalList.push(currency.substring(0, 3))
-    }
-    else {
-      finalList.push(currency.substring(3, 6))
-    }
-    finalList.push(notional)
-    finalList.push(currentPrice)
-    finalList.push(currentYear)
-    finalList.push('JPW')
-
-    expect("rejected").to.eq(finalList[1])
-    expect(currency).to.eq(finalList[4])
-
-    cy.task('setListTrade', finalList);
-  })
-
-
-})
 
 
 //
