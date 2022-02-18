@@ -1,5 +1,5 @@
 {
-    "env": {"base_url":"http://localhost:1918"},
+    "env": {"base_url":"https://web.dev.reactivetrader.com/"},
     "chromeWebSecurity": false,
     "testFiles": "**/*.*",
     "retries" :1,
