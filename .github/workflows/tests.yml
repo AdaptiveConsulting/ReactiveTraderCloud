@@ -17,5 +17,5 @@ jobs:
          working-directory: src/cypress
          run: pwd
          run: cd src/cypress
-         run: npm run tests
+         run: npm run tests 
 
