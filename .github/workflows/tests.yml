@@ -15,7 +15,7 @@ jobs:
         run:  |
               cd src/client
               npm install
-              npm run start
+              npm run tests
               npx wait-on http://localhost:1917
               
       - name: Cypress run
