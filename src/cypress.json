@@ -1,7 +1,0 @@
-{
-    "env": {"base_url":"http://localhost:1924"},
-    "chromeWebSecurity": false,
-    "testFiles": "**/*.*",
-    "retries" :1,
-    "integrationFolder":"./cypress/integration"    
-}
