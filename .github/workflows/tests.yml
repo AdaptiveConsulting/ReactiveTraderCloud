@@ -16,11 +16,15 @@ jobs:
               cd src/client
               npm install
               npm run start
-              exit 1
+              npx wait-on http://localhost:1917
+        env:
+          CI: true
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
          working-directory: src/cypress
          start: npm run tests
+        env:
+          CI: true
           
 
