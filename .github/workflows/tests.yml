@@ -14,9 +14,8 @@ jobs:
       - name: app start
         run:  |
               cd src/client
-              npm install
-              npm run start
-              npx wait-on http://localhost:1917
+              npm ci
+              npm run start & npx wait-on http://localhost:1917
         env:
           CI: true
       - name: Cypress run
