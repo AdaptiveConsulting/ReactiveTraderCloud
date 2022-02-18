@@ -15,7 +15,8 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
          working-directory: src/cypress
-         run: pwd
-         run: cd src/cypress
-         run: npm run tests 
+         run:  |
+             pwd
+             cd src/cypress
+             npm run tests 
 
