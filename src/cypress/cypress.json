@@ -1,7 +1,10 @@
 {
+
     "env": {"base_url":"http://localhost:1917"},
     "chromeWebSecurity": false,
     "testFiles": "**/*.*",
     "retries" :0,
-    "integrationFolder":"./cypress/integration"    
+    "integrationFolder":"./cypress/integration",
+    "defaultCommandTimeout":200000,
+    "pageLoadTimeout":300000
 }
