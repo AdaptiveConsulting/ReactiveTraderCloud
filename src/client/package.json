@@ -24,7 +24,7 @@
     "lint": "eslint",
     "dev": "cross-env TARGET=web vite",
     "tests": "cross-env TARGET=web vite& cd ../cypress && npm install && sleep 200 && npx cypress run --spec 'cypress/integration/demo.feature'",
-    "tests1": "cross-env TARGET=web vite& cd ../cypress && exit 1",
+    "tests1": "cross-env TARGET=web vite& cd ../cypress",
     "start": "cross-env TARGET=web vite",
     "build": "cross-env TARGET=web vite build",
     "serve": "cross-env TARGET=web vite preview",
