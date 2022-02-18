@@ -15,13 +15,13 @@ jobs:
         run:  |
               cd src/client
               npm install
-              npm run tests
+              npm run start
               npx wait-on http://localhost:1917
               
-      # - name: Cypress run
-      #   uses: cypress-io/github-action@v2
-      #   with:
-      #    working-directory: src/cypress
-      #    start: npm run tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+         working-directory: src/cypress
+         start: npm run tests
           
 
