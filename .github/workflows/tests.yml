@@ -17,8 +17,8 @@ jobs:
               cd src/client
               npm install
               npm run tests1   
-      -name: wait for localhost
-       run: sleep 200s           
+      - name: wait for localhost
+        run: sleep 200s           
       - name: Cypress run
         if: always()
         uses: cypress-io/github-action@v2
