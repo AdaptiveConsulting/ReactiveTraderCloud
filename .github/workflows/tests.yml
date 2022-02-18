@@ -12,6 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: app start
+        run: npm install
         with:
          working-directory: src/client
          build: npm install
