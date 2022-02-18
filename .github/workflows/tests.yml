@@ -16,8 +16,7 @@ jobs:
         with:
          working-directory: src/client
          start: npm run start
-         working-directory: src/cypress
-         start: npm run tests
+         run: npm run tests
         env:
           CI: true
           
