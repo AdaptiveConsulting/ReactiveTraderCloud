@@ -12,11 +12,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: app start
-        run: npm install
-        with:
-         working-directory: src/client
-         build: npm install
-         start: npm run start
+        run:  |
+              cd src/client
+              npm install
+              npm run start
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
