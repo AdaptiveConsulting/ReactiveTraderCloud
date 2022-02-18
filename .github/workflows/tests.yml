@@ -11,16 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: app start
-        run:  |
-              cd src/client
-              npm ci
-              npm build & npx wait-on http://localhost:1917
-              exit 1
-        env:
-          CI: true
-  cypress-tests  :  
-    steps:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
