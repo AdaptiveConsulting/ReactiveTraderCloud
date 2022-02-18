@@ -11,17 +11,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: app start
-        run:  |
-              cd src/client
-              npm install
-              npm run start
-              npx wait-on http://localhost:1917
+      # - name: app start
+      #   run:  |
+      #         cd src/client
+      #         npm install
+      #         npm run start
+      #         npx wait-on http://localhost:1917
               
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-         working-directory: src/cypress
-         start: npm run tests
+         working-directory: src/client
+         start: |
+            npm install  
+            npm run tests
           
 
