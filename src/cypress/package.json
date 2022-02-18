@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "tests": "npx cypress run --spec 'cypress/integration/demo.feature' --browser=chrome"
+    "tests": "npx cypress run --spec 'cypress/integration/demo.feature' --browser=chrome --headed"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
