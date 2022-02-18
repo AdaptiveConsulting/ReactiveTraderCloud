@@ -13,13 +13,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Cypress run
         uses: cypress-io/github-action@v2
-        with:
+        run:
+         working-directory: src/client
+         start: npm run start
          working-directory: src/cypress
-         start: |
-              cd ../client
-              npm run start
-              cd ../cypress
-              npm run tests
+         start: npm run tests
         env:
           CI: true
           
