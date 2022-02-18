@@ -14,7 +14,8 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-         command: cd src/cypress 
-         build: npm install
-         start: npm run tests
+         working-directory: src/cypress
+         run: pwd
+         run: cd src/cypress
+         run: npm run tests
 
