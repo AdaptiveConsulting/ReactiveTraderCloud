@@ -21,9 +21,14 @@ jobs:
         run: npm run tests1  
       - name: wait for localhost
         run: sleep 60s           
-      - name: Cypress run
+      - name: Cypress install
+        working-directory: src/cypress
+      #   uses: cypress-io/github-action@v2
+        run: npm ci
+      - name: Cypress Tests
         working-directory: src/cypress
       #   uses: cypress-io/github-action@v2
         run: npm run tests
+
           
 
