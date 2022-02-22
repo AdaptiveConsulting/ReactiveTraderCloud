@@ -16,15 +16,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: install
-         run: npm ci
+        run: npm ci
       - name: build
-         run: npm run tests1  
+        run: npm run tests1  
       - name: wait for localhost
-         run: sleep 60s           
+        run: sleep 60s           
       - name: Cypress run
       #   uses: cypress-io/github-action@v2
-         run: 
-          working-directory: src/cypress
-          start: npm run tests
+        run: 
+         working-directory: src/cypress
+         start: npm run tests
           
 
