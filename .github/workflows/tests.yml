@@ -23,8 +23,6 @@ jobs:
         run: sleep 60s           
       - name: Cypress run
       #   uses: cypress-io/github-action@v2
-        run: 
+        run: npm run tests 
          working-directory: src/cypress
-         start: npm run tests
-          
 
