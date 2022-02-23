@@ -27,7 +27,7 @@ jobs:
           run: npm run tests
         - name: upload artifacts 
           uses: actions/upload-artifact@v2
-          if: always()
+          if: failure()
           with:
             name: cypress-artifacts
             path: |
