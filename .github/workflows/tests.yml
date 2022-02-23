@@ -27,6 +27,7 @@ jobs:
         run: npm run tests
       - name: upload artifacts  
         uses: actions/upload-artifact@v2
+        working-directory: src/cypress
         if: always()
         with:
          name: cypress-artifacts
