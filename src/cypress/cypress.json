@@ -6,6 +6,6 @@
     "retries" :0,
     "integrationFolder":"./cypress/integration",
     "defaultCommandTimeout":200000,
-    "pageLoadTimeout":300000,
-    "video": false
+    "pageLoadTimeout":300000
+    
 }
