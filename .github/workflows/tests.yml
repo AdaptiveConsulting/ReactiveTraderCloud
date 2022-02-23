@@ -13,8 +13,8 @@ jobs:
     name: Cypress run
     runs-on: ubuntu-20.04
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v2
+        - name: Checkout
+          uses: actions/checkout@v2
       # - name: install
       #   run: npm ci
       # - name: build
@@ -27,13 +27,13 @@ jobs:
       #   run: npm run tests
         - name: upload artifacts 
       #   working-directory: src/cypress
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-         name: cypress-artifacts
-         path: |
-            src/cypress/cypress/videos
-            src/cypress/cypress/screenshots
+          uses: actions/upload-artifact@v2
+          if: always()
+          with:
+            name: cypress-artifacts
+            path: |
+              src/cypress/cypress/videos
+              src/cypress/cypress/screenshots
          
 
           
