@@ -7,4 +7,4 @@ When user performs "<direction>" trade for "<notional>" of "<symbol>"
 Then trade is success
 Examples:
 |symbol| direction | notional|
-|GBP/JPY| Buy | 1000|
+|USD/JPY| Buy | 1000|
