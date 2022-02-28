@@ -2,7 +2,16 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
 name: Cypress Tests
-on: [push]
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+  push:
+    branches:
+      - '**'
+    tags:
+      - v*
 
 defaults:
   run:
@@ -24,7 +33,7 @@ jobs:
           run: npm ci
         - name: Cypress Tests
           working-directory: src/cypress
-          run: npm run tests
+          run: npm run test:cmd
         - name: upload artifacts 
           uses: actions/upload-artifact@v2
           if: failure()

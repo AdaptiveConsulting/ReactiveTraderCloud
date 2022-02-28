@@ -16,12 +16,12 @@ And('{string} price tile is displayed', (symbol) => {
 
 When('user performs {string} trade for {string} of {string}', (direction, notional, symbol) => {
   
-    cy.VerifySuccessTradeExecution(symbol, notional, direction)
+    cy.performTrade(symbol, notional, direction)
 })
 
 
 Then('trade is success', () => {
 
-    cy.verifySuccess();
+    cy.verifyTradeSuccess();
 
 })

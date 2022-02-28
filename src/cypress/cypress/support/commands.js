@@ -47,7 +47,7 @@ Cypress.Commands.add('VerifyCurrencyOnPage', (symbol) => {
 
 })
 
-Cypress.Commands.add('VerifySuccessTradeExecution', (symbol, notional, direction) => {
+Cypress.Commands.add('performTrade', (symbol, notional, direction) => {
 
   currency = symbol.replace('/', '')
   notional1 = notional
@@ -112,7 +112,7 @@ Cypress.Commands.add('VerifySuccessTradeExecution', (symbol, notional, direction
 })
 
 
-Cypress.Commands.add('verifySuccess', () => {
+Cypress.Commands.add('verifyTradeSuccess', () => {
 
   cy.log('').then(() => {
 

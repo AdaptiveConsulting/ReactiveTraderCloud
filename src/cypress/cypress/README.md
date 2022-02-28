@@ -1,8 +1,3 @@
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AdaptiveConsulting/ReactiveTraderCloud/CI)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/actions?query=workflow%3ACI)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/AdaptiveConsulting/ReactiveTraderCloud)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/latest)
-[![GitHub](https://img.shields.io/github/license/AdaptiveConsulting/ReactiveTraderCloud)](https://opensource.org/licenses/Apache-2.0)
-
-[![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/adaptive-logo.png)](http://weareadaptive.com/)
 
 # Reactive Trader®
 
@@ -32,7 +27,6 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 
 8. If you want to run the test in terminal, please hit `npx cypress run --spec <path to feature file> --browser chrome`
 
-9. To run test using command line, please use `npm run tests`
+9. To run test using npm command line, please use `npm run test:cmd`
 
-9. Cucumber Report Integration is in progress currently.
 
