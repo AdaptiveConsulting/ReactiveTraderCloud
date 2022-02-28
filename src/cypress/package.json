@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test:cmd": "npx cypress run",
+    "test:cmd": "npx cypress run --browser=chrome",
     "test:interactive":"npx cypress run --browser=chrome --headed"
   },
   "cypress-cucumber-preprocessor": {
