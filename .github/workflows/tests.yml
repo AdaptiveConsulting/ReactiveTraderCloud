@@ -9,6 +9,8 @@ on:
       - synchronize
   push:
     branches:
+      - master
+      - 'env/uat'
       - '**'
     tags:
       - v*
