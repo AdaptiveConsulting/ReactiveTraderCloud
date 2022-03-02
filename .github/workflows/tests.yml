@@ -28,7 +28,7 @@ jobs:
         - name: install
           run: npm ci
         - name: build
-          run: npm run start
+          run: npm run start&
         - name: Cypress install
           working-directory: src/cypress 
           run: npm ci
