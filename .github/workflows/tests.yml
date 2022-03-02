@@ -30,10 +30,10 @@ jobs:
         - name: build
           run: npm run start&
         - name: Cypress install
-          working-directory: src/cypress 
+          working-directory: src 
           run: npm ci
         - name: Cypress Tests
-          working-directory: src/cypress
+          working-directory: src
           run: npm run test:cmd
         - name: upload artifacts 
           uses: actions/upload-artifact@v2
@@ -41,8 +41,8 @@ jobs:
           with:
             name: cypress-artifacts
             path: |
-              src/cypress/cypress/videos
-              src/cypress/cypress/screenshots
+              src/cypress/videos
+              src/cypress/screenshots
          
 
           
