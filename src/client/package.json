@@ -23,7 +23,7 @@
     "test": "jest",
     "lint": "eslint",
     "dev": "cross-env TARGET=web vite",
-    "starts": "cross-env TARGET=web vite& cd ../cypress",
+    "starts": "cross-env TARGET=web vite&",
     "start": "cross-env TARGET=web vite",
     "build": "cross-env TARGET=web vite build",
     "serve": "cross-env TARGET=web vite preview",
