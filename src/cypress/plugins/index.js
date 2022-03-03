@@ -17,7 +17,6 @@
  * @type {Cypress.PluginConfig}
  */
  const cucumber = require('cypress-cucumber-preprocessor').default
- let tradedetails
 
 // eslint-disable-next-line no-unused-vars
 module.exports = (on, config) => {
