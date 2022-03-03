@@ -1,11 +1,9 @@
 {
-
-    "env": {"base_url":"http://localhost:1917"},
-    "chromeWebSecurity": false,
-    "testFiles": "**/*.feature",
-    "retries" :0,
-    "integrationFolder":"./cypress/integration",
-    "defaultCommandTimeout":200000,
-    "pageLoadTimeout":300000
-    
+  "env": { "base_url": "http://localhost:1917" },
+  "chromeWebSecurity": false,
+  "testFiles": "**/*.feature",
+  "retries": 0,
+  "integrationFolder": "./cypress/integration",
+  "defaultCommandTimeout": 200000,
+  "pageLoadTimeout": 300000
 }

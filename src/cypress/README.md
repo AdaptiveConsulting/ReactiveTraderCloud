@@ -1,4 +1,3 @@
-
 # Reactive Trader®
 
 Reactive Trader® is a real-time FX trading platform designed to showcase reactive programming principles across the full application stack.
@@ -9,24 +8,20 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 
 ![image](docs/reactive-trader.gif)
 
-
 ## Setting up the Test
-
 
 1. Fork and clone the ReactiveTraderCloud repo
 
 2. Start the application on localhost by hitting `npm run start`
 
-4. Open a browser and navigate to http://localhost:1917 to see the application running. 
+3. Open a browser and navigate to http://localhost:1917 to see the application running.
 
-5. Navigate to `/cypress/integration` to see the list of feature files
+4. Navigate to `/cypress/integration` to see the list of feature files
 
-6. Now hit the command in different terminal `npx cypress open` to open the cypress interactive window.
+5. Now hit the command in different terminal `npx cypress open` to open the cypress interactive window.
 
-7. Now, click on the feature file present on the Testrunner window to trigger the test.
+6. Now, click on the feature file present on the Testrunner window to trigger the test.
 
-8. If you want to run the test in terminal, please hit `npx cypress run --spec <path to feature file> --browser chrome`
+7. If you want to run the test in terminal, please hit `npx cypress run --spec <path to feature file> --browser chrome`
 
-9. To run test using npm command line, please use `npm run test:cmd`
-
-
+8. To run test using npm command line, please use `npm run test:cmd`

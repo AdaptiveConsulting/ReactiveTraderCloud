@@ -1,16 +1,14 @@
 {
   "scripts": {
     "test:cmd": "npx cypress run --browser=chrome",
-    "test:interactive":"npx cypress run --browser=chrome --headed"
+    "test:interactive": "npx cypress run --browser=chrome --headed"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
   },
   "devDependencies": {
     "cypress": "^8.7.0",
-    "cypress-cucumber-preprocessor": "^4.3.1"
-  },
-  "dependencies": {
+    "cypress-cucumber-preprocessor": "^4.3.1",
     "cypress-configuration-builder": "^1.2.4"
   }
 }
