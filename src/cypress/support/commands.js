@@ -26,35 +26,27 @@
 
 let currentPrice = ''
 let textList
-let notional1
 let finalList = []
 let finalAmount = 0
 const dayjs = require('dayjs')
 var currentYear = dayjs().get('year')
 let currency
+let waitingText
 
 // Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
 
 Cypress.Commands.add('VerifyCurrencyOnPage', symbol => {
-  let currency = symbol.replace('/', '')
-
-  cy.log('').then(() => {
-    cy.get('div[data-testid="tile-' + currency + '"]')
-      .scrollIntoView()
-      .should('be.visible')
-  })
+  cy.get('div[data-testid="tile-' + symbol.replace('/', '') + '"]')
+    .scrollIntoView()
+    .should('be.visible')
 })
 
 Cypress.Commands.add('performTrade', (symbol, notional, direction) => {
+  finalList.length = 0
   currency = symbol.replace('/', '')
-  notional1 = notional
 
   cy.log('').then(() => {
-    cy.get(
-      'div[data-testid="tile-' +
-        currency +
-        '"] > div > div > div:nth-child(2) div:nth-child(2) input'
-    )
+    cy.get('div[data-testid="tile-' + currency + '"] input')
       .clear()
       .type(notional)
     cy.get(
@@ -83,7 +75,19 @@ Cypress.Commands.add('performTrade', (symbol, notional, direction) => {
         direction +
         ']'
     ).click({ force: true })
-    cy.wait(5000)
+    if (currency == 'EURJPY') {
+      cy.wait(2000)
+      cy.get('div[data-testid=tile-' + currency + '] div[role=dialog] > div[role=alert]').then(
+        el => {
+          cy.log('waiting text ' + el.text())
+          waitingText = el.text()
+
+          cy.wait(3000)
+        }
+      )
+    } else {
+      cy.wait(5000)
+    }
     cy.get('div[data-testid=tile-' + currency + '] div[role=dialog] > div:nth-child(2)').then(
       el => {
         let tradeIDList = el.text().split(' ')
@@ -92,29 +96,65 @@ Cypress.Commands.add('performTrade', (symbol, notional, direction) => {
     )
     cy.get('div[data-testid=tile-' + currency + '] div[role=dialog] > div[role=alert]').then(el => {
       cy.log('Confirmation text ' + el.text())
+      let confirmationText = el.text()
+      if (el.text().includes('rejected')) {
+        textList = confirmationText.split(' ')
+        finalList.push(textList[4])
 
-      textList = el.text().split(' ')
-      finalList.push('Done')
-      finalList.push(textList[14] + '-' + textList[15].replace('.', '') + '-' + currentYear)
-      finalList.push(direction)
-      finalList.push(textList[2] + textList[10])
-      if (direction.toLowerCase() == 'buy') {
-        finalList.push(textList[2])
+        finalList.push(currentYear)
+        finalList.push(direction)
+        finalList.push(currency)
+        if (direction.toLowerCase() == 'buy') {
+          finalList.push(currency.substring(0, 3))
+        } else {
+          finalList.push(currency.substring(3, 6))
+        }
+        finalList.push(notional)
+        finalList.push(currentPrice)
+        finalList.push(currentYear)
+        finalList.push('JPW')
       } else {
-        finalList.push(textList[10])
+        textList = el.text().split(' ')
+        finalList.push('Done')
+        finalList.push(textList[14] + '-' + textList[15].replace('.', '') + '-' + currentYear)
+        finalList.push(direction)
+        finalList.push(textList[2] + textList[10])
+        if (direction.toLowerCase() == 'buy') {
+          finalList.push(textList[2])
+        } else {
+          finalList.push(textList[10])
+        }
+        finalList.push(textList[3])
+        finalList.push(textList[8])
+        finalList.push(textList[14] + '-' + textList[15].replace('.', '') + '-' + currentYear)
+        finalList.push('JPW')
       }
-      finalList.push(textList[3])
-      finalList.push(textList[8])
-      finalList.push(textList[14] + '-' + textList[15].replace('.', '') + '-' + currentYear)
-      finalList.push('JPW')
     })
   })
 })
 
-Cypress.Commands.add('verifyTradeSuccess', () => {
+Cypress.Commands.add('verifyTradeRejected', () => {
+  cy.log('').then(() => {
+    expect('rejected').to.eq(finalList[1])
+  })
+})
+
+Cypress.Commands.add('verifyTradeSuccess', notional => {
   cy.log('').then(() => {
     expect(Number(currentPrice)).to.eq(Number(finalList[7]))
-    expect(Number(notional1)).to.eq(Number(textList[3].replace(/,/g, '')))
+    expect(Number(notional)).to.eq(Number(textList[3].replace(/,/g, '')))
+    expect(Math.round(Number(finalAmount))).to.eq(
+      Math.round(Number(textList[11].replace(/,/g, '')))
+    )
+    expect(currency).to.eq(textList[2] + textList[10])
+  })
+})
+
+Cypress.Commands.add('verifyTradeTimeoutAndSuccess', notional => {
+  cy.log('').then(() => {
+    expect(waitingText).to.eq('Trade execution taking longer than expected')
+    expect(Number(currentPrice)).to.eq(Number(finalList[7]))
+    expect(Number(notional)).to.eq(Number(textList[3].replace(/,/g, '')))
     expect(Math.round(Number(finalAmount))).to.eq(
       Math.round(Number(textList[11].replace(/,/g, '')))
     )
