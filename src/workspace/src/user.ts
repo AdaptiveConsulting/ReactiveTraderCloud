@@ -1,16 +1,16 @@
-export const USER_WORLDWIDE = 'Worldwide'
-export const USER_EUROPE = 'Europe'
+export const USER_TRADER = 'Trader'
+export const USER_OPS = 'Operations'
 
 const USER_STORAGE_KEY = 'workspace-user'
 export const USER_RESULT_KEY = 'switch-user'
 
-export const getCurrentUser = () => localStorage.getItem(USER_STORAGE_KEY) || USER_WORLDWIDE
+export const getCurrentUser = () => localStorage.getItem(USER_STORAGE_KEY) || USER_TRADER
 
 export const setCurrentUser = (user: string) => localStorage.setItem(USER_STORAGE_KEY, user)
 
 export const getUserToSwitch = () => {
   const currentUser = getCurrentUser()
-  return currentUser === USER_WORLDWIDE ? USER_EUROPE : USER_WORLDWIDE
+  return currentUser === USER_TRADER ? USER_OPS : USER_TRADER
 }
 
 export const switchUser = () => {

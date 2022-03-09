@@ -1,6 +1,6 @@
 {
   "name": "adaptive-workspace-provider",
-  "version": "5.0.0",
+  "version": "6.1.6",
   "description": "Adaptive Workspace Provider",
   "scripts": {
     "start": "vite",
@@ -33,8 +33,8 @@
   "dependencies": {
     "@adaptive/hydra-platform": "3.40.0",
     "@google-cloud/dialogflow": "^4.6.0",
-    "@openfin/workspace": "^5.5.0",
-    "@openfin/workspace-platform": "^5.5.0",
+    "@openfin/workspace": "^6.1.6",
+    "@openfin/workspace-platform": "^6.1.6",
     "dialogflow": "^1.2.0",
     "openfin-notifications": "^1.11.0",
     "rxjs": "^7.5.2"

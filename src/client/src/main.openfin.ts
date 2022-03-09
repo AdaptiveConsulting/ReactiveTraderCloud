@@ -115,13 +115,13 @@ export const getMainApp: () => React.FC = () => {
       Home.deregister(providerId)
     }
 
-    Home.register(cliProvider)
-      .then(() => {
-        console.log("Workspace provider registered")
+    // Home.register(cliProvider)
+    //   .then(() => {
+    //     console.log("Workspace provider registered")
 
-        window.addEventListener("beforeunload", deregister)
-      })
-      .catch((e) => console.log("Error registering", e))
+    //     window.addEventListener("beforeunload", deregister)
+    //   })
+    //   .catch((e) => console.log("Error registering", e))
   }
 
   return OpenFinApp

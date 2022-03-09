@@ -20,6 +20,7 @@ import {
   tradesView
 } from './apps'
 import { BASE_URL } from './consts'
+import { getCurrentUser, USER_TRADER } from './user'
 import { getSpotTileApps } from './utils'
 
 const PROVIDER_ID = 'adaptive-store-provider'
@@ -92,8 +93,10 @@ async function getNavigation(): Promise<
   [StorefrontNavigationSection?, StorefrontNavigationSection?]
 > {
   console.log('Showing the store navigation.')
+  const currentUser = getCurrentUser()
   const spotTileApps = await getSpotTileApps()
 
+  // @ts-ignore
   let navigationSections: [StorefrontNavigationSection?, StorefrontNavigationSection?] = [
     {
       id: 'apps',
@@ -104,7 +107,10 @@ async function getNavigation(): Promise<
           title: 'Apps',
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [reactiveTrader, reactiveAnalytics]
+            apps:
+              currentUser === USER_TRADER
+                ? [reactiveTrader, reactiveAnalytics]
+                : [reactiveAnalytics]
           }
         },
         {
@@ -112,7 +118,7 @@ async function getNavigation(): Promise<
           title: 'Native Apps',
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [limitChecker]
+            apps: currentUser === USER_TRADER ? [limitChecker] : []
           }
         },
         {
@@ -120,7 +126,10 @@ async function getNavigation(): Promise<
           title: 'Views',
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [liveRatesView, tradesView, analyticsView, reactiveAnalyticsView]
+            apps:
+              currentUser === USER_TRADER
+                ? [liveRatesView, tradesView, analyticsView, reactiveAnalyticsView]
+                : [tradesView, analyticsView, reactiveAnalyticsView]
           }
         },
         {
@@ -128,26 +137,28 @@ async function getNavigation(): Promise<
           title: 'Snapshots',
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [reactiveWorkspace]
+            apps: currentUser === USER_TRADER ? [reactiveWorkspace] : []
           }
         }
       ]
     },
-    {
-      id: 'fx',
-      title: 'FX',
-      items: [
-        {
-          id: 'spot-tiles',
-          title: 'Spot Tiles',
-          templateId: StorefrontTemplate.AppGrid,
-          templateData: {
-            apps: spotTileApps
-          }
+    currentUser === USER_TRADER
+      ? {
+          id: 'fx',
+          title: 'FX',
+          items: [
+            {
+              id: 'spot-tiles',
+              title: 'Spot Tiles',
+              templateId: StorefrontTemplate.AppGrid,
+              templateData: {
+                apps: spotTileApps
+              }
+            }
+          ]
         }
-      ]
-    }
-  ]
+      : undefined
+  ].filter(i => !!i)
 
   return navigationSections
 }

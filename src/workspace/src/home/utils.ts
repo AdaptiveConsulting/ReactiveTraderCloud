@@ -165,6 +165,7 @@ export const getNlpResults = async (
   }
 
   console.log('Intent', intent)
+  const nf = new Intl.NumberFormat('default')
 
   switch (intent.type) {
     case NlpIntentType.SpotQuote: {
@@ -196,7 +197,7 @@ export const getNlpResults = async (
         label: 'Live Rates',
         data: {
           manifestType: 'url',
-          manifest: `${VITE_RT_URL}/liverates`
+          manifest: `${VITE_RT_URL}/tiles`
         },
         actions: [{ name: `Launch Live Rates`, hotkey: 'enter' }],
         template: CLITemplate.List,
@@ -230,7 +231,7 @@ export const getNlpResults = async (
           label: 'Trade',
           data: {
             manifestType: 'url',
-            manifest: `${VITE_RT_URL}/trades`
+            manifest: `${VITE_RT_URL}/blotter`
           },
           actions: [{ name: `Launch trades`, hotkey: 'enter' }],
           template: CLITemplate.List,
@@ -241,7 +242,7 @@ export const getNlpResults = async (
             ['Direction', trade.direction],
             ['CCYCCY', trade.currencyPair],
             ['Deal CCY', trade.dealtCurrency],
-            ['Notional', trade.notional],
+            ['Notional', nf.format(trade.notional)],
             ['Rate', trade.spotRate],
             ['Value Date', trade.valueDate],
             ['Trade', trade.tradeName]
@@ -275,6 +276,8 @@ export const getNlpResults = async (
         getPriceForSymbol$(symbol)
           .pipe(takeUntil(executing$.pipe(filter(value => !!value))))
           .subscribe(({ bid, ask, mid }) => {
+            const formattedNotional = nf.format(notional);
+
             const data = {
               manifestType: 'trade-execution',
               currencyPair: symbol,
@@ -286,14 +289,14 @@ export const getNlpResults = async (
             }
             const result = {
               key,
-              title: `${direction} ${notional} ${symbol}`,
+              title: `${direction} ${formattedNotional} ${symbol}`,
               label: 'Trade Execution',
               data,
               actions: [{ name: `Execute`, hotkey: 'enter' }],
               template: CLITemplate.List,
               templateContent: [
                 ['Symbol', symbol],
-                ['Notional', notional],
+                ['Notional', formattedNotional],
                 ['Bid', bid],
                 ['Ask', ask],
                 ['Mid', mid]
@@ -318,7 +321,7 @@ export const getNlpResults = async (
               template: CLITemplate.List,
               templateContent: [
                 ['Symbol', execution.currencyPair],
-                ['Notional', execution.notional],
+                ['Notional', nf.format(execution.notional)],
                 [direction, execution.spotRate]
               ]
             }
@@ -333,14 +336,17 @@ export const getNlpResults = async (
               key,
               title: `Trade ${trade.status}`,
               label: 'Trade Execution',
-              data: {},
-              actions: [],
+              data: {
+                manifestType: 'url',
+                manifest: `${VITE_RT_URL}/blotter`
+              },
+              actions: [{ name: `Launch Trades`, hotkey: 'enter' }],
               // @ts-ignore
               template: CLITemplate.List,
               templateContent: [
                 [trade.tradeId, trade.status],
                 ['Symbol', trade.currencyPair],
-                ['Notional', trade.notional],
+                ['Notional', nf.format(trade.notional)],
                 [trade.direction, trade.spotRate],
                 ['Date', new Date(trade.tradeDate)]
               ]
