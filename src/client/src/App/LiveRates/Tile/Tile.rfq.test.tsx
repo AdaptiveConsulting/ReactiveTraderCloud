@@ -180,7 +180,6 @@ describe("Tile/rfq", () => {
     act(() => {
       fireEvent.click(screen.getAllByRole("button")[1])
     })
-    screen.debug()
     expect(executeFn.mock.calls.length).toBe(1)
 
     const originalRequest: ExecutionRequest = (
