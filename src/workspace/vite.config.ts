@@ -22,7 +22,7 @@ const copyOpenfinPlugin = (dev: boolean) => {
       targets: [
         {
           src: `./config/*.json`,
-          dest: './public/config',
+          dest: `./${dev ? 'public' : 'dist'}/config`,
           transform: contents =>
             contents
               .toString()
