@@ -1,5 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { defer, Observable } from "rxjs"
+import { defer, Observable, of } from "rxjs"
 import { HistoryPrice, Price } from "../types"
 
 let priceMocks$: Record<string, Observable<Price>> = {}
@@ -29,7 +29,8 @@ export const __resetMocks = () => {
   __resetPriceMocks()
 }
 
-export const [
-  useHistoricalPrices,
-  getHistoricalPrices$,
-] = bind((symbol: string) => defer(() => historicalPricesMock$!))
+export const [useHistoricalPrices, getHistoricalPrices$] = bind(
+  (symbol: string) => defer(() => historicalPricesMock$!),
+)
+
+export const getIsSymbolDataStale$ = () => of(false)

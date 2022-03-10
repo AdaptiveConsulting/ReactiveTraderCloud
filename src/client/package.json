@@ -125,6 +125,7 @@
     "rollup-plugin-modulepreload": "^1.2.3",
     "rollup-plugin-typescript2": "^0.30.0",
     "rollup-plugin-workbox": "^6.1.1",
+    "text-encoding": "^0.7.0",
     "ts-jest": "^26.5.4",
     "tsconfig-paths-webpack-plugin": "^3.5.1",
     "tslib": "^1.14.1",
