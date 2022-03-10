@@ -81,7 +81,7 @@ export const mockTrades: Trade[] = [
 ]
 
 export const nextTrade = {
-  tradeId: 4444444444,
+  tradeId: "4444444444",
   traderName: "EDO",
   symbol: "USDJPY",
   notional: 1_000_000,

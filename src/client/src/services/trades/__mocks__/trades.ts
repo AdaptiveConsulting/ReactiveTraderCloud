@@ -1,4 +1,4 @@
-import { Observable, defer, EMPTY } from "rxjs"
+import { Observable, defer, EMPTY, of } from "rxjs"
 import type { Trade } from "../types"
 
 let _trades$: Observable<Trade[]>
@@ -12,3 +12,5 @@ export const __setTrades = (input: Observable<Trade[]>) => {
 export const __resetMocks = () => {
   _trades$ = EMPTY
 }
+
+export const isBlotterDataStale$ = of(false)

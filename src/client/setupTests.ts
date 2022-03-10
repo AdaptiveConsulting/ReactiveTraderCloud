@@ -5,3 +5,4 @@
 import "@testing-library/jest-dom"
 import "jest-styled-components"
 ;(window as any).ga = Function.prototype
+window.TextDecoder = require("text-encoding").TextDecoder
