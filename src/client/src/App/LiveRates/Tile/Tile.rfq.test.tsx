@@ -60,7 +60,7 @@ const rfqExpireLabelTestId = "expireLabel"
 
 function initiateQuote() {
   act(() => {
-    const input = screen.getAllByRole("input")[0] as HTMLInputElement
+    const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
     fireEvent.change(input, { target: { value: "10000000" } })
   })
   act(() => {
@@ -95,7 +95,7 @@ describe("Tile/rfq", () => {
     expect(screen.queryByTestId(rfqButtonTestId)).toBe(null)
 
     act(() => {
-      const input = screen.getAllByRole("input")[0] as HTMLInputElement
+      const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
       fireEvent.change(input, { target: { value: "10000000" } })
     })
 
@@ -178,13 +178,14 @@ describe("Tile/rfq", () => {
     expect(screen.queryByText("Executing")).toBeNull()
 
     act(() => {
-      fireEvent.click(screen.getAllByRole("button")[0])
+      fireEvent.click(screen.getAllByRole("button")[1])
     })
-
+    screen.debug()
     expect(executeFn.mock.calls.length).toBe(1)
 
-    const originalRequest: ExecutionRequest = (executeFn.mock
-      .calls[0] as any)[0]
+    const originalRequest: ExecutionRequest = (
+      executeFn.mock.calls[0] as any
+    )[0]
     const request: Partial<ExecutionRequest> = {
       ...originalRequest,
     }
@@ -207,7 +208,8 @@ describe("Tile/rfq", () => {
     act(() => {
       response$.next({
         ...originalRequest,
-        valueDate: "2021-02-04T13:17:28.040711+00:00",
+        valueDate: new Date("2021-02-04T13:17:28.040711+00:00"),
+        tradeDate: new Date("2021-02-05T13:17:28.040711+00:00"),
         tradeId: 200,
         status: ExecutionStatus.Done,
       })
@@ -224,7 +226,7 @@ describe("Tile/rfq", () => {
 
     await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
 
-    expect(screen.getAllByRole("button")[0].textContent).toBe(
+    expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,
     )
 
@@ -235,7 +237,7 @@ describe("Tile/rfq", () => {
 
   it("RFQ button should be disabled where notional is not valid", async () => {
     act(() => {
-      const input = screen.getAllByRole("input")[0] as HTMLInputElement
+      const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
       fireEvent.change(input, { target: { value: "1000000001" } })
     })
 
