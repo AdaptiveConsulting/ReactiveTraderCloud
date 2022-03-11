@@ -26,7 +26,7 @@ const copyOpenfinPlugin = (dev: boolean) => {
           transform: contents =>
             contents
               .toString()
-              .replace(/<RT_URL>/g, process.env.VITE_RT_URL)
+              .replace(/<RT_URL>/g, dev ? process.env.VITE_RT_URL : getBaseUrl(dev).replace('/workspace', ''))
               .replace(/<RA_URL>/g, process.env.VITE_RA_URL)
               .replace(/<BASE_URL>/g, getBaseUrl(dev))
               .replace(/<ENV_NAME>/g, env)
