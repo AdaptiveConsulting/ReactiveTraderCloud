@@ -43,8 +43,8 @@ const copyOpenfinPlugin = (dev: boolean) => {
 }
 
 const setConfig = ({ mode }) => {
-  require('dotenv').config({ path: `./.env` })
-
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
+console.log('env', process.env)
   const isDev = mode === 'development'
   const plugins = isDev ? [typescriptPlugin] : []
 
