@@ -91,7 +91,7 @@ jobs:
       - name: Build (OpenFin - Workspace)
         env:
           DOMAIN: https://openfin.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
-          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
+          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}/workspace
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: |
