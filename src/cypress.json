@@ -4,6 +4,6 @@
   "testFiles": "**/*.feature",
   "retries": 0,
   "integrationFolder": "./cypress/integration",
-  "defaultCommandTimeout": 200000,
-  "pageLoadTimeout": 300000
+  "defaultCommandTimeout": 30000,
+  "pageLoadTimeout": 200000
 }
