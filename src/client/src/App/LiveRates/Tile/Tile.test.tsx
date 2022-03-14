@@ -93,11 +93,11 @@ describe("Tile", () => {
 
     renderComponent()
 
-    expect(screen.getAllByRole("button")[0].textContent).toBe(
+    expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,
     )
 
-    expect(screen.getAllByRole("button")[1].textContent).toBe(
+    expect(screen.getAllByRole("button")[2].textContent).toBe(
       `BUY${priceMock.ask}`,
     )
 
@@ -107,7 +107,7 @@ describe("Tile", () => {
     })
 
     await waitFor(() =>
-      expect(screen.getAllByRole("button")[0].textContent).toBe(
+      expect(screen.getAllByRole("button")[1].textContent).toBe(
         `SELL${nextBid}`,
       ),
     )
@@ -131,13 +131,14 @@ describe("Tile", () => {
     expect(screen.queryByText("Executing")).toBeNull()
 
     act(() => {
-      fireEvent.click(screen.getAllByRole("button")[0])
+      fireEvent.click(screen.getAllByRole("button")[1])
     })
 
     expect(executeFn.mock.calls.length).toBe(1)
 
-    const originalRequest: ExecutionRequest = (executeFn.mock
-      .calls[0] as any)[0]
+    const originalRequest: ExecutionRequest = (
+      executeFn.mock.calls[0] as any
+    )[0]
     const request: Partial<ExecutionRequest> = {
       ...originalRequest,
     }
@@ -157,7 +158,8 @@ describe("Tile", () => {
     act(() => {
       response$.next({
         ...originalRequest,
-        valueDate: "2021-02-04T13:17:28.040711+00:00",
+        valueDate: new Date("2021-02-04T13:17:28.040711+00:00"),
+        tradeDate: new Date("2021-02-05T13:17:28.040711+00:00"),
         tradeId,
         status: ExecutionStatus.Done,
       })
@@ -175,7 +177,7 @@ describe("Tile", () => {
 
     await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
 
-    expect(screen.getAllByRole("button")[0].textContent).toBe(
+    expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,
     )
   })
@@ -203,13 +205,14 @@ describe("Tile", () => {
     expect(screen.queryByText("Executing")).toBeNull()
 
     act(() => {
-      fireEvent.click(screen.getAllByRole("button")[0])
+      fireEvent.click(screen.getAllByRole("button")[1])
     })
 
     expect(executeFn.mock.calls.length).toBe(1)
 
-    const originalRequest: ExecutionRequest = (executeFn.mock
-      .calls[0] as any)[0]
+    const originalRequest: ExecutionRequest = (
+      executeFn.mock.calls[0] as any
+    )[0]
     const request: Partial<ExecutionRequest> = {
       ...originalRequest,
     }
@@ -230,14 +233,15 @@ describe("Tile", () => {
     })
     expect(screen.queryByText("Executing")).toBeNull()
     expect(screen.queryByRole("alert")!.textContent).toEqual(
-      "Trade execution taking longer than expected.",
+      "Trade execution taking longer than expected",
     )
 
     const tradeId = 200
     act(() => {
       response$.next({
         ...originalRequest,
-        valueDate: "2021-02-04T13:17:28.040711+00:00",
+        valueDate: new Date("2021-02-04T13:17:28.040711+00:00"),
+        tradeDate: new Date("2021-02-05T13:17:28.040711+00:00"),
         tradeId,
         status: ExecutionStatus.Done,
       })
@@ -254,7 +258,7 @@ describe("Tile", () => {
 
     await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
 
-    expect(screen.getAllByRole("button")[0].textContent).toBe(
+    expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,
     )
   })
@@ -277,13 +281,14 @@ describe("Tile", () => {
     expect(screen.queryByText("Executing")).toBeNull()
 
     act(() => {
-      fireEvent.click(screen.getAllByRole("button")[0])
+      fireEvent.click(screen.getAllByRole("button")[1])
     })
 
     expect(executeFn.mock.calls.length).toBe(1)
 
-    const originalRequest: ExecutionRequest = (executeFn.mock
-      .calls[0] as any)[0]
+    const originalRequest: ExecutionRequest = (
+      executeFn.mock.calls[0] as any
+    )[0]
     const request: Partial<ExecutionRequest> = {
       ...originalRequest,
     }
@@ -310,7 +315,7 @@ describe("Tile", () => {
     await waitFor(() => {
       expect(screen.queryByText("Executing")).toBeNull()
       expect(screen.queryByRole("alert")!.textContent).toEqual(
-        "Trade execution timeout exceeded.",
+        "Trade execution timeout exceeded",
       )
     })
 
@@ -320,7 +325,7 @@ describe("Tile", () => {
 
     await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
 
-    expect(screen.getAllByRole("button")[0].textContent).toBe(
+    expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,
     )
   })
@@ -343,13 +348,14 @@ describe("Tile", () => {
     expect(screen.queryByText("Executing")).toBeNull()
 
     act(() => {
-      fireEvent.click(screen.getAllByRole("button")[0])
+      fireEvent.click(screen.getAllByRole("button")[1])
     })
 
     expect(executeFn.mock.calls.length).toBe(1)
 
-    const originalRequest: ExecutionRequest = (executeFn.mock
-      .calls[0] as any)[0]
+    const originalRequest: ExecutionRequest = (
+      executeFn.mock.calls[0] as any
+    )[0]
     const request: Partial<ExecutionRequest> = {
       ...originalRequest,
     }
@@ -369,7 +375,8 @@ describe("Tile", () => {
     act(() => {
       response$.next({
         ...originalRequest,
-        valueDate: "2021-02-04T13:17:28.040711+00:00",
+        valueDate: new Date("2021-02-04T13:17:28.040711+00:00"),
+        tradeDate: new Date("2021-02-05T13:17:28.040711+00:00"),
         tradeId,
         status: ExecutionStatus.Rejected,
       })
@@ -389,7 +396,7 @@ describe("Tile", () => {
 
     await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
 
-    expect(screen.getAllByRole("button")[0].textContent).toBe(
+    expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,
     )
   })
@@ -412,7 +419,7 @@ describe("Tile", () => {
     expect(screen.queryByText("Executing")).toBeNull()
 
     act(() => {
-      fireEvent.click(screen.getAllByRole("button")[0])
+      fireEvent.click(screen.getAllByRole("button")[1])
     })
 
     expect(executeFn.mock.calls.length).toBe(1)
@@ -428,7 +435,7 @@ describe("Tile", () => {
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     renderComponent()
-    const input = screen.getAllByRole("input")[0] as HTMLInputElement
+    const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
     act(() => {
       fireEvent.change(input, { target: { value: "1000000" } })
     })
@@ -448,7 +455,7 @@ describe("Tile", () => {
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
     renderComponent()
-    const input = screen.getAllByRole("input")[0] as HTMLInputElement
+    const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
     act(() => {
       fireEvent.focus(input)
     })
@@ -462,7 +469,7 @@ describe("Tile", () => {
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     renderComponent()
-    const input = screen.getAllByRole("input")[0] as HTMLInputElement
+    const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
     expect(input.value).toBe("1,000,000")
     act(() => {
       fireEvent.change(input, { target: { value: "Hello" } })
@@ -475,7 +482,7 @@ describe("Tile", () => {
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     renderComponent()
-    const input = screen.getAllByRole("input")[0] as HTMLInputElement
+    const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
 
     expect(input.value).toBe("1,000,000")
 

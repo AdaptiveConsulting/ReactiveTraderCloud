@@ -75,7 +75,7 @@ describe("LastPositions", () => {
 
     renderComponent()
 
-    expect(screen.getAllByRole("lastPosition")[0].textContent).toBe(
+    expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
       `-2,713,309`,
     )
   })
@@ -86,13 +86,13 @@ describe("LastPositions", () => {
 
     renderComponent()
 
-    expect(screen.getAllByRole("lastPosition")[0].textContent).toBe(
+    expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
       `-2,713,309`,
     )
 
     act(() => historyMock$.next(historyMock2))
 
-    expect(screen.getAllByRole("lastPosition")[0].textContent).toBe(
+    expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
       `-2,700,751`,
     )
   })
@@ -103,13 +103,13 @@ describe("LastPositions", () => {
 
     renderComponent()
 
-    expect(screen.getAllByRole("lastPosition")[0].textContent).toBe(
+    expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
       `-2,713,309`,
     )
 
     act(() => historyMock$.next(historyMock3))
 
-    expect(screen.getAllByRole("lastPosition")[0].textContent).toBe(
+    expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
       `+2,700,751`,
     )
   })
