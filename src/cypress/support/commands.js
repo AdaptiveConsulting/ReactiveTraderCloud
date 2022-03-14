@@ -121,13 +121,13 @@ Cypress.Commands.add('verifyPriceView', () => {
   tradePage
     .getPriceView()
     .find('path[stroke]')
-    .should('have.length', 2)
+    .should('have.length', 1)
 })
 Cypress.Commands.add('verifyGraphView', () => {
   tradePage
     .getPriceView()
     .find('path[stroke]')
-    .should('have.length', 11)
+    .should('have.length', 10)
 })
 Cypress.Commands.add('clickPriceView', () => {
   tradePage.getPriceViewButton().click({ force: true })
