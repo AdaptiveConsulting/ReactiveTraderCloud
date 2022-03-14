@@ -136,9 +136,8 @@ describe("Tile", () => {
 
     expect(executeFn.mock.calls.length).toBe(1)
 
-    const originalRequest: ExecutionRequest = (
-      executeFn.mock.calls[0] as any
-    )[0]
+    const originalRequest: ExecutionRequest = (executeFn.mock
+      .calls[0] as any)[0]
     const request: Partial<ExecutionRequest> = {
       ...originalRequest,
     }
@@ -209,9 +208,8 @@ describe("Tile", () => {
 
     expect(executeFn.mock.calls.length).toBe(1)
 
-    const originalRequest: ExecutionRequest = (
-      executeFn.mock.calls[0] as any
-    )[0]
+    const originalRequest: ExecutionRequest = (executeFn.mock
+      .calls[0] as any)[0]
     const request: Partial<ExecutionRequest> = {
       ...originalRequest,
     }
@@ -284,9 +282,8 @@ describe("Tile", () => {
 
     expect(executeFn.mock.calls.length).toBe(1)
 
-    const originalRequest: ExecutionRequest = (
-      executeFn.mock.calls[0] as any
-    )[0]
+    const originalRequest: ExecutionRequest = (executeFn.mock
+      .calls[0] as any)[0]
     const request: Partial<ExecutionRequest> = {
       ...originalRequest,
     }
@@ -351,9 +348,8 @@ describe("Tile", () => {
 
     expect(executeFn.mock.calls.length).toBe(1)
 
-    const originalRequest: ExecutionRequest = (
-      executeFn.mock.calls[0] as any
-    )[0]
+    const originalRequest: ExecutionRequest = (executeFn.mock
+      .calls[0] as any)[0]
     const request: Partial<ExecutionRequest> = {
       ...originalRequest,
     }

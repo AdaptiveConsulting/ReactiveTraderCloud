@@ -1,20 +1,15 @@
-import styled, { css } from "styled-components"
+import styled, { css } from 'styled-components'
 
 interface FlexProperties {
   height?: string
   width?: string
-  direction?: "column" | "row"
+  direction?: 'column' | 'row'
   wrap?: string
-  justifyContent?: "center" | "flex-start" | "flex-end" | "space-between"
-  alignItems?: "center" | "stretch" | "flex-end" | "flex-start"
+  justifyContent?: 'center' | 'flex-start' | 'flex-end' | 'space-between'
+  alignItems?: 'center' | 'stretch' | 'flex-end' | 'flex-start'
 }
 
-export const flexStyle = ({
-  direction,
-  wrap,
-  justifyContent,
-  alignItems,
-}: FlexProperties) =>
+export const flexStyle = ({ direction, wrap, justifyContent, alignItems }: FlexProperties) =>
   css`
     display: flex;
     flex-direction: ${direction};
@@ -33,7 +28,7 @@ export const boxStyle = ({ height, width }: BoxDimentions) =>
     width: ${width};
   `
 
-export const Box = styled("div")`
+export const Box = styled('div')`
   ${boxStyle};
 `
 

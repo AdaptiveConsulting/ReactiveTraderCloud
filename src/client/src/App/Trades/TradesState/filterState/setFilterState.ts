@@ -201,7 +201,9 @@ export const appliedSetFilterEntries$ = appliedSetFilters$.pipe(
  * State hook and parametric stream of applied filter-value options
  *  used by SetFilter component to render options.
  */
-export const [useAppliedSetFieldFilters, appliedSetFieldFilters$] = bind(
-  (field: SetColField) =>
-    appliedSetFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
+export const [
+  useAppliedSetFieldFilters,
+  appliedSetFieldFilters$,
+] = bind((field: SetColField) =>
+  appliedSetFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
 )

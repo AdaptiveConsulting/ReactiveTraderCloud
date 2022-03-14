@@ -104,9 +104,11 @@ export const numberFilters$ = mergeWithKey({
  * State hook and parametric stream that emit number
  * filter state.  Used by NumFilter component.
  */
-export const [useAppliedNumFilters, appliedNumFilters$] = bind(
-  (field: NumColField) =>
-    numberFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
+export const [
+  useAppliedNumFilters,
+  appliedNumFilters$,
+] = bind((field: NumColField) =>
+  numberFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
 )
 
 /**

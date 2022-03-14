@@ -1,9 +1,6 @@
 import { StatelessExecutionResponse } from "@/App/LiveRates/Tile/ExecutionResponse"
 import { HeaderInner } from "@/App/LiveRates/Tile/Header"
-import {
-  HistoricalGraph,
-  HistoricalGraphComponent,
-} from "@/App/LiveRates/Tile/HistoricalGraph"
+import { HistoricalGraph, HistoricalGraphComponent } from "@/App/LiveRates/Tile/HistoricalGraph"
 import { NotionalInputInner } from "@/App/LiveRates/Tile/Notional"
 import {
   AwaitingPriceButton,
@@ -77,7 +74,7 @@ export const Tile: React.FC<TileProps> = ({
   isExpired,
   priceDisabled,
   priceButtonStatic,
-  graphPath,
+  graphPath
 }) => {
   const InputTimerWrapper: React.FC<{ isAnalytics?: boolean }> = ({
     isAnalytics,
@@ -120,10 +117,7 @@ export const Tile: React.FC<TileProps> = ({
         <Body isAnalyticsView={isAnalytics} showTimer={!!timerData}>
           {isAnalytics ? (
             <GraphNotionalWrapper>
-              <HistoricalGraphComponent
-                showTimer={!!timerData}
-                path={graphPath!}
-              />
+              <HistoricalGraphComponent showTimer={!!timerData} path={graphPath!} />
               <InputTimerWrapper isAnalytics />
             </GraphNotionalWrapper>
           ) : null}

@@ -3,16 +3,11 @@ interface Props {
   height: number
 }
 
-const UndockIcon: React.FC<Props> = (props) => {
+const UndockIcon: React.FC<Props> = props => {
   const { width, height } = props
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      viewBox="0 0 24 24"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 24 24">
       <g className="icon" fill="none" fillRule="evenodd">
         <path d="M0 0H24V24H0z" />
         <path

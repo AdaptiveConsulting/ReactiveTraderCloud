@@ -1,6 +1,6 @@
-import styled from "styled-components"
-import { ThemeName, useTheme, ThemeStorageSwitch } from "@/theme"
-import { Block } from "../styled"
+import styled from 'styled-components'
+import { ThemeName, useTheme, ThemeStorageSwitch } from '@/theme'
+import { Block } from '../styled'
 
 export const FloatingTools: React.FC = () => {
   const { themeName } = useTheme()
@@ -8,22 +8,17 @@ export const FloatingTools: React.FC = () => {
   return (
     <Root>
       <Bar>
-        <Label>Show {isDark ? "Light" : "Dark"} theme </Label>
+        <Label>Show {isDark ? 'Light' : 'Dark'} theme </Label>
         <ThemeStorageSwitch handleDiameter={18} />
       </Bar>
     </Root>
   )
 }
 
-const Root: React.FC = (props) => <Block bg={(t) => t.primary[2]} {...props} />
+const Root: React.FC = props => <Block bg={t => t.primary[2]} {...props} />
 
-const Bar = styled((props) => (
-  <Block
-    px={3}
-    bg={(t) => t.primary[1]}
-    fg={(t) => t.secondary[3]}
-    {...props}
-  />
+const Bar = styled(props => (
+  <Block px={3} bg={t => t.primary[1]} fg={t => t.secondary[3]} {...props} />
 ))`
   position: fixed;
   display: flex;

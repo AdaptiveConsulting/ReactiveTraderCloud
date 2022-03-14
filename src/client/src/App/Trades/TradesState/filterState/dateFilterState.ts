@@ -103,9 +103,11 @@ export const dateFilters$ = mergeWithKey({
  * State hook and parametric stream that emit date
  * filter state.  Used by DateFilter component.
  */
-export const [useAppliedDateFilters, appliedDateFilters$] = bind(
-  (field: DateColField) =>
-    dateFilters$.pipe(map((dateFilters) => dateFilters[field])),
+export const [
+  useAppliedDateFilters,
+  appliedDateFilters$,
+] = bind((field: DateColField) =>
+  dateFilters$.pipe(map((dateFilters) => dateFilters[field])),
 )
 
 /**

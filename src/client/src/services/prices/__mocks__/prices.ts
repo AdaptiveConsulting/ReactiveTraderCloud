@@ -29,6 +29,7 @@ export const __resetMocks = () => {
   __resetPriceMocks()
 }
 
-export const [useHistoricalPrices, getHistoricalPrices$] = bind(
-  (symbol: string) => defer(() => historicalPricesMock$!),
-)
+export const [
+  useHistoricalPrices,
+  getHistoricalPrices$,
+] = bind((symbol: string) => defer(() => historicalPricesMock$!))

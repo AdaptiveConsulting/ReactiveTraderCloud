@@ -51,10 +51,10 @@ Below you can find links to the installers for the various platforms.
 
 Download and run the exe below to install the integrated toolbar on your desktop, including Reactive Trader® components and workspaces.
 
-| Environment | Windows                       |
-| ----------- | ----------------------------- |
-| Demo        | [Download][fsbl-win-demo-exe] |
-| UAT         | [Download][fsbl-win-uat-exe]  |
+| Environment | Windows |
+|-------------|---------|
+| Demo | [Download][fsbl-win-demo-exe] |
+| UAT | [Download][fsbl-win-uat-exe] |
 
 [fsbl-win-demo-exe]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsemble.exe
 [fsbl-win-uat-exe]: https://storage.googleapis.com/reactive-trader-finsemble-uat/pkg/ReactiveTraderFinsemble.exe
