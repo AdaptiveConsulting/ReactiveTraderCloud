@@ -1,4 +1,3 @@
-import { useCallback } from "react"
 import { FaRedo } from "react-icons/fa"
 import { useRfqState, QuoteStateStage } from "../Rfq"
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
