@@ -31,6 +31,7 @@ const copyOpenfinPlugin = (dev: boolean) => {
               .replace(/<BASE_URL>/g, getBaseUrl(dev))
               .replace(/<ENV_NAME>/g, env)
               .replace(/<ENV_SUFFIX>/g, env === 'prod' ? '' : env.toUpperCase())
+              .replace(/<SHOW_PROVIDER_WINDOW>/g, `${dev}`)
         }
       ],
       verbose: true,
@@ -44,7 +45,7 @@ const copyOpenfinPlugin = (dev: boolean) => {
 
 const setConfig = ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
-console.log('env', process.env)
+
   const isDev = mode === 'development'
   const plugins = isDev ? [typescriptPlugin] : []
 

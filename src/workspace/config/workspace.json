@@ -64,7 +64,7 @@
   "shortcut": {
     "company": "Adaptive Financial Consulting",
     "description": "Adaptive workspace provider",
-    "icon": "http://localhost:2017/favicon.ico",
+    "icon": "<BASE_URL>/favicon.ico",
     "name": "Adaptive Workspace Provider",
     "target": ["desktop", "start-menu"]
   },

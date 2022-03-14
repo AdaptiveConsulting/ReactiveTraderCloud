@@ -1,4 +1,11 @@
-import { getCurrentSync, Page } from '@openfin/workspace-platform'
+import {
+  BrowserOverrideCallback,
+  getCurrentSync,
+  GlobalContextMenuOptionType,
+  OpenGlobalContextMenuPayload,
+  Page
+} from '@openfin/workspace-platform'
+import { getUserToSwitch, switchUser } from './user'
 
 export async function getPage(pageId: string) {
   let platform = getCurrentSync()
@@ -38,4 +45,39 @@ export async function launchView(
   }
 
   return platform.createView(viewOptions, targetIdentity)
+}
+
+const SWITCH_USER_ID = 'switch-user-id'
+
+export const overrideCallback: BrowserOverrideCallback = async WorkspacePlatformProvider => {
+  class Override extends WorkspacePlatformProvider {
+    openGlobalContextMenu(req: OpenGlobalContextMenuPayload, callerIdentity: any) {
+      return super.openGlobalContextMenu(
+        {
+          ...req,
+          template: [
+            ...req.template,
+            {
+              label: `Switch User to '${getUserToSwitch()}''`,
+              data: {
+                type: GlobalContextMenuOptionType.Custom,
+                action: {
+                  id: SWITCH_USER_ID
+                }
+              }
+            }
+          ]
+        },
+        callerIdentity
+      )
+    }
+  }
+  return new Override()
+}
+
+export const customActions = {
+  [SWITCH_USER_ID]: () => {
+    console.log('Switching user from global context menu');
+    switchUser()
+  }
 }
