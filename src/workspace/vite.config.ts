@@ -31,7 +31,7 @@ const copyOpenfinPlugin = (dev: boolean) => {
               .replace(/<BASE_URL>/g, getBaseUrl(dev))
               .replace(/<ENV_NAME>/g, env)
               .replace(/<ENV_SUFFIX>/g, env === 'prod' ? '' : env.toUpperCase())
-              .replace(/<SHOW_PROVIDER_WINDOW>/g, `${dev}`)
+              .replace('"<SHOW_PROVIDER_WINDOW>"', `${dev}`)
         }
       ],
       verbose: true,

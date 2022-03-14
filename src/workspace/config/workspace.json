@@ -8,7 +8,7 @@
   "platform": {
     "uuid": "adaptive-workspace-provider",
     "icon": "<BASE_URL>/favicon.ico",
-    "autoShow": true,
+    "autoShow": "<SHOW_PROVIDER_WINDOW>",
     "providerUrl": "<BASE_URL>/index.html",
     "preventQuitOnLastWindowClosed": true,
     "permissions": {
