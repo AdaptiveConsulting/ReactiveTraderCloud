@@ -86,6 +86,9 @@ Cypress.Commands.add('performTrade', (symbol, notional, direction) => {
 
   cy.log('').then(() => {
     cy.log('current price is ' + currentPrice)
+    if (Number(currentPrice) % 10 == 0) {
+      currentPrice = Number(currentPrice) / 10
+    }
     finalAmount = Number(currentPrice) * Number(notional)
 
     tradePage.getDirectionButton(currency, direction).click({ force: true })
