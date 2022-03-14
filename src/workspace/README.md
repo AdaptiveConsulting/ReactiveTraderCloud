@@ -20,7 +20,7 @@ Run the Workspace Provider
 - `npm run start` to start the server
 - `openfin:run` to launch the provider
 
-Reactive Trader client will need to be running to open any RT basedapps/views. `npm run openfin:dev` from the `src/client` directory
+Reactive Trader client will need to be running to open any RT based apps/views. `npm run openfin:dev` from the `src/client` directory
 
 Reactive Analytics will need to be running to open the RA app/view. `npm run start` from the `ReactiveAnalytics/src` directory.
 
@@ -36,7 +36,7 @@ Vite will replace placeholders at run/build time.
 
 `analytics, live-rates, trades & reactive-analytics.json` - Basic .json files that contain the bare minimum to launch a view in the Openfin browser using `platform.launchApp`
 
-### Scripts
+## Scripts
 
 `npm start` - Starts the vite dev server
 
@@ -47,3 +47,7 @@ Vite will replace placeholders at run/build time.
 `npm run openfin:start` - Start the server and launch the provider
 
 `npm run kill`, `npm run kill:fin`, `npm run kill:rvm` - Kill the Openfin processes
+
+## TODO
+
+There is some duplication between client and workspace around the services and notifications. This requires some structural changes to the repo and some type alignment. This was not done during the initial work due to the 'spike' like nature of the task.

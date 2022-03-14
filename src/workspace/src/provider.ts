@@ -1,6 +1,4 @@
-import {
-  init as workspacePlatformInit
-} from '@openfin/workspace-platform'
+import { init as workspacePlatformInit } from '@openfin/workspace-platform'
 import { connectToGateway } from '@adaptive/hydra-platform'
 import { registerHome, showHome, deregisterHome } from './home'
 import { registerStore, deregisterStore } from './store'
@@ -17,7 +15,7 @@ async function init() {
     theme: [
       {
         label: 'Dark',
-        logoUrl: `${BASE_URL}/favicon.ico`,
+        logoUrl: `${BASE_URL}/images/icons/adaptive.png`,
         palette: {
           brandPrimary: '#282E39',
           brandSecondary: '#FFF',

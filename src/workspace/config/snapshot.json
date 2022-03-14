@@ -653,8 +653,7 @@
                                 },
                                 "webAPIs": ["notifications", "audio", "video"]
                               },
-                              "_url": "https://demo-reactive-analytics.adaptivecluster.com/",
-                              "url": "http://localhost:3005/",
+                              "url": "<RA_URL>",
                               "componentName": "view",
                               "interop": {
                                 "currentContextGroup": "green"
@@ -753,7 +752,7 @@
                               },
                               "name": "internal-generated-view-4b33837c-1592-4258-8839-a984c4ea2a0e",
                               "uuid": "adaptive-workspace-provider",
-                              "initialUrl": "http://localhost:3005/",
+                              "initialUrl": "<RA_URL>",
                               "processAffinity": "adaptive-workspace-provider",
                               "zoomLevel": 0
                             },
@@ -1295,8 +1294,7 @@
                                         "video"
                                       ]
                                     },
-                                    "_url": "https://demo-reactive-analytics.adaptivecluster.com/",
-                                    "url": "http://localhost:3005/",
+                                    "url": "<RA_URL>",
                                     "componentName": "view",
                                     "interop": {
                                       "currentContextGroup": "green"
@@ -1395,7 +1393,7 @@
                                     },
                                     "name": "internal-generated-view-4b33837c-1592-4258-8839-a984c4ea2a0e",
                                     "uuid": "adaptive-workspace-provider",
-                                    "initialUrl": "http://localhost:3005/",
+                                    "initialUrl": "<RA_URL>",
                                     "processAffinity": "adaptive-workspace-provider",
                                     "zoomLevel": 0
                                   },
