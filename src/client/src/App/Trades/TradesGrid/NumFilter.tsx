@@ -7,6 +7,7 @@ import {
 } from "../TradesState"
 import { FilterPopup } from "./components/FilterPopup"
 import { ComparatorSelect } from "./components/ComparatorSelect"
+import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
 
 const FilterValueInputInner = styled.input`
   grid-area: Input;
@@ -31,6 +32,7 @@ const FilterValueInput: React.FC<{
   fieldValueName: "value1" | "value2"
 }> = ({ field, selected, fieldValueName }) => (
   <FilterValueInputInner
+    {...nonDraggableChildProps}
     placeholder="Filter..."
     role="textbox"
     defaultValue={selected[fieldValueName] ?? undefined}

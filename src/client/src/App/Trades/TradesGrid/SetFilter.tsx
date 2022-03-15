@@ -12,6 +12,7 @@ import {
 import { FilterPopup } from "./components/FilterPopup"
 import { onSearchInput, searchInputs$ } from "../TradesState/filterState"
 import { filter, map, startWith } from "rxjs/operators"
+import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
 
 const MultiSelectOption = styled.div<{
   selected: boolean
@@ -70,6 +71,7 @@ const SetFilterInner: React.FC<{
   return (
     <FilterPopup parentRef={parentRef}>
       <SearchInput
+        {...nonDraggableChildProps}
         type="text"
         placeholder="Search"
         value={inputValue}
