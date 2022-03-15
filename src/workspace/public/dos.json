@@ -1,0 +1,12 @@
+{
+  "desktopSettings": {
+    "systemApps": {
+      "workspace": {
+        "version": "6.1.6",
+        "flags": {
+          "WorkspaceDockEnabled": true
+        }
+      }
+    }
+  }
+}

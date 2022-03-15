@@ -19,6 +19,8 @@ import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
+import { useIsLimitCheckerRunning } from "@/services/limitChecker/limitChecker"
+import { LimitCheckerIndicator } from "./LimitCheckerIndicator"
 
 const [useCurrencies, mainHeader$] = bind(
   currencyPairs$.pipe(
@@ -34,6 +36,7 @@ export { mainHeader$ }
 export const MainHeader: React.FC = () => {
   const currencies = useCurrencies()
   const currency = useSelectedCurrency()
+  const isLimitCheckerRunning = useIsLimitCheckerRunning()
 
   const options = [ALL_CURRENCIES as AllCurrencies, ...currencies]
 
@@ -63,6 +66,7 @@ export const MainHeader: React.FC = () => {
           onSelectionChange={onSelectCurrency}
         />
         <ToggleView />
+        {isLimitCheckerRunning && <LimitCheckerIndicator />}
         {supportsTearOut && <TearOutComponent section="tiles" />}
       </RightNav>
     </Header>

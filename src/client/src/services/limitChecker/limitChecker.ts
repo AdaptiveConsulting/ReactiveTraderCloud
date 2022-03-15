@@ -6,3 +6,5 @@ export const checkLimit$: checkLimitFn = () =>
     observer.next(true)
     observer.complete()
   })
+
+export const useIsLimitCheckerRunning = () => false
