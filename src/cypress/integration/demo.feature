@@ -21,14 +21,14 @@ Feature: Demo
             | GBP/JPY | Buy       | 1000     |
 
 
-    Scenario Outline: Timeout Trade for "<symbol>"
-        Given Reactive Trader is open
-        And "<symbol>" price tile is displayed
-        When user performs "<direction>" trade for "<notional>" of "<symbol>"
-        Then trade is timed-out and then success for "<notional>" and "<direction>"
-        Examples:
-            | symbol  | direction | notional |
-            | EUR/JPY | Buy       | 1000     |
+    # Scenario Outline: Timeout Trade for "<symbol>"
+    #     Given Reactive Trader is open
+    #     And "<symbol>" price tile is displayed
+    #     When user performs "<direction>" trade for "<notional>" of "<symbol>"
+    #     Then trade is timed-out and then success for "<notional>" and "<direction>"
+    #     Examples:
+    #         | symbol  | direction | notional |
+    #         | EUR/JPY | Buy       | 1000     |
 
     Scenario Outline: High Notional RFQ for "<symbol>"
         Given Reactive Trader is open
@@ -68,18 +68,18 @@ Feature: Demo
             | USD/JPY | 1000000001 | Max exceeded |
 
 
-    Scenario: Toggle Scenario for Currencies and Graphs
-        Given Reactive Trader is open
-        When User clicks on price view
-        Then User is not able to see price graph for any Currencies
-        And User clicks on graph view
-        Then User is able to see price graph for all currencies
+    # Scenario: Toggle Scenario for Currencies and Graphs
+    #     Given Reactive Trader is open
+    #     When User clicks on price view
+    #     Then User is not able to see price graph for any Currencies
+    #     And User clicks on graph view
+    #     Then User is able to see price graph for all currencies
 
 
     Scenario Outline:  Toggle between Currencies for "<currency>"
         Given Reactive Trader is open
         And User clicks on "<currency>" tab
-        Then User sees curreiny combination only for "<currency>"
+        Then User sees currency combination only for "<currency>"
 
         Examples:
             | currency |

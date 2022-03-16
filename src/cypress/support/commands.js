@@ -7,29 +7,32 @@ let confirmationText
 let tradeText
 
 let tradePage = new TradePage()
+
+function getSymbol(symbol) {
+  return symbol.replace('/', '')
+}
 Cypress.Commands.add('VerifyCurrencyOnPage', symbol => {
-  tradePage
-    .getSymbol(symbol)
+  TradePage.getTile(symbol)
     .scrollIntoView()
     .should('be.visible')
 })
 
 Cypress.Commands.add('verifyDisabledDirections', symbol => {
-  tradePage.getDirectionButton(symbol.replace('/', ''), 'Buy').should('be.disabled')
-  tradePage.getDirectionButton(symbol.replace('/', ''), 'Sell').should('be.disabled')
+  tradePage.getDirectionButton(getSymbol(symbol), 'Buy').should('be.disabled')
+  tradePage.getDirectionButton(getSymbol(symbol), 'Sell').should('be.disabled')
 })
 
 Cypress.Commands.add('clickInitateRFQ', symbol => {
-  tradePage.getRFQButton(symbol.replace('/', '')).click()
+  tradePage.getRFQButton(getSymbol(symbol)).click()
 })
 
 Cypress.Commands.add('verifyEnabledDirections', symbol => {
-  tradePage.getDirectionButton(symbol.replace('/', ''), 'Buy').should('not.be.disabled')
-  tradePage.getDirectionButton(symbol.replace('/', ''), 'Sell').should('not.be.disabled')
+  tradePage.getDirectionButton(getSymbol(symbol), 'Buy').should('not.be.disabled')
+  tradePage.getDirectionButton(getSymbol(symbol), 'Sell').should('not.be.disabled')
 })
 
 Cypress.Commands.add('verifyRequoteButton', symbol => {
-  tradePage.getRFQButton(symbol.replace('/', '')).then(el => {
+  tradePage.getRFQButton(getSymbol(symbol)).then(el => {
     expect(el.text()).to.be.equal('Requote')
   })
 })
@@ -37,45 +40,39 @@ Cypress.Commands.add('verifyRequoteButton', symbol => {
 Cypress.Commands.add('editNotionalValue', (notional, symbol) => {
   cy.reload()
   tradePage
-    .enterNotional(symbol.replace('/', ''))
+    .getNotionalField(getSymbol(symbol))
     .clear()
     .type(notional)
 })
 
 Cypress.Commands.add('clickOnRejectButton', symbol => {
-  tradePage.getRejectButton(symbol.replace('/', '')).click()
-})
-
-Cypress.Commands.add('clickOnRejectButton', symbol => {
-  tradePage.getRejectButton(symbol.replace('/', '')).click()
+  tradePage.getRejectButton(getSymbol(symbol)).click()
 })
 
 Cypress.Commands.add('clickOnRequoteButton', symbol => {
-  tradePage.getRequoteButton(symbol.replace('/', '')).click()
-})
-
-Cypress.Commands.add('clickOnRequoteButton', symbol => {
-  tradePage.getRequoteButton(symbol.replace('/', '')).click()
+  tradePage.getRequoteButton(getSymbol(symbol)).click()
 })
 
 Cypress.Commands.add('verifyNotionalValue', (expected, symbol) => {
-  tradePage.getNotionalValue(symbol.replace('/', '')).should('contain', expected)
+  tradePage.getNotionalValue(getSymbol(symbol)).should('contain', expected)
 })
 
 Cypress.Commands.add('verifyErrorMessage', (expected, symbol) => {
-  cy.contains(expected).should('be.visible')
+  TradePage.getTile(symbol)
+    .contains(expected)
+    .should('be.visible')
 })
 
 Cypress.Commands.add('performTrade', (symbol, notional, direction) => {
-  currency = symbol.replace('/', '')
+  currency = getSymbol(symbol)
 
   cy.log('').then(() => {
     tradePage
-      .enterNotional(currency)
+      .getNotionalField(currency)
       .clear()
       .type(notional)
     tradePage.getCurrentPrice(currency, direction).each((el, index, list) => {
-      if (index == 0) {
+      if (index === 0) {
         // to get the current price text from the selected element
         currentPrice = el.find('div:nth-child(2)').text()
       } else {
@@ -86,15 +83,15 @@ Cypress.Commands.add('performTrade', (symbol, notional, direction) => {
 
   cy.log('').then(() => {
     cy.log('current price is ' + currentPrice)
-    if (Number(currentPrice) % 10 == 0) {
+    if (Number(currentPrice) % 10 === 0) {
       currentPrice = Number(currentPrice) / 10
     }
     finalAmount = Number(currentPrice) * Number(notional)
 
     tradePage.getDirectionButton(currency, direction).click({ force: true })
-    if (currency == 'EURJPY') {
+    if (currency === 'EURJPY') {
       cy.wait(2000)
-      tradePage.getWaitingTextMessage(currency).then(el => {
+      tradePage.getTileResponseMessage(currency).then(el => {
         cy.log('waiting text ' + el.text())
         waitingText = el.text()
 
@@ -104,7 +101,7 @@ Cypress.Commands.add('performTrade', (symbol, notional, direction) => {
       cy.wait(5000)
     }
 
-    tradePage.getConfirmationTextMessage(currency).then(el => {
+    tradePage.getTileResponseMessage(currency).then(el => {
       cy.log('Confirmation text ' + el.text())
       confirmationText = el.text()
     })
@@ -121,7 +118,7 @@ Cypress.Commands.add('verifyPriceView', () => {
   tradePage
     .getPriceView()
     .find('path[stroke]')
-    .should('have.length', 1)
+    .should('have.length', 2)
 })
 Cypress.Commands.add('verifyGraphView', () => {
   cy.wait(3000)
@@ -139,7 +136,7 @@ Cypress.Commands.add('clickGraphView', () => {
 })
 
 Cypress.Commands.add('clickCurrencyTab', currency => {
-  if (currency.toLowerCase() == 'all') {
+  if (currency.toLowerCase() === 'all') {
     tradePage.getCurrencyTab('Symbol(all)').click({ force: true })
   } else {
     tradePage.getCurrencyTab(currency).click({ force: true })
@@ -147,7 +144,7 @@ Cypress.Commands.add('clickCurrencyTab', currency => {
 })
 
 Cypress.Commands.add('verifyCurrencyCombination', currency => {
-  if (currency.toLowerCase() == 'all') {
+  if (currency.toLowerCase() === 'all') {
     tradePage.getCurrencyCombinationList().should('have.length', 9)
   } else {
     tradePage
@@ -158,7 +155,7 @@ Cypress.Commands.add('verifyCurrencyCombination', currency => {
 })
 
 Cypress.Commands.add('verifyTradeSuccess', (notional, operation) => {
-  if (operation.toLowerCase() == 'buy') {
+  if (operation.toLowerCase() === 'buy') {
     tradeText = 'bought'
   } else {
     tradeText = 'sold'
@@ -183,7 +180,7 @@ Cypress.Commands.add('verifyTradeSuccess', (notional, operation) => {
 })
 
 Cypress.Commands.add('verifyTradeTimeoutAndSuccess', (notional, operation) => {
-  if (operation.toLowerCase() == 'buy') {
+  if (operation.toLowerCase() === 'buy') {
     tradeText = 'bought'
   } else {
     tradeText = 'sold'

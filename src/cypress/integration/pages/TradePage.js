@@ -1,60 +1,42 @@
 class TradePage {
-  getSymbol(symbol) {
+  static getTile(symbol) {
     return cy.get('div[data-testid="tile-' + symbol.replace('/', '') + '"]')
   }
-  enterNotional(symbol) {
-    return cy.get('div[data-testid="tile-' + symbol + '"] input')
+  getNotionalField(symbol) {
+    return TradePage.getTile(symbol).find('input')
   }
 
   getCurrentPrice(symbol, direction) {
-    return cy.get(
-      'div[data-testid="tile-' +
-        symbol +
-        '"] > div > div > div:nth-child(2)  > div:nth-child(2) > div > button[direction=' +
-        direction +
-        '] > div > div'
-    )
+    return TradePage.getTile(symbol).find('button[direction=' + direction + '] > div > div')
   }
 
   getDirectionButton(symbol, direction) {
-    return cy.get(
-      'div[data-testid="tile-' +
-        symbol +
-        '"] > div > div > div:nth-child(2)  > div:nth-child(2) > div > button[direction=' +
-        direction +
-        ']'
-    )
+    return TradePage.getTile(symbol).find('button[direction=' + direction + ']')
   }
 
   getRFQButton(symbol) {
-    return cy.get(
-      'div[data-testid="tile-' +
-        symbol +
-        '"] > div > div > div:nth-child(2)  > div:nth-child(2) > div > div:nth-child(4) button'
+    return TradePage.getTile(symbol).find(
+      'div > div > div:nth-child(2)  > div:nth-child(2) > div > div:nth-child(4) button'
     )
   }
 
   getRejectButton(symbol) {
-    return cy.get('div[data-testid="tile-' + symbol + '"] button[data-testid=rfqReject]')
+    return TradePage.getTile(symbol).find('button[data-testid=rfqReject]')
   }
   getRequoteButton(symbol) {
-    return cy.get(
-      'div[data-testid="tile-' +
-        symbol +
-        '"] > div > div > div:nth-child(2)  > div:nth-child(2) > div > div:nth-child(4) button'
+    return TradePage.getTile(symbol).find(
+      'div > div > div:nth-child(2)  > div:nth-child(2) > div > div:nth-child(4) button'
     )
   }
 
-  getWaitingTextMessage(symbol) {
-    return cy.get('div[data-testid=tile-' + symbol + '] div[role=dialog] > div[role=alert]')
-  }
-
-  getConfirmationTextMessage(symbol) {
-    return cy.get('div[data-testid=tile-' + symbol + '] div[role=dialog] > div[role=alert]')
+  getTileResponseMessage(symbol) {
+    return TradePage.getTile(symbol).find('div[role=dialog] > div[role=alert]')
   }
 
   getNotionalValue(symbol) {
-    return cy.get('div[data-testid="tile-' + symbol + '"] input').invoke('attr', 'value')
+    return TradePage.getTile(symbol)
+      .find(' input')
+      .invoke('attr', 'value')
   }
 
   getPriceViewButton() {

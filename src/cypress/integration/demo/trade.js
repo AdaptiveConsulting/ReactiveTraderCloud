@@ -94,6 +94,6 @@ And('User clicks on {string} tab', currency => {
   cy.clickCurrencyTab(currency)
 })
 
-Then('User sees curreiny combination only for {string}', currency => {
+Then('User sees currency combination only for {string}', currency => {
   cy.verifyCurrencyCombination(currency)
 })
