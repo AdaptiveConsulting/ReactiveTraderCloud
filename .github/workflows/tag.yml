@@ -33,7 +33,7 @@ jobs:
         run: echo "::set-output name=tag::$(git describe --tag --abbrev=0)"
 
       - name: Set up GCloud
-        uses: google-github-actions/setup-gcloud@master
+        uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
           service_account_key: ${{ secrets.GOOGLE_PRIVATE_KEY }}

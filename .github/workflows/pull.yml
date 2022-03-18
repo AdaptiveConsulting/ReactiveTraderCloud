@@ -15,7 +15,7 @@ env:
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
   BUCKET_LAUNCHER: reactive-trader-launcher-builds
-  
+
 jobs:
   build:
     name: Build & deploy
@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up GCloud
-        uses: google-github-actions/setup-gcloud@master
+        uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
           service_account_key: ${{ secrets.GOOGLE_PRIVATE_KEY }}
