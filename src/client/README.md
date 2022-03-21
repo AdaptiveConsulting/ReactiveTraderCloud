@@ -43,7 +43,7 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 Clone the repo, then install the necessary node modules:
 
 ```sh
-cd /src/new-client (TODO: restore to 'client')
+cd /src/client
 npm install
 ```
 
@@ -106,7 +106,6 @@ How to run local instance of RT storybook
 ```sh
 npm run storybook
 ```
-
 
 ## Progressive Web App (PWA)
 
