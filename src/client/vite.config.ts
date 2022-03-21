@@ -60,7 +60,7 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
         const mockPath = `${file.dir}/${file.name}.${target}.${extension}`
         return this.resolve(mockPath, importer)
       } else {
-        const rootPrefix = "new-client/src/"
+        const rootPrefix = "client/src/"
         const thisImporter = (importer || "").replace(/\\/g, "/")
         if (
           !importer ||
@@ -77,7 +77,7 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
           // so we need to strip the path by the rootPrefix first
           importedFile.dir.startsWith("/src") &&
             importerFile.dir.includes(rootPrefix)
-            ? `${importerFile.dir.split(rootPrefix)[0]}/new-client`
+            ? `${importerFile.dir.split(rootPrefix)[0]}/client`
             : importerFile.dir,
           importedFile.dir,
           `${importedFile.name}.${target.toLowerCase()}`,
