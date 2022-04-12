@@ -10,9 +10,10 @@ import {
 } from '@openfin/workspace'
 import { BASE_URL } from '../consts'
 import { deletePage, getPage, launchPage } from '../browser'
-import { getAppsAndPages, getNlpResults, HOME_ACTION_DELETE_PAGE } from './utils'
+import { getAppsAndPages, HOME_ACTION_DELETE_PAGE } from './utils'
 import { execute } from '../services/executions'
 import { getUserResult, getUserToSwitch, switchUser } from '../user'
+import { getNlpResults } from './nlpProvider'
 
 const PROVIDER_ID = 'adaptive-home-provider'
 
