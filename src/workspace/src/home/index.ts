@@ -10,9 +10,10 @@ import {
 } from '@openfin/workspace'
 import { BASE_URL } from '../consts'
 import { deletePage, getPage, launchPage } from '../browser'
-import { getAppsAndPages, getNlpResults, HOME_ACTION_DELETE_PAGE } from './utils'
+import { getAppsAndPages, HOME_ACTION_DELETE_PAGE } from './utils'
 import { execute } from '../services/executions'
 import { getUserResult, getUserToSwitch, switchUser } from '../user'
+import { getNlpResults } from './nlpProvider'
 
 const PROVIDER_ID = 'adaptive-home-provider'
 
@@ -33,6 +34,12 @@ export async function registerHome(): Promise<void> {
   ): Promise<CLISearchResponse> => {
     let query = request.query.toLowerCase()
 
+    // Open this response so we can start pushing results
+    response.open()
+    request.onClose(() => {
+      response.close()
+    })
+
     // Keep reference to lastResponseso we can revoke a page if user deletes it from search results
     if (lastResponse !== undefined) {
       lastResponse.close()
@@ -41,34 +48,18 @@ export async function registerHome(): Promise<void> {
     lastResponse.open()
 
     if (query.indexOf('/') === 0) {
-      return { results: [] }
-    }
+      await getNlpResults(query, request, response)
 
-    if (query.toLowerCase().trim() === 'switch user') {
-      return {
-        results: [getUserResult(getUserToSwitch())]
+      if (query.trim() === '/switch user') {
+        return {
+          results: [getUserResult(getUserToSwitch())]
+        }
       }
+
+      return { results: [loadingResult] }
     }
 
-    if (query.length < queryMinLength) {
-      return getAppsAndPages()
-    }
-
-    // Open this response so we can start pushing results
-    response.open()
-
-    const appsAndPages = await getAppsAndPages(query)
-    response.respond([loadingResult, ...appsAndPages.results])
-
-    await getNlpResults(query, request, response)
-
-    request.onClose(() => {
-      response.close()
-    })
-
-    return {
-      results: []
-    }
+    return getAppsAndPages(query.length < queryMinLength ? undefined : query)
   }
 
   const handlePageSelection = async (result: CLIDispatchedSearchResult) => {

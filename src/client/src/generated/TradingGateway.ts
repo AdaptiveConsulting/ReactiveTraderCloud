@@ -2,6 +2,18 @@ import * as HydraPlatform from "@adaptive/hydra-platform"
 import { Observable } from "rxjs"
 import { LocalDateConverter } from "@adaptive/hydra-codecs/dist/valueConverters"
 
+export interface EchoResponse {
+  payload: number
+}
+
+export interface EchoRequest {
+  payload: number
+}
+
+export interface SetThroughputRequest {
+  targetUpdatesPerSecond: number
+}
+
 export interface QuoteResponse {
   notional: number
   currencyPair: CurrencyPair
@@ -132,6 +144,52 @@ export interface AnalyticsRequest {
 const converters = { LocalDateConverter }
 const allocators = HydraPlatform.createOtfAllocators(converters)
 
+function EchoResponseTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      payload: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: int32TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function int32TypeDefinition() {
+  return "Int32" as const
+}
+
+function EchoRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      payload: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: int32TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function SetThroughputRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      targetUpdatesPerSecond: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: int32TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
 function QuoteResponseTypeDefinition() {
   return {
     type: "record" as const,
@@ -194,10 +252,6 @@ function CurrencyPairTypeDefinition() {
     },
     jsonConverter: undefined,
   }
-}
-
-function int32TypeDefinition() {
-  return "Int32" as const
 }
 
 function SymbolRefTypeDefinition() {
@@ -774,8 +828,8 @@ export const BlotterService = {
         methodName: "getTradeStream",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("516767086541627392"),
-        responseRouteKey: BigInt("-1282749241317622016"),
+        requestRouteKey: BigInt("4693842777780463872"),
+        responseRouteKey: BigInt("6704491644460266240"),
         annotations: [],
       },
       allocators.responseAllocator(TradeUpdatesTypeDefinition),
@@ -807,8 +861,8 @@ export const ExecutionService = {
         methodName: "executeTrade",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("1075788347945614336"),
-        responseRouteKey: BigInt("619083084394464000"),
+        requestRouteKey: BigInt("2160750334379237376"),
+        responseRouteKey: BigInt("-6377304167934472960"),
         annotations: [],
       },
       allocators.responseAllocator(ExecutionResponseTypeDefinition),
@@ -880,6 +934,40 @@ export const RfqService = {
       },
       allocators.responseAllocator(QuoteResponseTypeDefinition),
       allocators.requestAllocator(input, QuoteRequestTypeDefinition),
+    )
+  },
+}
+export const ThroughputAdminService = {
+  setThroughput: (input: SetThroughputRequest): Observable<void> => {
+    return HydraPlatform.requestResponse$(
+      {
+        serviceName: "ThroughputAdminService",
+        methodName: "setThroughput",
+        inboundStream: "one",
+        outboundStream: "empty",
+        requestRouteKey: BigInt("-4643722542766134784"),
+        responseRouteKey: BigInt("7254487604321209088"),
+        annotations: [],
+      },
+      undefined,
+      allocators.requestAllocator(input, SetThroughputRequestTypeDefinition),
+    )
+  },
+}
+export const EchoService = {
+  echo: (input: EchoRequest): Observable<EchoResponse> => {
+    return HydraPlatform.requestResponse$(
+      {
+        serviceName: "EchoService",
+        methodName: "echo",
+        inboundStream: "one",
+        outboundStream: "one",
+        requestRouteKey: BigInt("4725880620509737984"),
+        responseRouteKey: BigInt("2394643777287617536"),
+        annotations: [],
+      },
+      allocators.responseAllocator(EchoResponseTypeDefinition),
+      allocators.requestAllocator(input, EchoRequestTypeDefinition),
     )
   },
 }

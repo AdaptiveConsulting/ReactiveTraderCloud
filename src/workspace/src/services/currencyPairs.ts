@@ -18,12 +18,12 @@ export const currencyPairs$ = ReferenceDataService.getCcyPairs().pipe(
   }, {} as Record<string, CurrencyPair>)
 )
 
-export const getCurencyPair = (symbol: string) =>
-  firstValueFrom(
-    currencyPairs$.pipe(
-      map(currencyPairs => currencyPairs[symbol]),
-      distinctUntilChanged()
-    )
+export const getCurencyPair$ = (symbol: string) =>
+  currencyPairs$.pipe(
+    map(currencyPairs => currencyPairs[symbol]),
+    distinctUntilChanged()
   )
+
+export const getCurencyPair = (symbol: string) => firstValueFrom(getCurencyPair$(symbol))
 
 export const currencyPairSymbols$ = currencyPairs$.pipe(map(ccyPairs => Object.keys(ccyPairs)))
