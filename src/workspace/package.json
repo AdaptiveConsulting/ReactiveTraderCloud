@@ -35,6 +35,7 @@
     "@google-cloud/dialogflow": "^4.6.0",
     "@openfin/workspace": "^6.1.6",
     "@openfin/workspace-platform": "^6.1.6",
+    "csstype": "^3.0.11",
     "dialogflow": "^1.2.0",
     "openfin-notifications": "^1.11.0",
     "rxjs": "^7.5.2"
