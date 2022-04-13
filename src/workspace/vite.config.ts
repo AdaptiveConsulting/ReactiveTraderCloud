@@ -63,7 +63,7 @@ const setConfig = ({ mode }) => {
         '/ws': {
           target:
             process.env.VITE_HYDRA_URL ||
-            'wss://trading-web-gateway-rt-prod.demo.hydra.weareadaptive.com',
+            'wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com',
           changeOrigin: true,
           ws: true
         }
