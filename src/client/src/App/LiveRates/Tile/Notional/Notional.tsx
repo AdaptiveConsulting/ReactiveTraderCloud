@@ -108,10 +108,9 @@ export const NotionalInputInner: React.FC<Props> = ({
   canReset,
   onReset,
 }) => (
-  <InputWrapper>
+  <InputWrapper {...nonDraggableChildProps}>
     <CurrencyPairSymbol htmlFor={id}>{base}</CurrencyPairSymbol>
     <Input
-      {...nonDraggableChildProps}
       type="text"
       id={id}
       className={!valid ? `is-invalid` : undefined}
