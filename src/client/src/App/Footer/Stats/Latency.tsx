@@ -1,5 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { EMPTY, of, timer } from "rxjs"
+import { of, timer } from "rxjs"
 import { ajax } from "rxjs/ajax"
 import { catchError, map, switchMap } from "rxjs/operators"
 
@@ -23,5 +23,9 @@ const [useLatency] = bind(
 
 export const Latency = () => {
   const latency = useLatency()
-  return latency ? <div>Latency: {latency}ms</div> : null
+  return latency ? (
+    <div>
+      UI Latency: <span>{latency}ms</span>
+    </div>
+  ) : null
 }

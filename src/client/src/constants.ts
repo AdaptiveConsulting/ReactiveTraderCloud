@@ -17,4 +17,5 @@ export const ROUTES_CONFIG = {
   blotter: "/blotter",
   analytics: "/analytics",
   styleguide: "/styleguide",
+  admin: "/admin",
 }

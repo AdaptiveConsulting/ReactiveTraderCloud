@@ -35,13 +35,7 @@ const Styleguide: FC = () => {
 
   return (
     <>
-      <Helmet title={"Style Guide for Reactive Trader®"}>
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-        />
-      </Helmet>
+      <Helmet title={"Style Guide for Reactive Trader®"} />
       <Root>
         <FloatingTools />
         <Introduction key="introduction" />

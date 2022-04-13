@@ -41,5 +41,9 @@ currencyPairs$.subscribe((currencyPairs) => {
 export const Updates = () => {
   const count = useUpdatesPerSecond()
 
-  return <div>UI Updates: {count}/sec</div>
+  return (
+    <div>
+      UI Updates: <span>{count}/sec</span>
+    </div>
+  )
 }

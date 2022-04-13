@@ -10,86 +10,95 @@ import { LiveRates } from "@/App/LiveRates"
 import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { lazy, Suspense } from "react"
+import { Admin } from "@/App/Admin"
+import { FEATURE_FLAG, useFeature } from "@/utils/featureFlag"
 
 const StyleguideRoute = lazy(() => import("@/styleguide"))
 
-export const WebApp: React.FC = () => (
-  <Suspense fallback={<div />}>
-    <BrowserRouter basename={BASE_PATH}>
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={() => (
-            <>
-              <DisconnectionOverlay />
-              <MainRoute />
-            </>
-          )}
-        />
-        <Route
-          path={ROUTES_CONFIG.tile}
-          render={({
-            location: { search },
-            match: {
-              params: { symbol },
-            },
-          }) => {
-            const query = new URLSearchParams(search)
-            const view = query.has("tileView")
-              ? (query.get("tileView") as TileView)
-              : TileView.Analytics
+export const WebApp: React.FC = () => {
+  const canUseAdmin = useFeature(FEATURE_FLAG.ADMIN)
 
-            return (
+  return (
+    <Suspense fallback={<div />}>
+      <BrowserRouter basename={BASE_PATH}>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={() => (
               <>
                 <DisconnectionOverlay />
-                <TearOutRouteWrapper>
-                  <TornOutTile symbol={symbol!} view={view} />
-                </TearOutRouteWrapper>
+                <MainRoute />
               </>
-            )
-          }}
-        />
-        <Route
-          path={ROUTES_CONFIG.styleguide}
-          render={() => <StyleguideRoute />}
-        />
-        <TearOutContext.Provider value={{ isTornOut: true }}>
+            )}
+          />
           <Route
-            path={ROUTES_CONFIG.tiles}
-            render={() => {
+            path={ROUTES_CONFIG.tile}
+            render={({
+              location: { search },
+              match: {
+                params: { symbol },
+              },
+            }) => {
+              const query = new URLSearchParams(search)
+              const view = query.has("tileView")
+                ? (query.get("tileView") as TileView)
+                : TileView.Analytics
+
               return (
                 <>
-                  <LiveRates />
                   <DisconnectionOverlay />
+                  <TearOutRouteWrapper>
+                    <TornOutTile symbol={symbol!} view={view} />
+                  </TearOutRouteWrapper>
                 </>
               )
             }}
           />
           <Route
-            path={ROUTES_CONFIG.blotter}
-            render={() => {
-              return (
-                <>
-                  <Trades />
-                  <DisconnectionOverlay />
-                </>
-              )
-            }}
+            path={ROUTES_CONFIG.styleguide}
+            render={() => <StyleguideRoute />}
           />
-          <Route
-            path={ROUTES_CONFIG.analytics}
-            render={() => {
-              return (
-                <>
-                  <Analytics hideIfMatches={""} />
-                  <DisconnectionOverlay />
-                </>
-              )
-            }}
-          />
-        </TearOutContext.Provider>
-      </Switch>
-    </BrowserRouter>
-  </Suspense>
-)
+          {canUseAdmin && (
+            <Route path={ROUTES_CONFIG.admin} render={() => <Admin />} />
+          )}
+          <TearOutContext.Provider value={{ isTornOut: true }}>
+            <Route
+              path={ROUTES_CONFIG.tiles}
+              render={() => {
+                return (
+                  <>
+                    <LiveRates />
+                    <DisconnectionOverlay />
+                  </>
+                )
+              }}
+            />
+            <Route
+              path={ROUTES_CONFIG.blotter}
+              render={() => {
+                return (
+                  <>
+                    <Trades />
+                    <DisconnectionOverlay />
+                  </>
+                )
+              }}
+            />
+            <Route
+              path={ROUTES_CONFIG.analytics}
+              render={() => {
+                return (
+                  <>
+                    <Analytics hideIfMatches={""} />
+                    <DisconnectionOverlay />
+                  </>
+                )
+              }}
+            />
+          </TearOutContext.Provider>
+        </Switch>
+      </BrowserRouter>
+    </Suspense>
+  )
+}
