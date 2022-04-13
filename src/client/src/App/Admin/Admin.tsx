@@ -1,4 +1,9 @@
-import { useState } from "react"
+import { ThroughputAdminService } from "@/generated/TradingGateway"
+import { withSubscriber } from "@/utils/withSubscriber"
+import { bind } from "@react-rxjs/core"
+import { createSignal } from "@react-rxjs/utils"
+import { EMPTY } from "rxjs"
+import { catchError, debounceTime, switchMap } from "rxjs/operators"
 import styled from "styled-components"
 
 const Wrapper = styled.div`
@@ -59,12 +64,30 @@ const InputSlider = styled.input`
   }
 `
 
-export const Admin = () => {
-  // TODO - Tie throughput to the backend so we can update in multiple places?
-  const [throughput, setThroughput] = useState<string>("1000")
+const [throughput$, setThroughput] = createSignal<number>()
+const [useThroughput] = bind(throughput$, 1000)
+
+// TODO - What (if any) UI feedback do we want on response
+throughput$
+  .pipe(
+    debounceTime(300),
+    switchMap((value) => {
+      return ThroughputAdminService.setThroughput({
+        targetUpdatesPerSecond: value,
+      })
+    }),
+    catchError((e) => {
+      console.log("Error setting throughput", e)
+      return EMPTY
+    }),
+  )
+  .subscribe()
+
+const AdminComponent = () => {
+  const throughput = useThroughput()
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setThroughput(e.currentTarget.value)
+    setThroughput(parseInt(e.currentTarget.value))
   }
 
   return (
@@ -92,3 +115,5 @@ export const Admin = () => {
     </Wrapper>
   )
 }
+
+export const Admin = withSubscriber(AdminComponent)
