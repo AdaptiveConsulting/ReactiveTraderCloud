@@ -7,18 +7,25 @@ import {
 } from '@openfin/workspace'
 import { filter, Subscription, take, takeUntil, withLatestFrom } from 'rxjs'
 import { format } from 'date-fns'
+// TODO - move into common place
 import {
   customNumberFormatter,
   significantDigitsNumberFormatter,
   DECIMAL_SEPARATOR
 } from '../../../client/src/utils/formatNumber'
 import { BASE_URL, VITE_RT_URL } from '../consts'
-import { CurrencyPair, Direction } from '../generated/TradingGateway'
+import { CurrencyPair, Direction, Trade, TradeStatus } from '../generated/TradingGateway'
 import { executing$, executionResponse$ } from '../services/executions'
 import { getNlpIntent, NlpIntentType } from '../services/nlpService'
 import { getPriceForSymbol$, Price, prices$ } from '../services/prices'
 import { tradesStream$ } from '../services/trades'
-import { createButton, createContainer, createImage, createText } from '../templates'
+import {
+  createButton,
+  createContainer,
+  createImage,
+  createText,
+  createTextContainer
+} from '../templates'
 import { currencyPairs$, getCurencyPair$ } from '../services/currencyPairs'
 
 const MOVEMENT_UP_ICON = `${BASE_URL}/images/icons/up.svg`
@@ -292,6 +299,87 @@ const constructTradeExecutionTemplateContent = (
   }
 }
 
+const constructTradeExecutedTemplateContent = (trade: Trade) => {
+  const fontSize = 12
+
+  if (trade.status === TradeStatus.Done) {
+    const inverseTextStyle = { backgroundColor: 'white', color: '#01C38D', fontWeight: 'bold' }
+    const fontSize = 12
+
+    const layout: TemplateFragment = createContainer(
+      'column',
+      [
+        createTextContainer([createText('tradeId')], { fontWeight: 'bold', marginBottom: '10px' }),
+        createTextContainer([
+          createText('direction', fontSize),
+          createText('notional', fontSize, inverseTextStyle),
+          createText('rateLabel', fontSize),
+          createText('rate', fontSize, inverseTextStyle),
+          createText('forLabel', fontSize),
+          createText('amount', fontSize, { fontWeight: 'bold', fontStyle: 'italic' }),
+          createText('settleLabel', fontSize),
+          createText('settleDate', fontSize, { fontWeight: 'bold' })
+        ])
+      ],
+      {
+        padding: '10px',
+        height: '100%',
+        justifyContent: 'center',
+        textAlign: 'center',
+        backgroundColor: '#01C38D',
+        color: 'white'
+      }
+    )
+
+    const base = trade.currencyPair.slice(0, 3)
+    const terms = trade.currencyPair.slice(3, 6)
+    const data = {
+      tradeId: `Trade ID: ${trade.tradeId.toString()}`,
+      direction: `You ${trade.direction === Direction.Buy ? 'bought' : 'sold'} `,
+      notional: `${base} ${nf.format(trade.notional)}`,
+      rateLabel: ' at a rate of ',
+      rate: trade.spotRate.toString(),
+      forLabel: ' for ',
+      amount: `${terms} ${nf.format(trade.notional * trade.spotRate)}`,
+      settleLabel: ` settling (Spt) `,
+      settleDate: format(new Date(trade.valueDate), 'dd MMM')
+    }
+
+    return {
+      layout,
+      data
+    }
+  }
+
+  const layout: TemplateFragment = createContainer(
+    'column',
+    [
+      createTextContainer([createText('tradeId')], { fontWeight: 'bold', marginBottom: '10px' }),
+      createTextContainer([createText('rejectedLabel', fontSize)])
+    ],
+    {
+      padding: '10px',
+      height: '100%',
+      justifyContent: 'center',
+      textAlign: 'center',
+      backgroundColor: '#FF274B',
+      color: 'white'
+    }
+  )
+
+  const data = {
+    tradeId: `Trade ID: ${trade.tradeId.toString()}`,
+    rejectedLabel: 'Your trade has been rejected'
+  }
+
+  return {
+    layout,
+    data
+  }
+}
+
+const nf = new Intl.NumberFormat('default')
+
 export const getNlpResults = async (
   query: string,
   request: CLISearchListenerRequest,
@@ -312,7 +400,6 @@ export const getNlpResults = async (
   }
 
   console.log('Intent', intent)
-  const nf = new Intl.NumberFormat('default')
 
   switch (intent.type) {
     case NlpIntentType.SpotQuote: {
@@ -514,14 +601,15 @@ export const getNlpResults = async (
               },
               actions: [{ name: `Launch Trades`, hotkey: 'enter' }],
               // @ts-ignore
-              template: CLITemplate.List,
-              templateContent: [
-                [trade.tradeId, trade.status],
-                ['Symbol', trade.currencyPair],
-                ['Notional', nf.format(trade.notional)],
-                [trade.direction, trade.spotRate],
-                ['Date', new Date(trade.tradeDate)]
-              ]
+              template: CLITemplate.Custom,
+              templateContent: constructTradeExecutedTemplateContent(trade)
+              // templateContent: [
+              //   [trade.tradeId, trade.status],
+              //   ['Symbol', trade.currencyPair],
+              //   ['Notional', nf.format(trade.notional)],
+              //   [trade.direction, trade.spotRate],
+              //   ['Date', new Date(trade.tradeDate)]
+              // ]
             }
           ])
         })

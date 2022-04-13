@@ -25,6 +25,19 @@ export function createContainer(
   }
 }
 
+export function createTextContainer(
+  children: TemplateFragment[],
+  style?: CSS.Properties
+): PlainContainerTemplateFragment {
+  return {
+    type: TemplateFragmentTypes.Container,
+    style: {
+      ...style
+    },
+    children
+  }
+}
+
 export function createText(
   dataKey: string,
   fontSize: number = 14,
