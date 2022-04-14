@@ -60,7 +60,7 @@ export const MainRoute: React.FC = () => {
         handleTearOutSection(section)
       }
     }
-  }, [tearOutEntry])
+  }, [tearOutEntry, tornOutSectionState])
 
   return (
     <Wrapper>
