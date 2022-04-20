@@ -1,25 +1,28 @@
 import { EchoService } from "@/generated/TradingGateway"
+import { withConnection } from "@/services/withConnection"
 import { bind } from "@react-rxjs/core"
-import { of, timer } from "rxjs"
-import { ajax } from "rxjs/ajax"
+import { EMPTY, timer } from "rxjs"
 import { catchError, map, switchMap } from "rxjs/operators"
 
+let count = 0
 const [useLatency] = bind(
-  timer(0, 10000).pipe(
+  timer(0, 1000).pipe(
+    withConnection(),
     switchMap(() => {
       const start = new Date().getTime()
-      return EchoService.echo({ payload: new Date().getTime() }).pipe(
+      return EchoService.echo({ payload: count++ }).pipe(
         map(() => {
           const stop = new Date().getTime()
           return stop - start
         }),
         catchError((e) => {
           console.log("Error pinging echo service", e)
-          return of(undefined)
+          return EMPTY
         }),
       )
     }),
   ),
+  null,
 )
 
 export const Latency = () => {

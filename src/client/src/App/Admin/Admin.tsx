@@ -2,8 +2,8 @@ import { ThroughputAdminService } from "@/generated/TradingGateway"
 import { withSubscriber } from "@/utils/withSubscriber"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { EMPTY } from "rxjs"
-import { catchError, debounceTime, switchMap } from "rxjs/operators"
+import { EMPTY, of } from "rxjs"
+import { catchError, debounceTime, switchMap, tap } from "rxjs/operators"
 import styled from "styled-components"
 
 const Wrapper = styled.div`
@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 const Row = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 `
 
 const Label = styled.label`
@@ -64,27 +65,52 @@ const InputSlider = styled.input`
   }
 `
 
+const ResultMessage = styled.div<{ result: boolean }>`
+  background-color: ${({ result, theme }) =>
+    result ? theme.accents.positive.base : theme.accents.negative.base};
+  color: ${({ theme }) => theme.white};
+  padding: 0.5rem;
+  font-size: 0.65rem;
+`
+
 const [throughput$, setThroughput] = createSignal<number>()
 const [useThroughput] = bind(throughput$, 1000)
+const [result$, setResult] = createSignal<number | Error | undefined>()
+const [useResult] = bind(result$, undefined)
 
 // TODO - What (if any) UI feedback do we want on response
 throughput$
   .pipe(
     debounceTime(300),
     switchMap((value) => {
-      return ThroughputAdminService.setThroughput({
+      ThroughputAdminService.setThroughput({
         targetUpdatesPerSecond: value,
-      })
-    }),
-    catchError((e) => {
-      console.log("Error setting throughput", e)
+      }).pipe(
+        catchError((e) => {
+          console.log("Error setting throughput", e)
+          setResult(e)
+          return EMPTY
+        }),
+      )
+
+      setResult(value)
       return EMPTY
+    }),
+  )
+  .subscribe()
+
+result$
+  .pipe(
+    debounceTime(3000),
+    tap(() => {
+      setResult(undefined)
     }),
   )
   .subscribe()
 
 const AdminComponent = () => {
   const throughput = useThroughput()
+  const result = useResult()
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     setThroughput(parseInt(e.currentTarget.value))
@@ -112,6 +138,13 @@ const AdminComponent = () => {
           step={10}
         />
       </Row>
+      {result !== undefined && (
+        <ResultMessage result={typeof result === "number"}>
+          {typeof result === "number"
+            ? `Throughput has been set to ${result}`
+            : "Error setting throughput"}
+        </ResultMessage>
+      )}
     </Wrapper>
   )
 }
