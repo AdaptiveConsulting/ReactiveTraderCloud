@@ -6,16 +6,25 @@ import { registerNotifications } from './home/notifications'
 import { BASE_URL } from './consts'
 import { customActions, overrideCallback } from './browser'
 
+const icon = `${BASE_URL}/images/icons/adaptive.png`
+
 async function init() {
   await workspacePlatformInit({
     browser: {
-      overrideCallback
+      overrideCallback,
+      defaultWindowOptions: {
+        icon,
+        workspacePlatform: {
+          pages: [],
+          favicon: icon
+        }
+      }
     },
     customActions,
     theme: [
       {
         label: 'Dark',
-        logoUrl: `${BASE_URL}/images/icons/adaptive.png`,
+        logoUrl: icon,
         palette: {
           brandPrimary: '#282E39',
           brandSecondary: '#FFF',
