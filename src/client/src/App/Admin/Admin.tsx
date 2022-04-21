@@ -73,12 +73,13 @@ const ResultMessage = styled.div<{ result: boolean }>`
   font-size: 0.65rem;
 `
 
+// TODO - Should we get the current throughput level from service?
+const INITIAL_THROUGHPUT = 10
 const [throughput$, setThroughput] = createSignal<number>()
-const [useThroughput] = bind(throughput$, 1000)
+const [useThroughput] = bind(throughput$, INITIAL_THROUGHPUT)
 const [result$, setResult] = createSignal<number | Error | undefined>()
 const [useResult] = bind(result$, undefined)
 
-// TODO - What (if any) UI feedback do we want on response
 throughput$
   .pipe(
     debounceTime(300),
@@ -134,7 +135,7 @@ const AdminComponent = () => {
           value={throughput}
           onChange={onChange}
           min={0}
-          max={5000}
+          max={1000}
           step={10}
         />
       </Row>

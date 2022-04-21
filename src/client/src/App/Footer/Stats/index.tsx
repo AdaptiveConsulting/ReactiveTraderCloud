@@ -3,6 +3,7 @@ import { Latency } from "./Latency"
 import { UpdatesHistoricalGraph } from "./UpdatesHistoricalGraph"
 import styled from "styled-components"
 import { AdminButton } from "./AdminButton"
+import { LatencyHistoricalGraph } from "./LatencyHistoricalGraph"
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ export const Stats = () => (
   <Wrapper>
     <UpdatesHistoricalGraph />
     <Updates />
+    <LatencyHistoricalGraph />
     <Latency />
     <AdminButton />
   </Wrapper>

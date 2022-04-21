@@ -2,10 +2,10 @@ import { EchoService } from "@/generated/TradingGateway"
 import { withConnection } from "@/services/withConnection"
 import { bind } from "@react-rxjs/core"
 import { EMPTY, timer } from "rxjs"
-import { catchError, map, switchMap } from "rxjs/operators"
+import { catchError, map, scan, switchMap } from "rxjs/operators"
 
 let count = 0
-const [useLatency] = bind(
+const [useLatency, latency$] = bind(
   timer(0, 1000).pipe(
     withConnection(),
     switchMap(() => {
@@ -22,7 +22,23 @@ const [useLatency] = bind(
       )
     }),
   ),
-  null,
+  0,
+)
+
+const MAX_SECONDS = 30
+export const [useLatencyHistory, latencyHistory$] = bind(
+  latency$.pipe(
+    scan(
+      (acc, value) => {
+        acc.push(value)
+        if (acc.length > MAX_SECONDS) {
+          acc.splice(0, 1)
+        }
+        return [...acc]
+      },
+      [0],
+    ),
+  ),
 )
 
 export const Latency = () => {
