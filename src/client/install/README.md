@@ -47,14 +47,28 @@ Below you can find links to the installers for the various platforms.
 
 ---
 
+## Openfin Workspace
+
+| Environment | Windows                    |
+| ----------- | -------------------------- |
+| Demo        | [Download][workspace-demo] |
+| UAT         | [Download][workspace-uat]  |
+| Dev         | [Download][workspace-dev]  |
+
+[workspace-demo]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-Demo&unzipped=true
+[workspace-uat]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-UAT&unzipped=true
+[workspace-dev]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-Dev&unzipped=true
+
+---
+
 ## Finsemble Toolbar
 
 Download and run the exe below to install the integrated toolbar on your desktop, including Reactive Trader® components and workspaces.
 
-| Environment | Windows |
-|-------------|---------|
-| Demo | [Download][fsbl-win-demo-exe] |
-| UAT | [Download][fsbl-win-uat-exe] |
+| Environment | Windows                       |
+| ----------- | ----------------------------- |
+| Demo        | [Download][fsbl-win-demo-exe] |
+| UAT         | [Download][fsbl-win-uat-exe]  |
 
 [fsbl-win-demo-exe]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsemble.exe
 [fsbl-win-uat-exe]: https://storage.googleapis.com/reactive-trader-finsemble-uat/pkg/ReactiveTraderFinsemble.exe
