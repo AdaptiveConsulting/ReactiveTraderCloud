@@ -41,8 +41,7 @@ async function init() {
   await connectToGateway({
     url: `${window.location.origin}/ws`,
     interceptor: () => null,
-    autoReconnect: true,
-    useJson: true
+    autoReconnect: true
   })
 
   const providerWindow = fin.Window.getCurrentSync()
