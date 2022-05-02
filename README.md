@@ -2,17 +2,17 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/AdaptiveConsulting/ReactiveTraderCloud)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/latest)
 [![GitHub](https://img.shields.io/github/license/AdaptiveConsulting/ReactiveTraderCloud)](https://opensource.org/licenses/Apache-2.0)
 
-[![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/adaptive-logo.png)](http://weareadaptive.com/)
+[![image](images/adaptive-logo.svg)](http://weareadaptive.com/)
 
 # Reactive Trader®
 
 Reactive Trader® is a real-time FX trading platform designed to showcase reactive programming principles across the full application stack.
 
-Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/ReactiveTrader), and now in React, React-RxJS, Node.js and running on [Hyrda](https://weareadaptive.com/platform-solutions/), we continue to evolve the platform to use the latest technologies.
+Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/ReactiveTrader), and now in React, React-RxJS, Node.js and running on [Hydra](https://weareadaptive.com/platform-solutions/), we continue to evolve the platform to use the latest technologies.
 
 Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full list of the latest features.
 
-![image](docs/reactive-trader.gif)
+![image](src/workspace/public/images/previews/reactive-trader.PNG)
 
 ## Demo
 
