@@ -1,4 +1,3 @@
-import { broadcast } from "@finos/fdc3"
 import styled, { css } from "styled-components"
 import { Trade, TradeStatus } from "@/services/trades"
 import {
@@ -8,6 +7,7 @@ import {
   useTableTrades,
 } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
+import useInterApplicationBus from "./useInterApplicationBus"
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -144,26 +144,13 @@ export const TradesGridInner: React.FC<{
 export const TradesGrid: React.FC = () => {
   const trades = useTableTrades()
   const highlightedRow = useTradeRowHighlight()
-
-  const tryBroadcastContext = (symbol: string) => {
-    const context = {
-      type: "fdc3.instrument",
-      id: { ticker: symbol },
-    }
-
-    if (window.fdc3) {
-      broadcast(context)
-    } else if (window.fin) {
-      // @ts-ignore
-      fin.me.interop.setContext(context)
-    }
-  }
+  const dispatchSelectedSymbol = useInterApplicationBus()
 
   return (
     <TradesGridInner
       trades={trades}
       highlightedRow={highlightedRow}
-      onRowClick={tryBroadcastContext}
+      onRowClick={dispatchSelectedSymbol}
     />
   )
 }
