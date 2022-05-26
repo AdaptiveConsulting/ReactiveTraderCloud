@@ -18,4 +18,4 @@ export const WithoutSelectionSpecified = Template.bind({})
 WithoutSelectionSpecified.args = {}
 
 export const WithSelectionSpecified = Template.bind({})
-WithSelectionSpecified.args = { selection: "Ringo" }
+WithSelectionSpecified.args = { selectedOption: "Ringo" }

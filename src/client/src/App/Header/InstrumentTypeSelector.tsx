@@ -23,7 +23,7 @@ const InstrumentTypeSelector: FC = () => {
       onSelectionChange={(selection) => {
         handleInstrumentTypeSelection(selection as InstrumentType)
       }}
-      selection={
+      selectedOption={
         location.pathname === ROUTES_CONFIG.credit
           ? InstrumentType.CREDIT
           : InstrumentType.FX

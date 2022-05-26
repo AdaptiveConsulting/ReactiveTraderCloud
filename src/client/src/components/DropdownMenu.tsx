@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { usePopUpMenu } from "@/utils/usePopUpMenu"
 import styled from "styled-components"
 import { FaCheck, FaChevronDown, FaChevronUp } from "react-icons/fa"
@@ -57,20 +57,26 @@ const AlignedDown = styled(FaChevronDown)`
 `
 
 interface Props {
-  selection?: string
+  selectedOption?: string
   options: string[]
   onSelectionChange: (selection: string) => void
 }
 
 export const DropdownMenu: React.FC<Props> = ({
-  selection,
+  selectedOption,
   options,
   onSelectionChange,
 }) => {
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
-  const [selected, setSelected] = useState(selection ?? options[0])
+  const [selected, setSelected] = useState(selectedOption ?? options[0])
   const toggleOpenCloseState = () => setDisplayMenu(!displayMenu)
+
+  useEffect(() => {
+    if (selectedOption) {
+      setSelected(selectedOption)
+    }
+  }, [selectedOption])
 
   const handleSelection = (option: string) => {
     setSelected(option)

@@ -2,13 +2,9 @@ import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { startWith } from "rxjs/operators"
 
-const ALL_CURRENCIES_ = Symbol("all")
-export type AllCurrencies = typeof ALL_CURRENCIES_
-export const ALL_CURRENCIES = ALL_CURRENCIES_ as AllCurrencies
+export const ALL_CURRENCIES = "ALL"
 
-const [selectedCurrencyInput$, onSelectCurrency] = createSignal<
-  string | AllCurrencies
->()
+const [selectedCurrencyInput$, onSelectCurrency] = createSignal<string>()
 
 export { onSelectCurrency }
 export const [useSelectedCurrency, selectedCurrency$] = bind(
