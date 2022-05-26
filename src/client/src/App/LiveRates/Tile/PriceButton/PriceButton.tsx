@@ -83,7 +83,7 @@ export const PriceButtonInner: React.FC<PriceButtonProps> = ({
   isStatic,
   onClick,
 }) => {
-  const { pipsPosition, ratePrecision, symbol } = currencyPair
+  const { pipsPosition, ratePrecision } = currencyPair
   const rateString = price.toFixed(ratePrecision)
   const [wholeNumber, fractions_] = rateString.split(".")
   const fractions = fractions_ || "00000"
