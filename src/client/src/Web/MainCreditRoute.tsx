@@ -1,15 +1,20 @@
+import { CreditRfqForm } from "@/App/CreditRfqForm"
+import Resizer from "@/components/Resizer"
 import styled from "styled-components"
 import MainLayout from "./MainLayout"
 
 const Placeholder = styled.div`
-  font-size: 3em;
-  margin: auto;
+  margin: 3em;
 `
 
 const MainCreditRoute: React.FC = () => {
   return (
     <MainLayout>
-      <Placeholder>Credit Dashboard Placeholder</Placeholder>
+      <Resizer defaultHeight={30}>
+        <Placeholder>RFQ List Placeholder</Placeholder>
+        <Placeholder>Credit Blotter Placeholder</Placeholder>
+      </Resizer>
+      <CreditRfqForm />
     </MainLayout>
   )
 }
