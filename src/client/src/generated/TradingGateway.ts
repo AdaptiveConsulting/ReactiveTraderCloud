@@ -538,7 +538,6 @@ function DealerIdListTypeDefinition() {
     },
     elementLength: { bitLength: 32, byteLength: 4 },
     elementType: DealerIdTypeDefinition,
-    lengthEncoding: undefined,
     firstElementOffset: 2,
   }
 }
@@ -725,7 +724,7 @@ function DealerBodyTypeDefinition() {
     fields: {
       id: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: DealerIdTypeDefinition,
+        type: InstrumentIdTypeDefinition,
       },
       name: {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
@@ -932,7 +931,6 @@ function CurrencyPairUpdateListTypeDefinition() {
     },
     elementLength: { bitLength: 40, byteLength: 5 },
     elementType: CurrencyPairUpdateTypeDefinition,
-    lengthEncoding: undefined,
     firstElementOffset: 2,
   }
 }
@@ -1028,10 +1026,6 @@ function PriceTickListTypeDefinition() {
     },
     elementLength: { bitLength: 320, byteLength: 40 },
     elementType: PriceTickTypeDefinition,
-    lengthEncoding: {
-      encodingType: "UInt24" as const,
-      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
-    },
     firstElementOffset: 5,
   }
 }
@@ -1267,10 +1261,6 @@ function TradeListTypeDefinition() {
     },
     elementLength: { bitLength: 384, byteLength: 48 },
     elementType: TradeTypeDefinition,
-    lengthEncoding: {
-      encodingType: "UInt24" as const,
-      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
-    },
     firstElementOffset: 5,
   }
 }
@@ -1309,10 +1299,6 @@ function HistoricPositionListTypeDefinition() {
     },
     elementLength: { bitLength: 96, byteLength: 12 },
     elementType: HistoricPositionTypeDefinition,
-    lengthEncoding: {
-      encodingType: "UInt24" as const,
-      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
-    },
     firstElementOffset: 5,
   }
 }
@@ -1351,10 +1337,6 @@ function CurrencyPairPositionListTypeDefinition() {
     },
     elementLength: { bitLength: 224, byteLength: 28 },
     elementType: CurrencyPairPositionTypeDefinition,
-    lengthEncoding: {
-      encodingType: "UInt24" as const,
-      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
-    },
     firstElementOffset: 5,
   }
 }
@@ -1658,93 +1640,4 @@ export const WorkflowService = {
       allocators.requestAllocator(input, SubscribeRequestTypeDefinition),
     )
   },
-}
-
-export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiation.Compatibility> {
-  return HydraPlatform.VersionNegotiation.VersionNegotiationService.checkCompatibility(
-    {
-      methods: [
-        {
-          serviceName: "AnalyticsService",
-          methodName: "getAnalytics",
-          methodRouteKey: BigInt("7193047013647582464"),
-        },
-        {
-          serviceName: "BlotterService",
-          methodName: "getTradeStream",
-          methodRouteKey: BigInt("4693842777780463872"),
-        },
-        {
-          serviceName: "LoginService",
-          methodName: "login",
-          methodRouteKey: BigInt("4665269211409501952"),
-        },
-        {
-          serviceName: "ExecutionService",
-          methodName: "executeTrade",
-          methodRouteKey: BigInt("2160750334379237376"),
-        },
-        {
-          serviceName: "PricingService",
-          methodName: "getPriceUpdates",
-          methodRouteKey: BigInt("8413700287026779648"),
-        },
-        {
-          serviceName: "PricingService",
-          methodName: "getPriceHistory",
-          methodRouteKey: BigInt("1528078832124954880"),
-        },
-        {
-          serviceName: "ReferenceDataService",
-          methodName: "getCcyPairs",
-          methodRouteKey: BigInt("3148703404362059776"),
-        },
-        {
-          serviceName: "ThroughputAdminService",
-          methodName: "setThroughput",
-          methodRouteKey: BigInt("-4643722542766134784"),
-        },
-        {
-          serviceName: "EchoService",
-          methodName: "echo",
-          methodRouteKey: BigInt("4725880620509737984"),
-        },
-        {
-          serviceName: "InstrumentService",
-          methodName: "subscribe",
-          methodRouteKey: BigInt("5328048580688377088"),
-        },
-        {
-          serviceName: "DealerService",
-          methodName: "subscribe",
-          methodRouteKey: BigInt("-5930757203928622592"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "createRfq",
-          methodRouteKey: BigInt("6846475326928265472"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "cancelRfq",
-          methodRouteKey: BigInt("-8355330331912118016"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "createQuote",
-          methodRouteKey: BigInt("-2467519023705392384"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "acceptQuote",
-          methodRouteKey: BigInt("-6126182223000772608"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "subscribe",
-          methodRouteKey: BigInt("1508092992556508416"),
-        },
-      ],
-    },
-  )
 }
