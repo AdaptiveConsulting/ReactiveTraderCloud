@@ -725,7 +725,7 @@ function DealerBodyTypeDefinition() {
     fields: {
       id: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: InstrumentIdTypeDefinition,
+        type: DealerIdTypeDefinition,
       },
       name: {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
