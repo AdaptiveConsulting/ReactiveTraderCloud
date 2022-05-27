@@ -94,62 +94,15 @@ export const IconWrapper = styled.div`
   color: ${({ theme }) => theme.core.textColor};
 `
 
-export const DropdownWrapper = styled.div`
-  display: none;
-  position: relative;
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  border-radius: 4px;
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 12px;
-  outline: none;
-  padding: 8px 15px 5px 15px;
-  cursor: pointer;
-  transition: all 200ms ease;
-
+export const CurrencyDropdown = styled.div`
+  @media (min-width: 915px) {
+    display: none;
+  }
   @media (max-width: 915px) {
     display: flex;
     justify-content: space-between;
   }
-
   @media (max-width: 400px) {
     padding-top: 10px;
-  }
-
-  .dd-placeholder {
-    padding-right: 20px;
-  }
-
-  i {
-    font-size: 10px;
-  }
-`
-
-export const DropdownMenu = styled.div`
-  border-radius: 4px;
-  position: absolute;
-  top: 40px;
-  left: 0px;
-  background-color: ${({ theme }) => theme.primary.base};
-  padding: 6px;
-  box-shadow: 0 7px 26px 0 rgba(23, 24, 25, 0.5);
-  z-index: 100;
-`
-
-export const DropdownOption = styled.div<{ selected: boolean }>`
-  padding: 8px 8px 5px 8px;
-  font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
-  background-color: ${({ selected, theme }) =>
-    selected ? theme.core.activeColor : "inherit"};
-  border-radius: 2px;
-  margin-bottom: 5px;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
-    font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
-    text-decoration: underline;
-  }
-
-  i {
-    padding-left: 20px;
   }
 `

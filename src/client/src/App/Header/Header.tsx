@@ -10,6 +10,8 @@ import {
   Fill,
 } from "./Header.styles"
 import { PWABanner, PWAInstallBanner, PWALaunchButton } from "./PWA"
+import { IS_CREDIT_ENABLED } from "@/constants"
+import InstrumentTypeSelector from "./InstrumentTypeSelector"
 
 interface Props {
   logo?: ReactNode
@@ -40,7 +42,14 @@ const defaultLogo = (
 
 const defaultFiller = <Fill aria-hidden={true} />
 
-const defaultSwitches = <ThemeSwitcher />
+const DefaultSwitches: FC = () => {
+  return (
+    <>
+      {IS_CREDIT_ENABLED && <InstrumentTypeSelector />}
+      <ThemeSwitcher />
+    </>
+  )
+}
 
 const defaultControls = <LoginControls />
 
@@ -64,7 +73,7 @@ const Header: FC<Props> = ({ logo, filler, controls, switches }) => {
         {filler || defaultFiller}
 
         <HeaderNav>
-          {switches || defaultSwitches}
+          {switches || <DefaultSwitches />}
           {controls || defaultControls}
           <PWALaunchButton state={banner} setIsModalOpen={setIsModalOpen} />
         </HeaderNav>

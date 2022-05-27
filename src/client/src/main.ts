@@ -5,7 +5,7 @@ import { register } from "@/Web/serviceWorkerRegistration"
 import { showCacheUpdateModal } from "@/Web/cacheUpdateModal"
 import { WebApp } from "@/Web"
 
-export const gaDimension = 'browser';
+export const gaDimension = "browser"
 
 export const getMainApp: () => React.FC = () => {
   if (import.meta.env.PROD) {

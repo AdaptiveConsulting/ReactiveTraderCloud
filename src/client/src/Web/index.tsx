@@ -2,7 +2,7 @@ import { TileView } from "@/App/LiveRates/selectedView"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
-import { MainRoute } from "./MainRoute"
+import { MainFxRoute } from "./MainFxRoute"
 import { TearOutRouteWrapper } from "./Web.styles"
 import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
@@ -12,6 +12,7 @@ import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { lazy, Suspense } from "react"
 
 const StyleguideRoute = lazy(() => import("@/styleguide"))
+const MainCreditRoute = lazy(() => import("./MainCreditRoute"))
 
 export const WebApp: React.FC = () => (
   <Suspense fallback={<div />}>
@@ -23,7 +24,17 @@ export const WebApp: React.FC = () => (
           render={() => (
             <>
               <DisconnectionOverlay />
-              <MainRoute />
+              <MainFxRoute />
+            </>
+          )}
+        />
+        <Route
+          exact
+          path={ROUTES_CONFIG.credit}
+          render={() => (
+            <>
+              <DisconnectionOverlay />
+              <MainCreditRoute />
             </>
           )}
         />
