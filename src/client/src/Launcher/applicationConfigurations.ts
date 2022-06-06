@@ -5,7 +5,7 @@ import {
   reactiveAnalyticsIcon,
   reactiveTraderIcon,
 } from "./icons"
-import { getReactiveTraderUrl } from "./utils/url"
+import { getReactiveAnalyticsUrls, getReactiveTraderUrl } from "./utils/url"
 
 type PlatformName = "browser" | "openfin" | "finsemble"
 
@@ -64,10 +64,7 @@ const envSuffix = `(${ENVIRONMENT.toUpperCase()})`
 const reactiveTraderManifestUrl = getReactiveTraderUrl(
   `${isLocal ? "/dist" : ""}/config/app.json`,
 )
-const reactiveAnalyticsManifestUrl = isLocal
-  ? "http://localhost:3005/openfin/app.json"
-  : // TODO
-    "https://demo-reactive-analytics.adaptivecluster.com/openfin/app.json"
+const reactiveAnalyticsManifestUrl = getReactiveAnalyticsUrls(env)
 
 const baseAppConfigs: ApplicationConfig[] = [
   {
