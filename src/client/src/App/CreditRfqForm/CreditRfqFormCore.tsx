@@ -9,14 +9,26 @@ import { RfqParameters } from "./RfqParameters"
 const CreditRfqFormCoreWrapper = styled.div`
   padding: 1em;
 `
+
+const CreditRfqHeader = styled.header`
+  padding: 10px;
+`
+
+const CreditRfqContent = styled.div`
+  padding: 10px;
+`
+
 export const CreditRfqFormCore: FC = () => {
   return (
     <CreditRfqFormCoreWrapper>
-      <BuySellToggle />
-      <CreditInstrumentSearch />
-      <RfqParameters />
-      <CounterPartySelection />
-      <RfqButtonPanel />
+      <CreditRfqHeader>RFQ Ticket</CreditRfqHeader>
+      <CreditRfqContent>
+        <BuySellToggle />
+        <CreditInstrumentSearch />
+        <RfqParameters />
+        <CounterPartySelection />
+        <RfqButtonPanel />
+      </CreditRfqContent>
     </CreditRfqFormCoreWrapper>
   )
 }

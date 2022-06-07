@@ -1,6 +1,5 @@
 import { useCreditInstrumentsByCusip } from "@/services/creditInstruments"
 import { Subscribe } from "@react-rxjs/core"
-import { prependOnceListener } from "process"
 import { FC, useState, useEffect, useRef } from "react"
 import { FaSearch } from "react-icons/fa"
 import styled from "styled-components"
@@ -8,28 +7,40 @@ import styled from "styled-components"
 const SearchWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 1em;
+  align-items: center;
+  margin: 1em 0;
   height: 2em;
+`
+
+const InputWrapper = styled.div`
+  flex: 1 1 0;
 `
 
 interface Hideable {
   visible: boolean
 }
 
-const blockOrNone = (props: Hideable) => (props.visible ? "block" : "none")
+const flexOrNone = (props: Hideable) => (props.visible ? "flex" : "none")
 
 const CreditInstrument = styled.div<Hideable>`
-  display: ${blockOrNone};
+  display: ${flexOrNone};
+  flex-direction: column;
+  justify-content: center;
 `
 
 const SearchInput = styled.input<Hideable>`
-  display: ${blockOrNone};
-  color: ${(props) => props.theme.core.textColor};
-  width: 15em;
+  display: ${flexOrNone};
+  color: ${({ theme }) => theme.core.textColor};
   padding: 6px;
-  height: 100%;
-  border-radius: 2px;
-  border: 1px solid ${(props) => props.theme.core.dividerColor};
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid ${({ theme }) => theme.core.dividerColor};
+  outline: none;
+
+  &:focus {
+    outline: none !important;
+    border-color: ${({ theme }) => theme.accents.primary.base};
+  }
 `
 
 const InstrumentName = styled.div`
@@ -38,13 +49,27 @@ const InstrumentName = styled.div`
 
 const Cusip = styled.div`
   font-size: 11px;
-  color: ${(props) => props.theme.secondary[4]};
+  opacity: 60%;
+`
+
+const MissingInstrument = styled.div`
+  font-size: 15px;
+  color: ${({ theme }) => theme.accents.negative.base};
 `
 
 const IconWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  margin-left: 1em;
+  height: 30px;
+  flex: 0 0 30px;
+  color: ${({ theme }) => theme.secondary[5]};
+
+  &:hover {
+    cursor: pointer;
+    color: ${({ theme }) => theme.accents.primary.base};
+  }
 `
 
 export const CreditInstrumentSearch: FC = () => {
@@ -55,10 +80,10 @@ export const CreditInstrumentSearch: FC = () => {
   const instrumentName = cusip in instruments ? instruments[cusip].name : ""
 
   useEffect(() => {
-    if (instrumentName) {
+    if (instrumentName || cusip.length === 9) {
       setShouldShowInput(false)
     }
-  }, [instrumentName])
+  }, [instrumentName, cusip])
 
   useEffect(() => {
     if (cusip === "" && inputRef.current) {
@@ -74,7 +99,7 @@ export const CreditInstrumentSearch: FC = () => {
   return (
     <Subscribe fallback={<div>Loading bonds</div>}>
       <SearchWrapper>
-        <div>
+        <InputWrapper>
           <SearchInput
             visible={shouldShowInput}
             ref={inputRef}
@@ -84,10 +109,16 @@ export const CreditInstrumentSearch: FC = () => {
             onChange={(e) => setCusip(e.currentTarget.value)}
           />
           <CreditInstrument visible={!shouldShowInput}>
-            <InstrumentName>{instrumentName}</InstrumentName>
-            <Cusip>{cusip}</Cusip>
+            {instrumentName ? (
+              <>
+                <InstrumentName>{instrumentName}</InstrumentName>
+                <Cusip>{cusip}</Cusip>
+              </>
+            ) : (
+              <MissingInstrument>No results found</MissingInstrument>
+            )}
           </CreditInstrument>
-        </div>
+        </InputWrapper>
         <IconWrapper>
           <FaSearch onClick={showAndResetInput} size="0.75em" />
         </IconWrapper>
