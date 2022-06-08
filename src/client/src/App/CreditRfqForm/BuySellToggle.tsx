@@ -8,12 +8,14 @@ const BuySellToggleWrapper = styled.div`
   display: flex;
 `
 
-const DirectionButton = styled.button<{
+interface DirectionButtonProps {
   direction: Direction
   active?: boolean
-}>`
+}
+
+const DirectionButton = styled.button<DirectionButtonProps>`
   flex: 1;
-  border-radius: 2px;
+  border-radius: 3px;
   background-color: ${({ theme, direction, active }) =>
     active
       ? theme.colors.spectrum.uniqueCollections[direction].base
