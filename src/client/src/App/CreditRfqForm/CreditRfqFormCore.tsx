@@ -1,3 +1,4 @@
+import { Subscribe } from "@react-rxjs/core"
 import { FC } from "react"
 import styled from "styled-components"
 import { BuySellToggle } from "./BuySellToggle"
@@ -23,11 +24,13 @@ export const CreditRfqFormCore: FC = () => {
     <CreditRfqFormCoreWrapper>
       <CreditRfqHeader>RFQ Ticket</CreditRfqHeader>
       <CreditRfqContent>
-        <BuySellToggle />
-        <CreditInstrumentSearch />
-        <RfqParameters />
-        <CounterPartySelection />
-        <RfqButtonPanel />
+        <Subscribe fallback={<div>Loading...</div>}>
+          <BuySellToggle />
+          <CreditInstrumentSearch />
+          <RfqParameters />
+          <CounterPartySelection />
+          <RfqButtonPanel />
+        </Subscribe>
       </CreditRfqContent>
     </CreditRfqFormCoreWrapper>
   )

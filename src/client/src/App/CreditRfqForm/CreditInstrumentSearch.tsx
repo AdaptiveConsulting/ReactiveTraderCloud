@@ -1,5 +1,7 @@
-import { useCreditInstrumentsByCusip } from "@/services/creditInstruments"
-import { Subscribe } from "@react-rxjs/core"
+// import { useCreditInstrumentsByCusip } from "@/services/creditInstruments"
+import { useCreditInstrumentsByCusip } from "@/services/creditInstruments/creditInstruments.service-mock"
+import { bind } from "@react-rxjs/core"
+import { createSignal } from "@react-rxjs/utils"
 import { FC, useState, useEffect, useRef } from "react"
 import { FaSearch } from "react-icons/fa"
 import styled from "styled-components"
@@ -72,18 +74,17 @@ const IconWrapper = styled.div`
   }
 `
 
+const [selectedInstrument$, setSelectedInstrument] = createSignal<string>()
+const [useSelectedInstrument] = bind(selectedInstrument$, "")
+
 export const CreditInstrumentSearch: FC = () => {
   const [cusip, setCusip] = useState("")
   const [shouldShowInput, setShouldShowInput] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
   const instruments = useCreditInstrumentsByCusip()
-  const instrumentName = cusip in instruments ? instruments[cusip].name : ""
+  const selectedInstrument = useSelectedInstrument()
 
-  useEffect(() => {
-    if (instrumentName || cusip.length === 9) {
-      setShouldShowInput(false)
-    }
-  }, [instrumentName, cusip])
+  console.log(selectedInstrument)
 
   useEffect(() => {
     if (cusip === "" && inputRef.current) {
@@ -91,38 +92,49 @@ export const CreditInstrumentSearch: FC = () => {
     }
   }, [cusip])
 
+  useEffect(() => {
+    if (cusip === "") {
+      setSelectedInstrument("")
+    } else if (cusip in instruments) {
+      setShouldShowInput(false)
+      setSelectedInstrument(cusip)
+    } else if (cusip.length === 9) {
+      setShouldShowInput(false)
+    }
+  }, [cusip, instruments])
+
   const showAndResetInput = () => {
     setShouldShowInput(true)
     setCusip("")
   }
 
   return (
-    <Subscribe fallback={<div>Loading bonds</div>}>
-      <SearchWrapper>
-        <InputWrapper>
-          <SearchInput
-            visible={shouldShowInput}
-            ref={inputRef}
-            type="text"
-            placeholder="CUSIP"
-            value={cusip}
-            onChange={(e) => setCusip(e.currentTarget.value)}
-          />
-          <CreditInstrument visible={!shouldShowInput}>
-            {instrumentName ? (
-              <>
-                <InstrumentName>{instrumentName}</InstrumentName>
-                <Cusip>{cusip}</Cusip>
-              </>
-            ) : (
-              <MissingInstrument>No results found</MissingInstrument>
-            )}
-          </CreditInstrument>
-        </InputWrapper>
-        <IconWrapper>
-          <FaSearch onClick={showAndResetInput} size="0.75em" />
-        </IconWrapper>
-      </SearchWrapper>
-    </Subscribe>
+    <SearchWrapper>
+      <InputWrapper>
+        <SearchInput
+          visible={shouldShowInput}
+          ref={inputRef}
+          type="text"
+          placeholder="CUSIP"
+          value={cusip}
+          onChange={(e) => setCusip(e.currentTarget.value)}
+        />
+        <CreditInstrument visible={!shouldShowInput}>
+          {selectedInstrument ? (
+            <>
+              <InstrumentName>
+                {instruments[selectedInstrument].name}
+              </InstrumentName>
+              <Cusip>{selectedInstrument}</Cusip>
+            </>
+          ) : (
+            <MissingInstrument>No results found</MissingInstrument>
+          )}
+        </CreditInstrument>
+      </InputWrapper>
+      <IconWrapper>
+        <FaSearch onClick={showAndResetInput} size="0.75em" />
+      </IconWrapper>
+    </SearchWrapper>
   )
 }
