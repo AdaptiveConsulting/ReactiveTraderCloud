@@ -7,7 +7,6 @@ const CreditRfqFormWrapper = styled.div`
   flex: 0 0 371px;
   padding: 0.5rem 1rem 0.5rem 0;
   user-select: none;
-  background: ${({ theme }) => theme.core.darkBackground};
 `
 
 export const CreditRfqForm: FC = () => (

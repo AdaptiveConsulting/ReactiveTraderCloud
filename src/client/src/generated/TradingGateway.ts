@@ -54,6 +54,7 @@ export enum RfqState {
 export interface QuoteBody {
   id: number
   rfqId: number
+  dealerId: number
   price: number
   state: QuoteState
 }
@@ -78,16 +79,6 @@ export enum Direction {
   Buy = "Buy",
   Sell = "Sell",
 }
-
-export const DEALER_SUBSCRIBE_REQUEST = "dealer",
-  CLIENT_SUBSCRIBE_REQUEST = "client"
-
-export type DealerSubscribeRequest = {
-  type: typeof DEALER_SUBSCRIBE_REQUEST
-  payload: number
-}
-export type ClientSubscribeRequest = { type: typeof CLIENT_SUBSCRIBE_REQUEST }
-export type SubscribeRequest = DealerSubscribeRequest | ClientSubscribeRequest
 
 export const ACK_ACCEPT_QUOTE_RESPONSE = "ack",
   NACK_ACCEPT_QUOTE_RESPONSE = "nack"
@@ -120,6 +111,7 @@ export type CreateQuoteResponse =
 
 export interface CreateQuoteRequest {
   rfqId: number
+  dealerId: number
   price: number
 }
 
@@ -423,7 +415,7 @@ function QuoteBodyRefTypeDefinition() {
 function QuoteBodyTypeDefinition() {
   return {
     type: "record" as const,
-    encodedLength: { bitLength: 136, byteLength: 17 },
+    encodedLength: { bitLength: 168, byteLength: 21 },
     fields: {
       id: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
@@ -433,12 +425,16 @@ function QuoteBodyTypeDefinition() {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
         type: RfqIdTypeDefinition,
       },
-      price: {
+      dealerId: {
         location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: DealerIdTypeDefinition,
+      },
+      price: {
+        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
         type: PriceTypeDefinition,
       },
       state: {
-        location: { bitOffset: 128, byteOffset: 16, mask: 0 },
+        location: { bitOffset: 160, byteOffset: 20, mask: 0 },
         type: QuoteStateTypeDefinition,
       },
     },
@@ -461,6 +457,10 @@ function QuoteStateTypeDefinition() {
 
 function PriceTypeDefinition() {
   return "Float64" as const
+}
+
+function DealerIdTypeDefinition() {
+  return "Int32" as const
 }
 
 function RfqBodyRefTypeDefinition() {
@@ -542,29 +542,8 @@ function DealerIdListTypeDefinition() {
   }
 }
 
-function DealerIdTypeDefinition() {
-  return "Int32" as const
-}
-
 function InstrumentIdTypeDefinition() {
   return "Int32" as const
-}
-
-function SubscribeRequestTypeDefinition() {
-  return {
-    type: "union" as const,
-    cases: {
-      dealer: {
-        tag: 1,
-        payload: {
-          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
-          type: DealerIdTypeDefinition,
-        },
-      },
-      client: { tag: 2, payload: undefined },
-    },
-    encodedLength: { bitLength: 40, byteLength: 5 },
-  }
 }
 
 function AcceptQuoteResponseTypeDefinition() {
@@ -612,14 +591,18 @@ function CreateQuoteResponseTypeDefinition() {
 function CreateQuoteRequestTypeDefinition() {
   return {
     type: "record" as const,
-    encodedLength: { bitLength: 96, byteLength: 12 },
+    encodedLength: { bitLength: 128, byteLength: 16 },
     fields: {
       rfqId: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
         type: RfqIdTypeDefinition,
       },
-      price: {
+      dealerId: {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: DealerIdTypeDefinition,
+      },
+      price: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
         type: PriceTypeDefinition,
       },
     },
@@ -724,7 +707,7 @@ function DealerBodyTypeDefinition() {
     fields: {
       id: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: InstrumentIdTypeDefinition,
+        type: DealerIdTypeDefinition,
       },
       name: {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
@@ -1602,8 +1585,8 @@ export const WorkflowService = {
         methodName: "createQuote",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("-2467519023705392384"),
-        responseRouteKey: BigInt("3015696483274539776"),
+        requestRouteKey: BigInt("8427355843682198016"),
+        responseRouteKey: BigInt("-6078994535941313280"),
         annotations: [],
       },
       allocators.responseAllocator(CreateQuoteResponseTypeDefinition),
@@ -1625,19 +1608,18 @@ export const WorkflowService = {
       allocators.requestAllocator(input, AcceptQuoteRequestTypeDefinition),
     )
   },
-  subscribe: (input: SubscribeRequest): Observable<RfqUpdate> => {
+  subscribe: (): Observable<RfqUpdate> => {
     return HydraPlatform.requestStream$(
       {
         serviceName: "WorkflowService",
         methodName: "subscribe",
-        inboundStream: "one",
+        inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("1508092992556508416"),
-        responseRouteKey: BigInt("-8876345996278733824"),
+        requestRouteKey: BigInt("1440683668491851264"),
+        responseRouteKey: BigInt("2797414104381160704"),
         annotations: [],
       },
       allocators.responseAllocator(RfqUpdateTypeDefinition),
-      allocators.requestAllocator(input, SubscribeRequestTypeDefinition),
     )
   },
 }

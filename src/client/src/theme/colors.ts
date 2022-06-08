@@ -204,6 +204,7 @@ interface AccentPalette extends BasePalette {
 
 interface TradingAccentPalette extends BasePalette {
   lighter: Color
+  darker: Color
 }
 
 export type AccentName = "primary" | "positive" | "aware" | "negative"
@@ -245,10 +246,12 @@ const uniqueCollections: TradingPaletteMap = {
   [Direction.Sell]: {
     base: rgb(255, 39, 75),
     lighter: rgb(255, 211, 219),
+    darker: rgb(167, 39, 64),
   },
   [Direction.Buy]: {
     base: rgb(45, 149, 255),
     lighter: rgb(191, 222, 255),
+    darker: rgb(41, 105, 172),
   },
 }
 

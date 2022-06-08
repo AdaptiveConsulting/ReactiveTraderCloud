@@ -18,6 +18,7 @@ export const MainFxRoute: React.FC = () => {
       tiles: false,
       blotter: false,
       analytics: false,
+      newRfq: false,
     })
 
   useEffect(() => {

@@ -82,6 +82,7 @@ const CoreBranding = () => {
                 "Trading-Sell": {
                   base: colors.spectrum.uniqueCollections.Sell.base,
                   1: colors.spectrum.uniqueCollections.Sell.lighter,
+                  2: colors.spectrum.uniqueCollections.Sell.darker,
                 },
               }}
             />
@@ -90,6 +91,7 @@ const CoreBranding = () => {
                 "Trading-Buy": {
                   base: colors.spectrum.uniqueCollections.Buy.base,
                   1: colors.spectrum.uniqueCollections.Buy.lighter,
+                  2: colors.spectrum.uniqueCollections.Buy.darker,
                 },
               }}
             />
@@ -375,7 +377,7 @@ const UniquePalettes: React.FC<{ palettes: any }> = ({
           label={label}
           palette={palettes[label]}
           fg="#000"
-          include={["base", "1"]}
+          include={["base", "1", "2"]}
         />
       ))}
     </UniqueRowGrid>
@@ -385,7 +387,7 @@ const UniquePalettes: React.FC<{ palettes: any }> = ({
 const UniqueRowGrid = styled.div`
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: 50%;
+  grid-template-columns: 75%;
   margin-bottom: 1rem;
 `
 
@@ -395,5 +397,6 @@ const UniqueSwatchGrid = styled.div`
   height: min-content;
   display: grid;
   grid-template-rows: 6rem;
-  grid-template-areas: "base 1";
+  grid-template-columns: 40% 30% 30%;
+  grid-template-areas: "base 1 2";
 `
