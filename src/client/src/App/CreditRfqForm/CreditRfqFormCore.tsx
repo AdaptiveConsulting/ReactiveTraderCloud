@@ -18,9 +18,13 @@ const CreditRfqHeader = styled.header`
   padding: 1em;
 `
 
-const CreditRfqContent = styled.div`
+const CreditRfqSection = styled.div<{ fixed?: boolean }>`
   padding: 10px 1em;
-  flex: 1;
+  flex: ${({ fixed }) => (fixed ? 0 : 1)};
+
+  &:not(:first-of-type) {
+    border-top: 2px solid ${({ theme }) => theme.primary.base};
+  }
 
   & > *:not(:last-child) {
     margin-bottom: 18px;
@@ -37,12 +41,14 @@ export const CreditRfqFormCore: FC = () => {
     <CreditRfqFormCoreWrapper>
       <Subscribe fallback={<div>Loading...</div>}>
         <CreditRfqHeader>RFQ Ticket</CreditRfqHeader>
-        <CreditRfqContent>
+        <CreditRfqSection fixed>
           <DirectionToggle />
           <CreditInstrumentSearch />
           <RfqParameters />
+        </CreditRfqSection>
+        <CreditRfqSection>
           <CounterpartySelection />
-        </CreditRfqContent>
+        </CreditRfqSection>
         <CreditRfqFooter>
           <RfqButtonPanel />
         </CreditRfqFooter>

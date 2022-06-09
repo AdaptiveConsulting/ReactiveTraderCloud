@@ -46,7 +46,7 @@ const InstrumentName = styled.div`
 `
 
 const Cusip = styled.div`
-  font-size: 11px;
+  font-size: 12px;
   opacity: 60%;
 `
 

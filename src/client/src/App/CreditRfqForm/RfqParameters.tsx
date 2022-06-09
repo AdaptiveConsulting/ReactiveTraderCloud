@@ -16,7 +16,7 @@ const RfqParametersWrapper = styled.div`
   grid-column-gap: 8px;
   grid-row-gap: 16px;
 
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
 `
 
@@ -28,7 +28,7 @@ const ParameterLabel = styled.div`
 export const ParameterInput = styled.input`
   background: #222730;
   outline: none;
-  font-size: 0.75rem;
+  // font-size: 12px;
   height: 24px;
   width: 100%;
   padding: 4px;

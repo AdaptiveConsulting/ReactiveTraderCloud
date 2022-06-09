@@ -31,7 +31,7 @@ const DirectionButton = styled.button<DirectionButtonProps>`
   justify-content: center;
   padding: 0 0.7rem;
   height: 24px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
 
   &:hover {
