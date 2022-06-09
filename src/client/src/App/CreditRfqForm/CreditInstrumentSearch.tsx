@@ -73,6 +73,8 @@ const IconWrapper = styled.div`
 const [selectedInstrument$, setSelectedInstrument] = createSignal<string>()
 const [useSelectedInstrument] = bind(selectedInstrument$, "")
 
+export { setSelectedInstrument, useSelectedInstrument }
+
 export const CreditInstrumentSearch: FC = () => {
   const [cusip, setCusip] = useState("")
   const [showInput, setShowInput] = useState(true)
@@ -85,6 +87,12 @@ export const CreditInstrumentSearch: FC = () => {
       inputRef.current.focus()
     }
   }, [cusip])
+
+  useEffect(() => {
+    if (selectedInstrument === "") {
+      showAndResetInput()
+    }
+  }, [selectedInstrument])
 
   useEffect(() => {
     if (cusip === "") {

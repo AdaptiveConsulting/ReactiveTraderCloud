@@ -1,5 +1,16 @@
+import { Direction } from "@/services/trades"
 import { FC } from "react"
 import styled from "styled-components"
+import {
+  setSelectedCounterpartyIds,
+  useSelectedCounterpartyIds,
+} from "./CounterpartySelection"
+import {
+  setSelectedInstrument,
+  useSelectedInstrument,
+} from "./CreditInstrumentSearch"
+import { setDirection, useDirection } from "./DirectionToggle"
+import { setQuantity, useQuantity } from "./RfqParameters"
 
 const RfqButtonPanelWrapper = styled.div`
   display: flex;
@@ -26,10 +37,31 @@ const SendRfqButton = styled(ActionButton)<{ disabled?: boolean }>`
 `
 
 export const RfqButtonPanel: FC = () => {
+  const direction = useDirection()
+  const selectedInstrument = useSelectedInstrument()
+  const quantity = useQuantity()
+  const selectedCounterpartyIds = useSelectedCounterpartyIds()
+
+  const detailsMissing =
+    selectedInstrument === "" ||
+    quantity.value === 0 ||
+    selectedCounterpartyIds.length === 0
+
+  const clearRfqTicket = () => {
+    setDirection(Direction.Buy)
+    setSelectedInstrument("")
+    setQuantity("")
+    setSelectedCounterpartyIds([])
+  }
+
+  const sendRfq = () => {}
+
   return (
     <RfqButtonPanelWrapper>
-      <ClearButton>Clear</ClearButton>
-      <SendRfqButton>Send RFQ</SendRfqButton>
+      <ClearButton onClick={clearRfqTicket}>Clear</ClearButton>
+      <SendRfqButton onClick={sendRfq} disabled={detailsMissing}>
+        Send RFQ
+      </SendRfqButton>
     </RfqButtonPanelWrapper>
   )
 }

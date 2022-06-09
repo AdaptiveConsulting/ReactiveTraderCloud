@@ -79,6 +79,8 @@ const [useQuantity] = bind(
   { value: 0, inputValue: "" },
 )
 
+export { setQuantity, useQuantity }
+
 export const RfqParameters: FC = () => {
   const quantity = useQuantity()
 

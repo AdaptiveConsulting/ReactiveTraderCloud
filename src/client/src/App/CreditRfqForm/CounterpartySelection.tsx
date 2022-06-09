@@ -2,6 +2,7 @@ import { useCreditDealers } from "@/services/creditDealers"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
+import { FaCheckSquare } from "react-icons/fa"
 import styled from "styled-components"
 
 const CounterpartySelectionWrapper = styled.div`
@@ -16,23 +17,34 @@ const CounterpartySelectionHeader = styled.header`
 
 const CounterpartyList = styled.div`
   padding: 2px 0;
+`
 
-  & > li {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    height: 24px;
-  }
+const CounterpartyListItem = styled.li`
+  display: flex;
+  align-items: center;
+  height: 24px;
+  list-style: none;
+  cursor: pointer;
 
-  & > li:not(:last-of-type) {
+  &:not(:last-of-type) {
     border-bottom: 1px solid ${({ theme }) => theme.primary.base};
   }
 
-  & > li > input {
+  & > input {
+    -webkit-appearance: none;
     background-color: transparent;
+    width: 11px;
+    height: 11px;
+    border: 1px solid ${({ theme }) => theme.primary[5]};
+    border-radius: 1px;
   }
 
-  & > li > span {
+  & > input:checked {
+    border: none;
+    background-color: ${({ theme }) => theme.accents.primary.base};
+  }
+
+  & > span {
     margin-left: 10px;
   }
 `
@@ -40,6 +52,8 @@ const CounterpartyList = styled.div`
 const [selectedCounterpartyIds$, setSelectedCounterpartyIds] =
   createSignal<number[]>()
 const [useSelectedCounterpartyIds] = bind(selectedCounterpartyIds$, [])
+
+export { setSelectedCounterpartyIds, useSelectedCounterpartyIds }
 
 export const CounterpartySelection: FC = () => {
   const counterparties = useCreditDealers()
@@ -54,8 +68,6 @@ export const CounterpartySelection: FC = () => {
     setSelectedCounterpartyIds(newCounterparties)
   }
 
-  console.log(selectedCounterpartyIds)
-
   return (
     <CounterpartySelectionWrapper>
       <CounterpartySelectionHeader>
@@ -63,14 +75,17 @@ export const CounterpartySelection: FC = () => {
       </CounterpartySelectionHeader>
       <CounterpartyList>
         {counterparties.map((dealer) => (
-          <li key={dealer.id} onClick={() => onToggleCounterparty(dealer.id)}>
+          <CounterpartyListItem
+            key={dealer.id}
+            onClick={() => onToggleCounterparty(dealer.id)}
+          >
             <input
               type="checkbox"
               checked={selectedCounterpartyIds.includes(dealer.id)}
               onChange={() => onToggleCounterparty(dealer.id)}
             />
             <span>{dealer.name}</span>
-          </li>
+          </CounterpartyListItem>
         ))}
       </CounterpartyList>
     </CounterpartySelectionWrapper>

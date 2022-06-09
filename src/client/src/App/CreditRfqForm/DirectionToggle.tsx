@@ -50,6 +50,8 @@ const [direction$, setDirection] = createSignal<Direction>()
 
 const [useDirection] = bind(direction$, Direction.Buy)
 
+export { setDirection, useDirection }
+
 export const DirectionToggle: FC = () => {
   const direction = useDirection()
 
