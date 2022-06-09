@@ -4,7 +4,7 @@ import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
 import styled from "styled-components"
 
-const BuySellToggleWrapper = styled.div`
+const DirectionToggleWrapper = styled.div`
   display: flex;
 `
 
@@ -46,29 +46,29 @@ const DirectionButton = styled.button<DirectionButtonProps>`
   }
 `
 
-const [rfqDirection$, setRfqDirection] = createSignal<Direction>()
+const [direction$, setDirection] = createSignal<Direction>()
 
-const [useRfqDirection] = bind(rfqDirection$, Direction.Buy)
+const [useDirection] = bind(direction$, Direction.Buy)
 
-export const BuySellToggle: FC = () => {
-  const direction = useRfqDirection()
+export const DirectionToggle: FC = () => {
+  const direction = useDirection()
 
   return (
-    <BuySellToggleWrapper>
+    <DirectionToggleWrapper>
       <DirectionButton
         direction={Direction.Buy}
         active={direction === Direction.Buy}
-        onClick={() => setRfqDirection(Direction.Buy)}
+        onClick={() => setDirection(Direction.Buy)}
       >
         Buy
       </DirectionButton>
       <DirectionButton
         direction={Direction.Sell}
         active={direction === Direction.Sell}
-        onClick={() => setRfqDirection(Direction.Sell)}
+        onClick={() => setDirection(Direction.Sell)}
       >
         Sell
       </DirectionButton>
-    </BuySellToggleWrapper>
+    </DirectionToggleWrapper>
   )
 }

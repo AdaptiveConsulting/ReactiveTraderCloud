@@ -1,5 +1,5 @@
 import { FC } from "react"
 
-export const CounterPartySelection: FC = () => {
+export const CounterpartySelection: FC = () => {
   return <div>Counterparty Selection...</div>
 }

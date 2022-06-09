@@ -1,8 +1,8 @@
 import { Subscribe } from "@react-rxjs/core"
 import { FC } from "react"
 import styled from "styled-components"
-import { BuySellToggle } from "./BuySellToggle"
-import { CounterPartySelection } from "./CounterPartySelection"
+import { DirectionToggle } from "./DirectionToggle"
+import { CounterpartySelection } from "./CounterpartySelection"
 import { CreditInstrumentSearch } from "./CreditInstrumentSearch"
 import { RfqButtonPanel } from "./RfqButtonPanel"
 import { RfqParameters } from "./RfqParameters"
@@ -23,7 +23,7 @@ const CreditRfqContent = styled.div`
   flex: 1;
 
   & > *:not(:last-child) {
-    margin-bottom: 1em;
+    margin-bottom: 18px;
   }
 `
 
@@ -38,10 +38,10 @@ export const CreditRfqFormCore: FC = () => {
       <Subscribe fallback={<div>Loading...</div>}>
         <CreditRfqHeader>RFQ Ticket</CreditRfqHeader>
         <CreditRfqContent>
-          <BuySellToggle />
+          <DirectionToggle />
           <CreditInstrumentSearch />
           <RfqParameters />
-          <CounterPartySelection />
+          <CounterpartySelection />
         </CreditRfqContent>
         <CreditRfqFooter>
           <RfqButtonPanel />
