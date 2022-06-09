@@ -26,7 +26,7 @@ const CreditRfqSection = styled.div<{ fixed?: boolean }>`
     border-top: 2px solid ${({ theme }) => theme.primary.base};
   }
 
-  & > *:not(:last-child) {
+  & > *:not(:last-of-type) {
     margin-bottom: 18px;
   }
 `
