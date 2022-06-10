@@ -1,13 +1,13 @@
-import path, { resolve } from "path"
-import { readdirSync, statSync } from "fs"
-import { defineConfig, loadEnv } from "vite"
-import reactRefresh from "@vitejs/plugin-react-refresh"
-import { injectHtml } from "vite-plugin-html"
-import copy from "rollup-plugin-copy"
 import eslint from "@rollup/plugin-eslint"
-import typescript from "rollup-plugin-typescript2"
+import reactRefresh from "@vitejs/plugin-react-refresh"
+import { readdirSync, statSync } from "fs"
+import path, { resolve } from "path"
+import copy from "rollup-plugin-copy"
 import modulepreload from "rollup-plugin-modulepreload"
+import typescript from "rollup-plugin-typescript2"
 import { injectManifest } from "rollup-plugin-workbox"
+import { defineConfig, loadEnv } from "vite"
+import { createHtmlPlugin } from "vite-plugin-html"
 
 const PORT = Number(process.env.PORT) || 1917
 
@@ -232,7 +232,8 @@ const htmlPlugin = (dev: boolean) => {
 }
 
 const injectScriptIntoHtml = () =>
-  injectHtml({
+createHtmlPlugin({
+  inject: {
     data: {
       injectScript: `
       <script>
@@ -244,7 +245,8 @@ const injectScriptIntoHtml = () =>
       </script>
     `,
     },
-  })
+  }    
+})
 
 const injectWebServiceWorkerPlugin = (mode: string) =>
   injectManifest(
