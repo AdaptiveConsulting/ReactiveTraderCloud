@@ -28,7 +28,6 @@ const ParameterLabel = styled.div`
 export const ParameterInput = styled.input`
   background: #222730;
   outline: none;
-  // font-size: 12px;
   height: 24px;
   width: 100%;
   padding: 4px;
@@ -58,7 +57,7 @@ const filterRegExp = new RegExp(THOUSANDS_SEPARATOR_REGEXP, "g")
 const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
 
 const [rawQuantity$, setQuantity] = createSignal<string>()
-const [useQuantity] = bind(
+const [useQuantity, quantity$] = bind(
   rawQuantity$.pipe(
     map((rawVal) => {
       const lastChar = rawVal.slice(-1).toLowerCase()
@@ -79,7 +78,7 @@ const [useQuantity] = bind(
   { value: 0, inputValue: "" },
 )
 
-export { setQuantity, useQuantity }
+export { setQuantity, useQuantity, quantity$ }
 
 export const RfqParameters: FC = () => {
   const quantity = useQuantity()

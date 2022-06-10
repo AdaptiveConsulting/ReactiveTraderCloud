@@ -49,11 +49,9 @@ const CounterpartyListItem = styled.li`
   }
 `
 
-const [selectedCounterpartyIds$, setSelectedCounterpartyIds] =
+export const [selectedCounterpartyIds$, setSelectedCounterpartyIds] =
   createSignal<number[]>()
-const [useSelectedCounterpartyIds] = bind(selectedCounterpartyIds$, [])
-
-export { setSelectedCounterpartyIds, useSelectedCounterpartyIds }
+export const [useSelectedCounterpartyIds] = bind(selectedCounterpartyIds$, [])
 
 export const CounterpartySelection: FC = () => {
   const counterparties = useCreditDealers()

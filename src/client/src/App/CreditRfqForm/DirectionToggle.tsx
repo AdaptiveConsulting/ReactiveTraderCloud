@@ -2,6 +2,7 @@ import { Direction } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
+import { startWith } from "rxjs/operators"
 import styled from "styled-components"
 
 const DirectionToggleWrapper = styled.div`
@@ -46,11 +47,14 @@ const DirectionButton = styled.button<DirectionButtonProps>`
   }
 `
 
-const [direction$, setDirection] = createSignal<Direction>()
+const [directionInput$, setDirection] = createSignal<Direction>()
 
-const [useDirection] = bind(direction$, Direction.Buy)
+const [useDirection, direction$] = bind(
+  directionInput$.pipe(startWith(Direction.Buy)),
+  Direction.Buy,
+)
 
-export { setDirection, useDirection }
+export { setDirection, useDirection, direction$ }
 
 export const DirectionToggle: FC = () => {
   const direction = useDirection()

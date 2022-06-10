@@ -1,8 +1,12 @@
-import { useCreditInstrumentsByCusip } from "@/services/creditInstruments"
+import {
+  creditInstrumentsByCusip$,
+  useCreditInstrumentsByCusip,
+} from "@/services/creditInstruments"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC, useState, useEffect, useRef } from "react"
 import { FaSearch } from "react-icons/fa"
+import { map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
 
 const SearchWrapper = styled.div`
@@ -28,11 +32,12 @@ const CreditInstrument = styled.div<Hideable>`
 
 const SearchInput = styled.input<Hideable>`
   display: flex;
-  color: ${({ theme }) => theme.core.textColor};
   padding: 6px;
   width: 100%;
   border-radius: 3px;
-  border: 1px solid ${({ theme }) => theme.core.dividerColor};
+  border: 1px solid ${({ theme }) => theme.primary[2]};
+  color: ${({ theme }) => theme.core.textColor};
+  background: #222730;
   outline: none;
 
   &:focus {
@@ -70,10 +75,21 @@ const IconWrapper = styled.div`
   }
 `
 
-const [selectedInstrument$, setSelectedInstrument] = createSignal<string>()
-const [useSelectedInstrument] = bind(selectedInstrument$, "")
-
-export { setSelectedInstrument, useSelectedInstrument }
+export const [selectedInstrumentId$, setSelectedInstrumentId] =
+  createSignal<number | null>()
+export const [useSelectedInstrument] = bind(
+  selectedInstrumentId$.pipe(
+    withLatestFrom(creditInstrumentsByCusip$),
+    map(([instrumentId, creditInstrumentsByCusip]) =>
+      instrumentId !== null
+        ? Object.values(creditInstrumentsByCusip).find(
+            (instrument) => instrument.id === instrumentId,
+          ) ?? null
+        : null,
+    ),
+  ),
+  null,
+)
 
 export const CreditInstrumentSearch: FC = () => {
   const [cusip, setCusip] = useState("")
@@ -89,17 +105,17 @@ export const CreditInstrumentSearch: FC = () => {
   }, [cusip])
 
   useEffect(() => {
-    if (selectedInstrument === "") {
+    if (selectedInstrument === null) {
       showAndResetInput()
     }
   }, [selectedInstrument])
 
   useEffect(() => {
     if (cusip === "") {
-      setSelectedInstrument("")
+      setSelectedInstrumentId(null)
     } else if (cusip in instruments) {
       setShowInput(false)
-      setSelectedInstrument(cusip)
+      setSelectedInstrumentId(instruments[cusip].id)
     } else if (cusip.length >= 9) {
       setShowInput(false)
     }
@@ -124,12 +140,10 @@ export const CreditInstrumentSearch: FC = () => {
           />
         ) : (
           <CreditInstrument visible={!showInput}>
-            {selectedInstrument ? (
+            {selectedInstrument !== null ? (
               <>
-                <InstrumentName>
-                  {instruments[selectedInstrument].name}
-                </InstrumentName>
-                <Cusip>{selectedInstrument}</Cusip>
+                <InstrumentName>{selectedInstrument.name}</InstrumentName>
+                <Cusip>{selectedInstrument.cusip}</Cusip>
               </>
             ) : (
               <MissingInstrument>No results found</MissingInstrument>
