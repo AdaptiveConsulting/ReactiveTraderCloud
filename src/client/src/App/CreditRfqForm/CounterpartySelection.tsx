@@ -34,6 +34,7 @@ const CounterpartyListItem = styled.li`
   }
 
   & > input {
+    position: relative;
     -webkit-appearance: none;
     background-color: transparent;
     width: 11px;
@@ -44,7 +45,7 @@ const CounterpartyListItem = styled.li`
 
   & > input:checked {
     border: none;
-    background-color: ${({ theme }) => theme.accents.primary.base};
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='11' viewBox='0.75 0.75 10.5 10.5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.0833 0.75H1.91667C1.26917 0.75 0.75 1.275 0.75 1.91667V10.0833C0.75 10.725 1.26917 11.25 1.91667 11.25H10.0833C10.7308 11.25 11.25 10.725 11.25 10.0833V1.91667C11.25 1.275 10.7308 0.75 10.0833 0.75ZM4.83333 8.91667L1.91667 6L2.73917 5.1775L4.83333 7.26583L9.26083 2.83833L10.0833 3.66667L4.83333 8.91667Z' fill='%235F94F5'/%3E%3C/svg%3E%0A");
   }
 
   & > span {

@@ -16,7 +16,8 @@ interface DirectionButtonProps {
 
 const DirectionButton = styled.button<DirectionButtonProps>`
   flex: 1;
-  border-radius: 2px;
+  border-radius: ${({ direction }) =>
+    direction === Direction.Buy ? "2px 0 0 2px" : "0 2px 2px 0"};
   background-color: ${({ theme, direction, active }) =>
     active
       ? theme.colors.spectrum.uniqueCollections[direction].base
