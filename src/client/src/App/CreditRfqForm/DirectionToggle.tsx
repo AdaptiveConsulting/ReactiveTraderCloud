@@ -16,7 +16,7 @@ interface DirectionButtonProps {
 
 const DirectionButton = styled.button<DirectionButtonProps>`
   flex: 1;
-  border-radius: 3px;
+  border-radius: 2px;
   background-color: ${({ theme, direction, active }) =>
     active
       ? theme.colors.spectrum.uniqueCollections[direction].base
@@ -25,7 +25,7 @@ const DirectionButton = styled.button<DirectionButtonProps>`
     ${({ theme, direction, active }) =>
       active
         ? theme.colors.spectrum.uniqueCollections[direction].base
-        : theme.primary[3]};
+        : theme.primary[2]};
   user-select: none;
   display: flex;
   align-items: center;
@@ -34,6 +34,10 @@ const DirectionButton = styled.button<DirectionButtonProps>`
   height: 24px;
   font-size: 12px;
   font-weight: 500;
+  clip-path: ${({ direction }) =>
+    direction === Direction.Buy
+      ? "polygon(0 0, 100% 0, 90% 100%, 0% 100%)"
+      : "polygon(10% 0, 100% 0, 100% 100%, 0% 100%)"};
 
   &:hover {
     background-color: ${({ theme, direction }) =>
@@ -43,7 +47,10 @@ const DirectionButton = styled.button<DirectionButtonProps>`
   }
 
   &:first-child {
-    margin-right: 3px;
+    margin-right: -6.5px;
+  }
+  &:last-child {
+    margin-left: -6.5px;
   }
 `
 
