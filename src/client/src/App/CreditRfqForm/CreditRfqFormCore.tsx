@@ -21,6 +21,7 @@ const CreditRfqHeader = styled.header`
 const CreditRfqSection = styled.div<{ fixed?: boolean }>`
   padding: 10px 1em;
   flex: ${({ fixed }) => (fixed ? 0 : 1)};
+  ${({ fixed }) => (fixed ? "" : "min-height: 0;")}
 
   &:not(:first-of-type) {
     border-top: 2px solid ${({ theme }) => theme.primary.base};

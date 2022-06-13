@@ -2,12 +2,14 @@ import { useCreditDealers } from "@/services/creditDealers"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
-import { FaCheckSquare } from "react-icons/fa"
 import styled from "styled-components"
 
 const CounterpartySelectionWrapper = styled.div`
   font-size: 12px;
   font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
 `
 
 const CounterpartySelectionHeader = styled.header`
@@ -17,6 +19,7 @@ const CounterpartySelectionHeader = styled.header`
 
 const CounterpartyList = styled.div`
   padding: 2px 0;
+  overflow: auto;
 `
 
 const CounterpartyListItem = styled.li`
