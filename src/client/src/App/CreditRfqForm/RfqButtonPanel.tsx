@@ -1,10 +1,9 @@
 import { createCreditRfq } from "@/services/creditRfqRequests"
-import { useCreditRfqs } from "@/services/creditRfqs"
 import { Direction } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
-import { exhaustMap, filter, map, tap, withLatestFrom } from "rxjs/operators"
+import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
 import {
   selectedCounterpartyIds$,
@@ -59,11 +58,10 @@ const [useRfqResponse, rfqResponse$] = bind(
     map(([_, direction, instrumentId, quantity, dealerIds]) => ({
       instrumentId: instrumentId!,
       dealerIds,
-      quantity: quantity.value,
+      quantity: quantity.value * 1000,
       direction,
-      expirySecs: 60,
+      expirySecs: 10,
     })),
-    tap((r) => console.log(r)),
     exhaustMap((request) => createCreditRfq(request)),
   ),
   null,
@@ -74,10 +72,8 @@ export const RfqButtonPanel: FC = () => {
   const quantity = useQuantity()
   const selectedCounterpartyIds = useSelectedCounterpartyIds()
   const rfqResponse = useRfqResponse()
-  const rfqs = useCreditRfqs()
 
   console.log(rfqResponse)
-  console.log(rfqs)
 
   const detailsMissing =
     selectedInstrument === null ||

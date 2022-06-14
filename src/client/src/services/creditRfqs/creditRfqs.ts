@@ -8,21 +8,36 @@ import {
   WorkflowService,
 } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
-import { scan } from "rxjs/operators"
+import { map, scan } from "rxjs/operators"
 
-export const [useCreditRfqs, creditRfqs$] = bind(
+const [, creditRfqsById$] = bind(
   WorkflowService.subscribe({ type: CLIENT_SUBSCRIBE_REQUEST }).pipe(
-    scan((acc: RfqBody[], update: RfqUpdate) => {
+    scan((acc: Record<string, RfqBody>, update: RfqUpdate) => {
+      console.log(update)
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE:
-          return []
+          return {}
         case RFQ_CREATED_RFQ_UPDATE:
-          return [...acc, update.payload]
+          return {
+            ...acc,
+            [update.payload.id]: update.payload,
+          }
         case RFQ_CLOSED_RFQ_UPDATE:
-          return acc.filter((rfq) => rfq.id !== update.payload.id)
+          return {
+            ...acc,
+            [update.payload.id]: {
+              ...acc[update.payload.id],
+              state: update.payload.state,
+            },
+          }
         default:
           return acc
       }
-    }, []),
+    }, {}),
   ),
+)
+
+export const [useCreditRfqs, creditRfqs$] = bind(
+  creditRfqsById$.pipe(map((creditRfqsById) => Object.values(creditRfqsById))),
+  [],
 )
