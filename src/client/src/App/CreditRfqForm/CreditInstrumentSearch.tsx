@@ -37,7 +37,7 @@ const SearchInput = styled.input<Hideable>`
   border-radius: 3px;
   border: 1px solid ${({ theme }) => theme.primary[2]};
   color: ${({ theme }) => theme.core.textColor};
-  background: #222730;
+  background-color: ${({ theme }) => theme.core.darkBackground};
   outline: none;
 
   &:focus {

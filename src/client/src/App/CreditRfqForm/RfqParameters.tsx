@@ -26,7 +26,7 @@ const ParameterLabel = styled.div`
 `
 
 export const ParameterInput = styled.input`
-  background: #222730;
+  background-color: ${({ theme }) => theme.core.darkBackground};
   outline: none;
   height: 24px;
   width: 100%;
