@@ -1,5 +1,5 @@
 import { CreditRfqForm } from "@/App/CreditRfqForm"
-import { CreditRfqList } from "@/App/CreditRfqList"
+import { CreditRfqs } from "@/App/CreditRfqs"
 import Resizer from "@/components/Resizer"
 import styled from "styled-components"
 import MainLayout from "./MainLayout"
@@ -12,7 +12,7 @@ const MainCreditRoute: React.FC = () => {
   return (
     <MainLayout>
       <Resizer defaultHeight={30}>
-        <CreditRfqList />
+        <CreditRfqs />
         <Placeholder>Credit Blotter Placeholder</Placeholder>
       </Resizer>
       <CreditRfqForm />

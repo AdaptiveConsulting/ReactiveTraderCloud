@@ -1,8 +1,8 @@
 import { FC } from "react"
 import styled from "styled-components"
-import { CreditRfqListCore } from "./CreditRfqListCore"
+import { CreditRfqsCore } from "./CreditRfqsCore"
 
-const CreditRfqListWrapper = styled.div`
+const CreditRfqsWrapper = styled.div`
   padding: 0.5rem 0 0.5rem 1rem;
   user-select: none;
   height: 100%;
@@ -14,8 +14,8 @@ const CreditRfqListWrapper = styled.div`
   overflow-y: auto;
 `
 
-export const CreditRfqList: FC = () => (
-  <CreditRfqListWrapper>
-    <CreditRfqListCore />
-  </CreditRfqListWrapper>
+export const CreditRfqs: FC = () => (
+  <CreditRfqsWrapper>
+    <CreditRfqsCore />
+  </CreditRfqsWrapper>
 )

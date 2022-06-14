@@ -1,9 +1,10 @@
+import { ACK_CREATE_RFQ_RESPONSE } from "@/generated/TradingGateway"
 import { createCreditRfq } from "@/services/creditRfqRequests"
 import { Direction } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
-import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
+import { exhaustMap, filter, map, tap, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
 import {
   selectedCounterpartyIds$,
@@ -43,7 +44,7 @@ const SendRfqButton = styled(ActionButton)<{ disabled?: boolean }>`
 `
 
 const [rfqRequest$, sendRfq] = createSignal()
-const [useRfqResponse, rfqResponse$] = bind(
+const [rfqResponse$] = bind(
   rfqRequest$.pipe(
     withLatestFrom(
       direction$,
@@ -63,17 +64,24 @@ const [useRfqResponse, rfqResponse$] = bind(
       expirySecs: 10,
     })),
     exhaustMap((request) => createCreditRfq(request)),
+    tap((response) => {
+      if (response.type === ACK_CREATE_RFQ_RESPONSE) {
+        setDirection(Direction.Buy)
+        setSelectedInstrumentId(null)
+        setQuantity("")
+        setSelectedCounterpartyIds([])
+      }
+    }),
   ),
   null,
 )
+
+export { rfqResponse$ }
 
 export const RfqButtonPanel: FC = () => {
   const selectedInstrument = useSelectedInstrument()
   const quantity = useQuantity()
   const selectedCounterpartyIds = useSelectedCounterpartyIds()
-  const rfqResponse = useRfqResponse()
-
-  console.log(rfqResponse)
 
   const detailsMissing =
     selectedInstrument === null ||

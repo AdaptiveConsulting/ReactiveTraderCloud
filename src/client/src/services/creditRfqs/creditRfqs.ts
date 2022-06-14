@@ -1,5 +1,7 @@
 import {
   CLIENT_SUBSCRIBE_REQUEST,
+  DealerBody,
+  InstrumentBody,
   RfqBody,
   RfqUpdate,
   RFQ_CLOSED_RFQ_UPDATE,
@@ -8,12 +10,13 @@ import {
   WorkflowService,
 } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
-import { map, scan } from "rxjs/operators"
+import { map, scan, withLatestFrom } from "rxjs/operators"
+import { creditDealers$ } from "../creditDealers"
+import { creditInstruments$ } from "../creditInstruments"
 
 const [, creditRfqsById$] = bind(
   WorkflowService.subscribe({ type: CLIENT_SUBSCRIBE_REQUEST }).pipe(
     scan((acc: Record<string, RfqBody>, update: RfqUpdate) => {
-      console.log(update)
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE:
           return {}
@@ -37,7 +40,30 @@ const [, creditRfqsById$] = bind(
   ),
 )
 
-export const [useCreditRfqs, creditRfqs$] = bind(
-  creditRfqsById$.pipe(map((creditRfqsById) => Object.values(creditRfqsById))),
+interface RfqDetail extends RfqBody {
+  instrument: InstrumentBody | null
+  dealers: DealerBody[]
+}
+
+export const [useCreditRfqs, creditRfqs$] = bind<RfqDetail[]>(
+  creditRfqsById$.pipe(
+    withLatestFrom(creditInstruments$, creditDealers$),
+    map(([creditRfqsById, creditInstruments, creditDealers]) =>
+      Object.values(creditRfqsById).map((creditRfq) => ({
+        ...creditRfq,
+        instrument:
+          creditInstruments.find(
+            (instrument) => instrument.id === creditRfq.instrumentId,
+          ) ?? null,
+        dealers: creditRfq.dealerIds.map(
+          (dealerId) =>
+            creditDealers.find((dealer) => dealer.id === dealerId) ?? {
+              id: dealerId,
+              name: "Unknown Dealer",
+            },
+        ),
+      })),
+    ),
+  ),
   [],
 )
