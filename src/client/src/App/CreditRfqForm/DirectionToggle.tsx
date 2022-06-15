@@ -22,19 +22,21 @@ const DirectionButton = styled.button<DirectionButtonProps>`
     direction === Direction.Buy ? "3px 0 0 3px" : "0 3px 3px 0"};
   background-color: ${({ theme, direction, active }) =>
     active
-      ? theme.colors.spectrum.uniqueCollections[direction].base
+      ? theme.colors.spectrum.uniqueCollections[direction].darker
       : theme.primary[2]};
   border: 1px solid
     ${({ theme, direction, active }) =>
       active
         ? theme.colors.spectrum.uniqueCollections[direction].base
-        : theme.primary[2]};
+        : theme.primary[3]};
+  color: ${({ theme, active }) =>
+    active ? theme.white : theme.core.textColor};
   user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 0.7rem;
-  height: 24px;
+  height: 48px;
   font-size: 12px;
   font-weight: 500;
   clip-path: ${({ direction }) =>
@@ -42,23 +44,64 @@ const DirectionButton = styled.button<DirectionButtonProps>`
       ? "polygon(0 0, 100% 0, 90% 100%, 0% 100%)"
       : "polygon(10% 0, 100% 0, 100% 100%, 0% 100%)"};
 
-  &:hover {
-    background-color: ${({ theme, direction }) =>
-      theme.colors.spectrum.uniqueCollections[direction].base};
-    border-color: ${({ theme, direction }) =>
-      theme.colors.spectrum.uniqueCollections[direction].base};
+  &:after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background-color: transparent;
+    -webkit-transform: skewX(-19.5deg);
+    -moz-transform: skewX(-19.5deg);
+    -ms-transform: skewX(-19.5deg);
+    transform: skewX(-19.5deg);
   }
 
   &:first-child {
     margin-right: -6.5px;
   }
+
   &:last-child {
     margin-left: -6.5px;
+  }
+
+  &:first-child:after {
+    left: 0;
+    width: calc(50% - 2px);
+    border-right: 1px solid
+      ${({ theme, direction, active }) =>
+        active
+          ? theme.colors.spectrum.uniqueCollections[direction].base
+          : theme.primary[3]};
+  }
+
+  &:last-child:after {
+    right: 0;
+    width: calc(50% - 2px);
+    border-left: 1px solid
+      ${({ theme, direction, active }) =>
+        active
+          ? theme.colors.spectrum.uniqueCollections[direction].base
+          : theme.primary[3]};
+  }
+
+  &:hover {
+    background-color: ${({ theme, direction }) =>
+      theme.colors.spectrum.uniqueCollections[direction].darker};
+    border-color: ${({ theme, direction }) =>
+      theme.colors.spectrum.uniqueCollections[direction].base};
+    color: ${({ theme }) => theme.white};
+  }
+
+  &:hover:after {
+    border-color: ${({ theme, direction }) =>
+      theme.colors.spectrum.uniqueCollections[direction].base};
   }
 `
 
 const IconWrapper = styled.div<{ direction: Direction }>`
   position: absolute;
+  top: 12px;
   left: calc(50% - 13px);
   z-index: 1;
   color: ${({ theme, direction }) =>

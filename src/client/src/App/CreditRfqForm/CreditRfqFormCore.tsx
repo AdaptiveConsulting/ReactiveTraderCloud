@@ -39,7 +39,7 @@ const CreditRfqFooter = styled.footer`
 export const CreditRfqFormCore: FC = () => {
   return (
     <CreditRfqFormCoreWrapper>
-      <CreditRfqHeader>RFQ Ticket</CreditRfqHeader>
+      <CreditRfqHeader>New RFQ</CreditRfqHeader>
       <CreditRfqSection fixed>
         <DirectionToggle />
         <CreditInstrumentSearch />
