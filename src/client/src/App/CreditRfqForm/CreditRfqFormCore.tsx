@@ -1,4 +1,3 @@
-import { Subscribe } from "@react-rxjs/core"
 import { FC } from "react"
 import styled from "styled-components"
 import { DirectionToggle } from "./DirectionToggle"
@@ -40,20 +39,18 @@ const CreditRfqFooter = styled.footer`
 export const CreditRfqFormCore: FC = () => {
   return (
     <CreditRfqFormCoreWrapper>
-      <Subscribe fallback={<div>Loading...</div>}>
-        <CreditRfqHeader>RFQ Ticket</CreditRfqHeader>
-        <CreditRfqSection fixed>
-          <DirectionToggle />
-          <CreditInstrumentSearch />
-          <RfqParameters />
-        </CreditRfqSection>
-        <CreditRfqSection>
-          <CounterpartySelection />
-        </CreditRfqSection>
-        <CreditRfqFooter>
-          <RfqButtonPanel />
-        </CreditRfqFooter>
-      </Subscribe>
+      <CreditRfqHeader>RFQ Ticket</CreditRfqHeader>
+      <CreditRfqSection fixed>
+        <DirectionToggle />
+        <CreditInstrumentSearch />
+        <RfqParameters />
+      </CreditRfqSection>
+      <CreditRfqSection>
+        <CounterpartySelection />
+      </CreditRfqSection>
+      <CreditRfqFooter>
+        <RfqButtonPanel />
+      </CreditRfqFooter>
     </CreditRfqFormCoreWrapper>
   )
 }

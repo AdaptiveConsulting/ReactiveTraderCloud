@@ -44,7 +44,7 @@ const SendRfqButton = styled(ActionButton)<{ disabled?: boolean }>`
 `
 
 const [rfqRequest$, sendRfq] = createSignal()
-const [rfqResponse$] = bind(
+const [, rfqResponse$] = bind(
   rfqRequest$.pipe(
     withLatestFrom(
       direction$,
@@ -76,7 +76,7 @@ const [rfqResponse$] = bind(
   null,
 )
 
-export { rfqResponse$ }
+rfqResponse$.subscribe()
 
 export const RfqButtonPanel: FC = () => {
   const selectedInstrument = useSelectedInstrument()

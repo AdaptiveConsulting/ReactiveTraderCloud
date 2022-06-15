@@ -1,5 +1,4 @@
 import { creditRfqs$ } from "@/services/creditRfqs"
-import { Subscribe } from "@react-rxjs/core"
 import { FC } from "react"
 import styled from "styled-components"
 import { CreditRfqList } from "./CreditRfqList"
@@ -19,10 +18,8 @@ const CreditRfqsHeader = styled.header`
 export const CreditRfqsCore: FC = () => {
   return (
     <CreditRfqsCoreWrapper>
-      <Subscribe source$={creditRfqs$} fallback={<div>Loading...</div>}>
-        <CreditRfqsHeader>RFQs</CreditRfqsHeader>
-        <CreditRfqList />
-      </Subscribe>
+      <CreditRfqsHeader>RFQ's</CreditRfqsHeader>
+      <CreditRfqList />
     </CreditRfqsCoreWrapper>
   )
 }
