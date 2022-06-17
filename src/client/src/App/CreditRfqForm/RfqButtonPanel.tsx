@@ -4,7 +4,15 @@ import { Direction } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
-import { exhaustMap, filter, map, tap, withLatestFrom } from "rxjs/operators"
+import { of, concat } from "rxjs"
+import {
+  exhaustMap,
+  filter,
+  map,
+  mergeMap,
+  tap,
+  withLatestFrom,
+} from "rxjs/operators"
 import styled from "styled-components"
 import {
   selectedCounterpartyIds$,
@@ -64,12 +72,16 @@ export const [, rfqResponse$] = bind(
       expirySecs: 10,
     })),
     exhaustMap((request) =>
-      createCreditRfq(request).pipe(
-        map((response) => ({ ...response, request })),
+      // clear RFQ response immediately after emission
+      concat(
+        createCreditRfq(request).pipe(
+          map((response) => ({ ...response, request })),
+        ),
+        of(null),
       ),
     ),
     tap((response) => {
-      if (response.type === ACK_CREATE_RFQ_RESPONSE) {
+      if (response?.type === ACK_CREATE_RFQ_RESPONSE) {
         setDirection(Direction.Buy)
         setSelectedInstrumentId(null)
         setQuantity("")

@@ -51,8 +51,8 @@ export { onDismissMessage }
 
 const [useConfirmations, confirmations$] = bind(
   rfqResponse$.pipe(
+    filter((response) => response !== null),
     withLatestFrom(creditInstruments$),
-    filter(([response]) => response !== null),
     map(([response, creditInstruments]) => ({
       ...response,
       request: {
