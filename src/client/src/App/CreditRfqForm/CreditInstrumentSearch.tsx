@@ -78,6 +78,9 @@ const IconWrapper = styled.div`
   }
 `
 
+const [cusip$, setCusip] = createSignal<string>()
+const [useCusip] = bind(cusip$, "")
+export { setCusip }
 export const [selectedInstrumentId$, setSelectedInstrumentId] =
   createSignal<number | null>()
 export const [useSelectedInstrument] = bind(
@@ -95,10 +98,10 @@ export const [useSelectedInstrument] = bind(
 )
 
 export const CreditInstrumentSearch: FC = () => {
-  const [cusip, setCusip] = useState("")
   const [showInput, setShowInput] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
   const instruments = useCreditInstrumentsByCusip()
+  const cusip = useCusip()
   const selectedInstrument = useSelectedInstrument()
 
   useEffect(() => {

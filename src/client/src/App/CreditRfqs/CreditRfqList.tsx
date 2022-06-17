@@ -18,8 +18,6 @@ const CreditRfqItemWrapper = styled.div`
 export const CreditRfqList: FC = () => {
   const rfqs = useCreditRfqs()
 
-  console.log(rfqs)
-
   return (
     <CreditRfqListWrapper>
       {rfqs.map((rfq) => (

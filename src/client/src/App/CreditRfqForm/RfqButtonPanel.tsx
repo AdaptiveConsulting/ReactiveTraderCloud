@@ -5,14 +5,7 @@ import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
 import { of, concat } from "rxjs"
-import {
-  exhaustMap,
-  filter,
-  map,
-  mergeMap,
-  tap,
-  withLatestFrom,
-} from "rxjs/operators"
+import { exhaustMap, filter, map, tap, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
 import {
   selectedCounterpartyIds$,
@@ -21,6 +14,7 @@ import {
 } from "./CounterpartySelection"
 import {
   selectedInstrumentId$,
+  setCusip,
   setSelectedInstrumentId,
   useSelectedInstrument,
 } from "./CreditInstrumentSearch"
@@ -106,6 +100,7 @@ export const RfqButtonPanel: FC = () => {
 
   const clearRfqTicket = () => {
     setDirection(Direction.Buy)
+    setCusip("")
     setSelectedInstrumentId(null)
     setQuantity("")
     setSelectedCounterpartyIds([])
@@ -114,7 +109,7 @@ export const RfqButtonPanel: FC = () => {
   return (
     <RfqButtonPanelWrapper>
       <ClearButton onClick={clearRfqTicket}>Clear</ClearButton>
-      <SendRfqButton onClick={() => sendRfq()} disabled={detailsMissing}>
+      <SendRfqButton onClick={sendRfq} disabled={detailsMissing}>
         Send RFQ
       </SendRfqButton>
     </RfqButtonPanelWrapper>
