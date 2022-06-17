@@ -10,6 +10,7 @@ import { map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
 
 const SearchWrapper = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,12 +62,14 @@ const MissingInstrument = styled.div`
 `
 
 const IconWrapper = styled.div`
+  position: absolute;
+  right: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 5px;
   height: 30px;
-  flex: 0 0 30px;
+  width: 30px;
   color: ${({ theme }) => theme.secondary[5]};
 
   &:hover {

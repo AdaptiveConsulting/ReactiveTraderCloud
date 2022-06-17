@@ -40,7 +40,7 @@ const [, creditRfqsById$] = bind(
   ),
 )
 
-interface RfqDetail extends RfqBody {
+export interface RfqDetail extends RfqBody {
   instrument: InstrumentBody | null
   dealers: DealerBody[]
 }

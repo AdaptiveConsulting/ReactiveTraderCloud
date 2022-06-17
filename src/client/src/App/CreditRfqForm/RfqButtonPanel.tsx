@@ -44,7 +44,7 @@ const SendRfqButton = styled(ActionButton)<{ disabled?: boolean }>`
 `
 
 const [rfqRequest$, sendRfq] = createSignal()
-const [, rfqResponse$] = bind(
+export const [, rfqResponse$] = bind(
   rfqRequest$.pipe(
     withLatestFrom(
       direction$,
@@ -63,7 +63,11 @@ const [, rfqResponse$] = bind(
       direction,
       expirySecs: 10,
     })),
-    exhaustMap((request) => createCreditRfq(request)),
+    exhaustMap((request) =>
+      createCreditRfq(request).pipe(
+        map((response) => ({ ...response, request })),
+      ),
+    ),
     tap((response) => {
       if (response.type === ACK_CREATE_RFQ_RESPONSE) {
         setDirection(Direction.Buy)
