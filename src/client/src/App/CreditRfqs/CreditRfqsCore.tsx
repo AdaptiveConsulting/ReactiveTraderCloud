@@ -7,10 +7,10 @@ import { CreditRfqList } from "./CreditRfqList"
 creditRfqs$.subscribe()
 
 const CreditRfqsCoreWrapper = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow-y: auto;
 `
 
 const CreditRfqsHeader = styled.header`

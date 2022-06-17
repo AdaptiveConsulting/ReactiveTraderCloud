@@ -1,8 +1,17 @@
 import { Direction } from "@/generated/TradingGateway"
 import { creditInstruments$ } from "@/services/creditInstruments"
 import { bind } from "@react-rxjs/core"
-import { concat, of, timer } from "rxjs"
-import { filter, map, mapTo, switchMap, withLatestFrom } from "rxjs/operators"
+import { createSignal } from "@react-rxjs/utils"
+import { FaTimes } from "react-icons/fa"
+import { concat, of, race, timer } from "rxjs"
+import {
+  filter,
+  map,
+  mapTo,
+  switchMap,
+  take,
+  withLatestFrom,
+} from "rxjs/operators"
 import styled from "styled-components"
 import { rfqResponse$ } from "../CreditRfqForm/RfqButtonPanel"
 
@@ -12,12 +21,33 @@ const ConfirmationPill = styled.div<{ direction: Direction }>`
   transform: translateX(-50%);
   background-color: ${({ theme, direction }) =>
     theme.colors.spectrum.uniqueCollections[direction].base};
-  display: inline-block;
+  display: flex;
+  align-items: center;
   padding: 0.5rem 1rem;
   border-radius: 2rem;
   font-size: 0.8rem;
   color: ${({ theme }) => theme.white};
 `
+
+const IconWrapper = styled.div<{ direction: Direction }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 1.5em;
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme, direction }) =>
+      theme.colors.spectrum.uniqueCollections[direction].lighter};
+  }
+`
+
+// Dismiss Message
+const DISMISS_TIMEOUT = 5_000
+const [dismiss$, onDismissMessage] = createSignal()
+export { onDismissMessage }
 
 const [useConfirmations, confirmations$] = bind(
   rfqResponse$.pipe(
@@ -34,7 +64,12 @@ const [useConfirmations, confirmations$] = bind(
       },
     })),
     switchMap((response) =>
-      concat(of(response), timer(5_000).pipe(mapTo(null))),
+      concat(
+        of(response),
+        race([dismiss$.pipe(take(1)), timer(DISMISS_TIMEOUT)]).pipe(
+          mapTo(null),
+        ),
+      ),
     ),
   ),
   null,
@@ -53,6 +88,9 @@ export const CreditRfqConfirmation = () => {
     <ConfirmationPill direction={direction}>
       You have sent an RFQ to {dealerIds.length} dealers to {direction}{" "}
       {quantity} {instrument?.name}
+      <IconWrapper direction={direction} onClick={onDismissMessage}>
+        <FaTimes />
+      </IconWrapper>
     </ConfirmationPill>
   ) : null
 }
