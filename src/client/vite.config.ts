@@ -234,21 +234,21 @@ const htmlPlugin = (dev: boolean) => {
 }
 
 const injectScriptIntoHtml = () =>
-createHtmlPlugin({
-  inject: {
-    data: {
-      injectScript: `
-      <script>
-        // Hydra dependency references BigInt at run time even when the application isn't explicitly started
-        // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
-        // Set BigInt to an anon function to prevent the runtime error 
-        window.supportsBigInt = typeof BigInt !== 'undefined';
-        window.BigInt = supportsBigInt ? BigInt : function(){};
-      </script>
-    `,
+  createHtmlPlugin({
+    inject: {
+      data: {
+        injectScript: `
+          <script>
+            // Hydra dependency references BigInt at run time even when the application isn't explicitly started
+            // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
+            // Set BigInt to an anon function to prevent the runtime error 
+            window.supportsBigInt = typeof BigInt !== 'undefined';
+            window.BigInt = supportsBigInt ? BigInt : function(){};
+          </script>
+        `,
+      },
     },
-  }    
-})
+  })
 
 const injectWebServiceWorkerPlugin = (mode: string) =>
   injectManifest(
