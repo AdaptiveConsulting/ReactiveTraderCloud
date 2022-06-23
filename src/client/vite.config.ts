@@ -203,8 +203,8 @@ const copyWebManifestPlugin = (dev: boolean) => {
             contents
               .toString()
               .replace(/<BASE_URL>/g, getBaseUrl(dev))
-              // We want the PWA banner to show on reactivetrader.com
-              .replace(/web\.prod\./g, "")
+              // We want the PWA banner to show on www.reactivetrader.com
+              .replace(/web\.prod\./g, "www.")
               // We don't want to show PROD in the PWA name
               .replace(
                 /{{environment_suffix}}/g,
