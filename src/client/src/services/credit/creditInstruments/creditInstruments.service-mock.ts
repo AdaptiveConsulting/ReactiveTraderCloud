@@ -1,7 +1,7 @@
-import { bind } from "@react-rxjs/core"
-import { scan } from "rxjs/operators"
 import { InstrumentBody } from "@/generated/TradingGateway"
-import { from } from "rxjs"
+import { bind } from "@react-rxjs/core"
+import { of } from "rxjs"
+import { scan } from "rxjs/operators"
 
 const fakeInstruments: InstrumentBody[] = [
   {
@@ -30,19 +30,21 @@ const fakeInstruments: InstrumentBody[] = [
   },
 ]
 
-const creditInstruments$ = from(fakeInstruments)
+export const creditInstruments$ = of(fakeInstruments)
 
 export const [useCreditInstrumentsByCusip, creditInstrumentsByCusip$] = bind<
   Record<string, InstrumentBody>
 >(
   creditInstruments$.pipe(
-    scan(
-      (acc, instrument) => ({
-        ...acc,
-        [instrument.cusip]: instrument,
-      }),
-      {},
-    ),
+    scan((acc, instruments) => {
+      instruments.forEach((instrument) => {
+        acc[instrument.cusip] = {
+          ...acc[instrument.cusip],
+          ...instrument,
+        }
+      })
+      return acc
+    }, {} as Record<string, InstrumentBody>),
   ),
   {},
 )

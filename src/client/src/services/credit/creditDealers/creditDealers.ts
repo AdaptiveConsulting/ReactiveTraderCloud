@@ -6,11 +6,13 @@ import {
   REMOVED_DEALER_UPDATE,
   START_OF_STATE_OF_THE_WORLD_DEALER_UPDATE,
 } from "@/generated/TradingGateway"
-import { bind } from "@react-rxjs/core"
-import { scan } from "rxjs/operators"
+import { bind, shareLatest } from "@react-rxjs/core"
+import { map, scan } from "rxjs/operators"
+import { withConnection } from "../../withConnection"
 
 export const [useCreditDealers, creditDealers$] = bind(
   DealerService.subscribe().pipe(
+    withConnection(),
     scan((acc: DealerBody[], update: DealerUpdate) => {
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_DEALER_UPDATE:
@@ -23,5 +25,14 @@ export const [useCreditDealers, creditDealers$] = bind(
           return acc
       }
     }, []),
+    shareLatest(),
   ),
+  [],
+)
+
+export const [useCreditDealerById, creditDealerById$] = bind(
+  (dealerId: number) =>
+    creditDealers$.pipe(
+      map((dealers) => dealers.find((dealer) => dealer.id === dealerId)),
+    ),
 )

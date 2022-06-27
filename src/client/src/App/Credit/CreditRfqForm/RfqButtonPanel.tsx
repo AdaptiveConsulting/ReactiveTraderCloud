@@ -1,5 +1,5 @@
 import { ACK_CREATE_RFQ_RESPONSE } from "@/generated/TradingGateway"
-import { createCreditRfq$ } from "@/services/creditRfqRequests"
+import { createCreditRfq$ } from "@/services/credit"
 import { Direction } from "@/services/trades"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"

@@ -1,13 +1,14 @@
 import { FC } from "react"
 import styled from "styled-components"
-import { DirectionToggle } from "./DirectionToggle"
 import { CounterpartySelection } from "./CounterpartySelection"
 import { CreditInstrumentSearch } from "./CreditInstrumentSearch"
+import { DirectionToggle } from "./DirectionToggle"
 import { RfqButtonPanel } from "./RfqButtonPanel"
 import { RfqParameters } from "./RfqParameters"
-import { supportsTearOut } from "../TearOutSection/supportsTearOut"
-import { TearOutComponent } from "../TearOutSection/TearOutComponent"
+import { supportsTearOut } from "../../TearOutSection/supportsTearOut"
+import { TearOutComponent } from "../../TearOutSection/TearOutComponent"
 import { Subscribe } from "@react-rxjs/core"
+import { Loader } from "@/components/Loader"
 
 const CreditRfqFormCoreWrapper = styled.div`
   display: flex;
@@ -57,7 +58,7 @@ const CreditRfqFooter = styled.footer`
 export const CreditRfqFormCore: FC = () => {
   return (
     <CreditRfqFormCoreWrapper>
-      <Subscribe>
+      <Subscribe fallback={<Loader ariaLabel="Loading New RFQ Form" />}>
         <CreditRfqHeader>
           New RFQ {supportsTearOut && <TearOutComponent section="newRfq" />}
         </CreditRfqHeader>

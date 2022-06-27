@@ -10,7 +10,7 @@ import { LiveRates } from "@/App/LiveRates"
 import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { lazy, Suspense } from "react"
-import { CreditRfqForm } from "@/App/CreditRfqForm"
+import { CreditRfqForm } from "@/App/Credit"
 
 const StyleguideRoute = lazy(() => import("@/styleguide"))
 const MainCreditRoute = lazy(() => import("./MainCreditRoute"))

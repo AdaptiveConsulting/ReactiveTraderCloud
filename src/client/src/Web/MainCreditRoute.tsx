@@ -1,8 +1,5 @@
-import { CreditRfqForm } from "@/App/CreditRfqForm"
-import { CreditRfqs } from "@/App/CreditRfqs"
-import {
-  getTornOutSections
-} from "@/App/TearOutSection/state"
+import { CreditRfqForm, CreditRfqs } from "@/App/Credit"
+import { getTornOutSections } from "@/App/TearOutSection/state"
 import { DraggableSectionTearOut } from "@/components/DraggableTearOut"
 import Resizer from "@/components/Resizer"
 import styled from "styled-components"
