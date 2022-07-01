@@ -7,7 +7,7 @@ export function openWindow(
   config: WindowConfig,
   onClose?: () => void,
 ): Promise<Window | undefined> {
-  const { name, width, height, center, url } = config
+  const { name, width, height, x, y, center, url } = config
   const prevWindow = openPopoutWindows[openPopoutWindows.length - 1]
   const windowReferencePosition = prevWindow
     ? { left: prevWindow.screenX, top: prevWindow.screenY }
@@ -30,8 +30,8 @@ export function openWindow(
     toWindowFeatures({
       width,
       height,
-      left,
-      top,
+      left: x ?? left,
+      top: y ?? top,
     }),
   )
 

@@ -1,58 +1,10 @@
 import { RfqState } from "@/generated/TradingGateway"
 import { cancelCreditRfq$ } from "@/services/credit"
 import { createSignal } from "@react-rxjs/utils"
-import { FC, useLayoutEffect, useRef, useState } from "react"
+import { FC } from "react"
 import { exhaustMap } from "rxjs/operators"
-import {
-  CancelQuoteButton,
-  CardFooterWrapper,
-  CardState,
-  ProgressBar,
-  ProgressBarWrapper,
-  TimeLeft,
-} from "./styled"
-
-const SecsTimer: React.FC<{ end: number }> = ({ end }) => {
-  const [timeLeft, setTimeLeft] = useState(() =>
-    Math.round((end - Date.now()) / 1000),
-  )
-  const expired = timeLeft <= 0
-  useLayoutEffect(() => {
-    if (!expired) {
-      const id = setInterval(() => {
-        setTimeLeft((x) => x - 1)
-      }, 1000)
-      return () => clearInterval(id)
-    }
-  }, [expired])
-
-  const timeLeftMins = Math.trunc(timeLeft / 60)
-  const timeLeftSecs = timeLeft % 60
-
-  return (
-    <>
-      {timeLeftMins}M {timeLeftSecs}S
-    </>
-  )
-}
-
-const TimeProgress: React.FC<{
-  start: number
-  end: number
-}> = ({ start, end }) => {
-  const transitionTime = useRef(end - Date.now())
-  const startgWidthPercentage = useRef(
-    ((end - Date.now()) / (end - start)) * 100,
-  )
-
-  return (
-    <ProgressBar
-      transitionTime={transitionTime.current}
-      start={startgWidthPercentage.current}
-      end={0}
-    />
-  )
-}
+import { CreditTimer } from "../../CreditTimer"
+import { CancelQuoteButton, CardFooterWrapper, CardState } from "./styled"
 
 interface CardFooterProps {
   rfqId: number
@@ -78,12 +30,7 @@ export const CardFooter: FC<CardFooterProps> = ({
     <CardFooterWrapper>
       {state === RfqState.Open ? (
         <>
-          <TimeLeft>
-            <SecsTimer end={end} />
-          </TimeLeft>
-          <ProgressBarWrapper>
-            <TimeProgress start={start} end={end} />
-          </ProgressBarWrapper>
+          <CreditTimer start={start} end={end} isSellSideView={false} />
           <CancelQuoteButton onClick={() => onCancelRfq(rfqId)}>
             Cancel
           </CancelQuoteButton>

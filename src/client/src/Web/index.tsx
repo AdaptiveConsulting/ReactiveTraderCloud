@@ -10,7 +10,7 @@ import { LiveRates } from "@/App/LiveRates"
 import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { lazy, Suspense } from "react"
-import { CreditRfqForm } from "@/App/Credit"
+import { CreditRfqForm, CreditSellSideTicket } from "@/App/Credit"
 
 const StyleguideRoute = lazy(() => import("@/styleguide"))
 const MainCreditRoute = lazy(() => import("./MainCreditRoute"))
@@ -36,6 +36,22 @@ export const WebApp: React.FC = () => (
             <>
               <DisconnectionOverlay />
               <MainCreditRoute />
+            </>
+          )}
+        />
+        <Route
+          path={ROUTES_CONFIG.sellSideTicket}
+          render={({
+            match: {
+              params: { rfqId, dealerId },
+            },
+          }) => (
+            <>
+              <DisconnectionOverlay />
+              <CreditSellSideTicket
+                rfqId={parseInt(rfqId!, 10)}
+                dealerId={parseInt(dealerId!, 10)}
+              />
             </>
           )}
         />

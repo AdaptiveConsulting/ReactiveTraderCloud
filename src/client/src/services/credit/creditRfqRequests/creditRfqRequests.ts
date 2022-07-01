@@ -1,13 +1,17 @@
+import { ROUTES_CONFIG } from "@/constants"
 import {
   AcceptQuoteRequest,
   AckCreateRfqResponse,
   ACK_CREATE_RFQ_RESPONSE,
   CancelRfqRequest,
+  CreateQuoteRequest,
   CreateRfqRequest,
   WorkflowService,
 } from "@/generated/TradingGateway"
+import { constructUrl } from "@/utils/url"
+import { openWindow } from "@/utils/window/openWindow"
 import { Subject } from "rxjs"
-import { exhaustMap, map, tap } from "rxjs/operators"
+import { map, tap } from "rxjs/operators"
 
 interface CreditRfqCreation extends AckCreateRfqResponse {
   request: CreateRfqRequest
@@ -28,21 +32,37 @@ export const createCreditRfq$ = (request: CreateRfqRequest) => {
 
 export const creditRfqCreations$ = creditRfqCreationsSubject.asObservable()
 
-// Mocking a quote
-creditRfqCreations$
-  .pipe(
-    exhaustMap((response) =>
-      WorkflowService.createQuote({
-        rfqId: response.payload,
-        dealerId: response.request.dealerIds[0],
-        price: 12,
-      }),
-    ),
-  )
-  .subscribe()
+creditRfqCreations$.subscribe(
+  ({ payload, request }) => {
+    const rfqId = payload.toString()
+    const firstDealerId = request.dealerIds[0].toString()
+    openWindow({
+      url: constructUrl(
+        ROUTES_CONFIG.sellSideTicket
+          .replace(":rfqId", rfqId)
+          .replace(":dealerId", firstDealerId),
+      ),
+      name: `CreditRFQ-${rfqId}-${firstDealerId}`,
+      width: 300,
+      height: 286,
+      x: window.innerWidth - 300,
+      y: window.innerHeight - 286,
+    })
+  },
+  (e) => {
+    console.error(e)
+  },
+  () => {
+    console.error("RFQ creation stream completed!?")
+  },
+)
 
 export const cancelCreditRfq$ = (cancelRequest: CancelRfqRequest) => {
   return WorkflowService.cancelRfq(cancelRequest)
+}
+
+export const createCreditQuote$ = (quoteRequest: CreateQuoteRequest) => {
+  return WorkflowService.createQuote(quoteRequest)
 }
 
 export const acceptCreditQuote$ = (acceptRequest: AcceptQuoteRequest) => {
