@@ -1,51 +1,31 @@
-import Resizer from "@/components/Resizer"
-import { Trades } from "@/App/Trades"
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
-import { useEffect, useState } from "react"
+import { getTornOutSections } from "@/App/TearOutSection/state"
+import { Trades } from "@/App/Trades"
 import { DraggableSectionTearOut } from "@/components/DraggableTearOut"
-import {
-  useTearOutSectionEntry,
-  TornOutSection,
-} from "@/App/TearOutSection/state"
-import { handleTearOutSection } from "@/App/TearOutSection/handleTearOutSection"
+import Resizer from "@/components/Resizer"
 import MainLayout from "./MainLayout"
 
+const FX_TEAR_OUT_SECTIONS = ["tiles", "blotter", "analytics"] as const
+const useTornOutSections = getTornOutSections(FX_TEAR_OUT_SECTIONS)
+
 export const MainFxRoute: React.FC = () => {
-  const tearOutEntry = useTearOutSectionEntry()
-  const [tornOutSectionState, setTornOutSectionState] =
-    useState<TornOutSection>({
-      tiles: false,
-      blotter: false,
-      analytics: false,
-      newRfq: false,
-    })
-
-  useEffect(() => {
-    if (tearOutEntry) {
-      const [tornOut, section] = tearOutEntry
-      setTornOutSectionState({ ...tornOutSectionState, [section]: tornOut })
-      if (tornOut) {
-        handleTearOutSection(section)
-      }
-    }
-  }, [tearOutEntry])
-
+  const tornOutSections = useTornOutSections()
   return (
     <MainLayout>
       <Resizer defaultHeight={30}>
-        {!tornOutSectionState.tiles && (
+        {!tornOutSections.tiles && (
           <DraggableSectionTearOut section="tiles">
             <LiveRates />
           </DraggableSectionTearOut>
         )}
-        {!tornOutSectionState.blotter && (
+        {!tornOutSections.blotter && (
           <DraggableSectionTearOut section="blotter">
             <Trades />
           </DraggableSectionTearOut>
         )}
       </Resizer>
-      {!tornOutSectionState.analytics && (
+      {!tornOutSections.analytics && (
         <DraggableSectionTearOut section="analytics">
           <Analytics />
         </DraggableSectionTearOut>

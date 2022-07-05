@@ -1,5 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { filter, scan, tap } from "rxjs/operators"
+import { handleTearOutSection } from "./handleTearOutSection"
 
 type TearOutSectionEntry = [boolean, Section]
 
@@ -15,10 +17,41 @@ export const [tearOutSectionEntry$, tearOutSection] = createSignal(
   (bool: boolean, section: Section): TearOutSectionEntry => [bool, section],
 )
 
-export const [useTearOutSectionEntry] = bind<TearOutSectionEntry | null>(
-  tearOutSectionEntry$,
-  null,
-)
+export function getTornOutSections<T extends Section>(sections: readonly T[]) {
+  const initialSectionsState = sections.reduce((acc, section) => {
+    acc[section] = false
+    return acc
+  }, {} as Record<T, boolean>)
+  
+  const [useTornOutSectionState] = bind(
+    tearOutSectionEntry$.pipe(
+      filter(([, section]) => sections.some((sec) => sec === section)),
+      // Should this side effect be passed in by the component to make it more explicit?
+      tap((sectionEntry) => {
+        if (sectionEntry) {
+          const [tornOut, section] = sectionEntry
+          if (tornOut) {
+            handleTearOutSection(section)
+          }
+        }
+      }),
+      scan((sectionsState, sectionEntry) => {
+        if (sectionEntry) {
+          const [tornOut, section] = sectionEntry
+          return {
+            ...sectionsState,
+            [section]: tornOut,
+          }
+        }
+
+        return sectionsState
+      }, initialSectionsState),
+    ),
+    initialSectionsState,
+  )
+
+  return useTornOutSectionState
+}
 
 export const sectionConfig: SectionConfig = {
   blotter: {

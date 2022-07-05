@@ -1,47 +1,28 @@
 import { CreditRfqForm } from "@/App/CreditRfqForm"
 import { CreditRfqs } from "@/App/CreditRfqs"
-import { handleTearOutSection } from "@/App/TearOutSection/handleTearOutSection"
 import {
-  TornOutSection,
-  useTearOutSectionEntry,
+  getTornOutSections
 } from "@/App/TearOutSection/state"
 import { DraggableSectionTearOut } from "@/components/DraggableTearOut"
 import Resizer from "@/components/Resizer"
-import { useEffect, useState } from "react"
 import styled from "styled-components"
 import MainLayout from "./MainLayout"
 
 const Placeholder = styled.div`
   margin: 3em;
 `
+const CREDIT_TEAR_OUT_SECTIONS = ["newRfq"] as const
+const useTornOutSections = getTornOutSections(CREDIT_TEAR_OUT_SECTIONS)
 
 const MainCreditRoute: React.FC = () => {
-  const tearOutEntry = useTearOutSectionEntry()
-  const [tornOutSectionState, setTornOutSectionState] =
-    useState<TornOutSection>({
-      tiles: false,
-      blotter: false,
-      analytics: false,
-      newRfq: false,
-    })
-
-  useEffect(() => {
-    if (tearOutEntry) {
-      const [tornOut, section] = tearOutEntry
-      setTornOutSectionState({ ...tornOutSectionState, [section]: tornOut })
-      if (tornOut) {
-        handleTearOutSection(section)
-      }
-    }
-  }, [tearOutEntry])
-
+  const tornOutSections = useTornOutSections()
   return (
     <MainLayout>
       <Resizer defaultHeight={30}>
         <CreditRfqs />
         <Placeholder>Credit Blotter Placeholder</Placeholder>
       </Resizer>
-      {!tornOutSectionState.newRfq && (
+      {!tornOutSections.newRfq && (
         <DraggableSectionTearOut section="newRfq">
           <CreditRfqForm />
         </DraggableSectionTearOut>
