@@ -10,6 +10,7 @@ import { LiveRates } from "@/App/LiveRates"
 import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { lazy, Suspense } from "react"
+import { CreditRfqForm } from "@/App/CreditRfqForm"
 
 const StyleguideRoute = lazy(() => import("@/styleguide"))
 const MainCreditRoute = lazy(() => import("./MainCreditRoute"))
@@ -94,6 +95,17 @@ export const WebApp: React.FC = () => (
               return (
                 <>
                   <Analytics hideIfMatches={""} />
+                  <DisconnectionOverlay />
+                </>
+              )
+            }}
+          />
+          <Route
+            path={ROUTES_CONFIG.newRfq}
+            render={() => {
+              return (
+                <>
+                  <CreditRfqForm />
                   <DisconnectionOverlay />
                 </>
               )

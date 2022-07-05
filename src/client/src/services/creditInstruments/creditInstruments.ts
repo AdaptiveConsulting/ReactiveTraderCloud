@@ -9,7 +9,7 @@ import {
   START_OF_STATE_OF_THE_WORLD_INSTRUMENT_UPDATE,
 } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
-import { scan } from "rxjs/operators"
+import { map, scan } from "rxjs/operators"
 
 const isAddedInstrumentUpdate = (
   update: InstrumentUpdate,
@@ -57,4 +57,11 @@ const reducer = (
 export const [useCreditInstrumentsByCusip, creditInstrumentsByCusip$] = bind(
   InstrumentService.subscribe().pipe(scan(reducer, {})),
   {},
+)
+
+export const [useCreditInstruments, creditInstruments$] = bind(
+  creditInstrumentsByCusip$.pipe(
+    map((creditInstrumentsByCusip) => Object.values(creditInstrumentsByCusip)),
+  ),
+  [],
 )
