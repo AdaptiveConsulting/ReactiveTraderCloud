@@ -14,11 +14,7 @@ const MainCreditRoute: React.FC = () => {
     <MainLayout>
       <Resizer defaultHeight={30}>
         <CreditRfqs />
-        {!tornOutSections.creditBlotter && (
-          <DraggableSectionTearOut section="creditBlotter">
-            <Trades credit={true} />
-          </DraggableSectionTearOut>
-        )}
+        <Trades credit={true} />
       </Resizer>
       {!tornOutSections.newRfq && (
         <DraggableSectionTearOut section="newRfq">

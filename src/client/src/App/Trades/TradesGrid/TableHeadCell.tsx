@@ -4,6 +4,7 @@ import { FaFilter, FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa"
 import { Subscribe } from "@react-rxjs/core"
 import { usePopUpMenu } from "@/utils"
 import type {
+  ColField,
   NumColField,
   SetColField,
   DateColField,
@@ -21,7 +22,6 @@ import {
 import { SetFilter } from "./SetFilter"
 import { NumFilter } from "./NumFilter"
 import { DateFilter } from "./DateFilter"
-import { AllColField } from "../TradesState/colConfig"
 
 const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
@@ -81,7 +81,7 @@ const AlignedArrow: React.FC<{
   )
 
 interface Props {
-  field: AllColField
+  field: ColField
   colConfigs: typeof colConfigs & typeof creditColConfigs
 }
 

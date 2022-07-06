@@ -163,7 +163,7 @@ const numFiltersTrueOfTrade = (
       return true
     }
 
-    const tradeValue = (trade as AllTrades)[field as NumColField]
+    const tradeValue = (trade as FxTrade)[field as NumColField]
     const tradeNumber =
       typeof tradeValue === "number" ? tradeValue : parseFloat(tradeValue)
     const filterNumber = filterContent.value1

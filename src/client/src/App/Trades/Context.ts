@@ -1,5 +1,5 @@
-import React, { useContext } from "react"
+import React from "react"
 
 export const CreditContext = React.createContext(false)
 
-export const useIsCredit = () => useContext(CreditContext)
+export const CreditContextConsumer = CreditContext.Consumer
