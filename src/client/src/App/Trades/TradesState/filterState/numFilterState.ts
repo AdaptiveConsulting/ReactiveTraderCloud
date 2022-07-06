@@ -1,4 +1,3 @@
-import { Trade } from "@/services/trades"
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
@@ -9,11 +8,15 @@ import {
   initialFilterContent,
 } from "./filterCommon"
 import { colFields, colConfigs } from "../colConfig"
+import { AllTrades } from "@/services/trades/types"
 
 /**
  * Subset of column fields (as type) that take number filters
  */
-export type NumColField = keyof Pick<Trade, "tradeId" | "notional" | "spotRate">
+export type NumColField = keyof Pick<
+  AllTrades,
+  "tradeId" | "notional" | "spotRate"
+>
 
 /**
  * Subset of column fields (as values) that take number filters
@@ -104,11 +107,9 @@ export const numberFilters$ = mergeWithKey({
  * State hook and parametric stream that emit number
  * filter state.  Used by NumFilter component.
  */
-export const [
-  useAppliedNumFilters,
-  appliedNumFilters$,
-] = bind((field: NumColField) =>
-  numberFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
+export const [useAppliedNumFilters, appliedNumFilters$] = bind(
+  (field: NumColField) =>
+    numberFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
 )
 
 /**

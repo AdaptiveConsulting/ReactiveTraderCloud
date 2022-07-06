@@ -1,5 +1,5 @@
 import { createSignal } from "@react-rxjs/utils"
-import type { ColField } from "../colConfig"
+import type { AllColField, ColField } from "../colConfig"
 
 /**
  * Used by date and number filter UI to populate
@@ -30,7 +30,7 @@ export interface FilterEvent {
  * the column or a selection from the TradesHeader.
  */
 export const [filterResets$, onFilterReset] = createSignal(
-  (field: ColField) => ({ field } as FilterEvent),
+  (field: AllColField) => ({ field } as FilterEvent),
 )
 
 /**

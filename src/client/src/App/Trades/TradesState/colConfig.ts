@@ -1,4 +1,4 @@
-import type { Trade } from "@/services/trades"
+import type { FxTrade, CreditTrade, Trade, AllTrades } from "@/services/trades"
 import { format as formatDate } from "date-fns"
 import {
   significantDigitsNumberFormatter,
@@ -7,7 +7,13 @@ import {
   THOUSANDS_SEPARATOR,
 } from "@/utils"
 
+export type FxColField = keyof FxTrade
+
+export type CreditColField = keyof CreditTrade
+
 export type ColField = keyof Trade
+
+export type AllColField = keyof AllTrades
 
 export type FilterType = "set" | "date" | "number"
 
@@ -40,7 +46,7 @@ const formatTo6Digits = significantDigitsNumberFormatter(6)
 const notionalExcelValueFormatter: ValueFormatter = (v) =>
   formatAsWholeNumber(v as number).replaceAll(THOUSANDS_SEPARATOR, "")
 
-export const colConfigs: Record<ColField, ColConfig> = {
+export const colConfigs: Record<FxColField, ColConfig> = {
   tradeId: {
     headerName: "Trade ID",
     filterType: "number",
@@ -99,8 +105,66 @@ export const colConfigs: Record<ColField, ColConfig> = {
   },
 }
 
+export const creditColConfigs: Record<CreditColField, ColConfig> = {
+  tradeId: {
+    headerName: "Trade ID",
+    filterType: "number",
+    width: 100,
+  },
+  status: {
+    headerName: "Status",
+    filterType: "set",
+    valueFormatter: capitalize,
+    width: 110,
+  },
+  tradeDate: {
+    headerName: "Trade Date",
+    filterType: "date",
+    valueFormatter: (v) => formatDate(v as Date, DATE_FORMAT),
+    width: 130,
+  },
+  direction: {
+    headerName: "Direction",
+    filterType: "set",
+    width: 110,
+  },
+  counterParty: {
+    headerName: "Counterparty",
+    filterType: "set",
+    width: 110,
+  },
+  cusip: {
+    headerName: "CUSIP",
+    filterType: "number",
+    width: 110,
+  },
+  security: {
+    headerName: "Security",
+    filterType: "number",
+    width: 110,
+  },
+  quantity: {
+    headerName: "Quantity",
+    filterType: "number",
+    width: 110,
+  },
+  orderType: {
+    headerName: "Order Type",
+    filterType: "number",
+    width: 110,
+  },
+  unitPrice: {
+    headerName: "Unit Price",
+    filterType: "number",
+    width: 110,
+  },
+}
+
 /**
  * Values of the Trade keys.  Used for dynamically constructing maps that
  * concern each key.
  */
 export const colFields: ColField[] = Object.keys(colConfigs) as ColField[]
+export const creditColFields: CreditColField[] = Object.keys(
+  creditColConfigs,
+) as CreditColField[]

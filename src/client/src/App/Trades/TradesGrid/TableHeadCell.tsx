@@ -5,6 +5,7 @@ import { Subscribe } from "@react-rxjs/core"
 import { usePopUpMenu } from "@/utils"
 import type {
   ColField,
+  CreditColField,
   NumColField,
   SetColField,
   DateColField,
@@ -13,6 +14,7 @@ import type {
 import {
   onSortFieldSelect,
   colConfigs,
+  creditColConfigs,
   useTableSort,
   appliedDateFilters$,
   appliedSetFieldFilters$,
@@ -79,9 +81,15 @@ const AlignedArrow: React.FC<{
     <AlignedDownArrow role="sort" aria-label={ariaLabel} />
   )
 
-export const TableHeadCellContainer: React.FC<{
+interface Props {
   field: ColField
-}> = ({ field }) => {
+  colConfigs: typeof colConfigs & typeof creditColConfigs
+}
+
+export const TableHeadCellContainer: React.FC<Props> = ({
+  field,
+  colConfigs,
+}) => {
   const [showFilter, setShowFilter] = useState(false)
   const ref = useRef<HTMLTableHeaderCellElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)

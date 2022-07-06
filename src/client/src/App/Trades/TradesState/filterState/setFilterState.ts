@@ -7,13 +7,14 @@ import { trades$ } from "@/services/trades"
 import { colConfigs, colFields } from "../colConfig"
 import type { FilterEvent } from "./filterCommon"
 import { filterResets$ } from "./filterCommon"
+import { AllTrades, FxTrade } from "@/services/trades/types"
 
 /**
  * Subset of column fields (as type) that take set/multi-select filter-value
  * options.
  */
 export type SetColField = keyof Pick<
-  Trade,
+  AllTrades,
   "status" | "direction" | "symbol" | "dealtCurrency" | "traderName"
 >
 
@@ -26,10 +27,10 @@ const setFields = colFields.filter(
 ) as SetColField[]
 
 export type DistinctValues = {
-  [K in SetColField]: Set<Trade[K]>
+  [K in SetColField]: Set<AllTrades[K]>
 }
 interface ColFieldToggle<T extends SetColField> extends FilterEvent {
-  value: Trade[T]
+  value: AllTrades[T]
 }
 
 interface SearchInput extends FilterEvent {
@@ -42,7 +43,7 @@ interface SearchInput extends FilterEvent {
  * ToDo: refactor into keyed signal
  */
 const [colFilterToggle$, onColFilterToggle] = createSignal(
-  <T extends SetColField>(field: T, value: Trade[T]) =>
+  <T extends SetColField>(field: T, value: AllTrades[T]) =>
     ({ field, value } as ColFieldToggle<T>),
 )
 
@@ -73,7 +74,7 @@ export const setFieldValuesContainer = Object.freeze(
   setFields.reduce((valuesContainer, field) => {
     return {
       ...valuesContainer,
-      [field]: new Set<Trade[typeof field]>(),
+      [field]: new Set<AllTrades[typeof field]>(),
     }
   }, {} as DistinctValues),
 )
@@ -88,7 +89,7 @@ export const setFieldValuesContainer = Object.freeze(
 const createFilterValuesContainer = () =>
   mapObject(
     setFieldValuesContainer,
-    (_, field) => new Set<Trade[typeof field]>(),
+    (_, field) => new Set<AllTrades[typeof field]>(),
   )
 
 /**
@@ -100,8 +101,8 @@ const distinctValues$ = trades$.pipe(
   map((trades) =>
     trades.reduce((distinctValues, trade) => {
       return mapObject(distinctValues, (fieldValues, fieldName) => {
-        return new Set<Trade[typeof fieldName]>([
-          trade[fieldName],
+        return new Set<AllTrades[typeof fieldName]>([
+          (trade as AllTrades)[fieldName],
           ...fieldValues,
         ])
       })
@@ -201,9 +202,7 @@ export const appliedSetFilterEntries$ = appliedSetFilters$.pipe(
  * State hook and parametric stream of applied filter-value options
  *  used by SetFilter component to render options.
  */
-export const [
-  useAppliedSetFieldFilters,
-  appliedSetFieldFilters$,
-] = bind((field: SetColField) =>
-  appliedSetFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
+export const [useAppliedSetFieldFilters, appliedSetFieldFilters$] = bind(
+  (field: SetColField) =>
+    appliedSetFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
 )

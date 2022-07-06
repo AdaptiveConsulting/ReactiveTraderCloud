@@ -1,5 +1,15 @@
-export type { ColField, ColConfig, FilterType } from "./colConfig"
-export { colConfigs, colFields } from "./colConfig"
+export type {
+  ColField,
+  ColConfig,
+  CreditColField,
+  FilterType,
+} from "./colConfig"
+export {
+  colConfigs,
+  colFields,
+  creditColConfigs,
+  creditColFields,
+} from "./colConfig"
 export type {
   DistinctValues,
   NumFilterContent,
@@ -28,6 +38,7 @@ export { useTableSort, onSortFieldSelect } from "./sortState"
 export {
   tableTrades$,
   useTableTrades,
+  useTableCreditTrades,
   useFilterFields,
   onTradeRowHighlight,
   useTradeRowHighlight,

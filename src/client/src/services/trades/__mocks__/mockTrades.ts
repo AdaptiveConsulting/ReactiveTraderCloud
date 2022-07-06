@@ -1,4 +1,4 @@
-import { Direction, Trade, TradeRaw, TradeStatus } from "../types"
+import { Direction, FxTrade, TradeRaw, TradeStatus } from "../types"
 
 export const mockRawTrades = {
   Trades: [
@@ -41,7 +41,7 @@ export const mockRawTrades = {
   ] as TradeRaw[],
 }
 
-export const mockTrades: Trade[] = [
+export const mockTrades: FxTrade[] = [
   {
     tradeId: "1111111111",
     traderName: "LMO",

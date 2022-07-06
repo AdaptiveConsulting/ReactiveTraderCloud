@@ -9,6 +9,7 @@ export enum TradeStatus {
   Pending = "Pending",
   Done = "Done",
   Rejected = "Rejected",
+  Expired = "Expired",
 }
 
 export interface TradeRaw {
@@ -28,7 +29,7 @@ export interface RawTradeUpdate extends CollectionUpdates {
   Trades: TradeRaw[]
 }
 
-export interface Trade
+export interface FxTrade
   extends CamelCase<
     Omit<TradeRaw, "TradeId" | "ValueDate" | "TradeDate" | "CurrencyPair">
   > {
@@ -37,3 +38,20 @@ export interface Trade
   valueDate: Date
   tradeDate: Date
 }
+
+export interface CreditTrade {
+  tradeId: string
+  status: TradeStatus
+  tradeDate: Date
+  direction: Direction
+  counterParty: string
+  cusip: string
+  security: string
+  quantity: string
+  orderType: string
+  unitPrice: string
+}
+
+export type Trade = FxTrade | CreditTrade
+
+export type AllTrades = FxTrade & CreditTrade
