@@ -1,5 +1,6 @@
 import { Direction, QuoteState } from "@/generated/TradingGateway"
-import styled from "styled-components"
+import { memo } from "react"
+import styled, { css, keyframes } from "styled-components"
 
 // Card
 
@@ -207,16 +208,27 @@ export const ProgressBarWrapper = styled.div`
   border-radius: 3px;
 `
 
-export const ProgressBar = styled.div<{
+const changeWidth = (start: number, end: number) => keyframes`
+  from { width: ${start}% }
+  to { width: ${end}%}
+`
+
+const progressAnimation = ({ start, end, transitionTime }: {
+  start: number
+  end: number
   transitionTime: number
-  width: number
+}) =>  css`${changeWidth(start, end)} ${transitionTime}ms linear; `;
+
+export const ProgressBar = memo(styled.div<{
+  start: number
+  end: number
+  transitionTime: number
 }>`
   background-color: ${({ theme }) => theme.accents.primary.base};
   border-radius: 3px;
-  transition: ${({ transitionTime }) => `width ${transitionTime}ms linear`};
   height: 100%;
-  width: ${(p) => p.width}%;
-`
+  animation: ${progressAnimation}
+`)
 
 export const CancelQuoteButton = styled.button`
   background-color: ${({ theme }) => `${theme.core.darkBackground}`};

@@ -109,8 +109,8 @@ const Card = ({ id }: { id: number }) => {
       <CardFooter
         rfqId={rfqDetails.id}
         state={rfqDetails.state}
-        start={Date.now()}
-        end={Date.now() + 2 * 60 * 1000}
+        start={rfqDetails.dateReceived}
+        end={rfqDetails.dateReceived + rfqDetails.expirySecs * 1000}
       />
     </CardContainer>
   )

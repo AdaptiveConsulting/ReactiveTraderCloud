@@ -9,4 +9,5 @@ export interface RfqDetails extends RfqBody {
   instrument: InstrumentBody | null
   dealers: DealerBody[]
   quotes: QuoteBody[]
+  dateReceived: number
 }
