@@ -8,8 +8,9 @@ import {
   REMOVED_INSTRUMENT_UPDATE,
   START_OF_STATE_OF_THE_WORLD_INSTRUMENT_UPDATE,
 } from "@/generated/TradingGateway"
-import { bind } from "@react-rxjs/core"
+import { bind, shareLatest } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
+import { withConnection } from "../../withConnection"
 
 const isAddedInstrumentUpdate = (
   update: InstrumentUpdate,
@@ -55,7 +56,11 @@ const reducer = (
 }
 
 export const [useCreditInstrumentsByCusip, creditInstrumentsByCusip$] = bind(
-  InstrumentService.subscribe().pipe(scan(reducer, {})),
+  InstrumentService.subscribe().pipe(
+    withConnection(),
+    scan(reducer, {}),
+    shareLatest(),
+  ),
   {},
 )
 
@@ -64,4 +69,13 @@ export const [useCreditInstruments, creditInstruments$] = bind(
     map((creditInstrumentsByCusip) => Object.values(creditInstrumentsByCusip)),
   ),
   [],
+)
+
+export const [useCreditInstrumentById, creditInstrumentById$] = bind(
+  (instrumentId: number) =>
+    creditInstruments$.pipe(
+      map((creditInstruments) =>
+        creditInstruments.find((instrument) => instrument.id === instrumentId),
+      ),
+    ),
 )

@@ -1,4 +1,4 @@
-import { useCreditDealers } from "@/services/creditDealers"
+import { useCreditDealers } from "@/services/credit"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"

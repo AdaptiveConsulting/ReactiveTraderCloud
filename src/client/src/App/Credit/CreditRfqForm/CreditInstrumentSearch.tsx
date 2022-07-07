@@ -1,7 +1,7 @@
 import {
   creditInstrumentsByCusip$,
   useCreditInstrumentsByCusip,
-} from "@/services/creditInstruments"
+} from "@/services/credit"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC, useState, useEffect, useRef } from "react"
