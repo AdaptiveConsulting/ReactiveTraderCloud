@@ -2,14 +2,7 @@ import { startOfDay } from "date-fns"
 import { combineLatest, merge, Observable } from "rxjs"
 import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import {
-  FxTrade,
-  Trade,
-  trades$,
-  creditTrades$,
-  AllTrades,
-} from "@/services/trades"
-import type { ColField } from "./colConfig"
+import { FxTrade, Trade, trades$, creditTrades$ } from "@/services/trades"
 import type {
   NumColField,
   DateColField,
@@ -64,10 +57,10 @@ const searchTrueOfTrade = (searchTerms: string[], tradeValues: unknown[]) => {
  */
 const setFiltersTrueOfTrade = (
   appliedFilters: [string, Set<unknown>][],
-  trade: Trade,
+  trade: Record<keyof any, unknown>,
 ) => {
   return appliedFilters.every(([field, filterValues]) => {
-    return (filterValues as Set<unknown>).has(trade[field as ColField])
+    return (filterValues as Set<unknown>).has(trade[field])
   })
 }
 
@@ -155,7 +148,7 @@ const dateFiltersTrueOfTrade = (
  */
 const numFiltersTrueOfTrade = (
   numFilters: [string, NumFilterContent][],
-  trade: Trade,
+  trade: Record<keyof any, unknown>,
 ) => {
   return numFilters.every(([field, filterContent]) => {
     // Predicate is trivially true if no number filter is set
@@ -163,9 +156,11 @@ const numFiltersTrueOfTrade = (
       return true
     }
 
-    const tradeValue = (trade as FxTrade)[field as NumColField]
+    const tradeValue = trade[field as NumColField]
     const tradeNumber =
-      typeof tradeValue === "number" ? tradeValue : parseFloat(tradeValue)
+      typeof tradeValue === "number"
+        ? tradeValue
+        : parseFloat(tradeValue as string)
     const filterNumber = filterContent.value1
 
     switch (filterContent.comparator) {
@@ -193,9 +188,7 @@ const numFiltersTrueOfTrade = (
   })
 }
 
-const getFilteredTrades = (credit: boolean): Observable<any> => {
-  const tradeStream$ = credit ? creditTrades$ : trades$
-
+const getFilteredTrades = <T extends object>(tradeStream$: Observable<T[]>) => {
   return combineLatest([
     tradeStream$,
     quickFilterInputs$.pipe(
@@ -266,9 +259,9 @@ const stringComparator = (direction: SortDirection, a: string, b: string) => {
  * Checks runtime type of column field to determine
  * which sort comparator to use.
  */
-const sortTrades = ([trades, { field, direction }]: [
-  AllTrades[],
-  TableSort,
+const sortTrades = <T extends object>([trades, { field, direction }]: [
+  T[],
+  TableSort<keyof T>,
 ]): Trade[] => {
   const sortedTrades = [...trades]
   if (field && direction) {
@@ -314,11 +307,13 @@ const sortTrades = ([trades, { field, direction }]: [
  * sort.
  */
 export const [useTableTrades, tableTrades$] = bind(
-  combineLatest([getFilteredTrades(false), tableSort$]).pipe(map(sortTrades)),
+  combineLatest([getFilteredTrades(trades$), tableSort$]).pipe(map(sortTrades)),
 )
 
 export const [useTableCreditTrades, tableCreditTrades$] = bind(
-  combineLatest([getFilteredTrades(true), tableSort$]).pipe(map(sortTrades)),
+  combineLatest([getFilteredTrades(creditTrades$), tableSort$]).pipe(
+    map(sortTrades),
+  ),
 )
 
 /**
@@ -334,12 +329,11 @@ export const [useFilterFields] = bind(
     numFilterEntries$.pipe(startWith([])),
     dateFilterEntries$.pipe(startWith([])),
   ]).pipe(
-    map(
-      ([set, num, date]) =>
-        [...set, ...num, ...date].map(([field]) => field) as ColField[],
+    map(([set, num, date]) =>
+      [...set, ...num, ...date].map(([field]) => field),
     ),
   ),
-  [] as ColField[],
+  [],
 )
 
 /**

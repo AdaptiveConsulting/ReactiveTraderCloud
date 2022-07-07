@@ -51,7 +51,3 @@ export interface CreditTrade {
   orderType: string
   unitPrice: string
 }
-
-export type Trade = FxTrade | CreditTrade
-
-export type AllTrades = FxTrade & CreditTrade

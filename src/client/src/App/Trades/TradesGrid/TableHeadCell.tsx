@@ -13,6 +13,7 @@ import type {
 import {
   onSortFieldSelect,
   colConfigs,
+  ColConfig,
   creditColConfigs,
   useTableSort,
   appliedDateFilters$,
@@ -80,15 +81,15 @@ const AlignedArrow: React.FC<{
     <AlignedDownArrow role="sort" aria-label={ariaLabel} />
   )
 
-interface Props {
-  field: ColField
-  colConfigs: typeof colConfigs & typeof creditColConfigs
+interface Props<T extends string> {
+  field: T
+  colConfigs: Record<T, ColConfig>
 }
 
-export const TableHeadCellContainer: React.FC<Props> = ({
+export const TableHeadCellContainer = <T extends string>({
   field,
   colConfigs,
-}) => {
+}: Props<T>) => {
   const [showFilter, setShowFilter] = useState(false)
   const ref = useRef<HTMLTableHeaderCellElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)

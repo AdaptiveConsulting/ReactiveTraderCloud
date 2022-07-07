@@ -1,5 +1,4 @@
 import { createSignal } from "@react-rxjs/utils"
-import type { AllColField, ColField } from "../colConfig"
 
 /**
  * Used by date and number filter UI to populate
@@ -17,20 +16,11 @@ export enum ComparatorType {
 }
 
 /**
- * All filter events extend this.  At a minimum,
- * a filter event specifies a column field whose
- * filters must be set or unset.
- */
-export interface FilterEvent {
-  field: ColField
-}
-
-/**
  * Unsets column field.  Represents a "Select All" on
  * the column or a selection from the TradesHeader.
  */
 export const [filterResets$, onFilterReset] = createSignal(
-  (field: AllColField) => ({ field } as FilterEvent),
+  (field: keyof any) => ({ field }),
 )
 
 /**

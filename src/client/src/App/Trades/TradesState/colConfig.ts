@@ -1,4 +1,4 @@
-import type { FxTrade, CreditTrade, Trade, AllTrades } from "@/services/trades"
+import type { FxTrade, CreditTrade } from "@/services/trades"
 import { format as formatDate } from "date-fns"
 import {
   significantDigitsNumberFormatter,
@@ -10,10 +10,6 @@ import {
 export type FxColField = keyof FxTrade
 
 export type CreditColField = keyof CreditTrade
-
-export type ColField = keyof Trade
-
-export type AllColField = keyof AllTrades
 
 export type FilterType = "set" | "date" | "number"
 

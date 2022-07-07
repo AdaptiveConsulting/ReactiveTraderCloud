@@ -1,4 +1,3 @@
-export type { FilterEvent } from "./filterCommon"
 export {
   ComparatorType,
   filterResets$,
@@ -14,7 +13,7 @@ export {
   onColFilterDateSelect,
   dateFilterEntries$,
 } from "./dateFilterState"
-export type { NumColField, NumFilterContent } from "./numFilterState"
+export type { NumFilterContent } from "./numFilterState"
 export {
   numberFilters$,
   useAppliedNumFilters,

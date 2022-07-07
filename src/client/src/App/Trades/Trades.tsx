@@ -24,7 +24,7 @@ export const Trades: React.FC<Props> = ({ credit }) => (
   <CreditContext.Provider value={!!credit}>
     <TradesWrapper>
       <Suspense fallback={<Loader />}>
-        <TradesCore credit={credit} />
+        <TradesCore />
       </Suspense>
     </TradesWrapper>
   </CreditContext.Provider>

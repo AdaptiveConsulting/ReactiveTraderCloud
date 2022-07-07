@@ -4,7 +4,7 @@ import { Observable } from "rxjs"
 import { map, scan } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
 import { withConnection } from "../withConnection"
-import { Trade } from "./types"
+import { FxTrade, CreditTrade } from "./types"
 import { mockCreditTrades } from "./__mocks__/creditTrades"
 
 const tradesStream$ = BlotterService.getTradeStream().pipe(
@@ -26,7 +26,7 @@ const tradesStream$ = BlotterService.getTradeStream().pipe(
   })),
 )
 
-export const [useTrades, trades$] = bind<Trade[]>(
+export const [useTrades, trades$] = bind<FxTrade[]>(
   tradesStream$.pipe(
     scan(
       (acc, { isStateOfTheWorld, updates }) => ({
@@ -35,7 +35,7 @@ export const [useTrades, trades$] = bind<Trade[]>(
           updates.map((trade) => [trade.tradeId, trade] as const),
         ),
       }),
-      {} as Record<number, Trade>,
+      {} as Record<number, FxTrade>,
     ),
     map((trades) => {
       console.log("************************************", Object.values(trades))
@@ -46,9 +46,10 @@ export const [useTrades, trades$] = bind<Trade[]>(
 
 export const isBlotterDataStale$ = withIsStaleData(trades$)
 
-const fakeCreditStream$ = new Observable<Trade[]>((subscriber) => {
+const fakeCreditStream$ = new Observable<CreditTrade[]>((subscriber) => {
   subscriber.next(mockCreditTrades)
   subscriber.complete()
 })
 
-export const [useCreditTrades, creditTrades$] = bind<Trade[]>(fakeCreditStream$)
+export const [useCreditTrades, creditTrades$] =
+  bind<CreditTrade[]>(fakeCreditStream$)

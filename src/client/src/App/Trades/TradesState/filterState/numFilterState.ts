@@ -1,29 +1,22 @@
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
-import type { FilterEvent } from "./filterCommon"
 import {
   ComparatorType,
   filterResets$,
   initialFilterContent,
 } from "./filterCommon"
-import { colFields, colConfigs } from "../colConfig"
-import { AllTrades } from "@/services/trades/types"
-
-/**
- * Subset of column fields (as type) that take number filters
- */
-export type NumColField = keyof Pick<
-  AllTrades,
-  "tradeId" | "notional" | "spotRate"
->
+import { ColConfig } from "../colConfig"
 
 /**
  * Subset of column fields (as values) that take number filters
  */
-const numFields = colFields.filter(
-  (field) => colConfigs[field].filterType === "number",
-)
+const extractNumberFields = <T extends keyof any>(
+  colConfigs: Record<T, ColConfig>,
+): T[] =>
+  (Object.keys(colConfigs) as T[]).filter(
+    (key: T) => colConfigs[key].filterType === "number",
+  )
 
 /**
  * Three components of number filter state
@@ -48,19 +41,25 @@ export interface NumFilterContent {
   value2?: number | null
 }
 
-export type NumFilters = {
-  [K in NumColField]: NumFilterContent
+export type NumFilters<T extends keyof any> = {
+  [key in T]: NumFilterContent
 }
-interface NumFilterSet extends FilterEvent {
+interface NumFilterSet {
+  field: keyof any
   value: NumFilterContent
 }
 
-const numFilterDefaults = numFields.reduce((valuesContainer, field) => {
-  return {
-    ...valuesContainer,
-    [field]: initialFilterContent,
-  }
-}, {} as NumFilters)
+const numFilterDefaults = <T extends keyof any>(
+  colConfigs: Record<T, ColConfig>,
+) => {
+  const numberFields = extractNumberFields(colConfigs)
+  return numberFields.reduce((valuesContainer, field) => {
+    return {
+      ...valuesContainer,
+      [field]: initialFilterContent,
+    }
+  }, {} as Record<typeof numberFields[number], NumFilterContent>)
+}
 
 /**
  * Stream of number filter events (either selection of new comparator
@@ -69,7 +68,7 @@ const numFilterDefaults = numFields.reduce((valuesContainer, field) => {
  * ToDo - refactor into keyed signal
  */
 const [colFilterNum$, onColFilterEnterNum] = createSignal(
-  (field: NumColField, value: NumFilterContent) =>
+  (field: keyof any, value: NumFilterContent) =>
     ({ field, value } as NumFilterSet),
 )
 
@@ -108,7 +107,7 @@ export const numberFilters$ = mergeWithKey({
  * filter state.  Used by NumFilter component.
  */
 export const [useAppliedNumFilters, appliedNumFilters$] = bind(
-  (field: NumColField) =>
+  (field: keyof any) =>
     numberFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
 )
 

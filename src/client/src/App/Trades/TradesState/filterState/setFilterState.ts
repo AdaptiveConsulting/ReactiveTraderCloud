@@ -2,37 +2,31 @@ import { map, mergeMap, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { mapObject } from "@/utils"
-import { trades$ } from "@/services/trades"
-import { colConfigs, colFields } from "../colConfig"
-import type { FilterEvent } from "./filterCommon"
+import { AllTrades, trades$ } from "@/services/trades"
+import { ColConfig } from "../colConfig"
 import { filterResets$ } from "./filterCommon"
-import { AllTrades } from "@/services/trades/types"
-
-/**
- * Subset of column fields (as type) that take set/multi-select filter-value
- * options.
- */
-export type SetColField = keyof Pick<
-  AllTrades,
-  "status" | "direction" | "symbol" | "dealtCurrency" | "traderName"
->
 
 /**
  * Subset of column fields (as values) that take set/multi-select filter-value
  * options.
  */
-const setFields = colFields.filter(
-  (field) => colConfigs[field].filterType === "set",
-) as SetColField[]
+const extractSetFields = <T extends keyof any>(
+  colConfigs: Record<T, ColConfig>,
+): T[] =>
+  (Object.keys(colConfigs) as T[]).filter(
+    (key: T) => colConfigs[key].filterType === "set",
+  )
 
 export type DistinctValues = {
-  [K in SetColField]: Set<AllTrades[K]>
+  [K in keyof any]: Set<AllTrades[K]>
 }
-interface ColFieldToggle<T extends SetColField> extends FilterEvent {
-  value: AllTrades[T]
+interface ColFieldToggle {
+  field: keyof any
+  value: unknown
 }
 
-interface SearchInput extends FilterEvent {
+interface SearchInput {
+  field: keyof any
   value: string
 }
 
@@ -42,8 +36,7 @@ interface SearchInput extends FilterEvent {
  * ToDo: refactor into keyed signal
  */
 const [colFilterToggle$, onColFilterToggle] = createSignal(
-  <T extends SetColField>(field: T, value: AllTrades[T]) =>
-    ({ field, value } as ColFieldToggle<T>),
+  <T extends keyof any>(field: T, value: unknown) => ({ field, value }),
 )
 
 /**
@@ -53,7 +46,7 @@ const [colFilterToggle$, onColFilterToggle] = createSignal(
  * ToDo: refactor into keyed signal
  */
 const [_si$, onSearchInput] = createSignal(
-  <T extends SetColField>(field: T, value: string) =>
+  <T extends keyof any>(field: T, value: string) =>
     ({ field, value } as SearchInput),
 )
 
@@ -70,7 +63,7 @@ export { onColFilterToggle, onSearchInput, searchInputs$ }
  * the universe of options and selected options.
  */
 export const setFieldValuesContainer = Object.freeze(
-  setFields.reduce((valuesContainer, field) => {
+  extractSetFields().reduce((valuesContainer, field) => {
     return {
       ...valuesContainer,
       [field]: new Set<AllTrades[typeof field]>(),
@@ -85,7 +78,7 @@ export const setFieldValuesContainer = Object.freeze(
  * Filter-value options container factory.  Used primarily
  * for setting defaults.
  */
-const createFilterValuesContainer = () =>
+const createFilterValuesContainer = (fields: (keyof any)[]) =>
   mapObject(
     setFieldValuesContainer,
     (_, field) => new Set<AllTrades[typeof field]>(),

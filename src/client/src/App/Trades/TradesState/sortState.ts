@@ -1,12 +1,12 @@
 import { scan, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import type { AllColField, ColField } from "./colConfig"
+import type { AllColField } from "./colConfig"
 
 export type SortDirection = "ASC" | "DESC"
 
-export class TableSort {
-  constructor(public direction?: SortDirection, public field?: AllColField) {}
+export class TableSort<T extends keyof any> {
+  constructor(public direction?: SortDirection, public field?: T) {}
 }
 
 /**
@@ -18,8 +18,7 @@ export class TableSort {
  * actually tracks the state of the sorting (ASC, DESC, unset)
  * on the column.
  */
-export const [sortFieldSelections$, onSortFieldSelect] =
-  createSignal<ColField>()
+export const getFieldSectionState = <T extends keyof any>() => createSignal<T>()
 
 /**
  * Default sorting direction is ASC.
@@ -44,7 +43,7 @@ const descDefaultFields = new Set<AllColField>([
  * and 3)
  */
 export const [useTableSort, tableSort$] = bind(
-  sortFieldSelections$.pipe(
+  getFieldSectionState()[0].pipe(
     scan((tableSort, sortFieldSelection) => {
       // User is cycling through sort direction on a column
       if (tableSort.field === sortFieldSelection) {
