@@ -1,6 +1,6 @@
-import { LocalDateConverter } from "@adaptive/hydra-codecs/dist/valueConverters"
 import * as HydraPlatform from "@adaptive/hydra-platform"
 import { Observable } from "rxjs"
+import { LocalDateConverter } from "@adaptive/hydra-codecs/dist/valueConverters"
 
 export const RFQ_CREATED_RFQ_UPDATE = "rfqCreated",
   QUOTE_CREATED_RFQ_UPDATE = "quoteCreated",
@@ -73,6 +73,7 @@ export interface RfqBody {
   direction: Direction
   state: RfqState
   expirySecs: number
+  creationTimestamp: bigint
 }
 
 export enum Direction {
@@ -470,7 +471,7 @@ function RfqBodyRefTypeDefinition() {
 function RfqBodyTypeDefinition() {
   return {
     type: "record" as const,
-    encodedLength: { bitLength: 224, byteLength: 28 },
+    encodedLength: { bitLength: 288, byteLength: 36 },
     fields: {
       id: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
@@ -500,9 +501,17 @@ function RfqBodyTypeDefinition() {
         location: { bitOffset: 192, byteOffset: 24, mask: 0 },
         type: int32TypeDefinition,
       },
+      creationTimestamp: {
+        location: { bitOffset: 224, byteOffset: 28, mask: 0 },
+        type: int64TypeDefinition,
+      },
     },
     jsonConverter: undefined,
   }
+}
+
+function int64TypeDefinition() {
+  return "Int64" as const
 }
 
 function int32TypeDefinition() {
@@ -915,8 +924,11 @@ function CurrencyPairUpdateListTypeDefinition() {
     },
     elementLength: { bitLength: 40, byteLength: 5 },
     elementType: CurrencyPairUpdateTypeDefinition,
-    lengthEncoding: undefined,
-    firstElementOffset: 2,
+    lengthEncoding: {
+      encodingType: "UInt24" as const,
+      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+    },
+    firstElementOffset: 5,
   }
 }
 
@@ -1051,10 +1063,6 @@ function PriceTickTypeDefinition() {
     },
     jsonConverter: undefined,
   }
-}
-
-function int64TypeDefinition() {
-  return "Int64" as const
 }
 
 function PriceStreamRequestTypeDefinition() {
@@ -1390,8 +1398,8 @@ export const AnalyticsService = {
         methodName: "getAnalytics",
         inboundStream: "one",
         outboundStream: "many",
-        requestRouteKey: BigInt("7193047013647582464"),
-        responseRouteKey: BigInt("-5366938992238658560"),
+        requestRouteKey: BigInt("1164161099841024256"),
+        responseRouteKey: BigInt("5686211384067522816"),
         annotations: [],
       },
       allocators.responseAllocator(PositionUpdatesTypeDefinition),
@@ -1407,8 +1415,8 @@ export const BlotterService = {
         methodName: "getTradeStream",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("4693842777780463872"),
-        responseRouteKey: BigInt("6704491644460266240"),
+        requestRouteKey: BigInt("-5157452200409264128"),
+        responseRouteKey: BigInt("6776512328093340672"),
         annotations: [],
       },
       allocators.responseAllocator(TradeUpdatesTypeDefinition),
@@ -1423,8 +1431,8 @@ export const LoginService = {
         methodName: "login",
         inboundStream: "one",
         outboundStream: "empty",
-        requestRouteKey: BigInt("4665269211409501952"),
-        responseRouteKey: BigInt("4822501354577487872"),
+        requestRouteKey: BigInt("-6881743837586205440"),
+        responseRouteKey: BigInt("-8802381833944962560"),
         annotations: [],
       },
       undefined,
@@ -1440,8 +1448,8 @@ export const ExecutionService = {
         methodName: "executeTrade",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("2160750334379237376"),
-        responseRouteKey: BigInt("-6377304167934472960"),
+        requestRouteKey: BigInt("-5207524058606496000"),
+        responseRouteKey: BigInt("7700181385355211776"),
         annotations: [],
       },
       allocators.responseAllocator(ExecutionResponseTypeDefinition),
@@ -1457,8 +1465,8 @@ export const PricingService = {
         methodName: "getPriceUpdates",
         inboundStream: "one",
         outboundStream: "many",
-        requestRouteKey: BigInt("8413700287026779648"),
-        responseRouteKey: BigInt("3800867469029228800"),
+        requestRouteKey: BigInt("-6086348338935972352"),
+        responseRouteKey: BigInt("8536520351885563904"),
         annotations: [],
       },
       allocators.responseAllocator(PriceTickTypeDefinition),
@@ -1474,8 +1482,8 @@ export const PricingService = {
         methodName: "getPriceHistory",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("1528078832124954880"),
-        responseRouteKey: BigInt("-4186857408412338688"),
+        requestRouteKey: BigInt("-6711739167421129728"),
+        responseRouteKey: BigInt("5800769435217250816"),
         annotations: [],
       },
       allocators.responseAllocator(PriceTickHistoryTypeDefinition),
@@ -1491,8 +1499,8 @@ export const ReferenceDataService = {
         methodName: "getCcyPairs",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("3148703404362059776"),
-        responseRouteKey: BigInt("3559278686880111616"),
+        requestRouteKey: BigInt("-3587707241265510912"),
+        responseRouteKey: BigInt("-6306063129046500096"),
         annotations: [],
       },
       allocators.responseAllocator(CurrencyPairUpdatesTypeDefinition),
@@ -1507,8 +1515,8 @@ export const ThroughputAdminService = {
         methodName: "setThroughput",
         inboundStream: "one",
         outboundStream: "empty",
-        requestRouteKey: BigInt("-4643722542766134784"),
-        responseRouteKey: BigInt("7254487604321209088"),
+        requestRouteKey: BigInt("-1018179353612796416"),
+        responseRouteKey: BigInt("6831105567706198528"),
         annotations: [],
       },
       undefined,
@@ -1524,8 +1532,8 @@ export const EchoService = {
         methodName: "echo",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("4725880620509737984"),
-        responseRouteKey: BigInt("2394643777287617536"),
+        requestRouteKey: BigInt("-1739061107074329088"),
+        responseRouteKey: BigInt("-3932217723524714240"),
         annotations: [],
       },
       allocators.responseAllocator(EchoResponseTypeDefinition),
@@ -1541,8 +1549,8 @@ export const InstrumentService = {
         methodName: "subscribe",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("5328048580688377088"),
-        responseRouteKey: BigInt("-4247505498334501376"),
+        requestRouteKey: BigInt("4964042739278814208"),
+        responseRouteKey: BigInt("1840451258422074368"),
         annotations: [],
       },
       allocators.responseAllocator(InstrumentUpdateTypeDefinition),
@@ -1557,8 +1565,8 @@ export const DealerService = {
         methodName: "subscribe",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("-5930757203928622592"),
-        responseRouteKey: BigInt("-5120972292417583872"),
+        requestRouteKey: BigInt("-8881681336949959168"),
+        responseRouteKey: BigInt("-3865403791155441152"),
         annotations: [],
       },
       allocators.responseAllocator(DealerUpdateTypeDefinition),
@@ -1573,8 +1581,8 @@ export const WorkflowService = {
         methodName: "createRfq",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("6846475326928265472"),
-        responseRouteKey: BigInt("-3123387385694872832"),
+        requestRouteKey: BigInt("6400895782728043776"),
+        responseRouteKey: BigInt("1480546138952989952"),
         annotations: [],
       },
       allocators.responseAllocator(CreateRfqResponseTypeDefinition),
@@ -1588,8 +1596,8 @@ export const WorkflowService = {
         methodName: "cancelRfq",
         inboundStream: "one",
         outboundStream: "empty",
-        requestRouteKey: BigInt("-8355330331912118016"),
-        responseRouteKey: BigInt("-5563187046507663104"),
+        requestRouteKey: BigInt("9120240265967396608"),
+        responseRouteKey: BigInt("8351955485888580608"),
         annotations: [],
       },
       undefined,
@@ -1603,8 +1611,8 @@ export const WorkflowService = {
         methodName: "createQuote",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("8427355843682198016"),
-        responseRouteKey: BigInt("-6078994535941313280"),
+        requestRouteKey: BigInt("-3909036003142708736"),
+        responseRouteKey: BigInt("1310475536040889344"),
         annotations: [],
       },
       allocators.responseAllocator(CreateQuoteResponseTypeDefinition),
@@ -1618,8 +1626,8 @@ export const WorkflowService = {
         methodName: "acceptQuote",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("-6126182223000772608"),
-        responseRouteKey: BigInt("1908764310378051584"),
+        requestRouteKey: BigInt("3406490184815367168"),
+        responseRouteKey: BigInt("-6269829733944167936"),
         annotations: [],
       },
       allocators.responseAllocator(AcceptQuoteResponseTypeDefinition),
@@ -1633,8 +1641,8 @@ export const WorkflowService = {
         methodName: "subscribe",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("1440683668491851264"),
-        responseRouteKey: BigInt("2797414104381160704"),
+        requestRouteKey: BigInt("-5880065670994126848"),
+        responseRouteKey: BigInt("3502450605082066688"),
         annotations: [],
       },
       allocators.responseAllocator(RfqUpdateTypeDefinition),
@@ -1649,82 +1657,82 @@ export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiatio
         {
           serviceName: "AnalyticsService",
           methodName: "getAnalytics",
-          methodRouteKey: BigInt("7193047013647582464"),
+          methodRouteKey: BigInt("1164161099841024256"),
         },
         {
           serviceName: "BlotterService",
           methodName: "getTradeStream",
-          methodRouteKey: BigInt("4693842777780463872"),
+          methodRouteKey: BigInt("-5157452200409264128"),
         },
         {
           serviceName: "LoginService",
           methodName: "login",
-          methodRouteKey: BigInt("4665269211409501952"),
+          methodRouteKey: BigInt("-6881743837586205440"),
         },
         {
           serviceName: "ExecutionService",
           methodName: "executeTrade",
-          methodRouteKey: BigInt("2160750334379237376"),
+          methodRouteKey: BigInt("-5207524058606496000"),
         },
         {
           serviceName: "PricingService",
           methodName: "getPriceUpdates",
-          methodRouteKey: BigInt("8413700287026779648"),
+          methodRouteKey: BigInt("-6086348338935972352"),
         },
         {
           serviceName: "PricingService",
           methodName: "getPriceHistory",
-          methodRouteKey: BigInt("1528078832124954880"),
+          methodRouteKey: BigInt("-6711739167421129728"),
         },
         {
           serviceName: "ReferenceDataService",
           methodName: "getCcyPairs",
-          methodRouteKey: BigInt("3148703404362059776"),
+          methodRouteKey: BigInt("-3587707241265510912"),
         },
         {
           serviceName: "ThroughputAdminService",
           methodName: "setThroughput",
-          methodRouteKey: BigInt("-4643722542766134784"),
+          methodRouteKey: BigInt("-1018179353612796416"),
         },
         {
           serviceName: "EchoService",
           methodName: "echo",
-          methodRouteKey: BigInt("4725880620509737984"),
+          methodRouteKey: BigInt("-1739061107074329088"),
         },
         {
           serviceName: "InstrumentService",
           methodName: "subscribe",
-          methodRouteKey: BigInt("5328048580688377088"),
+          methodRouteKey: BigInt("4964042739278814208"),
         },
         {
           serviceName: "DealerService",
           methodName: "subscribe",
-          methodRouteKey: BigInt("-5930757203928622592"),
+          methodRouteKey: BigInt("-8881681336949959168"),
         },
         {
           serviceName: "WorkflowService",
           methodName: "createRfq",
-          methodRouteKey: BigInt("6846475326928265472"),
+          methodRouteKey: BigInt("6400895782728043776"),
         },
         {
           serviceName: "WorkflowService",
           methodName: "cancelRfq",
-          methodRouteKey: BigInt("-8355330331912118016"),
+          methodRouteKey: BigInt("9120240265967396608"),
         },
         {
           serviceName: "WorkflowService",
           methodName: "createQuote",
-          methodRouteKey: BigInt("8427355843682198016"),
+          methodRouteKey: BigInt("-3909036003142708736"),
         },
         {
           serviceName: "WorkflowService",
           methodName: "acceptQuote",
-          methodRouteKey: BigInt("-6126182223000772608"),
+          methodRouteKey: BigInt("3406490184815367168"),
         },
         {
           serviceName: "WorkflowService",
           methodName: "subscribe",
-          methodRouteKey: BigInt("1440683668491851264"),
+          methodRouteKey: BigInt("-5880065670994126848"),
         },
       ],
     },
