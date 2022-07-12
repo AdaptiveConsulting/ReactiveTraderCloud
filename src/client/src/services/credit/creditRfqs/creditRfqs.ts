@@ -45,7 +45,6 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
                   },
               ),
               quotes: [],
-              dateReceived: Date.now() // to be replaced with the creation timestamp sent by the server once it is implemented
             },
           }
         case RFQ_CLOSED_RFQ_UPDATE:

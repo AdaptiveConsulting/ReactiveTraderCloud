@@ -16,6 +16,7 @@ import { CardFooter } from "./CardFooter"
 import { CardHeader } from "./CardHeader"
 import {
   AcceptQuoteButton,
+  CardContainer,
   CreditRfqCardsWrapper,
   DealerName,
   DetailsWrapper,
@@ -25,7 +26,6 @@ import {
   Quantity,
   QuoteRow,
   QuotesContainer,
-  CardContainer,
 } from "./styled"
 
 const formatter = customNumberFormatter()
@@ -109,8 +109,10 @@ const Card = ({ id }: { id: number }) => {
       <CardFooter
         rfqId={rfqDetails.id}
         state={rfqDetails.state}
-        start={rfqDetails.dateReceived}
-        end={rfqDetails.dateReceived + rfqDetails.expirySecs * 1000}
+        start={Number(rfqDetails.creationTimestamp)}
+        end={
+          Number(rfqDetails.creationTimestamp) + rfqDetails.expirySecs * 1000
+        }
       />
     </CardContainer>
   )
