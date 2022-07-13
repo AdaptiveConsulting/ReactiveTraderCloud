@@ -21,4 +21,6 @@ export const ROUTES_CONFIG = {
   analytics: "/analytics",
   styleguide: "/styleguide",
   credit: "/credit",
+  newRfq: "/credit/new-rfq",
+  sellSideTicket: "/credit/sellside/:rfqId/dealer/:dealerId",
 }
