@@ -42,7 +42,7 @@
     "build-storybook": "build-storybook -o ./dist/storybook"
   },
   "dependencies": {
-    "@adaptive/hydra-platform": "^3.40.0",
+    "@adaptive/hydra-platform": "^3.99.0",
     "@finos/fdc3": "^1.2.0",
     "@openfin/workspace": "^6.1.6",
     "@openfin/workspace-platform": "^6.1.6",
@@ -64,7 +64,7 @@
     "react-switch": "^6.0.0",
     "resize-observer": "^1.0.0",
     "ress": "^3.0.0",
-    "rxjs": "^6.6.7",
+    "rxjs": "^7.5.4",
     "styled-components": "^5.2.2",
     "typeface-lato": "^1.1.13",
     "typeface-montserrat": "^1.1.13",

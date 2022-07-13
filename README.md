@@ -51,6 +51,34 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 4. Navigate to http://localhost:1917
 </details>
 
+<details open>
+<summary>Manually update contracts for Trading Gateway API</summary>
+
+1. Open [hydra-reactive-trader](`https://github.com/AdaptiveConsulting/hydra-reactive-trader`) project in IntelliJ IDEA and run:
+   ```
+   ./gradlew
+   ```
+
+2. Copy file `component/gateway/trading/api/build/generated-sources/codecs/main/resources/trading-gateway.hyer` to UI project `src/client/trading-gateway.hyer`
+
+3. Back in src/client, run:
+   ```
+   npm run generateCod
+   ```
+   This will regenerate TradingGateway.ts `(file://./src/client/src/generated/TradingGateway.ts)`
+</details>
+
+<details open>
+<summary>Run against local Backend Services</summary>
+
+1. Follow instructions to start [Backend Services](`https://github.com/AdaptiveConsulting/hydra-reactive-trader#building-the-project`)
+
+2. Run:
+   ```
+   VITE_HYDRA_URL=ws://localhost:8929 npm start
+   ```
+</details>
+
 
 ## CI/CD
 
