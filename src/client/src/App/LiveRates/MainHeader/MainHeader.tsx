@@ -5,15 +5,14 @@ import {
   NavItem,
   RightNav,
   LeftNavTitle,
+  CurrencyDropdown,
 } from "../styled"
 import {
   useSelectedCurrency,
-  AllCurrencies,
   ALL_CURRENCIES,
   onSelectCurrency,
 } from "../selectedCurrency"
 import { ToggleView } from "./ToggleView"
-import { CurrencyOptions } from "./CurrencyOptions"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
@@ -21,6 +20,7 @@ import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
 import { useIsLimitCheckerRunning } from "@/services/limitChecker/limitChecker"
 import { LimitCheckerIndicator } from "./LimitCheckerIndicator"
+import { DropdownMenu } from "@/components/DropdownMenu"
 
 const [useCurrencies, mainHeader$] = bind(
   currencyPairs$.pipe(
@@ -38,7 +38,7 @@ export const MainHeader: React.FC = () => {
   const currency = useSelectedCurrency()
   const isLimitCheckerRunning = useIsLimitCheckerRunning()
 
-  const options = [ALL_CURRENCIES as AllCurrencies, ...currencies]
+  const options = [ALL_CURRENCIES, ...currencies]
 
   return (
     <Header>
@@ -55,16 +55,19 @@ export const MainHeader: React.FC = () => {
               .toLowerCase()}`}
             onClick={() => onSelectCurrency(currencyOption)}
           >
-            {currencyOption === ALL_CURRENCIES ? "ALL" : currencyOption}
+            {currencyOption}
           </NavItem>
         ))}
       </LeftNav>
       <LeftNavTitle>Live Rates</LeftNavTitle>
       <RightNav>
-        <CurrencyOptions
-          options={options}
-          onSelectionChange={onSelectCurrency}
-        />
+        <CurrencyDropdown>
+          <DropdownMenu
+            selectedOption={currency}
+            options={options}
+            onSelectionChange={onSelectCurrency}
+          />
+        </CurrencyDropdown>
         <ToggleView />
         {isLimitCheckerRunning && <LimitCheckerIndicator />}
         {supportsTearOut && <TearOutComponent section="tiles" />}

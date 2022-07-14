@@ -10,7 +10,9 @@ import styled from "styled-components"
 import { useTearOutEntry } from "./state"
 
 const Wrapper = styled("div")`
-  margin: 8px;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 8px;
 `
 
 export const TornOutTile = withSubscriber<{
@@ -29,7 +31,7 @@ export const TornOutTile = withSubscriber<{
       }
     }
   }, [tearOutEntry])
-  
+
   return (
     <Wrapper>
       <Tile

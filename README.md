@@ -2,17 +2,17 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/AdaptiveConsulting/ReactiveTraderCloud)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/latest)
 [![GitHub](https://img.shields.io/github/license/AdaptiveConsulting/ReactiveTraderCloud)](https://opensource.org/licenses/Apache-2.0)
 
-[![image](https://raw.githubusercontent.com/AdaptiveConsulting/ReactiveTrader/master/images/adaptive-logo.png)](http://weareadaptive.com/)
+[![image](images/adaptive-logo.svg)](http://weareadaptive.com/)
 
 # Reactive Trader®
 
 Reactive Trader® is a real-time FX trading platform designed to showcase reactive programming principles across the full application stack.
 
-Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/ReactiveTrader), and now in React, React-RxJS, Node.js and running on [Hyrda](https://weareadaptive.com/platform-solutions/), we continue to evolve the platform to use the latest technologies.
+Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/ReactiveTrader), and now in React, React-RxJS, Node.js and running on [Hydra](https://weareadaptive.com/platform-solutions/), we continue to evolve the platform to use the latest technologies.
 
 Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full list of the latest features.
 
-![image](docs/reactive-trader.gif)
+![image](src/workspace/public/images/previews/reactive-trader.PNG)
 
 ## Demo
 
@@ -49,6 +49,34 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
    This will connect to the dev back-end in the cloud.
 
 4. Navigate to http://localhost:1917
+</details>
+
+<details open>
+<summary>Manually update contracts for Trading Gateway API</summary>
+
+1. Open [hydra-reactive-trader](`https://github.com/AdaptiveConsulting/hydra-reactive-trader`) project in IntelliJ IDEA and run:
+   ```
+   ./gradlew
+   ```
+
+2. Copy file `component/gateway/trading/api/build/generated-sources/codecs/main/resources/trading-gateway.hyer` to UI project `src/client/trading-gateway.hyer`
+
+3. Back in src/client, run:
+   ```
+   npm run generateCod
+   ```
+   This will regenerate TradingGateway.ts `(file://./src/client/src/generated/TradingGateway.ts)`
+</details>
+
+<details open>
+<summary>Run against local Backend Services</summary>
+
+1. Follow instructions to start [Backend Services](`https://github.com/AdaptiveConsulting/hydra-reactive-trader#building-the-project`)
+
+2. Run:
+   ```
+   VITE_HYDRA_URL=ws://localhost:8929 npm start
+   ```
 </details>
 
 

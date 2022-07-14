@@ -1,19 +1,20 @@
-import { TileView } from "@/App/LiveRates/selectedView"
-import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
-import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
-import { BrowserRouter, Route, Switch } from "react-router-dom"
-import { MainRoute } from "./MainRoute"
-import { TearOutRouteWrapper } from "./Web.styles"
-import { Trades } from "@/App/Trades"
+import { Admin } from "@/App/Admin"
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
-import { TearOutContext } from "../App/TearOutSection/tearOutContext"
+import { TileView } from "@/App/LiveRates/selectedView"
+import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
+import { Trades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
-import { lazy, Suspense } from "react"
-import { Admin } from "@/App/Admin"
+import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { FEATURE_FLAG, useFeature } from "@/utils/featureFlag"
+import { lazy, Suspense } from "react"
+import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { TearOutContext } from "../App/TearOutSection/tearOutContext"
+import { MainFxRoute } from "./MainFxRoute"
+import { TearOutRouteWrapper } from "./Web.styles"
 
 const StyleguideRoute = lazy(() => import("@/styleguide"))
+const MainCreditRoute = lazy(() => import("./MainCreditRoute"))
 
 export const WebApp: React.FC = () => {
   const canUseAdmin = useFeature(FEATURE_FLAG.ADMIN)
@@ -28,7 +29,17 @@ export const WebApp: React.FC = () => {
             render={() => (
               <>
                 <DisconnectionOverlay />
-                <MainRoute />
+                <MainFxRoute />
+              </>
+            )}
+          />
+          <Route
+            exact
+            path={ROUTES_CONFIG.credit}
+            render={() => (
+              <>
+                <DisconnectionOverlay />
+                <MainCreditRoute />
               </>
             )}
           />

@@ -2,6 +2,208 @@ import * as HydraPlatform from "@adaptive/hydra-platform"
 import { Observable } from "rxjs"
 import { LocalDateConverter } from "@adaptive/hydra-codecs/dist/valueConverters"
 
+export const RFQ_CREATED_RFQ_UPDATE = "rfqCreated",
+  QUOTE_CREATED_RFQ_UPDATE = "quoteCreated",
+  QUOTE_ACCEPTED_RFQ_UPDATE = "quoteAccepted",
+  RFQ_CLOSED_RFQ_UPDATE = "rfqClosed",
+  START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE = "startOfStateOfTheWorld",
+  END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE = "endOfStateOfTheWorld"
+
+export type RfqCreatedRfqUpdate = {
+  type: typeof RFQ_CREATED_RFQ_UPDATE
+  payload: RfqBody
+}
+export type QuoteCreatedRfqUpdate = {
+  type: typeof QUOTE_CREATED_RFQ_UPDATE
+  payload: QuoteBody
+}
+export type QuoteAcceptedRfqUpdate = {
+  type: typeof QUOTE_ACCEPTED_RFQ_UPDATE
+  payload: number
+}
+export type RfqClosedRfqUpdate = {
+  type: typeof RFQ_CLOSED_RFQ_UPDATE
+  payload: RfqClosed
+}
+export type StartOfStateOfTheWorldRfqUpdate = {
+  type: typeof START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE
+}
+export type EndOfStateOfTheWorldRfqUpdate = {
+  type: typeof END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE
+}
+export type RfqUpdate =
+  | RfqCreatedRfqUpdate
+  | QuoteCreatedRfqUpdate
+  | QuoteAcceptedRfqUpdate
+  | RfqClosedRfqUpdate
+  | StartOfStateOfTheWorldRfqUpdate
+  | EndOfStateOfTheWorldRfqUpdate
+
+export interface RfqClosed {
+  id: number
+  state: RfqState
+}
+
+export enum RfqState {
+  Open = "Open",
+  Expired = "Expired",
+  Cancelled = "Cancelled",
+  Closed = "Closed",
+}
+
+export interface QuoteBody {
+  id: number
+  rfqId: number
+  dealerId: number
+  price: number
+  state: QuoteState
+}
+
+export enum QuoteState {
+  Pending = "Pending",
+  Accepted = "Accepted",
+  Rejected = "Rejected",
+}
+
+export interface RfqBody {
+  id: number
+  instrumentId: number
+  dealerIds: Array<number>
+  quantity: number
+  direction: Direction
+  state: RfqState
+  expirySecs: number
+  creationTimestamp: bigint
+}
+
+export enum Direction {
+  Buy = "Buy",
+  Sell = "Sell",
+}
+
+export const ACK_ACCEPT_QUOTE_RESPONSE = "ack",
+  NACK_ACCEPT_QUOTE_RESPONSE = "nack"
+
+export type AckAcceptQuoteResponse = { type: typeof ACK_ACCEPT_QUOTE_RESPONSE }
+export type NackAcceptQuoteResponse = {
+  type: typeof NACK_ACCEPT_QUOTE_RESPONSE
+}
+export type AcceptQuoteResponse =
+  | AckAcceptQuoteResponse
+  | NackAcceptQuoteResponse
+
+export interface AcceptQuoteRequest {
+  quoteId: number
+}
+
+export const ACK_CREATE_QUOTE_RESPONSE = "ack",
+  NACK_CREATE_QUOTE_RESPONSE = "nack"
+
+export type AckCreateQuoteResponse = {
+  type: typeof ACK_CREATE_QUOTE_RESPONSE
+  payload: number
+}
+export type NackCreateQuoteResponse = {
+  type: typeof NACK_CREATE_QUOTE_RESPONSE
+}
+export type CreateQuoteResponse =
+  | AckCreateQuoteResponse
+  | NackCreateQuoteResponse
+
+export interface CreateQuoteRequest {
+  rfqId: number
+  dealerId: number
+  price: number
+}
+
+export interface CancelRfqRequest {
+  rfqId: number
+}
+
+export const ACK_CREATE_RFQ_RESPONSE = "ack",
+  NACK_CREATE_RFQ_RESPONSE = "nack"
+
+export type AckCreateRfqResponse = {
+  type: typeof ACK_CREATE_RFQ_RESPONSE
+  payload: number
+}
+export type NackCreateRfqResponse = { type: typeof NACK_CREATE_RFQ_RESPONSE }
+export type CreateRfqResponse = AckCreateRfqResponse | NackCreateRfqResponse
+
+export interface CreateRfqRequest {
+  instrumentId: number
+  dealerIds: Array<number>
+  quantity: number
+  direction: Direction
+  expirySecs: number
+}
+
+export const ADDED_DEALER_UPDATE = "added",
+  REMOVED_DEALER_UPDATE = "removed",
+  START_OF_STATE_OF_THE_WORLD_DEALER_UPDATE = "startOfStateOfTheWorld",
+  END_OF_STATE_OF_THE_WORLD_DEALER_UPDATE = "endOfStateOfTheWorld"
+
+export type AddedDealerUpdate = {
+  type: typeof ADDED_DEALER_UPDATE
+  payload: DealerBody
+}
+export type RemovedDealerUpdate = {
+  type: typeof REMOVED_DEALER_UPDATE
+  payload: number
+}
+export type StartOfStateOfTheWorldDealerUpdate = {
+  type: typeof START_OF_STATE_OF_THE_WORLD_DEALER_UPDATE
+}
+export type EndOfStateOfTheWorldDealerUpdate = {
+  type: typeof END_OF_STATE_OF_THE_WORLD_DEALER_UPDATE
+}
+export type DealerUpdate =
+  | AddedDealerUpdate
+  | RemovedDealerUpdate
+  | StartOfStateOfTheWorldDealerUpdate
+  | EndOfStateOfTheWorldDealerUpdate
+
+export interface DealerBody {
+  id: number
+  name: string
+}
+
+export const ADDED_INSTRUMENT_UPDATE = "added",
+  REMOVED_INSTRUMENT_UPDATE = "removed",
+  START_OF_STATE_OF_THE_WORLD_INSTRUMENT_UPDATE = "startOfStateOfTheWorld",
+  END_OF_STATE_OF_THE_WORLD_INSTRUMENT_UPDATE = "endOfStateOfTheWorld"
+
+export type AddedInstrumentUpdate = {
+  type: typeof ADDED_INSTRUMENT_UPDATE
+  payload: InstrumentBody
+}
+export type RemovedInstrumentUpdate = {
+  type: typeof REMOVED_INSTRUMENT_UPDATE
+  payload: number
+}
+export type StartOfStateOfTheWorldInstrumentUpdate = {
+  type: typeof START_OF_STATE_OF_THE_WORLD_INSTRUMENT_UPDATE
+}
+export type EndOfStateOfTheWorldInstrumentUpdate = {
+  type: typeof END_OF_STATE_OF_THE_WORLD_INSTRUMENT_UPDATE
+}
+export type InstrumentUpdate =
+  | AddedInstrumentUpdate
+  | RemovedInstrumentUpdate
+  | StartOfStateOfTheWorldInstrumentUpdate
+  | EndOfStateOfTheWorldInstrumentUpdate
+
+export interface InstrumentBody {
+  id: number
+  name: string
+  cusip: string
+  ticker: string
+  maturity: LocalDate
+  interestRate: number
+}
+
+export type LocalDate = LocalDateConverter.ConvertedType
+
 export interface EchoResponse {
   payload: number
 }
@@ -14,23 +216,8 @@ export interface SetThroughputRequest {
   targetUpdatesPerSecond: number
 }
 
-export interface QuoteResponse {
-  notional: number
-  currencyPair: CurrencyPair
-  price: PriceTick
-  time: number
-  timeout: number
-}
-
-export interface CurrencyPair {
-  symbol: string
-  ratePrecision: number
-  pipsPosition: number
-}
-
-export interface QuoteRequest {
-  symbol: string
-  notional: number
+export interface GetThroughputResponse {
+  updatesPerSecond: number
 }
 
 export interface CurrencyPairUpdates {
@@ -54,6 +241,12 @@ export type CurrencyPairUpdate =
   | AddedCurrencyPairUpdate
   | RemovedCurrencyPairUpdate
 
+export interface CurrencyPair {
+  symbol: string
+  ratePrecision: number
+  pipsPosition: number
+}
+
 export interface PriceTickHistory {
   prices: Array<PriceTick>
 }
@@ -66,8 +259,6 @@ export interface PriceTick {
   valueDate: LocalDate
   creationTimestamp: bigint
 }
-
-export type LocalDate = LocalDateConverter.ConvertedType
 
 export interface PriceStreamRequest {
   symbol: string
@@ -94,11 +285,6 @@ export enum TradeStatus {
   Pending = "Pending",
   Done = "Done",
   Rejected = "Rejected",
-}
-
-export enum Direction {
-  Buy = "Buy",
-  Sell = "Sell",
 }
 
 export interface ExecuteTradeRequest {
@@ -144,6 +330,520 @@ export interface AnalyticsRequest {
 const converters = { LocalDateConverter }
 const allocators = HydraPlatform.createOtfAllocators(converters)
 
+function RfqUpdateTypeDefinition() {
+  return {
+    type: "union" as const,
+    cases: {
+      rfqCreated: {
+        tag: 1,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: RfqBodyRefTypeDefinition,
+        },
+      },
+      quoteCreated: {
+        tag: 2,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: QuoteBodyRefTypeDefinition,
+        },
+      },
+      quoteAccepted: {
+        tag: 3,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: QuoteIdTypeDefinition,
+        },
+      },
+      rfqClosed: {
+        tag: 4,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: RfqClosedRefTypeDefinition,
+        },
+      },
+      startOfStateOfTheWorld: { tag: 5, payload: undefined },
+      endOfStateOfTheWorld: { tag: 6, payload: undefined },
+    },
+    encodedLength: { bitLength: 40, byteLength: 5 },
+  }
+}
+
+function RfqClosedRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: RfqClosedTypeDefinition }
+}
+
+function RfqClosedTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 40, byteLength: 5 },
+    fields: {
+      id: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: RfqIdTypeDefinition,
+      },
+      state: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: RfqStateTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function RfqStateTypeDefinition() {
+  return {
+    type: "enum" as const,
+    cases: [
+      { name: "Open" as const, value: BigInt("1") },
+      { name: "Expired" as const, value: BigInt("2") },
+      { name: "Cancelled" as const, value: BigInt("3") },
+      { name: "Closed" as const, value: BigInt("4") },
+    ],
+    description: "" as const,
+    encoding: "Int8" as const,
+  }
+}
+
+function RfqIdTypeDefinition() {
+  return "Int32" as const
+}
+
+function QuoteIdTypeDefinition() {
+  return "Int32" as const
+}
+
+function QuoteBodyRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: QuoteBodyTypeDefinition }
+}
+
+function QuoteBodyTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 168, byteLength: 21 },
+    fields: {
+      id: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: QuoteIdTypeDefinition,
+      },
+      rfqId: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: RfqIdTypeDefinition,
+      },
+      dealerId: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: DealerIdTypeDefinition,
+      },
+      price: {
+        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
+        type: PriceTypeDefinition,
+      },
+      state: {
+        location: { bitOffset: 160, byteOffset: 20, mask: 0 },
+        type: QuoteStateTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function QuoteStateTypeDefinition() {
+  return {
+    type: "enum" as const,
+    cases: [
+      { name: "Pending" as const, value: BigInt("1") },
+      { name: "Accepted" as const, value: BigInt("2") },
+      { name: "Rejected" as const, value: BigInt("3") },
+    ],
+    description: "" as const,
+    encoding: "Int8" as const,
+  }
+}
+
+function PriceTypeDefinition() {
+  return "Float64" as const
+}
+
+function DealerIdTypeDefinition() {
+  return "Int32" as const
+}
+
+function RfqBodyRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: RfqBodyTypeDefinition }
+}
+
+function RfqBodyTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 288, byteLength: 36 },
+    fields: {
+      id: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: RfqIdTypeDefinition,
+      },
+      instrumentId: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: InstrumentIdTypeDefinition,
+      },
+      dealerIds: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: DealerIdListRefTypeDefinition,
+      },
+      quantity: {
+        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
+        type: QuantityTypeDefinition,
+      },
+      direction: {
+        location: { bitOffset: 160, byteOffset: 20, mask: 0 },
+        type: DirectionTypeDefinition,
+      },
+      state: {
+        location: { bitOffset: 168, byteOffset: 21, mask: 0 },
+        type: RfqStateTypeDefinition,
+      },
+      expirySecs: {
+        location: { bitOffset: 192, byteOffset: 24, mask: 0 },
+        type: int32TypeDefinition,
+      },
+      creationTimestamp: {
+        location: { bitOffset: 224, byteOffset: 28, mask: 0 },
+        type: int64TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function int64TypeDefinition() {
+  return "Int64" as const
+}
+
+function int32TypeDefinition() {
+  return "Int32" as const
+}
+
+function DirectionTypeDefinition() {
+  return {
+    type: "enum" as const,
+    cases: [
+      { name: "Buy" as const, value: BigInt("1") },
+      { name: "Sell" as const, value: BigInt("2") },
+    ],
+    description: "" as const,
+    encoding: "Int8" as const,
+  }
+}
+
+function QuantityTypeDefinition() {
+  return "Float64" as const
+}
+
+function DealerIdListRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: DealerIdListTypeDefinition }
+}
+
+function DealerIdListTypeDefinition() {
+  return {
+    type: "list" as const,
+    count: {
+      encodingType: "Int16" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    elementLength: { bitLength: 32, byteLength: 4 },
+    elementType: DealerIdTypeDefinition,
+    lengthEncoding: undefined,
+    firstElementOffset: 2,
+  }
+}
+
+function InstrumentIdTypeDefinition() {
+  return "Int32" as const
+}
+
+function AcceptQuoteResponseTypeDefinition() {
+  return {
+    type: "union" as const,
+    cases: {
+      ack: { tag: 1, payload: undefined },
+      nack: { tag: 2, payload: undefined },
+    },
+    encodedLength: { bitLength: 8, byteLength: 1 },
+  }
+}
+
+function AcceptQuoteRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      quoteId: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: QuoteIdTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function CreateQuoteResponseTypeDefinition() {
+  return {
+    type: "union" as const,
+    cases: {
+      ack: {
+        tag: 1,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: QuoteIdTypeDefinition,
+        },
+      },
+      nack: { tag: 2, payload: undefined },
+    },
+    encodedLength: { bitLength: 40, byteLength: 5 },
+  }
+}
+
+function CreateQuoteRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 128, byteLength: 16 },
+    fields: {
+      rfqId: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: RfqIdTypeDefinition,
+      },
+      dealerId: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: DealerIdTypeDefinition,
+      },
+      price: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: PriceTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function CancelRfqRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      rfqId: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: RfqIdTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function CreateRfqResponseTypeDefinition() {
+  return {
+    type: "union" as const,
+    cases: {
+      ack: {
+        tag: 1,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: RfqIdTypeDefinition,
+        },
+      },
+      nack: { tag: 2, payload: undefined },
+    },
+    encodedLength: { bitLength: 40, byteLength: 5 },
+  }
+}
+
+function CreateRfqRequestTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 192, byteLength: 24 },
+    fields: {
+      instrumentId: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: InstrumentIdTypeDefinition,
+      },
+      dealerIds: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: DealerIdListRefTypeDefinition,
+      },
+      quantity: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: QuantityTypeDefinition,
+      },
+      direction: {
+        location: { bitOffset: 128, byteOffset: 16, mask: 0 },
+        type: DirectionTypeDefinition,
+      },
+      expirySecs: {
+        location: { bitOffset: 160, byteOffset: 20, mask: 0 },
+        type: int32TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function DealerUpdateTypeDefinition() {
+  return {
+    type: "union" as const,
+    cases: {
+      added: {
+        tag: 1,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: DealerBodyRefTypeDefinition,
+        },
+      },
+      removed: {
+        tag: 2,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: DealerIdTypeDefinition,
+        },
+      },
+      startOfStateOfTheWorld: { tag: 3, payload: undefined },
+      endOfStateOfTheWorld: { tag: 4, payload: undefined },
+    },
+    encodedLength: { bitLength: 40, byteLength: 5 },
+  }
+}
+
+function DealerBodyRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: DealerBodyTypeDefinition }
+}
+
+function DealerBodyTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 64, byteLength: 8 },
+    fields: {
+      id: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: DealerIdTypeDefinition,
+      },
+      name: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function stringRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: stringTypeDefinition }
+}
+
+function stringTypeDefinition() {
+  return {
+    type: "string" as const,
+    count: {
+      encodingType: "Int32" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    encoding: "Utf16" as const,
+  }
+}
+
+function InstrumentUpdateTypeDefinition() {
+  return {
+    type: "union" as const,
+    cases: {
+      added: {
+        tag: 1,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: InstrumentBodyRefTypeDefinition,
+        },
+      },
+      removed: {
+        tag: 2,
+        payload: {
+          location: { bitOffset: 8, byteOffset: 1, mask: 0 },
+          type: InstrumentIdTypeDefinition,
+        },
+      },
+      startOfStateOfTheWorld: { tag: 3, payload: undefined },
+      endOfStateOfTheWorld: { tag: 4, payload: undefined },
+    },
+    encodedLength: { bitLength: 40, byteLength: 5 },
+  }
+}
+
+function InstrumentBodyRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: InstrumentBodyTypeDefinition }
+}
+
+function InstrumentBodyTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 224, byteLength: 28 },
+    fields: {
+      id: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: InstrumentIdTypeDefinition,
+      },
+      name: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+      cusip: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+      ticker: {
+        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+      maturity: {
+        location: { bitOffset: 128, byteOffset: 16, mask: 0 },
+        type: LocalDateTypeDefinition,
+      },
+      interestRate: {
+        location: { bitOffset: 160, byteOffset: 20, mask: 0 },
+        type: float64TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function float64TypeDefinition() {
+  return "Float64" as const
+}
+
+function LocalDateTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      year: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: int16TypeDefinition,
+      },
+      month: {
+        location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+        type: int8TypeDefinition,
+      },
+      day: {
+        location: { bitOffset: 24, byteOffset: 3, mask: 0 },
+        type: int8TypeDefinition,
+      },
+    },
+    jsonConverter: "LocalDateConverter" as const,
+  }
+}
+
+function int8TypeDefinition() {
+  return "Int8" as const
+}
+
+function int16TypeDefinition() {
+  return "Int16" as const
+}
+
 function EchoResponseTypeDefinition() {
   return {
     type: "record" as const,
@@ -156,10 +856,6 @@ function EchoResponseTypeDefinition() {
     },
     jsonConverter: undefined,
   }
-}
-
-function int32TypeDefinition() {
-  return "Int32" as const
 }
 
 function EchoRequestTypeDefinition() {
@@ -190,101 +886,14 @@ function SetThroughputRequestTypeDefinition() {
   }
 }
 
-function QuoteResponseTypeDefinition() {
+function GetThroughputResponseTypeDefinition() {
   return {
     type: "record" as const,
-    encodedLength: { bitLength: 256, byteLength: 32 },
+    encodedLength: { bitLength: 32, byteLength: 4 },
     fields: {
-      notional: {
+      updatesPerSecond: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: QuantityTypeDefinition,
-      },
-      currencyPair: {
-        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
-        type: CurrencyPairRefTypeDefinition,
-      },
-      price: {
-        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
-        type: PriceTickRefTypeDefinition,
-      },
-      time: {
-        location: { bitOffset: 128, byteOffset: 16, mask: 0 },
-        type: float64TypeDefinition,
-      },
-      timeout: {
-        location: { bitOffset: 192, byteOffset: 24, mask: 0 },
-        type: float64TypeDefinition,
-      },
-    },
-    jsonConverter: undefined,
-  }
-}
-
-function float64TypeDefinition() {
-  return "Float64" as const
-}
-
-function PriceTickRefTypeDefinition() {
-  return { type: "pointer" as const, elementType: PriceTickTypeDefinition }
-}
-
-function CurrencyPairRefTypeDefinition() {
-  return { type: "pointer" as const, elementType: CurrencyPairTypeDefinition }
-}
-
-function CurrencyPairTypeDefinition() {
-  return {
-    type: "record" as const,
-    encodedLength: { bitLength: 96, byteLength: 12 },
-    fields: {
-      symbol: {
-        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: SymbolRefTypeDefinition,
-      },
-      ratePrecision: {
-        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
         type: int32TypeDefinition,
-      },
-      pipsPosition: {
-        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
-        type: int32TypeDefinition,
-      },
-    },
-    jsonConverter: undefined,
-  }
-}
-
-function SymbolRefTypeDefinition() {
-  return { type: "pointer" as const, elementType: SymbolTypeDefinition }
-}
-
-function SymbolTypeDefinition() {
-  return {
-    type: "string" as const,
-    count: {
-      encodingType: "Int32" as const,
-      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-    },
-    encoding: "Utf16" as const,
-  }
-}
-
-function QuantityTypeDefinition() {
-  return "Float64" as const
-}
-
-function QuoteRequestTypeDefinition() {
-  return {
-    type: "record" as const,
-    encodedLength: { bitLength: 96, byteLength: 12 },
-    fields: {
-      symbol: {
-        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: SymbolRefTypeDefinition,
-      },
-      notional: {
-        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
-        type: QuantityTypeDefinition,
       },
     },
     jsonConverter: undefined,
@@ -333,7 +942,11 @@ function CurrencyPairUpdateListTypeDefinition() {
     },
     elementLength: { bitLength: 40, byteLength: 5 },
     elementType: CurrencyPairUpdateTypeDefinition,
-    firstElementOffset: 2,
+    lengthEncoding: {
+      encodingType: "UInt24" as const,
+      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+    },
+    firstElementOffset: 5,
   }
 }
 
@@ -357,6 +970,47 @@ function CurrencyPairUpdateTypeDefinition() {
       },
     },
     encodedLength: { bitLength: 40, byteLength: 5 },
+  }
+}
+
+function CurrencyPairRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: CurrencyPairTypeDefinition }
+}
+
+function CurrencyPairTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 96, byteLength: 12 },
+    fields: {
+      symbol: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: SymbolRefTypeDefinition,
+      },
+      ratePrecision: {
+        location: { bitOffset: 32, byteOffset: 4, mask: 0 },
+        type: int32TypeDefinition,
+      },
+      pipsPosition: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: int32TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function SymbolRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: SymbolTypeDefinition }
+}
+
+function SymbolTypeDefinition() {
+  return {
+    type: "string" as const,
+    count: {
+      encodingType: "Int32" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    encoding: "Utf16" as const,
   }
 }
 
@@ -387,6 +1041,10 @@ function PriceTickListTypeDefinition() {
     },
     elementLength: { bitLength: 320, byteLength: 40 },
     elementType: PriceTickTypeDefinition,
+    lengthEncoding: {
+      encodingType: "UInt24" as const,
+      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+    },
     firstElementOffset: 5,
   }
 }
@@ -423,44 +1081,6 @@ function PriceTickTypeDefinition() {
     },
     jsonConverter: undefined,
   }
-}
-
-function int64TypeDefinition() {
-  return "Int64" as const
-}
-
-function LocalDateTypeDefinition() {
-  return {
-    type: "record" as const,
-    encodedLength: { bitLength: 32, byteLength: 4 },
-    fields: {
-      year: {
-        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: int16TypeDefinition,
-      },
-      month: {
-        location: { bitOffset: 16, byteOffset: 2, mask: 0 },
-        type: int8TypeDefinition,
-      },
-      day: {
-        location: { bitOffset: 24, byteOffset: 3, mask: 0 },
-        type: int8TypeDefinition,
-      },
-    },
-    jsonConverter: "LocalDateConverter" as const,
-  }
-}
-
-function int8TypeDefinition() {
-  return "Int8" as const
-}
-
-function int16TypeDefinition() {
-  return "Int16" as const
-}
-
-function PriceTypeDefinition() {
-  return "Float64" as const
 }
 
 function PriceStreamRequestTypeDefinition() {
@@ -555,33 +1175,6 @@ function TradeStatusTypeDefinition() {
     ],
     description: "" as const,
     encoding: "Int8" as const,
-  }
-}
-
-function DirectionTypeDefinition() {
-  return {
-    type: "enum" as const,
-    cases: [
-      { name: "Buy" as const, value: BigInt("1") },
-      { name: "Sell" as const, value: BigInt("2") },
-    ],
-    description: "" as const,
-    encoding: "Int8" as const,
-  }
-}
-
-function stringRefTypeDefinition() {
-  return { type: "pointer" as const, elementType: stringTypeDefinition }
-}
-
-function stringTypeDefinition() {
-  return {
-    type: "string" as const,
-    count: {
-      encodingType: "Int32" as const,
-      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-    },
-    encoding: "Utf16" as const,
   }
 }
 
@@ -683,6 +1276,10 @@ function TradeListTypeDefinition() {
     },
     elementLength: { bitLength: 384, byteLength: 48 },
     elementType: TradeTypeDefinition,
+    lengthEncoding: {
+      encodingType: "UInt24" as const,
+      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+    },
     firstElementOffset: 5,
   }
 }
@@ -721,6 +1318,10 @@ function HistoricPositionListTypeDefinition() {
     },
     elementLength: { bitLength: 96, byteLength: 12 },
     elementType: HistoricPositionTypeDefinition,
+    lengthEncoding: {
+      encodingType: "UInt24" as const,
+      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+    },
     firstElementOffset: 5,
   }
 }
@@ -759,6 +1360,10 @@ function CurrencyPairPositionListTypeDefinition() {
     },
     elementLength: { bitLength: 224, byteLength: 28 },
     elementType: CurrencyPairPositionTypeDefinition,
+    lengthEncoding: {
+      encodingType: "UInt24" as const,
+      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+    },
     firstElementOffset: 5,
   }
 }
@@ -811,8 +1416,8 @@ export const AnalyticsService = {
         methodName: "getAnalytics",
         inboundStream: "one",
         outboundStream: "many",
-        requestRouteKey: BigInt("7193047013647582464"),
-        responseRouteKey: BigInt("-5366938992238658560"),
+        requestRouteKey: BigInt("1164161099841024256"),
+        responseRouteKey: BigInt("5686211384067522816"),
         annotations: [],
       },
       allocators.responseAllocator(PositionUpdatesTypeDefinition),
@@ -828,8 +1433,8 @@ export const BlotterService = {
         methodName: "getTradeStream",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("4693842777780463872"),
-        responseRouteKey: BigInt("6704491644460266240"),
+        requestRouteKey: BigInt("-5157452200409264128"),
+        responseRouteKey: BigInt("6776512328093340672"),
         annotations: [],
       },
       allocators.responseAllocator(TradeUpdatesTypeDefinition),
@@ -844,8 +1449,8 @@ export const LoginService = {
         methodName: "login",
         inboundStream: "one",
         outboundStream: "empty",
-        requestRouteKey: BigInt("4665269211409501952"),
-        responseRouteKey: BigInt("4822501354577487872"),
+        requestRouteKey: BigInt("-6881743837586205440"),
+        responseRouteKey: BigInt("-8802381833944962560"),
         annotations: [],
       },
       undefined,
@@ -861,8 +1466,8 @@ export const ExecutionService = {
         methodName: "executeTrade",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("2160750334379237376"),
-        responseRouteKey: BigInt("-6377304167934472960"),
+        requestRouteKey: BigInt("-5207524058606496000"),
+        responseRouteKey: BigInt("7700181385355211776"),
         annotations: [],
       },
       allocators.responseAllocator(ExecutionResponseTypeDefinition),
@@ -878,8 +1483,8 @@ export const PricingService = {
         methodName: "getPriceUpdates",
         inboundStream: "one",
         outboundStream: "many",
-        requestRouteKey: BigInt("8413700287026779648"),
-        responseRouteKey: BigInt("3800867469029228800"),
+        requestRouteKey: BigInt("-6086348338935972352"),
+        responseRouteKey: BigInt("8536520351885563904"),
         annotations: [],
       },
       allocators.responseAllocator(PriceTickTypeDefinition),
@@ -895,8 +1500,8 @@ export const PricingService = {
         methodName: "getPriceHistory",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("1528078832124954880"),
-        responseRouteKey: BigInt("-4186857408412338688"),
+        requestRouteKey: BigInt("-6711739167421129728"),
+        responseRouteKey: BigInt("5800769435217250816"),
         annotations: [],
       },
       allocators.responseAllocator(PriceTickHistoryTypeDefinition),
@@ -912,32 +1517,29 @@ export const ReferenceDataService = {
         methodName: "getCcyPairs",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("3148703404362059776"),
-        responseRouteKey: BigInt("3559278686880111616"),
+        requestRouteKey: BigInt("-3587707241265510912"),
+        responseRouteKey: BigInt("-6306063129046500096"),
         annotations: [],
       },
       allocators.responseAllocator(CurrencyPairUpdatesTypeDefinition),
     )
   },
 }
-export const RfqService = {
-  requestQuote: (input: QuoteRequest): Observable<QuoteResponse> => {
+export const ThroughputAdminService = {
+  getThroughput: (): Observable<GetThroughputResponse> => {
     return HydraPlatform.requestResponse$(
       {
-        serviceName: "RfqService",
-        methodName: "requestQuote",
-        inboundStream: "one",
+        serviceName: "ThroughputAdminService",
+        methodName: "getThroughput",
+        inboundStream: "empty",
         outboundStream: "one",
-        requestRouteKey: BigInt("8143068223263718656"),
-        responseRouteKey: BigInt("4897793398437933312"),
+        requestRouteKey: BigInt("-5527264366680351744"),
+        responseRouteKey: BigInt("7943050629117021440"),
         annotations: [],
       },
-      allocators.responseAllocator(QuoteResponseTypeDefinition),
-      allocators.requestAllocator(input, QuoteRequestTypeDefinition),
+      allocators.responseAllocator(GetThroughputResponseTypeDefinition),
     )
   },
-}
-export const ThroughputAdminService = {
   setThroughput: (input: SetThroughputRequest): Observable<void> => {
     return HydraPlatform.requestResponse$(
       {
@@ -945,8 +1547,8 @@ export const ThroughputAdminService = {
         methodName: "setThroughput",
         inboundStream: "one",
         outboundStream: "empty",
-        requestRouteKey: BigInt("-4643722542766134784"),
-        responseRouteKey: BigInt("7254487604321209088"),
+        requestRouteKey: BigInt("-1018179353612796416"),
+        responseRouteKey: BigInt("6831105567706198528"),
         annotations: [],
       },
       undefined,
@@ -962,12 +1564,214 @@ export const EchoService = {
         methodName: "echo",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("4725880620509737984"),
-        responseRouteKey: BigInt("2394643777287617536"),
+        requestRouteKey: BigInt("-1739061107074329088"),
+        responseRouteKey: BigInt("-3932217723524714240"),
         annotations: [],
       },
       allocators.responseAllocator(EchoResponseTypeDefinition),
       allocators.requestAllocator(input, EchoRequestTypeDefinition),
     )
   },
+}
+export const InstrumentService = {
+  subscribe: (): Observable<InstrumentUpdate> => {
+    return HydraPlatform.requestStream$(
+      {
+        serviceName: "InstrumentService",
+        methodName: "subscribe",
+        inboundStream: "empty",
+        outboundStream: "many",
+        requestRouteKey: BigInt("4964042739278814208"),
+        responseRouteKey: BigInt("1840451258422074368"),
+        annotations: [],
+      },
+      allocators.responseAllocator(InstrumentUpdateTypeDefinition),
+    )
+  },
+}
+export const DealerService = {
+  subscribe: (): Observable<DealerUpdate> => {
+    return HydraPlatform.requestStream$(
+      {
+        serviceName: "DealerService",
+        methodName: "subscribe",
+        inboundStream: "empty",
+        outboundStream: "many",
+        requestRouteKey: BigInt("-8881681336949959168"),
+        responseRouteKey: BigInt("-3865403791155441152"),
+        annotations: [],
+      },
+      allocators.responseAllocator(DealerUpdateTypeDefinition),
+    )
+  },
+}
+export const WorkflowService = {
+  createRfq: (input: CreateRfqRequest): Observable<CreateRfqResponse> => {
+    return HydraPlatform.requestResponse$(
+      {
+        serviceName: "WorkflowService",
+        methodName: "createRfq",
+        inboundStream: "one",
+        outboundStream: "one",
+        requestRouteKey: BigInt("6400895782728043776"),
+        responseRouteKey: BigInt("1480546138952989952"),
+        annotations: [],
+      },
+      allocators.responseAllocator(CreateRfqResponseTypeDefinition),
+      allocators.requestAllocator(input, CreateRfqRequestTypeDefinition),
+    )
+  },
+  cancelRfq: (input: CancelRfqRequest): Observable<void> => {
+    return HydraPlatform.requestResponse$(
+      {
+        serviceName: "WorkflowService",
+        methodName: "cancelRfq",
+        inboundStream: "one",
+        outboundStream: "empty",
+        requestRouteKey: BigInt("9120240265967396608"),
+        responseRouteKey: BigInt("8351955485888580608"),
+        annotations: [],
+      },
+      undefined,
+      allocators.requestAllocator(input, CancelRfqRequestTypeDefinition),
+    )
+  },
+  createQuote: (input: CreateQuoteRequest): Observable<CreateQuoteResponse> => {
+    return HydraPlatform.requestResponse$(
+      {
+        serviceName: "WorkflowService",
+        methodName: "createQuote",
+        inboundStream: "one",
+        outboundStream: "one",
+        requestRouteKey: BigInt("-3909036003142708736"),
+        responseRouteKey: BigInt("1310475536040889344"),
+        annotations: [],
+      },
+      allocators.responseAllocator(CreateQuoteResponseTypeDefinition),
+      allocators.requestAllocator(input, CreateQuoteRequestTypeDefinition),
+    )
+  },
+  acceptQuote: (input: AcceptQuoteRequest): Observable<AcceptQuoteResponse> => {
+    return HydraPlatform.requestResponse$(
+      {
+        serviceName: "WorkflowService",
+        methodName: "acceptQuote",
+        inboundStream: "one",
+        outboundStream: "one",
+        requestRouteKey: BigInt("3406490184815367168"),
+        responseRouteKey: BigInt("-6269829733944167936"),
+        annotations: [],
+      },
+      allocators.responseAllocator(AcceptQuoteResponseTypeDefinition),
+      allocators.requestAllocator(input, AcceptQuoteRequestTypeDefinition),
+    )
+  },
+  subscribe: (): Observable<RfqUpdate> => {
+    return HydraPlatform.requestStream$(
+      {
+        serviceName: "WorkflowService",
+        methodName: "subscribe",
+        inboundStream: "empty",
+        outboundStream: "many",
+        requestRouteKey: BigInt("-5880065670994126848"),
+        responseRouteKey: BigInt("3502450605082066688"),
+        annotations: [],
+      },
+      allocators.responseAllocator(RfqUpdateTypeDefinition),
+    )
+  },
+}
+
+export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiation.Compatibility> {
+  return HydraPlatform.VersionNegotiation.VersionNegotiationService.checkCompatibility(
+    {
+      methods: [
+        {
+          serviceName: "AnalyticsService",
+          methodName: "getAnalytics",
+          methodRouteKey: BigInt("1164161099841024256"),
+        },
+        {
+          serviceName: "BlotterService",
+          methodName: "getTradeStream",
+          methodRouteKey: BigInt("-5157452200409264128"),
+        },
+        {
+          serviceName: "LoginService",
+          methodName: "login",
+          methodRouteKey: BigInt("-6881743837586205440"),
+        },
+        {
+          serviceName: "ExecutionService",
+          methodName: "executeTrade",
+          methodRouteKey: BigInt("-5207524058606496000"),
+        },
+        {
+          serviceName: "PricingService",
+          methodName: "getPriceUpdates",
+          methodRouteKey: BigInt("-6086348338935972352"),
+        },
+        {
+          serviceName: "PricingService",
+          methodName: "getPriceHistory",
+          methodRouteKey: BigInt("-6711739167421129728"),
+        },
+        {
+          serviceName: "ReferenceDataService",
+          methodName: "getCcyPairs",
+          methodRouteKey: BigInt("-3587707241265510912"),
+        },
+        {
+          serviceName: "ThroughputAdminService",
+          methodName: "getThroughput",
+          methodRouteKey: BigInt("-5527264366680351744"),
+        },
+        {
+          serviceName: "ThroughputAdminService",
+          methodName: "setThroughput",
+          methodRouteKey: BigInt("-1018179353612796416"),
+        },
+        {
+          serviceName: "EchoService",
+          methodName: "echo",
+          methodRouteKey: BigInt("-1739061107074329088"),
+        },
+        {
+          serviceName: "InstrumentService",
+          methodName: "subscribe",
+          methodRouteKey: BigInt("4964042739278814208"),
+        },
+        {
+          serviceName: "DealerService",
+          methodName: "subscribe",
+          methodRouteKey: BigInt("-8881681336949959168"),
+        },
+        {
+          serviceName: "WorkflowService",
+          methodName: "createRfq",
+          methodRouteKey: BigInt("6400895782728043776"),
+        },
+        {
+          serviceName: "WorkflowService",
+          methodName: "cancelRfq",
+          methodRouteKey: BigInt("9120240265967396608"),
+        },
+        {
+          serviceName: "WorkflowService",
+          methodName: "createQuote",
+          methodRouteKey: BigInt("-3909036003142708736"),
+        },
+        {
+          serviceName: "WorkflowService",
+          methodName: "acceptQuote",
+          methodRouteKey: BigInt("3406490184815367168"),
+        },
+        {
+          serviceName: "WorkflowService",
+          methodName: "subscribe",
+          methodRouteKey: BigInt("-5880065670994126848"),
+        },
+      ],
+    },
+  )
 }

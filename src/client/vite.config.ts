@@ -1,13 +1,13 @@
-import path, { resolve } from "path"
-import { readdirSync, statSync } from "fs"
-import { defineConfig, loadEnv } from "vite"
-import reactRefresh from "@vitejs/plugin-react-refresh"
-import { injectHtml } from "vite-plugin-html"
-import copy from "rollup-plugin-copy"
 import eslint from "@rollup/plugin-eslint"
-import typescript from "rollup-plugin-typescript2"
+import reactRefresh from "@vitejs/plugin-react-refresh"
+import { readdirSync, statSync } from "fs"
+import path, { resolve } from "path"
+import copy from "rollup-plugin-copy"
 import modulepreload from "rollup-plugin-modulepreload"
+import typescript from "rollup-plugin-typescript2"
 import { injectManifest } from "rollup-plugin-workbox"
+import { defineConfig, loadEnv } from "vite"
+import { createHtmlPlugin } from "vite-plugin-html"
 
 const PORT = Number(process.env.PORT) || 1917
 
@@ -203,6 +203,8 @@ const copyWebManifestPlugin = (dev: boolean) => {
             contents
               .toString()
               .replace(/<BASE_URL>/g, getBaseUrl(dev))
+              // We want the PWA banner to show on www.reactivetrader.com
+              .replace(/web\.prod\./g, "www.")
               // We don't want to show PROD in the PWA name
               .replace(
                 /{{environment_suffix}}/g,
@@ -232,17 +234,19 @@ const htmlPlugin = (dev: boolean) => {
 }
 
 const injectScriptIntoHtml = () =>
-  injectHtml({
-    data: {
-      injectScript: `
-      <script>
-        // Hydra dependency references BigInt at run time even when the application isn't explicitly started
-        // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
-        // Set BigInt to an anon function to prevent the runtime error 
-        window.supportsBigInt = typeof BigInt !== 'undefined';
-        window.BigInt = supportsBigInt ? BigInt : function(){};
-      </script>
-    `,
+  createHtmlPlugin({
+    inject: {
+      data: {
+        injectScript: `
+          <script>
+            // Hydra dependency references BigInt at run time even when the application isn't explicitly started
+            // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
+            // Set BigInt to an anon function to prevent the runtime error 
+            window.supportsBigInt = typeof BigInt !== 'undefined';
+            window.BigInt = supportsBigInt ? BigInt : function(){};
+          </script>
+        `,
+      },
     },
   })
 

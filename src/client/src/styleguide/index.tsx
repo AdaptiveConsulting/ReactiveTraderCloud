@@ -1,6 +1,6 @@
 import { createRef, FC } from "react"
 import Helmet from "react-helmet"
-import styled from "styled-components"
+import styled, { createGlobalStyle } from "styled-components"
 import FloatingTools from "./components/FloatingsTools"
 import OnePageNavBar from "./components/OnePageNavBar"
 import Introduction from "./sections/Introduction"
@@ -35,7 +35,14 @@ const Styleguide: FC = () => {
 
   return (
     <>
-      <Helmet title={"Style Guide for Reactive Trader®"} />
+      <StyleGuideGlobal />
+      <Helmet title={"Style Guide for Reactive Trader®"}>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+        />
+      </Helmet>
       <Root>
         <FloatingTools />
         <Introduction key="introduction" />
@@ -51,6 +58,12 @@ const Styleguide: FC = () => {
     </>
   )
 }
+
+const StyleGuideGlobal = createGlobalStyle`
+  body, #root {
+    overflow: initial;
+  }
+`
 
 const ScrollableContainer = styled.div`
   scroll-margin: 76px;

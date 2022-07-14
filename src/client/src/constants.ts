@@ -10,6 +10,9 @@ export const ENVIRONMENT: Environment =
   (["env", "dev", "uat", "prod"].find((env) =>
     (BASE_URL || "").includes(`.${env}.`),
   ) as Environment) || "local"
+export const IS_CREDIT_ENABLED =
+  import.meta.env.VITE_IS_CREDIT_ENABLED === "yes"
+console.log(`Credit feature is ${IS_CREDIT_ENABLED ? "en" : "dis"}abled`)
 
 export const ROUTES_CONFIG = {
   tile: "/spot/:symbol",
@@ -18,4 +21,5 @@ export const ROUTES_CONFIG = {
   analytics: "/analytics",
   styleguide: "/styleguide",
   admin: "/admin",
+  credit: "/credit",
 }
