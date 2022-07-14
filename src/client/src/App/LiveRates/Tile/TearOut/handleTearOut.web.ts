@@ -9,7 +9,7 @@ export function handleTearOut(symbol: string) {
       url: constructUrl(ROUTES_CONFIG.tile.replace(":symbol", symbol)),
       name: symbol,
       width: 380,
-      height: 170,
+      height: 172,
     },
     () => tearOut(symbol, false),
   )

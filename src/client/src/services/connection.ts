@@ -1,6 +1,6 @@
 import {
-  connectionStatus$ as hConnectionStatus$,
   ConnectionStatus as HConnectionStatus,
+  connectionStatus$ as hConnectionStatus$,
   connectToGateway,
 } from "@adaptive/hydra-platform"
 import { bind } from "@react-rxjs/core"
@@ -87,7 +87,7 @@ const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
   map(([[_, dispose]]) => {
     console.log(`User was idle for ${IDLE_TIMEOUT}, disconnecting`)
     dispose!()
-    connectionDisposable$.next(undefined)
+    connectionDisposable$.next(() => undefined)
     return ConnectionStatus.IDLE_DISCONNECTED
   }),
 )
@@ -133,10 +133,7 @@ export const [useConnectionStatus, connectionStatus$] = bind(
   import.meta.env.VITE_MOCKS
     ? of(ConnectionStatus.CONNECTED)
     : merge<
-        ConnectionStatus,
-        ConnectionStatus,
-        ConnectionStatus,
-        ConnectionStatus
+        [ConnectionStatus, ConnectionStatus, ConnectionStatus, ConnectionStatus]
       >(
         mappedConnectionStatus$,
         idleDisconnect$,
