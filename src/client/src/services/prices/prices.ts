@@ -25,7 +25,7 @@ const [, getPriceHistory$] = bind((symbol: string) =>
   ),
 )
 
-const [, getPriceUpdates$] = bind((symbol: string) =>
+export const [, getPriceUpdates$] = bind((symbol: string) =>
   PricingService.getPriceUpdates({ symbol }).pipe(
     withConnection(),
     map(priceMappper),
