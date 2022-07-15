@@ -20,6 +20,7 @@ export const ROUTES_CONFIG = {
   blotter: "/blotter",
   analytics: "/analytics",
   styleguide: "/styleguide",
+  admin: "/admin",
   credit: "/credit",
   newRfq: "/credit/new-rfq",
   sellSideTicket: "/credit/sellside/:rfqId/dealer/:dealerId",
