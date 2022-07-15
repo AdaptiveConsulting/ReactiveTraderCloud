@@ -6,9 +6,6 @@ import styled from "styled-components"
 import MainLayout from "./MainLayout"
 import { Trades } from "@/App/Trades"
 
-const Placeholder = styled.div`
-  margin: 3em;
-`
 const CREDIT_TEAR_OUT_SECTIONS = ["newRfq"] as const
 const useTornOutSections = getTornOutSections(CREDIT_TEAR_OUT_SECTIONS)
 

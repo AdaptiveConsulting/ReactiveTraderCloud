@@ -2,12 +2,11 @@ import { map, mergeMap, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { mapObject } from "@/utils"
-import type { Trade } from "@/services/trades"
 import { trades$ } from "@/services/trades"
 import { colConfigs, colFields } from "../colConfig"
 import type { FilterEvent } from "./filterCommon"
 import { filterResets$ } from "./filterCommon"
-import { AllTrades, FxTrade } from "@/services/trades/types"
+import { AllTrades } from "@/services/trades/types"
 
 /**
  * Subset of column fields (as type) that take set/multi-select filter-value

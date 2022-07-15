@@ -1,7 +1,7 @@
 import { InstrumentBody } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { of } from "rxjs"
-import { scan } from "rxjs/operators"
+import { map, scan } from "rxjs/operators"
 
 const fakeInstruments: InstrumentBody[] = [
   {
@@ -47,4 +47,13 @@ export const [useCreditInstrumentsByCusip, creditInstrumentsByCusip$] = bind<
     }, {} as Record<string, InstrumentBody>),
   ),
   {},
+)
+
+export const [useCreditInstrumentById, creditInstrumentById$] = bind(
+  (instrumentId: number) =>
+    creditInstruments$.pipe(
+      map((creditInstruments) =>
+        creditInstruments.find((instrument) => instrument.id === instrumentId),
+      ),
+    ),
 )

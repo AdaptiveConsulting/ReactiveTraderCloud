@@ -111,7 +111,7 @@ export const creditColConfigs: Record<CreditColField, ColConfig> = {
     filterType: "number",
     width: 100,
   },
-  status: {
+  state: {
     headerName: "Status",
     filterType: "set",
     valueFormatter: capitalize,

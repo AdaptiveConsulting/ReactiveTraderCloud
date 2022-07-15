@@ -2,7 +2,13 @@ import { startOfDay } from "date-fns"
 import { combineLatest, merge, Observable } from "rxjs"
 import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import { FxTrade, Trade, trades$, creditTrades$ } from "@/services/trades"
+import {
+  FxTrade,
+  Trade,
+  trades$,
+  creditTrades$,
+  AllTrades,
+} from "@/services/trades"
 import type { ColField } from "./colConfig"
 import type {
   NumColField,
@@ -157,7 +163,7 @@ const numFiltersTrueOfTrade = (
       return true
     }
 
-    const tradeValue = (trade as FxTrade)[field as NumColField]
+    const tradeValue = (trade as AllTrades)[field as NumColField]
     const tradeNumber =
       typeof tradeValue === "number" ? tradeValue : parseFloat(tradeValue)
     const filterNumber = filterContent.value1
@@ -261,7 +267,7 @@ const stringComparator = (direction: SortDirection, a: string, b: string) => {
  * which sort comparator to use.
  */
 const sortTrades = ([trades, { field, direction }]: [
-  Trade[],
+  AllTrades[],
   TableSort,
 ]): Trade[] => {
   const sortedTrades = [...trades]

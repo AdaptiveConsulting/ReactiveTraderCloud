@@ -1,11 +1,11 @@
-import { BlotterService } from "@/generated/TradingGateway"
+import { BlotterService, QuoteState } from "@/generated/TradingGateway"
+import { CreditTrade, Direction } from "./types"
 import { bind } from "@react-rxjs/core"
-import { Observable } from "rxjs"
 import { map, scan } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
+import { creditRfqsById$ } from "../credit"
 import { withConnection } from "../withConnection"
 import { Trade } from "./types"
-import { mockCreditTrades } from "./__mocks__/creditTrades"
 
 const tradesStream$ = BlotterService.getTradeStream().pipe(
   withConnection(),
@@ -38,7 +38,6 @@ export const [useTrades, trades$] = bind<Trade[]>(
       {} as Record<number, Trade>,
     ),
     map((trades) => {
-      console.log("************************************", Object.values(trades))
       return Object.values(trades).reverse()
     }),
   ),
@@ -46,9 +45,32 @@ export const [useTrades, trades$] = bind<Trade[]>(
 
 export const isBlotterDataStale$ = withIsStaleData(trades$)
 
-const fakeCreditStream$ = new Observable<Trade[]>((subscriber) => {
-  subscriber.next(mockCreditTrades)
-  subscriber.complete()
-})
-
-export const [useCreditTrades, creditTrades$] = bind<Trade[]>(fakeCreditStream$)
+export const [useCreditTrades, creditTrades$] = bind(
+  creditRfqsById$.pipe(
+    map((update, idx) => {
+      const acceptedRfqs = Object.values(update).filter((rfq) => {
+        return rfq.quotes?.find((quote) => quote.state === QuoteState.Accepted)
+      })
+      return acceptedRfqs
+        .map((rfq) => {
+          const acceptedQuote = rfq.quotes[0]
+          return {
+            tradeId: rfq.id.toString(),
+            state: QuoteState.Accepted,
+            tradeDate: new Date(Date.now()),
+            direction: Direction.Buy,
+            counterParty: rfq.dealers.find(
+              (dealer) => dealer.id === acceptedQuote?.dealerId,
+            )?.name,
+            cusip: rfq.instrument?.cusip,
+            security: rfq.instrument?.ticker,
+            quantity: rfq.quantity.toString(),
+            orderType: "AON",
+            unitPrice: acceptedQuote?.price.toString(),
+          }
+        })
+        .reverse() as CreditTrade[]
+    }),
+  ),
+  [],
+)

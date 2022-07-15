@@ -29,7 +29,7 @@ const Trades: React.FC<Props> = ({ credit }) => (
     <SuspenseOnStaleData />
     <TradesStyle role="region" aria-labelledby="trades-table-heading">
       <TradesHeader />
-      <TradesGrid credit={credit} />
+      <TradesGrid />
       <TradesFooter />
     </TradesStyle>
   </Subscribe>

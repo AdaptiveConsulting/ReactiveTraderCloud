@@ -1,12 +1,12 @@
 import { scan, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import type { AllColField, ColField } from "./colConfig"
+import type { AllColField } from "./colConfig"
 
 export type SortDirection = "ASC" | "DESC"
 
 export class TableSort {
-  constructor(public direction?: SortDirection, public field?: ColField) {}
+  constructor(public direction?: SortDirection, public field?: AllColField) {}
 }
 
 /**
@@ -19,7 +19,7 @@ export class TableSort {
  * on the column.
  */
 export const [sortFieldSelections$, onSortFieldSelect] =
-  createSignal<ColField>()
+  createSignal<AllColField>()
 
 /**
  * Default sorting direction is ASC.
