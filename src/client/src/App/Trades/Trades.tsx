@@ -1,8 +1,7 @@
 import { Loader } from "@/components/Loader"
-import { lazy, Suspense, useEffect } from "react"
+import { FC, lazy, Suspense, useEffect } from "react"
 import { creditTrades$, trades$ } from "@/services/trades"
 import styled from "styled-components"
-import React from "react"
 import { CreditContext } from "./Context"
 
 export const TradesCoreDeferred = import("./TradesCore")
@@ -19,7 +18,7 @@ interface Props {
   credit?: boolean
 }
 
-export const Trades: React.FC<Props> = ({ credit }) => {
+export const Trades: FC<Props> = ({ credit }) => {
   useEffect(() => {
     const sub = credit ? creditTrades$.subscribe() : trades$.subscribe()
     return () => sub.unsubscribe()
