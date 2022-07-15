@@ -125,7 +125,7 @@
     "react-test-renderer": "^17.0.2",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-modulepreload": "^1.2.3",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-typescript2": "^0.32.0",
     "rollup-plugin-workbox": "^6.1.1",
     "text-encoding": "^0.7.0",
     "ts-jest": "^26.5.4",

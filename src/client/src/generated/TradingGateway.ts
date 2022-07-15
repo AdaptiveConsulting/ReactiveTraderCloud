@@ -216,6 +216,10 @@ export interface SetThroughputRequest {
   targetUpdatesPerSecond: number
 }
 
+export interface GetThroughputResponse {
+  updatesPerSecond: number
+}
+
 export interface CurrencyPairUpdates {
   updates: Array<CurrencyPairUpdate>
   isStateOfTheWorld: boolean
@@ -882,6 +886,20 @@ function SetThroughputRequestTypeDefinition() {
   }
 }
 
+function GetThroughputResponseTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      updatesPerSecond: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: int32TypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
 function CurrencyPairUpdatesTypeDefinition() {
   return {
     type: "record" as const,
@@ -1508,6 +1526,20 @@ export const ReferenceDataService = {
   },
 }
 export const ThroughputAdminService = {
+  getThroughput: (): Observable<GetThroughputResponse> => {
+    return HydraPlatform.requestResponse$(
+      {
+        serviceName: "ThroughputAdminService",
+        methodName: "getThroughput",
+        inboundStream: "empty",
+        outboundStream: "one",
+        requestRouteKey: BigInt("-5527264366680351744"),
+        responseRouteKey: BigInt("7943050629117021440"),
+        annotations: [],
+      },
+      allocators.responseAllocator(GetThroughputResponseTypeDefinition),
+    )
+  },
   setThroughput: (input: SetThroughputRequest): Observable<void> => {
     return HydraPlatform.requestResponse$(
       {
@@ -1688,6 +1720,11 @@ export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiatio
           serviceName: "ReferenceDataService",
           methodName: "getCcyPairs",
           methodRouteKey: BigInt("-3587707241265510912"),
+        },
+        {
+          serviceName: "ThroughputAdminService",
+          methodName: "getThroughput",
+          methodRouteKey: BigInt("-5527264366680351744"),
         },
         {
           serviceName: "ThroughputAdminService",
