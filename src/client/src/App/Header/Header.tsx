@@ -10,7 +10,6 @@ import {
   Fill,
 } from "./Header.styles"
 import { PWABanner, PWAInstallBanner, PWALaunchButton } from "./PWA"
-import { IS_CREDIT_ENABLED } from "@/constants"
 import InstrumentTypeSelector from "./InstrumentTypeSelector"
 
 interface Props {
@@ -45,7 +44,7 @@ const defaultFiller = <Fill aria-hidden={true} />
 const DefaultSwitches: FC = () => {
   return (
     <>
-      {IS_CREDIT_ENABLED && <InstrumentTypeSelector />}
+      <InstrumentTypeSelector />
       <ThemeSwitcher />
     </>
   )
