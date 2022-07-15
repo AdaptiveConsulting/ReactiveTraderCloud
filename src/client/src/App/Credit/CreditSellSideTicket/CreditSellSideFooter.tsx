@@ -71,7 +71,9 @@ export const CreditSellSideFooter: FC<CreditSellSideTicketFooterProps> = ({
 
   return (
     <FooterWrapper>
-      <PassButton disabled={!!quote} onClick={closeWindow}>Pass</PassButton>
+      <PassButton disabled={!!quote} onClick={closeWindow}>
+        Pass
+      </PassButton>
       <SendQuoteButton
         direction={direction}
         onClick={() => sendQuote({ rfqId, dealerId })}

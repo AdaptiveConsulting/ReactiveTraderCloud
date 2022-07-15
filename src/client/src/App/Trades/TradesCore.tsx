@@ -17,7 +17,11 @@ const TradesStyle = styled.div`
 
 const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
 
-const Trades: React.FC = () => (
+interface Props {
+  credit?: boolean
+}
+
+const Trades: React.FC<Props> = ({ credit }) => (
   <Subscribe
     source$={tableTrades$}
     fallback={<Loader ariaLabel="Loading trades blotter" />}

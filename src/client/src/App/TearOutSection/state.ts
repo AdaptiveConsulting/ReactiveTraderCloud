@@ -22,7 +22,7 @@ export function getTornOutSections<T extends Section>(sections: readonly T[]) {
     acc[section] = false
     return acc
   }, {} as Record<T, boolean>)
-  
+
   const [useTornOutSectionState] = bind(
     tearOutSectionEntry$.pipe(
       filter(([, section]) => sections.some((sec) => sec === section)),

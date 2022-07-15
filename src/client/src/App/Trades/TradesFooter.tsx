@@ -1,8 +1,11 @@
 import { bind } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
-import { trades$ } from "@/services/trades"
+import { creditTrades$, trades$ } from "@/services/trades"
 import { tableTrades$ } from "./TradesState"
+import { useContext } from "react"
+import { CreditContext } from "./Context"
+import { tableCreditTrades$ } from "./TradesState/tableTrades"
 
 const TradesFooterStyled = styled("div")`
   height: 2rem;
@@ -19,19 +22,20 @@ const TradesFooterStyled = styled("div")`
 const TradesFooterText = styled.span`
   opacity: 0.6;
 `
-const [useTotalRows] = bind<number>(
-  trades$.pipe(map((trades) => trades.length)),
-  0,
-)
+const [useTotalRows] = bind<[boolean], number>((credit: boolean) => {
+  const stream = credit ? creditTrades$ : trades$
+  return stream.pipe(map((trades) => trades.length))
+}, 0)
 
-const [useDisplayRows] = bind<number>(
-  tableTrades$.pipe(map((trades) => trades.length)),
-  0,
-)
+const [useDisplayRows] = bind<[boolean], number>((credit: boolean) => {
+  const stream = credit ? tableCreditTrades$ : tableTrades$
+  return stream.pipe(map((trades) => trades.length))
+}, 0)
 
 export const TradesFooter: React.FC = () => {
-  const totalRows = useTotalRows()
-  const displayRows = useDisplayRows()
+  const credit = useContext(CreditContext)
+  const totalRows = useTotalRows(credit)
+  const displayRows = useDisplayRows(credit)
 
   return (
     <TradesFooterStyled>

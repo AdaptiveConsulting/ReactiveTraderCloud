@@ -1,7 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
-import { Trade } from "@/services/trades"
+import { FxTrade } from "@/services/trades"
 import { colConfigs, colFields } from "../colConfig"
 import type { FilterEvent } from "./filterCommon"
 import {
@@ -13,7 +13,7 @@ import {
 /**
  * Subset of column fields (as type) that take date filters
  */
-export type DateColField = keyof Pick<Trade, "tradeDate" | "valueDate">
+export type DateColField = keyof Pick<FxTrade, "tradeDate" | "valueDate">
 
 /**
  * Subset of column fields (as values) that take date filters
@@ -103,11 +103,9 @@ export const dateFilters$ = mergeWithKey({
  * State hook and parametric stream that emit date
  * filter state.  Used by DateFilter component.
  */
-export const [
-  useAppliedDateFilters,
-  appliedDateFilters$,
-] = bind((field: DateColField) =>
-  dateFilters$.pipe(map((dateFilters) => dateFilters[field])),
+export const [useAppliedDateFilters, appliedDateFilters$] = bind(
+  (field: DateColField) =>
+    dateFilters$.pipe(map((dateFilters) => dateFilters[field])),
 )
 
 /**

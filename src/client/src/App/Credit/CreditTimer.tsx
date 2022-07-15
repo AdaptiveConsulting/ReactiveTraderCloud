@@ -101,7 +101,7 @@ export const CreditTimer: React.FC<{
   isSellSideView: boolean
 }> = ({ start, end, isSellSideView }) => {
   const [timerEnded, setTimerEnded] = useState(Date.now() >= end)
-  
+
   useEffect(() => {
     if (!timerEnded) {
       const id = setInterval(() => {

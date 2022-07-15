@@ -1,7 +1,9 @@
-import { BlotterService } from "@/generated/TradingGateway"
+import { BlotterService, QuoteState } from "@/generated/TradingGateway"
+import { CreditTrade, Direction } from "./types"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
+import { creditRfqsById$ } from "../credit"
 import { withConnection } from "../withConnection"
 import { Trade } from "./types"
 
@@ -35,8 +37,40 @@ export const [useTrades, trades$] = bind<Trade[]>(
       }),
       {} as Record<number, Trade>,
     ),
-    map((trades) => Object.values(trades).reverse()),
+    map((trades) => {
+      return Object.values(trades).reverse()
+    }),
   ),
 )
 
 export const isBlotterDataStale$ = withIsStaleData(trades$)
+
+export const [useCreditTrades, creditTrades$] = bind(
+  creditRfqsById$.pipe(
+    map((update, idx) => {
+      const acceptedRfqs = Object.values(update).filter((rfq) => {
+        return rfq.quotes?.find((quote) => quote.state === QuoteState.Accepted)
+      })
+      return acceptedRfqs
+        .map((rfq) => {
+          const acceptedQuote = rfq.quotes[0]
+          return {
+            tradeId: rfq.id.toString(),
+            state: QuoteState.Accepted,
+            tradeDate: new Date(Date.now()),
+            direction: Direction.Buy,
+            counterParty: rfq.dealers.find(
+              (dealer) => dealer.id === acceptedQuote?.dealerId,
+            )?.name,
+            cusip: rfq.instrument?.cusip,
+            security: rfq.instrument?.ticker,
+            quantity: rfq.quantity.toString(),
+            orderType: "AON",
+            unitPrice: acceptedQuote?.price.toString(),
+          }
+        })
+        .reverse() as CreditTrade[]
+    }),
+  ),
+  [],
+)
