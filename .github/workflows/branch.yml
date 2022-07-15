@@ -23,9 +23,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
       # URL_SUFFIX is used so we can append branch/<branch-name> to BASE_URL, or leave blank in the case of uat/dev where we do not need it
       - name: Set variables
