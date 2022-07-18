@@ -1,10 +1,10 @@
 import { Direction } from "@/generated/TradingGateway"
 import { useCreditInstrumentById } from "@/services/credit"
 import { memo } from "react"
+import { CusipWithBenchmark } from "../common/CusipWithBenchmark"
 import {
   DirectionContainer,
   DirectionLabel,
-  InstrumentCusip,
   InstrumentLabelContainer,
   InstrumentName,
 } from "../common/RfqTicketHeader"
@@ -25,9 +25,7 @@ export const CreditSellSideHeader = memo(
         )}
         <InstrumentLabelContainer direction={direction}>
           <InstrumentName>{instrument?.name ?? "No name found"}</InstrumentName>
-          <InstrumentCusip>
-            {instrument?.cusip ?? "No cusip found"}
-          </InstrumentCusip>
+          <CusipWithBenchmark cusip={instrument?.cusip} />
         </InstrumentLabelContainer>
         {direction === Direction.Sell && (
           <DirectionLabel direction={direction}> YOU SELL</DirectionLabel>

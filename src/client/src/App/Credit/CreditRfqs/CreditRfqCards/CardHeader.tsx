@@ -4,10 +4,10 @@ import { memo } from "react"
 import {
   DirectionContainer,
   DirectionLabel,
-  InstrumentCusip,
   InstrumentLabelContainer,
   InstrumentName,
 } from "../../common"
+import { CusipWithBenchmark } from "../../common/CusipWithBenchmark"
 
 interface CardHeaderProps {
   direction: Direction
@@ -25,9 +25,7 @@ export const CardHeader = memo(
         )}
         <InstrumentLabelContainer direction={direction}>
           <InstrumentName>{instrument?.name ?? "No name found"}</InstrumentName>
-          <InstrumentCusip>
-            {instrument?.cusip ?? "No cusip found"}
-          </InstrumentCusip>
+          <CusipWithBenchmark cusip={instrument?.cusip} />
         </InstrumentLabelContainer>
         {direction === Direction.Sell && (
           <DirectionLabel direction={direction}>YOU SELL</DirectionLabel>

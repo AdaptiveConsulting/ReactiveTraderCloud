@@ -350,7 +350,7 @@ export const [tradeRowHighlight$, onTradeRowHighlight] = createSignal<string>()
 /**
  * Emit tradeId of new trades after the initial load
  */
-const newTradeId$ = trades$.pipe(
+const newTradeId$ = merge(trades$, creditTrades$).pipe(
   scan(
     (acc, trades) => {
       return {

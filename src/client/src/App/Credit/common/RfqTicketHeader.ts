@@ -68,9 +68,3 @@ export const InstrumentName = styled.div`
   font-size: 13px;
   font-weight: 600;
 `
-
-export const InstrumentCusip = styled.div`
-  font-size: 11px;
-  font-weight: 500;
-  opacity: 0.6;
-`
