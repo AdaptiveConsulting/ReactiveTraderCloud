@@ -1,7 +1,7 @@
 import { useCreditDealers } from "@/services/credit"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { FC, useRef } from "react"
+import { FC } from "react"
 import styled from "styled-components"
 
 const CounterpartySelectionWrapper = styled.div`
@@ -55,7 +55,6 @@ export const [selectedCounterpartyIds$, setSelectedCounterpartyIds] =
 export const [useSelectedCounterpartyIds] = bind(selectedCounterpartyIds$, [])
 
 export const CounterpartySelection: FC = () => {
-  const allCheckboxRef = useRef<HTMLInputElement>(null)
   const counterparties = useCreditDealers()
   const selectedCounterpartyIds = useSelectedCounterpartyIds()
 
@@ -84,7 +83,6 @@ export const CounterpartySelection: FC = () => {
           onClick={() => handleToggleAllCheckbox(!allChecked)}
         >
           <input
-            ref={allCheckboxRef}
             type="checkbox"
             checked={allChecked}
             onChange={(e) => handleToggleAllCheckbox(e.target.checked)}

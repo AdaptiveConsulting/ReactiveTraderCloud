@@ -135,6 +135,17 @@ export const WebApp: React.FC = () => {
                 )
               }}
             />
+            <Route
+              path={ROUTES_CONFIG.creditBlotter}
+              render={() => {
+                return (
+                  <>
+                    <Trades credit={true} />
+                    <DisconnectionOverlay />
+                  </>
+                )
+              }}
+            />
           </TearOutContext.Provider>
         </Switch>
       </BrowserRouter>

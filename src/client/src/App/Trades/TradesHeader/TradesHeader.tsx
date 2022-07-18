@@ -1,9 +1,10 @@
-import styled from "styled-components"
-import { ExcelButton } from "./ExcelButton"
-import { AppliedFilters } from "./AppliedFilters"
-import { QuickFilter } from "./QuickFilter"
 import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
+import styled from "styled-components"
+import { useIsCredit } from "../Context"
+import { AppliedFilters } from "./AppliedFilters"
+import { ExcelButton } from "./ExcelButton"
+import { QuickFilter } from "./QuickFilter"
 
 const TradesHeaderStyle = styled("div")`
   display: flex;
@@ -33,6 +34,7 @@ const HeaderToolbar = styled("div")`
   justify-content: flex-end;
 `
 export const TradesHeader: React.FC = () => {
+  const isCredit = useIsCredit()
   return (
     <TradesHeaderStyle>
       <HeaderLeftGroup>Trades</HeaderLeftGroup>
@@ -42,7 +44,9 @@ export const TradesHeader: React.FC = () => {
           <AppliedFilters />
           <QuickFilter />
         </HeaderToolbar>
-        {supportsTearOut && <TearOutComponent section="blotter" />}
+        {supportsTearOut && (
+          <TearOutComponent section={isCredit ? "creditBlotter" : "blotter"} />
+        )}
         <Fill />
       </HeaderRightGroup>
     </TradesHeaderStyle>

@@ -7,7 +7,12 @@ type TearOutSectionEntry = [boolean, Section]
 
 type tornOutSize = { width: number; height: number }
 
-export type Section = "tiles" | "blotter" | "analytics" | "newRfq"
+export type Section =
+  | "tiles"
+  | "blotter"
+  | "analytics"
+  | "newRfq"
+  | "creditBlotter"
 
 export type SectionConfig = { [section in Section]: tornOutSize }
 
@@ -69,5 +74,9 @@ export const sectionConfig: SectionConfig = {
   newRfq: {
     width: window.innerWidth - window.innerWidth * 0.7,
     height: window.innerHeight,
+  },
+  creditBlotter: {
+    width: window.innerWidth - window.innerWidth * 0.15,
+    height: window.innerHeight - window.innerHeight * 0.5,
   },
 }

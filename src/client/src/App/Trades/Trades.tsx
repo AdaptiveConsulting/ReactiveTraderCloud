@@ -18,16 +18,16 @@ interface Props {
   credit?: boolean
 }
 
-export const Trades: FC<Props> = ({ credit }) => {
+export const Trades: FC<Props> = ({ credit = false }) => {
   useEffect(() => {
     const sub = credit ? creditTrades$.subscribe() : trades$.subscribe()
     return () => sub.unsubscribe()
   }, [credit])
   return (
-    <CreditContext.Provider value={!!credit}>
+    <CreditContext.Provider value={credit}>
       <TradesWrapper>
         <Suspense fallback={<Loader />}>
-          <TradesCore credit={credit} />
+          <TradesCore />
         </Suspense>
       </TradesWrapper>
     </CreditContext.Provider>
