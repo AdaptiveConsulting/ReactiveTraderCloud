@@ -1,16 +1,13 @@
 import styled from "styled-components"
 
-const buttonHeight = "2rem"
 export const Root = styled.div`
+  display: flex;
+  align-items: center;
   position: relative;
   float: right;
   backface-visibility: hidden;
-  min-height: ${buttonHeight};
-  max-height: ${buttonHeight};
   z-index: 20;
-
   font-size: 0.75rem;
-
   color: ${(props) => props.theme.textColor};
 `
 

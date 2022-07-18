@@ -7,7 +7,7 @@ import {
   InstrumentCusip,
   InstrumentLabelContainer,
   InstrumentName,
-} from "./styled"
+} from "../../common"
 
 interface CardHeaderProps {
   direction: Direction
@@ -21,7 +21,7 @@ export const CardHeader = memo(
     return (
       <DirectionContainer direction={direction}>
         {direction === Direction.Buy && (
-          <DirectionLabel direction={direction}>BUY</DirectionLabel>
+          <DirectionLabel direction={direction}>YOU BUY</DirectionLabel>
         )}
         <InstrumentLabelContainer direction={direction}>
           <InstrumentName>{instrument?.name ?? "No name found"}</InstrumentName>
@@ -30,7 +30,7 @@ export const CardHeader = memo(
           </InstrumentCusip>
         </InstrumentLabelContainer>
         {direction === Direction.Sell && (
-          <DirectionLabel direction={direction}>SELL</DirectionLabel>
+          <DirectionLabel direction={direction}>YOU SELL</DirectionLabel>
         )}
       </DirectionContainer>
     )

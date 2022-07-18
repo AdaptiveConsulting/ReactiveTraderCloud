@@ -3,6 +3,7 @@ import { DealerBody, QuoteBody, RfqState } from "@/generated/TradingGateway"
 import {
   acceptCreditQuote$,
   creditRfqsById$,
+  RfqDetails,
   useCreditRfqDetails,
 } from "@/services/credit"
 import { customNumberFormatter } from "@/utils"
@@ -39,6 +40,17 @@ const Details = ({ quantity }: { quantity: number }) => {
   )
 }
 
+function getQuoteLabel(
+  rfqState: RfqState,
+  quote: QuoteBody | undefined,
+): string {
+  if (rfqState === "Open") {
+    return quote?.price.toString() ?? "Awaiting response"
+  } else {
+    return quote?.state === "Accepted" ? quote.price.toString() : "--"
+  }
+}
+
 const [acceptRfq$, onAcceptRfq] = createSignal<number>()
 
 acceptRfq$
@@ -57,7 +69,7 @@ const Quote = ({
   return (
     <QuoteRow quoteActive={!!quote && rfqState === RfqState.Open}>
       <DealerName>{dealer?.name ?? "Dealer name not found"}</DealerName>
-      <Price quoteState={quote?.state}>{quote?.price ?? "--"}</Price>
+      <Price quoteState={quote?.state}>{getQuoteLabel(rfqState, quote)}</Price>
       <AcceptQuoteButton onClick={() => onAcceptRfq(quote!.id)}>
         Accept
       </AcceptQuoteButton>
@@ -118,16 +130,27 @@ const Card = ({ id }: { id: number }) => {
   )
 }
 
+function getRfqRemainingTime(rfq: RfqDetails): number {
+  return Date.now() - Number(rfq.creationTimestamp) + rfq.expirySecs * 1000
+}
+
+function timeRemainingComparator(rfq1: RfqDetails, rfq2: RfqDetails): number {
+  return getRfqRemainingTime(rfq1) - getRfqRemainingTime(rfq2)
+}
+
 const [useFilteredCreditRfqIds] = bind(
   combineLatest([creditRfqsById$, selectedRfqState$]).pipe(
     map(([creditRfqsById, selectedRfqState]) => {
+      const sortedRfqsById = [...Object.values(creditRfqsById)].sort(
+        timeRemainingComparator,
+      )
       if (selectedRfqState === ALL_RFQ_STATES) {
-        return Object.keys(creditRfqsById).map((rfqId) => parseInt(rfqId, 10))
+        return sortedRfqsById.map((rfq) => rfq.id)
       }
 
-      return Object.entries(creditRfqsById)
-        .filter(([, rfqDetail]) => rfqDetail.state === selectedRfqState)
-        .map(([rfqId]) => parseInt(rfqId, 10))
+      return sortedRfqsById
+        .filter((rfqDetail) => rfqDetail.state === selectedRfqState)
+        .map(({ id }) => id)
     }),
   ),
 )

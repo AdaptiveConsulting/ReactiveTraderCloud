@@ -1,7 +1,7 @@
 import { useCreditDealers } from "@/services/credit"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { FC } from "react"
+import { FC, useRef } from "react"
 import styled from "styled-components"
 
 const CounterpartySelectionWrapper = styled.div`
@@ -55,6 +55,7 @@ export const [selectedCounterpartyIds$, setSelectedCounterpartyIds] =
 export const [useSelectedCounterpartyIds] = bind(selectedCounterpartyIds$, [])
 
 export const CounterpartySelection: FC = () => {
+  const allCheckboxRef = useRef<HTMLInputElement>(null)
   const counterparties = useCreditDealers()
   const selectedCounterpartyIds = useSelectedCounterpartyIds()
 
@@ -67,9 +68,29 @@ export const CounterpartySelection: FC = () => {
     setSelectedCounterpartyIds(newCounterparties)
   }
 
+  const allChecked = counterparties.length === selectedCounterpartyIds.length
+  const handleToggleAllCheckbox = (checked: boolean) => {
+    if (checked) {
+      setSelectedCounterpartyIds(counterparties.map((c) => c.id))
+    } else {
+      setSelectedCounterpartyIds([])
+    }
+  }
+
   return (
     <CounterpartySelectionWrapper>
       <CounterpartyList>
+        <CounterpartyListItem
+          onClick={() => handleToggleAllCheckbox(!allChecked)}
+        >
+          <input
+            ref={allCheckboxRef}
+            type="checkbox"
+            checked={allChecked}
+            onChange={(e) => handleToggleAllCheckbox(e.target.checked)}
+          />
+          <span>All</span>
+        </CounterpartyListItem>
         {counterparties.map((dealer) => (
           <CounterpartyListItem
             key={dealer.id}

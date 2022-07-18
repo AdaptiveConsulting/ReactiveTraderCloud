@@ -3,6 +3,7 @@ import { cancelCreditRfq$ } from "@/services/credit"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
 import { exhaustMap } from "rxjs/operators"
+import { rfqStateToLabel } from "../../common"
 import { CreditTimer } from "../../CreditTimer"
 import { CancelQuoteButton, CardFooterWrapper, CardState } from "./styled"
 
@@ -16,9 +17,6 @@ interface CardFooterProps {
 const [cancelRfq$, onCancelRfq] = createSignal<number>()
 
 cancelRfq$.pipe(exhaustMap((rfqId) => cancelCreditRfq$({ rfqId }))).subscribe()
-
-const getRfqStateText = (rfqState: string) =>
-  rfqState === RfqState.Closed ? "Done" : rfqState
 
 export const CardFooter: FC<CardFooterProps> = ({
   rfqId,
@@ -37,7 +35,7 @@ export const CardFooter: FC<CardFooterProps> = ({
         </>
       ) : (
         <CardState accepted={state === RfqState.Closed}>
-          {getRfqStateText(state)}
+          {rfqStateToLabel(state)}
         </CardState>
       )}
     </CardFooterWrapper>

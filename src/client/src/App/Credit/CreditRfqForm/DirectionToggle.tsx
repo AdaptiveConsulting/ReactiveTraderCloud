@@ -118,7 +118,7 @@ export const DirectionToggle: FC = () => {
         active={direction === Direction.Buy}
         onClick={() => setDirection(Direction.Buy)}
       >
-        Buy
+        YOU BUY
       </DirectionButton>
       <IconWrapper direction={direction}>
         <DirectionIcon />
@@ -128,7 +128,7 @@ export const DirectionToggle: FC = () => {
         active={direction === Direction.Sell}
         onClick={() => setDirection(Direction.Sell)}
       >
-        Sell
+        YOU SELL
       </DirectionButton>
     </DirectionToggleWrapper>
   )
