@@ -8,6 +8,7 @@ import { FC, useState, useEffect, useRef } from "react"
 import { FaSearch } from "react-icons/fa"
 import { map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
+import { CusipWithBenchmark } from "../common/CusipWithBenchmark"
 
 const SearchWrapper = styled.div`
   position: relative;
@@ -49,11 +50,6 @@ const SearchInput = styled.input<Hideable>`
 
 const InstrumentName = styled.div`
   font-size: 15px;
-`
-
-const Cusip = styled.div`
-  font-size: 12px;
-  opacity: 60%;
 `
 
 const MissingInstrument = styled.div`
@@ -150,7 +146,7 @@ export const CreditInstrumentSearch: FC = () => {
             {selectedInstrument !== null ? (
               <>
                 <InstrumentName>{selectedInstrument.name}</InstrumentName>
-                <Cusip>{selectedInstrument.cusip}</Cusip>
+                <CusipWithBenchmark cusip={selectedInstrument.cusip} />
               </>
             ) : (
               <MissingInstrument>No results found</MissingInstrument>
