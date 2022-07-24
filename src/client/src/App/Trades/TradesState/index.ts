@@ -5,6 +5,7 @@ export type {
   FilterType,
 } from "./colConfig"
 export {
+  allColConfigs,
   colConfigs,
   colFields,
   creditColConfigs,

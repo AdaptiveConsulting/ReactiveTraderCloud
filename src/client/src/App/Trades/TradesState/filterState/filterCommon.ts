@@ -1,5 +1,5 @@
 import { createSignal } from "@react-rxjs/utils"
-import type { AllColField, ColField } from "../colConfig"
+import type { AllColField } from "../colConfig"
 
 /**
  * Used by date and number filter UI to populate
@@ -22,7 +22,7 @@ export enum ComparatorType {
  * filters must be set or unset.
  */
 export interface FilterEvent {
-  field: ColField
+  field: AllColField
 }
 
 /**

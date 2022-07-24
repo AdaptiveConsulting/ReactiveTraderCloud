@@ -1,9 +1,10 @@
 import { map, mergeMap, scan, shareReplay, startWith } from "rxjs/operators"
+import { combineLatest } from "rxjs"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { mapObject } from "@/utils"
-import { trades$ } from "@/services/trades"
-import { colConfigs, colFields } from "../colConfig"
+import { creditTrades$, trades$ } from "@/services/trades"
+import { allColConfigs, allColFields } from "../colConfig"
 import type { FilterEvent } from "./filterCommon"
 import { filterResets$ } from "./filterCommon"
 import { AllTrades } from "@/services/trades/types"
@@ -14,15 +15,23 @@ import { AllTrades } from "@/services/trades/types"
  */
 export type SetColField = keyof Pick<
   AllTrades,
-  "status" | "direction" | "symbol" | "dealtCurrency" | "traderName"
+  | "status"
+  | "direction"
+  | "symbol"
+  | "dealtCurrency"
+  | "traderName"
+  | "counterParty"
+  | "cusip"
+  | "security"
+  | "orderType"
 >
 
 /**
  * Subset of column fields (as values) that take set/multi-select filter-value
  * options.
  */
-const setFields = colFields.filter(
-  (field) => colConfigs[field].filterType === "set",
+const setFields = allColFields.filter(
+  (field) => allColConfigs[field].filterType === "set",
 ) as SetColField[]
 
 export type DistinctValues = {
@@ -96,12 +105,13 @@ const createFilterValuesContainer = () =>
  * for every column field, stored as sets keyed
  * to each field.
  */
-const distinctValues$ = trades$.pipe(
+const distinctValues$ = combineLatest([trades$, creditTrades$]).pipe(
   map((trades) =>
-    trades.reduce((distinctValues, trade) => {
+    trades.flat().reduce((distinctValues, trade) => {
       return mapObject(distinctValues, (fieldValues, fieldName) => {
+        const value = (trade as AllTrades)[fieldName]
         return new Set<AllTrades[typeof fieldName]>([
-          (trade as AllTrades)[fieldName],
+          ...(value ? [value] : []),
           ...fieldValues,
         ])
       })

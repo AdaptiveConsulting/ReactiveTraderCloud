@@ -9,7 +9,7 @@ import {
   creditTrades$,
   AllTrades,
 } from "@/services/trades"
-import type { ColField } from "./colConfig"
+import type { AllColField, ColField } from "./colConfig"
 import type {
   NumColField,
   DateColField,
@@ -276,6 +276,10 @@ const sortTrades = ([trades, { field, direction }]: [
       const aSortFieldValue = tradeA[field]
       const bSortFieldValue = tradeB[field]
 
+      if (aSortFieldValue === undefined || bSortFieldValue === undefined) {
+        return 1
+      }
+
       if (aSortFieldValue instanceof Date && bSortFieldValue instanceof Date) {
         return numericComparator(
           direction,
@@ -301,7 +305,6 @@ const sortTrades = ([trades, { field, direction }]: [
           bSortFieldValue.toLowerCase(),
         )
       }
-
       throw new Error("Trade sort for table received value of unexpected type")
     })
   }
@@ -336,10 +339,10 @@ export const [useFilterFields] = bind(
   ]).pipe(
     map(
       ([set, num, date]) =>
-        [...set, ...num, ...date].map(([field]) => field) as ColField[],
+        [...set, ...num, ...date].map(([field]) => field) as AllColField[],
     ),
   ),
-  [] as ColField[],
+  [] as AllColField[],
 )
 
 /**

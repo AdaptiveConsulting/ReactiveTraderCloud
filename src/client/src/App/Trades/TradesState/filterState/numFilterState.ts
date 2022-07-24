@@ -7,7 +7,7 @@ import {
   filterResets$,
   initialFilterContent,
 } from "./filterCommon"
-import { colFields, colConfigs } from "../colConfig"
+import { allColConfigs, allColFields } from "../colConfig"
 import { AllTrades } from "@/services/trades/types"
 
 /**
@@ -15,14 +15,14 @@ import { AllTrades } from "@/services/trades/types"
  */
 export type NumColField = keyof Pick<
   AllTrades,
-  "tradeId" | "notional" | "spotRate"
+  "tradeId" | "notional" | "spotRate" | "quantity" | "unitPrice"
 >
 
 /**
  * Subset of column fields (as values) that take number filters
  */
-const numFields = colFields.filter(
-  (field) => colConfigs[field].filterType === "number",
+const numFields = allColFields.filter(
+  (field) => allColConfigs[field].filterType === "number",
 )
 
 /**

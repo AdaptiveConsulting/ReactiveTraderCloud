@@ -1,8 +1,8 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
-import { FxTrade } from "@/services/trades"
-import { colConfigs, colFields } from "../colConfig"
+import { AllTrades } from "@/services/trades"
+import { allColConfigs, allColFields } from "../colConfig"
 import type { FilterEvent } from "./filterCommon"
 import {
   ComparatorType,
@@ -13,13 +13,13 @@ import {
 /**
  * Subset of column fields (as type) that take date filters
  */
-export type DateColField = keyof Pick<FxTrade, "tradeDate" | "valueDate">
+export type DateColField = keyof Pick<AllTrades, "tradeDate" | "valueDate">
 
 /**
  * Subset of column fields (as values) that take date filters
  */
-const dateFields = colFields.filter(
-  (field) => colConfigs[field].filterType === "date",
+const dateFields = allColFields.filter(
+  (field) => allColConfigs[field].filterType === "date",
 )
 
 /**

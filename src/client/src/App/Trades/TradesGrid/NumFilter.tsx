@@ -1,9 +1,11 @@
 import styled from "styled-components"
-import { colConfigs, NumColField, NumFilterContent } from "../TradesState"
 import {
   ComparatorType,
   onColFilterEnterNum,
   useAppliedNumFilters,
+  allColConfigs,
+  NumColField,
+  NumFilterContent,
 } from "../TradesState"
 import { FilterPopup } from "./components/FilterPopup"
 import { ComparatorSelect } from "./components/ComparatorSelect"
@@ -59,7 +61,7 @@ export const NumFilter: React.FC<{
   return (
     <FilterPopup
       parentRef={parentRef}
-      ariaLabel={`Filter trades by ${colConfigs[field].headerName} field value`}
+      ariaLabel={`Filter trades by ${allColConfigs[field].headerName} field value`}
     >
       <ComparatorSelect
         selected={selected}

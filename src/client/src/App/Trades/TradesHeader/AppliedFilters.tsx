@@ -1,6 +1,6 @@
 import { FaTimes } from "react-icons/fa"
 import styled from "styled-components"
-import { colConfigs, onFilterReset, useFilterFields } from "../TradesState"
+import { allColConfigs, onFilterReset, useFilterFields } from "../TradesState"
 
 const FilterButton = styled("button")`
   opacity: 0.59;
@@ -38,7 +38,7 @@ export const AppliedFilters: React.FC = () => {
     <>
       {filterFields.map((field) => (
         <FilterField key={field}>
-          <FilterName>{colConfigs[field].headerName}</FilterName>
+          <FilterName>{allColConfigs[field].headerName}</FilterName>
           <FilterButton>
             <FaTimes onClick={() => onFilterReset(field)} />
           </FilterButton>

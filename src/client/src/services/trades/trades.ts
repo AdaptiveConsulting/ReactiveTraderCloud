@@ -1,5 +1,4 @@
 import { BlotterService, QuoteState } from "@/generated/TradingGateway"
-import { CreditTrade, Direction } from "./types"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
@@ -47,7 +46,7 @@ export const isBlotterDataStale$ = withIsStaleData(trades$)
 
 export const [useCreditTrades, creditTrades$] = bind(
   creditRfqsById$.pipe(
-    map((update, idx) => {
+    map((update) => {
       const acceptedRfqs = Object.values(update).filter((rfq) => {
         return rfq.quotes?.find((quote) => quote.state === QuoteState.Accepted)
       })
@@ -58,7 +57,7 @@ export const [useCreditTrades, creditTrades$] = bind(
             tradeId: rfq.id.toString(),
             state: QuoteState.Accepted,
             tradeDate: new Date(Date.now()),
-            direction: Direction.Buy,
+            direction: rfq.direction,
             counterParty: rfq.dealers.find(
               (dealer) => dealer.id === acceptedQuote?.dealerId,
             )?.name,
@@ -69,7 +68,7 @@ export const [useCreditTrades, creditTrades$] = bind(
             unitPrice: acceptedQuote?.price.toString(),
           }
         })
-        .reverse() as CreditTrade[]
+        .reverse() as Trade[]
     }),
   ),
   [],

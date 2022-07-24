@@ -135,12 +135,12 @@ export const creditColConfigs: Record<CreditColField, ColConfig> = {
   },
   cusip: {
     headerName: "CUSIP",
-    filterType: "number",
+    filterType: "set",
     width: 110,
   },
   security: {
     headerName: "Security",
-    filterType: "number",
+    filterType: "set",
     width: 110,
   },
   quantity: {
@@ -150,7 +150,7 @@ export const creditColConfigs: Record<CreditColField, ColConfig> = {
   },
   orderType: {
     headerName: "Order Type",
-    filterType: "number",
+    filterType: "set",
     width: 110,
   },
   unitPrice: {
@@ -158,6 +158,11 @@ export const creditColConfigs: Record<CreditColField, ColConfig> = {
     filterType: "number",
     width: 110,
   },
+}
+
+export const allColConfigs: Record<AllColField, ColConfig> = {
+  ...colConfigs,
+  ...creditColConfigs,
 }
 
 /**
@@ -168,3 +173,6 @@ export const colFields: ColField[] = Object.keys(colConfigs) as ColField[]
 export const creditColFields: CreditColField[] = Object.keys(
   creditColConfigs,
 ) as CreditColField[]
+export const allColFields: ColField[] & CreditColField[] = Object.keys(
+  colConfigs,
+).concat(Object.keys(creditColConfigs)) as (ColField & CreditColField)[]

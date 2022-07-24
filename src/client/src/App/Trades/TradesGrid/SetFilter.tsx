@@ -2,12 +2,12 @@ import styled from "styled-components"
 import { FaCheck } from "react-icons/fa"
 import { bind, Subscribe } from "@react-rxjs/core"
 import {
-  colConfigs,
   SetColField,
   onColFilterToggle,
   onFilterReset,
   useAppliedSetFieldFilters,
   useDistinctSetFieldValues,
+  allColConfigs,
 } from "../TradesState"
 import { FilterPopup } from "./components/FilterPopup"
 import { onSearchInput, searchInputs$ } from "../TradesState/filterState"
@@ -66,7 +66,7 @@ const SetFilterInner: React.FC<{
   const selected = useAppliedSetFieldFilters(field) as Set<string>
   const options = useDistinctSetFieldValues(field) as Set<string>
   const inputValue = useInputText(field)
-  const { valueFormatter } = colConfigs[field]
+  const { valueFormatter } = allColConfigs[field]
 
   return (
     <FilterPopup parentRef={parentRef}>
