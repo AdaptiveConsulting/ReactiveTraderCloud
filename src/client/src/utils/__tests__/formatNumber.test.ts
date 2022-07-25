@@ -154,18 +154,22 @@ describe("formatWithScale", () => {
 // Note - these tests are dependent on the Intl values for the provided languages
 describe("thousands and decimal formatters", () => {
   describe("getThousandsSeparator", () => {
-    it("should find ',' for English, '\u00A0' for Russian, and '.' for German", () => {
+    it("should find ',' for English, '\u00A0' for Russian, and '.' for German and Spanish, ' ' for Finnish", () => {
       expect(getThousandsSeparator("EN")).toEqual(",")
       expect(getThousandsSeparator("RU")).toEqual("\u00A0")
       expect(getThousandsSeparator("DE")).toEqual(".")
+      expect(getThousandsSeparator("es-ES")).toEqual(".")
+      expect(getThousandsSeparator("fi-FI")).toEqual("\u00A0")
     })
   })
 
   describe("getDecimalSeparator", () => {
-    it("should find '.' for English, ',' for Russian, and ',' for German", () => {
+    it("should find '.' for English and Finnish, ',' for Russian, and ',' for German and Spanish, ", () => {
       expect(getDecimalSeparator("EN")).toEqual(".")
       expect(getDecimalSeparator("RU")).toEqual(",")
       expect(getDecimalSeparator("DE")).toEqual(",")
+      expect(getDecimalSeparator("es-ES")).toEqual(",")
+      expect(getDecimalSeparator("fi-FI")).toEqual(",")
     })
   })
 })
