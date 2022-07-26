@@ -25,7 +25,10 @@ export const CardHeader = memo(
         )}
         <InstrumentLabelContainer direction={direction}>
           <InstrumentName>{instrument?.name ?? "No name found"}</InstrumentName>
-          <CusipWithBenchmark cusip={instrument?.cusip} />
+          <CusipWithBenchmark
+            cusip={instrument?.cusip}
+            benchmark={instrument?.benchmark}
+          />
         </InstrumentLabelContainer>
         {direction === Direction.Sell && (
           <DirectionLabel direction={direction}>YOU SELL</DirectionLabel>

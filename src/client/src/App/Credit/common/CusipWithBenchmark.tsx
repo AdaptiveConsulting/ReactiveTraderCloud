@@ -17,7 +17,8 @@ export const CusipWithBenchmark = memo(
   ({ cusip, benchmark }: CusipWithBenchmarkProps) => {
     return (
       <InstrumentCusip>
-        {cusip ?? "No cusip found"} &#160;&#x2022;&#160; 5Y UST 1.500 08/2026
+        {cusip ?? "No cusip found"} &#160;&#x2022;&#160;{" "}
+        {benchmark ?? "No benchmark available"}
       </InstrumentCusip>
     )
   },
