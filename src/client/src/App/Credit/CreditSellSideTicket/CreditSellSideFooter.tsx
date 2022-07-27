@@ -1,5 +1,6 @@
 import { Direction, QuoteBody, RfqState } from "@/generated/TradingGateway"
 import { createCreditQuote$ } from "@/services/credit"
+import { ThemeName } from "@/theme"
 import { closeWindow } from "@/utils/window/closeWindow"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
@@ -23,7 +24,10 @@ const FooterButton = styled.button`
 `
 
 const PassButton = styled(FooterButton)<{ disabled: boolean }>`
-  background-color: ${({ theme }) => theme.colors.light.primary[3]};
+  color: ${({ theme }) =>
+    theme.secondary[theme.name === ThemeName.Dark ? "base" : 3]};
+  background-color: ${({ theme }) =>
+    theme.primary[theme.name === ThemeName.Dark ? 2 : 3]};
   ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
 `
 

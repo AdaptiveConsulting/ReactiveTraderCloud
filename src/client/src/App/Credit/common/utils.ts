@@ -15,10 +15,14 @@ export function isSell(direction: Direction): boolean {
 export function rfqStateToLabel(state: RfqState): string {
   switch (state) {
     case RfqState.Closed:
-      return "Done"
+      return "You traded with Done"
     case RfqState.Cancelled:
-      return "Canceled"
+      return "Request Canceled"
     default:
-      return state
+      return `Request ${state}`
   }
+}
+
+export function isRfqTerminated(rfqState: RfqState): boolean {
+  return rfqState === RfqState.Cancelled || rfqState === RfqState.Expired
 }

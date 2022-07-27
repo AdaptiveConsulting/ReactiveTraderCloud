@@ -9,6 +9,7 @@ export const TimerWrapper = styled.div`
 `
 
 export const TimeLeft = styled.div<{ margin: "left" | "right" }>`
+  color: ${({ theme }) => theme.textColor};
   font-size: 10px;
   opacity: 0.6;
   white-space: nowrap;
@@ -16,9 +17,8 @@ export const TimeLeft = styled.div<{ margin: "left" | "right" }>`
     margin === "left" ? "margin-left: 0.5rem" : "margin-right: 0.5rem"};
 `
 
-export const ProgressBarWrapper = styled.div<{ isSellSideView: boolean }>`
-  background-color: ${({ theme, isSellSideView }) =>
-    isSellSideView ? theme.colors.light.primary[1] : theme.core.darkBackground};
+export const ProgressBarWrapper = styled.div`
+  background-color: ${({ theme }) => theme.core.darkBackground};
   height: 6px;
   width: 100%;
   border-radius: 3px;
@@ -120,7 +120,7 @@ export const CreditTimer: React.FC<{
           <SecsTimer end={end} />
         </TimeLeft>
       )}
-      <ProgressBarWrapper isSellSideView={isSellSideView}>
+      <ProgressBarWrapper>
         <TimeProgress start={start} end={end} />
       </ProgressBarWrapper>
       {isSellSideView && (

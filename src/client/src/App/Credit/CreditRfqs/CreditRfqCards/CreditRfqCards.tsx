@@ -1,5 +1,10 @@
 import { Loader } from "@/components/Loader"
-import { DealerBody, QuoteBody, RfqState } from "@/generated/TradingGateway"
+import {
+  DealerBody,
+  QuoteBody,
+  QuoteState,
+  RfqState,
+} from "@/generated/TradingGateway"
 import {
   acceptCreditQuote$,
   creditRfqsById$,
@@ -10,10 +15,12 @@ import { customNumberFormatter } from "@/utils"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
+import { FaCheckCircle } from "react-icons/fa"
 import { combineLatest } from "rxjs"
 import { exhaustMap, map } from "rxjs/operators"
+import { isRfqTerminated } from "../../common"
 import { ALL_RFQ_STATES, selectedRfqState$ } from "../selectedRfqState"
-import { CardFooter } from "./CardFooter"
+import { CardFooter, removedTerminatedRfqIds$ } from "./CardFooter"
 import { CardHeader } from "./CardHeader"
 import {
   AcceptQuoteButton,
@@ -40,17 +47,6 @@ const Details = ({ quantity }: { quantity: number }) => {
   )
 }
 
-function getQuoteLabel(
-  rfqState: RfqState,
-  quote: QuoteBody | undefined,
-): string {
-  if (rfqState === "Open") {
-    return quote?.price.toString() ?? "Awaiting response"
-  } else {
-    return quote?.state === "Accepted" ? quote.price.toString() : "--"
-  }
-}
-
 const [acceptRfq$, onAcceptRfq] = createSignal<number>()
 
 acceptRfq$
@@ -68,8 +64,19 @@ const Quote = ({
 }) => {
   return (
     <QuoteRow quoteActive={!!quote && rfqState === RfqState.Open}>
-      <DealerName>{dealer?.name ?? "Dealer name not found"}</DealerName>
-      <Price quoteState={quote?.state}>{getQuoteLabel(rfqState, quote)}</Price>
+      <DealerName
+        open={rfqState === RfqState.Open}
+        accepted={quote?.state === QuoteState.Accepted}
+      >
+        {dealer?.name ?? "Dealer name not found"}
+      </DealerName>
+      <Price
+        open={rfqState === RfqState.Open}
+        accepted={quote?.state === QuoteState.Accepted}
+      >
+        {quote?.state === QuoteState.Accepted && <FaCheckCircle size={16} />}
+        {quote ? `$${quote.price.toString()}` : "Awaiting response"}
+      </Price>
       <AcceptQuoteButton onClick={() => onAcceptRfq(quote!.id)}>
         Accept
       </AcceptQuoteButton>
@@ -102,6 +109,7 @@ const Card = ({ id }: { id: number }) => {
       <CardHeader
         direction={rfqDetails.direction}
         instrumentId={rfqDetails.instrumentId}
+        terminated={isRfqTerminated(rfqDetails.state)}
       />
       <Details quantity={rfqDetails.quantity} />
       <QuotesContainer>
@@ -118,14 +126,7 @@ const Card = ({ id }: { id: number }) => {
             />
           ))}
       </QuotesContainer>
-      <CardFooter
-        rfqId={rfqDetails.id}
-        state={rfqDetails.state}
-        start={Number(rfqDetails.creationTimestamp)}
-        end={
-          Number(rfqDetails.creationTimestamp) + rfqDetails.expirySecs * 1000
-        }
-      />
+      <CardFooter rfqDetails={rfqDetails} />
     </CardContainer>
   )
 }
@@ -139,17 +140,23 @@ function timeRemainingComparator(rfq1: RfqDetails, rfq2: RfqDetails): number {
 }
 
 const [useFilteredCreditRfqIds] = bind(
-  combineLatest([creditRfqsById$, selectedRfqState$]).pipe(
-    map(([creditRfqsById, selectedRfqState]) => {
-      const sortedRfqsById = [...Object.values(creditRfqsById)].sort(
+  combineLatest([
+    creditRfqsById$,
+    selectedRfqState$,
+    removedTerminatedRfqIds$,
+  ]).pipe(
+    map(([creditRfqsById, selectedRfqState, removedTerminatedRfqIds]) => {
+      const sortedRfqs = [...Object.values(creditRfqsById)].sort(
         timeRemainingComparator,
       )
-      if (selectedRfqState === ALL_RFQ_STATES) {
-        return sortedRfqsById.map((rfq) => rfq.id)
-      }
 
-      return sortedRfqsById
-        .filter((rfqDetail) => rfqDetail.state === selectedRfqState)
+      return sortedRfqs
+        .filter(
+          (rfqDetail) =>
+            selectedRfqState === ALL_RFQ_STATES ||
+            rfqDetail.state === selectedRfqState,
+        )
+        .filter((rfqDetail) => !removedTerminatedRfqIds.includes(rfqDetail.id))
         .map(({ id }) => id)
     }),
   ),

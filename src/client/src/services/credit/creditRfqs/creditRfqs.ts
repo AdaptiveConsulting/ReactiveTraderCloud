@@ -1,7 +1,6 @@
 import {
   DealerBody,
   InstrumentBody,
-  RfqBody,
   QuoteState,
   QUOTE_ACCEPTED_RFQ_UPDATE,
   QUOTE_CREATED_RFQ_UPDATE,
@@ -98,11 +97,6 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
   ),
   shareLatest(),
 )
-
-export interface RfqDetail extends RfqBody {
-  instrument: InstrumentBody | null
-  dealers: DealerBody[]
-}
 
 export const [useCreditRfqDetails, getCreditRfqDetails$] = bind<
   [number],
