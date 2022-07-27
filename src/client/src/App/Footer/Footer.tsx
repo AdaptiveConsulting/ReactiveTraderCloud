@@ -1,4 +1,3 @@
-import { Subscribe } from "@react-rxjs/core"
 import ContactUsButton from "./ContactUsButton"
 import { Stats } from "./Stats"
 import StatusBar from "./StatusBar"
@@ -7,9 +6,7 @@ import { Version } from "./Version"
 
 export const Footer: React.FC = () => (
   <StatusBar>
-    <Subscribe>
-      <Stats />
-    </Subscribe>
+    <Stats />
     <Version />
     <ContactUsButton />
     <StatusButton />
