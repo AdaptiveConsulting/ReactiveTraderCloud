@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { colConfigs, NumColField, NumFilterContent } from "../TradesState"
+import { NumFilterContent } from "../TradesState"
 import {
   ComparatorType,
   onColFilterEnterNum,
@@ -8,6 +8,7 @@ import {
 import { FilterPopup } from "./components/FilterPopup"
 import { ComparatorSelect } from "./components/ComparatorSelect"
 import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
+import { useColConfig } from "../TradesState/colConfig"
 
 const FilterValueInputInner = styled.input`
   grid-area: Input;
@@ -27,7 +28,7 @@ const FilterValueInputInner = styled.input`
 `
 
 const FilterValueInput: React.FC<{
-  field: NumColField
+  field: keyof any
   selected: NumFilterContent
   fieldValueName: "value1" | "value2"
 }> = ({ field, selected, fieldValueName }) => (
@@ -52,10 +53,11 @@ const FilterValueInput: React.FC<{
 )
 
 export const NumFilter: React.FC<{
-  field: NumColField
+  field: keyof any
   parentRef: React.RefObject<HTMLDivElement>
 }> = ({ field, parentRef }) => {
   const selected = useAppliedNumFilters(field)
+  const colConfigs = useColConfig()
   return (
     <FilterPopup
       parentRef={parentRef}

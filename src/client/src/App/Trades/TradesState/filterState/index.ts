@@ -5,7 +5,7 @@ export {
   quickFilterInputs$,
   onQuickFilterInput,
 } from "./filterCommon"
-export type { DateColField, DateFilterContent } from "./dateFilterState"
+export type { DateFilterContent } from "./dateFilterState"
 export {
   dateFilters$,
   useAppliedDateFilters,
@@ -21,7 +21,6 @@ export {
   onColFilterEnterNum,
   numFilterEntries$,
 } from "./numFilterState"
-export type { SetColField, DistinctValues } from "./setFilterState"
 export {
   onSearchInput,
   searchInputs$,

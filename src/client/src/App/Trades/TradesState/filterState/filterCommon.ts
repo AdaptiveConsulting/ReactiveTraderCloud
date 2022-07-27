@@ -16,11 +16,20 @@ export enum ComparatorType {
 }
 
 /**
+ * All filter events extend this.  At a minimum,
+ * a filter event specifies a column field whose
+ * filters must be set or unset.
+ */
+export interface FilterEvent {
+  field: keyof any
+}
+
+/**
  * Unsets column field.  Represents a "Select All" on
  * the column or a selection from the TradesHeader.
  */
 export const [filterResets$, onFilterReset] = createSignal(
-  (field: keyof any) => ({ field }),
+  (field: keyof any) => ({ field } as FilterEvent),
 )
 
 /**

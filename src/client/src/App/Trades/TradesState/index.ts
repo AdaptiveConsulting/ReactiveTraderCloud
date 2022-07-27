@@ -1,22 +1,6 @@
-export type {
-  ColField,
-  ColConfig,
-  CreditColField,
-  FilterType,
-} from "./colConfig"
-export {
-  colConfigs,
-  colFields,
-  creditColConfigs,
-  creditColFields,
-} from "./colConfig"
-export type {
-  DistinctValues,
-  NumFilterContent,
-  NumColField,
-  SetColField,
-  DateColField,
-} from "./filterState"
+export type { ColConfig, ColDef, CreditColField, FilterType } from "./colConfig"
+export { creditColConfigs } from "./colConfig"
+export type { NumFilterContent } from "./filterState"
 export {
   onQuickFilterInput,
   onColFilterToggle,
@@ -34,11 +18,10 @@ export {
   onColFilterDateSelect,
 } from "./filterState"
 export type { SortDirection, TableSort } from "./sortState"
-export { useTableSort, onSortFieldSelect } from "./sortState"
+export { useTableSort } from "./sortState"
 export {
   tableTrades$,
   useTableTrades,
-  useTableCreditTrades,
   useFilterFields,
   onTradeRowHighlight,
   useTradeRowHighlight,

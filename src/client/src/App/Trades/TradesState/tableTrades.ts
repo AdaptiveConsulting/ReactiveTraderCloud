@@ -2,13 +2,8 @@ import { startOfDay } from "date-fns"
 import { combineLatest, merge, Observable } from "rxjs"
 import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import { FxTrade, Trade, trades$, creditTrades$ } from "@/services/trades"
-import type {
-  NumColField,
-  DateColField,
-  DateFilterContent,
-  NumFilterContent,
-} from "./filterState"
+import { Trade, trades$, creditTrades$ } from "@/services/trades"
+import type { DateFilterContent, NumFilterContent } from "./filterState"
 import {
   quickFilterInputs$,
   appliedSetFilterEntries$,
@@ -107,9 +102,7 @@ const dateFiltersTrueOfTrade = (
 
     // Normalize datetimes to start of day and take
     // Unix/numerical representation for simple comparisons.
-    const tradeDate = startOfDay(
-      (trade as FxTrade)[field as DateColField],
-    ).valueOf()
+    const tradeDate = startOfDay(trade[field]).valueOf()
     const filterDate = startOfDay(filterContent.value1).valueOf()
 
     switch (filterContent.comparator) {
@@ -148,7 +141,7 @@ const dateFiltersTrueOfTrade = (
  */
 const numFiltersTrueOfTrade = (
   numFilters: [string, NumFilterContent][],
-  trade: Record<keyof any, unknown>,
+  trade: Record<keyof any, any>,
 ) => {
   return numFilters.every(([field, filterContent]) => {
     // Predicate is trivially true if no number filter is set
@@ -156,7 +149,7 @@ const numFiltersTrueOfTrade = (
       return true
     }
 
-    const tradeValue = trade[field as NumColField]
+    const tradeValue = trade[field]
     const tradeNumber =
       typeof tradeValue === "number"
         ? tradeValue
@@ -188,7 +181,9 @@ const numFiltersTrueOfTrade = (
   })
 }
 
-const getFilteredTrades = <T extends object>(tradeStream$: Observable<T[]>) => {
+const getFilteredTrades = <T extends Record<keyof any, any>>(
+  tradeStream$: Observable<T[]>,
+) => {
   return combineLatest([
     tradeStream$,
     quickFilterInputs$.pipe(
@@ -308,12 +303,6 @@ const sortTrades = <T extends object>([trades, { field, direction }]: [
  */
 export const [useTableTrades, tableTrades$] = bind(
   combineLatest([getFilteredTrades(trades$), tableSort$]).pipe(map(sortTrades)),
-)
-
-export const [useTableCreditTrades, tableCreditTrades$] = bind(
-  combineLatest([getFilteredTrades(creditTrades$), tableSort$]).pipe(
-    map(sortTrades),
-  ),
 )
 
 /**

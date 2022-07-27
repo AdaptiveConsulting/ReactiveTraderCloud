@@ -3,18 +3,9 @@ import styled from "styled-components"
 import { FaFilter, FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa"
 import { Subscribe } from "@react-rxjs/core"
 import { usePopUpMenu } from "@/utils"
-import type {
-  ColField,
-  NumColField,
-  SetColField,
-  DateColField,
-  SortDirection,
-} from "../TradesState"
+import type { SortDirection } from "../TradesState"
 import {
-  onSortFieldSelect,
-  colConfigs,
   ColConfig,
-  creditColConfigs,
   useTableSort,
   appliedDateFilters$,
   appliedSetFieldFilters$,
@@ -136,16 +127,16 @@ export const TableHeadCellContainer = <T extends string>({
         )}
         {displayMenu &&
           (filterType === "number" ? (
-            <Subscribe source$={appliedNumFilters$(field as NumColField)}>
-              <NumFilter field={field as NumColField} parentRef={ref} />
+            <Subscribe source$={appliedNumFilters$(field)}>
+              <NumFilter field={field} parentRef={ref} />
             </Subscribe>
           ) : filterType === "set" ? (
-            <Subscribe source$={appliedSetFieldFilters$(field as SetColField)}>
-              <SetFilter field={field as SetColField} parentRef={ref} />
+            <Subscribe source$={appliedSetFieldFilters$(field)}>
+              <SetFilter field={field} parentRef={ref} />
             </Subscribe>
           ) : (
-            <Subscribe source$={appliedDateFilters$(field as DateColField)}>
-              <DateFilter field={field as DateColField} parentRef={ref} />
+            <Subscribe source$={appliedDateFilters$(field)}>
+              <DateFilter field={field} parentRef={ref} />
             </Subscribe>
           ))}
       </FlexWrapper>

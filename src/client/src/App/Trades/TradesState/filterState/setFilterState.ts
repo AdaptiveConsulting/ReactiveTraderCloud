@@ -1,29 +1,26 @@
-import { map, mergeMap, scan, shareReplay, startWith } from "rxjs/operators"
+import {
+  map,
+  mergeMap,
+  scan,
+  shareReplay,
+  startWith,
+  switchMap,
+} from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { mapObject } from "@/utils"
-import { AllTrades, trades$ } from "@/services/trades"
-import { ColConfig } from "../colConfig"
+import { trades$ } from "@/services/trades"
+import { colConfig$, ColDef } from "../colConfig"
 import { filterResets$ } from "./filterCommon"
 
 /**
  * Subset of column fields (as values) that take set/multi-select filter-value
  * options.
  */
-const extractSetFields = <T extends keyof any>(
-  colConfigs: Record<T, ColConfig>,
-): T[] =>
+const extractSetFields = <T extends keyof any>(colConfigs: ColDef): T[] =>
   (Object.keys(colConfigs) as T[]).filter(
     (key: T) => colConfigs[key].filterType === "set",
   )
-
-export type DistinctValues = {
-  [K in keyof any]: Set<AllTrades[K]>
-}
-interface ColFieldToggle {
-  field: keyof any
-  value: unknown
-}
 
 interface SearchInput {
   field: keyof any
@@ -62,44 +59,51 @@ export { onColFilterToggle, onSearchInput, searchInputs$ }
  * Container for holding filter-value options--both
  * the universe of options and selected options.
  */
-export const setFieldValuesContainer = Object.freeze(
-  extractSetFields().reduce((valuesContainer, field) => {
-    return {
-      ...valuesContainer,
-      [field]: new Set<AllTrades[typeof field]>(),
-    }
-  }, {} as DistinctValues),
-)
+export const setFieldValuesContainer = (config: ColDef) =>
+  Object.freeze(
+    extractSetFields(config).reduce((valuesContainer, field) => {
+      return {
+        ...valuesContainer,
+        [field]: new Set<any[typeof field]>(),
+      }
+    }, {}),
+  )
 
 /**
  *
- * @returns
  *
- * Filter-value options container factory.  Used primarily
+ * Filter-value options container stream.  Used primarily
  * for setting defaults.
  */
-const createFilterValuesContainer = (fields: (keyof any)[]) =>
-  mapObject(
-    setFieldValuesContainer,
-    (_, field) => new Set<AllTrades[typeof field]>(),
-  )
+const filterValuesContainer$ = colConfig$.pipe(
+  map((config) => {
+    return mapObject(
+      setFieldValuesContainer(config), // {field1: Set1, field2: Set2}
+      (_, field: keyof any) => new Set<any[typeof field]>(),
+    )
+  }),
+)
 
 /**
  * Stream that represents the distinct values
  * for every column field, stored as sets keyed
  * to each field.
  */
-const distinctValues$ = trades$.pipe(
-  map((trades) =>
-    trades.reduce((distinctValues, trade) => {
-      return mapObject(distinctValues, (fieldValues, fieldName) => {
-        return new Set<AllTrades[typeof fieldName]>([
-          (trade as AllTrades)[fieldName],
-          ...fieldValues,
-        ])
-      })
-    }, createFilterValuesContainer()),
-  ),
+const distinctValues$ = filterValuesContainer$.pipe(
+  switchMap((filterValuesContainer) => {
+    return trades$.pipe(
+      map((trades: Record<keyof any, any>) =>
+        trades.reduce((distinctValues: any, trade: any) => {
+          return mapObject(distinctValues, (fieldValues, fieldName) => {
+            return new Set<any>([
+              (trade as Record<keyof any, any>)[fieldName],
+              ...(fieldValues as any),
+            ])
+          })
+        }, filterValuesContainer),
+      ),
+    )
+  }),
 )
 
 /**
@@ -108,7 +112,7 @@ const distinctValues$ = trades$.pipe(
  * SetFilterComponent.
  */
 export const [useDistinctSetFieldValues, distinctSetFieldValues$] = bind(
-  <T extends SetColField>(field: T) =>
+  <T extends keyof any>(field: T) =>
     distinctValues$.pipe(map((distinctValues) => distinctValues[field])),
   new Set(),
 )
@@ -125,56 +129,60 @@ export const [useDistinctSetFieldValues, distinctSetFieldValues$] = bind(
  *
  * "Select all" is modeled as no filter applied.
  */
-const appliedSetFilters$ = mergeWithKey({
-  searchInput: searchInputs$,
-  toggle: colFilterToggle$,
-  reset: filterResets$,
-}).pipe(
-  mergeMap((event) =>
-    // merge necessary for filtering down distinct values from search
-    distinctSetFieldValues$(event.payload.field as SetColField).pipe(
-      map((distinctSetFieldValues) => ({
-        event,
-        distinctSetFieldValues,
-      })),
-    ),
-  ),
-  scan((appliedFilters, { event, distinctSetFieldValues }) => {
-    let newValues: Set<unknown>
-    const field = event.payload.field
-    if (event.type === "reset") {
-      newValues = new Set()
-    } else if (event.type === "searchInput") {
-      const { value: searchTerm } = event.payload
-      if (searchTerm.length === 0) {
-        newValues = new Set()
-      } else {
-        newValues = new Set(
-          [...distinctSetFieldValues].filter((fieldValue) =>
-            String(fieldValue).toLowerCase().includes(searchTerm.toLowerCase()),
-          ),
-        )
-      }
-    } else {
-      newValues = new Set(
-        appliedFilters[field as SetColField] as Iterable<string>,
-      )
-      const value = event.payload.value as any
-      // Unsetting the field if it's already included
-      // in applied filters.  Setting otherwise.
-      if (newValues.has(value)) {
-        newValues.delete(value)
-      } else {
-        newValues.add(value)
-      }
-    }
-    return {
-      ...appliedFilters,
-      [field]: newValues,
-    }
-  }, createFilterValuesContainer()),
-  startWith(createFilterValuesContainer()),
-  shareReplay(), // persist across mounting/unmounting
+const appliedSetFilters$ = filterValuesContainer$.pipe(
+  switchMap((filterValuesContainer) => {
+    return mergeWithKey({
+      searchInput: searchInputs$,
+      toggle: colFilterToggle$,
+      reset: filterResets$,
+    }).pipe(
+      mergeMap((event) =>
+        // merge necessary for filtering down distinct values from search
+        distinctSetFieldValues$(event.payload.field).pipe(
+          map((distinctSetFieldValues) => ({
+            event,
+            distinctSetFieldValues,
+          })),
+        ),
+      ),
+      scan((appliedFilters, { event, distinctSetFieldValues }) => {
+        let newValues: Set<unknown>
+        const field = event.payload.field
+        if (event.type === "reset") {
+          newValues = new Set()
+        } else if (event.type === "searchInput") {
+          const { value: searchTerm } = event.payload
+          if (searchTerm.length === 0) {
+            newValues = new Set()
+          } else {
+            newValues = new Set(
+              [...distinctSetFieldValues].filter((fieldValue) =>
+                String(fieldValue)
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase()),
+              ),
+            )
+          }
+        } else {
+          newValues = new Set(appliedFilters[field] as Iterable<string>)
+          const value = event.payload.value as any
+          // Unsetting the field if it's already included
+          // in applied filters.  Setting otherwise.
+          if (newValues.has(value)) {
+            newValues.delete(value)
+          } else {
+            newValues.add(value)
+          }
+        }
+        return {
+          ...appliedFilters,
+          [field]: newValues,
+        }
+      }, filterValuesContainer),
+      startWith(filterValuesContainer),
+      shareReplay(),
+    )
+  }),
 )
 
 /**
@@ -195,6 +203,6 @@ export const appliedSetFilterEntries$ = appliedSetFilters$.pipe(
  *  used by SetFilter component to render options.
  */
 export const [useAppliedSetFieldFilters, appliedSetFieldFilters$] = bind(
-  (field: SetColField) =>
+  (field: keyof any) =>
     appliedSetFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
 )

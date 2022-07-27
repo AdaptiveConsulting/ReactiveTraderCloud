@@ -2,21 +2,18 @@ import { broadcast } from "@finos/fdc3"
 import styled, { css } from "styled-components"
 import { Trade, TradeStatus } from "@/services/trades"
 import {
-  colConfigs,
-  creditColFields,
   useTradeRowHighlight,
   useTableTrades,
-  useTableCreditTrades,
-  colFields,
-  creditColConfigs,
-  ColField,
   ColConfig,
-  CreditColField,
+  colFields,
+  colConfigs,
+  creditColFields,
+  useTableCreditTrades,
 } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
-import { CreditContext } from "../Context"
-import { AllTrades } from "@/services/trades/types"
+import { creditColConfigs } from "../TradesState/colConfig"
 import { useContext } from "react"
+import { CreditContext } from "../Context"
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -111,59 +108,62 @@ export const TradesGridInner = <
   onRowClick,
   fields,
   colConfigs,
-}: TradesGridInnerProps<Field, Row>) => (
-  <TableWrapper>
-    <Table>
-      <caption id="trades-table-heading" className="visually-hidden">
-        Reactive Trader FX Trades Table
-      </caption>
-      <TableHead>
-        <TableHeadRow>
-          <StatusIndicatorSpacer scope="col" aria-label="Trade Status" />
-          {fields.map((field) => (
-            <TableHeadCellContainer
-              key={field}
-              field={field}
-              colConfigs={colConfigs}
-            />
-          ))}
-        </TableHeadRow>
-      </TableHead>
-      <tbody role="grid">
-        {rows.length ? (
-          rows.map((row) => (
-            <TableBodyRow
-              key={row.tradeId}
-              highlight={row.tradeId === highlightedRow}
-              onClick={() => onRowClick((row as AllTrades).symbol)}
-            >
-              <StatusIndicator status={row.status} aria-label={row.status} />
-              {fields.map((field, i) => (
-                <TableBodyCell
-                  key={field}
-                  numeric={
-                    colConfigs[field].filterType === "number" &&
-                    field !== "tradeId"
-                  }
-                  rejected={row.status === "Rejected"}
-                >
-                  {colConfigs[field].valueFormatter?.(row[field]) ?? row[field]}
-                </TableBodyCell>
-              ))}
+}: TradesGridInnerProps<Field, Row>) => {
+  return (
+    <TableWrapper>
+      <Table>
+        <caption id="trades-table-heading" className="visually-hidden">
+          Reactive Trader FX Trades Table
+        </caption>
+        <TableHead>
+          <TableHeadRow>
+            <StatusIndicatorSpacer scope="col" aria-label="Trade Status" />
+            {fields.map((field) => (
+              <TableHeadCellContainer
+                key={field as string}
+                field={field as string}
+                colConfigs={colConfigs}
+              />
+            ))}
+          </TableHeadRow>
+        </TableHead>
+        <tbody role="grid">
+          {rows.length ? (
+            rows.map((row: any) => (
+              <TableBodyRow
+                key={row.tradeId}
+                highlight={row.tradeId === highlightedRow}
+                onClick={() => onRowClick(row.symbol)}
+              >
+                <StatusIndicator status={row.status} aria-label={row.status} />
+                {fields.map((field, i) => (
+                  <TableBodyCell
+                    key={field as string}
+                    numeric={
+                      colConfigs[field].filterType === "number" &&
+                      field !== "tradeId"
+                    }
+                    rejected={row.status === "Rejected"}
+                  >
+                    {colConfigs[field].valueFormatter?.(row[field]) ??
+                      row[field]}
+                  </TableBodyCell>
+                ))}
+              </TableBodyRow>
+            ))
+          ) : (
+            <TableBodyRow>
+              <StatusIndicatorSpacer aria-hidden={true} />
+              <TableBodyCell colSpan={fields.length}>
+                No trades to show
+              </TableBodyCell>
             </TableBodyRow>
-          ))
-        ) : (
-          <TableBodyRow>
-            <StatusIndicatorSpacer aria-hidden={true} />
-            <TableBodyCell colSpan={fields.length}>
-              No trades to show
-            </TableBodyCell>
-          </TableBodyRow>
-        )}
-      </tbody>
-    </Table>
-  </TableWrapper>
-)
+          )}
+        </tbody>
+      </Table>
+    </TableWrapper>
+  )
+}
 
 export const TradesGrid: React.FC = () => {
   const credit = useContext(CreditContext)
@@ -204,7 +204,7 @@ export const TradesFXGrid: React.FC<CommonGridsProps> = (props) => {
   const trades = useTableTrades()
   return (
     <TradesGridInner
-      trades={trades}
+      rows={trades}
       fields={colFields}
       colConfigs={colConfigs}
       {...props}
@@ -216,7 +216,7 @@ export const TradesCreditGrid: React.FC<CommonGridsProps> = (props) => {
   const trades = useTableCreditTrades()
   return (
     <TradesGridInner
-      trades={trades}
+      rows={trades}
       fields={creditColFields}
       colConfigs={creditColConfigs}
       {...props}

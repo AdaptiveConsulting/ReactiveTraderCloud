@@ -1,26 +1,23 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
-import { map, scan, shareReplay, startWith } from "rxjs/operators"
+import { map, scan, shareReplay, startWith, switchMap } from "rxjs/operators"
 import { FxTrade } from "@/services/trades"
-import { colConfigs, colFields } from "../colConfig"
+import { colConfig$, ColDef } from "../colConfig"
 import type { FilterEvent } from "./filterCommon"
 import {
   ComparatorType,
   filterResets$,
   initialFilterContent,
 } from "./filterCommon"
-
-/**
- * Subset of column fields (as type) that take date filters
- */
-export type DateColField = keyof Pick<FxTrade, "tradeDate" | "valueDate">
+import { Observable } from "rxjs"
 
 /**
  * Subset of column fields (as values) that take date filters
  */
-const dateFields = colFields.filter(
-  (field) => colConfigs[field].filterType === "date",
-)
+const extractDateFields = <T extends keyof any>(colConfigs: ColDef): T[] =>
+  (Object.keys(colConfigs) as T[]).filter(
+    (key: T) => colConfigs[key].filterType === "date",
+  )
 
 /**
  * Three components of date filter state
@@ -43,20 +40,20 @@ export interface DateFilterContent {
   value2?: Date | null
 }
 
-export type DateFilters = {
-  [K in DateColField]: DateFilterContent
-}
-
 interface DateFilterSet extends FilterEvent {
   value: DateFilterContent
 }
 
-const dateFilterDefaults = dateFields.reduce((valuesContainer, field) => {
-  return {
-    ...valuesContainer,
-    [field]: initialFilterContent,
-  }
-}, {} as DateFilters)
+const dateFilterDefaults$ = colConfig$.pipe(
+  map((config: ColDef) => {
+    return extractDateFields(config).reduce((valuesContainer, field) => {
+      return {
+        ...valuesContainer,
+        [field]: initialFilterContent,
+      }
+    }, {} as Record<keyof any, any>)
+  }),
+)
 
 /**
  * Stream of date filter events (either selection of new comparator
@@ -65,7 +62,7 @@ const dateFilterDefaults = dateFields.reduce((valuesContainer, field) => {
  * ToDo - refactor into keyed signal
  */
 const [colFilterDateSelects$, onColFilterDateSelect] = createSignal(
-  (field: DateColField, value: DateFilterContent) =>
+  (field: keyof any, value: DateFilterContent) =>
     ({ field, value } as DateFilterSet),
 )
 
@@ -77,26 +74,30 @@ export { onColFilterDateSelect }
  * on column filter event or when the filter is
  * unset through the TradesHeader.
  */
-export const dateFilters$ = mergeWithKey({
-  set: colFilterDateSelects$,
-  reset: filterResets$,
-}).pipe(
-  scan((appliedDateFilters, event) => {
-    let newValues: DateFilterContent
-    const field = event.payload.field
-    if (event.type === "reset") {
-      newValues = initialFilterContent
-    } else {
-      const value = event.payload.value as DateFilterContent
-      newValues = value
-    }
-    return {
-      ...appliedDateFilters,
-      [field]: newValues,
-    }
-  }, dateFilterDefaults),
-  startWith(dateFilterDefaults),
-  shareReplay(),
+export const dateFilters$ = dateFilterDefaults$.pipe(
+  switchMap((dateFilterDefaults) => {
+    return mergeWithKey({
+      set: colFilterDateSelects$,
+      reset: filterResets$,
+    }).pipe(
+      scan((appliedDateFilters, event) => {
+        let newValues: DateFilterContent
+        const field = event.payload.field
+        if (event.type === "reset") {
+          newValues = initialFilterContent
+        } else {
+          const value = event.payload.value as DateFilterContent
+          newValues = value
+        }
+        return {
+          ...appliedDateFilters,
+          [field]: newValues,
+        }
+      }, dateFilterDefaults),
+      startWith(dateFilterDefaults),
+      shareReplay(),
+    )
+  }),
 )
 
 /**
@@ -104,7 +105,7 @@ export const dateFilters$ = mergeWithKey({
  * filter state.  Used by DateFilter component.
  */
 export const [useAppliedDateFilters, appliedDateFilters$] = bind(
-  (field: DateColField) =>
+  (field: keyof any) =>
     dateFilters$.pipe(map((dateFilters) => dateFilters[field])),
 )
 

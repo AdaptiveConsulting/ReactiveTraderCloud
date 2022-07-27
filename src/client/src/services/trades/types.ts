@@ -51,3 +51,8 @@ export interface CreditTrade {
   orderType: string
   unitPrice: string
 }
+
+export enum TradeRoute {
+  Credit = "credit",
+  FX = "fx",
+}

@@ -35,6 +35,8 @@ export interface ColConfig {
   width: number
 }
 
+export type ColDef = Record<keyof any, ColConfig>
+
 export const DATE_FORMAT = "dd-MMM-yyyy"
 
 const formatTo6Digits = significantDigitsNumberFormatter(6)
@@ -42,7 +44,7 @@ const formatTo6Digits = significantDigitsNumberFormatter(6)
 const notionalExcelValueFormatter: ValueFormatter = (v) =>
   formatAsWholeNumber(v as number).replaceAll(THOUSANDS_SEPARATOR, "")
 
-export const colConfigs: Record<FxColField, ColConfig> = {
+export const fxColConfigs: ColDef = {
   tradeId: {
     headerName: "Trade ID",
     filterType: "number",
@@ -101,7 +103,7 @@ export const colConfigs: Record<FxColField, ColConfig> = {
   },
 }
 
-export const creditColConfigs: Record<CreditColField, ColConfig> = {
+export const creditColConfigs: ColDef = {
   tradeId: {
     headerName: "Trade ID",
     filterType: "number",
@@ -155,12 +157,3 @@ export const creditColConfigs: Record<CreditColField, ColConfig> = {
     width: 110,
   },
 }
-
-/**
- * Values of the Trade keys.  Used for dynamically constructing maps that
- * concern each key.
- */
-export const colFields: ColField[] = Object.keys(colConfigs) as ColField[]
-export const creditColFields: CreditColField[] = Object.keys(
-  creditColConfigs,
-) as CreditColField[]

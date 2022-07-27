@@ -1,4 +1,4 @@
-import { map, scan, shareReplay, startWith } from "rxjs/operators"
+import { map, scan, shareReplay, startWith, switchMap } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import {
@@ -6,7 +6,7 @@ import {
   filterResets$,
   initialFilterContent,
 } from "./filterCommon"
-import { ColConfig } from "../colConfig"
+import { ColConfig, ColDef, colConfig$ } from "../colConfig"
 
 /**
  * Subset of column fields (as values) that take number filters
@@ -49,17 +49,17 @@ interface NumFilterSet {
   value: NumFilterContent
 }
 
-const numFilterDefaults = <T extends keyof any>(
-  colConfigs: Record<T, ColConfig>,
-) => {
-  const numberFields = extractNumberFields(colConfigs)
-  return numberFields.reduce((valuesContainer, field) => {
-    return {
-      ...valuesContainer,
-      [field]: initialFilterContent,
-    }
-  }, {} as Record<typeof numberFields[number], NumFilterContent>)
-}
+const numFilterDefaults$ = colConfig$.pipe(
+  map((configs) => {
+    const numberFields = extractNumberFields(configs)
+    return numberFields.reduce((valuesContainer, field) => {
+      return {
+        ...valuesContainer,
+        [field]: initialFilterContent,
+      }
+    }, {} as Record<typeof numberFields[number], NumFilterContent>)
+  }),
+)
 
 /**
  * Stream of number filter events (either selection of new comparator
@@ -80,26 +80,30 @@ export { onColFilterEnterNum }
  * on column filter event or when the filter is
  * unset through the TradesHeader.
  */
-export const numberFilters$ = mergeWithKey({
-  set: colFilterNum$,
-  reset: filterResets$,
-}).pipe(
-  scan((appliedNumFilters, event) => {
-    let newValues: NumFilterContent
-    const field = event.payload.field
-    if (event.type === "reset") {
-      newValues = initialFilterContent
-    } else {
-      const value = event.payload.value as NumFilterContent
-      newValues = value
-    }
-    return {
-      ...appliedNumFilters,
-      [field]: newValues,
-    }
-  }, numFilterDefaults),
-  startWith(numFilterDefaults),
-  shareReplay(), // persist across mounting/unmounting
+export const numberFilters$ = numFilterDefaults$.pipe(
+  switchMap((filters) => {
+    return mergeWithKey({
+      set: colFilterNum$,
+      reset: filterResets$,
+    }).pipe(
+      scan((appliedNumFilters, event) => {
+        let newValues: NumFilterContent
+        const field = event.payload.field
+        if (event.type === "reset") {
+          newValues = initialFilterContent
+        } else {
+          const value = event.payload.value as NumFilterContent
+          newValues = value
+        }
+        return {
+          ...appliedNumFilters,
+          [field]: newValues,
+        }
+      }, filters),
+      startWith(filters),
+      shareReplay(), // persist across mounting/unmounting
+    )
+  }),
 )
 
 /**
