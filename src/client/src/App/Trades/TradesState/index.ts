@@ -1,5 +1,10 @@
 export type { ColConfig, ColDef, CreditColField, FilterType } from "./colConfig"
-export { creditColConfigs } from "./colConfig"
+export {
+  creditColDef,
+  fxColDef,
+  fxColFields,
+  creditColFields,
+} from "./colConfig"
 export type { NumFilterContent } from "./filterState"
 export {
   onQuickFilterInput,
@@ -8,7 +13,7 @@ export {
   appliedSetFieldFilters$,
   onFilterReset,
   onColFilterEnterNum,
-  numberFilters$,
+  getNumberFilters,
   ComparatorType,
   useAppliedNumFilters,
   appliedNumFilters$,

@@ -1,3 +1,4 @@
+import { QuoteState } from "@/generated/TradingGateway"
 import { CamelCase, CollectionUpdates } from "../utils"
 
 export enum Direction {
@@ -31,17 +32,16 @@ export interface RawTradeUpdate extends CollectionUpdates {
 
 export interface FxTrade
   extends CamelCase<
-    Omit<TradeRaw, "TradeId" | "ValueDate" | "TradeDate" | "CurrencyPair">
-  > {
-  tradeId: string
+      Omit<TradeRaw, "TradeId" | "ValueDate" | "TradeDate" | "CurrencyPair">
+    >,
+    Trade {
   symbol: string
   valueDate: Date
   tradeDate: Date
 }
 
-export interface CreditTrade {
-  tradeId: string
-  status: TradeStatus
+export interface CreditTrade extends Trade {
+  state: QuoteState
   tradeDate: Date
   direction: Direction
   counterParty: string
@@ -51,8 +51,7 @@ export interface CreditTrade {
   orderType: string
   unitPrice: string
 }
-
-export enum TradeRoute {
-  Credit = "credit",
-  FX = "fx",
+export interface Trade {
+  tradeId: string
+  [prop: string]: any
 }

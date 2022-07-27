@@ -1,11 +1,10 @@
-import { scan, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import type { AllColField } from "./colConfig"
+import { scan, startWith } from "rxjs/operators"
 
 export type SortDirection = "ASC" | "DESC"
 
-export class TableSort<T extends keyof any> {
+export class TableSort<T extends string | number> {
   constructor(public direction?: SortDirection, public field?: T) {}
 }
 
@@ -18,18 +17,15 @@ export class TableSort<T extends keyof any> {
  * actually tracks the state of the sorting (ASC, DESC, unset)
  * on the column.
  */
-export const getFieldSectionState = <T extends keyof any>() => createSignal<T>()
+export const getFieldSectionState = <T extends string | number>() =>
+  createSignal<T>()
 
 /**
  * Default sorting direction is ASC.
  *
  * Exceptions are configured in this set.
  */
-const descDefaultFields = new Set<AllColField>([
-  "tradeDate",
-  "valueDate",
-  "tradeId",
-])
+const descDefaultFields = new Set<any>(["tradeDate", "valueDate", "tradeId"])
 
 /**
  * The user can sort on a column, ASC or DESC,

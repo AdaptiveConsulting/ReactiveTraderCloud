@@ -1,1 +1,1 @@
-export * from "./Trades"
+export * from "./FxTrades"

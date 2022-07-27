@@ -1,4 +1,4 @@
-import { map, scan, shareReplay, startWith, switchMap } from "rxjs/operators"
+import { map, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import {
@@ -6,16 +6,15 @@ import {
   filterResets$,
   initialFilterContent,
 } from "./filterCommon"
-import { ColConfig, ColDef, colConfig$ } from "../colConfig"
+import { ColDef } from "../colConfig"
 
+type Key = string | number
 /**
  * Subset of column fields (as values) that take number filters
  */
-const extractNumberFields = <T extends keyof any>(
-  colConfigs: Record<T, ColConfig>,
-): T[] =>
-  (Object.keys(colConfigs) as T[]).filter(
-    (key: T) => colConfigs[key].filterType === "number",
+const extractNumberFields = <T extends Key>(colDef: ColDef): T[] =>
+  (Object.keys(colDef) as T[]).filter(
+    (key: T) => colDef[key].filterType === "number",
   )
 
 /**
@@ -41,25 +40,23 @@ export interface NumFilterContent {
   value2?: number | null
 }
 
-export type NumFilters<T extends keyof any> = {
+export type NumFilters<T extends Key> = {
   [key in T]: NumFilterContent
 }
 interface NumFilterSet {
-  field: keyof any
+  field: Key
   value: NumFilterContent
 }
 
-const numFilterDefaults$ = colConfig$.pipe(
-  map((configs) => {
-    const numberFields = extractNumberFields(configs)
-    return numberFields.reduce((valuesContainer, field) => {
-      return {
-        ...valuesContainer,
-        [field]: initialFilterContent,
-      }
-    }, {} as Record<typeof numberFields[number], NumFilterContent>)
-  }),
-)
+const getNumFilterDefaults = (colDef: ColDef) => {
+  const numberFields = extractNumberFields(colDef)
+  return numberFields.reduce((valuesContainer, field) => {
+    return {
+      ...valuesContainer,
+      [field]: initialFilterContent,
+    }
+  }, {} as Record<typeof numberFields[number], NumFilterContent>)
+}
 
 /**
  * Stream of number filter events (either selection of new comparator
@@ -68,8 +65,7 @@ const numFilterDefaults$ = colConfig$.pipe(
  * ToDo - refactor into keyed signal
  */
 const [colFilterNum$, onColFilterEnterNum] = createSignal(
-  (field: keyof any, value: NumFilterContent) =>
-    ({ field, value } as NumFilterSet),
+  (field: Key, value: NumFilterContent) => ({ field, value } as NumFilterSet),
 )
 
 export { onColFilterEnterNum }
@@ -80,39 +76,38 @@ export { onColFilterEnterNum }
  * on column filter event or when the filter is
  * unset through the TradesHeader.
  */
-export const numberFilters$ = numFilterDefaults$.pipe(
-  switchMap((filters) => {
-    return mergeWithKey({
-      set: colFilterNum$,
-      reset: filterResets$,
-    }).pipe(
-      scan((appliedNumFilters, event) => {
-        let newValues: NumFilterContent
-        const field = event.payload.field
-        if (event.type === "reset") {
-          newValues = initialFilterContent
-        } else {
-          const value = event.payload.value as NumFilterContent
-          newValues = value
-        }
-        return {
-          ...appliedNumFilters,
-          [field]: newValues,
-        }
-      }, filters),
-      startWith(filters),
-      shareReplay(), // persist across mounting/unmounting
-    )
-  }),
-)
+export const getNumberFilters = (colDef: ColDef) =>
+  mergeWithKey({
+    set: colFilterNum$,
+    reset: filterResets$,
+  }).pipe(
+    scan((appliedNumFilters, event) => {
+      let newValues: NumFilterContent
+      const field = event.payload.field
+      if (event.type === "reset") {
+        newValues = initialFilterContent
+      } else {
+        const value = event.payload.value as NumFilterContent
+        newValues = value
+      }
+      return {
+        ...appliedNumFilters,
+        [field]: newValues,
+      }
+    }, getNumFilterDefaults(colDef)),
+    startWith(getNumFilterDefaults(colDef)),
+    shareReplay(), // persist across mounting/unmounting
+  )
 
 /**
  * State hook and parametric stream that emit number
  * filter state.  Used by NumFilter component.
  */
 export const [useAppliedNumFilters, appliedNumFilters$] = bind(
-  (field: keyof any) =>
-    numberFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
+  (field: Key, colDef: ColDef) =>
+    getNumberFilters(colDef).pipe(
+      map((appliedFilters) => appliedFilters[field]),
+    ),
 )
 
 /**
@@ -120,10 +115,11 @@ export const [useAppliedNumFilters, appliedNumFilters$] = bind(
  *
  * Used by number filter predicate to filter trades.
  */
-export const numFilterEntries$ = numberFilters$.pipe(
-  map((numberFilters) =>
-    Object.entries(numberFilters).filter(
-      ([_, valueSet]) => valueSet.value1 !== null,
+export const getNumFilterEntries = (colDef: ColDef) =>
+  getNumberFilters(colDef).pipe(
+    map((numberFilters) =>
+      Object.entries(numberFilters).filter(
+        ([_, valueSet]) => valueSet.value1 !== null,
+      ),
     ),
-  ),
-)
+  )

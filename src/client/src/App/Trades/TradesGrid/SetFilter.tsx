@@ -1,18 +1,17 @@
-import styled from "styled-components"
-import { FaCheck } from "react-icons/fa"
+import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
 import { bind, Subscribe } from "@react-rxjs/core"
+import { FaCheck } from "react-icons/fa"
+import { filter, map, startWith } from "rxjs/operators"
+import styled from "styled-components"
+import { useColDef, useTrades$ } from "../Context"
 import {
-  colConfigs,
-  SetColField,
   onColFilterToggle,
   onFilterReset,
   useAppliedSetFieldFilters,
   useDistinctSetFieldValues,
 } from "../TradesState"
-import { FilterPopup } from "./components/FilterPopup"
 import { onSearchInput, searchInputs$ } from "../TradesState/filterState"
-import { filter, map, startWith } from "rxjs/operators"
-import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
+import { FilterPopup } from "./components/FilterPopup"
 
 const MultiSelectOption = styled.div<{
   selected: boolean
@@ -59,14 +58,26 @@ const [useInputText, inputText$] = bind((propsField) =>
   ),
 )
 
+type Key = string | number
+
 const SetFilterInner: React.FC<{
-  field: SetColField
+  field: Key
   parentRef: React.RefObject<HTMLDivElement>
 }> = ({ field, parentRef }) => {
-  const selected = useAppliedSetFieldFilters(field) as Set<string>
-  const options = useDistinctSetFieldValues(field) as Set<string>
+  const colDef = useColDef()
+  const trades$ = useTrades$()
+  const selected = useAppliedSetFieldFilters(
+    field,
+    trades$,
+    colDef,
+  ) as Set<string>
+  const options = useDistinctSetFieldValues(
+    field,
+    trades$,
+    colDef,
+  ) as Set<string>
   const inputValue = useInputText(field)
-  const { valueFormatter } = colConfigs[field]
+  const { valueFormatter } = colDef[field]
 
   return (
     <FilterPopup parentRef={parentRef}>
@@ -107,7 +118,7 @@ const SetFilterInner: React.FC<{
 }
 
 export const SetFilter: React.FC<{
-  field: SetColField
+  field: Key
   parentRef: React.RefObject<HTMLDivElement>
 }> = ({ field, parentRef }) => (
   <Subscribe source$={inputText$(field)}>

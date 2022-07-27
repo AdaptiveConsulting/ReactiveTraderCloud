@@ -1,19 +1,14 @@
-import { useRef, useState } from "react"
-import styled from "styled-components"
-import { FaFilter, FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa"
-import { Subscribe } from "@react-rxjs/core"
 import { usePopUpMenu } from "@/utils"
+import { useRef, useState } from "react"
+import { FaFilter, FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa"
+import styled from "styled-components"
+import { useColDef } from "../Context"
 import type { SortDirection } from "../TradesState"
-import {
-  ColConfig,
-  useTableSort,
-  appliedDateFilters$,
-  appliedSetFieldFilters$,
-  appliedNumFilters$,
-} from "../TradesState"
-import { SetFilter } from "./SetFilter"
-import { NumFilter } from "./NumFilter"
+import { useTableSort } from "../TradesState"
+import { getFieldSectionState } from "../TradesState/sortState"
 import { DateFilter } from "./DateFilter"
+import { NumFilter } from "./NumFilter"
+import { SetFilter } from "./SetFilter"
 
 const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
   text-align: ${({ numeric }) => (numeric ? "right" : "left")};
@@ -74,25 +69,24 @@ const AlignedArrow: React.FC<{
 
 interface Props<T extends string> {
   field: T
-  colConfigs: Record<T, ColConfig>
 }
 
 export const TableHeadCellContainer = <T extends string>({
   field,
-  colConfigs,
 }: Props<T>) => {
   const [showFilter, setShowFilter] = useState(false)
   const ref = useRef<HTMLTableHeaderCellElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
   const tableSort = useTableSort()
-  const { headerName, filterType } = colConfigs[field]
+  const colDef = useColDef()
+  const { headerName, filterType, width } = colDef[field]
 
   return (
     <TableHeadCell
       onMouseEnter={() => setShowFilter(true)}
       onMouseLeave={() => setShowFilter(false)}
       numeric={filterType === "number" && field !== "tradeId"}
-      width={colConfigs[field].width}
+      width={width}
       scope="col"
       ref={ref}
     >
@@ -100,7 +94,7 @@ export const TableHeadCellContainer = <T extends string>({
         onClick={(e) => {
           // Don't trigger sort on events bubbling from FilterPopup
           if (e.target === e.currentTarget) {
-            onSortFieldSelect(field)
+            getFieldSectionState()[1](field)
           }
         }}
         headerFirst={filterType !== "number" || field === "tradeId"}
@@ -109,14 +103,14 @@ export const TableHeadCellContainer = <T extends string>({
         {tableSort.field === field && tableSort.direction !== undefined ? (
           <AlignedArrow
             sortDirection={tableSort.direction}
-            ariaLabel={`Update trades blotter sort on ${colConfigs[field].headerName} field`}
+            ariaLabel={`Update trades blotter sort on ${headerName} field`}
           />
         ) : (
           <span className="spacer" aria-hidden={true} />
         )}
         {showFilter ? (
           <AlignedFilterIcon
-            aria-label={`Open ${colConfigs[field].headerName} field filter pop up`}
+            aria-label={`Open ${headerName} field filter pop up`}
             role="button"
             onClick={() => {
               setDisplayMenu((current) => !current)
@@ -127,17 +121,11 @@ export const TableHeadCellContainer = <T extends string>({
         )}
         {displayMenu &&
           (filterType === "number" ? (
-            <Subscribe source$={appliedNumFilters$(field)}>
-              <NumFilter field={field} parentRef={ref} />
-            </Subscribe>
+            <NumFilter field={field} parentRef={ref} />
           ) : filterType === "set" ? (
-            <Subscribe source$={appliedSetFieldFilters$(field)}>
-              <SetFilter field={field} parentRef={ref} />
-            </Subscribe>
+            <SetFilter field={field} parentRef={ref} />
           ) : (
-            <Subscribe source$={appliedDateFilters$(field)}>
-              <DateFilter field={field} parentRef={ref} />
-            </Subscribe>
+            <DateFilter field={field} parentRef={ref} />
           ))}
       </FlexWrapper>
     </TableHeadCell>

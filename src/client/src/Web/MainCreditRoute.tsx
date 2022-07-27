@@ -1,10 +1,9 @@
 import { CreditRfqForm, CreditRfqs } from "@/App/Credit"
 import { getTornOutSections } from "@/App/TearOutSection/state"
-import { Trades } from "@/App/Trades"
+import CreditTrades from "@/App/Trades/CoreCreditTrades"
 import { DraggableSectionTearOut } from "@/components/DraggableTearOut"
 import Resizer from "@/components/Resizer"
 import MainLayout from "./MainLayout"
-import { TradeRoute } from "@/services/trades/types"
 
 const CREDIT_TEAR_OUT_SECTIONS = ["newRfq", "creditBlotter"] as const
 const useTornOutSections = getTornOutSections(CREDIT_TEAR_OUT_SECTIONS)
@@ -15,7 +14,11 @@ const MainCreditRoute: React.FC = () => {
     <MainLayout>
       <Resizer defaultHeight={30}>
         <CreditRfqs />
-        <Trades route={TradeRoute.Credit} />
+        {!tornOutSections.creditBlotter && (
+          <DraggableSectionTearOut section="creditBlotter">
+            <CreditTrades />
+          </DraggableSectionTearOut>
+        )}
       </Resizer>
       {!tornOutSections.newRfq && (
         <DraggableSectionTearOut section="newRfq">

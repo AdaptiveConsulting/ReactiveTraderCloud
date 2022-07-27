@@ -1,19 +1,8 @@
-import { broadcast } from "@finos/fdc3"
-import styled, { css } from "styled-components"
 import { Trade, TradeStatus } from "@/services/trades"
-import {
-  useTradeRowHighlight,
-  useTableTrades,
-  ColConfig,
-  colFields,
-  colConfigs,
-  creditColFields,
-  useTableCreditTrades,
-} from "../TradesState"
+import styled, { css } from "styled-components"
+import { useColDef, useColFields, useTrades$ } from "../Context"
+import { useTableTrades } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
-import { creditColConfigs } from "../TradesState/colConfig"
-import { useContext } from "react"
-import { CreditContext } from "../Context"
 
 const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
@@ -55,13 +44,16 @@ const TableBodyRow = styled.tr<{ pending?: boolean; highlight?: boolean }>`
   ${({ highlight }) => highlight && highlightBackgroundColor}
 `
 
-const TableBodyCell = styled.td<{ numeric?: boolean; rejected?: boolean }>`
-  text-align: ${({ numeric }) => (numeric ? "right" : "left")};
-  padding-right: ${({ numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
+const TableBodyCell = styled.td<{
+  align?: "right" | "left"
+  crossed?: boolean
+}>`
+  text-align: ${({ align = "left" }) => align};
+  padding-right: ${({ align: numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
   position: relative;
   &:before {
     content: " ";
-    display: ${({ rejected }) => (rejected ? "block;" : "none;")};
+    display: ${({ crossed }) => (crossed ? "block" : "none")};
     position: absolute;
     top: 50%;
     left: 0;
@@ -88,27 +80,21 @@ const StatusIndicatorSpacer = styled.th`
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
 `
 
-export interface TradesGridInnerProps<
-  Field extends keyof any,
-  Row extends Record<Field, any>,
-> {
-  rows: Row[]
-  fields: Field[]
-  colConfigs: Record<Field, ColConfig>
+export interface TradesGridInnerProps<Row extends Trade> {
   highlightedRow?: string | null
-  onRowClick: (symbol: string) => void
+  onRowClick?: (row: Row) => any
+  isRowCrossed?: (row: Row) => boolean
 }
 
-export const TradesGridInner = <
-  Field extends keyof any,
-  Row extends Record<Field, any>,
->({
-  rows,
+export const TradesGridInner = <Row extends Trade>({
   highlightedRow,
   onRowClick,
-  fields,
-  colConfigs,
-}: TradesGridInnerProps<Field, Row>) => {
+  isRowCrossed,
+}: TradesGridInnerProps<Row>) => {
+  const rows$ = useTrades$()
+  const colDef = useColDef()
+  const fields = useColFields()
+  const trades = useTableTrades(rows$, colDef)
   return (
     <TableWrapper>
       <Table>
@@ -122,33 +108,37 @@ export const TradesGridInner = <
               <TableHeadCellContainer
                 key={field as string}
                 field={field as string}
-                colConfigs={colConfigs}
               />
             ))}
           </TableHeadRow>
         </TableHead>
         <tbody role="grid">
-          {rows.length ? (
-            rows.map((row: any) => (
+          {trades.length ? (
+            trades.map((row: Trade) => (
               <TableBodyRow
                 key={row.tradeId}
                 highlight={row.tradeId === highlightedRow}
-                onClick={() => onRowClick(row.symbol)}
+                onClick={() => onRowClick?.(row as Row)}
               >
                 <StatusIndicator status={row.status} aria-label={row.status} />
-                {fields.map((field, i) => (
-                  <TableBodyCell
-                    key={field as string}
-                    numeric={
-                      colConfigs[field].filterType === "number" &&
-                      field !== "tradeId"
-                    }
-                    rejected={row.status === "Rejected"}
-                  >
-                    {colConfigs[field].valueFormatter?.(row[field]) ??
-                      row[field]}
-                  </TableBodyCell>
-                ))}
+                {fields.map((field, i) => {
+                  const columnDefinition = colDef[field]
+                  const value = row[field]
+                  return (
+                    <TableBodyCell
+                      key={field as string}
+                      align={
+                        columnDefinition.align ??
+                        columnDefinition.filterType === "number"
+                          ? "right"
+                          : "left"
+                      }
+                      crossed={isRowCrossed?.(row as Row)}
+                    >
+                      {columnDefinition.valueFormatter?.(value) ?? value}
+                    </TableBodyCell>
+                  )
+                })}
               </TableBodyRow>
             ))
           ) : (
@@ -162,64 +152,5 @@ export const TradesGridInner = <
         </tbody>
       </Table>
     </TableWrapper>
-  )
-}
-
-export const TradesGrid: React.FC = () => {
-  const credit = useContext(CreditContext)
-  const highlightedRow = useTradeRowHighlight()
-  const tryBroadcastContext = (symbol: string) => {
-    const context = {
-      type: "fdc3.instrument",
-      id: { ticker: symbol },
-    }
-
-    if (window.fdc3) {
-      broadcast(context)
-    } else if (window.fin) {
-      // @ts-ignore
-      fin.me.interop.setContext(context)
-    }
-  }
-
-  return credit ? (
-    <TradesCreditGrid
-      onRowClick={tryBroadcastContext}
-      highlightedRow={highlightedRow}
-    />
-  ) : (
-    <TradesFXGrid
-      onRowClick={tryBroadcastContext}
-      highlightedRow={highlightedRow}
-    />
-  )
-}
-
-interface CommonGridsProps {
-  onRowClick: (symbol: string) => void
-  highlightedRow: string | null | undefined
-}
-
-export const TradesFXGrid: React.FC<CommonGridsProps> = (props) => {
-  const trades = useTableTrades()
-  return (
-    <TradesGridInner
-      rows={trades}
-      fields={colFields}
-      colConfigs={colConfigs}
-      {...props}
-    />
-  )
-}
-
-export const TradesCreditGrid: React.FC<CommonGridsProps> = (props) => {
-  const trades = useTableCreditTrades()
-  return (
-    <TradesGridInner
-      rows={trades}
-      fields={creditColFields}
-      colConfigs={creditColConfigs}
-      {...props}
-    />
   )
 }

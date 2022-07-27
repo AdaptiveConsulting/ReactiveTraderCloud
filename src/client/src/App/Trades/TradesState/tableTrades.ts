@@ -1,19 +1,20 @@
+import { creditTrades$, Trade, trades$ } from "@/services/trades"
+import { bind } from "@react-rxjs/core"
+import { createSignal } from "@react-rxjs/utils"
 import { startOfDay } from "date-fns"
 import { combineLatest, merge, Observable } from "rxjs"
 import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
-import { bind } from "@react-rxjs/core"
-import { Trade, trades$, creditTrades$ } from "@/services/trades"
+import { ColDef } from "./colConfig"
 import type { DateFilterContent, NumFilterContent } from "./filterState"
 import {
-  quickFilterInputs$,
-  appliedSetFilterEntries$,
-  numFilterEntries$,
   ComparatorType,
-  dateFilterEntries$,
+  getAppliedSetFilterEntries,
+  getDateFilterEntries,
+  getNumFilterEntries,
+  quickFilterInputs$,
 } from "./filterState"
 import type { SortDirection, TableSort } from "./sortState"
 import { tableSort$ } from "./sortState"
-import { createSignal } from "@react-rxjs/utils"
 
 /**
  *
@@ -52,7 +53,7 @@ const searchTrueOfTrade = (searchTerms: string[], tradeValues: unknown[]) => {
  */
 const setFiltersTrueOfTrade = (
   appliedFilters: [string, Set<unknown>][],
-  trade: Record<keyof any, unknown>,
+  trade: Trade,
 ) => {
   return appliedFilters.every(([field, filterValues]) => {
     return (filterValues as Set<unknown>).has(trade[field])
@@ -181,18 +182,19 @@ const numFiltersTrueOfTrade = (
   })
 }
 
-const getFilteredTrades = <T extends Record<keyof any, any>>(
-  tradeStream$: Observable<T[]>,
+const getFilteredTrades = <T extends Trade>(
+  trades$: Observable<T[]>,
+  colDef: ColDef,
 ) => {
   return combineLatest([
-    tradeStream$,
+    trades$,
     quickFilterInputs$.pipe(
       startWith(""),
       map((quickFilterInputs) => quickFilterInputs.split(" ")),
     ),
-    appliedSetFilterEntries$,
-    numFilterEntries$,
-    dateFilterEntries$,
+    getAppliedSetFilterEntries(trades$, colDef),
+    getNumFilterEntries(colDef),
+    getDateFilterEntries(colDef),
   ]).pipe(
     map(([trades, searchTerms, setFilters, numFilters, dateFilters]) => {
       const haveSetFilters = setFilters.length > 0
@@ -213,7 +215,7 @@ const getFilteredTrades = <T extends Record<keyof any, any>>(
       // Trade is included if it either satisfies every
       // filter-type predicate applied to it or has no
       // filters of that type applied.
-      return trades.filter((trade) => {
+      return trades.filter((trade: Trade) => {
         const numFiltersTrue =
           !haveNumFilters || numFiltersTrueOfTrade(numFilters, trade)
         const setFiltersTrue =
@@ -254,9 +256,9 @@ const stringComparator = (direction: SortDirection, a: string, b: string) => {
  * Checks runtime type of column field to determine
  * which sort comparator to use.
  */
-const sortTrades = <T extends object>([trades, { field, direction }]: [
-  T[],
-  TableSort<keyof T>,
+const sortTrades = ([trades, { field, direction }]: [
+  Trade[],
+  TableSort<keyof Trade>,
 ]): Trade[] => {
   const sortedTrades = [...trades]
   if (field && direction) {
@@ -302,7 +304,12 @@ const sortTrades = <T extends object>([trades, { field, direction }]: [
  * sort.
  */
 export const [useTableTrades, tableTrades$] = bind(
-  combineLatest([getFilteredTrades(trades$), tableSort$]).pipe(map(sortTrades)),
+  (trades$: Observable<Trade[]>, colDef: ColDef) => {
+    return combineLatest([getFilteredTrades(trades$, colDef), tableSort$]).pipe(
+      map(sortTrades),
+    )
+  },
+  [],
 )
 
 /**
@@ -313,15 +320,16 @@ export const [useTableTrades, tableTrades$] = bind(
  * each column.
  */
 export const [useFilterFields] = bind(
-  combineLatest([
-    appliedSetFilterEntries$.pipe(startWith([])),
-    numFilterEntries$.pipe(startWith([])),
-    dateFilterEntries$.pipe(startWith([])),
-  ]).pipe(
-    map(([set, num, date]) =>
-      [...set, ...num, ...date].map(([field]) => field),
+  <T extends Trade>(trades$: Observable<T[]>, colDef: ColDef) =>
+    combineLatest([
+      getAppliedSetFilterEntries(trades$, colDef).pipe(startWith([])),
+      getNumFilterEntries(colDef).pipe(startWith([])),
+      getDateFilterEntries(colDef).pipe(startWith([])),
+    ]).pipe(
+      map(([set, num, date]) =>
+        [...set, ...num, ...date].map(([field]) => field),
+      ),
     ),
-  ),
   [],
 )
 

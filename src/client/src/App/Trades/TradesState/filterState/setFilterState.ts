@@ -1,29 +1,24 @@
-import {
-  map,
-  mergeMap,
-  scan,
-  shareReplay,
-  startWith,
-  switchMap,
-} from "rxjs/operators"
+import { map, mergeMap, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { mapObject } from "@/utils"
-import { trades$ } from "@/services/trades"
-import { colConfig$, ColDef } from "../colConfig"
+import { Trade } from "@/services/trades"
+import { ColDef } from "../colConfig"
 import { filterResets$ } from "./filterCommon"
+import { Observable } from "rxjs"
 
+type Key = string | number
 /**
  * Subset of column fields (as values) that take set/multi-select filter-value
  * options.
  */
-const extractSetFields = <T extends keyof any>(colConfigs: ColDef): T[] =>
-  (Object.keys(colConfigs) as T[]).filter(
-    (key: T) => colConfigs[key].filterType === "set",
+const extractSetFields = <T extends Key>(colDef: ColDef): T[] =>
+  (Object.keys(colDef) as T[]).filter(
+    (key: T) => colDef[key].filterType === "set",
   )
 
 interface SearchInput {
-  field: keyof any
+  field: Key
   value: string
 }
 
@@ -33,7 +28,7 @@ interface SearchInput {
  * ToDo: refactor into keyed signal
  */
 const [colFilterToggle$, onColFilterToggle] = createSignal(
-  <T extends keyof any>(field: T, value: unknown) => ({ field, value }),
+  <T extends Key>(field: T, value: unknown) => ({ field, value }),
 )
 
 /**
@@ -43,8 +38,7 @@ const [colFilterToggle$, onColFilterToggle] = createSignal(
  * ToDo: refactor into keyed signal
  */
 const [_si$, onSearchInput] = createSignal(
-  <T extends keyof any>(field: T, value: string) =>
-    ({ field, value } as SearchInput),
+  <T extends Key>(field: T, value: string) => ({ field, value } as SearchInput),
 )
 
 /**
@@ -59,9 +53,9 @@ export { onColFilterToggle, onSearchInput, searchInputs$ }
  * Container for holding filter-value options--both
  * the universe of options and selected options.
  */
-export const setFieldValuesContainer = (config: ColDef) =>
+export const setFieldValuesContainer = (colDef: ColDef) =>
   Object.freeze(
-    extractSetFields(config).reduce((valuesContainer, field) => {
+    extractSetFields(colDef).reduce((valuesContainer, field) => {
       return {
         ...valuesContainer,
         [field]: new Set<any[typeof field]>(),
@@ -75,36 +69,33 @@ export const setFieldValuesContainer = (config: ColDef) =>
  * Filter-value options container stream.  Used primarily
  * for setting defaults.
  */
-const filterValuesContainer$ = colConfig$.pipe(
-  map((config) => {
-    return mapObject(
-      setFieldValuesContainer(config), // {field1: Set1, field2: Set2}
-      (_, field: keyof any) => new Set<any[typeof field]>(),
-    )
-  }),
-)
+const getFilterValuesContainer = (colDef: ColDef) =>
+  mapObject(
+    setFieldValuesContainer(colDef), // {field1: Set1, field2: Set2}
+    (_, field: Key) => new Set<any[typeof field]>(),
+  )
 
 /**
  * Stream that represents the distinct values
  * for every column field, stored as sets keyed
  * to each field.
  */
-const distinctValues$ = filterValuesContainer$.pipe(
-  switchMap((filterValuesContainer) => {
-    return trades$.pipe(
-      map((trades: Record<keyof any, any>) =>
-        trades.reduce((distinctValues: any, trade: any) => {
-          return mapObject(distinctValues, (fieldValues, fieldName) => {
-            return new Set<any>([
-              (trade as Record<keyof any, any>)[fieldName],
-              ...(fieldValues as any),
-            ])
-          })
-        }, filterValuesContainer),
-      ),
-    )
-  }),
-)
+const getDistinctValues = <T extends Trade>(
+  trades$: Observable<T[]>,
+  colDef: ColDef,
+) =>
+  trades$.pipe(
+    map((trades: Record<Key, any>) =>
+      trades.reduce((distinctValues: any, trade: any) => {
+        return mapObject(distinctValues, (fieldValues, fieldName) => {
+          return new Set<any>([
+            (trade as Record<Key, any>)[fieldName as string],
+            ...(fieldValues as any),
+          ])
+        })
+      }, getFilterValuesContainer(colDef)),
+    ),
+  )
 
 /**
  * State hook and parametric stream of distinct values for each
@@ -112,8 +103,14 @@ const distinctValues$ = filterValuesContainer$.pipe(
  * SetFilterComponent.
  */
 export const [useDistinctSetFieldValues, distinctSetFieldValues$] = bind(
-  <T extends keyof any>(field: T) =>
-    distinctValues$.pipe(map((distinctValues) => distinctValues[field])),
+  <F extends Key, T extends Trade>(
+    field: F,
+    trades$: Observable<T[]>,
+    colDef: ColDef,
+  ) =>
+    getDistinctValues(trades$, colDef).pipe(
+      map((distinctValues) => distinctValues[field]),
+    ),
   new Set(),
 )
 
@@ -129,80 +126,92 @@ export const [useDistinctSetFieldValues, distinctSetFieldValues$] = bind(
  *
  * "Select all" is modeled as no filter applied.
  */
-const appliedSetFilters$ = filterValuesContainer$.pipe(
-  switchMap((filterValuesContainer) => {
-    return mergeWithKey({
-      searchInput: searchInputs$,
-      toggle: colFilterToggle$,
-      reset: filterResets$,
-    }).pipe(
-      mergeMap((event) =>
-        // merge necessary for filtering down distinct values from search
-        distinctSetFieldValues$(event.payload.field).pipe(
-          map((distinctSetFieldValues) => ({
-            event,
-            distinctSetFieldValues,
-          })),
-        ),
+const getAppliedSetFilters = <T extends Trade>(
+  trades$: Observable<T[]>,
+  colDef: ColDef,
+) => {
+  return mergeWithKey({
+    searchInput: searchInputs$,
+    toggle: colFilterToggle$,
+    reset: filterResets$,
+  }).pipe(
+    mergeMap((event) =>
+      // merge necessary for filtering down distinct values from search
+      distinctSetFieldValues$(
+        event.payload.field as string,
+        trades$,
+        colDef,
+      ).pipe(
+        map((distinctSetFieldValues) => ({
+          event,
+          distinctSetFieldValues,
+        })),
       ),
-      scan((appliedFilters, { event, distinctSetFieldValues }) => {
-        let newValues: Set<unknown>
-        const field = event.payload.field
-        if (event.type === "reset") {
+    ),
+    scan((appliedFilters, { event, distinctSetFieldValues }) => {
+      let newValues: Set<unknown>
+      const field = event.payload.field
+      if (event.type === "reset") {
+        newValues = new Set()
+      } else if (event.type === "searchInput") {
+        const { value: searchTerm } = event.payload
+        if (searchTerm.length === 0) {
           newValues = new Set()
-        } else if (event.type === "searchInput") {
-          const { value: searchTerm } = event.payload
-          if (searchTerm.length === 0) {
-            newValues = new Set()
-          } else {
-            newValues = new Set(
-              [...distinctSetFieldValues].filter((fieldValue) =>
-                String(fieldValue)
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase()),
-              ),
-            )
-          }
         } else {
-          newValues = new Set(appliedFilters[field] as Iterable<string>)
-          const value = event.payload.value as any
-          // Unsetting the field if it's already included
-          // in applied filters.  Setting otherwise.
-          if (newValues.has(value)) {
-            newValues.delete(value)
-          } else {
-            newValues.add(value)
-          }
+          newValues = new Set(
+            [...distinctSetFieldValues].filter((fieldValue) =>
+              String(fieldValue)
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()),
+            ),
+          )
         }
-        return {
-          ...appliedFilters,
-          [field]: newValues,
+      } else {
+        newValues = new Set(appliedFilters[field as string] as Iterable<string>)
+        const value = event.payload.value as any
+        // Unsetting the field if it's already included
+        // in applied filters.  Setting otherwise.
+        if (newValues.has(value)) {
+          newValues.delete(value)
+        } else {
+          newValues.add(value)
         }
-      }, filterValuesContainer),
-      startWith(filterValuesContainer),
-      shareReplay(),
-    )
-  }),
-)
+      }
+      return {
+        ...appliedFilters,
+        [field]: newValues,
+      }
+    }, getFilterValuesContainer(colDef)),
+    startWith(getFilterValuesContainer(colDef)),
+    shareReplay(),
+  )
+}
 
 /**
  * Construct set filter state stream as entries.
  *
  * Used by set filter predicate to filter trades.
  */
-export const appliedSetFilterEntries$ = appliedSetFilters$.pipe(
-  map((appliedFilters) =>
-    Object.entries(appliedFilters).filter(
-      ([_, valueSet]) => valueSet.size !== 0,
+export const getAppliedSetFilterEntries = <T extends Trade>(
+  trades$: Observable<T[]>,
+  colDef: ColDef,
+) => {
+  return getAppliedSetFilters(trades$, colDef).pipe(
+    map((appliedFilters) =>
+      Object.entries(appliedFilters).filter(
+        ([_, valueSet]) => valueSet.size !== 0,
+      ),
     ),
-  ),
-)
+  )
+}
 
 /**
  * State hook and parametric stream of applied filter-value options
  *  used by SetFilter component to render options.
  */
 export const [useAppliedSetFieldFilters, appliedSetFieldFilters$] = bind(
-  (field: keyof any) =>
-    appliedSetFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
+  <T extends Trade>(field: Key, trades$: Observable<T[]>, colDef: ColDef) =>
+    getAppliedSetFilters(trades$, colDef).pipe(
+      map((appliedFilters) => appliedFilters[field]),
+    ),
 )

@@ -4,7 +4,8 @@ import { CreditRfqForm, CreditSellSideTicket } from "@/App/Credit"
 import { LiveRates } from "@/App/LiveRates"
 import { TileView } from "@/App/LiveRates/selectedView"
 import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
-import { Trades } from "@/App/Trades"
+import { FxTrades } from "@/App/Trades"
+import CreditTrades from "@/App/Trades/CoreCreditTrades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { FEATURE_FLAG, useFeature } from "@/utils/featureFlag"
@@ -107,7 +108,7 @@ export const WebApp: React.FC = () => {
               render={() => {
                 return (
                   <>
-                    <Trades />
+                    <FxTrades />
                     <DisconnectionOverlay />
                   </>
                 )
@@ -140,7 +141,7 @@ export const WebApp: React.FC = () => {
               render={() => {
                 return (
                   <>
-                    <Trades credit={true} />
+                    <CreditTrades />
                     <DisconnectionOverlay />
                   </>
                 )

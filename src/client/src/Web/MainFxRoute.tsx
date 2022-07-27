@@ -1,7 +1,7 @@
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
 import { getTornOutSections } from "@/App/TearOutSection/state"
-import { Trades } from "@/App/Trades"
+import { FxTrades } from "@/App/Trades"
 import { DraggableSectionTearOut } from "@/components/DraggableTearOut"
 import Resizer from "@/components/Resizer"
 import MainLayout from "./MainLayout"
@@ -21,7 +21,7 @@ export const MainFxRoute: React.FC = () => {
         )}
         {!tornOutSections.blotter && (
           <DraggableSectionTearOut section="blotter">
-            <Trades />
+            <FxTrades />
           </DraggableSectionTearOut>
         )}
       </Resizer>

@@ -1,11 +1,13 @@
 import { BlotterService, QuoteState } from "@/generated/TradingGateway"
-import { CreditTrade, Direction } from "./types"
+import { CreditTrade, Direction, Trade } from "./types"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
 import { creditRfqsById$ } from "../credit"
 import { withConnection } from "../withConnection"
 import { FxTrade } from "./types"
+import { createContext, useContext } from "react"
+import { Observable } from "rxjs"
 
 const tradesStream$ = BlotterService.getTradeStream().pipe(
   withConnection(),

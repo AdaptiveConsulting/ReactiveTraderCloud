@@ -1,14 +1,16 @@
+import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
 import styled from "styled-components"
-import { NumFilterContent } from "../TradesState"
+import { useColDef } from "../Context"
 import {
   ComparatorType,
+  NumFilterContent,
   onColFilterEnterNum,
   useAppliedNumFilters,
 } from "../TradesState"
-import { FilterPopup } from "./components/FilterPopup"
 import { ComparatorSelect } from "./components/ComparatorSelect"
-import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
-import { useColConfig } from "../TradesState/colConfig"
+import { FilterPopup } from "./components/FilterPopup"
+
+type Key = string | number
 
 const FilterValueInputInner = styled.input`
   grid-area: Input;
@@ -28,7 +30,7 @@ const FilterValueInputInner = styled.input`
 `
 
 const FilterValueInput: React.FC<{
-  field: keyof any
+  field: Key
   selected: NumFilterContent
   fieldValueName: "value1" | "value2"
 }> = ({ field, selected, fieldValueName }) => (
@@ -53,15 +55,15 @@ const FilterValueInput: React.FC<{
 )
 
 export const NumFilter: React.FC<{
-  field: keyof any
+  field: Key
   parentRef: React.RefObject<HTMLDivElement>
 }> = ({ field, parentRef }) => {
-  const selected = useAppliedNumFilters(field)
-  const colConfigs = useColConfig()
+  const colDef = useColDef()
+  const selected = useAppliedNumFilters(field, colDef)
   return (
     <FilterPopup
       parentRef={parentRef}
-      ariaLabel={`Filter trades by ${colConfigs[field].headerName} field value`}
+      ariaLabel={`Filter trades by ${colDef[field].headerName} field value`}
     >
       <ComparatorSelect
         selected={selected}

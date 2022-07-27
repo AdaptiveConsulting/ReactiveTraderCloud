@@ -7,19 +7,19 @@ export {
 } from "./filterCommon"
 export type { DateFilterContent } from "./dateFilterState"
 export {
-  dateFilters$,
+  getDateFilters,
   useAppliedDateFilters,
   appliedDateFilters$,
   onColFilterDateSelect,
-  dateFilterEntries$,
+  getDateFilterEntries,
 } from "./dateFilterState"
 export type { NumFilterContent } from "./numFilterState"
 export {
-  numberFilters$,
+  getNumberFilters,
   useAppliedNumFilters,
   appliedNumFilters$,
   onColFilterEnterNum,
-  numFilterEntries$,
+  getNumFilterEntries,
 } from "./numFilterState"
 export {
   onSearchInput,
@@ -29,5 +29,5 @@ export {
   useDistinctSetFieldValues,
   useAppliedSetFieldFilters,
   appliedSetFieldFilters$,
-  appliedSetFilterEntries$,
+  getAppliedSetFilterEntries,
 } from "./setFilterState"

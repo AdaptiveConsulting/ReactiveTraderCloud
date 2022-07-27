@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 import { Trade, tradesTestData } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
-import Trades from "../TradesCore"
+import FxTrades from "../CoreFxTrades"
 import userEvent from "@testing-library/user-event"
 import { ComparatorType } from "@/App/Trades/TradesState"
 
@@ -13,7 +13,7 @@ const { mockTrades } = tradesTestData
 const renderComponent = () =>
   render(
     <TestThemeProvider>
-      <Trades />
+      <FxTrades />
     </TestThemeProvider>,
   )
 
