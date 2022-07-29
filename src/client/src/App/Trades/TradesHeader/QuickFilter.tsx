@@ -14,7 +14,6 @@ const QuickFilterStyle = styled("div")`
 
 const QuickFilterInput = styled("input")`
   opacity: 0.59;
-  background: none;
   border: none;
   color: ${({ theme }) => theme.core.textColor};
   box-shadow: 0 0.0625rem 0 ${({ theme }) => theme.core.textColor};
@@ -23,6 +22,7 @@ const QuickFilterInput = styled("input")`
   height: 1.25rem;
   padding: 0 0.875rem 0 0.375rem;
   outline: none;
+  user-select: text;
 
   &:hover {
     opacity: 1;
