@@ -74,7 +74,7 @@ const ResultMessage = styled.div<{ validResult: boolean }>`
 `
 
 const [userThroughput$, setUserThroughput] = createSignal<number>()
-const [useThroughput, throughput$] = bind(
+const [useThroughput] = bind(
   concat(
     ThroughputAdminService.getThroughput().pipe(
       map((res) => res.updatesPerSecond),
@@ -83,7 +83,7 @@ const [useThroughput, throughput$] = bind(
   ),
 )
 
-const throughputResponse$ = throughput$.pipe(
+const throughputResponse$ = userThroughput$.pipe(
   debounceTime(300),
   exhaustMap((value) => {
     return concat(
@@ -108,6 +108,7 @@ const [useResult] = bind<number | Error | undefined>(
       map(() => undefined),
     ),
   ),
+  undefined,
 )
 
 const AdminComponent = () => {
