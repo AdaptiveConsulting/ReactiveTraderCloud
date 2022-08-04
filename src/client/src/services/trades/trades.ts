@@ -1,13 +1,11 @@
 import { BlotterService, QuoteState } from "@/generated/TradingGateway"
-import { CreditTrade, Direction, Trade } from "./types"
+import { CreditTrade, Direction } from "./types"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
 import { creditRfqsById$ } from "../credit"
 import { withConnection } from "../withConnection"
 import { FxTrade } from "./types"
-import { createContext, useContext } from "react"
-import { Observable } from "rxjs"
 
 const tradesStream$ = BlotterService.getTradeStream().pipe(
   withConnection(),
@@ -50,15 +48,19 @@ export const isBlotterDataStale$ = withIsStaleData(trades$)
 export const [useCreditTrades, creditTrades$] = bind(
   creditRfqsById$.pipe(
     map((update, idx) => {
-      const acceptedRfqs = Object.values(update).filter((rfq) => {
-        return rfq.quotes?.find((quote) => quote.state === QuoteState.Accepted)
-      })
+      const acceptedRfqs = Object.values(update)
+        .filter((rfq) => {
+          return rfq.quotes?.find(
+            (quote) => quote.state === QuoteState.Accepted,
+          )
+        })
+        .map((rfq) => ({ ...rfq, status: rfq.state }))
       return acceptedRfqs
         .map((rfq) => {
           const acceptedQuote = rfq.quotes[0]
           return {
             tradeId: rfq.id.toString(),
-            state: QuoteState.Accepted,
+            status: QuoteState.Accepted,
             tradeDate: new Date(Date.now()),
             direction: Direction.Buy,
             counterParty: rfq.dealers.find(
@@ -66,9 +68,9 @@ export const [useCreditTrades, creditTrades$] = bind(
             )?.name,
             cusip: rfq.instrument?.cusip,
             security: rfq.instrument?.ticker,
-            quantity: rfq.quantity.toString(),
+            quantity: rfq.quantity,
             orderType: "AON",
-            unitPrice: acceptedQuote?.price.toString(),
+            unitPrice: acceptedQuote?.price,
           }
         })
         .reverse() as CreditTrade[]

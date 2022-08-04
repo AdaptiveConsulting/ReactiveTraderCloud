@@ -1,3 +1,4 @@
+import { QuoteState } from "@/generated/TradingGateway"
 import { Trade, TradeStatus } from "@/services/trades"
 import styled, { css } from "styled-components"
 import { useColDef, useColFields, useTrades$ } from "../Context"
@@ -61,11 +62,11 @@ const TableBodyCell = styled.td<{
     width: 100%;
   }
 `
-const StatusIndicator = styled.td<{ status?: TradeStatus }>`
+const StatusIndicator = styled.td<{ status?: TradeStatus | QuoteState }>`
   width: 18px;
   border-left: 6px solid
     ${({ status, theme: { accents } }) =>
-      status === TradeStatus.Done
+      status === TradeStatus.Done || status === QuoteState.Accepted
         ? accents.positive.base
         : status === TradeStatus.Rejected
         ? accents.negative.base
@@ -129,9 +130,9 @@ export const TradesGridInner = <Row extends Trade>({
                       key={field as string}
                       align={
                         columnDefinition.align ??
-                        columnDefinition.filterType === "number"
+                        (columnDefinition.filterType === "number"
                           ? "right"
-                          : "left"
+                          : "left")
                       }
                       crossed={isRowCrossed?.(row as Row)}
                     >

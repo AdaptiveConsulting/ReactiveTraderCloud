@@ -146,6 +146,8 @@ export const creditColDef: ColDef = {
   quantity: {
     headerName: "Quantity",
     filterType: "number",
+    valueFormatter: (v) => formatAsWholeNumber(v as number),
+    excelValueFormatter: notionalExcelValueFormatter,
     width: 110,
   },
   orderType: {
@@ -156,6 +158,8 @@ export const creditColDef: ColDef = {
   unitPrice: {
     headerName: "Unit Price",
     filterType: "number",
+    valueFormatter: (v) => `$${v}`,
+    excelValueFormatter: (v) => `${v}`,
     width: 110,
   },
 }

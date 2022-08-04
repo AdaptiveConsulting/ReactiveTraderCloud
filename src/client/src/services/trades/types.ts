@@ -41,15 +41,15 @@ export interface FxTrade
 }
 
 export interface CreditTrade extends Trade {
-  state: QuoteState
+  status: QuoteState
   tradeDate: Date
   direction: Direction
   counterParty: string
   cusip: string
   security: string
-  quantity: string
+  quantity: number
   orderType: string
-  unitPrice: string
+  unitPrice: number
 }
 export interface Trade {
   tradeId: string

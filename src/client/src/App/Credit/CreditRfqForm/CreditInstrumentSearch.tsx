@@ -126,7 +126,7 @@ export const CreditInstrumentSearch: FC = () => {
 
   const showAndResetInput = () => {
     setShowInput(true)
-    // setCusip("")
+    setCusip("")
   }
 
   return (

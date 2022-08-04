@@ -1,6 +1,6 @@
 import { CreditRfqForm, CreditRfqs } from "@/App/Credit"
 import { getTornOutSections } from "@/App/TearOutSection/state"
-import CreditTrades from "@/App/Trades/CoreCreditTrades"
+import { CreditTrades } from "@/App/Trades"
 import { DraggableSectionTearOut } from "@/components/DraggableTearOut"
 import Resizer from "@/components/Resizer"
 import MainLayout from "./MainLayout"
