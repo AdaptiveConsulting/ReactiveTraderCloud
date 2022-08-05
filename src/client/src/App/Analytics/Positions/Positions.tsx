@@ -24,9 +24,11 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
     .attr("data-testid", "tooltip")
 
   // const svg: Selection<SVGElement> = select(chartDiv).select("svg")
-  const { width, height } = chartDiv
-    ? chartDiv.getBoundingClientRect()
-    : { width: 0, height: 0 }
+  //TODO Refactor - Make sure getBoundingClientRect runs after the chartDiv has width
+  const { width, height } =
+    chartDiv.getBoundingClientRect().width !== 0
+      ? chartDiv.getBoundingClientRect()
+      : { width: 288, height: 288 }
   const svg = select(chartDiv)
     .append("svg")
     .attr("width", width)
