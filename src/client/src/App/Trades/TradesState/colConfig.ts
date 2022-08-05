@@ -35,7 +35,7 @@ export interface ColConfig {
   align?: "left" | "right"
 }
 
-export type ColDef = Record<keyof any, ColConfig>
+export type ColDef = Record<FxColField | CreditColField, ColConfig>
 
 export const DATE_FORMAT = "dd-MMM-yyyy"
 
@@ -135,12 +135,12 @@ export const creditColDef: ColDef = {
   },
   cusip: {
     headerName: "CUSIP",
-    filterType: "number",
+    filterType: "set",
     width: 110,
   },
   security: {
     headerName: "Security",
-    filterType: "number",
+    filterType: "set",
     width: 110,
   },
   quantity: {
@@ -152,7 +152,7 @@ export const creditColDef: ColDef = {
   },
   orderType: {
     headerName: "Order Type",
-    filterType: "number",
+    filterType: "set",
     width: 110,
   },
   unitPrice: {

@@ -1,3 +1,4 @@
+import { CreditTrade, FxTrade } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
@@ -9,14 +10,18 @@ import {
   initialFilterContent,
 } from "./filterCommon"
 
-type Key = string | number
+/**
+ * Subset of column fields (as type) that take date filters
+ */
+export type DateColField =
+  | keyof Pick<FxTrade, "tradeDate" | "valueDate">
+  | keyof Pick<CreditTrade, "tradeDate">
+
 /**
  * Subset of column fields (as values) that take date filters
  */
-const extractDateFields = <T extends Key>(colDef: ColDef): T[] =>
-  (Object.keys(colDef) as T[]).filter(
-    (key: T) => colDef[key].filterType === "date",
-  )
+const extractDateFields = (colDef: ColDef) =>
+  Object.keys(colDef).filter((key) => colDef[key].filterType === "date")
 
 /**
  * Three components of date filter state
@@ -39,6 +44,10 @@ export interface DateFilterContent {
   value2?: Date | null
 }
 
+export type DateFilters = {
+  [K in DateColField]: DateFilterContent
+}
+
 interface DateFilterSet extends FilterEvent {
   value: DateFilterContent
 }
@@ -49,7 +58,7 @@ const getDateFilterDefaults = (colDef: ColDef) => {
       ...valuesContainer,
       [field]: initialFilterContent,
     }
-  }, {} as Record<Key, any>)
+  }, {} as DateFilters)
 }
 
 /**
@@ -59,7 +68,8 @@ const getDateFilterDefaults = (colDef: ColDef) => {
  * ToDo - refactor into keyed signal
  */
 const [colFilterDateSelects$, onColFilterDateSelect] = createSignal(
-  (field: Key, value: DateFilterContent) => ({ field, value } as DateFilterSet),
+  (field: DateColField, value: DateFilterContent) =>
+    ({ field, value } as DateFilterSet),
 )
 
 export { onColFilterDateSelect }
@@ -98,7 +108,7 @@ export const getDateFilters = (colDef: ColDef) =>
  * filter state.  Used by DateFilter component.
  */
 export const [useAppliedDateFilters, appliedDateFilters$] = bind(
-  (field: Key, colDef: ColDef) =>
+  (field: DateColField, colDef: ColDef) =>
     getDateFilters(colDef).pipe(map((dateFilters) => dateFilters[field])),
 )
 

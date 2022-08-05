@@ -7,15 +7,20 @@ import {
   initialFilterContent,
 } from "./filterCommon"
 import { ColDef } from "../colConfig"
+import { CreditTrade, FxTrade } from "@/services/trades"
 
-type Key = string | number
+/**
+ * Subset of column fields (as type) that take number filters
+ */
+export type NumColField =
+  | keyof Pick<FxTrade, "tradeId" | "notional" | "spotRate">
+  | keyof Pick<CreditTrade, "tradeId" | "quantity" | "unitPrice">
+
 /**
  * Subset of column fields (as values) that take number filters
  */
-const extractNumberFields = <T extends Key>(colDef: ColDef): T[] =>
-  (Object.keys(colDef) as T[]).filter(
-    (key: T) => colDef[key].filterType === "number",
-  )
+const extractNumberFields = (colDef: ColDef) =>
+  Object.keys(colDef).filter((key) => colDef[key].filterType === "number")
 
 /**
  * Three components of number filter state
@@ -40,11 +45,11 @@ export interface NumFilterContent {
   value2?: number | null
 }
 
-export type NumFilters<T extends Key> = {
-  [key in T]: NumFilterContent
+export type NumFilters = {
+  [key in NumColField]: NumFilterContent
 }
 interface NumFilterSet {
-  field: Key
+  field: NumColField
   value: NumFilterContent
 }
 
@@ -65,7 +70,8 @@ const getNumFilterDefaults = (colDef: ColDef) => {
  * ToDo - refactor into keyed signal
  */
 const [colFilterNum$, onColFilterEnterNum] = createSignal(
-  (field: Key, value: NumFilterContent) => ({ field, value } as NumFilterSet),
+  (field: NumColField, value: NumFilterContent) =>
+    ({ field, value } as NumFilterSet),
 )
 
 export { onColFilterEnterNum }
@@ -104,7 +110,7 @@ export const getNumberFilters = (colDef: ColDef) =>
  * filter state.  Used by NumFilter component.
  */
 export const [useAppliedNumFilters, appliedNumFilters$] = bind(
-  (field: Key, colDef: ColDef) =>
+  (field: NumColField, colDef: ColDef) =>
     getNumberFilters(colDef).pipe(
       map((appliedFilters) => appliedFilters[field]),
     ),

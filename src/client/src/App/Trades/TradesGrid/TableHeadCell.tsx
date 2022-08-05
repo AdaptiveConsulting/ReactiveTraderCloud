@@ -5,7 +5,11 @@ import styled from "styled-components"
 import { useColDef } from "../Context"
 import type { SortDirection } from "../TradesState"
 import { useTableSort } from "../TradesState"
-import { getFieldSectionState } from "../TradesState/sortState"
+import { CreditColField, FxColField } from "../TradesState/colConfig"
+import { DateColField } from "../TradesState/filterState/dateFilterState"
+import { NumColField } from "../TradesState/filterState/numFilterState"
+import { SetColField } from "../TradesState/filterState/setFilterState"
+import { onSortFieldSelect } from "../TradesState/sortState"
 import { DateFilter } from "./DateFilter"
 import { NumFilter } from "./NumFilter"
 import { SetFilter } from "./SetFilter"
@@ -67,11 +71,11 @@ const AlignedArrow: React.FC<{
     <AlignedDownArrow role="sort" aria-label={ariaLabel} />
   )
 
-interface Props<T extends string> {
+interface Props<T extends FxColField | CreditColField> {
   field: T
 }
 
-export const TableHeadCellContainer = <T extends string>({
+export const TableHeadCellContainer = <T extends FxColField | CreditColField>({
   field,
 }: Props<T>) => {
   const [showFilter, setShowFilter] = useState(false)
@@ -94,7 +98,7 @@ export const TableHeadCellContainer = <T extends string>({
         onClick={(e) => {
           // Don't trigger sort on events bubbling from FilterPopup
           if (e.target === e.currentTarget) {
-            getFieldSectionState()[1](field)
+            onSortFieldSelect(field)
           }
         }}
         headerFirst={filterType !== "number" || field === "tradeId"}
@@ -121,11 +125,11 @@ export const TableHeadCellContainer = <T extends string>({
         )}
         {displayMenu &&
           (filterType === "number" ? (
-            <NumFilter field={field} parentRef={ref} />
+            <NumFilter field={field as NumColField} parentRef={ref} />
           ) : filterType === "set" ? (
-            <SetFilter field={field} parentRef={ref} />
+            <SetFilter field={field as SetColField} parentRef={ref} />
           ) : (
-            <DateFilter field={field} parentRef={ref} />
+            <DateFilter field={field as DateColField} parentRef={ref} />
           ))}
       </FlexWrapper>
     </TableHeadCell>

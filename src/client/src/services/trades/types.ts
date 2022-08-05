@@ -51,6 +51,7 @@ export interface CreditTrade extends Trade {
   orderType: string
   unitPrice: number
 }
+
 export interface Trade {
   tradeId: string
   [prop: string]: any

@@ -1,4 +1,4 @@
-import { creditTrades$, Trade, trades$ } from "@/services/trades"
+import { CreditTrade, creditTrades$, FxTrade, trades$ } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { startOfDay } from "date-fns"
@@ -15,6 +15,8 @@ import {
 } from "./filterState"
 import type { SortDirection, TableSort } from "./sortState"
 import { tableSort$ } from "./sortState"
+
+type Trade = FxTrade | CreditTrade
 
 /**
  *
@@ -142,7 +144,7 @@ const dateFiltersTrueOfTrade = (
  */
 const numFiltersTrueOfTrade = (
   numFilters: [string, NumFilterContent][],
-  trade: Record<keyof any, any>,
+  trade: Trade,
 ) => {
   return numFilters.every(([field, filterContent]) => {
     // Predicate is trivially true if no number filter is set

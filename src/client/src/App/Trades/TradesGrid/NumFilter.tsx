@@ -7,10 +7,9 @@ import {
   onColFilterEnterNum,
   useAppliedNumFilters,
 } from "../TradesState"
+import { NumColField } from "../TradesState/filterState/numFilterState"
 import { ComparatorSelect } from "./components/ComparatorSelect"
 import { FilterPopup } from "./components/FilterPopup"
-
-type Key = string | number
 
 const FilterValueInputInner = styled.input`
   grid-area: Input;
@@ -30,7 +29,7 @@ const FilterValueInputInner = styled.input`
 `
 
 const FilterValueInput: React.FC<{
-  field: Key
+  field: NumColField
   selected: NumFilterContent
   fieldValueName: "value1" | "value2"
 }> = ({ field, selected, fieldValueName }) => (
@@ -55,7 +54,7 @@ const FilterValueInput: React.FC<{
 )
 
 export const NumFilter: React.FC<{
-  field: Key
+  field: NumColField
   parentRef: React.RefObject<HTMLDivElement>
 }> = ({ field, parentRef }) => {
   const colDef = useColDef()

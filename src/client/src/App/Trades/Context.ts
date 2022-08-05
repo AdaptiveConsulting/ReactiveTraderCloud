@@ -1,10 +1,10 @@
-import { Trade } from "@/services/trades"
+import { CreditTrade, FxTrade } from "@/services/trades"
 import { createContext, useContext } from "react"
 import { Observable } from "rxjs"
 import { ColDef } from "./TradesState"
 
 export const Trades$Context =
-  createContext<Observable<Trade[]> | undefined>(undefined)
+  createContext<Observable<(FxTrade | CreditTrade)[]> | undefined>(undefined)
 
 export const useTrades$ = () => {
   const trades$ = useContext(Trades$Context)

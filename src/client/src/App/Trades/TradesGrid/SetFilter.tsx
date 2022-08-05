@@ -11,6 +11,7 @@ import {
   useDistinctSetFieldValues,
 } from "../TradesState"
 import { onSearchInput, searchInputs$ } from "../TradesState/filterState"
+import { SetColField } from "../TradesState/filterState/setFilterState"
 import { FilterPopup } from "./components/FilterPopup"
 
 const MultiSelectOption = styled.div<{
@@ -58,10 +59,8 @@ const [useInputText, inputText$] = bind((propsField) =>
   ),
 )
 
-type Key = string | number
-
 const SetFilterInner: React.FC<{
-  field: Key
+  field: SetColField
   parentRef: React.RefObject<HTMLDivElement>
 }> = ({ field, parentRef }) => {
   const colDef = useColDef()
@@ -118,7 +117,7 @@ const SetFilterInner: React.FC<{
 }
 
 export const SetFilter: React.FC<{
-  field: Key
+  field: SetColField
   parentRef: React.RefObject<HTMLDivElement>
 }> = ({ field, parentRef }) => (
   <Subscribe source$={inputText$(field)}>

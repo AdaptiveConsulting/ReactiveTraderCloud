@@ -2,23 +2,48 @@ import { map, mergeMap, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { mapObject } from "@/utils"
-import { Trade } from "@/services/trades"
+import { CreditTrade, FxTrade } from "@/services/trades"
 import { ColDef } from "../colConfig"
-import { filterResets$ } from "./filterCommon"
+import { FilterEvent, filterResets$ } from "./filterCommon"
 import { Observable } from "rxjs"
 
-type Key = string | number
+type Trade = FxTrade | CreditTrade
+
+/**
+ * Subset of column fields (as type) that take set/multi-select filter-value
+ * options.
+ */
+export type SetColField =
+  | keyof Pick<
+      FxTrade,
+      "status" | "direction" | "symbol" | "dealtCurrency" | "traderName"
+    >
+  | keyof Pick<
+      CreditTrade,
+      | "status"
+      | "direction"
+      | "counterParty"
+      | "cusip"
+      | "security"
+      | "orderType"
+    >
+
 /**
  * Subset of column fields (as values) that take set/multi-select filter-value
  * options.
  */
-const extractSetFields = <T extends Key>(colDef: ColDef): T[] =>
-  (Object.keys(colDef) as T[]).filter(
-    (key: T) => colDef[key].filterType === "set",
-  )
+const extractSetFields = (colDef: ColDef) =>
+  Object.keys(colDef).filter((key) => colDef[key].filterType === "set")
+
+export type DistinctValues = {
+  [K in SetColField]: Set<Trade[K]>
+}
+interface ColFieldToggle<T extends SetColField> extends FilterEvent {
+  value: Trade[T]
+}
 
 interface SearchInput {
-  field: Key
+  field: SetColField
   value: string
 }
 
@@ -28,7 +53,8 @@ interface SearchInput {
  * ToDo: refactor into keyed signal
  */
 const [colFilterToggle$, onColFilterToggle] = createSignal(
-  <T extends Key>(field: T, value: unknown) => ({ field, value }),
+  <T extends SetColField>(field: T, value: Trade[T]) =>
+    ({ field, value } as ColFieldToggle<T>),
 )
 
 /**
@@ -38,7 +64,8 @@ const [colFilterToggle$, onColFilterToggle] = createSignal(
  * ToDo: refactor into keyed signal
  */
 const [_si$, onSearchInput] = createSignal(
-  <T extends Key>(field: T, value: string) => ({ field, value } as SearchInput),
+  <T extends SetColField>(field: T, value: string) =>
+    ({ field, value } as SearchInput),
 )
 
 /**
@@ -58,9 +85,9 @@ export const setFieldValuesContainer = (colDef: ColDef) =>
     extractSetFields(colDef).reduce((valuesContainer, field) => {
       return {
         ...valuesContainer,
-        [field]: new Set<any[typeof field]>(),
+        [field]: new Set<Trade[typeof field]>(),
       }
-    }, {}),
+    }, {} as Record<SetColField, Set<string> | Set<number>>),
   )
 
 /**
@@ -72,7 +99,7 @@ export const setFieldValuesContainer = (colDef: ColDef) =>
 const getFilterValuesContainer = (colDef: ColDef) =>
   mapObject(
     setFieldValuesContainer(colDef), // {field1: Set1, field2: Set2}
-    (_, field: Key) => new Set<any[typeof field]>(),
+    (_, field: SetColField) => new Set<Trade[typeof field]>(),
   )
 
 /**
@@ -85,11 +112,11 @@ const getDistinctValues = <T extends Trade>(
   colDef: ColDef,
 ) =>
   trades$.pipe(
-    map((trades: Record<Key, any>) =>
-      trades.reduce((distinctValues: any, trade: any) => {
+    map((trades) =>
+      trades.reduce((distinctValues: any, trade: T) => {
         return mapObject(distinctValues, (fieldValues, fieldName) => {
           return new Set<any>([
-            (trade as Record<Key, any>)[fieldName as string],
+            (trade as T)[fieldName as string],
             ...(fieldValues as any),
           ])
         })
@@ -103,7 +130,7 @@ const getDistinctValues = <T extends Trade>(
  * SetFilterComponent.
  */
 export const [useDistinctSetFieldValues, distinctSetFieldValues$] = bind(
-  <F extends Key, T extends Trade>(
+  <F extends SetColField, T extends Trade>(
     field: F,
     trades$: Observable<T[]>,
     colDef: ColDef,
@@ -138,7 +165,7 @@ const getAppliedSetFilters = <T extends Trade>(
     mergeMap((event) =>
       // merge necessary for filtering down distinct values from search
       distinctSetFieldValues$(
-        event.payload.field as string,
+        event.payload.field as SetColField,
         trades$,
         colDef,
       ).pipe(
@@ -167,7 +194,9 @@ const getAppliedSetFilters = <T extends Trade>(
           )
         }
       } else {
-        newValues = new Set(appliedFilters[field as string] as Iterable<string>)
+        newValues = new Set(
+          appliedFilters[field as SetColField] as Iterable<string>,
+        )
         const value = event.payload.value as any
         // Unsetting the field if it's already included
         // in applied filters.  Setting otherwise.
@@ -210,7 +239,11 @@ export const getAppliedSetFilterEntries = <T extends Trade>(
  *  used by SetFilter component to render options.
  */
 export const [useAppliedSetFieldFilters, appliedSetFieldFilters$] = bind(
-  <T extends Trade>(field: Key, trades$: Observable<T[]>, colDef: ColDef) =>
+  <T extends Trade>(
+    field: SetColField,
+    trades$: Observable<T[]>,
+    colDef: ColDef,
+  ) =>
     getAppliedSetFilters(trades$, colDef).pipe(
       map((appliedFilters) => appliedFilters[field]),
     ),

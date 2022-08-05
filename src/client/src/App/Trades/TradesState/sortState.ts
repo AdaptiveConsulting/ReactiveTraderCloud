@@ -17,8 +17,8 @@ export class TableSort<T extends string | number> {
  * actually tracks the state of the sorting (ASC, DESC, unset)
  * on the column.
  */
-export const getFieldSectionState = <T extends string | number>() =>
-  createSignal<T>()
+export const [sortFieldSelections$, onSortFieldSelect] =
+  createSignal<string | number>()
 
 /**
  * Default sorting direction is ASC.
@@ -39,7 +39,7 @@ const descDefaultFields = new Set<any>(["tradeDate", "valueDate", "tradeId"])
  * and 3)
  */
 export const [useTableSort, tableSort$] = bind(
-  getFieldSectionState()[0].pipe(
+  sortFieldSelections$.pipe(
     scan((tableSort, sortFieldSelection) => {
       // User is cycling through sort direction on a column
       if (tableSort.field === sortFieldSelection) {
