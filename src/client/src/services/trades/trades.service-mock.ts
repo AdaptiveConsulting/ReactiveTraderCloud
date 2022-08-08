@@ -16,7 +16,6 @@ export const [useTrades, trades$] = bind<Trade[]>(
       {} as Record<number, Trade>,
     ),
     map((trades) => {
-      console.log("************************************", Object.values(trades))
       return Object.values(trades).reverse()
     }),
     startWith([]),

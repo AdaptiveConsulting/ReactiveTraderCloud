@@ -32,27 +32,27 @@ export interface RawTradeUpdate extends CollectionUpdates {
 
 export interface FxTrade
   extends CamelCase<
-    Omit<TradeRaw, "TradeId" | "ValueDate" | "TradeDate" | "CurrencyPair">
-  > {
-  tradeId: string
+      Omit<TradeRaw, "TradeId" | "ValueDate" | "TradeDate" | "CurrencyPair">
+    >,
+    Trade {
   symbol: string
   valueDate: Date
   tradeDate: Date
 }
 
-export interface CreditTrade {
-  tradeId: string
-  state: QuoteState
+export interface CreditTrade extends Trade {
+  status: QuoteState
   tradeDate: Date
   direction: Direction
   counterParty: string
   cusip: string
   security: string
-  quantity: string
+  quantity: number
   orderType: string
-  unitPrice: string
+  unitPrice: number
 }
 
-export type Trade = FxTrade | CreditTrade
-
-export type AllTrades = FxTrade & CreditTrade
+export interface Trade {
+  tradeId: string
+  [prop: string]: any
+}

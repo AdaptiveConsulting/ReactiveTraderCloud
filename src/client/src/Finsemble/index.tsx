@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
 import { TileView } from "@/App/LiveRates/selectedView"
-import { Trades } from "@/App/Trades"
+import { FxTrades } from "@/App/Trades"
 import { DocTitle } from "@/components/DocTitle"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
@@ -24,7 +24,7 @@ export const FinsembleApp: React.FC = () => (
         path={ROUTES_CONFIG.blotter}
         render={() => (
           <DocTitle title="Trades">
-            <Trades />
+            <FxTrades />
             <DisconnectionOverlay />
           </DocTitle>
         )}

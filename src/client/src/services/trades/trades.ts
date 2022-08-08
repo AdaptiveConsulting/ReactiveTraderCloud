@@ -5,7 +5,7 @@ import { map, scan } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
 import { creditRfqsById$ } from "../credit"
 import { withConnection } from "../withConnection"
-import { Trade } from "./types"
+import { FxTrade } from "./types"
 
 const tradesStream$ = BlotterService.getTradeStream().pipe(
   withConnection(),
@@ -26,7 +26,7 @@ const tradesStream$ = BlotterService.getTradeStream().pipe(
   })),
 )
 
-export const [useTrades, trades$] = bind<Trade[]>(
+export const [useTrades, trades$] = bind<FxTrade[]>(
   tradesStream$.pipe(
     scan(
       (acc, { isStateOfTheWorld, updates }) => ({
@@ -35,7 +35,7 @@ export const [useTrades, trades$] = bind<Trade[]>(
           updates.map((trade) => [trade.tradeId, trade] as const),
         ),
       }),
-      {} as Record<number, Trade>,
+      {} as Record<number, FxTrade>,
     ),
     map((trades) => {
       return Object.values(trades).reverse()
@@ -48,15 +48,19 @@ export const isBlotterDataStale$ = withIsStaleData(trades$)
 export const [useCreditTrades, creditTrades$] = bind(
   creditRfqsById$.pipe(
     map((update, idx) => {
-      const acceptedRfqs = Object.values(update).filter((rfq) => {
-        return rfq.quotes?.find((quote) => quote.state === QuoteState.Accepted)
-      })
+      const acceptedRfqs = Object.values(update)
+        .filter((rfq) => {
+          return rfq.quotes?.find(
+            (quote) => quote.state === QuoteState.Accepted,
+          )
+        })
+        .map((rfq) => ({ ...rfq, status: rfq.state }))
       return acceptedRfqs
         .map((rfq) => {
           const acceptedQuote = rfq.quotes[0]
           return {
             tradeId: rfq.id.toString(),
-            state: QuoteState.Accepted,
+            status: QuoteState.Accepted,
             tradeDate: new Date(Date.now()),
             direction: Direction.Buy,
             counterParty: rfq.dealers.find(
@@ -64,9 +68,9 @@ export const [useCreditTrades, creditTrades$] = bind(
             )?.name,
             cusip: rfq.instrument?.cusip,
             security: rfq.instrument?.ticker,
-            quantity: rfq.quantity.toString(),
+            quantity: rfq.quantity,
             orderType: "AON",
-            unitPrice: acceptedQuote?.price.toString(),
+            unitPrice: acceptedQuote?.price,
           }
         })
         .reverse() as CreditTrade[]

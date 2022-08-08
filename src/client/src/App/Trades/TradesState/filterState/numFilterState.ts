@@ -1,29 +1,26 @@
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
-import type { FilterEvent } from "./filterCommon"
 import {
   ComparatorType,
   filterResets$,
   initialFilterContent,
 } from "./filterCommon"
-import { colFields, colConfigs } from "../colConfig"
-import { AllTrades } from "@/services/trades/types"
+import { ColDef } from "../colConfig"
+import { CreditTrade, FxTrade } from "@/services/trades"
 
 /**
  * Subset of column fields (as type) that take number filters
  */
-export type NumColField = keyof Pick<
-  AllTrades,
-  "tradeId" | "notional" | "spotRate"
->
+export type NumColField =
+  | keyof Pick<FxTrade, "tradeId" | "notional" | "spotRate">
+  | keyof Pick<CreditTrade, "tradeId" | "quantity" | "unitPrice">
 
 /**
  * Subset of column fields (as values) that take number filters
  */
-const numFields = colFields.filter(
-  (field) => colConfigs[field].filterType === "number",
-)
+const extractNumberFields = (colDef: ColDef) =>
+  Object.keys(colDef).filter((key) => colDef[key].filterType === "number")
 
 /**
  * Three components of number filter state
@@ -49,18 +46,22 @@ export interface NumFilterContent {
 }
 
 export type NumFilters = {
-  [K in NumColField]: NumFilterContent
+  [key in NumColField]: NumFilterContent
 }
-interface NumFilterSet extends FilterEvent {
+interface NumFilterSet {
+  field: NumColField
   value: NumFilterContent
 }
 
-const numFilterDefaults = numFields.reduce((valuesContainer, field) => {
-  return {
-    ...valuesContainer,
-    [field]: initialFilterContent,
-  }
-}, {} as NumFilters)
+const getNumFilterDefaults = (colDef: ColDef) => {
+  const numberFields = extractNumberFields(colDef)
+  return numberFields.reduce((valuesContainer, field) => {
+    return {
+      ...valuesContainer,
+      [field]: initialFilterContent,
+    }
+  }, {} as Record<typeof numberFields[number], NumFilterContent>)
+}
 
 /**
  * Stream of number filter events (either selection of new comparator
@@ -81,35 +82,38 @@ export { onColFilterEnterNum }
  * on column filter event or when the filter is
  * unset through the TradesHeader.
  */
-export const numberFilters$ = mergeWithKey({
-  set: colFilterNum$,
-  reset: filterResets$,
-}).pipe(
-  scan((appliedNumFilters, event) => {
-    let newValues: NumFilterContent
-    const field = event.payload.field
-    if (event.type === "reset") {
-      newValues = initialFilterContent
-    } else {
-      const value = event.payload.value as NumFilterContent
-      newValues = value
-    }
-    return {
-      ...appliedNumFilters,
-      [field]: newValues,
-    }
-  }, numFilterDefaults),
-  startWith(numFilterDefaults),
-  shareReplay(), // persist across mounting/unmounting
-)
+export const getNumberFilters = (colDef: ColDef) =>
+  mergeWithKey({
+    set: colFilterNum$,
+    reset: filterResets$,
+  }).pipe(
+    scan((appliedNumFilters, event) => {
+      let newValues: NumFilterContent
+      const field = event.payload.field
+      if (event.type === "reset") {
+        newValues = initialFilterContent
+      } else {
+        const value = event.payload.value as NumFilterContent
+        newValues = value
+      }
+      return {
+        ...appliedNumFilters,
+        [field]: newValues,
+      }
+    }, getNumFilterDefaults(colDef)),
+    startWith(getNumFilterDefaults(colDef)),
+    shareReplay(), // persist across mounting/unmounting
+  )
 
 /**
  * State hook and parametric stream that emit number
  * filter state.  Used by NumFilter component.
  */
 export const [useAppliedNumFilters, appliedNumFilters$] = bind(
-  (field: NumColField) =>
-    numberFilters$.pipe(map((appliedFilters) => appliedFilters[field])),
+  (field: NumColField, colDef: ColDef) =>
+    getNumberFilters(colDef).pipe(
+      map((appliedFilters) => appliedFilters[field]),
+    ),
 )
 
 /**
@@ -117,10 +121,11 @@ export const [useAppliedNumFilters, appliedNumFilters$] = bind(
  *
  * Used by number filter predicate to filter trades.
  */
-export const numFilterEntries$ = numberFilters$.pipe(
-  map((numberFilters) =>
-    Object.entries(numberFilters).filter(
-      ([_, valueSet]) => valueSet.value1 !== null,
+export const getNumFilterEntries = (colDef: ColDef) =>
+  getNumberFilters(colDef).pipe(
+    map((numberFilters) =>
+      Object.entries(numberFilters).filter(
+        ([_, valueSet]) => valueSet.value1 !== null,
+      ),
     ),
-  ),
-)
+  )

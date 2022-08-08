@@ -551,6 +551,7 @@ function DealerIdListTypeDefinition() {
     },
     elementLength: { bitLength: 32, byteLength: 4 },
     elementType: DealerIdTypeDefinition,
+    lengthEncoding: undefined,
     firstElementOffset: 2,
   }
 }
@@ -1040,6 +1041,10 @@ function PriceTickListTypeDefinition() {
     },
     elementLength: { bitLength: 320, byteLength: 40 },
     elementType: PriceTickTypeDefinition,
+    lengthEncoding: {
+      encodingType: "UInt24" as const,
+      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+    },
     firstElementOffset: 5,
   }
 }
@@ -1271,6 +1276,10 @@ function TradeListTypeDefinition() {
     },
     elementLength: { bitLength: 384, byteLength: 48 },
     elementType: TradeTypeDefinition,
+    lengthEncoding: {
+      encodingType: "UInt24" as const,
+      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+    },
     firstElementOffset: 5,
   }
 }
@@ -1309,6 +1318,10 @@ function HistoricPositionListTypeDefinition() {
     },
     elementLength: { bitLength: 96, byteLength: 12 },
     elementType: HistoricPositionTypeDefinition,
+    lengthEncoding: {
+      encodingType: "UInt24" as const,
+      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+    },
     firstElementOffset: 5,
   }
 }
@@ -1347,6 +1360,10 @@ function CurrencyPairPositionListTypeDefinition() {
     },
     elementLength: { bitLength: 224, byteLength: 28 },
     elementType: CurrencyPairPositionTypeDefinition,
+    lengthEncoding: {
+      encodingType: "UInt24" as const,
+      location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+    },
     firstElementOffset: 5,
   }
 }
@@ -1755,6 +1772,7 @@ export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiatio
           methodRouteKey: BigInt("-5880065670994126848"),
         },
       ],
+      checkHandlersAreRegistered: true,
     },
   )
 }

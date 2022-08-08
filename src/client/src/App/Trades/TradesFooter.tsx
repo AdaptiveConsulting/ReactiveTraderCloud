@@ -1,11 +1,9 @@
+import { Trade } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
+import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
-import { creditTrades$, trades$ } from "@/services/trades"
-import { tableTrades$ } from "./TradesState"
-import { useContext } from "react"
-import { CreditContext } from "./Context"
-import { tableCreditTrades$ } from "./TradesState/tableTrades"
+import { useTrades$ } from "./Context"
 
 const TradesFooterStyled = styled("div")`
   height: 2rem;
@@ -22,20 +20,24 @@ const TradesFooterStyled = styled("div")`
 const TradesFooterText = styled.span`
   opacity: 0.6;
 `
-const [useTotalRows] = bind<[boolean], number>((credit: boolean) => {
-  const stream = credit ? creditTrades$ : trades$
-  return stream.pipe(map((trades) => trades.length))
-}, 0)
+const [useTotalRows] = bind<[Observable<Trade[]>], number>(
+  (trades$: Observable<Trade[]>) => {
+    return trades$.pipe(map((trades) => trades.length))
+  },
+  0,
+)
 
-const [useDisplayRows] = bind<[boolean], number>((credit: boolean) => {
-  const stream = credit ? tableCreditTrades$ : tableTrades$
-  return stream.pipe(map((trades) => trades.length))
-}, 0)
+const [useDisplayRows] = bind<[Observable<Trade[]>], number>(
+  (trades$: Observable<Trade[]>) => {
+    return trades$.pipe(map((trades) => trades.length))
+  },
+  0,
+)
 
 export const TradesFooter: React.FC = () => {
-  const credit = useContext(CreditContext)
-  const totalRows = useTotalRows(credit)
-  const displayRows = useDisplayRows(credit)
+  const trades$ = useTrades$()
+  const totalRows = useTotalRows(trades$)
+  const displayRows = useDisplayRows(trades$)
 
   return (
     <TradesFooterStyled>

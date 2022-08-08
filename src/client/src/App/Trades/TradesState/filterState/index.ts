@@ -1,4 +1,3 @@
-export type { FilterEvent } from "./filterCommon"
 export {
   ComparatorType,
   filterResets$,
@@ -6,23 +5,22 @@ export {
   quickFilterInputs$,
   onQuickFilterInput,
 } from "./filterCommon"
-export type { DateColField, DateFilterContent } from "./dateFilterState"
+export type { DateFilterContent } from "./dateFilterState"
 export {
-  dateFilters$,
+  getDateFilters,
   useAppliedDateFilters,
   appliedDateFilters$,
   onColFilterDateSelect,
-  dateFilterEntries$,
+  getDateFilterEntries,
 } from "./dateFilterState"
-export type { NumColField, NumFilterContent } from "./numFilterState"
+export type { NumFilterContent } from "./numFilterState"
 export {
-  numberFilters$,
+  getNumberFilters,
   useAppliedNumFilters,
   appliedNumFilters$,
   onColFilterEnterNum,
-  numFilterEntries$,
+  getNumFilterEntries,
 } from "./numFilterState"
-export type { SetColField, DistinctValues } from "./setFilterState"
 export {
   onSearchInput,
   searchInputs$,
@@ -31,5 +29,5 @@ export {
   useDistinctSetFieldValues,
   useAppliedSetFieldFilters,
   appliedSetFieldFilters$,
-  appliedSetFilterEntries$,
+  getAppliedSetFilterEntries,
 } from "./setFilterState"
