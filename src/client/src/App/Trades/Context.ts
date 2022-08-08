@@ -9,7 +9,7 @@ export const Trades$Context =
 export const useTrades$ = () => {
   const trades$ = useContext(Trades$Context)
 
-  if (!trades$) throw new Error("No trades stream found")
+  if (!trades$) throw new Error("No trades stream provided")
 
   return trades$
 }

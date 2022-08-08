@@ -1,5 +1,5 @@
 import { Loader } from "@/components/Loader"
-import React, { lazy, Suspense } from "react"
+import { lazy, Suspense } from "react"
 import styled from "styled-components"
 
 export const TradesCoreDeferred = import("./CoreFxTrades")
