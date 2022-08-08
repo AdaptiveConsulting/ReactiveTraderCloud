@@ -34,10 +34,11 @@ const ActionButton = styled.button`
 `
 
 const ClearButton = styled(ActionButton)`
-  background-color: ${({ theme }) => theme.primary.base};
+  background-color: ${({ theme }) => theme.core.darkBackground};
 `
 
 const SendRfqButton = styled(ActionButton)<{ disabled?: boolean }>`
+  color: ${({ theme }) => theme.white};
   background-color: ${({ theme }) =>
     theme.colors.spectrum.uniqueCollections.Buy.base};
   ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}

@@ -1,23 +1,32 @@
 import { Direction } from "@/generated/TradingGateway"
+import { ThemeName } from "@/theme"
 import styled from "styled-components"
 
 interface WithDirection {
   direction: Direction
 }
 
-export const DirectionContainer = styled.div<WithDirection>`
+interface WithTerminated {
+  terminated: boolean
+}
+
+export const DirectionContainer = styled.div<WithDirection & WithTerminated>`
   display: flex;
   width: 100%;
   flex: 0 0 48px;
   align-items: center;
-  background-color: ${(props) =>
-    props.direction === Direction.Buy
+  background-color: ${({ theme, direction, terminated }) =>
+    terminated
+      ? theme.name === ThemeName.Dark
+        ? "#222730"
+        : theme.primary[2]
+      : direction === Direction.Buy
       ? "rgba(76, 118, 196, 0.15)"
       : "rgba(167, 39, 64, 0.15)"};
 `
 
 // Not sure about the clipped path value here, atm they are eyeballed
-export const DirectionLabel = styled.div<WithDirection>`
+export const DirectionLabel = styled.div<WithDirection & WithTerminated>`
   position: relative;
   display: flex;
   justify-content: ${({ direction }) =>
@@ -29,10 +38,13 @@ export const DirectionLabel = styled.div<WithDirection>`
   width: 70px;
   font-size: 10px;
   font-weight: 700;
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme, terminated }) =>
+    terminated ? theme.secondary[5] : theme.white};
   border-radius: 2px;
-  background-color: ${({ theme, direction }) =>
-    theme.colors.spectrum.uniqueCollections[direction].darker};
+  background-color: ${({ theme, direction, terminated }) =>
+    terminated
+      ? theme.primary[theme.name === ThemeName.Dark ? 1 : 3]
+      : theme.colors.spectrum.uniqueCollections[direction].darker};
   clip-path: ${({ direction }) =>
     direction === Direction.Buy
       ? "polygon(0 0, 100% 0, 70% 100%, 0% 100%)"
@@ -46,8 +58,10 @@ export const DirectionLabel = styled.div<WithDirection>`
     position: absolute;
     top: 0;
     height: 100%;
-    background-color: ${({ theme, direction }) =>
-      theme.colors.spectrum.uniqueCollections[direction].base};
+    background-color: ${({ theme, direction, terminated }) =>
+      terminated
+        ? theme.primary[theme.name === ThemeName.Dark ? 1 : 3]
+        : theme.colors.spectrum.uniqueCollections[direction].base};
     -moz-transform: skewX(-24deg);
     -webkit-transform: skewX(-24deg);
     -ms-transform: skewX(-24deg);
@@ -55,13 +69,17 @@ export const DirectionLabel = styled.div<WithDirection>`
   }
 `
 
-export const InstrumentLabelContainer = styled.div<WithDirection>`
+export const InstrumentLabelContainer = styled.div<
+  WithDirection & WithTerminated
+>`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   justify-content: center;
   margin-left: ${({ direction }) =>
     direction === Direction.Sell ? "8px" : "4px"};
+  color: ${({ theme, terminated }) =>
+    terminated ? theme.secondary[5] : theme.textColor};
 `
 
 export const InstrumentName = styled.div`

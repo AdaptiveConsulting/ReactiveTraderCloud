@@ -1,4 +1,4 @@
-import { QuoteState } from "@/generated/TradingGateway"
+import { ThemeName } from "@/theme"
 import styled from "styled-components"
 
 // Card
@@ -30,7 +30,7 @@ const Row = styled.div`
 export const DetailsWrapper = styled(Row)`
   margin: 1px 0;
   flex: 0 0 24px;
-  background: ${({ theme }) => theme.core.backgroundHoverColor};
+  background: ${({ theme }) => theme.primary[2]};
 `
 
 export const RowText = styled.span`
@@ -43,7 +43,7 @@ export const Label = styled(RowText)`
 `
 
 export const Quantity = styled(RowText)`
-  color: ${({ theme }) => theme.colors.light.primary[5]};
+  color: ${({ theme }) => theme.secondary[5]};
 `
 
 export const QuotesContainer = styled.div`
@@ -68,22 +68,41 @@ export const QuoteRow = styled(Row)<{ quoteActive: boolean }>`
 `
 
 // This color does not seem to be part of the palette
-export const DealerName = styled(RowText)`
-  color: #a1a5ae;
+export const DealerName = styled(RowText)<{
+  open: boolean
+  accepted: boolean
+}>`
+  color: ${({ theme, open, accepted }) => {
+    if (open) {
+      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary.base
+    } else if (accepted) {
+      return theme.textColor
+    } else {
+      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary[4]
+    }
+  }};
   margin-right: auto;
 `
 
-export const Price = styled(RowText)<{ quoteState?: QuoteState }>`
-  color: ${({ theme, quoteState }) => {
-    switch (quoteState) {
-      case QuoteState.Accepted:
-        return theme.accents.positive.darker
-      case QuoteState.Rejected:
-        return theme.accents.negative.darker
-      default:
-        return theme.textColor
+export const Price = styled(RowText)<{ open: boolean; accepted: boolean }>`
+  color: ${({ theme, open, accepted }) => {
+    if (open) {
+      return theme.secondary[theme.name === ThemeName.Dark ? 5 : 4]
+    } else if (accepted) {
+      return theme.accents.positive.base
+    } else {
+      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary[4]
     }
   }};
+  ${({ open, accepted }) =>
+    !open && !accepted && "text-decoration: line-through;"}
+
+  display:flex;
+  align-items: center;
+
+  svg {
+    margin-right: 4px;
+  }
 `
 
 export const AcceptQuoteButton = styled.button`
@@ -95,6 +114,7 @@ export const AcceptQuoteButton = styled.button`
   font-size: 11px;
   font-weight: 500;
   margin-left: 8px;
+  color: ${({ theme }) => theme.white};
   background-color: ${({ theme }) =>
     theme.colors.spectrum.uniqueCollections.Buy.base};
 `
@@ -112,26 +132,51 @@ export const NoRfqsWrapper = styled.div`
 export const CardFooterWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   flex: 0 0 32px;
   padding: 0 8px;
   margin-top: 1px;
   background: ${({ theme }) => theme.core.lightBackground};
+  font-size: 11px;
 `
 
 export const CancelQuoteButton = styled.button`
-  background-color: ${({ theme }) => `${theme.core.darkBackground}`};
+  background-color: ${({ theme }) => theme.core.darkBackground};
   border-radius: 3px;
   font-size: 11px;
   padding: 2px 5px 3px 5px;
   margin-left: 9px;
 `
 
-export const CardState = styled.div<{ accepted: boolean }>`
-  justify-self: end;
-  color: ${({ theme, accepted }) =>
-    accepted
-      ? theme.colors.accents.positive.darker
-      : theme.colors.accents.negative.darker};
-  text-transform: uppercase;
-  font-size: 11px;
+export const TerminatedCardState = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background-color: ${({ theme }) =>
+    theme.primary[theme.name === ThemeName.Dark ? 2 : 3]};
+  color: ${({ theme }) =>
+    theme.name === ThemeName.Dark
+      ? theme.colors.light.core.activeColor
+      : theme.secondary[3]};
+
+  svg {
+    margin-right: 4px;
+  }
+`
+
+export const AcceptedCardState = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.accents.positive.base};
+
+  svg {
+    margin-right: 8px;
+  }
+`
+
+export const ViewTrade = styled.button`
+  flex: 0 0 fit-content;
+  color: ${({ theme }) => theme.accents.primary.base};
 `
