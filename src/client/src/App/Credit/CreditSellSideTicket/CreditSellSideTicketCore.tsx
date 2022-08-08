@@ -2,7 +2,7 @@ import { Loader } from "@/components/Loader"
 import { useCreditRfqDetails } from "@/services/credit"
 import { FC } from "react"
 import styled from "styled-components"
-import { invertDirection } from "../common"
+import { invertDirection, isRfqTerminated } from "../common"
 import { CreditSellSideFooter } from "./CreditSellSideFooter"
 import { CreditSellSideHeader } from "./CreditSellSideHeader"
 import { CreditSellSideParameters } from "./CreditSellSideParameters"
@@ -12,7 +12,7 @@ const CreditSellSideWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: white;
+  background-color: ${({ theme }) => theme.core.lightBackground};
 `
 
 interface CreditSellSideTicketCoreProps {
@@ -43,13 +43,18 @@ export const CreditSellSideTicketCore: FC<CreditSellSideTicketCoreProps> = ({
   const direction = invertDirection(clientDirection)
   return (
     <CreditSellSideWrapper>
-      <CreditSellSideHeader direction={direction} instrumentId={instrumentId} />
+      <CreditSellSideHeader
+        direction={direction}
+        instrumentId={instrumentId}
+        terminated={isRfqTerminated(state)}
+      />
       <CreditSellSideParameters
         quote={quote}
         state={state}
         quantity={quantity}
       />
       <CreditSellSideTimer
+        rfqState={state}
         start={Number(creationTimestamp)}
         end={Number(creationTimestamp) + expirySecs * 1000}
       />

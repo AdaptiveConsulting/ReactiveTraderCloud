@@ -1,4 +1,5 @@
 import { QuoteBody, RfqState } from "@/generated/TradingGateway"
+import { ThemeName } from "@/theme"
 import {
   customNumberFormatter,
   DECIMAL_SEPARATOR,
@@ -25,7 +26,7 @@ const ParametersWrapper = styled.div`
 `
 
 const ParameterLabel = styled.div`
-  color: ${({ theme }) => theme.colors.light.secondary[5]};
+  color: ${({ theme }) => theme.secondary[5]};
   margin-bottom: 4px;
 `
 
@@ -33,7 +34,8 @@ const ParameterValue = styled.div`
   display: flex;
   align-items: center;
   height: 24px;
-  color: ${({ theme }) => theme.colors.light.secondary[1]};
+  color: ${({ theme }) =>
+    theme.secondary[theme.name === ThemeName.Dark ? "base" : 1]};
 `
 
 export const ParameterInput = styled.input`
@@ -41,7 +43,9 @@ export const ParameterInput = styled.input`
   height: 24px;
   width: 100%;
   padding: 4px;
-  color: ${({ theme }) => theme.colors.light.secondary[1]};
+  color: ${({ theme }) =>
+    theme.secondary[theme.name === ThemeName.Dark ? "base" : 1]};
+  background-color: ${({ theme }) => theme.core.darkBackground};
   border: 1px solid ${({ theme }) => theme.colors.light.primary[3]};
   border-radius: 3px;
   &:focus {

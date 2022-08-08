@@ -1,42 +1,94 @@
-import { RfqState } from "@/generated/TradingGateway"
-import { cancelCreditRfq$ } from "@/services/credit"
+import { onTradeRowHighlight } from "@/App/Trades/TradesState"
+import { QuoteState, RfqState } from "@/generated/TradingGateway"
+import {
+  cancelCreditRfq$,
+  RfqDetails,
+  useCreditDealerById,
+} from "@/services/credit"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
-import { exhaustMap } from "rxjs/operators"
+import { FaCheckCircle, FaTrash } from "react-icons/fa"
+import { exhaustMap, scan, startWith } from "rxjs/operators"
 import { rfqStateToLabel } from "../../common"
 import { CreditTimer } from "../../CreditTimer"
-import { CancelQuoteButton, CardFooterWrapper, CardState } from "./styled"
-
-interface CardFooterProps {
-  rfqId: number
-  state: RfqState
-  start: number
-  end: number
-}
+import {
+  AcceptedCardState,
+  CancelQuoteButton,
+  CardFooterWrapper,
+  TerminatedCardState,
+  ViewTrade,
+} from "./styled"
 
 const [cancelRfq$, onCancelRfq] = createSignal<number>()
 
 cancelRfq$.pipe(exhaustMap((rfqId) => cancelCreditRfq$({ rfqId }))).subscribe()
 
-export const CardFooter: FC<CardFooterProps> = ({
-  rfqId,
-  state,
-  start,
-  end,
+export const LiveFooterContent: FC<{
+  rfqId: number
+  start: number
+  end: number
+}> = ({ rfqId, start, end }) => (
+  <>
+    <CreditTimer start={start} end={end} isSellSideView={false} />
+    <CancelQuoteButton onClick={() => onCancelRfq(rfqId)}>
+      Cancel
+    </CancelQuoteButton>
+  </>
+)
+
+export const AcceptedFooterContent: FC<{
+  rfqId: number
+  acceptedDealerId?: number
+}> = ({ rfqId, acceptedDealerId }) => {
+  const dealerName =
+    useCreditDealerById(acceptedDealerId!)?.name ?? "Unknown Dealer"
+
+  return (
+    <>
+      <AcceptedCardState>
+        <FaCheckCircle size={16} />
+        You traded with {dealerName}
+      </AcceptedCardState>
+      <ViewTrade onClick={() => onTradeRowHighlight(rfqId.toString())}>
+        View Trade {rfqId}
+      </ViewTrade>
+    </>
+  )
+}
+
+const [removedTerminatedRfqId$, removeTerminatedRfq] = createSignal<number>()
+export const removedTerminatedRfqIds$ = removedTerminatedRfqId$.pipe(
+  scan<number, number[]>((acc, rfqId) => [...acc, rfqId], []),
+  startWith<number[]>([]),
+)
+
+export const TerminatedFooterContent: FC<{ rfqId: number; state: RfqState }> =
+  ({ rfqId, state }) => (
+    <TerminatedCardState onClick={() => removeTerminatedRfq(rfqId)}>
+      <FaTrash size={12} />
+      {rfqStateToLabel(state)}
+    </TerminatedCardState>
+  )
+
+export const CardFooter: FC<{ rfqDetails: RfqDetails }> = ({
+  rfqDetails: { id, quotes, state, creationTimestamp, expirySecs },
 }) => {
+  const acceptedDealerId = quotes.find(
+    (quote) => quote.state === QuoteState.Accepted,
+  )?.dealerId
+
   return (
     <CardFooterWrapper>
       {state === RfqState.Open ? (
-        <>
-          <CreditTimer start={start} end={end} isSellSideView={false} />
-          <CancelQuoteButton onClick={() => onCancelRfq(rfqId)}>
-            Cancel
-          </CancelQuoteButton>
-        </>
+        <LiveFooterContent
+          rfqId={id}
+          start={Number(creationTimestamp)}
+          end={Number(creationTimestamp) + expirySecs * 1000}
+        />
+      ) : state === RfqState.Closed ? (
+        <AcceptedFooterContent rfqId={id} acceptedDealerId={acceptedDealerId} />
       ) : (
-        <CardState accepted={state === RfqState.Closed}>
-          {rfqStateToLabel(state)}
-        </CardState>
+        <TerminatedFooterContent rfqId={id} state={state} />
       )}
     </CardFooterWrapper>
   )

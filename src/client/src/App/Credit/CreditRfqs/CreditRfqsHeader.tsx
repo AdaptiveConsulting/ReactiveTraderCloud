@@ -61,6 +61,8 @@ const getRfqStateText = (rfqState: string) => {
       return "Live"
     case RfqState.Closed:
       return "Done"
+    case RfqState.Cancelled:
+      return "Canceled"
     default:
       return rfqState
   }
