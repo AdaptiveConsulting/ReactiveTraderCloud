@@ -9,15 +9,21 @@ import {
   RFQ_CREATED_RFQ_UPDATE,
   START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
   WorkflowService,
+  END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
+  QuoteCreatedRfqUpdate,
 } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
-import { map, scan, withLatestFrom } from "rxjs/operators"
-import { RfqDetails } from "./types"
+import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
+import { QuoteDetails, RfqDetails } from "./types"
 import { withConnection } from "../../withConnection"
 import { creditInstruments$ } from "../creditInstruments"
 import { creditDealers$ } from "../creditDealers"
+import { Observable } from "rxjs"
 
-const creditRfqUpdates$ = WorkflowService.subscribe().pipe(withConnection())
+const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
+  withConnection(),
+  shareLatest(),
+)
 
 export const creditRfqsById$ = creditRfqUpdates$.pipe(
   withLatestFrom(creditInstruments$, creditDealers$),
@@ -103,4 +109,37 @@ export const [useCreditRfqDetails, getCreditRfqDetails$] = bind<
   RfqDetails | undefined
 >((rfqId: number) =>
   creditRfqsById$.pipe(map((creditRfqsById) => creditRfqsById[rfqId])),
+)
+
+const endOfRfqStateOfWorld$ = creditRfqUpdates$.pipe(
+  filter(
+    (update) =>
+      update.type === START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE ||
+      update.type === END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
+  ),
+  map((update) => update.type === END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE),
+  startWith(false),
+)
+
+export const quotesReceived$: Observable<QuoteDetails> = creditRfqUpdates$.pipe(
+  withLatestFrom(endOfRfqStateOfWorld$),
+  filter(([_update, endOfRfqStateOfWorld]) => endOfRfqStateOfWorld),
+  map(([update, _endOfRfqStateOfWorld]) => update),
+  filter(
+    (update): update is QuoteCreatedRfqUpdate =>
+      update.type === QUOTE_CREATED_RFQ_UPDATE,
+  ),
+  withLatestFrom(creditRfqsById$),
+  map(([update, creditRfqsById]) => {
+    const rfq = creditRfqsById[update.payload.rfqId]
+    return {
+      ...update.payload,
+      instrument: rfq.instrument,
+      dealer:
+        rfq.dealers.find((dealer) => dealer.id === update.payload.dealerId) ??
+        null,
+      direction: rfq.direction,
+      quantity: rfq.quantity,
+    }
+  }),
 )
