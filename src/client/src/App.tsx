@@ -1,11 +1,13 @@
+import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
+import GlobalStyle from "@/theme/globals"
 import { StrictMode } from "react"
 import ReactDOM from "react-dom"
-import GlobalStyle from "@/theme/globals"
-import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
-import { registerNotifications } from "./notifications"
 import { GA_TRACKING_ID } from "./constants"
-import { getMainApp, gaDimension } from "./main"
+import { IncompatibilityModal } from "./IncompatibilityModal"
+import { gaDimension, getMainApp } from "./main"
+import { registerNotifications } from "./notifications"
 import { initConnection } from "./services/connection"
+import { checkTradingGatewayCompatibility } from "./services/tradingGatewayCompatibility"
 
 const MainApp = getMainApp()
 
@@ -14,32 +16,42 @@ export async function initApp() {
     initConnection()
   }
 
-  registerNotifications()
+  try {
+    const { isCompatible, incompatibilityReasons } =
+      await checkTradingGatewayCompatibility()
+    ReactDOM.render(
+      <StrictMode>
+        <GlobalStyle />
+        <ThemeProvider>
+          <GlobalScrollbarStyle />
+          {isCompatible ? (
+            <MainApp />
+          ) : (
+            <IncompatibilityModal reasons={incompatibilityReasons} />
+          )}
+        </ThemeProvider>
+      </StrictMode>,
+      document.getElementById("root"),
+    )
 
-  ReactDOM.render(
-    <StrictMode>
-      <GlobalStyle />
-      <ThemeProvider>
-        <GlobalScrollbarStyle />
-        <MainApp />
-      </ThemeProvider>
-    </StrictMode>,
-    document.getElementById("root"),
-  )
+    if (isCompatible) {
+      registerNotifications()
 
-  const { ga } = window
+      const { ga } = window
 
-  ga("create", {
-    trackingId: GA_TRACKING_ID,
-    transport: "beacon",
-  })
+      ga("create", {
+        trackingId: GA_TRACKING_ID,
+        transport: "beacon",
+      })
 
-  ga("set", {
-    dimension1: gaDimension,
-    dimension2: gaDimension,
-    dimension3: import.meta.env,
-    page: window.location.pathname,
-  })
+      ga("set", {
+        dimension1: gaDimension,
+        dimension2: gaDimension,
+        dimension3: import.meta.env,
+        page: window.location.pathname,
+      })
 
-  ga("send", "pageview")
+      ga("send", "pageview")
+    }
+  } catch (e) {}
 }
