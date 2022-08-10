@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import ContactUsButton from "./ContactUsButton"
 import { Stats } from "./Stats"
 import StatusBar from "./StatusBar"
@@ -6,7 +7,9 @@ import { Version } from "./Version"
 
 export const Footer: React.FC = () => (
   <StatusBar>
-    <Stats />
+    <Suspense fallback={null}>
+      <Stats />
+    </Suspense>
     <Version />
     <ContactUsButton />
     <StatusButton />

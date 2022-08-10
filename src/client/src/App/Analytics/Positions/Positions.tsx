@@ -1,4 +1,3 @@
-import { useLayoutEffect, useRef } from "react"
 import {
   D3DragEvent,
   drag,
@@ -8,8 +7,9 @@ import {
   forceY,
   select,
 } from "d3"
-import { BubbleChartNode, nodes$, useData, data$ } from "./data"
+import { useLayoutEffect, useRef } from "react"
 import { BubbleChart, Title } from "../styled"
+import { BubbleChartNode, data$, nodes$, useData } from "./data"
 
 // extra pixel amount that nodes in the chart repel each other within
 // for collision detection purposes, a nodes radius is r + COLLIDE_BORDER_WIDTH pixels
@@ -24,11 +24,9 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
     .attr("data-testid", "tooltip")
 
   // const svg: Selection<SVGElement> = select(chartDiv).select("svg")
-  //TODO Refactor - Make sure getBoundingClientRect runs after the chartDiv has width
-  const { width, height } =
-    chartDiv.getBoundingClientRect().width !== 0
-      ? chartDiv.getBoundingClientRect()
-      : { width: 288, height: 288 }
+  const { width, height } = chartDiv
+    ? chartDiv.getBoundingClientRect()
+    : { width: 0, height: 0 }
   const svg = select(chartDiv)
     .append("svg")
     .attr("width", width)
