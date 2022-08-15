@@ -1,5 +1,5 @@
 import { Direction } from "@/generated/TradingGateway"
-import { creditInstruments$, creditRfqCreations$ } from "@/services/credit"
+import { creditInstruments$, createdCreditRfq$ } from "@/services/credit"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FaTimes } from "react-icons/fa"
@@ -49,7 +49,7 @@ const [dismiss$, onDismissMessage] = createSignal()
 export { onDismissMessage }
 
 const [useConfirmations] = bind(
-  creditRfqCreations$.pipe(
+  createdCreditRfq$.pipe(
     filter((response) => response !== null),
     withLatestFrom(creditInstruments$),
     map(([response, creditInstruments]) => ({

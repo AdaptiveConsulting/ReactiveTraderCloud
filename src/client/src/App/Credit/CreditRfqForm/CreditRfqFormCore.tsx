@@ -1,14 +1,19 @@
-import { FC } from "react"
+import { Loader } from "@/components/Loader"
+import {
+  enableOpenSellSideTicketForAdaptiveBankRfqs,
+  registerSimulatedDealerResponses,
+} from "@/services/credit/creditRfqResponses"
+import { Subscribe } from "@react-rxjs/core"
+import { FC, useEffect } from "react"
+import { Subscription } from "rxjs"
 import styled from "styled-components"
+import { supportsTearOut } from "../../TearOutSection/supportsTearOut"
+import { TearOutComponent } from "../../TearOutSection/TearOutComponent"
 import { CounterpartySelection } from "./CounterpartySelection"
 import { CreditInstrumentSearch } from "./CreditInstrumentSearch"
 import { DirectionToggle } from "./DirectionToggle"
 import { RfqButtonPanel } from "./RfqButtonPanel"
 import { RfqParameters } from "./RfqParameters"
-import { supportsTearOut } from "../../TearOutSection/supportsTearOut"
-import { TearOutComponent } from "../../TearOutSection/TearOutComponent"
-import { Subscribe } from "@react-rxjs/core"
-import { Loader } from "@/components/Loader"
 
 const CreditRfqFormCoreWrapper = styled.div`
   display: flex;
@@ -56,6 +61,13 @@ const CreditRfqFooter = styled.footer`
 `
 
 export const CreditRfqFormCore: FC = () => {
+  useEffect(() => {
+    const subscription = new Subscription()
+    subscription.add(registerSimulatedDealerResponses())
+    subscription.add(enableOpenSellSideTicketForAdaptiveBankRfqs())
+
+    return () => subscription.unsubscribe()
+  }, [])
   return (
     <CreditRfqFormCoreWrapper>
       <Subscribe fallback={<Loader ariaLabel="Loading New RFQ Form" />}>
