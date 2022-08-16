@@ -1,2 +1,2 @@
 export * from "./creditRfqs"
-export type { RfqDetails } from "./types"
+export type { RfqDetails, QuoteDetails } from "./types"
