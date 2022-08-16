@@ -28,7 +28,10 @@ export const CreditSellSideHeader = memo(
         )}
         <InstrumentLabelContainer direction={direction} terminated={terminated}>
           <InstrumentName>{instrument?.name ?? "No name found"}</InstrumentName>
-          <CusipWithBenchmark cusip={instrument?.cusip} />
+          <CusipWithBenchmark
+            cusip={instrument?.cusip}
+            benchmark={instrument?.benchmark}
+          />
         </InstrumentLabelContainer>
         {direction === Direction.Sell && (
           <DirectionLabel direction={direction} terminated={terminated}>

@@ -146,7 +146,10 @@ export const CreditInstrumentSearch: FC = () => {
             {selectedInstrument !== null ? (
               <>
                 <InstrumentName>{selectedInstrument.name}</InstrumentName>
-                <CusipWithBenchmark cusip={selectedInstrument.cusip} />
+                <CusipWithBenchmark
+                  cusip={selectedInstrument.cusip}
+                  benchmark={selectedInstrument.benchmark}
+                />
               </>
             ) : (
               <MissingInstrument>No results found</MissingInstrument>

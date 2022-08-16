@@ -200,6 +200,7 @@ export interface InstrumentBody {
   ticker: string
   maturity: LocalDate
   interestRate: number
+  benchmark: string
 }
 
 export type LocalDate = LocalDateConverter.ConvertedType
@@ -779,7 +780,7 @@ function InstrumentBodyRefTypeDefinition() {
 function InstrumentBodyTypeDefinition() {
   return {
     type: "record" as const,
-    encodedLength: { bitLength: 224, byteLength: 28 },
+    encodedLength: { bitLength: 256, byteLength: 32 },
     fields: {
       id: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
@@ -804,6 +805,10 @@ function InstrumentBodyTypeDefinition() {
       interestRate: {
         location: { bitOffset: 160, byteOffset: 20, mask: 0 },
         type: float64TypeDefinition,
+      },
+      benchmark: {
+        location: { bitOffset: 224, byteOffset: 28, mask: 0 },
+        type: stringRefTypeDefinition,
       },
     },
     jsonConverter: undefined,
@@ -1581,8 +1586,8 @@ export const InstrumentService = {
         methodName: "subscribe",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("4964042739278814208"),
-        responseRouteKey: BigInt("1840451258422074368"),
+        requestRouteKey: BigInt("-1583240273509740800"),
+        responseRouteKey: BigInt("4826706302989189120"),
         annotations: [],
       },
       allocators.responseAllocator(InstrumentUpdateTypeDefinition),
@@ -1739,7 +1744,7 @@ export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiatio
         {
           serviceName: "InstrumentService",
           methodName: "subscribe",
-          methodRouteKey: BigInt("4964042739278814208"),
+          methodRouteKey: BigInt("-1583240273509740800"),
         },
         {
           serviceName: "DealerService",
