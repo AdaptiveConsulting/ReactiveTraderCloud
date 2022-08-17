@@ -2,6 +2,32 @@ import * as HydraPlatform from "@adaptive/hydra-platform"
 import { Observable } from "rxjs"
 import { LocalDateConverter } from "@adaptive/hydra-codecs/dist/valueConverters"
 
+export interface Trade {
+  tradeId: bigint
+  tradeName: string
+  currencyPair: string
+  notional: number
+  dealtCurrency: string
+  direction: Direction
+  spotRate: number
+  status: TradeStatus
+  tradeDate: LocalDate
+  valueDate: LocalDate
+}
+
+export type LocalDate = LocalDateConverter.ConvertedType
+
+export enum TradeStatus {
+  Pending = "Pending",
+  Done = "Done",
+  Rejected = "Rejected",
+}
+
+export enum Direction {
+  Buy = "Buy",
+  Sell = "Sell",
+}
+
 export const RFQ_CREATED_RFQ_UPDATE = "rfqCreated",
   QUOTE_CREATED_RFQ_UPDATE = "quoteCreated",
   QUOTE_ACCEPTED_RFQ_UPDATE = "quoteAccepted",
@@ -74,11 +100,6 @@ export interface RfqBody {
   state: RfqState
   expirySecs: number
   creationTimestamp: bigint
-}
-
-export enum Direction {
-  Buy = "Buy",
-  Sell = "Sell",
 }
 
 export const ACK_ACCEPT_QUOTE_RESPONSE = "ack",
@@ -203,8 +224,6 @@ export interface InstrumentBody {
   benchmark: string
 }
 
-export type LocalDate = LocalDateConverter.ConvertedType
-
 export interface EchoResponse {
   payload: number
 }
@@ -269,25 +288,6 @@ export interface ExecutionResponse {
   trade: Trade
 }
 
-export interface Trade {
-  tradeId: bigint
-  tradeName: string
-  currencyPair: string
-  notional: number
-  dealtCurrency: string
-  direction: Direction
-  spotRate: number
-  status: TradeStatus
-  tradeDate: LocalDate
-  valueDate: LocalDate
-}
-
-export enum TradeStatus {
-  Pending = "Pending",
-  Done = "Done",
-  Rejected = "Rejected",
-}
-
 export interface ExecuteTradeRequest {
   currencyPair: string
   spotRate: number
@@ -330,6 +330,138 @@ export interface AnalyticsRequest {
 
 const converters = { LocalDateConverter }
 const allocators = HydraPlatform.createOtfAllocators(converters)
+
+function TradeTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 384, byteLength: 48 },
+    fields: {
+      tradeId: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: int64TypeDefinition,
+      },
+      tradeName: {
+        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+      currencyPair: {
+        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+      notional: {
+        location: { bitOffset: 128, byteOffset: 16, mask: 0 },
+        type: QuantityTypeDefinition,
+      },
+      dealtCurrency: {
+        location: { bitOffset: 192, byteOffset: 24, mask: 0 },
+        type: stringRefTypeDefinition,
+      },
+      direction: {
+        location: { bitOffset: 224, byteOffset: 28, mask: 0 },
+        type: DirectionTypeDefinition,
+      },
+      spotRate: {
+        location: { bitOffset: 232, byteOffset: 29, mask: 0 },
+        type: PriceTypeDefinition,
+      },
+      status: {
+        location: { bitOffset: 296, byteOffset: 37, mask: 0 },
+        type: TradeStatusTypeDefinition,
+      },
+      tradeDate: {
+        location: { bitOffset: 320, byteOffset: 40, mask: 0 },
+        type: LocalDateTypeDefinition,
+      },
+      valueDate: {
+        location: { bitOffset: 352, byteOffset: 44, mask: 0 },
+        type: LocalDateTypeDefinition,
+      },
+    },
+    jsonConverter: undefined,
+  }
+}
+
+function LocalDateTypeDefinition() {
+  return {
+    type: "record" as const,
+    encodedLength: { bitLength: 32, byteLength: 4 },
+    fields: {
+      year: {
+        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+        type: int16TypeDefinition,
+      },
+      month: {
+        location: { bitOffset: 16, byteOffset: 2, mask: 0 },
+        type: int8TypeDefinition,
+      },
+      day: {
+        location: { bitOffset: 24, byteOffset: 3, mask: 0 },
+        type: int8TypeDefinition,
+      },
+    },
+    jsonConverter: "LocalDateConverter" as const,
+  }
+}
+
+function int8TypeDefinition() {
+  return "Int8" as const
+}
+
+function int16TypeDefinition() {
+  return "Int16" as const
+}
+
+function TradeStatusTypeDefinition() {
+  return {
+    type: "enum" as const,
+    cases: [
+      { name: "Pending" as const, value: BigInt("1") },
+      { name: "Done" as const, value: BigInt("2") },
+      { name: "Rejected" as const, value: BigInt("3") },
+    ],
+    description: "" as const,
+    encoding: "Int8" as const,
+  }
+}
+
+function PriceTypeDefinition() {
+  return "Float64" as const
+}
+
+function DirectionTypeDefinition() {
+  return {
+    type: "enum" as const,
+    cases: [
+      { name: "Buy" as const, value: BigInt("1") },
+      { name: "Sell" as const, value: BigInt("2") },
+    ],
+    description: "" as const,
+    encoding: "Int8" as const,
+  }
+}
+
+function QuantityTypeDefinition() {
+  return "Float64" as const
+}
+
+function stringRefTypeDefinition() {
+  return { type: "pointer" as const, elementType: stringTypeDefinition }
+}
+
+function stringTypeDefinition() {
+  return {
+    type: "string" as const,
+    count: {
+      encodingType: "Int32" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    encoding: "Utf16" as const,
+  }
+}
+
+function int64TypeDefinition() {
+  return "Int64" as const
+}
 
 function RfqUpdateTypeDefinition() {
   return {
@@ -461,10 +593,6 @@ function QuoteStateTypeDefinition() {
   }
 }
 
-function PriceTypeDefinition() {
-  return "Float64" as const
-}
-
 function DealerIdTypeDefinition() {
   return "Int32" as const
 }
@@ -515,28 +643,8 @@ function RfqBodyTypeDefinition() {
   }
 }
 
-function int64TypeDefinition() {
-  return "Int64" as const
-}
-
 function int32TypeDefinition() {
   return "Int32" as const
-}
-
-function DirectionTypeDefinition() {
-  return {
-    type: "enum" as const,
-    cases: [
-      { name: "Buy" as const, value: BigInt("1") },
-      { name: "Sell" as const, value: BigInt("2") },
-    ],
-    description: "" as const,
-    encoding: "Int8" as const,
-  }
-}
-
-function QuantityTypeDefinition() {
-  return "Float64" as const
 }
 
 function DealerIdListRefTypeDefinition() {
@@ -733,21 +841,6 @@ function DealerBodyTypeDefinition() {
   }
 }
 
-function stringRefTypeDefinition() {
-  return { type: "pointer" as const, elementType: stringTypeDefinition }
-}
-
-function stringTypeDefinition() {
-  return {
-    type: "string" as const,
-    count: {
-      encodingType: "Int32" as const,
-      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-    },
-    encoding: "Utf16" as const,
-  }
-}
-
 function InstrumentUpdateTypeDefinition() {
   return {
     type: "union" as const,
@@ -817,36 +910,6 @@ function InstrumentBodyTypeDefinition() {
 
 function float64TypeDefinition() {
   return "Float64" as const
-}
-
-function LocalDateTypeDefinition() {
-  return {
-    type: "record" as const,
-    encodedLength: { bitLength: 32, byteLength: 4 },
-    fields: {
-      year: {
-        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: int16TypeDefinition,
-      },
-      month: {
-        location: { bitOffset: 16, byteOffset: 2, mask: 0 },
-        type: int8TypeDefinition,
-      },
-      day: {
-        location: { bitOffset: 24, byteOffset: 3, mask: 0 },
-        type: int8TypeDefinition,
-      },
-    },
-    jsonConverter: "LocalDateConverter" as const,
-  }
-}
-
-function int8TypeDefinition() {
-  return "Int8" as const
-}
-
-function int16TypeDefinition() {
-  return "Int16" as const
 }
 
 function EchoResponseTypeDefinition() {
@@ -1118,69 +1181,6 @@ function ExecutionResponseTypeDefinition() {
 
 function TradeRefTypeDefinition() {
   return { type: "pointer" as const, elementType: TradeTypeDefinition }
-}
-
-function TradeTypeDefinition() {
-  return {
-    type: "record" as const,
-    encodedLength: { bitLength: 384, byteLength: 48 },
-    fields: {
-      tradeId: {
-        location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: int64TypeDefinition,
-      },
-      tradeName: {
-        location: { bitOffset: 64, byteOffset: 8, mask: 0 },
-        type: stringRefTypeDefinition,
-      },
-      currencyPair: {
-        location: { bitOffset: 96, byteOffset: 12, mask: 0 },
-        type: stringRefTypeDefinition,
-      },
-      notional: {
-        location: { bitOffset: 128, byteOffset: 16, mask: 0 },
-        type: QuantityTypeDefinition,
-      },
-      dealtCurrency: {
-        location: { bitOffset: 192, byteOffset: 24, mask: 0 },
-        type: stringRefTypeDefinition,
-      },
-      direction: {
-        location: { bitOffset: 224, byteOffset: 28, mask: 0 },
-        type: DirectionTypeDefinition,
-      },
-      spotRate: {
-        location: { bitOffset: 232, byteOffset: 29, mask: 0 },
-        type: PriceTypeDefinition,
-      },
-      status: {
-        location: { bitOffset: 296, byteOffset: 37, mask: 0 },
-        type: TradeStatusTypeDefinition,
-      },
-      tradeDate: {
-        location: { bitOffset: 320, byteOffset: 40, mask: 0 },
-        type: LocalDateTypeDefinition,
-      },
-      valueDate: {
-        location: { bitOffset: 352, byteOffset: 44, mask: 0 },
-        type: LocalDateTypeDefinition,
-      },
-    },
-    jsonConverter: undefined,
-  }
-}
-
-function TradeStatusTypeDefinition() {
-  return {
-    type: "enum" as const,
-    cases: [
-      { name: "Pending" as const, value: BigInt("1") },
-      { name: "Done" as const, value: BigInt("2") },
-      { name: "Rejected" as const, value: BigInt("3") },
-    ],
-    description: "" as const,
-    encoding: "Int8" as const,
-  }
 }
 
 function ExecuteTradeRequestTypeDefinition() {
@@ -1686,6 +1686,36 @@ export const WorkflowService = {
     )
   },
 }
+export const TradeService = {
+  trades: (): Observable<Trade> => {
+    return HydraPlatform.listen$(
+      {
+        serviceName: "TradeService",
+        methodName: "trades",
+        inboundStream: "none",
+        outboundStream: "many",
+        requestRouteKey: BigInt("-1097229152485494784"),
+        responseRouteKey: BigInt("2554439426220476416"),
+        annotations: [],
+      },
+      allocators.responseAllocator(TradeTypeDefinition),
+    )
+  },
+  getTrades: (): Observable<Trade> => {
+    return HydraPlatform.requestStream$(
+      {
+        serviceName: "TradeService",
+        methodName: "getTrades",
+        inboundStream: "empty",
+        outboundStream: "many",
+        requestRouteKey: BigInt("-7994767111825425152"),
+        responseRouteKey: BigInt("2586522596259981568"),
+        annotations: [],
+      },
+      allocators.responseAllocator(TradeTypeDefinition),
+    )
+  },
+}
 
 export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiation.Compatibility> {
   return HydraPlatform.VersionNegotiation.VersionNegotiationService.checkCompatibility(
@@ -1776,7 +1806,18 @@ export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiatio
           methodName: "subscribe",
           methodRouteKey: BigInt("-5880065670994126848"),
         },
+        {
+          serviceName: "TradeService",
+          methodName: "trades",
+          methodRouteKey: BigInt("-1097229152485494784"),
+        },
+        {
+          serviceName: "TradeService",
+          methodName: "getTrades",
+          methodRouteKey: BigInt("-7994767111825425152"),
+        },
       ],
+      checkHandlersAreRegistered: true,
     },
   )
 }

@@ -1,4 +1,3 @@
-import { useLayoutEffect, useRef } from "react"
 import {
   D3DragEvent,
   drag,
@@ -8,8 +7,9 @@ import {
   forceY,
   select,
 } from "d3"
-import { BubbleChartNode, nodes$, useData, data$ } from "./data"
+import { useLayoutEffect, useRef } from "react"
 import { BubbleChart, Title } from "../styled"
+import { BubbleChartNode, data$, nodes$, useData } from "./data"
 
 // extra pixel amount that nodes in the chart repel each other within
 // for collision detection purposes, a nodes radius is r + COLLIDE_BORDER_WIDTH pixels

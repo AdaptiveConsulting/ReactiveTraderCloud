@@ -142,11 +142,15 @@ export const formatWithScale = (num: number, format: NumberFormatter) => {
 type SeparatorGetter = (_locale: string) => string
 
 export const getThousandsSeparator: SeparatorGetter = (_locale) => {
-  return new Intl.NumberFormat(_locale).formatToParts(1000.5)[1].value
+  return new Intl.NumberFormat(_locale)
+    .formatToParts(10000.5)
+    .find((part) => part.type === "group")?.value!
 }
 
 export const getDecimalSeparator: SeparatorGetter = (_locale) => {
-  return new Intl.NumberFormat(_locale).formatToParts(1000.5)[3].value
+  return new Intl.NumberFormat(_locale)
+    .formatToParts(10000.5)
+    .find((part) => part.type === "decimal")?.value!
 }
 
 /**
