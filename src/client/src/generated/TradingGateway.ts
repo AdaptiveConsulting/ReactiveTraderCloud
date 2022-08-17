@@ -1777,7 +1777,6 @@ export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiatio
           methodRouteKey: BigInt("-5880065670994126848"),
         },
       ],
-      checkHandlersAreRegistered: true,
     },
   )
 }
