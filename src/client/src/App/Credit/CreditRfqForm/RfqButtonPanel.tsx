@@ -12,7 +12,6 @@ import {
 } from "./CounterpartySelection"
 import {
   selectedInstrumentId$,
-  setCusip,
   setSelectedInstrumentId,
   useSelectedInstrument,
 } from "./CreditInstrumentSearch"
@@ -88,7 +87,6 @@ export const RfqButtonPanel: FC = () => {
 
   const clearRfqTicket = () => {
     setDirection(Direction.Buy)
-    setCusip("")
     setSelectedInstrumentId(null)
     setQuantity("")
     setSelectedCounterpartyIds([])

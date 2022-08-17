@@ -4,13 +4,14 @@ import {
 } from "@/services/credit"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { FC, useState, useEffect, useRef } from "react"
+import { useCombobox } from "downshift"
+import { FC, forwardRef, useCallback, useMemo, useRef, useState } from "react"
 import { FaSearch } from "react-icons/fa"
 import { map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
 import { CusipWithBenchmark } from "../common/CusipWithBenchmark"
 
-const SearchWrapper = styled.div`
+const InstrumentSearchWrapper = styled.div`
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -22,39 +23,14 @@ const InputWrapper = styled.div`
   flex: 1 1 0;
 `
 
-interface Hideable {
-  visible: boolean
-}
-
-const CreditInstrument = styled.div<Hideable>`
+const CreditInstrument = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
 `
 
-const SearchInput = styled.input<Hideable>`
-  display: flex;
-  padding: 6px;
-  width: 100%;
-  border-radius: 3px;
-  border: 1px solid ${({ theme }) => theme.primary[2]};
-  color: ${({ theme }) => theme.core.textColor};
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  outline: none;
-
-  &:focus {
-    outline: none !important;
-    border-color: ${({ theme }) => theme.accents.primary.base};
-  }
-`
-
 const InstrumentName = styled.div`
   font-size: 15px;
-`
-
-const MissingInstrument = styled.div`
-  font-size: 15px;
-  color: ${({ theme }) => theme.accents.negative.base};
 `
 
 const IconWrapper = styled.div`
@@ -74,10 +50,6 @@ const IconWrapper = styled.div`
   }
 `
 
-const [cusip$, setCusip] = createSignal<string>()
-const [useCusip] = bind(cusip$, "")
-export { setCusip }
-
 export const [selectedInstrumentId$, setSelectedInstrumentId] =
   createSignal<number | null>()
 export const [useSelectedInstrument] = bind(
@@ -94,72 +66,178 @@ export const [useSelectedInstrument] = bind(
   null,
 )
 
-export const CreditInstrumentSearch: FC = () => {
-  const [showInput, setShowInput] = useState(true)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const instruments = useCreditInstrumentsByCusip()
-  const cusip = useCusip()
-  const selectedInstrument = useSelectedInstrument()
+const useInputFocus = () => {
+  const shouldFocusInputOnMount = useRef(false)
+  const inputRef = useRef<HTMLInputElement | null>()
 
-  useEffect(() => {
-    if (cusip === "" && inputRef.current) {
+  const inputRefCallback = useCallback((node: HTMLInputElement | null) => {
+    inputRef.current = node
+    if (node && shouldFocusInputOnMount.current) {
+      node.focus()
+      shouldFocusInputOnMount.current = false
+    }
+  }, [])
+
+  const focusInput = useCallback(() => {
+    if (inputRef.current) {
       inputRef.current.focus()
+    } else {
+      shouldFocusInputOnMount.current = true
     }
-  }, [cusip])
+  }, [])
 
-  useEffect(() => {
-    if (selectedInstrument === null) {
-      showAndResetInput()
-    }
-  }, [selectedInstrument])
+  return { inputRef: inputRefCallback, focusInput }
+}
 
-  useEffect(() => {
-    if (cusip === "") {
-      setSelectedInstrumentId(null)
-    } else if (cusip in instruments) {
-      setShowInput(false)
-      setSelectedInstrumentId(instruments[cusip].id)
-    } else if (cusip.length >= 9) {
-      setShowInput(false)
-    }
-  }, [cusip, instruments])
+export const CreditInstrumentSearch: FC = () => {
+  const selectedInstrument = useSelectedInstrument()
+  const { inputRef, focusInput } = useInputFocus()
 
   const showAndResetInput = () => {
-    setShowInput(true)
-    setCusip("")
+    setSelectedInstrumentId(null)
+    focusInput()
   }
 
   return (
-    <SearchWrapper>
+    <InstrumentSearchWrapper>
       <InputWrapper>
-        {showInput ? (
-          <SearchInput
-            visible={showInput}
-            ref={inputRef}
-            type="text"
-            placeholder="Enter a CUSIP"
-            value={cusip}
-            onChange={(e) => setCusip(e.currentTarget.value)}
-          />
-        ) : (
-          <CreditInstrument visible={!showInput}>
-            {selectedInstrument !== null ? (
-              <>
-                <InstrumentName>{selectedInstrument.name}</InstrumentName>
-                <CusipWithBenchmark
-                  cusip={selectedInstrument.cusip}
-                  benchmark={selectedInstrument.benchmark}
-                />
-              </>
-            ) : (
-              <MissingInstrument>No results found</MissingInstrument>
-            )}
+        {selectedInstrument ? (
+          <CreditInstrument>
+            <InstrumentName>{selectedInstrument.name}</InstrumentName>
+            <CusipWithBenchmark
+              cusip={selectedInstrument.cusip}
+              benchmark={selectedInstrument.benchmark}
+            />
           </CreditInstrument>
+        ) : (
+          <SearchBox ref={inputRef} />
         )}
       </InputWrapper>
-      <IconWrapper>
-        <FaSearch onClick={showAndResetInput} size="0.75em" />
+      <IconWrapper onClick={showAndResetInput}>
+        <FaSearch size="0.75em" />
       </IconWrapper>
-    </SearchWrapper>
+    </InstrumentSearchWrapper>
   )
 }
+
+const SearchWrapper = styled.div`
+  position: relative;
+`
+
+const SearchInput = styled.input`
+  display: flex;
+  padding: 6px;
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid ${({ theme }) => theme.primary[2]};
+  color: ${({ theme }) => theme.core.textColor};
+  background-color: ${({ theme }) => theme.core.darkBackground};
+  outline: none;
+  cursor: text;
+
+  &:focus {
+    outline: none !important;
+    border-color: ${({ theme }) => theme.accents.primary.base};
+  }
+`
+
+const SearchResults = styled.div`
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  border-radius: 3px;
+  color: ${({ theme }) => theme.core.textColor};
+  background: ${({ theme }) => theme.core.darkBackground};
+`
+
+const SearchResultItem = styled.div`
+  padding: 6px 12px;
+
+  &[aria-selected="true"] {
+    background-color: ${({ theme }) => theme.core.backgroundHoverColor};
+  }
+`
+
+const MissingInstrument = styled.div`
+  padding: 6px 12px;
+  font-size: 15px;
+`
+
+const SearchBox = forwardRef<HTMLInputElement>((_, inputRef) => {
+  const instruments = useCreditInstrumentsByCusip()
+  const [inputValue, setInputValue] = useState<string>("")
+
+  const filteredInstruments = useMemo(() => {
+    return Object.values(instruments).filter(
+      (instrument) =>
+        !inputValue ||
+        instrument.cusip.toLowerCase().includes(inputValue.toLowerCase()) ||
+        instrument.name.toLowerCase().includes(inputValue.toLowerCase()),
+    )
+  }, [inputValue, instruments])
+
+  const {
+    isOpen,
+    getMenuProps,
+    getInputProps,
+    getComboboxProps,
+    getItemProps,
+    openMenu,
+  } = useCombobox({
+    onInputValueChange({ inputValue, type }) {
+      console.log(type)
+      setInputValue(inputValue ?? "")
+    },
+    items: filteredInstruments,
+    itemToString(instrument) {
+      return instrument ? `${instrument.cusip} - ${instrument.name}` : ""
+    },
+    inputValue,
+    onSelectedItemChange: ({ selectedItem, type }) => {
+      if (type !== useCombobox.stateChangeTypes.InputBlur) {
+        setSelectedInstrumentId(selectedItem?.id ?? null)
+      }
+    },
+    defaultHighlightedIndex: 0,
+  })
+
+  const renderItems = () => {
+    if (filteredInstruments.length === 0) {
+      return <MissingInstrument>No results found...</MissingInstrument>
+    }
+    return (
+      <>
+        {filteredInstruments.map((instrument, index) => (
+          <SearchResultItem
+            key={instrument.id}
+            {...getItemProps({
+              index,
+              item: instrument,
+            })}
+          >
+            <InstrumentName>{instrument.name}</InstrumentName>
+            <CusipWithBenchmark
+              cusip={instrument.cusip}
+              benchmark={instrument.benchmark}
+            />
+          </SearchResultItem>
+        ))}
+      </>
+    )
+  }
+
+  return (
+    <SearchWrapper {...getComboboxProps()}>
+      <SearchInput
+        {...getInputProps({
+          placeholder: "Enter a CUSIP",
+          onFocus: () => openMenu(),
+          ref: inputRef,
+        })}
+      />
+      <SearchResults {...getMenuProps()}>
+        {isOpen && renderItems()}
+      </SearchResults>
+    </SearchWrapper>
+  )
+})
