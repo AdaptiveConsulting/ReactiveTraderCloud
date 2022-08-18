@@ -1,6 +1,7 @@
 import { Loader } from "@/components/Loader"
 import {
   DealerBody,
+  Direction,
   QuoteBody,
   QuoteState,
   RfqState,
@@ -10,6 +11,8 @@ import {
   creditRfqsById$,
   RfqDetails,
   useCreditRfqDetails,
+  useLatestQuote,
+  useQuoteRowHighlight,
 } from "@/services/credit"
 import { customNumberFormatter } from "@/utils"
 import { bind } from "@react-rxjs/core"
@@ -32,6 +35,7 @@ import {
   NoRfqsWrapper,
   Price,
   Quantity,
+  LatestQuoteDot,
   QuoteRow,
   QuotesContainer,
 } from "./styled"
@@ -57,17 +61,30 @@ const Quote = ({
   dealer,
   quote,
   rfqState,
+  direction,
+  highlight,
+  latest,
 }: {
   dealer: DealerBody
   quote: QuoteBody | undefined
   rfqState: RfqState
+  direction: Direction
+  highlight: boolean
+  latest: boolean
 }) => {
   return (
-    <QuoteRow quoteActive={!!quote && rfqState === RfqState.Open}>
+    <QuoteRow
+      quoteActive={!!quote && rfqState === RfqState.Open}
+      highlight={highlight}
+      direction={direction}
+    >
       <DealerName
         open={rfqState === RfqState.Open}
         accepted={quote?.state === QuoteState.Accepted}
       >
+        {latest && rfqState === RfqState.Open && (
+          <LatestQuoteDot direction={direction} />
+        )}
         {dealer?.name ?? "Dealer name not found"}
       </DealerName>
       <Price
@@ -99,13 +116,18 @@ const sortByPriceFunc =
 
 const Card = ({ id }: { id: number }) => {
   const rfqDetails = useCreditRfqDetails(id)
+  const highlightedRow = useQuoteRowHighlight(id)
+  const latestQuote = useLatestQuote(id)
 
   if (!rfqDetails) {
     return <Loader ariaLabel="Loading RFQ" />
   }
 
   return (
-    <CardContainer>
+    <CardContainer
+      direction={rfqDetails.direction}
+      live={rfqDetails.state === RfqState.Open}
+    >
       <CardHeader
         direction={rfqDetails.direction}
         instrumentId={rfqDetails.instrumentId}
@@ -115,16 +137,22 @@ const Card = ({ id }: { id: number }) => {
       <QuotesContainer>
         {rfqDetails.dealers
           .sort(sortByPriceFunc(rfqDetails.quotes))
-          .map((dealer) => (
-            <Quote
-              dealer={dealer}
-              quote={rfqDetails.quotes.find(
-                (quote) => quote.dealerId === dealer.id,
-              )}
-              rfqState={rfqDetails.state}
-              key={dealer.id}
-            />
-          ))}
+          .map((dealer) => {
+            const quote = rfqDetails.quotes.find(
+              (quote) => quote.dealerId === dealer.id,
+            )
+            return (
+              <Quote
+                key={dealer.id}
+                dealer={dealer}
+                quote={quote}
+                rfqState={rfqDetails.state}
+                direction={rfqDetails.direction}
+                highlight={!!quote && quote.id === highlightedRow}
+                latest={!!quote && quote.id === latestQuote}
+              />
+            )
+          })}
       </QuotesContainer>
       <CardFooter rfqDetails={rfqDetails} />
     </CardContainer>

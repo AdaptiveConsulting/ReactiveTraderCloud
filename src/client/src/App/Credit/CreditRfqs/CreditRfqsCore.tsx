@@ -2,7 +2,10 @@ import { Loader } from "@/components/Loader"
 import { Subscribe } from "@react-rxjs/core"
 import { FC } from "react"
 import styled from "styled-components"
-import { CreditRfqConfirmation } from "./CreditRfqConfirmation"
+import {
+  CreditRfqCreatedConfirmation,
+  CreditRfqAcceptedConfirmation,
+} from "./CreditRfqConfirmation"
 import { CreditRfqCards } from "./CreditRfqCards"
 import { CreditRfqsHeader } from "./CreditRfqsHeader"
 
@@ -19,7 +22,8 @@ export const CreditRfqsCore: FC = () => {
       <CreditRfqsCoreWrapper>
         <CreditRfqsHeader />
         <CreditRfqCards />
-        <CreditRfqConfirmation />
+        <CreditRfqCreatedConfirmation />
+        <CreditRfqAcceptedConfirmation />
       </CreditRfqsCoreWrapper>
     </Subscribe>
   )

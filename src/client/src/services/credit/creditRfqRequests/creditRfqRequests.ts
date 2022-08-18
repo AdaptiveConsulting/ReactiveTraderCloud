@@ -1,5 +1,6 @@
 import {
   AcceptQuoteRequest,
+  ACK_ACCEPT_QUOTE_RESPONSE,
   ACK_CREATE_RFQ_RESPONSE,
   CancelRfqRequest,
   CreateQuoteRequest,
@@ -35,6 +36,17 @@ export const createCreditQuote$ = (quoteRequest: CreateQuoteRequest) => {
   return WorkflowService.createQuote(quoteRequest)
 }
 
+export const [acceptedCreditRfq$, setAcceptedCreditRfq] =
+  createSignal<{ quoteId: number }>()
+
 export const acceptCreditQuote$ = (acceptRequest: AcceptQuoteRequest) => {
-  return WorkflowService.acceptQuote(acceptRequest)
+  return WorkflowService.acceptQuote(acceptRequest).pipe(
+    tap((response) => {
+      if (response.type === ACK_ACCEPT_QUOTE_RESPONSE) {
+        setAcceptedCreditRfq({
+          quoteId: acceptRequest.quoteId,
+        })
+      }
+    }),
+  )
 }

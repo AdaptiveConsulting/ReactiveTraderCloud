@@ -184,13 +184,12 @@ const SearchBox = forwardRef<HTMLInputElement>((_, inputRef) => {
     getItemProps,
     openMenu,
   } = useCombobox({
-    onInputValueChange({ inputValue, type }) {
-      console.log(type)
+    onInputValueChange({ inputValue }) {
       setInputValue(inputValue ?? "")
     },
     items: filteredInstruments,
     itemToString(instrument) {
-      return instrument ? `${instrument.cusip} - ${instrument.name}` : ""
+      return instrument?.cusip ?? ""
     },
     inputValue,
     onSelectedItemChange: ({ selectedItem, type }) => {
