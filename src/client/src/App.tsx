@@ -15,43 +15,39 @@ export async function initApp() {
   if (!import.meta.env.VITE_MOCKS) {
     initConnection()
   }
+  const { isCompatible, incompatibilityReasons } =
+    await checkTradingGatewayCompatibility()
 
-  try {
-    const { isCompatible, incompatibilityReasons } =
-      await checkTradingGatewayCompatibility()
-    ReactDOM.render(
-      <StrictMode>
-        <GlobalStyle />
-        <ThemeProvider>
-          <GlobalScrollbarStyle />
-          {isCompatible ? (
-            <MainApp />
-          ) : (
-            <IncompatibilityModal reasons={incompatibilityReasons} />
-          )}
-        </ThemeProvider>
-      </StrictMode>,
-      document.getElementById("root"),
-    )
+  registerNotifications()
 
-    if (isCompatible) {
-      registerNotifications()
+  ReactDOM.render(
+    <StrictMode>
+      <GlobalStyle />
+      <ThemeProvider>
+        <GlobalScrollbarStyle />
+        <IncompatibilityModal
+          isCompatible={isCompatible}
+          reasons={incompatibilityReasons}
+        />
+        <MainApp />
+      </ThemeProvider>
+    </StrictMode>,
+    document.getElementById("root"),
+  )
 
-      const { ga } = window
+  const { ga } = window
 
-      ga("create", {
-        trackingId: GA_TRACKING_ID,
-        transport: "beacon",
-      })
+  ga("create", {
+    trackingId: GA_TRACKING_ID,
+    transport: "beacon",
+  })
 
-      ga("set", {
-        dimension1: gaDimension,
-        dimension2: gaDimension,
-        dimension3: import.meta.env,
-        page: window.location.pathname,
-      })
+  ga("set", {
+    dimension1: gaDimension,
+    dimension2: gaDimension,
+    dimension3: import.meta.env,
+    page: window.location.pathname,
+  })
 
-      ga("send", "pageview")
-    }
-  } catch (e) {}
+  ga("send", "pageview")
 }

@@ -18,8 +18,10 @@ export async function checkTradingGatewayCompatibility(): Promise<Compatibility>
       map((response) => {
         if (response.type === "incompatible") {
           const incompatibilityReasons = response.payload.methods.map(
-            ({ method: { methodName, serviceName, methodRouteKey } }) =>
-              `${serviceName} ${methodName} ${methodRouteKey}`,
+            ({
+              method: { methodName, serviceName, methodRouteKey },
+              reason: { type },
+            }) => `${type} ${serviceName} ${methodName} ${methodRouteKey}`,
           )
           return {
             isCompatible: false,
