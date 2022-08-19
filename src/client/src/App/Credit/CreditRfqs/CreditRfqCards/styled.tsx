@@ -1,5 +1,6 @@
-import { ThemeName } from "@/theme"
-import styled from "styled-components"
+import { Direction } from "@/generated/TradingGateway"
+import { Theme, ThemeName } from "@/theme"
+import styled, { css, keyframes } from "styled-components"
 
 // Card
 
@@ -11,12 +12,21 @@ export const CreditRfqCardsWrapper = styled.div`
   flex: 1;
 `
 
-export const CardContainer = styled.div`
+export const CardContainer = styled.div<{
+  direction: Direction
+  live: boolean
+}>`
   display: flex;
   flex-direction: column;
   border-radius: 2px;
   width: 300px;
   height: 251px;
+
+  &:first-child {
+    ${({ theme, direction, live }) =>
+      live &&
+      `border: 1px solid ${theme.colors.spectrum.uniqueCollections[direction].base}`};
+  }
 `
 
 const Row = styled.div`
@@ -52,8 +62,41 @@ export const QuotesContainer = styled.div`
   background-color: ${({ theme }) => theme.core.lightBackground};
 `
 
-export const QuoteRow = styled(Row)<{ quoteActive: boolean }>`
+const flash = ({
+  theme,
+  direction,
+}: {
+  theme: Theme
+  direction: Direction
+}) => keyframes`
+    0% {
+      background-color: ${theme.primary.base};
+    }
+    50% {
+      background-color: ${
+        theme.colors.spectrum.uniqueCollections[direction][
+          theme.name === ThemeName.Dark ? "base" : "lighter"
+        ]
+      };
+    }
+    100% {
+      background-color: ${theme.primary.base};
+    }
+  `
+
+const highlightBackgroundColor = (direction: Direction) => css`
+  animation: ${({ theme }) => flash({ theme, direction })} 1s ease-in-out 3;
+`
+
+export const QuoteRow = styled(Row)<{
+  quoteActive: boolean
+  highlight: boolean
+  direction: Direction
+}>`
   justify-content: start;
+  ${({ highlight, direction }) =>
+    highlight && highlightBackgroundColor(direction)}
+
   &:nth-child(even) {
     background-color: ${({ theme }) => theme.core.darkBackground};
   }
@@ -67,11 +110,24 @@ export const QuoteRow = styled(Row)<{ quoteActive: boolean }>`
   }
 `
 
+export const LatestQuoteDot = styled.div<{ direction: Direction }>`
+  height: 4px;
+  width: 4px;
+  border-radius: 4px;
+  margin-right: 2px;
+  background-color: ${({ theme, direction }) =>
+    theme.colors.spectrum.uniqueCollections[direction][
+      theme.name === ThemeName.Dark ? "lighter" : "base"
+    ]};
+`
+
 // This color does not seem to be part of the palette
 export const DealerName = styled(RowText)<{
   open: boolean
   accepted: boolean
 }>`
+  display: flex;
+  align-items: center;
   color: ${({ theme, open, accepted }) => {
     if (open) {
       return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary.base

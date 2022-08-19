@@ -13,12 +13,19 @@ import {
   QuoteCreatedRfqUpdate,
 } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
-import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
+import {
+  filter,
+  map,
+  mergeMap,
+  scan,
+  startWith,
+  withLatestFrom,
+} from "rxjs/operators"
 import { QuoteDetails, RfqDetails } from "./types"
 import { withConnection } from "../../withConnection"
 import { creditInstruments$ } from "../creditInstruments"
 import { creditDealers$ } from "../creditDealers"
-import { Observable } from "rxjs"
+import { concat, Observable, timer } from "rxjs"
 
 const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
   withConnection(),
@@ -111,6 +118,12 @@ export const [useCreditRfqDetails, getCreditRfqDetails$] = bind<
   creditRfqsById$.pipe(map((creditRfqsById) => creditRfqsById[rfqId])),
 )
 
+export const creditQuotes$ = creditRfqsById$.pipe(
+  map((creditRfqsById) =>
+    Object.values(creditRfqsById).flatMap((creditRfq) => creditRfq.quotes),
+  ),
+)
+
 const endOfRfqStateOfWorld$ = creditRfqUpdates$.pipe(
   filter(
     (update) =>
@@ -142,4 +155,26 @@ export const quotesReceived$: Observable<QuoteDetails> = creditRfqUpdates$.pipe(
       quantity: rfq.quantity,
     }
   }),
+  shareLatest(),
+)
+
+export const [useQuoteRowHighlight] = bind(
+  (rfqId: number) =>
+    concat([
+      quotesReceived$.pipe(
+        filter((quote) => quote.rfqId === rfqId),
+        map((quote) => quote.id),
+      ),
+      timer(4000).pipe(map(() => null)),
+    ]).pipe(mergeMap((quoteId) => quoteId)),
+  null,
+)
+
+export const [useLatestQuote] = bind(
+  (rfqId: number) =>
+    quotesReceived$.pipe(
+      filter((quote) => quote.rfqId === rfqId),
+      map((quote) => quote.id),
+    ),
+  null,
 )
