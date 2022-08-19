@@ -10,6 +10,8 @@ import { bind, shareLatest } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 import { withConnection } from "../../withConnection"
 
+export const ADAPTIVE_BANK_NAME = "Adaptive Bank"
+
 export const [useCreditDealers, creditDealers$] = bind(
   DealerService.subscribe().pipe(
     withConnection(),

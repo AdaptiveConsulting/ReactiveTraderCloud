@@ -1,7 +1,9 @@
-import { useCreditDealers } from "@/services/credit"
+import { DealerBody } from "@/generated/TradingGateway"
+import { ADAPTIVE_BANK_NAME, creditDealers$ } from "@/services/credit"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
+import { map } from "rxjs/operators"
 import styled from "styled-components"
 
 const CounterpartySelectionWrapper = styled.div`
@@ -54,8 +56,24 @@ export const [selectedCounterpartyIds$, setSelectedCounterpartyIds] =
   createSignal<number[]>()
 export const [useSelectedCounterpartyIds] = bind(selectedCounterpartyIds$, [])
 
+// We always want the Adaptive Dealer to be at the top of the list
+const [useSortedCreditDealers] = bind(
+  creditDealers$.pipe(
+    map((dealers) =>
+      dealers.reduce((sortedDealers, dealer) => {
+        if (dealer.name === ADAPTIVE_BANK_NAME) {
+          sortedDealers.unshift(dealer)
+        } else {
+          sortedDealers.push(dealer)
+        }
+        return sortedDealers
+      }, [] as DealerBody[]),
+    ),
+  ),
+)
+
 export const CounterpartySelection: FC = () => {
-  const counterparties = useCreditDealers()
+  const counterparties = useSortedCreditDealers()
   const selectedCounterpartyIds = useSelectedCounterpartyIds()
 
   const onToggleCounterparty = (counterpartyId: number) => {
