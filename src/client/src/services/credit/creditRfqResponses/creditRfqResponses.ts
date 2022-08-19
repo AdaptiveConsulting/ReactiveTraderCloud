@@ -16,7 +16,7 @@ import {
   tap,
   withLatestFrom,
 } from "rxjs/operators"
-import { creditDealers$ } from "../creditDealers"
+import { ADAPTIVE_BANK_NAME, creditDealers$ } from "../creditDealers"
 import {
   createCreditQuote$,
   CreatedCreditRfq,
@@ -26,7 +26,6 @@ import { creditRfqsById$ } from "../creditRfqs/creditRfqs"
 
 // Keeping it short for demo purposes but could be driven by the actual RFQ duration value
 const DEALER_RFQ_RESPONSE_TIME_WINDOW_MILLIS = 30_000
-const ADAPTIVE_BANK_NAME = "Adaptive Bank"
 
 // Simulate other dealers responding to RFQs
 const dealersResponses$ = createdCreditRfq$.pipe(
@@ -106,9 +105,9 @@ function openDealerTicketForRfq(rfqId: string, dealerId: string) {
         .replace(":dealerId", dealerId),
     ),
     name: `CreditRFQ-${rfqId}-${dealerId}`,
-    width: 300,
+    width: 330,
     height: 286,
-    x: window.innerWidth - 300,
+    x: window.innerWidth - 330,
     y: window.innerHeight - 286,
   })
 }
