@@ -369,7 +369,23 @@ const newTradeId$ = merge(trades$, creditTrades$).pipe(
  * State hook that emits tradeId of row to highlight for x seconds
  * highlighted row will be either from manually updating tradeRowHighlight$ or a new trade
  */
-export const [useTradeRowHighlight] = bind(
+export const [useFxTradeRowHighlight] = bind(
+  merge([
+    tradeRowHighlight$,
+    tradeRowHighlight$.pipe(
+      delay(3000),
+      map(() => undefined),
+    ),
+    newTradeId$,
+    newTradeId$.pipe(
+      delay(1000),
+      map(() => undefined),
+    ),
+  ]).pipe(mergeMap((tradeId) => tradeId)),
+  null,
+)
+
+export const [useCreditTradeRowHighlight] = bind(
   merge([
     tradeRowHighlight$,
     tradeRowHighlight$.pipe(

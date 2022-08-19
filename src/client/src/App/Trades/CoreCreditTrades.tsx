@@ -6,7 +6,7 @@ import { ColDefContext, ColFieldsContext, Trades$Context } from "./Context"
 import { TradesFooter } from "./TradesFooter"
 import { TradesGridInner, TradesGridInnerProps } from "./TradesGrid/TradesGrid"
 import { TradesHeader } from "./TradesHeader"
-import { useTradeRowHighlight } from "./TradesState"
+import { useCreditTradeRowHighlight } from "./TradesState"
 import { creditColDef, creditColFields } from "./TradesState/colConfig"
 
 const TradesStyle = styled.div`
@@ -17,7 +17,7 @@ const TradesStyle = styled.div`
 `
 
 const TradesGrid: React.FC<TradesGridInnerProps<CreditTrade>> = (props) => {
-  const highlightedRow = useTradeRowHighlight()
+  const highlightedRow = useCreditTradeRowHighlight()
   return <TradesGridInner highlightedRow={highlightedRow} {...props} />
 }
 
