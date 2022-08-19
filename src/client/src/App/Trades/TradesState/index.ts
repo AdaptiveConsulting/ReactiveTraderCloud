@@ -29,5 +29,6 @@ export {
   useTableTrades,
   useFilterFields,
   onTradeRowHighlight,
-  useTradeRowHighlight,
+  useFxTradeRowHighlight,
+  useCreditTradeRowHighlight,
 } from "./tableTrades"

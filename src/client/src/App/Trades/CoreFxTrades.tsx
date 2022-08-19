@@ -9,7 +9,7 @@ import { ColDefContext, ColFieldsContext, Trades$Context } from "./Context"
 import { TradesFooter } from "./TradesFooter"
 import { TradesGridInner, TradesGridInnerProps } from "./TradesGrid"
 import { TradesHeader } from "./TradesHeader"
-import { useTradeRowHighlight } from "./TradesState"
+import { useFxTradeRowHighlight } from "./TradesState"
 import { fxColDef, fxColFields } from "./TradesState/colConfig"
 
 const TradesStyle = styled.div`
@@ -22,7 +22,7 @@ const TradesStyle = styled.div`
 const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
 
 const TradesGrid: React.FC<TradesGridInnerProps<FxTrade>> = (props) => {
-  const highlightedRow = useTradeRowHighlight()
+  const highlightedRow = useFxTradeRowHighlight()
   const tryBroadcastContext = useCallback((trade: FxTrade) => {
     const context = {
       type: "fdc3.instrument",
