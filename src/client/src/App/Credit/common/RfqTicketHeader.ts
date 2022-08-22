@@ -35,7 +35,8 @@ export const DirectionLabel = styled.div<WithDirection & WithTerminated>`
   padding: ${({ direction }) =>
     direction === Direction.Buy ? "0 0 0 4px" : "0 4px 0 0"};
   height: 100%;
-  width: 70px;
+  width: 72px;
+  white-space: pre-wrap;
   font-size: 10px;
   font-weight: 700;
   color: ${({ theme, terminated }) =>
@@ -66,6 +67,11 @@ export const DirectionLabel = styled.div<WithDirection & WithTerminated>`
     -webkit-transform: skewX(-24deg);
     -ms-transform: skewX(-24deg);
     transform: skewX(-24deg);
+  }
+
+  div {
+    width: 50px;
+    text-align: center;
   }
 `
 
