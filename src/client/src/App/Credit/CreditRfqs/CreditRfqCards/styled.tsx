@@ -4,11 +4,12 @@ import styled, { css, keyframes } from "styled-components"
 
 // Card
 
-export const CreditRfqCardsWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+export const CreditRfqCardsWrapper = styled.div<{ empty: boolean }>`
+  display: ${({ empty }) => (empty ? "flex" : "grid")};
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 8px;
   align-content: start;
-  gap: 8px;
+  margin-right: 8px;
   flex: 1;
 `
 
@@ -19,7 +20,7 @@ export const CardContainer = styled.div<{
   display: flex;
   flex-direction: column;
   border-radius: 2px;
-  width: 300px;
+  width: 100%;
   height: 251px;
 
   &:first-child {
