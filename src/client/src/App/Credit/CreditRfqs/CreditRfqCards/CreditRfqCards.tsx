@@ -194,7 +194,7 @@ export const CreditRfqCards: FC = () => {
   const rfqIds = useFilteredCreditRfqIds()
 
   return (
-    <CreditRfqCardsWrapper>
+    <CreditRfqCardsWrapper empty={rfqIds.length === 0}>
       {rfqIds.length > 0 ? (
         rfqIds.map((id) => <Card id={id} key={id} />)
       ) : (
