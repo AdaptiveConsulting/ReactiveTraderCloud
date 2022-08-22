@@ -21,7 +21,6 @@ import { FC } from "react"
 import { FaCheckCircle } from "react-icons/fa"
 import { combineLatest } from "rxjs"
 import { exhaustMap, map } from "rxjs/operators"
-import { isRfqTerminated } from "../../common"
 import { ALL_RFQ_STATES, selectedRfqState$ } from "../selectedRfqState"
 import { CardFooter, removedTerminatedRfqIds$ } from "./CardFooter"
 import { CardHeader } from "./CardHeader"
@@ -131,7 +130,7 @@ const Card = ({ id }: { id: number }) => {
       <CardHeader
         direction={rfqDetails.direction}
         instrumentId={rfqDetails.instrumentId}
-        terminated={isRfqTerminated(rfqDetails.state)}
+        rfqState={rfqDetails.state}
       />
       <Details quantity={rfqDetails.quantity} />
       <QuotesContainer>
