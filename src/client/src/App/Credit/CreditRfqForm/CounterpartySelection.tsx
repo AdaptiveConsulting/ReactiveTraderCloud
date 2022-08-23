@@ -1,6 +1,6 @@
 import { DealerBody } from "@/generated/TradingGateway"
 import { ADAPTIVE_BANK_NAME, creditDealers$ } from "@/services/credit"
-import { bind } from "@react-rxjs/core"
+import { bind, SUSPENSE } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
 import { map } from "rxjs/operators"
@@ -59,16 +59,19 @@ export const [useSelectedCounterpartyIds] = bind(selectedCounterpartyIds$, [])
 // We always want the Adaptive Dealer to be at the top of the list
 const [useSortedCreditDealers] = bind(
   creditDealers$.pipe(
-    map((dealers) =>
-      dealers.reduce((sortedDealers, dealer) => {
+    map((dealers) => {
+      const sortedDealers = dealers.reduce((sortedDealers, dealer) => {
         if (dealer.name === ADAPTIVE_BANK_NAME) {
           sortedDealers.unshift(dealer)
         } else {
           sortedDealers.push(dealer)
         }
         return sortedDealers
-      }, [] as DealerBody[]),
-    ),
+      }, [] as DealerBody[])
+
+      // suspend until we have a least one dealer as it makes no sense to render the RFQ form without being able to select a dealer
+      return sortedDealers.length > 0 ? sortedDealers : SUSPENSE
+    }),
   ),
 )
 
