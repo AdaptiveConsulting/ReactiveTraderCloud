@@ -21,7 +21,6 @@ const CreditRfqFormCoreWrapper = styled.div`
   height: 100%;
   width: 355px;
   margin: auto;
-  overflow: hidden;
   background: ${({ theme }) => theme.core.lightBackground};
   color: ${({ theme }) => theme.core.textColor};
 `
@@ -35,9 +34,9 @@ const CreditRfqHeader = styled.header`
 
 const CreditRfqSection = styled.div<{ fixed?: boolean }>`
   padding: 0 8px 8px;
-  flex: ${({ fixed }) => (fixed ? 0 : 1)};
+  flex: ${({ fixed }) => `0 ${fixed ? 0 : 1} auto`};
   ${({ fixed }) => (fixed ? "" : "min-height: 0;")}
-  display:flex;
+  display: flex;
   flex-direction: column;
 
   &:not(:first-of-type) {
