@@ -1,31 +1,33 @@
 import {
   DealerBody,
+  END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
   InstrumentBody,
+  QuoteCreatedRfqUpdate,
   QuoteState,
   QUOTE_ACCEPTED_RFQ_UPDATE,
   QUOTE_CREATED_RFQ_UPDATE,
+  RfqState,
   RfqUpdate,
   RFQ_CLOSED_RFQ_UPDATE,
   RFQ_CREATED_RFQ_UPDATE,
   START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
   WorkflowService,
-  END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
-  QuoteCreatedRfqUpdate,
 } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
+import { Observable, of, timer } from "rxjs"
 import {
+  concatWith,
   filter,
   map,
-  mergeMap,
   scan,
   startWith,
+  switchMap,
   withLatestFrom,
 } from "rxjs/operators"
-import { QuoteDetails, RfqDetails } from "./types"
 import { withConnection } from "../../withConnection"
-import { creditInstruments$ } from "../creditInstruments"
 import { creditDealers$ } from "../creditDealers"
-import { concat, Observable, timer } from "rxjs"
+import { creditInstruments$ } from "../creditInstruments"
+import { QuoteDetails, RfqDetails } from "./types"
 
 const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
   withConnection(),
@@ -134,45 +136,53 @@ const endOfRfqStateOfWorld$ = creditRfqUpdates$.pipe(
   startWith(false),
 )
 
-export const quotesReceived$: Observable<QuoteDetails> = creditRfqUpdates$.pipe(
-  withLatestFrom(endOfRfqStateOfWorld$),
-  filter(([_update, endOfRfqStateOfWorld]) => endOfRfqStateOfWorld),
-  map(([update, _endOfRfqStateOfWorld]) => update),
-  filter(
-    (update): update is QuoteCreatedRfqUpdate =>
-      update.type === QUOTE_CREATED_RFQ_UPDATE,
-  ),
-  withLatestFrom(creditRfqsById$),
-  map(([update, creditRfqsById]) => {
-    const rfq = creditRfqsById[update.payload.rfqId]
-    return {
-      ...update.payload,
-      instrument: rfq.instrument,
-      dealer:
-        rfq.dealers.find((dealer) => dealer.id === update.payload.dealerId) ??
-        null,
-      direction: rfq.direction,
-      quantity: rfq.quantity,
-    }
-  }),
-  shareLatest(),
-)
+export const lastQuoteReceived$: Observable<QuoteDetails> =
+  creditRfqUpdates$.pipe(
+    withLatestFrom(endOfRfqStateOfWorld$),
+    filter(([_update, endOfRfqStateOfWorld]) => endOfRfqStateOfWorld),
+    map(([update, _endOfRfqStateOfWorld]) => update),
+    filter(
+      (update): update is QuoteCreatedRfqUpdate =>
+        update.type === QUOTE_CREATED_RFQ_UPDATE,
+    ),
+    withLatestFrom(creditRfqsById$),
+    map(([update, creditRfqsById]) => {
+      const rfq = creditRfqsById[update.payload.rfqId]
+      return {
+        ...update.payload,
+        instrument: rfq.instrument,
+        dealer:
+          rfq.dealers.find((dealer) => dealer.id === update.payload.dealerId) ??
+          null,
+        direction: rfq.direction,
+        quantity: rfq.quantity,
+      }
+    }),
+    shareLatest(),
+  )
 
 export const [useQuoteRowHighlight] = bind(
   (rfqId: number) =>
-    concat([
-      quotesReceived$.pipe(
-        filter((quote) => quote.rfqId === rfqId),
-        map((quote) => quote.id),
+    lastQuoteReceived$.pipe(
+      withLatestFrom(
+        creditRfqsById$.pipe(map((creditRfqsById) => creditRfqsById[rfqId])),
       ),
-      timer(4000).pipe(map(() => null)),
-    ]).pipe(mergeMap((quoteId) => quoteId)),
+      filter(
+        ([quote, rfqDetails]) =>
+          quote.rfqId === rfqId &&
+          rfqDetails &&
+          rfqDetails.state === RfqState.Open,
+      ),
+      switchMap(([quote]) => {
+        return of(quote.id).pipe(concatWith(timer(4000).pipe(map(() => null))))
+      }),
+    ),
   null,
 )
 
 export const [useLatestQuote] = bind(
   (rfqId: number) =>
-    quotesReceived$.pipe(
+    lastQuoteReceived$.pipe(
       filter((quote) => quote.rfqId === rfqId),
       map((quote) => quote.id),
     ),

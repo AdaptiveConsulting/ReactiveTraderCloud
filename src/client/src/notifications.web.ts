@@ -2,7 +2,7 @@ import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { executions$ } from "@/services/executions/executions"
 import { formatNumber } from "@/utils"
 import { Subscription } from "rxjs"
-import { QuoteDetails, quotesReceived$ } from "./services/credit"
+import { QuoteDetails, lastQuoteReceived$ } from "./services/credit"
 
 const sendNotification = (executionTrade: ExecutionTrade) => {
   const notification = {
@@ -109,7 +109,7 @@ export async function registerCreditNotifications() {
     await notificationsGranted()
     console.log("Notifications permission granted.")
 
-    quotesReceivedSubscription = quotesReceived$.subscribe(
+    quotesReceivedSubscription = lastQuoteReceived$.subscribe(
       (quote) => {
         sendCreditQuoteNotification(quote)
       },
