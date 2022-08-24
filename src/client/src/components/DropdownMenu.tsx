@@ -56,17 +56,17 @@ const AlignedDown = styled(FaChevronDown)`
   top: 2px;
 `
 
-interface Props {
-  selectedOption?: string
-  options: string[]
-  onSelectionChange: (selection: string) => void
+interface Props<T extends string> {
+  selectedOption?: T
+  options: readonly T[]
+  onSelectionChange: (selection: T) => void
 }
 
-export const DropdownMenu: React.FC<Props> = ({
+export const DropdownMenu = <T extends string>({
   selectedOption,
   options,
   onSelectionChange,
-}) => {
+}: Props<T>) => {
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
   const [selected, setSelected] = useState(selectedOption ?? options[0])
@@ -78,7 +78,7 @@ export const DropdownMenu: React.FC<Props> = ({
     }
   }, [selectedOption])
 
-  const handleSelection = (option: string) => {
+  const handleSelection = (option: T) => {
     setSelected(option)
     onSelectionChange(option)
   }
