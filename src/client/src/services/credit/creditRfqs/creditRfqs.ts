@@ -14,7 +14,6 @@ import {
   WorkflowService,
 } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
-import { Observable, of, timer } from "rxjs"
 import {
   concatWith,
   filter,
@@ -28,6 +27,8 @@ import { withConnection } from "../../withConnection"
 import { creditDealers$ } from "../creditDealers"
 import { creditInstruments$ } from "../creditInstruments"
 import { QuoteDetails, RfqDetails } from "./types"
+import { combineLatest, Observable, of, timer } from "rxjs"
+import { createSignal } from "@react-rxjs/utils"
 
 const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
   withConnection(),
@@ -118,6 +119,24 @@ export const [useCreditRfqDetails, getCreditRfqDetails$] = bind<
   RfqDetails | undefined
 >((rfqId: number) =>
   creditRfqsById$.pipe(map((creditRfqsById) => creditRfqsById[rfqId])),
+)
+
+export const [removedRfqIds$, removeRfqs] = createSignal<number[]>()
+export const clearedRfqIds$ = removedRfqIds$.pipe(
+  scan<number[], number[]>((acc, rfqIds) => [...acc, ...rfqIds], []),
+  startWith<number[]>([]),
+)
+
+export const [useExecutedRfqIds] = bind(
+  combineLatest([creditRfqsById$, clearedRfqIds$]).pipe(
+    map(([creditRfqsById, clearedRfqIds]) =>
+      Object.values(creditRfqsById)
+        .filter((creditRfq) => creditRfq.state !== RfqState.Open)
+        .map((creditRfq) => creditRfq.id)
+        .filter((creditRfqId) => !clearedRfqIds.includes(creditRfqId)),
+    ),
+  ),
+  [],
 )
 
 export const creditQuotes$ = creditRfqsById$.pipe(

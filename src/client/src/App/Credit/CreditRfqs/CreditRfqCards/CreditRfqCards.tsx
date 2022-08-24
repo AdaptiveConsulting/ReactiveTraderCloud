@@ -8,6 +8,7 @@ import {
 } from "@/generated/TradingGateway"
 import {
   acceptCreditQuote$,
+  clearedRfqIds$,
   creditRfqsById$,
   RfqDetails,
   useCreditRfqDetails,
@@ -22,7 +23,7 @@ import { FaCheckCircle } from "react-icons/fa"
 import { combineLatest } from "rxjs"
 import { exhaustMap, map } from "rxjs/operators"
 import { ALL_RFQ_STATES, selectedRfqState$ } from "../selectedRfqState"
-import { CardFooter, removedTerminatedRfqIds$ } from "./CardFooter"
+import { CardFooter } from "./CardFooter"
 import { CardHeader } from "./CardHeader"
 import {
   AcceptQuoteButton,
@@ -167,12 +168,8 @@ function timeRemainingComparator(rfq1: RfqDetails, rfq2: RfqDetails): number {
 }
 
 const [useFilteredCreditRfqIds] = bind(
-  combineLatest([
-    creditRfqsById$,
-    selectedRfqState$,
-    removedTerminatedRfqIds$,
-  ]).pipe(
-    map(([creditRfqsById, selectedRfqState, removedTerminatedRfqIds]) => {
+  combineLatest([creditRfqsById$, selectedRfqState$, clearedRfqIds$]).pipe(
+    map(([creditRfqsById, selectedRfqState, clearedRfqIds]) => {
       const sortedRfqs = [...Object.values(creditRfqsById)].sort(
         timeRemainingComparator,
       )
@@ -183,7 +180,7 @@ const [useFilteredCreditRfqIds] = bind(
             selectedRfqState === ALL_RFQ_STATES ||
             rfqDetail.state === selectedRfqState,
         )
-        .filter((rfqDetail) => !removedTerminatedRfqIds.includes(rfqDetail.id))
+        .filter((rfqDetail) => !clearedRfqIds.includes(rfqDetail.id))
         .map(({ id }) => id)
     }),
   ),
