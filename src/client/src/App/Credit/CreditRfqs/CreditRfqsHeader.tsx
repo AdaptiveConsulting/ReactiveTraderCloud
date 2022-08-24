@@ -1,6 +1,8 @@
 import { DropdownMenu } from "@/components/DropdownMenu"
 import { RfqState } from "@/generated/TradingGateway"
+import { removeRfqs, useExecutedRfqIds } from "@/services/credit"
 import styled from "styled-components"
+import { ClearRfqsIcon } from "./ClearRfqsIcon"
 import {
   ALL_RFQ_STATES,
   onSelectRfqState,
@@ -8,7 +10,7 @@ import {
 } from "./selectedRfqState"
 
 const HeaderWrapper = styled.header`
-  padding: 1em 6px;
+  padding: 1em 8px 1em 6px;
   display: flex;
   justify-content: space-between;
 `
@@ -49,10 +51,25 @@ export const NavItem = styled.li<{ active: boolean }>`
 `
 
 const RightNav = styled.div`
+  display: flex;
+`
+
+const RfqStateDropdown = styled.div`
   display: none;
   @media (max-width: 915px) {
     display: block;
   }
+`
+
+const ClearRfqsButton = styled.button<{ disabled: boolean }>`
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.core.lightBackground};
+  ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
 `
 
 const getRfqStateText = (rfqState: string) => {
@@ -71,6 +88,7 @@ const getRfqStateText = (rfqState: string) => {
 export const CreditRfqsHeader: React.FC = () => {
   const rfqState = useSelectedRfqState()
   const options = [ALL_RFQ_STATES, ...Object.values(RfqState)]
+  const executedRfqIds = useExecutedRfqIds()
 
   return (
     <HeaderWrapper>
@@ -87,11 +105,19 @@ export const CreditRfqsHeader: React.FC = () => {
         ))}
       </LeftNav>
       <RightNav>
-        <DropdownMenu
-          selectedOption={rfqState}
-          options={options}
-          onSelectionChange={onSelectRfqState}
-        />
+        <RfqStateDropdown>
+          <DropdownMenu
+            selectedOption={rfqState}
+            options={options}
+            onSelectionChange={onSelectRfqState}
+          />
+        </RfqStateDropdown>
+        <ClearRfqsButton
+          onClick={() => removeRfqs(executedRfqIds)}
+          disabled={executedRfqIds.length === 0}
+        >
+          {ClearRfqsIcon}
+        </ClearRfqsButton>
       </RightNav>
     </HeaderWrapper>
   )

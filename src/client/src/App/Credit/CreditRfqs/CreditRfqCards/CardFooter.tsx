@@ -2,13 +2,14 @@ import { onTradeRowHighlight } from "@/App/Trades/TradesState"
 import { QuoteState, RfqState } from "@/generated/TradingGateway"
 import {
   cancelCreditRfq$,
+  removeRfqs,
   RfqDetails,
   useCreditDealerById,
 } from "@/services/credit"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
 import { FaCheckCircle, FaTrash } from "react-icons/fa"
-import { exhaustMap, scan, startWith } from "rxjs/operators"
+import { exhaustMap } from "rxjs/operators"
 import { rfqStateToLabel } from "../../common"
 import { CreditTimer } from "../../CreditTimer"
 import {
@@ -56,15 +57,9 @@ export const AcceptedFooterContent: FC<{
   )
 }
 
-const [removedTerminatedRfqId$, removeTerminatedRfq] = createSignal<number>()
-export const removedTerminatedRfqIds$ = removedTerminatedRfqId$.pipe(
-  scan<number, number[]>((acc, rfqId) => [...acc, rfqId], []),
-  startWith<number[]>([]),
-)
-
 export const TerminatedFooterContent: FC<{ rfqId: number; state: RfqState }> =
   ({ rfqId, state }) => (
-    <TerminatedCardState onClick={() => removeTerminatedRfq(rfqId)}>
+    <TerminatedCardState onClick={() => removeRfqs([rfqId])}>
       <FaTrash size={12} />
       {rfqStateToLabel(state)}
     </TerminatedCardState>
