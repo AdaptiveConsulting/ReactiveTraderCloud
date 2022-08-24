@@ -6,6 +6,7 @@ import {
   creditQuotes$,
   creditRfqsById$,
 } from "@/services/credit"
+import { customNumberFormatter } from "@/utils"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FaCheckCircle, FaTimes } from "react-icons/fa"
@@ -83,6 +84,8 @@ const [useRfqCreatedConfirmation] = bind(
   null,
 )
 
+const formatter = customNumberFormatter()
+
 export const CreditRfqCreatedConfirmation = () => {
   const confirmation = useRfqCreatedConfirmation()
 
@@ -94,8 +97,8 @@ export const CreditRfqCreatedConfirmation = () => {
 
   return confirmation ? (
     <ConfirmationPill direction={direction}>
-      You have sent an {direction} RFQ for {instrument?.name} to{" "}
-      {dealerIds.length} dealers with quantity {quantity}
+      You have sent an {direction} RFQ for {formatter(quantity)}{" "}
+      {instrument?.name} to {dealerIds.length} dealers
       <IconWrapper direction={direction} onClick={onDismissMessage}>
         <FaTimes />
       </IconWrapper>
@@ -145,8 +148,8 @@ export const CreditRfqAcceptedConfirmation = () => {
   return confirmation ? (
     <ConfirmationPill direction={rfq.direction}>
       <FaCheckCircle size={16} />
-      You have accepted a quote for {instrument.name} at a price of{" "}
-      {quote.price} from {dealer.name}
+      You have accepted a quote for {formatter(rfq.quantity)} {instrument.name}{" "}
+      @ ${quote.price} from {dealer.name}
       <IconWrapper direction={rfq.direction} onClick={onDismissMessage}>
         <FaTimes />
       </IconWrapper>

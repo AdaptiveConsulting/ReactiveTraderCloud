@@ -1,12 +1,12 @@
 import { Loader } from "@/components/Loader"
+import { QuoteState } from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
 import { FC } from "react"
 import styled from "styled-components"
-import { invertDirection, isRfqTerminated } from "../common"
+import { invertDirection } from "../common"
 import { CreditSellSideFooter } from "./CreditSellSideFooter"
 import { CreditSellSideHeader } from "./CreditSellSideHeader"
 import { CreditSellSideParameters } from "./CreditSellSideParameters"
-import { CreditSellSideTimer } from "./CreditSellSideTimer"
 
 const CreditSellSideWrapper = styled.div`
   display: flex;
@@ -36,8 +36,6 @@ export const CreditSellSideTicketCore: FC<CreditSellSideTicketCoreProps> = ({
     instrumentId,
     state,
     quantity,
-    creationTimestamp,
-    expirySecs,
   } = rfqDetails
 
   const direction = invertDirection(clientDirection)
@@ -46,25 +44,15 @@ export const CreditSellSideTicketCore: FC<CreditSellSideTicketCoreProps> = ({
       <CreditSellSideHeader
         direction={direction}
         instrumentId={instrumentId}
-        terminated={isRfqTerminated(state)}
+        rfqState={state}
+        quoteState={quote?.state ?? QuoteState.Pending}
       />
       <CreditSellSideParameters
         quote={quote}
         state={state}
         quantity={quantity}
       />
-      <CreditSellSideTimer
-        rfqState={state}
-        start={Number(creationTimestamp)}
-        end={Number(creationTimestamp) + expirySecs * 1000}
-      />
-      <CreditSellSideFooter
-        rfqId={rfqId}
-        dealerId={dealerId}
-        quote={quote}
-        state={state}
-        direction={direction}
-      />
+      <CreditSellSideFooter rfqId={rfqId} dealerId={dealerId} quote={quote} />
     </CreditSellSideWrapper>
   )
 }

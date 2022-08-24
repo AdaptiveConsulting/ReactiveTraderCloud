@@ -106,9 +106,9 @@ function openDealerTicketForRfq(rfqId: string, dealerId: string) {
     ),
     name: `CreditRFQ-${rfqId}-${dealerId}`,
     width: 330,
-    height: 286,
+    height: 262,
     x: window.innerWidth - 330,
-    y: window.innerHeight - 286,
+    y: window.innerHeight - 262,
   })
 }
 
