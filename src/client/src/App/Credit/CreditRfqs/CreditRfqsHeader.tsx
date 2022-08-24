@@ -1,13 +1,12 @@
 import { DropdownMenu } from "@/components/DropdownMenu"
-import { RfqState } from "@/generated/TradingGateway"
 import { removeRfqs, useExecutedRfqIds } from "@/services/credit"
 import styled from "styled-components"
 import { ClearRfqsIcon } from "./ClearRfqsIcon"
 import {
-  ALL_RFQ_STATES,
-  onSelectRfqState,
-  useSelectedRfqState,
-} from "./selectedRfqState"
+  RFQS_TABS,
+  setSelectedRfqsTab,
+  useSelectedRfqsTab,
+} from "./selectedRfqsTab"
 
 const HeaderWrapper = styled.header`
   padding: 1em 8px 1em 6px;
@@ -72,35 +71,21 @@ const ClearRfqsButton = styled.button<{ disabled: boolean }>`
   ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
 `
 
-const getRfqStateText = (rfqState: string) => {
-  switch (rfqState) {
-    case RfqState.Open:
-      return "Live"
-    case RfqState.Closed:
-      return "Done"
-    case RfqState.Cancelled:
-      return "Canceled"
-    default:
-      return rfqState
-  }
-}
-
 export const CreditRfqsHeader: React.FC = () => {
-  const rfqState = useSelectedRfqState()
-  const options = [ALL_RFQ_STATES, ...Object.values(RfqState)]
+  const rfqState = useSelectedRfqsTab()
   const executedRfqIds = useExecutedRfqIds()
 
   return (
     <HeaderWrapper>
       <LeftNav>
         <div>RFQ's</div>
-        {options.map((rfqStateOption) => (
+        {RFQS_TABS.map((rfqStateOption) => (
           <NavItem
             key={rfqStateOption}
             active={rfqStateOption === rfqState}
-            onClick={() => onSelectRfqState(rfqStateOption)}
+            onClick={() => setSelectedRfqsTab(rfqStateOption)}
           >
-            {getRfqStateText(rfqStateOption)}
+            {rfqStateOption}
           </NavItem>
         ))}
       </LeftNav>
@@ -108,8 +93,8 @@ export const CreditRfqsHeader: React.FC = () => {
         <RfqStateDropdown>
           <DropdownMenu
             selectedOption={rfqState}
-            options={options}
-            onSelectionChange={onSelectRfqState}
+            options={RFQS_TABS}
+            onSelectionChange={setSelectedRfqsTab}
           />
         </RfqStateDropdown>
         <ClearRfqsButton

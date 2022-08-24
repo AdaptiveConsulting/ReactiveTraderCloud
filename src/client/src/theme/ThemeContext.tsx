@@ -1,29 +1,25 @@
 import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
   Dispatch,
   SetStateAction,
+  useContext,
+  useEffect,
+  useState,
 } from "react"
-import { themes } from "./themes"
 import { ThemeProvider as StyledThemeProvider } from "styled-components"
-
-export enum ThemeName {
-  Light = "light",
-  Dark = "dark",
-}
+import { ThemeName, themes } from "./themes"
 
 interface Props {
   storage?: typeof localStorage | typeof sessionStorage
 }
 
 interface ContextValue {
-  themeName?: string
+  themeName: ThemeName
   setThemeName: Dispatch<SetStateAction<ThemeName>>
 }
 
 export const ThemeContext = createContext<ContextValue>({
+  themeName: ThemeName.Dark,
   setThemeName: () => console.warn("Missing StorageThemeProvider"),
 })
 
