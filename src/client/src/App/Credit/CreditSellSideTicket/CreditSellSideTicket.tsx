@@ -16,7 +16,7 @@ export const CreditSellSideTicket: FC<CreditSellSideTicketProps> = (props) => {
     themeName === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark
 
   useEffect(() => {
-    document.title = "RFQ from Adaptive Asset Management"
+    document.title = "Reactive Trader RFQ"
   }, [])
 
   return (
