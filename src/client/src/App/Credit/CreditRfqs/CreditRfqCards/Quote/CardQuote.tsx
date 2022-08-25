@@ -12,8 +12,9 @@ import { exhaustMap } from "rxjs/operators"
 import {
   AcceptQuoteButton,
   DealerName,
-  LatestQuoteDot,
   Price,
+  QuoteDot,
+  QuoteDotWrapper,
   QuoteRow,
 } from "./styled"
 
@@ -29,35 +30,37 @@ export const Quote = ({
   rfqState,
   direction,
   highlight,
-  latest,
 }: {
   dealer: DealerBody
   quote: QuoteBody | undefined
   rfqState: RfqState
   direction: Direction
   highlight: boolean
-  latest: boolean
 }) => {
+  const priced = quote?.price !== undefined
+  const rfqOpen = rfqState === RfqState.Open
+  const accepted = quote?.state === QuoteState.Accepted
   return (
     <QuoteRow
-      quoteActive={!!quote && rfqState === RfqState.Open}
+      quoteActive={!!quote && rfqOpen}
       highlight={highlight}
       direction={direction}
     >
-      <DealerName
-        open={rfqState === RfqState.Open}
-        accepted={quote?.state === QuoteState.Accepted}
-      >
-        {latest && rfqState === RfqState.Open && (
-          <LatestQuoteDot direction={direction} />
+      <DealerName open={rfqOpen} accepted={accepted} priced={priced}>
+        {priced && rfqOpen && (
+          <QuoteDotWrapper>
+            <QuoteDot highlight={highlight} />
+          </QuoteDotWrapper>
         )}
         {dealer?.name ?? "Dealer name not found"}
       </DealerName>
       <Price
-        open={rfqState === RfqState.Open}
-        accepted={quote?.state === QuoteState.Accepted}
+        open={rfqOpen}
+        accepted={accepted}
+        priced={priced}
+        highlight={highlight}
       >
-        {quote?.state === QuoteState.Accepted && <FaCheckCircle size={16} />}
+        {accepted && <FaCheckCircle size={16} />}
         {quote ? `$${quote.price.toString()}` : "Awaiting response"}
       </Price>
       <AcceptQuoteButton onClick={() => onAcceptRfq(quote!.id)}>
