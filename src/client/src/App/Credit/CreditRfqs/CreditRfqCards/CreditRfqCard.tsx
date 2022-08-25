@@ -1,14 +1,10 @@
 import { Loader } from "@/components/Loader"
 import { DealerBody, QuoteBody, RfqState } from "@/generated/TradingGateway"
-import {
-  useCreditRfqDetails,
-  useLatestQuote,
-  useQuoteRowHighlight,
-} from "@/services/credit"
+import { useCreditRfqDetails } from "@/services/credit"
 import { customNumberFormatter } from "@/utils"
 import { CardFooter } from "./CardFooter"
 import { CardHeader } from "./CardHeader"
-import { Quote } from "./CardQuote"
+import { Quote } from "./Quote/CardQuote"
 import {
   CardContainer,
   DetailsWrapper,
@@ -18,7 +14,6 @@ import {
 } from "./styled"
 
 const formatter = customNumberFormatter()
-
 const Details = ({ quantity }: { quantity: number }) => {
   return (
     <DetailsWrapper>
@@ -43,8 +38,6 @@ const sortByPriceFunc =
 
 export const Card = ({ id }: { id: number }) => {
   const rfqDetails = useCreditRfqDetails(id)
-  const highlightedRow = useQuoteRowHighlight(id)
-  const latestQuote = useLatestQuote(id)
 
   if (!rfqDetails) {
     return <Loader ariaLabel="Loading RFQ" />
@@ -64,10 +57,14 @@ export const Card = ({ id }: { id: number }) => {
       <QuotesContainer>
         {rfqDetails.dealers
           .sort(sortByPriceFunc(rfqDetails.quotes))
-          .map((dealer) => {
+          .map((dealer, index) => {
             const quote = rfqDetails.quotes.find(
               (quote) => quote.dealerId === dealer.id,
             )
+
+            // The highest price is the best quote since we do not have partial fills
+            const highlight =
+              !!quote && rfqDetails.state === RfqState.Open && index === 0
             return (
               <Quote
                 key={dealer.id}
@@ -75,8 +72,7 @@ export const Card = ({ id }: { id: number }) => {
                 quote={quote}
                 rfqState={rfqDetails.state}
                 direction={rfqDetails.direction}
-                highlight={!!quote && quote.id === highlightedRow}
-                latest={!!quote && quote.id === latestQuote}
+                highlight={highlight}
               />
             )
           })}

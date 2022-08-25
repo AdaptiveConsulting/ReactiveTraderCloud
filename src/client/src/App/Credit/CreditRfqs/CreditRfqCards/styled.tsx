@@ -1,6 +1,6 @@
 import { Direction } from "@/generated/TradingGateway"
-import { Theme, ThemeName } from "@/theme"
-import styled, { css, keyframes } from "styled-components"
+import { ThemeName } from "@/theme"
+import styled from "styled-components"
 
 // Card
 
@@ -30,7 +30,7 @@ export const CardContainer = styled.div<{
   }
 `
 
-const Row = styled.div`
+export const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,119 +61,6 @@ export const QuotesContainer = styled.div`
   flex: 1;
   overflow-y: auto;
   background-color: ${({ theme }) => theme.core.lightBackground};
-`
-
-const flash = ({
-  theme,
-  direction,
-}: {
-  theme: Theme
-  direction: Direction
-}) => keyframes`
-    0% {
-      background-color: ${theme.primary.base};
-    }
-    50% {
-      background-color: ${
-        theme.colors.spectrum.uniqueCollections[direction][
-          theme.name === ThemeName.Dark ? "base" : "lighter"
-        ]
-      };
-    }
-    100% {
-      background-color: ${theme.primary.base};
-    }
-  `
-
-const highlightBackgroundColor = (direction: Direction) => css`
-  animation: ${({ theme }) => flash({ theme, direction })} 1s ease-in-out 3;
-`
-
-export const QuoteRow = styled(Row)<{
-  quoteActive: boolean
-  highlight: boolean
-  direction: Direction
-}>`
-  justify-content: start;
-  ${({ highlight, direction }) =>
-    highlight && highlightBackgroundColor(direction)}
-
-  &:nth-child(even) {
-    background-color: ${({ theme }) => theme.core.darkBackground};
-  }
-  &:nth-child(odd) {
-    background-color: ${({ theme }) => theme.core.lightBackground};
-  }
-  &:hover {
-    & button {
-      display: ${({ quoteActive }) => (quoteActive ? "block" : null)};
-    }
-  }
-`
-
-export const LatestQuoteDot = styled.div<{ direction: Direction }>`
-  height: 4px;
-  width: 4px;
-  border-radius: 4px;
-  margin-right: 2px;
-  background-color: ${({ theme, direction }) =>
-    theme.colors.spectrum.uniqueCollections[direction][
-      theme.name === ThemeName.Dark ? "lighter" : "base"
-    ]};
-`
-
-// This color does not seem to be part of the palette
-export const DealerName = styled(RowText)<{
-  open: boolean
-  accepted: boolean
-}>`
-  display: flex;
-  align-items: center;
-  color: ${({ theme, open, accepted }) => {
-    if (open) {
-      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary.base
-    } else if (accepted) {
-      return theme.textColor
-    } else {
-      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary[4]
-    }
-  }};
-  margin-right: auto;
-`
-
-export const Price = styled(RowText)<{ open: boolean; accepted: boolean }>`
-  color: ${({ theme, open, accepted }) => {
-    if (open) {
-      return theme.secondary[theme.name === ThemeName.Dark ? 5 : 4]
-    } else if (accepted) {
-      return theme.accents.positive.base
-    } else {
-      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary[4]
-    }
-  }};
-  ${({ open, accepted }) =>
-    !open && !accepted && "text-decoration: line-through;"}
-
-  display:flex;
-  align-items: center;
-
-  svg {
-    margin-right: 4px;
-  }
-`
-
-export const AcceptQuoteButton = styled.button`
-  user-select: none;
-  display: none;
-  border-radius: 3px;
-  padding: 0 8px;
-  height: 16px;
-  font-size: 11px;
-  font-weight: 500;
-  margin-left: 8px;
-  color: ${({ theme }) => theme.white};
-  background-color: ${({ theme }) =>
-    theme.colors.spectrum.uniqueCollections.Buy.base};
 `
 
 export const NoRfqsWrapper = styled.div`

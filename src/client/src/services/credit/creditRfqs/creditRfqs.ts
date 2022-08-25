@@ -179,31 +179,3 @@ export const lastQuoteReceived$: Observable<QuoteDetails> =
     }),
     shareLatest(),
   )
-
-export const [useQuoteRowHighlight] = bind(
-  (rfqId: number) =>
-    lastQuoteReceived$.pipe(
-      withLatestFrom(
-        creditRfqsById$.pipe(map((creditRfqsById) => creditRfqsById[rfqId])),
-      ),
-      filter(
-        ([quote, rfqDetails]) =>
-          quote.rfqId === rfqId &&
-          rfqDetails &&
-          rfqDetails.state === RfqState.Open,
-      ),
-      switchMap(([quote]) => {
-        return of(quote.id).pipe(concatWith(timer(4000).pipe(map(() => null))))
-      }),
-    ),
-  null,
-)
-
-export const [useLatestQuote] = bind(
-  (rfqId: number) =>
-    lastQuoteReceived$.pipe(
-      filter((quote) => quote.rfqId === rfqId),
-      map((quote) => quote.id),
-    ),
-  null,
-)
