@@ -1,19 +1,42 @@
-import { Direction, QuoteBody, RfqState } from "@/generated/TradingGateway"
-import { createCreditQuote$ } from "@/services/credit"
+import {
+  Direction,
+  QuoteBody,
+  QuoteState,
+  RfqState,
+} from "@/generated/TradingGateway"
+import { createCreditQuote$, useCreditRfqDetails } from "@/services/credit"
 import { ThemeName } from "@/theme"
+import { customNumberFormatter } from "@/utils"
 import { closeWindow } from "@/utils/window/closeWindow"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
+import { FaCheckCircle } from "react-icons/fa"
 import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
+import { isRfqTerminated } from "../common"
+import { CreditTimer } from "../CreditTimer"
 import { price$, usePrice } from "./CreditSellSideParameters"
+import { TradeMissedIcon } from "./TradeMissedIcon"
 
-const FooterWrapper = styled.div`
-  flex: 0 0 56px;
+const FooterWrapper = styled.div<{ accepted: boolean; missed: boolean }>`
+  flex: 0 0 32px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 8px;
+  border-top: 1px solid ${({ theme }) => theme.primary[3]};
+  background-color: ${({ accepted, missed }) =>
+    accepted
+      ? "rgba(1, 195, 141, 0.1)"
+      : missed
+      ? "rgba(255, 197, 127, 0.1)"
+      : undefined};
+`
+
+export const TimerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 0 8px;
 `
 
 const FooterButton = styled.button`
@@ -41,6 +64,32 @@ const SendQuoteButton = styled(FooterButton)<{
   ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
 `
 
+const TradeStatus = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  svg {
+    margin-right: 8px;
+  }
+`
+const Terminated = styled(TradeStatus)`
+  justify-content: center;
+  color: ${({ theme }) => theme.primary[5]};
+`
+const Accepted = styled(TradeStatus)`
+  color: ${({ theme }) => theme.accents.positive.base};
+`
+const Missed = styled(TradeStatus)`
+  color: ${({ theme }) =>
+    theme.accents.aware[theme.name === ThemeName.Light ? "darker" : "medium"]};
+`
+const TradeDetails = styled.div`
+  font-size: 9px;
+  font-weight: 500px;
+`
+
 const [quoteRequest$, sendQuote] =
   createSignal<{ rfqId: number; dealerId: number }>()
 quoteRequest$
@@ -55,36 +104,90 @@ quoteRequest$
   )
   .subscribe()
 
+const formatter = customNumberFormatter()
+
 interface CreditSellSideTicketFooterProps {
   rfqId: number
   dealerId: number
   quote: QuoteBody | undefined
-  state: RfqState
-  direction: Direction
 }
 
 export const CreditSellSideFooter: FC<CreditSellSideTicketFooterProps> = ({
   rfqId,
   dealerId,
   quote,
-  state,
-  direction,
 }) => {
+  const rfq = useCreditRfqDetails(rfqId)
   const price = usePrice()
+
+  if (!rfq) {
+    return <FooterWrapper accepted={false} missed={false} />
+  }
+
+  const {
+    state,
+    direction,
+    quantity,
+    instrument,
+    creationTimestamp,
+    expirySecs,
+  } = rfq
+
   const disableSend = price.value <= 0 || state !== RfqState.Open || !!quote
+  const accepted =
+    state === RfqState.Closed && quote?.state === QuoteState.Accepted
+  const missed =
+    state === RfqState.Closed && quote?.state !== QuoteState.Accepted
 
   return (
-    <FooterWrapper>
-      <PassButton disabled={!!quote} onClick={closeWindow}>
-        Pass
-      </PassButton>
-      <SendQuoteButton
-        direction={direction}
-        onClick={() => sendQuote({ rfqId, dealerId })}
-        disabled={disableSend}
-      >
-        Send Quote
-      </SendQuoteButton>
+    <FooterWrapper accepted={accepted} missed={missed}>
+      {state === RfqState.Open && (
+        <>
+          <PassButton disabled={!!quote} onClick={closeWindow}>
+            Pass
+          </PassButton>
+          <TimerWrapper>
+            {state !== RfqState.Open ? null : (
+              <CreditTimer
+                start={Number(creationTimestamp)}
+                end={Number(creationTimestamp) + expirySecs * 1000}
+                isSellSideView={true}
+              />
+            )}
+          </TimerWrapper>
+          <SendQuoteButton
+            direction={direction}
+            onClick={() => sendQuote({ rfqId, dealerId })}
+            disabled={disableSend}
+          >
+            Send Quote
+          </SendQuoteButton>
+        </>
+      )}
+      {isRfqTerminated(state) && (
+        <Terminated>
+          Request {state === RfqState.Cancelled ? "Canceled" : "Expired"}
+        </Terminated>
+      )}
+      {accepted && (
+        <Accepted>
+          <FaCheckCircle size={16} />
+          <div>
+            <div>Trade Successful</div>
+            <TradeDetails>
+              You {direction === Direction.Buy ? "Bought" : "Sold"}{" "}
+              {formatter(quantity)} {instrument?.name ?? "Unknown Instrument"} @
+              ${quote?.price}
+            </TradeDetails>
+          </div>
+        </Accepted>
+      )}
+      {missed && (
+        <Missed>
+          <TradeMissedIcon />
+          Trade Missed
+        </Missed>
+      )}
     </FooterWrapper>
   )
 }

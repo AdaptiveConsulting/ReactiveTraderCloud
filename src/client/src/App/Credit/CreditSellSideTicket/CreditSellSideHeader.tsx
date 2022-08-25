@@ -1,4 +1,4 @@
-import { Direction } from "@/generated/TradingGateway"
+import { Direction, QuoteState, RfqState } from "@/generated/TradingGateway"
 import { useCreditInstrumentById } from "@/services/credit"
 import { memo } from "react"
 import { CusipWithBenchmark } from "../common/CusipWithBenchmark"
@@ -12,18 +12,26 @@ import {
 interface CreditSellSideHeaderProps {
   direction: Direction
   instrumentId: number
-  terminated: boolean
+  rfqState: RfqState
+  quoteState: QuoteState
 }
 
 export const CreditSellSideHeader = memo(
-  ({ direction, instrumentId, terminated }: CreditSellSideHeaderProps) => {
+  ({
+    direction,
+    instrumentId,
+    rfqState,
+    quoteState,
+  }: CreditSellSideHeaderProps) => {
     const instrument = useCreditInstrumentById(instrumentId)
+    const accepted = quoteState === QuoteState.Accepted
+    const terminated = rfqState !== RfqState.Open && !accepted
 
     return (
       <DirectionContainer direction={direction} terminated={terminated}>
         {direction === Direction.Buy && (
           <DirectionLabel direction={direction} terminated={terminated}>
-            YOU BUY
+            <div>YOU {accepted ? "BOUGHT" : "BUY"}</div>
           </DirectionLabel>
         )}
         <InstrumentLabelContainer direction={direction} terminated={terminated}>
@@ -35,7 +43,7 @@ export const CreditSellSideHeader = memo(
         </InstrumentLabelContainer>
         {direction === Direction.Sell && (
           <DirectionLabel direction={direction} terminated={terminated}>
-            YOU SELL
+            <div>YOU {accepted ? "SOLD" : "SELL"}</div>
           </DirectionLabel>
         )}
       </DirectionContainer>
