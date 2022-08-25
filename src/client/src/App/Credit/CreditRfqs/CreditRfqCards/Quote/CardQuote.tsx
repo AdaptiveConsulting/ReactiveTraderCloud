@@ -49,7 +49,7 @@ export const Quote = ({
       <DealerName open={rfqOpen} accepted={accepted} priced={priced}>
         {priced && rfqOpen && (
           <QuoteDotWrapper>
-            <QuoteDot highlight={highlight} />
+            <QuoteDot highlight={highlight} direction={direction} />
           </QuoteDotWrapper>
         )}
         {dealer?.name ?? "Dealer name not found"}
@@ -59,6 +59,7 @@ export const Quote = ({
         accepted={accepted}
         priced={priced}
         highlight={highlight}
+        direction={direction}
       >
         {accepted && <FaCheckCircle size={16} />}
         {quote ? `$${quote.price.toString()}` : "Awaiting response"}

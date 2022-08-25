@@ -14,21 +14,13 @@ import {
   WorkflowService,
 } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
-import {
-  concatWith,
-  filter,
-  map,
-  scan,
-  startWith,
-  switchMap,
-  withLatestFrom,
-} from "rxjs/operators"
+import { createSignal } from "@react-rxjs/utils"
+import { combineLatest, Observable } from "rxjs"
+import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
 import { withConnection } from "../../withConnection"
 import { creditDealers$ } from "../creditDealers"
 import { creditInstruments$ } from "../creditInstruments"
 import { QuoteDetails, RfqDetails } from "./types"
-import { combineLatest, Observable, of, timer } from "rxjs"
-import { createSignal } from "@react-rxjs/utils"
 
 const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
   withConnection(),

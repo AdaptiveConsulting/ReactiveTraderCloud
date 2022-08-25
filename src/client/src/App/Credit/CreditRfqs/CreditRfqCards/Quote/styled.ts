@@ -1,12 +1,14 @@
 import { Direction } from "@/generated/TradingGateway"
-import { ThemeName } from "@/theme"
+import { Theme, ThemeName } from "@/theme"
 import styled, { keyframes } from "styled-components"
 import { Row } from "../styled"
 
-type QuoteRowProps = {
-  quoteActive: boolean
+interface CommonProps {
   highlight: boolean
   direction: Direction
+}
+interface QuoteRowProps extends CommonProps {
+  quoteActive: boolean
 }
 
 export const QuoteRow = styled(Row)<QuoteRowProps>`
@@ -68,20 +70,27 @@ export const QuoteDotWrapper = styled.div`
   margin-right: 4px;
 `
 
-export const QuoteDot = styled.div<{ highlight: boolean }>`
+function getBuySellHighlightTextColor(theme: Theme, direction: Direction) {
+  return theme.colors.spectrum.uniqueCollections[direction][
+    theme.name === ThemeName.Dark ? "base" : "darker"
+  ]
+}
+
+export const QuoteDot = styled.div<CommonProps>`
   height: 4px;
   width: 4px;
   border-radius: 4px;
-  background-color: ${({ theme, highlight }) =>
-    highlight ? theme.textColor : theme.accents.primary.base};
+  background-color: ${({ theme, highlight, direction }) =>
+    highlight
+      ? theme.textColor
+      : getBuySellHighlightTextColor(theme, direction)};
   animation: ${breathing} 1s linear infinite;
 `
 
-type RowFieldProps = {
+interface RowFieldProps {
   open: boolean
   accepted: boolean
   priced: boolean
-  highlight?: boolean
 }
 
 const getRowFieldFontWeight = ({ priced, open, accepted }: RowFieldProps) =>
@@ -107,15 +116,17 @@ export const DealerName = styled(QuoteRowText)<RowFieldProps>`
   margin-right: auto;
 `
 
-export const Price = styled(QuoteRowText)<RowFieldProps>`
+export const Price = styled(QuoteRowText)<RowFieldProps & CommonProps>`
   display: flex;
   align-items: center;
-  color: ${({ theme, open, accepted, priced, highlight }) => {
+  color: ${({ theme, open, accepted, priced, highlight, direction }) => {
     if (accepted) {
       return theme.accents.positive.base
     } else if (open) {
       if (priced) {
-        return highlight ? theme.textColor : theme.accents.primary.base
+        return highlight
+          ? theme.textColor
+          : getBuySellHighlightTextColor(theme, direction)
       }
       return theme.secondary[theme.name === ThemeName.Dark ? 5 : 4]
     } else {
