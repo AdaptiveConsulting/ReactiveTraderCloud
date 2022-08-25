@@ -6,6 +6,7 @@ import { registerNotifications } from "./notifications"
 import { GA_TRACKING_ID } from "./constants"
 import { getMainApp, gaDimension } from "./main"
 import { initConnection } from "./services/connection"
+import { checkTradingGatewayCompatibility } from "./services/tradingGatewayCompatibility"
 
 const MainApp = getMainApp()
 
@@ -13,6 +14,8 @@ export async function initApp() {
   if (!import.meta.env.VITE_MOCKS) {
     initConnection()
   }
+
+  checkTradingGatewayCompatibility()
 
   registerNotifications()
 
