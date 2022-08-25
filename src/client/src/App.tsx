@@ -1,11 +1,10 @@
-import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
-import GlobalStyle from "@/theme/globals"
 import { StrictMode } from "react"
 import ReactDOM from "react-dom"
-import { GA_TRACKING_ID } from "./constants"
-import { IncompatibilityModal } from "./IncompatibilityModal"
-import { gaDimension, getMainApp } from "./main"
+import GlobalStyle from "@/theme/globals"
+import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import { registerNotifications } from "./notifications"
+import { GA_TRACKING_ID } from "./constants"
+import { getMainApp, gaDimension } from "./main"
 import { initConnection } from "./services/connection"
 import { checkTradingGatewayCompatibility } from "./services/tradingGatewayCompatibility"
 
@@ -15,8 +14,8 @@ export async function initApp() {
   if (!import.meta.env.VITE_MOCKS) {
     initConnection()
   }
-  const { isCompatible, incompatibilityReasons } =
-    await checkTradingGatewayCompatibility()
+
+  checkTradingGatewayCompatibility()
 
   registerNotifications()
 
@@ -25,10 +24,6 @@ export async function initApp() {
       <GlobalStyle />
       <ThemeProvider>
         <GlobalScrollbarStyle />
-        <IncompatibilityModal
-          isCompatible={isCompatible}
-          reasons={incompatibilityReasons}
-        />
         <MainApp />
       </ThemeProvider>
     </StrictMode>,
