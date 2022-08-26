@@ -13,7 +13,7 @@ import { FC } from "react"
 import { FaCheckCircle } from "react-icons/fa"
 import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
-import { isRfqTerminated } from "../common"
+import { invertDirection, isRfqTerminated } from "../common"
 import { CreditTimer } from "../CreditTimer"
 import { price$, usePrice } from "./CreditSellSideParameters"
 import { TradeMissedIcon } from "./TradeMissedIcon"
@@ -126,12 +126,13 @@ export const CreditSellSideFooter: FC<CreditSellSideTicketFooterProps> = ({
 
   const {
     state,
-    direction,
+    direction: clientDirection,
     quantity,
     instrument,
     creationTimestamp,
     expirySecs,
   } = rfq
+  const direction = invertDirection(clientDirection)
 
   const disableSend = price.value <= 0 || state !== RfqState.Open || !!quote
   const accepted =
