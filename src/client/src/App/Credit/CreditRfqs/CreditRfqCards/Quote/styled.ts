@@ -11,23 +11,28 @@ interface QuoteRowProps extends CommonProps {
   quoteActive: boolean
 }
 
+function getBuySellHighlightRowBackgroundColor(
+  theme: Theme,
+  direction: Direction,
+) {
+  return theme.colors.spectrum.uniqueCollections[direction][
+    theme.name === ThemeName.Dark ? "darker" : "lighter"
+  ]
+}
+
 export const QuoteRow = styled(Row)<QuoteRowProps>`
   justify-content: start;
 
   &:nth-child(even) {
     background-color: ${({ theme, highlight, direction }) =>
       highlight
-        ? theme.colors.spectrum.uniqueCollections[direction][
-            theme.name === ThemeName.Dark ? "base" : "lighter"
-          ]
+        ? getBuySellHighlightRowBackgroundColor(theme, direction)
         : theme.core.darkBackground};
   }
   &:nth-child(odd) {
     background-color: ${({ theme, highlight, direction }) =>
       highlight
-        ? theme.colors.spectrum.uniqueCollections[direction][
-            theme.name === ThemeName.Dark ? "base" : "lighter"
-          ]
+        ? getBuySellHighlightRowBackgroundColor(theme, direction)
         : theme.core.lightBackground};
   }
   &:hover {
