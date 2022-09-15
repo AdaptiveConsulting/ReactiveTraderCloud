@@ -70,7 +70,11 @@ export const WebApp: React.FC = () => {
         />
         <Route
           path={ROUTES_CONFIG.styleguide}
-          render={() => <StyleguideRoute />}
+          render={() => (
+            <Suspense fallback={<Loader />}>
+              <StyleguideRoute />
+            </Suspense>
+          )}
         />
         {canUseAdmin && (
           <Route path={ROUTES_CONFIG.admin} render={() => <Admin />} />

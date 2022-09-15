@@ -71,9 +71,9 @@ const OnePageNavBar: FC<OnePageNavBarProps> = (props) => {
 
     if (
       typeof currentSectionScrolled !== "undefined" &&
-      !location.hash.includes(currentSectionScrolled.path)
+      !window.location.hash.includes(currentSectionScrolled.path)
     ) {
-      history.pushState(null, "", "#" + currentSectionScrolled.path)
+      window.history.pushState(null, "", "#" + currentSectionScrolled.path)
       setCurrentSection(currentSectionScrolled.title)
     }
   }, [getCurrentSection])
