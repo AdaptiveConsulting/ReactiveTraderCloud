@@ -7,6 +7,7 @@ import { Trades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { Loader } from "@/components/Loader"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
+import { isMobileDevice } from "@/utils"
 import { FEATURE_FLAG, useFeature } from "@/utils/featureFlag"
 import { lazy, Suspense } from "react"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
@@ -20,6 +21,7 @@ const MainCreditRoute = lazy(() => import("./MainCreditRoute"))
 export const WebApp: React.FC = () => {
   const canUseAdmin = useFeature(FEATURE_FLAG.ADMIN)
 
+  const canDisplayCredit = !isMobileDevice
   return (
     <BrowserRouter basename={BASE_PATH}>
       <Switch>
@@ -33,18 +35,20 @@ export const WebApp: React.FC = () => {
             </>
           )}
         />
-        <Route
-          exact
-          path={ROUTES_CONFIG.credit}
-          render={() => (
-            <>
-              <DisconnectionOverlay />
-              <Suspense fallback={<Loader />}>
-                <MainCreditRoute />
-              </Suspense>
-            </>
-          )}
-        />
+        {canDisplayCredit && (
+          <Route
+            exact
+            path={ROUTES_CONFIG.credit}
+            render={() => (
+              <>
+                <DisconnectionOverlay />
+                <Suspense fallback={<Loader />}>
+                  <MainCreditRoute />
+                </Suspense>
+              </>
+            )}
+          />
+        )}
         <Route
           path={ROUTES_CONFIG.tile}
           render={({
