@@ -85,12 +85,14 @@ export interface TradesGridInnerProps<Row extends Trade> {
   highlightedRow?: string | null
   onRowClick?: (row: Row) => any
   isRowCrossed?: (row: Row) => boolean
+  caption: string
 }
 
 export const TradesGridInner = <Row extends Trade>({
   highlightedRow,
   onRowClick,
   isRowCrossed,
+  caption,
 }: TradesGridInnerProps<Row>) => {
   const rows$ = useTrades$()
   const colDef = useColDef()
@@ -100,7 +102,7 @@ export const TradesGridInner = <Row extends Trade>({
     <TableWrapper>
       <Table>
         <caption id="trades-table-heading" className="visually-hidden">
-          Reactive Trader FX Trades Table
+          {caption}
         </caption>
         <TableHead>
           <TableHeadRow>

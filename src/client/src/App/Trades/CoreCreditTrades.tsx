@@ -29,7 +29,7 @@ const CreditTrades: React.FC = () => {
           <Trades$Context.Provider value={creditTrades$}>
             <TradesStyle role="region" aria-labelledby="trades-table-heading">
               <TradesHeader section="creditBlotter" />
-              <TradesGrid />
+              <TradesGrid caption="Reactive Trader Credit Trades Table" />
               <TradesFooter />
             </TradesStyle>
           </Trades$Context.Provider>

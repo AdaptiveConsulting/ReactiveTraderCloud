@@ -3,7 +3,7 @@ import { CreditTrade, Direction } from "./types"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
-import { creditRfqsById$ } from "../credit"
+import { creditRfqsById$, RfqDetails } from "../credit"
 import { withConnection } from "../withConnection"
 import { FxTrade } from "./types"
 
@@ -62,7 +62,7 @@ export const [useCreditTrades, creditTrades$] = bind(
             tradeId: rfq.id.toString(),
             status: QuoteState.Accepted,
             tradeDate: new Date(Date.now()),
-            direction: Direction.Buy,
+            direction: rfq.direction,
             counterParty: rfq.dealers.find(
               (dealer) => dealer.id === acceptedQuote?.dealerId,
             )?.name,
