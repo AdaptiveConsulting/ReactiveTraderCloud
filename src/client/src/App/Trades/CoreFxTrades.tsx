@@ -59,7 +59,7 @@ const FxTrades: React.FC = () => {
             <SuspenseOnStaleData />
             <TradesStyle role="region" aria-labelledby="trades-table-heading">
               <TradesHeader section="blotter" />
-              <TradesGrid />
+              <TradesGrid caption="Reactive Trader FX Trades Table" />
               <TradesFooter />
             </TradesStyle>
           </Trades$Context.Provider>
