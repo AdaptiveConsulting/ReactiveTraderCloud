@@ -12,6 +12,11 @@ import { TestThemeProvider } from "@/utils/testUtils"
 import FxTrades from "../CoreFxTrades"
 
 jest.mock("@/services/trades/trades")
+jest.mock("../TradesState/tableTrades", () => ({
+  ...jest.requireActual("../TradesState/tableTrades"),
+  useFilterFields: jest.fn().mockReturnValue([]),
+  useFxTradeRowHighlight: jest.fn().mockReturnValue(undefined),
+}))
 
 const { mockTrades, nextTrade } = tradesTestData
 
@@ -29,22 +34,18 @@ describe("Trades", () => {
     _trades.__resetMocks()
   })
 
-  it("should display loading bar before trades are received", async () => {
+  it("should display 'no trades' message before trades are received", async () => {
     const tradesSubj = new Subject<Trade[]>()
     _trades.__setTrades(tradesSubj)
 
     renderComponent()
 
-    expect(
-      screen.queryByRole("progressbar", { name: "Loading trades blotter" }),
-    ).not.toBeNull()
+    expect(screen.queryByText("No trades to show")).not.toBeNull()
 
     act(() => tradesSubj.next(mockTrades))
 
     await waitFor(() =>
-      expect(
-        screen.queryByRole("progressbar", { name: "Loading trades blotter" }),
-      ).toBeNull(),
+      expect(screen.queryByText("No trades to show")).toBeNull(),
     )
   })
 
