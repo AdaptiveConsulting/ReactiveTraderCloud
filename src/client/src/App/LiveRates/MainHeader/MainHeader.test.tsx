@@ -6,6 +6,7 @@ import { liveRates$ } from "../LiveRatesCore"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { TestThemeProvider } from "@/utils/testUtils"
 import { Tiles } from "../Tiles"
+import { Trades } from "@/Launcher/NlpSuggestions/Trades"
 
 jest.mock("@/services/currencyPairs/currencyPairs")
 jest.mock("../Tile/Tile.tsx")
@@ -54,7 +55,7 @@ describe("MainHeader", () => {
   it("should load all the currency buttons", async () => {
     renderComponent()
 
-    expect(screen.getByTestId("menuButton-Symbol(all)").textContent).toBe(`ALL`)
+    expect(screen.getByTestId("menuButton-ALL").textContent).toBe(`ALL`)
     expect(screen.getByTestId("menuButton-EUR").textContent).toBe(`EUR`)
     expect(screen.getByTestId("menuButton-GBP").textContent).toBe(`GBP`)
   })
