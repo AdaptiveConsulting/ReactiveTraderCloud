@@ -5,7 +5,11 @@ import { TestThemeProvider } from "@/utils/testUtils"
 import FxTrades from "../CoreFxTrades"
 
 jest.mock("@/services/trades/trades")
-
+jest.mock("../TradesState/tableTrades", () => ({
+  ...jest.requireActual("../TradesState/tableTrades"),
+  useFilterFields: jest.fn().mockReturnValue([]),
+  useFxTradeRowHighlight: jest.fn().mockReturnValue(undefined),
+}))
 const { mockTrades } = tradesTestData
 
 const renderComponent = () =>

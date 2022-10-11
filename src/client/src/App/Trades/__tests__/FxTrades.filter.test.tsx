@@ -7,6 +7,11 @@ import userEvent from "@testing-library/user-event"
 import { ComparatorType } from "@/App/Trades/TradesState"
 
 jest.mock("@/services/trades/trades")
+jest.mock("../TradesState/tableTrades", () => ({
+  ...jest.requireActual("../TradesState/tableTrades"),
+  useFilterFields: jest.fn().mockReturnValue([]),
+  useFxTradeRowHighlight: jest.fn().mockReturnValue(undefined),
+}))
 
 const { mockTrades } = tradesTestData
 
@@ -58,6 +63,7 @@ describe("for notional column", () => {
       fireEvent.change(input, { target: { value: "1000000" } })
     })
     expect(input.value).toBe("1000000")
+
     expect(container.querySelectorAll("tbody tr").length).toBe(2)
 
     act(() => {
