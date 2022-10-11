@@ -2,6 +2,7 @@ import { FC } from "react"
 import { DropdownMenu } from "@/components/DropdownMenu"
 import { ROUTES_CONFIG } from "@/constants"
 import { useLocation, useHistory } from "react-router"
+import { isMobileDevice } from "@/utils"
 
 enum InstrumentType {
   FX = "FX",
@@ -17,6 +18,7 @@ const InstrumentTypeSelector: FC = () => {
     )
   }
 
+  if (isMobileDevice) return null
   return (
     <DropdownMenu
       options={[InstrumentType.FX, InstrumentType.CREDIT]}
