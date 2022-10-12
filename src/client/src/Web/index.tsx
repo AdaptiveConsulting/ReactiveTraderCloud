@@ -7,10 +7,11 @@ import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 import { FxTrades } from "@/App/Trades"
 import CreditTrades from "@/App/Trades/CoreCreditTrades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
+import { Loader } from "@/components/Loader"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { isMobileDevice } from "@/utils"
 import { FEATURE_FLAG, useFeature } from "@/utils/featureFlag"
-import { lazy } from "react"
+import { lazy, Suspense } from "react"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 import { TearOutContext } from "../App/TearOutSection/tearOutContext"
 import MainCreditRoute from "./MainCreditRoute"
@@ -46,7 +47,6 @@ export const WebApp: React.FC = () => {
             </>
           )}
         />
-
         {canDisplayCredit && (
           <Route
             exact
@@ -103,7 +103,11 @@ export const WebApp: React.FC = () => {
 
         <Route
           path={ROUTES_CONFIG.styleguide}
-          render={() => <StyleguideRoute />}
+          render={() => (
+            <Suspense fallback={<Loader />}>
+              <StyleguideRoute />
+            </Suspense>
+          )}
         />
 
         {canUseAdmin && (
