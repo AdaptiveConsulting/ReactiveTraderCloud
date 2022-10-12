@@ -434,6 +434,9 @@ describe("Tile", () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
+    const hPriceMock$ = new Subject<HistoryPrice>()
+    _prices.__setHistoricalPricesMock(hPriceMock$)
+
     renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
     act(() => {
@@ -468,6 +471,9 @@ describe("Tile", () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
+    const hPriceMock$ = new Subject<HistoryPrice>()
+    _prices.__setHistoricalPricesMock(hPriceMock$)
+
     renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
     expect(input.value).toBe("1,000,000")
@@ -480,6 +486,9 @@ describe("Tile", () => {
   it("should reformat the notional input after got new value", () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+
+    const hPriceMock$ = new Subject<HistoryPrice>()
+    _prices.__setHistoricalPricesMock(hPriceMock$)
 
     renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
