@@ -23,9 +23,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v3
 
       # URL_SUFFIX is used so we can append branch/<branch-name> to BASE_URL, or leave blank in the case of uat/dev where we do not need it
       - name: Set variables
@@ -55,6 +53,10 @@ jobs:
 
       - name: Install
         run: npm ci
+
+      - name: Test
+        run: |
+          npm run test
 
       - name: Build (web)
         env:

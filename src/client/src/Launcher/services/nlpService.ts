@@ -1,6 +1,6 @@
 import { Direction } from "@/services/trades"
 import { DetectIntentResponse } from "dialogflow"
-import { ajax, AjaxResponse } from "rxjs/ajax"
+import { fromFetch } from "rxjs/fetch"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import {
@@ -8,7 +8,6 @@ import {
   distinctUntilChanged,
   map,
   mapTo,
-  pluck,
   switchMap,
 } from "rxjs/operators"
 import { equals } from "@/utils"
@@ -90,13 +89,13 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | null | Loading>(
         ? [null]
         : concat(
             timer(250).pipe(mapTo("loading" as Loading)),
-            ajax(
+            fromFetch(
               `${import.meta.env.VITE_CLOUD_FUNCTION_HOST}/nlp?term=${request}`,
             ).pipe(
-              map<AjaxResponse, DetectIntentResponse[]>(
-                ({ response }) => response,
+              switchMap((response) => response.json()),
+              map<DetectIntentResponse[], DetectIntentResponse>(
+                ([response]) => response,
               ),
-              pluck(0),
               catchError((e) => {
                 console.error("Error getting nlp response", e)
                 return of(null)

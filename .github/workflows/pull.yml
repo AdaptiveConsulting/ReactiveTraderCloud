@@ -15,7 +15,7 @@ env:
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
   BUCKET_LAUNCHER: reactive-trader-launcher-builds
-  
+
 jobs:
   build:
     name: Build & deploy
@@ -26,9 +26,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v3
 
       - name: Set up GCloud
         uses: google-github-actions/setup-gcloud@v0
@@ -47,6 +45,10 @@ jobs:
 
       - name: Install
         run: npm ci
+
+      - name: Test
+        run: |
+          npm run test
 
       - name: Build (web)
         env:
