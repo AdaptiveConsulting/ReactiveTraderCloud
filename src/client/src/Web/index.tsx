@@ -34,6 +34,7 @@ export const WebApp: React.FC = () => {
   const canUseAdmin = useFeature(FEATURE_FLAG.ADMIN)
   const canDisplayCredit = !isMobileDevice
 
+  const canDisplayCredit = !isMobileDevice
   return (
     <BrowserRouter basename={BASE_PATH}>
       <Switch>
