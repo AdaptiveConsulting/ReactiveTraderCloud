@@ -1,14 +1,17 @@
 import styled from "styled-components"
 import { parseISO, format } from "date-fns"
-import type { DateColField } from "../TradesState"
 import {
   ComparatorType,
   onColFilterDateSelect,
   useAppliedDateFilters,
 } from "../TradesState"
-import { DateFilterContent } from "../TradesState/filterState/dateFilterState"
+import {
+  DateColField,
+  DateFilterContent,
+} from "../TradesState/filterState/dateFilterState"
 import { FilterPopup } from "./components/FilterPopup"
 import { ComparatorSelect } from "./components/ComparatorSelect"
+import { useColDef } from "../Context"
 
 const DateFilterInputInner = styled.input`
   padding: 8px 8px 5px 8px;
@@ -17,6 +20,7 @@ const DateFilterInputInner = styled.input`
     filter: ${({ theme }) => (theme.name === "dark" ? "invert(1)" : "none")};
   }
 `
+
 const DateFilterInput: React.FC<{
   fieldValueName: "value1" | "value2"
   field: DateColField
@@ -45,7 +49,8 @@ export const DateFilter: React.FC<{
   field: DateColField
   parentRef: React.RefObject<HTMLDivElement>
 }> = ({ field, parentRef }) => {
-  const selected = useAppliedDateFilters(field)
+  const colDef = useColDef()
+  const selected = useAppliedDateFilters(field, colDef)
   return (
     <FilterPopup parentRef={parentRef}>
       <ComparatorSelect

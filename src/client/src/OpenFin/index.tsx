@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import { Analytics } from "@/App/Analytics"
-import { Trades } from "@/App/Trades"
+import { FxTrades } from "@/App/Trades"
 import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
@@ -28,7 +28,7 @@ export const OpenFinApp: React.FC = () => (
         path={ROUTES_CONFIG.blotter}
         render={() => (
           <DocTitle title="Trades">
-            <Trades />
+            <FxTrades />
             <DisconnectionOverlay />
           </DocTitle>
         )}

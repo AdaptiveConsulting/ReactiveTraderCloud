@@ -1,5 +1,5 @@
 import { createSignal } from "@react-rxjs/utils"
-import type { ColField } from "../colConfig"
+import { CreditColField, FxColField } from "../colConfig"
 
 /**
  * Used by date and number filter UI to populate
@@ -22,7 +22,7 @@ export enum ComparatorType {
  * filters must be set or unset.
  */
 export interface FilterEvent {
-  field: ColField
+  field: FxColField | CreditColField
 }
 
 /**
@@ -30,7 +30,7 @@ export interface FilterEvent {
  * the column or a selection from the TradesHeader.
  */
 export const [filterResets$, onFilterReset] = createSignal(
-  (field: ColField) => ({ field } as FilterEvent),
+  (field: FxColField | CreditColField) => ({ field } as FilterEvent),
 )
 
 /**

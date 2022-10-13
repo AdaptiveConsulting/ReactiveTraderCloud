@@ -1,25 +1,22 @@
-import { startOfDay } from "date-fns"
-import { combineLatest, merge } from "rxjs"
-import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
+import { CreditTrade, creditTrades$, FxTrade, trades$ } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
-import { Trade, trades$ } from "@/services/trades"
-import type { ColField } from "./colConfig"
-import type {
-  NumColField,
-  DateColField,
-  DateFilterContent,
-  NumFilterContent,
-} from "./filterState"
+import { createSignal } from "@react-rxjs/utils"
+import { startOfDay } from "date-fns"
+import { combineLatest, merge, Observable } from "rxjs"
+import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
+import { ColDef } from "./colConfig"
+import type { DateFilterContent, NumFilterContent } from "./filterState"
 import {
-  quickFilterInputs$,
-  appliedSetFilterEntries$,
-  numFilterEntries$,
   ComparatorType,
-  dateFilterEntries$,
+  getAppliedSetFilterEntries,
+  getDateFilterEntries,
+  getNumFilterEntries,
+  quickFilterInputs$,
 } from "./filterState"
 import type { SortDirection, TableSort } from "./sortState"
 import { tableSort$ } from "./sortState"
-import { createSignal } from "@react-rxjs/utils"
+
+type Trade = FxTrade | CreditTrade
 
 /**
  *
@@ -61,7 +58,7 @@ const setFiltersTrueOfTrade = (
   trade: Trade,
 ) => {
   return appliedFilters.every(([field, filterValues]) => {
-    return (filterValues as Set<unknown>).has(trade[field as ColField])
+    return (filterValues as Set<unknown>).has(trade[field])
   })
 }
 
@@ -108,7 +105,7 @@ const dateFiltersTrueOfTrade = (
 
     // Normalize datetimes to start of day and take
     // Unix/numerical representation for simple comparisons.
-    const tradeDate = startOfDay(trade[field as DateColField]).valueOf()
+    const tradeDate = startOfDay(trade[field]).valueOf()
     const filterDate = startOfDay(filterContent.value1).valueOf()
 
     switch (filterContent.comparator) {
@@ -155,9 +152,11 @@ const numFiltersTrueOfTrade = (
       return true
     }
 
-    const tradeValue = trade[field as NumColField]
+    const tradeValue = trade[field]
     const tradeNumber =
-      typeof tradeValue === "number" ? tradeValue : parseFloat(tradeValue)
+      typeof tradeValue === "number"
+        ? tradeValue
+        : parseFloat(tradeValue as string)
     const filterNumber = filterContent.value1
 
     switch (filterContent.comparator) {
@@ -185,52 +184,54 @@ const numFiltersTrueOfTrade = (
   })
 }
 
-/**
- * Stream of filtered trades.  Represents trades/rows
- * that satisfy all the filters.
- */
-const filteredTrades$ = combineLatest([
-  trades$,
-  quickFilterInputs$.pipe(
-    startWith(""),
-    map((quickFilterInputs) => quickFilterInputs.split(" ")),
-  ),
-  appliedSetFilterEntries$,
-  numFilterEntries$,
-  dateFilterEntries$,
-]).pipe(
-  map(([trades, searchTerms, setFilters, numFilters, dateFilters]) => {
-    const haveSetFilters = setFilters.length > 0
-    const haveSearchTerms = searchTerms.length > 0
-    const haveNumFilters = numFilters.length > 0
-    const haveDateFilters = dateFilters.length > 0
+const getFilteredTrades = <T extends Trade>(
+  trades$: Observable<T[]>,
+  colDef: ColDef,
+) => {
+  return combineLatest([
+    trades$,
+    quickFilterInputs$.pipe(
+      startWith(""),
+      map((quickFilterInputs) => quickFilterInputs.split(" ")),
+    ),
+    getAppliedSetFilterEntries(trades$, colDef),
+    getNumFilterEntries(colDef),
+    getDateFilterEntries(colDef),
+  ]).pipe(
+    map(([trades, searchTerms, setFilters, numFilters, dateFilters]) => {
+      const haveSetFilters = setFilters.length > 0
+      const haveSearchTerms = searchTerms.length > 0
+      const haveNumFilters = numFilters.length > 0
+      const haveDateFilters = dateFilters.length > 0
 
-    // No filters applied
-    if (
-      !haveSearchTerms &&
-      !haveSetFilters &&
-      !haveNumFilters &&
-      !haveDateFilters
-    ) {
-      return trades
-    }
+      // No filters applied
+      if (
+        !haveSearchTerms &&
+        !haveSetFilters &&
+        !haveNumFilters &&
+        !haveDateFilters
+      ) {
+        return trades
+      }
 
-    // Trade is included if it either satisfies every
-    // filter-type predicate applied to it or has no
-    // filters of that type applied.
-    return trades.filter((trade) => {
-      const numFiltersTrue =
-        !haveNumFilters || numFiltersTrueOfTrade(numFilters, trade)
-      const setFiltersTrue =
-        !haveSetFilters || setFiltersTrueOfTrade(setFilters, trade)
-      const searchTrue =
-        !haveSearchTerms || searchTrueOfTrade(searchTerms, Object.values(trade))
-      const dateFiltersTrue =
-        !haveDateFilters || dateFiltersTrueOfTrade(dateFilters, trade)
-      return numFiltersTrue && setFiltersTrue && searchTrue && dateFiltersTrue
-    })
-  }),
-)
+      // Trade is included if it either satisfies every
+      // filter-type predicate applied to it or has no
+      // filters of that type applied.
+      return trades.filter((trade: Trade) => {
+        const numFiltersTrue =
+          !haveNumFilters || numFiltersTrueOfTrade(numFilters, trade)
+        const setFiltersTrue =
+          !haveSetFilters || setFiltersTrueOfTrade(setFilters, trade)
+        const searchTrue =
+          !haveSearchTerms ||
+          searchTrueOfTrade(searchTerms, Object.values(trade))
+        const dateFiltersTrue =
+          !haveDateFilters || dateFiltersTrueOfTrade(dateFilters, trade)
+        return numFiltersTrue && setFiltersTrue && searchTrue && dateFiltersTrue
+      })
+    }),
+  )
+}
 
 const numericComparator = (direction: SortDirection, a: number, b: number) => {
   return direction === "ASC" ? a - b : b - a
@@ -259,7 +260,7 @@ const stringComparator = (direction: SortDirection, a: string, b: string) => {
  */
 const sortTrades = ([trades, { field, direction }]: [
   Trade[],
-  TableSort,
+  TableSort<keyof Trade>,
 ]): Trade[] => {
   const sortedTrades = [...trades]
   if (field && direction) {
@@ -305,7 +306,12 @@ const sortTrades = ([trades, { field, direction }]: [
  * sort.
  */
 export const [useTableTrades, tableTrades$] = bind(
-  combineLatest([filteredTrades$, tableSort$]).pipe(map(sortTrades)),
+  (trades$: Observable<Trade[]>, colDef: ColDef) => {
+    return combineLatest([getFilteredTrades(trades$, colDef), tableSort$]).pipe(
+      map(sortTrades),
+    )
+  },
+  [],
 )
 
 /**
@@ -316,17 +322,17 @@ export const [useTableTrades, tableTrades$] = bind(
  * each column.
  */
 export const [useFilterFields] = bind(
-  combineLatest([
-    appliedSetFilterEntries$.pipe(startWith([])),
-    numFilterEntries$.pipe(startWith([])),
-    dateFilterEntries$.pipe(startWith([])),
-  ]).pipe(
-    map(
-      ([set, num, date]) =>
-        [...set, ...num, ...date].map(([field]) => field) as ColField[],
+  <T extends Trade>(trades$: Observable<T[]>, colDef: ColDef) =>
+    combineLatest([
+      getAppliedSetFilterEntries(trades$, colDef).pipe(startWith([])),
+      getNumFilterEntries(colDef).pipe(startWith([])),
+      getDateFilterEntries(colDef).pipe(startWith([])),
+    ]).pipe(
+      map(([set, num, date]) =>
+        [...set, ...num, ...date].map(([field]) => field),
+      ),
     ),
-  ),
-  [] as ColField[],
+  [],
 )
 
 /**
@@ -337,7 +343,7 @@ export const [tradeRowHighlight$, onTradeRowHighlight] = createSignal<string>()
 /**
  * Emit tradeId of new trades after the initial load
  */
-const newTradeId$ = trades$.pipe(
+const newTradeId$ = merge(trades$, creditTrades$).pipe(
   scan(
     (acc, trades) => {
       return {
@@ -363,7 +369,7 @@ const newTradeId$ = trades$.pipe(
  * State hook that emits tradeId of row to highlight for x seconds
  * highlighted row will be either from manually updating tradeRowHighlight$ or a new trade
  */
-export const [useTradeRowHighlight] = bind(
+export const [useFxTradeRowHighlight] = bind(
   merge([
     tradeRowHighlight$,
     tradeRowHighlight$.pipe(
@@ -373,6 +379,22 @@ export const [useTradeRowHighlight] = bind(
     newTradeId$,
     newTradeId$.pipe(
       delay(1000),
+      map(() => undefined),
+    ),
+  ]).pipe(mergeMap((tradeId) => tradeId)),
+  null,
+)
+
+export const [useCreditTradeRowHighlight] = bind(
+  merge([
+    tradeRowHighlight$,
+    tradeRowHighlight$.pipe(
+      delay(3000),
+      map(() => undefined),
+    ),
+    newTradeId$,
+    newTradeId$.pipe(
+      delay(4000),
       map(() => undefined),
     ),
   ]).pipe(mergeMap((tradeId) => tradeId)),

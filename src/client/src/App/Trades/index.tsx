@@ -1,1 +1,2 @@
-export * from "./Trades"
+export * from "./FxTrades"
+export * from "./CreditTrades"

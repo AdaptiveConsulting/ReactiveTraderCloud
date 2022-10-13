@@ -2,16 +2,20 @@ import { render, screen, within } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 import { Trade, tradesTestData } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
-import Trades from "../TradesCore"
+import FxTrades from "../CoreFxTrades"
 
 jest.mock("@/services/trades/trades")
-
+jest.mock("../TradesState/tableTrades", () => ({
+  ...jest.requireActual("../TradesState/tableTrades"),
+  useFilterFields: jest.fn().mockReturnValue([]),
+  useFxTradeRowHighlight: jest.fn().mockReturnValue(undefined),
+}))
 const { mockTrades } = tradesTestData
 
 const renderComponent = () =>
   render(
     <TestThemeProvider>
-      <Trades />
+      <FxTrades />
     </TestThemeProvider>,
   )
 

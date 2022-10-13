@@ -9,7 +9,6 @@ import { isMobileDevice } from "@/utils"
 
 const Wrapper = styled.div`
   display: flex;
-  height: 30px;
   align-items: center;
   justify-content: center;
   font-size: 0.65rem;

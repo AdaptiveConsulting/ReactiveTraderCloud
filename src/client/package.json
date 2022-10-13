@@ -51,6 +51,7 @@
     "axios": "^0.21.2",
     "d3": "^6.6.2",
     "date-fns": "^2.19.0",
+    "downshift": "^6.1.9",
     "lodash": "^4.17.21",
     "openfin-notifications": "^1.10.1",
     "polished": "^4.1.1",

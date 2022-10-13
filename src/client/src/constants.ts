@@ -19,4 +19,7 @@ export const ROUTES_CONFIG = {
   styleguide: "/styleguide",
   admin: "/admin",
   credit: "/credit",
+  newRfq: "/credit/new-rfq",
+  sellSideTicket: "/credit/sellside/:rfqId/dealer/:dealerId",
+  creditBlotter: "/credit/blotter",
 }

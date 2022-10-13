@@ -1,6 +1,9 @@
+import { Trade } from "@/services/trades"
+import { Observable } from "rxjs"
 import { map, take } from "rxjs/operators"
 import styled from "styled-components"
-import { tableTrades$, colConfigs, colFields } from "../TradesState"
+import { useColDef, useColFields, useTrades$ } from "../Context"
+import { ColDef } from "../TradesState"
 
 const ExcelIcon = () => (
   <svg
@@ -46,31 +49,40 @@ const Button = styled("button")`
  * Format trades data for CSV file, including escaping
  * inner commas.
  */
-export const exportTable$ = tableTrades$.pipe(
-  map((trades) =>
-    trades.map((trade) =>
-      colFields.map((field) => {
-        let res =
-          colConfigs[field].excelValueFormatter?.(trade[field]) ??
-          colConfigs[field].valueFormatter?.(trade[field]) ??
-          trade[field]
-        if (typeof res === "string" && res?.includes(",")) {
-          res = '"' + res + '"'
-        }
-        return res
-      }),
+export const getExportTable$ = (
+  trades$: Observable<Trade[]>,
+  colDef: ColDef,
+  colFields: (string | number)[],
+) =>
+  trades$.pipe(
+    map((trades) =>
+      trades.map((trade) =>
+        colFields.map((field) => {
+          let res =
+            colDef[field].excelValueFormatter?.(trade[field]) ??
+            colDef[field].valueFormatter?.(trade[field]) ??
+            trade[field]
+          if (typeof res === "string" && res?.includes(",")) {
+            res = '"' + res + '"'
+          }
+          return res
+        }),
+      ),
     ),
-  ),
-  take(1),
-)
+    take(1),
+  )
 
-const downloadCsv = () => {
-  exportTable$.subscribe((trades) => {
+const downloadCsv = (
+  trades$: Observable<Trade[]>,
+  colDef: ColDef,
+  colFields: (string | number)[],
+) => {
+  getExportTable$(trades$, colDef, colFields).subscribe((trades) => {
     let csv = ""
 
     // CSV header
     colFields.forEach((field) => {
-      csv += colConfigs[field].headerName + ","
+      csv += colDef[field].headerName + ","
     })
     csv += "\n"
 
@@ -91,8 +103,14 @@ const downloadCsv = () => {
 }
 
 export const ExcelButton: React.FC = () => {
+  const trades$ = useTrades$()
+  const colDef = useColDef()
+  const colFields = useColFields()
   return (
-    <Button onClick={downloadCsv} aria-label="Export to CSV">
+    <Button
+      onClick={() => downloadCsv(trades$, colDef, colFields)}
+      aria-label="Export to CSV"
+    >
       <ExcelIcon />
     </Button>
   )

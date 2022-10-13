@@ -6,6 +6,7 @@ import { liveRates$ } from "../LiveRatesCore"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { TestThemeProvider } from "@/utils/testUtils"
 import { Tiles } from "../Tiles"
+import { Trades } from "@/Launcher/NlpSuggestions/Trades"
 
 jest.mock("@/services/currencyPairs/currencyPairs")
 jest.mock("../Tile/Tile.tsx")

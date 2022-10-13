@@ -10,6 +10,10 @@ import {
   AccentName,
 } from "./colors"
 
+export enum ThemeName {
+  Light = "light",
+  Dark = "dark",
+}
 interface BaseTheme {
   white: Color
   black: Color
@@ -80,7 +84,7 @@ export const getThemeColor = (
     : fallback
 
 const createTheme = (
-  name: string,
+  name: ThemeName,
   { primary, secondary, core }: CorePaletteMap,
   accents: AccentPaletteMap,
 ) => ({
@@ -199,10 +203,18 @@ const createTheme = (
   },
 })
 
-const lightTheme: Theme = createTheme("light", colors.light, colors.accents)
-const darkTheme: Theme = createTheme("dark", colors.dark, colors.accents)
+const lightTheme: Theme = createTheme(
+  ThemeName.Light,
+  colors.light,
+  colors.accents,
+)
+const darkTheme: Theme = createTheme(
+  ThemeName.Dark,
+  colors.dark,
+  colors.accents,
+)
 
-export const themes = {
+export const themes: Record<ThemeName, Theme> = {
   light: lightTheme,
   dark: darkTheme,
 }

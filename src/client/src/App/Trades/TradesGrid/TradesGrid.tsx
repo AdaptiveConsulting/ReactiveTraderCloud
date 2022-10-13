@@ -1,12 +1,8 @@
-import { broadcast } from "@finos/fdc3"
-import styled, { css } from "styled-components"
+import { QuoteState } from "@/generated/TradingGateway"
 import { Trade, TradeStatus } from "@/services/trades"
-import {
-  colConfigs,
-  colFields,
-  useTradeRowHighlight,
-  useTableTrades,
-} from "../TradesState"
+import styled, { css } from "styled-components"
+import { useColDef, useColFields, useTrades$ } from "../Context"
+import { useTableTrades } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"
 
 const TableWrapper = styled.div`
@@ -21,7 +17,6 @@ const Table = styled.table`
   min-width: 60rem;
   border-collapse: separate;
   border-spacing: 0;
-
   .visually-hidden {
     display: none;
   }
@@ -50,13 +45,16 @@ const TableBodyRow = styled.tr<{ pending?: boolean; highlight?: boolean }>`
   ${({ highlight }) => highlight && highlightBackgroundColor}
 `
 
-const TableBodyCell = styled.td<{ numeric?: boolean; rejected?: boolean }>`
-  text-align: ${({ numeric }) => (numeric ? "right" : "left")};
-  padding-right: ${({ numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
+const TableBodyCell = styled.td<{
+  align?: "right" | "left"
+  crossed?: boolean
+}>`
+  text-align: ${({ align = "left" }) => align};
+  padding-right: ${({ align: numeric }) => (numeric ? "1.6rem;" : "0.1rem;")};
   position: relative;
   &:before {
     content: " ";
-    display: ${({ rejected }) => (rejected ? "block;" : "none;")};
+    display: ${({ crossed }) => (crossed ? "block" : "none")};
     position: absolute;
     top: 50%;
     left: 0;
@@ -64,11 +62,11 @@ const TableBodyCell = styled.td<{ numeric?: boolean; rejected?: boolean }>`
     width: 100%;
   }
 `
-const StatusIndicator = styled.td<{ status?: TradeStatus }>`
+const StatusIndicator = styled.td<{ status?: TradeStatus | QuoteState }>`
   width: 18px;
   border-left: 6px solid
     ${({ status, theme: { accents } }) =>
-      status === TradeStatus.Done
+      status === TradeStatus.Done || status === QuoteState.Accepted
         ? accents.positive.base
         : status === TradeStatus.Rejected
         ? accents.negative.base
@@ -83,87 +81,79 @@ const StatusIndicatorSpacer = styled.th`
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
 `
 
-export const TradesGridInner: React.FC<{
-  trades: Trade[]
+export interface TradesGridInnerProps<Row extends Trade> {
   highlightedRow?: string | null
-  onRowClick: (symbol: string) => void
-}> = ({ trades, highlightedRow, onRowClick }) => (
-  <TableWrapper>
-    <Table>
-      <caption id="trades-table-heading" className="visually-hidden">
-        Reactive Trader FX Trades Table
-      </caption>
-      <TableHead>
-        <TableHeadRow>
-          <StatusIndicatorSpacer scope="col" aria-label="Trade Status" />
-          {colFields.map((field) => (
-            <TableHeadCellContainer key={field} field={field} />
-          ))}
-        </TableHeadRow>
-      </TableHead>
-      <tbody role="grid">
-        {trades.length ? (
-          trades.map((trade) => (
-            <TableBodyRow
-              key={trade.tradeId}
-              highlight={trade.tradeId === highlightedRow}
-              onClick={() => onRowClick(trade.symbol)}
-            >
-              <StatusIndicator
-                status={trade.status}
-                aria-label={trade.status}
-              />
-              {colFields.map((field, i) => (
-                <TableBodyCell
-                  key={field}
-                  numeric={
-                    colConfigs[field].filterType === "number" &&
-                    field !== "tradeId"
-                  }
-                  rejected={trade.status === "Rejected"}
-                >
-                  {colConfigs[field].valueFormatter?.(trade[field]) ??
-                    trade[field]}
-                </TableBodyCell>
-              ))}
-            </TableBodyRow>
-          ))
-        ) : (
-          <TableBodyRow>
-            <StatusIndicatorSpacer aria-hidden={true} />
-            <TableBodyCell colSpan={colFields.length}>
-              No trades to show
-            </TableBodyCell>
-          </TableBodyRow>
-        )}
-      </tbody>
-    </Table>
-  </TableWrapper>
-)
+  onRowClick?: (row: Row) => any
+  isRowCrossed?: (row: Row) => boolean
+  caption: string
+}
 
-export const TradesGrid: React.FC = () => {
-  const trades = useTableTrades()
-  const highlightedRow = useTradeRowHighlight()
-
-  const tryBroadcastContext = (symbol: string) => {
-    const context = {
-      type: "fdc3.instrument",
-      id: { ticker: symbol },
-    }
-
-    if (window.fdc3) {
-      broadcast(context)
-    } else if (window.fin) {
-      // @ts-ignore
-      fin.me.interop.setContext(context)
-    }
-  }
-
+export const TradesGridInner = <Row extends Trade>({
+  highlightedRow,
+  onRowClick,
+  isRowCrossed,
+  caption,
+}: TradesGridInnerProps<Row>) => {
+  const rows$ = useTrades$()
+  const colDef = useColDef()
+  const fields = useColFields()
+  const trades = useTableTrades(rows$, colDef)
   return (
-    <TradesGridInner
-      trades={trades}
-      highlightedRow={highlightedRow}
-      onRowClick={tryBroadcastContext}
-    />
+    <TableWrapper>
+      <Table>
+        <caption id="trades-table-heading" className="visually-hidden">
+          {caption}
+        </caption>
+        <TableHead>
+          <TableHeadRow>
+            <StatusIndicatorSpacer scope="col" aria-label="Trade Status" />
+            {fields.map((field) => (
+              <TableHeadCellContainer
+                key={field as string}
+                field={field as string}
+              />
+            ))}
+          </TableHeadRow>
+        </TableHead>
+        <tbody role="grid">
+          {trades.length ? (
+            trades.map((row: Trade) => (
+              <TableBodyRow
+                key={row.tradeId}
+                highlight={row.tradeId === highlightedRow}
+                onClick={() => onRowClick?.(row as Row)}
+              >
+                <StatusIndicator status={row.status} aria-label={row.status} />
+                {fields.map((field, i) => {
+                  const columnDefinition = colDef[field]
+                  const value = row[field]
+                  return (
+                    <TableBodyCell
+                      key={field as string}
+                      align={
+                        columnDefinition.align ??
+                        (columnDefinition.filterType === "number"
+                          ? "right"
+                          : "left")
+                      }
+                      crossed={isRowCrossed?.(row as Row)}
+                    >
+                      {columnDefinition.valueFormatter?.(value) ?? value}
+                    </TableBodyCell>
+                  )
+                })}
+              </TableBodyRow>
+            ))
+          ) : (
+            <TableBodyRow>
+              <StatusIndicatorSpacer aria-hidden={true} />
+              <TableBodyCell colSpan={fields.length}>
+                No trades to show
+              </TableBodyCell>
+            </TableBodyRow>
+          )}
+        </tbody>
+      </Table>
+    </TableWrapper>
   )
 }

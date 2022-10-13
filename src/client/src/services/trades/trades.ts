@@ -1,9 +1,11 @@
-import { BlotterService } from "@/generated/TradingGateway"
+import { BlotterService, QuoteState } from "@/generated/TradingGateway"
+import { CreditTrade, Direction } from "./types"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
+import { creditRfqsById$, RfqDetails } from "../credit"
 import { withConnection } from "../withConnection"
-import { Trade } from "./types"
+import { FxTrade } from "./types"
 
 const tradesStream$ = BlotterService.getTradeStream().pipe(
   withConnection(),
@@ -24,7 +26,7 @@ const tradesStream$ = BlotterService.getTradeStream().pipe(
   })),
 )
 
-export const [useTrades, trades$] = bind<Trade[]>(
+export const [useTrades, trades$] = bind<FxTrade[]>(
   tradesStream$.pipe(
     scan(
       (acc, { isStateOfTheWorld, updates }) => ({
@@ -33,10 +35,46 @@ export const [useTrades, trades$] = bind<Trade[]>(
           updates.map((trade) => [trade.tradeId, trade] as const),
         ),
       }),
-      {} as Record<number, Trade>,
+      {} as Record<number, FxTrade>,
     ),
-    map((trades) => Object.values(trades).reverse()),
+    map((trades) => {
+      return Object.values(trades).reverse()
+    }),
   ),
 )
 
 export const isBlotterDataStale$ = withIsStaleData(trades$)
+
+export const [useCreditTrades, creditTrades$] = bind(
+  creditRfqsById$.pipe(
+    map((update, idx) => {
+      const acceptedRfqs = Object.values(update)
+        .filter((rfq) => {
+          return rfq.quotes?.find(
+            (quote) => quote.state === QuoteState.Accepted,
+          )
+        })
+        .map((rfq) => ({ ...rfq, status: rfq.state }))
+      return acceptedRfqs
+        .map((rfq) => {
+          const acceptedQuote = rfq.quotes[0]
+          return {
+            tradeId: rfq.id.toString(),
+            status: QuoteState.Accepted,
+            tradeDate: new Date(Date.now()),
+            direction: rfq.direction,
+            counterParty: rfq.dealers.find(
+              (dealer) => dealer.id === acceptedQuote?.dealerId,
+            )?.name,
+            cusip: rfq.instrument?.cusip,
+            security: rfq.instrument?.ticker,
+            quantity: rfq.quantity,
+            orderType: "AON",
+            unitPrice: acceptedQuote?.price,
+          }
+        })
+        .reverse() as CreditTrade[]
+    }),
+  ),
+  [],
+)
