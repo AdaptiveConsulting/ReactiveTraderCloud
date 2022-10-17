@@ -1,11 +1,10 @@
 import { BlotterService, QuoteState } from "@/generated/TradingGateway"
-import { CreditTrade, Direction } from "./types"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 import { withIsStaleData } from "../connection"
-import { creditRfqsById$, RfqDetails } from "../credit"
+import { creditRfqsById$ } from "../credit"
 import { withConnection } from "../withConnection"
-import { FxTrade } from "./types"
+import { CreditTrade, FxTrade } from "./types"
 
 const tradesStream$ = BlotterService.getTradeStream().pipe(
   withConnection(),
@@ -57,7 +56,9 @@ export const [useCreditTrades, creditTrades$] = bind(
         .map((rfq) => ({ ...rfq, status: rfq.state }))
       return acceptedRfqs
         .map((rfq) => {
-          const acceptedQuote = rfq.quotes[0]
+          const acceptedQuote = rfq.quotes?.find(
+            (quote) => quote.state === QuoteState.Accepted,
+          )
           return {
             tradeId: rfq.id.toString(),
             status: QuoteState.Accepted,
