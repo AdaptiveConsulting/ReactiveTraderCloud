@@ -63,7 +63,21 @@ Run the client using mocks:
 VITE_MOCKS=true npm start
 ```
 
-Run the client with a back end on the cloud:
+Run the client against the Dev back end in the cloud
+
+(uses `wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com`)
+
+```sh
+npm start
+```
+
+NOTE: you may test against UAT endpoint by temporarily substituting
+
+```sh
+VITE_HYDRA_URL=wss://trading-web-gateway-rt-uat.demo.hydra.weareadaptive.com npm start
+```
+
+or PROD (**_be careful!! this might interfere with demos_**)
 
 ```sh
 VITE_HYDRA_URL=wss://trading-web-gateway-rt-prod.demo.hydra.weareadaptive.com npm start
