@@ -1,8 +1,8 @@
 import {
-  customNumberFormatter,
   DECIMAL_SEPARATOR,
   DECIMAL_SEPARATOR_REGEXP,
   THOUSANDS_SEPARATOR_REGEXP,
+  truncatedDecimalNumberFormatter,
 } from "@/utils/formatNumber"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
@@ -52,7 +52,8 @@ const ParameterValue = styled.div`
   height: 24px;
 `
 
-const formatter = customNumberFormatter()
+const formatter = truncatedDecimalNumberFormatter(0)
+
 const filterRegExp = new RegExp(THOUSANDS_SEPARATOR_REGEXP, "g")
 const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
 
@@ -61,15 +62,26 @@ const [useQuantity, quantity$] = bind(
   rawQuantity$.pipe(
     map((rawVal) => {
       const lastChar = rawVal.slice(-1).toLowerCase()
-      const value = Math.abs(
-        Number(rawVal.replace(filterRegExp, "").replace(decimalRegExp, ".")),
+      const cleanedInput = rawVal
+        .replace(filterRegExp, "")
+        .replace(decimalRegExp, ".")
+
+      const inputQuantityAsNumber = Math.abs(Number(cleanedInput))
+
+      // numeric value could be NaN at this stage
+
+      const truncated = formatter(inputQuantityAsNumber)
+
+      const value = Number(
+        truncated.replace(filterRegExp, "").replace(decimalRegExp, "."),
       )
+
       return {
         value,
         inputValue:
           value === 0
             ? ""
-            : formatter(value) +
+            : truncated +
               (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
       }
     }),

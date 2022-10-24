@@ -99,6 +99,20 @@ export const precisionNumberFormatter = (precision: number): NumberFormatter =>
   })
 
 /**
+ * Returns a function that will format numbers truncating to the maximum precision given
+ *
+ * See __tests__/formatNumber.test.ts for full usage and behavior.
+ */
+export const truncatedDecimalNumberFormatter = (
+  precision: number,
+): NumberFormatter =>
+  numberFormatter({
+    maximumFractionDigits: precision,
+    // @ts-ignore // has not made it into types yet - or support grid in MDN seemingly! - but works
+    roundingMode: "trunc",
+  })
+
+/**
  * Takes any Intl.NumberFormatOptions as input to construct and
  * return a function that formats numbers as configured by options.
  *
