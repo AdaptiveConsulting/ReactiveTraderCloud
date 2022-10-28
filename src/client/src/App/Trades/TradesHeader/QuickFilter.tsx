@@ -1,4 +1,3 @@
-import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
 import { useEffect, useRef, useState } from "react"
 import { FaFilter, FaTimes } from "react-icons/fa"
 import styled from "styled-components"
@@ -77,7 +76,6 @@ export const QuickFilter: React.FC = () => {
         <FaFilter aria-hidden="true" />
       </QuickFilterIcon>
       <QuickFilterInput
-        {...nonDraggableChildProps}
         ref={quickFilterInput}
         type="search"
         placeholder="Filter"

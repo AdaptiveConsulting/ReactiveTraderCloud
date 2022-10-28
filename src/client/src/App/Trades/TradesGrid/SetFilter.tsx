@@ -1,4 +1,3 @@
-import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
 import { bind, Subscribe } from "@react-rxjs/core"
 import { FaCheck } from "react-icons/fa"
 import { filter, map, startWith } from "rxjs/operators"
@@ -81,7 +80,6 @@ const SetFilterInner: React.FC<{
   return (
     <FilterPopup parentRef={parentRef}>
       <SearchInput
-        {...nonDraggableChildProps}
         type="text"
         placeholder="Search"
         value={inputValue}
