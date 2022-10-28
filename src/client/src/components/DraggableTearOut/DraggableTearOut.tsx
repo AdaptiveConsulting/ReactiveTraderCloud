@@ -4,6 +4,11 @@ import { tearOutSection, Section } from "@/App/TearOutSection/state"
 import { supportsDragToTearOut } from "@/components/DraggableTearOut/supportsDragToTearOut"
 import { tearOut } from "@/App/LiveRates/Tile/TearOut/state"
 
+/**
+ * Unused since https://adaptive.kanbanize.com/ctrl_board/34/cards/3110/details/.
+ * Preserved in case it gets requested again.
+ */
+
 export const DragWrapper = styled.div`
   height: 100%;
 `
