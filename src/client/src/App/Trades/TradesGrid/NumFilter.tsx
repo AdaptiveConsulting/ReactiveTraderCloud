@@ -1,4 +1,3 @@
-import { nonDraggableChildProps } from "@/components/DraggableTearOut/nonDraggableChildProps"
 import styled from "styled-components"
 import { useColDef } from "../Context"
 import {
@@ -34,7 +33,6 @@ const FilterValueInput: React.FC<{
   fieldValueName: "value1" | "value2"
 }> = ({ field, selected, fieldValueName }) => (
   <FilterValueInputInner
-    {...nonDraggableChildProps}
     placeholder="Filter..."
     role="textbox"
     defaultValue={selected[fieldValueName] ?? undefined}
