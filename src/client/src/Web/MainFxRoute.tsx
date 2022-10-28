@@ -2,7 +2,6 @@ import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
 import { getTornOutSections } from "@/App/TearOutSection/state"
 import { FxTrades } from "@/App/Trades"
-import { DraggableSectionTearOut } from "@/components/DraggableTearOut"
 import Resizer from "@/components/Resizer"
 import MainLayout from "./MainLayout"
 
@@ -14,22 +13,10 @@ export const MainFxRoute: React.FC = () => {
   return (
     <MainLayout>
       <Resizer defaultHeight={30}>
-        {!tornOutSections.tiles && (
-          <DraggableSectionTearOut section="tiles">
-            <LiveRates />
-          </DraggableSectionTearOut>
-        )}
-        {!tornOutSections.blotter && (
-          <DraggableSectionTearOut section="blotter">
-            <FxTrades />
-          </DraggableSectionTearOut>
-        )}
+        {!tornOutSections.tiles && <LiveRates />}
+        {!tornOutSections.blotter && <FxTrades />}
       </Resizer>
-      {!tornOutSections.analytics && (
-        <DraggableSectionTearOut section="analytics">
-          <Analytics />
-        </DraggableSectionTearOut>
-      )}
+      {!tornOutSections.analytics && <Analytics />}
     </MainLayout>
   )
 }
