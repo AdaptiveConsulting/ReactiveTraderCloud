@@ -1,9 +1,9 @@
 # Reactive Trader Client
 
-The trading client GUI is a single page app (SPA) built using Typescript, React, RxJs and Styled components. Separate builds can be run as a desktop application using Openfin/Finsemble, in the browser, or on mobile as a PWA.
+The trading client GUI is a single page app (SPA) built using Typescript, React, RxJs and Styled components. Separate builds can be run in the browser, on mobile or desktop as a PWA, and as a desktop platform application using Openfin or Finsemble.
 
 [High Level Technologies](#high-level-technologies)  
-[DEV Machine Setup](#dev-machine-setup)  
+[Local Development Setup](#local-development-setup)  
 [Running the client locally](#running-the-client-locally)  
 [Openfin](#openfin)  
 [Finsemble](#finsemble)  
@@ -22,9 +22,14 @@ The trading client GUI is a single page app (SPA) built using Typescript, React,
 - Styles build using [Styled Components](https://www.styled-components.com/).
 - Build system [Vite](https://vitejs.dev/)
 
-## DEV Machine Setup
+## Local Development Setup
 
-Please ensure you have [Node](https://nodejs.org)(>=v14) and [Git](https://git-scm.com/downloads) installed on your machine and on your path.
+Please ensure you have
+
+- [Node](https://nodejs.org)(>=v18, suggest using nvm to manage node instances) and
+- [Git](https://git-scm.com/downloads)
+
+installed on your machine and on your path.
 
 ### Mac and Windows
 
@@ -63,27 +68,7 @@ Run the client using mocks:
 VITE_MOCKS=true npm start
 ```
 
-Run the client against the Dev back end in the cloud
-
-(uses `wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com`)
-
-```sh
-npm start
-```
-
-NOTE: you may test against UAT endpoint by temporarily substituting
-
-```sh
-VITE_HYDRA_URL=wss://trading-web-gateway-rt-uat.demo.hydra.weareadaptive.com npm start
-```
-
-or PROD (**_be careful!! this might interfere with demos_**)
-
-```sh
-VITE_HYDRA_URL=wss://trading-web-gateway-rt-prod.demo.hydra.weareadaptive.com npm start
-```
-
-These properties are mutually exclusive, of course, and can be added individually to a `.env.local` file.
+Any VITE\_\* properties may be added to a `.env.local` file (not checked in).
 
 Runs unit tests with Jest.
 
@@ -125,9 +110,9 @@ npm run storybook
 
 Reactive Trader can be installed as a progressive web application.
 
-The [service worker](src/serviceWorker.js) will need to be running for local development. For instructions on how to trust the self-signed localhost certificate, see [HTTPS and Create React App](https://medium.com/@danielgwilson/https-and-create-react-app-3a30ed31c904).
+The [service worker](src/serviceWorker.js) will need to be running for local development.
 
-The settings for the PWA are configured in [`manifest.json`](public/manifest.json).
+The settings for the PWA are configured in [`manifest.json`](public/manifest.json), plus various settings in index.html `<head>`. All attempts to date to bring iOS splash screens back to life have been fruitless, see [pwa-splash-screens](https://github.com/applification/pwa-splash-screens/blob/master/index.html) for reference, previous client [index.html](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/chore/classic-retirement/src/client/public/index.html) and many angry comments on the web.
 
 ## Token replacement
 
@@ -135,6 +120,6 @@ The PWA [`manifest.json`](public/manifest.json) file and the [OpenFin manifests]
 
 ## Deployment
 
-PR and dev deployment is through [GitHub Actions](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/tree/master/.github/workflows).
+Automatic branch, PR and Dev deployment (from master branch) is through [GitHub Actions](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/tree/master/.github/workflows).
 
-UAT and Prod deployment is through [reactive-deployments](https://github.com/AdaptiveConsulting/reactive-deployments)
+Actions also make UAT and Prod builds available on Google Cloud - see [reactive-deployments](https://github.com/AdaptiveConsulting/reactive-deployments) for more details.

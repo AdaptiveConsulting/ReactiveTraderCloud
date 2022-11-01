@@ -6,7 +6,13 @@ import copy from "rollup-plugin-copy"
 import modulepreload from "rollup-plugin-modulepreload"
 import typescript from "rollup-plugin-typescript2"
 import { injectManifest } from "rollup-plugin-workbox"
-import { defineConfig, loadEnv } from "vite"
+import {
+  ConfigEnv,
+  defineConfig,
+  loadEnv,
+  Plugin,
+  UserConfigExport,
+} from "vite"
 import { createHtmlPlugin } from "vite-plugin-html"
 
 const PORT = Number(process.env.PORT) || 1917
@@ -84,7 +90,7 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
         )
 
         // Source doesn't have file extension, so try all extensions
-        let candidate = null
+        let candidate
         const extensions = ["ts", "tsx"]
         for (let i = 0; i < extensions.length; i++) {
           try {
@@ -112,7 +118,7 @@ function indexSwitchPlugin(target: string): Plugin {
     name: "indexSwitchPlugin",
     enforce: "pre",
     resolveId: function (source: string, importer) {
-      if (!source.startsWith("./main")) {
+      if (!source.startsWith("./main") || !importer) {
         return null
       }
 
@@ -160,7 +166,11 @@ const typescriptPlugin = {
   enforce: "pre",
 }
 
-const copyOpenfinPlugin = (dev: boolean, target: "openfin" | "launcher") => {
+const copyOpenfinPlugin = (
+  dev: boolean,
+  baseUrl: string,
+  target: "openfin" | "launcher",
+) => {
   const env = process.env.ENVIRONMENT || "local"
   return {
     ...copy({
@@ -173,7 +183,7 @@ const copyOpenfinPlugin = (dev: boolean, target: "openfin" | "launcher") => {
           transform: (contents) =>
             contents
               .toString()
-              .replace(/<BASE_URL>/g, getBaseUrl(dev))
+              .replace(/<BASE_URL>/g, baseUrl)
               .replace(/<ENV_NAME>/g, env)
               .replace(
                 /<ENV_SUFFIX>/g,
@@ -262,14 +272,25 @@ const injectWebServiceWorkerPlugin = (mode: string) =>
         assets: `${getBaseUrl(mode === "development")}/assets`,
       },
     },
-    () => {},
+    ({ swDest, count, size }) => {
+      console.log(
+        "Created service worker: ",
+        swDest,
+        "- injected ",
+        count,
+        " files",
+      )
+    },
   )
 
-// https://vitejs.dev/config/
-const setConfig = ({ mode }) => {
+// Main Ref: https://vitejs.dev/config/
+const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
   const isDev = mode === "development"
+  const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
+  const openfinBaseUrl = getBaseUrl(isDev || !!process.env.LOCAL)
+
   const plugins = isDev
     ? [eslintPlugin, typescriptPlugin, reactRefresh()]
     : [customPreloadPlugin()]
@@ -281,11 +302,24 @@ const setConfig = ({ mode }) => {
   }
 
   if (TARGET === "openfin" || TARGET === "launcher") {
-    plugins.push(copyOpenfinPlugin(isDev, TARGET))
+    plugins.push(copyOpenfinPlugin(isDev, openfinBaseUrl, TARGET))
   }
 
+  let proxy
   if (process.env.VITE_MOCKS) {
     plugins.unshift(apiMockReplacerPlugin())
+  } else {
+    proxy = {
+      "/ws": {
+        // To test local execution of nginx gateway in Docker,
+        // use e.g.target: "http://localhost:55000", (no need for changeOrigin in that case)
+        target:
+          process.env.VITE_HYDRA_URL ||
+          "wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com",
+        changeOrigin: true,
+        ws: true,
+      },
+    }
   }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
@@ -295,7 +329,7 @@ const setConfig = ({ mode }) => {
   plugins.push(htmlPlugin(isDev))
 
   return defineConfig({
-    base: isDev ? "/" : getBaseUrl(false),
+    base: viteBaseUrl,
     define: {
       __TARGET__: JSON.stringify(TARGET),
     },
@@ -305,24 +339,19 @@ const setConfig = ({ mode }) => {
     build: {
       sourcemap: true,
     },
+    preview: {
+      port: PORT,
+    },
     server: {
       port: PORT,
-      proxy: !process.env.VITE_MOCKS && {
-        "/ws": {
-          // To test local execution of nginx gateway in Docker,
-          // use e.g.target: "http://localhost:55000", (no need for changeOrigin in that case)
-          target:
-            process.env.VITE_HYDRA_URL ||
-            "wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com",
-          changeOrigin: true,
-          ws: true,
-        },
-      },
+      proxy,
     },
     resolve: {
+      // see https://vitejs.dev/config/shared-options.html#resolve-alias
+      // then https://github.com/rollup/plugins/tree/master/packages/alias#entries
+      // originally inspired by https://github.com/vitejs/vite/issues/279
       alias: [
         {
-          // see https://github.com/vitejs/vite/issues/279#issuecomment-773454743
           find: "@",
           replacement: "/src",
         },
