@@ -9,6 +9,7 @@ const TableWrapper = styled.div`
   height: calc(100% - 4.75rem);
   overflow-x: scroll;
   overflow-y: scroll;
+  contain: content;
 `
 const Table = styled.table`
   background-color: ${({ theme }) => theme.core.lightBackground};
