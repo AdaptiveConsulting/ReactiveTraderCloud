@@ -1,13 +1,12 @@
 import {
-  DECIMAL_SEPARATOR,
-  DECIMAL_SEPARATOR_REGEXP,
-  THOUSANDS_SEPARATOR_REGEXP,
-  truncatedDecimalNumberFormatter,
+  createApplyCharacterMultiplier,
+  customNumberFormatter,
+  parseQuantity,
 } from "@/utils/formatNumber"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { FC } from "react"
-import { filter, map } from "rxjs/operators"
+import { map } from "rxjs/operators"
 import styled from "styled-components"
 
 const RfqParametersWrapper = styled.div`
@@ -52,42 +51,22 @@ const ParameterValue = styled.div`
   height: 24px;
 `
 
-const formatter = truncatedDecimalNumberFormatter(0)
-
-const filterRegExp = new RegExp(THOUSANDS_SEPARATOR_REGEXP, "g")
-const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
+const formatter = customNumberFormatter()
 
 const [rawQuantity$, setQuantity] = createSignal<string>()
+
+const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
+
 const [useQuantity, quantity$] = bind(
   rawQuantity$.pipe(
-    map((rawVal) => {
+    map((rawVal: string): number => {
+      const numValue = Math.trunc(Math.abs(parseQuantity(rawVal)))
       const lastChar = rawVal.slice(-1).toLowerCase()
-      const cleanedInput = rawVal
-        .replace(filterRegExp, "")
-        .replace(decimalRegExp, ".")
-
-      const inputQuantityAsNumber = Math.abs(Number(cleanedInput))
-
-      // numeric value could be NaN at this stage
-
-      const truncated = formatter(inputQuantityAsNumber)
-
-      const value = Number(
-        truncated.replace(filterRegExp, "").replace(decimalRegExp, "."),
-      )
-
-      return {
-        value,
-        inputValue:
-          value === 0
-            ? ""
-            : truncated +
-              (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
-      }
+      const value = applyCharacterMultiplier(numValue, lastChar)
+      return !Number.isNaN(value) ? value : 0
     }),
-    filter(({ value }) => !Number.isNaN(value)),
   ),
-  { value: 0, inputValue: "" },
+  0,
 )
 
 export { setQuantity, useQuantity, quantity$ }
@@ -101,7 +80,7 @@ export const RfqParameters: FC = () => {
         <ParameterLabel>Quantity (000)</ParameterLabel>
         <ParameterInput
           type="text"
-          value={quantity.inputValue}
+          value={quantity === 0 ? "" : formatter(quantity)}
           onChange={(event) => setQuantity(event.currentTarget.value)}
           onFocus={(event) => {
             event.target.select()

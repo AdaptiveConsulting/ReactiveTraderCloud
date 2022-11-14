@@ -14,6 +14,7 @@
  */
 
 import escapeRegExp from "lodash/fp/escapeRegExp"
+import pick from "lodash/fp/pick"
 
 enum Scale {
   K = "k",
@@ -147,6 +148,32 @@ export const formatWithScale = (num: number, format: NumberFormatter) => {
   return format(value) + scale
 }
 
+const multipliers = {
+  k,
+  m,
+  b,
+  t,
+}
+/**
+ * Creates a function that accepts a value and a character multiplier that results
+ * in the value being multiplied by the associated multiplier or returned without modification.
+ */
+export const createApplyCharacterMultiplier = (
+  activeMultiplierKeys: Array<keyof typeof multipliers>,
+) => {
+  const activeMultipliers = pick<{ [key: string]: number }>(
+    activeMultiplierKeys,
+    multipliers,
+  )
+  return (value: number, multiplierKey: string) => {
+    const multiplyBy = activeMultipliers[multiplierKey] ?? 1
+    if (value >= multiplyBy) {
+      return value
+    }
+    return value * multiplyBy
+  }
+}
+
 // The following code deals with finding the thousands and decimal separators for the current locale
 // Functions were chosen in order to write unit tests that would not be depended on driver default locale
 // "Magic Number" 1000.5 was chosen to accessing the thousands/decimal values
@@ -186,3 +213,14 @@ export const THOUSANDS_SEPARATOR_REGEXP = escapeRegExp(THOUSANDS_SEPARATOR)
  * Decimal separator for numbers in current locale, for use in regular expressions
  */
 export const DECIMAL_SEPARATOR_REGEXP = escapeRegExp(DECIMAL_SEPARATOR)
+
+const filterRegExp = new RegExp(
+  `${THOUSANDS_SEPARATOR_REGEXP}|k$|m$|K$|M$`,
+  "g",
+)
+const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
+/**
+ * Returns the number representation of a given quantity string
+ */
+export const parseQuantity = (rawValue: string): number =>
+  Number(rawValue.replace(filterRegExp, "").replace(decimalRegExp, "."))
