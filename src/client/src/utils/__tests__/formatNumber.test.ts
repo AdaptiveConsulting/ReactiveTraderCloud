@@ -7,6 +7,8 @@ import {
   customNumberFormatter,
   getThousandsSeparator,
   getDecimalSeparator,
+  createApplyCharacterMultiplier,
+  parseQuantity,
 } from "../formatNumber"
 
 describe("all number formatters", () => {
@@ -164,12 +166,65 @@ describe("thousands and decimal formatters", () => {
   })
 
   describe("getDecimalSeparator", () => {
-    it("should find '.' for English and Finnish, ',' for Russian, and ',' for German and Spanish, ", () => {
+    it("should find '.' for English and Finnish, ',' for Russian, and ',' for German and Spanish,", () => {
       expect(getDecimalSeparator("EN")).toEqual(".")
       expect(getDecimalSeparator("RU")).toEqual(",")
       expect(getDecimalSeparator("DE")).toEqual(",")
       expect(getDecimalSeparator("es-ES")).toEqual(",")
       expect(getDecimalSeparator("fi-FI")).toEqual(",")
     })
+  })
+})
+
+describe("createApplyCharacterMultiplier", () => {
+  const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
+
+  it("multiplies by k", () => {
+    const input = 999
+    const expectedOutput = 999_000
+    expect(applyCharacterMultiplier(input, "k")).toBe(expectedOutput)
+  })
+
+  it("multiplies by m", () => {
+    const input = 999
+    const expectedOutput = 999_000_000
+    expect(applyCharacterMultiplier(input, "m")).toBe(expectedOutput)
+  })
+
+  it("does not multiply in excess of multiplier k", () => {
+    const input = 1_000
+    expect(applyCharacterMultiplier(input, "k")).toBe(input)
+  })
+
+  it("does not multiply in excess of multiplier m", () => {
+    const input = 1_000_000
+    expect(applyCharacterMultiplier(input, "m")).toBe(input)
+  })
+
+  it("does not multiply for no multiplier", () => {
+    const input = 999
+    expect(applyCharacterMultiplier(input, "9")).toBe(input)
+  })
+
+  it("does not multiply for invalid multiplier", () => {
+    const input = 999
+    expect(applyCharacterMultiplier(input, "d")).toBe(input)
+  })
+})
+
+describe("parseQuantity", () => {
+  it.each`
+    input            | expected
+    ${"1234"}        | ${1234}
+    ${"1,234"}       | ${1234}
+    ${"1,234,567"}   | ${1234567}
+    ${"99,123.111"}  | ${99123.111}
+    ${"1k"}          | ${1}
+    ${"1,2,3,4,5.1"} | ${12345.1}
+    ${"0"}           | ${0}
+    ${""}            | ${0}
+    ${"foo"}         | ${NaN}
+  `("returns $expected from $input", ({ input, expected }) => {
+    expect(parseQuantity(input)).toBe(expected)
   })
 })

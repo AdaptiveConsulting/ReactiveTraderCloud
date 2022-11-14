@@ -1,6 +1,7 @@
 import {
   createApplyCharacterMultiplier,
   customNumberFormatter,
+  parseQuantity,
 } from "@/utils/formatNumber"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
@@ -56,19 +57,15 @@ const [rawQuantity$, setQuantity] = createSignal<string>()
 
 const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
 
-const mapRawQuantityToValue = (rawVal: string): number => {
-  // parse after removing everything but digits and decimal points
-  const parsedNumValue = parseInt(rawVal.replace(/[^(0-9|.)]/g, ""))
-  const numValue = !Number.isNaN(parsedNumValue) ? Math.abs(parsedNumValue) : 0
-
-  const lastChar = rawVal.slice(-1).toLowerCase()
-  const value = applyCharacterMultiplier(numValue, lastChar)
-
-  return value
-}
-
 const [useQuantity, quantity$] = bind(
-  rawQuantity$.pipe(map(mapRawQuantityToValue)),
+  rawQuantity$.pipe(
+    map((rawVal: string): number => {
+      const numValue = Math.trunc(Math.abs(parseQuantity(rawVal)))
+      const lastChar = rawVal.slice(-1).toLowerCase()
+      const value = applyCharacterMultiplier(numValue, lastChar)
+      return !Number.isNaN(value) ? value : 0
+    }),
+  ),
   0,
 )
 

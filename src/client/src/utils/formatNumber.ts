@@ -213,3 +213,14 @@ export const THOUSANDS_SEPARATOR_REGEXP = escapeRegExp(THOUSANDS_SEPARATOR)
  * Decimal separator for numbers in current locale, for use in regular expressions
  */
 export const DECIMAL_SEPARATOR_REGEXP = escapeRegExp(DECIMAL_SEPARATOR)
+
+const filterRegExp = new RegExp(
+  `${THOUSANDS_SEPARATOR_REGEXP}|k$|m$|K$|M$`,
+  "g",
+)
+const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
+/**
+ * Returns the number representation of a given quantity string
+ */
+export const parseQuantity = (rawValue: string): number =>
+  Number(rawValue.replace(filterRegExp, "").replace(decimalRegExp, "."))

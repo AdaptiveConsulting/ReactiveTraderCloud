@@ -14,10 +14,9 @@ import { filter, map, take } from "rxjs/operators"
 import { createKeyedSignal } from "@react-rxjs/utils"
 import {
   customNumberFormatter,
-  THOUSANDS_SEPARATOR_REGEXP,
   DECIMAL_SEPARATOR,
-  DECIMAL_SEPARATOR_REGEXP,
   createApplyCharacterMultiplier,
+  parseQuantity,
 } from "@/utils/formatNumber"
 
 const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
@@ -27,12 +26,6 @@ const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
 export { onChangeNotionalValue }
 
 const formatter = customNumberFormatter()
-
-const filterRegExp = new RegExp(
-  `${THOUSANDS_SEPARATOR_REGEXP}|k$|m$|K$|M$`,
-  "g",
-)
-const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
 
 const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
 
@@ -48,11 +41,9 @@ export const [useNotional, getNotional$] = symbolBind((symbol) =>
     rawNotional$(symbol),
   ).pipe(
     map(({ rawVal }) => {
+      const numValue = Math.abs(parseQuantity(rawVal))
       const lastChar = rawVal.slice(-1).toLowerCase()
-      const numValue = Number(
-        rawVal.replace(filterRegExp, "").replace(decimalRegExp, "."),
-      )
-      const value = Math.abs(applyCharacterMultiplier(numValue, lastChar))
+      const value = applyCharacterMultiplier(numValue, lastChar)
       return {
         value,
         inputValue:
