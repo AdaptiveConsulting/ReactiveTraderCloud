@@ -54,12 +54,12 @@ rfqRequest$
     ),
     filter(
       ([_, _direction, instrumentId, quantity, dealerIds]) =>
-        instrumentId !== null && quantity.value > 0 && dealerIds.length > 0,
+        instrumentId !== null && quantity > 0 && dealerIds.length > 0,
     ),
     map(([_, direction, instrumentId, quantity, dealerIds]) => ({
       instrumentId: instrumentId!,
       dealerIds,
-      quantity: quantity.value * 1000,
+      quantity: quantity * 1000,
       direction,
       expirySecs: 120,
     })),
@@ -82,7 +82,7 @@ export const RfqButtonPanel: FC = () => {
 
   const detailsMissing =
     selectedInstrument === null ||
-    quantity.value === 0 ||
+    quantity === 0 ||
     selectedCounterpartyIds.length === 0
 
   const clearRfqTicket = () => {

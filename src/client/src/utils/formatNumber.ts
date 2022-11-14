@@ -14,6 +14,7 @@
  */
 
 import escapeRegExp from "lodash/fp/escapeRegExp"
+import pick from "lodash/fp/pick"
 
 enum Scale {
   K = "k",
@@ -145,6 +146,32 @@ export const formatAsWholeNumber = precisionNumberFormatter(0)
 export const formatWithScale = (num: number, format: NumberFormatter) => {
   const { value, scale } = scaleNumber(num)
   return format(value) + scale
+}
+
+const multipliers = {
+  k,
+  m,
+  b,
+  t,
+}
+/**
+ * Creates a function that accepts a value and a character multiplier that results
+ * in the value being multiplied by the associated multiplier or returned without modification.
+ */
+export const createApplyCharacterMultiplier = (
+  activeMultiplierKeys: Array<keyof typeof multipliers>,
+) => {
+  const activeMultipliers = pick<{ [key: string]: number }>(
+    activeMultiplierKeys,
+    multipliers,
+  )
+  return (value: number, multiplierKey: string) => {
+    const multiplyBy = activeMultipliers[multiplierKey] ?? 1
+    if (value >= multiplyBy) {
+      return value
+    }
+    return value * multiplyBy
+  }
 }
 
 // The following code deals with finding the thousands and decimal separators for the current locale

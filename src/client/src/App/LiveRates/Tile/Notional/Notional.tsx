@@ -10,13 +10,14 @@ import {
 } from "./Notional.styles"
 import { concat, merge, pipe } from "rxjs"
 import { currencyPairs$ } from "@/services/currencyPairs"
-import { filter, map, pluck, take } from "rxjs/operators"
+import { filter, map, take } from "rxjs/operators"
 import { createKeyedSignal } from "@react-rxjs/utils"
 import {
   customNumberFormatter,
   THOUSANDS_SEPARATOR_REGEXP,
   DECIMAL_SEPARATOR,
   DECIMAL_SEPARATOR_REGEXP,
+  createApplyCharacterMultiplier,
 } from "@/utils/formatNumber"
 
 const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
@@ -25,11 +26,6 @@ const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
 )
 export { onChangeNotionalValue }
 
-const multipliers: Record<string, number> = {
-  k: 1_000,
-  m: 1_000_000,
-}
-
 const formatter = customNumberFormatter()
 
 const filterRegExp = new RegExp(
@@ -37,6 +33,8 @@ const filterRegExp = new RegExp(
   "g",
 )
 const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
+
+const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
 
 export const [useNotional, getNotional$] = symbolBind((symbol) =>
   concat(
@@ -51,10 +49,10 @@ export const [useNotional, getNotional$] = symbolBind((symbol) =>
   ).pipe(
     map(({ rawVal }) => {
       const lastChar = rawVal.slice(-1).toLowerCase()
-      const value = Math.abs(
-        Number(rawVal.replace(filterRegExp, "").replace(decimalRegExp, ".")) *
-          (multipliers[lastChar] || 1),
+      const numValue = Number(
+        rawVal.replace(filterRegExp, "").replace(decimalRegExp, "."),
       )
+      const value = Math.abs(applyCharacterMultiplier(numValue, lastChar))
       return {
         value,
         inputValue:
@@ -66,7 +64,10 @@ export const [useNotional, getNotional$] = symbolBind((symbol) =>
   ),
 )
 export const [, getNotionalValue$] = symbolBind(
-  pipe(getNotional$, pluck("value")),
+  pipe(
+    getNotional$,
+    map((notional) => notional.value),
+  ),
 )
 
 export const [useIsNotionalValid] = symbolBind(
