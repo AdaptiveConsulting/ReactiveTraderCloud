@@ -5,7 +5,7 @@ import { broadcast } from "@finos/fdc3"
 import { Subscribe } from "@react-rxjs/core"
 import { useCallback } from "react"
 import styled from "styled-components"
-import { ColDefContext, ColFieldsContext, Trades$Context } from "./Context"
+import { ColDefContext, ColFieldsContext, TradesStreamContext } from "./Context"
 import { TradesFooter } from "./TradesFooter"
 import { TradesGridInner, TradesGridInnerProps } from "./TradesGrid"
 import { TradesHeader } from "./TradesHeader"
@@ -55,14 +55,14 @@ const FxTrades: React.FC = () => {
     <Subscribe fallback={<Loader ariaLabel="Loading trades blotter" />}>
       <ColFieldsContext.Provider value={fxColFields}>
         <ColDefContext.Provider value={fxColDef}>
-          <Trades$Context.Provider value={trades$}>
+          <TradesStreamContext.Provider value={trades$}>
             <SuspenseOnStaleData />
             <TradesStyle role="region" aria-labelledby="trades-table-heading">
               <TradesHeader section="blotter" />
               <TradesGrid caption="Reactive Trader FX Trades Table" />
               <TradesFooter />
             </TradesStyle>
-          </Trades$Context.Provider>
+          </TradesStreamContext.Provider>
         </ColDefContext.Provider>
       </ColFieldsContext.Provider>
     </Subscribe>
