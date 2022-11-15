@@ -3,11 +3,11 @@ import { createContext, useContext } from "react"
 import { Observable } from "rxjs"
 import { ColDef } from "./TradesState"
 
-export const Trades$Context =
+export const TradesStreamContext =
   createContext<Observable<(FxTrade | CreditTrade)[]> | undefined>(undefined)
 
 export const useTrades$ = () => {
-  const trades$ = useContext(Trades$Context)
+  const trades$ = useContext(TradesStreamContext)
 
   if (!trades$) throw new Error("No trades stream provided")
 

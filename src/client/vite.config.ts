@@ -305,22 +305,23 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     plugins.push(copyOpenfinPlugin(isDev, openfinBaseUrl, TARGET))
   }
 
-  let proxy
   if (process.env.VITE_MOCKS) {
     plugins.unshift(apiMockReplacerPlugin())
-  } else {
-    proxy = {
-      "/ws": {
-        // To test local execution of nginx gateway in Docker,
-        // use e.g.target: "http://localhost:55000", (no need for changeOrigin in that case)
-        target:
-          process.env.VITE_HYDRA_URL ||
-          "wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com",
-        changeOrigin: true,
-        ws: true,
-      },
-    }
   }
+
+  const proxy = process.env.VITE_MOCKS
+    ? undefined
+    : {
+        "/ws": {
+          // To test local execution of nginx gateway in Docker,
+          // use e.g.target: "http://localhost:55000", (no need for changeOrigin in that case)
+          target:
+            process.env.VITE_HYDRA_URL ||
+            "wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com",
+          changeOrigin: true,
+          ws: true,
+        },
+      }
 
   plugins.unshift(indexSwitchPlugin(TARGET))
   plugins.unshift(targetBuildPlugin(isDev, TARGET))
