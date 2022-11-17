@@ -166,12 +166,10 @@ const typescriptPlugin = {
   enforce: "pre",
 }
 
-const copyOpenfinPlugin = (
-  dev: boolean,
-  baseUrl: string,
-  target: "openfin" | "launcher",
-) => {
+const copyOpenfinPlugin = (dev: boolean, target: "openfin" | "launcher") => {
   const env = process.env.ENVIRONMENT || "local"
+  const openfinBaseUrl = getBaseUrl(dev || env === "local")
+
   return {
     ...copy({
       targets: [
@@ -183,7 +181,7 @@ const copyOpenfinPlugin = (
           transform: (contents) =>
             contents
               .toString()
-              .replace(/<BASE_URL>/g, baseUrl)
+              .replace(/<BASE_URL>/g, openfinBaseUrl)
               .replace(/<ENV_NAME>/g, env)
               .replace(
                 /<ENV_SUFFIX>/g,
@@ -289,7 +287,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
 
   const isDev = mode === "development"
   const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
-  const openfinBaseUrl = getBaseUrl(isDev || !!process.env.LOCAL)
 
   const plugins = isDev
     ? [eslintPlugin, typescriptPlugin, reactRefresh()]
@@ -302,7 +299,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   }
 
   if (TARGET === "openfin" || TARGET === "launcher") {
-    plugins.push(copyOpenfinPlugin(isDev, openfinBaseUrl, TARGET))
+    plugins.push(copyOpenfinPlugin(isDev, TARGET))
   }
 
   if (process.env.VITE_MOCKS) {
