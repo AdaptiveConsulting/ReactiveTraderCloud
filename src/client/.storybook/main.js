@@ -1,5 +1,8 @@
 const path = require("path")
 
+// for explanation of public path configuration, see
+// https://github.com/storybookjs/storybook/issues/1291#issuecomment-795251283
+
 module.exports = {
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
@@ -11,7 +14,7 @@ module.exports = {
       type: "javascript/auto",
     })
 
-    config.output.publicPath = '/storybook/';
+    config.output.publicPath = "/storybook/"
 
     config.resolve.alias = {
       "@/components": path.resolve(__dirname, "../src", "components"),
@@ -24,7 +27,7 @@ module.exports = {
     return config
   },
   managerWebpack: async (config) => {
-    config.output.publicPath = '/storybook/';
-    return config;
+    config.output.publicPath = "/storybook/"
+    return config
   },
 }
