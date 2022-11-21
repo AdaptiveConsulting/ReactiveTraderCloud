@@ -1,4 +1,4 @@
-import styled from "@emotion/styled"
+import styled from "styled-components"
 import { limitCheckerIcon } from "@/Launcher/icons"
 
 const Indicator = styled.div`
