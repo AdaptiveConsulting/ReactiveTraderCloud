@@ -1,9 +1,9 @@
 import { QuoteState, RfqState } from "@/generated/TradingGateway"
 import { RfqDetails } from "@/services/credit/creditRfqs"
-import { BehaviorSubject, Subject } from "rxjs"
-import { Direction } from "../types"
+import { BehaviorSubject } from "rxjs"
 import * as creditService from "../../credit"
 import * as tradesService from "../../trades"
+import { Direction } from "../types"
 
 jest.mock("../../credit")
 
@@ -126,9 +126,8 @@ describe("trades", () => {
       const creditServiceMock = creditService as any
       creditServiceMock.__creditRfqsById(creditRfqs$)
     })
-    it("should be true", (done) => {
+    it("should convert RFQ and Quote details to trades stream", (done) => {
       tradesService.creditTrades$.subscribe((value) => {
-        console.log("Value: ", value)
         expect(value).toEqual([
           {
             tradeId: "3",

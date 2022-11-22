@@ -21,6 +21,7 @@
     "dotenv": "^14.2.0",
     "express": "^4.17.1",
     "openfin-adapter": "^21.64.9",
+    "prettier": "^2.2.1",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-typescript2": "^0.31.1",
     "ts-loader": "^9.2.6",
@@ -39,5 +40,10 @@
     "dialogflow": "^1.2.0",
     "openfin-notifications": "^1.11.0",
     "rxjs": "^7.5.2"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "trailingComma": "all"
   }
 }

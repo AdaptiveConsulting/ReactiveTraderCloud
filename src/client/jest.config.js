@@ -8,6 +8,22 @@ module.exports = {
   globals: {
     "ts-jest": {
       babelConfig: true,
+      diagnostics: {
+        ignoreCodes: [1343], // otherwise throws error about "import.meta" before babel can help
+      },
     },
   },
+  // for jest > 27 ..
+  // transform: {
+  //   "^.+\\.tsx?$": [
+  //     "ts-jest",
+  //     {
+  //       diagnostics: {
+  //         warnOnly: true,
+  //         ignoreCodes: [1343], // otherwise throws error about "import.meta" before babel can help
+  //       },
+  //       babelConfig: true,
+  //     },
+  //   ],
+  // },
 }
