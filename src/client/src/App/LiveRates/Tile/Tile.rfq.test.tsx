@@ -94,8 +94,9 @@ describe("Tile/rfq", () => {
   it("RFQ Button should only appear when notional above threshold", async () => {
     expect(screen.queryByTestId(rfqButtonTestId)).toBe(null)
 
+    const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
+
     act(() => {
-      const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
       fireEvent.change(input, { target: { value: "10000000" } })
     })
 

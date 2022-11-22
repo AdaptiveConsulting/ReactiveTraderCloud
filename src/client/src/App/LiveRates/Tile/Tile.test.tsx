@@ -55,7 +55,6 @@ const _exec = require("@/services/executions/executions")
 
 describe("Tile", () => {
   beforeEach(() => {
-    jest.useFakeTimers()
     _prices.__resetMocks()
     _ccpp.__resetMock()
     _exec.__resetMocks()
@@ -183,6 +182,8 @@ describe("Tile", () => {
   })
 
   it("should render alert when execution takes too long", async () => {
+    jest.useFakeTimers("legacy")
+
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
