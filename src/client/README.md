@@ -48,7 +48,7 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 Clone the repo, then install the necessary node modules:
 
 ```sh
-cd /src/client
+cd src/client
 npm install
 ```
 
