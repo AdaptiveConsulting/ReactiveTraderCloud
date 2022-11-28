@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { limitCheckerIcon } from "@/Launcher/icons"
+import { limitCheckerIcon } from "@/OpenFin/apps/Launcher/icons"
 
 const Indicator = styled.div`
   display: flex;

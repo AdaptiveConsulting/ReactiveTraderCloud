@@ -67,8 +67,13 @@ const ClearRfqsButton = styled.button<{ disabled: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: ${({ theme }) => theme.secondary.base};
   background-color: ${({ theme }) => theme.core.lightBackground};
   ${({ disabled }) => (disabled ? "opacity: 0.3" : "")}
+`
+
+const TabsHeader = styled.div`
+  color: ${({ theme }) => theme.secondary.base};
 `
 
 export const CreditRfqsHeader: React.FC = () => {
@@ -78,7 +83,7 @@ export const CreditRfqsHeader: React.FC = () => {
   return (
     <HeaderWrapper>
       <LeftNav>
-        <div>RFQ's</div>
+        <TabsHeader>RFQs</TabsHeader>
         {RFQS_TABS.map((rfqStateOption) => (
           <NavItem
             key={rfqStateOption}

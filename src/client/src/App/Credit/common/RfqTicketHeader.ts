@@ -12,9 +12,7 @@ interface WithTerminated {
 
 export const DirectionContainer = styled.div<WithDirection & WithTerminated>`
   display: flex;
-  width: 100%;
   flex: 0 0 48px;
-  align-items: center;
   background-color: ${({ theme, direction, terminated }) =>
     terminated
       ? theme.name === ThemeName.Dark
@@ -30,11 +28,10 @@ export const DirectionLabel = styled.div<WithDirection & WithTerminated>`
   position: relative;
   display: flex;
   justify-content: ${({ direction }) =>
-    direction === Direction.Buy ? "start" : "end"};
+    direction === Direction.Buy ? "flex-start" : "flex-end"};
   align-items: center;
   padding: ${({ direction }) =>
     direction === Direction.Buy ? "0 0 0 4px" : "0 4px 0 0"};
-  height: 100%;
   width: 72px;
   white-space: pre-wrap;
   font-size: 10px;

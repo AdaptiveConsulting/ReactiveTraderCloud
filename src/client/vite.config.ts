@@ -1,10 +1,8 @@
-import eslint from "@rollup/plugin-eslint"
-import reactRefresh from "@vitejs/plugin-react-refresh"
+import react from "@vitejs/plugin-react"
 import { readdirSync, statSync } from "fs"
 import path, { resolve } from "path"
 import copy from "rollup-plugin-copy"
 import modulepreload from "rollup-plugin-modulepreload"
-import typescript from "rollup-plugin-typescript2"
 import { injectManifest } from "rollup-plugin-workbox"
 import {
   ConfigEnv,
@@ -47,8 +45,7 @@ function apiMockReplacerPlugin(): Plugin {
 // Replace files with .<target> if they exist
 // Note - resolveId source and importer args are different between dev and build
 // Some more investigation and work should be done to improve this when possible
-function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
-  const target = preTarget === "launcher" ? "openfin" : preTarget
+function targetBuildPlugin(dev: boolean, target: string): Plugin {
   return {
     name: "targetBuildPlugin",
     enforce: "pre",
@@ -90,7 +87,7 @@ function targetBuildPlugin(dev: boolean, preTarget: string): Plugin {
         )
 
         // Source doesn't have file extension, so try all extensions
-        let candidate
+        let candidate: string | null = null
         const extensions = ["ts", "tsx"]
         for (let i = 0; i < extensions.length; i++) {
           try {
@@ -156,38 +153,23 @@ const customPreloadPlugin = () => {
   return result
 }
 
-const eslintPlugin = {
-  ...eslint({ include: "src/**/*.+(js|jsx|ts|tsx)" }),
-  enforce: "pre",
-}
-
-const typescriptPlugin = {
-  ...typescript(),
-  enforce: "pre",
-}
-
-const copyOpenfinPlugin = (dev: boolean, target: "openfin" | "launcher") => {
+const copyOpenfinPlugin = (dev: boolean) => {
   const env = process.env.ENVIRONMENT || "local"
   const openfinBaseUrl = getBaseUrl(dev || env === "local")
+  const transform = (contents: Buffer) =>
+    contents
+      .toString()
+      .replace(/<BASE_URL>/g, openfinBaseUrl)
+      .replace(/<ENV_NAME>/g, env)
+      .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : env.toUpperCase())
+  const dest = "./dist/config"
 
   return {
     ...copy({
       targets: [
-        {
-          src: `./public-openfin/${
-            target === "launcher" ? "launcher.json" : "app.json"
-          }`,
-          dest: "./dist/config",
-          transform: (contents) =>
-            contents
-              .toString()
-              .replace(/<BASE_URL>/g, openfinBaseUrl)
-              .replace(/<ENV_NAME>/g, env)
-              .replace(
-                /<ENV_SUFFIX>/g,
-                env === "prod" ? "" : env.toUpperCase(),
-              ),
-        },
+        { src: "./public-openfin/launcher.json", dest, transform },
+        { src: "./public-openfin/rt-fx.json", dest, transform },
+        { src: "./public-openfin/rt-credit.json", dest, transform },
       ],
       verbose: true,
       // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
@@ -288,9 +270,11 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   const isDev = mode === "development"
   const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
 
-  const plugins = isDev
-    ? [eslintPlugin, typescriptPlugin, reactRefresh()]
-    : [customPreloadPlugin()]
+  const plugins: any[] = [react()]
+
+  if (!isDev) {
+    plugins.push(customPreloadPlugin())
+  }
 
   const TARGET = process.env.TARGET || "web"
 
@@ -299,7 +283,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   }
 
   if (TARGET === "openfin" || TARGET === "launcher") {
-    plugins.push(copyOpenfinPlugin(isDev, TARGET))
+    plugins.push(copyOpenfinPlugin(isDev))
   }
 
   if (process.env.VITE_MOCKS) {
@@ -330,9 +314,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     base: viteBaseUrl,
     define: {
       __TARGET__: JSON.stringify(TARGET),
-    },
-    esbuild: {
-      jsxInject: `import React from 'react'`,
     },
     build: {
       sourcemap: true,

@@ -2,7 +2,7 @@ import { init as workspacePlatformInit } from '@openfin/workspace-platform'
 import { connectToGateway } from '@adaptive/hydra-platform'
 import { registerHome, showHome, deregisterHome } from './home'
 import { registerStore, deregisterStore } from './store'
-import { registerNotifications } from './home/notifications'
+import { registerFxNotifications } from './home/notifications'
 import { BASE_URL } from './consts'
 import { customActions, overrideCallback } from './browser'
 
@@ -34,7 +34,7 @@ async function init() {
     ]
   })
   await registerHome()
-  await registerNotifications()
+  await registerFxNotifications()
   await registerStore()
   await showHome()
 

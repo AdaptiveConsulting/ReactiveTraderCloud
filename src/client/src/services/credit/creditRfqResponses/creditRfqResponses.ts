@@ -1,4 +1,4 @@
-import { ROUTES_CONFIG } from "@/constants"
+import { CREDIT_SELL_SIDE_TICKET_HEIGHT, ROUTES_CONFIG } from "@/constants"
 import {
   CreateQuoteResponse,
   DealerBody,
@@ -105,10 +105,11 @@ function openDealerTicketForRfq(rfqId: string, dealerId: string) {
         .replace(":dealerId", dealerId),
     ),
     name: `CreditRFQ-${rfqId}-${dealerId}`,
+    displayName: "Credit RFQ",
     width: 330,
-    height: 262,
+    height: CREDIT_SELL_SIDE_TICKET_HEIGHT,
     x: window.innerWidth - 330,
-    y: window.innerHeight - 262,
+    y: window.innerHeight - CREDIT_SELL_SIDE_TICKET_HEIGHT,
   })
 }
 

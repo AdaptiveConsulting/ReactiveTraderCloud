@@ -23,6 +23,11 @@ function generateRandomName() {
   return text
 }
 
+// OpenFin windows open with shorter height than Chrome windows when
+// set to open with the same height parameters. This offset compensates
+// for the difference in height of OpenFin vs Chrome windows.
+const OPENFIN_HEIGHT_OFFSET = 30
+
 export async function openWindow(
   config: WindowConfig,
   onClose?: () => void,
@@ -30,7 +35,7 @@ export async function openWindow(
   const {
     url,
     width: defaultWidth,
-    height: defaultHeight,
+    height,
     displayName,
     maxHeight,
     maxWidth,
@@ -53,13 +58,13 @@ export async function openWindow(
     autoShow: true,
     contextMenu: true,
     defaultCentered: centered,
-    defaultHeight,
+    defaultHeight: height + OPENFIN_HEIGHT_OFFSET,
     defaultWidth,
     frame: false,
     icon: "/static/media/reactive-trader.ico",
-    maxHeight,
+    maxHeight: maxHeight ? maxHeight + OPENFIN_HEIGHT_OFFSET : undefined,
     maxWidth,
-    minHeight,
+    minHeight: minHeight + OPENFIN_HEIGHT_OFFSET,
     minWidth,
     defaultLeft: x,
     defaultTop: y,

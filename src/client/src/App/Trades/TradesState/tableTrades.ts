@@ -336,9 +336,16 @@ export const [useFilterFields] = bind(
 )
 
 /**
- * Signal to capture a tradeId of row to highlight
+ * Signal to capture a tradeId of row to highlight in FX blotter
  */
-export const [tradeRowHighlight$, onTradeRowHighlight] = createSignal<string>()
+export const [fxTradeRowHighlight$, setFxTradeRowHighlight] =
+  createSignal<string>()
+
+/**
+ * Signal to capture a tradeId of row to highlight in Credit blotter
+ */
+export const [creditTradeRowHighlight$, setCreditTradeRowHighlight] =
+  createSignal<string>()
 
 /**
  * Emit tradeId of new trades after the initial load
@@ -371,8 +378,8 @@ const newTradeId$ = merge(trades$, creditTrades$).pipe(
  */
 export const [useFxTradeRowHighlight] = bind(
   merge([
-    tradeRowHighlight$,
-    tradeRowHighlight$.pipe(
+    fxTradeRowHighlight$,
+    fxTradeRowHighlight$.pipe(
       delay(3000),
       map(() => undefined),
     ),
@@ -387,14 +394,14 @@ export const [useFxTradeRowHighlight] = bind(
 
 export const [useCreditTradeRowHighlight] = bind(
   merge([
-    tradeRowHighlight$,
-    tradeRowHighlight$.pipe(
+    creditTradeRowHighlight$,
+    creditTradeRowHighlight$.pipe(
       delay(3000),
       map(() => undefined),
     ),
     newTradeId$,
     newTradeId$.pipe(
-      delay(4000),
+      delay(1000),
       map(() => undefined),
     ),
   ]).pipe(mergeMap((tradeId) => tradeId)),

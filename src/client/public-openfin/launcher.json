@@ -63,8 +63,8 @@
             "url": "<BASE_URL>/plugin/fin.desktop.Excel.js"
           }
         ],
-        "url": "<BASE_URL>/",
-        "defaultWidth": 350,
+        "url": "<BASE_URL>/launcher",
+        "defaultWidth": 390,
         "defaultHeight": 56,
         "defaultTop": 160,
         "defaultLeft": 30,

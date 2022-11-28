@@ -15,20 +15,35 @@ Below you can find links to the installers for the various platforms.
 >
 > They should not be removed, in case there are external links to them.
 
-### Reactive Trader®
+### Reactive Trader® - FX
 
-| Environment | Windows                                                                   | Mac OS                                                                    |
-| ----------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Demo        | [Download](./Reactive-Trader-Demo.exe?raw=true) / [Generate][rt-demo-win] | [Download](./Reactive-Trader-Demo.dmg?raw=true) / [Generate][rt-demo-mac] |
-| UAT         | [Download](./Reactive-Trader-UAT.exe?raw=true) / [Generate][rt-uat-win]   | [Download](./Reactive-Trader-UAT.dmg?raw=true) / [Generate][rt-uat-mac]   |
-| Dev         | [Download](./Reactive-Trader-Dev.exe?raw=true) / [Generate][rt-dev-win]   | [Download](./Reactive-Trader-Dev.dmg?raw=true) / [Generate][rt-dev-mac]   |
+| Environment | Windows                                                                        | Mac OS                                                                         |
+| ----------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| Demo        | [Download](./Reactive-Trader-FX-Demo.exe?raw=true) / [Generate][rtfx-demo-win] | [Download](./Reactive-Trader-Demo-FX.dmg?raw=true) / [Generate][rtfx-demo-mac] |
+| UAT         | [Download](./Reactive-Trader-FX-UAT.exe?raw=true) / [Generate][rtfx-uat-win]   | [Download](./Reactive-Trader-UAT-FX.dmg?raw=true) / [Generate][rtfx-uat-mac]   |
+| Dev         | [Download](./Reactive-Trader-FX-Dev.exe?raw=true) / [Generate][rtfx-dev-win]   | [Download](./Reactive-Trader-Dev-FX.dmg?raw=true) / [Generate][rtfx-dev-mac]   |
 
-[rt-demo-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Fapp.json&fileName=Reactive-Trader-Demo&unzipped=true
-[rt-uat-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Fapp.json&fileName=Reactive-Trader-UAT&unzipped=true
-[rt-dev-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Fapp.json&fileName=Reactive-Trader-Dev&unzipped=true
-[rt-demo-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Fapp.json&fileName=Reactive-Trader-Demo&internal=true&iconFile=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2
-[rt-uat-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Fapp.json&fileName=Reactive-Trader-UAT&internal=true&iconFile=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2%20(UAT)
-[rt-dev-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Fapp.json&fileName=Reactive-Trader-Dev&internal=true&iconFile=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2%20(Dev)
+[rtfx-demo-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Frt-fx.json&fileName=Reactive-Trader-FX-Demo&unzipped=true
+[rtfx-uat-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Frt-fx.json&fileName=Reactive-Trader-FX-UAT&unzipped=true
+[rtfx-dev-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Frt-fx.json&fileName=Reactive-Trader-FX-Dev&unzipped=true
+[rtfx-demo-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Frt-fx.json&fileName=Reactive-Trader-FX-Demo&internal=true&iconFile=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2
+[rtfx-uat-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Frt-fx.json&fileName=Reactive-Trader-FX-UAT&internal=true&iconFile=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2%20(UAT)
+[rtfx-dev-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Frt-fx.json&fileName=Reactive-Trader-FX-Dev&internal=true&iconFile=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2%20(Dev)
+
+### Reactive Trader® - Credit
+
+| Environment | Windows                                                                             | Mac OS                                                                              |
+| ----------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Demo        | [Download](./Reactive-Trader-Credit-Demo.exe?raw=true) / [Generate][rt-cr-demo-win] | [Download](./Reactive-Trader-Demo-Credit.dmg?raw=true) / [Generate][rt-cr-demo-mac] |
+| UAT         | [Download](./Reactive-Trader-Credit-UAT.exe?raw=true) / [Generate][rt-cr-uat-win]   | [Download](./Reactive-Trader-UAT-Credit.dmg?raw=true) / [Generate][rt-cr-uat-mac]   |
+| Dev         | [Download](./Reactive-Trader-Credit-Dev.exe?raw=true) / [Generate][rt-cr-dev-win]   | [Download](./Reactive-Trader-Dev-Credit.dmg?raw=true) / [Generate][rt-cr-dev-mac]   |
+
+[rt-cr-demo-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-Demo&unzipped=true
+[rt-cr-uat-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-UAT&unzipped=true
+[rt-cr-dev-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-Dev&unzipped=true
+[rt-cr-demo-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-Demo&internal=true&iconFile=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2
+[rt-cr-uat-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-UAT&internal=true&iconFile=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2%20(UAT)
+[rt-cr-dev-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-Dev&internal=true&iconFile=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2%20(Dev)
 
 ### Reactive Launcher
 
@@ -38,12 +53,12 @@ Below you can find links to the installers for the various platforms.
 | UAT         | [Download](./Reactive-Launcher-UAT.exe?raw=true) / [Generate][rl-uat-win]   | [Download](./Reactive-Launcher-UAT.dmg?raw=true) / [Generate][rl-uat-mac]   |
 | Dev         | [Download](./Reactive-Launcher-Dev.exe?raw=true) / [Generate][rl-dev-win]   | [Download](./Reactive-Launcher-Dev.dmg?raw=true) / [Generate][rl-dev-mac]   |
 
-[rl-demo-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Flauncher.prod.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-Demo&unzipped=true
-[rl-uat-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Flauncher.uat.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-UAT&unzipped=true
-[rl-dev-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Flauncher.dev.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-Dev&unzipped=true
-[rl-demo-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Flauncher.prod.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-Demo&internal=true&iconFile=https%3A%2F%2Flauncher.prod.reactivetrader.com%2Fstatic%2Fmedia%2Fadaptive-icon-256x256.png&appName=Reactive%20Launcher
-[rl-uat-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Flauncher.uat.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-UAT&internal=true&iconFile=https%3A%2F%2Flauncher.uat.reactivetrader.com%2Fstatic%2Fmedia%2Fadaptive-icon-256x256.png&appName=Reactive%20Launcher%20(UAT)
-[rl-dev-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Flauncher.dev.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-Dev&internal=true&iconFile=https%3A%2F%2Flauncher.dev.reactivetrader.com%2Fstatic%2Fmedia%2Fadaptive-icon-256x256.png&appName=Reactive%20Launcher%20(Dev)
+[rl-demo-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-Demo&unzipped=true
+[rl-uat-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-UAT&unzipped=true
+[rl-dev-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-Dev&unzipped=true
+[rl-demo-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-Demo&internal=true&iconFile=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fstatic%2Fmedia%2Fadaptive-icon-256x256.png&appName=Reactive%20Launcher
+[rl-uat-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-UAT&internal=true&iconFile=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fstatic%2Fmedia%2Fadaptive-icon-256x256.png&appName=Reactive%20Launcher%20(UAT)
+[rl-dev-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Flauncher.json&fileName=Reactive-Launcher-Dev&internal=true&iconFile=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fstatic%2Fmedia%2Fadaptive-icon-256x256.png&appName=Reactive%20Launcher%20(Dev)
 
 ---
 

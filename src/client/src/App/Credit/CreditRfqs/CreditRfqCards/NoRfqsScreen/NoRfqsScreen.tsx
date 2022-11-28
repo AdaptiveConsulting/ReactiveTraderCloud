@@ -38,15 +38,15 @@ const Description = styled.div`
 function getTitleForTab(tab: RfqsTab) {
   switch (tab) {
     case RfqsTab.All:
-      return "You have no RFQ's"
+      return "You have no RFQs"
     case RfqsTab.Live:
-      return "You have no live RFQ's"
+      return "You have no live RFQs"
     case RfqsTab.Expired:
-      return "You have no expired RFQ's"
+      return "You have no expired RFQs"
     case RfqsTab.Cancelled:
-      return "You have no cancelled RFQ's"
+      return "You have no cancelled RFQs"
     case RfqsTab.Done:
-      return "You have no executed RFQ's"
+      return "You have no executed RFQs"
     default:
       throw new Error("Unsupported tab type")
   }
