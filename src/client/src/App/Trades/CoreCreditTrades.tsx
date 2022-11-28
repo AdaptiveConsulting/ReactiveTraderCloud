@@ -1,6 +1,8 @@
 import { Loader } from "@/components/Loader"
+import { registerCreditBlotterUpdates } from "@/notifications"
 import { CreditTrade, creditTrades$ } from "@/services/trades"
 import { Subscribe } from "@react-rxjs/core"
+import { useEffect } from "react"
 import styled from "styled-components"
 import { ColDefContext, ColFieldsContext, TradesStreamContext } from "./Context"
 import { TradesFooter } from "./TradesFooter"
@@ -22,6 +24,10 @@ const TradesGrid: React.FC<TradesGridInnerProps<CreditTrade>> = (props) => {
 }
 
 const CreditTrades: React.FC = () => {
+  useEffect(() => {
+    registerCreditBlotterUpdates()
+  }, [])
+
   return (
     <Subscribe fallback={<Loader ariaLabel="Loading trades blotter" />}>
       <ColFieldsContext.Provider value={creditColFields}>

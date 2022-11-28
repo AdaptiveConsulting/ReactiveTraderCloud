@@ -19,10 +19,9 @@ import { price$, usePrice } from "./CreditSellSideParameters"
 import { TradeMissedIcon } from "./TradeMissedIcon"
 
 const FooterWrapper = styled.div<{ accepted: boolean; missed: boolean }>`
-  flex: 0 0 32px;
   display: flex;
   align-items: center;
-  padding: 0 8px;
+  padding: 8px;
   border-top: 1px solid ${({ theme }) => theme.primary[3]};
   background-color: ${({ accepted, missed }) =>
     accepted

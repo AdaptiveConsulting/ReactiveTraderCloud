@@ -3,7 +3,7 @@ import { BASE_URL } from '../consts'
 import { executionResponse$ } from '../services/executions'
 import { ExecutionResponse, TradeStatus } from '../generated/TradingGateway'
 
-const sendNotification = (executionResponse: ExecutionResponse) => {
+const sendFxTradeNotification = (executionResponse: ExecutionResponse) => {
   const notification = {
     ...executionResponse.trade,
     valueDate: executionResponse.trade.valueDate.toString(),
@@ -26,8 +26,8 @@ const sendNotification = (executionResponse: ExecutionResponse) => {
   })
 }
 
-export async function registerNotifications() {
+export async function registerFxNotifications() {
   executionResponse$.subscribe(executionResponse => {
-    sendNotification(executionResponse)
+    sendFxTradeNotification(executionResponse)
   })
 }

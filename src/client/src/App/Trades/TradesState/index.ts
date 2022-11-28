@@ -28,7 +28,8 @@ export {
   tableTrades$,
   useTableTrades,
   useFilterFields,
-  onTradeRowHighlight,
+  setFxTradeRowHighlight,
   useFxTradeRowHighlight,
+  setCreditTradeRowHighlight,
   useCreditTradeRowHighlight,
 } from "./tableTrades"

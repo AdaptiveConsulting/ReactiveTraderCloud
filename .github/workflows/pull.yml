@@ -14,7 +14,6 @@ env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
-  BUCKET_LAUNCHER: reactive-trader-launcher-builds
 
 jobs:
   build:
@@ -116,21 +115,6 @@ jobs:
             rsync -d -r dist \
             gs://$BUCKET_FINSEMBLE/pull/${{ github.event.number }}
 
-      - name: Build (Launcher)
-        env:
-          DOMAIN: https://launcher.env.reactivetrader.com
-          URL_PATH: /pull/${{ github.event.number }}
-          VITE_BUILD_VERSION: ${{ github.sha }}
-          ENVIRONMENT: env
-        run: npm run launcher:build
-
-      - name: Deploy (Launcher)
-        run: |
-          gsutil -m \
-            -h "Cache-Control: no-cache" \
-            rsync -d -r dist \
-            gs://$BUCKET_LAUNCHER/pull/${{ github.event.number }}
-
       - name: Find comment
         uses: peter-evans/find-comment@v1
         id: comment
@@ -150,13 +134,13 @@ jobs:
             ### Preview links
 
             As part of the code review process, please ensure that you test against the following
-
-            | Version   | URL                                                                                     |
-            | :--       | :--                                                                                     |
-            | Web       | https://web.env.reactivetrader.com/pull/${{ github.event.number }}                      |
-            | OpenFin   | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/app.json   |
-            | Finsemble | https://finsemble.env.reactivetrader.com/pull/${{ github.event.number }}                |
-            | Launcher  | fins://launcher.env.reactivetrader.com/pull/${{ github.event.number }}/config/launcher.json   |
+            | Version            | URL                                                                                         |
+            | :----------------- | :------------------------------------------------------------------------------------------ |
+            | Web                | https://web.env.reactivetrader.com/pull/${{ github.event.number }}                          |
+            | OpenFin - FX       | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json     |
+            | OpenFin - Credit   | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-credit.json |
+            | OpenFin - Launcher | fins://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/launcher.json  |
+            | Finsemble          | https://finsemble.env.reactivetrader.com/pull/${{ github.event.number }}                    |
 
             ### Performance
 

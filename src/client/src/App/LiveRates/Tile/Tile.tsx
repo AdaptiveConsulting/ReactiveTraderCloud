@@ -35,7 +35,7 @@ import { isMobileDevice } from "@/utils"
 
 export const tile$ = (symbol: string) =>
   merge(
-    ...[
+    [
       historicalGraph$,
       header$,
       priceMovement$,

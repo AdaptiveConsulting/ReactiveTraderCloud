@@ -1,3 +1,4 @@
+import { CREDIT_RFQ_EXPIRY_SECONDS } from "@/constants"
 import { ACK_CREATE_RFQ_RESPONSE } from "@/generated/TradingGateway"
 import { createCreditRfq$ } from "@/services/credit"
 import { Direction } from "@/services/trades"
@@ -61,7 +62,7 @@ rfqRequest$
       dealerIds,
       quantity: quantity * 1000,
       direction,
-      expirySecs: 120,
+      expirySecs: CREDIT_RFQ_EXPIRY_SECONDS,
     })),
     exhaustMap((request) => createCreditRfq$(request)),
     tap((response) => {

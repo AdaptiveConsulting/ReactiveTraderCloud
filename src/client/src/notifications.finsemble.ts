@@ -1,7 +1,7 @@
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { executions$ } from "@/services/executions/executions"
 
-export function sendNotification(executionTrade: ExecutionTrade) {
+export function sendFxTradeNotification(executionTrade: ExecutionTrade) {
   const status =
     executionTrade.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
   const title = `Trade ${status}: ID ${executionTrade.tradeId}`
@@ -17,10 +17,10 @@ export function sendNotification(executionTrade: ExecutionTrade) {
   window.FSBL.Clients.NotificationClient.notify([notification])
 }
 
-export async function registerNotifications() {
+export async function registerFxNotifications() {
   executions$.subscribe(
     (executionTrade) => {
-      sendNotification(executionTrade)
+      sendFxTradeNotification(executionTrade)
     },
     (e) => {
       console.error(e)
@@ -29,4 +29,8 @@ export async function registerNotifications() {
       console.error("notifications stream completed!?")
     },
   )
+}
+
+export function registerCreditBlotterUpdates() {
+  // no-op
 }

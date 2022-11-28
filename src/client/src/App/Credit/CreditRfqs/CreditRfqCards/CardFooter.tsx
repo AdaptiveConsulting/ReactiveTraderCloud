@@ -1,4 +1,3 @@
-import { onTradeRowHighlight } from "@/App/Trades/TradesState"
 import { QuoteState, RfqState } from "@/generated/TradingGateway"
 import {
   cancelCreditRfq$,
@@ -12,6 +11,7 @@ import { FaCheckCircle, FaTrash } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
 import { rfqStateToLabel } from "../../common"
 import { CreditTimer } from "../../CreditTimer"
+import { handleViewTrade } from "./handleViewTrade"
 import {
   AcceptedCardState,
   CancelQuoteButton,
@@ -50,7 +50,11 @@ export const AcceptedFooterContent: FC<{
         <FaCheckCircle size={16} />
         You traded with {dealerName}
       </AcceptedCardState>
-      <ViewTrade onClick={() => onTradeRowHighlight(rfqId.toString())}>
+      <ViewTrade
+        onClick={() => {
+          handleViewTrade(rfqId.toString())
+        }}
+      >
         View Trade {rfqId}
       </ViewTrade>
     </>

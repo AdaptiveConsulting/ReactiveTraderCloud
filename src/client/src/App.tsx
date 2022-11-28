@@ -2,7 +2,7 @@ import { StrictMode } from "react"
 import ReactDOM from "react-dom"
 import GlobalStyle from "@/theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
-import { registerNotifications } from "./notifications"
+import { registerFxNotifications } from "./notifications"
 import { GA_TRACKING_ID } from "./constants"
 import { getMainApp, gaDimension } from "./main"
 import { initConnection } from "./services/connection"
@@ -17,7 +17,7 @@ export async function initApp() {
 
   checkTradingGatewayCompatibility()
 
-  registerNotifications()
+  registerFxNotifications()
 
   ReactDOM.render(
     <StrictMode>

@@ -13,7 +13,6 @@ env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
-  BUCKET_LAUNCHER: reactive-trader-launcher-builds
 
 jobs:
   build:
@@ -123,18 +122,3 @@ jobs:
             -h "Cache-Control: no-cache" \
             rsync -d -r dist \
             gs://$BUCKET_FINSEMBLE/branch/${{ steps.vars.outputs.branch }}
-
-      - name: Build (Launcher)
-        env:
-          DOMAIN: https://launcher.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
-          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
-          VITE_BUILD_VERSION: ${{ github.sha }}
-          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
-        run: npm run launcher:build
-
-      - name: Deploy (Launcher)
-        run: |
-          gsutil -m \
-            -h "Cache-Control: no-cache" \
-            rsync -d -r dist \
-            gs://$BUCKET_LAUNCHER/branch/${{ steps.vars.outputs.branch }}

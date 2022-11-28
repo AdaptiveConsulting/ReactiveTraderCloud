@@ -1,6 +1,6 @@
 import { Loader } from "@/components/Loader"
 import { Subscribe } from "@react-rxjs/core"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import styled from "styled-components"
 import {
   CreditRfqCreatedConfirmation,
@@ -8,6 +8,10 @@ import {
 } from "./CreditRfqConfirmation"
 import { CreditRfqCards } from "./CreditRfqCards"
 import { CreditRfqsHeader } from "./CreditRfqsHeader"
+import {
+  registerCreditQuoteNotifications,
+  unregisterCreditQuoteNotifications,
+} from "@/notifications"
 
 const CreditRfqsCoreWrapper = styled.div`
   display: flex;
@@ -17,6 +21,12 @@ const CreditRfqsCoreWrapper = styled.div`
 `
 
 export const CreditRfqsCore: FC = () => {
+  useEffect(() => {
+    registerCreditQuoteNotifications()
+
+    return unregisterCreditQuoteNotifications
+  }, [])
+
   return (
     <Subscribe fallback={<Loader ariaLabel="Loading Credit RFQs" />}>
       <CreditRfqsCoreWrapper>

@@ -19,7 +19,7 @@ const CreditRfqFormCoreWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 355px;
+  min-width: 260px;
   margin: auto;
   background: ${({ theme }) => theme.core.lightBackground};
   color: ${({ theme }) => theme.core.textColor};

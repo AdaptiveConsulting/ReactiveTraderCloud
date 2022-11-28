@@ -1,4 +1,5 @@
 import { Loader } from "@/components/Loader"
+import { CREDIT_SELL_SIDE_TICKET_HEIGHT } from "@/constants"
 import { QuoteState } from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
 import { FC } from "react"
@@ -11,7 +12,7 @@ import { CreditSellSideParameters } from "./CreditSellSideParameters"
 const CreditSellSideWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: ${CREDIT_SELL_SIDE_TICKET_HEIGHT}px;
   background-color: ${({ theme }) => theme.core.lightBackground};
 `
 

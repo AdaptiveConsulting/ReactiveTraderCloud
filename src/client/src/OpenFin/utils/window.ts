@@ -8,7 +8,7 @@ interface BasicWindow {
 
 export type Offset = [number, number]
 const openFinPopupPrefix = "user-generated-popup-"
-export const mainOpenFinWindowName = "Reactive-Trader-MAIN" // set in the app.json
+export const mainOpenFinWindowName = "Reactive-Trader-MAIN" // set in the JSON manifest
 
 function popupNameFor(name: string): string {
   return `${openFinPopupPrefix}${name}`
@@ -120,7 +120,7 @@ function isUserGeneratedPopup(windowIdentity: Identity): boolean {
 export function inMainOpenFinWindow() {
   const currentWindowName = fin.Window.getCurrentSync().identity.name
 
-  // set in app.json
+  // set in the JSON manifest
   return currentWindowName === mainOpenFinWindowName
 }
 
