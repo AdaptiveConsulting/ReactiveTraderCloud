@@ -1,7 +1,6 @@
 import react from "@vitejs/plugin-react"
 import { readdirSync, statSync } from "fs"
 import path, { resolve } from "path"
-import copy from "rollup-plugin-copy"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 import {
@@ -12,12 +11,15 @@ import {
   UserConfigExport,
 } from "vite"
 import { createHtmlPlugin } from "vite-plugin-html"
+import { TransformOption, viteStaticCopy } from "vite-plugin-static-copy"
 
-const PORT = Number(process.env.PORT) || 1917
+type BuildTarget = "web" | "openfin" | "launcher"
+
+const localPort = Number(process.env.PORT) || 1917
 
 function getBaseUrl(dev: boolean) {
   return dev
-    ? `http://localhost:${PORT}`
+    ? `http://localhost:${localPort}`
     : `${process.env.DOMAIN || ""}${process.env.URL_PATH || ""}` || ""
 }
 
@@ -153,62 +155,50 @@ const customPreloadPlugin = () => {
   return result
 }
 
-const copyOpenfinPlugin = (dev: boolean) => {
+const copyPlugin = (
+  isDev: boolean,
+  buildTarget: "web" | "openfin" | "launcher",
+): Plugin[] => {
   const env = process.env.ENVIRONMENT || "local"
-  const openfinBaseUrl = getBaseUrl(dev || env === "local")
-  const transform = (contents: Buffer) =>
+
+  const transform: TransformOption | undefined = (contents) =>
     contents
-      .toString()
-      .replace(/<BASE_URL>/g, openfinBaseUrl)
+      .replace(/<BASE_URL>/g, getBaseUrl(isDev || env === "local"))
+
+      // We want the PWA banner to show on www.reactivetrader.com
+      .replace(/web\.prod\./g, "www.")
+
       .replace(/<ENV_NAME>/g, env)
+      // We don't want to show PROD in the PWA name
       .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : env.toUpperCase())
-  const dest = "./dist/config"
 
-  return {
-    ...copy({
-      targets: [
-        { src: "./public-openfin/launcher.json", dest, transform },
-        { src: "./public-openfin/rt-fx.json", dest, transform },
-        { src: "./public-openfin/rt-credit.json", dest, transform },
-      ],
-      verbose: true,
-      // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
-      // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
-      // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
-      hook: dev ? "buildStart" : "writeBundle",
-    }),
-  }
-}
-
-const copyWebManifestPlugin = (dev: boolean) => {
-  const envSuffix = (process.env.ENVIRONMENT || "local").toUpperCase()
-  return {
-    ...copy({
-      targets: [
-        {
-          src: "./public/.manifest.json",
-          dest: dev ? "./public" : "./dist",
-          rename: "manifest.json",
-          transform: (contents) =>
-            contents
-              .toString()
-              .replace(/<BASE_URL>/g, getBaseUrl(dev))
-              // We want the PWA banner to show on www.reactivetrader.com
-              .replace(/web\.prod\./g, "www.")
-              // We don't want to show PROD in the PWA name
-              .replace(
-                /{{environment_suffix}}/g,
-                envSuffix === "PROD" ? "" : envSuffix,
-              ),
-        },
-      ],
-      verbose: true,
-      // For dev, (most) output generation hooks are not called, so this needs to be buildStart.
-      // For prod, writeBundle is the appropriate hook, otherwise it gets wiped by the dist clean.
-      // Ref: https://vitejs.dev/guide/api-plugin.html#universal-hooks
-      hook: dev ? "buildStart" : "writeBundle",
-    }),
-  }
+  return viteStaticCopy({
+    flatten: true,
+    targets:
+      buildTarget === "openfin"
+        ? [
+            {
+              src: "public-openfin/*.json",
+              dest: "config",
+              transform,
+            },
+            {
+              src: "public-openfin/plugin/*",
+              dest: "plugin",
+            },
+          ]
+        : [
+            {
+              src: "public-pwa/manifest.json",
+              dest: "",
+              transform,
+            },
+            {
+              src: "public-pwa/splashscreens/*",
+              dest: "splashscreens",
+            },
+          ],
+  })
 }
 
 const htmlPlugin = (dev: boolean) => {
@@ -276,14 +266,10 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     plugins.push(customPreloadPlugin())
   }
 
-  const TARGET = process.env.TARGET || "web"
+  const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
 
-  if (TARGET === "web") {
+  if (buildTarget === "web") {
     plugins.push(injectWebServiceWorkerPlugin(mode))
-  }
-
-  if (TARGET === "openfin") {
-    plugins.push(copyOpenfinPlugin(isDev))
   }
 
   if (process.env.VITE_MOCKS) {
@@ -304,9 +290,9 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
         },
       }
 
-  plugins.unshift(indexSwitchPlugin(TARGET))
-  plugins.unshift(targetBuildPlugin(isDev, TARGET))
-  plugins.push(copyWebManifestPlugin(mode === "development"))
+  plugins.unshift(indexSwitchPlugin(buildTarget))
+  plugins.unshift(targetBuildPlugin(isDev, buildTarget))
+  plugins.push(copyPlugin(isDev, buildTarget))
   plugins.push(injectScriptIntoHtml())
   plugins.push(htmlPlugin(isDev))
 
@@ -316,10 +302,10 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
       sourcemap: true,
     },
     preview: {
-      port: PORT,
+      port: localPort,
     },
     server: {
-      port: PORT,
+      port: localPort,
       proxy,
     },
     resolve: {
