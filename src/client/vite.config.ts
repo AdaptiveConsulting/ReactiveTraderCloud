@@ -8,6 +8,7 @@ import {
   defineConfig,
   loadEnv,
   Plugin,
+  splitVendorChunkPlugin,
   UserConfigExport,
 } from "vite"
 import { createHtmlPlugin } from "vite-plugin-html"
@@ -260,10 +261,10 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   const isDev = mode === "development"
   const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
 
-  const plugins: any[] = [react()]
+  const plugins: any[] = [react()] // stays as any[] as WB injectManifest does not return PluginOption
 
   if (!isDev) {
-    plugins.push(customPreloadPlugin())
+    plugins.push(splitVendorChunkPlugin(), customPreloadPlugin())
   }
 
   const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
