@@ -282,7 +282,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     plugins.push(injectWebServiceWorkerPlugin(mode))
   }
 
-  if (TARGET === "openfin" || TARGET === "launcher") {
+  if (TARGET === "openfin") {
     plugins.push(copyOpenfinPlugin(isDev))
   }
 
@@ -312,9 +312,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
 
   return defineConfig({
     base: viteBaseUrl,
-    define: {
-      __TARGET__: JSON.stringify(TARGET),
-    },
     build: {
       sourcemap: true,
     },

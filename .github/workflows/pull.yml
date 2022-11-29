@@ -146,4 +146,4 @@ jobs:
 
             Please ensure that this PR does not degrade the performance of the UI. We should maintain a performance score of 95+.
 
-            https://developers.google.com/speed/pagespeed/insights/?url=https://env.reactivetrader.com/pull/${{ github.event.number }}
+            https://developers.google.com/speed/pagespeed/insights/?url=https://web.env.reactivetrader.com/pull/${{ github.event.number }}
