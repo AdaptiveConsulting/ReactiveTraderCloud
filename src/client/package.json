@@ -35,7 +35,7 @@
     "openfin:start:launcher": "concurrently \"npm:openfin:dev\" \"npm:openfin:run:launcher\"",
     "openfin:build": "cross-env TARGET=openfin vite build",
     "openfin:serve": "cross-env TARGET=openfin vite preview",
-    "openfin:run:preview": "wait-on -l http://localhost:1917/config/launcher.json && openfin -c http://localhost:1917/config/launcher.json -l",
+    "openfin:run:preview": "npm run _openfin:run --manifest_url=http://localhost:1917/config/launcher.json",
     "openfin:start:preview": "npm:openfin:build && concurrently \"npm:openfin:serve\" \"npm:openfin:run:preview\"",
     "finsemble:dev": "cross-env TARGET=finsemble vite",
     "finsemble:build": "cross-env TARGET=finsemble vite build",
