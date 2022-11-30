@@ -10,48 +10,45 @@ import {
   CLITemplate,
   Home,
 } from "@openfin/workspace"
-import { map, take } from "rxjs/operators"
+import { firstValueFrom, map } from "rxjs"
 
 const providerId = "reactive-trader-workspace-platform"
 
 const getResults = async (query?: string): Promise<CLISearchResponse> => {
   const formattedQuery = query?.toLowerCase().trim()
-  return currencyPairs$
-    .pipe(
-      map<Record<string, CurrencyPair>, CLISearchResponse>((data) => {
-        console.log("inside map", data)
-        const symbols = Object.keys(data)
-        let results: CLISearchResult<any>[] = symbols
-          .filter(
-            (symbol) =>
-              !formattedQuery || symbol.toLowerCase().includes(formattedQuery),
-          )
-          .map((symbol) => ({
-            key: symbol,
-            title: symbol,
-            data: {
-              appId: `reactive-trader-${symbol}`,
-              manifestType: "symbol",
-              manifest: symbol,
+  const results$ = currencyPairs$.pipe(
+    map<Record<string, CurrencyPair>, CLISearchResponse>((data) => {
+      const symbols = Object.keys(data)
+      let results: CLISearchResult<any>[] = symbols
+        .filter(
+          (symbol) =>
+            !formattedQuery || symbol.toLowerCase().includes(formattedQuery),
+        )
+        .map((symbol) => ({
+          key: symbol,
+          title: symbol,
+          data: {
+            appId: `reactive-trader-${symbol}`,
+            manifestType: "symbol",
+            manifest: symbol,
+          },
+          actions: [
+            {
+              name: "Launch Tile",
+              hotkey: "enter",
             },
-            actions: [
-              {
-                name: "Launch Tile",
-                hotkey: "enter",
-              },
-            ],
-            description: `${symbol} live rate`,
-            template: CLITemplate.SimpleText,
-            templateContent: `${symbol} live rate`,
-          }))
+          ],
+          description: `${symbol} live rate`,
+          template: CLITemplate.SimpleText,
+          templateContent: `${symbol} live rate`,
+        }))
 
-        return {
-          results,
-        }
-      }),
-      take(1),
-    )
-    .toPromise()
+      return {
+        results,
+      }
+    }),
+  )
+  return firstValueFrom(results$)
 }
 
 export const registerWorkspaceProvider = () => {

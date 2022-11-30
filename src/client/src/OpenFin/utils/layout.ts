@@ -1,4 +1,3 @@
-import { Snapshot } from "openfin/_v2/shapes/Platform"
 import { mainOpenFinWindowName } from "./window"
 
 export const isLayoutLocked = async (): Promise<boolean> => {
@@ -57,7 +56,7 @@ export const getSnapshotNames = (): Array<string> => {
   return []
 }
 
-export const getSnapshots = (): Record<string, Snapshot> => {
+export const getSnapshots = (): Record<string, OpenFin.Snapshot> => {
   const snapshotsStr = window.localStorage.getItem(OPENFIN_SNAPSHOTS)
   if (snapshotsStr) {
     return JSON.parse(snapshotsStr)
@@ -74,7 +73,7 @@ const setSnapshotNames = (snapshotNames: string[]) => {
     JSON.stringify(snapshotNames),
   )
 }
-const setSnapshots = (snapshots: Record<string, Snapshot>) => {
+const setSnapshots = (snapshots: Record<string, OpenFin.Snapshot>) => {
   window.localStorage.setItem(OPENFIN_SNAPSHOTS, JSON.stringify(snapshots))
 }
 

@@ -10,7 +10,7 @@ import { getReactiveAnalyticsUrls, getReactiveTraderUrl } from "./utils/url"
 
 type PlatformName = "browser" | "openfin" | "finsemble"
 
-const defaultWindowOptions: fin.WindowOption = {
+const defaultWindowOptions: Partial<OpenFin.WindowCreationOptions> = {
   autoShow: true,
   defaultWidth: 1280,
   defaultHeight: 900,
@@ -43,7 +43,7 @@ type ApplicationType =
 export interface ApplicationProvider {
   platformName: PlatformName
   applicationType: ApplicationType
-  windowOptions?: fin.WindowOption
+  windowOptions?: OpenFin.WindowCreationOptions
 }
 
 export interface ApplicationConfig {
@@ -117,6 +117,7 @@ const baseAppConfigs: ApplicationConfig[] = [
       applicationType: "download",
       windowOptions: {
         ...defaultWindowOptions,
+        name: "Limit Checker",
         icon: constructUrl(`/static/media/limit-checker-icon.ico`),
       },
     },

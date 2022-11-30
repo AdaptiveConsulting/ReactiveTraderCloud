@@ -1,14 +1,5 @@
 import { WindowConfig } from "./openWindow"
-
-// TODO - Move to generic place
-function getChildWindows() {
-  return new Promise<fin.OpenFinWindow[]>((resolve, reject) => {
-    fin.desktop.Application.getCurrent().getChildWindows(
-      (children: fin.OpenFinWindow[]) => resolve(children),
-      (error: string) => reject(error),
-    )
-  })
-}
+import { _Window } from "openfin-adapter/src/api/window"
 
 // TODO - Maybe move to generic place
 function generateRandomName() {
@@ -31,7 +22,7 @@ const OPENFIN_HEIGHT_OFFSET = 30
 export async function openWindow(
   config: WindowConfig,
   onClose?: () => void,
-): Promise<fin._Window> {
+): Promise<_Window> {
   const {
     url,
     width: defaultWidth,
@@ -46,7 +37,7 @@ export async function openWindow(
     includeInSnapshots,
   } = config
 
-  const childWindows = await getChildWindows()
+  const childWindows = await fin.Application.getCurrentSync().getChildWindows()
   const hasChildWindows = childWindows && childWindows.length
   const hasCoordinates = config.x !== undefined && config.y !== undefined
   const windowName = config.name || generateRandomName()

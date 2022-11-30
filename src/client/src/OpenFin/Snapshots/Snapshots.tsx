@@ -38,7 +38,7 @@ const useSnapshots = () => {
 }
 
 interface ListProps {
-  snapshots: Record<string, Snapshot>
+  snapshots: Record<string, OpenFin.Snapshot>
   onSelect(name: string): void
 }
 

@@ -1,11 +1,10 @@
 // TODO - Revisit if/when launcher is cross platform
-import { Application } from "openfin/_v2/main"
 import { Bounds } from "openfin/_v2/shapes/shapes"
 import { useEffect } from "react"
 
 export async function getExistingOpenFinApplication(
   uuid: string,
-): Promise<Application | undefined> {
+): Promise<OpenFin.Application | undefined> {
   const allApps = await fin.System.getAllApplications()
   const targetApp = allApps.some((app) => app.uuid === uuid)
   if (targetApp) {
@@ -13,7 +12,9 @@ export async function getExistingOpenFinApplication(
   }
 }
 
-async function restoreExistingApp(existingApp: Application): Promise<void> {
+async function restoreExistingApp(
+  existingApp: OpenFin.Application,
+): Promise<void> {
   const isRunning = await existingApp.isRunning()
   if (!isRunning) {
     await existingApp.run()
@@ -27,7 +28,7 @@ async function restoreExistingApp(existingApp: Application): Promise<void> {
 
 export async function bringToFrontOpenFinApplication(
   uuid: string,
-): Promise<Application | undefined> {
+): Promise<OpenFin.Application | undefined> {
   const existingApp = await getExistingOpenFinApplication(uuid)
   if (existingApp) {
     await restoreExistingApp(existingApp)
@@ -39,35 +40,31 @@ export async function createAndRunOpenFinApplication(
   name: string,
   url: string,
   uuid?: string,
-  windowOptions?: fin.WindowOption,
-): Promise<Application> {
-  const appOptions: fin.ApplicationOption = {
+  windowOptions?: OpenFin.WindowCreationOptions,
+): Promise<OpenFin.Application> {
+  return fin.Application.start({
     name,
     url,
     uuid: uuid || name,
     nonPersistent: true,
     mainWindowOptions: windowOptions,
+    // TODO understand if we need to pass this property, if not, remove it
+    // @ts-ignore
     fdc3Api: true,
-  }
-
-  return fin.Application.start(appOptions)
+  })
 }
 
-export function createOpenFinWindow(
+function createOpenFinWindow(
   name: string,
   url: string,
-  windowOptions?: fin.WindowOption,
-): Promise<fin.OpenFinWindow> {
+  windowOptions?: OpenFin.WindowCreationOptions,
+): Promise<OpenFin.Window> {
   return new Promise((resolve, reject) => {
-    const window: fin.OpenFinWindow = new fin.desktop.Window(
-      {
-        url,
-        name,
-        ...windowOptions,
-      },
-      () => resolve(window),
-      reject,
-    )
+    const window = fin.Window.create({
+      url,
+      name,
+      ...windowOptions,
+    })
   })
 }
 
