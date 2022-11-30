@@ -60,13 +60,10 @@ export interface ApplicationConfig {
 }
 
 const env = ENVIRONMENT
-const isLocal = env === "local"
 const envSuffix = `(${ENVIRONMENT.toUpperCase()})`
-const reactiveTraderFxManifestUrl = getReactiveTraderUrl(
-  `${isLocal ? "/dist" : ""}/config/rt-fx.json`,
-)
+const reactiveTraderFxManifestUrl = getReactiveTraderUrl("/config/rt-fx.json")
 const reactiveTraderCreditManifestUrl = getReactiveTraderUrl(
-  `${isLocal ? "/dist" : ""}/config/rt-credit.json`,
+  "/config/rt-credit.json",
 )
 const reactiveAnalyticsManifestUrl = getReactiveAnalyticsUrls(env)
 
