@@ -14,17 +14,17 @@ const CreditRoutes = lazy(() => import("@/OpenFin/apps/Credit"))
 export const OpenFinApp: React.FC = () => (
   <BrowserRouter basename={BASE_PATH}>
     <Switch>
-      <Route path={ROUTES_CONFIG.launcher}>
+      <Route path={`${ROUTES_CONFIG.launcher}*`}>
         <Suspense fallback={<Loader />}>
           <LauncherRoutes />
         </Suspense>
       </Route>
-      <Route path={ROUTES_CONFIG.fx}>
+      <Route path={`${ROUTES_CONFIG.fx}*`}>
         <Suspense fallback={<Loader />}>
           <FxRoutes />
         </Suspense>
       </Route>
-      <Route path={ROUTES_CONFIG.credit}>
+      <Route path={`${ROUTES_CONFIG.credit}*`}>
         <Suspense fallback={<Loader />}>
           <CreditRoutes />
         </Suspense>
