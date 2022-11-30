@@ -1,4 +1,4 @@
-import { Application } from "openfin/_v2/main"
+import { Application } from "openfin-adapter"
 import { useState } from "react"
 import { appConfigs, ApplicationConfig } from "./applicationConfigurations"
 import { LaunchButton } from "./components/LaunchButton"

@@ -24,6 +24,7 @@ export const Search: React.FC<Props> = ({ value, visible, onHide }) => {
       window.removeEventListener("keydown", onKeyDown)
     }
   }, [])
+  // }, [onHide])
 
   useEffect(() => {
     if (visible) {

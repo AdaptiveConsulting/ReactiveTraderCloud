@@ -31,8 +31,7 @@ const TradesGrid: React.FC<TradesGridInnerProps<FxTrade>> = (props) => {
 
     if (window.fdc3) {
       broadcast(context)
-    } else if (window.fin) {
-      // @ts-ignore
+    } else if (fin) {
       fin.me.interop.setContext(context)
     }
   }, [])

@@ -1,3 +1,8 @@
+// This file uses legacy OpenFin API which is not compatible with the
+// types of the version of the OpenFin lib we are using. This should
+// be fixed, but in the meantime, we are ignoring type checking on
+// on this file.
+// @ts-nocheck
 import { bind } from "@react-rxjs/core"
 import { BehaviorSubject, of, race, Subject, timer } from "rxjs"
 import { map, switchMap, take, tap } from "rxjs/operators"

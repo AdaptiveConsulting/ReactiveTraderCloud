@@ -4,11 +4,10 @@ import {
   ApplicationProvider,
 } from "./applicationConfigurations"
 import {
-  createOpenFinWindow,
   bringToFrontOpenFinApplication,
   createAndRunOpenFinApplication,
 } from "./utils"
-import { Application } from "openfin/_v2/main"
+import { Application } from "openfin-adapter"
 
 function openWindow(provider: ApplicationProvider, name: string, url?: string) {
   if (!provider.windowOptions) {
@@ -19,7 +18,7 @@ function openWindow(provider: ApplicationProvider, name: string, url?: string) {
     console.error(`Error opening app - url is missing`)
     return
   }
-  return createOpenFinWindow(name, url, provider.windowOptions)
+  return fin.Window.create({ url, ...provider.windowOptions, name })
 }
 
 async function openApplication({
@@ -57,7 +56,7 @@ async function launchByManifestUrl(uuid: string, manifestUrl?: string) {
 
 export async function open(
   config: ApplicationConfig,
-): Promise<Window | fin.OpenFinWindow | Application | void | null> {
+): Promise<Window | OpenFin.Window | Application | void | null> {
   const { provider, url, name, uuid } = config
 
   // Not under openfin -> open as url on browser
@@ -67,13 +66,10 @@ export async function open(
 
   // open as url through openfin
   if (provider?.platformName === "browser") {
-    return new Promise((resolve, reject) => {
-      if (typeof config.url !== "string") {
-        console.error(`Error opening with browser - url should be a string`)
-        return
-      }
-      fin.desktop.System.openUrlWithBrowser(config.url, resolve, reject)
-    })
+    if (typeof config.url !== "string") {
+      throw new TypeError(`Error opening with browser - url should be a string`)
+    }
+    return fin.System.openUrlWithBrowser(config.url)
   }
 
   // open new openfin application
@@ -93,21 +89,15 @@ export async function open(
   }
 }
 
-async function launchLimitChecker(config: ApplicationConfig) {
+async function launchLimitChecker(
+  config: ApplicationConfig,
+): Promise<Application> {
   const app = fin.Application.wrap({ uuid: config.name })
-  fin.desktop.System.launchExternalProcess(
-    {
-      alias: "LimitChecker",
-      listener: (result) => {
-        console.log("the exit code", result.exitCode)
-      },
+  await fin.System.launchExternalProcess({
+    alias: "LimitChecker",
+    listener: (result) => {
+      console.log("the exit code", result.exitCode)
     },
-    (data) => {
-      console.info("Process launched: ", data)
-    },
-    (e) => {
-      console.error("Process launch failed: ", e)
-    },
-  )
+  })
   return app
 }

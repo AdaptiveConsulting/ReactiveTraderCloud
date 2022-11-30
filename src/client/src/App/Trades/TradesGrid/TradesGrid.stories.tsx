@@ -1,4 +1,3 @@
-import { mockTrades } from "@/services/trades/__mocks__/mockTrades"
 import { Subscribe } from "@react-rxjs/core"
 import { ComponentStory, ComponentMeta } from "@storybook/react"
 import styled from "styled-components"
@@ -25,11 +24,8 @@ const Template: ComponentStory<typeof TradesGridInner> = (args) => (
 )
 
 export const NoTrades = Template.bind({})
-NoTrades.args = {
-  trades: [],
-}
+NoTrades.args = {}
 
+// Clark is working on resolving this
 export const WithTrades = Template.bind({})
-WithTrades.args = {
-  trades: mockTrades,
-}
+WithTrades.args = {}

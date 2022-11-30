@@ -8,7 +8,7 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "types": ["vite/client", "node", "openfin", "jest"],
     "allowJs": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
