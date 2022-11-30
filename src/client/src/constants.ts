@@ -12,24 +12,21 @@ export const ENVIRONMENT: Environment =
     (BASE_URL || "").includes(`.${env}.`),
   ) as Environment) || "local"
 
-const credit = "/credit"
-const fx = "/fx"
-
 // NOTE: these routes are hard coded in the OpenFin manifest JSON files,
 // so any changes here need to be manually synchronized with those files.
 export const ROUTES_CONFIG = {
-  fx,
-  tile: `${fx}/spot/:symbol`,
-  tiles: `${fx}/tiles`,
-  blotter: `${fx}/blotter`,
-  analytics: `${fx}/analytics`,
+  fx: "/fx",
+  tile: "/fx-spot/:symbol",
+  tiles: "/fx-tiles",
+  blotter: "/fx-blotter",
+  analytics: "/fx-analytics",
   styleguide: "/styleguide",
   admin: "/admin",
-  credit,
-  creditRfqs: `${credit}/rfqs`,
-  newRfq: `${credit}/new-rfq`,
-  sellSideTicket: `${credit}/sellside/:rfqId/dealer/:dealerId`,
-  creditBlotter: `${credit}/blotter`,
+  credit: "/credit",
+  creditRfqs: "/credit-rfqs",
+  newRfq: "/credit-new-rfq",
+  sellSideTicket: "/credit-sellside/:rfqId/dealer/:dealerId",
+  creditBlotter: "/credit-blotter",
   launcher: "/launcher",
   contact: "/contact",
   status: "/status",
