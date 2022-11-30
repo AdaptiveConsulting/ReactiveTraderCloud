@@ -30,21 +30,6 @@ Below you can find links to the installers for the various platforms.
 [rtfx-uat-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Frt-fx.json&fileName=Reactive-Trader-FX-UAT&internal=true&iconFile=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2%20(UAT)
 [rtfx-dev-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Frt-fx.json&fileName=Reactive-Trader-FX-Dev&internal=true&iconFile=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2%20(Dev)
 
-### Reactive Trader® - Credit
-
-| Environment | Windows                                                                             | Mac OS                                                                              |
-| ----------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Demo        | [Download](./Reactive-Trader-Credit-Demo.exe?raw=true) / [Generate][rt-cr-demo-win] | [Download](./Reactive-Trader-Demo-Credit.dmg?raw=true) / [Generate][rt-cr-demo-mac] |
-| UAT         | [Download](./Reactive-Trader-Credit-UAT.exe?raw=true) / [Generate][rt-cr-uat-win]   | [Download](./Reactive-Trader-UAT-Credit.dmg?raw=true) / [Generate][rt-cr-uat-mac]   |
-| Dev         | [Download](./Reactive-Trader-Credit-Dev.exe?raw=true) / [Generate][rt-cr-dev-win]   | [Download](./Reactive-Trader-Dev-Credit.dmg?raw=true) / [Generate][rt-cr-dev-mac]   |
-
-[rt-cr-demo-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-Demo&unzipped=true
-[rt-cr-uat-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-UAT&unzipped=true
-[rt-cr-dev-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-Dev&unzipped=true
-[rt-cr-demo-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-Demo&internal=true&iconFile=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2
-[rt-cr-uat-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-UAT&internal=true&iconFile=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2%20(UAT)
-[rt-cr-dev-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fconfig%2Frt-credit.json&fileName=Reactive-Trader-Credit-Dev&internal=true&iconFile=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fstatic%2Fmedia%2Freactive-trader-icon-256x256.png&appName=Reactive%20Trader%E2%84%A2%20(Dev)
-
 ### Reactive Launcher
 
 | Environment | Windows                                                                     | Mac OS                                                                      |
