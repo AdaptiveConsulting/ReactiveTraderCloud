@@ -1,4 +1,4 @@
-import { css } from 'styled-components'
+import { css } from "styled-components"
 
 export const preventStutter = css`
   backface-visibility: hidden;
@@ -28,7 +28,7 @@ export const userSelectButton = (props: { disabled?: boolean } | any) => css`
     ? css`
         cursor: default;
       `
-    : ''};
+    : ""};
 `
 
 export const touchScroll = css`

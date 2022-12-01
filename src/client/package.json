@@ -40,6 +40,7 @@
     "finsemble:dev": "cross-env TARGET=finsemble vite",
     "finsemble:build": "cross-env TARGET=finsemble vite build",
     "format": "prettier --write README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
+    "format:check": "prettier --check README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated",
     "storybook": "start-storybook -p 6006 --no-manager-cache",
     "build-storybook": "build-storybook -o ./dist/storybook"

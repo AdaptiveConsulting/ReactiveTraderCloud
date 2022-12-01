@@ -16,17 +16,17 @@ export interface DatePoints {
   yRange: Range<number>
 }
 
-export const getDataPoints = <T>(mapper: (x: T, idx: number) => DatePoint) => (
-  arr: T[],
-): DatePoints => {
-  const points = arr.map(mapper)
+export const getDataPoints =
+  <T>(mapper: (x: T, idx: number) => DatePoint) =>
+  (arr: T[]): DatePoints => {
+    const points = arr.map(mapper)
 
-  return {
-    points,
-    xRange: [points[0][0], points[points.length - 1][0]],
-    yRange: extent(points.map(([_, y]) => y)).reverse() as [number, number],
+    return {
+      points,
+      xRange: [points[0][0], points[points.length - 1][0]],
+      yRange: extent(points.map(([_, y]) => y)).reverse() as [number, number],
+    }
   }
-}
 
 export const withScales = (xRange: Range<number>, yRange: Range<number>) => {
   const xScale = scaleTime().range(xRange)

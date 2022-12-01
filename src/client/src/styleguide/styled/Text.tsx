@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components'
-import { Theme, ThemeSelector } from '@/theme'
+import styled, { css } from "styled-components"
+import { Theme, ThemeSelector } from "@/theme"
 
 // Normalized font sizes are `rem` values corresponding to whole pixel values (i.e. rem*16 is integer)
 type NormalizedFontSize =
@@ -27,7 +27,7 @@ type NormalizedFontSize =
 type NormalizedLineHeight = 1 | 1.25 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 5 | 7.5
 
 export interface TextProps {
-  display?: 'inline' | 'block' | 'inline-block'
+  display?: "inline" | "block" | "inline-block"
   /**
    * Expressed in `rem`
    */
@@ -36,12 +36,12 @@ export interface TextProps {
    * Expressed in `rem`
    */
   fontSize?: NormalizedFontSize
-  fontWeight?: 'bold' | number
-  fontStyle?: 'italic' | string
-  fontFamily?: 'lato' | 'montserrat' | 'roboto' | string
-  textAlign?: 'initial' | 'left' | 'center' | 'right'
-  textTransform?: 'uppercase' | 'capitalize'
-  whiteSpace?: 'initial' | 'nowrap' | 'pre-line' | 'pre-wrap'
+  fontWeight?: "bold" | number
+  fontStyle?: "italic" | string
+  fontFamily?: "lato" | "montserrat" | "roboto" | string
+  textAlign?: "initial" | "left" | "center" | "right"
+  textTransform?: "uppercase" | "capitalize"
+  whiteSpace?: "initial" | "nowrap" | "pre-line" | "pre-wrap"
   /**
    * Expressed in `px`
    */
@@ -58,7 +58,9 @@ export interface TextProps {
 }
 
 type TextPropsToCssMapper = {
-  [k in keyof TextProps]: (props: TextProps & { theme: Theme }) => ReturnType<typeof css>
+  [k in keyof TextProps]: (
+    props: TextProps & { theme: Theme },
+  ) => ReturnType<typeof css>
 }
 
 const textPropsToCSS: TextPropsToCssMapper = {
@@ -71,12 +73,13 @@ const textPropsToCSS: TextPropsToCssMapper = {
   textAlign: ({ textAlign }) => css({ textAlign }),
   textTransform: ({ textTransform }) => css({ textTransform }),
   whiteSpace: ({ whiteSpace }) => css({ whiteSpace }),
-  letterSpacing: ({ letterSpacing }) => css({ letterSpacing: `${letterSpacing}px` }),
+  letterSpacing: ({ letterSpacing }) =>
+    css({ letterSpacing: `${letterSpacing}px` }),
   textColor: ({ textColor, theme }) => {
-    if (typeof textColor === 'string') {
+    if (typeof textColor === "string") {
       return css({ color: textColor })
     }
-    if (typeof textColor === 'function') {
+    if (typeof textColor === "function") {
       return css({ color: textColor(theme) })
     }
     return css({})
@@ -92,12 +95,12 @@ function isTextProp(propName: string): propName is keyof TextProps {
 export function mapTextProps(props: TextProps & { theme: Theme }) {
   return Object.keys(props)
     .filter(isTextProp)
-    .map(propName => {
+    .map((propName) => {
       const textPropsToCSSValue = textPropsToCSS[propName]
       return textPropsToCSSValue && textPropsToCSSValue(props)
     })
     .filter(Boolean)
-    .join(';')
+    .join(";")
 }
 
 export const Text = styled.span<TextProps>`

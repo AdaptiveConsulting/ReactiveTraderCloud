@@ -1,6 +1,9 @@
-import styled from 'styled-components'
-import { mapMarginPaddingProps, MarginPaddingProps } from './mapMarginPaddingProps'
-import { mapTextProps, TextProps } from './Text'
+import styled from "styled-components"
+import {
+  mapMarginPaddingProps,
+  MarginPaddingProps,
+} from "./mapMarginPaddingProps"
+import { mapTextProps, TextProps } from "./Text"
 
 export interface ParagraphProps extends TextProps, MarginPaddingProps {}
 
