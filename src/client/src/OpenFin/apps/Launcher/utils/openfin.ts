@@ -78,10 +78,7 @@ export const getCurrentWindowBounds = async () => {
   return window.getBounds()
 }
 
-export async function animateCurrentWindowSize(
-  bounds: Bounds,
-  duration: number = 200,
-) {
+export async function animateCurrentWindowSize(bounds: Bounds, duration = 200) {
   const window = await fin.Window.getCurrent()
 
   return window.animate(

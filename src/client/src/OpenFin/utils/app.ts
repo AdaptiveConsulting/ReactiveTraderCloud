@@ -1,6 +1,6 @@
 import { ENVIRONMENT } from "@/constants"
 
-export function getAppName(name: string = "Reactive Trader®"): string {
+export function getAppName(name = "Reactive Trader®"): string {
   const envFormatted =
     ENVIRONMENT === "prod" ? "" : ` (${ENVIRONMENT.toUpperCase()})`
 

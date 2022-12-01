@@ -99,7 +99,7 @@ const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
  * The user's network might lose connection to the internet even though the device is connected to the network
  * In this scenario $online will not fire that the user went offline (false positive for internet connection status)
  */
-const online$: Observable<Boolean> = merge(
+const online$: Observable<boolean> = merge(
   of(navigator.onLine),
   fromEvent(window, "online").pipe(mapTo(true)),
   fromEvent(window, "offline").pipe(mapTo(false)),

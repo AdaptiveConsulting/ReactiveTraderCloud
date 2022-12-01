@@ -1,4 +1,4 @@
-import { Component, ErrorInfo } from "react"
+import { Component, ErrorInfo, ReactNode } from "react"
 import { ThemeProvider } from "@/theme"
 
 class LocalStorageMock {
@@ -33,9 +33,9 @@ class LocalStorageMock {
 
 const mockedLocalStorage = new LocalStorageMock()
 
-jest.mock("@/theme/globals", () => {})
+jest.mock("@/theme/globals", () => ({}))
 
-export const TestThemeProvider: React.FC = ({ children }) => (
+export const TestThemeProvider = ({ children }: { children: ReactNode }) => (
   <ThemeProvider storage={mockedLocalStorage}>{children}</ThemeProvider>
 )
 

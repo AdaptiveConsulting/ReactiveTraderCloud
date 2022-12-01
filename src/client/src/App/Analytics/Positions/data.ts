@@ -62,8 +62,8 @@ export const nodes$: Observable<BubbleChartNode[]> = currentPositions$.pipe(
       .filter((posPerCCY: CCYPosition) => posPerCCY.baseTradedAmount !== 0)
   }),
   map((positionData) => {
-    const minR: number = 15
-    const maxR: number = 60
+    const minR = 15
+    const maxR = 60
     const baseValues: number[] = positionData.map((val) =>
       Math.abs(val.baseTradedAmount),
     )

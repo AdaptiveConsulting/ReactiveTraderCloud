@@ -6,7 +6,7 @@ import DarkThemeIcon from "./DarkThemeIcon"
 import { IconContainer, SwitchContainer } from "@/components/Switch"
 import LightThemeIcon from "./LightThemeIcon"
 
-export interface ThemeStorageSwitchProps extends Partial<ReactSwitchProps> {}
+export type ThemeStorageSwitchProps = Partial<ReactSwitchProps>
 const iconSize = 18
 
 // TODO: Get rid of this library or open an issue/PR to fix their build

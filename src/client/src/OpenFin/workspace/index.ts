@@ -19,7 +19,7 @@ const getResults = async (query?: string): Promise<CLISearchResponse> => {
   const results$ = currencyPairs$.pipe(
     map<Record<string, CurrencyPair>, CLISearchResponse>((data) => {
       const symbols = Object.keys(data)
-      let results: CLISearchResult<any>[] = symbols
+      const results: CLISearchResult<any>[] = symbols
         .filter(
           (symbol) =>
             !formattedQuery || symbol.toLowerCase().includes(formattedQuery),
@@ -69,7 +69,7 @@ export const registerWorkspaceProvider = () => {
     request: CLISearchListenerRequest,
     response: CLISearchListenerResponse,
   ): Promise<CLISearchResponse> => {
-    let query = request.query.toLowerCase()
+    const query = request.query.toLowerCase()
     if (query.indexOf("/") === 0) {
       return { results: [] }
     }

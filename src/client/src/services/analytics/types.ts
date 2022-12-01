@@ -7,8 +7,7 @@ export interface CurrencyPairPositionRaw {
   CounterTradedAmount: number
 }
 
-export interface CurrencyPairPosition
-  extends CamelCase<CurrencyPairPositionRaw> {}
+export type CurrencyPairPosition = CamelCase<CurrencyPairPositionRaw>
 
 export interface HistoryRaw {
   Timestamp: string

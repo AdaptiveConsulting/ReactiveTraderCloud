@@ -142,6 +142,7 @@ const marginPaddingProps: AllMarginRules & AllPaddingRules = {
 }
 
 function isMarginPaddingRuleType(rule: string): rule is MarginPaddingRuleType {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return marginPaddingProps[rule] !== undefined
 }
@@ -153,6 +154,7 @@ export const mapMarginPaddingProps = (
     .filter(isMarginPaddingRuleType)
     .map((key) => {
       const marginPaddingProp = marginPaddingProps[key]
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return marginPaddingProp && marginPaddingProp[props[key]]
     })

@@ -6,9 +6,11 @@ export const withSubscriber = function <T extends object>(
   Comp: React.ComponentType<T>,
   fallback?: NonNullable<ReactNode> | null,
 ) {
-  return (props: T) => (
-    <Subscribe fallback={fallback || <Loader />}>
-      <Comp {...props} />
-    </Subscribe>
-  )
+  return function WithSubscriber(props: T) {
+    return (
+      <Subscribe fallback={fallback || <Loader />}>
+        <Comp {...props} />
+      </Subscribe>
+    )
+  }
 }

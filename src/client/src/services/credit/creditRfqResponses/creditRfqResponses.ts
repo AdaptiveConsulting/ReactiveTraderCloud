@@ -154,7 +154,7 @@ function sendRandomQuoteAfterDelay(
 }
 
 // The target price should be driven by the benchmark once it is implemented
-function generateRandomPrice(targetPrice: number = 100) {
+function generateRandomPrice(targetPrice = 100) {
   const sign = Math.random() > 0.5 ? -1 : 1
   const priceChange = Math.floor(Math.random() * 10)
 

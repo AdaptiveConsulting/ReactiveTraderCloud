@@ -5,7 +5,7 @@ export default (
     height="22"
     viewBox="0 0 22 22"
   >
-    <g fill="none" fill-rule="evenodd">
+    <g fill="none" fillRule="evenodd">
       <path d="M0 0H22V22H0z" />
       <circle cx="11" cy="11" r="11" fill="#5F94F5" />
       <path d="M0 0H22V22H0z" />
