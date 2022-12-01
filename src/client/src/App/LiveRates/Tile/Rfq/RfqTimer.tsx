@@ -111,7 +111,11 @@ export const RfqTimer: React.FC<{
         <SecsTimer {...props} />
       </TimeLeft>
       <ProgressBarWrapper isAnalyticsView={isAnalyticsView}>
-        {staticProgressWidth ? <ProgressBar width={staticProgressWidth} transitionTime={0} /> : <TimeProgress {...props} />}
+        {staticProgressWidth ? (
+          <ProgressBar width={staticProgressWidth} transitionTime={0} />
+        ) : (
+          <TimeProgress {...props} />
+        )}
       </ProgressBarWrapper>
       <RejectQuoteButton
         data-testid="rfqReject"

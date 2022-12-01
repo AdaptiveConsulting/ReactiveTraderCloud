@@ -4,7 +4,7 @@ import { DisconnectionOverlayInner } from "./DisconnectionOverlay"
 
 export default {
   title: "Components/DisconnectionOverlay",
-  component: DisconnectionOverlayInner
+  component: DisconnectionOverlayInner,
 } as ComponentMeta<typeof DisconnectionOverlayInner>
 
 const Template: ComponentStory<typeof DisconnectionOverlayInner> = (args) => (

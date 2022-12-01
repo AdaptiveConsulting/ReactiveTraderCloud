@@ -7,4 +7,4 @@ export default {
 } as ComponentMeta<typeof ContactUsButton>
 
 export const Default = () => <ContactUsButton />
-Default.storyName = 'ContactUsButton'
+Default.storyName = "ContactUsButton"
