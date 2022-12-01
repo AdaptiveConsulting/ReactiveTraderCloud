@@ -30,12 +30,12 @@ export const usePopUpMenu = <T extends HTMLElement>(
   }
 
   useEffect(() => {
-    if (displayMenu) {
-      document.addEventListener("click", hidePopUpMenu.current!)
-    }
-
-    return () => {
-      document.removeEventListener("click", hidePopUpMenu.current!)
+    if (displayMenu && hidePopUpMenu.current) {
+      document.addEventListener("click", hidePopUpMenu.current)
+      return () => {
+        hidePopUpMenu?.current &&
+          document.removeEventListener("click", hidePopUpMenu.current)
+      }
     }
   }, [displayMenu])
 

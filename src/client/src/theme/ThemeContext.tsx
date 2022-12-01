@@ -1,6 +1,7 @@
 import {
   createContext,
   Dispatch,
+  ReactNode,
   SetStateAction,
   useContext,
   useEffect,
@@ -11,6 +12,7 @@ import { ThemeName, themes } from "./themes"
 
 interface Props {
   storage?: typeof localStorage | typeof sessionStorage
+  children: ReactNode
 }
 
 interface ContextValue {
@@ -25,10 +27,7 @@ export const ThemeContext = createContext<ContextValue>({
 
 const STORAGE_KEY = "themeName"
 
-export const ThemeProvider: React.FC<Props> = ({
-  storage = localStorage,
-  children,
-}) => {
+export const ThemeProvider = ({ storage = localStorage, children }: Props) => {
   const [themeName, setThemeName] = useState<ThemeName>(
     () => (storage.getItem(STORAGE_KEY) as ThemeName) || ThemeName.Dark,
   )

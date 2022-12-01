@@ -22,7 +22,7 @@ interface PNLBarProps {
   symbol: string
 }
 
-const TRANSLATION_WIDTH: number = 50
+const TRANSLATION_WIDTH = 50
 
 const formatToPrecision2 = precisionNumberFormatter(2)
 

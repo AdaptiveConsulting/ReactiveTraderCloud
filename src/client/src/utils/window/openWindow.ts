@@ -15,6 +15,7 @@ export interface WindowConfig {
   includeInSnapshots?: boolean
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export function openWindow(
   config: WindowConfig,
   onClose?: () => void,

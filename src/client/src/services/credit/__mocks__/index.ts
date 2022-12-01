@@ -3,7 +3,7 @@ import { RfqDetails } from "../creditRfqs/types"
 
 let _creditRfqsById$: Observable<Observable<Record<number, RfqDetails>>>
 
-export let creditRfqsById$ = defer(() => _creditRfqsById$)
+export const creditRfqsById$ = defer(() => _creditRfqsById$)
 
 export const __creditRfqsById = (
   input: Observable<Observable<Record<number, RfqDetails>>>,

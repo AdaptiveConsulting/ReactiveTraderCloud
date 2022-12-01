@@ -87,8 +87,7 @@ const textPropsToCSS: TextPropsToCssMapper = {
   opacity: ({ opacity }) => css({ opacity }),
 }
 
-function isTextProp(propName: string): propName is keyof TextProps {
-  // @ts-ignore
+function isTextProp(propName: keyof TextProps): propName is keyof TextProps {
   return textPropsToCSS[propName] !== undefined
 }
 

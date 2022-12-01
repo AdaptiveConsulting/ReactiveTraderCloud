@@ -48,7 +48,7 @@ export const TradeMessageDiv = styled.div`
 `
 
 export const Button = styled("button")<{
-  success: Boolean
+  success: boolean
   theme: DefaultTheme
 }>`
   background-color: ${({ success, theme }) =>

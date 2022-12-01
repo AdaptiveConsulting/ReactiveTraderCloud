@@ -2,8 +2,8 @@ import { FC, ReactNode } from "react"
 import { Table, TableRow, TableCell, TableHeader } from "./styles"
 
 export interface Col {
-  title: String
-  id: String
+  title: string
+  id: string
   align?: "center" | "right"
   formatter?: (value: any) => void
   fixedWidth?: boolean

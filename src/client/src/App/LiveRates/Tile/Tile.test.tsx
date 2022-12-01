@@ -414,7 +414,7 @@ describe("Tile", () => {
     const executeFn = jest.fn(() => response$)
     _exec.__setExecute$(executeFn)
 
-    let renderedComponent = renderComponent()
+    const renderedComponent = renderComponent()
 
     expect(executeFn).not.toHaveBeenCalled()
     expect(screen.queryByText("Executing")).toBeNull()

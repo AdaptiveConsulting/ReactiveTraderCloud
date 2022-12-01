@@ -10,15 +10,15 @@ export function equals<T>(objA: T, objB: T): boolean {
     return false
   }
 
-  const keysA = Object.keys(objA)
-  const keysB = Object.keys(objB)
+  const keysA = Object.keys(objA) as (keyof T)[]
+  const keysB = Object.keys(objB) as (keyof T)[]
 
   if (keysA.length !== keysB.length) return false
 
   for (let i = 0; i < keysA.length; i++) {
     if (
       !Object.prototype.hasOwnProperty.call(objB, keysA[i]) ||
-      !equals((objA as any)[keysA[i]], (objB as any)[keysA[i]])
+      !equals(objA[keysA[i]], objB[keysA[i]])
     ) {
       return false
     }

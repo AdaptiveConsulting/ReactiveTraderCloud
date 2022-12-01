@@ -108,6 +108,7 @@ export const truncatedDecimalNumberFormatter = (
 ): NumberFormatter =>
   numberFormatter({
     maximumFractionDigits: precision,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore // has not made it into types yet - or support grid in MDN seemingly! - but works
     roundingMode: "trunc",
   })
@@ -179,18 +180,18 @@ export const createApplyCharacterMultiplier = (
 // Assumes that for this number, for all locales, the thousands and decimal separators will occur at the provided indices
 // Preference would have been given to a native Intl function for finding these values, but none appear to be exposed at this time
 
-type SeparatorGetter = (_locale: string) => string
+type SeparatorGetter = (_locale: string) => string | undefined
 
 export const getThousandsSeparator: SeparatorGetter = (_locale) => {
   return new Intl.NumberFormat(_locale)
     .formatToParts(10000.5)
-    .find((part) => part.type === "group")?.value!
+    .find((part) => part.type === "group")?.value
 }
 
 export const getDecimalSeparator: SeparatorGetter = (_locale) => {
   return new Intl.NumberFormat(_locale)
     .formatToParts(10000.5)
-    .find((part) => part.type === "decimal")?.value!
+    .find((part) => part.type === "decimal")?.value
 }
 
 /**

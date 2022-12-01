@@ -62,7 +62,7 @@ export function openWindow(
 }
 
 function calculatePosition(
-  center: string = "parent",
+  center = "parent",
   width: number,
   height: number,
   reference?: { top: number; left: number },
@@ -73,8 +73,11 @@ function calculatePosition(
   const TOP_POSITION_OFFSET = 50
 
   if (center === "parent") {
-    left = window.top!.outerWidth / 2 + window.top!.screenX - width / 2
-    top = window.top!.outerHeight / 2 + window.top!.screenY - height / 2
+    if (!window.top) {
+      throw new Error("Unable to calculate window position")
+    }
+    left = window.top.outerWidth / 2 + window.top.screenX - width / 2
+    top = window.top.outerHeight / 2 + window.top.screenY - height / 2
   } else if (center === "screen") {
     const screenLeft = window.screenLeft
     const screenTop = window.screenTop

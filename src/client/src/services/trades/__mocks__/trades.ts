@@ -3,7 +3,7 @@ import type { Trade } from "../types"
 
 let _trades$: Observable<Trade[]>
 
-export let trades$ = defer(() => _trades$)
+export const trades$ = defer(() => _trades$)
 
 export const __setTrades = (input: Observable<Trade[]>) => {
   _trades$ = input

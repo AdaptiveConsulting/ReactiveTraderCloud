@@ -9,7 +9,7 @@ const LAYOUT_ITEMS = {
 
 type LayoutKey = keyof typeof LAYOUT_ITEMS
 
-const getEmptyContent = (key: LayoutKey, useIcon: boolean = true) => {
+const getEmptyContent = (key: LayoutKey, useIcon = true) => {
   if (useIcon) {
     const icon = LAYOUT_ITEMS[key]
     if (icon) {
@@ -35,7 +35,7 @@ export const WindowViewport: React.FC = ({ children }) => {
       const listenerViewHidden = (e: any) => {
         const layoutItems: HTMLCollectionOf<Element> =
           document.getElementsByClassName("lm_item")
-        for (let idx in layoutItems) {
+        for (const idx in layoutItems) {
           const layoutItem = layoutItems[idx]
           if (layoutItem && layoutItem.querySelector) {
             const placeholder = layoutItem.querySelector(".wrapper_title")

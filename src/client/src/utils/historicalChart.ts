@@ -24,7 +24,7 @@ export const getDataPoints =
     return {
       points,
       xRange: [points[0][0], points[points.length - 1][0]],
-      yRange: extent(points.map(([_, y]) => y)).reverse() as [number, number],
+      yRange: extent(points.map(([, y]) => y)).reverse() as [number, number],
     }
   }
 
@@ -50,5 +50,5 @@ export const toSvgPath = (
     xScale: (x: Date) => number
     yScale: (x: number) => number
     points: DatePoint[]
-  }) => curvedLine.x((d) => x(d[0])).y((d) => y(d[1]))(points)!
+  }) => curvedLine.x((d) => x(d[0])).y((d) => y(d[1]))(points)
 }
