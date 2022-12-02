@@ -22,8 +22,10 @@ export default (() => (
   </Root>
 )) as FC
 
-const PriceMovementVariants: FC<{ direction: PriceMovementType }> = ({
+const PriceMovementVariants = ({
   direction,
+}: {
+  direction: PriceMovementType
 }) => (
   <PriceMovementInner
     movementType={direction}

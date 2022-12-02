@@ -62,7 +62,7 @@ export const [usePrice, getPrice$] = bind((symbol: string) =>
             ? PriceMovementType.UP
             : PriceMovementType.DOWN,
       }),
-      undefined as any as Price,
+      undefined as unknown as Price,
     ),
   ),
 )

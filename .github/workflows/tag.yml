@@ -49,6 +49,10 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Verify Quality (type checking, linting, format checking, tests)
+        run: |
+          npm run verify
+
       - name: Build (web)
         env:
           DOMAIN: https://web.prod.reactivetrader.com

@@ -102,7 +102,7 @@ const downloadCsv = (
   })
 }
 
-export const ExcelButton: React.FC = () => {
+export const ExcelButton = () => {
   const trades$ = useTrades$()
   const colDef = useColDef()
   const colFields = useColFields()

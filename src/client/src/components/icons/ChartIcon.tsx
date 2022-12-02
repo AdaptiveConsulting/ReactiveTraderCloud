@@ -4,11 +4,7 @@ interface Props {
   width?: number
 }
 
-const ChartIcon: React.FC<Props> = ({
-  fill = "#7E8188",
-  height = 24,
-  width = 24,
-}) => (
+const ChartIcon = ({ fill = "#7E8188", height = 24, width = 24 }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 16 8"

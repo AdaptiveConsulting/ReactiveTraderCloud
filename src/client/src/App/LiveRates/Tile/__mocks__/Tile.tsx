@@ -1,10 +1,13 @@
 import { Subject } from "rxjs"
 import { CurrencyPair } from "services/currencyPairs"
 
-export const Tile: React.FC<{
+export const Tile = ({
+  currencyPair,
+  isAnalytics,
+}: {
   currencyPair: CurrencyPair
   isAnalytics: boolean
-}> = ({ currencyPair, isAnalytics }) => (
+}) => (
   <div data-testid={`tile-${currencyPair.symbol}`}>
     IsAnalytics: {isAnalytics ? "true" : "false"}
   </div>

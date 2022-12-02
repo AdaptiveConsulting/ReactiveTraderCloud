@@ -1,4 +1,3 @@
-import { FC } from "react"
 import styled from "styled-components"
 import { ChevronIcon } from "@/components/icons"
 import Button from "./Button"
@@ -9,7 +8,7 @@ export interface DropdownStyleProps {
   title?: string
 }
 
-export const Dropdown: FC<DropdownStyleProps> = (props) => {
+export const Dropdown = (props: DropdownStyleProps) => {
   const { title, ...rest } = props
 
   return (

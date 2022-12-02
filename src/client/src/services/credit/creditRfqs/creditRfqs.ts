@@ -150,8 +150,8 @@ const endOfRfqStateOfWorld$ = creditRfqUpdates$.pipe(
 export const lastQuoteReceived$: Observable<QuoteDetails> =
   creditRfqUpdates$.pipe(
     withLatestFrom(endOfRfqStateOfWorld$),
-    filter(([_update, endOfRfqStateOfWorld]) => endOfRfqStateOfWorld),
-    map(([update, _endOfRfqStateOfWorld]) => update),
+    filter(([, endOfRfqStateOfWorld]) => endOfRfqStateOfWorld),
+    map(([update]) => update),
     filter(
       (update): update is QuoteCreatedRfqUpdate =>
         update.type === QUOTE_CREATED_RFQ_UPDATE,

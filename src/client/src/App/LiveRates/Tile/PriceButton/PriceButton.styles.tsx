@@ -32,13 +32,13 @@ type TradeButtonProps = {
   priceAnnounced: boolean
   isStatic?: boolean
   expired?: boolean
+  theme: Theme
 }
 
 const backgroundEffect = ({
   priceAnnounced,
   isStatic,
   direction,
-  // @ts-ignore
   theme,
 }: TradeButtonProps) =>
   priceAnnounced && !isStatic

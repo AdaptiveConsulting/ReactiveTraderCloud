@@ -1,3 +1,8 @@
+// disabling these rules for the time being as there are
+// existing TODOs to clean this up
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { WithChildren } from "@/utils/utilityTypes"
 import { useEffect } from "react"
 import { Helmet } from "react-helmet"
 
@@ -19,9 +24,10 @@ const getEmptyContent = (key: LayoutKey, useIcon = true) => {
   return key
 }
 
-export const WindowViewport: React.FC = ({ children }) => {
+export const WindowViewport = ({ children }: WithChildren) => {
   //TODO: Remove this HACK once OpenFin exposes content of "empty" layout containers...
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     if (!window.fin.me.isView) {
       const listenerViewAttached = (e: any) => {

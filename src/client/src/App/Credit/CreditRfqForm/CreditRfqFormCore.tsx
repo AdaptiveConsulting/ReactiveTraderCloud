@@ -4,7 +4,7 @@ import {
   registerSimulatedDealerResponses,
 } from "@/services/credit/creditRfqResponses"
 import { Subscribe } from "@react-rxjs/core"
-import { FC, useEffect } from "react"
+import { useEffect } from "react"
 import { Subscription } from "rxjs"
 import styled from "styled-components"
 import { supportsTearOut } from "../../TearOutSection/supportsTearOut"
@@ -59,7 +59,7 @@ const CreditRfqFooter = styled.footer`
   background-color: ${({ theme }) => theme.core.lightBackground};
 `
 
-export const CreditRfqFormCore: FC = () => {
+export const CreditRfqFormCore = () => {
   useEffect(() => {
     const subscription = new Subscription()
     subscription.add(registerSimulatedDealerResponses())

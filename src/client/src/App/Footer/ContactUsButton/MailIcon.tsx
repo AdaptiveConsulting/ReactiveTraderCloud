@@ -1,6 +1,7 @@
 import { SVGAttributes } from "react"
 import styled from "styled-components"
 import { dark } from "@/theme/colors"
+import _ from "lodash"
 
 interface Props extends SVGAttributes<Element> {
   fill?: string
@@ -8,13 +9,7 @@ interface Props extends SVGAttributes<Element> {
   active?: boolean
 }
 
-const MailIconBase: React.FC<Props> = ({
-  fill = "#000",
-  size = 2,
-  style,
-  active,
-  ...props
-}) => {
+const MailIconBase = ({ fill = "#000", size = 2, ...props }: Props) => {
   return (
     <svg
       height={size + "rem"}
@@ -24,7 +19,7 @@ const MailIconBase: React.FC<Props> = ({
       x="0px"
       y="0px"
       viewBox="0 0 100 100"
-      {...props}
+      {..._.omit(props, "active")}
     >
       <g fill={fill}>
         <path d="M84,32.1c0-3.3-2.7-6.1-6.1-6.1H22.1c-3.3,0-6.1,2.7-6.1,6.1v34.9c0,3.3,2.7,6.1,6.1,6.1h55.9c3.3,0,6.1-2.7,6.1-6.1V32.1z    M22.1,30h55.9c0.3,0,0.5,0.1,0.8,0.1L51.2,50.7c-0.7,0.5-1.7,0.5-2.5,0L21.3,30.1C21.5,30.1,21.8,30,22.1,30z M80,66.9   c0,1.1-0.9,2.1-2.1,2.1H22.1c-1.1,0-2.1-0.9-2.1-2.1V34.2l26.4,19.7c1.1,0.8,2.3,1.2,3.6,1.2s2.6-0.4,3.6-1.2L80,34.2V66.9z"></path>

@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import Header from "@/App/Header"
 import { Footer } from "@/App/Footer"
+import { WithChildren } from "@/utils/utilityTypes"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -30,7 +31,7 @@ const MainWrapper = styled.div`
   overflow: hidden;
 `
 
-const MainLayout: React.FC = ({ children }) => (
+const MainLayout = ({ children }: WithChildren) => (
   <Wrapper>
     <AppLayoutRoot data-qa="app-layout__root">
       <Header />

@@ -4,7 +4,7 @@ import { currentPositions$ } from "@/services/analytics"
 import { equals } from "@/utils/equals"
 import { mapObject } from "@/utils/mapObject"
 import { Title } from "../styled"
-import PNLBar from "./PNLBar"
+import PNLBar, { PNLBarProps } from "./PNLBar"
 
 const [usePnL, pnL$] = bind(
   currentPositions$.pipe(
@@ -17,7 +17,6 @@ const [usePnL, pnL$] = bind(
       const maxVal = Math.max(Math.abs(max), Math.abs(min))
 
       return Object.entries(basePnlsDict).map(([symbol, basePnl]) => ({
-        key: symbol,
         symbol,
         basePnl,
         maxVal,
@@ -28,23 +27,16 @@ const [usePnL, pnL$] = bind(
 
 export { pnL$ }
 
-export const PnLInner: React.FC<{
-  data: {
-    key: string
-    symbol: string
-    basePnl: number
-    maxVal: number
-  }[]
-}> = ({ data }) => (
+export const PnLInner = ({ data }: { data: PNLBarProps[] }) => (
   <div>
     <Title>PnL</Title>
     {data.map((pnlItem) => (
-      <PNLBar {...pnlItem} />
+      <PNLBar key={pnlItem.symbol} {...pnlItem} />
     ))}
   </div>
 )
 
-export const PnL: React.FC = () => {
+export const PnL = () => {
   const data = usePnL()
   return <PnLInner data={data} />
 }

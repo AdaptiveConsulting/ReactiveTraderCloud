@@ -76,7 +76,7 @@ const TabsHeader = styled.div`
   color: ${({ theme }) => theme.secondary.base};
 `
 
-export const CreditRfqsHeader: React.FC = () => {
+export const CreditRfqsHeader = () => {
   const rfqState = useSelectedRfqsTab()
   const executedRfqIds = useExecutedRfqIds()
 

@@ -32,7 +32,7 @@ export default (() => (
   </Root>
 )) as FC
 
-const ButtonVariants: FC<ButtonStyleProps & TitleButtonProp> = (props) => (
+const ButtonVariants = (props: ButtonStyleProps & TitleButtonProp) => (
   <>
     {
       // primary

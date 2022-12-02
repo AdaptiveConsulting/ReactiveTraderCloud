@@ -1,7 +1,7 @@
 import { Loader } from "@/components/Loader"
 import { ThemeName, themes, useTheme } from "@/theme"
 import { Subscribe } from "@react-rxjs/core"
-import { FC, useEffect } from "react"
+import { useEffect } from "react"
 import { ThemeProvider } from "styled-components"
 import { CreditSellSideTicketCore } from "./CreditSellSideTicketCore"
 
@@ -10,7 +10,7 @@ interface CreditSellSideTicketProps {
   dealerId: number
 }
 
-export const CreditSellSideTicket: FC<CreditSellSideTicketProps> = (props) => {
+export const CreditSellSideTicket = (props: CreditSellSideTicketProps) => {
   const { themeName } = useTheme()
   const invertedThemeName =
     themeName === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark

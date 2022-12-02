@@ -113,14 +113,18 @@ const getDistinctValues = <T extends Trade>(
 ) =>
   trades$.pipe(
     map((trades) =>
-      trades.reduce((distinctValues: any, trade: T) => {
-        return mapObject(distinctValues, (fieldValues, fieldName) => {
-          return new Set<any>([
-            (trade as T)[fieldName as string],
-            ...(fieldValues as any),
-          ])
-        })
-      }, getFilterValuesContainer(colDef)),
+      trades.reduce(
+        (distinctValues, trade: T) =>
+          mapObject(
+            distinctValues,
+            (fieldValues, fieldName) =>
+              new Set<unknown>([
+                (trade as T)[fieldName as string],
+                ...fieldValues,
+              ]),
+          ),
+        getFilterValuesContainer(colDef),
+      ),
     ),
   )
 
@@ -197,7 +201,7 @@ const getAppliedSetFilters = <T extends Trade>(
         newValues = new Set(
           appliedFilters[field as SetColField] as Iterable<string>,
         )
-        const value = event.payload.value as any
+        const value = event.payload.value as unknown
         // Unsetting the field if it's already included
         // in applied filters.  Setting otherwise.
         if (newValues.has(value)) {
@@ -228,7 +232,7 @@ export const getAppliedSetFilterEntries = <T extends Trade>(
   return getAppliedSetFilters(trades$, colDef).pipe(
     map((appliedFilters) =>
       Object.entries(appliedFilters).filter(
-        ([_, valueSet]) => valueSet.size !== 0,
+        ([, valueSet]) => valueSet.size !== 0,
       ),
     ),
   )

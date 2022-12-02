@@ -2,7 +2,6 @@ import { DirectionIcon } from "@/components/icons/DirectionIcon"
 import { Direction } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { FC } from "react"
 import styled from "styled-components"
 
 const DirectionToggleWrapper = styled.div`
@@ -108,7 +107,7 @@ const [useDirection, direction$] = bind(directionInput$, Direction.Buy)
 
 export { setDirection, useDirection, direction$ }
 
-export const DirectionToggle: FC = () => {
+export const DirectionToggle = () => {
   const direction = useDirection()
 
   return (

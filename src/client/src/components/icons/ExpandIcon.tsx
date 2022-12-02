@@ -1,4 +1,4 @@
-const ExpandIcon: React.FC = () => (
+const ExpandIcon = () => (
   <svg
     width="12px"
     height="12px"

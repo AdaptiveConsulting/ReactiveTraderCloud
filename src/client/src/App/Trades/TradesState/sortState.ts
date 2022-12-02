@@ -25,7 +25,7 @@ export const [sortFieldSelections$, onSortFieldSelect] =
  *
  * Exceptions are configured in this set.
  */
-const descDefaultFields = new Set<any>(["tradeDate", "valueDate", "tradeId"])
+const descDefaultFields = new Set(["tradeDate", "valueDate", "tradeId"])
 
 /**
  * The user can sort on a column, ASC or DESC,
@@ -44,12 +44,12 @@ export const [useTableSort, tableSort$] = bind(
       // User is cycling through sort direction on a column
       if (tableSort.field === sortFieldSelection) {
         if (
-          descDefaultFields.has(sortFieldSelection) &&
+          descDefaultFields.has(String(sortFieldSelection)) &&
           tableSort.direction === "DESC"
         ) {
           return new TableSort("ASC", sortFieldSelection)
         } else if (
-          !descDefaultFields.has(sortFieldSelection) &&
+          !descDefaultFields.has(String(sortFieldSelection)) &&
           tableSort.direction === "ASC"
         ) {
           return new TableSort("DESC", sortFieldSelection)
@@ -60,7 +60,7 @@ export const [useTableSort, tableSort$] = bind(
 
       // User is sorting on a new column
       return new TableSort(
-        descDefaultFields.has(sortFieldSelection) ? "DESC" : "ASC",
+        descDefaultFields.has(String(sortFieldSelection)) ? "DESC" : "ASC",
         sortFieldSelection,
       )
     }, new TableSort()),

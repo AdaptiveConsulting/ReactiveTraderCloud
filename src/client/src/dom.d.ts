@@ -5,9 +5,9 @@ declare global {
     beforeInstallPromptEvent: BeforeInstallPromptEvent
     // Set in index.html
     supportsBigInt: boolean
-    // TODO
-    FSBL: any
-    ga: any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    FSBL: any // Finsemble
+    ga: ga
   }
 
   interface WindowEventMap {

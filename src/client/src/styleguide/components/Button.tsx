@@ -1,4 +1,4 @@
-import { Component, ButtonHTMLAttributes, ReactChild } from "react"
+import { Component, ButtonHTMLAttributes, ReactChild, ReactNode } from "react"
 import styled, { css, ThemeProvider, withTheme } from "styled-components"
 import { Theme, TouchableIntentName } from "@/theme"
 import { userSelectButton, userSelectNone } from "../rules"
@@ -11,6 +11,7 @@ export interface ButtonStyleProps {
   pill?: boolean
   size?: number
   invert?: boolean
+  children?: ReactNode
 }
 
 const boxShadow = `0 0.25rem 0.375rem rgba(50, 50, 93, 0.11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08)`
@@ -217,7 +218,7 @@ const StyledBase = styled.div<ButtonStyleProps>`
 `
 
 const StyledButtonBase = StyledBase.withComponent("button")
-const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
+const StyledButton = styled(StyledButtonBase)<ButtonStyleProps>`
   width: max-content;
   min-width: 4rem;
   max-width: 26rem;
@@ -228,11 +229,10 @@ const StyledButton: any = styled(StyledButtonBase)<ButtonStyleProps>`
   padding-right: 0.75rem;
 
   &:active ${({ active }) => (active ? ", &" : "")} {
-    background-color: ${({ active, ...props }) =>
-      bgColor({ active: true, ...props })};
+    background-color: ${({ ...props }) => bgColor({ active: true, ...props })};
     box-shadow: ${boxShadow};
     * {
-      color: ${({ active, ...props }) => fgColor({ active: true, ...props })};
+      color: ${({ ...props }) => fgColor({ active: true, ...props })};
     }
   }
 
@@ -252,7 +252,7 @@ StyledButton.defaultProps = {
   role: "button",
 }
 
-const StyledButtonGroup: any = styled(StyledBase)<ButtonStyleProps>`
+const StyledButtonGroup = styled(StyledBase)<ButtonStyleProps>`
   ${StyledButton} {
     min-width: 1rem;
     padding-left: 0.625rem;

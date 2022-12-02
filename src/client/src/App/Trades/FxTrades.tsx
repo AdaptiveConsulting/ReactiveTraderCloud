@@ -12,7 +12,7 @@ const TradesWrapper = styled.article`
   background: ${({ theme }) => theme.core.darkBackground};
 `
 
-export const FxTrades: React.FC = () => (
+export const FxTrades = () => (
   <TradesWrapper>
     <Suspense fallback={<Loader />}>
       <TradesCore />

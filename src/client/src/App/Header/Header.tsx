@@ -1,4 +1,4 @@
-import { FC, useState, ReactNode } from "react"
+import { useState, ReactNode } from "react"
 import LoginControls from "./LoginControls"
 import Logo from "@/components/Logo"
 import ThemeSwitcher from "./theme-switcher"
@@ -41,7 +41,7 @@ const defaultLogo = (
 
 const defaultFiller = <Fill aria-hidden={true} />
 
-const DefaultSwitches: FC = () => {
+const DefaultSwitches = () => {
   return (
     <>
       <InstrumentTypeSelector />
@@ -54,7 +54,7 @@ const defaultControls = <LoginControls />
 
 const SESSION = "PWABanner"
 
-const Header: FC<Props> = ({ logo, filler, controls, switches }) => {
+const Header = ({ logo, filler, controls, switches }: Props) => {
   const [banner, setBanner] = useState<string>(
     sessionStorage.getItem(SESSION) || PWABanner.NotSet,
   )

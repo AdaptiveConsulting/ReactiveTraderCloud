@@ -13,12 +13,13 @@ import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 import { isAnalyticsDataStale$ } from "@/services/analytics"
 import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
+import { WithChildren } from "@/utils/utilityTypes"
 
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 
 const SuspenseOnStaleData = createSuspenseOnStale(isAnalyticsDataStale$)
 
-const Analytics: React.FC = ({ children }) => {
+const Analytics = ({ children }: WithChildren) => {
   return (
     <Subscribe source$={analytics$} fallback={children}>
       <SuspenseOnStaleData />

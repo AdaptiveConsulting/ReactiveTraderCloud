@@ -9,7 +9,7 @@ interface Props extends WindowControlProps {
   title: string
 }
 
-export const WindowHeader: React.FC<Props> = ({ title, ...controlsProps }) => (
+export const WindowHeader = ({ title, ...controlsProps }: Props) => (
   <Header
     controls={
       <>

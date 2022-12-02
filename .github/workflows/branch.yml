@@ -53,21 +53,9 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Lint
+      - name: Verify Quality (type checking, linting, format checking, tests)
         run: |
-          npm run lint
-
-      - name: Type Check
-        run: |
-          npm run typecheck
-
-      - name: Format Check
-        run: |
-          npm run format:check
-
-      - name: Test
-        run: |
-          npm run test
+          npm run verify
 
       - name: Build (web)
         env:

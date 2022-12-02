@@ -1,4 +1,3 @@
-import { FC } from "react"
 import { usePrice } from "@/services/prices"
 import { ResultsTable, ResultsTableRow, defaultColDefs } from "./resultsTable"
 import { MovementIcon } from "../icons"
@@ -6,7 +5,7 @@ import { format } from "date-fns"
 import { useCurrencyPairs } from "@/services/currencyPairs"
 import { showCurrencyPairWindow } from "./intents"
 
-export const InlineQuote: FC<{ symbol: string }> = ({ symbol }) => {
+export const InlineQuote = ({ symbol }: { symbol: string }) => {
   const quote = usePrice(symbol)
 
   const row = {
@@ -21,7 +20,7 @@ export const InlineQuote: FC<{ symbol: string }> = ({ symbol }) => {
   return <ResultsTableRow row={row} cols={defaultColDefs} />
 }
 
-export const Quotes: FC<{ symbols: string[] }> = ({ symbols }) => {
+export const Quotes = ({ symbols }: { symbols: string[] }) => {
   return (
     <ResultsTable cols={defaultColDefs}>
       {symbols.map((symbol) => (
@@ -31,7 +30,7 @@ export const Quotes: FC<{ symbols: string[] }> = ({ symbols }) => {
   )
 }
 
-export const AllQuotes: FC = () => {
+export const AllQuotes = () => {
   const symbols = Object.keys(useCurrencyPairs())
   return <Quotes symbols={symbols} />
 }

@@ -31,6 +31,11 @@ Please ensure you have
 
 installed on your machine and on your path.
 
+### Testing and Quality Checks
+
+Run `npm run verify` before pushing to run type checking, linting, format checking, and tests.
+This command is run as part of the continuous integration pipeline on GitHub actions.
+
 ### Mac and Windows
 
 There are no additional packages to install other than Git and a recent build of Node.

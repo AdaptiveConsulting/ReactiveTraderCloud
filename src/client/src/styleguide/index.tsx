@@ -1,4 +1,4 @@
-import { createRef, FC } from "react"
+import { createRef } from "react"
 import Helmet from "react-helmet"
 import styled, { createGlobalStyle } from "styled-components"
 import FloatingTools from "./components/FloatingsTools"
@@ -24,7 +24,7 @@ const sections: Array<{
   { path: "molecules-components", Section: Molecules, title: "Molecules" },
 ]
 
-const Styleguide: FC = () => {
+const Styleguide = () => {
   const refs: React.RefObject<HTMLDivElement>[] = [
     ...Array(sections.length),
   ].map(() => createRef())
@@ -45,6 +45,8 @@ const Styleguide: FC = () => {
       </Helmet>
       <Root>
         <FloatingTools />
+        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+        {/* @ts-ignore */}
         <Introduction key="introduction" />
         <OnePageNavBar sections={navSections} />
         <>

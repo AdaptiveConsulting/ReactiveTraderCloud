@@ -8,10 +8,7 @@ interface Props extends ControlsProps {
 
 const EMPTY = <></>
 
-export const ChildWindowHeader: React.FC<Props> = ({
-  title,
-  ...controlsProps
-}) => (
+export const ChildWindowHeader = ({ title, ...controlsProps }: Props) => (
   <Header
     logo={EMPTY}
     controls={<WindowControls {...controlsProps} />}

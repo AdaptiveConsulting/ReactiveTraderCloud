@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Observable } from "rxjs"
 import { mockAnalytics } from "./mockData/mockAnalytics"
 import { mockPriceHistory } from "./mockData/mockPriceHistory"

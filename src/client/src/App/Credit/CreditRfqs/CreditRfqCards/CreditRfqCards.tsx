@@ -1,7 +1,6 @@
 import { RfqState } from "@/generated/TradingGateway"
 import { clearedRfqIds$, creditRfqsById$, RfqDetails } from "@/services/credit"
 import { bind } from "@react-rxjs/core"
-import { FC } from "react"
 import { combineLatest } from "rxjs"
 import { map } from "rxjs/operators"
 import { RfqsTab, selectedRfqsTab$ } from "../selectedRfqsTab"
@@ -48,7 +47,7 @@ const [useFilteredCreditRfqIds] = bind(
   ),
 )
 
-export const CreditRfqCards: FC = () => {
+export const CreditRfqCards = () => {
   const rfqIds = useFilteredCreditRfqIds()
 
   return (

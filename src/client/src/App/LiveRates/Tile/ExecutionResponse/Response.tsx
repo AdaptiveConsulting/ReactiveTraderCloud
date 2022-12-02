@@ -95,11 +95,15 @@ const getExecutionMessage = (
   )
 }
 
-const ExecutionMessage: React.FC<{
+const ExecutionMessage = ({
+  tileState,
+  currencyPair: { terms, base },
+  onClose,
+}: {
   tileState: TileState
   currencyPair: CurrencyPair
   onClose: () => void
-}> = ({ tileState, currencyPair: { terms, base }, onClose }) => {
+}) => {
   const tradeId = tileState.trade?.tradeId
 
   const isWaiting =
@@ -145,11 +149,15 @@ export const ExecutionResponse = () => {
   return <StatelessExecutionResponse {...props} />
 }
 
-export const StatelessExecutionResponse: React.FC<{
+export const StatelessExecutionResponse = ({
+  currencyPair,
+  tileState,
+  onClose,
+}: {
   currencyPair: CurrencyPair
   tileState: TileState
   onClose: () => void
-}> = ({ currencyPair, tileState, onClose }) => {
+}) => {
   if (tileState.status === TileStates.Ready) return null
 
   return tileState.status === TileStates.Started ? (

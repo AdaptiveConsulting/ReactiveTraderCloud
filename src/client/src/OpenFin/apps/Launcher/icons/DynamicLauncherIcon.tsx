@@ -1,4 +1,4 @@
-import { FC, memo } from "react"
+import { memo } from "react"
 import { css, keyframes } from "styled-components"
 import styled from "styled-components"
 import LauncherIcon from "./LauncherIcon"
@@ -50,7 +50,7 @@ interface Props {
   isMoving: boolean
 }
 
-const DynamicLauncherLogo: FC<Props> = ({ isMoving }) => (
+const DynamicLauncherLogo = ({ isMoving }: Props) => (
   <DynamicLauncherLogoWrapper isMoving={isMoving}>
     <LauncherIcon />
   </DynamicLauncherLogoWrapper>

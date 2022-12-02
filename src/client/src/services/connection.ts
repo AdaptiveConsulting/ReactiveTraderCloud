@@ -79,14 +79,14 @@ const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
   connectionDisposable$,
 ]).pipe(
   withLatestFrom(mappedConnectionStatus$),
-  filter(([[_, dispose], status]) =>
+  filter(([[, dispose], status]) =>
     // Only when we are connecting/ed and there is a disposable
     connectionExists(status, dispose),
   ),
   debounceTime(IDLE_TIMEOUT),
-  map(([[_, dispose]]) => {
+  map(([[, dispose]]) => {
     console.log(`User was idle for ${IDLE_TIMEOUT}, disconnecting`)
-    dispose!()
+    dispose()
     connectionDisposable$.next(() => undefined)
     return ConnectionStatus.IDLE_DISCONNECTED
   }),
@@ -120,8 +120,8 @@ const offlineDisconnect$: Observable<ConnectionStatus> = online$.pipe(
 // Init connection when user goes online
 const onlineConnect$: Observable<ConnectionStatus> = online$.pipe(
   withLatestFrom(mappedConnectionStatus$),
-  filter(([online, status]) => !!online),
-  map(([online, status]) => {
+  filter(([online]) => !!online),
+  map(([, status]) => {
     console.log(
       `User came online, updated with latest mapped connection status`,
     )

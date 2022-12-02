@@ -33,7 +33,7 @@ const [useCurrencies, mainHeader$] = bind(
 )
 
 export { mainHeader$ }
-export const MainHeader: React.FC = () => {
+export const MainHeader = () => {
   const currencies = useCurrencies()
   const currency = useSelectedCurrency()
   const isLimitCheckerRunning = useIsLimitCheckerRunning()

@@ -21,11 +21,15 @@ const DateFilterInputInner = styled.input`
   }
 `
 
-const DateFilterInput: React.FC<{
+const DateFilterInput = ({
+  fieldValueName,
+  field,
+  selected,
+}: {
   fieldValueName: "value1" | "value2"
   field: DateColField
   selected: DateFilterContent
-}> = ({ fieldValueName, field, selected }) => {
+}) => {
   return (
     <DateFilterInputInner
       defaultValue={
@@ -45,10 +49,13 @@ const DateFilterInput: React.FC<{
   )
 }
 
-export const DateFilter: React.FC<{
+export const DateFilter = ({
+  field,
+  parentRef,
+}: {
   field: DateColField
   parentRef: React.RefObject<HTMLDivElement>
-}> = ({ field, parentRef }) => {
+}) => {
   const colDef = useColDef()
   const selected = useAppliedDateFilters(field, colDef)
   return (

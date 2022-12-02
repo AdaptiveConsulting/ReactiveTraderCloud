@@ -5,7 +5,6 @@ import {
 } from "@/utils/formatNumber"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { FC } from "react"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 
@@ -71,7 +70,7 @@ const [useQuantity, quantity$] = bind(
 
 export { setQuantity, useQuantity, quantity$ }
 
-export const RfqParameters: FC = () => {
+export const RfqParameters = () => {
   const quantity = useQuantity()
 
   return (

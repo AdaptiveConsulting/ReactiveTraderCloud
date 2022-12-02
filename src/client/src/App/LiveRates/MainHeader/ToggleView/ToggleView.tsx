@@ -32,7 +32,7 @@ const ToggleItem = styled(NavItem)<{ active: boolean }>`
   }
 `
 
-export const ToggleView: React.FC = () => {
+export const ToggleView = () => {
   const tileView = useSelectedTileView(getInitView())
   return (
     <ToggleItem

@@ -32,10 +32,7 @@ const getInitialState = (start: number, end: number) => ({
   end,
 })
 
-const TimeProgress: React.FC<{
-  start: number
-  end: number
-}> = ({ start, end }) => {
+const TimeProgress = ({ start, end }: { start: number; end: number }) => {
   const [state, setState] = useState(() => getInitialState(start, end))
 
   useLayoutEffect(() => {
@@ -74,37 +71,49 @@ const TimerWrapper = styled.div<{ isAnalyticsView: boolean }>`
   z-index: 3;
 `
 
-const SecsTimer: React.FC<{ start: number; end: number; isStatic?: boolean }> =
-  ({ start, end, isStatic }) => {
-    const [timeLeftSecs, setTimeLeftSecs] = useState(() =>
-      Math.round((end - Date.now()) / 1000),
+const SecsTimer = ({
+  start,
+  end,
+  isStatic,
+}: {
+  start: number
+  end: number
+  isStatic?: boolean
+}) => {
+  const [timeLeftSecs, setTimeLeftSecs] = useState(() =>
+    Math.round((end - Date.now()) / 1000),
+  )
+  useLayoutEffect(() => {
+    if (timeLeftSecs === 0) return
+    const token = setTimeout(
+      () => setTimeLeftSecs((x) => x - 1),
+      end - (timeLeftSecs - 1) * 1000 - Date.now(),
     )
-    useLayoutEffect(() => {
-      if (timeLeftSecs === 0) return
-      const token = setTimeout(
-        () => setTimeLeftSecs((x) => x - 1),
-        end - (timeLeftSecs - 1) * 1000 - Date.now(),
-      )
-      return () => clearTimeout(token)
-    }, [timeLeftSecs, end])
+    return () => clearTimeout(token)
+  }, [timeLeftSecs, end])
 
-    return isStatic ? (
-      <>{end - start} secs</>
-    ) : (
-      <>
-        {timeLeftSecs} sec{timeLeftSecs > 1 ? "s" : ""}
-      </>
-    )
-  }
+  return isStatic ? (
+    <>{end - start} secs</>
+  ) : (
+    <>
+      {timeLeftSecs} sec{timeLeftSecs > 1 ? "s" : ""}
+    </>
+  )
+}
 
-export const RfqTimer: React.FC<{
+export const RfqTimer = ({
+  isAnalyticsView,
+  onReject,
+  staticProgressWidth,
+  ...props
+}: {
   isAnalyticsView: boolean
   onReject: () => void
   start: number
   end: number
   isStatic?: boolean
   staticProgressWidth?: number
-}> = ({ isAnalyticsView, onReject, staticProgressWidth, ...props }) => {
+}) => {
   return (
     <TimerWrapper isAnalyticsView={isAnalyticsView} data-testid="rfqTimer">
       <TimeLeft isAnalyticsView={isAnalyticsView}>

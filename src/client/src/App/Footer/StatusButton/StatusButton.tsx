@@ -2,9 +2,7 @@ import { ConnectionStatus, useConnectionStatus } from "@/services/connection"
 import { StatusCircle, StatusLabel } from "./styled"
 import { Root, Button } from "../common-styles"
 
-export const StatusButtonInner: React.FC<{ status: ConnectionStatus }> = ({
-  status,
-}) => {
+export const StatusButtonInner = ({ status }: { status: ConnectionStatus }) => {
   const appStatus =
     status === ConnectionStatus.IDLE_DISCONNECTED ||
     status === ConnectionStatus.OFFLINE_DISCONNECTED
@@ -23,6 +21,6 @@ export const StatusButtonInner: React.FC<{ status: ConnectionStatus }> = ({
   )
 }
 
-export const StatusButton: React.FC = () => (
+export const StatusButton = () => (
   <StatusButtonInner status={useConnectionStatus()} />
 )

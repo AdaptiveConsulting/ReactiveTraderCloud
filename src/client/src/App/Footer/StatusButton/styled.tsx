@@ -1,13 +1,11 @@
-import { FunctionComponent } from "react"
 import styled from "styled-components"
 import Popup from "@/components/Popup"
 import { ConnectionStatus } from "@/services/connection"
+import { WithChildren } from "@/utils/utilityTypes"
 
 const buttonHeight = "2rem"
 
-const StatusCircleCore: FunctionComponent<{ className?: string }> = ({
-  className,
-}) => {
+const StatusCircleCore = ({ className }: { className?: string }) => {
   return (
     <div
       style={{
@@ -41,9 +39,12 @@ export const StatusCircle = styled(StatusCircleCore)<{
   }
 `
 
-const StatusLabelCore: React.FC<{
-  className?: string
-}> = ({ className, children }) => <span className={className}>{children}</span>
+const StatusLabelCore = ({
+  className,
+  children,
+}: { className?: string } & WithChildren) => (
+  <span className={className}>{children}</span>
+)
 
 export const StatusLabel = styled(StatusLabelCore)`
   margin-left: 0.75rem;

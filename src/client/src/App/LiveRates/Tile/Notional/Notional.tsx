@@ -81,7 +81,7 @@ const MAX_NOTIONAL = 1_000_000_000
 type Props = {
   id: string
   value: string
-  onChange: (e: any) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   base: string
   valid: boolean
   disabled: boolean
@@ -89,7 +89,7 @@ type Props = {
   onReset: () => void
 }
 
-export const NotionalInputInner: React.FC<Props> = ({
+export const NotionalInputInner = ({
   id,
   base,
   valid,
@@ -98,7 +98,7 @@ export const NotionalInputInner: React.FC<Props> = ({
   onChange,
   canReset,
   onReset,
-}) => (
+}: Props) => (
   <InputWrapper>
     <CurrencyPairSymbol htmlFor={id}>{base}</CurrencyPairSymbol>
     <Input
@@ -119,7 +119,7 @@ export const NotionalInputInner: React.FC<Props> = ({
   </InputWrapper>
 )
 
-export const NotionalInput: React.FC = () => {
+export const NotionalInput = () => {
   const { base, symbol } = useTileCurrencyPair()
   const defaultNotional = useDefaultNotional()
   const notional = useNotional()

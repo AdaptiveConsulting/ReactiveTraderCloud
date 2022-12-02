@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { HTMLAttributes, useRef } from "react"
 import styled from "styled-components"
 
@@ -124,7 +125,7 @@ export const Input = (
 ) => {
   const { label, disabled, className } = props
   const refInput = useRef<HTMLInputElement>(null)
-  const focusInput = () => (refInput as any)?.current.focus()
+  const focusInput = () => refInput.current?.focus()
 
   return (
     <div className={className}>

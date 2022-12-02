@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { render, screen, act, fireEvent } from "@testing-library/react"
 import { TestThemeProvider } from "@/utils/testUtils"
 import PNLBar from "./PNLBar"

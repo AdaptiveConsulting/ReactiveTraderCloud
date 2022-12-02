@@ -3,7 +3,7 @@ interface Props {
   height: number
 }
 
-const DisconnectIcon: React.FC<Props> = ({ width, height }) => {
+const DisconnectIcon = ({ width, height }: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

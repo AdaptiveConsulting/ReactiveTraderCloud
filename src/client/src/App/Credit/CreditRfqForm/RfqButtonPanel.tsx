@@ -3,7 +3,6 @@ import { ACK_CREATE_RFQ_RESPONSE } from "@/generated/TradingGateway"
 import { createCreditRfq$ } from "@/services/credit"
 import { Direction } from "@/services/trades"
 import { createSignal } from "@react-rxjs/utils"
-import { FC } from "react"
 import { exhaustMap, filter, map, tap, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
 import {
@@ -54,11 +53,11 @@ rfqRequest$
       selectedCounterpartyIds$,
     ),
     filter(
-      ([_, _direction, instrumentId, quantity, dealerIds]) =>
+      ([, , instrumentId, quantity, dealerIds]) =>
         instrumentId !== null && quantity > 0 && dealerIds.length > 0,
     ),
-    map(([_, direction, instrumentId, quantity, dealerIds]) => ({
-      instrumentId: instrumentId!,
+    map(([, direction, instrumentId, quantity, dealerIds]) => ({
+      instrumentId: instrumentId as number,
       dealerIds,
       quantity: quantity * 1000,
       direction,
@@ -76,7 +75,7 @@ rfqRequest$
   )
   .subscribe()
 
-export const RfqButtonPanel: FC = () => {
+export const RfqButtonPanel = () => {
   const selectedInstrument = useSelectedInstrument()
   const quantity = useQuantity()
   const selectedCounterpartyIds = useSelectedCounterpartyIds()

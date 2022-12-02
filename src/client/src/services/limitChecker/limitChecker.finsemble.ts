@@ -57,7 +57,7 @@ export const checkLimit$: checkLimitFn = (message: {
       window.FSBL.Clients.RouterClient.query(
         REQUEST_LIMIT_CHECK_CHANNEL,
         payload,
-        function (error: {}, response: { data: { result: boolean } }) {
+        function (error: Error, response: { data: { result: boolean } }) {
           if (!error) {
             const result = response.data.result
             console.info(
@@ -90,7 +90,7 @@ export const checkLimit$: checkLimitFn = (message: {
 window.FSBL.Clients.RouterClient.transmit(CLIENT_STATUS_CHANNEL, "ALIVE")
 window.FSBL.Clients.RouterClient.addListener(
   LIMIT_CHECKER_STATUS_CHANNEL,
-  function (error: {}, response: { data: string }) {
+  function (error: Error, response: { data: string }) {
     if (error) {
       console.error(
         LOG_NAME,

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Subscribe } from "@react-rxjs/core"
 import { render, screen, act, waitFor, fireEvent } from "@testing-library/react"
 import { BehaviorSubject, Subject } from "rxjs"
@@ -166,7 +168,7 @@ describe("Tile", () => {
     })
 
     await waitFor(() => expect(screen.queryByText("Executing")).toBeNull())
-    expect(screen.queryByRole("alert")!.textContent).toEqual(
+    expect(screen.getByRole("alert").textContent).toEqual(
       "You sold EUR 1,000,000 at a rate of 1.53816 for USD 1,538,160 settling (Spt) 04 Feb.",
     )
 
@@ -233,7 +235,7 @@ describe("Tile", () => {
       jest.advanceTimersByTime(2000)
     })
     expect(screen.queryByText("Executing")).toBeNull()
-    expect(screen.queryByRole("alert")!.textContent).toEqual(
+    expect(screen.getByRole("alert").textContent).toEqual(
       "Trade execution taking longer than expected",
     )
 
@@ -249,7 +251,7 @@ describe("Tile", () => {
       response$.complete()
     })
 
-    expect(screen.queryByRole("alert")!.textContent).toEqual(
+    expect(screen.getByRole("alert").textContent).toEqual(
       "You sold EUR 1,000,000 at a rate of 1.53816 for USD 1,538,160 settling (Spt) 04 Feb.",
     )
 
@@ -315,7 +317,7 @@ describe("Tile", () => {
 
     await waitFor(() => {
       expect(screen.queryByText("Executing")).toBeNull()
-      expect(screen.queryByRole("alert")!.textContent).toEqual(
+      expect(screen.getByRole("alert").textContent).toEqual(
         "Trade execution timeout exceeded",
       )
     })
@@ -386,7 +388,7 @@ describe("Tile", () => {
 
     await waitFor(() => {
       expect(screen.queryByText("Executing")).toBeNull()
-      expect(screen.queryByRole("alert")!.textContent).toEqual(
+      expect(screen.getByRole("alert").textContent).toEqual(
         "Your trade has been rejected",
       )
     })

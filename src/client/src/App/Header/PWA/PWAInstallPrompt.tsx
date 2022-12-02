@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, FC } from "react"
+import { Dispatch, SetStateAction, useEffect } from "react"
 import { CrossIcon } from "@/components/icons"
 import { PWAInstallModal } from "./PWAInstallModal"
 import { usePWABannerPrompt } from "./usePWABannerPrompt"
@@ -24,12 +24,12 @@ interface InstallBannerProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export const PWAInstallBanner: FC<InstallBannerProps> = ({
+export const PWAInstallBanner = ({
   banner,
   updateBanner,
   isModalOpen,
   setIsModalOpen,
-}) => {
+}: InstallBannerProps) => {
   const [prompt, promptToInstall] = usePWABannerPrompt()
 
   const isHidden = banner !== PWABanner.Shown || (!prompt && !isiOS) || isPWA()

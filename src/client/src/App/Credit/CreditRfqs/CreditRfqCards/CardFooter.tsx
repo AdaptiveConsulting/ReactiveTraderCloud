@@ -6,7 +6,6 @@ import {
   useCreditDealerById,
 } from "@/services/credit"
 import { createSignal } from "@react-rxjs/utils"
-import { FC } from "react"
 import { FaCheckCircle, FaTrash } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
 import { rfqStateToLabel } from "../../common"
@@ -24,11 +23,15 @@ const [cancelRfq$, onCancelRfq] = createSignal<number>()
 
 cancelRfq$.pipe(exhaustMap((rfqId) => cancelCreditRfq$({ rfqId }))).subscribe()
 
-export const LiveFooterContent: FC<{
+export const LiveFooterContent = ({
+  rfqId,
+  start,
+  end,
+}: {
   rfqId: number
   start: number
   end: number
-}> = ({ rfqId, start, end }) => (
+}) => (
   <>
     <CreditTimer start={start} end={end} isSellSideView={false} />
     <CancelQuoteButton onClick={() => onCancelRfq(rfqId)}>
@@ -37,12 +40,16 @@ export const LiveFooterContent: FC<{
   </>
 )
 
-export const AcceptedFooterContent: FC<{
+export const AcceptedFooterContent = ({
+  rfqId,
+  acceptedDealerId,
+}: {
   rfqId: number
   acceptedDealerId?: number
-}> = ({ rfqId, acceptedDealerId }) => {
+}) => {
   const dealerName =
-    useCreditDealerById(acceptedDealerId!)?.name ?? "Unknown Dealer"
+    (acceptedDealerId ? useCreditDealerById(acceptedDealerId) : undefined)
+      ?.name ?? "Unknown Dealer"
 
   return (
     <>
@@ -61,16 +68,23 @@ export const AcceptedFooterContent: FC<{
   )
 }
 
-export const TerminatedFooterContent: FC<{ rfqId: number; state: RfqState }> =
-  ({ rfqId, state }) => (
-    <TerminatedCardState onClick={() => removeRfqs([rfqId])}>
-      <FaTrash size={12} />
-      {rfqStateToLabel(state)}
-    </TerminatedCardState>
-  )
+export const TerminatedFooterContent = ({
+  rfqId,
+  state,
+}: {
+  rfqId: number
+  state: RfqState
+}) => (
+  <TerminatedCardState onClick={() => removeRfqs([rfqId])}>
+    <FaTrash size={12} />
+    {rfqStateToLabel(state)}
+  </TerminatedCardState>
+)
 
-export const CardFooter: FC<{ rfqDetails: RfqDetails }> = ({
+export const CardFooter = ({
   rfqDetails: { id, quotes, state, creationTimestamp, expirySecs },
+}: {
+  rfqDetails: RfqDetails
 }) => {
   const acceptedDealerId = quotes.find(
     (quote) => quote.state === QuoteState.Accepted,

@@ -1,3 +1,4 @@
+import { TradeStatus } from "@/services/trades"
 import styled from "styled-components"
 
 export const PlatformLogoWrapper = styled.div`
@@ -51,16 +52,17 @@ export const Table = styled.table`
   }
 `
 
-export const TableRow = styled.tr<{ status?: "rejected" | "done" | "pending" }>`
+export const TableRow = styled.tr<{ status?: TradeStatus }>`
   border-left: 0.125rem solid transparent;
   border-left-color: ${({ theme, status }) =>
-    status === "done" ? theme.accents.positive.base : "transparent"};
+    status === TradeStatus.Done ? theme.accents.positive.base : "transparent"};
 
   td {
     position: relative;
-    color: ${({ status }) => (status === "rejected" ? "#7f7f7f" : "white")};
+    color: ${({ status }) =>
+      status === TradeStatus.Rejected ? "#7f7f7f" : "white"};
     ${({ status }) =>
-      status === "rejected" &&
+      status === TradeStatus.Rejected &&
       `
       &:after {
         content: '';

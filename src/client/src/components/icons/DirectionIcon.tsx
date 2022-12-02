@@ -1,4 +1,4 @@
-export const DirectionIcon: React.FC = () => (
+export const DirectionIcon = () => (
   <svg
     width="24"
     height="24"

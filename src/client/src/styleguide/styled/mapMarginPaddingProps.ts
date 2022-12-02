@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* An implementation of Styled System m*, p* for maring padding props
  * https://jxnblk.com/styled-system/getting-started#margin--padding
  */
@@ -142,19 +143,17 @@ const marginPaddingProps: AllMarginRules & AllPaddingRules = {
 }
 
 function isMarginPaddingRuleType(rule: string): rule is MarginPaddingRuleType {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return marginPaddingProps[rule] !== undefined
 }
 
 export const mapMarginPaddingProps = (
-  props: MarginPaddingProps | { [key: string]: any },
+  props: MarginPaddingProps | { [key: string]: string },
 ) => {
   return Object.keys(props)
     .filter(isMarginPaddingRuleType)
     .map((key) => {
       const marginPaddingProp = marginPaddingProps[key]
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return marginPaddingProp && marginPaddingProp[props[key]]
     })

@@ -59,7 +59,7 @@ const QuickFilterClearIcon = styled("i")`
   }
 `
 
-export const QuickFilter: React.FC = () => {
+export const QuickFilter = () => {
   const quickFilterInput = useRef<HTMLInputElement>(null)
   const [quickFilterText, setQuickFilterText] = useState<string>("")
 

@@ -60,7 +60,10 @@ type HeaderProps = {
 }
 
 export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
-  ({ currencyPair, isTornOut, supportsTearOut, date, onClick }, ref) => {
+  function HeaderInner(
+    { currencyPair, isTornOut, supportsTearOut, date, onClick },
+    ref,
+  ) {
     const { base, terms } = currencyPair
     const canTearOut = supportsTearOut
 
@@ -87,12 +90,12 @@ export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
   },
 )
 
-export const Header: React.FC = () => {
+export const Header = () => {
   const ref = useRef<HTMLDivElement>(null)
   const { currencyPair, isTornOut, supportsTearOut } = useTileContext()
   const date = useDate(currencyPair.symbol)
   const onClick = () => {
-    tearOut(currencyPair.symbol, !isTornOut, ref.current!)
+    ref.current && tearOut(currencyPair.symbol, !isTornOut, ref.current)
   }
 
   return (

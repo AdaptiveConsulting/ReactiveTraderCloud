@@ -1,7 +1,6 @@
-import { FC } from "react"
 import { BaseIconProps } from "./types"
 
-const LauncherIcon: FC<BaseIconProps> = ({ height = 40, width = 40 }) => (
+const LauncherIcon = ({ height = 40, width = 40 }: BaseIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={width}

@@ -3,7 +3,7 @@ import { AdaptiveLoader } from "@/components/AdaptiveLoader"
 import { currentUser$, useUser, User as UserType } from "@/services/currentUser"
 import { LoadingButton, UserWrapper, UserContainer, UserAvatar } from "./styled"
 
-export const UserInner: React.FC<{ user: UserType }> = ({ user }) => (
+export const UserInner = ({ user }: { user: UserType }) => (
   <UserWrapper>
     <UserContainer>
       <UserAvatar src={user.avatar} alt={`${user.code}'s avatar`} />
@@ -12,9 +12,9 @@ export const UserInner: React.FC<{ user: UserType }> = ({ user }) => (
   </UserWrapper>
 )
 
-const User: React.FC = () => <UserInner user={useUser()} />
+const User = () => <UserInner user={useUser()} />
 
-const LoginControls: React.FC = () => (
+const LoginControls = () => (
   <Subscribe
     source$={currentUser$}
     fallback={

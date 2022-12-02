@@ -14,6 +14,6 @@ export const MainLine = () => (
     fill="none"
     width={LINE_CHART_WIDTH}
     height={LINE_CHART_HEIGHT}
-    d={useD()}
+    d={useD() || undefined}
   />
 )

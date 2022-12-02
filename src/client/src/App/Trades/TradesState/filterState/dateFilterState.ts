@@ -121,7 +121,7 @@ export const getDateFilterEntries = (colDef: ColDef) =>
   getDateFilters(colDef).pipe(
     map((dateFilters) =>
       Object.entries(dateFilters).filter(
-        ([_, valueSet]) => valueSet.value1 !== null,
+        ([, valueSet]) => valueSet.value1 !== null,
       ),
     ),
   )

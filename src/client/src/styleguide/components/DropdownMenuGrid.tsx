@@ -29,7 +29,7 @@ export default (() => (
   </Root>
 )) as FC
 
-const DropdownMenuVariants: FC<DropdownMenuStyleProps> = (props) => (
+const DropdownMenuVariants = (props: DropdownMenuStyleProps) => (
   <>
     {
       // standard

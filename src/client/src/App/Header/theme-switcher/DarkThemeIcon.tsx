@@ -7,11 +7,7 @@ interface LightThemeIconProps extends SVGAttributes<Element> {
   width?: number
 }
 
-const LightThemeIcon: React.FC<LightThemeIconProps> = ({
-  fill = "#FF8D00",
-  height = 24,
-  width = 24,
-}) => {
+const LightThemeIcon = ({ height = 24, width = 24 }: LightThemeIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

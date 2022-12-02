@@ -39,7 +39,7 @@ const loader = (
     minHeight="22rem"
   />
 )
-export const LiveRates: React.FC = () => (
+export const LiveRates = () => (
   <LiveRateWrapper>
     <OverflowScroll>
       <div data-qa="workspace__tiles-workspace">

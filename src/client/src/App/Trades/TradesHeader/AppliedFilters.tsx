@@ -33,7 +33,7 @@ const FilterName = styled("div")`
   padding-right: 0.625rem;
 `
 
-export const AppliedFilters: React.FC = () => {
+export const AppliedFilters = () => {
   const trades$ = useTrades$()
   const colDef = useColDef()
   const filterFields = useFilterFields(trades$, colDef)

@@ -1,3 +1,4 @@
+import { WithChildren } from "@/utils/utilityTypes"
 import styled from "styled-components"
 import { DeliveryDate, HeaderAction } from "./Header/TileHeader"
 import { TradeButton } from "./PriceButton/PriceButton.styles"
@@ -69,7 +70,7 @@ export const Body = styled.div<{
   height: 100%;
   display: flex;
   justify-content: space-between;
-  ${({ isAnalyticsView, showTimer }) =>
+  ${({ isAnalyticsView }) =>
     isAnalyticsView
       ? `
   `
@@ -138,7 +139,7 @@ const MainTileWrapper = styled.div`
   }
 `
 
-export const Main: React.FC = ({ children }) => (
+export const Main = ({ children }: WithChildren) => (
   <MainTileWrapper>
     <MainTileStyle>{children}</MainTileStyle>
   </MainTileWrapper>

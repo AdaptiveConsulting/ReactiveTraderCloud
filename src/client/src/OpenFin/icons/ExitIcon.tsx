@@ -3,7 +3,7 @@ interface Props {
   height?: number
 }
 
-export const ExitIcon: React.FC<Props> = ({ width = 24, height = 24 }) => (
+export const ExitIcon = ({ width = 24, height = 24 }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={width}

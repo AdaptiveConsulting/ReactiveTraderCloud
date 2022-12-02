@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { rgba } from "polished"
 import styled, {
   StyledComponent,
@@ -7,6 +9,7 @@ import styled, {
 import { H2, H3 } from "../elements"
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from "../styled"
 import { colors, Theme, AccentName, useTheme, ThemeName } from "@/theme"
+import { ReactNode } from "react"
 
 const { primary, ...others } = colors.accents
 
@@ -109,20 +112,20 @@ const Separator = styled.div`
   background-color: ${({ theme }) => theme.core.primaryStyleGuideBackground};
 `
 
-const PaletteLayout: React.FC<{
-  grid?: StyledComponent<React.ComponentType<any>, Theme, any>
-  fg: string
-  label: string
-  palette: any
-  include?: any[]
-  codes?: object
-}> = ({
+const PaletteLayout = ({
   grid: SwatchGrid,
   fg,
   label: paletteLabel,
   palette,
   include = ["base", 1, 2, 3, 4, 5],
   codes = {},
+}: {
+  grid?: StyledComponent<React.ComponentType<any>, Theme, any>
+  fg: string
+  label: string
+  palette: any
+  include?: any[]
+  codes?: object
 }) => {
   if (!SwatchGrid) {
     return <></>
@@ -174,18 +177,17 @@ export interface SwatchProps extends BlockProps, SwatchColorProps {
   code?: string
   toStyle?: React.CSSProperties
   extra?: FlattenSimpleInterpolation
+  children?: ReactNode
 }
 
-export const Swatch: React.FC<SwatchProps> = ({
+export const Swatch = ({
   is: SwatchElement = SwatchColor,
   label,
   value,
-  code,
   bg,
   fg,
-  p,
   ...props
-}) => (
+}: SwatchProps) => (
   <SwatchElement p={1} bg={bg} fg={fg} {...props}>
     <Text fontSize={0.75} fontWeight="bold" textTransform="capitalize">
       {label}
@@ -193,9 +195,6 @@ export const Swatch: React.FC<SwatchProps> = ({
     <Text fontSize={0.75} textTransform="uppercase">
       {value}
     </Text>
-    {/* <Text fontSize={0.75} textTransform="uppercase" opacity={0.75}>
-      {code}
-    </Text> */}
   </SwatchElement>
 )
 
@@ -248,10 +247,7 @@ const CoreSwatchGrid = styled.div`
   }
 `
 
-const ThemePalettes: React.FC<{ theme: any }> = ({
-  theme: { primary, secondary },
-  ...props
-}) => {
+const ThemePalettes = ({ theme: { primary, secondary } }: { theme: any }) => {
   return (
     <ThemeRow>
       <PaletteLayout
@@ -302,10 +298,7 @@ const QuadrantLayout = styled.div`
   }
 `
 
-const DominantAccentPalettes: React.FC<{ dominant: object }> = ({
-  dominant,
-  ...props
-}) => {
+const DominantAccentPalettes = ({ dominant }: { dominant: object }) => {
   return (
     <AccentRowGrid>
       <PaletteLayout
@@ -320,10 +313,7 @@ const DominantAccentPalettes: React.FC<{ dominant: object }> = ({
   )
 }
 
-const AccentPalettes: React.FC<{ accents: object }> = ({
-  accents,
-  ...props
-}) => {
+const AccentPalettes = ({ accents }: { accents: object }) => {
   return (
     <AccentRowGrid>
       {(Object.keys(accents) as AccentName[]).map((accentName) => (
@@ -364,10 +354,7 @@ const DominantAccentSwatchGrid = styled.div`
   grid-template-areas: "base darker lighter";
 `
 
-const UniquePalettes: React.FC<{ palettes: any }> = ({
-  palettes,
-  ...props
-}) => {
+const UniquePalettes = ({ palettes }: { palettes: any }) => {
   return (
     <UniqueRowGrid>
       {Object.keys(palettes).map((label) => (

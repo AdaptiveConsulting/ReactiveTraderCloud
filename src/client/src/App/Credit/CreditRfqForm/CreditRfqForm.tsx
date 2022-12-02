@@ -1,4 +1,3 @@
-import { FC } from "react"
 import styled from "styled-components"
 import { CreditRfqFormCore } from "./CreditRfqFormCore"
 
@@ -10,7 +9,7 @@ const CreditRfqFormWrapper = styled.div`
   user-select: none;
 `
 
-export const CreditRfqForm: FC = () => (
+export const CreditRfqForm = () => (
   <CreditRfqFormWrapper>
     <CreditRfqFormCore />
   </CreditRfqFormWrapper>

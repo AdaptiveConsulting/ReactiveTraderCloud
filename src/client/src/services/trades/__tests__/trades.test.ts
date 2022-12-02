@@ -123,6 +123,7 @@ describe("trades", () => {
   describe("credit", () => {
     beforeEach(() => {
       const creditRfqs$ = new BehaviorSubject<Record<number, RfqDetails>>(rfqs)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const creditServiceMock = creditService as any
       creditServiceMock.__creditRfqsById(creditRfqs$)
     })

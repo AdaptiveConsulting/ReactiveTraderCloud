@@ -1,6 +1,6 @@
 import { Loader } from "@/components/Loader"
 import { Subscribe } from "@react-rxjs/core"
-import { FC, useEffect } from "react"
+import { useEffect } from "react"
 import styled from "styled-components"
 import {
   CreditRfqCreatedConfirmation,
@@ -20,7 +20,7 @@ const CreditRfqsCoreWrapper = styled.div`
   overflow-y: auto;
 `
 
-export const CreditRfqsCore: FC = () => {
+export const CreditRfqsCore = () => {
   useEffect(() => {
     registerCreditQuoteNotifications()
 

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { bind } from "@react-rxjs/core"
 import { defer, Observable, of } from "rxjs"
 import { HistoryPrice, Price } from "../types"
@@ -30,7 +32,7 @@ export const __resetMocks = () => {
 }
 
 export const [useHistoricalPrices, getHistoricalPrices$] = bind(
-  (symbol: string) => defer(() => historicalPricesMock$!),
+  (_symbol: string) => defer(() => historicalPricesMock$!),
 )
 
 export const getIsSymbolDataStale$ = () => of(false)

@@ -1,7 +1,14 @@
-import { FC } from "react"
+import { WithChildren } from "@/utils/utilityTypes"
+import { ReactNode } from "react"
 import styled from "styled-components"
 import { H2, H3, H5 } from "../elements"
-import { Paragraph, SectionBlock, Text, TextProps } from "../styled"
+import {
+  Paragraph,
+  ParagraphProps,
+  SectionBlock,
+  Text,
+  TextProps,
+} from "../styled"
 
 const SIZES: Array<
   [
@@ -33,17 +40,6 @@ const CHARACTERS = [
   `‘?’“!”(%)[#]{@}/&<-+÷×=>®©$€£¥¢:;,.*`,
 ].map((line) => line.split("").join(" "))
 
-const LATO = {
-  fontFamily: "lato",
-  fontFaces: [
-    { fontWeight: 100, advised: false, name: "Hairline" },
-    { fontWeight: 200, advised: true, name: "Light" },
-    { fontWeight: 500, advised: true, name: "Regular" },
-    { fontWeight: 700, advised: true, name: "Bold" },
-    { fontWeight: 900, advised: true, name: "Black" },
-  ],
-}
-
 const ROBOTO = {
   fontFamily: "roboto",
   fontFaces: [
@@ -59,7 +55,7 @@ const ROBOTO = {
   ],
 }
 
-export const FontFamilies: FC = () => (
+export const FontFamilies = () => (
   <>
     <SectionBlock>
       <H2 pt={4}>Typography</H2>
@@ -85,15 +81,7 @@ export const FontFamilies: FC = () => (
         <H5>Case</H5>
       </FontSizeGridHeader>
       {SIZES.map(
-        ([
-          label,
-          fontWeight,
-          alignment,
-          fontSizeText,
-          caps,
-          fontSize,
-          lineHeight,
-        ]) => (
+        ([label, fontWeight, alignment, fontSizeText, caps, fontSize]) => (
           <FontSizeGrid key={label}>
             <Text
               textColor={(theme) => theme.secondary[1]}
@@ -126,11 +114,7 @@ export const FontFamilies: FC = () => (
   </>
 )
 
-const FontFamilySample: React.FC<{
-  fontFamily: string
-  fontFaces: typeof LATO.fontFaces
-  characters?: string[]
-}> = ({ fontFamily, fontFaces, characters = CHARACTERS, ...props }) => (
+const FontFamilySample = ({ fontFamily, ...props }: { fontFamily: string }) => (
   <FontFamilySampleGrid {...props}>
     <Glyph fontFamily={fontFamily}>Aa</Glyph>
     <div>
@@ -151,7 +135,7 @@ const FontFamilySample: React.FC<{
   </FontFamilySampleGrid>
 )
 
-const Heading: React.FC = (props) => (
+const Heading = (props: ParagraphProps & WithChildren) => (
   <Paragraph display="block" fontSize={1} lineHeight={2} mt={2} {...props} />
 )
 
@@ -164,14 +148,14 @@ const FontFamilySampleGrid = styled(Text)<TextProps>`
   margin: 3rem 0;
 `
 
-const Glyph: React.FC<{ fontFamily: string }> = (props) => (
+const Glyph = (props: { fontFamily: string; children: ReactNode }) => (
   <div>
     <Heading>Glyph</Heading>
     <Paragraph fontSize={7.5} lineHeight={7.5} {...props} />
   </div>
 )
 
-const CharacterMap: React.FC<TextProps> = (props) => (
+const CharacterMap = (props: TextProps & WithChildren) => (
   <Text
     display="block"
     fontSize={1}
@@ -194,7 +178,7 @@ const CharacterLine = styled.div`
   @media all and (min-width: 640px) {
   }
 `
-const FontSizeGridHeader = styled.div<{ children: any[] }>`
+const FontSizeGridHeader = styled.div<{ children: ReactNode }>`
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: minmax(25%, max-content) repeat(4, 1fr);
@@ -204,7 +188,7 @@ const FontSizeGridHeader = styled.div<{ children: any[] }>`
   padding: 1rem;
 `
 
-const FontSizeGrid = styled.div<{ children: any[] }>`
+const FontSizeGrid = styled.div<{ children: ReactNode }>`
   display: grid;
   border-bottom: 1px solid ${({ theme }) => theme.primary[2]};
   grid-template-rows: auto;

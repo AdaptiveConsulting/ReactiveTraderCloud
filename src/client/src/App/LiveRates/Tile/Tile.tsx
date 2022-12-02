@@ -59,7 +59,7 @@ interface Props {
   isAnalytics: boolean
 }
 
-const Tile: React.FC<Props> = ({ isAnalytics }) => {
+const Tile = ({ isAnalytics }: Props) => {
   useIsSymbolDataStale()
   const rfq = useRfqState()
   const {
@@ -71,9 +71,7 @@ const Tile: React.FC<Props> = ({ isAnalytics }) => {
       ? { start: rfq.payload.time, end: rfq.payload.time + rfq.payload.timeout }
       : null
 
-  const InputTimerWrapper: React.FC<{ isAnalytics?: boolean }> = ({
-    isAnalytics,
-  }) => {
+  const InputTimerWrapper = ({ isAnalytics }: { isAnalytics?: boolean }) => {
     return (
       <InputTimerStyle isAnalyticsView={!!isAnalytics}>
         <NotionalInput />
@@ -115,30 +113,28 @@ const Tile: React.FC<Props> = ({ isAnalytics }) => {
   )
 }
 
-const TileContext: React.FC<{
+const TileContext = memo(function TileContext({
+  currencyPair,
+  isAnalytics,
+  isTornOut = false,
+  supportsTearOut = true,
+}: {
   currencyPair: CurrencyPair
   isAnalytics: boolean
   isTornOut?: boolean
   supportsTearOut?: boolean
-}> = memo(
-  ({
-    currencyPair,
-    isAnalytics,
-    isTornOut = false,
-    supportsTearOut = true,
-  }) => {
-    return (
-      <Provider
-        value={{
-          currencyPair,
-          isTornOut,
-          supportsTearOut: supportsTearOut && !isMobileDevice,
-        }}
-      >
-        <Tile isAnalytics={isAnalytics} />
-      </Provider>
-    )
-  },
-)
+}) {
+  return (
+    <Provider
+      value={{
+        currencyPair,
+        isTornOut,
+        supportsTearOut: supportsTearOut && !isMobileDevice,
+      }}
+    >
+      <Tile isAnalytics={isAnalytics} />
+    </Provider>
+  )
+})
 
 export { TileContext as Tile }

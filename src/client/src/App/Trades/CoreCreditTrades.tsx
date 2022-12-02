@@ -18,12 +18,12 @@ const TradesStyle = styled.div`
   font-size: 0.8125rem;
 `
 
-const TradesGrid: React.FC<TradesGridInnerProps<CreditTrade>> = (props) => {
+const TradesGrid = (props: TradesGridInnerProps<CreditTrade>) => {
   const highlightedRow = useCreditTradeRowHighlight()
   return <TradesGridInner highlightedRow={highlightedRow} {...props} />
 }
 
-const CreditTrades: React.FC = () => {
+const CreditTrades = () => {
   useEffect(() => {
     registerCreditBlotterUpdates()
   }, [])

@@ -15,11 +15,16 @@ import { NlpIntent } from "../services/nlpService"
 import { handleIntent } from "./intents"
 import { open } from "../tools"
 import { appConfigs } from "../applicationConfigurations"
+import { WithChildren } from "@/utils/utilityTypes"
 
-export const SuggestionWrapper: React.FC<{
+export const SuggestionWrapper = ({
+  children,
+  intent,
+  intentButtonText,
+}: {
   intent: NlpIntent
   intentButtonText: string
-}> = ({ children, intent, intentButtonText }) => {
+} & WithChildren) => {
   return (
     <IntentWrapper>
       <IntentActions>

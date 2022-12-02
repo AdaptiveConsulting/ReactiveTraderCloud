@@ -8,7 +8,6 @@ import {
 } from "@/utils"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { FC } from "react"
 import { filter, map } from "rxjs/operators"
 import styled from "styled-components"
 
@@ -104,11 +103,11 @@ interface CreditSellSideParametersProps {
   quantity: number
 }
 
-export const CreditSellSideParameters: FC<CreditSellSideParametersProps> = ({
+export const CreditSellSideParameters = ({
   quote,
   state,
   quantity,
-}) => {
+}: CreditSellSideParametersProps) => {
   const price = usePrice()
 
   return (
