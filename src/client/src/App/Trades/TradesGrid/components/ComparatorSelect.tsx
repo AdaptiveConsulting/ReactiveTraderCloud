@@ -44,10 +44,13 @@ const ComparatorSelectInner = styled.select`
   }
 `
 
-export const ComparatorSelect: React.FC<{
+export const ComparatorSelect = ({
+  selected,
+  onSelection,
+}: {
   selected: DateFilterContent | NumFilterContent
   onSelection: (comparator: ComparatorType) => void
-}> = ({ selected, onSelection }) => {
+}) => {
   return (
     <ComparatorSelectOuter>
       <ComparatorSelectInner

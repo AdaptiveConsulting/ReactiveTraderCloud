@@ -3,7 +3,7 @@ import { ContactUsContentResolver, Link } from "./styled"
 const WEBSITE = "https://weareadaptive.com"
 const EMAIL = "sales@weareadaptive.com"
 
-export const ContactUs: React.FC = () => (
+export const ContactUs = () => (
   <ContactUsContentResolver>
     <span className="header">Contact us</span>
     <div>

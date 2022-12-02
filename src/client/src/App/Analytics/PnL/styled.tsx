@@ -1,3 +1,4 @@
+import { AccentPaletteMap } from "@/theme"
 import styled from "styled-components"
 
 const FlexDiv = styled.div`
@@ -31,11 +32,14 @@ export const OriginTickWrapper = styled(FlexDiv)`
   height: 20px;
 `
 
-export const PriceLabel = styled.div<{ color: string; distance: number }>`
+export const PriceLabel = styled.div<{
+  color: keyof AccentPaletteMap
+  distance: number
+}>`
   align-self: center;
   height: 1.1rem;
   transition: transform 0.2s;
-  color: ${({ theme, color }) => (theme as any).accents[color].base};
+  color: ${({ theme, color }) => theme.accents[color].base};
   padding-bottom: 0px;
 
   &:hover {
@@ -45,12 +49,14 @@ export const PriceLabel = styled.div<{ color: string; distance: number }>`
       12px;
   }
 `
-export const DiamondShape = styled.div<{ color: string }>`
+export const DiamondShape = styled.div<{
+  color: keyof AccentPaletteMap
+}>`
   align-self: center;
   width: 6px;
   height: 6px;
   transform: rotate(45deg);
-  background-color: ${({ theme, color }) => (theme as any).accents[color].base};
+  background-color: ${({ theme, color }) => theme.accents[color].base};
 `
 export const Label = styled.div`
   flex: 0 0 60px;

@@ -2,7 +2,12 @@ import { TradesInfoIntent } from "../services/nlpService"
 import { useTrades } from "@/services/trades"
 import { formatNumber } from "@/utils"
 import { format } from "date-fns"
-import { ResultsTable, ResultsTableRow, Col } from "./resultsTable"
+import {
+  ResultsTable,
+  ResultsTableRow,
+  Col,
+  ResultsTableRowType,
+} from "./resultsTable"
 
 const colDefs: Col[] = [
   { title: "Trade ID", id: "tradeId" },
@@ -12,11 +17,11 @@ const colDefs: Col[] = [
   { title: "Status", id: "status" },
 ]
 
-export const Trades: React.FC<TradesInfoIntent["payload"]> = ({
+export const Trades = ({
   count,
   symbol,
   currency,
-}) => {
+}: TradesInfoIntent["payload"]) => {
   const trades = useTrades()
     .filter(
       (trade) =>
@@ -29,7 +34,7 @@ export const Trades: React.FC<TradesInfoIntent["payload"]> = ({
     return <>No last trades</>
   }
 
-  const rows = trades.map((trade) => ({
+  const rows: ResultsTableRowType[] = trades.map((trade) => ({
     ...trade,
     notional: formatNumber(trade.notional),
     tradeDate: format(trade.tradeDate, "dd-MM-yyyy"),
@@ -38,16 +43,13 @@ export const Trades: React.FC<TradesInfoIntent["payload"]> = ({
   return (
     <ResultsTable cols={colDefs}>
       {rows &&
-        rows.map((row: any) => {
-          return (
-            <ResultsTableRow
-              key={row.tradeId}
-              row={row}
-              cols={colDefs}
-              status={row.status}
-            />
-          )
-        })}
+        rows.map((row: ResultsTableRowType) => (
+          <ResultsTableRow
+            key={row.tradeId as string}
+            row={row}
+            cols={colDefs}
+          />
+        ))}
     </ResultsTable>
   )
 }

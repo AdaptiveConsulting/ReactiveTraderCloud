@@ -16,7 +16,7 @@ import {
   OriginTickWrapper,
   OriginTick,
 } from "./styled"
-interface PNLBarProps {
+export interface PNLBarProps {
   basePnl: number
   maxVal: number
   symbol: string
@@ -32,7 +32,7 @@ const getLogRatio: (max: number, numb: number) => number = (max, numb) => {
   return logNumb / logMax
 }
 
-const PNLBar: React.FC<PNLBarProps> = ({ symbol, basePnl, maxVal }) => {
+const PNLBar = ({ symbol, basePnl, maxVal }: PNLBarProps) => {
   const [hovering, setHovering] = useState(false)
   const color = basePnl >= 0 ? "positive" : "negative"
   const distance =

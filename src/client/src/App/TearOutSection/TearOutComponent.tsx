@@ -7,9 +7,7 @@ import { useContext } from "react"
 import { closeWindow } from "@/utils/window/closeWindow"
 import { Section } from "./state"
 
-export const TearOutComponent: React.FC<{ section: Section }> = ({
-  section,
-}) => {
+export const TearOutComponent = ({ section }: { section: Section }) => {
   const tearOutContext = useContext(TearOutContext)
   return (
     <HeaderTearOutAction

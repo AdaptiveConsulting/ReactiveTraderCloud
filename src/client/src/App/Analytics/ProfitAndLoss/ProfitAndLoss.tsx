@@ -1,4 +1,3 @@
-import { FC } from "react"
 import {
   Title,
   AnalyticsLineChartWrapper,
@@ -16,7 +15,7 @@ export const ProfitAndLossStyle = styled.div`
   grid-row-end: 2;
   grid-column: 1/-1;
 `
-export const ProfitAndLoss: FC = () => (
+export const ProfitAndLoss = () => (
   <ProfitAndLossStyle>
     <ProfitAndLossHeader>
       <Title>Profit &amp; Loss</Title>

@@ -5,13 +5,15 @@ import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import {
   catchError,
-  distinctUntilChanged,
   map,
-  mapTo,
   switchMap,
-} from "rxjs/operators"
+  distinctUntilChanged,
+  concat,
+  merge,
+  of,
+  timer,
+} from "rxjs"
 import { equals } from "@/utils"
-import { concat, merge, of, timer } from "rxjs"
 
 const [input$, setInput] = createSignal<string>()
 export { setInput }
@@ -20,7 +22,7 @@ const [resetInput$, onResetInput] = createSignal()
 export { onResetInput }
 
 const [useNlpInput, nlpInput$] = bind(
-  merge(input$, resetInput$.pipe(mapTo(""))),
+  merge(input$, resetInput$.pipe(map(() => ""))),
   "",
 )
 export { useNlpInput }
@@ -59,7 +61,7 @@ export interface TradesInfoIntent {
 
 export interface MarketInfoIntent {
   type: NlpIntentType.MarketInfo
-  payload: {}
+  payload: Record<string, unknown>
 }
 
 export type NlpIntent =
@@ -82,13 +84,13 @@ const directionMapper: Record<string, Direction> = {
 
 export type Loading = "loading"
 
-export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | null | Loading>(
+export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
   nlpInput$.pipe(
     switchMap((request) =>
       request.length === 0
         ? [null]
         : concat(
-            timer(250).pipe(mapTo("loading" as Loading)),
+            timer(250).pipe(map(() => "loading" as Loading)),
             fromFetch(
               `${import.meta.env.VITE_CLOUD_FUNCTION_HOST}/nlp?term=${request}`,
             ).pipe(
@@ -110,12 +112,12 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | null | Loading>(
       const intent = intentMapper[response.queryResult?.intent?.displayName]
       const symbol =
         response.queryResult?.parameters?.fields?.CurrencyPairs?.stringValue
-      const number =
+      const value: number =
         response.queryResult?.parameters?.fields?.number?.numberValue
 
       switch (intent) {
         case NlpIntentType.TradeExecution: {
-          const result = {
+          return {
             type: NlpIntentType.TradeExecution,
             payload: {
               symbol,
@@ -123,44 +125,43 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | null | Loading>(
                 directionMapper[
                   response.queryResult.parameters.fields.TradeType.stringValue
                 ],
-              notional: number,
+              notional: value,
             },
-          }
-          return result
+          } as TradeExecutionIntent
         }
 
         case NlpIntentType.MarketInfo:
           return {
             type: NlpIntentType.MarketInfo,
             payload: {},
-          }
+          } as MarketInfoIntent
 
         case NlpIntentType.TradeInfo:
           return {
             type: NlpIntentType.TradeInfo,
             payload: {
               symbol,
-              count: number,
+              count: value,
               currency:
                 response.queryResult?.parameters?.fields?.Currency?.stringValue,
             },
-          }
+          } as TradesInfoIntent
 
         case NlpIntentType.SpotQuote:
           return symbol
-            ? {
+            ? ({
                 type: NlpIntentType.SpotQuote,
                 payload: {
                   symbol,
                 },
-              }
+              } as SpotQuoteIntent)
             : null
 
         default:
           return null
       }
     }),
-    distinctUntilChanged(equals) as any,
+    distinctUntilChanged(equals),
   ),
   null,
 )

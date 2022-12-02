@@ -64,7 +64,7 @@ export const Quote = ({
         {accepted && <FaCheckCircle size={16} />}
         {quote ? `$${quote.price.toString()}` : "Awaiting response"}
       </Price>
-      <AcceptQuoteButton onClick={() => onAcceptRfq(quote!.id)}>
+      <AcceptQuoteButton onClick={() => quote && onAcceptRfq(quote.id)}>
         Accept
       </AcceptQuoteButton>
     </QuoteRow>

@@ -25,7 +25,7 @@ const LoadableStyle = styled.div<Props>`
   fill: ${({ theme }) => theme.core.textColor};
 `
 
-export const Loader: React.FC<Props> = ({ size, ...props }) => (
+export const Loader = ({ size, ...props }: Props) => (
   <LoadableStyle {...props}>
     <AdaptiveLoader size={size || 50} speed={1.4} ariaLabel={props.ariaLabel} />
   </LoadableStyle>

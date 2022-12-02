@@ -1,13 +1,16 @@
-import { Dispatch, SetStateAction, FC } from "react"
+import { Dispatch, SetStateAction } from "react"
 import { PWABanner } from "./PWAInstallPrompt"
 import { usePWABannerPrompt } from "./usePWABannerPrompt"
 import { isiOS } from "@/utils"
 import { InstallButton } from "./PWAInstallPrompt.styles"
 
-export const LaunchButtonInner: FC<{
+export const LaunchButtonInner = ({
+  onClick,
+  hasPrompt,
+}: {
   onClick: () => void
   hasPrompt: boolean
-}> = ({ onClick, hasPrompt }) => (
+}) => (
   <InstallButton onClick={onClick}>
     Install{hasPrompt ? " PWA" : ""}
   </InstallButton>
@@ -18,10 +21,10 @@ interface InstallLaunchProps {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export const PWALaunchButton: FC<InstallLaunchProps> = ({
+export const PWALaunchButton = ({
   state,
   setIsModalOpen,
-}) => {
+}: InstallLaunchProps) => {
   const [prompt, promptToInstall] = usePWABannerPrompt()
 
   if (!prompt && isiOS && state === PWABanner.Hidden) {

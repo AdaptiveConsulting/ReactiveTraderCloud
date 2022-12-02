@@ -1,3 +1,6 @@
+// for the time being, disabling stricter typing enforcement here as it would
+// require non-trivial effort to type the D3 related code
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   D3DragEvent,
   drag,
@@ -175,10 +178,13 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
   return () => subscription.unsubscribe()
 }
 
-export const Positions: React.FC = () => {
+export const Positions = () => {
   useData()
-  const wrapperRef = useRef<HTMLDivElement>(null)
-  useLayoutEffect(() => d3Effect(wrapperRef.current!), [])
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
+  useLayoutEffect(() => {
+    if (!wrapperRef.current) return
+    return d3Effect(wrapperRef.current)
+  }, [])
 
   return (
     <div>

@@ -34,7 +34,7 @@ const [useDisplayRows] = bind<[Observable<Trade[]>], number>(
   0,
 )
 
-export const TradesFooter: React.FC = () => {
+export const TradesFooter = () => {
   const trades$ = useTrades$()
   const totalRows = useTotalRows(trades$)
   const displayRows = useDisplayRows(trades$)

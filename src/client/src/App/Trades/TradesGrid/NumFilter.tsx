@@ -27,11 +27,15 @@ const FilterValueInputInner = styled.input`
   }
 `
 
-const FilterValueInput: React.FC<{
+const FilterValueInput = ({
+  field,
+  selected,
+  fieldValueName,
+}: {
   field: NumColField
   selected: NumFilterContent
   fieldValueName: "value1" | "value2"
-}> = ({ field, selected, fieldValueName }) => (
+}) => (
   <FilterValueInputInner
     placeholder="Filter..."
     role="textbox"
@@ -51,10 +55,13 @@ const FilterValueInput: React.FC<{
   />
 )
 
-export const NumFilter: React.FC<{
+export const NumFilter = ({
+  field,
+  parentRef,
+}: {
   field: NumColField
   parentRef: React.RefObject<HTMLDivElement>
-}> = ({ field, parentRef }) => {
+}) => {
   const colDef = useColDef()
   const selected = useAppliedNumFilters(field, colDef)
   return (

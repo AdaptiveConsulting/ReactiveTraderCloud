@@ -125,7 +125,7 @@ export const getNumFilterEntries = (colDef: ColDef) =>
   getNumberFilters(colDef).pipe(
     map((numberFilters) =>
       Object.entries(numberFilters).filter(
-        ([_, valueSet]) => valueSet.value1 !== null,
+        ([, valueSet]) => valueSet.value1 !== null,
       ),
     ),
   )

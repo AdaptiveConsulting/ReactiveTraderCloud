@@ -1,4 +1,3 @@
-import { FC } from "react"
 import styled from "styled-components"
 import { CreditRfqsCore } from "./CreditRfqsCore"
 
@@ -14,7 +13,7 @@ const CreditRfqsWrapper = styled.div`
   }
 `
 
-export const CreditRfqs: FC = () => (
+export const CreditRfqs = () => (
   <CreditRfqsWrapper>
     <CreditRfqsCore />
   </CreditRfqsWrapper>

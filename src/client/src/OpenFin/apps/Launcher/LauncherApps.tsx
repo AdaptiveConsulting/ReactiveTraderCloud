@@ -5,7 +5,7 @@ import { LaunchButton } from "./components/LaunchButton"
 import { ButtonContainer, IconTitle } from "./styles"
 import { open } from "./tools"
 
-export const LauncherApps: React.FC = () => {
+export const LauncherApps = () => {
   const [openedApps, setOpenedApps] = useState<Set<string>>(new Set())
 
   const addToOpenedList = (name: string) => {

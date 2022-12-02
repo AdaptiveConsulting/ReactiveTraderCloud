@@ -8,8 +8,9 @@ export function mapObject<K extends string | number | symbol, I, O>(
   mapper: (i: I, k?: K) => O,
 ): Record<K, O> {
   return Object.fromEntries(
-    Object.entries(input).map(
-      ([key, value]: any) => [key, mapper(value, key)] as const,
-    ),
-  ) as any
+    Object.entries(input).map(([key, value]: [string, unknown]) => [
+      key,
+      mapper(value as I, key as K),
+    ]),
+  ) as Record<K, O>
 }

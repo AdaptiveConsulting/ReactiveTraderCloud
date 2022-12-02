@@ -1,11 +1,13 @@
-import { FC, ReactNode } from "react"
+import { TradeStatus } from "@/generated/TradingGateway"
+import { FxTrade } from "@/services/trades"
+import { ReactNode } from "react"
 import { Table, TableRow, TableCell, TableHeader } from "./styles"
 
 export interface Col {
   title: string
   id: string
   align?: "center" | "right"
-  formatter?: (value: any) => void
+  formatter?: (value: number) => ReactNode
   fixedWidth?: boolean
 }
 interface ResultsTableProps {
@@ -13,17 +15,21 @@ interface ResultsTableProps {
   children: ReactNode
 }
 
+export interface ResultsTableRowType extends Omit<FxTrade, "tradeDate"> {
+  notional?: string
+  tradeDate?: string
+}
+
 interface ResultsTableRowProps {
-  row: any
+  row: ResultsTableRowType
   cols: Col[]
-  status?: "rejected" | "done" | "pending" | undefined
 }
 
 interface LoadingRowProps {
   cols: Col[]
 }
 
-export const LoadingRow: FC<LoadingRowProps> = ({ cols }) => (
+export const LoadingRow = ({ cols }: LoadingRowProps) => (
   <TableRow>
     <TableCell>Loading latest prices...</TableCell>
     {cols.map((_, index) => (
@@ -32,14 +38,10 @@ export const LoadingRow: FC<LoadingRowProps> = ({ cols }) => (
   </TableRow>
 )
 
-export const ResultsTableRow: FC<ResultsTableRowProps> = ({
-  row,
-  cols,
-  status,
-}) => (
-  <TableRow status={status}>
-    {cols.map((col: any, cellIndex: number) => {
-      const value = row[col.id]
+export const ResultsTableRow = ({ row, cols }: ResultsTableRowProps) => (
+  <TableRow status={row.status as TradeStatus}>
+    {cols.map((col: Col, cellIndex: number) => {
+      const value = row[col.id] as number
       const formattedValue = col.formatter ? col.formatter(value) : value
       return (
         <TableCell
@@ -54,7 +56,7 @@ export const ResultsTableRow: FC<ResultsTableRowProps> = ({
   </TableRow>
 )
 
-export const ResultsTable: FC<ResultsTableProps> = ({ cols, children }) => {
+export const ResultsTable = ({ cols, children }: ResultsTableProps) => {
   return (
     <Table>
       <thead>

@@ -1,6 +1,6 @@
 import { bind } from "@react-rxjs/core"
 import { defer, Observable, of } from "rxjs"
-import { map, mergeMap } from "rxjs/operators"
+import { map } from "rxjs/operators"
 import { UpdateType } from "@/services/utils"
 import { CurrencyPair } from "../types"
 
@@ -30,10 +30,3 @@ export const currencyPairUpdates$ = currencyPairs$.pipe(
     })),
   ),
 )
-
-export const currencyPairDependant$ = (
-  input: (symbol: string) => Observable<any>,
-) =>
-  currencyPairs$.pipe(
-    mergeMap((entries) => Object.values(entries).map((cc) => input(cc.symbol))),
-  )

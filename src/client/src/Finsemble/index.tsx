@@ -8,7 +8,7 @@ import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 
-export const FinsembleApp: React.FC = () => (
+export const FinsembleApp = () => (
   <BrowserRouter basename={BASE_PATH}>
     <Switch>
       <Route
@@ -53,11 +53,13 @@ export const FinsembleApp: React.FC = () => (
 
           return (
             <>
-              <TornOutTile
-                symbol={symbol!}
-                view={view}
-                supportsTearOut={false}
-              />
+              {symbol && (
+                <TornOutTile
+                  symbol={symbol}
+                  view={view}
+                  supportsTearOut={false}
+                />
+              )}
               <DisconnectionOverlay />
             </>
           )

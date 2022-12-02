@@ -3,7 +3,7 @@ interface Props {
   height: number
 }
 
-const UndockIcon: React.FC<Props> = (props) => {
+const UndockIcon = (props: Props) => {
   const { width, height } = props
 
   return (

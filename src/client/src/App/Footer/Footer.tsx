@@ -5,7 +5,7 @@ import StatusBar from "./StatusBar"
 import { StatusButton } from "./StatusButton"
 import { Version } from "./Version"
 
-export const Footer: React.FC = () => (
+export const Footer = () => (
   <StatusBar>
     <Suspense fallback={null}>
       <Stats />

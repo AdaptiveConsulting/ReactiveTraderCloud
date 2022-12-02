@@ -1,4 +1,3 @@
-import { FC } from "react"
 import { DropdownMenu } from "@/components/DropdownMenu"
 import { ROUTES_CONFIG } from "@/constants"
 import { useLocation, useHistory } from "react-router"
@@ -9,7 +8,7 @@ enum InstrumentType {
   CREDIT = "Credit",
 }
 
-const InstrumentTypeSelector: FC = () => {
+const InstrumentTypeSelector = () => {
   const location = useLocation()
   const history = useHistory()
   const handleInstrumentTypeSelection = (instrumentType: InstrumentType) => {

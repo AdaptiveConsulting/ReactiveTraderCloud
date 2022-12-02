@@ -1,5 +1,5 @@
 import { QuoteState } from "@/generated/TradingGateway"
-import { Trade, TradeStatus } from "@/services/trades"
+import { CreditTrade, FxTrade, Trade, TradeStatus } from "@/services/trades"
 import styled, { css } from "styled-components"
 import { useColDef, useColFields, useTrades$ } from "../Context"
 import { useTableTrades } from "../TradesState"
@@ -84,7 +84,7 @@ const StatusIndicatorSpacer = styled.th`
 
 export interface TradesGridInnerProps<Row extends Trade> {
   highlightedRow?: string | null
-  onRowClick?: (row: Row) => any
+  onRowClick?: (row: Row) => void
   isRowCrossed?: (row: Row) => boolean
   caption: string
 }
@@ -118,14 +118,14 @@ export const TradesGridInner = <Row extends Trade>({
         </TableHead>
         <tbody role="grid">
           {trades.length ? (
-            trades.map((row: Trade) => (
+            trades.map((row: FxTrade | CreditTrade) => (
               <TableBodyRow
                 key={row.tradeId}
                 highlight={row.tradeId === highlightedRow}
-                onClick={() => onRowClick?.(row as Row)}
+                onClick={() => onRowClick?.(row as unknown as Row)}
               >
                 <StatusIndicator status={row.status} aria-label={row.status} />
-                {fields.map((field, i) => {
+                {fields.map((field) => {
                   const columnDefinition = colDef[field]
                   const value = row[field]
                   return (
@@ -137,7 +137,7 @@ export const TradesGridInner = <Row extends Trade>({
                           ? "right"
                           : "left")
                       }
-                      crossed={isRowCrossed?.(row as Row)}
+                      crossed={isRowCrossed?.(row as unknown as Row)}
                     >
                       {columnDefinition.valueFormatter?.(value) ?? value}
                     </TableBodyCell>

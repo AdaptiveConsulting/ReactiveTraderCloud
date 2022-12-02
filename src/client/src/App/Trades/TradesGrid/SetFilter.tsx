@@ -58,10 +58,13 @@ const [useInputText, inputText$] = bind((propsField) =>
   ),
 )
 
-const SetFilterInner: React.FC<{
+const SetFilterInner = ({
+  field,
+  parentRef,
+}: {
   field: SetColField
   parentRef: React.RefObject<HTMLDivElement>
-}> = ({ field, parentRef }) => {
+}) => {
   const colDef = useColDef()
   const trades$ = useTrades$()
   const selected = useAppliedSetFieldFilters(
@@ -114,10 +117,13 @@ const SetFilterInner: React.FC<{
   )
 }
 
-export const SetFilter: React.FC<{
+export const SetFilter = ({
+  field,
+  parentRef,
+}: {
   field: SetColField
   parentRef: React.RefObject<HTMLDivElement>
-}> = ({ field, parentRef }) => (
+}) => (
   <Subscribe source$={inputText$(field)}>
     <SetFilterInner field={field} parentRef={parentRef} />
   </Subscribe>

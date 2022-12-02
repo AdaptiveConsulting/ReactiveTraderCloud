@@ -65,11 +65,15 @@ const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
 )
 export { priceMovement$ }
 
-export const PriceMovementInner: React.FC<{
+export const PriceMovementInner = ({
+  spread,
+  movementType,
+  isAnalyticsView,
+}: {
   spread: string
   movementType?: PriceMovementType
   isAnalyticsView: boolean
-}> = ({ spread, movementType, isAnalyticsView }) => (
+}) => (
   <PriceMovementStyle isAnalyticsView={isAnalyticsView}>
     <MovementIconUP
       $show={movementType === PriceMovementType.UP}
@@ -83,9 +87,11 @@ export const PriceMovementInner: React.FC<{
   </PriceMovementStyle>
 )
 
-const PriceMovementFromStream: React.FC<{
+const PriceMovementFromStream = ({
+  isAnalyticsView,
+}: {
   isAnalyticsView: boolean
-}> = ({ isAnalyticsView }) => {
+}) => {
   const { spread, movementType } = usePriceMovementData()
 
   return (
@@ -97,19 +103,25 @@ const PriceMovementFromStream: React.FC<{
   )
 }
 
-export const PriceFromQuoteInner: React.FC<{
+export const PriceFromQuoteInner = ({
+  isAnalytics,
+  spread,
+}: {
   isAnalytics: boolean
   spread: string
-}> = ({ isAnalytics, spread }) => (
+}) => (
   <PriceMovementStyle isAnalyticsView={isAnalytics}>
     <MovementValue>{spread}</MovementValue>
   </PriceMovementStyle>
 )
 
-const PriceFromQuote: React.FC<{
+const PriceFromQuote = ({
+  isAnalyticsView: isAnalytics,
+  rfqResponse,
+}: {
   isAnalyticsView: boolean
   rfqResponse: RfqResponse
-}> = ({ isAnalyticsView: isAnalytics, rfqResponse }) => {
+}) => {
   const {
     price: { bid, ask },
     currencyPair: { ratePrecision, pipsPosition },
@@ -122,9 +134,11 @@ const PriceFromQuote: React.FC<{
   )
 }
 
-export const PriceMovement: React.FC<{
+export const PriceMovement = ({
+  isAnalyticsView,
+}: {
   isAnalyticsView: boolean
-}> = ({ isAnalyticsView }) => {
+}) => {
   const payload = useRfqPayload()
 
   return payload ? (

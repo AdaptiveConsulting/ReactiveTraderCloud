@@ -11,6 +11,7 @@ import { Loader } from "@/components/Loader"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { isMobileDevice } from "@/utils"
 import { FEATURE_FLAG, useFeature } from "@/utils/featureFlag"
+import { WithChildren } from "@/utils/utilityTypes"
 import { lazy, Suspense } from "react"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 import { TearOutContext } from "../App/TearOutSection/tearOutContext"
@@ -23,14 +24,14 @@ const StyleguideRoute = lazy(() => import("@/styleguide"))
 // Note: for the Redirect (or anything) to work, the Route components above it must be at the
 //       top level of the switch e.g. no fragments, context providers ..
 
-const TornOut: React.FC = ({ children }) => (
+const TornOut = ({ children }: WithChildren) => (
   <TearOutContext.Provider value={{ isTornOut: true }}>
     {children}
     <DisconnectionOverlay />
   </TearOutContext.Provider>
 )
 
-export const WebApp: React.FC = () => {
+export const WebApp = () => {
   const canUseAdmin = useFeature(FEATURE_FLAG.ADMIN)
   const canDisplayCredit = !isMobileDevice
 
@@ -69,10 +70,12 @@ export const WebApp: React.FC = () => {
             }) => (
               <>
                 <DisconnectionOverlay />
-                <CreditSellSideTicket
-                  rfqId={parseInt(rfqId!, 10)}
-                  dealerId={parseInt(dealerId!, 10)}
-                />
+                {rfqId && dealerId && (
+                  <CreditSellSideTicket
+                    rfqId={parseInt(rfqId, 10)}
+                    dealerId={parseInt(dealerId, 10)}
+                  />
+                )}
               </>
             )}
           />
@@ -94,7 +97,7 @@ export const WebApp: React.FC = () => {
               <>
                 <DisconnectionOverlay />
                 <TearOutRouteWrapper>
-                  <TornOutTile symbol={symbol!} view={view} />
+                  {symbol && <TornOutTile symbol={symbol} view={view} />}
                 </TearOutRouteWrapper>
               </>
             )

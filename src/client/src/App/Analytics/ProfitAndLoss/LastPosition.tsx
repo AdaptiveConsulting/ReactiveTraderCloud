@@ -20,7 +20,7 @@ const [useLastPosition, lastPosition$] = bind(
   history$.pipe(map((history) => history[history.length - 1]?.usPnl ?? 0)),
 )
 
-export const LastPosition: React.FC = () => {
+export const LastPosition = () => {
   const lastPos = useLastPosition()
   const lastPosStr = `${lastPos >= 0 ? "+" : ""}${formatAsWholeNumber(lastPos)}`
 

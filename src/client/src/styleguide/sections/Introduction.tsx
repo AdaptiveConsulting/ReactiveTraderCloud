@@ -1,4 +1,3 @@
-import { FC } from "react"
 import styled from "styled-components"
 import designTownPNGURL from "../assets/design-town.png"
 import Logo from "@/components/Logo"
@@ -32,7 +31,7 @@ const H3Intro = styled(H3)`
   margin: 0.5rem 0 1rem 0;
 `
 
-const Introduction: FC = (props) => (
+const Introduction = (props: typeof SectionBlock) => (
   <>
     <SectionBlock {...props}>
       <Flex>
@@ -42,7 +41,7 @@ const Introduction: FC = (props) => (
           <H1>Adaptive UI Library</H1>
           <Paragraph>
             A quicker, more consistent and collaborative way to design and build
-            complex UI's.
+            complex UI&apos;s.
           </Paragraph>
         </Content>
         <Background />

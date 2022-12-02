@@ -44,7 +44,7 @@ interface Props {
   defaultHeight: number
 }
 
-const Resizer: React.FC<Props> = ({ defaultHeight, children }) => {
+const Resizer = ({ defaultHeight, children }: Props) => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(defaultHeight)
 
@@ -101,8 +101,8 @@ const Resizer: React.FC<Props> = ({ defaultHeight, children }) => {
         <ResizableSection height={children[0] ? height : 100}>
           <ResizableContent>
             <Bar
-              onMouseDown={startDragging.current!}
-              onTouchStart={startDragging.current!}
+              onMouseDown={startDragging.current}
+              onTouchStart={startDragging.current}
               show
             />
             {children[1]}

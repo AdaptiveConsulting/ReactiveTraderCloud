@@ -24,7 +24,7 @@ export default (() => (
   </Root>
 )) as FC
 
-const ChartsVariants: FC<{ active?: boolean }> = ({ active }) => (
+const ChartsVariants = ({ active }: { active?: boolean }) => (
   <>
     <ChartingContainer>
       <HistoricalGraphComponent

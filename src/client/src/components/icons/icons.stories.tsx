@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { storiesOf } from "@storybook/react"
 import * as icons from "./"
 

@@ -1,4 +1,4 @@
-import { memo } from "react"
+import { memo, ReactNode } from "react"
 import { keyframes } from "styled-components"
 import styled from "styled-components"
 
@@ -41,14 +41,23 @@ const Bar = styled("rect")<BarProps>`
 
 type LoaderType = "primary" | "secondary"
 
-export const AdaptiveLoader: React.FC<{
+export const AdaptiveLoader = memo(function AdaptiveLoader({
+  size,
+  type,
+  separation,
+  speed,
+  children,
+  color,
+  ariaLabel,
+}: {
   ariaLabel?: string
   size: number | string
   type?: LoaderType
   separation?: number
   speed?: number
   color?: string
-}> = memo(({ size, type, separation, speed, children, color, ariaLabel }) => {
+  children?: ReactNode
+}) {
   const sizeNum = Number(size)
   const barHeight = sizeNum * 0.75
   const barWidth = barHeight / 4

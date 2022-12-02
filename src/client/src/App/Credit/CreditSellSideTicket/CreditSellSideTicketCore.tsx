@@ -2,7 +2,6 @@ import { Loader } from "@/components/Loader"
 import { CREDIT_SELL_SIDE_TICKET_HEIGHT } from "@/constants"
 import { QuoteState } from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
-import { FC } from "react"
 import styled from "styled-components"
 import { invertDirection } from "../common"
 import { CreditSellSideFooter } from "./CreditSellSideFooter"
@@ -21,10 +20,10 @@ interface CreditSellSideTicketCoreProps {
   dealerId: number
 }
 
-export const CreditSellSideTicketCore: FC<CreditSellSideTicketCoreProps> = ({
+export const CreditSellSideTicketCore = ({
   rfqId,
   dealerId,
-}) => {
+}: CreditSellSideTicketCoreProps) => {
   const rfqDetails = useCreditRfqDetails(rfqId)
 
   if (!rfqDetails) {

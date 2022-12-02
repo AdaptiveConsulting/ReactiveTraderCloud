@@ -19,9 +19,11 @@ import {
   useMoveNextOnEnter,
 } from "./state"
 
-const ConfirmContent: React.FC<
-  NlpExecutionDataReady["payload"]["requestData"]
-> = ({ direction, notional, symbol }) => {
+const ConfirmContent = ({
+  direction,
+  notional,
+  symbol,
+}: NlpExecutionDataReady["payload"]["requestData"]) => {
   useMoveNextOnEnter()
   const directionStr = direction === Direction.Buy ? "buying" : "selling"
   const notionalStr = formatNumber(notional)
@@ -63,7 +65,7 @@ const SuccessContent: React.FC<ExecutionTrade> = (trade) => {
   )
 }
 
-const ErrorContent: React.FC<{ message: string }> = ({ message }) => (
+const ErrorContent = ({ message }: { message: string }) => (
   <>
     <p>
       <strong>Something went wrong while executing your trade.</strong>

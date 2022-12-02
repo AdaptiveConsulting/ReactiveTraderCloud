@@ -22,7 +22,7 @@ const WINDOW = {
 
 const OFFSET: Offset = [119, 40]
 
-export const SnapshotButton: React.FC = () => {
+export const SnapshotButton = () => {
   const [showing, setShowing] = useState(false)
 
   useEffect(() => {

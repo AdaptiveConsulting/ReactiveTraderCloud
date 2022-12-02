@@ -1,13 +1,14 @@
-import { FC } from "react"
 import Switch, { ReactSwitchProps } from "react-switch"
 import { withTheme } from "styled-components"
 import { Theme, ThemeName, useTheme } from "."
 
 export type ThemeStorageSwitchProps = Partial<ReactSwitchProps>
 
-const ThemeStorageSwitch: FC<ThemeStorageSwitchProps & { theme: Theme }> = ({
+const ThemeStorageSwitch = ({
   theme,
   ...props
+}: ThemeStorageSwitchProps & {
+  theme: Theme
 }) => {
   const { themeName, toggleTheme } = useTheme()
 

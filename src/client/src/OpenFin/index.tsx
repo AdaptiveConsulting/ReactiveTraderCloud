@@ -11,7 +11,7 @@ const LauncherRoutes = lazy(() => import("@/OpenFin/apps/Launcher"))
 const FxRoutes = lazy(() => import("@/OpenFin/apps/FX"))
 const CreditRoutes = lazy(() => import("@/OpenFin/apps/Credit"))
 
-export const OpenFinApp: React.FC = () => (
+export const OpenFinApp = () => (
   <BrowserRouter basename={BASE_PATH}>
     <Switch>
       <Route path={`${ROUTES_CONFIG.launcher}*`}>

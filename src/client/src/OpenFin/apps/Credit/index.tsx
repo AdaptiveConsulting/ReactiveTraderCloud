@@ -36,10 +36,12 @@ const CreditRoutes = () => (
       }) => (
         <>
           <DisconnectionOverlay />
-          <CreditSellSideTicket
-            rfqId={parseInt(rfqId!, 10)}
-            dealerId={parseInt(dealerId!, 10)}
-          />
+          {rfqId && dealerId && (
+            <CreditSellSideTicket
+              rfqId={parseInt(rfqId, 10)}
+              dealerId={parseInt(dealerId, 10)}
+            />
+          )}
         </>
       )}
     />

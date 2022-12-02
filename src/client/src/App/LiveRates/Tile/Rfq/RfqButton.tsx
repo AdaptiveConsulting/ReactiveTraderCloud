@@ -70,13 +70,13 @@ type RFQButtonProps = {
   buttonText: string
 }
 
-export const RfqButtonInner: React.FC<RFQButtonProps> = ({
+export const RfqButtonInner = ({
   isAnalytics,
   disabled,
   textWrap,
   onClick,
   buttonText,
-}) => {
+}: RFQButtonProps) => {
   return (
     <RfqButtonContainer
       left={isAnalytics ? `calc(${AnalyticsPricesFirstCol} / 2)` : 0}
@@ -96,7 +96,7 @@ export const RfqButtonInner: React.FC<RFQButtonProps> = ({
   )
 }
 
-const RfqButton: React.FC<{ isAnalytics: boolean }> = ({ isAnalytics }) => {
+const RfqButton = ({ isAnalytics }: { isAnalytics: boolean }) => {
   const isRfq = useIsRfq()
   const { stage } = useRfqState()
   const { symbol } = useTileCurrencyPair()

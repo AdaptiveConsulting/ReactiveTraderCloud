@@ -38,7 +38,7 @@ import { closeWindow } from "@/utils/window/closeWindow"
 
 const expandedLauncherWidth = 600
 
-const Logo: React.FC<{ active: boolean }> = ({ active }) => (
+const Logo = ({ active }: { active: boolean }) => (
   <LogoLauncherContainer>
     {useIsNlpIntentLoading() ? (
       <Loader size={21} opacity={1} />
@@ -48,10 +48,13 @@ const Logo: React.FC<{ active: boolean }> = ({ active }) => (
   </LogoLauncherContainer>
 )
 
-const SearchButton: React.FC<{
+const SearchButton = ({
+  onClick,
+  isSearchVisible,
+}: {
   onClick: () => void
   isSearchVisible: boolean
-}> = ({ onClick, isSearchVisible }) => (
+}) => (
   <SearchButtonContainer isSearchVisible={isSearchVisible}>
     <LaunchButton
       iconFill="#CFCFCF"
@@ -64,7 +67,7 @@ const SearchButton: React.FC<{
   </SearchButtonContainer>
 )
 
-const LauncherMinimiseAndExit: React.FC = () => (
+const LauncherMinimiseAndExit = () => (
   <MinExitContainer>
     <ExitButton onClick={closeWindow}>
       <ExitIcon />

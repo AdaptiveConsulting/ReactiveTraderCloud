@@ -1,4 +1,3 @@
-import { FC } from "react"
 import styled from "styled-components"
 
 export interface DropdownOptionStyleProps {
@@ -9,14 +8,14 @@ export interface DropdownOptionStyleProps {
 }
 
 export type DropdownMenuStyleProps = DropdownOptionStyleProps & {
-  options: any[]
+  options: string[]
 }
 
-const DropdownMenuOption: FC<DropdownOptionStyleProps> = (props) => (
+const DropdownMenuOption = (props: DropdownOptionStyleProps) => (
   <DropdownMenuOptionStyled {...props}>{props.option}</DropdownMenuOptionStyled>
 )
 
-export const DropdownMenu: FC<DropdownMenuStyleProps> = (props) => {
+export const DropdownMenu = (props: DropdownMenuStyleProps) => {
   const { options, active, hover, disabled } = props
 
   return (
@@ -52,7 +51,7 @@ const StyledBase = styled.div<DropdownOptionStyleProps>`
 `
 
 const StyledButtonBase = StyledBase.withComponent("button")
-const DropdownMenuOptionStyled: any = styled(
+const DropdownMenuOptionStyled = styled(
   StyledButtonBase,
 )<DropdownOptionStyleProps>``
 

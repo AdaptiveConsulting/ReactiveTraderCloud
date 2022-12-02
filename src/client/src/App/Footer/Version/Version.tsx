@@ -1,7 +1,8 @@
-import { FC, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Wrapper, Link } from "./styled"
 
 type IdentifierType = "release" | "commit"
+type Element = { tag_name: string }
 
 const getGitResource = async (
   identifier: string,
@@ -17,7 +18,7 @@ const getGitResource = async (
 
     if (type === "release") {
       const exists = data.find(
-        (element: any) => element.tag_name === identifier,
+        (element: Element) => element.tag_name === identifier,
       )
       return exists
         ? `https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/tag/${identifier}`
@@ -30,7 +31,7 @@ const getGitResource = async (
   }
 }
 
-export const Version: FC = () => {
+export const Version = () => {
   const [gitResource, setGitResource] = useState<string>()
 
   const rawBuildIdentifier =

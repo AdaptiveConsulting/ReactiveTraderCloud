@@ -2,9 +2,9 @@ import { fromEventPattern } from "rxjs"
 
 export function topic$<T>(topic: Topic) {
   return fromEventPattern<T>(
-    (handler: Function) =>
+    (handler) =>
       fin.InterApplicationBus.subscribe({ uuid: "*" }, topic, handler),
-    (handler: Function) =>
+    (handler) =>
       fin.InterApplicationBus.unsubscribe({ uuid: "*" }, topic, handler),
   )
 }

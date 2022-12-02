@@ -33,7 +33,7 @@ export const usePopUpMenu = <T extends HTMLElement>(
     if (displayMenu && hidePopUpMenu.current) {
       document.addEventListener("click", hidePopUpMenu.current)
       return () => {
-        hidePopUpMenu?.current &&
+        hidePopUpMenu.current &&
           document.removeEventListener("click", hidePopUpMenu.current)
       }
     }

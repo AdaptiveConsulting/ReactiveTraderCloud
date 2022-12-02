@@ -14,7 +14,7 @@ import {
   withLatestFrom,
 } from "rxjs/operators"
 import { createSignal } from "@react-rxjs/utils"
-import { concat, Observable } from "rxjs"
+import { concat } from "rxjs"
 import { getPrice$ } from "@/services/prices"
 import { getCurrencyPair$ } from "@/services/currencyPairs"
 import {
@@ -61,7 +61,7 @@ interface RequestData {
 
 export interface NlpExecutionMissingData {
   type: NlpExecutionStatus.MissingData
-  payload: {}
+  payload: Record<string, unknown>
 }
 
 export interface NlpExecutionDataReady {
@@ -105,13 +105,14 @@ export type NlpExecutionState =
 let nextId = 1
 const getId = () => (nextId++).toString()
 
-const nlpExecutionState$: Observable<NlpExecutionState> = nlpIntent$.pipe(
+const nlpExecutionState$ = nlpIntent$.pipe(
   switchMap((intent) => {
     if (
       !intent ||
       intent === "loading" ||
       intent.type !== NlpIntentType.TradeExecution ||
       !intent.payload.symbol ||
+      !("notional" in intent.payload) ||
       !intent.payload.notional ||
       !intent.payload.direction
     ) {

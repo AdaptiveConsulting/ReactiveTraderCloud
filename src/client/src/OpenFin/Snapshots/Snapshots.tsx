@@ -1,4 +1,3 @@
-import { Snapshot } from "openfin/_v2/shapes/Platform"
 import { useState } from "react"
 import {
   applySnapshotFromStorage,
@@ -42,7 +41,7 @@ interface ListProps {
   onSelect(name: string): void
 }
 
-const SnapshotList: React.FC<ListProps> = ({ snapshots, onSelect }) => {
+const SnapshotList = ({ snapshots, onSelect }: ListProps) => {
   const names = Object.keys(snapshots)
 
   return (
@@ -66,7 +65,7 @@ interface FormProps {
   onSubmit(value: string): void
 }
 
-const SnapshotForm: React.FC<FormProps> = ({ onSubmit }) => {
+const SnapshotForm = ({ onSubmit }: FormProps) => {
   const [value, setValue] = useState("")
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +103,7 @@ const SnapshotForm: React.FC<FormProps> = ({ onSubmit }) => {
   )
 }
 
-export const Snapshots: React.FC = () => {
+export const Snapshots = () => {
   const { snapshots, saveSnapshot, applySnapshot } = useSnapshots()
 
   console.log(snapshots)

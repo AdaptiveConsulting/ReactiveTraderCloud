@@ -1,3 +1,4 @@
+import { WithChildren } from "@/utils/utilityTypes"
 import styled from "styled-components"
 
 export const FilterPopupOuter = styled.span`
@@ -30,10 +31,14 @@ export const FilterPopupInner = styled.div`
   box-shadow: ${({ theme }) => theme.core.textColor} 0px 0px 0.3125rem 0px;
 `
 
-export const FilterPopup: React.FC<{
+export const FilterPopup = ({
+  parentRef,
+  ariaLabel,
+  children,
+}: {
   ariaLabel?: string
   parentRef: React.RefObject<HTMLDivElement>
-}> = ({ parentRef, ariaLabel, children }) => (
+} & WithChildren) => (
   <FilterPopupOuter>
     <FilterPopupInner role="search" aria-label={ariaLabel} ref={parentRef}>
       {children}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { bind } from "@react-rxjs/core"
 import { Observable, of } from "rxjs"
 import { scan, map } from "rxjs/operators"
@@ -52,7 +53,10 @@ const [, getSymbolPrices$] = bind(
     }),
 )
 
-export const [, getIsSymbolDataStale$] = bind((_: string) => of(false))
+export const [, getIsSymbolDataStale$] = bind(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  (_: string): Observable<boolean> => of(false),
+)
 
 export const [usePrice, getPrice$] = bind((symbol: string) =>
   getSymbolPrices$(symbol).pipe(

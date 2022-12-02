@@ -5,7 +5,7 @@ import {
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { useCombobox } from "downshift"
-import { FC, forwardRef, useCallback, useMemo, useRef, useState } from "react"
+import { forwardRef, useCallback, useMemo, useRef, useState } from "react"
 import { FaSearch } from "react-icons/fa"
 import { map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
@@ -89,7 +89,7 @@ const useInputFocus = () => {
   return { inputRef: inputRefCallback, focusInput }
 }
 
-export const CreditInstrumentSearch: FC = () => {
+export const CreditInstrumentSearch = () => {
   const selectedInstrument = useSelectedInstrument()
   const { inputRef, focusInput } = useInputFocus()
 
@@ -163,7 +163,7 @@ const MissingInstrument = styled.div`
   font-size: 15px;
 `
 
-const SearchBox = forwardRef<HTMLInputElement>((_, inputRef) => {
+const SearchBox = forwardRef<HTMLInputElement>(function SearchBox(_, inputRef) {
   const instruments = useCreditInstrumentsByCusip()
   const [inputValue, setInputValue] = useState<string>("")
 

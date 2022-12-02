@@ -51,10 +51,10 @@ export type TileProps = {
   isExpired?: boolean
   priceDisabled?: boolean
   priceButtonStatic?: boolean
-  graphPath?: string
+  graphPath: string
 }
 
-export const Tile: React.FC<TileProps> = ({
+export const Tile = ({
   currencyPair,
   isAnalytics,
   timerData,
@@ -75,10 +75,8 @@ export const Tile: React.FC<TileProps> = ({
   priceDisabled,
   priceButtonStatic,
   graphPath,
-}) => {
-  const InputTimerWrapper: React.FC<{ isAnalytics?: boolean }> = ({
-    isAnalytics,
-  }) => {
+}: TileProps) => {
+  const InputTimerWrapper = ({ isAnalytics }: { isAnalytics?: boolean }) => {
     return (
       <InputTimerStyle isAnalyticsView={!!isAnalytics}>
         <NotionalInputInner
@@ -119,7 +117,7 @@ export const Tile: React.FC<TileProps> = ({
             <GraphNotionalWrapper>
               <HistoricalGraphComponent
                 showTimer={!!timerData}
-                path={graphPath!}
+                path={graphPath}
               />
               <InputTimerWrapper isAnalytics />
             </GraphNotionalWrapper>
@@ -171,13 +169,13 @@ export const Tile: React.FC<TileProps> = ({
               ) : (
                 <PriceUnavailableButton />
               )}
-              {rfqButtonText && (
+              {rfqButtonText && typeof rfqButtonText === "string" && (
                 <RfqButtonInner
                   isAnalytics={isAnalytics}
                   disabled={false}
                   onClick={() => null}
                   textWrap={!!rfqTextWrap}
-                  buttonText={rfqButtonText!}
+                  buttonText={rfqButtonText}
                 />
               )}
             </PriceControlsStyle>

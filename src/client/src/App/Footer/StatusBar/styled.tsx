@@ -25,10 +25,9 @@ export const Root = styled.div`
   }
 `
 
-export const ChevronIcon: React.FC<{ expand: boolean }> = ({
-  expand,
-  ...props
-}) => <Icon IconComponent={ChevronIcon} {...props} />
+export const ChevronIcon = (props: { expand: boolean }) => (
+  <Icon IconComponent={ChevronIcon} {...props} />
+)
 
 export const ExpandToggle = styled(ChevronIcon)`
   transform: rotate(

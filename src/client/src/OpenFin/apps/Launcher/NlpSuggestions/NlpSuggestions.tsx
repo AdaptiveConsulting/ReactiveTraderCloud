@@ -6,9 +6,7 @@ import { Quotes, AllQuotes } from "./Quotes"
 import { Trades } from "./Trades"
 import { TradeExecution } from "./TradeExecution"
 
-export const NlpSuggestions: React.FC<{ intent: NlpIntent | null }> = ({
-  intent,
-}) => {
+export const NlpSuggestions = ({ intent }: { intent: NlpIntent | null }) => {
   if (intent === null) return <HelpText>No results</HelpText>
 
   switch (intent.type) {

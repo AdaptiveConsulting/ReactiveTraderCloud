@@ -9,7 +9,6 @@ import { ThemeName } from "@/theme"
 import { customNumberFormatter } from "@/utils"
 import { closeWindow } from "@/utils/window/closeWindow"
 import { createSignal } from "@react-rxjs/utils"
-import { FC } from "react"
 import { FaCheckCircle } from "react-icons/fa"
 import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
@@ -94,7 +93,7 @@ const [quoteRequest$, sendQuote] =
 quoteRequest$
   .pipe(
     withLatestFrom(price$),
-    filter(([_, price]) => price.value > 0),
+    filter(([, price]) => price.value > 0),
     map(([ids, price]) => ({
       ...ids,
       price: price.value,
@@ -111,11 +110,11 @@ interface CreditSellSideTicketFooterProps {
   quote: QuoteBody | undefined
 }
 
-export const CreditSellSideFooter: FC<CreditSellSideTicketFooterProps> = ({
+export const CreditSellSideFooter = ({
   rfqId,
   dealerId,
   quote,
-}) => {
+}: CreditSellSideTicketFooterProps) => {
   const rfq = useCreditRfqDetails(rfqId)
   const price = usePrice()
 

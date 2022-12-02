@@ -1,8 +1,11 @@
 import styled from "styled-components"
 
-const Icon: React.FC<{
+const Icon = ({
+  IconComponent,
+  ...props
+}: {
   IconComponent: React.FC<{ expand: boolean }>
-}> = ({ IconComponent, ...props }) => (
+}) => (
   <div {...props}>
     <IconComponent expand={false} />
   </div>

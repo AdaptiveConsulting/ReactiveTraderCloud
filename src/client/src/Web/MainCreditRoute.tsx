@@ -7,7 +7,7 @@ import MainLayout from "./MainLayout"
 const CREDIT_TEAR_OUT_SECTIONS = ["newRfq", "creditBlotter"] as const
 const useTornOutSections = getTornOutSections(CREDIT_TEAR_OUT_SECTIONS)
 
-const MainCreditRoute: React.FC = () => {
+const MainCreditRoute = () => {
   const tornOutSections = useTornOutSections()
 
   return (

@@ -53,7 +53,7 @@ export const ProgressBar = memo(styled.div<{
   animation: ${progressAnimation};
 `)
 
-const SecsTimer: React.FC<{ end: number }> = ({ end }) => {
+const SecsTimer = ({ end }: { end: number }) => {
   const [timeLeft, setTimeLeft] = useState(() =>
     Math.round((end - Date.now()) / 1000),
   )
@@ -77,10 +77,7 @@ const SecsTimer: React.FC<{ end: number }> = ({ end }) => {
   )
 }
 
-const TimeProgress: React.FC<{
-  start: number
-  end: number
-}> = ({ start, end }) => {
+const TimeProgress = ({ start, end }: { start: number; end: number }) => {
   const transitionTime = useRef(end - Date.now())
   const startWidthPercentage = useRef(
     ((end - Date.now()) / (end - start)) * 100,
@@ -95,11 +92,15 @@ const TimeProgress: React.FC<{
   )
 }
 
-export const CreditTimer: React.FC<{
+export const CreditTimer = ({
+  start,
+  end,
+  isSellSideView,
+}: {
   start: number
   end: number
   isSellSideView: boolean
-}> = ({ start, end, isSellSideView }) => {
+}) => {
   const [timerEnded, setTimerEnded] = useState(Date.now() >= end)
 
   useEffect(() => {

@@ -180,18 +180,22 @@ export const createApplyCharacterMultiplier = (
 // Assumes that for this number, for all locales, the thousands and decimal separators will occur at the provided indices
 // Preference would have been given to a native Intl function for finding these values, but none appear to be exposed at this time
 
-type SeparatorGetter = (_locale: string) => string | undefined
+type SeparatorGetter = (_locale: string) => string
 
 export const getThousandsSeparator: SeparatorGetter = (_locale) => {
-  return new Intl.NumberFormat(_locale)
-    .formatToParts(10000.5)
-    .find((part) => part.type === "group")?.value
+  return (
+    new Intl.NumberFormat(_locale)
+      .formatToParts(10000.5)
+      .find((part) => part.type === "group")?.value || ","
+  )
 }
 
 export const getDecimalSeparator: SeparatorGetter = (_locale) => {
-  return new Intl.NumberFormat(_locale)
-    .formatToParts(10000.5)
-    .find((part) => part.type === "decimal")?.value
+  return (
+    new Intl.NumberFormat(_locale)
+      .formatToParts(10000.5)
+      .find((part) => part.type === "decimal")?.value || "."
+  )
 }
 
 /**

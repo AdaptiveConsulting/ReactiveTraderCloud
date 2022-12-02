@@ -28,10 +28,13 @@ type DisconnectedStatus =
   | ConnectionStatus.IDLE_DISCONNECTED
   | ConnectionStatus.OFFLINE_DISCONNECTED
 
-export const DisconnectionOverlayInner: React.FC<{
+export const DisconnectionOverlayInner = ({
+  connectionStatus,
+  onReconnect,
+}: {
   connectionStatus: DisconnectedStatus
   onReconnect: () => void
-}> = ({ connectionStatus, onReconnect }) => (
+}) => (
   <Modal shouldShow>
     {connectionStatus === ConnectionStatus.IDLE_DISCONNECTED ? (
       <>
@@ -63,7 +66,7 @@ const [useHideOverlay] = bind(
   true,
 )
 
-export const DisconnectionOverlay: React.FC = () => {
+export const DisconnectionOverlay = () => {
   const connectionStatus = useConnectionStatus()
   return useHideOverlay() ? null : (
     <DisconnectionOverlayInner

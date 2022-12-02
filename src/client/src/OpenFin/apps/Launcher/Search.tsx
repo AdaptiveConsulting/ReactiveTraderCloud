@@ -9,7 +9,7 @@ type Props = {
   onHide: () => void
 }
 
-export const Search: React.FC<Props> = ({ value, visible, onHide }) => {
+export const Search = ({ value, visible, onHide }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -23,12 +23,11 @@ export const Search: React.FC<Props> = ({ value, visible, onHide }) => {
     return () => {
       window.removeEventListener("keydown", onKeyDown)
     }
-  }, [])
-  // }, [onHide])
+  }, [onHide])
 
   useEffect(() => {
-    if (visible) {
-      inputRef.current!.focus()
+    if (visible && inputRef.current) {
+      inputRef.current.focus()
     }
   }, [visible])
 
@@ -47,7 +46,7 @@ export const Search: React.FC<Props> = ({ value, visible, onHide }) => {
         <CancelButton
           onClick={() => {
             onResetInput()
-            inputRef.current!.focus()
+            inputRef.current && inputRef.current.focus()
           }}
         >
           <ExitIcon />

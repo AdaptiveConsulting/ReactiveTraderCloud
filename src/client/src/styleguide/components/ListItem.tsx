@@ -1,4 +1,3 @@
-import { FC } from "react"
 import styled from "styled-components"
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
   disabled?: boolean
 }
 
-export const ListItem: FC<Props> = ({ title, active, hover, disabled }) => {
+export const ListItem = ({ title, active, hover, disabled }: Props) => {
   return (
     <Root active={active} hover={hover} disabled={disabled}>
       {title}

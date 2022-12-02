@@ -21,7 +21,7 @@ const TradesStyle = styled.div`
 
 const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
 
-const TradesGrid: React.FC<TradesGridInnerProps<FxTrade>> = (props) => {
+const TradesGrid = (props: TradesGridInnerProps<FxTrade>) => {
   const highlightedRow = useFxTradeRowHighlight()
   const tryBroadcastContext = useCallback((trade: FxTrade) => {
     const context = {
@@ -49,7 +49,7 @@ const TradesGrid: React.FC<TradesGridInnerProps<FxTrade>> = (props) => {
   )
 }
 
-const FxTrades: React.FC = () => {
+const FxTrades = () => {
   return (
     <Subscribe fallback={<Loader ariaLabel="Loading trades blotter" />}>
       <ColFieldsContext.Provider value={fxColFields}>

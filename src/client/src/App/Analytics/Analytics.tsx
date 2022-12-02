@@ -39,9 +39,7 @@ interface Props {
   hideIfMatches?: string | null
 }
 
-export const Analytics: React.FC<Props> = ({
-  hideIfMatches = "(max-width: 750px)",
-}) => {
+export const Analytics = ({ hideIfMatches = "(max-width: 750px)" }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const shouldMountAnalytics = useHasItBeenVisible(ref)
 

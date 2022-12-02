@@ -48,23 +48,6 @@ export async function createAndRunOpenFinApplication(
     uuid: uuid || name,
     nonPersistent: true,
     mainWindowOptions: windowOptions,
-    // TODO understand if we need to pass this property, if not, remove it
-    // @ts-ignore
-    fdc3Api: true,
-  })
-}
-
-function createOpenFinWindow(
-  name: string,
-  url: string,
-  windowOptions?: OpenFin.WindowCreationOptions,
-): Promise<OpenFin.Window> {
-  return new Promise((resolve, reject) => {
-    const window = fin.Window.create({
-      url,
-      name,
-      ...windowOptions,
-    })
   })
 }
 

@@ -92,7 +92,7 @@ function isTextProp(propName: keyof TextProps): propName is keyof TextProps {
 }
 
 export function mapTextProps(props: TextProps & { theme: Theme }) {
-  return Object.keys(props)
+  return (Object.keys(props) as (keyof TextProps)[])
     .filter(isTextProp)
     .map((propName) => {
       const textPropsToCSSValue = textPropsToCSS[propName]

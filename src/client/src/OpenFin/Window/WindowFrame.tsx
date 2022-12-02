@@ -5,7 +5,7 @@ import { WindowHeader } from "./WindowHeader"
 import { WindowViewport } from "./WindowViewport"
 import { FrameRoot } from "./WindowFrame.styles"
 
-export const WindowFrame: React.FC = () => {
+export const WindowFrame = () => {
   const win = fin.Window.getCurrentSync()
 
   const headerControlHandlers = {

@@ -47,7 +47,7 @@ export default (() => (
   </Root>
 )) as FC
 
-const PriceButtonVariants: FC<{ direction: Direction }> = ({ direction }) => (
+const PriceButtonVariants = ({ direction }: { direction: Direction }) => (
   <>
     {
       //Price Announced

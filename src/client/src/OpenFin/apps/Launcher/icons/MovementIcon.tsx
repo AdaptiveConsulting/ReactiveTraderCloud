@@ -1,16 +1,15 @@
 import { PriceMovementType } from "@/services/prices"
-import { FC } from "react"
 import { BaseIconProps } from "./types"
 
 interface MovementIconProps extends BaseIconProps {
-  direction: PriceMovementType
+  direction: PriceMovementType | undefined
 }
 
-const MovementIcon: FC<MovementIconProps> = ({
+const MovementIcon = ({
   direction = undefined,
-  width = "24",
-  height = "24",
-}) => {
+  width = 24,
+  height = 24,
+}: MovementIconProps) => {
   if (direction === PriceMovementType.DOWN) {
     return (
       <svg

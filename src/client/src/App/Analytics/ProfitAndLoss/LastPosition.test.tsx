@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Subscribe } from "@react-rxjs/core"
 import { render, screen, act } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"

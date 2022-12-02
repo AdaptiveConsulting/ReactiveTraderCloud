@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { act, fireEvent, render, screen } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 import { Trade, tradesTestData } from "@/services/trades"

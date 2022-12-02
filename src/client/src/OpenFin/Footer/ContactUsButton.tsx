@@ -46,7 +46,7 @@ export const OpenFinContactDisplay = () => (
 const baseWin = { name: "contact", height: 445, width: 245 }
 const pathname = constructUrl("/contact")
 
-const ContactUsButton: React.FC = () => {
+const ContactUsButton = () => {
   const [showing, setShowing] = useState(false)
 
   const showPopup = () => {

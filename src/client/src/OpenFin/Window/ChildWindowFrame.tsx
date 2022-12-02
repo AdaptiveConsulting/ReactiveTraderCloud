@@ -5,7 +5,7 @@ import { WindowBody } from "./WindowBody"
 import { WindowViewport } from "./WindowViewport"
 import { getAppName, getPlatformLayoutTitle } from "../utils/app"
 
-export const ChildWindowFrame: React.FC = () => {
+export const ChildWindowFrame = () => {
   const win = fin.Window.getCurrentSync()
   const [windowName, setWindowName] = useState("")
 

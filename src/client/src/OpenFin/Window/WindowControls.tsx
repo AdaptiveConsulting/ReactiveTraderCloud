@@ -13,12 +13,7 @@ export interface Props {
   popIn?: () => void
 }
 
-export const WindowControls: React.FC<Props> = ({
-  close,
-  minimize,
-  maximize,
-  popIn,
-}) => {
+export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
   // Close other windows when page is refreshed to avoid recreating popups
   useEffect(() => {
     const inMainWindow = inMainOpenFinWindow()

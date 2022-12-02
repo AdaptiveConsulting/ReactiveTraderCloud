@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Subscribe } from "@react-rxjs/core"
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { BehaviorSubject, Subject } from "rxjs"
@@ -216,7 +218,7 @@ describe("Tile/rfq", () => {
       response$.complete()
     })
 
-    expect(screen.queryByRole("alert")!.textContent).toEqual(
+    expect(screen.getByRole("alert").textContent).toEqual(
       "You sold EUR 10,000,000 at a rate of 1.53816 for USD 15,381,600 settling (Spt) 04 Feb.",
     )
 

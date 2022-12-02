@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ExecutionStatus } from "@/services/executions"
 import { ComponentStory, ComponentMeta } from "@storybook/react"
 import styled from "styled-components"

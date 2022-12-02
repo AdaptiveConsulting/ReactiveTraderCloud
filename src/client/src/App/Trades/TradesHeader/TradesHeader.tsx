@@ -33,7 +33,7 @@ const HeaderToolbar = styled("div")`
   align-items: center;
   justify-content: flex-end;
 `
-export const TradesHeader: React.FC<{ section: Section }> = ({ section }) => {
+export const TradesHeader = ({ section }: { section: Section }) => {
   return (
     <TradesHeaderStyle>
       <HeaderLeftGroup>Trades</HeaderLeftGroup>

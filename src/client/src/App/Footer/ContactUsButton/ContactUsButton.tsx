@@ -11,7 +11,7 @@ interface Props {
   logoSize: number
 }
 
-export const ContactUsPopupContent: React.FC<Props> = ({ logoSize }) => (
+export const ContactUsPopupContent = ({ logoSize }: Props) => (
   <>
     <ContactUs />
     <FollowUs />
@@ -21,7 +21,7 @@ export const ContactUsPopupContent: React.FC<Props> = ({ logoSize }) => (
   </>
 )
 
-const ContactUsButton: React.FC = () => {
+const ContactUsButton = () => {
   const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
 

@@ -69,44 +69,48 @@ interface HistoricalGraphComponentProps {
 export const HistoricalGraphComponent = forwardRef<
   HTMLDivElement,
   HistoricalGraphComponentProps
->(({ showTimer, path, active, showCenterLine }, ref) => (
-  <LineChartWrapper showTimer={showTimer} ref={ref}>
-    <Svg>
-      <Path
-        stroke={active ? "#5f94f5" : "#737987"}
-        strokeOpacity={0.9}
-        strokeWidth={1.6}
-        fill="none"
-        d={path}
-      />
-      {showCenterLine && (
-        <g>
-          <line
-            y="0"
-            strokeDasharray="4 3"
-            stroke="#737987"
-            strokeOpacity="0.9"
-            strokeWidth="0.8"
-            fill="none"
-            fillOpacity="1"
-            x1="0"
-            y1="40"
-            x2={"200"}
-            y2="40"
-          ></line>
-        </g>
-      )}
-    </Svg>
-  </LineChartWrapper>
-))
+>(function HistoricalGraphComponent(
+  { showTimer, path, active, showCenterLine },
+  ref,
+) {
+  return (
+    <LineChartWrapper showTimer={showTimer} ref={ref}>
+      <Svg>
+        <Path
+          stroke={active ? "#5f94f5" : "#737987"}
+          strokeOpacity={0.9}
+          strokeWidth={1.6}
+          fill="none"
+          d={path}
+        />
+        {showCenterLine && (
+          <g>
+            <line
+              y="0"
+              strokeDasharray="4 3"
+              stroke="#737987"
+              strokeOpacity="0.9"
+              strokeWidth="0.8"
+              fill="none"
+              fillOpacity="1"
+              x1="0"
+              y1="40"
+              x2={"200"}
+              y2="40"
+            ></line>
+          </g>
+        )}
+      </Svg>
+    </LineChartWrapper>
+  )
+})
 
-export const HistoricalGraph: React.FC<HistoricalGraphProps> = ({
-  showTimer,
-}) => {
+export const HistoricalGraph = ({ showTimer }: HistoricalGraphProps) => {
   const ref = useRef<HTMLDivElement>(null)
   const { symbol } = useTileCurrencyPair()
   useEffect(() => {
-    const element = ref.current!
+    const element = ref.current
+    if (!element) return
 
     const resizeObserver = new ResizeObserver(
       (entries: Array<ResizeObserverEntry>) => {
@@ -124,7 +128,7 @@ export const HistoricalGraph: React.FC<HistoricalGraphProps> = ({
 
   const path = useHistoricalPath()
 
-  return (
+  return path ? (
     <HistoricalGraphComponent showTimer={showTimer} ref={ref} path={path} />
-  )
+  ) : null
 }

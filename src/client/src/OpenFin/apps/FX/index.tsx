@@ -6,7 +6,7 @@ import { FxTrades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { DocTitle } from "@/components/DocTitle"
 import { ROUTES_CONFIG } from "@/constants"
-import { Route, useRouteMatch } from "react-router-dom"
+import { Route } from "react-router-dom"
 
 const FxRoutes = () => (
   <>
@@ -52,7 +52,13 @@ const FxRoutes = () => (
 
         return (
           <>
-            <TornOutTile symbol={symbol!} view={view} supportsTearOut={false} />
+            {symbol && (
+              <TornOutTile
+                symbol={symbol}
+                view={view}
+                supportsTearOut={false}
+              />
+            )}
             <DisconnectionOverlay />
           </>
         )

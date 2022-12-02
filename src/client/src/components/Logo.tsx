@@ -7,13 +7,13 @@ interface LogoProps extends SVGAttributes<Element> {
   withText?: boolean
 }
 
-const Logo: React.FC<LogoProps> = ({
+const Logo = ({
   fill = "#000",
   size = 2,
   style,
   withText = true,
   ...props
-}) => {
+}: LogoProps) => {
   const widthMultiplier = withText ? 4.375 : 1
   const viewBox = withText ? "0 0 140 32" : "0 0 28 32"
 

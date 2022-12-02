@@ -3,7 +3,13 @@ import { createSignal } from "@react-rxjs/utils"
 import { LINE_CHART_HEIGHT } from "./constants"
 import { dataPoints$ } from "./dataPoints$"
 import { format } from "date-fns"
-import { RefObject, useEffect, useLayoutEffect, useRef } from "react"
+import {
+  MutableRefObject,
+  RefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react"
 import { createPortal } from "react-dom"
 import { map, switchMap } from "rxjs/operators"
 import styled from "styled-components"
@@ -38,10 +44,17 @@ const formatToPrecision1 = precisionNumberFormatter(1)
 
 const [hoverX$, onHover] = createSignal<number | null>()
 
+type ScaledPoint = {
+  date: Date
+  value: number
+  x: number
+  y: number
+}
+
 const getScaledPoint$ = (mouseX: number) =>
   dataPoints$.pipe(
     map(({ points, xScale, yScale }) => {
-      const scaledPoints = points.map((point) => ({
+      const scaledPoints: ScaledPoint[] = points.map((point) => ({
         date: point[0],
         value: point[1],
         y: yScale(point[1]),
@@ -85,19 +98,22 @@ type Event = React.BaseSyntheticEvent<
   EventTarget
 >["nativeEvent"]
 
-const CURSOR_MARGIN = 12
-export const Tooltip: React.FC<{ svgRef: RefObject<SVGSVGElement> }> = ({
-  svgRef,
-}) => {
-  const tooltipDivRef = useRef<HTMLDivElement>(null)
+function useDivRef() {
+  const tooltipDivRef = useRef<null | HTMLDivElement>(null)
   if (tooltipDivRef.current === null) {
-    ;(tooltipDivRef as any).current = document.createElement("div")
+    tooltipDivRef.current = document.createElement("div")
   }
+  return tooltipDivRef as MutableRefObject<HTMLDivElement>
+}
+
+const CURSOR_MARGIN = 12
+export const Tooltip = ({ svgRef }: { svgRef: RefObject<SVGSVGElement> }) => {
+  const tooltipDivRef = useDivRef()
 
   const tooltipPositionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
   useEffect(() => {
     if (!svgRef.current) return
-    const svg = svgRef.current!
+    const svg = svgRef.current
     const pt = svg.createSVGPoint()
 
     function onLeave() {
@@ -106,14 +122,14 @@ export const Tooltip: React.FC<{ svgRef: RefObject<SVGSVGElement> }> = ({
     function onMove(e: Event) {
       pt.x = e.clientX
       pt.y = e.clientY
-      onHover(pt.matrixTransform(svg!.getScreenCTM()!.inverse()!).x)
+      onHover(pt.matrixTransform(svg?.getScreenCTM()?.inverse()).x)
 
       tooltipPositionRef.current.x = e.offsetX + CURSOR_MARGIN
       tooltipPositionRef.current.y = e.offsetY + CURSOR_MARGIN
     }
     svg.addEventListener("pointermove", onMove)
     svg.addEventListener("pointerleave", onLeave)
-    svg.parentNode!.append(tooltipDivRef.current!)
+    svg.parentNode?.append(tooltipDivRef.current)
     return () => {
       svg.removeEventListener("pointermove", onMove)
       svg.removeEventListener("pointerleave", onLeave)
@@ -122,7 +138,7 @@ export const Tooltip: React.FC<{ svgRef: RefObject<SVGSVGElement> }> = ({
 
   useLayoutEffect(() => {
     // We have to correct the position of the tooltip when it overflows
-    const tooltipEl = tooltipDivRef.current!.children[0] as HTMLDivElement
+    const tooltipEl = tooltipDivRef.current.children[0] as HTMLDivElement
     const wrapperEl = svgRef.current?.parentNode as HTMLDivElement | null
 
     const tooltipRect = tooltipEl?.getBoundingClientRect()
@@ -180,7 +196,7 @@ translate(${tooltipPositionRef.current.x}px, ${tooltipPositionRef.current.y}px)
               {formatWithScale(point.value, formatToPrecision1)}
             </ToolTipChildRight>
           </ToolTipStyle>,
-          tooltipDivRef.current!,
+          tooltipDivRef.current,
         )}
       </>
     )

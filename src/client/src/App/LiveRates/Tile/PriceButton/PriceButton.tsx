@@ -73,7 +73,7 @@ export type PriceButtonProps = {
   onClick: () => void
 }
 
-export const PriceButtonInner: React.FC<PriceButtonProps> = ({
+export const PriceButtonInner = ({
   direction,
   price,
   currencyPair,
@@ -82,7 +82,7 @@ export const PriceButtonInner: React.FC<PriceButtonProps> = ({
   isExpired,
   isStatic,
   onClick,
-}) => {
+}: PriceButtonProps) => {
   const { pipsPosition, ratePrecision } = currencyPair
   const rateString = price.toFixed(ratePrecision)
   const [wholeNumber, fractions_] = rateString.split(".")
@@ -132,10 +132,13 @@ export const PriceButtonInner: React.FC<PriceButtonProps> = ({
   )
 }
 
-const PriceButtonContainer: React.FC<{
+const PriceButtonContainer = ({
+  direction,
+  rfqQuoteState,
+}: {
   direction: Direction
   rfqQuoteState: QuoteState
-}> = ({ direction, rfqQuoteState }) => {
+}) => {
   const currencyPair = useTileCurrencyPair()
   const { price, isExpired } = usePrice(currencyPair.symbol, direction)
   const isRfq = useIsRfq()
@@ -167,9 +170,7 @@ export const AwaitingPriceButton = () => (
   </QuotePriceLoading>
 )
 
-export const PriceButton: React.FC<{
-  direction: Direction
-}> = ({ direction }) => {
+export const PriceButton = ({ direction }: { direction: Direction }) => {
   const rfqState = useRfqState()
 
   return rfqState.stage === QuoteStateStage.Requested ? (

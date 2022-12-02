@@ -6,7 +6,7 @@ import { OpenFinLogo } from "../Footer/OpenFinLogo"
 import ContactUsButton from "../Footer/ContactUsButton"
 import { Version } from "@/App/Footer/Version"
 
-export const WindowFooter: React.FC = () => (
+export const WindowFooter = () => (
   <StatusBar>
     <Controls>
       <Version />

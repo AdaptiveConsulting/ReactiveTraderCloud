@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { tearOut } from "@/App/LiveRates/Tile/TearOut/state"
 import { CurrencyPair, currencyPairs$ } from "@/services/currencyPairs"
 import {
   CLIDispatchedSearchResult,
   CLIProvider,
   CLISearchListenerRequest,
-  CLISearchListenerResponse,
   CLISearchResponse,
   CLISearchResult,
   CLITemplate,
@@ -67,7 +67,6 @@ export const registerWorkspaceProvider = () => {
 
   const onUserInput = async (
     request: CLISearchListenerRequest,
-    response: CLISearchListenerResponse,
   ): Promise<CLISearchResponse> => {
     const query = request.query.toLowerCase()
     if (query.indexOf("/") === 0) {

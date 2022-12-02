@@ -1,8 +1,15 @@
-export const Text: React.FC<{
+import { WithChildren } from "@/utils/utilityTypes"
+
+export const Text = ({
+  children,
+  x,
+  y,
+  textAnchor = "middle",
+}: {
   x: number
   y: number
   textAnchor?: "middle" | "start" | "end"
-}> = ({ children, x, y, textAnchor = "middle" }) => (
+} & WithChildren) => (
   <text
     style={{ fontSize: "12px" }}
     x={x}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Subscribe } from "@react-rxjs/core"
 import { BehaviorSubject } from "rxjs"
 import { TestThemeProvider } from "@/utils/testUtils"

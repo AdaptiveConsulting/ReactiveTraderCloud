@@ -1,4 +1,4 @@
-import { ReactNode, FC } from "react"
+import { ReactNode } from "react"
 import {
   Body,
   Header,
@@ -10,16 +10,17 @@ import {
 interface Props {
   shouldShow?: boolean
   title?: string | ReactNode | undefined
-  onOverlayClick?: Function
+  onOverlayClick?: (e: React.MouseEvent<HTMLElement>) => void
+  children: ReactNode
 }
 
 // TODO disable tabbing outside of the modal
-export const Modal: FC<Props> = ({
+export const Modal = ({
   shouldShow,
   title,
   children,
   onOverlayClick,
-}) => {
+}: Props) => {
   if (!shouldShow) {
     return null
   }

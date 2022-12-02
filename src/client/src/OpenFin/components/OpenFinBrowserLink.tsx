@@ -1,4 +1,4 @@
-import { FC, MouseEvent, ReactNode } from "react"
+import { MouseEvent, ReactNode } from "react"
 
 interface Props {
   href: string
@@ -11,7 +11,7 @@ const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
   fin.System.openUrlWithBrowser(e.currentTarget.href)
 }
 
-const OpenFinBrowserLink: FC<Props> = ({ children, ...props }) => (
+const OpenFinBrowserLink = ({ children, ...props }: Props) => (
   <a {...props} onClick={handleClick}>
     {children}
   </a>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 // This file uses legacy OpenFin API which is not compatible with the
 // types of the version of the OpenFin lib we are using. This should
 // be fixed, but in the meantime, we are ignoring type checking on
@@ -110,9 +111,9 @@ fin.desktop.main(() => {
     LIMIT_CHECKER_UUID,
     // TODO: figure out if OpenFin typings are wrong - looks like this parameter is optional in docs but required in typings
     // TODO: this is why I had to use this weird construct - make undefined look like string
-    undefined as any as string,
+    undefined as unknown as string,
     LIMIT_CHECKER_STATUS_TOPIC,
-    (message, _) => {
+    (message) => {
       if (message === "ALIVE") {
         setLimitCheckSubscriber(LIMIT_CHECKER_UUID, REQUEST_LIMIT_CHECK_TOPIC)
       }

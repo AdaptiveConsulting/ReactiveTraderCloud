@@ -8,13 +8,7 @@ interface Props extends SVGAttributes<Element> {
   active?: boolean
 }
 
-const MailIcon: React.FC<Props> = ({
-  fill = "#000",
-  size = 2,
-  style,
-  active,
-  ...props
-}) => {
+const MailIcon = ({ fill = "#000", size = 2, ...props }: Props) => {
   return (
     <svg
       height={size + "rem"}

@@ -7,7 +7,7 @@ const config: Record<Social, string> = {
   Github: "https://github.com/adaptiveConsulting/",
 }
 
-export const FollowUs: React.FC = () => {
+export const FollowUs = () => {
   const onClick = (social: Social) => () => {
     window.ga("send", "event", "RT - Social", "click", `${social} (url)`)
     window.open(config[social])

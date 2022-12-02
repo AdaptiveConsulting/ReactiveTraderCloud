@@ -46,7 +46,7 @@ export const isBlotterDataStale$ = withIsStaleData(trades$)
 
 export const [useCreditTrades, creditTrades$] = bind(
   creditRfqsById$.pipe(
-    map((update, idx) => {
+    map((update) => {
       const acceptedRfqs = Object.values(update)
         .filter((rfq) => {
           return rfq.quotes?.find(

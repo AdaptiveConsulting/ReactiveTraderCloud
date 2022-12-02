@@ -1,7 +1,6 @@
-import { FC } from "react"
 import { BaseIconProps } from "./types"
 
-const ExitIcon: FC<BaseIconProps> = ({ width = "24", height = "24" }) => (
+const ExitIcon = ({ width = 24, height = 24 }: BaseIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={width}

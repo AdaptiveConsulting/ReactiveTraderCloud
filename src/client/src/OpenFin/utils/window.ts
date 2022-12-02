@@ -94,8 +94,12 @@ export async function createOpenFinPopup(
     await popupWindow.addListener("blurred", () =>
       popupWindow.hide().then(callback),
     )
-  } catch (e: any) {
-    if (e.message && e.message.includes("with name already in use")) {
+  } catch (e) {
+    if (
+      e instanceof Error &&
+      e.message &&
+      e.message.includes("with name already in use")
+    ) {
       console.log(`Attempted to recreate hidden window: ${popupNameFor(name)}`)
     } else {
       console.error(e)

@@ -61,10 +61,13 @@ const AlignedDownArrow = styled(FaLongArrowAltDown)`
   margin-top: 0.1rem;
 `
 
-const AlignedArrow: React.FC<{
+const AlignedArrow = ({
+  sortDirection,
+  ariaLabel,
+}: {
   sortDirection: SortDirection
   ariaLabel: string
-}> = ({ sortDirection, ariaLabel }) =>
+}) =>
   sortDirection === "ASC" ? (
     <AlignedUpArrow role="sort" aria-label={ariaLabel} />
   ) : (

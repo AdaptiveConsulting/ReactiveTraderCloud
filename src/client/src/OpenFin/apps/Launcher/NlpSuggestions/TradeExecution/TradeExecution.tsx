@@ -7,13 +7,13 @@ import {
   useNlpExecutionState,
 } from "./state"
 
-const Usage: React.FC = () => (
+const Usage = () => (
   <HelpText>
     Usage: <Pill>buy/sell</Pill> <Pill>quantity</Pill> <Pill>instrument</Pill>
   </HelpText>
 )
 
-const Confirmation: React.FC = () => {
+const Confirmation = () => {
   useMoveNextOnEnter()
   return (
     <HelpText>
@@ -22,7 +22,7 @@ const Confirmation: React.FC = () => {
   )
 }
 
-export const TradeExecution: React.FC = () => {
+export const TradeExecution = () => {
   const state = useNlpExecutionState()
 
   switch (state.type) {

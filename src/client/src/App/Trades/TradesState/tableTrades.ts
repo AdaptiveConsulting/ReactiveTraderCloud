@@ -105,7 +105,7 @@ const dateFiltersTrueOfTrade = (
 
     // Normalize datetimes to start of day and take
     // Unix/numerical representation for simple comparisons.
-    const tradeDate = startOfDay(trade[field]).valueOf()
+    const tradeDate = startOfDay(trade[field] as Date).valueOf()
     const filterDate = startOfDay(filterContent.value1).valueOf()
 
     switch (filterContent.comparator) {

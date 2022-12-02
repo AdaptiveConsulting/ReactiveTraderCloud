@@ -15,7 +15,7 @@ const AnalyticsLineChartStyle = styled.div`
   position: relative;
 `
 
-export const LineChart: React.FC = () => {
+export const LineChart = () => {
   const svgRef = useRef<SVGSVGElement>(null)
   return (
     <AnalyticsLineChartStyle>

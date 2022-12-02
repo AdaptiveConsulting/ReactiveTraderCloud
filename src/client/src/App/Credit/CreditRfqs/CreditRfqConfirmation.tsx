@@ -65,10 +65,10 @@ const [useRfqCreatedConfirmation] = bind(
     map(([response, creditInstruments]) => ({
       ...response,
       request: {
-        ...response!.request,
+        ...response.request,
         instrument:
           creditInstruments.find(
-            (instrument) => instrument.id === response!.request.instrumentId,
+            (instrument) => instrument.id === response.request.instrumentId,
           ) ?? null,
       },
     })),
