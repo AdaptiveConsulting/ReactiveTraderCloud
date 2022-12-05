@@ -26,7 +26,7 @@ The trading client GUI is a single page app (SPA) built using Typescript, React,
 
 Please ensure you have
 
-- [Node](https://nodejs.org)(>=v18, suggest using nvm to manage node instances) and
+- [Node](https://nodejs.org)(V16.x, suggest using nvm to manage node instances) and
 - [Git](https://git-scm.com/downloads)
 
 installed on your machine and on your path.
@@ -34,6 +34,14 @@ installed on your machine and on your path.
 ### Mac and Windows
 
 There are no additional packages to install other than Git and a recent build of Node.
+
+For Node 17+, on Windows, we have to suppress new DNS lookup behaviour as it interferes with the OpenFin CLI.
+
+So this must be added to shell / profile:
+
+    export NODE_OPTIONS=--dns-result-order=ipv4first
+
+Ref: https://github.com/nodejs/node/issues/40702
 
 ### Linux
 
