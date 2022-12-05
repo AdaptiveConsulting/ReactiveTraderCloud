@@ -14,7 +14,7 @@ import {
 import { createHtmlPlugin } from "vite-plugin-html"
 import { TransformOption, viteStaticCopy } from "vite-plugin-static-copy"
 
-type BuildTarget = "web" | "openfin" | "launcher"
+type BuildTarget = "web" | "openfin" | "finsemble"
 
 const localPort = Number(process.env.PORT) || 1917
 
@@ -156,10 +156,7 @@ const customPreloadPlugin = () => {
   return result
 }
 
-const copyPlugin = (
-  isDev: boolean,
-  buildTarget: "web" | "openfin" | "launcher",
-): Plugin[] => {
+const copyPlugin = (isDev: boolean, buildTarget: BuildTarget): Plugin[] => {
   const env = process.env.ENVIRONMENT || "local"
 
   const transform: TransformOption | undefined = (contents) =>
