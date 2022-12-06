@@ -14,7 +14,8 @@
     }
   },
   "runtime": {
-    "version": "17.85.53.10"
+    "version": "17.85.53.10",
+    "arguments": "--security-realm=rtcredit"
   },
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",
   "shortcut": {
