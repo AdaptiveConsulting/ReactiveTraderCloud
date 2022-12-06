@@ -116,11 +116,12 @@ export function unregisterCreditQuoteNotifications() {
 
 export const TOPIC_HIGHLIGHT_CREDIT_BLOTTER = "highlight-credit-blotter"
 
-export function registerCreditBlotterUpdates() {}
-fin.InterApplicationBus.subscribe(
-  { uuid: "*" },
-  TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
-  (message: { tradeId: number }) => {
-    setCreditTradeRowHighlight(message.tradeId.toString())
-  },
-)
+export function registerCreditBlotterUpdates() {
+  fin.InterApplicationBus.subscribe(
+    { uuid: "*" },
+    TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
+    (message: { tradeId: number }) => {
+      setCreditTradeRowHighlight(message.tradeId.toString())
+    },
+  )
+}

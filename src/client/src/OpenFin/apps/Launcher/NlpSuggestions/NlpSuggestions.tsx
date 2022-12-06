@@ -31,7 +31,7 @@ export const NlpSuggestions = ({ intent }: { intent: NlpIntent | null }) => {
 
     case NlpIntentType.MarketInfo:
       return (
-        <SuggestionWrapper intent={intent} intentButtonText="Open Lives Rates">
+        <SuggestionWrapper intent={intent} intentButtonText="Open Live Rates">
           <AllQuotes />
         </SuggestionWrapper>
       )
