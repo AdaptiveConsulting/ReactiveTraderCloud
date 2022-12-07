@@ -67,7 +67,7 @@
           "reloadIgnoringCache": true,
           "zoom": true
         },
-        "url": "<BASE_URL>/openfin-window-frame",
+        "url": "<BASE_URL>/openfin-window-frame?app=FX",
         "name": "Reactive-Trader-MAIN",
         "layout": {
           "settings": {

@@ -4,6 +4,7 @@ import { Button } from "@/App/Footer/common-styles"
 import { PlatformLockedStatusIcon } from "../icons/PlatformLockedStatusIcon"
 import { createOpenFinPopup, Offset, showOpenFinPopup } from "../utils/window"
 import { constructUrl } from "@/utils/url"
+import { useLocation } from "react-router"
 
 const IconContainer = styled.div`
   display: flex;
@@ -24,12 +25,13 @@ const OFFSET: Offset = [119, 40]
 
 export const SnapshotButton = () => {
   const [showing, setShowing] = useState(false)
+  const queryString = useLocation().search
 
   useEffect(() => {
-    createOpenFinPopup(WINDOW, constructUrl("/snapshots"), () =>
+    createOpenFinPopup(WINDOW, constructUrl(`/snapshots${queryString}`), () =>
       setShowing(false),
     )
-  }, [])
+  }, [queryString])
 
   const handleShowPopup = () => {
     if (!showing) {

@@ -2,7 +2,9 @@ import { useState } from "react"
 import {
   applySnapshotFromStorage,
   getSnapshots,
+  AppName,
   saveSnapshotToStorage,
+  useAppNameForSnapshots,
 } from "../utils/layout"
 
 import {
@@ -17,16 +19,16 @@ import {
   Title,
 } from "./Snapshots.styles"
 
-const useSnapshots = () => {
-  const [snapshots, setSnapshots] = useState(() => getSnapshots())
+const useSnapshots = (app: AppName) => {
+  const [snapshots, setSnapshots] = useState(() => getSnapshots(app))
 
   const saveSnapshot = async (name: string) => {
-    await saveSnapshotToStorage(name)
-    setSnapshots(getSnapshots())
+    await saveSnapshotToStorage(app, name)
+    setSnapshots(getSnapshots(app))
   }
 
   const applySnapshot = async (name: string) => {
-    await applySnapshotFromStorage(name)
+    await applySnapshotFromStorage(app, name)
   }
 
   return {
@@ -104,9 +106,8 @@ const SnapshotForm = ({ onSubmit }: FormProps) => {
 }
 
 export const Snapshots = () => {
-  const { snapshots, saveSnapshot, applySnapshot } = useSnapshots()
-
-  console.log(snapshots)
+  const app = useAppNameForSnapshots()
+  const { snapshots, saveSnapshot, applySnapshot } = useSnapshots(app)
 
   return (
     <Container>
