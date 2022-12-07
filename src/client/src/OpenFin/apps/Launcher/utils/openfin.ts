@@ -1,5 +1,3 @@
-// TODO - Revisit if/when launcher is cross platform
-import { Bounds } from "openfin/_v2/shapes/shapes"
 import { useEffect } from "react"
 
 export async function getExistingOpenFinApplication(
@@ -61,7 +59,10 @@ export const getCurrentWindowBounds = async () => {
   return window.getBounds()
 }
 
-export async function animateCurrentWindowSize(bounds: Bounds, duration = 200) {
+export async function animateCurrentWindowSize(
+  bounds: OpenFin.Bounds,
+  duration = 200,
+) {
   const window = await fin.Window.getCurrent()
 
   return window.animate(
@@ -79,7 +80,7 @@ export async function animateCurrentWindowSize(bounds: Bounds, duration = 200) {
   )
 }
 
-export function useAppBoundReset(bounds: Bounds | undefined) {
+export function useAppBoundReset(bounds: OpenFin.Bounds | undefined) {
   useEffect(() => {
     if (!bounds) {
       return
