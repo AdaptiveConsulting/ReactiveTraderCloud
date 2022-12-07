@@ -122,6 +122,8 @@ npm run storybook
 _Tech Note: this is running the standard react storybook local server (which is based on [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware)) with a configured public path of /storybook, for deployment purposes.
 This means that we need a customer middleware.js to redirect, therefore the landing page resolves to http://localhost:6006/storybook start url_
 
+There seems to be some issues with storybook cache on some machines, we can solve it by running it without the cache. We added --no-manager-cache to the storybook script
+
 ## Progressive Web App (PWA)
 
 Reactive Trader can be installed as a progressive web application.

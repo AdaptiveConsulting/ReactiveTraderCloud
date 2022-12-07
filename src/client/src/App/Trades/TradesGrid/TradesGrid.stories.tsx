@@ -1,6 +1,22 @@
+import { CreditTrade, FxTrade } from "@/services/trades"
+import { mockCreditTrades } from "@/services/trades/__mocks__/creditTrades"
+import { mockTrades } from "@/services/trades/__mocks__/mockTrades"
 import { Subscribe } from "@react-rxjs/core"
 import { ComponentStory, ComponentMeta } from "@storybook/react"
+import { Observable, of } from "rxjs"
 import styled from "styled-components"
+import {
+  ColDefContext,
+  ColFieldsContext,
+  TradesStreamContext,
+} from "../Context"
+import {
+  ColDef,
+  creditColDef,
+  creditColFields,
+  fxColDef,
+  fxColFields,
+} from "../TradesState"
 import { TradesGridInner } from "./TradesGrid"
 
 export default {
@@ -15,17 +31,58 @@ const TradesStyle = styled.div`
   font-size: 0.8125rem;
 `
 
-const Template: ComponentStory<typeof TradesGridInner> = (args) => (
+interface TradesGridWrapperProps {
+  colDef: ColDef
+  fields: (string | number)[]
+  trades$: Observable<CreditTrade[] | FxTrade[]>
+}
+
+const TradesGridWrapper = ({
+  colDef,
+  fields,
+  trades$,
+}: TradesGridWrapperProps) => (
   <TradesStyle>
     <Subscribe>
-      <TradesGridInner {...args} />
+      <ColFieldsContext.Provider value={fields}>
+        <ColDefContext.Provider value={colDef}>
+          <TradesStreamContext.Provider value={trades$}>
+            <TradesGridInner caption="Example Trades Grid" />
+          </TradesStreamContext.Provider>
+        </ColDefContext.Provider>
+      </ColFieldsContext.Provider>
     </Subscribe>
   </TradesStyle>
 )
 
-export const NoTrades = Template.bind({})
-NoTrades.args = {}
+const Template: ComponentStory<typeof TradesGridWrapper> = (args) => (
+  <TradesGridWrapper {...args}></TradesGridWrapper>
+)
 
-// Clark is working on resolving this
-export const WithTrades = Template.bind({})
-WithTrades.args = {}
+export const WithCreditTrades = Template.bind({})
+WithCreditTrades.args = {
+  colDef: creditColDef,
+  fields: creditColFields,
+  trades$: of(mockCreditTrades),
+}
+
+export const WithFxTrades = Template.bind({})
+WithFxTrades.args = {
+  colDef: fxColDef,
+  fields: fxColFields,
+  trades$: of(mockTrades),
+}
+
+export const NoCreditTrades = Template.bind({})
+NoCreditTrades.args = {
+  colDef: creditColDef,
+  fields: creditColFields,
+  trades$: of([]),
+}
+
+export const NoFxTrades = Template.bind({})
+NoFxTrades.args = {
+  colDef: fxColDef,
+  fields: fxColFields,
+  trades$: of([]),
+}

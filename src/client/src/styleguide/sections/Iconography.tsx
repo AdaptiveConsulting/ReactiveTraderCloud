@@ -85,16 +85,16 @@ export const FontFamilies = () => (
 
         <H5>Undock</H5>
         <div>
-          <UndockIcon width={24} height={24} />
+          <UndockIcon />
         </div>
         <ActiveIconInverse>
-          <UndockIcon width={24} height={24} />
+          <UndockIcon />
         </ActiveIconInverse>
         <ActiveIconInverse>
-          <UndockIcon width={24} height={24} />
+          <UndockIcon />
         </ActiveIconInverse>
         <DisabledIcon>
-          <UndockIcon width={24} height={24} />
+          <UndockIcon />
         </DisabledIcon>
 
         <H5>Chart</H5>
