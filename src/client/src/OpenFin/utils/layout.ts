@@ -1,3 +1,5 @@
+import queryString from "query-string"
+import { useLocation } from "react-router-dom"
 import { mainOpenFinWindowName } from "./window"
 
 export const isLayoutLocked = async (): Promise<boolean> => {
@@ -39,69 +41,97 @@ export const toggleLayoutLock = async () => {
   }
 }
 
-const OPENFIN_SNAPSHOT_CURRENT = "OPENFIN_SNAPSHOT_CURRENT"
-const OPENFIN_SNAPSHOT_NAMES = "OPENFIN_SNAPSHOT_NAMES"
-const OPENFIN_SNAPSHOTS = "OPENFIN_SNAPSHOTS"
-const OPENFIN_SNAPSHOT_DEFAULT_NAME = "RTC - Default"
+const openFinSnapshotCurrentKey = (app: AppName) =>
+  `OPENFIN_SNAPSHOT_CURRENT_${app}`
+const openFinSnapshotNamesKey = (app: AppName) =>
+  `OPENFIN_SNAPSHOT_NAMES_${app}`
+const openFinSnapshotsKey = (app: AppName) => `OPENFIN_SNAPSHOTS_${app}`
+const openFinSnapshotDefaultNameKey = (app: AppName) => `RTC - Default - ${app}`
 
-export const resetCurrentSnapshotName = () => {
-  setCurrentSnapshotName(OPENFIN_SNAPSHOT_DEFAULT_NAME)
+export type AppName = "CREDIT" | "FX"
+
+export const resetCurrentSnapshotName = (app: AppName) => {
+  setCurrentSnapshotName(app, openFinSnapshotDefaultNameKey(app))
 }
 
-export const getSnapshotNames = (): Array<string> => {
-  const snapshotNamesStr = window.localStorage.getItem(OPENFIN_SNAPSHOT_NAMES)
+export const getSnapshotNames = (app: AppName): Array<string> => {
+  const snapshotNamesStr = window.localStorage.getItem(
+    openFinSnapshotNamesKey(app),
+  )
   if (snapshotNamesStr) {
     return JSON.parse(snapshotNamesStr)
   }
   return []
 }
 
-export const getSnapshots = (): Record<string, OpenFin.Snapshot> => {
-  const snapshotsStr = window.localStorage.getItem(OPENFIN_SNAPSHOTS)
+export const getSnapshots = (
+  app: AppName,
+): Record<string, OpenFin.Snapshot> => {
+  const snapshotsStr = window.localStorage.getItem(openFinSnapshotsKey(app))
   if (snapshotsStr) {
     return JSON.parse(snapshotsStr)
   }
   return {}
 }
 
-const setCurrentSnapshotName = (snapshotName: string) => {
-  window.localStorage.setItem(OPENFIN_SNAPSHOT_CURRENT, snapshotName)
+const setCurrentSnapshotName = (app: AppName, snapshotName: string) => {
+  window.localStorage.setItem(openFinSnapshotCurrentKey(app), snapshotName)
 }
-const setSnapshotNames = (snapshotNames: string[]) => {
+const setSnapshotNames = (app: AppName, snapshotNames: string[]) => {
   window.localStorage.setItem(
-    OPENFIN_SNAPSHOT_NAMES,
+    openFinSnapshotNamesKey(app),
     JSON.stringify(snapshotNames),
   )
 }
-const setSnapshots = (snapshots: Record<string, OpenFin.Snapshot>) => {
-  window.localStorage.setItem(OPENFIN_SNAPSHOTS, JSON.stringify(snapshots))
+const setSnapshots = (
+  app: AppName,
+  snapshots: Record<string, OpenFin.Snapshot>,
+) => {
+  window.localStorage.setItem(
+    openFinSnapshotsKey(app),
+    JSON.stringify(snapshots),
+  )
 }
 
-export const applySnapshotFromStorage = async (snapshotName: string) => {
+export const applySnapshotFromStorage = async (
+  app: AppName,
+  snapshotName: string,
+) => {
   const platform = await fin.Platform.getCurrent()
-  const snapshotNames = getSnapshotNames()
-  const snapshots = getSnapshots()
+  const snapshotNames = getSnapshotNames(app)
+  const snapshots = getSnapshots(app)
 
   if (snapshotNames.includes(snapshotName)) {
-    setCurrentSnapshotName(snapshotName)
+    setCurrentSnapshotName(app, snapshotName)
     await platform.applySnapshot(snapshots[snapshotName])
     return true
   }
   return false
 }
 
-export const saveSnapshotToStorage = async (newSnapshotName: string) => {
+export const saveSnapshotToStorage = async (
+  app: AppName,
+  newSnapshotName: string,
+) => {
   const platform = await fin.Platform.getCurrent()
   const snapshot = await platform.getSnapshot()
 
-  const snapshotNames = getSnapshotNames()
+  const snapshotNames = getSnapshotNames(app)
 
   if (!snapshotNames.includes(newSnapshotName)) {
-    const snapshots = getSnapshots()
+    const snapshots = getSnapshots(app)
     snapshots[newSnapshotName] = snapshot
 
-    setCurrentSnapshotName(newSnapshotName)
-    setSnapshotNames([...snapshotNames, newSnapshotName])
-    setSnapshots(snapshots)
+    setCurrentSnapshotName(app, newSnapshotName)
+    setSnapshotNames(app, [...snapshotNames, newSnapshotName])
+    setSnapshots(app, snapshots)
   }
+}
+
+export function useAppNameForSnapshots() {
+  const { app } = queryString.parse(useLocation().search)
+  if (!app || (app !== "FX" && app !== "CREDIT")) {
+    throw new TypeError("expected app name in query string to be FX or CREDIT")
+  }
+  return app as AppName
 }
