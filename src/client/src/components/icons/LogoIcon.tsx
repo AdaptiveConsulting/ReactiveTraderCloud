@@ -4,7 +4,7 @@ interface Props {
   active?: boolean
 }
 
-const LogoIcon = ({ width, height, active }: Props) => (
+const LogoIcon = ({ width = 2, height = 2, active }: Props) => (
   <svg
     width={width * 16}
     height={height * 16}
