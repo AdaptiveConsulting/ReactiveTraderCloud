@@ -45,7 +45,7 @@ export async function openWindow(
     (!hasChildWindows && !hasCoordinates) || config.center === "screen"
 
   const platform = await fin.Platform.getCurrent()
-  const options = {
+  const options: OpenFin.PlatformWindowCreationOptions = {
     autoShow: true,
     contextMenu: true,
     defaultCentered: centered,
@@ -71,7 +71,6 @@ export async function openWindow(
       content: [
         {
           type: "stack",
-          title: displayName || windowName,
           content: [
             {
               type: "component",
