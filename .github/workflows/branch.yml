@@ -3,7 +3,7 @@ name: Branch build
 on:
   push:
     branches:
-      - '**'
+      - "**"
 
 defaults:
   run:
@@ -13,6 +13,7 @@ env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
+  BUCKET_LAUNCHER: reactive-trader-launcher-builds
 
 jobs:
   build:
@@ -88,6 +89,13 @@ jobs:
             -h "Cache-Control: no-cache" \
             rsync -d -r dist \
             gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.branch }}
+
+      - name: Deploy (Launcher)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_LAUNCHER/branch/${{ steps.vars.outputs.branch }}
 
       - name: Build (OpenFin - Workspace)
         env:
