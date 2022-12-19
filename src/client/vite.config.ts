@@ -180,6 +180,13 @@ const copyPlugin = (isDev: boolean, buildTarget: BuildTarget): Plugin[] => {
               dest: "config",
               transform,
             },
+            // for back compat to existing RT installations (that will expect an app.json)
+            {
+              src: "public-openfin/rt-fx.json",
+              dest: "config",
+              rename: "app.json",
+              transform,
+            },
             {
               src: "public-openfin/plugin/*",
               dest: "plugin",
