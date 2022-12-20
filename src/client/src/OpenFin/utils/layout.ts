@@ -1,7 +1,6 @@
 import queryString from "query-string"
 import { useLocation } from "react-router-dom"
-
-import { mainOpenFinWindowName } from "./window"
+import { RT_FX_MAIN_WINDOW_NAME } from "./window"
 
 export const isLayoutLocked = async (): Promise<boolean> => {
   const { settings } = await fin.Platform.Layout.getCurrentSync().getConfig()
@@ -11,7 +10,7 @@ export const isLayoutLocked = async (): Promise<boolean> => {
 
 export const toggleLayoutLock = async () => {
   const layout = fin.Platform.Layout.wrapSync({
-    name: mainOpenFinWindowName,
+    name: RT_FX_MAIN_WINDOW_NAME,
     uuid: fin.me.uuid,
   })
 

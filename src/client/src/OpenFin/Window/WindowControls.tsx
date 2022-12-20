@@ -5,7 +5,11 @@ import { PopInIcon } from "@/components/icons/PopInIcon"
 import { ExitIcon } from "../icons/ExitIcon"
 import { MaximizeIcon } from "../icons/MaximizeIcon"
 import { MinimizeIcon } from "../icons/MinimizeIcon"
-import { closeOtherWindows, inMainOpenFinWindow } from "../utils/window"
+import {
+  closeOtherWindows,
+  inMainReactiveTraderWindow,
+  isWindowPlatformPrimary,
+} from "../utils/window"
 import { Control, ControlsWrapper } from "./WindowHeader.styles"
 
 export interface Props {
@@ -18,7 +22,7 @@ export interface Props {
 export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
   // Close other windows when page is refreshed to avoid recreating popups
   useEffect(() => {
-    const inMainWindow = inMainOpenFinWindow()
+    const inMainWindow = inMainReactiveTraderWindow()
 
     const cb = async () => {
       await closeOtherWindows()
@@ -36,7 +40,14 @@ export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
   }, [])
 
   async function wrappedClose() {
-    if (inMainOpenFinWindow()) {
+    if (inMainReactiveTraderWindow()) {
+      // ONLY if main win is primary win of platform, close all platform windows
+      if (isWindowPlatformPrimary()) {
+        console.warn(`AJG: close platform`)
+        fin.Platform.getCurrentSync().quit()
+        return
+      }
+      // otherwise close all windows related to the main RT (FX OR Credit)
       await closeOtherWindows()
     }
 

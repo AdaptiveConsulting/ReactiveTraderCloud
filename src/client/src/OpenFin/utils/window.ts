@@ -1,17 +1,32 @@
-import { Identity } from "openfin/_v2/identity"
-
 interface BasicWindow {
   name: string
   width: number
   height: number
 }
 
+/**
+ * In Reactive Launcher platform app, the _root platform window_ (OF Platform Provider) has identity
+ *  {uuid: 'reactive-launcher-<env e.g. local>', name: 'reactive-launcher-<env e.g. local>'}
+ * from launcher.json manifest
+ * For other windows under launcher, getParentWindow() will return this window,
+ *  and only this window will return true from .isMainWindow()
+ */
 export type Offset = [number, number]
-const openFinPopupPrefix = "user-generated-popup-"
-export const mainOpenFinWindowName = "Reactive-Trader-MAIN" // set in the JSON manifest
+export const RT_LAUNCHER_MAIN_WINDOW_NAME = "Reactive-Launcher" // set in the JSON manifest
+export const RT_FX_MAIN_WINDOW_NAME = "Reactive-Trader-FX" // set in the JSON manifest
+export const RT_CREDIT_MAIN_WINDOW_NAME = "Reactive-Trader-Credit" // set in the JSON manifest
+export const RT_PLATFORM_UUID_PREFIX = "reactive-trader-" // prefix for main uuid in the RT manifests
+
+function getWindowName() {
+  return fin.Window.getCurrentSync().identity.name // e.g. Reactive-Trader-FX or Reactive-Trader-Credit
+}
+
+function getPopupPrefix() {
+  return `${getWindowName()}-popup-`
+}
 
 function popupNameFor(name: string): string {
-  return `${openFinPopupPrefix}${name}`
+  return `${getPopupPrefix()}${name}`
 }
 
 /**
@@ -107,25 +122,38 @@ export async function createOpenFinPopup(
   }
 }
 
-function isInternalGeneratedWindow(windowIdentity: Identity): boolean {
-  // the "internal-generated-window" string is set by OpenFin
+function isInternalGeneratedWindow(
+  windowIdentity: OpenFin.Identity,
+  windowContext: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+): boolean {
+  // the "internal-generated-window" string is set by OpenFin when using Platform layout popout button
   return Boolean(
     windowIdentity.name &&
-      windowIdentity.name.startsWith("internal-generated-window"),
+      windowIdentity.name.startsWith("internal-generated-window") &&
+      windowContext &&
+      windowContext.owningWindowName === getWindowName(),
   )
 }
 
-function isUserGeneratedPopup(windowIdentity: Identity): boolean {
+function isUserGeneratedPopup(windowIdentity: OpenFin.Identity): boolean {
   return Boolean(
-    windowIdentity.name && windowIdentity.name.startsWith(openFinPopupPrefix),
+    windowIdentity.name && windowIdentity.name.startsWith(getPopupPrefix()),
   )
 }
 
-export function inMainOpenFinWindow() {
-  const currentWindowName = fin.Window.getCurrentSync().identity.name
+export function inMainReactiveTraderWindow() {
+  const currentWindowName = getWindowName()
 
-  // set in the JSON manifest
-  return currentWindowName === mainOpenFinWindowName
+  return (
+    currentWindowName === RT_FX_MAIN_WINDOW_NAME ||
+    currentWindowName === RT_CREDIT_MAIN_WINDOW_NAME
+  )
+}
+
+export function isWindowPlatformPrimary() {
+  const currentWindowId = fin.Window.getCurrentSync().identity.uuid
+
+  return currentWindowId.startsWith(RT_PLATFORM_UUID_PREFIX)
 }
 
 /**
@@ -148,10 +176,16 @@ export async function closeOtherWindows() {
 
   for (let i = 0; i < childWindows.length; i++) {
     const winIdentity = childWindows[i].identity
+    const customWindowContext =
+      await fin.Platform.getCurrentSync().getWindowContext(winIdentity)
     if (
-      isInternalGeneratedWindow(winIdentity) ||
+      isInternalGeneratedWindow(winIdentity, customWindowContext) ||
       isUserGeneratedPopup(winIdentity)
     ) {
+      console.warn(
+        `AJG: definitely close: ${winIdentity.uuid}, ${winIdentity.name}`,
+      )
+
       const wrapped = fin.Window.wrapSync({
         uuid: winIdentity.uuid,
         name: winIdentity.name,

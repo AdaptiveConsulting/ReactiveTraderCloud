@@ -1,4 +1,3 @@
-import { Application } from "openfin-adapter"
 import { useState } from "react"
 
 import { appConfigs, ApplicationConfig } from "./applicationConfigurations"
@@ -26,7 +25,7 @@ export const LauncherApps = () => {
       const opened = await open(app)
       if (!opened) return
 
-      const currentApp = opened as Application
+      const currentApp = opened as OpenFin.Application
       currentApp.addListener("closed", () => {
         removeFromOpenedList(app.name)
       })

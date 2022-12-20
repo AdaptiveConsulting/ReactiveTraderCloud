@@ -1,19 +1,24 @@
 {
   "platform": {
-    "uuid": "reactive-trader-<ENV_NAME>",
-    "name": "Reactive Trader®<ENV_SUFFIX>",
-    "applicationIcon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
+    "uuid": "reactive-trader-fx-<ENV_NAME>",
+    "name": "Reactive Trader® FX<ENV_SUFFIX>",
+    "icon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
     "url": "<BASE_URL>",
-    "fdc3Api": true,
+    "autoShow": false,
     "defaultWindowOptions": {
       "contextMenu": true,
+      "fdc3InteropApi": "1.2",
       "frame": false,
-      "applicationIcon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
+      "icon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
       "url": "<BASE_URL>/openfin-sub-window-frame"
+    },
+    "defaultViewOptions": {
+      "contextMenu": true,
+      "fdc3InteropApi": "1.2"
     }
   },
   "runtime": {
-    "version": "17.85.53.10",
+    "version": "28.106.72.17",
     "arguments": "--remote-debugging-port=9091"
   },
   "services": [
@@ -40,7 +45,7 @@
   "snapshot": {
     "windows": [
       {
-        "applicationIcon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
+        "icon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
         "autoShow": true,
         "defaultWidth": 1280,
         "defaultHeight": 900,
@@ -68,8 +73,11 @@
           "reloadIgnoringCache": true,
           "zoom": true
         },
+        "customContext": {
+          "owningWindowName": "Reactive-Trader-FX"
+        },
         "url": "<BASE_URL>/openfin-window-frame?app=FX",
-        "name": "Reactive-Trader-MAIN",
+        "name": "Reactive-Trader-FX",
         "layout": {
           "settings": {
             "blockedPopoutsThrowError": false,

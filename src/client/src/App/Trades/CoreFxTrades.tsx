@@ -1,6 +1,6 @@
-import { broadcast } from "@finos/fdc3"
+import { broadcast, joinChannel } from "@finos/fdc3"
 import { Subscribe } from "@react-rxjs/core"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
 import styled from "styled-components"
 
 import { Loader } from "@/components/Loader"
@@ -25,16 +25,20 @@ const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
 
 const TradesGrid = (props: TradesGridInnerProps<FxTrade>) => {
   const highlightedRow = useFxTradeRowHighlight()
+
+  useEffect(() => {
+    if (window.fdc3) {
+      // https://developer.openfin.co/docs/javascript/stable/tutorial-fdc3.joinChannel.html
+      joinChannel("green") //async
+    }
+  }, [])
   const tryBroadcastContext = useCallback((trade: FxTrade) => {
     const context = {
       type: "fdc3.instrument",
       id: { ticker: trade.symbol },
     }
-
     if (window.fdc3) {
       broadcast(context)
-    } else if (fin) {
-      fin.me.interop.setContext(context)
     }
   }, [])
 

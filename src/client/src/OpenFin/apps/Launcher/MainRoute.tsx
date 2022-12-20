@@ -40,6 +40,10 @@ import {
 
 const expandedLauncherWidth = 600
 
+const closePlatform = () => {
+  fin.Platform.getCurrentSync().quit()
+}
+
 const Logo = ({ active }: { active: boolean }) => (
   <LogoLauncherContainer>
     {useIsNlpIntentLoading() ? (
@@ -71,7 +75,7 @@ const SearchButton = ({
 
 const LauncherMinimiseAndExit = () => (
   <MinExitContainer>
-    <ExitButton onClick={closeWindow}>
+    <ExitButton onClick={closePlatform}>
       <ExitIcon />
     </ExitButton>
     <MinimiseButton onClick={minimiseCurrentWindow}>
@@ -82,7 +86,7 @@ const LauncherMinimiseAndExit = () => (
 
 function Launcher() {
   const [isSearchVisible, setIsSearchVisible] = useState(false)
-  const [initialBounds, setInitialBounds] = useState<Bounds>()
+  const [initialBounds, setInitialBounds] = useState<OpenFin.Bounds>()
   const [responseHeight, setResponseHeight] = useState<number>()
   const overlayRef = useRef<HTMLDivElement>(null)
   const [overlay, setOverlay] = useState<HTMLDivElement | null>(null)
