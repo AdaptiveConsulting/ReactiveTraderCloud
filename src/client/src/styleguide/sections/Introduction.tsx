@@ -5,6 +5,7 @@ import Logo from "@/components/Logo"
 import designTownPNGURL from "../assets/design-town.png"
 import { H1, H3 } from "../elements"
 import { Paragraph, SectionBlock } from "../styled"
+import { SectionProps } from "../styled/SectionBlock"
 
 const Flex = styled.div`
   display: flex;
@@ -33,7 +34,7 @@ const H3Intro = styled(H3)`
   margin: 0.5rem 0 1rem 0;
 `
 
-const Introduction = (props: typeof SectionBlock) => (
+const Introduction = (props: SectionProps) => (
   <>
     <SectionBlock {...props}>
       <Flex>

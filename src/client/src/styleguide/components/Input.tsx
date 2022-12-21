@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { HTMLAttributes, useRef } from "react"
 import styled from "styled-components"
 
-const inputColors = {
-  error: "error",
+import { AccentName } from "@/theme/colors"
+
+const inputColors: Record<"error" | "info", AccentName> = {
+  error: "negative",
   info: "primary",
 }
 
@@ -36,8 +37,7 @@ const StyledInput = styled.input<InputStyleProps>`
   border-bottom: ${({ status, theme }) =>
     `1px solid ${
       status
-        ? // @ts-ignore
-          theme.accents[inputColors[status]].darker
+        ? theme.accents[inputColors[status]].darker
         : theme.name === "light"
         ? theme.primary[1]
         : theme.primary[2]
@@ -56,8 +56,7 @@ const StyledInput = styled.input<InputStyleProps>`
     border-bottom: ${({ status, theme }) =>
       `1px solid ${
         status
-          ? // @ts-ignore
-            theme.accents[inputColors[status]].base
+          ? theme.accents[inputColors[status]].base
           : theme.name === "light"
           ? "#beccdc"
           : theme.colors.light.secondary[1]
@@ -67,23 +66,20 @@ const StyledInput = styled.input<InputStyleProps>`
     caret-color: ${({ status, theme }) =>
       `${
         status
-          ? // @ts-ignore
-            theme.accents[inputColors[status]].darker
+          ? theme.accents[inputColors[status]].darker
           : theme.accents.primary.darker
       }`};
     outline: none;
     border-bottom: ${({ status, theme }) =>
       `1px solid ${
         status
-          ? // @ts-ignore
-            theme.accents[inputColors[status]].darker
+          ? theme.accents[inputColors[status]].darker
           : theme.accents.primary.darker
       }`};
   }
   &:disabled {
     border-bottom: ${({ status, theme }) =>
       `1px solid ${
-        // @ts-ignore
         status ? theme.accents[inputColors[status]].darker : theme.primary[2]
       }`};
     color: ${({ theme, disabled }) =>

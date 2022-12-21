@@ -28,9 +28,7 @@ const getEmptyContent = (key: LayoutKey, useIcon = true) => {
 export const WindowViewport = ({ children }: WithChildren) => {
   //TODO: Remove this HACK once OpenFin exposes content of "empty" layout containers...
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    if (!window.fin.me.isView) {
+    if (!fin.me.isView) {
       const listenerViewAttached = (e: any) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "attach", label })
