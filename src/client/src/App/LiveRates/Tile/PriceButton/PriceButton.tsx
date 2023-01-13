@@ -112,6 +112,7 @@ export const PriceButtonInner = ({
       priceAnnounced={priceAnnounced}
       disabled={disabled}
       isStatic={isStatic}
+      data-testid={`${direction}-${currencyPair.symbol}`}
     >
       <Price disabled={disabled}>
         <CenteringContainer>
