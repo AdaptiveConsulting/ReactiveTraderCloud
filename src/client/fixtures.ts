@@ -3,7 +3,6 @@ import { Page, chromium } from "playwright"
 // ensures all window objects we interact with in our spec have fin tyepdefs
 export * from "./openfinGlobal"
 
-// DEV TOOL attribute from openfin
 const RUNTIME_ADDRESS = "http://localhost:9091"
 
 // Define custom fixture interface
