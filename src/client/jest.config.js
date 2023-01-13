@@ -4,6 +4,7 @@ module.exports = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
+  testPathIgnorePatterns: ["<rootDir>/tests/"],
   setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
   globals: {
     "ts-jest": {
