@@ -21,8 +21,8 @@ export const test = base.extend<IPlaywrightFixtures>({
       const runtimeConnection = await chromium.connectOverCDP(RUNTIME_ADDRESS)
       await use(runtimeConnection)
     } catch (e) {
-      const foo = await chromium.launch()
-      await use(foo)
+      const browser = await chromium.launch()
+      await use(browser)
     }
   },
   context: async ({ browser }, use) => {
@@ -69,7 +69,7 @@ export const test = base.extend<IPlaywrightFixtures>({
         (page) => page.url() === "http://localhost:1917/fx-tiles", // url matches that of fx tiles defined in rt-fx.json
       )
 
-      if (!tilePage) throw Error("Tiles not found at url!")
+      if (!tilePage) throw Error("Tiles not found!")
       await use(tilePage)
     } catch (e) {
       if (pages.length > 0) {
@@ -87,7 +87,7 @@ export const test = base.extend<IPlaywrightFixtures>({
         (page) => page.url() === "http://localhost:1917/fx-blotter",
       )
 
-      if (!blotterPage) throw Error("Blotter not found at url!")
+      if (!blotterPage) throw Error("Blotter not found!")
       await use(blotterPage)
     } catch (e) {
       if (pages.length > 0) {
@@ -105,8 +105,7 @@ export const test = base.extend<IPlaywrightFixtures>({
         (page) => page.url() === "http://localhost:1917/fx-analytics",
       )
 
-      if (!analyticsPage)
-        throw Error("Analytics not found at url http://localhost:1917!")
+      if (!analyticsPage) throw Error("Analytics not found")
       await use(analyticsPage)
     } catch (e) {
       if (pages.length > 0) {
@@ -137,7 +136,7 @@ export const test = base.extend<IPlaywrightFixtures>({
         "https://cdn.openfin.co/services/openfin/notifications/0.12.10/provider.html",
     )
 
-    if (!notificationPage) throw Error("Notification not found at url!")
+    if (!notificationPage) throw Error("Notification not found!")
     await use(notificationPage)
   },
 })
