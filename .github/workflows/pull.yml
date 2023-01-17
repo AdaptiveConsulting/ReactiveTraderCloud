@@ -21,7 +21,7 @@ jobs:
 
     runs-on: ubuntu-20.04
 
-    if: '!github.event.pull_request.header.repo.fork'
+    if: "!github.event.pull_request.header.repo.fork"
 
     steps:
       - name: Checkout code
@@ -120,8 +120,8 @@ jobs:
         id: comment
         with:
           issue-number: ${{ github.event.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: '(auto-deploy)'
+          comment-author: "github-actions[bot]"
+          body-includes: "(auto-deploy)"
 
       - name: Create comment (if not exists)
         if: ${{ steps.comment.outputs.comment-id == 0 }}
@@ -147,3 +147,19 @@ jobs:
             Please ensure that this PR does not degrade the performance of the UI. We should maintain a performance score of 95+.
 
             https://developers.google.com/speed/pagespeed/insights/?url=https://web.env.reactivetrader.com/pull/${{ github.event.number }}
+
+  end-to-end-test:
+    name: End-to-end test
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Test
+        env:
+          URL_PATH: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
+          ENVIRONMENT: env
+        run: |
+          npm run test:run:playwright
