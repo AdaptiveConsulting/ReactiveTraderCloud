@@ -3,15 +3,31 @@ import { Page, chromium } from "playwright"
 // ensures all window objects we interact with in our spec have fin tyepdefs
 export * from "./openfinGlobal"
 
-const RUNTIME_ADDRESS = "http://localhost:9091"
+//
+type FXPage = "mainWindow" | "fx-tiles" | "fx-blotter" | "fx-analytics"
+
+const RUNTIME_ADDRESS = "http://localhost:9090"
 
 // Define custom fixture interface
 interface IPlaywrightFixtures {
   mainWindow: Page
-  openfinTile: Page
-  openfinBlotter: Page
   openfinNotification: Page
-  openfinAnalytics: Page
+  fxOpenfinPagesRec: Record<FXPage, Page>
+}
+const fxOpenfinUrlpath: string[] = [
+  "openfin-window-frame?app=FX",
+  "fx-tiles",
+  "fx-blotter",
+  "fx-analytics",
+]
+
+const urlPathToFxPage = (path: string): FXPage => {
+  switch (path) {
+    case "openfin-window-frame?app=FX":
+      return "mainWindow"
+    default:
+      return path as FXPage
+  }
 }
 
 export const test = base.extend<IPlaywrightFixtures>({
@@ -38,81 +54,26 @@ export const test = base.extend<IPlaywrightFixtures>({
       use(context)
     }
   },
-  mainWindow: async ({ context }, use) => {
-    const pages = await context.pages()
+  fxOpenfinPagesRec: async ({ context }, use) => {
+    const contextPages = await context.pages()
     try {
-      const openfinFramePage = pages.find(
-        (page) =>
-          page.url() === "http://localhost:1917/openfin-window-frame?app=FX",
-      )
-
-      if (!openfinFramePage)
-        throw Error(
-          "Main Openfin Window not found! Make sure to launch RT openfin application first",
+      const pages = fxOpenfinUrlpath.reduce((rec, urlPath) => {
+        const page = contextPages.find(
+          (p) => p.url() === `http://localhost:1917/${urlPath}`,
         )
-      await use(openfinFramePage)
+        if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
+        return { ...rec, [urlPathToFxPage(urlPath)]: page }
+      }, {} as Record<FXPage, Page>)
+      use(pages)
     } catch (e) {
-      if (pages.length > 0) {
-        await use(pages[0])
-      } else {
-        const page = await context.newPage()
-        await use(page)
-      }
-    }
-  },
-  openfinTile: async ({ context }, use) => {
-    const pages = await context.pages()
-
-    try {
-      const tilePage = pages.find(
-        (page) => page.url() === "http://localhost:1917/fx-tiles", // url matches that of fx tiles defined in rt-fx.json
-      )
-
-      if (!tilePage) throw Error("Tiles not found!")
-      await use(tilePage)
-    } catch (e) {
-      if (pages.length > 0) {
-        await use(pages[0])
-      } else {
-        const page = await context.newPage()
-        await use(page)
-      }
-    }
-  },
-  openfinBlotter: async ({ context }, use) => {
-    const pages = await context.pages()
-    try {
-      const blotterPage = pages.find(
-        (page) => page.url() === "http://localhost:1917/fx-blotter",
-      )
-
-      if (!blotterPage) throw Error("Blotter not found!")
-      await use(blotterPage)
-    } catch (e) {
-      if (pages.length > 0) {
-        await use(pages[0])
-      } else {
-        const page = await context.newPage()
-        await use(page)
-      }
-    }
-  },
-  openfinAnalytics: async ({ context }, use) => {
-    const pages = await context.pages()
-    try {
-      const analyticsPage = pages.find(
-        (page) => page.url() === "http://localhost:1917/fx-analytics",
-      )
-
-      if (!analyticsPage) throw Error("Analytics not found")
-      await use(analyticsPage)
-    } catch (e) {
-      if (pages.length > 0) {
-        await use(pages[0])
-      } else {
-        const page = await context.newPage()
-        await use(page)
-      }
+      const mainWindow =
+        contextPages.length > 0 ? contextPages[0] : await context.newPage()
+      use({
+        mainWindow,
+        "fx-analytics": mainWindow,
+        "fx-blotter": mainWindow,
+        "fx-tiles": mainWindow,
+      })
     }
   },
   openfinNotification: async ({}, use) => {
