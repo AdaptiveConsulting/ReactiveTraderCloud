@@ -130,8 +130,8 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
       {},
     ],
   ),
-  filter((acc) => acc[0].type === END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE),
-  map((x) => x[2]),
+  filter(([update, ,]) => update.type === END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE),
+  map(([, , rfqDetailsRec]) => rfqDetailsRec),
   shareLatest(),
 )
 
