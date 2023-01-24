@@ -31,17 +31,16 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
   withLatestFrom(creditInstruments$, creditDealers$),
   scan<
     [RfqUpdate, InstrumentBody[], DealerBody[]],
-    [RfqUpdate, RfqUpdate, Record<number, RfqDetails>]
+    [boolean, Record<number, RfqDetails>]
   >(
     (acc, [update, instruments, dealers]) => {
-      const rec = acc[2]
+      const rec = acc[1]
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE:
-          return [update, update, {}]
+          return [false, {}]
         case RFQ_CREATED_RFQ_UPDATE:
           return [
             acc[0],
-            update,
             {
               ...rec,
               [update.payload.id]: {
@@ -66,7 +65,6 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
         case RFQ_CLOSED_RFQ_UPDATE:
           return [
             acc[0],
-            update,
             {
               ...rec,
               [update.payload.id]: {
@@ -79,7 +77,6 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
           const previousRfq = rec[update.payload.rfqId]
           return [
             acc[0],
-            update,
             {
               ...rec,
               [update.payload.rfqId]: {
@@ -100,7 +97,6 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
           if (previousRfq) {
             return [
               acc[0],
-              update,
               {
                 ...rec,
                 [previousRfq.id]: {
@@ -116,22 +112,18 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
               },
             ]
           }
-          return [acc[0], update, rec]
+          return [acc[0], rec]
         }
         case END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE:
-          return [update, update, rec]
+          return [true, rec]
         default:
-          return [acc[0], update, rec]
+          return [acc[0], rec]
       }
     },
-    [
-      { type: "startOfStateOfTheWorld" },
-      { type: "startOfStateOfTheWorld" },
-      {},
-    ],
+    [false, {}],
   ),
-  filter(([update, ,]) => update.type === END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE),
-  map(([, , rfqDetailsRec]) => rfqDetailsRec),
+  filter(([isEndStateOftheWorld]) => isEndStateOftheWorld),
+  map(([, rfqDetailsRec]) => rfqDetailsRec),
   shareLatest(),
 )
 
