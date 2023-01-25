@@ -36,8 +36,10 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
     (acc, [update, instruments, dealers]) => {
       const rec = acc[1]
       switch (update.type) {
-        case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE:
+        case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
+          console.debug(START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE)
           return [false, {}]
+        }
         case RFQ_CREATED_RFQ_UPDATE:
           return [
             acc[0],
@@ -114,10 +116,12 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
           }
           return [acc[0], rec]
         }
-        case END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE:
+        case END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
+          console.debug(END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE)
           return [true, rec]
+        }
         default:
-          return [acc[0], rec]
+          return acc
       }
     },
     [false, {}],
