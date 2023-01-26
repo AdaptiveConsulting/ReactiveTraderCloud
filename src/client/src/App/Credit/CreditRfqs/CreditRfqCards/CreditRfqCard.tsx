@@ -24,15 +24,18 @@ const Details = ({ quantity }: { quantity: number }) => {
 }
 
 const sortByPriceFunc =
-  (quotes: QuoteBody[]) => (d1: DealerBody, d2: DealerBody) => {
+  (quotes: QuoteBody[], direction) => (d1: DealerBody, d2: DealerBody) => {
     const d1Quote = quotes.find((quote) => quote.dealerId === d1.id)
     const d2Quote = quotes.find((quote) => quote.dealerId === d2.id)
+    console.log("direction: ", direction)
     if (!d2Quote) {
       return -1
     } else if (!d1Quote) {
       return 1
     } else {
-      return d2Quote.price - d1Quote.price
+      return direction == "Buy"
+        ? d1Quote.price - d2Quote.price
+        : d2Quote.price - d1Quote.price
     }
   }
 
@@ -56,7 +59,7 @@ export const Card = ({ id }: { id: number }) => {
       <Details quantity={rfqDetails.quantity} />
       <QuotesContainer>
         {rfqDetails.dealers
-          .sort(sortByPriceFunc(rfqDetails.quotes))
+          .sort(sortByPriceFunc(rfqDetails.quotes, rfqDetails.direction))
           .map((dealer, index) => {
             const quote = rfqDetails.quotes.find(
               (quote) => quote.dealerId === dealer.id,
