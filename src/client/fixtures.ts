@@ -3,8 +3,13 @@ import { Page, chromium } from "playwright"
 // ensures all window objects we interact with in our spec have fin tyepdefs
 export * from "./openfinGlobal"
 
-//
+// Pages types
 type FXPage = "mainWindow" | "fx-tiles" | "fx-blotter" | "fx-analytics"
+type CreditPage =
+  | "credit-new-rfq"
+  | "credit-blotter"
+  | "credit-rfqs"
+  | "mainWindow"
 
 const RUNTIME_ADDRESS = "http://localhost:9090"
 
@@ -13,12 +18,21 @@ interface IPlaywrightFixtures {
   mainWindow: Page
   openfinNotification: Page
   fxOpenfinPagesRec: Record<FXPage, Page>
+  creditOpenfinPagesRec: Record<CreditPage, Page>
 }
-const fxOpenfinUrlpath: string[] = [
+
+const fxOpenfinUrlPaths: string[] = [
   "openfin-window-frame?app=FX",
   "fx-tiles",
   "fx-blotter",
   "fx-analytics",
+]
+
+const creditOpenfinUrlPaths: string[] = [
+  "openfin-window-frame?app=CREDIT",
+  "credit-new-rfq",
+  "credit-blotter",
+  "credit-rfqs",
 ]
 
 const urlPathToFxPage = (path: string): FXPage => {
@@ -27,6 +41,15 @@ const urlPathToFxPage = (path: string): FXPage => {
       return "mainWindow"
     default:
       return path as FXPage
+  }
+}
+
+const urlPathToCreditPage = (path: string): CreditPage => {
+  switch (path) {
+    case "openfin-window-frame?app=CREDIT":
+      return "mainWindow"
+    default:
+      return path as CreditPage
   }
 }
 
@@ -57,7 +80,7 @@ export const test = base.extend<IPlaywrightFixtures>({
   fxOpenfinPagesRec: async ({ context }, use) => {
     const contextPages = await context.pages()
     try {
-      const pages = fxOpenfinUrlpath.reduce((rec, urlPath) => {
+      const pages = fxOpenfinUrlPaths.reduce((rec, urlPath) => {
         const page = contextPages.find(
           (p) => p.url() === `http://localhost:1917/${urlPath}`,
         )
@@ -73,6 +96,28 @@ export const test = base.extend<IPlaywrightFixtures>({
         "fx-analytics": mainWindow,
         "fx-blotter": mainWindow,
         "fx-tiles": mainWindow,
+      })
+    }
+  },
+  creditOpenfinPagesRec: async ({ context }, use) => {
+    const contextPages = await context.pages()
+    try {
+      const pages = creditOpenfinUrlPaths.reduce((rec, urlPath) => {
+        const page = contextPages.find(
+          (p) => p.url() === `http://localhost:1917/${urlPath}`,
+        )
+        if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
+        return { ...rec, [urlPathToCreditPage(urlPath)]: page }
+      }, {} as Record<CreditPage, Page>)
+      use(pages)
+    } catch (e) {
+      const mainWindow =
+        contextPages.length > 0 ? contextPages[0] : await context.newPage()
+      use({
+        mainWindow,
+        "credit-blotter": mainWindow,
+        "credit-new-rfq": mainWindow,
+        "credit-rfqs": mainWindow,
       })
     }
   },
