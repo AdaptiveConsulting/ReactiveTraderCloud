@@ -48,8 +48,6 @@ const AlignedTriangle = styled(FaExclamationTriangle)`
   font-size: 1.5em;
 `
 
-const TradeIDValue = styled.span``
-
 const pastTenseDirection: Record<Direction, string> = {
   [Direction.Buy]: "bought",
   [Direction.Sell]: "sold",
@@ -126,8 +124,7 @@ const ExecutionMessage = ({
       <TradeIdDiv>
         {tradeId && (
           <>
-            Trade ID:{" "}
-            <TradeIDValue data-testid="trade-id">{tradeId}</TradeIDValue>
+            Trade ID: <span data-testid="trade-id">{tradeId}</span>
           </>
         )}
       </TradeIdDiv>

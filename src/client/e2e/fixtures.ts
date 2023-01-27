@@ -1,12 +1,11 @@
 import { test as base } from "@playwright/test"
 import { Page, chromium } from "playwright"
 // ensures all window objects we interact with in our spec have fin tyepdefs
-export * from "./openfinGlobal"
+export * from "../openfinGlobal"
 
-//
 type FXPage = "mainWindow" | "fx-tiles" | "fx-blotter" | "fx-analytics"
 
-const RUNTIME_ADDRESS = "http://localhost:9090"
+const RUNTIME_ADDRESS = "http://localhost:9091"
 
 // Define custom fixture interface
 interface IPlaywrightFixtures {
