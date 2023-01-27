@@ -1,5 +1,10 @@
 import { Loader } from "@/components/Loader"
-import { DealerBody, QuoteBody, RfqState } from "@/generated/TradingGateway"
+import {
+  DealerBody,
+  QuoteBody,
+  RfqState,
+  Direction,
+} from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
 import { customNumberFormatter } from "@/utils"
 import { CardFooter } from "./CardFooter"
@@ -24,7 +29,8 @@ const Details = ({ quantity }: { quantity: number }) => {
 }
 
 const sortByPriceFunc =
-  (quotes: QuoteBody[], direction) => (d1: DealerBody, d2: DealerBody) => {
+  (quotes: QuoteBody[], direction: Direction) =>
+  (d1: DealerBody, d2: DealerBody) => {
     const d1Quote = quotes.find((quote) => quote.dealerId === d1.id)
     const d2Quote = quotes.find((quote) => quote.dealerId === d2.id)
     if (!d2Quote) {
@@ -59,7 +65,7 @@ export const Card = ({ id }: { id: number }) => {
       <QuotesContainer>
         {rfqDetails.dealers
           .sort(sortByPriceFunc(rfqDetails.quotes, rfqDetails.direction))
-          .map((dealer, index) => {
+          .map((dealer) => {
             const quote = rfqDetails.quotes.find(
               (quote) => quote.dealerId === dealer.id,
             )
