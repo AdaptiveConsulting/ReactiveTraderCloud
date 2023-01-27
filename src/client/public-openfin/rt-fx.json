@@ -13,7 +13,7 @@
     }
   },
   "runtime": {
-    "arguments": "--remote-debugging-port=9090",
+    "arguments": "--remote-debugging-port=9091",
     "version": "17.85.53.10"
   },
   "services": [
@@ -22,7 +22,7 @@
       "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.12.10/app.json"
     }
   ],
-  "devtools_port": 9090,
+  "devtools_port": 9091,
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",
   "shortcut": {
     "company": "Adaptive Consulting",

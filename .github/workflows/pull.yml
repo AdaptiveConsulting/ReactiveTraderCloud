@@ -166,4 +166,4 @@ jobs:
           URL_PATH: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
           ENVIRONMENT: env
         run: |
-          npm run test:run:playwright
+          npm run e2e:web
