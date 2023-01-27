@@ -5,7 +5,7 @@ export * from "../openfinGlobal"
 
 type FXPage = "mainWindow" | "fx-tiles" | "fx-blotter" | "fx-analytics"
 
-const RUNTIME_ADDRESS = "http://localhost:9091"
+const RUNTIME_ADDRESS = "http://localhost:9090"
 
 // Define custom fixture interface
 interface IPlaywrightFixtures {
