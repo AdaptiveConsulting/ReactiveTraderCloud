@@ -1,9 +1,8 @@
 import { test as base } from "@playwright/test"
 import { Page, chromium } from "playwright"
 // ensures all window objects we interact with in our spec have fin tyepdefs
-export * from "./openfinGlobal"
+export * from "../openfinGlobal"
 
-// Pages types
 type FXPage = "mainWindow" | "fx-tiles" | "fx-blotter" | "fx-analytics"
 type CreditPage =
   | "credit-new-rfq"
