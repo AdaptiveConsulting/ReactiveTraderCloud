@@ -27,7 +27,6 @@ const sortByPriceFunc =
   (quotes: QuoteBody[], direction) => (d1: DealerBody, d2: DealerBody) => {
     const d1Quote = quotes.find((quote) => quote.dealerId === d1.id)
     const d2Quote = quotes.find((quote) => quote.dealerId === d2.id)
-    console.log("direction: ", direction)
     if (!d2Quote) {
       return -1
     } else if (!d1Quote) {
@@ -67,7 +66,9 @@ export const Card = ({ id }: { id: number }) => {
 
             // The highest price is the best quote since we do not have partial fills
             const highlight =
-              !!quote && rfqDetails.state === RfqState.Open && index === 0
+              !!quote &&
+              rfqDetails.state === RfqState.Open &&
+              dealer.name == "Adaptive Bank"
             return (
               <Quote
                 key={dealer.id}
