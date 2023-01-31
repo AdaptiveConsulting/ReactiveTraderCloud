@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from "@playwright/test"
+import { expect, Page } from "@playwright/test"
 import * as dotenv from "dotenv"
 import { test } from "./fixtures"
 
