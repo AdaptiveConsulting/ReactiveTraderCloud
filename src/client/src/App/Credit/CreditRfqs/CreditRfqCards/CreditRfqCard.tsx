@@ -54,7 +54,7 @@ export const Card = ({ id }: { id: number }) => {
         rfqState={rfqDetails.state}
       />
       <Details quantity={rfqDetails.quantity} />
-      <QuotesContainer>
+      <QuotesContainer data-testid="quotes">
         {rfqDetails.dealers
           .sort(sortByPriceFunc(rfqDetails.quotes))
           .map((dealer, index) => {
