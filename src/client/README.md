@@ -119,6 +119,31 @@ How to run local instance of RT storybook
 npm run storybook
 ```
 
+## End to End testing (web and openfin)
+
+How to run e2e tests against the web
+
+```sh
+npm start
+```
+
+```sh
+npm run e2e:web -- --headed --workers=1
+```
+
+arguments: --headed (launches a browser visible to the user) and --workers=2 (the tests run in parallel)
+
+How to run e2e tests against openfin
+
+```sh
+npm run openfin:start:fx
+npm run openfin:start:credit
+```
+
+```sh
+npm run e2e:openfin -- --workers=1
+```
+
 _Tech Note: this is running the standard react storybook local server (which is based on [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware)) with a configured public path of /storybook, for deployment purposes.
 This means that we need a customer middleware.js to redirect, therefore the landing page resolves to http://localhost:6006/storybook start url_
 
