@@ -73,16 +73,11 @@ test.describe("Credit", () => {
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
-        .locator("button")
-        .getByText(/View Trade/)
+        .locator("[data-testid='view-trade']")
         .first()
         .innerText()
 
-      await rfqsPage
-        .locator("button")
-        .getByText(/View Trade/)
-        .first()
-        .click()
+      await rfqsPage.locator("[data-testid='view-trade']").first().click()
 
       const tradeId = btnTxt.split(" ")[2]
       const blotterId = await rfqBlotterPage
