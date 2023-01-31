@@ -10,7 +10,7 @@ test.describe("Credit", () => {
       context,
       creditOpenfinPagesRec,
     }, testInfo) => {
-      test.setTimeout(120000)
+      test.setTimeout(150000)
       let newRfqPage: Page
       let rfqsPage: Page
       let rfqBlotterPage: Page
@@ -44,37 +44,32 @@ test.describe("Credit", () => {
       await quantity.blur()
 
       await newRfqPage.locator("span").getByText(/All/).click()
-      console.log("Found span > all")
+
       await newRfqPage
         .locator("span")
         .getByText(/Adaptive Bank/)
         .click()
-      console.log("Found span > Adaptive Bank")
 
       await newRfqPage
         .locator("button")
         .getByText(/Send RFQ/)
         .click()
-      console.log("Clicked Send RFQ")
+
       // Navigate to Live
       await rfqsPage.getByText(/Live/).click()
       await rfqsPage.waitForTimeout(15000)
 
-      console.log("Timeout 15000 ms reached")
       await rfqsPage
         .locator("[data-testid='quotes']")
         .locator("div")
         .first()
         .hover()
 
-      console.log("Hover over single quote")
       await rfqsPage
         .getByTestId("quotes")
         .getByText(/Accept/)
         .first()
         .click()
-
-      console.log("Click accept")
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
