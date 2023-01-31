@@ -1,5 +1,10 @@
 import { test as base } from "@playwright/test"
 import { Page, chromium } from "playwright"
+import * as dotenv from "dotenv"
+
+dotenv.config({ path: ".env.development" })
+dotenv.config()
+
 // ensures all window objects we interact with in our spec have fin tyepdefs
 export * from "../openfinGlobal"
 
@@ -10,7 +15,7 @@ type CreditPage =
   | "credit-rfqs"
   | "mainWindow"
 
-const RUNTIME_ADDRESS = "http://localhost:9091"
+const RUNTIME_ADDRESS = process.env.OPENFIN_RUNTIME_ADDRESS ?? ""
 
 // Define custom fixture interface
 interface IPlaywrightFixtures {
@@ -81,7 +86,7 @@ export const test = base.extend<IPlaywrightFixtures>({
     try {
       const pages = fxOpenfinUrlPaths.reduce((rec, urlPath) => {
         const page = contextPages.find(
-          (p) => p.url() === `http://localhost:1917/${urlPath}`,
+          (p) => p.url() === `${process.env.URL_PATH}/${urlPath}`,
         )
         if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
         return { ...rec, [urlPathToFxPage(urlPath)]: page }
@@ -103,7 +108,7 @@ export const test = base.extend<IPlaywrightFixtures>({
     try {
       const pages = creditOpenfinUrlPaths.reduce((rec, urlPath) => {
         const page = contextPages.find(
-          (p) => p.url() === `http://localhost:1917/${urlPath}`,
+          (p) => p.url() === `${process.env.URL_PATH}/${urlPath}`,
         )
         if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
         return { ...rec, [urlPathToCreditPage(urlPath)]: page }
@@ -122,7 +127,7 @@ export const test = base.extend<IPlaywrightFixtures>({
   },
   openfinNotification: async ({}, use) => {
     const runtimeConnection = await chromium.connectOverCDP(
-      "http://localhost:9090",
+      `${process.env.NOTIFICATION_RUNTIME_ADDRESS}`,
     )
 
     const contexts = runtimeConnection.contexts()
@@ -135,9 +140,7 @@ export const test = base.extend<IPlaywrightFixtures>({
     const pages = await contexts[0].pages()
 
     const notificationPage = pages.find(
-      (page) =>
-        page.url() ===
-        "https://cdn.openfin.co/services/openfin/notifications/0.12.10/provider.html",
+      (page) => page.url() === `${process.env.OPENFIN_NOTIFICATION_URL_PATH}`,
     )
 
     if (!notificationPage) throw Error("Notification not found!")

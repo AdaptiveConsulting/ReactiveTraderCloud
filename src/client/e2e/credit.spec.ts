@@ -1,8 +1,5 @@
 import { expect, Page } from "@playwright/test"
-import * as dotenv from "dotenv"
 import { test } from "./fixtures"
-
-dotenv.config()
 
 test.describe("Credit", () => {
   test.describe("New RFQ", () => {
@@ -27,9 +24,7 @@ test.describe("Credit", () => {
       } else {
         const pages = await context.pages()
         newRfqPage = pages.length > 0 ? pages[0] : await context.newPage()
-        await newRfqPage.goto(
-          `${process.env.URL_PATH ?? "http://localhost:1917"}/credit`,
-        )
+        await newRfqPage.goto(`${process.env.URL_PATH}/credit`)
         rfqsPage = newRfqPage
         rfqBlotterPage = newRfqPage
       }

@@ -1,8 +1,5 @@
 import { expect, Page } from "@playwright/test"
-import * as dotenv from "dotenv"
 import { test } from "./fixtures"
-
-dotenv.config()
 
 test.describe("Spot Tile", () => {
   test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter", async ({
@@ -25,9 +22,7 @@ test.describe("Spot Tile", () => {
     } else {
       const pages = await context.pages()
       const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
-      await mainWindow.goto(
-        `${process.env.URL_PATH ?? "http://localhost:1917/"}`,
-      )
+      await mainWindow.goto(`${process.env.URL_PATH}`)
       tilePage = mainWindow
       blotterPage = mainWindow
     }
