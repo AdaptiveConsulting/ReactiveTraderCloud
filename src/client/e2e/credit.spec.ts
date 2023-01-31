@@ -10,7 +10,7 @@ test.describe("Credit", () => {
       context,
       creditOpenfinPagesRec,
     }, testInfo) => {
-      test.setTimeout(150000)
+      test.setTimeout(120000)
       let newRfqPage: Page
       let rfqsPage: Page
       let rfqBlotterPage: Page
@@ -28,7 +28,7 @@ test.describe("Credit", () => {
         const pages = await context.pages()
         newRfqPage = pages.length > 0 ? pages[0] : await context.newPage()
         await newRfqPage.goto(
-          `${process.env.URL_PATH ?? "http://localhost:1917/credit"}`,
+          `${process.env.URL_PATH ?? "http://localhost:1917"}/credit`,
         )
         rfqsPage = newRfqPage
         rfqBlotterPage = newRfqPage
