@@ -103,7 +103,9 @@ export const CreditInstrumentSearch = () => {
       <InputWrapper>
         {selectedInstrument ? (
           <CreditInstrument>
-            <InstrumentName>{selectedInstrument.name}</InstrumentName>
+            <InstrumentName data-testid="instrument-name">
+              {selectedInstrument.name}
+            </InstrumentName>
             <CusipWithBenchmark
               cusip={selectedInstrument.cusip}
               benchmark={selectedInstrument.benchmark}
@@ -213,6 +215,7 @@ const SearchBox = forwardRef<HTMLInputElement>(function SearchBox(_, inputRef) {
               index,
               item: instrument,
             })}
+            data-testid="search-result-item"
           >
             <InstrumentName>{instrument.name}</InstrumentName>
             <CusipWithBenchmark
@@ -234,7 +237,7 @@ const SearchBox = forwardRef<HTMLInputElement>(function SearchBox(_, inputRef) {
           ref: inputRef,
         })}
       />
-      <SearchResults {...getMenuProps()}>
+      <SearchResults {...getMenuProps()} data-testid="search-results">
         {isOpen && renderItems()}
       </SearchResults>
     </SearchWrapper>

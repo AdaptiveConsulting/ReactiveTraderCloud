@@ -84,6 +84,7 @@ export const RfqParameters = () => {
           onFocus={(event) => {
             event.target.select()
           }}
+          data-testid="quantity"
         />
       </div>
       <div>

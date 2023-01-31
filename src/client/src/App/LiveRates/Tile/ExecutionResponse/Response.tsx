@@ -121,7 +121,13 @@ const ExecutionMessage = ({
           {base}/{terms}
         </AssetText>
       </CurrencyPairDiv>
-      <TradeIdDiv>{tradeId && `Trade ID: ${tradeId}`}</TradeIdDiv>
+      <TradeIdDiv>
+        {tradeId && (
+          <>
+            Trade ID: <span data-testid="trade-id">{tradeId}</span>
+          </>
+        )}
+      </TradeIdDiv>
       <TradeMessageDiv role="alert">
         {getExecutionMessage(tileState, base, terms)}
       </TradeMessageDiv>

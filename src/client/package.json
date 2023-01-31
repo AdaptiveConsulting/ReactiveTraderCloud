@@ -46,6 +46,8 @@
     "finsemble:build": "cross-env TARGET=finsemble vite build",
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated",
     "storybook": "start-storybook -p 6006 --no-manager-cache",
+    "e2e:openfin": "playwright test --project=openfin",
+    "e2e:web": "playwright test --project=chrome",
     "build-storybook": "build-storybook -o ./dist/storybook"
   },
   "dependencies": {
@@ -87,6 +89,7 @@
     "@babel/core": "^7.13.16",
     "@babel/preset-env": "^7.13.12",
     "@babel/preset-typescript": "^7.13.0",
+    "@playwright/test": "^1.29.1",
     "@storybook/addon-actions": "^6.5.13",
     "@storybook/addon-essentials": "^6.5.13",
     "@storybook/addon-links": "^6.5.13",
@@ -123,6 +126,7 @@
     "jest": "^27.0.0",
     "jest-styled-components": "^7.0.3",
     "openfin-cli": "^3.0.2",
+    "playwright": "^1.29.1",
     "prettier": "^2.2.1",
     "react-test-renderer": "^17.0.2",
     "rollup-plugin-modulepreload": "^1.2.3",

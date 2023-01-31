@@ -61,6 +61,7 @@ export const AcceptedFooterContent = ({
         onClick={() => {
           handleViewTrade(rfqId.toString())
         }}
+        data-testid="view-trade"
       >
         View Trade {rfqId}
       </ViewTrade>
