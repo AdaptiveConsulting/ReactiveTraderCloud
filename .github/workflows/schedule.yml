@@ -1,0 +1,28 @@
+name: Runs e2e every day at 2pm
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+
+defaults:
+  run:
+    working-directory: src/client
+
+jobs:
+  e2e:
+    name: End-to-end test
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        env:
+          URL_PATH: https://reactivetrader.com
+          ENVIRONMENT: env
+        run: |
+          npm run e2e:web
