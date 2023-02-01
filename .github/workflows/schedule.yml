@@ -1,4 +1,4 @@
-name: Runs e2e every day at 2pm
+name: Runs e2e every day at 2pm against RT Prod
 on:
   schedule:
     - cron: "*/10 * * * *"
@@ -9,7 +9,7 @@ defaults:
 
 jobs:
   e2e:
-    name: End-to-end test
+    name: End-to-end test against RT Prod
 
     runs-on: ubuntu-20.04
 
