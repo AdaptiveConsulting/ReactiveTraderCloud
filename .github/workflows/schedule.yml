@@ -22,7 +22,7 @@ jobs:
 
       - name: Test
         env:
-          URL_PATH: https://reactivetrader.com
+          URL_PATH: https://web.dev.reactivetrader.com
           ENVIRONMENT: env
         run: |
           npm run e2e:web
