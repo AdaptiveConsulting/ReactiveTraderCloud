@@ -1,7 +1,7 @@
-name: Runs e2e every day at 2pm against RT Prod
+name: Runs e2e every day at 9am against RT Prod
 on:
   schedule:
-    - cron: "5 18 * * *"
+    - cron: "10 9 * * *"
 
 defaults:
   run:
