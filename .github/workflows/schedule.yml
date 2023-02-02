@@ -1,7 +1,7 @@
 name: Runs e2e every day at 2pm against RT Prod
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "5 18 * * *"
 
 defaults:
   run:
