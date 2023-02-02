@@ -28,21 +28,9 @@ test.describe("Spot Tile", () => {
   })
 
   test.describe("Valid Purchase", () => {
-    test("When I buy USD/JPY then an Execution screen appears until transaction is performed and tile displays green confirmation screen", async () => {
-      await tilePage.locator("[data-testid='Buy-USDJPY']").click()
-
-      const executingSpinner = await tilePage.getByText(/Executing/)
-      expect(executingSpinner).not.toBe(null)
-
-      const greenConfirmation = await tilePage
-        .locator("div[role='dialog']")
-        .getByText(/You bought/)
-      expect(greenConfirmation).not.toBe(null)
-    })
-
     test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter", async () => {
       await tilePage.locator("[data-testid='menuButton-EUR']").click()
-      await tilePage.waitForTimeout(10000)
+
       await tilePage.locator("[data-testid='Sell-EURUSD']").click()
 
       const tradeId = await tilePage
@@ -54,6 +42,18 @@ test.describe("Spot Tile", () => {
         .innerText()
       await tilePage.locator("[data-testid='menuButton-ALL']").click()
       expect(tradeId).toBe(blotterTradeID)
+    })
+
+    test("When I buy USD/JPY then an Execution screen appears until transaction is performed and tile displays green confirmation screen", async () => {
+      await tilePage.locator("[data-testid='Buy-USDJPY']").click()
+
+      const executingSpinner = await tilePage.getByText(/Executing/)
+      expect(executingSpinner).not.toBe(null)
+
+      const greenConfirmation = await tilePage
+        .locator("div[role='dialog']")
+        .getByText(/You bought/)
+      expect(greenConfirmation).not.toBe(null)
     })
   })
 
