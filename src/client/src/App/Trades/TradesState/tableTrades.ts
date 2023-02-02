@@ -385,7 +385,7 @@ export const [useFxTradeRowHighlight] = bind(
     ),
     newTradeId$,
     newTradeId$.pipe(
-      delay(1000),
+      delay(3000),
       map(() => undefined),
     ),
   ]).pipe(mergeMap((tradeId) => tradeId)),
