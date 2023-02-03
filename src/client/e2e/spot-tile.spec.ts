@@ -112,6 +112,18 @@ test.describe("Spot Tile", () => {
         .inputValue()
       expect(notionalValue).toEqual("1,000,000")
     })
+
+    test("When I enter a number too large (over 1,000,000,000) then an error will appear 'Max exceeded'", async () => {
+      await tilePage.locator("input[id='notional-input-EURUSD']").clear()
+      await tilePage
+        .locator("input[id='notional-input-EURUSD']")
+        .type("1200000000")
+
+      const txt = await tilePage.getByText(/Max exceeded/).innerText()
+      expect(txt).toEqual("Max exceeded")
+      await tilePage.locator("input[id='notional-input-EURUSD']").clear()
+      await tilePage.locator("input[id='notional-input-EURUSD']").type("1m")
+    })
   })
 
   test.describe("Toggle between prices and graph views", () => {
@@ -164,8 +176,8 @@ test.describe("Spot Tile", () => {
       const totalNZDTiles = await tilePage
         .locator('div[aria-label="Lives Rates Tiles"] > div')
         .count()
-
       expect(totalNZDTiles).toBe(1)
+      await tilePage.locator("[data-testid='menuButton-ALL']").click()
     })
   })
 })
