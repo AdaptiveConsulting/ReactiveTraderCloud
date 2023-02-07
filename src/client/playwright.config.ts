@@ -5,7 +5,7 @@ const config: PlaywrightTestConfig = {
   testDir: "./e2e",
   /* Maximum time one test can run for. */
   timeout: 50 * 1000,
-  workers: 2,
+  workers: 1,
   projects: [
     {
       name: "chrome",
@@ -17,6 +17,11 @@ const config: PlaywrightTestConfig = {
       name: "openfin",
     },
   ],
+  // use: {
+  //   launchOptions: {
+  //     slowMo: 800,
+  //   },
+  // },
 }
 
 export default config
