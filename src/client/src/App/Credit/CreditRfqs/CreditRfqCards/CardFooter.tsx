@@ -48,8 +48,10 @@ export const AcceptedFooterContent = ({
   acceptedDealerId?: number
 }) => {
   const dealerName =
-    (acceptedDealerId ? useCreditDealerById(acceptedDealerId) : undefined)
-      ?.name ?? "Unknown Dealer"
+    (acceptedDealerId !== undefined
+      ? useCreditDealerById(acceptedDealerId)
+      : undefined
+    )?.name ?? "Unknown Dealer"
 
   return (
     <>
