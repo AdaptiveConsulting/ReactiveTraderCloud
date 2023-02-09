@@ -12,9 +12,9 @@ import {
   TimeoutExecution,
 } from "@/services/executions"
 import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
-import { Direction } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
 import { Tile, tile$ } from "./Tile"
+import { Direction } from "@/generated/TradingGateway"
 
 jest.mock("@/services/executions/executions")
 jest.mock("@/services/prices/prices")

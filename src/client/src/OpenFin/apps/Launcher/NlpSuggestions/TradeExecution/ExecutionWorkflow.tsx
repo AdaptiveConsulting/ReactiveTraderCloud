@@ -1,7 +1,7 @@
+import { Direction } from "@/generated/TradingGateway"
 import { useOverlayElement } from "@/OpenFin/apps/Launcher/overlayContext"
 import { onResetInput } from "@/OpenFin/apps/Launcher/services/nlpService"
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
-import { Direction } from "@/services/trades"
 import { formatNumber } from "@/utils"
 import { format } from "date-fns"
 import { createPortal } from "react-dom"

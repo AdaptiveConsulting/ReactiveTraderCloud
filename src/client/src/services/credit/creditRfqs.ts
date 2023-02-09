@@ -12,15 +12,30 @@ import {
   RFQ_CREATED_RFQ_UPDATE,
   START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
   WorkflowService,
+  Direction,
+  QuoteBody,
+  RfqBody,
 } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { combineLatest, Observable } from "rxjs"
 import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
-import { withConnection } from "../../withConnection"
-import { creditDealers$ } from "../creditDealers"
-import { creditInstruments$ } from "../creditInstruments"
-import { QuoteDetails, RfqDetails } from "./types"
+import { withConnection } from "../withConnection"
+import { creditDealers$ } from "./creditDealers"
+import { creditInstruments$ } from "./creditInstruments"
+
+export interface RfqDetails extends RfqBody {
+  instrument: InstrumentBody | null
+  dealers: DealerBody[]
+  quotes: QuoteBody[]
+}
+
+export interface QuoteDetails extends QuoteBody {
+  instrument: InstrumentBody | null
+  dealer: DealerBody | null
+  direction: Direction
+  quantity: number
+}
 
 const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
   withConnection(),
@@ -37,7 +52,6 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
       const rec = acc[1]
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
-          console.debug(START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE)
           return [false, {}]
         }
         case RFQ_CREATED_RFQ_UPDATE:
@@ -117,7 +131,6 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
           return [acc[0], rec]
         }
         case END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
-          console.debug(END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE)
           return [true, rec]
         }
         default:

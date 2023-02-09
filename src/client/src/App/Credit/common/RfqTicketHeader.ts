@@ -15,9 +15,7 @@ export const DirectionContainer = styled.div<WithDirection & WithTerminated>`
   flex: 0 0 48px;
   background-color: ${({ theme, direction, terminated }) =>
     terminated
-      ? theme.name === ThemeName.Dark
-        ? "#222730"
-        : theme.primary[2]
+      ? theme.primary[2]
       : direction === Direction.Buy
       ? "rgba(76, 118, 196, 0.15)"
       : "rgba(167, 39, 64, 0.15)"};

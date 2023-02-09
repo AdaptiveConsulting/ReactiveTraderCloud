@@ -1,20 +1,13 @@
-import { RfqState } from "@/generated/TradingGateway"
-import { clearedRfqIds$, creditRfqsById$, RfqDetails } from "@/services/credit"
-import { bind } from "@react-rxjs/core"
 import { combineLatest } from "rxjs"
 import { map } from "rxjs/operators"
+import { bind } from "@react-rxjs/core"
+import { RfqState } from "@/generated/TradingGateway"
+import { clearedRfqIds$, creditRfqsById$ } from "@/services/credit"
+import { timeRemainingComparator } from "../../common"
 import { RfqsTab, selectedRfqsTab$ } from "../selectedRfqsTab"
+import { CreditRfqCardsWrapper } from "./styled"
 import { Card } from "./CreditRfqCard"
 import { NoRfqsScreen } from "./NoRfqsScreen/NoRfqsScreen"
-import { CreditRfqCardsWrapper } from "./styled"
-
-function getRfqRemainingTime(rfq: RfqDetails): number {
-  return Date.now() - Number(rfq.creationTimestamp) + rfq.expirySecs * 1000
-}
-
-function timeRemainingComparator(rfq1: RfqDetails, rfq2: RfqDetails): number {
-  return getRfqRemainingTime(rfq1) - getRfqRemainingTime(rfq2)
-}
 
 const RFQ_STATE_TO_TAB_MAPPING: Record<RfqState, RfqsTab> = {
   [RfqState.Open]: RfqsTab.Live,

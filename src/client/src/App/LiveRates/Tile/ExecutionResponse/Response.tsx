@@ -9,7 +9,6 @@ import {
   TradeMessageDiv,
 } from "./Response.styles"
 import styled from "styled-components"
-import { Direction } from "@/services/trades"
 import { ExecutionStatus } from "@/services/executions"
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"
 import Pending from "./Pending"
@@ -22,6 +21,7 @@ import {
   getTileState$,
 } from "../Tile.state"
 import { CurrencyPair } from "@/services/currencyPairs"
+import { Direction } from "@/generated/TradingGateway"
 
 const BackgroundColored = styled.span`
   background-color: ${({ theme }) => theme.white};

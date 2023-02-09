@@ -7,7 +7,7 @@ import MainLayout from "./MainLayout"
 const CREDIT_TEAR_OUT_SECTIONS = ["newRfq", "creditBlotter"] as const
 const useTornOutSections = getTornOutSections(CREDIT_TEAR_OUT_SECTIONS)
 
-const MainCreditRoute = () => {
+const CreditPage = () => {
   const tornOutSections = useTornOutSections()
 
   return (
@@ -20,4 +20,4 @@ const MainCreditRoute = () => {
     </MainLayout>
   )
 }
-export default MainCreditRoute
+export default CreditPage

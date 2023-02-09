@@ -1,10 +1,10 @@
-import { Direction } from "@/services/trades"
 import { FC } from "react"
 import styled from "styled-components"
 import {
   PriceButtonInner as PriceButton,
   PriceButtonProps,
 } from "@/App/LiveRates/Tile/PriceButton"
+import { Direction } from "@/generated/TradingGateway"
 
 const values: PriceButtonProps = {
   currencyPair: {
