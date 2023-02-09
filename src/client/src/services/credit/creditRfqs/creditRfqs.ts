@@ -37,7 +37,6 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
       const rec = acc[1]
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
-          console.debug(START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE)
           return [false, {}]
         }
         case RFQ_CREATED_RFQ_UPDATE:

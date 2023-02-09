@@ -1,6 +1,6 @@
 import { Admin } from "@/App/Admin"
 import { Analytics } from "@/App/Analytics"
-import { CreditRfqForm, CreditSellSideTicket } from "@/App/Credit"
+import { CreditRfqForm } from "@/App/Credit"
 import { LiveRates } from "@/App/LiveRates"
 import { TileView } from "@/App/LiveRates/selectedView"
 import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
@@ -20,6 +20,7 @@ import { MainFxRoute } from "./MainFxRoute"
 import { TearOutRouteWrapper } from "./Web.styles"
 
 const StyleguideRoute = lazy(() => import("@/styleguide"))
+const MainSellSideRoute = lazy(() => import("./MainSellSideRoute"))
 
 // Note: for the Redirect (or anything) to work, the Route components above it must be at the
 //       top level of the switch e.g. no fragments, context providers ..
@@ -52,34 +53,22 @@ export const WebApp = () => {
           <Route
             exact
             path={ROUTES_CONFIG.credit}
-            render={() => (
-              <>
-                <DisconnectionOverlay />
-                <MainCreditRoute />
-              </>
-            )}
+            render={() => <MainCreditRoute />}
           />
         )}
-        {canDisplayCredit && (
+        <Suspense fallback={<Loader />}>
           <Route
-            path={ROUTES_CONFIG.sellSideTicket}
-            render={({
-              match: {
-                params: { rfqId, dealerId },
-              },
-            }) => (
-              <>
-                <DisconnectionOverlay />
-                {rfqId && dealerId && (
-                  <CreditSellSideTicket
-                    rfqId={parseInt(rfqId, 10)}
-                    dealerId={parseInt(dealerId, 10)}
-                  />
-                )}
-              </>
-            )}
+            path={ROUTES_CONFIG.sellSide}
+            render={() => {
+              return (
+                <>
+                  <DisconnectionOverlay />
+                  <MainSellSideRoute />
+                </>
+              )
+            }}
           />
-        )}
+        </Suspense>
         <Route
           path={ROUTES_CONFIG.tile}
           render={({
@@ -172,7 +161,6 @@ export const WebApp = () => {
             }}
           />
         )}
-
         <Redirect to="/" />
       </Switch>
     </BrowserRouter>

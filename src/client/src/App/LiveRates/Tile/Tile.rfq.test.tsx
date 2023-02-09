@@ -14,7 +14,7 @@ import {
   ExecutionTrade,
   TimeoutExecution,
 } from "@/services/executions"
-import { Direction } from "@/services/trades"
+import { Direction } from "@/generated/TradingGateway"
 
 jest.mock("@/services/executions/executions")
 jest.mock("@/services/prices/prices")

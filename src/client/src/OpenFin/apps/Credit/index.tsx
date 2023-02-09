@@ -1,8 +1,9 @@
-import { CreditRfqForm, CreditRfqs, CreditSellSideTicket } from "@/App/Credit"
+import { CreditRfqForm, CreditRfqs } from "@/App/Credit"
 import { CreditTrades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { DocTitle } from "@/components/DocTitle"
 import { ROUTES_CONFIG } from "@/constants"
+import MainSellSideRoute from "@/Web/MainSellSideRoute"
 import { Route } from "react-router-dom"
 
 const CreditRoutes = () => (
@@ -27,24 +28,7 @@ const CreditRoutes = () => (
         </DocTitle>
       )}
     />
-    <Route
-      path={ROUTES_CONFIG.sellSideTicket}
-      render={({
-        match: {
-          params: { rfqId, dealerId },
-        },
-      }) => (
-        <>
-          <DisconnectionOverlay />
-          {rfqId && dealerId && (
-            <CreditSellSideTicket
-              rfqId={parseInt(rfqId, 10)}
-              dealerId={parseInt(dealerId, 10)}
-            />
-          )}
-        </>
-      )}
-    />
+
     <Route
       exact
       path={ROUTES_CONFIG.newRfq}
@@ -52,6 +36,16 @@ const CreditRoutes = () => (
         <DocTitle title="New RFQ">
           <DisconnectionOverlay />
           <CreditRfqForm />
+        </DocTitle>
+      )}
+    />
+    <Route
+      exact
+      path={ROUTES_CONFIG.sellSide}
+      render={() => (
+        <DocTitle title="Adaptive Bank RFQ Queue">
+          <DisconnectionOverlay />
+          <MainSellSideRoute />
         </DocTitle>
       )}
     />

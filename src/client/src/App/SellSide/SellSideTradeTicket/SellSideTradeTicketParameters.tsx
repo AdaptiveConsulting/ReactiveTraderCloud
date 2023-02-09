@@ -8,22 +8,21 @@ import {
 } from "@/utils"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { merge } from "rxjs"
 import { filter, map } from "rxjs/operators"
 import styled from "styled-components"
+import { getSellSideQuoteState, SellSideQuoteState } from "../sellSideState"
+import { selectedRfqId$ } from "../sellSideState"
 
 const ParametersWrapper = styled.div`
-  flex: 1;
-  padding: 16px;
+  padding: 8px;
   overflow-y: auto;
   font-size: 12px;
   font-weight: 500;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-rows: minmax(min-content, max-content);
-  grid-column-gap: 8px;
-  grid-row-gap: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
-
 const ParameterLabel = styled.div`
   color: ${({ theme }) => theme.secondary[5]};
   margin-bottom: 4px;
@@ -35,6 +34,11 @@ const ParameterValue = styled.div`
   height: 24px;
   color: ${({ theme }) =>
     theme.secondary[theme.name === ThemeName.Dark ? "base" : 1]};
+`
+
+const PendingPrice = styled.span`
+  margin-right: 6px;
+  color: ${({ theme }) => theme.accents.primary.base};
 `
 
 export const ParameterInput = styled.input`
@@ -66,48 +70,51 @@ const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
 
 const [rawPrice$, setPrice] = createSignal<string>()
 export const [usePrice, price$] = bind(
-  rawPrice$.pipe(
-    map((rawVal) => {
-      const lastChar = rawVal.slice(-1).toLowerCase()
-      const cleanedInput = rawVal
-        .replace(filterRegExp, "")
-        .replace(decimalRegExp, ".")
+  merge(
+    selectedRfqId$.pipe(map(() => ({ value: 0, inputValue: "" }))),
+    rawPrice$.pipe(
+      map((rawVal) => {
+        const lastChar = rawVal.slice(-1).toLowerCase()
+        const cleanedInput = rawVal
+          .replace(filterRegExp, "")
+          .replace(decimalRegExp, ".")
 
-      const inputQuantityAsNumber = Math.abs(Number(cleanedInput))
+        const inputQuantityAsNumber = Math.abs(Number(cleanedInput))
 
-      // numeric value could be NaN at this stage
+        // numeric value could be NaN at this stage
 
-      const truncated = formatter(inputQuantityAsNumber)
+        const truncated = formatter(inputQuantityAsNumber)
 
-      const value = Number(
-        truncated.replace(filterRegExp, "").replace(decimalRegExp, "."),
-      )
+        const value = Number(
+          truncated.replace(filterRegExp, "").replace(decimalRegExp, "."),
+        )
 
-      return {
-        value,
-        inputValue:
-          value === 0
-            ? ""
-            : formatter(value) +
-              (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
-      }
-    }),
-    filter(({ value }) => !Number.isNaN(value)),
+        return {
+          value,
+          inputValue:
+            value === 0
+              ? ""
+              : formatter(value) +
+                (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
+        }
+      }),
+      filter(({ value }) => !Number.isNaN(value)),
+    ),
   ),
   { value: 0, inputValue: "" },
 )
 
-interface CreditSellSideParametersProps {
+interface SellSideTradeTicketParametersProps {
   quote: QuoteBody | undefined
   state: RfqState
   quantity: number
 }
 
-export const CreditSellSideParameters = ({
+export const SellSideTradeTicketParameters = ({
   quote,
   state,
   quantity,
-}: CreditSellSideParametersProps) => {
+}: SellSideTradeTicketParametersProps) => {
   const price = usePrice()
 
   return (
@@ -123,7 +130,15 @@ export const CreditSellSideParameters = ({
       <div>
         <ParameterLabel>Price</ParameterLabel>
         {quote ? (
-          <ParameterValue>{quote.price}</ParameterValue>
+          getSellSideQuoteState(state, quote.state) ===
+          SellSideQuoteState.Pending ? (
+            <ParameterValue>
+              <PendingPrice>{quote.price}</PendingPrice>
+              <em>Awaiting Response</em>
+            </ParameterValue>
+          ) : (
+            <ParameterValue>{quote.price}</ParameterValue>
+          )
         ) : (
           <ParameterInput
             type="text"

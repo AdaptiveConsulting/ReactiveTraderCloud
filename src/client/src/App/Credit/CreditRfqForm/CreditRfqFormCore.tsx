@@ -1,8 +1,5 @@
 import { Loader } from "@/components/Loader"
-import {
-  enableOpenSellSideTicketForAdaptiveBankRfqs,
-  registerSimulatedDealerResponses,
-} from "@/services/credit/creditRfqResponses"
+import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 import { Subscription } from "rxjs"
@@ -63,7 +60,6 @@ export const CreditRfqFormCore = () => {
   useEffect(() => {
     const subscription = new Subscription()
     subscription.add(registerSimulatedDealerResponses())
-    subscription.add(enableOpenSellSideTicketForAdaptiveBankRfqs())
 
     return () => subscription.unsubscribe()
   }, [])

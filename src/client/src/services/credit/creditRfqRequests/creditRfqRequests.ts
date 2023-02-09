@@ -7,8 +7,10 @@ import {
   CreateRfqRequest,
   WorkflowService,
 } from "@/generated/TradingGateway"
+import { toSellSideView } from "@/utils"
 import { createSignal } from "@react-rxjs/utils"
-import { tap } from "rxjs/operators"
+import { filter, map, tap, withLatestFrom } from "rxjs/operators"
+import { adaptiveDealerId$ } from "../creditDealers"
 
 export interface CreatedCreditRfq {
   request: CreateRfqRequest
@@ -27,6 +29,21 @@ export const createCreditRfq$ = (request: CreateRfqRequest) => {
     }),
   )
 }
+
+const sellSideRfqs$ = createdCreditRfq$.pipe(
+  withLatestFrom(adaptiveDealerId$),
+  filter(
+    ([
+      {
+        request: { dealerIds },
+      },
+      adaptiveBankId,
+    ]) => !!dealerIds.find((id) => id === adaptiveBankId),
+  ),
+  map(([{ rfqId }]) => rfqId),
+)
+
+sellSideRfqs$.subscribe(toSellSideView)
 
 export const cancelCreditRfq$ = (cancelRequest: CancelRfqRequest) => {
   return WorkflowService.cancelRfq(cancelRequest)

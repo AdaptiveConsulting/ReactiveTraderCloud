@@ -9,7 +9,7 @@ import { forwardRef, useCallback, useMemo, useRef, useState } from "react"
 import { FaSearch } from "react-icons/fa"
 import { map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
-import { CusipWithBenchmark } from "../common/CusipWithBenchmark"
+import { CusipWithBenchmark } from "@/components/CusipWithBenchmark"
 
 const InstrumentSearchWrapper = styled.div`
   position: relative;

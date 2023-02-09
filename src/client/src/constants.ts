@@ -25,11 +25,11 @@ export const ROUTES_CONFIG = {
   credit: "/credit",
   creditRfqs: "/credit-rfqs",
   newRfq: "/credit-new-rfq",
-  sellSideTicket: "/credit-sellside/:rfqId/dealer/:dealerId",
   creditBlotter: "/credit-blotter",
   launcher: "/launcher",
   contact: "/contact",
   status: "/status",
+  sellSide: "/credit-sellside",
 }
 
 export const CREDIT_RFQ_EXPIRY_SECONDS = 120

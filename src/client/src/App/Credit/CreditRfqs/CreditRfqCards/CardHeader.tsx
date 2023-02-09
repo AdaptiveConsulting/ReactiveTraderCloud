@@ -1,14 +1,14 @@
 import { Direction, RfqState } from "@/generated/TradingGateway"
 import { useCreditInstrumentById } from "@/services/credit"
 import { memo } from "react"
+import { CusipWithBenchmark } from "@/components/CusipWithBenchmark"
 import {
   DirectionContainer,
   DirectionLabel,
   InstrumentLabelContainer,
   InstrumentName,
-  isRfqTerminated,
-} from "../../common"
-import { CusipWithBenchmark } from "../../common/CusipWithBenchmark"
+} from "@/components/RfqTicketHeader"
+import { isRfqTerminated } from "@/utils"
 
 interface CardHeaderProps {
   direction: Direction

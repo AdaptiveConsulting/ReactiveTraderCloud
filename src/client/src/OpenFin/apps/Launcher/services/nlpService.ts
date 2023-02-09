@@ -1,4 +1,3 @@
-import { Direction } from "@/services/trades"
 import { DetectIntentResponse } from "dialogflow"
 import { fromFetch } from "rxjs/fetch"
 import { bind } from "@react-rxjs/core"
@@ -14,6 +13,7 @@ import {
   timer,
 } from "rxjs"
 import { equals } from "@/utils"
+import { Direction } from "@/generated/TradingGateway"
 
 const [input$, setInput] = createSignal<string>()
 export { setInput }

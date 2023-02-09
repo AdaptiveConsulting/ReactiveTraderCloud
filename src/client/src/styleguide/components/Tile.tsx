@@ -23,9 +23,9 @@ import {
   PriceControlsStyle,
   PriceControlWrapper,
 } from "@/App/LiveRates/Tile/Tile.styles"
+import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { PriceMovementType } from "@/services/prices"
-import { Direction } from "@/services/trades"
 import { format } from "date-fns"
 
 export type TileProps = {

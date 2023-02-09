@@ -1,9 +1,5 @@
 import { Direction, RfqState } from "@/generated/TradingGateway"
 
-export function invertDirection(direction: Direction): Direction {
-  return direction === Direction.Buy ? Direction.Sell : Direction.Buy
-}
-
 export function isBuy(direction: Direction): boolean {
   return direction === Direction.Buy
 }
@@ -21,8 +17,4 @@ export function rfqStateToLabel(state: RfqState): string {
     default:
       return `Request ${state}`
   }
-}
-
-export function isRfqTerminated(rfqState: RfqState): boolean {
-  return rfqState === RfqState.Cancelled || rfqState === RfqState.Expired
 }

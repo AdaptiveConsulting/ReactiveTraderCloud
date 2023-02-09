@@ -9,7 +9,7 @@ import { createSignal } from "@react-rxjs/utils"
 import { FaCheckCircle, FaTrash } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
 import { rfqStateToLabel } from "../../common"
-import { CreditTimer } from "../../CreditTimer"
+import { CreditRfqTimer } from "@/components/CreditRfqTimer"
 import { handleViewTrade } from "./handleViewTrade"
 import {
   AcceptedCardState,
@@ -33,7 +33,7 @@ export const LiveFooterContent = ({
   end: number
 }) => (
   <>
-    <CreditTimer start={start} end={end} isSellSideView={false} />
+    <CreditRfqTimer start={start} end={end} isSellSideView={false} />
     <CancelQuoteButton onClick={() => onCancelRfq(rfqId)}>
       Cancel
     </CancelQuoteButton>

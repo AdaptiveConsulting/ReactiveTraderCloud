@@ -1,5 +1,5 @@
 import { DirectionIcon } from "@/components/icons/DirectionIcon"
-import { Direction } from "@/services/trades"
+import { Direction } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import styled from "styled-components"
