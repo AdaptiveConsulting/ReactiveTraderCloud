@@ -1,6 +1,7 @@
+import styled from "styled-components"
 import { Direction } from "@/generated/TradingGateway"
 import { Theme, ThemeName } from "@/theme"
-import styled, { keyframes } from "styled-components"
+import { breathing } from "@/utils/styling"
 import { Row } from "../styled"
 
 interface CommonProps {
@@ -48,31 +49,13 @@ export const QuoteRowText = styled.div`
   font-weight: 500;
 `
 
-const breathing = keyframes`
-    0% {
-        transform: scale(1);
-    }
-
-    25% {
-        transform: scale(2);
-    }
-
-    50% {
-        transform: scale(2);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-`
-
 export const QuoteDotWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 8px;
   height: 8px;
-  margin-right: 4px;
+  margin: 0 4px;
 `
 
 function getBuySellHighlightTextColor(theme: Theme, direction: Direction) {

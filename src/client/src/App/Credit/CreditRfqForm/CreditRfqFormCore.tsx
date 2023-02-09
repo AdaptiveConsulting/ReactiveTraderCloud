@@ -1,12 +1,9 @@
-import { Loader } from "@/components/Loader"
-import {
-  enableOpenSellSideTicketForAdaptiveBankRfqs,
-  registerSimulatedDealerResponses,
-} from "@/services/credit/creditRfqResponses"
-import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 import { Subscription } from "rxjs"
 import styled from "styled-components"
+import { Subscribe } from "@react-rxjs/core"
+import { Loader } from "@/components/Loader"
+import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 import { supportsTearOut } from "../../TearOutSection/supportsTearOut"
 import { TearOutComponent } from "../../TearOutSection/TearOutComponent"
 import { CounterpartySelection } from "./CounterpartySelection"
@@ -63,7 +60,6 @@ export const CreditRfqFormCore = () => {
   useEffect(() => {
     const subscription = new Subscription()
     subscription.add(registerSimulatedDealerResponses())
-    subscription.add(enableOpenSellSideTicketForAdaptiveBankRfqs())
 
     return () => subscription.unsubscribe()
   }, [])

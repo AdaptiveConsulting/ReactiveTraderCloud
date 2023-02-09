@@ -2,7 +2,6 @@ import {
   nlpIntent$,
   NlpIntentType,
 } from "@/OpenFin/apps/Launcher/services/nlpService"
-import { Direction } from "@/services/trades"
 import {
   catchError,
   exhaustMap,
@@ -24,6 +23,7 @@ import {
 } from "@/services/executions"
 import { bind } from "@react-rxjs/core"
 import { useEffect } from "react"
+import { Direction } from "@/generated/TradingGateway"
 
 const [next$_, onNext] = createSignal()
 export { onNext }

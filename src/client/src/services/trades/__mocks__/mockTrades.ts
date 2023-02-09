@@ -1,4 +1,5 @@
-import { Direction, FxTrade, TradeRaw, TradeStatus } from "../types"
+import { Direction } from "@/generated/TradingGateway"
+import { FxTrade, TradeRaw, TradeStatus } from "../types"
 
 export const mockRawTrades = {
   Trades: [

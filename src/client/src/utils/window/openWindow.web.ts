@@ -57,7 +57,6 @@ export function openWindow(
   if (win) {
     openPopoutWindows = openPopoutWindows.concat(win)
   }
-
   return Promise.resolve(win || undefined)
 }
 

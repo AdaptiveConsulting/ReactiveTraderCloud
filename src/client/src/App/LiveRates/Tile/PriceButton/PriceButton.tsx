@@ -1,5 +1,4 @@
 import { getPrice$ } from "@/services/prices"
-import { Direction } from "@/services/trades"
 import {
   customNumberFormatter,
   significantDigitsNumberFormatter,
@@ -28,6 +27,7 @@ import { of } from "rxjs"
 import { useIsNotionalValid } from "../Notional/Notional"
 import { getRfqPayload$, QuoteState, useIsRfq } from "../Rfq/Rfq.state"
 import { CurrencyPair } from "@/services/currencyPairs"
+import { Direction } from "@/generated/TradingGateway"
 
 const getPriceByDirection$ = (symbol: string, direction: Direction) =>
   getPrice$(symbol).pipe(

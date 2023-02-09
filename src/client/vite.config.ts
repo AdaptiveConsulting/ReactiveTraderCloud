@@ -247,7 +247,7 @@ const injectWebServiceWorkerPlugin = (mode: string) =>
         assets: `${getBaseUrl(mode === "development")}/assets`,
       },
     },
-    ({ swDest, count, size }) => {
+    ({ swDest, count }) => {
       console.log(
         "Created service worker: ",
         swDest,

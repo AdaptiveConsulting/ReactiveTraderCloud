@@ -38,3 +38,12 @@ export const [useCreditDealerById, creditDealerById$] = bind(
       map((dealers) => dealers.find((dealer) => dealer.id === dealerId)),
     ),
 )
+
+export const [useAdaptiveDealerId, adaptiveDealerId$] = bind(
+  creditDealers$.pipe(
+    map(
+      (dealers) =>
+        dealers.filter((dealer) => dealer.name === ADAPTIVE_BANK_NAME)?.[0]?.id,
+    ),
+  ),
+)
