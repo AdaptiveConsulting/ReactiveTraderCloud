@@ -1,3 +1,7 @@
+import styled from "styled-components"
+import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
+import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
+import { createSignal } from "@react-rxjs/utils"
 import {
   Direction,
   QuoteBody,
@@ -6,27 +10,21 @@ import {
 } from "@/generated/TradingGateway"
 import { createCreditQuote$, useCreditRfqDetails } from "@/services/credit"
 import { ThemeName } from "@/theme"
-import { customNumberFormatter } from "@/utils"
-import { closeWindow } from "@/utils/window/closeWindow"
-import { createSignal } from "@react-rxjs/utils"
-import { FaCheckCircle } from "react-icons/fa"
-import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
-import styled from "styled-components"
-import { invertDirection, isRfqTerminated } from "../common"
-import { CreditTimer } from "../CreditTimer"
-import { price$, usePrice } from "./CreditSellSideParameters"
-import { TradeMissedIcon } from "./TradeMissedIcon"
+import { customNumberFormatter, invertDirection } from "@/utils"
+import { isRfqTerminated, CreditRfqTimer } from "../../common"
+import { price$, usePrice } from "./SellSideTradeTicketParameters"
 
 const FooterWrapper = styled.div<{ accepted: boolean; missed: boolean }>`
   display: flex;
   align-items: center;
+  height: 50px;
   padding: 8px;
   border-top: 1px solid ${({ theme }) => theme.primary[3]};
   background-color: ${({ accepted, missed }) =>
     accepted
       ? "rgba(1, 195, 141, 0.1)"
       : missed
-      ? "rgba(255, 197, 127, 0.1)"
+      ? "rgba(167, 39, 64, 0.15)"
       : undefined};
 `
 
@@ -81,7 +79,9 @@ const Accepted = styled(TradeStatus)`
 `
 const Missed = styled(TradeStatus)`
   color: ${({ theme }) =>
-    theme.accents.aware[theme.name === ThemeName.Light ? "darker" : "medium"]};
+    theme.accents.negative[
+      theme.name === ThemeName.Light ? "darker" : "medium"
+    ]};
 `
 const TradeDetails = styled.div`
   font-size: 9px;
@@ -104,17 +104,17 @@ quoteRequest$
 
 const formatter = customNumberFormatter()
 
-interface CreditSellSideTicketFooterProps {
+interface SellSideTradeTicketTicketFooterProps {
   rfqId: number
   dealerId: number
   quote: QuoteBody | undefined
 }
 
-export const CreditSellSideFooter = ({
+export const SellSideTradeTicketFooter = ({
   rfqId,
   dealerId,
   quote,
-}: CreditSellSideTicketFooterProps) => {
+}: SellSideTradeTicketTicketFooterProps) => {
   const rfq = useCreditRfqDetails(rfqId)
   const price = usePrice()
 
@@ -142,12 +142,17 @@ export const CreditSellSideFooter = ({
     <FooterWrapper accepted={accepted} missed={missed}>
       {state === RfqState.Open && (
         <>
-          <PassButton disabled={!!quote} onClick={closeWindow}>
+          <PassButton
+            disabled={!!quote}
+            onClick={() => {
+              console.log("Send message")
+            }}
+          >
             Pass
           </PassButton>
           <TimerWrapper>
             {state !== RfqState.Open ? null : (
-              <CreditTimer
+              <CreditRfqTimer
                 start={Number(creationTimestamp)}
                 end={Number(creationTimestamp) + expirySecs * 1000}
                 isSellSideView={true}
@@ -170,7 +175,7 @@ export const CreditSellSideFooter = ({
       )}
       {accepted && (
         <Accepted>
-          <FaCheckCircle size={16} />
+          <FaCheckCircle size={11} />
           <div>
             <div>Trade Successful</div>
             <TradeDetails>
@@ -183,8 +188,8 @@ export const CreditSellSideFooter = ({
       )}
       {missed && (
         <Missed>
-          <TradeMissedIcon />
-          Trade Missed
+          <FaThumbsDown size={11} />
+          Traded Away
         </Missed>
       )}
     </FooterWrapper>

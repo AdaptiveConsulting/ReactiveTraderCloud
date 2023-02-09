@@ -1,25 +1,25 @@
+import { lazy, Suspense } from "react"
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 import { Admin } from "@/App/Admin"
 import { Analytics } from "@/App/Analytics"
-import { CreditRfqForm, CreditSellSideTicket } from "@/App/Credit"
+import { CreditRfqForm } from "@/App/Credit"
 import { LiveRates } from "@/App/LiveRates"
 import { TileView } from "@/App/LiveRates/selectedView"
 import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
-import { FxTrades } from "@/App/Trades"
-import CreditTrades from "@/App/Trades/CoreCreditTrades"
+import { CreditTrades, FxTrades } from "@/App/Trades"
+import { TearOutContext } from "@/App/TearOutSection/tearOutContext"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { Loader } from "@/components/Loader"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { isMobileDevice } from "@/utils"
 import { FEATURE_FLAG, useFeature } from "@/utils/featureFlag"
 import { WithChildren } from "@/utils/utilityTypes"
-import { lazy, Suspense } from "react"
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
-import { TearOutContext } from "../App/TearOutSection/tearOutContext"
-import MainCreditRoute from "./MainCreditRoute"
-import { MainFxRoute } from "./MainFxRoute"
+import { FxPage } from "./FxPage"
+import CreditPage from "./CreditPage"
 import { TearOutRouteWrapper } from "./Web.styles"
 
-const StyleguideRoute = lazy(() => import("@/styleguide"))
+const StyleguidePage = lazy(() => import("@/styleguide"))
+const SellSidePage = lazy(() => import("./SellSidePage"))
 
 // Note: for the Redirect (or anything) to work, the Route components above it must be at the
 //       top level of the switch e.g. no fragments, context providers ..
@@ -44,7 +44,7 @@ export const WebApp = () => {
           render={() => (
             <>
               <DisconnectionOverlay />
-              <MainFxRoute />
+              <FxPage />
             </>
           )}
         />
@@ -55,29 +55,47 @@ export const WebApp = () => {
             render={() => (
               <>
                 <DisconnectionOverlay />
-                <MainCreditRoute />
+                <CreditPage />
               </>
             )}
           />
         )}
         {canDisplayCredit && (
           <Route
-            path={ROUTES_CONFIG.sellSideTicket}
-            render={({
-              match: {
-                params: { rfqId, dealerId },
-              },
-            }) => (
-              <>
-                <DisconnectionOverlay />
-                {rfqId && dealerId && (
-                  <CreditSellSideTicket
-                    rfqId={parseInt(rfqId, 10)}
-                    dealerId={parseInt(dealerId, 10)}
-                  />
-                )}
-              </>
-            )}
+            exact
+            path={ROUTES_CONFIG.sellSide}
+            render={() => {
+              return (
+                <Suspense fallback={<Loader />}>
+                  <DisconnectionOverlay />
+                  <SellSidePage />
+                </Suspense>
+              )
+            }}
+          />
+        )}
+        {canDisplayCredit && (
+          <Route
+            path={ROUTES_CONFIG.newRfq}
+            render={() => {
+              return (
+                <TornOut>
+                  <CreditRfqForm />
+                </TornOut>
+              )
+            }}
+          />
+        )}
+        {canDisplayCredit && (
+          <Route
+            path={ROUTES_CONFIG.creditBlotter}
+            render={() => {
+              return (
+                <TornOut>
+                  <CreditTrades />
+                </TornOut>
+              )
+            }}
           />
         )}
         <Route
@@ -108,7 +126,7 @@ export const WebApp = () => {
           path={ROUTES_CONFIG.styleguide}
           render={() => (
             <Suspense fallback={<Loader />}>
-              <StyleguideRoute />
+              <StyleguidePage />
             </Suspense>
           )}
         />
@@ -147,32 +165,6 @@ export const WebApp = () => {
             )
           }}
         />
-
-        {canDisplayCredit && (
-          <Route
-            path={ROUTES_CONFIG.newRfq}
-            render={() => {
-              return (
-                <TornOut>
-                  <CreditRfqForm />
-                </TornOut>
-              )
-            }}
-          />
-        )}
-        {canDisplayCredit && (
-          <Route
-            path={ROUTES_CONFIG.creditBlotter}
-            render={() => {
-              return (
-                <TornOut>
-                  <CreditTrades />
-                </TornOut>
-              )
-            }}
-          />
-        )}
-
         <Redirect to="/" />
       </Switch>
     </BrowserRouter>

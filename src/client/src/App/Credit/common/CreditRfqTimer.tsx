@@ -1,4 +1,4 @@
-import { memo, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef, useState, useLayoutEffect } from "react"
 import styled, { css, keyframes } from "styled-components"
 
 export const TimerWrapper = styled.div`
@@ -53,7 +53,27 @@ export const ProgressBar = memo(styled.div<{
   animation: ${progressAnimation};
 `)
 
-const SecsTimer = ({ end }: { end: number }) => {
+const TimeProgress = ({ start, end }: { start: number; end: number }) => {
+  const transitionTime = useRef(end - Date.now())
+  const startWidthPercentage = useRef(
+    ((end - Date.now()) / (end - start)) * 100,
+  )
+
+  return (
+    <ProgressBar
+      transitionTime={transitionTime.current}
+      start={startWidthPercentage.current}
+      end={0}
+    />
+  )
+}
+
+const CountWrapper = styled.span<{ grid?: boolean }>`
+  color: ${({ grid, theme }) =>
+    grid ? theme.accents.primary.base : "inherit"};
+`
+
+export const SecsTimer = ({ end, grid }: { end: number; grid?: boolean }) => {
   const [timeLeft, setTimeLeft] = useState(() =>
     Math.round((end - Date.now()) / 1000),
   )
@@ -71,28 +91,13 @@ const SecsTimer = ({ end }: { end: number }) => {
   const timeLeftSecs = timeLeft % 60
 
   return (
-    <>
-      {timeLeftMins}M {timeLeftSecs}S
-    </>
+    <CountWrapper grid={grid}>
+      {timeLeftMins}m {timeLeftSecs}s
+    </CountWrapper>
   )
 }
 
-const TimeProgress = ({ start, end }: { start: number; end: number }) => {
-  const transitionTime = useRef(end - Date.now())
-  const startWidthPercentage = useRef(
-    ((end - Date.now()) / (end - start)) * 100,
-  )
-
-  return (
-    <ProgressBar
-      transitionTime={transitionTime.current}
-      start={startWidthPercentage.current}
-      end={0}
-    />
-  )
-}
-
-export const CreditTimer = ({
+export const CreditRfqTimer = ({
   start,
   end,
   isSellSideView,

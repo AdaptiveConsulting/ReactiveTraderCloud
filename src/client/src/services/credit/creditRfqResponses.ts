@@ -1,28 +1,24 @@
-import { CREDIT_SELL_SIDE_TICKET_HEIGHT, ROUTES_CONFIG } from "@/constants"
 import {
   CreateQuoteResponse,
   DealerBody,
   RfqState,
 } from "@/generated/TradingGateway"
-import { constructUrl } from "@/utils/url"
-import { openWindow } from "@/utils/window/openWindow"
 import { EMPTY, merge, Observable, of } from "rxjs"
 import {
   catchError,
   delay,
   exhaustMap,
-  map,
   mergeMap,
   tap,
   withLatestFrom,
 } from "rxjs/operators"
-import { ADAPTIVE_BANK_NAME, creditDealers$ } from "../creditDealers"
+import { ADAPTIVE_BANK_NAME, creditDealers$ } from "./creditDealers"
 import {
   createCreditQuote$,
   CreatedCreditRfq,
   createdCreditRfq$,
-} from "../creditRfqRequests"
-import { creditRfqsById$ } from "../creditRfqs/creditRfqs"
+} from "./creditRfqRequests"
+import { creditRfqsById$ } from "./creditRfqs"
 
 // Keeping it short for demo purposes but could be driven by the actual RFQ duration value
 const DEALER_RFQ_RESPONSE_TIME_WINDOW_MILLIS = 30_000
@@ -63,55 +59,6 @@ const dealersResponses$ = createdCreditRfq$.pipe(
     },
   ),
 )
-
-const sellSideTicket$ = createdCreditRfq$.pipe(
-  withLatestFrom(creditDealers$),
-  map(
-    ([
-      {
-        rfqId,
-        request: { dealerIds },
-      },
-      creditDealers,
-    ]: [CreatedCreditRfq, DealerBody[]]) => {
-      const adaptiveBankId = creditDealers.find(
-        (dealer) => dealer.name === ADAPTIVE_BANK_NAME,
-      )?.id
-      const dealerId = dealerIds.find((id) => id === adaptiveBankId)
-      return dealerId !== undefined
-        ? {
-            rfqId,
-            dealerId,
-          }
-        : undefined
-    },
-  ),
-  tap((ticketToOpen) => {
-    if (ticketToOpen) {
-      openDealerTicketForRfq(
-        ticketToOpen.rfqId.toString(),
-        ticketToOpen.dealerId.toString(),
-      )
-    }
-  }),
-)
-
-// Open the sell side ticket to manually respond to RFQs
-function openDealerTicketForRfq(rfqId: string, dealerId: string) {
-  openWindow({
-    url: constructUrl(
-      ROUTES_CONFIG.sellSideTicket
-        .replace(":rfqId", rfqId)
-        .replace(":dealerId", dealerId),
-    ),
-    name: `CreditRFQ-${rfqId}-${dealerId}`,
-    displayName: "Credit RFQ",
-    width: 330,
-    height: CREDIT_SELL_SIDE_TICKET_HEIGHT,
-    x: window.innerWidth - 330,
-    y: window.innerHeight - CREDIT_SELL_SIDE_TICKET_HEIGHT,
-  })
-}
 
 function sendRandomQuoteAfterDelay(
   rfqId: number,
@@ -163,8 +110,4 @@ function generateRandomPrice(targetPrice = 100) {
 
 export function registerSimulatedDealerResponses() {
   return dealersResponses$.subscribe()
-}
-
-export function enableOpenSellSideTicketForAdaptiveBankRfqs() {
-  return sellSideTicket$.subscribe()
 }

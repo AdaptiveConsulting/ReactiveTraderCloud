@@ -10,7 +10,7 @@ import {
 } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
-import { withConnection } from "../../withConnection"
+import { withConnection } from "../withConnection"
 
 const isAddedInstrumentUpdate = (
   update: InstrumentUpdate,

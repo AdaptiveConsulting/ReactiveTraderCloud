@@ -8,7 +8,7 @@ import MainLayout from "./MainLayout"
 const FX_TEAR_OUT_SECTIONS = ["tiles", "blotter", "analytics"] as const
 const useTornOutSections = getTornOutSections(FX_TEAR_OUT_SECTIONS)
 
-export const MainFxRoute = () => {
+export const FxPage = () => {
   const tornOutSections = useTornOutSections()
   return (
     <MainLayout>

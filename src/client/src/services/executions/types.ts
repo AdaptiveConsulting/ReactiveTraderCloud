@@ -1,4 +1,4 @@
-import { Direction } from "../trades"
+import { Direction } from "@/generated/TradingGateway"
 
 export interface TradeRaw {
   CurrencyPair: string

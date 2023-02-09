@@ -50,6 +50,7 @@ export const initConnection = async () => {
     url: `${window.location.origin}/ws`,
     interceptor: noop,
     autoReconnect: true,
+    useJson: !!import.meta.env.DEV,
   })
   connectionDisposable$.next(dispose)
 }

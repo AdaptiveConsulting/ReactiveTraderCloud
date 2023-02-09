@@ -1,10 +1,5 @@
-import { QuoteState } from "@/generated/TradingGateway"
+import { Direction, QuoteState } from "@/generated/TradingGateway"
 import { CamelCase, CollectionUpdates } from "../utils"
-
-export enum Direction {
-  Buy = "Buy",
-  Sell = "Sell",
-}
 
 export enum TradeStatus {
   Pending = "Pending",

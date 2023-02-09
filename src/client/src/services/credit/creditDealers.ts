@@ -8,7 +8,7 @@ import {
 } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
-import { withConnection } from "../../withConnection"
+import { withConnection } from "../withConnection"
 
 export const ADAPTIVE_BANK_NAME = "Adaptive Bank"
 
@@ -37,4 +37,13 @@ export const [useCreditDealerById, creditDealerById$] = bind(
     creditDealers$.pipe(
       map((dealers) => dealers.find((dealer) => dealer.id === dealerId)),
     ),
+)
+
+export const [useAdaptiveDealerId, adaptiveDealerId$] = bind(
+  creditDealers$.pipe(
+    map(
+      (dealers) =>
+        dealers.find((dealer) => dealer.name === ADAPTIVE_BANK_NAME)?.id,
+    ),
+  ),
 )

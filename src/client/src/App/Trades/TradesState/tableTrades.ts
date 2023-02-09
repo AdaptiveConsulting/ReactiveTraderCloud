@@ -1,3 +1,4 @@
+import { HIGHLIGHT_ROW_FLASH_TIME } from "@/constants"
 import { CreditTrade, creditTrades$, FxTrade, trades$ } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
@@ -376,17 +377,17 @@ const newTradeId$ = merge(trades$, creditTrades$).pipe(
  * State hook that emits tradeId of row to highlight for x seconds
  * highlighted row will be either from manually updating tradeRowHighlight$ or a new trade
  */
-const FLASH_TIME = 3000
+
 export const [useFxTradeRowHighlight] = bind(
   merge([
     fxTradeRowHighlight$,
     fxTradeRowHighlight$.pipe(
-      delay(FLASH_TIME),
+      delay(HIGHLIGHT_ROW_FLASH_TIME),
       map(() => undefined),
     ),
     newTradeId$,
     newTradeId$.pipe(
-      delay(FLASH_TIME),
+      delay(HIGHLIGHT_ROW_FLASH_TIME),
       map(() => undefined),
     ),
   ]).pipe(mergeMap((tradeId) => tradeId)),
@@ -397,12 +398,12 @@ export const [useCreditTradeRowHighlight] = bind(
   merge([
     creditTradeRowHighlight$,
     creditTradeRowHighlight$.pipe(
-      delay(FLASH_TIME),
+      delay(HIGHLIGHT_ROW_FLASH_TIME),
       map(() => undefined),
     ),
     newTradeId$,
     newTradeId$.pipe(
-      delay(FLASH_TIME),
+      delay(HIGHLIGHT_ROW_FLASH_TIME),
       map(() => undefined),
     ),
   ]).pipe(mergeMap((tradeId) => tradeId)),

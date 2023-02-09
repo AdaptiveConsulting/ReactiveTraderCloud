@@ -1,5 +1,4 @@
 import { createKeyedSignal } from "@react-rxjs/utils"
-import { Direction } from "@/services/trades"
 import {
   exhaustMap,
   map,
@@ -20,6 +19,7 @@ import { getCurrencyPair$ } from "@/services/currencyPairs"
 import { emitTooLongMessage } from "@/utils/emitTooLong"
 import { bind } from "@react-rxjs/core"
 import { getNotionalValue$ } from "./Notional"
+import { Direction } from "@/generated/TradingGateway"
 
 // Dismiss Message
 const DISMISS_TIMEOUT = 5_000

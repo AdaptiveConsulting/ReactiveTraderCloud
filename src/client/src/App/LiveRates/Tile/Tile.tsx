@@ -1,6 +1,5 @@
 import { memo } from "react"
 import { merge, pipe } from "rxjs"
-import { Direction } from "@/services/trades"
 import { PriceMovement, priceMovement$ } from "./PriceMovement"
 import { NotionalInput, notionalInput$ } from "./Notional"
 import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"
@@ -32,6 +31,7 @@ import { getIsSymbolDataStale$ } from "@/services/prices"
 import { SUSPENSE } from "@react-rxjs/core"
 import { map } from "rxjs/operators"
 import { isMobileDevice } from "@/utils"
+import { Direction } from "@/generated/TradingGateway"
 
 export const tile$ = (symbol: string) =>
   merge(
