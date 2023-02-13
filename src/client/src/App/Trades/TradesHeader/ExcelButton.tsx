@@ -3,7 +3,7 @@ import { Observable } from "rxjs"
 import { map, take } from "rxjs/operators"
 import styled from "styled-components"
 import { useColDef, useColFields, useTrades$ } from "../Context"
-import { ColDef } from "../TradesState"
+import { ColDef, useTableTrades } from "../TradesState"
 
 const ExcelIcon = () => (
   <svg
@@ -45,70 +45,48 @@ const Button = styled("button")`
     transform: scale(0.7);
   }
 `
-/**
- * Format trades data for CSV file, including escaping
- * inner commas.
- */
-export const getExportTable$ = (
-  trades$: Observable<Trade[]>,
-  colDef: ColDef,
-  colFields: (string | number)[],
-) =>
-  trades$.pipe(
-    map((trades) =>
-      trades.map((trade) =>
-        colFields.map((field) => {
-          let res =
-            colDef[field].excelValueFormatter?.(trade[field]) ??
-            colDef[field].valueFormatter?.(trade[field]) ??
-            trade[field]
-          if (typeof res === "string" && res?.includes(",")) {
-            res = '"' + res + '"'
-          }
-          return res
-        }),
-      ),
-    ),
-    take(1),
-  )
 
 const downloadCsv = (
-  trades$: Observable<Trade[]>,
+  trades: Trade[],
   colDef: ColDef,
   colFields: (string | number)[],
 ) => {
-  getExportTable$(trades$, colDef, colFields).subscribe((trades) => {
-    let csv = ""
-
-    // CSV header
-    colFields.forEach((field) => {
-      csv += colDef[field].headerName + ","
+  let csv = ""
+  // CSV header
+  colFields.forEach((field) => {
+    csv += colDef[field].headerName + ","
+  })
+  csv += "\n"
+  // CSV body
+  trades.map((trade) => {
+    colFields.map((field) => {
+      const res =
+        colDef[field].excelValueFormatter?.(trade[field]) ??
+        colDef[field].valueFormatter?.(trade[field]) ??
+        trade[field]
+      csv += res + ", "
     })
     csv += "\n"
-
-    // CSV body
-    trades.forEach((row) => {
-      csv += row.join(",")
-      csv += "\n"
-    })
-
-    // Create and cleanup hidden element to trigger download in browser
-    const hiddenElement = document.createElement("a")
-    hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv)
-    hiddenElement.target = "_blank"
-    hiddenElement.download = "RT-Blotter.csv"
-    hiddenElement.click()
-    hiddenElement.parentElement?.removeChild(hiddenElement)
   })
+
+  // Create and cleanup hidden element to trigger download in browser
+  const hiddenElement = document.createElement("a")
+  hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv)
+  hiddenElement.target = "_blank"
+  hiddenElement.download = "RT-Blotter.csv"
+  hiddenElement.click()
+  hiddenElement.parentElement?.removeChild(hiddenElement)
 }
 
 export const ExcelButton = () => {
-  const trades$ = useTrades$()
+  const rows$ = useTrades$()
   const colDef = useColDef()
   const colFields = useColFields()
+  const trades = useTableTrades(rows$, colDef)
+
   return (
     <Button
-      onClick={() => downloadCsv(trades$, colDef, colFields)}
+      onClick={() => downloadCsv(trades, colDef, colFields)}
       aria-label="Export to CSV"
     >
       <ExcelIcon />
