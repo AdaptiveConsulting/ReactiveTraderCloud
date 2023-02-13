@@ -1,6 +1,4 @@
 import { Trade } from "@/services/trades"
-import { Observable } from "rxjs"
-import { map, take } from "rxjs/operators"
 import styled from "styled-components"
 import { useColDef, useColFields, useTrades$ } from "../Context"
 import { ColDef, useTableTrades } from "../TradesState"
