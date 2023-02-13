@@ -11,7 +11,7 @@ const tradesStream$ = BlotterService.getTradeStream().pipe(
   map(({ isStateOfTheWorld, updates }) => ({
     isStateOfTheWorld,
     updates: updates.map((rawTrade) => ({
-      tradeId: rawTrade.tradeId.toString(10),
+      tradeId: Number(rawTrade.tradeId),
       symbol: rawTrade.currencyPair, // TODO: talk with hydra team about this
       traderName: rawTrade.tradeName,
       notional: rawTrade.notional,
