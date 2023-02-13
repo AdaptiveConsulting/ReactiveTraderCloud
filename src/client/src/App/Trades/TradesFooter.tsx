@@ -3,7 +3,8 @@ import { bind } from "@react-rxjs/core"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
-import { useTrades$ } from "./Context"
+import { useColDef, useTrades$ } from "./Context"
+import { useTableTrades } from "./TradesState"
 
 const TradesFooterStyled = styled("div")`
   height: 2rem;
@@ -27,17 +28,12 @@ const [useTotalRows] = bind<[Observable<Trade[]>], number>(
   0,
 )
 
-const [useDisplayRows] = bind<[Observable<Trade[]>], number>(
-  (trades$: Observable<Trade[]>) => {
-    return trades$.pipe(map((trades) => trades.length))
-  },
-  0,
-)
-
 export const TradesFooter = () => {
-  const trades$ = useTrades$()
-  const totalRows = useTotalRows(trades$)
-  const displayRows = useDisplayRows(trades$)
+  const rows$ = useTrades$()
+  const colDef = useColDef()
+  const trades = useTableTrades(rows$, colDef)
+  const totalRows = useTotalRows(rows$)
+  const displayRows = trades.length
 
   return (
     <TradesFooterStyled>
