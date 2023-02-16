@@ -77,7 +77,7 @@ test.describe("Credit", () => {
       const tradeId = btnTxt.split(" ")[2]
       const blotterId = await rfqBlotterPage
         .locator("td")
-        .getByText(tradeId)
+        .getByText(tradeId, { exact: true })
         .first()
         .innerText()
 
