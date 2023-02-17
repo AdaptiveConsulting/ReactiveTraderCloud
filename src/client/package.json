@@ -47,7 +47,7 @@
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated",
     "storybook": "start-storybook -p 6006 --no-manager-cache",
     "e2e:openfin": "playwright test --project=openfin",
-    "e2e:web": "playwright test --project=chrome --repeat-each=20",
+    "e2e:web": "playwright test --project=chrome",
     "build-storybook": "build-storybook -o ./dist/storybook"
   },
   "dependencies": {
