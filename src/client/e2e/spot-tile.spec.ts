@@ -38,8 +38,9 @@ test.describe("Spot Tile", () => {
         .innerText()
 
       const blotterTradeID = await blotterPage
-        .getByRole("cell", { name: tradeId })
-        .innerText()
+        .locator(`[data-testid='trades-grid-row-${tradeId}'] > td`)
+        .nth(1)
+        .textContent()
       await tilePage.locator("[data-testid='menuButton-ALL']").click()
       expect(tradeId).toBe(blotterTradeID)
     })
@@ -130,7 +131,7 @@ test.describe("Spot Tile", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async () => {
       const toggle = tilePage.locator("[data-testid='toggleButton']")
       await toggle.click()
-      expect(toggle).toHaveAttribute("background", "")
+      expect(toggle).toHaveCSS("background", "none")
     })
   })
 
