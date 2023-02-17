@@ -123,6 +123,7 @@ export const TradesGridInner = <Row extends Trade>({
                 key={row.tradeId}
                 highlight={row.tradeId === highlightedRow}
                 onClick={() => onRowClick?.(row as unknown as Row)}
+                data-testid={`trades-grid-row-${row.tradeId}`}
               >
                 <StatusIndicator status={row.status} aria-label={row.status} />
                 {fields.map((field) => {
