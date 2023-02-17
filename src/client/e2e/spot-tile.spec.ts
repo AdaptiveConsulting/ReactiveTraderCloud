@@ -131,7 +131,10 @@ test.describe("Spot Tile", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async () => {
       const toggle = tilePage.locator("[data-testid='toggleButton']")
       await toggle.click()
-      expect(toggle).toHaveCSS("background", "none")
+      await expect(toggle).toHaveAttribute(
+        "data-qa-id",
+        "workspace-view-Normal",
+      )
     })
   })
 
