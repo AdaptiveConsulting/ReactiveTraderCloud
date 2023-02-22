@@ -128,13 +128,26 @@ test.describe("Spot Tile", () => {
   })
 
   test.describe("Toggle between prices and graph views", () => {
-    test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async () => {
+    test.only("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async () => {
       const toggle = tilePage.locator("[data-testid='toggleButton']")
+      // first click, goes into normal mode, should be no graphs
       await toggle.click()
-      await expect(toggle).toHaveAttribute(
-        "data-qa-id",
-        "workspace-view-Normal",
+      const tileState = await tilePage.evaluate(() =>
+        window.localStorage.getItem("selectedView"),
       )
+      await expect(tileState).toBe("Normal")
+      await expect(
+        tilePage.locator("[data-testid='tile-graph']").nth(0),
+      ).toBeHidden()
+      // click toggleButton again, now expect there to be graphs
+      await toggle.click()
+      const tileState2 = await tilePage.evaluate(() =>
+        window.localStorage.getItem("selectedView"),
+      )
+      await expect(tileState2).toBe("Analytics")
+      await expect(
+        tilePage.locator("[data-testid='tile-graph']").nth(0),
+      ).toBeVisible()
     })
   })
 

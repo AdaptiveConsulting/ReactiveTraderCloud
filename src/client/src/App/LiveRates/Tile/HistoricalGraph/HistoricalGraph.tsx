@@ -75,7 +75,7 @@ export const HistoricalGraphComponent = forwardRef<
 ) {
   return (
     <LineChartWrapper showTimer={showTimer} ref={ref}>
-      <Svg>
+      <Svg data-testid="tile-graph">
         <Path
           stroke={active ? "#5f94f5" : "#737987"}
           strokeOpacity={0.9}
