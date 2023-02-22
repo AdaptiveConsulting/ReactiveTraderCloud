@@ -128,7 +128,7 @@ test.describe("Spot Tile", () => {
   })
 
   test.describe("Toggle between prices and graph views", () => {
-    test.only("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async () => {
+    test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async () => {
       const toggle = tilePage.locator("[data-testid='toggleButton']")
       // first click, goes into normal mode, should be no graphs
       await toggle.click()
