@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { render, screen, within } from "@testing-library/react"
+import { render, screen, waitFor, within } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 import { Trade, tradesTestData } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
@@ -27,18 +27,20 @@ describe("Trades quick filter", () => {
     _trades.__resetMocks()
   })
 
-  it("should be empty on load", () => {
+  it("should be empty on load", async () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
     _trades.__setTrades(tradesSubj)
 
     renderComponent()
 
-    expect(
-      within(
-        screen.getByRole("search", {
-          name: "Search by text across all trade fields",
-        }),
-      ).queryByRole("textbox")?.textContent,
-    ).toBe("")
+    await waitFor(() => {
+      expect(
+        within(
+          screen.getByRole("search", {
+            name: "Search by text across all trade fields",
+          }),
+        ).queryByRole("textbox")?.textContent,
+      ).toBe("")
+    })
   })
 })

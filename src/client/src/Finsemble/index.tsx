@@ -1,70 +1,44 @@
-import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { BrowserRouter, Route } from "react-router-dom"
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
-import { TileView } from "@/App/LiveRates/selectedView"
 import { FxTrades } from "@/App/Trades"
 import { DocTitle } from "@/components/DocTitle"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
-import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
+import { Routes } from "@storybook/router/dist/ts3.9/_modules/react-router-index"
+import { TornOutTileView } from "@/Web"
 
 export const FinsembleApp = () => (
   <BrowserRouter basename={BASE_PATH}>
-    <Switch>
+    <Routes>
       <Route
         path={ROUTES_CONFIG.analytics}
-        render={() => (
+        element={
           <DocTitle title="Analytics">
             <Analytics hideIfMatches={null} />
             <DisconnectionOverlay />
           </DocTitle>
-        )}
+        }
       />
       <Route
         path={ROUTES_CONFIG.blotter}
-        render={() => (
+        element={
           <DocTitle title="Trades">
             <FxTrades />
             <DisconnectionOverlay />
           </DocTitle>
-        )}
+        }
       />
       <Route
         path={ROUTES_CONFIG.tiles}
-        render={() => (
+        element={
           <DocTitle title="Live Rates">
             <LiveRates />
             <DisconnectionOverlay />
           </DocTitle>
-        )}
+        }
       />
-      <Route
-        path={ROUTES_CONFIG.tile}
-        render={({
-          location: { search },
-          match: {
-            params: { symbol },
-          },
-        }) => {
-          const query = new URLSearchParams(search)
-          const view = query.has("tileView")
-            ? (query.get("tileView") as TileView)
-            : TileView.Analytics
-
-          return (
-            <>
-              {symbol && (
-                <TornOutTile
-                  symbol={symbol}
-                  view={view}
-                  supportsTearOut={false}
-                />
-              )}
-              <DisconnectionOverlay />
-            </>
-          )
-        }}
-      />
-    </Switch>
+      <Route path={ROUTES_CONFIG.tile} element={<TornOutTileView />} />
+    </Routes>
   </BrowserRouter>
 )

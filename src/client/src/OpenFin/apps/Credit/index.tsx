@@ -9,45 +9,41 @@ import { Route } from "react-router-dom"
 const CreditRoutes = () => (
   <>
     <Route
-      exact
       path={ROUTES_CONFIG.creditRfqs}
-      render={() => (
+      element={
         <DocTitle title="RFQs">
           <DisconnectionOverlay />
           <CreditRfqs />
         </DocTitle>
-      )}
+      }
     />
     <Route
-      exact
       path={ROUTES_CONFIG.creditBlotter}
-      render={() => (
+      element={
         <DocTitle title="Trades">
           <DisconnectionOverlay />
           <CreditTrades />
         </DocTitle>
-      )}
+      }
     />
 
     <Route
-      exact
       path={ROUTES_CONFIG.newRfq}
-      render={() => (
+      element={
         <DocTitle title="New RFQ">
           <DisconnectionOverlay />
           <CreditRfqForm />
         </DocTitle>
-      )}
+      }
     />
     <Route
-      exact
       path={ROUTES_CONFIG.sellSide}
-      render={() => (
+      element={
         <DocTitle title="Adaptive Bank RFQ Queue">
           <DisconnectionOverlay />
           <MainSellSideRoute />
         </DocTitle>
-      )}
+      }
     />
   </>
 )

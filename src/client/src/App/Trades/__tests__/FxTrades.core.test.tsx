@@ -41,7 +41,9 @@ describe("Trades", () => {
 
     renderComponent()
 
-    expect(screen.queryByText("No trades to show")).not.toBeNull()
+    await waitFor(() =>
+      expect(screen.queryByText("No trades to show")).not.toBeNull(),
+    )
 
     act(() => tradesSubj.next(mockTrades))
 
@@ -56,9 +58,11 @@ describe("Trades", () => {
 
     renderComponent()
 
-    expect(
-      within(screen.getByRole("grid")).queryByText("No trades to show"),
-    ).not.toBeNull()
+    await waitFor(() =>
+      expect(
+        within(screen.getByRole("grid")).queryByText("No trades to show"),
+      ).not.toBeNull(),
+    )
 
     act(() => tradesSubj.next(mockTrades))
 
@@ -87,8 +91,10 @@ describe("Trades", () => {
       throw new Error("Expected rows not rendered")
     }
 
-    expect(queryByText(firstRow as HTMLElement, "1111111111")).not.toBeNull()
-    expect(queryByText(lastRow as HTMLElement, "3333333333")).not.toBeNull()
+    await waitFor(() => {
+      expect(queryByText(firstRow as HTMLElement, "1111111111")).not.toBeNull()
+      expect(queryByText(lastRow as HTMLElement, "3333333333")).not.toBeNull()
+    })
   })
 
   it("should apply no filter by default", async () => {
@@ -97,7 +103,9 @@ describe("Trades", () => {
 
     renderComponent()
 
-    expect(screen.queryByText("Displaying rows 3 of 3")).not.toBeNull()
+    await waitFor(() => {
+      expect(screen.queryByText("Displaying rows 3 of 3")).not.toBeNull()
+    })
   })
 
   it("should update when new trades are received", async () => {
@@ -106,7 +114,9 @@ describe("Trades", () => {
 
     renderComponent()
 
-    expect(screen.queryByText("Displaying rows 3 of 3")).not.toBeNull()
+    await waitFor(() => {
+      expect(screen.queryByText("Displaying rows 3 of 3")).not.toBeNull()
+    })
 
     act(() => tradesSubj.next([nextTrade, ...mockTrades]))
 

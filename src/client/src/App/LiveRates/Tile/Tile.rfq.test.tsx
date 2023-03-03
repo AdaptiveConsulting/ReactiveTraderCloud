@@ -73,7 +73,7 @@ const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 const executeFn = jest.fn(() => response$)
 
 describe("Tile/rfq", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.useFakeTimers("modern")
 
     _prices.__resetMocks()
@@ -90,11 +90,16 @@ describe("Tile/rfq", () => {
     _prices.__setHistoricalPricesMock(hPriceMock$)
 
     _exec.__setExecute$(executeFn)
-    renderComponent()
+    const container = renderComponent().container
+    await waitFor(() => {
+      expect(container).toBeDefined()
+    })
   })
 
   it("RFQ Button should only appear when notional above threshold", async () => {
-    expect(screen.queryByTestId(rfqButtonTestId)).toBe(null)
+    await waitFor(() => {
+      expect(screen.queryByTestId(rfqButtonTestId)).toBe(null)
+    })
 
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
 
@@ -102,22 +107,31 @@ describe("Tile/rfq", () => {
       fireEvent.change(input, { target: { value: "10000000" } })
     })
 
-    expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(
-      "Initiate RFQ",
-    )
+    await waitFor(() => {
+      expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(
+        "Initiate RFQ",
+      )
+    })
   })
 
   it("RFQ cancel should appear after initiate quote and work as expected", async () => {
     initiateQuote()
-    expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe("Cancel RFQ")
+    await waitFor(() => {
+      expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(
+        "Cancel RFQ",
+      )
+    })
 
     // clicking cancel button
     act(() => {
       fireEvent.click(screen.getByTestId(rfqButtonTestId))
     })
-    expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(
-      "Initiate RFQ",
-    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(
+        "Initiate RFQ",
+      )
+    })
   })
 
   it("RFQ cancel should disappear after 2 seconds, and timer and reject button should appear", async () => {
@@ -126,9 +140,11 @@ describe("Tile/rfq", () => {
       jest.advanceTimersByTime(2001)
     })
 
-    expect(screen.queryByTestId(rfqButtonTestId)).toBe(null)
-    expect(screen.queryByTestId(rfqTimerTestId)).not.toBe(null)
-    expect(screen.queryByTestId(rfqRejectTestId)).not.toBe(null)
+    await waitFor(() => {
+      expect(screen.queryByTestId(rfqButtonTestId)).toBe(null)
+      expect(screen.queryByTestId(rfqTimerTestId)).not.toBe(null)
+      expect(screen.queryByTestId(rfqRejectTestId)).not.toBe(null)
+    })
   })
 
   it("RFQ Reject button should work as expected", async () => {
@@ -141,14 +157,21 @@ describe("Tile/rfq", () => {
       fireEvent.click(rfqReject)
     })
 
-    expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe("Requote")
-    expect(screen.queryAllByTestId(rfqExpireLabelTestId)).toHaveLength(2)
+    await waitFor(() => {
+      expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe("Requote")
+      expect(screen.queryAllByTestId(rfqExpireLabelTestId)).toHaveLength(2)
+    })
 
     // click requote button
     act(() => {
       fireEvent.click(screen.getByTestId(rfqButtonTestId))
     })
-    expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe("Cancel RFQ")
+
+    await waitFor(() => {
+      expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(
+        "Cancel RFQ",
+      )
+    })
   })
 
   it("RFQ timer timeout should work as rejected", async () => {
@@ -161,14 +184,21 @@ describe("Tile/rfq", () => {
       jest.advanceTimersByTime(10001)
     })
 
-    expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe("Requote")
-    expect(screen.queryAllByTestId(rfqExpireLabelTestId)).toHaveLength(2)
+    await waitFor(() => {
+      expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe("Requote")
+      expect(screen.queryAllByTestId(rfqExpireLabelTestId)).toHaveLength(2)
+    })
 
     // click requote button
     act(() => {
       fireEvent.click(screen.getByTestId(rfqButtonTestId))
     })
-    expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe("Cancel RFQ")
+
+    await waitFor(() => {
+      expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(
+        "Cancel RFQ",
+      )
+    })
   })
 
   it("RFQ buy/sell buttons should work as expected", async () => {
@@ -177,13 +207,18 @@ describe("Tile/rfq", () => {
       jest.advanceTimersByTime(2001)
     })
 
-    expect(executeFn).not.toHaveBeenCalled()
-    expect(screen.queryByText("Executing")).toBeNull()
+    await waitFor(() => {
+      expect(executeFn).not.toHaveBeenCalled()
+      expect(screen.queryByText("Executing")).toBeNull()
+    })
 
     act(() => {
       fireEvent.click(screen.getAllByRole("button")[1])
     })
-    expect(executeFn.mock.calls.length).toBe(1)
+
+    await waitFor(() => {
+      expect(executeFn.mock.calls.length).toBe(1)
+    })
 
     const originalRequest: ExecutionRequest = (
       executeFn.mock.calls[0] as any
@@ -193,12 +228,14 @@ describe("Tile/rfq", () => {
     }
     delete request.id
 
-    expect(request).toEqual({
-      currencyPair: "EURUSD",
-      dealtCurrency: "USD",
-      direction: Direction.Sell,
-      notional: 10000000,
-      spotRate: 1.53816,
+    await waitFor(() => {
+      expect(request).toEqual({
+        currencyPair: "EURUSD",
+        dealtCurrency: "USD",
+        direction: Direction.Sell,
+        notional: 10000000,
+        spotRate: 1.53816,
+      })
     })
 
     await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
@@ -218,23 +255,25 @@ describe("Tile/rfq", () => {
       response$.complete()
     })
 
-    expect(screen.getByRole("alert").textContent).toEqual(
-      "You sold EUR 10,000,000 at a rate of 1.53816 for USD 15,381,600 settling (Spt) 04 Feb.",
-    )
+    await waitFor(() => {
+      expect(screen.getByRole("alert").textContent).toEqual(
+        "You sold EUR 10,000,000 at a rate of 1.53816 for USD 15,381,600 settling (Spt) 04 Feb.",
+      )
+    })
 
     act(() => {
       fireEvent.click(screen.getByText("Close"))
     })
 
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
-
-    expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
-    )
-
-    expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(
-      "Initiate RFQ",
-    )
+    await waitFor(() => {
+      expect(screen.queryByRole("alert")).toBeNull()
+      expect(screen.getAllByRole("button")[1].textContent).toBe(
+        `SELL${priceMock.bid}`,
+      )
+      expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe(
+        "Initiate RFQ",
+      )
+    })
   })
 
   it("RFQ button should be disabled where notional is not valid", async () => {
@@ -243,8 +282,10 @@ describe("Tile/rfq", () => {
       fireEvent.change(input, { target: { value: "1000000001" } })
     })
 
-    expect(
-      screen.queryByText("Initiate RFQ")?.hasAttribute("disabled"),
-    ).toEqual(true)
+    await waitFor(() => {
+      expect(
+        screen.queryByText("Initiate RFQ")?.hasAttribute("disabled"),
+      ).toEqual(true)
+    })
   })
 })

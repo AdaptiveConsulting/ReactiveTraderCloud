@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { ThemeName, useTheme, ThemeStorageSwitch } from "@/theme"
 import { Block } from "../styled"
+import { ReactNode } from "react"
 
 export const FloatingTools = () => {
   const { themeName } = useTheme()
@@ -15,7 +16,9 @@ export const FloatingTools = () => {
   )
 }
 
-const Root: React.FC = () => <Block bg={(t) => t.primary[2]} />
+const Root = ({ children }: { children: ReactNode }) => (
+  <Block bg={(t) => t.primary[2]}>{children}</Block>
+)
 
 const Bar = styled((props) => (
   <Block

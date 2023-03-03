@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { act, fireEvent, render, screen } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 import { Trade, tradesTestData } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
@@ -33,39 +33,48 @@ describe("for notional column", () => {
 
   let container: HTMLElement
 
-  beforeEach(() => {
+  beforeEach(async () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj)
+    act(() => _trades.__setTrades(tradesSubj))
     container = renderComponent().container
+    await waitFor(() => {
+      expect(container).toBeDefined()
+    })
   })
 
-  it("no filter icon or menu should be rendered", () => {
+  it("no filter icon or menu should be rendered", async () => {
     expect(container.querySelector(notionalFilterIcon)).toBe(null)
     expect(container.querySelector(notionalFilterMenu)).toBe(null)
   })
 
-  it("filter icon and menu should work correct", () => {
+  it("filter icon and menu should work correctly", async () => {
     act(() => {
       fireEvent.mouseOver(screen.getByText("Notional").closest("th") as Element)
     })
+
     expect(container.querySelector(notionalFilterIcon)).not.toBe(null)
 
     act(() => {
       fireEvent.click(container.querySelector(notionalFilterIcon) as Element)
     })
+
     expect(container.querySelector(notionalFilterMenu)).not.toBe(null)
 
     const input = container.querySelector(
       notionalFilterMenuInput,
     ) as HTMLInputElement
+
     expect(input.value).toBe("")
 
     act(() => {
       fireEvent.change(input, { target: { value: "1000000" } })
     })
+
     expect(input.value).toBe("1000000")
 
-    expect(container.querySelectorAll("tbody tr").length).toBe(2)
+    await waitFor(() => {
+      expect(container.querySelectorAll("tbody tr").length).toBe(2)
+    })
 
     act(() => {
       userEvent.selectOptions(
@@ -73,7 +82,10 @@ describe("for notional column", () => {
         ComparatorType.Greater,
       )
     })
-    expect(container.querySelectorAll("tbody tr").length).toBe(1)
+
+    await waitFor(() =>
+      expect(container.querySelectorAll("tbody tr").length).toBe(1),
+    )
 
     act(() => {
       userEvent.selectOptions(
@@ -81,6 +93,9 @@ describe("for notional column", () => {
         ComparatorType.NotEqual,
       )
     })
-    expect(container.querySelectorAll("tbody tr").length).toBe(1)
+
+    await waitFor(() => {
+      expect(container.querySelectorAll("tbody tr").length).toBe(1)
+    })
   })
 })

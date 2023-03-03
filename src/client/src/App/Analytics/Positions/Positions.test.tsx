@@ -88,7 +88,7 @@ describe("Positions", () => {
     >(positionMock)
     _analytics.__setPositionMock(positionMock$)
 
-    renderComponent()
+    act(() => renderComponent())
 
     await waitFor(() =>
       expect(screen.getByTestId("positions-label-JPY")).not.toBeNull(),
@@ -98,13 +98,19 @@ describe("Positions", () => {
       fireEvent.mouseOver(screen.getByTestId("positions-label-JPY"))
     })
 
-    expect(screen.getByTestId("tooltip").textContent).toBe("JPY 1,014,984,844")
+    await waitFor(() => {
+      expect(screen.getByTestId("tooltip").textContent).toBe(
+        "JPY 1,014,984,844",
+      )
+    })
 
     act(() => {
       fireEvent.mouseOver(screen.getByTestId("positions-label-AUD"))
     })
 
-    expect(screen.getByTestId("tooltip").textContent).toBe("AUD -1,557,030")
+    await waitFor(() => {
+      expect(screen.getByTestId("tooltip").textContent).toBe("AUD -1,557,030")
+    })
 
     act(() => {
       positionMock$.next(positionMock2)
@@ -117,7 +123,9 @@ describe("Positions", () => {
       fireEvent.mouseOver(screen.getByTestId("positions-label-AUD"))
     })
 
-    expect(screen.getByTestId("tooltip").textContent).toBe("AUD -1,557,031")
+    await waitFor(() => {
+      expect(screen.getByTestId("tooltip").textContent).toBe("AUD -1,557,031")
+    })
   })
 
   it("should display the correct bubble chart", async () => {
@@ -127,6 +135,7 @@ describe("Positions", () => {
     _analytics.__setPositionMock(positionMock$)
 
     const subscription = positions$.subscribe()
+
     const { container } = render(
       <TestThemeProvider>
         <Subscribe source$={positions$} fallback="No data">
@@ -135,7 +144,9 @@ describe("Positions", () => {
       </TestThemeProvider>,
     )
 
-    expect(container.firstChild).toMatchSnapshot()
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot()
+    })
 
     act(() => {
       positionMock$.next(positionMock2)
@@ -143,7 +154,9 @@ describe("Positions", () => {
 
     await new Promise((res) => setTimeout(res, 2200))
 
-    expect(container.firstChild).toMatchSnapshot()
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot()
+    })
 
     subscription.unsubscribe()
   })

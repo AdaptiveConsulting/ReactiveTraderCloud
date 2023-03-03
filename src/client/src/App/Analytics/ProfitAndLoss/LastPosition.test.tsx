@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Subscribe } from "@react-rxjs/core"
-import { render, screen, act } from "@testing-library/react"
+import { render, screen, act, waitFor } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 import { TestThemeProvider } from "@/utils/testUtils"
 import { LastPosition, lastPosition$ } from "./LastPosition"
@@ -70,48 +70,58 @@ describe("LastPositions", () => {
     _analytics.__resetMocks()
   })
 
-  it("should render the initial last position value", () => {
+  it("should render the initial last position value", async () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
     _analytics.__setHistoryMock(historyMock$)
 
-    renderComponent()
+    act(() => renderComponent())
 
-    expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
-      `-2,713,309`,
+    await waitFor(() =>
+      expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
+        `-2,713,309`,
+      ),
     )
   })
 
-  it("should display the updated last position", () => {
+  it("should display the updated last position", async () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
     _analytics.__setHistoryMock(historyMock$)
 
-    renderComponent()
+    act(() => renderComponent())
 
-    expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
-      `-2,713,309`,
+    await waitFor(() =>
+      expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
+        `-2,713,309`,
+      ),
     )
 
     act(() => historyMock$.next(historyMock2))
 
-    expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
-      `-2,700,751`,
+    await waitFor(() =>
+      expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
+        `-2,700,751`,
+      ),
     )
   })
 
-  it("should display positive and negative number correctly", () => {
+  it("should display positive and negative number correctly", async () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
     _analytics.__setHistoryMock(historyMock$)
 
-    renderComponent()
+    act(() => renderComponent())
 
-    expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
-      `-2,713,309`,
+    await waitFor(() =>
+      expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
+        `-2,713,309`,
+      ),
     )
 
     act(() => historyMock$.next(historyMock3))
 
-    expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
-      `+2,700,751`,
+    await waitFor(() =>
+      expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
+        `+2,700,751`,
+      ),
     )
   })
 })

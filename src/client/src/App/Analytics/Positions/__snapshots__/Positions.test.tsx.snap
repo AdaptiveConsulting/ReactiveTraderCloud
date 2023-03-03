@@ -66,12 +66,12 @@ exports[`Positions should display the correct bubble chart 1`] = `
 exports[`Positions should display the correct bubble chart 2`] = `
 <div>
   <div
-    class="sc-jSFjdj eBlbsr"
+    class="sc-jTQDnj bTIroT"
   >
     Positions
   </div>
   <div
-    class="sc-iCoGMd jKUYqm"
+    class="sc-iBdmCd duIjXM"
   >
     <div
       class="analytics__positions-tooltip"
@@ -113,8 +113,8 @@ exports[`Positions should display the correct bubble chart 2`] = `
         style="visibility: visible;"
       >
         <circle
-          cx="22.366362534396142"
-          cy="65.17120150536171"
+          cx="22.148709018834936"
+          cy="65.27118787412081"
           r="15.240588068460097"
           style="fill: #ff274b; filter: url(#drop-shadow);"
         />
@@ -122,8 +122,8 @@ exports[`Positions should display the correct bubble chart 2`] = `
           class="analytics__positions-label"
           data-testid="positions-label-EUR"
           text-anchor="middle"
-          x="22.366362534396142"
-          y="69.17120150536171"
+          x="22.148709018834936"
+          y="69.27118787412081"
         >
           EUR
         </text>
@@ -133,8 +133,8 @@ exports[`Positions should display the correct bubble chart 2`] = `
         style="visibility: visible;"
       >
         <circle
-          cx="-24.09298211184919"
-          cy="64.28187563887715"
+          cx="-23.866306276238102"
+          cy="64.39407227724564"
           r="15"
           style="fill: #ff274b; filter: url(#drop-shadow);"
         />
@@ -142,8 +142,8 @@ exports[`Positions should display the correct bubble chart 2`] = `
           class="analytics__positions-label"
           data-testid="positions-label-AUD"
           text-anchor="middle"
-          x="-24.09298211184919"
-          y="68.28187563887715"
+          x="-23.866306276238102"
+          y="68.39407227724564"
         >
           AUD
         </text>
@@ -153,8 +153,8 @@ exports[`Positions should display the correct bubble chart 2`] = `
         style="visibility: visible;"
       >
         <circle
-          cx="0.13455356501548343"
-          cy="-10.50968065293873"
+          cx="0.1299017306519406"
+          cy="-10.47211575811071"
           r="60"
           style="fill: #01c38d; filter: url(#drop-shadow);"
         />
@@ -162,8 +162,8 @@ exports[`Positions should display the correct bubble chart 2`] = `
           class="analytics__positions-label"
           data-testid="positions-label-JPY"
           text-anchor="middle"
-          x="0.13455356501548343"
-          y="-6.50968065293873"
+          x="0.1299017306519406"
+          y="-6.472115758110711"
         >
           JPY
         </text>

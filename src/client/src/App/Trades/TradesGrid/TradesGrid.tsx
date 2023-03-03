@@ -1,5 +1,6 @@
 import { QuoteState } from "@/generated/TradingGateway"
 import { CreditTrade, FxTrade, Trade, TradeStatus } from "@/services/trades"
+import { ReactNode } from "react"
 import styled, { css } from "styled-components"
 import { useColDef, useColFields, useTrades$ } from "../Context"
 import { useTableTrades } from "../TradesState"
@@ -140,7 +141,10 @@ export const TradesGridInner = <Row extends Trade>({
                       }
                       crossed={isRowCrossed?.(row as unknown as Row)}
                     >
-                      {columnDefinition.valueFormatter?.(value) ?? value}
+                      {
+                        (columnDefinition.valueFormatter?.(value) ??
+                          value) as ReactNode
+                      }
                     </TableBodyCell>
                   )
                 })}

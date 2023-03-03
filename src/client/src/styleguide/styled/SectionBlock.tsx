@@ -1,4 +1,4 @@
-import { Component } from "react"
+import { Component, ReactNode } from "react"
 import styled, { css } from "styled-components"
 import { Block, BlockProps } from "../styled"
 import {
@@ -16,6 +16,7 @@ export interface SectionProps extends BlockProps, MarginPaddingProps {
   invert?: boolean
   colorScheme?: ColorSchemeName
   bleeds?: boolean
+  children?: ReactNode
 }
 
 const colorSchemes: { [scheme in ColorSchemeName]: ThemeSelectorPair } = {

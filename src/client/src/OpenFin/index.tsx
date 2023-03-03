@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react"
-import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
@@ -13,7 +13,7 @@ const CreditRoutes = lazy(() => import("@/OpenFin/apps/Credit"))
 
 export const OpenFinApp = () => (
   <BrowserRouter basename={BASE_PATH}>
-    <Switch>
+    <Routes>
       <Route path={`${ROUTES_CONFIG.launcher}*`}>
         <Suspense fallback={<Loader />}>
           <LauncherRoutes />
@@ -29,17 +29,11 @@ export const OpenFinApp = () => (
           <CreditRoutes />
         </Suspense>
       </Route>
-      <Route
-        path={ROUTES_CONFIG.contact}
-        render={() => <OpenFinContactDisplay />}
-      />
-      <Route path="/openfin-window-frame" render={() => <WindowFrame />} />
-      <Route
-        path="/openfin-sub-window-frame"
-        render={() => <ChildWindowFrame />}
-      />
-      <Route path={ROUTES_CONFIG.status} render={() => <div />} />
-      <Route path="/snapshots" render={() => <Snapshots />} />
-    </Switch>
+      <Route path={ROUTES_CONFIG.contact} element={<OpenFinContactDisplay />} />
+      <Route path="/openfin-window-frame" element={<WindowFrame />} />
+      <Route path="/openfin-sub-window-frame" element={<ChildWindowFrame />} />
+      <Route path={ROUTES_CONFIG.status} element={<div />} />
+      <Route path="/snapshots" element={<Snapshots />} />
+    </Routes>
   </BrowserRouter>
 )

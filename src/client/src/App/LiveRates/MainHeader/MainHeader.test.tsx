@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Subscribe } from "@react-rxjs/core"
-import { render, screen, act, fireEvent } from "@testing-library/react"
+import { render, screen, act, fireEvent, waitFor } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 import { MainHeader } from "./MainHeader"
 import { liveRates$ } from "../LiveRatesCore"
@@ -55,58 +55,75 @@ describe("MainHeader", () => {
   it("should load all the currency buttons", async () => {
     renderComponent()
 
-    expect(screen.getByTestId("menuButton-ALL").textContent).toBe(`ALL`)
-    expect(screen.getByTestId("menuButton-EUR").textContent).toBe(`EUR`)
-    expect(screen.getByTestId("menuButton-GBP").textContent).toBe(`GBP`)
+    await waitFor(() => {
+      expect(screen.getByTestId("menuButton-ALL").textContent).toBe(`ALL`)
+      expect(screen.getByTestId("menuButton-EUR").textContent).toBe(`EUR`)
+      expect(screen.getByTestId("menuButton-GBP").textContent).toBe(`GBP`)
+    })
   })
 
   it("should filter the tiles based on selection", async () => {
     renderComponent()
 
-    expect(
-      screen.getByRole("region", { name: "Lives Rates Tiles" }).children.length,
-    ).toBe(2)
+    await waitFor(() => {
+      expect(
+        screen.getByRole("region", { name: "Lives Rates Tiles" }).children
+          .length,
+      ).toBe(2)
+    })
 
     act(() => {
       fireEvent.click(screen.getByTestId("menuButton-EUR"))
     })
 
-    expect(
-      screen.getByRole("region", { name: "Lives Rates Tiles" }).children.length,
-    ).toBe(1)
-    expect(screen.getByTestId("tile-EURUSD")).not.toBeNull()
+    await waitFor(() => {
+      expect(
+        screen.getByRole("region", { name: "Lives Rates Tiles" }).children
+          .length,
+      ).toBe(1)
+      expect(screen.getByTestId("tile-EURUSD")).not.toBeNull()
+    })
 
     act(() => {
       fireEvent.click(screen.getByTestId("menuButton-GBP"))
     })
 
-    expect(
-      screen.getByRole("region", { name: "Lives Rates Tiles" }).children.length,
-    ).toBe(1)
-    expect(screen.getByTestId("tile-GBPJPY")).not.toBeNull()
+    await waitFor(() => {
+      expect(
+        screen.getByRole("region", { name: "Lives Rates Tiles" }).children
+          .length,
+      ).toBe(1)
+      expect(screen.getByTestId("tile-GBPJPY")).not.toBeNull()
+    })
   })
 
   it("should show the charts in tiles once click toggle view button", async () => {
     renderComponent()
 
-    expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
-      "IsAnalytics: true",
+    await waitFor(() => {
+      expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
+        "IsAnalytics: true",
+      )
+    })
+
+    act(() => {
+      fireEvent.click(screen.getByTestId("toggleButton"))
+    })
+
+    await waitFor(() =>
+      expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
+        "IsAnalytics: false",
+      ),
     )
 
     act(() => {
       fireEvent.click(screen.getByTestId("toggleButton"))
     })
 
-    expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
-      "IsAnalytics: false",
-    )
-
-    act(() => {
-      fireEvent.click(screen.getByTestId("toggleButton"))
-    })
-
-    expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
-      "IsAnalytics: true",
+    await waitFor(() =>
+      expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
+        "IsAnalytics: true",
+      ),
     )
   })
 })

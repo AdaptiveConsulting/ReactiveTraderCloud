@@ -1,5 +1,5 @@
 import { StrictMode } from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 import GlobalStyle from "@/theme/globals"
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import { registerFxNotifications } from "./notifications"
@@ -19,7 +19,14 @@ export async function initApp() {
 
   registerFxNotifications()
 
-  ReactDOM.render(
+  const container = document.getElementById("root")
+
+  if (container === null) {
+    throw Error("HTML missing #root div")
+  }
+
+  const root = createRoot(container)
+  root.render(
     <StrictMode>
       <GlobalStyle />
       <ThemeProvider>
@@ -27,7 +34,6 @@ export async function initApp() {
         <MainApp />
       </ThemeProvider>
     </StrictMode>,
-    document.getElementById("root"),
   )
 
   const { ga } = window

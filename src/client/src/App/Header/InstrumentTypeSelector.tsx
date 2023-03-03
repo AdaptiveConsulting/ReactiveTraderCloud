@@ -1,6 +1,6 @@
 import { DropdownMenu } from "@/components/DropdownMenu"
 import { ROUTES_CONFIG } from "@/constants"
-import { useLocation, useHistory } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import { isMobileDevice } from "@/utils"
 
 enum InstrumentType {
@@ -10,9 +10,9 @@ enum InstrumentType {
 
 const InstrumentTypeSelector = () => {
   const location = useLocation()
-  const history = useHistory()
+  const naviate = useNavigate()
   const handleInstrumentTypeSelection = (instrumentType: InstrumentType) => {
-    history.push(
+    naviate(
       instrumentType === InstrumentType.CREDIT ? ROUTES_CONFIG.credit : "/",
     )
   }

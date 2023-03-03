@@ -76,7 +76,9 @@ describe("Tile", () => {
 
     renderComponent()
 
-    expect(screen.queryByText("No data")).not.toBeNull()
+    await waitFor(() => {
+      expect(screen.queryByText("No data")).not.toBeNull()
+    })
 
     act(() => {
       priceMock$.next(priceMock)
@@ -94,13 +96,15 @@ describe("Tile", () => {
 
     renderComponent()
 
-    expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
-    )
+    await waitFor(() => {
+      expect(screen.getAllByRole("button")[1].textContent).toBe(
+        `SELL${priceMock.bid}`,
+      )
 
-    expect(screen.getAllByRole("button")[2].textContent).toBe(
-      `BUY${priceMock.ask}`,
-    )
+      expect(screen.getAllByRole("button")[2].textContent).toBe(
+        `BUY${priceMock.ask}`,
+      )
+    })
 
     const nextBid = 4.34345
     act(() => {
@@ -128,14 +132,18 @@ describe("Tile", () => {
 
     renderComponent()
 
-    expect(executeFn).not.toHaveBeenCalled()
-    expect(screen.queryByText("Executing")).toBeNull()
+    await waitFor(() => {
+      expect(executeFn).not.toHaveBeenCalled()
+      expect(screen.queryByText("Executing")).toBeNull()
+    })
 
     act(() => {
       fireEvent.click(screen.getAllByRole("button")[1])
     })
 
-    expect(executeFn.mock.calls.length).toBe(1)
+    await waitFor(() => {
+      expect(executeFn.mock.calls.length).toBe(1)
+    })
 
     const originalRequest: ExecutionRequest = (
       executeFn.mock.calls[0] as any
@@ -145,15 +153,16 @@ describe("Tile", () => {
     }
     delete request.id
 
-    expect(request).toEqual({
-      currencyPair: "EURUSD",
-      dealtCurrency: "USD",
-      direction: Direction.Sell,
-      notional: 1000000,
-      spotRate: 1.53816,
+    await waitFor(() => {
+      expect(request).toEqual({
+        currencyPair: "EURUSD",
+        dealtCurrency: "USD",
+        direction: Direction.Sell,
+        notional: 1000000,
+        spotRate: 1.53816,
+      })
+      expect(screen.queryByText("Executing")).not.toBeNull()
     })
-
-    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
 
     const tradeId = 200
     act(() => {
@@ -167,20 +176,23 @@ describe("Tile", () => {
       response$.complete()
     })
 
-    await waitFor(() => expect(screen.queryByText("Executing")).toBeNull())
-    expect(screen.getByRole("alert").textContent).toEqual(
-      "You sold EUR 1,000,000 at a rate of 1.53816 for USD 1,538,160 settling (Spt) 04 Feb.",
-    )
+    await waitFor(() => {
+      expect(screen.queryByText("Executing")).toBeNull()
+      expect(screen.getByRole("alert").textContent).toEqual(
+        "You sold EUR 1,000,000 at a rate of 1.53816 for USD 1,538,160 settling (Spt) 04 Feb.",
+      )
+    })
 
     act(() => {
       fireEvent.click(screen.getByText("Close"))
     })
 
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
-
-    expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
-    )
+    await waitFor(() => {
+      expect(screen.queryByRole("alert")).toBeNull()
+      expect(screen.getAllByRole("button")[1].textContent).toBe(
+        `SELL${priceMock.bid}`,
+      )
+    })
   })
 
   it("should render alert when execution takes too long", async () => {
@@ -204,14 +216,18 @@ describe("Tile", () => {
 
     renderComponent()
 
-    expect(executeFn).not.toHaveBeenCalled()
-    expect(screen.queryByText("Executing")).toBeNull()
+    await waitFor(() => {
+      expect(executeFn).not.toHaveBeenCalled()
+      expect(screen.queryByText("Executing")).toBeNull()
+    })
 
     act(() => {
       fireEvent.click(screen.getAllByRole("button")[1])
     })
 
-    expect(executeFn.mock.calls.length).toBe(1)
+    await waitFor(() => {
+      expect(executeFn.mock.calls.length).toBe(1)
+    })
 
     const originalRequest: ExecutionRequest = (
       executeFn.mock.calls[0] as any
@@ -221,23 +237,26 @@ describe("Tile", () => {
     }
     delete request.id
 
-    expect(request).toEqual({
-      currencyPair: "EURUSD",
-      dealtCurrency: "USD",
-      direction: Direction.Sell,
-      notional: 1000000,
-      spotRate: 1.53816,
+    await waitFor(() => {
+      expect(request).toEqual({
+        currencyPair: "EURUSD",
+        dealtCurrency: "USD",
+        direction: Direction.Sell,
+        notional: 1000000,
+        spotRate: 1.53816,
+      })
+      expect(screen.queryByText("Executing")).not.toBeNull()
     })
-
-    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
 
     act(() => {
       jest.advanceTimersByTime(2000)
     })
-    expect(screen.queryByText("Executing")).toBeNull()
-    expect(screen.getByRole("alert").textContent).toEqual(
-      "Trade execution taking longer than expected",
-    )
+    await waitFor(() => {
+      expect(screen.queryByText("Executing")).toBeNull()
+      expect(screen.getByRole("alert").textContent).toEqual(
+        "Trade execution taking longer than expected",
+      )
+    })
 
     const tradeId = 200
     act(() => {
@@ -251,19 +270,22 @@ describe("Tile", () => {
       response$.complete()
     })
 
-    expect(screen.getByRole("alert").textContent).toEqual(
-      "You sold EUR 1,000,000 at a rate of 1.53816 for USD 1,538,160 settling (Spt) 04 Feb.",
-    )
+    await waitFor(() => {
+      expect(screen.getByRole("alert").textContent).toEqual(
+        "You sold EUR 1,000,000 at a rate of 1.53816 for USD 1,538,160 settling (Spt) 04 Feb.",
+      )
+    })
 
     act(() => {
       fireEvent.click(screen.getByText("Close"))
     })
 
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
-
-    expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
-    )
+    await waitFor(() => {
+      expect(screen.queryByRole("alert")).toBeNull()
+      expect(screen.getAllByRole("button")[1].textContent).toBe(
+        `SELL${priceMock.bid}`,
+      )
+    })
   })
 
   it("should render alert when execution timeout", async () => {
@@ -280,14 +302,18 @@ describe("Tile", () => {
 
     renderComponent()
 
-    expect(executeFn).not.toHaveBeenCalled()
-    expect(screen.queryByText("Executing")).toBeNull()
+    await waitFor(() => {
+      expect(executeFn).not.toHaveBeenCalled()
+      expect(screen.queryByText("Executing")).toBeNull()
+    })
 
     act(() => {
       fireEvent.click(screen.getAllByRole("button")[1])
     })
 
-    expect(executeFn.mock.calls.length).toBe(1)
+    await waitFor(() => {
+      expect(executeFn.mock.calls.length).toBe(1)
+    })
 
     const originalRequest: ExecutionRequest = (
       executeFn.mock.calls[0] as any
@@ -297,15 +323,16 @@ describe("Tile", () => {
     }
     delete request.id
 
-    expect(request).toEqual({
-      currencyPair: "EURUSD",
-      dealtCurrency: "USD",
-      direction: Direction.Sell,
-      notional: 1000000,
-      spotRate: 1.53816,
+    await waitFor(() => {
+      expect(request).toEqual({
+        currencyPair: "EURUSD",
+        dealtCurrency: "USD",
+        direction: Direction.Sell,
+        notional: 1000000,
+        spotRate: 1.53816,
+      })
+      expect(screen.queryByText("Executing")).not.toBeNull()
     })
-
-    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
 
     act(() => {
       response$.next({
@@ -326,11 +353,12 @@ describe("Tile", () => {
       fireEvent.click(screen.getByText("Close"))
     })
 
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
-
-    expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
-    )
+    await waitFor(() => {
+      expect(screen.queryByRole("alert")).toBeNull()
+      expect(screen.getAllByRole("button")[1].textContent).toBe(
+        `SELL${priceMock.bid}`,
+      )
+    })
   })
 
   it("should render alert when execution rejected", async () => {
@@ -347,14 +375,18 @@ describe("Tile", () => {
 
     renderComponent()
 
-    expect(executeFn).not.toHaveBeenCalled()
-    expect(screen.queryByText("Executing")).toBeNull()
+    await waitFor(() => {
+      expect(executeFn).not.toHaveBeenCalled()
+      expect(screen.queryByText("Executing")).toBeNull()
+    })
 
     act(() => {
       fireEvent.click(screen.getAllByRole("button")[1])
     })
 
-    expect(executeFn.mock.calls.length).toBe(1)
+    await waitFor(() => {
+      expect(executeFn.mock.calls.length).toBe(1)
+    })
 
     const originalRequest: ExecutionRequest = (
       executeFn.mock.calls[0] as any
@@ -364,15 +396,16 @@ describe("Tile", () => {
     }
     delete request.id
 
-    expect(request).toEqual({
-      currencyPair: "EURUSD",
-      dealtCurrency: "USD",
-      direction: Direction.Sell,
-      notional: 1000000,
-      spotRate: 1.53816,
+    await waitFor(() => {
+      expect(request).toEqual({
+        currencyPair: "EURUSD",
+        dealtCurrency: "USD",
+        direction: Direction.Sell,
+        notional: 1000000,
+        spotRate: 1.53816,
+      })
+      expect(screen.queryByText("Executing")).not.toBeNull()
     })
-
-    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
 
     const tradeId = 200
     act(() => {
@@ -397,14 +430,15 @@ describe("Tile", () => {
       fireEvent.click(screen.getByText("Close"))
     })
 
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
-
-    expect(screen.getAllByRole("button")[1].textContent).toBe(
-      `SELL${priceMock.bid}`,
-    )
+    await waitFor(() => {
+      expect(screen.queryByRole("alert")).toBeNull()
+      expect(screen.getAllByRole("button")[1].textContent).toBe(
+        `SELL${priceMock.bid}`,
+      )
+    })
   })
 
-  it("should not re-trigger executions after remounting", () => {
+  it("should not re-trigger executions after remounting", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
@@ -418,22 +452,28 @@ describe("Tile", () => {
 
     const renderedComponent = renderComponent()
 
-    expect(executeFn).not.toHaveBeenCalled()
-    expect(screen.queryByText("Executing")).toBeNull()
+    await waitFor(() => {
+      expect(executeFn).not.toHaveBeenCalled()
+      expect(screen.queryByText("Executing")).toBeNull()
+    })
 
     act(() => {
       fireEvent.click(screen.getAllByRole("button")[1])
     })
 
-    expect(executeFn.mock.calls.length).toBe(1)
+    await waitFor(() => {
+      expect(executeFn.mock.calls.length).toBe(1)
+    })
 
     renderedComponent.unmount()
     renderComponent()
 
-    expect(executeFn.mock.calls.length).toBe(1)
+    await waitFor(() => {
+      expect(executeFn.mock.calls.length).toBe(1)
+    })
   })
 
-  it("should not unformat the notional number when focused", () => {
+  it("should not unformat the notional number when focused", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
@@ -445,15 +485,21 @@ describe("Tile", () => {
     act(() => {
       fireEvent.change(input, { target: { value: "1000000" } })
     })
-    expect(input.value).toBe("1,000,000")
+
+    await waitFor(() => {
+      expect(input.value).toBe("1,000,000")
+    })
 
     act(() => {
       fireEvent.focus(input)
     })
-    expect(input.value).toBe("1,000,000")
+
+    await waitFor(() => {
+      expect(input.value).toBe("1,000,000")
+    })
   })
 
-  it("should automatically selected the text of the input when focused", () => {
+  it("should automatically selected the text of the input when focused", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
@@ -466,11 +512,13 @@ describe("Tile", () => {
       fireEvent.focus(input)
     })
 
-    expect(input.selectionStart).toBe(0)
-    expect(input.selectionEnd).toBe("1,000,000".length)
+    await waitFor(() => {
+      expect(input.selectionStart).toBe(0)
+      expect(input.selectionEnd).toBe("1,000,000".length)
+    })
   })
 
-  it("should not allow letters in the notional input", () => {
+  it("should not allow letters in the notional input", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
@@ -479,14 +527,21 @@ describe("Tile", () => {
 
     renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
-    expect(input.value).toBe("1,000,000")
+
+    await waitFor(() => {
+      expect(input.value).toBe("1,000,000")
+    })
+
     act(() => {
       fireEvent.change(input, { target: { value: "Hello" } })
     })
-    expect(input.value).toBe("1,000,000")
+
+    await waitFor(() => {
+      expect(input.value).toBe("1,000,000")
+    })
   })
 
-  it("should reformat the notional input after got new value", () => {
+  it("should reformat the notional input after got new value", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
@@ -496,11 +551,16 @@ describe("Tile", () => {
     renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
 
-    expect(input.value).toBe("1,000,000")
+    await waitFor(() => {
+      expect(input.value).toBe("1,000,000")
+    })
 
     act(() => {
       fireEvent.change(input, { target: { value: "10000000" } })
     })
-    expect(input.value).toBe("10,000,000")
+
+    await waitFor(() => {
+      expect(input.value).toBe("10,000,000")
+    })
   })
 })
