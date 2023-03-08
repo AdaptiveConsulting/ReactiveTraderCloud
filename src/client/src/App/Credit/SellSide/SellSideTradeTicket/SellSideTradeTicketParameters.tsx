@@ -63,7 +63,7 @@ export const ParameterInput = styled.input`
   }
 `
 
-const formatter = truncatedDecimalNumberFormatter(4)
+const formatter = truncatedDecimalNumberFormatter(2)
 
 const filterRegExp = new RegExp(THOUSANDS_SEPARATOR_REGEXP, "g")
 const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
@@ -85,12 +85,13 @@ export const [usePrice, price$] = bind<{ value: number; inputValue: string }>(
 
         const truncated = formatter(inputQuantityAsNumber)
 
-        const value = Number(
+        const unboundValue = Number(
           truncated.replace(filterRegExp, "").replace(decimalRegExp, "."),
         )
 
+        const value = Math.max(Math.min(unboundValue, 100000), -100000)
+
         switch (rawVal) {
-          //don't want empty strings to === 0, but do want to be able to explicitly set price as 0
           case "":
           case " ":
             return {
@@ -156,7 +157,7 @@ export const SellSideTradeTicketParameters = ({
           <ParameterInput
             type="text"
             value={price.inputValue}
-            disabled={false}
+            disabled={state !== RfqState.Open}
             onChange={(event) => setPrice(event.currentTarget.value)}
             onFocus={(event) => {
               event.target.select()
