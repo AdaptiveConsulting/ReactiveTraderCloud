@@ -16,7 +16,7 @@ The trading client GUI is a single page app (SPA) built using Typescript, React,
 
 - HTML5, Typescript, Rx and React-RxJs
 - Tests use [Jest](https://jestjs.io/)
-- Streaming data abstractions are build with [RxJs](https://github.com/Reactive-Extensions/RxJS).
+- Streaming data abstractions are built with [RxJs](https://github.com/Reactive-Extensions/RxJS).
 - Mapping Rx to React components with [react-rxjs](https://react-rxjs.org/).
 - Connectivity to the backend is done via Hydra.
 - Styles build using [Styled Components](https://www.styled-components.com/).

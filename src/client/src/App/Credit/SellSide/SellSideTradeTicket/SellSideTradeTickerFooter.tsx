@@ -90,10 +90,11 @@ const TradeDetails = styled.div`
 
 const [quoteRequest$, sendQuote] =
   createSignal<{ rfqId: number; dealerId: number }>()
+
 quoteRequest$
   .pipe(
     withLatestFrom(price$),
-    filter(([, price]) => price.value > 0),
+    filter(([, price]) => !isNaN(price.value)),
     map(([ids, price]) => ({
       ...ids,
       price: price.value,
@@ -132,7 +133,7 @@ export const SellSideTradeTicketFooter = ({
   } = rfq
   const direction = invertDirection(clientDirection)
 
-  const disableSend = price.value <= 0 || state !== RfqState.Open || !!quote
+  const disableSend = isNaN(price.value) || state !== RfqState.Open || !!quote
   const accepted =
     state === RfqState.Closed && quote?.state === QuoteState.Accepted
   const missed =

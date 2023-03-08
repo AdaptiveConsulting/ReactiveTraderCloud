@@ -1,5 +1,5 @@
 import { merge } from "rxjs"
-import { filter, map } from "rxjs/operators"
+import { map } from "rxjs/operators"
 import styled from "styled-components"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
@@ -69,7 +69,7 @@ const filterRegExp = new RegExp(THOUSANDS_SEPARATOR_REGEXP, "g")
 const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
 
 const [rawPrice$, setPrice] = createSignal<string>()
-export const [usePrice, price$] = bind(
+export const [usePrice, price$] = bind<{ value: number; inputValue: string }>(
   merge(
     selectedRfqId$.pipe(map(() => ({ value: 0, inputValue: "" }))),
     rawPrice$.pipe(
@@ -79,7 +79,7 @@ export const [usePrice, price$] = bind(
           .replace(filterRegExp, "")
           .replace(decimalRegExp, ".")
 
-        const inputQuantityAsNumber = Math.abs(Number(cleanedInput))
+        const inputQuantityAsNumber = Number(cleanedInput)
 
         // numeric value could be NaN at this stage
 
@@ -89,19 +89,32 @@ export const [usePrice, price$] = bind(
           truncated.replace(filterRegExp, "").replace(decimalRegExp, "."),
         )
 
-        return {
-          value,
-          inputValue:
-            value === 0
-              ? ""
-              : formatter(value) +
-                (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
+        switch (rawVal) {
+          //don't want empty strings to === 0, but do want to be able to explicitly set price as 0
+          case "":
+          case " ":
+            return {
+              value: NaN,
+              inputValue: "",
+            }
+          case "-":
+            return {
+              value,
+              inputValue: "-",
+            }
+          default:
+            return {
+              value,
+              inputValue: isNaN(value)
+                ? ""
+                : formatter(value) +
+                  (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
+            }
         }
       }),
-      filter(({ value }) => !Number.isNaN(value)),
     ),
   ),
-  { value: 0, inputValue: "" },
+  { value: NaN, inputValue: "" },
 )
 
 interface SellSideTradeTicketParametersProps {
@@ -143,7 +156,7 @@ export const SellSideTradeTicketParameters = ({
           <ParameterInput
             type="text"
             value={price.inputValue}
-            disabled={state !== RfqState.Open}
+            disabled={false}
             onChange={(event) => setPrice(event.currentTarget.value)}
             onFocus={(event) => {
               event.target.select()

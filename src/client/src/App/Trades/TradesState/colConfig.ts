@@ -156,9 +156,9 @@ export const creditColDef: ColDef = {
     width: 110,
   },
   unitPrice: {
-    headerName: "Unit Price",
+    headerName: "Price (BPS)",
     filterType: "number",
-    valueFormatter: (v) => `$${v}`,
+    valueFormatter: (v) => `${v}`,
     excelValueFormatter: (v) => `${v}`,
     width: 110,
   },

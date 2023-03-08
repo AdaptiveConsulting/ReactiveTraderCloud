@@ -39,8 +39,8 @@ const sortByPriceFunc =
       return 1
     } else {
       return direction == "Buy"
-        ? d1Quote.price - d2Quote.price
-        : d2Quote.price - d1Quote.price
+        ? d2Quote.price - d1Quote.price
+        : d1Quote.price - d2Quote.price
     }
   }
 
