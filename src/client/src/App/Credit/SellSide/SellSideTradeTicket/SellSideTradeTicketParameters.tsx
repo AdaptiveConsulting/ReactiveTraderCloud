@@ -69,7 +69,7 @@ const filterRegExp = new RegExp(THOUSANDS_SEPARATOR_REGEXP, "g")
 const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
 
 const [rawPrice$, setPrice] = createSignal<string>()
-export const [usePrice, price$] = bind<{ value: number; inputValue: string }>(
+export const [usePrice, price$] = bind(
   merge(
     selectedRfqId$.pipe(map(() => ({ value: 0, inputValue: "" }))),
     rawPrice$.pipe(
