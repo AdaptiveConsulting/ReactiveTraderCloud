@@ -58,5 +58,3 @@ export const SellSideRfqGrid = () => {
     </Subscribe>
   )
 }
-
-export default SellSideRfqGrid

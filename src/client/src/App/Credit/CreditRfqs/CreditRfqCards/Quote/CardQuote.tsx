@@ -63,7 +63,9 @@ export const Quote = ({
         direction={direction}
       >
         {accepted && <FaCheckCircle size={16} />}
-        {quote ? `${quote.price.toString()}` : "Awaiting response"}
+        {quote
+          ? `${quote.price > 0 ? "+" + quote.price : quote.price.toString()}`
+          : "Awaiting response"}
       </Price>
       <AcceptQuoteButton onClick={() => quote && onAcceptRfq(quote.id)}>
         Accept

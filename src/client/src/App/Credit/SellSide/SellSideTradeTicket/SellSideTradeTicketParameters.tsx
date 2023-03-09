@@ -142,7 +142,7 @@ export const SellSideTradeTicketParameters = ({
         <ParameterValue>All or None</ParameterValue>
       </div>
       <div>
-        <ParameterLabel>Price</ParameterLabel>
+        <ParameterLabel>Price (bps)</ParameterLabel>
         {quote ? (
           getSellSideQuoteState(state, quote.state) ===
           SellSideQuoteState.Pending ? (

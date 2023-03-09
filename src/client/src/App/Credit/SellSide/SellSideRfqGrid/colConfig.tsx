@@ -88,11 +88,11 @@ export const rfqColDef: RfqColDef = {
     width: 10,
   },
   price: {
-    headerName: "Price",
+    headerName: "Price (bps)",
     filterType: "number",
-    valueFormatter: (v) => `$${v}`,
+    valueFormatter: (v) => `${Number(v) > 0 ? "+" + v : v}`,
     excelValueFormatter: (v) => `${v}`,
-    width: 10,
+    width: 80,
   },
   timer: {
     headerName: "Timer",
