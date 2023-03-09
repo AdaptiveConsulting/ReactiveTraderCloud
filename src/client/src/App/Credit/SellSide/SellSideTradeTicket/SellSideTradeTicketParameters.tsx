@@ -124,6 +124,8 @@ interface SellSideTradeTicketParametersProps {
   quantity: number
 }
 
+const prependPlus = (price: number) => (price > 0 ? "+" + price : price)
+
 export const SellSideTradeTicketParameters = ({
   quote,
   state,
@@ -147,11 +149,11 @@ export const SellSideTradeTicketParameters = ({
           getSellSideQuoteState(state, quote.state) ===
           SellSideQuoteState.Pending ? (
             <ParameterValue>
-              <PendingPrice>{quote.price}</PendingPrice>
+              <PendingPrice>{prependPlus(quote.price)}</PendingPrice>
               <em>Awaiting Response</em>
             </ParameterValue>
           ) : (
-            <ParameterValue>{quote.price}</ParameterValue>
+            <ParameterValue>{prependPlus(quote.price)}</ParameterValue>
           )
         ) : (
           <ParameterInput

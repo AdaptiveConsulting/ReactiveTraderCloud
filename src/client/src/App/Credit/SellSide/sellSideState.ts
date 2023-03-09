@@ -135,7 +135,7 @@ const _sellSideRfqs$ = combineLatest([
         transformed.cpy = "AAM"
         transformed.security = rfq.instrument?.name ?? "NA"
         transformed.quantity = rfq.quantity
-        transformed.price = adaptiveQuote?.price ? adaptiveQuote.price : 0
+        transformed.price = adaptiveQuote?.price ? adaptiveQuote.price : NaN
         transformed.timer =
           rfq.state !== RfqState.Open
             ? undefined

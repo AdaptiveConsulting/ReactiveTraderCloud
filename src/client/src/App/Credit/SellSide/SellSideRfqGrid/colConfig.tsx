@@ -58,6 +58,12 @@ const StatefulTimer = ({ end }: { end?: number }) => {
   )
 }
 
+const formatPrice = (price: number) => {
+  if (price > 0) return "+" + price
+  if (isNaN(price)) return ""
+  return price
+}
+
 export const rfqColDef: RfqColDef = {
   status: {
     headerName: "Status",
@@ -90,7 +96,7 @@ export const rfqColDef: RfqColDef = {
   price: {
     headerName: "Price (bps)",
     filterType: "number",
-    valueFormatter: (v) => `${Number(v) > 0 ? "+" + v : v}`,
+    valueFormatter: (v) => `${formatPrice(Number(v))}`,
     excelValueFormatter: (v) => `${v}`,
     width: 80,
   },
