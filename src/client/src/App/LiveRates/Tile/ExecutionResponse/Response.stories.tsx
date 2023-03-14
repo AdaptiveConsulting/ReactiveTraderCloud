@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ExecutionStatus } from "@/services/executions"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
 import styled from "styled-components"
+import { ComponentStory, ComponentMeta } from "@storybook/react"
+import { ExecutionStatus } from "@/services/executions"
 import { TileStates } from "../Tile.state"
 import { StatelessExecutionResponse } from "./Response"
 

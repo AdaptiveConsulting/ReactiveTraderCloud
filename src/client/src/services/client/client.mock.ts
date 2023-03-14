@@ -1,13 +1,10 @@
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Observable } from "rxjs"
-import { mockAnalytics } from "./mockData/mockAnalytics"
-import { mockPriceHistory } from "./mockData/mockPriceHistory"
-import { mockCurrencyPair } from "./mockData/mockCurrencyPair"
-import { mockTrade } from "./mockData/mockTrade"
+import { mockAnalytics } from "./mockData/analytics.mock"
+import { mockCurrencyPair } from "./mockData/currencyPairs.mock"
+import { mockPriceHistory } from "./mockData/priceHistory.mock"
+import { mockTrade } from "./mockData/trade.mock"
 
-export const getStream$ = <TResponse, TPayload = {}>(
+export const getStream$ = <TResponse, TPayload = Record<string, unknown>>(
   service: string,
   operationName: string,
   payload: TPayload,

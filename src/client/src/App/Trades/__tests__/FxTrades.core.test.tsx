@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import { BehaviorSubject, Subject } from "rxjs"
 import {
   render,
   screen,
@@ -7,7 +7,6 @@ import {
   within,
   queryByText,
 } from "@testing-library/react"
-import { BehaviorSubject, Subject } from "rxjs"
 import { Trade, tradesTestData } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
 import FxTrades from "../CoreFxTrades"

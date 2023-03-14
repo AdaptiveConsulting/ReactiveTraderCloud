@@ -1,15 +1,14 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import { BehaviorSubject } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
 import { render, screen, act, fireEvent } from "@testing-library/react"
-import { BehaviorSubject } from "rxjs"
-import { MainHeader } from "./MainHeader"
-import { liveRates$ } from "../LiveRatesCore"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { TestThemeProvider } from "@/utils/testUtils"
-import { Tiles } from "../Tiles"
+import { liveRates$ } from "../../LiveRatesCore"
+import { Tiles } from "../../Tiles"
+import { MainHeader } from ".."
 
 jest.mock("@/services/currencyPairs/currencyPairs")
-jest.mock("../Tile/Tile.tsx")
+jest.mock("../../Tile/Tile.tsx")
 
 const currencyPairMock1: CurrencyPair = {
   symbol: "EURUSD",

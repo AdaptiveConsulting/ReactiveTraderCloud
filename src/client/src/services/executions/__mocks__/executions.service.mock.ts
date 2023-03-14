@@ -1,16 +1,16 @@
 import { Observable, race, Subject, timer } from "rxjs"
 import { mapTo, tap } from "rxjs/operators"
 import {
-  ExecutionRequest,
-  ExecutionTrade,
-  ExecutionStatus,
-  TimeoutExecution,
-} from "./types"
-import {
   DELAYED_CURRENCY,
   EXECUTION_TIMEOUT_VALUE,
   REJECTED_CURRENCY,
 } from "@/services/executions/constants"
+import {
+  ExecutionRequest,
+  ExecutionTrade,
+  ExecutionStatus,
+  TimeoutExecution,
+} from "../types"
 
 const executionsSubject = new Subject<ExecutionTrade>()
 

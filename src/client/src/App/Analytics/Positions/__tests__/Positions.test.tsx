@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import { BehaviorSubject } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
 import { render, screen, act, fireEvent, waitFor } from "@testing-library/react"
-import { BehaviorSubject } from "rxjs"
-import { TestThemeProvider } from "@/utils/testUtils"
-import { Positions, positions$ } from "./Positions"
 import { CurrencyPairPosition } from "@/services/analytics"
 import { CurrencyPair } from "@/services/currencyPairs"
+import { TestThemeProvider } from "@/utils/testUtils"
+import { Positions, positions$ } from "../Positions"
 
 jest.mock("@/services/analytics/analytics")
 jest.mock("@/services/currencyPairs/currencyPairs")

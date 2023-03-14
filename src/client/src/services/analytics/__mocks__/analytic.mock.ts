@@ -1,8 +1,8 @@
 import { bind, shareLatest } from "@react-rxjs/core"
 import { combineLatest, NEVER, Observable, of } from "rxjs"
 import { map } from "rxjs/operators"
-import { withIsStaleData } from "../connection"
-import { CurrencyPairPosition, HistoryEntry } from "./types"
+import { withIsStaleData } from "../../connection"
+import { CurrencyPairPosition, HistoryEntry } from "../types"
 
 export const analytics$ = NEVER
 

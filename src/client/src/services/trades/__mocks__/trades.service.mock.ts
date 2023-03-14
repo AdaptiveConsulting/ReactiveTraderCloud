@@ -1,10 +1,10 @@
-import { bind } from "@react-rxjs/core"
 import { Observable } from "rxjs/internal/Observable"
 import { map, scan, startWith } from "rxjs/operators"
-import { withIsStaleData } from "../connection"
-import { executions$ } from "../executions"
-import { Trade } from "./types"
-import { mockCreditTrades } from "./__mocks__/creditTrades"
+import { bind } from "@react-rxjs/core"
+import { withIsStaleData } from "../../connection"
+import { executions$ } from "../../executions"
+import { Trade } from "../types"
+import { mockCreditTrades } from "./creditTrades"
 
 export const [useTrades, trades$] = bind<Trade[]>(
   executions$.pipe(

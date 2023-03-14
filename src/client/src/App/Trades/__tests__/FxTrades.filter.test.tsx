@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-import { act, fireEvent, render, screen } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
+import { act, fireEvent, render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { ComparatorType } from "@/App/Trades/TradesState"
 import { Trade, tradesTestData } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
 import FxTrades from "../CoreFxTrades"
-import userEvent from "@testing-library/user-event"
-import { ComparatorType } from "@/App/Trades/TradesState"
 
 jest.mock("@/services/trades/trades")
 jest.mock("../TradesState/tableTrades", () => ({
