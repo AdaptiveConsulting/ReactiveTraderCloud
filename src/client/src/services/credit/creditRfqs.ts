@@ -28,13 +28,13 @@ import { creditDealers$ } from "./creditDealers"
 import { mockCreditRFQS } from "./mockNewRfqs"
 
 // Mock
-// const creditRfqUpdates$ = mockCreditRFQS.pipe(withConnection(), shareLatest())
+const creditRfqUpdates$ = mockCreditRFQS.pipe(withConnection(), shareLatest())
 
 // Hydra
-const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
-  withConnection(),
-  shareLatest(),
-)
+// const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
+//   withConnection(),
+//   shareLatest(),
+// )
 
 export const creditRfqsById$ = creditRfqUpdates$.pipe(
   //Type issues

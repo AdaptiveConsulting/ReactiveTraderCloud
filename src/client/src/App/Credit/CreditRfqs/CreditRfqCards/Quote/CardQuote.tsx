@@ -9,7 +9,6 @@ import {
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
   PENDING_WITH_PRICE_QUOTE_STATE,
   QuoteBody,
-  QuoteState,
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   REJECTED_WITH_PRICE_QUOTE_STATE,
   RfqState,
@@ -18,7 +17,6 @@ import { acceptCreditQuote$ } from "@/services/credit"
 
 import {
   AcceptQuoteButton,
-  PassQuoteButton,
   DealerName,
   Price,
   QuoteDot,
