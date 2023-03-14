@@ -1,4 +1,4 @@
-import { concat, from } from "rxjs"
+import { concat, delay, from } from "rxjs"
 import {
   PASSED_QUOTE_STATE,
   QUOTE_PASSED_RFQ_UPDATE,
@@ -34,10 +34,8 @@ const randomQuoteBodyState = () => {
   switch (State) {
     case 1:
       return PENDING_WITH_PRICE_QUOTE_STATE
-      break
     case 2:
       return PENDING_WITHOUT_PRICE_QUOTE_STATE
-      break
     default:
       break
   }
@@ -102,88 +100,6 @@ const addStateOfTheWorld = () => {
   mockRFQs.push({ type: "endOfStateOfTheWorld" })
 }
 
-export const Dealers = [
-  {
-    type: "added",
-    payload: {
-      id: 0,
-      name: "J.P. Morgan",
-    },
-  },
-  {
-    type: "added",
-    payload: {
-      id: 1,
-      name: "Wells Fargo",
-    },
-  },
-  {
-    type: "added",
-    payload: {
-      id: 2,
-      name: "Bank of America",
-    },
-  },
-  {
-    type: "added",
-    payload: {
-      id: 3,
-      name: "Morgan Stanley",
-    },
-  },
-  {
-    type: "added",
-    payload: {
-      id: 4,
-      name: "Goldman Sachs",
-    },
-  },
-  {
-    type: "added",
-    payload: {
-      id: 5,
-      name: "Citigroup",
-    },
-  },
-  {
-    type: "added",
-    payload: {
-      id: 6,
-      name: "Ally",
-    },
-  },
-  {
-    type: "added",
-    payload: {
-      id: 7,
-      name: "Bank of New York Mellon",
-    },
-  },
-  {
-    type: "added",
-    payload: {
-      id: 8,
-      name: "TD Bank",
-    },
-  },
-  {
-    type: "added",
-    payload: {
-      id: 9,
-      name: "UBS",
-    },
-  },
-  {
-    type: "added",
-    payload: {
-      id: 10,
-      name: "Adaptive Bank",
-    },
-  },
-]
+const mockCreditRFQS_ = concat(StartState(), constructPassOnRandomRFQ$())
 
-export const mockCreditRFQS = concat(StartState(), constructPassOnRandomRFQ$())
-
-export const mockCreditDealers$ = () => {
-  return from(Dealers)
-}
+export const mockCreditRFQS = mockCreditRFQS_.pipe(delay(1000))

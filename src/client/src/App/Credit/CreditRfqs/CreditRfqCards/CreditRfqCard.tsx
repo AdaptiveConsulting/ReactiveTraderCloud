@@ -31,36 +31,32 @@ const Details = ({ quantity }: { quantity: number }) => {
   )
 }
 
-//Order
-//Low
-//  |
-//High
-//Awaiting Response
-//Passed
-const assignValues = (quote: QuoteBody): Number | undefined => {
-  switch (quote.state.type) {
-    case PENDING_WITH_PRICE_QUOTE_STATE:
-      return quote.state.payload
-      break
-    case PENDING_WITHOUT_PRICE_QUOTE_STATE:
-      return Number.MAX_SAFE_INTEGER - 1
-      break
-    case PASSED_QUOTE_STATE:
-      return Number.MAX_SAFE_INTEGER
-      break
-    default:
-      return 0
-      break
+const assignNumericalValue = (
+  quote: QuoteBody | undefined,
+): number | undefined => {
+  if (!quote) {
+    return
+  } else {
+    switch (quote.state.type) {
+      case PENDING_WITH_PRICE_QUOTE_STATE:
+        return quote.state.payload
+      case PENDING_WITHOUT_PRICE_QUOTE_STATE:
+        return Number.MAX_SAFE_INTEGER - 1
+      case PASSED_QUOTE_STATE:
+        return Number.MAX_SAFE_INTEGER
+      default:
+        return 0
+    }
   }
 }
 
 const sortByPriceFunc =
   (quotes: QuoteBody[], direction: Direction) =>
   (d1: DealerBody, d2: DealerBody) => {
-    const d1Value = assignValues(
+    const d1Value: number | undefined = assignNumericalValue(
       quotes.find((quote) => quote.dealerId === d1.id),
     )
-    const d2Value = assignValues(
+    const d2Value = assignNumericalValue(
       quotes.find((quote) => quote.dealerId === d2.id),
     )
     if (!d2Value) {

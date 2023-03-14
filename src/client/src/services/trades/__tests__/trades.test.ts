@@ -1,8 +1,8 @@
 import { Direction, QuoteState, RfqState } from "@/generated/TradingGateway"
-import { RfqDetails } from "@/services/credit/creditRfqs"
 import { BehaviorSubject } from "rxjs"
 import * as creditService from "../../credit"
 import * as tradesService from "../../trades"
+import { RfqDetails } from "@/services/credit/oldtypes"
 
 jest.mock("../../credit")
 

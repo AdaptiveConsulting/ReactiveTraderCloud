@@ -1,23 +1,7 @@
-// import {
-//   DealerBody,
-//   END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
-//   InstrumentBody,
-//   QuoteCreatedRfqUpdate,
-//   QuoteState,
-//   QUOTE_ACCEPTED_RFQ_UPDATE,
-//   QUOTE_CREATED_RFQ_UPDATE,
-//   RfqState,
-//   RfqUpdate,
-//   RFQ_CLOSED_RFQ_UPDATE,
-//   RFQ_CREATED_RFQ_UPDATE,
-//   START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
-//   WorkflowService,
-// } from "@/generated/TradingGateway"
 import {
   DealerBody,
   END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
   InstrumentBody,
-  QuoteState,
   QUOTE_ACCEPTED_RFQ_UPDATE,
   RfqState,
   RfqUpdate,
@@ -33,38 +17,35 @@ import {
 } from "@/generated/NewTradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { combineLatest, Observable, tap } from "rxjs"
+import { combineLatest, Observable } from "rxjs"
 import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
-import { withConnection } from "../../withConnection"
-import { creditDealers$ } from "../creditDealers"
-import { creditInstruments$ } from "../creditInstruments"
-
-//Mocks
 import { QuoteDetails, RfqDetails } from "./types"
-import { mockCreditRFQS, Dealers } from "./mockNewRfqs"
+import { withConnection } from "../withConnection"
+import { creditInstruments$ } from "./creditInstruments"
+import { creditDealers$ } from "./creditDealers"
 
+//MockImports
+import { mockCreditRFQS } from "./mockNewRfqs"
+
+// Mock
+const creditRfqUpdates$ = mockCreditRFQS.pipe(withConnection(), shareLatest())
+
+// Hydra
 // const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
-//   tap(console.log),
 //   withConnection(),
 //   shareLatest(),
 // )
 
-// Mock
-const creditRfqUpdates$ = mockCreditRFQS.pipe(
-  tap(console.log),
-  withConnection(),
-  shareLatest(),
-)
-
 export const creditRfqsById$ = creditRfqUpdates$.pipe(
+  //Type issues
   withLatestFrom(creditInstruments$, creditDealers$),
   scan<
     [RfqUpdate, InstrumentBody[], DealerBody[]],
     [boolean, Record<number, RfqDetails>]
   >(
+    //Type issues
     (acc, [update, instruments, dealers]) => {
       const rec = acc[1]
-      console.log({ rec })
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
           return [false, {}]
@@ -82,11 +63,9 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
                     (instrument) =>
                       instrument.id === update.payload.instrumentId,
                   ) ?? null,
-                dealers: Dealers.map(
+                dealers: dealers.map(
                   (dealerId) =>
-                    dealers.find(
-                      (dealer) => dealer.id === dealerId.payload.id,
-                    ) ?? {
+                    dealers.find((dealer) => dealer.id === dealerId.id) ?? {
                       id: dealerId,
                       name: "Unknown Dealer",
                     },
@@ -186,8 +165,6 @@ export const [useCreditRfqDetails, getCreditRfqDetails$] = bind<
 >((rfqId: number) =>
   creditRfqsById$.pipe(
     map((creditRfqsById) => {
-      console.log({ test: creditRfqsById[rfqId] })
-
       return creditRfqsById[rfqId]
     }),
   ),

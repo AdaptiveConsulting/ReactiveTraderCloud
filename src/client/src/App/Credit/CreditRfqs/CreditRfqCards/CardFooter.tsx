@@ -5,9 +5,9 @@ import { QuoteState, RfqState } from "@/generated/TradingGateway"
 import {
   cancelCreditRfq$,
   removeRfqs,
-  RfqDetails,
   useCreditDealerById,
 } from "@/services/credit"
+import { RfqDetails } from "@/services/credit/types"
 import { rfqStateToLabel, CreditRfqTimer } from "../../common"
 import { handleViewTrade } from "./handleViewTrade"
 import {
@@ -17,6 +17,7 @@ import {
   TerminatedCardState,
   ViewTrade,
 } from "./styled"
+import { ACCEPTED_QUOTE_STATE } from "@/generated/NewTradingGateway"
 
 const [cancelRfq$, onCancelRfq] = createSignal<number>()
 
@@ -89,7 +90,7 @@ export const CardFooter = ({
   rfqDetails: RfqDetails
 }) => {
   const acceptedDealerId = quotes.find(
-    (quote) => quote.state === QuoteState.Accepted,
+    (quote) => quote.state.type === ACCEPTED_QUOTE_STATE,
   )?.dealerId
   return (
     <CardFooterWrapper>

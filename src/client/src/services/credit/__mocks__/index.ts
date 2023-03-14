@@ -1,5 +1,5 @@
 import { Observable, defer, EMPTY, of } from "rxjs"
-import { RfqDetails } from "../CreditRfqs/types"
+import { RfqDetails } from "../types"
 
 let _creditRfqsById$: Observable<Observable<Record<number, RfqDetails>>>
 
