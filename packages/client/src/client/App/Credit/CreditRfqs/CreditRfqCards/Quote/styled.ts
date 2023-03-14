@@ -12,6 +12,9 @@ interface CommonProps {
 interface QuoteRowProps extends CommonProps {
   quoteActive: boolean
 }
+interface AnimatedRowProps extends CommonProps {
+  isPassed: boolean
+}
 
 function getBuySellHighlightRowBackgroundColor(
   theme: Theme,
@@ -65,13 +68,15 @@ function getBuySellHighlightTextColor(theme: Theme, direction: Direction) {
   ]
 }
 
-export const QuoteDot = styled.div<CommonProps>`
+export const QuoteDot = styled.div<AnimatedRowProps>`
   height: 4px;
   width: 4px;
   border-radius: 4px;
-  background-color: ${({ theme, highlight, direction }) =>
+  background-color: ${({ theme, highlight, direction, isPassed }) =>
     highlight
       ? theme.textColor
+      : isPassed
+      ? `#686D74`
       : getBuySellHighlightTextColor(theme, direction)};
   animation: ${breathing} 1s linear infinite;
 `

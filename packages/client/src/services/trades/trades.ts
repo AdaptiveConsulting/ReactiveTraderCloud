@@ -1,6 +1,11 @@
 import { bind } from "@react-rxjs/core"
-import { BlotterService, QuoteState } from "generated/TradingGateway"
+import { BlotterService } from "generated/TradingGateway"
 import { map, scan } from "rxjs/operators"
+
+import {
+  ACCEPTED_QUOTE_STATE,
+  AcceptedQuoteState,
+} from "@/generated/TradingGateway"
 
 import { withIsStaleData } from "../connection"
 import { creditRfqsById$ } from "../credit"
@@ -49,18 +54,19 @@ export const [useCreditTrades, creditTrades$] = bind(
       const acceptedRfqs = Object.values(update)
         .filter((rfq) => {
           return rfq.quotes?.find(
-            (quote) => quote.state === QuoteState.Accepted,
+            (quote) => quote.state.type === ACCEPTED_QUOTE_STATE,
           )
         })
         .map((rfq) => ({ ...rfq, status: rfq.state }))
       return acceptedRfqs
         .map((rfq) => {
           const acceptedQuote = rfq.quotes?.find(
-            (quote) => quote.state === QuoteState.Accepted,
+            (quote) => quote.state.type === ACCEPTED_QUOTE_STATE,
           )
+
           return {
             tradeId: rfq.id,
-            status: QuoteState.Accepted,
+            status: ACCEPTED_QUOTE_STATE,
             tradeDate: new Date(Date.now()),
             direction: rfq.direction,
             counterParty: rfq.dealers.find(
@@ -70,7 +76,7 @@ export const [useCreditTrades, creditTrades$] = bind(
             security: rfq.instrument?.ticker,
             quantity: rfq.quantity,
             orderType: "AON",
-            unitPrice: acceptedQuote?.price,
+            unitPrice: (acceptedQuote?.state as AcceptedQuoteState)?.payload,
           }
         })
         .reverse() as CreditTrade[]

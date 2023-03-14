@@ -21,6 +21,8 @@ import {
 } from "services/credit"
 import styled from "styled-components"
 
+import { ACCEPTED_QUOTE_STATE } from "@/generated/TradingGateway"
+
 const ConfirmationPill = styled.div<{ direction: Direction }>`
   position: absolute;
   left: 50%;
@@ -149,7 +151,9 @@ export const CreditRfqAcceptedConfirmation = () => {
     <ConfirmationPill direction={rfq.direction}>
       <FaCheckCircle size={16} />
       You have accepted a quote for {formatter(rfq.quantity)} {instrument.name}{" "}
-      @ ${quote.price} from {dealer.name}
+      {quote.state.type === ACCEPTED_QUOTE_STATE
+        ? `@$${quote.state.payload} from ${dealer.name}`
+        : null}
       <IconWrapper direction={rfq.direction} onClick={onDismissMessage}>
         <FaTimes />
       </IconWrapper>

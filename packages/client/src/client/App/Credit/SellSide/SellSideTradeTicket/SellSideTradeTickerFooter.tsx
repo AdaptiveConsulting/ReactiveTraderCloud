@@ -6,6 +6,7 @@ import {
   useClickElementOnEnter,
 } from "client/utils"
 import {
+  ACCEPTED_QUOTE_STATE,
   Direction,
   QuoteBody,
   QuoteState,
@@ -151,9 +152,9 @@ export const SellSideTradeTicketFooter = ({
 
   const disableSend = price.value <= 0 || state !== RfqState.Open || !!quote
   const accepted =
-    state === RfqState.Closed && quote?.state === QuoteState.Accepted
+    state === RfqState.Closed && quote?.state.type === ACCEPTED_QUOTE_STATE
   const missed =
-    state === RfqState.Closed && quote?.state !== QuoteState.Accepted
+    state === RfqState.Closed && quote?.state.type !== ACCEPTED_QUOTE_STATE
 
   return (
     <FooterWrapper accepted={accepted} missed={missed}>
@@ -200,7 +201,10 @@ export const SellSideTradeTicketFooter = ({
             <TradeDetails>
               You {direction === Direction.Buy ? "Bought" : "Sold"}{" "}
               {formatter(quantity)} {instrument?.name ?? "Unknown Instrument"} @
-              ${quote?.price}
+              {quote.state?.type === ACCEPTED_QUOTE_STATE
+                ? `$${quote?.state?.payload}`
+                : null}
+              `
             </TradeDetails>
           </div>
         </Accepted>

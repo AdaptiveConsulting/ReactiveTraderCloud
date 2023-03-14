@@ -1,6 +1,5 @@
 import { Loader } from "client/components/Loader"
 import { invertDirection } from "client/utils"
-import { QuoteState } from "generated/TradingGateway"
 import { useCreditRfqDetails } from "services/credit"
 import styled from "styled-components"
 
@@ -119,7 +118,7 @@ export const SellSideTradeTicketTicketCore = ({
           direction={direction}
           instrumentId={instrumentId}
           rfqState={rfqState}
-          quoteState={quote?.state ?? QuoteState.Pending}
+          quoteState={quote?.state.type}
         />
         <SellSideTradeTicketParameters
           selectedRfqId={rfqId}

@@ -11,6 +11,14 @@ import {
   RfqDetails,
 } from "services/credit"
 
+import {
+  ACCEPTED_QUOTE_STATE,
+  DealerBody,
+  PENDING_WITH_PRICE_QUOTE_STATE,
+  PENDING_WITHOUT_PRICE_QUOTE_STATE,
+  REJECTED_WITH_PRICE_QUOTE_STATE,
+} from "@/generated/TradingGateway"
+
 import { timeRemainingComparator } from "../common"
 import { RfqRow } from "./SellSideRfqGrid"
 
@@ -33,18 +41,24 @@ export const getSellSideQuoteState = (
     return SellSideQuoteState.Cancelled
   } else if (rfqState === RfqState.Expired) {
     return SellSideQuoteState.Expired
-  } else if (rfqState === RfqState.Open && quoteState === undefined) {
+  } else if (
+    rfqState === RfqState.Open &&
+    quoteState?.type === PENDING_WITHOUT_PRICE_QUOTE_STATE
+  ) {
     return SellSideQuoteState.New
   } else if (
     rfqState === RfqState.Closed &&
-    quoteState !== QuoteState.Accepted
+    quoteState?.type !== ACCEPTED_QUOTE_STATE
   ) {
     return SellSideQuoteState.Lost
-  } else if (rfqState === RfqState.Open && quoteState === QuoteState.Pending) {
+  } else if (
+    rfqState === RfqState.Open &&
+    quoteState?.type === PENDING_WITH_PRICE_QUOTE_STATE
+  ) {
     return SellSideQuoteState.Pending
-  } else if (quoteState === QuoteState.Rejected) {
+  } else if (quoteState?.type === REJECTED_WITH_PRICE_QUOTE_STATE) {
     return SellSideQuoteState.Rejected
-  } else if (quoteState === QuoteState.Accepted) {
+  } else if (quoteState?.type === ACCEPTED_QUOTE_STATE) {
     return SellSideQuoteState.Accepted
   } else {
     throw new Error()
@@ -100,7 +114,9 @@ const filterByQuoteState = (
 }
 
 const filterByIsAdaptiveRfq = (rfq: RfqDetails) =>
-  rfq.dealers.findIndex((dealer) => dealer.name === ADAPTIVE_BANK_NAME) > -1
+  rfq.dealers.findIndex(
+    (dealer: DealerBody) => dealer.name === ADAPTIVE_BANK_NAME,
+  ) > -1
 
 const _sellSideRfqs$ = combineLatest([
   creditRfqsById$,
@@ -132,7 +148,9 @@ const _sellSideRfqs$ = combineLatest([
         transformed.cpy = "AAM"
         transformed.security = rfq.instrument?.name ?? "NA"
         transformed.quantity = rfq.quantity
-        transformed.price = adaptiveQuote?.price ? adaptiveQuote.price : 0
+        transformed.price = adaptiveQuote?.state?.payload
+          ? adaptiveQuote?.state?.payload
+          : 0
         transformed.timer =
           rfq.state !== RfqState.Open
             ? undefined

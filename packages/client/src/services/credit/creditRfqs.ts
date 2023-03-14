@@ -6,17 +6,17 @@ import {
   END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
   InstrumentBody,
   QUOTE_ACCEPTED_RFQ_UPDATE,
-  QUOTE_CREATED_RFQ_UPDATE,
+  QUOTE_PASSED_RFQ_UPDATE,
+  QUOTE_UPDATED_RFQ_UPDATE,
   QuoteBody,
-  QuoteCreatedRfqUpdate,
-  QuoteState,
+  QuoteUpdatedRfqUpdate,
+  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   RFQ_CLOSED_RFQ_UPDATE,
   RFQ_CREATED_RFQ_UPDATE,
   RfqBody,
   RfqState,
   RfqUpdate,
   START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
-  WorkflowService,
 } from "generated/TradingGateway"
 import { combineLatest, Observable } from "rxjs"
 import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
@@ -25,6 +25,22 @@ import { withConnection } from "../withConnection"
 import { creditDealers$ } from "./creditDealers"
 import { creditInstruments$ } from "./creditInstruments"
 
+export type QuoteStateTypes =
+  | "pendngWithoutPrice"
+  | "pendingWithPrice"
+  | "passed"
+  | "accepted"
+  | "rejectedWithPrice"
+  | "rejectedWithoutPrice"
+
+export enum QuoteStateTypes_ {
+  PENDING_WITHOUT_PRICE_QUOTE_STATE = "pendingWithoutPrice",
+  PENDING_WITH_PRICE_QUOTE_STATE = "pendingWithPrice",
+  PASSED_QUOTE_STATE = "passed",
+  ACCEPTED_QUOTE_STATE = "accepted",
+  REJECTED_WITH_PRICE_QUOTE_STATE = "rejectedWithPrice",
+  REJECTED_WITHOUT_PRICE_QUOTE_STATE = "rejectedWithoutPrice",
+}
 export interface RfqDetails extends RfqBody {
   instrument: InstrumentBody | null
   dealers: DealerBody[]
@@ -38,10 +54,17 @@ export interface QuoteDetails extends QuoteBody {
   quantity: number
 }
 
-const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
-  withConnection(),
-  shareLatest(),
-)
+//MockImports
+import { mockCreditRFQS } from "./mockNewRfqs"
+
+// Mock
+const creditRfqUpdates$ = mockCreditRFQS.pipe(withConnection(), shareLatest())
+
+//Hydra
+// const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
+//   withConnection(),
+//   shareLatest(),
+// )
 
 export const creditRfqsById$ = creditRfqUpdates$.pipe(
   withLatestFrom(creditInstruments$, creditDealers$),
@@ -68,10 +91,10 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
                     (instrument) =>
                       instrument.id === update.payload.instrumentId,
                   ) ?? null,
-                dealers: update.payload.dealerIds.map(
+                dealers: dealers.map(
                   (dealerId) =>
-                    dealers.find((dealer) => dealer.id === dealerId) ?? {
-                      id: dealerId,
+                    dealers.find((dealer) => dealer.id === dealerId.id) ?? {
+                      id: dealerId.id,
                       name: "Unknown Dealer",
                     },
                 ),
@@ -90,7 +113,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
               },
             },
           ]
-        case QUOTE_CREATED_RFQ_UPDATE: {
+        case QUOTE_UPDATED_RFQ_UPDATE: {
           const previousRfq = rec[update.payload.rfqId]
           return [
             acc[0],
@@ -105,11 +128,30 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
             },
           ]
         }
+        case QUOTE_PASSED_RFQ_UPDATE: {
+          const previousRfq = rec[update.payload.rfqId]
+          return [
+            acc[0],
+            {
+              ...rec,
+              [update.payload.rfqId]: {
+                ...previousRfq,
+                quotes: previousRfq.quotes.map((quote) => ({
+                  ...quote,
+                  state:
+                    quote.id === update.payload.id
+                      ? update.payload.state
+                      : quote.state,
+                })),
+              },
+            },
+          ]
+        }
         // Currently the server sets the state of all the other quotes to
         // Rejected if one quote is accepted
         case QUOTE_ACCEPTED_RFQ_UPDATE: {
           const previousRfq = Object.values(rec).find((rfqDetails) =>
-            rfqDetails.quotes.some((quote) => quote.id === update.payload),
+            rfqDetails.quotes.some((quote) => quote.id === update.payload.id),
           )
           if (previousRfq) {
             return [
@@ -121,9 +163,9 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
                   quotes: previousRfq.quotes.map((quote) => ({
                     ...quote,
                     state:
-                      quote.id === update.payload
-                        ? QuoteState.Accepted
-                        : QuoteState.Rejected,
+                      quote.id === update.payload.id
+                        ? update.payload?.state
+                        : { type: REJECTED_WITHOUT_PRICE_QUOTE_STATE },
                   })),
                 },
               },
@@ -149,7 +191,11 @@ export const [useCreditRfqDetails, getCreditRfqDetails$] = bind<
   [number],
   RfqDetails | undefined
 >((rfqId: number) =>
-  creditRfqsById$.pipe(map((creditRfqsById) => creditRfqsById[rfqId])),
+  creditRfqsById$.pipe(
+    map((creditRfqsById) => {
+      return creditRfqsById[rfqId]
+    }),
+  ),
 )
 
 export const [removedRfqIds$, removeRfqs] = createSignal<number[]>()
@@ -192,8 +238,8 @@ export const lastQuoteReceived$: Observable<QuoteDetails> =
     filter(([, endOfRfqStateOfWorld]) => endOfRfqStateOfWorld),
     map(([update]) => update),
     filter(
-      (update): update is QuoteCreatedRfqUpdate =>
-        update.type === QUOTE_CREATED_RFQ_UPDATE,
+      (update): update is QuoteUpdatedRfqUpdate =>
+        update.type === QUOTE_UPDATED_RFQ_UPDATE,
     ),
     withLatestFrom(creditRfqsById$),
     map(([update, creditRfqsById]) => {
