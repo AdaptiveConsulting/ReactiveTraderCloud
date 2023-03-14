@@ -8,12 +8,14 @@ import {
 } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
-import { withConnection } from "../withConnection"
+import { withConnection } from "../../withConnection"
+import { mockCreditDealers$ } from "../oldCreditRfqs/mockOldRfqs"
 
 export const ADAPTIVE_BANK_NAME = "Adaptive Bank"
 
 export const [useCreditDealers, creditDealers$] = bind(
-  DealerService.subscribe().pipe(
+  // DealerService.subscribe().pipe(
+  mockCreditDealers$().pipe(
     withConnection(),
     scan((acc: DealerBody[], update: DealerUpdate) => {
       switch (update.type) {

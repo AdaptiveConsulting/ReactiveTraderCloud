@@ -143,3 +143,16 @@ export const AcceptQuoteButton = styled.button`
   background-color: ${({ theme }) =>
     theme.colors.spectrum.uniqueCollections.Buy.base};
 `
+export const PassQuoteButton = styled.button`
+  user-select: none;
+  display: none;
+  border-radius: 3px;
+  padding: 0 8px;
+  height: 16px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-left: 8px;
+  color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) =>
+    theme.colors.spectrum.uniqueCollections.Buy.darker};
+`

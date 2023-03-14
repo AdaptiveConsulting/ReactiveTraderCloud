@@ -17,8 +17,8 @@ import {
   createCreditQuote$,
   CreatedCreditRfq,
   createdCreditRfq$,
-} from "./creditRfqRequests"
-import { creditRfqsById$ } from "./creditRfqs"
+} from "../creditRfqRequests"
+import { creditRfqsById$ } from "../oldCreditRfqs/creditRfqs"
 
 // Keeping it short for demo purposes but could be driven by the actual RFQ duration value
 const DEALER_RFQ_RESPONSE_TIME_WINDOW_MILLIS = 30_000

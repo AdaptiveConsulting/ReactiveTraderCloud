@@ -91,7 +91,6 @@ export const CardFooter = ({
   const acceptedDealerId = quotes.find(
     (quote) => quote.state === QuoteState.Accepted,
   )?.dealerId
-
   return (
     <CardFooterWrapper>
       {state === RfqState.Open ? (

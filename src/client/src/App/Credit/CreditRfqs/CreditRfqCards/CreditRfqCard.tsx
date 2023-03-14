@@ -4,7 +4,10 @@ import {
   QuoteBody,
   RfqState,
   Direction,
-} from "@/generated/TradingGateway"
+  PASSED_QUOTE_STATE,
+  PENDING_WITH_PRICE_QUOTE_STATE,
+  PENDING_WITHOUT_PRICE_QUOTE_STATE,
+} from "@/generated/NewTradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
 import { customNumberFormatter } from "@/utils"
 import { CardFooter } from "./CardFooter"
@@ -28,19 +31,44 @@ const Details = ({ quantity }: { quantity: number }) => {
   )
 }
 
+//Order
+//Low
+//  |
+//High
+//Awaiting Response
+//Passed
+const assignValues = (quote: QuoteBody): Number | undefined => {
+  switch (quote.state.type) {
+    case PENDING_WITH_PRICE_QUOTE_STATE:
+      return quote.state.payload
+      break
+    case PENDING_WITHOUT_PRICE_QUOTE_STATE:
+      return Number.MAX_SAFE_INTEGER - 1
+      break
+    case PASSED_QUOTE_STATE:
+      return Number.MAX_SAFE_INTEGER
+      break
+    default:
+      return 0
+      break
+  }
+}
+
 const sortByPriceFunc =
   (quotes: QuoteBody[], direction: Direction) =>
   (d1: DealerBody, d2: DealerBody) => {
-    const d1Quote = quotes.find((quote) => quote.dealerId === d1.id)
-    const d2Quote = quotes.find((quote) => quote.dealerId === d2.id)
-    if (!d2Quote) {
+    const d1Value = assignValues(
+      quotes.find((quote) => quote.dealerId === d1.id),
+    )
+    const d2Value = assignValues(
+      quotes.find((quote) => quote.dealerId === d2.id),
+    )
+    if (!d2Value) {
       return -1
-    } else if (!d1Quote) {
+    } else if (!d1Value) {
       return 1
     } else {
-      return direction == "Buy"
-        ? d1Quote.price - d2Quote.price
-        : d2Quote.price - d1Quote.price
+      return direction === "Buy" ? d1Value - d2Value : d2Value - d1Value
     }
   }
 
@@ -69,7 +97,6 @@ export const Card = ({ id }: { id: number }) => {
             const quote = rfqDetails.quotes.find(
               (quote) => quote.dealerId === dealer.id,
             )
-
             // The highest price is the best quote since we do not have partial fills
             const highlight =
               !!quote &&

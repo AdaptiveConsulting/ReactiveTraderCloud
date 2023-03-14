@@ -48,6 +48,7 @@ const connectionExists = (status: ConnectionStatus, dispose: Disposable) => {
 export const initConnection = async () => {
   const dispose = await connectToGateway({
     url: `${window.location.origin}/ws`,
+    useJson: true,
     interceptor: noop,
     autoReconnect: true,
     useJson: !!import.meta.env.DEV,
