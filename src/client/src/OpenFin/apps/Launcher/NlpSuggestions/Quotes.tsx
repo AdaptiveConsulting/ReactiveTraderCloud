@@ -1,9 +1,11 @@
-import { usePrice } from "@/services/prices"
-import { ResultsTable, ResultsTableRow, defaultColDefs } from "./resultsTable"
-import { MovementIcon } from "../icons"
 import { format } from "date-fns"
+
 import { useCurrencyPairs } from "@/services/currencyPairs"
+import { usePrice } from "@/services/prices"
+
+import { MovementIcon } from "../icons"
 import { showCurrencyPairWindow } from "./intents"
+import { defaultColDefs, ResultsTable, ResultsTableRow } from "./resultsTable"
 
 export const InlineQuote = ({ symbol }: { symbol: string }) => {
   const quote = usePrice(symbol)

@@ -1,3 +1,4 @@
+import { createKeyedSignal } from "@react-rxjs/utils"
 import { concat, Observable, pipe, race, timer } from "rxjs"
 import {
   distinctUntilChanged,
@@ -8,12 +9,13 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
-import { createKeyedSignal } from "@react-rxjs/utils"
+
 import { rfq$, RfqResponse } from "@/services/rfqs"
-import { tileExecutions$ } from "../Tile.state"
-import { symbolBind } from "../Tile.context"
 import { equals } from "@/utils"
+
 import { getNotionalValue$ } from "../Notional"
+import { symbolBind } from "../Tile.context"
+import { tileExecutions$ } from "../Tile.state"
 
 export const [useIsRfq, isRfq$] = symbolBind(
   (symbol: string) =>
@@ -43,7 +45,7 @@ const [quoteRequested$, onQuoteRequest] = createKeyedSignal<string>()
 const [cancelRfq$, onCancelRfq] = createKeyedSignal<string>()
 const [rejectQuote$, onRejectQuote] = createKeyedSignal<string>()
 
-export { onRejectQuote, onCancelRfq, onQuoteRequest }
+export { onCancelRfq, onQuoteRequest, onRejectQuote }
 
 const REJECT_TIMEOUT = 2_000
 export const [useRfqState, getRfqState$] = symbolBind(

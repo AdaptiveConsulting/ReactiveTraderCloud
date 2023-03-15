@@ -11,6 +11,7 @@ import {
   select,
 } from "d3"
 import { useLayoutEffect, useRef } from "react"
+
 import { BubbleChart, Title } from "../styled"
 import { BubbleChartNode, data$, nodes$, useData } from "./data"
 

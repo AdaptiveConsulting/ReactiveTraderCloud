@@ -1,5 +1,6 @@
 import Switch, { ReactSwitchProps } from "react-switch"
 import { withTheme } from "styled-components"
+
 import { Theme, ThemeName, useTheme } from "."
 
 export type ThemeStorageSwitchProps = Partial<ReactSwitchProps>

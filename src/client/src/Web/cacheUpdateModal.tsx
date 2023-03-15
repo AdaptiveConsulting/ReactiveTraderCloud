@@ -1,7 +1,8 @@
-import { Modal } from "@/components/Modal"
-import { ThemeProvider, TouchableIntentName } from "@/theme"
 import ReactDOM from "react-dom"
 import styled from "styled-components"
+
+import { Modal } from "@/components/Modal"
+import { ThemeProvider, TouchableIntentName } from "@/theme"
 
 const Buttons = styled.button`
   display: flex;

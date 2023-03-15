@@ -1,5 +1,6 @@
 import { MouseEvent, ReactNode, useCallback } from "react"
-import { PopupContainer, PopupPanel, Body } from "./styled"
+
+import { Body, PopupContainer, PopupPanel } from "./styled"
 
 interface Props {
   className?: string

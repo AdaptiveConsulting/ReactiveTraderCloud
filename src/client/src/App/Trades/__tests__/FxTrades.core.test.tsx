@@ -1,14 +1,16 @@
-import { BehaviorSubject, Subject } from "rxjs"
 import {
+  act,
+  queryByText,
   render,
   screen,
   waitFor,
-  act,
   within,
-  queryByText,
 } from "@testing-library/react"
+import { BehaviorSubject, Subject } from "rxjs"
+
 import { Trade, tradesTestData } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
+
 import FxTrades from "../CoreFxTrades"
 
 jest.mock("@/services/trades/trades")

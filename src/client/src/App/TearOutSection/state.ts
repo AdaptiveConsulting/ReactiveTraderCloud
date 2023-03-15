@@ -1,6 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { filter, scan, tap } from "rxjs/operators"
+
 import { handleTearOutSection } from "./handleTearOutSection"
 
 type TearOutSectionEntry = [boolean, Section]

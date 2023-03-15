@@ -1,6 +1,7 @@
-import { defer, of, Observable } from "rxjs"
 import { bind } from "@react-rxjs/core"
-import { HistoryEntry, CurrencyPairPosition } from "../types"
+import { defer, Observable, of } from "rxjs"
+
+import { CurrencyPairPosition, HistoryEntry } from "../types"
 
 let historyMocks$: Observable<HistoryEntry[]> = of([])
 let positionMocks$: Observable<Record<string, CurrencyPairPosition>> = of({})

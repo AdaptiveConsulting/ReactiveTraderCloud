@@ -1,8 +1,10 @@
-import { BehaviorSubject } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
-import { render, screen, act } from "@testing-library/react"
+import { act, render, screen } from "@testing-library/react"
+import { BehaviorSubject } from "rxjs"
+
 import { HistoryEntry } from "@/services/analytics"
 import { TestThemeProvider } from "@/utils/testUtils"
+
 import { LastPosition, lastPosition$ } from "../LastPosition"
 
 jest.mock("@/services/analytics/analytics")

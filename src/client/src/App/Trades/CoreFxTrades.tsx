@@ -1,10 +1,12 @@
-import { Loader } from "@/components/Loader"
-import { FxTrade, isBlotterDataStale$, trades$ } from "@/services/trades"
-import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 import { broadcast } from "@finos/fdc3"
 import { Subscribe } from "@react-rxjs/core"
 import { useCallback } from "react"
 import styled from "styled-components"
+
+import { Loader } from "@/components/Loader"
+import { FxTrade, isBlotterDataStale$, trades$ } from "@/services/trades"
+import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
+
 import { ColDefContext, ColFieldsContext, TradesStreamContext } from "./Context"
 import { TradesFooter } from "./TradesFooter"
 import { TradesGridInner, TradesGridInnerProps } from "./TradesGrid"

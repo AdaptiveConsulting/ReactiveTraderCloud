@@ -1,4 +1,6 @@
 // TODO - Revisit if/when launcher is cross platform
+import { Application } from "openfin-adapter"
+
 import {
   ApplicationConfig,
   ApplicationProvider,
@@ -7,7 +9,6 @@ import {
   bringToFrontOpenFinApplication,
   createAndRunOpenFinApplication,
 } from "./utils"
-import { Application } from "openfin-adapter"
 
 function openWindow(provider: ApplicationProvider, name: string, url?: string) {
   if (!provider.windowOptions) {

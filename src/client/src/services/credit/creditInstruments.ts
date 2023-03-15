@@ -1,15 +1,17 @@
+import { bind, shareLatest } from "@react-rxjs/core"
+import { map, scan } from "rxjs/operators"
+
 import {
-  AddedInstrumentUpdate,
   ADDED_INSTRUMENT_UPDATE,
+  AddedInstrumentUpdate,
   InstrumentBody,
   InstrumentService,
   InstrumentUpdate,
-  RemovedInstrumentUpdate,
   REMOVED_INSTRUMENT_UPDATE,
+  RemovedInstrumentUpdate,
   START_OF_STATE_OF_THE_WORLD_INSTRUMENT_UPDATE,
 } from "@/generated/TradingGateway"
-import { bind, shareLatest } from "@react-rxjs/core"
-import { map, scan } from "rxjs/operators"
+
 import { withConnection } from "../withConnection"
 
 const isAddedInstrumentUpdate = (

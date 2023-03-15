@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react"
-import { usePopUpMenu } from "@/utils/usePopUpMenu"
-import styled from "styled-components"
 import { FaCheck, FaChevronDown, FaChevronUp } from "react-icons/fa"
+import styled from "styled-components"
+
+import { usePopUpMenu } from "@/utils/usePopUpMenu"
 
 const DropdownLayout = styled.div`
   display: flex;

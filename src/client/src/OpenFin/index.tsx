@@ -1,11 +1,13 @@
 import { lazy, Suspense } from "react"
 import { BrowserRouter, Route, Switch } from "react-router-dom"
+
+import { Loader } from "@/components/Loader"
+import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
+import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
+
 import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
-import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
-import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
-import { Loader } from "@/components/Loader"
 
 const LauncherRoutes = lazy(() => import("@/OpenFin/apps/Launcher"))
 const FxRoutes = lazy(() => import("@/OpenFin/apps/FX"))

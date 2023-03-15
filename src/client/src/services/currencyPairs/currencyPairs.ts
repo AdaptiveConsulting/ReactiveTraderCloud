@@ -1,6 +1,8 @@
-import { ReferenceDataService } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { distinctUntilChanged, map, scan } from "rxjs/operators"
+
+import { ReferenceDataService } from "@/generated/TradingGateway"
+
 import { withConnection } from "../withConnection"
 import { CurrencyPair } from "./types"
 

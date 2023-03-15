@@ -3,6 +3,7 @@ import { LiveRates } from "@/App/LiveRates"
 import { getTornOutSections } from "@/App/TearOutSection/state"
 import { FxTrades } from "@/App/Trades"
 import Resizer from "@/components/Resizer"
+
 import MainLayout from "./MainLayout"
 
 const FX_TEAR_OUT_SECTIONS = ["tiles", "blotter", "analytics"] as const

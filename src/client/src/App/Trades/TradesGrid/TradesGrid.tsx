@@ -1,6 +1,8 @@
+import styled, { css } from "styled-components"
+
 import { QuoteState } from "@/generated/TradingGateway"
 import { CreditTrade, FxTrade, Trade, TradeStatus } from "@/services/trades"
-import styled, { css } from "styled-components"
+
 import { useColDef, useColFields, useTrades$ } from "../Context"
 import { useTableTrades } from "../TradesState"
 import { TableHeadCellContainer } from "./TableHeadCell"

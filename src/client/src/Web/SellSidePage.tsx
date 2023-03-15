@@ -1,12 +1,13 @@
 import styled, { ThemeProvider } from "styled-components"
-import { GlobalScrollbarStyle } from "@/theme"
-import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
+
 import {
   SellSideRfqGrid,
   SellSideTradeTicket,
   useInvertedTheme,
   useRfqSearchParamEffect,
 } from "@/App/Credit/SellSide"
+import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
+import { GlobalScrollbarStyle } from "@/theme"
 
 const SellSideWrapper = styled.div`
   display: flex;

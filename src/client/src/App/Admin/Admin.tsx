@@ -1,10 +1,11 @@
-import { ThroughputAdminService } from "@/generated/TradingGateway"
-import { withSubscriber } from "@/utils/withSubscriber"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { concat, merge, of } from "rxjs"
 import { catchError, debounceTime, exhaustMap, map } from "rxjs/operators"
 import styled from "styled-components"
+
+import { ThroughputAdminService } from "@/generated/TradingGateway"
+import { withSubscriber } from "@/utils/withSubscriber"
 
 const Wrapper = styled.div`
   background: ${({ theme }) => theme.white};

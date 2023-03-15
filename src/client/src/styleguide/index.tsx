@@ -1,16 +1,16 @@
 import { createRef } from "react"
 import Helmet from "react-helmet"
 import styled, { createGlobalStyle } from "styled-components"
+
 import FloatingTools from "./components/FloatingsTools"
 import OnePageNavBar from "./components/OnePageNavBar"
-import Introduction from "./sections/Introduction"
-import { Block } from "./styled"
-
+import Atoms from "./sections/Atoms"
 import CoreBranding from "./sections/CoreBranding"
 import FontFamilies from "./sections/FontFamilies"
 import Iconography from "./sections/Iconography"
-import Atoms from "./sections/Atoms"
+import Introduction from "./sections/Introduction"
 import Molecules from "./sections/Molecules"
+import { Block } from "./styled"
 
 const sections: Array<{
   path: string

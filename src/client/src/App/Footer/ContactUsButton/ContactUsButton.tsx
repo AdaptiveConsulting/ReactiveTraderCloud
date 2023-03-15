@@ -1,11 +1,13 @@
 import { useRef } from "react"
-import { ContactUsPopup, LogoWrapper } from "./styled"
+
+import Logo from "@/components/Logo"
+import { usePopUpMenu } from "@/utils/usePopUpMenu"
+
+import { Button, Root } from "../common-styles"
 import { ContactUs } from "./ContactUs"
 import { FollowUs } from "./FollowUs"
-import Logo from "@/components/Logo"
 import { MailIcon } from "./MailIcon"
-import { usePopUpMenu } from "@/utils/usePopUpMenu"
-import { Button, Root } from "../common-styles"
+import { ContactUsPopup, LogoWrapper } from "./styled"
 
 interface Props {
   logoSize: number

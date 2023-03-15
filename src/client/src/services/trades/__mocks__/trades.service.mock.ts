@@ -1,6 +1,7 @@
+import { bind } from "@react-rxjs/core"
 import { Observable } from "rxjs/internal/Observable"
 import { map, scan, startWith } from "rxjs/operators"
-import { bind } from "@react-rxjs/core"
+
 import { withIsStaleData } from "../../connection"
 import { executions$ } from "../../executions"
 import { Trade } from "../types"

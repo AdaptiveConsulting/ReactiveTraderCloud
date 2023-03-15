@@ -1,4 +1,5 @@
 import { storiesOf } from "@storybook/react"
+
 import * as icons from "./"
 
 const stories = storiesOf("Components/Icons", module)

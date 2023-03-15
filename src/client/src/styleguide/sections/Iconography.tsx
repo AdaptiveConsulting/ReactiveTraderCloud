@@ -1,17 +1,19 @@
 import styled from "styled-components"
+
 import {
+  ChartIcon,
+  ChevronIcon,
+  CrossIcon,
   DownloadIcon,
   FilterIcon,
-  PopOutIcon,
-  PopInIcon,
-  CrossIcon,
+  MailIcon,
   MaximizeIcon,
   MinimizeIcon,
-  ChevronIcon,
+  PopInIcon,
+  PopOutIcon,
   UndockIcon,
-  ChartIcon,
-  MailIcon,
 } from "@/components/icons"
+
 import { H2, H3, H5 } from "../elements"
 import { Paragraph, SectionBlock, Text, TextProps } from "../styled"
 

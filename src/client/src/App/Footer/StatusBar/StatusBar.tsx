@@ -1,4 +1,5 @@
 import { WithChildren } from "@/utils/utilityTypes"
+
 import { Fill, Header, Root } from "./styled"
 
 const StatusBar = ({ children }: WithChildren) => (

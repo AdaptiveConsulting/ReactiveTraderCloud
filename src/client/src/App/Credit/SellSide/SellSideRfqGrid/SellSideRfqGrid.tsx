@@ -1,11 +1,13 @@
-import styled from "styled-components"
 import { Subscribe } from "@react-rxjs/core"
+import styled from "styled-components"
+
 import { Loader } from "@/components/Loader"
 import Logo from "@/components/Logo"
 import { Direction } from "@/generated/TradingGateway"
+
 import { SellSideQuoteState } from "../sellSideState"
-import { RfqGridInner } from "./SellSideRfqGridInner"
 import { SellSideGridHeader } from "./SellSideGridHeader"
+import { RfqGridInner } from "./SellSideRfqGridInner"
 
 export interface RfqRow {
   id: number

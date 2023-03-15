@@ -1,9 +1,10 @@
 import styled from "styled-components"
+
 import {
-  TileView,
-  onToggleSelectedView,
-  useSelectedTileView,
   getInitView,
+  onToggleSelectedView,
+  TileView,
+  useSelectedTileView,
 } from "../../selectedView"
 import { NavItem } from "../../styled"
 import { ChartIcon } from "./ChartIcon"

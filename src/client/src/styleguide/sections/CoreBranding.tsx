@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { rgba } from "polished"
+import { ReactNode } from "react"
 import styled, {
-  StyledComponent,
   css,
   FlattenSimpleInterpolation,
+  StyledComponent,
 } from "styled-components"
+
+import { AccentName, colors, Theme, ThemeName, useTheme } from "@/theme"
+
 import { H2, H3 } from "../elements"
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from "../styled"
-import { colors, Theme, AccentName, useTheme, ThemeName } from "@/theme"
-import { ReactNode } from "react"
 
 const { primary, ...others } = colors.accents
 

@@ -1,21 +1,23 @@
 import { Subscribe } from "@react-rxjs/core"
+
 import { Loader } from "@/components/Loader"
-import {
-  LogoWrapper,
-  IntentWrapper,
-  IntentActions,
-  IntentActionWrapper,
-  PlatformLogoWrapper,
-  Suggestion,
-  LoadingWrapper,
-  InlineIntent,
-} from "./styles"
+import { WithChildren } from "@/utils/utilityTypes"
+
+import { appConfigs } from "../applicationConfigurations"
 import { reactiveTraderFxIcon } from "../icons"
 import { NlpIntent } from "../services/nlpService"
-import { handleIntent } from "./intents"
 import { open } from "../tools"
-import { appConfigs } from "../applicationConfigurations"
-import { WithChildren } from "@/utils/utilityTypes"
+import { handleIntent } from "./intents"
+import {
+  InlineIntent,
+  IntentActions,
+  IntentActionWrapper,
+  IntentWrapper,
+  LoadingWrapper,
+  LogoWrapper,
+  PlatformLogoWrapper,
+  Suggestion,
+} from "./styles"
 
 export const SuggestionWrapper = ({
   children,

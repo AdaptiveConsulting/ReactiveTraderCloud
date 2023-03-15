@@ -1,6 +1,7 @@
 import { EMPTY, Observable } from "rxjs"
 import { switchMap } from "rxjs/operators"
-import { connectionStatus$, ConnectionStatus } from "./connection"
+
+import { ConnectionStatus, connectionStatus$ } from "./connection"
 
 export const withConnection =
   () =>

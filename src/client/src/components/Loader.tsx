@@ -1,4 +1,5 @@
 import styled from "styled-components"
+
 import { AdaptiveLoader } from "./AdaptiveLoader"
 
 interface Props {

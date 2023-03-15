@@ -1,4 +1,5 @@
 import { Suspense } from "react"
+
 import ContactUsButton from "./ContactUsButton"
 import { Stats } from "./Stats"
 import StatusBar from "./StatusBar"

@@ -1,14 +1,16 @@
 import { Dispatch, SetStateAction, useEffect } from "react"
+
 import { CrossIcon } from "@/components/icons"
+import { isiOS, isMobileDevice, isPWA } from "@/utils"
+
 import { PWAInstallModal } from "./PWAInstallModal"
-import { usePWABannerPrompt } from "./usePWABannerPrompt"
-import { isPWA, isiOS, isMobileDevice } from "@/utils"
 import {
-  MainBanner,
   BannerText,
   CrossButton,
   InstallButton,
+  MainBanner,
 } from "./PWAInstallPrompt.styles"
+import { usePWABannerPrompt } from "./usePWABannerPrompt"
 
 export enum PWABanner {
   Shown = "shown",

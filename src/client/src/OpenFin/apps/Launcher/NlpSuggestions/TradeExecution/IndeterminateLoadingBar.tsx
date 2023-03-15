@@ -1,4 +1,5 @@
 import styled, { DefaultTheme, keyframes } from "styled-components"
+
 import { NlpExecutionState, NlpExecutionStatus } from "./state"
 
 const getBarColor = (state: NlpExecutionState, theme: DefaultTheme) => {

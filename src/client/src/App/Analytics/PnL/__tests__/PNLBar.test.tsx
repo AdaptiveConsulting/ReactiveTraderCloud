@@ -1,5 +1,7 @@
-import { render, screen, act, fireEvent } from "@testing-library/react"
+import { act, fireEvent, render, screen } from "@testing-library/react"
+
 import { TestThemeProvider } from "@/utils/testUtils"
+
 import PNLBar from "../PNLBar"
 
 const renderer = require("react-test-renderer")

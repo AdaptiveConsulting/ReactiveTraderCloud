@@ -1,7 +1,7 @@
-import { keyframes, css } from "styled-components"
-import styled from "styled-components"
-import { Theme } from "@/theme/themes"
+import styled, { css, keyframes } from "styled-components"
+
 import { Direction } from "@/generated/TradingGateway"
+import { Theme } from "@/theme/themes"
 
 const backgroundEffectKeyframes = ({
   direction,

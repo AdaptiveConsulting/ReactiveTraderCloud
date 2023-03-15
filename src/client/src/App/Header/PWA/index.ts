@@ -1,3 +1,3 @@
 export * from "./PWAInstallPrompt"
-export * from "./usePWABannerPrompt"
 export * from "./PWALaunchButton"
+export * from "./usePWABannerPrompt"

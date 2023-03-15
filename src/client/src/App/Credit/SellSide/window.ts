@@ -1,5 +1,7 @@
 import { useEffect } from "react"
+
 import { RFQ_ID_PARAM } from "@/utils"
+
 import { highlightRfqId } from "./sellSideState"
 
 const getRfqSearchParam = (url: string) =>

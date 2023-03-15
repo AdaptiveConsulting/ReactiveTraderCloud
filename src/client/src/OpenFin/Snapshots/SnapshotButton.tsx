@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
+import { useLocation } from "react-router"
 import styled from "styled-components"
+
 import { Button } from "@/App/Footer/common-styles"
+import { constructUrl } from "@/utils/url"
+
 import { PlatformLockedStatusIcon } from "../icons/PlatformLockedStatusIcon"
 import { createOpenFinPopup, Offset, showOpenFinPopup } from "../utils/window"
-import { constructUrl } from "@/utils/url"
-import { useLocation } from "react-router"
 
 const IconContainer = styled.div`
   display: flex;

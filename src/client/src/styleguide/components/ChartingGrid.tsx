@@ -1,5 +1,6 @@
 import { FC } from "react"
 import styled from "styled-components"
+
 import { HistoricalGraphComponent } from "@/App/LiveRates/Tile/HistoricalGraph"
 
 const PATH =

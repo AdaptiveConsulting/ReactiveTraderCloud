@@ -1,11 +1,13 @@
-import { Updates } from "./Updates"
-import { Latency } from "./Latency"
-import { UpdatesHistoricalGraph } from "./UpdatesHistoricalGraph"
-import styled from "styled-components"
-import { AdminButton } from "./AdminButton"
-import { LatencyHistoricalGraph } from "./LatencyHistoricalGraph"
 import { Subscribe } from "@react-rxjs/core"
+import styled from "styled-components"
+
 import { isMobileDevice } from "@/utils"
+
+import { AdminButton } from "./AdminButton"
+import { Latency } from "./Latency"
+import { LatencyHistoricalGraph } from "./LatencyHistoricalGraph"
+import { Updates } from "./Updates"
+import { UpdatesHistoricalGraph } from "./UpdatesHistoricalGraph"
 
 const Wrapper = styled.div`
   display: flex;

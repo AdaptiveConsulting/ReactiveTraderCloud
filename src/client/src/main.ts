@@ -1,9 +1,9 @@
 import { AnalyticsCoreDeferred } from "@/App/Analytics"
 import { LiveRatesCoreDeferred } from "@/App/LiveRates"
 import { TradesCoreDeferred } from "@/App/Trades"
-import { register } from "@/Web/serviceWorkerRegistration"
-import { showCacheUpdateModal } from "@/Web/cacheUpdateModal"
 import { WebApp } from "@/Web"
+import { showCacheUpdateModal } from "@/Web/cacheUpdateModal"
+import { register } from "@/Web/serviceWorkerRegistration"
 
 export const gaDimension = "browser"
 

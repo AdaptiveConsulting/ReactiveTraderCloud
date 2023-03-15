@@ -1,3 +1,6 @@
+import { useEffect } from "react"
+import styled from "styled-components"
+
 import { SELECTED_VIEW_KEY, TileView } from "@/App/LiveRates/selectedView"
 import { Tile } from "@/App/LiveRates/Tile"
 import { Loader } from "@/components/Loader"
@@ -5,8 +8,7 @@ import { useCurrencyPair } from "@/services/currencyPairs"
 import { useLocalStorage } from "@/utils"
 import { closeWindow } from "@/utils/window/closeWindow"
 import { withSubscriber } from "@/utils/withSubscriber"
-import { useEffect } from "react"
-import styled from "styled-components"
+
 import { useTearOutEntry } from "./state"
 
 const Wrapper = styled("div")`

@@ -1,4 +1,5 @@
 import styled from "styled-components"
+
 import { transparentColor } from "./globals/variables"
 
 export const AnalyticsInnerWrapper = styled.div<{ inExternalWindow?: boolean }>`

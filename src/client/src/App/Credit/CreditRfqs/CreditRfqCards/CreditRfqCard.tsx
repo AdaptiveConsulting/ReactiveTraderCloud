@@ -1,12 +1,13 @@
 import { Loader } from "@/components/Loader"
 import {
   DealerBody,
+  Direction,
   QuoteBody,
   RfqState,
-  Direction,
 } from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
 import { customNumberFormatter } from "@/utils"
+
 import { CardFooter } from "./CardFooter"
 import { CardHeader } from "./CardHeader"
 import { Quote } from "./Quote/CardQuote"

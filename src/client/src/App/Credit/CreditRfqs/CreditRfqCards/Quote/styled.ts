@@ -1,7 +1,9 @@
 import styled from "styled-components"
+
 import { Direction } from "@/generated/TradingGateway"
 import { Theme, ThemeName } from "@/theme"
 import { breathing } from "@/utils/styling"
+
 import { Row } from "../styled"
 
 interface CommonProps {

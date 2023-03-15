@@ -1,20 +1,21 @@
 /* eslint-disable no-restricted-globals */
 import {
-  create,
   addEventListener,
+  create,
   NotificationActionEvent,
 } from "openfin-notifications"
+import { Subscription } from "rxjs"
 
-import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
-import { executions$ } from "@/services/executions/executions"
-import { formatNumber } from "@/utils"
 import {
   setCreditTradeRowHighlight,
   setFxTradeRowHighlight,
 } from "@/App/Trades/TradesState"
-import { constructUrl } from "./utils/url"
+import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
+import { executions$ } from "@/services/executions/executions"
+import { formatNumber } from "@/utils"
+
 import { lastQuoteReceived$, QuoteDetails } from "./services/credit"
-import { Subscription } from "rxjs"
+import { constructUrl } from "./utils/url"
 
 const icon = constructUrl("/static/media/reactive-trader-icon-dark.ico")
 

@@ -1,6 +1,6 @@
+import SpotTilesGrid from "../components/SpotTilesGrid"
 import { H2 } from "../elements"
 import { Paragraph, SectionBlock } from "../styled"
-import SpotTilesGrid from "../components/SpotTilesGrid"
 
 const Molecules = () => (
   <>

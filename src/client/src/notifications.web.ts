@@ -1,8 +1,10 @@
+import { Subscription } from "rxjs"
+
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { executions$ } from "@/services/executions/executions"
 import { formatNumber } from "@/utils"
-import { Subscription } from "rxjs"
-import { QuoteDetails, lastQuoteReceived$ } from "./services/credit"
+
+import { lastQuoteReceived$, QuoteDetails } from "./services/credit"
 
 const icon =
   navigator.userAgent.indexOf("Chrome") !== -1 &&

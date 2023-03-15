@@ -1,7 +1,9 @@
-import { combineLatest, merge } from "rxjs"
-import { map, startWith, delay } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { combineLatest, merge } from "rxjs"
+import { delay, map, startWith } from "rxjs/operators"
+
+import { HIGHLIGHT_ROW_FLASH_TIME } from "@/constants"
 import { QuoteState, RfqState } from "@/generated/TradingGateway"
 import {
   ADAPTIVE_BANK_NAME,
@@ -9,9 +11,9 @@ import {
   RfqDetails,
 } from "@/services/credit"
 import { invertDirection } from "@/utils"
+
 import { timeRemainingComparator } from "../common"
 import { RfqRow } from "./SellSideRfqGrid"
-import { HIGHLIGHT_ROW_FLASH_TIME } from "@/constants"
 
 export enum SellSideQuoteState {
   New = "New RFQ",

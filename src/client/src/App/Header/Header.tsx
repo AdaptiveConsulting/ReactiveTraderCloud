@@ -1,16 +1,18 @@
-import { useState, ReactNode } from "react"
-import LoginControls from "./LoginControls"
+import { ReactNode, useState } from "react"
+
 import Logo from "@/components/Logo"
-import ThemeSwitcher from "./theme-switcher"
+
 import {
-  LogoWrapper,
-  AppHeaderWrapper,
   AppHeaderRoot,
-  HeaderNav,
+  AppHeaderWrapper,
   Fill,
+  HeaderNav,
+  LogoWrapper,
 } from "./Header.styles"
-import { PWABanner, PWAInstallBanner, PWALaunchButton } from "./PWA"
 import InstrumentTypeSelector from "./InstrumentTypeSelector"
+import LoginControls from "./LoginControls"
+import { PWABanner, PWAInstallBanner, PWALaunchButton } from "./PWA"
+import ThemeSwitcher from "./theme-switcher"
 
 interface Props {
   logo?: ReactNode

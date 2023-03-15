@@ -1,9 +1,11 @@
-import { BehaviorSubject } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
-import { render, screen, act, fireEvent, waitFor } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { BehaviorSubject } from "rxjs"
+
 import { CurrencyPairPosition } from "@/services/analytics"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { TestThemeProvider } from "@/utils/testUtils"
+
 import { Positions, positions$ } from "../Positions"
 
 jest.mock("@/services/analytics/analytics")

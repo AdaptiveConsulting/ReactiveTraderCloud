@@ -1,33 +1,35 @@
+import { bind } from "@react-rxjs/core"
+import { of } from "rxjs"
+import { map, switchMap } from "rxjs/operators"
+
+import { AdaptiveLoader } from "@/components/AdaptiveLoader"
+import { CenteringContainer } from "@/components/CenteringContainer"
+import { Direction } from "@/generated/TradingGateway"
+import { CurrencyPair } from "@/services/currencyPairs"
 import { getPrice$ } from "@/services/prices"
 import {
   customNumberFormatter,
-  significantDigitsNumberFormatter,
   DECIMAL_SEPARATOR,
+  significantDigitsNumberFormatter,
 } from "@/utils/formatNumber"
-import { map, switchMap } from "rxjs/operators"
-import { bind } from "@react-rxjs/core"
-import { CenteringContainer } from "@/components/CenteringContainer"
-import { AdaptiveLoader } from "@/components/AdaptiveLoader"
-import { sendExecution } from "../Tile.state"
-import { useTileCurrencyPair } from "../Tile.context"
-import { useRfqState, QuoteStateStage } from "../Rfq"
-import {
-  TradeButton,
-  Price,
-  DirectionLabel,
-  Big,
-  Pip,
-  Tenth,
-  QuotePriceLoading,
-  ExpiredPrice,
-  PriceButtonDisabledPlaceholder,
-  Icon,
-} from "./PriceButton.styles"
-import { of } from "rxjs"
+
 import { useIsNotionalValid } from "../Notional/Notional"
+import { QuoteStateStage, useRfqState } from "../Rfq"
 import { getRfqPayload$, QuoteState, useIsRfq } from "../Rfq/Rfq.state"
-import { CurrencyPair } from "@/services/currencyPairs"
-import { Direction } from "@/generated/TradingGateway"
+import { useTileCurrencyPair } from "../Tile.context"
+import { sendExecution } from "../Tile.state"
+import {
+  Big,
+  DirectionLabel,
+  ExpiredPrice,
+  Icon,
+  Pip,
+  Price,
+  PriceButtonDisabledPlaceholder,
+  QuotePriceLoading,
+  Tenth,
+  TradeButton,
+} from "./PriceButton.styles"
 
 const getPriceByDirection$ = (symbol: string, direction: Direction) =>
   getPrice$(symbol).pipe(

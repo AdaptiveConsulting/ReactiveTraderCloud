@@ -1,8 +1,10 @@
-import { merge } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
-import { Tiles, tiles$ } from "./Tiles"
-import { MainHeader, mainHeader$ } from "./MainHeader"
+import { merge } from "rxjs"
+
 import { WithChildren } from "@/utils/utilityTypes"
+
+import { MainHeader, mainHeader$ } from "./MainHeader"
+import { Tiles, tiles$ } from "./Tiles"
 
 export const liveRates$ = merge(tiles$, mainHeader$)
 

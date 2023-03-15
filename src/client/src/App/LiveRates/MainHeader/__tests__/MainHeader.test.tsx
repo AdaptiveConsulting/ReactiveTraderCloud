@@ -1,8 +1,10 @@
-import { BehaviorSubject } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
-import { render, screen, act, fireEvent } from "@testing-library/react"
+import { act, fireEvent, render, screen } from "@testing-library/react"
+import { BehaviorSubject } from "rxjs"
+
 import { CurrencyPair } from "@/services/currencyPairs"
 import { TestThemeProvider } from "@/utils/testUtils"
+
 import { liveRates$ } from "../../LiveRatesCore"
 import { Tiles } from "../../Tiles"
 import { MainHeader } from ".."

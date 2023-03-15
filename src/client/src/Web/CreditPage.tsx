@@ -2,6 +2,7 @@ import { CreditRfqForm, CreditRfqs } from "@/App/Credit"
 import { getTornOutSections } from "@/App/TearOutSection/state"
 import { CreditTrades } from "@/App/Trades"
 import Resizer from "@/components/Resizer"
+
 import MainLayout from "./MainLayout"
 
 const CREDIT_TEAR_OUT_SECTIONS = ["newRfq", "creditBlotter"] as const

@@ -1,6 +1,6 @@
+import { LocalDateConverter } from "@adaptive/hydra-codecs/dist/valueConverters"
 import * as HydraPlatform from "@adaptive/hydra-platform"
 import { Observable } from "rxjs"
-import { LocalDateConverter } from "@adaptive/hydra-codecs/dist/valueConverters"
 
 export interface Trade {
   tradeId: bigint

@@ -1,21 +1,24 @@
 import { useState } from "react"
+
 import {
   formatAsWholeNumber,
   formatWithScale,
   precisionNumberFormatter,
 } from "@/utils/formatNumber"
+
 import {
+  Bar,
   BarChart,
   BarPriceContainer,
+  DiamondShape,
   Label,
   Offset,
+  OriginTick,
+  OriginTickWrapper,
   PriceContainer,
   PriceLabel,
-  DiamondShape,
-  Bar,
-  OriginTickWrapper,
-  OriginTick,
 } from "./styled"
+
 export interface PNLBarProps {
   basePnl: number
   maxVal: number

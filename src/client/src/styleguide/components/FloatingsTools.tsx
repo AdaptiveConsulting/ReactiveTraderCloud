@@ -1,5 +1,7 @@
 import styled from "styled-components"
-import { ThemeName, useTheme, ThemeStorageSwitch } from "@/theme"
+
+import { ThemeName, ThemeStorageSwitch, useTheme } from "@/theme"
+
 import { Block } from "../styled"
 
 export const FloatingTools = () => {

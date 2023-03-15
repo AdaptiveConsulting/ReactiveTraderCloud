@@ -1,9 +1,10 @@
-import { currencyPairs$ } from "@/services/currencyPairs"
-import { getPriceUpdates$ } from "@/services/prices"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { timer } from "rxjs"
 import { scan } from "rxjs/operators"
+
+import { currencyPairs$ } from "@/services/currencyPairs"
+import { getPriceUpdates$ } from "@/services/prices"
 
 const MAX_SECONDS = 60
 const [updatesPerSecond$, setUpdatesPerSecond] = createSignal<number>()

@@ -2,12 +2,14 @@
 /* eslint-disable react/prop-types */
 import kebabCase from "lodash/fp/kebabCase"
 import styled from "styled-components"
+
 import {
   mapMarginPaddingProps,
   mapTextProps,
   MarginPaddingProps,
   TextProps,
 } from "./styled"
+
 export { Paragraph } from "./styled"
 
 const Hashable = ({ is: Element = "div" as any, ...props }) => (

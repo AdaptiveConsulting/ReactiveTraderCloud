@@ -1,5 +1,7 @@
-import { ConnectionStatus } from "@/services/connection"
 import { ComponentMeta } from "@storybook/react"
+
+import { ConnectionStatus } from "@/services/connection"
+
 import { StatusButtonInner } from "./StatusButton"
 
 export default {

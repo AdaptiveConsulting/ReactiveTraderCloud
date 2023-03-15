@@ -1,12 +1,13 @@
+import { merge } from "rxjs"
+import styled from "styled-components"
+
 import {
-  Title,
   AnalyticsLineChartWrapper,
   ProfitAndLossHeader,
+  Title,
 } from "../styled"
-import { LineChart, lineChart$ } from "./LineChart"
 import { LastPosition, lastPosition$ } from "./LastPosition"
-import styled from "styled-components"
-import { merge } from "rxjs"
+import { LineChart, lineChart$ } from "./LineChart"
 
 export const ProfitAndLossStyle = styled.div`
   width: 100%;

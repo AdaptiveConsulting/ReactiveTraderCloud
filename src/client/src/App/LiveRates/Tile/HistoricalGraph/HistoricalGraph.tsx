@@ -1,13 +1,15 @@
-import styled from "styled-components"
-import { getHistoricalPrices$, HistoryPrice } from "@/services/prices"
-import { distinctUntilChanged, map, startWith } from "rxjs/operators"
-import { getDataPoints, toSvgPath, withScales } from "@/utils/historicalChart"
-import { combineLatest } from "rxjs"
-import { curveBasis } from "d3"
-import { symbolBind, useTileCurrencyPair } from "../Tile.context"
-import { forwardRef, useEffect, useRef } from "react"
 import { createKeyedSignal } from "@react-rxjs/utils"
+import { curveBasis } from "d3"
+import { forwardRef, useEffect, useRef } from "react"
+import { combineLatest } from "rxjs"
+import { distinctUntilChanged, map, startWith } from "rxjs/operators"
+import styled from "styled-components"
+
+import { getHistoricalPrices$, HistoryPrice } from "@/services/prices"
 import { equals } from "@/utils"
+import { getDataPoints, toSvgPath, withScales } from "@/utils/historicalChart"
+
+import { symbolBind, useTileCurrencyPair } from "../Tile.context"
 
 const VIEW_BOX_WIDTH = 200
 const VIEW_BOX_HEIGHT = 90

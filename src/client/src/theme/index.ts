@@ -1,5 +1,5 @@
 import type { Theme } from "./themes"
-export { colors, dark } from "./colors"
+
 export type {
   AccentName,
   AccentPaletteMap,
@@ -8,16 +8,17 @@ export type {
   DarkShade,
   LightShade,
 } from "./colors"
+export { colors, dark } from "./colors"
 export { default as GlobalStyle } from "./globals"
 export { GlobalScrollbarStyle } from "./GlobalScrollbarStyle"
 export { ThemeConsumer, ThemeProvider, useTheme } from "./ThemeContext"
-export { getThemeColor, ThemeName, themes } from "./themes"
 export type {
   ColorProps,
   Theme,
   ThemeSelector,
   TouchableIntentName,
 } from "./themes"
+export { getThemeColor, ThemeName, themes } from "./themes"
 export { default as ThemeStorageSwitch } from "./ThemeStorageSwitch"
 
 // Make all styled-component functions (e.g. `styled`, `css`) typed with Theme

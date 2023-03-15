@@ -1,7 +1,9 @@
-import { BehaviorSubject } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
-import { TestThemeProvider } from "@/utils/testUtils"
+import { BehaviorSubject } from "rxjs"
+
 import { HistoryEntry } from "@/services/analytics"
+import { TestThemeProvider } from "@/utils/testUtils"
+
 import { LineChart, lineChart$ } from "../LineChart"
 
 const renderer = require("react-test-renderer")

@@ -1,15 +1,17 @@
-import { combineLatest, merge } from "rxjs"
-import styled from "styled-components"
-import { currencyPairs$ } from "@/services/currencyPairs"
-import { getInitView, TileView, useSelectedTileView } from "./selectedView"
-import { Tile, tile$ } from "./Tile"
-import { map } from "rxjs/operators"
-import { selectedCurrency$, ALL_CURRENCIES } from "./selectedCurrency"
 import { bind } from "@react-rxjs/core"
 import { combineKeys } from "@react-rxjs/utils"
-import { tearOutState$, useTearOutEntry } from "./Tile/TearOut/state"
 import { useEffect } from "react"
+import { combineLatest, merge } from "rxjs"
+import { map } from "rxjs/operators"
+import styled from "styled-components"
+
+import { currencyPairs$ } from "@/services/currencyPairs"
+
+import { ALL_CURRENCIES, selectedCurrency$ } from "./selectedCurrency"
+import { getInitView, TileView, useSelectedTileView } from "./selectedView"
+import { Tile, tile$ } from "./Tile"
 import { handleTearOut } from "./Tile/TearOut/handleTearOut"
+import { tearOutState$, useTearOutEntry } from "./Tile/TearOut/state"
 
 const PanelItems = styled.div`
   display: grid;

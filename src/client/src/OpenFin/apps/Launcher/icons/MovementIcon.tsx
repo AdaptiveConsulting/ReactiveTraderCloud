@@ -1,4 +1,5 @@
 import { PriceMovementType } from "@/services/prices"
+
 import { BaseIconProps } from "./types"
 
 interface MovementIconProps extends BaseIconProps {

@@ -1,6 +1,7 @@
-import { BehaviorSubject, Subject } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { BehaviorSubject, Subject } from "rxjs"
+
 import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
 import {
@@ -11,6 +12,7 @@ import {
 } from "@/services/executions"
 import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
 import { TestThemeProvider } from "@/utils/testUtils"
+
 import { Tile, tile$ } from ".."
 
 jest.mock("@/services/executions/executions")

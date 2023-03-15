@@ -1,13 +1,15 @@
 import { Component } from "react"
 import styled, { css } from "styled-components"
+
+import { ColorProps as ThemeSelectorPair } from "@/theme"
+
+import { H2 } from "../elements"
+import { rules } from "../rules"
 import { Block, BlockProps } from "../styled"
 import {
   mapMarginPaddingProps,
   MarginPaddingProps,
 } from "./mapMarginPaddingProps"
-import { ColorProps as ThemeSelectorPair } from "@/theme"
-import { H2 } from "../elements"
-import { rules } from "../rules"
 
 type ColorSchemeName = "primary" | "secondary" | "inverted"
 

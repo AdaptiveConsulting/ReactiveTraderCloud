@@ -1,7 +1,8 @@
-import styled from "styled-components"
-import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
-import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
 import { createSignal } from "@react-rxjs/utils"
+import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
+import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
+import styled from "styled-components"
+
 import {
   Direction,
   QuoteBody,
@@ -11,7 +12,8 @@ import {
 import { createCreditQuote$, useCreditRfqDetails } from "@/services/credit"
 import { ThemeName } from "@/theme"
 import { customNumberFormatter, invertDirection } from "@/utils"
-import { isRfqTerminated, CreditRfqTimer } from "../../common"
+
+import { CreditRfqTimer, isRfqTerminated } from "../../common"
 import { price$, usePrice } from "./SellSideTradeTicketParameters"
 
 const FooterWrapper = styled.div<{ accepted: boolean; missed: boolean }>`

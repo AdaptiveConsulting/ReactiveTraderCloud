@@ -1,10 +1,12 @@
 import { StrictMode } from "react"
 import ReactDOM from "react-dom"
-import GlobalStyle from "@/theme/globals"
+
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
-import { registerFxNotifications } from "./notifications"
+import GlobalStyle from "@/theme/globals"
+
 import { GA_TRACKING_ID } from "./constants"
-import { getMainApp, gaDimension } from "./main"
+import { gaDimension, getMainApp } from "./main"
+import { registerFxNotifications } from "./notifications"
 import { initConnection } from "./services/connection"
 import { checkTradingGatewayCompatibility } from "./services/tradingGatewayCompatibility"
 

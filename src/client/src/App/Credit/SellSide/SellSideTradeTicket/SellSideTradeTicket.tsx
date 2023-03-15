@@ -1,7 +1,9 @@
-import styled from "styled-components"
 import { Subscribe } from "@react-rxjs/core"
-import { useAdaptiveDealerId } from "@/services/credit"
+import styled from "styled-components"
+
 import { Loader } from "@/components/Loader"
+import { useAdaptiveDealerId } from "@/services/credit"
+
 import { useSelectedRfqId } from "../sellSideState"
 import { SellSideTradeTicketTicketCore } from "./SellSideTradeTicketCore"
 

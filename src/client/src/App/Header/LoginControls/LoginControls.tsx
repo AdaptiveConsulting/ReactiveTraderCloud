@@ -1,7 +1,9 @@
 import { Subscribe } from "@react-rxjs/core"
+
 import { AdaptiveLoader } from "@/components/AdaptiveLoader"
-import { currentUser$, useUser, User as UserType } from "@/services/currentUser"
-import { LoadingButton, UserWrapper, UserContainer, UserAvatar } from "./styled"
+import { currentUser$, User as UserType, useUser } from "@/services/currentUser"
+
+import { LoadingButton, UserAvatar, UserContainer, UserWrapper } from "./styled"
 
 export const UserInner = ({ user }: { user: UserType }) => (
   <UserWrapper>

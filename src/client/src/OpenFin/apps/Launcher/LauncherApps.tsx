@@ -1,5 +1,6 @@
 import { Application } from "openfin-adapter"
 import { useState } from "react"
+
 import { appConfigs, ApplicationConfig } from "./applicationConfigurations"
 import { LaunchButton } from "./components/LaunchButton"
 import { ButtonContainer, IconTitle } from "./styles"

@@ -1,7 +1,8 @@
-import { Observable, of } from "rxjs"
-import { scan, map } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
-import { PriceMovementType, HistoryPrice, Price } from "../types"
+import { Observable, of } from "rxjs"
+import { map, scan } from "rxjs/operators"
+
+import { HistoryPrice, Price, PriceMovementType } from "../types"
 
 function* makePriceGenerator(
   symbol: string,

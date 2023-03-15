@@ -1,3 +1,5 @@
+import { format } from "date-fns"
+
 import { StatelessExecutionResponse } from "@/App/LiveRates/Tile/ExecutionResponse"
 import { HeaderInner } from "@/App/LiveRates/Tile/Header"
 import { HistoricalGraphComponent } from "@/App/LiveRates/Tile/HistoricalGraph"
@@ -26,7 +28,6 @@ import {
 import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { PriceMovementType } from "@/services/prices"
-import { format } from "date-fns"
 
 export type TileProps = {
   currencyPair: CurrencyPair

@@ -1,4 +1,5 @@
 import styled from "styled-components"
+
 import { limitCheckerIcon } from "@/OpenFin/apps/Launcher/icons"
 
 const Indicator = styled.div`

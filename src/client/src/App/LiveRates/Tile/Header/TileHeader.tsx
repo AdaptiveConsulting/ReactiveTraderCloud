@@ -1,14 +1,16 @@
-import styled from "styled-components"
-import { map } from "rxjs/operators"
-import { format } from "date-fns"
-import { getPrice$ } from "@/services/prices"
 import { bind } from "@react-rxjs/core"
-import { useTileContext } from "../Tile.context"
-import { PopOutIcon } from "@/components/icons/PopOutIcon"
-import { tearOut } from "../TearOut/state"
-import { PopInIcon } from "@/components/icons/PopInIcon"
+import { format } from "date-fns"
 import { forwardRef, useRef } from "react"
+import { map } from "rxjs/operators"
+import styled from "styled-components"
+
+import { PopInIcon } from "@/components/icons/PopInIcon"
+import { PopOutIcon } from "@/components/icons/PopOutIcon"
 import { CurrencyPair } from "@/services/currencyPairs"
+import { getPrice$ } from "@/services/prices"
+
+import { tearOut } from "../TearOut/state"
+import { useTileContext } from "../Tile.context"
 
 export const DeliveryDate = styled.div`
   color: ${({ theme }) => theme.core.textColor};

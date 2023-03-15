@@ -1,4 +1,5 @@
 import { Direction, QuoteState } from "@/generated/TradingGateway"
+
 import { CreditTrade } from "../types"
 
 export const mockCreditTrades: CreditTrade[] = [

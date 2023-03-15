@@ -1,7 +1,8 @@
+import _ from "lodash"
 import { SVGAttributes } from "react"
 import styled from "styled-components"
+
 import { dark } from "@/theme/colors"
-import _ from "lodash"
 
 interface Props extends SVGAttributes<Element> {
   fill?: string

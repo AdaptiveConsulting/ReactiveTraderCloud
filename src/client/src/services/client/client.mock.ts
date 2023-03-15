@@ -1,4 +1,5 @@
 import { Observable } from "rxjs"
+
 import { mockAnalytics } from "./mockData/analytics.mock"
 import { mockCurrencyPair } from "./mockData/currencyPairs.mock"
 import { mockPriceHistory } from "./mockData/priceHistory.mock"

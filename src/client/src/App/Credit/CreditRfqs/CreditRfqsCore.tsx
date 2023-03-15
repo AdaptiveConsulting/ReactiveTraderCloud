@@ -1,16 +1,18 @@
+import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 import styled from "styled-components"
-import { Subscribe } from "@react-rxjs/core"
+
+import { Loader } from "@/components/Loader"
 import {
   registerCreditQuoteNotifications,
   unregisterCreditQuoteNotifications,
 } from "@/notifications"
-import { Loader } from "@/components/Loader"
-import {
-  CreditRfqCreatedConfirmation,
-  CreditRfqAcceptedConfirmation,
-} from "./CreditRfqConfirmation"
+
 import { CreditRfqCards } from "./CreditRfqCards"
+import {
+  CreditRfqAcceptedConfirmation,
+  CreditRfqCreatedConfirmation,
+} from "./CreditRfqConfirmation"
 import { CreditRfqsHeader } from "./CreditRfqsHeader"
 
 const CreditRfqsCoreWrapper = styled.div`

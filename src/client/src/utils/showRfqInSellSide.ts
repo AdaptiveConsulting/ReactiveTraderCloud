@@ -1,4 +1,5 @@
 import { ROUTES_CONFIG } from "@/constants"
+
 import { constructUrl } from "./url"
 import { openWindow } from "./window/openWindow"
 

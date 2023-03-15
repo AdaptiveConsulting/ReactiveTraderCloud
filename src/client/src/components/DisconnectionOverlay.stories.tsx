@@ -1,5 +1,7 @@
+import { ComponentMeta, ComponentStory } from "@storybook/react"
+
 import { ConnectionStatus } from "@/services/connection"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
+
 import { DisconnectionOverlayInner } from "./DisconnectionOverlay"
 
 export default {
