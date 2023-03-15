@@ -12,7 +12,7 @@ import {
   ExecutionStatus,
   ExecutionTrade,
   TimeoutExecution,
-} from "../types"
+} from "./types"
 
 const executionsSubject = new Subject<ExecutionTrade>()
 

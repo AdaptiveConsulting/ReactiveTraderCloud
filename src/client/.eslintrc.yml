@@ -11,7 +11,8 @@ extends:
 overrides:
   [
     {
-      files: ["*.{mock,test,spec,stories}.{ts,tsx}", "**/__mocks__/*"],
+      files:
+        ["*.{service-mock,mock,test,spec,stories}.{ts,tsx}", "**/__mocks__/*"],
       rules:
         {
           "@typescript-eslint/no-explicit-any": 0,
