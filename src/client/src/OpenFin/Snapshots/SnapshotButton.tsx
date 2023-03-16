@@ -17,28 +17,30 @@ const IconContainer = styled.div`
   margin-right: 0.5rem;
 `
 
-const WINDOW = {
+const snapshotWindowInfo = {
   name: "snapshots",
   height: 249,
   width: 245,
 }
 
-const OFFSET: Offset = [119, 40]
+const offsetFromMain: Offset = [119, 40]
 
 export const SnapshotButton = () => {
   const [showing, setShowing] = useState(false)
   const queryString = useLocation().search
 
   useEffect(() => {
-    createOpenFinPopup(WINDOW, constructUrl(`/snapshots${queryString}`), () =>
-      setShowing(false),
+    createOpenFinPopup(
+      snapshotWindowInfo,
+      constructUrl(`/snapshots${queryString}`),
+      () => setShowing(false),
     )
   }, [queryString])
 
   const handleShowPopup = () => {
     if (!showing) {
       setShowing(true)
-      showOpenFinPopup(WINDOW, OFFSET)
+      showOpenFinPopup(snapshotWindowInfo, offsetFromMain)
     }
   }
 

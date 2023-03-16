@@ -27,7 +27,6 @@
       "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.12.10/app.json"
     }
   ],
-  "devtools_port": 9091,
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",
   "shortcut": {
     "company": "Adaptive Consulting",
@@ -143,7 +142,7 @@
                           "componentName": "view",
                           "componentState": {
                             "url": "<BASE_URL>/fx-blotter",
-                            "name": "Blotter"
+                            "name": "FX-Blotter"
                           },
                           "isClosable": true,
                           "title": "Blotter"

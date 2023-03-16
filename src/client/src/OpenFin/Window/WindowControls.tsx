@@ -8,7 +8,7 @@ import { MinimizeIcon } from "../icons/MinimizeIcon"
 import {
   closeOtherWindows,
   inMainReactiveTraderWindow,
-  isWindowPlatformPrimary,
+  isReactiveTraderPlatformPrimary,
 } from "../utils/window"
 import { Control, ControlsWrapper } from "./WindowHeader.styles"
 
@@ -41,9 +41,8 @@ export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
 
   async function wrappedClose() {
     if (inMainReactiveTraderWindow()) {
-      // ONLY if main win is primary win of platform, close all platform windows
-      if (isWindowPlatformPrimary()) {
-        console.warn(`AJG: close platform`)
+      // ONLY if RT main win is primary win of platform, close all platform windows
+      if (isReactiveTraderPlatformPrimary()) {
         fin.Platform.getCurrentSync().quit()
         return
       }

@@ -150,7 +150,7 @@ export function inMainReactiveTraderWindow() {
   )
 }
 
-export function isWindowPlatformPrimary() {
+export function isReactiveTraderPlatformPrimary() {
   const currentWindowId = fin.Window.getCurrentSync().identity.uuid
 
   return currentWindowId.startsWith(RT_PLATFORM_UUID_PREFIX)
@@ -182,10 +182,6 @@ export async function closeOtherWindows() {
       isInternalGeneratedWindow(winIdentity, customWindowContext) ||
       isUserGeneratedPopup(winIdentity)
     ) {
-      console.warn(
-        `AJG: definitely close: ${winIdentity.uuid}, ${winIdentity.name}`,
-      )
-
       const wrapped = fin.Window.wrapSync({
         uuid: winIdentity.uuid,
         name: winIdentity.name,

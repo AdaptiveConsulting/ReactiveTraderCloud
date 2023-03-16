@@ -16,7 +16,8 @@
     }
   },
   "runtime": {
-    "version": "28.106.72.17"
+    "version": "28.106.72.17",
+    "arguments": "--remote-debugging-port=9091"
   },
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",
   "shortcut": {
@@ -24,7 +25,6 @@
     "icon": "<BASE_URL>/static/media/reactive-trader.ico",
     "name": "Reactive Trader® Credit<ENV_SUFFIX>"
   },
-  "devtools_port": 9091,
   "snapshot": {
     "windows": [
       {
@@ -114,7 +114,7 @@
                           "componentName": "view",
                           "componentState": {
                             "url": "<BASE_URL>/credit-blotter",
-                            "name": "Blotter"
+                            "name": "Credit-Blotter"
                           },
                           "isClosable": true,
                           "title": "Blotter"
