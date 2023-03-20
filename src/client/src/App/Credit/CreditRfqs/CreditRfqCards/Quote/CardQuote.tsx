@@ -23,6 +23,7 @@ import {
   QuoteDotWrapper,
   QuoteRow,
 } from "./styled"
+import { useEffect, useState } from "react"
 
 const [acceptRfq$, onAcceptRfq] = createSignal<number>()
 
@@ -43,19 +44,31 @@ export const Quote = ({
   direction: Direction
   highlight: boolean
 }) => {
-  //I would like to consolidate these functions
-  const isQuotePriced = (quote: QuoteBody) => {
-    switch (quote.state.type) {
-      case PENDING_WITH_PRICE_QUOTE_STATE:
-        return true
-      case ACCEPTED_QUOTE_STATE:
-        return true
-      case REJECTED_WITH_PRICE_QUOTE_STATE:
-        return true
-      default:
-        return false
+  const pricedQuoteStates = [
+    PENDING_WITH_PRICE_QUOTE_STATE,
+    ACCEPTED_QUOTE_STATE,
+    REJECTED_WITH_PRICE_QUOTE_STATE,
+  ]
+
+  const stateType = quote?.state.type ? quote?.state.type : ""
+  const priced = pricedQuoteStates.includes(stateType)
+  const acceptable = quote?.state.type === PENDING_WITH_PRICE_QUOTE_STATE
+  const passed = quote?.state.type === PASSED_QUOTE_STATE
+  const accepted = quote?.state.type === ACCEPTED_QUOTE_STATE
+  const rfqOpen = rfqState === RfqState.Open
+  const [passedState, setPassedState] = useState(false)
+
+  useEffect(() => {
+    if (passed) {
+      setPassedState(true)
+      const timeout = setTimeout(function () {
+        setPassedState(false)
+      }, 6000)
+      return function () {
+        clearTimeout(timeout)
+      }
     }
-  }
+  }, [passed])
 
   const handleQuoteState = (quote: QuoteBody) => {
     switch (quote.state.type) {
@@ -68,7 +81,6 @@ export const Quote = ({
       case ACCEPTED_QUOTE_STATE:
         return "Accepted"
       case REJECTED_WITH_PRICE_QUOTE_STATE:
-        return "Rejected"
       case REJECTED_WITHOUT_PRICE_QUOTE_STATE:
         return "Rejected"
       default:
@@ -76,41 +88,24 @@ export const Quote = ({
     }
   }
 
-  const isQuoteStateTerminal = (stateType: string | undefined) => {
-    switch (stateType) {
-      case PENDING_WITHOUT_PRICE_QUOTE_STATE:
-        return true
-      case PENDING_WITH_PRICE_QUOTE_STATE:
-        return false
-      case PASSED_QUOTE_STATE:
-        return true
-      case ACCEPTED_QUOTE_STATE:
-        return false
-      case REJECTED_WITH_PRICE_QUOTE_STATE:
-        return false
-      case REJECTED_WITHOUT_PRICE_QUOTE_STATE:
-        return false
-      default:
-        return false
-        break
-    }
-  }
-
-  const rfqOpen = rfqState === RfqState.Open
-  const priced = quote ? isQuotePriced(quote) : false
-  const accepted = quote?.state.type === ACCEPTED_QUOTE_STATE
   return (
     <QuoteRow
       quoteActive={!!quote && rfqOpen}
       highlight={highlight}
       direction={direction}
     >
+      {acceptable && rfqOpen && (
+        <QuoteDotWrapper>
+          <QuoteDot highlight={highlight} direction={direction} />
+        </QuoteDotWrapper>
+      )}
+      {passedState && rfqOpen && (
+        //Color of animation needs to be changed
+        <QuoteDotWrapper>
+          <QuoteDot highlight={highlight} direction={direction} />
+        </QuoteDotWrapper>
+      )}
       <DealerName open={rfqOpen} accepted={accepted} priced={priced}>
-        {priced && rfqOpen && (
-          <QuoteDotWrapper>
-            <QuoteDot highlight={highlight} direction={direction} />
-          </QuoteDotWrapper>
-        )}
         {dealer?.name ?? "Dealer name not found"}
       </DealerName>
       <Price
@@ -123,12 +118,10 @@ export const Quote = ({
         {accepted && <FaCheckCircle size={16} />}
         {quote && handleQuoteState(quote)}
       </Price>
-      {!isQuoteStateTerminal(quote?.state.type) ? (
+      {acceptable && (
         <AcceptQuoteButton onClick={() => quote && onAcceptRfq(quote.id)}>
           Accept
         </AcceptQuoteButton>
-      ) : (
-        <></>
       )}
     </QuoteRow>
   )

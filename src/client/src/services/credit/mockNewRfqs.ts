@@ -1,4 +1,13 @@
-import { concat, delay, from } from "rxjs"
+import {
+  concat,
+  concatMap,
+  delay,
+  from,
+  interval,
+  of,
+  switchMap,
+  timer,
+} from "rxjs"
 import {
   PASSED_QUOTE_STATE,
   QUOTE_PASSED_RFQ_UPDATE,
@@ -15,7 +24,7 @@ const dealerIdLength = 10
 const AmountOfRFQs = 10
 const mockRFQs: RfqUpdate[] = []
 
-const StartState = () => {
+const startState = () => {
   return from(constructMockStartStateRFQS())
 }
 const constructMockStartStateRFQS = () => {
@@ -78,7 +87,7 @@ const constructRfqUpdate = () => {
 }
 
 const constructPassOnRandomRFQ$ = () => {
-  const PassRFQs = []
+  const PassRFQs: RfqUpdate[] = []
   for (let i = 0; i < AmountOfRFQs; i++) {
     for (let j = 0; j <= dealerIdLength; j += 2) {
       PassRFQs.push({
@@ -92,7 +101,9 @@ const constructPassOnRandomRFQ$ = () => {
       })
     }
   }
-  return from(PassRFQs)
+  return from(PassRFQs).pipe(
+    concatMap((PassRFQ) => of(PassRFQ).pipe(delay(1000))),
+  )
 }
 
 const addStateOfTheWorld = () => {
@@ -100,6 +111,7 @@ const addStateOfTheWorld = () => {
   mockRFQs.push({ type: "endOfStateOfTheWorld" })
 }
 
-const mockCreditRFQS_ = concat(StartState(), constructPassOnRandomRFQ$())
-
-export const mockCreditRFQS = mockCreditRFQS_.pipe(delay(1000))
+const mockCreditPassRFQs$ = constructPassOnRandomRFQ$()
+const mockCreditRFQs$__ = startState()
+const mockCreditRFQs$_ = concat(mockCreditRFQs$__, mockCreditPassRFQs$)
+export const mockCreditRFQS = mockCreditRFQs$_.pipe(delay(1000))

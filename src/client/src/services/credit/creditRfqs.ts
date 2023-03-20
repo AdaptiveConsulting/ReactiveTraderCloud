@@ -66,7 +66,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
                 dealers: dealers.map(
                   (dealerId) =>
                     dealers.find((dealer) => dealer.id === dealerId.id) ?? {
-                      id: dealerId,
+                      id: dealerId.id,
                       name: "Unknown Dealer",
                     },
                 ),

@@ -74,7 +74,6 @@ export const QuoteDot = styled.div<CommonProps>`
       : getBuySellHighlightTextColor(theme, direction)};
   animation: ${breathing} 1s linear infinite;
 `
-
 interface RowFieldProps {
   open: boolean
   accepted: boolean

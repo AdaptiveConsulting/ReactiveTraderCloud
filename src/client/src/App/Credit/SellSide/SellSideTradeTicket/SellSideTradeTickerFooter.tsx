@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { exhaustMap, filter, map, tap, withLatestFrom } from "rxjs/operators"
+import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
 import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
 import { createSignal } from "@react-rxjs/utils"
 import {
@@ -92,7 +92,6 @@ const [quoteRequest$, sendQuote] =
   createSignal<{ rfqId: number; dealerId: number }>()
 quoteRequest$
   .pipe(
-    tap(console.log),
     withLatestFrom(price$),
     filter(([, price]) => price.value > 0),
     map(([ids, price]) => ({

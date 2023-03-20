@@ -2,7 +2,7 @@ import { combineLatest, merge } from "rxjs"
 import { map, startWith, delay } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { QuoteState, RfqState } from "@/generated/TradingGateway"
+import { DealerBody, QuoteState, RfqState } from "@/generated/TradingGateway"
 import {
   ADAPTIVE_BANK_NAME,
   creditRfqsById$,
@@ -103,7 +103,9 @@ const filterByQuoteState = (
 }
 
 const filterByIsAdaptiveRfq = (rfq: RfqDetails) =>
-  rfq.dealers.findIndex((dealer) => dealer.name === ADAPTIVE_BANK_NAME) > -1
+  rfq.dealers.findIndex(
+    (dealer: DealerBody) => dealer.name === ADAPTIVE_BANK_NAME,
+  ) > -1
 
 const _sellSideRfqs$ = combineLatest([
   creditRfqsById$,
