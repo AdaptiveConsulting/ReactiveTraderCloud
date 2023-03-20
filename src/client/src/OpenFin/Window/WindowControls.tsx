@@ -7,7 +7,7 @@ import { MaximizeIcon } from "../icons/MaximizeIcon"
 import { MinimizeIcon } from "../icons/MinimizeIcon"
 import {
   closeOtherWindows,
-  inMainReactiveTraderWindow,
+  inReactiveTraderMainWindow,
   isReactiveTraderPlatformPrimary,
 } from "../utils/window"
 import { Control, ControlsWrapper } from "./WindowHeader.styles"
@@ -22,7 +22,7 @@ export interface Props {
 export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
   // Close other windows when page is refreshed to avoid recreating popups
   useEffect(() => {
-    const inMainWindow = inMainReactiveTraderWindow()
+    const inMainWindow = inReactiveTraderMainWindow()
 
     const cb = async () => {
       await closeOtherWindows()
@@ -40,7 +40,7 @@ export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
   }, [])
 
   async function wrappedClose() {
-    if (inMainReactiveTraderWindow()) {
+    if (inReactiveTraderMainWindow()) {
       // ONLY if RT main win is primary win of platform, close all platform windows
       if (isReactiveTraderPlatformPrimary()) {
         fin.Platform.getCurrentSync().quit()

@@ -1,7 +1,4 @@
-// disabling these rules for the time being as there are
-// existing TODOs to clean this up
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { WindowEvent } from "@openfin/core/src/api/events/base"
 import { useEffect } from "react"
 import { Helmet } from "react-helmet"
 
@@ -29,15 +26,21 @@ export const WindowViewport = ({ children }: WithChildren) => {
   //TODO: Remove this HACK once OpenFin exposes content of "empty" layout containers...
   useEffect(() => {
     if (!fin.me.isView) {
-      const listenerViewAttached = (e: any) => {
+      const listenerViewAttached = (
+        _: WindowEvent<"window", "view-attached">,
+      ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "attach", label })
       }
-      const listenerViewDetached = (e: any) => {
+      const listenerViewDetached = (
+        _: WindowEvent<"window", "view-detached">,
+      ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "detach", label })
       }
-      const listenerViewHidden = (e: any) => {
+      const listenerViewHidden = (
+        _: WindowEvent<"application", "view-hidden">,
+      ) => {
         const layoutItems: HTMLCollectionOf<Element> =
           document.getElementsByClassName("lm_item")
         for (const idx in layoutItems) {
@@ -54,11 +57,15 @@ export const WindowViewport = ({ children }: WithChildren) => {
           }
         }
       }
-      const listenerWindowCreated = (e: any) => {
+      const listenerWindowCreated = (
+        _: WindowEvent<"application", "window-created">,
+      ) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "open", label })
       }
-      const listenerWindowClosed = (e: any) => {
+      const listenerWindowClosed = (
+        _: WindowEvent<"application", "window-closed">,
+      ) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "close", label })
       }
@@ -69,6 +76,7 @@ export const WindowViewport = ({ children }: WithChildren) => {
           window.addListener("view-detached", listenerViewDetached)
         })
         .catch((ex) => console.warn(ex))
+
       fin.Application.getCurrent()
         .then((app) => {
           app.addListener("view-hidden", listenerViewHidden)

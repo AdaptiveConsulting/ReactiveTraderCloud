@@ -2,11 +2,11 @@ import { format } from "date-fns"
 import { createPortal } from "react-dom"
 
 import { Direction } from "@/generated/TradingGateway"
-import { useOverlayElement } from "@/OpenFin/apps/Launcher/overlayContext"
-import { onResetInput } from "@/OpenFin/apps/Launcher/services/nlpService"
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { formatNumber } from "@/utils"
 
+import { useOverlayElement } from "../../overlayContext"
+import { onResetInput } from "../../services/nlpService"
 import {
   TradeExecutionActionContainer,
   TradeExecutionContainer,

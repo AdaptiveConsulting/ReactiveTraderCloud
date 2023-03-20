@@ -1,4 +1,5 @@
 import { ROUTES_CONFIG } from "@/constants"
+import { RT_FX_MAIN_WINDOW_NAME } from "@/OpenFin/utils/window"
 import { calculateWindowCoordinates, Offset } from "@/utils"
 import { constructUrl } from "@/utils/url"
 import { openWindow } from "@/utils/window/openWindow"
@@ -29,7 +30,7 @@ export async function handleTearOut(symbol: string, tileRef?: HTMLDivElement) {
 
   openWindow(
     {
-      name: symbol,
+      name: `${RT_FX_MAIN_WINDOW_NAME}--Tile-{$symbol}`,
       url: constructUrl(ROUTES_CONFIG.tile.replace(":symbol", symbol)),
       width: 380,
       height: 200,

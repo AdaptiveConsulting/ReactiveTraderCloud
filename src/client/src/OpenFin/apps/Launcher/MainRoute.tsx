@@ -1,10 +1,8 @@
-import { Bounds } from "openfin/_v2/shapes/shapes"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Measure, { ContentRect } from "react-measure"
 
 import { Loader } from "@/components/Loader"
 import LogoIcon from "@/components/LogoIcon"
-import { closeWindow } from "@/utils/window/closeWindow"
 
 import { LaunchButton } from "./components/LaunchButton"
 import { ExitIcon, minimiseNormalIcon, SearchIcon } from "./icons"
@@ -33,16 +31,13 @@ import {
 } from "./styles"
 import {
   animateCurrentWindowSize,
+  closePlatform,
   getCurrentWindowBounds,
   minimiseCurrentWindow,
   useAppBoundReset,
 } from "./utils/openfin"
 
 const expandedLauncherWidth = 600
-
-const closePlatform = () => {
-  fin.Platform.getCurrentSync().quit()
-}
 
 const Logo = ({ active }: { active: boolean }) => (
   <LogoLauncherContainer>

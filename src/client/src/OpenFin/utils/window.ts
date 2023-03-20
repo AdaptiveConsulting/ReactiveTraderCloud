@@ -135,13 +135,14 @@ function isInternalGeneratedWindow(
   )
 }
 
-function isUserGeneratedPopup(windowIdentity: OpenFin.Identity): boolean {
+function isReactiveTraderSubWindow(windowIdentity: OpenFin.Identity): boolean {
   return Boolean(
-    windowIdentity.name && windowIdentity.name.startsWith(getPopupPrefix()),
+    windowIdentity.name &&
+      windowIdentity.name.startsWith(`${getWindowName()}-`),
   )
 }
 
-export function inMainReactiveTraderWindow() {
+export function inReactiveTraderMainWindow() {
   const currentWindowName = getWindowName()
 
   return (
@@ -180,7 +181,7 @@ export async function closeOtherWindows() {
       await fin.Platform.getCurrentSync().getWindowContext(winIdentity)
     if (
       isInternalGeneratedWindow(winIdentity, customWindowContext) ||
-      isUserGeneratedPopup(winIdentity)
+      isReactiveTraderSubWindow(winIdentity)
     ) {
       const wrapped = fin.Window.wrapSync({
         uuid: winIdentity.uuid,
