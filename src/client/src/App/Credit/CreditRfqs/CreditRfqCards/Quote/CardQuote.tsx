@@ -96,13 +96,21 @@ export const Quote = ({
     >
       {acceptable && rfqOpen && (
         <QuoteDotWrapper>
-          <QuoteDot highlight={highlight} direction={direction} />
+          <QuoteDot
+            highlight={highlight}
+            direction={direction}
+            isPassed={passed}
+          />
         </QuoteDotWrapper>
       )}
       {passedState && rfqOpen && (
         //Color of animation needs to be changed
         <QuoteDotWrapper>
-          <QuoteDot highlight={highlight} direction={direction} />
+          <QuoteDot
+            highlight={highlight}
+            direction={direction}
+            isPassed={passed}
+          />
         </QuoteDotWrapper>
       )}
       <DealerName open={rfqOpen} accepted={accepted} priced={priced}>
