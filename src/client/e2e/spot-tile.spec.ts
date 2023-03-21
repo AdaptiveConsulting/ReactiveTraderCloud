@@ -5,19 +5,17 @@ test.describe("Spot Tile", () => {
   let tilePage: Page
   let blotterPage: Page
 
-  test.beforeAll(async ({ context, fxOpenfinPagesRec }, testInfo) => {
+  test.beforeAll(async ({ context, fxPagesRec }, testInfo) => {
     if (testInfo.project.name === "openfin") {
-      const mainWindow = fxOpenfinPagesRec["mainWindow"]
+      const mainWindow = fxPagesRec["mainWindow"]
       await mainWindow.evaluate(async () => {
-        const currentWindow = window.fin.desktop.Window.getCurrent()
-        currentWindow.maximize()
-        return window.fin
+        window.fin.Window.getCurrentSync().maximize()
       })
 
-      tilePage = fxOpenfinPagesRec["fx-tiles"]
-      blotterPage = fxOpenfinPagesRec["fx-blotter"]
+      tilePage = fxPagesRec["fx-tiles"]
+      blotterPage = fxPagesRec["fx-blotter"]
     } else {
-      const pages = await context.pages()
+      const pages = context.pages()
       const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
 
       await mainWindow.goto(`${process.env.URL_PATH}`)
@@ -28,7 +26,7 @@ test.describe("Spot Tile", () => {
   })
 
   test.describe("Valid Purchase", () => {
-    test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter", async () => {
+    test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter @smoke", async () => {
       await tilePage.locator("[data-testid='menuButton-EUR']").click()
 
       await tilePage.locator("[data-testid='Sell-EURUSD']").click()

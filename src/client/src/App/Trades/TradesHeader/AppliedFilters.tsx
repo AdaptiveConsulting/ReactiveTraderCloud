@@ -42,7 +42,7 @@ export const AppliedFilters = () => {
       {filterFields.map((field) => (
         <FilterField key={field}>
           <FilterName>{colDef[field].headerName}</FilterName>
-          <FilterButton>
+          <FilterButton data-testid="filter-button">
             <FaTimes onClick={() => onFilterReset(field)} />
           </FilterButton>
         </FilterField>
