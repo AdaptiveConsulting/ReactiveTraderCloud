@@ -1,4 +1,4 @@
-name: Runs e2e every day at 9am against RT Prod
+name: Scheduled E2E
 on:
   schedule:
     - cron: "55 8 * * *"
