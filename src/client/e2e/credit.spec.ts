@@ -1,28 +1,27 @@
 import { expect, Page } from "@playwright/test"
 import { test } from "./fixtures"
+import { OPENFIN_PROJECT_NAME } from "./utils"
 
 test.describe("Credit", () => {
   test.describe("New RFQ", () => {
-    test("When I select Googl instrument and click Send RFQ button then I should see a GOOGL RFQ created on the RFQ sections and I can accept any value", async ({
+    test("When I select Googl instrument and click Send RFQ button then I should see a GOOGL RFQ created on the RFQ sections and I can accept any value @smoke", async ({
       context,
-      creditOpenfinPagesRec,
+      creditPagesRec,
     }, testInfo) => {
       test.setTimeout(120000)
       let newRfqPage: Page
       let rfqsPage: Page
       let rfqBlotterPage: Page
-      if (testInfo.project.name === "openfin") {
-        const mainWindow = creditOpenfinPagesRec["mainWindow"]
+      if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+        const mainWindow = creditPagesRec["mainWindow"]
         await mainWindow.evaluate(async () => {
-          const currentWindow = window.fin.desktop.Window.getCurrent()
-          currentWindow.maximize()
-          return window.fin
+          window.fin.Window.getCurrentSync().maximize()
         })
-        newRfqPage = creditOpenfinPagesRec["credit-new-rfq"]
-        rfqsPage = creditOpenfinPagesRec["credit-rfqs"]
-        rfqBlotterPage = creditOpenfinPagesRec["credit-blotter"]
+        newRfqPage = creditPagesRec["credit-new-rfq"]
+        rfqsPage = creditPagesRec["credit-rfqs"]
+        rfqBlotterPage = creditPagesRec["credit-blotter"]
       } else {
-        const pages = await context.pages()
+        const pages = context.pages()
         newRfqPage = pages.length > 0 ? pages[0] : await context.newPage()
         await newRfqPage.goto(`${process.env.URL_PATH}/credit`)
         rfqsPage = newRfqPage

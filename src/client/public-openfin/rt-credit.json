@@ -14,7 +14,8 @@
     }
   },
   "runtime": {
-    "version": "17.85.53.10"
+    "version": "17.85.53.10",
+    "arguments": "--remote-debugging-port=9091"
   },
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",
   "shortcut": {

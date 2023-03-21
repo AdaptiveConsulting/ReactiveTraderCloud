@@ -1,6 +1,7 @@
 import { test as base } from "@playwright/test"
 import { Page, chromium } from "playwright"
 import * as dotenv from "dotenv"
+import { OPENFIN_PROJECT_NAME } from "./utils"
 
 dotenv.config({ path: ".env.development" })
 dotenv.config()
@@ -21,8 +22,8 @@ const RUNTIME_ADDRESS = process.env.OPENFIN_RUNTIME_ADDRESS ?? ""
 interface IPlaywrightFixtures {
   mainWindow: Page
   openfinNotification: Page
-  fxOpenfinPagesRec: Record<FXPage, Page>
-  creditOpenfinPagesRec: Record<CreditPage, Page>
+  fxPagesRec: Record<FXPage, Page>
+  creditPagesRec: Record<CreditPage, Page>
 }
 
 const fxOpenfinUrlPaths: string[] = [
@@ -58,18 +59,18 @@ const urlPathToCreditPage = (path: string): CreditPage => {
 }
 
 export const test = base.extend<IPlaywrightFixtures>({
-  browser: async ({}, use) => {
-    try {
+  browser: async ({}, use, workerInfo) => {
+    if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
       const runtimeConnection = await chromium.connectOverCDP(RUNTIME_ADDRESS)
       await use(runtimeConnection)
-    } catch (e) {
+    } else {
       const browser = await chromium.launch()
       await use(browser)
     }
   },
   context: async ({ browser }, use) => {
     try {
-      const contexts = await browser.contexts()
+      const contexts = browser.contexts()
       if (contexts.length !== 1) {
         throw Error(
           `Unexepcted Context(s): Expected 1, Found ${contexts.length}`,
@@ -81,9 +82,9 @@ export const test = base.extend<IPlaywrightFixtures>({
       use(context)
     }
   },
-  fxOpenfinPagesRec: async ({ context }, use) => {
-    const contextPages = await context.pages()
-    try {
+  fxPagesRec: async ({ context }, use, workerInfo) => {
+    const contextPages = context.pages()
+    if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
       const pages = fxOpenfinUrlPaths.reduce((rec, urlPath) => {
         const page = contextPages.find(
           (p) => p.url() === `${process.env.URL_PATH}/${urlPath}`,
@@ -92,7 +93,7 @@ export const test = base.extend<IPlaywrightFixtures>({
         return { ...rec, [urlPathToFxPage(urlPath)]: page }
       }, {} as Record<FXPage, Page>)
       use(pages)
-    } catch (e) {
+    } else {
       const mainWindow =
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
       use({
@@ -103,9 +104,9 @@ export const test = base.extend<IPlaywrightFixtures>({
       })
     }
   },
-  creditOpenfinPagesRec: async ({ context }, use) => {
-    const contextPages = await context.pages()
-    try {
+  creditPagesRec: async ({ context }, use, workerInfo) => {
+    const contextPages = context.pages()
+    if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
       const pages = creditOpenfinUrlPaths.reduce((rec, urlPath) => {
         const page = contextPages.find(
           (p) => p.url() === `${process.env.URL_PATH}/${urlPath}`,
@@ -114,7 +115,7 @@ export const test = base.extend<IPlaywrightFixtures>({
         return { ...rec, [urlPathToCreditPage(urlPath)]: page }
       }, {} as Record<CreditPage, Page>)
       use(pages)
-    } catch (e) {
+    } else {
       const mainWindow =
         contextPages.length > 0 ? contextPages[0] : await context.newPage()
       use({
@@ -124,26 +125,5 @@ export const test = base.extend<IPlaywrightFixtures>({
         "credit-rfqs": mainWindow,
       })
     }
-  },
-  openfinNotification: async ({}, use) => {
-    const runtimeConnection = await chromium.connectOverCDP(
-      `${process.env.NOTIFICATION_RUNTIME_ADDRESS}`,
-    )
-
-    const contexts = runtimeConnection.contexts()
-    if (contexts.length !== 1) {
-      throw Error(
-        `Unexepcted Context(s) for Notification: Expected 1, Found ${contexts.length}`,
-      )
-    }
-
-    const pages = await contexts[0].pages()
-
-    const notificationPage = pages.find(
-      (page) => page.url() === `${process.env.OPENFIN_NOTIFICATION_URL_PATH}`,
-    )
-
-    if (!notificationPage) throw Error("Notification not found!")
-    await use(notificationPage)
   },
 })

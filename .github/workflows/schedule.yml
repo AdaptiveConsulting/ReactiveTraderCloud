@@ -1,7 +1,7 @@
 name: Runs e2e every day at 9am against RT Prod
 on:
   schedule:
-    - cron: "10 9 * * *"
+    - cron: "55 8 * * *"
 
 defaults:
   run:
@@ -22,7 +22,7 @@ jobs:
 
       - name: Test
         env:
-          URL_PATH: https://web.dev.reactivetrader.com
+          URL_PATH: https://web.prod.reactivetrader.com
           ENVIRONMENT: env
         run: |
           npm run e2e:web
