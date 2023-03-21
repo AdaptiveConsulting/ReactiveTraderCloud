@@ -1,12 +1,13 @@
 import { expect, Page } from "@playwright/test"
 import { test } from "./fixtures"
+import { OPENFIN_PROJECT_NAME } from "./utils"
 
 test.describe("Spot Tile", () => {
   let tilePage: Page
   let blotterPage: Page
 
   test.beforeAll(async ({ context, fxPagesRec }, testInfo) => {
-    if (testInfo.project.name === "openfin") {
+    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
       const mainWindow = fxPagesRec["mainWindow"]
       await mainWindow.evaluate(async () => {
         window.fin.Window.getCurrentSync().maximize()

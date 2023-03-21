@@ -3,6 +3,7 @@ import { test } from "./fixtures"
 // import { fxColDef, fxColFields } from "../src/App/Trades/TradesState/colConfig"
 // import { FxTrade } from "../src/services/trades"
 import fs from "fs"
+import { OPENFIN_PROJECT_NAME } from "./utils"
 
 const getTradeIDColIndex = () => {
   // const tradeIndex = fxColFields.indexOf(
@@ -36,7 +37,7 @@ test.describe("Trade Blotter", () => {
   let blotterPage: Page
 
   test.beforeAll(async ({ context, fxPagesRec: fxPagesRec }, testInfo) => {
-    if (testInfo.project.name === "openfin") {
+    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
       const mainWindow = fxPagesRec["mainWindow"]
       await mainWindow.evaluate(() => {
         window.fin.Window.getCurrentSync().maximize()
@@ -57,7 +58,7 @@ test.describe("Trade Blotter", () => {
 
   // eslint-disable-next-line no-empty-pattern
   test.afterAll(async ({}, testInfo) => {
-    if (testInfo.project.name === "openfin") {
+    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
       await blotterPage.getByTestId("filter-button").click()
     }
   })

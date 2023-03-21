@@ -1,6 +1,7 @@
 import { test as base } from "@playwright/test"
 import { Page, chromium } from "playwright"
 import * as dotenv from "dotenv"
+import { OPENFIN_PROJECT_NAME } from "./utils"
 
 dotenv.config({ path: ".env.development" })
 dotenv.config()
@@ -59,7 +60,7 @@ const urlPathToCreditPage = (path: string): CreditPage => {
 
 export const test = base.extend<IPlaywrightFixtures>({
   browser: async ({}, use, workerInfo) => {
-    if (workerInfo.project.name === "openfin") {
+    if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
       const runtimeConnection = await chromium.connectOverCDP(RUNTIME_ADDRESS)
       await use(runtimeConnection)
     } else {
@@ -83,7 +84,7 @@ export const test = base.extend<IPlaywrightFixtures>({
   },
   fxPagesRec: async ({ context }, use, workerInfo) => {
     const contextPages = context.pages()
-    if (workerInfo.project.name === "openfin") {
+    if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
       const pages = fxOpenfinUrlPaths.reduce((rec, urlPath) => {
         const page = contextPages.find(
           (p) => p.url() === `${process.env.URL_PATH}/${urlPath}`,
@@ -105,7 +106,7 @@ export const test = base.extend<IPlaywrightFixtures>({
   },
   creditPagesRec: async ({ context }, use, workerInfo) => {
     const contextPages = context.pages()
-    if (workerInfo.project.name === "openfin") {
+    if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
       const pages = creditOpenfinUrlPaths.reduce((rec, urlPath) => {
         const page = contextPages.find(
           (p) => p.url() === `${process.env.URL_PATH}/${urlPath}`,

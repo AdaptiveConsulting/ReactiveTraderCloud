@@ -1,5 +1,6 @@
 import { expect, Page } from "@playwright/test"
 import { test } from "./fixtures"
+import { OPENFIN_PROJECT_NAME } from "./utils"
 
 test.describe("Credit", () => {
   test.describe("New RFQ", () => {
@@ -11,7 +12,7 @@ test.describe("Credit", () => {
       let newRfqPage: Page
       let rfqsPage: Page
       let rfqBlotterPage: Page
-      if (testInfo.project.name === "openfin") {
+      if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
         const mainWindow = creditPagesRec["mainWindow"]
         await mainWindow.evaluate(async () => {
           window.fin.Window.getCurrentSync().maximize()
