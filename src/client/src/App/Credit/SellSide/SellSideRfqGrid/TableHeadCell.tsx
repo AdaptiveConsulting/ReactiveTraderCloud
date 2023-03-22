@@ -1,4 +1,5 @@
 import styled from "styled-components"
+
 import { ColKey, rfqColDef } from "./colConfig"
 
 const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`

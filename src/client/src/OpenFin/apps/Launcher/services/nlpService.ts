@@ -1,19 +1,20 @@
-import { DetectIntentResponse } from "dialogflow"
-import { fromFetch } from "rxjs/fetch"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { DetectIntentResponse } from "dialogflow"
 import {
   catchError,
-  map,
-  switchMap,
-  distinctUntilChanged,
   concat,
+  distinctUntilChanged,
+  map,
   merge,
   of,
+  switchMap,
   timer,
 } from "rxjs"
-import { equals } from "@/utils"
+import { fromFetch } from "rxjs/fetch"
+
 import { Direction } from "@/generated/TradingGateway"
+import { equals } from "@/utils"
 
 const [input$, setInput] = createSignal<string>()
 export { setInput }

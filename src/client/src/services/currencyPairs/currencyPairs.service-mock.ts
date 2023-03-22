@@ -1,6 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { of } from "rxjs"
 import { delay, distinctUntilChanged, map } from "rxjs/operators"
+
 import { CurrencyPair } from "./types"
 
 const fakeData: Record<string, CurrencyPair> = {

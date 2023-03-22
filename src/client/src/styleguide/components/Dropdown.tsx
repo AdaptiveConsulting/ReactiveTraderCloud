@@ -1,5 +1,7 @@
 import styled from "styled-components"
+
 import { ChevronIcon } from "@/components/icons"
+
 import Button from "./Button"
 
 export interface DropdownStyleProps {

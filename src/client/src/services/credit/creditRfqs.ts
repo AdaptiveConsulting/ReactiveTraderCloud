@@ -1,25 +1,27 @@
-import {
-  DealerBody,
-  END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
-  InstrumentBody,
-  QuoteCreatedRfqUpdate,
-  QuoteState,
-  QUOTE_ACCEPTED_RFQ_UPDATE,
-  QUOTE_CREATED_RFQ_UPDATE,
-  RfqState,
-  RfqUpdate,
-  RFQ_CLOSED_RFQ_UPDATE,
-  RFQ_CREATED_RFQ_UPDATE,
-  START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
-  WorkflowService,
-  Direction,
-  QuoteBody,
-  RfqBody,
-} from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { combineLatest, Observable } from "rxjs"
 import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
+
+import {
+  DealerBody,
+  Direction,
+  END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
+  InstrumentBody,
+  QUOTE_ACCEPTED_RFQ_UPDATE,
+  QUOTE_CREATED_RFQ_UPDATE,
+  QuoteBody,
+  QuoteCreatedRfqUpdate,
+  QuoteState,
+  RFQ_CLOSED_RFQ_UPDATE,
+  RFQ_CREATED_RFQ_UPDATE,
+  RfqBody,
+  RfqState,
+  RfqUpdate,
+  START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
+  WorkflowService,
+} from "@/generated/TradingGateway"
+
 import { withConnection } from "../withConnection"
 import { creditDealers$ } from "./creditDealers"
 import { creditInstruments$ } from "./creditInstruments"

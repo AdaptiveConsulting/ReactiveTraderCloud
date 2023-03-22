@@ -1,5 +1,6 @@
-import OpenFinBrowserLink from "../components/OpenFinBrowserLink"
 import styled from "styled-components"
+
+import OpenFinBrowserLink from "../components/OpenFinBrowserLink"
 
 const OpenFinLogoLink = styled.a`
   .svg-fill {

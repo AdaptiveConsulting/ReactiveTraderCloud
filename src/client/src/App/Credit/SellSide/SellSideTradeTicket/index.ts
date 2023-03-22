@@ -1,2 +1,2 @@
-export * from "./SellSideTradeTicket"
 export * from "./SellSideTradeTickerFooter"
+export * from "./SellSideTradeTicket"

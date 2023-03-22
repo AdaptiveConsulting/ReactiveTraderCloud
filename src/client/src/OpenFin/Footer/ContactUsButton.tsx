@@ -1,12 +1,13 @@
-import { MailIcon } from "@/App/Footer/ContactUsButton/MailIcon"
-import { Button as OpenFinButton, Background } from "@/App/Footer/common-styles"
-import { createOpenFinPopup, showOpenFinPopup } from "@/OpenFin/utils/window"
 import { useEffect, useState } from "react"
+import styled from "styled-components"
+
+import { Background, Button as OpenFinButton } from "@/App/Footer/common-styles"
 import { ContactUs } from "@/App/Footer/ContactUsButton/ContactUs"
 import { FollowUs } from "@/App/Footer/ContactUsButton/FollowUs"
 import { LogoWrapper } from "@/App/Footer/ContactUsButton/styled"
+import { MailIcon } from "@/components/icons"
 import Logo from "@/components/Logo"
-import styled from "styled-components"
+import { createOpenFinPopup, showOpenFinPopup } from "@/OpenFin/utils/window"
 import { constructUrl } from "@/utils/url"
 
 const Wrapper = styled(Background)`
@@ -62,7 +63,7 @@ const ContactUsButton = () => {
 
   return (
     <Button onClick={showPopup} data-qa="contact-us-button">
-      <MailIcon size={1} active={showing} />
+      <MailIcon height="1" width="1" active={showing} />
       Get in touch
     </Button>
   )

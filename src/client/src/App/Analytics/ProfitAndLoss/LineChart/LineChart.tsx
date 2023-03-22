@@ -1,13 +1,14 @@
-import styled from "styled-components"
-import { Colors, colors$ } from "./Colors"
-import { MainLine, mainLine$ } from "./MainLine"
-import { Tooltip } from "./Tooltip"
-import { TimeLegends, timeLegends$ } from "./TimeLegends"
-import { ValueLegends, valueLegends$ } from "./ValueLegends"
-import { TOTAL_WIDTH, TOTAL_HEIGHT } from "./constants"
-import { merge } from "rxjs"
 import { useRef } from "react"
+import { merge } from "rxjs"
+import styled from "styled-components"
+
+import { Colors, colors$ } from "./Colors"
+import { TOTAL_HEIGHT, TOTAL_WIDTH } from "./constants"
+import { MainLine, mainLine$ } from "./MainLine"
 import { ReferenceLine, referenceLine$ } from "./ReferenceLine"
+import { TimeLegends, timeLegends$ } from "./TimeLegends"
+import { Tooltip } from "./Tooltip"
+import { ValueLegends, valueLegends$ } from "./ValueLegends"
 
 const AnalyticsLineChartStyle = styled.div`
   width: 100%;

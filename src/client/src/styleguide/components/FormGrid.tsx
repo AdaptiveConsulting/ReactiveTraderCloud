@@ -1,5 +1,6 @@
-import { Input } from "./Input"
 import styled, { keyframes } from "styled-components"
+
+import { Input } from "./Input"
 
 const Grid = styled.div`
   display: grid;

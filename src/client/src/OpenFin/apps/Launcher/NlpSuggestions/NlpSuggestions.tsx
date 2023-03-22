@@ -1,10 +1,11 @@
 import { Subscribe } from "@react-rxjs/core"
-import { Suggestion, HelpText } from "./styles"
+
 import { NlpIntent, NlpIntentType } from "../services/nlpService"
+import { AllQuotes, Quotes } from "./Quotes"
+import { HelpText, Suggestion } from "./styles"
 import { SuggestionWrapper } from "./SuggestionWrapper"
-import { Quotes, AllQuotes } from "./Quotes"
-import { Trades } from "./Trades"
 import { TradeExecution } from "./TradeExecution"
+import { Trades } from "./Trades"
 
 export const NlpSuggestions = ({ intent }: { intent: NlpIntent | null }) => {
   if (intent === null) return <HelpText>No results</HelpText>

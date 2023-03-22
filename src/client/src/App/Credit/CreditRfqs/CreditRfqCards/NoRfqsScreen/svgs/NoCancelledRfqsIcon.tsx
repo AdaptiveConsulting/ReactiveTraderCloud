@@ -1,4 +1,5 @@
 import { memo } from "react"
+
 import { IconProps } from "./types"
 import { DEFAULT_NO_RFQ_SVG_SIZE, useNoRfqsIconColors } from "./utils"
 

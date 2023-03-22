@@ -1,12 +1,14 @@
-import styled from "styled-components"
-import { FaSortUp, FaSortDown } from "react-icons/fa"
+import { FaSortDown, FaSortUp } from "react-icons/fa"
 import { distinctUntilChanged, map, withLatestFrom } from "rxjs/operators"
-import { getPrice$, PriceMovementType } from "@/services/prices"
+import styled from "styled-components"
+
 import { getCurrencyPair$ } from "@/services/currencyPairs"
+import { getPrice$, PriceMovementType } from "@/services/prices"
 import type { RfqResponse } from "@/services/rfqs"
 import { equals } from "@/utils/equals"
-import { symbolBind } from "../Tile.context"
+
 import { useRfqPayload } from "../Rfq/Rfq.state"
+import { symbolBind } from "../Tile.context"
 
 const MovementIconUP = styled(FaSortUp)<{ $show: boolean }>`
   text-align: center;

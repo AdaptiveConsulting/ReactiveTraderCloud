@@ -14,7 +14,6 @@
  * Here we use "ress", a modern CSS reset based off normalize
  */
 import "ress"
-
 /**
  * Adding Typefaces
  *
@@ -47,7 +46,6 @@ import "typeface-roboto"
  * line-height explicit in our styles will allow us to
  * achieve a consistent vertical rhythm.
  */
-
 import { createGlobalStyle } from "styled-components"
 
 // background-color needs to be hardcoded to dark theme for PWA otherwise we end up with a

@@ -1,5 +1,6 @@
-import { WindowConfig } from "./openWindow"
 import { _Window } from "openfin-adapter/src/api/window"
+
+import { WindowConfig } from "./openWindow"
 
 // TODO - Maybe move to generic place
 function generateRandomName() {

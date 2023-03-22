@@ -1,10 +1,11 @@
+import { Route } from "react-router-dom"
+
 import { CreditRfqForm, CreditRfqs } from "@/App/Credit"
 import { CreditTrades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { DocTitle } from "@/components/DocTitle"
 import { ROUTES_CONFIG } from "@/constants"
 import SellSidePage from "@/Web/SellSidePage"
-import { Route } from "react-router-dom"
 
 const CreditRoutes = () => (
   <>

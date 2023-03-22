@@ -1,11 +1,12 @@
-import { Loader } from "@/components/Loader"
+import { combineKeys } from "@react-rxjs/utils"
 import { lazy, Suspense } from "react"
 import { merge } from "rxjs"
+import { map } from "rxjs/operators"
+import styled from "styled-components"
+
+import { Loader } from "@/components/Loader"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { getHistoricalPrices$, getPrice$ } from "@/services/prices"
-import styled from "styled-components"
-import { combineKeys } from "@react-rxjs/utils"
-import { map } from "rxjs/operators"
 
 export const LiveRatesCoreDeferred = import("./LiveRatesCore")
 const LiveRatesCore = lazy(() => LiveRatesCoreDeferred)

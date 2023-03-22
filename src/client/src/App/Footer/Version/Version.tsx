@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react"
-import { Wrapper, Link } from "./styled"
+import { useEffect, useState } from "react"
+
+import { Link, Wrapper } from "./styled"
 
 type IdentifierType = "release" | "commit"
 type Element = { tag_name: string }

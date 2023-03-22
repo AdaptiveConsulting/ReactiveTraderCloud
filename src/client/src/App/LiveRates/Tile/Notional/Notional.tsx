@@ -1,23 +1,25 @@
-import { FaRedo } from "react-icons/fa"
-import { useRfqState, QuoteStateStage } from "../Rfq"
-import { symbolBind, useTileCurrencyPair } from "../Tile.context"
-import {
-  InputWrapper,
-  CurrencyPairSymbol,
-  Input,
-  ResetInputValue,
-  ErrorMessage,
-} from "./Notional.styles"
-import { concat, merge, pipe } from "rxjs"
-import { currencyPairs$ } from "@/services/currencyPairs"
-import { filter, map, take } from "rxjs/operators"
 import { createKeyedSignal } from "@react-rxjs/utils"
+import { FaRedo } from "react-icons/fa"
+import { concat, merge, pipe } from "rxjs"
+import { filter, map, take } from "rxjs/operators"
+
+import { currencyPairs$ } from "@/services/currencyPairs"
 import {
+  createApplyCharacterMultiplier,
   customNumberFormatter,
   DECIMAL_SEPARATOR,
-  createApplyCharacterMultiplier,
   parseQuantity,
 } from "@/utils/formatNumber"
+
+import { QuoteStateStage, useRfqState } from "../Rfq"
+import { symbolBind, useTileCurrencyPair } from "../Tile.context"
+import {
+  CurrencyPairSymbol,
+  ErrorMessage,
+  Input,
+  InputWrapper,
+  ResetInputValue,
+} from "./Notional.styles"
 
 const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
   (x) => x.symbol,

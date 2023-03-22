@@ -1,26 +1,28 @@
+import { bind } from "@react-rxjs/core"
+import { map } from "rxjs/operators"
+
+import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
+import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
+import { DropdownMenu } from "@/components/DropdownMenu"
+import { currencyPairs$ } from "@/services/currencyPairs"
+import { useIsLimitCheckerRunning } from "@/services/limitChecker/limitChecker"
+
 import {
+  ALL_CURRENCIES,
+  onSelectCurrency,
+  useSelectedCurrency,
+} from "../selectedCurrency"
+import {
+  CurrencyDropdown,
   Header,
   LeftNav,
   LeftNavItemFirst,
+  LeftNavTitle,
   NavItem,
   RightNav,
-  LeftNavTitle,
-  CurrencyDropdown,
 } from "../styled"
-import {
-  useSelectedCurrency,
-  ALL_CURRENCIES,
-  onSelectCurrency,
-} from "../selectedCurrency"
-import { ToggleView } from "./ToggleView"
-import { currencyPairs$ } from "@/services/currencyPairs"
-import { bind } from "@react-rxjs/core"
-import { map } from "rxjs/operators"
-import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
-import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
-import { useIsLimitCheckerRunning } from "@/services/limitChecker/limitChecker"
 import { LimitCheckerIndicator } from "./LimitCheckerIndicator"
-import { DropdownMenu } from "@/components/DropdownMenu"
+import { ToggleView } from "./ToggleView"
 
 const [useCurrencies, mainHeader$] = bind(
   currencyPairs$.pipe(

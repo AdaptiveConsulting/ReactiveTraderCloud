@@ -1,6 +1,5 @@
 import { memo, ReactNode } from "react"
-import { keyframes } from "styled-components"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 
 const ANIMATION_SPEED = 2
 const BAR_NUMBER = 4

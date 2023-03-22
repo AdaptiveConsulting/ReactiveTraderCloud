@@ -1,13 +1,15 @@
-import { map, scan, shareReplay, startWith } from "rxjs/operators"
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
+import { map, scan, shareReplay, startWith } from "rxjs/operators"
+
+import { CreditTrade, FxTrade } from "@/services/trades"
+
+import { ColDef } from "../colConfig"
 import {
   ComparatorType,
   filterResets$,
   initialFilterContent,
 } from "./filterCommon"
-import { ColDef } from "../colConfig"
-import { CreditTrade, FxTrade } from "@/services/trades"
 
 /**
  * Subset of column fields (as type) that take number filters

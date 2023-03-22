@@ -1,6 +1,8 @@
-import { Component, ButtonHTMLAttributes, ReactChild, ReactNode } from "react"
+import { ButtonHTMLAttributes, Component, ReactChild, ReactNode } from "react"
 import styled, { css, ThemeProvider, withTheme } from "styled-components"
+
 import { Theme, TouchableIntentName } from "@/theme"
+
 import { userSelectButton, userSelectNone } from "../rules"
 
 export interface ButtonStyleProps {

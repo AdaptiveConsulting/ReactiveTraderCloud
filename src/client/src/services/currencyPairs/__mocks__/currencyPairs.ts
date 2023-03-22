@@ -1,7 +1,9 @@
 import { bind } from "@react-rxjs/core"
 import { defer, Observable, of } from "rxjs"
 import { map } from "rxjs/operators"
+
 import { UpdateType } from "@/services/utils"
+
 import { CurrencyPair } from "../types"
 
 let currencyPairsMocks$: Observable<Record<string, CurrencyPair>> = of({})

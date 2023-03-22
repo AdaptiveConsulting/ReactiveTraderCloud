@@ -1,11 +1,13 @@
 import { useRef } from "react"
-import { ContactUsPopup, LogoWrapper } from "./styled"
+
+import { MailIcon } from "@/components/icons"
+import Logo from "@/components/Logo"
+import { usePopUpMenu } from "@/utils/usePopUpMenu"
+
+import { Button, Root } from "../common-styles"
 import { ContactUs } from "./ContactUs"
 import { FollowUs } from "./FollowUs"
-import Logo from "@/components/Logo"
-import { MailIcon } from "./MailIcon"
-import { usePopUpMenu } from "@/utils/usePopUpMenu"
-import { Button, Root } from "../common-styles"
+import { ContactUsPopup, LogoWrapper } from "./styled"
 
 interface Props {
   logoSize: number
@@ -32,7 +34,7 @@ const ContactUsButton = () => {
         data-qa="contact-us-button"
         margin={"0 0.7rem 0 0"}
       >
-        <MailIcon size={1} active={displayMenu} />
+        <MailIcon height="1" width="1" active={displayMenu} />
         Get in touch
       </Button>
 

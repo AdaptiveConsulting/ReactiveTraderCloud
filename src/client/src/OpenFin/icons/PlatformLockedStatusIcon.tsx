@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
+
+import { isLayoutLocked } from "../utils/layout"
 import { LockedIcon } from "./LockedIcon"
 import { UnlockedIcon } from "./UnlockedIcon"
-import { isLayoutLocked } from "../utils/layout"
 
 export const PlatformLockedStatusIcon = () => {
   const [locked, setLocked] = useState(false)

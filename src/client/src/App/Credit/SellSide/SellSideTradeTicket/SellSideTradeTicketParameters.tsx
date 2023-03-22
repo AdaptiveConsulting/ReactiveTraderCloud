@@ -1,8 +1,10 @@
+import { bind } from "@react-rxjs/core"
+import { createSignal } from "@react-rxjs/utils"
 import { merge } from "rxjs"
 import { filter, map } from "rxjs/operators"
 import styled from "styled-components"
-import { bind } from "@react-rxjs/core"
-import { createSignal } from "@react-rxjs/utils"
+
+import { QuoteBody, RfqState } from "@/generated/TradingGateway"
 import { ThemeName } from "@/theme"
 import {
   DECIMAL_SEPARATOR,
@@ -10,9 +12,12 @@ import {
   THOUSANDS_SEPARATOR_REGEXP,
   truncatedDecimalNumberFormatter,
 } from "@/utils"
-import { QuoteBody, RfqState } from "@/generated/TradingGateway"
-import { getSellSideQuoteState, SellSideQuoteState } from "../sellSideState"
-import { selectedRfqId$ } from "../sellSideState"
+
+import {
+  getSellSideQuoteState,
+  selectedRfqId$,
+  SellSideQuoteState,
+} from "../sellSideState"
 
 const ParametersWrapper = styled.div`
   padding: 8px;

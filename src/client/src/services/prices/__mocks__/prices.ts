@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { bind } from "@react-rxjs/core"
 import { defer, Observable, of } from "rxjs"
+
 import { HistoryPrice, Price } from "../types"
 
 let priceMocks$: Record<string, Observable<Price>> = {}

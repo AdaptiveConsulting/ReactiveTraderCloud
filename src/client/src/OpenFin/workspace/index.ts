@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { tearOut } from "@/App/LiveRates/Tile/TearOut/state"
-import { CurrencyPair, currencyPairs$ } from "@/services/currencyPairs"
 import {
   CLIDispatchedSearchResult,
   CLIProvider,
@@ -11,6 +9,9 @@ import {
   Home,
 } from "@openfin/workspace"
 import { firstValueFrom, map } from "rxjs"
+
+import { tearOut } from "@/App/LiveRates/Tile/TearOut/state"
+import { CurrencyPair, currencyPairs$ } from "@/services/currencyPairs"
 
 const providerId = "reactive-trader-workspace-platform"
 

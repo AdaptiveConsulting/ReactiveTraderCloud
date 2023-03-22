@@ -1,21 +1,23 @@
 import { lazy, Suspense } from "react"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
+
 import { Admin } from "@/App/Admin"
 import { Analytics } from "@/App/Analytics"
 import { CreditRfqForm } from "@/App/Credit"
 import { LiveRates } from "@/App/LiveRates"
 import { TileView } from "@/App/LiveRates/selectedView"
 import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
-import { CreditTrades, FxTrades } from "@/App/Trades"
 import { TearOutContext } from "@/App/TearOutSection/tearOutContext"
+import { CreditTrades, FxTrades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { Loader } from "@/components/Loader"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { isMobileDevice } from "@/utils"
 import { FEATURE_FLAG, useFeature } from "@/utils/featureFlag"
 import { WithChildren } from "@/utils/utilityTypes"
-import { FxPage } from "./FxPage"
+
 import CreditPage from "./CreditPage"
+import { FxPage } from "./FxPage"
 import { TearOutRouteWrapper } from "./Web.styles"
 
 const StyleguidePage = lazy(() => import("@/styleguide"))

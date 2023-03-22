@@ -1,7 +1,8 @@
-import { map } from "rxjs/operators"
-import styled from "styled-components"
 import { bind, SUSPENSE } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { map } from "rxjs/operators"
+import styled from "styled-components"
+
 import { DealerBody } from "@/generated/TradingGateway"
 import { ADAPTIVE_BANK_NAME, creditDealers$ } from "@/services/credit"
 

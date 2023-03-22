@@ -1,12 +1,13 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom"
+
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
 import { TileView } from "@/App/LiveRates/selectedView"
+import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
 import { FxTrades } from "@/App/Trades"
+import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { DocTitle } from "@/components/DocTitle"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
-import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
-import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 
 export const FinsembleApp = () => (
   <BrowserRouter basename={BASE_PATH}>

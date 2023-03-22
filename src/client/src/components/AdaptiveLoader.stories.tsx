@@ -1,4 +1,5 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react"
+import { ComponentMeta, ComponentStory } from "@storybook/react"
+
 import { AdaptiveLoader } from "./AdaptiveLoader"
 
 export default {

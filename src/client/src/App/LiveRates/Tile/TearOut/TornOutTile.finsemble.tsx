@@ -1,9 +1,10 @@
+import styled from "styled-components"
+
 import { TileView } from "@/App/LiveRates/selectedView"
 import { Tile } from "@/App/LiveRates/Tile"
 import { Loader } from "@/components/Loader"
 import { useCurrencyPair } from "@/services/currencyPairs"
 import { withSubscriber } from "@/utils/withSubscriber"
-import styled from "styled-components"
 
 const Wrapper = styled("div")`
   margin: 8px;

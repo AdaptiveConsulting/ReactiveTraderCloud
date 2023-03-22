@@ -2,12 +2,12 @@ import { darken } from "polished"
 import { keyframes } from "styled-components"
 
 import {
-  colors,
+  AccentName,
   AccentPaletteMap,
   Color,
+  colors,
   CorePalette,
   CorePaletteMap,
-  AccentName,
 } from "./colors"
 
 export enum ThemeName {

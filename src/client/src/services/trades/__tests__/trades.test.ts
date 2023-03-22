@@ -1,8 +1,10 @@
-import { Direction, QuoteState, RfqState } from "@/generated/TradingGateway"
-import { RfqDetails } from "@/services/credit/creditRfqs"
 import { BehaviorSubject } from "rxjs"
-import * as creditService from "../../credit"
-import * as tradesService from "../../trades"
+
+import { Direction, QuoteState, RfqState } from "@/generated/TradingGateway"
+import * as creditService from "@/services/credit"
+import { RfqDetails } from "@/services/credit/creditRfqs"
+
+import * as tradesService from ".."
 
 jest.mock("../../credit")
 
@@ -122,7 +124,6 @@ describe("trades", () => {
   describe("credit", () => {
     beforeEach(() => {
       const creditRfqs$ = new BehaviorSubject<Record<number, RfqDetails>>(rfqs)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const creditServiceMock = creditService as any
       creditServiceMock.__creditRfqsById(creditRfqs$)
     })

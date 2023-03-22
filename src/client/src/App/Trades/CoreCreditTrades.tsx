@@ -1,9 +1,11 @@
-import { Loader } from "@/components/Loader"
-import { registerCreditBlotterUpdates } from "@/notifications"
-import { CreditTrade, creditTrades$ } from "@/services/trades"
 import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 import styled from "styled-components"
+
+import { Loader } from "@/components/Loader"
+import { registerCreditBlotterUpdates } from "@/notifications"
+import { CreditTrade, creditTrades$ } from "@/services/trades"
+
 import { ColDefContext, ColFieldsContext, TradesStreamContext } from "./Context"
 import { TradesFooter } from "./TradesFooter"
 import { TradesGridInner, TradesGridInnerProps } from "./TradesGrid/TradesGrid"

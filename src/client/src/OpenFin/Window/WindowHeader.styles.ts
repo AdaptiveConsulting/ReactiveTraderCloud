@@ -1,4 +1,5 @@
 import styled from "styled-components"
+
 import { TouchableIntentName } from "@/theme"
 
 export const Control = styled.div<{ accent: TouchableIntentName }>`

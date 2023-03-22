@@ -1,6 +1,7 @@
+import { useHistory, useLocation } from "react-router"
+
 import { DropdownMenu } from "@/components/DropdownMenu"
 import { ROUTES_CONFIG } from "@/constants"
-import { useLocation, useHistory } from "react-router"
 import { isMobileDevice } from "@/utils"
 
 enum InstrumentType {

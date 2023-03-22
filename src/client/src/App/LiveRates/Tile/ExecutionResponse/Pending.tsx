@@ -1,7 +1,8 @@
-import { AdaptiveLoader } from "@/components/AdaptiveLoader"
 import styled from "styled-components"
-import { OverlayDiv } from "@/components/OverlayDiv"
+
+import { AdaptiveLoader } from "@/components/AdaptiveLoader"
 import { CenteringContainer } from "@/components/CenteringContainer"
+import { OverlayDiv } from "@/components/OverlayDiv"
 
 const PendingContainer = styled(OverlayDiv)`
   // Solution to stack flex child ontop of another, height is not respected in safari

@@ -1,6 +1,7 @@
 import styled from "styled-components"
-import Header from "@/App/Header"
+
 import { Footer } from "@/App/Footer"
+import Header from "@/App/Header"
 import { WithChildren } from "@/utils/utilityTypes"
 
 const Wrapper = styled("div")`

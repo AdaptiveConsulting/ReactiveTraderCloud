@@ -1,19 +1,21 @@
-import { merge } from "rxjs"
 import { Subscribe } from "@react-rxjs/core"
-import { ProfitAndLoss, profitAndLoss$ } from "./ProfitAndLoss"
-import { Positions, positions$ } from "./Positions"
-import { PnL, pnL$ } from "./PnL"
-import {
-  AnalyticsStyle,
-  AnalyticsHeader,
-  AnalyticsInnerWrapper,
-  RightNav,
-} from "./styled"
-import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
-import { isAnalyticsDataStale$ } from "@/services/analytics"
+import { merge } from "rxjs"
+
 import { supportsTearOut } from "@/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/App/TearOutSection/TearOutComponent"
+import { isAnalyticsDataStale$ } from "@/services/analytics"
+import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 import { WithChildren } from "@/utils/utilityTypes"
+
+import { PnL, pnL$ } from "./PnL"
+import { Positions, positions$ } from "./Positions"
+import { ProfitAndLoss, profitAndLoss$ } from "./ProfitAndLoss"
+import {
+  AnalyticsHeader,
+  AnalyticsInnerWrapper,
+  AnalyticsStyle,
+  RightNav,
+} from "./styled"
 
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 

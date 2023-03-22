@@ -1,7 +1,8 @@
+import { bind } from "@react-rxjs/core"
+import { map } from "rxjs/operators"
+
 import { LINE_CHART_WIDTH, Y_LEGENDS_WIDTH } from "./constants"
 import { dataPoints$ } from "./dataPoints$"
-import { map } from "rxjs/operators"
-import { bind } from "@react-rxjs/core"
 
 const [useY, referenceLine$] = bind(
   dataPoints$.pipe(map(({ yScale }) => yScale(0))),

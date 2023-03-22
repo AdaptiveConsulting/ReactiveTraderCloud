@@ -1,11 +1,13 @@
-import { PriceTick, PricingService } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { mergeWithKey } from "@react-rxjs/utils"
 import { combineLatest, concat, race } from "rxjs"
-import { scan, map, take, distinctUntilChanged } from "rxjs/operators"
+import { distinctUntilChanged, map, scan, take } from "rxjs/operators"
+
+import { PriceTick, PricingService } from "@/generated/TradingGateway"
+
 import { withIsStaleData } from "../connection"
 import { withConnection } from "../withConnection"
-import { PriceMovementType, HistoryPrice, Price } from "./types"
+import { HistoryPrice, Price, PriceMovementType } from "./types"
 
 const priceMappper = (input: PriceTick): HistoryPrice => ({
   ask: input.ask,

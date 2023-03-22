@@ -1,20 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { Subscribe } from "@react-rxjs/core"
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { BehaviorSubject, Subject } from "rxjs"
 
+import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
-import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
-import { TestThemeProvider } from "@/utils/testUtils"
-import { Tile, tile$ } from "./Tile"
 import {
   ExecutionRequest,
   ExecutionStatus,
   ExecutionTrade,
   TimeoutExecution,
 } from "@/services/executions"
-import { Direction } from "@/generated/TradingGateway"
+import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
+import { TestThemeProvider } from "@/utils/testUtils"
+
+import { Tile, tile$ } from ".."
 
 jest.mock("@/services/executions/executions")
 jest.mock("@/services/prices/prices")

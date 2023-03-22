@@ -1,23 +1,19 @@
+import { SUSPENSE } from "@react-rxjs/core"
 import { memo } from "react"
 import { merge, pipe } from "rxjs"
-import { PriceMovement, priceMovement$ } from "./PriceMovement"
-import { NotionalInput, notionalInput$ } from "./Notional"
-import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"
-import { PriceButton, priceButton$ } from "./PriceButton"
-import { Header, header$ } from "./Header"
-import {
-  Body,
-  InputTimerStyle,
-  Main,
-  PanelItem,
-  PriceControlsStyle,
-  PriceControlWrapper,
-  GraphNotionalWrapper,
-} from "./Tile.styles"
-import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
-
+import { map } from "rxjs/operators"
 import { CurrencyPair } from "services/currencyPairs"
-import { Provider, symbolBind, useTileContext } from "./Tile.context"
+
+import { Direction } from "@/generated/TradingGateway"
+import { getIsSymbolDataStale$ } from "@/services/prices"
+import { isMobileDevice } from "@/utils"
+
+import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
+import { Header, header$ } from "./Header"
+import { HistoricalGraph, historicalGraph$ } from "./HistoricalGraph"
+import { NotionalInput, notionalInput$ } from "./Notional"
+import { PriceButton, priceButton$ } from "./PriceButton"
+import { PriceMovement, priceMovement$ } from "./PriceMovement"
 import {
   getRfqState$,
   isRfq$,
@@ -27,11 +23,16 @@ import {
   RfqTimer,
   useRfqState,
 } from "./Rfq"
-import { getIsSymbolDataStale$ } from "@/services/prices"
-import { SUSPENSE } from "@react-rxjs/core"
-import { map } from "rxjs/operators"
-import { isMobileDevice } from "@/utils"
-import { Direction } from "@/generated/TradingGateway"
+import { Provider, symbolBind, useTileContext } from "./Tile.context"
+import {
+  Body,
+  GraphNotionalWrapper,
+  InputTimerStyle,
+  Main,
+  PanelItem,
+  PriceControlsStyle,
+  PriceControlWrapper,
+} from "./Tile.styles"
 
 export const tile$ = (symbol: string) =>
   merge(

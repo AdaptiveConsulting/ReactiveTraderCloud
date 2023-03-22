@@ -1,17 +1,19 @@
 import styled from "styled-components"
-import { OverlayDiv } from "@/components/OverlayDiv"
+
 import { CenteringContainer } from "@/components/CenteringContainer"
-import { useTileCurrencyPair } from "../Tile.context"
-import {
-  useRfqState,
-  useIsRfq,
-  onQuoteRequest,
-  onCancelRfq,
-  QuoteStateStage,
-} from "./Rfq.state"
-import { AnalyticsPricesFirstCol } from "../Tile.styles"
-import { TileStates, useTileState } from "../Tile.state"
+import { OverlayDiv } from "@/components/OverlayDiv"
+
 import { useIsNotionalValid } from "../Notional/Notional"
+import { useTileCurrencyPair } from "../Tile.context"
+import { TileStates, useTileState } from "../Tile.state"
+import { AnalyticsPricesFirstCol } from "../Tile.styles"
+import {
+  onCancelRfq,
+  onQuoteRequest,
+  QuoteStateStage,
+  useIsRfq,
+  useRfqState,
+} from "./Rfq.state"
 
 const RfqButtonContainer = styled(OverlayDiv)`
   position: absolute;

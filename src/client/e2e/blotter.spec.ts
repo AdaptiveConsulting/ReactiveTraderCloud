@@ -1,8 +1,9 @@
 import { expect, Page } from "@playwright/test"
-import { test } from "./fixtures"
 // import { fxColDef, fxColFields } from "../src/App/Trades/TradesState/colConfig"
 // import { FxTrade } from "../src/services/trades"
 import fs from "fs"
+
+import { test } from "./fixtures"
 import { OPENFIN_PROJECT_NAME } from "./utils"
 
 const getTradeIDColIndex = () => {

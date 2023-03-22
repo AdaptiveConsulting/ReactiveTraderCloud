@@ -1,6 +1,7 @@
 import { FC } from "react"
-import { Button, ButtonStyleProps } from "./Button"
 import styled from "styled-components"
+
+import { Button, ButtonStyleProps } from "./Button"
 
 interface TitleButtonProp {
   title?: string

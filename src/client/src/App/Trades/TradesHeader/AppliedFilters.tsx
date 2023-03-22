@@ -1,5 +1,6 @@
 import { FaTimes } from "react-icons/fa"
 import styled from "styled-components"
+
 import { useColDef, useTrades$ } from "../Context"
 import { onFilterReset, useFilterFields } from "../TradesState"
 

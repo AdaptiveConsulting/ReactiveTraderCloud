@@ -1,6 +1,8 @@
+import { ComponentMeta } from "@storybook/react"
+
 import { ThemeName } from "@/theme"
 import { ThemeContext } from "@/theme/ThemeContext"
-import { ComponentMeta } from "@storybook/react"
+
 import ThemeSwitcher from "./ThemeSwitcher"
 
 export default {

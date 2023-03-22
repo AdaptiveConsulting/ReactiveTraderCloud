@@ -1,4 +1,5 @@
 import Header from "@/App/Header"
+
 import { Props as ControlsProps, WindowControls } from "./WindowControls"
 import { TitleBar } from "./WindowHeader.styles"
 

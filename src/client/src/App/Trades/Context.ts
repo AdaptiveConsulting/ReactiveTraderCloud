@@ -1,6 +1,8 @@
-import { CreditTrade, FxTrade } from "@/services/trades"
 import { createContext, useContext } from "react"
 import { Observable } from "rxjs"
+
+import { CreditTrade, FxTrade } from "@/services/trades"
+
 import { ColDef } from "./TradesState"
 
 export const TradesStreamContext =

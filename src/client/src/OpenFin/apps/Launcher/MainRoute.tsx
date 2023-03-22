@@ -1,40 +1,42 @@
+import { Bounds } from "openfin/_v2/shapes/shapes"
+import { useCallback, useEffect, useRef, useState } from "react"
+import Measure, { ContentRect } from "react-measure"
+
 import { Loader } from "@/components/Loader"
 import LogoIcon from "@/components/LogoIcon"
-import Measure, { ContentRect } from "react-measure"
-import {
-  RootLauncherContainer,
-  LauncherContainer,
-  LauncherGlobalStyle,
-  LogoLauncherContainer,
-  SearchButtonContainer,
-  MinExitContainer,
-  ExitButton,
-  MinimiseButton,
-  RootResultsContainer,
-  Response,
-  OverlayContainer,
-} from "./styles"
-import { ExitIcon, SearchIcon, minimiseNormalIcon } from "./icons"
+import { closeWindow } from "@/utils/window/closeWindow"
+
+import { LaunchButton } from "./components/LaunchButton"
+import { ExitIcon, minimiseNormalIcon, SearchIcon } from "./icons"
 import { LauncherApps } from "./LauncherApps"
-import { Search } from "./Search"
-import { useCallback, useEffect, useRef, useState } from "react"
 import { NlpSuggestions } from "./NlpSuggestions/NlpSuggestions"
+import { OverlayProvider } from "./overlayContext"
+import { Search } from "./Search"
 import {
   onResetInput,
   useIsNlpIntentLoading,
   useNlpInput,
   useNlpIntent,
 } from "./services/nlpService"
-import { OverlayProvider } from "./overlayContext"
 import {
-  minimiseCurrentWindow,
-  getCurrentWindowBounds,
+  ExitButton,
+  LauncherContainer,
+  LauncherGlobalStyle,
+  LogoLauncherContainer,
+  MinExitContainer,
+  MinimiseButton,
+  OverlayContainer,
+  Response,
+  RootLauncherContainer,
+  RootResultsContainer,
+  SearchButtonContainer,
+} from "./styles"
+import {
   animateCurrentWindowSize,
+  getCurrentWindowBounds,
+  minimiseCurrentWindow,
   useAppBoundReset,
 } from "./utils/openfin"
-import { LaunchButton } from "./components/LaunchButton"
-import { Bounds } from "openfin/_v2/shapes/shapes"
-import { closeWindow } from "@/utils/window/closeWindow"
 
 const expandedLauncherWidth = 600
 

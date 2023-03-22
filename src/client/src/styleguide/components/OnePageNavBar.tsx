@@ -1,16 +1,18 @@
 import {
-  RefObject,
   ComponentType,
-  useRef,
-  useEffect,
-  useState,
+  RefObject,
   useCallback,
+  useEffect,
+  useRef,
+  useState,
 } from "react"
 import { HashLink as Link } from "react-router-hash-link"
 import styled, { css } from "styled-components"
-import { Flex } from "../styled"
-import { H2 } from "../elements"
+
 import Logo from "@/components/Logo"
+
+import { H2 } from "../elements"
+import { Flex } from "../styled"
 import { mapMarginPaddingProps } from "../styled/mapMarginPaddingProps"
 
 export type NavSection =

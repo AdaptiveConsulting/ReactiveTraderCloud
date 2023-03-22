@@ -1,6 +1,8 @@
-import { BlotterService, QuoteState } from "@/generated/TradingGateway"
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
+
+import { BlotterService, QuoteState } from "@/generated/TradingGateway"
+
 import { withIsStaleData } from "../connection"
 import { creditRfqsById$ } from "../credit"
 import { withConnection } from "../withConnection"

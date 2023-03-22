@@ -1,11 +1,13 @@
-import { TradesInfoIntent } from "../services/nlpService"
+import { format } from "date-fns"
+
 import { useTrades } from "@/services/trades"
 import { formatNumber } from "@/utils"
-import { format } from "date-fns"
+
+import { TradesInfoIntent } from "../services/nlpService"
 import {
+  Col,
   ResultsTable,
   ResultsTableRow,
-  Col,
   ResultsTableRowType,
 } from "./resultsTable"
 

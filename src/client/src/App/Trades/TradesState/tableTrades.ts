@@ -1,10 +1,12 @@
-import { HIGHLIGHT_ROW_FLASH_TIME } from "@/constants"
-import { CreditTrade, creditTrades$, FxTrade, trades$ } from "@/services/trades"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { startOfDay } from "date-fns"
 import { combineLatest, merge, Observable } from "rxjs"
 import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
+
+import { HIGHLIGHT_ROW_FLASH_TIME } from "@/constants"
+import { CreditTrade, creditTrades$, FxTrade, trades$ } from "@/services/trades"
+
 import { ColDef } from "./colConfig"
 import type { DateFilterContent, NumFilterContent } from "./filterState"
 import {

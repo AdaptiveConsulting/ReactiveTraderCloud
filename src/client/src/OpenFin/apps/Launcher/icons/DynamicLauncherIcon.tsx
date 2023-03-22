@@ -1,6 +1,6 @@
 import { memo } from "react"
-import { css, keyframes } from "styled-components"
-import styled from "styled-components"
+import styled, { css, keyframes } from "styled-components"
+
 import LauncherIcon from "./LauncherIcon"
 
 const fillChangeKeyframes = (path?: number) => keyframes`

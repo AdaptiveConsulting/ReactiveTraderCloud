@@ -1,9 +1,11 @@
 import { useState } from "react"
 import Switch, { ReactSwitchProps } from "react-switch"
-import { ThemeName, Theme, useTheme } from "@/theme"
 import { withTheme } from "styled-components"
-import DarkThemeIcon from "./DarkThemeIcon"
+
 import { IconContainer, SwitchContainer } from "@/components/Switch"
+import { Theme, ThemeName, useTheme } from "@/theme"
+
+import DarkThemeIcon from "./DarkThemeIcon"
 import LightThemeIcon from "./LightThemeIcon"
 
 export type ThemeStorageSwitchProps = Partial<ReactSwitchProps>

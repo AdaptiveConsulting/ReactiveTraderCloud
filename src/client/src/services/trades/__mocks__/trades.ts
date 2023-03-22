@@ -1,4 +1,5 @@
-import { Observable, defer, EMPTY, of } from "rxjs"
+import { defer, EMPTY, Observable, of } from "rxjs"
+
 import type { Trade } from "../types"
 
 let _trades$: Observable<Trade[]>

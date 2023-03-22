@@ -1,20 +1,22 @@
 import styled, { css } from "styled-components"
-import { colors } from "@/theme"
+
 import { Direction } from "@/generated/TradingGateway"
+import { colors } from "@/theme"
 import { breathing } from "@/utils/styling"
-import { getSellSideStatusColor } from "../utils"
+
 import {
   selectRfqId,
+  SellSideQuotesTab,
   SellSideQuoteState,
   useHighlightedRfqId,
   useSelectedRfqId,
   useSellSideQuotesFilter,
-  SellSideQuotesTab,
   useSellSideRfqs,
 } from "../sellSideState"
-import { TableHeadCellContainer } from "./TableHeadCell"
-import { RfqRow } from "./SellSideRfqGrid"
+import { getSellSideStatusColor } from "../utils"
 import { ColKey, rfqColDef, rfqColFields } from "./colConfig"
+import { RfqRow } from "./SellSideRfqGrid"
+import { TableHeadCellContainer } from "./TableHeadCell"
 
 export const QuoteDot = styled.div`
   height: 4px;

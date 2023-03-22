@@ -1,5 +1,7 @@
 import { ReactElement, useEffect, useState } from "react"
+
 import { capitalize, formatAsWholeNumber, THOUSANDS_SEPARATOR } from "@/utils"
+
 import { SecsTimer } from "../../common"
 import { RfqRowKey } from "./SellSideRfqGrid"
 

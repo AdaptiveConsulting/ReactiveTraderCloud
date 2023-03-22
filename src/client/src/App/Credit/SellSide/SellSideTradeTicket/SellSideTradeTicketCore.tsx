@@ -1,8 +1,10 @@
 import styled from "styled-components"
+
 import { Loader } from "@/components/Loader"
 import { QuoteState } from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
 import { invertDirection } from "@/utils"
+
 import { getSellSideQuoteState, SellSideQuoteState } from "../sellSideState"
 import { getSellSideStatusColor } from "../utils"
 import { SellSideTradeTicketFooter } from "./SellSideTradeTickerFooter"

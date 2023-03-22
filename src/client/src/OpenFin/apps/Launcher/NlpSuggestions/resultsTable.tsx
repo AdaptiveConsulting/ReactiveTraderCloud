@@ -1,7 +1,9 @@
+import { ReactNode } from "react"
+
 import { TradeStatus } from "@/generated/TradingGateway"
 import { FxTrade } from "@/services/trades"
-import { ReactNode } from "react"
-import { Table, TableRow, TableCell, TableHeader } from "./styles"
+
+import { Table, TableCell, TableHeader, TableRow } from "./styles"
 
 export interface Col {
   title: string

@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState, useLayoutEffect } from "react"
+import { memo, useEffect, useLayoutEffect, useRef, useState } from "react"
 import styled, { css, keyframes } from "styled-components"
 
 export const TimerWrapper = styled.div`

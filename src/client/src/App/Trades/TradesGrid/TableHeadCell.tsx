@@ -1,7 +1,9 @@
-import { usePopUpMenu } from "@/utils"
 import { useRef, useState } from "react"
 import { FaFilter, FaLongArrowAltDown, FaLongArrowAltUp } from "react-icons/fa"
 import styled from "styled-components"
+
+import { usePopUpMenu } from "@/utils"
+
 import { useColDef } from "../Context"
 import type { SortDirection } from "../TradesState"
 import { useTableSort } from "../TradesState"

@@ -1,5 +1,6 @@
 import { forkJoin } from "rxjs"
 import { delay, map, take } from "rxjs/operators"
+
 import { getCurrencyPair$ } from "../currencyPairs"
 import { getPrice$ } from "../prices"
 import type { RfqRequest, RfqResponse } from "./types"

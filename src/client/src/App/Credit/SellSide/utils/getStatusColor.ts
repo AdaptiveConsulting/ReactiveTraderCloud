@@ -1,4 +1,5 @@
 import { DefaultTheme } from "styled-components"
+
 import { SellSideQuoteState } from "../sellSideState"
 
 export const getSellSideStatusColor = (

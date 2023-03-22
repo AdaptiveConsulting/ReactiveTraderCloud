@@ -1,8 +1,10 @@
-import { dataPoints$ } from "./dataPoints$"
+import { bind } from "@react-rxjs/core"
 import { scaleLinear } from "d3"
 import { map } from "rxjs/operators"
-import { bind } from "@react-rxjs/core"
+
 import { Range } from "@/utils/historicalChart"
+
+import { dataPoints$ } from "./dataPoints$"
 
 const offsetScale = scaleLinear().range([0, 1])
 const getOffset = ({ yRange }: { yRange: Range<number> }) =>

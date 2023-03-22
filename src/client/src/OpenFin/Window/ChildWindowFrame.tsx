@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
-import { ChildWindowHeader } from "./ChildWindowHeader"
+
+import { getAppName, getPlatformLayoutTitle } from "../utils/app"
 import { FrameRoot } from "./ChildWindowFrame.styles"
+import { ChildWindowHeader } from "./ChildWindowHeader"
 import { WindowBody } from "./WindowBody"
 import { WindowViewport } from "./WindowViewport"
-import { getAppName, getPlatformLayoutTitle } from "../utils/app"
 
 export const ChildWindowFrame = () => {
   const win = fin.Window.getCurrentSync()

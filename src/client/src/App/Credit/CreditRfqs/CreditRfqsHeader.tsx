@@ -1,6 +1,8 @@
 import styled from "styled-components"
+
 import { DropdownMenu } from "@/components/DropdownMenu"
 import { removeRfqs, useExecutedRfqIds } from "@/services/credit"
+
 import { ClearRfqsIcon } from "./ClearRfqsIcon"
 import {
   RFQS_TABS,

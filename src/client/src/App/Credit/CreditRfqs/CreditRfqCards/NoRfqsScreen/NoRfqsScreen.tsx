@@ -1,5 +1,6 @@
 import { FC } from "react"
 import styled from "styled-components"
+
 import { RfqsTab, useSelectedRfqsTab } from "../../selectedRfqsTab"
 import { NoCancelledRfqsIcon } from "./svgs/NoCancelledRfqsIcon"
 import { NoDoneRfqsIcon } from "./svgs/NoDoneRfqsIcon"

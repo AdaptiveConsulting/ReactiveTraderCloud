@@ -1,7 +1,9 @@
 import { StrictMode } from "react"
 import ReactDOM from "react-dom"
-import GlobalStyle from "@/theme/globals"
+
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
+import GlobalStyle from "@/theme/globals"
+
 import { Modal } from "./components/Modal"
 
 export function browserUnsupported() {

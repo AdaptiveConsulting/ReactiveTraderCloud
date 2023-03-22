@@ -1,5 +1,6 @@
-import { AccentPaletteMap } from "@/theme"
 import styled from "styled-components"
+
+import { AccentPaletteMap } from "@/theme"
 
 const FlexDiv = styled.div`
   display: flex;

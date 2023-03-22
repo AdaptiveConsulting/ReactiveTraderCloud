@@ -1,5 +1,6 @@
 import { ComponentMeta } from "@storybook/react"
 import styled from "styled-components"
+
 import { PnLInner } from "./PnL"
 
 export default {

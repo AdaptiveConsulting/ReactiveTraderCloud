@@ -1,12 +1,12 @@
 import { useState } from "react"
+
 import {
   applySnapshotFromStorage,
-  getSnapshots,
   AppName,
+  getSnapshots,
   saveSnapshotToStorage,
   useAppNameForSnapshots,
 } from "../utils/layout"
-
 import {
   Button,
   Container,

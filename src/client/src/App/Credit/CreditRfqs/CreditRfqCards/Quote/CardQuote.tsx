@@ -1,6 +1,7 @@
+import { createSignal } from "@react-rxjs/utils"
 import { FaCheckCircle } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
-import { createSignal } from "@react-rxjs/utils"
+
 import {
   DealerBody,
   Direction,

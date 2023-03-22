@@ -1,4 +1,5 @@
-import styled from "styled-components"
+import { bind } from "@react-rxjs/core"
+import { createSignal } from "@react-rxjs/utils"
 import { FaCheckCircle, FaTimes } from "react-icons/fa"
 import { concat, of, race, timer } from "rxjs"
 import {
@@ -9,13 +10,13 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
-import { bind } from "@react-rxjs/core"
-import { createSignal } from "@react-rxjs/utils"
+import styled from "styled-components"
+
 import { Direction } from "@/generated/TradingGateway"
 import {
-  creditInstruments$,
-  createdCreditRfq$,
   acceptedCreditRfq$,
+  createdCreditRfq$,
+  creditInstruments$,
   creditQuotes$,
   creditRfqsById$,
 } from "@/services/credit"

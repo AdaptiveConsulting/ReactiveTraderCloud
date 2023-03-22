@@ -1,5 +1,21 @@
 import { format } from "date-fns"
+import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"
+import styled from "styled-components"
+
+import { Direction } from "@/generated/TradingGateway"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { ExecutionStatus } from "@/services/executions"
 import { formatNumber } from "@/utils"
+
+import { useTileCurrencyPair } from "../Tile.context"
+import {
+  getTileState$,
+  onDismissMessage,
+  TileState,
+  TileStates,
+  useTileState,
+} from "../Tile.state"
+import Pending from "./Pending"
 import {
   AssetText,
   Button,
@@ -8,20 +24,6 @@ import {
   TradeIdDiv,
   TradeMessageDiv,
 } from "./Response.styles"
-import styled from "styled-components"
-import { ExecutionStatus } from "@/services/executions"
-import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"
-import Pending from "./Pending"
-import { useTileCurrencyPair } from "../Tile.context"
-import {
-  onDismissMessage,
-  TileState,
-  TileStates,
-  useTileState,
-  getTileState$,
-} from "../Tile.state"
-import { CurrencyPair } from "@/services/currencyPairs"
-import { Direction } from "@/generated/TradingGateway"
 
 const BackgroundColored = styled.span`
   background-color: ${({ theme }) => theme.white};

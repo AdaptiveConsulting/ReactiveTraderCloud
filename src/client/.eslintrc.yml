@@ -7,7 +7,20 @@ extends:
   - plugin:react/jsx-runtime
   - plugin:@typescript-eslint/recommended
   - prettier
-overrides: []
+
+overrides:
+  [
+    {
+      files: ["*.{service-mock,mock,test,spec}.{ts,tsx}", "**/__mocks__/*"],
+      rules:
+        {
+          "@typescript-eslint/no-explicit-any": 0,
+          "@typescript-eslint/no-non-null-assertion": 0,
+          "@typescript-eslint/no-unused-vars": 0,
+          "@typescript-eslint/no-var-requires": 0,
+        },
+    },
+  ]
 parser: "@typescript-eslint/parser"
 parserOptions:
   ecmaVersion: latest
@@ -15,8 +28,14 @@ parserOptions:
 plugins:
   - react
   - "@typescript-eslint"
+  - "simple-import-sort"
 rules:
-  "@typescript-eslint/no-loss-of-precision": 0
+  {
+    "@typescript-eslint/no-loss-of-precision": 0,
+    "simple-import-sort/imports": 2,
+    "simple-import-sort/exports": 2,
+  }
+
 settings:
   react:
     version: detect

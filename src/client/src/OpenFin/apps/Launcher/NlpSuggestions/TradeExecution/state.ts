@@ -1,7 +1,7 @@
-import {
-  nlpIntent$,
-  NlpIntentType,
-} from "@/OpenFin/apps/Launcher/services/nlpService"
+import { bind } from "@react-rxjs/core"
+import { createSignal } from "@react-rxjs/utils"
+import { useEffect } from "react"
+import { concat } from "rxjs"
 import {
   catchError,
   exhaustMap,
@@ -12,18 +12,19 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
-import { createSignal } from "@react-rxjs/utils"
-import { concat } from "rxjs"
-import { getPrice$ } from "@/services/prices"
+
+import { Direction } from "@/generated/TradingGateway"
+import {
+  nlpIntent$,
+  NlpIntentType,
+} from "@/OpenFin/apps/Launcher/services/nlpService"
 import { getCurrencyPair$ } from "@/services/currencyPairs"
 import {
   execute$,
   ExecutionStatus,
   ExecutionTrade,
 } from "@/services/executions"
-import { bind } from "@react-rxjs/core"
-import { useEffect } from "react"
-import { Direction } from "@/generated/TradingGateway"
+import { getPrice$ } from "@/services/prices"
 
 const [next$_, onNext] = createSignal()
 export { onNext }

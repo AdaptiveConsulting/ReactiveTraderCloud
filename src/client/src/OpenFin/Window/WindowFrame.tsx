@@ -1,9 +1,10 @@
 import { useEffect } from "react"
+
 import { WindowBody } from "./WindowBody"
 import { WindowFooter } from "./WindowFooter"
+import { FrameRoot } from "./WindowFrame.styles"
 import { WindowHeader } from "./WindowHeader"
 import { WindowViewport } from "./WindowViewport"
-import { FrameRoot } from "./WindowFrame.styles"
 
 export const WindowFrame = () => {
   const win = fin.Window.getCurrentSync()

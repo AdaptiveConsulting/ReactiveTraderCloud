@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { bind } from "@react-rxjs/core"
 import { Observable, of } from "rxjs"
-import { scan, map } from "rxjs/operators"
-import { PriceMovementType, HistoryPrice, Price } from "./types"
+import { map, scan } from "rxjs/operators"
+
+import { HistoryPrice, Price, PriceMovementType } from "./types"
 
 function* makePriceGenerator(
   symbol: string,
@@ -54,7 +54,6 @@ const [, getSymbolPrices$] = bind(
 )
 
 export const [, getIsSymbolDataStale$] = bind(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (_: string): Observable<boolean> => of(false),
 )
 

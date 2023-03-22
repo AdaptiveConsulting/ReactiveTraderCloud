@@ -1,17 +1,19 @@
 import styled from "styled-components"
+
 import {
+  ChartIcon,
+  ChevronIcon,
+  CrossIcon,
   DownloadIcon,
   FilterIcon,
-  PopOutIcon,
-  PopInIcon,
-  CrossIcon,
+  MailIcon,
   MaximizeIcon,
   MinimizeIcon,
-  ChevronIcon,
+  PopInIcon,
+  PopOutIcon,
   UndockIcon,
-  ChartIcon,
-  MailIcon,
 } from "@/components/icons"
+
 import { H2, H3, H5 } from "../elements"
 import { Paragraph, SectionBlock, Text, TextProps } from "../styled"
 
@@ -113,16 +115,16 @@ export const FontFamilies = () => (
 
         <H5>Mail</H5>
         <div>
-          <MailIcon size={1} />
+          <MailIcon height={1} width={1} />
         </div>
         <ActiveIcon>
-          <MailIcon size={1} />
+          <MailIcon height={1} width={1} />
         </ActiveIcon>
         <ActiveIcon>
-          <MailIcon size={1} />
+          <MailIcon height={1} width={1} />
         </ActiveIcon>
         <DisabledIcon>
-          <MailIcon size={1} />
+          <MailIcon height={1} width={1} />
         </DisabledIcon>
       </IconGrid>
     </SectionBlock>

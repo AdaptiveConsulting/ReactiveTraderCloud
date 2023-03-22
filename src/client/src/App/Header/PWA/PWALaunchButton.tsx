@@ -1,8 +1,10 @@
 import { Dispatch, SetStateAction } from "react"
-import { PWABanner } from "./PWAInstallPrompt"
-import { usePWABannerPrompt } from "./usePWABannerPrompt"
+
 import { isiOS } from "@/utils"
+
+import { PWABanner } from "./PWAInstallPrompt"
 import { InstallButton } from "./PWAInstallPrompt.styles"
+import { usePWABannerPrompt } from "./usePWABannerPrompt"
 
 export const LaunchButtonInner = ({
   onClick,

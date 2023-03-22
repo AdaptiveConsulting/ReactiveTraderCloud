@@ -1,15 +1,16 @@
 import styled from "styled-components"
-import { H2, H3 } from "../elements"
-import { Paragraph, SectionBlock } from "../styled"
-import FormGrid from "../components/FormGrid"
-import PricingTilesGrid from "../components/PricingTilesGrid"
-import ChartingGrid from "../components/ChartingGrid"
+
 import ButtonGrid from "../components/ButtonGrid"
-import SpreadGrid from "../components/SpreadGrid"
+import ChartingGrid from "../components/ChartingGrid"
 import ConfirmationGrid from "../components/ConfirmationGrid"
 import DropdownGrid from "../components/DropdowGrid"
 import DropdownMenuGrid from "../components/DropdownMenuGrid"
+import FormGrid from "../components/FormGrid"
 import ListItemGrid from "../components/ListItemGrid"
+import PricingTilesGrid from "../components/PricingTilesGrid"
+import SpreadGrid from "../components/SpreadGrid"
+import { H2, H3 } from "../elements"
+import { Paragraph, SectionBlock } from "../styled"
 
 const Atoms = () => {
   return (

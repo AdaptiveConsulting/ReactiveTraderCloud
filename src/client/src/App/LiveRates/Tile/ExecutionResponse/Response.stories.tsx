@@ -1,11 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ExecutionStatus } from "@/services/executions"
-import { ComponentStory, ComponentMeta } from "@storybook/react"
+import { ComponentMeta, ComponentStory } from "@storybook/react"
 import styled from "styled-components"
-import { TileStates } from "../Tile.state"
+
+import { ExecutionStatus } from "@/services/executions"
+
+import { TileStates, TradeState } from "../Tile.state"
 import { StatelessExecutionResponse } from "./Response"
 
 const mockTrade = {
+  id: "1111111111",
   tradeId: 1111111111,
   traderName: "LMO",
   currencyPair: "GBPUSD",
@@ -49,7 +51,7 @@ export const Pending = Template.bind({})
 Pending.args = {
   tileState: {
     status: TileStates.Started,
-  } as any,
+  },
 }
 
 export const Executed = Template.bind({})
@@ -57,7 +59,7 @@ Executed.args = {
   tileState: {
     status: TileStates.Finished,
     trade: mockTrade,
-  } as any,
+  } as TradeState,
 }
 
 export const TooLong = Template.bind({})
@@ -82,7 +84,7 @@ Rejected.args = {
       ...mockTrade,
       status: ExecutionStatus.Rejected,
     },
-  } as any,
+  } as TradeState,
 }
 
 export const CreditExceeded = Template.bind({})

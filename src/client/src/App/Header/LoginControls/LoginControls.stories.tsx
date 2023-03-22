@@ -1,6 +1,7 @@
 import { ComponentMeta } from "@storybook/react"
-import { UserInner } from "./LoginControls"
+
 import avatar from "../../../../public/static/media/mockedAvatars/one.png"
+import { UserInner } from "./LoginControls"
 
 export default {
   title: "Header/User",

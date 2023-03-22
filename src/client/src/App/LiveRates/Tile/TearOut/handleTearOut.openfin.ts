@@ -2,6 +2,7 @@ import { ROUTES_CONFIG } from "@/constants"
 import { calculateWindowCoordinates, Offset } from "@/utils"
 import { constructUrl } from "@/utils/url"
 import { openWindow } from "@/utils/window/openWindow"
+
 import { tearOut } from "./state"
 
 const calculateOpeningWindowCoords = async (coords: Offset) => {

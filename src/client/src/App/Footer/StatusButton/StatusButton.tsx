@@ -1,6 +1,7 @@
 import { ConnectionStatus, useConnectionStatus } from "@/services/connection"
+
+import { Button, Root } from "../common-styles"
 import { StatusCircle, StatusLabel } from "./styled"
-import { Root, Button } from "../common-styles"
 
 export const StatusButtonInner = ({ status }: { status: ConnectionStatus }) => {
   const appStatus =

@@ -1,8 +1,10 @@
+import { bind } from "@react-rxjs/core"
+import { map } from "rxjs/operators"
+
+import { toSvgPath } from "@/utils/historicalChart"
+
 import { LINE_CHART_HEIGHT, LINE_CHART_WIDTH } from "./constants"
 import { dataPoints$ } from "./dataPoints$"
-import { map } from "rxjs/operators"
-import { bind } from "@react-rxjs/core"
-import { toSvgPath } from "@/utils/historicalChart"
 
 const [useD, mainLine$] = bind(dataPoints$.pipe(map(toSvgPath())))
 

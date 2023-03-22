@@ -1,5 +1,7 @@
+import { format, parseISO } from "date-fns"
 import styled from "styled-components"
-import { parseISO, format } from "date-fns"
+
+import { useColDef } from "../Context"
 import {
   ComparatorType,
   onColFilterDateSelect,
@@ -9,9 +11,8 @@ import {
   DateColField,
   DateFilterContent,
 } from "../TradesState/filterState/dateFilterState"
-import { FilterPopup } from "./components/FilterPopup"
 import { ComparatorSelect } from "./components/ComparatorSelect"
-import { useColDef } from "../Context"
+import { FilterPopup } from "./components/FilterPopup"
 
 const DateFilterInputInner = styled.input`
   padding: 8px 8px 5px 8px;

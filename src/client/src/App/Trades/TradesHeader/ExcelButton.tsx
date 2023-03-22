@@ -1,5 +1,7 @@
-import { Trade } from "@/services/trades"
 import styled from "styled-components"
+
+import { Trade } from "@/services/trades"
+
 import { useColDef, useColFields, useTrades$ } from "../Context"
 import { ColDef, useTableTrades } from "../TradesState"
 

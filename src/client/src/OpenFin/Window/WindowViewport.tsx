@@ -2,9 +2,10 @@
 // existing TODOs to clean this up
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { WithChildren } from "@/utils/utilityTypes"
 import { useEffect } from "react"
 import { Helmet } from "react-helmet"
+
+import { WithChildren } from "@/utils/utilityTypes"
 
 const LAYOUT_ITEMS = {
   Blotter: "stream",

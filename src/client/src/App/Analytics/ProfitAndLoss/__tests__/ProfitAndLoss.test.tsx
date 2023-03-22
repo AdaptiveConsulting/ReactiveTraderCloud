@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { Subscribe } from "@react-rxjs/core"
 import { BehaviorSubject } from "rxjs"
-import { TestThemeProvider } from "@/utils/testUtils"
+
 import { HistoryEntry } from "@/services/analytics"
-import { LineChart, lineChart$ } from "./LineChart"
+import { TestThemeProvider } from "@/utils/testUtils"
+
+import { LineChart, lineChart$ } from "../LineChart"
+
 const renderer = require("react-test-renderer")
 
 jest.mock("@/services/analytics/analytics")

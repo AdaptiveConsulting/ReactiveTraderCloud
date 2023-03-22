@@ -1,4 +1,5 @@
 import { ComponentMeta } from "@storybook/react"
+
 import Resizer from "./Resizer"
 
 export default {

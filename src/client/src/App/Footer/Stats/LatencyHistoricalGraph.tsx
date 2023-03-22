@@ -1,8 +1,10 @@
-import { HistoricalGraph } from "@/components/HistoricalGraph"
-import { getDataPoints, toSvgPath, withScales } from "@/utils/historicalChart"
 import { bind } from "@react-rxjs/core"
 import { curveBasis } from "d3"
 import { map } from "rxjs/operators"
+
+import { HistoricalGraph } from "@/components/HistoricalGraph"
+import { getDataPoints, toSvgPath, withScales } from "@/utils/historicalChart"
+
 import { latencyHistory$ } from "./Latency"
 
 const WIDTH = 100

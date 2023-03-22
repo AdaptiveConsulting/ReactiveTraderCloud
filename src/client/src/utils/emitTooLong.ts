@@ -1,5 +1,5 @@
-import { OperatorFunction, race, concat, timer } from "rxjs"
-import { publish, mapTo } from "rxjs/operators"
+import { concat, OperatorFunction, race, timer } from "rxjs"
+import { mapTo, publish } from "rxjs/operators"
 
 export const emitTooLongMessage = <M, T>(
   ms: number,

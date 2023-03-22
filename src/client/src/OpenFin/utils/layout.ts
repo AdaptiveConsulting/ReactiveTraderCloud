@@ -1,5 +1,6 @@
 import queryString from "query-string"
 import { useLocation } from "react-router-dom"
+
 import { mainOpenFinWindowName } from "./window"
 
 export const isLayoutLocked = async (): Promise<boolean> => {

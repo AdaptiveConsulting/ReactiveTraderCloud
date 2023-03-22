@@ -1,4 +1,6 @@
+import { bind } from "@react-rxjs/core"
 import { createKeyedSignal } from "@react-rxjs/utils"
+import { concat, race, timer } from "rxjs"
 import {
   exhaustMap,
   map,
@@ -8,18 +10,18 @@ import {
   tap,
   withLatestFrom,
 } from "rxjs/operators"
-import { concat, race, timer } from "rxjs"
-import { getPrice$ } from "@/services/prices"
+
+import { Direction } from "@/generated/TradingGateway"
+import { getCurrencyPair$ } from "@/services/currencyPairs"
 import {
-  ExecutionTrade,
   execute$,
   ExecutionStatus,
+  ExecutionTrade,
 } from "@/services/executions"
-import { getCurrencyPair$ } from "@/services/currencyPairs"
+import { getPrice$ } from "@/services/prices"
 import { emitTooLongMessage } from "@/utils/emitTooLong"
-import { bind } from "@react-rxjs/core"
+
 import { getNotionalValue$ } from "./Notional"
-import { Direction } from "@/generated/TradingGateway"
 
 // Dismiss Message
 const DISMISS_TIMEOUT = 5_000
@@ -44,7 +46,7 @@ export enum TileStates {
   CreditExceeded,
 }
 
-interface NoTradeState {
+export interface NoTradeState {
   status:
     | TileStates.Ready
     | TileStates.Started
@@ -54,7 +56,7 @@ interface NoTradeState {
   trade?: undefined
 }
 
-interface TradeState {
+export interface TradeState {
   status: TileStates.Finished
   trade: ExecutionTrade
 }

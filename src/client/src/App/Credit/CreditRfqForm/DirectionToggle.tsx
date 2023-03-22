@@ -1,6 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import styled from "styled-components"
+
 import { DirectionIcon } from "@/components/icons/DirectionIcon"
 import { Direction } from "@/generated/TradingGateway"
 
@@ -105,7 +106,7 @@ const [directionInput$, setDirection] = createSignal<Direction>()
 
 const [useDirection, direction$] = bind(directionInput$, Direction.Buy)
 
-export { setDirection, useDirection, direction$ }
+export { direction$, setDirection, useDirection }
 
 export const DirectionToggle = () => {
   const direction = useDirection()

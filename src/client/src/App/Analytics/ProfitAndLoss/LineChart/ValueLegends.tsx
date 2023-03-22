@@ -1,9 +1,11 @@
 import { bind } from "@react-rxjs/core"
-import { map } from "rxjs/operators"
-import { dataPoints$ } from "./dataPoints$"
-import { LINE_CHART_HEIGHT, Y_LEGENDS_WIDTH } from "./constants"
-import { formatWithScale, precisionNumberFormatter } from "@/utils/formatNumber"
 import { scaleLinear } from "d3"
+import { map } from "rxjs/operators"
+
+import { formatWithScale, precisionNumberFormatter } from "@/utils/formatNumber"
+
+import { LINE_CHART_HEIGHT, Y_LEGENDS_WIDTH } from "./constants"
+import { dataPoints$ } from "./dataPoints$"
 import { Text } from "./Text"
 
 const N_LABELS = 5

@@ -1,10 +1,11 @@
 import { AppleShareIcon } from "@/components/icons"
 import { Modal } from "@/components/Modal"
+
 import {
-  ModalWrapper,
   DeviceText,
   Icon,
   MainTitle,
+  ModalWrapper,
   Text,
 } from "./PWAInstallModal.styles"
 import { InstallButton } from "./PWAInstallPrompt.styles"

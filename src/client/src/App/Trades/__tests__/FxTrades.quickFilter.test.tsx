@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { render, screen, within } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
+
 import { Trade, tradesTestData } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
+
 import FxTrades from "../CoreFxTrades"
 
 jest.mock("@/services/trades/trades")

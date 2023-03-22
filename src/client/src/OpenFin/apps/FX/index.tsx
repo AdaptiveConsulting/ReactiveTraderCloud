@@ -1,3 +1,5 @@
+import { Route } from "react-router-dom"
+
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
 import { TileView } from "@/App/LiveRates/selectedView"
@@ -6,7 +8,6 @@ import { FxTrades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { DocTitle } from "@/components/DocTitle"
 import { ROUTES_CONFIG } from "@/constants"
-import { Route } from "react-router-dom"
 
 const FxRoutes = () => (
   <>

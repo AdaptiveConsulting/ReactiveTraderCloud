@@ -1,6 +1,7 @@
+import { createSignal } from "@react-rxjs/utils"
 import { FaCheckCircle, FaTrash } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
-import { createSignal } from "@react-rxjs/utils"
+
 import { QuoteState, RfqState } from "@/generated/TradingGateway"
 import {
   cancelCreditRfq$,
@@ -8,7 +9,8 @@ import {
   RfqDetails,
   useCreditDealerById,
 } from "@/services/credit"
-import { rfqStateToLabel, CreditRfqTimer } from "../../common"
+
+import { CreditRfqTimer, rfqStateToLabel } from "../../common"
 import { handleViewTrade } from "./handleViewTrade"
 import {
   AcceptedCardState,

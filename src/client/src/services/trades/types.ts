@@ -1,4 +1,5 @@
 import { Direction, QuoteState } from "@/generated/TradingGateway"
+
 import { CamelCase, CollectionUpdates } from "../utils"
 
 export enum TradeStatus {

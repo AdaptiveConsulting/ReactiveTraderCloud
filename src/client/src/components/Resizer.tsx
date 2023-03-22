@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useRef, useState } from "react"
 import styled from "styled-components"
 
 const ResizerStyle = styled.div`

@@ -1,7 +1,9 @@
 import styled, { DefaultTheme } from "styled-components"
-import { ExecutionStatus } from "@/services/executions"
-import { TileState, TileStates } from "../Tile.state"
+
 import { OverlayDiv } from "@/components/OverlayDiv"
+import { ExecutionStatus } from "@/services/executions"
+
+import { TileState, TileStates } from "../Tile.state"
 
 export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
   state: TileState
