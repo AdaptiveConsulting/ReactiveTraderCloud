@@ -4,8 +4,8 @@ import styled from "styled-components"
 import { Background, Button as OpenFinButton } from "@/App/Footer/common-styles"
 import { ContactUs } from "@/App/Footer/ContactUsButton/ContactUs"
 import { FollowUs } from "@/App/Footer/ContactUsButton/FollowUs"
-import { MailIcon } from "@/App/Footer/ContactUsButton/MailIcon"
 import { LogoWrapper } from "@/App/Footer/ContactUsButton/styled"
+import { MailIcon } from "@/components/icons"
 import Logo from "@/components/Logo"
 import { createOpenFinPopup, showOpenFinPopup } from "@/OpenFin/utils/window"
 import { constructUrl } from "@/utils/url"
@@ -63,7 +63,7 @@ const ContactUsButton = () => {
 
   return (
     <Button onClick={showPopup} data-qa="contact-us-button">
-      <MailIcon height={1} width={1} active={showing} />
+      <MailIcon height="1" width="1" active={showing} />
       Get in touch
     </Button>
   )
