@@ -46,7 +46,7 @@ export enum TileStates {
   CreditExceeded,
 }
 
-interface NoTradeState {
+export interface NoTradeState {
   status:
     | TileStates.Ready
     | TileStates.Started
@@ -56,7 +56,7 @@ interface NoTradeState {
   trade?: undefined
 }
 
-interface TradeState {
+export interface TradeState {
   status: TileStates.Finished
   trade: ExecutionTrade
 }

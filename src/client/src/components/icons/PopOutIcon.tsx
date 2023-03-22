@@ -1,9 +1,6 @@
-interface Props {
-  width?: number
-  height?: number
-}
+import type { ReactiveTraderIcon } from "./types"
 
-export const PopOutIcon = ({ width = 24, height = 24 }: Props) => (
+export const PopOutIcon = ({ width = 24, height = 24 }: ReactiveTraderIcon) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={width}

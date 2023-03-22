@@ -115,16 +115,16 @@ export const FontFamilies = () => (
 
         <H5>Mail</H5>
         <div>
-          <MailIcon size={1} />
+          <MailIcon height={1} width={1} />
         </div>
         <ActiveIcon>
-          <MailIcon size={1} />
+          <MailIcon height={1} width={1} />
         </ActiveIcon>
         <ActiveIcon>
-          <MailIcon size={1} />
+          <MailIcon height={1} width={1} />
         </ActiveIcon>
         <DisabledIcon>
-          <MailIcon size={1} />
+          <MailIcon height={1} width={1} />
         </DisabledIcon>
       </IconGrid>
     </SectionBlock>

@@ -1,13 +1,13 @@
-interface Props {
-  width: number
-  height: number
-  active?: boolean
-}
+import { ReactiveTraderIcon } from "./types"
 
-const LogoIcon = ({ width = 2, height = 2, active }: Props) => (
+const LogoIcon = ({
+  width = "2",
+  height = "2",
+  active,
+}: ReactiveTraderIcon) => (
   <svg
-    width={width * 16}
-    height={height * 16}
+    width={Number(width) * 16}
+    height={Number(height) * 16}
     viewBox="0 0 21 23"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"

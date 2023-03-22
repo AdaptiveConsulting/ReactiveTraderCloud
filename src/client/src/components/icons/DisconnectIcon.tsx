@@ -1,14 +1,11 @@
-interface Props {
-  width: number
-  height: number
-}
+import { ReactiveTraderIcon } from "./types"
 
-const DisconnectIcon = ({ width, height }: Props) => {
+const DisconnectIcon = ({ width = 1, height = 1 }: ReactiveTraderIcon) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width * 16}
-      height={height * 16}
+      width={Number(width) * 16}
+      height={Number(height) * 16}
       viewBox="0 0 44 36"
       data-qa="disconnection__svg"
     >

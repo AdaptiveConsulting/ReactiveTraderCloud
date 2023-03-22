@@ -1,10 +1,10 @@
-interface Props {
-  fill?: string
-  height?: number
-  width?: number
-}
+import { ReactiveTraderIcon } from "./types"
 
-const ChartIcon = ({ fill = "#7E8188", height = 24, width = 24 }: Props) => (
+const ChartIcon = ({
+  fill = "#7E8188",
+  height = "24",
+  width = "24",
+}: ReactiveTraderIcon) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 16 8"

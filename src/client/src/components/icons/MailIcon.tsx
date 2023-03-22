@@ -1,19 +1,19 @@
-import { SVGAttributes } from "react"
 import styled from "styled-components"
 
 import { dark } from "@/theme"
 
-interface Props extends SVGAttributes<Element> {
-  fill?: string
-  size?: number
-  active?: boolean
-}
+import { ReactiveTraderIcon } from "./types"
 
-const MailIcon = ({ fill = "#000", size = 2, ...props }: Props) => {
+const MailIcon = ({
+  fill = "#000",
+  width = "2",
+  height = "2",
+  ...props
+}: ReactiveTraderIcon) => {
   return (
     <svg
-      height={size + "rem"}
-      width={size + "rem"}
+      height={height + "rem"}
+      width={width + "rem"}
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
       x="0px"

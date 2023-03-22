@@ -1,9 +1,6 @@
-interface Props {
-  width?: number
-  height?: number
-}
+import { ReactiveTraderIcon } from "./types"
 
-const UndockIcon = ({ width = 24, height = 24 }: Props) => (
+const UndockIcon = ({ width = "24", height = "24" }: ReactiveTraderIcon) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={width}

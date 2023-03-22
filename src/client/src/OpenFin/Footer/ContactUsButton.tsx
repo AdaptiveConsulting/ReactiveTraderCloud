@@ -63,7 +63,7 @@ const ContactUsButton = () => {
 
   return (
     <Button onClick={showPopup} data-qa="contact-us-button">
-      <MailIcon size={1} active={showing} />
+      <MailIcon height={1} width={1} active={showing} />
       Get in touch
     </Button>
   )
