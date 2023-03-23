@@ -8,6 +8,7 @@ const MailIcon = ({
   fill = "#000",
   width = "2",
   height = "2",
+  active: _,
   ...props
 }: ReactiveTraderIcon) => {
   return (
