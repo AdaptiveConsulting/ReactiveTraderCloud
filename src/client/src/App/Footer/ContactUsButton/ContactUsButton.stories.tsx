@@ -1,11 +1,13 @@
-import { ComponentMeta } from "@storybook/react"
+import { Meta } from "@storybook/react"
 
 import ContactUsButton from "./ContactUsButton"
 
 export default {
   title: "Footer/ContactUsButton",
   component: ContactUsButton,
-} as ComponentMeta<typeof ContactUsButton>
+} as Meta<typeof ContactUsButton>
 
-export const Default = () => <ContactUsButton />
-Default.storyName = "ContactUsButton"
+export const Default = {
+  render: () => <ContactUsButton />,
+  name: "ContactUsButton",
+}

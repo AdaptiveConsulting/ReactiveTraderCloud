@@ -1,6 +1,6 @@
 import React from "react"
 import styled, { ThemeProvider } from "styled-components"
-import { GlobalStyle, themes } from "@/theme"
+import { GlobalStyle, themes } from "../src/theme"
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -41,6 +41,7 @@ export const decorators = [
 ]
 
 const StyledStory = styled.div`
+  overflow: hidden;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -53,8 +54,8 @@ const StyledStory = styled.div`
 `
 
 const Content = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;

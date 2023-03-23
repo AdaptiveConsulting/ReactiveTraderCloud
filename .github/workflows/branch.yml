@@ -69,7 +69,7 @@ jobs:
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: |
           npm run build
-          npm run build-storybook
+          npm run storybook:build
 
       - name: Deploy (web)
         run: |

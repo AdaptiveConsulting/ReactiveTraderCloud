@@ -1,4 +1,4 @@
-import { ComponentMeta } from "@storybook/react"
+import { Meta } from "@storybook/react"
 
 import { ThemeName } from "@/theme"
 import { ThemeContext } from "@/theme/ThemeContext"
@@ -8,26 +8,29 @@ import ThemeSwitcher from "./ThemeSwitcher"
 export default {
   title: "Header/ThemeSwitcher",
   component: ThemeSwitcher,
-} as ComponentMeta<typeof ThemeSwitcher>
+} as Meta<typeof ThemeSwitcher>
 
-export const Dark = () => (
-  <ThemeContext.Provider
-    value={{
-      setThemeName: (t) => console.log("Set theme", t),
-      themeName: ThemeName.Dark,
-    }}
-  >
-    <ThemeSwitcher />
-  </ThemeContext.Provider>
-)
-
-export const Light = () => (
-  <ThemeContext.Provider
-    value={{
-      setThemeName: (t) => console.log("Set theme", t),
-      themeName: ThemeName.Light,
-    }}
-  >
-    <ThemeSwitcher />
-  </ThemeContext.Provider>
-)
+export const Dark = {
+  render: () => (
+    <ThemeContext.Provider
+      value={{
+        setThemeName: (t) => console.log("Set theme", t),
+        themeName: ThemeName.Dark,
+      }}
+    >
+      <ThemeSwitcher />
+    </ThemeContext.Provider>
+  ),
+}
+export const Light = {
+  render: () => (
+    <ThemeContext.Provider
+      value={{
+        setThemeName: (t) => console.log("Set theme", t),
+        themeName: ThemeName.Light,
+      }}
+    >
+      <ThemeSwitcher />
+    </ThemeContext.Provider>
+  ),
+}

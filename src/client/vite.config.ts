@@ -301,6 +301,8 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   plugins.push(injectScriptIntoHtml())
   plugins.push(htmlPlugin(isDev))
 
+  const isStorybook = process.env.STORYBOOK === "true"
+
   return defineConfig({
     base: viteBaseUrl,
     build: {
@@ -320,11 +322,11 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
       alias: [
         {
           find: "@",
-          replacement: "/src",
+          replacement: path.resolve(__dirname, "/src"),
         },
       ],
     },
-    plugins,
+    plugins: isStorybook ? [] : [...plugins],
     test: {
       globals: true,
       environment: "jsdom",

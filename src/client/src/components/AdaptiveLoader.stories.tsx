@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
+import { Meta } from "@storybook/react"
 
 import { AdaptiveLoader } from "./AdaptiveLoader"
 
@@ -8,18 +8,16 @@ export default {
   args: {
     size: 40,
   },
-} as ComponentMeta<typeof AdaptiveLoader>
+} as Meta<typeof AdaptiveLoader>
 
-const Template: ComponentStory<typeof AdaptiveLoader> = (args) => (
-  <AdaptiveLoader {...args} />
-)
-
-export const Primary = Template.bind({})
-Primary.args = {
-  type: "primary",
+export const Primary = {
+  args: {
+    type: "primary",
+  },
 }
 
-export const Secondary = Template.bind({})
-Secondary.args = {
-  type: "secondary",
+export const Secondary = {
+  args: {
+    type: "secondary",
+  },
 }

@@ -1,9 +1,9 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
+import { Meta } from "@storybook/react"
 import styled from "styled-components"
 
 import { ExecutionStatus } from "@/services/executions"
 
-import { TileStates, TradeState } from "../Tile.state"
+import { TileStates } from "../Tile.state"
 import { StatelessExecutionResponse } from "./Response"
 
 const mockTrade = {
@@ -20,6 +20,12 @@ const mockTrade = {
   status: ExecutionStatus.Done,
 }
 
+const TileContainer = styled.div`
+  width: 360px;
+  height: 180px;
+  position: relative;
+`
+
 export default {
   title: "LiveRates/ExecutionResponse",
   component: StatelessExecutionResponse,
@@ -33,63 +39,64 @@ export default {
       defaultNotional: 1000000,
     },
   },
-} as ComponentMeta<typeof StatelessExecutionResponse>
+  decorators: [
+    (Story) => (
+      <TileContainer>
+        <Story />
+      </TileContainer>
+    ),
+  ],
+} as Meta<typeof StatelessExecutionResponse>
 
-const TileContainer = styled.div`
-  width: 360px;
-  height: 180px;
-  position: relative;
-`
-
-const Template: ComponentStory<typeof StatelessExecutionResponse> = (args) => (
-  <TileContainer>
-    <StatelessExecutionResponse {...args} />
-  </TileContainer>
-)
-
-export const Pending = Template.bind({})
-Pending.args = {
-  tileState: {
-    status: TileStates.Started,
-  },
-}
-
-export const Executed = Template.bind({})
-Executed.args = {
-  tileState: {
-    status: TileStates.Finished,
-    trade: mockTrade,
-  } as TradeState,
-}
-
-export const TooLong = Template.bind({})
-TooLong.args = {
-  tileState: {
-    status: TileStates.TooLong,
-  },
-}
-
-export const Timeout = Template.bind({})
-Timeout.args = {
-  tileState: {
-    status: TileStates.Timeout,
-  },
-}
-
-export const Rejected = Template.bind({})
-Rejected.args = {
-  tileState: {
-    status: TileStates.Finished,
-    trade: {
-      ...mockTrade,
-      status: ExecutionStatus.Rejected,
+export const Pending = {
+  args: {
+    tileState: {
+      status: TileStates.Started,
     },
-  } as TradeState,
+  },
 }
 
-export const CreditExceeded = Template.bind({})
-CreditExceeded.args = {
-  tileState: {
-    status: TileStates.CreditExceeded,
+export const Executed = {
+  args: {
+    tileState: {
+      status: TileStates.Finished,
+      trade: mockTrade,
+    },
+  },
+}
+
+export const TooLong = {
+  args: {
+    tileState: {
+      status: TileStates.TooLong,
+    },
+  },
+}
+
+export const Timeout = {
+  args: {
+    tileState: {
+      status: TileStates.Timeout,
+    },
+  },
+}
+
+export const Rejected = {
+  args: {
+    tileState: {
+      status: TileStates.Finished,
+      trade: {
+        ...mockTrade,
+        status: ExecutionStatus.Rejected,
+      },
+    },
+  },
+}
+
+export const CreditExceeded = {
+  args: {
+    tileState: {
+      status: TileStates.CreditExceeded,
+    },
   },
 }

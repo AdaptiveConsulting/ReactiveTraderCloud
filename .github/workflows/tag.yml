@@ -65,7 +65,7 @@ jobs:
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.tag }}
         run: |
           npm run build
-          npm run build-storybook
+          npm run storybook:build
 
       - name: Deploy (web)
         run: |
