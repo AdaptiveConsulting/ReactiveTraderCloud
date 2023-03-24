@@ -1,5 +1,3 @@
-import { QuoteState } from "@/generated/TradingGateway"
-import { Trade, TradeStatus } from "@/services/trades"
 import {
   createContext,
   CSSProperties,
@@ -7,14 +5,18 @@ import {
   PropsWithChildren,
   useContext,
 } from "react"
+import AutoSizer from "react-virtualized-auto-sizer"
 import { FixedSizeList as List, FixedSizeListProps } from "react-window"
 import styled, { css } from "styled-components"
+
+import { QuoteState } from "@/generated/TradingGateway"
+import { Trade, TradeStatus } from "@/services/trades"
+
 import { useColDef, useColFields, useTrades$ } from "../Context"
 import { useTableTrades } from "../TradesState"
 import { useTableTradeWithIndex } from "../TradesState/tableTrades"
 import { TableHeadCellContainer } from "./TableHeadCell"
 import { convertRemToPixels, getWidthPercentage } from "./utils"
-import AutoSizer from "react-virtualized-auto-sizer"
 
 const Table = styled.div`
   border-bottom: 15px solid ${({ theme }) => theme.core.darkBackground};

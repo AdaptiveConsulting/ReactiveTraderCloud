@@ -1,4 +1,5 @@
 import { expect, Page } from "@playwright/test"
+
 import { test } from "./fixtures"
 import { OPENFIN_PROJECT_NAME } from "./utils"
 
