@@ -17,7 +17,7 @@ import {
   TerminatedCardState,
   ViewTrade,
 } from "./styled"
-import { ACCEPTED_QUOTE_STATE } from "@/generated/NewTradingGateway"
+import { ACCEPTED_QUOTE_STATE } from "@/generated/TradingGateway"
 
 const [cancelRfq$, onCancelRfq] = createSignal<number>()
 

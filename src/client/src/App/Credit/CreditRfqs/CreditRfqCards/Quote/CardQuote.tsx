@@ -12,7 +12,7 @@ import {
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   REJECTED_WITH_PRICE_QUOTE_STATE,
   RfqState,
-} from "@/generated/NewTradingGateway"
+} from "@/generated/TradingGateway"
 import { acceptCreditQuote$ } from "@/services/credit"
 
 import {

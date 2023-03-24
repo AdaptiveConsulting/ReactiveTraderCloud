@@ -7,7 +7,7 @@ import {
   PASSED_QUOTE_STATE,
   PENDING_WITH_PRICE_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
-} from "@/generated/NewTradingGateway"
+} from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
 import { customNumberFormatter } from "@/utils"
 import { CardFooter } from "./CardFooter"

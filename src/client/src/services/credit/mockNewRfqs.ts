@@ -18,7 +18,7 @@ import {
   RFQ_CREATED_RFQ_UPDATE,
   PENDING_WITH_PRICE_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
-} from "@/generated/NewTradingGateway"
+} from "@/generated/TradingGateway"
 
 const dealerIdLength = 10
 const AmountOfRFQs = 10

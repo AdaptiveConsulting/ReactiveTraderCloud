@@ -4,7 +4,7 @@ import {
   InstrumentBody,
   QuoteBody,
   RfqBody,
-} from "@/generated/NewTradingGateway"
+} from "@/generated/TradingGateway"
 
 export interface RfqDetails extends RfqBody {
   instrument: InstrumentBody | null

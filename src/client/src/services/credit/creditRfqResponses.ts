@@ -1,8 +1,5 @@
-import {
-  CreateQuoteResponse,
-  DealerBody,
-  RfqState,
-} from "@/generated/TradingGateway"
+import { DealerBody, RfqState } from "@/generated/TradingGateway"
+import { CreateQuoteResponse } from "@/generated/OldTradingGateway"
 import { EMPTY, merge, Observable, of } from "rxjs"
 import {
   catchError,

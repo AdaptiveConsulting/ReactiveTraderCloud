@@ -14,7 +14,7 @@ import {
   ACCEPTED_QUOTE_STATE,
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   QUOTE_PASSED_RFQ_UPDATE,
-} from "@/generated/NewTradingGateway"
+} from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { combineLatest, Observable } from "rxjs"
@@ -30,7 +30,7 @@ import { mockCreditRFQS } from "./mockNewRfqs"
 // Mock
 const creditRfqUpdates$ = mockCreditRFQS.pipe(withConnection(), shareLatest())
 
-// Hydra
+//Hydra
 // const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
 //   withConnection(),
 //   shareLatest(),
@@ -46,6 +46,9 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
     //Type issues
     (acc, [update, instruments, dealers]) => {
       const rec = acc[1]
+      // console.log({ rec })
+      console.log({ acc })
+      // console.log(rec[1])
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
           return [false, {}]

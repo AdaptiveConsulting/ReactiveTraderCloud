@@ -1,4 +1,4 @@
-import { QuoteState } from "@/generated/TradingGateway"
+import { QuoteState } from "@/generated/OldTradingGateway"
 import { CreditTrade, FxTrade, Trade, TradeStatus } from "@/services/trades"
 import styled, { css } from "styled-components"
 import { useColDef, useColFields, useTrades$ } from "../Context"
@@ -63,6 +63,7 @@ const TableBodyCell = styled.td<{
     width: 100%;
   }
 `
+//Problem
 const StatusIndicator = styled.td<{ status?: TradeStatus | QuoteState }>`
   width: 18px;
   border-left: 6px solid
