@@ -38,9 +38,7 @@ export const [useTrades, trades$] = bind<FxTrade[]>(
       }),
       {} as Record<number, FxTrade>,
     ),
-    map((trades) => {
-      return Object.values(trades).reverse()
-    }),
+    map((trades) => Object.values(trades).reverse()),
   ),
 )
 

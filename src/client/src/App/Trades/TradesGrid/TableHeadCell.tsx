@@ -15,18 +15,21 @@ import { onSortFieldSelect } from "../TradesState/sortState"
 import { DateFilter } from "./DateFilter"
 import { NumFilter } from "./NumFilter"
 import { SetFilter } from "./SetFilter"
+import { getWidthPercentage } from "./utils"
 
-const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
-  text-align: ${({ numeric }) => (numeric ? "right" : "left")};
-  ${({ numeric }) => (numeric ? "padding-right: 1.5rem;" : null)};
-  width: ${({ width }) => `${width} px`};
+const TableHeadCell = styled.div<{
+  width: number
+  headerFirst: boolean
+  numeric: boolean
+}>`
+  width: ${({ width }) => width}%;
   font-weight: unset;
-  top: 0;
-  position: sticky;
-  background-color: ${({ theme }) => theme.core.lightBackground};
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
   cursor: pointer;
-  z-index: 1;
+  display: flex;
+  flex-direction: ${({ headerFirst }) => (headerFirst ? "row" : "row-reverse")};
+  align-items: center;
+  padding-right: ${({ numeric }) => (numeric ? "1.5rem;" : null)};
 
   svg {
     width: 0.675rem;
@@ -42,10 +45,6 @@ const TableHeadCell = styled.th<{ numeric: boolean; width: number }>`
     min-width: 1rem;
     display: inline-block;
   }
-`
-const FlexWrapper = styled.div<{ headerFirst: boolean }>`
-  display: flex;
-  flex-direction: ${({ headerFirst }) => (headerFirst ? "row" : "row-reverse")};
 `
 
 const AlignedFilterIcon = styled(FaFilter)<{
@@ -84,59 +83,58 @@ export const TableHeadCellContainer = <T extends FxColField | CreditColField>({
   field,
 }: Props<T>) => {
   const [showFilter, setShowFilter] = useState(false)
-  const ref = useRef<HTMLTableHeaderCellElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const { displayMenu, setDisplayMenu } = usePopUpMenu(ref)
   const tableSort = useTableSort()
   const colDef = useColDef()
   const { headerName, filterType, width } = colDef[field]
-
+  const widthPercentage = getWidthPercentage(
+    Object.values(colDef).map((value) => value.width),
+    width,
+  )
   return (
     <TableHeadCell
       onMouseEnter={() => setShowFilter(true)}
       onMouseLeave={() => setShowFilter(false)}
+      width={widthPercentage}
       numeric={filterType === "number" && field !== "tradeId"}
-      width={width}
-      scope="col"
+      headerFirst={filterType !== "number" || field === "tradeId"}
+      onClick={(e) => {
+        // Don't trigger sort on events bubbling from FilterPopup
+        if (e.target === e.currentTarget) {
+          onSortFieldSelect(field)
+        }
+      }}
       ref={ref}
     >
-      <FlexWrapper
-        onClick={(e) => {
-          // Don't trigger sort on events bubbling from FilterPopup
-          if (e.target === e.currentTarget) {
-            onSortFieldSelect(field)
-          }
-        }}
-        headerFirst={filterType !== "number" || field === "tradeId"}
-      >
-        {headerName}
-        {tableSort.field === field && tableSort.direction !== undefined ? (
-          <AlignedArrow
-            sortDirection={tableSort.direction}
-            ariaLabel={`Update trades blotter sort on ${headerName} field`}
-          />
+      {headerName}
+      {tableSort.field === field && tableSort.direction !== undefined ? (
+        <AlignedArrow
+          sortDirection={tableSort.direction}
+          ariaLabel={`Update trades blotter sort on ${headerName} field`}
+        />
+      ) : (
+        <span className="spacer" aria-hidden={true} />
+      )}
+      {showFilter ? (
+        <AlignedFilterIcon
+          aria-label={`Open ${headerName} field filter pop up`}
+          role="button"
+          onClick={() => {
+            setDisplayMenu((current) => !current)
+          }}
+        />
+      ) : (
+        <span className="spacer" aria-hidden={true} />
+      )}
+      {displayMenu &&
+        (filterType === "number" ? (
+          <NumFilter field={field as NumColField} parentRef={ref} />
+        ) : filterType === "set" ? (
+          <SetFilter field={field as SetColField} parentRef={ref} />
         ) : (
-          <span className="spacer" aria-hidden={true} />
-        )}
-        {showFilter ? (
-          <AlignedFilterIcon
-            aria-label={`Open ${headerName} field filter pop up`}
-            role="button"
-            onClick={() => {
-              setDisplayMenu((current) => !current)
-            }}
-          />
-        ) : (
-          <span className="spacer" aria-hidden={true} />
-        )}
-        {displayMenu &&
-          (filterType === "number" ? (
-            <NumFilter field={field as NumColField} parentRef={ref} />
-          ) : filterType === "set" ? (
-            <SetFilter field={field as SetColField} parentRef={ref} />
-          ) : (
-            <DateFilter field={field as DateColField} parentRef={ref} />
-          ))}
-      </FlexWrapper>
+          <DateFilter field={field as DateColField} parentRef={ref} />
+        ))}
     </TableHeadCell>
   )
 }

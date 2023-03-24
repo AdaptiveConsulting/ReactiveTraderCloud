@@ -317,6 +317,11 @@ export const [useTableTrades, tableTrades$] = bind(
   [],
 )
 
+export const [useTableTradeWithIndex] = bind(
+  (trades$: Observable<Trade[]>, colDef: ColDef, index: number) =>
+    tableTrades$(trades$, colDef).pipe(map((trades) => trades[index])),
+)
+
 /**
  * State hook that emits an array of the
  * current column fields that have column filters

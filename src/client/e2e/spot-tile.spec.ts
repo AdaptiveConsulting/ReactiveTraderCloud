@@ -37,7 +37,7 @@ test.describe("Spot Tile", () => {
         .innerText()
 
       const blotterTradeID = await blotterPage
-        .locator(`[data-testid='trades-grid-row-${tradeId}'] > td`)
+        .locator(`[data-testid='trades-grid-row-${tradeId}'] > div`)
         .nth(1)
         .textContent()
       await tilePage.locator("[data-testid='menuButton-ALL']").click()
@@ -47,10 +47,10 @@ test.describe("Spot Tile", () => {
     test("When I buy USD/JPY then an Execution screen appears until transaction is performed and tile displays green confirmation screen", async () => {
       await tilePage.locator("[data-testid='Buy-USDJPY']").click()
 
-      const executingSpinner = await tilePage.getByText(/Executing/)
+      const executingSpinner = tilePage.getByText(/Executing/)
       expect(executingSpinner).not.toBe(null)
 
-      const greenConfirmation = await tilePage
+      const greenConfirmation = tilePage
         .locator("div[role='dialog']")
         .getByText(/You bought/)
       expect(greenConfirmation).not.toBe(null)
@@ -61,10 +61,10 @@ test.describe("Spot Tile", () => {
     test("When I buy GBP/JPY then an execution screen appears and the tile displays are red with message Trade was rejected", async () => {
       await tilePage.locator("[data-testid='Buy-GBPJPY']").click()
 
-      const executingSpinner = await tilePage.getByText(/Executing/)
+      const executingSpinner = tilePage.getByText(/Executing/)
       expect(executingSpinner).not.toBe(null)
 
-      const greenConfirmation = await tilePage
+      const greenConfirmation = tilePage
         .locator("div[role='dialog']")
         .getByText(/Your trade has been rejected/)
       expect(greenConfirmation).not.toBe(null)
@@ -89,7 +89,7 @@ test.describe("Spot Tile", () => {
 
       await tilePage.waitForTimeout(10000)
 
-      const requoteBtn = await tilePage.getByText(/Requote/)
+      const requoteBtn = tilePage.getByText(/Requote/)
       expect(requoteBtn).toBeDefined()
     })
   })

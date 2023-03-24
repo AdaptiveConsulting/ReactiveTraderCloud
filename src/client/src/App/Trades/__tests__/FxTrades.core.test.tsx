@@ -12,6 +12,7 @@ import { Trade, tradesTestData } from "@/services/trades"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
+import { setupWindow } from "./utils"
 
 jest.mock("@/services/trades/trades")
 jest.mock("../TradesState/tableTrades", () => ({
@@ -32,6 +33,8 @@ const renderComponent = () =>
 const _trades = require("@/services/trades/trades")
 
 describe("Trades", () => {
+  setupWindow()
+
   beforeEach(() => {
     _trades.__resetMocks()
   })
@@ -81,7 +84,7 @@ describe("Trades", () => {
       throw new Error(`Expected grid not rendered`)
     }
 
-    const firstRow = grid.firstElementChild
+    const firstRow = grid.children[1]
     const lastRow = grid.lastElementChild
 
     if (!firstRow || !lastRow) {
