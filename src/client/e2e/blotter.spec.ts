@@ -67,7 +67,6 @@ test.describe("Trade Blotter", () => {
   test("When user hovers over a row on the Blotter, it should highlight that row", async () => {
     const firstRow = blotterPage.locator(`[role="grid"] > div`).nth(1)
     const color = await firstRow.evaluate((element) => {
-      console.log("here")
       return window
         .getComputedStyle(element)
         .getPropertyValue("background-color")
