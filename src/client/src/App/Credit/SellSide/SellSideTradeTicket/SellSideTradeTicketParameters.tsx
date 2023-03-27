@@ -1,5 +1,6 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { useEffect, useRef } from "react"
 import { merge } from "rxjs"
 import { filter, map } from "rxjs/operators"
 import styled from "styled-components"
@@ -110,6 +111,7 @@ export const [usePrice, price$] = bind(
 )
 
 interface SellSideTradeTicketParametersProps {
+  selectedRfqId: number
   quote: QuoteBody | undefined
   state: RfqState
   quantity: number
@@ -117,10 +119,17 @@ interface SellSideTradeTicketParametersProps {
 
 export const SellSideTradeTicketParameters = ({
   quote,
+  selectedRfqId,
   state,
   quantity,
 }: SellSideTradeTicketParametersProps) => {
   const price = usePrice()
+
+  const ref = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    ref.current?.focus()
+  }, [selectedRfqId])
 
   return (
     <ParametersWrapper>
@@ -147,6 +156,7 @@ export const SellSideTradeTicketParameters = ({
         ) : (
           <ParameterInput
             type="text"
+            ref={ref}
             value={price.inputValue}
             disabled={state !== RfqState.Open}
             onChange={(event) => setPrice(event.currentTarget.value)}
