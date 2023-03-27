@@ -1,13 +1,4 @@
-import {
-  concat,
-  concatMap,
-  delay,
-  from,
-  interval,
-  of,
-  switchMap,
-  timer,
-} from "rxjs"
+import { concat, concatMap, delay, from, of } from "rxjs"
 import {
   PASSED_QUOTE_STATE,
   QUOTE_PASSED_RFQ_UPDATE,
@@ -60,7 +51,7 @@ const constructRfqCreatedRfqUpdate = () => {
         direction: Direction.Buy,
         state: RfqState.Open,
         expirySecs: 120,
-        creationTimestamp: BigInt(Date.now()),
+        creationTimestamp: Date.now() as unknown as bigint,
       },
       type: RFQ_CREATED_RFQ_UPDATE,
     })
@@ -76,7 +67,7 @@ const constructRfqUpdate = () => {
           rfqId: i,
           dealerId: j,
           state: {
-            type: randomQuoteBodyState() || PENDING_WITHOUT_PRICE_QUOTE_STATE,
+            type: PENDING_WITH_PRICE_QUOTE_STATE,
             payload: randomNumberGenerator(1, 9999),
           },
         },
