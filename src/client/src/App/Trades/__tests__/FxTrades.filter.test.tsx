@@ -4,10 +4,11 @@ import { BehaviorSubject } from "rxjs"
 
 import { ComparatorType } from "@/App/Trades/TradesState"
 import { Trade, tradesTestData } from "@/services/trades"
-import { TestThemeProvider } from "@/utils/testUtils"
+import { setupMockWindow, TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
 
+jest.mock("../TradesGrid/utils")
 jest.mock("@/services/trades/trades")
 jest.mock("../TradesState/tableTrades", () => ({
   ...jest.requireActual("../TradesState/tableTrades"),
@@ -32,22 +33,26 @@ describe("for notional column", () => {
     '[aria-label="Filter trades by Notional field value"]'
   const notionalFilterMenuInput = '[aria-label="Primary filter value"]'
 
-  let container: HTMLElement
+  setupMockWindow()
 
   beforeEach(() => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj)
-    container = renderComponent().container
+    _trades.__setTrades(tradesSubj.asObservable())
   })
 
   it("no filter icon or menu should be rendered", () => {
+    const { container } = renderComponent()
     expect(container.querySelector(notionalFilterIcon)).toBe(null)
     expect(container.querySelector(notionalFilterMenu)).toBe(null)
   })
 
-  it("filter icon and menu should work correct", () => {
+  it("filter icon and menu should work correct", async () => {
+    const { container, findAllByTestId } = renderComponent()
+
     act(() => {
-      fireEvent.mouseOver(screen.getByText("Notional").closest("th") as Element)
+      fireEvent.mouseOver(
+        screen.getByText("Notional").closest("div") as Element,
+      )
     })
     expect(container.querySelector(notionalFilterIcon)).not.toBe(null)
 
@@ -66,7 +71,9 @@ describe("for notional column", () => {
     })
     expect(input.value).toBe("1000000")
 
-    expect(container.querySelectorAll("tbody tr").length).toBe(2)
+    let rows = await findAllByTestId(/trades-grid-row/)
+
+    expect(rows.length).toBe(2)
 
     act(() => {
       userEvent.selectOptions(
@@ -74,7 +81,8 @@ describe("for notional column", () => {
         ComparatorType.Greater,
       )
     })
-    expect(container.querySelectorAll("tbody tr").length).toBe(1)
+    rows = await findAllByTestId(/trades-grid-row/)
+    expect(rows.length).toBe(1)
 
     act(() => {
       userEvent.selectOptions(
@@ -82,6 +90,7 @@ describe("for notional column", () => {
         ComparatorType.NotEqual,
       )
     })
-    expect(container.querySelectorAll("tbody tr").length).toBe(1)
+    rows = await findAllByTestId(/trades-grid-row/)
+    expect(rows.length).toBe(1)
   })
 })

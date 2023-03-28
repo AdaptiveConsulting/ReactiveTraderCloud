@@ -1,4 +1,5 @@
 import { expect, Page } from "@playwright/test"
+
 import { test } from "./fixtures"
 import { OPENFIN_PROJECT_NAME } from "./utils"
 
@@ -9,24 +10,32 @@ test.describe("Credit", () => {
       creditPagesRec,
     }, testInfo) => {
       test.setTimeout(120000)
+
       let newRfqPage: Page
       let rfqsPage: Page
       let rfqBlotterPage: Page
+
       if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
         const mainWindow = creditPagesRec["mainWindow"]
+
         await mainWindow.evaluate(async () => {
           window.fin.Window.getCurrentSync().maximize()
         })
+
         newRfqPage = creditPagesRec["credit-new-rfq"]
         rfqsPage = creditPagesRec["credit-rfqs"]
         rfqBlotterPage = creditPagesRec["credit-blotter"]
       } else {
         const pages = context.pages()
+
         newRfqPage = pages.length > 0 ? pages[0] : await context.newPage()
+
         await newRfqPage.goto(`${process.env.URL_PATH}/credit`)
+
         rfqsPage = newRfqPage
         rfqBlotterPage = newRfqPage
       }
+
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage
         .locator("[data-testid='search-result-item']")
@@ -75,7 +84,7 @@ test.describe("Credit", () => {
 
       const tradeId = btnTxt.split(" ")[2]
       const blotterId = await rfqBlotterPage
-        .locator("td")
+        .locator("div")
         .getByText(tradeId, { exact: true })
         .first()
         .innerText()
