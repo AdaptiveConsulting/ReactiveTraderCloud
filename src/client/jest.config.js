@@ -4,7 +4,7 @@ module.exports = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },
-  testPathIgnorePatterns: ["<rootDir>/e2e/", "utils.ts"],
+  testPathIgnorePatterns: ["<rootDir>/e2e/"],
   setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
   globals: {
     "ts-jest": {

@@ -43,7 +43,6 @@ const highlightBackgroundColor = css`
 `
 
 const TableBodyRow = styled.div<{
-  pending?: boolean
   highlight?: boolean
   index?: number
 }>`
@@ -61,8 +60,6 @@ const TableBodyRow = styled.div<{
 const TableBodyCell = styled.div<{
   align?: "right" | "left"
   crossed?: boolean
-  pending?: boolean
-  highlight?: boolean
   width: number
 }>`
   display: flex;
@@ -104,7 +101,7 @@ const TableBackground = styled.div`
 
 const BlotterContext = createContext("Caption not loaded")
 
-const innerElementType = forwardRef<
+const InnerElementType = forwardRef<
   HTMLDivElement,
   PropsWithChildren<{ style: CSSProperties }>
 >(function ListInnerElement({ children, style }, ref) {
@@ -142,7 +139,7 @@ const innerElementType = forwardRef<
   )
 })
 
-const outerElementType = forwardRef<
+const OuterElementType = forwardRef<
   HTMLDivElement,
   PropsWithChildren<{
     style: CSSProperties
@@ -262,8 +259,8 @@ export const TradesGridInner = <Row extends Trade>({
               itemSize={convertRemToPixels(2)}
               height={height}
               width={width}
-              innerElementType={innerElementType}
-              outerElementType={outerElementType}
+              innerElementType={InnerElementType}
+              outerElementType={OuterElementType}
               itemData={{
                 highlightedRow,
                 onRowClick,

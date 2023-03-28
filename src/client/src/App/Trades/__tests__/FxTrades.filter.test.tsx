@@ -4,10 +4,9 @@ import { BehaviorSubject } from "rxjs"
 
 import { ComparatorType } from "@/App/Trades/TradesState"
 import { Trade, tradesTestData } from "@/services/trades"
-import { TestThemeProvider } from "@/utils/testUtils"
+import { setupMockWindow, TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
-import { setupWindow } from "./utils"
 
 jest.mock("@/services/trades/trades")
 jest.mock("../TradesState/tableTrades", () => ({
@@ -33,7 +32,7 @@ describe("for notional column", () => {
     '[aria-label="Filter trades by Notional field value"]'
   const notionalFilterMenuInput = '[aria-label="Primary filter value"]'
 
-  setupWindow()
+  setupMockWindow()
 
   beforeEach(() => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
