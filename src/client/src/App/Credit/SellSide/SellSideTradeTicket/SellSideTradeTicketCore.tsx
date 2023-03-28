@@ -123,6 +123,7 @@ export const SellSideTradeTicketTicketCore = ({
           quoteState={quote?.state ?? QuoteState.Pending}
         />
         <SellSideTradeTicketParameters
+          selectedRfqId={rfqId}
           quote={quote}
           state={rfqState}
           quantity={quantity}
