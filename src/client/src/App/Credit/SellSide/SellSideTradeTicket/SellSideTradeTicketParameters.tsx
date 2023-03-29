@@ -133,11 +133,11 @@ export const SellSideTradeTicketParameters = ({
           getSellSideQuoteState(state, quote.state) ===
           SellSideQuoteState.Pending ? (
             <ParameterValue>
-              <PendingPrice>{quote.price}</PendingPrice>
+              <PendingPrice>{quote.state?.payload}</PendingPrice>
               <em>Awaiting Response</em>
             </ParameterValue>
           ) : (
-            <ParameterValue>{quote.price}</ParameterValue>
+            <ParameterValue>{quote.state?.payload}</ParameterValue>
           )
         ) : (
           <ParameterInput

@@ -1,7 +1,13 @@
 import { memo } from "react"
 import styled from "styled-components"
-import { Direction, QuoteState, RfqState } from "@/generated/TradingGateway"
-import { useCreditInstrumentById } from "@/services/credit"
+import {
+  ACCEPTED_QUOTE_STATE,
+  Direction,
+  PENDING_WITHOUT_PRICE_QUOTE_STATE,
+  QuoteState,
+  RfqState,
+} from "@/generated/TradingGateway"
+import { QuoteStateTypes, useCreditInstrumentById } from "@/services/credit"
 import {
   CusipWithBenchmark,
   DirectionContainer,
@@ -19,7 +25,7 @@ interface SellSideTradeTicketHeaderProps {
   direction: Direction
   instrumentId: number
   rfqState: RfqState
-  quoteState: QuoteState
+  quoteState: QuoteStateTypes
 }
 
 export const SellSideTradeTicketHeader = memo(
@@ -30,7 +36,7 @@ export const SellSideTradeTicketHeader = memo(
     quoteState,
   }: SellSideTradeTicketHeaderProps) {
     const instrument = useCreditInstrumentById(instrumentId)
-    const accepted = quoteState === QuoteState.Accepted
+    const accepted = quoteState.type === ACCEPTED_QUOTE_STATE
     const terminated = rfqState !== RfqState.Open && !accepted
     return (
       <Wrapper>

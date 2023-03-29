@@ -7,7 +7,7 @@ import {
   removeRfqs,
   useCreditDealerById,
 } from "@/services/credit"
-import { RfqDetails } from "@/services/credit/types"
+import { RfqDetails } from "@/services/credit/creditRfqs"
 import { rfqStateToLabel, CreditRfqTimer } from "../../common"
 import { handleViewTrade } from "./handleViewTrade"
 import {

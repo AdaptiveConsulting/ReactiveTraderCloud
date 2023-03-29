@@ -15,6 +15,7 @@ import {
   QuoteBody,
   RfqBody,
   Direction,
+  ACCEPTED_QUOTE_STATE,
 } from "@/generated/TradingGateway"
 import { bind, shareLatest } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
@@ -24,6 +25,22 @@ import { withConnection } from "../withConnection"
 import { creditInstruments$ } from "./creditInstruments"
 import { creditDealers$ } from "./creditDealers"
 
+export type QuoteStateTypes =
+  | "pendngWithoutPrice"
+  | "pendingWithPrice"
+  | "passed"
+  | "accepted"
+  | "rejectedWithPrice"
+  | "rejectedWithoutPrice"
+
+export enum QuoteStateTypes_ {
+  PENDING_WITHOUT_PRICE_QUOTE_STATE = "pendingWithoutPrice",
+  PENDING_WITH_PRICE_QUOTE_STATE = "pendingWithPrice",
+  PASSED_QUOTE_STATE = "passed",
+  ACCEPTED_QUOTE_STATE = "accepted",
+  REJECTED_WITH_PRICE_QUOTE_STATE = "rejectedWithPrice",
+  REJECTED_WITHOUT_PRICE_QUOTE_STATE = "rejectedWithoutPrice",
+}
 export interface RfqDetails extends RfqBody {
   instrument: InstrumentBody | null
   dealers: DealerBody[]
@@ -50,13 +67,11 @@ const creditRfqUpdates$ = mockCreditRFQS.pipe(withConnection(), shareLatest())
 // )
 
 export const creditRfqsById$ = creditRfqUpdates$.pipe(
-  //Type issues
   withLatestFrom(creditInstruments$, creditDealers$),
   scan<
     [RfqUpdate, InstrumentBody[], DealerBody[]],
     [boolean, Record<number, RfqDetails>]
   >(
-    //Type issues
     (acc, [update, instruments, dealers]) => {
       const rec = acc[1]
       console.log({ acc })
@@ -150,7 +165,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
                     ...quote,
                     state:
                       quote.id === update.payload.id
-                        ? quote.state
+                        ? update.payload?.state
                         : { type: REJECTED_WITHOUT_PRICE_QUOTE_STATE },
                   })),
                 },

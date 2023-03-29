@@ -1,6 +1,9 @@
 import styled from "styled-components"
 import { Loader } from "@/components/Loader"
-import { QuoteState } from "@/generated/TradingGateway"
+import {
+  PENDING_WITH_PRICE_QUOTE_STATE,
+  QuoteState,
+} from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
 import { invertDirection } from "@/utils"
 import { getSellSideQuoteState, SellSideQuoteState } from "../sellSideState"
@@ -118,7 +121,7 @@ export const SellSideTradeTicketTicketCore = ({
           direction={direction}
           instrumentId={instrumentId}
           rfqState={rfqState}
-          quoteState={quote?.state ?? QuoteState.Pending}
+          quoteState={quote?.state.type}
         />
         <SellSideTradeTicketParameters
           quote={quote}

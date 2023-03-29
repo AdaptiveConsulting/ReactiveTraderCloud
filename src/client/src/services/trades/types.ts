@@ -51,12 +51,3 @@ export interface Trade {
   tradeId: string
   [prop: string]: unknown
 }
-
-export enum QuoteStateTypes {
-  PENDING_WITHOUT_PRICE_QUOTE_STATE = "pendingWithoutPrice",
-  PENDING_WITH_PRICE_QUOTE_STATE = "pendingWithPrice",
-  PASSED_QUOTE_STATE = "passed",
-  ACCEPTED_QUOTE_STATE = "accepted",
-  REJECTED_WITH_PRICE_QUOTE_STATE = "rejectedWithPrice",
-  REJECTED_WITHOUT_PRICE_QUOTE_STATE = "rejectedWithoutPrice",
-}
