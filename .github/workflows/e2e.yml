@@ -1,7 +1,7 @@
 name: Scheduled E2E
 on:
   schedule:
-    - cron: "55 8 * * *"
+    - cron: "55 8 * * 1-5"
 
 defaults:
   run:
@@ -9,7 +9,7 @@ defaults:
 
 jobs:
   e2e:
-    name: End-to-end test against RT Prod
+    name: End-to-end test against
 
     runs-on: ubuntu-20.04
 
@@ -22,7 +22,7 @@ jobs:
 
       - name: Test
         env:
-          URL_PATH: https://web.prod.reactivetrader.com
+          URL_PATH: https://web.uat.reactivetrader.com
           ENVIRONMENT: env
         run: |
-          npm run e2e:web:smoke
+          npm run e2e:web
