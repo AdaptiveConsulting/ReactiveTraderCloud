@@ -1,5 +1,3 @@
-import { _Window } from "openfin-adapter/src/api/window"
-
 import { WindowConfig } from "./openWindow"
 
 // TODO - Maybe move to generic place
@@ -23,7 +21,7 @@ const OPENFIN_HEIGHT_OFFSET = 30
 export async function openWindow(
   config: WindowConfig,
   onClose?: () => void,
-): Promise<_Window> {
+): Promise<OpenFin.Window> {
   const {
     url,
     width: defaultWidth,

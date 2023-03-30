@@ -1,5 +1,9 @@
 import { useEffect } from "react"
 
+export const closePlatform = () => {
+  fin.Platform.getCurrentSync().quit()
+}
+
 export async function getExistingOpenFinApplication(
   uuid: string,
 ): Promise<OpenFin.Application | undefined> {

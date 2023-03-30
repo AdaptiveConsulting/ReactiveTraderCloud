@@ -1,8 +1,6 @@
 import queryString from "query-string"
 import { useLocation } from "react-router-dom"
 
-import { mainOpenFinWindowName } from "./window"
-
 export const isLayoutLocked = async (): Promise<boolean> => {
   const { settings } = await fin.Platform.Layout.getCurrentSync().getConfig()
 
@@ -10,16 +8,12 @@ export const isLayoutLocked = async (): Promise<boolean> => {
 }
 
 export const toggleLayoutLock = async () => {
-  const layout = fin.Platform.Layout.wrapSync({
-    name: mainOpenFinWindowName,
-    uuid: fin.me.uuid,
-  })
-
-  const oldLayout = await layout.getConfig()
-  const { settings, dimensions } = oldLayout
+  const layout = fin.Platform.Layout.getCurrentSync()
+  const oldLayoutConfig = await layout.getConfig()
+  const { settings, dimensions } = oldLayoutConfig
   if (settings && settings.hasHeaders && settings.reorderEnabled) {
     layout.replace({
-      ...oldLayout,
+      ...oldLayoutConfig,
       settings: {
         ...settings,
         hasHeaders: false,
@@ -28,7 +22,7 @@ export const toggleLayoutLock = async () => {
     })
   } else {
     layout.replace({
-      ...oldLayout,
+      ...oldLayoutConfig,
       settings: {
         ...settings,
         hasHeaders: true,

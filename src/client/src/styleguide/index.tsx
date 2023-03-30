@@ -45,8 +45,6 @@ const Styleguide = () => {
       </Helmet>
       <Root>
         <FloatingTools />
-        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-        {/* @ts-ignore */}
         <Introduction key="introduction" />
         <OnePageNavBar sections={navSections} />
         <>

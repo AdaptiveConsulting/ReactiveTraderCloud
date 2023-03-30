@@ -9,6 +9,9 @@ import { setupMockWindow, TestThemeProvider } from "@/utils/testUtils"
 import FxTrades from "../CoreFxTrades"
 
 jest.mock("../TradesGrid/utils")
+jest.mock("@openfin/core", () => ({
+  fin: undefined,
+}))
 jest.mock("@/services/trades/trades")
 jest.mock("../TradesState/tableTrades", () => ({
   ...jest.requireActual("../TradesState/tableTrades"),

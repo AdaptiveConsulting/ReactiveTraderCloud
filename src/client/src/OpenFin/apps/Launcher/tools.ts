@@ -1,6 +1,3 @@
-// TODO - Revisit if/when launcher is cross platform
-import { Application } from "openfin-adapter"
-
 import {
   ApplicationConfig,
   ApplicationProvider,
@@ -52,12 +49,13 @@ async function launchByManifestUrl(uuid: string, manifestUrl?: string) {
   if (runningApp) {
     return runningApp
   }
-  return fin.Application.startFromManifest(manifestUrl)
+  const platform = fin.Platform.getCurrentSync()
+  await platform.launchContentManifest(manifestUrl)
 }
 
 export async function open(
   config: ApplicationConfig,
-): Promise<Window | OpenFin.Window | Application | void | null> {
+): Promise<Window | OpenFin.Window | OpenFin.Application | void | null> {
   const { provider, url, name, uuid } = config
 
   // Not under openfin -> open as url on browser
@@ -92,7 +90,7 @@ export async function open(
 
 async function launchLimitChecker(
   config: ApplicationConfig,
-): Promise<Application> {
+): Promise<OpenFin.Application> {
   const app = fin.Application.wrap({ uuid: config.name })
   await fin.System.launchExternalProcess({
     alias: "LimitChecker",

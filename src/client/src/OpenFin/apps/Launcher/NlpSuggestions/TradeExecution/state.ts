@@ -14,10 +14,6 @@ import {
 } from "rxjs/operators"
 
 import { Direction } from "@/generated/TradingGateway"
-import {
-  nlpIntent$,
-  NlpIntentType,
-} from "@/OpenFin/apps/Launcher/services/nlpService"
 import { getCurrencyPair$ } from "@/services/currencyPairs"
 import {
   execute$,
@@ -25,6 +21,8 @@ import {
   ExecutionTrade,
 } from "@/services/executions"
 import { getPrice$ } from "@/services/prices"
+
+import { nlpIntent$, NlpIntentType } from "../../services/nlpService"
 
 const [next$_, onNext] = createSignal()
 export { onNext }

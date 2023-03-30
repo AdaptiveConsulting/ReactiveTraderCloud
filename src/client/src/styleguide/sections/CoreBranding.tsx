@@ -8,7 +8,7 @@ import styled, {
   StyledComponent,
 } from "styled-components"
 
-import { AccentName, colors, Theme, ThemeName, useTheme } from "@/theme"
+import { AccentPaletteMap, colors, Theme, ThemeName, useTheme } from "@/theme"
 
 import { H2, H3 } from "../elements"
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from "../styled"
@@ -315,16 +315,19 @@ const DominantAccentPalettes = ({ dominant }: { dominant: object }) => {
   )
 }
 
-const AccentPalettes = ({ accents }: { accents: object }) => {
+const AccentPalettes = ({
+  accents,
+}: {
+  accents: Omit<AccentPaletteMap, "primary">
+}) => {
   return (
     <AccentRowGrid>
-      {(Object.keys(accents) as AccentName[]).map((accentName) => (
+      {Object.keys(accents).map((accentName) => (
         <PaletteLayout
           key={accentName}
           grid={AccentSwatchGrid}
           label={`Accent-${accentName}`}
-          // @ts-ignore
-          palette={accents[accentName]}
+          palette={accents[accentName as "positive" | "aware" | "negative"]}
           fg="#000"
           include={["base", "darker", "medium", "lighter"]}
         />

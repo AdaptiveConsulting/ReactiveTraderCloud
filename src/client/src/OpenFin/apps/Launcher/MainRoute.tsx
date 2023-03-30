@@ -1,10 +1,8 @@
-import { Bounds } from "openfin/_v2/shapes/shapes"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Measure, { ContentRect } from "react-measure"
 
 import { Loader } from "@/components/Loader"
 import LogoIcon from "@/components/LogoIcon"
-import { closeWindow } from "@/utils/window/closeWindow"
 
 import { LaunchButton } from "./components/LaunchButton"
 import { ExitIcon, minimiseNormalIcon, SearchIcon } from "./icons"
@@ -33,6 +31,7 @@ import {
 } from "./styles"
 import {
   animateCurrentWindowSize,
+  closePlatform,
   getCurrentWindowBounds,
   minimiseCurrentWindow,
   useAppBoundReset,
@@ -71,7 +70,7 @@ const SearchButton = ({
 
 const LauncherMinimiseAndExit = () => (
   <MinExitContainer>
-    <ExitButton onClick={closeWindow}>
+    <ExitButton onClick={closePlatform}>
       <ExitIcon />
     </ExitButton>
     <MinimiseButton onClick={minimiseCurrentWindow}>
@@ -82,7 +81,7 @@ const LauncherMinimiseAndExit = () => (
 
 function Launcher() {
   const [isSearchVisible, setIsSearchVisible] = useState(false)
-  const [initialBounds, setInitialBounds] = useState<Bounds>()
+  const [initialBounds, setInitialBounds] = useState<OpenFin.Bounds>()
   const [responseHeight, setResponseHeight] = useState<number>()
   const overlayRef = useRef<HTMLDivElement>(null)
   const [overlay, setOverlay] = useState<HTMLDivElement | null>(null)

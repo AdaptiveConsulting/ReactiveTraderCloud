@@ -5,16 +5,18 @@
     "applicationIcon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
     "defaultWindowOptions": {
       "contextMenu": true,
+      "fdc3InteropApi": "1.2",
       "frame": false,
       "applicationIcon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
       "url": "<BASE_URL>/openfin-sub-window-frame"
     },
     "defaultViewOptions": {
-      "contextMenu": true
+      "contextMenu": true,
+      "fdc3InteropApi": "1.2"
     }
   },
   "runtime": {
-    "version": "17.85.53.10",
+    "version": "29.108.73.14",
     "arguments": "--remote-debugging-port=9091"
   },
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",
@@ -23,7 +25,6 @@
     "icon": "<BASE_URL>/static/media/reactive-trader.ico",
     "name": "Reactive Trader® Credit<ENV_SUFFIX>"
   },
-  "devtools_port": 9091,
   "snapshot": {
     "windows": [
       {
@@ -45,8 +46,11 @@
           "reloadIgnoringCache": true,
           "zoom": true
         },
+        "customContext": {
+          "owningWindowName": "Reactive-Trader-Credit"
+        },
         "url": "<BASE_URL>/openfin-window-frame?app=CREDIT",
-        "name": "Reactive-Trader-MAIN",
+        "name": "Reactive-Trader-Credit",
         "layout": {
           "settings": {
             "blockedPopoutsThrowError": false,
@@ -110,7 +114,7 @@
                           "componentName": "view",
                           "componentState": {
                             "url": "<BASE_URL>/credit-blotter",
-                            "name": "Blotter"
+                            "name": "Credit-Blotter"
                           },
                           "isClosable": true,
                           "title": "Blotter"
