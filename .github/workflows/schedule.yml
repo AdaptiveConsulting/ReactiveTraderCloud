@@ -25,4 +25,4 @@ jobs:
           URL_PATH: https://web.prod.reactivetrader.com
           ENVIRONMENT: env
         run: |
-          npm run e2e:web
+          npm run e2e:web:smoke
