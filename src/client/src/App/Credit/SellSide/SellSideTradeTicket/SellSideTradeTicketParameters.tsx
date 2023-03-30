@@ -155,6 +155,7 @@ export const SellSideTradeTicketParameters = ({
           )
         ) : (
           <ParameterInput
+            tabIndex={1}
             type="text"
             ref={ref}
             value={price.inputValue}

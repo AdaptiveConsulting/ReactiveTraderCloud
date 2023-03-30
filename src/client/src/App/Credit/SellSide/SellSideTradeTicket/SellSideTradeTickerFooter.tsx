@@ -11,7 +11,11 @@ import {
 } from "@/generated/TradingGateway"
 import { createCreditQuote$, useCreditRfqDetails } from "@/services/credit"
 import { ThemeName } from "@/theme"
-import { customNumberFormatter, invertDirection } from "@/utils"
+import {
+  customNumberFormatter,
+  invertDirection,
+  useClickElementOnEnter,
+} from "@/utils"
 
 import { CreditRfqTimer, isRfqTerminated } from "../../common"
 import { price$, usePrice } from "./SellSideTradeTicketParameters"
@@ -42,6 +46,10 @@ const FooterButton = styled.button`
   border-radius: 3px;
   height: 24px;
   font-size: 11px;
+  &:focus {
+    border-radius: 3px;
+    border: 1px solid #4c76c4 !important;
+  }
 `
 
 const PassButton = styled(FooterButton)<{ disabled: boolean }>`
@@ -92,6 +100,7 @@ const TradeDetails = styled.div`
 
 const [quoteRequest$, sendQuote] =
   createSignal<{ rfqId: number; dealerId: number }>()
+
 quoteRequest$
   .pipe(
     withLatestFrom(price$),
@@ -120,6 +129,8 @@ export const SellSideTradeTicketFooter = ({
   const rfq = useCreditRfqDetails(rfqId)
   const price = usePrice()
 
+  const clickElementRef = useClickElementOnEnter<HTMLButtonElement>()
+
   if (!rfq) {
     return <FooterWrapper accepted={false} missed={false} />
   }
@@ -145,6 +156,7 @@ export const SellSideTradeTicketFooter = ({
       {state === RfqState.Open && (
         <>
           <PassButton
+            tabIndex={2}
             disabled={!!quote}
             onClick={() => {
               console.log("Send message")
@@ -162,6 +174,8 @@ export const SellSideTradeTicketFooter = ({
             )}
           </TimerWrapper>
           <SendQuoteButton
+            tabIndex={1}
+            ref={clickElementRef}
             direction={direction}
             onClick={() => sendQuote({ rfqId, dealerId })}
             disabled={disableSend}
