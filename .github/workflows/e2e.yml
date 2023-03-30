@@ -9,7 +9,7 @@ defaults:
 
 jobs:
   e2e:
-    name: End-to-end test against
+    name: End-to-end test against uat
 
     runs-on: ubuntu-20.04
 
