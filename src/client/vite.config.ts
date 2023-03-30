@@ -5,7 +5,6 @@ import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 import {
   ConfigEnv,
-  defineConfig,
   loadEnv,
   Plugin,
   splitVendorChunkPlugin,
@@ -13,6 +12,7 @@ import {
 } from "vite"
 import { createHtmlPlugin } from "vite-plugin-html"
 import { TransformOption, viteStaticCopy } from "vite-plugin-static-copy"
+import { defineConfig } from "vitest/config"
 
 type BuildTarget = "web" | "openfin" | "finsemble"
 
@@ -325,6 +325,11 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
       ],
     },
     plugins,
+    test: {
+      globals: true,
+      environment: "jsdom",
+      include: ["**/*.test.{tsx,ts}", "**/__tests__/*"],
+    },
   })
 }
 

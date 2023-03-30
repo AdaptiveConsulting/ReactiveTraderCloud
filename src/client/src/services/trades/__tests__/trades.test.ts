@@ -6,7 +6,7 @@ import { RfqDetails } from "@/services/credit/creditRfqs"
 
 import * as tradesService from ".."
 
-jest.mock("../../credit")
+vi.mock("../../credit")
 
 const rfqs: Record<number, RfqDetails> = {
   "2": {
@@ -127,36 +127,37 @@ describe("trades", () => {
       const creditServiceMock = creditService as any
       creditServiceMock.__creditRfqsById(creditRfqs$)
     })
-    it("should convert RFQ and Quote details to trades stream", (done) => {
-      tradesService.creditTrades$.subscribe((value) => {
-        expect(value).toEqual([
-          {
-            tradeId: "3",
-            status: "Accepted",
-            tradeDate: expect.any(Date),
-            direction: "Buy",
-            counterParty: "Adaptive Bank",
-            cusip: "037833100",
-            security: "AAPL",
-            quantity: 99000,
-            orderType: "AON",
-            unitPrice: 88,
-          },
-          {
-            tradeId: "2",
-            status: "Accepted",
-            tradeDate: expect.any(Date),
-            direction: "Buy",
-            counterParty: "Adaptive Bank",
-            cusip: "68389X105",
-            security: "ORCL",
-            quantity: 44000,
-            orderType: "AON",
-            unitPrice: 22,
-          },
-        ])
-        done()
-      })
-    })
+    it("should convert RFQ and Quote details to trades stream", () =>
+      new Promise<void>((done) => {
+        tradesService.creditTrades$.subscribe((value) => {
+          expect(value).toEqual([
+            {
+              tradeId: "3",
+              status: "Accepted",
+              tradeDate: expect.any(Date),
+              direction: "Buy",
+              counterParty: "Adaptive Bank",
+              cusip: "037833100",
+              security: "AAPL",
+              quantity: 99000,
+              orderType: "AON",
+              unitPrice: 88,
+            },
+            {
+              tradeId: "2",
+              status: "Accepted",
+              tradeDate: expect.any(Date),
+              direction: "Buy",
+              counterParty: "Adaptive Bank",
+              cusip: "68389X105",
+              security: "ORCL",
+              quantity: 44000,
+              orderType: "AON",
+              unitPrice: 22,
+            },
+          ])
+          done()
+        })
+      }))
   })
 })

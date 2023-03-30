@@ -3,11 +3,12 @@ import { act, render, screen } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import { HistoryEntry } from "@/services/analytics"
+import { _analytics } from "@/services/analytics/__mocks__/_analytics"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import { LastPosition, lastPosition$ } from "../LastPosition"
 
-jest.mock("@/services/analytics/analytics")
+vi.mock("@/services/analytics/analytics")
 
 const historyMock1: HistoryEntry[] = [
   {
@@ -63,8 +64,6 @@ const renderComponent = () =>
       </Subscribe>
     </TestThemeProvider>,
   )
-
-const _analytics = require("@/services/analytics/analytics")
 
 describe("LastPositions", () => {
   beforeEach(() => {

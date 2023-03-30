@@ -231,13 +231,11 @@ const TableRows = <Row extends Trade>({
   children,
   itemData,
   ...rest
-}: FixedSizeListProps<ItemData<Row>>) => {
-  return (
-    <List itemData={{ ...itemData, ItemRenderer: children }} {...rest}>
-      {ItemWrapper}
-    </List>
-  )
-}
+}: FixedSizeListProps<ItemData<Row>>) => (
+  <List itemData={{ ...itemData, ItemRenderer: children }} {...rest}>
+    {ItemWrapper}
+  </List>
+)
 
 export const TradesGridInner = <Row extends Trade>({
   highlightedRow,
@@ -248,7 +246,6 @@ export const TradesGridInner = <Row extends Trade>({
   const rows$ = useTrades$()
   const colDef = useColDef()
   const trades = useTableTrades(rows$, colDef)
-
   return (
     <BlotterContext.Provider value={caption}>
       <Table>
@@ -257,8 +254,8 @@ export const TradesGridInner = <Row extends Trade>({
             <TableRows
               itemCount={trades.length + 1}
               itemSize={convertRemToPixels(2)}
-              height={height}
-              width={width}
+              height={height ? height : 100}
+              width={width ? width : 100}
               innerElementType={InnerElementType}
               outerElementType={OuterElementType}
               itemData={{

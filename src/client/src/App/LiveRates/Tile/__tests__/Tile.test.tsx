@@ -4,20 +4,23 @@ import { BehaviorSubject, Subject } from "rxjs"
 
 import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
+import { _ccpp } from "@/services/currencyPairs/__mocks__/_ccpp"
 import {
   ExecutionRequest,
   ExecutionStatus,
   ExecutionTrade,
   TimeoutExecution,
 } from "@/services/executions"
+import { _exec } from "@/services/executions/__mocks__/_exec"
 import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
+import { _prices } from "@/services/prices/__mocks__/_prices"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import { Tile, tile$ } from "../Tile"
 
-jest.mock("@/services/executions/executions")
-jest.mock("@/services/prices/prices")
-jest.mock("@/services/currencyPairs/currencyPairs")
+vi.mock("@/services/prices/prices")
+vi.mock("@/services/currencyPairs/currencyPairs")
+vi.mock("@/services/executions/executions")
 
 const currencyPairMock: CurrencyPair = {
   symbol: "EURUSD",
@@ -50,9 +53,11 @@ const renderComponent = (
     </TestThemeProvider>,
   )
 
-const _prices = require("@/services/prices/prices")
-const _ccpp = require("@/services/currencyPairs/currencyPairs")
-const _exec = require("@/services/executions/executions")
+beforeAll(() => {
+  window.ga = () => {
+    return
+  }
+})
 
 describe("Tile", () => {
   beforeEach(() => {
@@ -122,7 +127,7 @@ describe("Tile", () => {
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
-    const executeFn = jest.fn(() => response$)
+    const executeFn = vi.fn(() => response$)
     _exec.__setExecute$(executeFn)
 
     renderComponent()
@@ -183,7 +188,7 @@ describe("Tile", () => {
   })
 
   it("should render alert when execution takes too long", async () => {
-    jest.useFakeTimers("legacy")
+    vi.useFakeTimers()
 
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
@@ -198,7 +203,7 @@ describe("Tile", () => {
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
-    const executeFn = jest.fn(() => response$)
+    const executeFn = vi.fn(() => response$)
     _exec.__setExecute$(executeFn)
 
     renderComponent()
@@ -231,7 +236,7 @@ describe("Tile", () => {
     await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
 
     act(() => {
-      jest.advanceTimersByTime(2000)
+      vi.advanceTimersByTime(2000)
     })
     expect(screen.queryByText("Executing")).toBeNull()
     expect(screen.getByRole("alert").textContent).toEqual(
@@ -274,7 +279,7 @@ describe("Tile", () => {
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
-    const executeFn = jest.fn(() => response$)
+    const executeFn = vi.fn(() => response$)
     _exec.__setExecute$(executeFn)
 
     renderComponent()
@@ -341,7 +346,7 @@ describe("Tile", () => {
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
-    const executeFn = jest.fn(() => response$)
+    const executeFn = vi.fn(() => response$)
     _exec.__setExecute$(executeFn)
 
     renderComponent()
@@ -412,7 +417,7 @@ describe("Tile", () => {
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
-    const executeFn = jest.fn(() => response$)
+    const executeFn = vi.fn(() => response$)
     _exec.__setExecute$(executeFn)
 
     const renderedComponent = renderComponent()

@@ -3,13 +3,15 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import { CurrencyPairPosition } from "@/services/analytics"
+import { _analytics } from "@/services/analytics/__mocks__/_analytics"
 import { CurrencyPair } from "@/services/currencyPairs"
+import { _ccpp } from "@/services/currencyPairs/__mocks__/_ccpp"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import { Positions, positions$ } from "../Positions"
 
-jest.mock("@/services/analytics/analytics")
-jest.mock("@/services/currencyPairs/currencyPairs")
+vi.mock("@/services/analytics/analytics")
+vi.mock("@/services/currencyPairs/currencyPairs")
 
 const currencyPairMock1: CurrencyPair = {
   symbol: "EURAUD",
@@ -67,9 +69,6 @@ const renderComponent = () =>
       </Subscribe>
     </TestThemeProvider>,
   )
-
-const _analytics = require("@/services/analytics/analytics")
-const _ccpp = require("@/services/currencyPairs/currencyPairs")
 
 describe("Positions", () => {
   beforeEach(() => {
