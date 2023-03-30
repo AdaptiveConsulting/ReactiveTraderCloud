@@ -51,7 +51,7 @@
     "build-storybook": "build-storybook -o ./dist/storybook"
   },
   "dependencies": {
-    "@adaptive/hydra-platform": "^3.120.0",
+    "@adaptive/hydra-platform": "^4.3.0",
     "@finos/fdc3": "^1.2.0",
     "@openfin/core": "^27.71.21",
     "@openfin/workspace": "^6.1.6",
