@@ -3,7 +3,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import { CurrencyPair } from "@/services/currencyPairs"
-import { _ccpp } from "@/services/currencyPairs/__mocks__/_ccpp"
+import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import { liveRates$ } from "../../LiveRatesCore"
@@ -43,8 +43,8 @@ const renderComponent = () =>
 
 describe("MainHeader", () => {
   beforeEach(() => {
-    _ccpp.__resetMock()
-    _ccpp.__setMock(
+    ccppMock.__resetMock()
+    ccppMock.__setMock(
       new BehaviorSubject({
         [currencyPairMock1.symbol]: currencyPairMock1,
         [currencyPairMock2.symbol]: currencyPairMock2,

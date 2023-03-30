@@ -1,58 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`PNLBar > renders the bar correctly 1`] = `
-<div
-  className="sc-gtsrHT kmRgEe"
->
-  <div
-    className="sc-iCoGMd dMHYut"
-    data-testid="symbolLabel"
-  >
-    EURAUD
-  </div>
-  <div
-    className="sc-hKFxyN tPoPv"
-  />
-  <div
-    className="sc-fujyAs hROlRZ"
-  >
-    <div
-      className="sc-bdnxRM sc-dlnjwi eoiijl gYpIAg"
-      style={
-        {
-          "transform": "translate(-31.125428646769944%)",
-        }
-      }
-    >
-      <div
-        className="sc-jSFjdj fEMaYF"
-        color="negative"
-        data-testid="priceLabel"
-        onMouseEnter={[Function]}
-        onMouseLeave={[Function]}
-      >
-        -26k
-      </div>
-      <div
-        className="sc-gKAaRy fVcCIa"
-        color="negative"
-      />
-    </div>
-    <div
-      className="sc-pNWdM brWIgH"
-    />
-    <div
-      className="sc-bdnxRM sc-eCApnc eoiijl dHIBPL"
-    >
-      <div
-        className="sc-jrsJWt hjNGX"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`PNLBar renders the bar correctly 1`] = `
 .c4 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -174,7 +122,7 @@ exports[`PNLBar renders the bar correctly 1`] = `
     <div
       className="c4 c5"
       style={
-        Object {
+        {
           "transform": "translate(-31.125428646769944%)",
         }
       }

@@ -3,9 +3,9 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import { CurrencyPairPosition } from "@/services/analytics"
-import { _analytics } from "@/services/analytics/__mocks__/_analytics"
+import { analyticsMock } from "@/services/analytics/__mocks__/_analytics"
 import { CurrencyPair } from "@/services/currencyPairs"
-import { _ccpp } from "@/services/currencyPairs/__mocks__/_ccpp"
+import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import { Positions, positions$ } from "../Positions"
@@ -72,9 +72,9 @@ const renderComponent = () =>
 
 describe("Positions", () => {
   beforeEach(() => {
-    _analytics.__resetMocks()
-    _ccpp.__resetMock()
-    _ccpp.__setMock(
+    analyticsMock.__resetMocks()
+    ccppMock.__resetMock()
+    ccppMock.__setMock(
       new BehaviorSubject({
         [currencyPairMock1.symbol]: currencyPairMock1,
         [currencyPairMock2.symbol]: currencyPairMock2,
@@ -86,7 +86,7 @@ describe("Positions", () => {
     const positionMock$ = new BehaviorSubject<
       Record<string, CurrencyPairPosition>
     >(positionMock)
-    _analytics.__setPositionMock(positionMock$)
+    analyticsMock.__setPositionMock(positionMock$)
 
     renderComponent()
 
@@ -124,7 +124,7 @@ describe("Positions", () => {
     const positionMock$ = new BehaviorSubject<
       Record<string, CurrencyPairPosition>
     >(positionMock)
-    _analytics.__setPositionMock(positionMock$)
+    analyticsMock.__setPositionMock(positionMock$)
 
     const subscription = positions$.subscribe()
     const { container } = render(

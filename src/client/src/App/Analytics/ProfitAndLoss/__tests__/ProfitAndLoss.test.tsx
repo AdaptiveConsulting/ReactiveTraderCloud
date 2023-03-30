@@ -2,7 +2,7 @@ import { Subscribe } from "@react-rxjs/core"
 import { BehaviorSubject } from "rxjs"
 
 import { HistoryEntry } from "@/services/analytics"
-import { _analytics } from "@/services/analytics/__mocks__/_analytics"
+import { analyticsMock } from "@/services/analytics/__mocks__/_analytics"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import { LineChart, lineChart$ } from "../LineChart"
@@ -47,12 +47,12 @@ const historyMock2: HistoryEntry[] = [
 
 describe("Profit and Loss", () => {
   beforeEach(() => {
-    _analytics.__resetMocks()
+    analyticsMock.__resetMocks()
   })
 
   it("renders the chart correctly", () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
-    _analytics.__setHistoryMock(historyMock$)
+    analyticsMock.__setHistoryMock(historyMock$)
 
     const tree = renderer
       .create(
@@ -69,7 +69,7 @@ describe("Profit and Loss", () => {
 
   it("renders the chart with updates", () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock2)
-    _analytics.__setHistoryMock(historyMock$)
+    analyticsMock.__setHistoryMock(historyMock$)
 
     const tree = renderer
       .create(

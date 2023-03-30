@@ -4,7 +4,7 @@ import { BehaviorSubject } from "rxjs"
 
 import { ComparatorType } from "@/App/Trades/TradesState"
 import { Trade, tradesTestData } from "@/services/trades"
-import { _trades } from "@/services/trades/__mocks__/_trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 import { setupMockWindow, TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
@@ -53,7 +53,7 @@ describe("for notional column", () => {
 
   beforeEach(() => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj.asObservable())
+    tradesMock.__setTrades(tradesSubj.asObservable())
   })
 
   it("no filter icon or menu should be rendered", () => {

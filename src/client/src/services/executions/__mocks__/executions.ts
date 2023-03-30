@@ -1,6 +1,6 @@
 import { Mock } from "vitest"
 
-let mock: Mock<any, any> = vi.fn()
+let mock = vi.fn()
 
 export const __setExecute$ = (input: Mock<any, any>) => {
   mock = input

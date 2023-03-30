@@ -329,6 +329,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
       globals: true,
       environment: "jsdom",
       include: ["**/*.test.{tsx,ts}", "**/__tests__/*"],
+      setupFiles: "./src/setupTests.ts",
     },
   })
 }

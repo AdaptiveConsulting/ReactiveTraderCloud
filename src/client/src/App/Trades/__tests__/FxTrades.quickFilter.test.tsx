@@ -2,7 +2,7 @@ import { render, screen, within } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import * as Trades from "@/services/trades"
-import { _trades } from "@/services/trades/__mocks__/_trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
@@ -33,12 +33,12 @@ const renderComponent = () =>
 
 describe("Trades quick filter", () => {
   beforeEach(() => {
-    _trades.__resetMocks()
+    tradesMock.__resetMocks()
   })
 
   it("should be empty on load", () => {
     const tradesSubj = new BehaviorSubject<Trades.Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     renderComponent()
 

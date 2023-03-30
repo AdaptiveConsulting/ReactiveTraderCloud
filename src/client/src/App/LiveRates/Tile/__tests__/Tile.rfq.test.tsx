@@ -4,16 +4,16 @@ import { BehaviorSubject, Subject } from "rxjs"
 
 import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
-import { _ccpp } from "@/services/currencyPairs/__mocks__/_ccpp"
+import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
 import {
   ExecutionRequest,
   ExecutionStatus,
   ExecutionTrade,
   TimeoutExecution,
 } from "@/services/executions"
-import { _exec } from "@/services/executions/__mocks__/_exec"
+import { execMock } from "@/services/executions/__mocks__/_exec"
 import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
-import { _prices } from "@/services/prices/__mocks__/_prices"
+import { pricesMock } from "@/services/prices/__mocks__/_prices"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import { Tile, tile$ } from ".."
@@ -70,30 +70,24 @@ function initiateQuote() {
 const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 const executeFn = vi.fn(() => response$)
 
-beforeAll(() => {
-  window.ga = () => {
-    return
-  }
-})
-
 describe("Tile/rfq", () => {
   beforeEach(() => {
     vi.useFakeTimers()
 
-    _prices.__resetMocks()
-    _ccpp.__resetMock()
-    _exec.__resetMocks()
+    pricesMock.__resetMocks()
+    ccppMock.__resetMock()
+    execMock.__resetMocks()
 
     const ccPairMock$ = new BehaviorSubject({
       [currencyPairMock.symbol]: currencyPairMock,
     })
-    _ccpp.__setMock(ccPairMock$)
+    ccppMock.__setMock(ccPairMock$)
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
-    _exec.__setExecute$(executeFn)
+    execMock.__setExecute$(executeFn)
     renderComponent()
   })
 

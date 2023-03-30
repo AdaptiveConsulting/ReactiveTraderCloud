@@ -9,7 +9,7 @@ import {
 import { BehaviorSubject, Subject } from "rxjs"
 
 import { Trade, tradesTestData } from "@/services/trades"
-import { _trades } from "@/services/trades/__mocks__/_trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
@@ -50,12 +50,12 @@ const renderComponent = () =>
 
 describe("Trades", () => {
   beforeEach(() => {
-    _trades.__resetMocks()
+    tradesMock.__resetMocks()
   })
 
   it("should display 'no trades' message before trades are received", async () => {
     const tradesSubj = new Subject<Trade[]>()
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     renderComponent()
 
@@ -70,7 +70,7 @@ describe("Trades", () => {
 
   it("should display 'No trades' when there are no trades", async () => {
     const tradesSubj = new BehaviorSubject<Trade[]>([])
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     renderComponent()
 
@@ -89,7 +89,7 @@ describe("Trades", () => {
 
   it("should apply no sort by default", async () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     const { container } = renderComponent()
     const grid = container.querySelector('[role="grid"]')
@@ -111,7 +111,7 @@ describe("Trades", () => {
 
   it("should apply no filter by default", async () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     renderComponent()
 
@@ -120,7 +120,7 @@ describe("Trades", () => {
 
   it("should update when new trades are received", async () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     renderComponent()
 
