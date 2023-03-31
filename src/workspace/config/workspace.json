@@ -2,8 +2,8 @@
   "devtools_port": 9090,
   "licenseKey": "695aecfa-0329-41a2-b44f-c2e8fe28241d",
   "runtime": {
-    "arguments": "--v=1 --inspect",
-    "version": "23.96.68.3"
+    "version": "29.108.73.14",
+    "arguments": "--v=1 --inspect"
   },
   "platform": {
     "uuid": "adaptive-workspace-provider",

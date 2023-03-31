@@ -14,7 +14,7 @@ export async function getApps(): Promise<App[]> {
   ]
 }
 
-const reactiveTraderManifestUrl = `${VITE_RT_URL}${VITE_RT_URL.includes('localhost') ? '/dist' : ''}/config/app.json`
+const reactiveTraderManifestUrl = `${VITE_RT_URL}/config/rt-fx.json`
 
 export const reactiveTrader: App = {
   appId: 'reactive-trader',
