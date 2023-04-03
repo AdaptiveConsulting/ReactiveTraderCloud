@@ -1,4 +1,4 @@
-name: Scheduled E2E
+name: Scheduled Weekday E2E
 on:
   schedule:
     - cron: "55 8 * * 1-5"
