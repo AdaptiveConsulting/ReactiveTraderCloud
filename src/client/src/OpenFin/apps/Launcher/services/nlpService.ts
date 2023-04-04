@@ -1,6 +1,6 @@
+import { protos } from "@google-cloud/dialogflow"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { DetectIntentResponse } from "dialogflow"
 import {
   catchError,
   concat,
@@ -96,9 +96,10 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
               `${import.meta.env.VITE_CLOUD_FUNCTION_HOST}/nlp?term=${request}`,
             ).pipe(
               switchMap((response) => response.json()),
-              map<DetectIntentResponse[], DetectIntentResponse>(
-                ([response]) => response,
-              ),
+              map<
+                protos.google.cloud.dialogflow.v2.DetectIntentResponse[],
+                protos.google.cloud.dialogflow.v2.DetectIntentResponse
+              >(([response]) => response),
               catchError((e) => {
                 console.error("Error getting nlp response", e)
                 return of(null)
@@ -108,27 +109,28 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
     ),
     map((response) => {
       if (response === "loading") return "loading"
-      if (!response) return null
+      if (!response || !response.queryResult?.intent?.displayName) return null
 
       const intent = intentMapper[response.queryResult?.intent?.displayName]
       const symbol =
         response.queryResult?.parameters?.fields?.CurrencyPairs?.stringValue
-      const value: number =
+      const direction =
+        response.queryResult?.parameters?.fields?.TradeType.stringValue
+      const value =
         response.queryResult?.parameters?.fields?.number?.numberValue
 
       switch (intent) {
         case NlpIntentType.TradeExecution: {
-          return {
-            type: NlpIntentType.TradeExecution,
-            payload: {
-              symbol,
-              direction:
-                directionMapper[
-                  response.queryResult.parameters.fields.TradeType.stringValue
-                ],
-              notional: value,
-            },
-          } as TradeExecutionIntent
+          return direction
+            ? ({
+                type: NlpIntentType.TradeExecution,
+                payload: {
+                  symbol,
+                  direction: directionMapper[direction],
+                  notional: value,
+                },
+              } as TradeExecutionIntent)
+            : null
         }
 
         case NlpIntentType.MarketInfo:

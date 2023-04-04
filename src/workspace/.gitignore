@@ -1,2 +1,4 @@
-node_modules
-public/config
+node_modules/
+dist/
+
+public/config/
