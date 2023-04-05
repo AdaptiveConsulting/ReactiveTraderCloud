@@ -158,6 +158,7 @@ export const SellSideTradeTicketParameters = ({
           <ParameterInput
             tabIndex={1}
             type="text"
+            data-testid="price-input"
             ref={ref}
             value={price.inputValue}
             disabled={state !== RfqState.Open}
