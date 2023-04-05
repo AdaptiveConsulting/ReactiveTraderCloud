@@ -1,0 +1,28 @@
+name: Scheduled E2E
+on:
+  schedule:
+    - cron: "55 8 * * *"
+
+defaults:
+  run:
+    working-directory: src/client
+
+jobs:
+  e2e:
+    name: End-to-end smoke test against RT Prod
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        env:
+          URL_PATH: https://web.prod.reactivetrader.com
+          ENVIRONMENT: env
+        run: |
+          npm run e2e:web:smoke
