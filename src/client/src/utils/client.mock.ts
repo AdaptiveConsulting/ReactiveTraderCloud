@@ -13,13 +13,11 @@ const mockModule = () => {
       )?.[1] ?? NEVER
     return result
   }
-  const watch$ = jest.fn((...args: any[]) =>
-    defer(() => getMatch("watch", args)),
-  )
-  const getRemoteProcedureCall$ = jest.fn((...args: any[]) =>
+  const watch$ = vi.fn((...args: any[]) => defer(() => getMatch("watch", args)))
+  const getRemoteProcedureCall$ = vi.fn((...args: any[]) =>
     defer(() => getMatch("rpc", args)),
   )
-  const getStream$ = jest.fn((...args: any[]) =>
+  const getStream$ = vi.fn((...args: any[]) =>
     defer(() => getMatch("stream", args)),
   )
 
@@ -60,7 +58,7 @@ const mockModule = () => {
 
 type MockedClient = ReturnType<typeof mockModule>
 
-jest.mock("@/services/client", () => mockModule())
+vi.mock("@/services/client", () => mockModule())
 
 const mock = require("@/services/client") as MockedClient
 

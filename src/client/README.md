@@ -15,7 +15,7 @@ The trading client GUI is a single page app (SPA) built using Typescript, React,
 ## High level technologies
 
 - HTML5, Typescript, Rx and React-RxJs
-- Tests use [Jest](https://jestjs.io/)
+- Tests use [Vitest](https://vitest.dev/)
 - Streaming data abstractions are build with [RxJs](https://github.com/Reactive-Extensions/RxJS).
 - Mapping Rx to React components with [react-rxjs](https://react-rxjs.org/).
 - Connectivity to the backend is done via Hydra.
@@ -83,7 +83,7 @@ VITE_MOCKS=true npm start
 
 Any VITE\_\* properties may be added to a `.env.local` file (not checked in).
 
-Runs unit tests with Jest.
+Runs unit tests with Vitest.
 
 ```sh
 npm run test

@@ -4,20 +4,23 @@ import { BehaviorSubject, Subject } from "rxjs"
 
 import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
+import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
 import {
   ExecutionRequest,
   ExecutionStatus,
   ExecutionTrade,
   TimeoutExecution,
 } from "@/services/executions"
+import { execMock } from "@/services/executions/__mocks__/_exec"
 import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
+import { pricesMock } from "@/services/prices/__mocks__/_prices"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import { Tile, tile$ } from ".."
 
-jest.mock("@/services/executions/executions")
-jest.mock("@/services/prices/prices")
-jest.mock("@/services/currencyPairs/currencyPairs")
+vi.mock("@/services/executions/executions")
+vi.mock("@/services/prices/prices")
+vi.mock("@/services/currencyPairs/currencyPairs")
 
 const currencyPairMock: CurrencyPair = {
   symbol: "EURUSD",
@@ -50,10 +53,6 @@ const renderComponent = (
     </TestThemeProvider>,
   )
 
-const _prices = require("@/services/prices/prices")
-const _ccpp = require("@/services/currencyPairs/currencyPairs")
-const _exec = require("@/services/executions/executions")
-
 const rfqButtonTestId = "rfqButton"
 const rfqRejectTestId = "rfqReject"
 const rfqTimerTestId = "rfqTimer"
@@ -69,26 +68,26 @@ function initiateQuote() {
   })
 }
 const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
-const executeFn = jest.fn(() => response$)
+const executeFn = vi.fn(() => response$)
 
 describe("Tile/rfq", () => {
   beforeEach(() => {
-    jest.useFakeTimers("modern")
+    vi.useFakeTimers()
 
-    _prices.__resetMocks()
-    _ccpp.__resetMock()
-    _exec.__resetMocks()
+    pricesMock.__resetMocks()
+    ccppMock.__resetMock()
+    execMock.__resetMocks()
 
     const ccPairMock$ = new BehaviorSubject({
       [currencyPairMock.symbol]: currencyPairMock,
     })
-    _ccpp.__setMock(ccPairMock$)
+    ccppMock.__setMock(ccPairMock$)
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
-    _exec.__setExecute$(executeFn)
+    execMock.__setExecute$(executeFn)
     renderComponent()
   })
 
@@ -122,7 +121,7 @@ describe("Tile/rfq", () => {
   it("RFQ cancel should disappear after 2 seconds, and timer and reject button should appear", async () => {
     initiateQuote()
     act(() => {
-      jest.advanceTimersByTime(2001)
+      vi.advanceTimersByTime(2001)
     })
 
     expect(screen.queryByTestId(rfqButtonTestId)).toBe(null)
@@ -133,7 +132,7 @@ describe("Tile/rfq", () => {
   it("RFQ Reject button should work as expected", async () => {
     initiateQuote()
     act(() => {
-      jest.advanceTimersByTime(2001)
+      vi.advanceTimersByTime(2001)
     })
     act(() => {
       const rfqReject = screen.getByTestId(rfqRejectTestId)
@@ -153,11 +152,11 @@ describe("Tile/rfq", () => {
   it("RFQ timer timeout should work as rejected", async () => {
     initiateQuote()
     act(() => {
-      jest.advanceTimersByTime(2001)
+      vi.advanceTimersByTime(2001)
     })
 
     act(() => {
-      jest.advanceTimersByTime(10001)
+      vi.advanceTimersByTime(10001)
     })
 
     expect(screen.getByTestId(rfqButtonTestId)?.textContent).toBe("Requote")
@@ -173,7 +172,7 @@ describe("Tile/rfq", () => {
   it("RFQ buy/sell buttons should work as expected", async () => {
     initiateQuote()
     act(() => {
-      jest.advanceTimersByTime(2001)
+      vi.advanceTimersByTime(2001)
     })
 
     expect(executeFn).not.toHaveBeenCalled()
@@ -203,7 +202,7 @@ describe("Tile/rfq", () => {
     await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
 
     act(() => {
-      jest.advanceTimersByTime(2001)
+      vi.advanceTimersByTime(2001)
     })
 
     act(() => {

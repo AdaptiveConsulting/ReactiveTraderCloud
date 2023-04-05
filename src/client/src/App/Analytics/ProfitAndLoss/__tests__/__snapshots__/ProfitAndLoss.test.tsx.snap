@@ -1,5 +1,5 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Profit and Loss renders the chart correctly 1`] = `"No data"`;
+exports[`Profit and Loss > renders the chart correctly 1`] = `"No data"`;
 
-exports[`Profit and Loss renders the chart with updates 1`] = `"No data"`;
+exports[`Profit and Loss > renders the chart with updates 1`] = `"No data"`;

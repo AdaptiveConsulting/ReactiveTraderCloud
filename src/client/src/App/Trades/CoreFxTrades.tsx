@@ -55,23 +55,21 @@ const TradesGrid = (props: TradesGridInnerProps<FxTrade>) => {
   )
 }
 
-const FxTrades = () => {
-  return (
-    <Subscribe fallback={<Loader ariaLabel="Loading trades blotter" />}>
-      <ColFieldsContext.Provider value={fxColFields}>
-        <ColDefContext.Provider value={fxColDef}>
-          <TradesStreamContext.Provider value={trades$}>
-            <SuspenseOnStaleData />
-            <TradesStyle role="region" aria-labelledby="trades-table-heading">
-              <TradesHeader section="blotter" />
-              <TradesGrid caption="Reactive Trader FX Trades Table" />
-              <TradesFooter />
-            </TradesStyle>
-          </TradesStreamContext.Provider>
-        </ColDefContext.Provider>
-      </ColFieldsContext.Provider>
-    </Subscribe>
-  )
-}
+const FxTrades = () => (
+  <Subscribe fallback={<Loader ariaLabel="Loading trades blotter" />}>
+    <ColFieldsContext.Provider value={fxColFields}>
+      <ColDefContext.Provider value={fxColDef}>
+        <TradesStreamContext.Provider value={trades$}>
+          <SuspenseOnStaleData />
+          <TradesStyle role="region" aria-labelledby="trades-table-heading">
+            <TradesHeader section="blotter" />
+            <TradesGrid caption="Reactive Trader FX Trades Table" />
+            <TradesFooter />
+          </TradesStyle>
+        </TradesStreamContext.Provider>
+      </ColDefContext.Provider>
+    </ColFieldsContext.Provider>
+  </Subscribe>
+)
 
 export default FxTrades

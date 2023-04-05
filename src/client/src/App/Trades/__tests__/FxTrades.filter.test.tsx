@@ -4,19 +4,34 @@ import { BehaviorSubject } from "rxjs"
 
 import { ComparatorType } from "@/App/Trades/TradesState"
 import { Trade, tradesTestData } from "@/services/trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 import { setupMockWindow, TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
+import * as TableTrades from "../TradesState/tableTrades"
 
-jest.mock("../TradesGrid/utils")
-jest.mock("@openfin/core", () => ({
+vi.mock("../TradesGrid/utils")
+vi.mock("@openfin/core", () => ({
   fin: undefined,
 }))
-jest.mock("@/services/trades/trades")
-jest.mock("../TradesState/tableTrades", () => ({
-  ...jest.requireActual("../TradesState/tableTrades"),
-  useFilterFields: jest.fn().mockReturnValue([]),
-  useFxTradeRowHighlight: jest.fn().mockReturnValue(undefined),
+vi.mock("@/services/trades/trades")
+vi.mock("../TradesState/tableTrades", async () => {
+  const tableTrades: typeof TableTrades = await vi.importActual(
+    "../TradesState/tableTrades",
+  )
+  return {
+    ...tableTrades,
+    useFilterFields: vi.fn().mockReturnValue([]),
+    useFxTradeRowHighlight: vi.fn().mockReturnValue(undefined),
+  }
+})
+vi.mock("../TradesGrid/utils")
+vi.mock("react-virtualized-auto-sizer", () => ({
+  default: ({
+    children,
+  }: {
+    children: React.FunctionComponent<{ height: number; width: number }>
+  }) => children({ height: 100, width: 100 }),
 }))
 
 const { mockTrades } = tradesTestData
@@ -28,8 +43,6 @@ const renderComponent = () =>
     </TestThemeProvider>,
   )
 
-const _trades = require("@/services/trades/trades")
-
 describe("for notional column", () => {
   const notionalFilterIcon = '[aria-label="Open Notional field filter pop up"]'
   const notionalFilterMenu =
@@ -40,7 +53,7 @@ describe("for notional column", () => {
 
   beforeEach(() => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj.asObservable())
+    tradesMock.__setTrades(tradesSubj.asObservable())
   })
 
   it("no filter icon or menu should be rendered", () => {

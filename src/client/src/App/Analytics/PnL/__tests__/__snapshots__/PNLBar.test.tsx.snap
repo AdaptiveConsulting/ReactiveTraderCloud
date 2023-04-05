@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`PNLBar renders the bar correctly 1`] = `
+exports[`PNLBar > renders the bar correctly 1`] = `
 .c4 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -122,7 +122,7 @@ exports[`PNLBar renders the bar correctly 1`] = `
     <div
       className="c4 c5"
       style={
-        Object {
+        {
           "transform": "translate(-31.125428646769944%)",
         }
       }

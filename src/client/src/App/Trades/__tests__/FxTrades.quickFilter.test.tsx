@@ -1,21 +1,28 @@
 import { render, screen, within } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
-import { Trade, tradesTestData } from "@/services/trades"
+import * as Trades from "@/services/trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
+import * as TableTrades from "../TradesState/tableTrades"
 
-jest.mock("@openfin/core", () => ({
+vi.mock("@openfin/core", () => ({
   fin: undefined,
 }))
-jest.mock("@/services/trades/trades")
-jest.mock("../TradesState/tableTrades", () => ({
-  ...jest.requireActual("../TradesState/tableTrades"),
-  useFilterFields: jest.fn().mockReturnValue([]),
-  useFxTradeRowHighlight: jest.fn().mockReturnValue(undefined),
-}))
-const { mockTrades } = tradesTestData
+vi.mock("@/services/trades/trades")
+vi.mock("../TradesState/tableTrades", async () => {
+  const tableTrades: typeof TableTrades = await vi.importActual(
+    "../TradesState/tableTrades",
+  )
+  return {
+    ...tableTrades,
+    useFilterFields: vi.fn().mockReturnValue([]),
+    useFxTradeRowHighlight: vi.fn().mockReturnValue(undefined),
+  }
+})
+const { mockTrades } = Trades.tradesTestData
 
 const renderComponent = () =>
   render(
@@ -24,16 +31,14 @@ const renderComponent = () =>
     </TestThemeProvider>,
   )
 
-const _trades = require("@/services/trades/trades")
-
 describe("Trades quick filter", () => {
   beforeEach(() => {
-    _trades.__resetMocks()
+    tradesMock.__resetMocks()
   })
 
   it("should be empty on load", () => {
-    const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj)
+    const tradesSubj = new BehaviorSubject<Trades.Trade[]>(mockTrades)
+    tradesMock.__setTrades(tradesSubj)
 
     renderComponent()
 

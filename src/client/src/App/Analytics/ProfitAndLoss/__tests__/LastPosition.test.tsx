@@ -3,11 +3,12 @@ import { act, render, screen } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import { HistoryEntry } from "@/services/analytics"
+import { analyticsMock } from "@/services/analytics/__mocks__/_analytics"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import { LastPosition, lastPosition$ } from "../LastPosition"
 
-jest.mock("@/services/analytics/analytics")
+vi.mock("@/services/analytics/analytics")
 
 const historyMock1: HistoryEntry[] = [
   {
@@ -64,16 +65,14 @@ const renderComponent = () =>
     </TestThemeProvider>,
   )
 
-const _analytics = require("@/services/analytics/analytics")
-
 describe("LastPositions", () => {
   beforeEach(() => {
-    _analytics.__resetMocks()
+    analyticsMock.__resetMocks()
   })
 
   it("should render the initial last position value", () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
-    _analytics.__setHistoryMock(historyMock$)
+    analyticsMock.__setHistoryMock(historyMock$)
 
     renderComponent()
 
@@ -84,7 +83,7 @@ describe("LastPositions", () => {
 
   it("should display the updated last position", () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
-    _analytics.__setHistoryMock(historyMock$)
+    analyticsMock.__setHistoryMock(historyMock$)
 
     renderComponent()
 
@@ -101,7 +100,7 @@ describe("LastPositions", () => {
 
   it("should display positive and negative number correctly", () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
-    _analytics.__setHistoryMock(historyMock$)
+    analyticsMock.__setHistoryMock(historyMock$)
 
     renderComponent()
 

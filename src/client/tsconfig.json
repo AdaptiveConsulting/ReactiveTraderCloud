@@ -6,7 +6,7 @@
     },
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vite/client", "node", "jest", "./fin"],
+    "types": ["vite/client", "node", "vitest/globals", "./fin"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,

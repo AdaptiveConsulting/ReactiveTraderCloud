@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Positions should display the correct bubble chart 1`] = `
+exports[`Positions > should display the correct bubble chart 1`] = `
 .c0 {
   margin-bottom: 1rem;
   font-size: 15px;
@@ -63,15 +63,28 @@ exports[`Positions should display the correct bubble chart 1`] = `
 </div>
 `;
 
-exports[`Positions should display the correct bubble chart 2`] = `
+exports[`Positions > should display the correct bubble chart 2`] = `
+.c0 {
+  margin-bottom: 1rem;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.c1 {
+  text-anchor: middle;
+  height: 18rem;
+  overflow: hidden;
+  position: relative;
+}
+
 <div>
   <div
-    class="sc-jSFjdj eBlbsr"
+    class="c0"
   >
     Positions
   </div>
   <div
-    class="sc-iCoGMd jKUYqm"
+    class="c1"
   >
     <div
       class="analytics__positions-tooltip"

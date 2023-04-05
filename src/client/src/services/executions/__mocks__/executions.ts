@@ -1,6 +1,8 @@
-let mock: jest.Mock<any, any> = jest.fn()
+import { Mock } from "vitest"
 
-export const __setExecute$ = (input: jest.Mock<any, any>) => {
+let mock = vi.fn()
+
+export const __setExecute$ = (input: Mock<any, any>) => {
   mock = input
 }
 
@@ -9,5 +11,5 @@ export const execute$ = (...args: any[]) => {
 }
 
 export const __resetMocks = () => {
-  mock = jest.fn()
+  mock = vi.fn()
 }

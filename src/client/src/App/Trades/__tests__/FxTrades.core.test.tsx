@@ -9,19 +9,34 @@ import {
 import { BehaviorSubject, Subject } from "rxjs"
 
 import { Trade, tradesTestData } from "@/services/trades"
-import { setupMockWindow, TestThemeProvider } from "@/utils/testUtils"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
+import { TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
+import * as TableTrades from "../TradesState/tableTrades"
 
-jest.mock("../TradesGrid/utils")
-jest.mock("@openfin/core", () => ({
+vi.mock("../TradesGrid/utils")
+vi.mock("@openfin/core", () => ({
   fin: undefined,
 }))
-jest.mock("@/services/trades/trades")
-jest.mock("../TradesState/tableTrades", () => ({
-  ...jest.requireActual("../TradesState/tableTrades"),
-  useFilterFields: jest.fn().mockReturnValue([]),
-  useFxTradeRowHighlight: jest.fn().mockReturnValue(undefined),
+vi.mock("@/services/trades/trades")
+vi.mock("../TradesState/tableTrades", async () => {
+  const tableTrades: typeof TableTrades = await vi.importActual(
+    "../TradesState/tableTrades",
+  )
+  return {
+    ...tableTrades,
+    useFilterFields: vi.fn().mockReturnValue([]),
+    useFxTradeRowHighlight: vi.fn().mockReturnValue(undefined),
+  }
+})
+vi.mock("../TradesGrid/utils")
+vi.mock("react-virtualized-auto-sizer", () => ({
+  default: ({
+    children,
+  }: {
+    children: React.FunctionComponent<{ height: number; width: number }>
+  }) => children({ height: 100, width: 100 }),
 }))
 
 const { mockTrades, nextTrade } = tradesTestData
@@ -33,18 +48,14 @@ const renderComponent = () =>
     </TestThemeProvider>,
   )
 
-const _trades = require("@/services/trades/trades")
-
 describe("Trades", () => {
-  setupMockWindow()
-
   beforeEach(() => {
-    _trades.__resetMocks()
+    tradesMock.__resetMocks()
   })
 
   it("should display 'no trades' message before trades are received", async () => {
     const tradesSubj = new Subject<Trade[]>()
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     renderComponent()
 
@@ -59,7 +70,7 @@ describe("Trades", () => {
 
   it("should display 'No trades' when there are no trades", async () => {
     const tradesSubj = new BehaviorSubject<Trade[]>([])
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     renderComponent()
 
@@ -78,7 +89,7 @@ describe("Trades", () => {
 
   it("should apply no sort by default", async () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     const { container } = renderComponent()
     const grid = container.querySelector('[role="grid"]')
@@ -100,7 +111,7 @@ describe("Trades", () => {
 
   it("should apply no filter by default", async () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     renderComponent()
 
@@ -109,7 +120,7 @@ describe("Trades", () => {
 
   it("should update when new trades are received", async () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
-    _trades.__setTrades(tradesSubj)
+    tradesMock.__setTrades(tradesSubj)
 
     renderComponent()
 

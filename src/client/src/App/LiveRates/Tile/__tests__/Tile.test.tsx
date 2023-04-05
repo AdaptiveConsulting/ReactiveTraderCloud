@@ -4,20 +4,23 @@ import { BehaviorSubject, Subject } from "rxjs"
 
 import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
+import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
 import {
   ExecutionRequest,
   ExecutionStatus,
   ExecutionTrade,
   TimeoutExecution,
 } from "@/services/executions"
+import { execMock } from "@/services/executions/__mocks__/_exec"
 import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
+import { pricesMock } from "@/services/prices/__mocks__/_prices"
 import { TestThemeProvider } from "@/utils/testUtils"
 
 import { Tile, tile$ } from "../Tile"
 
-jest.mock("@/services/executions/executions")
-jest.mock("@/services/prices/prices")
-jest.mock("@/services/currencyPairs/currencyPairs")
+vi.mock("@/services/prices/prices")
+vi.mock("@/services/currencyPairs/currencyPairs")
+vi.mock("@/services/executions/executions")
 
 const currencyPairMock: CurrencyPair = {
   symbol: "EURUSD",
@@ -50,28 +53,24 @@ const renderComponent = (
     </TestThemeProvider>,
   )
 
-const _prices = require("@/services/prices/prices")
-const _ccpp = require("@/services/currencyPairs/currencyPairs")
-const _exec = require("@/services/executions/executions")
-
 describe("Tile", () => {
   beforeEach(() => {
-    _prices.__resetMocks()
-    _ccpp.__resetMock()
-    _exec.__resetMocks()
+    pricesMock.__resetMocks()
+    ccppMock.__resetMock()
+    execMock.__resetMocks()
 
     const ccPairMock$ = new BehaviorSubject({
       [currencyPairMock.symbol]: currencyPairMock,
     })
-    _ccpp.__setMock(ccPairMock$)
+    ccppMock.__setMock(ccPairMock$)
   })
 
   it("should trigger Suspense before it receives the first update", async () => {
     const priceMock$ = new Subject<Price>()
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     renderComponent()
 
@@ -86,10 +85,10 @@ describe("Tile", () => {
 
   it("should display and update the right prices on the buy and sell buttons", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     renderComponent()
 
@@ -115,15 +114,15 @@ describe("Tile", () => {
 
   it("triggers executions currenctly", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
-    const executeFn = jest.fn(() => response$)
-    _exec.__setExecute$(executeFn)
+    const executeFn = vi.fn(() => response$)
+    execMock.__setExecute$(executeFn)
 
     renderComponent()
 
@@ -183,23 +182,23 @@ describe("Tile", () => {
   })
 
   it("should render alert when execution takes too long", async () => {
-    jest.useFakeTimers("legacy")
+    vi.useFakeTimers()
 
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     const ccPairMock$ = new BehaviorSubject({
       [currencyPairMock.symbol]: currencyPairMock,
     })
-    _ccpp.__setMock(ccPairMock$)
+    ccppMock.__setMock(ccPairMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
-    const executeFn = jest.fn(() => response$)
-    _exec.__setExecute$(executeFn)
+    const executeFn = vi.fn(() => response$)
+    execMock.__setExecute$(executeFn)
 
     renderComponent()
 
@@ -231,7 +230,7 @@ describe("Tile", () => {
     await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
 
     act(() => {
-      jest.advanceTimersByTime(2000)
+      vi.advanceTimersByTime(2000)
     })
     expect(screen.queryByText("Executing")).toBeNull()
     expect(screen.getByRole("alert").textContent).toEqual(
@@ -267,15 +266,15 @@ describe("Tile", () => {
 
   it("should render alert when execution timeout", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
-    const executeFn = jest.fn(() => response$)
-    _exec.__setExecute$(executeFn)
+    const executeFn = vi.fn(() => response$)
+    execMock.__setExecute$(executeFn)
 
     renderComponent()
 
@@ -334,15 +333,15 @@ describe("Tile", () => {
 
   it("should render alert when execution rejected", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
-    const executeFn = jest.fn(() => response$)
-    _exec.__setExecute$(executeFn)
+    const executeFn = vi.fn(() => response$)
+    execMock.__setExecute$(executeFn)
 
     renderComponent()
 
@@ -405,15 +404,15 @@ describe("Tile", () => {
 
   it("should not re-trigger executions after remounting", () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 
-    const executeFn = jest.fn(() => response$)
-    _exec.__setExecute$(executeFn)
+    const executeFn = vi.fn(() => response$)
+    execMock.__setExecute$(executeFn)
 
     const renderedComponent = renderComponent()
 
@@ -434,10 +433,10 @@ describe("Tile", () => {
 
   it("should not unformat the notional number when focused", () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
@@ -454,10 +453,10 @@ describe("Tile", () => {
 
   it("should automatically selected the text of the input when focused", () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
@@ -471,10 +470,10 @@ describe("Tile", () => {
 
   it("should not allow letters in the notional input", () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
@@ -487,10 +486,10 @@ describe("Tile", () => {
 
   it("should reformat the notional input after got new value", () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
-    _prices.__setPriceMock(currencyPairMock.symbol, priceMock$)
+    pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
-    _prices.__setHistoricalPricesMock(hPriceMock$)
+    pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
