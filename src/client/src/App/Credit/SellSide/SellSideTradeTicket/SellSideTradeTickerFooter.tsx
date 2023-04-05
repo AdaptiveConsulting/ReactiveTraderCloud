@@ -18,6 +18,7 @@ import {
 } from "@/utils"
 
 import { CreditRfqTimer, isRfqTerminated } from "../../common"
+import { useIsFocused } from "../utils/useIsFocused"
 import { price$, usePrice } from "./SellSideTradeTicketParameters"
 
 const FooterWrapper = styled.div<{ accepted: boolean; missed: boolean }>`
@@ -128,8 +129,10 @@ export const SellSideTradeTicketFooter = ({
 }: SellSideTradeTicketTicketFooterProps) => {
   const rfq = useCreditRfqDetails(rfqId)
   const price = usePrice()
+  const isPriceFieldFocused = useIsFocused()
 
-  const clickElementRef = useClickElementOnEnter<HTMLButtonElement>()
+  const clickElementRef =
+    useClickElementOnEnter<HTMLButtonElement>(isPriceFieldFocused)
 
   if (!rfq) {
     return <FooterWrapper accepted={false} missed={false} />
