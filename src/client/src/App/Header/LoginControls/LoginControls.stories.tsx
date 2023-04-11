@@ -1,4 +1,4 @@
-import { ComponentMeta } from "@storybook/react"
+import { Meta } from "@storybook/react"
 
 import avatar from "../../../../public/static/media/mockedAvatars/one.png"
 import { UserInner } from "./LoginControls"
@@ -6,17 +6,19 @@ import { UserInner } from "./LoginControls"
 export default {
   title: "Header/User",
   component: UserInner,
-} as ComponentMeta<typeof UserInner>
+} as Meta<typeof UserInner>
 
-export const Default = () => (
-  <UserInner
-    user={{
-      code: "LMO",
-      firstName: "Lorretta",
-      lastName: "Moe",
-      avatar,
-    }}
-  />
-)
+export const Default = {
+  render: () => (
+    <UserInner
+      user={{
+        code: "LMO",
+        firstName: "Lorretta",
+        lastName: "Moe",
+        avatar,
+      }}
+    />
+  ),
 
-Default.storyName = "User"
+  name: "User",
+}

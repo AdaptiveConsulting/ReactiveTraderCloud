@@ -1,4 +1,4 @@
-import { ComponentMeta } from "@storybook/react"
+import { Meta } from "@storybook/react"
 
 import { ConnectionStatus } from "@/services/connection"
 
@@ -7,7 +7,7 @@ import { StatusButtonInner } from "./StatusButton"
 export default {
   title: "Footer/StatusButton",
   component: StatusButtonInner,
-} as ComponentMeta<typeof StatusButtonInner>
+} as Meta<typeof StatusButtonInner>
 
 export const Connecting = () => (
   <StatusButtonInner status={ConnectionStatus.CONNECTING} />

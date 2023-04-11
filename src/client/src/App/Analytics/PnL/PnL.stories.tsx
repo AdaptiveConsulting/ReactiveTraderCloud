@@ -1,4 +1,4 @@
-import { ComponentMeta } from "@storybook/react"
+import { Meta } from "@storybook/react"
 import styled from "styled-components"
 
 import { PnLInner } from "./PnL"
@@ -6,7 +6,7 @@ import { PnLInner } from "./PnL"
 export default {
   title: "Analytics/PnL",
   component: PnLInner,
-} as ComponentMeta<typeof PnLInner>
+} as Meta<typeof PnLInner>
 
 const data = [
   {
@@ -69,9 +69,12 @@ const Container = styled.div`
   width: 320px;
 `
 
-export const PnL = () => (
-  <Container>
-    <PnLInner data={data} />
-  </Container>
-)
-PnL.storyName = "PnL"
+export const PnL = {
+  render: () => (
+    <Container>
+      <PnLInner data={data} />
+    </Container>
+  ),
+
+  name: "PnL",
+}

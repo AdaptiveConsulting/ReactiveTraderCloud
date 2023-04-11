@@ -144,8 +144,7 @@ npm run openfin:start:credit
 npm run e2e:openfin -- --workers=1
 ```
 
-_Tech Note: this is running the standard react storybook local server (which is based on [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware)) with a configured public path of /storybook, for deployment purposes.
-This means that we need a customer middleware.js to redirect, therefore the landing page resolves to http://localhost:6006/storybook start url_
+_Tech Note: Since we are no longer using a middleware, we are able to serve Storybook from root (separate web server entirely from the main RT one) during development but for production, the build is all apart of the same bundle/server from /storybook/ which is handled in `.storybook/main.ts`._
 
 There seems to be some issues with storybook cache on some machines, we can solve it by running it without the cache. We added --no-manager-cache to the storybook script
 

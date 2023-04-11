@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
+import { Meta } from "@storybook/react"
 
 import Logo from "./Logo"
 
@@ -15,14 +15,14 @@ export default {
       control: "color",
     },
   },
-} as ComponentMeta<typeof Logo>
+} as Meta<typeof Logo>
 
-const Template: ComponentStory<typeof Logo> = (args) => <Logo {...args} />
+export const WithText = {
+  args: {},
+}
 
-export const WithText = Template.bind({})
-WithText.args = {}
-
-export const WithoutText = Template.bind({})
-WithoutText.args = {
-  withText: false,
+export const WithoutText = {
+  args: {
+    withText: false,
+  },
 }

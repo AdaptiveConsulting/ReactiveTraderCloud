@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react"
+import { Meta } from "@storybook/react"
 
 import { DropdownMenu } from "./DropdownMenu"
 
@@ -6,17 +6,15 @@ export default {
   title: "Components/DropdownMenu",
   component: DropdownMenu,
   args: {
-    options: ["George", "Paul", "Ringo", "John"],
+    options: ["John", "Paul", "George", "Ringo"],
     onSelectionChange: console.log,
   },
-} as ComponentMeta<typeof DropdownMenu>
+} as Meta<typeof DropdownMenu>
 
-const Template: ComponentStory<typeof DropdownMenu> = (args) => (
-  <DropdownMenu {...args} />
-)
+export const WithoutSelectionSpecified = {
+  args: {},
+}
 
-export const WithoutSelectionSpecified = Template.bind({})
-WithoutSelectionSpecified.args = {}
-
-export const WithSelectionSpecified = Template.bind({})
-WithSelectionSpecified.args = { selectedOption: "Ringo" }
+export const WithSelectionSpecified = {
+  args: { selectedOption: "Paul" },
+}

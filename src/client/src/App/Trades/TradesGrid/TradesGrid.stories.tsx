@@ -1,5 +1,5 @@
 import { Subscribe } from "@react-rxjs/core"
-import { ComponentMeta, ComponentStory } from "@storybook/react"
+import { Meta } from "@storybook/react"
 import { Observable, of } from "rxjs"
 import styled from "styled-components"
 
@@ -24,7 +24,7 @@ import { TradesGridInner } from "./TradesGrid"
 export default {
   title: "Trades/TradesGrid",
   component: TradesGridInner,
-} as ComponentMeta<typeof TradesGridInner>
+} as Meta<typeof TradesGridInner>
 
 const TradesStyle = styled.div`
   height: 100%;
@@ -57,34 +57,50 @@ const TradesGridWrapper = ({
   </TradesStyle>
 )
 
-const Template: ComponentStory<typeof TradesGridWrapper> = (args) => (
-  <TradesGridWrapper {...args}></TradesGridWrapper>
-)
+export const WithCreditTrades = {
+  render: (args: TradesGridWrapperProps) => (
+    <TradesGridWrapper {...args}></TradesGridWrapper>
+  ),
 
-export const WithCreditTrades = Template.bind({})
-WithCreditTrades.args = {
-  colDef: creditColDef,
-  fields: creditColFields,
-  trades$: of(mockCreditTrades),
+  args: {
+    colDef: creditColDef,
+    fields: creditColFields,
+    trades$: of(mockCreditTrades),
+  },
 }
 
-export const WithFxTrades = Template.bind({})
-WithFxTrades.args = {
-  colDef: fxColDef,
-  fields: fxColFields,
-  trades$: of(mockTrades),
+export const WithFxTrades = {
+  render: (args: TradesGridWrapperProps) => (
+    <TradesGridWrapper {...args}></TradesGridWrapper>
+  ),
+
+  args: {
+    colDef: fxColDef,
+    fields: fxColFields,
+    trades$: of(mockTrades),
+  },
 }
 
-export const NoCreditTrades = Template.bind({})
-NoCreditTrades.args = {
-  colDef: creditColDef,
-  fields: creditColFields,
-  trades$: of([]),
+export const NoCreditTrades = {
+  render: (args: TradesGridWrapperProps) => (
+    <TradesGridWrapper {...args}></TradesGridWrapper>
+  ),
+
+  args: {
+    colDef: creditColDef,
+    fields: creditColFields,
+    trades$: of([]),
+  },
 }
 
-export const NoFxTrades = Template.bind({})
-NoFxTrades.args = {
-  colDef: fxColDef,
-  fields: fxColFields,
-  trades$: of([]),
+export const NoFxTrades = {
+  render: (args: TradesGridWrapperProps) => (
+    <TradesGridWrapper {...args}></TradesGridWrapper>
+  ),
+
+  args: {
+    colDef: fxColDef,
+    fields: fxColFields,
+    trades$: of([]),
+  },
 }
