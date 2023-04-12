@@ -36,15 +36,6 @@ jobs:
           project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
           service_account_key: ${{ secrets.GOOGLE_PRIVATE_KEY }}
 
-      - name: Decrypt NPM credentials
-        run: |
-          gcloud kms decrypt \
-            --ciphertext-file=npmrc.enc \
-            --plaintext-file=.npmrc \
-            --location=global \
-            --keyring=rt-keyring \
-            --key=npmrc-key
-
       - name: Install
         run: npm ci
 
