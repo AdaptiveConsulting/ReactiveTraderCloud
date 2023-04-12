@@ -1,6 +1,5 @@
 import { WindowEvent } from "@openfin/core/src/api/events/base"
 import { useEffect } from "react"
-import { Helmet } from "react-helmet"
 
 import { WithChildren } from "@/utils/utilityTypes"
 
@@ -103,26 +102,27 @@ export const WindowViewport = ({ children }: WithChildren) => {
     }
   }, [])
 
-  return (
-    <>
-      <Helmet>
-        <style>
-          {`
-            :root, body, #root {
-              overflow: hidden;
-              min-height: 100%;
-              max-height: 100vh;
-              font-size: 16px;
-            }
+  useEffect(() => {
+    const style = document.createElement("style")
+    style.innerHTML = `
+      :root, body, #root {
+        overflow: hidden;
+        min-height: 100%;
+        max-height: 100vh;
+        font-size: 16px;
+      }
 
-            body, select, button, li, span, div {
-              font-family: inherit;
-              color: inherit;
-            }
-          `}
-        </style>
-      </Helmet>
-      {children}
-    </>
-  )
+      body, select, button, li, span, div {
+        font-family: inherit;
+        color: inherit;
+      }
+    `
+    document.head.appendChild(style)
+
+    return () => {
+      document.head.removeChild(style)
+    }
+  }, [])
+
+  return <>{children}</>
 }

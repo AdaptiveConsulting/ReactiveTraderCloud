@@ -1,3 +1,4 @@
+import { ReactElement } from "react"
 import styled from "styled-components"
 
 import { ThemeName, ThemeStorageSwitch, useTheme } from "@/theme"
@@ -17,7 +18,18 @@ export const FloatingTools = () => {
   )
 }
 
-const Root: React.FC = () => <Block bg={(t) => t.primary[2]} />
+interface RootProps {
+  children: ReactElement
+}
+
+const Root: React.FC<RootProps> = ({ children }: RootProps) => {
+  return (
+    <>
+      <Block bg={(t) => t.primary[2]} />
+      {children}
+    </>
+  )
+}
 
 const Bar = styled((props) => (
   <Block

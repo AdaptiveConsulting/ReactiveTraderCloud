@@ -5,8 +5,9 @@ import { CreditTrade, FxTrade } from "@/services/trades"
 
 import { ColDef } from "./TradesState"
 
-export const TradesStreamContext =
-  createContext<Observable<(FxTrade | CreditTrade)[]> | undefined>(undefined)
+export const TradesStreamContext = createContext<
+  Observable<(FxTrade | CreditTrade)[]> | undefined
+>(undefined)
 
 export const useTrades$ = () => {
   const trades$ = useContext(TradesStreamContext)
@@ -26,8 +27,9 @@ export const useColDef = () => {
   return colDef
 }
 
-export const ColFieldsContext =
-  createContext<(string | number)[] | undefined>(undefined)
+export const ColFieldsContext = createContext<(string | number)[] | undefined>(
+  undefined,
+)
 
 export const useColFields = () => {
   const colFields = useContext(ColFieldsContext)

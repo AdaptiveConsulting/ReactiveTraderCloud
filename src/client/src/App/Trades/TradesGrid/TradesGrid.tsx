@@ -3,6 +3,7 @@ import {
   CSSProperties,
   forwardRef,
   PropsWithChildren,
+  ReactNode,
   useContext,
 } from "react"
 import AutoSizer from "react-virtualized-auto-sizer"
@@ -61,6 +62,7 @@ const TableBodyCell = styled.div<{
   align?: "right" | "left"
   crossed?: boolean
   width: number
+  children: ReactNode
 }>`
   display: flex;
   align-items: center;
@@ -195,7 +197,7 @@ const Row = <Row extends Trade>({
             }
             crossed={isRowCrossed?.(row as unknown as Row)}
           >
-            {columnDefinition.valueFormatter?.(value) ?? value}
+            {columnDefinition.valueFormatter?.(value) ?? (value as string)}
           </TableBodyCell>
         )
       })}

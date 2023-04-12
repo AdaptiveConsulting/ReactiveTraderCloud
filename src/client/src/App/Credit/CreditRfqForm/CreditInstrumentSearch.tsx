@@ -52,8 +52,9 @@ const IconWrapper = styled.div`
   }
 `
 
-export const [selectedInstrumentId$, setSelectedInstrumentId] =
-  createSignal<number | null>()
+export const [selectedInstrumentId$, setSelectedInstrumentId] = createSignal<
+  number | null
+>()
 export const [useSelectedInstrument] = bind(
   selectedInstrumentId$.pipe(
     withLatestFrom(creditInstrumentsByCusip$),

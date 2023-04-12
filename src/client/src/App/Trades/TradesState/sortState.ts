@@ -17,8 +17,9 @@ export class TableSort<T extends string | number> {
  * actually tracks the state of the sorting (ASC, DESC, unset)
  * on the column.
  */
-export const [sortFieldSelections$, onSortFieldSelect] =
-  createSignal<string | number>()
+export const [sortFieldSelections$, onSortFieldSelect] = createSignal<
+  string | number
+>()
 
 /**
  * Default sorting direction is ASC.

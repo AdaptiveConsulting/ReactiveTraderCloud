@@ -1,4 +1,4 @@
-import { useHistory, useLocation } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 
 import { DropdownMenu } from "@/components/DropdownMenu"
 import { ROUTES_CONFIG } from "@/constants"
@@ -11,9 +11,9 @@ enum InstrumentType {
 
 const InstrumentTypeSelector = () => {
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const handleInstrumentTypeSelection = (instrumentType: InstrumentType) => {
-    history.push(
+    navigate(
       instrumentType === InstrumentType.CREDIT ? ROUTES_CONFIG.credit : "/",
     )
   }

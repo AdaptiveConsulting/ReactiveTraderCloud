@@ -1,5 +1,12 @@
 import { lazy, Suspense } from "react"
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from "react-router-dom"
 
 import { Admin } from "@/App/Admin"
 import { Analytics } from "@/App/Analytics"
@@ -33,142 +40,123 @@ const TornOut = ({ children }: WithChildren) => (
   </TearOutContext.Provider>
 )
 
+export const TileWrapper = () => {
+  const { symbol } = useParams()
+  const { search } = useLocation()
+  const query = new URLSearchParams(search)
+  const view = query.has("tileView")
+    ? (query.get("tileView") as TileView)
+    : TileView.Analytics
+
+  return (
+    <>
+      <DisconnectionOverlay />
+      <TearOutRouteWrapper>
+        {symbol && <TornOutTile symbol={symbol} view={view} />}
+      </TearOutRouteWrapper>
+    </>
+  )
+}
+
 export const WebApp = () => {
   const canUseAdmin = useFeature(FEATURE_FLAG.ADMIN)
   const canDisplayCredit = !isMobileDevice
 
   return (
     <BrowserRouter basename={BASE_PATH}>
-      <Switch>
+      <Routes>
         <Route
-          exact
           path="/"
-          render={() => (
+          element={
             <>
               <DisconnectionOverlay />
               <FxPage />
             </>
-          )}
+          }
         />
         {canDisplayCredit && (
           <Route
-            exact
             path={ROUTES_CONFIG.credit}
-            render={() => (
+            element={
               <>
                 <DisconnectionOverlay />
                 <CreditPage />
               </>
-            )}
+            }
           />
         )}
         {canDisplayCredit && (
           <Route
-            exact
             path={ROUTES_CONFIG.sellSide}
-            render={() => {
-              return (
-                <Suspense fallback={<Loader />}>
-                  <DisconnectionOverlay />
-                  <SellSidePage />
-                </Suspense>
-              )
-            }}
+            element={
+              <Suspense fallback={<Loader />}>
+                <DisconnectionOverlay />
+                <SellSidePage />
+              </Suspense>
+            }
           />
         )}
         {canDisplayCredit && (
           <Route
             path={ROUTES_CONFIG.newRfq}
-            render={() => {
-              return (
-                <TornOut>
-                  <CreditRfqForm />
-                </TornOut>
-              )
-            }}
+            element={
+              <TornOut>
+                <CreditRfqForm />
+              </TornOut>
+            }
           />
         )}
         {canDisplayCredit && (
           <Route
             path={ROUTES_CONFIG.creditBlotter}
-            render={() => {
-              return (
-                <TornOut>
-                  <CreditTrades />
-                </TornOut>
-              )
-            }}
+            element={
+              <TornOut>
+                <CreditTrades />
+              </TornOut>
+            }
           />
         )}
-        <Route
-          path={ROUTES_CONFIG.tile}
-          render={({
-            location: { search },
-            match: {
-              params: { symbol },
-            },
-          }) => {
-            const query = new URLSearchParams(search)
-            const view = query.has("tileView")
-              ? (query.get("tileView") as TileView)
-              : TileView.Analytics
-
-            return (
-              <>
-                <DisconnectionOverlay />
-                <TearOutRouteWrapper>
-                  {symbol && <TornOutTile symbol={symbol} view={view} />}
-                </TearOutRouteWrapper>
-              </>
-            )
-          }}
-        />
+        <Route path={ROUTES_CONFIG.tile} element={<TileWrapper />} />
 
         <Route
           path={ROUTES_CONFIG.styleguide}
-          render={() => (
+          element={
             <Suspense fallback={<Loader />}>
               <StyleguidePage />
             </Suspense>
-          )}
+          }
         />
 
         {canUseAdmin && (
-          <Route path={ROUTES_CONFIG.admin} render={() => <Admin />} />
+          <Route path={ROUTES_CONFIG.admin} element={<Admin />} />
         )}
 
         <Route
           path={ROUTES_CONFIG.tiles}
-          render={() => {
-            return (
-              <TornOut>
-                <LiveRates />
-              </TornOut>
-            )
-          }}
+          element={
+            <TornOut>
+              <LiveRates />
+            </TornOut>
+          }
         />
         <Route
           path={ROUTES_CONFIG.blotter}
-          render={() => {
-            return (
-              <TornOut>
-                <FxTrades />
-              </TornOut>
-            )
-          }}
+          element={
+            <TornOut>
+              <FxTrades />
+            </TornOut>
+          }
         />
         <Route
           path={ROUTES_CONFIG.analytics}
-          render={() => {
-            return (
-              <TornOut>
-                <Analytics hideIfMatches={""} />
-              </TornOut>
-            )
-          }}
+          element={
+            <TornOut>
+              <Analytics hideIfMatches={""} />
+            </TornOut>
+          }
         />
-        <Redirect to="/" />
-      </Switch>
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </BrowserRouter>
   )
 }
