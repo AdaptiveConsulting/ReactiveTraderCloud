@@ -51,9 +51,9 @@ Below you can find links to the installers for the various platforms.
 
 | Environment | Windows                    |
 | ----------- | -------------------------- |
-| Demo        | [Download][workspace-demo] |
-| UAT         | [Download][workspace-uat]  |
-| Dev         | [Download][workspace-dev]  |
+| Demo        | [Generate][workspace-demo] |
+| UAT         | [Generate][workspace-uat]  |
+| Dev         | [Generate][workspace-dev]  |
 
 [workspace-demo]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-Demo&unzipped=true
 [workspace-uat]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-UAT&unzipped=true
