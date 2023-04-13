@@ -327,7 +327,7 @@
                                 },
                                 "webAPIs": ["notifications", "audio", "video"]
                               },
-                              "url": "<RT_URL>/tiles",
+                              "url": "<RT_URL>/fx-tiles",
                               "componentName": "view",
                               "interop": {},
                               "preloadScripts": [],
@@ -424,11 +424,11 @@
                               },
                               "name": "internal-generated-view-878aa0f6-edcc-421f-bf9e-2ac3b7fa20cf",
                               "uuid": "adaptive-workspace-provider",
-                              "initialUrl": "<RT_URL>/tiles",
+                              "initialUrl": "<RT_URL>/fx-tiles",
                               "processAffinity": "adaptive-workspace-provider",
                               "zoomLevel": 0
                             },
-                            "title": "Live Rates",
+                            "title": "FX Live Rates",
                             "isClosable": true,
                             "reorderEnabled": true
                           }
@@ -489,7 +489,7 @@
                                       "video"
                                     ]
                                   },
-                                  "url": "<RT_URL>/blotter",
+                                  "url": "<RT_URL>/fx-blotter",
                                   "componentName": "view",
                                   "interop": {
                                     "currentContextGroup": "green"
@@ -588,11 +588,11 @@
                                   },
                                   "name": "internal-generated-view-e61f0941-fb7e-477d-abba-141fd2e9ca93",
                                   "uuid": "adaptive-workspace-provider",
-                                  "initialUrl": "<RT_URL>/blotter",
+                                  "initialUrl": "<RT_URL>/fx-blotter",
                                   "processAffinity": "adaptive-workspace-provider",
                                   "zoomLevel": 0
                                 },
-                                "title": "Trades",
+                                "title": "FX Trades",
                                 "isClosable": true,
                                 "reorderEnabled": true
                               }
@@ -756,7 +756,7 @@
                               "processAffinity": "adaptive-workspace-provider",
                               "zoomLevel": 0
                             },
-                            "title": "Reactive Analytics (LOCAL)",
+                            "title": "Reactive Analytics",
                             "isClosable": true,
                             "reorderEnabled": true
                           }
@@ -964,7 +964,7 @@
                                         "video"
                                       ]
                                     },
-                                    "url": "<RT_URL>/tiles",
+                                    "url": "<RT_URL>/fx-tiles",
                                     "componentName": "view",
                                     "interop": {},
                                     "preloadScripts": [],
@@ -1061,11 +1061,11 @@
                                     },
                                     "name": "internal-generated-view-878aa0f6-edcc-421f-bf9e-2ac3b7fa20cf",
                                     "uuid": "adaptive-workspace-provider",
-                                    "initialUrl": "<RT_URL>/tiles",
+                                    "initialUrl": "<RT_URL>/fx-tiles",
                                     "processAffinity": "adaptive-workspace-provider",
                                     "zoomLevel": 0
                                   },
-                                  "title": "Live Rates",
+                                  "title": "FX Live Rates",
                                   "isClosable": true,
                                   "reorderEnabled": true
                                 }
@@ -1126,7 +1126,7 @@
                                             "video"
                                           ]
                                         },
-                                        "url": "<RT_URL>/blotter",
+                                        "url": "<RT_URL>/fx-blotter",
                                         "componentName": "view",
                                         "interop": {
                                           "currentContextGroup": "green"
@@ -1225,11 +1225,11 @@
                                         },
                                         "name": "internal-generated-view-e61f0941-fb7e-477d-abba-141fd2e9ca93",
                                         "uuid": "adaptive-workspace-provider",
-                                        "initialUrl": "<RT_URL>/blotter",
+                                        "initialUrl": "<RT_URL>/fx-blotter",
                                         "processAffinity": "adaptive-workspace-provider",
                                         "zoomLevel": 0
                                       },
-                                      "title": "Trades",
+                                      "title": "FX Trades",
                                       "isClosable": true,
                                       "reorderEnabled": true
                                     }
@@ -1397,7 +1397,7 @@
                                     "processAffinity": "adaptive-workspace-provider",
                                     "zoomLevel": 0
                                   },
-                                  "title": "Reactive Analytics (LOCAL)",
+                                  "title": "Reactive Analytics",
                                   "isClosable": true,
                                   "reorderEnabled": true
                                 }
