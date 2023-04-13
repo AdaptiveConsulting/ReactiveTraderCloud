@@ -59,8 +59,8 @@ Below you can find links to the installers for the various platforms.
 [workspace-uat]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-UAT&unzipped=true
 [workspace-dev]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-Dev&unzipped=true
 [workspace-demo-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-Demo&internal=true&appName=Reactive-Workspace-Demo
-[workspace-uat-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-Demo&internal=true&appName=Reactive-Workspace-Demo
-[workspace-dev-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-Demo&internal=true&appName=Reactive-Workspace-Demo
+[workspace-uat-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-UAT&internal=true&appName=Reactive-Workspace-UAT
+[workspace-dev-mac]: https://install.openfin.co/download/?os=osx&config=https%3A%2F%2Fopenfin.dev.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-Dev&internal=true&appName=Reactive-Workspace-Dev
 
 ## Finsemble Toolbar
 
