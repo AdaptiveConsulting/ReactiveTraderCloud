@@ -54,7 +54,10 @@ const TableBodyRow = styled.div<{
   &:hover {
     background-color: ${({ theme }) => theme.core.alternateBackground};
   }
-  ${({ highlight }) => highlight && highlightBackgroundColor}
+  ${({ highlight }) => {
+    console.log("HIGHLIGHTER CSS", highlight)
+    return highlight && highlightBackgroundColor
+  }}
 `
 
 const TableBodyCell = styled.div<{
@@ -169,10 +172,18 @@ const Row = <Row extends Trade>({
   const row = useTableTradeWithIndex(rows$, colDef, index - 1)
   const { highlightedRow, onRowClick, isRowCrossed } = data
 
+  console.warn(
+    `HIGHLIGHTED Row ${highlightedRow}, data: ${JSON.stringify(
+      data,
+    )}, current row: ${JSON.stringify(row)}, should highlight: ${
+      row.tradeId === highlightedRow
+    }`,
+  )
+
   return (
     <TableBodyRow
       index={index}
-      highlight={row.tradeId === highlightedRow}
+      highlight={row.tradeId == highlightedRow}
       onClick={() => onRowClick?.(row as unknown as Row)}
       data-testid={`trades-grid-row-${row.tradeId}`}
       style={style}

@@ -62,7 +62,9 @@ const sendCreditQuoteNotification = (quote: QuoteDetails) => {
 
 const TOPIC_HIGHLIGHT_FX_BLOTTER = "highlight-fx-blotter"
 const handleNotificationAction = (event: NotificationActionEvent) => {
+  console.warn("ACTION", event)
   if (event.result["task"] === TASK_HIGHLIGHT_FX_TRADE) {
+    console.warn("ACTION - FX Trade task, fire IAB message", event)
     fin.InterApplicationBus.publish(
       TOPIC_HIGHLIGHT_FX_BLOTTER,
       event.notification.customData,
@@ -74,8 +76,10 @@ export async function registerFxNotifications() {
   fin.InterApplicationBus.subscribe(
     { uuid: "*" },
     TOPIC_HIGHLIGHT_FX_BLOTTER,
-    (message: { tradeId: number }) =>
-      setFxTradeRowHighlight(message.tradeId.toString()),
+    (message: { tradeId: number }) => {
+      console.warn("ACTION - FX Trade IAB subscription handler", message)
+      setFxTradeRowHighlight(message.tradeId.toString())
+    },
   )
 
   addEventListener("notification-action", handleNotificationAction)
