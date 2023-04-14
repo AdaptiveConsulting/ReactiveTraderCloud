@@ -12,6 +12,13 @@ function getBaseUrl(dev: boolean) {
 const copyOpenfinPlugin = (isDev: boolean): Plugin[] => {
   const env = process.env.ENVIRONMENT || "local"
 
+  const reactiveAnalyticsUrl =
+    env === "local"
+      ? "http://localhost:3005"
+      : `https://${
+          env === "prod" ? "demo" : env
+        }-reactive-analytics.adaptivecluster.com`
+
   const transform: TransformOption | undefined = (contents) =>
     contents
       // Reactive Trader (FX) URL from .env
@@ -22,10 +29,7 @@ const copyOpenfinPlugin = (isDev: boolean): Plugin[] => {
           : getBaseUrl(isDev).replace("/workspace", ""),
       )
       // Reactive Analytics URL from .env
-      .replace(
-        /<RA_URL>/g,
-        process.env.VITE_RA_URL || "http://please-set-in-config",
-      )
+      .replace(/<RA_URL>/g, process.env.VITE_RA_URL || reactiveAnalyticsUrl)
       .replace(/<BASE_URL>/g, getBaseUrl(isDev))
       .replace(/<ENV_NAME>/g, env)
       .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : env.toUpperCase())
