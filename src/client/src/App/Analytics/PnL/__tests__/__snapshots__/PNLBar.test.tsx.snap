@@ -105,50 +105,44 @@ exports[`PNLBar > renders the bar correctly 1`] = `
 }
 
 <div
-  className="c0"
+  class="c0"
 >
   <div
-    className="c1"
+    class="c1"
     data-testid="symbolLabel"
   >
     EURAUD
   </div>
   <div
-    className="c2"
+    class="c2"
   />
   <div
-    className="c3"
+    class="c3"
   >
     <div
-      className="c4 c5"
-      style={
-        {
-          "transform": "translate(-31.125428646769944%)",
-        }
-      }
+      class="c4 c5"
+      style="transform: translate(-31.125428646769944%);"
     >
       <div
-        className="c6"
+        class="c6"
         color="negative"
         data-testid="priceLabel"
-        onMouseEnter={[Function]}
-        onMouseLeave={[Function]}
       >
         -26k
       </div>
       <div
-        className="c7"
+        class="c7"
         color="negative"
       />
     </div>
     <div
-      className="c8"
+      class="c8"
     />
     <div
-      className="c4 c9"
+      class="c4 c9"
     >
       <div
-        className="c10"
+        class="c10"
       />
     </div>
   </div>
