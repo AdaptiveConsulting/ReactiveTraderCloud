@@ -98,6 +98,8 @@ export const Suggestion = styled.div`
   flex-direction: row;
   padding: 5px 2px;
   line-height: 1rem;
+  max-height: 800px;
+  overflow: auto;
 `
 
 export const LoadingWrapper = styled.div`
