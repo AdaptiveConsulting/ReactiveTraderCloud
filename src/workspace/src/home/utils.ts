@@ -11,6 +11,9 @@ import { getPages } from "../browser"
 export const HOME_ACTION_DELETE_PAGE = "Delete Page"
 export const HOME_ACTION_LAUNCH_PAGE = "Launch Page"
 
+import { BASE_URL } from "../consts"
+export const ADAPTIVE_LOGO = `${BASE_URL}/images/icons/adaptive.png`
+
 const mapAppEntriesToSearchEntries = (apps: App[]): CLISearchResult<Action>[] =>
   apps.map((app) => {
     let entry: any = {
@@ -69,6 +72,7 @@ const mapPageEntriesToSearchEntries = (
         { name: HOME_ACTION_LAUNCH_PAGE, hotkey: "Enter" },
       ],
       data: { tags: ["page"], pageId: page.pageId },
+      icon: ADAPTIVE_LOGO,
       template: CLITemplate.Plain,
     }
 

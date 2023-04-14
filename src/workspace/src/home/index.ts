@@ -1,4 +1,4 @@
-import { App, getCurrentSync } from '@openfin/workspace-platform'
+import { App, getCurrentSync } from "@openfin/workspace-platform"
 import {
   Home,
   CLIProvider,
@@ -6,31 +6,36 @@ import {
   CLITemplate,
   CLISearchListenerResponse,
   CLISearchResponse,
-  CLIDispatchedSearchResult
-} from '@openfin/workspace'
-import { BASE_URL } from '../consts'
-import { deletePage, getPage, launchPage } from '../browser'
-import { getAppsAndPages, HOME_ACTION_DELETE_PAGE } from './utils'
-import { execute } from '../services/executions'
-import { getUserResult, getUserToSwitch, switchUser } from '../user'
-import { getNlpResults } from './nlpProvider'
+  CLIDispatchedSearchResult,
+  HomeRegistration,
+} from "@openfin/workspace"
+import { deletePage, getPage, launchPage } from "../browser"
+import {
+  ADAPTIVE_LOGO,
+  getAppsAndPages,
+  HOME_ACTION_DELETE_PAGE,
+} from "./utils"
+import { execute } from "../services/executions"
+import { getUserResult, getUserToSwitch, switchUser } from "../user"
+import { getNlpResults } from "./nlpProvider"
 
-const PROVIDER_ID = 'adaptive-home-provider'
+const PROVIDER_ID = "adaptive-home-provider"
 
-export async function registerHome(): Promise<void> {
+export async function registerHome(): Promise<HomeRegistration> {
   const queryMinLength = 3
   const loadingResult = {
-    key: 'loading',
-    title: 'Searching...',
+    key: "loading",
+    title: "Searching...",
     data: {},
+    icon: ADAPTIVE_LOGO,
     actions: [],
-    template: CLITemplate.Plain
+    template: CLITemplate.Plain,
   }
   let lastResponse: CLISearchListenerResponse
 
   const onUserInput = async (
     request: CLISearchListenerRequest,
-    response: CLISearchListenerResponse
+    response: CLISearchListenerResponse,
   ): Promise<CLISearchResponse> => {
     let query = request.query.toLowerCase()
 
@@ -47,12 +52,12 @@ export async function registerHome(): Promise<void> {
     lastResponse = response
     lastResponse.open()
 
-    if (query.indexOf('/') === 0) {
+    if (query.indexOf("/") === 0) {
       await getNlpResults(query, request, response)
 
-      if (query.trim() === '/switch user') {
+      if (query.trim() === "/switch user") {
         return {
-          results: [getUserResult(getUserToSwitch())]
+          results: [getUserResult(getUserToSwitch())],
         }
       }
 
@@ -75,20 +80,20 @@ export async function registerHome(): Promise<void> {
   }
 
   const handleAppSelection = async (appEntry: App) => {
-    if (appEntry.manifestType === 'external') {
+    if (appEntry.manifestType === "external") {
       fin.System.launchExternalProcess({
         alias: appEntry.manifest,
         listener: (result: any) => {
-          console.log('the exit code', result.exitCode)
-        }
+          console.log("the exit code", result.exitCode)
+        },
       })
         .then((data: any) => {
-          console.info('Process launched: ', data)
+          console.info("Process launched: ", data)
         })
         .catch((e: any) => {
-          console.error('Process launch failed: ', e)
+          console.error("Process launch failed: ", e)
         })
-    } else if (appEntry.manifestType === 'trade-execution') {
+    } else if (appEntry.manifestType === "trade-execution") {
       if (lastResponse !== undefined && lastResponse !== null) {
         const {
           currencyPair,
@@ -96,9 +101,9 @@ export async function registerHome(): Promise<void> {
           valueDate,
           direction,
           notional,
-          dealtCurrency
+          dealtCurrency,
         } = appEntry as any
-        console.log('Action on execute', appEntry)
+        console.log("Action on execute", appEntry)
 
         await execute({
           currencyPair,
@@ -106,18 +111,21 @@ export async function registerHome(): Promise<void> {
           valueDate,
           direction,
           notional,
-          dealtCurrency
+          dealtCurrency,
         })
       }
-    } else if (appEntry.manifestType === 'switch-user') {
+    } else if (appEntry.manifestType === "switch-user") {
       switchUser()
       const userToSwitch = getUserToSwitch()
       if (lastResponse !== undefined && lastResponse !== null) {
         lastResponse.respond([getUserResult(userToSwitch)])
       }
-    } else if (appEntry.manifestType === 'url') {
+    } else if (appEntry.manifestType === "url") {
       let platform = getCurrentSync()
-      platform.createView({ url: appEntry.manifest, bounds: { width: 320, height: 180 } } as any)
+      platform.createView({
+        url: appEntry.manifest,
+        bounds: { width: 320, height: 180 },
+      } as any)
     } else {
       let platform = getCurrentSync()
       await platform.launchApp({ app: appEntry })
@@ -132,16 +140,16 @@ export async function registerHome(): Promise<void> {
         await handleAppSelection(result.data)
       }
     } else {
-      console.warn('Unable to execute result without data being passed')
+      console.warn("Unable to execute result without data being passed")
     }
   }
 
   const cliProvider: CLIProvider = {
-    title: 'Adaptive Workspace',
+    title: "Adaptive Workspace",
     id: PROVIDER_ID,
-    icon: `${BASE_URL}/images/icons/adaptive.png`,
+    icon: ADAPTIVE_LOGO,
     onUserInput: onUserInput,
-    onResultDispatch: onSelection
+    onResultDispatch: onSelection,
   }
 
   return Home.register(cliProvider)
