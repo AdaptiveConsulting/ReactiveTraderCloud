@@ -199,7 +199,7 @@ const constructSpotResult = (price: Price, currencyPair: CurrencyPair) => {
     data: {
       symbol,
       manifestType: "url",
-      manifest: `${VITE_RT_URL}/spot/${symbol}`,
+      manifest: `${VITE_RT_URL}/fx-spot/${symbol}`,
     },
     actions: [
       { name: LAUNCH_ACTION, hotkey: "enter" },
@@ -479,7 +479,7 @@ export const getNlpResults = async (
         icon: ADAPTIVE_LOGO,
         data: {
           manifestType: "url",
-          manifest: `${VITE_RT_URL}/tiles`,
+          manifest: `${VITE_RT_URL}/fx-spot/tiles`,
         },
         actions: [{ name: `Launch Live Rates`, hotkey: "enter" }],
         template: CLITemplate.Custom,
@@ -521,7 +521,7 @@ export const getNlpResults = async (
           icon: ADAPTIVE_LOGO,
           data: {
             manifestType: "url",
-            manifest: `${VITE_RT_URL}/blotter`,
+            manifest: `${VITE_RT_URL}/fx-spot/blotter`,
           },
           actions: [{ name: `Launch trades`, hotkey: "enter" }],
           template: CLITemplate.List,
@@ -651,7 +651,7 @@ export const getNlpResults = async (
               icon: ADAPTIVE_LOGO,
               data: {
                 manifestType: "url",
-                manifest: `${VITE_RT_URL}/blotter`,
+                manifest: `${VITE_RT_URL}/fx-spot/blotter`,
               },
               actions: [{ name: `Launch Trades`, hotkey: "enter" }],
               // @ts-ignore
