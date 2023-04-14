@@ -9,16 +9,11 @@ function getBaseUrl(dev: boolean) {
     : `${process.env.DOMAIN || ""}${process.env.URL_PATH || ""}` || ""
 }
 
-const copyOpenfinPlugin = (isDev: boolean): Plugin[] => {
-  const env = process.env.ENVIRONMENT || "local"
-
-  const reactiveAnalyticsUrl =
-    env === "local"
-      ? "http://localhost:3005"
-      : `https://${
-          env === "prod" ? "demo" : env
-        }-reactive-analytics.adaptivecluster.com`
-
+const copyOpenfinPlugin = (
+  isDev: boolean,
+  env: string,
+  reactiveAnalyticsUrl: string,
+): Plugin[] => {
   const transform: TransformOption | undefined = (contents) =>
     contents
       // Reactive Trader (FX) URL from .env
@@ -29,10 +24,8 @@ const copyOpenfinPlugin = (isDev: boolean): Plugin[] => {
           : getBaseUrl(isDev).replace("/workspace", ""),
       )
       // Reactive Analytics URL from .env
-      .replace(/<RA_URL>/g, process.env.VITE_RA_URL || reactiveAnalyticsUrl)
+      .replace(/<RA_URL>/g, reactiveAnalyticsUrl)
       .replace(/<BASE_URL>/g, getBaseUrl(isDev))
-      .replace(/<ENV_NAME>/g, env)
-      .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : env.toUpperCase())
       .replace('"<SHOW_PROVIDER_WINDOW>"', `${isDev}`)
 
   return viteStaticCopy({
@@ -48,13 +41,28 @@ const copyOpenfinPlugin = (isDev: boolean): Plugin[] => {
 }
 
 const setConfig = ({ mode }) => {
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
+  const env = process.env.ENVIRONMENT || "local"
+  const reactiveAnalyticsUrl =
+    env === "local"
+      ? "http://localhost:3005"
+      : `https://${
+          env === "prod" ? "demo" : env
+        }-reactive-analytics.adaptivecluster.com`
+
+  // ensure we have a RA URL in the env for OpenFin substitution
+  // AND in the code for use in Home search responses
+  process.env = {
+    VITE_RA_URL: reactiveAnalyticsUrl,
+    ...process.env,
+    ...loadEnv(mode, process.cwd()),
+  }
 
   const isDev = mode === "development"
-  const plugins = [copyOpenfinPlugin(isDev)]
+  const baseUrl = getBaseUrl(isDev)
+  const plugins = [copyOpenfinPlugin(isDev, env, process.env.VITE_RA_URL!)]
 
   return defineConfig({
-    base: getBaseUrl(isDev),
+    base: baseUrl,
     build: {
       sourcemap: true,
     },
