@@ -49,11 +49,11 @@ Below you can find links to the installers for the various platforms.
 
 ## Openfin Workspace
 
-| Environment | Windows                    | Mac OS                         |
-| ----------- | -------------------------- | ------------------------------ |
-| Demo        | [Generate][workspace-demo] | [Generate][workspace-demo-mac] |
-| UAT         | [Generate][workspace-uat]  | [Generate][workspace-uat-mac]  |
-| Dev         | [Generate][workspace-dev]  | [Generate][workspace-dev-mac]  |
+| Environment | Windows                    | Mac OS                                                                              |
+| ----------- | -------------------------- | ----------------------------------------------------------------------------------- |
+| Demo        | [Generate][workspace-demo] | [Download](./Reactive-Workspace-Demo.dmg?raw=true) / [Generate][workspace-demo-mac] |
+| UAT         | [Generate][workspace-uat]  | [Download](./Reactive-Workspace-UAT.dmg?raw=true) / [Generate][workspace-uat-mac]   |
+| Dev         | [Generate][workspace-dev]  | [Download](./Reactive-Workspace-Dev.dmg?raw=true) / [Generate][workspace-dev-mac]   |
 
 [workspace-demo]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-Demo&unzipped=true
 [workspace-uat]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fworkspace%2Fconfig%2Fworkspace.json&fileName=Reactive-Workspace-UAT&unzipped=true
