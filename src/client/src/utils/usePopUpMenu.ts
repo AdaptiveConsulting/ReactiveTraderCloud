@@ -30,12 +30,18 @@ export const usePopUpMenu = <T extends HTMLElement>(
   }
 
   useEffect(() => {
-    if (displayMenu && hidePopUpMenu.current) {
-      document.addEventListener("click", hidePopUpMenu.current)
-      return () => {
-        hidePopUpMenu.current &&
-          document.removeEventListener("click", hidePopUpMenu.current)
+    /**
+     * Wrapping in setTimeout is a workaround to solve this change introduced by
+     * React 18 - https://github.com/facebook/react/issues/23097
+     */
+    setTimeout(() => {
+      if (displayMenu && hidePopUpMenu.current) {
+        document.addEventListener("click", hidePopUpMenu?.current)
       }
+    }, 0)
+    return () => {
+      hidePopUpMenu.current &&
+        document.removeEventListener("click", hidePopUpMenu.current)
     }
   }, [displayMenu])
 
