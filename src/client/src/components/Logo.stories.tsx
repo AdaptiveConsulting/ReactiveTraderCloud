@@ -15,7 +15,7 @@ export default {
       control: "color",
     },
   },
-} as Meta<typeof Logo>
+} as unknown as Meta<typeof Logo>
 
 export const WithText = {
   args: {},

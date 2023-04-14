@@ -14,10 +14,8 @@ import { symbolBind, useTileCurrencyPair } from "../Tile.context"
 const VIEW_BOX_WIDTH = 200
 const VIEW_BOX_HEIGHT = 90
 
-const [size$, setSize] = createKeyedSignal<
-  string,
-  { width: number; height: number }
->()
+const [size$, setSize] =
+  createKeyedSignal<string, { width: number; height: number }>()
 
 const [useHistoricalPath, historicalGraph$] = symbolBind((symbol: string) =>
   combineLatest([

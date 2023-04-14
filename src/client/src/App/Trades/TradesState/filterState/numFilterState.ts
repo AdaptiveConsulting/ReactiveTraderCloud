@@ -62,7 +62,7 @@ const getNumFilterDefaults = (colDef: ColDef) => {
       ...valuesContainer,
       [field]: initialFilterContent,
     }
-  }, {} as Record<(typeof numberFields)[number], NumFilterContent>)
+  }, {} as Record<typeof numberFields[number], NumFilterContent>)
 }
 
 /**

@@ -100,8 +100,10 @@ const TradeDetails = styled.div`
 `
 
 const [quoteRequest$, sendQuote] =
-  createSignal<{ rfqId: number; dealerId: number }>()
-
+  createSignal<{
+    rfqId: number
+    dealerId: number
+  }>()
 quoteRequest$
   .pipe(
     withLatestFrom(price$),
