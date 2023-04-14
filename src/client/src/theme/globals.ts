@@ -14,6 +14,7 @@
  * Here we use "ress", a modern CSS reset based off normalize
  */
 import "ress"
+
 /**
  * Adding Typefaces
  *
@@ -25,10 +26,6 @@ import "ress"
  * benefit between maintainence, functional guarantees, and
  * trade offs in initial load times.
  */
-import "typeface-lato"
-import "typeface-montserrat"
-import "typeface-roboto"
-
 /**
  * Establishing a Baseline
  *
