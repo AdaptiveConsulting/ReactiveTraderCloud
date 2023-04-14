@@ -479,7 +479,7 @@ export const getNlpResults = async (
         icon: ADAPTIVE_LOGO,
         data: {
           manifestType: "url",
-          manifest: `${VITE_RT_URL}/fx-spot/tiles`,
+          manifest: `${VITE_RT_URL}/fx-tiles`,
         },
         actions: [{ name: `Launch Live Rates`, hotkey: "enter" }],
         template: CLITemplate.Custom,
@@ -521,7 +521,7 @@ export const getNlpResults = async (
           icon: ADAPTIVE_LOGO,
           data: {
             manifestType: "url",
-            manifest: `${VITE_RT_URL}/fx-spot/blotter`,
+            manifest: `${VITE_RT_URL}/fx-blotter`,
           },
           actions: [{ name: `Launch trades`, hotkey: "enter" }],
           template: CLITemplate.List,
@@ -651,7 +651,7 @@ export const getNlpResults = async (
               icon: ADAPTIVE_LOGO,
               data: {
                 manifestType: "url",
-                manifest: `${VITE_RT_URL}/fx-spot/blotter`,
+                manifest: `${VITE_RT_URL}/fx-blotter`,
               },
               actions: [{ name: `Launch Trades`, hotkey: "enter" }],
               // @ts-ignore
