@@ -74,8 +74,7 @@ export async function registerFxNotifications() {
   fin.InterApplicationBus.subscribe(
     { uuid: "*" },
     TOPIC_HIGHLIGHT_FX_BLOTTER,
-    (message: { tradeId: number }) =>
-      setFxTradeRowHighlight(message.tradeId.toString()),
+    (message: { tradeId: number }) => setFxTradeRowHighlight(message.tradeId),
   )
 
   addEventListener("notification-action", handleNotificationAction)
@@ -122,7 +121,7 @@ export function registerCreditBlotterUpdates() {
     { uuid: "*" },
     TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
     (message: { tradeId: number }) => {
-      setCreditTradeRowHighlight(message.tradeId.toString())
+      setCreditTradeRowHighlight(message.tradeId)
     },
   )
 }

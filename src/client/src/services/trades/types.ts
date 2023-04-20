@@ -49,6 +49,6 @@ export interface CreditTrade extends Trade {
 }
 
 export interface Trade {
-  tradeId: string
+  tradeId: number
   [prop: string]: unknown
 }

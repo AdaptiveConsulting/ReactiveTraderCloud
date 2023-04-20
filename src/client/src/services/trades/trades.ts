@@ -60,7 +60,7 @@ export const [useCreditTrades, creditTrades$] = bind(
             (quote) => quote.state === QuoteState.Accepted,
           )
           return {
-            tradeId: rfq.id.toString(),
+            tradeId: rfq.id,
             status: QuoteState.Accepted,
             tradeDate: new Date(Date.now()),
             direction: rfq.direction,
