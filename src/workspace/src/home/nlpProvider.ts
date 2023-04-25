@@ -13,7 +13,7 @@ import {
   significantDigitsNumberFormatter,
   DECIMAL_SEPARATOR,
 } from "../../../client/src/utils/formatNumber"
-import { BASE_URL, VITE_RT_URL } from "../consts"
+import { BASE_URL, VITE_RT_URL } from "@/consts"
 import {
   CurrencyPair,
   Direction,
