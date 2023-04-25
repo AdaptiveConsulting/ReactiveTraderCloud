@@ -17,11 +17,11 @@ env:
 
 jobs:
   build:
-    name: Build & deploy
+    name: Build & deploy from forked branch
 
     runs-on: ubuntu-20.04
 
-    if: "!github.event.pull_request.header.repo.fork"
+    if: "github.event.pull_request.header.repo.fork"
 
     steps:
       - name: Checkout code
@@ -64,13 +64,6 @@ jobs:
           npm run build
           npm run storybook:build
 
-      - name: Deploy (web)
-        run: |
-          gsutil -m \
-            -h "Cache-Control: no-cache" \
-            rsync -d -r dist \
-            gs://$BUCKET_WEB/branch/${{ steps.vars.outputs.branch }}
-
       - name: Build (OpenFin)
         env:
           DOMAIN: https://openfin.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
@@ -78,20 +71,6 @@ jobs:
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run openfin:build
-
-      - name: Deploy (OpenFin)
-        run: |
-          gsutil -m \
-            -h "Cache-Control: no-cache" \
-            rsync -d -r dist \
-            gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.branch }}
-
-      - name: Deploy (Launcher)
-        run: |
-          gsutil -m \
-            -h "Cache-Control: no-cache" \
-            rsync -d -r dist \
-            gs://$BUCKET_LAUNCHER/branch/${{ steps.vars.outputs.branch }}
 
       - name: Build (OpenFin - Workspace)
         env:
@@ -104,14 +83,6 @@ jobs:
           npm run build
         working-directory: src/workspace
 
-      - name: Deploy (OpenFin - Workspace)
-        run: |
-          gsutil -m \
-            -h "Cache-Control: no-cache" \
-            rsync -d -r dist \
-            gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.branch }}/workspace
-        working-directory: src/workspace
-
       - name: Build (Finsemble)
         env:
           DOMAIN: https://finsemble.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
@@ -119,10 +90,3 @@ jobs:
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: npm run finsemble:build
-
-      - name: Deploy (Finsemble)
-        run: |
-          gsutil -m \
-            -h "Cache-Control: no-cache" \
-            rsync -d -r dist \
-            gs://$BUCKET_FINSEMBLE/branch/${{ steps.vars.outputs.branch }}
