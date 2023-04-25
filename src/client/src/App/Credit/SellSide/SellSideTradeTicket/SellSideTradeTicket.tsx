@@ -5,6 +5,7 @@ import { Loader } from "@/components/Loader"
 import { useAdaptiveDealerId } from "@/services/credit"
 
 import { useSelectedRfqId } from "../sellSideState"
+import { focused$ } from "../utils/useIsFocused"
 import { SellSideTradeTicketTicketCore } from "./SellSideTradeTicketCore"
 
 const SellSideWrapper = styled.div`
@@ -74,7 +75,7 @@ const SellSideTradeTicketInner = () => {
 
 export const SellSideTradeTicket = () => (
   <SellSideWrapper>
-    <Subscribe fallback={<Loader />}>
+    <Subscribe fallback={<Loader />} source$={focused$}>
       <SellSideTradeTicketInner />
     </Subscribe>
   </SellSideWrapper>

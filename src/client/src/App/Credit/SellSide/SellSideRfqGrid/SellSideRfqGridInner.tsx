@@ -169,7 +169,7 @@ export const RfqGridInner = ({ caption }: RfqGridInner) => {
         </TableHead>
         <TableBody role="grid">
           {rfqs.length ? (
-            rfqs.map((row: RfqRow) => (
+            rfqs.map((row) => (
               <TableBodyRow
                 selected={row.id === selectedId}
                 highlight={row.id === highlightId}

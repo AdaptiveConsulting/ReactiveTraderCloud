@@ -19,6 +19,7 @@ import {
   selectedRfqId$,
   SellSideQuoteState,
 } from "../sellSideState"
+import { setFocused } from "../utils/useIsFocused"
 
 const ParametersWrapper = styled.div`
   padding: 8px;
@@ -155,13 +156,19 @@ export const SellSideTradeTicketParameters = ({
           )
         ) : (
           <ParameterInput
+            tabIndex={1}
             type="text"
+            data-testid="price-input"
             ref={ref}
             value={price.inputValue}
             disabled={state !== RfqState.Open}
             onChange={(event) => setPrice(event.currentTarget.value)}
             onFocus={(event) => {
               event.target.select()
+              setFocused(true)
+            }}
+            onBlur={() => {
+              setFocused(false)
             }}
           />
         )}
