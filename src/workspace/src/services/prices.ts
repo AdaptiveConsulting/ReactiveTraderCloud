@@ -1,9 +1,15 @@
-import { combineLatest, firstValueFrom, scan, switchMap, withLatestFrom } from 'rxjs'
-import { PriceTick, PricingService } from '../generated/TradingGateway'
-import { currencyPairSymbols$, getCurencyPair$ } from './currencyPairs'
+import {
+  combineLatest,
+  firstValueFrom,
+  scan,
+  switchMap,
+  withLatestFrom,
+} from "rxjs"
+import { PriceTick, PricingService } from "@/generated/TradingGateway"
+import { currencyPairSymbols$, getCurencyPair$ } from "./currencyPairs"
 
 export interface Price extends PriceTick {
-  lastMove: 'up' | 'down' | 'none'
+  lastMove: "up" | "down" | "none"
   spread: string
 }
 
@@ -12,16 +18,23 @@ const getPriceMovementType = (prevItem: Price, newItem: Price) => {
   const lastPrice = prevItem.mid
   const nextPrice = newItem.mid
   if (lastPrice < nextPrice) {
-    return 'up'
+    return "up"
   }
   if (lastPrice > nextPrice) {
-    return 'down'
+    return "down"
   }
   return prevPriceMove
 }
 
-const calculateSpread = (ask: number, bid: number, ratePrecision: number, pipsPosition: number) =>
-  ((ask - bid) * Math.pow(10, pipsPosition)).toFixed(ratePrecision - pipsPosition)
+const calculateSpread = (
+  ask: number,
+  bid: number,
+  ratePrecision: number,
+  pipsPosition: number,
+) =>
+  ((ask - bid) * Math.pow(10, pipsPosition)).toFixed(
+    ratePrecision - pipsPosition,
+  )
 
 const priceMapper = (price: PriceTick): Price => ({
   ask: price.ask,
@@ -30,8 +43,8 @@ const priceMapper = (price: PriceTick): Price => ({
   creationTimestamp: price.creationTimestamp,
   symbol: price.symbol,
   valueDate: price.valueDate,
-  lastMove: 'none',
-  spread: '0'
+  lastMove: "none",
+  spread: "0",
 })
 
 export const getPriceForSymbol$ = (symbol: string) =>
@@ -44,19 +57,21 @@ export const getPriceForSymbol$ = (symbol: string) =>
         price.ask,
         price.bid,
         currencyPair.ratePrecision,
-        currencyPair.pipsPosition
+        currencyPair.pipsPosition,
       )
 
       return price
-    }, {} as Price)
+    }, {} as Price),
   )
 
 export const prices$ = currencyPairSymbols$.pipe(
-  switchMap(symbols => {
-    const priceUpdates$ = symbols.map(symbol => PricingService.getPriceUpdates({ symbol }))
+  switchMap((symbols) => {
+    const priceUpdates$ = symbols.map((symbol) =>
+      PricingService.getPriceUpdates({ symbol }),
+    )
     return combineLatest(priceUpdates$).pipe(
       scan((acc, prices) => {
-        prices.map(priceMapper).forEach(price => {
+        prices.map(priceMapper).forEach((price) => {
           if (acc.has(price.symbol)) {
             price.lastMove = getPriceMovementType(acc.get(price.symbol)!, price)
           }
@@ -64,9 +79,9 @@ export const prices$ = currencyPairSymbols$.pipe(
         })
 
         return acc
-      }, new Map<string, Price>())
+      }, new Map<string, Price>()),
     )
-  })
+  }),
 )
 
 export const getMarket = () => firstValueFrom(prices$)

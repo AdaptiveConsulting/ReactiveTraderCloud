@@ -9,14 +9,14 @@ import {
   CLIDispatchedSearchResult,
   HomeRegistration,
 } from "@openfin/workspace"
-import { deletePage, getPage, launchPage } from "../browser"
+import { deletePage, getPage, launchPage } from "@/browser"
 import {
   ADAPTIVE_LOGO,
   getAppsAndPages,
   HOME_ACTION_DELETE_PAGE,
 } from "./utils"
-import { execute } from "../services/executions"
-import { getUserResult, getUserToSwitch, switchUser } from "../user"
+import { execute } from "@/services/executions"
+import { getUserResult, getUserToSwitch, switchUser } from "@/user"
 import { getNlpResults } from "./nlpProvider"
 
 const PROVIDER_ID = "adaptive-home-provider"

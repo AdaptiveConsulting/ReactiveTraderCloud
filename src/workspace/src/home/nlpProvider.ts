@@ -19,19 +19,19 @@ import {
   Direction,
   Trade,
   TradeStatus,
-} from "../generated/TradingGateway"
-import { executing$, executionResponse$ } from "../services/executions"
-import { getNlpIntent, NlpIntentType } from "../services/nlpService"
-import { getPriceForSymbol$, Price, prices$ } from "../services/prices"
-import { tradesStream$ } from "../services/trades"
+} from "@/generated/TradingGateway"
+import { executing$, executionResponse$ } from "@/services/executions"
+import { getNlpIntent, NlpIntentType } from "@/services/nlpService"
+import { getPriceForSymbol$, Price, prices$ } from "@/services/prices"
+import { tradesStream$ } from "@/services/trades"
 import {
   createButton,
   createContainer,
   createImage,
   createText,
   createTextContainer,
-} from "../templates"
-import { currencyPairs$, getCurencyPair$ } from "../services/currencyPairs"
+} from "@/templates"
+import { currencyPairs$, getCurencyPair$ } from "@/services/currencyPairs"
 import { ADAPTIVE_LOGO } from "./utils"
 
 const MOVEMENT_UP_ICON = `${BASE_URL}/images/icons/up.svg`
