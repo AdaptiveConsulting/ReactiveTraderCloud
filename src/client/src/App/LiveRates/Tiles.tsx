@@ -23,7 +23,7 @@ export const [useFilteredCurrencyPairs, filteredCurrencyPairs$] = bind(
   combineLatest([currencyPairs$, selectedCurrency$, tearOutState$]).pipe(
     map(([currencyPairs, selectedCurrency, tearOutState]) => {
       const result = { ...currencyPairs }
-
+      console.log("tearoutState: ", tearOutState)
       for (const symbol of Object.keys(result)) {
         if (tearOutState[symbol]) {
           delete result[symbol]
@@ -56,6 +56,12 @@ export const Tiles = () => {
   const tearOutEntry = useTearOutEntry()
 
   useEffect(() => {
+    console.log(
+      "tearoutEntry: ",
+      tearOutEntry,
+      "\ncurrencyPairs: ",
+      currencyPairs,
+    )
     if (tearOutEntry) {
       const [symbol, tornOut, tileRef] = tearOutEntry
       if (tornOut) {

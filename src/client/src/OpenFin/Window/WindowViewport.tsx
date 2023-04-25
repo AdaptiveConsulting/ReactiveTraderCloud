@@ -3,6 +3,9 @@ import { useEffect } from "react"
 
 import { WithChildren } from "@/utils/utilityTypes"
 
+import { mainOpenFinWindowName } from "../utils/window"
+import tileWindowNames from "@/OpenFin/utils/tileWindowNames"
+
 const LAYOUT_ITEMS = {
   Blotter: "stream",
   Analytics: "chart-line",
@@ -21,6 +24,22 @@ const getEmptyContent = (key: LayoutKey, useIcon = true) => {
   return key
 }
 
+const closeTileWindows = async () => {
+  const childWindowNames = (
+    await fin.Application.getCurrentSync().getChildWindows()
+  ).map((window) => window.identity.name)
+  const openTiles = childWindowNames.filter((windowName) =>
+    tileWindowNames.has(windowName),
+  )
+  openTiles.forEach((tileName) => {
+    const tileWindow = fin.Window.wrapSync({
+      uuid: fin.me.uuid,
+      name: tileName,
+    })
+    tileWindow.close()
+  })
+}
+
 export const WindowViewport = ({ children }: WithChildren) => {
   //TODO: Remove this HACK once OpenFin exposes content of "empty" layout containers...
   useEffect(() => {
@@ -30,6 +49,25 @@ export const WindowViewport = ({ children }: WithChildren) => {
       ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "attach", label })
+        const viewName = e.viewIdentity.name
+        switch (viewName) {
+          case "Tiles":
+            setTilesPoppedOut(false)
+            // console.warn("tile view attached!\nopen tiles: ", openTiles)
+            closeTileWindows()
+            break
+          case "Blotter":
+            setBlotterPoppedOut(false)
+            break
+          case "Analytics":
+            setAnalyticsPoppedOut(false)
+            break
+        }
+        setNumPoppedOutSections(numPoppedOutSections - 1)
+        // console.warn(
+        //   "view attached!\npoppedoutSections: ",
+        //   numPoppedOutSections,
+        // )
       }
 
       const listenerViewDetached = (
@@ -37,6 +75,35 @@ export const WindowViewport = ({ children }: WithChildren) => {
       ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "detach", label })
+        const viewName = e.viewIdentity.name
+        switch (viewName) {
+          case "Tiles":
+            setTilesPoppedOut(true)
+            break
+          case "Blotter":
+            setBlotterPoppedOut(true)
+            break
+          case "Analytics":
+            setAnalyticsPoppedOut(true)
+            break
+        }
+        setNumPoppedOutSections(numPoppedOutSections + 1)
+        // console.warn(
+        //   "view detached!\npoppedoutSections: ",
+        //   numPoppedOutSections,
+        // )
+        // focus the view so it doesn't go behind the main window on popout
+        const view = fin.View.wrapSync({ uuid: fin.me.uuid, name: viewName })
+        await view.focus()
+      }
+
+      const listenerViewDestroyed = (e: any) => {
+        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+        // ReactGA.event({ category: "RT - Tab", action: "detach", label })
+        console.warn(
+          "view destroyed!\npoppedoutSections: ",
+          numPoppedOutSections,
+        )
       }
 
       const listenerViewHidden = (
@@ -64,6 +131,7 @@ export const WindowViewport = ({ children }: WithChildren) => {
       ) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "open", label })
+        // console.warn("window created!\nwindow: ", e, "\n")
       }
 
       const listenerWindowClosed = (
@@ -71,6 +139,55 @@ export const WindowViewport = ({ children }: WithChildren) => {
       ) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "close", label })
+        const windowName = e.name
+        if (tileWindowNames.has(windowName)) return
+        const layout = fin.Platform.Layout.wrapSync({
+          name: mainOpenFinWindowName,
+          uuid: fin.me.uuid,
+        })
+        if (numPoppedOutSections == 1) layout.replace(mainLayout)
+        else {
+          // this solution only works if the child window of the other popped out section is the last one in the list of child windows
+          const childWindows =
+            await fin.Application.getCurrentSync().getChildWindows()
+          const otherSectionWindow = childWindows.pop()
+          const views = (await otherSectionWindow?.getCurrentViews()) || []
+          const view = views[0]
+          const otherPoppedOutSection = view.identity.name
+          // console.warn(
+          //   "window closed!\npoppedoutsections: ",
+          //   numPoppedOutSections,
+          //   "\nwindow: ",
+          //   e,
+          //   "\nother popped out section: ",
+          //   otherPoppedOutSection,
+          //   "\ntilesPoppedOut: ",
+          //   tilesPoppedOut,
+          //   "\nblotterPoppedOut: ",
+          //   blotterPoppedOut,
+          //   "\nanalyticsPoppedOut: ",
+          //   analyticsPoppedOut,
+          // )
+          if (tilesPoppedOut && blotterPoppedOut) {
+            if (otherPoppedOutSection === "Tiles") {
+              layout.replace(blotterAnalyticsLayout)
+            } else {
+              layout.replace(tilesAnalyticsLayout)
+            }
+          } else if (tilesPoppedOut && analyticsPoppedOut) {
+            if (otherPoppedOutSection === "Tiles") {
+              layout.replace(blotterAnalyticsLayout)
+            } else {
+              layout.replace(tilesBlotterLayout)
+            }
+          } else if (blotterPoppedOut && analyticsPoppedOut) {
+            if (otherPoppedOutSection === "Blotter") {
+              layout.replace(tilesAnalyticsLayout)
+            } else {
+              layout.replace(tilesBlotterLayout)
+            }
+          }
+        }
       }
 
       const listenerWindowClosing = ({
@@ -93,6 +210,7 @@ export const WindowViewport = ({ children }: WithChildren) => {
         .then((window) => {
           window.addListener("view-attached", listenerViewAttached)
           window.addListener("view-detached", listenerViewDetached)
+          window.addListener("view-destroyed", listenerViewDestroyed)
         })
         .catch((ex) => console.warn(ex))
 

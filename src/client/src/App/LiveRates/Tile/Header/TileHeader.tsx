@@ -95,6 +95,7 @@ export const HeaderInner = forwardRef<HTMLDivElement, HeaderProps>(
 export const Header = () => {
   const ref = useRef<HTMLDivElement>(null)
   const { currencyPair, isTornOut, supportsTearOut } = useTileContext()
+  console.log("tileContext: ", useTileContext())
   const date = useDate(currencyPair.symbol)
   const onClick = () => {
     ref.current && tearOut(currencyPair.symbol, !isTornOut, ref.current)
