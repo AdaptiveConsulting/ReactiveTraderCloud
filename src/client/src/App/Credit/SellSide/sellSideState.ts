@@ -66,10 +66,6 @@ export const [useHighlightedRfqId] = bind(
   null,
 )
 
-const [_selectedRfqId$, selectRfqId] = createSignal<number | null>()
-export { selectRfqId }
-export const [useSelectedRfqId, selectedRfqId$] = bind(_selectedRfqId$, null)
-
 export enum SellSideQuotesTab {
   All = "All RFQs",
   Live = "Live RFQs",
@@ -148,3 +144,10 @@ const _sellSideRfqs$ = combineLatest([
 )
 
 export const [useSellSideRfqs, sellSideRfqs$] = bind(_sellSideRfqs$)
+
+const [_selectedRfqId$, selectRfqId] = createSignal<number | null>()
+export { selectRfqId }
+export const [useSelectedRfqId, selectedRfqId$] = bind(
+  merge(_selectedRfqId$, sellSideRfqs$.pipe(map((rfqs) => rfqs.at(0)?.id))),
+  null,
+)

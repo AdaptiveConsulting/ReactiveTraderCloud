@@ -159,8 +159,8 @@ export const SellSideTradeTicketFooter = ({
       {state === RfqState.Open && (
         <>
           <PassButton
-            tabIndex={2}
-            disabled={!!quote}
+            // disabled={!!quote} //reinstate when pass feature is implemented
+            disabled={true}
             onClick={() => {
               console.log("Send message")
             }}
@@ -177,7 +177,6 @@ export const SellSideTradeTicketFooter = ({
             )}
           </TimerWrapper>
           <SendQuoteButton
-            tabIndex={1}
             ref={clickElementRef}
             direction={direction}
             onClick={() => sendQuote({ rfqId, dealerId })}

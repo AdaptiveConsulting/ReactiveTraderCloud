@@ -169,7 +169,7 @@ export const RfqGridInner = ({ caption }: RfqGridInner) => {
         </TableHead>
         <TableBody role="grid">
           {rfqs.length ? (
-            rfqs.map((row: RfqRow) => (
+            rfqs.map((row, index) => (
               <TableBodyRow
                 selected={row.id === selectedId}
                 highlight={row.id === highlightId}
@@ -182,6 +182,7 @@ export const RfqGridInner = ({ caption }: RfqGridInner) => {
                 {rfqColFields.map((field) => {
                   const columnDefinition = rfqColDef[field as ColKey]
                   const value = row[field as ColKey]
+                  console.log(index, row.cpy)
                   return (
                     <TableBodyCell
                       key={field as string}

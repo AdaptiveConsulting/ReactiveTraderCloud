@@ -32,7 +32,7 @@ test.describe("Credit", () => {
   })
 
   test.describe("New RFQ", () => {
-    test("When I select Googl instrument and click Send RFQ button then I should see a GOOGL RFQ created on the RFQ sections and I can accept any value @smoke", async () => {
+    test("Create RFQ for GOOGL @smoke", async () => {
       test.setTimeout(120000)
 
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
@@ -93,7 +93,7 @@ test.describe("Credit", () => {
   })
 
   test.describe("Sell side", () => {
-    test.only("Sell side ticket", async ({ context }) => {
+    test("Sell side ticket", async ({ context }) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage
         .locator("[data-testid='search-result-item']")
@@ -102,7 +102,6 @@ test.describe("Credit", () => {
 
       const quantity = newRfqPage.locator("[data-testid='quantity']")
       await quantity.type("2")
-      await quantity.blur()
 
       await newRfqPage
         .locator("span")
@@ -125,7 +124,6 @@ test.describe("Credit", () => {
 
       await sellSidePage.getByTestId("price-input").fill("100")
 
-      await sellSidePage.keyboard.press("Tab")
       await sellSidePage.keyboard.press("Enter")
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText("$100")
