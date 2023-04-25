@@ -111,7 +111,6 @@
                   "content": [
                     {
                       "type": "stack",
-                      "width": 50,
                       "height": 50,
                       "isClosable": true,
                       "title": "",
@@ -146,7 +145,7 @@
                             "name": "FX-Blotter"
                           },
                           "isClosable": true,
-                          "title": "Blotter"
+                          "title": "FX-Blotter"
                         }
                       ]
                     }
@@ -155,7 +154,6 @@
                 {
                   "type": "stack",
                   "width": 30,
-                  "height": 100,
                   "isClosable": true,
                   "title": "",
                   "activeItemIndex": 0,

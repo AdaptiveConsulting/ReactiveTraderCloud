@@ -9,11 +9,6 @@ test.describe("Spot Tile", () => {
 
   test.beforeAll(async ({ context, fxPagesRec }, testInfo) => {
     if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
-      const mainWindow = fxPagesRec["mainWindow"]
-      await mainWindow.evaluate(async () => {
-        window.fin.Window.getCurrentSync().maximize()
-      })
-
       tilePage = fxPagesRec["fx-tiles"]
       blotterPage = fxPagesRec["fx-blotter"]
     } else {

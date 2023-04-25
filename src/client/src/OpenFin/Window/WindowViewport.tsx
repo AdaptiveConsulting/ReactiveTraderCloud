@@ -1,10 +1,16 @@
-import { WindowEvent } from "@openfin/core/src/api/events/base"
+import { ApplicationEvents } from "@openfin/core/src/api/events/application.js"
+import { WindowEvent } from "@openfin/core/src/api/events/base.js"
+import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 
 import { WithChildren } from "@/utils/utilityTypes"
 
-import { mainOpenFinWindowName } from "../utils/window"
-import tileWindowNames from "@/OpenFin/utils/tileWindowNames"
+import {
+  CLOSING_WINDOW,
+  OPENING_WINDOW,
+  registerWindowEvent,
+  windows$,
+} from "./state"
 
 const LAYOUT_ITEMS = {
   Blotter: "stream",
@@ -24,23 +30,7 @@ const getEmptyContent = (key: LayoutKey, useIcon = true) => {
   return key
 }
 
-const closeTileWindows = async () => {
-  const childWindowNames = (
-    await fin.Application.getCurrentSync().getChildWindows()
-  ).map((window) => window.identity.name)
-  const openTiles = childWindowNames.filter((windowName) =>
-    tileWindowNames.has(windowName),
-  )
-  openTiles.forEach((tileName) => {
-    const tileWindow = fin.Window.wrapSync({
-      uuid: fin.me.uuid,
-      name: tileName,
-    })
-    tileWindow.close()
-  })
-}
-
-export const WindowViewport = ({ children }: WithChildren) => {
+const WindowViewportComponent = ({ children }: WithChildren) => {
   //TODO: Remove this HACK once OpenFin exposes content of "empty" layout containers...
   useEffect(() => {
     if (!fin.me.isView) {
@@ -49,25 +39,6 @@ export const WindowViewport = ({ children }: WithChildren) => {
       ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "attach", label })
-        const viewName = e.viewIdentity.name
-        switch (viewName) {
-          case "Tiles":
-            setTilesPoppedOut(false)
-            // console.warn("tile view attached!\nopen tiles: ", openTiles)
-            closeTileWindows()
-            break
-          case "Blotter":
-            setBlotterPoppedOut(false)
-            break
-          case "Analytics":
-            setAnalyticsPoppedOut(false)
-            break
-        }
-        setNumPoppedOutSections(numPoppedOutSections - 1)
-        // console.warn(
-        //   "view attached!\npoppedoutSections: ",
-        //   numPoppedOutSections,
-        // )
       }
 
       const listenerViewDetached = (
@@ -75,47 +46,33 @@ export const WindowViewport = ({ children }: WithChildren) => {
       ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "detach", label })
-        const viewName = e.viewIdentity.name
-        switch (viewName) {
-          case "Tiles":
-            setTilesPoppedOut(true)
-            break
-          case "Blotter":
-            setBlotterPoppedOut(true)
-            break
-          case "Analytics":
-            setAnalyticsPoppedOut(true)
-            break
-        }
-        setNumPoppedOutSections(numPoppedOutSections + 1)
-        // console.warn(
-        //   "view detached!\npoppedoutSections: ",
-        //   numPoppedOutSections,
-        // )
-        // focus the view so it doesn't go behind the main window on popout
-        const view = fin.View.wrapSync({ uuid: fin.me.uuid, name: viewName })
-        await view.focus()
-      }
 
-      const listenerViewDestroyed = (e: any) => {
-        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
-        // ReactGA.event({ category: "RT - Tab", action: "detach", label })
-        console.warn(
-          "view destroyed!\npoppedoutSections: ",
-          numPoppedOutSections,
+        //openfin event types are not up to date
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        fin.View.wrap({ uuid: fin.me.uuid, name: e.viewIdentity.name }).then(
+          (view) => view.focus(),
         )
       }
 
-      const listenerViewHidden = (
-        _: WindowEvent<"application", "view-hidden">,
-      ) => {
+      const listenerViewDestroyed = (_: WindowEvent<"window", string>) => {
+        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+        // ReactGA.event({ category: "RT - Tab", action: "destroyed", label })
+      }
+
+      const listenerViewHidden = (_: ApplicationEvents["view-hidden"]) => {
+        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+        // ReactGA.event({ category: "RT - Tab", action: "hidden", label })
         const layoutItems: HTMLCollectionOf<Element> =
           document.getElementsByClassName("lm_item")
+
         for (const idx in layoutItems) {
           const layoutItem = layoutItems[idx]
+
           if (layoutItem && layoutItem.querySelector) {
             const placeholder = layoutItem.querySelector(".wrapper_title")
             const tab = layoutItem.querySelector(".lm_tab.lm_active .lm_title")
+
             if (placeholder && tab) {
               placeholder.innerHTML = getEmptyContent(
                 tab.innerHTML as LayoutKey,
@@ -131,63 +88,42 @@ export const WindowViewport = ({ children }: WithChildren) => {
       ) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "open", label })
-        // console.warn("window created!\nwindow: ", e, "\n")
+
+        fin.Window.wrap({ uuid, name }).then((newWindow) => {
+          newWindow.addListener("view-attached", (e) => {
+            registerWindowEvent({
+              //openfin event types are not up to date
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-ignore
+              window: { name, view: e.viewIdentity.name },
+              type: OPENING_WINDOW,
+            })
+          })
+        })
       }
 
-      const listenerWindowClosed = (
-        _: WindowEvent<"application", "window-closed">,
-      ) => {
+      const listenerWindowClosing = ({
+        name,
+        uuid,
+      }: WindowEvent<"application", "window-closing">) => {
+        //const label: string = (e || {}).name || "unknown"
+        // ReactGA.event({ category: "RT - Window", action: "closing", label })
+
+        fin.Window.wrap({ uuid, name }).then((closingWindow) => {
+          closingWindow.removeAllListeners()
+        })
+      }
+
+      const listenerWindowClosed = ({
+        name,
+      }: WindowEvent<"application", "window-closed">) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "close", label })
-        const windowName = e.name
-        if (tileWindowNames.has(windowName)) return
-        const layout = fin.Platform.Layout.wrapSync({
-          name: mainOpenFinWindowName,
-          uuid: fin.me.uuid,
+
+        registerWindowEvent({
+          window: { name },
+          type: CLOSING_WINDOW,
         })
-        if (numPoppedOutSections == 1) layout.replace(mainLayout)
-        else {
-          // this solution only works if the child window of the other popped out section is the last one in the list of child windows
-          const childWindows =
-            await fin.Application.getCurrentSync().getChildWindows()
-          const otherSectionWindow = childWindows.pop()
-          const views = (await otherSectionWindow?.getCurrentViews()) || []
-          const view = views[0]
-          const otherPoppedOutSection = view.identity.name
-          // console.warn(
-          //   "window closed!\npoppedoutsections: ",
-          //   numPoppedOutSections,
-          //   "\nwindow: ",
-          //   e,
-          //   "\nother popped out section: ",
-          //   otherPoppedOutSection,
-          //   "\ntilesPoppedOut: ",
-          //   tilesPoppedOut,
-          //   "\nblotterPoppedOut: ",
-          //   blotterPoppedOut,
-          //   "\nanalyticsPoppedOut: ",
-          //   analyticsPoppedOut,
-          // )
-          if (tilesPoppedOut && blotterPoppedOut) {
-            if (otherPoppedOutSection === "Tiles") {
-              layout.replace(blotterAnalyticsLayout)
-            } else {
-              layout.replace(tilesAnalyticsLayout)
-            }
-          } else if (tilesPoppedOut && analyticsPoppedOut) {
-            if (otherPoppedOutSection === "Tiles") {
-              layout.replace(blotterAnalyticsLayout)
-            } else {
-              layout.replace(tilesBlotterLayout)
-            }
-          } else if (blotterPoppedOut && analyticsPoppedOut) {
-            if (otherPoppedOutSection === "Blotter") {
-              layout.replace(tilesAnalyticsLayout)
-            } else {
-              layout.replace(tilesBlotterLayout)
-            }
-          }
-        }
       }
 
       const listenerWindowClosing = ({
@@ -219,6 +155,7 @@ export const WindowViewport = ({ children }: WithChildren) => {
           app.addListener("view-hidden", listenerViewHidden)
           app.addListener("window-closing", listenerWindowClosing)
           app.addListener("window-closed", listenerWindowClosed)
+          app.addListener("window-closing", listenerWindowClosing)
           app.addListener("window-created", listenerWindowCreated)
         })
         .catch((ex) => console.warn(ex))
@@ -265,4 +202,12 @@ export const WindowViewport = ({ children }: WithChildren) => {
   }, [])
 
   return <>{children}</>
+}
+
+export const WindowViewport = ({ children }: WithChildren) => {
+  return (
+    <Subscribe source$={windows$}>
+      <WindowViewportComponent>{children}</WindowViewportComponent>
+    </Subscribe>
+  )
 }
