@@ -117,10 +117,7 @@ test.describe("Credit", () => {
 
       const sellSidePage = await pagePromise
 
-      await sellSidePage
-        .getByText(/New RFQ/)
-        .first()
-        .click()
+      await sellSidePage.waitForSelector("text=New RFQ")
 
       await sellSidePage.getByTestId("price-input").fill("100")
 

@@ -1,7 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { combineLatest, merge } from "rxjs"
-import { delay, map, startWith } from "rxjs/operators"
+import { delay, filter, map, startWith } from "rxjs/operators"
 
 import { HIGHLIGHT_ROW_FLASH_TIME } from "@/constants"
 import { QuoteState, RfqState } from "@/generated/TradingGateway"
@@ -148,6 +148,12 @@ export const [useSellSideRfqs, sellSideRfqs$] = bind(_sellSideRfqs$)
 const [_selectedRfqId$, selectRfqId] = createSignal<number | null>()
 export { selectRfqId }
 export const [useSelectedRfqId, selectedRfqId$] = bind(
-  merge(_selectedRfqId$, sellSideRfqs$.pipe(map((rfqs) => rfqs.at(0)?.id))),
+  merge(
+    _selectedRfqId$,
+    sellSideRfqs$.pipe(
+      map((rfqs) => rfqs.at(0)?.id),
+      filter(Boolean),
+    ),
+  ),
   null,
 )
