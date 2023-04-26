@@ -4,7 +4,7 @@ import { CreditTrade } from "../types"
 
 export const mockCreditTrades: CreditTrade[] = [
   {
-    tradeId: "1111111111",
+    tradeId: 1111111111,
     direction: Direction.Buy,
     tradeDate: new Date("2021-01-13T17:32:12.6003777+00:00"),
     status: QuoteState.Accepted,
@@ -16,7 +16,7 @@ export const mockCreditTrades: CreditTrade[] = [
     unitPrice: 100.65,
   },
   {
-    tradeId: "2222222222",
+    tradeId: 2222222222,
     direction: Direction.Buy,
     tradeDate: new Date("2021-01-13T17:32:26.7011799+00:00"),
     status: QuoteState.Accepted,
@@ -28,7 +28,7 @@ export const mockCreditTrades: CreditTrade[] = [
     unitPrice: 100.65,
   },
   {
-    tradeId: "3333333333",
+    tradeId: 3333333333,
     direction: Direction.Buy,
     tradeDate: new Date("2021-01-13T20:02:39.4410315+00:00"),
     status: QuoteState.Accepted,

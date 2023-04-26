@@ -3,6 +3,6 @@
 
 import { setCreditTradeRowHighlight } from "@/App/Trades/TradesState"
 
-export function handleViewTrade(rfqId: string) {
+export function handleViewTrade(rfqId: number) {
   setCreditTradeRowHighlight(rfqId)
 }

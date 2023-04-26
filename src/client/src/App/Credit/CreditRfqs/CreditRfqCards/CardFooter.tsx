@@ -62,7 +62,7 @@ export const AcceptedFooterContent = ({
       </AcceptedCardState>
       <ViewTrade
         onClick={() => {
-          handleViewTrade(rfqId.toString())
+          handleViewTrade(rfqId)
         }}
         data-testid="view-trade"
       >

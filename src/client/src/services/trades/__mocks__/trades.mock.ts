@@ -45,7 +45,7 @@ export const mockRawTrades = {
 
 export const mockTrades: FxTrade[] = [
   {
-    tradeId: "1111111111",
+    tradeId: 1111111111,
     traderName: "LMO",
     symbol: "GBPUSD",
     notional: 1_000_000,
@@ -57,7 +57,7 @@ export const mockTrades: FxTrade[] = [
     status: TradeStatus.Done,
   },
   {
-    tradeId: "2222222222",
+    tradeId: 2222222222,
     traderName: "LMO",
     symbol: "USDJPY",
     notional: 1_000_000,
@@ -69,7 +69,7 @@ export const mockTrades: FxTrade[] = [
     status: TradeStatus.Pending,
   },
   {
-    tradeId: "3333333333",
+    tradeId: 3333333333,
     traderName: "EDO",
     symbol: "USDJPY",
     notional: 10_000_000,
@@ -83,7 +83,7 @@ export const mockTrades: FxTrade[] = [
 ]
 
 export const nextTrade = {
-  tradeId: "4444444444",
+  tradeId: 4444444444,
   traderName: "EDO",
   symbol: "USDJPY",
   notional: 1_000_000,

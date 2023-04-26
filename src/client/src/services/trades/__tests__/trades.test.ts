@@ -132,7 +132,7 @@ describe("trades", () => {
         tradesService.creditTrades$.subscribe((value) => {
           expect(value).toEqual([
             {
-              tradeId: "3",
+              tradeId: 3,
               status: "Accepted",
               tradeDate: expect.any(Date),
               direction: "Buy",
@@ -144,7 +144,7 @@ describe("trades", () => {
               unitPrice: 88,
             },
             {
-              tradeId: "2",
+              tradeId: 2,
               status: "Accepted",
               tradeDate: expect.any(Date),
               direction: "Buy",

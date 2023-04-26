@@ -347,13 +347,13 @@ export const [useFilterFields] = bind(
  * Signal to capture a tradeId of row to highlight in FX blotter
  */
 export const [fxTradeRowHighlight$, setFxTradeRowHighlight] =
-  createSignal<string>()
+  createSignal<number>()
 
 /**
  * Signal to capture a tradeId of row to highlight in Credit blotter
  */
 export const [creditTradeRowHighlight$, setCreditTradeRowHighlight] =
-  createSignal<string>()
+  createSignal<number>()
 
 /**
  * Emit tradeId of new trades after the initial load

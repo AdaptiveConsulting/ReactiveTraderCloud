@@ -274,7 +274,7 @@ export const TradesGridInner = <Row extends Trade>({
 }
 
 export interface TradesGridInnerProps<Row extends Trade> {
-  highlightedRow?: string | null
+  highlightedRow?: number | null
   onRowClick?: (row: Row) => void
   isRowCrossed?: (row: Row) => boolean
   caption: string
