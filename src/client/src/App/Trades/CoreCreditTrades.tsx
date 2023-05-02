@@ -1,9 +1,7 @@
 import { Subscribe } from "@react-rxjs/core"
-import { useEffect } from "react"
 import styled from "styled-components"
 
 import { Loader } from "@/components/Loader"
-import { registerCreditBlotterUpdates } from "@/notifications"
 import { CreditTrade, creditTrades$ } from "@/services/trades"
 
 import { ColDefContext, ColFieldsContext, TradesStreamContext } from "./Context"
@@ -26,10 +24,6 @@ const TradesGrid = (props: TradesGridInnerProps<CreditTrade>) => {
 }
 
 const CreditTrades = () => {
-  useEffect(() => {
-    registerCreditBlotterUpdates()
-  }, [])
-
   return (
     <Subscribe fallback={<Loader ariaLabel="Loading trades blotter" />}>
       <ColFieldsContext.Provider value={creditColFields}>

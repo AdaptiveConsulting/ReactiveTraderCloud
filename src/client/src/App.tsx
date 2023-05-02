@@ -6,7 +6,10 @@ import GlobalStyle from "@/theme/globals"
 
 import { GA_TRACKING_ID } from "./constants"
 import { gaDimension, getMainApp } from "./main"
-import { registerFxNotifications } from "./notifications"
+import {
+  registerCreditBlotterUpdates,
+  registerFxNotifications,
+} from "./notifications"
 import { initConnection } from "./services/connection"
 import { checkTradingGatewayCompatibility } from "./services/tradingGatewayCompatibility"
 
@@ -20,6 +23,7 @@ export async function initApp() {
   checkTradingGatewayCompatibility()
 
   registerFxNotifications()
+  registerCreditBlotterUpdates()
 
   ReactDOM.render(
     <StrictMode>
