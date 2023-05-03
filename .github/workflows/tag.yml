@@ -28,10 +28,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set Node to v20
+      - name: Set Node to v16
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 16
 
       - name: Set variables
         id: vars
