@@ -4,7 +4,7 @@ import {
   create,
   NotificationActionEvent,
 } from "openfin-notifications"
-import { filter, map, Subscription, withLatestFrom } from "rxjs"
+import { Subscription } from "rxjs"
 
 import {
   setCreditTradeRowHighlight,
@@ -17,13 +17,11 @@ import {
 } from "@/services/executions"
 import { formatNumber } from "@/utils"
 
-import { QuoteBody } from "./generated/TradingGateway"
 import {
-  acceptedCreditRfq$,
-  creditRfqsById$,
+  acceptedRfqWithQuote$,
   lastQuoteReceived$,
   QuoteDetails,
-  RfqDetails,
+  RfqWithQuote,
 } from "./services/credit"
 import { constructUrl } from "./utils/url"
 
@@ -63,7 +61,7 @@ const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
   })
 }
 
-export const sendCreditTradeNotificaton = ({ rfq, quote }: RfqWithQuote) => {
+const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {
   const notification = {
     ...rfq,
   }
@@ -159,23 +157,6 @@ const handleCreditTradeNotification = (event: NotificationActionEvent) => {
   }
 }
 
-interface RfqWithQuote {
-  rfq: RfqDetails
-  quote: QuoteBody
-}
-
-export const latestCreditTrade$ = acceptedCreditRfq$.pipe(
-  withLatestFrom(creditRfqsById$),
-  //get rfq with same quoteid as acceptedCreditRfq
-  map(([{ quoteId }, rfqs]) => {
-    return Object.values(rfqs).reduce((acc, rfq) => {
-      const quote = rfq.quotes.find((quote) => quoteId === quote.id)
-      return quote ? { quote, rfq } : acc
-    }, {} as RfqWithQuote)
-  }),
-  filter(Boolean),
-)
-
 export async function registerCreditBlotterUpdates() {
   fin.InterApplicationBus.subscribe(
     { uuid: "*" },
@@ -188,7 +169,7 @@ export async function registerCreditBlotterUpdates() {
 
   addEventListener("notification-action", handleCreditTradeNotification)
 
-  latestCreditTrade$.subscribe((rfq) => {
-    sendCreditTradeNotificaton(rfq)
+  acceptedRfqWithQuote$.subscribe((rfq) => {
+    sendQuoteAcceptedNotification(rfq)
   })
 }
