@@ -17,24 +17,19 @@ env:
 
 jobs:
   build:
-    name: Build & deploy
+    name: Build
 
     runs-on: ubuntu-20.04
 
-    if: "github.event.pull_request.header.repo.fork"
+    if: "github.event.pull_request.head.repo.fork"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Set Node to v16
+      - name: Set Node to v20
         uses: actions/setup-node@v3
         with:
-          node-version: 16
-      - name: Set up GCloud
-        uses: google-github-actions/setup-gcloud@v0
-        with:
-          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
-          service_account_key: ${{ secrets.GOOGLE_PRIVATE_KEY }}
+          node-version: 20
 
       - name: Install
         run: npm ci
@@ -71,19 +66,3 @@ jobs:
           npm ci
           npm run build
         working-directory: src/workspace
-
-      - name: Build (Finsemble)
-        env:
-          DOMAIN: https://finsemble.env.reactivetrader.com
-          URL_PATH: /pull/${{ github.event.number }}
-          VITE_BUILD_VERSION: ${{ github.sha }}
-          ENVIRONMENT: env
-        run: npm run finsemble:build
-
-      - name: Find comment
-        uses: peter-evans/find-comment@v1
-        id: comment
-        with:
-          issue-number: ${{ github.event.number }}
-          comment-author: "github-actions[bot]"
-          body-includes: "(auto-deploy)"
