@@ -1,9 +1,9 @@
-import { delay, firstValueFrom, of, Subject, switchMap, tap } from 'rxjs'
+import { delay, firstValueFrom, of, Subject, switchMap, tap } from "rxjs"
 import {
   ExecuteTradeRequest,
   ExecutionResponse,
-  ExecutionService
-} from '../generated/TradingGateway'
+  ExecutionService,
+} from "@/generated/TradingGateway"
 
 export const executing$ = new Subject<ExecuteTradeRequest>()
 export const executionResponse$ = new Subject<ExecutionResponse>()
@@ -15,7 +15,7 @@ export const execute = async (execution: ExecuteTradeRequest) => {
     of(null).pipe(
       delay(2000),
       switchMap(() => ExecutionService.executeTrade(execution)),
-      tap(response => executionResponse$.next(response!))
-    )
+      tap((response) => executionResponse$.next(response!)),
+    ),
   )
 }

@@ -5,13 +5,13 @@ import {
   CLITemplate,
 } from "@openfin/workspace"
 import { App, Page } from "@openfin/workspace-platform"
-import { getApps } from "../apps"
-import { getPages } from "../browser"
+import { getApps } from "@/apps"
+import { getPages } from "@/browser"
 
 export const HOME_ACTION_DELETE_PAGE = "Delete Page"
 export const HOME_ACTION_LAUNCH_PAGE = "Launch Page"
 
-import { BASE_URL } from "../consts"
+import { BASE_URL } from "@/consts"
 export const ADAPTIVE_LOGO = `${BASE_URL}/images/icons/adaptive.png`
 
 const mapAppEntriesToSearchEntries = (apps: App[]): CLISearchResult<Action>[] =>

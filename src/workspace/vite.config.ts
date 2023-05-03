@@ -1,3 +1,4 @@
+import path from "path"
 import { defineConfig, loadEnv, Plugin } from "vite"
 import { TransformOption, viteStaticCopy } from "vite-plugin-static-copy"
 
@@ -76,6 +77,14 @@ const setConfig = ({ mode }) => {
           changeOrigin: true,
           ws: true,
         },
+      },
+    },
+    resolve: {
+      // see https://vitejs.dev/config/shared-options.html#resolve-alias
+      // then https://github.com/rollup/plugins/tree/master/packages/alias#entries
+      // originally inspired by https://github.com/vitejs/vite/issues/279
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
       },
     },
     plugins,
