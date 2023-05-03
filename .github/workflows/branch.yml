@@ -34,9 +34,9 @@ jobs:
       - name: Set variables
         id: vars
         run: |
-          echo "::set-output name=branch::$(git branch --show-current | sed 's/\//_/g')"
-          echo "::set-output name=ENVIRONMENT::$([[ $(git branch --show-current) = env/uat ]] && echo 'uat' || [[ $(git branch --show-current) = master ]] && echo 'dev' || echo 'env')"
-          echo "::set-output name=URL_SUFFIX::$([[ $(git branch --show-current) = env/uat || $(git branch --show-current) = master ]] && echo '' || echo /branch/$(git branch --show-current | sed 's/\//_/g'))"
+          echo "branch=$(git branch --show-current | sed 's/\//_/g')" >> $GITHUB_OUTPUT
+          echo "ENVIRONMENT=$([[ $(git branch --show-current) = env/uat ]] && echo 'uat' || [[ $(git branch --show-current) = master ]] && echo 'dev' || echo 'env')" >> $GITHUB_OUTPUT
+          echo "URL_SUFFIX=$([[ $(git branch --show-current) = env/uat || $(git branch --show-current) = master ]] && echo '' || echo /branch/$(git branch --show-current | sed 's/\//_/g'))" >> $GITHUB_OUTPUT
 
       - name: Echo url suffix
         run: echo ${{ steps.vars.outputs.URL_SUFFIX }}
