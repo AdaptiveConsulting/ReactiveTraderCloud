@@ -10,11 +10,6 @@ defaults:
   run:
     working-directory: src/client
 
-env:
-  BUCKET_WEB: reactive-trader-web-builds
-  BUCKET_OPENFIN: reactive-trader-openfin-builds
-  BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
-
 jobs:
   build:
     name: Build
