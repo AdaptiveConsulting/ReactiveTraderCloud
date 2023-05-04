@@ -49,8 +49,6 @@ export const PWAInstallBanner = ({
       updateBanner(PWABanner.Installed)
     }
 
-    // TODO - This is deprecated with no mention of an alternative
-    // ref - https://developer.mozilla.org/en-US/docs/Web/API/Window/appinstalled_event
     window.addEventListener("appinstalled", handler)
 
     return () => window.removeEventListener("appinstalled", handler)
