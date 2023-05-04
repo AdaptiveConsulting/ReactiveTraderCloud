@@ -35,7 +35,7 @@ jobs:
 
       - name: Set variables
         id: vars
-        run: echo "::set-output name=tag::$(git describe --tag --abbrev=0)"
+        run: echo "tag=$(git describe --tag --abbrev=0)" >> $GITHUB_OUTPUT
 
       - name: Set up GCloud
         uses: google-github-actions/setup-gcloud@v0

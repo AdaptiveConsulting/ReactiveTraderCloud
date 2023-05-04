@@ -1,0 +1,63 @@
+name: Pull request build
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+defaults:
+  run:
+    working-directory: src/client
+
+jobs:
+  build:
+    name: Build
+
+    runs-on: ubuntu-20.04
+
+    if: "github.event.pull_request.head.repo.fork"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set Node to v16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install
+        run: npm ci
+
+      - name: Verify Quality (type checking, linting, format checking, tests)
+        run: |
+          npm run verify
+
+      - name: Build (web)
+        env:
+          DOMAIN: https://web.env.reactivetrader.com
+          URL_PATH: /pull/${{ github.event.number }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: env
+        run: |
+          npm run build
+          npm run storybook:build
+
+      - name: Build (OpenFin)
+        env:
+          DOMAIN: https://openfin.env.reactivetrader.com
+          URL_PATH: /pull/${{ github.event.number }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: env
+        run: npm run openfin:build
+
+      - name: Build (OpenFin - Workspace)
+        env:
+          DOMAIN: https://openfin.env.reactivetrader.com
+          URL_PATH: /pull/${{ github.event.number }}/workspace
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: env
+        run: |
+          npm ci
+          npm run build
+        working-directory: src/workspace

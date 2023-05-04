@@ -21,7 +21,7 @@ jobs:
 
     runs-on: ubuntu-20.04
 
-    if: "!github.event.pull_request.header.repo.fork"
+    if: "!github.event.pull_request.head.repo.fork"
 
     steps:
       - name: Checkout code
