@@ -50,9 +50,6 @@ export const Fill = styled.div`
   font-weight: normal;
   opacity: 0.58;
   font-size: 0.625rem;
-  /**
-    TODO 8/22 extract this extension of header, and the fill outside header layout
-  */
   -webkit-app-region: drag;
   cursor: -webkit-grab;
 `
