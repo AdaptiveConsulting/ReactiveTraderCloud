@@ -81,10 +81,7 @@
     "react-window": "^1.8.8",
     "ress": "^3.0.0",
     "rxjs": "^7.5.4",
-    "styled-components": "^5.2.2",
-    "typeface-lato": "^1.1.13",
-    "typeface-montserrat": "^1.1.13",
-    "typeface-roboto": "^1.1.13"
+    "styled-components": "^5.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
@@ -136,6 +133,7 @@
     "storybook": "^7.0.2",
     "text-encoding": "^0.7.0",
     "typescript": "^4.9.3",
+    "unplugin-fonts": "^1.0.0",
     "vite": "^4.2.1",
     "vite-plugin-html": "^3.2.0",
     "vite-plugin-static-copy": "^0.13.1",

@@ -3,10 +3,12 @@ import { readdirSync, statSync } from "fs"
 import path, { resolve } from "path"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
+import Unfonts from "unplugin-fonts/vite"
 import {
   ConfigEnv,
   loadEnv,
   Plugin,
+  PluginOption,
   splitVendorChunkPlugin,
   UserConfigExport,
 } from "vite"
@@ -258,28 +260,63 @@ const injectWebServiceWorkerPlugin = (mode: string) =>
     },
   )
 
+const fontFacePreload = Unfonts({
+  google: {
+    families: [
+      {
+        name: "Lato",
+        styles:
+          "ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900",
+      },
+      {
+        name: "Roboto",
+        styles:
+          "ital,wght@0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900",
+      },
+      {
+        name: "Montserrat",
+        styles:
+          "ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900",
+      },
+    ],
+    preconnect: true,
+    display: "block",
+  },
+})
+
 // Main Ref: https://vitejs.dev/config/
 const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
+  const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
   const isDev = mode === "development"
   const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
 
-  const plugins: any[] = [react()] // stays as any[] as WB injectManifest does not return PluginOption
+  const devPlugins: PluginOption[] = [] // stays as any[] as WB injectManifest does not return PluginOption
 
-  if (!isDev) {
-    plugins.push(splitVendorChunkPlugin(), customPreloadPlugin())
-  }
-
-  const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
-
-  if (buildTarget === "web") {
-    plugins.push(injectWebServiceWorkerPlugin(mode))
-  }
+  devPlugins.push(targetBuildPlugin(isDev, buildTarget))
+  devPlugins.push(indexSwitchPlugin(buildTarget))
 
   if (process.env.VITE_MOCKS) {
-    plugins.unshift(apiMockReplacerPlugin())
+    devPlugins.push(apiMockReplacerPlugin())
   }
+
+  devPlugins.push(react())
+
+  if (!isDev) {
+    devPlugins.push(splitVendorChunkPlugin(), customPreloadPlugin())
+  }
+
+  if (buildTarget === "web") {
+    devPlugins.push(injectWebServiceWorkerPlugin(mode) as Plugin)
+  }
+
+  devPlugins.push(copyPlugin(isDev, buildTarget))
+  devPlugins.push(injectScriptIntoHtml())
+  devPlugins.push(htmlPlugin(isDev))
+
+  const plugins = process.env.STORYBOOK === "true" ? [] : devPlugins
+  plugins.push(fontFacePreload)
 
   const proxy = process.env.VITE_MOCKS
     ? undefined
@@ -294,14 +331,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
           ws: true,
         },
       }
-
-  plugins.unshift(indexSwitchPlugin(buildTarget))
-  plugins.unshift(targetBuildPlugin(isDev, buildTarget))
-  plugins.push(copyPlugin(isDev, buildTarget))
-  plugins.push(injectScriptIntoHtml())
-  plugins.push(htmlPlugin(isDev))
-
-  const isStorybook = process.env.STORYBOOK === "true"
 
   return defineConfig({
     base: viteBaseUrl,
@@ -326,7 +355,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
         },
       ],
     },
-    plugins: isStorybook ? [] : [...plugins],
+    plugins,
     test: {
       globals: true,
       environment: "jsdom",

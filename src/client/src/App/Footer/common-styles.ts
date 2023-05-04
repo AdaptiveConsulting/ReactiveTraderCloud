@@ -22,7 +22,7 @@ export const Button = styled.button<{ margin?: string; disabled?: boolean }>`
   padding: 0 0.7rem;
   height: 1.6rem;
   font-size: 0.65rem;
-  font-weight: 350;
+  font-weight: 300;
   margin: ${({ margin }) => (margin ? margin : "unset")};
 `
 
