@@ -55,7 +55,7 @@
   "snapshot": {
     "windows": [
       {
-        "autoShow": true,
+        "autoShow": false,
         "frame": false,
         "_comment": "Openfin Excel API preloaded below + added in appAssets (not included in standard OpenFin package)",
         "preload": [
@@ -72,7 +72,6 @@
         "defaultHeight": 56,
         "defaultTop": 160,
         "defaultLeft": 30,
-        "backgroundColor": "#313131",
         "cornerRounding": {
           "width": 4,
           "height": 4

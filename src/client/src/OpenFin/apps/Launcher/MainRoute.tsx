@@ -93,6 +93,8 @@ function Launcher() {
   useEffect(() => {
     setOverlay(overlayRef.current)
     getCurrentWindowBounds().then(setInitialBounds).catch(console.error)
+    const window = fin.Window.getCurrentSync()
+    window.show()
   }, [])
 
   useEffect(() => {
