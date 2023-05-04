@@ -60,7 +60,7 @@ const reducer = (
 export const [useCreditInstrumentsByCusip, creditInstrumentsByCusip$] = bind(
   InstrumentService.subscribe().pipe(
     withConnection(),
-    scan(reducer, {}),
+    scan(reducer, {} as Record<string, InstrumentBody>),
     shareLatest(),
   ),
   {},

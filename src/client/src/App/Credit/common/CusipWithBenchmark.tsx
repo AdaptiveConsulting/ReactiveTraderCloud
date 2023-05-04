@@ -12,14 +12,14 @@ interface CusipWithBenchmarkProps {
   benchmark?: string
 }
 
-export const CusipWithBenchmark = memo(
-  // TODO: get benchmark from server
-  function CusipWithBenchmark({ cusip, benchmark }: CusipWithBenchmarkProps) {
-    return (
-      <InstrumentCusip>
-        {cusip ?? "No cusip found"} &#160;&#x2022;&#160;{" "}
-        {benchmark ?? "No benchmark available"}
-      </InstrumentCusip>
-    )
-  },
-)
+export const CusipWithBenchmark = memo(function CusipWithBenchmark({
+  cusip,
+  benchmark,
+}: CusipWithBenchmarkProps) {
+  return (
+    <InstrumentCusip>
+      {cusip ?? "No cusip found"} &#160;&#x2022;&#160;{" "}
+      {benchmark ?? "No benchmark available"}
+    </InstrumentCusip>
+  )
+})
