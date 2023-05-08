@@ -1,5 +1,11 @@
 import { lazy, Suspense } from "react"
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Router,
+  Routes,
+} from "react-router-dom"
 
 import { Admin } from "@/App/Admin"
 import { Analytics } from "@/App/Analytics"
@@ -13,11 +19,10 @@ import { Loader } from "@/components/Loader"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { isMobileDevice } from "@/utils"
 import { FEATURE_FLAG, useFeature } from "@/utils/featureFlag"
-import { WithChildren } from "@/utils/utilityTypes"
 
 import CreditPage from "./CreditPage"
 import { FxPage } from "./FxPage"
-import { TearOutRouteWrapper } from "./Web.styles"
+import MainLayout from "./MainLayout"
 
 const StyleguidePage = lazy(() => import("@/styleguide"))
 const SellSidePage = lazy(() => import("./SellSidePage"))
@@ -29,26 +34,28 @@ export const WebApp = () => {
   return (
     <BrowserRouter basename={BASE_PATH}>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <DisconnectionOverlay />
-              <FxPage />
-            </>
-          }
-        />
-        {canDisplayCredit && (
+        <Route path="/" element={<MainLayout />}>
           <Route
-            path={ROUTES_CONFIG.credit}
+            path="/"
             element={
               <>
                 <DisconnectionOverlay />
-                <CreditPage />
+                <FxPage />
               </>
             }
           />
-        )}
+          {canDisplayCredit && (
+            <Route
+              path={ROUTES_CONFIG.credit}
+              element={
+                <>
+                  <DisconnectionOverlay />
+                  <CreditPage />
+                </>
+              }
+            />
+          )}
+        </Route>
         {canDisplayCredit && (
           <Route
             path={ROUTES_CONFIG.sellSide}
