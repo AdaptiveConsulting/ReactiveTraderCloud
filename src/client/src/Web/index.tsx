@@ -1,20 +1,12 @@
 import { lazy, Suspense } from "react"
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useParams,
-} from "react-router-dom"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 
 import { Admin } from "@/App/Admin"
 import { Analytics } from "@/App/Analytics"
 import { CreditRfqForm } from "@/App/Credit"
 import { LiveRates } from "@/App/LiveRates"
-import { TileView } from "@/App/LiveRates/selectedView"
-import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
-import { TearOutContext } from "@/App/TearOutSection/tearOutContext"
+import { TornOutTileWrapper } from "@/App/LiveRates/Tile"
+import { TornOut } from "@/App/TearOutSection/TearOutWrapper"
 import { CreditTrades, FxTrades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { Loader } from "@/components/Loader"
@@ -29,34 +21,6 @@ import { TearOutRouteWrapper } from "./Web.styles"
 
 const StyleguidePage = lazy(() => import("@/styleguide"))
 const SellSidePage = lazy(() => import("./SellSidePage"))
-
-// Note: for the Redirect (or anything) to work, the Route components above it must be at the
-//       top level of the switch e.g. no fragments, context providers ..
-
-const TornOut = ({ children }: WithChildren) => (
-  <TearOutContext.Provider value={{ isTornOut: true }}>
-    {children}
-    <DisconnectionOverlay />
-  </TearOutContext.Provider>
-)
-
-export const TileWrapper = () => {
-  const { symbol } = useParams()
-  const { search } = useLocation()
-  const query = new URLSearchParams(search)
-  const view = query.has("tileView")
-    ? (query.get("tileView") as TileView)
-    : TileView.Analytics
-
-  return (
-    <>
-      <DisconnectionOverlay />
-      <TearOutRouteWrapper>
-        {symbol && <TornOutTile symbol={symbol} view={view} />}
-      </TearOutRouteWrapper>
-    </>
-  )
-}
 
 export const WebApp = () => {
   const canUseAdmin = useFeature(FEATURE_FLAG.ADMIN)
@@ -116,7 +80,7 @@ export const WebApp = () => {
             }
           />
         )}
-        <Route path={ROUTES_CONFIG.tile} element={<TileWrapper />} />
+        <Route path={ROUTES_CONFIG.tile} element={<TornOutTileWrapper />} />
 
         <Route
           path={ROUTES_CONFIG.styleguide}

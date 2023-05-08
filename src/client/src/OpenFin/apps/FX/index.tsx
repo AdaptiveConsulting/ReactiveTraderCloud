@@ -2,11 +2,11 @@ import { Route } from "react-router-dom"
 
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
+import { TornOutTileWrapper } from "@/App/LiveRates/Tile"
 import { FxTrades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { DocTitle } from "@/components/DocTitle"
 import { ROUTES_CONFIG } from "@/constants"
-import { TileWrapper } from "@/Web"
 
 const FxRoutes = () => (
   <>
@@ -37,7 +37,7 @@ const FxRoutes = () => (
         </DocTitle>
       }
     />
-    <Route path={ROUTES_CONFIG.tile} element={<TileWrapper />} />
+    <Route path={ROUTES_CONFIG.tile} element={<TornOutTileWrapper />} />
   </>
 )
 

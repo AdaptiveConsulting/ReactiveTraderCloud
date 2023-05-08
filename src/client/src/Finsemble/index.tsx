@@ -2,11 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
+import { TornOutTileWrapper } from "@/App/LiveRates/Tile"
 import { FxTrades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { DocTitle } from "@/components/DocTitle"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
-import { TileWrapper } from "@/Web"
 
 export const FinsembleApp = () => (
   <BrowserRouter basename={BASE_PATH}>
@@ -38,7 +38,7 @@ export const FinsembleApp = () => (
           </DocTitle>
         }
       />
-      <Route path={ROUTES_CONFIG.tile} element={<TileWrapper />} />
+      <Route path={ROUTES_CONFIG.tile} element={<TornOutTileWrapper />} />
     </Routes>
   </BrowserRouter>
 )

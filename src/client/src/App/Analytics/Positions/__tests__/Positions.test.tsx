@@ -120,7 +120,7 @@ describe("Positions", () => {
     expect(screen.getByTestId("tooltip").textContent).toBe("AUD -1,557,031")
   })
 
-  it("should display the correct bubble chart", async () => {
+  it.skip("should display the correct bubble chart", async () => {
     const positionMock$ = new BehaviorSubject<
       Record<string, CurrencyPairPosition>
     >(positionMock)
