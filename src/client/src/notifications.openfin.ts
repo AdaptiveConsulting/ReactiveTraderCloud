@@ -2,6 +2,7 @@
 import {
   addEventListener,
   create,
+  IndicatorColor,
   NotificationActionEvent,
 } from "openfin-notifications"
 import { Subscription } from "rxjs"
@@ -28,6 +29,7 @@ import { constructUrl } from "./utils/url"
 const icon = constructUrl("/static/media/reactive-trader-icon-dark.ico")
 
 const TASK_HIGHLIGHT_FX_TRADE = "highlight-fx-trade"
+const TASK_HIGHLIGHT_CREDIT_TRADE = "highlight-credit-trade"
 
 const TASK_HIGHLIGHT_CREDIT_TRADE = "highlight-credit-trade"
 
@@ -41,15 +43,8 @@ const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
   const status =
     notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
 
-  create({
+  const notif = {
     title: `Trade ${status}: ID ${notification.tradeId}`,
-    body: `${notification.direction} ${
-      notification.dealtCurrency
-    } ${formatNumber(
-      notification.notional,
-    )} vs ${notification.currencyPair.substring(3)} @ ${notification.spotRate}`,
-    icon,
-    customData: { tradeId: notification.tradeId },
     buttons: [
       {
         title: "Highlight trade in blotter",
@@ -57,7 +52,64 @@ const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
         onClick: { task: TASK_HIGHLIGHT_FX_TRADE },
       },
     ],
+    body: `${notification.direction} ${
+      notification.dealtCurrency
+    } ${formatNumber(
+      notification.notional,
+    )} vs ${notification.currencyPair.substring(3)} @ ${notification.spotRate}`,
+    icon,
+    customData: { tradeId: notification.tradeId },
     category: "Trade Executed",
+    indicator: {
+      color: status === "Accepted" ? IndicatorColor.GREEN : IndicatorColor.RED,
+      text: status,
+    },
+  }
+
+  create({
+    icon,
+    template: "custom",
+    category: "Trade Executed",
+    title: `Trade ${status}: ID ${notification.tradeId}`,
+    customData: { tradeId: notification.tradeId },
+    indicator: { text: status },
+    templateOptions: {
+      body: {
+        compositions: [
+          {
+            minTemplateAPIVersion: "1",
+            layout: {
+              type: "text",
+              dataKey: "message",
+            },
+          },
+        ],
+      },
+      indicator: {
+        align: "center", //left, right, center
+        color:
+          status === "Accepted" ? IndicatorColor.GREEN : IndicatorColor.RED,
+      },
+      buttons: {
+        align: "right",
+      },
+    },
+    buttons: [
+      {
+        title: "Highlight trade in blotter",
+        iconUrl: icon,
+        onClick: { task: TASK_HIGHLIGHT_FX_TRADE },
+      },
+    ],
+    templateData: {
+      message: `${notification.direction} ${
+        notification.dealtCurrency
+      } ${formatNumber(
+        notification.notional,
+      )} vs ${notification.currencyPair.substring(3)} @ ${
+        notification.spotRate
+      }`,
+    },
   })
 }
 
@@ -83,12 +135,28 @@ const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {
 }
 
 const sendCreditQuoteNotification = (quote: QuoteDetails) => {
+  const notification = {
+    ...quote,
+  }
+
   const title = `Quote Received: RFQ ID ${quote.rfqId} from ${quote.dealer?.name}`
   const body = `${quote.direction} ${quote.instrument?.name} ${formatNumber(
     quote.quantity,
   )} @ $${formatNumber(quote.price)}`
 
-  create({ title, body, icon, category: "Quote Received" })
+  create({
+    title,
+    body,
+    icon,
+    category: "Quote Received",
+    indicator: {
+      text: `${quote.dealer?.name}`,
+      color:
+        `${quote.direction}` === "Buy"
+          ? IndicatorColor.BLUE
+          : IndicatorColor.PURPLE,
+    },
+  })
 }
 
 const TOPIC_HIGHLIGHT_FX_BLOTTER = "highlight-fx-blotter"
