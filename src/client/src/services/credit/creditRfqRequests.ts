@@ -86,5 +86,4 @@ export const acceptedRfqWithQuote$ = acceptedCreditRfq$.pipe(
       return quote ? { quote, rfq } : acc
     }, {} as RfqWithQuote)
   }),
-  filter(Boolean),
 )

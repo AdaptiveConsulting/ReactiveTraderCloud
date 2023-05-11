@@ -148,7 +148,6 @@ export function unregisterCreditQuoteNotifications() {
 export const TOPIC_HIGHLIGHT_CREDIT_BLOTTER = "highlight-credit-blotter"
 
 const handleCreditTradeNotification = (event: NotificationActionEvent) => {
-  console.log("handling trade notifcation")
   if (event.result["task"] === TASK_HIGHLIGHT_CREDIT_TRADE) {
     fin.InterApplicationBus.publish(
       TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
@@ -162,7 +161,6 @@ export async function registerCreditBlotterUpdates() {
     { uuid: "*" },
     TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
     (message: { tradeId: number }) => {
-      console.log("setting credit trade row highlight", message.tradeId)
       setCreditTradeRowHighlight(message.tradeId)
     },
   )
