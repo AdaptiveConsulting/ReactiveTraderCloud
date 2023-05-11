@@ -4,7 +4,12 @@ import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { executions$ } from "@/services/executions/executions"
 import { formatNumber } from "@/utils"
 
-import { lastQuoteReceived$, QuoteDetails } from "./services/credit"
+import {
+  acceptedRfqWithQuote$,
+  lastQuoteReceived$,
+  QuoteDetails,
+  RfqWithQuote,
+} from "./services/credit"
 
 const icon =
   navigator.userAgent.indexOf("Chrome") !== -1 &&
@@ -34,6 +39,21 @@ const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
     dir: "ltr",
     data: notification,
     // tag: "trade", TODO: investigate why this field causes malfunctions on certain versions of chrome
+  }
+
+  new Notification(title, options)
+}
+
+const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {
+  const notification = {
+    ...rfq,
+  }
+
+  const title = `Quote Accepted: ID ${notification.id}`
+
+  const options: NotificationOptions = {
+    body: `${notification.direction} ${notification.quantity} ${notification.instrument?.name} @ ${quote?.price}`,
+    icon,
   }
 
   new Notification(title, options)
@@ -127,6 +147,14 @@ export function unregisterCreditQuoteNotifications() {
   }
 }
 
-export function registerCreditBlotterUpdates() {
-  // no-op
+export async function registerCreditBlotterUpdates() {
+  try {
+    await notificationsGranted()
+
+    acceptedRfqWithQuote$.subscribe((rfqWithQuote) =>
+      sendQuoteAcceptedNotification(rfqWithQuote),
+    )
+  } catch (e) {
+    console.error(e)
+  }
 }

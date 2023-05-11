@@ -8,11 +8,13 @@ import {
   CancelRfqRequest,
   CreateQuoteRequest,
   CreateRfqRequest,
+  QuoteBody,
   WorkflowService,
 } from "@/generated/TradingGateway"
 import { showRfqInSellSide } from "@/utils"
 
 import { adaptiveDealerId$ } from "./creditDealers"
+import { creditRfqsById$, RfqDetails } from "./creditRfqs"
 
 export interface CreatedCreditRfq {
   request: CreateRfqRequest
@@ -69,3 +71,19 @@ export const acceptCreditQuote$ = (acceptRequest: AcceptQuoteRequest) => {
     }),
   )
 }
+
+export interface RfqWithQuote {
+  rfq: RfqDetails
+  quote: QuoteBody
+}
+
+export const acceptedRfqWithQuote$ = acceptedCreditRfq$.pipe(
+  withLatestFrom(creditRfqsById$),
+  //get rfq with same quoteid as acceptedCreditRfq
+  map(([{ quoteId }, rfqs]) => {
+    return Object.values(rfqs).reduce((acc, rfq) => {
+      const quote = rfq.quotes.find((quote) => quoteId === quote.id)
+      return quote ? { quote, rfq } : acc
+    }, {} as RfqWithQuote)
+  }),
+)

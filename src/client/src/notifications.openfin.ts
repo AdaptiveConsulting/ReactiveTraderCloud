@@ -10,16 +10,26 @@ import {
   setCreditTradeRowHighlight,
   setFxTradeRowHighlight,
 } from "@/App/Trades/TradesState"
-import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
-import { executions$ } from "@/services/executions/executions"
+import {
+  executions$,
+  ExecutionStatus,
+  ExecutionTrade,
+} from "@/services/executions"
 import { formatNumber } from "@/utils"
 
-import { lastQuoteReceived$, QuoteDetails } from "./services/credit"
+import {
+  acceptedRfqWithQuote$,
+  lastQuoteReceived$,
+  QuoteDetails,
+  RfqWithQuote,
+} from "./services/credit"
 import { constructUrl } from "./utils/url"
 
 const icon = constructUrl("/static/media/reactive-trader-icon-dark.ico")
 
 const TASK_HIGHLIGHT_FX_TRADE = "highlight-fx-trade"
+
+const TASK_HIGHLIGHT_CREDIT_TRADE = "highlight-credit-trade"
 
 const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
   const notification = {
@@ -51,6 +61,27 @@ const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
   })
 }
 
+const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {
+  const notification = {
+    ...rfq,
+  }
+
+  create({
+    title: `Quote Accepted: ID ${notification.id}`,
+    body: `${notification.direction} ${notification.quantity} ${notification.instrument?.name} @ ${quote?.price}`,
+    icon,
+    customData: { tradeId: notification.id },
+    buttons: [
+      {
+        title: "Highlight trade in blotter",
+        iconUrl: icon,
+        onClick: { task: TASK_HIGHLIGHT_CREDIT_TRADE },
+      },
+    ],
+    category: "Trade Executed",
+  })
+}
+
 const sendCreditQuoteNotification = (quote: QuoteDetails) => {
   const title = `Quote Received: RFQ ID ${quote.rfqId} from ${quote.dealer?.name}`
   const body = `${quote.direction} ${quote.instrument?.name} ${formatNumber(
@@ -61,7 +92,7 @@ const sendCreditQuoteNotification = (quote: QuoteDetails) => {
 }
 
 const TOPIC_HIGHLIGHT_FX_BLOTTER = "highlight-fx-blotter"
-const handleNotificationAction = (event: NotificationActionEvent) => {
+const handleFxTradeNotificationAction = (event: NotificationActionEvent) => {
   if (event.result["task"] === TASK_HIGHLIGHT_FX_TRADE) {
     fin.InterApplicationBus.publish(
       TOPIC_HIGHLIGHT_FX_BLOTTER,
@@ -77,7 +108,7 @@ export async function registerFxNotifications() {
     (message: { tradeId: number }) => setFxTradeRowHighlight(message.tradeId),
   )
 
-  addEventListener("notification-action", handleNotificationAction)
+  addEventListener("notification-action", handleFxTradeNotificationAction)
 
   executions$.subscribe({
     next: (executionTrade) => {
@@ -116,7 +147,16 @@ export function unregisterCreditQuoteNotifications() {
 
 export const TOPIC_HIGHLIGHT_CREDIT_BLOTTER = "highlight-credit-blotter"
 
-export function registerCreditBlotterUpdates() {
+const handleCreditTradeNotification = (event: NotificationActionEvent) => {
+  if (event.result["task"] === TASK_HIGHLIGHT_CREDIT_TRADE) {
+    fin.InterApplicationBus.publish(
+      TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
+      event.notification.customData,
+    )
+  }
+}
+
+export async function registerCreditBlotterUpdates() {
   fin.InterApplicationBus.subscribe(
     { uuid: "*" },
     TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
@@ -124,4 +164,10 @@ export function registerCreditBlotterUpdates() {
       setCreditTradeRowHighlight(message.tradeId)
     },
   )
+
+  addEventListener("notification-action", handleCreditTradeNotification)
+
+  acceptedRfqWithQuote$.subscribe((rfq) => {
+    sendQuoteAcceptedNotification(rfq)
+  })
 }
