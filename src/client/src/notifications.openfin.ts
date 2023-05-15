@@ -31,8 +31,6 @@ const icon = constructUrl("/static/media/reactive-trader-icon-dark.ico")
 const TASK_HIGHLIGHT_FX_TRADE = "highlight-fx-trade"
 const TASK_HIGHLIGHT_CREDIT_TRADE = "highlight-credit-trade"
 
-const TASK_HIGHLIGHT_CREDIT_TRADE = "highlight-credit-trade"
-
 const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
   const notification = {
     ...executionTrade,
@@ -43,6 +41,7 @@ const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
   const status =
     notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
 
+  // This is if we want to keep th default notification but add colors
   const notif = {
     title: `Trade ${status}: ID ${notification.tradeId}`,
     buttons: [
@@ -66,6 +65,9 @@ const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
     },
   }
 
+  //This is for a custom notification
+  // https://developers.openfin.co/of-docs/docs/customize-notifications#arrangement-of-sections
+  // we are limited in what we can do
   create({
     icon,
     template: "custom",
@@ -81,17 +83,18 @@ const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
             layout: {
               type: "text",
               dataKey: "message",
+              // style: { backgroundColor: "purple" },
             },
           },
         ],
       },
       indicator: {
-        align: "center", //left, right, center
+        align: "right", //left, right, center
         color:
-          status === "Accepted" ? IndicatorColor.GREEN : IndicatorColor.RED,
+          status === "Accepted" ? IndicatorColor.GRAY : IndicatorColor.YELLOW,
       },
       buttons: {
-        align: "right",
+        align: "left", //left, right, center
       },
     },
     buttons: [
@@ -131,14 +134,14 @@ const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {
       },
     ],
     category: "Trade Executed",
+    indicator: {
+      color: IndicatorColor.GREEN,
+      text: `Accepted`,
+    },
   })
 }
 
 const sendCreditQuoteNotification = (quote: QuoteDetails) => {
-  const notification = {
-    ...quote,
-  }
-
   const title = `Quote Received: RFQ ID ${quote.rfqId} from ${quote.dealer?.name}`
   const body = `${quote.direction} ${quote.instrument?.name} ${formatNumber(
     quote.quantity,
@@ -150,7 +153,7 @@ const sendCreditQuoteNotification = (quote: QuoteDetails) => {
     icon,
     category: "Quote Received",
     indicator: {
-      text: `${quote.dealer?.name}`,
+      text: `${quote.direction} from ${quote.dealer?.name}`,
       color:
         `${quote.direction}` === "Buy"
           ? IndicatorColor.BLUE
