@@ -1,7 +1,7 @@
-name: Scheduled Weekday E2E
+name: Scheduled E2E
 on:
   schedule:
-    - cron: "55 8 * * 1-5"
+    - cron: "55 8 * * *"
 
 defaults:
   run:
@@ -9,9 +9,11 @@ defaults:
 
 jobs:
   e2e:
-    name: End-to-end test against uat
+    name: End-to-end smoke test against RT Prod
 
     runs-on: ubuntu-20.04
+
+    if: github.event.repository.full_name == github.repository
 
     steps:
       - name: Checkout code
@@ -22,7 +24,6 @@ jobs:
 
       - name: Test
         env:
-          URL_PATH: https://web.uat.reactivetrader.com
-          ENVIRONMENT: env
+          E2E_RTC_WEB_ROOT_URL: https://web.prod.reactivetrader.com
         run: |
-          npm run e2e:web
+          npm run e2e:web:smoke

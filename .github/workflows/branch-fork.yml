@@ -1,10 +1,9 @@
-name: Fork Pull Request
+name: Fork Branch
 
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
+  push:
+    branches:
+      - "**"
 
 defaults:
   run:

@@ -87,7 +87,7 @@ export const test = base.extend<IPlaywrightFixtures>({
     if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
       const pages = fxOpenfinUrlPaths.reduce((rec, urlPath) => {
         const page = contextPages.find(
-          (p) => p.url() === `${process.env.URL_PATH}/${urlPath}`,
+          (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
         )
         if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
         return { ...rec, [urlPathToFxPage(urlPath)]: page }
@@ -109,7 +109,7 @@ export const test = base.extend<IPlaywrightFixtures>({
     if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
       const pages = creditOpenfinUrlPaths.reduce((rec, urlPath) => {
         const page = contextPages.find(
-          (p) => p.url() === `${process.env.URL_PATH}/${urlPath}`,
+          (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
         )
         if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
         return { ...rec, [urlPathToCreditPage(urlPath)]: page }
