@@ -24,17 +24,17 @@
     }
   },
   "runtime": {
-    "version": "29.108.73.14",
+    "version": "31.112.75.4",
     "arguments": "--remote-debugging-port=9091"
   },
   "services": [
     {
       "name": "notifications",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/0.12.10/app.json"
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/1.23.0/app.json"
     }
   ],
   "shortcut": {
-    "company": "Adaptive Consulting",
+    "company": "Adaptive Financial Consulting",
     "icon": "<BASE_URL>/static/media/adaptive.ico",
     "name": "Reactive Launcher<ENV_SUFFIX>"
   },

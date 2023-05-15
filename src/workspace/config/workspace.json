@@ -6,7 +6,8 @@
     "arguments": "--v=1 --inspect"
   },
   "platform": {
-    "uuid": "adaptive-workspace-provider",
+    "uuid": "adaptive-workspace-provider-<ENV_NAME>",
+    "name": "Reactive Workspace<ENV_SUFFIX>",
     "icon": "<BASE_URL>/favicon.ico",
     "autoShow": "<SHOW_PROVIDER_WINDOW>",
     "providerUrl": "<BASE_URL>/index.html",
@@ -65,7 +66,7 @@
     "company": "Adaptive Financial Consulting",
     "description": "Adaptive workspace provider",
     "icon": "<BASE_URL>/favicon.ico",
-    "name": "Adaptive Workspace Provider",
+    "name": "Adaptive Workspace Provider<ENV_SUFFIX>",
     "target": ["desktop", "start-menu"]
   },
   "appAssets": [

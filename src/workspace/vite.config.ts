@@ -27,6 +27,9 @@ const copyOpenfinPlugin = (
       // Reactive Analytics URL from .env
       .replace(/<RA_URL>/g, reactiveAnalyticsUrl)
       .replace(/<BASE_URL>/g, getBaseUrl(isDev))
+      .replace(/<ENV_NAME>/g, env)
+      // We don't want to show PROD in the app name
+      .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : ` ${env.toUpperCase()}`)
       .replace('"<SHOW_PROVIDER_WINDOW>"', `${isDev}`)
 
   return viteStaticCopy({
