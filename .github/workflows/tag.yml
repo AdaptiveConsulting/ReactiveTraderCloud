@@ -22,7 +22,7 @@ jobs:
 
     runs-on: ubuntu-20.04
 
-    if: github.event.repository.full_name == github.repository
+    if: github.repository_owner == 'AdaptiveConsulting'
 
     steps:
       - name: Checkout code
