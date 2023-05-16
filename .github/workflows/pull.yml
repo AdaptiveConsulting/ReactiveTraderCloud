@@ -1,4 +1,4 @@
-name: Pull request build
+name: Pull Request
 
 on:
   pull_request:
@@ -14,6 +14,7 @@ env:
   BUCKET_WEB: reactive-trader-web-builds
   BUCKET_OPENFIN: reactive-trader-openfin-builds
   BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
+  ENVIRONMENT: env
 
 jobs:
   build:
@@ -21,20 +22,26 @@ jobs:
 
     runs-on: ubuntu-20.04
 
-    if: "!github.event.pull_request.head.repo.fork"
+    if: github.event.repository.full_name == github.repository
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Set Node to v16
+
+      - name: Set Node version
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
+
+      - name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}"
+
       - name: Set up GCloud
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
-          service_account_key: ${{ secrets.GOOGLE_PRIVATE_KEY }}
 
       - name: Install
         run: npm ci
@@ -48,7 +55,6 @@ jobs:
           DOMAIN: https://web.env.reactivetrader.com
           URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
-          ENVIRONMENT: env
         run: |
           npm run build
           npm run storybook:build
@@ -60,12 +66,13 @@ jobs:
             rsync -d -r dist \
             gs://$BUCKET_WEB/pull/${{ github.event.number }}
 
+      # No need to deploy legacy Launcher as branch/tag workflows
+
       - name: Build (OpenFin)
         env:
           DOMAIN: https://openfin.env.reactivetrader.com
           URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
-          ENVIRONMENT: env
         run: npm run openfin:build
 
       - name: Deploy (OpenFin)
@@ -80,7 +87,6 @@ jobs:
           DOMAIN: https://openfin.env.reactivetrader.com
           URL_PATH: /pull/${{ github.event.number }}/workspace
           VITE_BUILD_VERSION: ${{ github.sha }}
-          ENVIRONMENT: env
         run: |
           npm ci
           npm run build
@@ -99,7 +105,6 @@ jobs:
           DOMAIN: https://finsemble.env.reactivetrader.com
           URL_PATH: /pull/${{ github.event.number }}
           VITE_BUILD_VERSION: ${{ github.sha }}
-          ENVIRONMENT: env
         run: npm run finsemble:build
 
       - name: Deploy (Finsemble)
@@ -157,7 +162,6 @@ jobs:
 
       - name: Test
         env:
-          URL_PATH: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
-          ENVIRONMENT: env
+          E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
         run: |
           npm run e2e:web

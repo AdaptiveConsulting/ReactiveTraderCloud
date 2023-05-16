@@ -24,7 +24,7 @@ test.describe("Credit", () => {
 
       newRfqPage = pages.length > 0 ? pages[0] : await context.newPage()
 
-      await newRfqPage.goto(`${process.env.URL_PATH}/credit`)
+      await newRfqPage.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}/credit`)
 
       rfqsPage = newRfqPage
       rfqBlotterPage = newRfqPage
