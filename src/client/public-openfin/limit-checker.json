@@ -1,0 +1,84 @@
+{
+  "platform": {
+    "uuid": "reactive-trader-limit-checker",
+    "name": "Limit Checker <ENV_SUFFIX>",
+    "icon": "<BASE_URL>/static/media/limit-checker-icon.ico",
+    "url": "<BASE_URL>",
+    "autoShow": false
+  },
+  "runtime": {
+    "version": "29.108.73.14",
+    "arguments": "--remote-debugging-port=9091"
+  },
+  "defaultWindowOptions": {
+    "preventDragOut": true
+  },
+  "splashScreenImage": "<BASE_URL>/static/media/splash.png",
+  "snapshot": {
+    "windows": [
+      {
+        "icon": "<BASE_URL>/static/media/limit-checker-icon.ico",
+        "autoShow": true,
+        "defaultWidth": 600,
+        "defaultHeight": 800,
+        "minWidth": 600,
+        "minHeight": 800,
+        "defaultCentered": true,
+        "resizable": true,
+        "maximizable": true,
+        "saveWindowState": true,
+        "frame": false,
+        "shadow": true,
+        "name": "Limit-Checker",
+        "url": "<BASE_URL>/openfin-window-frame?app=limit-checker",
+        "layout": {
+          "settings": {
+            "blockedPopoutsThrowError": false,
+            "closePopoutsOnUnload": true,
+            "constrainDragToContainer": false,
+            "hasHeaders": false,
+            "popoutWholeStack": false,
+            "reorderEnabled": true,
+            "reorderOnTabMenuClick": true,
+            "responsiveMode": "always",
+            "selectionEnabled": true,
+            "showCloseIcon": false,
+            "showMaximiseIcon": false,
+            "showPopoutIcon": true,
+            "tabControlOffset": 10,
+            "tabOverlapAllowance": 0
+          },
+          "content": [
+            {
+              "type": "column",
+              "id": "mainColumn",
+              "isClosable": false,
+              "title": "",
+              "content": [
+                {
+                  "type": "row",
+                  "content": [
+                    {
+                      "type": "stack",
+                      "content": [
+                        {
+                          "type": "component",
+                          "componentName": "view",
+                          "componentState": {
+                            "url": "<BASE_URL>/limit-checker",
+                            "name": "Limiters"
+                          },
+                          "title": "Limiters"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -8,6 +8,7 @@ import { Loader } from "@/components/Loader"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
 
+import LimitCheckerRoutes from "./apps/LimitChecker"
 import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"

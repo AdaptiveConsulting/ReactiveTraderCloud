@@ -35,6 +35,7 @@ const [useCurrencies, mainHeader$] = bind(
 )
 
 export { mainHeader$ }
+
 export const MainHeader = () => {
   const currencies = useCurrencies()
   const currency = useSelectedCurrency()
