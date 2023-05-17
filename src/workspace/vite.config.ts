@@ -83,9 +83,12 @@ const setConfig = ({ mode }) => {
       // see https://vitejs.dev/config/shared-options.html#resolve-alias
       // then https://github.com/rollup/plugins/tree/master/packages/alias#entries
       // originally inspired by https://github.com/vitejs/vite/issues/279
-      alias: {
-        "@": path.resolve(__dirname, "./src"),
-      },
+      alias: [
+        {
+          find: "@",
+          replacement: "/src",
+        },
+      ],
     },
     plugins,
   })
