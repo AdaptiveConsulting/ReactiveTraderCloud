@@ -351,7 +351,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
       alias: [
         {
           find: "@",
-          replacement: path.resolve(__dirname, "/src"),
+          replacement: "/src",
         },
       ],
     },
