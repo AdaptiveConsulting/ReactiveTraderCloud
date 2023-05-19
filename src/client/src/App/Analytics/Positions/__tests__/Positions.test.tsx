@@ -120,6 +120,7 @@ describe("Positions", () => {
     expect(screen.getByTestId("tooltip").textContent).toBe("AUD -1,557,031")
   })
 
+  // TODO (5350): fix test failure - Windows snapshot incompatible with Mac
   it.skip("should display the correct bubble chart", async () => {
     const positionMock$ = new BehaviorSubject<
       Record<string, CurrencyPairPosition>

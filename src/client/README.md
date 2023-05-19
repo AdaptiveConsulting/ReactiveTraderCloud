@@ -26,7 +26,7 @@ The trading client GUI is a single page app (SPA) built using Typescript, React,
 
 Please ensure you have
 
-- [Node](https://nodejs.org)(V16.x, suggest using nvm to manage node instances) and
+- [Node](https://nodejs.org)(v20+, suggest using nvm to manage node instances) and
 - [Git](https://git-scm.com/downloads)
 
 installed on your machine and on your path.
@@ -39,14 +39,6 @@ This command is run as part of the continuous integration pipeline on GitHub act
 ### Mac and Windows
 
 There are no additional packages to install other than Git and a recent build of Node.
-
-For Node 17+, on Windows, we have to suppress new DNS lookup behaviour as it interferes with the OpenFin CLI.
-
-So this must be added to shell / profile:
-
-    export NODE_OPTIONS=--dns-result-order=ipv4first
-
-Ref: https://github.com/nodejs/node/issues/40702
 
 ### Linux
 
@@ -75,12 +67,6 @@ You can then browse the app at http://localhost:1917
 
 ### Additional command line options
 
-Run the client using mocks:
-
-```sh
-VITE_MOCKS=true npm start
-```
-
 Any VITE\_\* properties may be added to a `.env.local` file (not checked in).
 
 Runs unit tests with Vitest.
@@ -97,19 +83,35 @@ npm run build
 
 ## Openfin
 
-How to run local instance of RT client in OpenFin
+How to run a web server, to serve the client in OpenFin
 
 ```sh
-npm run openfin:start
+npm run openfin:dev
+```
+
+and to run up the RT client using OpenFin
+
+```sh
+npm run openfin:run:blah
+```
+
+where blah is fx, credit, launcher
+
+As a shortcut, to run the server and client in one command, use
+
+```sh
+npm run openfin:start:blah
 ```
 
 ## Finsemble
 
-How to run local instance of RT client in Finsemble
+How to run a web server, to serve the client in Finsemble
 
 ```sh
 npm run finsemble:dev
 ```
+
+The Finsemble client code is in an internal repo .. ask a colleague for details.
 
 ## Storybook
 

@@ -29,11 +29,7 @@ describe("number formatting", () => {
       expect(format(input3)).toBe(expectedOutput3)
     })
 
-    // TODO unskip when Node is caught up (ref: ticket 3001)
-    //      tested with Node 19.0.0, released 17-oct-2022 and this test passes (latest v18 fails)
-    //      it is a little 'fresh' to push to CI right now
-    //      Ref: https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V19.md#v8-107
-    it.skip("specialised decimal truncation formatter does NOT round", () => {
+    it("specialised decimal truncation formatter does NOT round", () => {
       const format = truncatedDecimalNumberFormatter(0)
       const input = 4.5678
       const expectedOutput = "4"
