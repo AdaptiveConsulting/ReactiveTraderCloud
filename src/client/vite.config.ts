@@ -169,8 +169,8 @@ const copyPlugin = (isDev: boolean, buildTarget: BuildTarget): Plugin[] => {
       .replace(/web\.prod\./g, "www.")
 
       .replace(/<ENV_NAME>/g, env)
-      // We don't want to show PROD in the PWA name
-      .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : env.toUpperCase())
+      // We don't want to show PROD in the app name
+      .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : ` ${env.toUpperCase()}`)
 
   return viteStaticCopy({
     flatten: true,
