@@ -1,8 +1,8 @@
+import { Outlet } from "react-router"
 import styled from "styled-components"
 
 import { Footer } from "@/App/Footer"
 import Header from "@/App/Header"
-import { WithChildren } from "@/utils/utilityTypes"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -32,11 +32,13 @@ const MainWrapper = styled.div`
   overflow: hidden;
 `
 
-const MainLayout = ({ children }: WithChildren) => (
+const MainLayout = () => (
   <Wrapper>
     <AppLayoutRoot data-qa="app-layout__root">
       <Header />
-      <MainWrapper>{children}</MainWrapper>
+      <MainWrapper>
+        <Outlet />
+      </MainWrapper>
       <Footer />
     </AppLayoutRoot>
   </Wrapper>

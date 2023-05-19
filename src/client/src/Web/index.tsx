@@ -1,37 +1,31 @@
 import { lazy, Suspense } from "react"
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Router,
+  Routes,
+} from "react-router-dom"
 
 import { Admin } from "@/App/Admin"
 import { Analytics } from "@/App/Analytics"
 import { CreditRfqForm } from "@/App/Credit"
 import { LiveRates } from "@/App/LiveRates"
-import { TileView } from "@/App/LiveRates/selectedView"
-import { TornOutTile } from "@/App/LiveRates/Tile/TearOut/TornOutTile"
-import { TearOutContext } from "@/App/TearOutSection/tearOutContext"
+import { TornOutTileWrapper } from "@/App/LiveRates/Tile"
+import { TornOut } from "@/App/TearOutSection/TearOutWrapper"
 import { CreditTrades, FxTrades } from "@/App/Trades"
 import { DisconnectionOverlay } from "@/components/DisconnectionOverlay"
 import { Loader } from "@/components/Loader"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { isMobileDevice } from "@/utils"
 import { FEATURE_FLAG, useFeature } from "@/utils/featureFlag"
-import { WithChildren } from "@/utils/utilityTypes"
 
 import CreditPage from "./CreditPage"
 import { FxPage } from "./FxPage"
-import { TearOutRouteWrapper } from "./Web.styles"
+import MainLayout from "./MainLayout"
 
 const StyleguidePage = lazy(() => import("@/styleguide"))
 const SellSidePage = lazy(() => import("./SellSidePage"))
-
-// Note: for the Redirect (or anything) to work, the Route components above it must be at the
-//       top level of the switch e.g. no fragments, context providers ..
-
-const TornOut = ({ children }: WithChildren) => (
-  <TearOutContext.Provider value={{ isTornOut: true }}>
-    {children}
-    <DisconnectionOverlay />
-  </TearOutContext.Provider>
-)
 
 export const WebApp = () => {
   const canUseAdmin = useFeature(FEATURE_FLAG.ADMIN)
@@ -39,136 +33,101 @@ export const WebApp = () => {
 
   return (
     <BrowserRouter basename={BASE_PATH}>
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={() => (
-            <>
-              <DisconnectionOverlay />
-              <FxPage />
-            </>
-          )}
-        />
-        {canDisplayCredit && (
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
           <Route
-            exact
-            path={ROUTES_CONFIG.credit}
-            render={() => (
+            path="/"
+            element={
               <>
                 <DisconnectionOverlay />
-                <CreditPage />
+                <FxPage />
               </>
-            )}
+            }
           />
-        )}
+          {canDisplayCredit && (
+            <Route
+              path={ROUTES_CONFIG.credit}
+              element={
+                <>
+                  <DisconnectionOverlay />
+                  <CreditPage />
+                </>
+              }
+            />
+          )}
+        </Route>
         {canDisplayCredit && (
           <Route
-            exact
             path={ROUTES_CONFIG.sellSide}
-            render={() => {
-              return (
-                <Suspense fallback={<Loader />}>
-                  <DisconnectionOverlay />
-                  <SellSidePage />
-                </Suspense>
-              )
-            }}
+            element={
+              <Suspense fallback={<Loader />}>
+                <DisconnectionOverlay />
+                <SellSidePage />
+              </Suspense>
+            }
           />
         )}
         {canDisplayCredit && (
           <Route
             path={ROUTES_CONFIG.newRfq}
-            render={() => {
-              return (
-                <TornOut>
-                  <CreditRfqForm />
-                </TornOut>
-              )
-            }}
+            element={
+              <TornOut>
+                <CreditRfqForm />
+              </TornOut>
+            }
           />
         )}
         {canDisplayCredit && (
           <Route
             path={ROUTES_CONFIG.creditBlotter}
-            render={() => {
-              return (
-                <TornOut>
-                  <CreditTrades />
-                </TornOut>
-              )
-            }}
+            element={
+              <TornOut>
+                <CreditTrades />
+              </TornOut>
+            }
           />
         )}
-        <Route
-          path={ROUTES_CONFIG.tile}
-          render={({
-            location: { search },
-            match: {
-              params: { symbol },
-            },
-          }) => {
-            const query = new URLSearchParams(search)
-            const view = query.has("tileView")
-              ? (query.get("tileView") as TileView)
-              : TileView.Analytics
-
-            return (
-              <>
-                <DisconnectionOverlay />
-                <TearOutRouteWrapper>
-                  {symbol && <TornOutTile symbol={symbol} view={view} />}
-                </TearOutRouteWrapper>
-              </>
-            )
-          }}
-        />
+        <Route path={ROUTES_CONFIG.tile} element={<TornOutTileWrapper />} />
 
         <Route
           path={ROUTES_CONFIG.styleguide}
-          render={() => (
+          element={
             <Suspense fallback={<Loader />}>
               <StyleguidePage />
             </Suspense>
-          )}
+          }
         />
 
         {canUseAdmin && (
-          <Route path={ROUTES_CONFIG.admin} render={() => <Admin />} />
+          <Route path={ROUTES_CONFIG.admin} element={<Admin />} />
         )}
 
         <Route
           path={ROUTES_CONFIG.tiles}
-          render={() => {
-            return (
-              <TornOut>
-                <LiveRates />
-              </TornOut>
-            )
-          }}
+          element={
+            <TornOut>
+              <LiveRates />
+            </TornOut>
+          }
         />
         <Route
           path={ROUTES_CONFIG.blotter}
-          render={() => {
-            return (
-              <TornOut>
-                <FxTrades />
-              </TornOut>
-            )
-          }}
+          element={
+            <TornOut>
+              <FxTrades />
+            </TornOut>
+          }
         />
         <Route
           path={ROUTES_CONFIG.analytics}
-          render={() => {
-            return (
-              <TornOut>
-                <Analytics hideIfMatches={""} />
-              </TornOut>
-            )
-          }}
+          element={
+            <TornOut>
+              <Analytics hideIfMatches={""} />
+            </TornOut>
+          }
         />
-        <Redirect to="/" />
-      </Switch>
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </BrowserRouter>
   )
 }

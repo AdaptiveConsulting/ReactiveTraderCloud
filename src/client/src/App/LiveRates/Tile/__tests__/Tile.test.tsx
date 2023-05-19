@@ -112,7 +112,7 @@ describe("Tile", () => {
     )
   })
 
-  it("triggers executions currenctly", async () => {
+  it("triggers executions correctly", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
@@ -227,8 +227,6 @@ describe("Tile", () => {
       spotRate: 1.53816,
     })
 
-    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
-
     act(() => {
       vi.advanceTimersByTime(2000)
     })
@@ -256,8 +254,6 @@ describe("Tile", () => {
     act(() => {
       fireEvent.click(screen.getByText("Close"))
     })
-
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,
@@ -303,8 +299,6 @@ describe("Tile", () => {
       spotRate: 1.53816,
     })
 
-    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
-
     act(() => {
       response$.next({
         ...originalRequest,
@@ -313,18 +307,16 @@ describe("Tile", () => {
       response$.complete()
     })
 
-    await waitFor(() => {
-      expect(screen.queryByText("Executing")).toBeNull()
-      expect(screen.getByRole("alert").textContent).toEqual(
-        "Trade execution timeout exceeded",
-      )
-    })
+    expect(screen.queryByText("Executing")).toBeNull()
+    expect(screen.getByRole("alert").textContent).toEqual(
+      "Trade execution timeout exceeded",
+    )
 
     act(() => {
       fireEvent.click(screen.getByText("Close"))
     })
 
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
+    expect(screen.queryByRole("alert")).toBeNull()
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,
@@ -370,7 +362,7 @@ describe("Tile", () => {
       spotRate: 1.53816,
     })
 
-    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
+    expect(screen.queryByText("Executing")).not.toBeNull()
 
     const tradeId = 200
     act(() => {
@@ -384,18 +376,16 @@ describe("Tile", () => {
       response$.complete()
     })
 
-    await waitFor(() => {
-      expect(screen.queryByText("Executing")).toBeNull()
-      expect(screen.getByRole("alert").textContent).toEqual(
-        "Your trade has been rejected",
-      )
-    })
+    expect(screen.queryByText("Executing")).toBeNull()
+    expect(screen.getByRole("alert").textContent).toEqual(
+      "Your trade has been rejected",
+    )
 
     act(() => {
       fireEvent.click(screen.getByText("Close"))
     })
 
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
+    expect(screen.queryByRole("alert")).toBeNull()
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,

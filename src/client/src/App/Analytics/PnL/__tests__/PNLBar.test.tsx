@@ -4,8 +4,6 @@ import { TestThemeProvider } from "@/utils/testUtils"
 
 import PNLBar from "../PNLBar"
 
-const renderer = require("react-test-renderer")
-
 const renderComponent = (symbol: string, basePnl: number, maxVal: number) =>
   render(
     <TestThemeProvider>
@@ -31,17 +29,15 @@ describe("PNLBar", () => {
   })
 
   it("renders the bar correctly", () => {
-    const tree = renderer
-      .create(
-        <TestThemeProvider>
-          <PNLBar
-            symbol={"EURAUD"}
-            basePnl={-26043.691207338878}
-            maxVal={1239939.1231111237}
-          />
-        </TestThemeProvider>,
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { container } = render(
+      <TestThemeProvider>
+        <PNLBar
+          symbol={"EURAUD"}
+          basePnl={-26043.691207338878}
+          maxVal={1239939.1231111237}
+        />
+      </TestThemeProvider>,
+    )
+    expect(container.firstChild).toMatchSnapshot()
   })
 })

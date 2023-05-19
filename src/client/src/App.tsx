@@ -1,5 +1,5 @@
 import { StrictMode } from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 
 import { GlobalScrollbarStyle, ThemeProvider } from "@/theme"
 import GlobalStyle from "@/theme/globals"
@@ -25,7 +25,9 @@ export async function initApp() {
   registerFxNotifications()
   registerCreditBlotterUpdates()
 
-  ReactDOM.render(
+  const container = document.getElementById("root")
+  const root = createRoot(container as HTMLElement)
+  root.render(
     <StrictMode>
       <GlobalStyle />
       <ThemeProvider>
@@ -33,7 +35,6 @@ export async function initApp() {
         <MainApp />
       </ThemeProvider>
     </StrictMode>,
-    document.getElementById("root"),
   )
 
   const { ga } = window

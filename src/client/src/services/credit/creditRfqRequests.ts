@@ -58,7 +58,9 @@ export const createCreditQuote$ = (quoteRequest: CreateQuoteRequest) => {
 }
 
 export const [acceptedCreditRfq$, setAcceptedCreditRfq] =
-  createSignal<{ quoteId: number }>()
+  createSignal<{
+    quoteId: number
+  }>()
 
 export const acceptCreditQuote$ = (acceptRequest: AcceptQuoteRequest) => {
   return WorkflowService.acceptQuote(acceptRequest).pipe(

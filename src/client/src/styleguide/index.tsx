@@ -1,5 +1,4 @@
-import { createRef } from "react"
-import Helmet from "react-helmet"
+import { createRef, useEffect } from "react"
 import styled, { createGlobalStyle } from "styled-components"
 
 import FloatingTools from "./components/FloatingsTools"
@@ -25,6 +24,19 @@ const sections: Array<{
 ]
 
 const Styleguide = () => {
+  useEffect(() => {
+    document.title = "Style Guide for Reactive Trader®"
+    const link = document.createElement("link")
+    link.type = "text/css"
+    link.rel = "stylesheet"
+    link.href = "https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+    document.head.appendChild(link)
+
+    return () => {
+      document.head.removeChild(link)
+    }
+  }, [])
+
   const refs: React.RefObject<HTMLDivElement>[] = [
     ...Array(sections.length),
   ].map(() => createRef())
@@ -36,13 +48,6 @@ const Styleguide = () => {
   return (
     <>
       <StyleGuideGlobal />
-      <Helmet title={"Style Guide for Reactive Trader®"}>
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-        />
-      </Helmet>
       <Root>
         <FloatingTools />
         <Introduction key="introduction" />

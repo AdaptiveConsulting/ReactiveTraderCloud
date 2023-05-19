@@ -199,7 +199,7 @@ describe("Tile/rfq", () => {
       spotRate: 1.53816,
     })
 
-    await waitFor(() => expect(screen.queryByText("Executing")).not.toBeNull())
+    expect(screen.queryByText("Executing")).not.toBeNull()
 
     act(() => {
       vi.advanceTimersByTime(2001)
@@ -224,7 +224,7 @@ describe("Tile/rfq", () => {
       fireEvent.click(screen.getByText("Close"))
     })
 
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull())
+    expect(screen.queryByRole("alert")).toBeNull()
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,

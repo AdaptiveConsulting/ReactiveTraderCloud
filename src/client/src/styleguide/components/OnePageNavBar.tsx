@@ -6,10 +6,11 @@ import {
   useRef,
   useState,
 } from "react"
-import { HashLink as Link } from "react-router-hash-link"
+import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 
 import Logo from "@/components/Logo"
+import { useScrollToHashElement } from "@/utils"
 
 import { H2 } from "../elements"
 import { Flex } from "../styled"
@@ -98,6 +99,8 @@ const OnePageNavBar = (props: OnePageNavBarProps) => {
     setIsSticky(scrollTop > positionNavBar)
   }, [scrollTop, positionNavBar])
 
+  useScrollToHashElement()
+
   return (
     <>
       <NavBarBleed className={isSticky ? "sticky" : ""} ref={ref}>
@@ -114,12 +117,6 @@ const OnePageNavBar = (props: OnePageNavBarProps) => {
                     <OnePageNavLink
                       key={`navlink-${section.path}`}
                       to={`#${section.path}`}
-                      scroll={(el) =>
-                        el.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        })
-                      }
                       className={isActive(section.path)}
                       onClick={() => setCurrentSection(section.title)}
                     >

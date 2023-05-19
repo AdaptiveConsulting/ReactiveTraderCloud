@@ -43,6 +43,7 @@ export const TestThemeProvider = ({ children }: { children: ReactNode }) => (
 export class TestErrorBoundary extends Component<
   {
     onError: (error: Error, errorInfo: ErrorInfo) => void
+    children: ReactNode
   },
   {
     hasError: boolean
