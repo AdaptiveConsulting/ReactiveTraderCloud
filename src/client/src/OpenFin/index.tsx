@@ -16,21 +16,30 @@ const CreditRoutes = lazy(() => import("@/OpenFin/apps/Credit"))
 export const OpenFinApp = () => (
   <BrowserRouter basename={BASE_PATH}>
     <Routes>
-      <Route path={`${ROUTES_CONFIG.launcher}*`}>
-        <Suspense fallback={<Loader />}>
-          <LauncherRoutes />
-        </Suspense>
-      </Route>
-      <Route path={`${ROUTES_CONFIG.fx}*`}>
-        <Suspense fallback={<Loader />}>
-          <FxRoutes />
-        </Suspense>
-      </Route>
-      <Route path={`${ROUTES_CONFIG.credit}*`}>
-        <Suspense fallback={<Loader />}>
-          <CreditRoutes />
-        </Suspense>
-      </Route>
+      <Route
+        path={`${ROUTES_CONFIG.launcher}*`}
+        element={
+          <Suspense fallback={<Loader />}>
+            <LauncherRoutes />
+          </Suspense>
+        }
+      />
+      <Route
+        path={`${ROUTES_CONFIG.fx}*`}
+        element={
+          <Suspense fallback={<Loader />}>
+            <FxRoutes />
+          </Suspense>
+        }
+      />
+      <Route
+        path={`${ROUTES_CONFIG.credit}*`}
+        element={
+          <Suspense fallback={<Loader />}>
+            <CreditRoutes />
+          </Suspense>
+        }
+      />
       <Route path={ROUTES_CONFIG.contact} element={<OpenFinContactDisplay />} />
       <Route path="/openfin-window-frame" element={<WindowFrame />} />
       <Route path="/openfin-sub-window-frame" element={<ChildWindowFrame />} />
