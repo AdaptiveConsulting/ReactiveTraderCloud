@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 
 import { Analytics } from "@/App/Analytics"
 import { LiveRates } from "@/App/LiveRates"
@@ -9,7 +9,7 @@ import { DocTitle } from "@/components/DocTitle"
 import { ROUTES_CONFIG } from "@/constants"
 
 const FxRoutes = () => (
-  <>
+  <Routes>
     <Route
       path={ROUTES_CONFIG.analytics}
       element={
@@ -38,7 +38,7 @@ const FxRoutes = () => (
       }
     />
     <Route path={ROUTES_CONFIG.tile} element={<TornOutTileWrapper />} />
-  </>
+  </Routes>
 )
 
 export default FxRoutes

@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 
 import { CreditRfqForm, CreditRfqs } from "@/App/Credit"
 import { CreditTrades } from "@/App/Trades"
@@ -8,7 +8,7 @@ import { ROUTES_CONFIG } from "@/constants"
 import SellSidePage from "@/Web/SellSidePage"
 
 const CreditRoutes = () => (
-  <>
+  <Routes>
     <Route
       path={ROUTES_CONFIG.creditRfqs}
       element={
@@ -46,7 +46,7 @@ const CreditRoutes = () => (
         </DocTitle>
       }
     />
-  </>
+  </Routes>
 )
 
 export default CreditRoutes

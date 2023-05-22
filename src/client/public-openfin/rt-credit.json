@@ -93,7 +93,7 @@
                           "type": "component",
                           "componentName": "view",
                           "componentState": {
-                            "url": "<BASE_URL>/credit-rfqs",
+                            "url": "<BASE_URL>/credit/credit-rfqs",
                             "name": "RFQs"
                           },
                           "isClosable": true,
@@ -113,7 +113,7 @@
                           "type": "component",
                           "componentName": "view",
                           "componentState": {
-                            "url": "<BASE_URL>/credit-blotter",
+                            "url": "<BASE_URL>/credit/credit-blotter",
                             "name": "Credit-Blotter"
                           },
                           "isClosable": true,
@@ -135,7 +135,7 @@
                       "type": "component",
                       "componentName": "view",
                       "componentState": {
-                        "url": "<BASE_URL>/credit-new-rfq",
+                        "url": "<BASE_URL>/credit/credit-new-rfq",
                         "name": "New RFQ"
                       },
                       "isClosable": true,

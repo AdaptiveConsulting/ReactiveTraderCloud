@@ -17,7 +17,7 @@ export const OpenFinApp = () => (
   <BrowserRouter basename={BASE_PATH}>
     <Routes>
       <Route
-        path={`${ROUTES_CONFIG.launcher}*`}
+        path={`${ROUTES_CONFIG.launcher}/*`}
         element={
           <Suspense fallback={<Loader />}>
             <LauncherRoutes />
@@ -25,7 +25,7 @@ export const OpenFinApp = () => (
         }
       />
       <Route
-        path={`${ROUTES_CONFIG.fx}*`}
+        path={`${ROUTES_CONFIG.fx}/*`}
         element={
           <Suspense fallback={<Loader />}>
             <FxRoutes />
@@ -33,7 +33,7 @@ export const OpenFinApp = () => (
         }
       />
       <Route
-        path={`${ROUTES_CONFIG.credit}*`}
+        path={`${ROUTES_CONFIG.credit}/*`}
         element={
           <Suspense fallback={<Loader />}>
             <CreditRoutes />

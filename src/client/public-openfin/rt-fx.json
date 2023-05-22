@@ -121,7 +121,7 @@
                           "componentName": "view",
                           "contextMenu": true,
                           "componentState": {
-                            "url": "<BASE_URL>/fx-tiles",
+                            "url": "<BASE_URL>/fx/fx-tiles",
                             "name": "Tiles"
                           },
                           "isClosable": true,
@@ -141,7 +141,7 @@
                           "type": "component",
                           "componentName": "view",
                           "componentState": {
-                            "url": "<BASE_URL>/fx-blotter",
+                            "url": "<BASE_URL>/fx/fx-blotter",
                             "name": "FX-Blotter"
                           },
                           "isClosable": true,
@@ -163,7 +163,7 @@
                       "type": "component",
                       "componentName": "view",
                       "componentState": {
-                        "url": "<BASE_URL>/fx-analytics",
+                        "url": "<BASE_URL>/fx/fx-analytics",
                         "name": "Analytics"
                       },
                       "isClosable": true,
