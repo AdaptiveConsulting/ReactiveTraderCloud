@@ -3,7 +3,6 @@ import { customNumberFormatter } from "client/utils"
 import {
   DealerBody,
   Direction,
-  Direction,
   PASSED_QUOTE_STATE,
   PENDING_WITH_PRICE_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,

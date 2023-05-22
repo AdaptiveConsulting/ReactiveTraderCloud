@@ -16,6 +16,7 @@ import {
   DealerBody,
   PENDING_WITH_PRICE_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
+  PendingWithPriceQuoteState,
   REJECTED_WITH_PRICE_QUOTE_STATE,
 } from "@/generated/TradingGateway"
 
@@ -148,8 +149,10 @@ const _sellSideRfqs$ = combineLatest([
         transformed.cpy = "AAM"
         transformed.security = rfq.instrument?.name ?? "NA"
         transformed.quantity = rfq.quantity
-        transformed.price = adaptiveQuote?.state?.payload
-          ? adaptiveQuote?.state?.payload
+        // TODO (2988) - logic needs looking at here - what does RFQ Row do with un-Adaptive-quoted RFQ
+        transformed.price = (adaptiveQuote?.state as PendingWithPriceQuoteState)
+          ?.payload
+          ? (adaptiveQuote?.state as PendingWithPriceQuoteState)?.payload
           : 0
         transformed.timer =
           rfq.state !== RfqState.Open

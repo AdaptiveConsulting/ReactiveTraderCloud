@@ -4,14 +4,17 @@ import {
   DealerBody,
   Direction,
   PASSED_QUOTE_STATE,
-  PENDING_WITHOUT_PRICE_QUOTE_STATE,
   PENDING_WITH_PRICE_QUOTE_STATE,
+  PENDING_WITHOUT_PRICE_QUOTE_STATE,
   QuoteBody,
-  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   REJECTED_WITH_PRICE_QUOTE_STATE,
+  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   RfqState,
 } from "generated/TradingGateway"
+import { useEffect, useState } from "react"
 import { FaCheckCircle } from "react-icons/fa"
+import { FaCheckCircle } from "react-icons/fa"
+import { exhaustMap } from "rxjs/operators"
 import { exhaustMap } from "rxjs/operators"
 import { acceptCreditQuote$ } from "services/credit"
 
@@ -23,7 +26,6 @@ import {
   QuoteDotWrapper,
   QuoteRow,
 } from "./styled"
-import { useEffect, useState } from "react"
 
 const [acceptRfq$, onAcceptRfq] = createSignal<number>()
 

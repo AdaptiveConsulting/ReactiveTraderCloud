@@ -26,7 +26,7 @@ import { creditDealers$ } from "./creditDealers"
 import { creditInstruments$ } from "./creditInstruments"
 
 export type QuoteStateTypes =
-  | "pendngWithoutPrice"
+  | "pendingWithoutPrice"
   | "pendingWithPrice"
   | "passed"
   | "accepted"

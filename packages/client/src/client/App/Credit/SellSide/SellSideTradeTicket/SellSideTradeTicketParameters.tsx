@@ -1,6 +1,5 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { ThemeName } from "client/theme"
 import {
   DECIMAL_SEPARATOR,
   DECIMAL_SEPARATOR_REGEXP,
@@ -12,6 +11,12 @@ import { useEffect, useRef } from "react"
 import { merge } from "rxjs"
 import { filter, map } from "rxjs/operators"
 import styled from "styled-components"
+
+import {
+  AcceptedQuoteState,
+  PendingWithPriceQuoteState,
+} from "@/generated/TradingGateway"
+import { ThemeName } from "@/theme"
 
 import {
   getSellSideQuoteState,
@@ -147,11 +152,16 @@ export const SellSideTradeTicketParameters = ({
           getSellSideQuoteState(state, quote.state) ===
           SellSideQuoteState.Pending ? (
             <ParameterValue>
-              <PendingPrice>{quote.state?.payload}</PendingPrice>
+              <PendingPrice>
+                {(quote.state as PendingWithPriceQuoteState)?.payload}
+              </PendingPrice>
               <em>Awaiting Response</em>
             </ParameterValue>
           ) : (
-            <ParameterValue>{quote.state?.payload}</ParameterValue>
+            // TODO (2988) .. sort out this quote state vs payload/price thing once and for all
+            <ParameterValue>
+              {(quote.state as AcceptedQuoteState)?.payload}
+            </ParameterValue>
           )
         ) : (
           <ParameterInput

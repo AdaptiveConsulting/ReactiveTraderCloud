@@ -1,14 +1,15 @@
 import { concat, concatMap, delay, from, of } from "rxjs"
+
 import {
-  PASSED_QUOTE_STATE,
-  QUOTE_PASSED_RFQ_UPDATE,
-  RfqUpdate,
   Direction,
-  RfqState,
-  QUOTE_UPDATED_RFQ_UPDATE,
-  RFQ_CREATED_RFQ_UPDATE,
+  PASSED_QUOTE_STATE,
   PENDING_WITH_PRICE_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
+  QUOTE_PASSED_RFQ_UPDATE,
+  QUOTE_UPDATED_RFQ_UPDATE,
+  RFQ_CREATED_RFQ_UPDATE,
+  RfqState,
+  RfqUpdate,
 } from "@/generated/TradingGateway"
 
 const dealerIdLength = 10

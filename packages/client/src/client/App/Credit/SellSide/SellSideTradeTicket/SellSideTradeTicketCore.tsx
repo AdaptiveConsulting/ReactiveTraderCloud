@@ -118,7 +118,11 @@ export const SellSideTradeTicketTicketCore = ({
           direction={direction}
           instrumentId={instrumentId}
           rfqState={rfqState}
-          quoteState={quote?.state.type}
+          // TODO (2988) .. obviously :)
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          quoteState={quote!.state.type}
         />
         <SellSideTradeTicketParameters
           selectedRfqId={rfqId}
