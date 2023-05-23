@@ -58,7 +58,7 @@
   "dependencies": {
     "@adaptive/hydra-platform": "^3.120.0",
     "@finos/fdc3": "^1.2.0",
-    "@openfin/core": "^29.0.0",
+    "@openfin/core": "31.75.4",
     "@openfin/workspace": "11.0.6",
     "@openfin/workspace-platform": "11.0.6",
     "@react-rxjs/core": "^0.10.3",
@@ -67,7 +67,7 @@
     "date-fns": "^2.19.0",
     "downshift": "^6.1.9",
     "lodash": "^4.17.21",
-    "openfin-notifications": "1.20.0",
+    "openfin-notifications": "1.23.0",
     "polished": "^4.1.1",
     "query-string": "^7.1.3",
     "react": "18.2.0",
