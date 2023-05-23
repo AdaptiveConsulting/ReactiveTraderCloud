@@ -47,8 +47,21 @@ export interface CreditTrade extends Trade {
   orderType: string
   unitPrice: number
 }
+export enum LimitCheckStatus {
+  Success = "Success",
+  Failure = "Failure",
+}
+
+export interface LimitCheckTrade extends Trade {
+  status: LimitCheckStatus
+  symbol: string
+  notional: number
+  spotRate: number
+}
 
 export interface Trade {
   tradeId: number
   [prop: string]: unknown
 }
+
+export type CompositeTrade = FxTrade | CreditTrade | LimitCheckTrade

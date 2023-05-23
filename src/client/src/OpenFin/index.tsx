@@ -111,8 +111,23 @@ export const OpenFinApp = () => (
       />
 
       {/* ..the rest */}
+      <Route
+        path={`${ROUTES_CONFIG.limitChecker}/*`}
+        element={
+          <Suspense fallback={<Loader />}>
+            <LimitCheckerRoutes />
+          </Suspense>
+        }
+      />
 
-      <Route path="/openfin-window-frame" element={<WindowFrame />} />
+      <Route
+        path="/openfin-window-frame"
+        element={<WindowFrame admin={false} />}
+      />
+      <Route
+        path="/openfin-admin-window-frame"
+        element={<WindowFrame admin={true} />}
+      />
       <Route path="/openfin-sub-window-frame" element={<ChildWindowFrame />} />
       <Route path={ROUTES_CONFIG.contact} element={<OpenFinContactDisplay />} />
       <Route path={ROUTES_CONFIG.snapshots} element={<Snapshots />} />

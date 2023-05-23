@@ -30,7 +30,7 @@
         "frame": false,
         "shadow": true,
         "name": "Limit-Checker",
-        "url": "<BASE_URL>/openfin-window-frame?app=limit-checker",
+        "url": "<BASE_URL>/openfin-admin-window-frame?app=limit-checker",
         "layout": {
           "settings": {
             "blockedPopoutsThrowError": false,
@@ -44,7 +44,7 @@
             "selectionEnabled": true,
             "showCloseIcon": false,
             "showMaximiseIcon": false,
-            "showPopoutIcon": true,
+            "showPopoutIcon": false,
             "tabControlOffset": 10,
             "tabOverlapAllowance": 0
           },
@@ -52,25 +52,20 @@
             {
               "type": "column",
               "id": "mainColumn",
-              "isClosable": false,
-              "title": "",
+              "isClosable": true,
+              "title": "Limit Checker",
               "content": [
                 {
-                  "type": "row",
+                  "type": "stack",
                   "content": [
                     {
-                      "type": "stack",
-                      "content": [
-                        {
-                          "type": "component",
-                          "componentName": "view",
-                          "componentState": {
-                            "url": "<BASE_URL>/limit-checker",
-                            "name": "Limiters"
-                          },
-                          "title": "Limiters"
-                        }
-                      ]
+                      "type": "component",
+                      "componentName": "view",
+                      "componentState": {
+                        "url": "<BASE_URL>/limit-checker/limit-checker",
+                        "name": "Limiters"
+                      },
+                      "title": "Limiters"
                     }
                   ]
                 }

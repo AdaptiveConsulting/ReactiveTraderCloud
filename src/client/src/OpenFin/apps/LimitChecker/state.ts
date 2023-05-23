@@ -6,12 +6,14 @@ import {
   merge,
   of,
   scan,
+  share,
   switchMap,
   timer,
   withLatestFrom,
 } from "rxjs"
 
 import { currencyPairs$ } from "@/services/currencyPairs"
+import { LimitCheckStatus, LimitCheckTrade } from "@/services/trades/types"
 
 import { LimitCheckerRequest } from "./LimitChecker"
 
@@ -56,4 +58,22 @@ limitResult$.subscribe(({ result, request }) =>
 
 const [useLimits] = bind(limits$, {})
 
-export { checkLimit, setLimit, useLimitResult, useLimits }
+let tradeId = 0
+
+const tableRows$ = limitResult$.pipe(
+  scan((acc, { request, result }) => {
+    return [
+      ...acc,
+      {
+        status: result ? LimitCheckStatus.Success : LimitCheckStatus.Failure,
+        tradeId: tradeId++,
+        symbol: request.tradedCurrencyPair,
+        notional: request.notional,
+        spotRate: request.rate,
+      },
+    ]
+  }, [] as LimitCheckTrade[]),
+  share(),
+)
+
+export { checkLimit, setLimit, tableRows$, useLimitResult, useLimits }

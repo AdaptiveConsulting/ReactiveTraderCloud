@@ -6,7 +6,7 @@ import { FrameRoot } from "./WindowFrame.styles"
 import { WindowHeader } from "./WindowHeader"
 import { WindowViewport } from "./WindowViewport"
 
-export const WindowFrame = () => {
+export const WindowFrame = ({ admin }: { admin: boolean }) => {
   const win = fin.Window.getCurrentSync()
 
   const headerControlHandlers = {
@@ -29,7 +29,11 @@ export const WindowFrame = () => {
   return (
     <FrameRoot>
       <WindowViewport>
-        <WindowHeader {...headerControlHandlers} title="Reactive Trader®" />
+        <WindowHeader
+          admin={admin}
+          {...headerControlHandlers}
+          title="Reactive Trader®"
+        />
         <WindowBody />
         <WindowFooter />
       </WindowViewport>

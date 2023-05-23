@@ -14,6 +14,7 @@ export type Section =
   | "analytics"
   | "newRfq"
   | "creditBlotter"
+  | "limitChecker"
 
 export type SectionConfig = { [section in Section]: tornOutSize }
 
@@ -79,5 +80,9 @@ export const sectionConfig: SectionConfig = {
   creditBlotter: {
     width: window.innerWidth - window.innerWidth * 0.15,
     height: window.innerHeight - window.innerHeight * 0.5,
+  },
+  limitChecker: {
+    width: 0,
+    height: 0,
   },
 }

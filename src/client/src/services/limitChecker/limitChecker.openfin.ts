@@ -31,7 +31,7 @@ const removeLimitCheckSubscriber = (uuid: string, topic: string) => {
 }
 
 const REQUEST_LIMIT_CHECK_TOPIC = "request-limit-check"
-const LIMIT_CHECKER_UUID = "reactive-launcher-local"
+const LIMIT_CHECKER_UUID = "reactive-trader-limit-checker"
 const LIMIT_CHECKER_STATUS_TOPIC = "request-limit-check-status"
 const LOG_NAME = "OpenFin: "
 let limitCheckId = 1

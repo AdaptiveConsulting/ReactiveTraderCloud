@@ -1,2 +1,2 @@
-export type { TradesGridInnerProps } from "./TradesGrid"
-export { TradesGridInner } from "./TradesGrid"
+export type { TradesGridInnerProps } from "./TradesGridInner"
+export { TradesGridInner } from "./TradesGridInner"

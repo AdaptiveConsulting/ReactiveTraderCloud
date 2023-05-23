@@ -66,11 +66,9 @@ export const reactiveAnalytics: App = {
 export const limitChecker: App = {
   appId: "limit-checker",
   title: "Limit Checker",
-  manifestType: "external",
+  manifestType: "manifest",
   description: "Reactive Trader Limit Checker",
-  manifest:
-    // Maps to appAssets alias in manifest.fin.json
-    "LimitChecker",
+  manifest: `${VITE_RT_URL}/config/limit-checker.json`,
   icons: [
     {
       src: `${BASE_URL}/images/icons/limit-checker.ico`,

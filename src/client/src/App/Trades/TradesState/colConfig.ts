@@ -166,6 +166,39 @@ export const creditColDef: ColDef = {
   },
 }
 
+export const limitCheckerColDef: ColDef = {
+  tradeId: {
+    headerName: "ID",
+    filterType: "number",
+    width: 80,
+    align: "left",
+  },
+  status: {
+    headerName: "Status",
+    filterType: "set",
+    valueFormatter: capitalize,
+    width: 110,
+  },
+  symbol: {
+    headerName: "CCYCCY",
+    filterType: "set",
+    width: 110,
+  },
+  notional: {
+    headerName: "Notional",
+    filterType: "number",
+    valueFormatter: (v) => formatAsWholeNumber(v as number),
+    excelValueFormatter: notionalExcelValueFormatter,
+    width: 120,
+  },
+  spotRate: {
+    headerName: "Rate",
+    filterType: "number",
+    valueFormatter: (v) => formatTo6Digits(v as number),
+    width: 100,
+  },
+}
+
 /**
  * Values of the Trade keys.  Used for dynamically constructing maps that
  * concern each key.
@@ -174,3 +207,5 @@ export const fxColFields: FxColField[] = Object.keys(fxColDef) as FxColField[]
 export const creditColFields: CreditColField[] = Object.keys(
   creditColDef,
 ) as CreditColField[]
+
+export const limitCheckerColFields = Object.keys(limitCheckerColDef)

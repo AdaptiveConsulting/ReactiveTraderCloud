@@ -5,7 +5,8 @@ import { combineLatest, merge, Observable } from "rxjs"
 import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
 
 import { HIGHLIGHT_ROW_FLASH_TIME } from "@/constants"
-import { CreditTrade, creditTrades$, FxTrade, trades$ } from "@/services/trades"
+import { creditTrades$, trades$ } from "@/services/trades"
+import { CompositeTrade } from "@/services/trades/types"
 
 import { ColDef } from "./colConfig"
 import type { DateFilterContent, NumFilterContent } from "./filterState"
@@ -18,8 +19,6 @@ import {
 } from "./filterState"
 import type { SortDirection, TableSort } from "./sortState"
 import { tableSort$ } from "./sortState"
-
-type Trade = FxTrade | CreditTrade
 
 /**
  *
@@ -58,7 +57,7 @@ const searchTrueOfTrade = (searchTerms: string[], tradeValues: unknown[]) => {
  */
 const setFiltersTrueOfTrade = (
   appliedFilters: [string, Set<unknown>][],
-  trade: Trade,
+  trade: CompositeTrade,
 ) => {
   return appliedFilters.every(([field, filterValues]) => {
     return (filterValues as Set<unknown>).has(trade[field])
@@ -98,7 +97,7 @@ const dateIsSet = (val: Date | undefined | null): val is Date => {
  */
 const dateFiltersTrueOfTrade = (
   dateFilters: [string, DateFilterContent][],
-  trade: Trade,
+  trade: CompositeTrade,
 ) => {
   return dateFilters.every(([field, filterContent]) => {
     // Predicate is trivially true if no date filter is set
@@ -147,7 +146,7 @@ const dateFiltersTrueOfTrade = (
  */
 const numFiltersTrueOfTrade = (
   numFilters: [string, NumFilterContent][],
-  trade: Trade,
+  trade: CompositeTrade,
 ) => {
   return numFilters.every(([field, filterContent]) => {
     // Predicate is trivially true if no number filter is set
@@ -187,7 +186,7 @@ const numFiltersTrueOfTrade = (
   })
 }
 
-const getFilteredTrades = <T extends Trade>(
+const getFilteredTrades = <T extends CompositeTrade>(
   trades$: Observable<T[]>,
   colDef: ColDef,
 ) => {
@@ -220,7 +219,7 @@ const getFilteredTrades = <T extends Trade>(
       // Trade is included if it either satisfies every
       // filter-type predicate applied to it or has no
       // filters of that type applied.
-      return trades.filter((trade: Trade) => {
+      return trades.filter((trade: CompositeTrade) => {
         const numFiltersTrue =
           !haveNumFilters || numFiltersTrueOfTrade(numFilters, trade)
         const setFiltersTrue =
@@ -262,9 +261,9 @@ const stringComparator = (direction: SortDirection, a: string, b: string) => {
  * which sort comparator to use.
  */
 const sortTrades = ([trades, { field, direction }]: [
-  Trade[],
-  TableSort<keyof Trade>,
-]): Trade[] => {
+  CompositeTrade[],
+  TableSort<keyof CompositeTrade>,
+]): CompositeTrade[] => {
   const sortedTrades = [...trades]
   if (field && direction) {
     sortedTrades.sort((tradeA, tradeB) => {
@@ -309,7 +308,7 @@ const sortTrades = ([trades, { field, direction }]: [
  * sort.
  */
 export const [useTableTrades, tableTrades$] = bind(
-  (trades$: Observable<Trade[]>, colDef: ColDef) => {
+  (trades$: Observable<CompositeTrade[]>, colDef: ColDef) => {
     return combineLatest([getFilteredTrades(trades$, colDef), tableSort$]).pipe(
       map(sortTrades),
     )
@@ -318,7 +317,7 @@ export const [useTableTrades, tableTrades$] = bind(
 )
 
 export const [useTableTradeWithIndex] = bind(
-  (trades$: Observable<Trade[]>, colDef: ColDef, index: number) =>
+  (trades$: Observable<CompositeTrade[]>, colDef: ColDef, index: number) =>
     tableTrades$(trades$, colDef).pipe(map((trades) => trades[index])),
 )
 
@@ -330,7 +329,7 @@ export const [useTableTradeWithIndex] = bind(
  * each column.
  */
 export const [useFilterFields] = bind(
-  <T extends Trade>(trades$: Observable<T[]>, colDef: ColDef) =>
+  <T extends CompositeTrade>(trades$: Observable<T[]>, colDef: ColDef) =>
     combineLatest([
       getAppliedSetFilterEntries(trades$, colDef).pipe(startWith([])),
       getNumFilterEntries(colDef).pipe(startWith([])),
@@ -369,7 +368,7 @@ const newTradeId$ = merge(trades$, creditTrades$).pipe(
     },
     { stateOfWorld: true, trades: [], skip: false } as {
       stateOfWorld: boolean
-      trades: Trade[]
+      trades: CompositeTrade[]
       skip: boolean
     },
   ),
