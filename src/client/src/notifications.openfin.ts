@@ -1,10 +1,14 @@
-/* eslint-disable no-restricted-globals */
+import * as CSS from "csstype"
 import {
   addEventListener,
+  ContainerTemplateFragment,
   create,
   IndicatorColor,
   NotificationActionEvent,
+  TemplateFragment,
+  TextTemplateFragment,
 } from "openfin-notifications"
+import { TemplateCustom } from "openfin-notifications"
 import { Subscription } from "rxjs"
 
 import {
@@ -18,6 +22,7 @@ import {
 } from "@/services/executions"
 import { formatNumber } from "@/utils"
 
+import { Direction } from "./generated/TradingGateway"
 import {
   acceptedRfqWithQuote$,
   lastQuoteReceived$,
@@ -26,10 +31,46 @@ import {
 } from "./services/credit"
 import { constructUrl } from "./utils/url"
 
-const icon = constructUrl("/static/media/reactive-trader-icon-dark.ico")
+const fxIconUrl = constructUrl("/static/media/reactive-trader-fx.svg")
+const creditIconUrl = constructUrl("/static/media/reactive-trader-credit.svg")
 
 const TASK_HIGHLIGHT_FX_TRADE = "highlight-fx-trade"
 const TASK_HIGHLIGHT_CREDIT_TRADE = "highlight-credit-trade"
+
+// from OF "starter" projects
+function createContainer(
+  containerType: "column" | "row",
+  children: TemplateFragment[],
+  style?: CSS.Properties,
+): ContainerTemplateFragment {
+  return {
+    type: "container",
+    style: {
+      display: "flex",
+      flexDirection: containerType,
+      ...style,
+    },
+    children,
+  }
+}
+
+function createText(
+  dataKey: string,
+  fontSize = 14,
+  style?: CSS.Properties,
+): TextTemplateFragment {
+  return {
+    type: "text",
+    dataKey,
+    style: {
+      fontSize: `${fontSize}px`,
+      ...style,
+    },
+  }
+}
+
+// Custom notifications, per
+// https://developers.openfin.co/of-docs/docs/customize-notifications#arrangement-of-sections
 
 const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
   const notification = {
@@ -40,36 +81,11 @@ const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
 
   const status =
     notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
+  const baseCurrency = notification.currencyPair.substring(0, 3)
+  const quoteCurrency = notification.currencyPair.substring(3)
 
-  // This is if we want to keep th default notification but add colors
-  const notif = {
-    title: `Trade ${status}: ID ${notification.tradeId}`,
-    buttons: [
-      {
-        title: "Highlight trade in blotter",
-        iconUrl: icon,
-        onClick: { task: TASK_HIGHLIGHT_FX_TRADE },
-      },
-    ],
-    body: `${notification.direction} ${
-      notification.dealtCurrency
-    } ${formatNumber(
-      notification.notional,
-    )} vs ${notification.currencyPair.substring(3)} @ ${notification.spotRate}`,
-    icon,
-    customData: { tradeId: notification.tradeId },
-    category: "Trade Executed",
-    indicator: {
-      color: status === "Accepted" ? IndicatorColor.GREEN : IndicatorColor.RED,
-      text: status,
-    },
-  }
-
-  //This is for a custom notification
-  // https://developers.openfin.co/of-docs/docs/customize-notifications#arrangement-of-sections
-  // we are limited in what we can do
-  create({
-    icon,
+  const notificationOptions: TemplateCustom = {
+    icon: fxIconUrl,
     template: "custom",
     category: "Trade Executed",
     title: `Trade ${status}: ID ${notification.tradeId}`,
@@ -80,86 +96,162 @@ const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
         compositions: [
           {
             minTemplateAPIVersion: "1",
-            layout: {
-              type: "text",
-              dataKey: "message",
-              // style: { backgroundColor: "purple" },
-            },
+            layout: createContainer(
+              "row",
+              [
+                createText("messageTradeDirection", 12, {
+                  fontWeight: "bold",
+                  backgroundColor:
+                    notification.direction === Direction.Buy ? "green" : "red",
+                  borderRadius: "10px",
+                  padding: "0 5px",
+                }),
+                createText("messageTradeDetails", 12),
+              ],
+              {
+                // some mininal styling for the container, to keep the "pill" and message apart
+                alignItems: "baseline",
+                gap: "4px",
+              },
+            ),
           },
         ],
       },
       indicator: {
-        align: "right", //left, right, center
+        align: "left",
         color:
-          status === "Accepted" ? IndicatorColor.GRAY : IndicatorColor.YELLOW,
+          status === "Accepted" ? IndicatorColor.GREEN : IndicatorColor.RED,
       },
       buttons: {
-        align: "left", //left, right, center
+        align: "right",
       },
     },
     buttons: [
       {
         title: "Highlight trade in blotter",
-        iconUrl: icon,
+        iconUrl: fxIconUrl,
         onClick: { task: TASK_HIGHLIGHT_FX_TRADE },
       },
     ],
     templateData: {
-      message: `${notification.direction} ${
-        notification.dealtCurrency
-      } ${formatNumber(
+      messageTradeDirection: notification.direction.toUpperCase(),
+      messageTradeDetails: `${baseCurrency} ${formatNumber(
         notification.notional,
-      )} vs ${notification.currencyPair.substring(3)} @ ${
-        notification.spotRate
-      }`,
+      )} vs ${quoteCurrency} @ ${notification.spotRate}`,
     },
-  })
+  }
+
+  create(notificationOptions)
 }
 
 const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {
-  const notification = {
-    ...rfq,
-  }
+  const dealer = rfq.dealers.find((dealer) => dealer.id === quote.dealerId)
+  const title = `Quote Accepted: RFQ ID ${quote.rfqId} from ${dealer?.name}`
 
-  create({
-    title: `Quote Accepted: ID ${notification.id}`,
-    body: `${notification.direction} ${notification.quantity} ${notification.instrument?.name} @ ${quote?.price}`,
-    icon,
-    customData: { tradeId: notification.id },
+  const notificationOptions: TemplateCustom = {
+    icon: creditIconUrl,
+    template: "custom",
+    category: "Trade Executed",
+    title,
+    customData: { tradeId: rfq.id },
+    indicator: { text: "Accepted" },
+    templateOptions: {
+      body: {
+        compositions: [
+          {
+            minTemplateAPIVersion: "1",
+            layout: createContainer(
+              "row",
+              [
+                createText("messageTradeDirection", 12, {
+                  fontWeight: "bold",
+                  backgroundColor:
+                    rfq.direction === Direction.Buy ? "green" : "red",
+                  borderRadius: "10px",
+                  padding: "0 5px",
+                }),
+                createText("messageTradeDetails", 12),
+              ],
+              {
+                alignItems: "baseline",
+                gap: "4px",
+              },
+            ),
+          },
+        ],
+      },
+      indicator: {
+        align: "left",
+        color: IndicatorColor.GREEN,
+      },
+      buttons: {
+        align: "right",
+      },
+    },
     buttons: [
       {
         title: "Highlight trade in blotter",
-        iconUrl: icon,
+        iconUrl: creditIconUrl,
         onClick: { task: TASK_HIGHLIGHT_CREDIT_TRADE },
       },
     ],
-    category: "Trade Executed",
-    indicator: {
-      color: IndicatorColor.GREEN,
-      text: `Accepted`,
+    templateData: {
+      messageTradeDirection: rfq.direction.toUpperCase(),
+      messageTradeDetails: `${rfq.quantity} ${rfq.instrument?.name} @ ${quote?.price}`,
     },
-  })
+  }
+
+  create(notificationOptions)
 }
 
 const sendCreditQuoteNotification = (quote: QuoteDetails) => {
   const title = `Quote Received: RFQ ID ${quote.rfqId} from ${quote.dealer?.name}`
-  const body = `${quote.direction} ${quote.instrument?.name} ${formatNumber(
-    quote.quantity,
-  )} @ $${formatNumber(quote.price)}`
 
-  create({
-    title,
-    body,
-    icon,
+  const notificationOptions: TemplateCustom = {
+    icon: creditIconUrl,
+    template: "custom",
     category: "Quote Received",
-    indicator: {
-      text: `${quote.direction} from ${quote.dealer?.name}`,
-      color:
-        `${quote.direction}` === "Buy"
-          ? IndicatorColor.BLUE
-          : IndicatorColor.PURPLE,
+    title,
+    indicator: { text: "quote" }, // TODO change to "new quote" when we have a View RFQ button
+    templateOptions: {
+      body: {
+        compositions: [
+          {
+            minTemplateAPIVersion: "1",
+            layout: createContainer(
+              "row",
+              [
+                createText("messageTradeDirection", 12, {
+                  fontWeight: "bold",
+                  backgroundColor:
+                    quote.direction === Direction.Buy ? "green" : "red",
+                  borderRadius: "10px",
+                  padding: "0 5px",
+                }),
+                createText("messageTradeDetails", 12),
+              ],
+              {
+                alignItems: "baseline",
+                gap: "4px",
+              },
+            ),
+          },
+        ],
+      },
+      indicator: {
+        align: "left",
+        color: IndicatorColor.GRAY,
+      },
     },
-  })
+    templateData: {
+      messageTradeDirection: quote.direction.toUpperCase(),
+      messageTradeDetails: `${quote.instrument?.name} ${formatNumber(
+        quote.quantity,
+      )} @ $${formatNumber(quote.price)}`,
+    },
+  }
+
+  create(notificationOptions)
 }
 
 const TOPIC_HIGHLIGHT_FX_BLOTTER = "highlight-fx-blotter"
