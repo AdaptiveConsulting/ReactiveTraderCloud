@@ -15,21 +15,25 @@ export const ENVIRONMENT: Environment =
 // NOTE: these routes are hard coded in the OpenFin manifest JSON files,
 // so any changes here need to be manually synchronized with those files.
 export const ROUTES_CONFIG = {
-  fx: "/fx",
+  // fx
   tile: "/fx-spot/:symbol",
   tiles: "/fx-tiles",
   blotter: "/fx-blotter",
   analytics: "/fx-analytics",
-  styleguide: "/styleguide",
-  admin: "/admin",
+  // credit
   credit: "/credit",
   creditRfqs: "/credit-rfqs",
   newRfq: "/credit-new-rfq",
   creditBlotter: "/credit-blotter",
+  sellSide: "/credit-sellside",
+  styleguide: "/styleguide",
+  admin: "/admin",
+  // openfin
   launcher: "/launcher",
   contact: "/contact",
+  snapshots: "/snapshots",
+  // admin/CI
   status: "/status",
-  sellSide: "/credit-sellside",
 }
 
 export const CREDIT_RFQ_EXPIRY_SECONDS = 120

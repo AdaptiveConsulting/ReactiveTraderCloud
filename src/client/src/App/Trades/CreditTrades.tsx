@@ -20,3 +20,5 @@ export const CreditTrades = () => (
     </Suspense>
   </TradesWrapper>
 )
+
+export default CreditTrades

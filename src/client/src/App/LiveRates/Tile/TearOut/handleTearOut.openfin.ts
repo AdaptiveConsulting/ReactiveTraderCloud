@@ -30,7 +30,7 @@ export async function handleTearOut(symbol: string, tileRef?: HTMLDivElement) {
 
   openWindow(
     {
-      name: `${RT_FX_MAIN_WINDOW_NAME}--Tile-{$symbol}`,
+      name: `${RT_FX_MAIN_WINDOW_NAME}--Tile-${symbol}`,
       url: constructUrl(ROUTES_CONFIG.tile.replace(":symbol", symbol)),
       width: 380,
       height: 200,

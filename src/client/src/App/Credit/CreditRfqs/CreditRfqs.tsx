@@ -19,3 +19,5 @@ export const CreditRfqs = () => (
     <CreditRfqsCore />
   </CreditRfqsWrapper>
 )
+
+export default CreditRfqs
