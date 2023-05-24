@@ -51,3 +51,5 @@ export const LiveRates = () => (
     </OverflowScroll>
   </LiveRateWrapper>
 )
+
+export default LiveRates

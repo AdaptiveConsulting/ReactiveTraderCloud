@@ -56,3 +56,5 @@ export const Analytics = ({ hideIfMatches = "(max-width: 750px)" }: Props) => {
     </AnalyticsWrapper>
   )
 }
+
+export default Analytics

@@ -5,6 +5,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "openfin:dev": "npm start",
     "_openfin:run": "cross-env-shell \"wait-on -l $npm_config_manifest_url && openfin -l -c $npm_config_manifest_url\"",
     "openfin:run": "npm run _openfin:run --manifest_url=http://localhost:2017/config/workspace.json",
     "openfin:start": "concurrently \"npm:start\" \"npm:openfin:run\"",
@@ -15,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=16.0.0"
   },
   "dependencies": {
     "@adaptive/hydra-platform": "^3.120.0",

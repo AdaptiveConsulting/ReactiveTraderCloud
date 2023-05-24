@@ -15,3 +15,5 @@ export const CreditRfqForm = () => (
     <CreditRfqFormCore />
   </CreditRfqFormWrapper>
 )
+
+export default CreditRfqForm

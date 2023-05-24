@@ -20,3 +20,5 @@ export const FxTrades = () => (
     </Suspense>
   </TradesWrapper>
 )
+
+export default FxTrades
