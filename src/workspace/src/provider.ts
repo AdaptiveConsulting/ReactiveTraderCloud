@@ -1,10 +1,11 @@
-import { init as workspacePlatformInit } from '@openfin/workspace-platform'
-import { connectToGateway } from '@adaptive/hydra-platform'
-import { registerHome, showHome, deregisterHome } from './home'
-import { registerStore, deregisterStore } from './store'
-import { registerFxNotifications } from './home/notifications'
-import { BASE_URL } from './consts'
-import { customActions, overrideCallback } from './browser'
+import { init as workspacePlatformInit } from "@openfin/workspace-platform"
+import { connectToGateway } from "@adaptive/hydra-platform"
+import { registerHome, showHome, deregisterHome } from "./home"
+import { registerStore, deregisterStore } from "./store"
+import { registerFxNotifications } from "./home/notifications"
+import { BASE_URL } from "./consts"
+import { customActions, overrideCallback } from "./browser"
+import { dockCustomActions, registerDock } from "./dock"
 
 const icon = `${BASE_URL}/images/icons/adaptive.png`
 
@@ -16,42 +17,43 @@ async function init() {
         icon,
         workspacePlatform: {
           pages: [],
-          favicon: icon
-        }
-      }
+          favicon: icon,
+        },
+      },
     },
-    customActions,
+    customActions: { ...customActions, ...dockCustomActions },
     theme: [
       {
-        label: 'Dark',
+        label: "Dark",
         logoUrl: icon,
         palette: {
-          brandPrimary: '#282E39',
-          brandSecondary: '#FFF',
-          backgroundPrimary: '#2F3542'
-        }
-      }
-    ]
+          brandPrimary: "#282E39",
+          brandSecondary: "#FFF",
+          backgroundPrimary: "#2F3542",
+        },
+      },
+    ],
   })
   await registerHome()
   await registerFxNotifications()
   await registerStore()
+  await registerDock()
   await showHome()
 
   await connectToGateway({
     url: `${window.location.origin}/ws`,
     interceptor: () => null,
-    autoReconnect: true
+    autoReconnect: true,
   })
 
   const providerWindow = fin.Window.getCurrentSync()
-  providerWindow.once('close-requested', async () => {
+  providerWindow.once("close-requested", async () => {
     await deregisterStore()
     await deregisterHome()
     fin.Platform.getCurrentSync().quit()
   })
 }
 
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener("DOMContentLoaded", async () => {
   await init()
 })
