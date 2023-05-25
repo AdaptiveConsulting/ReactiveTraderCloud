@@ -18,7 +18,7 @@ test.describe("Fx App", () => {
       const pages = context.pages()
       mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
 
-      await mainWindow.goto(`${process.env.URL_PATH}`)
+      await mainWindow.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
 
       tilePage = mainWindow
       blotterPage = mainWindow
