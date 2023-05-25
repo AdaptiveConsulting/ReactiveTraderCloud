@@ -1,4 +1,3 @@
-import { View } from "@openfin/core/src/api/view"
 import { createSignal } from "@react-rxjs/utils"
 import { merge, scan } from "rxjs"
 
@@ -49,14 +48,18 @@ const creditViews = Object.values(CreditView)
 
 export { registerWindowEvent }
 
-const getPoppedOutView = <T>(view: T, closedView: T, mainWindowViews: View[]) =>
+const getPoppedOutView = <T>(
+  view: T,
+  closedView: T,
+  mainWindowViews: OpenFin.View[],
+) =>
   ![closedView, ...mainWindowViews.map((view) => view.identity.name)].includes(
     view,
   )
 
 const getCreditWindowLayout = (
   closedView: CreditView,
-  mainWindowViews: View[],
+  mainWindowViews: OpenFin.View[],
 ) => {
   const poppedOutView = creditViews.find((view) =>
     getPoppedOutView(view, closedView, mainWindowViews),
@@ -66,7 +69,10 @@ const getCreditWindowLayout = (
     : creditTemplateLayouts.main
 }
 
-const getFxWindowLayout = (closedView: FxView, mainWindowViews: View[]) => {
+const getFxWindowLayout = (
+  closedView: FxView,
+  mainWindowViews: OpenFin.View[],
+) => {
   const poppedOutView = fxViews.find((view) =>
     getPoppedOutView(view, closedView, mainWindowViews),
   )
