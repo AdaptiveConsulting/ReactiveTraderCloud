@@ -98,15 +98,28 @@ export const precisionNumberFormatter = (precision: number): NumberFormatter =>
     maximumFractionDigits: precision,
   })
 
+const fooFormatter = (options?: Intl.NumberFormatOptions): NumberFormatter => {
+  const nf = new Intl.NumberFormat("default", { ...options })
+
+  return (num: number) => {
+    console.log(options, nf.format(5.5))
+    if (typeof num !== "number") {
+      return num
+    } else {
+      return nf.format(num)
+    }
+  }
+}
+
 /**
- * Returns a function that will format numbers truncating to the maximum precision given
+ * Returns a function that will format numbers truncating to the maximum precision given and rounded
  *
  * See __tests__/formatNumber.test.ts for full usage and behavior.
  */
 export const truncatedDecimalNumberFormatter = (
   precision: number,
 ): NumberFormatter =>
-  numberFormatter({
+  fooFormatter({
     maximumFractionDigits: precision,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore // has not made it into types yet - or support grid in MDN seemingly! - but works
