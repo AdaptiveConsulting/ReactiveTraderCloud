@@ -29,7 +29,7 @@ describe("number formatting", () => {
       expect(format(input3)).toBe(expectedOutput3)
     })
 
-    it.only("specialised decimal truncation formatter does NOT round", () => {
+    it("specialised decimal truncation formatter does NOT round", () => {
       const format = truncatedDecimalNumberFormatter(0)
       const input = 4.5678
       const expectedOutput = "4"
