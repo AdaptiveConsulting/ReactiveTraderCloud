@@ -1,98 +1,79 @@
 import { Subscription } from "rxjs"
 
-import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
+import { ExecutionTrade } from "@/services/executions"
 import { executions$ } from "@/services/executions/executions"
-import { formatNumber } from "@/utils"
 
+import {
+  processCreditAccepted,
+  processCreditQuote,
+  processFxExecution,
+} from "./notificationsUtils"
 import {
   acceptedRfqWithQuote$,
   lastQuoteReceived$,
   QuoteDetails,
   RfqWithQuote,
 } from "./services/credit"
+import { constructUrl } from "./utils/url"
 
-const icon =
-  navigator.userAgent.indexOf("Chrome") !== -1 &&
-  navigator.userAgent.indexOf("Win") !== -1
-    ? "./static/media/reactive-trader-icon-no-bkgd-256x256.png"
-    : "./static/media/reactive-trader-icon-dark-256x256.png" // MacOS & Firefox notifications have white backgrounds, so use dark backgrounded icon
+const fxIconUrl = constructUrl("/static/media/reactive-trader-fx.svg")
+const creditIconUrl = constructUrl("/static/media/reactive-trader-credit.svg")
 
-const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
-  const notification = {
-    ...executionTrade,
-    valueDate: executionTrade.valueDate.toString(),
-    tradeDate: executionTrade.valueDate.toString(),
-  }
-
-  const status =
-    notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
-  const title = `Trade ${status}: ID ${notification.tradeId}`
-  const body = `${notification.direction} ${
-    notification.dealtCurrency
-  } ${formatNumber(
-    notification.notional,
-  )} vs ${notification.currencyPair.substr(3)} @ ${notification.spotRate}`
+const sendFxTradeNotification = (trade: ExecutionTrade) => {
+  const { title, tradeDetails: tradeCurrencyDetails } =
+    processFxExecution(trade)
 
   const options: NotificationOptions = {
-    body,
-    icon,
+    body: `${trade.direction} ${tradeCurrencyDetails}`,
+    icon: fxIconUrl,
     dir: "ltr",
-    data: notification,
-    // tag: "trade", TODO: investigate why this field causes malfunctions on certain versions of chrome
   }
 
-  new Notification(title, options)
+  const fxNote = new Notification(title, options)
+  fxNote.onclick = (notification) => console.log(notification)
 }
 
 const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {
-  const notification = {
-    ...rfq,
-  }
-
-  const title = `Quote Accepted: ID ${notification.id}`
+  const { title, tradeDetails } = processCreditAccepted(rfq, quote)
 
   const options: NotificationOptions = {
-    body: `${notification.direction} ${notification.quantity} ${notification.instrument?.name} @ ${quote?.price}`,
-    icon,
+    body: `${rfq.direction} ${tradeDetails}`,
+    icon: creditIconUrl,
+    dir: "ltr",
   }
 
   new Notification(title, options)
 }
 
 const sendCreditQuoteNotification = (quote: QuoteDetails) => {
-  const title = `Quote Received: RFQ ID ${quote.rfqId} from ${quote.dealer?.name}`
-  const body = `${quote.direction} ${quote.instrument?.name} ${formatNumber(
-    quote.quantity,
-  )} @ $${formatNumber(quote.price)}`
+  const { title, tradeDetails } = processCreditQuote(quote)
 
   const options: NotificationOptions = {
-    body,
-    icon,
+    body: `${quote.direction} ${tradeDetails}`,
+    icon: creditIconUrl,
     dir: "ltr",
-    data: quote,
-    // tag: "trade", TODO: investigate why this field causes malfunctions on certain versions of chrome
   }
 
   new Notification(title, options)
 }
 
 const notificationsGranted = () =>
-  new Promise<void>((res, rej) => {
-    if (!("Notification" in window)) rej()
+  new Promise<void>((resolve, reject) => {
+    if (!("Notification" in window)) reject()
 
     if (Notification.permission === "default") {
       Notification.requestPermission().then((permission) => {
         if (permission === "denied") {
-          rej()
+          reject()
         } else {
-          res()
+          resolve()
         }
       })
     } else {
       if (Notification.permission === "granted") {
-        res()
+        resolve()
       } else {
-        rej()
+        reject()
       }
     }
   })
@@ -100,8 +81,8 @@ const notificationsGranted = () =>
 export async function registerFxNotifications() {
   try {
     await notificationsGranted()
-    console.log("Notifications permission granted.")
 
+    // send trade executed for this tab only (driven from executeTrade ACK)
     executions$.subscribe({
       next: (executionTrade) => {
         sendFxTradeNotification(executionTrade)
@@ -123,8 +104,8 @@ let quotesReceivedSubscription: Subscription | null = null
 export async function registerCreditQuoteNotifications() {
   try {
     await notificationsGranted()
-    console.log("Notifications permission granted.")
 
+    // send quote alerts for every live tab connected to BE (driven from rfq update feed)
     quotesReceivedSubscription = lastQuoteReceived$.subscribe({
       next: (quote) => {
         sendCreditQuoteNotification(quote)
@@ -147,10 +128,11 @@ export function unregisterCreditQuoteNotifications() {
   }
 }
 
-export async function registerCreditBlotterUpdates() {
+export async function registerCreditAcceptedNotifications() {
   try {
     await notificationsGranted()
 
+    // send accepted quote for this tab only (driven from acceptQuote ACK)
     acceptedRfqWithQuote$.subscribe((rfqWithQuote) =>
       sendQuoteAcceptedNotification(rfqWithQuote),
     )

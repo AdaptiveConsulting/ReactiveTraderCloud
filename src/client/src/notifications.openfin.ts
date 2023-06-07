@@ -3,26 +3,27 @@ import {
   addEventListener,
   ContainerTemplateFragment,
   create,
+  CustomTemplateOptions,
   IndicatorColor,
   NotificationActionEvent,
+  TemplateCustom,
   TemplateFragment,
   TextTemplateFragment,
 } from "openfin-notifications"
-import { TemplateCustom } from "openfin-notifications"
 import { Subscription } from "rxjs"
 
 import {
   setCreditTradeRowHighlight,
   setFxTradeRowHighlight,
 } from "@/App/Trades/TradesState"
-import {
-  executions$,
-  ExecutionStatus,
-  ExecutionTrade,
-} from "@/services/executions"
-import { formatNumber } from "@/utils"
+import { executions$, ExecutionTrade } from "@/services/executions"
 
 import { Direction } from "./generated/TradingGateway"
+import {
+  processCreditAccepted,
+  processCreditQuote,
+  processFxExecution,
+} from "./notificationsUtils"
 import {
   acceptedRfqWithQuote$,
   lastQuoteReceived$,
@@ -38,216 +39,159 @@ const TASK_HIGHLIGHT_FX_TRADE = "highlight-fx-trade"
 const TASK_HIGHLIGHT_CREDIT_TRADE = "highlight-credit-trade"
 
 // from OF "starter" projects
-function createContainer(
+const createContainer = (
   containerType: "column" | "row",
   children: TemplateFragment[],
   style?: CSS.Properties,
-): ContainerTemplateFragment {
-  return {
-    type: "container",
-    style: {
-      display: "flex",
-      flexDirection: containerType,
-      ...style,
-    },
-    children,
-  }
-}
+): ContainerTemplateFragment => ({
+  type: "container",
+  style: {
+    display: "flex",
+    flexDirection: containerType,
+    ...style,
+  },
+  children,
+})
 
-function createText(
+const createText = (
   dataKey: string,
   fontSize = 14,
   style?: CSS.Properties,
-): TextTemplateFragment {
-  return {
-    type: "text",
-    dataKey,
-    style: {
-      fontSize: `${fontSize}px`,
-      ...style,
-    },
-  }
-}
+): TextTemplateFragment => ({
+  type: "text",
+  dataKey,
+  style: {
+    fontSize: `${fontSize}px`,
+    ...style,
+  },
+})
 
 // Custom notifications, per
 // https://developers.openfin.co/of-docs/docs/customize-notifications#arrangement-of-sections
+// we are not using it "correctly", as the templateOptions should not be repeated every time
+// (it is supposed to be a 'template' after all) but styling requires conditionals atm and
+// there is no way (so far) of doing that with the primitive "dataKey" approach using templateData
 
-const sendFxTradeNotification = (executionTrade: ExecutionTrade) => {
-  const notification = {
-    ...executionTrade,
-    valueDate: executionTrade.valueDate.toString(),
-    tradeDate: executionTrade.valueDate.toString(),
-  }
+const basicNotificationContainerStyles: CSS.Properties = {
+  alignItems: "baseline",
+  gap: "4px",
+}
 
-  const status =
-    notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
-  const baseCurrency = notification.currencyPair.substring(0, 3)
-  const quoteCurrency = notification.currencyPair.substring(3)
+const createNotificationTemplate = (
+  direction: Direction,
+): CustomTemplateOptions => ({
+  body: {
+    compositions: [
+      {
+        minTemplateAPIVersion: "1",
+        layout: createContainer(
+          "row",
+          [
+            createText("messageTradeDirection", 12, {
+              fontWeight: "bold",
+              backgroundColor: direction === Direction.Buy ? "green" : "red",
+              borderRadius: "10px",
+              padding: "0 5px",
+            }),
+            createText("messageTradeDetails", 12),
+          ],
+          basicNotificationContainerStyles,
+        ),
+      },
+    ],
+  },
+  indicator: {
+    align: "left",
+  },
+})
+
+const sendFxTradeNotification = (trade: ExecutionTrade) => {
+  const { status, title, tradeDetails } = processFxExecution(trade)
 
   const notificationOptions: TemplateCustom = {
-    icon: fxIconUrl,
     template: "custom",
+    templateOptions: createNotificationTemplate(trade.direction),
+    templateData: {
+      messageTradeDirection: trade.direction.toUpperCase(),
+      messageTradeDetails: tradeDetails,
+    },
+    // non-template stuff below
+    icon: fxIconUrl,
     category: "Trade Executed",
-    title: `Trade ${status}: ID ${notification.tradeId}`,
-    customData: { tradeId: notification.tradeId },
-    indicator: { text: status },
-    templateOptions: {
-      body: {
-        compositions: [
-          {
-            minTemplateAPIVersion: "1",
-            layout: createContainer(
-              "row",
-              [
-                createText("messageTradeDirection", 12, {
-                  fontWeight: "bold",
-                  backgroundColor:
-                    notification.direction === Direction.Buy ? "green" : "red",
-                  borderRadius: "10px",
-                  padding: "0 5px",
-                }),
-                createText("messageTradeDetails", 12),
-              ],
-              {
-                // some mininal styling for the container, to keep the "pill" and message apart
-                alignItems: "baseline",
-                gap: "4px",
-              },
-            ),
-          },
-        ],
-      },
-      indicator: {
-        align: "left",
-        color:
-          status === "Accepted" ? IndicatorColor.GREEN : IndicatorColor.RED,
-      },
-      buttons: {
-        align: "right",
-      },
+    title,
+    indicator: {
+      text: status,
+      color: status === "Accepted" ? IndicatorColor.GREEN : IndicatorColor.RED,
     },
     buttons: [
       {
         title: "Highlight trade in blotter",
         iconUrl: fxIconUrl,
-        onClick: { task: TASK_HIGHLIGHT_FX_TRADE },
+        onClick: {
+          task: TASK_HIGHLIGHT_FX_TRADE,
+          payload: {
+            tradeId: trade.id,
+          },
+        },
       },
     ],
-    templateData: {
-      messageTradeDirection: notification.direction.toUpperCase(),
-      messageTradeDetails: `${baseCurrency} ${formatNumber(
-        notification.notional,
-      )} vs ${quoteCurrency} @ ${notification.spotRate}`,
-    },
   }
 
   create(notificationOptions)
 }
 
 const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {
-  const dealer = rfq.dealers.find((dealer) => dealer.id === quote.dealerId)
-  const title = `Quote Accepted: RFQ ID ${quote.rfqId} from ${dealer?.name}`
+  const { title, tradeDetails } = processCreditAccepted(rfq, quote)
 
   const notificationOptions: TemplateCustom = {
-    icon: creditIconUrl,
     template: "custom",
+    templateOptions: createNotificationTemplate(rfq.direction),
+    templateData: {
+      messageTradeDirection: rfq.direction.toUpperCase(),
+      messageTradeDetails: tradeDetails,
+    },
+    // non-template stuff below
+    icon: creditIconUrl,
     category: "Trade Executed",
     title,
-    customData: { tradeId: rfq.id },
-    indicator: { text: "Accepted" },
-    templateOptions: {
-      body: {
-        compositions: [
-          {
-            minTemplateAPIVersion: "1",
-            layout: createContainer(
-              "row",
-              [
-                createText("messageTradeDirection", 12, {
-                  fontWeight: "bold",
-                  backgroundColor:
-                    rfq.direction === Direction.Buy ? "green" : "red",
-                  borderRadius: "10px",
-                  padding: "0 5px",
-                }),
-                createText("messageTradeDetails", 12),
-              ],
-              {
-                alignItems: "baseline",
-                gap: "4px",
-              },
-            ),
-          },
-        ],
-      },
-      indicator: {
-        align: "left",
-        color: IndicatorColor.GREEN,
-      },
-      buttons: {
-        align: "right",
-      },
+    indicator: {
+      text: "accepted",
+      color: IndicatorColor.GREEN,
     },
     buttons: [
       {
         title: "Highlight trade in blotter",
         iconUrl: creditIconUrl,
-        onClick: { task: TASK_HIGHLIGHT_CREDIT_TRADE },
+        onClick: {
+          task: TASK_HIGHLIGHT_CREDIT_TRADE,
+          payload: {
+            tradeId: rfq.id,
+          },
+        },
       },
     ],
-    templateData: {
-      messageTradeDirection: rfq.direction.toUpperCase(),
-      messageTradeDetails: `${rfq.quantity} ${rfq.instrument?.name} @ ${quote?.price}`,
-    },
   }
 
   create(notificationOptions)
 }
 
 const sendCreditQuoteNotification = (quote: QuoteDetails) => {
-  const title = `Quote Received: RFQ ID ${quote.rfqId} from ${quote.dealer?.name}`
+  const { title, tradeDetails } = processCreditQuote(quote)
 
   const notificationOptions: TemplateCustom = {
-    icon: creditIconUrl,
     template: "custom",
-    category: "Quote Received",
-    title,
-    indicator: { text: "quote" }, // TODO change to "new quote" when we have a View RFQ button
-    templateOptions: {
-      body: {
-        compositions: [
-          {
-            minTemplateAPIVersion: "1",
-            layout: createContainer(
-              "row",
-              [
-                createText("messageTradeDirection", 12, {
-                  fontWeight: "bold",
-                  backgroundColor:
-                    quote.direction === Direction.Buy ? "green" : "red",
-                  borderRadius: "10px",
-                  padding: "0 5px",
-                }),
-                createText("messageTradeDetails", 12),
-              ],
-              {
-                alignItems: "baseline",
-                gap: "4px",
-              },
-            ),
-          },
-        ],
-      },
-      indicator: {
-        align: "left",
-        color: IndicatorColor.GRAY,
-      },
-    },
+    templateOptions: createNotificationTemplate(quote.direction),
     templateData: {
       messageTradeDirection: quote.direction.toUpperCase(),
-      messageTradeDetails: `${quote.instrument?.name} ${formatNumber(
-        quote.quantity,
-      )} @ $${formatNumber(quote.price)}`,
+      messageTradeDetails: tradeDetails,
+    },
+    // non-template stuff below
+    icon: creditIconUrl,
+    category: "Quote Received",
+    title,
+    indicator: {
+      text: "quote", // TODO change to "new quote" when we have a View RFQ button
+      color: IndicatorColor.GRAY,
     },
   }
 
@@ -255,16 +199,17 @@ const sendCreditQuoteNotification = (quote: QuoteDetails) => {
 }
 
 const TOPIC_HIGHLIGHT_FX_BLOTTER = "highlight-fx-blotter"
+
 const handleFxTradeNotificationAction = (event: NotificationActionEvent) => {
-  if (event.result["task"] === TASK_HIGHLIGHT_FX_TRADE) {
+  if (event.result.task === TASK_HIGHLIGHT_FX_TRADE) {
     fin.InterApplicationBus.publish(
       TOPIC_HIGHLIGHT_FX_BLOTTER,
-      event.notification.customData,
+      event.result.payload,
     )
   }
 }
 
-export async function registerFxNotifications() {
+export const registerFxNotifications = () => {
   fin.InterApplicationBus.subscribe(
     { uuid: "*" },
     TOPIC_HIGHLIGHT_FX_BLOTTER,
@@ -288,7 +233,7 @@ export async function registerFxNotifications() {
 
 let quotesReceivedSubscription: Subscription | null = null
 
-export async function registerCreditQuoteNotifications() {
+export const registerCreditQuoteNotifications = () => {
   quotesReceivedSubscription = lastQuoteReceived$.subscribe({
     next: (quote) => {
       sendCreditQuoteNotification(quote)
@@ -302,7 +247,7 @@ export async function registerCreditQuoteNotifications() {
   })
 }
 
-export function unregisterCreditQuoteNotifications() {
+export const unregisterCreditQuoteNotifications = () => {
   if (quotesReceivedSubscription) {
     quotesReceivedSubscription.unsubscribe()
   }
@@ -311,15 +256,15 @@ export function unregisterCreditQuoteNotifications() {
 export const TOPIC_HIGHLIGHT_CREDIT_BLOTTER = "highlight-credit-blotter"
 
 const handleCreditTradeNotification = (event: NotificationActionEvent) => {
-  if (event.result["task"] === TASK_HIGHLIGHT_CREDIT_TRADE) {
+  if (event.result.task === TASK_HIGHLIGHT_CREDIT_TRADE) {
     fin.InterApplicationBus.publish(
       TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
-      event.notification.customData,
+      event.result.payload,
     )
   }
 }
 
-export async function registerCreditBlotterUpdates() {
+export const registerCreditAcceptedNotifications = () => {
   fin.InterApplicationBus.subscribe(
     { uuid: "*" },
     TOPIC_HIGHLIGHT_CREDIT_BLOTTER,

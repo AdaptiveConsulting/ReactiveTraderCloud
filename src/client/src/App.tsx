@@ -7,7 +7,7 @@ import GlobalStyle from "@/theme/globals"
 import { GA_TRACKING_ID } from "./constants"
 import { gaDimension, getMainApp } from "./main"
 import {
-  registerCreditBlotterUpdates,
+  registerCreditAcceptedNotifications,
   registerFxNotifications,
 } from "./notifications"
 import { initConnection } from "./services/connection"
@@ -23,7 +23,7 @@ export async function initApp() {
   checkTradingGatewayCompatibility()
 
   registerFxNotifications()
-  registerCreditBlotterUpdates()
+  registerCreditAcceptedNotifications()
 
   const container = document.getElementById("root")
   const root = createRoot(container as HTMLElement)
