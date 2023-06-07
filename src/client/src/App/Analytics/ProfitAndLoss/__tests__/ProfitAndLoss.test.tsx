@@ -1,11 +1,11 @@
-//  import { Subscribe } from "@react-rxjs/core"
+import { Subscribe } from "@react-rxjs/core"
 import { BehaviorSubject } from "rxjs"
 
 import { HistoryEntry } from "@/services/analytics"
 import { analyticsMock } from "@/services/analytics/__mocks__/_analytics"
-// import { TestThemeProvider } from "@/utils/testUtils"
-
-// import { LineChart, lineChart$ } from "../LineChart"
+import { TestThemeProvider } from "@/utils/testUtils"
+import { render } from "@testing-library/react"
+import { LineChart, lineChart$ } from "../LineChart"
 
 vi.mock("@/services/analytics/analytics")
 
@@ -48,37 +48,37 @@ describe("Profit and Loss", () => {
     analyticsMock.__resetMocks()
   })
 
-  it.skip("renders the chart correctly", () => {
+  it("renders the chart correctly", () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
     analyticsMock.__setHistoryMock(historyMock$)
 
-    // const tree = renderer
-    //   .create(
-    //     <TestThemeProvider>
-    //       <Subscribe source$={lineChart$} fallback="No data">
-    //         <LineChart />
-    //       </Subscribe>
-    //     </TestThemeProvider>,
-    //   )
-    //   .toJSON()
+    const { container } = render(
+      <TestThemeProvider>
+        <Subscribe source$={lineChart$} fallback="No data">
+          <LineChart />
+        </Subscribe>
+      </TestThemeProvider>,
+    )
 
-    // expect(tree).toMatchSnapshot()
+    expect(container).toMatchSnapshot()
   })
 
-  it.skip("renders the chart with updates", () => {
+  it("renders the chart with updates", async () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock2)
     analyticsMock.__setHistoryMock(historyMock$)
 
-    // const tree = renderer
-    //   .create(
-    //     <TestThemeProvider>
-    //       <Subscribe source$={lineChart$} fallback="No data">
-    //         <LineChart />
-    //       </Subscribe>
-    //     </TestThemeProvider>,
-    //   )
-    //   .toJSON()
+    const { container } = render(
+      <TestThemeProvider>
+        <Subscribe source$={lineChart$} fallback="No data">
+          <LineChart />
+        </Subscribe>
+      </TestThemeProvider>,
+    )
 
-    // expect(tree).toMatchSnapshot()
+    // TODO find a way to update the chart with new data
+    // await new Promise((res) => setTimeout(res, 2200))
+
+    // expect(container.firstChild).toMatchSnapshot()
+    expect(container).toMatchSnapshot()
   })
 })

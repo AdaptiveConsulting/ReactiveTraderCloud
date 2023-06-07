@@ -1,0 +1,285 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Profit and Loss > renders the chart correctly 1`] = `
+.c0 {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <svg
+      viewBox="0 0 320 200"
+    >
+      <defs>
+        <lineargradient
+          id="colorValue"
+          x1="0"
+          x2="0"
+          y1="0"
+          y2="1"
+        >
+          <stop
+            offset="-125.64528636414947"
+            stop-color="#28c988"
+            stop-opacity="1"
+            stroke-width="1.2"
+          />
+          <stop
+            offset="-125.64528636414947"
+            stop-color="#f94c4c"
+            stop-opacity="1"
+            stroke-width="1.2"
+          />
+        </lineargradient>
+      </defs>
+      <path
+        d="M40,170C40,170,134.3526956402018,126.8356809876267,180.01399999999998,99.32337522843923C227.78134916398582,70.54211429138842,320,0,320,0"
+        fill="none"
+        height="170"
+        stroke="url(#colorValue)"
+        stroke-width="2"
+        width="280"
+      />
+      <line
+        fill="none"
+        fill-opacity="1"
+        stroke="white"
+        stroke-opacity="0.3"
+        stroke-width="1"
+        x1="40"
+        x2="320"
+        y1="-21359.69868190541"
+        y2="-21359.69868190541"
+      />
+      <line
+        fill="none"
+        fill-opacity="1"
+        stroke="#444C5F"
+        stroke-dasharray="4 3"
+        stroke-opacity="0.9"
+        stroke-width="0.8"
+        x1="40"
+        x2="40"
+        y1="0"
+        y2="170"
+      />
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="start"
+        x="40"
+        y="185"
+      >
+        15:20:46 p.m.
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="end"
+        x="40"
+        y="185"
+      >
+        15:20:46 p.m.
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="middle"
+        x="18"
+        y="10"
+      >
+        -2.7m
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="middle"
+        x="18"
+        y="50"
+      >
+        -2.7m
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="middle"
+        x="18"
+        y="90"
+      >
+        -2.7m
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="middle"
+        x="18"
+        y="130"
+      >
+        -2.7m
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="middle"
+        x="18"
+        y="170"
+      >
+        -2.7m
+      </text>
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`Profit and Loss > renders the chart with updates 1`] = `
+.c0 {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <svg
+      viewBox="0 0 320 200"
+    >
+      <defs>
+        <lineargradient
+          id="colorValue"
+          x1="0"
+          x2="0"
+          y1="0"
+          y2="1"
+        >
+          <stop
+            offset="-125.64528636414947"
+            stop-color="#28c988"
+            stop-opacity="1"
+            stroke-width="1.2"
+          />
+          <stop
+            offset="-125.64528636414947"
+            stop-color="#f94c4c"
+            stop-opacity="1"
+            stroke-width="1.2"
+          />
+        </lineargradient>
+      </defs>
+      <path
+        d="M40,170C40,170,134.34340154200464,126.83556574940367,180,99.32337522843923C227.76274093622698,70.54204519462398,318.6621329006422,0.41752031638673065,319.97200279972003,0C319.9887324649374,-0.0053325716695316215,320,6.260436613558795e-11,320,6.260436613558795e-11"
+        fill="none"
+        height="170"
+        stroke="url(#colorValue)"
+        stroke-width="2"
+        width="280"
+      />
+      <line
+        fill="none"
+        fill-opacity="1"
+        stroke="white"
+        stroke-opacity="0.3"
+        stroke-width="1"
+        x1="40"
+        x2="320"
+        y1="-21359.69868190541"
+        y2="-21359.69868190541"
+      />
+      <line
+        fill="none"
+        fill-opacity="1"
+        stroke="#444C5F"
+        stroke-dasharray="4 3"
+        stroke-opacity="0.9"
+        stroke-width="0.8"
+        x1="40"
+        x2="40"
+        y1="0"
+        y2="170"
+      />
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="start"
+        x="40"
+        y="185"
+      >
+        15:20:46 p.m.
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="end"
+        x="40"
+        y="185"
+      >
+        15:20:46 p.m.
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="middle"
+        x="18"
+        y="10"
+      >
+        -2.7m
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="middle"
+        x="18"
+        y="50"
+      >
+        -2.7m
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="middle"
+        x="18"
+        y="90"
+      >
+        -2.7m
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="middle"
+        x="18"
+        y="130"
+      >
+        -2.7m
+      </text>
+      <text
+        fill="#666"
+        stroke="none"
+        style="font-size: 12px;"
+        text-anchor="middle"
+        x="18"
+        y="170"
+      >
+        -2.7m
+      </text>
+    </svg>
+  </div>
+</div>
+`;
