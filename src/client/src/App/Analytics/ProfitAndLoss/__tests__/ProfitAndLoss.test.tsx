@@ -1,10 +1,11 @@
 import { Subscribe } from "@react-rxjs/core"
+import { render } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import { HistoryEntry } from "@/services/analytics"
 import { analyticsMock } from "@/services/analytics/__mocks__/_analytics"
 import { TestThemeProvider } from "@/utils/testUtils"
-import { render } from "@testing-library/react"
+
 import { LineChart, lineChart$ } from "../LineChart"
 
 vi.mock("@/services/analytics/analytics")
