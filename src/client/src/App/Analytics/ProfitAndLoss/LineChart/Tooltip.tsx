@@ -116,8 +116,7 @@ export const Tooltip = ({ svgRef }: { svgRef: RefObject<SVGSVGElement> }) => {
   useEffect(() => {
     if (!svgRef.current) return
     const svg = svgRef.current
-    if (!svg.ownerSVGElement) return
-    const pt = svg.ownerSVGElement.createSVGPoint()
+    const pt = svg.createSVGPoint()
 
     function onLeave() {
       onHover(null)
