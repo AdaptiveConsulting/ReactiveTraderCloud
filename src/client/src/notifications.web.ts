@@ -29,8 +29,7 @@ const sendFxTradeNotification = (trade: ExecutionTrade) => {
     dir: "ltr",
   }
 
-  const fxNote = new Notification(title, options)
-  fxNote.onclick = (notification) => console.log(notification)
+  new Notification(title, options)
 }
 
 const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {

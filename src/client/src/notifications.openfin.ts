@@ -89,7 +89,10 @@ const createNotificationTemplate = (
           [
             createText("messageTradeDirection", 12, {
               fontWeight: "bold",
-              backgroundColor: direction === Direction.Buy ? "green" : "red",
+              backgroundColor:
+                direction === Direction.Buy
+                  ? "rgb(45, 149, 255)"
+                  : "rgb(255, 39, 75)",
               borderRadius: "10px",
               padding: "0 5px",
             }),
