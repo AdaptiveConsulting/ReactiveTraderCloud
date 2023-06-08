@@ -99,7 +99,7 @@ export const precisionNumberFormatter = (precision: number): NumberFormatter =>
   })
 
 /**
- * Returns a function that will format numbers truncating to the maximum precision given and rounded
+ * Returns a function that will format numbers truncating to the maximum precision given
  *
  * See __tests__/formatNumber.test.ts for full usage and behavior.
  */
