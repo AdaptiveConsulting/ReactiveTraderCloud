@@ -6,7 +6,6 @@ export async function getApps(): Promise<App[]> {
     reactiveTraderFx,
     reactiveTraderCredit,
     reactiveAnalytics,
-    limitChecker,
     reactiveWorkspace,
     limitCheckerView,
     reactiveTraderFxLiveRatesView,
