@@ -1,4 +1,8 @@
-import { limitChecker, reactiveAnalytics, reactiveTraderCredit } from "@/apps"
+import {
+  limitCheckerView,
+  reactiveAnalytics,
+  reactiveTraderCredit,
+} from "@/apps"
 import { reactiveTraderFx } from "@/apps"
 import { BASE_URL } from "@/consts"
 import { ADAPTIVE_LOGO } from "@/home/utils"
@@ -70,7 +74,7 @@ export const dockCustomActions = {
   },
   [DockAction.OpenLimitChecker]: () => {
     platform.launchApp({
-      app: limitChecker,
+      app: limitCheckerView,
     })
   },
 }
