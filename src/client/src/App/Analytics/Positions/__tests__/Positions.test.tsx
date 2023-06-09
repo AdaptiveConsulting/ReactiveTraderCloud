@@ -119,33 +119,4 @@ describe("Positions", () => {
 
     expect(screen.getByTestId("tooltip").textContent).toBe("AUD -1,557,031")
   })
-
-  // TODO (5350): fix test failure - Windows snapshot incompatible with Mac
-  it.skip("should display the correct bubble chart", async () => {
-    const positionMock$ = new BehaviorSubject<
-      Record<string, CurrencyPairPosition>
-    >(positionMock)
-    analyticsMock.__setPositionMock(positionMock$)
-
-    const subscription = positions$.subscribe()
-    const { container } = render(
-      <TestThemeProvider>
-        <Subscribe source$={positions$} fallback="No data">
-          <Positions />
-        </Subscribe>
-      </TestThemeProvider>,
-    )
-
-    expect(container.firstChild).toMatchSnapshot()
-
-    act(() => {
-      positionMock$.next(positionMock2)
-    })
-
-    await new Promise((res) => setTimeout(res, 2200))
-
-    expect(container.firstChild).toMatchSnapshot()
-
-    subscription.unsubscribe()
-  })
 })
