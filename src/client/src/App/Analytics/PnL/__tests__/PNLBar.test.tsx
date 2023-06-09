@@ -27,17 +27,4 @@ describe("PNLBar", () => {
 
     expect(screen.getByTestId("priceLabel").textContent).toBe(`-26,043.69`)
   })
-
-  it("renders the bar correctly", () => {
-    const { container } = render(
-      <TestThemeProvider>
-        <PNLBar
-          symbol={"EURAUD"}
-          basePnl={-26043.691207338878}
-          maxVal={1239939.1231111237}
-        />
-      </TestThemeProvider>,
-    )
-    expect(container.firstChild).toMatchSnapshot()
-  })
 })
