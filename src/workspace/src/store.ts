@@ -11,7 +11,6 @@ import { getCurrentSync } from "@openfin/workspace-platform"
 import {
   reactiveTraderFxAnalyticsView,
   getApps,
-  limitChecker,
   reactiveTraderFxLiveRatesView,
   reactiveAnalytics,
   reactiveAnalyticsView,
@@ -19,6 +18,7 @@ import {
   reactiveTraderFx,
   reactiveWorkspace,
   reactiveTraderFxTradesView,
+  limitCheckerView,
 } from "./apps"
 import { BASE_URL } from "./consts"
 import { getCurrentUser, USER_TRADER } from "./user"
@@ -125,7 +125,7 @@ async function getNavigation(): Promise<
           title: "Native Apps",
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: currentUser === USER_TRADER ? [limitChecker] : [],
+            apps: currentUser === USER_TRADER ? [limitCheckerView] : [],
           },
         },
         {
@@ -192,7 +192,7 @@ async function getLandingPage(): Promise<StorefrontLandingPage> {
         title: "Explore",
         templateId: StorefrontTemplate.AppGrid,
         templateData: {
-          apps: [reactiveTraderFx, reactiveAnalytics, limitChecker],
+          apps: [reactiveTraderFx, reactiveAnalytics, limitCheckerView],
         },
       },
       image: {
@@ -224,7 +224,7 @@ async function getLandingPage(): Promise<StorefrontLandingPage> {
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [limitChecker],
+            apps: [limitCheckerView],
           },
         },
       ],
