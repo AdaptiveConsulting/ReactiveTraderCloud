@@ -10,7 +10,7 @@ import {
 
 export enum FxView {
   Tiles = "Tiles",
-  FxBlotter = "FX-Blotter",
+  FxBlotter = "FX Blotter",
   Analytics = "Analytics",
 }
 
