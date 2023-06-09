@@ -69,6 +69,7 @@ export const NumFilter = ({
     <FilterPopup
       parentRef={parentRef}
       ariaLabel={`Filter trades by ${colDef[field].headerName} field value`}
+      leftAlignFilter={field !== "tradeId"}
     >
       <ComparatorSelect
         selected={selected}
