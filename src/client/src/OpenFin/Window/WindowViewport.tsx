@@ -1,4 +1,4 @@
-import { joinChannel } from "@finos/fdc3"
+import { broadcast, joinChannel } from "@finos/fdc3"
 import { ApplicationEvents } from "@openfin/core/src/api/events/application.js"
 import { WindowEvent } from "@openfin/core/src/api/events/base.js"
 import { Subscribe } from "@react-rxjs/core"
@@ -126,7 +126,7 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         // ReactGA.event({ category: "RT - Window", action: "closing", label })
 
         if (name === "Limit-Checker") {
-          fin.me.interop.setContext({
+          broadcast({
             type: "limit-checker-status",
             id: { isAlive: "false" },
           })
