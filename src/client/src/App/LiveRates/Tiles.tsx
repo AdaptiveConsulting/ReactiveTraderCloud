@@ -23,7 +23,6 @@ export const [useFilteredCurrencyPairs, filteredCurrencyPairs$] = bind(
   combineLatest([currencyPairs$, selectedCurrency$, tearOutState$]).pipe(
     map(([currencyPairs, selectedCurrency, tearOutState]) => {
       const result = { ...currencyPairs }
-
       for (const symbol of Object.keys(result)) {
         if (tearOutState[symbol]) {
           delete result[symbol]

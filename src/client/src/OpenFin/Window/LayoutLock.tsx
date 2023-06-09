@@ -31,6 +31,7 @@ export const LayoutLock: React.FC = () => {
     <SwitchContainer
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      title="toggle layout lock"
     >
       {hover ? (
         <Switch

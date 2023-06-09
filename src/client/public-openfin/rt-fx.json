@@ -83,9 +83,9 @@
             "blockedPopoutsThrowError": false,
             "closePopoutsOnUnload": true,
             "constrainDragToContainer": false,
-            "hasHeaders": true,
+            "hasHeaders": false,
             "popoutWholeStack": false,
-            "reorderEnabled": true,
+            "reorderEnabled": false,
             "reorderOnTabMenuClick": true,
             "responsiveMode": "always",
             "selectionEnabled": true,
@@ -111,7 +111,6 @@
                   "content": [
                     {
                       "type": "stack",
-                      "width": 50,
                       "height": 50,
                       "isClosable": true,
                       "title": "",
@@ -126,7 +125,7 @@
                             "name": "Tiles"
                           },
                           "isClosable": true,
-                          "title": "Spot Tiles"
+                          "title": "FX Spot Tiles"
                         }
                       ]
                     },
@@ -143,10 +142,10 @@
                           "componentName": "view",
                           "componentState": {
                             "url": "<BASE_URL>/fx-blotter",
-                            "name": "FX-Blotter"
+                            "name": "FX Blotter"
                           },
                           "isClosable": true,
-                          "title": "Blotter"
+                          "title": "FX Blotter"
                         }
                       ]
                     }
@@ -155,7 +154,6 @@
                 {
                   "type": "stack",
                   "width": 30,
-                  "height": 100,
                   "isClosable": true,
                   "title": "",
                   "activeItemIndex": 0,
@@ -168,7 +166,7 @@
                         "name": "Analytics"
                       },
                       "isClosable": true,
-                      "title": "Analytics"
+                      "title": "FX Analytics"
                     }
                   ]
                 }

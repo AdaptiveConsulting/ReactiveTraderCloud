@@ -17,7 +17,7 @@ export const RT_FX_MAIN_WINDOW_NAME = "Reactive-Trader-FX" // set in the JSON ma
 export const RT_CREDIT_MAIN_WINDOW_NAME = "Reactive-Trader-Credit" // set in the JSON manifest
 export const RT_PLATFORM_UUID_PREFIX = "reactive-trader-" // prefix for main uuid in the RT manifests
 
-function getWindowName() {
+export function getWindowName() {
   return fin.Window.getCurrentSync().identity.name // e.g. Reactive-Trader-FX or Reactive-Trader-Credit
 }
 

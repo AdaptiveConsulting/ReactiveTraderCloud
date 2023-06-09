@@ -63,9 +63,9 @@
             "blockedPopoutsThrowError": false,
             "closePopoutsOnUnload": true,
             "constrainDragToContainer": false,
-            "hasHeaders": true,
+            "hasHeaders": false,
             "popoutWholeStack": false,
-            "reorderEnabled": true,
+            "reorderEnabled": false,
             "reorderOnTabMenuClick": true,
             "responsiveMode": "always",
             "selectionEnabled": true,
@@ -104,7 +104,7 @@
                             "name": "RFQs"
                           },
                           "isClosable": true,
-                          "title": "RFQs"
+                          "title": "Credit RFQs"
                         }
                       ]
                     },
@@ -124,7 +124,7 @@
                             "name": "Credit-Blotter"
                           },
                           "isClosable": true,
-                          "title": "Blotter"
+                          "title": "Credit Blotter"
                         }
                       ]
                     }
@@ -143,10 +143,10 @@
                       "componentName": "view",
                       "componentState": {
                         "url": "<BASE_URL>/credit-new-rfq",
-                        "name": "New RFQ"
+                        "name": "New-RFQ"
                       },
                       "isClosable": true,
-                      "title": "New RFQ"
+                      "title": "Credit New RFQ"
                     }
                   ]
                 }

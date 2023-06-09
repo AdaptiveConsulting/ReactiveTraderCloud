@@ -38,13 +38,8 @@ test.describe("Trade Blotter", () => {
   let tilePage: Page
   let blotterPage: Page
 
-  test.beforeAll(async ({ context, fxPagesRec: fxPagesRec }, testInfo) => {
+  test.beforeAll(async ({ context, fxPagesRec }, testInfo) => {
     if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
-      const mainWindow = fxPagesRec["mainWindow"]
-      await mainWindow.evaluate(() => {
-        window.fin.Window.getCurrentSync().maximize()
-      })
-
       tilePage = fxPagesRec["fx-tiles"]
       blotterPage = fxPagesRec["fx-blotter"]
     } else {

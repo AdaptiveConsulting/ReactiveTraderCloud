@@ -1,7 +1,16 @@
-import { WindowEvent } from "@openfin/core/src/api/events/base"
+import { ApplicationEvents } from "@openfin/core/src/api/events/application.js"
+import { WindowEvent } from "@openfin/core/src/api/events/base.js"
+import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 
 import { WithChildren } from "@/utils/utilityTypes"
+
+import {
+  CLOSING_WINDOW,
+  OPENING_WINDOW,
+  registerWindowEvent,
+  windows$,
+} from "./state"
 
 const LAYOUT_ITEMS = {
   Blotter: "stream",
@@ -21,7 +30,7 @@ const getEmptyContent = (key: LayoutKey, useIcon = true) => {
   return key
 }
 
-export const WindowViewport = ({ children }: WithChildren) => {
+const WindowViewportComponent = ({ children }: WithChildren) => {
   //TODO: Remove this HACK once OpenFin exposes content of "empty" layout containers...
   useEffect(() => {
     if (!fin.me.isView) {
@@ -33,22 +42,37 @@ export const WindowViewport = ({ children }: WithChildren) => {
       }
 
       const listenerViewDetached = (
-        _: WindowEvent<"window", "view-detached">,
+        e: WindowEvent<"window", "view-detached">,
       ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "detach", label })
+
+        //openfin event types are not up to date
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        fin.View.wrap({ uuid: fin.me.uuid, name: e.viewIdentity.name }).then(
+          (view) => view.focus(),
+        )
       }
 
-      const listenerViewHidden = (
-        _: WindowEvent<"application", "view-hidden">,
-      ) => {
+      const listenerViewDestroyed = (_: WindowEvent<"window", string>) => {
+        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+        // ReactGA.event({ category: "RT - Tab", action: "destroyed", label })
+      }
+
+      const listenerViewHidden = (_: ApplicationEvents["view-hidden"]) => {
+        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+        // ReactGA.event({ category: "RT - Tab", action: "hidden", label })
         const layoutItems: HTMLCollectionOf<Element> =
           document.getElementsByClassName("lm_item")
+
         for (const idx in layoutItems) {
           const layoutItem = layoutItems[idx]
+
           if (layoutItem && layoutItem.querySelector) {
             const placeholder = layoutItem.querySelector(".wrapper_title")
             const tab = layoutItem.querySelector(".lm_tab.lm_active .lm_title")
+
             if (placeholder && tab) {
               placeholder.innerHTML = getEmptyContent(
                 tab.innerHTML as LayoutKey,
@@ -59,18 +83,36 @@ export const WindowViewport = ({ children }: WithChildren) => {
         }
       }
 
-      const listenerWindowCreated = (
-        _: WindowEvent<"application", "window-created">,
-      ) => {
+      const listenerWindowCreated = ({
+        uuid,
+        name,
+      }: WindowEvent<"application", "window-created">) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "open", label })
+
+        fin.Window.wrap({ uuid, name }).then((newWindow) => {
+          newWindow.addListener("view-attached", (e) => {
+            registerWindowEvent({
+              //openfin event types are not up to date
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-ignore
+              window: { name, view: e.viewIdentity.name },
+              type: OPENING_WINDOW,
+            })
+          })
+        })
       }
 
-      const listenerWindowClosed = (
-        _: WindowEvent<"application", "window-closed">,
-      ) => {
+      const listenerWindowClosed = ({
+        name,
+      }: WindowEvent<"application", "window-closed">) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "close", label })
+
+        registerWindowEvent({
+          window: { name },
+          type: CLOSING_WINDOW,
+        })
       }
 
       const listenerWindowClosing = ({
@@ -80,6 +122,8 @@ export const WindowViewport = ({ children }: WithChildren) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "closing", label })
         fin.Window.wrap({ uuid, name }).then((closingWindow) => {
+          closingWindow.removeAllListeners()
+
           if (name === "Limit-Checker") {
             fin.me.interop.setContext({
               type: "limit-checker-status",
@@ -93,6 +137,7 @@ export const WindowViewport = ({ children }: WithChildren) => {
         .then((window) => {
           window.addListener("view-attached", listenerViewAttached)
           window.addListener("view-detached", listenerViewDetached)
+          window.addListener("view-destroyed", listenerViewDestroyed)
         })
         .catch((ex) => console.warn(ex))
 
@@ -101,6 +146,7 @@ export const WindowViewport = ({ children }: WithChildren) => {
           app.addListener("view-hidden", listenerViewHidden)
           app.addListener("window-closing", listenerWindowClosing)
           app.addListener("window-closed", listenerWindowClosed)
+          app.addListener("window-closing", listenerWindowClosing)
           app.addListener("window-created", listenerWindowCreated)
         })
         .catch((ex) => console.warn(ex))
@@ -147,4 +193,12 @@ export const WindowViewport = ({ children }: WithChildren) => {
   }, [])
 
   return <>{children}</>
+}
+
+export const WindowViewport = ({ children }: WithChildren) => {
+  return (
+    <Subscribe source$={windows$}>
+      <WindowViewportComponent>{children}</WindowViewportComponent>
+    </Subscribe>
+  )
 }
