@@ -10,6 +10,6 @@ export function unregisterCreditQuoteNotifications() {
   new Error("Function should be implemented at platform level")
 }
 
-export function registerCreditBlotterUpdates() {
+export function registerCreditAcceptedNotifications() {
   // no-op by default; implemented for OpenFin
 }

@@ -1,13 +1,12 @@
-import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
+import { ExecutionTrade } from "@/services/executions"
 import { executions$ } from "@/services/executions/executions"
 
+import { processFxExecution } from "./notificationsUtils"
+
 export function sendFxTradeNotification(executionTrade: ExecutionTrade) {
-  const status =
-    executionTrade.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
-  const title = `Trade ${status}: ID ${executionTrade.tradeId}`
-  const body = `${executionTrade.direction} ${executionTrade.dealtCurrency} ${
-    executionTrade.notional
-  } vs ${executionTrade.currencyPair.substr(3)} @ ${executionTrade.spotRate}`
+  const { title, tradeDetails: tradeCurrencyDetails } =
+    processFxExecution(executionTrade)
+  const body = `${executionTrade.direction} ${tradeCurrencyDetails}`
 
   const notification = new window.FSBL.Clients.NotificationClient.Notification()
   notification.title = title
@@ -17,20 +16,30 @@ export function sendFxTradeNotification(executionTrade: ExecutionTrade) {
   window.FSBL.Clients.NotificationClient.notify([notification])
 }
 
-export async function registerFxNotifications() {
-  executions$.subscribe(
-    (executionTrade) => {
+export function registerFxNotifications() {
+  executions$.subscribe({
+    next: (executionTrade) => {
       sendFxTradeNotification(executionTrade)
     },
-    (e) => {
+    error: (e) => {
       console.error(e)
     },
-    () => {
-      console.error("notifications stream completed!?")
+    complete: () => {
+      console.error("FX trade notifications stream completed!?")
     },
-  )
+  })
 }
 
-export function registerCreditBlotterUpdates() {
+// TODO (4823) implement these for Finsemble when upgrading
+
+export function registerCreditAcceptedNotifications() {
+  // no-op
+}
+
+export function registerCreditQuoteNotifications() {
+  // no-op
+}
+
+export function unregisterCreditQuoteNotifications() {
   // no-op
 }
