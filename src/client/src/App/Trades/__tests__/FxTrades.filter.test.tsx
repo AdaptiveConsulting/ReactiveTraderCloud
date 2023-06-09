@@ -1,5 +1,4 @@
 import { act, fireEvent, render, screen } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
 import { BehaviorSubject } from "rxjs"
 
 import { ComparatorType } from "@/App/Trades/TradesState"
@@ -62,8 +61,8 @@ describe("for notional column", () => {
     expect(container.querySelector(notionalFilterMenu)).toBe(null)
   })
 
-  it.skip("filter icon and menu should work correct", async () => {
-    const { container, findAllByTestId } = renderComponent()
+  it("filter icon and menu should work correct", async () => {
+    const { container } = renderComponent()
 
     act(() => {
       fireEvent.mouseOver(
@@ -87,26 +86,24 @@ describe("for notional column", () => {
     })
     expect(input.value).toBe("1000000")
 
-    let rows = await findAllByTestId(/trades-grid-row/)
+    let rows = await screen.findAllByTestId(/trades-grid-row/)
 
     expect(rows.length).toBe(2)
-
     act(() => {
-      userEvent.selectOptions(
-        container.querySelector("select") as Element,
-        ComparatorType.Greater,
-      )
+      fireEvent.change(container.querySelector("select") as Element, {
+        target: { value: ComparatorType.Greater },
+      })
     })
-    rows = await findAllByTestId(/trades-grid-row/)
+
+    rows = await screen.findAllByTestId(/trades-grid-row/)
     expect(rows.length).toBe(1)
 
     act(() => {
-      userEvent.selectOptions(
-        container.querySelector("select") as Element,
-        ComparatorType.NotEqual,
-      )
+      fireEvent.change(container.querySelector("select") as Element, {
+        target: { value: ComparatorType.NotEqual },
+      })
     })
-    rows = await findAllByTestId(/trades-grid-row/)
+    rows = await screen.findAllByTestId(/trades-grid-row/)
     expect(rows.length).toBe(1)
   })
 })
