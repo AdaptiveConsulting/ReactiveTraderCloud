@@ -69,8 +69,8 @@ export const dockCustomActions = {
     platform.launchApp({ app: reactiveAnalytics })
   },
   [DockAction.OpenLimitChecker]: () => {
-    fin.System.launchExternalProcess({
-      alias: limitChecker.manifest,
+    platform.launchApp({
+      app: limitChecker,
     })
   },
 }

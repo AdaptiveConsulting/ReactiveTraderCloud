@@ -1,12 +1,12 @@
 import { createContext, useContext } from "react"
 import { Observable } from "rxjs"
 
-import { CreditTrade, FxTrade } from "@/services/trades"
+import { TradeType } from "@/services/trades/types"
 
 import { ColDef } from "./TradesState"
 
 export const TradesStreamContext =
-  createContext<Observable<(FxTrade | CreditTrade)[]> | undefined>(undefined)
+  createContext<Observable<TradeType[]> | undefined>(undefined)
 
 export const useTrades$ = () => {
   const trades$ = useContext(TradesStreamContext)
@@ -35,4 +35,13 @@ export const useColFields = () => {
   if (!colFields) throw Error("No Column fields provided")
 
   return colFields
+}
+
+export const HighlightedRowContext =
+  createContext<number | null | undefined>(null)
+
+export const useHighlightedRow = () => {
+  const highlightedRow = useContext(HighlightedRowContext)
+
+  return highlightedRow
 }

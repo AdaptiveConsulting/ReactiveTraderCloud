@@ -1,6 +1,7 @@
 import { test as base } from "@playwright/test"
-import { Page, chromium } from "playwright"
 import * as dotenv from "dotenv"
+import { chromium, Page } from "playwright"
+
 import { OPENFIN_PROJECT_NAME } from "./utils"
 
 dotenv.config({ path: ".env.development" })
@@ -24,6 +25,7 @@ interface IPlaywrightFixtures {
   openfinNotification: Page
   fxPagesRec: Record<FXPage, Page>
   creditPagesRec: Record<CreditPage, Page>
+  limitCheckerPageRec: Page
 }
 
 const fxOpenfinUrlPaths: string[] = [
@@ -39,6 +41,8 @@ const creditOpenfinUrlPaths: string[] = [
   "credit-blotter",
   "credit-rfqs",
 ]
+
+const limitCheckerUrlPath = "limit-checker"
 
 const urlPathToFxPage = (path: string): FXPage => {
   switch (path) {
@@ -124,6 +128,24 @@ export const test = base.extend<IPlaywrightFixtures>({
         "credit-new-rfq": mainWindow,
         "credit-rfqs": mainWindow,
       })
+    }
+  },
+  limitCheckerPageRec: async ({ context }, use, workerInfo) => {
+    const contextPages = context.pages()
+    if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
+      const page = contextPages.find(
+        (p) =>
+          p.url() ===
+          `${process.env.E2E_RTC_WEB_ROOT_URL}/${limitCheckerUrlPath}`,
+      )
+      if (!page)
+        throw Error(`Openfin page at ${limitCheckerUrlPath} was not found`)
+      use(page)
+    } else {
+      const mainWindow =
+        contextPages.length > 0 ? contextPages[0] : await context.newPage()
+
+      use(mainWindow)
     }
   },
 })

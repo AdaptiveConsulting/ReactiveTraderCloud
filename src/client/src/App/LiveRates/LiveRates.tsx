@@ -1,5 +1,6 @@
+import { joinChannel } from "@finos/fdc3"
 import { combineKeys } from "@react-rxjs/utils"
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useEffect } from "react"
 import { merge } from "rxjs"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
@@ -40,16 +41,22 @@ const loader = (
     minHeight="22rem"
   />
 )
-export const LiveRates = () => (
-  <LiveRateWrapper>
-    <OverflowScroll>
-      <div data-qa="workspace__tiles-workspace">
-        <Suspense fallback={loader}>
-          <LiveRatesCore>{loader}</LiveRatesCore>
-        </Suspense>
-      </div>
-    </OverflowScroll>
-  </LiveRateWrapper>
-)
+export const LiveRates = () => {
+  useEffect(() => {
+    if (window.fdc3) joinChannel("green")
+  }, [])
+
+  return (
+    <LiveRateWrapper>
+      <OverflowScroll>
+        <div data-qa="workspace__tiles-workspace">
+          <Suspense fallback={loader}>
+            <LiveRatesCore>{loader}</LiveRatesCore>
+          </Suspense>
+        </div>
+      </OverflowScroll>
+    </LiveRateWrapper>
+  )
+}
 
 export default LiveRates

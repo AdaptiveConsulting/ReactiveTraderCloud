@@ -31,12 +31,14 @@ export const WindowViewport = ({ children }: WithChildren) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "attach", label })
       }
+
       const listenerViewDetached = (
         _: WindowEvent<"window", "view-detached">,
       ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "detach", label })
       }
+
       const listenerViewHidden = (
         _: WindowEvent<"application", "view-hidden">,
       ) => {
@@ -56,17 +58,35 @@ export const WindowViewport = ({ children }: WithChildren) => {
           }
         }
       }
+
       const listenerWindowCreated = (
         _: WindowEvent<"application", "window-created">,
       ) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "open", label })
       }
+
       const listenerWindowClosed = (
         _: WindowEvent<"application", "window-closed">,
       ) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "close", label })
+      }
+
+      const listenerWindowClosing = ({
+        name,
+        uuid,
+      }: WindowEvent<"application", "window-closing">) => {
+        //const label: string = (e || {}).name || "unknown"
+        // ReactGA.event({ category: "RT - Window", action: "closing", label })
+        fin.Window.wrap({ uuid, name }).then((closingWindow) => {
+          if (name === "Limit-Checker") {
+            fin.me.interop.setContext({
+              type: "limit-checker-status",
+              id: { isAlive: "false" },
+            })
+          }
+        })
       }
 
       fin.Window.getCurrent()
@@ -79,6 +99,7 @@ export const WindowViewport = ({ children }: WithChildren) => {
       fin.Application.getCurrent()
         .then((app) => {
           app.addListener("view-hidden", listenerViewHidden)
+          app.addListener("window-closing", listenerWindowClosing)
           app.addListener("window-closed", listenerWindowClosed)
           app.addListener("window-created", listenerWindowCreated)
         })
@@ -95,6 +116,7 @@ export const WindowViewport = ({ children }: WithChildren) => {
           .then((app) => {
             app.removeListener("view-hidden", listenerViewHidden)
             app.removeListener("window-closed", listenerWindowClosed)
+            app.removeListener("window-closing", listenerWindowClosing)
             app.removeListener("window-created", listenerWindowCreated)
           })
           .catch((ex) => console.warn(ex))

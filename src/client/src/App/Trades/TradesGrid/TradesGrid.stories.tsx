@@ -19,7 +19,7 @@ import {
   fxColDef,
   fxColFields,
 } from "../TradesState"
-import { TradesGridInner } from "./TradesGrid"
+import { TradesGridInner } from "./TradesGridInner"
 
 export default {
   title: "Trades/TradesGrid",

@@ -4,12 +4,11 @@ import { Observable } from "rxjs"
 import { map, mergeMap, scan, shareReplay, startWith } from "rxjs/operators"
 
 import { CreditTrade, FxTrade } from "@/services/trades"
+import { Trade, TradeType } from "@/services/trades/types"
 import { mapObject } from "@/utils"
 
 import { ColDef } from "../colConfig"
 import { FilterEvent, filterResets$ } from "./filterCommon"
-
-type Trade = FxTrade | CreditTrade
 
 /**
  * Subset of column fields (as type) that take set/multi-select filter-value
@@ -41,7 +40,7 @@ export type DistinctValues = {
   [K in SetColField]: Set<Trade[K]>
 }
 interface ColFieldToggle<T extends SetColField> extends FilterEvent {
-  value: Trade[T]
+  value: TradeType[T]
 }
 
 interface SearchInput {
@@ -55,7 +54,7 @@ interface SearchInput {
  * ToDo: refactor into keyed signal
  */
 const [colFilterToggle$, onColFilterToggle] = createSignal(
-  <T extends SetColField>(field: T, value: Trade[T]) =>
+  <T extends SetColField>(field: T, value: TradeType[T]) =>
     ({ field, value } as ColFieldToggle<T>),
 )
 
@@ -87,7 +86,7 @@ export const setFieldValuesContainer = (colDef: ColDef) =>
     extractSetFields(colDef).reduce((valuesContainer, field) => {
       return {
         ...valuesContainer,
-        [field]: new Set<Trade[typeof field]>(),
+        [field]: new Set<TradeType[typeof field]>(),
       }
     }, {} as Record<SetColField, Set<string> | Set<number>>),
   )
@@ -101,7 +100,7 @@ export const setFieldValuesContainer = (colDef: ColDef) =>
 const getFilterValuesContainer = (colDef: ColDef) =>
   mapObject(
     setFieldValuesContainer(colDef), // {field1: Set1, field2: Set2}
-    (_, field: SetColField) => new Set<Trade[typeof field]>(),
+    (_, field: SetColField) => new Set<TradeType[typeof field]>(),
   )
 
 /**
@@ -109,7 +108,7 @@ const getFilterValuesContainer = (colDef: ColDef) =>
  * for every column field, stored as sets keyed
  * to each field.
  */
-const getDistinctValues = <T extends Trade>(
+const getDistinctValues = <T extends TradeType>(
   trades$: Observable<T[]>,
   colDef: ColDef,
 ) =>
@@ -136,7 +135,7 @@ const getDistinctValues = <T extends Trade>(
  * SetFilterComponent.
  */
 export const [useDistinctSetFieldValues, distinctSetFieldValues$] = bind(
-  <F extends SetColField, T extends Trade>(
+  <F extends SetColField, T extends TradeType>(
     field: F,
     trades$: Observable<T[]>,
     colDef: ColDef,
@@ -159,7 +158,7 @@ export const [useDistinctSetFieldValues, distinctSetFieldValues$] = bind(
  *
  * "Select all" is modeled as no filter applied.
  */
-const getAppliedSetFilters = <T extends Trade>(
+const getAppliedSetFilters = <T extends TradeType>(
   trades$: Observable<T[]>,
   colDef: ColDef,
 ) => {
@@ -227,7 +226,7 @@ const getAppliedSetFilters = <T extends Trade>(
  *
  * Used by set filter predicate to filter trades.
  */
-export const getAppliedSetFilterEntries = <T extends Trade>(
+export const getAppliedSetFilterEntries = <T extends TradeType>(
   trades$: Observable<T[]>,
   colDef: ColDef,
 ) => {
@@ -245,7 +244,7 @@ export const getAppliedSetFilterEntries = <T extends Trade>(
  *  used by SetFilter component to render options.
  */
 export const [useAppliedSetFieldFilters, appliedSetFieldFilters$] = bind(
-  <T extends Trade>(
+  <T extends TradeType>(
     field: SetColField,
     trades$: Observable<T[]>,
     colDef: ColDef,

@@ -1,4 +1,5 @@
 import Header from "@/App/Header"
+import { LimitCheckerHeader } from "@/App/Header/LimitCheckerHeader"
 import LoginControls from "@/App/Header/LoginControls"
 import ThemeSwitcher from "@/App/Header/theme-switcher"
 

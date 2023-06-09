@@ -1,6 +1,6 @@
 import { Observable } from "rxjs"
 
-export type checkLimitFn = (message: {
+export type CheckLimitStreamGenerator = (message: {
   tradedCurrencyPair: string
   notional: number
   rate: number

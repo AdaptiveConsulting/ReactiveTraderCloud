@@ -66,6 +66,9 @@ const reactiveTraderFxManifestUrl = getReactiveTraderUrl("/config/rt-fx.json")
 const reactiveTraderCreditManifestUrl = getReactiveTraderUrl(
   "/config/rt-credit.json",
 )
+const limitCheckerManifestUrl = getReactiveTraderUrl(
+  "/config/limit-checker.json",
+)
 const reactiveAnalyticsManifestUrl = getReactiveAnalyticsUrls(env)
 
 const baseConfig = () => ({
@@ -112,16 +115,9 @@ const baseAppConfigs: ApplicationConfig[] = [
     name: "Limit Checker",
     displayName: "LC",
     tooltipName: "Launch Limit Checker",
+    uuid: "limit-checker",
+    url: limitCheckerManifestUrl,
     icon: limitCheckerIcon,
-    provider: {
-      platformName: "openfin",
-      applicationType: "download",
-      windowOptions: {
-        ...defaultWindowOptions,
-        name: "Limit Checker",
-        icon: constructUrl(`/static/media/limit-checker-icon.ico`),
-      },
-    },
   },
 ]
 

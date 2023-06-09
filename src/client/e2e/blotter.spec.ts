@@ -14,6 +14,7 @@ const getTradeIDColIndex = () => {
   // return tradeIndex + 1
   return 1
 }
+
 const getTradeIDCellContent = (
   page: Page,
   rowIndex: number,

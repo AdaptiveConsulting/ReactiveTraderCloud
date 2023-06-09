@@ -1,9 +1,11 @@
 import { useContext } from "react"
 
-import { WindowFrameBase } from "./WindowFrameBase"
-import { WindowHeader } from "./WindowHeader"
+import { LimitCheckerHeader } from "@/App/Header/LimitCheckerHeader"
 
-export const WindowFrame = () => {
+import { WindowControls } from "./WindowControls"
+import { WindowFrameBase } from "./WindowFrameBase"
+
+export const LimitCheckerWindowFrame = () => {
   const win = fin.Window.getCurrentSync()
 
   const headerControlHandlers = {
@@ -16,10 +18,11 @@ export const WindowFrame = () => {
           state === "maximized" ? win.restore() : win.maximize(),
         ),
   }
-
   return (
     <WindowFrameBase>
-      <WindowHeader {...headerControlHandlers} title="Reactive Trader®" />
+      <LimitCheckerHeader
+        controls={<WindowControls {...headerControlHandlers} />}
+      />
     </WindowFrameBase>
   )
 }

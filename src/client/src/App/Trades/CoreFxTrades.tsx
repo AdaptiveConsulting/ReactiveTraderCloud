@@ -1,37 +1,15 @@
-import { broadcast, joinChannel } from "@finos/fdc3"
-import { Subscribe } from "@react-rxjs/core"
-import { useCallback, useEffect } from "react"
-import styled from "styled-components"
+import { broadcast } from "@finos/fdc3"
+import { useCallback } from "react"
 
-import { Loader } from "@/components/Loader"
-import { FxTrade, isBlotterDataStale$, trades$ } from "@/services/trades"
-import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
+import { FxTrade, trades$ } from "@/services/trades"
 
-import { ColDefContext, ColFieldsContext, TradesStreamContext } from "./Context"
-import { TradesFooter } from "./TradesFooter"
-import { TradesGridInner, TradesGridInnerProps } from "./TradesGrid"
-import { TradesHeader } from "./TradesHeader"
+import { TradesGrid } from "./TradesGrid"
 import { useFxTradeRowHighlight } from "./TradesState"
 import { fxColDef, fxColFields } from "./TradesState/colConfig"
 
-const TradesStyle = styled.div`
-  height: 100%;
-  width: 100%;
-  color: ${({ theme }) => theme.core.textColor};
-  font-size: 0.8125rem;
-`
-
-const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
-
-const TradesGrid = (props: TradesGridInnerProps<FxTrade>) => {
+const FxTrades = () => {
   const highlightedRow = useFxTradeRowHighlight()
 
-  useEffect(() => {
-    if (window.fdc3) {
-      // https://developer.openfin.co/docs/javascript/stable/tutorial-fdc3.joinChannel.html
-      joinChannel("green") //async
-    }
-  }, [])
   const tryBroadcastContext = useCallback((trade: FxTrade) => {
     const context = {
       type: "fdc3.instrument",
@@ -42,34 +20,24 @@ const TradesGrid = (props: TradesGridInnerProps<FxTrade>) => {
     }
   }, [])
 
-  const isRowCrossed = useCallback((row: FxTrade) => {
-    return row.status === "Rejected"
-  }, [])
+  const isRejected = useCallback(
+    (row: FxTrade) => row.status === "Rejected",
+    [],
+  )
+
   return (
-    <TradesGridInner
-      onRowClick={tryBroadcastContext}
-      isRowCrossed={isRowCrossed}
+    <TradesGrid
+      caption="Reactive Trader FX Trades Table"
       highlightedRow={highlightedRow}
-      {...props}
+      columnDefinitions={fxColDef}
+      columnFields={fxColFields}
+      trades$={trades$}
+      isRejected={isRejected}
+      onRowClick={tryBroadcastContext}
+      section="blotter"
+      showHeaderTools
     />
   )
 }
-
-const FxTrades = () => (
-  <Subscribe fallback={<Loader ariaLabel="Loading trades blotter" />}>
-    <ColFieldsContext.Provider value={fxColFields}>
-      <ColDefContext.Provider value={fxColDef}>
-        <TradesStreamContext.Provider value={trades$}>
-          <SuspenseOnStaleData />
-          <TradesStyle role="region" aria-labelledby="trades-table-heading">
-            <TradesHeader section="blotter" />
-            <TradesGrid caption="Reactive Trader FX Trades Table" />
-            <TradesFooter />
-          </TradesStyle>
-        </TradesStreamContext.Provider>
-      </ColDefContext.Provider>
-    </ColFieldsContext.Provider>
-  </Subscribe>
-)
 
 export default FxTrades

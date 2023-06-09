@@ -34,6 +34,8 @@ export const ROUTES_CONFIG = {
   snapshots: "/snapshots",
   // admin/CI
   status: "/status",
+  // limit checker
+  limitChecker: "/limit-checker",
 }
 
 export const CREDIT_RFQ_EXPIRY_SECONDS = 120

@@ -14,14 +14,14 @@ import LoginControls from "./LoginControls"
 import { PWABanner, PWAInstallBanner, PWALaunchButton } from "./PWA"
 import ThemeSwitcher from "./theme-switcher"
 
-interface Props {
+export interface HeaderProps {
   logo?: ReactNode
   filler?: ReactNode
   controls?: ReactNode
   switches?: ReactNode
 }
 
-const defaultLogo = (
+export const defaultLogo = (
   <LogoWrapper>
     <Logo
       size={1.75}
@@ -41,7 +41,7 @@ const defaultLogo = (
   </LogoWrapper>
 )
 
-const defaultFiller = <Fill aria-hidden={true} />
+export const defaultFiller = <Fill aria-hidden={true} />
 
 const DefaultSwitches = () => {
   return (
@@ -56,7 +56,7 @@ const defaultControls = <LoginControls />
 
 const SESSION = "PWABanner"
 
-const Header = ({ logo, filler, controls, switches }: Props) => {
+const Header = ({ logo, filler, controls, switches }: HeaderProps) => {
   const [banner, setBanner] = useState<string>(
     sessionStorage.getItem(SESSION) || PWABanner.NotSet,
   )
