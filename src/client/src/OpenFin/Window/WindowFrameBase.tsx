@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useEffect } from "react"
+import { PropsWithChildren, useEffect } from "react"
 
 import { WindowBody } from "./WindowBody"
 import { WindowFooter } from "./WindowFooter"

@@ -1,3 +1,4 @@
+import { broadcast, joinChannel } from "@finos/fdc3"
 import { ApplicationEvents } from "@openfin/core/src/api/events/application.js"
 import { WindowEvent } from "@openfin/core/src/api/events/base.js"
 import { Subscribe } from "@react-rxjs/core"
@@ -33,6 +34,8 @@ const getEmptyContent = (key: LayoutKey, useIcon = true) => {
 const WindowViewportComponent = ({ children }: WithChildren) => {
   //TODO: Remove this HACK once OpenFin exposes content of "empty" layout containers...
   useEffect(() => {
+    joinChannel("green")
+
     if (!fin.me.isView) {
       const listenerViewAttached = (
         _: WindowEvent<"window", "view-attached">,
@@ -121,15 +124,16 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
       }: WindowEvent<"application", "window-closing">) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "closing", label })
+
+        if (name === "Limit-Checker") {
+          broadcast({
+            type: "limit-checker-status",
+            id: { isAlive: "false" },
+          })
+        }
+
         fin.Window.wrap({ uuid, name }).then((closingWindow) => {
           closingWindow.removeAllListeners()
-
-          if (name === "Limit-Checker") {
-            fin.me.interop.setContext({
-              type: "limit-checker-status",
-              id: { isAlive: "false" },
-            })
-          }
         })
       }
 
