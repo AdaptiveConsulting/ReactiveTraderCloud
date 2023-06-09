@@ -104,7 +104,7 @@
                             "name": "RFQs"
                           },
                           "isClosable": true,
-                          "title": "RFQs"
+                          "title": "Credit RFQs"
                         }
                       ]
                     },
@@ -124,7 +124,7 @@
                             "name": "Credit-Blotter"
                           },
                           "isClosable": true,
-                          "title": "Blotter"
+                          "title": "Credit Blotter"
                         }
                       ]
                     }
@@ -146,7 +146,7 @@
                         "name": "New-RFQ"
                       },
                       "isClosable": true,
-                      "title": "New RFQ"
+                      "title": "Credit New RFQ"
                     }
                   ]
                 }

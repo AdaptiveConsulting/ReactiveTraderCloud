@@ -15,15 +15,15 @@ export enum CreditView {
 }
 
 const viewContent = {
-  rfqs: createViewContent("RFQs", {
+  rfqs: createViewContent("Credit RFQs", {
     url: constructUrl(ROUTES_CONFIG.creditRfqs),
     name: CreditView.RFQS,
   }),
-  creditBlotter: createViewContent("Blotter", {
+  creditBlotter: createViewContent("Credit Blotter", {
     url: constructUrl(ROUTES_CONFIG.creditBlotter),
     name: CreditView.CreditBlotter,
   }),
-  newRfq: createViewContent("New RFQ", {
+  newRfq: createViewContent("Credit New RFQ", {
     url: constructUrl(ROUTES_CONFIG.newRfq),
     name: CreditView.NewRFQ,
   }),

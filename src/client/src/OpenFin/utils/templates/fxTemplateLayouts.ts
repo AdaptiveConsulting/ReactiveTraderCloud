@@ -15,15 +15,15 @@ export enum FxView {
 }
 
 const viewContent = {
-  tiles: createViewContent("Spot Tiles", {
+  tiles: createViewContent("FX Spot Tiles", {
     url: constructUrl(ROUTES_CONFIG["tiles"]),
     name: FxView.Tiles,
   }),
-  blotter: createViewContent("FX-Blotter", {
+  blotter: createViewContent("FX Blotter", {
     url: constructUrl(ROUTES_CONFIG["blotter"]),
     name: FxView.FxBlotter,
   }),
-  analytics: createViewContent("Analytics", {
+  analytics: createViewContent("FX Analytics", {
     url: constructUrl(ROUTES_CONFIG["analytics"]),
     name: FxView.Analytics,
   }),

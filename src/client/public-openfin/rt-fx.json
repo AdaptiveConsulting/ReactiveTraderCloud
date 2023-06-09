@@ -125,7 +125,7 @@
                             "name": "Tiles"
                           },
                           "isClosable": true,
-                          "title": "Spot Tiles"
+                          "title": "FX Spot Tiles"
                         }
                       ]
                     },
@@ -142,10 +142,10 @@
                           "componentName": "view",
                           "componentState": {
                             "url": "<BASE_URL>/fx-blotter",
-                            "name": "FX-Blotter"
+                            "name": "FX Blotter"
                           },
                           "isClosable": true,
-                          "title": "FX-Blotter"
+                          "title": "FX Blotter"
                         }
                       ]
                     }
@@ -166,7 +166,7 @@
                         "name": "Analytics"
                       },
                       "isClosable": true,
-                      "title": "Analytics"
+                      "title": "FX Analytics"
                     }
                   ]
                 }

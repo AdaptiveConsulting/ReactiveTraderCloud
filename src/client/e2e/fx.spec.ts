@@ -23,12 +23,16 @@ test.describe("Fx App", () => {
       tilePage = mainWindow
       blotterPage = mainWindow
     }
+    selectors.setTestIdAttribute("data-qa")
   })
 
   test("Views should open new windows when popped out, and reattach to main window when closed", async ({
     context,
   }, testInfo) => {
+    //TODO either adapt this test for web tear out or write a companion test
+
     test.skip(testInfo.project.name !== OPENFIN_PROJECT_NAME)
+
     await mainWindow.getByTitle("toggle layout lock").click()
 
     const popOutTitle = "open in new window"
@@ -45,8 +49,6 @@ test.describe("Fx App", () => {
     const poppedOutBlotterPage = await blotterPagePromise
 
     await poppedOutBlotterPage.waitForSelector("text=Trades")
-
-    selectors.setTestIdAttribute("data-qa")
 
     await poppedOutLiveRatesPage.getByTestId("openfin-chrome__close").click()
 

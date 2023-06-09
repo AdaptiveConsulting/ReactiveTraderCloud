@@ -27,7 +27,7 @@ const tilesContent = [
       name: "Tiles",
     },
     isClosable: true,
-    title: "Spot Tiles",
+    title: "FX Spot Tiles",
   },
 ]
 const blotterContent = [
@@ -40,7 +40,7 @@ const blotterContent = [
       name: "Blotter",
     },
     isClosable: true,
-    title: "Blotter",
+    title: "FX Blotter",
   },
 ]
 const analyticsContent = [
@@ -53,7 +53,7 @@ const analyticsContent = [
       name: "Analytics",
     },
     isClosable: true,
-    title: "Analytics",
+    title: "FX Analytics",
   },
 ]
 
