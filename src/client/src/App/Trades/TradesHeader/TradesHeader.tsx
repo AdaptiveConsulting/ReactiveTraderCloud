@@ -35,20 +35,27 @@ const HeaderToolbar = styled("div")`
   align-items: center;
   justify-content: flex-end;
 `
-export const TradesHeader = ({ section }: { section: Section }) => {
+export const TradesHeader = ({
+  section,
+  title = "Trades",
+  showTools,
+}: {
+  section?: Section
+  title?: string
+  showTools: boolean
+}) => {
   return (
     <TradesHeaderStyle>
-      <HeaderLeftGroup>
-        {section !== "limitChecker" ? "Trades" : "Limit Check Results"}
-      </HeaderLeftGroup>
-      {section !== "limitChecker" && (
+      <HeaderLeftGroup>{title}</HeaderLeftGroup>
+
+      {showTools && (
         <HeaderRightGroup>
           <ExcelButton />
           <HeaderToolbar>
             <AppliedFilters />
             <QuickFilter />
           </HeaderToolbar>
-          {supportsTearOut && <TearOutComponent section={section} />}
+          {supportsTearOut && section && <TearOutComponent section={section} />}
           <Fill />
         </HeaderRightGroup>
       )}

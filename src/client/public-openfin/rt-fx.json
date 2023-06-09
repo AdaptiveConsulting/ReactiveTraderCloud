@@ -2,7 +2,7 @@
   "licenseKey": "695aecfa-0329-41a2-b44f-c2e8fe28241d",
   "platform": {
     "uuid": "reactive-trader-fx-<ENV_NAME>",
-    "name": "Reactive Trader®FX<ENV_SUFFIX>",
+    "name": "Reactive Trader® FX <ENV_SUFFIX>",
     "icon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
     "url": "<BASE_URL>",
     "autoShow": false,

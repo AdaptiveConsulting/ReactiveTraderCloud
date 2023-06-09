@@ -2,7 +2,7 @@
   "licenseKey": "695aecfa-0329-41a2-b44f-c2e8fe28241d",
   "platform": {
     "uuid": "reactive-launcher-<ENV_NAME>",
-    "name": "Reactive Launcher<ENV_SUFFIX>",
+    "name": "Reactive Launcher <ENV_SUFFIX>",
     "icon": "<BASE_URL>/static/media/adaptive-icon-256x256.png",
     "defaultWindowOptions": {
       "contextMenu": true,

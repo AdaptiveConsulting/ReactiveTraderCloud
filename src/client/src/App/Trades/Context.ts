@@ -1,12 +1,12 @@
 import { createContext, useContext } from "react"
 import { Observable } from "rxjs"
 
-import { CompositeTrade } from "@/services/trades/types"
+import { TradeType } from "@/services/trades/types"
 
 import { ColDef } from "./TradesState"
 
 export const TradesStreamContext =
-  createContext<Observable<CompositeTrade[]> | undefined>(undefined)
+  createContext<Observable<TradeType[]> | undefined>(undefined)
 
 export const useTrades$ = () => {
   const trades$ = useContext(TradesStreamContext)

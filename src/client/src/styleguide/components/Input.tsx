@@ -96,7 +96,7 @@ const StyledInput = styled.input<InputStyleProps>`
     color: ${({ theme, disabled }) =>
       theme.name === "light"
         ? disabled
-          ? theme.secondary[2]
+          ? theme.secondary[1]
           : theme.secondary[2]
         : disabled
         ? theme.colors.light.secondary[1]
@@ -106,14 +106,10 @@ const StyledInput = styled.input<InputStyleProps>`
 
 const Label = styled.label<LabelProps>`
   color: ${({ theme, disabled }) =>
-    theme.name === "light"
-      ? disabled
-        ? theme.secondary[2]
-        : theme.secondary[2]
-      : disabled
-      ? theme.colors.light.secondary[1]
-      : theme.colors.light.secondary[2]};
+    disabled ? theme.secondary[1] : theme.secondary[2]};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  display: flex;
+  align-items: center;
 `
 
 export const Input = (
@@ -128,8 +124,8 @@ export const Input = (
       <InputGroup>
         <Label disabled={disabled} onClick={focusInput}>
           {label.toUpperCase()}
+          <StyledInput ref={refInput} {...props} />
         </Label>
-        <StyledInput ref={refInput} {...props} />
       </InputGroup>
     </div>
   )

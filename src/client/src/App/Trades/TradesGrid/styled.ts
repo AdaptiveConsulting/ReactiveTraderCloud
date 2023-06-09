@@ -44,7 +44,6 @@ export const TableBodyRow = styled.div<{
 
 export const TableBodyCell = styled.div<{
   align?: "right" | "left"
-  crossed?: boolean
   width: number
   children: ReactNode
 }>`
@@ -54,15 +53,18 @@ export const TableBodyCell = styled.div<{
     align === "right" ? "flex-end" : "flex-start"};
   width: ${({ width }) => width}%;
   padding-right: ${({ align: numeric }) => (numeric ? "1.5rem;" : null)};
-  &:before {
-    content: " ";
-    display: ${({ crossed }) => (crossed ? "block" : "none")};
-    position: absolute;
-    top: 50%;
-    left: 0;
-    border-bottom: 1px solid red;
-    width: 100%;
-  }
+`
+
+export const TableBodyStrikeThrough = styled.div<{
+  isRejected?: boolean
+}>`
+  content: " ";
+  display: ${({ isRejected }) => (isRejected ? "block" : "none")};
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-bottom: 1px solid red;
+  width: 100%;
 `
 
 export const StatusIndicator = styled.div<{
@@ -92,5 +94,3 @@ export const StatusIndicatorSpacer = styled.div`
   border-bottom: 0.25rem solid ${({ theme }) => theme.core.darkBackground};
   width: 21px;
 `
-
-export const TableBackground = styled.div``

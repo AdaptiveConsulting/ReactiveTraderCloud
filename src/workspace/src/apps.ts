@@ -8,6 +8,7 @@ export async function getApps(): Promise<App[]> {
     reactiveAnalytics,
     limitChecker,
     reactiveWorkspace,
+    limitCheckerView,
     reactiveTraderFxLiveRatesView,
     reactiveTraderFxTradesView,
     reactiveTraderFxAnalyticsView,
@@ -69,6 +70,22 @@ export const limitChecker: App = {
   manifestType: "manifest",
   description: "Reactive Trader Limit Checker",
   manifest: `${VITE_RT_URL}/config/limit-checker.json`,
+  icons: [
+    {
+      src: `${BASE_URL}/images/icons/limit-checker.ico`,
+    },
+  ],
+  publisher: "Adaptive Financial Consulting",
+  tags: ["Trading", "Tools"],
+  images: [{ src: `${BASE_URL}/images/previews/limit-checker.PNG` }],
+}
+
+export const limitCheckerView: App = {
+  appId: "limit-checker-view",
+  title: "Limit Checker",
+  manifestType: "view",
+  description: "Reactive Trader Limit Checker",
+  manifest: `${BASE_URL}/config/limit-checker.json`,
   icons: [
     {
       src: `${BASE_URL}/images/icons/limit-checker.ico`,

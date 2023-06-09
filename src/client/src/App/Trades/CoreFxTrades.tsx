@@ -20,7 +20,7 @@ const FxTrades = () => {
     }
   }, [])
 
-  const isRowCrossed = useCallback(
+  const isRejected = useCallback(
     (row: FxTrade) => row.status === "Rejected",
     [],
   )
@@ -32,9 +32,10 @@ const FxTrades = () => {
       columnDefinitions={fxColDef}
       columnFields={fxColFields}
       trades$={trades$}
-      isRowCrossed={isRowCrossed}
+      isRejected={isRejected}
       onRowClick={tryBroadcastContext}
       section="blotter"
+      showHeaderTools
     />
   )
 }

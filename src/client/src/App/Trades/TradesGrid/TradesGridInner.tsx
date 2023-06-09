@@ -22,9 +22,9 @@ import {
   StatusIndicator,
   StatusIndicatorSpacer,
   Table,
-  TableBackground,
   TableBodyCell,
   TableBodyRow,
+  TableBodyStrikeThrough,
   TableHeadRow,
 } from "./styled"
 import { TableHeadCellContainer } from "./TableHeadCell"
@@ -46,7 +46,7 @@ const InnerElementType = forwardRef<
       <p id="trades-table-heading" className="visually-hidden">
         {caption}
       </p>
-      <TableBackground role="grid" ref={ref} style={style}>
+      <div role="grid" ref={ref} style={style}>
         <TableHeadRow>
           <StatusIndicatorSpacer aria-label="Trade Status" />
           {fields.map((field) => (
@@ -65,7 +65,7 @@ const InnerElementType = forwardRef<
             <TableBodyCell width={100}>No trades to show</TableBodyCell>
           </TableBodyRow>
         )}
-      </TableBackground>
+      </div>
     </>
   )
 })
@@ -99,7 +99,7 @@ const Row = <Row extends Trade>({
   const fields = useColFields()
   const row = useTableTradeWithIndex(rows$, colDef, index - 1)
   const highlightedRow = useHighlightedRow()
-  const { onRowClick, isRowCrossed } = data
+  const { onRowClick, isRejected } = data
 
   return (
     <TableBodyRow
@@ -125,12 +125,14 @@ const Row = <Row extends Trade>({
               columnDefinition.align ??
               (columnDefinition.filterType === "number" ? "right" : "left")
             }
-            crossed={isRowCrossed?.(row as unknown as Row)}
           >
             {columnDefinition.valueFormatter?.(value) ?? (value as string)}
           </TableBodyCell>
         )
       })}
+      <TableBodyStrikeThrough
+        isRejected={isRejected?.(row as unknown as Row)}
+      />
     </TableBodyRow>
   )
 }
@@ -171,7 +173,7 @@ const TableRows = <Row extends Trade>({
 
 export const TradesGridInner = <Row extends Trade>({
   onRowClick,
-  isRowCrossed,
+  isRejected,
   caption,
 }: TradesGridInnerProps<Row>) => {
   const rows$ = useTrades$()
@@ -193,7 +195,7 @@ export const TradesGridInner = <Row extends Trade>({
               outerElementType={OuterElementType}
               itemData={{
                 onRowClick,
-                isRowCrossed,
+                isRejected,
               }}
             >
               {Row}
@@ -207,6 +209,6 @@ export const TradesGridInner = <Row extends Trade>({
 
 export interface TradesGridInnerProps<Row extends Trade> {
   onRowClick?: (row: Row) => void
-  isRowCrossed?: (row: Row) => boolean
+  isRejected?: (row: Row) => boolean
   caption: string
 }

@@ -1,23 +1,17 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import {
-  concat,
-  map,
-  merge,
-  of,
-  scan,
-  share,
-  switchMap,
-  timer,
-  withLatestFrom,
-} from "rxjs"
+import { map, merge, scan, share, withLatestFrom } from "rxjs"
 
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { LimitCheckStatus, LimitCheckTrade } from "@/services/trades/types"
 
-import { LimitCheckerRequest } from "./LimitChecker"
-
-const [limitInput$, setLimit] = createSignal<Record<string, number>>()
+export interface LimitCheckerRequest {
+  id: string
+  responseTopic: string
+  tradedCurrencyPair: string
+  notional: string
+  rate: string
+}
 
 const defaultLimits$ = currencyPairs$.pipe(
   map((currencyPairs) =>
@@ -29,13 +23,25 @@ const defaultLimits$ = currencyPairs$.pipe(
   ),
 )
 
+const [limitInput$, setLimit] = createSignal<Record<string, number>>()
+
 const limits$ = merge(defaultLimits$, limitInput$).pipe(
   scan((acc, limits) => ({ ...acc, ...limits }), {} as Record<string, number>),
+)
+
+const [useLimit] = bind(
+  (symbol: string) => limits$.pipe(map((limits) => limits[symbol])),
+  0,
 )
 
 const [limitCheckRequest$, checkLimit] = createSignal<LimitCheckerRequest>()
 
 const limitResult$ = limitCheckRequest$.pipe(
+  map((request) => ({
+    ...request,
+    notional: parseFloat(request.notional),
+    rate: parseFloat(request.rate),
+  })),
   withLatestFrom(limits$),
   map(([request, limits]) => ({
     result: request.notional <= limits[request.tradedCurrencyPair],
@@ -43,27 +49,18 @@ const limitResult$ = limitCheckRequest$.pipe(
   })),
 )
 
-const [useLimitResult] = bind(
-  limitResult$.pipe(
-    switchMap((result) =>
-      concat(of(result), timer(1000).pipe(map(() => null))),
-    ),
-  ),
-  null,
-)
-
-limitResult$.subscribe(({ result, request }) =>
-  fin.InterApplicationBus.publish(request.responseTopic, { result }),
-)
-
-const [useLimits] = bind(limits$, {})
+limitResult$.subscribe(({ result, request }) => {
+  window.fdc3.broadcast({
+    type: `result-${request.id}`,
+    id: { result: result.toString(), ccy: request.tradedCurrencyPair },
+  })
+})
 
 let tradeId = 0
 
 const tableRows$ = limitResult$.pipe(
   scan((acc, { request, result }) => {
     return [
-      ...acc,
       {
         status: result ? LimitCheckStatus.Success : LimitCheckStatus.Failure,
         tradeId: tradeId++,
@@ -71,9 +68,10 @@ const tableRows$ = limitResult$.pipe(
         notional: request.notional,
         spotRate: request.rate,
       },
+      ...acc,
     ]
   }, [] as LimitCheckTrade[]),
   share(),
 )
 
-export { checkLimit, setLimit, tableRows$, useLimitResult, useLimits }
+export { checkLimit, setLimit, tableRows$, useLimit }

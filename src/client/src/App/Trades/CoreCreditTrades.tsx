@@ -14,6 +14,7 @@ const CreditTrades = () => {
       columnFields={creditColFields}
       trades$={creditTrades$}
       section="creditBlotter"
+      showHeaderTools
     />
   )
 }

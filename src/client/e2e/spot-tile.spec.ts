@@ -105,7 +105,7 @@ test.describe("Spot Tile", () => {
       expect(notionalValue).toEqual("1,000")
     })
 
-    test("When I type 1m as notional value to EUR/USD then notional value should be 1000", async () => {
+    test("When I type 1m as notional value to EUR/USD then notional value should be 1,000,000", async () => {
       await tilePage.locator("input[id='notional-input-EURUSD']").clear()
       await tilePage.locator("input[id='notional-input-EURUSD']").type("1m")
       const notionalValue = await tilePage

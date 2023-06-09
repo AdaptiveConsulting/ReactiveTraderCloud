@@ -2,7 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { BehaviorSubject, of, race, Subject, timer } from "rxjs"
 import { map, switchMap, take } from "rxjs/operators"
 
-import { checkLimitFn } from "./types"
+import { CheckLimitStreamGenerator } from "./types"
 
 const limitCheckSubscriptionUuid$ = new BehaviorSubject<string | null>(null)
 
@@ -24,7 +24,7 @@ const LOG_NAME = "Finsemble: "
 
 let limitCheckId = 1
 
-export const checkLimit$: checkLimitFn = (message: {
+export const checkLimit$: CheckLimitStreamGenerator = (message: {
   tradedCurrencyPair: string
   notional: number
   rate: number

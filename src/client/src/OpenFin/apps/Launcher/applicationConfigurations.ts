@@ -119,22 +119,6 @@ const baseAppConfigs: ApplicationConfig[] = [
     url: limitCheckerManifestUrl,
     icon: limitCheckerIcon,
   },
-  // {
-  //   ...baseConfig(),
-  //   name: "Limit Checker",
-  //   displayName: "LC",
-  //   tooltipName: "Launch Limit Checker",
-  //   icon: limitCheckerIcon,
-  //   provider: {
-  //     platformName: "openfin",
-  //     applicationType: "download",
-  //     windowOptions: {
-  //       ...defaultWindowOptions,
-  //       name: "Limit Checker",
-  //       icon: constructUrl(`/static/media/limit-checker-icon.ico`),
-  //     },
-  //   },
-  // },
 ]
 
 export const appConfigs = baseAppConfigs

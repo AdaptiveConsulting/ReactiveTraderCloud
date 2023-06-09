@@ -1,9 +1,9 @@
-import { useEffect } from "react"
 import styled from "styled-components"
 
+import { CurrencyPair } from "@/services/currencyPairs/types"
 import Input from "@/styleguide/components/Input"
 
-import { setLimit, useLimitResult, useLimits } from "./state"
+import { setLimit, useLimit } from "./state"
 
 const Container = styled.div`
   display: flex;
@@ -13,24 +13,25 @@ const Container = styled.div`
   padding: 10px 10px 10px 10px;
 `
 
-export const LimitInput = ({ currencyPair }: { currencyPair: string }) => {
-  const limit = useLimits()[currencyPair]
-
-  const result = useLimitResult()
+export const LimitInput = ({
+  currencyPair,
+}: {
+  currencyPair: CurrencyPair
+}) => {
+  const limit = useLimit(currencyPair.symbol)
 
   const handleLimitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLimit({ [currencyPair]: Number(e.target.value) })
+    setLimit({ [currencyPair.symbol]: Number(e.target.value) })
   }
 
   return (
     <Container>
-      <h2>{currencyPair.slice(0, 3) + "/" + currencyPair.slice(3)}</h2>
       <Input
-        label={""}
+        label={currencyPair.base + "/" + currencyPair.terms}
         type="number"
+        disabled={false}
         value={limit ? String(limit) : "0"}
         onChange={handleLimitChange}
-        className="limit-setter"
       />
     </Container>
   )

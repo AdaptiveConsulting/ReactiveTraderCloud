@@ -8,13 +8,14 @@ import { Loader } from "@/components/Loader"
 import { BASE_PATH, ROUTES_CONFIG } from "@/constants"
 import { OpenFinContactDisplay } from "@/OpenFin/Footer/ContactUsButton"
 
-import LimitCheckerRoutes from "./apps/LimitChecker"
 import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
+import { LimitCheckerWindowFrame } from "./Window/LimitCheckerWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
 
 const Launcher = lazy(() => import("@/OpenFin/apps/Launcher"))
 
+const LimitChecker = lazy(() => import("./apps/LimitChecker/LimitChecker"))
 const Analytics = lazy(() => import("@/App/Analytics/Analytics"))
 const FxTrades = lazy(() => import("@/App/Trades/FxTrades"))
 const LiveRates = lazy(() => import("@/App/LiveRates/LiveRates"))
@@ -112,21 +113,19 @@ export const OpenFinApp = () => (
 
       {/* ..the rest */}
       <Route
-        path={`${ROUTES_CONFIG.limitChecker}/*`}
+        path={ROUTES_CONFIG.limitChecker}
         element={
-          <Suspense fallback={<Loader />}>
-            <LimitCheckerRoutes />
-          </Suspense>
+          <DocTitle title="Limit Checker">
+            <LimitChecker />
+            <DisconnectionOverlay />
+          </DocTitle>
         }
       />
 
-      <Route
-        path="/openfin-window-frame"
-        element={<WindowFrame admin={false} />}
-      />
+      <Route path="/openfin-window-frame" element={<WindowFrame />} />
       <Route
         path="/openfin-admin-window-frame"
-        element={<WindowFrame admin={true} />}
+        element={<LimitCheckerWindowFrame />}
       />
       <Route path="/openfin-sub-window-frame" element={<ChildWindowFrame />} />
       <Route path={ROUTES_CONFIG.contact} element={<OpenFinContactDisplay />} />

@@ -64,4 +64,4 @@ export interface Trade {
   [prop: string]: unknown
 }
 
-export type CompositeTrade = FxTrade | CreditTrade | LimitCheckTrade
+export type TradeType = FxTrade | CreditTrade | LimitCheckTrade

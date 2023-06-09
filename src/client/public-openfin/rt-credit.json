@@ -2,7 +2,7 @@
   "licenseKey": "695aecfa-0329-41a2-b44f-c2e8fe28241d",
   "platform": {
     "uuid": "reactive-trader-credit-<ENV_NAME>",
-    "name": "Reactive Trader® Credit<ENV_SUFFIX>",
+    "name": "Reactive Trader® Credit <ENV_SUFFIX>",
     "applicationIcon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
     "defaultWindowOptions": {
       "contextMenu": true,
@@ -23,7 +23,7 @@
   "services": [
     {
       "name": "notifications",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/1.23.0/app.json"
+      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/1.20.0/app.json"
     }
   ],
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",

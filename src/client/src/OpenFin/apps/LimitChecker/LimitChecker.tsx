@@ -1,39 +1,39 @@
+import { Context, joinChannel } from "@finos/fdc3"
 import { useEffect } from "react"
+import styled from "styled-components"
 
 import { LimitCheckResultsTable } from "./LimitCheckResults"
-import { LimitInputs } from "./LimitInputs"
-import { checkLimit } from "./state"
+import { LimitInputs } from "./LimitInputGrid"
+import { checkLimit, LimitCheckerRequest } from "./state"
 
-export interface LimitCheckerRequest {
-  id: number
-  responseTopic: string
-  tradedCurrencyPair: string
-  notional: number
-  rate: number
+const contextHandler = (context: Context) => {
+  if (context) checkLimit(context.id as unknown as LimitCheckerRequest)
 }
 
-export const LimitChecker = () => {
+window.fdc3.addContextListener("check-limit", contextHandler)
+
+joinChannel("green")
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`
+
+const LimitChecker = () => {
   useEffect(() => {
-    fin.InterApplicationBus.subscribe(
-      { uuid: "*" },
-      "request-limit-check",
-      checkLimit,
-    )
-
-    fin.InterApplicationBus.publish("request-limit-check-status", "ALIVE")
-
-    return () => {
-      fin.InterApplicationBus.unsubscribe(
-        { uuid: "*" },
-        "request-limit-check",
-        checkLimit,
-      )
-    }
+    window.fdc3.broadcast({
+      type: "limit-checker-status",
+      id: { isAlive: "true" },
+    })
   }, [])
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <Container>
       <LimitInputs />
       <LimitCheckResultsTable />
-    </div>
+    </Container>
   )
 }
+
+export default LimitChecker

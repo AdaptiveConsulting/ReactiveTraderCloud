@@ -23,7 +23,8 @@ export const LimitCheckResultsTable = () => {
         trades$={tableRows$}
         caption="Trade Table"
         highlightedRow={null}
-        section="limitChecker"
+        showHeaderTools={false}
+        title="Limit Check Results"
       />
     </Container>
   )

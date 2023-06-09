@@ -31,10 +31,7 @@ export const LimitInputs = () => {
       <Header className="header">Currency Pair Trade Limits</Header>
       <Grid>
         {Object.values(currencyPairs).map((currencyPair) => (
-          <LimitInput
-            currencyPair={currencyPair.symbol}
-            key={currencyPair.symbol}
-          />
+          <LimitInput currencyPair={currencyPair} key={currencyPair.symbol} />
         ))}
       </Grid>
     </Container>

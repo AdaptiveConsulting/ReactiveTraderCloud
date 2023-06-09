@@ -7,7 +7,7 @@ import styled from "styled-components"
 import { Section } from "@/App/TearOutSection/state"
 import { Loader } from "@/components/Loader"
 import { isBlotterDataStale$, Trade } from "@/services/trades"
-import { CompositeTrade } from "@/services/trades/types"
+import { TradeType } from "@/services/trades/types"
 import { createSuspenseOnStale } from "@/utils/createSuspenseOnStale"
 
 import {
@@ -34,12 +34,14 @@ const SuspenseOnStaleData = createSuspenseOnStale(isBlotterDataStale$)
 interface TradesGridProps<Row extends Trade> {
   columnFields: FxColField[]
   columnDefinitions: ColDef
-  trades$: Observable<CompositeTrade[]>
+  trades$: Observable<TradeType[]>
   caption: string
   highlightedRow: number | null | undefined
-  isRowCrossed?: (row: Row) => boolean
+  isRejected?: (row: Row) => boolean
   onRowClick?: (row: Row) => void
-  section: Section
+  section?: Section
+  showHeaderTools: boolean
+  title?: string
 }
 
 export const TradesGrid = <Row extends Trade>({
@@ -48,9 +50,11 @@ export const TradesGrid = <Row extends Trade>({
   trades$,
   caption,
   highlightedRow,
-  isRowCrossed,
+  isRejected,
   onRowClick,
   section,
+  showHeaderTools,
+  title,
 }: TradesGridProps<Row>) => {
   useEffect(() => {
     if (window.fdc3) {
@@ -67,9 +71,13 @@ export const TradesGrid = <Row extends Trade>({
             <HighlightedRowContext.Provider value={highlightedRow}>
               <SuspenseOnStaleData />
               <TradesStyle role="region" aria-labelledby="trades-table-heading">
-                <TradesHeader section={section} />
+                <TradesHeader
+                  section={section}
+                  showTools={showHeaderTools}
+                  title={title}
+                />
                 <TradesGridInner
-                  isRowCrossed={isRowCrossed}
+                  isRejected={isRejected}
                   onRowClick={onRowClick}
                   caption={caption}
                 />

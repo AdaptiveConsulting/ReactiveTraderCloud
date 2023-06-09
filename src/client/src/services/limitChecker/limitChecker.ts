@@ -1,8 +1,8 @@
 import { Observable } from "rxjs"
 
-import { checkLimitFn } from "./types"
+import { CheckLimitStreamGenerator } from "./types"
 
-export const checkLimit$: checkLimitFn = () =>
+export const checkLimit$: CheckLimitStreamGenerator = () =>
   new Observable<boolean>((observer) => {
     observer.next(true)
     observer.complete()
