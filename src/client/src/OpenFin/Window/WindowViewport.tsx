@@ -42,7 +42,7 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
       }
 
       const listenerViewDetached = (
-        _: WindowEvent<"window", "view-detached">,
+        e: WindowEvent<"window", "view-detached">,
       ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "detach", label })
@@ -83,9 +83,10 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         }
       }
 
-      const listenerWindowCreated = (
-        _: WindowEvent<"application", "window-created">,
-      ) => {
+      const listenerWindowCreated = ({
+        uuid,
+        name,
+      }: WindowEvent<"application", "window-created">) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "open", label })
 
@@ -99,18 +100,6 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
               type: OPENING_WINDOW,
             })
           })
-        })
-      }
-
-      const listenerWindowClosing = ({
-        name,
-        uuid,
-      }: WindowEvent<"application", "window-closing">) => {
-        //const label: string = (e || {}).name || "unknown"
-        // ReactGA.event({ category: "RT - Window", action: "closing", label })
-
-        fin.Window.wrap({ uuid, name }).then((closingWindow) => {
-          closingWindow.removeAllListeners()
         })
       }
 
@@ -133,6 +122,8 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "closing", label })
         fin.Window.wrap({ uuid, name }).then((closingWindow) => {
+          closingWindow.removeAllListeners()
+
           if (name === "Limit-Checker") {
             fin.me.interop.setContext({
               type: "limit-checker-status",
