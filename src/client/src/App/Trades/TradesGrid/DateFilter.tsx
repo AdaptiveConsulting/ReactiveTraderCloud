@@ -26,8 +26,10 @@ const DateFilterInput = ({
   fieldValueName,
   field,
   selected,
+  dataTestId,
 }: {
   fieldValueName: "value1" | "value2"
+  dataTestId?: string
   field: DateColField
   selected: DateFilterContent
 }) => {
@@ -46,6 +48,7 @@ const DateFilterInput = ({
         })
       }}
       type="date"
+      data-testid={dataTestId}
     />
   )
 }
@@ -59,6 +62,7 @@ export const DateFilter = ({
 }) => {
   const colDef = useColDef()
   const selected = useAppliedDateFilters(field, colDef)
+  console.log("HERE TEST")
   return (
     <FilterPopup
       parentRef={parentRef}
@@ -74,6 +78,7 @@ export const DateFilter = ({
         }}
       />
       <DateFilterInput
+        dataTestId="date-filter-input"
         selected={selected}
         field={field}
         fieldValueName="value1"

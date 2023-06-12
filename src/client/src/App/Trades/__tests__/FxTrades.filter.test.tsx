@@ -1,4 +1,6 @@
 import { act, fireEvent, render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+
 import { BehaviorSubject } from "rxjs"
 
 import { ComparatorType } from "@/App/Trades/TradesState"
@@ -175,9 +177,10 @@ describe.only("Date Filter", () => {
   setupMockWindow()
 
   describe("For Trade Date column", () => {
-    const tradeDateFilterIcon = '[aria-label="Open Status field filter pop up"]'
+    const tradeDateFilterIcon =
+      '[aria-label="Open Trade Date field filter pop up"]'
     const tradeDateFilterMenu =
-      '[aria-label="Filter trades by status field value"]'
+      '[aria-label="Filter trades by tradeDate field value"]'
 
     beforeEach(() => {
       const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
@@ -188,6 +191,39 @@ describe.only("Date Filter", () => {
       const { container } = renderComponent()
       expect(container.querySelector(tradeDateFilterIcon)).toBe(null)
       expect(container.querySelector(tradeDateFilterMenu)).toBe(null)
+    })
+
+    it("filter icon and menu should work correct", async () => {
+      const { container } = renderComponent()
+
+      act(() => {
+        fireEvent.mouseOver(
+          screen.getByText("Trade Date").closest("div") as Element,
+        )
+      })
+
+      expect(container.querySelector(tradeDateFilterIcon)).not.toBe(null)
+
+      act(() => {
+        fireEvent.click(container.querySelector(tradeDateFilterIcon) as Element)
+      })
+
+      expect(container.querySelector(tradeDateFilterMenu)).not.toBe(null)
+
+      // let rows = await screen.findAllByTestId(/trades-grid-row/)
+
+      // expect(rows.length).toBe(3)
+      // const dateInput = (await screen.findByTestId(
+      //   "date-filter-input",
+      // )) as HTMLInputElement
+
+      // act(() => {
+      //   fireEvent.change(dateInput, { target: { value: "13012021" } })
+      // })
+
+      // rows = await screen.findAllByTestId(/trades-grid-row/)
+
+      // expect(rows.length).toBe(1)
     })
   })
 })
