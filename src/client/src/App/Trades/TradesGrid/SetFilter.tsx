@@ -82,7 +82,10 @@ const SetFilterInner = ({
   const { valueFormatter } = colDef[field]
 
   return (
-    <FilterPopup parentRef={parentRef}>
+    <FilterPopup
+      parentRef={parentRef}
+      ariaLabel={`Filter trades by ${field} field value`}
+    >
       <SearchInput
         type="text"
         placeholder="Search"
@@ -106,6 +109,7 @@ const SetFilterInner = ({
         return (
           <MultiSelectOption
             key={`${option}-filter`}
+            data-testid={`select-option-${option}`}
             onClick={() => onColFilterToggle(field, option)}
             selected={isSelected}
           >

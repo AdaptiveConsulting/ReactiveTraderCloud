@@ -60,7 +60,10 @@ export const DateFilter = ({
   const colDef = useColDef()
   const selected = useAppliedDateFilters(field, colDef)
   return (
-    <FilterPopup parentRef={parentRef}>
+    <FilterPopup
+      parentRef={parentRef}
+      ariaLabel={`Filter trades by ${field} field value`}
+    >
       <ComparatorSelect
         selected={selected}
         onSelection={(comparator: ComparatorType) => {

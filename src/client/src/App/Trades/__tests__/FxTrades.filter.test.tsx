@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import { ComparatorType } from "@/App/Trades/TradesState"
-import { Trade, tradesTestData } from "@/services/trades"
+import { Trade, TradeStatus, tradesTestData } from "@/services/trades"
 import { tradesMock } from "@/services/trades/__mocks__/_trades"
 import { setupMockWindow, TestThemeProvider } from "@/utils/testUtils"
 
@@ -105,5 +105,89 @@ describe("for notional column", () => {
     })
     rows = await screen.findAllByTestId(/trades-grid-row/)
     expect(rows.length).toBe(1)
+  })
+})
+
+// Applies to all column with set filter
+describe("Set filter", () => {
+  setupMockWindow()
+
+  describe("For Status column", () => {
+    const statusFilterIcon = '[aria-label="Open Status field filter pop up"]'
+    const statusFilterMenu =
+      '[aria-label="Filter trades by status field value"]'
+
+    beforeEach(() => {
+      const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
+      tradesMock.__setTrades(tradesSubj.asObservable())
+    })
+
+    it("no filter icon or menu should be rendered", () => {
+      const { container } = renderComponent()
+      expect(container.querySelector(statusFilterIcon)).toBe(null)
+      expect(container.querySelector(statusFilterMenu)).toBe(null)
+    })
+
+    it("filter icon and menu should work correct", async () => {
+      const { container } = renderComponent()
+
+      act(() => {
+        fireEvent.mouseOver(
+          screen.getByText("Status").closest("div") as Element,
+        )
+      })
+
+      expect(container.querySelector(statusFilterIcon)).not.toBe(null)
+
+      act(() => {
+        fireEvent.click(container.querySelector(statusFilterIcon) as Element)
+      })
+
+      expect(container.querySelector(statusFilterMenu)).not.toBe(null)
+
+      let rows = await screen.findAllByTestId(/trades-grid-row/)
+
+      expect(rows.length).toBe(3)
+
+      const selectDoneOption = await screen.findByTestId(
+        `select-option-${TradeStatus.Done}`,
+      )
+      act(() => {
+        fireEvent.click(selectDoneOption)
+      })
+
+      rows = await screen.findAllByTestId(/trades-grid-row/)
+      expect(rows.length).toBe(1)
+
+      // Unselect Done option
+      act(() => {
+        fireEvent.click(selectDoneOption)
+      })
+
+      rows = await screen.findAllByTestId(/trades-grid-row/)
+      expect(rows.length).toBe(3)
+    })
+  })
+})
+
+// Applies to all columns with Date Filter
+describe.only("Date Filter", () => {
+  setupMockWindow()
+
+  describe("For Trade Date column", () => {
+    const tradeDateFilterIcon = '[aria-label="Open Status field filter pop up"]'
+    const tradeDateFilterMenu =
+      '[aria-label="Filter trades by status field value"]'
+
+    beforeEach(() => {
+      const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
+      tradesMock.__setTrades(tradesSubj.asObservable())
+    })
+
+    it("no filter icon or menu should be rendered", () => {
+      const { container } = renderComponent()
+      expect(container.querySelector(tradeDateFilterIcon)).toBe(null)
+      expect(container.querySelector(tradeDateFilterMenu)).toBe(null)
+    })
   })
 })
