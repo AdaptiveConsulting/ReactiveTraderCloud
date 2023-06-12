@@ -172,7 +172,7 @@ describe("Set filter", () => {
 })
 
 // Applies to all columns with Date Filter
-describe.only("Date Filter", () => {
+describe("Date Filter", () => {
   setupMockWindow()
 
   describe("For Trade Date column", () => {
