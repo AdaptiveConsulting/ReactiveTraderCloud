@@ -209,20 +209,28 @@ describe("Date Filter", () => {
 
       expect(container.querySelector(tradeDateFilterMenu)).not.toBe(null)
 
-      // let rows = await screen.findAllByTestId(/trades-grid-row/)
+      let rows = await screen.findAllByTestId(/trades-grid-row/)
 
-      // expect(rows.length).toBe(3)
-      // const dateInput = (await screen.findByTestId(
-      //   "date-filter-input",
-      // )) as HTMLInputElement
+      expect(rows.length).toBe(3)
+      const dateInput = (await screen.findByTestId(
+        "date-filter-input",
+      )) as HTMLInputElement
 
-      // act(() => {
-      //   fireEvent.change(dateInput, { target: { value: "13012021" } })
-      // })
+      act(() => {
+        fireEvent.change(dateInput, { target: { value: "2021-01-13" } })
+      })
 
-      // rows = await screen.findAllByTestId(/trades-grid-row/)
+      rows = await screen.findAllByTestId(/trades-grid-row/)
+      expect(rows.length).toBe(1)
 
-      // expect(rows.length).toBe(1)
+      act(() => {
+        fireEvent.change(container.querySelector("select") as Element, {
+          target: { value: ComparatorType.Greater },
+        })
+      })
+
+      rows = await screen.findAllByTestId(/trades-grid-row/)
+      expect(rows.length).toBe(1)
     })
   })
 })

@@ -62,7 +62,7 @@ export const DateFilter = ({
 }) => {
   const colDef = useColDef()
   const selected = useAppliedDateFilters(field, colDef)
-  console.log("HERE TEST")
+
   return (
     <FilterPopup
       parentRef={parentRef}
