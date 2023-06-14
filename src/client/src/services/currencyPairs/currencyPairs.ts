@@ -28,7 +28,6 @@ export const [useCurrencyPairs, currencyPairs$] = bind(
       return result
     }, {} as Record<string, CurrencyPair>),
   ),
-  {},
 )
 
 export const [useCurrencyPair, getCurrencyPair$] = bind((symbol: string) =>
