@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, within } from "@testing-library/react"
+import { act } from "react-dom/test-utils"
 import { BehaviorSubject } from "rxjs"
 
 import * as Trades from "@/services/trades"
@@ -7,7 +8,6 @@ import { TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
 import * as TableTrades from "../TradesState/tableTrades"
-import { act } from "react-dom/test-utils"
 
 vi.mock("@openfin/core", () => ({
   fin: undefined,
