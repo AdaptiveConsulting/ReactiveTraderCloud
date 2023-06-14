@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react"
+import { fireEvent, render, screen, within } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import * as Trades from "@/services/trades"
@@ -7,6 +7,7 @@ import { TestThemeProvider } from "@/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
 import * as TableTrades from "../TradesState/tableTrades"
+import { act } from "react-dom/test-utils"
 
 vi.mock("@openfin/core", () => ({
   fin: undefined,
@@ -22,6 +23,15 @@ vi.mock("../TradesState/tableTrades", async () => {
     useFxTradeRowHighlight: vi.fn().mockReturnValue(undefined),
   }
 })
+vi.mock("../TradesGrid/utils")
+vi.mock("react-virtualized-auto-sizer", () => ({
+  default: ({
+    children,
+  }: {
+    children: React.FunctionComponent<{ height: number; width: number }>
+  }) => children({ height: 100, width: 100 }),
+}))
+
 const { mockTrades } = Trades.tradesTestData
 
 const renderComponent = () =>
@@ -49,5 +59,30 @@ describe("Trades quick filter", () => {
         }),
       ).queryByRole("textbox")?.textContent,
     ).toBe("")
+  })
+
+  it("should filter across columns", async () => {
+    const tradesSubj = new BehaviorSubject<Trades.Trade[]>(mockTrades)
+    tradesMock.__setTrades(tradesSubj)
+
+    renderComponent()
+
+    let rows = await screen.findAllByTestId(/trades-grid-row/)
+    expect(rows.length).toBe(3)
+
+    const searchTextBox = within(
+      screen.getByRole("search", {
+        name: "Search by text across all trade fields",
+      }),
+    ).queryByRole("textbox") as HTMLInputElement
+
+    act(() => {
+      fireEvent.change(searchTextBox, {
+        target: { value: "Pend" },
+      })
+    })
+
+    rows = await screen.findAllByTestId(/trades-grid-row/)
+    expect(rows.length).toBe(1)
   })
 })
