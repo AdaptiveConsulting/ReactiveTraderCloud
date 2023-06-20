@@ -177,7 +177,7 @@
         }
       },
       "transparent": false,
-      "uuid": "adaptive-workspace-provider-local",
+      "uuid": "adaptive-workspace-provider",
       "accelerator": {
         "devtools": false,
         "zoom": false,
@@ -218,14 +218,14 @@
         "reload": false
       },
       "cornerRounding": {
-        "height": 0,
-        "width": 0
+        "height": 8,
+        "width": 8
       },
       "closeOnLastViewRemoved": false,
-      "defaultHeight": 1393,
-      "defaultLeft": -446,
-      "defaultTop": -1393,
-      "defaultWidth": 1952,
+      "defaultHeight": 1000,
+      "defaultLeft": 10,
+      "defaultTop": 10,
+      "defaultWidth": 1200,
       "draggable": false,
       "experimental": {
         "api": {
@@ -360,11 +360,11 @@
       },
       "autoplayPolicy": "no-user-gesture-required",
       "title": "https://cdn.openfin.co/workspace/11.0.6/browser/",
-      "height": 1393,
-      "width": 1952,
+      "height": 1000,
+      "width": 1200,
       "center": false,
-      "x": -446,
-      "y": -1393,
+      "x": 10,
+      "y": 10,
       "permissions": {
         "ExternalWindow": {
           "wrap": true
@@ -478,7 +478,7 @@
                                 },
                                 "webAPIs": ["notifications", "audio", "video"]
                               },
-                              "url": "http://localhost:1917/fx-tiles",
+                              "url": "<RT_URL>/fx-tiles",
                               "componentName": "view",
                               "interop": {
                                 "currentContextGroup": "green"
@@ -576,8 +576,8 @@
                                 "height": false
                               },
                               "name": "internal-generated-view-7f380de8-56ae-42b7-a36b-62ec19bdde85",
-                              "uuid": "adaptive-workspace-provider-local",
-                              "initialUrl": "http://localhost:1917/fx-tiles",
+                              "uuid": "adaptive-workspace-provider",
+                              "initialUrl": "<RT_URL>/fx-tiles",
                               "processAffinity": "adaptive-workspace-provider",
                               "zoomLevel": 0,
                               "enableBeforeUnload": false
@@ -647,7 +647,7 @@
                                       "video"
                                     ]
                                   },
-                                  "url": "http://localhost:1917/fx-blotter",
+                                  "url": "<RT_URL>/fx-blotter",
                                   "componentName": "view",
                                   "interop": {
                                     "currentContextGroup": "purple"
@@ -745,8 +745,8 @@
                                     "height": false
                                   },
                                   "name": "internal-generated-view-97e140ad-c2e2-4d56-8231-06c8139daa3f",
-                                  "uuid": "adaptive-workspace-provider-local",
-                                  "initialUrl": "http://localhost:1917/fx-blotter",
+                                  "uuid": "adaptive-workspace-provider",
+                                  "initialUrl": "<RT_URL>/fx-blotter",
                                   "processAffinity": "adaptive-workspace-provider",
                                   "zoomLevel": 0,
                                   "enableBeforeUnload": false
@@ -816,7 +816,7 @@
                                 },
                                 "webAPIs": ["notifications", "audio", "video"]
                               },
-                              "url": "http://localhost:1917/limit-checker",
+                              "url": "<RT_URL>/limit-checker",
                               "componentName": "view",
                               "interop": {
                                 "currentContextGroup": "green"
@@ -914,8 +914,8 @@
                                 "height": false
                               },
                               "name": "internal-generated-view-8f6a77c2-a79e-4dca-a923-843f34d99d21",
-                              "uuid": "adaptive-workspace-provider-local",
-                              "initialUrl": "http://localhost:1917/limit-checker",
+                              "uuid": "adaptive-workspace-provider",
+                              "initialUrl": "<RT_URL>/limit-checker",
                               "processAffinity": "adaptive-workspace-provider",
                               "zoomLevel": 0,
                               "enableBeforeUnload": false
@@ -974,7 +974,7 @@
                                 },
                                 "webAPIs": ["notifications", "audio", "video"]
                               },
-                              "url": "http://localhost:3005/fx/USDJPY",
+                              "url": "<RA_URL>",
                               "componentName": "view",
                               "interop": {
                                 "currentContextGroup": "purple"
@@ -1072,13 +1072,13 @@
                                 "height": false
                               },
                               "name": "internal-generated-view-d7384c2e-98a3-43c3-84d8-6017be42c1f6",
-                              "uuid": "adaptive-workspace-provider-local",
-                              "initialUrl": "http://localhost:3005",
+                              "uuid": "adaptive-workspace-provider",
+                              "initialUrl": "<RA_URL>",
                               "processAffinity": "adaptive-workspace-provider",
                               "zoomLevel": 0,
                               "enableBeforeUnload": false
                             },
-                            "title": "Reactive Analytics (LOCAL)",
+                            "title": "Reactive Analytics",
                             "isClosable": true,
                             "reorderEnabled": true
                           }
@@ -1208,7 +1208,7 @@
                                         "video"
                                       ]
                                     },
-                                    "url": "http://localhost:1917/fx-tiles",
+                                    "url": "<RT_URL>/fx-tiles",
                                     "componentName": "view",
                                     "interop": {
                                       "currentContextGroup": "green"
@@ -1306,8 +1306,8 @@
                                       "height": false
                                     },
                                     "name": "internal-generated-view-7f380de8-56ae-42b7-a36b-62ec19bdde85",
-                                    "uuid": "adaptive-workspace-provider-local",
-                                    "initialUrl": "http://localhost:1917/fx-tiles",
+                                    "uuid": "adaptive-workspace-provider",
+                                    "initialUrl": "<RT_URL>/fx-tiles",
                                     "processAffinity": "adaptive-workspace-provider",
                                     "zoomLevel": 0,
                                     "enableBeforeUnload": false
@@ -1377,7 +1377,7 @@
                                             "video"
                                           ]
                                         },
-                                        "url": "http://localhost:1917/fx-blotter",
+                                        "url": "<RT_URL>/fx-blotter",
                                         "componentName": "view",
                                         "interop": {
                                           "currentContextGroup": "purple"
@@ -1475,8 +1475,8 @@
                                           "height": false
                                         },
                                         "name": "internal-generated-view-97e140ad-c2e2-4d56-8231-06c8139daa3f",
-                                        "uuid": "adaptive-workspace-provider-local",
-                                        "initialUrl": "http://localhost:1917/fx-blotter",
+                                        "uuid": "adaptive-workspace-provider",
+                                        "initialUrl": "<RT_URL>/fx-blotter",
                                         "processAffinity": "adaptive-workspace-provider",
                                         "zoomLevel": 0,
                                         "enableBeforeUnload": false
@@ -1502,7 +1502,7 @@
                       "content": [
                         {
                           "type": "row",
-                          "height": 28.80354505169867,
+                          "height": 35,
                           "isClosable": true,
                           "reorderEnabled": true,
                           "title": "",
@@ -1550,7 +1550,7 @@
                                         "video"
                                       ]
                                     },
-                                    "url": "http://localhost:1917/limit-checker",
+                                    "url": "<RT_URL>/limit-checker",
                                     "componentName": "view",
                                     "interop": {
                                       "currentContextGroup": "green"
@@ -1648,8 +1648,8 @@
                                       "height": false
                                     },
                                     "name": "internal-generated-view-8f6a77c2-a79e-4dca-a923-843f34d99d21",
-                                    "uuid": "adaptive-workspace-provider-local",
-                                    "initialUrl": "http://localhost:1917/limit-checker",
+                                    "uuid": "adaptive-workspace-provider",
+                                    "initialUrl": "<RT_URL>/limit-checker",
                                     "processAffinity": "adaptive-workspace-provider",
                                     "zoomLevel": 0,
                                     "enableBeforeUnload": false
@@ -1664,7 +1664,7 @@
                         },
                         {
                           "type": "row",
-                          "height": 71.19645494830134,
+                          "height": 65,
                           "isClosable": true,
                           "reorderEnabled": true,
                           "title": "",
@@ -1712,7 +1712,7 @@
                                         "video"
                                       ]
                                     },
-                                    "url": "http://localhost:3005/fx/USDJPY",
+                                    "url": "<RA_URL>",
                                     "componentName": "view",
                                     "interop": {
                                       "currentContextGroup": "purple"
@@ -1810,13 +1810,13 @@
                                       "height": false
                                     },
                                     "name": "internal-generated-view-d7384c2e-98a3-43c3-84d8-6017be42c1f6",
-                                    "uuid": "adaptive-workspace-provider-local",
-                                    "initialUrl": "http://localhost:3005",
+                                    "uuid": "adaptive-workspace-provider",
+                                    "initialUrl": "<RA_URL>",
                                     "processAffinity": "adaptive-workspace-provider",
                                     "zoomLevel": 0,
                                     "enableBeforeUnload": false
                                   },
-                                  "title": "Reactive Analytics (LOCAL)",
+                                  "title": "Reactive Analytics",
                                   "isClosable": true,
                                   "reorderEnabled": true
                                 }
@@ -1840,7 +1840,7 @@
             "panels": []
           }
         ],
-        "favicon": "http://localhost:2017/images/icons/adaptive.png",
+        "favicon": "<BASE_URL>/images/icons/adaptive.png",
         "_internalDeferShowOptions": {
           "setAsForeground": true,
           "deferShowEnabled": true,
@@ -1853,130 +1853,8 @@
   ],
   "interopSnapshotDetails": {
     "contextGroupStates": {
-      "green": {
-        "limit-checker-status": {
-          "type": "limit-checker-status",
-          "id": {
-            "isAlive": "true"
-          }
-        },
-        "check-limit": {
-          "type": "check-limit",
-          "id": {
-            "notional": "3001",
-            "rate": "1.36364",
-            "tradedCurrencyPair": "EURUSD",
-            "id": "11"
-          }
-        },
-        "result-0": {
-          "type": "result-0",
-          "id": {
-            "result": "false",
-            "ccy": "EURUSD"
-          }
-        },
-        "fdc3.instrument": {
-          "type": "fdc3.instrument",
-          "id": {
-            "ticker": "GBPJPY"
-          }
-        },
-        "result-1": {
-          "type": "result-1",
-          "id": {
-            "result": "false",
-            "ccy": "EURUSD"
-          }
-        },
-        "result-2": {
-          "type": "result-2",
-          "id": {
-            "result": "false",
-            "ccy": "EURUSD"
-          }
-        },
-        "result-3": {
-          "type": "result-3",
-          "id": {
-            "result": "true",
-            "ccy": "EURUSD"
-          }
-        },
-        "result-7": {
-          "type": "result-7",
-          "id": {
-            "result": "false",
-            "ccy": "EURUSD"
-          }
-        },
-        "result-8": {
-          "type": "result-8",
-          "id": {
-            "result": "true",
-            "ccy": "EURUSD"
-          }
-        },
-        "result-9": {
-          "type": "result-9",
-          "id": {
-            "result": "false",
-            "ccy": "EURUSD"
-          }
-        },
-        "result-10": {
-          "type": "result-10",
-          "id": {
-            "result": "true",
-            "ccy": "EURUSD"
-          }
-        },
-        "result-11": {
-          "type": "result-11",
-          "id": {
-            "result": "false",
-            "ccy": "EURUSD"
-          }
-        }
-      },
-      "purple": {
-        "fdc3.instrument": {
-          "type": "fdc3.instrument",
-          "id": {
-            "ticker": "USDJPY"
-          }
-        },
-        "check-limit": {
-          "type": "check-limit",
-          "id": {
-            "notional": "2000001",
-            "rate": "1.36366",
-            "tradedCurrencyPair": "EURUSD",
-            "id": "6"
-          }
-        },
-        "result-4": {
-          "type": "result-4",
-          "id": {
-            "result": "true",
-            "ccy": "EURUSD"
-          }
-        },
-        "result-5": {
-          "type": "result-5",
-          "id": {
-            "result": "true",
-            "ccy": "EURUSD"
-          }
-        },
-        "result-6": {
-          "type": "result-6",
-          "id": {
-            "result": "false",
-            "ccy": "EURUSD"
-          }
-        }
-      },
+      "green": {},
+      "purple": {},
       "orange": {},
       "red": {},
       "pink": {},
