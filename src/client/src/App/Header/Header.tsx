@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react"
 
 import Logo from "@/components/Logo"
+import { WEBSITE } from "@/constants"
 
 import {
   AppHeaderRoot,
@@ -27,14 +28,10 @@ export const defaultLogo = (
       size={1.75}
       role="button"
       onClick={() => {
-        window.ga(
-          "send",
-          "event",
-          "RT - Outbound",
-          "click",
-          "https://weareadaptive.com",
-        )
-        window.open("https://weareadaptive.com/")
+        window.gtag("event", "outbound_click", {
+          destination: WEBSITE,
+        })
+        window.open(WEBSITE)
       }}
       data-qa="header__root-logo"
     />

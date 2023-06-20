@@ -1,3 +1,3 @@
 import { styleSheetSerializer } from "jest-styled-components/serializer"
-window.ga = Function.prototype
+window.gtag = Function.prototype
 expect.addSnapshotSerializer(styleSheetSerializer)

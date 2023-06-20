@@ -1,7 +1,6 @@
-import { ContactUsContentResolver, Link } from "./styled"
+import { EMAIL, WEBSITE } from "@/constants"
 
-const WEBSITE = "https://weareadaptive.com"
-const EMAIL = "sales@weareadaptive.com"
+import { ContactUsContentResolver, Link } from "./styled"
 
 export const ContactUs = () => (
   <ContactUsContentResolver>
@@ -25,7 +24,9 @@ export const ContactUs = () => (
 
     <Link
       onClick={() => {
-        window.ga("send", "event", "RT - Outbound", "click", WEBSITE)
+        window.gtag("event", "outbound_click", {
+          destination: WEBSITE,
+        })
         window.open(WEBSITE)
       }}
     >

@@ -1,42 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no"
-    />
-    <meta id="themeColor" name="theme-color" content="#2e3543" />
-    <meta
-      name="description"
-      content="Reactive Trader® - Cloud edition. Example reactive currency pair trading app"
-    />
-    <link rel="apple-touch-icon" href="/touch-icon-iphone.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-    />
-    <title>Reactive Trader®</title>
-    <%- injectScript %>
-  </head>
 
-  <body>
-    <div id="root"></div>
-    <noscript> You need to enable JavaScript to run this app. </noscript>
-    <!-- Google Analytics -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
+  <meta id="themeColor" name="theme-color" content="#2e3543" />
+  <meta name="description" content="Reactive Trader® - Cloud edition. Example reactive currency pair trading app" />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/touch-icon-iphone.png" />
+  <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
+
+  <title>Reactive Trader®</title>
+
+  <%- injectScript %>
+    <!-- Google Analytics tag - (gtag.js) -->
     <script>
-      window.ga =
-        window.ga ||
-        function () {
-          ;(ga.q = ga.q || []).push(arguments)
-        }
-      ga.l = +new Date()
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
     </script>
-    <script async src="https://www.google-analytics.com/analytics.js"></script>
     <!-- End Google Analytics -->
-    <script type="module" src="/src/index.tsx"></script>
-  </body>
+</head>
+
+<body>
+  <div id="root"></div>
+  <noscript> You need to enable JavaScript to run this app. </noscript>
+  <script type="module" src="/src/index.tsx"></script>
+</body>
+
 </html>

@@ -1,16 +1,13 @@
+import { SOCIAL_ADDRESSES, SocialPlatform } from "@/constants"
+
 import { ContactUsContentResolver, Link } from "./styled"
 
-type Social = "Twitter" | "LinkedIn" | "Github"
-const config: Record<Social, string> = {
-  Twitter: "https://twitter.com/WeAreAdaptive",
-  LinkedIn: "https://www.linkedin.com/company/adaptive-consulting-ltd/",
-  Github: "https://github.com/adaptiveConsulting/",
-}
-
 export const FollowUs = () => {
-  const onClick = (social: Social) => () => {
-    window.ga("send", "event", "RT - Social", "click", `${social} (url)`)
-    window.open(config[social])
+  const onClick = (social: SocialPlatform) => () => {
+    window.gtag("event", "outbound_click", {
+      destination: SOCIAL_ADDRESSES[social],
+    })
+    window.open(SOCIAL_ADDRESSES[social])
   }
 
   return (
