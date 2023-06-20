@@ -1,110 +1,183 @@
 {
   "snapshotDetails": {
-    "timestamp": "2022-01-10T11:26:57.741Z",
-    "runtimeVersion": "23.96.67.7",
+    "timestamp": "2023-06-20T12:17:19.360Z",
+    "runtimeVersion": "29.108.73.14",
     "monitorInfo": {
-      "deviceScaleFactor": 1.25,
+      "deviceScaleFactor": 1,
       "dpi": {
-        "x": 120,
-        "y": 120
+        "x": 96,
+        "y": 96
       },
-      "nonPrimaryMonitors": [],
+      "nonPrimaryMonitors": [
+        {
+          "available": {
+            "dipRect": {
+              "top": -1415,
+              "bottom": 0,
+              "left": -578,
+              "right": 1982
+            },
+            "scaledRect": {
+              "top": -1415,
+              "bottom": 0,
+              "left": -578,
+              "right": 1982
+            }
+          },
+          "availableRect": {
+            "top": -1415,
+            "bottom": 0,
+            "left": -578,
+            "right": 1982
+          },
+          "deviceId": 2,
+          "deviceScaleFactor": 1,
+          "displayDeviceActive": true,
+          "dpi": {
+            "x": 96,
+            "y": 96
+          },
+          "monitor": {
+            "dipRect": {
+              "top": -1440,
+              "bottom": 0,
+              "left": -578,
+              "right": 1982
+            },
+            "scaledRect": {
+              "top": -1440,
+              "bottom": 0,
+              "left": -578,
+              "right": 1982
+            }
+          },
+          "monitorRect": {
+            "top": -1440,
+            "bottom": 0,
+            "left": -578,
+            "right": 1982
+          },
+          "name": 2
+        }
+      ],
       "primaryMonitor": {
         "available": {
           "dipRect": {
-            "top": 0,
-            "bottom": 824,
+            "top": 38,
+            "bottom": 982,
             "left": 0,
-            "right": 1536
+            "right": 1512
           },
           "scaledRect": {
-            "top": 0,
-            "bottom": 1030,
+            "top": 38,
+            "bottom": 982,
             "left": 0,
-            "right": 1920
+            "right": 1512
           }
         },
         "availableRect": {
-          "top": 0,
-          "bottom": 824,
+          "top": 38,
+          "bottom": 982,
           "left": 0,
-          "right": 1536
+          "right": 1512
         },
-        "deviceId": "\\\\?\\DISPLAY#LEN4183#4&869197d&0&UID265988#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}",
-        "deviceScaleFactor": 1.25,
+        "deviceId": 1,
+        "deviceScaleFactor": 2,
         "displayDeviceActive": true,
         "dpi": {
-          "x": 120,
-          "y": 120
+          "x": 192,
+          "y": 192
         },
         "monitor": {
           "dipRect": {
             "top": 0,
-            "bottom": 864,
+            "bottom": 982,
             "left": 0,
-            "right": 1536
+            "right": 1512
           },
           "scaledRect": {
             "top": 0,
-            "bottom": 1080,
+            "bottom": 982,
             "left": 0,
-            "right": 1920
+            "right": 1512
           }
         },
         "monitorRect": {
           "top": 0,
-          "bottom": 864,
+          "bottom": 982,
           "left": 0,
-          "right": 1536
+          "right": 1512
         },
-        "name": "\\\\.\\DISPLAY1"
+        "name": 1
       },
       "reason": "api-query",
       "taskbar": {
         "dipRect": {
-          "top": 824,
-          "bottom": 864,
+          "top": 0,
+          "bottom": 0,
           "left": 0,
-          "right": 1536
+          "right": 0
         },
-        "edge": "bottom",
+        "edge": "left",
         "rect": {
-          "top": 824,
-          "bottom": 864,
+          "top": 0,
+          "bottom": 0,
           "left": 0,
-          "right": 1536
+          "right": 0
         },
         "scaledRect": {
-          "top": 1030,
-          "bottom": 1080,
+          "top": 0,
+          "bottom": 0,
           "left": 0,
-          "right": 1920
+          "right": 0
         }
       },
       "virtualScreen": {
-        "top": 0,
-        "bottom": 864,
-        "left": 0,
-        "right": 1536,
+        "top": -1440,
+        "bottom": 982,
+        "left": -578,
+        "right": 1982,
         "dipRect": {
-          "top": 0,
-          "bottom": 864,
-          "left": 0,
-          "right": 1536
+          "top": -1440,
+          "bottom": 982,
+          "left": -578,
+          "right": 1982
         },
         "scaledRect": {
-          "top": 0,
-          "bottom": 1080,
-          "left": 0,
-          "right": 1920
+          "top": -1440,
+          "bottom": 982,
+          "left": -578,
+          "right": 1982
         }
       }
     },
-    "machineId": "57af7c4f-455d-434c-adaa-a19584c18a62",
-    "machineName": null
+    "machineId": "95061B9A-4458-5763-AED7-89544EE87F9A",
+    "machineName": "unknown"
   },
   "windows": [
     {
+      "alwaysOnTop": false,
+      "frame": false,
+      "icon": "",
+      "maxHeight": -1,
+      "maxWidth": -1,
+      "maximizable": true,
+      "minHeight": 200,
+      "minWidth": 200,
+      "minimizable": true,
+      "opacity": 1,
+      "resizeRegion": {
+        "bottomRightCorner": 20,
+        "size": 7,
+        "sides": {
+          "top": true,
+          "right": true,
+          "bottom": true,
+          "left": true
+        }
+      },
+      "transparent": false,
+      "uuid": "adaptive-workspace-provider-local",
       "accelerator": {
         "devtools": false,
         "zoom": false,
@@ -117,7 +190,6 @@
         "red": -1
       },
       "alwaysOnBottom": false,
-      "alwaysOnTop": false,
       "api": {
         "iframe": {
           "crossOriginInjection": false,
@@ -127,7 +199,7 @@
       },
       "applicationIcon": "",
       "aspectRatio": 0,
-      "autoShow": true,
+      "autoShow": false,
       "backgroundThrottling": true,
       "contentCreation": {
         "rules": []
@@ -146,14 +218,14 @@
         "reload": false
       },
       "cornerRounding": {
-        "height": 8,
-        "width": 8
+        "height": 0,
+        "width": 0
       },
-      "enableJumpList": false,
-      "defaultHeight": 801,
-      "defaultLeft": 10,
-      "defaultTop": 10,
-      "defaultWidth": 801,
+      "closeOnLastViewRemoved": false,
+      "defaultHeight": 1393,
+      "defaultLeft": -446,
+      "defaultTop": -1393,
+      "defaultWidth": 1952,
       "draggable": false,
       "experimental": {
         "api": {
@@ -175,48 +247,124 @@
         "showFavicons": true,
         "defaultFaviconUrl": "https://cdn.openfin.co/workspace/5.0.0/icons/defaultFavicon.svg"
       },
-      "frame": false,
-      "icon": "",
-      "maxHeight": -1,
-      "maxWidth": -1,
-      "maximizable": true,
-      "minHeight": 200,
-      "minWidth": 200,
-      "minimizable": true,
-      "opacity": 1,
+      "includeInSnapshots": true,
       "resizable": true,
       "resize": true,
-      "resizeRegion": {
-        "bottomRightCorner": 20,
-        "size": 7,
-        "sides": {
-          "top": true,
-          "right": true,
-          "bottom": true,
-          "left": true
-        }
-      },
       "saveWindowState": false,
       "shadow": false,
       "showTaskbarIcon": true,
       "showBackgroundImages": false,
       "smallWindow": false,
       "spellCheck": false,
-      "state": "maximized",
+      "state": "normal",
       "taskbarIcon": "",
       "taskbarIconGroup": "adaptive-workspace-provider",
-      "transparent": false,
-      "url": "https://cdn.openfin.co/workspace/5.0.0/browser/",
-      "uuid": "adaptive-workspace-provider",
+      "url": "https://cdn.openfin.co/workspace/11.0.6/browser/",
       "waitForPageLoad": true,
       "backgroundColor": "#FFF",
       "fdc3InteropApi": "",
-      "title": "https://cdn.openfin.co/workspace/5.0.0/browser/",
-      "height": 801,
-      "width": 801,
+      "enableBeforeUnload": false,
+      "hotkeys": [
+        {
+          "command": "stack.nextTab",
+          "keys": "Ctrl+Tab"
+        },
+        {
+          "command": "stack.previousTab",
+          "keys": "Ctrl+Shift+Tab"
+        },
+        {
+          "command": "view.zoomIn",
+          "keys": "Ctrl+="
+        },
+        {
+          "command": "view.zoomInNumPad",
+          "keys": "Ctrl+numadd"
+        },
+        {
+          "command": "view.zoomOut",
+          "keys": "Ctrl+-"
+        },
+        {
+          "command": "view.zoomOutNumPad",
+          "keys": "Ctrl+numsub"
+        },
+        {
+          "command": "view.zoomReset",
+          "keys": "Ctrl+0"
+        },
+        {
+          "command": "view.detach",
+          "keys": "Ctrl+Shift+D"
+        },
+        {
+          "command": "view.focusLeft",
+          "keys": "Ctrl+Shift+Left"
+        },
+        {
+          "command": "view.focusRight",
+          "keys": "Ctrl+Shift+Right"
+        },
+        {
+          "command": "view.focusUp",
+          "keys": "Ctrl+Shift+Up"
+        },
+        {
+          "command": "view.focusDown",
+          "keys": "Ctrl+Shift+Down"
+        },
+        {
+          "command": "stack.nth-tab-1",
+          "keys": "Ctrl+1"
+        },
+        {
+          "command": "stack.nth-tab-2",
+          "keys": "Ctrl+2"
+        },
+        {
+          "command": "stack.nth-tab-3",
+          "keys": "Ctrl+3"
+        },
+        {
+          "command": "stack.nth-tab-4",
+          "keys": "Ctrl+4"
+        },
+        {
+          "command": "stack.nth-tab-5",
+          "keys": "Ctrl+5"
+        },
+        {
+          "command": "stack.nth-tab-6",
+          "keys": "Ctrl+6"
+        },
+        {
+          "command": "stack.nth-tab-7",
+          "keys": "Ctrl+7"
+        },
+        {
+          "command": "stack.nth-tab-8",
+          "keys": "Ctrl+8"
+        },
+        {
+          "command": "stack.nth-tab-9",
+          "keys": "Ctrl+9"
+        }
+      ],
+      "viewVisibility": {
+        "showViewsOnSplitterDrag": {
+          "enabled": true
+        },
+        "showViewsOnWindowResize": {
+          "enabled": true
+        }
+      },
+      "autoplayPolicy": "no-user-gesture-required",
+      "title": "https://cdn.openfin.co/workspace/11.0.6/browser/",
+      "height": 1393,
+      "width": 1952,
       "center": false,
-      "x": 10,
-      "y": 10,
+      "x": -446,
+      "y": -1393,
       "permissions": {
         "ExternalWindow": {
           "wrap": true
@@ -233,7 +381,6 @@
         },
         "webAPIs": ["notifications", "audio", "video"]
       },
-      "preloadScripts": [],
       "layout": {
         "settings": {
           "hasHeaders": true,
@@ -280,14 +427,14 @@
             "content": [
               {
                 "type": "column",
-                "width": 55,
+                "width": 60,
                 "isClosable": true,
                 "reorderEnabled": true,
                 "title": "",
                 "content": [
                   {
                     "type": "row",
-                    "height": 55,
+                    "height": 50,
                     "isClosable": true,
                     "reorderEnabled": true,
                     "title": "",
@@ -315,6 +462,10 @@
                               "detachOnClose": false,
                               "isClosable": true,
                               "preventDragOut": false,
+                              "accelerator": {
+                                "zoom": true
+                              },
+                              "fdc3InteropApi": "1.2",
                               "permissions": {
                                 "ExternalWindow": {
                                   "wrap": true
@@ -327,333 +478,7 @@
                                 },
                                 "webAPIs": ["notifications", "audio", "video"]
                               },
-                              "url": "<RT_URL>/fx-tiles",
-                              "componentName": "view",
-                              "interop": {},
-                              "preloadScripts": [],
-                              "hotkeys": [
-                                {
-                                  "command": "stack.nextTab",
-                                  "keys": "Ctrl+Tab"
-                                },
-                                {
-                                  "command": "stack.previousTab",
-                                  "keys": "Ctrl+Shift+Tab"
-                                },
-                                {
-                                  "command": "view.zoomIn",
-                                  "keys": "Ctrl+="
-                                },
-                                {
-                                  "command": "view.zoomInNumPad",
-                                  "keys": "Ctrl+numadd"
-                                },
-                                {
-                                  "command": "view.zoomOut",
-                                  "keys": "Ctrl+-"
-                                },
-                                {
-                                  "command": "view.zoomOutNumPad",
-                                  "keys": "Ctrl+numsub"
-                                },
-                                {
-                                  "command": "view.zoomReset",
-                                  "keys": "Ctrl+0"
-                                },
-                                {
-                                  "command": "view.detach",
-                                  "keys": "Ctrl+Shift+D"
-                                },
-                                {
-                                  "command": "view.focusLeft",
-                                  "keys": "Ctrl+Shift+Left"
-                                },
-                                {
-                                  "command": "view.focusRight",
-                                  "keys": "Ctrl+Shift+Right"
-                                },
-                                {
-                                  "command": "view.focusUp",
-                                  "keys": "Ctrl+Shift+Up"
-                                },
-                                {
-                                  "command": "view.focusDown",
-                                  "keys": "Ctrl+Shift+Down"
-                                },
-                                {
-                                  "command": "stack.nth-tab-1",
-                                  "keys": "Ctrl+1"
-                                },
-                                {
-                                  "command": "stack.nth-tab-2",
-                                  "keys": "Ctrl+2"
-                                },
-                                {
-                                  "command": "stack.nth-tab-3",
-                                  "keys": "Ctrl+3"
-                                },
-                                {
-                                  "command": "stack.nth-tab-4",
-                                  "keys": "Ctrl+4"
-                                },
-                                {
-                                  "command": "stack.nth-tab-5",
-                                  "keys": "Ctrl+5"
-                                },
-                                {
-                                  "command": "stack.nth-tab-6",
-                                  "keys": "Ctrl+6"
-                                },
-                                {
-                                  "command": "stack.nth-tab-7",
-                                  "keys": "Ctrl+7"
-                                },
-                                {
-                                  "command": "stack.nth-tab-8",
-                                  "keys": "Ctrl+8"
-                                },
-                                {
-                                  "command": "stack.nth-tab-9",
-                                  "keys": "Ctrl+9"
-                                }
-                              ],
-                              "backgroundThrottling": true,
-                              "autoResize": {
-                                "width": false,
-                                "height": false
-                              },
-                              "name": "internal-generated-view-878aa0f6-edcc-421f-bf9e-2ac3b7fa20cf",
-                              "uuid": "adaptive-workspace-provider",
-                              "initialUrl": "<RT_URL>/fx-tiles",
-                              "processAffinity": "adaptive-workspace-provider",
-                              "zoomLevel": 0
-                            },
-                            "title": "FX Live Rates",
-                            "isClosable": true,
-                            "reorderEnabled": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "row",
-                    "height": 45,
-                    "isClosable": true,
-                    "reorderEnabled": true,
-                    "title": "",
-                    "content": [
-                      {
-                        "type": "column",
-                        "width": 100,
-                        "isClosable": true,
-                        "reorderEnabled": true,
-                        "title": "",
-                        "content": [
-                          {
-                            "type": "stack",
-                            "width": 100,
-                            "height": 100,
-                            "isClosable": true,
-                            "reorderEnabled": true,
-                            "title": "",
-                            "activeItemIndex": 0,
-                            "content": [
-                              {
-                                "type": "component",
-                                "componentName": "view",
-                                "componentState": {
-                                  "bounds": {
-                                    "x": 1,
-                                    "y": 1,
-                                    "width": 0,
-                                    "height": 0
-                                  },
-                                  "contextMenu": true,
-                                  "detachOnClose": false,
-                                  "isClosable": true,
-                                  "preventDragOut": false,
-                                  "permissions": {
-                                    "ExternalWindow": {
-                                      "wrap": true
-                                    },
-                                    "System": {
-                                      "getAllExternalWindows": true,
-                                      "launchExternalProcess": true,
-                                      "readRegistryValue": false,
-                                      "terminateExternalProcess": true
-                                    },
-                                    "webAPIs": [
-                                      "notifications",
-                                      "audio",
-                                      "video"
-                                    ]
-                                  },
-                                  "url": "<RT_URL>/fx-blotter",
-                                  "componentName": "view",
-                                  "interop": {
-                                    "currentContextGroup": "green"
-                                  },
-                                  "preloadScripts": [],
-                                  "hotkeys": [
-                                    {
-                                      "command": "stack.nextTab",
-                                      "keys": "Ctrl+Tab"
-                                    },
-                                    {
-                                      "command": "stack.previousTab",
-                                      "keys": "Ctrl+Shift+Tab"
-                                    },
-                                    {
-                                      "command": "view.zoomIn",
-                                      "keys": "Ctrl+="
-                                    },
-                                    {
-                                      "command": "view.zoomInNumPad",
-                                      "keys": "Ctrl+numadd"
-                                    },
-                                    {
-                                      "command": "view.zoomOut",
-                                      "keys": "Ctrl+-"
-                                    },
-                                    {
-                                      "command": "view.zoomOutNumPad",
-                                      "keys": "Ctrl+numsub"
-                                    },
-                                    {
-                                      "command": "view.zoomReset",
-                                      "keys": "Ctrl+0"
-                                    },
-                                    {
-                                      "command": "view.detach",
-                                      "keys": "Ctrl+Shift+D"
-                                    },
-                                    {
-                                      "command": "view.focusLeft",
-                                      "keys": "Ctrl+Shift+Left"
-                                    },
-                                    {
-                                      "command": "view.focusRight",
-                                      "keys": "Ctrl+Shift+Right"
-                                    },
-                                    {
-                                      "command": "view.focusUp",
-                                      "keys": "Ctrl+Shift+Up"
-                                    },
-                                    {
-                                      "command": "view.focusDown",
-                                      "keys": "Ctrl+Shift+Down"
-                                    },
-                                    {
-                                      "command": "stack.nth-tab-1",
-                                      "keys": "Ctrl+1"
-                                    },
-                                    {
-                                      "command": "stack.nth-tab-2",
-                                      "keys": "Ctrl+2"
-                                    },
-                                    {
-                                      "command": "stack.nth-tab-3",
-                                      "keys": "Ctrl+3"
-                                    },
-                                    {
-                                      "command": "stack.nth-tab-4",
-                                      "keys": "Ctrl+4"
-                                    },
-                                    {
-                                      "command": "stack.nth-tab-5",
-                                      "keys": "Ctrl+5"
-                                    },
-                                    {
-                                      "command": "stack.nth-tab-6",
-                                      "keys": "Ctrl+6"
-                                    },
-                                    {
-                                      "command": "stack.nth-tab-7",
-                                      "keys": "Ctrl+7"
-                                    },
-                                    {
-                                      "command": "stack.nth-tab-8",
-                                      "keys": "Ctrl+8"
-                                    },
-                                    {
-                                      "command": "stack.nth-tab-9",
-                                      "keys": "Ctrl+9"
-                                    }
-                                  ],
-                                  "backgroundThrottling": true,
-                                  "autoResize": {
-                                    "width": false,
-                                    "height": false
-                                  },
-                                  "name": "internal-generated-view-e61f0941-fb7e-477d-abba-141fd2e9ca93",
-                                  "uuid": "adaptive-workspace-provider",
-                                  "initialUrl": "<RT_URL>/fx-blotter",
-                                  "processAffinity": "adaptive-workspace-provider",
-                                  "zoomLevel": 0
-                                },
-                                "title": "FX Trades",
-                                "isClosable": true,
-                                "reorderEnabled": true
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "type": "column",
-                "width": 45,
-                "isClosable": true,
-                "reorderEnabled": true,
-                "title": "",
-                "content": [
-                  {
-                    "type": "row",
-                    "height": 100,
-                    "isClosable": true,
-                    "reorderEnabled": true,
-                    "title": "",
-                    "content": [
-                      {
-                        "type": "stack",
-                        "width": 100,
-                        "height": 100,
-                        "isClosable": true,
-                        "reorderEnabled": true,
-                        "title": "",
-                        "activeItemIndex": 0,
-                        "content": [
-                          {
-                            "type": "component",
-                            "componentName": "view",
-                            "componentState": {
-                              "bounds": {
-                                "x": 1,
-                                "y": 1,
-                                "width": 0,
-                                "height": 0
-                              },
-                              "contextMenu": true,
-                              "detachOnClose": false,
-                              "isClosable": true,
-                              "preventDragOut": false,
-                              "permissions": {
-                                "ExternalWindow": {
-                                  "wrap": true
-                                },
-                                "System": {
-                                  "getAllExternalWindows": true,
-                                  "launchExternalProcess": true,
-                                  "readRegistryValue": false,
-                                  "terminateExternalProcess": true
-                                },
-                                "webAPIs": ["notifications", "audio", "video"]
-                              },
-                              "url": "<RA_URL>",
+                              "url": "http://localhost:1917/fx-tiles",
                               "componentName": "view",
                               "interop": {
                                 "currentContextGroup": "green"
@@ -750,13 +575,510 @@
                                 "width": false,
                                 "height": false
                               },
-                              "name": "internal-generated-view-4b33837c-1592-4258-8839-a984c4ea2a0e",
-                              "uuid": "adaptive-workspace-provider",
-                              "initialUrl": "<RA_URL>",
+                              "name": "internal-generated-view-7f380de8-56ae-42b7-a36b-62ec19bdde85",
+                              "uuid": "adaptive-workspace-provider-local",
+                              "initialUrl": "http://localhost:1917/fx-tiles",
                               "processAffinity": "adaptive-workspace-provider",
-                              "zoomLevel": 0
+                              "zoomLevel": 0,
+                              "enableBeforeUnload": false
                             },
-                            "title": "Reactive Analytics",
+                            "title": "Live Rates",
+                            "isClosable": true,
+                            "reorderEnabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "row",
+                    "height": 50,
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "",
+                    "content": [
+                      {
+                        "type": "column",
+                        "width": 100,
+                        "isClosable": true,
+                        "reorderEnabled": true,
+                        "title": "",
+                        "content": [
+                          {
+                            "type": "stack",
+                            "width": 100,
+                            "height": 100,
+                            "isClosable": true,
+                            "reorderEnabled": true,
+                            "title": "",
+                            "activeItemIndex": 0,
+                            "content": [
+                              {
+                                "type": "component",
+                                "componentName": "view",
+                                "componentState": {
+                                  "bounds": {
+                                    "x": 1,
+                                    "y": 1,
+                                    "width": 0,
+                                    "height": 0
+                                  },
+                                  "contextMenu": true,
+                                  "detachOnClose": false,
+                                  "isClosable": true,
+                                  "preventDragOut": false,
+                                  "accelerator": {
+                                    "zoom": true
+                                  },
+                                  "fdc3InteropApi": "1.2",
+                                  "permissions": {
+                                    "ExternalWindow": {
+                                      "wrap": true
+                                    },
+                                    "System": {
+                                      "getAllExternalWindows": true,
+                                      "launchExternalProcess": true,
+                                      "readRegistryValue": false,
+                                      "terminateExternalProcess": true
+                                    },
+                                    "webAPIs": [
+                                      "notifications",
+                                      "audio",
+                                      "video"
+                                    ]
+                                  },
+                                  "url": "http://localhost:1917/fx-blotter",
+                                  "componentName": "view",
+                                  "interop": {
+                                    "currentContextGroup": "purple"
+                                  },
+                                  "preloadScripts": [],
+                                  "hotkeys": [
+                                    {
+                                      "command": "stack.nextTab",
+                                      "keys": "Ctrl+Tab"
+                                    },
+                                    {
+                                      "command": "stack.previousTab",
+                                      "keys": "Ctrl+Shift+Tab"
+                                    },
+                                    {
+                                      "command": "view.zoomIn",
+                                      "keys": "Ctrl+="
+                                    },
+                                    {
+                                      "command": "view.zoomInNumPad",
+                                      "keys": "Ctrl+numadd"
+                                    },
+                                    {
+                                      "command": "view.zoomOut",
+                                      "keys": "Ctrl+-"
+                                    },
+                                    {
+                                      "command": "view.zoomOutNumPad",
+                                      "keys": "Ctrl+numsub"
+                                    },
+                                    {
+                                      "command": "view.zoomReset",
+                                      "keys": "Ctrl+0"
+                                    },
+                                    {
+                                      "command": "view.detach",
+                                      "keys": "Ctrl+Shift+D"
+                                    },
+                                    {
+                                      "command": "view.focusLeft",
+                                      "keys": "Ctrl+Shift+Left"
+                                    },
+                                    {
+                                      "command": "view.focusRight",
+                                      "keys": "Ctrl+Shift+Right"
+                                    },
+                                    {
+                                      "command": "view.focusUp",
+                                      "keys": "Ctrl+Shift+Up"
+                                    },
+                                    {
+                                      "command": "view.focusDown",
+                                      "keys": "Ctrl+Shift+Down"
+                                    },
+                                    {
+                                      "command": "stack.nth-tab-1",
+                                      "keys": "Ctrl+1"
+                                    },
+                                    {
+                                      "command": "stack.nth-tab-2",
+                                      "keys": "Ctrl+2"
+                                    },
+                                    {
+                                      "command": "stack.nth-tab-3",
+                                      "keys": "Ctrl+3"
+                                    },
+                                    {
+                                      "command": "stack.nth-tab-4",
+                                      "keys": "Ctrl+4"
+                                    },
+                                    {
+                                      "command": "stack.nth-tab-5",
+                                      "keys": "Ctrl+5"
+                                    },
+                                    {
+                                      "command": "stack.nth-tab-6",
+                                      "keys": "Ctrl+6"
+                                    },
+                                    {
+                                      "command": "stack.nth-tab-7",
+                                      "keys": "Ctrl+7"
+                                    },
+                                    {
+                                      "command": "stack.nth-tab-8",
+                                      "keys": "Ctrl+8"
+                                    },
+                                    {
+                                      "command": "stack.nth-tab-9",
+                                      "keys": "Ctrl+9"
+                                    }
+                                  ],
+                                  "backgroundThrottling": true,
+                                  "autoResize": {
+                                    "width": false,
+                                    "height": false
+                                  },
+                                  "name": "internal-generated-view-97e140ad-c2e2-4d56-8231-06c8139daa3f",
+                                  "uuid": "adaptive-workspace-provider-local",
+                                  "initialUrl": "http://localhost:1917/fx-blotter",
+                                  "processAffinity": "adaptive-workspace-provider",
+                                  "zoomLevel": 0,
+                                  "enableBeforeUnload": false
+                                },
+                                "title": "Trades",
+                                "isClosable": true,
+                                "reorderEnabled": true
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "column",
+                "width": 40,
+                "isClosable": true,
+                "reorderEnabled": true,
+                "title": "",
+                "content": [
+                  {
+                    "type": "row",
+                    "height": 35,
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "",
+                    "content": [
+                      {
+                        "type": "stack",
+                        "width": 100,
+                        "height": 100,
+                        "isClosable": true,
+                        "reorderEnabled": true,
+                        "title": "",
+                        "activeItemIndex": 0,
+                        "content": [
+                          {
+                            "type": "component",
+                            "componentName": "view",
+                            "componentState": {
+                              "bounds": {
+                                "x": 1,
+                                "y": 1,
+                                "width": 0,
+                                "height": 0
+                              },
+                              "contextMenu": true,
+                              "detachOnClose": false,
+                              "isClosable": true,
+                              "preventDragOut": false,
+                              "accelerator": {
+                                "zoom": true
+                              },
+                              "fdc3InteropApi": "1.2",
+                              "permissions": {
+                                "ExternalWindow": {
+                                  "wrap": true
+                                },
+                                "System": {
+                                  "getAllExternalWindows": true,
+                                  "launchExternalProcess": true,
+                                  "readRegistryValue": false,
+                                  "terminateExternalProcess": true
+                                },
+                                "webAPIs": ["notifications", "audio", "video"]
+                              },
+                              "url": "http://localhost:1917/limit-checker",
+                              "componentName": "view",
+                              "interop": {
+                                "currentContextGroup": "green"
+                              },
+                              "preloadScripts": [],
+                              "hotkeys": [
+                                {
+                                  "command": "stack.nextTab",
+                                  "keys": "Ctrl+Tab"
+                                },
+                                {
+                                  "command": "stack.previousTab",
+                                  "keys": "Ctrl+Shift+Tab"
+                                },
+                                {
+                                  "command": "view.zoomIn",
+                                  "keys": "Ctrl+="
+                                },
+                                {
+                                  "command": "view.zoomInNumPad",
+                                  "keys": "Ctrl+numadd"
+                                },
+                                {
+                                  "command": "view.zoomOut",
+                                  "keys": "Ctrl+-"
+                                },
+                                {
+                                  "command": "view.zoomOutNumPad",
+                                  "keys": "Ctrl+numsub"
+                                },
+                                {
+                                  "command": "view.zoomReset",
+                                  "keys": "Ctrl+0"
+                                },
+                                {
+                                  "command": "view.detach",
+                                  "keys": "Ctrl+Shift+D"
+                                },
+                                {
+                                  "command": "view.focusLeft",
+                                  "keys": "Ctrl+Shift+Left"
+                                },
+                                {
+                                  "command": "view.focusRight",
+                                  "keys": "Ctrl+Shift+Right"
+                                },
+                                {
+                                  "command": "view.focusUp",
+                                  "keys": "Ctrl+Shift+Up"
+                                },
+                                {
+                                  "command": "view.focusDown",
+                                  "keys": "Ctrl+Shift+Down"
+                                },
+                                {
+                                  "command": "stack.nth-tab-1",
+                                  "keys": "Ctrl+1"
+                                },
+                                {
+                                  "command": "stack.nth-tab-2",
+                                  "keys": "Ctrl+2"
+                                },
+                                {
+                                  "command": "stack.nth-tab-3",
+                                  "keys": "Ctrl+3"
+                                },
+                                {
+                                  "command": "stack.nth-tab-4",
+                                  "keys": "Ctrl+4"
+                                },
+                                {
+                                  "command": "stack.nth-tab-5",
+                                  "keys": "Ctrl+5"
+                                },
+                                {
+                                  "command": "stack.nth-tab-6",
+                                  "keys": "Ctrl+6"
+                                },
+                                {
+                                  "command": "stack.nth-tab-7",
+                                  "keys": "Ctrl+7"
+                                },
+                                {
+                                  "command": "stack.nth-tab-8",
+                                  "keys": "Ctrl+8"
+                                },
+                                {
+                                  "command": "stack.nth-tab-9",
+                                  "keys": "Ctrl+9"
+                                }
+                              ],
+                              "backgroundThrottling": true,
+                              "autoResize": {
+                                "width": false,
+                                "height": false
+                              },
+                              "name": "internal-generated-view-8f6a77c2-a79e-4dca-a923-843f34d99d21",
+                              "uuid": "adaptive-workspace-provider-local",
+                              "initialUrl": "http://localhost:1917/limit-checker",
+                              "processAffinity": "adaptive-workspace-provider",
+                              "zoomLevel": 0,
+                              "enableBeforeUnload": false
+                            },
+                            "title": "Limit Checker",
+                            "isClosable": true,
+                            "reorderEnabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "row",
+                    "height": 65,
+                    "isClosable": true,
+                    "reorderEnabled": true,
+                    "title": "",
+                    "content": [
+                      {
+                        "type": "stack",
+                        "width": 100,
+                        "height": 100,
+                        "isClosable": true,
+                        "reorderEnabled": true,
+                        "title": "",
+                        "activeItemIndex": 0,
+                        "content": [
+                          {
+                            "type": "component",
+                            "componentName": "view",
+                            "componentState": {
+                              "bounds": {
+                                "x": 1,
+                                "y": 1,
+                                "width": 0,
+                                "height": 0
+                              },
+                              "contextMenu": true,
+                              "detachOnClose": false,
+                              "isClosable": true,
+                              "preventDragOut": false,
+                              "accelerator": {
+                                "zoom": true
+                              },
+                              "fdc3InteropApi": "1.2",
+                              "permissions": {
+                                "ExternalWindow": {
+                                  "wrap": true
+                                },
+                                "System": {
+                                  "getAllExternalWindows": true,
+                                  "launchExternalProcess": true,
+                                  "readRegistryValue": false,
+                                  "terminateExternalProcess": true
+                                },
+                                "webAPIs": ["notifications", "audio", "video"]
+                              },
+                              "url": "http://localhost:3005/fx/USDJPY",
+                              "componentName": "view",
+                              "interop": {
+                                "currentContextGroup": "purple"
+                              },
+                              "preloadScripts": [],
+                              "hotkeys": [
+                                {
+                                  "command": "stack.nextTab",
+                                  "keys": "Ctrl+Tab"
+                                },
+                                {
+                                  "command": "stack.previousTab",
+                                  "keys": "Ctrl+Shift+Tab"
+                                },
+                                {
+                                  "command": "view.zoomIn",
+                                  "keys": "Ctrl+="
+                                },
+                                {
+                                  "command": "view.zoomInNumPad",
+                                  "keys": "Ctrl+numadd"
+                                },
+                                {
+                                  "command": "view.zoomOut",
+                                  "keys": "Ctrl+-"
+                                },
+                                {
+                                  "command": "view.zoomOutNumPad",
+                                  "keys": "Ctrl+numsub"
+                                },
+                                {
+                                  "command": "view.zoomReset",
+                                  "keys": "Ctrl+0"
+                                },
+                                {
+                                  "command": "view.detach",
+                                  "keys": "Ctrl+Shift+D"
+                                },
+                                {
+                                  "command": "view.focusLeft",
+                                  "keys": "Ctrl+Shift+Left"
+                                },
+                                {
+                                  "command": "view.focusRight",
+                                  "keys": "Ctrl+Shift+Right"
+                                },
+                                {
+                                  "command": "view.focusUp",
+                                  "keys": "Ctrl+Shift+Up"
+                                },
+                                {
+                                  "command": "view.focusDown",
+                                  "keys": "Ctrl+Shift+Down"
+                                },
+                                {
+                                  "command": "stack.nth-tab-1",
+                                  "keys": "Ctrl+1"
+                                },
+                                {
+                                  "command": "stack.nth-tab-2",
+                                  "keys": "Ctrl+2"
+                                },
+                                {
+                                  "command": "stack.nth-tab-3",
+                                  "keys": "Ctrl+3"
+                                },
+                                {
+                                  "command": "stack.nth-tab-4",
+                                  "keys": "Ctrl+4"
+                                },
+                                {
+                                  "command": "stack.nth-tab-5",
+                                  "keys": "Ctrl+5"
+                                },
+                                {
+                                  "command": "stack.nth-tab-6",
+                                  "keys": "Ctrl+6"
+                                },
+                                {
+                                  "command": "stack.nth-tab-7",
+                                  "keys": "Ctrl+7"
+                                },
+                                {
+                                  "command": "stack.nth-tab-8",
+                                  "keys": "Ctrl+8"
+                                },
+                                {
+                                  "command": "stack.nth-tab-9",
+                                  "keys": "Ctrl+9"
+                                }
+                              ],
+                              "backgroundThrottling": true,
+                              "autoResize": {
+                                "width": false,
+                                "height": false
+                              },
+                              "name": "internal-generated-view-d7384c2e-98a3-43c3-84d8-6017be42c1f6",
+                              "uuid": "adaptive-workspace-provider-local",
+                              "initialUrl": "http://localhost:3005",
+                              "processAffinity": "adaptive-workspace-provider",
+                              "zoomLevel": 0,
+                              "enableBeforeUnload": false
+                            },
+                            "title": "Reactive Analytics (LOCAL)",
                             "isClosable": true,
                             "reorderEnabled": true
                           }
@@ -775,92 +1097,10 @@
         "openPopouts": [],
         "maximisedItemId": null
       },
-      "hotkeys": [
-        {
-          "command": "stack.nextTab",
-          "keys": "Ctrl+Tab"
-        },
-        {
-          "command": "stack.previousTab",
-          "keys": "Ctrl+Shift+Tab"
-        },
-        {
-          "command": "view.zoomIn",
-          "keys": "Ctrl+="
-        },
-        {
-          "command": "view.zoomInNumPad",
-          "keys": "Ctrl+numadd"
-        },
-        {
-          "command": "view.zoomOut",
-          "keys": "Ctrl+-"
-        },
-        {
-          "command": "view.zoomOutNumPad",
-          "keys": "Ctrl+numsub"
-        },
-        {
-          "command": "view.zoomReset",
-          "keys": "Ctrl+0"
-        },
-        {
-          "command": "view.detach",
-          "keys": "Ctrl+Shift+D"
-        },
-        {
-          "command": "view.focusLeft",
-          "keys": "Ctrl+Shift+Left"
-        },
-        {
-          "command": "view.focusRight",
-          "keys": "Ctrl+Shift+Right"
-        },
-        {
-          "command": "view.focusUp",
-          "keys": "Ctrl+Shift+Up"
-        },
-        {
-          "command": "view.focusDown",
-          "keys": "Ctrl+Shift+Down"
-        },
-        {
-          "command": "stack.nth-tab-1",
-          "keys": "Ctrl+1"
-        },
-        {
-          "command": "stack.nth-tab-2",
-          "keys": "Ctrl+2"
-        },
-        {
-          "command": "stack.nth-tab-3",
-          "keys": "Ctrl+3"
-        },
-        {
-          "command": "stack.nth-tab-4",
-          "keys": "Ctrl+4"
-        },
-        {
-          "command": "stack.nth-tab-5",
-          "keys": "Ctrl+5"
-        },
-        {
-          "command": "stack.nth-tab-6",
-          "keys": "Ctrl+6"
-        },
-        {
-          "command": "stack.nth-tab-7",
-          "keys": "Ctrl+7"
-        },
-        {
-          "command": "stack.nth-tab-8",
-          "keys": "Ctrl+8"
-        },
-        {
-          "command": "stack.nth-tab-9",
-          "keys": "Ctrl+9"
-        }
-      ],
+      "contextMenu": true,
+      "contextMenuOptions": {
+        "enabled": false
+      },
       "workspacePlatform": {
         "pages": [
           {
@@ -913,14 +1153,14 @@
                   "content": [
                     {
                       "type": "column",
-                      "width": 55,
+                      "width": 60,
                       "isClosable": true,
                       "reorderEnabled": true,
                       "title": "",
                       "content": [
                         {
                           "type": "row",
-                          "height": 55,
+                          "height": 50,
                           "isClosable": true,
                           "reorderEnabled": true,
                           "title": "",
@@ -948,6 +1188,10 @@
                                     "detachOnClose": false,
                                     "isClosable": true,
                                     "preventDragOut": false,
+                                    "accelerator": {
+                                      "zoom": true
+                                    },
+                                    "fdc3InteropApi": "1.2",
                                     "permissions": {
                                       "ExternalWindow": {
                                         "wrap": true
@@ -964,337 +1208,7 @@
                                         "video"
                                       ]
                                     },
-                                    "url": "<RT_URL>/fx-tiles",
-                                    "componentName": "view",
-                                    "interop": {},
-                                    "preloadScripts": [],
-                                    "hotkeys": [
-                                      {
-                                        "command": "stack.nextTab",
-                                        "keys": "Ctrl+Tab"
-                                      },
-                                      {
-                                        "command": "stack.previousTab",
-                                        "keys": "Ctrl+Shift+Tab"
-                                      },
-                                      {
-                                        "command": "view.zoomIn",
-                                        "keys": "Ctrl+="
-                                      },
-                                      {
-                                        "command": "view.zoomInNumPad",
-                                        "keys": "Ctrl+numadd"
-                                      },
-                                      {
-                                        "command": "view.zoomOut",
-                                        "keys": "Ctrl+-"
-                                      },
-                                      {
-                                        "command": "view.zoomOutNumPad",
-                                        "keys": "Ctrl+numsub"
-                                      },
-                                      {
-                                        "command": "view.zoomReset",
-                                        "keys": "Ctrl+0"
-                                      },
-                                      {
-                                        "command": "view.detach",
-                                        "keys": "Ctrl+Shift+D"
-                                      },
-                                      {
-                                        "command": "view.focusLeft",
-                                        "keys": "Ctrl+Shift+Left"
-                                      },
-                                      {
-                                        "command": "view.focusRight",
-                                        "keys": "Ctrl+Shift+Right"
-                                      },
-                                      {
-                                        "command": "view.focusUp",
-                                        "keys": "Ctrl+Shift+Up"
-                                      },
-                                      {
-                                        "command": "view.focusDown",
-                                        "keys": "Ctrl+Shift+Down"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-1",
-                                        "keys": "Ctrl+1"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-2",
-                                        "keys": "Ctrl+2"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-3",
-                                        "keys": "Ctrl+3"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-4",
-                                        "keys": "Ctrl+4"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-5",
-                                        "keys": "Ctrl+5"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-6",
-                                        "keys": "Ctrl+6"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-7",
-                                        "keys": "Ctrl+7"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-8",
-                                        "keys": "Ctrl+8"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-9",
-                                        "keys": "Ctrl+9"
-                                      }
-                                    ],
-                                    "backgroundThrottling": true,
-                                    "autoResize": {
-                                      "width": false,
-                                      "height": false
-                                    },
-                                    "name": "internal-generated-view-878aa0f6-edcc-421f-bf9e-2ac3b7fa20cf",
-                                    "uuid": "adaptive-workspace-provider",
-                                    "initialUrl": "<RT_URL>/fx-tiles",
-                                    "processAffinity": "adaptive-workspace-provider",
-                                    "zoomLevel": 0
-                                  },
-                                  "title": "FX Live Rates",
-                                  "isClosable": true,
-                                  "reorderEnabled": true
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "row",
-                          "height": 45,
-                          "isClosable": true,
-                          "reorderEnabled": true,
-                          "title": "",
-                          "content": [
-                            {
-                              "type": "column",
-                              "width": 100,
-                              "isClosable": true,
-                              "reorderEnabled": true,
-                              "title": "",
-                              "content": [
-                                {
-                                  "type": "stack",
-                                  "width": 100,
-                                  "height": 100,
-                                  "isClosable": true,
-                                  "reorderEnabled": true,
-                                  "title": "",
-                                  "activeItemIndex": 0,
-                                  "content": [
-                                    {
-                                      "type": "component",
-                                      "componentName": "view",
-                                      "componentState": {
-                                        "bounds": {
-                                          "x": 1,
-                                          "y": 1,
-                                          "width": 0,
-                                          "height": 0
-                                        },
-                                        "contextMenu": true,
-                                        "detachOnClose": false,
-                                        "isClosable": true,
-                                        "preventDragOut": false,
-                                        "permissions": {
-                                          "ExternalWindow": {
-                                            "wrap": true
-                                          },
-                                          "System": {
-                                            "getAllExternalWindows": true,
-                                            "launchExternalProcess": true,
-                                            "readRegistryValue": false,
-                                            "terminateExternalProcess": true
-                                          },
-                                          "webAPIs": [
-                                            "notifications",
-                                            "audio",
-                                            "video"
-                                          ]
-                                        },
-                                        "url": "<RT_URL>/fx-blotter",
-                                        "componentName": "view",
-                                        "interop": {
-                                          "currentContextGroup": "green"
-                                        },
-                                        "preloadScripts": [],
-                                        "hotkeys": [
-                                          {
-                                            "command": "stack.nextTab",
-                                            "keys": "Ctrl+Tab"
-                                          },
-                                          {
-                                            "command": "stack.previousTab",
-                                            "keys": "Ctrl+Shift+Tab"
-                                          },
-                                          {
-                                            "command": "view.zoomIn",
-                                            "keys": "Ctrl+="
-                                          },
-                                          {
-                                            "command": "view.zoomInNumPad",
-                                            "keys": "Ctrl+numadd"
-                                          },
-                                          {
-                                            "command": "view.zoomOut",
-                                            "keys": "Ctrl+-"
-                                          },
-                                          {
-                                            "command": "view.zoomOutNumPad",
-                                            "keys": "Ctrl+numsub"
-                                          },
-                                          {
-                                            "command": "view.zoomReset",
-                                            "keys": "Ctrl+0"
-                                          },
-                                          {
-                                            "command": "view.detach",
-                                            "keys": "Ctrl+Shift+D"
-                                          },
-                                          {
-                                            "command": "view.focusLeft",
-                                            "keys": "Ctrl+Shift+Left"
-                                          },
-                                          {
-                                            "command": "view.focusRight",
-                                            "keys": "Ctrl+Shift+Right"
-                                          },
-                                          {
-                                            "command": "view.focusUp",
-                                            "keys": "Ctrl+Shift+Up"
-                                          },
-                                          {
-                                            "command": "view.focusDown",
-                                            "keys": "Ctrl+Shift+Down"
-                                          },
-                                          {
-                                            "command": "stack.nth-tab-1",
-                                            "keys": "Ctrl+1"
-                                          },
-                                          {
-                                            "command": "stack.nth-tab-2",
-                                            "keys": "Ctrl+2"
-                                          },
-                                          {
-                                            "command": "stack.nth-tab-3",
-                                            "keys": "Ctrl+3"
-                                          },
-                                          {
-                                            "command": "stack.nth-tab-4",
-                                            "keys": "Ctrl+4"
-                                          },
-                                          {
-                                            "command": "stack.nth-tab-5",
-                                            "keys": "Ctrl+5"
-                                          },
-                                          {
-                                            "command": "stack.nth-tab-6",
-                                            "keys": "Ctrl+6"
-                                          },
-                                          {
-                                            "command": "stack.nth-tab-7",
-                                            "keys": "Ctrl+7"
-                                          },
-                                          {
-                                            "command": "stack.nth-tab-8",
-                                            "keys": "Ctrl+8"
-                                          },
-                                          {
-                                            "command": "stack.nth-tab-9",
-                                            "keys": "Ctrl+9"
-                                          }
-                                        ],
-                                        "backgroundThrottling": true,
-                                        "autoResize": {
-                                          "width": false,
-                                          "height": false
-                                        },
-                                        "name": "internal-generated-view-e61f0941-fb7e-477d-abba-141fd2e9ca93",
-                                        "uuid": "adaptive-workspace-provider",
-                                        "initialUrl": "<RT_URL>/fx-blotter",
-                                        "processAffinity": "adaptive-workspace-provider",
-                                        "zoomLevel": 0
-                                      },
-                                      "title": "FX Trades",
-                                      "isClosable": true,
-                                      "reorderEnabled": true
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "column",
-                      "width": 45,
-                      "isClosable": true,
-                      "reorderEnabled": true,
-                      "title": "",
-                      "content": [
-                        {
-                          "type": "row",
-                          "height": 100,
-                          "isClosable": true,
-                          "reorderEnabled": true,
-                          "title": "",
-                          "content": [
-                            {
-                              "type": "stack",
-                              "width": 100,
-                              "height": 100,
-                              "isClosable": true,
-                              "reorderEnabled": true,
-                              "title": "",
-                              "activeItemIndex": 0,
-                              "content": [
-                                {
-                                  "type": "component",
-                                  "componentName": "view",
-                                  "componentState": {
-                                    "bounds": {
-                                      "x": 1,
-                                      "y": 1,
-                                      "width": 0,
-                                      "height": 0
-                                    },
-                                    "contextMenu": true,
-                                    "detachOnClose": false,
-                                    "isClosable": true,
-                                    "preventDragOut": false,
-                                    "permissions": {
-                                      "ExternalWindow": {
-                                        "wrap": true
-                                      },
-                                      "System": {
-                                        "getAllExternalWindows": true,
-                                        "launchExternalProcess": true,
-                                        "readRegistryValue": false,
-                                        "terminateExternalProcess": true
-                                      },
-                                      "webAPIs": [
-                                        "notifications",
-                                        "audio",
-                                        "video"
-                                      ]
-                                    },
-                                    "url": "<RA_URL>",
+                                    "url": "http://localhost:1917/fx-tiles",
                                     "componentName": "view",
                                     "interop": {
                                       "currentContextGroup": "green"
@@ -1391,13 +1305,518 @@
                                       "width": false,
                                       "height": false
                                     },
-                                    "name": "internal-generated-view-4b33837c-1592-4258-8839-a984c4ea2a0e",
-                                    "uuid": "adaptive-workspace-provider",
-                                    "initialUrl": "<RA_URL>",
+                                    "name": "internal-generated-view-7f380de8-56ae-42b7-a36b-62ec19bdde85",
+                                    "uuid": "adaptive-workspace-provider-local",
+                                    "initialUrl": "http://localhost:1917/fx-tiles",
                                     "processAffinity": "adaptive-workspace-provider",
-                                    "zoomLevel": 0
+                                    "zoomLevel": 0,
+                                    "enableBeforeUnload": false
                                   },
-                                  "title": "Reactive Analytics",
+                                  "title": "Live Rates",
+                                  "isClosable": true,
+                                  "reorderEnabled": true
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "row",
+                          "height": 50,
+                          "isClosable": true,
+                          "reorderEnabled": true,
+                          "title": "",
+                          "content": [
+                            {
+                              "type": "column",
+                              "width": 100,
+                              "isClosable": true,
+                              "reorderEnabled": true,
+                              "title": "",
+                              "content": [
+                                {
+                                  "type": "stack",
+                                  "width": 100,
+                                  "height": 100,
+                                  "isClosable": true,
+                                  "reorderEnabled": true,
+                                  "title": "",
+                                  "activeItemIndex": 0,
+                                  "content": [
+                                    {
+                                      "type": "component",
+                                      "componentName": "view",
+                                      "componentState": {
+                                        "bounds": {
+                                          "x": 1,
+                                          "y": 1,
+                                          "width": 0,
+                                          "height": 0
+                                        },
+                                        "contextMenu": true,
+                                        "detachOnClose": false,
+                                        "isClosable": true,
+                                        "preventDragOut": false,
+                                        "accelerator": {
+                                          "zoom": true
+                                        },
+                                        "fdc3InteropApi": "1.2",
+                                        "permissions": {
+                                          "ExternalWindow": {
+                                            "wrap": true
+                                          },
+                                          "System": {
+                                            "getAllExternalWindows": true,
+                                            "launchExternalProcess": true,
+                                            "readRegistryValue": false,
+                                            "terminateExternalProcess": true
+                                          },
+                                          "webAPIs": [
+                                            "notifications",
+                                            "audio",
+                                            "video"
+                                          ]
+                                        },
+                                        "url": "http://localhost:1917/fx-blotter",
+                                        "componentName": "view",
+                                        "interop": {
+                                          "currentContextGroup": "purple"
+                                        },
+                                        "preloadScripts": [],
+                                        "hotkeys": [
+                                          {
+                                            "command": "stack.nextTab",
+                                            "keys": "Ctrl+Tab"
+                                          },
+                                          {
+                                            "command": "stack.previousTab",
+                                            "keys": "Ctrl+Shift+Tab"
+                                          },
+                                          {
+                                            "command": "view.zoomIn",
+                                            "keys": "Ctrl+="
+                                          },
+                                          {
+                                            "command": "view.zoomInNumPad",
+                                            "keys": "Ctrl+numadd"
+                                          },
+                                          {
+                                            "command": "view.zoomOut",
+                                            "keys": "Ctrl+-"
+                                          },
+                                          {
+                                            "command": "view.zoomOutNumPad",
+                                            "keys": "Ctrl+numsub"
+                                          },
+                                          {
+                                            "command": "view.zoomReset",
+                                            "keys": "Ctrl+0"
+                                          },
+                                          {
+                                            "command": "view.detach",
+                                            "keys": "Ctrl+Shift+D"
+                                          },
+                                          {
+                                            "command": "view.focusLeft",
+                                            "keys": "Ctrl+Shift+Left"
+                                          },
+                                          {
+                                            "command": "view.focusRight",
+                                            "keys": "Ctrl+Shift+Right"
+                                          },
+                                          {
+                                            "command": "view.focusUp",
+                                            "keys": "Ctrl+Shift+Up"
+                                          },
+                                          {
+                                            "command": "view.focusDown",
+                                            "keys": "Ctrl+Shift+Down"
+                                          },
+                                          {
+                                            "command": "stack.nth-tab-1",
+                                            "keys": "Ctrl+1"
+                                          },
+                                          {
+                                            "command": "stack.nth-tab-2",
+                                            "keys": "Ctrl+2"
+                                          },
+                                          {
+                                            "command": "stack.nth-tab-3",
+                                            "keys": "Ctrl+3"
+                                          },
+                                          {
+                                            "command": "stack.nth-tab-4",
+                                            "keys": "Ctrl+4"
+                                          },
+                                          {
+                                            "command": "stack.nth-tab-5",
+                                            "keys": "Ctrl+5"
+                                          },
+                                          {
+                                            "command": "stack.nth-tab-6",
+                                            "keys": "Ctrl+6"
+                                          },
+                                          {
+                                            "command": "stack.nth-tab-7",
+                                            "keys": "Ctrl+7"
+                                          },
+                                          {
+                                            "command": "stack.nth-tab-8",
+                                            "keys": "Ctrl+8"
+                                          },
+                                          {
+                                            "command": "stack.nth-tab-9",
+                                            "keys": "Ctrl+9"
+                                          }
+                                        ],
+                                        "backgroundThrottling": true,
+                                        "autoResize": {
+                                          "width": false,
+                                          "height": false
+                                        },
+                                        "name": "internal-generated-view-97e140ad-c2e2-4d56-8231-06c8139daa3f",
+                                        "uuid": "adaptive-workspace-provider-local",
+                                        "initialUrl": "http://localhost:1917/fx-blotter",
+                                        "processAffinity": "adaptive-workspace-provider",
+                                        "zoomLevel": 0,
+                                        "enableBeforeUnload": false
+                                      },
+                                      "title": "Trades",
+                                      "isClosable": true,
+                                      "reorderEnabled": true
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "column",
+                      "width": 40,
+                      "isClosable": true,
+                      "reorderEnabled": true,
+                      "title": "",
+                      "content": [
+                        {
+                          "type": "row",
+                          "height": 28.80354505169867,
+                          "isClosable": true,
+                          "reorderEnabled": true,
+                          "title": "",
+                          "content": [
+                            {
+                              "type": "stack",
+                              "width": 100,
+                              "height": 100,
+                              "isClosable": true,
+                              "reorderEnabled": true,
+                              "title": "",
+                              "activeItemIndex": 0,
+                              "content": [
+                                {
+                                  "type": "component",
+                                  "componentName": "view",
+                                  "componentState": {
+                                    "bounds": {
+                                      "x": 1,
+                                      "y": 1,
+                                      "width": 0,
+                                      "height": 0
+                                    },
+                                    "contextMenu": true,
+                                    "detachOnClose": false,
+                                    "isClosable": true,
+                                    "preventDragOut": false,
+                                    "accelerator": {
+                                      "zoom": true
+                                    },
+                                    "fdc3InteropApi": "1.2",
+                                    "permissions": {
+                                      "ExternalWindow": {
+                                        "wrap": true
+                                      },
+                                      "System": {
+                                        "getAllExternalWindows": true,
+                                        "launchExternalProcess": true,
+                                        "readRegistryValue": false,
+                                        "terminateExternalProcess": true
+                                      },
+                                      "webAPIs": [
+                                        "notifications",
+                                        "audio",
+                                        "video"
+                                      ]
+                                    },
+                                    "url": "http://localhost:1917/limit-checker",
+                                    "componentName": "view",
+                                    "interop": {
+                                      "currentContextGroup": "green"
+                                    },
+                                    "preloadScripts": [],
+                                    "hotkeys": [
+                                      {
+                                        "command": "stack.nextTab",
+                                        "keys": "Ctrl+Tab"
+                                      },
+                                      {
+                                        "command": "stack.previousTab",
+                                        "keys": "Ctrl+Shift+Tab"
+                                      },
+                                      {
+                                        "command": "view.zoomIn",
+                                        "keys": "Ctrl+="
+                                      },
+                                      {
+                                        "command": "view.zoomInNumPad",
+                                        "keys": "Ctrl+numadd"
+                                      },
+                                      {
+                                        "command": "view.zoomOut",
+                                        "keys": "Ctrl+-"
+                                      },
+                                      {
+                                        "command": "view.zoomOutNumPad",
+                                        "keys": "Ctrl+numsub"
+                                      },
+                                      {
+                                        "command": "view.zoomReset",
+                                        "keys": "Ctrl+0"
+                                      },
+                                      {
+                                        "command": "view.detach",
+                                        "keys": "Ctrl+Shift+D"
+                                      },
+                                      {
+                                        "command": "view.focusLeft",
+                                        "keys": "Ctrl+Shift+Left"
+                                      },
+                                      {
+                                        "command": "view.focusRight",
+                                        "keys": "Ctrl+Shift+Right"
+                                      },
+                                      {
+                                        "command": "view.focusUp",
+                                        "keys": "Ctrl+Shift+Up"
+                                      },
+                                      {
+                                        "command": "view.focusDown",
+                                        "keys": "Ctrl+Shift+Down"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-1",
+                                        "keys": "Ctrl+1"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-2",
+                                        "keys": "Ctrl+2"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-3",
+                                        "keys": "Ctrl+3"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-4",
+                                        "keys": "Ctrl+4"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-5",
+                                        "keys": "Ctrl+5"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-6",
+                                        "keys": "Ctrl+6"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-7",
+                                        "keys": "Ctrl+7"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-8",
+                                        "keys": "Ctrl+8"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-9",
+                                        "keys": "Ctrl+9"
+                                      }
+                                    ],
+                                    "backgroundThrottling": true,
+                                    "autoResize": {
+                                      "width": false,
+                                      "height": false
+                                    },
+                                    "name": "internal-generated-view-8f6a77c2-a79e-4dca-a923-843f34d99d21",
+                                    "uuid": "adaptive-workspace-provider-local",
+                                    "initialUrl": "http://localhost:1917/limit-checker",
+                                    "processAffinity": "adaptive-workspace-provider",
+                                    "zoomLevel": 0,
+                                    "enableBeforeUnload": false
+                                  },
+                                  "title": "Limit Checker",
+                                  "isClosable": true,
+                                  "reorderEnabled": true
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "row",
+                          "height": 71.19645494830134,
+                          "isClosable": true,
+                          "reorderEnabled": true,
+                          "title": "",
+                          "content": [
+                            {
+                              "type": "stack",
+                              "width": 100,
+                              "height": 100,
+                              "isClosable": true,
+                              "reorderEnabled": true,
+                              "title": "",
+                              "activeItemIndex": 0,
+                              "content": [
+                                {
+                                  "type": "component",
+                                  "componentName": "view",
+                                  "componentState": {
+                                    "bounds": {
+                                      "x": 1,
+                                      "y": 1,
+                                      "width": 0,
+                                      "height": 0
+                                    },
+                                    "contextMenu": true,
+                                    "detachOnClose": false,
+                                    "isClosable": true,
+                                    "preventDragOut": false,
+                                    "accelerator": {
+                                      "zoom": true
+                                    },
+                                    "fdc3InteropApi": "1.2",
+                                    "permissions": {
+                                      "ExternalWindow": {
+                                        "wrap": true
+                                      },
+                                      "System": {
+                                        "getAllExternalWindows": true,
+                                        "launchExternalProcess": true,
+                                        "readRegistryValue": false,
+                                        "terminateExternalProcess": true
+                                      },
+                                      "webAPIs": [
+                                        "notifications",
+                                        "audio",
+                                        "video"
+                                      ]
+                                    },
+                                    "url": "http://localhost:3005/fx/USDJPY",
+                                    "componentName": "view",
+                                    "interop": {
+                                      "currentContextGroup": "purple"
+                                    },
+                                    "preloadScripts": [],
+                                    "hotkeys": [
+                                      {
+                                        "command": "stack.nextTab",
+                                        "keys": "Ctrl+Tab"
+                                      },
+                                      {
+                                        "command": "stack.previousTab",
+                                        "keys": "Ctrl+Shift+Tab"
+                                      },
+                                      {
+                                        "command": "view.zoomIn",
+                                        "keys": "Ctrl+="
+                                      },
+                                      {
+                                        "command": "view.zoomInNumPad",
+                                        "keys": "Ctrl+numadd"
+                                      },
+                                      {
+                                        "command": "view.zoomOut",
+                                        "keys": "Ctrl+-"
+                                      },
+                                      {
+                                        "command": "view.zoomOutNumPad",
+                                        "keys": "Ctrl+numsub"
+                                      },
+                                      {
+                                        "command": "view.zoomReset",
+                                        "keys": "Ctrl+0"
+                                      },
+                                      {
+                                        "command": "view.detach",
+                                        "keys": "Ctrl+Shift+D"
+                                      },
+                                      {
+                                        "command": "view.focusLeft",
+                                        "keys": "Ctrl+Shift+Left"
+                                      },
+                                      {
+                                        "command": "view.focusRight",
+                                        "keys": "Ctrl+Shift+Right"
+                                      },
+                                      {
+                                        "command": "view.focusUp",
+                                        "keys": "Ctrl+Shift+Up"
+                                      },
+                                      {
+                                        "command": "view.focusDown",
+                                        "keys": "Ctrl+Shift+Down"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-1",
+                                        "keys": "Ctrl+1"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-2",
+                                        "keys": "Ctrl+2"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-3",
+                                        "keys": "Ctrl+3"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-4",
+                                        "keys": "Ctrl+4"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-5",
+                                        "keys": "Ctrl+5"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-6",
+                                        "keys": "Ctrl+6"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-7",
+                                        "keys": "Ctrl+7"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-8",
+                                        "keys": "Ctrl+8"
+                                      },
+                                      {
+                                        "command": "stack.nth-tab-9",
+                                        "keys": "Ctrl+9"
+                                      }
+                                    ],
+                                    "backgroundThrottling": true,
+                                    "autoResize": {
+                                      "width": false,
+                                      "height": false
+                                    },
+                                    "name": "internal-generated-view-d7384c2e-98a3-43c3-84d8-6017be42c1f6",
+                                    "uuid": "adaptive-workspace-provider-local",
+                                    "initialUrl": "http://localhost:3005",
+                                    "processAffinity": "adaptive-workspace-provider",
+                                    "zoomLevel": 0,
+                                    "enableBeforeUnload": false
+                                  },
+                                  "title": "Reactive Analytics (LOCAL)",
                                   "isClosable": true,
                                   "reorderEnabled": true
                                 }
@@ -1417,18 +1836,147 @@
               "maximisedItemId": null
             },
             "isActive": true,
-            "hasUnsavedChanges": false
+            "hasUnsavedChanges": true,
+            "panels": []
           }
-        ]
+        ],
+        "favicon": "http://localhost:2017/images/icons/adaptive.png",
+        "_internalDeferShowOptions": {
+          "setAsForeground": true,
+          "deferShowEnabled": true,
+          "autoShow": true
+        }
       },
-      "includeInSnapshots": true,
-      "closeOnLastViewRemoved": false
+      "ignoreSavedWindowState": true,
+      "preloadScripts": []
     }
   ],
   "interopSnapshotDetails": {
     "contextGroupStates": {
-      "green": {},
-      "purple": {},
+      "green": {
+        "limit-checker-status": {
+          "type": "limit-checker-status",
+          "id": {
+            "isAlive": "true"
+          }
+        },
+        "check-limit": {
+          "type": "check-limit",
+          "id": {
+            "notional": "3001",
+            "rate": "1.36364",
+            "tradedCurrencyPair": "EURUSD",
+            "id": "11"
+          }
+        },
+        "result-0": {
+          "type": "result-0",
+          "id": {
+            "result": "false",
+            "ccy": "EURUSD"
+          }
+        },
+        "fdc3.instrument": {
+          "type": "fdc3.instrument",
+          "id": {
+            "ticker": "GBPJPY"
+          }
+        },
+        "result-1": {
+          "type": "result-1",
+          "id": {
+            "result": "false",
+            "ccy": "EURUSD"
+          }
+        },
+        "result-2": {
+          "type": "result-2",
+          "id": {
+            "result": "false",
+            "ccy": "EURUSD"
+          }
+        },
+        "result-3": {
+          "type": "result-3",
+          "id": {
+            "result": "true",
+            "ccy": "EURUSD"
+          }
+        },
+        "result-7": {
+          "type": "result-7",
+          "id": {
+            "result": "false",
+            "ccy": "EURUSD"
+          }
+        },
+        "result-8": {
+          "type": "result-8",
+          "id": {
+            "result": "true",
+            "ccy": "EURUSD"
+          }
+        },
+        "result-9": {
+          "type": "result-9",
+          "id": {
+            "result": "false",
+            "ccy": "EURUSD"
+          }
+        },
+        "result-10": {
+          "type": "result-10",
+          "id": {
+            "result": "true",
+            "ccy": "EURUSD"
+          }
+        },
+        "result-11": {
+          "type": "result-11",
+          "id": {
+            "result": "false",
+            "ccy": "EURUSD"
+          }
+        }
+      },
+      "purple": {
+        "fdc3.instrument": {
+          "type": "fdc3.instrument",
+          "id": {
+            "ticker": "USDJPY"
+          }
+        },
+        "check-limit": {
+          "type": "check-limit",
+          "id": {
+            "notional": "2000001",
+            "rate": "1.36366",
+            "tradedCurrencyPair": "EURUSD",
+            "id": "6"
+          }
+        },
+        "result-4": {
+          "type": "result-4",
+          "id": {
+            "result": "true",
+            "ccy": "EURUSD"
+          }
+        },
+        "result-5": {
+          "type": "result-5",
+          "id": {
+            "result": "true",
+            "ccy": "EURUSD"
+          }
+        },
+        "result-6": {
+          "type": "result-6",
+          "id": {
+            "result": "false",
+            "ccy": "EURUSD"
+          }
+        }
+      },
       "orange": {},
       "red": {},
       "pink": {},

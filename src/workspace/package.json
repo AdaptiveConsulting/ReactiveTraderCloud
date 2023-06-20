@@ -5,6 +5,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "serve": "vite preview",
     "openfin:dev": "npm start",
     "_openfin:run": "cross-env-shell \"wait-on -l $npm_config_manifest_url && openfin -l -c $npm_config_manifest_url\"",
     "openfin:run": "npm run _openfin:run --manifest_url=http://localhost:2017/config/workspace.json",
