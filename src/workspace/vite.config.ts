@@ -1,12 +1,11 @@
-import path from "path"
 import { defineConfig, loadEnv, Plugin } from "vite"
 import { TransformOption, viteStaticCopy } from "vite-plugin-static-copy"
 
-const PORT = Number(process.env.PORT) || 2017
+const localPort = Number(process.env.PORT) || 2017
 
 function getBaseUrl(dev: boolean) {
   return dev
-    ? `http://localhost:${PORT}`
+    ? `http://localhost:${localPort}`
     : `${process.env.DOMAIN || ""}${process.env.URL_PATH || ""}` || ""
 }
 
@@ -70,8 +69,11 @@ const setConfig = ({ mode }) => {
     build: {
       sourcemap: true,
     },
-    server: {
-      port: PORT,
+    preview: {
+      port: localPort,
+    },
+        server: {
+      port: localPort,
       proxy: {
         "/ws": {
           target:

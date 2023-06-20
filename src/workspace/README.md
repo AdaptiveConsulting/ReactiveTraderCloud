@@ -48,6 +48,30 @@ Vite will replace placeholders at run/build time.
 
 `npm run kill`, `npm run kill:fin`, `npm run kill:rvm` - Kill the Openfin processes
 
+## Working with Workspace Data
+
+Workspace config for pages / snapshots is stored in IndexedDB - example below is retrieving a saved workspace snapshot
+
+```
+db = indexedDB.open('openfin-workspace-platform-workspaces-adaptive-workspace-provider-local', 1)
+db.onsuccess = () => {
+    console.log("Success")
+    dbResult = db.result
+}
+db.onerror = () => {
+    console.error("BAH")
+}
+
+// check what object stores you have under that DB (can also just look in devtools)
+dbResult.objectStoreNames
+
+// open transaction, get the object store and grab the key for the saved workspace
+// annoyingly you have to do this even to just "look" at the data
+data = dbResult.transaction("workspaces").objectStore("workspaces").get("fc9cdd93-104c-4305-97fa-92ea5a560546")
+
+console.log(data.result)
+```
+
 ## TODO
 
 There is some duplication between client and workspace around the services and notifications. This requires some structural changes to the repo and some type alignment. This was not done during the initial work due to the 'spike' like nature of the task.
