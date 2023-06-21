@@ -30,6 +30,8 @@ export const showCacheUpdateModal = () => {
 
   const root = createRoot(updateRoot)
 
+  console.log("Showing service worker modal")
+
   root.render(
     <ThemeProvider>
       <Modal title="New updates are available" shouldShow>
