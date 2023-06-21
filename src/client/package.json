@@ -60,7 +60,7 @@
     "@finos/fdc3": "^1.2.0",
     "@openfin/core": "31.75.4",
     "@openfin/workspace": "13.0.7",
-    "@openfin/workspace-platform": "11.0.6",
+    "@openfin/workspace-platform": "13.0.7",
     "@react-rxjs/core": "^0.10.3",
     "@react-rxjs/utils": "^0.9.5",
     "d3": "^6.6.2",
