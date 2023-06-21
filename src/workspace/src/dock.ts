@@ -2,7 +2,6 @@ import { BASE_URL } from "@/consts"
 import { ADAPTIVE_LOGO } from "@/home/utils"
 import { Dock, DockProvider } from "@openfin/workspace"
 import { manifest } from "./utils"
-import { getCurrentSync } from "@openfin/workspace-platform"
 
 export enum DockAction {
   OpenReactiveTraderFx = "open-reactive-trader-fx",
@@ -19,6 +18,7 @@ export const registerDock = () => {
     workspaceComponents: {
       hideWorkspacesButton: true,
     },
+    skipSavedDockProviderConfig: true,
     buttons: [
       {
         tooltip: "Reactive Trader FX",
@@ -41,21 +41,12 @@ export const registerDock = () => {
           id: DockAction.OpenReactiveAnalytics,
         },
       },
-      {
-        tooltip: "Limit Checker",
-        iconUrl: `${BASE_URL}/images/icons/limit-checker.png`,
-        action: {
-          id: DockAction.OpenLimitChecker,
-        },
-      },
     ],
   }
 
   Dock.register(dockProvider)
   return Dock.show()
 }
-
-const platform = getCurrentSync()
 
 export const dockCustomActions = {
   [DockAction.OpenReactiveTraderFx]: () => {
@@ -66,8 +57,5 @@ export const dockCustomActions = {
   },
   [DockAction.OpenReactiveAnalytics]: () => {
     fin.Application.startFromManifest(manifest.reactiveAnalytics)
-  },
-  [DockAction.OpenLimitChecker]: () => {
-    platform.launchContentManifest(manifest.limitChecker)
   },
 }
