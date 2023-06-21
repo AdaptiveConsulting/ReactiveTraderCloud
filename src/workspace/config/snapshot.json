@@ -1,183 +1,110 @@
 {
   "snapshotDetails": {
-    "timestamp": "2023-06-20T12:17:19.360Z",
-    "runtimeVersion": "29.108.73.14",
+    "timestamp": "2022-01-10T11:26:57.741Z",
+    "runtimeVersion": "23.96.67.7",
     "monitorInfo": {
-      "deviceScaleFactor": 1,
+      "deviceScaleFactor": 1.25,
       "dpi": {
-        "x": 96,
-        "y": 96
+        "x": 120,
+        "y": 120
       },
-      "nonPrimaryMonitors": [
-        {
-          "available": {
-            "dipRect": {
-              "top": -1415,
-              "bottom": 0,
-              "left": -578,
-              "right": 1982
-            },
-            "scaledRect": {
-              "top": -1415,
-              "bottom": 0,
-              "left": -578,
-              "right": 1982
-            }
-          },
-          "availableRect": {
-            "top": -1415,
-            "bottom": 0,
-            "left": -578,
-            "right": 1982
-          },
-          "deviceId": 2,
-          "deviceScaleFactor": 1,
-          "displayDeviceActive": true,
-          "dpi": {
-            "x": 96,
-            "y": 96
-          },
-          "monitor": {
-            "dipRect": {
-              "top": -1440,
-              "bottom": 0,
-              "left": -578,
-              "right": 1982
-            },
-            "scaledRect": {
-              "top": -1440,
-              "bottom": 0,
-              "left": -578,
-              "right": 1982
-            }
-          },
-          "monitorRect": {
-            "top": -1440,
-            "bottom": 0,
-            "left": -578,
-            "right": 1982
-          },
-          "name": 2
-        }
-      ],
+      "nonPrimaryMonitors": [],
       "primaryMonitor": {
         "available": {
           "dipRect": {
-            "top": 38,
-            "bottom": 982,
+            "top": 0,
+            "bottom": 824,
             "left": 0,
-            "right": 1512
+            "right": 1536
           },
           "scaledRect": {
-            "top": 38,
-            "bottom": 982,
+            "top": 0,
+            "bottom": 1030,
             "left": 0,
-            "right": 1512
+            "right": 1920
           }
         },
         "availableRect": {
-          "top": 38,
-          "bottom": 982,
+          "top": 0,
+          "bottom": 824,
           "left": 0,
-          "right": 1512
+          "right": 1536
         },
-        "deviceId": 1,
-        "deviceScaleFactor": 2,
+        "deviceId": "\\\\?\\DISPLAY#LEN4183#4&869197d&0&UID265988#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}",
+        "deviceScaleFactor": 1.25,
         "displayDeviceActive": true,
         "dpi": {
-          "x": 192,
-          "y": 192
+          "x": 120,
+          "y": 120
         },
         "monitor": {
           "dipRect": {
             "top": 0,
-            "bottom": 982,
+            "bottom": 864,
             "left": 0,
-            "right": 1512
+            "right": 1536
           },
           "scaledRect": {
             "top": 0,
-            "bottom": 982,
+            "bottom": 1080,
             "left": 0,
-            "right": 1512
+            "right": 1920
           }
         },
         "monitorRect": {
           "top": 0,
-          "bottom": 982,
+          "bottom": 864,
           "left": 0,
-          "right": 1512
+          "right": 1536
         },
-        "name": 1
+        "name": "\\\\.\\DISPLAY1"
       },
       "reason": "api-query",
       "taskbar": {
         "dipRect": {
-          "top": 0,
-          "bottom": 0,
+          "top": 824,
+          "bottom": 864,
           "left": 0,
-          "right": 0
+          "right": 1536
         },
-        "edge": "left",
+        "edge": "bottom",
         "rect": {
-          "top": 0,
-          "bottom": 0,
+          "top": 824,
+          "bottom": 864,
           "left": 0,
-          "right": 0
+          "right": 1536
         },
         "scaledRect": {
-          "top": 0,
-          "bottom": 0,
+          "top": 1030,
+          "bottom": 1080,
           "left": 0,
-          "right": 0
+          "right": 1920
         }
       },
       "virtualScreen": {
-        "top": -1440,
-        "bottom": 982,
-        "left": -578,
-        "right": 1982,
+        "top": 0,
+        "bottom": 864,
+        "left": 0,
+        "right": 1536,
         "dipRect": {
-          "top": -1440,
-          "bottom": 982,
-          "left": -578,
-          "right": 1982
+          "top": 0,
+          "bottom": 864,
+          "left": 0,
+          "right": 1536
         },
         "scaledRect": {
-          "top": -1440,
-          "bottom": 982,
-          "left": -578,
-          "right": 1982
+          "top": 0,
+          "bottom": 1080,
+          "left": 0,
+          "right": 1920
         }
       }
     },
-    "machineId": "95061B9A-4458-5763-AED7-89544EE87F9A",
-    "machineName": "unknown"
+    "machineId": "57af7c4f-455d-434c-adaa-a19584c18a62",
+    "machineName": null
   },
   "windows": [
     {
-      "alwaysOnTop": false,
-      "frame": false,
-      "icon": "",
-      "maxHeight": -1,
-      "maxWidth": -1,
-      "maximizable": true,
-      "minHeight": 200,
-      "minWidth": 200,
-      "minimizable": true,
-      "opacity": 1,
-      "resizeRegion": {
-        "bottomRightCorner": 20,
-        "size": 7,
-        "sides": {
-          "top": true,
-          "right": true,
-          "bottom": true,
-          "left": true
-        }
-      },
-      "transparent": false,
-      "uuid": "adaptive-workspace-provider",
       "accelerator": {
         "devtools": false,
         "zoom": false,
@@ -190,6 +117,7 @@
         "red": -1
       },
       "alwaysOnBottom": false,
+      "alwaysOnTop": false,
       "api": {
         "iframe": {
           "crossOriginInjection": false,
@@ -199,7 +127,7 @@
       },
       "applicationIcon": "",
       "aspectRatio": 0,
-      "autoShow": false,
+      "autoShow": true,
       "backgroundThrottling": true,
       "contentCreation": {
         "rules": []
@@ -221,11 +149,11 @@
         "height": 8,
         "width": 8
       },
-      "closeOnLastViewRemoved": false,
-      "defaultHeight": 1000,
+      "enableJumpList": false,
+      "defaultHeight": 801,
       "defaultLeft": 10,
       "defaultTop": 10,
-      "defaultWidth": 1200,
+      "defaultWidth": 801,
       "draggable": false,
       "experimental": {
         "api": {
@@ -247,121 +175,45 @@
         "showFavicons": true,
         "defaultFaviconUrl": "https://cdn.openfin.co/workspace/5.0.0/icons/defaultFavicon.svg"
       },
-      "includeInSnapshots": true,
+      "frame": false,
+      "icon": "",
+      "maxHeight": -1,
+      "maxWidth": -1,
+      "maximizable": true,
+      "minHeight": 200,
+      "minWidth": 200,
+      "minimizable": true,
+      "opacity": 1,
       "resizable": true,
       "resize": true,
+      "resizeRegion": {
+        "bottomRightCorner": 20,
+        "size": 7,
+        "sides": {
+          "top": true,
+          "right": true,
+          "bottom": true,
+          "left": true
+        }
+      },
       "saveWindowState": false,
       "shadow": false,
       "showTaskbarIcon": true,
       "showBackgroundImages": false,
       "smallWindow": false,
       "spellCheck": false,
-      "state": "normal",
+      "state": "maximized",
       "taskbarIcon": "",
       "taskbarIconGroup": "adaptive-workspace-provider",
-      "url": "https://cdn.openfin.co/workspace/11.0.6/browser/",
+      "transparent": false,
+      "url": "https://cdn.openfin.co/workspace/5.0.0/browser/",
+      "uuid": "adaptive-workspace-provider",
       "waitForPageLoad": true,
       "backgroundColor": "#FFF",
       "fdc3InteropApi": "",
-      "enableBeforeUnload": false,
-      "hotkeys": [
-        {
-          "command": "stack.nextTab",
-          "keys": "Ctrl+Tab"
-        },
-        {
-          "command": "stack.previousTab",
-          "keys": "Ctrl+Shift+Tab"
-        },
-        {
-          "command": "view.zoomIn",
-          "keys": "Ctrl+="
-        },
-        {
-          "command": "view.zoomInNumPad",
-          "keys": "Ctrl+numadd"
-        },
-        {
-          "command": "view.zoomOut",
-          "keys": "Ctrl+-"
-        },
-        {
-          "command": "view.zoomOutNumPad",
-          "keys": "Ctrl+numsub"
-        },
-        {
-          "command": "view.zoomReset",
-          "keys": "Ctrl+0"
-        },
-        {
-          "command": "view.detach",
-          "keys": "Ctrl+Shift+D"
-        },
-        {
-          "command": "view.focusLeft",
-          "keys": "Ctrl+Shift+Left"
-        },
-        {
-          "command": "view.focusRight",
-          "keys": "Ctrl+Shift+Right"
-        },
-        {
-          "command": "view.focusUp",
-          "keys": "Ctrl+Shift+Up"
-        },
-        {
-          "command": "view.focusDown",
-          "keys": "Ctrl+Shift+Down"
-        },
-        {
-          "command": "stack.nth-tab-1",
-          "keys": "Ctrl+1"
-        },
-        {
-          "command": "stack.nth-tab-2",
-          "keys": "Ctrl+2"
-        },
-        {
-          "command": "stack.nth-tab-3",
-          "keys": "Ctrl+3"
-        },
-        {
-          "command": "stack.nth-tab-4",
-          "keys": "Ctrl+4"
-        },
-        {
-          "command": "stack.nth-tab-5",
-          "keys": "Ctrl+5"
-        },
-        {
-          "command": "stack.nth-tab-6",
-          "keys": "Ctrl+6"
-        },
-        {
-          "command": "stack.nth-tab-7",
-          "keys": "Ctrl+7"
-        },
-        {
-          "command": "stack.nth-tab-8",
-          "keys": "Ctrl+8"
-        },
-        {
-          "command": "stack.nth-tab-9",
-          "keys": "Ctrl+9"
-        }
-      ],
-      "viewVisibility": {
-        "showViewsOnSplitterDrag": {
-          "enabled": true
-        },
-        "showViewsOnWindowResize": {
-          "enabled": true
-        }
-      },
-      "autoplayPolicy": "no-user-gesture-required",
-      "title": "https://cdn.openfin.co/workspace/11.0.6/browser/",
-      "height": 1000,
-      "width": 1200,
+      "title": "https://cdn.openfin.co/workspace/5.0.0/browser/",
+      "height": 801,
+      "width": 801,
       "center": false,
       "x": 10,
       "y": 10,
@@ -381,6 +233,7 @@
         },
         "webAPIs": ["notifications", "audio", "video"]
       },
+      "preloadScripts": [],
       "layout": {
         "settings": {
           "hasHeaders": true,
@@ -427,14 +280,14 @@
             "content": [
               {
                 "type": "column",
-                "width": 60,
+                "width": 55,
                 "isClosable": true,
                 "reorderEnabled": true,
                 "title": "",
                 "content": [
                   {
                     "type": "row",
-                    "height": 50,
+                    "height": 55,
                     "isClosable": true,
                     "reorderEnabled": true,
                     "title": "",
@@ -462,10 +315,6 @@
                               "detachOnClose": false,
                               "isClosable": true,
                               "preventDragOut": false,
-                              "accelerator": {
-                                "zoom": true
-                              },
-                              "fdc3InteropApi": "1.2",
                               "permissions": {
                                 "ExternalWindow": {
                                   "wrap": true
@@ -480,9 +329,7 @@
                               },
                               "url": "<RT_URL>/fx-tiles",
                               "componentName": "view",
-                              "interop": {
-                                "currentContextGroup": "green"
-                              },
+                              "interop": {},
                               "preloadScripts": [],
                               "hotkeys": [
                                 {
@@ -575,14 +422,13 @@
                                 "width": false,
                                 "height": false
                               },
-                              "name": "internal-generated-view-7f380de8-56ae-42b7-a36b-62ec19bdde85",
+                              "name": "internal-generated-view-878aa0f6-edcc-421f-bf9e-2ac3b7fa20cf",
                               "uuid": "adaptive-workspace-provider",
                               "initialUrl": "<RT_URL>/fx-tiles",
                               "processAffinity": "adaptive-workspace-provider",
-                              "zoomLevel": 0,
-                              "enableBeforeUnload": false
+                              "zoomLevel": 0
                             },
-                            "title": "Live Rates",
+                            "title": "FX Live Rates",
                             "isClosable": true,
                             "reorderEnabled": true
                           }
@@ -592,7 +438,7 @@
                   },
                   {
                     "type": "row",
-                    "height": 50,
+                    "height": 45,
                     "isClosable": true,
                     "reorderEnabled": true,
                     "title": "",
@@ -627,10 +473,6 @@
                                   "detachOnClose": false,
                                   "isClosable": true,
                                   "preventDragOut": false,
-                                  "accelerator": {
-                                    "zoom": true
-                                  },
-                                  "fdc3InteropApi": "1.2",
                                   "permissions": {
                                     "ExternalWindow": {
                                       "wrap": true
@@ -650,7 +492,7 @@
                                   "url": "<RT_URL>/fx-blotter",
                                   "componentName": "view",
                                   "interop": {
-                                    "currentContextGroup": "purple"
+                                    "currentContextGroup": "green"
                                   },
                                   "preloadScripts": [],
                                   "hotkeys": [
@@ -744,14 +586,13 @@
                                     "width": false,
                                     "height": false
                                   },
-                                  "name": "internal-generated-view-97e140ad-c2e2-4d56-8231-06c8139daa3f",
+                                  "name": "internal-generated-view-e61f0941-fb7e-477d-abba-141fd2e9ca93",
                                   "uuid": "adaptive-workspace-provider",
                                   "initialUrl": "<RT_URL>/fx-blotter",
                                   "processAffinity": "adaptive-workspace-provider",
-                                  "zoomLevel": 0,
-                                  "enableBeforeUnload": false
+                                  "zoomLevel": 0
                                 },
-                                "title": "Trades",
+                                "title": "FX Trades",
                                 "isClosable": true,
                                 "reorderEnabled": true
                               }
@@ -765,14 +606,14 @@
               },
               {
                 "type": "column",
-                "width": 40,
+                "width": 45,
                 "isClosable": true,
                 "reorderEnabled": true,
                 "title": "",
                 "content": [
                   {
                     "type": "row",
-                    "height": 35,
+                    "height": 100,
                     "isClosable": true,
                     "reorderEnabled": true,
                     "title": "",
@@ -800,10 +641,6 @@
                               "detachOnClose": false,
                               "isClosable": true,
                               "preventDragOut": false,
-                              "accelerator": {
-                                "zoom": true
-                              },
-                              "fdc3InteropApi": "1.2",
                               "permissions": {
                                 "ExternalWindow": {
                                   "wrap": true
@@ -816,7 +653,7 @@
                                 },
                                 "webAPIs": ["notifications", "audio", "video"]
                               },
-                              "url": "<RT_URL>/limit-checker",
+                              "url": "<RA_URL>",
                               "componentName": "view",
                               "interop": {
                                 "currentContextGroup": "green"
@@ -913,170 +750,11 @@
                                 "width": false,
                                 "height": false
                               },
-                              "name": "internal-generated-view-8f6a77c2-a79e-4dca-a923-843f34d99d21",
-                              "uuid": "adaptive-workspace-provider",
-                              "initialUrl": "<RT_URL>/limit-checker",
-                              "processAffinity": "adaptive-workspace-provider",
-                              "zoomLevel": 0,
-                              "enableBeforeUnload": false
-                            },
-                            "title": "Limit Checker",
-                            "isClosable": true,
-                            "reorderEnabled": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "row",
-                    "height": 65,
-                    "isClosable": true,
-                    "reorderEnabled": true,
-                    "title": "",
-                    "content": [
-                      {
-                        "type": "stack",
-                        "width": 100,
-                        "height": 100,
-                        "isClosable": true,
-                        "reorderEnabled": true,
-                        "title": "",
-                        "activeItemIndex": 0,
-                        "content": [
-                          {
-                            "type": "component",
-                            "componentName": "view",
-                            "componentState": {
-                              "bounds": {
-                                "x": 1,
-                                "y": 1,
-                                "width": 0,
-                                "height": 0
-                              },
-                              "contextMenu": true,
-                              "detachOnClose": false,
-                              "isClosable": true,
-                              "preventDragOut": false,
-                              "accelerator": {
-                                "zoom": true
-                              },
-                              "fdc3InteropApi": "1.2",
-                              "permissions": {
-                                "ExternalWindow": {
-                                  "wrap": true
-                                },
-                                "System": {
-                                  "getAllExternalWindows": true,
-                                  "launchExternalProcess": true,
-                                  "readRegistryValue": false,
-                                  "terminateExternalProcess": true
-                                },
-                                "webAPIs": ["notifications", "audio", "video"]
-                              },
-                              "url": "<RA_URL>",
-                              "componentName": "view",
-                              "interop": {
-                                "currentContextGroup": "purple"
-                              },
-                              "preloadScripts": [],
-                              "hotkeys": [
-                                {
-                                  "command": "stack.nextTab",
-                                  "keys": "Ctrl+Tab"
-                                },
-                                {
-                                  "command": "stack.previousTab",
-                                  "keys": "Ctrl+Shift+Tab"
-                                },
-                                {
-                                  "command": "view.zoomIn",
-                                  "keys": "Ctrl+="
-                                },
-                                {
-                                  "command": "view.zoomInNumPad",
-                                  "keys": "Ctrl+numadd"
-                                },
-                                {
-                                  "command": "view.zoomOut",
-                                  "keys": "Ctrl+-"
-                                },
-                                {
-                                  "command": "view.zoomOutNumPad",
-                                  "keys": "Ctrl+numsub"
-                                },
-                                {
-                                  "command": "view.zoomReset",
-                                  "keys": "Ctrl+0"
-                                },
-                                {
-                                  "command": "view.detach",
-                                  "keys": "Ctrl+Shift+D"
-                                },
-                                {
-                                  "command": "view.focusLeft",
-                                  "keys": "Ctrl+Shift+Left"
-                                },
-                                {
-                                  "command": "view.focusRight",
-                                  "keys": "Ctrl+Shift+Right"
-                                },
-                                {
-                                  "command": "view.focusUp",
-                                  "keys": "Ctrl+Shift+Up"
-                                },
-                                {
-                                  "command": "view.focusDown",
-                                  "keys": "Ctrl+Shift+Down"
-                                },
-                                {
-                                  "command": "stack.nth-tab-1",
-                                  "keys": "Ctrl+1"
-                                },
-                                {
-                                  "command": "stack.nth-tab-2",
-                                  "keys": "Ctrl+2"
-                                },
-                                {
-                                  "command": "stack.nth-tab-3",
-                                  "keys": "Ctrl+3"
-                                },
-                                {
-                                  "command": "stack.nth-tab-4",
-                                  "keys": "Ctrl+4"
-                                },
-                                {
-                                  "command": "stack.nth-tab-5",
-                                  "keys": "Ctrl+5"
-                                },
-                                {
-                                  "command": "stack.nth-tab-6",
-                                  "keys": "Ctrl+6"
-                                },
-                                {
-                                  "command": "stack.nth-tab-7",
-                                  "keys": "Ctrl+7"
-                                },
-                                {
-                                  "command": "stack.nth-tab-8",
-                                  "keys": "Ctrl+8"
-                                },
-                                {
-                                  "command": "stack.nth-tab-9",
-                                  "keys": "Ctrl+9"
-                                }
-                              ],
-                              "backgroundThrottling": true,
-                              "autoResize": {
-                                "width": false,
-                                "height": false
-                              },
-                              "name": "internal-generated-view-d7384c2e-98a3-43c3-84d8-6017be42c1f6",
+                              "name": "internal-generated-view-4b33837c-1592-4258-8839-a984c4ea2a0e",
                               "uuid": "adaptive-workspace-provider",
                               "initialUrl": "<RA_URL>",
                               "processAffinity": "adaptive-workspace-provider",
-                              "zoomLevel": 0,
-                              "enableBeforeUnload": false
+                              "zoomLevel": 0
                             },
                             "title": "Reactive Analytics",
                             "isClosable": true,
@@ -1097,10 +775,92 @@
         "openPopouts": [],
         "maximisedItemId": null
       },
-      "contextMenu": true,
-      "contextMenuOptions": {
-        "enabled": false
-      },
+      "hotkeys": [
+        {
+          "command": "stack.nextTab",
+          "keys": "Ctrl+Tab"
+        },
+        {
+          "command": "stack.previousTab",
+          "keys": "Ctrl+Shift+Tab"
+        },
+        {
+          "command": "view.zoomIn",
+          "keys": "Ctrl+="
+        },
+        {
+          "command": "view.zoomInNumPad",
+          "keys": "Ctrl+numadd"
+        },
+        {
+          "command": "view.zoomOut",
+          "keys": "Ctrl+-"
+        },
+        {
+          "command": "view.zoomOutNumPad",
+          "keys": "Ctrl+numsub"
+        },
+        {
+          "command": "view.zoomReset",
+          "keys": "Ctrl+0"
+        },
+        {
+          "command": "view.detach",
+          "keys": "Ctrl+Shift+D"
+        },
+        {
+          "command": "view.focusLeft",
+          "keys": "Ctrl+Shift+Left"
+        },
+        {
+          "command": "view.focusRight",
+          "keys": "Ctrl+Shift+Right"
+        },
+        {
+          "command": "view.focusUp",
+          "keys": "Ctrl+Shift+Up"
+        },
+        {
+          "command": "view.focusDown",
+          "keys": "Ctrl+Shift+Down"
+        },
+        {
+          "command": "stack.nth-tab-1",
+          "keys": "Ctrl+1"
+        },
+        {
+          "command": "stack.nth-tab-2",
+          "keys": "Ctrl+2"
+        },
+        {
+          "command": "stack.nth-tab-3",
+          "keys": "Ctrl+3"
+        },
+        {
+          "command": "stack.nth-tab-4",
+          "keys": "Ctrl+4"
+        },
+        {
+          "command": "stack.nth-tab-5",
+          "keys": "Ctrl+5"
+        },
+        {
+          "command": "stack.nth-tab-6",
+          "keys": "Ctrl+6"
+        },
+        {
+          "command": "stack.nth-tab-7",
+          "keys": "Ctrl+7"
+        },
+        {
+          "command": "stack.nth-tab-8",
+          "keys": "Ctrl+8"
+        },
+        {
+          "command": "stack.nth-tab-9",
+          "keys": "Ctrl+9"
+        }
+      ],
       "workspacePlatform": {
         "pages": [
           {
@@ -1153,14 +913,14 @@
                   "content": [
                     {
                       "type": "column",
-                      "width": 60,
+                      "width": 55,
                       "isClosable": true,
                       "reorderEnabled": true,
                       "title": "",
                       "content": [
                         {
                           "type": "row",
-                          "height": 50,
+                          "height": 55,
                           "isClosable": true,
                           "reorderEnabled": true,
                           "title": "",
@@ -1188,10 +948,6 @@
                                     "detachOnClose": false,
                                     "isClosable": true,
                                     "preventDragOut": false,
-                                    "accelerator": {
-                                      "zoom": true
-                                    },
-                                    "fdc3InteropApi": "1.2",
                                     "permissions": {
                                       "ExternalWindow": {
                                         "wrap": true
@@ -1210,9 +966,7 @@
                                     },
                                     "url": "<RT_URL>/fx-tiles",
                                     "componentName": "view",
-                                    "interop": {
-                                      "currentContextGroup": "green"
-                                    },
+                                    "interop": {},
                                     "preloadScripts": [],
                                     "hotkeys": [
                                       {
@@ -1305,14 +1059,13 @@
                                       "width": false,
                                       "height": false
                                     },
-                                    "name": "internal-generated-view-7f380de8-56ae-42b7-a36b-62ec19bdde85",
+                                    "name": "internal-generated-view-878aa0f6-edcc-421f-bf9e-2ac3b7fa20cf",
                                     "uuid": "adaptive-workspace-provider",
                                     "initialUrl": "<RT_URL>/fx-tiles",
                                     "processAffinity": "adaptive-workspace-provider",
-                                    "zoomLevel": 0,
-                                    "enableBeforeUnload": false
+                                    "zoomLevel": 0
                                   },
-                                  "title": "Live Rates",
+                                  "title": "FX Live Rates",
                                   "isClosable": true,
                                   "reorderEnabled": true
                                 }
@@ -1322,7 +1075,7 @@
                         },
                         {
                           "type": "row",
-                          "height": 50,
+                          "height": 45,
                           "isClosable": true,
                           "reorderEnabled": true,
                           "title": "",
@@ -1357,10 +1110,6 @@
                                         "detachOnClose": false,
                                         "isClosable": true,
                                         "preventDragOut": false,
-                                        "accelerator": {
-                                          "zoom": true
-                                        },
-                                        "fdc3InteropApi": "1.2",
                                         "permissions": {
                                           "ExternalWindow": {
                                             "wrap": true
@@ -1380,7 +1129,7 @@
                                         "url": "<RT_URL>/fx-blotter",
                                         "componentName": "view",
                                         "interop": {
-                                          "currentContextGroup": "purple"
+                                          "currentContextGroup": "green"
                                         },
                                         "preloadScripts": [],
                                         "hotkeys": [
@@ -1474,14 +1223,13 @@
                                           "width": false,
                                           "height": false
                                         },
-                                        "name": "internal-generated-view-97e140ad-c2e2-4d56-8231-06c8139daa3f",
+                                        "name": "internal-generated-view-e61f0941-fb7e-477d-abba-141fd2e9ca93",
                                         "uuid": "adaptive-workspace-provider",
                                         "initialUrl": "<RT_URL>/fx-blotter",
                                         "processAffinity": "adaptive-workspace-provider",
-                                        "zoomLevel": 0,
-                                        "enableBeforeUnload": false
+                                        "zoomLevel": 0
                                       },
-                                      "title": "Trades",
+                                      "title": "FX Trades",
                                       "isClosable": true,
                                       "reorderEnabled": true
                                     }
@@ -1495,14 +1243,14 @@
                     },
                     {
                       "type": "column",
-                      "width": 40,
+                      "width": 45,
                       "isClosable": true,
                       "reorderEnabled": true,
                       "title": "",
                       "content": [
                         {
                           "type": "row",
-                          "height": 35,
+                          "height": 100,
                           "isClosable": true,
                           "reorderEnabled": true,
                           "title": "",
@@ -1530,10 +1278,6 @@
                                     "detachOnClose": false,
                                     "isClosable": true,
                                     "preventDragOut": false,
-                                    "accelerator": {
-                                      "zoom": true
-                                    },
-                                    "fdc3InteropApi": "1.2",
                                     "permissions": {
                                       "ExternalWindow": {
                                         "wrap": true
@@ -1550,7 +1294,7 @@
                                         "video"
                                       ]
                                     },
-                                    "url": "<RT_URL>/limit-checker",
+                                    "url": "<RA_URL>",
                                     "componentName": "view",
                                     "interop": {
                                       "currentContextGroup": "green"
@@ -1647,174 +1391,11 @@
                                       "width": false,
                                       "height": false
                                     },
-                                    "name": "internal-generated-view-8f6a77c2-a79e-4dca-a923-843f34d99d21",
-                                    "uuid": "adaptive-workspace-provider",
-                                    "initialUrl": "<RT_URL>/limit-checker",
-                                    "processAffinity": "adaptive-workspace-provider",
-                                    "zoomLevel": 0,
-                                    "enableBeforeUnload": false
-                                  },
-                                  "title": "Limit Checker",
-                                  "isClosable": true,
-                                  "reorderEnabled": true
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "row",
-                          "height": 65,
-                          "isClosable": true,
-                          "reorderEnabled": true,
-                          "title": "",
-                          "content": [
-                            {
-                              "type": "stack",
-                              "width": 100,
-                              "height": 100,
-                              "isClosable": true,
-                              "reorderEnabled": true,
-                              "title": "",
-                              "activeItemIndex": 0,
-                              "content": [
-                                {
-                                  "type": "component",
-                                  "componentName": "view",
-                                  "componentState": {
-                                    "bounds": {
-                                      "x": 1,
-                                      "y": 1,
-                                      "width": 0,
-                                      "height": 0
-                                    },
-                                    "contextMenu": true,
-                                    "detachOnClose": false,
-                                    "isClosable": true,
-                                    "preventDragOut": false,
-                                    "accelerator": {
-                                      "zoom": true
-                                    },
-                                    "fdc3InteropApi": "1.2",
-                                    "permissions": {
-                                      "ExternalWindow": {
-                                        "wrap": true
-                                      },
-                                      "System": {
-                                        "getAllExternalWindows": true,
-                                        "launchExternalProcess": true,
-                                        "readRegistryValue": false,
-                                        "terminateExternalProcess": true
-                                      },
-                                      "webAPIs": [
-                                        "notifications",
-                                        "audio",
-                                        "video"
-                                      ]
-                                    },
-                                    "url": "<RA_URL>",
-                                    "componentName": "view",
-                                    "interop": {
-                                      "currentContextGroup": "purple"
-                                    },
-                                    "preloadScripts": [],
-                                    "hotkeys": [
-                                      {
-                                        "command": "stack.nextTab",
-                                        "keys": "Ctrl+Tab"
-                                      },
-                                      {
-                                        "command": "stack.previousTab",
-                                        "keys": "Ctrl+Shift+Tab"
-                                      },
-                                      {
-                                        "command": "view.zoomIn",
-                                        "keys": "Ctrl+="
-                                      },
-                                      {
-                                        "command": "view.zoomInNumPad",
-                                        "keys": "Ctrl+numadd"
-                                      },
-                                      {
-                                        "command": "view.zoomOut",
-                                        "keys": "Ctrl+-"
-                                      },
-                                      {
-                                        "command": "view.zoomOutNumPad",
-                                        "keys": "Ctrl+numsub"
-                                      },
-                                      {
-                                        "command": "view.zoomReset",
-                                        "keys": "Ctrl+0"
-                                      },
-                                      {
-                                        "command": "view.detach",
-                                        "keys": "Ctrl+Shift+D"
-                                      },
-                                      {
-                                        "command": "view.focusLeft",
-                                        "keys": "Ctrl+Shift+Left"
-                                      },
-                                      {
-                                        "command": "view.focusRight",
-                                        "keys": "Ctrl+Shift+Right"
-                                      },
-                                      {
-                                        "command": "view.focusUp",
-                                        "keys": "Ctrl+Shift+Up"
-                                      },
-                                      {
-                                        "command": "view.focusDown",
-                                        "keys": "Ctrl+Shift+Down"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-1",
-                                        "keys": "Ctrl+1"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-2",
-                                        "keys": "Ctrl+2"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-3",
-                                        "keys": "Ctrl+3"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-4",
-                                        "keys": "Ctrl+4"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-5",
-                                        "keys": "Ctrl+5"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-6",
-                                        "keys": "Ctrl+6"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-7",
-                                        "keys": "Ctrl+7"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-8",
-                                        "keys": "Ctrl+8"
-                                      },
-                                      {
-                                        "command": "stack.nth-tab-9",
-                                        "keys": "Ctrl+9"
-                                      }
-                                    ],
-                                    "backgroundThrottling": true,
-                                    "autoResize": {
-                                      "width": false,
-                                      "height": false
-                                    },
-                                    "name": "internal-generated-view-d7384c2e-98a3-43c3-84d8-6017be42c1f6",
+                                    "name": "internal-generated-view-4b33837c-1592-4258-8839-a984c4ea2a0e",
                                     "uuid": "adaptive-workspace-provider",
                                     "initialUrl": "<RA_URL>",
                                     "processAffinity": "adaptive-workspace-provider",
-                                    "zoomLevel": 0,
-                                    "enableBeforeUnload": false
+                                    "zoomLevel": 0
                                   },
                                   "title": "Reactive Analytics",
                                   "isClosable": true,
@@ -1836,19 +1417,12 @@
               "maximisedItemId": null
             },
             "isActive": true,
-            "hasUnsavedChanges": true,
-            "panels": []
+            "hasUnsavedChanges": false
           }
-        ],
-        "favicon": "<BASE_URL>/images/icons/adaptive.png",
-        "_internalDeferShowOptions": {
-          "setAsForeground": true,
-          "deferShowEnabled": true,
-          "autoShow": true
-        }
+        ]
       },
-      "ignoreSavedWindowState": true,
-      "preloadScripts": []
+      "includeInSnapshots": true,
+      "closeOnLastViewRemoved": false
     }
   ],
   "interopSnapshotDetails": {
