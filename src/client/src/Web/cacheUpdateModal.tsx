@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 import styled from "styled-components"
 
 import { Modal } from "@/components/Modal"
@@ -28,7 +28,11 @@ export const showCacheUpdateModal = () => {
   const updateRoot = document.createElement("div")
   document.body.appendChild(updateRoot)
 
-  ReactDOM.render(
+  const root = createRoot(updateRoot)
+
+  console.log("Showing service worker modal")
+
+  root.render(
     <ThemeProvider>
       <Modal title="New updates are available" shouldShow>
         <p>Reload the page to see them.</p>
@@ -47,6 +51,5 @@ export const showCacheUpdateModal = () => {
         </Buttons>
       </Modal>
     </ThemeProvider>,
-    updateRoot,
   )
 }

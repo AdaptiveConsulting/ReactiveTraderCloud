@@ -16,11 +16,15 @@ export const getMainApp: () => React.FC = () => {
         // could be a disaster
         // Wait for our async chunks to be loaded, then skip waiting phase and show
         // the user a modal informing them that there are new updates available
+
+        console.log("Service worker on update")
+
         Promise.all([
           AnalyticsCoreDeferred,
           LiveRatesCoreDeferred,
           TradesCoreDeferred,
         ]).then(() => {
+          console.log("Deferred components resolved, sending skip message")
           registration.waiting?.postMessage({ type: "SKIP_WAITING" })
           showCacheUpdateModal()
         })

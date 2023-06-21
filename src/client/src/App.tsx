@@ -27,6 +27,7 @@ export async function initApp() {
 
   const container = document.getElementById("root")
   const root = createRoot(container as HTMLElement)
+
   root.render(
     <StrictMode>
       <GlobalStyle />
