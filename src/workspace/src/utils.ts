@@ -1,6 +1,6 @@
 import { App } from "@openfin/workspace-platform"
 import { firstValueFrom } from "rxjs"
-import { VITE_RT_URL } from "./consts"
+import { VITE_RA_URL, VITE_RT_URL } from "./consts"
 import { currencyPairSymbols$ } from "./services/currencyPairs"
 import { ADAPTIVE_LOGO } from "./home/utils"
 
@@ -16,4 +16,11 @@ export const getSpotTileApps = async (): Promise<App[]> => {
     publisher: "Adaptive Financial Consulting",
     description: `View ${symbol} live rates`,
   }))
+}
+
+export const manifest = {
+  reactiveTrader: `${VITE_RT_URL}/config/rt-fx.json`,
+  reactiveCredit: `${VITE_RT_URL}/config/rt-credit.json`,
+  reactiveAnalytics: `${VITE_RA_URL}/openfin/app.json`,
+  limitChecker: `${VITE_RT_URL}/config/limit-checker.json`,
 }

@@ -171,6 +171,7 @@ const copyPlugin = (isDev: boolean, buildTarget: BuildTarget): Plugin[] => {
       .replace(/<ENV_NAME>/g, env)
       // We don't want to show PROD in the app name
       .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : ` ${env.toUpperCase()}`)
+      .replace(/<OPENFIN_RUNTIME>/g, "31.112.75.4")
 
   return viteStaticCopy({
     flatten: true,

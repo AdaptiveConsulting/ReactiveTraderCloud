@@ -1,11 +1,12 @@
 import {
-  BrowserOverrideCallback,
   getCurrentSync,
   GlobalContextMenuOptionType,
   OpenGlobalContextMenuPayload,
-  Page
-} from '@openfin/workspace-platform'
-import { getUserToSwitch, switchUser } from './user'
+  Page,
+  WorkspacePlatformOverrideCallback,
+} from "@openfin/workspace-platform"
+import { getUserToSwitch, switchUser } from "./user"
+import OpenFin from "@openfin/core"
 
 export async function getPage(pageId: string) {
   let platform = getCurrentSync()
@@ -26,19 +27,19 @@ export async function launchPage(page: Page) {
   let platform = getCurrentSync()
   return platform.Browser.createWindow({
     workspacePlatform: {
-      pages: [page]
-    }
+      pages: [page],
+    },
   })
 }
 
 export async function launchView(
   view: OpenFin.PlatformViewCreationOptions | string,
-  targetIdentity?: OpenFin.Identity
+  targetIdentity?: OpenFin.Identity,
 ) {
   let platform = getCurrentSync()
   let viewOptions: OpenFin.PlatformViewCreationOptions
 
-  if (typeof view === 'string') {
+  if (typeof view === "string") {
     viewOptions = { url: view } as OpenFin.PlatformViewCreationOptions
   } else {
     viewOptions = view
@@ -47,11 +48,16 @@ export async function launchView(
   return platform.createView(viewOptions, targetIdentity)
 }
 
-const SWITCH_USER_ID = 'switch-user-id'
+const SWITCH_USER_ID = "switch-user-id"
 
-export const overrideCallback: BrowserOverrideCallback = async WorkspacePlatformProvider => {
+export const overrideCallback: WorkspacePlatformOverrideCallback = async (
+  WorkspacePlatformProvider,
+) => {
   class Override extends WorkspacePlatformProvider {
-    openGlobalContextMenu(req: OpenGlobalContextMenuPayload, callerIdentity: any) {
+    openGlobalContextMenu(
+      req: OpenGlobalContextMenuPayload,
+      callerIdentity: any,
+    ) {
       return super.openGlobalContextMenu(
         {
           ...req,
@@ -62,13 +68,13 @@ export const overrideCallback: BrowserOverrideCallback = async WorkspacePlatform
               data: {
                 type: GlobalContextMenuOptionType.Custom,
                 action: {
-                  id: SWITCH_USER_ID
-                }
-              }
-            }
-          ]
+                  id: SWITCH_USER_ID,
+                },
+              },
+            },
+          ],
         },
-        callerIdentity
+        callerIdentity,
       )
     }
   }
@@ -77,7 +83,7 @@ export const overrideCallback: BrowserOverrideCallback = async WorkspacePlatform
 
 export const customActions = {
   [SWITCH_USER_ID]: () => {
-    console.log('Switching user from global context menu');
+    console.log("Switching user from global context menu")
     switchUser()
-  }
+  },
 }

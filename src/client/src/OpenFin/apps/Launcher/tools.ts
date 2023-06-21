@@ -1,3 +1,5 @@
+import OpenFin from "@openfin/core"
+
 import {
   ApplicationConfig,
   ApplicationProvider,

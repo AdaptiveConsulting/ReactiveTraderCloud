@@ -1,12 +1,7 @@
-import {
-  limitCheckerView,
-  reactiveAnalytics,
-  reactiveTraderCredit,
-} from "@/apps"
-import { reactiveTraderFx } from "@/apps"
 import { BASE_URL } from "@/consts"
 import { ADAPTIVE_LOGO } from "@/home/utils"
 import { Dock, DockProvider } from "@openfin/workspace"
+import { manifest } from "./utils"
 import { getCurrentSync } from "@openfin/workspace-platform"
 
 export enum DockAction {
@@ -64,17 +59,15 @@ const platform = getCurrentSync()
 
 export const dockCustomActions = {
   [DockAction.OpenReactiveTraderFx]: () => {
-    platform.launchApp({ app: reactiveTraderFx })
+    fin.Application.startFromManifest(manifest.reactiveTrader)
   },
   [DockAction.OpenReactiveTraderCredit]: () => {
-    platform.launchApp({ app: reactiveTraderCredit })
+    fin.Application.startFromManifest(manifest.reactiveCredit)
   },
   [DockAction.OpenReactiveAnalytics]: () => {
-    platform.launchApp({ app: reactiveAnalytics })
+    fin.Application.startFromManifest(manifest.reactiveAnalytics)
   },
   [DockAction.OpenLimitChecker]: () => {
-    platform.launchApp({
-      app: limitCheckerView,
-    })
+    platform.launchContentManifest(manifest.limitChecker)
   },
 }

@@ -1,3 +1,4 @@
+import OpenFin from "@openfin/core"
 import queryString from "query-string"
 import { useLocation } from "react-router-dom"
 

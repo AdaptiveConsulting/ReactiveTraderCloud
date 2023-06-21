@@ -30,6 +30,7 @@ const copyOpenfinPlugin = (
       // We don't want to show PROD in the app name
       .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : ` ${env.toUpperCase()}`)
       .replace('"<SHOW_PROVIDER_WINDOW>"', `${isDev}`)
+      .replace(/<OPENFIN_RUNTIME>/g, "31.112.75.4")
 
   return viteStaticCopy({
     flatten: true,

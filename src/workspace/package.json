@@ -6,6 +6,7 @@
     "start": "vite",
     "build": "vite build",
     "serve": "vite preview",
+    "typecheck": "tsc",
     "openfin:dev": "npm start",
     "_openfin:run": "cross-env-shell \"wait-on -l $npm_config_manifest_url && openfin -l -c $npm_config_manifest_url\"",
     "openfin:run": "npm run _openfin:run --manifest_url=http://localhost:2017/config/workspace.json",
@@ -22,10 +23,10 @@
   "dependencies": {
     "@adaptive/hydra-platform": "^3.120.0",
     "@google-cloud/dialogflow": "^4.7.0",
-    "@openfin/workspace": "11.0.6",
-    "@openfin/workspace-platform": "11.0.6",
+    "@openfin/workspace": "13.0.7",
+    "@openfin/workspace-platform": "13.0.7",
     "csstype": "^3.0.11",
-    "openfin-notifications": "1.20.0",
+    "openfin-notifications": "1.23.0",
     "rxjs": "^7.5.4"
   },
   "devDependencies": {

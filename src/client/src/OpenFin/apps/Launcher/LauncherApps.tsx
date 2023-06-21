@@ -1,3 +1,4 @@
+import OpenFin from "@openfin/core"
 import { useState } from "react"
 
 import { appConfigs, ApplicationConfig } from "./applicationConfigurations"

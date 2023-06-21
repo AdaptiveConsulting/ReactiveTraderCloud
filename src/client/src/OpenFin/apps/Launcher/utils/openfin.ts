@@ -1,3 +1,4 @@
+import OpenFin from "@openfin/core"
 import { useEffect } from "react"
 
 export const closePlatform = () => {

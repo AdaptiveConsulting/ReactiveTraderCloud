@@ -1,3 +1,4 @@
+import OpenFin from "@openfin/core"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Measure, { ContentRect } from "react-measure"
 
