@@ -103,6 +103,8 @@ As a shortcut, to run the server and client in one command, use
 npm run openfin:start:blah
 ```
 
+For more insight into how NLP works in RT see their [doc](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/src/server/cloud/nlp/README.md).
+
 ## Finsemble
 
 How to run a web server, to serve the client in Finsemble

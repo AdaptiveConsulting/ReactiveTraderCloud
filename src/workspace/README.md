@@ -12,6 +12,7 @@ Branch builds are located at -
 PR builds are located at -
 `http://openfin.env.reactivetrader.com/pull/pr_id/workspace/config/workspace.json`
 
+For more insight into how NLP works in RT see their [doc](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/src/server/cloud/nlp/README.md).
 
 ## Running Locally
 
