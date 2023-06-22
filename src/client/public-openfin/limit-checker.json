@@ -20,10 +20,8 @@
       {
         "icon": "<BASE_URL>/static/media/limit-checker.svg",
         "autoShow": true,
-        "defaultWidth": 720,
-        "defaultHeight": 800,
-        "minWidth": 720,
-        "minHeight": 800,
+        "defaultWidth": 900,
+        "defaultHeight": 820,
         "defaultCentered": true,
         "resizable": true,
         "maximizable": true,

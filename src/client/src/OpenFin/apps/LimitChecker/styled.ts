@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"
 
 export const Header = styled.h1`
-  padding: 15px 0 15px 15px;
+  padding: 12px 0 15px 15px;
   font-size: 16px;
   font-weight: 400;
   color: white;

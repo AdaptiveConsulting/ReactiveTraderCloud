@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import styled from "styled-components"
 
 import { LimitCheckResultsTable } from "./LimitCheckResults"
-import { LimitInputs } from "./LimitInputGrid"
+import { LimitInputs } from "./LimitInputList"
 import { checkLimit, LimitCheckerRequest } from "./state"
 
 const contextHandler = (context: Context) => {
@@ -16,8 +16,9 @@ joinChannel("green")
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
+  color: ${({ theme }) => theme.core.textColor};
 `
 
 const LimitChecker = () => {
