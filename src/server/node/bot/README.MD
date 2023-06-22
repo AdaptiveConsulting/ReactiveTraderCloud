@@ -38,8 +38,6 @@ For a detailed breakdown of Symphony Auhentication see their [docs](https://deve
 
 For a detailed breakdown of Google Cloud Authentication see their [docs](https://cloud.google.com/docs/authentication/getting-started)
 
-For more insight into how NLP works in RT see their [doc](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/src/server/cloud/nlp/README.md)
-
 ### Starting the bot
 
 ```
