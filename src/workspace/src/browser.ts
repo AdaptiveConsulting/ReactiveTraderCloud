@@ -1,3 +1,4 @@
+import OpenFin from "@openfin/core"
 import {
   getCurrentSync,
   GlobalContextMenuOptionType,
@@ -6,7 +7,6 @@ import {
   WorkspacePlatformOverrideCallback,
 } from "@openfin/workspace-platform"
 import { getUserToSwitch, switchUser } from "./user"
-import OpenFin from "@openfin/core"
 
 export async function getPage(pageId: string) {
   let platform = getCurrentSync()
