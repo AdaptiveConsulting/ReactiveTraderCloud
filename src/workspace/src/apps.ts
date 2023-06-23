@@ -1,6 +1,6 @@
 import { App } from "@openfin/workspace"
 import { BASE_URL } from "./consts"
-import { manifest } from "./utils"
+import { manifestUrls } from "./utils"
 
 export async function getApps(): Promise<App[]> {
   return [
@@ -21,7 +21,7 @@ export const reactiveTraderFx: App = {
   title: "Reactive Trader FX",
   manifestType: "manifest",
   description: "Reactive Trader FX",
-  manifest: manifest.reactiveTrader,
+  manifest: manifestUrls.reactiveTrader,
   icons: [
     {
       src: `${BASE_URL}/images/icons/reactive-trader.png`,
@@ -37,7 +37,7 @@ export const reactiveTraderCredit: App = {
   title: "Reactive Trader Credit",
   manifestType: "manifest",
   description: "Reactive Trader Credit",
-  manifest: manifest.reactiveCredit,
+  manifest: manifestUrls.reactiveCredit,
   icons: [
     {
       src: `${BASE_URL}/images/icons/reactive-trader.png`,
@@ -53,7 +53,7 @@ export const reactiveAnalytics: App = {
   title: "Reactive Analytics",
   manifestType: "manifest",
   description: "Reactive Analytics",
-  manifest: manifest.reactiveAnalytics,
+  manifest: manifestUrls.reactiveAnalytics,
   icons: [
     {
       src: `${BASE_URL}/images/icons/reactive-analytics.png`,
@@ -69,7 +69,7 @@ export const limitChecker: App = {
   title: "Limit Checker",
   manifestType: "manifest",
   description: "Reactive Trader Limit Checker",
-  manifest: manifest.limitChecker,
+  manifest: manifestUrls.limitChecker,
   icons: [
     {
       src: `${BASE_URL}/images/icons/limit-checker.ico`,

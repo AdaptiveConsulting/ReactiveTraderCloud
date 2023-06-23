@@ -18,7 +18,7 @@ export const getSpotTileApps = async (): Promise<App[]> => {
   }))
 }
 
-export const manifest = {
+export const manifestUrls = {
   reactiveTrader: `${VITE_RT_URL}/config/rt-fx.json`,
   reactiveCredit: `${VITE_RT_URL}/config/rt-credit.json`,
   reactiveAnalytics: `${VITE_RA_URL}/openfin/app.json`,

@@ -3,6 +3,8 @@ import { TransformOption, viteStaticCopy } from "vite-plugin-static-copy"
 
 const localPort = Number(process.env.PORT) || 2017
 
+const openfinRuntime = "31.112.75.4"
+
 function getBaseUrl(dev: boolean) {
   return dev
     ? `http://localhost:${localPort}`
@@ -30,7 +32,7 @@ const copyOpenfinPlugin = (
       // We don't want to show PROD in the app name
       .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : ` ${env.toUpperCase()}`)
       .replace('"<SHOW_PROVIDER_WINDOW>"', `${isDev}`)
-      .replace(/<OPENFIN_RUNTIME>/g, "31.112.75.4")
+      .replace(/<OPENFIN_RUNTIME>/g, openfinRuntime)
 
   return viteStaticCopy({
     flatten: true,
@@ -73,7 +75,7 @@ const setConfig = ({ mode }) => {
     preview: {
       port: localPort,
     },
-        server: {
+    server: {
       port: localPort,
       proxy: {
         "/ws": {

@@ -1,7 +1,7 @@
 import { BASE_URL } from "@/consts"
 import { ADAPTIVE_LOGO } from "@/home/utils"
 import { Dock, DockProvider } from "@openfin/workspace"
-import { manifest } from "./utils"
+import { manifestUrls } from "./utils"
 
 export enum DockAction {
   OpenReactiveTraderFx = "open-reactive-trader-fx",
@@ -50,12 +50,12 @@ export const registerDock = () => {
 
 export const dockCustomActions = {
   [DockAction.OpenReactiveTraderFx]: () => {
-    fin.Application.startFromManifest(manifest.reactiveTrader)
+    fin.Application.startFromManifest(manifestUrls.reactiveTrader)
   },
   [DockAction.OpenReactiveTraderCredit]: () => {
-    fin.Application.startFromManifest(manifest.reactiveCredit)
+    fin.Application.startFromManifest(manifestUrls.reactiveCredit)
   },
   [DockAction.OpenReactiveAnalytics]: () => {
-    fin.Application.startFromManifest(manifest.reactiveAnalytics)
+    fin.Application.startFromManifest(manifestUrls.reactiveAnalytics)
   },
 }
