@@ -1,6 +1,6 @@
 import { broadcast, joinChannel } from "@finos/fdc3"
-import { ApplicationEvents } from "@openfin/core/src/api/events/application.js"
-import { WindowEvent } from "@openfin/core/src/api/events/base.js"
+import { EventHandler } from "@openfin/core/src/api/events/base"
+import { ApplicationEvent, WindowEvent } from "@openfin/core/src/OpenFin"
 import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 
@@ -37,15 +37,15 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
     joinChannel("green")
 
     if (!fin.me.isView) {
-      const listenerViewAttached = (
-        _: WindowEvent<"window", "view-attached">,
+      const listenerViewAttached: EventHandler<WindowEvent, "view-attached"> = (
+        _,
       ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "attach", label })
       }
 
-      const listenerViewDetached = (
-        e: WindowEvent<"window", "view-detached">,
+      const listenerViewDetached: EventHandler<WindowEvent, "view-detached"> = (
+        e,
       ) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "detach", label })
@@ -58,38 +58,42 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         )
       }
 
-      const listenerViewDestroyed = (_: WindowEvent<"window", string>) => {
-        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
-        // ReactGA.event({ category: "RT - Tab", action: "destroyed", label })
-      }
+      const listenerViewDestroyed: EventHandler<WindowEvent, "view-destroyed"> =
+        (_) => {
+          //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+          // ReactGA.event({ category: "RT - Tab", action: "destroyed", label })
+        }
 
-      const listenerViewHidden = (_: ApplicationEvents["view-hidden"]) => {
-        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
-        // ReactGA.event({ category: "RT - Tab", action: "hidden", label })
-        const layoutItems: HTMLCollectionOf<Element> =
-          document.getElementsByClassName("lm_item")
+      const listenerViewHidden: EventHandler<ApplicationEvent, "view-hidden"> =
+        (_) => {
+          //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+          // ReactGA.event({ category: "RT - Tab", action: "hidden", label })
+          const layoutItems: HTMLCollectionOf<Element> =
+            document.getElementsByClassName("lm_item")
 
-        for (const idx in layoutItems) {
-          const layoutItem = layoutItems[idx]
+          for (const idx in layoutItems) {
+            const layoutItem = layoutItems[idx]
 
-          if (layoutItem && layoutItem.querySelector) {
-            const placeholder = layoutItem.querySelector(".wrapper_title")
-            const tab = layoutItem.querySelector(".lm_tab.lm_active .lm_title")
-
-            if (placeholder && tab) {
-              placeholder.innerHTML = getEmptyContent(
-                tab.innerHTML as LayoutKey,
-                false,
+            if (layoutItem && layoutItem.querySelector) {
+              const placeholder = layoutItem.querySelector(".wrapper_title")
+              const tab = layoutItem.querySelector(
+                ".lm_tab.lm_active .lm_title",
               )
+
+              if (placeholder && tab) {
+                placeholder.innerHTML = getEmptyContent(
+                  tab.innerHTML as LayoutKey,
+                  false,
+                )
+              }
             }
           }
         }
-      }
 
-      const listenerWindowCreated = ({
-        uuid,
-        name,
-      }: WindowEvent<"application", "window-created">) => {
+      const listenerWindowCreated: EventHandler<
+        ApplicationEvent,
+        "window-created"
+      > = ({ uuid, name }) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "open", label })
 
@@ -106,9 +110,10 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         })
       }
 
-      const listenerWindowClosed = ({
-        name,
-      }: WindowEvent<"application", "window-closed">) => {
+      const listenerWindowClosed: EventHandler<
+        ApplicationEvent,
+        "window-closed"
+      > = ({ name }) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "close", label })
 
@@ -118,10 +123,10 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         })
       }
 
-      const listenerWindowClosing = ({
-        name,
-        uuid,
-      }: WindowEvent<"application", "window-closing">) => {
+      const listenerWindowClosing: EventHandler<
+        ApplicationEvent,
+        "window-closing"
+      > = ({ name, uuid }) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "closing", label })
 

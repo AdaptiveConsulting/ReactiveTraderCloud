@@ -1,5 +1,6 @@
 import { App } from "@openfin/workspace"
-import { BASE_URL, VITE_RA_URL, VITE_RT_URL } from "./consts"
+import { BASE_URL } from "./consts"
+import { manifestUrls } from "./utils"
 
 export async function getApps(): Promise<App[]> {
   return [
@@ -20,7 +21,7 @@ export const reactiveTraderFx: App = {
   title: "Reactive Trader FX",
   manifestType: "manifest",
   description: "Reactive Trader FX",
-  manifest: `${VITE_RT_URL}/config/rt-fx.json`,
+  manifest: manifestUrls.reactiveTrader,
   icons: [
     {
       src: `${BASE_URL}/images/icons/reactive-trader.png`,
@@ -36,7 +37,7 @@ export const reactiveTraderCredit: App = {
   title: "Reactive Trader Credit",
   manifestType: "manifest",
   description: "Reactive Trader Credit",
-  manifest: `${VITE_RT_URL}/config/rt-credit.json`,
+  manifest: manifestUrls.reactiveCredit,
   icons: [
     {
       src: `${BASE_URL}/images/icons/reactive-trader.png`,
@@ -52,7 +53,7 @@ export const reactiveAnalytics: App = {
   title: "Reactive Analytics",
   manifestType: "manifest",
   description: "Reactive Analytics",
-  manifest: `${VITE_RA_URL}/openfin/app.json`,
+  manifest: manifestUrls.reactiveAnalytics,
   icons: [
     {
       src: `${BASE_URL}/images/icons/reactive-analytics.png`,
@@ -68,7 +69,7 @@ export const limitChecker: App = {
   title: "Limit Checker",
   manifestType: "manifest",
   description: "Reactive Trader Limit Checker",
-  manifest: `${VITE_RT_URL}/config/limit-checker.json`,
+  manifest: manifestUrls.limitChecker,
   icons: [
     {
       src: `${BASE_URL}/images/icons/limit-checker.ico`,

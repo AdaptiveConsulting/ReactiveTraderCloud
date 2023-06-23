@@ -1,3 +1,5 @@
+import OpenFin from "@openfin/core"
+
 import { ENVIRONMENT } from "@/constants"
 import { constructUrl } from "@/utils/url"
 

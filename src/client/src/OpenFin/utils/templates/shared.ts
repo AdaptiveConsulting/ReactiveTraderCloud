@@ -1,3 +1,5 @@
+import OpenFin from "@openfin/core"
+
 import { CreditView } from "./creditTemplateLayouts"
 import { FxView } from "./fxTemplateLayouts"
 

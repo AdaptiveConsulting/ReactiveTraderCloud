@@ -25,7 +25,7 @@
     }
   },
   "runtime": {
-    "version": "29.108.73.14",
+    "version": "<OPENFIN_RUNTIME>",
     "arguments": "--remote-debugging-port=9091"
   },
   "services": [

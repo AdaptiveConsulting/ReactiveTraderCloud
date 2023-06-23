@@ -1,3 +1,5 @@
+import OpenFin from "@openfin/core"
+
 interface BasicWindow {
   name: string
   width: number

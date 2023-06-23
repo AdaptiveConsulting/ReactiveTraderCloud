@@ -1,3 +1,4 @@
+import OpenFin from "@openfin/core"
 import { createSignal } from "@react-rxjs/utils"
 import { merge, scan } from "rxjs"
 

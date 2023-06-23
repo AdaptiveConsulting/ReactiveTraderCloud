@@ -1,3 +1,5 @@
+import OpenFin from "@openfin/core"
+
 import { WindowConfig } from "./openWindow"
 
 // TODO - Maybe move to generic place
