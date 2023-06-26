@@ -6,7 +6,7 @@ The Reactive Trader Openfin Workspace Provider is a standalone application that 
 
 The manifest file is available at - `http://openfin.dev|uat|prod.reactivetrader.com/workspace/config/workspace.json`
 
-Branch builds are located at - 
+Branch builds are located at -
 `http://openfin.env.reactivetrader.com/branch/branch_name/workspace/config/workspace.json`
 
 PR builds are located at -
@@ -16,7 +16,7 @@ For more insight into how NLP works in RT see their [doc](https://github.com/Ada
 
 ## Running Locally
 
-Run the Workspace Provider 
+Run the Workspace Provider
 
 - `npm run start` to start the server
 - `openfin:run` to launch the provider

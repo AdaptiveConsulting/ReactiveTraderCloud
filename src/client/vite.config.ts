@@ -20,7 +20,7 @@ type BuildTarget = "web" | "openfin" | "finsemble"
 
 const localPort = Number(process.env.PORT) || 1917
 
-const openfinRuntime = "31.112.75.4"
+const OPENFIN_RUNTIME = "31.112.75.4"
 
 function getBaseUrl(dev: boolean) {
   return dev
@@ -173,7 +173,7 @@ const copyPlugin = (isDev: boolean, buildTarget: BuildTarget): Plugin[] => {
       .replace(/<ENV_NAME>/g, env)
       // We don't want to show PROD in the app name
       .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : ` ${env.toUpperCase()}`)
-      .replace(/<OPENFIN_RUNTIME>/g, openfinRuntime)
+      .replace(/<OPENFIN_RUNTIME>/g, OPENFIN_RUNTIME)
 
   return viteStaticCopy({
     flatten: true,
