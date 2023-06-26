@@ -33,6 +33,7 @@ export enum NlpIntentType {
   SpotQuote,
   TradeInfo,
   MarketInfo,
+  CreditRfq,
 }
 
 export interface TradeExecutionIntent {
@@ -65,17 +66,28 @@ export interface MarketInfoIntent {
   payload: Record<string, unknown>
 }
 
+export interface CreditRfqIntent {
+  type: NlpIntentType.CreditRfq
+  payload: {
+    stock?: string
+    direction?: Direction
+    notional?: number
+  }
+}
+
 export type NlpIntent =
   | TradeExecutionIntent
   | SpotQuoteIntent
   | TradesInfoIntent
   | MarketInfoIntent
+  | CreditRfqIntent
 
 const intentMapper: Record<string, NlpIntentType> = {
   "rt.trades.execute": NlpIntentType.TradeExecution,
   "rt.spot.quote": NlpIntentType.SpotQuote,
   "rt.trades.info": NlpIntentType.TradeInfo,
   "rt.market.info": NlpIntentType.MarketInfo,
+  "rt.credit.rfq": NlpIntentType.CreditRfq,
 }
 
 const directionMapper: Record<string, Direction> = {
@@ -130,6 +142,21 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
                   notional: value,
                 },
               } as TradeExecutionIntent)
+            : null
+        }
+
+        case NlpIntentType.CreditRfq: {
+          return direction
+            ? ({
+                type: NlpIntentType.CreditRfq,
+                payload: {
+                  stock:
+                    response.queryResult?.parameters?.fields?.Stock
+                      ?.stringValue,
+                  direction: directionMapper[direction],
+                  notional: value,
+                },
+              } as CreditRfqIntent)
             : null
         }
 

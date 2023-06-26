@@ -20,6 +20,13 @@ export const NlpSuggestions = ({ intent }: { intent: NlpIntent | null }) => {
         </Suggestion>
       )
 
+    case NlpIntentType.CreditRfq:
+      return (
+        <Suggestion>
+          <Subscribe fallback={null}>{/* Credit */}</Subscribe>
+        </Suggestion>
+      )
+
     case NlpIntentType.SpotQuote:
       return (
         <SuggestionWrapper
