@@ -17,6 +17,7 @@ const FxTrades = () => {
     }
     if (window.fdc3) {
       broadcast(context)
+      window.fdc3.raiseIntent("ViewChart", context)
     }
   }, [])
 
