@@ -22,7 +22,7 @@ import {
 } from "@/services/executions"
 import { getPrice$ } from "@/services/prices"
 
-import { nlpIntent$, NlpIntentType } from "../../services/nlpService"
+import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
 
 const [next$_, onNext] = createSignal()
 export { onNext }
@@ -52,7 +52,7 @@ export enum NlpExecutionStatus {
   Done = 5,
 }
 
-interface RequestData {
+export interface RequestData {
   symbol: string
   notional: number
   direction: Direction
@@ -130,10 +130,10 @@ const nlpExecutionState$ = nlpIntent$.pipe(
         },
       ],
       next$.pipe(
-        mapTo({
+        map(() => ({
           type: NlpExecutionStatus.WaitingToExecute as const,
           payload: { requestData },
-        }),
+        })),
       ),
       next$.pipe(
         withLatestFrom(getPrice$(symbol), getCurrencyPair$(symbol)),

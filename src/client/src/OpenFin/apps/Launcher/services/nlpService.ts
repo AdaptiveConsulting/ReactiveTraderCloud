@@ -69,9 +69,9 @@ export interface MarketInfoIntent {
 export interface CreditRfqIntent {
   type: NlpIntentType.CreditRfq
   payload: {
-    stock?: string
-    direction?: Direction
-    notional?: number
+    symbol: string
+    direction: Direction
+    notional: number
   }
 }
 
@@ -124,10 +124,14 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
       if (!response || !response.queryResult?.intent?.displayName) return null
 
       const intent = intentMapper[response.queryResult?.intent?.displayName]
+
       const symbol =
-        response.queryResult?.parameters?.fields?.CurrencyPairs?.stringValue
+        response.queryResult?.parameters?.fields?.CurrencyPairs?.stringValue ||
+        response.queryResult?.parameters?.fields?.Stock?.stringValue
+
       const direction =
         response.queryResult?.parameters?.fields?.TradeType?.stringValue
+
       const value =
         response.queryResult?.parameters?.fields?.number?.numberValue
 
@@ -146,18 +150,18 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
         }
 
         case NlpIntentType.CreditRfq: {
-          return direction
-            ? ({
-                type: NlpIntentType.CreditRfq,
-                payload: {
-                  stock:
-                    response.queryResult?.parameters?.fields?.Stock
-                      ?.stringValue,
-                  direction: directionMapper[direction],
-                  notional: value,
-                },
-              } as CreditRfqIntent)
-            : null
+          if (direction) {
+            return {
+              type: NlpIntentType.CreditRfq,
+              payload: {
+                symbol,
+                direction: directionMapper[direction],
+                notional: value,
+              },
+            } as CreditRfqIntent
+          } else {
+            return null
+          }
         }
 
         case NlpIntentType.MarketInfo:

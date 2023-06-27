@@ -5,13 +5,13 @@ import { Direction } from "@/generated/TradingGateway"
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { formatNumber } from "@/utils"
 
-import { useOverlayElement } from "../../overlayContext"
-import { onResetInput } from "../../services/nlpService"
+import { useOverlayElement } from "../../../overlayContext"
+import { onResetInput } from "../../../services/nlpService"
 import {
   TradeExecutionActionContainer,
   TradeExecutionContainer,
   TradeResponseContainer,
-} from "../styles"
+} from "../../styles"
 import { IndeterminateLoadingBar } from "./IndeterminateLoadingBar"
 import {
   NlpExecutionDataReady,

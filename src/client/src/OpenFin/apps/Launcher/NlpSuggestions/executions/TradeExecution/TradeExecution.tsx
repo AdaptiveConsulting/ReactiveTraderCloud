@@ -1,5 +1,5 @@
-import { Quotes } from "../Quotes"
-import { HelpText, Pill } from "../styles"
+import { Quotes } from "../../Quotes"
+import { HelpText, Pill } from "../../styles"
 import { ExecutionWorkflow } from "./ExecutionWorkflow"
 import {
   NlpExecutionStatus,
