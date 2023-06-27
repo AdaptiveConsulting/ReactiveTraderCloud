@@ -1,24 +1,82 @@
-import { NlpExecutionStatus, onNext, useRfqExecutionIntent } from "./state"
+import { Direction } from "@/generated/TradingGateway"
+import { formatNumber } from "@/utils"
+import {
+  HelpText,
+  Pill,
+  TradeExecutionActionContainer,
+  TradeExecutionContainer,
+  TradeResponseContainer,
+} from "../../styles"
+import { IndeterminateLoadingBar } from "../TradeExecution/IndeterminateLoadingBar"
+import {
+  NlpExecutionDataReady,
+  NlpExecutionStatus,
+  useMoveNextOnEnter,
+} from "../TradeExecution/state"
+import { onNext, useRfqExecutionState } from "./state"
 
-const ExecuteButtons = () => <button onClick={onNext}>Execute</button>
+const ConfirmContent = ({
+  direction,
+  notional,
+  symbol,
+}: NlpExecutionDataReady["payload"]["requestData"]) => {
+  useMoveNextOnEnter()
+  const directionStr = direction === Direction.Buy ? "buying" : "selling"
+  const notionalStr = formatNumber(notional)
+
+  return (
+    <>
+      <p>
+        <strong>Are You Sure?</strong>
+      </p>
+      <p>
+        <small>
+          You are raising an RFQ for {directionStr} {notionalStr} {symbol}
+        </small>
+      </p>
+    </>
+  )
+}
+
+const Usage = () => (
+  <HelpText>
+    Usage: <Pill>buy/sell</Pill> <Pill>quantity</Pill> <Pill>stock</Pill>
+  </HelpText>
+)
+
+const Confirmation = () => {
+  useMoveNextOnEnter()
+  return (
+    <HelpText>
+      Press <Pill onClick={onNext}>ENTER</Pill> to create RFQ
+    </HelpText>
+  )
+}
 
 export const RfqExecution = () => {
-  const state = useRfqExecutionIntent()
+  const state = useRfqExecutionState()
 
   switch (state.type) {
     case NlpExecutionStatus.MissingData:
-      return <div>Missing Data</div>
+      return <Usage />
     case NlpExecutionStatus.DataReady:
-      return (
-        <>
-          <div>Data Ready</div>
-          <ExecuteButtons />
-        </>
-      )
+      return <Confirmation />
     case NlpExecutionStatus.WaitingToExecute:
-      return <div>Waiting to Execute</div>
+      return (
+        <TradeExecutionContainer className="search-container--active">
+          <IndeterminateLoadingBar state={state} />
+          <TradeResponseContainer>
+            <ConfirmContent {...state.payload.requestData} />
+          </TradeResponseContainer>
+          <TradeExecutionActionContainer>
+            {state.type === NlpExecutionStatus.WaitingToExecute ? (
+              <button onClick={onNext}>Execute</button>
+            ) : null}
+          </TradeExecutionActionContainer>
+        </TradeExecutionContainer>
+      )
     case NlpExecutionStatus.Done:
-      return <div>Done</div>
+      return <div>Your RFQ has been created.</div>
     default:
       return <div>default</div>
   }
