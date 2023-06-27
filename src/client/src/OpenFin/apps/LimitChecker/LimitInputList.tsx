@@ -6,21 +6,19 @@ import { LimitInput } from "./LimitInput"
 import { Header } from "./styled"
 
 const Container = styled.div`
-  border-bottom: 3px solid ${({ theme }) => theme.core.dividerColor};
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) => theme.core.darkBackground};
   h2 {
     font-size: 14px;
     font-weight: 400;
     color: white;
   }
+  display: flex;
+  flex-direction: column;
 `
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 3px;
-  padding: 10px 10px 10px 10px;
-  border-radius: 3px;
+const Scroll = styled.div`
+  padding-left: 10px;
+  overflow: auto;
 `
 
 export const LimitInputs = () => {
@@ -29,11 +27,11 @@ export const LimitInputs = () => {
   return (
     <Container>
       <Header className="header">Currency Pair Trade Limits</Header>
-      <Grid>
+      <Scroll>
         {Object.values(currencyPairs).map((currencyPair) => (
           <LimitInput currencyPair={currencyPair} key={currencyPair.symbol} />
         ))}
-      </Grid>
+      </Scroll>
     </Container>
   )
 }
