@@ -18,7 +18,7 @@ const Container = styled.div`
 
 const Scroll = styled.div`
   padding-left: 10px;
-  overflow: scroll;
+  overflow: auto;
 `
 
 export const LimitInputs = () => {

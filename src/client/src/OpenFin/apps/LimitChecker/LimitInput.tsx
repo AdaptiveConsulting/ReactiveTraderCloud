@@ -6,8 +6,8 @@ import { setLimit, useLimit } from "./state"
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.core.lightBackground};
-  padding: 10px 10px 10px 10px;
-  margin-bottom: 10px;
+  padding: 10px;
+  margin-bottom: 0.25rem;
 
   &:hover {
     background-color: ${({ theme }) => theme.core.backgroundHoverColor};
@@ -39,7 +39,6 @@ const Input = styled.input`
   border-bottom: 1.5px solid ${({ theme }) => theme.primary[5]};
   caret-color: ${({ theme }) => theme.primary.base};
   &:focus {
-    outline: none !important;
     border-color: ${({ theme }) => theme.accents.primary.base};
   }
 `
