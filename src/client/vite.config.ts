@@ -160,7 +160,11 @@ const customPreloadPlugin = () => {
   return result
 }
 
-const copyPlugin = (isDev: boolean, buildTarget: BuildTarget, env: string): Plugin[] => {
+const copyPlugin = (
+  isDev: boolean,
+  buildTarget: BuildTarget,
+  env: string,
+): Plugin[] => {
   const transform: TransformOption | undefined = (contents) =>
     contents
       .replace(/<BASE_URL>/g, getBaseUrl(isDev || env === "local"))
@@ -209,12 +213,22 @@ const copyPlugin = (isDev: boolean, buildTarget: BuildTarget, env: string): Plug
   })
 }
 
-const injectScriptIntoHtml = (isDev: boolean, buildTarget: BuildTarget, env: string) =>
+const injectScriptIntoHtml = (
+  isDev: boolean,
+  buildTarget: BuildTarget,
+  env: string,
+) =>
   createHtmlPlugin({
     inject: {
       data: {
         injectScript: `
-          ${buildTarget === "web" && `<link rel="manifest" href="${getBaseUrl(isDev)}/manifest.json" />`}
+          ${
+            buildTarget === "web"
+              ? `<link rel="manifest" href="${getBaseUrl(
+                  isDev,
+                )}/manifest.json" />`
+              : "<!-- no manifest.json for OpenFin -->"
+          }
           
           <script>
             // Hydra dependency references BigInt at run time even when the application isn't explicitly started
@@ -225,7 +239,9 @@ const injectScriptIntoHtml = (isDev: boolean, buildTarget: BuildTarget, env: str
             window.BigInt = supportsBigInt ? BigInt : function(){};
           </script>
           
-          <script async src="https://www.googletagmanager.com/gtag/js?id=${env === 'prod' ? 'G-Z3PC9MRCH9' : 'G-Y28QSEPEC8'}"></script>
+          <script async src="https://www.googletagmanager.com/gtag/js?id=${
+            env === "prod" ? "G-Z3PC9MRCH9" : "G-Y28QSEPEC8"
+          }"></script>
         `,
       },
     },
