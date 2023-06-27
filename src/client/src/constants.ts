@@ -1,6 +1,5 @@
 type Environment = "local" | "env" | "dev" | "uat" | "prod"
 
-export const GA_TRACKING_ID = "UA-46320965-5"
 // Comes from vite.config - base
 // Will be / for vite development mode (local),
 // otherwise the full domain / path of the deployment e.g. https://web.env.reactivetrader.com/pull/2064
@@ -42,3 +41,13 @@ export const CREDIT_RFQ_EXPIRY_SECONDS = 120
 export const CREDIT_SELL_SIDE_TICKET_HEIGHT = 262
 
 export const HIGHLIGHT_ROW_FLASH_TIME = 3000
+
+export const WEBSITE = "https://weareadaptive.com"
+export const EMAIL = "sales@weareadaptive.com"
+
+export type SocialPlatform = "Twitter" | "LinkedIn" | "Github"
+export const SOCIAL_ADDRESSES: Record<SocialPlatform, string> = {
+  Twitter: "https://twitter.com/WeAreAdaptive",
+  LinkedIn: "https://www.linkedin.com/company/adaptive-consulting-ltd/",
+  Github: "https://github.com/adaptiveConsulting/",
+}

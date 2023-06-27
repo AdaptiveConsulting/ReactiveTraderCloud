@@ -160,9 +160,7 @@ const customPreloadPlugin = () => {
   return result
 }
 
-const copyPlugin = (isDev: boolean, buildTarget: BuildTarget): Plugin[] => {
-  const env = process.env.ENVIRONMENT || "local"
-
+const copyPlugin = (isDev: boolean, buildTarget: BuildTarget, env: string): Plugin[] => {
   const transform: TransformOption | undefined = (contents) =>
     contents
       .replace(/<BASE_URL>/g, getBaseUrl(isDev || env === "local"))
@@ -211,30 +209,23 @@ const copyPlugin = (isDev: boolean, buildTarget: BuildTarget): Plugin[] => {
   })
 }
 
-const htmlPlugin = (dev: boolean) => {
-  return {
-    name: "html-transform",
-    transformIndexHtml(html) {
-      return html.replace(
-        /href="\/manifest.json"/,
-        `href="${getBaseUrl(dev)}/manifest.json"`,
-      )
-    },
-  }
-}
-
-const injectScriptIntoHtml = () =>
+const injectScriptIntoHtml = (isDev: boolean, buildTarget: BuildTarget, env: string) =>
   createHtmlPlugin({
     inject: {
       data: {
         injectScript: `
+          ${buildTarget === "web" && `<link rel="manifest" href="${getBaseUrl(isDev)}/manifest.json" />`}
+          
           <script>
             // Hydra dependency references BigInt at run time even when the application isn't explicitly started
             // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
-            // Set BigInt to an anon function to prevent the runtime error 
+            // Set BigInt to an anon function to prevent the runtime error
+
             window.supportsBigInt = typeof BigInt !== 'undefined';
             window.BigInt = supportsBigInt ? BigInt : function(){};
           </script>
+          
+          <script async src="https://www.googletagmanager.com/gtag/js?id=${env === 'prod' ? 'G-Z3PC9MRCH9' : 'G-Y28QSEPEC8'}"></script>
         `,
       },
     },
@@ -291,6 +282,7 @@ const fontFacePreload = Unfonts({
 const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
+  const env = process.env.ENVIRONMENT || "local"
   const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
   const isDev = mode === "development"
   const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
@@ -314,9 +306,8 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     devPlugins.push(injectWebServiceWorkerPlugin(mode) as Plugin)
   }
 
-  devPlugins.push(copyPlugin(isDev, buildTarget))
-  devPlugins.push(injectScriptIntoHtml())
-  devPlugins.push(htmlPlugin(isDev))
+  devPlugins.push(copyPlugin(isDev, buildTarget, env))
+  devPlugins.push(injectScriptIntoHtml(isDev, buildTarget, env))
 
   const plugins = process.env.STORYBOOK === "true" ? [] : devPlugins
   plugins.push(fontFacePreload)

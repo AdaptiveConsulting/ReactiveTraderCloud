@@ -91,14 +91,12 @@ export const [useTileState, getTileState$] = bind(
         spotRate: direction === Direction.Buy ? price.ask : price.bid,
       })),
       tap(({ direction, currencyPair, spotRate, notional }) => {
-        window.ga(
-          "send",
-          "event",
-          "RT - Trade Attempt",
+        window.gtag("event", "fx_trade_attempt", {
           direction,
-          `${currencyPair} - ${spotRate}`,
+          currencyPair,
+          spotRate,
           notional,
-        )
+        })
       }),
       exhaustMap((request) =>
         concat(

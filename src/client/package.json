@@ -56,7 +56,7 @@
     "e2e:web:smoke": "playwright test --project=chrome --grep @smoke"
   },
   "dependencies": {
-    "@adaptive/hydra-platform": "^3.120.0",
+    "@adaptive/hydra-platform": "3.120.0",
     "@finos/fdc3": "^1.2.0",
     "@openfin/core": "31.75.4",
     "@openfin/workspace": "13.0.7",
@@ -66,7 +66,7 @@
     "d3": "^6.6.2",
     "date-fns": "^2.19.0",
     "downshift": "^6.1.9",
-    "lodash": "^4.17.21",
+    "lodash": "4.17.21",
     "openfin-notifications": "1.23.0",
     "polished": "^4.1.1",
     "query-string": "^7.1.3",

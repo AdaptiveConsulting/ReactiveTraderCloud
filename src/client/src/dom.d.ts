@@ -8,6 +8,7 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     FSBL: any // Finsemble
     ga: ga
+    gtag: gtag
   }
 
   interface WindowEventMap {
