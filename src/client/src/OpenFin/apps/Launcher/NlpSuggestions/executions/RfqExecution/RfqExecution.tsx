@@ -64,11 +64,9 @@ export const RfqExecution = () => {
 
   useEffect(() => {
     const sub = registerSimulatedDealerResponses()
-    registerCreditQuoteNotifications()
 
     return () => {
       sub.unsubscribe()
-      unregisterCreditQuoteNotifications()
     }
   }, [])
 
