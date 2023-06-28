@@ -1,5 +1,11 @@
+import { useEffect } from "react"
+
 import { Card } from "@/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
 import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
+import {
+  registerCreditQuoteNotifications,
+  unregisterCreditQuoteNotifications,
+} from "@/notifications"
 import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 import { formatNumber } from "@/utils"
 
@@ -55,7 +61,16 @@ const Confirmation = () => {
 
 export const RfqExecution = () => {
   const state = useRfqExecutionState()
-  registerSimulatedDealerResponses()
+
+  useEffect(() => {
+    const sub = registerSimulatedDealerResponses()
+    registerCreditQuoteNotifications()
+
+    return () => {
+      sub.unsubscribe()
+      unregisterCreditQuoteNotifications()
+    }
+  }, [])
 
   switch (state.type) {
     case NlpExecutionStatus.MissingData:
