@@ -12,14 +12,14 @@ import {
   TradeExecutionContainer,
   TradeResponseContainer,
 } from "../../styles"
-import { IndeterminateLoadingBar } from "./IndeterminateLoadingBar"
+import { useMoveNextOnEnter } from "../hooks"
 import {
   NlpExecutionDataReady,
   NlpExecutionState,
   NlpExecutionStatus,
-  onNext,
-  useMoveNextOnEnter,
-} from "./state"
+} from "../types"
+import { IndeterminateLoadingBar } from "./IndeterminateLoadingBar"
+import { onNext } from "./state"
 
 const ConfirmContent = ({
   direction,

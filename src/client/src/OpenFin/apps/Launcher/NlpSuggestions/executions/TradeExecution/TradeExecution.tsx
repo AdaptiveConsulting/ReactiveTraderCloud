@@ -1,12 +1,9 @@
 import { Quotes } from "../../Quotes"
 import { HelpText, Pill } from "../../styles"
+import { useMoveNextOnEnter } from "../hooks"
+import { NlpExecutionStatus } from "../types"
 import { ExecutionWorkflow } from "./ExecutionWorkflow"
-import {
-  NlpExecutionStatus,
-  onNext,
-  useMoveNextOnEnter,
-  useNlpExecutionState,
-} from "./state"
+import { onNext, useNlpExecutionState } from "./state"
 
 const Usage = () => (
   <HelpText>

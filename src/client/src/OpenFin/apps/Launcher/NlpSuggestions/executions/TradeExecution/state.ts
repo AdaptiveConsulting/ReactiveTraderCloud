@@ -1,12 +1,10 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { useEffect } from "react"
 import { concat } from "rxjs"
 import {
   catchError,
   exhaustMap,
   map,
-  mapTo,
   startWith,
   switchMap,
   take,
@@ -15,91 +13,16 @@ import {
 
 import { Direction } from "@/generated/TradingGateway"
 import { getCurrencyPair$ } from "@/services/currencyPairs"
-import {
-  execute$,
-  ExecutionStatus,
-  ExecutionTrade,
-} from "@/services/executions"
+import { execute$, ExecutionStatus } from "@/services/executions"
 import { getPrice$ } from "@/services/prices"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
+import { NlpExecutionDataReady, NlpExecutionStatus } from "../types"
 
 const [next$_, onNext] = createSignal()
 export { onNext }
 
 const next$ = next$_.pipe(take(1))
-
-export const useMoveNextOnEnter = (onNext: () => void) => {
-  useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Enter" && !e.repeat) {
-        onNext()
-      }
-    }
-    window.addEventListener("keydown", onKeyDown)
-
-    return () => {
-      window.removeEventListener("keydown", onKeyDown)
-    }
-  }, [])
-}
-
-export enum NlpExecutionStatus {
-  MissingData = 1,
-  DataReady = 2,
-  WaitingToExecute = 3,
-  Executing = 4,
-  Done = 5,
-}
-
-export interface RequestData {
-  symbol: string
-  notional: number
-  direction: Direction
-}
-
-export interface NlpExecutionMissingData {
-  type: NlpExecutionStatus.MissingData
-  payload: Record<string, unknown>
-}
-
-export interface NlpExecutionDataReady {
-  type: NlpExecutionStatus.DataReady
-  payload: {
-    requestData: RequestData
-  }
-}
-
-export interface NlpExecutionWaitingToExecute {
-  type: NlpExecutionStatus.WaitingToExecute
-  payload: {
-    requestData: RequestData
-  }
-}
-
-export interface NlpExecutionExecuting {
-  type: NlpExecutionStatus.Executing
-  payload: {
-    requestData: RequestData
-  }
-}
-
-export interface NlpExecutionDone {
-  type: NlpExecutionStatus.Done
-  payload: {
-    requestData: RequestData
-    response:
-      | { type: "ok"; trade: ExecutionTrade }
-      | { type: "ko"; reason: string }
-  }
-}
-
-export type NlpExecutionState =
-  | NlpExecutionMissingData
-  | NlpExecutionDataReady
-  | NlpExecutionWaitingToExecute
-  | NlpExecutionExecuting
-  | NlpExecutionDone
 
 let nextId = 1
 const getId = () => (nextId++).toString()

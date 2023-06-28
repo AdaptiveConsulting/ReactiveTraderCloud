@@ -1,4 +1,6 @@
-import { Direction } from "@/generated/TradingGateway"
+import { Card } from "@/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
+import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
+import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 import { formatNumber } from "@/utils"
 
 import {
@@ -8,12 +10,9 @@ import {
   TradeExecutionContainer,
   TradeResponseContainer,
 } from "../../styles"
+import { useMoveNextOnEnter } from "../hooks"
 import { IndeterminateLoadingBar } from "../TradeExecution/IndeterminateLoadingBar"
-import {
-  NlpExecutionDataReady,
-  NlpExecutionStatus,
-  useMoveNextOnEnter,
-} from "../TradeExecution/state"
+import { NlpExecutionDataReady, NlpExecutionStatus } from "../types"
 import { onNext, useRfqExecutionState } from "./state"
 
 const ConfirmContent = ({
@@ -56,6 +55,7 @@ const Confirmation = () => {
 
 export const RfqExecution = () => {
   const state = useRfqExecutionState()
+  registerSimulatedDealerResponses()
 
   switch (state.type) {
     case NlpExecutionStatus.MissingData:
@@ -77,7 +77,13 @@ export const RfqExecution = () => {
         </TradeExecutionContainer>
       )
     case NlpExecutionStatus.Done:
-      return <div>Your RFQ has been created.</div>
+      return (
+        <>
+          {state.payload.response.type === ACK_CREATE_RFQ_RESPONSE && (
+            <Card id={state.payload.response.payload} />
+          )}
+        </>
+      )
     default:
       return <div>default</div>
   }

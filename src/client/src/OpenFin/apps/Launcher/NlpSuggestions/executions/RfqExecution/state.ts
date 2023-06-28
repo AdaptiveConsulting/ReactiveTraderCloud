@@ -10,17 +10,14 @@ import {
 } from "@/services/credit"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
-import {
-  NlpExecutionDataReady,
-  NlpExecutionStatus,
-} from "../TradeExecution/state"
+import { NlpExecutionDataReady, NlpExecutionStatus } from "../types"
 
 const [next$_, onNext] = createSignal()
 export { onNext }
 
 const next$ = next$_.pipe(take(1))
 
-export const rfqExecutionState$ = nlpIntent$.pipe(
+const rfqExecutionState$ = nlpIntent$.pipe(
   withLatestFrom(creditInstruments$, creditDealers$),
   switchMap(([intent, instruments, dealers]) => {
     if (
@@ -70,10 +67,10 @@ export const rfqExecutionState$ = nlpIntent$.pipe(
             expirySecs: CREDIT_RFQ_EXPIRY_SECONDS,
           }),
         ),
-        map(() => {
+        map((response) => {
           return {
             type: NlpExecutionStatus.Done as const,
-            payload: { requestData },
+            payload: { response },
           }
         }),
       ),
