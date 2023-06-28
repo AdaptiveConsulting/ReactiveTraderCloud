@@ -26,7 +26,7 @@ const ConfirmContent = ({
   notional,
   symbol,
 }: NlpExecutionDataReady["payload"]["requestData"]) => {
-  useMoveNextOnEnter()
+  useMoveNextOnEnter(onNext)
   const directionStr = direction === Direction.Buy ? "buying" : "selling"
   const notionalStr = formatNumber(notional)
 

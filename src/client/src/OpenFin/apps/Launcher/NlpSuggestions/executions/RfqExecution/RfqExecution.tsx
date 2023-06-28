@@ -1,5 +1,6 @@
 import { Direction } from "@/generated/TradingGateway"
 import { formatNumber } from "@/utils"
+
 import {
   HelpText,
   Pill,
@@ -20,7 +21,7 @@ const ConfirmContent = ({
   notional,
   symbol,
 }: NlpExecutionDataReady["payload"]["requestData"]) => {
-  useMoveNextOnEnter()
+  useMoveNextOnEnter(onNext)
   const directionStr = direction === Direction.Buy ? "buying" : "selling"
   const notionalStr = formatNumber(notional)
 
@@ -45,10 +46,10 @@ const Usage = () => (
 )
 
 const Confirmation = () => {
-  useMoveNextOnEnter()
+  useMoveNextOnEnter(onNext)
   return (
     <HelpText>
-      Press <Pill onClick={onNext}>ENTER</Pill> to create RFQ
+      Press <Pill>ENTER</Pill> to create RFQ
     </HelpText>
   )
 }

@@ -29,7 +29,7 @@ export { onNext }
 
 const next$ = next$_.pipe(take(1))
 
-export const useMoveNextOnEnter = () => {
+export const useMoveNextOnEnter = (onNext: () => void) => {
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Enter" && !e.repeat) {

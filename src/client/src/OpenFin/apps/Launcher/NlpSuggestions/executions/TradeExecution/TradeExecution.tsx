@@ -3,6 +3,7 @@ import { HelpText, Pill } from "../../styles"
 import { ExecutionWorkflow } from "./ExecutionWorkflow"
 import {
   NlpExecutionStatus,
+  onNext,
   useMoveNextOnEnter,
   useNlpExecutionState,
 } from "./state"
@@ -14,7 +15,7 @@ const Usage = () => (
 )
 
 const Confirmation = () => {
-  useMoveNextOnEnter()
+  useMoveNextOnEnter(onNext)
   return (
     <HelpText>
       Press <Pill>ENTER</Pill> to continue
