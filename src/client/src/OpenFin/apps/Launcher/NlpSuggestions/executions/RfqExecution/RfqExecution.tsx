@@ -2,13 +2,10 @@ import { useEffect } from "react"
 
 import { Card } from "@/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
 import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
-import {
-  registerCreditQuoteNotifications,
-  unregisterCreditQuoteNotifications,
-} from "@/notifications"
 import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 import { formatNumber } from "@/utils"
 
+import { onResetInput } from "../../../services/nlpService"
 import {
   HelpText,
   Pill,
@@ -86,6 +83,7 @@ export const RfqExecution = () => {
             {state.type === NlpExecutionStatus.WaitingToExecute ? (
               <button onClick={onNext}>Execute</button>
             ) : null}
+            <button onClick={onResetInput}>Cancel</button>
           </TradeExecutionActionContainer>
         </TradeExecutionContainer>
       )
