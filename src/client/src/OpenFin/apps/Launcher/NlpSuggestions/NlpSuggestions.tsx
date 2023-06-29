@@ -1,7 +1,7 @@
 import { Subscribe } from "@react-rxjs/core"
 
 import { NlpIntent, NlpIntentType } from "../services/nlpService"
-import { RfqExecution } from "./executions/RfqExecution/RfqExecution"
+import { RfqExecution } from "./executions/RfqExecution"
 import { TradeExecution } from "./executions/TradeExecution"
 import { AllQuotes, Quotes } from "./Quotes"
 import { HelpText, Suggestion } from "./styles"

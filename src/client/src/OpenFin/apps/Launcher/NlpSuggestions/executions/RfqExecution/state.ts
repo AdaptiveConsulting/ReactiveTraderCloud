@@ -48,7 +48,6 @@ const rfqExecutionState$ = nlpIntent$.pipe(
       [
         {
           type: NlpExecutionStatus.DataReady as const,
-          payload: { requestData },
         },
       ],
       next$.pipe(

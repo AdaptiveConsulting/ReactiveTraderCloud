@@ -127,7 +127,7 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
 
       const symbol =
         response.queryResult?.parameters?.fields?.CurrencyPairs?.stringValue ||
-        response.queryResult?.parameters?.fields?.Stock?.stringValue
+        response.queryResult?.parameters?.fields?.Bond?.stringValue
 
       const direction =
         response.queryResult?.parameters?.fields?.TradeType?.stringValue

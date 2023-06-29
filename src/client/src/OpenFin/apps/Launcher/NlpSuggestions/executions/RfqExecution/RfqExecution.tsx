@@ -90,13 +90,9 @@ export const RfqExecution = () => {
         </TradeExecutionContainer>
       )
     case NlpExecutionStatus.Done:
-      return (
-        <>
-          {state.payload.response.type === ACK_CREATE_RFQ_RESPONSE && (
-            <Card id={state.payload.response.payload} />
-          )}
-        </>
-      )
+      return state.payload.response.type === ACK_CREATE_RFQ_RESPONSE ? (
+        <Card id={state.payload.response.payload} />
+      ) : null
     default:
       return <div>default</div>
   }
