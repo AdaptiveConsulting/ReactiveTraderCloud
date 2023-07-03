@@ -1,9 +1,9 @@
 import { bind } from "@react-rxjs/core"
-import { createSignal } from "@react-rxjs/utils"
-import { map, merge, scan, share, withLatestFrom } from "rxjs"
+import { createKeyedSignal, createSignal } from "@react-rxjs/utils"
+import { concat, map, switchMap, take } from "rxjs"
 
+import { mapToFormattedNotional } from "@/App/LiveRates/Tile/Notional"
 import { currencyPairs$ } from "@/services/currencyPairs"
-import { LimitCheckStatus, LimitCheckTrade } from "@/services/trades/types"
 
 export interface LimitCheckerRequest {
   id: string
@@ -13,40 +13,37 @@ export interface LimitCheckerRequest {
   rate: string
 }
 
-const defaultLimits$ = currencyPairs$.pipe(
-  map((currencyPairs) =>
-    Object.keys(currencyPairs).reduce((ccyNotionalValues, symbol) => {
-      const { defaultNotional } = currencyPairs[symbol]
-      ccyNotionalValues[symbol] = defaultNotional
-      return ccyNotionalValues
-    }, {} as Record<string, number>),
-  ),
+const [limitInputValue$, onChangeLimitValue] = createKeyedSignal(
+  (limit) => limit.symbol,
+  (symbol: string, value: string) => ({ symbol, value }),
 )
 
-const [limitInput$, setLimit] = createSignal<Record<string, number>>()
-
-const limits$ = merge(defaultLimits$, limitInput$).pipe(
-  scan((acc, limits) => ({ ...acc, ...limits }), {} as Record<string, number>),
-)
-
-const [useLimit] = bind(
-  (symbol: string) => limits$.pipe(map((limits) => limits[symbol])),
-  0,
+const [useLimit, limitBySymbol$] = bind((symbol: string) =>
+  concat(
+    currencyPairs$.pipe(
+      take(1),
+      map((currencyPairs) => ({
+        symbol,
+        value: currencyPairs[symbol].defaultNotional.toString(),
+      })),
+    ),
+    limitInputValue$(symbol),
+  ).pipe(mapToFormattedNotional(({ value }) => value, ["k", "m"])),
 )
 
 const [limitCheckRequest$, checkLimit] = createSignal<LimitCheckerRequest>()
 
 const limitResult$ = limitCheckRequest$.pipe(
-  map((request) => ({
-    ...request,
-    notional: parseFloat(request.notional),
-    rate: parseFloat(request.rate),
-  })),
-  withLatestFrom(limits$),
-  map(([request, limits]) => ({
-    result: request.notional <= limits[request.tradedCurrencyPair],
-    request,
-  })),
+  switchMap((request) =>
+    limitBySymbol$(request.tradedCurrencyPair).pipe(
+      take(1),
+      map(([value, formattedValue]) => ({
+        notional: formattedValue,
+        result: Number(request.notional) <= value,
+        request,
+      })),
+    ),
+  ),
 )
 
 limitResult$.subscribe(({ result, request }) => {
@@ -56,22 +53,4 @@ limitResult$.subscribe(({ result, request }) => {
   })
 })
 
-let tradeId = 0
-
-const tableRows$ = limitResult$.pipe(
-  scan((acc, { request, result }) => {
-    return [
-      {
-        status: result ? LimitCheckStatus.Success : LimitCheckStatus.Failure,
-        tradeId: tradeId++,
-        symbol: request.tradedCurrencyPair,
-        notional: request.notional,
-        spotRate: request.rate,
-      },
-      ...acc,
-    ]
-  }, [] as LimitCheckTrade[]),
-  share(),
-)
-
-export { checkLimit, setLimit, tableRows$, useLimit }
+export { checkLimit, limitResult$, onChangeLimitValue, useLimit }

@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 import { CurrencyPair } from "@/services/currencyPairs/types"
 
-import { setLimit, useLimit } from "./state"
+import { onChangeLimitValue, useLimit } from "./state"
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.core.lightBackground};
@@ -37,7 +37,7 @@ const Input = styled.input`
   padding: 2px 0;
   color: ${({ theme }) => theme.core.textColor};
   border-bottom: 1.5px solid ${({ theme }) => theme.primary[5]};
-  caret-color: ${({ theme }) => theme.primary.base};
+  caret-color: ${({ theme }) => theme.accents.primary.base};
   &:focus {
     border-color: ${({ theme }) => theme.accents.primary.base};
   }
@@ -48,17 +48,17 @@ export const LimitInput = ({
 }: {
   currencyPair: CurrencyPair
 }) => {
-  const limit = useLimit(currencyPair.symbol)
+  const [, inputValue] = useLimit(currencyPair.symbol)
 
   const handleLimitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLimit({ [currencyPair.symbol]: Number(e.target.value) })
+    onChangeLimitValue(currencyPair.symbol, e.target.value)
   }
 
   return (
     <Container>
       <Symbol>{currencyPair.base + "/" + currencyPair.terms}</Symbol>
       <Label>{currencyPair.base}</Label>
-      <Input value={limit} onChange={handleLimitChange} />
+      <Input value={inputValue} onChange={handleLimitChange} />
     </Container>
   )
 }

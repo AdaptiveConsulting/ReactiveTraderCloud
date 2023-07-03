@@ -55,8 +55,8 @@ export enum LimitCheckStatus {
 export interface LimitCheckTrade extends Trade {
   status: LimitCheckStatus
   symbol: string
-  notional: number
-  spotRate: number
+  notional: string
+  spotRate: string
 }
 
 export interface Trade {

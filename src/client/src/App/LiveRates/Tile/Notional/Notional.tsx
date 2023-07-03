@@ -1,6 +1,6 @@
 import { createKeyedSignal } from "@react-rxjs/utils"
 import { FaRedo } from "react-icons/fa"
-import { concat, merge, pipe } from "rxjs"
+import { concat, merge, Observable, OperatorFunction, pipe } from "rxjs"
 import { filter, map, take } from "rxjs/operators"
 
 import { currencyPairs$ } from "@/services/currencyPairs"
@@ -27,9 +27,33 @@ const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
 )
 export { onChangeNotionalValue }
 
-const formatter = customNumberFormatter()
+export const mapToFormattedNotional: <T>(
+  callback: (value: T) => string,
+  c: ("k" | "m" | "b" | "t")[],
+  f?: Intl.NumberFormatOptions,
+) => OperatorFunction<T, [number, string]> =
+  (callback, characterMultipliers, formatterOptions) => (source$) => {
+    return new Observable((subscriber) => {
+      const applyCharacterMultiplier =
+        createApplyCharacterMultiplier(characterMultipliers)
 
-const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
+      const formatter = customNumberFormatter(formatterOptions)
+
+      source$.subscribe((v) => {
+        const rawVal = callback(v)
+
+        const numValue = Math.abs(parseQuantity(rawVal))
+        const lastChar = rawVal.slice(-1).toLowerCase()
+        const value = applyCharacterMultiplier(numValue, lastChar)
+
+        subscriber.next([
+          value,
+          formatter(value) +
+            (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
+        ])
+      })
+    })
+  }
 
 export const [useNotional, getNotional$] = symbolBind((symbol) =>
   concat(
@@ -42,24 +66,14 @@ export const [useNotional, getNotional$] = symbolBind((symbol) =>
     ),
     rawNotional$(symbol),
   ).pipe(
-    map(({ rawVal }) => {
-      const numValue = Math.abs(parseQuantity(rawVal))
-      const lastChar = rawVal.slice(-1).toLowerCase()
-      const value = applyCharacterMultiplier(numValue, lastChar)
-      return {
-        value,
-        inputValue:
-          formatter(value) +
-          (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
-      }
-    }),
-    filter(({ value }) => !Number.isNaN(value)),
+    mapToFormattedNotional(({ rawVal }) => rawVal, ["k", "m"]),
+    filter(([value]) => !Number.isNaN(value)),
   ),
 )
 export const [, getNotionalValue$] = symbolBind(
   pipe(
     getNotional$,
-    map((notional) => notional.value),
+    map(([value]) => value),
   ),
 )
 
@@ -124,7 +138,7 @@ export const NotionalInputInner = ({
 export const NotionalInput = () => {
   const { base, symbol } = useTileCurrencyPair()
   const defaultNotional = useDefaultNotional()
-  const notional = useNotional()
+  const [value, inputValue] = useNotional()
   const valid = useIsNotionalValid()
   const { stage: quoteStage } = useRfqState()
   const id = `notional-input-${symbol}`
@@ -137,11 +151,11 @@ export const NotionalInput = () => {
       disabled={[QuoteStateStage.Received, QuoteStateStage.Requested].includes(
         quoteStage,
       )}
-      value={notional.inputValue}
+      value={inputValue}
       onChange={(e) => {
         onChangeNotionalValue(symbol, e.target.value)
       }}
-      canReset={notional.value !== defaultNotional}
+      canReset={value !== defaultNotional}
       onReset={() => {
         onChangeNotionalValue(symbol, defaultNotional.toString(10))
       }}

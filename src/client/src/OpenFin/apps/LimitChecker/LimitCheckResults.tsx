@@ -1,3 +1,4 @@
+import { scan, share } from "rxjs"
 import styled from "styled-components"
 
 import { TradesGrid } from "@/App/Trades/TradesGrid"
@@ -5,8 +6,27 @@ import {
   limitCheckerColDef,
   limitCheckerColFields,
 } from "@/App/Trades/TradesState/colConfig"
+import { LimitCheckStatus, LimitCheckTrade } from "@/services/trades/types"
 
-import { tableRows$ } from "./state"
+import { limitResult$ } from "./state"
+
+let tradeId = 0
+
+const tableRows$ = limitResult$.pipe(
+  scan((acc, { notional, request, result }) => {
+    return [
+      {
+        status: result ? LimitCheckStatus.Success : LimitCheckStatus.Failure,
+        tradeId: tradeId++,
+        symbol: request.tradedCurrencyPair,
+        notional,
+        spotRate: request.rate,
+      },
+      ...acc,
+    ]
+  }, [] as LimitCheckTrade[]),
+  share(),
+)
 
 const Container = styled.div`
   display: flex;

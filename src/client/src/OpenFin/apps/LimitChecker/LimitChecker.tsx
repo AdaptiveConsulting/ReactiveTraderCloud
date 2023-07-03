@@ -1,4 +1,5 @@
 import { Context, joinChannel } from "@finos/fdc3"
+import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 import styled from "styled-components"
 
@@ -31,8 +32,10 @@ const LimitChecker = () => {
 
   return (
     <Container>
-      <LimitInputs />
-      <LimitCheckResultsTable />
+      <Subscribe>
+        <LimitInputs />
+        <LimitCheckResultsTable />
+      </Subscribe>
     </Container>
   )
 }
