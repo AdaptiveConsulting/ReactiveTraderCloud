@@ -4,12 +4,7 @@ import { concat, merge, Observable, OperatorFunction, pipe } from "rxjs"
 import { filter, map, take } from "rxjs/operators"
 
 import { currencyPairs$ } from "@/services/currencyPairs"
-import {
-  createApplyCharacterMultiplier,
-  customNumberFormatter,
-  DECIMAL_SEPARATOR,
-  parseQuantity,
-} from "@/utils/formatNumber"
+import { formatNotional } from "@/utils/formatNotional"
 
 import { QuoteStateStage, useRfqState } from "../Rfq"
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
@@ -26,27 +21,6 @@ const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
   (symbol: string, rawVal: string) => ({ symbol, rawVal }),
 )
 export { onChangeNotionalValue }
-
-export const formatNotional = (
-  rawVal: string,
-  characterMultipliers: ("k" | "m" | "b" | "t")[],
-  formatterOptions?: Intl.NumberFormatOptions,
-): [number, string] => {
-  const applyCharacterMultiplier =
-    createApplyCharacterMultiplier(characterMultipliers)
-
-  const formatter = customNumberFormatter(formatterOptions)
-
-  const numValue = Math.abs(parseQuantity(rawVal))
-  const lastChar = rawVal.slice(-1).toLowerCase()
-  const value = applyCharacterMultiplier(numValue, lastChar)
-
-  return [
-    value,
-    formatter(value) +
-      (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
-  ]
-}
 
 export const [useNotional, getNotional$] = symbolBind((symbol) =>
   concat(
