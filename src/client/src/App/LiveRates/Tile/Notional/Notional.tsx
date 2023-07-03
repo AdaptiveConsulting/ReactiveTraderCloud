@@ -27,33 +27,26 @@ const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
 )
 export { onChangeNotionalValue }
 
-export const mapToFormattedNotional: <T>(
-  callback: (value: T) => string,
-  c: ("k" | "m" | "b" | "t")[],
-  f?: Intl.NumberFormatOptions,
-) => OperatorFunction<T, [number, string]> =
-  (callback, characterMultipliers, formatterOptions) => (source$) => {
-    return new Observable((subscriber) => {
-      const applyCharacterMultiplier =
-        createApplyCharacterMultiplier(characterMultipliers)
+export const formatNotional = (
+  rawVal: string,
+  characterMultipliers: ("k" | "m" | "b" | "t")[],
+  formatterOptions?: Intl.NumberFormatOptions,
+): [number, string] => {
+  const applyCharacterMultiplier =
+    createApplyCharacterMultiplier(characterMultipliers)
 
-      const formatter = customNumberFormatter(formatterOptions)
+  const formatter = customNumberFormatter(formatterOptions)
 
-      source$.subscribe((v) => {
-        const rawVal = callback(v)
+  const numValue = Math.abs(parseQuantity(rawVal))
+  const lastChar = rawVal.slice(-1).toLowerCase()
+  const value = applyCharacterMultiplier(numValue, lastChar)
 
-        const numValue = Math.abs(parseQuantity(rawVal))
-        const lastChar = rawVal.slice(-1).toLowerCase()
-        const value = applyCharacterMultiplier(numValue, lastChar)
-
-        subscriber.next([
-          value,
-          formatter(value) +
-            (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
-        ])
-      })
-    })
-  }
+  return [
+    value,
+    formatter(value) +
+      (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
+  ]
+}
 
 export const [useNotional, getNotional$] = symbolBind((symbol) =>
   concat(
@@ -66,7 +59,7 @@ export const [useNotional, getNotional$] = symbolBind((symbol) =>
     ),
     rawNotional$(symbol),
   ).pipe(
-    mapToFormattedNotional(({ rawVal }) => rawVal, ["k", "m"]),
+    map(({ rawVal }) => formatNotional(rawVal, ["k", "m"])),
     filter(([value]) => !Number.isNaN(value)),
   ),
 )

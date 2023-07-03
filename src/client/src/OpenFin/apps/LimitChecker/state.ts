@@ -1,8 +1,8 @@
 import { bind } from "@react-rxjs/core"
 import { createKeyedSignal, createSignal } from "@react-rxjs/utils"
-import { concat, map, switchMap, take } from "rxjs"
+import { concat, filter, map, switchMap, take } from "rxjs"
 
-import { mapToFormattedNotional } from "@/App/LiveRates/Tile/Notional"
+import { formatNotional } from "@/App/LiveRates/Tile/Notional"
 import { currencyPairs$ } from "@/services/currencyPairs"
 
 export interface LimitCheckerRequest {
@@ -28,7 +28,10 @@ const [useLimit, limitBySymbol$] = bind((symbol: string) =>
       })),
     ),
     limitInputValue$(symbol),
-  ).pipe(mapToFormattedNotional(({ value }) => value, ["k", "m"])),
+  ).pipe(
+    map(({ value }) => formatNotional(value, ["k", "m"])),
+    filter(([value]) => !Number.isNaN(value)),
+  ),
 )
 
 const [limitCheckRequest$, checkLimit] = createSignal<LimitCheckerRequest>()
