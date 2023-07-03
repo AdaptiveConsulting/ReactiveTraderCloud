@@ -43,7 +43,7 @@ const ConfirmContent = ({
 
 const Usage = () => (
   <HelpText>
-    Usage: <Pill>buy/sell</Pill> <Pill>quantity</Pill> <Pill>stock</Pill>
+    Usage: <Pill>buy/sell</Pill> <Pill>quantity</Pill> <Pill>bond</Pill>
   </HelpText>
 )
 
