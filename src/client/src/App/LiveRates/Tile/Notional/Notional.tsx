@@ -1,15 +1,10 @@
 import { createKeyedSignal } from "@react-rxjs/utils"
 import { FaRedo } from "react-icons/fa"
-import { concat, merge, pipe } from "rxjs"
+import { concat, merge, Observable, OperatorFunction, pipe } from "rxjs"
 import { filter, map, take } from "rxjs/operators"
 
 import { currencyPairs$ } from "@/services/currencyPairs"
-import {
-  createApplyCharacterMultiplier,
-  customNumberFormatter,
-  DECIMAL_SEPARATOR,
-  parseQuantity,
-} from "@/utils/formatNumber"
+import { formatNotional } from "@/utils/formatNotional"
 
 import { QuoteStateStage, useRfqState } from "../Rfq"
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
@@ -27,10 +22,6 @@ const [rawNotional$, onChangeNotionalValue] = createKeyedSignal(
 )
 export { onChangeNotionalValue }
 
-const formatter = customNumberFormatter()
-
-const applyCharacterMultiplier = createApplyCharacterMultiplier(["k", "m"])
-
 export const [useNotional, getNotional$] = symbolBind((symbol) =>
   concat(
     currencyPairs$.pipe(
@@ -42,24 +33,14 @@ export const [useNotional, getNotional$] = symbolBind((symbol) =>
     ),
     rawNotional$(symbol),
   ).pipe(
-    map(({ rawVal }) => {
-      const numValue = Math.abs(parseQuantity(rawVal))
-      const lastChar = rawVal.slice(-1).toLowerCase()
-      const value = applyCharacterMultiplier(numValue, lastChar)
-      return {
-        value,
-        inputValue:
-          formatter(value) +
-          (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
-      }
-    }),
-    filter(({ value }) => !Number.isNaN(value)),
+    map(({ rawVal }) => formatNotional(rawVal, ["k", "m"])),
+    filter(([value]) => !Number.isNaN(value)),
   ),
 )
 export const [, getNotionalValue$] = symbolBind(
   pipe(
     getNotional$,
-    map((notional) => notional.value),
+    map(([value]) => value),
   ),
 )
 
@@ -124,7 +105,7 @@ export const NotionalInputInner = ({
 export const NotionalInput = () => {
   const { base, symbol } = useTileCurrencyPair()
   const defaultNotional = useDefaultNotional()
-  const notional = useNotional()
+  const [value, inputValue] = useNotional()
   const valid = useIsNotionalValid()
   const { stage: quoteStage } = useRfqState()
   const id = `notional-input-${symbol}`
@@ -137,11 +118,11 @@ export const NotionalInput = () => {
       disabled={[QuoteStateStage.Received, QuoteStateStage.Requested].includes(
         quoteStage,
       )}
-      value={notional.inputValue}
+      value={inputValue}
       onChange={(e) => {
         onChangeNotionalValue(symbol, e.target.value)
       }}
-      canReset={notional.value !== defaultNotional}
+      canReset={value !== defaultNotional}
       onReset={() => {
         onChangeNotionalValue(symbol, defaultNotional.toString(10))
       }}
