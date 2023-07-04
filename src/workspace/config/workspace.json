@@ -2,8 +2,7 @@
   "devtools_port": 9090,
   "licenseKey": "WSb63491c7-090f-4e38-8088-62675824c24b",
   "runtime": {
-    "version": "<OPENFIN_RUNTIME>",
-    "arguments": "--inspect"
+    "version": "<OPENFIN_RUNTIME>"
   },
   "platform": {
     "uuid": "adaptive-workspace-provider-<ENV_NAME>",
@@ -68,13 +67,5 @@
     "icon": "<BASE_URL>/favicon.ico",
     "name": "Adaptive Workspace Provider<ENV_SUFFIX>",
     "target": ["desktop", "start-menu"]
-  },
-  "appAssets": [
-    {
-      "src": "<BASE_URL>/plugin/LimitChecker.zip",
-      "alias": "LimitChecker",
-      "version": "1.6.0",
-      "target": "LimitChecker.application"
-    }
-  ]
+  }
 }

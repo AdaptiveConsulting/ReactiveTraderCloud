@@ -3,6 +3,8 @@ import { ADAPTIVE_LOGO } from "@/home/utils"
 import { Dock, DockProvider } from "@openfin/workspace"
 import { manifestUrls } from "./utils"
 
+const PROVIDER_ID = "adaptive-dock-provider"
+
 export enum DockAction {
   OpenReactiveTraderFx = "open-reactive-trader-fx",
   OpenReactiveTraderCredit = "open-reactive-trader-credit",
@@ -13,7 +15,7 @@ export enum DockAction {
 export const registerDock = () => {
   const dockProvider: DockProvider = {
     title: "Adaptive Workspace",
-    id: "dock",
+    id: PROVIDER_ID,
     icon: ADAPTIVE_LOGO,
     workspaceComponents: {
       hideWorkspacesButton: true,
@@ -46,6 +48,10 @@ export const registerDock = () => {
 
   Dock.register(dockProvider)
   return Dock.show()
+}
+
+export async function deregisterdock() {
+  return Dock.deregister()
 }
 
 export const dockCustomActions = {
