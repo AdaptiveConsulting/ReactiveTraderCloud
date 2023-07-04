@@ -1,7 +1,9 @@
 import { bind } from "@react-rxjs/core"
-import { combineLatest } from "rxjs"
-import { map } from "rxjs/operators"
+import { createSignal } from "@react-rxjs/utils"
+import { combineLatest, merge } from "rxjs"
+import { delay, map, mergeMap, tap } from "rxjs/operators"
 
+import { HIGHLIGHT_ROW_FLASH_TIME } from "@/constants"
 import { RfqState } from "@/generated/TradingGateway"
 import { clearedRfqIds$, creditRfqsById$ } from "@/services/credit"
 
@@ -42,13 +44,40 @@ const [useFilteredCreditRfqIds] = bind(
   ),
 )
 
+/**
+ * Signal to capture a tradeId of a credit RFQ card to highlight
+ */
+export const [creditRfqCardHighlight$, setCreditRfqCardHighlight] =
+  createSignal<number>()
+
+/**
+ * State hook that emits tradeId of row to highlight for x seconds
+ * highlighted row will be either from manually updating tradeRowHighlight$ or a new trade
+ */
+
+export const [useCreditRfqCardHighlight] = bind(
+  merge([
+    creditRfqCardHighlight$,
+    creditRfqCardHighlight$.pipe(
+      delay(HIGHLIGHT_ROW_FLASH_TIME),
+      map(() => undefined),
+    ),
+  ]).pipe(mergeMap((tradeId) => tradeId)),
+  null,
+)
+
 export const CreditRfqCards = () => {
   const rfqIds = useFilteredCreditRfqIds()
+  const highlightedRfqCard = useCreditRfqCardHighlight()
+
+  console.log(highlightedRfqCard)
 
   return (
     <CreditRfqCardsWrapper empty={rfqIds.length === 0}>
       {rfqIds.length > 0 ? (
-        rfqIds.map((id) => <Card id={id} key={id} />)
+        rfqIds.map((id) => (
+          <Card id={id} key={id} highlight={highlightedRfqCard === id} />
+        ))
       ) : (
         <NoRfqsScreen />
       )}

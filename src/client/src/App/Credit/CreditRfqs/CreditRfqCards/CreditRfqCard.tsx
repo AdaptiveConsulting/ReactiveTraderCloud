@@ -45,7 +45,7 @@ const sortByPriceFunc =
     }
   }
 
-export const Card = ({ id }: { id: number }) => {
+export const Card = ({ id, highlight }: { id: number; highlight: boolean }) => {
   const rfqDetails = useCreditRfqDetails(id)
 
   if (!rfqDetails) {
@@ -56,6 +56,7 @@ export const Card = ({ id }: { id: number }) => {
     <CardContainer
       direction={rfqDetails.direction}
       live={rfqDetails.state === RfqState.Open}
+      highlight={highlight}
     >
       <CardHeader
         direction={rfqDetails.direction}
@@ -72,7 +73,7 @@ export const Card = ({ id }: { id: number }) => {
             )
 
             // The highest price is the best quote since we do not have partial fills
-            const highlight =
+            const bestQuote =
               !!quote &&
               rfqDetails.state === RfqState.Open &&
               dealer.name == "Adaptive Bank"
@@ -83,7 +84,7 @@ export const Card = ({ id }: { id: number }) => {
                 quote={quote}
                 rfqState={rfqDetails.state}
                 direction={rfqDetails.direction}
-                highlight={highlight}
+                highlight={bestQuote}
               />
             )
           })}
