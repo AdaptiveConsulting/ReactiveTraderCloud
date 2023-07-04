@@ -44,7 +44,7 @@ export const CardContainer = styled.div<{
   display: flex;
   flex-direction: column;
   border-radius: 2px;
-  border: 1px solid transparent;
+  border: ${({ highlight }) => (highlight ? "2px" : "1px")} solid transparent;
   width: 100%;
   height: 251px;
 

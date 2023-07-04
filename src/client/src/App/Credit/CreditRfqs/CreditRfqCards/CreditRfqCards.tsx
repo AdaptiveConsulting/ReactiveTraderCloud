@@ -70,8 +70,6 @@ export const CreditRfqCards = () => {
   const rfqIds = useFilteredCreditRfqIds()
   const highlightedRfqCard = useCreditRfqCardHighlight()
 
-  console.log(highlightedRfqCard)
-
   return (
     <CreditRfqCardsWrapper empty={rfqIds.length === 0}>
       {rfqIds.length > 0 ? (
