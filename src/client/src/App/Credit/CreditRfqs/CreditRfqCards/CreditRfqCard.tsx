@@ -45,7 +45,13 @@ const sortByPriceFunc =
     }
   }
 
-export const Card = ({ id, highlight }: { id: number; highlight: boolean }) => {
+export const RfqCard = ({
+  id,
+  highlight,
+}: {
+  id: number
+  highlight: boolean
+}) => {
   const rfqDetails = useCreditRfqDetails(id)
 
   if (!rfqDetails) {

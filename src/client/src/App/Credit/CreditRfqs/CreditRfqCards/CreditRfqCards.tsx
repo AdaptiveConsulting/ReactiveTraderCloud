@@ -9,7 +9,7 @@ import { clearedRfqIds$, creditRfqsById$ } from "@/services/credit"
 
 import { timeRemainingComparator } from "../../common"
 import { RfqsTab, selectedRfqsTab$ } from "../selectedRfqsTab"
-import { Card } from "./CreditRfqCard"
+import { RfqCard } from "./CreditRfqCard"
 import { NoRfqsScreen } from "./NoRfqsScreen/NoRfqsScreen"
 import { CreditRfqCardsWrapper } from "./styled"
 
@@ -74,7 +74,7 @@ export const CreditRfqCards = () => {
     <CreditRfqCardsWrapper empty={rfqIds.length === 0}>
       {rfqIds.length > 0 ? (
         rfqIds.map((id) => (
-          <Card id={id} key={id} highlight={highlightedRfqCard === id} />
+          <RfqCard id={id} key={id} highlight={highlightedRfqCard === id} />
         ))
       ) : (
         <NoRfqsScreen />

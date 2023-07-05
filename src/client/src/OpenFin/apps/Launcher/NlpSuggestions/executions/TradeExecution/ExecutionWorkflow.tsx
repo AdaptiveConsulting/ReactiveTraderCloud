@@ -87,9 +87,9 @@ const Content: React.FC<TradeNlpExecutionState> = (state) => {
     case TradeNlpExecutionStatus.Done:
       return state.payload.response.type === "ok" ? (
         <SuccessContent {...state.payload.response.trade} />
-      ) : (
+      ) : state.payload.response.type === "ko" ? (
         <ErrorContent message={state.payload.response.reason} />
-      )
+      ) : null
 
     default:
       return null
