@@ -1,6 +1,6 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { concat } from "rxjs"
+import { concat, Observable } from "rxjs"
 import {
   catchError,
   exhaustMap,
@@ -17,7 +17,11 @@ import { execute$, ExecutionStatus } from "@/services/executions"
 import { getPrice$ } from "@/services/prices"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
-import { NlpExecutionDataReady, NlpExecutionStatus } from "../types"
+import {
+  NlpExecutionDataReady,
+  NlpExecutionState,
+  NlpExecutionStatus,
+} from "../nlpExecutionTypes"
 
 const [next$_, onNext] = createSignal()
 export { onNext }
@@ -27,7 +31,7 @@ const next$ = next$_.pipe(take(1))
 let nextId = 1
 const getId = () => (nextId++).toString()
 
-const nlpExecutionState$ = nlpIntent$.pipe(
+const nlpExecutionState$: Observable<NlpExecutionState> = nlpIntent$.pipe(
   switchMap((intent) => {
     if (
       !intent ||

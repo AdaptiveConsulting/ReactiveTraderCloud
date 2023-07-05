@@ -1,7 +1,7 @@
 import { Quotes } from "../../Quotes"
 import { HelpText, Pill } from "../../styles"
-import { useMoveNextOnEnter } from "../hooks"
-import { NlpExecutionStatus } from "../types"
+import { NlpExecutionStatus } from "../nlpExecutionTypes"
+import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
 import { ExecutionWorkflow } from "./ExecutionWorkflow"
 import { onNext, useNlpExecutionState } from "./state"
 

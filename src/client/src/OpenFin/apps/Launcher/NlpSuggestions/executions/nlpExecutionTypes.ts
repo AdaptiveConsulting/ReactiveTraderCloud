@@ -1,4 +1,8 @@
-import { Direction } from "@/generated/TradingGateway"
+import {
+  AckCreateRfqResponse,
+  Direction,
+  NackCreateRfqResponse,
+} from "@/generated/TradingGateway"
 import { ExecutionTrade } from "@/services/executions"
 
 export enum NlpExecutionStatus {
@@ -48,6 +52,8 @@ export interface NlpExecutionDone {
     response:
       | { type: "ok"; trade: ExecutionTrade }
       | { type: "ko"; reason: string }
+      | { type: "ack"; response: AckCreateRfqResponse }
+      | { type: "nack"; reason: string }
   }
 }
 

@@ -1,6 +1,6 @@
 import styled, { DefaultTheme, keyframes } from "styled-components"
 
-import { NlpExecutionState, NlpExecutionStatus } from "../types"
+import { NlpExecutionState, NlpExecutionStatus } from "../nlpExecutionTypes"
 
 const getBarColor = (state: NlpExecutionState, theme: DefaultTheme) => {
   if (state.type !== NlpExecutionStatus.Done) {

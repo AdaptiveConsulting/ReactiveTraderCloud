@@ -124,16 +124,15 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
       if (!response || !response.queryResult?.intent?.displayName) return null
 
       const intent = intentMapper[response.queryResult?.intent?.displayName]
+      const intentFields = response.queryResult?.parameters?.fields
 
       const symbol =
-        response.queryResult?.parameters?.fields?.CurrencyPairs?.stringValue ||
-        response.queryResult?.parameters?.fields?.Bond?.stringValue
+        intentFields?.CurrencyPairs?.stringValue ||
+        intentFields?.Bond?.stringValue
 
-      const direction =
-        response.queryResult?.parameters?.fields?.TradeType?.stringValue
+      const direction = intentFields?.TradeType?.stringValue
 
-      const value =
-        response.queryResult?.parameters?.fields?.number?.numberValue
+      const value = intentFields?.number?.numberValue
 
       switch (intent) {
         case NlpIntentType.TradeExecution: {

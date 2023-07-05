@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-import { Card } from "@/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
+import { RfqCard } from "@/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
 import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
 import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 import { formatNumber } from "@/utils"
@@ -13,9 +13,9 @@ import {
   TradeExecutionContainer,
   TradeResponseContainer,
 } from "../../styles"
-import { useMoveNextOnEnter } from "../hooks"
+import { NlpExecutionDataReady, NlpExecutionStatus } from "../nlpExecutionTypes"
 import { IndeterminateLoadingBar } from "../TradeExecution/IndeterminateLoadingBar"
-import { NlpExecutionDataReady, NlpExecutionStatus } from "../types"
+import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
 import { onNext, useRfqExecutionState } from "./state"
 
 const ConfirmContent = ({
@@ -89,7 +89,7 @@ export const RfqExecution = () => {
       )
     case NlpExecutionStatus.Done:
       return state.payload.response.type === ACK_CREATE_RFQ_RESPONSE ? (
-        <Card id={state.payload.response.payload} />
+        <RfqCard id={state.payload.response.response.payload} />
       ) : null
     default:
       return <div>default</div>

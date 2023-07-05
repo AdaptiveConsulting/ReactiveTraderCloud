@@ -1,8 +1,19 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { concat, exhaustMap, map, switchMap, take, withLatestFrom } from "rxjs"
+import {
+  concat,
+  exhaustMap,
+  map,
+  Observable,
+  switchMap,
+  take,
+  withLatestFrom
+} from "rxjs"
 
 import { CREDIT_RFQ_EXPIRY_SECONDS } from "@/constants"
+import {
+  AckCreateRfqResponse
+} from "@/generated/TradingGateway"
 import {
   createCreditRfq$,
   creditDealers$,
@@ -10,14 +21,18 @@ import {
 } from "@/services/credit"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
-import { NlpExecutionDataReady, NlpExecutionStatus } from "../types"
+import {
+  NlpExecutionDataReady,
+  NlpExecutionState,
+  NlpExecutionStatus,
+} from "../nlpExecutionTypes"
 
 const [next$_, onNext] = createSignal()
 export { onNext }
 
 const next$ = next$_.pipe(take(1))
 
-const rfqExecutionState$ = nlpIntent$.pipe(
+const rfqExecutionState$: Observable<NlpExecutionState> = nlpIntent$.pipe(
   withLatestFrom(creditInstruments$, creditDealers$),
   switchMap(([intent, instruments, dealers]) => {
     if (
@@ -48,6 +63,7 @@ const rfqExecutionState$ = nlpIntent$.pipe(
       [
         {
           type: NlpExecutionStatus.DataReady as const,
+          payload: { requestData },
         },
       ],
       next$.pipe(
@@ -69,7 +85,13 @@ const rfqExecutionState$ = nlpIntent$.pipe(
         map((response) => {
           return {
             type: NlpExecutionStatus.Done as const,
-            payload: { response },
+            payload: {
+              requestData,
+              response: {
+                type: "ack" as const,
+                response: response as AckCreateRfqResponse,
+              },
+            },
           }
         }),
       ),
