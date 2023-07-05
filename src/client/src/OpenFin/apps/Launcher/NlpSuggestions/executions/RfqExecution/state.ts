@@ -7,13 +7,11 @@ import {
   Observable,
   switchMap,
   take,
-  withLatestFrom
+  withLatestFrom,
 } from "rxjs"
 
 import { CREDIT_RFQ_EXPIRY_SECONDS } from "@/constants"
-import {
-  AckCreateRfqResponse
-} from "@/generated/TradingGateway"
+import { AckCreateRfqResponse } from "@/generated/TradingGateway"
 import {
   createCreditRfq$,
   creditDealers$,
