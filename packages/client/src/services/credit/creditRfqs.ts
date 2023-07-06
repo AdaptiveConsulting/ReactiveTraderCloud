@@ -1,15 +1,11 @@
 import { bind, shareLatest } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import {
-  DealerBody,
-  Direction,
-  END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
-  InstrumentBody,
-  QUOTE_ACCEPTED_RFQ_UPDATE,
   QUOTE_PASSED_RFQ_UPDATE,
   QUOTE_UPDATED_RFQ_UPDATE,
   QuoteBody,
   QuoteUpdatedRfqUpdate,
+  REJECTED_WITH_PRICE_QUOTE_STATE,
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   RFQ_CLOSED_RFQ_UPDATE,
   RFQ_CREATED_RFQ_UPDATE,
@@ -18,13 +14,20 @@ import {
   RfqUpdate,
   START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
 } from "generated/TradingGateway"
-import { combineLatest, Observable } from "rxjs"
-import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
+import { combineLatest, merge, Observable, of, timer } from "rxjs"
+import {
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  scan,
+  startWith,
+  switchMap,
+  withLatestFrom,
+} from "rxjs/operators"
 
 import { withConnection } from "../withConnection"
 import { creditDealers$ } from "./creditDealers"
 import { creditInstruments$ } from "./creditInstruments"
-
 export type QuoteStateTypes =
   | "pendingWithoutPrice"
   | "pendingWithPrice"
@@ -219,6 +222,73 @@ export const [useExecutedRfqIds] = bind(
 export const creditQuotes$ = creditRfqsById$.pipe(
   map((creditRfqsById) =>
     Object.values(creditRfqsById).flatMap((creditRfq) => creditRfq.quotes),
+  ),
+)
+
+export const INACTIVE_PASSED_QUOTE_STATE = "passedInactiveQuoteState"
+
+export const [useQuoteState] = bind((dealerId, rfqId) =>
+  creditQuotes$.pipe(
+    map((quotes) =>
+      quotes.find(
+        (quote) => quote.dealerId === dealerId && quote.rfqId === rfqId,
+      ),
+    ),
+    map((quote) => {
+      if (!quote) {
+        throw Error("Missing quote") //should never be thrown since we only call this hook with existing quotes
+      }
+
+      switch (quote?.state.type) {
+        case PENDING_WITHOUT_PRICE_QUOTE_STATE:
+          return {
+            type: quote.state.type,
+            payload: "Awaiting response",
+          }
+        case PENDING_WITH_PRICE_QUOTE_STATE:
+          return {
+            type: quote.state.type,
+            payload: quote.state.payload,
+          }
+        case PASSED_QUOTE_STATE:
+          return {
+            type: quote.state.type,
+            payload: "Passed",
+          }
+        case ACCEPTED_QUOTE_STATE:
+          return {
+            type: quote.state.type,
+            payload: "Accepted",
+          }
+        case REJECTED_WITH_PRICE_QUOTE_STATE:
+          return {
+            type: quote.state.type,
+            payload: "Rejected",
+          }
+        default:
+          return {
+            type: quote.state.type,
+            payload: "Rejected",
+          }
+      }
+    }),
+    distinctUntilKeyChanged("type"),
+    switchMap((state) => {
+      if (state.type === PASSED_QUOTE_STATE) {
+        // hides the dot after 6 seconds
+        return merge(
+          of(state),
+          timer(6000).pipe(
+            map(() => ({
+              type: INACTIVE_PASSED_QUOTE_STATE,
+              payload: state.payload,
+            })),
+          ),
+        )
+      }
+
+      return of(state)
+    }),
   ),
 )
 

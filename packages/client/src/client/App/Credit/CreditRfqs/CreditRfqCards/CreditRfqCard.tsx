@@ -105,6 +105,7 @@ export const Card = ({ id, highlight }: { id: number; highlight: boolean }) => {
                 key={dealer.id}
                 dealer={dealer}
                 quote={quote}
+                rfqId={rfqDetails.id}
                 rfqState={rfqDetails.state}
                 direction={rfqDetails.direction}
                 highlight={bestQuote}

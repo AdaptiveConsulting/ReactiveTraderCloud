@@ -7,7 +7,7 @@ import {
 import { useEffect } from "react"
 import styled from "styled-components"
 
-import { CreditRfqCards } from "./CreditRfqCards"
+import { CreditRfqCardGrid } from "./CreditRfqCards"
 import {
   CreditRfqAcceptedConfirmation,
   CreditRfqCreatedConfirmation,
@@ -32,7 +32,7 @@ export const CreditRfqsCore = () => {
     <Subscribe fallback={<Loader ariaLabel="Loading Credit RFQs" />}>
       <CreditRfqsCoreWrapper>
         <CreditRfqsHeader />
-        <CreditRfqCards />
+        <CreditRfqCardGrid />
         <CreditRfqCreatedConfirmation />
         <CreditRfqAcceptedConfirmation />
       </CreditRfqsCoreWrapper>
