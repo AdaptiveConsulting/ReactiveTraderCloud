@@ -1,4 +1,5 @@
-import { AckCreateRfqResponse, Direction } from "@/generated/TradingGateway"
+import { Direction } from "@/generated/TradingGateway"
+import { ExecutionTrade } from "@/services/executions"
 
 export enum NlpExecutionStatus {
   MissingData = 1,
@@ -14,45 +15,45 @@ export interface RequestData {
   direction: Direction
 }
 
-export interface NlpExecutionMissingData {
+export interface TradeNlpExecutionMissingData {
   type: NlpExecutionStatus.MissingData
   payload: Record<string, unknown>
 }
 
-export interface NlpExecutionDataReady {
+export interface TradeNlpExecutionDataReady {
   type: NlpExecutionStatus.DataReady
   payload: {
     requestData: RequestData
   }
 }
 
-export interface NlpExecutionWaitingToExecute {
+export interface TradeNlpExecutionWaitingToExecute {
   type: NlpExecutionStatus.WaitingToExecute
   payload: {
     requestData: RequestData
   }
 }
 
-export interface NlpExecutionExecuting {
+export interface TradeNlpExecutionExecuting {
   type: NlpExecutionStatus.Executing
   payload: {
     requestData: RequestData
   }
 }
 
-export interface NlpExecutionDone {
+export interface TradeNlpExecutionDone {
   type: NlpExecutionStatus.Done
   payload: {
     requestData: RequestData
     response:
-      | { type: "ack"; response: AckCreateRfqResponse }
-      | { type: "nack"; reason: string }
+      | { type: "ok"; trade: ExecutionTrade }
+      | { type: "ko"; reason: string }
   }
 }
 
-export type NlpExecutionState =
-  | NlpExecutionMissingData
-  | NlpExecutionDataReady
-  | NlpExecutionWaitingToExecute
-  | NlpExecutionExecuting
-  | NlpExecutionDone
+export type TradeNlpExecutionState =
+  | TradeNlpExecutionMissingData
+  | TradeNlpExecutionDataReady
+  | TradeNlpExecutionWaitingToExecute
+  | TradeNlpExecutionExecuting
+  | TradeNlpExecutionDone

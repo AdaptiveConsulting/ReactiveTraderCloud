@@ -20,17 +20,17 @@ import {
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
 import {
-  NlpExecutionDataReady,
-  NlpExecutionState,
   NlpExecutionStatus,
-} from "./nlpExecutionTypes"
+  RfqNlpExecutionDataReady,
+  RfqNlpExecutionState,
+} from "./rfqExecutionTypes"
 
 const [next$_, onNext] = createSignal()
 export { onNext }
 
 const next$ = next$_.pipe(take(1))
 
-const rfqExecutionState$: Observable<NlpExecutionState> = nlpIntent$.pipe(
+const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
   withLatestFrom(creditInstruments$, creditDealers$),
   switchMap(([intent, instruments, dealers]) => {
     if (
@@ -46,7 +46,7 @@ const rfqExecutionState$: Observable<NlpExecutionState> = nlpIntent$.pipe(
     }
 
     const requestData =
-      intent.payload as NlpExecutionDataReady["payload"]["requestData"]
+      intent.payload as RfqNlpExecutionDataReady["payload"]["requestData"]
     const { symbol, direction, notional } = requestData
 
     const instrument = instruments.find(

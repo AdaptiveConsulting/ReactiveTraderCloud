@@ -15,9 +15,9 @@ import {
 } from "../../styles"
 import { IndeterminateLoadingBar } from "../TradeExecution/IndeterminateLoadingBar"
 import {
-  NlpExecutionDataReady,
   NlpExecutionStatus,
-} from "../TradeExecution/nlpExecutionTypes"
+  TradeNlpExecutionDataReady,
+} from "../TradeExecution/tradeExecutionTypes"
 import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
 import { onNext, useRfqExecutionState } from "./state"
 
@@ -25,7 +25,7 @@ const ConfirmContent = ({
   direction,
   notional,
   symbol,
-}: NlpExecutionDataReady["payload"]["requestData"]) => {
+}: TradeNlpExecutionDataReady["payload"]["requestData"]) => {
   useMoveNextOnEnter(onNext)
   const directionStr = direction === Direction.Buy ? "buying" : "selling"
   const notionalStr = formatNumber(notional)

@@ -18,10 +18,10 @@ import { getPrice$ } from "@/services/prices"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
 import {
-  NlpExecutionDataReady,
-  NlpExecutionState,
   NlpExecutionStatus,
-} from "./nlpExecutionTypes"
+  TradeNlpExecutionDataReady,
+  TradeNlpExecutionState,
+} from "./tradeExecutionTypes"
 
 const [next$_, onNext] = createSignal()
 export { onNext }
@@ -31,7 +31,7 @@ const next$ = next$_.pipe(take(1))
 let nextId = 1
 const getId = () => (nextId++).toString()
 
-const nlpExecutionState$: Observable<NlpExecutionState> = nlpIntent$.pipe(
+const nlpExecutionState$: Observable<TradeNlpExecutionState> = nlpIntent$.pipe(
   switchMap((intent) => {
     if (
       !intent ||
@@ -46,7 +46,7 @@ const nlpExecutionState$: Observable<NlpExecutionState> = nlpIntent$.pipe(
     }
 
     const requestData =
-      intent.payload as NlpExecutionDataReady["payload"]["requestData"]
+      intent.payload as TradeNlpExecutionDataReady["payload"]["requestData"]
     const { symbol, direction, notional } = requestData
 
     return concat(

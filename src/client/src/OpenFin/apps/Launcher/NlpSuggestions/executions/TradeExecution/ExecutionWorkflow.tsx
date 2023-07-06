@@ -14,18 +14,18 @@ import {
 } from "../../styles"
 import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
 import { IndeterminateLoadingBar } from "./IndeterminateLoadingBar"
-import {
-  NlpExecutionDataReady,
-  NlpExecutionState,
-  NlpExecutionStatus,
-} from "./nlpExecutionTypes"
 import { onNext } from "./state"
+import {
+  NlpExecutionStatus,
+  TradeNlpExecutionDataReady,
+  TradeNlpExecutionState,
+} from "./tradeExecutionTypes"
 
 const ConfirmContent = ({
   direction,
   notional,
   symbol,
-}: NlpExecutionDataReady["payload"]["requestData"]) => {
+}: TradeNlpExecutionDataReady["payload"]["requestData"]) => {
   useMoveNextOnEnter(onNext)
   const directionStr = direction === Direction.Buy ? "buying" : "selling"
   const notionalStr = formatNumber(notional)
@@ -76,7 +76,7 @@ const ErrorContent = ({ message }: { message: string }) => (
   </>
 )
 
-const Content: React.FC<NlpExecutionState> = (state) => {
+const Content: React.FC<TradeNlpExecutionState> = (state) => {
   switch (state.type) {
     case NlpExecutionStatus.WaitingToExecute:
       return <ConfirmContent {...state.payload.requestData} />
@@ -96,7 +96,7 @@ const Content: React.FC<NlpExecutionState> = (state) => {
   }
 }
 
-export const ExecutionWorkflow: React.FC<NlpExecutionState> = (state) => {
+export const ExecutionWorkflow: React.FC<TradeNlpExecutionState> = (state) => {
   const overlayEl = useOverlayElement()
 
   return (

@@ -1,8 +1,11 @@
 import styled, { DefaultTheme, keyframes } from "styled-components"
 
-import { NlpExecutionState, NlpExecutionStatus } from "./nlpExecutionTypes"
+import {
+  NlpExecutionStatus,
+  TradeNlpExecutionState,
+} from "./tradeExecutionTypes"
 
-const getBarColor = (state: NlpExecutionState, theme: DefaultTheme) => {
+const getBarColor = (state: TradeNlpExecutionState, theme: DefaultTheme) => {
   if (state.type !== NlpExecutionStatus.Done) {
     return theme.colors.accents.primary.base
   }
@@ -20,7 +23,7 @@ const Slider = styled.div`
   top: 0;
   left: 0;
 `
-const Line = styled.div<{ state: NlpExecutionState }>`
+const Line = styled.div<{ state: TradeNlpExecutionState }>`
   position: absolute;
   opacity: ${({ state }) =>
     state.type === NlpExecutionStatus.Done ? "1.0" : "0.4"};
@@ -28,7 +31,7 @@ const Line = styled.div<{ state: NlpExecutionState }>`
   width: 150%;
   height: 3px;
 `
-const SubLine = styled.div<{ state: NlpExecutionState }>`
+const SubLine = styled.div<{ state: TradeNlpExecutionState }>`
   position: absolute;
   background: ${({ theme, state }) => getBarColor(state, theme)};
   height: 3px;
@@ -53,7 +56,7 @@ const Dec = styled(SubLine)`
 export function IndeterminateLoadingBar({
   state,
 }: {
-  state: NlpExecutionState
+  state: TradeNlpExecutionState
 }) {
   if (state.type < NlpExecutionStatus.WaitingToExecute) return null
 
