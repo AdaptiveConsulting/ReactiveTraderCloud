@@ -18,6 +18,7 @@ import {
 } from "@/App/Trades/TradesState"
 import { executions$, ExecutionTrade } from "@/services/executions"
 
+import { setCreditRfqCardHighlight } from "./App/Credit/CreditRfqs/CreditRfqCards"
 import { Direction } from "./generated/TradingGateway"
 import {
   processCreditAccepted,
@@ -37,6 +38,7 @@ const creditIconUrl = constructUrl("/static/media/reactive-trader-credit.svg")
 
 const TASK_HIGHLIGHT_FX_TRADE = "highlight-fx-trade"
 const TASK_HIGHLIGHT_CREDIT_TRADE = "highlight-credit-trade"
+const TASK_HIGHLIGHT_CREDIT_RFQ = "highlight-credit-rfq"
 
 // from OF "starter" projects
 const createContainer = (
@@ -193,9 +195,21 @@ const sendCreditQuoteNotification = (quote: QuoteDetails) => {
     category: "Quote Received",
     title,
     indicator: {
-      text: "quote", // TODO change to "new quote" when we have a View RFQ button
+      text: "new quote",
       color: IndicatorColor.GRAY,
     },
+    buttons: [
+      {
+        title: "View RFQ",
+        iconUrl: creditIconUrl,
+        onClick: {
+          task: TASK_HIGHLIGHT_CREDIT_RFQ,
+          payload: {
+            rfqId: quote.rfqId,
+          },
+        },
+      },
+    ],
   }
 
   create(notificationOptions)
@@ -267,6 +281,17 @@ const handleCreditTradeNotification = (event: NotificationActionEvent) => {
   }
 }
 
+export const TOPIC_HIGHLIGHT_CREDIT_RFQ = "highlight-credit-rfq"
+
+const handleCreditRfqNotification = (event: NotificationActionEvent) => {
+  if (event.result.task === TASK_HIGHLIGHT_CREDIT_RFQ) {
+    fin.InterApplicationBus.publish(
+      TOPIC_HIGHLIGHT_CREDIT_RFQ,
+      event.result.payload,
+    )
+  }
+}
+
 export const registerCreditAcceptedNotifications = () => {
   fin.InterApplicationBus.subscribe(
     { uuid: "*" },
@@ -277,6 +302,16 @@ export const registerCreditAcceptedNotifications = () => {
   )
 
   addEventListener("notification-action", handleCreditTradeNotification)
+
+  fin.InterApplicationBus.subscribe(
+    { uuid: "*" },
+    TOPIC_HIGHLIGHT_CREDIT_RFQ,
+    (message: { rfqId: number }) => {
+      setCreditRfqCardHighlight(message.rfqId)
+    },
+  )
+
+  addEventListener("notification-action", handleCreditRfqNotification)
 
   acceptedRfqWithQuote$.subscribe((rfq) => {
     sendQuoteAcceptedNotification(rfq)

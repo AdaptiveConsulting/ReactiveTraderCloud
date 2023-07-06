@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css, DefaultTheme, keyframes } from "styled-components"
 
 import { Direction } from "@/generated/TradingGateway"
 import { ThemeName } from "@/theme"
@@ -14,20 +14,47 @@ export const CreditRfqCardsWrapper = styled.div<{ empty: boolean }>`
   flex: 1;
 `
 
+const cardFlash = ({
+  theme,
+  direction,
+}: {
+  theme: DefaultTheme
+  direction: Direction
+}) => keyframes`
+  0% {
+    border-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+  }
+  50% {
+    border-color: transparent;
+  }
+  100% {
+    border-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
+  }
+`
+
+const highlightBorderColor = css`
+  animation: ${cardFlash} 1s ease-in-out 3;
+`
+
 export const CardContainer = styled.div<{
   direction: Direction
   live: boolean
+  highlight: boolean
 }>`
   display: flex;
   flex-direction: column;
   border-radius: 2px;
+  border: ${({ highlight }) => (highlight ? "2px" : "1px")} solid transparent;
   width: 100%;
   height: 251px;
 
+  ${({ highlight }) => highlight && highlightBorderColor}
+
   &:first-child {
-    ${({ theme, direction, live }) =>
+    ${({ theme, direction, live, highlight }) =>
       live &&
-      `border: 1px solid ${theme.colors.spectrum.uniqueCollections[direction].base}`};
+      !highlight &&
+      `border-color: ${theme.colors.spectrum.uniqueCollections[direction].base}`};
   }
 `
 
