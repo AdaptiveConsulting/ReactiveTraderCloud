@@ -23,7 +23,7 @@ import {
   NlpExecutionDataReady,
   NlpExecutionState,
   NlpExecutionStatus,
-} from "../nlpExecutionTypes"
+} from "./nlpExecutionTypes"
 
 const [next$_, onNext] = createSignal()
 export { onNext }

@@ -13,8 +13,11 @@ import {
   TradeExecutionContainer,
   TradeResponseContainer,
 } from "../../styles"
-import { NlpExecutionDataReady, NlpExecutionStatus } from "../nlpExecutionTypes"
 import { IndeterminateLoadingBar } from "../TradeExecution/IndeterminateLoadingBar"
+import {
+  NlpExecutionDataReady,
+  NlpExecutionStatus,
+} from "../TradeExecution/nlpExecutionTypes"
 import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
 import { onNext, useRfqExecutionState } from "./state"
 

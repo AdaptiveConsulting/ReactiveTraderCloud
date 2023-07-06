@@ -1,9 +1,4 @@
-import {
-  AckCreateRfqResponse,
-  Direction,
-  NackCreateRfqResponse,
-} from "@/generated/TradingGateway"
-import { ExecutionTrade } from "@/services/executions"
+import { AckCreateRfqResponse, Direction } from "@/generated/TradingGateway"
 
 export enum NlpExecutionStatus {
   MissingData = 1,
@@ -50,8 +45,6 @@ export interface NlpExecutionDone {
   payload: {
     requestData: RequestData
     response:
-      | { type: "ok"; trade: ExecutionTrade }
-      | { type: "ko"; reason: string }
       | { type: "ack"; response: AckCreateRfqResponse }
       | { type: "nack"; reason: string }
   }

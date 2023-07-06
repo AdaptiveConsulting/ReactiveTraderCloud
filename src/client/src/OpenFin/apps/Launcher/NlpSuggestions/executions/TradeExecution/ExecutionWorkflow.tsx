@@ -12,13 +12,13 @@ import {
   TradeExecutionContainer,
   TradeResponseContainer,
 } from "../../styles"
+import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
+import { IndeterminateLoadingBar } from "./IndeterminateLoadingBar"
 import {
   NlpExecutionDataReady,
   NlpExecutionState,
   NlpExecutionStatus,
-} from "../nlpExecutionTypes"
-import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
-import { IndeterminateLoadingBar } from "./IndeterminateLoadingBar"
+} from "./nlpExecutionTypes"
 import { onNext } from "./state"
 
 const ConfirmContent = ({
@@ -87,9 +87,9 @@ const Content: React.FC<NlpExecutionState> = (state) => {
     case NlpExecutionStatus.Done:
       return state.payload.response.type === "ok" ? (
         <SuccessContent {...state.payload.response.trade} />
-      ) : state.payload.response.type === "ko" ? (
+      ) : (
         <ErrorContent message={state.payload.response.reason} />
-      ) : null
+      )
 
     default:
       return null

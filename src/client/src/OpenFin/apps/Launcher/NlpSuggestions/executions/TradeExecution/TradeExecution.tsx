@@ -1,8 +1,8 @@
 import { Quotes } from "../../Quotes"
 import { HelpText, Pill } from "../../styles"
-import { NlpExecutionStatus } from "../nlpExecutionTypes"
 import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
 import { ExecutionWorkflow } from "./ExecutionWorkflow"
+import { NlpExecutionStatus } from "./nlpExecutionTypes"
 import { onNext, useNlpExecutionState } from "./state"
 
 const Usage = () => (
