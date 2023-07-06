@@ -14,18 +14,18 @@ import {
   TradeResponseContainer,
 } from "../../styles"
 import { IndeterminateLoadingBar } from "../TradeExecution/IndeterminateLoadingBar"
+import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
 import {
   NlpExecutionStatus,
-  TradeNlpExecutionDataReady,
-} from "../TradeExecution/tradeExecutionTypes"
-import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
+  RfqNlpExecutionDataReady,
+} from "./rfqExecutionTypes"
 import { onNext, useRfqExecutionState } from "./state"
 
 const ConfirmContent = ({
   direction,
   notional,
   symbol,
-}: TradeNlpExecutionDataReady["payload"]["requestData"]) => {
+}: RfqNlpExecutionDataReady["payload"]["requestData"]) => {
   useMoveNextOnEnter(onNext)
   const directionStr = direction === Direction.Buy ? "buying" : "selling"
   const notionalStr = formatNumber(notional)
