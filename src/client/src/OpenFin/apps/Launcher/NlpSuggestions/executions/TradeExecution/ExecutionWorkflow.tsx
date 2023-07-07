@@ -8,17 +8,17 @@ import { formatNumber } from "@/utils"
 import { useOverlayElement } from "../../../overlayContext"
 import { onResetInput } from "../../../services/nlpService"
 import {
-  TradeExecutionActionContainer,
-  TradeExecutionContainer,
-  TradeResponseContainer,
+  NlpExecutionActionContainer,
+  NlpExecutionContainer,
+  NlpResponseContainer,
 } from "../../styles"
+import { IndeterminateLoadingBar } from "../IndeterminateLoadingBar"
 import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
-import { IndeterminateLoadingBar } from "./IndeterminateLoadingBar"
 import { onNext } from "./state"
 import {
-  NlpExecutionStatus,
   TradeNlpExecutionDataReady,
   TradeNlpExecutionState,
+  TradeNlpExecutionStatus,
 } from "./tradeExecutionTypes"
 
 const ConfirmContent = ({
@@ -78,13 +78,13 @@ const ErrorContent = ({ message }: { message: string }) => (
 
 const Content: React.FC<TradeNlpExecutionState> = (state) => {
   switch (state.type) {
-    case NlpExecutionStatus.WaitingToExecute:
+    case TradeNlpExecutionStatus.WaitingToExecute:
       return <ConfirmContent {...state.payload.requestData} />
 
-    case NlpExecutionStatus.Executing:
+    case TradeNlpExecutionStatus.Executing:
       return <p>Executing Trade...</p>
 
-    case NlpExecutionStatus.Done:
+    case TradeNlpExecutionStatus.Done:
       return state.payload.response.type === "ok" ? (
         <SuccessContent {...state.payload.response.trade} />
       ) : (
@@ -102,23 +102,31 @@ export const ExecutionWorkflow: React.FC<TradeNlpExecutionState> = (state) => {
   return (
     overlayEl &&
     createPortal(
-      <TradeExecutionContainer className="search-container--active">
-        <IndeterminateLoadingBar state={state} />
-        <TradeResponseContainer>
+      <NlpExecutionContainer className="search-container--active">
+        <IndeterminateLoadingBar
+          done={state.type === TradeNlpExecutionStatus.Done ? true : false}
+          successful={
+            state.type === TradeNlpExecutionStatus.Done ? true : false
+          }
+          waitingToExecute={
+            state.type < TradeNlpExecutionStatus.WaitingToExecute ? true : false
+          }
+        />
+        <NlpResponseContainer>
           <Content {...state} />
-        </TradeResponseContainer>
-        <TradeExecutionActionContainer>
-          {state.type === NlpExecutionStatus.WaitingToExecute ? (
+        </NlpResponseContainer>
+        <NlpExecutionActionContainer>
+          {state.type === TradeNlpExecutionStatus.WaitingToExecute ? (
             <button onClick={onNext}>Execute</button>
           ) : null}
           <button
-            disabled={state.type === NlpExecutionStatus.Executing}
+            disabled={state.type === TradeNlpExecutionStatus.Executing}
             onClick={onResetInput}
           >
-            {state.type === NlpExecutionStatus.Done ? "Close" : "Cancel"}
+            {state.type === TradeNlpExecutionStatus.Done ? "Close" : "Cancel"}
           </button>
-        </TradeExecutionActionContainer>
-      </TradeExecutionContainer>,
+        </NlpExecutionActionContainer>
+      </NlpExecutionContainer>,
       overlayEl,
     )
   )

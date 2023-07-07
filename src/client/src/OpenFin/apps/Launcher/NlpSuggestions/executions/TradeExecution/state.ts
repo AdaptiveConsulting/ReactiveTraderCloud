@@ -18,9 +18,9 @@ import { getPrice$ } from "@/services/prices"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
 import {
-  NlpExecutionStatus,
   TradeNlpExecutionDataReady,
   TradeNlpExecutionState,
+  TradeNlpExecutionStatus,
 } from "./tradeExecutionTypes"
 
 const [next$_, onNext] = createSignal()
@@ -42,7 +42,9 @@ const nlpExecutionState$: Observable<TradeNlpExecutionState> = nlpIntent$.pipe(
       !intent.payload.notional ||
       !intent.payload.direction
     ) {
-      return [{ type: NlpExecutionStatus.MissingData as const, payload: {} }]
+      return [
+        { type: TradeNlpExecutionStatus.MissingData as const, payload: {} },
+      ]
     }
 
     const requestData =
@@ -52,13 +54,13 @@ const nlpExecutionState$: Observable<TradeNlpExecutionState> = nlpIntent$.pipe(
     return concat(
       [
         {
-          type: NlpExecutionStatus.DataReady as const,
+          type: TradeNlpExecutionStatus.DataReady as const,
           payload: { requestData },
         },
       ],
       next$.pipe(
         map(() => ({
-          type: NlpExecutionStatus.WaitingToExecute as const,
+          type: TradeNlpExecutionStatus.WaitingToExecute as const,
           payload: { requestData },
         })),
       ),
@@ -81,7 +83,7 @@ const nlpExecutionState$: Observable<TradeNlpExecutionState> = nlpIntent$.pipe(
                 throw new Error("Request timed out!")
               }
               return {
-                type: NlpExecutionStatus.Done as const,
+                type: TradeNlpExecutionStatus.Done as const,
                 payload: {
                   requestData,
                   response: {
@@ -93,7 +95,7 @@ const nlpExecutionState$: Observable<TradeNlpExecutionState> = nlpIntent$.pipe(
             }),
             catchError((e) => [
               {
-                type: NlpExecutionStatus.Done as const,
+                type: TradeNlpExecutionStatus.Done as const,
                 payload: {
                   requestData,
                   response: { type: "ko" as const, reason: e?.message ?? "" },
@@ -101,7 +103,7 @@ const nlpExecutionState$: Observable<TradeNlpExecutionState> = nlpIntent$.pipe(
               },
             ]),
             startWith({
-              type: NlpExecutionStatus.Executing as const,
+              type: TradeNlpExecutionStatus.Executing as const,
               payload: { requestData },
             }),
           ),

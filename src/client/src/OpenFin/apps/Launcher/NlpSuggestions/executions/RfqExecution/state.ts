@@ -20,9 +20,9 @@ import {
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
 import {
-  NlpExecutionStatus,
   RfqNlpExecutionDataReady,
   RfqNlpExecutionState,
+  RfqNlpExecutionStatus,
 } from "./rfqExecutionTypes"
 
 const [next$_, onNext] = createSignal()
@@ -42,7 +42,7 @@ const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
       !intent.payload.notional ||
       !dealers.length
     ) {
-      return [{ type: NlpExecutionStatus.MissingData as const, payload: {} }]
+      return [{ type: RfqNlpExecutionStatus.MissingData as const, payload: {} }]
     }
 
     const requestData =
@@ -54,19 +54,19 @@ const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
     )
 
     if (!instrument) {
-      return [{ type: NlpExecutionStatus.MissingData as const, payload: {} }]
+      return [{ type: RfqNlpExecutionStatus.MissingData as const, payload: {} }]
     }
 
     return concat(
       [
         {
-          type: NlpExecutionStatus.DataReady as const,
+          type: RfqNlpExecutionStatus.DataReady as const,
           payload: { requestData },
         },
       ],
       next$.pipe(
         map(() => ({
-          type: NlpExecutionStatus.WaitingToExecute as const,
+          type: RfqNlpExecutionStatus.WaitingToExecute as const,
           payload: { requestData },
         })),
       ),
@@ -82,7 +82,7 @@ const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
         ),
         map((response) => {
           return {
-            type: NlpExecutionStatus.Done as const,
+            type: RfqNlpExecutionStatus.Done as const,
             payload: {
               requestData,
               response: {

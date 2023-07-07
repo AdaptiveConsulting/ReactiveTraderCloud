@@ -1,48 +1,12 @@
 import { useEffect } from "react"
 
-import { RfqCard } from "@/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
-import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
 import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
-import { formatNumber } from "@/utils"
 
-import { onResetInput } from "../../../services/nlpService"
-import {
-  HelpText,
-  Pill,
-  TradeExecutionActionContainer,
-  TradeExecutionContainer,
-  TradeResponseContainer,
-} from "../../styles"
-import { IndeterminateLoadingBar } from "../TradeExecution/IndeterminateLoadingBar"
+import { HelpText, Pill } from "../../styles"
 import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
-import {
-  NlpExecutionStatus,
-  RfqNlpExecutionDataReady,
-} from "./rfqExecutionTypes"
+import { ExecutionWorkflow } from "./ExecutionWorkflow"
+import { RfqNlpExecutionStatus } from "./rfqExecutionTypes"
 import { onNext, useRfqExecutionState } from "./state"
-
-const ConfirmContent = ({
-  direction,
-  notional,
-  symbol,
-}: RfqNlpExecutionDataReady["payload"]["requestData"]) => {
-  useMoveNextOnEnter(onNext)
-  const directionStr = direction === Direction.Buy ? "buying" : "selling"
-  const notionalStr = formatNumber(notional)
-
-  return (
-    <>
-      <p>
-        <strong>Are You Sure?</strong>
-      </p>
-      <p>
-        <small>
-          You are raising an RFQ for {directionStr} {notionalStr} {symbol}
-        </small>
-      </p>
-    </>
-  )
-}
 
 const Usage = () => (
   <HelpText>
@@ -71,30 +35,15 @@ export const RfqExecution = () => {
   }, [])
 
   switch (state.type) {
-    case NlpExecutionStatus.MissingData:
+    case RfqNlpExecutionStatus.MissingData:
       return <Usage />
-    case NlpExecutionStatus.DataReady:
+    case RfqNlpExecutionStatus.DataReady:
       return <Confirmation />
-    case NlpExecutionStatus.WaitingToExecute:
-      return (
-        <TradeExecutionContainer className="search-container--active">
-          <IndeterminateLoadingBar state={state} />
-          <TradeResponseContainer>
-            <ConfirmContent {...state.payload.requestData} />
-          </TradeResponseContainer>
-          <TradeExecutionActionContainer>
-            {state.type === NlpExecutionStatus.WaitingToExecute ? (
-              <button onClick={onNext}>Execute</button>
-            ) : null}
-            <button onClick={onResetInput}>Cancel</button>
-          </TradeExecutionActionContainer>
-        </TradeExecutionContainer>
-      )
-    case NlpExecutionStatus.Done:
-      return state.payload.response.type === ACK_CREATE_RFQ_RESPONSE ? (
-        <RfqCard id={state.payload.response.response.payload} />
-      ) : null
     default:
-      return <div>default</div>
+      return (
+        <>
+          <ExecutionWorkflow {...state} />
+        </>
+      )
   }
 }

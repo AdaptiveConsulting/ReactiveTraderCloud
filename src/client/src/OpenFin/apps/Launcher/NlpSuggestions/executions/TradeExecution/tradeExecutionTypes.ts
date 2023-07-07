@@ -1,7 +1,7 @@
 import { Direction } from "@/generated/TradingGateway"
 import { ExecutionTrade } from "@/services/executions"
 
-export enum NlpExecutionStatus {
+export enum TradeNlpExecutionStatus {
   MissingData = 1,
   DataReady = 2,
   WaitingToExecute = 3,
@@ -16,33 +16,33 @@ export interface RequestData {
 }
 
 export interface TradeNlpExecutionMissingData {
-  type: NlpExecutionStatus.MissingData
+  type: TradeNlpExecutionStatus.MissingData
   payload: Record<string, unknown>
 }
 
 export interface TradeNlpExecutionDataReady {
-  type: NlpExecutionStatus.DataReady
+  type: TradeNlpExecutionStatus.DataReady
   payload: {
     requestData: RequestData
   }
 }
 
 export interface TradeNlpExecutionWaitingToExecute {
-  type: NlpExecutionStatus.WaitingToExecute
+  type: TradeNlpExecutionStatus.WaitingToExecute
   payload: {
     requestData: RequestData
   }
 }
 
 export interface TradeNlpExecutionExecuting {
-  type: NlpExecutionStatus.Executing
+  type: TradeNlpExecutionStatus.Executing
   payload: {
     requestData: RequestData
   }
 }
 
 export interface TradeNlpExecutionDone {
-  type: NlpExecutionStatus.Done
+  type: TradeNlpExecutionStatus.Done
   payload: {
     requestData: RequestData
     response:

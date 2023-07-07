@@ -1,6 +1,6 @@
 import { AckCreateRfqResponse, Direction } from "@/generated/TradingGateway"
 
-export enum NlpExecutionStatus {
+export enum RfqNlpExecutionStatus {
   MissingData = 1,
   DataReady = 2,
   WaitingToExecute = 3,
@@ -15,33 +15,33 @@ export interface RequestData {
 }
 
 export interface RfqNlpExecutionMissingData {
-  type: NlpExecutionStatus.MissingData
+  type: RfqNlpExecutionStatus.MissingData
   payload: Record<string, unknown>
 }
 
 export interface RfqNlpExecutionDataReady {
-  type: NlpExecutionStatus.DataReady
+  type: RfqNlpExecutionStatus.DataReady
   payload: {
     requestData: RequestData
   }
 }
 
 export interface RfqNlpExecutionWaitingToExecute {
-  type: NlpExecutionStatus.WaitingToExecute
+  type: RfqNlpExecutionStatus.WaitingToExecute
   payload: {
     requestData: RequestData
   }
 }
 
 export interface RfqNlpExecutionExecuting {
-  type: NlpExecutionStatus.Executing
+  type: RfqNlpExecutionStatus.Executing
   payload: {
     requestData: RequestData
   }
 }
 
 export interface RfqNlpExecutionDone {
-  type: NlpExecutionStatus.Done
+  type: RfqNlpExecutionStatus.Done
   payload: {
     requestData: RequestData
     response:

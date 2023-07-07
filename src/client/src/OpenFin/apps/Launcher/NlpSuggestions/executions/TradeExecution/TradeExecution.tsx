@@ -3,7 +3,7 @@ import { HelpText, Pill } from "../../styles"
 import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
 import { ExecutionWorkflow } from "./ExecutionWorkflow"
 import { onNext, useNlpExecutionState } from "./state"
-import { NlpExecutionStatus } from "./tradeExecutionTypes"
+import { TradeNlpExecutionStatus } from "./tradeExecutionTypes"
 
 const Usage = () => (
   <HelpText>
@@ -24,9 +24,9 @@ export const TradeExecution = () => {
   const state = useNlpExecutionState()
 
   switch (state.type) {
-    case NlpExecutionStatus.MissingData:
+    case TradeNlpExecutionStatus.MissingData:
       return <Usage />
-    case NlpExecutionStatus.DataReady:
+    case TradeNlpExecutionStatus.DataReady:
       return <Confirmation />
     default:
       return (

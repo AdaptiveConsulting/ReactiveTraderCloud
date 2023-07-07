@@ -222,7 +222,7 @@ export const InlineQuoteContainer = styled.div`
   font-size: 0.6875rem;
 `
 
-export const TradeExecutionContainer = styled.div`
+export const NlpExecutionContainer = styled.div`
   width: 100%;
   max-width: 100%;
   height: 100%;
@@ -235,7 +235,7 @@ export const TradeExecutionContainer = styled.div`
   align-items: center;
 `
 
-export const TradeExecutionActionContainer = styled.div`
+export const NlpExecutionActionContainer = styled.div`
   button {
     cursor: pointer;
     padding: 0.75rem 1.5rem;
@@ -252,7 +252,7 @@ export const TradeExecutionActionContainer = styled.div`
   }
 `
 
-export const TradeResponseContainer = styled.div`
+export const NlpResponseContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
