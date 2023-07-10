@@ -1,4 +1,4 @@
-import { RfqCard } from "@/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
+import { Card as RfqCard } from "@/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
 import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
 import { formatNumber } from "@/utils"
 
@@ -10,7 +10,7 @@ import {
   NlpResponseContainer,
 } from "../../styles"
 import { IndeterminateLoadingBar } from "../IndeterminateLoadingBar"
-import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
+import { useMoveNextOnEnter } from "../useMouseNextOnEnter"
 import {
   RfqNlpExecutionDataReady,
   RfqNlpExecutionState,
@@ -41,6 +41,15 @@ const ConfirmContent = ({
   )
 }
 
+const ErrorContent = ({ message }: { message: string }) => (
+  <>
+    <p>
+      <strong>Something went wrong while creating your RFQ.</strong>
+    </p>
+    <p>{<small>{message}</small>}</p>
+  </>
+)
+
 const Content: React.FC<RfqNlpExecutionState> = (state) => {
   switch (state.type) {
     case RfqNlpExecutionStatus.WaitingToExecute:
@@ -50,12 +59,20 @@ const Content: React.FC<RfqNlpExecutionState> = (state) => {
         </NlpResponseContainer>
       )
 
+    case RfqNlpExecutionStatus.Executing:
+      return <p>Executing Trade...</p>
+
     case RfqNlpExecutionStatus.Done:
       return state.payload.response.type === ACK_CREATE_RFQ_RESPONSE ? (
-        <RfqCard id={state.payload.response.response.payload} />
-      ) : null
+        <RfqCard
+          id={state.payload.response.response.payload}
+          highlight={false}
+        />
+      ) : (
+        <ErrorContent message={state.payload.response.reason} />
+      )
     default:
-      return <div>default</div>
+      return <div>Default</div>
   }
 }
 
@@ -66,11 +83,12 @@ export const ExecutionWorkflow: React.FC<RfqNlpExecutionState> = (state) => {
     overlayEl && (
       <NlpExecutionContainer className="search-container--active">
         <IndeterminateLoadingBar
-          done={state.type === RfqNlpExecutionStatus.Done ? true : false}
-          successful={state.type == RfqNlpExecutionStatus.Done ? true : false}
-          waitingToExecute={
-            state.type < RfqNlpExecutionStatus.WaitingToExecute ? true : false
+          done={state.type === RfqNlpExecutionStatus.Done}
+          successful={
+            state.type === RfqNlpExecutionStatus.Done &&
+            state.payload.response.type === ACK_CREATE_RFQ_RESPONSE
           }
+          waitingToExecute={state.type < RfqNlpExecutionStatus.WaitingToExecute}
         />
         <Content {...state} />
         {state.type === RfqNlpExecutionStatus.WaitingToExecute ? (

@@ -1,10 +1,12 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import {
+  catchError,
   concat,
   exhaustMap,
   map,
   Observable,
+  startWith,
   switchMap,
   take,
   withLatestFrom,
@@ -78,20 +80,34 @@ const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
             direction,
             dealerIds: dealers.map((dealer) => dealer.id),
             expirySecs: CREDIT_RFQ_EXPIRY_SECONDS,
-          }),
-        ),
-        map((response) => {
-          return {
-            type: RfqNlpExecutionStatus.Done as const,
-            payload: {
-              requestData,
-              response: {
-                type: "ack" as const,
-                response: response as AckCreateRfqResponse,
+          }).pipe(
+            map((response) => {
+              return {
+                type: RfqNlpExecutionStatus.Done as const,
+                payload: {
+                  requestData,
+                  response: {
+                    type: "ack" as const,
+                    response: response as AckCreateRfqResponse,
+                  },
+                },
+              }
+            }),
+            catchError((e) => [
+              {
+                type: RfqNlpExecutionStatus.Done as const,
+                payload: {
+                  requestData,
+                  response: { type: "nack" as const, reason: e?.message ?? "" },
+                },
               },
-            },
-          }
-        }),
+            ]),
+            startWith({
+              type: RfqNlpExecutionStatus.Executing as const,
+              payload: { requestData },
+            }),
+          ),
+        ),
       ),
     )
   }),

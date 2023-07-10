@@ -3,9 +3,9 @@ import { useEffect } from "react"
 import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 
 import { HelpText, Pill } from "../../styles"
-import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
-import { ExecutionWorkflow } from "./ExecutionWorkflow"
+import { useMoveNextOnEnter } from "../useMouseNextOnEnter"
 import { RfqNlpExecutionStatus } from "./rfqExecutionTypes"
+import { ExecutionWorkflow } from "./RfqExecutionWorkflow"
 import { onNext, useRfqExecutionState } from "./state"
 
 const Usage = () => (

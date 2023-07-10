@@ -13,7 +13,7 @@ import {
   NlpResponseContainer,
 } from "../../styles"
 import { IndeterminateLoadingBar } from "../IndeterminateLoadingBar"
-import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
+import { useMoveNextOnEnter } from "../useMouseNextOnEnter"
 import { onNext } from "./state"
 import {
   TradeNlpExecutionDataReady,
@@ -87,9 +87,9 @@ const Content: React.FC<TradeNlpExecutionState> = (state) => {
     case TradeNlpExecutionStatus.Done:
       return state.payload.response.type === "ok" ? (
         <SuccessContent {...state.payload.response.trade} />
-      ) : state.payload.response.type === "ko" ? (
+      ) : (
         <ErrorContent message={state.payload.response.reason} />
-      ) : null
+      )
 
     default:
       return null
@@ -104,12 +104,13 @@ export const ExecutionWorkflow: React.FC<TradeNlpExecutionState> = (state) => {
     createPortal(
       <NlpExecutionContainer className="search-container--active">
         <IndeterminateLoadingBar
-          done={state.type === TradeNlpExecutionStatus.Done ? true : false}
+          done={state.type === TradeNlpExecutionStatus.Done}
           successful={
-            state.type === TradeNlpExecutionStatus.Done ? true : false
+            state.type === TradeNlpExecutionStatus.Done &&
+            state.payload.response.type === "ok"
           }
           waitingToExecute={
-            state.type < TradeNlpExecutionStatus.WaitingToExecute ? true : false
+            state.type < TradeNlpExecutionStatus.WaitingToExecute
           }
         />
         <NlpResponseContainer>

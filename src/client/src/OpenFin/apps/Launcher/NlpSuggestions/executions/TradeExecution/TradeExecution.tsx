@@ -1,9 +1,9 @@
 import { Quotes } from "../../Quotes"
 import { HelpText, Pill } from "../../styles"
-import { useMoveNextOnEnter } from "../useMoveNextOnEnterHook"
-import { ExecutionWorkflow } from "./ExecutionWorkflow"
-import { onNext, useNlpExecutionState } from "./state"
+import { useMoveNextOnEnter } from "../useMouseNextOnEnter"
+import { onNext, useTradeExecutionState } from "./state"
 import { TradeNlpExecutionStatus } from "./tradeExecutionTypes"
+import { ExecutionWorkflow } from "./TradeExecutionWorkflow"
 
 const Usage = () => (
   <HelpText>
@@ -21,7 +21,7 @@ const Confirmation = () => {
 }
 
 export const TradeExecution = () => {
-  const state = useNlpExecutionState()
+  const state = useTradeExecutionState()
 
   switch (state.type) {
     case TradeNlpExecutionStatus.MissingData:
