@@ -17,7 +17,11 @@ import { execute$, ExecutionStatus } from "@/services/executions"
 import { getPrice$ } from "@/services/prices"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
-import { TradeNlpExecutionDataReady, TradeNlpExecutionState, TradeNlpExecutionStatus } from "./tradeExecutionTypes"
+import {
+  TradeNlpExecutionDataReady,
+  TradeNlpExecutionState,
+  TradeNlpExecutionStatus,
+} from "./tradeExecutionTypes"
 
 const [next$_, onNext] = createSignal()
 export { onNext }
