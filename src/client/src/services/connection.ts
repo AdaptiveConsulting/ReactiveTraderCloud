@@ -46,12 +46,8 @@ const connectionExists = (status: ConnectionStatus, dispose: Disposable) => {
 
 // Connect to Hydra gateway and store the disposable
 export const initConnection = async () => {
-  const url = import.meta.env.VITE_LOCAL_HYDRA_URL
-    ? import.meta.env.VITE_LOCAL_HYDRA_URL
-    : `${window.location.origin}/ws`
-  console.log(url)
   const dispose = await connectToGateway({
-    url,
+    url: `${window.location.origin}/ws`,
     interceptor: noop,
     autoReconnect: true,
     useJson: !!import.meta.env.DEV,
