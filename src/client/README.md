@@ -65,6 +65,12 @@ npm start
 
 You can then browse the app at http://localhost:1917
 
+To run while pointing to a local hydra backend.
+
+```sh
+npm start:local
+```
+
 ### Additional command line options
 
 Any VITE\_\* properties may be added to a `.env.local` file (not checked in).
