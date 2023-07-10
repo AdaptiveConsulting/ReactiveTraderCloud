@@ -1,13 +1,15 @@
 import styled, { DefaultTheme, keyframes } from "styled-components"
 
-import { NlpExecutionState, NlpExecutionStatus } from "./state"
-
-const getBarColor = (state: NlpExecutionState, theme: DefaultTheme) => {
-  if (state.type !== NlpExecutionStatus.Done) {
+const getBarColor = (
+  successful: boolean,
+  done: boolean,
+  theme: DefaultTheme,
+) => {
+  if (!done) {
     return theme.colors.accents.primary.base
   }
 
-  return state.payload.response.type === "ok"
+  return successful
     ? theme.colors.accents.positive.base
     : theme.colors.accents.negative.base
 }
@@ -20,17 +22,18 @@ const Slider = styled.div`
   top: 0;
   left: 0;
 `
-const Line = styled.div<{ state: NlpExecutionState }>`
+const Line = styled.div<{ successful: boolean; done: boolean }>`
   position: absolute;
-  opacity: ${({ state }) =>
-    state.type === NlpExecutionStatus.Done ? "1.0" : "0.4"};
-  background: ${({ theme, state }) => getBarColor(state, theme)};
+  opacity: ${({ done }) => (done ? "1.0" : "0.4")};
+  background: ${({ theme, successful, done }) =>
+    getBarColor(successful, done, theme)};
   width: 150%;
   height: 3px;
 `
-const SubLine = styled.div<{ state: NlpExecutionState }>`
+const SubLine = styled.div<{ successful: boolean; done: boolean }>`
   position: absolute;
-  background: ${({ theme, state }) => getBarColor(state, theme)};
+  background: ${({ theme, successful, done }) =>
+    getBarColor(successful, done, theme)};
   height: 3px;
 `
 
@@ -51,19 +54,23 @@ const Dec = styled(SubLine)`
 `
 
 export function IndeterminateLoadingBar({
-  state,
+  done,
+  successful,
+  waitingToExecute,
 }: {
-  state: NlpExecutionState
+  waitingToExecute: boolean
+  done: boolean
+  successful: boolean
 }) {
-  if (state.type < NlpExecutionStatus.WaitingToExecute) return null
+  if (waitingToExecute) return null
 
   return (
     <Slider>
-      <Line state={state} />
-      {state.type !== NlpExecutionStatus.Done && (
+      <Line done={done} successful={successful} />
+      {!done && (
         <>
-          <Inc state={state} />
-          <Dec state={state} />
+          <Inc done={done} successful={successful} />
+          <Dec done={done} successful={successful} />
         </>
       )}
     </Slider>

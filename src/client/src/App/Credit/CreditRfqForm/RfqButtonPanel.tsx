@@ -45,6 +45,7 @@ const SendRfqButton = styled(ActionButton)<{ disabled?: boolean }>`
 `
 
 const [rfqRequest$, sendRfq] = createSignal()
+
 rfqRequest$
   .pipe(
     withLatestFrom(

@@ -1,10 +1,11 @@
 import { Subscribe } from "@react-rxjs/core"
 
 import { NlpIntent, NlpIntentType } from "../services/nlpService"
+import { RfqExecution } from "./executions/RfqExecution"
+import { TradeExecution } from "./executions/TradeExecution"
 import { AllQuotes, Quotes } from "./Quotes"
 import { HelpText, Suggestion } from "./styles"
 import { SuggestionWrapper } from "./SuggestionWrapper"
-import { TradeExecution } from "./TradeExecution"
 import { Trades } from "./Trades"
 
 export const NlpSuggestions = ({ intent }: { intent: NlpIntent | null }) => {
@@ -16,6 +17,15 @@ export const NlpSuggestions = ({ intent }: { intent: NlpIntent | null }) => {
         <Suggestion>
           <Subscribe fallback={null}>
             <TradeExecution />
+          </Subscribe>
+        </Suggestion>
+      )
+
+    case NlpIntentType.CreditRfq:
+      return (
+        <Suggestion>
+          <Subscribe>
+            <RfqExecution />
           </Subscribe>
         </Suggestion>
       )

@@ -5,28 +5,28 @@ import { Direction } from "@/generated/TradingGateway"
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { formatNumber } from "@/utils"
 
-import { useOverlayElement } from "../../overlayContext"
-import { onResetInput } from "../../services/nlpService"
+import { useOverlayElement } from "../../../overlayContext"
+import { onResetInput } from "../../../services/nlpService"
 import {
-  TradeExecutionActionContainer,
-  TradeExecutionContainer,
-  TradeResponseContainer,
-} from "../styles"
-import { IndeterminateLoadingBar } from "./IndeterminateLoadingBar"
+  NlpExecutionActionContainer,
+  NlpExecutionContainer,
+  NlpResponseContainer,
+} from "../../styles"
+import { IndeterminateLoadingBar } from "../IndeterminateLoadingBar"
+import { useMoveNextOnEnter } from "../useMouseNextOnEnter"
+import { onNext } from "./state"
 import {
-  NlpExecutionDataReady,
-  NlpExecutionState,
-  NlpExecutionStatus,
-  onNext,
-  useMoveNextOnEnter,
-} from "./state"
+  TradeNlpExecutionDataReady,
+  TradeNlpExecutionState,
+  TradeNlpExecutionStatus,
+} from "./tradeExecutionTypes"
 
 const ConfirmContent = ({
   direction,
   notional,
   symbol,
-}: NlpExecutionDataReady["payload"]["requestData"]) => {
-  useMoveNextOnEnter()
+}: TradeNlpExecutionDataReady["payload"]["requestData"]) => {
+  useMoveNextOnEnter(onNext)
   const directionStr = direction === Direction.Buy ? "buying" : "selling"
   const notionalStr = formatNumber(notional)
 
@@ -76,15 +76,15 @@ const ErrorContent = ({ message }: { message: string }) => (
   </>
 )
 
-const Content: React.FC<NlpExecutionState> = (state) => {
+const Content: React.FC<TradeNlpExecutionState> = (state) => {
   switch (state.type) {
-    case NlpExecutionStatus.WaitingToExecute:
+    case TradeNlpExecutionStatus.WaitingToExecute:
       return <ConfirmContent {...state.payload.requestData} />
 
-    case NlpExecutionStatus.Executing:
+    case TradeNlpExecutionStatus.Executing:
       return <p>Executing Trade...</p>
 
-    case NlpExecutionStatus.Done:
+    case TradeNlpExecutionStatus.Done:
       return state.payload.response.type === "ok" ? (
         <SuccessContent {...state.payload.response.trade} />
       ) : (
@@ -96,29 +96,38 @@ const Content: React.FC<NlpExecutionState> = (state) => {
   }
 }
 
-export const ExecutionWorkflow: React.FC<NlpExecutionState> = (state) => {
+export const ExecutionWorkflow: React.FC<TradeNlpExecutionState> = (state) => {
   const overlayEl = useOverlayElement()
 
   return (
     overlayEl &&
     createPortal(
-      <TradeExecutionContainer className="search-container--active">
-        <IndeterminateLoadingBar state={state} />
-        <TradeResponseContainer>
+      <NlpExecutionContainer className="search-container--active">
+        <IndeterminateLoadingBar
+          done={state.type === TradeNlpExecutionStatus.Done}
+          successful={
+            state.type === TradeNlpExecutionStatus.Done &&
+            state.payload.response.type === "ok"
+          }
+          waitingToExecute={
+            state.type < TradeNlpExecutionStatus.WaitingToExecute
+          }
+        />
+        <NlpResponseContainer>
           <Content {...state} />
-        </TradeResponseContainer>
-        <TradeExecutionActionContainer>
-          {state.type === NlpExecutionStatus.WaitingToExecute ? (
+        </NlpResponseContainer>
+        <NlpExecutionActionContainer>
+          {state.type === TradeNlpExecutionStatus.WaitingToExecute ? (
             <button onClick={onNext}>Execute</button>
           ) : null}
           <button
-            disabled={state.type === NlpExecutionStatus.Executing}
+            disabled={state.type === TradeNlpExecutionStatus.Executing}
             onClick={onResetInput}
           >
-            {state.type === NlpExecutionStatus.Done ? "Close" : "Cancel"}
+            {state.type === TradeNlpExecutionStatus.Done ? "Close" : "Cancel"}
           </button>
-        </TradeExecutionActionContainer>
-      </TradeExecutionContainer>,
+        </NlpExecutionActionContainer>
+      </NlpExecutionContainer>,
       overlayEl,
     )
   )

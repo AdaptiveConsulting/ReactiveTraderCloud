@@ -1,11 +1,9 @@
-import { Quotes } from "../Quotes"
-import { HelpText, Pill } from "../styles"
-import { ExecutionWorkflow } from "./ExecutionWorkflow"
-import {
-  NlpExecutionStatus,
-  useMoveNextOnEnter,
-  useNlpExecutionState,
-} from "./state"
+import { Quotes } from "../../Quotes"
+import { HelpText, Pill } from "../../styles"
+import { useMoveNextOnEnter } from "../useMouseNextOnEnter"
+import { onNext, useTradeExecutionState } from "./state"
+import { TradeNlpExecutionStatus } from "./tradeExecutionTypes"
+import { ExecutionWorkflow } from "./TradeExecutionWorkflow"
 
 const Usage = () => (
   <HelpText>
@@ -14,7 +12,7 @@ const Usage = () => (
 )
 
 const Confirmation = () => {
-  useMoveNextOnEnter()
+  useMoveNextOnEnter(onNext)
   return (
     <HelpText>
       Press <Pill>ENTER</Pill> to continue
@@ -23,12 +21,12 @@ const Confirmation = () => {
 }
 
 export const TradeExecution = () => {
-  const state = useNlpExecutionState()
+  const state = useTradeExecutionState()
 
   switch (state.type) {
-    case NlpExecutionStatus.MissingData:
+    case TradeNlpExecutionStatus.MissingData:
       return <Usage />
-    case NlpExecutionStatus.DataReady:
+    case TradeNlpExecutionStatus.DataReady:
       return <Confirmation />
     default:
       return (

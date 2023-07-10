@@ -4,6 +4,10 @@ import Measure, { ContentRect } from "react-measure"
 
 import { Loader } from "@/components/Loader"
 import LogoIcon from "@/components/LogoIcon"
+import {
+  registerCreditQuoteNotifications,
+  unregisterCreditQuoteNotifications,
+} from "@/notifications"
 
 import { LaunchButton } from "./components/LaunchButton"
 import { ExitIcon, minimiseNormalIcon, SearchIcon } from "./icons"
@@ -94,6 +98,11 @@ function Launcher() {
   useEffect(() => {
     setOverlay(overlayRef.current)
     getCurrentWindowBounds().then(setInitialBounds).catch(console.error)
+    registerCreditQuoteNotifications()
+
+    return () => {
+      unregisterCreditQuoteNotifications()
+    }
   }, [])
 
   useEffect(() => {

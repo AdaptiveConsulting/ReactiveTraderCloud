@@ -33,6 +33,7 @@ export enum NlpIntentType {
   SpotQuote,
   TradeInfo,
   MarketInfo,
+  CreditRfq,
 }
 
 export interface TradeExecutionIntent {
@@ -65,17 +66,28 @@ export interface MarketInfoIntent {
   payload: Record<string, unknown>
 }
 
+export interface CreditRfqIntent {
+  type: NlpIntentType.CreditRfq
+  payload: {
+    symbol: string
+    direction: Direction
+    notional: number
+  }
+}
+
 export type NlpIntent =
   | TradeExecutionIntent
   | SpotQuoteIntent
   | TradesInfoIntent
   | MarketInfoIntent
+  | CreditRfqIntent
 
 const intentMapper: Record<string, NlpIntentType> = {
   "rt.trades.execute": NlpIntentType.TradeExecution,
   "rt.spot.quote": NlpIntentType.SpotQuote,
   "rt.trades.info": NlpIntentType.TradeInfo,
   "rt.market.info": NlpIntentType.MarketInfo,
+  "rt.credit.rfq": NlpIntentType.CreditRfq,
 }
 
 const directionMapper: Record<string, Direction> = {
@@ -112,12 +124,15 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
       if (!response || !response.queryResult?.intent?.displayName) return null
 
       const intent = intentMapper[response.queryResult?.intent?.displayName]
+      const intentFields = response.queryResult?.parameters?.fields
+
       const symbol =
-        response.queryResult?.parameters?.fields?.CurrencyPairs?.stringValue
-      const direction =
-        response.queryResult?.parameters?.fields?.TradeType?.stringValue
-      const value =
-        response.queryResult?.parameters?.fields?.number?.numberValue
+        intentFields?.CurrencyPairs?.stringValue ||
+        intentFields?.Bond?.stringValue
+
+      const direction = intentFields?.TradeType?.stringValue
+
+      const value = intentFields?.number?.numberValue
 
       switch (intent) {
         case NlpIntentType.TradeExecution: {
@@ -131,6 +146,21 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
                 },
               } as TradeExecutionIntent)
             : null
+        }
+
+        case NlpIntentType.CreditRfq: {
+          if (direction) {
+            return {
+              type: NlpIntentType.CreditRfq,
+              payload: {
+                symbol,
+                direction: directionMapper[direction],
+                notional: value,
+              },
+            } as CreditRfqIntent
+          } else {
+            return null
+          }
         }
 
         case NlpIntentType.MarketInfo:
