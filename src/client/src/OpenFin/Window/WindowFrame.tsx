@@ -1,5 +1,3 @@
-import { useContext } from "react"
-
 import { WindowFrameBase } from "./WindowFrameBase"
 import { WindowHeader } from "./WindowHeader"
 

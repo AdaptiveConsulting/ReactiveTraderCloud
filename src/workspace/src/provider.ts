@@ -5,7 +5,7 @@ import { registerStore, deregisterStore } from "./store"
 import { registerFxNotifications } from "./home/notifications"
 import { BASE_URL } from "./consts"
 import { customActions, overrideCallback } from "./browser"
-import { dockCustomActions, registerDock } from "./dock"
+import { deregisterdock, dockCustomActions, registerDock } from "./dock"
 
 const icon = `${BASE_URL}/images/icons/adaptive.png`
 
@@ -48,8 +48,9 @@ async function init() {
 
   const providerWindow = fin.Window.getCurrentSync()
   providerWindow.once("close-requested", async () => {
-    await deregisterStore()
     await deregisterHome()
+    await deregisterStore()
+    await deregisterdock()
     fin.Platform.getCurrentSync().quit()
   })
 }

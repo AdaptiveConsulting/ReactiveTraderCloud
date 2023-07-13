@@ -219,32 +219,43 @@ const injectScriptIntoHtml = (
   env: string,
 ) =>
   createHtmlPlugin({
-    inject: {
-      data: {
-        injectScript: `
-          ${
-            buildTarget === "web"
-              ? `<link rel="manifest" href="${getBaseUrl(
-                  isDev,
-                )}/manifest.json" />`
-              : "<!-- no manifest.json for OpenFin -->"
-          }
-          
-          <script>
-            // Hydra dependency references BigInt at run time even when the application isn't explicitly started
-            // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
-            // Set BigInt to an anon function to prevent the runtime error
-
-            window.supportsBigInt = typeof BigInt !== 'undefined';
-            window.BigInt = supportsBigInt ? BigInt : function(){};
-          </script>
-          
-          <script async src="https://www.googletagmanager.com/gtag/js?id=${
-            env === "prod" ? "G-Z3PC9MRCH9" : "G-Y28QSEPEC8"
-          }"></script>
-        `,
+    pages: [
+      {
+        filename: "index.html",
+        template: "index.html",
+        injectOptions: {
+          data: {
+            injectScript: `
+              ${
+                buildTarget === "web"
+                  ? `<link rel="manifest" href="${getBaseUrl(
+                      isDev,
+                    )}/manifest.json" />`
+                  : "<!-- no manifest.json for OpenFin -->"
+              }
+              
+              <script>
+                // Hydra dependency references BigInt at run time even when the application isn't explicitly started
+                // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
+                // Set BigInt to an anon function to prevent the runtime error
+    
+                window.supportsBigInt = typeof BigInt !== 'undefined';
+                window.BigInt = supportsBigInt ? BigInt : function(){};
+              </script>
+              
+              <script async src="https://www.googletagmanager.com/gtag/js?id=${
+                env === "prod" ? "G-Z3PC9MRCH9" : "G-Y28QSEPEC8"
+              }"></script>
+            `,
+          },
+        },
       },
-    },
+      // TODO - make OpenFin-only
+      {
+        filename: "provider.html",
+        template: "provider.html",
+      },
+    ],
   })
 
 const injectWebServiceWorkerPlugin = (mode: string) =>
@@ -346,6 +357,14 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     base: viteBaseUrl,
     build: {
       sourcemap: true,
+      rollupOptions: {
+        input: {
+          // TODO - use the opportunity for OpenFin- or PWA-specific root html
+          main: resolve(__dirname, "index.html"),
+          // TODO - make OpenFin-only, move to /OpenFin
+          ofProvider: resolve(__dirname, "provider.html"),
+        },
+      },
     },
     preview: {
       port: localPort,
