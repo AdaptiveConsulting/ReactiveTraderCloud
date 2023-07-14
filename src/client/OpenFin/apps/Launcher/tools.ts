@@ -52,7 +52,8 @@ async function launchByManifestUrl(uuid: string, manifestUrl?: string) {
     return runningApp
   }
   const platform = fin.Platform.getCurrentSync()
-  await platform.launchContentManifest(manifestUrl)
+  await fin.Platform.startFromManifest(manifestUrl)
+  // await platform.launchContentManifest(manifestUrl)
 }
 
 export async function open(
@@ -65,7 +66,6 @@ export async function open(
     return window.open(config.url, config.name)
   }
 
-  // open as url through openfin
   if (provider?.platformName === "browser") {
     if (typeof config.url !== "string") {
       throw new TypeError(`Error opening with browser - url should be a string`)
