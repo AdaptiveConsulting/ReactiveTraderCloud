@@ -1,8 +1,10 @@
 import { firstValueFrom } from "rxjs"
 import { distinctUntilChanged, map, scan } from "rxjs/operators"
 import { CurrencyPair, ReferenceDataService } from "@/generated/TradingGateway"
+import { withConnection } from "./withConnection"
 
 export const currencyPairs$ = ReferenceDataService.getCcyPairs().pipe(
+  withConnection(),
   scan((acc, data) => {
     const { updates } = data
     const result = { ...acc }

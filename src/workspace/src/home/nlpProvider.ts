@@ -5,24 +5,40 @@ import {
   CLITemplate,
   TemplateFragment,
 } from "@openfin/workspace"
-import { filter, Subscription, take, takeUntil, withLatestFrom } from "rxjs"
 import { format } from "date-fns"
-// TODO - move into common place
 import {
-  customNumberFormatter,
-  significantDigitsNumberFormatter,
-  DECIMAL_SEPARATOR,
-} from "../../../client/src/utils/formatNumber"
+  Subscription,
+  filter,
+  map,
+  take,
+  takeUntil,
+  withLatestFrom,
+} from "rxjs"
+// TODO - move into common place
 import { BASE_URL, VITE_RT_URL } from "@/consts"
 import {
+  ACK_CREATE_RFQ_RESPONSE,
+  AckCreateRfqResponse,
   CurrencyPair,
   Direction,
+  InstrumentBody,
+  NackCreateRfqResponse,
+  RfqBody,
   Trade,
   TradeStatus,
 } from "@/generated/TradingGateway"
+import { creditInstruments$ } from "@/services/creditInstruments"
+import { createdRfqInstrumentReponse$ as createdRfqWithInstrumentWithReponse$ } from "@/services/creditRfqRequests"
+import { currencyPairs$, getCurencyPair$ } from "@/services/currencyPairs"
 import { executing$, executionResponse$ } from "@/services/executions"
-import { getNlpIntent, NlpIntentType } from "@/services/nlpService"
-import { getPriceForSymbol$, Price, prices$ } from "@/services/prices"
+import {
+  CreditRfqIntent,
+  NlpIntentType,
+  TradeExecutionIntent,
+  TradesInfoIntent,
+  getNlpIntent,
+} from "@/services/nlpService"
+import { Price, getPriceForSymbol$, prices$ } from "@/services/prices"
 import { tradesStream$ } from "@/services/trades"
 import {
   createButton,
@@ -31,7 +47,11 @@ import {
   createText,
   createTextContainer,
 } from "@/templates"
-import { currencyPairs$, getCurencyPair$ } from "@/services/currencyPairs"
+import {
+  DECIMAL_SEPARATOR,
+  customNumberFormatter,
+  significantDigitsNumberFormatter,
+} from "../../../client/src/utils/formatNumber"
 import { ADAPTIVE_LOGO } from "./utils"
 
 const MOVEMENT_UP_ICON = `${BASE_URL}/images/icons/up.svg`
@@ -423,6 +443,91 @@ const constructTradeExecutedTemplateContent = (trade: Trade) => {
   }
 }
 
+interface AckType {
+  rfq: RfqBody
+  instrument: InstrumentBody
+  response: AckCreateRfqResponse
+}
+
+interface NackType {
+  response: NackCreateRfqResponse
+}
+
+const constructRfqRaisedTemplateContent = (
+  createdRfqWithInstrumentWithResponse: AckType | NackType,
+) => {
+  const fontSize = 12
+
+  if (
+    createdRfqWithInstrumentWithResponse.response.type ===
+    ACK_CREATE_RFQ_RESPONSE
+  ) {
+    const { rfq, instrument } = createdRfqWithInstrumentWithResponse as AckType
+
+    const inverseTextStyle = {
+      backgroundColor: "white",
+      color: "#01C38D",
+      fontWeight: "bold",
+    }
+    const fontSize = 12
+
+    const layout: TemplateFragment = createContainer(
+      "column",
+      [
+        createTextContainer([createText("rfqId")], {
+          fontWeight: "bold",
+          marginBottom: "10px",
+        }),
+        createTextContainer([
+          createText("direction", fontSize),
+          createText("notional", fontSize, inverseTextStyle),
+        ]),
+      ],
+      {
+        padding: "10px",
+        height: "100%",
+        justifyContent: "center",
+        textAlign: "center",
+        backgroundColor: "#01C38D",
+        color: "white",
+      },
+    )
+
+    const data = {
+      rfqId: `RFQ ID: ${rfq.id.toString()}`,
+      direction: `You raised an RFQ to ${rfq.direction} `,
+      notional: `${nf.format(rfq.quantity)} ${instrument.ticker}`,
+    }
+
+    return {
+      layout,
+      data,
+    }
+  }
+
+  const layout: TemplateFragment = createContainer(
+    "column",
+    [createTextContainer([createText("rejectedLabel", fontSize)])],
+    {
+      padding: "10px",
+      height: "100%",
+      justifyContent: "center",
+      textAlign: "center",
+      backgroundColor: "#FF274B",
+      color: "white",
+    },
+  )
+
+  const data = {
+    rejectedLabel: "Your RFQ could not be raised",
+  }
+
+  return {
+    layout,
+    data,
+  }
+}
+
 const nf = new Intl.NumberFormat("default")
 
 export const getNlpResults = async (
@@ -443,8 +548,6 @@ export const getNlpResults = async (
   if (!intent) {
     return revokeLoading()
   }
-
-  console.log("Intent", intent)
 
   switch (intent.type) {
     case NlpIntentType.SpotQuote: {
@@ -510,9 +613,8 @@ export const getNlpResults = async (
     case NlpIntentType.TradeInfo: {
       let sub = tradesStream$.subscribe((trades) => {
         trades.reverse()
-        // @ts-ignore
-        const trimmedTrades = intent.payload.count
-          ? trades.splice(0, intent.payload.count)
+        const trimmedTrades = (intent as TradesInfoIntent).payload.count
+          ? trades.splice(0, (intent as TradesInfoIntent).payload.count)
           : trades
         const results = trimmedTrades.map((trade) => ({
           key: `trade-${trade.tradeId}`,
@@ -553,61 +655,61 @@ export const getNlpResults = async (
     }
 
     case NlpIntentType.TradeExecution: {
-      const { direction, notional, symbol } = intent.payload as any
+      const { direction, notional, symbol } = (intent as TradeExecutionIntent)
+        .payload
 
       if (!symbol) {
         return revokeLoading()
       }
 
       const key = `trade-execution-${symbol}`
-      let subs: Subscription[] = []
+      let subs: Subscription
       let result: any
 
-      subs.push(
-        getPriceForSymbol$(symbol)
-          .pipe(
-            withLatestFrom(getCurencyPair$(symbol)),
-            takeUntil(executing$.pipe(filter((value) => !!value))),
-          )
-          .subscribe(([price, currencyPair]) => {
-            const { bid, ask } = price
-            const formattedNotional = nf.format(notional)
+      subs = getPriceForSymbol$(symbol)
+        .pipe(
+          withLatestFrom(getCurencyPair$(symbol)),
+          takeUntil(executing$.pipe(filter((value) => !!value))),
+        )
+        .subscribe(([price, currencyPair]) => {
+          const { bid, ask } = price
+          const formattedNotional = nf.format(notional)
 
-            const data = {
-              manifestType: "trade-execution",
-              currencyPair: symbol,
-              spotRate: direction === Direction.Buy ? ask : bid,
-              valueDate: new Date().toISOString().substr(0, 10),
+          const data = {
+            manifestType: "trade-execution",
+            currencyPair: symbol,
+            spotRate: direction === Direction.Buy ? ask : bid,
+            valueDate: new Date().toISOString().substr(0, 10),
+            direction,
+            notional,
+            dealtCurrency:
+              direction === Direction.Buy
+                ? symbol.substr(0, 3)
+                : symbol.substr(3, 3),
+          }
+
+          result = {
+            key,
+            title: `${direction} ${formattedNotional} ${symbol}`,
+            label: "Trade Execution",
+            icon: ADAPTIVE_LOGO,
+            data,
+            actions: [{ name: `Execute`, hotkey: "enter" }],
+            // @ts-ignore
+            template: CLITemplate.Custom,
+            templateContent: constructTradeExecutionTemplateContent(
+              price,
+              currencyPair,
+              formattedNotional,
               direction,
-              notional,
-              dealtCurrency:
-                direction === Direction.Buy
-                  ? symbol.substr(0, 3)
-                  : symbol.substr(3, 3),
-            }
-            result = {
-              key,
-              title: `${direction} ${formattedNotional} ${symbol}`,
-              label: "Trade Execution",
-              icon: ADAPTIVE_LOGO,
-              data,
-              actions: [{ name: `Execute`, hotkey: "enter" }],
-              // @ts-ignore
-              template: CLITemplate.Custom,
-              templateContent: constructTradeExecutionTemplateContent(
-                price,
-                currencyPair,
-                formattedNotional,
-                direction,
-              ),
-            }
+            ),
+          }
 
-            revokeLoading()
-            response.respond([result])
-          }),
-      )
+          revokeLoading()
+          response.respond([result])
+        })
 
-      subs.push(
+      subs.add(
         executing$.pipe(take(1)).subscribe(() => {
           const newResult = { ...result }
           newResult.actions = []
@@ -641,7 +743,7 @@ export const getNlpResults = async (
         }),
       )
 
-      subs.push(
+      subs.add(
         executionResponse$.pipe(take(1)).subscribe(({ trade }) => {
           response.respond([
             {
@@ -657,22 +759,107 @@ export const getNlpResults = async (
               // @ts-ignore
               template: CLITemplate.Custom,
               templateContent: constructTradeExecutedTemplateContent(trade),
-              // templateContent: [
-              //   [trade.tradeId, trade.status],
-              //   ['Symbol', trade.currencyPair],
-              //   ['Notional', nf.format(trade.notional)],
-              //   [trade.direction, trade.spotRate],
-              //   ['Date', new Date(trade.tradeDate)]
-              // ]
             },
           ])
         }),
       )
 
       request.onClose(() => {
-        if (subs.length) {
-          subs.forEach((sub) => sub.unsubscribe())
-        }
+        subs.unsubscribe()
+      })
+
+      break
+    }
+
+    case NlpIntentType.CreditRfq: {
+      const { symbol, direction, notional } = (intent as CreditRfqIntent)
+        .payload
+
+      const formattedNotional = nf.format(notional)
+
+      if (!symbol) {
+        return revokeLoading()
+      }
+
+      const key = `rfq-execution-${symbol}`
+      let subs: Subscription
+      let result: any
+
+      subs = creditInstruments$
+        .pipe(
+          map((instruments) =>
+            instruments.find((instrument) => instrument.ticker === symbol),
+          ),
+        )
+        .subscribe((instrument) => {
+          if (!instrument) {
+            return revokeLoading()
+          }
+
+          const { cusip, maturity, interestRate, benchmark, ticker } =
+            instrument
+
+          const data = {
+            manifestType: "rfq-execution",
+            instrumentId: instrument.id,
+            quantity: notional,
+            direction,
+          }
+
+          result = {
+            key,
+            title: `Raise RFQ: ${direction} ${formattedNotional} ${symbol}`,
+            label: "RFQ Execution",
+            icon: ADAPTIVE_LOGO,
+            data,
+            actions: [{ name: `Execute`, hotkey: "enter" }],
+            // @ts-ignore
+            template: CLITemplate.List,
+            templateContent: [
+              ["Ticker", ticker],
+              ["Cusip", cusip],
+              ["Maturity", maturity],
+              ["Interest Rate", interestRate],
+              ["Benchmark", benchmark],
+            ],
+          }
+
+          revokeLoading()
+          response.respond([result])
+        })
+
+      subs.add(
+        createdRfqWithInstrumentWithReponse$.subscribe(
+          (createdRfqWithInstrumentWithResponse) => {
+            response.respond([
+              {
+                key,
+                title: `RFQ ${
+                  createdRfqWithInstrumentWithResponse.response.type ===
+                  ACK_CREATE_RFQ_RESPONSE
+                    ? "Raised"
+                    : "Failed to Raise"
+                }`,
+                label: "RFQ Execution",
+                icon: ADAPTIVE_LOGO,
+                data: {
+                  manifestType: "url",
+                  manifest: `${VITE_RT_URL}/credit-rfqs`,
+                },
+                actions: [{ name: `Launch RFQs`, hotkey: "enter" }],
+                // @ts-ignore
+                template: CLITemplate.Custom,
+                templateContent: constructRfqRaisedTemplateContent(
+                  createdRfqWithInstrumentWithResponse,
+                ),
+              },
+            ])
+          },
+        ),
+      )
+
+      request.onClose(() => {
+        subs.unsubscribe()
       })
 
       break

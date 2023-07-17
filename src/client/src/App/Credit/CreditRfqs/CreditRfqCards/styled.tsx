@@ -113,6 +113,7 @@ export const CardFooterWrapper = styled.div`
 `
 
 export const CancelQuoteButton = styled.button`
+  color: ${({ theme }) => theme.core.textColor};
   background-color: ${({ theme }) => theme.core.darkBackground};
   border-radius: 3px;
   font-size: 11px;
