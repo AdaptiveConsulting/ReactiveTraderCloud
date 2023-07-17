@@ -51,9 +51,7 @@ async function launchByManifestUrl(uuid: string, manifestUrl?: string) {
   if (runningApp) {
     return runningApp
   }
-  const platform = fin.Platform.getCurrentSync()
-  await fin.Platform.startFromManifest(manifestUrl)
-  // await platform.launchContentManifest(manifestUrl)
+  await fin.Application.startFromManifest(manifestUrl)
 }
 
 export async function open(
