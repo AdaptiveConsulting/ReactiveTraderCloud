@@ -4,16 +4,21 @@
     "name": "Limit Checker <ENV_SUFFIX>",
     "icon": "<BASE_URL>/static/media/limit-checker.svg",
     "url": "<BASE_URL>",
-    "autoShow": false
+    "autoShow": false,
+    "defaultWindowOptions": {
+      "preventDragOut": true,
+      "fdc3InteropApi": "1.2"
+    },
+    "defaultViewOptions": {
+      "contextMenu": true,
+      "fdc3InteropApi": "1.2"
+    }
   },
   "runtime": {
     "version": "<OPENFIN_RUNTIME>",
     "arguments": "--remote-debugging-port=9091"
   },
-  "defaultWindowOptions": {
-    "preventDragOut": true,
-    "fdc3InteropApi": "1.2"
-  },
+
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",
   "snapshot": {
     "windows": [
