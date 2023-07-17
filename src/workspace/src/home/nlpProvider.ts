@@ -663,53 +663,55 @@ export const getNlpResults = async (
       }
 
       const key = `trade-execution-${symbol}`
-      let subs: Subscription
+      let subs: Subscription[] = []
       let result: any
 
-      subs = getPriceForSymbol$(symbol)
-        .pipe(
-          withLatestFrom(getCurencyPair$(symbol)),
-          takeUntil(executing$.pipe(filter((value) => !!value))),
-        )
-        .subscribe(([price, currencyPair]) => {
-          const { bid, ask } = price
-          const formattedNotional = nf.format(notional)
+      subs.push(
+        getPriceForSymbol$(symbol)
+          .pipe(
+            withLatestFrom(getCurencyPair$(symbol)),
+            takeUntil(executing$.pipe(filter((value) => !!value))),
+          )
+          .subscribe(([price, currencyPair]) => {
+            const { bid, ask } = price
+            const formattedNotional = nf.format(notional)
 
-          const data = {
-            manifestType: "trade-execution",
-            currencyPair: symbol,
-            spotRate: direction === Direction.Buy ? ask : bid,
-            valueDate: new Date().toISOString().substr(0, 10),
-            direction,
-            notional,
-            dealtCurrency:
-              direction === Direction.Buy
-                ? symbol.substr(0, 3)
-                : symbol.substr(3, 3),
-          }
-
-          result = {
-            key,
-            title: `${direction} ${formattedNotional} ${symbol}`,
-            label: "Trade Execution",
-            icon: ADAPTIVE_LOGO,
-            data,
-            actions: [{ name: `Execute`, hotkey: "enter" }],
-            // @ts-ignore
-            template: CLITemplate.Custom,
-            templateContent: constructTradeExecutionTemplateContent(
-              price,
-              currencyPair,
-              formattedNotional,
+            const data = {
+              manifestType: "trade-execution",
+              currencyPair: symbol,
+              spotRate: direction === Direction.Buy ? ask : bid,
+              valueDate: new Date().toISOString().substr(0, 10),
               direction,
-            ),
-          }
+              notional,
+              dealtCurrency:
+                direction === Direction.Buy
+                  ? symbol.substr(0, 3)
+                  : symbol.substr(3, 3),
+            }
 
-          revokeLoading()
-          response.respond([result])
-        })
+            result = {
+              key,
+              title: `${direction} ${formattedNotional} ${symbol}`,
+              label: "Trade Execution",
+              icon: ADAPTIVE_LOGO,
+              data,
+              actions: [{ name: `Execute`, hotkey: "enter" }],
+              // @ts-ignore
+              template: CLITemplate.Custom,
+              templateContent: constructTradeExecutionTemplateContent(
+                price,
+                currencyPair,
+                formattedNotional,
+                direction,
+              ),
+            }
 
-      subs.add(
+            revokeLoading()
+            response.respond([result])
+          }),
+      )
+
+      subs.push(
         executing$.pipe(take(1)).subscribe(() => {
           const newResult = { ...result }
           newResult.actions = []
@@ -743,7 +745,7 @@ export const getNlpResults = async (
         }),
       )
 
-      subs.add(
+      subs.push(
         executionResponse$.pipe(take(1)).subscribe(({ trade }) => {
           response.respond([
             {
@@ -765,7 +767,9 @@ export const getNlpResults = async (
       )
 
       request.onClose(() => {
-        subs.unsubscribe()
+        if (subs.length) {
+          subs.forEach((sub) => sub.unsubscribe())
+        }
       })
 
       break
