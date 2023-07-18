@@ -36,12 +36,9 @@ test.describe("Credit", () => {
       test.setTimeout(120000)
 
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage
-        .locator("[data-testid='search-result-item']")
-        .nth(5)
-        .click()
+      await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
-      const quantity = newRfqPage.locator("[data-testid='quantity']")
+      const quantity = newRfqPage.getByTestId("quantity")
       await quantity.type("2")
       await quantity.blur()
 
@@ -59,27 +56,28 @@ test.describe("Credit", () => {
 
       // Navigate to Live
       await rfqsPage.getByText(/Live/).click()
-      await rfqsPage.waitForTimeout(15000)
 
-      await rfqsPage
-        .locator("[data-testid='quotes']")
+      const firstquote = await rfqsPage
+        .getByTestId("quotes")
+        .first()
         .locator("div")
         .first()
-        .hover()
+      // Wait for first quote response
+      await expect(firstquote).not.toContainText("Awaiting response", {
+        timeout: 20000,
+      })
 
-      await rfqsPage
-        .getByTestId("quotes")
-        .getByText(/Accept/)
-        .first()
-        .click()
+      await firstquote.hover()
+
+      await firstquote.getByText(/Accept/).click()
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
-        .locator("[data-testid='view-trade']")
+        .getByTestId("view-trade")
         .first()
         .innerText()
 
-      await rfqsPage.locator("[data-testid='view-trade']").first().click()
+      await rfqsPage.getByTestId("view-trade").first().click()
 
       const tradeId = btnTxt.split(" ")[2]
       const blotterId = await rfqBlotterPage
@@ -95,12 +93,9 @@ test.describe("Credit", () => {
   test.describe("Sell side", () => {
     test("Sell side ticket", async ({ context }) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage
-        .locator("[data-testid='search-result-item']")
-        .nth(5)
-        .click()
+      await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
-      const quantity = newRfqPage.locator("[data-testid='quantity']")
+      const quantity = newRfqPage.getByTestId("quantity")
       await quantity.type("2")
 
       await newRfqPage
