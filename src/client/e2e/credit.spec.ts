@@ -57,19 +57,19 @@ test.describe("Credit", () => {
       // Navigate to Live
       await rfqsPage.getByText(/Live/).click()
 
-      const firstquote = await rfqsPage
+      const firstQuote = await rfqsPage
         .getByTestId("quotes")
         .first()
         .locator("div")
         .first()
       // Wait for first quote response
-      await expect(firstquote).not.toContainText("Awaiting response", {
+      await expect(firstQuote).not.toContainText("Awaiting response", {
         timeout: 20000,
       })
 
-      await firstquote.hover()
+      await firstQuote.hover()
 
-      await firstquote.getByText(/Accept/).click()
+      await firstQuote.getByText(/Accept/).click()
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
