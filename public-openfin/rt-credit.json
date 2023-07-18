@@ -22,8 +22,7 @@
   },
   "services": [
     {
-      "name": "notifications",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/1.20.0/app.json"
+      "name": "notifications"
     }
   ],
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",

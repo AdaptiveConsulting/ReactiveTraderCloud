@@ -37,7 +37,7 @@ function interopOverride(
     ) {
       super(overrideProvider, overrideOpts, ...overrideArgs)
       this.analyticsUuid = `reactive-analytics-${ENVIRONMENT}`
-      this.limitCheckerUuid = `reactive-trader-limit-checker`
+      this.limitCheckerUuid = `reactive-trader-limit-checker` // TODO make env specific
       this.analyticsClients = new Map()
       this.limitCheckerClients = new Map()
       this.overrideArgs = overrideArgs
