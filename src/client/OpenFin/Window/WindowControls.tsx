@@ -39,14 +39,9 @@ export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
   }, [])
 
   async function wrappedClose() {
+    // ONLY if RT/LC main win is primary win of platform, close all platform windows
     if (inReactiveTraderMainWindow()) {
-      // ONLY if RT main win is primary win of platform, close all platform windows
-      if (isReactiveTraderPlatformPrimary()) {
-        fin.Platform.getCurrentSync().quit()
-        return
-      }
-      // otherwise close all windows related to the main RT (FX OR Credit)
-      await closeOtherWindows()
+      fin.Platform.getCurrentSync().quit()
     }
 
     if (close) {
