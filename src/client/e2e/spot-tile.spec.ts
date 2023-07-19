@@ -40,42 +40,39 @@ test.describe("Spot Tile", () => {
       expect(tradeId).toBe(blotterTradeID)
     })
 
-    test("When I buy USD/JPY then an Execution screen appears until transaction is performed and tile displays green confirmation screen", async () => {
+    test("When I buy USD/JPY then a tile displays in green with confirmation message", async () => {
       await tilePage.locator("[data-testid='Buy-USDJPY']").click()
-
-      const executingSpinner = tilePage.getByText(/Executing/)
-      expect(executingSpinner).not.toBe(null)
 
       const greenConfirmation = tilePage
         .locator("div[role='dialog']")
         .getByText(/You bought/)
-      expect(greenConfirmation).not.toBe(null)
+      await expect(greenConfirmation).toBeVisible()
     })
   })
 
   test.describe("Rejected purchase confirmation", () => {
-    test("When I buy GBP/JPY then an execution screen appears and the tile displays are red with message Trade was rejected", async () => {
+    test("When I buy GBP/JPY then a tile displays in red with message 'Trade was rejected'", async () => {
       await tilePage.locator("[data-testid='Buy-GBPJPY']").click()
 
-      const executingSpinner = tilePage.getByText(/Executing/)
-      expect(executingSpinner).not.toBe(null)
-
-      const greenConfirmation = tilePage
+      const redConfirmation = tilePage
         .locator("div[role='dialog']")
         .getByText(/Your trade has been rejected/)
-      expect(greenConfirmation).not.toBe(null)
+      await expect(redConfirmation).toBeVisible()
     })
   })
 
   test.describe("Timed out transaction", () => {
     test.setTimeout(60000)
-    test("When I sell EUR/JPY then a timed out message appears with message displays 'Trade taking longer than expected'", async () => {
+    test("When I sell EUR/JPY then an execution animation appears until a timed out tile displays in orange with message 'Trade taking longer than expected'", async () => {
       await tilePage.locator("[data-testid='Sell-EURJPY']").click()
 
-      const greenConfirmation = await tilePage
+      const executingSpinner = tilePage.getByText(/Executing/)
+      await expect(executingSpinner).toBeVisible()
+
+      const orangeconfirmation = await tilePage
         .locator("div[role='dialog']")
-        .getByText(/Trade taking longer than expected/)
-      expect(greenConfirmation).not.toBe(null)
+        .getByText(/Trade execution taking longer than expected/)
+      await expect(orangeconfirmation).toBeVisible()
     })
   })
 
@@ -83,10 +80,10 @@ test.describe("Spot Tile", () => {
     test("When I initiate RFQ on NZD/USD then it should display fixed prices for buy/sell and after 10 secs, and a requote button appears", async () => {
       await tilePage.locator("[data-testid='rfqButton']").click()
 
-      await tilePage.waitForTimeout(10000)
-
+      await expect(tilePage.getByTestId("rfqTimer")).toBeVisible()
+      await tilePage.getByTestId("rfqTimer").waitFor({state: "hidden", timeout: 10500})
       const requoteBtn = tilePage.getByText(/Requote/)
-      expect(requoteBtn).toBeDefined()
+      await expect (requoteBtn).toBeVisible({timeout: 100})
     })
   })
 
@@ -114,11 +111,13 @@ test.describe("Spot Tile", () => {
       await tilePage
         .locator("input[id='notional-input-EURUSD']")
         .type("1200000000")
+      await expect(tilePage.getByText(/Max exceeded/)).toBeVisible()
 
-      const txt = await tilePage.getByText(/Max exceeded/).innerText()
-      expect(txt).toEqual("Max exceeded")
       await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage.locator("input[id='notional-input-EURUSD']").type("1m")
+      await tilePage
+        .locator("input[id='notional-input-EURUSD']")
+        .type("1m")
+      await expect(tilePage.getByText(/Max exceeded/)).not.toBeVisible()
     })
   })
 
