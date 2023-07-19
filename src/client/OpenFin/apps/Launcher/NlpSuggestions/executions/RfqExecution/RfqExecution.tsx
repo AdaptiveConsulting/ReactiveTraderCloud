@@ -9,7 +9,8 @@ import { onNext, useRfqExecutionState } from "./state"
 
 const Usage = () => (
   <HelpText>
-    Usage: <Pill>buy/sell</Pill> <Pill>quantity</Pill> <Pill>bond</Pill>
+    Usage: <Pill>buy/sell</Pill> <Pill>quantity</Pill> <Pill>bond</Pill>{" "}
+    <Pill>maturity</Pill>
   </HelpText>
 )
 

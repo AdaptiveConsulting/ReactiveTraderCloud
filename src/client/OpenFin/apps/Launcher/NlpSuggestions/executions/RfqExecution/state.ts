@@ -48,11 +48,16 @@ const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
 
     const requestData =
       intent.payload as RfqNlpExecutionDataReady["payload"]["requestData"]
-    const { symbol, direction, notional } = requestData
+    const { symbol, direction, notional, maturity } = requestData
 
-    const instrument = instruments.find(
-      (instrument) => instrument.ticker === symbol,
-    )
+    const instrument = instruments.find((instrument) => {
+      if (maturity) {
+        return (
+          instrument.ticker === symbol && instrument.maturity.includes(maturity)
+        )
+      }
+      return instrument.ticker === symbol
+    })
 
     if (!instrument) {
       return [{ type: RfqNlpExecutionStatus.MissingData as const, payload: {} }]
@@ -75,7 +80,7 @@ const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
         exhaustMap(() =>
           createCreditRfq$({
             instrumentId: instrument.id,
-            quantity: notional,
+            quantity: notional * 1000,
             direction,
             dealerIds: dealers.map((dealer) => dealer.id),
             expirySecs: CREDIT_RFQ_EXPIRY_SECONDS,

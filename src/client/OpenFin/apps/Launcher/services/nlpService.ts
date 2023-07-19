@@ -71,6 +71,7 @@ export interface CreditRfqIntent {
     symbol: string
     direction: Direction
     notional: number
+    maturity?: string
   }
 }
 
@@ -133,6 +134,8 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
 
       const value = intentFields?.number?.numberValue
 
+      const maturity = intentFields?.Maturity?.stringValue
+
       switch (intent) {
         case NlpIntentType.TradeExecution: {
           return direction
@@ -155,6 +158,7 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
                 symbol,
                 direction: directionMapper[direction],
                 notional: value,
+                maturity: maturity,
               },
             } as CreditRfqIntent
           } else {
