@@ -1,6 +1,5 @@
 import OpenFin from "@openfin/core"
-
-import { ENVIRONMENT } from "@/constants"
+import { ENVIRONMENT } from "client/constants"
 
 type ExternalClientMap = Map<
   OpenFin.ApplicationIdentity["uuid"],
@@ -15,9 +14,6 @@ export interface ExternalContext extends OpenFin.Context {
 
 function interopOverride(
   InteropBroker: OpenFin.Constructor<OpenFin.InteropBroker>,
-  provider?: OpenFin.ChannelProvider,
-  options?: OpenFin.InteropBrokerOptions,
-  ...args: unknown[]
 ): OpenFin.InteropBroker {
   class Override extends InteropBroker {
     public analyticsUuid: string
@@ -28,20 +24,12 @@ function interopOverride(
 
     public limitCheckerClients: ExternalClientMap
 
-    public overrideArgs: unknown[]
-
-    constructor(
-      overrideProvider?: OpenFin.ChannelProvider,
-      overrideOpts?: OpenFin.InteropBrokerOptions,
-      ...overrideArgs: unknown[]
-    ) {
-      super(overrideProvider, overrideOpts, ...overrideArgs)
+    constructor() {
+      super()
       this.analyticsUuid = `reactive-analytics-${ENVIRONMENT}`
       this.limitCheckerUuid = `reactive-trader-limit-checker` // TODO make env specific
       this.analyticsClients = new Map()
       this.limitCheckerClients = new Map()
-      this.overrideArgs = overrideArgs
-      this.overrideArgs = [...this.overrideArgs, "connect-external"]
       this.initializeBrokers(this.analyticsUuid, this.analyticsClients).catch(
         (error) => console.error(error),
       )
@@ -213,7 +201,7 @@ function interopOverride(
     }
   }
 
-  return new Override(provider, options, ...args)
+  return new Override()
 }
 
 function init() {

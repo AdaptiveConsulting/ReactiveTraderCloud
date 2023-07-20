@@ -197,7 +197,6 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
 }
 
 export const WindowViewport = ({ children }: WithChildren) => {
-  console.log("viewport")
   return (
     <Subscribe source$={windows$}>
       <WindowViewportComponent>{children}</WindowViewportComponent>
