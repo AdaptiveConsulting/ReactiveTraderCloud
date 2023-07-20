@@ -1,11 +1,11 @@
 import { init as workspacePlatformInit } from "@openfin/workspace-platform"
-import { connectToGateway } from "@adaptive/hydra-platform"
 import { registerHome, showHome, deregisterHome } from "./home"
 import { registerStore, deregisterStore } from "./store"
 import { registerFxNotifications } from "./home/notifications"
 import { BASE_URL } from "./consts"
 import { customActions, overrideCallback } from "./browser"
 import { deregisterdock, dockCustomActions, registerDock } from "./dock"
+import { initConnection } from "./services/connection"
 
 const icon = `${BASE_URL}/images/icons/adaptive.png`
 
@@ -40,11 +40,7 @@ async function init() {
   await registerDock()
   await showHome()
 
-  await connectToGateway({
-    url: `${window.location.origin}/ws`,
-    interceptor: () => null,
-    autoReconnect: true,
-  })
+  await initConnection()
 
   const providerWindow = fin.Window.getCurrentSync()
   providerWindow.once("close-requested", async () => {

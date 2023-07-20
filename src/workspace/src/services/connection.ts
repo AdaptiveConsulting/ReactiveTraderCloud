@@ -15,7 +15,6 @@ import {
 } from "rxjs"
 import {
   debounceTime,
-  distinctUntilChanged,
   filter,
   map,
   mapTo,
@@ -130,7 +129,7 @@ const onlineConnect$: Observable<ConnectionStatus> = online$.pipe(
   }),
 )
 
-export const [useConnectionStatus, connectionStatus$] = bind(
+export const [, connectionStatus$] = bind(
   import.meta.env.VITE_MOCKS
     ? of(ConnectionStatus.CONNECTED)
     : merge<
@@ -151,22 +150,3 @@ export const [useConnectionStatus, connectionStatus$] = bind(
       ),
   ConnectionStatus.CONNECTING,
 )
-
-export const withIsStaleData = <T>(
-  source$: Observable<T>,
-): Observable<boolean> => {
-  const sourceDate$ = source$.pipe(
-    map(() => Date.now()),
-    startWith(0),
-  )
-
-  const connectionDate$ = connectionStatus$.pipe(
-    filter((status) => status === ConnectionStatus.CONNECTED),
-    map(() => Date.now()),
-  )
-
-  return combineLatest([sourceDate$, connectionDate$]).pipe(
-    map(([sourceDate, connectionDate]) => sourceDate < connectionDate),
-    distinctUntilChanged(),
-  )
-}
