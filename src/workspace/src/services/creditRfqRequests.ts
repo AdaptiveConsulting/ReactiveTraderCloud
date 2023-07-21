@@ -13,7 +13,7 @@ import { creditRfqsById$ } from "./creditRfqs"
 
 const [rfqCreatedResponse$, setRfqResponse] = createSignal<CreateRfqResponse>()
 
-export const createdRfqInstrumentReponse$ = rfqCreatedResponse$.pipe(
+export const createdRfqWithInstrumentWithResponse$ = rfqCreatedResponse$.pipe(
   switchMap((response) => {
     if (response.type === NACK_CREATE_RFQ_RESPONSE) {
       return of({ response })

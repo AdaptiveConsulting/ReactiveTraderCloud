@@ -28,7 +28,7 @@ import {
   TradeStatus,
 } from "@/generated/TradingGateway"
 import { creditInstruments$ } from "@/services/creditInstruments"
-import { createdRfqInstrumentReponse$ as createdRfqWithInstrumentWithReponse$ } from "@/services/creditRfqRequests"
+import { createdRfqWithInstrumentWithResponse$ } from "@/services/creditRfqRequests"
 import { currencyPairs$, getCurencyPair$ } from "@/services/currencyPairs"
 import { executing$, executionResponse$ } from "@/services/executions"
 import {
@@ -833,7 +833,7 @@ export const getNlpResults = async (
         })
 
       subs.add(
-        createdRfqWithInstrumentWithReponse$.subscribe(
+        createdRfqWithInstrumentWithResponse$.subscribe(
           (createdRfqWithInstrumentWithResponse) => {
             response.respond([
               {
