@@ -1,0 +1,191 @@
+import { bind } from "@react-rxjs/core"
+import { of } from "rxjs"
+import { map, switchMap } from "rxjs/operators"
+
+import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
+import { CenteringContainer } from "@/client/components/CenteringContainer"
+import { Direction } from "@/generated/TradingGateway"
+import { CurrencyPair } from "@/client/services/currencyPairs"
+import { getPrice$ } from "@/client/services/prices"
+import {
+  customNumberFormatter,
+  DECIMAL_SEPARATOR,
+  significantDigitsNumberFormatter,
+} from "@/client/utils/formatNumber"
+
+import { useIsNotionalValid } from "../Notional/Notional"
+import { QuoteStateStage, useRfqState } from "../Rfq"
+import { getRfqPayload$, QuoteState, useIsRfq } from "../Rfq/Rfq.state"
+import { useTileCurrencyPair } from "../Tile.context"
+import { sendExecution } from "../Tile.state"
+import {
+  Big,
+  DirectionLabel,
+  ExpiredPrice,
+  Icon,
+  Pip,
+  Price,
+  PriceButtonDisabledPlaceholder,
+  QuotePriceLoading,
+  Tenth,
+  TradeButton,
+} from "./PriceButton.styles"
+
+const getPriceByDirection$ = (symbol: string, direction: Direction) =>
+  getPrice$(symbol).pipe(
+    map(({ bid, ask }) => (direction === Direction.Buy ? ask : bid)),
+    map((price) => ({ isExpired: false, price })),
+  )
+
+const [usePrice, getPriceDirection$] = bind(
+  (symbol: string, direction: Direction) =>
+    getRfqPayload$(symbol).pipe(
+      switchMap((payload) =>
+        payload
+          ? of({
+              ...payload,
+              price:
+                direction === Direction.Buy
+                  ? payload.rfqResponse.price.ask
+                  : payload.rfqResponse.price.bid,
+            })
+          : getPriceByDirection$(symbol, direction),
+      ),
+    ),
+)
+
+export const priceButton$ = (direction: Direction) => (symbol: string) =>
+  getPriceDirection$(symbol, direction)
+
+const formatSimple = customNumberFormatter()
+const formatTo2Digits = significantDigitsNumberFormatter(2)
+const formatTo3Digits = significantDigitsNumberFormatter(3)
+const formatToMin2IntDigits = customNumberFormatter({
+  minimumIntegerDigits: 2,
+})
+
+export type PriceButtonProps = {
+  direction: Direction
+  price: number
+  currencyPair: CurrencyPair
+  priceAnnounced: boolean
+  disabled: boolean
+  isExpired: boolean
+  isStatic?: boolean
+  onClick: () => void
+}
+
+export const PriceButtonInner = ({
+  direction,
+  price,
+  currencyPair,
+  priceAnnounced,
+  disabled,
+  isExpired,
+  isStatic,
+  onClick,
+}: PriceButtonProps) => {
+  const { pipsPosition, ratePrecision } = currencyPair
+  const rateString = price.toFixed(ratePrecision)
+  const [wholeNumber, fractions_] = rateString.split(".")
+  const fractions = fractions_ || "00000"
+
+  const pip = formatToMin2IntDigits(
+    Number(fractions.substring(pipsPosition - 2, pipsPosition)),
+  )
+  const tenth = formatSimple(
+    Number(fractions.substring(pipsPosition, pipsPosition + 1)),
+  )
+
+  const bigFigureNumber = Number(
+    wholeNumber + "." + fractions.substring(0, pipsPosition - 2),
+  )
+  let bigFigure =
+    bigFigureNumber < 1 && pipsPosition === 4
+      ? formatTo2Digits(bigFigureNumber)
+      : formatTo3Digits(bigFigureNumber)
+  if (bigFigureNumber === Math.floor(bigFigureNumber))
+    bigFigure += DECIMAL_SEPARATOR
+
+  return (
+    <TradeButton
+      direction={direction}
+      onClick={onClick}
+      priceAnnounced={priceAnnounced}
+      disabled={disabled}
+      isStatic={isStatic}
+      data-testid={`${direction}-${currencyPair.symbol}`}
+    >
+      <Price disabled={disabled}>
+        <CenteringContainer>
+          <DirectionLabel>{direction.toUpperCase()}</DirectionLabel>
+          <Big>{price ? bigFigure : "-"}</Big>
+        </CenteringContainer>
+        {price && (
+          <>
+            <Pip>{pip}</Pip>
+            <Tenth>{tenth}</Tenth>
+          </>
+        )}
+      </Price>
+      {isExpired && (
+        <ExpiredPrice data-testid="expireLabel">Expired</ExpiredPrice>
+      )}
+    </TradeButton>
+  )
+}
+
+const PriceButtonContainer = ({
+  direction,
+  rfqQuoteState,
+}: {
+  direction: Direction
+  rfqQuoteState: QuoteState
+}) => {
+  const currencyPair = useTileCurrencyPair()
+  const { price, isExpired } = usePrice(currencyPair.symbol, direction)
+  const isRfq = useIsRfq()
+  const isNotionalValid = useIsNotionalValid()
+  const disabled =
+    price === 0 ||
+    !isNotionalValid ||
+    (isRfq && rfqQuoteState.stage !== QuoteStateStage.Received)
+
+  return (
+    <PriceButtonInner
+      direction={direction}
+      price={price}
+      currencyPair={currencyPair}
+      onClick={() => {
+        sendExecution(currencyPair.symbol, direction)
+      }}
+      priceAnnounced={rfqQuoteState.stage === QuoteStateStage.Received}
+      disabled={disabled}
+      isExpired={isExpired}
+    />
+  )
+}
+
+export const AwaitingPriceButton = () => (
+  <QuotePriceLoading>
+    <AdaptiveLoader size={16} />
+    Awaiting Price
+  </QuotePriceLoading>
+)
+
+export const PriceButton = ({ direction }: { direction: Direction }) => {
+  const rfqState = useRfqState()
+
+  return rfqState.stage === QuoteStateStage.Requested ? (
+    <AwaitingPriceButton />
+  ) : (
+    <PriceButtonContainer direction={direction} rfqQuoteState={rfqState} />
+  )
+}
+
+export const PriceUnavailableButton = () => (
+  <PriceButtonDisabledPlaceholder>
+    <Icon className="fas fa-ban fa-flip-horizontal" />
+    Pricing Unavailable
+  </PriceButtonDisabledPlaceholder>
+)

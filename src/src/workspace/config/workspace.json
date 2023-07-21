@@ -1,0 +1,71 @@
+{
+  "devtools_port": 9090,
+  "licenseKey": "WSb63491c7-090f-4e38-8088-62675824c24b",
+  "runtime": {
+    "version": "<OPENFIN_RUNTIME>"
+  },
+  "platform": {
+    "uuid": "adaptive-workspace-provider-<ENV_NAME>",
+    "name": "Reactive Workspace<ENV_SUFFIX>",
+    "icon": "<BASE_URL>/favicon.ico",
+    "autoShow": "<SHOW_PROVIDER_WINDOW>",
+    "providerUrl": "<BASE_URL>/workspaceProvider.html",
+    "preventQuitOnLastWindowClosed": true,
+    "permissions": {
+      "ExternalWindow": {
+        "wrap": true
+      },
+      "System": {
+        "getAllExternalWindows": true,
+        "launchExternalProcess": true,
+        "openUrlWithBrowser": {
+          "enabled": true,
+          "protocols": ["slack", "msteams"]
+        },
+        "readRegistryValue": false,
+        "terminateExternalProcess": true
+      },
+      "webAPIs": ["notifications", "audio", "video"]
+    },
+    "defaultWindowOptions": {
+      "fdc3InteropApi": "1.2",
+      "permissions": {
+        "ExternalWindow": {
+          "wrap": true
+        },
+        "System": {
+          "getAllExternalWindows": true,
+          "launchExternalProcess": true,
+          "readRegistryValue": false,
+          "terminateExternalProcess": true
+        },
+        "webAPIs": ["notifications", "audio", "video"]
+      }
+    },
+    "defaultViewOptions": {
+      "fdc3InteropApi": "1.2",
+      "permissions": {
+        "ExternalWindow": {
+          "wrap": true
+        },
+        "System": {
+          "getAllExternalWindows": true,
+          "launchExternalProcess": true,
+          "readRegistryValue": false,
+          "terminateExternalProcess": true
+        },
+        "webAPIs": ["notifications", "audio", "video"]
+      }
+    }
+  },
+  "snapshot": {
+    "windows": []
+  },
+  "shortcut": {
+    "company": "Adaptive Financial Consulting",
+    "description": "Adaptive workspace provider",
+    "icon": "<BASE_URL>/favicon.ico",
+    "name": "Adaptive Workspace Provider<ENV_SUFFIX>",
+    "target": ["desktop", "start-menu"]
+  }
+}
