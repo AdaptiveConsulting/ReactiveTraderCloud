@@ -1,17 +1,19 @@
 import { create } from "openfin-notifications"
+import { filter } from "rxjs"
+
+import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { BASE_URL } from "@/workspace/consts"
 import { executionResponse$ } from "@/workspace/services/executions"
-import { ExecutionResponse, TradeStatus } from "@/generated/TradingGateway"
 
-const sendFxTradeNotification = (executionResponse: ExecutionResponse) => {
+const sendFxTradeNotification = (trade: ExecutionTrade) => {
   const notification = {
-    ...executionResponse.trade,
-    valueDate: executionResponse.trade.valueDate.toString(),
-    tradeDate: executionResponse.trade.valueDate.toString(),
+    ...trade,
+    valueDate: trade.valueDate.toString(),
+    tradeDate: trade.valueDate.toString(),
   }
 
   const status =
-    notification.status === TradeStatus.Done ? "Accepted" : "Rejected"
+    notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
 
   const iconUrl = `${BASE_URL}/images/icons/reactive-trader.png`
 
@@ -28,7 +30,15 @@ const sendFxTradeNotification = (executionResponse: ExecutionResponse) => {
 }
 
 export async function registerFxNotifications() {
-  executionResponse$.subscribe((executionResponse) => {
-    sendFxTradeNotification(executionResponse)
-  })
+  executionResponse$
+    .pipe(
+      filter(
+        (response) =>
+          response.status === ExecutionStatus.Done ||
+          response.status === ExecutionStatus.Rejected,
+      ),
+    )
+    .subscribe((executionResponse) => {
+      sendFxTradeNotification(executionResponse as ExecutionTrade)
+    })
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { protos } from "@google-cloud/dialogflow"
 
 export enum Direction {
@@ -40,6 +41,7 @@ export interface TradesInfoIntent {
 
 export interface MarketInfoIntent {
   type: NlpIntentType.MarketInfo
+  // eslint-disable-next-line @typescript-eslint/ban-types
   payload: {}
 }
 

@@ -12,9 +12,9 @@ export const [useTrades, trades$] = bind<Trade[]>(
     scan(
       (acc, trade) => ({
         ...acc,
-        [trade.id]: trade,
+        [trade.tradeId]: trade,
       }),
-      {} as Record<number, Trade>,
+      {} as Record<string, Trade>,
     ),
     map((trades) => {
       return Object.values(trades).reverse()

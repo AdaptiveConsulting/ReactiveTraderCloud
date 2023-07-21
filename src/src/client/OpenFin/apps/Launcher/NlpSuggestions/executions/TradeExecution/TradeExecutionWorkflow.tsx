@@ -1,9 +1,9 @@
 import { format } from "date-fns"
 import { createPortal } from "react-dom"
 
+import { formatNumber } from "@/client/utils"
 import { Direction } from "@/generated/TradingGateway"
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
-import { formatNumber } from "@/client/utils"
 
 import { useOverlayElement } from "../../../overlayContext"
 import { onResetInput } from "../../../services/nlpService"
@@ -58,7 +58,7 @@ const SuccessContent: React.FC<ExecutionTrade> = (trade) => {
   return (
     <>
       <p>
-        <strong>Trade ID: {trade.id}</strong>
+        <strong>Trade ID: {trade.tradeId}</strong>
       </p>
       <p>
         <small>{message}</small>

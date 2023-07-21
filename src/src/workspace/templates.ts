@@ -1,4 +1,3 @@
-import * as CSS from "csstype"
 import {
   ButtonStyle,
   ButtonTemplateFragment,
@@ -8,6 +7,7 @@ import {
   TemplateFragmentTypes,
   TextTemplateFragment,
 } from "@openfin/workspace"
+import * as CSS from "csstype"
 
 export function createContainer(
   containerType: "column" | "row",
@@ -40,7 +40,7 @@ export function createTextContainer(
 
 export function createText(
   dataKey: string,
-  fontSize: number = 14,
+  fontSize = 14,
   style?: CSS.Properties,
 ): TextTemplateFragment {
   return {

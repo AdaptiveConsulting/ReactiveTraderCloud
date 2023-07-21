@@ -69,9 +69,6 @@ const TOO_LONG: NoTradeState = { status: TileStates.TooLong }
 const TIMEOUT: NoTradeState = { status: TileStates.Timeout }
 const CREDIT_EXCEEDED: NoTradeState = { status: TileStates.CreditExceeded }
 
-let nextId = 1
-const getId = () => (nextId++).toString()
-
 const TAKING_TOO_LONG = 2_000
 
 export const [useTileState, getTileState$] = bind(
@@ -83,7 +80,6 @@ export const [useTileState, getTileState$] = bind(
         getCurrencyPair$(symbol),
       ),
       map(([{ direction }, notional, price, { base, terms, symbol }]) => ({
-        id: getId(),
         currencyPair: symbol,
         dealtCurrency: direction === Direction.Buy ? base : terms,
         direction,

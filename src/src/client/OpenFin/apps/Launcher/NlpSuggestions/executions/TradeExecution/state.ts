@@ -28,9 +28,6 @@ export { onNext }
 
 const next$ = next$_.pipe(take(1))
 
-let nextId = 1
-export const getId = () => (nextId++).toString()
-
 const tradeExecutionState$: Observable<TradeNlpExecutionState> =
   nlpIntent$.pipe(
     switchMap((intent) => {
@@ -69,7 +66,6 @@ const tradeExecutionState$: Observable<TradeNlpExecutionState> =
           withLatestFrom(getPrice$(symbol), getCurrencyPair$(symbol)),
           exhaustMap(([, price, { base, terms, symbol }]) =>
             execute$({
-              id: getId(),
               currencyPair: symbol,
               dealtCurrency: direction === Direction.Buy ? base : terms,
               direction,

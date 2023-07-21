@@ -2,6 +2,7 @@ import { Subscribe } from "@react-rxjs/core"
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { BehaviorSubject, Subject } from "rxjs"
 
+import { TestThemeProvider } from "@/client/utils/testUtils"
 import { Direction } from "@/generated/TradingGateway"
 import { CurrencyPair } from "@/services/currencyPairs"
 import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
@@ -14,7 +15,6 @@ import {
 import { execMock } from "@/services/executions/__mocks__/_exec"
 import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
 import { pricesMock } from "@/services/prices/__mocks__/_prices"
-import { TestThemeProvider } from "@/client/utils/testUtils"
 
 import { Tile, tile$ } from ".."
 
@@ -189,7 +189,6 @@ describe("Tile/rfq", () => {
     const request: Partial<ExecutionRequest> = {
       ...originalRequest,
     }
-    delete request.id
 
     expect(request).toEqual({
       currencyPair: "EURUSD",

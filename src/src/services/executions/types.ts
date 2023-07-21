@@ -33,7 +33,6 @@ export enum RawExecutionStatus {
 }
 
 export interface ExecutionRequest {
-  id: string
   currencyPair: string
   dealtCurrency: string
   direction: Direction

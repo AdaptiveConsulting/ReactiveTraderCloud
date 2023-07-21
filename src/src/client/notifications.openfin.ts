@@ -135,7 +135,7 @@ const sendFxTradeNotification = (trade: ExecutionTrade) => {
         onClick: {
           task: TASK_HIGHLIGHT_FX_TRADE,
           payload: {
-            tradeId: trade.id,
+            tradeId: trade.tradeId,
           },
         },
       },

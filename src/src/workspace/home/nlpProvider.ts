@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   ButtonStyle,
   CLISearchListenerRequest,
@@ -5,6 +6,7 @@ import {
   CLITemplate,
   TemplateFragment,
 } from "@openfin/workspace"
+import * as CSS from "csstype"
 import { format } from "date-fns"
 import {
   filter,
@@ -30,13 +32,18 @@ import {
   InstrumentBody,
   NackCreateRfqResponse,
   RfqBody,
-  Trade,
-  TradeStatus,
 } from "@/generated/TradingGateway"
 import { creditInstruments$ } from "@/services/creditInstruments"
 import { createdRfqWithInstrumentWithResponse$ } from "@/services/creditRfqRequests"
 import { currencyPairs$, getCurencyPair$ } from "@/services/currencyPairs"
-import { executing$, executionResponse$ } from "@/services/executions"
+import {
+  executing$,
+  executionResponse$,
+  ExecutionStatus,
+  ExecutionTrade,
+  TimeoutExecution,
+} from "@/services/executions"
+import { CreditExceededExecution } from "@/services/executions/types"
 import {
   CreditRfqIntent,
   getNlpIntent,
@@ -352,11 +359,13 @@ const constructTradeExecutionTemplateContent = (
   }
 }
 
-const constructTradeExecutedTemplateContent = (trade: Trade) => {
+const constructTradeExecutedTemplateContent = (
+  trade: ExecutionTrade | CreditExceededExecution | TimeoutExecution,
+) => {
   const fontSize = 12
 
-  if (trade.status === TradeStatus.Done) {
-    const inverseTextStyle = {
+  if (trade.status === ExecutionStatus.Done) {
+    const inverseTextStyle: CSS.Properties = {
       backgroundColor: "white",
       color: "#01C38D",
       fontWeight: "bold",
@@ -435,9 +444,27 @@ const constructTradeExecutedTemplateContent = (trade: Trade) => {
     },
   )
 
-  const data = {
-    tradeId: `Trade ID: ${trade.tradeId.toString()}`,
-    rejectedLabel: "Your trade has been rejected",
+  let data
+
+  switch (trade.status) {
+    case ExecutionStatus.Rejected:
+      data = {
+        tradeId: `Trade ID: ${trade.tradeId.toString()}`,
+        rejectedLabel: "Your trade has been rejected",
+      }
+      break
+    case ExecutionStatus.CreditExceeded:
+      data = {
+        tradeId: `Trade ID: NA`,
+        rejectedLabel: "Credit limit exceeded",
+      }
+      break
+    case ExecutionStatus.Timeout:
+      data = {
+        tradeId: `Trade ID: NA`,
+        rejectedLabel: "Request timed out",
+      }
+      break
   }
 
   return {
@@ -749,7 +776,7 @@ export const getNlpResults = async (
       )
 
       subs.push(
-        executionResponse$.pipe(take(1)).subscribe(({ trade }) => {
+        executionResponse$.pipe(take(1)).subscribe((trade) => {
           response.respond([
             {
               key,
