@@ -1,24 +1,25 @@
 import {
-  Storefront,
   App,
+  Storefront,
+  StorefrontFooter,
   StorefrontLandingPage,
   StorefrontNavigationSection,
-  StorefrontFooter,
   StorefrontProvider,
   StorefrontTemplate,
 } from "@openfin/workspace"
 import { getCurrentSync } from "@openfin/workspace-platform"
+
 import {
-  reactiveTraderFxAnalyticsView,
   getApps,
-  reactiveTraderFxLiveRatesView,
+  limitCheckerView,
   reactiveAnalytics,
   reactiveAnalyticsView,
   reactiveTraderCredit,
   reactiveTraderFx,
-  reactiveWorkspace,
+  reactiveTraderFxAnalyticsView,
+  reactiveTraderFxLiveRatesView,
   reactiveTraderFxTradesView,
-  limitCheckerView,
+  reactiveWorkspace,
 } from "./apps"
 import { BASE_URL } from "./consts"
 import { getCurrentUser, USER_TRADER } from "./user"
@@ -28,7 +29,7 @@ const PROVIDER_ID = "adaptive-store-provider"
 
 export async function registerStore() {
   console.log("Initialising the storefront provider.")
-  let provider = await getStoreProvider()
+  const provider = await getStoreProvider()
   try {
     await Storefront.register(provider)
     console.log("Storefront provider initialised.")
@@ -80,13 +81,14 @@ async function getStoreProvider(): Promise<StorefrontProvider> {
             console.error("Process launch failed: ", e)
           })
       } else if (app.manifestType === "url") {
-        let platform = getCurrentSync()
+        const platform = getCurrentSync()
         platform.createView({
           url: app.manifest,
           bounds: { width: 320, height: 180 },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any)
       } else {
-        let platform = getCurrentSync()
+        const platform = getCurrentSync()
         await platform.launchApp({ app })
       }
     },
@@ -100,8 +102,9 @@ async function getNavigation(): Promise<
   const currentUser = getCurrentUser()
   const spotTileApps = await getSpotTileApps()
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  let navigationSections: [
+  const navigationSections: [
     StorefrontNavigationSection?,
     StorefrontNavigationSection?,
   ] = [
@@ -182,7 +185,7 @@ async function getNavigation(): Promise<
 async function getLandingPage(): Promise<StorefrontLandingPage> {
   console.log("Getting the store landing page.")
 
-  let landingPage: StorefrontLandingPage = {
+  const landingPage: StorefrontLandingPage = {
     hero: {
       title: "Reactive Trader",
       description:

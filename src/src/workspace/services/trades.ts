@@ -1,4 +1,5 @@
 import { map } from "rxjs/operators"
+
 import { BlotterService } from "@/generated/TradingGateway"
 import { withConnection } from "./withConnection"
 

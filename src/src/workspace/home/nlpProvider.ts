@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
+  Action,
   ButtonStyle,
   CLISearchListenerRequest,
   CLISearchListenerResponse,
   CLITemplate,
+  SearchResult,
   TemplateFragment,
 } from "@openfin/workspace"
 import * as CSS from "csstype"
@@ -694,7 +696,7 @@ export const getNlpResults = async (
 
       const key = `trade-execution-${symbol}`
       const subs: Subscription[] = []
-      let result: any
+      let result: SearchResult
 
       subs.push(
         getPriceForSymbol$(symbol)
@@ -743,11 +745,14 @@ export const getNlpResults = async (
 
       subs.push(
         executing$.pipe(take(1)).subscribe(() => {
-          const newResult = { ...result }
+          const newResult: SearchResult = { ...result }
           newResult.actions = []
+          //@ts-ignore
           newResult.templateContent = {
+            //@ts-ignore
             ...newResult.templateContent,
             layout: createContainer("column", [
+              //@ts-ignore
               newResult.templateContent.layout,
               createContainer(
                 "column",

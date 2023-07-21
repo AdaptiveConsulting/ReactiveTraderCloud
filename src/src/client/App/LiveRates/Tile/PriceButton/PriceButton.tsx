@@ -4,14 +4,14 @@ import { map, switchMap } from "rxjs/operators"
 
 import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
 import { CenteringContainer } from "@/client/components/CenteringContainer"
-import { Direction } from "@/generated/TradingGateway"
-import { CurrencyPair } from "@/services/currencyPairs"
-import { getPrice$ } from "@/services/prices"
 import {
   customNumberFormatter,
   DECIMAL_SEPARATOR,
   significantDigitsNumberFormatter,
 } from "@/client/utils/formatNumber"
+import { Direction } from "@/generated/TradingGateway"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { getPrice$ } from "@/services/prices"
 
 import { useIsNotionalValid } from "../Notional/Notional"
 import { QuoteStateStage, useRfqState } from "../Rfq"

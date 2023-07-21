@@ -6,25 +6,26 @@ import {
   Page,
   WorkspacePlatformOverrideCallback,
 } from "@openfin/workspace-platform"
+
 import { getUserToSwitch, switchUser } from "./user"
 
 export async function getPage(pageId: string) {
-  let platform = getCurrentSync()
+  const platform = getCurrentSync()
   return platform.Storage.getPage(pageId)
 }
 
 export async function getPages() {
-  let platform = getCurrentSync()
+  const platform = getCurrentSync()
   return platform.Storage.getPages()
 }
 
 export async function deletePage(pageId: string) {
-  let platform = getCurrentSync()
+  const platform = getCurrentSync()
   return platform.Storage.deletePage(pageId)
 }
 
 export async function launchPage(page: Page) {
-  let platform = getCurrentSync()
+  const platform = getCurrentSync()
   return platform.Browser.createWindow({
     workspacePlatform: {
       pages: [page],
@@ -36,7 +37,7 @@ export async function launchView(
   view: OpenFin.PlatformViewCreationOptions | string,
   targetIdentity?: OpenFin.Identity,
 ) {
-  let platform = getCurrentSync()
+  const platform = getCurrentSync()
   let viewOptions: OpenFin.PlatformViewCreationOptions
 
   if (typeof view === "string") {
@@ -56,7 +57,7 @@ export const overrideCallback: WorkspacePlatformOverrideCallback = async (
   class Override extends WorkspacePlatformProvider {
     openGlobalContextMenu(
       req: OpenGlobalContextMenuPayload,
-      callerIdentity: any,
+      callerIdentity: OpenFin.Identity,
     ) {
       return super.openGlobalContextMenu(
         {

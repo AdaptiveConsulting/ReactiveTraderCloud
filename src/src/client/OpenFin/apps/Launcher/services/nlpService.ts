@@ -13,8 +13,8 @@ import {
 } from "rxjs"
 import { fromFetch } from "rxjs/fetch"
 
-import { Direction } from "@/generated/TradingGateway"
 import { equals } from "@/client/utils"
+import { Direction } from "@/generated/TradingGateway"
 
 const [input$, setInput] = createSignal<string>()
 export { setInput }

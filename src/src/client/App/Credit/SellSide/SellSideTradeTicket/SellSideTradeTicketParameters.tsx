@@ -5,7 +5,6 @@ import { merge } from "rxjs"
 import { filter, map } from "rxjs/operators"
 import styled from "styled-components"
 
-import { QuoteBody, RfqState } from "@/generated/TradingGateway"
 import { ThemeName } from "@/client/theme"
 import {
   DECIMAL_SEPARATOR,
@@ -13,6 +12,7 @@ import {
   THOUSANDS_SEPARATOR_REGEXP,
   truncatedDecimalNumberFormatter,
 } from "@/client/utils"
+import { QuoteBody, RfqState } from "@/generated/TradingGateway"
 
 import {
   getSellSideQuoteState,

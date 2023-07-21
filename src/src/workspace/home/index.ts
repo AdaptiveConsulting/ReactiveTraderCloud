@@ -1,4 +1,5 @@
 import { ExitCode } from "@openfin/core/src/OpenFin"
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   CLIDispatchedSearchResult,
   CLIProvider,

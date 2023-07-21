@@ -5,7 +5,9 @@ import {
   switchMap,
   withLatestFrom,
 } from "rxjs"
+
 import { PriceTick, PricingService } from "@/generated/TradingGateway"
+
 import { currencyPairSymbols$, getCurencyPair$ } from "./currencyPairs"
 import { withConnection } from "./withConnection"
 
@@ -75,7 +77,10 @@ export const prices$ = currencyPairSymbols$.pipe(
       scan((acc, prices) => {
         prices.map(priceMapper).forEach((price) => {
           if (acc.has(price.symbol)) {
-            price.lastMove = getPriceMovementType(acc.get(price.symbol)!, price)
+            price.lastMove = getPriceMovementType(
+              acc.get(price.symbol) as Price,
+              price,
+            )
           }
           acc.set(price.symbol, price)
         })

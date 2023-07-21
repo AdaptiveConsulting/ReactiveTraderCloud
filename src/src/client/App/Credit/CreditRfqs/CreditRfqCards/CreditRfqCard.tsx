@@ -1,4 +1,5 @@
 import { Loader } from "@/client/components/Loader"
+import { customNumberFormatter } from "@/client/utils"
 import {
   DealerBody,
   Direction,
@@ -6,7 +7,6 @@ import {
   RfqState,
 } from "@/generated/TradingGateway"
 import { useCreditRfqDetails } from "@/services/credit"
-import { customNumberFormatter } from "@/client/utils"
 
 import { CardFooter } from "./CardFooter"
 import { CardHeader } from "./CardHeader"

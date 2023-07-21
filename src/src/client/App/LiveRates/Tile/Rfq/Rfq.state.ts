@@ -10,8 +10,8 @@ import {
   withLatestFrom,
 } from "rxjs/operators"
 
-import { rfq$, RfqResponse } from "@/services/rfqs"
 import { equals } from "@/client/utils"
+import { rfq$, RfqResponse } from "@/services/rfqs"
 
 import { getNotionalValue$ } from "../Notional"
 import { symbolBind } from "../Tile.context"

@@ -1,6 +1,6 @@
 import { Card as RfqCard } from "@/client/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
-import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
 import { formatNumber } from "@/client/utils"
+import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
 
 import { useOverlayElement } from "../../../overlayContext"
 import { onResetInput } from "../../../services/nlpService"

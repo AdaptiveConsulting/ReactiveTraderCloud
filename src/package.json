@@ -27,6 +27,7 @@
     "start:local": "cross-env VITE_HYDRA_URL=ws://localhost:8929 TARGET=web vite",
     "typecheck": "tsc",
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --max-warnings 0",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --max-warnings 0 --fix",
     "lint:cache": "npm run lint -- --cache",
     "_format": "prettier README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
     "format": "npm run _format -- --write",

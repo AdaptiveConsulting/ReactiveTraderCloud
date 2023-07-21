@@ -5,13 +5,13 @@ import { combineLatest } from "rxjs"
 import { distinctUntilChanged, map, startWith } from "rxjs/operators"
 import styled from "styled-components"
 
-import { getHistoricalPrices$, HistoryPrice } from "@/services/prices"
 import { equals } from "@/client/utils"
 import {
   getDataPoints,
   toSvgPath,
   withScales,
 } from "@/client/utils/historicalChart"
+import { getHistoricalPrices$, HistoryPrice } from "@/services/prices"
 
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
 

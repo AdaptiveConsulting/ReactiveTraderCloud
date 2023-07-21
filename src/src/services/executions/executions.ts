@@ -29,25 +29,22 @@ const mapExecutionToPayload = (e: ExecutionRequest): ExecuteTradeRequest => {
   }
 }
 
-const mapResponseToTrade =
-  (id: string) =>
-  ({ trade }: ExecutionResponse): ExecutionTrade => {
-    // Decision was taken not to have a pending state from Hydra
-    if (trade.status === TradeStatus.Pending) throw new Error("wait what?!")
+const mapResponseToTrade = ({ trade }: ExecutionResponse): ExecutionTrade => {
+  // Decision was taken not to have a pending state from Hydra
+  if (trade.status === TradeStatus.Pending) throw new Error("wait what?!")
 
-    return {
-      currencyPair: trade.currencyPair,
-      dealtCurrency: trade.dealtCurrency,
-      direction: trade.direction,
-      notional: trade.notional,
-      spotRate: trade.spotRate,
-      status: ExecutionStatus[trade.status],
-      tradeId: Number(trade.tradeId), // TODO: talk with hydra team
-      tradeDate: new Date(),
-      valueDate: new Date(trade.valueDate),
-      id,
-    }
+  return {
+    currencyPair: trade.currencyPair,
+    dealtCurrency: trade.dealtCurrency,
+    direction: trade.direction,
+    notional: trade.notional,
+    spotRate: trade.spotRate,
+    status: ExecutionStatus[trade.status],
+    tradeId: Number(trade.tradeId), // TODO: talk with hydra team
+    tradeDate: new Date(),
+    valueDate: new Date(trade.valueDate),
   }
+}
 
 const executionsSubject = new Subject<ExecutionTrade>()
 
@@ -69,7 +66,7 @@ export const execute$ = (execution: ExecutionRequest) =>
         return ExecutionService.executeTrade(
           mapExecutionToPayload(execution),
         ).pipe(
-          map(mapResponseToTrade(execution.id)),
+          map(mapResponseToTrade),
           tap((trade) => {
             executionsSubject.next(trade)
           }),

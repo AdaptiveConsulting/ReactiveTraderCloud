@@ -93,7 +93,8 @@ export const getNlpIntent = async (query: string) => {
       ? response.queryResult?.parameters?.fields?.Bond?.stringValue
       : response.queryResult?.parameters?.fields?.CurrencyPairs?.stringValue
   // @ts-ignore
-  const number = response.queryResult?.parameters?.fields?.number?.numberValue
+  const number = response.queryResult?.parameters?.fields?.number
+    ?.numberValue as number
 
   const direction =
     directionMapper[

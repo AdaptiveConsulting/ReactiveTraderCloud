@@ -4,13 +4,13 @@ import { combineLatest, merge } from "rxjs"
 import { delay, filter, map, startWith } from "rxjs/operators"
 
 import { HIGHLIGHT_ROW_FLASH_TIME } from "@/client/constants"
+import { invertDirection } from "@/client/utils"
 import { QuoteState, RfqState } from "@/generated/TradingGateway"
 import {
   ADAPTIVE_BANK_NAME,
   creditRfqsById$,
   RfqDetails,
 } from "@/services/credit"
-import { invertDirection } from "@/client/utils"
 
 import { timeRemainingComparator } from "../common"
 import { RfqRow } from "./SellSideRfqGrid"

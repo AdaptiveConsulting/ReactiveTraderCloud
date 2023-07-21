@@ -12,6 +12,7 @@ import {
 } from "rxjs/operators"
 import styled from "styled-components"
 
+import { customNumberFormatter } from "@/client/utils"
 import { Direction } from "@/generated/TradingGateway"
 import {
   acceptedCreditRfq$,
@@ -20,7 +21,6 @@ import {
   creditQuotes$,
   creditRfqsById$,
 } from "@/services/credit"
-import { customNumberFormatter } from "@/client/utils"
 
 const ConfirmationPill = styled.div<{ direction: Direction }>`
   position: absolute;

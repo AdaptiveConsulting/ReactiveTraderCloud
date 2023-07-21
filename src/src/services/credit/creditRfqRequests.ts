@@ -1,6 +1,7 @@
 import { createSignal } from "@react-rxjs/utils"
 import { filter, map, tap, withLatestFrom } from "rxjs/operators"
 
+import { showRfqInSellSide } from "@/client/utils"
 import {
   AcceptQuoteRequest,
   ACK_ACCEPT_QUOTE_RESPONSE,
@@ -11,7 +12,6 @@ import {
   QuoteBody,
   WorkflowService,
 } from "@/generated/TradingGateway"
-import { showRfqInSellSide } from "@/client/utils"
 
 import { adaptiveDealerId$ } from "./creditDealers"
 import { creditRfqsById$, RfqDetails } from "./creditRfqs"

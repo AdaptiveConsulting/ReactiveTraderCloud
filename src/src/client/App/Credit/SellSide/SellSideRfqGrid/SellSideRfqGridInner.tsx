@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components"
 
-import { Direction } from "@/generated/TradingGateway"
 import { colors } from "@/client/theme"
 import { breathing } from "@/client/utils/styling"
+import { Direction } from "@/generated/TradingGateway"
 
 import {
   selectRfqId,

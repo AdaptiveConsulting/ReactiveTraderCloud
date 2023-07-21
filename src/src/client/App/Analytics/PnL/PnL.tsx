@@ -1,9 +1,9 @@
 import { bind } from "@react-rxjs/core"
 import { distinctUntilChanged, map } from "rxjs/operators"
 
-import { currentPositions$ } from "@/services/analytics"
 import { equals } from "@/client/utils/equals"
 import { mapObject } from "@/client/utils/mapObject"
+import { currentPositions$ } from "@/services/analytics"
 
 import { Title } from "../styled"
 import PNLBar, { PNLBarProps } from "./PNLBar"

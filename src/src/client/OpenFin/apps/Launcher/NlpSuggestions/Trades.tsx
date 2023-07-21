@@ -1,7 +1,7 @@
 import { format } from "date-fns"
 
-import { useTrades } from "@/services/trades"
 import { formatNumber } from "@/client/utils"
+import { useTrades } from "@/services/trades"
 
 import { TradesInfoIntent } from "../services/nlpService"
 import {

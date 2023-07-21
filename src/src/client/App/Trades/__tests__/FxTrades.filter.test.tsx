@@ -3,9 +3,9 @@ import userEvent from "@testing-library/user-event"
 import { BehaviorSubject } from "rxjs"
 
 import { ComparatorType } from "@/client/App/Trades/TradesState"
+import { setupMockWindow, TestThemeProvider } from "@/client/utils/testUtils"
 import { Trade, TradeStatus, tradesTestData } from "@/services/trades"
 import { tradesMock } from "@/services/trades/__mocks__/_trades"
-import { setupMockWindow, TestThemeProvider } from "@/client/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"
 import * as TableTrades from "../TradesState/tableTrades"
