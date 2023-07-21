@@ -69,10 +69,10 @@ test.describe("Spot Tile", () => {
       const executingSpinner = tilePage.getByText(/Executing/)
       await expect(executingSpinner).toBeVisible()
 
-      const orangeconfirmation = await tilePage
+      const orangeConfirmation = await tilePage
         .locator("div[role='dialog']")
         .getByText(/Trade execution taking longer than expected/)
-      await expect(orangeconfirmation).toBeVisible()
+      await expect(orangeConfirmation).toBeVisible()
     })
   })
 
