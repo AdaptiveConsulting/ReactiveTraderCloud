@@ -2,7 +2,7 @@ import { memo } from "react"
 import styled from "styled-components"
 
 import { Direction, QuoteState, RfqState } from "@/generated/TradingGateway"
-import { useCreditInstrumentById } from "@/client/services/credit"
+import { useCreditInstrumentById } from "@/services/credit"
 
 import {
   CusipWithBenchmark,

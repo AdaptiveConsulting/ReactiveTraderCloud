@@ -5,7 +5,7 @@ import {
   DELAYED_CURRENCY,
   EXECUTION_TIMEOUT_VALUE,
   REJECTED_CURRENCY,
-} from "@/client/services/executions/constants"
+} from "@/services/executions/constants"
 
 import {
   ExecutionRequest,

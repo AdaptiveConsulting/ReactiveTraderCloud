@@ -4,7 +4,7 @@ import { Subscription } from "rxjs"
 import styled from "styled-components"
 
 import { Loader } from "@/client/components/Loader"
-import { registerSimulatedDealerResponses } from "@/client/services/credit/creditRfqResponses"
+import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 
 import { supportsTearOut } from "../../TearOutSection/supportsTearOut"
 import { TearOutComponent } from "../../TearOutSection/TearOutComponent"

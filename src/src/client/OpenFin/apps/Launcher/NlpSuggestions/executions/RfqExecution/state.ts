@@ -18,7 +18,7 @@ import {
   createCreditRfq$,
   creditDealers$,
   creditInstruments$,
-} from "@/client/services/credit"
+} from "@/services/credit"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
 import {

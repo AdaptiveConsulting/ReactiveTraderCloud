@@ -8,7 +8,7 @@ import {
   removeRfqs,
   RfqDetails,
   useCreditDealerById,
-} from "@/client/services/credit"
+} from "@/services/credit"
 
 import { CreditRfqTimer, rfqStateToLabel } from "../../common"
 import { handleViewTrade } from "./handleViewTrade"

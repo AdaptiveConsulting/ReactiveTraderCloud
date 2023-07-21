@@ -11,7 +11,7 @@ import {
 import { firstValueFrom, map } from "rxjs"
 
 import { tearOut } from "@/client/App/LiveRates/Tile/TearOut/state"
-import { CurrencyPair, currencyPairs$ } from "@/client/services/currencyPairs"
+import { CurrencyPair, currencyPairs$ } from "@/services/currencyPairs"
 
 const providerId = "reactive-trader-workspace-platform"
 

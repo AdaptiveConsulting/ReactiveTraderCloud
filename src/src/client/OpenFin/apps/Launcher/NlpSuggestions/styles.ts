@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { TradeStatus } from "@/client/services/trades"
+import { TradeStatus } from "@/services/trades"
 
 export const PlatformLogoWrapper = styled.div`
   svg {

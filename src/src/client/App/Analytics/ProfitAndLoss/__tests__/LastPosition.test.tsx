@@ -2,8 +2,8 @@ import { Subscribe } from "@react-rxjs/core"
 import { act, render, screen } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
-import { HistoryEntry } from "@/client/services/analytics"
-import { analyticsMock } from "@/client/services/analytics/__mocks__/_analytics"
+import { HistoryEntry } from "@/services/analytics"
+import { analyticsMock } from "@/services/analytics/__mocks__/_analytics"
 import { TestThemeProvider } from "@/client/utils/testUtils"
 
 import { LastPosition, lastPosition$ } from "../LastPosition"

@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { useCurrencyPairs } from "@/client/services/currencyPairs"
+import { useCurrencyPairs } from "@/services/currencyPairs"
 
 import { LimitInput } from "./LimitInput"
 import { Header } from "./styled"

@@ -1,17 +1,18 @@
 import { Subscription } from "rxjs"
 
 import {
-  processCreditAccepted,
-  processCreditQuote,
-  processFxExecution,
-} from "./notificationsUtils"
-import {
   acceptedRfqWithQuote$,
   lastQuoteReceived$,
   QuoteDetails,
   RfqWithQuote,
-} from "./services/credit"
-import { executions$, ExecutionTrade } from "./services/executions"
+} from "@/services/credit"
+import { executions$, ExecutionTrade } from "@/services/executions"
+
+import {
+  processCreditAccepted,
+  processCreditQuote,
+  processFxExecution,
+} from "./notificationsUtils"
 import { constructUrl } from "./utils/url"
 
 const fxIconUrl = constructUrl("/static/media/reactive-trader-fx.svg")

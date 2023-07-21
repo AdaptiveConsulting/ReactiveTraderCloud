@@ -6,8 +6,8 @@ import { map } from "rxjs/operators"
 import styled from "styled-components"
 
 import { Loader } from "@/client/components/Loader"
-import { currencyPairs$ } from "@/client/services/currencyPairs"
-import { getHistoricalPrices$, getPrice$ } from "@/client/services/prices"
+import { currencyPairs$ } from "@/services/currencyPairs"
+import { getHistoricalPrices$, getPrice$ } from "@/services/prices"
 
 export const LiveRatesCoreDeferred = import("./LiveRatesCore")
 const LiveRatesCore = lazy(() => LiveRatesCoreDeferred)

@@ -2,7 +2,7 @@ import { Subscribe } from "@react-rxjs/core"
 import styled from "styled-components"
 
 import { Loader } from "@/client/components/Loader"
-import { useAdaptiveDealerId } from "@/client/services/credit"
+import { useAdaptiveDealerId } from "@/services/credit"
 
 import { useSelectedRfqId } from "../sellSideState"
 import { focused$ } from "../utils/useIsFocused"

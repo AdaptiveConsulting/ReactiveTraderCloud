@@ -11,15 +11,15 @@ import {
   withLatestFrom,
 } from "rxjs/operators"
 
+import { emitTooLongMessage } from "@/client/utils/emitTooLong"
 import { Direction } from "@/generated/TradingGateway"
-import { getCurrencyPair$ } from "@/client/services/currencyPairs"
+import { getCurrencyPair$ } from "@/services/currencyPairs"
 import {
   execute$,
   ExecutionStatus,
   ExecutionTrade,
-} from "@/client/services/executions"
-import { getPrice$ } from "@/client/services/prices"
-import { emitTooLongMessage } from "@/client/utils/emitTooLong"
+} from "@/services/executions"
+import { getPrice$ } from "@/services/prices"
 
 import { getNotionalValue$ } from "./Notional"
 

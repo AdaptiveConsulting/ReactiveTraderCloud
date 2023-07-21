@@ -3,9 +3,9 @@ import { Meta } from "@storybook/react"
 import { Observable, of } from "rxjs"
 import styled from "styled-components"
 
-import { CreditTrade, FxTrade } from "@/client/services/trades"
-import { mockCreditTrades } from "@/client/services/trades/__mocks__/creditTrades"
-import { mockTrades } from "@/client/services/trades/__mocks__/trades.mock"
+import { CreditTrade, FxTrade } from "@/services/trades"
+import { mockCreditTrades } from "@/services/trades/__mocks__/creditTrades"
+import { mockTrades } from "@/services/trades/__mocks__/trades.mock"
 
 import {
   ColDefContext,

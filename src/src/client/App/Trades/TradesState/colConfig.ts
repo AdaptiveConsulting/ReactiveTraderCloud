@@ -1,6 +1,6 @@
 import { format as formatDate } from "date-fns"
 
-import type { CreditTrade, FxTrade } from "@/client/services/trades"
+import type { CreditTrade, FxTrade } from "@/services/trades"
 import {
   capitalize,
   formatAsWholeNumber,

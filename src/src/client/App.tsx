@@ -1,14 +1,14 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
+import { initConnection } from "../services/connection"
+import { checkTradingGatewayCompatibility } from "../services/tradingGatewayCompatibility"
 import { ENVIRONMENT } from "./constants"
 import { getMainApp } from "./main"
 import {
   registerCreditAcceptedNotifications,
   registerFxNotifications,
 } from "./notifications"
-import { initConnection } from "./services/connection"
-import { checkTradingGatewayCompatibility } from "./services/tradingGatewayCompatibility"
 import { GlobalScrollbarStyle, GlobalStyle, ThemeProvider } from "./theme"
 
 const MainApp = getMainApp()

@@ -9,7 +9,7 @@ import {
   ADAPTIVE_BANK_NAME,
   creditRfqsById$,
   RfqDetails,
-} from "@/client/services/credit"
+} from "@/services/credit"
 import { invertDirection } from "@/client/utils"
 
 import { timeRemainingComparator } from "../common"

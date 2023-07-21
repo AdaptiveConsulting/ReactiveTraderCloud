@@ -2,8 +2,8 @@ import { fireEvent, render, screen, within } from "@testing-library/react"
 import { act } from "react-dom/test-utils"
 import { BehaviorSubject } from "rxjs"
 
-import * as Trades from "@/client/services/trades"
-import { tradesMock } from "@/client/services/trades/__mocks__/_trades"
+import * as Trades from "@/services/trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 import { TestThemeProvider } from "@/client/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"

@@ -3,8 +3,8 @@ import { createSignal } from "@react-rxjs/utils"
 import { timer } from "rxjs"
 import { scan } from "rxjs/operators"
 
-import { currencyPairs$ } from "@/client/services/currencyPairs"
-import { getPriceUpdates$ } from "@/client/services/prices"
+import { currencyPairs$ } from "@/services/currencyPairs"
+import { getPriceUpdates$ } from "@/services/prices"
 
 const MAX_SECONDS = 60
 const [updatesPerSecond$, setUpdatesPerSecond] = createSignal<number>()

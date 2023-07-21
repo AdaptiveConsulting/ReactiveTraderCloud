@@ -1,5 +1,5 @@
 import { Direction } from "@/generated/TradingGateway"
-import { ExecutionTrade } from "@/client/services/executions"
+import { ExecutionTrade } from "@/services/executions"
 
 export enum TradeNlpExecutionStatus {
   MissingData = 1,

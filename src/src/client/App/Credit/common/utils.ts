@@ -1,5 +1,5 @@
 import { Direction, RfqState } from "@/generated/TradingGateway"
-import { RfqDetails } from "@/client/services/credit"
+import { RfqDetails } from "@/services/credit"
 
 function getRfqRemainingTime(rfq: RfqDetails): number {
   return Date.now() - Number(rfq.creationTimestamp) + rfq.expirySecs * 1000

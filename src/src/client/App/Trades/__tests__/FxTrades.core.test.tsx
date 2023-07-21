@@ -8,9 +8,9 @@ import {
 } from "@testing-library/react"
 import { BehaviorSubject, Subject } from "rxjs"
 
-import { Trade, tradesTestData } from "@/client/services/trades"
-import { tradesMock } from "@/client/services/trades/__mocks__/_trades"
 import { TestThemeProvider } from "@/client/utils/testUtils"
+import { Trade, tradesTestData } from "@/services/trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 
 import FxTrades from "../CoreFxTrades"
 import * as TableTrades from "../TradesState/tableTrades"

@@ -4,7 +4,7 @@ import { map } from "rxjs/operators"
 import styled from "styled-components"
 
 import { DealerBody } from "@/generated/TradingGateway"
-import { ADAPTIVE_BANK_NAME, creditDealers$ } from "@/client/services/credit"
+import { ADAPTIVE_BANK_NAME, creditDealers$ } from "@/services/credit"
 
 const CounterpartySelectionWrapper = styled.div`
   font-size: 12px;

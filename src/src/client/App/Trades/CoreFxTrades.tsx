@@ -1,7 +1,7 @@
 import { broadcast } from "@finos/fdc3"
 import { useCallback } from "react"
 
-import { FxTrade, trades$ } from "@/client/services/trades"
+import { FxTrade, trades$ } from "@/services/trades"
 
 import { TradesGrid } from "./TradesGrid"
 import { useFxTradeRowHighlight } from "./TradesState"

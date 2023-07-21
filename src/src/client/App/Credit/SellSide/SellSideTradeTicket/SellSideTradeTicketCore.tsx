@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 import { Loader } from "@/client/components/Loader"
 import { QuoteState } from "@/generated/TradingGateway"
-import { useCreditRfqDetails } from "@/client/services/credit"
+import { useCreditRfqDetails } from "@/services/credit"
 import { invertDirection } from "@/client/utils"
 
 import { getSellSideQuoteState, SellSideQuoteState } from "../sellSideState"

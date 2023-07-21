@@ -9,7 +9,7 @@ import styled from "styled-components"
 import {
   creditInstrumentsByCusip$,
   useCreditInstrumentsByCusip,
-} from "@/client/services/credit"
+} from "@/services/credit"
 
 import { CusipWithBenchmark } from "../common/CusipWithBenchmark"
 

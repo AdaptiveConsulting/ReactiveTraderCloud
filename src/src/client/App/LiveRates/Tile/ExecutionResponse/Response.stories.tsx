@@ -1,7 +1,7 @@
 import { Meta } from "@storybook/react"
 import styled from "styled-components"
 
-import { ExecutionStatus } from "@/client/services/executions"
+import { ExecutionStatus } from "@/services/executions"
 
 import { TileStates } from "../Tile.state"
 import { StatelessExecutionResponse } from "./Response"

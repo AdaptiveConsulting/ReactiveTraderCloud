@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 import { Observable } from "rxjs"
 
-import { TradeType } from "@/client/services/trades/types"
+import { TradeType } from "@/services/trades/types"
 
 import { ColDef } from "./TradesState"
 

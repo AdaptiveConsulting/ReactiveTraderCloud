@@ -6,8 +6,8 @@ import styled from "styled-components"
 
 import { PopInIcon } from "@/client/components/icons/PopInIcon"
 import { PopOutIcon } from "@/client/components/icons/PopOutIcon"
-import { CurrencyPair } from "@/client/services/currencyPairs"
-import { getPrice$ } from "@/client/services/prices"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { getPrice$ } from "@/services/prices"
 
 import { tearOut } from "../TearOut/state"
 import { useTileContext } from "../Tile.context"

@@ -9,7 +9,7 @@ import {
   QuoteState,
   RfqState,
 } from "@/generated/TradingGateway"
-import { acceptCreditQuote$ } from "@/client/services/credit"
+import { acceptCreditQuote$ } from "@/services/credit"
 
 import {
   AcceptQuoteButton,

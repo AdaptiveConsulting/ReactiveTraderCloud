@@ -9,10 +9,7 @@ import {
   QuoteState,
   RfqState,
 } from "@/generated/TradingGateway"
-import {
-  createCreditQuote$,
-  useCreditRfqDetails,
-} from "@/client/services/credit"
+import { createCreditQuote$, useCreditRfqDetails } from "@/services/credit"
 import { ThemeName } from "@/client/theme"
 import {
   customNumberFormatter,

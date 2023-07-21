@@ -9,7 +9,7 @@ import {
   scan,
 } from "rxjs/operators"
 
-import { CurrencyPair, currencyPairs$ } from "@/client/services/currencyPairs"
+import { CurrencyPair, currencyPairs$ } from "@/services/currencyPairs"
 
 type TearOutEntry = [string, boolean, HTMLDivElement?]
 

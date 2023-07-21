@@ -3,7 +3,7 @@ import { EMPTY, timer } from "rxjs"
 import { catchError, map, scan, switchMap } from "rxjs/operators"
 
 import { EchoService } from "@/generated/TradingGateway"
-import { withConnection } from "@/client/services/withConnection"
+import { withConnection } from "@/services/withConnection"
 
 let count = 0
 const [useLatency, latency$] = bind(

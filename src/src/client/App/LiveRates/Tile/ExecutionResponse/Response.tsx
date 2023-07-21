@@ -2,10 +2,10 @@ import { format } from "date-fns"
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"
 import styled from "styled-components"
 
-import { Direction } from "@/generated/TradingGateway"
-import { CurrencyPair } from "@/client/services/currencyPairs"
-import { ExecutionStatus } from "@/client/services/executions"
 import { formatNumber } from "@/client/utils"
+import { Direction } from "@/generated/TradingGateway"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { ExecutionStatus } from "@/services/executions"
 
 import { useTileCurrencyPair } from "../Tile.context"
 import {

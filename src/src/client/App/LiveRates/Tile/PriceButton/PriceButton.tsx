@@ -5,8 +5,8 @@ import { map, switchMap } from "rxjs/operators"
 import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
 import { CenteringContainer } from "@/client/components/CenteringContainer"
 import { Direction } from "@/generated/TradingGateway"
-import { CurrencyPair } from "@/client/services/currencyPairs"
-import { getPrice$ } from "@/client/services/prices"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { getPrice$ } from "@/services/prices"
 import {
   customNumberFormatter,
   DECIMAL_SEPARATOR,

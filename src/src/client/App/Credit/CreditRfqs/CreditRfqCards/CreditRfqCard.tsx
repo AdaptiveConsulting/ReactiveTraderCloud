@@ -5,7 +5,7 @@ import {
   QuoteBody,
   RfqState,
 } from "@/generated/TradingGateway"
-import { useCreditRfqDetails } from "@/client/services/credit"
+import { useCreditRfqDetails } from "@/services/credit"
 import { customNumberFormatter } from "@/client/utils"
 
 import { CardFooter } from "./CardFooter"

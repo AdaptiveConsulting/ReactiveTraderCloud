@@ -5,7 +5,7 @@ import { combineLatest, merge } from "rxjs"
 import { map } from "rxjs/operators"
 import styled from "styled-components"
 
-import { currencyPairs$ } from "@/client/services/currencyPairs"
+import { currencyPairs$ } from "@/services/currencyPairs"
 
 import { ALL_CURRENCIES, selectedCurrency$ } from "./selectedCurrency"
 import { getInitView, TileView, useSelectedTileView } from "./selectedView"

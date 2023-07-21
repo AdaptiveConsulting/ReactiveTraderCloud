@@ -6,7 +6,7 @@ import {
   ExecutionResponse,
   ExecutionService,
 } from "@/generated/TradingGateway"
-import { EXECUTION_TIMEOUT_VALUE } from "@/client/services/executions/constants"
+import { EXECUTION_TIMEOUT_VALUE } from "@/services/executions/constants"
 
 import { checkLimit$ } from "../limitChecker/limitChecker"
 import { TradeStatus } from "../trades"
@@ -70,8 +70,8 @@ export const execute$ = (execution: ExecutionRequest) =>
           mapExecutionToPayload(execution),
         ).pipe(
           map(mapResponseToTrade(execution.id)),
-          tap((value) => {
-            executionsSubject.next(value)
+          tap((trade) => {
+            executionsSubject.next(trade)
           }),
         )
       }),

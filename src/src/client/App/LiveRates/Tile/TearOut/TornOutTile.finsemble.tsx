@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { TileView } from "@/client/App/LiveRates/selectedView"
 import { Tile } from "@/client/App/LiveRates/Tile"
 import { Loader } from "@/client/components/Loader"
-import { useCurrencyPair } from "@/client/services/currencyPairs"
+import { useCurrencyPair } from "@/services/currencyPairs"
 import { withSubscriber } from "@/client/utils/withSubscriber"
 
 const Wrapper = styled("div")`

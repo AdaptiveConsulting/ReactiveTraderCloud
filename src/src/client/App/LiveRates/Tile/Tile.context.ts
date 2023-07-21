@@ -1,7 +1,7 @@
 import { contextBinder } from "@react-rxjs/utils"
 import { createContext, useContext } from "react"
 
-import { CurrencyPair } from "@/client/services/currencyPairs"
+import { CurrencyPair } from "@/services/currencyPairs"
 
 type TileContextBase = {
   isTornOut: boolean

@@ -2,9 +2,9 @@ import { FaSortDown, FaSortUp } from "react-icons/fa"
 import { distinctUntilChanged, map, withLatestFrom } from "rxjs/operators"
 import styled from "styled-components"
 
-import { getCurrencyPair$ } from "@/client/services/currencyPairs"
-import { getPrice$, PriceMovementType } from "@/client/services/prices"
-import type { RfqResponse } from "@/client/services/rfqs"
+import { getCurrencyPair$ } from "@/services/currencyPairs"
+import { getPrice$, PriceMovementType } from "@/services/prices"
+import type { RfqResponse } from "@/services/rfqs"
 import { equals } from "@/client/utils/equals"
 
 import { useRfqPayload } from "../Rfq/Rfq.state"

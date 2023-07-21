@@ -16,21 +16,21 @@ import {
   setCreditTradeRowHighlight,
   setFxTradeRowHighlight,
 } from "@/client/App/Trades/TradesState"
-import { executions$, ExecutionTrade } from "@/client/services/executions"
+import { executions$, ExecutionTrade } from "@/services/executions"
 
-import { setCreditRfqCardHighlight } from "./App/Credit/CreditRfqs/CreditRfqCards"
 import { Direction } from "../generated/TradingGateway"
-import {
-  processCreditAccepted,
-  processCreditQuote,
-  processFxExecution,
-} from "./notificationsUtils"
 import {
   acceptedRfqWithQuote$,
   lastQuoteReceived$,
   QuoteDetails,
   RfqWithQuote,
-} from "./services/credit"
+} from "../services/credit"
+import { setCreditRfqCardHighlight } from "./App/Credit/CreditRfqs/CreditRfqCards"
+import {
+  processCreditAccepted,
+  processCreditQuote,
+  processFxExecution,
+} from "./notificationsUtils"
 import { constructUrl } from "./utils/url"
 
 const fxIconUrl = constructUrl("/static/media/reactive-trader-fx.svg")

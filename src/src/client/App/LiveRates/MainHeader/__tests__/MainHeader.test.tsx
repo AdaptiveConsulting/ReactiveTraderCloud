@@ -2,8 +2,8 @@ import { Subscribe } from "@react-rxjs/core"
 import { act, fireEvent, render, screen } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
-import { CurrencyPair } from "@/client/services/currencyPairs"
-import { ccppMock } from "@/client/services/currencyPairs/__mocks__/_ccpp"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
 import { TestThemeProvider } from "@/client/utils/testUtils"
 
 import { liveRates$ } from "../../LiveRatesCore"

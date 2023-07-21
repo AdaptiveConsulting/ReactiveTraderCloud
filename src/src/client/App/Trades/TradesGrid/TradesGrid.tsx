@@ -6,9 +6,9 @@ import styled from "styled-components"
 
 import { Section } from "@/client/App/TearOutSection/state"
 import { Loader } from "@/client/components/Loader"
-import { isBlotterDataStale$, Trade } from "@/client/services/trades"
-import { TradeType } from "@/client/services/trades/types"
 import { createSuspenseOnStale } from "@/client/utils/createSuspenseOnStale"
+import { isBlotterDataStale$, Trade } from "@/services/trades"
+import { TradeType } from "@/services/trades/types"
 
 import {
   ColDefContext,

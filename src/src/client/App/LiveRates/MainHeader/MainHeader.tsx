@@ -4,8 +4,8 @@ import { map } from "rxjs/operators"
 import { supportsTearOut } from "@/client/App/TearOutSection/supportsTearOut"
 import { TearOutComponent } from "@/client/App/TearOutSection/TearOutComponent"
 import { DropdownMenu } from "@/client/components/DropdownMenu"
-import { currencyPairs$ } from "@/client/services/currencyPairs"
-import { useIsLimitCheckerRunning } from "@/client/services/limitChecker/limitChecker"
+import { currencyPairs$ } from "@/services/currencyPairs"
+import { useIsLimitCheckerRunning } from "@/services/limitChecker/limitChecker"
 
 import {
   ALL_CURRENCIES,

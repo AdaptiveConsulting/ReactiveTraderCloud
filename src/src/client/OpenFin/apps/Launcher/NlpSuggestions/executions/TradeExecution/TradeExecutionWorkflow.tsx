@@ -2,7 +2,7 @@ import { format } from "date-fns"
 import { createPortal } from "react-dom"
 
 import { Direction } from "@/generated/TradingGateway"
-import { ExecutionStatus, ExecutionTrade } from "@/client/services/executions"
+import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { formatNumber } from "@/client/utils"
 
 import { useOverlayElement } from "../../../overlayContext"

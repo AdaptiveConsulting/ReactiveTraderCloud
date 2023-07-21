@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event"
 import { BehaviorSubject } from "rxjs"
 
 import { ComparatorType } from "@/client/App/Trades/TradesState"
-import { Trade, TradeStatus, tradesTestData } from "@/client/services/trades"
-import { tradesMock } from "@/client/services/trades/__mocks__/_trades"
+import { Trade, TradeStatus, tradesTestData } from "@/services/trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 import { setupMockWindow, TestThemeProvider } from "@/client/utils/testUtils"
 
 import FxTrades from "../CoreFxTrades"

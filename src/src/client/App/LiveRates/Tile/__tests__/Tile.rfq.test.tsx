@@ -3,21 +3,17 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { BehaviorSubject, Subject } from "rxjs"
 
 import { Direction } from "@/generated/TradingGateway"
-import { CurrencyPair } from "@/client/services/currencyPairs"
-import { ccppMock } from "@/client/services/currencyPairs/__mocks__/_ccpp"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
 import {
   ExecutionRequest,
   ExecutionStatus,
   ExecutionTrade,
   TimeoutExecution,
-} from "@/client/services/executions"
-import { execMock } from "@/client/services/executions/__mocks__/_exec"
-import {
-  HistoryPrice,
-  Price,
-  PriceMovementType,
-} from "@/client/services/prices"
-import { pricesMock } from "@/client/services/prices/__mocks__/_prices"
+} from "@/services/executions"
+import { execMock } from "@/services/executions/__mocks__/_exec"
+import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
+import { pricesMock } from "@/services/prices/__mocks__/_prices"
 import { TestThemeProvider } from "@/client/utils/testUtils"
 
 import { Tile, tile$ } from ".."

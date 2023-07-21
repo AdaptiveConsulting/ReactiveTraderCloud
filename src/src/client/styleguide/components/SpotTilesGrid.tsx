@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 import { TileStates } from "@/client/App/LiveRates/Tile/Tile.state"
-import { PriceMovementType } from "@/client/services/prices"
+import { PriceMovementType } from "@/services/prices"
 
 import { H3 } from "../elements"
 import { Tile, TileProps } from "./Tile"

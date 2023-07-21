@@ -19,7 +19,7 @@ import {
   creditInstruments$,
   creditQuotes$,
   creditRfqsById$,
-} from "@/client/services/credit"
+} from "@/services/credit"
 import { customNumberFormatter } from "@/client/utils"
 
 const ConfirmationPill = styled.div<{ direction: Direction }>`

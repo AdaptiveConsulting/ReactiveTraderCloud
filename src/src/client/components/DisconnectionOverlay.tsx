@@ -8,7 +8,7 @@ import {
   connectionStatus$,
   initConnection,
   useConnectionStatus,
-} from "@/client/services/connection"
+} from "@/services/connection"
 
 // TODO - Use component from styleguide when available
 const Button = styled.button`

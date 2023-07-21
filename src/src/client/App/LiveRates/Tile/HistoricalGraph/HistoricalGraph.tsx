@@ -5,7 +5,7 @@ import { combineLatest } from "rxjs"
 import { distinctUntilChanged, map, startWith } from "rxjs/operators"
 import styled from "styled-components"
 
-import { getHistoricalPrices$, HistoryPrice } from "@/client/services/prices"
+import { getHistoricalPrices$, HistoryPrice } from "@/services/prices"
 import { equals } from "@/client/utils"
 import {
   getDataPoints,

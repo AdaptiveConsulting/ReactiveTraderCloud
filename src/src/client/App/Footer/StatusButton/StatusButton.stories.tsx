@@ -1,6 +1,6 @@
 import { Meta } from "@storybook/react"
 
-import { ConnectionStatus } from "@/client/services/connection"
+import { ConnectionStatus } from "@/services/connection"
 
 import { StatusButtonInner } from "./StatusButton"
 

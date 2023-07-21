@@ -10,7 +10,7 @@ import {
   withLatestFrom,
 } from "rxjs/operators"
 
-import { rfq$, RfqResponse } from "@/client/services/rfqs"
+import { rfq$, RfqResponse } from "@/services/rfqs"
 import { equals } from "@/client/utils"
 
 import { getNotionalValue$ } from "../Notional"

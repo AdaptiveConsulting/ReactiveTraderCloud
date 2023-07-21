@@ -12,9 +12,9 @@ import {
 } from "rxjs/operators"
 
 import { Direction } from "@/generated/TradingGateway"
-import { getCurrencyPair$ } from "@/client/services/currencyPairs"
-import { execute$, ExecutionStatus } from "@/client/services/executions"
-import { getPrice$ } from "@/client/services/prices"
+import { getCurrencyPair$ } from "@/services/currencyPairs"
+import { execute$, ExecutionStatus } from "@/services/executions"
+import { getPrice$ } from "@/services/prices"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
 import {
@@ -29,7 +29,7 @@ export { onNext }
 const next$ = next$_.pipe(take(1))
 
 let nextId = 1
-const getId = () => (nextId++).toString()
+export const getId = () => (nextId++).toString()
 
 const tradeExecutionState$: Observable<TradeNlpExecutionState> =
   nlpIntent$.pipe(

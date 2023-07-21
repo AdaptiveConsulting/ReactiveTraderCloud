@@ -6,10 +6,7 @@ import {
   limitCheckerColDef,
   limitCheckerColFields,
 } from "@/client/App/Trades/TradesState/colConfig"
-import {
-  LimitCheckStatus,
-  LimitCheckTrade,
-} from "@/client/services/trades/types"
+import { LimitCheckStatus, LimitCheckTrade } from "@/services/trades/types"
 
 import { limitResult$ } from "./state"
 

@@ -7,7 +7,7 @@ import {
 } from "@/client/App/LiveRates/selectedView"
 import { Tile } from "@/client/App/LiveRates/Tile"
 import { Loader } from "@/client/components/Loader"
-import { useCurrencyPair } from "@/client/services/currencyPairs"
+import { useCurrencyPair } from "@/services/currencyPairs"
 import { useLocalStorage } from "@/client/utils"
 import { closeWindow } from "@/client/utils/window/closeWindow"
 import { withSubscriber } from "@/client/utils/withSubscriber"

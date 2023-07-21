@@ -2,7 +2,7 @@ import { FC } from "react"
 import styled from "styled-components"
 
 import { PriceMovementInner } from "@/client/App/LiveRates/Tile/PriceMovement"
-import { PriceMovementType } from "@/client/services/prices"
+import { PriceMovementType } from "@/services/prices"
 
 export default (() => (
   <Root>

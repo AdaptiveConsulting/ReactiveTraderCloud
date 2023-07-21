@@ -5,7 +5,7 @@ import { delay, map, mergeMap, tap } from "rxjs/operators"
 
 import { HIGHLIGHT_ROW_FLASH_TIME } from "@/client/constants"
 import { RfqState } from "@/generated/TradingGateway"
-import { clearedRfqIds$, creditRfqsById$ } from "@/client/services/credit"
+import { clearedRfqIds$, creditRfqsById$ } from "@/services/credit"
 
 import { timeRemainingComparator } from "../../common"
 import { RfqsTab, selectedRfqsTab$ } from "../selectedRfqsTab"

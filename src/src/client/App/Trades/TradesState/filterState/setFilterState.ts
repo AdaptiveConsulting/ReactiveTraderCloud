@@ -3,8 +3,8 @@ import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { Observable } from "rxjs"
 import { map, mergeMap, scan, shareReplay, startWith } from "rxjs/operators"
 
-import { CreditTrade, FxTrade } from "@/client/services/trades"
-import { Trade, TradeType } from "@/client/services/trades/types"
+import { CreditTrade, FxTrade } from "@/services/trades"
+import { Trade, TradeType } from "@/services/trades/types"
 import { mapObject } from "@/client/utils"
 
 import { ColDef } from "../colConfig"

@@ -3,7 +3,7 @@ import { FaRedo } from "react-icons/fa"
 import { concat, merge, Observable, OperatorFunction, pipe } from "rxjs"
 import { filter, map, take } from "rxjs/operators"
 
-import { currencyPairs$ } from "@/client/services/currencyPairs"
+import { currencyPairs$ } from "@/services/currencyPairs"
 import { formatNotional } from "@/client/utils/formatNotional"
 
 import { QuoteStateStage, useRfqState } from "../Rfq"
