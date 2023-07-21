@@ -18,6 +18,8 @@ import {
 import { execute } from "@/services/executions"
 import { getUserResult, getUserToSwitch, switchUser } from "@/user"
 import { getNlpResults } from "./nlpProvider"
+import { createCreditRfq } from "@/services/creditRfqRequests"
+import { ExitCode } from "@openfin/core/src/OpenFin"
 
 const PROVIDER_ID = "adaptive-home-provider"
 
@@ -80,55 +82,90 @@ export async function registerHome(): Promise<HomeRegistration> {
   }
 
   const handleAppSelection = async (appEntry: App) => {
-    if (appEntry.manifestType === "external") {
-      fin.System.launchExternalProcess({
-        alias: appEntry.manifest,
-        listener: (result: any) => {
-          console.log("the exit code", result.exitCode)
-        },
-      })
-        .then((data: any) => {
-          console.info("Process launched: ", data)
-        })
-        .catch((e: any) => {
-          console.error("Process launch failed: ", e)
-        })
-    } else if (appEntry.manifestType === "trade-execution") {
-      if (lastResponse !== undefined && lastResponse !== null) {
-        const {
-          currencyPair,
-          spotRate,
-          valueDate,
-          direction,
-          notional,
-          dealtCurrency,
-        } = appEntry as any
-        console.log("Action on execute", appEntry)
+    switch (appEntry.manifestType) {
+      case "external": {
+        try {
+          const data = await fin.System.launchExternalProcess({
+            alias: appEntry.manifest,
+            listener: (result: ExitCode) => {
+              console.log("the exit code", result.exitCode)
+            },
+          })
 
-        await execute({
-          currencyPair,
-          spotRate,
-          valueDate,
-          direction,
-          notional,
-          dealtCurrency,
-        })
+          console.info("Process launched: ", data)
+        } catch (e: any) {
+          console.error("Process launch failed: ", e)
+        }
+
+        break
       }
-    } else if (appEntry.manifestType === "switch-user") {
-      switchUser()
-      const userToSwitch = getUserToSwitch()
-      if (lastResponse !== undefined && lastResponse !== null) {
-        lastResponse.respond([getUserResult(userToSwitch)])
+
+      case "trade-execution": {
+        if (lastResponse !== undefined && lastResponse !== null) {
+          const {
+            currencyPair,
+            spotRate,
+            valueDate,
+            direction,
+            notional,
+            dealtCurrency,
+          } = appEntry as any
+
+          console.log("Action on execute", appEntry)
+
+          await execute({
+            currencyPair,
+            spotRate,
+            valueDate,
+            direction,
+            notional,
+            dealtCurrency,
+          })
+        }
+
+        break
       }
-    } else if (appEntry.manifestType === "url") {
-      let platform = getCurrentSync()
-      platform.createView({
-        url: appEntry.manifest,
-        bounds: { width: 320, height: 180 },
-      } as any)
-    } else {
-      let platform = getCurrentSync()
-      await platform.launchApp({ app: appEntry })
+
+      case "rfq-execution": {
+        if (lastResponse !== undefined && lastResponse !== null) {
+          const { instrumentId, quantity, direction } = appEntry as any
+          await createCreditRfq({
+            instrumentId,
+            quantity,
+            direction,
+            expirySecs: 120,
+          })
+        }
+        break
+      }
+
+      case "switch-user": {
+        switchUser()
+
+        const userToSwitch = getUserToSwitch()
+
+        if (lastResponse !== undefined && lastResponse !== null) {
+          lastResponse.respond([getUserResult(userToSwitch)])
+        }
+        break
+      }
+
+      case "url": {
+        const platform = getCurrentSync()
+
+        platform.createView({
+          url: appEntry.manifest,
+          bounds: { width: 320, height: 180 },
+        } as any)
+
+        break
+      }
+
+      default: {
+        const platform = getCurrentSync()
+
+        await platform.launchApp({ app: appEntry })
+      }
     }
   }
 

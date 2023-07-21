@@ -7,6 +7,7 @@ import {
 } from "rxjs"
 import { PriceTick, PricingService } from "@/generated/TradingGateway"
 import { currencyPairSymbols$, getCurencyPair$ } from "./currencyPairs"
+import { withConnection } from "./withConnection"
 
 export interface Price extends PriceTick {
   lastMove: "up" | "down" | "none"
@@ -49,6 +50,7 @@ const priceMapper = (price: PriceTick): Price => ({
 
 export const getPriceForSymbol$ = (symbol: string) =>
   PricingService.getPriceUpdates({ symbol }).pipe(
+    withConnection(),
     withLatestFrom(getCurencyPair$(symbol)),
     scan((acc, [priceTick, currencyPair]) => {
       const price = priceMapper(priceTick)

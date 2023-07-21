@@ -28,9 +28,11 @@
     "@google-cloud/dialogflow": "^4.7.0",
     "@openfin/workspace": "13.0.7",
     "@openfin/workspace-platform": "13.0.7",
+    "@react-rxjs/core": "^0.10.6",
+    "@react-rxjs/utils": "^0.9.7",
     "csstype": "^3.0.11",
     "openfin-notifications": "1.23.0",
-    "rxjs": "^7.5.4"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@types/node": "^14.14.37",

@@ -10,14 +10,15 @@ export enum NlpIntentType {
   SpotQuote,
   TradeInfo,
   MarketInfo,
+  CreditRfq,
 }
 
 export interface TradeExecutionIntent {
   type: NlpIntentType.TradeExecution
   payload: {
-    symbol?: string
-    direction?: Direction
-    notional?: number
+    symbol: string
+    direction: Direction
+    notional: number
   }
 }
 
@@ -42,17 +43,28 @@ export interface MarketInfoIntent {
   payload: {}
 }
 
+export interface CreditRfqIntent {
+  type: NlpIntentType.CreditRfq
+  payload: {
+    symbol: string
+    direction: Direction
+    notional: number
+  }
+}
+
 export type NlpIntent =
   | TradeExecutionIntent
   | SpotQuoteIntent
   | TradesInfoIntent
   | MarketInfoIntent
+  | CreditRfqIntent
 
 const intentMapper: Record<string, NlpIntentType> = {
   "rt.trades.execute": NlpIntentType.TradeExecution,
   "rt.spot.quote": NlpIntentType.SpotQuote,
   "rt.trades.info": NlpIntentType.TradeInfo,
   "rt.market.info": NlpIntentType.MarketInfo,
+  "rt.credit.rfq": NlpIntentType.CreditRfq,
 }
 
 const directionMapper: Record<string, Direction> = {
@@ -75,9 +87,17 @@ export const getNlpIntent = async (query: string) => {
   const intent = intentMapper[response.queryResult?.intent?.displayName]
   // @ts-ignore
   const symbol =
-    response.queryResult?.parameters?.fields?.CurrencyPairs?.stringValue
+    intent === NlpIntentType.CreditRfq
+      ? response.queryResult?.parameters?.fields?.Bond?.stringValue
+      : response.queryResult?.parameters?.fields?.CurrencyPairs?.stringValue
   // @ts-ignore
   const number = response.queryResult?.parameters?.fields?.number?.numberValue
+
+  const direction =
+    directionMapper[
+      // @ts-ignore
+      response.queryResult.parameters.fields.TradeType.stringValue
+    ]
 
   switch (intent) {
     case NlpIntentType.TradeExecution: {
@@ -85,11 +105,7 @@ export const getNlpIntent = async (query: string) => {
         type: NlpIntentType.TradeExecution,
         payload: {
           symbol,
-          direction:
-            // @ts-ignore
-            directionMapper[
-              response.queryResult.parameters.fields.TradeType.stringValue
-            ],
+          direction,
           notional: number,
         },
       }
@@ -124,6 +140,15 @@ export const getNlpIntent = async (query: string) => {
           }
         : null
 
+    case NlpIntentType.CreditRfq:
+      return {
+        type: NlpIntentType.CreditRfq,
+        payload: {
+          symbol,
+          direction,
+          notional: number,
+        },
+      }
     default:
       return null
   }
