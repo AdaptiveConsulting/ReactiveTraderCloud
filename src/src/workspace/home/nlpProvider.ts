@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
-  Action,
   ButtonStyle,
   CLISearchListenerRequest,
   CLISearchListenerResponse,
@@ -40,7 +39,7 @@ import { createdRfqWithInstrumentWithResponse$ } from "@/services/creditRfqReque
 import { currencyPairs$, getCurencyPair$ } from "@/services/currencyPairs"
 import {
   executing$,
-  executionResponse$,
+  executions$,
   ExecutionStatus,
   ExecutionTrade,
   TimeoutExecution,
@@ -781,7 +780,7 @@ export const getNlpResults = async (
       )
 
       subs.push(
-        executionResponse$.pipe(take(1)).subscribe((trade) => {
+        executions$.pipe(take(1)).subscribe((trade) => {
           response.respond([
             {
               key,

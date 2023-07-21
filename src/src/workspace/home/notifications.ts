@@ -1,9 +1,12 @@
 import { create } from "openfin-notifications"
 import { filter } from "rxjs"
 
-import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
+import {
+  executions$,
+  ExecutionStatus,
+  ExecutionTrade,
+} from "@/services/executions"
 import { BASE_URL } from "@/workspace/consts"
-import { executionResponse$ } from "@/workspace/services/executions"
 
 const sendFxTradeNotification = (trade: ExecutionTrade) => {
   const notification = {
@@ -30,15 +33,7 @@ const sendFxTradeNotification = (trade: ExecutionTrade) => {
 }
 
 export async function registerFxNotifications() {
-  executionResponse$
-    .pipe(
-      filter(
-        (response) =>
-          response.status === ExecutionStatus.Done ||
-          response.status === ExecutionStatus.Rejected,
-      ),
-    )
-    .subscribe((executionResponse) => {
-      sendFxTradeNotification(executionResponse as ExecutionTrade)
-    })
+  executions$.subscribe((executionResponse) => {
+    sendFxTradeNotification(executionResponse as ExecutionTrade)
+  })
 }
