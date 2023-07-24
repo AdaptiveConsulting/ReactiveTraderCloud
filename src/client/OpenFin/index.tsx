@@ -4,8 +4,10 @@ import { DocTitle } from "client/components/DocTitle"
 import { Loader } from "client/components/Loader"
 import { BASE_PATH, ROUTES_CONFIG } from "client/constants"
 import { OpenFinContactDisplay } from "client/OpenFin/Footer/ContactUsButton"
+import { ThemeName, themes } from "client/theme"
 import { lazy, Suspense } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { ThemeProvider } from "styled-components"
 
 import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
@@ -33,9 +35,11 @@ export const OpenFinApp = () => (
       <Route
         path={ROUTES_CONFIG.launcher}
         element={
-          <Suspense fallback={<Loader />}>
-            <Launcher />
-          </Suspense>
+          <ThemeProvider theme={themes[ThemeName.Dark]}>
+            <Suspense fallback={<Loader opacity={1} />}>
+              <Launcher />
+            </Suspense>
+          </ThemeProvider>
         }
       />
 
@@ -114,17 +118,23 @@ export const OpenFinApp = () => (
       <Route
         path={ROUTES_CONFIG.limitChecker}
         element={
-          <DocTitle title="Limit Checker">
-            <LimitChecker />
-            <DisconnectionOverlay />
-          </DocTitle>
+          <ThemeProvider theme={themes[ThemeName.Dark]}>
+            <DocTitle title="Limit Checker">
+              <LimitChecker />
+              <DisconnectionOverlay />
+            </DocTitle>
+          </ThemeProvider>
         }
       />
 
       <Route path="/openfin-window-frame" element={<WindowFrame />} />
       <Route
         path="/openfin-admin-window-frame"
-        element={<LimitCheckerWindowFrame />}
+        element={
+          <ThemeProvider theme={themes[ThemeName.Dark]}>
+            <LimitCheckerWindowFrame />
+          </ThemeProvider>
+        }
       />
       <Route path="/openfin-sub-window-frame" element={<ChildWindowFrame />} />
       <Route path={ROUTES_CONFIG.contact} element={<OpenFinContactDisplay />} />

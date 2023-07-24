@@ -28,6 +28,7 @@ const tableRows$ = limitResult$.pipe(
 )
 
 const Container = styled.div`
+  background-color: ${({ theme }) => theme.core.darkBackground};
   display: flex;
   flex: 1;
   padding: 0 10px 20px 10px;
