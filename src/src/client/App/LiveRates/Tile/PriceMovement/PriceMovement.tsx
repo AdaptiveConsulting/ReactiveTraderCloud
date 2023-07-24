@@ -1,9 +1,8 @@
 import { FaSortDown, FaSortUp } from "react-icons/fa"
-import { distinctUntilChanged, map, withLatestFrom } from "rxjs/operators"
+import { distinctUntilChanged, map } from "rxjs/operators"
 import styled from "styled-components"
 
 import { equals } from "@/client/utils/equals"
-import { getCurrencyPair$ } from "@/services/currencyPairs"
 import { getPrice$, PriceMovementType } from "@/services/prices"
 import type { RfqResponse } from "@/services/rfqs"
 
@@ -40,28 +39,11 @@ const PriceMovementStyle = styled.div<{
   grid-area: movement;
 `
 
-const calculateSpread = (
-  ask: number,
-  bid: number,
-  ratePrecision: number,
-  pipsPosition: number,
-) =>
-  ((ask - bid) * Math.pow(10, pipsPosition)).toFixed(
-    ratePrecision - pipsPosition,
-  )
-
 const [usePriceMovementData, priceMovement$] = symbolBind((symbol: string) =>
   getPrice$(symbol).pipe(
-    withLatestFrom(getCurrencyPair$(symbol)),
-    map(
-      ([
-        { bid, ask, movementType, symbol },
-        { pipsPosition, ratePrecision },
-      ]) => {
-        const spread = calculateSpread(ask, bid, ratePrecision, pipsPosition)
-        return { spread, movementType, symbol }
-      },
-    ),
+    map(({ spread, movementType, symbol }) => {
+      return { spread, movementType, symbol }
+    }),
     distinctUntilChanged(equals),
   ),
 )
@@ -123,18 +105,11 @@ const PriceFromQuote = ({
 }: {
   isAnalyticsView: boolean
   rfqResponse: RfqResponse
-}) => {
-  const {
-    price: { bid, ask },
-    currencyPair: { ratePrecision, pipsPosition },
-  } = rfqResponse
-  const spread = calculateSpread(ask, bid, ratePrecision, pipsPosition)
-  return (
-    <PriceMovementStyle isAnalyticsView={isAnalytics}>
-      <MovementValue>{spread}</MovementValue>
-    </PriceMovementStyle>
-  )
-}
+}) => (
+  <PriceMovementStyle isAnalyticsView={isAnalytics}>
+    <MovementValue>{rfqResponse.price.spread}</MovementValue>
+  </PriceMovementStyle>
+)
 
 export const PriceMovement = ({
   isAnalyticsView,

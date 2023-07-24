@@ -11,10 +11,23 @@ import {
   HomeRegistration,
 } from "@openfin/workspace"
 import { App, getCurrentSync } from "@openfin/workspace-platform"
-import { delay, firstValueFrom, of, Subject, switchMap } from "rxjs"
+import {
+  delay,
+  firstValueFrom,
+  of,
+  Subject,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from "rxjs"
 
-import { ExecuteTradeRequest } from "@/generated/TradingGateway"
-import { createCreditRfq } from "@/services/creditRfqRequests"
+import {
+  CreateRfqRequest,
+  CreateRfqResponse,
+  ExecuteTradeRequest,
+} from "@/generated/TradingGateway"
+import { creditDealers$ } from "@/services/credit"
+import { createCreditRfq$ } from "@/services/credit/creditRfqRequests"
 import { execute$ } from "@/services/executions"
 import { deletePage, getPage, launchPage } from "@/workspace/browser"
 import { getUserResult, getUserToSwitch, switchUser } from "@/workspace/user"
@@ -35,6 +48,25 @@ export const execute = async (execution: ExecuteTradeRequest) => {
     of(null).pipe(
       delay(2000),
       switchMap(() => execute$(execution)),
+    ),
+  )
+}
+
+export const rfqResponse$ = new Subject<CreateRfqResponse>()
+
+export const createRfq = async (
+  request: Omit<CreateRfqRequest, "dealerIds">,
+) => {
+  return firstValueFrom(
+    of(null).pipe(
+      withLatestFrom(creditDealers$),
+      switchMap(([, dealers]) =>
+        createCreditRfq$({
+          ...request,
+          dealerIds: dealers.map((dealer) => dealer.id),
+        }),
+      ),
+      tap((response) => rfqResponse$.next(response)),
     ),
   )
 }
@@ -147,7 +179,7 @@ export async function registerHome(): Promise<HomeRegistration> {
       case "rfq-execution": {
         if (lastResponse !== undefined && lastResponse !== null) {
           const { instrumentId, quantity, direction } = appEntry as any
-          await createCreditRfq({
+          await createRfq({
             instrumentId,
             quantity,
             direction,

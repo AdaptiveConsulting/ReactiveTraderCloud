@@ -1,11 +1,12 @@
 import { init as workspacePlatformInit } from "@openfin/workspace-platform"
 
+import { initConnection } from "@/services/connection"
+
 import { customActions, overrideCallback } from "./browser"
 import { BASE_URL } from "./consts"
 import { deregisterdock, dockCustomActions, registerDock } from "./dock"
 import { deregisterHome, registerHome, showHome } from "./home"
 import { registerFxNotifications } from "./home/notifications"
-import { initConnection } from "./services/connection"
 import { deregisterStore, registerStore } from "./store"
 
 const icon = `${BASE_URL}/images/icons/adaptive.png`

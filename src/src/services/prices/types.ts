@@ -19,6 +19,7 @@ export type HistoryPrice = CamelCase<RawPrice>
 
 export interface Price extends HistoryPrice {
   movementType: PriceMovementType
+  spread: string
 }
 
 export interface Request {

@@ -1,13 +1,30 @@
 import { bind } from "@react-rxjs/core"
 import { mergeWithKey } from "@react-rxjs/utils"
 import { combineLatest, concat, race } from "rxjs"
-import { distinctUntilChanged, map, scan, take } from "rxjs/operators"
+import {
+  distinctUntilChanged,
+  map,
+  scan,
+  take,
+  withLatestFrom,
+} from "rxjs/operators"
 
 import { PriceTick, PricingService } from "@/generated/TradingGateway"
 
 import { withIsStaleData } from "../connection"
+import { getCurrencyPair$ } from "../currencyPairs"
 import { withConnection } from "../withConnection"
 import { HistoryPrice, Price, PriceMovementType } from "./types"
+
+const calculateSpread = (
+  ask: number,
+  bid: number,
+  ratePrecision: number,
+  pipsPosition: number,
+) =>
+  ((ask - bid) * Math.pow(10, pipsPosition)).toFixed(
+    ratePrecision - pipsPosition,
+  )
 
 const priceMappper = (input: PriceTick): HistoryPrice => ({
   ask: input.ask,
@@ -54,8 +71,9 @@ export const [usePrice, getPrice$] = bind((symbol: string) =>
       getPriceUpdates$(symbol),
     ),
   ]).pipe(
+    withLatestFrom(getCurrencyPair$(symbol)),
     scan(
-      (acc, price) => ({
+      (acc, [price, ccyPair]) => ({
         ...price,
         movementType:
           acc === undefined
@@ -63,6 +81,12 @@ export const [usePrice, getPrice$] = bind((symbol: string) =>
             : price.mid > acc.mid
             ? PriceMovementType.UP
             : PriceMovementType.DOWN,
+        spread: calculateSpread(
+          price.ask,
+          price.bid,
+          ccyPair.ratePrecision,
+          ccyPair.pipsPosition,
+        ),
       }),
       undefined as unknown as Price,
     ),
