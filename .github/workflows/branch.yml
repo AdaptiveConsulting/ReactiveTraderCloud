@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: src/client
+    working-directory: src
 
 env:
   BUCKET_WEB: reactive-trader-web-builds
