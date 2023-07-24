@@ -25,6 +25,8 @@ import {
 } from "@/client/utils"
 // TODO - move into common place
 import { BASE_URL, VITE_RT_URL } from "@/consts"
+import { CurrencyPair, Direction } from "@/generated/TradingGateway"
+import { currencyPairs$, getCurrencyPair$ } from "@/services/currencyPairs"
 import {
   ACK_CREATE_RFQ_RESPONSE,
   AckCreateRfqResponse,
@@ -36,7 +38,7 @@ import {
 } from "@/generated/TradingGateway"
 import { creditInstruments$ } from "@/services/creditInstruments"
 import { createdRfqWithInstrumentWithResponse$ } from "@/services/creditRfqRequests"
-import { currencyPairs$, getCurencyPair$ } from "@/services/currencyPairs"
+import { currencyPairs$ } from "@/services/currencyPairs"
 import {
   executing$,
   executions$,
@@ -54,6 +56,10 @@ import {
 } from "@/services/nlpService"
 import { getPriceForSymbol$, Price, prices$ } from "@/services/prices"
 import { tradesStream$ } from "@/services/trades"
+import { BASE_URL, VITE_RT_URL } from "@/workspace/consts"
+import { getNlpIntent, NlpIntentType } from "@/workspace/services/nlpService"
+import { getPriceForSymbol$, Price, prices$ } from "@/workspace/services/prices"
+import { tradesStream$ } from "@/workspace/services/trades"
 import {
   createButton,
   createContainer,
@@ -62,6 +68,7 @@ import {
   createTextContainer,
 } from "@/templates"
 
+import { executing$ } from "."
 // TODO - move into common place
 import { ADAPTIVE_LOGO } from "./utils"
 
@@ -589,7 +596,7 @@ export const getNlpResults = async (
       }
 
       const sub = getPriceForSymbol$(symbol)
-        .pipe(withLatestFrom(getCurencyPair$(symbol)))
+        .pipe(withLatestFrom(getCurrencyPair$(symbol)))
         .subscribe(([priceTick, currencyPair]) => {
           const result = constructSpotResult(priceTick, currencyPair)
           revokeLoading()
@@ -700,8 +707,8 @@ export const getNlpResults = async (
       subs.push(
         getPriceForSymbol$(symbol)
           .pipe(
-            withLatestFrom(getCurencyPair$(symbol)),
-            takeUntil(executing$.pipe(filter((value) => !!value))),
+            withLatestFrom(getCurrencyPair$(symbol)),
+ø            takeUntil(executing$.pipe(filter((value) => !!value))),
           )
           .subscribe(([price, currencyPair]) => {
             const { bid, ask } = price

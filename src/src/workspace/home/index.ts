@@ -11,10 +11,12 @@ import {
   HomeRegistration,
 } from "@openfin/workspace"
 import { App, getCurrentSync } from "@openfin/workspace-platform"
+import { delay, firstValueFrom, of, Subject, switchMap } from "rxjs"
 
+import { ExecuteTradeRequest } from "@/generated/TradingGateway"
 import { createCreditRfq } from "@/services/creditRfqRequests"
+import { execute$ } from "@/services/executions"
 import { deletePage, getPage, launchPage } from "@/workspace/browser"
-import { execute } from "@/workspace/services/executions"
 import { getUserResult, getUserToSwitch, switchUser } from "@/workspace/user"
 
 import { getNlpResults } from "./nlpProvider"
@@ -23,6 +25,19 @@ import {
   getAppsAndPages,
   HOME_ACTION_DELETE_PAGE,
 } from "./utils"
+
+export const executing$ = new Subject<ExecuteTradeRequest>()
+
+// Must return a promise to execute properly from the context of CLIProvider.onSelection
+export const execute = async (execution: ExecuteTradeRequest) => {
+  executing$.next(execution)
+  return firstValueFrom(
+    of(null).pipe(
+      delay(2000),
+      switchMap(() => execute$(execution)),
+    ),
+  )
+}
 
 const PROVIDER_ID = "adaptive-home-provider"
 

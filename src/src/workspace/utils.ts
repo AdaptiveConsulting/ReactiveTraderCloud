@@ -1,9 +1,10 @@
 import { App } from "@openfin/workspace-platform"
 import { firstValueFrom } from "rxjs"
 
+import { currencyPairSymbols$ } from "@/services/currencyPairs"
+
 import { VITE_RA_URL, VITE_RT_URL } from "./consts"
 import { ADAPTIVE_LOGO } from "./home/utils"
-import { currencyPairSymbols$ } from "./services/currencyPairs"
 
 export const getSpotTileApps = async (): Promise<App[]> => {
   const currencyPairs = await firstValueFrom(currencyPairSymbols$)

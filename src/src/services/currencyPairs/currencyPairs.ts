@@ -36,3 +36,7 @@ export const [useCurrencyPair, getCurrencyPair$] = bind((symbol: string) =>
     distinctUntilChanged(),
   ),
 )
+
+export const currencyPairSymbols$ = currencyPairs$.pipe(
+  map((ccyPairs) => Object.keys(ccyPairs)),
+)
