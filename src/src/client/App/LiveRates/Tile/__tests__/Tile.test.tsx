@@ -34,6 +34,7 @@ const currencyPairMock: CurrencyPair = {
 const priceMock: Price = {
   ask: 1.53834,
   bid: 1.53816,
+  spread: "0.00022",
   creationTimestamp: 5318479648168,
   mid: 1.53825,
   symbol: "EURUSD",

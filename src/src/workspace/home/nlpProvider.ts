@@ -835,6 +835,7 @@ export const getNlpResults = async (
       }
 
       const key = `rfq-execution-${symbol}`
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let result: any
 
       const subs = creditInstruments$

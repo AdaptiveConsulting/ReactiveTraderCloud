@@ -16,7 +16,7 @@ import { getCurrencyPair$ } from "../currencyPairs"
 import { withConnection } from "../withConnection"
 import { HistoryPrice, Price, PriceMovementType } from "./types"
 
-const calculateSpread = (
+export const calculateSpread = (
   ask: number,
   bid: number,
   ratePrecision: number,
@@ -75,12 +75,14 @@ export const [usePrice, getPrice$] = bind((symbol: string) =>
     scan(
       (acc, [price, ccyPair]) => ({
         ...price,
+
         movementType:
           acc === undefined
             ? PriceMovementType.NONE
             : price.mid > acc.mid
             ? PriceMovementType.UP
             : PriceMovementType.DOWN,
+
         spread: calculateSpread(
           price.ask,
           price.bid,

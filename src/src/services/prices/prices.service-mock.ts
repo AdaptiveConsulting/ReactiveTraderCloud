@@ -1,7 +1,9 @@
 import { bind } from "@react-rxjs/core"
 import { Observable, of } from "rxjs"
-import { map, scan } from "rxjs/operators"
+import { map, scan, withLatestFrom } from "rxjs/operators"
 
+import { getCurrencyPair$ } from "../currencyPairs/currencyPairs.service-mock"
+import { calculateSpread } from "./prices"
 import { HistoryPrice, Price, PriceMovementType } from "./types"
 
 function* makePriceGenerator(
@@ -60,8 +62,9 @@ export const [, getIsSymbolDataStale$] = bind(
 export const [usePrice, getPrice$] = bind((symbol: string) =>
   getSymbolPrices$(symbol).pipe(
     map((prices) => prices[prices.length - 1]),
+    withLatestFrom(getCurrencyPair$(symbol)),
     scan(
-      (acc, price) => ({
+      (acc, [price, ccyPair]) => ({
         ...price,
         movementType:
           acc === undefined
@@ -69,6 +72,13 @@ export const [usePrice, getPrice$] = bind((symbol: string) =>
             : price.mid > acc.mid
             ? PriceMovementType.UP
             : PriceMovementType.DOWN,
+
+        spread: calculateSpread(
+          price.ask,
+          price.bid,
+          ccyPair.ratePrecision,
+          ccyPair.pipsPosition,
+        ),
       }),
       undefined as any as Price,
     ),
