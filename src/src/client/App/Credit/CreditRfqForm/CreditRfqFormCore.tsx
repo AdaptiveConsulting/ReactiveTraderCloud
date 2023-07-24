@@ -60,8 +60,7 @@ const CreditRfqFooter = styled.footer`
 
 export const CreditRfqFormCore = () => {
   useEffect(() => {
-    const subscription = new Subscription()
-    subscription.add(registerSimulatedDealerResponses())
+    const subscription = registerSimulatedDealerResponses()
 
     return () => subscription.unsubscribe()
   }, [])

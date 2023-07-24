@@ -1,4 +1,3 @@
-import { ExitCode } from "@openfin/core/src/OpenFin"
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   CLIDispatchedSearchResult,
@@ -10,66 +9,17 @@ import {
   Home,
   HomeRegistration,
 } from "@openfin/workspace"
-import { App, getCurrentSync } from "@openfin/workspace-platform"
-import {
-  delay,
-  firstValueFrom,
-  of,
-  Subject,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from "rxjs"
 
-import {
-  CreateRfqRequest,
-  CreateRfqResponse,
-  ExecuteTradeRequest,
-} from "@/generated/TradingGateway"
-import { creditDealers$ } from "@/services/credit"
-import { createCreditRfq$ } from "@/services/credit/creditRfqRequests"
-import { execute$ } from "@/services/executions"
 import { deletePage, getPage, launchPage } from "@/workspace/browser"
-import { getUserResult, getUserToSwitch, switchUser } from "@/workspace/user"
+import { getUserResult, getUserToSwitch } from "@/workspace/user"
 
 import { getNlpResults } from "./nlpProvider"
 import {
   ADAPTIVE_LOGO,
   getAppsAndPages,
+  handleAppSelection,
   HOME_ACTION_DELETE_PAGE,
 } from "./utils"
-
-export const executing$ = new Subject<ExecuteTradeRequest>()
-
-// Must return a promise to execute properly from the context of CLIProvider.onSelection
-export const execute = async (execution: ExecuteTradeRequest) => {
-  executing$.next(execution)
-  return firstValueFrom(
-    of(null).pipe(
-      delay(2000),
-      switchMap(() => execute$(execution)),
-    ),
-  )
-}
-
-export const rfqResponse$ = new Subject<CreateRfqResponse>()
-
-export const createRfq = async (
-  request: Omit<CreateRfqRequest, "dealerIds">,
-) => {
-  return firstValueFrom(
-    of(null).pipe(
-      withLatestFrom(creditDealers$),
-      switchMap(([, dealers]) =>
-        createCreditRfq$({
-          ...request,
-          dealerIds: dealers.map((dealer) => dealer.id),
-        }),
-      ),
-      tap((response) => rfqResponse$.next(response)),
-    ),
-  )
-}
 
 const PROVIDER_ID = "adaptive-home-provider"
 
@@ -131,100 +81,12 @@ export async function registerHome(): Promise<HomeRegistration> {
     }
   }
 
-  const handleAppSelection = async (appEntry: App) => {
-    switch (appEntry.manifestType) {
-      case "external": {
-        try {
-          const data = await fin.System.launchExternalProcess({
-            alias: appEntry.manifest,
-            listener: (result: ExitCode) => {
-              console.log("the exit code", result.exitCode)
-            },
-          })
-
-          console.info("Process launched: ", data)
-        } catch (e: any) {
-          console.error("Process launch failed: ", e)
-        }
-
-        break
-      }
-
-      case "trade-execution": {
-        if (lastResponse !== undefined && lastResponse !== null) {
-          const {
-            currencyPair,
-            spotRate,
-            valueDate,
-            direction,
-            notional,
-            dealtCurrency,
-          } = appEntry as any
-
-          console.log("Action on execute", appEntry)
-
-          await execute({
-            currencyPair,
-            spotRate,
-            valueDate,
-            direction,
-            notional,
-            dealtCurrency,
-          })
-        }
-
-        break
-      }
-
-      case "rfq-execution": {
-        if (lastResponse !== undefined && lastResponse !== null) {
-          const { instrumentId, quantity, direction } = appEntry as any
-          await createRfq({
-            instrumentId,
-            quantity,
-            direction,
-            expirySecs: 120,
-          })
-        }
-        break
-      }
-
-      case "switch-user": {
-        switchUser()
-
-        const userToSwitch = getUserToSwitch()
-
-        if (lastResponse !== undefined && lastResponse !== null) {
-          lastResponse.respond([getUserResult(userToSwitch)])
-        }
-        break
-      }
-
-      case "url": {
-        const platform = getCurrentSync()
-
-        platform.createView({
-          url: appEntry.manifest,
-          bounds: { width: 320, height: 180 },
-        } as any)
-
-        break
-      }
-
-      default: {
-        const platform = getCurrentSync()
-
-        await platform.launchApp({ app: appEntry })
-      }
-    }
-  }
-
   const onSelection = async (result: CLIDispatchedSearchResult) => {
     if (result.data !== undefined) {
       if (result.data.pageId !== undefined) {
         await handlePageSelection(result)
       } else {
-        await handleAppSelection(result.data)
+        await handleAppSelection(result.data, lastResponse)
       }
     } else {
       console.warn("Unable to execute result without data being passed")

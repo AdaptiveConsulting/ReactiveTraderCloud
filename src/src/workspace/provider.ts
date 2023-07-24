@@ -1,6 +1,7 @@
 import { init as workspacePlatformInit } from "@openfin/workspace-platform"
 
 import { initConnection } from "@/services/connection"
+import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 
 import { customActions, overrideCallback } from "./browser"
 import { BASE_URL } from "./consts"
@@ -42,6 +43,8 @@ export async function init() {
   await registerDock()
   await showHome()
 
+  const sub = registerSimulatedDealerResponses()
+
   await initConnection()
 
   const providerWindow = fin.Window.getCurrentSync()
@@ -49,6 +52,7 @@ export async function init() {
     await deregisterHome()
     await deregisterStore()
     await deregisterdock()
+    sub.unsubscribe()
     fin.Platform.getCurrentSync().quit()
   })
 }

@@ -67,9 +67,8 @@ import {
   createText,
   createTextContainer,
 } from "../templates"
-import { executing$, rfqResponse$ } from "."
 // TODO - move into common place
-import { ADAPTIVE_LOGO } from "./utils"
+import { ADAPTIVE_LOGO, executing$, rfqResponse$ } from "./utils"
 
 const MOVEMENT_UP_ICON = `${BASE_URL}/images/icons/up.svg`
 const MOVEMENT_DOWN_ICON = `${BASE_URL}/images/icons/down.svg`
