@@ -27,14 +27,11 @@ lerna-debug.log
 .DS_Store
 *.code-workspace
 
-# dependencies
-/node_modules
-
 # testing
-/coverage
+/src/coverage
 
-# hydragen
-/generated
+# hydra
+/src/generated
 
 # production
 dist
