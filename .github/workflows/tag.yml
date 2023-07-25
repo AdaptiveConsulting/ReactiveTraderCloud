@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: src
+    working-directory: .
 
 env:
   BUCKET_WEB: reactive-trader-web-builds
@@ -99,7 +99,7 @@ jobs:
         run: |
           npm ci
           npm run build
-        working-directory: src
+        working-directory: .
 
       - name: Deploy (OpenFin - Workspace)
         run: |
@@ -107,7 +107,7 @@ jobs:
             -h "Cache-Control: no-cache" \
             rsync -d -r dist \
             gs://$BUCKET_OPENFIN/tag/${{ steps.vars.outputs.TAG }}/workspace
-        working-directory: src
+        working-directory: .
 
       - name: Build (Finsemble)
         env:

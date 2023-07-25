@@ -5,7 +5,7 @@ on:
 
 defaults:
   run:
-    working-directory: src
+    working-directory: .
 
 jobs:
   e2e:
