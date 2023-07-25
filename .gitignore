@@ -30,9 +30,6 @@ lerna-debug.log
 # testing
 /src/coverage
 
-# hydra
-/src/generated
-
 # production
 dist
 dist-ssr
