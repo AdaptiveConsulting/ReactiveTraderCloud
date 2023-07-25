@@ -1,6 +1,5 @@
+import { ChevronIcon } from "client/components/icons"
 import styled from "styled-components"
-
-import { ChevronIcon } from "@/client/components/icons"
 
 import Button from "./Button"
 

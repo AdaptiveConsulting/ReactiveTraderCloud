@@ -1,10 +1,9 @@
 import { Subscribe } from "@react-rxjs/core"
+import { Loader } from "client/components/Loader"
 import { useEffect } from "react"
 import { Subscription } from "rxjs"
+import { registerSimulatedDealerResponses } from "services/credit/creditRfqResponses"
 import styled from "styled-components"
-
-import { Loader } from "@/client/components/Loader"
-import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 
 import { supportsTearOut } from "../../TearOutSection/supportsTearOut"
 import { TearOutComponent } from "../../TearOutSection/TearOutComponent"

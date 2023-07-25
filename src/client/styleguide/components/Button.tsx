@@ -1,7 +1,6 @@
+import { Theme, TouchableIntentName } from "client/theme"
 import { ButtonHTMLAttributes, Component, ReactChild, ReactNode } from "react"
 import styled, { css, ThemeProvider, withTheme } from "styled-components"
-
-import { Theme, TouchableIntentName } from "@/client/theme"
 
 import { userSelectButton, userSelectNone } from "../rules"
 

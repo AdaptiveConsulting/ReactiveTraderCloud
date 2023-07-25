@@ -1,8 +1,5 @@
 import { bind, shareLatest } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { combineLatest, Observable } from "rxjs"
-import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
-
 import {
   DealerBody,
   Direction,
@@ -20,7 +17,9 @@ import {
   RfqUpdate,
   START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
   WorkflowService,
-} from "@/generated/TradingGateway"
+} from "generated/TradingGateway"
+import { combineLatest, Observable } from "rxjs"
+import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
 
 import { withConnection } from "../withConnection"
 import { creditDealers$ } from "./creditDealers"

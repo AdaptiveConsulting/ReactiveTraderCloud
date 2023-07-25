@@ -1,6 +1,5 @@
+import { WithChildren } from "client/utils/utilityTypes"
 import styled from "styled-components"
-
-import { WithChildren } from "@/client/utils/utilityTypes"
 
 export const FilterPopupOuter = styled.span`
   position: absolute;

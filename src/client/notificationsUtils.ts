@@ -1,6 +1,6 @@
-import { QuoteBody } from "@/generated/TradingGateway"
-import { QuoteDetails, RfqDetails } from "@/services/credit"
-import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
+import { QuoteBody } from "generated/TradingGateway"
+import { QuoteDetails, RfqDetails } from "services/credit"
+import { ExecutionStatus, ExecutionTrade } from "services/executions"
 
 import { formatNumber } from "./utils"
 

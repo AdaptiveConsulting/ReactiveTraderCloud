@@ -1,9 +1,8 @@
 import { bind } from "@react-rxjs/core"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
+import { Trade } from "services/trades"
 import styled from "styled-components"
-
-import { Trade } from "@/services/trades"
 
 import { useColDef, useTrades$ } from "./Context"
 import { useTableTrades } from "./TradesState"

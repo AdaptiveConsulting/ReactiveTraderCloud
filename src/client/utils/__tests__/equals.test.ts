@@ -1,4 +1,4 @@
-import { equals } from "@/client/utils/equals"
+import { equals } from "client/utils/equals"
 
 test("it should return true when two inputs are the same value", () => {
   const object1 = "string1"

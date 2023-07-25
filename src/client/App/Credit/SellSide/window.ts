@@ -1,6 +1,5 @@
+import { RFQ_ID_PARAM } from "client/utils"
 import { useEffect } from "react"
-
-import { RFQ_ID_PARAM } from "@/client/utils"
 
 import { highlightRfqId } from "./sellSideState"
 

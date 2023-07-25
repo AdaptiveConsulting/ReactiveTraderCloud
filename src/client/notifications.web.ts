@@ -1,12 +1,11 @@
 import { Subscription } from "rxjs"
-
 import {
   acceptedRfqWithQuote$,
   lastQuoteReceived$,
   QuoteDetails,
   RfqWithQuote,
-} from "@/services/credit"
-import { executions$, ExecutionTrade } from "@/services/executions"
+} from "services/credit"
+import { executions$, ExecutionTrade } from "services/executions"
 
 import {
   processCreditAccepted,

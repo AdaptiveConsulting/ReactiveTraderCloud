@@ -1,17 +1,16 @@
 import { Subscribe } from "@react-rxjs/core"
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { TestThemeProvider } from "client/utils/testUtils"
 import { BehaviorSubject } from "rxjs"
-
-import { TestThemeProvider } from "@/client/utils/testUtils"
-import { CurrencyPairPosition } from "@/services/analytics"
-import { analyticsMock } from "@/services/analytics/__mocks__/_analytics"
-import { CurrencyPair } from "@/services/currencyPairs"
-import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
+import { CurrencyPairPosition } from "services/analytics"
+import { analyticsMock } from "services/analytics/__mocks__/_analytics"
+import { CurrencyPair } from "services/currencyPairs"
+import { ccppMock } from "services/currencyPairs/__mocks__/_ccpp"
 
 import { Positions, positions$ } from "../Positions"
 
-vi.mock("@/services/analytics/analytics")
-vi.mock("@/services/currencyPairs/currencyPairs")
+vi.mock("services/analytics/analytics")
+vi.mock("services/currencyPairs/currencyPairs")
 
 const currencyPairMock1: CurrencyPair = {
   symbol: "EURAUD",

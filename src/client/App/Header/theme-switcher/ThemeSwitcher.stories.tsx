@@ -1,7 +1,6 @@
 import { Meta } from "@storybook/react"
-
-import { ThemeName } from "@/client/theme"
-import { ThemeContext } from "@/client/theme/ThemeContext"
+import { ThemeName } from "client/theme"
+import { ThemeContext } from "client/theme/ThemeContext"
 
 import ThemeSwitcher from "./ThemeSwitcher"
 

@@ -1,6 +1,5 @@
 import { useEffect } from "react"
-
-import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
+import { registerSimulatedDealerResponses } from "services/credit/creditRfqResponses"
 
 import { HelpText, Pill } from "../../styles"
 import { useMoveNextOnEnter } from "../useMouseNextOnEnter"

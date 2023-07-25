@@ -1,6 +1,5 @@
+import Popup from "client/components/Popup"
 import styled from "styled-components"
-
-import Popup from "@/client/components/Popup"
 
 const buttonHeight = "2rem"
 

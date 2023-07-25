@@ -1,14 +1,13 @@
 import { Subscribe } from "@react-rxjs/core"
 import { act, render, screen } from "@testing-library/react"
+import { TestThemeProvider } from "client/utils/testUtils"
 import { BehaviorSubject } from "rxjs"
-
-import { TestThemeProvider } from "@/client/utils/testUtils"
-import { HistoryEntry } from "@/services/analytics"
-import { analyticsMock } from "@/services/analytics/__mocks__/_analytics"
+import { HistoryEntry } from "services/analytics"
+import { analyticsMock } from "services/analytics/__mocks__/_analytics"
 
 import { LastPosition, lastPosition$ } from "../LastPosition"
 
-vi.mock("@/services/analytics/analytics")
+vi.mock("services/analytics/analytics")
 
 const historyMock1: HistoryEntry[] = [
   {

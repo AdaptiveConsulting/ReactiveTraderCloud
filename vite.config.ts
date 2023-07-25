@@ -70,7 +70,7 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
         const mockPath = `${file.dir}/${file.name}.${target}.${extension}`
         return this.resolve(mockPath, importer)
       } else {
-        const rootPrefix = "client/src/"
+        const rootPrefix = "src/client/"
         const thisImporter = (importer || "").replace(/\\/g, "/")
         if (
           !importer ||
@@ -81,14 +81,17 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
         }
 
         const importedFile = path.parse(source)
+
         const importerFile = path.parse(thisImporter)
+
         const candidatePath = path.join(
           // If imported file starts with /src we can not append it to importer dir
           // so we need to strip the path by the rootPrefix first
           importedFile.dir.startsWith("/src") &&
             importerFile.dir.includes(rootPrefix)
-            ? `${importerFile.dir.split(rootPrefix)[0]}/client`
+            ? `${importerFile.dir.split(rootPrefix)[0]}/`
             : importerFile.dir,
+
           importedFile.dir,
           `${importedFile.name}.${target.toLowerCase()}`,
         )
@@ -385,6 +388,22 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
         {
           find: "~",
           replacement: ".",
+        },
+        {
+          find: "client",
+          replacement: "/src/client",
+        },
+        {
+          find: "workspace",
+          replacement: "/src/workspace",
+        },
+        {
+          find: "services",
+          replacement: "/src/services",
+        },
+        {
+          find: "generated",
+          replacement: "/src/generated",
         },
       ],
     },

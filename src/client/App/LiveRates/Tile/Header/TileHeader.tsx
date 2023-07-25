@@ -1,13 +1,12 @@
 import { bind } from "@react-rxjs/core"
+import { PopInIcon } from "client/components/icons/PopInIcon"
+import { PopOutIcon } from "client/components/icons/PopOutIcon"
 import { format } from "date-fns"
 import { forwardRef, useRef } from "react"
 import { map } from "rxjs/operators"
+import { CurrencyPair } from "services/currencyPairs"
+import { getPrice$ } from "services/prices"
 import styled from "styled-components"
-
-import { PopInIcon } from "@/client/components/icons/PopInIcon"
-import { PopOutIcon } from "@/client/components/icons/PopOutIcon"
-import { CurrencyPair } from "@/services/currencyPairs"
-import { getPrice$ } from "@/services/prices"
 
 import { tearOut } from "../TearOut/state"
 import { useTileContext } from "../Tile.context"

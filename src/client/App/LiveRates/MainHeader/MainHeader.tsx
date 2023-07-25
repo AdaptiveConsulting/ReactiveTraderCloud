@@ -1,11 +1,10 @@
 import { bind } from "@react-rxjs/core"
+import { supportsTearOut } from "client/App/TearOutSection/supportsTearOut"
+import { TearOutComponent } from "client/App/TearOutSection/TearOutComponent"
+import { DropdownMenu } from "client/components/DropdownMenu"
 import { map } from "rxjs/operators"
-
-import { supportsTearOut } from "@/client/App/TearOutSection/supportsTearOut"
-import { TearOutComponent } from "@/client/App/TearOutSection/TearOutComponent"
-import { DropdownMenu } from "@/client/components/DropdownMenu"
-import { currencyPairs$ } from "@/services/currencyPairs"
-import { useIsLimitCheckerRunning } from "@/services/limitChecker/limitChecker"
+import { currencyPairs$ } from "services/currencyPairs"
+import { useIsLimitCheckerRunning } from "services/limitChecker/limitChecker"
 
 import {
   ALL_CURRENCIES,

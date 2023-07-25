@@ -1,16 +1,15 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { HIGHLIGHT_ROW_FLASH_TIME } from "client/constants"
+import { invertDirection } from "client/utils"
+import { QuoteState, RfqState } from "generated/TradingGateway"
 import { combineLatest, merge } from "rxjs"
 import { delay, filter, map, startWith } from "rxjs/operators"
-
-import { HIGHLIGHT_ROW_FLASH_TIME } from "@/client/constants"
-import { invertDirection } from "@/client/utils"
-import { QuoteState, RfqState } from "@/generated/TradingGateway"
 import {
   ADAPTIVE_BANK_NAME,
   creditRfqsById$,
   RfqDetails,
-} from "@/services/credit"
+} from "services/credit"
 
 import { timeRemainingComparator } from "../common"
 import { RfqRow } from "./SellSideRfqGrid"

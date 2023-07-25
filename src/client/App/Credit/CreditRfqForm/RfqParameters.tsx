@@ -1,13 +1,12 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { map } from "rxjs/operators"
-import styled from "styled-components"
-
 import {
   createApplyCharacterMultiplier,
   customNumberFormatter,
   parseQuantity,
-} from "@/client/utils/formatNumber"
+} from "client/utils/formatNumber"
+import { map } from "rxjs/operators"
+import styled from "styled-components"
 
 const RfqParametersWrapper = styled.div`
   display: grid;

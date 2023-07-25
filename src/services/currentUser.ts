@@ -1,8 +1,7 @@
 import { bind } from "@react-rxjs/core"
+import { constructUrl } from "client/utils/url"
 import { Observable } from "rxjs"
 import { shareReplay } from "rxjs/operators"
-
-import { constructUrl } from "@/client/utils/url"
 
 export interface User {
   code: string

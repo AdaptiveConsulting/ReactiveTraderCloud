@@ -1,8 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal, mergeWithKey } from "@react-rxjs/utils"
 import { map, scan, shareReplay, startWith } from "rxjs/operators"
-
-import { CreditTrade, FxTrade } from "@/services/trades"
+import { CreditTrade, FxTrade } from "services/trades"
 
 import { ColDef } from "../colConfig"
 import {

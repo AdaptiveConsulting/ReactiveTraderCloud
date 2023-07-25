@@ -3,9 +3,8 @@ import { combineKeys } from "@react-rxjs/utils"
 import { useEffect } from "react"
 import { combineLatest, merge } from "rxjs"
 import { map } from "rxjs/operators"
+import { currencyPairs$ } from "services/currencyPairs"
 import styled from "styled-components"
-
-import { currencyPairs$ } from "@/services/currencyPairs"
 
 import { ALL_CURRENCIES, selectedCurrency$ } from "./selectedCurrency"
 import { getInitView, TileView, useSelectedTileView } from "./selectedView"

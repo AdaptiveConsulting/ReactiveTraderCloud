@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react"
-import styled from "styled-components"
-
 import {
   Background,
   Button as OpenFinButton,
-} from "@/client/App/Footer/common-styles"
-import { ContactUs } from "@/client/App/Footer/ContactUsButton/ContactUs"
-import { FollowUs } from "@/client/App/Footer/ContactUsButton/FollowUs"
-import { LogoWrapper } from "@/client/App/Footer/ContactUsButton/styled"
-import { MailIcon } from "@/client/components/icons"
-import Logo from "@/client/components/Logo"
+} from "client/App/Footer/common-styles"
+import { ContactUs } from "client/App/Footer/ContactUsButton/ContactUs"
+import { FollowUs } from "client/App/Footer/ContactUsButton/FollowUs"
+import { LogoWrapper } from "client/App/Footer/ContactUsButton/styled"
+import { MailIcon } from "client/components/icons"
+import Logo from "client/components/Logo"
 import {
   createOpenFinPopup,
   showOpenFinPopup,
-} from "@/client/OpenFin/utils/window"
-import { constructUrl } from "@/client/utils/url"
+} from "client/OpenFin/utils/window"
+import { constructUrl } from "client/utils/url"
+import { useEffect, useState } from "react"
+import styled from "styled-components"
 
 const Wrapper = styled(Background)`
   &&& {

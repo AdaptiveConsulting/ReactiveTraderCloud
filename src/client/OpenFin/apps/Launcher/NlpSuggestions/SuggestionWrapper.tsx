@@ -1,7 +1,6 @@
 import { Subscribe } from "@react-rxjs/core"
-
-import { Loader } from "@/client/components/Loader"
-import { WithChildren } from "@/client/utils/utilityTypes"
+import { Loader } from "client/components/Loader"
+import { WithChildren } from "client/utils/utilityTypes"
 
 import { appConfigs } from "../applicationConfigurations"
 import { reactiveTraderFxIcon } from "../icons"

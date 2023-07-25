@@ -1,4 +1,4 @@
-import { ConnectionStatus, useConnectionStatus } from "@/services/connection"
+import { ConnectionStatus, useConnectionStatus } from "services/connection"
 
 import { Button, Root } from "../common-styles"
 import { StatusCircle, StatusLabel } from "./styled"

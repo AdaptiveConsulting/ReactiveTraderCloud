@@ -4,12 +4,11 @@ import { useCombobox } from "downshift"
 import { forwardRef, useCallback, useMemo, useRef, useState } from "react"
 import { FaSearch } from "react-icons/fa"
 import { map, withLatestFrom } from "rxjs/operators"
-import styled from "styled-components"
-
 import {
   creditInstrumentsByCusip$,
   useCreditInstrumentsByCusip,
-} from "@/services/credit"
+} from "services/credit"
+import styled from "styled-components"
 
 import { CusipWithBenchmark } from "../common/CusipWithBenchmark"
 

@@ -1,7 +1,6 @@
+import { AccentName } from "client/theme/colors"
 import { HTMLAttributes, useRef } from "react"
 import styled from "styled-components"
-
-import { AccentName } from "@/client/theme/colors"
 
 const inputColors: Record<"error" | "info", AccentName> = {
   error: "negative",

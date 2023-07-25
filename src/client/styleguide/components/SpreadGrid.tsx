@@ -1,8 +1,7 @@
+import { PriceMovementInner } from "client/App/LiveRates/Tile/PriceMovement"
 import { FC } from "react"
+import { PriceMovementType } from "services/prices"
 import styled from "styled-components"
-
-import { PriceMovementInner } from "@/client/App/LiveRates/Tile/PriceMovement"
-import { PriceMovementType } from "@/services/prices"
 
 export default (() => (
   <Root>

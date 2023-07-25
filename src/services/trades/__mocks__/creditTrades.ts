@@ -1,4 +1,4 @@
-import { Direction, QuoteState } from "@/generated/TradingGateway"
+import { Direction, QuoteState } from "generated/TradingGateway"
 
 import { CreditTrade } from "../types"
 

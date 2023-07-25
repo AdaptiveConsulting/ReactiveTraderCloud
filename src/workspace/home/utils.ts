@@ -7,14 +7,18 @@ import {
   SearchListenerResponse,
 } from "@openfin/workspace"
 import { App, getCurrentSync, Page } from "@openfin/workspace-platform"
-
-import { getApps } from "@/workspace/apps"
-import { getPages } from "@/workspace/browser"
+import { getApps } from "workspace/apps"
+import { getPages } from "workspace/browser"
 
 export const HOME_ACTION_DELETE_PAGE = "Delete Page"
 export const HOME_ACTION_LAUNCH_PAGE = "Launch Page"
 
 import { ExitCode } from "@openfin/core/src/OpenFin"
+import {
+  CreateRfqRequest,
+  CreateRfqResponse,
+  ExecuteTradeRequest,
+} from "generated/TradingGateway"
 import {
   delay,
   firstValueFrom,
@@ -24,14 +28,8 @@ import {
   tap,
   withLatestFrom,
 } from "rxjs"
-
-import {
-  CreateRfqRequest,
-  CreateRfqResponse,
-  ExecuteTradeRequest,
-} from "@/generated/TradingGateway"
-import { createCreditRfq$, creditDealers$ } from "@/services/credit"
-import { execute$ } from "@/services/executions"
+import { createCreditRfq$, creditDealers$ } from "services/credit"
+import { execute$ } from "services/executions"
 
 import { BASE_URL } from "../consts"
 import { getUserResult, getUserToSwitch, switchUser } from "../user"

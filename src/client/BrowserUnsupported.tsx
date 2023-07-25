@@ -1,8 +1,7 @@
+import { GlobalScrollbarStyle, ThemeProvider } from "client/theme"
+import GlobalStyle from "client/theme/globals"
 import { StrictMode } from "react"
 import ReactDOM from "react-dom"
-
-import { GlobalScrollbarStyle, ThemeProvider } from "@/client/theme"
-import GlobalStyle from "@/client/theme/globals"
 
 import { Modal } from "./components/Modal"
 

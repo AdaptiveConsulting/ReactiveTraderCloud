@@ -1,5 +1,5 @@
-import { ROUTES_CONFIG } from "@/client/constants"
-import { openWindow } from "@/client/utils/window/openWindow"
+import { ROUTES_CONFIG } from "client/constants"
+import { openWindow } from "client/utils/window/openWindow"
 
 import { NlpIntent, NlpIntentType } from "../../services/nlpService"
 import { getReactiveTraderUrl } from "../../utils/url"

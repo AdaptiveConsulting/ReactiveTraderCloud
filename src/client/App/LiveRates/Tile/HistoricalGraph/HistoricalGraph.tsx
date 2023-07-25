@@ -1,17 +1,16 @@
 import { createKeyedSignal } from "@react-rxjs/utils"
-import { curveBasis } from "d3"
-import { forwardRef, useEffect, useRef } from "react"
-import { combineLatest } from "rxjs"
-import { distinctUntilChanged, map, startWith } from "rxjs/operators"
-import styled from "styled-components"
-
-import { equals } from "@/client/utils"
+import { equals } from "client/utils"
 import {
   getDataPoints,
   toSvgPath,
   withScales,
-} from "@/client/utils/historicalChart"
-import { getHistoricalPrices$, HistoryPrice } from "@/services/prices"
+} from "client/utils/historicalChart"
+import { curveBasis } from "d3"
+import { forwardRef, useEffect, useRef } from "react"
+import { combineLatest } from "rxjs"
+import { distinctUntilChanged, map, startWith } from "rxjs/operators"
+import { getHistoricalPrices$, HistoryPrice } from "services/prices"
+import styled from "styled-components"
 
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"
 

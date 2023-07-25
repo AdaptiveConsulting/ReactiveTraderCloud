@@ -1,6 +1,5 @@
+import { Theme, ThemeSelector } from "client/theme"
 import styled, { css } from "styled-components"
-
-import { Theme, ThemeSelector } from "@/client/theme"
 
 // Normalized font sizes are `rem` values corresponding to whole pixel values (i.e. rem*16 is integer)
 type NormalizedFontSize =

@@ -1,12 +1,11 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { HIGHLIGHT_ROW_FLASH_TIME } from "client/constants"
 import { startOfDay } from "date-fns"
 import { combineLatest, merge, Observable } from "rxjs"
 import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
-
-import { HIGHLIGHT_ROW_FLASH_TIME } from "@/client/constants"
-import { creditTrades$, trades$ } from "@/services/trades"
-import { TradeType } from "@/services/trades/types"
+import { creditTrades$, trades$ } from "services/trades"
+import { TradeType } from "services/trades/types"
 
 import { ColDef } from "./colConfig"
 import type { DateFilterContent, NumFilterContent } from "./filterState"

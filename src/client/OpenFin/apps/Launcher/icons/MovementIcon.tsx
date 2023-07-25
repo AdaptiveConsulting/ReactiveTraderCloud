@@ -1,4 +1,4 @@
-import { PriceMovementType } from "@/services/prices"
+import { PriceMovementType } from "services/prices"
 
 import { BaseIconProps } from "./types"
 

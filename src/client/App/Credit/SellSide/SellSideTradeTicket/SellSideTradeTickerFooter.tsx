@@ -1,21 +1,20 @@
 import { createSignal } from "@react-rxjs/utils"
-import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
-import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
-import styled from "styled-components"
-
-import { ThemeName } from "@/client/theme"
+import { ThemeName } from "client/theme"
 import {
   customNumberFormatter,
   invertDirection,
   useClickElementOnEnter,
-} from "@/client/utils"
+} from "client/utils"
 import {
   Direction,
   QuoteBody,
   QuoteState,
   RfqState,
-} from "@/generated/TradingGateway"
-import { createCreditQuote$, useCreditRfqDetails } from "@/services/credit"
+} from "generated/TradingGateway"
+import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
+import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
+import { createCreditQuote$, useCreditRfqDetails } from "services/credit"
+import styled from "styled-components"
 
 import { CreditRfqTimer, isRfqTerminated } from "../../common"
 import { useIsFocused } from "../utils/useIsFocused"

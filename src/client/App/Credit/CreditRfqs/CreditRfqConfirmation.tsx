@@ -1,5 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { customNumberFormatter } from "client/utils"
+import { Direction } from "generated/TradingGateway"
 import { FaCheckCircle, FaTimes } from "react-icons/fa"
 import { concat, of, race, timer } from "rxjs"
 import {
@@ -10,17 +12,14 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
-import styled from "styled-components"
-
-import { customNumberFormatter } from "@/client/utils"
-import { Direction } from "@/generated/TradingGateway"
 import {
   acceptedCreditRfq$,
   createdCreditRfq$,
   creditInstruments$,
   creditQuotes$,
   creditRfqsById$,
-} from "@/services/credit"
+} from "services/credit"
+import styled from "styled-components"
 
 const ConfirmationPill = styled.div<{ direction: Direction }>`
   position: absolute;

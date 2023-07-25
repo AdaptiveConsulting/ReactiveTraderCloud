@@ -1,4 +1,4 @@
-import { WithChildren } from "@/client/utils/utilityTypes"
+import { WithChildren } from "client/utils/utilityTypes"
 
 import { Fill, Header, Root } from "./styled"
 

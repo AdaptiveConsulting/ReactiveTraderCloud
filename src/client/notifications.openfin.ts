@@ -1,4 +1,9 @@
+import {
+  setCreditTradeRowHighlight,
+  setFxTradeRowHighlight,
+} from "client/App/Trades/TradesState"
 import * as CSS from "csstype"
+import { Direction } from "generated/TradingGateway"
 import {
   addEventListener,
   ContainerTemplateFragment,
@@ -11,19 +16,13 @@ import {
   TextTemplateFragment,
 } from "openfin-notifications"
 import { Subscription } from "rxjs"
-
-import {
-  setCreditTradeRowHighlight,
-  setFxTradeRowHighlight,
-} from "@/client/App/Trades/TradesState"
-import { Direction } from "@/generated/TradingGateway"
 import {
   acceptedRfqWithQuote$,
   lastQuoteReceived$,
   QuoteDetails,
   RfqWithQuote,
-} from "@/services/credit"
-import { executions$, ExecutionTrade } from "@/services/executions"
+} from "services/credit"
+import { executions$, ExecutionTrade } from "services/executions"
 
 import { setCreditRfqCardHighlight } from "./App/Credit/CreditRfqs/CreditRfqCards"
 import {

@@ -1,8 +1,7 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-
-import { initConnection } from "@/services/connection"
-import { checkTradingGatewayCompatibility } from "@/services/tradingGatewayCompatibility"
+import { initConnection } from "services/connection"
+import { checkTradingGatewayCompatibility } from "services/tradingGatewayCompatibility"
 
 import { ENVIRONMENT } from "./constants"
 import { getMainApp } from "./main"

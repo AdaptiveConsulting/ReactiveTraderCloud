@@ -1,7 +1,7 @@
-import { CreditRfqForm, CreditRfqs } from "@/client/App/Credit"
-import { getTornOutSections } from "@/client/App/TearOutSection/state"
-import { CreditTrades } from "@/client/App/Trades"
-import Resizer from "@/client/components/Resizer"
+import { CreditRfqForm, CreditRfqs } from "client/App/Credit"
+import { getTornOutSections } from "client/App/TearOutSection/state"
+import { CreditTrades } from "client/App/Trades"
+import Resizer from "client/components/Resizer"
 
 const CREDIT_TEAR_OUT_SECTIONS = ["newRfq", "creditBlotter"] as const
 const useTornOutSections = getTornOutSections(CREDIT_TEAR_OUT_SECTIONS)

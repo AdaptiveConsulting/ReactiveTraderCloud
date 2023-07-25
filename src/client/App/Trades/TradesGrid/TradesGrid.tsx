@@ -1,14 +1,13 @@
 import { joinChannel } from "@finos/fdc3"
 import { Subscribe } from "@react-rxjs/core"
+import { Section } from "client/App/TearOutSection/state"
+import { Loader } from "client/components/Loader"
+import { createSuspenseOnStale } from "client/utils/createSuspenseOnStale"
 import { useEffect } from "react"
 import { Observable } from "rxjs"
+import { isBlotterDataStale$, Trade } from "services/trades"
+import { TradeType } from "services/trades/types"
 import styled from "styled-components"
-
-import { Section } from "@/client/App/TearOutSection/state"
-import { Loader } from "@/client/components/Loader"
-import { createSuspenseOnStale } from "@/client/utils/createSuspenseOnStale"
-import { isBlotterDataStale$, Trade } from "@/services/trades"
-import { TradeType } from "@/services/trades/types"
 
 import {
   ColDefContext,

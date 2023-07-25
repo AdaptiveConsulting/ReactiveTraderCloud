@@ -1,7 +1,6 @@
+import { CenteringContainer } from "client/components/CenteringContainer"
+import { OverlayDiv } from "client/components/OverlayDiv"
 import styled from "styled-components"
-
-import { CenteringContainer } from "@/client/components/CenteringContainer"
-import { OverlayDiv } from "@/client/components/OverlayDiv"
 
 import { useIsNotionalValid } from "../Notional/Notional"
 import { useTileCurrencyPair } from "../Tile.context"

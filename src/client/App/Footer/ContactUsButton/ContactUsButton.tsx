@@ -1,8 +1,7 @@
+import { MailIcon } from "client/components/icons"
+import Logo from "client/components/Logo"
+import { usePopUpMenu } from "client/utils/usePopUpMenu"
 import { useRef } from "react"
-
-import { MailIcon } from "@/client/components/icons"
-import Logo from "@/client/components/Logo"
-import { usePopUpMenu } from "@/client/utils/usePopUpMenu"
 
 import { Button, Root } from "../common-styles"
 import { ContactUs } from "./ContactUs"

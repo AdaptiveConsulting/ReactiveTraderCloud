@@ -1,5 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createKeyedSignal } from "@react-rxjs/utils"
+import { emitTooLongMessage } from "client/utils/emitTooLong"
+import { Direction } from "generated/TradingGateway"
 import { concat, race, timer } from "rxjs"
 import {
   exhaustMap,
@@ -10,16 +12,9 @@ import {
   tap,
   withLatestFrom,
 } from "rxjs/operators"
-
-import { emitTooLongMessage } from "@/client/utils/emitTooLong"
-import { Direction } from "@/generated/TradingGateway"
-import { getCurrencyPair$ } from "@/services/currencyPairs"
-import {
-  execute$,
-  ExecutionStatus,
-  ExecutionTrade,
-} from "@/services/executions"
-import { getPrice$ } from "@/services/prices"
+import { getCurrencyPair$ } from "services/currencyPairs"
+import { execute$, ExecutionStatus, ExecutionTrade } from "services/executions"
+import { getPrice$ } from "services/prices"
 
 import { getNotionalValue$ } from "./Notional"
 

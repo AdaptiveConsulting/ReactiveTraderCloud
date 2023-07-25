@@ -1,5 +1,5 @@
-import { DisconnectionOverlay } from "@/client/components/DisconnectionOverlay"
-import { WithChildren } from "@/client/utils/utilityTypes"
+import { DisconnectionOverlay } from "client/components/DisconnectionOverlay"
+import { WithChildren } from "client/utils/utilityTypes"
 
 import { TearOutContext } from "./tearOutContext"
 

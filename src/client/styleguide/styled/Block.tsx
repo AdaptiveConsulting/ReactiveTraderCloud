@@ -1,6 +1,5 @@
+import { ColorProps, getThemeColor } from "client/theme"
 import styled, { css } from "styled-components"
-
-import { ColorProps, getThemeColor } from "@/client/theme"
 
 import {
   mapMarginPaddingProps,

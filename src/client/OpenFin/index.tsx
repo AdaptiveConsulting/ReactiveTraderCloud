@@ -1,32 +1,29 @@
+import { TornOutTileWrapper } from "client/App/LiveRates/Tile" // TODO check
+import { DisconnectionOverlay } from "client/components/DisconnectionOverlay"
+import { DocTitle } from "client/components/DocTitle"
+import { Loader } from "client/components/Loader"
+import { BASE_PATH, ROUTES_CONFIG } from "client/constants"
+import { OpenFinContactDisplay } from "client/OpenFin/Footer/ContactUsButton"
 import { lazy, Suspense } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-
-import { TornOutTileWrapper } from "@/client/App/LiveRates/Tile" // TODO check
-import { DisconnectionOverlay } from "@/client/components/DisconnectionOverlay"
-import { DocTitle } from "@/client/components/DocTitle"
-import { Loader } from "@/client/components/Loader"
-import { BASE_PATH, ROUTES_CONFIG } from "@/client/constants"
-import { OpenFinContactDisplay } from "@/client/OpenFin/Footer/ContactUsButton"
 
 import { Snapshots } from "./Snapshots/Snapshots"
 import { ChildWindowFrame } from "./Window/ChildWindowFrame"
 import { LimitCheckerWindowFrame } from "./Window/LimitCheckerWindowFrame"
 import { WindowFrame } from "./Window/WindowFrame"
 
-const Launcher = lazy(() => import("@/client/OpenFin/apps/Launcher"))
+const Launcher = lazy(() => import("client/OpenFin/apps/Launcher"))
 
 const LimitChecker = lazy(() => import("./apps/LimitChecker/LimitChecker"))
-const Analytics = lazy(() => import("@/client/App/Analytics/Analytics"))
-const FxTrades = lazy(() => import("@/client/App/Trades/FxTrades"))
-const LiveRates = lazy(() => import("@/client/App/LiveRates/LiveRates"))
-const CreditRfqs = lazy(
-  () => import("@/client/App/Credit/CreditRfqs/CreditRfqs"),
-)
-const CreditTrades = lazy(() => import("@/client/App/Trades/CreditTrades"))
+const Analytics = lazy(() => import("client/App/Analytics/Analytics"))
+const FxTrades = lazy(() => import("client/App/Trades/FxTrades"))
+const LiveRates = lazy(() => import("client/App/LiveRates/LiveRates"))
+const CreditRfqs = lazy(() => import("client/App/Credit/CreditRfqs/CreditRfqs"))
+const CreditTrades = lazy(() => import("client/App/Trades/CreditTrades"))
 const CreditRfqForm = lazy(
-  () => import("@/client/App/Credit/CreditRfqForm/CreditRfqForm"),
+  () => import("client/App/Credit/CreditRfqForm/CreditRfqForm"),
 )
-const SellSidePage = lazy(() => import("@/client/Web/SellSidePage"))
+const SellSidePage = lazy(() => import("client/Web/SellSidePage"))
 
 export const OpenFinApp = () => (
   <BrowserRouter basename={BASE_PATH}>

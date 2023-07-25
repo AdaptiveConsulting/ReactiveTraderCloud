@@ -1,10 +1,9 @@
+import { TileView } from "client/App/LiveRates/selectedView"
+import { Tile } from "client/App/LiveRates/Tile"
+import { Loader } from "client/components/Loader"
+import { withSubscriber } from "client/utils/withSubscriber"
+import { useCurrencyPair } from "services/currencyPairs"
 import styled from "styled-components"
-
-import { TileView } from "@/client/App/LiveRates/selectedView"
-import { Tile } from "@/client/App/LiveRates/Tile"
-import { Loader } from "@/client/components/Loader"
-import { withSubscriber } from "@/client/utils/withSubscriber"
-import { useCurrencyPair } from "@/services/currencyPairs"
 
 const Wrapper = styled("div")`
   margin: 8px;

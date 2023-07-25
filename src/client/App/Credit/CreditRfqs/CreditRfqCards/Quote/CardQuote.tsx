@@ -1,15 +1,14 @@
 import { createSignal } from "@react-rxjs/utils"
-import { FaCheckCircle } from "react-icons/fa"
-import { exhaustMap } from "rxjs/operators"
-
 import {
   DealerBody,
   Direction,
   QuoteBody,
   QuoteState,
   RfqState,
-} from "@/generated/TradingGateway"
-import { acceptCreditQuote$ } from "@/services/credit"
+} from "generated/TradingGateway"
+import { FaCheckCircle } from "react-icons/fa"
+import { exhaustMap } from "rxjs/operators"
+import { acceptCreditQuote$ } from "services/credit"
 
 import {
   AcceptQuoteButton,

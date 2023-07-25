@@ -1,10 +1,9 @@
-import { ReactElement, useEffect, useState } from "react"
-
 import {
   capitalize,
   formatAsWholeNumber,
   THOUSANDS_SEPARATOR,
-} from "@/client/utils"
+} from "client/utils"
+import { ReactElement, useEffect, useState } from "react"
 
 import { SecsTimer } from "../../common"
 import { RfqRowKey } from "./SellSideRfqGrid"

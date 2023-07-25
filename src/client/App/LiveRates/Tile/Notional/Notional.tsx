@@ -1,10 +1,9 @@
 import { createKeyedSignal } from "@react-rxjs/utils"
+import { formatNotional } from "client/utils/formatNotional"
 import { FaRedo } from "react-icons/fa"
 import { concat, merge, Observable, OperatorFunction, pipe } from "rxjs"
 import { filter, map, take } from "rxjs/operators"
-
-import { formatNotional } from "@/client/utils/formatNotional"
-import { currencyPairs$ } from "@/services/currencyPairs"
+import { currencyPairs$ } from "services/currencyPairs"
 
 import { QuoteStateStage, useRfqState } from "../Rfq"
 import { symbolBind, useTileCurrencyPair } from "../Tile.context"

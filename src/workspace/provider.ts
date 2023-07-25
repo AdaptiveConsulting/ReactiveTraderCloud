@@ -1,7 +1,6 @@
 import { init as workspacePlatformInit } from "@openfin/workspace-platform"
-
-import { initConnection } from "@/services/connection"
-import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
+import { initConnection } from "services/connection"
+import { registerSimulatedDealerResponses } from "services/credit/creditRfqResponses"
 
 import { customActions, overrideCallback } from "./browser"
 import { BASE_URL } from "./consts"

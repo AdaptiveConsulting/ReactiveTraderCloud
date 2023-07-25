@@ -1,5 +1,6 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { Direction } from "generated/TradingGateway"
 import { concat, Observable } from "rxjs"
 import {
   catchError,
@@ -10,11 +11,9 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
-
-import { Direction } from "@/generated/TradingGateway"
-import { getCurrencyPair$ } from "@/services/currencyPairs"
-import { execute$, ExecutionStatus } from "@/services/executions"
-import { getPrice$ } from "@/services/prices"
+import { getCurrencyPair$ } from "services/currencyPairs"
+import { execute$, ExecutionStatus } from "services/executions"
+import { getPrice$ } from "services/prices"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
 import {

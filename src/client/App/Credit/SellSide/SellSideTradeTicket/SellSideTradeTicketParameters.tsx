@@ -1,18 +1,17 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { useEffect, useRef } from "react"
-import { merge } from "rxjs"
-import { filter, map } from "rxjs/operators"
-import styled from "styled-components"
-
-import { ThemeName } from "@/client/theme"
+import { ThemeName } from "client/theme"
 import {
   DECIMAL_SEPARATOR,
   DECIMAL_SEPARATOR_REGEXP,
   THOUSANDS_SEPARATOR_REGEXP,
   truncatedDecimalNumberFormatter,
-} from "@/client/utils"
-import { QuoteBody, RfqState } from "@/generated/TradingGateway"
+} from "client/utils"
+import { QuoteBody, RfqState } from "generated/TradingGateway"
+import { useEffect, useRef } from "react"
+import { merge } from "rxjs"
+import { filter, map } from "rxjs/operators"
+import styled from "styled-components"
 
 import {
   getSellSideQuoteState,

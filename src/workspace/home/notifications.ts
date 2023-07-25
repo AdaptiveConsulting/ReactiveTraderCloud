@@ -1,12 +1,11 @@
 import { create } from "openfin-notifications"
 import { filter } from "rxjs"
-
 import {
   executions$,
   ExecutionStatus,
   ExecutionTrade,
-} from "@/services/executions"
-import { BASE_URL } from "@/workspace/consts"
+} from "services/executions"
+import { BASE_URL } from "workspace/consts"
 
 const sendFxTradeNotification = (trade: ExecutionTrade) => {
   const notification = {

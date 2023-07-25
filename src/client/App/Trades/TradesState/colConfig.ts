@@ -1,12 +1,11 @@
-import { format as formatDate } from "date-fns"
-
 import {
   capitalize,
   formatAsWholeNumber,
   significantDigitsNumberFormatter,
   THOUSANDS_SEPARATOR,
-} from "@/client/utils"
-import type { CreditTrade, FxTrade } from "@/services/trades"
+} from "client/utils"
+import { format as formatDate } from "date-fns"
+import type { CreditTrade, FxTrade } from "services/trades"
 
 export type FxColField = keyof FxTrade
 

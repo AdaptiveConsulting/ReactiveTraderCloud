@@ -1,3 +1,15 @@
+import { Admin } from "client/App/Admin"
+import { Analytics } from "client/App/Analytics"
+import { CreditRfqForm } from "client/App/Credit"
+import { LiveRates } from "client/App/LiveRates"
+import { TornOutTileWrapper } from "client/App/LiveRates/Tile"
+import { TornOut } from "client/App/TearOutSection/TearOutWrapper"
+import { CreditTrades, FxTrades } from "client/App/Trades"
+import { DisconnectionOverlay } from "client/components/DisconnectionOverlay"
+import { Loader } from "client/components/Loader"
+import { BASE_PATH, ROUTES_CONFIG } from "client/constants"
+import { isMobileDevice } from "client/utils"
+import { FEATURE_FLAG, useFeature } from "client/utils/featureFlag"
 import { lazy, Suspense } from "react"
 import {
   BrowserRouter,
@@ -7,24 +19,11 @@ import {
   Routes,
 } from "react-router-dom"
 
-import { Admin } from "@/client/App/Admin"
-import { Analytics } from "@/client/App/Analytics"
-import { CreditRfqForm } from "@/client/App/Credit"
-import { LiveRates } from "@/client/App/LiveRates"
-import { TornOutTileWrapper } from "@/client/App/LiveRates/Tile"
-import { TornOut } from "@/client/App/TearOutSection/TearOutWrapper"
-import { CreditTrades, FxTrades } from "@/client/App/Trades"
-import { DisconnectionOverlay } from "@/client/components/DisconnectionOverlay"
-import { Loader } from "@/client/components/Loader"
-import { BASE_PATH, ROUTES_CONFIG } from "@/client/constants"
-import { isMobileDevice } from "@/client/utils"
-import { FEATURE_FLAG, useFeature } from "@/client/utils/featureFlag"
-
 import CreditPage from "./CreditPage"
 import { FxPage } from "./FxPage"
 import MainLayout from "./MainLayout"
 
-const StyleguidePage = lazy(() => import("@/client/styleguide"))
+const StyleguidePage = lazy(() => import("client/styleguide"))
 const SellSidePage = lazy(() => import("./SellSidePage"))
 
 export const WebApp = () => {

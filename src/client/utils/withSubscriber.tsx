@@ -1,7 +1,6 @@
 import { Subscribe } from "@react-rxjs/core"
+import { Loader } from "client/components/Loader"
 import { ReactNode } from "react"
-
-import { Loader } from "@/client/components/Loader"
 
 export const withSubscriber = function <T extends object>(
   Comp: React.ComponentType<T>,

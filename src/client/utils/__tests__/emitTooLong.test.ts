@@ -1,5 +1,5 @@
-import { emitTooLongMessage } from "@/client/utils/emitTooLong"
-import { testScheduler } from "@/client/utils/testScheduler"
+import { emitTooLongMessage } from "client/utils/emitTooLong"
+import { testScheduler } from "client/utils/testScheduler"
 
 const TOO_LONG = { status: "too long" }
 

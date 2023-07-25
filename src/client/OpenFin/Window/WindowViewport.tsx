@@ -2,9 +2,8 @@ import { broadcast, joinChannel } from "@finos/fdc3"
 import { EventHandler } from "@openfin/core/src/api/events/base"
 import { ApplicationEvent, WindowEvent } from "@openfin/core/src/OpenFin"
 import { Subscribe } from "@react-rxjs/core"
+import { WithChildren } from "client/utils/utilityTypes"
 import { useEffect } from "react"
-
-import { WithChildren } from "@/client/utils/utilityTypes"
 
 import {
   CLOSING_WINDOW,

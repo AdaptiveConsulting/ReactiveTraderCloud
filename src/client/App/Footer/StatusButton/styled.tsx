@@ -1,8 +1,7 @@
+import Popup from "client/components/Popup"
+import { WithChildren } from "client/utils/utilityTypes"
+import { ConnectionStatus } from "services/connection"
 import styled from "styled-components"
-
-import Popup from "@/client/components/Popup"
-import { WithChildren } from "@/client/utils/utilityTypes"
-import { ConnectionStatus } from "@/services/connection"
 
 const buttonHeight = "2rem"
 

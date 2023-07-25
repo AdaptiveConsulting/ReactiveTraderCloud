@@ -1,8 +1,7 @@
+import { QuoteState } from "generated/TradingGateway"
 import { ReactNode } from "react"
+import { LimitCheckStatus, TradeStatus } from "services/trades/types"
 import styled, { css } from "styled-components"
-
-import { QuoteState } from "@/generated/TradingGateway"
-import { LimitCheckStatus, TradeStatus } from "@/services/trades/types"
 
 export const Table = styled.div`
   border-bottom: 15px solid ${({ theme }) => theme.core.darkBackground};

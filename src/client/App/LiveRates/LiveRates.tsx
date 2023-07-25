@@ -1,13 +1,12 @@
 import { joinChannel } from "@finos/fdc3"
 import { combineKeys } from "@react-rxjs/utils"
+import { Loader } from "client/components/Loader"
 import { lazy, Suspense, useEffect } from "react"
 import { merge } from "rxjs"
 import { map } from "rxjs/operators"
+import { currencyPairs$ } from "services/currencyPairs"
+import { getHistoricalPrices$, getPrice$ } from "services/prices"
 import styled from "styled-components"
-
-import { Loader } from "@/client/components/Loader"
-import { currencyPairs$ } from "@/services/currencyPairs"
-import { getHistoricalPrices$, getPrice$ } from "@/services/prices"
 
 export const LiveRatesCoreDeferred = import("./LiveRatesCore")
 const LiveRatesCore = lazy(() => LiveRatesCoreDeferred)

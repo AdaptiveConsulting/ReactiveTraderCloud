@@ -9,9 +9,8 @@ import {
   Home,
   HomeRegistration,
 } from "@openfin/workspace"
-
-import { deletePage, getPage, launchPage } from "@/workspace/browser"
-import { getUserResult, getUserToSwitch } from "@/workspace/user"
+import { deletePage, getPage, launchPage } from "workspace/browser"
+import { getUserResult, getUserToSwitch } from "workspace/user"
 
 import { getNlpResults } from "./nlpProvider"
 import {

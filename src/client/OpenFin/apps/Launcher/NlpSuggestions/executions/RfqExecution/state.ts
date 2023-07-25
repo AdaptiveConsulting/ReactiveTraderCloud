@@ -1,5 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { CREDIT_RFQ_EXPIRY_SECONDS } from "client/constants"
+import { AckCreateRfqResponse } from "generated/TradingGateway"
 import {
   catchError,
   concat,
@@ -11,14 +13,11 @@ import {
   take,
   withLatestFrom,
 } from "rxjs"
-
-import { CREDIT_RFQ_EXPIRY_SECONDS } from "@/client/constants"
-import { AckCreateRfqResponse } from "@/generated/TradingGateway"
 import {
   createCreditRfq$,
   creditDealers$,
   creditInstruments$,
-} from "@/services/credit"
+} from "services/credit"
 
 import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
 import {

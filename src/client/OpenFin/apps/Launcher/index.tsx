@@ -1,13 +1,12 @@
 import OpenFin from "@openfin/core"
-import { useCallback, useEffect, useRef, useState } from "react"
-import Measure, { ContentRect } from "react-measure"
-
-import { Loader } from "@/client/components/Loader"
-import LogoIcon from "@/client/components/LogoIcon"
+import { Loader } from "client/components/Loader"
+import LogoIcon from "client/components/LogoIcon"
 import {
   registerCreditQuoteNotifications,
   unregisterCreditQuoteNotifications,
-} from "@/client/notifications"
+} from "client/notifications"
+import { useCallback, useEffect, useRef, useState } from "react"
+import Measure, { ContentRect } from "react-measure"
 
 import { LaunchButton } from "./components/LaunchButton"
 import { ExitIcon, minimiseNormalIcon, SearchIcon } from "./icons"

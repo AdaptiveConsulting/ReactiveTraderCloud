@@ -1,4 +1,4 @@
-import { ENVIRONMENT } from "@/client/constants"
+import { ENVIRONMENT } from "client/constants"
 
 export function getAppName(name = "Reactive Trader®"): string {
   const envFormatted =

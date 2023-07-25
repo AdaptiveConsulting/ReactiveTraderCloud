@@ -1,6 +1,5 @@
+import { PopInIcon } from "client/components/icons/PopInIcon"
 import { useEffect } from "react"
-
-import { PopInIcon } from "@/client/components/icons/PopInIcon"
 
 import { ExitIcon } from "../icons/ExitIcon"
 import { MaximizeIcon } from "../icons/MaximizeIcon"

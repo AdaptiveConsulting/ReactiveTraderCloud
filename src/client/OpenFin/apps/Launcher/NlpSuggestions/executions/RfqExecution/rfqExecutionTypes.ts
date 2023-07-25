@@ -1,4 +1,4 @@
-import { AckCreateRfqResponse, Direction } from "@/generated/TradingGateway"
+import { AckCreateRfqResponse, Direction } from "generated/TradingGateway"
 
 export enum RfqNlpExecutionStatus {
   MissingData = 1,

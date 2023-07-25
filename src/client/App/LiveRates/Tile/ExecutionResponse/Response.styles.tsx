@@ -1,7 +1,6 @@
+import { OverlayDiv } from "client/components/OverlayDiv"
+import { ExecutionStatus } from "services/executions"
 import styled, { DefaultTheme } from "styled-components"
-
-import { OverlayDiv } from "@/client/components/OverlayDiv"
-import { ExecutionStatus } from "@/services/executions"
 
 import { TileState, TileStates } from "../Tile.state"
 

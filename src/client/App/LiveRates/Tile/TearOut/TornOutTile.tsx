@@ -1,16 +1,12 @@
+import { SELECTED_VIEW_KEY, TileView } from "client/App/LiveRates/selectedView"
+import { Tile } from "client/App/LiveRates/Tile"
+import { Loader } from "client/components/Loader"
+import { useLocalStorage } from "client/utils"
+import { closeWindow } from "client/utils/window/closeWindow"
+import { withSubscriber } from "client/utils/withSubscriber"
 import { useEffect } from "react"
+import { useCurrencyPair } from "services/currencyPairs"
 import styled from "styled-components"
-
-import {
-  SELECTED_VIEW_KEY,
-  TileView,
-} from "@/client/App/LiveRates/selectedView"
-import { Tile } from "@/client/App/LiveRates/Tile"
-import { Loader } from "@/client/components/Loader"
-import { useLocalStorage } from "@/client/utils"
-import { closeWindow } from "@/client/utils/window/closeWindow"
-import { withSubscriber } from "@/client/utils/withSubscriber"
-import { useCurrencyPair } from "@/services/currencyPairs"
 
 import { useTearOutEntry } from "./state"
 

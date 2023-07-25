@@ -1,5 +1,5 @@
-import { ExecutionTrade } from "@/services/executions"
-import { executions$ } from "@/services/executions/executions"
+import { ExecutionTrade } from "services/executions"
+import { executions$ } from "services/executions/executions"
 
 import { processFxExecution } from "./notificationsUtils"
 

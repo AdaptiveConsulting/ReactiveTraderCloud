@@ -7,8 +7,23 @@ import {
   SearchResult,
   TemplateFragment,
 } from "@openfin/workspace"
+import {
+  NlpIntentType,
+  TradesInfoIntent,
+} from "client/OpenFin/apps/Launcher/services/nlpService"
+import {
+  customNumberFormatter,
+  DECIMAL_SEPARATOR,
+  significantDigitsNumberFormatter,
+} from "client/utils"
 import * as CSS from "csstype"
 import { format } from "date-fns"
+// TODO - move into common place
+import {
+  ACK_CREATE_RFQ_RESPONSE,
+  CurrencyPair,
+  Direction,
+} from "generated/TradingGateway"
 import {
   combineLatest,
   filter,
@@ -21,38 +36,22 @@ import {
   takeUntil,
   withLatestFrom,
 } from "rxjs"
-
-import {
-  NlpIntentType,
-  TradesInfoIntent,
-} from "@/client/OpenFin/apps/Launcher/services/nlpService"
-import {
-  customNumberFormatter,
-  DECIMAL_SEPARATOR,
-  significantDigitsNumberFormatter,
-} from "@/client/utils"
-// TODO - move into common place
-import {
-  ACK_CREATE_RFQ_RESPONSE,
-  CurrencyPair,
-  Direction,
-} from "@/generated/TradingGateway"
-import { getCreditRfqDetails$, RfqDetails } from "@/services/credit"
-import { creditInstruments$ } from "@/services/credit/creditInstruments"
+import { getCreditRfqDetails$, RfqDetails } from "services/credit"
+import { creditInstruments$ } from "services/credit/creditInstruments"
 import {
   currencyPairs$,
   currencyPairSymbols$,
   getCurrencyPair$,
-} from "@/services/currencyPairs"
+} from "services/currencyPairs"
 import {
   executions$,
   ExecutionStatus,
   ExecutionTrade,
   TimeoutExecution,
-} from "@/services/executions"
-import { CreditExceededExecution } from "@/services/executions/types"
-import { getPrice$, Price, PriceMovementType } from "@/services/prices"
-import { trades$ } from "@/services/trades"
+} from "services/executions"
+import { CreditExceededExecution } from "services/executions/types"
+import { getPrice$, Price, PriceMovementType } from "services/prices"
+import { trades$ } from "services/trades"
 
 import { BASE_URL, VITE_RT_URL } from "../consts"
 import {

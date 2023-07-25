@@ -1,6 +1,5 @@
+import { LimitCheckerHeader } from "client/App/Header/LimitCheckerHeader"
 import { useContext } from "react"
-
-import { LimitCheckerHeader } from "@/client/App/Header/LimitCheckerHeader"
 
 import { WindowControls } from "./WindowControls"
 import { WindowFrameBase } from "./WindowFrameBase"

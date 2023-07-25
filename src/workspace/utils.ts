@@ -1,7 +1,6 @@
 import { App } from "@openfin/workspace-platform"
 import { firstValueFrom } from "rxjs"
-
-import { currencyPairSymbols$ } from "@/services/currencyPairs"
+import { currencyPairSymbols$ } from "services/currencyPairs"
 
 import { VITE_RA_URL, VITE_RT_URL } from "./consts"
 import { ADAPTIVE_LOGO } from "./home/utils"

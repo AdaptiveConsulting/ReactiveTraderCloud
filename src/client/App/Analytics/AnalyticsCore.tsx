@@ -1,11 +1,10 @@
 import { Subscribe } from "@react-rxjs/core"
+import { supportsTearOut } from "client/App/TearOutSection/supportsTearOut"
+import { TearOutComponent } from "client/App/TearOutSection/TearOutComponent"
+import { createSuspenseOnStale } from "client/utils/createSuspenseOnStale"
+import { WithChildren } from "client/utils/utilityTypes"
 import { merge } from "rxjs"
-
-import { supportsTearOut } from "@/client/App/TearOutSection/supportsTearOut"
-import { TearOutComponent } from "@/client/App/TearOutSection/TearOutComponent"
-import { createSuspenseOnStale } from "@/client/utils/createSuspenseOnStale"
-import { WithChildren } from "@/client/utils/utilityTypes"
-import { isAnalyticsDataStale$ } from "@/services/analytics"
+import { isAnalyticsDataStale$ } from "services/analytics"
 
 import { PnL, pnL$ } from "./PnL"
 import { Positions, positions$ } from "./Positions"

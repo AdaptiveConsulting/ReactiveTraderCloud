@@ -1,9 +1,8 @@
 import { shareLatest } from "@react-rxjs/core"
+import { getDataPoints, withScales } from "client/utils/historicalChart"
 import { pipe } from "rxjs"
 import { map } from "rxjs/operators"
-
-import { getDataPoints, withScales } from "@/client/utils/historicalChart"
-import { history$, HistoryEntry } from "@/services/analytics"
+import { history$, HistoryEntry } from "services/analytics"
 
 import { LINE_CHART_HEIGHT, TOTAL_WIDTH, Y_LEGENDS_WIDTH } from "./constants"
 

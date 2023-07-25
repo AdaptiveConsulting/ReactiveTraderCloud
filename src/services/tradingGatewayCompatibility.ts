@@ -1,4 +1,4 @@
-import { checkCompatibility } from "@/generated/TradingGateway"
+import { checkCompatibility } from "generated/TradingGateway"
 
 export function checkTradingGatewayCompatibility() {
   checkCompatibility().subscribe((response) => {

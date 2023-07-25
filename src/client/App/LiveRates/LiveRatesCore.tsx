@@ -1,7 +1,6 @@
 import { Subscribe } from "@react-rxjs/core"
+import { WithChildren } from "client/utils/utilityTypes"
 import { merge } from "rxjs"
-
-import { WithChildren } from "@/client/utils/utilityTypes"
 
 import { MainHeader, mainHeader$ } from "./MainHeader"
 import { Tiles, tiles$ } from "./Tiles"

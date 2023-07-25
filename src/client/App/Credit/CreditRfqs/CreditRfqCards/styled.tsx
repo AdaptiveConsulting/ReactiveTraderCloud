@@ -1,7 +1,6 @@
+import { ThemeName } from "client/theme"
+import { Direction } from "generated/TradingGateway"
 import styled, { css, DefaultTheme, keyframes } from "styled-components"
-
-import { ThemeName } from "@/client/theme"
-import { Direction } from "@/generated/TradingGateway"
 
 // Card
 

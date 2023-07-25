@@ -1,5 +1,5 @@
-import { CurrencyPair } from "@/services/currencyPairs"
-import { Price, PriceMovementType } from "@/services/prices"
+import { CurrencyPair } from "services/currencyPairs"
+import { Price, PriceMovementType } from "services/prices"
 
 export interface RfqRequest {
   symbol: string

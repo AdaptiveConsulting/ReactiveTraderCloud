@@ -1,16 +1,15 @@
 import { Subscribe } from "@react-rxjs/core"
 import { act, fireEvent, render, screen } from "@testing-library/react"
+import { TestThemeProvider } from "client/utils/testUtils"
 import { BehaviorSubject } from "rxjs"
-
-import { TestThemeProvider } from "@/client/utils/testUtils"
-import { CurrencyPair } from "@/services/currencyPairs"
-import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
+import { CurrencyPair } from "services/currencyPairs"
+import { ccppMock } from "services/currencyPairs/__mocks__/_ccpp"
 
 import { liveRates$ } from "../../LiveRatesCore"
 import { Tiles } from "../../Tiles"
 import { MainHeader } from ".."
 
-vi.mock("@/services/currencyPairs/currencyPairs")
+vi.mock("services/currencyPairs/currencyPairs")
 vi.mock("../../Tile/Tile.tsx")
 
 const currencyPairMock1: CurrencyPair = {

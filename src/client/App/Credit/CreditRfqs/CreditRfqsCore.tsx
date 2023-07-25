@@ -1,12 +1,11 @@
 import { Subscribe } from "@react-rxjs/core"
-import { useEffect } from "react"
-import styled from "styled-components"
-
-import { Loader } from "@/client/components/Loader"
+import { Loader } from "client/components/Loader"
 import {
   registerCreditQuoteNotifications,
   unregisterCreditQuoteNotifications,
-} from "@/client/notifications"
+} from "client/notifications"
+import { useEffect } from "react"
+import styled from "styled-components"
 
 import { CreditRfqCards } from "./CreditRfqCards"
 import {

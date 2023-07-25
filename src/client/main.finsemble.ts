@@ -1,4 +1,4 @@
-import { FinsembleApp } from "@/client/Finsemble"
+import { FinsembleApp } from "client/Finsemble"
 
 export const gaDimension = "finsemble"
 

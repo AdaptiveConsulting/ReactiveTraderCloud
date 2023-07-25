@@ -1,9 +1,8 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { DirectionIcon } from "client/components/icons/DirectionIcon"
+import { Direction } from "generated/TradingGateway"
 import styled from "styled-components"
-
-import { DirectionIcon } from "@/client/components/icons/DirectionIcon"
-import { Direction } from "@/generated/TradingGateway"
 
 const DirectionToggleWrapper = styled.div`
   display: flex;

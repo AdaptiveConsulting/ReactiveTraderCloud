@@ -1,11 +1,10 @@
+import { formatNumber } from "client/utils"
 import { format } from "date-fns"
+import { Direction } from "generated/TradingGateway"
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa"
+import { CurrencyPair } from "services/currencyPairs"
+import { ExecutionStatus } from "services/executions"
 import styled from "styled-components"
-
-import { formatNumber } from "@/client/utils"
-import { Direction } from "@/generated/TradingGateway"
-import { CurrencyPair } from "@/services/currencyPairs"
-import { ExecutionStatus } from "@/services/executions"
 
 import { useTileCurrencyPair } from "../Tile.context"
 import {

@@ -1,7 +1,6 @@
+import { ThemeName, ThemeStorageSwitch, useTheme } from "client/theme"
 import { ReactElement } from "react"
 import styled from "styled-components"
-
-import { ThemeName, ThemeStorageSwitch, useTheme } from "@/client/theme"
 
 import { Block } from "../styled"
 

@@ -1,4 +1,4 @@
-import { creditTrades$ } from "@/services/trades"
+import { creditTrades$ } from "services/trades"
 
 import { TradesGrid } from "./TradesGrid"
 import { useCreditTradeRowHighlight } from "./TradesState"

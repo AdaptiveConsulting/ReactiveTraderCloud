@@ -1,4 +1,5 @@
 import { createKeyedSignal } from "@react-rxjs/utils"
+import { equals } from "client/utils"
 import { concat, Observable, pipe, race, timer } from "rxjs"
 import {
   distinctUntilChanged,
@@ -9,9 +10,7 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
-
-import { equals } from "@/client/utils"
-import { rfq$, RfqResponse } from "@/services/rfqs"
+import { rfq$, RfqResponse } from "services/rfqs"
 
 import { getNotionalValue$ } from "../Notional"
 import { symbolBind } from "../Tile.context"

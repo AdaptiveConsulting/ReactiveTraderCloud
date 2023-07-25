@@ -1,5 +1,3 @@
-import styled from "styled-components"
-
 import {
   ChartIcon,
   ChevronIcon,
@@ -12,7 +10,8 @@ import {
   PopInIcon,
   PopOutIcon,
   UndockIcon,
-} from "@/client/components/icons"
+} from "client/components/icons"
+import styled from "styled-components"
 
 import { H2, H3, H5 } from "../elements"
 import { Paragraph, SectionBlock, Text, TextProps } from "../styled"

@@ -1,8 +1,8 @@
-import { ROUTES_CONFIG } from "@/client/constants"
-import { RT_FX_MAIN_WINDOW_NAME } from "@/client/OpenFin/utils/window"
-import { calculateWindowCoordinates, Offset } from "@/client/utils"
-import { constructUrl } from "@/client/utils/url"
-import { openWindow } from "@/client/utils/window/openWindow"
+import { ROUTES_CONFIG } from "client/constants"
+import { RT_FX_MAIN_WINDOW_NAME } from "client/OpenFin/utils/window"
+import { calculateWindowCoordinates, Offset } from "client/utils"
+import { constructUrl } from "client/utils/url"
+import { openWindow } from "client/utils/window/openWindow"
 
 import { tearOut } from "./state"
 

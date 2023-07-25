@@ -1,11 +1,10 @@
 import { Subscribe } from "@react-rxjs/core"
 import { Meta } from "@storybook/react"
 import { Observable, of } from "rxjs"
+import { CreditTrade, FxTrade } from "services/trades"
+import { mockCreditTrades } from "services/trades/__mocks__/creditTrades"
+import { mockTrades } from "services/trades/__mocks__/trades.mock"
 import styled from "styled-components"
-
-import { CreditTrade, FxTrade } from "@/services/trades"
-import { mockCreditTrades } from "@/services/trades/__mocks__/creditTrades"
-import { mockTrades } from "@/services/trades/__mocks__/trades.mock"
 
 import {
   ColDefContext,
