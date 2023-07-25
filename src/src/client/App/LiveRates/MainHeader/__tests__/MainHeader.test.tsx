@@ -10,7 +10,7 @@ import { liveRates$ } from "../../LiveRatesCore"
 import { Tiles } from "../../Tiles"
 import { MainHeader } from ".."
 
-vi.mock("@/client/services/currencyPairs/currencyPairs")
+vi.mock("@/services/currencyPairs/currencyPairs")
 vi.mock("../../Tile/Tile.tsx")
 
 const currencyPairMock1: CurrencyPair = {

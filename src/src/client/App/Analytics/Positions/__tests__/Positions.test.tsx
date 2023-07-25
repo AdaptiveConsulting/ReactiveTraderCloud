@@ -10,8 +10,8 @@ import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
 
 import { Positions, positions$ } from "../Positions"
 
-vi.mock("@/client/services/analytics/analytics")
-vi.mock("@/client/services/currencyPairs/currencyPairs")
+vi.mock("@/services/analytics/analytics")
+vi.mock("@/services/currencyPairs/currencyPairs")
 
 const currencyPairMock1: CurrencyPair = {
   symbol: "EURAUD",

@@ -1,6 +1,7 @@
 import { Meta } from "@storybook/react"
 
-import avatar from "../../../../public/static/media/mockedAvatars/one.png"
+import avatar from "~/public/static/media/mockedAvatars/one.png"
+
 import { UserInner } from "./LoginControls"
 
 export default {

@@ -34,7 +34,7 @@ class LocalStorageMock {
 
 const mockedLocalStorage = new LocalStorageMock()
 
-vi.mock("@/client/theme/globals", () => ({}))
+vi.mock("@/theme/globals", () => ({}))
 
 export const TestThemeProvider = ({ children }: { children: ReactNode }) => (
   <ThemeProvider storage={mockedLocalStorage}>{children}</ThemeProvider>

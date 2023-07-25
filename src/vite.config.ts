@@ -261,7 +261,7 @@ const injectScriptIntoHtml = (
 const injectWebServiceWorkerPlugin = (mode: string) =>
   injectManifest(
     {
-      swSrc: "./src/Web/sw.js",
+      swSrc: "./src/client/Web/sw.js",
       swDest: "./dist/sw.js",
       dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
       globDirectory: "dist",
@@ -383,6 +383,10 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
           find: "@",
           replacement: "/src",
         },
+        {
+          find: "~",
+          replacement: ".",
+        },
       ],
     },
     plugins,
@@ -390,7 +394,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
       globals: true,
       environment: "jsdom",
       include: ["**/*.test.{tsx,ts}", "**/__tests__/*"],
-      setupFiles: "./src/setupTests.ts",
+      setupFiles: "./src/client/setupTests.ts",
     },
   })
 }

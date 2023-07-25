@@ -16,15 +16,15 @@ import {
   setCreditTradeRowHighlight,
   setFxTradeRowHighlight,
 } from "@/client/App/Trades/TradesState"
-import { executions$, ExecutionTrade } from "@/services/executions"
-
-import { Direction } from "../generated/TradingGateway"
+import { Direction } from "@/generated/TradingGateway"
 import {
   acceptedRfqWithQuote$,
   lastQuoteReceived$,
   QuoteDetails,
   RfqWithQuote,
-} from "../services/credit"
+} from "@/services/credit"
+import { executions$, ExecutionTrade } from "@/services/executions"
+
 import { setCreditRfqCardHighlight } from "./App/Credit/CreditRfqs/CreditRfqCards"
 import {
   processCreditAccepted,

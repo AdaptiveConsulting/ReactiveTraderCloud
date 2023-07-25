@@ -18,9 +18,9 @@ import { pricesMock } from "@/services/prices/__mocks__/_prices"
 
 import { Tile, tile$ } from "../Tile"
 
-vi.mock("@/client/services/prices/prices")
-vi.mock("@/client/services/currencyPairs/currencyPairs")
-vi.mock("@/client/services/executions/executions")
+vi.mock("@/services/prices/prices")
+vi.mock("@/services/currencyPairs/currencyPairs")
+vi.mock("@/services/executions/executions")
 
 const currencyPairMock: CurrencyPair = {
   symbol: "EURUSD",

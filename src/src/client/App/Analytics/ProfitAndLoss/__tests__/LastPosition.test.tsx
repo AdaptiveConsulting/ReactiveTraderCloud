@@ -8,7 +8,7 @@ import { analyticsMock } from "@/services/analytics/__mocks__/_analytics"
 
 import { LastPosition, lastPosition$ } from "../LastPosition"
 
-vi.mock("@/client/services/analytics/analytics")
+vi.mock("@/services/analytics/analytics")
 
 const historyMock1: HistoryEntry[] = [
   {

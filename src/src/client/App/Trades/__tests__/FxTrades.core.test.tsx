@@ -19,7 +19,7 @@ vi.mock("../TradesGrid/utils")
 vi.mock("@openfin/core", () => ({
   fin: undefined,
 }))
-vi.mock("@/client/services/trades/trades")
+vi.mock("@/services/trades/trades")
 vi.mock("../TradesState/tableTrades", async () => {
   const tableTrades: typeof TableTrades = await vi.importActual(
     "../TradesState/tableTrades",
