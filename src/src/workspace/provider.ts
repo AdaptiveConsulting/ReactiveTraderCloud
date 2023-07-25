@@ -12,7 +12,7 @@ import { deregisterStore, registerStore } from "./store"
 
 const icon = `${BASE_URL}/images/icons/adaptive.png`
 
-export async function init() {
+async function init() {
   await workspacePlatformInit({
     browser: {
       overrideCallback,

@@ -363,7 +363,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
           main: resolve(__dirname, "index.html"),
           // TODO - make OpenFin-only, move to /OpenFin
           ofProvider: resolve(__dirname, "provider.html"),
-          workspaceProvider: resolve(__dirname, "workspaceProvider.html"),
         },
       },
     },

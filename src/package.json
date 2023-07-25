@@ -48,7 +48,7 @@
     "openfin:build": "cross-env TARGET=openfin vite build",
     "openfin:serve": "cross-env TARGET=openfin vite preview",
     "openfin:start:preview": "npm:openfin:build && concurrently \"npm:openfin:serve\" \"npm:openfin:run:launcher\"",
-    "workspace:start": "cross-env TARGET=workspace VITE_TARGET=workspace vite --config vite-ws.config.ts",
+    "workspace:start": "cross-env TARGET=workspace vite --config vite-ws.config.ts",
     "workspace:build": "cross-env TARGET=workspace vite build --config vite-ws.config.ts",
     "workspace:serve": "cross-env TARGET=workspace vite serve --config vite-ws.config.ts",
     "workspace:openfin:dev": "npm run workspace:start",
