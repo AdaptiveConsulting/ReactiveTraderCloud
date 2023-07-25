@@ -106,7 +106,7 @@ jobs:
         run: |
           npm ci
           npm run build
-        working-directory: src/workspace
+        working-directory: src
 
       - name: Deploy (OpenFin - Workspace)
         run: |
@@ -114,7 +114,7 @@ jobs:
             -h "Cache-Control: no-cache" \
             rsync -d -r dist \
             gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.BRANCH }}/workspace
-        working-directory: src/workspace
+        working-directory: src
 
       - name: Build (Finsemble)
         env:
