@@ -5,7 +5,7 @@ import { ColorProps as ThemeSelectorPair } from "@/client/theme"
 
 import { H2 } from "../elements"
 import { rules } from "../rules"
-import { Block, BlockProps } from "../styled"
+import { Block, BlockProps } from "."
 import {
   mapMarginPaddingProps,
   MarginPaddingProps,

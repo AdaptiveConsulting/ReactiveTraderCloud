@@ -1,4 +1,4 @@
-import * as icons from "./"
+import * as icons from "."
 
 export default {
   title: "Components/Icons",
