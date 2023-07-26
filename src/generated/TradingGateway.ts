@@ -421,6 +421,7 @@ function TradeStatusTypeDefinition() {
     ],
     description: "" as const,
     encoding: "Int8" as const,
+    unknownCaseValue: undefined,
   }
 }
 
@@ -437,6 +438,7 @@ function DirectionTypeDefinition() {
     ],
     description: "" as const,
     encoding: "Int8" as const,
+    unknownCaseValue: undefined,
   }
 }
 
@@ -499,6 +501,7 @@ function RfqUpdateTypeDefinition() {
       endOfStateOfTheWorld: { tag: 6, payload: undefined },
     },
     encodedLength: { bitLength: 40, byteLength: 5 },
+    isGrowable: false,
   }
 }
 
@@ -535,6 +538,7 @@ function RfqStateTypeDefinition() {
     ],
     description: "" as const,
     encoding: "Int8" as const,
+    unknownCaseValue: undefined,
   }
 }
 
@@ -590,6 +594,7 @@ function QuoteStateTypeDefinition() {
     ],
     description: "" as const,
     encoding: "Int8" as const,
+    unknownCaseValue: undefined,
   }
 }
 
@@ -636,11 +641,15 @@ function RfqBodyTypeDefinition() {
       },
       creationTimestamp: {
         location: { bitOffset: 224, byteOffset: 28, mask: 0 },
-        type: int64TypeDefinition,
+        type: int64_130TypeDefinition,
       },
     },
     jsonConverter: undefined,
   }
+}
+
+function int64_130TypeDefinition() {
+  return "Int64" as const
 }
 
 function int32TypeDefinition() {
@@ -677,6 +686,7 @@ function AcceptQuoteResponseTypeDefinition() {
       nack: { tag: 2, payload: undefined },
     },
     encodedLength: { bitLength: 8, byteLength: 1 },
+    isGrowable: false,
   }
 }
 
@@ -708,6 +718,7 @@ function CreateQuoteResponseTypeDefinition() {
       nack: { tag: 2, payload: undefined },
     },
     encodedLength: { bitLength: 40, byteLength: 5 },
+    isGrowable: false,
   }
 }
 
@@ -761,6 +772,7 @@ function CreateRfqResponseTypeDefinition() {
       nack: { tag: 2, payload: undefined },
     },
     encodedLength: { bitLength: 40, byteLength: 5 },
+    isGrowable: false,
   }
 }
 
@@ -816,6 +828,7 @@ function DealerUpdateTypeDefinition() {
       endOfStateOfTheWorld: { tag: 4, payload: undefined },
     },
     encodedLength: { bitLength: 40, byteLength: 5 },
+    isGrowable: false,
   }
 }
 
@@ -834,10 +847,25 @@ function DealerBodyTypeDefinition() {
       },
       name: {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
-        type: stringRefTypeDefinition,
+        type: stringRef_137TypeDefinition,
       },
     },
     jsonConverter: undefined,
+  }
+}
+
+function stringRef_137TypeDefinition() {
+  return { type: "pointer" as const, elementType: string_132TypeDefinition }
+}
+
+function string_132TypeDefinition() {
+  return {
+    type: "string" as const,
+    count: {
+      encodingType: "Int32" as const,
+      location: { bitOffset: 0, byteOffset: 0, mask: 0 },
+    },
+    encoding: "Utf16" as const,
   }
 }
 
@@ -863,6 +891,7 @@ function InstrumentUpdateTypeDefinition() {
       endOfStateOfTheWorld: { tag: 4, payload: undefined },
     },
     encodedLength: { bitLength: 40, byteLength: 5 },
+    isGrowable: false,
   }
 }
 
@@ -881,15 +910,15 @@ function InstrumentBodyTypeDefinition() {
       },
       name: {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
-        type: stringRefTypeDefinition,
+        type: stringRef_137TypeDefinition,
       },
       cusip: {
         location: { bitOffset: 64, byteOffset: 8, mask: 0 },
-        type: stringRefTypeDefinition,
+        type: stringRef_137TypeDefinition,
       },
       ticker: {
         location: { bitOffset: 96, byteOffset: 12, mask: 0 },
-        type: stringRefTypeDefinition,
+        type: stringRef_137TypeDefinition,
       },
       maturity: {
         location: { bitOffset: 128, byteOffset: 16, mask: 0 },
@@ -901,7 +930,7 @@ function InstrumentBodyTypeDefinition() {
       },
       benchmark: {
         location: { bitOffset: 224, byteOffset: 28, mask: 0 },
-        type: stringRefTypeDefinition,
+        type: stringRef_137TypeDefinition,
       },
     },
     jsonConverter: undefined,
@@ -1038,6 +1067,7 @@ function CurrencyPairUpdateTypeDefinition() {
       },
     },
     encodedLength: { bitLength: 40, byteLength: 5 },
+    isGrowable: false,
   }
 }
 
@@ -1056,15 +1086,19 @@ function CurrencyPairTypeDefinition() {
       },
       ratePrecision: {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
-        type: int32TypeDefinition,
+        type: int32_125TypeDefinition,
       },
       pipsPosition: {
         location: { bitOffset: 64, byteOffset: 8, mask: 0 },
-        type: int32TypeDefinition,
+        type: int32_125TypeDefinition,
       },
     },
     jsonConverter: undefined,
   }
+}
+
+function int32_125TypeDefinition() {
+  return "Int32" as const
 }
 
 function SymbolRefTypeDefinition() {
@@ -1158,11 +1192,15 @@ function PriceStreamRequestTypeDefinition() {
     fields: {
       symbol: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: SymbolRefTypeDefinition,
+        type: SymbolRef_ComWeareadaptiveRtCommonTypeDefinition,
       },
     },
     jsonConverter: undefined,
   }
+}
+
+function SymbolRef_ComWeareadaptiveRtCommonTypeDefinition() {
+  return { type: "pointer" as const, elementType: SymbolTypeDefinition }
 }
 
 function ExecutionResponseTypeDefinition() {
@@ -1190,7 +1228,7 @@ function ExecuteTradeRequestTypeDefinition() {
     fields: {
       currencyPair: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: SymbolRefTypeDefinition,
+        type: SymbolRef_ComWeareadaptiveRtCommonTypeDefinition,
       },
       spotRate: {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
@@ -1239,7 +1277,7 @@ function LoginRequestTypeDefinition() {
     fields: {
       username: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: stringRefTypeDefinition,
+        type: stringRef_137TypeDefinition,
       },
     },
     jsonConverter: undefined,
@@ -1338,7 +1376,7 @@ function HistoricPositionTypeDefinition() {
     fields: {
       timestamp: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: stringRefTypeDefinition,
+        type: stringRef_137TypeDefinition,
       },
       usdPnl: {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
@@ -1380,7 +1418,7 @@ function CurrencyPairPositionTypeDefinition() {
     fields: {
       symbol: {
         location: { bitOffset: 0, byteOffset: 0, mask: 0 },
-        type: SymbolRefTypeDefinition,
+        type: SymbolRef_ComWeareadaptiveRtCommonTypeDefinition,
       },
       basePnl: {
         location: { bitOffset: 32, byteOffset: 4, mask: 0 },
@@ -1418,11 +1456,26 @@ export const AnalyticsService = {
     return HydraPlatform.requestStream$(
       {
         serviceName: "AnalyticsService",
+        serviceVersion: "ZPWRZEYxeuriphf5mM3F-3ajfVE=",
+        majorVersionContentAddress:
+          "0xe62e7df2d92678862813a264ddc89f1027ee5a31",
         methodName: "getAnalytics",
         inboundStream: "one",
         outboundStream: "many",
-        requestRouteKey: BigInt("1164161099841024256"),
-        responseRouteKey: BigInt("5686211384067522816"),
+        routingData: {
+          request: {
+            NEXT: BigInt("398568636411697713"),
+            COMPLETED: BigInt("542683824487553585"),
+            ERROR: BigInt("110338260259985969"),
+            CANCEL: BigInt("254453448335841841"),
+          },
+          response: {
+            NEXT: BigInt("290482514890006657"),
+            COMPLETED: BigInt("434597702965862529"),
+            ERROR: BigInt("2252138738294913"),
+            CANCEL: BigInt("146367326814150785"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(PositionUpdatesTypeDefinition),
@@ -1435,11 +1488,26 @@ export const BlotterService = {
     return HydraPlatform.requestStream$(
       {
         serviceName: "BlotterService",
+        serviceVersion: "71ZHSzqYkzeAMY8FHL-e1ZjDX9M=",
+        majorVersionContentAddress:
+          "0x4f8899fe381a704fbaed510e1751f1b86d0c8c90",
         methodName: "getTradeStream",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("-5157452200409264128"),
-        responseRouteKey: BigInt("6776512328093340672"),
+        routingData: {
+          request: {
+            NEXT: BigInt("324259965274197136"),
+            COMPLETED: BigInt("468375153350053008"),
+            ERROR: BigInt("36029589122485392"),
+            CANCEL: BigInt("180144777198341264"),
+          },
+          response: {
+            NEXT: BigInt("333266776337026836"),
+            COMPLETED: BigInt("477381964412882708"),
+            ERROR: BigInt("45036400185315092"),
+            CANCEL: BigInt("189151588261170964"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(TradeUpdatesTypeDefinition),
@@ -1451,11 +1519,26 @@ export const LoginService = {
     return HydraPlatform.requestResponse$(
       {
         serviceName: "LoginService",
+        serviceVersion: "HobGg0oQiuBiKlSYrrxJ0N6uWJ8=",
+        majorVersionContentAddress:
+          "0xd1acbdbcec85d9cbf2f7c6214fbfdba07f2270d5",
         methodName: "login",
         inboundStream: "one",
         outboundStream: "empty",
-        requestRouteKey: BigInt("-6881743837586205440"),
-        responseRouteKey: BigInt("-8802381833944962560"),
+        routingData: {
+          request: {
+            NEXT: BigInt("335518861566832853"),
+            COMPLETED: BigInt("479634049642688725"),
+            ERROR: BigInt("47288485415121109"),
+            CANCEL: BigInt("191403673490976981"),
+          },
+          response: {
+            NEXT: BigInt("382806543175277546"),
+            COMPLETED: BigInt("526921731251133418"),
+            ERROR: BigInt("94576167023565802"),
+            CANCEL: BigInt("238691355099421674"),
+          },
+        },
         annotations: [],
       },
       undefined,
@@ -1468,11 +1551,26 @@ export const ExecutionService = {
     return HydraPlatform.requestResponse$(
       {
         serviceName: "ExecutionService",
+        serviceVersion: "u9AuEKVxDfRiwjRAJX0iJJ9v5cw=",
+        majorVersionContentAddress:
+          "0xcff73f76c021c915bfe397253bda70b7bb287597",
         methodName: "executeTrade",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("-5207524058606496000"),
-        responseRouteKey: BigInt("7700181385355211776"),
+        routingData: {
+          request: {
+            NEXT: BigInt("340022560985478551"),
+            COMPLETED: BigInt("484137749061334423"),
+            ERROR: BigInt("51792184833766807"),
+            CANCEL: BigInt("195907372909622679"),
+          },
+          response: {
+            NEXT: BigInt("405324425429920820"),
+            COMPLETED: BigInt("549439613505776692"),
+            ERROR: BigInt("117094049278209076"),
+            CANCEL: BigInt("261209237354064948"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(ExecutionResponseTypeDefinition),
@@ -1485,11 +1583,26 @@ export const PricingService = {
     return HydraPlatform.requestStream$(
       {
         serviceName: "PricingService",
+        serviceVersion: "lMGjEAXz4GnWgyQK2jJTCMe1h68=",
+        majorVersionContentAddress:
+          "0xd47e9b02537be1029246d28fad3846ab88f26ebe",
         methodName: "getPriceUpdates",
         inboundStream: "one",
         outboundStream: "many",
-        requestRouteKey: BigInt("-6086348338935972352"),
-        responseRouteKey: BigInt("8536520351885563904"),
+        routingData: {
+          request: {
+            NEXT: BigInt("427842701337194174"),
+            COMPLETED: BigInt("571957889413050046"),
+            ERROR: BigInt("139612325185482430"),
+            CANCEL: BigInt("283727513261338302"),
+          },
+          response: {
+            NEXT: BigInt("342274080496420888"),
+            COMPLETED: BigInt("486389268572276760"),
+            ERROR: BigInt("54043704344709144"),
+            CANCEL: BigInt("198158892420565016"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(PriceTickTypeDefinition),
@@ -1502,11 +1615,26 @@ export const PricingService = {
     return HydraPlatform.requestResponse$(
       {
         serviceName: "PricingService",
+        serviceVersion: "lMGjEAXz4GnWgyQK2jJTCMe1h68=",
+        majorVersionContentAddress:
+          "0xa1ed267eed573cf8a11410c6420e05a2db1cc99c",
         methodName: "getPriceHistory",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("-6711739167421129728"),
-        responseRouteKey: BigInt("5800769435217250816"),
+        routingData: {
+          request: {
+            NEXT: BigInt("351281470395697564"),
+            COMPLETED: BigInt("495396658471553436"),
+            ERROR: BigInt("63051094243985820"),
+            CANCEL: BigInt("207166282319841692"),
+          },
+          response: {
+            NEXT: BigInt("310748720041365834"),
+            COMPLETED: BigInt("454863908117221706"),
+            ERROR: BigInt("22518343889654090"),
+            CANCEL: BigInt("166633531965509962"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(PriceTickHistoryTypeDefinition),
@@ -1519,11 +1647,26 @@ export const ReferenceDataService = {
     return HydraPlatform.requestStream$(
       {
         serviceName: "ReferenceDataService",
+        serviceVersion: "OqWWP0EWma-LLq1gVKo89v7EEDU=",
+        majorVersionContentAddress:
+          "0xe61a79918fd439042742d78a7b67ccce35e745c6",
         methodName: "getCcyPairs",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("-3587707241265510912"),
-        responseRouteKey: BigInt("-6306063129046500096"),
+        routingData: {
+          request: {
+            NEXT: BigInt("301742060701435334"),
+            COMPLETED: BigInt("445857248777291206"),
+            ERROR: BigInt("13511684549723590"),
+            CANCEL: BigInt("157626872625579462"),
+          },
+          response: {
+            NEXT: BigInt("425590888427486909"),
+            COMPLETED: BigInt("569706076503342781"),
+            ERROR: BigInt("137360512275775165"),
+            CANCEL: BigInt("281475700351631037"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(CurrencyPairUpdatesTypeDefinition),
@@ -1535,11 +1678,26 @@ export const ThroughputAdminService = {
     return HydraPlatform.requestResponse$(
       {
         serviceName: "ThroughputAdminService",
+        serviceVersion: "hPl5jJ6kWETbXFuLnvWAwrfi5jc=",
+        majorVersionContentAddress:
+          "0x98ab50219a2ea5d9e19eb25f691bdbb34b3657dc",
         methodName: "getThroughput",
         inboundStream: "empty",
         outboundStream: "one",
-        requestRouteKey: BigInt("-5527264366680351744"),
-        responseRouteKey: BigInt("7943050629117021440"),
+        routingData: {
+          request: {
+            NEXT: BigInt("351281540995897308"),
+            COMPLETED: BigInt("495396729071753180"),
+            ERROR: BigInt("63051164844185564"),
+            CANCEL: BigInt("207166352920041436"),
+          },
+          response: {
+            NEXT: BigInt("317504247172331149"),
+            COMPLETED: BigInt("461619435248187021"),
+            ERROR: BigInt("29273871020619405"),
+            CANCEL: BigInt("173389059096475277"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(GetThroughputResponseTypeDefinition),
@@ -1549,11 +1707,26 @@ export const ThroughputAdminService = {
     return HydraPlatform.requestResponse$(
       {
         serviceName: "ThroughputAdminService",
+        serviceVersion: "hPl5jJ6kWETbXFuLnvWAwrfi5jc=",
+        majorVersionContentAddress:
+          "0xec5a6ccffbbc97f1281f69833904dff1deb345be",
         methodName: "setThroughput",
         inboundStream: "one",
         outboundStream: "empty",
-        requestRouteKey: BigInt("-1018179353612796416"),
-        responseRouteKey: BigInt("6831105567706198528"),
+        routingData: {
+          request: {
+            NEXT: BigInt("427843003423606206"),
+            COMPLETED: BigInt("571958191499462078"),
+            ERROR: BigInt("139612627271894462"),
+            CANCEL: BigInt("283727815347750334"),
+          },
+          response: {
+            NEXT: BigInt("400820774001594930"),
+            COMPLETED: BigInt("544935962077450802"),
+            ERROR: BigInt("112590397849883186"),
+            CANCEL: BigInt("256705585925739058"),
+          },
+        },
         annotations: [],
       },
       undefined,
@@ -1566,11 +1739,26 @@ export const EchoService = {
     return HydraPlatform.requestResponse$(
       {
         serviceName: "EchoService",
+        serviceVersion: "3pvE2P7uCShir_5g26nbD2Q4pSI=",
+        majorVersionContentAddress:
+          "0xf49cc1a0c1899403dd3d5d414eef4ce7dd9d2316",
         methodName: "echo",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("-1739061107074329088"),
-        responseRouteKey: BigInt("-3932217723524714240"),
+        routingData: {
+          request: {
+            NEXT: BigInt("337770967908295446"),
+            COMPLETED: BigInt("481886155984151318"),
+            ERROR: BigInt("49540591756583702"),
+            CANCEL: BigInt("193655779832439574"),
+          },
+          response: {
+            NEXT: BigInt("398569432155476081"),
+            COMPLETED: BigInt("542684620231331953"),
+            ERROR: BigInt("110339056003764337"),
+            CANCEL: BigInt("254454244079620209"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(EchoResponseTypeDefinition),
@@ -1583,11 +1771,26 @@ export const InstrumentService = {
     return HydraPlatform.requestStream$(
       {
         serviceName: "InstrumentService",
+        serviceVersion: "F_OPT_bs_UpYBTnuGcirYfGLd08=",
+        majorVersionContentAddress:
+          "0x3f05c6b0f369625ad6cff51ef7e574ea07335c0f",
         methodName: "subscribe",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("-1583240273509740800"),
-        responseRouteKey: BigInt("4826706302989189120"),
+        routingData: {
+          request: {
+            NEXT: BigInt("322008378500144143"),
+            COMPLETED: BigInt("466123566576000015"),
+            ERROR: BigInt("33778002348432399"),
+            CANCEL: BigInt("177893190424288271"),
+          },
+          response: {
+            NEXT: BigInt("288230663845826368"),
+            COMPLETED: BigInt("432345851921682240"),
+            ERROR: BigInt("287694114624"),
+            CANCEL: BigInt("144115475769970496"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(InstrumentUpdateTypeDefinition),
@@ -1599,11 +1802,26 @@ export const DealerService = {
     return HydraPlatform.requestStream$(
       {
         serviceName: "DealerService",
+        serviceVersion: "H_zyq8pnacrwFlPwJjz2Fb1788M=",
+        majorVersionContentAddress:
+          "0x11710ad71d1ec5d9fdd981e2dd608084bdede196",
         methodName: "subscribe",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("-8881681336949959168"),
-        responseRouteKey: BigInt("-3865403791155441152"),
+        routingData: {
+          request: {
+            NEXT: BigInt("337770542174953878"),
+            COMPLETED: BigInt("481885730250809750"),
+            ERROR: BigInt("49540166023242134"),
+            CANCEL: BigInt("193655354099098006"),
+          },
+          response: {
+            NEXT: BigInt("328763641913654098"),
+            COMPLETED: BigInt("472878829989509970"),
+            ERROR: BigInt("40533265761942354"),
+            CANCEL: BigInt("184648453837798226"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(DealerUpdateTypeDefinition),
@@ -1615,11 +1833,26 @@ export const WorkflowService = {
     return HydraPlatform.requestResponse$(
       {
         serviceName: "WorkflowService",
+        serviceVersion: "XpQhN9sLfmGohyAPM7Voe7LgS-A=",
+        majorVersionContentAddress:
+          "0x5d266533fe0016e5a2e6d9cfc8012558d48ccd0d",
         methodName: "createRfq",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("6400895782728043776"),
-        responseRouteKey: BigInt("1480546138952989952"),
+        routingData: {
+          request: {
+            NEXT: BigInt("317504155252739341"),
+            COMPLETED: BigInt("461619343328595213"),
+            ERROR: BigInt("29273779101027597"),
+            CANCEL: BigInt("173388967176883469"),
+          },
+          response: {
+            NEXT: BigInt("425590253033938557"),
+            COMPLETED: BigInt("569705441109794429"),
+            ERROR: BigInt("137359876882226813"),
+            CANCEL: BigInt("281475064958082685"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(CreateRfqResponseTypeDefinition),
@@ -1630,11 +1863,26 @@ export const WorkflowService = {
     return HydraPlatform.requestResponse$(
       {
         serviceName: "WorkflowService",
+        serviceVersion: "XpQhN9sLfmGohyAPM7Voe7LgS-A=",
+        majorVersionContentAddress:
+          "0x462a1441fbf810fe69b66cd4cc23bf7e919a3367",
         methodName: "cancelRfq",
         inboundStream: "one",
         outboundStream: "empty",
-        requestRouteKey: BigInt("9120240265967396608"),
-        responseRouteKey: BigInt("8351955485888580608"),
+        routingData: {
+          request: {
+            NEXT: BigInt("376051112494117735"),
+            COMPLETED: BigInt("520166300569973607"),
+            ERROR: BigInt("87820736342405991"),
+            CANCEL: BigInt("231935924418261863"),
+          },
+          response: {
+            NEXT: BigInt("315252471731274636"),
+            COMPLETED: BigInt("459367659807130508"),
+            ERROR: BigInt("27022095579562892"),
+            CANCEL: BigInt("171137283655418764"),
+          },
+        },
         annotations: [],
       },
       undefined,
@@ -1645,11 +1893,26 @@ export const WorkflowService = {
     return HydraPlatform.requestResponse$(
       {
         serviceName: "WorkflowService",
+        serviceVersion: "XpQhN9sLfmGohyAPM7Voe7LgS-A=",
+        majorVersionContentAddress:
+          "0x386488ecfc5ac2338a4125a78777dfc9c0507752",
         methodName: "createQuote",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("-3909036003142708736"),
-        responseRouteKey: BigInt("1310475536040889344"),
+        routingData: {
+          request: {
+            NEXT: BigInt("328763639312971602"),
+            COMPLETED: BigInt("472878827388827474"),
+            ERROR: BigInt("40533263161259858"),
+            CANCEL: BigInt("184648451237115730"),
+          },
+          response: {
+            NEXT: BigInt("315252052026363532"),
+            COMPLETED: BigInt("459367240102219404"),
+            ERROR: BigInt("27021675874651788"),
+            CANCEL: BigInt("171136863950507660"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(CreateQuoteResponseTypeDefinition),
@@ -1660,11 +1923,26 @@ export const WorkflowService = {
     return HydraPlatform.requestResponse$(
       {
         serviceName: "WorkflowService",
+        serviceVersion: "XpQhN9sLfmGohyAPM7Voe7LgS-A=",
+        majorVersionContentAddress:
+          "0xb040551d7260282c1413812d6f7b942f4648c654",
         methodName: "acceptQuote",
         inboundStream: "one",
         outboundStream: "one",
-        requestRouteKey: BigInt("3406490184815367168"),
-        responseRouteKey: BigInt("-6269829733944167936"),
+        routingData: {
+          request: {
+            NEXT: BigInt("333266575468054100"),
+            COMPLETED: BigInt("477381763543909972"),
+            ERROR: BigInt("45036199316342356"),
+            CANCEL: BigInt("189151387392198228"),
+          },
+          response: {
+            NEXT: BigInt("400821092636627826"),
+            COMPLETED: BigInt("544936280712483698"),
+            ERROR: BigInt("112590716484916082"),
+            CANCEL: BigInt("256705904560771954"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(AcceptQuoteResponseTypeDefinition),
@@ -1675,11 +1953,26 @@ export const WorkflowService = {
     return HydraPlatform.requestStream$(
       {
         serviceName: "WorkflowService",
+        serviceVersion: "XpQhN9sLfmGohyAPM7Voe7LgS-A=",
+        majorVersionContentAddress:
+          "0x43f56fd0ff2ed960c3d703b526ef56ae65cf6d18",
         methodName: "subscribe",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("-5880065670994126848"),
-        responseRouteKey: BigInt("3502450605082066688"),
+        routingData: {
+          request: {
+            NEXT: BigInt("342274320712559896"),
+            COMPLETED: BigInt("486389508788415768"),
+            ERROR: BigInt("54043944560848152"),
+            CANCEL: BigInt("198159132636704024"),
+          },
+          response: {
+            NEXT: BigInt("430093973176206527"),
+            COMPLETED: BigInt("574209161252062399"),
+            ERROR: BigInt("141863597024494783"),
+            CANCEL: BigInt("285978785100350655"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(RfqUpdateTypeDefinition),
@@ -1691,11 +1984,26 @@ export const TradeService = {
     return HydraPlatform.listen$(
       {
         serviceName: "TradeService",
+        serviceVersion: "BcarX12WJm_5S2XhtDiTp6-tCxw=",
+        majorVersionContentAddress:
+          "0xa6a3f7f4e00d155dd9589348882fdbf0c5dbe630",
         methodName: "trades",
         inboundStream: "none",
         outboundStream: "many",
-        requestRouteKey: BigInt("-1097229152485494784"),
-        responseRouteKey: BigInt("2554439426220476416"),
+        routingData: {
+          request: {
+            NEXT: BigInt("396317801320277552"),
+            COMPLETED: BigInt("540432989396133424"),
+            ERROR: BigInt("108087425168565808"),
+            CANCEL: BigInt("252202613244421680"),
+          },
+          response: {
+            NEXT: BigInt("306244926917648328"),
+            COMPLETED: BigInt("450360114993504200"),
+            ERROR: BigInt("18014550765936584"),
+            CANCEL: BigInt("162129738841792456"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(TradeTypeDefinition),
@@ -1705,11 +2013,26 @@ export const TradeService = {
     return HydraPlatform.requestStream$(
       {
         serviceName: "TradeService",
+        serviceVersion: "BcarX12WJm_5S2XhtDiTp6-tCxw=",
+        majorVersionContentAddress:
+          "0x93fd65c8dc4850c834fd1fe7788811910ce1ab7d",
         methodName: "getTrades",
         inboundStream: "empty",
         outboundStream: "many",
-        requestRouteKey: BigInt("-7994767111825425152"),
-        responseRouteKey: BigInt("2586522596259981568"),
+        routingData: {
+          request: {
+            NEXT: BigInt("425590787772885885"),
+            COMPLETED: BigInt("569705975848741757"),
+            ERROR: BigInt("137360411621174141"),
+            CANCEL: BigInt("281475599697030013"),
+          },
+          response: {
+            NEXT: BigInt("380554322681567465"),
+            COMPLETED: BigInt("524669510757423337"),
+            ERROR: BigInt("92323946529855721"),
+            CANCEL: BigInt("236439134605711593"),
+          },
+        },
         annotations: [],
       },
       allocators.responseAllocator(TradeTypeDefinition),
@@ -1724,100 +2047,102 @@ export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiatio
         {
           serviceName: "AnalyticsService",
           methodName: "getAnalytics",
-          methodRouteKey: BigInt("1164161099841024256"),
+          methodRouteKey: BigInt("398568636411697713"),
         },
         {
           serviceName: "BlotterService",
           methodName: "getTradeStream",
-          methodRouteKey: BigInt("-5157452200409264128"),
+          methodRouteKey: BigInt("324259965274197136"),
         },
         {
           serviceName: "LoginService",
           methodName: "login",
-          methodRouteKey: BigInt("-6881743837586205440"),
+          methodRouteKey: BigInt("335518861566832853"),
         },
         {
           serviceName: "ExecutionService",
           methodName: "executeTrade",
-          methodRouteKey: BigInt("-5207524058606496000"),
+          methodRouteKey: BigInt("340022560985478551"),
         },
         {
           serviceName: "PricingService",
           methodName: "getPriceUpdates",
-          methodRouteKey: BigInt("-6086348338935972352"),
+          methodRouteKey: BigInt("427842701337194174"),
         },
         {
           serviceName: "PricingService",
           methodName: "getPriceHistory",
-          methodRouteKey: BigInt("-6711739167421129728"),
+          methodRouteKey: BigInt("351281470395697564"),
         },
         {
           serviceName: "ReferenceDataService",
           methodName: "getCcyPairs",
-          methodRouteKey: BigInt("-3587707241265510912"),
+          methodRouteKey: BigInt("301742060701435334"),
         },
         {
           serviceName: "ThroughputAdminService",
           methodName: "getThroughput",
-          methodRouteKey: BigInt("-5527264366680351744"),
+          methodRouteKey: BigInt("351281540995897308"),
         },
         {
           serviceName: "ThroughputAdminService",
           methodName: "setThroughput",
-          methodRouteKey: BigInt("-1018179353612796416"),
+          methodRouteKey: BigInt("427843003423606206"),
         },
         {
           serviceName: "EchoService",
           methodName: "echo",
-          methodRouteKey: BigInt("-1739061107074329088"),
+          methodRouteKey: BigInt("337770967908295446"),
         },
         {
           serviceName: "InstrumentService",
           methodName: "subscribe",
-          methodRouteKey: BigInt("-1583240273509740800"),
+          methodRouteKey: BigInt("322008378500144143"),
         },
         {
           serviceName: "DealerService",
           methodName: "subscribe",
-          methodRouteKey: BigInt("-8881681336949959168"),
+          methodRouteKey: BigInt("337770542174953878"),
         },
         {
           serviceName: "WorkflowService",
           methodName: "createRfq",
-          methodRouteKey: BigInt("6400895782728043776"),
+          methodRouteKey: BigInt("317504155252739341"),
         },
         {
           serviceName: "WorkflowService",
           methodName: "cancelRfq",
-          methodRouteKey: BigInt("9120240265967396608"),
+          methodRouteKey: BigInt("376051112494117735"),
         },
         {
           serviceName: "WorkflowService",
           methodName: "createQuote",
-          methodRouteKey: BigInt("-3909036003142708736"),
+          methodRouteKey: BigInt("328763639312971602"),
         },
         {
           serviceName: "WorkflowService",
           methodName: "acceptQuote",
-          methodRouteKey: BigInt("3406490184815367168"),
+          methodRouteKey: BigInt("333266575468054100"),
         },
         {
           serviceName: "WorkflowService",
           methodName: "subscribe",
-          methodRouteKey: BigInt("-5880065670994126848"),
+          methodRouteKey: BigInt("342274320712559896"),
         },
         {
           serviceName: "TradeService",
           methodName: "trades",
-          methodRouteKey: BigInt("-1097229152485494784"),
+          methodRouteKey: BigInt("396317801320277552"),
         },
         {
           serviceName: "TradeService",
           methodName: "getTrades",
-          methodRouteKey: BigInt("-7994767111825425152"),
+          methodRouteKey: BigInt("425590787772885885"),
         },
       ],
       checkHandlersAreRegistered: true,
+      methodRouteKeyFormatVersion: 1,
+      clientSupportsOlderMessageFormats: false,
     },
   )
 }
