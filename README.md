@@ -22,11 +22,11 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 - [Style guide]: Colours, iconography, typography, atoms and molecules
 - [Storybook]: Explore individual React components
 
-[Web & Mobile]: https://www.reactivetrader.com
-[Openfin]: https://openfin.co/
-[Finsemble]: https://cosaic.io/finsemble/
-[Storybook]: https://www.reactivetrader.com/storybook
-[Style guide]: https://www.reactivetrader.com/styleguide
+[web & mobile]: https://www.reactivetrader.com
+[openfin]: https://openfin.co/
+[finsemble]: https://cosaic.io/finsemble/
+[storybook]: https://www.reactivetrader.com/storybook
+[style guide]: https://www.reactivetrader.com/styleguide
 [openfin-win]: ./src/client/install/Reactive-Launcher-Demo.exe?raw=true
 [openfin-mac]: ./src/client/install/Reactive-Launcher-Demo.dmg?raw=true
 [finsemble-win]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsemble.exe
@@ -41,11 +41,13 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 2. Install [Node.js and npm](https://nodejs.org/en/download/)
 
 3. Start the client:
+
    ```bash
     cd src/client
     npm install
     npm start
-    ```
+   ```
+
    This will connect to the dev back-end in the cloud.
 
 4. Navigate to http://localhost:1917
@@ -55,6 +57,7 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 <summary>Manually update contracts for Trading Gateway API</summary>
 
 1. Open [hydra-reactive-trader](`https://github.com/AdaptiveConsulting/hydra-reactive-trader`) project in IntelliJ IDEA and run:
+
    ```
    ./gradlew
    ```
@@ -66,7 +69,7 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
    npm run generateCod
    ```
    This will regenerate TradingGateway.ts `(file://./src/client/src/generated/TradingGateway.ts)`
-</details>
+   </details>
 
 <details open>
 <summary>Run against local Backend Services</summary>
@@ -77,8 +80,7 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
    ```
    VITE_HYDRA_URL=ws://localhost:8929 npm start
    ```
-</details>
-
+   </details>
 
 ## CI/CD
 

@@ -9,7 +9,7 @@
     "name": "Reactive Workspace<ENV_SUFFIX>",
     "icon": "<BASE_URL>/favicon.ico",
     "autoShow": "<SHOW_PROVIDER_WINDOW>",
-    "providerUrl": "<BASE_URL>/index.html",
+    "providerUrl": "<BASE_URL>/workspaceProvider.html",
     "preventQuitOnLastWindowClosed": true,
     "permissions": {
       "ExternalWindow": {
