@@ -162,7 +162,7 @@ There seems to be some issues with storybook cache on some machines, we can solv
 
 Reactive Trader can be installed as a progressive web application.
 
-The [service worker](src/serviceWorker.js) will need to be running for local development.
+The [service worker](src/client/Web/serviceWorkerRegistration.ts) will need to be running for local development.
 
 The settings for the PWA are configured in [`manifest.json`](public/manifest.json), plus various settings in index.html `<head>`. All attempts to date to bring iOS splash screens back to life have been fruitless, see [pwa-splash-screens](https://github.com/applification/pwa-splash-screens/blob/master/index.html) for reference, previous client [index.html](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/chore/classic-retirement/src/client/public/index.html) and many angry comments on the web.
 
