@@ -1,5 +1,4 @@
 import Header from "client/App/Header"
-import { LimitCheckerHeader } from "client/App/Header/LimitCheckerHeader"
 import LoginControls from "client/App/Header/LoginControls"
 import ThemeSwitcher from "client/App/Header/theme-switcher"
 
