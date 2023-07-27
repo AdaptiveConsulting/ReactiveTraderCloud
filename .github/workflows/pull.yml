@@ -89,7 +89,7 @@ jobs:
           VITE_BUILD_VERSION: ${{ github.sha }}
         run: |
           npm ci
-          npm run build
+          npm run workspace:build
         working-directory: .
 
       - name: Deploy (OpenFin - Workspace)
