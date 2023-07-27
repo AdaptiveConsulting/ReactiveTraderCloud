@@ -12,7 +12,7 @@ Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/React
 
 Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full list of the latest features.
 
-![image](src/workspace/public/images/previews/reactive-trader.PNG)
+![image](/public-workspace/images/previews/reactive-trader.PNG)
 
 ## Demo
 
@@ -43,8 +43,7 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 3. Start the client:
 
    ```bash
-    cd src/client
-    npm install
+    npm i
     npm start
    ```
 
