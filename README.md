@@ -12,7 +12,7 @@ Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/React
 
 Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full list of the latest features.
 
-![image](src/workspace/public/images/previews/reactive-trader.PNG)
+![image](/public-workspace/images/previews/reactive-trader.PNG)
 
 ## Demo
 
@@ -27,8 +27,8 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 [finsemble]: https://cosaic.io/finsemble/
 [storybook]: https://www.reactivetrader.com/storybook
 [style guide]: https://www.reactivetrader.com/styleguide
-[openfin-win]: ./src/client/install/Reactive-Launcher-Demo.exe?raw=true
-[openfin-mac]: ./src/client/install/Reactive-Launcher-Demo.dmg?raw=true
+[openfin-win]: ./install/Reactive-Launcher-Demo.exe?raw=true
+[openfin-mac]: ./install/Reactive-Launcher-Demo.dmg?raw=true
 [finsemble-win]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsemble.exe
 
 ## Development
@@ -43,8 +43,7 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 3. Start the client:
 
    ```bash
-    cd src/client
-    npm install
+    npm i
     npm start
    ```
 
