@@ -164,7 +164,7 @@ Reactive Trader can be installed as a progressive web application.
 
 The [service worker](src/client/Web/serviceWorkerRegistration.ts) will need to be running for local development.
 
-The settings for the PWA are configured in [`manifest.json`](public-pwa/manifest.json), plus various settings in index.html `<head>`. All attempts to date to bring iOS splash screens back to life have been fruitless, see [pwa-splash-screens](https://github.com/AdaptiveConsulting/blob/master/public-pwa/splashscreen) for reference.
+The settings for the PWA are configured in [`manifest.json`](public-pwa/manifest.json), plus various settings in index.html `<head>`. All attempts to date to bring iOS splash screens back to life have been fruitless, see [pwa-splash-screens](https://github.com/applification/pwa-splash-screens/blob/master/index.html) for reference.
 
 ## Token replacement
 
