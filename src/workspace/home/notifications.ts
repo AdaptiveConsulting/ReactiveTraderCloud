@@ -1,38 +1,76 @@
-import { create } from "openfin-notifications"
-import { filter } from "rxjs"
+import { View } from "@openfin/core/src/OpenFin"
+import { getCurrentSync } from "@openfin/workspace-platform"
 import {
-  executions$,
-  ExecutionStatus,
-  ExecutionTrade,
-} from "services/executions"
-import { BASE_URL } from "workspace/consts"
+  handleHighlightFxBlotterAction,
+  handleHighlightRfqAction,
+  TASK_HIGHLIGHT_CREDIT_RFQ,
+  TASK_HIGHLIGHT_FX_TRADE,
+} from "client/notifications.openfin"
+import { RT_PLATFORM_UUID_PREFIX } from "client/OpenFin/utils/window"
+import { NotificationActionEvent } from "openfin-notifications"
 
-const sendFxTradeNotification = (trade: ExecutionTrade) => {
-  const notification = {
-    ...trade,
-    valueDate: trade.valueDate.toString(),
-    tradeDate: trade.valueDate.toString(),
+import { VITE_RT_URL } from "../consts"
+
+let rfqsView: View | null = null
+export const handleCreditRfqNotification = async (
+  event: NotificationActionEvent,
+) => {
+  if (event.result.task === TASK_HIGHLIGHT_CREDIT_RFQ) {
+    const apps = await fin.System.getAllApplications()
+
+    const isCreditOpen = apps.find((app) =>
+      app.uuid.includes(`${RT_PLATFORM_UUID_PREFIX}credit`),
+    )?.isRunning
+
+    //if credit is already open, highlight the rfq
+    if (isCreditOpen) {
+      handleHighlightRfqAction(event)
+    } else if (!rfqsView) {
+      //else open an rfqs view
+      const platform = getCurrentSync()
+
+      rfqsView = await platform.createView({
+        url: `${VITE_RT_URL}/credit-rfqs`,
+        bounds: { width: 320, height: 180, top: 0, left: 0 },
+      })
+
+      rfqsView.on("destroyed", () => {
+        rfqsView?.removeAllListeners()
+        rfqsView = null
+      })
+    } else {
+      rfqsView.focus()
+    }
   }
-
-  const status =
-    notification.status === ExecutionStatus.Done ? "Accepted" : "Rejected"
-
-  const iconUrl = `${BASE_URL}/images/icons/reactive-trader.png`
-
-  create({
-    title: `Trade ${status}: ID ${notification.tradeId}`,
-    body: `${notification.direction} ${notification.dealtCurrency} ${
-      notification.notional
-    } vs ${notification.currencyPair.substr(3)} @ ${notification.spotRate}`,
-    icon: iconUrl,
-    customData: { tradeId: notification.tradeId },
-    buttons: [],
-    category: "Trade Executed",
-  })
 }
 
-export async function registerFxNotifications() {
-  executions$.subscribe((executionResponse) => {
-    sendFxTradeNotification(executionResponse as ExecutionTrade)
-  })
+let blotterView: View | null = null
+export const handleFxTradeNotification = async (
+  event: NotificationActionEvent,
+) => {
+  if (event.result.task === TASK_HIGHLIGHT_FX_TRADE) {
+    const apps = await fin.System.getAllApplications()
+
+    const isFxOpen = apps.find((app) =>
+      app.uuid.includes(`${RT_PLATFORM_UUID_PREFIX}fx`),
+    )?.isRunning
+
+    if (isFxOpen) {
+      handleHighlightFxBlotterAction(event)
+    } else if (!blotterView) {
+      const platform = getCurrentSync()
+
+      blotterView = await platform.createView({
+        url: `${VITE_RT_URL}/fx-blotter`,
+        bounds: { width: 320, height: 180, top: 0, left: 0 },
+      })
+
+      blotterView.on("destroyed", () => {
+        blotterView?.removeAllListeners()
+        blotterView = null
+      })
+    } else {
+      blotterView.focus()
+    }
+  }
 }
