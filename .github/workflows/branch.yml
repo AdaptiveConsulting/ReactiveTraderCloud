@@ -105,7 +105,7 @@ jobs:
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: |
           npm ci
-          npm run build
+          npm run workspace:build
         working-directory: .
 
       - name: Deploy (OpenFin - Workspace)

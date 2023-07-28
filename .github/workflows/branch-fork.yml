@@ -44,5 +44,5 @@ jobs:
       - name: Build (OpenFin - Workspace)
         run: |
           npm ci
-          npm run build
+          npm run workspace:build
         working-directory: .

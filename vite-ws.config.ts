@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv, Plugin } from "vite"
+import { createHtmlPlugin } from "vite-plugin-html"
 import { TransformOption, viteStaticCopy } from "vite-plugin-static-copy"
 
 const localPort = Number(process.env.PORT) || 2017
@@ -46,6 +47,25 @@ const copyOpenfinPlugin = (
   })
 }
 
+const injectScriptIntoHtml = () =>
+  createHtmlPlugin({
+    pages: [
+      {
+        filename: "index.html",
+        template: "index.html",
+        injectOptions: {
+          data: {
+            injectScript: `"<!-- no manifest.json for OpenFin -->"`,
+          },
+        },
+      },
+      {
+        filename: "workspaceProvider.html",
+        template: "workspaceProvider.html",
+      },
+    ],
+  })
+
 const setConfig = ({ mode }) => {
   const env = process.env.ENVIRONMENT || "local"
   const reactiveAnalyticsUrl =
@@ -65,7 +85,10 @@ const setConfig = ({ mode }) => {
 
   const isDev = mode === "development"
   const baseUrl = getBaseUrl(isDev)
-  const plugins = [copyOpenfinPlugin(isDev, env, process.env.VITE_RA_URL!)]
+  const plugins = [
+    copyOpenfinPlugin(isDev, env, process.env.VITE_RA_URL!),
+    injectScriptIntoHtml(),
+  ]
 
   return defineConfig({
     base: baseUrl,
