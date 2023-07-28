@@ -109,7 +109,7 @@ As a shortcut, to run the server and client in one command, use
 npm run openfin:start:blah
 ```
 
-For more insight into how NLP works in RT see their [doc](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/src/server/cloud/nlp/README.md).
+For more insight into how NLP works in RT see their [doc](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/server/cloud/nlp/README.md).
 
 ## Finsemble
 
@@ -164,11 +164,11 @@ Reactive Trader can be installed as a progressive web application.
 
 The [service worker](src/client/Web/serviceWorkerRegistration.ts) will need to be running for local development.
 
-The settings for the PWA are configured in [`manifest.json`](public/manifest.json), plus various settings in index.html `<head>`. All attempts to date to bring iOS splash screens back to life have been fruitless, see [pwa-splash-screens](https://github.com/applification/pwa-splash-screens/blob/master/index.html) for reference, previous client [index.html](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/chore/classic-retirement/src/client/public/index.html) and many angry comments on the web.
+The settings for the PWA are configured in [`manifest.json`](public-pwa/manifest.json), plus various settings in index.html `<head>`. All attempts to date to bring iOS splash screens back to life have been fruitless, see [pwa-splash-screens](https://github.com/AdaptiveConsulting/blob/master/public-pwa/splashscreen) for reference.
 
 ## Token replacement
 
-The PWA [`manifest.json`](public/manifest.json) file and the [OpenFin manifests](public/openfin) contain tokens in the form `{{token}}` that can be replaced at build time with environment-specific values (e.g. the application name may have an environment suffix).
+The PWA [`manifest.json`](public-pwa/manifest.json) file and the [OpenFin manifests](public-openfin) contain tokens in the form `{{token}}` that can be replaced at build time with environment-specific values (e.g. the application name may have an environment suffix).
 
 ## Deployment
 
