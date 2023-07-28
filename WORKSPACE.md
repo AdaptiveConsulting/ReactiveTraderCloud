@@ -26,7 +26,7 @@ Reactive Analytics will need to be running to open the RA app/view. `npm run sta
 
 ## Configs
 
-Config files are located in [./src/workspace/config](./config).
+Config files are located in [./src/workspace/config](./src/workspace/config).
 
 Vite will replace placeholders at run/build time.
 
