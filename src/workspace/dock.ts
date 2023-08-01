@@ -1,6 +1,6 @@
 import { Dock, DockProvider } from "@openfin/workspace"
 
-import { BASE_URL } from "./consts"
+import { BASE_URL, VITE_RT_URL } from "./consts"
 import { ADAPTIVE_LOGO } from "./home/utils"
 import { manifestUrls } from "./utils"
 
@@ -25,27 +25,30 @@ export const registerDock = () => {
     buttons: [
       {
         tooltip: "Reactive Trader FX",
-        iconUrl: `${BASE_URL}/public-workspace/images/icons/reactive-trader-fx.png`,
+        iconUrl: `${BASE_URL}/images/icons/reactive-trader-fx.png`,
         action: {
           id: DockAction.OpenReactiveTraderFx,
         },
       },
       {
         tooltip: "Reactive Trader Credit",
-        iconUrl: `${BASE_URL}/public-workspace/images/icons/reactive-trader-credit.png`,
+        iconUrl: `${BASE_URL}/images/icons/reactive-trader-credit.png`,
         action: {
           id: DockAction.OpenReactiveTraderCredit,
         },
       },
       {
         tooltip: "Reactive Analytics",
-        iconUrl: `${BASE_URL}/public-workspace/images/icons/reactive-analytics-2.png`,
+        iconUrl: `${BASE_URL}/images/icons/reactive-analytics-2.png`,
         action: {
           id: DockAction.OpenReactiveAnalytics,
         },
       },
     ],
   }
+
+  console.log(window.location.href)
+  console.log(VITE_RT_URL)
 
   Dock.register(dockProvider)
   return Dock.show()
