@@ -25,14 +25,12 @@ export const reactiveTraderFx: App = {
   manifest: manifestUrls.reactiveTrader,
   icons: [
     {
-      src: `${BASE_URL}/public-workspace/images/icons/reactive-trader.png`,
+      src: `${BASE_URL}/images/icons/reactive-trader.png`,
     },
   ],
   publisher: "Adaptive Financial Consulting",
   tags: ["FX", "Trading", "Market Data", "Analytics"],
-  images: [
-    { src: `${BASE_URL}/public-workspace/images/previews/reactive-trader.PNG` },
-  ],
+  images: [{ src: `${BASE_URL}/images/previews/reactive-trader.PNG` }],
 }
 
 export const reactiveTraderCredit: App = {
@@ -43,14 +41,12 @@ export const reactiveTraderCredit: App = {
   manifest: manifestUrls.reactiveCredit,
   icons: [
     {
-      src: `${BASE_URL}/public-workspace/images/icons/reactive-trader.png`,
+      src: `${BASE_URL}/images/icons/reactive-trader.png`,
     },
   ],
   publisher: "Adaptive Financial Consulting",
   tags: ["Credit", "Trading", "Market Data", "Analytics"],
-  images: [
-    { src: `${BASE_URL}/public-workspace/images/previews/reactive-trader.PNG` },
-  ],
+  images: [{ src: `${BASE_URL}/images/previews/reactive-trader.PNG` }],
 }
 
 export const reactiveAnalytics: App = {
@@ -61,14 +57,14 @@ export const reactiveAnalytics: App = {
   manifest: manifestUrls.reactiveAnalytics,
   icons: [
     {
-      src: `${BASE_URL}/public-workspace/images/icons/reactive-analytics.png`,
+      src: `${BASE_URL}/images/icons/reactive-analytics.png`,
     },
   ],
   publisher: "Adaptive Financial Consulting",
   tags: ["Market Data", "Research"],
   images: [
     {
-      src: `${BASE_URL}/public-workspace/images/previews/reactive-analytics.PNG`,
+      src: `${BASE_URL}/images/previews/reactive-analytics.PNG`,
     },
   ],
 }
@@ -81,14 +77,12 @@ export const limitChecker: App = {
   manifest: manifestUrls.limitChecker,
   icons: [
     {
-      src: `${BASE_URL}/public-workspace/images/icons/limit-checker.ico`,
+      src: `${BASE_URL}/images/icons/limit-checker.ico`,
     },
   ],
   publisher: "Adaptive Financial Consulting",
   tags: ["Trading", "Tools"],
-  images: [
-    { src: `${BASE_URL}/public-workspace/images/previews/limit-checker.PNG` },
-  ],
+  images: [{ src: `${BASE_URL}/images/previews/limit-checker.PNG` }],
 }
 
 export const limitCheckerView: App = {
@@ -99,14 +93,12 @@ export const limitCheckerView: App = {
   manifest: `${BASE_URL}/config/limit-checker.json`,
   icons: [
     {
-      src: `${BASE_URL}/public-workspace/images/icons/limit-checker.ico`,
+      src: `${BASE_URL}/images/icons/limit-checker.ico`,
     },
   ],
   publisher: "Adaptive Financial Consulting",
   tags: ["Trading", "Tools"],
-  images: [
-    { src: `${BASE_URL}/public-workspace/images/previews/limit-checker.PNG` },
-  ],
+  images: [{ src: `${BASE_URL}/images/previews/limit-checker.PNG` }],
 }
 
 export const reactiveWorkspace: App = {
@@ -117,14 +109,14 @@ export const reactiveWorkspace: App = {
   manifest: `${BASE_URL}/src/workspace/config/snapshot.json`,
   icons: [
     {
-      src: `${BASE_URL}/public-workspace/images/icons/reactive-trader.png`,
+      src: `${BASE_URL}/images/icons/reactive-trader.png`,
     },
   ],
   publisher: "OpenFin",
   tags: ["Trading", "Market Data", "Research"],
   images: [
     {
-      src: `${BASE_URL}/public-workspace/images/previews/reactive-trader-snapshot.PNG`,
+      src: `${BASE_URL}/images/previews/reactive-trader-snapshot.PNG`,
     },
   ],
 }
@@ -137,14 +129,12 @@ export const reactiveTraderFxLiveRatesView: App = {
   manifest: `${BASE_URL}/config/fx-live-rates.json`,
   icons: [
     {
-      src: `${BASE_URL}/public-workspace/images/icons/reactive-trader.png`,
+      src: `${BASE_URL}/images/icons/reactive-trader.png`,
     },
   ],
   publisher: "Adaptive Financial Consulting",
   tags: ["FX", "Market Data", "Trading"],
-  images: [
-    { src: `${BASE_URL}/public-workspace/images/previews/live-rates-view.PNG` },
-  ],
+  images: [{ src: `${BASE_URL}/images/previews/live-rates-view.PNG` }],
 }
 
 export const reactiveTraderFxTradesView: App = {
@@ -155,14 +145,12 @@ export const reactiveTraderFxTradesView: App = {
   manifest: `${BASE_URL}/config/fx-trades.json`,
   icons: [
     {
-      src: `${BASE_URL}/public-workspace/images/icons/reactive-trader.png`,
+      src: `${BASE_URL}/images/icons/reactive-trader.png`,
     },
   ],
   publisher: "Adaptive Financial Consulting",
   tags: ["FX", "Trading"],
-  images: [
-    { src: `${BASE_URL}/public-workspace/images/previews/trades-view.PNG` },
-  ],
+  images: [{ src: `${BASE_URL}/images/previews/trades-view.PNG` }],
 }
 
 export const reactiveTraderFxAnalyticsView: App = {
@@ -173,14 +161,12 @@ export const reactiveTraderFxAnalyticsView: App = {
   manifest: `${BASE_URL}/config/fx-analytics.json`,
   icons: [
     {
-      src: `${BASE_URL}/public-workspace/images/icons/reactive-trader.png`,
+      src: `${BASE_URL}/images/icons/reactive-trader.png`,
     },
   ],
   publisher: "Adaptive Financial Consulting",
   tags: ["FX", "Analytics"],
-  images: [
-    { src: `${BASE_URL}/public-workspace/images/previews/analytics-view.PNG` },
-  ],
+  images: [{ src: `${BASE_URL}/images/previews/analytics-view.PNG` }],
 }
 
 export const reactiveAnalyticsView: App = {
@@ -191,14 +177,14 @@ export const reactiveAnalyticsView: App = {
   manifest: `${BASE_URL}/config/reactive-analytics.json`,
   icons: [
     {
-      src: `${BASE_URL}/public-workspace/images/icons/reactive-analytics.png`,
+      src: `${BASE_URL}/images/icons/reactive-analytics.png`,
     },
   ],
   publisher: "Adaptive Financial Consulting",
   tags: ["Market Data", "Research"],
   images: [
     {
-      src: `${BASE_URL}/public-workspace/images/previews/reactive-analytics.PNG`,
+      src: `${BASE_URL}/images/previews/reactive-analytics.PNG`,
     },
   ],
 }

@@ -33,7 +33,7 @@ import { execute$ } from "services/executions"
 
 import { BASE_URL } from "../consts"
 import { getUserResult, getUserToSwitch, switchUser } from "../user"
-export const ADAPTIVE_LOGO = `${BASE_URL}/public-workspace/images/icons/adaptive.png`
+export const ADAPTIVE_LOGO = `${BASE_URL}/images/icons/adaptive.png`
 
 const mapAppEntriesToSearchEntries = (apps: App[]): CLISearchResult<Action>[] =>
   apps.map((app) => {
