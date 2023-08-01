@@ -47,9 +47,6 @@ export const registerDock = () => {
     ],
   }
 
-  console.log(window.location.href)
-  console.log(VITE_RT_URL)
-
   Dock.register(dockProvider)
   return Dock.show()
 }
