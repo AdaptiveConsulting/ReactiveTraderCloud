@@ -41,7 +41,9 @@ export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
   async function wrappedClose() {
     // ONLY if RT/LC main win is primary win of platform, close all platform windows
     if (inReactiveTraderMainWindow()) {
-      fin.Platform.getCurrentSync().quit()
+      const windows = await fin.Application.getCurrentSync().getChildWindows()
+      windows.forEach((window) => window.close())
+      // fin.Platform.getCurrentSync().quit() // TODO Commenting for now until we find why this sometimes closes every window
     }
 
     if (close) {
