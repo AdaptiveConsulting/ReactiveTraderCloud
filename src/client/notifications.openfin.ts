@@ -251,78 +251,93 @@ export const handleHighlightRfqAction = (event: NotificationActionEvent) => {
 
 export type NotificationActionHandler = (event: NotificationActionEvent) => void
 
+let areFxNotificationsRegistered = false
 export const registerFxNotifications = (
   handler?: NotificationActionHandler,
 ) => {
-  fin.InterApplicationBus.subscribe(
-    { uuid: "*" },
-    TOPIC_HIGHLIGHT_FX_BLOTTER,
-    (message: { tradeId: number }) => setFxTradeRowHighlight(message.tradeId),
-  )
+  if (!areFxNotificationsRegistered) {
+    areFxNotificationsRegistered = true
 
-  addEventListener(
-    "notification-action",
-    handler || handleHighlightFxBlotterAction,
-  )
+    fin.InterApplicationBus.subscribe(
+      { uuid: "*" },
+      TOPIC_HIGHLIGHT_FX_BLOTTER,
+      (message: { tradeId: number }) => setFxTradeRowHighlight(message.tradeId),
+    )
 
-  executions$.subscribe({
-    next: (executionTrade) => {
-      sendFxTradeNotification(executionTrade)
-    },
-    error: (e) => {
-      console.error(e)
-    },
-    complete: () => {
-      console.error("FX trade notifications stream completed!?")
-    },
-  })
+    addEventListener(
+      "notification-action",
+      handler || handleHighlightFxBlotterAction,
+    )
+
+    executions$.subscribe({
+      next: (executionTrade) => {
+        sendFxTradeNotification(executionTrade)
+      },
+      error: (e) => {
+        console.error(e)
+      },
+      complete: () => {
+        console.error("FX trade notifications stream completed!?")
+      },
+    })
+  }
 }
 
+let areCreditQuoteNotificatiosRegistered = false
 export const registerCreditQuoteNotifications = (
   handler?: NotificationActionHandler,
 ) => {
-  fin.InterApplicationBus.subscribe(
-    { uuid: "*" },
-    TOPIC_HIGHLIGHT_CREDIT_RFQ,
-    (message: { rfqId: number }) => {
-      setCreditRfqCardHighlight(message.rfqId)
-    },
-  )
+  if (!areCreditAcceptedNotificationsRegistered) {
+    areCreditQuoteNotificatiosRegistered = true
 
-  addEventListener("notification-action", handler || handleHighlightRfqAction)
+    fin.InterApplicationBus.subscribe(
+      { uuid: "*" },
+      TOPIC_HIGHLIGHT_CREDIT_RFQ,
+      (message: { rfqId: number }) => {
+        setCreditRfqCardHighlight(message.rfqId)
+      },
+    )
 
-  quotesReceivedSubscription = lastQuoteReceived$.subscribe({
-    next: (quote) => {
-      sendCreditQuoteNotification(quote)
-    },
-    error: (e) => {
-      console.error(e)
-    },
-    complete: () => {
-      console.error("credit quote notifications stream completed!?")
-    },
-  })
+    addEventListener("notification-action", handler || handleHighlightRfqAction)
+
+    quotesReceivedSubscription = lastQuoteReceived$.subscribe({
+      next: (quote) => {
+        sendCreditQuoteNotification(quote)
+      },
+      error: (e) => {
+        console.error(e)
+      },
+      complete: () => {
+        console.error("credit quote notifications stream completed!?")
+      },
+    })
+  }
 }
 
+let areCreditAcceptedNotificationsRegistered = false
 export const registerCreditAcceptedNotifications = (
   handler?: NotificationActionHandler,
 ) => {
-  fin.InterApplicationBus.subscribe(
-    { uuid: "*" },
-    TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
-    (message: { tradeId: number }) => {
-      setCreditTradeRowHighlight(message.tradeId)
-    },
-  )
+  if (!areCreditAcceptedNotificationsRegistered) {
+    areCreditAcceptedNotificationsRegistered = true
 
-  addEventListener(
-    "notification-action",
-    handler || handleHighlightCreditBlotterAction,
-  )
+    fin.InterApplicationBus.subscribe(
+      { uuid: "*" },
+      TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
+      (message: { tradeId: number }) => {
+        setCreditTradeRowHighlight(message.tradeId)
+      },
+    )
 
-  acceptedRfqWithQuote$.subscribe((rfq) => {
-    sendQuoteAcceptedNotification(rfq)
-  })
+    addEventListener(
+      "notification-action",
+      handler || handleHighlightCreditBlotterAction,
+    )
+
+    acceptedRfqWithQuote$.subscribe((rfq) => {
+      sendQuoteAcceptedNotification(rfq)
+    })
+  }
 }
 
 export const unregisterCreditQuoteNotifications = () => {
