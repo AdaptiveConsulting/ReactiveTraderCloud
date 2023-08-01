@@ -92,6 +92,7 @@ const setConfig = ({ mode }) => {
 
   return defineConfig({
     base: baseUrl,
+    publicDir: "/public-workspace",
     build: {
       sourcemap: true,
     },
