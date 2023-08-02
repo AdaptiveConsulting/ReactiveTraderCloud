@@ -22,7 +22,7 @@ const [resetInput$, onResetInput] = createSignal()
 export { onResetInput }
 
 const [useNlpInput, nlpInput$] = bind(
-  merge(input$, resetInput$.pipe(map(() => ""))),
+  merge(resetInput$.pipe(map(() => ""))),
   "",
 )
 export { useNlpInput }
@@ -38,9 +38,9 @@ export enum NlpIntentType {
 export interface TradeExecutionIntent {
   type: NlpIntentType.TradeExecution
   payload: {
-    symbol?: string
-    direction?: Direction
-    notional?: number
+    symbol: string
+    direction: Direction
+    notional: number
   }
 }
 
@@ -54,9 +54,9 @@ export interface SpotQuoteIntent {
 export interface TradesInfoIntent {
   type: NlpIntentType.TradeInfo
   payload: {
-    count?: number
-    symbol?: string
-    currency?: string
+    count: number
+    symbol: string
+    currency: string
   }
 }
 
