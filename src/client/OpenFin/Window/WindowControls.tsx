@@ -4,11 +4,7 @@ import { useEffect } from "react"
 import { ExitIcon } from "../icons/ExitIcon"
 import { MaximizeIcon } from "../icons/MaximizeIcon"
 import { MinimizeIcon } from "../icons/MinimizeIcon"
-import {
-  closeOtherWindows,
-  inReactiveTraderMainWindow,
-  isReactiveTraderPlatformPrimary,
-} from "../utils/window"
+import { closeOtherWindows, inReactiveTraderMainWindow } from "../utils/window"
 import { Control, ControlsWrapper } from "./WindowHeader.styles"
 
 export interface Props {

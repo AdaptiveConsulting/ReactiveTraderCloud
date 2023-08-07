@@ -27,7 +27,7 @@ function interopOverride(
     constructor() {
       super()
       this.analyticsUuid = `reactive-analytics-${ENVIRONMENT}`
-      this.limitCheckerUuid = `reactive-trader-limit-checker` // TODO make env specific
+      this.limitCheckerUuid = `reactive-trader-limit-checker-${ENVIRONMENT}`
       this.analyticsClients = new Map()
       this.limitCheckerClients = new Map()
       this.initializeBrokers(this.analyticsUuid, this.analyticsClients).catch(

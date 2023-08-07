@@ -1,6 +1,6 @@
 {
   "platform": {
-    "uuid": "reactive-trader-limit-checker",
+    "uuid": "reactive-trader-limit-checker-<ENV_NAME>",
     "name": "Limit Checker <ENV_SUFFIX>",
     "icon": "<BASE_URL>/static/media/limit-checker.svg",
     "url": "<BASE_URL>",
