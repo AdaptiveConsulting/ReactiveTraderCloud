@@ -12,6 +12,7 @@ overrides:
   [
     {
       files: ["*.{service-mock,mock,test,spec}.{ts,tsx}", "**/__mocks__/*"],
+      ignorePatterns: ["generated/*.ts"]
       rules:
         {
           "@typescript-eslint/no-explicit-any": 0,
