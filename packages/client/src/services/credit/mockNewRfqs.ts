@@ -6,7 +6,7 @@ import {
   PENDING_WITH_PRICE_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
   QUOTE_PASSED_RFQ_UPDATE,
-  QUOTE_UPDATED_RFQ_UPDATE,
+  QUOTE_QUOTED_RFQ_UPDATE,
   RFQ_CREATED_RFQ_UPDATE,
   RfqState,
   RfqUpdate,
@@ -72,7 +72,7 @@ const constructRfqUpdate = () => {
             payload: randomNumberGenerator(1, 9999),
           },
         },
-        type: QUOTE_UPDATED_RFQ_UPDATE,
+        type: QUOTE_QUOTED_RFQ_UPDATE,
       })
     }
   }

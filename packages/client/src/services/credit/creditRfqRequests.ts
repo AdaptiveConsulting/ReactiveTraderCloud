@@ -2,19 +2,16 @@ import { createSignal } from "@react-rxjs/utils"
 import { showRfqInSellSide } from "client/utils"
 import {
   AcceptQuoteRequest,
+  ACK_ACCEPT_QUOTE_RESPONSE,
   ACK_CREATE_RFQ_RESPONSE,
   CancelRfqRequest,
   CreateRfqRequest,
-  QuoteBody,
+  QuoteRequest,
+  WorkflowService,
 } from "generated/TradingGateway"
 import { filter, map, tap, withLatestFrom } from "rxjs/operators"
 
-import {
-  ACK_ACCEPT_QUOTE_RESPONSE,
-  CreateQuoteRequest,
-  WorkflowService,
-} from "@/generated/OldTradingGateway"
-
+import { PricedQuoteBody } from "../rfqs/types"
 import { adaptiveDealerId$ } from "./creditDealers"
 import { creditRfqsById$, RfqDetails } from "./creditRfqs"
 
@@ -63,8 +60,8 @@ export const cancelCreditRfq$ = (cancelRequest: CancelRfqRequest) => {
   return WorkflowService.cancelRfq(cancelRequest)
 }
 
-export const createCreditQuote$ = (quoteRequest: CreateQuoteRequest) => {
-  return WorkflowService.createQuote(quoteRequest)
+export const createCreditQuote$ = (quoteRequest: QuoteRequest) => {
+  return WorkflowService.quote(quoteRequest)
 }
 
 export const [acceptedCreditRfq$, setAcceptedCreditRfq] =
@@ -73,7 +70,7 @@ export const [acceptedCreditRfq$, setAcceptedCreditRfq] =
   }>()
 
 export const acceptCreditQuote$ = (acceptRequest: AcceptQuoteRequest) => {
-  return WorkflowService.acceptQuote(acceptRequest).pipe(
+  return WorkflowService.accept(acceptRequest).pipe(
     tap((response) => {
       if (response.type === ACK_ACCEPT_QUOTE_RESPONSE) {
         setAcceptedCreditRfq({
@@ -84,9 +81,9 @@ export const acceptCreditQuote$ = (acceptRequest: AcceptQuoteRequest) => {
   )
 }
 
-export interface RfqWithQuote {
+export interface RfqWithPricedQuote {
   rfq: RfqDetails
-  quote: QuoteBody
+  quote: PricedQuoteBody
 }
 
 export const acceptedRfqWithQuote$ = acceptedCreditRfq$.pipe(
@@ -95,7 +92,7 @@ export const acceptedRfqWithQuote$ = acceptedCreditRfq$.pipe(
   map(([{ quoteId }, rfqs]) => {
     return Object.values(rfqs).reduce((acc, rfq) => {
       const quote = rfq.quotes.find((quote) => quoteId === quote.id)
-      return quote ? { quote, rfq } : acc
-    }, {} as RfqWithQuote)
+      return quote ? ({ quote, rfq } as RfqWithPricedQuote) : acc
+    }, {} as RfqWithPricedQuote)
   }),
 )

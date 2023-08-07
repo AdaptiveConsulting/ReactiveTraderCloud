@@ -1,10 +1,19 @@
 import { bind, shareLatest } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import {
+  ACCEPTED_QUOTE_STATE,
+  DealerBody,
+  Direction,
+  END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
+  InstrumentBody,
+  PASSED_QUOTE_STATE,
+  PENDING_WITH_PRICE_QUOTE_STATE,
+  PENDING_WITHOUT_PRICE_QUOTE_STATE,
+  QUOTE_ACCEPTED_RFQ_UPDATE,
   QUOTE_PASSED_RFQ_UPDATE,
-  QUOTE_UPDATED_RFQ_UPDATE,
+  QUOTE_QUOTED_RFQ_UPDATE,
   QuoteBody,
-  QuoteUpdatedRfqUpdate,
+  QuoteQuotedRfqUpdate,
   REJECTED_WITH_PRICE_QUOTE_STATE,
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   RFQ_CLOSED_RFQ_UPDATE,
@@ -28,22 +37,7 @@ import {
 import { withConnection } from "../withConnection"
 import { creditDealers$ } from "./creditDealers"
 import { creditInstruments$ } from "./creditInstruments"
-export type QuoteStateTypes =
-  | "pendingWithoutPrice"
-  | "pendingWithPrice"
-  | "passed"
-  | "accepted"
-  | "rejectedWithPrice"
-  | "rejectedWithoutPrice"
 
-export enum QuoteStateTypes_ {
-  PENDING_WITHOUT_PRICE_QUOTE_STATE = "pendingWithoutPrice",
-  PENDING_WITH_PRICE_QUOTE_STATE = "pendingWithPrice",
-  PASSED_QUOTE_STATE = "passed",
-  ACCEPTED_QUOTE_STATE = "accepted",
-  REJECTED_WITH_PRICE_QUOTE_STATE = "rejectedWithPrice",
-  REJECTED_WITHOUT_PRICE_QUOTE_STATE = "rejectedWithoutPrice",
-}
 export interface RfqDetails extends RfqBody {
   instrument: InstrumentBody | null
   dealers: DealerBody[]
@@ -57,7 +51,12 @@ export interface QuoteDetails extends QuoteBody {
   quantity: number
 }
 
+export interface PricedQuoteDetails extends Omit<QuoteDetails, "state"> {
+  state: PricedQuoteState
+}
+
 //MockImports
+import { PricedQuoteBody, PricedQuoteState } from "../rfqs/types"
 import { mockCreditRFQS } from "./mockNewRfqs"
 
 // Mock
@@ -116,7 +115,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
               },
             },
           ]
-        case QUOTE_UPDATED_RFQ_UPDATE: {
+        case QUOTE_QUOTED_RFQ_UPDATE: {
           const previousRfq = rec[update.payload.rfqId]
           return [
             acc[0],
@@ -302,24 +301,26 @@ const endOfRfqStateOfWorld$ = creditRfqUpdates$.pipe(
   startWith(false),
 )
 
-export const lastQuoteReceived$: Observable<QuoteDetails> =
+export const lastQuoteReceived$: Observable<PricedQuoteDetails> =
   creditRfqUpdates$.pipe(
     withLatestFrom(endOfRfqStateOfWorld$),
     filter(([, endOfRfqStateOfWorld]) => endOfRfqStateOfWorld),
     map(([update]) => update),
     filter(
-      (update): update is QuoteUpdatedRfqUpdate =>
-        update.type === QUOTE_UPDATED_RFQ_UPDATE,
+      (update): update is QuoteQuotedRfqUpdate =>
+        update.type === QUOTE_QUOTED_RFQ_UPDATE,
     ),
     withLatestFrom(creditRfqsById$),
     map(([update, creditRfqsById]) => {
-      const rfq = creditRfqsById[update.payload.rfqId]
+      const pricedQuoteBody = update.payload as PricedQuoteBody
+      const rfq = creditRfqsById[pricedQuoteBody.rfqId]
       return {
-        ...update.payload,
+        ...pricedQuoteBody,
         instrument: rfq.instrument,
         dealer:
-          rfq.dealers.find((dealer) => dealer.id === update.payload.dealerId) ??
-          null,
+          rfq.dealers.find(
+            (dealer) => dealer.id === pricedQuoteBody.dealerId,
+          ) ?? null,
         direction: rfq.direction,
         quantity: rfq.quantity,
       }

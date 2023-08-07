@@ -3,6 +3,8 @@ import { invertDirection } from "client/utils"
 import { useCreditRfqDetails } from "services/credit"
 import styled from "styled-components"
 
+import { QuoteBody } from "@/generated/TradingGateway"
+
 import { getSellSideQuoteState, SellSideQuoteState } from "../sellSideState"
 import { getSellSideStatusColor } from "../utils"
 import { SellSideTradeTicketFooter } from "./SellSideTradeTickerFooter"
@@ -97,6 +99,7 @@ export const SellSideTradeTicketTicketCore = ({
   }
 
   const quote = rfqDetails.quotes.find((quote) => quote.dealerId === dealerId)
+
   const {
     direction: clientDirection,
     instrumentId,
@@ -122,7 +125,7 @@ export const SellSideTradeTicketTicketCore = ({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          quoteState={quote!.state.type}
+          quoteState={quote!.state}
         />
         <SellSideTradeTicketParameters
           selectedRfqId={rfqId}
@@ -130,11 +133,7 @@ export const SellSideTradeTicketTicketCore = ({
           state={rfqState}
           quantity={quantity}
         />
-        <SellSideTradeTicketFooter
-          rfqId={rfqId}
-          dealerId={dealerId}
-          quote={quote}
-        />
+        <SellSideTradeTicketFooter rfqId={rfqId} quote={quote as QuoteBody} />
       </SellSideTradeTicketInnerWrapper>
     </SellSideTradeTicketWrapper>
   )

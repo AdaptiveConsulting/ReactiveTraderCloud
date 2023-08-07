@@ -99,17 +99,14 @@ const TradeDetails = styled.div`
   font-weight: 500px;
 `
 
-const [quoteRequest$, sendQuote] =
-  createSignal<{
-    rfqId: number
-    dealerId: number
-  }>()
-quoteRequest$
+const [quoteId$, sendQuote] = createSignal<number>()
+
+quoteId$
   .pipe(
     withLatestFrom(price$),
     filter(([, price]) => price.value > 0),
-    map(([ids, price]) => ({
-      ...ids,
+    map(([quoteId, price]) => ({
+      quoteId,
       price: price.value,
     })),
     exhaustMap((quoteRequest) => createCreditQuote$(quoteRequest)),
@@ -120,13 +117,11 @@ const formatter = customNumberFormatter()
 
 interface SellSideTradeTicketTicketFooterProps {
   rfqId: number
-  dealerId: number
-  quote: QuoteBody | undefined
+  quote: QuoteBody
 }
 
 export const SellSideTradeTicketFooter = ({
   rfqId,
-  dealerId,
   quote,
 }: SellSideTradeTicketTicketFooterProps) => {
   const rfq = useCreditRfqDetails(rfqId)
@@ -148,6 +143,7 @@ export const SellSideTradeTicketFooter = ({
     creationTimestamp,
     expirySecs,
   } = rfq
+
   const direction = invertDirection(clientDirection)
 
   const disableSend = price.value <= 0 || state !== RfqState.Open || !!quote
@@ -181,7 +177,7 @@ export const SellSideTradeTicketFooter = ({
           <SendQuoteButton
             ref={clickElementRef}
             direction={direction}
-            onClick={() => sendQuote({ rfqId, dealerId })}
+            onClick={() => sendQuote(quote?.id)}
             disabled={disableSend}
           >
             Send Quote

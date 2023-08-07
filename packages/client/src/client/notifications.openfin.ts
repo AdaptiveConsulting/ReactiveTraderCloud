@@ -19,8 +19,8 @@ import { Subscription } from "rxjs"
 import {
   acceptedRfqWithQuote$,
   lastQuoteReceived$,
-  QuoteDetails,
-  RfqWithQuote,
+  PricedQuoteDetails,
+  RfqWithPricedQuote,
 } from "services/credit"
 import { executions$, ExecutionTrade } from "services/executions"
 
@@ -144,7 +144,7 @@ const sendFxTradeNotification = (trade: ExecutionTrade) => {
   create(notificationOptions)
 }
 
-const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {
+const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithPricedQuote) => {
   const { title, tradeDetails } = processCreditAccepted(rfq, quote)
 
   const notificationOptions: TemplateCustom = {
@@ -179,7 +179,7 @@ const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithQuote) => {
   create(notificationOptions)
 }
 
-const sendCreditQuoteNotification = (quote: QuoteDetails) => {
+const sendCreditQuoteNotification = (quote: PricedQuoteDetails) => {
   const { title, tradeDetails } = processCreditQuote(quote)
 
   const notificationOptions: TemplateCustom = {

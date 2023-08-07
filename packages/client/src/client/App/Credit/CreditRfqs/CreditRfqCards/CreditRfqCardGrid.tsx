@@ -43,7 +43,6 @@ const [useFilteredCreditRfqIds] = bind(
   ),
 )
 
-<<<<<<<< HEAD:src/client/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCards.tsx
 /**
  * Signal to capture a tradeId of a credit RFQ card to highlight
  */
@@ -66,10 +65,7 @@ export const [useCreditRfqCardHighlight] = bind(
   null,
 )
 
-export const CreditRfqCards = () => {
-========
 export const CreditRfqCardGrid = () => {
->>>>>>>> 807a4d55b (refactor: moved quote state to rx):src/client/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCardGrid.tsx
   const rfqIds = useFilteredCreditRfqIds()
   const highlightedRfqCard = useCreditRfqCardHighlight()
 

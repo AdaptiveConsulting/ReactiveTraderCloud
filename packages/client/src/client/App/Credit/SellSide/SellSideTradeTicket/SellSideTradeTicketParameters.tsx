@@ -12,11 +12,11 @@ import { merge } from "rxjs"
 import { filter, map } from "rxjs/operators"
 import styled from "styled-components"
 
+import { ThemeName } from "@/client/theme"
 import {
   AcceptedQuoteState,
   PendingWithPriceQuoteState,
 } from "@/generated/TradingGateway"
-import { ThemeName } from "@/theme"
 
 import {
   getSellSideQuoteState,
@@ -66,7 +66,7 @@ export const ParameterInput = styled.input`
     outline: none !important;
     border-color: ${({ theme }) => theme.accents.primary.darker};
   }
-  &:disabled {
+  ¯ &:disabled {
     opacity: 0.3;
   }
   &.is-invalid {
