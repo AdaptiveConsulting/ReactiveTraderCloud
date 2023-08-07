@@ -71,7 +71,7 @@ export interface CreditRfqIntent {
     symbol: string
     direction: Direction
     notional: number
-    maturity?: string
+    maturity: string
   }
 }
 
