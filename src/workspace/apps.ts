@@ -106,7 +106,7 @@ export const reactiveWorkspace: App = {
   title: "Trading Workspace",
   manifestType: "snapshot",
   description: "Live rates, blotter and analytics",
-  manifest: `${BASE_URL}/src/workspace/config/snapshot.json`,
+  manifest: `${BASE_URL}/config/snapshot.json`,
   icons: [
     {
       src: `${BASE_URL}/images/icons/reactive-trader.png`,
