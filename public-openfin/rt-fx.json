@@ -19,7 +19,7 @@
     }
   },
   "runtime": {
-    "version": "<OPENFIN_RUNTIME>",
+    "version": "29.108.73.14",
     "arguments": "--remote-debugging-port=9091"
   },
   "services": [{ "name": "notifications" }],
