@@ -1,9 +1,8 @@
 import { Loader } from "client/components/Loader"
 import { invertDirection } from "client/utils"
+import { QuoteBody } from "generated/TradingGateway"
 import { useCreditRfqDetails } from "services/credit"
 import styled from "styled-components"
-
-import { QuoteBody } from "@/generated/TradingGateway"
 
 import { getSellSideQuoteState, SellSideQuoteState } from "../sellSideState"
 import { getSellSideStatusColor } from "../utils"

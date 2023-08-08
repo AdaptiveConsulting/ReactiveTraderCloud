@@ -10,6 +10,7 @@ import {
   PENDING_WITH_PRICE_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
   QUOTE_ACCEPTED_RFQ_UPDATE,
+  QUOTE_CREATED_RFQ_UPDATE,
   QUOTE_PASSED_RFQ_UPDATE,
   QUOTE_QUOTED_RFQ_UPDATE,
   QuoteBody,
@@ -22,6 +23,7 @@ import {
   RfqState,
   RfqUpdate,
   START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
+  WorkflowService,
 } from "generated/TradingGateway"
 import { combineLatest, merge, Observable, of, timer } from "rxjs"
 import {
@@ -31,9 +33,11 @@ import {
   scan,
   startWith,
   switchMap,
+  tap,
   withLatestFrom,
 } from "rxjs/operators"
 
+import { PricedQuoteBody, PricedQuoteState } from "../rfqs/types"
 import { withConnection } from "../withConnection"
 import { creditDealers$ } from "./creditDealers"
 import { creditInstruments$ } from "./creditInstruments"
@@ -55,18 +59,10 @@ export interface PricedQuoteDetails extends Omit<QuoteDetails, "state"> {
   state: PricedQuoteState
 }
 
-//MockImports
-import { PricedQuoteBody, PricedQuoteState } from "../rfqs/types"
-import { mockCreditRFQS } from "./mockNewRfqs"
-
-// Mock
-const creditRfqUpdates$ = mockCreditRFQS.pipe(withConnection(), shareLatest())
-
-//Hydra
-// const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
-//   withConnection(),
-//   shareLatest(),
-// )
+const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
+  withConnection(),
+  shareLatest(),
+)
 
 export const creditRfqsById$ = creditRfqUpdates$.pipe(
   withLatestFrom(creditInstruments$, creditDealers$),
@@ -115,7 +111,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
               },
             },
           ]
-        case QUOTE_QUOTED_RFQ_UPDATE: {
+        case QUOTE_CREATED_RFQ_UPDATE: {
           const previousRfq = rec[update.payload.rfqId]
           return [
             acc[0],
@@ -131,6 +127,25 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
           ]
         }
         case QUOTE_PASSED_RFQ_UPDATE: {
+          const previousRfq = rec[update.payload.rfqId]
+          return [
+            acc[0],
+            {
+              ...rec,
+              [update.payload.rfqId]: {
+                ...previousRfq,
+                quotes: previousRfq.quotes.map((quote) => ({
+                  ...quote,
+                  state:
+                    quote.id === update.payload.id
+                      ? update.payload.state
+                      : quote.state,
+                })),
+              },
+            },
+          ]
+        }
+        case QUOTE_QUOTED_RFQ_UPDATE: {
           const previousRfq = rec[update.payload.rfqId]
           return [
             acc[0],

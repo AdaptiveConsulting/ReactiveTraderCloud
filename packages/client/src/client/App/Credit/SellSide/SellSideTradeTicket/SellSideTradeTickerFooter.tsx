@@ -14,7 +14,7 @@ import {
 } from "generated/TradingGateway"
 import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
 import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
-import { createCreditQuote$, useCreditRfqDetails } from "services/credit"
+import { quoteCreditQuote$, useCreditRfqDetails } from "services/credit"
 import styled from "styled-components"
 
 import { CreditRfqTimer, isRfqTerminated } from "../../common"
@@ -109,7 +109,7 @@ quoteId$
       quoteId,
       price: price.value,
     })),
-    exhaustMap((quoteRequest) => createCreditQuote$(quoteRequest)),
+    exhaustMap((quoteRequest) => quoteCreditQuote$(quoteRequest)),
   )
   .subscribe()
 

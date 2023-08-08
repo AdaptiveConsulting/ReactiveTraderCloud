@@ -60,7 +60,7 @@ export const cancelCreditRfq$ = (cancelRequest: CancelRfqRequest) => {
   return WorkflowService.cancelRfq(cancelRequest)
 }
 
-export const createCreditQuote$ = (quoteRequest: QuoteRequest) => {
+export const quoteCreditQuote$ = (quoteRequest: QuoteRequest) => {
   return WorkflowService.quote(quoteRequest)
 }
 

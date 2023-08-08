@@ -1,11 +1,10 @@
 import { bind } from "@react-rxjs/core"
 import { BlotterService } from "generated/TradingGateway"
-import { map, scan } from "rxjs/operators"
-
 import {
   ACCEPTED_QUOTE_STATE,
   AcceptedQuoteState,
-} from "@/generated/TradingGateway"
+} from "generated/TradingGateway"
+import { map, scan } from "rxjs/operators"
 
 import { withIsStaleData } from "../connection"
 import { creditRfqsById$ } from "../credit"
@@ -58,6 +57,7 @@ export const [useCreditTrades, creditTrades$] = bind(
           )
         })
         .map((rfq) => ({ ...rfq, status: rfq.state }))
+
       return acceptedRfqs
         .map((rfq) => {
           const acceptedQuote = rfq.quotes?.find(

@@ -12,8 +12,7 @@ import {
 import { FaCheckCircle } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
 import { acceptCreditQuote$ } from "services/credit"
-
-import { INACTIVE_PASSED_QUOTE_STATE, useQuoteState } from "@/services/credit"
+import { INACTIVE_PASSED_QUOTE_STATE, useQuoteState } from "services/credit"
 
 import {
   AcceptQuoteButton,
@@ -84,7 +83,9 @@ export const Quote = ({
         direction={direction}
       >
         {accepted && <FaCheckCircle size={16} />}
-        {quote && state.payload}
+        {quote && typeof state.payload === "number"
+          ? `$${state.payload}`
+          : state.payload}
       </Price>
       {acceptable && (
         <AcceptQuoteButton onClick={() => quote && onAcceptRfq(quote.id)}>

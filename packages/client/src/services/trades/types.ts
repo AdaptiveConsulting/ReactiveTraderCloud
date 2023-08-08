@@ -1,4 +1,4 @@
-import { Direction } from "@/generated/TradingGateway"
+import { Direction } from "generated/TradingGateway"
 
 import { QuoteStateType } from "../rfqs/types"
 import { CamelCase, CollectionUpdates } from "../utils"

@@ -1,5 +1,6 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { ThemeName } from "client/theme"
 import {
   DECIMAL_SEPARATOR,
   DECIMAL_SEPARATOR_REGEXP,
@@ -7,16 +8,14 @@ import {
   truncatedDecimalNumberFormatter,
 } from "client/utils"
 import { QuoteBody, RfqState } from "generated/TradingGateway"
+import {
+  AcceptedQuoteState,
+  PendingWithPriceQuoteState,
+} from "generated/TradingGateway"
 import { useEffect, useRef } from "react"
 import { merge } from "rxjs"
 import { filter, map } from "rxjs/operators"
 import styled from "styled-components"
-
-import { ThemeName } from "@/client/theme"
-import {
-  AcceptedQuoteState,
-  PendingWithPriceQuoteState,
-} from "@/generated/TradingGateway"
 
 import {
   getSellSideQuoteState,

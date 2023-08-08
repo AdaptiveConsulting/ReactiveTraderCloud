@@ -1,13 +1,12 @@
-import { ReactNode } from "react"
-import { LimitCheckStatus, TradeStatus } from "services/trades/types"
-import styled, { css } from "styled-components"
-
 import {
   ACCEPTED_QUOTE_STATE,
   REJECTED_WITH_PRICE_QUOTE_STATE,
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
-} from "@/generated/TradingGateway"
-import { QuoteStateType } from "@/services/rfqs/types"
+} from "generated/TradingGateway"
+import { ReactNode } from "react"
+import { QuoteStateType } from "services/rfqs/types"
+import { LimitCheckStatus, TradeStatus } from "services/trades/types"
+import styled, { css } from "styled-components"
 
 export const Table = styled.div`
   border-bottom: 15px solid ${({ theme }) => theme.core.darkBackground};

@@ -11,9 +11,9 @@ import {
 
 import { ADAPTIVE_BANK_NAME, creditDealers$ } from "./creditDealers"
 import {
-  createCreditQuote$,
   CreatedCreditRfq,
   createdCreditRfq$,
+  quoteCreditQuote$,
 } from "./creditRfqRequests"
 import { creditRfqsById$ } from "./creditRfqs"
 
@@ -59,24 +59,26 @@ const dealersResponses$ = createdCreditRfq$.pipe(
 
 function sendRandomQuoteAfterDelay(
   rfqId: number,
-  quoteId: number,
+  dealerId: number,
   dealerName: string,
   delayMillis: number,
 ) {
   const price = generateRandomPrice()
   const payload = {
-    quoteId,
+    dealerId,
     price,
   }
 
   return of(payload).pipe(
     delay(delayMillis),
     withLatestFrom(creditRfqsById$),
-    exhaustMap(([payload, creditRfqsById]) => {
-      const rfqStillOpen = creditRfqsById[rfqId]?.state === RfqState.Open
+    exhaustMap(([, creditRfqsById]) => {
+      const rfq = creditRfqsById[rfqId]
+      const quoteId = rfq.quotes.find((quote) => quote.dealerId === dealerId)
+        ?.id as number
 
-      return rfqStillOpen
-        ? createCreditQuote$(payload).pipe(
+      return rfq.state === RfqState.Open
+        ? quoteCreditQuote$({ price, quoteId }).pipe(
             catchError((e) =>
               EMPTY.pipe(
                 tap({

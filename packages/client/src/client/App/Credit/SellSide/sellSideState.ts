@@ -3,14 +3,6 @@ import { createSignal } from "@react-rxjs/utils"
 import { HIGHLIGHT_ROW_FLASH_TIME } from "client/constants"
 import { invertDirection } from "client/utils"
 import { QuoteState, RfqState } from "generated/TradingGateway"
-import { combineLatest, merge } from "rxjs"
-import { delay, filter, map, startWith } from "rxjs/operators"
-import {
-  ADAPTIVE_BANK_NAME,
-  creditRfqsById$,
-  RfqDetails,
-} from "services/credit"
-
 import {
   ACCEPTED_QUOTE_STATE,
   DealerBody,
@@ -18,7 +10,14 @@ import {
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
   PendingWithPriceQuoteState,
   REJECTED_WITH_PRICE_QUOTE_STATE,
-} from "@/generated/TradingGateway"
+} from "generated/TradingGateway"
+import { combineLatest, merge } from "rxjs"
+import { delay, filter, map, startWith } from "rxjs/operators"
+import {
+  ADAPTIVE_BANK_NAME,
+  creditRfqsById$,
+  RfqDetails,
+} from "services/credit"
 
 import { timeRemainingComparator } from "../common"
 import { RfqRow } from "./SellSideRfqGrid"

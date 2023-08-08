@@ -1,6 +1,3 @@
-import { CurrencyPair } from "services/currencyPairs"
-import { Price } from "services/prices"
-
 import {
   ACCEPTED_QUOTE_STATE,
   AcceptedQuoteState,
@@ -14,7 +11,9 @@ import {
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   RejectedWithoutPriceQuoteState,
   RejectedWithPriceQuoteState,
-} from "@/generated/TradingGateway"
+} from "generated/TradingGateway"
+import { CurrencyPair } from "services/currencyPairs"
+import { Price } from "services/prices"
 
 export interface RfqRequest {
   symbol: string
