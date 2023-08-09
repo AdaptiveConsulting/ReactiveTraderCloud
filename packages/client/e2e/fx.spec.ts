@@ -33,9 +33,13 @@ test.describe("Fx App", () => {
 
     test.skip(testInfo.project.name !== OPENFIN_PROJECT_NAME)
 
+    const popOutTitle = "open in new window"
+
+    await expect(mainWindow.getByTitle(popOutTitle).nth(0)).not.toBeVisible()
+
+    await mainWindow.getByTitle("toggle layout lock").hover()
     await mainWindow.getByTitle("toggle layout lock").click()
 
-    const popOutTitle = "open in new window"
     const popOutButtons = mainWindow.getByTitle(popOutTitle)
 
     const liveRatesPagePromise = context.waitForEvent("page")
@@ -50,13 +54,26 @@ test.describe("Fx App", () => {
 
     await poppedOutBlotterPage.waitForSelector("text=Trades")
 
-    await poppedOutLiveRatesPage.getByTestId("openfin-chrome__close").click()
+    await poppedOutLiveRatesPage
+      .locator("[data-qa='openfin-chrome__close']")
+      .click()
 
-    expect(await mainWindow.waitForSelector("text=Live Rates")).toBeTruthy()
+    await expect(poppedOutLiveRatesPage.isClosed()).toBeTruthy()
+    await expect(poppedOutBlotterPage.isClosed()).toBeFalsy()
+    await expect(mainWindow.locator("text=Live Rates")).toBeVisible()
+    
+    await poppedOutBlotterPage
+      .locator("[data-qa='openfin-chrome__close']")
+      .click()
+    
+    await expect(poppedOutBlotterPage.isClosed()).toBeTruthy()
 
-    await poppedOutBlotterPage.getByTestId("openfin-chrome__close").click()
+    await expect(mainWindow.locator("text=Trades")).toBeVisible()
+    await expect(mainWindow.locator("text=Analytics")).toBeVisible()
 
-    expect(await mainWindow.waitForSelector("text=Trades")).toBeTruthy()
-    expect(await mainWindow.waitForSelector("text=Analytics")).toBeTruthy()
+    await mainWindow.getByTitle("toggle layout lock").hover()
+    await mainWindow.getByTitle("toggle layout lock").click()
+
+    await expect(popOutButtons.nth(0)).not.toBeVisible()
   })
 })
