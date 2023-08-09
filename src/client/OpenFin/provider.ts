@@ -16,13 +16,13 @@ function interopOverride(
   InteropBroker: OpenFin.Constructor<OpenFin.InteropBroker>,
 ): OpenFin.InteropBroker {
   class Override extends InteropBroker {
-    public analyticsUuid: string
+    private analyticsUuid: string
 
-    public limitCheckerUuid: string
+    private limitCheckerUuid: string
 
-    public analyticsClients: ExternalClientMap
+    private analyticsClients: ExternalClientMap
 
-    public limitCheckerClients: ExternalClientMap
+    private limitCheckerClients: ExternalClientMap
 
     constructor() {
       super()
@@ -39,7 +39,7 @@ function interopOverride(
       ).catch((error) => console.error(error))
     }
 
-    public async initializeBrokers(
+    private async initializeBrokers(
       externalUuid: string,
       externalClients: ExternalClientMap,
     ): Promise<void> {
@@ -47,22 +47,22 @@ function interopOverride(
         uuid: externalUuid,
       })
 
-      // If platform is already running
+      // If an external platform (i.e. RA/LC) is already running when the broker platform (i.e. RT) is launched
       if (await platform.Application.isRunning()) {
         await this.setupContextGroups(externalUuid, externalClients)
       }
 
-      // If platform is just being run
+      // If an external platform (i.e. RA/LC) has just been started when the broker platform (i.e. RT) is already running
       await platform.on("platform-api-ready", async () => {
         await this.setupContextGroups(externalUuid, externalClients)
       })
 
       await platform.Application.once("closed", () => {
-        externalClients = new Map()
+        externalClients.clear()
       })
     }
 
-    public async setupContextGroups(
+    private async setupContextGroups(
       externalUuid: string,
       externalClients: ExternalClientMap,
     ) {
@@ -72,15 +72,15 @@ function interopOverride(
         await externalInteropClient.getContextGroups()
 
       // Create a InteropClient instance by connecting to the current platform broker
-      const fxInteropClient = fin.Interop.connectSync(fin.me.uuid, {})
-      const fxContextGroups = await fxInteropClient.getContextGroups()
+      const brokerInteropClient = fin.Interop.connectSync(fin.me.uuid, {})
+      const brokerContextGroups = await brokerInteropClient.getContextGroups()
 
       // Check which external context groups is shared with the current platform context group and
       // create a colorClient
       const externalContextGroupPromises = externalContextGroup.map(
         async (externalContextGroupInfo) => {
           // check to see if a Platform Client's context group has any of the channels as a externalContextGroup
-          const hasPlatformContextGroup: boolean = fxContextGroups.some(
+          const hasPlatformContextGroup: boolean = brokerContextGroups.some(
             ({ id }) => id === externalContextGroupInfo.id,
           )
 
@@ -102,13 +102,13 @@ function interopOverride(
             const contextHandler = async (
               context: ExternalContext,
             ): Promise<void> => {
-              await fxInteropClient.joinContextGroup(
+              await brokerInteropClient.joinContextGroup(
                 externalContextGroupInfo.id,
               )
               const newContext = context._clientInfo?.uuid
                 ? context
                 : { ...context, _clientInfo: { uuid: externalUuid } }
-              await fxInteropClient.setContext(newContext)
+              await brokerInteropClient.setContext(newContext)
             }
 
             await colorClient.addContextHandler(contextHandler)
@@ -135,7 +135,7 @@ function interopOverride(
      * @remarks if the externalClientsMap has previously derived contextGroup get the corresponding colorClient and set the context on the matching colorClient.
      */
 
-    public async setContextOnExternalClient(
+    private async setContextOnExternalClient(
       context: ExternalContext,
       clientIdentity: OpenFin.ClientIdentity,
     ) {
@@ -163,7 +163,7 @@ function interopOverride(
      * @param clientIdentity object containing the clientIdentity of the sender.
      * @example // please refer to the working examples code panel in this projects interface.
      */
-    public async setContext(
+    async setContext(
       payload: { context: ExternalContext },
       clientIdentity: OpenFin.ClientIdentity,
     ): Promise<void> {

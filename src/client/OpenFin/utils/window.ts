@@ -195,3 +195,10 @@ export async function closeOtherWindows() {
     }
   }
 }
+
+// Temporary replacement for fin.Platform.getCurrentSync().quit() until we find why this sometimes closes every window
+// https://openfin.zendesk.com/hc/en-us/requests/19445
+export async function quitPlatform() {
+  const windows = await fin.Application.getCurrentSync().getChildWindows()
+  windows.forEach((window) => window.close())
+}
