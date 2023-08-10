@@ -45,6 +45,7 @@
     "openfin:run:launcher": "npm run _openfin:run --manifest_url=http://localhost:1917/config/launcher.json",
     "openfin:start:fx": "concurrently \"npm:openfin:dev\" \"npm:openfin:run:fx\"",
     "openfin:start:credit": "concurrently \"npm:openfin:dev\" \"npm:openfin:run:credit\"",
+    "openfin:start:credit:local": "VITE_HYDRA_URL=ws://localhost:8929 concurrently \"npm:openfin:dev\" \"npm:openfin:run:credit\"",
     "openfin:start:limitchecker": "concurrently \"npm:openfin:dev\" \"npm:openfin:run:limitchecker\"",
     "openfin:start:launcher": "concurrently \"npm:openfin:dev\" \"npm:openfin:run:launcher\"",
     "openfin:start:launcher:local": "VITE_HYDRA_URL=ws://localhost:8929 concurrently \"npm:openfin:dev\" \"npm:openfin:run:launcher\"",

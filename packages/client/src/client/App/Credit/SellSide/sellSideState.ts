@@ -43,7 +43,7 @@ export const getSellSideQuoteState = (
     return SellSideQuoteState.Expired
   } else if (
     rfqState === RfqState.Open &&
-    quoteState?.type === PENDING_WITHOUT_PRICE_QUOTE_STATE
+    (!quoteState || quoteState.type === PENDING_WITHOUT_PRICE_QUOTE_STATE)
   ) {
     return SellSideQuoteState.New
   } else if (

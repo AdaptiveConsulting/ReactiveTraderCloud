@@ -1,6 +1,9 @@
 import { Loader } from "client/components/Loader"
 import { invertDirection } from "client/utils"
-import { QuoteBody } from "generated/TradingGateway"
+import {
+  PENDING_WITHOUT_PRICE_QUOTE_STATE,
+  QuoteBody,
+} from "generated/TradingGateway"
 import { useCreditRfqDetails } from "services/credit"
 import styled from "styled-components"
 
@@ -120,11 +123,9 @@ export const SellSideTradeTicketTicketCore = ({
           direction={direction}
           instrumentId={instrumentId}
           rfqState={rfqState}
-          // TODO (2988) .. obviously :)
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          quoteState={quote!.state}
+          quoteState={
+            quote?.state ?? { type: PENDING_WITHOUT_PRICE_QUOTE_STATE }
+          }
         />
         <SellSideTradeTicketParameters
           selectedRfqId={rfqId}

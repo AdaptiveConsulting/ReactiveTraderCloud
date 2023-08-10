@@ -128,6 +128,7 @@ export const SellSideTradeTicketParameters = ({
   quantity,
 }: SellSideTradeTicketParametersProps) => {
   const price = usePrice()
+  const sellSideQuoteState = getSellSideQuoteState(state, quote?.state)
 
   const ref = useRef<HTMLInputElement>(null)
 
@@ -147,22 +148,7 @@ export const SellSideTradeTicketParameters = ({
       </div>
       <div>
         <ParameterLabel>Price</ParameterLabel>
-        {quote ? (
-          getSellSideQuoteState(state, quote.state) ===
-          SellSideQuoteState.Pending ? (
-            <ParameterValue>
-              <PendingPrice>
-                {(quote.state as PendingWithPriceQuoteState)?.payload}
-              </PendingPrice>
-              <em>Awaiting Response</em>
-            </ParameterValue>
-          ) : (
-            // TODO (2988) .. sort out this quote state vs payload/price thing once and for all
-            <ParameterValue>
-              {(quote.state as AcceptedQuoteState)?.payload}
-            </ParameterValue>
-          )
-        ) : (
+        {sellSideQuoteState === SellSideQuoteState.New ? (
           <ParameterInput
             tabIndex={1}
             type="text"
@@ -179,6 +165,18 @@ export const SellSideTradeTicketParameters = ({
               setFocused(false)
             }}
           />
+        ) : sellSideQuoteState === SellSideQuoteState.Pending ? (
+          <ParameterValue>
+            <PendingPrice>
+              {(quote?.state as PendingWithPriceQuoteState)?.payload}
+            </PendingPrice>
+            <em>Awaiting Response</em>
+          </ParameterValue>
+        ) : (
+          // TODO (2988) .. sort out this quote state vs payload/price thing once and for all
+          <ParameterValue>
+            {(quote?.state as AcceptedQuoteState)?.payload}
+          </ParameterValue>
         )}
       </div>
     </ParametersWrapper>

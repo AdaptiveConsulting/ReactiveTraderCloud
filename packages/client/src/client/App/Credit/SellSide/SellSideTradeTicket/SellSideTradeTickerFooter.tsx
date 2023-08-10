@@ -8,6 +8,7 @@ import {
 import {
   ACCEPTED_QUOTE_STATE,
   Direction,
+  PENDING_WITHOUT_PRICE_QUOTE_STATE,
   QuoteBody,
   QuoteState,
   RfqState,
@@ -146,7 +147,11 @@ export const SellSideTradeTicketFooter = ({
 
   const direction = invertDirection(clientDirection)
 
-  const disableSend = price.value <= 0 || state !== RfqState.Open || !!quote
+  console.log(price.value, state, quote)
+  const disableSend =
+    price.value <= 0 ||
+    state !== RfqState.Open ||
+    quote.state.type !== PENDING_WITHOUT_PRICE_QUOTE_STATE
   const accepted =
     state === RfqState.Closed && quote?.state.type === ACCEPTED_QUOTE_STATE
   const missed =
