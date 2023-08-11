@@ -6,6 +6,7 @@ import {
   ACK_CREATE_RFQ_RESPONSE,
   CancelRfqRequest,
   CreateRfqRequest,
+  PassRequest,
   QuoteRequest,
   WorkflowService,
 } from "generated/TradingGateway"
@@ -62,6 +63,10 @@ export const cancelCreditRfq$ = (cancelRequest: CancelRfqRequest) => {
 
 export const quoteCreditQuote$ = (quoteRequest: QuoteRequest) => {
   return WorkflowService.quote(quoteRequest)
+}
+
+export const passCreditQuote$ = (passRequest: PassRequest) => {
+  return WorkflowService.pass(passRequest)
 }
 
 export const [acceptedCreditRfq$, setAcceptedCreditRfq] =

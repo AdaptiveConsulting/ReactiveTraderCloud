@@ -55,6 +55,7 @@ export const Quote = ({
   const hasPrice = pricedQuoteStates.includes(state.type)
   const acceptable = state.type === PENDING_WITH_PRICE_QUOTE_STATE
   const accepted = state.type === ACCEPTED_QUOTE_STATE
+  const passed = quote?.state.type === PASSED_QUOTE_STATE
   const rfqOpen = rfqState === RfqState.Open
 
   return (
@@ -78,6 +79,7 @@ export const Quote = ({
       <Price
         open={rfqOpen}
         accepted={accepted}
+        passed={passed}
         priced={hasPrice}
         highlight={highlight}
         direction={direction}

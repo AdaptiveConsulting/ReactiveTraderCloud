@@ -15,6 +15,7 @@ import {
   QUOTE_QUOTED_RFQ_UPDATE,
   QuoteBody,
   QuoteQuotedRfqUpdate,
+  QuoteState,
   REJECTED_WITH_PRICE_QUOTE_STATE,
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   RFQ_CLOSED_RFQ_UPDATE,
@@ -71,6 +72,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
     [boolean, Record<number, RfqDetails>]
   >(
     (acc, [update, instruments, dealers]) => {
+      console.log("update", update)
       const rec = acc[1]
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
@@ -179,10 +181,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
                   ...previousRfq,
                   quotes: previousRfq.quotes.map((quote) => ({
                     ...quote,
-                    state:
-                      quote.id === update.payload.id
-                        ? update.payload?.state
-                        : { type: REJECTED_WITHOUT_PRICE_QUOTE_STATE },
+                    state: getQuoteStateOnAccept(quote, update.payload),
                   })),
                 },
               },
@@ -203,6 +202,22 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
   map(([, rfqDetailsRec]) => rfqDetailsRec),
   shareLatest(),
 )
+
+function getQuoteStateOnAccept(
+  quote: QuoteBody,
+  acceptedQuote: QuoteBody,
+): QuoteState {
+  if (quote.id === acceptedQuote.id) {
+    return acceptedQuote.state
+  }
+  if (quote.state.type === PENDING_WITHOUT_PRICE_QUOTE_STATE) {
+    return { type: REJECTED_WITHOUT_PRICE_QUOTE_STATE }
+  }
+  if (quote.state.type === PENDING_WITH_PRICE_QUOTE_STATE) {
+    return { ...quote.state, type: REJECTED_WITH_PRICE_QUOTE_STATE }
+  }
+  return { type: PASSED_QUOTE_STATE }
+}
 
 export const [useCreditRfqDetails, getCreditRfqDetails$] = bind<
   [number],
@@ -255,34 +270,20 @@ export const [useQuoteState] = bind((dealerId, rfqId) =>
 
       switch (quote?.state.type) {
         case PENDING_WITHOUT_PRICE_QUOTE_STATE:
+        case REJECTED_WITHOUT_PRICE_QUOTE_STATE:
           return {
             type: quote.state.type,
             payload: "Awaiting response",
-          }
-        case PENDING_WITH_PRICE_QUOTE_STATE:
-          return {
-            type: quote.state.type,
-            payload: quote.state.payload,
           }
         case PASSED_QUOTE_STATE:
           return {
             type: quote.state.type,
             payload: "Passed",
           }
-        case ACCEPTED_QUOTE_STATE:
-          return {
-            type: quote.state.type,
-            payload: "Accepted",
-          }
-        case REJECTED_WITH_PRICE_QUOTE_STATE:
-          return {
-            type: quote.state.type,
-            payload: "Rejected",
-          }
         default:
           return {
             type: quote.state.type,
-            payload: "Rejected",
+            payload: quote.state.payload,
           }
       }
     }),

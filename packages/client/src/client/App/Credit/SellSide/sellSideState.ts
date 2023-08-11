@@ -2,7 +2,12 @@ import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { HIGHLIGHT_ROW_FLASH_TIME } from "client/constants"
 import { invertDirection } from "client/utils"
-import { QuoteState, RfqState } from "generated/TradingGateway"
+import {
+  PASSED_QUOTE_STATE,
+  QuoteState,
+  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
+  RfqState,
+} from "generated/TradingGateway"
 import {
   ACCEPTED_QUOTE_STATE,
   DealerBody,
@@ -37,7 +42,9 @@ export const getSellSideQuoteState = (
   rfqState: RfqState,
   quoteState: QuoteState | undefined,
 ): SellSideQuoteState => {
-  if (rfqState === RfqState.Cancelled) {
+  if (quoteState?.type === PASSED_QUOTE_STATE) {
+    return SellSideQuoteState.Passed
+  } else if (rfqState === RfqState.Cancelled) {
     return SellSideQuoteState.Cancelled
   } else if (rfqState === RfqState.Expired) {
     return SellSideQuoteState.Expired
@@ -47,16 +54,19 @@ export const getSellSideQuoteState = (
   ) {
     return SellSideQuoteState.New
   } else if (
+    rfqState === RfqState.Open &&
+    quoteState?.type === PENDING_WITH_PRICE_QUOTE_STATE
+  ) {
+    return SellSideQuoteState.Pending
+  } else if (
     rfqState === RfqState.Closed &&
     quoteState?.type !== ACCEPTED_QUOTE_STATE
   ) {
     return SellSideQuoteState.Lost
   } else if (
-    rfqState === RfqState.Open &&
-    quoteState?.type === PENDING_WITH_PRICE_QUOTE_STATE
+    quoteState?.type === REJECTED_WITH_PRICE_QUOTE_STATE ||
+    quoteState?.type === REJECTED_WITHOUT_PRICE_QUOTE_STATE
   ) {
-    return SellSideQuoteState.Pending
-  } else if (quoteState?.type === REJECTED_WITH_PRICE_QUOTE_STATE) {
     return SellSideQuoteState.Rejected
   } else if (quoteState?.type === ACCEPTED_QUOTE_STATE) {
     return SellSideQuoteState.Accepted

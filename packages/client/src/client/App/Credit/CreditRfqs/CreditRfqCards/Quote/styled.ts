@@ -84,6 +84,7 @@ export const QuoteDot = styled.div<AnimatedRowProps>`
 interface RowFieldProps {
   open: boolean
   accepted: boolean
+  passed?: boolean
   priced: boolean
 }
 
@@ -128,8 +129,8 @@ export const Price = styled(QuoteRowText)<RowFieldProps & CommonProps>`
     }
   }};
   font-weight: ${getRowFieldFontWeight};
-  ${({ open, accepted }) =>
-    !open && !accepted && "text-decoration: line-through;"}
+  ${({ open, accepted, passed }) =>
+    (passed || (!open && !accepted)) && "text-decoration: line-through;"}
 
   svg {
     margin-right: 4px;

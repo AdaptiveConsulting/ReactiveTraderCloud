@@ -133,7 +133,7 @@ export const SellSideTradeTicketTicketCore = ({
           state={rfqState}
           quantity={quantity}
         />
-        <SellSideTradeTicketFooter rfqId={rfqId} quote={quote as QuoteBody} />
+        <SellSideTradeTicketFooter rfqId={rfqId} quote={quote} />
       </SellSideTradeTicketInnerWrapper>
     </SellSideTradeTicketWrapper>
   )

@@ -8,6 +8,7 @@ import {
 import {
   ACCEPTED_QUOTE_STATE,
   Direction,
+  PASSED_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
   QuoteBody,
   QuoteState,
@@ -15,7 +16,11 @@ import {
 } from "generated/TradingGateway"
 import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
 import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
-import { quoteCreditQuote$, useCreditRfqDetails } from "services/credit"
+import {
+  passCreditQuote$,
+  quoteCreditQuote$,
+  useCreditRfqDetails,
+} from "services/credit"
 import styled from "styled-components"
 
 import { CreditRfqTimer, isRfqTerminated } from "../../common"
@@ -100,9 +105,9 @@ const TradeDetails = styled.div`
   font-weight: 500px;
 `
 
-const [quoteId$, sendQuote] = createSignal<number>()
+const [sendQuoteId$, sendQuote] = createSignal<number>()
 
-quoteId$
+sendQuoteId$
   .pipe(
     withLatestFrom(price$),
     filter(([, price]) => price.value > 0),
@@ -114,11 +119,17 @@ quoteId$
   )
   .subscribe()
 
+const [passQuoteId$, passQuote] = createSignal<number>()
+
+passQuoteId$
+  .pipe(exhaustMap((quoteId) => passCreditQuote$({ quoteId })))
+  .subscribe()
+
 const formatter = customNumberFormatter()
 
 interface SellSideTradeTicketTicketFooterProps {
   rfqId: number
-  quote: QuoteBody
+  quote: QuoteBody | undefined
 }
 
 export const SellSideTradeTicketFooter = ({
@@ -145,28 +156,30 @@ export const SellSideTradeTicketFooter = ({
     expirySecs,
   } = rfq
 
+  console.log(quote)
+
   const direction = invertDirection(clientDirection)
 
-  console.log(price.value, state, quote)
+  const disablePass = quote?.state.type !== PENDING_WITHOUT_PRICE_QUOTE_STATE
   const disableSend =
     price.value <= 0 ||
     state !== RfqState.Open ||
-    quote.state.type !== PENDING_WITHOUT_PRICE_QUOTE_STATE
+    quote?.state.type !== PENDING_WITHOUT_PRICE_QUOTE_STATE
+  const passed = quote?.state.type === PASSED_QUOTE_STATE
   const accepted =
     state === RfqState.Closed && quote?.state.type === ACCEPTED_QUOTE_STATE
   const missed =
-    state === RfqState.Closed && quote?.state.type !== ACCEPTED_QUOTE_STATE
+    !passed &&
+    state === RfqState.Closed &&
+    quote?.state.type !== ACCEPTED_QUOTE_STATE
 
   return (
     <FooterWrapper accepted={accepted} missed={missed}>
-      {state === RfqState.Open && (
+      {state === RfqState.Open && !passed && (
         <>
           <PassButton
-            // disabled={!!quote} //reinstate when pass feature is implemented
-            disabled={true}
-            onClick={() => {
-              console.log("Send message")
-            }}
+            disabled={disablePass}
+            onClick={() => quote && passQuote(quote.id)}
           >
             Pass
           </PassButton>
@@ -182,16 +195,21 @@ export const SellSideTradeTicketFooter = ({
           <SendQuoteButton
             ref={clickElementRef}
             direction={direction}
-            onClick={() => sendQuote(quote?.id)}
+            onClick={() => quote && sendQuote(quote.id)}
             disabled={disableSend}
           >
             Send Quote
           </SendQuoteButton>
         </>
       )}
-      {isRfqTerminated(state) && (
+      {(isRfqTerminated(state) || passed) && (
         <Terminated>
-          Request {state === RfqState.Cancelled ? "Canceled" : "Expired"}
+          Request{" "}
+          {passed
+            ? "Passed"
+            : state === RfqState.Cancelled
+            ? "Canceled"
+            : "Expired"}
         </Terminated>
       )}
       {accepted && (
