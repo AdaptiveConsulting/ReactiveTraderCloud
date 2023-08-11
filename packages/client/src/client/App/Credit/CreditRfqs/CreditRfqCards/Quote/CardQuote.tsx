@@ -12,7 +12,7 @@ import {
 import { FaCheckCircle } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
 import { acceptCreditQuote$ } from "services/credit"
-import { INACTIVE_PASSED_QUOTE_STATE, useQuoteState } from "services/credit"
+import { useQuoteState } from "services/credit"
 
 import {
   AcceptQuoteButton,
@@ -35,6 +35,15 @@ const pricedQuoteStates = [
   REJECTED_WITH_PRICE_QUOTE_STATE,
 ]
 
+interface QuoteProps {
+  dealer: DealerBody
+  quote: QuoteBody | undefined
+  rfqState: RfqState
+  rfqId: number
+  direction: Direction
+  highlight: boolean
+}
+
 export const Quote = ({
   dealer,
   quote,
@@ -42,34 +51,27 @@ export const Quote = ({
   rfqId,
   direction,
   highlight,
-}: {
-  dealer: DealerBody
-  quote: QuoteBody | undefined
-  rfqState: RfqState
-  rfqId: number
-  direction: Direction
-  highlight: boolean
-}) => {
+}: QuoteProps) => {
   const state = useQuoteState(dealer.id, rfqId)
 
+  const rfqOpen = rfqState === RfqState.Open
   const hasPrice = pricedQuoteStates.includes(state.type)
-  const acceptable = state.type === PENDING_WITH_PRICE_QUOTE_STATE
+  const acceptable = state.type === PENDING_WITH_PRICE_QUOTE_STATE && rfqOpen
   const accepted = state.type === ACCEPTED_QUOTE_STATE
   const passed = quote?.state.type === PASSED_QUOTE_STATE
-  const rfqOpen = rfqState === RfqState.Open
 
   return (
     <QuoteRow
-      quoteActive={!!quote && rfqOpen}
+      quoteActive={acceptable}
       highlight={highlight}
       direction={direction}
     >
-      {(acceptable || state.type !== INACTIVE_PASSED_QUOTE_STATE) && rfqOpen && (
+      {(acceptable || state.type === PASSED_QUOTE_STATE) && rfqOpen && (
         <QuoteDotWrapper>
           <QuoteDot
             highlight={highlight}
             direction={direction}
-            isPassed={state.type === PASSED_QUOTE_STATE}
+            passed={state.type === PASSED_QUOTE_STATE}
           />
         </QuoteDotWrapper>
       )}
@@ -85,15 +87,11 @@ export const Quote = ({
         direction={direction}
       >
         {accepted && <FaCheckCircle size={16} />}
-        {quote && typeof state.payload === "number"
-          ? `$${state.payload}`
-          : state.payload}
+        {state.payload}
       </Price>
-      {acceptable && (
-        <AcceptQuoteButton onClick={() => quote && onAcceptRfq(quote.id)}>
-          Accept
-        </AcceptQuoteButton>
-      )}
+      <AcceptQuoteButton onClick={() => quote && onAcceptRfq(quote.id)}>
+        Accept
+      </AcceptQuoteButton>
     </QuoteRow>
   )
 }

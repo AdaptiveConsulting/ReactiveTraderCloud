@@ -161,9 +161,7 @@ export const SellSideTradeTicketParameters = ({
               event.target.select()
               setFocused(true)
             }}
-            onBlur={() => {
-              setFocused(false)
-            }}
+            onBlur={() => setFocused(false)}
           />
         ) : sellSideQuoteState === SellSideQuoteState.Pending ? (
           <ParameterValue>
@@ -173,9 +171,10 @@ export const SellSideTradeTicketParameters = ({
             <em>Awaiting Response</em>
           </ParameterValue>
         ) : (
-          // TODO (2988) .. sort out this quote state vs payload/price thing once and for all
           <ParameterValue>
-            {(quote?.state as AcceptedQuoteState)?.payload}
+            {quote?.state && "payload" in quote.state
+              ? quote.state.payload
+              : ""}
           </ParameterValue>
         )}
       </div>

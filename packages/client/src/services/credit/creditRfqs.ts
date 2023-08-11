@@ -1,7 +1,6 @@
 import { bind, shareLatest } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import {
-  ACCEPTED_QUOTE_STATE,
   DealerBody,
   Direction,
   END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
@@ -72,7 +71,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
     [boolean, Record<number, RfqDetails>]
   >(
     (acc, [update, instruments, dealers]) => {
-      console.log("update", update)
+      console.log(update)
       const rec = acc[1]
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
@@ -91,13 +90,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
                     (instrument) =>
                       instrument.id === update.payload.instrumentId,
                   ) ?? null,
-                dealers: dealers.map(
-                  (dealerId) =>
-                    dealers.find((dealer) => dealer.id === dealerId.id) ?? {
-                      id: dealerId.id,
-                      name: "Unknown Dealer",
-                    },
-                ),
+                dealers: [],
                 quotes: [],
               },
             },
@@ -121,9 +114,16 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
               ...rec,
               [update.payload.rfqId]: {
                 ...previousRfq,
-                quotes: previousRfq?.quotes
-                  ? previousRfq.quotes.concat([update.payload])
-                  : [update.payload],
+                dealers: [
+                  ...previousRfq.dealers,
+                  dealers.find(
+                    (dealer) => dealer.id === update.payload.dealerId,
+                  ) ?? {
+                    id: update.payload.dealerId,
+                    name: "Unknown Dealer",
+                  },
+                ],
+                quotes: [...previousRfq.quotes, update.payload],
               },
             },
           ]
@@ -254,7 +254,7 @@ export const creditQuotes$ = creditRfqsById$.pipe(
   ),
 )
 
-export const INACTIVE_PASSED_QUOTE_STATE = "passedInactiveQuoteState"
+const INACTIVE_PASSED_QUOTE_STATE = "passedInactiveQuoteState"
 
 export const [useQuoteState] = bind((dealerId, rfqId) =>
   creditQuotes$.pipe(
@@ -283,7 +283,7 @@ export const [useQuoteState] = bind((dealerId, rfqId) =>
         default:
           return {
             type: quote.state.type,
-            payload: quote.state.payload,
+            payload: `$${quote.state.payload}`,
           }
       }
     }),

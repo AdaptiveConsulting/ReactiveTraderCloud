@@ -109,6 +109,7 @@ export const Card = ({ id, highlight }: { id: number; highlight: boolean }) => {
             if (quote) {
               // The highest price is the best quote since we do not have partial fills
               const bestQuote =
+                rfqDetails.state === RfqState.Open &&
                 quote.state.type === PENDING_WITH_PRICE_QUOTE_STATE &&
                 dealer.name == "Adaptive Bank"
               return (

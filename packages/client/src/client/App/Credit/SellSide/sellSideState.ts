@@ -17,7 +17,7 @@ import {
   REJECTED_WITH_PRICE_QUOTE_STATE,
 } from "generated/TradingGateway"
 import { combineLatest, merge } from "rxjs"
-import { delay, filter, map, startWith } from "rxjs/operators"
+import { delay, filter, map, startWith, tap } from "rxjs/operators"
 import {
   ADAPTIVE_BANK_NAME,
   creditRfqsById$,
@@ -123,15 +123,20 @@ const filterByQuoteState = (
   }
 }
 
-const filterByIsAdaptiveRfq = (rfq: RfqDetails) =>
-  rfq.dealers.findIndex(
-    (dealer: DealerBody) => dealer.name === ADAPTIVE_BANK_NAME,
-  ) > -1
+const filterByIsAdaptiveRfq = (rfq: RfqDetails) => {
+  console.log(rfq)
+  return (
+    rfq.dealers.findIndex(
+      (dealer: DealerBody) => dealer.name === ADAPTIVE_BANK_NAME,
+    ) > -1
+  )
+}
 
 const _sellSideRfqs$ = combineLatest([
   creditRfqsById$,
   sellSideQuotesFilter$,
 ]).pipe(
+  tap(([record]) => console.log(record)),
   map(([record, quoteFilter]) =>
     (Object.values(record) as RfqDetails[])
       .filter(

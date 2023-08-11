@@ -1,7 +1,7 @@
 import { Theme, ThemeName } from "client/theme"
 import { breathing } from "client/utils/styling"
 import { Direction } from "generated/TradingGateway"
-import styled from "styled-components"
+import styled, { DefaultTheme } from "styled-components"
 
 import { Row } from "../styled"
 
@@ -13,7 +13,7 @@ interface QuoteRowProps extends CommonProps {
   quoteActive: boolean
 }
 interface AnimatedRowProps extends CommonProps {
-  isPassed: boolean
+  passed: boolean
 }
 
 function getBuySellHighlightRowBackgroundColor(
@@ -72,10 +72,10 @@ export const QuoteDot = styled.div<AnimatedRowProps>`
   height: 4px;
   width: 4px;
   border-radius: 4px;
-  background-color: ${({ theme, highlight, direction, isPassed }) =>
+  background-color: ${({ theme, highlight, direction, passed }) =>
     highlight
       ? theme.textColor
-      : isPassed
+      : passed
       ? `#686D74`
       : getBuySellHighlightTextColor(theme, direction)};
   animation: ${breathing} 1s linear infinite;
@@ -91,22 +91,29 @@ interface RowFieldProps {
 const getRowFieldFontWeight = ({ priced, open, accepted }: RowFieldProps) =>
   (priced && open) || accepted ? "700" : null
 
+const getDealerFontColor = ({
+  theme,
+  open,
+  accepted,
+  priced,
+}: RowFieldProps & { theme: DefaultTheme }) => {
+  if (accepted) {
+    return theme.accents.positive.base
+  } else if (open) {
+    if (priced) {
+      return theme.secondary.base
+    }
+    return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary.base
+  } else {
+    return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary[4]
+  }
+}
+
 // This color does not seem to be part of the palette
 export const DealerName = styled(QuoteRowText)<RowFieldProps>`
   display: flex;
   align-items: center;
-  color: ${({ theme, open, accepted, priced }) => {
-    if (accepted) {
-      return theme.accents.positive.base
-    } else if (open) {
-      if (priced) {
-        return theme.secondary.base
-      }
-      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary.base
-    } else {
-      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary[4]
-    }
-  }};
+  color: ${getDealerFontColor};
   font-weight: ${getRowFieldFontWeight};
   margin-right: auto;
 `

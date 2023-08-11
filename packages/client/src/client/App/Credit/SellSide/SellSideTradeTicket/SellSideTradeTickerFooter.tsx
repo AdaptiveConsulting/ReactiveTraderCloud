@@ -156,8 +156,6 @@ export const SellSideTradeTicketFooter = ({
     expirySecs,
   } = rfq
 
-  console.log(quote)
-
   const direction = invertDirection(clientDirection)
 
   const disablePass = quote?.state.type !== PENDING_WITHOUT_PRICE_QUOTE_STATE
@@ -165,13 +163,14 @@ export const SellSideTradeTicketFooter = ({
     price.value <= 0 ||
     state !== RfqState.Open ||
     quote?.state.type !== PENDING_WITHOUT_PRICE_QUOTE_STATE
+
   const passed = quote?.state.type === PASSED_QUOTE_STATE
   const accepted =
     state === RfqState.Closed && quote?.state.type === ACCEPTED_QUOTE_STATE
   const missed =
-    !passed &&
     state === RfqState.Closed &&
-    quote?.state.type !== ACCEPTED_QUOTE_STATE
+    quote?.state.type !== ACCEPTED_QUOTE_STATE &&
+    !passed
 
   return (
     <FooterWrapper accepted={accepted} missed={missed}>
