@@ -107,7 +107,7 @@ test.describe("Credit", () => {
         .click()
 
       context.on("page", async (sellSidePage) => {
-        await sellSidePage.waitForURL("**/credit-sellside?**")
+        await sellSidePage.waitForURL(`${process.env.E2E_RTC_WEB_ROOT_URL}/credit-sellside?**`)
 
         await sellSidePage.waitForSelector("text=New RFQ")
 

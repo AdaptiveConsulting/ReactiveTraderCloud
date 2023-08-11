@@ -46,7 +46,7 @@ test.describe("Limit Checker", () => {
     await limitCheckInput.fill("2000000")
 
     const tileInput = tilePage.getByLabel("EUR").nth(0)
-    await tileInput.fill("999999")
+    await tileInput.fill("1999999")
 
     await tilePage.locator("[data-testid='Buy-EURUSD']").click()
 
@@ -56,12 +56,14 @@ test.describe("Limit Checker", () => {
       limitTableFirstRowCells,
       [limitId + 1 + "", "Success", "EURUSD", "2,000,000"],
       1,
+      5,
     )
 
     await assertGridRow(
       tradeBlotterFirstRowCells,
-      ["Buy", "EURUSD", "EUR", "999,999"],
+      ["Buy", "EURUSD", "EUR", "1,999,999"],
       4,
+      8,
     )
   })
 

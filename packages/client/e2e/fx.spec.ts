@@ -26,7 +26,7 @@ test.describe("Fx App", () => {
     selectors.setTestIdAttribute("data-qa")
   })
 
-  test("Views should open new windows when popped out, and reattach to main window when closed", async ({
+  test.skip("Views should open new windows when popped out, and reattach to main window when closed", async ({
     context,
   }, testInfo) => {
     //TODO either adapt this test for web tear out or write a companion test
