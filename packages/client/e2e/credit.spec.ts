@@ -33,7 +33,7 @@ test.describe("Credit", () => {
 
   test.describe("New RFQ", () => {
     test("Create RFQ for GOOGL @smoke", async () => {
-      test.setTimeout(120000)
+      test.setTimeout(30000)
 
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
@@ -103,22 +103,23 @@ test.describe("Credit", () => {
         .getByText(/Adaptive Bank/)
         .click()
 
-      const pagePromise = context.waitForEvent("page")
-
       await newRfqPage
         .locator("button")
         .getByText(/Send RFQ/)
         .click()
 
-      const sellSidePage = await pagePromise
+      context.on("page", async (sellSidePage) => {
+        await sellSidePage.waitForURL("**/credit-sellside?**")
 
-      await sellSidePage.waitForSelector("text=New RFQ")
+        await sellSidePage.waitForSelector("text=New RFQ")
 
-      await sellSidePage.getByTestId("price-input").fill("100")
+        await sellSidePage.getByTestId("price-input").fill("100")
 
-      await sellSidePage.keyboard.press("Enter")
+        await sellSidePage.keyboard.press("Enter")
 
-      await expect(rfqsPage.getByTestId("quotes").first()).toContainText("$100")
+      })
+
+      await expect(rfqsPage.getByTestId("quotes").first()).toContainText("$100", {timeout: 10000})
     })
   })
 })
