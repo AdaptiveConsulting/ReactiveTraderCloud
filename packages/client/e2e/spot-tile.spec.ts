@@ -65,7 +65,6 @@ test.describe("Spot Tile", () => {
   })
 
   test.describe("Timed out transaction", () => {
-    test.setTimeout(10000)
     test("When I sell EUR/JPY then an execution animation appears until a timed out tile displays in orange with message 'Trade taking longer than expected'", async () => {
       await tilePage.locator("[data-testid='Sell-EURJPY']").click()
 
@@ -80,7 +79,6 @@ test.describe("Spot Tile", () => {
   })
 
   test.describe("High notional RFQ", () => {
-    test.setTimeout(15000)
     test("When I initiate RFQ on NZD/USD then it should display fixed prices for buy/sell and after 10 secs, and a requote button appears", async () => {
       await tilePage.locator("[data-testid='rfqButton']").click()
 

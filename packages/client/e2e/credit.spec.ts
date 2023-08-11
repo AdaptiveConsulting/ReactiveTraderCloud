@@ -33,8 +33,6 @@ test.describe("Credit", () => {
 
   test.describe("New RFQ", () => {
     test("Create RFQ for GOOGL @smoke", async () => {
-      test.setTimeout(30000)
-
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
