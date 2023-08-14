@@ -283,12 +283,12 @@ export const registerFxNotifications = (
   }
 }
 
-let areCreditQuoteNotificatiosRegistered = false
+let areCreditQuoteNotificationsRegistered = false
 export const registerCreditQuoteNotifications = (
   handler?: NotificationActionHandler,
 ) => {
-  if (!areCreditAcceptedNotificationsRegistered) {
-    areCreditQuoteNotificatiosRegistered = true
+  if (!areCreditQuoteNotificationsRegistered) {
+    areCreditQuoteNotificationsRegistered = true
 
     fin.InterApplicationBus.subscribe(
       { uuid: "*" },

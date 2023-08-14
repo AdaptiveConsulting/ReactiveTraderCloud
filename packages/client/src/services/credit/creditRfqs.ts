@@ -71,7 +71,6 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
     [boolean, Record<number, RfqDetails>]
   >(
     (acc, [update, instruments, dealers]) => {
-      console.log(update)
       const rec = acc[1]
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
@@ -223,11 +222,7 @@ export const [useCreditRfqDetails, getCreditRfqDetails$] = bind<
   [number],
   RfqDetails | undefined
 >((rfqId: number) =>
-  creditRfqsById$.pipe(
-    map((creditRfqsById) => {
-      return creditRfqsById[rfqId]
-    }),
-  ),
+  creditRfqsById$.pipe(map((creditRfqsById) => creditRfqsById[rfqId])),
 )
 
 export const [removedRfqIds$, removeRfqs] = createSignal<number[]>()

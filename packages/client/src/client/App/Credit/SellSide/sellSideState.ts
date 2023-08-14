@@ -1,7 +1,13 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { HIGHLIGHT_ROW_FLASH_TIME } from "client/constants"
-import { invertDirection } from "client/utils"
+import {
+  DECIMAL_SEPARATOR,
+  DECIMAL_SEPARATOR_REGEXP,
+  invertDirection,
+  THOUSANDS_SEPARATOR_REGEXP,
+  truncatedDecimalNumberFormatter,
+} from "client/utils"
 import {
   PASSED_QUOTE_STATE,
   QuoteState,
@@ -13,14 +19,23 @@ import {
   DealerBody,
   PENDING_WITH_PRICE_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
-  PendingWithPriceQuoteState,
   REJECTED_WITH_PRICE_QUOTE_STATE,
 } from "generated/TradingGateway"
 import { combineLatest, merge } from "rxjs"
-import { delay, filter, map, startWith, tap } from "rxjs/operators"
+import {
+  delay,
+  distinctUntilChanged,
+  exhaustMap,
+  filter,
+  map,
+  startWith,
+  withLatestFrom,
+} from "rxjs/operators"
 import {
   ADAPTIVE_BANK_NAME,
   creditRfqsById$,
+  passCreditQuote$,
+  quoteCreditQuote$,
   RfqDetails,
 } from "services/credit"
 
@@ -71,7 +86,9 @@ export const getSellSideQuoteState = (
   } else if (quoteState?.type === ACCEPTED_QUOTE_STATE) {
     return SellSideQuoteState.Accepted
   } else {
-    throw new Error()
+    throw new Error(
+      `Unable to determine sell side quote state from RFQ state [${rfqState}] and Quote state [${quoteState?.type}]`,
+    )
   }
 }
 
@@ -123,20 +140,15 @@ const filterByQuoteState = (
   }
 }
 
-const filterByIsAdaptiveRfq = (rfq: RfqDetails) => {
-  console.log(rfq)
-  return (
-    rfq.dealers.findIndex(
-      (dealer: DealerBody) => dealer.name === ADAPTIVE_BANK_NAME,
-    ) > -1
-  )
-}
+const filterByIsAdaptiveRfq = (rfq: RfqDetails) =>
+  rfq.dealers.findIndex(
+    (dealer: DealerBody) => dealer.name === ADAPTIVE_BANK_NAME,
+  ) > -1
 
 const _sellSideRfqs$ = combineLatest([
   creditRfqsById$,
   sellSideQuotesFilter$,
 ]).pipe(
-  tap(([record]) => console.log(record)),
   map(([record, quoteFilter]) =>
     (Object.values(record) as RfqDetails[])
       .filter(
@@ -163,11 +175,10 @@ const _sellSideRfqs$ = combineLatest([
         transformed.cpy = "AAM"
         transformed.security = rfq.instrument?.name ?? "NA"
         transformed.quantity = rfq.quantity
-        // TODO (2988) - logic needs looking at here - what does RFQ Row do with un-Adaptive-quoted RFQ
-        transformed.price = (adaptiveQuote?.state as PendingWithPriceQuoteState)
-          ?.payload
-          ? (adaptiveQuote?.state as PendingWithPriceQuoteState)?.payload
-          : 0
+        transformed.price =
+          adaptiveQuote && "payload" in adaptiveQuote.state
+            ? adaptiveQuote.state.payload
+            : 0
         transformed.timer =
           rfq.state !== RfqState.Open
             ? undefined
@@ -187,7 +198,48 @@ export const [useSelectedRfqId, selectedRfqId$] = bind(
     sellSideRfqs$.pipe(
       map((rfqs) => rfqs.at(0)?.id),
       filter(Boolean),
+      distinctUntilChanged(), // should prevent input from clearing when quotes are received
     ),
   ),
   null,
+)
+
+const formatter = truncatedDecimalNumberFormatter(4)
+const filterRegExp = new RegExp(THOUSANDS_SEPARATOR_REGEXP, "g")
+const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
+
+export const [rawPrice$, setPrice] = createSignal<string>()
+export const [usePrice, price$] = bind(
+  merge(
+    selectedRfqId$.pipe(map(() => ({ value: 0, inputValue: "" }))),
+    rawPrice$.pipe(
+      map((rawVal) => {
+        const lastChar = rawVal.slice(-1).toLowerCase()
+        const cleanedInput = rawVal
+          .replace(filterRegExp, "")
+          .replace(decimalRegExp, ".")
+
+        const inputQuantityAsNumber = Math.abs(Number(cleanedInput))
+
+        // numeric value could be NaN at this stage
+
+        const truncated = formatter(inputQuantityAsNumber)
+
+        const value = Number(
+          truncated.replace(filterRegExp, "").replace(decimalRegExp, "."),
+        )
+
+        return {
+          value,
+          inputValue:
+            value === 0
+              ? ""
+              : formatter(value) +
+                (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
+        }
+      }),
+      filter(({ value }) => !Number.isNaN(value)),
+    ),
+  ),
+  { value: 0, inputValue: "" },
 )
