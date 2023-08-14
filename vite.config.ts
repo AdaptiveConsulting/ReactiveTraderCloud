@@ -20,7 +20,7 @@ type BuildTarget = "web" | "openfin" | "finsemble"
 
 const localPort = Number(process.env.PORT) || 1917
 
-const OPENFIN_RUNTIME = "31.112.75.4"
+const OPENFIN_RUNTIME = "29.108.73.14"
 
 function getBaseUrl(dev: boolean) {
   return dev
