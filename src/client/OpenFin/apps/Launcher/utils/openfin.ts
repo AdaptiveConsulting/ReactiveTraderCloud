@@ -18,12 +18,6 @@ export async function getExistingOpenFinApplication(
 async function restoreExistingApp(
   existingApp: OpenFin.Application,
 ): Promise<void> {
-  const isRunning = await existingApp.isRunning()
-  if (!isRunning) {
-    await existingApp.run()
-    return
-  }
-
   const window = await existingApp.getWindow()
   await window.restore()
   await window.bringToFront()
@@ -33,10 +27,12 @@ export async function bringToFrontOpenFinApplication(
   uuid: string,
 ): Promise<OpenFin.Application | undefined> {
   const existingApp = await getExistingOpenFinApplication(uuid)
-  if (existingApp) {
-    await restoreExistingApp(existingApp)
-    return existingApp
-  }
+
+  // If the app is not running then just continue and let the rest of the steps start up the app
+  if (!existingApp || !(await existingApp.isRunning())) return
+
+  await restoreExistingApp(existingApp)
+  return existingApp
 }
 
 export async function createAndRunOpenFinApplication(

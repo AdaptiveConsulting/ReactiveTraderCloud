@@ -1,4 +1,4 @@
-import { broadcast, joinChannel } from "@finos/fdc3"
+import { joinChannel } from "@finos/fdc3"
 import { EventHandler } from "@openfin/core/src/api/events/base"
 import { ApplicationEvent, WindowEvent } from "@openfin/core/src/OpenFin"
 import { Subscribe } from "@react-rxjs/core"
@@ -128,13 +128,6 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
       > = ({ name, uuid }) => {
         //const label: string = (e || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Window", action: "closing", label })
-
-        if (name === "Limit-Checker") {
-          broadcast({
-            type: "limit-checker-status",
-            id: { isAlive: "false" },
-          })
-        }
 
         fin.Window.wrap({ uuid, name }).then((closingWindow) => {
           closingWindow.removeAllListeners()

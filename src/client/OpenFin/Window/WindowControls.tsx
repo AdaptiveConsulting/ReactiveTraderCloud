@@ -7,7 +7,7 @@ import { MinimizeIcon } from "../icons/MinimizeIcon"
 import {
   closeOtherWindows,
   inReactiveTraderMainWindow,
-  isReactiveTraderPlatformPrimary,
+  quitPlatform,
 } from "../utils/window"
 import { Control, ControlsWrapper } from "./WindowHeader.styles"
 
@@ -40,13 +40,11 @@ export const WindowControls = ({ close, minimize, maximize, popIn }: Props) => {
 
   async function wrappedClose() {
     if (inReactiveTraderMainWindow()) {
-      // ONLY if RT main win is primary win of platform, close all platform windows
-      if (isReactiveTraderPlatformPrimary()) {
-        fin.Platform.getCurrentSync().quit()
-        return
-      }
-      // otherwise close all windows related to the main RT (FX OR Credit)
-      await closeOtherWindows()
+      // ONLY if RT/Credit/LC main win is primary win of platform, close all platform windows
+      // TODO Commenting for now until we find why this sometimes closes every window
+      // https://openfin.zendesk.com/hc/en-us/requests/19445
+      // fin.Platform.getCurrentSync().quit()
+      await quitPlatform()
     }
 
     if (close) {

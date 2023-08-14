@@ -20,12 +20,7 @@
     "version": "<OPENFIN_RUNTIME>",
     "arguments": "--remote-debugging-port=9091"
   },
-  "services": [
-    {
-      "name": "notifications",
-      "manifestUrl": "https://cdn.openfin.co/services/openfin/notifications/1.20.0/app.json"
-    }
-  ],
+  "services": [{ "name": "notifications" }],
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",
   "shortcut": {
     "company": "Adaptive Financial Consulting",

@@ -17,6 +17,7 @@ export type Offset = [number, number]
 export const RT_LAUNCHER_MAIN_WINDOW_NAME = "Reactive-Launcher" // set in the JSON manifest
 export const RT_FX_MAIN_WINDOW_NAME = "Reactive-Trader-FX" // set in the JSON manifest
 export const RT_CREDIT_MAIN_WINDOW_NAME = "Reactive-Trader-Credit" // set in the JSON manifest
+export const LIMIT_CHECKER_MAIN_WINDOW_NAME = "Limit-Checker" // set in the JSON manifest
 export const RT_PLATFORM_UUID_PREFIX = "reactive-trader-" // prefix for main uuid in the RT manifests
 
 export function getWindowName() {
@@ -149,7 +150,8 @@ export function inReactiveTraderMainWindow() {
 
   return (
     currentWindowName === RT_FX_MAIN_WINDOW_NAME ||
-    currentWindowName === RT_CREDIT_MAIN_WINDOW_NAME
+    currentWindowName === RT_CREDIT_MAIN_WINDOW_NAME ||
+    currentWindowName === LIMIT_CHECKER_MAIN_WINDOW_NAME
   )
 }
 
@@ -192,4 +194,11 @@ export async function closeOtherWindows() {
       await wrapped.close()
     }
   }
+}
+
+// Temporary replacement for fin.Platform.getCurrentSync().quit() until we find why this sometimes closes every window
+// https://openfin.zendesk.com/hc/en-us/requests/19445
+export async function quitPlatform() {
+  const windows = await fin.Application.getCurrentSync().getChildWindows()
+  windows.forEach((window) => window.close())
 }
