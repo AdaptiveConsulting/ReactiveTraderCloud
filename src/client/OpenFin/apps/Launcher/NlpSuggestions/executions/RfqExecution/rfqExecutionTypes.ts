@@ -12,6 +12,7 @@ export interface RequestData {
   symbol: string
   notional: number
   direction: Direction
+  maturity: string
 }
 
 export interface RfqNlpExecutionMissingData {

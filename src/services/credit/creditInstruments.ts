@@ -9,7 +9,8 @@ import {
   RemovedInstrumentUpdate,
   START_OF_STATE_OF_THE_WORLD_INSTRUMENT_UPDATE,
 } from "generated/TradingGateway"
-import { map, scan } from "rxjs/operators"
+import { of } from "rxjs"
+import { map, scan, tap } from "rxjs/operators"
 
 import { withConnection } from "../withConnection"
 

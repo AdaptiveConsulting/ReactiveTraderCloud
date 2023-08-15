@@ -25,7 +25,7 @@ const ConfirmContent = ({
 }: RfqNlpExecutionDataReady["payload"]["requestData"]) => {
   useMoveNextOnEnter(onNext)
   const directionStr = direction === Direction.Buy ? "buying" : "selling"
-  const notionalStr = formatNumber(notional)
+  const notionalStr = formatNumber(notional * 1000)
 
   return (
     <>

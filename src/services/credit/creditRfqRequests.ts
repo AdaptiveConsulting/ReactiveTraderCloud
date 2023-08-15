@@ -24,7 +24,15 @@ export const [createdCreditRfq$, setCreatedCreditRfq] =
   createSignal<CreatedCreditRfq>()
 
 export const createCreditRfq$ = (request: CreateRfqRequest) => {
-  return WorkflowService.createRfq(request).pipe(
+  const { dealerIds, direction, expirySecs, instrumentId, quantity } = request
+
+  return WorkflowService.createRfq({
+    dealerIds,
+    direction,
+    expirySecs,
+    instrumentId,
+    quantity: quantity * 1000,
+  }).pipe(
     tap((response) => {
       if (response.type === ACK_CREATE_RFQ_RESPONSE) {
         setCreatedCreditRfq({ request, rfqId: response.payload })
