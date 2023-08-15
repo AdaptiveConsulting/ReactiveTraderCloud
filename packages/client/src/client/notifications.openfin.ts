@@ -342,6 +342,7 @@ export const registerCreditAcceptedNotifications = (
 
 export const unregisterCreditQuoteNotifications = () => {
   if (quotesReceivedSubscription) {
+    areCreditQuoteNotificationsRegistered = false
     quotesReceivedSubscription.unsubscribe()
   }
 }

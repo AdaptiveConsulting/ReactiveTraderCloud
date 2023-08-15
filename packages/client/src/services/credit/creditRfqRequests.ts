@@ -27,7 +27,6 @@ export const [createdCreditRfq$, setCreatedCreditRfq] =
 export const createCreditRfq$ = (request: CreateRfqRequest) => {
   const { dealerIds, direction, expirySecs, instrumentId, quantity } = request
 
-  console.log(request)
   return WorkflowService.createRfq({
     dealerIds,
     direction,
