@@ -60,7 +60,7 @@ rfqRequest$
     map(([, direction, instrumentId, quantity, dealerIds]) => ({
       instrumentId: instrumentId as number,
       dealerIds,
-      quantity: quantity * 1000,
+      quantity: quantity,
       direction,
       expirySecs: CREDIT_RFQ_EXPIRY_SECONDS,
     })),

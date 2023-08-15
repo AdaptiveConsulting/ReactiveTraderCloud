@@ -81,7 +81,7 @@ const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
         exhaustMap(() =>
           createCreditRfq$({
             instrumentId: instrument.id,
-            quantity: notional * 1000,
+            quantity: notional,
             direction,
             dealerIds: dealers.map((dealer) => dealer.id),
             expirySecs: CREDIT_RFQ_EXPIRY_SECONDS,
