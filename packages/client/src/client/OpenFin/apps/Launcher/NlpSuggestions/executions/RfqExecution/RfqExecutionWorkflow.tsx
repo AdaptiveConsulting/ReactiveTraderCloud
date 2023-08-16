@@ -1,6 +1,7 @@
 import { Card as RfqCard } from "client/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
 import { formatNumber } from "client/utils"
 import { ACK_CREATE_RFQ_RESPONSE, Direction } from "generated/TradingGateway"
+import { creditInstruments$ } from "services/credit"
 
 import { useOverlayElement } from "../../../overlayContext"
 import { onResetInput } from "../../../services/nlpService"
@@ -22,10 +23,20 @@ const ConfirmContent = ({
   direction,
   notional,
   symbol,
+  maturity,
 }: RfqNlpExecutionDataReady["payload"]["requestData"]) => {
   useMoveNextOnEnter(onNext)
   const directionStr = direction === Direction.Buy ? "buying" : "selling"
   const notionalStr = formatNumber(notional * 1000)
+  const creditInstrument = creditInstruments$
+    .getValue()
+    .filter((bond) => bond.ticker === symbol)
+
+  const selectedMaturity =
+    maturity === creditInstrument[0].maturity.slice(0, 4) ||
+    maturity === creditInstrument[1].maturity.slice(0, 4)
+      ? maturity
+      : creditInstrument[0].maturity.slice(0, 4)
 
   return (
     <>
@@ -36,6 +47,9 @@ const ConfirmContent = ({
         <small>
           You are raising an RFQ for {directionStr} {notionalStr} {symbol}
         </small>
+      </p>
+      <p>
+        <small>with a maturity set to {selectedMaturity} </small>
       </p>
     </>
   )
@@ -93,7 +107,7 @@ export const ExecutionWorkflow: React.FC<RfqNlpExecutionState> = (state) => {
         <Content {...state} />
         {state.type === RfqNlpExecutionStatus.WaitingToExecute ? (
           <NlpExecutionActionContainer>
-            <button onClick={onNext}>Execute</button>
+            <button onClick={onNext}>Raise</button>
 
             <button onClick={onResetInput}>Cancel</button>
           </NlpExecutionActionContainer>
