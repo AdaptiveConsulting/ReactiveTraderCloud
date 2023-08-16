@@ -12,9 +12,9 @@ const config: PlaywrightTestConfig = {
       use: {
         ...devices["Desktop Chrome"],
         //Artifacts
-      screenshot: `only-on-failure`,
-      video: `retain-on-failure`,
-      trace: `retain-on-failure`,
+      screenshot: "only-on-failure",
+      video: "retain-on-failure",
+      trace: "retain-on-failure",
       headless: true,
       },
     },
@@ -23,10 +23,12 @@ const config: PlaywrightTestConfig = {
     },
   ],
   reporter: [
+    ["list"],
     [
-      `html`,
+      "html",
       {
-        outputFolder: "html-report",
+        outputFolder: "playwright-report",
+        open: "never",
       },
     ],
   ],
