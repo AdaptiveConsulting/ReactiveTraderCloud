@@ -16,15 +16,16 @@
     }
   ],
   "engines": {
-    "node": ">=16.0.0"
+    "node": "=16.x || >= 20.5.1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AdaptiveConsulting/ReactiveTraderCloud.git"
   },
   "scripts": {
+    "_runLocal": "cross-env VITE_HYDRA_URL=ws://localhost:8929 $npm_config_runcmd",
     "start": "cross-env TARGET=web vite",
-    "start:local": "cross-env VITE_HYDRA_URL=ws://localhost:8929 TARGET=web vite",
+    "start:local": "npm run _runLocal --runcmd=\"TARGET=web vite\"",
     "typecheck": "tsc",
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --max-warnings 0",
     "lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --max-warnings 0 --fix",
@@ -50,13 +51,11 @@
     "openfin:build": "cross-env TARGET=openfin vite build",
     "openfin:serve": "cross-env TARGET=openfin vite preview",
     "openfin:start:preview": "npm:openfin:build && concurrently \"npm:openfin:serve\" \"npm:openfin:run:launcher\"",
-    "workspace:start": "cross-env TARGET=workspace vite --config vite-ws.config.ts",
+    "workspace:dev": "cross-env TARGET=workspace vite --config vite-ws.config.ts",
     "workspace:build": "cross-env TARGET=workspace vite build --config vite-ws.config.ts",
     "workspace:serve": "cross-env TARGET=workspace vite serve --config vite-ws.config.ts",
-    "workspace:openfin:dev": "npm run workspace:start",
-    "_workspace:openfin:run": "cross-env-shell \"wait-on -l $npm_config_manifest_url && openfin -l -c $npm_config_manifest_url\"",
-    "workspace:openfin:run": "npm run _workspace:openfin:run --manifest_url=http://localhost:2017/config/workspace.json",
-    "workspace:openfin:start": "concurrently \"npm:workspace:start\" \"npm:openfin:dev\" \"npm:workspace:openfin:run\"",
+    "workspace:run": "cross-env-shell \"wait-on -l http://localhost:2017/config/workspace.json && openfin -l -c http://localhost:2017/config/workspace.json\"",
+    "workspace:start": "concurrently \"npm:openfin:dev\" \"npm:workspace:dev\" \"npm:workspace:run\"",
     "finsemble:dev": "cross-env TARGET=finsemble vite",
     "finsemble:build": "cross-env TARGET=finsemble vite build",
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated",

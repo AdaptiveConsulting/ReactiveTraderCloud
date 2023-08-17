@@ -1,0 +1,11 @@
+# production
+dist/
+
+# misc
+*.local
+.eslintcache
+
+# testing
+/test-results/
+/playwright-report/
+/playwright/.cache/
