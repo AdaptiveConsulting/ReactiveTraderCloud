@@ -27,3 +27,9 @@ jobs:
           E2E_RTC_WEB_ROOT_URL: https://web.prod.reactivetrader.com
         run: |
           npm run e2e:web:smoke
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
