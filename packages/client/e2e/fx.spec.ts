@@ -30,6 +30,7 @@ test.describe("Fx App", () => {
     context,
   }, testInfo) => {
     //TODO either adapt this test for web tear out or write a companion test
+    //TODO remove skip once https://adaptive.kanbanize.com/ctrl_board/18/cards/5498/details/ is resolved. Skipping as it fail to reattach to main window
 
     test.skip(testInfo.project.name !== OPENFIN_PROJECT_NAME)
 

@@ -34,7 +34,7 @@ test.describe("Credit", () => {
   test.describe("New RFQ", () => {
     test("Create RFQ for GOOGL @smoke", async () => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage.getByTestId("search-result-item").nth(5).click()
+      await newRfqPage.getByTestId("search-result-item").getByText("GOOGL").first().click()
 
       const quantity = newRfqPage.getByTestId("quantity")
       await quantity.type("2")
@@ -91,7 +91,7 @@ test.describe("Credit", () => {
   test.describe("Sell side", () => {
     test("Sell side ticket", async ({ context }) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage.getByTestId("search-result-item").nth(5).click()
+      await newRfqPage.getByTestId("search-result-item").getByText("GOOGL").first().click()
 
       const quantity = newRfqPage.getByTestId("quantity")
       await quantity.type("2")
@@ -101,21 +101,20 @@ test.describe("Credit", () => {
         .getByText(/Adaptive Bank/)
         .click()
 
+      const pagePromise = context.waitForEvent("page")
+
       await newRfqPage
         .locator("button")
         .getByText(/Send RFQ/)
         .click()
 
-      context.on("page", async (sellSidePage) => {
-        await sellSidePage.waitForURL(`${process.env.E2E_RTC_WEB_ROOT_URL}/credit-sellside?**`)
+      const sellSidePage = await pagePromise
 
-        await sellSidePage.waitForSelector("text=New RFQ")
+      await sellSidePage.waitForSelector("text=New RFQ")
 
-        await sellSidePage.getByTestId("price-input").fill("100")
+      await sellSidePage.getByTestId("price-input").fill("100")
 
-        await sellSidePage.keyboard.press("Enter")
-
-      })
+      await sellSidePage.keyboard.press("Enter")
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText("$100", {timeout: 10000})
     })
