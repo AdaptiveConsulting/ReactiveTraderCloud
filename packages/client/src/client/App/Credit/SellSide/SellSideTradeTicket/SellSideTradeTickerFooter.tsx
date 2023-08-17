@@ -149,7 +149,7 @@ export const SellSideTradeTicketFooter = ({
               You {direction === Direction.Buy ? "Bought" : "Sold"}{" "}
               {formatter(quantity)} {instrument?.name ?? "Unknown Instrument"} @
               {quote.state?.type === ACCEPTED_QUOTE_STATE
-                ? `$${quote?.state?.payload}`
+                ? `$${quote.state.payload}`
                 : null}
               `
             </TradeDetails>

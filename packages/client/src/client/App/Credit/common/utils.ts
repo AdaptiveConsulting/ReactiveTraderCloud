@@ -1,4 +1,11 @@
-import { Direction, RfqState } from "generated/TradingGateway"
+import {
+  AcceptedQuoteState,
+  Direction,
+  PendingWithPriceQuoteState,
+  QuoteState,
+  RejectedWithPriceQuoteState,
+  RfqState,
+} from "generated/TradingGateway"
 import { RfqDetails } from "services/credit"
 
 function getRfqRemainingTime(rfq: RfqDetails): number {
@@ -33,4 +40,13 @@ export function rfqStateToLabel(state: RfqState): string {
     default:
       return `Request ${state}`
   }
+}
+
+export const hasPrice = (
+  quoteState: QuoteState | undefined,
+): quoteState is
+  | PendingWithPriceQuoteState
+  | RejectedWithPriceQuoteState
+  | AcceptedQuoteState => {
+  return !!quoteState && "payload" in quoteState
 }

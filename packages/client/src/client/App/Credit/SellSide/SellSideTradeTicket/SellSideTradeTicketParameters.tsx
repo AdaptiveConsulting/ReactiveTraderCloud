@@ -3,6 +3,7 @@ import { QuoteBody, RfqState } from "generated/TradingGateway"
 import { PendingWithPriceQuoteState } from "generated/TradingGateway"
 import { useEffect, useRef } from "react"
 
+import { hasPrice } from "../../common"
 import {
   getSellSideQuoteState,
   SellSideQuoteState,
@@ -78,7 +79,7 @@ export const SellSideTradeTicketParameters = ({
           </ParameterValue>
         ) : (
           <ParameterValue>
-            {quote?.state && "payload" in quote.state && quote.state.payload}
+            {hasPrice(quote?.state) && quote?.state.payload}
           </ParameterValue>
         )}
       </div>

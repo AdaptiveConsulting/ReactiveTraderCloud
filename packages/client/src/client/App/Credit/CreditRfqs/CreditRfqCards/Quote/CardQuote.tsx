@@ -6,7 +6,6 @@ import {
   PASSED_QUOTE_STATE,
   PENDING_WITH_PRICE_QUOTE_STATE,
   QuoteBody,
-  REJECTED_WITH_PRICE_QUOTE_STATE,
   RfqState,
 } from "generated/TradingGateway"
 import { FaCheckCircle } from "react-icons/fa"
@@ -14,6 +13,7 @@ import { exhaustMap } from "rxjs/operators"
 import { acceptCreditQuote$ } from "services/credit"
 import { useQuoteState } from "services/credit"
 
+import { hasPrice } from "../../../common"
 import {
   AcceptQuoteButton,
   DealerName,
@@ -28,12 +28,6 @@ const [acceptRfq$, onAcceptRfq] = createSignal<number>()
 acceptRfq$
   .pipe(exhaustMap((quoteId) => acceptCreditQuote$({ quoteId })))
   .subscribe()
-
-const pricedQuoteStates = [
-  PENDING_WITH_PRICE_QUOTE_STATE,
-  ACCEPTED_QUOTE_STATE,
-  REJECTED_WITH_PRICE_QUOTE_STATE,
-]
 
 interface QuoteProps {
   dealer: DealerBody
@@ -55,7 +49,7 @@ export const Quote = ({
   const state = useQuoteState(dealer.id, rfqId)
 
   const rfqOpen = rfqState === RfqState.Open
-  const hasPrice = pricedQuoteStates.includes(state.type)
+  const priced = hasPrice(quote?.state)
   const acceptable = state.type === PENDING_WITH_PRICE_QUOTE_STATE && rfqOpen
   const accepted = state.type === ACCEPTED_QUOTE_STATE
   const passed = quote?.state.type === PASSED_QUOTE_STATE
@@ -75,14 +69,14 @@ export const Quote = ({
           />
         </QuoteDotWrapper>
       )}
-      <DealerName open={rfqOpen} accepted={accepted} priced={hasPrice}>
+      <DealerName open={rfqOpen} accepted={accepted} priced={priced}>
         {dealer?.name ?? "Dealer name not found"}
       </DealerName>
       <Price
         open={rfqOpen}
         accepted={accepted}
         passed={passed}
-        priced={hasPrice}
+        priced={priced}
         highlight={highlight}
         direction={direction}
       >

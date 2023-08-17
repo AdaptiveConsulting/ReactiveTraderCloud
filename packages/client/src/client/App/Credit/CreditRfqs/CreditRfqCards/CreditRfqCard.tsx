@@ -106,25 +106,26 @@ export const Card = ({ id, highlight }: { id: number; highlight: boolean }) => {
             const quote = rfqDetails.quotes.find(
               (quote) => quote.dealerId === dealer.id,
             )
-            if (quote) {
-              // The highest price is the best quote since we do not have partial fills
-              const bestQuote =
-                rfqDetails.state === RfqState.Open &&
-                quote.state.type === PENDING_WITH_PRICE_QUOTE_STATE &&
-                dealer.name == "Adaptive Bank"
-              return (
-                <Quote
-                  key={dealer.id}
-                  dealer={dealer}
-                  quote={quote}
-                  rfqId={rfqDetails.id}
-                  rfqState={rfqDetails.state}
-                  direction={rfqDetails.direction}
-                  highlight={bestQuote}
-                />
-              )
+            if (!quote) {
+              return null
             }
-            return null
+
+            // The highest price is the best quote since we do not have partial fills
+            const bestQuote =
+              rfqDetails.state === RfqState.Open &&
+              quote.state.type === PENDING_WITH_PRICE_QUOTE_STATE &&
+              dealer.name == "Adaptive Bank"
+            return (
+              <Quote
+                key={dealer.id}
+                dealer={dealer}
+                quote={quote}
+                rfqId={rfqDetails.id}
+                rfqState={rfqDetails.state}
+                direction={rfqDetails.direction}
+                highlight={bestQuote}
+              />
+            )
           })}
       </QuotesContainer>
       <CardFooter rfqDetails={rfqDetails} />

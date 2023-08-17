@@ -39,7 +39,7 @@ import {
   RfqDetails,
 } from "services/credit"
 
-import { timeRemainingComparator } from "../common"
+import { hasPrice, timeRemainingComparator } from "../common"
 import { RfqRow } from "./SellSideRfqGrid"
 
 export enum SellSideQuoteState {
@@ -176,7 +176,7 @@ const _sellSideRfqs$ = combineLatest([
         transformed.security = rfq.instrument?.name ?? "NA"
         transformed.quantity = rfq.quantity
         transformed.price =
-          adaptiveQuote && "payload" in adaptiveQuote.state
+          adaptiveQuote && hasPrice(adaptiveQuote.state)
             ? adaptiveQuote.state.payload
             : 0
         transformed.timer =
