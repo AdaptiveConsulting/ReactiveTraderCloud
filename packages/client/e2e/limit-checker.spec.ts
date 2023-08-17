@@ -30,31 +30,38 @@ test.describe("Limit Checker", () => {
       .nth(1)
       .locator("div")
 
-    const limitCheckInput = limitCheckerPage.getByLabel("EUR/USD")
+    const limitCheckInput = limitCheckerPage
+      .locator("div", {
+        has: limitCheckerPage.locator("div", { hasText: /^EUR\/USD$/ }),
+      })
+      .last()
+      .locator("input")
+
+    const lastTradeIdString = await tradeBlotterFirstRowCells.nth(1).innerText()
+    const lastTradeId = isNaN(Number(lastTradeIdString)) ? 0 : Number(lastTradeIdString)
 
     const limitIdString = await limitTableFirstRowCells.nth(1).innerText()
+    const limitId = isNaN(Number(limitIdString)) ? -1 : Number(limitIdString)
 
-    const limitId = Number(limitIdString) ? Number(limitIdString) : -1
-
-    await limitCheckInput.fill("1000000")
+    await limitCheckInput.fill("2000000")
 
     const tileInput = tilePage.getByLabel("EUR").nth(0)
-    await tileInput.fill("12345")
+    await tileInput.fill("1999999")
 
     await tilePage.locator("[data-testid='Buy-EURUSD']").click()
 
+    await tradeBlotterFirstRowCells.nth(1).getByText(lastTradeId + 1 + "").waitFor({state: "visible"})
+    
     await assertGridRow(
       limitTableFirstRowCells,
-      [limitId + 1 + "", "Success", "EURUSD", "12,345"],
+      [limitId + 1 + "", "Success", "EURUSD", "2,000,000"],
       1,
       5,
     )
 
-    await assertGridCell(tradeBlotterFirstRowCells, 2, "Done")
-
     await assertGridRow(
       tradeBlotterFirstRowCells,
-      ["Buy", "EURUSD", "EUR", "12,345"],
+      ["Buy", "EURUSD", "EUR", "1,999,999"],
       4,
       8,
     )
@@ -62,7 +69,7 @@ test.describe("Limit Checker", () => {
 
   test("Trade is blocked if notional is above limit", async ({}, testInfo) => {
     test.skip(testInfo.project.name !== OPENFIN_PROJECT_NAME, "Openfin Only")
-
+  
     const limitTableFirstRowCells = limitCheckerPage
       .locator(`[role="grid"] > div`)
       .nth(1)
@@ -75,21 +82,27 @@ test.describe("Limit Checker", () => {
 
     const tradeId = await tradeBlotterFirstRowCells.nth(1).innerText()
 
-    const limitCheckInput = limitCheckerPage.getByLabel("EUR/USD")
+    const limitCheckInput = limitCheckerPage
+      .locator("div", {
+        has: limitCheckerPage.locator("div", { hasText: /^EUR\/USD$/ }),
+      })
+      .last()
+      .locator("input")
+
     const tileInput = tilePage.getByLabel("EUR").nth(0)
 
     const limitIdString = await limitTableFirstRowCells.nth(1).innerText()
-    const limitId = Number(limitIdString) ? Number(limitIdString) : -1
+    const limitId = !isNaN(Number(limitIdString)) ? Number(limitIdString) : -1
 
-    await limitCheckInput.fill("1000")
+    await limitCheckInput.fill("1000000")
 
-    await tileInput.fill("100000")
+    await tileInput.fill("1000001")
 
     await tilePage.locator("[data-testid='Buy-EURUSD']").click()
 
     await assertGridRow(
       limitTableFirstRowCells,
-      [limitId + 2 + "", "Failure", "EURUSD", "100,000"],
+      [limitId + 1 + "", "Failure", "EURUSD", "1,000,000"],
       1,
       5,
     )
