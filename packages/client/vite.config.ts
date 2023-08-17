@@ -168,16 +168,16 @@ const copyPlugin = (
   buildTarget: BuildTarget,
   env: string,
 ): Plugin[] => {
-  const transform: TransformOption | undefined = (contents) =>
+  const transform: TransformOption = (contents) =>
     contents
       .replace(/<BASE_URL>/g, getBaseUrl(isDev || env === "local"))
-
       // We want the PWA banner to show on www.reactivetrader.com
       .replace(/web\.prod\./g, "www.")
-
+      // for environment disambiguation, in OpenFin uuids
       .replace(/<ENV_NAME>/g, env)
-      // We don't want to show PROD in the app name
+      // for (visible) env naming - OpenFin and PWA - but not for PROD
       .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : ` ${env.toUpperCase()}`)
+      // to keep consistent runtime version across our manifests
       .replace(/<OPENFIN_RUNTIME>/g, OPENFIN_RUNTIME)
 
   return viteStaticCopy({
@@ -317,7 +317,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   const isDev = mode === "development"
   const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
 
-  const devPlugins: PluginOption[] = [] // stays as any[] as WB injectManifest does not return PluginOption
+  const devPlugins: PluginOption[] = []
 
   devPlugins.push(targetBuildPlugin(isDev, buildTarget))
   devPlugins.push(indexSwitchPlugin(buildTarget))
@@ -375,6 +375,10 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     server: {
       port: localPort,
       proxy,
+      watch: {
+        cwd: __dirname,
+        ignored: "dist/**",
+      },
     },
     resolve: {
       // see https://vitejs.dev/config/shared-options.html#resolve-alias

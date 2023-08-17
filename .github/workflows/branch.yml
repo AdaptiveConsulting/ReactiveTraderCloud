@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: .
+    working-directory: packages/client
 
 env:
   BUCKET_WEB: reactive-trader-web-builds
@@ -104,9 +104,7 @@ jobs:
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: |
-          npm ci
           npm run workspace:build
-        working-directory: .
 
       - name: Deploy (OpenFin - Workspace)
         run: |
@@ -114,7 +112,6 @@ jobs:
             -h "Cache-Control: no-cache" \
             rsync -d -r dist \
             gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.BRANCH }}/workspace
-        working-directory: .
 
       - name: Build (Finsemble)
         env:
