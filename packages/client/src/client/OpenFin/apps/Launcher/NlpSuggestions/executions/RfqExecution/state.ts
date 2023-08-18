@@ -50,14 +50,14 @@ const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
       intent.payload as RfqNlpExecutionDataReady["payload"]["requestData"]
     const { symbol, direction, notional, maturity } = requestData
 
-    const instrument = instruments.find((bond) => {
-      const instrumentDate = bond.maturity.slice(0, 4)
+    const instrument = instruments.find((instrument) => {
+      const instrumentDate = instrument.maturity.slice(0, 4)
 
-      if (maturity !== instrumentDate) {
-        return bond.ticker === symbol
+      if (maturity === "") {
+        return instrument.ticker === symbol
       }
 
-      return bond.ticker === symbol && instrumentDate === maturity
+      return instrument.ticker === symbol && instrumentDate === maturity
     })
 
     if (!instrument) {

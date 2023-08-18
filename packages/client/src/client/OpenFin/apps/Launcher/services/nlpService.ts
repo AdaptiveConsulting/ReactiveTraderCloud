@@ -68,6 +68,7 @@ export interface MarketInfoIntent {
 export interface CreditRfqIntent {
   type: NlpIntentType.CreditRfq
   payload: {
+    rfqIntent: string
     symbol: string
     direction: Direction
     notional: number
@@ -136,6 +137,8 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
 
       const maturity = intentFields?.Maturity?.stringValue
 
+      const rfqIntent = intentFields?.CreditRfq?.stringValue
+
       switch (intent) {
         case NlpIntentType.TradeExecution: {
           return direction
@@ -151,12 +154,13 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
         }
 
         case NlpIntentType.CreditRfq: {
-          if (direction) {
+          if (direction || rfqIntent) {
             return {
               type: NlpIntentType.CreditRfq,
               payload: {
+                rfqIntent,
                 symbol,
-                direction: directionMapper[direction],
+                direction: directionMapper[direction ?? ""],
                 notional: value,
                 maturity: maturity,
               },
