@@ -76,9 +76,8 @@ test.describe("Trade Blotter", () => {
     await tilePage.locator("input[id='notional-input-EURUSD']").clear()
     await tilePage.locator("input[id='notional-input-EURUSD']").type("1m")
 
-    const tile = tilePage.locator('[data-testid="Buy-EURUSD"]').nth(0)
-    await tile.click()
-
+    await tilePage.locator('[data-testid="Buy-EURUSD"]').nth(0).click()
+  
     const tradeID = await tilePage
       .locator("[data-testid='trade-id']")
       .innerText()

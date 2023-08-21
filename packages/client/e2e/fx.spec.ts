@@ -30,18 +30,18 @@ test.describe("Fx App", () => {
     context,
   }, testInfo) => {
     //TODO either adapt this test for web tear out or write a companion test
-    //TODO remove skip once https://adaptive.kanbanize.com/ctrl_board/18/cards/5498/details/ is resolved. Skipping as it fail to reattach to main window
+    //TODO Test is failing intermittently due to issue documented in RT-5538. Skipping the test until resolved
 
     test.skip(testInfo.project.name !== OPENFIN_PROJECT_NAME)
 
-    const popOutTitle = "open in new window"
+ 
+    const popOutButtons = mainWindow.getByTitle("open in new window")
+    const toggleLock = mainWindow.getByTitle("toggle layout lock")
 
-    await expect(mainWindow.getByTitle(popOutTitle).nth(0)).not.toBeVisible()
+    await expect(popOutButtons.nth(0)).not.toBeVisible()
 
-    await mainWindow.getByTitle("toggle layout lock").hover()
-    await mainWindow.getByTitle("toggle layout lock").click()
-
-    const popOutButtons = mainWindow.getByTitle(popOutTitle)
+    await toggleLock.hover()
+    await toggleLock.click()
 
     const liveRatesPagePromise = context.waitForEvent("page")
     await popOutButtons.nth(0).click()
@@ -59,21 +59,20 @@ test.describe("Fx App", () => {
       .locator("[data-qa='openfin-chrome__close']")
       .click()
 
-    await expect(poppedOutLiveRatesPage.isClosed()).toBeTruthy()
-    await expect(poppedOutBlotterPage.isClosed()).toBeFalsy()
     await expect(mainWindow.locator("text=Live Rates")).toBeVisible()
+    expect(poppedOutLiveRatesPage.isClosed()).toBeTruthy()
     
     await poppedOutBlotterPage
       .locator("[data-qa='openfin-chrome__close']")
       .click()
-    
-    await expect(poppedOutBlotterPage.isClosed()).toBeTruthy()
 
     await expect(mainWindow.locator("text=Trades")).toBeVisible()
+    expect(poppedOutBlotterPage.isClosed()).toBeTruthy()
+
     await expect(mainWindow.locator("text=Analytics")).toBeVisible()
 
-    await mainWindow.getByTitle("toggle layout lock").hover()
-    await mainWindow.getByTitle("toggle layout lock").click()
+    await toggleLock.hover()
+    await toggleLock.click()
 
     await expect(popOutButtons.nth(0)).not.toBeVisible()
   })

@@ -82,13 +82,13 @@ test.describe("Limit Checker", () => {
 
     const tradeId = await tradeBlotterFirstRowCells.nth(1).innerText()
 
-    const limitCheckInput = limitCheckerPage
+   const limitCheckInput = limitCheckerPage
       .locator("div", {
         has: limitCheckerPage.locator("div", { hasText: /^EUR\/USD$/ }),
       })
       .last()
       .locator("input")
-
+  
     const tileInput = tilePage.getByLabel("EUR").nth(0)
 
     const limitIdString = await limitTableFirstRowCells.nth(1).innerText()
