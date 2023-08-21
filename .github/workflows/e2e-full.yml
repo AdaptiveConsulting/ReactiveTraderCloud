@@ -5,7 +5,7 @@ on:
 
 defaults:
   run:
-    working-directory: .
+    working-directory: packages/client
 
 jobs:
   e2e:
