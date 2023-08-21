@@ -24,7 +24,7 @@ jobs:
 
       - name: Test
         env:
-          E2E_RTC_WEB_ROOT_URL: https://web.uat.reactivetrader.com
+          E2E_RTC_WEB_ROOT_URL: https://web.dev.reactivetrader.com
         run: |
           npm run e2e:web
       - uses: actions/upload-artifact@v3
