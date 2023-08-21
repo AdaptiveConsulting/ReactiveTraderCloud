@@ -1,7 +1,7 @@
 import { Card as RfqCard } from "client/App/Credit/CreditRfqs/CreditRfqCards/CreditRfqCard"
 import { formatNumber } from "client/utils"
 import { ACK_CREATE_RFQ_RESPONSE, Direction } from "generated/TradingGateway"
-import { creditInstruments$ } from "services/credit"
+import { useCreditInstruments } from "services/credit"
 
 import { useOverlayElement } from "../../../overlayContext"
 import { onResetInput } from "../../../services/nlpService"
@@ -28,15 +28,14 @@ const ConfirmContent = ({
   useMoveNextOnEnter(onNext)
   const directionStr = direction === Direction.Buy ? "buying" : "selling"
   const notionalStr = formatNumber(notional * 1000)
-  const creditInstrument = creditInstruments$
-    .getValue()
+  const instrumentMaturity = useCreditInstruments()
     .filter((bond) => bond.ticker === symbol)
+    .map((bond) => bond.maturity.slice(0, 4))
 
   const selectedMaturity =
-    maturity === creditInstrument[0].maturity.slice(0, 4) ||
-    maturity === creditInstrument[1].maturity.slice(0, 4)
-      ? maturity
-      : creditInstrument[0].maturity.slice(0, 4)
+    instrumentMaturity.find(
+      (instrumentMaturity) => instrumentMaturity === maturity,
+    ) ?? instrumentMaturity[0]
 
   return (
     <>
