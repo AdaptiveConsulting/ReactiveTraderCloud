@@ -22,7 +22,7 @@ const [resetInput$, onResetInput] = createSignal()
 export { onResetInput }
 
 const [useNlpInput, nlpInput$] = bind(
-  merge(resetInput$.pipe(map(() => ""))),
+  merge(input$, resetInput$.pipe(map(() => ""))),
   "",
 )
 export { useNlpInput }
