@@ -55,7 +55,7 @@ test.describe("Credit", () => {
       // Navigate to Live
       await rfqsPage.getByText(/Live/).first().click()
 
-      const firstQuote = await rfqsPage
+      const firstQuote = rfqsPage
         .getByTestId("quotes")
         .first()
         .locator("div")
@@ -101,21 +101,22 @@ test.describe("Credit", () => {
         .getByText(/Adaptive Bank/)
         .click()
 
+      const pagePromise = context.waitForEvent("page", {
+        predicate: page => page.url().includes("credit-sellside"),
+      })
+
       await newRfqPage
         .locator("button")
         .getByText(/Send RFQ/)
         .click()
 
-      context.on("page", async (sellSidePage) => {
-        await sellSidePage.waitForURL("**/credit-sellside?**")
+      const sellSidePage = await pagePromise
 
-        await sellSidePage.waitForSelector("text=New RFQ")
+      await sellSidePage.waitForSelector("text=New RFQ")
 
-        await sellSidePage.getByTestId("price-input").fill("100")
+      await sellSidePage.getByTestId("price-input").fill("100")
 
-        await sellSidePage.keyboard.press("Enter")
-
-      })
+      await sellSidePage.keyboard.press("Enter")
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText("$100", {timeout: 10000})
     })

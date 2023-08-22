@@ -50,7 +50,7 @@ test.describe("Limit Checker", () => {
 
     await tilePage.locator("[data-testid='Buy-EURUSD']").click()
 
-    await tradeBlotterFirstRowCells.nth(1).getByText(lastTradeId + 1 + "").waitFor({state: "visible"})
+    await tradeBlotterFirstRowCells.nth(1).getByText(lastTradeId + 1 + "").waitFor({state: "visible", timeout:5000})
     
     await assertGridRow(
       limitTableFirstRowCells,

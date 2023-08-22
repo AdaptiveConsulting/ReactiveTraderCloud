@@ -38,6 +38,7 @@ test.describe("Fx App", () => {
     const popOutButtons = mainWindow.getByTitle("open in new window")
     const toggleLock = mainWindow.getByTitle("toggle layout lock")
 
+    await expect(popOutButtons).toHaveCount(3)
     await expect(popOutButtons.nth(0)).not.toBeVisible()
 
     await toggleLock.hover()
@@ -46,13 +47,11 @@ test.describe("Fx App", () => {
     const liveRatesPagePromise = context.waitForEvent("page")
     await popOutButtons.nth(0).click()
     const poppedOutLiveRatesPage = await liveRatesPagePromise
-
     await poppedOutLiveRatesPage.waitForSelector("text=Live Rates")
 
     const blotterPagePromise = context.waitForEvent("page")
     await popOutButtons.nth(0).click()
     const poppedOutBlotterPage = await blotterPagePromise
-
     await poppedOutBlotterPage.waitForSelector("text=Trades")
 
     await poppedOutLiveRatesPage
@@ -74,6 +73,7 @@ test.describe("Fx App", () => {
     await toggleLock.hover()
     await toggleLock.click()
 
+    await expect(popOutButtons).toHaveCount(3)
     await expect(popOutButtons.nth(0)).not.toBeVisible()
   })
 })

@@ -4,7 +4,7 @@ import {devices} from "@playwright/test"
 const config: PlaywrightTestConfig = {
   testDir: "./e2e",
   /* Maximum time one test can run for. */
-  timeout: 30000,
+  timeout: 30_000,
   workers: 1,
   projects: [
     {
@@ -20,6 +20,11 @@ const config: PlaywrightTestConfig = {
     },
     {
       name: "openfin",
+      use: {
+      screenshot: "only-on-failure",
+      video: "retain-on-failure",
+      trace: "retain-on-failure",
+      },
     },
   ],
   reporter: [
