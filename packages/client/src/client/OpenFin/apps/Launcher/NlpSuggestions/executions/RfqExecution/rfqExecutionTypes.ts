@@ -9,6 +9,7 @@ export enum RfqNlpExecutionStatus {
 }
 
 export interface RequestData {
+  rfqIntent?: string
   symbol: string
   notional: number
   direction: Direction
