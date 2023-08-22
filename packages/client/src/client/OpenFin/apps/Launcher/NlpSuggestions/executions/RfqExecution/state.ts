@@ -1,7 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { CREDIT_RFQ_EXPIRY_SECONDS } from "client/constants"
-import { AckCreateRfqResponse } from "generated/TradingGateway"
+import { AckCreateRfqResponse, InstrumentBody } from "generated/TradingGateway"
 import {
   catchError,
   concat,
@@ -54,11 +54,15 @@ const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
     const symbolInstruments = instruments.filter(
       (instrument) => instrument.ticker === symbol,
     )
-    const instrument =
-      symbolInstruments.find(
-        (instrument) =>
-          !maturity || maturity === instrument.maturity.slice(0, 4),
-      ) ?? symbolInstruments[0]
+
+    let instrument = symbolInstruments[0]
+
+    if (maturity) {
+      instrument =
+        symbolInstruments.find(
+          (instrument) => maturity === instrument.maturity.slice(0, 4),
+        ) ?? symbolInstruments[0]
+    }
 
     if (!instrument) {
       return [{ type: RfqNlpExecutionStatus.MissingData as const, payload: {} }]
