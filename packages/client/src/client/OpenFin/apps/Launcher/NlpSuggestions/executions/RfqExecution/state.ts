@@ -51,15 +51,14 @@ const rfqExecutionState$: Observable<RfqNlpExecutionState> = nlpIntent$.pipe(
       intent.payload as RfqNlpExecutionDataReady["payload"]["requestData"]
     const { symbol, direction, notional, maturity } = requestData
 
-    const instrument = instruments.find((instrument) => {
-      const instrumentDate = instrument.maturity.slice(0, 4)
-
-      if (maturity === "") {
-        return instrument.ticker === symbol
-      }
-
-      return instrument.ticker === symbol && instrumentDate === maturity
-    })
+    const symbolInstruments = instruments.filter(
+      (instrument) => instrument.ticker === symbol,
+    )
+    const instrument =
+      symbolInstruments.find(
+        (instrument) =>
+          !maturity || maturity === instrument.maturity.slice(0, 4),
+      ) ?? symbolInstruments[0]
 
     if (!instrument) {
       return [{ type: RfqNlpExecutionStatus.MissingData as const, payload: {} }]
