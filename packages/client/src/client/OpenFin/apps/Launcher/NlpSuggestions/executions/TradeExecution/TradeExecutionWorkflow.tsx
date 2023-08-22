@@ -4,8 +4,9 @@ import { Direction } from "generated/TradingGateway"
 import { createPortal } from "react-dom"
 import { ExecutionStatus, ExecutionTrade } from "services/executions"
 
+import { onResetInput } from "@/services/nlp"
+
 import { useOverlayElement } from "../../../overlayContext"
-import { onResetInput } from "../../../services/nlpService"
 import {
   NlpExecutionActionContainer,
   NlpExecutionContainer,

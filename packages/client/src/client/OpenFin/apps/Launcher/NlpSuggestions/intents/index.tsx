@@ -1,7 +1,8 @@
 import { ROUTES_CONFIG } from "client/constants"
 import { openWindow } from "client/utils/window/openWindow"
 
-import { NlpIntent, NlpIntentType } from "../../services/nlpService"
+import { NlpIntent, NlpIntentType } from "@/services/nlp"
+
 import { getReactiveTraderUrl } from "../../utils/url"
 
 export const showCurrencyPairWindow = (currencyPair: string) => {

@@ -14,10 +14,7 @@ import { withLatestFrom } from "rxjs"
 import { deletePage, getPage, launchPage } from "workspace/browser"
 import { getUserResult, getUserToSwitch } from "workspace/user"
 
-import {
-  nlpIntent$,
-  setInput,
-} from "@/client/OpenFin/apps/Launcher/services/nlpService"
+import { nlpIntent$, setInput } from "@/services/nlp"
 
 import { respondWithIntent as respond } from "./respondWithIntent"
 import {

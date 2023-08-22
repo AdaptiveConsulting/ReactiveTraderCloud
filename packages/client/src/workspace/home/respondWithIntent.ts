@@ -1,19 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
-  CLISearchListenerRequest,
-  CLISearchListenerResponse,
   CLITemplate,
   SearchListenerRequest,
   SearchListenerResponse,
   SearchResult,
 } from "@openfin/workspace"
-import {
-  CreditRfqIntent,
-  NlpIntent,
-  NlpIntentType,
-  TradeExecutionIntent,
-  TradesInfoIntent,
-} from "client/OpenFin/apps/Launcher/services/nlpService"
 // TODO - move into common place
 import { ACK_CREATE_RFQ_RESPONSE, Direction } from "generated/TradingGateway"
 import {
@@ -38,6 +29,14 @@ import {
 import { executions$ } from "services/executions"
 import { getPrice$, Price } from "services/prices"
 import { trades$ } from "services/trades"
+
+import {
+  CreditRfqIntent,
+  NlpIntent,
+  NlpIntentType,
+  TradeExecutionIntent,
+  TradesInfoIntent,
+} from "@/services/nlp"
 
 import { VITE_RT_URL } from "../consts"
 import { createContainer, createText } from "../templates"

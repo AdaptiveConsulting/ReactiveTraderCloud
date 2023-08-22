@@ -15,7 +15,8 @@ import { getCurrencyPair$ } from "services/currencyPairs"
 import { execute$, ExecutionStatus } from "services/executions"
 import { getPrice$ } from "services/prices"
 
-import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
+import { nlpIntent$, NlpIntentType } from "@/services/nlp"
+
 import {
   TradeNlpExecutionDataReady,
   TradeNlpExecutionState,
