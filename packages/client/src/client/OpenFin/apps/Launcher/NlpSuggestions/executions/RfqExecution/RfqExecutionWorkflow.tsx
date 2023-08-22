@@ -3,8 +3,9 @@ import { formatNumber } from "client/utils"
 import { ACK_CREATE_RFQ_RESPONSE, Direction } from "generated/TradingGateway"
 import { useCreditInstruments } from "services/credit"
 
+import { onResetInput } from "@/services/nlp"
+
 import { useOverlayElement } from "../../../overlayContext"
-import { onResetInput } from "../../../services/nlpService"
 import {
   NlpExecutionActionContainer,
   NlpExecutionContainer,

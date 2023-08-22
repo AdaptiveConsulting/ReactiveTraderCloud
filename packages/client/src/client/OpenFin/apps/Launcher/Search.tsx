@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react"
 
+import { onResetInput, setInput } from "@/services/nlp"
+
 import { ExitIcon } from "./icons"
-import { onResetInput, setInput } from "./services/nlpService"
 import { CancelButton, Input, SearchContainer } from "./styles"
 
 type Props = {

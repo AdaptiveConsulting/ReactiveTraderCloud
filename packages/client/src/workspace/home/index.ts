@@ -9,10 +9,14 @@ import {
   Home,
   HomeRegistration,
 } from "@openfin/workspace"
+import { createSignal } from "@react-rxjs/utils"
+import { withLatestFrom } from "rxjs"
 import { deletePage, getPage, launchPage } from "workspace/browser"
 import { getUserResult, getUserToSwitch } from "workspace/user"
 
-import { getNlpResults } from "./nlpProvider"
+import { nlpIntent$, setInput } from "@/services/nlp"
+
+import { respondWithIntent as respond } from "./respondWithIntent"
 import {
   ADAPTIVE_LOGO,
   getAppsAndPages,
@@ -21,6 +25,20 @@ import {
 } from "./utils"
 
 const PROVIDER_ID = "adaptive-home-provider"
+
+const [requestResponse$, setRequestResponse] =
+  createSignal<{
+    request: CLISearchListenerRequest
+    response: CLISearchListenerResponse
+  }>()
+
+nlpIntent$
+  .pipe(withLatestFrom(requestResponse$))
+  .subscribe(([intent, { request, response }]) => {
+    if (intent !== "loading") {
+      respond(intent, response, request)
+    }
+  })
 
 export async function registerHome(): Promise<HomeRegistration> {
   const queryMinLength = 3
@@ -54,7 +72,8 @@ export async function registerHome(): Promise<HomeRegistration> {
     lastResponse.open()
 
     if (query.indexOf("/") === 0) {
-      await getNlpResults(query, request, response)
+      setRequestResponse({ request, response })
+      setInput(query)
 
       if (query.trim() === "/switch user") {
         return {

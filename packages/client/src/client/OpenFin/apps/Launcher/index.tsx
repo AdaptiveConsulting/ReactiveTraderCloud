@@ -8,18 +8,19 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react"
 import Measure, { ContentRect } from "react-measure"
 
+import {
+  onResetInput,
+  useIsNlpIntentLoading,
+  useNlpInput,
+  useNlpIntent,
+} from "@/services/nlp"
+
 import { LaunchButton } from "./components/LaunchButton"
 import { ExitIcon, minimiseNormalIcon, SearchIcon } from "./icons"
 import { LauncherApps } from "./LauncherApps"
 import { NlpSuggestions } from "./NlpSuggestions/NlpSuggestions"
 import { OverlayProvider } from "./overlayContext"
 import { Search } from "./Search"
-import {
-  onResetInput,
-  useIsNlpIntentLoading,
-  useNlpInput,
-  useNlpIntent,
-} from "./services/nlpService"
 import {
   ExitButton,
   LauncherContainer,

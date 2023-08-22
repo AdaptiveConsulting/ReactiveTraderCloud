@@ -19,7 +19,8 @@ import {
   creditInstruments$,
 } from "services/credit"
 
-import { nlpIntent$, NlpIntentType } from "../../../services/nlpService"
+import { nlpIntent$, NlpIntentType } from "@/services/nlp"
+
 import {
   RfqNlpExecutionDataReady,
   RfqNlpExecutionState,
