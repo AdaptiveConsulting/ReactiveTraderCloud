@@ -5,7 +5,6 @@ import {
   SearchListenerResponse,
   SearchResult,
 } from "@openfin/workspace"
-// TODO - move into common place
 import { ACK_CREATE_RFQ_RESPONSE, Direction } from "generated/TradingGateway"
 import {
   combineLatest,
@@ -40,7 +39,6 @@ import {
 
 import { VITE_RT_URL } from "../consts"
 import { createContainer, createText } from "../templates"
-// TODO - move into common place
 import {
   constructMarketTemplateContent,
   constructRfqRaisedTemplateContent,
