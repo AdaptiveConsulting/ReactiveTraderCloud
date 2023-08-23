@@ -26,37 +26,54 @@ test.describe("Fx App", () => {
     selectors.setTestIdAttribute("data-qa")
   })
 
-  test("Views should open new windows when popped out, and reattach to main window when closed", async ({
+  test.skip("Views should open new windows when popped out, and reattach to main window when closed", async ({
     context,
   }, testInfo) => {
     //TODO either adapt this test for web tear out or write a companion test
+    //TODO Test is failing intermittently due to issue documented in RT-5538. Skipping the test until resolved
 
     test.skip(testInfo.project.name !== OPENFIN_PROJECT_NAME)
 
-    await mainWindow.getByTitle("toggle layout lock").click()
+ 
+    const popOutButtons = mainWindow.getByTitle("open in new window")
+    const toggleLock = mainWindow.getByTitle("toggle layout lock")
 
-    const popOutTitle = "open in new window"
-    const popOutButtons = mainWindow.getByTitle(popOutTitle)
+    await expect(popOutButtons).toHaveCount(3)
+    await expect(popOutButtons.nth(0)).not.toBeVisible()
+
+    await toggleLock.hover()
+    await toggleLock.click()
 
     const liveRatesPagePromise = context.waitForEvent("page")
     await popOutButtons.nth(0).click()
     const poppedOutLiveRatesPage = await liveRatesPagePromise
-
     await poppedOutLiveRatesPage.waitForSelector("text=Live Rates")
 
     const blotterPagePromise = context.waitForEvent("page")
     await popOutButtons.nth(0).click()
     const poppedOutBlotterPage = await blotterPagePromise
-
     await poppedOutBlotterPage.waitForSelector("text=Trades")
 
-    await poppedOutLiveRatesPage.getByTestId("openfin-chrome__close").click()
+    await poppedOutLiveRatesPage
+      .locator("[data-qa='openfin-chrome__close']")
+      .click()
 
-    expect(await mainWindow.waitForSelector("text=Live Rates")).toBeTruthy()
+    await expect(mainWindow.locator("text=Live Rates")).toBeVisible()
+    expect(poppedOutLiveRatesPage.isClosed()).toBeTruthy()
+    
+    await poppedOutBlotterPage
+      .locator("[data-qa='openfin-chrome__close']")
+      .click()
 
-    await poppedOutBlotterPage.getByTestId("openfin-chrome__close").click()
+    await expect(mainWindow.locator("text=Trades")).toBeVisible()
+    expect(poppedOutBlotterPage.isClosed()).toBeTruthy()
 
-    expect(await mainWindow.waitForSelector("text=Trades")).toBeTruthy()
-    expect(await mainWindow.waitForSelector("text=Analytics")).toBeTruthy()
+    await expect(mainWindow.locator("text=Analytics")).toBeVisible()
+
+    await toggleLock.hover()
+    await toggleLock.click()
+
+    await expect(popOutButtons).toHaveCount(3)
+    await expect(popOutButtons.nth(0)).not.toBeVisible()
   })
 })

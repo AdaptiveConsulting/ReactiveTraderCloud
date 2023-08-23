@@ -15,7 +15,7 @@ export const assertGridRow = async (
     i < (endIndex ? endIndex : assertions.length);
     i++
   ) {
-    assertGridCell(row, i, assertions[j])
+    await assertGridCell(row, i, assertions[j])
     j++
   }
 }

@@ -72,9 +72,12 @@ test.describe("Trade Blotter", () => {
   })
 
   test("when user buys a currency, the new row should flash briefly ", async () => {
-    const tile = tilePage.locator('[data-testid="Buy-EURUSD"]').nth(0)
-    await tile.click()
 
+    await tilePage.locator("input[id='notional-input-EURUSD']").clear()
+    await tilePage.locator("input[id='notional-input-EURUSD']").type("1m")
+
+    await tilePage.locator('[data-testid="Buy-EURUSD"]').nth(0).click()
+  
     const tradeID = await tilePage
       .locator("[data-testid='trade-id']")
       .innerText()
@@ -157,7 +160,7 @@ test.describe("Trade Blotter", () => {
 
     const searchInput = blotterPage.locator('[aria-label*="Primary filter"]')
 
-    const tradeIDToSearch = "2"
+    const tradeIDToSearch = "1"
     await searchInput.type(tradeIDToSearch, { delay: 100 })
 
     const downloadPromise = blotterPage.waitForEvent("download")

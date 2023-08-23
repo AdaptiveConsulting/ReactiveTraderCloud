@@ -26,6 +26,9 @@ test.describe("Spot Tile", () => {
     test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter @smoke", async () => {
       await tilePage.locator("[data-testid='menuButton-EUR']").click()
 
+      await tilePage.locator("input[id='notional-input-EURUSD']").clear()
+      await tilePage.locator("input[id='notional-input-EURUSD']").type("1m")
+
       await tilePage.locator("[data-testid='Sell-EURUSD']").click()
 
       const tradeId = await tilePage
@@ -62,7 +65,6 @@ test.describe("Spot Tile", () => {
   })
 
   test.describe("Timed out transaction", () => {
-    test.setTimeout(60000)
     test("When I sell EUR/JPY then an execution animation appears until a timed out tile displays in orange with message 'Trade taking longer than expected'", async () => {
       await tilePage.locator("[data-testid='Sell-EURJPY']").click()
 

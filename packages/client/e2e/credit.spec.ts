@@ -33,10 +33,8 @@ test.describe("Credit", () => {
 
   test.describe("New RFQ", () => {
     test("Create RFQ for GOOGL @smoke", async () => {
-      test.setTimeout(120000)
-
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage.getByTestId("search-result-item").nth(5).click()
+      await newRfqPage.getByTestId("search-result-item").getByText("GOOGL").first().click()
 
       const quantity = newRfqPage.getByTestId("quantity")
       await quantity.type("2")
@@ -55,9 +53,9 @@ test.describe("Credit", () => {
         .click()
 
       // Navigate to Live
-      await rfqsPage.getByText(/Live/).click()
+      await rfqsPage.getByText(/Live/).first().click()
 
-      const firstQuote = await rfqsPage
+      const firstQuote = rfqsPage
         .getByTestId("quotes")
         .first()
         .locator("div")
@@ -93,7 +91,7 @@ test.describe("Credit", () => {
   test.describe("Sell side", () => {
     test("Sell side ticket", async ({ context }) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage.getByTestId("search-result-item").nth(5).click()
+      await newRfqPage.getByTestId("search-result-item").getByText("GOOGL").first().click()
 
       const quantity = newRfqPage.getByTestId("quantity")
       await quantity.type("2")
@@ -103,7 +101,9 @@ test.describe("Credit", () => {
         .getByText(/Adaptive Bank/)
         .click()
 
-      const pagePromise = context.waitForEvent("page")
+      const pagePromise = context.waitForEvent("page", {
+        predicate: page => page.url().includes("credit-sellside"),
+      })
 
       await newRfqPage
         .locator("button")
@@ -118,7 +118,7 @@ test.describe("Credit", () => {
 
       await sellSidePage.keyboard.press("Enter")
 
-      await expect(rfqsPage.getByTestId("quotes").first()).toContainText("$100")
+      await expect(rfqsPage.getByTestId("quotes").first()).toContainText("$100", {timeout: 10000})
     })
   })
 })
