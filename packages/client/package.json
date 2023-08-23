@@ -38,7 +38,7 @@
     "build": "cross-env TARGET=web vite build",
     "serve": "cross-env TARGET=web vite preview",
     "openfin:dev": "cross-env TARGET=openfin vite",
-    "openfin:local": "cross-env VITE_HYDRA_URL=ws://localhost:8929 TARGET=openfin vite",
+    "openfin:local": "npm run _runLocal --runcmd=\"TARGET=openfin vite\"",
     "_openfin:run": "cross-env-shell \"wait-on -l $npm_config_manifest_url && openfin -l -c $npm_config_manifest_url\"",
     "openfin:run:fx": "npm run _openfin:run --manifest_url=http://localhost:1917/config/rt-fx.json",
     "openfin:run:credit": "npm run _openfin:run --manifest_url=http://localhost:1917/config/rt-credit.json",

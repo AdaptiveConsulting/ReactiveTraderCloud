@@ -15,7 +15,7 @@ export const SellSideTradeTicketWrapper = styled.div`
 export const SellSideTradeTicketInnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid #686d74;
+  border: 1px solid ${({ theme }) => theme.primary[4]};
   border-radius: 2px;
   height: 100%;
   background-color: ${({ theme }) => theme.core.lightBackground};

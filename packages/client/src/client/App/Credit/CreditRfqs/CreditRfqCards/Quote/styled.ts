@@ -76,7 +76,7 @@ export const QuoteDot = styled.div<AnimatedRowProps>`
     highlight
       ? theme.textColor
       : passed
-      ? `#686D74`
+      ? theme.primary[4]
       : getBuySellHighlightTextColor(theme, direction)};
   animation: ${breathing} 1s linear infinite;
 `
@@ -103,9 +103,9 @@ const getDealerFontColor = ({
     if (priced) {
       return theme.secondary.base
     }
-    return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary.base
+    return theme.secondary[theme.name === ThemeName.Dark ? 6 : "base"]
   } else {
-    return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary[4]
+    return theme.secondary[theme.name === ThemeName.Dark ? 6 : 4]
   }
 }
 
@@ -132,7 +132,7 @@ export const Price = styled(QuoteRowText)<RowFieldProps & CommonProps>`
       }
       return theme.secondary[theme.name === ThemeName.Dark ? 5 : 4]
     } else {
-      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary[4]
+      return theme.secondary[theme.name === ThemeName.Dark ? 6 : 4]
     }
   }};
   font-weight: ${getRowFieldFontWeight};

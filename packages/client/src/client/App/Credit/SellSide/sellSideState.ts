@@ -25,17 +25,13 @@ import { combineLatest, merge } from "rxjs"
 import {
   delay,
   distinctUntilChanged,
-  exhaustMap,
   filter,
   map,
   startWith,
-  withLatestFrom,
 } from "rxjs/operators"
 import {
   ADAPTIVE_BANK_NAME,
   creditRfqsById$,
-  passCreditQuote$,
-  quoteCreditQuote$,
   RfqDetails,
 } from "services/credit"
 
@@ -59,37 +55,33 @@ export const getSellSideQuoteState = (
 ): SellSideQuoteState => {
   if (quoteState?.type === PASSED_QUOTE_STATE) {
     return SellSideQuoteState.Passed
-  } else if (rfqState === RfqState.Cancelled) {
+  }
+  if (rfqState === RfqState.Cancelled) {
     return SellSideQuoteState.Cancelled
-  } else if (rfqState === RfqState.Expired) {
+  }
+  if (rfqState === RfqState.Expired) {
     return SellSideQuoteState.Expired
-  } else if (
-    rfqState === RfqState.Open &&
-    (!quoteState || quoteState.type === PENDING_WITHOUT_PRICE_QUOTE_STATE)
-  ) {
-    return SellSideQuoteState.New
-  } else if (
-    rfqState === RfqState.Open &&
-    quoteState?.type === PENDING_WITH_PRICE_QUOTE_STATE
-  ) {
-    return SellSideQuoteState.Pending
-  } else if (
-    rfqState === RfqState.Closed &&
-    quoteState?.type !== ACCEPTED_QUOTE_STATE
-  ) {
-    return SellSideQuoteState.Lost
-  } else if (
+  }
+  if (quoteState?.type === ACCEPTED_QUOTE_STATE) {
+    return SellSideQuoteState.Accepted
+  }
+  if (rfqState === RfqState.Closed) {
+    return SellSideQuoteState.Lost // RFQ closed and quote not accepted
+  }
+  if (
     quoteState?.type === REJECTED_WITH_PRICE_QUOTE_STATE ||
     quoteState?.type === REJECTED_WITHOUT_PRICE_QUOTE_STATE
   ) {
     return SellSideQuoteState.Rejected
-  } else if (quoteState?.type === ACCEPTED_QUOTE_STATE) {
-    return SellSideQuoteState.Accepted
-  } else {
-    throw new Error(
-      `Unable to determine sell side quote state from RFQ state [${rfqState}] and Quote state [${quoteState?.type}]`,
-    )
   }
+  if (!quoteState || quoteState.type === PENDING_WITHOUT_PRICE_QUOTE_STATE) {
+    return SellSideQuoteState.New
+  }
+  if (quoteState?.type === PENDING_WITH_PRICE_QUOTE_STATE) {
+    return SellSideQuoteState.Pending
+  }
+
+  throw new Error(`Unable to determine sell side quote state`)
 }
 
 const [_highlightRfqId$, highlightRfqId] = createSignal<number | null>()
@@ -140,7 +132,7 @@ const filterByQuoteState = (
   }
 }
 
-const filterByIsAdaptiveRfq = (rfq: RfqDetails) =>
+const filterAdaptiveDealer = (rfq: RfqDetails) =>
   rfq.dealers.findIndex(
     (dealer: DealerBody) => dealer.name === ADAPTIVE_BANK_NAME,
   ) > -1
@@ -153,7 +145,7 @@ const _sellSideRfqs$ = combineLatest([
     (Object.values(record) as RfqDetails[])
       .filter(
         (rfq) =>
-          filterByIsAdaptiveRfq(rfq) && filterByQuoteState(quoteFilter, rfq),
+          filterAdaptiveDealer(rfq) && filterByQuoteState(quoteFilter, rfq),
       )
       .sort(timeRemainingComparator)
       .reduce((rows, rfq) => {

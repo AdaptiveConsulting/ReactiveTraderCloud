@@ -2,14 +2,12 @@ import {
   ACCEPTED_QUOTE_STATE,
   AcceptedQuoteState,
   PASSED_QUOTE_STATE,
-  PassedQuoteState,
   PENDING_WITH_PRICE_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
   PendingWithPriceQuoteState,
   QuoteBody,
   REJECTED_WITH_PRICE_QUOTE_STATE,
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
-  RejectedWithoutPriceQuoteState,
   RejectedWithPriceQuoteState,
 } from "generated/TradingGateway"
 import { CurrencyPair } from "services/currencyPairs"
@@ -28,7 +26,7 @@ export interface RfqResponse {
   timeout: number
 }
 
-export type QuoteStateType =
+export type QuoteStatus =
   | typeof PENDING_WITHOUT_PRICE_QUOTE_STATE
   | typeof PENDING_WITH_PRICE_QUOTE_STATE
   | typeof PASSED_QUOTE_STATE

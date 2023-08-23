@@ -10,7 +10,7 @@ import { timeRemainingComparator } from "../../common"
 import { RfqsTab, selectedRfqsTab$ } from "../selectedRfqsTab"
 import { Card } from "./CreditRfqCard"
 import { NoRfqsScreen } from "./NoRfqsScreen/NoRfqsScreen"
-import { CreditRfqCardsWrapper } from "./styled"
+import { CreditRfqCardGridWrapper } from "./styled"
 
 const RFQ_STATE_TO_TAB_MAPPING: Record<RfqState, RfqsTab> = {
   [RfqState.Open]: RfqsTab.Live,
@@ -70,7 +70,7 @@ export const CreditRfqCardGrid = () => {
   const highlightedRfqCard = useCreditRfqCardHighlight()
 
   return (
-    <CreditRfqCardsWrapper empty={rfqIds.length === 0}>
+    <CreditRfqCardGridWrapper empty={rfqIds.length === 0}>
       {rfqIds.length > 0 ? (
         rfqIds.map((id) => (
           <Card id={id} key={id} highlight={highlightedRfqCard === id} />
@@ -78,6 +78,6 @@ export const CreditRfqCardGrid = () => {
       ) : (
         <NoRfqsScreen />
       )}
-    </CreditRfqCardsWrapper>
+    </CreditRfqCardGridWrapper>
   )
 }

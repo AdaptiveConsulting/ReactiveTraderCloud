@@ -31,7 +31,7 @@ acceptRfq$
 
 interface QuoteProps {
   dealer: DealerBody
-  quote: QuoteBody | undefined
+  quote: QuoteBody
   rfqState: RfqState
   rfqId: number
   direction: Direction
@@ -49,10 +49,10 @@ export const Quote = ({
   const state = useQuoteState(dealer.id, rfqId)
 
   const rfqOpen = rfqState === RfqState.Open
-  const priced = hasPrice(quote?.state)
+  const priced = hasPrice(quote.state)
   const acceptable = state.type === PENDING_WITH_PRICE_QUOTE_STATE && rfqOpen
   const accepted = state.type === ACCEPTED_QUOTE_STATE
-  const passed = quote?.state.type === PASSED_QUOTE_STATE
+  const passed = quote.state.type === PASSED_QUOTE_STATE
 
   return (
     <QuoteRow
@@ -83,7 +83,7 @@ export const Quote = ({
         {accepted && <FaCheckCircle size={16} />}
         {state.payload}
       </Price>
-      <AcceptQuoteButton onClick={() => quote && onAcceptRfq(quote.id)}>
+      <AcceptQuoteButton onClick={() => onAcceptRfq(quote.id)}>
         Accept
       </AcceptQuoteButton>
     </QuoteRow>

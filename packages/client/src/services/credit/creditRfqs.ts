@@ -165,7 +165,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
             },
           ]
         }
-        // Currently the server sets the state of all the other quotes to
+        // Currently the server sets the state of all the other non-passed quotes to
         // Rejected if one quote is accepted
         case QUOTE_ACCEPTED_RFQ_UPDATE: {
           const previousRfq = Object.values(rec).find((rfqDetails) =>
@@ -249,7 +249,7 @@ export const creditQuotes$ = creditRfqsById$.pipe(
   ),
 )
 
-const INACTIVE_PASSED_QUOTE_STATE = "passedInactiveQuoteState"
+const INACTIVE_PASSED_QUOTE_STATE = "inactivePassedQuoteState"
 
 export const [useQuoteState] = bind((dealerId, rfqId) =>
   creditQuotes$.pipe(

@@ -4,7 +4,7 @@ import {
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
 } from "generated/TradingGateway"
 import { ReactNode } from "react"
-import { QuoteStateType } from "services/rfqs/types"
+import { QuoteStatus } from "services/rfqs/types"
 import { LimitCheckStatus, TradeStatus } from "services/trades/types"
 import styled, { css } from "styled-components"
 
@@ -74,7 +74,7 @@ export const TableBodyStrikeThrough = styled.div<{
 `
 
 export const StatusIndicator = styled.div<{
-  status: QuoteStateType | LimitCheckStatus | TradeStatus
+  status: QuoteStatus | LimitCheckStatus | TradeStatus
 }>`
   width: 21px;
   border-left: 6px solid
