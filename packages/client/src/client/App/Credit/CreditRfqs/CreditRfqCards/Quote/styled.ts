@@ -1,7 +1,7 @@
 import { Theme, ThemeName } from "client/theme"
 import { breathing } from "client/utils/styling"
 import { Direction } from "generated/TradingGateway"
-import styled from "styled-components"
+import styled, { DefaultTheme } from "styled-components"
 
 import { Row } from "../styled"
 
@@ -11,6 +11,9 @@ interface CommonProps {
 }
 interface QuoteRowProps extends CommonProps {
   quoteActive: boolean
+}
+interface AnimatedRowProps extends CommonProps {
+  passed: boolean
 }
 
 function getBuySellHighlightRowBackgroundColor(
@@ -65,13 +68,15 @@ function getBuySellHighlightTextColor(theme: Theme, direction: Direction) {
   ]
 }
 
-export const QuoteDot = styled.div<CommonProps>`
+export const QuoteDot = styled.div<AnimatedRowProps>`
   height: 4px;
   width: 4px;
   border-radius: 4px;
-  background-color: ${({ theme, highlight, direction }) =>
+  background-color: ${({ theme, highlight, direction, passed }) =>
     highlight
       ? theme.textColor
+      : passed
+      ? theme.primary[4]
       : getBuySellHighlightTextColor(theme, direction)};
   animation: ${breathing} 1s linear infinite;
 `
@@ -79,28 +84,36 @@ export const QuoteDot = styled.div<CommonProps>`
 interface RowFieldProps {
   open: boolean
   accepted: boolean
+  passed?: boolean
   priced: boolean
 }
 
 const getRowFieldFontWeight = ({ priced, open, accepted }: RowFieldProps) =>
   (priced && open) || accepted ? "700" : null
 
+const getDealerFontColor = ({
+  theme,
+  open,
+  accepted,
+  priced,
+}: RowFieldProps & { theme: DefaultTheme }) => {
+  if (accepted) {
+    return theme.accents.positive.base
+  } else if (open) {
+    if (priced) {
+      return theme.secondary.base
+    }
+    return theme.secondary[theme.name === ThemeName.Dark ? 6 : "base"]
+  } else {
+    return theme.secondary[theme.name === ThemeName.Dark ? 6 : 4]
+  }
+}
+
 // This color does not seem to be part of the palette
 export const DealerName = styled(QuoteRowText)<RowFieldProps>`
   display: flex;
   align-items: center;
-  color: ${({ theme, open, accepted, priced }) => {
-    if (accepted) {
-      return theme.accents.positive.base
-    } else if (open) {
-      if (priced) {
-        return theme.secondary.base
-      }
-      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary.base
-    } else {
-      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary[4]
-    }
-  }};
+  color: ${getDealerFontColor};
   font-weight: ${getRowFieldFontWeight};
   margin-right: auto;
 `
@@ -119,12 +132,12 @@ export const Price = styled(QuoteRowText)<RowFieldProps & CommonProps>`
       }
       return theme.secondary[theme.name === ThemeName.Dark ? 5 : 4]
     } else {
-      return theme.name === ThemeName.Dark ? "#a1a5ae" : theme.secondary[4]
+      return theme.secondary[theme.name === ThemeName.Dark ? 6 : 4]
     }
   }};
   font-weight: ${getRowFieldFontWeight};
-  ${({ open, accepted }) =>
-    !open && !accepted && "text-decoration: line-through;"}
+  ${({ open, accepted, passed }) =>
+    (passed || (!open && !accepted)) && "text-decoration: line-through;"}
 
   svg {
     margin-right: 4px;

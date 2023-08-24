@@ -1,8 +1,13 @@
-import { Direction, QuoteState, RfqState } from "generated/TradingGateway"
+import { Direction, RfqState } from "generated/TradingGateway"
+import {
+  ACCEPTED_QUOTE_STATE,
+  REJECTED_WITH_PRICE_QUOTE_STATE,
+} from "generated/TradingGateway"
 import { BehaviorSubject } from "rxjs"
-import * as creditService from "services/credit"
-import { RfqDetails } from "services/credit/creditRfqs"
 
+import * as creditService from "../../credit"
+import { RfqDetails } from "../../credit"
+// import * as creditService from "services/credit"
 import * as tradesService from ".."
 
 vi.mock("../../credit")
@@ -11,7 +16,6 @@ const rfqs: Record<number, RfqDetails> = {
   "2": {
     id: 2,
     instrumentId: 0,
-    dealerIds: [10, 0, 6, 9],
     quantity: 44000,
     direction: Direction.Buy,
     state: RfqState.Closed,
@@ -49,29 +53,34 @@ const rfqs: Record<number, RfqDetails> = {
         id: 8,
         rfqId: 2,
         dealerId: 9,
-        price: 95,
-        state: QuoteState.Rejected,
+        state: {
+          type: REJECTED_WITH_PRICE_QUOTE_STATE,
+          payload: 95,
+        },
       },
       {
         id: 9,
         rfqId: 2,
         dealerId: 6,
-        price: 101,
-        state: QuoteState.Rejected,
+        state: {
+          type: REJECTED_WITH_PRICE_QUOTE_STATE,
+          payload: 101,
+        },
       },
       {
         id: 10,
         rfqId: 2,
         dealerId: 10,
-        price: 22,
-        state: QuoteState.Accepted,
+        state: {
+          type: ACCEPTED_QUOTE_STATE,
+          payload: 22,
+        },
       },
     ],
   },
   "3": {
     id: 3,
     instrumentId: 1,
-    dealerIds: [10, 0, 1],
     quantity: 99000,
     direction: Direction.Buy,
     state: RfqState.Open,
@@ -105,15 +114,19 @@ const rfqs: Record<number, RfqDetails> = {
         id: 11,
         rfqId: 3,
         dealerId: 10,
-        price: 88,
-        state: QuoteState.Accepted,
+        state: {
+          type: ACCEPTED_QUOTE_STATE,
+          payload: 88,
+        },
       },
       {
         id: 12,
         rfqId: 3,
         dealerId: 0,
-        price: 93,
-        state: QuoteState.Rejected,
+        state: {
+          type: REJECTED_WITH_PRICE_QUOTE_STATE,
+          payload: 93,
+        },
       },
     ],
   },
@@ -132,7 +145,7 @@ describe("trades", () => {
           expect(value).toEqual([
             {
               tradeId: 3,
-              status: "Accepted",
+              status: "accepted",
               tradeDate: expect.any(Date),
               direction: "Buy",
               counterParty: "Adaptive Bank",
@@ -144,7 +157,7 @@ describe("trades", () => {
             },
             {
               tradeId: 2,
-              status: "Accepted",
+              status: "accepted",
               tradeDate: expect.any(Date),
               direction: "Buy",
               counterParty: "Adaptive Bank",

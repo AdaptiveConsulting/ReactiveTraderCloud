@@ -1,52 +1,16 @@
 import { Subscribe } from "@react-rxjs/core"
 import { Loader } from "client/components/Loader"
 import { useAdaptiveDealerId } from "services/credit"
-import styled from "styled-components"
 
 import { useSelectedRfqId } from "../sellSideState"
 import { focused$ } from "../utils/useIsFocused"
+import {
+  NoSelectedMessage,
+  NoSelectedWrapper,
+  NoSelectHeader,
+  SellSideWrapper,
+} from "./SellSideTradeTicket.styles"
 import { SellSideTradeTicketTicketCore } from "./SellSideTradeTicketCore"
-
-const SellSideWrapper = styled.div`
-  z-index: 1;
-  min-height: 220px;
-  max-height: 220px;
-  width: 100%;
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  border: 1px solid ${({ theme }) => theme.core.dividerColor};
-`
-
-const NoSelectedWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 8px 8px 12px 8px;
-  box-sizing: border-box;
-  color: ${({ theme }) => theme.core.textColor};
-`
-
-const NoSelectHeader = styled.div`
-  padding: 8px 0;
-  font-size: 11px;
-  flex: 0 1 auto;
-  background-color: ${({ theme }) => theme.core.darkBackground};
-`
-
-const NoSelectedMessage = styled.div`
-  width: 100%;
-  flex: 1 1 auto;
-  text-align: center;
-  font-size: 11px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  background-color: ${({ theme }) => theme.core.lightBackground};
-  border: 1px solid ${({ theme }) => theme.core.dividerColor};
-  color: ${({ theme }) => theme.core.textColor};
-`
 
 const SellSideTradeTicketInner = () => {
   const dealerId = useAdaptiveDealerId()

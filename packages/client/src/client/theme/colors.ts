@@ -109,7 +109,7 @@ const brand = createPalette(BRAND)
 
 /*---------------------------- 2.2 Core palettes -----------------------------*/
 
-type CorePaletteVariant = "base" | 1 | 2 | 3 | 4 | 5
+type CorePaletteVariant = "base" | 1 | 2 | 3 | 4 | 5 | 6
 
 /**
  * A palette consisting of a `base` and 5 variants
@@ -155,6 +155,7 @@ const darkSecondary = {
   3: rgb(228, 229, 230),
   4: rgb(207, 208, 211),
   5: rgb(189, 190, 195),
+  6: rgb(161, 165, 174),
 }
 
 export const dark: CorePaletteMap = {

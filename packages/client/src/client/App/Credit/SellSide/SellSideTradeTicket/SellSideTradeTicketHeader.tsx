@@ -1,4 +1,5 @@
 import { Direction, QuoteState, RfqState } from "generated/TradingGateway"
+import { ACCEPTED_QUOTE_STATE } from "generated/TradingGateway"
 import { memo } from "react"
 import { useCreditInstrumentById } from "services/credit"
 import styled from "styled-components"
@@ -31,7 +32,7 @@ export const SellSideTradeTicketHeader = memo(
     quoteState,
   }: SellSideTradeTicketHeaderProps) {
     const instrument = useCreditInstrumentById(instrumentId)
-    const accepted = quoteState === QuoteState.Accepted
+    const accepted = quoteState.type === ACCEPTED_QUOTE_STATE
     const terminated = rfqState !== RfqState.Open && !accepted
     return (
       <Wrapper>

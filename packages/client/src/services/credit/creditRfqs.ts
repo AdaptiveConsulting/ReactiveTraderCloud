@@ -5,11 +5,18 @@ import {
   Direction,
   END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
   InstrumentBody,
+  PASSED_QUOTE_STATE,
+  PENDING_WITH_PRICE_QUOTE_STATE,
+  PENDING_WITHOUT_PRICE_QUOTE_STATE,
   QUOTE_ACCEPTED_RFQ_UPDATE,
   QUOTE_CREATED_RFQ_UPDATE,
+  QUOTE_PASSED_RFQ_UPDATE,
+  QUOTE_QUOTED_RFQ_UPDATE,
   QuoteBody,
-  QuoteCreatedRfqUpdate,
+  QuoteQuotedRfqUpdate,
   QuoteState,
+  REJECTED_WITH_PRICE_QUOTE_STATE,
+  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   RFQ_CLOSED_RFQ_UPDATE,
   RFQ_CREATED_RFQ_UPDATE,
   RfqBody,
@@ -18,9 +25,19 @@ import {
   START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
   WorkflowService,
 } from "generated/TradingGateway"
-import { combineLatest, Observable } from "rxjs"
-import { filter, map, scan, startWith, withLatestFrom } from "rxjs/operators"
+import { combineLatest, merge, Observable, of, timer } from "rxjs"
+import {
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  scan,
+  startWith,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from "rxjs/operators"
 
+import { PricedQuoteBody, PricedQuoteState } from "../rfqs/types"
 import { withConnection } from "../withConnection"
 import { creditDealers$ } from "./creditDealers"
 import { creditInstruments$ } from "./creditInstruments"
@@ -36,6 +53,10 @@ export interface QuoteDetails extends QuoteBody {
   dealer: DealerBody | null
   direction: Direction
   quantity: number
+}
+
+export interface PricedQuoteDetails extends Omit<QuoteDetails, "state"> {
+  state: PricedQuoteState
 }
 
 const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
@@ -68,13 +89,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
                     (instrument) =>
                       instrument.id === update.payload.instrumentId,
                   ) ?? null,
-                dealers: update.payload.dealerIds.map(
-                  (dealerId) =>
-                    dealers.find((dealer) => dealer.id === dealerId) ?? {
-                      id: dealerId,
-                      name: "Unknown Dealer",
-                    },
-                ),
+                dealers: [],
                 quotes: [],
               },
             },
@@ -98,18 +113,63 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
               ...rec,
               [update.payload.rfqId]: {
                 ...previousRfq,
-                quotes: previousRfq?.quotes
-                  ? previousRfq.quotes.concat([update.payload])
-                  : [update.payload],
+                dealers: [
+                  ...previousRfq.dealers,
+                  dealers.find(
+                    (dealer) => dealer.id === update.payload.dealerId,
+                  ) ?? {
+                    id: update.payload.dealerId,
+                    name: "Unknown Dealer",
+                  },
+                ],
+                quotes: [...previousRfq.quotes, update.payload],
               },
             },
           ]
         }
-        // Currently the server sets the state of all the other quotes to
+        case QUOTE_PASSED_RFQ_UPDATE: {
+          const previousRfq = rec[update.payload.rfqId]
+          return [
+            acc[0],
+            {
+              ...rec,
+              [update.payload.rfqId]: {
+                ...previousRfq,
+                quotes: previousRfq.quotes.map((quote) => ({
+                  ...quote,
+                  state:
+                    quote.id === update.payload.id
+                      ? update.payload.state
+                      : quote.state,
+                })),
+              },
+            },
+          ]
+        }
+        case QUOTE_QUOTED_RFQ_UPDATE: {
+          const previousRfq = rec[update.payload.rfqId]
+          return [
+            acc[0],
+            {
+              ...rec,
+              [update.payload.rfqId]: {
+                ...previousRfq,
+                quotes: previousRfq.quotes.map((quote) => ({
+                  ...quote,
+                  state:
+                    quote.id === update.payload.id
+                      ? update.payload.state
+                      : quote.state,
+                })),
+              },
+            },
+          ]
+        }
+        // Currently the server sets the state of all the other non-passed quotes to
         // Rejected if one quote is accepted
         case QUOTE_ACCEPTED_RFQ_UPDATE: {
           const previousRfq = Object.values(rec).find((rfqDetails) =>
-            rfqDetails.quotes.some((quote) => quote.id === update.payload),
+            rfqDetails.quotes.some((quote) => quote.id === update.payload.id),
           )
           if (previousRfq) {
             return [
@@ -120,10 +180,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
                   ...previousRfq,
                   quotes: previousRfq.quotes.map((quote) => ({
                     ...quote,
-                    state:
-                      quote.id === update.payload
-                        ? QuoteState.Accepted
-                        : QuoteState.Rejected,
+                    state: getQuoteStateOnAccept(quote, update.payload),
                   })),
                 },
               },
@@ -144,6 +201,22 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
   map(([, rfqDetailsRec]) => rfqDetailsRec),
   shareLatest(),
 )
+
+function getQuoteStateOnAccept(
+  quote: QuoteBody,
+  acceptedQuote: QuoteBody,
+): QuoteState {
+  if (quote.id === acceptedQuote.id) {
+    return acceptedQuote.state
+  }
+  if (quote.state.type === PENDING_WITHOUT_PRICE_QUOTE_STATE) {
+    return { type: REJECTED_WITHOUT_PRICE_QUOTE_STATE }
+  }
+  if (quote.state.type === PENDING_WITH_PRICE_QUOTE_STATE) {
+    return { ...quote.state, type: REJECTED_WITH_PRICE_QUOTE_STATE }
+  }
+  return { type: PASSED_QUOTE_STATE }
+}
 
 export const [useCreditRfqDetails, getCreditRfqDetails$] = bind<
   [number],
@@ -176,6 +249,59 @@ export const creditQuotes$ = creditRfqsById$.pipe(
   ),
 )
 
+const INACTIVE_PASSED_QUOTE_STATE = "inactivePassedQuoteState"
+
+export const [useQuoteState] = bind((dealerId, rfqId) =>
+  creditQuotes$.pipe(
+    map((quotes) =>
+      quotes.find(
+        (quote) => quote.dealerId === dealerId && quote.rfqId === rfqId,
+      ),
+    ),
+    map((quote) => {
+      if (!quote) {
+        throw Error("Missing quote") //should never be thrown since we only call this hook with existing quotes
+      }
+
+      switch (quote?.state.type) {
+        case PENDING_WITHOUT_PRICE_QUOTE_STATE:
+        case REJECTED_WITHOUT_PRICE_QUOTE_STATE:
+          return {
+            type: quote.state.type,
+            payload: "Awaiting response",
+          }
+        case PASSED_QUOTE_STATE:
+          return {
+            type: quote.state.type,
+            payload: "Passed",
+          }
+        default:
+          return {
+            type: quote.state.type,
+            payload: `$${quote.state.payload}`,
+          }
+      }
+    }),
+    distinctUntilKeyChanged("type"),
+    switchMap((state) => {
+      if (state.type === PASSED_QUOTE_STATE) {
+        // hides the dot after 6 seconds
+        return merge(
+          of(state),
+          timer(6000).pipe(
+            map(() => ({
+              type: INACTIVE_PASSED_QUOTE_STATE,
+              payload: state.payload,
+            })),
+          ),
+        )
+      }
+
+      return of(state)
+    }),
+  ),
+)
+
 const endOfRfqStateOfWorld$ = creditRfqUpdates$.pipe(
   filter(
     (update) =>
@@ -186,24 +312,26 @@ const endOfRfqStateOfWorld$ = creditRfqUpdates$.pipe(
   startWith(false),
 )
 
-export const lastQuoteReceived$: Observable<QuoteDetails> =
+export const lastQuoteReceived$: Observable<PricedQuoteDetails> =
   creditRfqUpdates$.pipe(
     withLatestFrom(endOfRfqStateOfWorld$),
     filter(([, endOfRfqStateOfWorld]) => endOfRfqStateOfWorld),
     map(([update]) => update),
     filter(
-      (update): update is QuoteCreatedRfqUpdate =>
-        update.type === QUOTE_CREATED_RFQ_UPDATE,
+      (update): update is QuoteQuotedRfqUpdate =>
+        update.type === QUOTE_QUOTED_RFQ_UPDATE,
     ),
     withLatestFrom(creditRfqsById$),
     map(([update, creditRfqsById]) => {
-      const rfq = creditRfqsById[update.payload.rfqId]
+      const pricedQuoteBody = update.payload as PricedQuoteBody
+      const rfq = creditRfqsById[pricedQuoteBody.rfqId]
       return {
-        ...update.payload,
+        ...pricedQuoteBody,
         instrument: rfq.instrument,
         dealer:
-          rfq.dealers.find((dealer) => dealer.id === update.payload.dealerId) ??
-          null,
+          rfq.dealers.find(
+            (dealer) => dealer.id === pricedQuoteBody.dealerId,
+          ) ?? null,
         direction: rfq.direction,
         quantity: rfq.quantity,
       }

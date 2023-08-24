@@ -1,17 +1,41 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { HIGHLIGHT_ROW_FLASH_TIME } from "client/constants"
-import { invertDirection } from "client/utils"
-import { QuoteState, RfqState } from "generated/TradingGateway"
+import {
+  DECIMAL_SEPARATOR,
+  DECIMAL_SEPARATOR_REGEXP,
+  invertDirection,
+  THOUSANDS_SEPARATOR_REGEXP,
+  truncatedDecimalNumberFormatter,
+} from "client/utils"
+import {
+  PASSED_QUOTE_STATE,
+  QuoteState,
+  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
+  RfqState,
+} from "generated/TradingGateway"
+import {
+  ACCEPTED_QUOTE_STATE,
+  DealerBody,
+  PENDING_WITH_PRICE_QUOTE_STATE,
+  PENDING_WITHOUT_PRICE_QUOTE_STATE,
+  REJECTED_WITH_PRICE_QUOTE_STATE,
+} from "generated/TradingGateway"
 import { combineLatest, merge } from "rxjs"
-import { delay, filter, map, startWith } from "rxjs/operators"
+import {
+  delay,
+  distinctUntilChanged,
+  filter,
+  map,
+  startWith,
+} from "rxjs/operators"
 import {
   ADAPTIVE_BANK_NAME,
   creditRfqsById$,
   RfqDetails,
 } from "services/credit"
 
-import { timeRemainingComparator } from "../common"
+import { hasPrice, timeRemainingComparator } from "../common"
 import { RfqRow } from "./SellSideRfqGrid"
 
 export enum SellSideQuoteState {
@@ -29,26 +53,35 @@ export const getSellSideQuoteState = (
   rfqState: RfqState,
   quoteState: QuoteState | undefined,
 ): SellSideQuoteState => {
+  if (quoteState?.type === PASSED_QUOTE_STATE) {
+    return SellSideQuoteState.Passed
+  }
   if (rfqState === RfqState.Cancelled) {
     return SellSideQuoteState.Cancelled
-  } else if (rfqState === RfqState.Expired) {
-    return SellSideQuoteState.Expired
-  } else if (rfqState === RfqState.Open && quoteState === undefined) {
-    return SellSideQuoteState.New
-  } else if (
-    rfqState === RfqState.Closed &&
-    quoteState !== QuoteState.Accepted
-  ) {
-    return SellSideQuoteState.Lost
-  } else if (rfqState === RfqState.Open && quoteState === QuoteState.Pending) {
-    return SellSideQuoteState.Pending
-  } else if (quoteState === QuoteState.Rejected) {
-    return SellSideQuoteState.Rejected
-  } else if (quoteState === QuoteState.Accepted) {
-    return SellSideQuoteState.Accepted
-  } else {
-    throw new Error()
   }
+  if (rfqState === RfqState.Expired) {
+    return SellSideQuoteState.Expired
+  }
+  if (quoteState?.type === ACCEPTED_QUOTE_STATE) {
+    return SellSideQuoteState.Accepted
+  }
+  if (rfqState === RfqState.Closed) {
+    return SellSideQuoteState.Lost // RFQ closed and quote not accepted
+  }
+  if (
+    quoteState?.type === REJECTED_WITH_PRICE_QUOTE_STATE ||
+    quoteState?.type === REJECTED_WITHOUT_PRICE_QUOTE_STATE
+  ) {
+    return SellSideQuoteState.Rejected
+  }
+  if (!quoteState || quoteState.type === PENDING_WITHOUT_PRICE_QUOTE_STATE) {
+    return SellSideQuoteState.New
+  }
+  if (quoteState?.type === PENDING_WITH_PRICE_QUOTE_STATE) {
+    return SellSideQuoteState.Pending
+  }
+
+  throw new Error(`Unable to determine sell side quote state`)
 }
 
 const [_highlightRfqId$, highlightRfqId] = createSignal<number | null>()
@@ -99,8 +132,10 @@ const filterByQuoteState = (
   }
 }
 
-const filterByIsAdaptiveRfq = (rfq: RfqDetails) =>
-  rfq.dealers.findIndex((dealer) => dealer.name === ADAPTIVE_BANK_NAME) > -1
+const filterAdaptiveDealer = (rfq: RfqDetails) =>
+  rfq.dealers.findIndex(
+    (dealer: DealerBody) => dealer.name === ADAPTIVE_BANK_NAME,
+  ) > -1
 
 const _sellSideRfqs$ = combineLatest([
   creditRfqsById$,
@@ -110,7 +145,7 @@ const _sellSideRfqs$ = combineLatest([
     (Object.values(record) as RfqDetails[])
       .filter(
         (rfq) =>
-          filterByIsAdaptiveRfq(rfq) && filterByQuoteState(quoteFilter, rfq),
+          filterAdaptiveDealer(rfq) && filterByQuoteState(quoteFilter, rfq),
       )
       .sort(timeRemainingComparator)
       .reduce((rows, rfq) => {
@@ -132,7 +167,10 @@ const _sellSideRfqs$ = combineLatest([
         transformed.cpy = "AAM"
         transformed.security = rfq.instrument?.name ?? "NA"
         transformed.quantity = rfq.quantity
-        transformed.price = adaptiveQuote?.price ? adaptiveQuote.price : 0
+        transformed.price =
+          adaptiveQuote && hasPrice(adaptiveQuote.state)
+            ? adaptiveQuote.state.payload
+            : 0
         transformed.timer =
           rfq.state !== RfqState.Open
             ? undefined
@@ -152,7 +190,48 @@ export const [useSelectedRfqId, selectedRfqId$] = bind(
     sellSideRfqs$.pipe(
       map((rfqs) => rfqs.at(0)?.id),
       filter(Boolean),
+      distinctUntilChanged(), // should prevent input from clearing when quotes are received
     ),
   ),
   null,
+)
+
+const formatter = truncatedDecimalNumberFormatter(4)
+const filterRegExp = new RegExp(THOUSANDS_SEPARATOR_REGEXP, "g")
+const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
+
+export const [rawPrice$, setPrice] = createSignal<string>()
+export const [usePrice, price$] = bind(
+  merge(
+    selectedRfqId$.pipe(map(() => ({ value: 0, inputValue: "" }))),
+    rawPrice$.pipe(
+      map((rawVal) => {
+        const lastChar = rawVal.slice(-1).toLowerCase()
+        const cleanedInput = rawVal
+          .replace(filterRegExp, "")
+          .replace(decimalRegExp, ".")
+
+        const inputQuantityAsNumber = Math.abs(Number(cleanedInput))
+
+        // numeric value could be NaN at this stage
+
+        const truncated = formatter(inputQuantityAsNumber)
+
+        const value = Number(
+          truncated.replace(filterRegExp, "").replace(decimalRegExp, "."),
+        )
+
+        return {
+          value,
+          inputValue:
+            value === 0
+              ? ""
+              : formatter(value) +
+                (lastChar === DECIMAL_SEPARATOR ? DECIMAL_SEPARATOR : ""),
+        }
+      }),
+      filter(({ value }) => !Number.isNaN(value)),
+    ),
+  ),
+  { value: 0, inputValue: "" },
 )

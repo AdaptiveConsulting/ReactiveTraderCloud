@@ -1,13 +1,14 @@
 import { createSignal } from "@react-rxjs/utils"
-import { QuoteState, RfqState } from "generated/TradingGateway"
+import { RfqState } from "generated/TradingGateway"
+import { ACCEPTED_QUOTE_STATE } from "generated/TradingGateway"
 import { FaCheckCircle, FaTrash } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
 import {
   cancelCreditRfq$,
   removeRfqs,
-  RfqDetails,
   useCreditDealerById,
 } from "services/credit"
+import { RfqDetails } from "services/credit/creditRfqs"
 
 import { CreditRfqTimer, rfqStateToLabel } from "../../common"
 import { handleViewTrade } from "./handleViewTrade"
@@ -90,9 +91,8 @@ export const CardFooter = ({
   rfqDetails: RfqDetails
 }) => {
   const acceptedDealerId = quotes.find(
-    (quote) => quote.state === QuoteState.Accepted,
+    (quote) => quote.state.type === ACCEPTED_QUOTE_STATE,
   )?.dealerId
-
   return (
     <CardFooterWrapper>
       {state === RfqState.Open ? (

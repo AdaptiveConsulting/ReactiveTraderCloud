@@ -1,2 +1,5 @@
 export { Card } from "./CreditRfqCard"
-export { CreditRfqCards, setCreditRfqCardHighlight } from "./CreditRfqCards"
+export {
+  CreditRfqCardGrid,
+  setCreditRfqCardHighlight,
+} from "./CreditRfqCardGrid"

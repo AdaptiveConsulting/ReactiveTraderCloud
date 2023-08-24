@@ -1,8 +1,4 @@
-import {
-  CreateQuoteResponse,
-  DealerBody,
-  RfqState,
-} from "generated/TradingGateway"
+import { DealerBody, QuoteResponse, RfqState } from "generated/TradingGateway"
 import { EMPTY, merge, Observable, of } from "rxjs"
 import {
   catchError,
@@ -15,9 +11,9 @@ import {
 
 import { ADAPTIVE_BANK_NAME, creditDealers$ } from "./creditDealers"
 import {
-  createCreditQuote$,
   CreatedCreditRfq,
   createdCreditRfq$,
+  quoteCreditQuote$,
 } from "./creditRfqRequests"
 import { creditRfqsById$ } from "./creditRfqs"
 
@@ -38,7 +34,7 @@ const dealersResponses$ = createdCreditRfq$.pipe(
         creditDealers.map((dealer) => [dealer.id, dealer.name]),
       )
 
-      const dealersResponses$: Observable<CreateQuoteResponse>[] = []
+      const dealersResponses$: Observable<QuoteResponse>[] = []
       dealerIds.forEach((id) => {
         const isNotAdaptiveBank = dealerByIdMap.get(id) !== ADAPTIVE_BANK_NAME
         const shouldRespond = Math.random() > 0.3
@@ -70,19 +66,19 @@ function sendRandomQuoteAfterDelay(
   const price = generateRandomPrice()
   const payload = {
     dealerId,
-    rfqId,
     price,
   }
 
   return of(payload).pipe(
     delay(delayMillis),
     withLatestFrom(creditRfqsById$),
-    exhaustMap(([payload, creditRfqsById]) => {
-      const rfqStillOpen =
-        creditRfqsById[payload.rfqId]?.state === RfqState.Open
+    exhaustMap(([, creditRfqsById]) => {
+      const rfq = creditRfqsById[rfqId]
+      const quoteId = rfq.quotes.find((quote) => quote.dealerId === dealerId)
+        ?.id as number
 
-      return rfqStillOpen
-        ? createCreditQuote$(payload).pipe(
+      return rfq.state === RfqState.Open
+        ? quoteCreditQuote$({ price, quoteId }).pipe(
             catchError((e) =>
               EMPTY.pipe(
                 tap({

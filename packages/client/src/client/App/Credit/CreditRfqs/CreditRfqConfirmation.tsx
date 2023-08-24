@@ -1,7 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { customNumberFormatter } from "client/utils"
-import { Direction } from "generated/TradingGateway"
+import { AcceptedQuoteState, Direction } from "generated/TradingGateway"
 import { FaCheckCircle, FaTimes } from "react-icons/fa"
 import { concat, of, race, timer } from "rxjs"
 import {
@@ -149,7 +149,7 @@ export const CreditRfqAcceptedConfirmation = () => {
     <ConfirmationPill direction={rfq.direction}>
       <FaCheckCircle size={16} />
       You have accepted a quote for {formatter(rfq.quantity)} {instrument.name}{" "}
-      @ ${quote.price} from {dealer.name}
+      @${(quote.state as AcceptedQuoteState).payload} from {dealer.name}
       <IconWrapper direction={rfq.direction} onClick={onDismissMessage}>
         <FaTimes />
       </IconWrapper>

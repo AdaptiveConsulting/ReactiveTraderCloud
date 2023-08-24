@@ -1,5 +1,10 @@
-import { QuoteState } from "generated/TradingGateway"
+import {
+  ACCEPTED_QUOTE_STATE,
+  REJECTED_WITH_PRICE_QUOTE_STATE,
+  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
+} from "generated/TradingGateway"
 import { ReactNode } from "react"
+import { QuoteStatus } from "services/rfqs/types"
 import { LimitCheckStatus, TradeStatus } from "services/trades/types"
 import styled, { css } from "styled-components"
 
@@ -69,20 +74,21 @@ export const TableBodyStrikeThrough = styled.div<{
 `
 
 export const StatusIndicator = styled.div<{
-  status: QuoteState | LimitCheckStatus | TradeStatus
+  status: QuoteStatus | LimitCheckStatus | TradeStatus
 }>`
   width: 21px;
   border-left: 6px solid
     ${({ status, theme: { accents } }) => {
       if (
         status === TradeStatus.Done ||
-        status === QuoteState.Accepted ||
+        status === ACCEPTED_QUOTE_STATE ||
         status === LimitCheckStatus.Success
       )
         return accents.positive.base
       else if (
         status === TradeStatus.Rejected ||
-        status === QuoteState.Rejected ||
+        status === REJECTED_WITH_PRICE_QUOTE_STATE ||
+        status === REJECTED_WITHOUT_PRICE_QUOTE_STATE ||
         status === LimitCheckStatus.Failure
       ) {
         return accents.negative.base

@@ -1,6 +1,6 @@
-import { QuoteBody } from "generated/TradingGateway"
-import { QuoteDetails, RfqDetails } from "services/credit"
+import { PricedQuoteDetails, RfqDetails } from "services/credit"
 import { ExecutionStatus, ExecutionTrade } from "services/executions"
+import { PricedQuoteBody } from "services/rfqs/types"
 
 import { formatNumber } from "./utils"
 
@@ -19,21 +19,24 @@ export const processFxExecution = (executionTrade: ExecutionTrade) => {
   }
 }
 
-export const processCreditAccepted = (rfq: RfqDetails, quote: QuoteBody) => {
+export const processCreditAccepted = (
+  rfq: RfqDetails,
+  quote: PricedQuoteBody,
+) => {
   const dealer = rfq.dealers.find((dealer) => dealer.id === quote.dealerId)
   return {
     title: `Quote Accepted: RFQ ID ${quote.rfqId} from ${dealer?.name}`,
     tradeDetails: `${rfq.instrument?.name} ${formatNumber(
       rfq.quantity,
-    )} @ $${formatNumber(quote.price)}`,
+    )} @ $${formatNumber(quote.state.payload)}`,
   }
 }
 
-export const processCreditQuote = (quote: QuoteDetails) => {
+export const processCreditQuote = (quote: PricedQuoteDetails) => {
   return {
     title: `Quote Received: RFQ ID ${quote.rfqId} from ${quote.dealer?.name}`,
     tradeDetails: `${quote.instrument?.name} ${formatNumber(
       quote.quantity,
-    )} @ $${formatNumber(quote.price)}`,
+    )} @ $${formatNumber(quote.state.payload)}`,
   }
 }
