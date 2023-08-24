@@ -34,7 +34,11 @@ test.describe("Credit", () => {
   test.describe("New RFQ", () => {
     test("Create RFQ for GOOGL @smoke", async () => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage.getByTestId("search-result-item").getByText("GOOGL").first().click()
+      await newRfqPage
+        .getByTestId("search-result-item")
+        .getByText("GOOGL")
+        .first()
+        .click()
 
       const quantity = newRfqPage.getByTestId("quantity")
       await quantity.type("2")
@@ -91,7 +95,11 @@ test.describe("Credit", () => {
   test.describe("Sell side", () => {
     test("Sell side ticket", async ({ context }) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage.getByTestId("search-result-item").getByText("GOOGL").first().click()
+      await newRfqPage
+        .getByTestId("search-result-item")
+        .getByText("GOOGL")
+        .first()
+        .click()
 
       const quantity = newRfqPage.getByTestId("quantity")
       await quantity.type("2")
@@ -102,7 +110,7 @@ test.describe("Credit", () => {
         .click()
 
       const pagePromise = context.waitForEvent("page", {
-        predicate: page => page.url().includes("credit-sellside"),
+        predicate: (page) => page.url().includes("credit-sellside"),
       })
 
       await newRfqPage
@@ -118,7 +126,47 @@ test.describe("Credit", () => {
 
       await sellSidePage.keyboard.press("Enter")
 
-      await expect(rfqsPage.getByTestId("quotes").first()).toContainText("$100", {timeout: 10000})
+      await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
+        "$100",
+        { timeout: 10000 },
+      )
+
+      sellSidePage.close()
+    })
+  })
+
+  test.describe("Pass", () => {
+    test("pass", async ({ context }) => {
+      await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
+      await newRfqPage.getByTestId("search-result-item").nth(5).click()
+
+      const quantity = newRfqPage.getByTestId("quantity")
+      await quantity.type("2")
+
+      await newRfqPage
+        .locator("span")
+        .getByText(/Adaptive Bank/)
+        .click()
+
+      const pagePromise = context.waitForEvent("page")
+
+      await newRfqPage
+        .locator("button")
+        .getByText(/Send RFQ/)
+        .click()
+
+      const sellSidePage = await pagePromise
+
+      await sellSidePage.waitForSelector("text=New RFQ")
+
+      await sellSidePage.getByRole("button", { name: "Pass" }).click()
+
+      await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
+        "Passed",
+        { timeout: 10000 },
+      )
+
+      sellSidePage.close()
     })
   })
 })

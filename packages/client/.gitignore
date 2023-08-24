@@ -6,6 +6,7 @@ dist/
 .eslintcache
 
 # testing
+test-data
 /test-results/
 /playwright-report/
 /playwright/.cache/
