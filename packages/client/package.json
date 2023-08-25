@@ -99,7 +99,7 @@
   },
   "devDependencies": {
     "@google-cloud/dialogflow": "^4.7.0",
-    "@playwright/test": "^1.29.1",
+    "@playwright/test": "^1.37.1",
     "@storybook/addon-actions": "^7.0.2",
     "@storybook/addon-essentials": "^7.0.2",
     "@storybook/addon-links": "^7.0.2",
@@ -132,7 +132,7 @@
     "jest-styled-components": "^7.1.1",
     "jsdom": "^21.1.1",
     "openfin-cli": "^4.0.0",
-    "playwright": "^1.29.1",
+    "playwright": "^1.37.1",
     "prettier": "2.3.0",
     "rollup-plugin-modulepreload": "^1.2.3",
     "rollup-plugin-workbox": "^6.2.0",

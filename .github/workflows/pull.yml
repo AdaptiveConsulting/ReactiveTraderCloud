@@ -145,6 +145,28 @@ jobs:
 
             https://developers.google.com/speed/pagespeed/insights/?url=https://web.env.reactivetrader.com/pull/${{ github.event.number }}
 
+  openfin-test:
+    name: openfin test
+
+    needs: build
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm run e2e:openfin spot-tile.spec
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+       
   end-to-end-test:
     name: End-to-end test
 
@@ -154,9 +176,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Install
-        run: npm ci
 
       - name: Test
         env:
