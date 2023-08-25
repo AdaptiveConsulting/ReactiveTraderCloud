@@ -1,5 +1,5 @@
 import react from "@vitejs/plugin-react"
-import { readdirSync, statSync } from "fs"
+import { existsSync, readdirSync, statSync } from "fs"
 import path, { resolve } from "path"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
@@ -56,7 +56,7 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
   return {
     name: "targetBuildPlugin",
     enforce: "pre",
-    resolveId: function (source, importer, options) {
+    resolveId: function (source, importer) {
       if (dev) {
         const extension = source.split(".")[1]
         if (extension !== "ts" && extension !== "tsx") return null
@@ -70,51 +70,48 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
         const mockPath = `${file.dir}/${file.name}.${target}.${extension}`
         return this.resolve(mockPath, importer)
       } else {
-        const rootPrefix = "src/client/"
-        const thisImporter = (importer || "").replace(/\\/g, "/")
         if (
           !importer ||
-          !thisImporter.includes(rootPrefix) ||
+          importer.includes("node_modules") ||
           source === "./main"
         ) {
           return null
         }
 
-        const importedFile = path.parse(source)
+        if (!source.startsWith(".") && !source.startsWith("/")) {
+          return null
+        }
 
-        const importerFile = path.parse(thisImporter)
+        const sourcePath = path.parse(source)
+        const importerPath = path.parse(importer.replace(/\\/g, "/"))
+
+        // If imported file starts with /src we can not append it to importer dir
+        // so we need to strip the path by the rootPrefix first
+        const aliasedSourceRootPrefix = "/src"
+        const baseCandidatePath =
+          sourcePath.dir.startsWith(aliasedSourceRootPrefix) &&
+          importerPath.dir.includes(aliasedSourceRootPrefix)
+            ? `${importerPath.dir.split(aliasedSourceRootPrefix)[0]}/`
+            : importerPath.dir
+        const targetFileName = `${sourcePath.name}.${target.toLowerCase()}`
 
         const candidatePath = path.join(
-          // If imported file starts with /src we can not append it to importer dir
-          // so we need to strip the path by the rootPrefix first
-          importedFile.dir.startsWith("/src") &&
-            importerFile.dir.includes(rootPrefix)
-            ? `${importerFile.dir.split(rootPrefix)[0]}/`
-            : importerFile.dir,
-
-          importedFile.dir,
-          `${importedFile.name}.${target.toLowerCase()}`,
+          baseCandidatePath,
+          sourcePath.dir,
+          targetFileName,
         )
 
         // Source doesn't have file extension, so try all extensions
-        let candidate: string | null = null
-        const extensions = ["ts", "tsx"]
-        for (let i = 0; i < extensions.length; i++) {
-          try {
-            candidate = `${candidatePath}.${extensions[i]}`
-            statSync(candidate)
-            console.log("candidate good", candidate)
-          } catch (e) {
-            // console.log("Error with candidate", candidate, e)
-            candidate = null
-          }
-
-          if (candidate) {
-            break
-          }
+        const candidateTs = `${candidatePath}.ts`
+        if (existsSync(candidateTs)) {
+          console.log(`\ncandidate is ${candidateTs}\n`)
+          return candidateTs
         }
-
-        return candidate
+        const candidateTsx = `${candidatePath}.tsx`
+        if (existsSync(candidateTsx)) {
+          console.log(`\ncandidate is ${candidateTsx}\n`)
+          return candidateTsx
+        }
       }
     },
   }
@@ -124,7 +121,7 @@ function indexSwitchPlugin(target: string): Plugin {
   return {
     name: "indexSwitchPlugin",
     enforce: "pre",
-    resolveId: function (source: string, importer) {
+    resolveId: function (source, importer) {
       if (!source.startsWith("./main") || !importer) {
         return null
       }
@@ -375,10 +372,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     server: {
       port: localPort,
       proxy,
-      watch: {
-        cwd: __dirname,
-        ignored: "dist/**",
-      },
     },
     resolve: {
       // see https://vitejs.dev/config/shared-options.html#resolve-alias
