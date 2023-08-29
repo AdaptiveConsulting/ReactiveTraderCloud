@@ -312,8 +312,9 @@ export const respondWithIntent = (
     }
 
     case NlpIntentType.CreditRfq: {
-      const { symbol, direction, notional } = (intent as CreditRfqIntent)
-        .payload
+      const { symbol, direction, notional, maturity } = (
+        intent as CreditRfqIntent
+      ).payload
 
       if (!symbol || !direction || !notional) {
         return revokeLoading()
@@ -327,9 +328,21 @@ export const respondWithIntent = (
 
       const subs = creditInstruments$
         .pipe(
-          map((instruments) =>
-            instruments.find((instrument) => instrument.ticker === symbol),
-          ),
+          map((instruments) => {
+            const symbolInstruments = instruments.filter(
+              (instrument) => instrument.ticker === symbol,
+            )
+
+            if (maturity) {
+              return (
+                symbolInstruments.find(
+                  (instrument) => maturity === instrument.maturity.slice(0, 4),
+                ) ?? symbolInstruments[0]
+              )
+            }
+
+            return symbolInstruments[0]
+          }),
         )
         .subscribe((instrument) => {
           if (!instrument) {
