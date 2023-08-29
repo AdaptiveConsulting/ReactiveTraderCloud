@@ -315,11 +315,11 @@ export const respondWithIntent = (
       const { symbol, direction, notional } = (intent as CreditRfqIntent)
         .payload
 
-      const formattedNotional = nf.format(notional)
-
-      if (!symbol) {
+      if (!symbol || !direction || !notional) {
         return revokeLoading()
       }
+
+      const formattedNotional = nf.format(notional)
 
       const key = `rfq-execution-${symbol}`
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
