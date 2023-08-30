@@ -190,7 +190,7 @@ export const respondWithIntent = (
       const { direction, notional, symbol } = (intent as TradeExecutionIntent)
         .payload
 
-      if (!symbol) {
+      if (!symbol || !notional) {
         return revokeLoading()
       }
 
