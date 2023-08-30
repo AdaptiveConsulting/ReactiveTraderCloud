@@ -11,6 +11,9 @@ import { getCurrentSync } from "@openfin/workspace-platform"
 
 import {
   getApps,
+  getSnapshots,
+  getViews,
+  limitChecker,
   limitCheckerView,
   reactiveAnalytics,
   reactiveAnalyticsView,
@@ -21,9 +24,9 @@ import {
   reactiveTraderFxTradesView,
   reactiveWorkspace,
 } from "./apps"
-import { BASE_URL } from "./consts"
+import { BASE_URL } from "./constants"
 import { getCurrentUser, USER_TRADER } from "./user"
-import { getSpotTileApps } from "./utils"
+import { getAllMainApps, getSpotTileApps } from "./utils"
 
 const PROVIDER_ID = "adaptive-store-provider"
 
@@ -62,10 +65,10 @@ async function getStoreProvider(): Promise<StorefrontProvider> {
     id: PROVIDER_ID,
     title: "Adaptive Store",
     icon: `${BASE_URL}/favicon.ico`,
-    getNavigation: getNavigation,
-    getLandingPage: getLandingPage,
-    getFooter: getFooter,
-    getApps,
+    getNavigation,
+    getLandingPage,
+    getFooter,
+    getApps: getAllMainApps,
     launchApp: async (app: App) => {
       if (app.manifestType === "external") {
         fin.System.launchExternalProcess({
@@ -117,18 +120,7 @@ async function getNavigation(): Promise<
           title: "Apps",
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps:
-              currentUser === USER_TRADER
-                ? [reactiveTraderFx, reactiveTraderCredit, reactiveAnalytics]
-                : [reactiveAnalytics],
-          },
-        },
-        {
-          id: "external",
-          title: "Native Apps",
-          templateId: StorefrontTemplate.AppGrid,
-          templateData: {
-            apps: currentUser === USER_TRADER ? [limitCheckerView] : [],
+            apps: getApps(),
           },
         },
         {
@@ -136,19 +128,7 @@ async function getNavigation(): Promise<
           title: "Views",
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps:
-              currentUser === USER_TRADER
-                ? [
-                    reactiveTraderFxLiveRatesView,
-                    reactiveTraderFxTradesView,
-                    reactiveTraderFxAnalyticsView,
-                    reactiveAnalyticsView,
-                  ]
-                : [
-                    reactiveTraderFxTradesView,
-                    reactiveTraderFxAnalyticsView,
-                    reactiveAnalyticsView,
-                  ],
+            apps: getViews(),
           },
         },
         {
@@ -156,7 +136,7 @@ async function getNavigation(): Promise<
           title: "Snapshots",
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: currentUser === USER_TRADER ? [reactiveWorkspace] : [],
+            apps: getSnapshots(),
           },
         },
       ],

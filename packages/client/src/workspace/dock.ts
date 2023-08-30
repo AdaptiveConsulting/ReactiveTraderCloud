@@ -1,8 +1,7 @@
 import { Dock, DockProvider } from "@openfin/workspace"
 
-import { BASE_URL, VITE_RT_URL } from "./consts"
+import { BASE_URL, manifestUrls } from "./constants"
 import { ADAPTIVE_LOGO } from "./home/utils"
-import { manifestUrls } from "./utils"
 
 const PROVIDER_ID = "adaptive-dock-provider"
 
