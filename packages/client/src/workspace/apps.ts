@@ -1,20 +1,32 @@
 import { App } from "@openfin/workspace"
 
-import { BASE_URL } from "./consts"
-import { manifestUrls } from "./utils"
+import { BASE_URL, manifestUrls } from "./constants"
+import { getCurrentUser, USER_TRADER } from "./user"
 
-export async function getApps(): Promise<App[]> {
-  return [
-    reactiveTraderFx,
-    reactiveTraderCredit,
-    reactiveAnalytics,
-    reactiveWorkspace,
-    limitCheckerView,
-    reactiveTraderFxLiveRatesView,
-    reactiveTraderFxTradesView,
-    reactiveTraderFxAnalyticsView,
-    reactiveAnalyticsView,
-  ]
+export function getApps(): App[] {
+  return getCurrentUser() === USER_TRADER
+    ? [reactiveTraderFx, reactiveTraderCredit, reactiveAnalytics]
+    : [reactiveAnalytics, limitChecker]
+}
+
+export function getViews(): App[] {
+  return getCurrentUser() === USER_TRADER
+    ? [
+        reactiveTraderFxLiveRatesView,
+        reactiveTraderFxTradesView,
+        reactiveTraderFxAnalyticsView,
+        reactiveAnalyticsView,
+      ]
+    : [
+        reactiveTraderFxTradesView,
+        reactiveTraderFxAnalyticsView,
+        reactiveAnalyticsView,
+        limitCheckerView,
+      ]
+}
+
+export function getSnapshots(): App[] {
+  return getCurrentUser() === USER_TRADER ? [reactiveWorkspace] : []
 }
 
 export const reactiveTraderFx: App = {
