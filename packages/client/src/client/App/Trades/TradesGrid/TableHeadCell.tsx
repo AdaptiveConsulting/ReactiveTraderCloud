@@ -18,6 +18,7 @@ import { getWidthPercentage } from "./utils"
 
 const TableHeadCell = styled.div<{
   width: number
+  isLast: boolean
   headerFirst: boolean
   numeric: boolean
 }>`
@@ -43,6 +44,11 @@ const TableHeadCell = styled.div<{
   span.spacer-2 {
     min-width: 1rem;
     display: inline-block;
+  }
+
+  .popup {
+    float: ${({ isLast }) => (isLast ? "right" : undefined)};
+    margin-right: 0.4rem;
   }
 `
 
@@ -76,10 +82,12 @@ const AlignedArrow = ({
 
 interface Props<T extends FxColField | CreditColField> {
   field: T
+  isLast: boolean
 }
 
 export const TableHeadCellContainer = <T extends FxColField | CreditColField>({
   field,
+  isLast,
 }: Props<T>) => {
   const [showFilter, setShowFilter] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -96,6 +104,7 @@ export const TableHeadCellContainer = <T extends FxColField | CreditColField>({
       onMouseEnter={() => setShowFilter(true)}
       onMouseLeave={() => setShowFilter(false)}
       width={widthPercentage}
+      isLast={isLast}
       numeric={filterType === "number" && field !== "tradeId"}
       headerFirst={filterType !== "number" || field === "tradeId"}
       onClick={(e) => {

@@ -48,14 +48,18 @@ const InnerElementType = forwardRef<
       <div
         role="grid"
         ref={ref}
-        style={{ ...style, minWidth: `${fields.length * 6}rem` }}
+        style={{
+          ...style,
+          minWidth: `${fields.length * 6}rem`,
+        }}
       >
         <TableHeadRow>
           <StatusIndicatorSpacer aria-label="Trade Status" />
-          {fields.map((field) => (
+          {fields.map((field, index) => (
             <TableHeadCellContainer
               key={field as string}
               field={field as string}
+              isLast={index === fields.length - 1}
             />
           ))}
         </TableHeadRow>
