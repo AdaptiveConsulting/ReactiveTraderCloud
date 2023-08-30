@@ -12,13 +12,14 @@ import { limitResult$ } from "./state"
 let tradeId = 0
 
 const tableRows$ = limitResult$.pipe(
-  scan((acc, { notional, request, result }) => {
+  scan((acc, { limit, notional, request, result }) => {
     return [
       {
         status: result ? LimitCheckStatus.Success : LimitCheckStatus.Failure,
         tradeId: tradeId++,
         symbol: request.tradedCurrencyPair,
         notional,
+        limit,
         spotRate: request.rate,
       },
       ...acc,

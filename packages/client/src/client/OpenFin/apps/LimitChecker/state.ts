@@ -40,7 +40,8 @@ const limitResult$ = limitCheckRequest$.pipe(
     limitBySymbol$(request.tradedCurrencyPair).pipe(
       take(1),
       map(([value, formattedValue]) => ({
-        notional: formattedValue,
+        notional: formatNotional(request.notional, ["k", "m"])[1],
+        limit: formattedValue,
         result: Number(request.notional) <= value,
         request,
       })),

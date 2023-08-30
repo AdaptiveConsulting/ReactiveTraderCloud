@@ -187,7 +187,12 @@ export const limitCheckerColDef: ColDef = {
     headerName: "Notional",
     filterType: "number",
     valueFormatter: (v) => formatAsWholeNumber(v as number),
-    excelValueFormatter: notionalExcelValueFormatter,
+    width: 120,
+  },
+  limit: {
+    headerName: "Limit",
+    filterType: "number",
+    valueFormatter: (v) => formatAsWholeNumber(v as number),
     width: 120,
   },
   spotRate: {
