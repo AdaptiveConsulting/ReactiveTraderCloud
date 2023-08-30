@@ -9,11 +9,8 @@ import { LimitCheckStatus, TradeStatus } from "services/trades/types"
 import styled, { css } from "styled-components"
 
 export const Table = styled.div`
-  border-bottom: 15px solid ${({ theme }) => theme.core.darkBackground};
   height: calc(100% - 4.75rem);
   width: 100%;
-  overflow-x: scroll;
-  overflow-y: hidden;
   .visually-hidden {
     display: none;
   }
