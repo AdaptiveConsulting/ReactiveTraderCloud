@@ -101,10 +101,10 @@ const OuterElementType = forwardRef<
 type ItemData<Row extends Trade> = Omit<TradesGridInnerProps<Row>, "caption">
 
 const Row = <Row extends Trade>({
-  index,
-  style,
-  data,
-}: {
+                                  index,
+                                  style,
+                                  data,
+                                }: {
   index: number
   style: CSSProperties
   data: ItemData<Row>
@@ -161,10 +161,10 @@ interface ItemWrapperData<Row extends Trade> extends ItemData<Row> {
 }
 
 const ItemWrapper = <Row extends Trade>({
-  data,
-  index,
-  style,
-}: {
+                                          data,
+                                          index,
+                                          style,
+                                        }: {
   index: number
   style: CSSProperties
   data: ItemWrapperData<Row>
@@ -177,20 +177,20 @@ const ItemWrapper = <Row extends Trade>({
 }
 
 const TableRows = <Row extends Trade>({
-  children,
-  itemData,
-  ...rest
-}: FixedSizeListProps<ItemData<Row>>) => (
+                                        children,
+                                        itemData,
+                                        ...rest
+                                      }: FixedSizeListProps<ItemData<Row>>) => (
   <List itemData={{ ...itemData, ItemRenderer: children }} {...rest}>
     {ItemWrapper}
   </List>
 )
 
 export const TradesGridInner = <Row extends Trade>({
-  onRowClick,
-  isRejected,
-  caption,
-}: TradesGridInnerProps<Row>) => {
+                                                     onRowClick,
+                                                     isRejected,
+                                                     caption,
+                                                   }: TradesGridInnerProps<Row>) => {
   const rows$ = useTrades$()
   const colDef = useColDef()
   const fields = useColFields()
