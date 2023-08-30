@@ -3,16 +3,21 @@ import { Locator } from "playwright"
 
 export const OPENFIN_PROJECT_NAME = "openfin"
 
-export const assertGridRow = async (
-  row: Locator,
-  assertions: string[],
-  startIndex?: number,
-  endIndex?: number,
-) => {
+export const assertGridRow = async ({
+  row,
+  assertions,
+  firstCellToAssert,
+  lastCellToAssert,
+}: {
+  row: Locator
+  assertions: string[]
+  firstCellToAssert?: number
+  lastCellToAssert?: number
+}) => {
   let j = 0
   for (
-    let i = startIndex ? startIndex : 0;
-    i < (endIndex ? endIndex : assertions.length);
+    let i = firstCellToAssert ? firstCellToAssert : 0;
+    i < (lastCellToAssert ? lastCellToAssert : assertions.length);
     i++
   ) {
     await assertGridCell(row, i, assertions[j])
