@@ -145,7 +145,6 @@ export const respondWithIntent = (
 
     case NlpIntentType.TradeInfo: {
       const sub = trades$.subscribe((trades) => {
-        trades.reverse()
         const trimmedTrades = (intent as TradesInfoIntent).payload.count
           ? trades.splice(0, (intent as TradesInfoIntent).payload.count)
           : trades
