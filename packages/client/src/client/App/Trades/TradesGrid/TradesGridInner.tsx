@@ -45,7 +45,11 @@ const InnerElementType = forwardRef<
       <p id="trades-table-heading" className="visually-hidden">
         {caption}
       </p>
-      <div role="grid" ref={ref} style={style}>
+      <div
+        role="grid"
+        ref={ref}
+        style={{ ...style, minWidth: `${fields.length * 6}rem` }}
+      >
         <TableHeadRow>
           <StatusIndicatorSpacer aria-label="Trade Status" />
           {fields.map((field) => (
@@ -74,9 +78,16 @@ const OuterElementType = forwardRef<
   PropsWithChildren<{
     style: CSSProperties
   }>
->(function ListOuterElement({ children, ...rest }, ref) {
+>(function ListOuterElement({ children, style, ...rest }, ref) {
   return (
-    <div ref={ref} {...rest} style={{ ...rest.style, overflow: "scroll" }}>
+    <div
+      ref={ref}
+      {...rest}
+      style={{
+        ...style,
+        overflowX: "scroll",
+      }}
+    >
       {children}
     </div>
   )
@@ -106,7 +117,7 @@ const Row = <Row extends Trade>({
       highlight={row.tradeId === highlightedRow}
       onClick={() => onRowClick?.(row as unknown as Row)}
       data-testid={`trades-grid-row-${row.tradeId}`}
-      style={style}
+      style={{ ...style, minWidth: `${fields.length * 6}rem` }}
     >
       <StatusIndicator status={row.status} aria-label={row.status} />
       {fields.map((field) => {
@@ -189,7 +200,6 @@ export const TradesGridInner = <Row extends Trade>({
               itemSize={convertRemToPixels(2)}
               height={height ? height : 100}
               width={width ? width : 100}
-              style={{ minWidth: `${fields.length * 6}rem` }}
               innerElementType={InnerElementType}
               outerElementType={OuterElementType}
               itemData={{
