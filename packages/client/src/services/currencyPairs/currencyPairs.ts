@@ -20,7 +20,7 @@ export const [useCurrencyPairs, currencyPairs$] = bind(
             ...payload,
             base: symbol.substring(0, 3), // TODO: talk with hydra team about this
             terms: symbol.substring(3),
-            defaultNotional: symbol === "NZDUSD" ? 120044 : 1_000_000, // TODO: talk with hydra team about this
+            defaultNotional: symbol === "NZDUSD" ? 10_000_000 : 1_000_000, // TODO: talk with hydra team about this
           }
         }
       })
