@@ -9,7 +9,7 @@ import {
 import { RT_PLATFORM_UUID_PREFIX } from "client/OpenFin/utils/window"
 import { NotificationActionEvent } from "openfin-notifications"
 
-import { VITE_RT_URL } from "../consts"
+import { VITE_RT_URL } from "../constants"
 
 let rfqsView: View | null = null
 export const handleCreditRfqNotification = async (

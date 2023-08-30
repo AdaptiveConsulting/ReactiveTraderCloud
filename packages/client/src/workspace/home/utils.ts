@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ExitCode } from "@openfin/core/src/OpenFin"
 import {
   Action,
   CLISearchResponse,
@@ -7,13 +8,6 @@ import {
   SearchListenerResponse,
 } from "@openfin/workspace"
 import { App, getCurrentSync, Page } from "@openfin/workspace-platform"
-import { getApps } from "workspace/apps"
-import { getPages } from "workspace/browser"
-
-export const HOME_ACTION_DELETE_PAGE = "Delete Page"
-export const HOME_ACTION_LAUNCH_PAGE = "Launch Page"
-
-import { ExitCode } from "@openfin/core/src/OpenFin"
 import {
   CreateRfqRequest,
   CreateRfqResponse,
@@ -30,10 +24,15 @@ import {
 } from "rxjs"
 import { createCreditRfq$, creditDealers$ } from "services/credit"
 import { execute$ } from "services/executions"
+import { getPages } from "workspace/browser"
 
-import { BASE_URL } from "../consts"
+import { BASE_URL } from "../constants"
 import { getUserResult, getUserToSwitch, switchUser } from "../user"
+import { getAllMainApps } from "../utils"
+
 export const ADAPTIVE_LOGO = `${BASE_URL}/images/icons/adaptive.png`
+export const HOME_ACTION_DELETE_PAGE = "Delete Page"
+export const HOME_ACTION_LAUNCH_PAGE = "Launch Page"
 
 const mapAppEntriesToSearchEntries = (apps: App[]): CLISearchResult<Action>[] =>
   apps.map((app) => {
@@ -110,7 +109,7 @@ const mapPageEntriesToSearchEntries = (
 export const getAppsAndPages = async (
   query?: string,
 ): Promise<CLISearchResponse> => {
-  const apps = await getApps()
+  const apps = await getAllMainApps()
   const pages = await getPages()
 
   const appSearchEntries = mapAppEntriesToSearchEntries(apps)

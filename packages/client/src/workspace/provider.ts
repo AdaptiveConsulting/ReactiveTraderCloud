@@ -8,7 +8,7 @@ import { initConnection } from "services/connection"
 import { registerSimulatedDealerResponses } from "services/credit/creditRfqResponses"
 
 import { customActions, overrideCallback } from "./browser"
-import { BASE_URL } from "./consts"
+import { BASE_URL } from "./constants"
 import { deregisterdock, dockCustomActions, registerDock } from "./dock"
 import { deregisterHome, registerHome, showHome } from "./home"
 import {

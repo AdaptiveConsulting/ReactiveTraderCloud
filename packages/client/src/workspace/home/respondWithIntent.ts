@@ -37,7 +37,7 @@ import {
   TradesInfoIntent,
 } from "@/services/nlp"
 
-import { VITE_RT_URL } from "../consts"
+import { VITE_RT_URL } from "../constants"
 import { createContainer, createText } from "../templates"
 import {
   constructMarketTemplateContent,

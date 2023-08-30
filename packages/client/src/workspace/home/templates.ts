@@ -17,7 +17,7 @@ import {
 import { CreditExceededExecution } from "@/services/executions/types"
 import { Price, PriceMovementType } from "@/services/prices"
 
-import { BASE_URL, VITE_RT_URL } from "../consts"
+import { BASE_URL, VITE_RT_URL } from "../constants"
 import {
   createButton,
   createContainer,
