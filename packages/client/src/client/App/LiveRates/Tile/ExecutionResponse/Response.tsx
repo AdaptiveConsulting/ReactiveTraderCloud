@@ -133,7 +133,7 @@ const ExecutionMessage = ({
         {getExecutionMessage(tileState, base, terms)}
       </TradeMessageDiv>
       {!isWaiting && (
-        <Button onClick={onClose} success={isSuccessful}>
+        <Button onclick={onClose} success={isSuccessful}>
           Close
         </Button>
       )}

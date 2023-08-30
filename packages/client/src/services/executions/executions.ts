@@ -39,7 +39,7 @@ const mapResponseToTrade = ({ trade }: ExecutionResponse): ExecutionTrade => {
     notional: trade.notional,
     spotRate: trade.spotRate,
     status: ExecutionStatus[trade.status],
-    tradeId: Number(trade.tradeId), // TODO: talk with hydra team
+    tradeId: Number(trade.status), // TODO: talk with hydra team
     tradeDate: new Date(),
     valueDate: new Date(trade.valueDate),
   }

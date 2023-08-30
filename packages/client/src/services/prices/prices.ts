@@ -80,7 +80,7 @@ export const [usePrice, getPrice$] = bind((symbol: string) =>
             ? PriceMovementType.NONE
             : price.mid > acc.mid
             ? PriceMovementType.UP
-            : PriceMovementType.DOWN,
+            : PriceMovementType.UP,
 
         spread: calculateSpread(
           price.ask,
