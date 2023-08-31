@@ -112,6 +112,8 @@ const createNotificationTemplate = (
 const sendFxTradeNotification = (trade: ExecutionTrade) => {
   const { status, title, tradeDetails } = processFxExecution(trade)
 
+  console.log(fxIconUrl)
+
   const notificationOptions: TemplateCustom = {
     template: "custom",
     templateOptions: createNotificationTemplate(trade.direction),

@@ -8,7 +8,6 @@ import { LimitCheckStatus, LimitCheckTrade } from "services/trades/types"
 import styled from "styled-components"
 
 import { limitResult$ } from "./state"
-
 let tradeId = 0
 
 const tableRows$ = limitResult$.pipe(

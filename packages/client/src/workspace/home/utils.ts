@@ -215,8 +215,6 @@ export const handleAppSelection = async (
           dealtCurrency,
         } = appEntry as any
 
-        console.log("Action on execute", appEntry)
-
         await execute({
           currencyPair,
           spotRate,
