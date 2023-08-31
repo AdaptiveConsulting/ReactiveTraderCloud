@@ -14,7 +14,7 @@ import {
   createOpenFinPopup,
   showOpenFinPopup,
 } from "@/client/OpenFin/utils/window"
-import { constructUrl } from "@/client/utils/url"
+import { constructUrl } from "@/client/utils/constructUrl"
 
 const Wrapper = styled(Background)`
   &&& {

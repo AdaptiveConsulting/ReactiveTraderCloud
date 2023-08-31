@@ -4,6 +4,7 @@ type Environment = "local" | "env" | "dev" | "uat" | "prod"
 // Will be / for vite development mode (local),
 // otherwise the full domain / path of the deployment e.g. https://web.env.reactivetrader.com/pull/2064
 const BASE_URL = import.meta.env.BASE_URL
+
 export const BASE_PATH =
   BASE_URL && BASE_URL.startsWith("http") ? new URL(BASE_URL).pathname : ""
 export const ENVIRONMENT: Environment =
