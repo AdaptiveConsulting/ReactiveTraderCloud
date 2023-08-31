@@ -1,10 +1,10 @@
 import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 
-import { BlotterService } from "@/generated/TradingGateway"
 import {
   ACCEPTED_QUOTE_STATE,
   AcceptedQuoteState,
+  BlotterService,
 } from "@/generated/TradingGateway"
 
 import { withIsStaleData } from "../connection"
