@@ -1,6 +1,6 @@
 import { ROUTES_CONFIG } from "@/client/constants"
 
-import { constructUrl } from "./url"
+import { constructUrl } from "./constructUrl"
 import { openWindow } from "./window/openWindow"
 
 export const RFQ_ID_PARAM = "rfqId"

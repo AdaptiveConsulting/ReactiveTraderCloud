@@ -31,7 +31,7 @@ import {
   processCreditQuote,
   processFxExecution,
 } from "./notificationsUtils"
-import { constructUrl } from "./utils/url"
+import { constructUrl } from "./utils/constructUrl"
 
 const fxIconUrl = constructUrl("/static/media/reactive-trader-fx.svg")
 const creditIconUrl = constructUrl("/static/media/reactive-trader-credit.svg")
