@@ -9,6 +9,7 @@ import {
 import { LimitCheckStatus, LimitCheckTrade } from "@/services/trades/types"
 
 import { limitResult$ } from "./state"
+
 let tradeId = 0
 
 const tableRows$ = limitResult$.pipe(
