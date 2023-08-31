@@ -1,4 +1,4 @@
-import { BASE_PATH, ENVIRONMENT } from "client/constants"
+import { BASE_PATH } from "@/client/constants"
 
 export const constructUrl = (
   path: string,

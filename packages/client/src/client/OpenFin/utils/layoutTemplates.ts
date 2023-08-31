@@ -1,5 +1,4 @@
-import { ROUTES_CONFIG } from "client/constants"
-
+import { ROUTES_CONFIG } from "@/client/constants"
 import { constructUrl } from "@/client/utils/constructUrl"
 
 const settings = {
