@@ -1,5 +1,6 @@
-import { CurrencyPair } from "services/currencyPairs/types"
 import styled from "styled-components"
+
+import { CurrencyPair } from "@/services/currencyPairs/types"
 
 import { onChangeLimitValue, useLimit } from "./state"
 

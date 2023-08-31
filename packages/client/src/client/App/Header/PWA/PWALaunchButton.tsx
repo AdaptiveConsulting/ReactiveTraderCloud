@@ -1,5 +1,6 @@
-import { isiOS } from "client/utils"
 import { Dispatch, SetStateAction } from "react"
+
+import { isiOS } from "@/client/utils"
 
 import { PWABanner } from "./PWAInstallPrompt"
 import { InstallButton } from "./PWAInstallPrompt.styles"

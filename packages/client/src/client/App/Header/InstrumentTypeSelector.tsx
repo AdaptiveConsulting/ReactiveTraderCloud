@@ -1,7 +1,8 @@
-import { DropdownMenu } from "client/components/DropdownMenu"
-import { ROUTES_CONFIG } from "client/constants"
-import { isMobileDevice } from "client/utils"
 import { useLocation, useNavigate } from "react-router"
+
+import { DropdownMenu } from "@/client/components/DropdownMenu"
+import { ROUTES_CONFIG } from "@/client/constants"
+import { isMobileDevice } from "@/client/utils"
 
 enum InstrumentType {
   FX = "FX",

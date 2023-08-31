@@ -1,9 +1,10 @@
-import { tearOutSection } from "client/App/TearOutSection/state"
-import { TearOutContext } from "client/App/TearOutSection/tearOutContext"
-import { PopInIcon } from "client/components/icons/PopInIcon"
-import { PopOutIcon } from "client/components/icons/PopOutIcon"
-import { closeWindow } from "client/utils/window/closeWindow"
 import { useContext } from "react"
+
+import { tearOutSection } from "@/client/App/TearOutSection/state"
+import { TearOutContext } from "@/client/App/TearOutSection/tearOutContext"
+import { PopInIcon } from "@/client/components/icons/PopInIcon"
+import { PopOutIcon } from "@/client/components/icons/PopOutIcon"
+import { closeWindow } from "@/client/utils/window/closeWindow"
 
 import { Section } from "./state"
 import { HeaderTearOutAction } from "./TearOutComponent.styles"

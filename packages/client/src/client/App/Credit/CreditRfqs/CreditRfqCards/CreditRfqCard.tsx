@@ -1,5 +1,5 @@
-import { Loader } from "client/components/Loader"
-import { customNumberFormatter } from "client/utils"
+import { Loader } from "@/client/components/Loader"
+import { customNumberFormatter } from "@/client/utils"
 import {
   ACCEPTED_QUOTE_STATE,
   DealerBody,
@@ -10,8 +10,8 @@ import {
   QuoteBody,
   REJECTED_WITH_PRICE_QUOTE_STATE,
   RfqState,
-} from "generated/TradingGateway"
-import { useCreditRfqDetails } from "services/credit"
+} from "@/generated/TradingGateway"
+import { useCreditRfqDetails } from "@/services/credit"
 
 import { CardFooter } from "./CardFooter"
 import { CardHeader } from "./CardHeader"

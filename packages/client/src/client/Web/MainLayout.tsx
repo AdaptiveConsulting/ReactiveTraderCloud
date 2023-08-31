@@ -1,7 +1,8 @@
-import { Footer } from "client/App/Footer"
-import Header from "client/App/Header"
 import { Outlet } from "react-router"
 import styled from "styled-components"
+
+import { Footer } from "@/client/App/Footer"
+import Header from "@/client/App/Header"
 
 const Wrapper = styled("div")`
   width: 100%;

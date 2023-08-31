@@ -1,7 +1,8 @@
-import { IconContainer, SwitchContainer } from "client/components/Switch"
 import { useEffect, useState } from "react"
 import Switch from "react-switch"
 import { useTheme } from "styled-components"
+
+import { IconContainer, SwitchContainer } from "@/client/components/Switch"
 
 import { LockedIcon } from "../icons/LockedIcon"
 import { PlatformLockedStatusIcon } from "../icons/PlatformLockedStatusIcon"

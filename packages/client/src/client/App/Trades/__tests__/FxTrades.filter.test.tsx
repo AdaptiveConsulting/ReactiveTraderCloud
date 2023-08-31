@@ -1,10 +1,11 @@
 import { act, fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { ComparatorType } from "client/App/Trades/TradesState"
-import { setupMockWindow, TestThemeProvider } from "client/utils/testUtils"
 import { BehaviorSubject } from "rxjs"
-import { Trade, TradeStatus, tradesTestData } from "services/trades"
-import { tradesMock } from "services/trades/__mocks__/_trades"
+
+import { ComparatorType } from "@/client/App/Trades/TradesState"
+import { setupMockWindow, TestThemeProvider } from "@/client/utils/testUtils"
+import { Trade, TradeStatus, tradesTestData } from "@/services/trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 
 import FxTrades from "../CoreFxTrades"
 import * as TableTrades from "../TradesState/tableTrades"
@@ -13,7 +14,7 @@ vi.mock("../TradesGrid/utils")
 vi.mock("@openfin/core", () => ({
   fin: undefined,
 }))
-vi.mock("services/trades/trades")
+vi.mock("@/services/trades/trades")
 vi.mock("../TradesState/tableTrades", async () => {
   const tableTrades: typeof TableTrades = await vi.importActual(
     "../TradesState/tableTrades",

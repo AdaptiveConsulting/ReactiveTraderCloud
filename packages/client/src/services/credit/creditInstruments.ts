@@ -1,4 +1,7 @@
 import { bind, shareLatest } from "@react-rxjs/core"
+import { of } from "rxjs"
+import { map, scan, tap } from "rxjs/operators"
+
 import {
   ADDED_INSTRUMENT_UPDATE,
   AddedInstrumentUpdate,
@@ -8,9 +11,7 @@ import {
   REMOVED_INSTRUMENT_UPDATE,
   RemovedInstrumentUpdate,
   START_OF_STATE_OF_THE_WORLD_INSTRUMENT_UPDATE,
-} from "generated/TradingGateway"
-import { of } from "rxjs"
-import { map, scan, tap } from "rxjs/operators"
+} from "@/generated/TradingGateway"
 
 import { withConnection } from "../withConnection"
 

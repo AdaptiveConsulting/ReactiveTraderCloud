@@ -1,4 +1,4 @@
-import { OpenFinApp } from "client/OpenFin"
+import { OpenFinApp } from "@/client/OpenFin"
 // import { ROUTES_CONFIG } from "./constants"
 // import { registerWorkspaceProvider } from "./OpenFin/workspace"
 

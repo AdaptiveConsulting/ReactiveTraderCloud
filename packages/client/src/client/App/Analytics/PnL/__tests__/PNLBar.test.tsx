@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from "@testing-library/react"
-import { TestThemeProvider } from "client/utils/testUtils"
+
+import { TestThemeProvider } from "@/client/utils/testUtils"
 
 import PNLBar from "../PNLBar"
 

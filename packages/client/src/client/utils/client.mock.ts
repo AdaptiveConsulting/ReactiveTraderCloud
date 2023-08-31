@@ -58,9 +58,9 @@ const mockModule = () => {
 
 type MockedClient = ReturnType<typeof mockModule>
 
-vi.mock("services/client", () => mockModule())
+vi.mock("@/services/client", () => mockModule())
 
-const mock = require("client/services/client") as MockedClient
+const mock = require("@/client/services/client") as MockedClient
 
 export const {
   watch$,

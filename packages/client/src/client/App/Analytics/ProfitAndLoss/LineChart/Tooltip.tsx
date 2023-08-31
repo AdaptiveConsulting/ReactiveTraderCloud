@@ -1,9 +1,5 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import {
-  formatWithScale,
-  precisionNumberFormatter,
-} from "client/utils/formatNumber"
 import { format } from "date-fns"
 import {
   MutableRefObject,
@@ -15,6 +11,11 @@ import {
 import { createPortal } from "react-dom"
 import { map, switchMap } from "rxjs/operators"
 import styled from "styled-components"
+
+import {
+  formatWithScale,
+  precisionNumberFormatter,
+} from "@/client/utils/formatNumber"
 
 import { LINE_CHART_HEIGHT } from "./constants"
 import { dataPoints$ } from "./dataPoints$"

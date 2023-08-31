@@ -1,6 +1,7 @@
 import OpenFin from "@openfin/core"
-import { ENVIRONMENT } from "client/constants"
-import { constructUrl } from "client/utils/url"
+
+import { ENVIRONMENT } from "@/client/constants"
+import { constructUrl } from "@/client/utils/url"
 
 import {
   limitCheckerIcon,

@@ -6,10 +6,11 @@ import {
   waitFor,
   within,
 } from "@testing-library/react"
-import { TestThemeProvider } from "client/utils/testUtils"
 import { BehaviorSubject, Subject } from "rxjs"
-import { Trade, tradesTestData } from "services/trades"
-import { tradesMock } from "services/trades/__mocks__/_trades"
+
+import { TestThemeProvider } from "@/client/utils/testUtils"
+import { Trade, tradesTestData } from "@/services/trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 
 import FxTrades from "../CoreFxTrades"
 import * as TableTrades from "../TradesState/tableTrades"
@@ -18,7 +19,7 @@ vi.mock("../TradesGrid/utils")
 vi.mock("@openfin/core", () => ({
   fin: undefined,
 }))
-vi.mock("services/trades/trades")
+vi.mock("@/services/trades/trades")
 vi.mock("../TradesState/tableTrades", async () => {
   const tableTrades: typeof TableTrades = await vi.importActual(
     "../TradesState/tableTrades",

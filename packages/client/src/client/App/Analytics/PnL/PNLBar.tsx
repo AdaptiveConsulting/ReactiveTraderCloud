@@ -1,9 +1,10 @@
+import { useState } from "react"
+
 import {
   formatAsWholeNumber,
   formatWithScale,
   precisionNumberFormatter,
-} from "client/utils/formatNumber"
-import { useState } from "react"
+} from "@/client/utils/formatNumber"
 
 import {
   Bar,

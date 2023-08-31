@@ -1,11 +1,12 @@
 import { SUSPENSE } from "@react-rxjs/core"
-import { isMobileDevice } from "client/utils"
-import { Direction } from "generated/TradingGateway"
 import { memo } from "react"
 import { merge, pipe } from "rxjs"
 import { map } from "rxjs/operators"
-import { CurrencyPair } from "services/currencyPairs"
-import { getIsSymbolDataStale$ } from "services/prices"
+
+import { isMobileDevice } from "@/client/utils"
+import { Direction } from "@/generated/TradingGateway"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { getIsSymbolDataStale$ } from "@/services/prices"
 
 import { ExecutionResponse, executionResponse$ } from "./ExecutionResponse"
 import { Header, header$ } from "./Header"

@@ -1,5 +1,5 @@
-import { ENVIRONMENT } from "client/constants"
-import { constructUrl } from "client/utils/url"
+import { ENVIRONMENT } from "@/client/constants"
+import { constructUrl } from "@/client/utils/url"
 
 export const getReactiveTraderUrl = (path: string) =>
   constructUrl(

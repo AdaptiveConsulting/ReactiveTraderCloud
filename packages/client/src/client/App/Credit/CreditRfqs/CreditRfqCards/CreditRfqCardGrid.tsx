@@ -1,10 +1,11 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { HIGHLIGHT_ROW_FLASH_TIME } from "client/constants"
-import { RfqState } from "generated/TradingGateway"
 import { combineLatest, merge } from "rxjs"
 import { delay, map, mergeMap, tap } from "rxjs/operators"
-import { clearedRfqIds$, creditRfqsById$ } from "services/credit"
+
+import { HIGHLIGHT_ROW_FLASH_TIME } from "@/client/constants"
+import { RfqState } from "@/generated/TradingGateway"
+import { clearedRfqIds$, creditRfqsById$ } from "@/services/credit"
 
 import { timeRemainingComparator } from "../../common"
 import { RfqsTab, selectedRfqsTab$ } from "../selectedRfqsTab"

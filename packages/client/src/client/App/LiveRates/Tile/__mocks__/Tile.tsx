@@ -1,5 +1,6 @@
 import { Subject } from "rxjs"
-import { CurrencyPair } from "services/currencyPairs"
+
+import { CurrencyPair } from "@/services/currencyPairs"
 
 export const Tile = ({
   currencyPair,

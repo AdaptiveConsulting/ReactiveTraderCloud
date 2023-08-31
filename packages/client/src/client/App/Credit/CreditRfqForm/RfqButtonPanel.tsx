@@ -1,9 +1,10 @@
 import { createSignal } from "@react-rxjs/utils"
-import { CREDIT_RFQ_EXPIRY_SECONDS } from "client/constants"
-import { ACK_CREATE_RFQ_RESPONSE, Direction } from "generated/TradingGateway"
 import { exhaustMap, filter, map, tap, withLatestFrom } from "rxjs/operators"
-import { createCreditRfq$ } from "services/credit"
 import styled from "styled-components"
+
+import { CREDIT_RFQ_EXPIRY_SECONDS } from "@/client/constants"
+import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
+import { createCreditRfq$ } from "@/services/credit"
 
 import {
   selectedCounterpartyIds$,

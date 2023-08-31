@@ -1,6 +1,7 @@
-import Logo from "client/components/Logo"
-import { WEBSITE } from "client/constants"
 import { ReactNode, useState } from "react"
+
+import Logo from "@/client/components/Logo"
+import { WEBSITE } from "@/client/constants"
 
 import {
   AppHeaderRoot,

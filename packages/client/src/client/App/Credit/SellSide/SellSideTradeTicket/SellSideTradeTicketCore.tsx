@@ -1,7 +1,7 @@
-import { Loader } from "client/components/Loader"
-import { invertDirection } from "client/utils"
-import { PENDING_WITHOUT_PRICE_QUOTE_STATE } from "generated/TradingGateway"
-import { useCreditRfqDetails } from "services/credit"
+import { Loader } from "@/client/components/Loader"
+import { invertDirection } from "@/client/utils"
+import { PENDING_WITHOUT_PRICE_QUOTE_STATE } from "@/generated/TradingGateway"
+import { useCreditRfqDetails } from "@/services/credit"
 
 import { getSellSideQuoteState, SellSideQuoteState } from "../sellSideState"
 import { SellSideTradeTicketFooter } from "./SellSideTradeTickerFooter"

@@ -1,8 +1,4 @@
 import { bind, shareLatest } from "@react-rxjs/core"
-import { colors } from "client/theme"
-import { equals } from "client/utils/equals"
-import { formatAsWholeNumber } from "client/utils/formatNumber"
-import { mapObject } from "client/utils/mapObject"
 import { scaleLinear, SimulationNodeDatum } from "d3"
 import { combineLatest, Observable } from "rxjs"
 import {
@@ -12,8 +8,13 @@ import {
   scan,
   withLatestFrom,
 } from "rxjs/operators"
-import { currentPositions$ } from "services/analytics"
-import { currencyPairs$ } from "services/currencyPairs"
+
+import { colors } from "@/client/theme"
+import { equals } from "@/client/utils/equals"
+import { formatAsWholeNumber } from "@/client/utils/formatNumber"
+import { mapObject } from "@/client/utils/mapObject"
+import { currentPositions$ } from "@/services/analytics"
+import { currencyPairs$ } from "@/services/currencyPairs"
 
 interface CCYPosition {
   symbol: string

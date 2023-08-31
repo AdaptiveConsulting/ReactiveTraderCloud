@@ -1,7 +1,8 @@
 import { bind } from "@react-rxjs/core"
-import { DealerBody } from "generated/TradingGateway"
 import { from } from "rxjs"
 import { scan } from "rxjs/operators"
+
+import { DealerBody } from "@/generated/TradingGateway"
 
 const fakeDealers: DealerBody[] = [
   {

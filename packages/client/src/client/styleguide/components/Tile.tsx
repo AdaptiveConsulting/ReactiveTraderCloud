@@ -1,19 +1,21 @@
-import { StatelessExecutionResponse } from "client/App/LiveRates/Tile/ExecutionResponse"
-import { HeaderInner } from "client/App/LiveRates/Tile/Header"
-import { HistoricalGraphComponent } from "client/App/LiveRates/Tile/HistoricalGraph"
-import { NotionalInputInner } from "client/App/LiveRates/Tile/Notional"
+import { format } from "date-fns"
+
+import { StatelessExecutionResponse } from "@/client/App/LiveRates/Tile/ExecutionResponse"
+import { HeaderInner } from "@/client/App/LiveRates/Tile/Header"
+import { HistoricalGraphComponent } from "@/client/App/LiveRates/Tile/HistoricalGraph"
+import { NotionalInputInner } from "@/client/App/LiveRates/Tile/Notional"
 import {
   AwaitingPriceButton,
   PriceButtonInner,
   PriceUnavailableButton,
-} from "client/App/LiveRates/Tile/PriceButton"
+} from "@/client/App/LiveRates/Tile/PriceButton"
 import {
   PriceFromQuoteInner,
   PriceMovementInner,
-} from "client/App/LiveRates/Tile/PriceMovement"
-import { RfqTimer } from "client/App/LiveRates/Tile/Rfq"
-import { RfqButtonInner } from "client/App/LiveRates/Tile/Rfq/RfqButton"
-import { TileState } from "client/App/LiveRates/Tile/Tile.state"
+} from "@/client/App/LiveRates/Tile/PriceMovement"
+import { RfqTimer } from "@/client/App/LiveRates/Tile/Rfq"
+import { RfqButtonInner } from "@/client/App/LiveRates/Tile/Rfq/RfqButton"
+import { TileState } from "@/client/App/LiveRates/Tile/Tile.state"
 import {
   Body,
   GraphNotionalWrapper,
@@ -22,11 +24,10 @@ import {
   PanelItem,
   PriceControlsStyle,
   PriceControlWrapper,
-} from "client/App/LiveRates/Tile/Tile.styles"
-import { format } from "date-fns"
-import { Direction } from "generated/TradingGateway"
-import { CurrencyPair } from "services/currencyPairs"
-import { PriceMovementType } from "services/prices"
+} from "@/client/App/LiveRates/Tile/Tile.styles"
+import { Direction } from "@/generated/TradingGateway"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { PriceMovementType } from "@/services/prices"
 
 export type TileProps = {
   currencyPair: CurrencyPair

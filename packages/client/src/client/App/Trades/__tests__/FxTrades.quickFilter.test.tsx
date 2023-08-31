@@ -1,9 +1,10 @@
 import { fireEvent, render, screen, within } from "@testing-library/react"
-import { TestThemeProvider } from "client/utils/testUtils"
 import { act } from "react-dom/test-utils"
 import { BehaviorSubject } from "rxjs"
-import * as Trades from "services/trades"
-import { tradesMock } from "services/trades/__mocks__/_trades"
+
+import { TestThemeProvider } from "@/client/utils/testUtils"
+import * as Trades from "@/services/trades"
+import { tradesMock } from "@/services/trades/__mocks__/_trades"
 
 import FxTrades from "../CoreFxTrades"
 import * as TableTrades from "../TradesState/tableTrades"
@@ -11,7 +12,7 @@ import * as TableTrades from "../TradesState/tableTrades"
 vi.mock("@openfin/core", () => ({
   fin: undefined,
 }))
-vi.mock("services/trades/trades")
+vi.mock("@/services/trades/trades")
 vi.mock("../TradesState/tableTrades", async () => {
   const tableTrades: typeof TableTrades = await vi.importActual(
     "../TradesState/tableTrades",

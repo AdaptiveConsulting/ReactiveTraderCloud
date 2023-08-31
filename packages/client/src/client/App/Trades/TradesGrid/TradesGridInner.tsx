@@ -7,7 +7,8 @@ import {
 } from "react"
 import AutoSizer from "react-virtualized-auto-sizer"
 import { FixedSizeList as List, FixedSizeListProps } from "react-window"
-import { Trade } from "services/trades"
+
+import { Trade } from "@/services/trades"
 
 import {
   useColDef,

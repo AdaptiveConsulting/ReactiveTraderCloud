@@ -1,6 +1,6 @@
-import { ROUTES_CONFIG } from "client/constants"
-import { constructUrl } from "client/utils/url"
-import { openWindow } from "client/utils/window/openWindow"
+import { ROUTES_CONFIG } from "@/client/constants"
+import { constructUrl } from "@/client/utils/url"
+import { openWindow } from "@/client/utils/window/openWindow"
 
 import { tearOut } from "./state"
 

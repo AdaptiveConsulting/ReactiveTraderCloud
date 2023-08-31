@@ -11,10 +11,10 @@ import {
 } from "@openfin/workspace"
 import { createSignal } from "@react-rxjs/utils"
 import { withLatestFrom } from "rxjs"
-import { deletePage, getPage, launchPage } from "workspace/browser"
-import { getUserResult, getUserToSwitch } from "workspace/user"
 
 import { nlpIntent$, setInput } from "@/services/nlp"
+import { deletePage, getPage, launchPage } from "@/workspace/browser"
+import { getUserResult, getUserToSwitch } from "@/workspace/user"
 
 import { respondWithIntent as respond } from "./respondWithIntent"
 import {

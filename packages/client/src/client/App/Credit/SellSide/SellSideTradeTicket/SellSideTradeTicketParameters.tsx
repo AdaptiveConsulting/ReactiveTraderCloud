@@ -1,7 +1,8 @@
-import { truncatedDecimalNumberFormatter } from "client/utils"
-import { QuoteBody, RfqState } from "generated/TradingGateway"
-import { PendingWithPriceQuoteState } from "generated/TradingGateway"
 import { useEffect, useRef } from "react"
+
+import { truncatedDecimalNumberFormatter } from "@/client/utils"
+import { QuoteBody, RfqState } from "@/generated/TradingGateway"
+import { PendingWithPriceQuoteState } from "@/generated/TradingGateway"
 
 import { hasPrice } from "../../common"
 import {

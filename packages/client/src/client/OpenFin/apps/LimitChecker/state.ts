@@ -1,8 +1,9 @@
 import { bind } from "@react-rxjs/core"
 import { createKeyedSignal, createSignal } from "@react-rxjs/utils"
-import { formatNotional } from "client/utils/formatNotional"
 import { concat, filter, map, switchMap, take } from "rxjs"
-import { currencyPairs$ } from "services/currencyPairs"
+
+import { formatNotional } from "@/client/utils/formatNotional"
+import { currencyPairs$ } from "@/services/currencyPairs"
 
 export interface LimitCheckerRequest {
   id: string

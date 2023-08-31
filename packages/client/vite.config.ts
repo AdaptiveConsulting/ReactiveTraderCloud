@@ -382,26 +382,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
           find: "@",
           replacement: "/src",
         },
-        {
-          find: "~",
-          replacement: ".",
-        },
-        {
-          find: "client",
-          replacement: "/src/client",
-        },
-        {
-          find: "workspace",
-          replacement: "/src/workspace",
-        },
-        {
-          find: "services",
-          replacement: "/src/services",
-        },
-        {
-          find: "generated",
-          replacement: "/src/generated",
-        },
       ],
     },
     plugins,
