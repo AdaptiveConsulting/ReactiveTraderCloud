@@ -1,4 +1,4 @@
-import { Direction } from "generated/TradingGateway"
+import { Direction } from "@/generated/TradingGateway"
 
 import { FxTrade, TradeRaw, TradeStatus } from "../types"
 

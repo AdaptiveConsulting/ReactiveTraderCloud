@@ -1,6 +1,7 @@
 import { format } from "date-fns"
-import { useCurrencyPairs } from "services/currencyPairs"
-import { usePrice } from "services/prices"
+
+import { useCurrencyPairs } from "@/services/currencyPairs"
+import { usePrice } from "@/services/prices"
 
 import { MovementIcon } from "../icons"
 import { showCurrencyPairWindow } from "./intents"

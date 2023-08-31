@@ -120,22 +120,6 @@ const setConfig = ({ mode }) => {
           find: "@",
           replacement: "/src",
         },
-        {
-          find: "client",
-          replacement: "/src/client",
-        },
-        {
-          find: "workspace",
-          replacement: "/src/workspace",
-        },
-        {
-          find: "services",
-          replacement: "/src/services",
-        },
-        {
-          find: "generated",
-          replacement: "/src/generated",
-        },
       ],
     },
     plugins,

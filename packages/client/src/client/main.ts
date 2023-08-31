@@ -1,6 +1,6 @@
-import { AnalyticsCoreDeferred } from "client/App/Analytics"
-import { LiveRatesCoreDeferred } from "client/App/LiveRates"
-import { TradesCoreDeferred } from "client/App/Trades"
+import { AnalyticsCoreDeferred } from "@/client/App/Analytics"
+import { LiveRatesCoreDeferred } from "@/client/App/LiveRates"
+import { TradesCoreDeferred } from "@/client/App/Trades"
 
 import { WebApp } from "./Web"
 import { showCacheUpdateModal } from "./Web/cacheUpdateModal"

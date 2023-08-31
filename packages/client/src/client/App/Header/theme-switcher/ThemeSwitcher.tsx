@@ -1,8 +1,9 @@
-import { IconContainer, SwitchContainer } from "client/components/Switch"
-import { Theme, ThemeName, useTheme } from "client/theme"
 import { useState } from "react"
 import Switch, { ReactSwitchProps } from "react-switch"
 import { withTheme } from "styled-components"
+
+import { IconContainer, SwitchContainer } from "@/client/components/Switch"
+import { Theme, ThemeName, useTheme } from "@/client/theme"
 
 import DarkThemeIcon from "./DarkThemeIcon"
 import LightThemeIcon from "./LightThemeIcon"

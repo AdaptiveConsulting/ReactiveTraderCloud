@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  AccentPaletteMap,
-  colors,
-  Theme,
-  ThemeName,
-  useTheme,
-} from "client/theme"
 import { rgba } from "polished"
 import { ReactNode } from "react"
 import styled, {
@@ -14,6 +7,14 @@ import styled, {
   FlattenSimpleInterpolation,
   StyledComponent,
 } from "styled-components"
+
+import {
+  AccentPaletteMap,
+  colors,
+  Theme,
+  ThemeName,
+  useTheme,
+} from "@/client/theme"
 
 import { H2, H3 } from "../elements"
 import { Block, BlockProps, Paragraph, SectionBlock, Text } from "../styled"

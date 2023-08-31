@@ -1,5 +1,5 @@
-import { ROUTES_CONFIG } from "client/constants"
-import { constructUrl } from "client/utils/url"
+import { ROUTES_CONFIG } from "@/client/constants"
+import { constructUrl } from "@/client/utils/url"
 
 const settings = {
   blockedPopoutsThrowError: false,

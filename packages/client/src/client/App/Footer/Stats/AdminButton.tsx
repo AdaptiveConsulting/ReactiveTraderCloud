@@ -1,7 +1,7 @@
-import { ROUTES_CONFIG } from "client/constants"
-import { FEATURE_FLAG, useFeature } from "client/utils/featureFlag"
-import { constructUrl } from "client/utils/url"
-import { openWindow } from "client/utils/window/openWindow"
+import { ROUTES_CONFIG } from "@/client/constants"
+import { FEATURE_FLAG, useFeature } from "@/client/utils/featureFlag"
+import { constructUrl } from "@/client/utils/url"
+import { openWindow } from "@/client/utils/window/openWindow"
 
 export const AdminButton = () => {
   const canUseAdmin = useFeature(FEATURE_FLAG.ADMIN)

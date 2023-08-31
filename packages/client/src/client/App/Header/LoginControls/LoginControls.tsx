@@ -1,6 +1,7 @@
 import { Subscribe } from "@react-rxjs/core"
-import { AdaptiveLoader } from "client/components/AdaptiveLoader"
-import { currentUser$, User as UserType, useUser } from "services/currentUser"
+
+import { AdaptiveLoader } from "@/client/components/AdaptiveLoader"
+import { currentUser$, User as UserType, useUser } from "@/services/currentUser"
 
 import { LoadingButton, UserAvatar, UserContainer, UserWrapper } from "./styled"
 

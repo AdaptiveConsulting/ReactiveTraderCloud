@@ -5,7 +5,6 @@ import {
   SearchListenerResponse,
   SearchResult,
 } from "@openfin/workspace"
-import { ACK_CREATE_RFQ_RESPONSE, Direction } from "generated/TradingGateway"
 import {
   combineLatest,
   filter,
@@ -18,17 +17,16 @@ import {
   takeUntil,
   withLatestFrom,
 } from "rxjs"
-import { getCreditRfqDetails$ } from "services/credit"
-import { creditInstruments$ } from "services/credit/creditInstruments"
+
+import { ACK_CREATE_RFQ_RESPONSE, Direction } from "@/generated/TradingGateway"
+import { getCreditRfqDetails$ } from "@/services/credit"
+import { creditInstruments$ } from "@/services/credit/creditInstruments"
 import {
   currencyPairs$,
   currencyPairSymbols$,
   getCurrencyPair$,
-} from "services/currencyPairs"
-import { executions$ } from "services/executions"
-import { getPrice$, Price } from "services/prices"
-import { trades$ } from "services/trades"
-
+} from "@/services/currencyPairs"
+import { executions$ } from "@/services/executions"
 import {
   CreditRfqIntent,
   NlpIntent,
@@ -36,6 +34,8 @@ import {
   TradeExecutionIntent,
   TradesInfoIntent,
 } from "@/services/nlp"
+import { getPrice$, Price } from "@/services/prices"
+import { trades$ } from "@/services/trades"
 
 import { VITE_RT_URL } from "../constants"
 import { createContainer, createText } from "../templates"

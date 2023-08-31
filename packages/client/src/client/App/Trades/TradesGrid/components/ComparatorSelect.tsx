@@ -1,5 +1,6 @@
-import { colors, Theme } from "client/theme"
 import styled from "styled-components"
+
+import { colors, Theme } from "@/client/theme"
 
 import type { NumFilterContent } from "../../TradesState"
 import { ComparatorType } from "../../TradesState"

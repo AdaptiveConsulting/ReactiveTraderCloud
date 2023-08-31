@@ -1,6 +1,7 @@
 import { Subscribe } from "@react-rxjs/core"
-import { Loader } from "client/components/Loader"
-import { useAdaptiveDealerId } from "services/credit"
+
+import { Loader } from "@/client/components/Loader"
+import { useAdaptiveDealerId } from "@/services/credit"
 
 import { useSelectedRfqId } from "../sellSideState"
 import { focused$ } from "../utils/useIsFocused"

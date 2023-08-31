@@ -1,5 +1,5 @@
-import { AppleShareIcon } from "client/components/icons"
-import { Modal } from "client/components/Modal"
+import { AppleShareIcon } from "@/client/components/icons"
+import { Modal } from "@/client/components/Modal"
 
 import {
   DeviceText,

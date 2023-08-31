@@ -1,4 +1,7 @@
 import { createSignal } from "@react-rxjs/utils"
+import { FaCheckCircle } from "react-icons/fa"
+import { exhaustMap } from "rxjs/operators"
+
 import {
   ACCEPTED_QUOTE_STATE,
   DealerBody,
@@ -7,11 +10,9 @@ import {
   PENDING_WITH_PRICE_QUOTE_STATE,
   QuoteBody,
   RfqState,
-} from "generated/TradingGateway"
-import { FaCheckCircle } from "react-icons/fa"
-import { exhaustMap } from "rxjs/operators"
-import { acceptCreditQuote$ } from "services/credit"
-import { useQuoteState } from "services/credit"
+} from "@/generated/TradingGateway"
+import { acceptCreditQuote$ } from "@/services/credit"
+import { useQuoteState } from "@/services/credit"
 
 import { hasPrice } from "../../../common"
 import {

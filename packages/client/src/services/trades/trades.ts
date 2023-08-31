@@ -1,10 +1,11 @@
 import { bind } from "@react-rxjs/core"
-import { BlotterService } from "generated/TradingGateway"
+import { map, scan } from "rxjs/operators"
+
 import {
   ACCEPTED_QUOTE_STATE,
   AcceptedQuoteState,
-} from "generated/TradingGateway"
-import { map, scan } from "rxjs/operators"
+  BlotterService,
+} from "@/generated/TradingGateway"
 
 import { withIsStaleData } from "../connection"
 import { creditRfqsById$ } from "../credit"

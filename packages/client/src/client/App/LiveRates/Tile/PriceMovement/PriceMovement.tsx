@@ -1,9 +1,10 @@
-import { equals } from "client/utils/equals"
 import { FaSortDown, FaSortUp } from "react-icons/fa"
 import { distinctUntilChanged, map } from "rxjs/operators"
-import { getPrice$, PriceMovementType } from "services/prices"
-import type { RfqResponse } from "services/rfqs"
 import styled from "styled-components"
+
+import { equals } from "@/client/utils/equals"
+import { getPrice$, PriceMovementType } from "@/services/prices"
+import type { RfqResponse } from "@/services/rfqs"
 
 import { useRfqPayload } from "../Rfq/Rfq.state"
 import { symbolBind } from "../Tile.context"

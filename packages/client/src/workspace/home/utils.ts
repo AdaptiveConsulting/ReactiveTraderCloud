@@ -9,11 +9,6 @@ import {
 } from "@openfin/workspace"
 import { App, getCurrentSync, Page } from "@openfin/workspace-platform"
 import {
-  CreateRfqRequest,
-  CreateRfqResponse,
-  ExecuteTradeRequest,
-} from "generated/TradingGateway"
-import {
   delay,
   firstValueFrom,
   of,
@@ -22,9 +17,15 @@ import {
   tap,
   withLatestFrom,
 } from "rxjs"
-import { createCreditRfq$, creditDealers$ } from "services/credit"
-import { execute$ } from "services/executions"
-import { getPages } from "workspace/browser"
+
+import {
+  CreateRfqRequest,
+  CreateRfqResponse,
+  ExecuteTradeRequest,
+} from "@/generated/TradingGateway"
+import { createCreditRfq$, creditDealers$ } from "@/services/credit"
+import { execute$ } from "@/services/executions"
+import { getPages } from "@/workspace/browser"
 
 import { BASE_URL } from "../constants"
 import { getUserResult, getUserToSwitch, switchUser } from "../user"

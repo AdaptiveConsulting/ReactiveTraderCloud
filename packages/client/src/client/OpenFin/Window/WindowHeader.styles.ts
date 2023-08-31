@@ -1,5 +1,6 @@
-import { TouchableIntentName } from "client/theme"
 import styled from "styled-components"
+
+import { TouchableIntentName } from "@/client/theme"
 
 export const Control = styled.div<{ accent: TouchableIntentName }>`
   display: flex;

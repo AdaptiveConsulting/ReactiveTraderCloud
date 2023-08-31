@@ -1,8 +1,9 @@
 import { bind } from "@react-rxjs/core"
-import { formatAsWholeNumber } from "client/utils/formatNumber"
 import { map } from "rxjs/operators"
-import { history$ } from "services/analytics"
 import styled from "styled-components"
+
+import { formatAsWholeNumber } from "@/client/utils/formatNumber"
+import { history$ } from "@/services/analytics"
 
 type Accents = "positive" | "negative"
 

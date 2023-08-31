@@ -1,12 +1,13 @@
+import { ReactNode } from "react"
+import styled, { css } from "styled-components"
+
 import {
   ACCEPTED_QUOTE_STATE,
   REJECTED_WITH_PRICE_QUOTE_STATE,
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
-} from "generated/TradingGateway"
-import { ReactNode } from "react"
-import { QuoteStatus } from "services/rfqs/types"
-import { LimitCheckStatus, TradeStatus } from "services/trades/types"
-import styled, { css } from "styled-components"
+} from "@/generated/TradingGateway"
+import { QuoteStatus } from "@/services/rfqs/types"
+import { LimitCheckStatus, TradeStatus } from "@/services/trades/types"
 
 export const Table = styled.div`
   height: calc(100% - 4.75rem);

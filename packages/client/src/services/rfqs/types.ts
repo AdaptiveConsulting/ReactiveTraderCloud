@@ -9,9 +9,9 @@ import {
   REJECTED_WITH_PRICE_QUOTE_STATE,
   REJECTED_WITHOUT_PRICE_QUOTE_STATE,
   RejectedWithPriceQuoteState,
-} from "generated/TradingGateway"
-import { CurrencyPair } from "services/currencyPairs"
-import { Price } from "services/prices"
+} from "@/generated/TradingGateway"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { Price } from "@/services/prices"
 
 export interface RfqRequest {
   symbol: string

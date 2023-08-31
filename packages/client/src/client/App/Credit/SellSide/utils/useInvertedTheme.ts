@@ -1,4 +1,4 @@
-import { ThemeName, themes, useTheme } from "client/theme"
+import { ThemeName, themes, useTheme } from "@/client/theme"
 
 export const useInvertedTheme = () => {
   const { themeName } = useTheme()

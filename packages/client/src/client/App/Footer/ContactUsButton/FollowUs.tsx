@@ -1,4 +1,4 @@
-import { SOCIAL_ADDRESSES, SocialPlatform } from "client/constants"
+import { SOCIAL_ADDRESSES, SocialPlatform } from "@/client/constants"
 
 import { ContactUsContentResolver, Link } from "./styled"
 

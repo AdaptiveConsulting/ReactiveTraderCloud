@@ -1,11 +1,12 @@
-import { TradesGrid } from "client/App/Trades/TradesGrid"
+import { scan, share } from "rxjs"
+import styled from "styled-components"
+
+import { TradesGrid } from "@/client/App/Trades/TradesGrid"
 import {
   limitCheckerColDef,
   limitCheckerColFields,
-} from "client/App/Trades/TradesState/colConfig"
-import { scan, share } from "rxjs"
-import { LimitCheckStatus, LimitCheckTrade } from "services/trades/types"
-import styled from "styled-components"
+} from "@/client/App/Trades/TradesState/colConfig"
+import { LimitCheckStatus, LimitCheckTrade } from "@/services/trades/types"
 
 import { limitResult$ } from "./state"
 

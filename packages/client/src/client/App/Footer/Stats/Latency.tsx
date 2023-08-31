@@ -1,8 +1,9 @@
 import { bind } from "@react-rxjs/core"
-import { EchoService } from "generated/TradingGateway"
 import { EMPTY, timer } from "rxjs"
 import { catchError, map, scan, switchMap } from "rxjs/operators"
-import { withConnection } from "services/withConnection"
+
+import { EchoService } from "@/generated/TradingGateway"
+import { withConnection } from "@/services/withConnection"
 
 let count = 0
 const [useLatency, latency$] = bind(

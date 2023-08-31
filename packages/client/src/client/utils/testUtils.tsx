@@ -1,5 +1,6 @@
-import { ThemeProvider } from "client/theme"
 import { Component, ErrorInfo, ReactNode } from "react"
+
+import { ThemeProvider } from "@/client/theme"
 
 class LocalStorageMock {
   store: Record<string, string>

@@ -1,6 +1,7 @@
-import { DisconnectionOverlay } from "client/components/DisconnectionOverlay"
-import { TearOutRouteWrapper } from "client/Web/Web.styles"
 import { useLocation, useParams } from "react-router"
+
+import { DisconnectionOverlay } from "@/client/components/DisconnectionOverlay"
+import { TearOutRouteWrapper } from "@/client/Web/Web.styles"
 
 import { TileView } from "../selectedView"
 import { TornOutTile } from "./TearOut/TornOutTile"

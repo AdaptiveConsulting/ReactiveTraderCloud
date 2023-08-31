@@ -1,7 +1,8 @@
 import { bind } from "@react-rxjs/core"
-import { InstrumentBody } from "generated/TradingGateway"
 import { of } from "rxjs"
 import { map, scan } from "rxjs/operators"
+
+import { InstrumentBody } from "@/generated/TradingGateway"
 
 const fakeInstruments: InstrumentBody[] = [
   {

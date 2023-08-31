@@ -1,5 +1,6 @@
-import { dark } from "client/theme"
 import styled from "styled-components"
+
+import { dark } from "@/client/theme"
 
 import { ReactiveTraderIcon } from "./types"
 

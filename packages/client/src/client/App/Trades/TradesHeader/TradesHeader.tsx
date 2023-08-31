@@ -1,7 +1,8 @@
-import { Section } from "client/App/TearOutSection/state"
-import { supportsTearOut } from "client/App/TearOutSection/supportsTearOut"
-import { TearOutComponent } from "client/App/TearOutSection/TearOutComponent"
 import styled from "styled-components"
+
+import { Section } from "@/client/App/TearOutSection/state"
+import { supportsTearOut } from "@/client/App/TearOutSection/supportsTearOut"
+import { TearOutComponent } from "@/client/App/TearOutSection/TearOutComponent"
 
 import { AppliedFilters } from "./AppliedFilters"
 import { ExcelButton } from "./ExcelButton"

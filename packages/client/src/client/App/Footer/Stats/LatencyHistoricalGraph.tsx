@@ -1,12 +1,13 @@
 import { bind } from "@react-rxjs/core"
-import { HistoricalGraph } from "client/components/HistoricalGraph"
+import { curveBasis } from "d3"
+import { map } from "rxjs/operators"
+
+import { HistoricalGraph } from "@/client/components/HistoricalGraph"
 import {
   getDataPoints,
   toSvgPath,
   withScales,
-} from "client/utils/historicalChart"
-import { curveBasis } from "d3"
-import { map } from "rxjs/operators"
+} from "@/client/utils/historicalChart"
 
 import { latencyHistory$ } from "./Latency"
 

@@ -1,6 +1,7 @@
-import { CrossIcon } from "client/components/icons"
-import { isiOS, isMobileDevice, isPWA } from "client/utils"
 import { Dispatch, SetStateAction, useEffect } from "react"
+
+import { CrossIcon } from "@/client/components/icons"
+import { isiOS, isMobileDevice, isPWA } from "@/client/utils"
 
 import { PWAInstallModal } from "./PWAInstallModal"
 import {

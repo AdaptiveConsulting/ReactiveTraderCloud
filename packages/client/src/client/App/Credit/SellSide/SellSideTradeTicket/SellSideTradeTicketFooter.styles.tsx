@@ -1,7 +1,7 @@
-import { Direction } from "generated/TradingGateway"
 import styled from "styled-components"
 
 import { ThemeName } from "@/client/theme"
+import { Direction } from "@/generated/TradingGateway"
 
 export const FooterWrapper = styled.div<{ accepted: boolean; missed: boolean }>`
   display: flex;
