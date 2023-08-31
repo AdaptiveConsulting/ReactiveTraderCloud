@@ -3,7 +3,7 @@ import { useLocation } from "react-router"
 import styled from "styled-components"
 
 import { Button } from "@/client/App/Footer/common-styles"
-import { constructUrl } from "@/client/utils/url"
+import { constructUrl } from "@/client/utils/constructUrl"
 
 import { PlatformLockedStatusIcon } from "../icons/PlatformLockedStatusIcon"
 import { createOpenFinPopup, Offset, showOpenFinPopup } from "../utils/window"
