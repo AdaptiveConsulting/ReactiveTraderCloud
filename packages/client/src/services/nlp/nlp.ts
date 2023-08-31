@@ -1,8 +1,6 @@
 import { protos } from "@google-cloud/dialogflow"
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { equals } from "client/utils"
-import { Direction } from "generated/TradingGateway"
 import {
   catchError,
   concat,
@@ -14,6 +12,9 @@ import {
   timer,
 } from "rxjs"
 import { fromFetch } from "rxjs/fetch"
+
+import { equals } from "@/client/utils"
+import { Direction } from "@/generated/TradingGateway"
 
 const [input$, setInput] = createSignal<string>()
 export { setInput }

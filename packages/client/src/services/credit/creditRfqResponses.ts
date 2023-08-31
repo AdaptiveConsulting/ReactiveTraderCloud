@@ -1,4 +1,3 @@
-import { DealerBody, QuoteResponse, RfqState } from "generated/TradingGateway"
 import { EMPTY, merge, Observable, of } from "rxjs"
 import {
   catchError,
@@ -8,6 +7,8 @@ import {
   tap,
   withLatestFrom,
 } from "rxjs/operators"
+
+import { DealerBody, QuoteResponse, RfqState } from "@/generated/TradingGateway"
 
 import { ADAPTIVE_BANK_NAME, creditDealers$ } from "./creditDealers"
 import {

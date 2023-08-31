@@ -1,6 +1,7 @@
-import { ColorProps as ThemeSelectorPair } from "client/theme"
 import { Component, ReactNode } from "react"
 import styled, { css } from "styled-components"
+
+import { ColorProps as ThemeSelectorPair } from "@/client/theme"
 
 import { H2 } from "../elements"
 import { rules } from "../rules"

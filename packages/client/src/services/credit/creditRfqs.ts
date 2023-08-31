@@ -1,5 +1,17 @@
 import { bind, shareLatest } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
+import { combineLatest, merge, Observable, of, timer } from "rxjs"
+import {
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  scan,
+  startWith,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from "rxjs/operators"
+
 import {
   DealerBody,
   Direction,
@@ -24,18 +36,7 @@ import {
   RfqUpdate,
   START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE,
   WorkflowService,
-} from "generated/TradingGateway"
-import { combineLatest, merge, Observable, of, timer } from "rxjs"
-import {
-  distinctUntilKeyChanged,
-  filter,
-  map,
-  scan,
-  startWith,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from "rxjs/operators"
+} from "@/generated/TradingGateway"
 
 import { PricedQuoteBody, PricedQuoteState } from "../rfqs/types"
 import { withConnection } from "../withConnection"

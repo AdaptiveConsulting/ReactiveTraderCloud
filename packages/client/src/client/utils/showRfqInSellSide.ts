@@ -1,4 +1,4 @@
-import { ROUTES_CONFIG } from "client/constants"
+import { ROUTES_CONFIG } from "@/client/constants"
 
 import { constructUrl } from "./url"
 import { openWindow } from "./window/openWindow"

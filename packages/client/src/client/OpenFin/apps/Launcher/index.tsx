@@ -1,13 +1,13 @@
 import OpenFin from "@openfin/core"
-import { Loader } from "client/components/Loader"
-import LogoIcon from "client/components/LogoIcon"
-import {
-  registerCreditQuoteNotifications,
-  unregisterCreditQuoteNotifications,
-} from "client/notifications"
 import { useCallback, useEffect, useRef, useState } from "react"
 import Measure, { ContentRect } from "react-measure"
 
+import { Loader } from "@/client/components/Loader"
+import LogoIcon from "@/client/components/LogoIcon"
+import {
+  registerCreditQuoteNotifications,
+  unregisterCreditQuoteNotifications,
+} from "@/client/notifications"
 import {
   onResetInput,
   useIsNlpIntentLoading,

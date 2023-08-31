@@ -1,11 +1,12 @@
+import { of, race, Subject, timer } from "rxjs"
+import { map, mapTo, mergeMap, tap } from "rxjs/operators"
+
 import {
   ExecuteTradeRequest,
   ExecutionResponse,
   ExecutionService,
-} from "generated/TradingGateway"
-import { of, race, Subject, timer } from "rxjs"
-import { map, mapTo, mergeMap, tap } from "rxjs/operators"
-import { EXECUTION_TIMEOUT_VALUE } from "services/executions/constants"
+} from "@/generated/TradingGateway"
+import { EXECUTION_TIMEOUT_VALUE } from "@/services/executions/constants"
 
 import { checkLimit$ } from "../limitChecker/limitChecker"
 import { TradeStatus } from "../trades"

@@ -1,7 +1,8 @@
 import { bind, shareLatest } from "@react-rxjs/core"
-import { AnalyticsService } from "generated/TradingGateway"
 import { combineLatest, Observable } from "rxjs"
 import { filter, map } from "rxjs/operators"
+
+import { AnalyticsService } from "@/generated/TradingGateway"
 
 import { withIsStaleData } from "../connection"
 import { withConnection } from "../withConnection"

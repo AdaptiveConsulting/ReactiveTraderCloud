@@ -1,6 +1,7 @@
 import { bind } from "@react-rxjs/core"
-import { toSvgPath } from "client/utils/historicalChart"
 import { map } from "rxjs/operators"
+
+import { toSvgPath } from "@/client/utils/historicalChart"
 
 import { LINE_CHART_HEIGHT, LINE_CHART_WIDTH } from "./constants"
 import { dataPoints$ } from "./dataPoints$"

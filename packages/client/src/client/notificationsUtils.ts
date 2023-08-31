@@ -1,6 +1,6 @@
-import { PricedQuoteDetails, RfqDetails } from "services/credit"
-import { ExecutionStatus, ExecutionTrade } from "services/executions"
-import { PricedQuoteBody } from "services/rfqs/types"
+import { PricedQuoteDetails, RfqDetails } from "@/services/credit"
+import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
+import { PricedQuoteBody } from "@/services/rfqs/types"
 
 import { formatNumber } from "./utils"
 

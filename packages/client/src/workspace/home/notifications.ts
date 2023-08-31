@@ -1,13 +1,14 @@
 import { View } from "@openfin/core/src/OpenFin"
 import { getCurrentSync } from "@openfin/workspace-platform"
+import { NotificationActionEvent } from "openfin-notifications"
+
 import {
   handleHighlightFxBlotterAction,
   handleHighlightRfqAction,
   TASK_HIGHLIGHT_CREDIT_RFQ,
   TASK_HIGHLIGHT_FX_TRADE,
-} from "client/notifications.openfin"
-import { RT_PLATFORM_UUID_PREFIX } from "client/OpenFin/utils/window"
-import { NotificationActionEvent } from "openfin-notifications"
+} from "@/client/notifications.openfin"
+import { RT_PLATFORM_UUID_PREFIX } from "@/client/OpenFin/utils/window"
 
 import { VITE_RT_URL } from "../constants"
 

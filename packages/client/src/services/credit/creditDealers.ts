@@ -1,4 +1,6 @@
 import { bind, shareLatest } from "@react-rxjs/core"
+import { map, scan } from "rxjs/operators"
+
 import {
   ADDED_DEALER_UPDATE,
   DealerBody,
@@ -6,8 +8,7 @@ import {
   DealerUpdate,
   REMOVED_DEALER_UPDATE,
   START_OF_STATE_OF_THE_WORLD_DEALER_UPDATE,
-} from "generated/TradingGateway"
-import { map, scan } from "rxjs/operators"
+} from "@/generated/TradingGateway"
 
 import { withConnection } from "../withConnection"
 

@@ -1,8 +1,9 @@
-import { Loader } from "client/components/Loader"
-import { useHasItBeenVisible } from "client/utils/useHasItBeenVisible"
 import { lazy, Suspense, useRef } from "react"
-import { analytics$ } from "services/analytics"
 import styled from "styled-components"
+
+import { Loader } from "@/client/components/Loader"
+import { useHasItBeenVisible } from "@/client/utils/useHasItBeenVisible"
+import { analytics$ } from "@/services/analytics"
 
 export const AnalyticsCoreDeferred = import("./AnalyticsCore")
 const AnalyticsCore = lazy(() => AnalyticsCoreDeferred)

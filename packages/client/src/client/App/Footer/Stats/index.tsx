@@ -1,6 +1,7 @@
 import { Subscribe } from "@react-rxjs/core"
-import { isMobileDevice } from "client/utils"
 import styled from "styled-components"
+
+import { isMobileDevice } from "@/client/utils"
 
 import { AdminButton } from "./AdminButton"
 import { Latency } from "./Latency"

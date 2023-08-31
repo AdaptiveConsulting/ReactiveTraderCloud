@@ -1,6 +1,7 @@
-import { ThemeName } from "client/theme"
-import { Direction } from "generated/TradingGateway"
 import styled from "styled-components"
+
+import { ThemeName } from "@/client/theme"
+import { Direction } from "@/generated/TradingGateway"
 
 interface WithDirection {
   direction: Direction

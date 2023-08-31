@@ -1,6 +1,7 @@
-import { Loader } from "client/components/Loader"
 import { lazy, Suspense } from "react"
 import styled from "styled-components"
+
+import { Loader } from "@/client/components/Loader"
 
 export const TradesCoreDeferred = import("./CoreFxTrades")
 const TradesCore = lazy(() => TradesCoreDeferred)

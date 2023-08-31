@@ -1,9 +1,9 @@
-import { formatNumber } from "client/utils"
 import { format } from "date-fns"
-import { Direction } from "generated/TradingGateway"
 import { createPortal } from "react-dom"
-import { ExecutionStatus, ExecutionTrade } from "services/executions"
 
+import { formatNumber } from "@/client/utils"
+import { Direction } from "@/generated/TradingGateway"
+import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { onResetInput } from "@/services/nlp"
 
 import { useOverlayElement } from "../../../overlayContext"

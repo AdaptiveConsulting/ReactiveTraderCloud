@@ -1,5 +1,6 @@
 import { broadcast } from "@finos/fdc3"
-import { LimitCheckerHeader } from "client/App/Header/LimitCheckerHeader"
+
+import { LimitCheckerHeader } from "@/client/App/Header/LimitCheckerHeader"
 
 import { WindowControls } from "./WindowControls"
 import { WindowFrameBase } from "./WindowFrameBase"

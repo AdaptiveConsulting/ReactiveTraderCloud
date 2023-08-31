@@ -2,12 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["./*"],
-      "~/*": ["../*"],
-      "client/*": ["./client/*"],
-      "workspace/*": ["./workspace/*"],
-      "services/*": ["./services/*"],
-      "generated/*": ["./generated/*"]
+      "@/*": ["./*"]
     },
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],

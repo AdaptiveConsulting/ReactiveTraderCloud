@@ -1,5 +1,6 @@
-import { WithChildren } from "client/utils/utilityTypes"
 import styled from "styled-components"
+
+import { WithChildren } from "@/client/utils/utilityTypes"
 
 import { DeliveryDate, HeaderAction } from "./Header/TileHeader"
 import { TradeButton } from "./PriceButton/PriceButton.styles"

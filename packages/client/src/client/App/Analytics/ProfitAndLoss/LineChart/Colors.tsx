@@ -1,7 +1,8 @@
 import { bind } from "@react-rxjs/core"
-import { Range } from "client/utils/historicalChart"
 import { scaleLinear } from "d3"
 import { map } from "rxjs/operators"
+
+import { Range } from "@/client/utils/historicalChart"
 
 import { dataPoints$ } from "./dataPoints$"
 

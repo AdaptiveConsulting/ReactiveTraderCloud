@@ -1,25 +1,26 @@
 import { Subscribe } from "@react-rxjs/core"
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
-import { TestThemeProvider } from "client/utils/testUtils"
-import { Direction } from "generated/TradingGateway"
 import { BehaviorSubject, Subject } from "rxjs"
-import { CurrencyPair } from "services/currencyPairs"
-import { ccppMock } from "services/currencyPairs/__mocks__/_ccpp"
+
+import { TestThemeProvider } from "@/client/utils/testUtils"
+import { Direction } from "@/generated/TradingGateway"
+import { CurrencyPair } from "@/services/currencyPairs"
+import { ccppMock } from "@/services/currencyPairs/__mocks__/_ccpp"
 import {
   ExecutionRequest,
   ExecutionStatus,
   ExecutionTrade,
   TimeoutExecution,
-} from "services/executions"
-import { execMock } from "services/executions/__mocks__/_exec"
-import { HistoryPrice, Price, PriceMovementType } from "services/prices"
-import { pricesMock } from "services/prices/__mocks__/_prices"
+} from "@/services/executions"
+import { execMock } from "@/services/executions/__mocks__/_exec"
+import { HistoryPrice, Price, PriceMovementType } from "@/services/prices"
+import { pricesMock } from "@/services/prices/__mocks__/_prices"
 
 import { Tile, tile$ } from "../Tile"
 
-vi.mock("services/prices/prices")
-vi.mock("services/currencyPairs/currencyPairs")
-vi.mock("services/executions/executions")
+vi.mock("@/services/prices/prices")
+vi.mock("@/services/currencyPairs/currencyPairs")
+vi.mock("@/services/executions/executions")
 
 const currencyPairMock: CurrencyPair = {
   symbol: "EURUSD",

@@ -1,4 +1,4 @@
-import { EMAIL, WEBSITE } from "client/constants"
+import { EMAIL, WEBSITE } from "@/client/constants"
 
 import { ContactUsContentResolver, Link } from "./styled"
 

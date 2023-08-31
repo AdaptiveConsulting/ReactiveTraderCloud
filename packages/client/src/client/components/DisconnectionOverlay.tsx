@@ -1,13 +1,14 @@
 import { bind } from "@react-rxjs/core"
-import { Modal } from "client/components/Modal"
 import { map, scan } from "rxjs/operators"
+import styled from "styled-components"
+
+import { Modal } from "@/client/components/Modal"
 import {
   ConnectionStatus,
   connectionStatus$,
   initConnection,
   useConnectionStatus,
-} from "services/connection"
-import styled from "styled-components"
+} from "@/services/connection"
 
 // TODO - Use component from styleguide when available
 const Button = styled.button`

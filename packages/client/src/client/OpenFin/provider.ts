@@ -1,5 +1,6 @@
 import OpenFin from "@openfin/core"
-import { ENVIRONMENT } from "client/constants"
+
+import { ENVIRONMENT } from "@/client/constants"
 
 type ExternalClientMap = Map<
   OpenFin.ApplicationIdentity["uuid"],

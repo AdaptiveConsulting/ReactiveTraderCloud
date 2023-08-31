@@ -1,11 +1,12 @@
 import { init as workspacePlatformInit } from "@openfin/workspace-platform"
+
 import {
   registerCreditAcceptedNotifications,
   registerCreditQuoteNotifications,
   registerFxNotifications,
-} from "client/notifications.openfin"
-import { initConnection } from "services/connection"
-import { registerSimulatedDealerResponses } from "services/credit/creditRfqResponses"
+} from "@/client/notifications.openfin"
+import { initConnection } from "@/services/connection"
+import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 
 import { customActions, overrideCallback } from "./browser"
 import { BASE_URL } from "./constants"

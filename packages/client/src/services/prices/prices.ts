@@ -1,6 +1,5 @@
 import { bind } from "@react-rxjs/core"
 import { mergeWithKey } from "@react-rxjs/utils"
-import { PriceTick, PricingService } from "generated/TradingGateway"
 import { combineLatest, concat, race } from "rxjs"
 import {
   distinctUntilChanged,
@@ -9,6 +8,8 @@ import {
   take,
   withLatestFrom,
 } from "rxjs/operators"
+
+import { PriceTick, PricingService } from "@/generated/TradingGateway"
 
 import { withIsStaleData } from "../connection"
 import { getCurrencyPair$ } from "../currencyPairs"

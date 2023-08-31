@@ -1,6 +1,7 @@
-import { WithChildren } from "client/utils/utilityTypes"
 import { ReactNode } from "react"
 import styled from "styled-components"
+
+import { WithChildren } from "@/client/utils/utilityTypes"
 
 import { H2, H3, H5 } from "../elements"
 import {

@@ -1,7 +1,8 @@
 import { bind } from "@react-rxjs/core"
 import { format } from "date-fns"
 import { map, pluck, scan, withLatestFrom } from "rxjs/operators"
-import { history$ } from "services/analytics"
+
+import { history$ } from "@/services/analytics"
 
 import { LINE_CHART_HEIGHT, X_LEGENDS_HEIGHT } from "./constants"
 import { dataPoints$ } from "./dataPoints$"

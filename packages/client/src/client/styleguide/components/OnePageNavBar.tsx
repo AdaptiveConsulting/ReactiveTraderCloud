@@ -1,5 +1,3 @@
-import Logo from "client/components/Logo"
-import { useScrollToHashElement } from "client/utils"
 import {
   ComponentType,
   RefObject,
@@ -10,6 +8,9 @@ import {
 } from "react"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
+
+import Logo from "@/client/components/Logo"
+import { useScrollToHashElement } from "@/client/utils"
 
 import { H2 } from "../elements"
 import { Flex } from "../styled"

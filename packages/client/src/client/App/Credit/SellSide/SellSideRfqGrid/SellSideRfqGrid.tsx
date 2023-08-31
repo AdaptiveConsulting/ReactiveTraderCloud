@@ -1,8 +1,9 @@
 import { Subscribe } from "@react-rxjs/core"
-import { Loader } from "client/components/Loader"
-import Logo from "client/components/Logo"
-import { Direction } from "generated/TradingGateway"
 import styled from "styled-components"
+
+import { Loader } from "@/client/components/Loader"
+import Logo from "@/client/components/Logo"
+import { Direction } from "@/generated/TradingGateway"
 
 import { SellSideQuoteState } from "../sellSideState"
 import { SellSideGridHeader } from "./SellSideGridHeader"

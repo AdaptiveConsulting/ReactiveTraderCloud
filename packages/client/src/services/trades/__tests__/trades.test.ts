@@ -1,13 +1,14 @@
-import { Direction, RfqState } from "generated/TradingGateway"
+import { BehaviorSubject } from "rxjs"
+
+import { Direction, RfqState } from "@/generated/TradingGateway"
 import {
   ACCEPTED_QUOTE_STATE,
   REJECTED_WITH_PRICE_QUOTE_STATE,
-} from "generated/TradingGateway"
-import { BehaviorSubject } from "rxjs"
+} from "@/generated/TradingGateway"
 
 import * as creditService from "../../credit"
 import { RfqDetails } from "../../credit"
-// import * as creditService from "services/credit"
+// import * as creditService from "@/services/credit"
 import * as tradesService from ".."
 
 vi.mock("../../credit")

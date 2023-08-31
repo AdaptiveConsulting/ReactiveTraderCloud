@@ -1,9 +1,12 @@
 import { createSignal } from "@react-rxjs/utils"
+import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
+import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
+
 import {
   customNumberFormatter,
   invertDirection,
   useClickElementOnEnter,
-} from "client/utils"
+} from "@/client/utils"
 import {
   ACCEPTED_QUOTE_STATE,
   Direction,
@@ -11,14 +14,12 @@ import {
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
   QuoteBody,
   RfqState,
-} from "generated/TradingGateway"
-import { FaCheckCircle, FaThumbsDown } from "react-icons/fa"
-import { exhaustMap, filter, map, withLatestFrom } from "rxjs/operators"
+} from "@/generated/TradingGateway"
 import {
   passCreditQuote$,
   quoteCreditQuote$,
   useCreditRfqDetails,
-} from "services/credit"
+} from "@/services/credit"
 
 import { CreditRfqTimer, isRfqTerminated } from "../../common"
 import { price$, usePrice } from "../sellSideState"

@@ -1,10 +1,11 @@
 import { bind } from "@react-rxjs/core"
+import { scaleLinear } from "d3"
+import { map } from "rxjs/operators"
+
 import {
   formatWithScale,
   precisionNumberFormatter,
-} from "client/utils/formatNumber"
-import { scaleLinear } from "d3"
-import { map } from "rxjs/operators"
+} from "@/client/utils/formatNumber"
 
 import { LINE_CHART_HEIGHT, Y_LEGENDS_WIDTH } from "./constants"
 import { dataPoints$ } from "./dataPoints$"

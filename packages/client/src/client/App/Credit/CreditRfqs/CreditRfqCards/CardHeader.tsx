@@ -1,6 +1,7 @@
-import { Direction, RfqState } from "generated/TradingGateway"
 import { memo } from "react"
-import { useCreditInstrumentById } from "services/credit"
+
+import { Direction, RfqState } from "@/generated/TradingGateway"
+import { useCreditInstrumentById } from "@/services/credit"
 
 import {
   CusipWithBenchmark,

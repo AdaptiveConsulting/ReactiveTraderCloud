@@ -1,26 +1,5 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
-import { HIGHLIGHT_ROW_FLASH_TIME } from "client/constants"
-import {
-  DECIMAL_SEPARATOR,
-  DECIMAL_SEPARATOR_REGEXP,
-  invertDirection,
-  THOUSANDS_SEPARATOR_REGEXP,
-  truncatedDecimalNumberFormatter,
-} from "client/utils"
-import {
-  PASSED_QUOTE_STATE,
-  QuoteState,
-  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
-  RfqState,
-} from "generated/TradingGateway"
-import {
-  ACCEPTED_QUOTE_STATE,
-  DealerBody,
-  PENDING_WITH_PRICE_QUOTE_STATE,
-  PENDING_WITHOUT_PRICE_QUOTE_STATE,
-  REJECTED_WITH_PRICE_QUOTE_STATE,
-} from "generated/TradingGateway"
 import { combineLatest, merge } from "rxjs"
 import {
   delay,
@@ -29,11 +8,33 @@ import {
   map,
   startWith,
 } from "rxjs/operators"
+
+import { HIGHLIGHT_ROW_FLASH_TIME } from "@/client/constants"
+import {
+  DECIMAL_SEPARATOR,
+  DECIMAL_SEPARATOR_REGEXP,
+  invertDirection,
+  THOUSANDS_SEPARATOR_REGEXP,
+  truncatedDecimalNumberFormatter,
+} from "@/client/utils"
+import {
+  PASSED_QUOTE_STATE,
+  QuoteState,
+  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
+  RfqState,
+} from "@/generated/TradingGateway"
+import {
+  ACCEPTED_QUOTE_STATE,
+  DealerBody,
+  PENDING_WITH_PRICE_QUOTE_STATE,
+  PENDING_WITHOUT_PRICE_QUOTE_STATE,
+  REJECTED_WITH_PRICE_QUOTE_STATE,
+} from "@/generated/TradingGateway"
 import {
   ADAPTIVE_BANK_NAME,
   creditRfqsById$,
   RfqDetails,
-} from "services/credit"
+} from "@/services/credit"
 
 import { hasPrice, timeRemainingComparator } from "../common"
 import { RfqRow } from "./SellSideRfqGrid"

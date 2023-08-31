@@ -1,5 +1,5 @@
-import { Direction } from "generated/TradingGateway"
-import { ACCEPTED_QUOTE_STATE } from "generated/TradingGateway"
+import { Direction } from "@/generated/TradingGateway"
+import { ACCEPTED_QUOTE_STATE } from "@/generated/TradingGateway"
 
 import { CreditTrade } from "../types"
 

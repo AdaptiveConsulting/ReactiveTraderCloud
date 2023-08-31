@@ -5,8 +5,8 @@ import {
   QuoteState,
   RejectedWithPriceQuoteState,
   RfqState,
-} from "generated/TradingGateway"
-import { RfqDetails } from "services/credit"
+} from "@/generated/TradingGateway"
+import { RfqDetails } from "@/services/credit"
 
 function getRfqRemainingTime(rfq: RfqDetails): number {
   return Date.now() - Number(rfq.creationTimestamp) + rfq.expirySecs * 1000

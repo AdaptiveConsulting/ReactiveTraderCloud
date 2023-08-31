@@ -1,5 +1,6 @@
-import { themes, useTheme } from "client/theme"
 import { useMemo } from "react"
+
+import { themes, useTheme } from "@/client/theme"
 
 export const DEFAULT_NO_RFQ_SVG_SIZE = 82
 

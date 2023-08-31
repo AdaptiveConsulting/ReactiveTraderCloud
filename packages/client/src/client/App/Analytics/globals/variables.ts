@@ -1,5 +1,6 @@
-import { colors } from "client/theme"
 import { rgba } from "polished"
+
+import { colors } from "@/client/theme"
 
 export const transparentColor = rgba(colors.spectrum.offblack.base, 0)
 export const strokeColor = transparentColor

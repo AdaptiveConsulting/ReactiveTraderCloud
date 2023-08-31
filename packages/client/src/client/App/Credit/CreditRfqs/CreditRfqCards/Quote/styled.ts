@@ -1,7 +1,8 @@
-import { Theme, ThemeName } from "client/theme"
-import { breathing } from "client/utils/styling"
-import { Direction } from "generated/TradingGateway"
 import styled, { DefaultTheme } from "styled-components"
+
+import { Theme, ThemeName } from "@/client/theme"
+import { breathing } from "@/client/utils/styling"
+import { Direction } from "@/generated/TradingGateway"
 
 import { Row } from "../styled"
 
