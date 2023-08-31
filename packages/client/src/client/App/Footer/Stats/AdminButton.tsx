@@ -1,6 +1,6 @@
 import { ROUTES_CONFIG } from "client/constants"
 import { FEATURE_FLAG, useFeature } from "client/utils/featureFlag"
-import { constructUrl } from "client/utils/url"
+import { constructUrl } from "@/client/utils/constructUrl"
 import { openWindow } from "client/utils/window/openWindow"
 
 export const AdminButton = () => {

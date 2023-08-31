@@ -1,5 +1,5 @@
 import { bind } from "@react-rxjs/core"
-import { constructUrl } from "client/utils/url"
+import { constructUrl } from "@/client/utils/constructUrl"
 import { Observable } from "rxjs"
 import { shareReplay } from "rxjs/operators"
 
