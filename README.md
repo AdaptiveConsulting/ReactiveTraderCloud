@@ -8,11 +8,11 @@
 
 Reactive Trader® is a real-time FX trading platform designed to showcase reactive programming principles across the full application stack.
 
-Originally [written in WPF and .Net](https://github.com/AdaptiveConsulting/ReactiveTrader), and now in React, React-RxJS, Node.js and running on [Hydra](https://weareadaptive.com/platform-solutions/), we continue to evolve the platform to use the latest technologies.
+Written in React and RxJs / React-RxJs and running on [Hydra](https://weareadaptive.com/platform-solutions/), the platform will continue to evolve and use the latest technologies.
 
 Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full list of the latest features.
 
-![image](/public-workspace/images/previews/reactive-trader.PNG)
+![image](/packages/client/public-workspace/images/previews/reactive-trader.PNG)
 
 ## Demo
 
@@ -33,26 +33,13 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 
 ## Development
 
-<details open>
-<summary>Web client</summary>
+To run the web UI
 
 1. Fork and clone the ReactiveTraderCloud repo ([see Contributing page](CONTRIBUTING.md))
 
-2. Install [Node.js and npm](https://nodejs.org/en/download/)
+2. [See client README](packages/client/README.md)
 
-3. Start the client:
-
-   ```bash
-    npm i
-    npm start
-   ```
-
-   This will connect to the dev back-end in the cloud.
-
-4. Navigate to http://localhost:1917
-</details>
-
-<details open>
+<details>
 <summary>Manually update contracts for Trading Gateway API</summary>
 
 1. Open [hydra-reactive-trader](`https://github.com/AdaptiveConsulting/hydra-reactive-trader`) project in IntelliJ IDEA and run:
@@ -70,7 +57,7 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
    This will regenerate TradingGateway.ts `(file://./src/client/src/generated/TradingGateway.ts)`
    </details>
 
-<details open>
+<details>
 <summary>Run against local Backend Services</summary>
 
 1. Follow instructions to start [Backend Services](`https://github.com/AdaptiveConsulting/hydra-reactive-trader#building-the-project`)
