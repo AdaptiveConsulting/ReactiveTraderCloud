@@ -1,17 +1,30 @@
 type Environment = "local" | "env" | "dev" | "uat" | "prod"
 
-// Comes from vite.config - base
-// Will be / for vite development mode (local),
+// import.meta.env.BASE_URL comes from vite.config.base, unless development mode when it is "/"
 // otherwise the full domain / path of the deployment e.g. https://web.env.reactivetrader.com/pull/2064
-const BASE_URL = import.meta.env.BASE_URL
+// TODO (ticket TBD) launcher.*.reactivetrader.com is Deprecated, but until we remove the deployment, leave the conversion
+export const BASE_URL =
+  import.meta.env.BASE_URL === "/"
+    ? window.location.origin
+    : import.meta.env.BASE_URL.replace("launcher", "openfin")
 
 export const BASE_PATH =
   BASE_URL && BASE_URL.startsWith("http") ? new URL(BASE_URL).pathname : ""
+
 export const ENVIRONMENT: Environment =
   (["env", "dev", "uat", "prod"].find((env) =>
     (BASE_URL || "").includes(`.${env}.`),
   ) as Environment) || "local"
 
+// local/deployed diffs resolved in vite.config
+const RA_URL = import.meta.env.VITE_RA_URL
+
+export const manifestUrls = {
+  reactiveTrader: `${BASE_URL}/config/rt-fx.json`,
+  reactiveCredit: `${BASE_URL}/config/rt-credit.json`,
+  reactiveAnalytics: `${RA_URL}/openfin/app.json`,
+  limitChecker: `${BASE_URL}/config/limit-checker.json`,
+}
 // NOTE: these routes are hard coded in the OpenFin manifest JSON files,
 // so any changes here need to be manually synchronized with those files.
 export const ROUTES_CONFIG = {

@@ -19,11 +19,13 @@ import { defineConfig } from "vitest/config"
 type BuildTarget = "web" | "openfin" | "finsemble"
 
 const localPort = Number(process.env.PORT) || 1917
+const showOpenFinProvider = !!process.env.OPENFIN_SHOW_PROVIDER
 
 const OPENFIN_RUNTIME = "29.108.73.14"
+const WORKSPACE_OPENFIN_RUNTIME = "31.112.75.4"
 
-function getBaseUrl(dev: boolean) {
-  return dev
+function getBaseUrl(isLocal: boolean) {
+  return isLocal
     ? `http://localhost:${localPort}`
     : `${process.env.DOMAIN || ""}${process.env.URL_PATH || ""}` || ""
 }
@@ -164,13 +166,16 @@ const customPreloadPlugin = () => {
 }
 
 const copyPlugin = (
-  isDev: boolean,
+  baseUrl: string,
   buildTarget: BuildTarget,
   env: string,
 ): Plugin[] => {
   const transform: TransformOption = (contents) =>
     contents
-      .replace(/<BASE_URL>/g, getBaseUrl(isDev || env === "local"))
+      .replace(/<BASE_URL>/g, baseUrl)
+      .replace(/<RT_URL>/g, process.env.VITE_RT_URL || baseUrl)
+      // Reactive Analytics URL from .env
+      .replace(/<RA_URL>/g, process.env.VITE_RA_URL || baseUrl)
       // We want the PWA banner to show on www.reactivetrader.com
       .replace(/web\.prod\./g, "www.")
       // for environment disambiguation, in OpenFin uuids
@@ -179,6 +184,8 @@ const copyPlugin = (
       .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : ` ${env.toUpperCase()}`)
       // to keep consistent runtime version across our manifests
       .replace(/<OPENFIN_RUNTIME>/g, OPENFIN_RUNTIME)
+      .replace(/<WORKSPACE_OPENFIN_RUNTIME>/g, WORKSPACE_OPENFIN_RUNTIME)
+      .replace('"<SHOW_PROVIDER_WINDOW>"', `${showOpenFinProvider}`)
 
   return viteStaticCopy({
     flatten: true,
@@ -200,6 +207,24 @@ const copyPlugin = (
             {
               src: "public-openfin/plugin/*",
               dest: "plugin",
+            },
+            // TODO move
+            {
+              src: "public-workspace/config/*",
+              dest: "workspace/config",
+              transform,
+            },
+            {
+              src: "public-workspace/images/icons/*",
+              dest: "images/icons",
+            },
+            {
+              src: "public-workspace/images/previews/*",
+              dest: "images/previews",
+            },
+            {
+              src: "public-workspace/*.json",
+              dest: "",
             },
           ]
         : [
@@ -255,8 +280,12 @@ const injectScriptIntoHtml = (
       },
       // TODO - make OpenFin-only
       {
-        filename: "provider.html",
-        template: "provider.html",
+        filename: "openfinContainerProvider.html",
+        template: "openfinContainerProvider.html",
+      },
+      {
+        filename: "openfinWorkspaceProvider.html",
+        template: "openfinWorkspaceProvider.html",
       },
     ],
   })
@@ -309,13 +338,35 @@ const fontFacePreload = Unfonts({
 })
 
 // Main Ref: https://vitejs.dev/config/
-const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
+// TODO use env.command = build or serve ??
+const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
+  const externalEnv = {
+    ...process.env,
+    ...loadEnv(mode, process.cwd()),
+  }
+  const env = externalEnv.ENVIRONMENT || "local"
 
-  const env = process.env.ENVIRONMENT || "local"
+  const reactiveAnalyticsUrl =
+    env === "local"
+      ? "http://localhost:3005"
+      : `https://${
+          env === "prod" ? "demo" : env
+        }-reactive-analytics.adaptivecluster.com`
+
+  process.env = {
+    VITE_RA_URL: reactiveAnalyticsUrl,
+    // so we can directly override RA address if we ever want to
+    ...externalEnv,
+  }
+
   const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
   const isDev = mode === "development"
-  const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
+  const isServe = command === "serve" // true for vite AND vite preview
+
+  // const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
+  const viteBaseUrl = getBaseUrl(env === "local")
+
+  console.log(`base ${viteBaseUrl}`)
 
   const devPlugins: PluginOption[] = []
 
@@ -336,10 +387,13 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     devPlugins.push(injectWebServiceWorkerPlugin(mode) as Plugin)
   }
 
-  devPlugins.push(copyPlugin(isDev, buildTarget, env))
+  devPlugins.push(copyPlugin(viteBaseUrl, buildTarget, env))
   devPlugins.push(injectScriptIntoHtml(isDev, buildTarget, env))
 
-  const plugins = process.env.STORYBOOK === "true" ? [] : devPlugins
+  // TODO can we avoid plugin creation entirely for serve / storybook?
+  const plugins =
+    (!isDev && isServe) || process.env.STORYBOOK === "true" ? [] : devPlugins
+
   plugins.push(fontFacePreload)
 
   const proxy = process.env.VITE_MOCKS
@@ -365,7 +419,15 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
           // TODO - use the opportunity for OpenFin- or PWA-specific root html
           main: resolve(__dirname, "index.html"),
           // TODO - make OpenFin-only, move to /OpenFin
-          ofProvider: resolve(__dirname, "provider.html"),
+          "openfin/containerProvider": resolve(
+            __dirname,
+            "openfinContainerProvider.html",
+          ),
+          // TODO - make OpenFin-only, move to /OpenFin
+          "openfin/workspaceProvider": resolve(
+            __dirname,
+            "openfinWorkspaceProvider.html",
+          ),
         },
       },
     },

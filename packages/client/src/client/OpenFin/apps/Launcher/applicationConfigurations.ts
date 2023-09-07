@@ -1,6 +1,6 @@
 import OpenFin from "@openfin/core"
 
-import { ENVIRONMENT } from "@/client/constants"
+import { ENVIRONMENT, manifestUrls } from "@/client/constants"
 import { constructUrl } from "@/client/utils/constructUrl"
 
 import {
@@ -9,7 +9,6 @@ import {
   reactiveTraderCreditIcon,
   reactiveTraderFxIcon,
 } from "./icons"
-import { getReactiveAnalyticsUrls, getReactiveTraderUrl } from "./utils/url"
 
 type PlatformName = "browser" | "openfin" | "finsemble"
 
@@ -64,14 +63,6 @@ export interface ApplicationConfig {
 
 const env = ENVIRONMENT
 const envSuffix = `(${ENVIRONMENT.toUpperCase()})`
-const reactiveTraderFxManifestUrl = getReactiveTraderUrl("/config/rt-fx.json")
-const reactiveTraderCreditManifestUrl = getReactiveTraderUrl(
-  "/config/rt-credit.json",
-)
-const limitCheckerManifestUrl = getReactiveTraderUrl(
-  "/config/limit-checker.json",
-)
-const reactiveAnalyticsManifestUrl = getReactiveAnalyticsUrls(env)
 
 const baseConfig = () => ({
   iconFillColor: "#CFCFCF",
@@ -90,7 +81,7 @@ const baseAppConfigs: ApplicationConfig[] = [
     displayName: "RT FX",
     tooltipName: `Launch Reactive Trader®${envSuffix}`,
     uuid: `reactive-trader-${env}`,
-    url: reactiveTraderFxManifestUrl,
+    url: manifestUrls.reactiveTrader,
     icon: reactiveTraderFxIcon,
   },
   {
@@ -99,7 +90,7 @@ const baseAppConfigs: ApplicationConfig[] = [
     displayName: "RT Credit",
     tooltipName: `Launch Reactive Trader® Credit${envSuffix}`,
     uuid: `reactive-trader-credit-${env}`,
-    url: reactiveTraderCreditManifestUrl,
+    url: manifestUrls.reactiveCredit,
     icon: reactiveTraderCreditIcon,
   },
   {
@@ -108,7 +99,7 @@ const baseAppConfigs: ApplicationConfig[] = [
     displayName: "RA",
     tooltipName: `Launch Reactive Analytics${envSuffix}`,
     uuid: `reactive-analytics-${env}`,
-    url: reactiveAnalyticsManifestUrl,
+    url: manifestUrls.reactiveAnalytics,
     icon: reactiveAnalyticsIcon,
     iconHoverBackgroundColor: "#AAABD1",
   },
@@ -118,7 +109,7 @@ const baseAppConfigs: ApplicationConfig[] = [
     displayName: "LC",
     tooltipName: "Launch Limit Checker",
     uuid: "limit-checker",
-    url: limitCheckerManifestUrl,
+    url: manifestUrls.limitChecker,
     icon: limitCheckerIcon,
   },
 ]

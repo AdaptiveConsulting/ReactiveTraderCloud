@@ -1,14 +1,14 @@
-import { ROUTES_CONFIG } from "@/client/constants"
+import { BASE_URL, ROUTES_CONFIG } from "@/client/constants"
+import { constructUrl } from "@/client/utils/constructUrl"
 import { openWindow } from "@/client/utils/window/openWindow"
 import { NlpIntent, NlpIntentType } from "@/services/nlp"
-
-import { getReactiveTraderUrl } from "../../utils/url"
 
 export const showCurrencyPairWindow = (currencyPair: string) => {
   const options = {
     name: currencyPair,
-    url: getReactiveTraderUrl(
+    url: constructUrl(
       ROUTES_CONFIG.tile.replace(":symbol", currencyPair),
+      BASE_URL,
     ),
     width: 380,
     height: 200,
@@ -21,7 +21,7 @@ export const showCurrencyPairWindow = (currencyPair: string) => {
 export const showTilesWindow = () => {
   const options = {
     name: "Live Rates",
-    url: getReactiveTraderUrl(ROUTES_CONFIG.tiles),
+    url: constructUrl(ROUTES_CONFIG.tiles, BASE_URL),
     width: 1000,
     height: 500,
     includeInSnapshots: false,
@@ -33,7 +33,7 @@ export const showTilesWindow = () => {
 export const showBlotterWindow = () => {
   const options = {
     name: "Trades",
-    url: getReactiveTraderUrl(ROUTES_CONFIG.blotter),
+    url: constructUrl(ROUTES_CONFIG.blotter, BASE_URL),
     width: 1000,
     height: 500,
     includeInSnapshots: false,
