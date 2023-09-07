@@ -20,7 +20,7 @@ const config: PlaywrightTestConfig = {
     },
     {
       name: 'startOpenfin',
-      testMatch: /startOpenfin.setup\.ts/,
+      testMatch: "startOpenfin.setup.ts",
     },
     {
       name: "openfin",
