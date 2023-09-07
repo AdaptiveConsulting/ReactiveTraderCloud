@@ -82,14 +82,13 @@ setup("start openfin", async () => {
   //     { silent: true, force: true },
   //   )
   // })
-  const testManifestUrl =
-	"http://localhost:1917/config/rt-fx.json";
+const testManifestUrl = "http://localhost:1917/config/rt-fx.json";
 const chromeDriverPort = 1917;
 const devToolsPort = 9090;
 
 console.log('DevTools Port', devToolsPort);
 console.log('ChromeDriver Port', chromeDriverPort);
-const openFinRVM = path.join(process.env.dirname!, 'OpenFin', 'OpenFinRVM.exe');
+const openFinRVM = path.join(process.env.LocalAppData!, 'OpenFin', 'OpenFinRVM.exe');
 console.log('OpenFinRVM', openFinRVM);
 
 //   console.log("Removing any existing OpenFin processes")
