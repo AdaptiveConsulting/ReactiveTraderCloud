@@ -185,10 +185,10 @@ jobs:
 
       - name: Test
         run: |
-          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json ./e2e/openfin/openfin.spec.js --reporter ./e2e/openfin/mocha.reporter.json
+          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json ./e2e/openfin/openfin.spec.js --reporter ./e2e/openfin/reports/mocha/mocha.reporter.json
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: openfin tests result
-          path: reports/mocha/report.html
+          path: ./e2e/openfin/reports/mocha/report.html
           retention-days: 7

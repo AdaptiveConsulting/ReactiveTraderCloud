@@ -1,17 +1,17 @@
-exports.setup = async (globalVars) => {
+export async function setup(globalVars) {
 	console.log(`Global Setup`);
 	globalVars.startTime = Date.now();
-};
+}
 
-exports.teardown = async (globalVars) => {
+export async function teardown(globalVars) {
 	console.log(`Global Teardown`);
 	console.log(`Time taken`, Date.now() - globalVars.startTime);
-};
+}
 
-exports.beforeEach = async (globalVars, currentTestName) => {
+export async function beforeEach(globalVars, currentTestName) {
 	// console.log("Before", currentTestName);
-};
+}
 
-exports.afterEach = async (globalVars, currentTestName) => {
+export async function afterEach(globalVars, currentTestName) {
 	// console.log("After", currentTestName);
-};
+}
