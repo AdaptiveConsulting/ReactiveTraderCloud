@@ -72,6 +72,9 @@
   "dependencies": {
     "@adaptive/hydra-platform": "4.12.0",
     "@finos/fdc3": "^1.2.0",
+    "@openfin/automation-cli": "^1.1.6",
+		"@openfin/automation-helpers": "^1.1.6",
+		"@openfin/automation-native": "^1.1.6",
     "@openfin/core": "31.75.4",
     "@openfin/workspace": "13.0.7",
     "@openfin/workspace-platform": "13.0.7",
@@ -132,6 +135,7 @@
     "jest-styled-components": "^7.1.1",
     "jsdom": "^21.1.1",
     "openfin-cli": "^4.0.0",
+    "mochawesome": "7.1.3",
     "playwright": "^1.29.1",
     "prettier": "2.3.0",
     "rollup-plugin-modulepreload": "^1.2.3",
