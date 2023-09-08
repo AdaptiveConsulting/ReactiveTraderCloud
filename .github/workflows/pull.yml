@@ -8,32 +8,23 @@ on:
 
 defaults:
   run:
-    working-directory: packages/client
-
-env:
-  BUCKET_WEB: reactive-trader-web-builds
-  BUCKET_OPENFIN: reactive-trader-openfin-builds
-  BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
-  ENVIRONMENT: env
+    working-directory: packages/client/e2e/openfinpoc
 
 jobs:
-
-  end-to-end-test:
-    name: openfin End-to-end test
+  build:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repo
         uses: actions/checkout@v3
-
-      - name: Install
-        run: npm ci
-
-      - name: Test
-        run: npm run e2e:openfin spot-tile.spec
-      - uses: actions/upload-artifact@v3
-        if: failure()
+      - name: Setup Node 16
+        uses: actions/setup-node@v3
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
+          node-version: 16
+      - name: Install Packages
+        run: |
+          npm install
+      - name: Run JavaScript Tests with Mocha
+        run: |
+          npx fkill-cli OpenFin OpenFinRVM --force --silent
+          npm run test-remote-mocha

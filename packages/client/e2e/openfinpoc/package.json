@@ -1,0 +1,31 @@
+{
+	"name": "automation-testing-register-with-home-js",
+	"version": "13.1.8",
+	"description": "OpenFin Workspace Starter Automation Tests",
+	"scripts": {
+		"build": "echo Nothing to build",
+		"test-remote-mocha": "of-automation https://built-on-openfin.github.io/workspace-starter/workspace/v13.1.0/register-with-home/manifest.fin.json ./tests/**/*.spec.js --reporter ./mocha.reporter.json --testFailCount 1 --workspace 13.1.8",
+		"test-local-mocha": "of-automation http://localhost:8080/manifest.fin.json ./tests/**/*.spec.js --workspace 13.1.8",
+		"test-remote-jasmine": "of-automation https://built-on-openfin.github.io/workspace-starter/workspace/v13.1.0/register-with-home/manifest.fin.json ./tests/**/*.spec.js --framework jasmine --reporter ./jasmine.reporter.json --testFailCount 1 --workspace 13.1.8",
+		"test-local-jasmine": "of-automation http://localhost:8080/manifest.fin.json ./tests/**/*.spec.js --framework jasmine --workspace 13.1.8",
+		"test-remote-jest": "of-automation https://built-on-openfin.github.io/workspace-starter/workspace/v13.1.0/register-with-home/manifest.fin.json ./tests/**/*.spec.js --framework jest --reporter ./jest.reporter.json --testFailCount 1 --workspace 13.1.8",
+		"test-local-jest": "of-automation http://localhost:8080/manifest.fin.json ./tests/**/*.spec.js --framework jest --workspace 13.1.8",
+		"test-offline": "of-automation http://localhost:8080/manifest.fin.json ./tests/**/*.spec.js --offline --storageFolder=./offline-storage --workspace 13.1.8",
+		"test-remote-mocha-selenium": "of-automation https://built-on-openfin.github.io/workspace-starter/workspace/v13.1.0/register-with-home/manifest.fin.json ./tests/**/*.spec.js --driver=selenium --workspace 13.1.8",
+		"test-local-mocha-selenium": "of-automation http://localhost:8080/manifest.fin.json ./tests/**/*.spec.js --driver=selenium --workspace 13.1.8"
+	},
+	"author": "martyn.janes@openfin.co",
+	"license": "SEE LICENSE IN LICENSE.MD",
+	"packageExclude": [
+		"how-to/automation-testing/selenium"
+	],
+	"devDependencies": {
+		"@openfin/automation-cli": "^1.1.6",
+		"@openfin/automation-helpers": "^1.1.6",
+		"@openfin/automation-native": "^1.1.6",
+		"chai": "4.3.8",
+		"jasmine-pretty-html-reporter": "0.2.5",
+		"jest-html-reporters": "3.1.4",
+		"mochawesome": "7.1.3"
+	}
+}
