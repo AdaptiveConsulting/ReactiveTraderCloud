@@ -66,10 +66,12 @@ function registerValidSW(swUrl: string, config?: Config) {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing
         if (installingWorker == null) {
+          console.log("NO SW detected")
           return
         }
         installingWorker.onstatechange = () => {
           if (installingWorker.state === "installed") {
+            console.log("SW controller -->", navigator.serviceWorker.controller)
             if (navigator.serviceWorker.controller) {
               // At this point, the updated precached content has been fetched,
               // but the previous service worker will still serve the older
@@ -95,6 +97,21 @@ function registerValidSW(swUrl: string, config?: Config) {
                 config.onSuccess(registration)
               }
             }
+          } else if (installingWorker.state === "activating") {
+            console.log("Service worker is activating")
+          } else if (installingWorker.state === "activated") {
+            console.log("Service worker is activated")
+          } else if (installingWorker.state === "parsed") {
+            console.log("Service worker is parsed")
+          } else if (installingWorker.state === "installing") {
+            console.log("Service worker is installing")
+          } else if (installingWorker.state === "redundant") {
+            console.log("Service worker is redundant")
+          } else {
+            console.error(
+              "Unknown state for the service worker: ",
+              installingWorker,
+            )
           }
         }
       }
