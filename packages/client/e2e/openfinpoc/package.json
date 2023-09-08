@@ -4,7 +4,7 @@
 	"description": "OpenFin Workspace Starter Automation Tests",
 	"scripts": {
 		"build": "echo Nothing to build",
-		"test-remote-mocha": "of-automation https://built-on-openfin.github.io/workspace-starter/workspace/v13.1.0/register-with-home/manifest.fin.json ./tests/**/*.spec.js --reporter ./mocha.reporter.json --testFailCount 1 --workspace 13.1.8",
+		"test-remote-mocha": "of-automation https://openfin.env.reactivetrader.com/pull/2276/config/rt-fx.json ./tests/**/*.spec.js --reporter ./mocha.reporter.json --testFailCount 1",
 		"test-local-mocha": "of-automation http://localhost:8080/manifest.fin.json ./tests/**/*.spec.js --workspace 13.1.8",
 		"test-remote-jasmine": "of-automation https://built-on-openfin.github.io/workspace-starter/workspace/v13.1.0/register-with-home/manifest.fin.json ./tests/**/*.spec.js --framework jasmine --reporter ./jasmine.reporter.json --testFailCount 1 --workspace 13.1.8",
 		"test-local-jasmine": "of-automation http://localhost:8080/manifest.fin.json ./tests/**/*.spec.js --framework jasmine --workspace 13.1.8",

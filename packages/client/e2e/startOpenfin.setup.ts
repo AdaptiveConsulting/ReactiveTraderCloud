@@ -100,10 +100,7 @@ setup("start openfin", async () => {
 
   console.log("DevTools Port", devToolsPort)
   console.log("ChromeDriver Port", chromeDriverPort)
-  const openFinRVM = path.join(
-    "/Users/stephan/OpenFin/Runtime/31.112.75.4",
-    "OpenFin.exe",
-  )
+  const openFinRVM = path.join(process.env.LocalAppData!, 'OpenFin', 'OpenFinRVM.exe');
   console.log("OpenFinRVM", openFinRVM)
 
   //   console.log("Removing any existing OpenFin processes")

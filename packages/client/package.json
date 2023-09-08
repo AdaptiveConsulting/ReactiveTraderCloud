@@ -51,6 +51,7 @@
     "openfin:start:limitchecker": "concurrently \"npm:openfin:dev\" \"npm:openfin:run:limitchecker\"",
     "openfin:start:launcher": "concurrently \"npm:openfin:dev\" \"npm:openfin:run:launcher\"",
     "openfin:start:launcher:local": "concurrently \"npm:openfin:local\" \"npm:openfin:run:launcher\"",
+    "e2e:openfin:ci": "of-automation https://openfin.env.reactivetrader.com/pull/2276/config/rt-fx.json ./e2e/index.spec.js",
     "openfin:build": "cross-env TARGET=openfin vite build",
     "openfin:serve": "cross-env TARGET=openfin vite preview",
     "openfin:start:preview": "npm:openfin:build && concurrently \"npm:openfin:serve\" \"npm:openfin:run:launcher\"",
@@ -65,7 +66,7 @@
     "storybook": "storybook dev -p 6006",
     "storybook:build": "cross-env STORYBOOK=true storybook build -o ./dist/storybook",
     "e2e:openfin": "playwright test --project=openfin",
-    "e2e:openfin:smoke": "playwright test --project=openfin --grep @smoke",
+    "e2e:openfin:smoke": "of-automation https://openfin.env.reactivetrader.com/pull/2276/config/rt-fx.json playwright test",
     "e2e:web": "playwright test --project=chrome",
     "e2e:web:smoke": "playwright test --project=chrome --grep @smoke"
   },
@@ -145,6 +146,9 @@
     "vite-plugin-html": "^3.2.0",
     "vite-plugin-static-copy": "0.15.0",
     "vitest": "^0.29.8",
-    "wait-on": "^7.0.0"
+    "wait-on": "^7.0.0",
+    "@openfin/automation-cli": "^1.1.6",
+		"@openfin/automation-helpers": "^1.1.6",
+		"@openfin/automation-native": "^1.1.6"
   }
 }
