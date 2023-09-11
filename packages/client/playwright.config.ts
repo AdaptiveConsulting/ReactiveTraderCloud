@@ -1,5 +1,5 @@
-import type {PlaywrightTestConfig} from "@playwright/test"
-import {devices} from "@playwright/test"
+import type { PlaywrightTestConfig } from "@playwright/test"
+import { devices } from "@playwright/test"
 
 const config: PlaywrightTestConfig = {
   testDir: "./e2e",
@@ -8,25 +8,42 @@ const config: PlaywrightTestConfig = {
   workers: 1,
   projects: [
     {
+      name: "setup",
+      testMatch: /global.setup\.ts/,
+      teardown: "openfin teardown",
+    },
+    {
+      name: "openfin teardown",
+      testMatch: /global.teardown\.ts/,
+    },
+    {
       name: "chrome",
       use: {
         ...devices["Desktop Chrome"],
         //Artifacts
-      screenshot: "only-on-failure",
-      video: "retain-on-failure",
-      trace: "retain-on-failure",
-      headless: true,
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
+        trace: "retain-on-failure",
+        headless: true,
       },
     },
     {
       name: "openfin",
+      dependencies: ["setup"],
       use: {
-      screenshot: "only-on-failure",
-      video: "retain-on-failure",
-      trace: "retain-on-failure",
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
+        trace: "retain-on-failure",
       },
     },
   ],
+  /* Run your local dev server before starting the tests */
+  webServer: {
+    command: 'npm run openfin:dev',
+    port:1917,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
+  },
   reporter: [
     ["list"],
     [
