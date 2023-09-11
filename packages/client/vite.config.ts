@@ -245,40 +245,48 @@ const injectScriptIntoHtml = (
   isDev: boolean,
   buildTarget: BuildTarget,
   env: string,
-) =>
-  createHtmlPlugin({
-    pages: [
-      {
-        filename: "index.html",
-        template: "index.html",
-        injectOptions: {
-          data: {
-            injectScript: `
-              ${
-                buildTarget === "web"
-                  ? `<link rel="manifest" href="${getBaseUrl(
-                      isDev,
-                    )}/manifest.json" />`
-                  : "<!-- no manifest.json for OpenFin -->"
-              }
-              
-              <script>
-                // Hydra dependency references BigInt at run time even when the application isn't explicitly started
-                // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
-                // Set BigInt to an anon function to prevent the runtime error
-    
-                window.supportsBigInt = typeof BigInt !== 'undefined';
-                window.BigInt = supportsBigInt ? BigInt : function(){};
-              </script>
-              
-              <script async src="https://www.googletagmanager.com/gtag/js?id=${
-                env === "prod" ? "G-Z3PC9MRCH9" : "G-Y28QSEPEC8"
-              }"></script>
-            `,
-          },
+) => {
+  // more specific type than one in "vite-plugin-html", which should be exported but .. is not :-/
+  interface PageOption {
+    filename: string
+    template: string
+    entry?: string
+    injectOptions?: { data?: { injectScript: string } }
+  }
+  const pages: PageOption[] = [
+    {
+      filename: "index.html",
+      template: "index.html",
+      injectOptions: {
+        data: {
+          injectScript: `
+            ${
+              buildTarget === "web"
+                ? `<link rel="manifest" href="${getBaseUrl(
+                    isDev,
+                  )}/manifest.json" />`
+                : "<!-- no manifest.json for OpenFin -->"
+            }
+            
+            <script>
+              // Hydra dependency references BigInt at run time even when the application isn't explicitly started
+              // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
+              // Set BigInt to an anon function to prevent the runtime error
+  
+              window.supportsBigInt = typeof BigInt !== 'undefined';
+              window.BigInt = supportsBigInt ? BigInt : function(){};
+            </script>
+            
+            <script async src="https://www.googletagmanager.com/gtag/js?id=${
+              env === "prod" ? "G-Z3PC9MRCH9" : "G-Y28QSEPEC8"
+            }"></script>
+          `,
         },
       },
-      // TODO - make OpenFin-only
+    },
+  ]
+  if (buildTarget === "openfin") {
+    pages.push(
       {
         filename: "openfinContainerProvider.html",
         template: "openfinContainerProvider.html",
@@ -287,8 +295,13 @@ const injectScriptIntoHtml = (
         filename: "openfinWorkspaceProvider.html",
         template: "openfinWorkspaceProvider.html",
       },
-    ],
+    )
+  }
+
+  return createHtmlPlugin({
+    pages,
   })
+}
 
 const injectWebServiceWorkerPlugin = (mode: string) =>
   injectManifest(
@@ -366,8 +379,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   // const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
   const viteBaseUrl = getBaseUrl(env === "local")
 
-  console.log(`base ${viteBaseUrl}`)
-
   const devPlugins: PluginOption[] = []
 
   devPlugins.push(targetBuildPlugin(isDev, buildTarget))
@@ -380,6 +391,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   devPlugins.push(react())
 
   if (!isDev) {
+    // splitVendorChunkPlugin gives us main AND vendor in assets, vendor is still big tho
     devPlugins.push(splitVendorChunkPlugin(), customPreloadPlugin())
   }
 
@@ -410,25 +422,27 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
         },
       }
 
+  const input = {
+    main: resolve(__dirname, "index.html"),
+  }
+  if (buildTarget === "openfin") {
+    input["openfin/containerProvider"] = resolve(
+      __dirname,
+      "openfinContainerProvider.html",
+    )
+    input["openfin/workspaceProvider"] = resolve(
+      __dirname,
+      "openfinWorkspaceProvider.html",
+    )
+  }
+
   return defineConfig({
     base: viteBaseUrl,
     build: {
       sourcemap: true,
+      chunkSizeWarningLimit: 750,
       rollupOptions: {
-        input: {
-          // TODO - use the opportunity for OpenFin- or PWA-specific root html
-          main: resolve(__dirname, "index.html"),
-          // TODO - make OpenFin-only, move to /OpenFin
-          "openfin/containerProvider": resolve(
-            __dirname,
-            "openfinContainerProvider.html",
-          ),
-          // TODO - make OpenFin-only, move to /OpenFin
-          "openfin/workspaceProvider": resolve(
-            __dirname,
-            "openfinWorkspaceProvider.html",
-          ),
-        },
+        input,
       },
     },
     preview: {
