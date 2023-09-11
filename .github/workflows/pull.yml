@@ -185,11 +185,10 @@ jobs:
         run: npm ci
       - name: start openfin
         run: |
-          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json ./e2e/openfin/openfin.spec.js --closeRuntime=never
+          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json ./e2e/openfinchecks/openfinchecks.spec.js --devToolsPort=9091 --closeRuntime=never
       - name: Run tests
         env:
-          E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
-          E2E_RTC_OPENFIN_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
+          E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
         run: |
           npm run e2e:openfin
       - uses: actions/upload-artifact@v3
