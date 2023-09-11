@@ -145,8 +145,8 @@ jobs:
 
             https://developers.google.com/speed/pagespeed/insights/?url=https://web.env.reactivetrader.com/pull/${{ github.event.number }}
 
-  end-to-end-test:
-    name: End-to-end test
+  web-end-to-end-test:
+    name: Web end-to-end test
 
     needs: build
     runs-on: ubuntu-20.04
@@ -168,4 +168,33 @@ jobs:
         with:
           name: playwright-report
           path: packages/client/playwright-report/
+          retention-days: 7
+
+  openfin-end-to-end-test:
+    name: Openfin end-to-end test
+
+    needs: build
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: start openfin
+        run: |
+          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json ./e2e/openfin/openfin.spec.js --closeRuntime=never
+      - name: Run tests
+        env:
+          E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
+          E2E_RTC_OPENFIN_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
+        run: |
+          npm run e2e:openfin
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
           retention-days: 7
