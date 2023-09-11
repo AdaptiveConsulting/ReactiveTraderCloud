@@ -3,8 +3,7 @@ import styled from "styled-components"
 
 import { Loader } from "@/client/components/Loader"
 
-export const TradesCoreDeferred = import("./CoreFxTrades")
-const TradesCore = lazy(() => TradesCoreDeferred)
+const TradesCore = lazy(() => import("./CoreFxTrades"))
 
 const TradesWrapper = styled.article`
   height: 100%;

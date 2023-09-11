@@ -17,7 +17,6 @@ import {
   RightNav,
 } from "./styled"
 
-console.log("----- AnalyticsCore -----")
 const analytics$ = merge(pnL$, profitAndLoss$, positions$)
 
 const SuspenseOnStaleData = createSuspenseOnStale(isAnalyticsDataStale$)

@@ -104,12 +104,12 @@ function targetBuildPlugin(dev: boolean, target: string): Plugin {
         // Source doesn't have file extension, so try all extensions
         const candidateTs = `${candidatePath}.ts`
         if (existsSync(candidateTs)) {
-          console.log(`\ncandidate is ${candidateTs}\n`)
+          console.log(`candidate is ${candidateTs}\n`)
           return candidateTs
         }
         const candidateTsx = `${candidatePath}.tsx`
         if (existsSync(candidateTsx)) {
-          console.log(`\ncandidate is ${candidateTsx}\n`)
+          console.log(`candidate is ${candidateTsx}\n`)
           return candidateTsx
         }
       }
@@ -145,8 +145,11 @@ function indexSwitchPlugin(target: string): Plugin {
   }
 }
 
-// TODO: This is a workaround until the following issue gets
-// confirmed/resolved: https://github.com/vitejs/vite/issues/2460
+// Vite adds link rel="modulepreload" for static chunks, but not dynamic imports/chunks (by design)
+// .. back in the day Vite issue raised: https://github.com/vitejs/vite/issues/2460
+// More Info: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload
+// but basically this tells the browser to fetch (or get from SW cache), parse and load into module map
+// obviously quicker than grabbing from SW cache and processing, but how much?
 const customPreloadPlugin = () => {
   const result: any = {
     ...((modulepreload as any)({

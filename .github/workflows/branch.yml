@@ -55,8 +55,7 @@ jobs:
         run: npm ci
 
       - name: Verify Quality (type checking, linting, format checking, tests)
-        run: |
-          npm run verify
+        run: npm run verify
 
       - name: Build (web)
         env:
@@ -103,8 +102,7 @@ jobs:
           URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}/workspace
           VITE_BUILD_VERSION: ${{ github.sha }}
           ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
-        run: |
-          npm run workspace:build
+        run: npm run workspace:build
 
       - name: Deploy (OpenFin - Workspace)
         run: |

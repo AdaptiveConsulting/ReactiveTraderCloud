@@ -1,6 +1,9 @@
+import { lazy, Suspense } from "react"
 import styled from "styled-components"
 
-import { CreditRfqFormCore } from "./CreditRfqFormCore"
+import { Loader } from "@/client/components/Loader"
+
+const CreditRfqFormCore = lazy(() => import("./CreditRfqFormCore"))
 
 const CreditRfqFormWrapper = styled.div`
   height: 100%;
@@ -10,9 +13,15 @@ const CreditRfqFormWrapper = styled.div`
   user-select: none;
 `
 
+const loader = (
+  <Loader ariaLabel="Loading New RFQ Form" minWidth="22rem" minHeight="22rem" />
+)
+
 export const CreditRfqForm = () => (
   <CreditRfqFormWrapper>
-    <CreditRfqFormCore />
+    <Suspense fallback={loader}>
+      <CreditRfqFormCore>{loader}</CreditRfqFormCore>
+    </Suspense>
   </CreditRfqFormWrapper>
 )
 
