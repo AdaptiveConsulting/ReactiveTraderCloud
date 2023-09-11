@@ -1,11 +1,5 @@
 import { lazy, Suspense } from "react"
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Router,
-  Routes,
-} from "react-router-dom"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 
 import { Admin } from "@/client/App/Admin"
 import { Analytics } from "@/client/App/Analytics"

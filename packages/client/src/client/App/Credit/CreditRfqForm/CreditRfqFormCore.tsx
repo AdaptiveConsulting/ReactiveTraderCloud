@@ -1,9 +1,8 @@
 import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
-import { Subscription } from "rxjs"
 import styled from "styled-components"
 
-import { Loader } from "@/client/components/Loader"
+import { WithChildren } from "@/client/utils/utilityTypes"
 import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 
 import { supportsTearOut } from "../../TearOutSection/supportsTearOut"
@@ -58,7 +57,7 @@ const CreditRfqFooter = styled.footer`
   background-color: ${({ theme }) => theme.core.lightBackground};
 `
 
-export const CreditRfqFormCore = () => {
+const CreditRfqFormCore = ({ children }: WithChildren) => {
   useEffect(() => {
     const subscription = registerSimulatedDealerResponses()
 
@@ -66,7 +65,7 @@ export const CreditRfqFormCore = () => {
   }, [])
   return (
     <CreditRfqFormCoreWrapper>
-      <Subscribe fallback={<Loader ariaLabel="Loading New RFQ Form" />}>
+      <Subscribe fallback={children}>
         <CreditRfqHeader>
           New RFQ {supportsTearOut && <TearOutComponent section="newRfq" />}
         </CreditRfqHeader>
@@ -87,3 +86,5 @@ export const CreditRfqFormCore = () => {
     </CreditRfqFormCoreWrapper>
   )
 }
+
+export default CreditRfqFormCore

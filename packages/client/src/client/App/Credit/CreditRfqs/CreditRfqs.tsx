@@ -1,6 +1,9 @@
+import { lazy, Suspense } from "react"
 import styled from "styled-components"
 
-import { CreditRfqsCore } from "./CreditRfqsCore"
+import { Loader } from "@/client/components/Loader"
+
+const CreditRfqsCore = lazy(() => import("./CreditRfqsCore"))
 
 const CreditRfqsWrapper = styled.div`
   position: relative;
@@ -13,10 +16,19 @@ const CreditRfqsWrapper = styled.div`
     padding-right: 1rem;
   }
 `
+const loader = (
+  <Loader
+    ariaLabel="Loading Credit RFQ tiles"
+    minWidth="22rem"
+    minHeight="22rem"
+  />
+)
 
 export const CreditRfqs = () => (
   <CreditRfqsWrapper>
-    <CreditRfqsCore />
+    <Suspense fallback={loader}>
+      <CreditRfqsCore>{loader}</CreditRfqsCore>
+    </Suspense>
   </CreditRfqsWrapper>
 )
 

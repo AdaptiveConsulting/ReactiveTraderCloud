@@ -5,8 +5,7 @@ import { Loader } from "@/client/components/Loader"
 import { useHasItBeenVisible } from "@/client/utils/useHasItBeenVisible"
 import { analytics$ } from "@/services/analytics"
 
-export const AnalyticsCoreDeferred = import("./AnalyticsCore")
-const AnalyticsCore = lazy(() => AnalyticsCoreDeferred)
+const AnalyticsCore = lazy(() => import("./AnalyticsCore"))
 
 const AnalyticsWrapper = styled.div<{ hideIfMatches?: string | null }>`
   height: 100%;
@@ -18,11 +17,9 @@ const AnalyticsWrapper = styled.div<{ hideIfMatches?: string | null }>`
 
   ${({ hideIfMatches }) =>
     hideIfMatches
-      ? `
-    @media ${hideIfMatches} {
-      display: none;
-    }
-  `
+      ? ` @media ${hideIfMatches} {
+       display: none;
+       } `
       : ""}
 `
 

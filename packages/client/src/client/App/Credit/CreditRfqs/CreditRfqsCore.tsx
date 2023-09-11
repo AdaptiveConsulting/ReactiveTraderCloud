@@ -2,11 +2,11 @@ import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 import styled from "styled-components"
 
-import { Loader } from "@/client/components/Loader"
 import {
   registerCreditQuoteNotifications,
   unregisterCreditQuoteNotifications,
 } from "@/client/notifications"
+import { WithChildren } from "@/client/utils/utilityTypes"
 
 import { CreditRfqCardGrid } from "./CreditRfqCards"
 import {
@@ -21,8 +21,7 @@ const CreditRfqsCoreWrapper = styled.div`
   height: 100%;
   overflow-y: auto;
 `
-
-export const CreditRfqsCore = () => {
+const CreditRfqsCore = ({ children }: WithChildren) => {
   useEffect(() => {
     registerCreditQuoteNotifications()
 
@@ -30,7 +29,7 @@ export const CreditRfqsCore = () => {
   }, [])
 
   return (
-    <Subscribe fallback={<Loader ariaLabel="Loading Credit RFQs" />}>
+    <Subscribe fallback={children}>
       <CreditRfqsCoreWrapper>
         <CreditRfqsHeader />
         <CreditRfqCardGrid />
@@ -40,3 +39,5 @@ export const CreditRfqsCore = () => {
     </Subscribe>
   )
 }
+
+export default CreditRfqsCore
