@@ -91,20 +91,6 @@ jobs:
             rsync -d -r dist \
             gs://$BUCKET_LAUNCHER/tag/${{ steps.vars.outputs.TAG }}
 
-      - name: Build (OpenFin - Workspace)
-        env:
-          DOMAIN: https://openfin.prod.reactivetrader.com
-          URL_PATH: /workspace
-          VITE_BUILD_VERSION: ${{ steps.vars.outputs.TAG }}
-        run: npm run workspace:build
-
-      - name: Deploy (OpenFin - Workspace)
-        run: |
-          gsutil -m \
-            -h "Cache-Control: no-cache" \
-            rsync -d -r dist \
-            gs://$BUCKET_OPENFIN/tag/${{ steps.vars.outputs.TAG }}/workspace
-
       - name: Build (Finsemble)
         env:
           DOMAIN: https://finsemble.prod.reactivetrader.com
