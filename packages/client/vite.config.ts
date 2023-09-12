@@ -24,6 +24,8 @@ const showOpenFinProvider = !!process.env.OPENFIN_SHOW_PROVIDER
 const OPENFIN_RUNTIME = "29.108.73.14"
 const WORKSPACE_OPENFIN_RUNTIME = "31.112.75.4"
 
+const RA_DEPLOYMENT_SUFFIX = "reactive-analytics.adaptivecluster.com"
+
 function getBaseUrl(isLocal: boolean) {
   return isLocal
     ? `http://localhost:${localPort}`
@@ -208,7 +210,6 @@ const copyPlugin = (
               src: "public-openfin/plugin/*",
               dest: "plugin",
             },
-            // TODO move
             {
               src: "public-workspace/config/*",
               dest: "workspace/config",
@@ -350,6 +351,14 @@ const fontFacePreload = Unfonts({
   },
 })
 
+const genRAUrl = (env: string) => {
+  if (env === "local") return "http://localhost:3005"
+
+  return `https://${
+    env === "prod" ? "demo" : env === "env" ? "dev" : env
+  }-${RA_DEPLOYMENT_SUFFIX}`
+}
+
 // Main Ref: https://vitejs.dev/config/
 // TODO use env.command = build or serve ??
 const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
@@ -359,15 +368,8 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   }
   const env = externalEnv.ENVIRONMENT || "local"
 
-  const reactiveAnalyticsUrl =
-    env === "local"
-      ? "http://localhost:3005"
-      : `https://${
-          env === "prod" ? "demo" : env
-        }-reactive-analytics.adaptivecluster.com`
-
   process.env = {
-    VITE_RA_URL: reactiveAnalyticsUrl,
+    VITE_RA_URL: genRAUrl(env),
     // so we can directly override RA address if we ever want to
     ...externalEnv,
   }
