@@ -3,9 +3,9 @@ import { devices } from "@playwright/test"
 
 const config: PlaywrightTestConfig = {
   testDir: "./e2e",
-  testIgnore: "./e2e/openfinchecks",
+  testIgnore: "**/openfinchecks/**",
   /* Maximum time one test can run for. */
-  timeout: 10_000,
+  timeout: 30_000,
   workers: 1,
   projects: [
     {

@@ -65,7 +65,7 @@ const urlPathToCreditPage = (path: string): CreditPage => {
 export const test = base.extend<IPlaywrightFixtures>({
   browser: async ({}, use, workerInfo) => {
     if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
-      const runtimeConnection = await chromium.connectOverCDP(RUNTIME_ADDRESS, {timeout: 60000})
+      const runtimeConnection = await chromium.connectOverCDP(RUNTIME_ADDRESS)
       await use(runtimeConnection)
     } else {
       const browser = await chromium.launch()

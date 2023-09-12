@@ -65,7 +65,7 @@
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "cross-env STORYBOOK=true storybook build -o ./dist/storybook",
-    "e2e:openfin": "playwright test --project=openfin spot-tile.spec",
+    "e2e:openfin": "playwright test --project=openfin",
     "e2e:openfin:smoke": "playwright test --project=openfin --grep @smoke",
     "e2e:web": "playwright test --project=chrome",
     "e2e:web:smoke": "playwright test --project=chrome --grep @smoke"

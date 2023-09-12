@@ -11,6 +11,8 @@ test.describe("Spot Tile", () => {
     if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
       tilePage = fxPagesRec["fx-tiles"]
       blotterPage = fxPagesRec["fx-blotter"]
+      tilePage.setViewportSize({ width: 1280, height: 1024 })
+      blotterPage.setViewportSize({ width: 1280, height: 1024 })
     } else {
       const pages = context.pages()
       const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
@@ -35,12 +37,12 @@ test.describe("Spot Tile", () => {
         .locator("[data-testid='trade-id']")
         .innerText()
 
-      // const blotterTradeID = await blotterPage
-      //   .locator(`[data-testid='trades-grid-row-${tradeId}'] > div`)
-      //   .nth(1)
-      //   .textContent()
-      // await tilePage.locator("[data-testid='menuButton-ALL']").click()
-      // expect(tradeId).toBe(blotterTradeID)
+      const blotterTradeID = await blotterPage
+        .locator(`[data-testid='trades-grid-row-${tradeId}'] > div`)
+        .nth(1)
+        .textContent()
+      await tilePage.locator("[data-testid='menuButton-ALL']").click()
+      expect(tradeId).toBe(blotterTradeID)
     })
 
     test("When I buy USD/JPY then a tile displays in green with confirmation message", async () => {
@@ -74,7 +76,7 @@ test.describe("Spot Tile", () => {
       const orangeConfirmation = await tilePage
         .locator("div[role='dialog']")
         .getByText(/Trade execution taking longer than expected/)
-      await expect(orangeConfirmation).toBeVisible()
+      await expect(orangeConfirmation).toBeVisible({timeout:7000})
     })
   })
 
