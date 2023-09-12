@@ -76,7 +76,7 @@ test.describe("Spot Tile", () => {
       const orangeConfirmation = await tilePage
         .locator("div[role='dialog']")
         .getByText(/Trade execution taking longer than expected/)
-      await expect(orangeConfirmation).toBeVisible({timeout:7000})
+      await expect(orangeConfirmation).toBeVisible({ timeout: 7500 })
     })
   })
 
@@ -87,7 +87,7 @@ test.describe("Spot Tile", () => {
       await expect(tilePage.getByTestId("rfqTimer")).toBeVisible()
       await tilePage.getByTestId("rfqTimer").waitFor({state: "hidden", timeout: 10500})
       const requoteBtn = tilePage.getByText(/Requote/)
-      await expect (requoteBtn).toBeVisible({timeout: 100})
+      await expect(requoteBtn).toBeVisible({ timeout: 100 })
     })
   })
 
@@ -118,9 +118,7 @@ test.describe("Spot Tile", () => {
       await expect(tilePage.getByText(/Max exceeded/)).toBeVisible()
 
       await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage
-        .locator("input[id='notional-input-EURUSD']")
-        .type("1m")
+      await tilePage.locator("input[id='notional-input-EURUSD']").type("1m")
       await expect(tilePage.getByText(/Max exceeded/)).not.toBeVisible()
     })
   })

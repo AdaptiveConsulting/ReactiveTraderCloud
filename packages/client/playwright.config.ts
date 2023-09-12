@@ -9,15 +9,6 @@ const config: PlaywrightTestConfig = {
   workers: 1,
   projects: [
     {
-      name: "setup",
-      testMatch: /global.setup\.ts/,
-      teardown: "openfin teardown",
-    },
-    {
-      name: "openfin teardown",
-      testMatch: /global.teardown\.ts/,
-    },
-    {
       name: "chrome",
       use: {
         ...devices["Desktop Chrome"],
@@ -30,7 +21,6 @@ const config: PlaywrightTestConfig = {
     },
     {
       name: "openfin",
-      dependencies: ["setup"],
       use: {
         screenshot: "only-on-failure",
         video: "retain-on-failure",
@@ -40,10 +30,10 @@ const config: PlaywrightTestConfig = {
   ],
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run openfin:dev',
-    port:1917,
+    command: "npm run openfin:dev",
+    port: 1917,
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
+    timeout: 120_000,
   },
   reporter: [
     ["list"],

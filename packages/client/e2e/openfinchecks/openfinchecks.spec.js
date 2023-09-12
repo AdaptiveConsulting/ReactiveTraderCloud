@@ -3,8 +3,6 @@ const {
     WebDriver,
 } = require('@openfin/automation-helpers');
 const { expect } = require('chai');
-const { By } = require('selenium-webdriver');
-
 
 let providerWindowUrl;
 
