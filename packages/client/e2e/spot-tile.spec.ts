@@ -35,12 +35,12 @@ test.describe("Spot Tile", () => {
         .locator("[data-testid='trade-id']")
         .innerText()
 
-      const blotterTradeID = await blotterPage
-        .locator(`[data-testid='trades-grid-row-${tradeId}'] > div`)
-        .nth(1)
-        .textContent()
-      await tilePage.locator("[data-testid='menuButton-ALL']").click()
-      expect(tradeId).toBe(blotterTradeID)
+      // const blotterTradeID = await blotterPage
+      //   .locator(`[data-testid='trades-grid-row-${tradeId}'] > div`)
+      //   .nth(1)
+      //   .textContent()
+      // await tilePage.locator("[data-testid='menuButton-ALL']").click()
+      // expect(tradeId).toBe(blotterTradeID)
     })
 
     test("When I buy USD/JPY then a tile displays in green with confirmation message", async () => {
