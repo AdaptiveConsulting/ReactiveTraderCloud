@@ -2,7 +2,7 @@ import { test as base } from "@playwright/test"
 import * as dotenv from "dotenv"
 import { chromium, Page } from "playwright"
 
-import { OPENFIN_PROJECT_NAME } from "./utils"
+import { OPENFIN_PROJECT_NAME, OPENFIN_PROJECT_SETUP } from "./utils"
 
 dotenv.config({ path: ".env.development" })
 dotenv.config()
@@ -25,7 +25,8 @@ interface IPlaywrightFixtures {
   openfinNotification: Page
   fxPagesRec: Record<FXPage, Page>
   creditPagesRec: Record<CreditPage, Page>
-  limitCheckerPageRec: Page
+  limitCheckerPageRec: Page,
+  launcherPageRec: Page
 }
 
 const fxOpenfinUrlPaths: string[] = [
@@ -43,6 +44,8 @@ const creditOpenfinUrlPaths: string[] = [
 ]
 
 const limitCheckerUrlPath = "limit-checker"
+
+const launcherUrlPath = "launcher"
 
 const urlPathToFxPage = (path: string): FXPage => {
   switch (path) {
@@ -64,7 +67,7 @@ const urlPathToCreditPage = (path: string): CreditPage => {
 
 export const test = base.extend<IPlaywrightFixtures>({
   browser: async ({}, use, workerInfo) => {
-    if (workerInfo.project.name === OPENFIN_PROJECT_NAME) {
+    if (workerInfo.project.name === OPENFIN_PROJECT_NAME || workerInfo.project.name === OPENFIN_PROJECT_SETUP) {
       const runtimeConnection = await chromium.connectOverCDP(RUNTIME_ADDRESS)
       await use(runtimeConnection)
     } else {
@@ -140,6 +143,24 @@ export const test = base.extend<IPlaywrightFixtures>({
       )
       if (!page)
         throw Error(`Openfin page at ${limitCheckerUrlPath} was not found`)
+      use(page)
+    } else {
+      const mainWindow =
+        contextPages.length > 0 ? contextPages[0] : await context.newPage()
+
+      use(mainWindow)
+    }
+  },
+  launcherPageRec: async ({ context }, use, workerInfo) => {
+    const contextPages = context.pages()
+    if (workerInfo.project.name === OPENFIN_PROJECT_NAME || workerInfo.project.name === OPENFIN_PROJECT_SETUP) {
+      const page = contextPages.find(
+        (p) =>
+          p.url() ===
+          `${process.env.E2E_RTC_WEB_ROOT_URL}/${launcherUrlPath}`,
+      )
+      if (!page)
+        throw Error(`Openfin page at ${launcherUrlPath} was not found`)
       use(page)
     } else {
       const mainWindow =

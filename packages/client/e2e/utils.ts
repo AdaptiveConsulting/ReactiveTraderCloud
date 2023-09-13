@@ -3,6 +3,8 @@ import { Locator } from "playwright"
 
 export const OPENFIN_PROJECT_NAME = "openfin"
 
+export const OPENFIN_PROJECT_SETUP = "openfin setup"
+
 export const assertGridRow = async ({
   row,
   assertions,

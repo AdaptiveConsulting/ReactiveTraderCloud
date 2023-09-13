@@ -8,6 +8,15 @@ const config: PlaywrightTestConfig = {
   workers: 1,
   projects: [
     {
+      name: "openfin setup",
+      testMatch: /openfin.setup\.ts/,
+      teardown: "openfin teardown",
+    },
+    {
+      name: "openfin teardown",
+      testMatch: /openfin.teardown\.ts/,
+    },
+    {
       name: "chrome",
       use: {
         ...devices["Desktop Chrome"],
@@ -20,6 +29,7 @@ const config: PlaywrightTestConfig = {
     },
     {
       name: "openfin",
+      dependencies: ["openfin setup"],
       use: {
         screenshot: "only-on-failure",
         video: "retain-on-failure",

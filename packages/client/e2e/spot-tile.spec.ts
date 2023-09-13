@@ -4,15 +4,21 @@ import { test } from "./fixtures"
 import { OPENFIN_PROJECT_NAME } from "./utils"
 
 test.describe("Spot Tile", () => {
+  let mainWindow
   let tilePage: Page
   let blotterPage: Page
 
   test.beforeAll(async ({ context, fxPagesRec }, testInfo) => {
     if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+      mainWindow = fxPagesRec["mainWindow"]
+      
+      await mainWindow.evaluate(async () => {
+        window.fin.Window.getCurrentSync().maximize()
+      })
+      
       tilePage = fxPagesRec["fx-tiles"]
       blotterPage = fxPagesRec["fx-blotter"]
-      tilePage.setViewportSize({ width: 1280, height: 1024 })
-      blotterPage.setViewportSize({ width: 1280, height: 1024 })
+     
     } else {
       const pages = context.pages()
       const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()

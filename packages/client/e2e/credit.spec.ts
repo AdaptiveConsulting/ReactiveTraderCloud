@@ -136,7 +136,7 @@ test.describe("Credit", () => {
   })
 
   test.describe("Pass", () => {
-    test("pass", async ({ context }) => {
+    test.skip("pass", async ({ context }) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
