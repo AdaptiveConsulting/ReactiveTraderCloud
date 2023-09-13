@@ -144,6 +144,7 @@ jobs:
             Please ensure that this PR does not degrade the performance of the UI. We should maintain a performance score of 95+.
 
             https://developers.google.com/speed/pagespeed/insights/?url=https://web.env.reactivetrader.com/pull/${{ github.event.number }}
+
   web-end-to-end-test:
     name: Web end-to-end test
 
@@ -171,7 +172,6 @@ jobs:
 
   openfin-end-to-end-test:
     name: Openfin end-to-end test
-
     needs: build
     runs-on: windows-latest
 
@@ -179,7 +179,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 16
       - name: Install dependencies
         run: npm ci
       - name: start openfin

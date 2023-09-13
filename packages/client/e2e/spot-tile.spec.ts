@@ -10,15 +10,11 @@ test.describe("Spot Tile", () => {
 
   test.beforeAll(async ({ context, fxPagesRec }, testInfo) => {
     if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
-      mainWindow = fxPagesRec["mainWindow"]
-      
-      await mainWindow.evaluate(async () => {
-        window.fin.Window.getCurrentSync().maximize()
-      })
-      
       tilePage = fxPagesRec["fx-tiles"]
       blotterPage = fxPagesRec["fx-blotter"]
-     
+      tilePage.setViewportSize({ width: 1280, height: 1024 })
+      blotterPage.setViewportSize({ width: 1280, height: 1024 })
+
     } else {
       const pages = context.pages()
       const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
