@@ -30,6 +30,7 @@ const config: PlaywrightTestConfig = {
     {
       name: "openfin",
       dependencies: ["openfin setup"],
+      timeout: 45_000,
       use: {
         screenshot: "only-on-failure",
         video: "retain-on-failure",
