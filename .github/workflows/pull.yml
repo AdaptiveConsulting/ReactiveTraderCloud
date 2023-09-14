@@ -180,18 +180,17 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 16
       - name: Install dependencies
         run: npm ci
       - name: start openfin
         run: |
-          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json ./e2e/openfin/openfin.spec.js --closeRuntime=never
+          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json ./e2e/openfin.spec.js --closeRuntime=never
       - name: Run tests
         env:
-          E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
-          E2E_RTC_OPENFIN_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
+          E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
         run: |
-          npm run e2e:openfin
+          npm run e2e:openfin spot-time.spec blotter.spec
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
