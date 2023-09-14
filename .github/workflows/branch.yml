@@ -16,31 +16,114 @@ env:
   BUCKET_LAUNCHER: reactive-trader-launcher-builds
 
 jobs:
+  build:
+    name: Build & deploy
 
-  openfin-end-to-end-test:
-    name: Openfin end-to-end test
+    runs-on: ubuntu-20.04
 
-    runs-on: windows-latest
+    if: github.repository_owner == 'AdaptiveConsulting'
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set Node version
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
-      - name: Install dependencies
+          node-version: 20
+
+      # URL_SUFFIX is used so we can append branch/<branch-name> to BASE_URL, or leave blank in the case of uat/dev where we do not need it
+      - name: Set variables
+        id: vars
+        run: |
+          echo "BRANCH=$(echo $GITHUB_REF_NAME  | sed 's/\//_/g')" >> $GITHUB_OUTPUT
+          echo "ENVIRONMENT=$( ([[ $GITHUB_REF_NAME = env/uat ]] && echo 'uat') || ([[ $GITHUB_REF_NAME = master ]] && echo 'dev') || echo 'env' )" >> $GITHUB_OUTPUT
+          echo "URL_SUFFIX=$( ([[ $GITHUB_REF_NAME = env/uat || $GITHUB_REF_NAME = master ]] && echo '') || echo /branch/$(echo $GITHUB_REF_NAME  | sed 's/\//_/g') )" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
+
+      - name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}"
+
+      - name: Set up GCloud
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
+
+      - name: Install
         run: npm ci
-      - name: start openfin
+
+      - name: Verify Quality (type checking, linting, format checking, tests)
         run: |
-          npx of-automation https://openfin.env.reactivetrader.com/branch/RT5530_openfin-ci-single-spec/config/rt-fx.json ./e2e/openfin.spec.js --devToolsPort=9091 --closeRuntime=never
-      - name: Run tests
+          npm run verify
+
+      - name: Build (web)
         env:
-          E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/branch/RT5530_openfin-ci-single-spec
+          DOMAIN: https://web.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
         run: |
-          npm run e2e:openfin spot-time.spec blotter.spec
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
-          
+          npm run build
+          npm run storybook:build
+
+      - name: Deploy (web)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_WEB/branch/${{ steps.vars.outputs.BRANCH }}
+
+      - name: Build (OpenFin)
+        env:
+          DOMAIN: https://openfin.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
+        run: npm run openfin:build
+
+      - name: Deploy (OpenFin)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.BRANCH }}
+
+      - name: Deploy (Launcher)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_LAUNCHER/branch/${{ steps.vars.outputs.BRANCH }}
+
+      - name: Build (OpenFin - Workspace)
+        env:
+          DOMAIN: https://openfin.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}/workspace
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
+        run: |
+          npm run workspace:build
+
+      - name: Deploy (OpenFin - Workspace)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_OPENFIN/branch/${{ steps.vars.outputs.BRANCH }}/workspace
+
+      - name: Build (Finsemble)
+        env:
+          DOMAIN: https://finsemble.${{ steps.vars.outputs.ENVIRONMENT }}.reactivetrader.com
+          URL_PATH: ${{ steps.vars.outputs.URL_SUFFIX }}
+          VITE_BUILD_VERSION: ${{ github.sha }}
+          ENVIRONMENT: ${{ steps.vars.outputs.ENVIRONMENT }}
+        run: npm run finsemble:build
+
+      - name: Deploy (Finsemble)
+        run: |
+          gsutil -m \
+            -h "Cache-Control: no-cache" \
+            rsync -d -r dist \
+            gs://$BUCKET_FINSEMBLE/branch/${{ steps.vars.outputs.BRANCH }}
