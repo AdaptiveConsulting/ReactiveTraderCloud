@@ -4,7 +4,6 @@ import { test } from "./fixtures"
 import { OPENFIN_PROJECT_NAME } from "./utils"
 
 test.describe("Spot Tile", () => {
-  let mainWindow
   let tilePage: Page
   let blotterPage: Page
 
