@@ -54,7 +54,6 @@
     "openfin:build": "cross-env TARGET=openfin vite build",
     "openfin:serve": "cross-env TARGET=openfin vite preview",
     "openfin:start:preview": "npm:openfin:build && concurrently \"npm:openfin:serve\" \"npm:openfin:run:launcher\"",
-    "openfin:kill": "node kill.mjs",
     "workspace:dev": "cross-env TARGET=workspace vite --config vite-ws.config.ts",
     "workspace:build": "cross-env TARGET=workspace vite build --config vite-ws.config.ts",
     "workspace:serve": "cross-env TARGET=workspace vite serve --config vite-ws.config.ts",
@@ -65,7 +64,7 @@
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "cross-env STORYBOOK=true storybook build -o ./dist/storybook",
-    "e2e:openfin": "playwright test --project=openfin spot-tile.spec",
+    "e2e:openfin": "playwright test --project=openfin",
     "e2e:openfin:smoke": "playwright test --project=openfin --grep @smoke",
     "e2e:web": "playwright test --project=chrome",
     "e2e:web:smoke": "playwright test --project=chrome --grep @smoke"
@@ -100,6 +99,7 @@
   },
   "devDependencies": {
     "@google-cloud/dialogflow": "^4.7.0",
+    "@openfin/automation-cli": "1.1.6",
     "@playwright/test": "^1.37.1",
     "@storybook/addon-actions": "^7.0.2",
     "@storybook/addon-essentials": "^7.0.2",
@@ -132,7 +132,6 @@
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "jest-styled-components": "^7.1.1",
     "jsdom": "^21.1.1",
-    "openfin-adapter": "^32.76.10",
     "openfin-cli": "^4.0.0",
     "playwright": "^1.37.1",
     "prettier": "2.3.0",

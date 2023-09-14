@@ -4,7 +4,7 @@ import { TransformOption, viteStaticCopy } from "vite-plugin-static-copy"
 
 const localPort = Number(process.env.PORT) || 2017
 
-const OPENFIN_RUNTIME = "31.112.75.7"
+const OPENFIN_RUNTIME = "31.112.75.4"
 
 function getBaseUrl(dev: boolean) {
   return dev
