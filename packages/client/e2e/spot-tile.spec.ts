@@ -11,6 +11,8 @@ test.describe("Spot Tile", () => {
     if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
       tilePage = fxPagesRec["fx-tiles"]
       blotterPage = fxPagesRec["fx-blotter"]
+      tilePage.setViewportSize({ width: 1280, height: 1024 })
+      blotterPage.setViewportSize({ width: 1280, height: 1024 })
     } else {
       const pages = context.pages()
       const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
