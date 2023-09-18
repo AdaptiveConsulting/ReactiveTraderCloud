@@ -185,7 +185,7 @@ jobs:
         run: npm ci
       - name: start openfin
         run: |
-          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json ./e2e/openfin.spec.js --devToolsPort=9091 --closeRuntime=never
+          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json ./e2e/openfin.spec.js --chromeDriverOverride=112 --devToolsPort=9091 --closeRuntime=never
       - name: Run tests
         env:
           E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
