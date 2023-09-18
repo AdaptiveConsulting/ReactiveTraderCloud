@@ -1,4 +1,4 @@
-name: Branch
+name: Branch openfin tests
 
 on:
   push:

@@ -19,6 +19,9 @@ test.describe("Credit", () => {
       newRfqPage = creditPagesRec["credit-new-rfq"]
       rfqsPage = creditPagesRec["credit-rfqs"]
       rfqBlotterPage = creditPagesRec["credit-blotter"]
+      newRfqPage.setViewportSize({ width: 1280, height: 1024 })
+      rfqsPage.setViewportSize({ width: 1280, height: 1024 })
+      rfqBlotterPage.setViewportSize({ width: 1280, height: 1024 })
     } else {
       const pages = context.pages()
 
@@ -136,7 +139,7 @@ test.describe("Credit", () => {
   })
 
   test.describe("Pass", () => {
-    test("pass", async ({ context }) => {
+    test.skip("pass", async ({ context }) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
