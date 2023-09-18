@@ -19,6 +19,9 @@ test.describe("Credit", () => {
       newRfqPage = creditPagesRec["credit-new-rfq"]
       rfqsPage = creditPagesRec["credit-rfqs"]
       rfqBlotterPage = creditPagesRec["credit-blotter"]
+      newRfqPage.setViewportSize({ width: 1280, height: 1024 })
+      rfqsPage.setViewportSize({ width: 1280, height: 1024 })
+      rfqBlotterPage.setViewportSize({ width: 1280, height: 1024 })
     } else {
       const pages = context.pages()
 
@@ -93,13 +96,59 @@ test.describe("Credit", () => {
   })
 
   test.describe("Sell side", () => {
-    test("Sell side ticket", async ({ context }) => {
+    test("Sell side ticket", async ({ context }, testInfo) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage
         .getByTestId("search-result-item")
         .getByText("GOOGL")
         .first()
         .click()
+
+      const quantity = newRfqPage.getByTestId("quantity")
+      await quantity.type("2")
+
+      await newRfqPage
+        .locator("span")
+        .getByText(/Adaptive Bank/)
+        .click()
+
+      const sellSidePromise = context.waitForEvent("page", {
+        predicate: (page) => page.url().includes("credit-sellside"),
+      })
+
+      await newRfqPage
+        .locator("button")
+        .getByText(/Send RFQ/)
+        .click()
+
+      const sellSidePage = await sellSidePromise
+
+      await sellSidePage.waitForSelector("text=New RFQ")
+
+      await sellSidePage.getByTestId("price-input").fill("100")
+
+      await sellSidePage.keyboard.press("Enter")
+
+      await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
+        "$100",
+        { timeout: 5000 },
+      )
+
+      if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+        const subWindowFrame = context
+          .pages()
+          .find((page) => page.url().includes("openfin-sub-window-frame"))
+        await subWindowFrame?.close()
+      } else {
+        await sellSidePage.close()
+      }
+    })
+  })
+
+  test.describe("Passing a new RFQ", () => {
+    test("pass a newly created RFQ ", async ({ context }, testInfo) => {
+      await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
+      await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
       const quantity = newRfqPage.getByTestId("quantity")
       await quantity.type("2")
@@ -120,53 +169,22 @@ test.describe("Credit", () => {
 
       const sellSidePage = await pagePromise
 
-      await sellSidePage.waitForSelector("text=New RFQ")
-
-      await sellSidePage.getByTestId("price-input").fill("100")
-
-      await sellSidePage.keyboard.press("Enter")
-
-      await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
-        "$100",
-        { timeout: 10000 },
-      )
-
-      sellSidePage.close()
-    })
-  })
-
-  test.describe("Pass", () => {
-    test("pass", async ({ context }) => {
-      await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
-      await newRfqPage.getByTestId("search-result-item").nth(5).click()
-
-      const quantity = newRfqPage.getByTestId("quantity")
-      await quantity.type("2")
-
-      await newRfqPage
-        .locator("span")
-        .getByText(/Adaptive Bank/)
-        .click()
-
-      const pagePromise = context.waitForEvent("page")
-
-      await newRfqPage
-        .locator("button")
-        .getByText(/Send RFQ/)
-        .click()
-
-      const sellSidePage = await pagePromise
-
-      await sellSidePage.waitForSelector("text=New RFQ")
+      await sellSidePage.waitForSelector("text=New RFQ", { timeout: 10000 })
 
       await sellSidePage.getByRole("button", { name: "Pass" }).click()
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "Passed",
-        { timeout: 10000 },
+        { timeout: 5000 },
       )
-
-      sellSidePage.close()
+      if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+        const subWindowFrame = context
+          .pages()
+          .find((page) => page.url().includes("openfin-sub-window-frame"))
+        await subWindowFrame?.close()
+      } else {
+        await sellSidePage.close()
+      }
     })
   })
 })
