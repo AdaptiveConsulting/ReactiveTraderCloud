@@ -140,7 +140,7 @@ test.describe("Credit", () => {
 
   test.describe("Pass", () => {
 
-    // skipping until resolution is found as of why it fails on openfin -> https://adaptive.kanbanize.com/ctrl_board/18/cards/5578/details/    
+    // TODO: skipping until resolution is found as of why it fails on openfin -> https://adaptive.kanbanize.com/ctrl_board/18/cards/5578/details/    
     test.skip("pass", async ({ context }) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
