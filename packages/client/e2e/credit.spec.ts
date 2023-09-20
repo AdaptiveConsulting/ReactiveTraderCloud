@@ -86,7 +86,10 @@ test.describe("Credit", () => {
         timeout: 20000,
       })
 
-      await firstQuote.getByText(/Accept/).dispatchEvent('click')
+      await firstQuote.hover()
+
+      await firstQuote.getByText(/Accept/).waitFor({state: "visible"})
+      await firstQuote.getByText(/Accept/).click()
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
