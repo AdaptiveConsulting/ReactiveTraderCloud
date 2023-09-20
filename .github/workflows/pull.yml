@@ -184,8 +184,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: start openfin
-        run: |
-          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json ./e2e/openfin.spec.js --chromeDriverOverride=114 --devToolsPort=9091 --closeRuntime=never
+        run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json
       - name: Run tests
         env:
           E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
@@ -212,8 +211,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: start openfin
-        run: |
-          npx of-automation https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-credit.json ./e2e/openfin.spec.js --chromeDriverOverride=114 --devToolsPort=9091 --closeRuntime=never
+        run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-credit.json
       - name: Run tests
         env:
           E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
