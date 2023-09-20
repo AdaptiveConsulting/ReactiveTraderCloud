@@ -34,6 +34,20 @@ test.describe("Credit", () => {
     }
   })
 
+  test.afterEach(async ({ context }, testInfo) => {
+    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+      const subWindowFrame = context
+        .pages()
+        .find((page) => page.url().includes("openfin-sub-window-frame"))
+      await subWindowFrame?.close()
+    } else {
+      const sellSidePage = context
+        .pages()
+        .find((page) => page.url().includes("credit-sellside"))
+      await sellSidePage?.close()
+    }
+  })
+
   test.describe("New RFQ", () => {
     test("Create RFQ for GOOGL @smoke", async () => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
@@ -131,17 +145,14 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "$100",
-        { timeout: 10000 },
+        { timeout: 5000 },
       )
-
-      sellSidePage.close()
     })
   })
 
-  test.describe("Pass", () => {
-
-    // TODO: skipping until resolution is found as of why it fails on openfin -> https://adaptive.kanbanize.com/ctrl_board/18/cards/5578/details/    
-    test.skip("pass", async ({ context }) => {
+  test.describe("Passing RFQ", () => {
+    test("pass a newly created RFQ ", async ({ context }) => {
+      
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
@@ -153,7 +164,9 @@ test.describe("Credit", () => {
         .getByText(/Adaptive Bank/)
         .click()
 
-      const pagePromise = context.waitForEvent("page")
+      const pagePromise = context.waitForEvent("page", {
+        predicate: (page) => page.url().includes("credit-sellside"),
+      })
 
       await newRfqPage
         .locator("button")
@@ -168,10 +181,8 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "Passed",
-        { timeout: 10000 },
+        { timeout: 5000 },
       )
-
-      sellSidePage.close()
     })
   })
 })
