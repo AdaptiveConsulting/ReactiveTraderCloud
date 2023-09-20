@@ -7,12 +7,6 @@ import { TradesGrid } from "./TradesGrid"
 import { useFxTradeRowHighlight } from "./TradesState"
 import { fxColDef, fxColFields } from "./TradesState/colConfig"
 
-if (window.fdc3) {
-  window.fdc3.addIntentListener("ViewChart", (e) => {
-    console.debug("ViewChart intent received", e)
-  })
-}
-
 const FxTrades = () => {
   const highlightedRow = useFxTradeRowHighlight()
 
