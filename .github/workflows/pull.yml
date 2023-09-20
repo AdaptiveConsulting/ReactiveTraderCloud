@@ -155,6 +155,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set Node version
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
       - name: Install
         run: npm ci
 
@@ -178,18 +183,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: Install dependencies
         run: npm ci
+
       - name: start openfin
         run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json
+
       - name: Run tests
         env:
           E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
-        run: |
-          npm run e2e:openfin spot-tile.spec blotter.spec
+        run: npm run e2e:openfin spot-tile.spec blotter.spec
+
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
@@ -208,15 +217,18 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: Install dependencies
         run: npm ci
+
       - name: start openfin
         run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-credit.json
+
       - name: Run tests
         env:
           E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
-        run: |
-          npm run e2e:openfin credit.spec
+        run: npm run e2e:openfin credit.
+
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
