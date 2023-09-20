@@ -86,8 +86,6 @@ test.describe("Credit", () => {
         timeout: 20000,
       })
 
-      await firstQuote.hover()
-
       await firstQuote.getByText(/Accept/).dispatchEvent('click')
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
@@ -150,8 +148,8 @@ test.describe("Credit", () => {
     })
   })
 
-  test.describe("Passing RFQ", () => {
-    test("pass a newly created RFQ ", async ({ context }) => {
+  test.describe("Respond to RFQ with Pass", () => {
+    test("Passing a newly created RFQ ", async ({ context }) => {
       
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
