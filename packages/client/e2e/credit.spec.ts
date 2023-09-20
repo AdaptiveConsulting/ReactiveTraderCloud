@@ -88,7 +88,7 @@ test.describe("Credit", () => {
 
       await firstQuote.hover()
 
-      await firstQuote.getByText(/Accept/).click()
+      await firstQuote.getByText(/Accept/).dispatchEvent('click')
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
