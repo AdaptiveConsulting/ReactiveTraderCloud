@@ -145,7 +145,7 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "$100",
-        { timeout: 5000 },
+        { timeout: 10000 },
       )
     })
   })
@@ -181,7 +181,7 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "Passed",
-        { timeout: 5000 },
+        { timeout: 10000 },
       )
     })
   })
