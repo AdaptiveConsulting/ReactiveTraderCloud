@@ -5,8 +5,8 @@ import Measure, { ContentRect } from "react-measure"
 import { Loader } from "@/client/components/Loader"
 import LogoIcon from "@/client/components/LogoIcon"
 import {
-  registerCreditQuoteNotifications,
-  unregisterCreditQuoteNotifications,
+  registerCreditNotifications,
+  unregisterCreditNotifications,
 } from "@/client/notifications"
 import {
   onResetInput,
@@ -98,10 +98,10 @@ function Launcher() {
   useEffect(() => {
     setOverlay(overlayRef.current)
     getCurrentWindowBounds().then(setInitialBounds).catch(console.error)
-    registerCreditQuoteNotifications()
+    registerCreditNotifications()
 
     return () => {
-      unregisterCreditQuoteNotifications()
+      unregisterCreditNotifications()
     }
   }, [])
 

@@ -1,13 +1,14 @@
 import { createSignal } from "@react-rxjs/utils"
 import { filter, map, tap, withLatestFrom } from "rxjs/operators"
 
-import { showRfqInSellSide } from "@/client/utils"
+import { adjustUserCreditQuantity, showRfqInSellSide } from "@/client/utils"
 import {
   AcceptQuoteRequest,
   ACK_ACCEPT_QUOTE_RESPONSE,
   ACK_CREATE_RFQ_RESPONSE,
   CancelRfqRequest,
   CreateRfqRequest,
+  InstrumentBody,
   PassRequest,
   QuoteRequest,
   WorkflowService,
@@ -15,11 +16,20 @@ import {
 
 import { PricedQuoteBody } from "../rfqs/types"
 import { adaptiveDealerId$ } from "./creditDealers"
+import { creditInstruments$ } from "./creditInstruments"
 import { creditRfqsById$, RfqDetails } from "./creditRfqs"
 
 export interface CreatedCreditRfq {
   request: CreateRfqRequest
   rfqId: number
+}
+
+type ConfirmRfqRequest = CreateRfqRequest & {
+  instrument: InstrumentBody | null
+}
+export interface ConfirmCreatedCreditRfq
+  extends Omit<CreatedCreditRfq, "request"> {
+  request: ConfirmRfqRequest
 }
 
 export const [createdCreditRfq$, setCreatedCreditRfq] =
@@ -33,7 +43,7 @@ export const createCreditRfq$ = (request: CreateRfqRequest) => {
     direction,
     expirySecs,
     instrumentId,
-    quantity: quantity * 1000,
+    quantity: adjustUserCreditQuantity(quantity),
   }).pipe(
     tap((response) => {
       if (response.type === ACK_CREATE_RFQ_RESPONSE) {
@@ -42,6 +52,24 @@ export const createCreditRfq$ = (request: CreateRfqRequest) => {
     }),
   )
 }
+
+export const createdCreditConfirmation$ = createdCreditRfq$.pipe(
+  filter((response) => response !== null),
+  withLatestFrom(creditInstruments$),
+  map(
+    ([response, creditInstruments]): ConfirmCreatedCreditRfq => ({
+      ...response,
+      request: {
+        ...response.request,
+        quantity: adjustUserCreditQuantity(response.request.quantity),
+        instrument:
+          creditInstruments.find(
+            (instrument) => instrument.id === response.request.instrumentId,
+          ) ?? null,
+      },
+    }),
+  ),
+)
 
 const sellSideRfqs$ = createdCreditRfq$.pipe(
   withLatestFrom(adaptiveDealerId$),

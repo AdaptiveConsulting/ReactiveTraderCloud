@@ -6,10 +6,6 @@ import { checkTradingGatewayCompatibility } from "@/services/tradingGatewayCompa
 
 import { ENVIRONMENT } from "./constants"
 import { getMainApp } from "./main"
-import {
-  registerCreditAcceptedNotifications,
-  registerFxNotifications,
-} from "./notifications"
 import { GlobalScrollbarStyle, GlobalStyle, ThemeProvider } from "./theme"
 
 const MainApp = getMainApp()
@@ -20,9 +16,6 @@ export async function initApp() {
   }
 
   checkTradingGatewayCompatibility()
-
-  registerFxNotifications()
-  registerCreditAcceptedNotifications()
 
   const container = document.getElementById("root")
   const root = createRoot(container as HTMLElement)

@@ -19,6 +19,8 @@ import {
 import { Direction } from "@/generated/TradingGateway"
 import {
   acceptedRfqWithQuote$,
+  ConfirmCreatedCreditRfq,
+  createdCreditConfirmation$,
   lastQuoteReceived$,
   PricedQuoteDetails,
   RfqWithPricedQuote,
@@ -27,8 +29,9 @@ import { executions$, ExecutionTrade } from "@/services/executions"
 
 import { setCreditRfqCardHighlight } from "./App/Credit/CreditRfqs/CreditRfqCards"
 import {
-  processCreditAccepted,
   processCreditQuote,
+  processCreditRfqAccepted,
+  processCreditRfqCreated,
   processFxExecution,
 } from "./notificationsUtils"
 import { constructUrl } from "./utils/constructUrl"
@@ -146,7 +149,7 @@ const sendFxTradeNotification = (trade: ExecutionTrade) => {
 }
 
 const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithPricedQuote) => {
-  const { title, tradeDetails } = processCreditAccepted(rfq, quote)
+  const { title, tradeDetails } = processCreditRfqAccepted(rfq, quote)
 
   const notificationOptions: TemplateCustom = {
     template: "custom",
@@ -215,6 +218,46 @@ const sendCreditQuoteNotification = (quote: PricedQuoteDetails) => {
   create(notificationOptions)
 }
 
+const sendRFQCreatedConfirmationNotification = (
+  rfqRequestConfirmation: ConfirmCreatedCreditRfq,
+) => {
+  const { title, rfqDetails } = processCreditRfqCreated(rfqRequestConfirmation)
+
+  const notificationOptions: TemplateCustom = {
+    template: "custom",
+    templateOptions: createNotificationTemplate(
+      rfqRequestConfirmation.request.direction,
+    ),
+    templateData: {
+      messageTradeDirection:
+        rfqRequestConfirmation.request.direction.toUpperCase(),
+      messageTradeDetails: rfqDetails,
+    },
+
+    icon: creditIconUrl,
+    category: "RFQ Created",
+    title,
+    indicator: {
+      text: "new rfq",
+      color: IndicatorColor.GRAY,
+    },
+    buttons: [
+      {
+        title: "View RFQ",
+        iconUrl: creditIconUrl,
+        onClick: {
+          task: TASK_HIGHLIGHT_CREDIT_RFQ,
+          payload: {
+            rfqId: rfqRequestConfirmation.rfqId,
+          },
+        },
+      },
+    ],
+  }
+
+  create(notificationOptions)
+}
+
 const TOPIC_HIGHLIGHT_FX_BLOTTER = "highlight-fx-blotter"
 export const TOPIC_HIGHLIGHT_CREDIT_RFQ = "highlight-credit-rfq"
 export const TOPIC_HIGHLIGHT_CREDIT_BLOTTER = "highlight-credit-blotter"
@@ -253,6 +296,8 @@ export const handleHighlightRfqAction = (event: NotificationActionEvent) => {
 export type NotificationActionHandler = (event: NotificationActionEvent) => void
 
 let areFxNotificationsRegistered = false
+let executionSubscription: Subscription | null = null
+
 export const registerFxNotifications = (
   handler?: NotificationActionHandler,
 ) => {
@@ -270,7 +315,7 @@ export const registerFxNotifications = (
       handler || handleHighlightFxBlotterAction,
     )
 
-    executions$.subscribe({
+    executionSubscription = executions$.subscribe({
       next: (executionTrade) => {
         sendFxTradeNotification(executionTrade)
       },
@@ -284,13 +329,65 @@ export const registerFxNotifications = (
   }
 }
 
-let areCreditQuoteNotificationsRegistered = false
-export const registerCreditQuoteNotifications = (
+export const unregisterFxNotifications = () => {
+  if (executionSubscription) {
+    areFxNotificationsRegistered = false
+    executionSubscription.unsubscribe()
+  }
+}
+
+const registerCreditQuoteNotifications = (
   handler?: NotificationActionHandler,
 ) => {
-  if (!areCreditQuoteNotificationsRegistered) {
-    areCreditQuoteNotificationsRegistered = true
+  fin.InterApplicationBus.subscribe(
+    { uuid: "*" },
+    TOPIC_HIGHLIGHT_CREDIT_RFQ,
+    (message: { rfqId: number }) => {
+      setCreditRfqCardHighlight(message.rfqId)
+    },
+  )
 
+  addEventListener("notification-action", handler || handleHighlightRfqAction)
+
+  quotesReceivedSubscription = lastQuoteReceived$.subscribe({
+    next: (quote) => {
+      sendCreditQuoteNotification(quote)
+    },
+    error: (e) => {
+      console.error(e)
+    },
+    complete: () => {
+      console.error("credit quote notifications stream completed!?")
+    },
+  })
+}
+
+let acceptedRfqWithQuoteSubscription: Subscription | null = null
+const registerCreditAcceptedNotifications = (
+  handler?: NotificationActionHandler,
+) => {
+  fin.InterApplicationBus.subscribe(
+    { uuid: "*" },
+    TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
+    (message: { tradeId: number }) => {
+      setCreditTradeRowHighlight(message.tradeId)
+    },
+  )
+
+  addEventListener(
+    "notification-action",
+    handler || handleHighlightCreditBlotterAction,
+  )
+
+  acceptedRfqWithQuoteSubscription = acceptedRfqWithQuote$.subscribe((rfq) => {
+    sendQuoteAcceptedNotification(rfq)
+  })
+}
+
+let createdCreditSubscription: Subscription | null = null
+
+export const registerCreatedCreditNotification = () => {
+  if (createdCreditSubscription == null) {
     fin.InterApplicationBus.subscribe(
       { uuid: "*" },
       TOPIC_HIGHLIGHT_CREDIT_RFQ,
@@ -299,51 +396,40 @@ export const registerCreditQuoteNotifications = (
       },
     )
 
-    addEventListener("notification-action", handler || handleHighlightRfqAction)
+    addEventListener("notification-action", handleHighlightRfqAction)
 
-    quotesReceivedSubscription = lastQuoteReceived$.subscribe({
-      next: (quote) => {
-        sendCreditQuoteNotification(quote)
+    createdCreditSubscription = createdCreditConfirmation$.subscribe(
+      (rfqRquest) => {
+        sendRFQCreatedConfirmationNotification(rfqRquest)
       },
-      error: (e) => {
-        console.error(e)
-      },
-      complete: () => {
-        console.error("credit quote notifications stream completed!?")
-      },
-    })
+    )
   }
 }
 
-let areCreditAcceptedNotificationsRegistered = false
-export const registerCreditAcceptedNotifications = (
+export const unregisterCreatedCreditNotification = () => {
+  if (createdCreditSubscription != null) {
+    createdCreditSubscription.unsubscribe()
+  }
+}
+
+let areCreditNotificationsCreated = false
+export const registerCreditNotifications = (
   handler?: NotificationActionHandler,
 ) => {
-  if (!areCreditAcceptedNotificationsRegistered) {
-    areCreditAcceptedNotificationsRegistered = true
-
-    fin.InterApplicationBus.subscribe(
-      { uuid: "*" },
-      TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
-      (message: { tradeId: number }) => {
-        setCreditTradeRowHighlight(message.tradeId)
-      },
-    )
-
-    addEventListener(
-      "notification-action",
-      handler || handleHighlightCreditBlotterAction,
-    )
-
-    acceptedRfqWithQuote$.subscribe((rfq) => {
-      sendQuoteAcceptedNotification(rfq)
-    })
+  if (!areCreditNotificationsCreated) {
+    registerCreditAcceptedNotifications(handler)
+    registerCreditQuoteNotifications(handler)
+    areCreditNotificationsCreated = true
   }
 }
 
-export const unregisterCreditQuoteNotifications = () => {
+export const unregisterCreditNotifications = () => {
   if (quotesReceivedSubscription) {
-    areCreditQuoteNotificationsRegistered = false
     quotesReceivedSubscription.unsubscribe()
   }
+
+  if (acceptedRfqWithQuoteSubscription) {
+    acceptedRfqWithQuoteSubscription.unsubscribe()
+  }
+  areCreditNotificationsCreated = false
 }

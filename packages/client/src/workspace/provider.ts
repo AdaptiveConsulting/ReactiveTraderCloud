@@ -1,8 +1,7 @@
 import { init as workspacePlatformInit } from "@openfin/workspace-platform"
 
 import {
-  registerCreditAcceptedNotifications,
-  registerCreditQuoteNotifications,
+  registerCreditNotifications,
   registerFxNotifications,
 } from "@/client/notifications.openfin"
 import { initConnection } from "@/services/connection"
@@ -51,8 +50,7 @@ async function init() {
   await showHome()
 
   registerFxNotifications(handleFxTradeNotification)
-  registerCreditQuoteNotifications(handleCreditRfqNotification)
-  registerCreditAcceptedNotifications()
+  registerCreditNotifications(handleCreditRfqNotification)
 
   const sub = registerSimulatedDealerResponses()
 

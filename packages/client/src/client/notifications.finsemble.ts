@@ -1,3 +1,5 @@
+import { Subscription } from "rxjs"
+
 import { ExecutionTrade } from "@/services/executions"
 import { executions$ } from "@/services/executions/executions"
 
@@ -16,8 +18,10 @@ export function sendFxTradeNotification(executionTrade: ExecutionTrade) {
   window.FSBL.Clients.NotificationClient.notify([notification])
 }
 
+let executionSubscription: Subscription | null = null
+
 export function registerFxNotifications() {
-  executions$.subscribe({
+  executionSubscription = executions$.subscribe({
     next: (executionTrade) => {
       sendFxTradeNotification(executionTrade)
     },
@@ -30,16 +34,26 @@ export function registerFxNotifications() {
   })
 }
 
+export function unregisterFxNotifications() {
+  if (executionSubscription) {
+    executionSubscription.unsubscribe()
+  }
+}
+
 // TODO (4823) implement these for Finsemble when upgrading
 
-export function registerCreditAcceptedNotifications() {
+export function registerCreditNotifications() {
   // no-op
 }
 
-export function registerCreditQuoteNotifications() {
+export function unregisterCreditNotifications() {
   // no-op
 }
 
-export function unregisterCreditQuoteNotifications() {
+export function registerCreatedCreditNotification() {
+  // no-op
+}
+
+export function unregisterCreatedCreditNotification() {
   // no-op
 }

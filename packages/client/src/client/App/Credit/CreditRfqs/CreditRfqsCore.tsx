@@ -3,16 +3,12 @@ import { useEffect } from "react"
 import styled from "styled-components"
 
 import {
-  registerCreditQuoteNotifications,
-  unregisterCreditQuoteNotifications,
+  registerCreditNotifications,
+  unregisterCreditNotifications,
 } from "@/client/notifications"
 import { WithChildren } from "@/client/utils/utilityTypes"
 
 import { CreditRfqCardGrid } from "./CreditRfqCards"
-import {
-  CreditRfqAcceptedConfirmation,
-  CreditRfqCreatedConfirmation,
-} from "./CreditRfqConfirmation"
 import { CreditRfqsHeader } from "./CreditRfqsHeader"
 
 const CreditRfqsCoreWrapper = styled.div`
@@ -23,9 +19,11 @@ const CreditRfqsCoreWrapper = styled.div`
 `
 const CreditRfqsCore = ({ children }: WithChildren) => {
   useEffect(() => {
-    registerCreditQuoteNotifications()
+    registerCreditNotifications()
 
-    return unregisterCreditQuoteNotifications
+    return () => {
+      unregisterCreditNotifications()
+    }
   }, [])
 
   return (
@@ -33,8 +31,6 @@ const CreditRfqsCore = ({ children }: WithChildren) => {
       <CreditRfqsCoreWrapper>
         <CreditRfqsHeader />
         <CreditRfqCardGrid />
-        <CreditRfqCreatedConfirmation />
-        <CreditRfqAcceptedConfirmation />
       </CreditRfqsCoreWrapper>
     </Subscribe>
   )

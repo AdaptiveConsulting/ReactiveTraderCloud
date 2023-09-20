@@ -1,4 +1,8 @@
-import { PricedQuoteDetails, RfqDetails } from "@/services/credit"
+import {
+  ConfirmCreatedCreditRfq,
+  PricedQuoteDetails,
+  RfqDetails,
+} from "@/services/credit"
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { PricedQuoteBody } from "@/services/rfqs/types"
 
@@ -19,7 +23,7 @@ export const processFxExecution = (executionTrade: ExecutionTrade) => {
   }
 }
 
-export const processCreditAccepted = (
+export const processCreditRfqAccepted = (
   rfq: RfqDetails,
   quote: PricedQuoteBody,
 ) => {
@@ -38,5 +42,17 @@ export const processCreditQuote = (quote: PricedQuoteDetails) => {
     tradeDetails: `${quote.instrument?.name} ${formatNumber(
       quote.quantity,
     )} @ $${formatNumber(quote.state.payload)}`,
+  }
+}
+
+export const processCreditRfqCreated = ({
+  request,
+  rfqId,
+}: ConfirmCreatedCreditRfq) => {
+  return {
+    title: `RFQ Created: RFQ ID ${rfqId}`,
+    rfqDetails: `RFQ for ${formatNumber(request.quantity)} ${
+      request.instrument?.name
+    } to ${request.dealerIds.length} dealers`,
   }
 }
