@@ -19,6 +19,9 @@ test.describe("Credit", () => {
       newRfqPage = creditPagesRec["credit-new-rfq"]
       rfqsPage = creditPagesRec["credit-rfqs"]
       rfqBlotterPage = creditPagesRec["credit-blotter"]
+      newRfqPage.setViewportSize({ width: 1280, height: 1024 })
+      rfqsPage.setViewportSize({ width: 1280, height: 1024 })
+      rfqBlotterPage.setViewportSize({ width: 1280, height: 1024 })
     } else {
       const pages = context.pages()
 
@@ -28,6 +31,20 @@ test.describe("Credit", () => {
 
       rfqsPage = newRfqPage
       rfqBlotterPage = newRfqPage
+    }
+  })
+
+  test.afterEach(async ({ context }, testInfo) => {
+    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+      const subWindowFrame = context
+        .pages()
+        .find((page) => page.url().includes("openfin-sub-window-frame"))
+      await subWindowFrame?.close()
+    } else {
+      const sellSidePage = context
+        .pages()
+        .find((page) => page.url().includes("credit-sellside"))
+      await sellSidePage?.close()
     }
   })
 
@@ -71,7 +88,7 @@ test.describe("Credit", () => {
 
       await firstQuote.hover()
 
-      await firstQuote.getByText(/Accept/).click()
+      await firstQuote.getByText(/Accept/).click({ force: true })
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
@@ -128,15 +145,13 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "$100",
-        { timeout: 10000 },
+        { timeout: 5000 },
       )
-
-      sellSidePage.close()
     })
   })
 
-  test.describe("Pass", () => {
-    test("pass", async ({ context }) => {
+  test.describe("Passing RFQ", () => {
+    test("pass a newly created RFQ ", async ({ context }) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
@@ -148,7 +163,9 @@ test.describe("Credit", () => {
         .getByText(/Adaptive Bank/)
         .click()
 
-      const pagePromise = context.waitForEvent("page")
+      const pagePromise = context.waitForEvent("page", {
+        predicate: (page) => page.url().includes("credit-sellside"),
+      })
 
       await newRfqPage
         .locator("button")
@@ -163,10 +180,8 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "Passed",
-        { timeout: 10000 },
+        { timeout: 5000 },
       )
-
-      sellSidePage.close()
     })
   })
 })
