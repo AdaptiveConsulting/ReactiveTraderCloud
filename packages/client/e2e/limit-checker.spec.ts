@@ -1,7 +1,7 @@
 import { Page } from "playwright"
 
 import { test } from "./fixtures"
-import { assertGridCell, assertGridRow, OPENFIN_PROJECT_NAME } from "./utils"
+import { assertGridCell, assertGridRow, OPENFIN_PROJECT_NAME, Timeout } from "./utils"
 
 test.describe("Limit Checker", () => {
   let tilePage: Page
@@ -55,7 +55,7 @@ test.describe("Limit Checker", () => {
     await tradeBlotterFirstRowCells
       .nth(1)
       .getByText(lastTradeId + 1 + "")
-      .waitFor({ state: "visible", timeout: 5000 })
+      .waitFor({ state: "visible", timeout: Timeout.AGGRESSIVE })
 
     await assertGridRow({
       row: limitTableFirstRowCells,
