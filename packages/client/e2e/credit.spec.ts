@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { OPENFIN_PROJECT_NAME } from "./utils"
+import { OPENFIN_PROJECT_NAME,Timeout } from "./utils"
 
 test.describe("Credit", () => {
   let newRfqPage: Page
@@ -83,7 +83,7 @@ test.describe("Credit", () => {
         .first()
       // Wait for first quote response
       await expect(firstQuote).not.toContainText("Awaiting response", {
-        timeout: 20000,
+        timeout: Timeout.LONG,
       })
 
       await firstQuote.hover()
@@ -146,7 +146,7 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "$100",
-        { timeout: 10000 },
+        { timeout: Timeout.NORMAL},
       )
     })
   })
@@ -182,7 +182,7 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "Passed",
-        { timeout: 10000 },
+        { timeout: Timeout.NORMAL },
       )
     })
   })
