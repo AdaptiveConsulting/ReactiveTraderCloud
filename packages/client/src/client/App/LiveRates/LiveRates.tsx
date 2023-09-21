@@ -9,8 +9,7 @@ import { Loader } from "@/client/components/Loader"
 import { currencyPairs$ } from "@/services/currencyPairs"
 import { getHistoricalPrices$, getPrice$ } from "@/services/prices"
 
-export const LiveRatesCoreDeferred = import("./LiveRatesCore")
-const LiveRatesCore = lazy(() => LiveRatesCoreDeferred)
+const LiveRatesCore = lazy(() => import("./LiveRatesCore"))
 
 currencyPairs$.subscribe()
 combineKeys(currencyPairs$.pipe(map(Object.keys)), (symbol: string) =>
@@ -41,6 +40,7 @@ const loader = (
     minHeight="22rem"
   />
 )
+
 export const LiveRates = () => {
   useEffect(() => {
     if (window.fdc3) joinChannel("green")
