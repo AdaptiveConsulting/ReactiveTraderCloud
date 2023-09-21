@@ -1,5 +1,5 @@
-import type {PlaywrightTestConfig} from "@playwright/test"
-import {devices} from "@playwright/test"
+import type { PlaywrightTestConfig } from "@playwright/test"
+import { devices } from "@playwright/test"
 
 const config: PlaywrightTestConfig = {
   testDir: "./e2e",
@@ -12,18 +12,18 @@ const config: PlaywrightTestConfig = {
       use: {
         ...devices["Desktop Chrome"],
         //Artifacts
-      screenshot: "only-on-failure",
-      video: "retain-on-failure",
-      trace: "retain-on-failure",
-      headless: true,
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
+        trace: "retain-on-failure",
+        headless: true,
       },
     },
     {
       name: "openfin",
       use: {
-      screenshot: "only-on-failure",
-      video: "retain-on-failure",
-      trace: "retain-on-failure",
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
+        trace: "retain-on-failure",
       },
     },
   ],

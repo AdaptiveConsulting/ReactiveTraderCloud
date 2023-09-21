@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { OPENFIN_PROJECT_NAME } from "./utils"
+import { OPENFIN_PROJECT_NAME,Timeout } from "./utils"
 
 test.describe("Credit", () => {
   let newRfqPage: Page
@@ -83,12 +83,13 @@ test.describe("Credit", () => {
         .first()
       // Wait for first quote response
       await expect(firstQuote).not.toContainText("Awaiting response", {
-        timeout: 20000,
+        timeout: Timeout.LONG,
       })
 
       await firstQuote.hover()
 
-      await firstQuote.getByText(/Accept/).click({ force: true })
+      await firstQuote.getByText(/Accept/).waitFor({state: "visible"})
+      await firstQuote.getByText(/Accept/).click()
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
@@ -145,13 +146,14 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "$100",
-        { timeout: 5000 },
+        { timeout: Timeout.NORMAL},
       )
     })
   })
 
-  test.describe("Passing RFQ", () => {
-    test("pass a newly created RFQ ", async ({ context }) => {
+  test.describe("Respond to RFQ with Pass", () => {
+    test("Passing a newly created RFQ ", async ({ context }) => {
+      
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
@@ -180,7 +182,7 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "Passed",
-        { timeout: 5000 },
+        { timeout: Timeout.NORMAL },
       )
     })
   })
