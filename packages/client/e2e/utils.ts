@@ -6,6 +6,10 @@ export enum Timeout {
   NORMAL = 10000,
   LONG = 20000,
 }
+export enum TestTimeout {
+  NORMAL = 30000,
+  EXTENDED = 60000
+}
 
 export const assertGridRow = async ({
   row,

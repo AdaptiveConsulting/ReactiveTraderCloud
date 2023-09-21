@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { OPENFIN_PROJECT_NAME,Timeout } from "./utils"
+import { OPENFIN_PROJECT_NAME, TestTimeout, Timeout } from "./utils"
 
 test.describe("Credit", () => {
   let newRfqPage: Page
@@ -49,6 +49,7 @@ test.describe("Credit", () => {
   })
 
   test.describe("New RFQ", () => {
+    test.setTimeout(TestTimeout.EXTENDED)
     test("Create RFQ for GOOGL @smoke", async () => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage
@@ -81,15 +82,41 @@ test.describe("Credit", () => {
         .first()
         .locator("div")
         .first()
-      // Wait for first quote response
-      await expect(firstQuote).not.toContainText("Awaiting response", {
-        timeout: Timeout.LONG,
-      })
 
-      await firstQuote.hover()
+      // retry logic to circumvent intermittent failures at clicking on the accept button
+      const MAX_ATTEMPT = 2
+      let isAcceptBtnClicked = false
 
-      await firstQuote.getByText(/Accept/).waitFor({state: "visible"})
-      await firstQuote.getByText(/Accept/).click()
+      const acceptQuote = async () => {
+        try {
+          await firstQuote.hover()
+          await firstQuote
+            .getByText(/Accept/)
+            .click({ timeout: Timeout.AGGRESSIVE })
+          isAcceptBtnClicked = true
+        } catch (exception) {
+          console.warn(`Failed to click on the 'accept' button, retrying ...`)
+          console.warn(`Error: ${exception}`)
+          isAcceptBtnClicked = false
+        }
+      }
+
+      await expect(firstQuote)
+        .not.toContainText("Awaiting response", {
+          timeout: Timeout.LONG,
+        })
+        .then(async () => {
+          let attempt = 1
+          while (!isAcceptBtnClicked) {
+            expect(
+              attempt,
+              "Max attempts to click on accept button is reach",
+            ).toBeLessThanOrEqual(MAX_ATTEMPT)
+            await acceptQuote()
+            attempt++
+          }
+          return
+        })
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
@@ -146,14 +173,13 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "$100",
-        { timeout: Timeout.NORMAL},
+        { timeout: Timeout.NORMAL },
       )
     })
   })
 
   test.describe("Respond to RFQ with Pass", () => {
     test("Passing a newly created RFQ ", async ({ context }) => {
-      
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 

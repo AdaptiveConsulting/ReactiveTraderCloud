@@ -1,10 +1,12 @@
 import type { PlaywrightTestConfig } from "@playwright/test"
 import { devices } from "@playwright/test"
 
+import { TestTimeout } from "./e2e/utils"
+
 const config: PlaywrightTestConfig = {
   testDir: "./e2e",
   /* Maximum time one test can run for. */
-  timeout: 60_000,
+  timeout: TestTimeout.NORMAL,
   workers: 1,
   projects: [
     {
