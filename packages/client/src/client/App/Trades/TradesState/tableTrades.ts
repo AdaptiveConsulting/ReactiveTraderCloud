@@ -361,21 +361,16 @@ const newTradeId$ = merge(trades$, creditTrades$).pipe(
   scan(
     (acc, trades) => {
       return {
-        stateOfWorld: acc.stateOfWorld && acc.trades.length === 0,
         trades: trades,
-        skip: acc.trades.length === trades.length,
+        count: acc.count + 1,
       }
     },
-    { stateOfWorld: true, trades: [], skip: false } as {
-      stateOfWorld: boolean
+    { trades: [], count: 0 } as {
       trades: TradeType[]
-      skip: boolean
+      count: number
     },
   ),
-  filter(
-    ({ stateOfWorld, trades, skip }) =>
-      !stateOfWorld && trades.length > 0 && !skip,
-  ),
+  filter(({ count }) => count > 2),
   map(({ trades }) => trades[0].tradeId),
 )
 
