@@ -362,15 +362,15 @@ const newTradeId$ = merge(trades$, creditTrades$).pipe(
     (acc, trades) => {
       return {
         trades: trades,
-        count: acc.count + 1,
+        countOnRefresh: acc.countOnRefresh + 1,
       }
     },
-    { trades: [], count: 0 } as {
+    { trades: [], countOnRefresh: 0 } as {
       trades: TradeType[]
-      count: number
+      countOnRefresh: number
     },
   ),
-  filter(({ count }) => count > 2),
+  filter(({ countOnRefresh }) => countOnRefresh > 2),
   map(({ trades }) => trades[0].tradeId),
 )
 
