@@ -357,20 +357,47 @@ export const [creditTradeRowHighlight$, setCreditTradeRowHighlight] =
 /**
  * Emit tradeId of new trades after the initial load
  */
-const newTradeId$ = merge(trades$, creditTrades$).pipe(
+const newTradeId$ = trades$.pipe(
   scan(
     (acc, trades) => {
       return {
+        stateOfWorld: acc.stateOfWorld && acc.trades.length === 0,
         trades: trades,
-        countOnRefresh: acc.countOnRefresh + 1,
+        skip: acc.trades.length === trades.length,
       }
     },
-    { trades: [], countOnRefresh: 0 } as {
+    { stateOfWorld: true, trades: [], skip: false } as {
+      stateOfWorld: boolean
       trades: TradeType[]
-      countOnRefresh: number
+      skip: boolean
     },
   ),
-  filter(({ countOnRefresh }) => countOnRefresh > 2),
+  filter(
+    ({ stateOfWorld, trades, skip }) =>
+      !stateOfWorld && trades.length > 0 && !skip,
+  ),
+  map(({ trades }) => trades[0].tradeId),
+)
+
+const newCreditTradeIds$ = creditTrades$.pipe(
+  scan(
+    (acc, trades) => {
+      return {
+        stateOfWorld: acc.stateOfWorld && acc.trades.length === 0,
+        trades: trades,
+        skip: acc.trades.length === trades.length,
+      }
+    },
+    { stateOfWorld: true, trades: [], skip: false } as {
+      stateOfWorld: boolean
+      trades: TradeType[]
+      skip: boolean
+    },
+  ),
+  filter(
+    ({ stateOfWorld, trades, skip }) =>
+      !stateOfWorld && trades.length > 0 && !skip,
+  ),
   map(({ trades }) => trades[0].tradeId),
 )
 
@@ -402,8 +429,8 @@ export const [useCreditTradeRowHighlight] = bind(
       delay(HIGHLIGHT_ROW_FLASH_TIME),
       map(() => undefined),
     ),
-    newTradeId$,
-    newTradeId$.pipe(
+    newCreditTradeIds$,
+    newCreditTradeIds$.pipe(
       delay(HIGHLIGHT_ROW_FLASH_TIME),
       map(() => undefined),
     ),
