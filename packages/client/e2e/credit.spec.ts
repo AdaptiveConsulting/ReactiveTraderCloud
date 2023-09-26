@@ -151,9 +151,16 @@ test.describe("Credit", () => {
     })
   })
 
+<<<<<<< HEAD
   test.describe("Respond to RFQ with Pass", () => {
     test("Passing a newly created RFQ ", async ({ context }) => {
 
+=======
+  test.describe("Pass", () => {
+
+    // skipping until resolution is found as of why it fails on openfin -> https://adaptive.kanbanize.com/ctrl_board/18/cards/5578/details/    
+    test.skip("pass", async ({ context }) => {
+>>>>>>> cd65d213c (setup pull.yml and tests cleanup)
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
