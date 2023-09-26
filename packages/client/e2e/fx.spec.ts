@@ -1,5 +1,4 @@
-import { expect, selectors } from "@playwright/test"
-import { Page } from "playwright"
+import { expect, Page, selectors } from "@playwright/test"
 
 import { test } from "./fixtures"
 import { OPENFIN_PROJECT_NAME } from "./utils"
@@ -34,7 +33,6 @@ test.describe("Fx App", () => {
 
     test.skip(testInfo.project.name !== OPENFIN_PROJECT_NAME)
 
- 
     const popOutButtons = mainWindow.getByTitle("open in new window")
     const toggleLock = mainWindow.getByTitle("toggle layout lock")
 
@@ -60,7 +58,7 @@ test.describe("Fx App", () => {
 
     await expect(mainWindow.locator("text=Live Rates")).toBeVisible()
     expect(poppedOutLiveRatesPage.isClosed()).toBeTruthy()
-    
+
     await poppedOutBlotterPage
       .locator("[data-qa='openfin-chrome__close']")
       .click()

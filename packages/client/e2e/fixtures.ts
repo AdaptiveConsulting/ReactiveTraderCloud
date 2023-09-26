@@ -1,6 +1,5 @@
-import { test as base } from "@playwright/test"
+import { chromium, Page, test as base } from "@playwright/test"
 import * as dotenv from "dotenv"
-import { chromium, Page } from "playwright"
 
 import { OPENFIN_PROJECT_NAME } from "./utils"
 
