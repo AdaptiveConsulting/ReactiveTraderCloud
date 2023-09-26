@@ -153,7 +153,6 @@ test.describe("Credit", () => {
 
   test.describe("Respond to RFQ with Pass", () => {
     test("Passing a newly created RFQ ", async ({ context }) => {
-
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
