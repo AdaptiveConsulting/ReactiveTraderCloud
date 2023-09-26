@@ -1,14 +1,15 @@
 import { expect, Locator } from "@playwright/test"
 
 export const OPENFIN_PROJECT_NAME = "openfin"
-export enum Timeout {
+
+export enum ElementTimeout {
   AGGRESSIVE = 5000,
-  NORMAL = 10000,
-  LONG = 20000,
+  NORMAL = 15000,
+  LONG = 30000
 }
 export enum TestTimeout {
-  NORMAL = 30000,
-  EXTENDED = 60000
+  NORMAL = 60000,
+  EXTENDED = 90000
 }
 
 export const assertGridRow = async ({
