@@ -8,7 +8,6 @@ import {
   scan,
   startWith,
   switchMap,
-  tap,
   withLatestFrom,
 } from "rxjs/operators"
 
@@ -60,7 +59,7 @@ export interface PricedQuoteDetails extends Omit<QuoteDetails, "state"> {
   state: PricedQuoteState
 }
 
-const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
+export const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
   withConnection(),
   shareLatest(),
 )
@@ -72,18 +71,24 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
     [boolean, Record<number, RfqDetails>]
   >(
     (acc, [update, instruments, dealers]) => {
-      const rec = acc[1]
+      // need to know when we can release updates from this stream
+      const hasProcessedStateOfTheWorld = acc[0]
+      // keep record of rfq/trade ID to rfq details .. accepted, rejected etc.
+      const rfqs = acc[1]
+
       switch (update.type) {
-        case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
-          return [false, {}]
-        }
+        case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE:
+          // init state of scan is correct for start of SoW
+          return acc
+        case END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE:
+          return [true, rfqs]
         case RFQ_CREATED_RFQ_UPDATE:
           return [
-            acc[0],
+            hasProcessedStateOfTheWorld,
             {
-              ...rec,
+              ...rfqs,
               [update.payload.id]: {
-                ...rec[update.payload.id],
+                ...rfqs[update.payload.id],
                 ...update.payload,
                 instrument:
                   instruments.find(
@@ -97,21 +102,21 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
           ]
         case RFQ_CLOSED_RFQ_UPDATE:
           return [
-            acc[0],
+            hasProcessedStateOfTheWorld,
             {
-              ...rec,
+              ...rfqs,
               [update.payload.id]: {
-                ...rec[update.payload.id],
+                ...rfqs[update.payload.id],
                 ...update.payload,
               },
             },
           ]
         case QUOTE_CREATED_RFQ_UPDATE: {
-          const previousRfq = rec[update.payload.rfqId]
+          const previousRfq = rfqs[update.payload.rfqId]
           return [
-            acc[0],
+            hasProcessedStateOfTheWorld,
             {
-              ...rec,
+              ...rfqs,
               [update.payload.rfqId]: {
                 ...previousRfq,
                 dealers: [
@@ -129,11 +134,11 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
           ]
         }
         case QUOTE_PASSED_RFQ_UPDATE: {
-          const previousRfq = rec[update.payload.rfqId]
+          const previousRfq = rfqs[update.payload.rfqId]
           return [
-            acc[0],
+            hasProcessedStateOfTheWorld,
             {
-              ...rec,
+              ...rfqs,
               [update.payload.rfqId]: {
                 ...previousRfq,
                 quotes: previousRfq.quotes.map((quote) => ({
@@ -148,11 +153,11 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
           ]
         }
         case QUOTE_QUOTED_RFQ_UPDATE: {
-          const previousRfq = rec[update.payload.rfqId]
+          const previousRfq = rfqs[update.payload.rfqId]
           return [
-            acc[0],
+            hasProcessedStateOfTheWorld,
             {
-              ...rec,
+              ...rfqs,
               [update.payload.rfqId]: {
                 ...previousRfq,
                 quotes: previousRfq.quotes.map((quote) => ({
@@ -166,31 +171,23 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
             },
           ]
         }
-        // Currently the server sets the state of all the other non-passed quotes to
-        // Rejected if one quote is accepted
         case QUOTE_ACCEPTED_RFQ_UPDATE: {
-          const previousRfq = Object.values(rec).find((rfqDetails) =>
-            rfqDetails.quotes.some((quote) => quote.id === update.payload.id),
-          )
-          if (previousRfq) {
-            return [
-              acc[0],
-              {
-                ...rec,
-                [previousRfq.id]: {
-                  ...previousRfq,
-                  quotes: previousRfq.quotes.map((quote) => ({
-                    ...quote,
-                    state: getQuoteStateOnAccept(quote, update.payload),
-                  })),
-                },
+          const previousRfq = rfqs[update.payload.rfqId]
+          // Emulating the server which, in "state of the world" sets the state of
+          // any non-accepted/passed quotes to one of the rejected states
+          return [
+            hasProcessedStateOfTheWorld,
+            {
+              ...rfqs,
+              [previousRfq.id]: {
+                ...previousRfq,
+                quotes: previousRfq.quotes.map((quote) => ({
+                  ...quote,
+                  state: getQuoteStateOnAccept(quote, update.payload),
+                })),
               },
-            ]
-          }
-          return [acc[0], rec]
-        }
-        case END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE: {
-          return [true, rec]
+            },
+          ]
         }
         default:
           return acc
@@ -198,8 +195,8 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
     },
     [false, {}],
   ),
-  filter(([isEndStateOftheWorld]) => isEndStateOftheWorld),
-  map(([, rfqDetailsRec]) => rfqDetailsRec),
+  filter(([hasProcessedStateOfTheWorld]) => hasProcessedStateOfTheWorld),
+  map(([, rfqs]) => rfqs),
   shareLatest(),
 )
 

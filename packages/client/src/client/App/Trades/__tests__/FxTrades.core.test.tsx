@@ -27,6 +27,7 @@ vi.mock("../TradesState/tableTrades", async () => {
   return {
     ...tableTrades,
     useFilterFields: vi.fn().mockReturnValue([]),
+    useCreditTradeRowHighlight: vi.fn().mockReturnValue(undefined),
     useFxTradeRowHighlight: vi.fn().mockReturnValue(undefined),
   }
 })
