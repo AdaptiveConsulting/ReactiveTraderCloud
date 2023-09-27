@@ -2,10 +2,12 @@ import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { startOfDay } from "date-fns"
 import { combineLatest, merge, Observable } from "rxjs"
-import { delay, filter, map, mergeMap, scan, startWith } from "rxjs/operators"
+import { delay, filter, map, mergeMap, startWith } from "rxjs/operators"
 
 import { HIGHLIGHT_ROW_FLASH_TIME } from "@/client/constants"
-import { creditTrades$, trades$ } from "@/services/trades"
+import { QUOTE_ACCEPTED_RFQ_UPDATE } from "@/generated/TradingGateway"
+import { creditRfqUpdates$ } from "@/services/credit"
+import { tradesStream$ } from "@/services/trades"
 import { TradeType } from "@/services/trades/types"
 
 import { ColDef } from "./colConfig"
@@ -357,33 +359,23 @@ export const [creditTradeRowHighlight$, setCreditTradeRowHighlight] =
 /**
  * Emit tradeId of new trades after the initial load
  */
-const newTradeId$ = merge(trades$, creditTrades$).pipe(
-  scan(
-    (acc, trades) => {
-      return {
-        stateOfWorld: acc.stateOfWorld && acc.trades.length === 0,
-        trades: trades,
-        skip: acc.trades.length === trades.length,
-      }
-    },
-    { stateOfWorld: true, trades: [], skip: false } as {
-      stateOfWorld: boolean
-      trades: TradeType[]
-      skip: boolean
-    },
+const newTradeId$ = tradesStream$.pipe(
+  filter(({ isStateOfTheWorld }) => !isStateOfTheWorld),
+  map(({ updates }) => updates[0].tradeId),
+)
+
+const newCreditTradeIds$ = creditRfqUpdates$.pipe(
+  // only need to grab ID on Accept
+  map((update) =>
+    update.type === QUOTE_ACCEPTED_RFQ_UPDATE ? update.payload.rfqId : 0,
   ),
-  filter(
-    ({ stateOfWorld, trades, skip }) =>
-      !stateOfWorld && trades.length > 0 && !skip,
-  ),
-  map(({ trades }) => trades[0].tradeId),
+  filter((rfqId) => rfqId > 0),
 )
 
 /**
- * State hook that emits tradeId of row to highlight for x seconds
- * highlighted row will be either from manually updating tradeRowHighlight$ or a new trade
+ * State hooks that emit tradeId of row to highlight for HIGHLIGHT_ROW_FLASH_TIME ms
+ * highlighted row will be either from manually updating *TradeRowHighlight$ or a new trade
  */
-
 export const [useFxTradeRowHighlight] = bind(
   merge([
     fxTradeRowHighlight$,
@@ -407,8 +399,8 @@ export const [useCreditTradeRowHighlight] = bind(
       delay(HIGHLIGHT_ROW_FLASH_TIME),
       map(() => undefined),
     ),
-    newTradeId$,
-    newTradeId$.pipe(
+    newCreditTradeIds$,
+    newCreditTradeIds$.pipe(
       delay(HIGHLIGHT_ROW_FLASH_TIME),
       map(() => undefined),
     ),

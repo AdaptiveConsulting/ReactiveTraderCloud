@@ -12,7 +12,7 @@ import { creditRfqsById$ } from "../credit"
 import { withConnection } from "../withConnection"
 import { CreditTrade, FxTrade } from "./types"
 
-const tradesStream$ = BlotterService.getTradeStream().pipe(
+export const tradesStream$ = BlotterService.getTradeStream().pipe(
   withConnection(),
   map(({ isStateOfTheWorld, updates }) => ({
     isStateOfTheWorld,
