@@ -79,7 +79,7 @@ export const creditRfqsById$ = creditRfqUpdates$.pipe(
       switch (update.type) {
         case START_OF_STATE_OF_THE_WORLD_RFQ_UPDATE:
           // init state of scan is correct for start of SoW
-          return acc
+          return [false, {}]
         case END_OF_STATE_OF_THE_WORLD_RFQ_UPDATE:
           return [true, rfqs]
         case RFQ_CREATED_RFQ_UPDATE:
