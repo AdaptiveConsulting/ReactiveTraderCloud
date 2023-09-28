@@ -68,7 +68,7 @@ const connectionMapper = (input: HConnectionStatus): ConnectionStatus =>
 // Stream of mapped (Hydra - RT) connection status
 const mappedConnectionStatus$ = hConnectionStatus$().pipe(map(connectionMapper))
 
-const IDLE_TIMEOUT = 15 * 60000
+const IDLE_TIMEOUT_MINUTES = 15
 
 // Dispose of connection and emit when idle for IDLE_TIMEOUT ms
 const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
@@ -84,9 +84,11 @@ const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
     // Only when we are connecting/ed and there is a disposable
     connectionExists(status, dispose),
   ),
-  debounceTime(IDLE_TIMEOUT),
+  debounceTime(IDLE_TIMEOUT_MINUTES * 60000),
   map(([[, dispose]]) => {
-    console.log(`User was idle for ${IDLE_TIMEOUT}, disconnecting`)
+    console.log(
+      `User was idle for ${IDLE_TIMEOUT_MINUTES} minutes .. disconnecting`,
+    )
     dispose()
     connectionDisposable$.next(() => undefined)
     return ConnectionStatus.IDLE_DISCONNECTED
