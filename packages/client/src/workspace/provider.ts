@@ -1,8 +1,9 @@
 import { init as workspacePlatformInit } from "@openfin/workspace-platform"
 
 import {
-  registerCreditNotifications,
-  registerFxNotifications,
+  registerCreditQuoteReceivedNotifications,
+  registerCreditRfqCreatedNotifications,
+  registerFxTradeNotifications,
 } from "@/client/notifications.openfin"
 import { initConnection } from "@/services/connection"
 import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
@@ -12,8 +13,8 @@ import { BASE_URL } from "./constants"
 import { deregisterdock, dockCustomActions, registerDock } from "./dock"
 import { deregisterHome, registerHome, showHome } from "./home"
 import {
-  handleCreditRfqNotification,
-  handleFxTradeNotification,
+  handleCreditViewRfqNotificationEvents,
+  handleFxHighlightTradeNotificationEvents,
 } from "./home/notifications"
 import { deregisterStore, registerStore } from "./store"
 
@@ -49,8 +50,11 @@ async function init() {
   await registerDock()
   await showHome()
 
-  registerFxNotifications(handleFxTradeNotification)
-  registerCreditNotifications(handleCreditRfqNotification)
+  registerFxTradeNotifications(handleFxHighlightTradeNotificationEvents)
+  registerCreditRfqCreatedNotifications(handleCreditViewRfqNotificationEvents)
+  registerCreditQuoteReceivedNotifications(
+    handleCreditViewRfqNotificationEvents,
+  )
 
   const sub = registerSimulatedDealerResponses()
 

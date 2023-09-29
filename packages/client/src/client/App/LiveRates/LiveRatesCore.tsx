@@ -3,8 +3,8 @@ import { useEffect } from "react"
 import { merge } from "rxjs"
 
 import {
-  registerFxNotifications,
-  unregisterFxNotifications,
+  registerFxTradeNotifications,
+  unregisterFxTradeNotifications,
 } from "@/client/notifications"
 import { WithChildren } from "@/client/utils/utilityTypes"
 
@@ -15,9 +15,9 @@ export const liveRates$ = merge(tiles$, mainHeader$)
 
 const LiveRates = ({ children }: WithChildren) => {
   useEffect(() => {
-    registerFxNotifications()
+    registerFxTradeNotifications()
     return () => {
-      unregisterFxNotifications()
+      unregisterFxTradeNotifications()
     }
   }, [])
 

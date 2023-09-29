@@ -5,7 +5,7 @@ import { executions$ } from "@/services/executions/executions"
 
 import { processFxExecution } from "./notificationsUtils"
 
-export function sendFxTradeNotification(executionTrade: ExecutionTrade) {
+function sendFxTradeNotification(executionTrade: ExecutionTrade) {
   const { title, tradeDetails: tradeCurrencyDetails } =
     processFxExecution(executionTrade)
   const body = `${executionTrade.direction} ${tradeCurrencyDetails}`
@@ -20,7 +20,7 @@ export function sendFxTradeNotification(executionTrade: ExecutionTrade) {
 
 let executionSubscription: Subscription | null = null
 
-export function registerFxNotifications() {
+export function registerFxTradeNotifications() {
   executionSubscription = executions$.subscribe({
     next: (executionTrade) => {
       sendFxTradeNotification(executionTrade)
@@ -34,26 +34,36 @@ export function registerFxNotifications() {
   })
 }
 
-export function unregisterFxNotifications() {
+export function unregisterFxTradeNotifications() {
   if (executionSubscription) {
     executionSubscription.unsubscribe()
   }
 }
 
-// TODO (4823) implement these for Finsemble when upgrading
+//
+// TODO (5580) implement these for Finsemble when adding in Credit apps/views
+//
 
-export function registerCreditNotifications() {
+export function registerCreditRfqCreatedNotifications() {
   // no-op
 }
 
-export function unregisterCreditNotifications() {
+export function unregisterCreditRfqCreatedNotifications() {
   // no-op
 }
 
-export function registerCreatedCreditNotification() {
+export function registerCreditQuoteReceivedNotifications() {
   // no-op
 }
 
-export function unregisterCreatedCreditNotification() {
+export function unregisterCreditQuoteReceivedNotifications() {
+  // no-op
+}
+
+export function registerCreditQuoteAcceptedNotifications() {
+  // no-op
+}
+
+export function unregisterCreditQuoteAcceptedNotifications() {
   // no-op
 }

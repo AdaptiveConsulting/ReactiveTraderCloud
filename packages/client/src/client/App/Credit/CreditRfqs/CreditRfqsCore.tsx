@@ -3,8 +3,8 @@ import { useEffect } from "react"
 import styled from "styled-components"
 
 import {
-  registerCreditNotifications,
-  unregisterCreditNotifications,
+  registerCreditQuoteReceivedNotifications,
+  unregisterCreditQuoteReceivedNotifications,
 } from "@/client/notifications"
 import { WithChildren } from "@/client/utils/utilityTypes"
 
@@ -19,10 +19,10 @@ const CreditRfqsCoreWrapper = styled.div`
 `
 const CreditRfqsCore = ({ children }: WithChildren) => {
   useEffect(() => {
-    registerCreditNotifications()
+    registerCreditQuoteReceivedNotifications()
 
     return () => {
-      unregisterCreditNotifications()
+      unregisterCreditQuoteReceivedNotifications()
     }
   }, [])
 

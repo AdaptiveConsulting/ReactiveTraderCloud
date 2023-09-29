@@ -12,8 +12,10 @@ import { RT_PLATFORM_UUID_PREFIX } from "@/client/OpenFin/utils/window"
 
 import { VITE_RT_URL } from "../constants"
 
+// TODO what about TASK_HIGHLIGHT_CREDIT_TRADE
+
 let rfqsView: View | null = null
-export const handleCreditRfqNotification = async (
+export const handleCreditViewRfqNotificationEvents = async (
   event: NotificationActionEvent,
 ) => {
   if (event.result.task === TASK_HIGHLIGHT_CREDIT_RFQ) {
@@ -24,6 +26,9 @@ export const handleCreditRfqNotification = async (
     )?.isRunning
 
     //if credit is already open, highlight the rfq
+
+    // TODO what if it is not open .. just give up?
+
     if (isCreditOpen) {
       handleHighlightRfqAction(event)
     } else if (!rfqsView) {
@@ -46,7 +51,7 @@ export const handleCreditRfqNotification = async (
 }
 
 let blotterView: View | null = null
-export const handleFxTradeNotification = async (
+export const handleFxHighlightTradeNotificationEvents = async (
   event: NotificationActionEvent,
 ) => {
   if (event.result.task === TASK_HIGHLIGHT_FX_TRADE) {
