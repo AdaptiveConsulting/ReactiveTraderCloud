@@ -192,10 +192,10 @@ There seems to be some issues with storybook cache on some machines, we can solv
 
 How to run e2e tests against the web
 
-Install chromium if not already installed
+Install Playwright if not already installed
 
 ```sh
-npx playwright install --with-deps chromium
+npx playwright install
 ```
 
 ```sh
@@ -210,10 +210,10 @@ arguments: --headed (launches a browser visible to the user) and --workers=1 to 
 
 How to run e2e tests against openfin
 
-Install chromium if not already installed
+Install Playwright if not already installed
 
 ```sh
-npx playwright install --with-deps chromium
+npx playwright install
 ```
 
 ```sh
