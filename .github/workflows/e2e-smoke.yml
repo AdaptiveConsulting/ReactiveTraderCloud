@@ -27,7 +27,7 @@ jobs:
       - name: Install
         run: |
           npm ci 
-          npx playwright install --with-deps chromium
+          npx playwright install
 
       - name: Test
         env:

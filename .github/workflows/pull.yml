@@ -163,7 +163,7 @@ jobs:
       - name: Install
         run: |
           npm ci 
-          npx playwright install --with-deps chromium
+          npx playwright install
 
       - name: Test
         env:
@@ -193,7 +193,7 @@ jobs:
       - name: Install
         run: |
           npm ci 
-          npx playwright install --with-deps chromium
+          npx playwright install
 
       - name: start openfin
         run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json
@@ -225,7 +225,7 @@ jobs:
       - name: Install
         run: |
           npm ci 
-          npx playwright install --with-deps chromium
+          npx playwright install
 
       - name: start openfin
         run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-credit.json

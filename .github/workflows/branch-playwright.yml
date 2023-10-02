@@ -1,0 +1,105 @@
+name: test[to_be_deleted]
+
+on:
+  push:
+    branches:
+      - "**"
+
+defaults:
+  run:
+    working-directory: packages/client
+
+env:
+  BUCKET_WEB: reactive-trader-web-builds
+  BUCKET_OPENFIN: reactive-trader-openfin-builds
+  BUCKET_FINSEMBLE: reactive-trader-finsemble-builds
+  BUCKET_LAUNCHER: reactive-trader-launcher-builds
+
+jobs:
+  web-end-to-end-test:
+    name: Web e2e test - All
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set Node version
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        env:
+          E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/2283
+        run: |
+          npm run e2e:web credit.spec
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: playwright-report
+          path: packages/client/playwright-report/
+          retention-days: 7
+
+  # openfin-end-to-end-test-fx:
+  #   name: Openfin e2e test - FX
+
+  #   runs-on: windows-latest
+
+  #   steps:
+  #     - uses: actions/checkout@v3
+
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 20.5.1
+
+  #     - name: Install dependencies
+  #       run: npm ci
+
+  #     - name: start openfin
+  #       run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/2283/config/rt-fx.json
+
+  #     - name: Run tests
+  #       env:
+  #         E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/2283
+  #       run: npm run e2e:openfin spot-tile.spec blotter.spec
+
+  #     - uses: actions/upload-artifact@v3
+  #       if: failure()
+  #       with:
+  #         name: playwright-report
+  #         path: packages/client/playwright-report/
+  #         retention-days: 7
+
+  openfin-end-to-end-test-credit:
+    name: Openfin e2e test - Credit
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.5.1
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: start openfin
+        run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/2283/config/rt-credit.json
+
+      - name: Run tests
+        env:
+          E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/2283
+        run: npm run e2e:openfin credit.spec
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: playwright-report
+          path: packages/client/playwright-report/
+          retention-days: 7
