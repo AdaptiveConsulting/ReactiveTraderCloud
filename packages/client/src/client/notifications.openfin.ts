@@ -1,6 +1,6 @@
 import * as CSS from "csstype"
 import {
-  addEventListener,
+  addEventListener as addOpenFinNotificationsEventListener,
   ContainerTemplateFragment,
   create,
   CustomTemplateOptions,
@@ -316,7 +316,7 @@ export const registerFxTradeNotifications = (
     (message: { tradeId: number }) => setFxTradeRowHighlight(message.tradeId),
   )
 
-  addEventListener(
+  addOpenFinNotificationsEventListener(
     "notification-action",
     handler || handleHighlightFxBlotterAction,
   )
@@ -336,9 +336,10 @@ export const registerFxTradeNotifications = (
 
 export const unregisterFxTradeNotifications = () => {
   if (executionSubscription) {
-    areFxTradeNotificationsRegistered = false
     executionSubscription.unsubscribe()
+    executionSubscription = null
   }
+  areFxTradeNotificationsRegistered = false
 }
 
 let areCreditRfqCreatedNotificationsRegistered = false
@@ -352,28 +353,30 @@ export const registerCreditRfqCreatedNotifications = (
   }
   areCreditRfqCreatedNotificationsRegistered = true
 
-  if (creditRfqCreatedSubscription == null) {
-    fin.InterApplicationBus.subscribe(
-      { uuid: "*" },
-      TOPIC_HIGHLIGHT_CREDIT_RFQ,
-      (message: { rfqId: number }) => {
-        setCreditRfqCardHighlight(message.rfqId)
-      },
-    )
+  fin.InterApplicationBus.subscribe(
+    { uuid: "*" },
+    TOPIC_HIGHLIGHT_CREDIT_RFQ,
+    (message: { rfqId: number }) => {
+      setCreditRfqCardHighlight(message.rfqId)
+    },
+  )
 
-    addEventListener("notification-action", handler || handleHighlightRfqAction)
+  addOpenFinNotificationsEventListener(
+    "notification-action",
+    handler || handleHighlightRfqAction,
+  )
 
-    creditRfqCreatedSubscription = createdCreditConfirmation$.subscribe(
-      (rfqRquest) => {
-        sendCreditRfqCreatedNotification(rfqRquest)
-      },
-    )
-  }
+  creditRfqCreatedSubscription = createdCreditConfirmation$.subscribe(
+    (rfqRquest) => {
+      sendCreditRfqCreatedNotification(rfqRquest)
+    },
+  )
 }
 
 export const unregisterCreditRfqCreatedNotifications = () => {
-  if (creditRfqCreatedSubscription != null) {
+  if (creditRfqCreatedSubscription) {
     creditRfqCreatedSubscription.unsubscribe()
+    creditRfqCreatedSubscription = null
   }
   areCreditRfqCreatedNotificationsRegistered = false
 }
@@ -397,7 +400,10 @@ export const registerCreditQuoteReceivedNotifications = (
     },
   )
 
-  addEventListener("notification-action", handler || handleHighlightRfqAction)
+  addOpenFinNotificationsEventListener(
+    "notification-action",
+    handler || handleHighlightRfqAction,
+  )
 
   creditQuoteReceivedSubscription = lastQuoteReceived$.subscribe({
     next: (quote) => {
@@ -413,8 +419,9 @@ export const registerCreditQuoteReceivedNotifications = (
 }
 
 export const unregisterCreditQuoteReceivedNotifications = () => {
-  if (creditQuoteReceivedSubscription != null) {
+  if (creditQuoteReceivedSubscription) {
     creditQuoteReceivedSubscription.unsubscribe()
+    creditQuoteReceivedSubscription = null
   }
   areCreditQuoteReceivedNotificationsRegistered = false
 }
@@ -429,6 +436,7 @@ export const registerCreditQuoteAcceptedNotifications = (
     return
   }
   areCreditQuoteAcceptedNotificationsRegistered = true
+
   fin.InterApplicationBus.subscribe(
     { uuid: "*" },
     TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
@@ -437,7 +445,7 @@ export const registerCreditQuoteAcceptedNotifications = (
     },
   )
 
-  addEventListener(
+  addOpenFinNotificationsEventListener(
     "notification-action",
     handler || handleHighlightCreditBlotterAction,
   )
@@ -448,8 +456,9 @@ export const registerCreditQuoteAcceptedNotifications = (
 }
 
 export const unregisterCreditQuoteAcceptedNotifications = () => {
-  if (creditQuoteAcceptedSubscription != null) {
+  if (creditQuoteAcceptedSubscription) {
     creditQuoteAcceptedSubscription.unsubscribe()
+    creditQuoteAcceptedSubscription = null
   }
   areCreditQuoteAcceptedNotificationsRegistered = false
 }

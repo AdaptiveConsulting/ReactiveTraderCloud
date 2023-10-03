@@ -2,10 +2,6 @@ import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 import styled from "styled-components"
 
-import {
-  registerCreditRfqCreatedNotifications,
-  unregisterCreditRfqCreatedNotifications,
-} from "@/client/notifications"
 import { WithChildren } from "@/client/utils/utilityTypes"
 import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 
@@ -64,11 +60,8 @@ const CreditRfqFooter = styled.footer`
 const CreditRfqFormCore = ({ children }: WithChildren) => {
   useEffect(() => {
     const subscription = registerSimulatedDealerResponses()
-    registerCreditRfqCreatedNotifications()
-
     return () => {
       subscription.unsubscribe()
-      unregisterCreditRfqCreatedNotifications()
     }
   }, [])
 

@@ -95,11 +95,19 @@ const notificationsGranted = () =>
     }
   })
 
+// NOTE: All the guard code complication below is due to:
+//       a) the delay of the notificationsGranted promise - in development mode effects, unreg happens before reg
+//       b) other calls of the same registration in the same context causes duplicate subs
+
 let executionSubscription: Subscription | null = null
 
 export async function registerFxTradeNotifications() {
   try {
     await notificationsGranted()
+
+    if (executionSubscription) {
+      return
+    }
 
     // send trade executed for this tab only (driven from executeTrade ACK)
     executionSubscription = executions$.subscribe({
@@ -121,29 +129,41 @@ export async function registerFxTradeNotifications() {
 export function unregisterFxTradeNotifications() {
   if (executionSubscription) {
     executionSubscription.unsubscribe()
+    executionSubscription = null
   }
 }
 
 let creditRfqCreatedSubscription: Subscription | null = null
 
-export function registerCreditRfqCreatedNotifications() {
-  // send rfq created alerts for this tab only (driven from credit createRfq ACK)
-  creditRfqCreatedSubscription = createdCreditConfirmation$.subscribe({
-    next: (createdRFQRequest) => {
-      sendCreditRfqCreatedNotification(createdRFQRequest)
-    },
-    error: (e) => {
-      console.error(e)
-    },
-    complete: () => {
-      console.error("Credit notifications RFQ created stream completed!?")
-    },
-  })
+export async function registerCreditRfqCreatedNotifications() {
+  try {
+    await notificationsGranted()
+
+    if (creditRfqCreatedSubscription) {
+      return
+    }
+
+    // send rfq created alerts for this tab only (driven from credit createRfq ACK)
+    creditRfqCreatedSubscription = createdCreditConfirmation$.subscribe({
+      next: (createdRFQRequest) => {
+        sendCreditRfqCreatedNotification(createdRFQRequest)
+      },
+      error: (e) => {
+        console.error(e)
+      },
+      complete: () => {
+        console.error("Credit notifications RFQ created stream completed!?")
+      },
+    })
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 export function unregisterCreditRfqCreatedNotifications() {
   if (creditRfqCreatedSubscription) {
     creditRfqCreatedSubscription.unsubscribe()
+    creditRfqCreatedSubscription = null
   }
 }
 
@@ -152,6 +172,10 @@ let creditQuoteReceivedSubscription: Subscription | null = null
 export async function registerCreditQuoteReceivedNotifications() {
   try {
     await notificationsGranted()
+
+    if (creditQuoteReceivedSubscription) {
+      return
+    }
 
     // send quote alerts for every live tab connected to BE (driven from rfq update feed)
     creditQuoteReceivedSubscription = lastQuoteReceived$.subscribe({
@@ -173,6 +197,7 @@ export async function registerCreditQuoteReceivedNotifications() {
 export function unregisterCreditQuoteReceivedNotifications() {
   if (creditQuoteReceivedSubscription) {
     creditQuoteReceivedSubscription.unsubscribe()
+    creditQuoteReceivedSubscription = null
   }
 }
 
@@ -181,6 +206,10 @@ let creditQuoteAcceptedSubscription: Subscription | null = null
 export async function registerCreditQuoteAcceptedNotifications() {
   try {
     await notificationsGranted()
+
+    if (creditQuoteAcceptedSubscription) {
+      return
+    }
 
     // send accepted quote alerts for this tab only (driven from credit accept ACK)
     creditQuoteAcceptedSubscription = acceptedRfqWithQuote$.subscribe({
@@ -202,5 +231,6 @@ export async function registerCreditQuoteAcceptedNotifications() {
 export function unregisterCreditQuoteAcceptedNotifications() {
   if (creditQuoteAcceptedSubscription) {
     creditQuoteAcceptedSubscription.unsubscribe()
+    creditQuoteAcceptedSubscription = null
   }
 }
