@@ -4,7 +4,7 @@ import { expect, Page } from "@playwright/test"
 import fs from "fs"
 
 import { test } from "./fixtures"
-import { isOpenFin } from "./utils"
+import { ElementTimeout, isOpenFin } from "./utils"
 
 const getTradeIDColIndex = () => {
   // const tradeIndex = fxColFields.indexOf(
@@ -72,60 +72,34 @@ test.describe("Trade Blotter", () => {
   })
 
   test("when user buys a currency, the new row should flash briefly ", async () => {
-<<<<<<< HEAD
     await tilePage.locator("input[id='notional-input-EURUSD']").clear()
     await tilePage
       .locator("input[id='notional-input-EURUSD']")
       .pressSequentially("1m")
 
-    await tilePage.locator('[data-testid="Buy-EURUSD"]').nth(0).click()
+    // circumvent low occurences of false negative. if it fails on 1st attempt then we retry until timeout
+    const retryTimeout = ElementTimeout.NORMAL
+    await expect(async () => {
+      await tilePage.locator("input[id='notional-input-EURUSD']").clear()
+      await tilePage
+        .locator("input[id='notional-input-EURUSD']")
+        .pressSequentially("1m")
+      await tilePage.locator('[data-testid="Buy-EURUSD"]').nth(0).click()
 
-    const tradeID = await tilePage
-      .locator("[data-testid='trade-id']")
-      .innerText()
-    const newRow = blotterPage.getByTestId(`trades-grid-row-${tradeID}`)
-    await expect(newRow).toHaveCSS("animation", /1s ease-in-out/)
-=======
-    const MAX_ATTEMPT = 2
-    let isNewRowFlashing = false
+      const tradeID = await tilePage
+        .locator("[data-testid='trade-id']")
+        .innerText()
 
-    const placeTradeAndValidateFlashing = async () => {
-      try {
-        await tilePage.locator('[data-testid="Buy-EURUSD"]').nth(0).click()
+      const newRow = blotterPage.getByTestId(`trades-grid-row-${tradeID}`)
 
-        const tradeID = await tilePage
-          .locator("[data-testid='trade-id']")
-          .innerText()
-
-        const newRow = blotterPage.getByTestId(`trades-grid-row-${tradeID}`)
-
-        await expect(newRow).toHaveCSS("animation", /1s ease-in-out/, {
-          timeout: Timeout.AGGRESSIVE,
-        })
-        isNewRowFlashing = true
-      } catch (exception) {
-        console.warn(`Failed to to see row flashing, retrying ...`)
-        isNewRowFlashing = false
-      }
-    }
-
-    await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-    await tilePage
-      .locator("input[id='notional-input-EURUSD']")
-      .type("1m")
-      .then(async () => {
-        let attempt = 1
-        while (!isNewRowFlashing) {
-          expect(
-            attempt,
-            "Max attempts trying to get new row flashing, failing the test",
-          ).toBeLessThanOrEqual(MAX_ATTEMPT)
-          await placeTradeAndValidateFlashing()
-          attempt++
-        }
-        return
+      await expect(newRow).toHaveCSS("animation", /1s ease-in-out/, {
+        timeout: ElementTimeout.AGGRESSIVE,
       })
->>>>>>> 9c133db5e (added retry logic to circumvent intermittent issue asserting row flashing)
+    }, `Unable to retry clicking on accept button within ${retryTimeout} seconds`).toPass(
+      {
+        timeout: retryTimeout,
+      },
+    )
   })
 
   test("when user clicks on the header of any column, it should sort it (depending on number of clicks, can be ascending or descending)", async () => {
