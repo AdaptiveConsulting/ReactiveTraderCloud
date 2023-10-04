@@ -1,6 +1,10 @@
 import { broadcast } from "@finos/fdc3"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
 
+import {
+  registerFxTradeNotifications,
+  unregisterFxTradeNotifications,
+} from "@/client/notifications"
 import { FxTrade, trades$ } from "@/services/trades"
 
 import { TradesGrid } from "./TradesGrid"
@@ -8,6 +12,13 @@ import { useFxTradeRowHighlight } from "./TradesState"
 import { fxColDef, fxColFields } from "./TradesState/colConfig"
 
 const FxTrades = () => {
+  useEffect(() => {
+    registerFxTradeNotifications()
+    return () => {
+      unregisterFxTradeNotifications()
+    }
+  }, [])
+
   const highlightedRow = useFxTradeRowHighlight()
 
   const tryBroadcastContext = useCallback((trade: FxTrade) => {

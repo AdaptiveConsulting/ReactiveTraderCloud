@@ -57,7 +57,7 @@
     "workspace:dev": "cross-env TARGET=workspace vite --config vite-ws.config.ts",
     "workspace:build": "cross-env TARGET=workspace vite build --config vite-ws.config.ts",
     "workspace:serve": "cross-env TARGET=workspace vite serve --config vite-ws.config.ts",
-    "workspace:run": "cross-env-shell \"wait-on -l http://localhost:2017/config/workspace.json && openfin -l http://localhost:2017/config/workspace.json\"",
+    "workspace:run": "cross-env-shell \"wait-on -l http://localhost:2017/config/workspace.json && openfin -l -c http://localhost:2017/config/workspace.json\"",
     "workspace:start": "concurrently \"npm:openfin:dev\" \"npm:workspace:dev\" \"npm:workspace:run\"",
     "finsemble:dev": "cross-env TARGET=finsemble vite",
     "finsemble:build": "cross-env TARGET=finsemble vite build",

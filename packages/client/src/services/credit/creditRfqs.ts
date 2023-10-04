@@ -61,7 +61,6 @@ export interface PricedQuoteDetails extends Omit<QuoteDetails, "state"> {
 
 export const creditRfqUpdates$ = WorkflowService.subscribe().pipe(
   withConnection(),
-  shareLatest(),
 )
 
 export const creditRfqsById$ = creditRfqUpdates$.pipe(

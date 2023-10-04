@@ -1,6 +1,5 @@
 import { bind, shareLatest } from "@react-rxjs/core"
-import { of } from "rxjs"
-import { map, scan, tap } from "rxjs/operators"
+import { map, scan } from "rxjs/operators"
 
 import {
   ADDED_INSTRUMENT_UPDATE,
@@ -71,7 +70,6 @@ export const [useCreditInstruments, creditInstruments$] = bind(
   creditInstrumentsByCusip$.pipe(
     map((creditInstrumentsByCusip) => Object.values(creditInstrumentsByCusip)),
   ),
-  [],
 )
 
 export const [useCreditInstrumentById, creditInstrumentById$] = bind(
