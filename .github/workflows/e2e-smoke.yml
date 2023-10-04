@@ -25,9 +25,7 @@ jobs:
           node-version: 20
 
       - name: Install
-        run: |
-          npm ci 
-          npx playwright install
+        run: npm ci 
 
       - name: Test
         env:

@@ -10,7 +10,8 @@ const config: PlaywrightTestConfig = {
     {
       name: "chrome",
       use: {
-        ...devices["Desktop Chrome"],
+        ...devices["Desktop Chrome"], 
+        channel: 'chrome',
         //Artifacts
         screenshot: "only-on-failure",
         video: "retain-on-failure",

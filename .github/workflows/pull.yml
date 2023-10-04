@@ -161,9 +161,7 @@ jobs:
           node-version: 20
 
       - name: Install
-        run: |
-          npm ci 
-          npx playwright install
+        run: npm ci 
 
       - name: Test
         env:
@@ -191,9 +189,7 @@ jobs:
           node-version: 20.5.1
 
       - name: Install
-        run: |
-          npm ci 
-          npx playwright install
+        run: npm ci
 
       - name: start openfin
         run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-fx.json
@@ -223,9 +219,7 @@ jobs:
           node-version: 20.5.1
 
       - name: Install
-        run: |
-          npm ci 
-          npx playwright install
+        run: npm ci
 
       - name: start openfin
         run: npm run _e2e:openfin:run --manifest_url=https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}/config/rt-credit.json
