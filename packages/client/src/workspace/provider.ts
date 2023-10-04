@@ -1,6 +1,7 @@
 import { init as workspacePlatformInit } from "@openfin/workspace-platform"
 
 import {
+  registerCreditQuoteAcceptedNotifications,
   registerCreditQuoteReceivedNotifications,
   registerCreditRfqCreatedNotifications,
   registerFxTradeNotifications,
@@ -13,7 +14,7 @@ import { BASE_URL } from "./constants"
 import { deregisterdock, dockCustomActions, registerDock } from "./dock"
 import { deregisterHome, registerHome, showHome } from "./home"
 import {
-  handleCreditViewRfqNotificationEvents,
+  handleCreditNotificationEvents,
   handleFxHighlightTradeNotificationEvents,
 } from "./home/notifications"
 import { deregisterStore, registerStore } from "./store"
@@ -51,10 +52,9 @@ async function init() {
   await showHome()
 
   registerFxTradeNotifications(handleFxHighlightTradeNotificationEvents)
-  registerCreditRfqCreatedNotifications(handleCreditViewRfqNotificationEvents)
-  registerCreditQuoteReceivedNotifications(
-    handleCreditViewRfqNotificationEvents,
-  )
+  registerCreditRfqCreatedNotifications(handleCreditNotificationEvents)
+  registerCreditQuoteReceivedNotifications(handleCreditNotificationEvents)
+  registerCreditQuoteAcceptedNotifications(handleCreditNotificationEvents)
 
   const sub = registerSimulatedDealerResponses()
 
@@ -62,6 +62,7 @@ async function init() {
 
   const providerWindow = fin.Window.getCurrentSync()
   providerWindow.once("close-requested", async () => {
+    // this runs _after_ the user clicks on confirm in the, well, confirmation dialog
     await deregisterHome()
     await deregisterStore()
     await deregisterdock()

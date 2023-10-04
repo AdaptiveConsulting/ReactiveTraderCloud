@@ -281,6 +281,8 @@ export const handleHighlightFxBlotterAction = (
 
 export const handleHighlightRfqAction = (event: NotificationActionEvent) => {
   if (event.result.task === TASK_HIGHLIGHT_CREDIT_RFQ) {
+    console.warn("hightlight RFQ", event.result.payload)
+
     fin.InterApplicationBus.publish(
       TOPIC_HIGHLIGHT_CREDIT_RFQ,
       event.result.payload,
@@ -288,8 +290,11 @@ export const handleHighlightRfqAction = (event: NotificationActionEvent) => {
   }
 }
 
-const handleHighlightCreditBlotterAction = (event: NotificationActionEvent) => {
+export const handleHighlightCreditBlotterAction = (
+  event: NotificationActionEvent,
+) => {
   if (event.result.task === TASK_HIGHLIGHT_CREDIT_TRADE) {
+    console.warn("hightlight Credit Trade", event.result.payload)
     fin.InterApplicationBus.publish(
       TOPIC_HIGHLIGHT_CREDIT_BLOTTER,
       event.result.payload,
