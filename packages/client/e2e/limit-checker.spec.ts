@@ -1,4 +1,4 @@
-import { Page } from "playwright"
+import { Page } from "@playwright/test"
 
 import { test } from "./fixtures"
 import { assertGridCell, assertGridRow, OPENFIN_PROJECT_NAME, Timeout } from "./utils"

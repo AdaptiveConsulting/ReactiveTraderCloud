@@ -188,7 +188,7 @@ jobs:
         with:
           node-version: 20.5.1
 
-      - name: Install dependencies
+      - name: Install
         run: npm ci
 
       - name: start openfin
@@ -218,7 +218,7 @@ jobs:
         with:
           node-version: 20.5.1
 
-      - name: Install dependencies
+      - name: Install
         run: npm ci
 
       - name: start openfin

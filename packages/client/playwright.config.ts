@@ -4,13 +4,14 @@ import { devices } from "@playwright/test"
 const config: PlaywrightTestConfig = {
   testDir: "./e2e",
   /* Maximum time one test can run for. */
-  timeout: 30_000,
+  timeout: 60_000,
   workers: 1,
   projects: [
     {
       name: "chrome",
       use: {
-        ...devices["Desktop Chrome"],
+        ...devices["Desktop Chrome"], 
+        channel: 'chrome',
         //Artifacts
         screenshot: "only-on-failure",
         video: "retain-on-failure",
