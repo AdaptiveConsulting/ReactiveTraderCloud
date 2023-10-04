@@ -192,7 +192,7 @@ jobs:
       - name: Run tests
         env:
           E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
-        run: npm run e2e:openfin spot-tile.spec blotter.spec
+        run: npm run e2e:openfin spot-tile.spec blotter.spec fx-analytics.spec
 
       - uses: actions/upload-artifact@v3
         if: failure()
