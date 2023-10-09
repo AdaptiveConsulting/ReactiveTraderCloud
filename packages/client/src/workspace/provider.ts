@@ -11,11 +11,11 @@ import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqRes
 
 import { customActions, overrideCallback } from "./browser"
 import { BASE_URL } from "./constants"
-import { deregisterdock, dockCustomActions, registerDock } from "./dock"
+import { deregisterDock, dockCustomActions, registerDock } from "./dock"
 import { deregisterHome, registerHome, showHome } from "./home"
 import {
   handleCreditNotificationEvents,
-  handleFxHighlightTradeNotificationEvents,
+  handleFxNotificationEvents,
 } from "./home/notifications"
 import { deregisterStore, registerStore } from "./store"
 
@@ -51,12 +51,12 @@ async function init() {
   await registerDock()
   await showHome()
 
-  registerFxTradeNotifications(handleFxHighlightTradeNotificationEvents)
+  registerFxTradeNotifications(handleFxNotificationEvents)
   registerCreditRfqCreatedNotifications(handleCreditNotificationEvents)
   registerCreditQuoteReceivedNotifications(handleCreditNotificationEvents)
   registerCreditQuoteAcceptedNotifications(handleCreditNotificationEvents)
 
-  const sub = registerSimulatedDealerResponses()
+  const simulatedDealersSubscription = registerSimulatedDealerResponses()
 
   await initConnection()
 
@@ -65,8 +65,8 @@ async function init() {
     // this runs _after_ the user clicks on confirm in the, well, confirmation dialog
     await deregisterHome()
     await deregisterStore()
-    await deregisterdock()
-    sub.unsubscribe()
+    await deregisterDock()
+    simulatedDealersSubscription.unsubscribe()
     fin.Platform.getCurrentSync().quit()
   })
 }

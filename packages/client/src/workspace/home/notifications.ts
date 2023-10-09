@@ -105,7 +105,7 @@ export const handleCreditNotificationEvents = async (
 }
 
 let blotterView: View | null = null
-export const handleFxHighlightTradeNotificationEvents = async (
+export const handleFxNotificationEvents = async (
   event: NotificationActionEvent,
 ) => {
   if (event.result.task !== TASK_HIGHLIGHT_FX_TRADE) {
