@@ -1,15 +1,20 @@
 import { Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { assertGridCell, assertGridRow, OPENFIN_PROJECT_NAME, Timeout } from "./utils"
+import {
+  assertGridCell,
+  assertGridRow,
+  ElementTimeout,
+  isOpenFin,
+} from "./utils"
 
 test.describe("Limit Checker", () => {
   let tilePage: Page
   let blotterPage: Page
   let limitCheckerPage: Page
 
-  test.beforeAll(async ({ fxPagesRec, limitCheckerPageRec }, testInfo) => {
-    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+  test.beforeAll(async ({ fxPagesRec, limitCheckerPageRec }, workerInfo) => {
+    if (isOpenFin(workerInfo)) {
       tilePage = fxPagesRec["fx-tiles"]
       blotterPage = fxPagesRec["fx-blotter"]
       limitCheckerPage = limitCheckerPageRec
@@ -17,8 +22,8 @@ test.describe("Limit Checker", () => {
   })
 
   // eslint-disable-next-line no-empty-pattern
-  test("Trade is checked and allowed if notional is under set limit", async ({}, testInfo) => {
-    test.skip(testInfo.project.name !== OPENFIN_PROJECT_NAME, "Openfin Only")
+  test("Trade is checked and allowed if notional is under set limit", async ({}, workerInfo) => {
+    test.skip(!isOpenFin(workerInfo), "Openfin Only")
 
     const limitTableFirstRowCells = limitCheckerPage
       .locator(`[role="grid"] > div`)
@@ -55,7 +60,7 @@ test.describe("Limit Checker", () => {
     await tradeBlotterFirstRowCells
       .nth(1)
       .getByText(lastTradeId + 1 + "")
-      .waitFor({ state: "visible", timeout: Timeout.AGGRESSIVE })
+      .waitFor({ state: "visible", timeout: ElementTimeout.AGGRESSIVE })
 
     await assertGridRow({
       row: limitTableFirstRowCells,
@@ -78,8 +83,9 @@ test.describe("Limit Checker", () => {
     })
   })
 
-  test("Trade is blocked if notional is above limit", async ({}, testInfo) => {
-    test.skip(testInfo.project.name !== OPENFIN_PROJECT_NAME, "Openfin Only")
+  // eslint-disable-next-line no-empty-pattern
+  test("Trade is blocked if notional is above limit", async ({}, workerInfo) => {
+    test.skip(!isOpenFin(workerInfo), "Openfin Only")
 
     const limitTableFirstRowCells = limitCheckerPage
       .locator(`[role="grid"] > div`)

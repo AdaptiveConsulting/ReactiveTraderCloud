@@ -1,15 +1,15 @@
 import { expect, Page, selectors } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { OPENFIN_PROJECT_NAME } from "./utils"
+import { isOpenFin } from "./utils"
 
 test.describe("Fx App", () => {
   let mainWindow: Page
   let tilePage: Page
   let blotterPage: Page
 
-  test.beforeAll(async ({ context, fxPagesRec }, testInfo) => {
-    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+  test.beforeAll(async ({ context, fxPagesRec }, workerInfo) => {
+    if (isOpenFin(workerInfo)) {
       mainWindow = fxPagesRec["mainWindow"]
       tilePage = fxPagesRec["fx-tiles"]
       blotterPage = fxPagesRec["fx-blotter"]
@@ -27,11 +27,11 @@ test.describe("Fx App", () => {
 
   test.skip("Views should open new windows when popped out, and reattach to main window when closed", async ({
     context,
-  }, testInfo) => {
+  }, workerInfo) => {
     //TODO either adapt this test for web tear out or write a companion test
     //TODO Test is failing intermittently due to issue documented in RT-5538. Skipping the test until resolved
 
-    test.skip(testInfo.project.name !== OPENFIN_PROJECT_NAME)
+    test.skip(!isOpenFin(workerInfo), "openfin only")
 
     const popOutButtons = mainWindow.getByTitle("open in new window")
     const toggleLock = mainWindow.getByTitle("toggle layout lock")

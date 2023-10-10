@@ -30,7 +30,7 @@
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --max-warnings 0",
     "lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --max-warnings 0 --fix",
     "lint:cache": "npm run lint -- --cache",
-    "_format": "prettier README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\"",
+    "_format": "prettier README.md \"src/**/*.{js,jsx,ts,tsx,json,md}\" \"e2e/**/*.ts\"",
     "format": "npm run _format -- --write",
     "format:check": "npm run _format -- --check",
     "test": "vitest",

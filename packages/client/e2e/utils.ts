@@ -1,15 +1,17 @@
-import { expect, Locator } from "@playwright/test"
+import { expect, Locator, WorkerInfo } from "@playwright/test"
 
-export const OPENFIN_PROJECT_NAME = "openfin"
+export const isOpenFin = (workerInfo: WorkerInfo) =>
+  workerInfo.project.name === "openfin"
 
 export enum ElementTimeout {
   AGGRESSIVE = 5000,
   NORMAL = 15000,
-  LONG = 30000
+  LONG = 30000,
+  RFQTIMEOUT = 10500,
 }
 export enum TestTimeout {
   NORMAL = 60000,
-  EXTENDED = 90000
+  EXTENDED = 90000,
 }
 
 export const assertGridRow = async ({

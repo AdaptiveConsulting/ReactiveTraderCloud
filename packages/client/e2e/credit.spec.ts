@@ -1,15 +1,15 @@
 import { expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { ElementTimeout, OPENFIN_PROJECT_NAME, TestTimeout } from "./utils"
+import { ElementTimeout, isOpenFin, TestTimeout } from "./utils"
 
 test.describe("Credit", () => {
   let newRfqPage: Page
   let rfqsPage: Page
   let rfqBlotterPage: Page
 
-  test.beforeAll(async ({ context, creditPagesRec }, testInfo) => {
-    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+  test.beforeAll(async ({ context, creditPagesRec }, workerInfo) => {
+    if (isOpenFin(workerInfo)) {
       const mainWindow = creditPagesRec["mainWindow"]
 
       await mainWindow.evaluate(async () => {
@@ -19,6 +19,7 @@ test.describe("Credit", () => {
       newRfqPage = creditPagesRec["credit-new-rfq"]
       rfqsPage = creditPagesRec["credit-rfqs"]
       rfqBlotterPage = creditPagesRec["credit-blotter"]
+
       newRfqPage.setViewportSize({ width: 1280, height: 1024 })
       rfqsPage.setViewportSize({ width: 1280, height: 1024 })
       rfqBlotterPage.setViewportSize({ width: 1280, height: 1024 })
@@ -34,8 +35,8 @@ test.describe("Credit", () => {
     }
   })
 
-  test.afterEach(async ({ context }, testInfo) => {
-    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+  test.afterEach(async ({ context }, workerInfo) => {
+    if (isOpenFin(workerInfo)) {
       const subWindowFrame = context
         .pages()
         .find((page) => page.url().includes("openfin-sub-window-frame"))
@@ -52,40 +53,8 @@ test.describe("Credit", () => {
     test.setTimeout(TestTimeout.EXTENDED)
 
     test("Create RFQ for GOOGL @smoke", async () => {
-      const MAX_ATTEMPT = 2
-
-      const clickAcceptButton = async () => {
-        const firstQuote = rfqsPage.getByTestId("quotes").locator("div").first()
-        const acceptButton = firstQuote.getByText(/Accept/)
-
-        await firstQuote.hover()
-        // Wait for first quote response
-        await expect(firstQuote).not.toContainText("Awaiting response", {
-          timeout: ElementTimeout.LONG,
-        })
-        await acceptButton.click({ timeout: ElementTimeout.AGGRESSIVE })
-      }
-
-      // retry logic to circumvent intermittent failures at clicking on the accept button
-      const acceptQuote = async () => {
-        let attempt = 0
-        let isQuoteAccepted = false
-        while (!isQuoteAccepted) {
-          // fail test if max attempt threshold is reach
-          expect(
-            attempt,
-            "Check if max attempts to click on accept button is reach",
-          ).toBeLessThan(MAX_ATTEMPT)
-          try {
-            await clickAcceptButton()
-            isQuoteAccepted = true
-          } catch (exception) {
-            console.warn(`Failed to click on the 'accept' button, retrying ...`)
-            isQuoteAccepted = false
-          }
-          attempt++
-        }
-      }
+      const firstQuote = rfqsPage.getByTestId("quotes").locator("div").first()
+      const acceptButton = firstQuote.getByText(/Accept/)
 
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage
@@ -95,7 +64,7 @@ test.describe("Credit", () => {
         .click()
 
       const quantity = newRfqPage.getByTestId("quantity")
-      await quantity.type("2")
+      await quantity.pressSequentially("2")
       await quantity.blur()
 
       await newRfqPage.locator("span").getByText(/All/).click()
@@ -113,7 +82,22 @@ test.describe("Credit", () => {
       // Navigate to Live
       await rfqsPage.getByText(/Live/).first().click()
 
-      await acceptQuote()
+      // Wait for first quote response
+      await expect(firstQuote).not.toContainText("Awaiting response", {
+        timeout: ElementTimeout.LONG,
+      })
+
+      // retry clicking on accept button until timeout
+      const retryTimeout = ElementTimeout.NORMAL
+
+      await expect(async () => {
+        await firstQuote.hover()
+        await acceptButton.click({ timeout: ElementTimeout.AGGRESSIVE })
+      }, `Unable to retry clicking on accept button within ${retryTimeout} seconds`).toPass(
+        {
+          timeout: retryTimeout,
+        },
+      )
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
@@ -144,7 +128,7 @@ test.describe("Credit", () => {
         .click()
 
       const quantity = newRfqPage.getByTestId("quantity")
-      await quantity.type("2")
+      await quantity.pressSequentially("2")
 
       await newRfqPage
         .locator("span")
@@ -181,7 +165,7 @@ test.describe("Credit", () => {
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
       const quantity = newRfqPage.getByTestId("quantity")
-      await quantity.type("2")
+      await quantity.pressSequentially("2")
 
       await newRfqPage
         .locator("span")
