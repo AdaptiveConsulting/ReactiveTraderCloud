@@ -1,15 +1,31 @@
-export function registerFxNotifications(): Promise<void> {
+export function registerFxTradeNotifications(): Promise<void> {
   return Promise.reject("Function should be implemented at platform level")
 }
 
-export function registerCreditQuoteNotifications(): Promise<void> {
+export function unregisterFxTradeNotifications(): Promise<void> {
   return Promise.reject("Function should be implemented at platform level")
 }
 
-export function unregisterCreditQuoteNotifications() {
-  new Error("Function should be implemented at platform level")
+export function registerCreditRfqCreatedNotifications(): Promise<void> {
+  return Promise.reject("Function should be implemented at platform level")
 }
 
-export function registerCreditAcceptedNotifications() {
-  // no-op by default; implemented for OpenFin
+export function unregisterCreditRfqCreatedNotifications(): Promise<void> {
+  return Promise.reject("Function should be implemented at platform level")
+}
+
+export function registerCreditQuoteReceivedNotifications(): Promise<void> {
+  return Promise.reject("Function should be implemented at platform level")
+}
+
+export function unregisterCreditQuoteReceivedNotifications(): Promise<void> {
+  return Promise.reject("Function should be implemented at platform level")
+}
+
+export function registerCreditQuoteAcceptedNotifications(): Promise<void> {
+  return Promise.reject("Function should be implemented at platform level")
+}
+
+export function unregisterCreditQuoteAcceptedNotifications(): Promise<void> {
+  return Promise.reject("Function should be implemented at platform level")
 }

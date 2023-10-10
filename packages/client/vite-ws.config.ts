@@ -1,3 +1,5 @@
+import { existsSync, readdirSync } from "fs"
+import path from "path"
 import { defineConfig, loadEnv, Plugin } from "vite"
 import { createHtmlPlugin } from "vite-plugin-html"
 import { TransformOption, viteStaticCopy } from "vite-plugin-static-copy"
@@ -10,6 +12,74 @@ function getBaseUrl(dev: boolean) {
   return dev
     ? `http://localhost:${localPort}`
     : `${process.env.DOMAIN || ""}${process.env.URL_PATH || ""}` || ""
+}
+
+// Replace files with .<target> if they exist
+// Note - resolveId source and importer args are different between dev and build
+// Some more investigation and work should be done to improve this when possible
+function targetBuildPlugin(dev: boolean, target: string): Plugin {
+  return {
+    name: "targetBuildPlugin",
+    enforce: "pre",
+    resolveId: function (source, importer) {
+      if (dev) {
+        const extension = source.split(".")[1]
+        if (extension !== "ts" && extension !== "tsx") return null
+
+        const file = path.parse(source)
+        const files = readdirSync("." + file.dir)
+
+        // Only continue if we can find a .<target>.<extension> file
+        if (!files.includes(`${file.name}.${target}.${extension}`)) return null
+
+        const mockPath = `${file.dir}/${file.name}.${target}.${extension}`
+        return this.resolve(mockPath, importer)
+      } else {
+        if (
+          !importer ||
+          importer.includes("node_modules") ||
+          source === "./main"
+        ) {
+          return null
+        }
+
+        if (!source.startsWith(".") && !source.startsWith("/")) {
+          return null
+        }
+
+        const sourcePath = path.parse(source)
+        const importerPath = path.parse(importer.replace(/\\/g, "/"))
+
+        // If imported file starts with /src we can not append it to importer dir
+        // so we need to strip the path by the rootPrefix first
+        const aliasedSourceRootPrefix = "/src"
+        const baseCandidatePath =
+          sourcePath.dir.startsWith(aliasedSourceRootPrefix) &&
+          importerPath.dir.includes(aliasedSourceRootPrefix)
+            ? `${importerPath.dir.split(aliasedSourceRootPrefix)[0]}/`
+            : importerPath.dir
+        const targetFileName = `${sourcePath.name}.${target.toLowerCase()}`
+
+        const candidatePath = path.join(
+          baseCandidatePath,
+          sourcePath.dir,
+          targetFileName,
+        )
+
+        // Source doesn't have file extension, so try all extensions
+        const candidateTs = `${candidatePath}.ts`
+        if (existsSync(candidateTs)) {
+          console.log(`candidate is ${candidateTs}\n`)
+          return candidateTs
+        }
+        const candidateTsx = `${candidatePath}.tsx`
+        if (existsSync(candidateTsx)) {
+          console.log(`candidate is ${candidateTsx}\n`)
+          return candidateTsx
+        }
+      }
+    },
+  }
 }
 
 const copyOpenfinPlugin = (
@@ -86,6 +156,7 @@ const setConfig = ({ mode }) => {
   const isDev = mode === "development"
   const baseUrl = getBaseUrl(isDev)
   const plugins = [
+    targetBuildPlugin(isDev, "openfin"),
     copyOpenfinPlugin(isDev, env, process.env.VITE_RA_URL!),
     injectScriptIntoHtml(),
   ]

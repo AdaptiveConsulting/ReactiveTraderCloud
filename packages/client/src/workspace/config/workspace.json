@@ -2,7 +2,8 @@
   "devtools_port": 9090,
   "licenseKey": "WSb63491c7-090f-4e38-8088-62675824c24b",
   "runtime": {
-    "version": "<OPENFIN_RUNTIME>"
+    "version": "<OPENFIN_RUNTIME>",
+    "arguments": "--remote-debugging-port=9092"
   },
   "platform": {
     "uuid": "adaptive-workspace-provider-<ENV_NAME>",

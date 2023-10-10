@@ -1,20 +1,21 @@
 import { init as workspacePlatformInit } from "@openfin/workspace-platform"
 
 import {
-  registerCreditAcceptedNotifications,
-  registerCreditQuoteNotifications,
-  registerFxNotifications,
+  registerCreditQuoteAcceptedNotifications,
+  registerCreditQuoteReceivedNotifications,
+  registerCreditRfqCreatedNotifications,
+  registerFxTradeNotifications,
 } from "@/client/notifications.openfin"
 import { initConnection } from "@/services/connection"
 import { registerSimulatedDealerResponses } from "@/services/credit/creditRfqResponses"
 
 import { customActions, overrideCallback } from "./browser"
 import { BASE_URL } from "./constants"
-import { deregisterdock, dockCustomActions, registerDock } from "./dock"
+import { deregisterDock, dockCustomActions, registerDock } from "./dock"
 import { deregisterHome, registerHome, showHome } from "./home"
 import {
-  handleCreditRfqNotification,
-  handleFxTradeNotification,
+  handleCreditNotificationEvents,
+  handleFxNotificationEvents,
 } from "./home/notifications"
 import { deregisterStore, registerStore } from "./store"
 
@@ -50,20 +51,22 @@ async function init() {
   await registerDock()
   await showHome()
 
-  registerFxNotifications(handleFxTradeNotification)
-  registerCreditQuoteNotifications(handleCreditRfqNotification)
-  registerCreditAcceptedNotifications()
+  registerFxTradeNotifications(handleFxNotificationEvents)
+  registerCreditRfqCreatedNotifications(handleCreditNotificationEvents)
+  registerCreditQuoteReceivedNotifications(handleCreditNotificationEvents)
+  registerCreditQuoteAcceptedNotifications(handleCreditNotificationEvents)
 
-  const sub = registerSimulatedDealerResponses()
+  const simulatedDealersSubscription = registerSimulatedDealerResponses()
 
   await initConnection()
 
   const providerWindow = fin.Window.getCurrentSync()
   providerWindow.once("close-requested", async () => {
+    // this runs _after_ the user clicks on confirm in the, well, confirmation dialog
     await deregisterHome()
     await deregisterStore()
-    await deregisterdock()
-    sub.unsubscribe()
+    await deregisterDock()
+    simulatedDealersSubscription.unsubscribe()
     fin.Platform.getCurrentSync().quit()
   })
 }

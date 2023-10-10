@@ -1,4 +1,8 @@
-import { PricedQuoteDetails, RfqDetails } from "@/services/credit"
+import {
+  ConfirmCreatedCreditRfq,
+  PricedQuoteDetails,
+  RfqDetails,
+} from "@/services/credit"
 import { ExecutionStatus, ExecutionTrade } from "@/services/executions"
 import { PricedQuoteBody } from "@/services/rfqs/types"
 
@@ -19,7 +23,28 @@ export const processFxExecution = (executionTrade: ExecutionTrade) => {
   }
 }
 
-export const processCreditAccepted = (
+export const processCreditRfqCreatedConfirmation = ({
+  request,
+  rfqId,
+}: ConfirmCreatedCreditRfq) => {
+  return {
+    title: `RFQ Created: RFQ ID ${rfqId}`,
+    rfqDetails: `RFQ for ${formatNumber(request.quantity)} ${
+      request.instrument?.name
+    } to ${request.dealerIds.length} dealers`,
+  }
+}
+
+export const processCreditQuoteReceived = (quote: PricedQuoteDetails) => {
+  return {
+    title: `Quote Received: RFQ ID ${quote.rfqId} from ${quote.dealer?.name}`,
+    quoteDetails: `${quote.instrument?.name} ${formatNumber(
+      quote.quantity,
+    )} @ $${formatNumber(quote.state.payload)}`,
+  }
+}
+
+export const processCreditRfqWithAcceptedQuote = (
   rfq: RfqDetails,
   quote: PricedQuoteBody,
 ) => {
@@ -28,15 +53,6 @@ export const processCreditAccepted = (
     title: `Quote Accepted: RFQ ID ${quote.rfqId} from ${dealer?.name}`,
     tradeDetails: `${rfq.instrument?.name} ${formatNumber(
       rfq.quantity,
-    )} @ $${formatNumber(quote.state.payload)}`,
-  }
-}
-
-export const processCreditQuote = (quote: PricedQuoteDetails) => {
-  return {
-    title: `Quote Received: RFQ ID ${quote.rfqId} from ${quote.dealer?.name}`,
-    tradeDetails: `${quote.instrument?.name} ${formatNumber(
-      quote.quantity,
     )} @ $${formatNumber(quote.state.payload)}`,
   }
 }

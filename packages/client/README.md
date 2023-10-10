@@ -98,6 +98,22 @@ As a shortcut, to run the server and client in one command, use
 npm run openfin:start:<app>
 ```
 
+To debug OpenFin windows more easily (using Chromium devtools), check the relevant manifest for the appropriate port in e.g.
+
+```
+    "arguments": "--remote-debugging-port=9092"
+```
+
+navigate to [chrome://inspect/#devices](chrome://inspect/#devices) in a Chrome tab
+
+add the address in the dialog you get when you click "Configure ..."
+
+```
+http://localhost:<debug-port-from-above>
+```
+
+and any running OpenFin windows should be displayed, with Inspect links etc.
+
 ### NLP in the OpenFin Launcher and Workspace (below)
 
 The OpenFin Launcher and Workspace Home UI have a search command line interface powered by [DialogFlow](https://cloud.google.com/dialogflow), where you can enter commands like

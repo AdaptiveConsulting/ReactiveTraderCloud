@@ -1,4 +1,4 @@
-import { bind, shareLatest } from "@react-rxjs/core"
+import { bind } from "@react-rxjs/core"
 import { map, scan } from "rxjs/operators"
 
 import {
@@ -29,9 +29,7 @@ export const [useCreditDealers, creditDealers$] = bind(
           return acc
       }
     }, []),
-    shareLatest(),
   ),
-  [],
 )
 
 export const [useCreditDealerById, creditDealerById$] = bind(

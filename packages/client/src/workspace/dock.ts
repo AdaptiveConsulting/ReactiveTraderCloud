@@ -50,7 +50,7 @@ export const registerDock = () => {
   return Dock.show()
 }
 
-export async function deregisterdock() {
+export async function deregisterDock() {
   return Dock.deregister()
 }
 

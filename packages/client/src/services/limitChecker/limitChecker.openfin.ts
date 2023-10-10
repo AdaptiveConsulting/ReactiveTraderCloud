@@ -4,9 +4,11 @@ import { map, switchMap, take, tap } from "rxjs/operators"
 
 import { CheckLimitStreamGenerator } from "./types"
 
-window.fdc3.addContextListener("limit-checker-status", (context) => {
-  if (context.id) limitCheckSubscription$.next(context.id.isAlive)
-})
+if (window.fdc3) {
+  window.fdc3.addContextListener("limit-checker-status", (context) => {
+    if (context.id) limitCheckSubscription$.next(context.id.isAlive)
+  })
+}
 
 const limitCheckSubscription$ = new BehaviorSubject<string>("false")
 

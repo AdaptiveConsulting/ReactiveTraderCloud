@@ -228,3 +228,5 @@ const decimalRegExp = new RegExp(DECIMAL_SEPARATOR_REGEXP, "g")
  */
 export const parseQuantity = (rawValue: string): number =>
   Number(rawValue.replace(filterRegExp, "").replace(decimalRegExp, "."))
+
+export const adjustUserCreditQuantity = (value: number): number => value * 1000

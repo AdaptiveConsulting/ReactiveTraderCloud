@@ -2,16 +2,18 @@ import { Subscription } from "rxjs"
 
 import {
   acceptedRfqWithQuote$,
+  ConfirmCreatedCreditRfq,
+  createdCreditConfirmation$,
   lastQuoteReceived$,
   PricedQuoteDetails,
-  QuoteDetails,
   RfqWithPricedQuote,
 } from "@/services/credit"
 import { executions$, ExecutionTrade } from "@/services/executions"
 
 import {
-  processCreditAccepted,
-  processCreditQuote,
+  processCreditQuoteReceived,
+  processCreditRfqCreatedConfirmation,
+  processCreditRfqWithAcceptedQuote,
   processFxExecution,
 } from "./notificationsUtils"
 import { constructUrl } from "./utils/constructUrl"
@@ -32,11 +34,12 @@ const sendFxTradeNotification = (trade: ExecutionTrade) => {
   new Notification(title, options)
 }
 
-const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithPricedQuote) => {
-  const { title, tradeDetails } = processCreditAccepted(rfq, quote)
-
+const sendCreditRfqCreatedNotification = (
+  rfqCreate: ConfirmCreatedCreditRfq,
+) => {
+  const { title, rfqDetails } = processCreditRfqCreatedConfirmation(rfqCreate)
   const options: NotificationOptions = {
-    body: `${rfq.direction} ${tradeDetails}`,
+    body: `You have sent a ${rfqCreate.request.direction} ${rfqDetails}`,
     icon: creditIconUrl,
     dir: "ltr",
   }
@@ -44,11 +47,26 @@ const sendQuoteAcceptedNotification = ({ rfq, quote }: RfqWithPricedQuote) => {
   new Notification(title, options)
 }
 
-const sendCreditQuoteNotification = (quote: PricedQuoteDetails) => {
-  const { title, tradeDetails } = processCreditQuote(quote)
+const sendCreditQuoteReceivedNotification = (quote: PricedQuoteDetails) => {
+  const { title, quoteDetails } = processCreditQuoteReceived(quote)
 
   const options: NotificationOptions = {
-    body: `${quote.direction} ${tradeDetails}`,
+    body: `${quote.direction} ${quoteDetails}`,
+    icon: creditIconUrl,
+    dir: "ltr",
+  }
+
+  new Notification(title, options)
+}
+
+const sendCreditQuoteAcceptedNotification = ({
+  rfq,
+  quote,
+}: RfqWithPricedQuote) => {
+  const { title, tradeDetails } = processCreditRfqWithAcceptedQuote(rfq, quote)
+
+  const options: NotificationOptions = {
+    body: `${rfq.direction} ${tradeDetails}`,
     icon: creditIconUrl,
     dir: "ltr",
   }
@@ -77,12 +95,22 @@ const notificationsGranted = () =>
     }
   })
 
-export async function registerFxNotifications() {
+// NOTE: All the guard code complication below is due to:
+//       a) the delay of the notificationsGranted promise - in development mode effects, unreg happens before reg
+//       b) other calls of the same registration in the same context causes duplicate subs
+
+let executionSubscription: Subscription | null = null
+
+export async function registerFxTradeNotifications() {
   try {
     await notificationsGranted()
 
+    if (executionSubscription) {
+      return
+    }
+
     // send trade executed for this tab only (driven from executeTrade ACK)
-    executions$.subscribe({
+    executionSubscription = executions$.subscribe({
       next: (executionTrade) => {
         sendFxTradeNotification(executionTrade)
       },
@@ -90,7 +118,7 @@ export async function registerFxNotifications() {
         console.error(e)
       },
       complete: () => {
-        console.error("notifications stream completed!?")
+        console.error("FX notifications execution stream completed!?")
       },
     })
   } catch (_) {
@@ -98,44 +126,111 @@ export async function registerFxNotifications() {
   }
 }
 
-let quotesReceivedSubscription: Subscription | null = null
+export function unregisterFxTradeNotifications() {
+  if (executionSubscription) {
+    executionSubscription.unsubscribe()
+    executionSubscription = null
+  }
+}
 
-export async function registerCreditQuoteNotifications() {
+let creditRfqCreatedSubscription: Subscription | null = null
+
+export async function registerCreditRfqCreatedNotifications() {
   try {
     await notificationsGranted()
 
-    // send quote alerts for every live tab connected to BE (driven from rfq update feed)
-    quotesReceivedSubscription = lastQuoteReceived$.subscribe({
-      next: (quote) => {
-        sendCreditQuoteNotification(quote)
+    if (creditRfqCreatedSubscription) {
+      return
+    }
+
+    // send rfq created alerts for this tab only (driven from credit createRfq ACK)
+    creditRfqCreatedSubscription = createdCreditConfirmation$.subscribe({
+      next: (createdRFQRequest) => {
+        sendCreditRfqCreatedNotification(createdRFQRequest)
       },
       error: (e) => {
         console.error(e)
       },
       complete: () => {
-        console.error("credit quote notifications stream completed!?")
+        console.error("Credit notifications RFQ created stream completed!?")
       },
     })
-  } catch (_) {
-    console.log("Notification permission was not granted.")
+  } catch (e) {
+    console.error(e)
   }
 }
 
-export function unregisterCreditQuoteNotifications() {
-  if (quotesReceivedSubscription) {
-    quotesReceivedSubscription.unsubscribe()
+export function unregisterCreditRfqCreatedNotifications() {
+  if (creditRfqCreatedSubscription) {
+    creditRfqCreatedSubscription.unsubscribe()
+    creditRfqCreatedSubscription = null
   }
 }
 
-export async function registerCreditAcceptedNotifications() {
+let creditQuoteReceivedSubscription: Subscription | null = null
+
+export async function registerCreditQuoteReceivedNotifications() {
   try {
     await notificationsGranted()
 
-    // send accepted quote for this tab only (driven from acceptQuote ACK)
-    acceptedRfqWithQuote$.subscribe((rfqWithQuote) =>
-      sendQuoteAcceptedNotification(rfqWithQuote),
-    )
+    if (creditQuoteReceivedSubscription) {
+      return
+    }
+
+    // send quote alerts for every live tab connected to BE (driven from rfq update feed)
+    creditQuoteReceivedSubscription = lastQuoteReceived$.subscribe({
+      next: (quote) => {
+        sendCreditQuoteReceivedNotification(quote)
+      },
+      error: (e) => {
+        console.error(e)
+      },
+      complete: () => {
+        console.error("credit quote received notifications stream completed!?")
+      },
+    })
   } catch (e) {
     console.error(e)
+  }
+}
+
+export function unregisterCreditQuoteReceivedNotifications() {
+  if (creditQuoteReceivedSubscription) {
+    creditQuoteReceivedSubscription.unsubscribe()
+    creditQuoteReceivedSubscription = null
+  }
+}
+
+let creditQuoteAcceptedSubscription: Subscription | null = null
+
+export async function registerCreditQuoteAcceptedNotifications() {
+  try {
+    await notificationsGranted()
+
+    if (creditQuoteAcceptedSubscription) {
+      return
+    }
+
+    // send accepted quote alerts for this tab only (driven from credit accept ACK)
+    creditQuoteAcceptedSubscription = acceptedRfqWithQuote$.subscribe({
+      next: (rfqWithQuote) => {
+        sendCreditQuoteAcceptedNotification(rfqWithQuote)
+      },
+      error: (e) => {
+        console.error(e)
+      },
+      complete: () => {
+        console.error("credit quote accepted notifications stream completed!?")
+      },
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export function unregisterCreditQuoteAcceptedNotifications() {
+  if (creditQuoteAcceptedSubscription) {
+    creditQuoteAcceptedSubscription.unsubscribe()
+    creditQuoteAcceptedSubscription = null
   }
 }

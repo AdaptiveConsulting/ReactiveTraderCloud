@@ -3,16 +3,14 @@ import { useEffect } from "react"
 import styled from "styled-components"
 
 import {
-  registerCreditQuoteNotifications,
-  unregisterCreditQuoteNotifications,
+  registerCreditQuoteAcceptedNotifications,
+  registerCreditQuoteReceivedNotifications,
+  unregisterCreditQuoteAcceptedNotifications,
+  unregisterCreditQuoteReceivedNotifications,
 } from "@/client/notifications"
 import { WithChildren } from "@/client/utils/utilityTypes"
 
 import { CreditRfqCardGrid } from "./CreditRfqCards"
-import {
-  CreditRfqAcceptedConfirmation,
-  CreditRfqCreatedConfirmation,
-} from "./CreditRfqConfirmation"
 import { CreditRfqsHeader } from "./CreditRfqsHeader"
 
 const CreditRfqsCoreWrapper = styled.div`
@@ -23,9 +21,15 @@ const CreditRfqsCoreWrapper = styled.div`
 `
 const CreditRfqsCore = ({ children }: WithChildren) => {
   useEffect(() => {
-    registerCreditQuoteNotifications()
+    registerCreditQuoteReceivedNotifications()
+    // the most logical place for accepted notifications,
+    // for all cases except the NLP-based nested RFQ ticket
+    registerCreditQuoteAcceptedNotifications()
 
-    return unregisterCreditQuoteNotifications
+    return () => {
+      unregisterCreditQuoteReceivedNotifications()
+      unregisterCreditQuoteAcceptedNotifications()
+    }
   }, [])
 
   return (
@@ -33,8 +37,6 @@ const CreditRfqsCore = ({ children }: WithChildren) => {
       <CreditRfqsCoreWrapper>
         <CreditRfqsHeader />
         <CreditRfqCardGrid />
-        <CreditRfqCreatedConfirmation />
-        <CreditRfqAcceptedConfirmation />
       </CreditRfqsCoreWrapper>
     </Subscribe>
   )
