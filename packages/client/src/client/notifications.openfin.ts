@@ -1,3 +1,4 @@
+import { EntityType, Me } from "@openfin/core/src/OpenFin"
 import * as CSS from "csstype"
 import {
   addEventListener as addOpenFinNotificationsEventListener,
@@ -386,7 +387,7 @@ export const unregisterCreditRfqCreatedNotifications = () => {
 let areCreditQuoteReceivedNotificationsRegistered = false
 let creditQuoteReceivedSubscription: Subscription | null = null
 
-export const registerCreditQuoteReceivedNotifications = (
+export const registerCreditQuoteReceivedNotifications = async (
   handler?: NotificationActionHandler,
 ) => {
   if (areCreditQuoteReceivedNotificationsRegistered) {
@@ -406,6 +407,22 @@ export const registerCreditQuoteReceivedNotifications = (
     "notification-action",
     handler || handleHighlightRfqAction,
   )
+
+  // we do not want to duplicate the subscription to the common quotes feed
+  // as this will duplicate notifications
+  // .. bit of TS type torture .. otherwise we cannot cleanly query the isView
+  const isView = (fin.View.me as Me<EntityType>).isView
+  if (isView) {
+    const allApps = await fin.System.getAllApplications()
+    const parentLauncherPlatform = allApps.find(
+      (app) =>
+        app.uuid.startsWith("adaptive-workspace-provider-local") ||
+        app.uuid.startsWith("reactive-launcher"),
+    )
+    if (parentLauncherPlatform) {
+      return
+    }
+  }
 
   creditQuoteReceivedSubscription = lastQuoteReceived$.subscribe({
     next: (quote) => {
