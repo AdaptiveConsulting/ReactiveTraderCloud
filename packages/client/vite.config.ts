@@ -154,17 +154,21 @@ function indexSwitchPlugin(target: string): Plugin {
 // More Info: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload
 // but basically this tells the browser to fetch (or get from SW cache), parse and load into module map
 // obviously quicker than grabbing from SW cache and processing, but how much?
-const customPreloadPlugin = () => {
-  const result: any = {
-    ...((modulepreload as any)({
-      index: resolve(__dirname, "dist", "index.html"),
-      prefix: getBaseUrl(false) || "",
-    }) as any),
+const customPreloadPlugin = (): Plugin => {
+  const rollupPlugin = modulepreload({
+    index: resolve(__dirname, "dist", "index.html"),
+    prefix: getBaseUrl(false),
+  })
+
+  return {
+    name: "custommodulepreload",
+    // to type this as Plugin, need to ignore ..
+    // as replacing writeBundle with generateBundle messes with the types (but it works)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    writeBundle: rollupPlugin.generateBundle,
     enforce: "post",
   }
-  result.writeBundle = result.generateBundle
-  delete result.generateBundle
-  return result
 }
 
 const copyPlugin = (
@@ -304,7 +308,7 @@ const injectScriptIntoHtml = (
   })
 }
 
-const injectWebServiceWorkerPlugin = (mode: string) =>
+const injectWebServiceWorkerPlugin = (mode: string, baseUrl: string) =>
   injectManifest(
     {
       swSrc: "./src/client/Web/sw.js",
@@ -313,7 +317,7 @@ const injectWebServiceWorkerPlugin = (mode: string) =>
       globDirectory: "dist",
       mode,
       modifyURLPrefix: {
-        assets: `${getBaseUrl(mode === "development")}/assets`,
+        assets: `${baseUrl}/assets`,
       },
     },
     ({ swDest, count }) => {
@@ -360,7 +364,6 @@ const genRAUrl = (env: string) => {
 }
 
 // Main Ref: https://vitejs.dev/config/
-// TODO use env.command = build or serve ??
 const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   const externalEnv = {
     ...process.env,
@@ -376,10 +379,13 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
 
   const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
   const isDev = mode === "development"
-  const isServe = command === "serve" // true for vite AND vite preview
+  // command is "serve" for
+  // .. vite (when we are building at the same time) AND
+  // .. vite preview (when we are not .. so don't need any plugins etc.)
+  // .. AND vitest!
+  const isServe = command === "serve"
 
-  // const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
-  const viteBaseUrl = getBaseUrl(env === "local")
+  const baseUrl = getBaseUrl(env === "local")
 
   const devPlugins: PluginOption[] = []
 
@@ -398,15 +404,15 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   }
 
   if (buildTarget === "web") {
-    devPlugins.push(injectWebServiceWorkerPlugin(mode) as Plugin)
+    devPlugins.push(injectWebServiceWorkerPlugin(mode, baseUrl) as Plugin)
   }
 
-  devPlugins.push(copyPlugin(viteBaseUrl, buildTarget, env))
+  devPlugins.push(copyPlugin(baseUrl, buildTarget, env))
   devPlugins.push(injectScriptIntoHtml(isDev, buildTarget, env))
 
-  // TODO can we avoid plugin creation entirely for serve / storybook?
-  const plugins =
-    (!isDev && isServe) || process.env.STORYBOOK === "true" ? [] : devPlugins
+  console.log(`\n\nDEV: ${isDev} .. SERVE: ${isServe}\n\n`)
+
+  const plugins = process.env.STORYBOOK === "true" ? [] : devPlugins
 
   plugins.push(fontFacePreload)
 
@@ -439,7 +445,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   }
 
   return defineConfig({
-    base: viteBaseUrl,
+    base: baseUrl,
     build: {
       sourcemap: true,
       chunkSizeWarningLimit: 750,
@@ -449,9 +455,11 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
     },
     preview: {
       port: localPort,
+      strictPort: true, // due to substition, dynamic ports won't work - use PORT=1234 <cmd>
     },
     server: {
       port: localPort,
+      strictPort: true, // due to substition, dynamic ports won't work - use PORT=1234 <cmd>
       proxy,
     },
     resolve: {

@@ -121,7 +121,7 @@
     "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "5.58.0",
     "@typescript-eslint/parser": "5.58.0",
-    "@vitejs/plugin-react": "3.1.0",
+    "@vitejs/plugin-react": "4.1.0",
     "concurrently": "^7.6.0",
     "cross-env": "^6.0.3",
     "csstype": "^3.0.2",
@@ -130,10 +130,10 @@
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "jest-styled-components": "^7.1.1",
-    "jsdom": "^21.1.1",
+    "jsdom": "22.1.0",
     "openfin-cli": "^4.0.0",
     "prettier": "2.3.0",
-    "rollup-plugin-modulepreload": "^1.2.3",
+    "rollup-plugin-modulepreload": "2.0.0",
     "rollup-plugin-workbox": "^6.2.0",
     "storybook": "^7.0.2",
     "typescript": "5.0.4",
@@ -141,7 +141,7 @@
     "vite": "4.2.3",
     "vite-plugin-html": "3.2.0",
     "vite-plugin-static-copy": "0.15.0",
-    "vitest": "^0.29.8",
-    "wait-on": "^7.0.0"
+    "vitest": "0.34.6",
+    "wait-on": "7.0.1"
   }
 }
