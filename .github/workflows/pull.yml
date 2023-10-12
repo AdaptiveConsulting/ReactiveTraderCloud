@@ -5,6 +5,8 @@ on:
     types:
       - opened
       - synchronize
+      - reopened
+      - ready_for_review
 
 defaults:
   run:
@@ -21,8 +23,7 @@ jobs:
     name: Build & deploy
 
     runs-on: ubuntu-20.04
-
-    if: "!github.event.pull_request.head.repo.fork"
+    if: ${{ !github.event.pull_request.head.repo.fork && !github.event.pull_request.draft }}
 
     steps:
       - name: Checkout code
@@ -47,8 +48,7 @@ jobs:
         run: npm ci
 
       - name: Verify Quality (type checking, linting, format checking, tests)
-        run: |
-          npm run verify
+        run: npm run verify
 
       - name: Build (web)
         env:
@@ -67,7 +67,6 @@ jobs:
             gs://$BUCKET_WEB/pull/${{ github.event.number }}
 
       # No need to deploy legacy Launcher as branch/tag workflows
-
       - name: Build (OpenFin)
         env:
           DOMAIN: https://openfin.env.reactivetrader.com
@@ -87,8 +86,7 @@ jobs:
           DOMAIN: https://openfin.env.reactivetrader.com
           URL_PATH: /pull/${{ github.event.number }}/workspace
           VITE_BUILD_VERSION: ${{ github.sha }}
-        run: |
-          npm run workspace:build
+        run: npm run workspace:build
 
       - name: Deploy (OpenFin - Workspace)
         run: |
@@ -147,7 +145,6 @@ jobs:
 
   web-end-to-end-test:
     name: Web e2e test - All
-
     needs: build
     runs-on: ubuntu-20.04
 
@@ -166,8 +163,7 @@ jobs:
       - name: Test
         env:
           E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
-        run: |
-          npm run e2e:web
+        run: npm run e2e:web
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
@@ -177,7 +173,6 @@ jobs:
 
   openfin-end-to-end-test-fx:
     name: Openfin e2e test - FX
-
     needs: build
     runs-on: windows-latest
 
@@ -208,7 +203,6 @@ jobs:
 
   openfin-end-to-end-test-credit:
     name: Openfin e2e test - Credit
-
     needs: build
     runs-on: windows-latest
 
