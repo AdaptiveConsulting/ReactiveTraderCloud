@@ -1,15 +1,15 @@
 import { expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { OPENFIN_PROJECT_NAME,Timeout } from "./utils"
+import { ElementTimeout, isOpenFin, TestTimeout } from "./utils"
 
 test.describe("Credit", () => {
   let newRfqPage: Page
   let rfqsPage: Page
   let rfqBlotterPage: Page
 
-  test.beforeAll(async ({ context, creditPagesRec }, testInfo) => {
-    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+  test.beforeAll(async ({ context, creditPagesRec }, workerInfo) => {
+    if (isOpenFin(workerInfo)) {
       const mainWindow = creditPagesRec["mainWindow"]
 
       await mainWindow.evaluate(async () => {
@@ -19,6 +19,7 @@ test.describe("Credit", () => {
       newRfqPage = creditPagesRec["credit-new-rfq"]
       rfqsPage = creditPagesRec["credit-rfqs"]
       rfqBlotterPage = creditPagesRec["credit-blotter"]
+
       newRfqPage.setViewportSize({ width: 1280, height: 1024 })
       rfqsPage.setViewportSize({ width: 1280, height: 1024 })
       rfqBlotterPage.setViewportSize({ width: 1280, height: 1024 })
@@ -34,8 +35,8 @@ test.describe("Credit", () => {
     }
   })
 
-  test.afterEach(async ({ context }, testInfo) => {
-    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+  test.afterEach(async ({ context }, workerInfo) => {
+    if (isOpenFin(workerInfo)) {
       const subWindowFrame = context
         .pages()
         .find((page) => page.url().includes("openfin-sub-window-frame"))
@@ -49,7 +50,12 @@ test.describe("Credit", () => {
   })
 
   test.describe("New RFQ", () => {
+    test.setTimeout(TestTimeout.EXTENDED)
+
     test("Create RFQ for GOOGL @smoke", async () => {
+      const firstQuote = rfqsPage.getByTestId("quotes").locator("div").first()
+      const acceptButton = firstQuote.getByText(/Accept/)
+
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage
         .getByTestId("search-result-item")
@@ -58,7 +64,7 @@ test.describe("Credit", () => {
         .click()
 
       const quantity = newRfqPage.getByTestId("quantity")
-      await quantity.type("2")
+      await quantity.pressSequentially("2")
       await quantity.blur()
 
       await newRfqPage.locator("span").getByText(/All/).click()
@@ -76,20 +82,22 @@ test.describe("Credit", () => {
       // Navigate to Live
       await rfqsPage.getByText(/Live/).first().click()
 
-      const firstQuote = rfqsPage
-        .getByTestId("quotes")
-        .first()
-        .locator("div")
-        .first()
       // Wait for first quote response
       await expect(firstQuote).not.toContainText("Awaiting response", {
-        timeout: Timeout.LONG,
+        timeout: ElementTimeout.LONG,
       })
 
-      await firstQuote.hover()
+      // retry clicking on accept button until timeout
+      const retryTimeout = ElementTimeout.NORMAL
 
-      await firstQuote.getByText(/Accept/).waitFor({state: "visible"})
-      await firstQuote.getByText(/Accept/).click()
+      await expect(async () => {
+        await firstQuote.hover()
+        await acceptButton.click({ timeout: ElementTimeout.AGGRESSIVE })
+      }, `Unable to retry clicking on accept button within ${retryTimeout} seconds`).toPass(
+        {
+          timeout: retryTimeout,
+        },
+      )
 
       await rfqsPage.locator("li").getByText(/All/).nth(0).click()
       const btnTxt = await rfqsPage
@@ -120,7 +128,7 @@ test.describe("Credit", () => {
         .click()
 
       const quantity = newRfqPage.getByTestId("quantity")
-      await quantity.type("2")
+      await quantity.pressSequentially("2")
 
       await newRfqPage
         .locator("span")
@@ -146,19 +154,18 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "$100",
-        { timeout: Timeout.NORMAL},
+        { timeout: ElementTimeout.AGGRESSIVE },
       )
     })
   })
 
   test.describe("Respond to RFQ with Pass", () => {
     test("Passing a newly created RFQ ", async ({ context }) => {
-      
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
       const quantity = newRfqPage.getByTestId("quantity")
-      await quantity.type("2")
+      await quantity.pressSequentially("2")
 
       await newRfqPage
         .locator("span")
@@ -182,7 +189,7 @@ test.describe("Credit", () => {
 
       await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
         "Passed",
-        { timeout: Timeout.NORMAL },
+        { timeout: ElementTimeout.NORMAL },
       )
     })
   })

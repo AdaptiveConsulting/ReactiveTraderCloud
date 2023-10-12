@@ -1,14 +1,14 @@
 import { expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import { OPENFIN_PROJECT_NAME } from "./utils"
+import { ElementTimeout, isOpenFin } from "./utils"
 
 test.describe("Spot Tile", () => {
   let tilePage: Page
   let blotterPage: Page
 
-  test.beforeAll(async ({ context, fxPagesRec }, testInfo) => {
-    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+  test.beforeAll(async ({ context, fxPagesRec }, workerInfo) => {
+    if (isOpenFin(workerInfo)) {
       tilePage = fxPagesRec["fx-tiles"]
       blotterPage = fxPagesRec["fx-blotter"]
       tilePage.setViewportSize({ width: 1280, height: 1024 })
@@ -29,7 +29,9 @@ test.describe("Spot Tile", () => {
       await tilePage.locator("[data-testid='menuButton-EUR']").click()
 
       await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage.locator("input[id='notional-input-EURUSD']").type("1m")
+      await tilePage
+        .locator("input[id='notional-input-EURUSD']")
+        .pressSequentially("1m")
 
       await tilePage.locator("[data-testid='Sell-EURUSD']").click()
 
@@ -85,16 +87,20 @@ test.describe("Spot Tile", () => {
       await tilePage.locator("[data-testid='rfqButton']").click()
 
       await expect(tilePage.getByTestId("rfqTimer")).toBeVisible()
-      await tilePage.getByTestId("rfqTimer").waitFor({state: "hidden", timeout: 10500})
+      await tilePage
+        .getByTestId("rfqTimer")
+        .waitFor({ state: "hidden", timeout: ElementTimeout.RFQTIMEOUT })
       const requoteBtn = tilePage.getByText(/Requote/)
-      await expect (requoteBtn).toBeVisible({timeout: 100})
+      await expect(requoteBtn).toBeVisible({ timeout: 100 })
     })
   })
 
   test.describe("Notional value", () => {
     test("When I type 1k as notional value to EUR/USD then notional value should be 1000", async () => {
       await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage.locator("input[id='notional-input-EURUSD']").type("1k")
+      await tilePage
+        .locator("input[id='notional-input-EURUSD']")
+        .pressSequentially("1k")
       const notionalValue = await tilePage
         .locator("input[id='notional-input-EURUSD']")
         .inputValue()
@@ -103,7 +109,9 @@ test.describe("Spot Tile", () => {
 
     test("When I type 1m as notional value to EUR/USD then notional value should be 1,000,000", async () => {
       await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage.locator("input[id='notional-input-EURUSD']").type("1m")
+      await tilePage
+        .locator("input[id='notional-input-EURUSD']")
+        .pressSequentially("1m")
       const notionalValue = await tilePage
         .locator("input[id='notional-input-EURUSD']")
         .inputValue()
@@ -114,13 +122,13 @@ test.describe("Spot Tile", () => {
       await tilePage.locator("input[id='notional-input-EURUSD']").clear()
       await tilePage
         .locator("input[id='notional-input-EURUSD']")
-        .type("1200000000")
+        .pressSequentially("1200000000")
       await expect(tilePage.getByText(/Max exceeded/)).toBeVisible()
 
       await tilePage.locator("input[id='notional-input-EURUSD']").clear()
       await tilePage
         .locator("input[id='notional-input-EURUSD']")
-        .type("1m")
+        .pressSequentially("1m")
       await expect(tilePage.getByText(/Max exceeded/)).not.toBeVisible()
     })
   })

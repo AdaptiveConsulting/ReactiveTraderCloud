@@ -4,7 +4,7 @@ import { expect, Page } from "@playwright/test"
 import fs from "fs"
 
 import { test } from "./fixtures"
-import { OPENFIN_PROJECT_NAME } from "./utils"
+import { isOpenFin } from "./utils"
 
 const getTradeIDColIndex = () => {
   // const tradeIndex = fxColFields.indexOf(
@@ -38,8 +38,8 @@ test.describe("Trade Blotter", () => {
   let tilePage: Page
   let blotterPage: Page
 
-  test.beforeAll(async ({ context, fxPagesRec }, testInfo) => {
-    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+  test.beforeAll(async ({ context, fxPagesRec }, workerInfo) => {
+    if (isOpenFin(workerInfo)) {
       tilePage = fxPagesRec["fx-tiles"]
       blotterPage = fxPagesRec["fx-blotter"]
     } else {
@@ -54,8 +54,8 @@ test.describe("Trade Blotter", () => {
   })
 
   // eslint-disable-next-line no-empty-pattern
-  test.afterAll(async ({}, testInfo) => {
-    if (testInfo.project.name === OPENFIN_PROJECT_NAME) {
+  test.afterAll(async ({}, workerInfo) => {
+    if (isOpenFin(workerInfo)) {
       await blotterPage.getByTestId("filter-button").click()
     }
   })
@@ -72,12 +72,13 @@ test.describe("Trade Blotter", () => {
   })
 
   test("when user buys a currency, the new row should flash briefly ", async () => {
-
     await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-    await tilePage.locator("input[id='notional-input-EURUSD']").type("1m")
+    await tilePage
+      .locator("input[id='notional-input-EURUSD']")
+      .pressSequentially("1m")
 
     await tilePage.locator('[data-testid="Buy-EURUSD"]').nth(0).click()
-  
+
     const tradeID = await tilePage
       .locator("[data-testid='trade-id']")
       .innerText()
@@ -117,7 +118,7 @@ test.describe("Trade Blotter", () => {
     await filterButton.click()
     const searchInput = blotterPage.locator('[aria-label*="Primary filter"]')
     const tradeIDToSearch = "1"
-    await searchInput.type(tradeIDToSearch, { delay: 100 })
+    await searchInput.pressSequentially(tradeIDToSearch, { delay: 100 })
     const rows = blotterPage.locator(`[role="grid"] > div`)
     expect(await rows.count()).toBe(2)
     const firstRowTradeID = await getTradeIDCellContent(blotterPage, 1)
@@ -161,7 +162,7 @@ test.describe("Trade Blotter", () => {
     const searchInput = blotterPage.locator('[aria-label*="Primary filter"]')
 
     const tradeIDToSearch = "1"
-    await searchInput.type(tradeIDToSearch, { delay: 100 })
+    await searchInput.pressSequentially(tradeIDToSearch, { delay: 100 })
 
     const downloadPromise = blotterPage.waitForEvent("download")
 
