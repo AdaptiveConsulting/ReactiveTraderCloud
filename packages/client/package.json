@@ -101,7 +101,7 @@
   "devDependencies": {
     "@google-cloud/dialogflow": "^4.7.0",
     "@openfin/automation-cli": "1.1.6",
-    "@playwright/test": "1.38.1",
+    "@playwright/test": "1.39.0",
     "@storybook/addon-actions": "^7.0.2",
     "@storybook/addon-essentials": "^7.0.2",
     "@storybook/addon-links": "^7.0.2",

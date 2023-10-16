@@ -33,55 +33,41 @@ test.describe("Analytics panel", () => {
   })
 
   test.describe("Profit & Loss section", () => {
-    test("Last position amount is displayed in numerical format @smoke", async () => {
-      const lastPositionAmount = await analyticsPage
+    test("Last Profit & Loss amount is displayed in numerical format @smoke", async () => {
+      const lastPnlAmount = await analyticsPage
         .locator("[data-testid='lastPosition']")
         .textContent()
 
       const regexp = RegExp(`[-+,.0-9]`, "g")
-      expect(lastPositionAmount).toMatch(regexp)
+      expect(lastPnlAmount).toMatch(regexp)
     })
 
-    test("Last position amount is updated periodically", async () => {
-      const lastpositionLocator = analyticsPage.locator(
-        "[data-testid='lastPosition']",
-      )
-      const initiallastPositionAmount = await lastpositionLocator.textContent()
+    test("Profit & Loss amount is updated periodically", async () => {
+      const pnlLocator = analyticsPage.locator("[data-testid='lastPosition']")
+      const initialPnlAmount = await pnlLocator.textContent()
 
-      if (initiallastPositionAmount)
-        await expect(lastpositionLocator).not.toContainText(
-          initiallastPositionAmount,
-          { timeout: ElementTimeout.NORMAL },
-        )
+      if (initialPnlAmount)
+        await expect(pnlLocator).not.toContainText(initialPnlAmount, {
+          timeout: ElementTimeout.NORMAL,
+        })
     })
 
-    test("Correct text color is displayed based on position value", async () => {
-      const initialpositionLocator = analyticsPage.locator(
-        "[data-testid='lastPosition']",
-      )
-      const amount = Number(
-        (await initialpositionLocator.textContent())?.replace(/[.,]/g, ""),
-      )
-      
-      expect(amount).toBeTruthy()
+    test("Correct text color is displayed based on Profit & Loss amount", async () => {
+      const pnlLocator = analyticsPage.locator("[data-testid='lastPosition']")
 
-      if (amount < 0) {
-        expect(await initialpositionLocator.getAttribute("color")).toEqual(
-          "negative",
-        )
-      } else
-        expect(await initialpositionLocator.getAttribute("color")).toEqual(
-          "positive",
-        )
-    })
+      const pnlText = await pnlLocator.textContent()
 
-    test.skip("Graph display coherent values", async () => {
-      // TODO
-      // more complex. may requires datatest-id to reliably assert graph content
-      // to be completed under https://adaptive.kanbanize.com/ctrl_board/18/cards/5634/details/
+      test.fail(!pnlText, "Profit & Loss value should not be empty")
+
+      const pnlValue = Number.parseFloat(pnlText as string)
+
+      expect(pnlValue, "Profit & Loss value is not a number").not.toBeNaN()
+
+      if (pnlValue < 0) {
+        expect(await pnlLocator.getAttribute("color")).toEqual("negative")
+      } else expect(await pnlLocator.getAttribute("color")).toEqual("positive")
     })
   })
-
   test.describe("Positions section", () => {
     test("Position nodes are showing tooltip information for each currencies", async () => {
       for (const currency of currencies) {
@@ -126,7 +112,7 @@ test.describe("Analytics panel", () => {
     test("PnL value is displayed for each currencies", async () => {
       const pnlSection = analyticsPage
         .locator("div")
-        .filter( {has: analyticsPage.locator("div", {hasText: "PnL"})})
+        .filter({ has: analyticsPage.locator("div", { hasText: "PnL" }) })
         .last()
 
       for (const currencypair of currencyPairs) {
