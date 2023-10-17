@@ -26,7 +26,7 @@ jobs:
     if: ${{ !github.event.pull_request.head.repo.fork && !github.event.pull_request.draft }}
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Set Node version
@@ -44,7 +44,7 @@ jobs:
         with:
           project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
 
-      - name: Install
+      - name: Install dependencies
         run: npm ci
 
       - name: Verify Quality (type checking, linting, format checking, tests)
@@ -66,7 +66,6 @@ jobs:
             rsync -d -r dist \
             gs://$BUCKET_WEB/pull/${{ github.event.number }}
 
-      # No need to deploy legacy Launcher as branch/tag workflows
       - name: Build (OpenFin)
         env:
           DOMAIN: https://openfin.env.reactivetrader.com
@@ -131,11 +130,13 @@ jobs:
 
   web-end-to-end-test:
     name: Web e2e test - All
+
     needs: build
+
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Set Node version
@@ -143,14 +144,16 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install
+      - name: Install dependencies
         run: npm ci
 
       - name: Test
         env:
           E2E_RTC_WEB_ROOT_URL: https://web.env.reactivetrader.com/pull/${{ github.event.number }}
         run: npm run e2e:web
-      - uses: actions/upload-artifact@v3
+
+      - name: Artifact Upload
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: playwright-report
@@ -159,17 +162,21 @@ jobs:
 
   openfin-end-to-end-test-fx:
     name: Openfin e2e test - FX
+
     needs: web-end-to-end-test
+
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      - name: Set Node version
+        uses: actions/setup-node@v3
         with:
           node-version: 20.5.1
 
-      - name: Install
+      - name: Install dependencies
         run: npm ci
 
       - name: start openfin
@@ -180,7 +187,8 @@ jobs:
           E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
         run: npm run e2e:openfin fx-spot-tile.spec fx-blotter.spec fx-analytics.spec
 
-      - uses: actions/upload-artifact@v3
+      - name: Artifact Upload
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: playwright-report
@@ -189,16 +197,21 @@ jobs:
 
   openfin-end-to-end-test-credit:
     name: Openfin e2e test - Credit
+
     needs: web-end-to-end-test
+
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set Node version
+        uses: actions/setup-node@v3
         with:
           node-version: 20.5.1
 
-      - name: Install
+      - name: Install dependencies
         run: npm ci
 
       - name: start openfin
@@ -209,7 +222,8 @@ jobs:
           E2E_RTC_WEB_ROOT_URL: https://openfin.env.reactivetrader.com/pull/${{ github.event.number }}
         run: npm run e2e:openfin credit.spec
 
-      - uses: actions/upload-artifact@v3
+      - name: Artifact Upload
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: playwright-report

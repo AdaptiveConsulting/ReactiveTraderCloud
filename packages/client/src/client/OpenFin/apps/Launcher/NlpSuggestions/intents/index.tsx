@@ -6,10 +6,7 @@ import { NlpIntent, NlpIntentType } from "@/services/nlp"
 export const showCurrencyPairWindow = (currencyPair: string) => {
   const options = {
     name: currencyPair,
-    url: constructUrl(
-      ROUTES_CONFIG.tile.replace(":symbol", currencyPair),
-      BASE_URL,
-    ),
+    url: constructUrl(ROUTES_CONFIG.tile.replace(":symbol", currencyPair)),
     width: 380,
     height: 200,
     includeInSnapshots: false,
@@ -21,7 +18,7 @@ export const showCurrencyPairWindow = (currencyPair: string) => {
 export const showTilesWindow = () => {
   const options = {
     name: "Live Rates",
-    url: constructUrl(ROUTES_CONFIG.tiles, BASE_URL),
+    url: constructUrl(ROUTES_CONFIG.tiles),
     width: 1000,
     height: 500,
     includeInSnapshots: false,
@@ -33,7 +30,7 @@ export const showTilesWindow = () => {
 export const showBlotterWindow = () => {
   const options = {
     name: "Trades",
-    url: constructUrl(ROUTES_CONFIG.blotter, BASE_URL),
+    url: constructUrl(ROUTES_CONFIG.blotter),
     width: 1000,
     height: 500,
     includeInSnapshots: false,

@@ -16,7 +16,7 @@
     }
   ],
   "engines": {
-    "node": "=16.x || >= 20.5.1"
+    "node": "> 20.5.0"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,7 @@
     "test": "vitest",
     "verify": "npm run typecheck && npm run lint && npm run format:check && npm run test",
     "build": "cross-env TARGET=web vite build",
-    "serve": "cross-env TARGET=web vite preview",
+    "serve": "cross-env vite preview",
     "openfin:dev": "cross-env TARGET=openfin vite",
     "openfin:local": "npm run _runLocal --runcmd=\"TARGET=openfin vite\"",
     "_openfin:run": "cross-env-shell \"wait-on -l $npm_config_manifest_url && openfin -l -c $npm_config_manifest_url\"",
@@ -52,11 +52,10 @@
     "openfin:start:launcher": "concurrently \"npm:openfin:dev\" \"npm:openfin:run:launcher\"",
     "openfin:start:launcher:local": "concurrently \"npm:openfin:local\" \"npm:openfin:run:launcher\"",
     "openfin:build": "cross-env TARGET=openfin vite build",
-    "openfin:serve": "cross-env TARGET=openfin vite preview",
-    "openfin:start:preview": "npm:openfin:build && concurrently \"npm:openfin:serve\" \"npm:openfin:run:launcher\"",
+    "openfin:start:preview": "npm:openfin:build && concurrently \"npm:serve\" \"npm:openfin:run:launcher\"",
     "workspace:run": "npm run _openfin:run --manifest_url=http://localhost:1917/workspace/config/workspace.json",
     "workspace:start": "concurrently \"npm:openfin:dev\" \"npm:workspace:run\"",
-    "workspace:start:preview": "*** TODO check if :serve can be generic *** npm:openfin:build && concurrently \"npm:openfin:serve\" \"npm:openfin:run:launcher\"",
+    "workspace:start:preview": "npm:openfin:build && concurrently \"npm:serve\" \"npm:workspace:run\"",
     "finsemble:dev": "cross-env TARGET=finsemble vite",
     "finsemble:build": "cross-env TARGET=finsemble vite build",
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated",
@@ -129,7 +128,7 @@
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "jest-styled-components": "^7.1.1",
+    "jest-styled-components": "7.2.0",
     "jsdom": "22.1.0",
     "openfin-cli": "^4.0.0",
     "prettier": "2.3.0",

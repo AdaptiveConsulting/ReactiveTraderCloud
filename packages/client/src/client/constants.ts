@@ -2,7 +2,7 @@ type Environment = "local" | "env" | "dev" | "uat" | "prod"
 
 // import.meta.env.BASE_URL comes from vite.config.base, unless development mode when it is "/"
 // otherwise the full domain / path of the deployment e.g. https://web.env.reactivetrader.com/pull/2064
-// TODO (ticket TBD) launcher.*.reactivetrader.com is Deprecated, but until we remove the deployment, leave the conversion
+// TODO (5636) launcher.*.reactivetrader.com should be Deprecated, but until we remove the deployment, leave the conversion
 export const BASE_URL =
   import.meta.env.BASE_URL === "/"
     ? window.location.origin

@@ -355,7 +355,7 @@ const fontFacePreload = Unfonts({
   },
 })
 
-const genRAUrl = (env: string) => {
+const generateRAUrl = (env: string) => {
   if (env === "local") return "http://localhost:3005"
 
   return `https://${
@@ -372,18 +372,18 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   const env = externalEnv.ENVIRONMENT || "local"
 
   process.env = {
-    VITE_RA_URL: genRAUrl(env),
+    VITE_RA_URL: generateRAUrl(env),
     // so we can directly override RA address if we ever want to
     ...externalEnv,
   }
 
   const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
   const isDev = mode === "development"
-  // command is "serve" for
-  // .. vite (when we are building at the same time) AND
-  // .. vite preview (when we are not .. so don't need any plugins etc.)
-  // .. AND vitest!
   const isServe = command === "serve"
+  // quick look-up (not using isServe atm, but expecting to optimise plugins later)
+  // - vite ..         isDev: true   isServe: true (building with esbuild AND serving)
+  // - vite preview .. isDev: false  isServe: true (just running static, so don't need any plugins etc.)
+  // - vitest ..       isDev: false  isServe: true (still need the plugins to e.g. switch in openfin code)
 
   const baseUrl = getBaseUrl(env === "local")
 
@@ -409,8 +409,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
 
   devPlugins.push(copyPlugin(baseUrl, buildTarget, env))
   devPlugins.push(injectScriptIntoHtml(isDev, buildTarget, env))
-
-  console.log(`\n\nDEV: ${isDev} .. SERVE: ${isServe}\n\n`)
 
   const plugins = process.env.STORYBOOK === "true" ? [] : devPlugins
 
@@ -458,9 +456,10 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
       strictPort: true, // due to substition, dynamic ports won't work - use PORT=1234 <cmd>
     },
     server: {
+      host: "127.0.0.1",
       port: localPort,
       strictPort: true, // due to substition, dynamic ports won't work - use PORT=1234 <cmd>
-      proxy,
+      proxy, // also applies to preview mode, per https://vitejs.dev/config/preview-options.html#preview-proxy
     },
     resolve: {
       // see https://vitejs.dev/config/shared-options.html#resolve-alias
