@@ -1,5 +1,4 @@
-import type { PlaywrightTestConfig } from "@playwright/test"
-import { devices } from "@playwright/test"
+import { devices, PlaywrightTestConfig } from "@playwright/test"
 
 import { TestTimeout } from "./e2e/utils"
 
