@@ -173,7 +173,7 @@ jobs:
 
   openfin-end-to-end-test-fx:
     name: Openfin e2e test - FX
-    needs: build
+    needs: web-end-to-end-test
     runs-on: windows-latest
 
     steps:
@@ -203,7 +203,7 @@ jobs:
 
   openfin-end-to-end-test-credit:
     name: Openfin e2e test - Credit
-    needs: build
+    needs: web-end-to-end-test
     runs-on: windows-latest
 
     steps:

@@ -148,7 +148,7 @@ test.describe("Credit", () => {
 
       await sellSidePage.waitForSelector("text=New RFQ")
 
-      await sellSidePage.getByTestId("price-input").fill("100")
+      await sellSidePage.getByTestId("price-input").pressSequentially("100")
 
       await sellSidePage.keyboard.press("Enter")
 
