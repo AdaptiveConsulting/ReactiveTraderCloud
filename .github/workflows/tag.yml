@@ -96,10 +96,7 @@ jobs:
           DOMAIN: https://openfin.prod.reactivetrader.com
           URL_PATH: /workspace
           VITE_BUILD_VERSION: ${{ steps.vars.outputs.TAG }}
-        run: |
-          npm ci
-          npm run build
-        working-directory: .
+        run: npm run workspace:build
 
       - name: Deploy (OpenFin - Workspace)
         run: |
@@ -107,7 +104,6 @@ jobs:
             -h "Cache-Control: no-cache" \
             rsync -d -r dist \
             gs://$BUCKET_OPENFIN/tag/${{ steps.vars.outputs.TAG }}/workspace
-        working-directory: .
 
       - name: Build (Finsemble)
         env:
