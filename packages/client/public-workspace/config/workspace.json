@@ -2,7 +2,7 @@
   "devtools_port": 9090,
   "licenseKey": "WSb63491c7-090f-4e38-8088-62675824c24b",
   "runtime": {
-    "version": "<OPENFIN_RUNTIME>",
+    "version": "<WORKSPACE_OPENFIN_RUNTIME>",
     "arguments": "--remote-debugging-port=9092"
   },
   "platform": {
@@ -10,7 +10,7 @@
     "name": "Reactive Workspace<ENV_SUFFIX>",
     "icon": "<BASE_URL>/favicon.ico",
     "autoShow": "<SHOW_PROVIDER_WINDOW>",
-    "providerUrl": "<BASE_URL>/workspaceProvider.html",
+    "providerUrl": "<BASE_URL>/openfinWorkspaceProvider.html",
     "preventQuitOnLastWindowClosed": true,
     "permissions": {
       "ExternalWindow": {

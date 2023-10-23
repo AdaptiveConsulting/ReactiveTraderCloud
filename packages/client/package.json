@@ -16,7 +16,7 @@
     }
   ],
   "engines": {
-    "node": "=16.x || >= 20.5.1"
+    "node": "> 20.5.0"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,7 @@
     "test": "vitest",
     "verify": "npm run typecheck && npm run lint && npm run format:check && npm run test",
     "build": "cross-env TARGET=web vite build",
-    "serve": "cross-env TARGET=web vite preview",
+    "serve": "cross-env vite preview",
     "openfin:dev": "cross-env TARGET=openfin vite",
     "openfin:local": "npm run _runLocal --runcmd=\"TARGET=openfin vite\"",
     "_openfin:run": "cross-env-shell \"wait-on -l $npm_config_manifest_url && openfin -l -c $npm_config_manifest_url\"",
@@ -52,13 +52,10 @@
     "openfin:start:launcher": "concurrently \"npm:openfin:dev\" \"npm:openfin:run:launcher\"",
     "openfin:start:launcher:local": "concurrently \"npm:openfin:local\" \"npm:openfin:run:launcher\"",
     "openfin:build": "cross-env TARGET=openfin vite build",
-    "openfin:serve": "cross-env TARGET=openfin vite preview",
-    "openfin:start:preview": "npm:openfin:build && concurrently \"npm:openfin:serve\" \"npm:openfin:run:launcher\"",
-    "workspace:dev": "cross-env TARGET=workspace vite --config vite-ws.config.ts",
-    "workspace:build": "cross-env TARGET=workspace vite build --config vite-ws.config.ts",
-    "workspace:serve": "cross-env TARGET=workspace vite serve --config vite-ws.config.ts",
-    "workspace:run": "cross-env-shell \"wait-on -l http://localhost:2017/config/workspace.json && openfin -l -c http://localhost:2017/config/workspace.json\"",
-    "workspace:start": "concurrently \"npm:openfin:dev\" \"npm:workspace:dev\" \"npm:workspace:run\"",
+    "openfin:start:preview": "npm:openfin:build && concurrently \"npm:serve\" \"npm:openfin:run:launcher\"",
+    "workspace:run": "npm run _openfin:run --manifest_url=http://localhost:1917/workspace/config/workspace.json",
+    "workspace:start": "concurrently \"npm:openfin:dev\" \"npm:workspace:run\"",
+    "workspace:start:preview": "npm:openfin:build && concurrently \"npm:serve\" \"npm:workspace:run\"",
     "finsemble:dev": "cross-env TARGET=finsemble vite",
     "finsemble:build": "cross-env TARGET=finsemble vite build",
     "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated",
@@ -123,7 +120,7 @@
     "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "5.58.0",
     "@typescript-eslint/parser": "5.58.0",
-    "@vitejs/plugin-react": "3.1.0",
+    "@vitejs/plugin-react": "4.1.0",
     "concurrently": "^7.6.0",
     "cross-env": "^6.0.3",
     "csstype": "^3.0.2",
@@ -131,19 +128,19 @@
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "jest-styled-components": "^7.1.1",
-    "jsdom": "^21.1.1",
+    "jest-styled-components": "7.2.0",
+    "jsdom": "22.1.0",
     "openfin-cli": "^4.0.0",
     "prettier": "2.3.0",
-    "rollup-plugin-modulepreload": "^1.2.3",
+    "rollup-plugin-modulepreload": "2.0.0",
     "rollup-plugin-workbox": "^6.2.0",
     "storybook": "^7.0.2",
     "typescript": "5.0.4",
     "unplugin-fonts": "^1.0.0",
     "vite": "4.2.3",
-    "vite-plugin-html": "^3.2.0",
+    "vite-plugin-html": "3.2.0",
     "vite-plugin-static-copy": "0.15.0",
-    "vitest": "^0.29.8",
-    "wait-on": "^7.0.0"
+    "vitest": "0.34.6",
+    "wait-on": "7.0.1"
   }
 }

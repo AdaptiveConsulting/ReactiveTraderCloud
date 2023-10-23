@@ -25,7 +25,7 @@ The trading client GUI is a single page app (SPA) built using Typescript, React,
 
 Required:
 
-- [Node](https://nodejs.org) (v16 or v20+ - nothing in-between, due to problems with networking affecting OpenFin operation - suggest using nvm to manage node instances)
+- [Node](https://nodejs.org) (v20+ see "engine" spec in package.json - anything between 16 and 20 is a disaster for OpenFin, due to problems with networking (DNS lookups) - suggest using `nvm`` to manage node instances)
 
 ### Testing and Quality Checks
 
@@ -76,6 +76,12 @@ Create a production version of the application in the dist folder
 npm run build
 ```
 
+.. and run it
+
+```sh
+npm run serve
+```
+
 ## Openfin
 
 How to run a web server, to serve the client in OpenFin
@@ -84,7 +90,7 @@ How to run a web server, to serve the client in OpenFin
 npm run openfin:dev
 ```
 
-and to run up the RT client using OpenFin
+and to run up the RT clients using OpenFin
 
 ```sh
 npm run openfin:run:<app>
@@ -92,11 +98,19 @@ npm run openfin:run:<app>
 
 where `<app>` is `fx`, `credit`, `launcher`, or `limitchecker`
 
-As a shortcut, to run the server and client in one command, use
+As a shortcut, to run the local dev server and client in one command, use
 
 ```sh
 npm run openfin:start:<app>
 ```
+
+#### Configs
+
+Config files (OpenFin manifests) are located in [./public-openfin](./public-openfin).
+
+Vite will replace placeholders at build time.
+
+#### Troubleshooting
 
 To debug OpenFin windows more easily (using Chromium devtools), check the relevant manifest for the appropriate port in e.g.
 
@@ -120,7 +134,7 @@ The OpenFin Launcher and Workspace Home UI have a search command line interface 
 
 `buy 10m USDJPY`
 
-For more insight into how NLP works see the diagflow function [doc](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/server/cloud/nlp/README.md).
+For more insight into how NLP works see the diagflow function [doc](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/blob/master/packages/server/cloud/nlp/README.md).
 
 ### Workspace
 
@@ -138,23 +152,27 @@ and at the same `/workspace/config/workspace.json` path on every other (openfin)
 
 Working with OpenFin workspace locally using the OpenFin CLI ...
 
-`npm run openfin:dev` as above to serve RT apps/views
+`npm run openfin:dev` as above to serve RT apps, views and the workspace platform
 
-`npm run workspace:dev` to serve the workspace manifest and code
+`npm run workspace:run` to launch workspace (when running local dev server, you'll see the "provider" window first)
 
-`npm run workspace:run` to launch workspace (in dev, you'll see the "provider" window first)
+As a shortcut, to run the local dev server and client in one command, use
+
+```sh
+npm run workspace:start
+```
 
 Reactive Analytics will need to be running to open the RA app/view - see [RA repo, client folder](https://github.com/AdaptiveConsulting/ReactiveAnalytics/tree/master/client).
 
 #### Configs
 
-Config files are located in [./src/workspace/config](./src/workspace/config).
+Config files are located in [./public-workspace/config](./public-workspace/config).
 
-Vite will replace placeholders at run/build time.
+Vite will replace placeholders at build time.
 
-[workspace.json](./src/workspace/config/workspace.json) - This is the manifest file Openfin uses to run the workspace provider.
+[workspace.json](./public-workspace/config/workspace.json) - This is the manifest file Openfin uses to run the workspace provider.
 
-[snapshot.json](./src/workspace/config/snapshot.json) - A workspace window _layout_ or 'snapshot', saved from previous layout modifications - on launching this (from the Home UI) the Trading Workspace will be displayed.
+[snapshot.json](./public-workspace/config/snapshot.json) - A workspace window _layout_ or 'snapshot', saved from previous layout modifications - on launching this (from the Home UI) the Trading Workspace will be displayed.
 
 `analytics, live-rates, trades & reactive-analytics.json` - Basic .json files that contain the bare minimum to launch a view in the Openfin browser using `platform.launchApp`
 
@@ -221,11 +239,11 @@ arguments: --headed (launches a browser visible to the user) and --workers=1 to 
 How to run e2e tests against openfin
 
 ```sh
-npm run openfin:dev
 npm run openfin:start:launcher
 ```
 
-and launch all of the apps from the launcher (apart from Reactive Analytics which has no E2E tests as yet)
+and launch all of the apps from the launcher
+(RA E2E tests need to be run from the RA repo)
 
 ```sh
 npm run e2e:openfin -- --workers=1

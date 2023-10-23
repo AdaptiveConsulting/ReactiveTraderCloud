@@ -9,6 +9,10 @@ export function topic$<T>(topic: Topic) {
   )
 }
 
+// TODO (5465) - use it or lose it
+// .. this feels like the centralising place I was looking for, tho, to tie up
+// interop functions, channel defaults etc.
+// see also notifications, and Credit "View Trade" messages ..
 export function publish<T>(topic: Topic, message: T) {
   return fin.InterApplicationBus.publish(topic, message)
 }

@@ -18,7 +18,7 @@ jobs:
     if: github.repository_owner != 'AdaptiveConsulting'
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Set Node version
@@ -26,12 +26,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install
+      - name: Install dependencies
         run: npm ci
 
       - name: Verify Quality (type checking, linting, format checking, tests)
-        run: |
-          npm run verify
+        run: npm run verify
 
       - name: Build (web)
         run: |
@@ -40,9 +39,3 @@ jobs:
 
       - name: Build (OpenFin)
         run: npm run openfin:build
-
-      - name: Build (OpenFin - Workspace)
-        run: |
-          npm ci
-          npm run workspace:build
-        working-directory: .

@@ -5,7 +5,7 @@
     "name": "Reactive Trader® FX <ENV_SUFFIX>",
     "icon": "<BASE_URL>/static/media/reactive-trader-icon-256x256.png",
     "url": "<BASE_URL>",
-    "providerUrl": "<BASE_URL>/provider.html",
+    "providerUrl": "<BASE_URL>/openfinContainerProvider.html",
     "defaultWindowOptions": {
       "contextMenu": true,
       "fdc3InteropApi": "1.2",

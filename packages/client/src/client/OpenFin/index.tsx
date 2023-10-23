@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { ThemeProvider } from "styled-components"
 
-import { TornOutTileWrapper } from "@/client/App/LiveRates/Tile" // TODO check
+import { TornOutTileWrapper } from "@/client/App/LiveRates/Tile"
 import { DisconnectionOverlay } from "@/client/components/DisconnectionOverlay"
 import { DocTitle } from "@/client/components/DocTitle"
 import { Loader } from "@/client/components/Loader"

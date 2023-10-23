@@ -19,11 +19,15 @@ import { defineConfig } from "vitest/config"
 type BuildTarget = "web" | "openfin" | "finsemble"
 
 const localPort = Number(process.env.PORT) || 1917
+const showOpenFinProvider = !!process.env.OPENFIN_SHOW_PROVIDER
 
 const OPENFIN_RUNTIME = "29.108.73.14"
+const WORKSPACE_OPENFIN_RUNTIME = "31.112.75.4"
 
-function getBaseUrl(dev: boolean) {
-  return dev
+const RA_DEPLOYMENT_SUFFIX = "reactive-analytics.adaptivecluster.com"
+
+function getBaseUrl(isLocal: boolean) {
+  return isLocal
     ? `http://localhost:${localPort}`
     : `${process.env.DOMAIN || ""}${process.env.URL_PATH || ""}` || ""
 }
@@ -150,27 +154,34 @@ function indexSwitchPlugin(target: string): Plugin {
 // More Info: https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload
 // but basically this tells the browser to fetch (or get from SW cache), parse and load into module map
 // obviously quicker than grabbing from SW cache and processing, but how much?
-const customPreloadPlugin = () => {
-  const result: any = {
-    ...((modulepreload as any)({
-      index: resolve(__dirname, "dist", "index.html"),
-      prefix: getBaseUrl(false) || "",
-    }) as any),
+const customPreloadPlugin = (): Plugin => {
+  const rollupPlugin = modulepreload({
+    index: resolve(__dirname, "dist", "index.html"),
+    prefix: getBaseUrl(false),
+  })
+
+  return {
+    name: "custommodulepreload",
+    // to type this as Plugin, need to ignore ..
+    // as replacing writeBundle with generateBundle messes with the types (but it works)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    writeBundle: rollupPlugin.generateBundle,
     enforce: "post",
   }
-  result.writeBundle = result.generateBundle
-  delete result.generateBundle
-  return result
 }
 
 const copyPlugin = (
-  isDev: boolean,
+  baseUrl: string,
   buildTarget: BuildTarget,
   env: string,
 ): Plugin[] => {
   const transform: TransformOption = (contents) =>
     contents
-      .replace(/<BASE_URL>/g, getBaseUrl(isDev || env === "local"))
+      .replace(/<BASE_URL>/g, baseUrl)
+      .replace(/<RT_URL>/g, process.env.VITE_RT_URL || baseUrl)
+      // Reactive Analytics URL from .env
+      .replace(/<RA_URL>/g, process.env.VITE_RA_URL || baseUrl)
       // We want the PWA banner to show on www.reactivetrader.com
       .replace(/web\.prod\./g, "www.")
       // for environment disambiguation, in OpenFin uuids
@@ -179,6 +190,8 @@ const copyPlugin = (
       .replace(/<ENV_SUFFIX>/g, env === "prod" ? "" : ` ${env.toUpperCase()}`)
       // to keep consistent runtime version across our manifests
       .replace(/<OPENFIN_RUNTIME>/g, OPENFIN_RUNTIME)
+      .replace(/<WORKSPACE_OPENFIN_RUNTIME>/g, WORKSPACE_OPENFIN_RUNTIME)
+      .replace('"<SHOW_PROVIDER_WINDOW>"', `${showOpenFinProvider}`)
 
   return viteStaticCopy({
     flatten: true,
@@ -201,6 +214,23 @@ const copyPlugin = (
               src: "public-openfin/plugin/*",
               dest: "plugin",
             },
+            {
+              src: "public-workspace/config/*",
+              dest: "workspace/config",
+              transform,
+            },
+            {
+              src: "public-workspace/images/icons/*",
+              dest: "images/icons",
+            },
+            {
+              src: "public-workspace/images/previews/*",
+              dest: "images/previews",
+            },
+            {
+              src: "public-workspace/*.json",
+              dest: "",
+            },
           ]
         : [
             {
@@ -220,48 +250,65 @@ const injectScriptIntoHtml = (
   isDev: boolean,
   buildTarget: BuildTarget,
   env: string,
-) =>
-  createHtmlPlugin({
-    pages: [
-      {
-        filename: "index.html",
-        template: "index.html",
-        injectOptions: {
-          data: {
-            injectScript: `
-              ${
-                buildTarget === "web"
-                  ? `<link rel="manifest" href="${getBaseUrl(
-                      isDev,
-                    )}/manifest.json" />`
-                  : "<!-- no manifest.json for OpenFin -->"
-              }
-              
-              <script>
-                // Hydra dependency references BigInt at run time even when the application isn't explicitly started
-                // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
-                // Set BigInt to an anon function to prevent the runtime error
-    
-                window.supportsBigInt = typeof BigInt !== 'undefined';
-                window.BigInt = supportsBigInt ? BigInt : function(){};
-              </script>
-              
-              <script async src="https://www.googletagmanager.com/gtag/js?id=${
-                env === "prod" ? "G-Z3PC9MRCH9" : "G-Y28QSEPEC8"
-              }"></script>
-            `,
-          },
+) => {
+  // more specific type than one in "vite-plugin-html", which should be exported but .. is not :-/
+  interface PageOption {
+    filename: string
+    template: string
+    entry?: string
+    injectOptions?: { data?: { injectScript: string } }
+  }
+  const pages: PageOption[] = [
+    {
+      filename: "index.html",
+      template: "index.html",
+      injectOptions: {
+        data: {
+          injectScript: `
+            ${
+              buildTarget === "web"
+                ? `<link rel="manifest" href="${getBaseUrl(
+                    isDev,
+                  )}/manifest.json" />`
+                : "<!-- no manifest.json for OpenFin -->"
+            }
+            
+            <script>
+              // Hydra dependency references BigInt at run time even when the application isn't explicitly started
+              // Detect this as supportsBigInt so we  can show a 'browser unsupported' message
+              // Set BigInt to an anon function to prevent the runtime error
+  
+              window.supportsBigInt = typeof BigInt !== 'undefined';
+              window.BigInt = supportsBigInt ? BigInt : function(){};
+            </script>
+            
+            <script async src="https://www.googletagmanager.com/gtag/js?id=${
+              env === "prod" ? "G-Z3PC9MRCH9" : "G-Y28QSEPEC8"
+            }"></script>
+          `,
         },
       },
-      // TODO - make OpenFin-only
+    },
+  ]
+  if (buildTarget === "openfin") {
+    pages.push(
       {
-        filename: "provider.html",
-        template: "provider.html",
+        filename: "openfinContainerProvider.html",
+        template: "openfinContainerProvider.html",
       },
-    ],
-  })
+      {
+        filename: "openfinWorkspaceProvider.html",
+        template: "openfinWorkspaceProvider.html",
+      },
+    )
+  }
 
-const injectWebServiceWorkerPlugin = (mode: string) =>
+  return createHtmlPlugin({
+    pages,
+  })
+}
+
+const injectWebServiceWorkerPlugin = (mode: string, baseUrl: string) =>
   injectManifest(
     {
       swSrc: "./src/client/Web/sw.js",
@@ -270,7 +317,7 @@ const injectWebServiceWorkerPlugin = (mode: string) =>
       globDirectory: "dist",
       mode,
       modifyURLPrefix: {
-        assets: `${getBaseUrl(mode === "development")}/assets`,
+        assets: `${baseUrl}/assets`,
       },
     },
     ({ swDest, count }) => {
@@ -308,14 +355,37 @@ const fontFacePreload = Unfonts({
   },
 })
 
-// Main Ref: https://vitejs.dev/config/
-const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
+const generateRAUrl = (env: string) => {
+  if (env === "local") return "http://localhost:3005"
 
-  const env = process.env.ENVIRONMENT || "local"
+  return `https://${
+    env === "prod" ? "demo" : env === "env" ? "dev" : env
+  }-${RA_DEPLOYMENT_SUFFIX}`
+}
+
+// Main Ref: https://vitejs.dev/config/
+const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
+  const externalEnv = {
+    ...process.env,
+    ...loadEnv(mode, process.cwd()),
+  }
+  const env = externalEnv.ENVIRONMENT || "local"
+
+  process.env = {
+    VITE_RA_URL: generateRAUrl(env),
+    // so we can directly override RA address if we ever want to
+    ...externalEnv,
+  }
+
   const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
   const isDev = mode === "development"
-  const viteBaseUrl = isDev ? "/" : getBaseUrl(false)
+  const isServe = command === "serve"
+  // quick look-up (not using isServe atm, but expecting to optimise plugins later)
+  // - vite ..         isDev: true   isServe: true (building with esbuild AND serving)
+  // - vite preview .. isDev: false  isServe: true (just running static, so don't need any plugins etc.)
+  // - vitest ..       isDev: false  isServe: true (still need the plugins to e.g. switch in openfin code)
+
+  const baseUrl = getBaseUrl(env === "local")
 
   const devPlugins: PluginOption[] = []
 
@@ -329,17 +399,19 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   devPlugins.push(react())
 
   if (!isDev) {
+    // splitVendorChunkPlugin gives us main AND vendor in assets, vendor is still big tho
     devPlugins.push(splitVendorChunkPlugin(), customPreloadPlugin())
   }
 
   if (buildTarget === "web") {
-    devPlugins.push(injectWebServiceWorkerPlugin(mode) as Plugin)
+    devPlugins.push(injectWebServiceWorkerPlugin(mode, baseUrl) as Plugin)
   }
 
-  devPlugins.push(copyPlugin(isDev, buildTarget, env))
+  devPlugins.push(copyPlugin(baseUrl, buildTarget, env))
   devPlugins.push(injectScriptIntoHtml(isDev, buildTarget, env))
 
   const plugins = process.env.STORYBOOK === "true" ? [] : devPlugins
+
   plugins.push(fontFacePreload)
 
   const proxy = process.env.VITE_MOCKS
@@ -356,25 +428,38 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
         },
       }
 
+  const input = {
+    main: resolve(__dirname, "index.html"),
+  }
+  if (buildTarget === "openfin") {
+    input["openfin/containerProvider"] = resolve(
+      __dirname,
+      "openfinContainerProvider.html",
+    )
+    input["openfin/workspaceProvider"] = resolve(
+      __dirname,
+      "openfinWorkspaceProvider.html",
+    )
+  }
+
   return defineConfig({
-    base: viteBaseUrl,
+    base: baseUrl,
     build: {
       sourcemap: true,
+      chunkSizeWarningLimit: 750,
       rollupOptions: {
-        input: {
-          // TODO - use the opportunity for OpenFin- or PWA-specific root html
-          main: resolve(__dirname, "index.html"),
-          // TODO - make OpenFin-only, move to /OpenFin
-          ofProvider: resolve(__dirname, "provider.html"),
-        },
+        input,
       },
     },
     preview: {
       port: localPort,
+      strictPort: true, // due to substition, dynamic ports won't work - use PORT=1234 <cmd>
     },
     server: {
+      host: "127.0.0.1",
       port: localPort,
-      proxy,
+      strictPort: true, // due to substition, dynamic ports won't work - use PORT=1234 <cmd>
+      proxy, // also applies to preview mode, per https://vitejs.dev/config/preview-options.html#preview-proxy
     },
     resolve: {
       // see https://vitejs.dev/config/shared-options.html#resolve-alias
