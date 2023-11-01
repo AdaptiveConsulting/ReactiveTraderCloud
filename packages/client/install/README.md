@@ -19,9 +19,9 @@ Below you can find links to the installers for the various platforms.
 
 | Environment | Windows                                                                        | Mac OS                                                                         |
 | ----------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| Demo        | [Download](./Reactive-Trader-FX-Demo.exe?raw=true) / [Generate][rtfx-demo-win] | [Download](./Reactive-Trader-Demo-FX.dmg?raw=true) / [Generate][rtfx-demo-mac] |
-| UAT         | [Download](./Reactive-Trader-FX-UAT.exe?raw=true) / [Generate][rtfx-uat-win]   | [Download](./Reactive-Trader-UAT-FX.dmg?raw=true) / [Generate][rtfx-uat-mac]   |
-| Dev         | [Download](./Reactive-Trader-FX-Dev.exe?raw=true) / [Generate][rtfx-dev-win]   | [Download](./Reactive-Trader-Dev-FX.dmg?raw=true) / [Generate][rtfx-dev-mac]   |
+| Demo        | [Download](./Reactive-Trader-FX-Demo.exe?raw=true) / [Generate][rtfx-demo-win] | [Download](./Reactive-Trader-FX-Demo.dmg?raw=true) / [Generate][rtfx-demo-mac] |
+| UAT         | [Download](./Reactive-Trader-FX-UAT.exe?raw=true) / [Generate][rtfx-uat-win]   | [Download](./Reactive-Trader-FX-UAT.dmg?raw=true) / [Generate][rtfx-uat-mac]   |
+| Dev         | [Download](./Reactive-Trader-FX-Dev.exe?raw=true) / [Generate][rtfx-dev-win]   | [Download](./Reactive-Trader-FX-Dev.dmg?raw=true) / [Generate][rtfx-dev-mac]   |
 
 [rtfx-demo-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.prod.reactivetrader.com%2Fconfig%2Frt-fx.json&fileName=Reactive-Trader-FX-Demo&unzipped=true
 [rtfx-uat-win]: https://install.openfin.co/download/?os=win&config=https%3A%2F%2Fopenfin.uat.reactivetrader.com%2Fconfig%2Frt-fx.json&fileName=Reactive-Trader-FX-UAT&unzipped=true
