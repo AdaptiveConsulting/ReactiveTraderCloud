@@ -27,8 +27,8 @@ Please see [our Showcase page](https://weareadaptive.com/showcase/) for a full l
 [finsemble]: https://cosaic.io/finsemble/
 [storybook]: https://www.reactivetrader.com/storybook
 [style guide]: https://www.reactivetrader.com/styleguide
-[openfin-win]: ./install/Reactive-Launcher-Demo.exe?raw=true
-[openfin-mac]: ./install/Reactive-Launcher-Demo.dmg?raw=true
+[openfin-win]: ./packages/client/install/Reactive-Launcher-Demo.exe?raw=true
+[openfin-mac]: ./packages/client/install/Reactive-Launcher-Demo.dmg?raw=true
 [finsemble-win]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsemble.exe
 
 ## Development
