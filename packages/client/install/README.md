@@ -72,4 +72,4 @@ Download and run the exe below to install the integrated toolbar on your desktop
 | UAT         | [Download][fsbl-win-uat-exe]  |
 
 [fsbl-win-demo-exe]: https://storage.googleapis.com/reactive-trader-finsemble/pkg/ReactiveTraderFinsemble.exe
-[fsbl-win-uat-exe]: https://storage.googleapis.com/reactive-trader-finsemble-uat/pkg/ReactiveTraderFinsemble.exe
+[fsbl-win-uat-exe]: https://storage.googleapis.com/reactive-trader-finsemble-uat/pkg/ReactiveTraderFinsemble-UAT.exe
