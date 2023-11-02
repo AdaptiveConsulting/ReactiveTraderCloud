@@ -26,6 +26,16 @@ const config: PlaywrightTestConfig = {
         trace: "retain-on-failure",
       },
     },
+    {
+      name: "QA",
+      testDir: "./playwright/tests",
+      use: {
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
+        trace: "retain-on-failure",
+        baseURL: "https://web.dev.reactivetrader.com"
+      },
+    }
   ],
   reporter: [
     ["list"],
