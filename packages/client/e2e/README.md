@@ -44,7 +44,8 @@ To run the web UI
 ## QA Exercise
 
 1. Three UI bugs have been added on this branch, try and find them.
-2. Create a bugs from then providing all the necessary information required for investigation.
+2. Log bugs for them, providing all the necessary information required for investigation. You can use a doc/template
+   of your choice e.g google docs/spreadsheets etc.
 <details>
    1. Steps to reproduce
    2. Expected result:
