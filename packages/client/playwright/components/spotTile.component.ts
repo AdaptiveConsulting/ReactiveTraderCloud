@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test"
+import { Locator, Page } from "@playwright/test"
 
 import { BasePageComponent } from "../base.component"
 
@@ -14,15 +14,6 @@ export enum CurrencyPair {
   EURAUD = "EUR/AUD",
 }
 
-export enum Filter {
-  ALL,
-  EUR,
-  USD,
-  GBP,
-  AUD,
-  NZD,
-}
-
 export enum Side {
   BUY = "Buy",
   SELL = "Sell",
@@ -30,22 +21,16 @@ export enum Side {
 
 export default class SpotTileComponent extends BasePageComponent {
   constructor(page: Page) {
-    super(page.locator("[data-qa='workspace__tiles-workspace']"), page)
+    super(page.getByRole("region").locator("div"), page)
   }
-
-  public async selectFilter(filter: Filter) {
-    await this.host.getByTestId(`menuButton-${Filter[filter]}`).click()
-  }
-
-  public getSpotTile(currencyPair: CurrencyPair) {
+  public getTile(currencyPair: CurrencyPair) {
     const spotTile = this.host
-      .getByRole("region")
-      .locator("div")
       .filter({ hasText: currencyPair })
-      .first()
+      .first() as Locator
+
     const confirmationDialogGreen = spotTile
-      .getByRole("dialog")
-      .getByText(/Trade ID/)
+      .getByRole("dialog").filter({has:this.page.getByTestId("trade-id")})
+    
     const confirmationDialogOrange = spotTile
       .getByRole("dialog")
       .getByText(/Trade execution taking longer than expected/)

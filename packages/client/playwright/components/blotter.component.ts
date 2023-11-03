@@ -21,10 +21,15 @@ export default class BlotterComponent extends BasePageComponent {
     super(page.locator("[aria-labelledby='trades-table-heading']"), page)
   }
 
-  public async getTradeLineValue(tradeId: string, column: BlotterColumnValue) {
-    return await this.host
-      .locator(`[data-testid='trades-grid-row-${tradeId}'] > div`)
-      .nth(column)
-      .textContent()
+  public getTradeLine(tradeId: string) {
+    const getLinebyTradeId = this.host.locator(
+      `[data-testid='trades-grid-row-${tradeId}']`
+    ).locator("div")
+
+    async function getValueByColumn(column: BlotterColumnValue) {
+      return getLinebyTradeId.nth(column).textContent()
+    }
+
+    return { getValueByColumn }
   }
 }
