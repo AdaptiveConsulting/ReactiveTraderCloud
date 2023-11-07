@@ -28,8 +28,10 @@ export default class SpotTileComponent extends BasePageComponent {
       .filter({ hasText: currencyPair })
       .first() as Locator
 
+    // TODO - Make confirmation Green to fail when Orange/Red are received
     const confirmationDialogGreen = spotTile
-      .getByRole("dialog").filter({has:this.page.getByTestId("trade-id")})
+      .getByRole("dialog")
+      .filter({has:this.page.getByTestId("trade-id")})
     
     const confirmationDialogOrange = spotTile
       .getByRole("dialog")

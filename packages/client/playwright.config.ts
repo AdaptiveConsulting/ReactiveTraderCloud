@@ -27,6 +27,16 @@ const config: PlaywrightTestConfig = {
       },
     },
     {
+      name: "local",
+      testDir: "./playwright/tests",
+      use: {
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
+        trace: "retain-on-failure",
+        baseURL: "http://localhost:1917/"
+      },
+    },
+    {
       name: "QA",
       testDir: "./playwright/tests",
       use: {
