@@ -23,16 +23,20 @@ export default class SpotTileComponent extends BasePageComponent {
   constructor(page: Page) {
     super(page.getByRole("region").locator("div"), page)
   }
+
   public getTile(currencyPair: CurrencyPair) {
     const spotTile = this.host
       .filter({ hasText: currencyPair })
       .first() as Locator
 
-    // TODO - Make confirmation Green to fail when Orange/Red are received
+    const formattedCurrencyPair = currencyPair.replace("/", "")
+
     const confirmationDialogGreen = spotTile
       .getByRole("dialog")
-      .filter({has:this.page.getByTestId("trade-id")})
-    
+      .filter({ hasText: /You/ })
+      .filter({
+        has: this.page.getByTestId("trade-id"),
+      })
     const confirmationDialogOrange = spotTile
       .getByRole("dialog")
       .getByText(/Trade execution taking longer than expected/)
@@ -41,16 +45,35 @@ export default class SpotTileComponent extends BasePageComponent {
       .getByText(/Your trade has been rejected/)
     const executionSpinner = spotTile.getByText(/Executing/)
 
+    const getMaxExceedError = spotTile.getByText(/Max exceeded/)
+    
+    const getRfqButton = spotTile.locator("[data-testid='rfqButton']")
+
+    const rfqSellPrice = spotTile.locator(
+      `[data-testid='Sell-${formattedCurrencyPair}']`,
+    )
+    const rfqBuyPrice = spotTile.locator(
+      `[data-testid='Buy-${formattedCurrencyPair}']`,
+    )
+
     async function clearTextField() {
       await spotTile.locator("input").clear()
     }
+
     async function fillTextField(amount: string) {
       await spotTile.locator("input").fill(amount)
     }
+
+    async function getTextField() {
+      return await spotTile
+        .locator(`input[id='notional-input-${formattedCurrencyPair}']`)
+        .inputValue()
+    }
+
     async function selectSide(side: Side) {
-      const formattedCurrencyPair = currencyPair.replace("/", "")
       await spotTile.getByTestId(`${side}-${formattedCurrencyPair}`).click()
     }
+
     async function getTradeId() {
       return await confirmationDialogGreen
         .locator("[data-testid='trade-id']")
@@ -62,8 +85,13 @@ export default class SpotTileComponent extends BasePageComponent {
       confirmationDialogOrange,
       confirmationDialogRed,
       executionSpinner,
+      rfqSellPrice,
+      rfqBuyPrice,
+      getRfqButton,
+      getMaxExceedError,
       clearTextField,
       fillTextField,
+      getTextField,
       selectSide,
       getTradeId,
     }
