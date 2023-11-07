@@ -1,4 +1,5 @@
 import { type Page } from "@playwright/test"
+import fs from "fs"
 
 import { BaseComponent } from "../Base.component"
 
@@ -74,6 +75,20 @@ export default class BlotterComponent extends BaseComponent {
     const status = firstRow.getValueByColumn(BlotterColumnValue.STATUS)
     return status
   }
+  public parseCSV (filePath:string): Array<string> | string {
+    //read the downloaded file, use readFileSync because it is synchronous
+    let csvRows: Array<string> | string
+    try {
+      csvRows = fs
+        .readFileSync(filePath, "utf8")
+        .toString()
+        .split("\n") as Array<string>
+    } catch (err) {
+      csvRows = "error"
+    }
+    return csvRows
+  }
+  
 
   public async getTradeEntry(rank: number) {
     const tradeEntry = this.page.locator("[role=\"grid\"] > div").nth(rank)

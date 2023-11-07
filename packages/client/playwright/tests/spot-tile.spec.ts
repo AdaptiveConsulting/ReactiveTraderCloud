@@ -136,15 +136,15 @@ test.describe("FX purchase", () => {
   test.describe("Toggle between prices and graph views", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async ({}) => {
       await page.spotTileComponent.getToggle().click()
-      var tileState = await page.spotTileComponent.getTileSate()
-      await expect(tileState).toBe("Normal")
+      let tileState = await page.spotTileComponent.getTileSate()
+      expect(tileState).toBe("Normal")
 
       await page.spotTileComponent.getToggle().click()
       tileState = await page.spotTileComponent.getTileSate()
-      await expect(tileState).toBe("Analytics")
+      expect(tileState).toBe("Analytics")
     })
   })
-  //TODO: Write the Playwright code for the Test-Cases defined below 
+  //TODO: Write the Playwright code for the Test-Cases defined below
   //TODO: refer to "e2e/spot-tile.spec.ts" file to understand what we currently do
   test.describe("Toggle between tile filters", () => {
     test("When I toggle EUR then I should see 4 tiles", async () => {

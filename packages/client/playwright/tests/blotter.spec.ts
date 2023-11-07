@@ -91,15 +91,9 @@ test.describe("Blotter", () => {
 
     await download.saveAs("e2e/test-data/blotter-data.csv")
     //read the downloaded file, use readFileSync because it is synchronous
-    let csvRows: Array<string> | string
-    try {
-      csvRows = fs
-        .readFileSync("e2e/test-data/blotter-data.csv", "utf8")
-        .toString()
-        .split("\n") as Array<string>
-    } catch (err) {
-      csvRows = "error"
-    }
+    const csvRows = page.blotterComponent.parseCSV(
+      "e2e/test-data/blotter-data.csv",
+    )
 
     expect(typeof csvRows).not.toBe("string")
     expect(page.blotterComponent.getTradeIDFromCSV(csvRows)).toBe(
@@ -120,15 +114,9 @@ test.describe("Blotter", () => {
     await download.saveAs("e2e/test-data/filtered-data.csv")
 
     //read the downloaded file, use readFileSync because it is synchronous
-    let filteredCSVRows: Array<string> | string
-    try {
-      filteredCSVRows = fs
-        .readFileSync("e2e/test-data/filtered-data.csv", "utf8")
-        .toString()
-        .split("\n") as Array<string>
-    } catch (err) {
-      filteredCSVRows = "error"
-    }
+    const filteredCSVRows = page.blotterComponent.parseCSV(
+      "e2e/test-data/filtered-data.csv",
+    )
 
     expect(typeof filteredCSVRows).not.toBe("string")
     expect(page.blotterComponent.getTradeIDFromCSV(filteredCSVRows)).toBe("1")
