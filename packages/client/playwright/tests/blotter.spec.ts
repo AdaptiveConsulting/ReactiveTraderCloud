@@ -1,8 +1,8 @@
 /* eslint-disable no-empty-pattern */
 import fs from "fs"
 
-import { BlotterColumnValue } from "../components/blotter.component"
-import { CurrencyPair, Side } from "../components/spotTile.component"
+import { BlotterColumnValue } from "../components/Blotter.component"
+import { CurrencyPair, Side } from "../components/SpotTile.component"
 import { expect, test } from "../pageFixture"
 import FxPage from "../pages/fx.page"
 

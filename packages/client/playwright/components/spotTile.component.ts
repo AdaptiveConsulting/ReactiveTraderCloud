@@ -1,6 +1,6 @@
 import { Locator, Page } from "@playwright/test"
 
-import { BaseComponent } from "../base.component"
+import { BaseComponent } from "../Base.component"
 
 export enum CurrencyPair {
   EURUSD = "EUR/USD",
@@ -27,7 +27,7 @@ export default class SpotTileComponent extends BaseComponent {
   public getTile(currencyPair: CurrencyPair) {
     const spotTile = this.host
       .filter({ hasText: currencyPair })
-      .first() as Locator
+      .first()
 
     const formattedCurrencyPair = currencyPair.replace("/", "")
 

@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 
-import { BaseComponent } from "../base.component"
+import { BaseComponent } from "../Base.component"
 
 export default class AnalyticsComponent extends BaseComponent {
   constructor(page: Page) {

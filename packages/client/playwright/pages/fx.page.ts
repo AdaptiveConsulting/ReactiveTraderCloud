@@ -1,9 +1,9 @@
 import { Download, Page } from "@playwright/test"
 
 import { BasePage } from "../base.page"
-import AnalyticsComponent from "../components/analytics.component"
-import BlotterComponent from "../components/blotter.component"
-import SpotTileComponent from "../components/spotTile.component"
+import AnalyticsComponent from "../components/Analytics.component"
+import BlotterComponent from "../components/Blotter.component"
+import SpotTileComponent from "../components/SpotTile.component"
 
 export enum Filter {
   ALL,

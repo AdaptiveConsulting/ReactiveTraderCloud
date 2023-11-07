@@ -1,6 +1,6 @@
 import { type Page } from "@playwright/test"
 
-import { BaseComponent } from "../base.component"
+import { BaseComponent } from "../Base.component"
 
 export enum BlotterColumnValue {
   MAIN,
@@ -75,7 +75,7 @@ export default class BlotterComponent extends BaseComponent {
  })
     
    async function getValueByColumn(column: BlotterColumnValue) {
-    return tradeEntry.locator("div").nth(column).textContent()
+    return await tradeEntry.locator("div").nth(column).textContent()
   }
 
     async function hover() {
