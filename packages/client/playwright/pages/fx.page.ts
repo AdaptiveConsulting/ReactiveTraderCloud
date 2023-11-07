@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test"
+import { Download, Page } from "@playwright/test"
 
 import { BasePage } from "../base.page"
 import AnalyticsComponent from "../components/analytics.component"
@@ -28,6 +28,10 @@ export default class FxPage extends BasePage {
       .locator("[data-qa='workspace__tiles-workspace']")
       .getByTestId(`menuButton-${Filter[filter]}`)
       .click()
+  }
+
+  public async waitForEventDownload(): Promise<Download> {
+    return await this.page.waitForEvent("download")
   }
 
   async open() {

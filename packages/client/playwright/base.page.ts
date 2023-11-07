@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test"
+import type { Page } from "@playwright/test";
 
 export abstract class BasePage {
   constructor(public readonly page: Page) {}
@@ -8,6 +8,6 @@ export abstract class BasePage {
    * @param path - url path
    */
   async open(path: string) {
-    await this.page.goto(path)
+    await this.page.goto(path);
   }
 }

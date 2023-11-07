@@ -1,6 +1,6 @@
 import { Locator, Page } from "@playwright/test"
 
-import { BasePageComponent } from "../base.component"
+import { BaseComponent } from "../base.component"
 
 export enum CurrencyPair {
   EURUSD = "EUR/USD",
@@ -19,7 +19,7 @@ export enum Side {
   SELL = "Sell",
 }
 
-export default class SpotTileComponent extends BasePageComponent {
+export default class SpotTileComponent extends BaseComponent {
   constructor(page: Page) {
     super(page.getByRole("region").locator("div"), page)
   }
