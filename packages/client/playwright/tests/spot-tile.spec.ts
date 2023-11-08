@@ -22,7 +22,7 @@ test.describe("FX purchase", () => {
       await expect(eurusdTile.confirmationDialogGreen).toBeVisible()
       const tileTradeId = await eurusdTile.getTradeId()
       const blotterTradeId = await page.blotterComponent.getlatestTradeId()
-      const blotterStatus = await page.blotterComponent.getLatestStatus()
+      const blotterStatus = await page.blotterComponent.getLatestTradeStatus()
 
       expect(tileTradeId).toBe(blotterTradeId)
       expect(blotterStatus).toBe("Done")
@@ -52,7 +52,7 @@ test.describe("FX purchase", () => {
       const tileTradeId = await gbpjpyTile.getTradeId()
 
       const blotterTradeId = await page.blotterComponent.getlatestTradeId()
-      const blotterStatus = await page.blotterComponent.getLatestStatus()
+      const blotterStatus = await page.blotterComponent.getLatestTradeStatus()
 
       expect(tileTradeId).toBe(blotterTradeId)
       expect(blotterStatus).toBe("Rejected")
@@ -73,7 +73,7 @@ test.describe("FX purchase", () => {
       const tileTradeId = await eurjpyTile.getTradeId()
 
       const blotterTradeId = await page.blotterComponent.getlatestTradeId()
-      const blotterStatus = await page.blotterComponent.getLatestStatus()
+      const blotterStatus = await page.blotterComponent.getLatestTradeStatus()
 
       expect(tileTradeId).toBe(blotterTradeId)
       expect(blotterStatus).toBe("Done")

@@ -67,7 +67,7 @@ export default class BlotterComponent extends BaseComponent {
     return tradeId
   }
 
-  public async getLatestStatus() {
+  public async getLatestTradeStatus() {
 
 
     const firstRow = await this.getTradeEntry(1)
