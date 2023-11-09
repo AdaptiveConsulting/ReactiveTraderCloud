@@ -1,5 +1,4 @@
 /* eslint-disable no-empty-pattern */
-import { BlotterColumnValue } from "../components/Blotter.component"
 import { CurrencyPair, Side } from "../components/SpotTile.component"
 import { expect, test } from "../pageFixture"
 import FxPage from "../pages/fx.page"
@@ -22,13 +21,11 @@ test.describe("FX purchase", () => {
 
       await expect(eurusdTile.confirmationDialogGreen).toBeVisible()
       const tileTradeId = await eurusdTile.getTradeId()
-
-      const firstRow = await page.blotterComponent.getTradeEntry(1)
-      const blotterTradeId = await firstRow.getValueByColumn(
-        BlotterColumnValue.TRADEID,
-      )
+      const blotterTradeId = await page.blotterComponent.getlatestTradeId()
+      const blotterStatus = await page.blotterComponent.getLatestTradeStatus()
 
       expect(tileTradeId).toBe(blotterTradeId)
+      expect(blotterStatus).toBe("Done")
     })
 
     test("When I buy USD/JPY then a tile displays in green with confirmation message", async ({}) => {
@@ -54,12 +51,11 @@ test.describe("FX purchase", () => {
       await expect(gbpjpyTile.confirmationDialogRed).toBeVisible()
       const tileTradeId = await gbpjpyTile.getTradeId()
 
-      const firstRow = await page.blotterComponent.getTradeEntry(1)
-      const blotterTradeId = await firstRow.getValueByColumn(
-        BlotterColumnValue.TRADEID,
-      )
+      const blotterTradeId = await page.blotterComponent.getlatestTradeId()
+      const blotterStatus = await page.blotterComponent.getLatestTradeStatus()
 
       expect(tileTradeId).toBe(blotterTradeId)
+      expect(blotterStatus).toBe("Rejected")
     })
   })
 
@@ -76,12 +72,11 @@ test.describe("FX purchase", () => {
       await expect(eurjpyTile.confirmationDialogGreen).toBeVisible()
       const tileTradeId = await eurjpyTile.getTradeId()
 
-      const firstRow = await page.blotterComponent.getTradeEntry(1)
-      const blotterTradeId = await firstRow.getValueByColumn(
-        BlotterColumnValue.TRADEID,
-      )
+      const blotterTradeId = await page.blotterComponent.getlatestTradeId()
+      const blotterStatus = await page.blotterComponent.getLatestTradeStatus()
 
       expect(tileTradeId).toBe(blotterTradeId)
+      expect(blotterStatus).toBe("Done")
     })
   })
 
