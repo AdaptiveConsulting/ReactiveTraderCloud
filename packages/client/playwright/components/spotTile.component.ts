@@ -1,6 +1,7 @@
 import { Locator, Page } from "@playwright/test"
 
 import { BaseComponent } from "../Base.component"
+import { GrReturn } from "react-icons/all"
 
 export enum CurrencyPair {
   EURUSD = "EUR/USD",
@@ -24,10 +25,24 @@ export default class SpotTileComponent extends BaseComponent {
     super(page.getByRole("region").locator("div"), page)
   }
 
+  public getToggle() {
+    return this.page.getByTestId("toggleButton")
+  }
+
+  get tileState() {
+    return this.page.evaluate(() => {
+      window.localStorage.getItem("selectedView")
+    })
+  }
+
+  public async getTileSate() {
+    await this.page.evaluate(() => {
+      return window.localStorage.getItem("selectedView")
+    })
+  }
+
   public getTile(currencyPair: CurrencyPair) {
-    const spotTile = this.host
-      .filter({ hasText: currencyPair })
-      .first()
+    const spotTile = this.host.filter({ hasText: currencyPair }).first()
 
     const formattedCurrencyPair = currencyPair.replace("/", "")
 
@@ -46,7 +61,7 @@ export default class SpotTileComponent extends BaseComponent {
     const executionSpinner = spotTile.getByText(/Executing/)
 
     const getMaxExceedError = spotTile.getByText(/Max exceeded/)
-    
+
     const getRfqButton = spotTile.locator("[data-testid='rfqButton']")
 
     const rfqSellPrice = spotTile.locator(
