@@ -136,11 +136,16 @@ test.describe("FX purchase", () => {
   test.describe("Toggle between prices and graph views", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async ({}) => {
       
-      const tileState = await page.spotTileComponent.tileState
+      const tileState = await page.spotTileComponent.getTileSate()
       console.log("1")
       console.log(tileState)
       console.log("2")
       await page.spotTileComponent.getToggle().click()
+      const tileState2 = await page.spotTileComponent.getTileSate()
+      console.log("1")
+      console.log(tileState2)
+      console.log("2")
+
       await page.selectCurrencyFilter(Filter.ALL)
       await page.spotTileComponent.getToggle().click()
       await page.selectCurrencyFilter(Filter.EUR)

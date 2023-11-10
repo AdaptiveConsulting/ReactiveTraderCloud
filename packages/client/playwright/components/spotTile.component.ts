@@ -29,16 +29,11 @@ export default class SpotTileComponent extends BaseComponent {
     return this.page.getByTestId("toggleButton")
   }
 
-  get tileState() {
-    return this.page.evaluate(() => {
-      window.localStorage.getItem("selectedView")
-    })
-  }
-
   public async getTileSate() {
-    await this.page.evaluate(() => {
+    const tileState = await this.page.evaluate(() => {
       return window.localStorage.getItem("selectedView")
     })
+    return tileState
   }
 
   public getTile(currencyPair: CurrencyPair) {
