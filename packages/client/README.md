@@ -8,8 +8,9 @@ The trading client GUI is a single page app (SPA) built using Typescript, React,
 [Openfin](#openfin)  
 [Finsemble](#finsemble)  
 [Storybook](#storybook)  
-[Progressive Web App](#progressive-web-app)  
-[Token replacement](#token-replacement)
+[Progressive Web App](#progressive-web-app-or-pwa)  
+[E2E Testing](#end-to-end-testing)  
+[Token replacement](#token-replacement)  
 [Deployment](#deployment)
 
 ## High level technologies
@@ -222,7 +223,7 @@ _Tech Note: Since we are no longer using a middleware, we are able to serve Stor
 
 There seems to be some issues with storybook cache on some machines, we can solve it by running it without the cache. We added --no-manager-cache to the storybook script
 
-## End to End testing (web and openfin)
+## End to End testing
 
 How to run e2e tests against the web
 
@@ -249,7 +250,7 @@ and launch all of the apps from the launcher
 npm run e2e:openfin -- --workers=1
 ```
 
-## Progressive Web App (PWA)
+## Progressive Web App or PWA
 
 Reactive Trader can be installed as a progressive web application.
 
