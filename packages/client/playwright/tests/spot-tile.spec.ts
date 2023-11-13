@@ -135,24 +135,32 @@ test.describe("FX purchase", () => {
   })
   test.describe("Toggle between prices and graph views", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async ({}) => {
-      
-      const tileState = await page.spotTileComponent.getTileSate()
-      console.log("1")
-      console.log(tileState)
-      console.log("2")
       await page.spotTileComponent.getToggle().click()
-      const tileState2 = await page.spotTileComponent.getTileSate()
-      console.log("1")
-      console.log(tileState2)
-      console.log("2")
+      var tileState = await page.spotTileComponent.getTileSate()
+      await expect(tileState).toBe("Normal")
 
-      await page.selectCurrencyFilter(Filter.ALL)
       await page.spotTileComponent.getToggle().click()
-      await page.selectCurrencyFilter(Filter.EUR)
-      
-      
-      //await page.spotTileComponent.clickToggleButton()
-      
+      tileState = await page.spotTileComponent.getTileSate()
+      await expect(tileState).toBe("Analytics")
+    })
+  })
+  //TODO: Write the Playwright code for the Test-Cases defined below 
+  //TODO: refer to "e2e/spot-tile.spec.ts" file to understand what we currently do
+  test.describe("Toggle between tile filters", () => {
+    test("When I toggle EUR then I should see 4 tiles", async () => {
+      // Write Tests
+    })
+    test("When I toggle USD then I should see 5 tiles", async () => {
+      // Write Tests
+    })
+    test("When I toggle GBP then I should see 2 tiles", async () => {
+      // Write Tests
+    })
+    test("When I toggle AUD then I should see 2 tiles", async () => {
+      // Write Tests
+    })
+    test("When I toggle NZD then I should see 1 tiles", async () => {
+      // Write Tests
     })
   })
 })
