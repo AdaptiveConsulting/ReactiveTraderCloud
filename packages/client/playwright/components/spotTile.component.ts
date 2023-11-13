@@ -1,7 +1,6 @@
 import { Locator, Page } from "@playwright/test"
 
 import { BaseComponent } from "../Base.component"
-import { GrReturn } from "react-icons/all"
 
 export enum CurrencyPair {
   EURUSD = "EUR/USD",
@@ -30,10 +29,9 @@ export default class SpotTileComponent extends BaseComponent {
   }
 
   public async getTileSate() {
-    const tileState = await this.page.evaluate(() => {
+    return await this.page.evaluate(() => {
       return window.localStorage.getItem("selectedView")
     })
-    return tileState
   }
 
   public getTile(currencyPair: CurrencyPair) {
