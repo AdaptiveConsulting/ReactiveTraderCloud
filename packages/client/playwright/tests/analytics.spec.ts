@@ -1,6 +1,6 @@
-import { expect, test } from "../pageFixture"
+import { test } from "../pageFixture"
 
-test.describe("Analytics", () => {
+test.describe.skip("Analytics", () => {
   test("Analytics test 1", async () => {
     //TODO
   })

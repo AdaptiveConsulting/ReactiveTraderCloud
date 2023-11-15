@@ -1,8 +1,8 @@
-import { chromium, test as base } from "@playwright/test"
+import { test as base } from "@playwright/test"
 
 import FxPage from "./pages/fx.page"
 
-export type PageObjects = {
+interface PageObjects {
   fxPage: FxPage
 }
 
@@ -27,4 +27,4 @@ export const test = base.extend<PageObjects>({
   },
 })
 
-export { expect, Locator, Page, Response } from "@playwright/test"
+export { expect } from "@playwright/test"

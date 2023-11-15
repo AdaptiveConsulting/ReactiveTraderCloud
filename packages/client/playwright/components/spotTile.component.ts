@@ -1,6 +1,6 @@
-import { Locator, Page } from "@playwright/test"
+import { Page } from "@playwright/test"
 
-import { BaseComponent } from "../Base.component"
+import { BaseComponent } from "../base.component"
 
 export enum CurrencyPair {
   EURUSD = "EUR/USD",

@@ -2,34 +2,14 @@ import type { PlaywrightTestConfig } from "@playwright/test"
 import { devices } from "@playwright/test"
 
 const config: PlaywrightTestConfig = {
-  testDir: "./e2e",
-  /* Maximum time one test can run for. */
+  testDir: "./playwright/tests",
   timeout: 30_000,
   workers: 1,
   projects: [
     {
-      name: "chrome",
+      name: "local",
       use: {
         ...devices["Desktop Chrome"],
-        //Artifacts
-        screenshot: "only-on-failure",
-        video: "retain-on-failure",
-        trace: "retain-on-failure",
-        headless: true,
-      },
-    },
-    {
-      name: "openfin",
-      use: {
-        screenshot: "only-on-failure",
-        video: "retain-on-failure",
-        trace: "retain-on-failure",
-      },
-    },
-    {
-      name: "local",
-      testDir: "./playwright/tests",
-      use: {
         screenshot: "only-on-failure",
         video: "retain-on-failure",
         trace: "retain-on-failure",
@@ -37,8 +17,7 @@ const config: PlaywrightTestConfig = {
       },
     },
     {
-      name: "QA",
-      testDir: "./playwright/tests",
+      name: "dev",
       use: {
         screenshot: "only-on-failure",
         video: "retain-on-failure",
@@ -53,7 +32,7 @@ const config: PlaywrightTestConfig = {
       "html",
       {
         outputFolder: "playwright-report",
-        open: "never",
+        open: "on-failure",
       },
     ],
   ],

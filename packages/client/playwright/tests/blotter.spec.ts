@@ -1,6 +1,6 @@
 /* eslint-disable no-empty-pattern */
-import { BlotterColumnValue } from "../components/Blotter.component"
-import { CurrencyPair, Side } from "../components/SpotTile.component"
+import { BlotterColumnValue } from "../components/blotter.component"
+import { CurrencyPair, Side } from "../components/spotTile.component"
 import { expect, test } from "../pageFixture"
 import FxPage from "../pages/fx.page"
 
@@ -87,10 +87,10 @@ test.describe("Blotter", () => {
     await page.blotterComponent.clickDownload()
     const download = await downloadPromise
 
-    await download.saveAs("e2e/test-data/blotter-data.csv")
+    await download.saveAs("playwright/test-data/blotter-data.csv")
     //read the downloaded file, use readFileSync because it is synchronous
     const csvRows = page.blotterComponent.parseCSV(
-      "e2e/test-data/blotter-data.csv",
+      "playwright/test-data/blotter-data.csv",
     )
 
     expect(typeof csvRows).not.toBe("string")
@@ -109,11 +109,11 @@ test.describe("Blotter", () => {
     await page.blotterComponent.clickDownload()
     const download = await downloadPromise
 
-    await download.saveAs("e2e/test-data/filtered-data.csv")
+    await download.saveAs("playwright/test-data/filtered-data.csv")
 
     //read the downloaded file, use readFileSync because it is synchronous
     const filteredCSVRows = page.blotterComponent.parseCSV(
-      "e2e/test-data/filtered-data.csv",
+      "playwright/test-data/filtered-data.csv",
     )
 
     expect(typeof filteredCSVRows).not.toBe("string")

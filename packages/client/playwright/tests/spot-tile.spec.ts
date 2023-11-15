@@ -1,5 +1,5 @@
 /* eslint-disable no-empty-pattern */
-import { CurrencyPair, Side } from "../components/SpotTile.component"
+import { CurrencyPair, Side } from "../components/spotTile.component"
 import { expect, test } from "../pageFixture"
 import FxPage from "../pages/fx.page"
 import { Filter } from "../pages/fx.page"
@@ -146,7 +146,7 @@ test.describe("FX purchase", () => {
   })
   //TODO: Write the Playwright code for the Test-Cases defined below
   //TODO: refer to "e2e/spot-tile.spec.ts" file to understand what we currently do
-  test.describe("Toggle between tile filters", () => {
+  test.describe.skip("Toggle between tile filters", () => {
     test("When I toggle EUR then I should see 4 tiles", async () => {
       // Write Tests
     })

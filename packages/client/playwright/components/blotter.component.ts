@@ -1,7 +1,7 @@
-import { type Page } from "@playwright/test"
+import { Page } from "@playwright/test"
 import fs from "fs"
 
-import { BaseComponent } from "../Base.component"
+import { BaseComponent } from "../base.component"
 
 export enum BlotterColumnValue {
   MAIN,
