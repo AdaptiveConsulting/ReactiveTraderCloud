@@ -33,7 +33,7 @@ const config: PlaywrightTestConfig = {
         screenshot: "only-on-failure",
         video: "retain-on-failure",
         trace: "retain-on-failure",
-        baseURL: "http://localhost:1917/"
+        baseURL: "http://localhost:1917/",
       },
     },
     {
@@ -43,9 +43,9 @@ const config: PlaywrightTestConfig = {
         screenshot: "only-on-failure",
         video: "retain-on-failure",
         trace: "retain-on-failure",
-        baseURL: "https://web.dev.reactivetrader.com"
+        baseURL: "https://web.dev.reactivetrader.com",
       },
-    }
+    },
   ],
   reporter: [
     ["list"],
@@ -57,11 +57,11 @@ const config: PlaywrightTestConfig = {
       },
     ],
   ],
-  // use: {
-  //   launchOptions: {
-  //     slowMo: 800,
-  //   },
-  // },
+  webServer: {
+    command: "npm run start",
+    url: "http://localhost:1917",
+    reuseExistingServer: true,
+  },
 }
 
 export default config

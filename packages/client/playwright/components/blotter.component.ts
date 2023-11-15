@@ -62,15 +62,12 @@ export default class BlotterComponent extends BaseComponent {
   }
 
   public async getlatestTradeId() {
-
     const firstRow = await this.getTradeEntry(1)
     const tradeId = firstRow.getValueByColumn(BlotterColumnValue.TRADEID)
     return tradeId
   }
 
   public async getLatestTradeStatus() {
-
-
     const firstRow = await this.getTradeEntry(1)
     const status = firstRow.getValueByColumn(BlotterColumnValue.STATUS)
     return status
@@ -89,7 +86,6 @@ export default class BlotterComponent extends BaseComponent {
     return csvRows
   }
   
-
   public async getTradeEntry(rank: number) {
     const tradeEntry = this.page.locator("[role=\"grid\"] > div").nth(rank)
 
