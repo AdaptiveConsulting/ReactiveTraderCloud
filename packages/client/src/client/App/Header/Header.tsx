@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react"
 
 import Logo from "@/client/components/Logo"
-import { WEBSITE } from "@/client/constants"
+import { BASE_URL, WEBSITE } from "@/client/constants"
 
 import {
   AppHeaderRoot,
@@ -22,9 +22,12 @@ export interface HeaderProps {
   switches?: ReactNode
 }
 
+const logoSource = `${BASE_URL}/static/media/bam_logo_white_on_red_small.png`
+
 export const defaultLogo = (
   <LogoWrapper>
-    <Logo
+    <img src={logoSource} style={{ width: "250px" }} />
+    {/* <Logo
       theme={{
         // TODO make BAM theme
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -42,7 +45,7 @@ export const defaultLogo = (
         window.open(WEBSITE)
       }}
       data-qa="header__root-logo"
-    />
+    /> */}
   </LogoWrapper>
 )
 

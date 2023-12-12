@@ -21,7 +21,6 @@ const ResizableContent = styled.div`
 const Bar = styled.div<{ show?: boolean }>`
   display: ${({ show }) => (show ? "block" : "none")};
   background-color: ${({ theme }) => theme.core.textColor};
-  box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
     0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
   cursor: row-resize;
   opacity: 0.1;
@@ -29,16 +28,18 @@ const Bar = styled.div<{ show?: boolean }>`
   height: 0.25rem;
   width: 100%;
 
-  &:hover {
-    box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
-      0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
-    opacity: 0.3;
-    transition: all 200ms ease-in-out;
-  }
 
   user-select: none;
 `
 
+// box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
+
+// &:hover {
+//   box-shadow: 0 -0.125rem 0 0 ${({ theme }) => theme.core.textColor},
+//     0 0.125rem 0 0 ${({ theme }) => theme.core.textColor};
+//   opacity: 0.3;
+//   transition: all 200ms ease-in-out;
+// }
 interface Props {
   children: [React.ReactNode, React.ReactNode]
   defaultHeight: number

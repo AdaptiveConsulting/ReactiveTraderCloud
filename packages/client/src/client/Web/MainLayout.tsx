@@ -4,6 +4,8 @@ import styled from "styled-components"
 import { Footer } from "@/client/App/Footer"
 import Header from "@/client/App/Header"
 
+const BAM_THEME_RED3 = "#e21637"
+
 const Wrapper = styled("div")`
   width: 100%;
   background-color: ${({ theme }) => theme.core.darkBackground};
@@ -23,9 +25,11 @@ const AppLayoutRoot = styled.div`
 
   display: grid;
   grid-template-rows: auto 1fr auto;
-  background-color: ${({ theme }) => theme.core.darkBackground};
+  background-color: ${BAM_THEME_RED3};
   color: ${({ theme }) => theme.core.textColor};
 `
+// background-color: ${({ theme }) => theme.core.darkBackground};
+
 const MainWrapper = styled.div`
   display: flex;
   width: 100%;
