@@ -1,5 +1,7 @@
 import styled from "styled-components"
 
+export const BAM_THEME_RED = "#c41230;"
+
 export const LogoWrapper = styled.div`
   &:hover {
     cursor: pointer;
@@ -8,6 +10,7 @@ export const LogoWrapper = styled.div`
 
 export const AppHeaderWrapper = styled.div`
   position: relative;
+  background-color: ${BAM_THEME_RED};
 `
 
 export const AppHeaderRoot = styled.div`
@@ -22,15 +25,15 @@ export const AppHeaderRoot = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  background-color: ${({ theme }) => theme.core.darkBackground};
-  border-bottom: 1px solid ${({ theme }) => theme.core.dividerColor};
+  background-color: ${BAM_THEME_RED};
   color: ${({ theme }) => theme.core.textColor};
 
   position: relative;
   z-index: 5;
-
-  box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
 `
+// background-color: ${({ theme }) => theme.core.darkBackground};
+// border-bottom: 1px solid ${({ theme }) => theme.core.dividerColor};
+// box-shadow: 0 0.125rem 0 ${({ theme }) => theme.core.darkBackground};
 
 export const HeaderNav = styled.div`
   display: flex;

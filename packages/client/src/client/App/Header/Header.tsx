@@ -25,6 +25,14 @@ export interface HeaderProps {
 export const defaultLogo = (
   <LogoWrapper>
     <Logo
+      theme={{
+        // TODO make BAM theme
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        core: {
+          textColor: "#FFF",
+        },
+      }}
       size={1.75}
       role="button"
       onClick={() => {
