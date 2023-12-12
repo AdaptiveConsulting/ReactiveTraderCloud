@@ -5,6 +5,7 @@ import { combineLatest } from "rxjs"
 import { distinctUntilChanged, map, startWith } from "rxjs/operators"
 import styled from "styled-components"
 
+import { BAM_THEME_BLUE } from "@/client/theme/colors"
 import { equals } from "@/client/utils"
 import {
   getDataPoints,
@@ -83,7 +84,7 @@ export const HistoricalGraphComponent = forwardRef<
     <LineChartWrapper showTimer={showTimer} ref={ref}>
       <Svg data-testid="tile-graph">
         <Path
-          stroke={active ? "#5f94f5" : "#737987"}
+          stroke={active ? "#5f94f5" : BAM_THEME_BLUE}
           strokeOpacity={0.9}
           strokeWidth={1.6}
           fill="none"

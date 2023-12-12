@@ -1,5 +1,7 @@
 import styled from "styled-components"
 
+import { BAM_THEME_BLUE } from "@/client/theme/colors"
+
 export const MainBanner = styled.div<{ isHidden: boolean }>`
   display: ${({ isHidden }) => (isHidden ? "none" : "flex")};
   align-items: center;
@@ -28,7 +30,7 @@ export const BannerText = styled.p`
 `
 
 export const InstallButton = styled.button`
-  background-color: ${({ theme }) => theme.accents.primary.base};
+  background-color: ${({ theme }) => BAM_THEME_BLUE};
   color: #ffffff;
   padding: 5px 9px;
   margin: 0 10px;

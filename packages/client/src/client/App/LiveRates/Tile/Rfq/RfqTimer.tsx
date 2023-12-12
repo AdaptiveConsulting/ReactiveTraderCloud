@@ -1,6 +1,8 @@
 import { useLayoutEffect, useState } from "react"
 import styled from "styled-components"
 
+import { BAM_THEME_BLUE } from "@/client/theme/colors"
+
 const TimeLeft = styled.div<{ isAnalyticsView: boolean }>`
   font-size: 10px;
   opacity: 0.6;
@@ -19,7 +21,7 @@ const ProgressBar = styled.div<{
   transitionTime: number
   width: number
 }>`
-  background-color: ${({ theme }) => theme.accents.primary.base};
+  background-color: ${({ theme }) => BAM_THEME_BLUE};
   border-radius: 3px;
   transition: ${({ transitionTime }) => `width ${transitionTime}ms linear`};
   height: 100%;

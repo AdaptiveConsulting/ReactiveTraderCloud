@@ -39,6 +39,13 @@ const OFFWHITE = rgb(244, 246, 249)
 const OFFBLACK = rgb(68, 76, 95) // sRGB
 const BRAND = rgb(42, 87, 141) // Adaptive blue a.k.a. #2A578D
 
+const BAM_THEME_RED1 = "#c41230"
+const BAM_THEME_RED2 = "#DC1431"
+
+export const BAM_THEME_RED = rgb(226, 22, 55) // "#e21637"
+
+export const BAM_THEME_BLUE = rgb(1, 33, 105) // "#012169"
+
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// 2. Palettes //////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -222,7 +229,7 @@ const accents: AccentPaletteMap = {
     lighter: rgb(127, 169, 247),
   },
   positive: {
-    base: rgb(1, 195, 141),
+    base: BAM_THEME_BLUE,
     darker: rgb(3, 160, 119),
     lighter: rgb(12, 150, 116),
     medium: rgb(153, 231, 209),
@@ -234,7 +241,7 @@ const accents: AccentPaletteMap = {
     medium: rgb(255, 197, 127),
   },
   negative: {
-    base: rgb(255, 39, 75),
+    base: BAM_THEME_RED,
     darker: rgb(230, 35, 67),
     lighter: rgb(255, 211, 219),
     medium: rgb(255, 146, 164),
@@ -244,14 +251,17 @@ const accents: AccentPaletteMap = {
 export type TradingPaletteMap = {
   [direction in Direction]: TradingAccentPalette
 }
+
 const uniqueCollections: TradingPaletteMap = {
   [Direction.Sell]: {
-    base: rgb(255, 39, 75),
+    // base: rgb(255, 39, 75),
+    base: BAM_THEME_RED,
     lighter: rgb(255, 211, 219),
     darker: rgb(167, 39, 64),
   },
   [Direction.Buy]: {
-    base: rgb(45, 149, 255),
+    // base: rgb(45, 149, 255),
+    base: BAM_THEME_BLUE,
     lighter: rgb(191, 222, 255),
     darker: rgb(41, 105, 172),
   },

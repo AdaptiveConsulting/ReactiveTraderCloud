@@ -1,10 +1,6 @@
 import styled from "styled-components"
 
-const BAM_THEME_RED = "#c41230"
-const BAM_THEME_RED2 = "#DC1431"
-const BAM_THEME_RED3 = "#e21637"
-
-const BAM_THEME_BLUE1 = "#012169"
+import { BAM_THEME_RED } from "@/client/theme/colors"
 
 export const LogoWrapper = styled.div`
   &:hover {
@@ -28,7 +24,7 @@ export const AppHeaderRoot = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  background-color: ${BAM_THEME_RED3};
+  background-color: ${BAM_THEME_RED};
   color: ${({ theme }) => theme.core.textColor};
 
   position: relative;

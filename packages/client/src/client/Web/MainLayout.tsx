@@ -3,8 +3,7 @@ import styled from "styled-components"
 
 import { Footer } from "@/client/App/Footer"
 import Header from "@/client/App/Header"
-
-const BAM_THEME_RED3 = "#e21637"
+import { BAM_THEME_RED } from "@/client/theme/colors"
 
 const Wrapper = styled("div")`
   width: 100%;
@@ -25,7 +24,7 @@ const AppLayoutRoot = styled.div`
 
   display: grid;
   grid-template-rows: auto 1fr auto;
-  background-color: ${BAM_THEME_RED3};
+  background-color: ${BAM_THEME_RED};
   color: ${({ theme }) => theme.core.textColor};
 `
 // background-color: ${({ theme }) => theme.core.darkBackground};
