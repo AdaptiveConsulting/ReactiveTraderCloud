@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react"
 
 import Logo from "@/client/components/Logo"
-import { WEBSITE } from "@/client/constants"
+import { BASE_URL, WEBSITE } from "@/client/constants"
 
 import {
   AppHeaderRoot,
@@ -22,9 +22,12 @@ export interface HeaderProps {
   switches?: ReactNode
 }
 
+const logoSource = `${BASE_URL}/static/media/bam-title-blue-and-logo.svg`
+
 export const defaultLogo = (
   <LogoWrapper>
-    <Logo
+    <img src={logoSource} style={{ width: "250px" }} />
+    {/* <Logo
       size={1.75}
       role="button"
       onClick={() => {
@@ -34,7 +37,7 @@ export const defaultLogo = (
         window.open(WEBSITE)
       }}
       data-qa="header__root-logo"
-    />
+    /> */}
   </LogoWrapper>
 )
 
