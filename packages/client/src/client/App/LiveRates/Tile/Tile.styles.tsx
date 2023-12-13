@@ -130,6 +130,7 @@ const MainTileStyle = styled(SpotTileStyle)`
   }
 `
 const MainTileWrapper = styled.div`
+  border-radius: 3px;
   min-height: 11rem;
   position: relative;
   height: 100%;
