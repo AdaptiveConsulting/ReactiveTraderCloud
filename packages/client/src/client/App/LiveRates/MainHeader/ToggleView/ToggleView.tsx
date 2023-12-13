@@ -1,7 +1,5 @@
 import styled from "styled-components"
 
-import { BAM_THEME_BLUE } from "@/client/theme/colors"
-
 import {
   getInitView,
   onToggleSelectedView,
