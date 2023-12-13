@@ -23,6 +23,7 @@ export const ExecutionStatusAlertContainer = styled(OverlayDiv)<{
         return ""
     }
   }};
+  border-radius: 3px;
   display: flex;
   flex-direction: column;
   font-weight: bolder;
