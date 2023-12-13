@@ -38,12 +38,13 @@ const d3Effect = (chartDiv: HTMLDivElement) => {
 
   // Add shadow
   const definitions = svg.append("defs")
-  const filter = definitions
-    .append("filter")
-    .attr("id", "drop-shadow")
-    .attr("height", "130%")
+  // const filter = definitions
+  // .append("filter")
+  // .attr("id", "drop-shadow")
+  // .attr("height", "130%")
 
-  filter
+  const filter = definitions
+    // filter
     .append("feGaussianBlur")
     .attr("in", "SourceAlpha")
     .attr("stdDeviation", 1.5)
