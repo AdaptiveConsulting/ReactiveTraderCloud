@@ -2,6 +2,7 @@ import { bind } from "@react-rxjs/core"
 import { scaleLinear } from "d3"
 import { map } from "rxjs/operators"
 
+import { BAM_THEME_BLUE, BAM_THEME_RED } from "@/client/theme/colors"
 import { Range } from "@/client/utils/historicalChart"
 
 import { dataPoints$ } from "./dataPoints$"
@@ -20,13 +21,13 @@ export const Colors = () => {
       <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
         <stop
           offset={offset}
-          stopColor="#28c988"
+          stopColor={BAM_THEME_BLUE}
           stopOpacity="1"
           strokeWidth="1.2"
         ></stop>
         <stop
           offset={offset}
-          stopColor="#f94c4c"
+          stopColor={BAM_THEME_RED}
           stopOpacity="1"
           strokeWidth="1.2"
         ></stop>

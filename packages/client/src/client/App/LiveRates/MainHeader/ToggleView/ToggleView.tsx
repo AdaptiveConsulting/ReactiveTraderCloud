@@ -1,5 +1,7 @@
 import styled from "styled-components"
 
+import { BAM_THEME_BLUE } from "@/client/theme/colors"
+
 import {
   getInitView,
   onToggleSelectedView,
@@ -14,7 +16,7 @@ const ToggleItem = styled(NavItem)<{ active: boolean }>`
   margin-left: 15px;
 
   svg {
-    color: ${({ theme }) => theme.secondary.base};
+    color: ${({ active, theme }) => (active ? "white" : theme.secondary.base)};
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -22,8 +24,7 @@ const ToggleItem = styled(NavItem)<{ active: boolean }>`
     height: 34px;
     line-height: 34px;
     opacity: ${({ active }) => (active ? "1" : "0.52")};
-    background: ${({ active, theme }) =>
-      active ? theme.core.lightBackground : "none"};
+    background: ${({ active, theme }) => (active ? BAM_THEME_BLUE : "none")};
     text-decoration: none;
     padding: 5px;
     min-width: 34px;
@@ -32,6 +33,9 @@ const ToggleItem = styled(NavItem)<{ active: boolean }>`
     border-radius: 2px;
   }
 `
+// color: ${({ theme }) => theme.secondary.base};
+// background: ${({ active, theme }) =>
+//   active ? theme.core.lightBackground : "none"};
 
 export const ToggleView = () => {
   const tileView = useSelectedTileView(getInitView())
