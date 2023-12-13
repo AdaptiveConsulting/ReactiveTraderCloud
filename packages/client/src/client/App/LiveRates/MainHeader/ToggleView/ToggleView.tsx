@@ -14,9 +14,11 @@ import { ChartIcon } from "./ChartIcon"
 const ToggleItem = styled(NavItem)<{ active: boolean }>`
   list-style-type: none;
   margin-left: 15px;
+  background: ${({ active, theme }) =>
+    active ? theme.core.lightBackground : "none"};
 
   svg {
-    color: ${({ active, theme }) => (active ? "white" : theme.secondary.base)};
+    color: ${({ theme }) => theme.secondary.base};
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -24,7 +26,8 @@ const ToggleItem = styled(NavItem)<{ active: boolean }>`
     height: 34px;
     line-height: 34px;
     opacity: ${({ active }) => (active ? "1" : "0.52")};
-    background: ${({ active, theme }) => (active ? BAM_THEME_BLUE : "none")};
+    background: ${({ active, theme }) =>
+      active ? theme.core.lightBackground : "none"};
     text-decoration: none;
     padding: 5px;
     min-width: 34px;
@@ -33,10 +36,6 @@ const ToggleItem = styled(NavItem)<{ active: boolean }>`
     border-radius: 2px;
   }
 `
-// color: ${({ theme }) => theme.secondary.base};
-// background: ${({ active, theme }) =>
-//   active ? theme.core.lightBackground : "none"};
-
 export const ToggleView = () => {
   const tileView = useSelectedTileView(getInitView())
   return (

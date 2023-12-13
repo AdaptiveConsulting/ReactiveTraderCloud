@@ -1,3 +1,5 @@
+import { BAM_THEME_BLUE } from "@/client/theme/colors"
+
 interface Props {
   fill?: string
   height?: number
@@ -5,7 +7,7 @@ interface Props {
 }
 
 export const ChartIcon = ({
-  fill = "#7E8188",
+  fill = BAM_THEME_BLUE,
   height = 24,
   width = 24,
 }: Props) => (
