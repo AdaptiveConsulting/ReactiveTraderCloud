@@ -69,16 +69,19 @@ export const Label = styled.div`
 export const BarPriceContainer = styled.div`
   width: 100%;
 `
-const bgColor = "#444c5f"
+
+const bgColor = "rgb(222, 222, 222)"
+
 export const Bar = styled.div`
   background-color: ${bgColor};
   height: 0.125rem;
   width: 100%;
-  border: 1px solid ${bgColor};
 `
+// border: 1px solid ${bgColor};
+
 export const OriginTick = styled.div`
   width: 1.6px;
   height: 5px;
   background-color: ${bgColor};
-  border: 1px solid ${bgColor};
 `
+// border: 1px solid ${bgColor};
