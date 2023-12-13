@@ -43,7 +43,7 @@ export const LeftNavItemFirst = styled(LiStyle)`
 
 export const NavItem = styled(LiStyle)<{ active: boolean }>`
   list-style-type: none;
-  margin-left: 15px;
+  margin-left: 12px;
 
   color: ${({ active, theme }) => (active ? "white" : theme.secondary.base)};
   display: flex;
@@ -55,12 +55,15 @@ export const NavItem = styled(LiStyle)<{ active: boolean }>`
   opacity: ${({ active }) => (active ? "1" : "0.52")};
   background: ${({ active, theme }) => (active ? BAM_THEME_BLUE : "none")};
   text-decoration: none;
-  padding: 5px;
+  padding: 4px 8px;
   min-width: 34px;
   min-height: 34px;
   text-align: center;
-  border-radius: 2px;
+  border-radius: 4px;
 `
+// margin-left: 15px;
+
+// padding: 5px;
 // color: ${({ theme }) => theme.secondary.base};
 // background: ${({ active, theme }) =>
 // active ? theme.core.lightBackground : "none"};
