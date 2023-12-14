@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 import { ThemeName } from "@/client/theme"
+import { bamThemeBlue, bamThemeRed } from "@/client/theme/colors"
 import { Direction } from "@/generated/TradingGateway"
 
 interface WithDirection {
@@ -18,8 +19,8 @@ export const DirectionContainer = styled.div<WithDirection & WithTerminated>`
     terminated
       ? theme.primary[2]
       : direction === Direction.Buy
-      ? "rgba(76, 118, 196, 0.15)"
-      : "rgba(167, 39, 64, 0.15)"};
+      ? bamThemeBlue(0.1)
+      : bamThemeRed(0.1)};
 `
 
 // Not sure about the clipped path value here, atm they are eyeballed
@@ -41,7 +42,7 @@ export const DirectionLabel = styled.div<WithDirection & WithTerminated>`
   background-color: ${({ theme, direction, terminated }) =>
     terminated
       ? theme.primary[theme.name === ThemeName.Dark ? 1 : 3]
-      : theme.colors.spectrum.uniqueCollections[direction].darker};
+      : theme.colors.spectrum.uniqueCollections[direction].base};
   clip-path: ${({ direction }) =>
     direction === Direction.Buy
       ? "polygon(0 0, 100% 0, 70% 100%, 0% 100%)"

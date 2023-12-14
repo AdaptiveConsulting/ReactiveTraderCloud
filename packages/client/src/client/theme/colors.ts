@@ -43,8 +43,10 @@ const BAM_THEME_RED1 = "#c41230"
 const BAM_THEME_RED2 = "#DC1431"
 
 export const BAM_THEME_RED = rgb(226, 22, 55) // "#e21637"
+export const bamThemeRed = (opacity = 1) => rgba(226, 22, 55, opacity)
 
 export const BAM_THEME_BLUE = rgb(1, 33, 105) // "#012169"
+export const bamThemeBlue = (opacity = 1) => rgba(1, 33, 105, opacity)
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// 2. Palettes //////////////////////////////////

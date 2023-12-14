@@ -19,7 +19,7 @@ const DirectionButton = styled.button<DirectionButtonProps>`
   flex: 1;
   background-color: ${({ theme, direction, active }) =>
     active
-      ? theme.colors.spectrum.uniqueCollections[direction].darker
+      ? theme.colors.spectrum.uniqueCollections[direction].base
       : theme.primary[2]};
   border: 1px solid
     ${({ theme, direction, active }) =>
@@ -81,7 +81,7 @@ const DirectionButton = styled.button<DirectionButtonProps>`
 
   &:hover {
     background-color: ${({ theme, direction }) =>
-      theme.colors.spectrum.uniqueCollections[direction].darker};
+      theme.colors.spectrum.uniqueCollections[direction].base};
     border-color: ${({ theme, direction }) =>
       theme.colors.spectrum.uniqueCollections[direction].base};
     color: ${({ theme }) => theme.white};
