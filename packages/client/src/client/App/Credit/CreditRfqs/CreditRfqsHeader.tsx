@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 import { DropdownMenu } from "@/client/components/DropdownMenu"
+import { BAM_THEME_BLUE } from "@/client/theme/colors"
 import { removeRfqs, useExecutedRfqIds } from "@/services/credit"
 
 import { ClearRfqsIcon } from "./ClearRfqsIcon"
@@ -24,8 +25,8 @@ const LeftNav = styled.div`
 export const NavItem = styled.li<{ active: boolean }>`
   font-size: 14px;
   list-style-type: none;
-  margin-left: 15px;
-  color: ${({ theme }) => theme.secondary.base};
+  margin-left: 12px;
+  color: ${({ active, theme }) => (active ? "white" : theme.secondary.base)};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,14 +34,13 @@ export const NavItem = styled.li<{ active: boolean }>`
   height: 34px;
   line-height: 34px;
   opacity: ${({ active }) => (active ? "1" : "0.52")};
-  background: ${({ active, theme }) =>
-    active ? theme.core.lightBackground : "none"};
+  background: ${({ active }) => (active ? BAM_THEME_BLUE : "none")};
   text-decoration: none;
-  padding: 5px;
+  padding: 4px 8px;
   min-width: 34px;
   min-height: 34px;
   text-align: center;
-  border-radius: 2px;
+  border-radius: 4px;
 
   &:hover {
     cursor: pointer;
@@ -50,6 +50,13 @@ export const NavItem = styled.li<{ active: boolean }>`
     display: none;
   }
 `
+// margin-left: 15px;
+// color: ${({ theme }) => theme.secondary.base};
+// background: ${({ active, theme }) =>
+// active ? theme.core.lightBackground : "none"};
+// padding: 5px;
+
+// border-radius: 2px;
 
 const RightNav = styled.div`
   display: flex;
