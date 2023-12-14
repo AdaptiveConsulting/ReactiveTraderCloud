@@ -1,7 +1,9 @@
 import { ReactNode, useState } from "react"
 
 import Logo from "@/client/components/Logo"
+import { LogoForDark, LogoForLight } from "@/client/components/LogoBAM"
 import { BASE_URL, WEBSITE } from "@/client/constants"
+import { ThemeName, useTheme } from "@/client/theme"
 
 import {
   AppHeaderRoot,
@@ -22,24 +24,41 @@ export interface HeaderProps {
   switches?: ReactNode
 }
 
-const logoSource = `${BASE_URL}/static/media/bam-title-blue-and-logo.svg`
-
-export const defaultLogo = (
-  <LogoWrapper>
-    <img src={logoSource} style={{ width: "250px" }} />
-    {/* <Logo
-      size={1.75}
-      role="button"
-      onClick={() => {
-        window.gtag("event", "outbound_click", {
-          destination: WEBSITE,
-        })
-        window.open(WEBSITE)
-      }}
-      data-qa="header__root-logo"
-    /> */}
-  </LogoWrapper>
-)
+export const defaultLogo = (themeName: string = ThemeName.Dark) => {
+  const logoBase = `${BASE_URL}/static/media/`
+  const imgSource =
+    themeName === ThemeName.Dark
+      ? `${logoBase}bam-title-white.svg`
+      : `${logoBase}bam-title-blue-and-red.svg`
+  return (
+    <LogoWrapper>
+      {themeName === ThemeName.Dark ? (
+        <LogoForDark
+          // role="button"
+          // onClick={() => {
+          //   window.open(WEBSITE)
+          // }}
+          data-qa="header__root-logo"
+        />
+      ) : (
+        <LogoForLight
+          // role="button"
+          // onClick={() => {
+          //   window.open(WEBSITE)
+          // }}
+          data-qa="header__root-logo"
+        />
+      )}
+    </LogoWrapper>
+  )
+}
+// <Logo
+//   role="button"
+//   onClick={() => {
+//     window.open(WEBSITE)
+//   }}
+//   data-qa="header__root-logo"
+// />
 
 export const defaultFiller = <Fill aria-hidden={true} />
 
@@ -57,6 +76,8 @@ const defaultControls = <LoginControls />
 const SESSION = "PWABanner"
 
 const Header = ({ logo, filler, controls, switches }: HeaderProps) => {
+  const { themeName } = useTheme()
+
   const [banner, setBanner] = useState<string>(
     sessionStorage.getItem(SESSION) || PWABanner.NotSet,
   )
@@ -70,7 +91,7 @@ const Header = ({ logo, filler, controls, switches }: HeaderProps) => {
   return (
     <AppHeaderWrapper role="banner" aria-label="Reactive Trader Header">
       <AppHeaderRoot>
-        {logo || defaultLogo}
+        {logo || defaultLogo(themeName)}
         {filler || defaultFiller}
 
         <HeaderNav>

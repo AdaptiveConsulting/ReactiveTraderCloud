@@ -5,7 +5,7 @@ export const LimitCheckerHeader = ({ logo, filler, controls }: HeaderProps) => {
   return (
     <AppHeaderWrapper role="banner" aria-label="Reactive Trader Header">
       <AppHeaderRoot>
-        {logo || defaultLogo}
+        {logo || defaultLogo()}
         {filler || defaultFiller}
 
         <HeaderNav>{controls}</HeaderNav>
