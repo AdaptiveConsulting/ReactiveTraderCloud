@@ -53,7 +53,7 @@ export const NavItem = styled(LiStyle)<{ active: boolean }>`
   height: 34px;
   line-height: 34px;
   opacity: ${({ active }) => (active ? "1" : "0.52")};
-  background: ${({ active, theme }) => (active ? BAM_THEME_BLUE : "none")};
+  background: ${({ active }) => (active ? BAM_THEME_BLUE : "none")};
   text-decoration: none;
   padding: 4px 8px;
   min-width: 34px;
@@ -109,7 +109,7 @@ export const CurrencyDropdown = styled.div`
     display: flex;
     justify-content: space-between;
   }
-  @media (max-width: 400px) {
-    padding-top: 10px;
-  }
 `
+// @media (max-width: 400px) {
+//   padding-top: 10px;
+// }

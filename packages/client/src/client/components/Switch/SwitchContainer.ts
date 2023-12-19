@@ -5,5 +5,6 @@ export const SwitchContainer = styled.div`
   padding-top: 1px;
   display: flex;
   justify-content: flex-end;
+  cursor: pointer;
 `
 // min-width: 3.5rem;

@@ -1,6 +1,6 @@
 export const LogoForDark = () => (
   <svg
-    width="250"
+    width="200"
     height="25"
     viewBox="0 0 168 18"
     fill="none"
@@ -35,7 +35,7 @@ export const LogoForDark = () => (
 
 export const LogoForLight = () => (
   <svg
-    width="250"
+    width="200"
     height="25"
     viewBox="0 0 168 18"
     fill="none"

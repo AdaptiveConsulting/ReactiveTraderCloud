@@ -25,13 +25,13 @@ const ThemeStorageSwitch = ({
   const Icon = isDarkTheme ? DarkThemeIcon : LightThemeIcon
 
   const handleTouchThemeSwitch = () => {
-    setHover(true)
-    setTimeout(() => {
-      toggleTheme()
-    }, 400)
-    setTimeout(() => {
-      setHover(false)
-    }, 1200)
+    // setHover(true)
+    // setTimeout(() => {
+    toggleTheme()
+    // }, 400)
+    // setTimeout(() => {
+    //   setHover(false)
+    // }, 1200)
   }
 
   const eventHandlers = {
@@ -46,7 +46,7 @@ const ThemeStorageSwitch = ({
 
   return (
     <SwitchContainer {...eventHandlers}>
-      {hover ? (
+      {/* {hover ? (
         <Switch
           onChange={handleChange}
           checked={isDarkTheme}
@@ -75,11 +75,11 @@ const ThemeStorageSwitch = ({
           onHandleColor={theme.accents.primary.base}
           {...props}
         />
-      ) : (
-        <IconContainer hover={hover}>
-          <Icon height={iconSize} width={iconSize} />
-        </IconContainer>
-      )}
+      ) : ( */}
+      <IconContainer hover={hover} onClick={handleChange}>
+        <Icon height={iconSize} width={iconSize} />
+      </IconContainer>
+      {/* )} */}
     </SwitchContainer>
   )
 }

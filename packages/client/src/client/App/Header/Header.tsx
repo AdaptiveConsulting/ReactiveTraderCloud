@@ -97,7 +97,7 @@ const Header = ({ logo, filler, controls, switches }: HeaderProps) => {
         <HeaderNav>
           {switches || <DefaultSwitches />}
           {controls || defaultControls}
-          <PWALaunchButton state={banner} setIsModalOpen={setIsModalOpen} />
+          {/* <PWALaunchButton state={banner} setIsModalOpen={setIsModalOpen} /> */}
         </HeaderNav>
       </AppHeaderRoot>
       <PWAInstallBanner
