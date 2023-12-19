@@ -45,7 +45,9 @@ const BAM_THEME_RED2 = "#DC1431"
 export const BAM_THEME_RED = rgb(226, 22, 55) // "#e21637"
 export const bamThemeRed = (opacity = 1) => rgba(226, 22, 55, opacity)
 
-export const BAM_THEME_BLUE = rgb(1, 33, 105) // "#012169"
+export const BAM_THEME_BLUE = rgb(1, 33, 105) // #012169
+export const BAM_THEME_BLUE2 = rgb(4, 23, 65) // #041741 .. Tile bg
+export const BAM_THEME_BLUE3 = rgba(4, 28, 84, 1) // #041C54 .. Header button bg
 export const bamThemeBlue = (opacity = 1) => rgba(1, 33, 105, opacity)
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -149,8 +151,8 @@ export interface CorePaletteMap {
 
 // New color definition based on custom rgb colors, not from colorPalettes generated before
 const darkPrimary = {
-  base: rgb(40, 46, 57),
-  1: rgb(47, 53, 66),
+  base: rgb(0, 13, 29), // #000D1D
+  1: rgba(4, 23, 65, 0.5), // #041741, 50% // TODO upsets Switch, see ThemeSwitcher
   2: rgb(61, 68, 85),
   3: rgb(83, 87, 96),
   4: rgb(104, 109, 116),
