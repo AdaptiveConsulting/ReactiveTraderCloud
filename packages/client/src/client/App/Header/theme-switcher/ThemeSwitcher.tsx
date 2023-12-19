@@ -4,6 +4,7 @@ import { withTheme } from "styled-components"
 
 import { IconContainer, SwitchContainer } from "@/client/components/Switch"
 import { Theme, ThemeName, useTheme } from "@/client/theme"
+import { BAM_THEME_BLUE2, BAM_THEME_BLUE3 } from "@/client/theme/colors"
 
 import DarkThemeIcon from "./DarkThemeIcon"
 import LightThemeIcon from "./LightThemeIcon"
@@ -70,7 +71,7 @@ const ThemeStorageSwitch = ({
           handleDiameter={props.handleDiameter}
           offColor={theme.primary.base}
           offHandleColor={theme.accents.primary.base}
-          onColor={theme.primary[1]}
+          onColor={theme.name === "light" ? theme.primary[1] : BAM_THEME_BLUE3}
           onHandleColor={theme.accents.primary.base}
           {...props}
         />

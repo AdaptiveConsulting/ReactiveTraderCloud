@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { BAM_THEME_BLUE } from "@/client/theme/colors"
+import { BAM_THEME_BLUE, BAM_THEME_BLUE3 } from "@/client/theme/colors"
 
 export const MainBanner = styled.div<{ isHidden: boolean }>`
   display: ${({ isHidden }) => (isHidden ? "none" : "flex")};
@@ -8,10 +8,13 @@ export const MainBanner = styled.div<{ isHidden: boolean }>`
   padding: 0 10px;
   width: 100%;
   height: 36px;
-  background-color: ${BAM_THEME_BLUE};
+  background-color: ${({ theme }) =>
+    theme.name === "light" ? BAM_THEME_BLUE : theme.core.textColor};
   color: ${({ theme }) => theme.core.darkBackground};
   z-index: 100;
 `
+// height: 32px;
+// background-color: ${({ theme }) => theme.core.textColor};
 
 export const CrossButton = styled.div`
   width: 24px;
@@ -30,7 +33,8 @@ export const BannerText = styled.p`
 `
 
 export const InstallButton = styled.button`
-  background-color: ${BAM_THEME_BLUE};
+  background-color: ${({ theme }) =>
+    theme.name === "light" ? BAM_THEME_BLUE : BAM_THEME_BLUE3};
   color: #ffffff;
   padding: 5px 9px;
   margin: 0 10px;
@@ -41,3 +45,4 @@ export const InstallButton = styled.button`
     background-color: ${({ theme }) => theme.accents.primary.darker};
   }
 `
+// background-color: ${({ theme }) => theme.accents.primary.base};

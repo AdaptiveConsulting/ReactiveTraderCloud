@@ -4,17 +4,23 @@ import styled from "styled-components"
 
 import { usePopUpMenu } from "@/client/utils/usePopUpMenu"
 
+import { BAM_THEME_BLUE3 } from "../theme/colors"
+
 const DropdownLayout = styled.div`
   display: flex;
   position: relative;
-  background-color: ${({ theme }) => theme.core.lightBackground};
+  background-color: ${({ theme }) =>
+    theme.name === "light" ? theme.core.lightBackground : BAM_THEME_BLUE3};
   border-radius: 4px;
   color: ${({ theme }) => theme.core.textColor};
   font-size: 12px;
-  padding: 8px 15px 5px 15px;
+  padding: 8px 15px;
   cursor: pointer;
   transition: all 200ms ease;
 `
+// background-color: ${({ theme }) => theme.core.lightBackground};
+// padding: 8px 15px 5px 15px;
+
 const SelectedOption = styled.div`
   padding-right: 20px;
 `
