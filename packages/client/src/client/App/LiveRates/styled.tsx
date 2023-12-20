@@ -52,7 +52,7 @@ export const NavItem = styled(LiStyle)<{ active: boolean }>`
   align-content: center;
   height: 34px;
   line-height: 34px;
-  opacity: ${({ active }) => (active ? "1" : "0.52")};
+  opacity: ${({ active }) => (active ? "1" : "0.6")};
   background: ${({ active }) => (active ? BAM_THEME_BLUE : "none")};
   text-decoration: none;
   padding: 4px 8px;

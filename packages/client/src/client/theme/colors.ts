@@ -39,16 +39,21 @@ const OFFWHITE = rgb(244, 246, 249)
 const OFFBLACK = rgb(68, 76, 95) // sRGB
 const BRAND = rgb(42, 87, 141) // Adaptive blue a.k.a. #2A578D
 
-const BAM_THEME_RED1 = "#c41230"
 const BAM_THEME_RED2 = "#DC1431"
 
 export const BAM_THEME_RED = rgb(226, 22, 55) // "#e21637"
+const BAM_THEME_RED1 = rgb(196, 18, 48) // "#c41230"
 export const bamThemeRed = (opacity = 1) => rgba(226, 22, 55, opacity)
 
 export const BAM_THEME_BLUE = rgb(1, 33, 105) // #012169
+// export const BAM_THEME_BLUE_POS = rgb(52, 77, 135) // #344d87
+export const BAM_THEME_BLUE_POS = rgb(120, 140, 240) // #......
+export const BAM_THEME_BLUE_POS_DARKER = rgb(26, 55, 120) // #1a3778
 export const BAM_THEME_BLUE2 = rgb(4, 23, 65) // #041741 .. Tile bg
-export const BAM_THEME_BLUE3 = rgba(4, 28, 84, 1) // #041C54 .. Header button bg
+export const BAM_THEME_BLUE3 = rgb(4, 28, 84) // #041C54 .. Header button bg
+export const BAM_THEME_LIGHT_BLUE = rgb(92, 111, 155) // #5C6F9B .. Live Rates spark lines
 export const bamThemeBlue = (opacity = 1) => rgba(1, 33, 105, opacity)
+export const bamThemeLightBlue = (opacity = 1) => rgba(92, 111, 155, opacity)
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// 2. Palettes //////////////////////////////////
@@ -233,8 +238,8 @@ const accents: AccentPaletteMap = {
     lighter: rgb(127, 169, 247),
   },
   positive: {
-    base: BAM_THEME_BLUE,
-    darker: rgb(3, 160, 119),
+    base: BAM_THEME_BLUE_POS,
+    darker: BAM_THEME_BLUE_POS_DARKER,
     lighter: rgb(12, 150, 116),
     medium: rgb(153, 231, 209),
   },
@@ -246,7 +251,7 @@ const accents: AccentPaletteMap = {
   },
   negative: {
     base: BAM_THEME_RED,
-    darker: rgb(230, 35, 67),
+    darker: BAM_THEME_RED1,
     lighter: rgb(255, 211, 219),
     medium: rgb(255, 146, 164),
   },

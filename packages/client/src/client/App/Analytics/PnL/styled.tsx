@@ -1,6 +1,11 @@
 import styled from "styled-components"
 
 import { AccentPaletteMap } from "@/client/theme"
+import {
+  BAM_THEME_LIGHT_BLUE,
+  bamThemeBlue,
+  bamThemeLightBlue,
+} from "@/client/theme/colors"
 
 const FlexDiv = styled.div`
   display: flex;
@@ -70,7 +75,7 @@ export const BarPriceContainer = styled.div`
   width: 100%;
 `
 
-const bgColor = "rgb(222, 222, 222)"
+const bgColor = bamThemeLightBlue(0.5)
 
 export const Bar = styled.div`
   background-color: ${bgColor};

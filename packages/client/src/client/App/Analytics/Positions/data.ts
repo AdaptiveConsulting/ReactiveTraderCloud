@@ -84,8 +84,8 @@ export const nodes$: Observable<BubbleChartNode[]> = currentPositions$.pipe(
     positionsData.forEach((dataObj: CCYPosition) => {
       const color =
         dataObj.baseTradedAmount > 0
-          ? colors.accents.positive.base
-          : colors.accents.negative.base
+          ? colors.accents.positive.darker
+          : colors.accents.negative.darker
 
       newAcc[dataObj.symbol] = Object.assign(
         acc[dataObj.symbol] || { id: dataObj.symbol },

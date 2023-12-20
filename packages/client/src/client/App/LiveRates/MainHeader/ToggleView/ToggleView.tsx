@@ -22,7 +22,6 @@ const ToggleItem = styled(NavItem)<{ active: boolean }>`
     align-content: center;
     height: 34px;
     line-height: 34px;
-    opacity: ${({ active }) => (active ? "1" : "0.52")};
     background: none;
     text-decoration: none;
     padding: 5px;
@@ -32,6 +31,7 @@ const ToggleItem = styled(NavItem)<{ active: boolean }>`
     border-radius: 2px;
   }
 `
+// opacity: ${({ active }) => (active ? "1" : "0.7")};
 // background: ${({ active, theme }) =>
 // active ? theme.core.lightBackground : "none"};
 
