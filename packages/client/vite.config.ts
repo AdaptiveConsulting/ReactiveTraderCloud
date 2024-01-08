@@ -428,7 +428,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
       strictPort: true, // due to substitution, dynamic ports won't work - use PORT=1234 <cmd>
     },
     server: {
-      host: "127.0.0.1",
       port: localPort,
       strictPort: true, // due to substitution, dynamic ports won't work - use PORT=1234 <cmd>
       // would be nice if this was as .gitignore, per this:
