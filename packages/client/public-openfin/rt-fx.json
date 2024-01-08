@@ -22,7 +22,6 @@
     "version": "<OPENFIN_RUNTIME>",
     "arguments": "--remote-debugging-port=9091"
   },
-  "services": [{ "name": "notifications" }],
   "splashScreenImage": "<BASE_URL>/static/media/splash.png",
   "shortcut": {
     "company": "Adaptive Financial Consulting",

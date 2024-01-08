@@ -135,7 +135,6 @@ const sendFxTradeNotification = (trade: ExecutionTrade) => {
     buttons: [
       {
         title: "Highlight trade in blotter",
-        iconUrl: fxIconUrl,
         onClick: {
           task: TASK_HIGHLIGHT_FX_TRADE,
           payload: {
@@ -177,7 +176,6 @@ const sendCreditRfqCreatedNotification = (
     buttons: [
       {
         title: "View RFQ",
-        iconUrl: creditIconUrl,
         onClick: {
           task: TASK_HIGHLIGHT_CREDIT_RFQ,
           payload: {
@@ -212,7 +210,6 @@ const sendCreditQuoteReceivedNotification = (quote: PricedQuoteDetails) => {
     buttons: [
       {
         title: "View RFQ",
-        iconUrl: creditIconUrl,
         onClick: {
           task: TASK_HIGHLIGHT_CREDIT_RFQ,
           payload: {
@@ -250,7 +247,6 @@ const sendCreditQuoteAcceptedNotification = ({
     buttons: [
       {
         title: "Highlight trade in blotter",
-        iconUrl: creditIconUrl,
         onClick: {
           task: TASK_HIGHLIGHT_CREDIT_TRADE,
           payload: {

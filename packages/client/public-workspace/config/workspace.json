@@ -2,7 +2,11 @@
   "devtools_port": 9090,
   "licenseKey": "WSb63491c7-090f-4e38-8088-62675824c24b",
   "runtime": {
+<<<<<<< Updated upstream:packages/client/public-workspace/config/workspace.json
     "version": "<WORKSPACE_OPENFIN_RUNTIME>",
+=======
+    "version": "32.114.76.14",
+>>>>>>> Stashed changes:packages/client/src/workspace/config/workspace.json
     "arguments": "--remote-debugging-port=9092"
   },
   "platform": {
