@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ExitCode } from "@openfin/core/src/OpenFin"
+import OpenFin from "@openfin/core"
 import {
   Action,
   CLISearchResponse,
@@ -192,7 +192,7 @@ export const handleAppSelection = async (
       try {
         const data = await fin.System.launchExternalProcess({
           alias: appEntry.manifest,
-          listener: (result: ExitCode) => {
+          listener: (result: OpenFin.ExitCode) => {
             console.log("the exit code", result.exitCode)
           },
         })

@@ -21,8 +21,8 @@ type BuildTarget = "web" | "openfin" | "finsemble"
 const localPort = Number(process.env.PORT) || 1917
 const showOpenFinProvider = !!process.env.OPENFIN_SHOW_PROVIDER
 
-const OPENFIN_RUNTIME = "29.108.73.14"
-const WORKSPACE_OPENFIN_RUNTIME = "31.112.75.4"
+const OPENFIN_RUNTIME = "33.116.77.11"
+const WORKSPACE_OPENFIN_RUNTIME = "33.116.77.11"
 
 function getBaseUrl(isLocal: boolean) {
   return isLocal
@@ -452,8 +452,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     test: {
       globals: true,
       environment: "jsdom",
-      // was .. environment: "jsdom",
-      //
       browser: {
         // enabled: true,
         //

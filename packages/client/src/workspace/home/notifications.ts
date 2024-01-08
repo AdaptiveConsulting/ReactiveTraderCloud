@@ -1,6 +1,6 @@
-import { View } from "@openfin/core/src/OpenFin"
+import OpenFin from "@openfin/core"
+import type { NotificationActionEvent } from "@openfin/workspace/notifications"
 import { getCurrentSync } from "@openfin/workspace-platform"
-import { NotificationActionEvent } from "openfin-notifications"
 
 import {
   handleHighlightCreditBlotterAction,
@@ -15,9 +15,9 @@ import { RT_PLATFORM_UUID_PREFIX } from "@/client/OpenFin/utils/window"
 import { VITE_RT_URL } from "../constants"
 
 let openingCreditRfqsView = false
-let creditRfqsView: View | null = null
+let creditRfqsView: OpenFin.View | null = null
 let openingCreditBlotterView = false
-let creditBlotterView: View | null = null
+let creditBlotterView: OpenFin.View | null = null
 
 export const handleCreditNotificationEvents = async (
   event: NotificationActionEvent,
@@ -104,7 +104,7 @@ export const handleCreditNotificationEvents = async (
   }
 }
 
-let blotterView: View | null = null
+let blotterView: OpenFin.View | null = null
 export const handleFxNotificationEvents = async (
   event: NotificationActionEvent,
 ) => {
