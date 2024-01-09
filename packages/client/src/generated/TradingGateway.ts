@@ -1,6 +1,13 @@
 import { LocalDateConverter } from "@adaptive/hydra-codecs/dist/valueConverters"
-import * as HydraPlatform from "@adaptive/hydra-platform"
-import { Observable } from "rxjs"
+import {
+  createGatewayConnection,
+  createHydraPlatform,
+  createOtfAllocators,
+  HydraPlatform,
+  PlatformConfig,
+  VersionNegotiation,
+} from "@adaptive/hydra-platform"
+import { map, mergeMap, Observable, of, ReplaySubject, take } from "rxjs"
 
 export interface Trade {
   tradeId: bigint
@@ -365,7 +372,7 @@ export interface AnalyticsRequest {
 }
 
 const converters = { LocalDateConverter }
-const allocators = HydraPlatform.createOtfAllocators(converters)
+const allocators = createOtfAllocators(converters)
 
 function TradeTypeDefinition() {
   return {
@@ -1511,9 +1518,11 @@ function AnalyticsRequestTypeDefinition() {
   }
 }
 
-export const AnalyticsService = {
-  getAnalytics: (input: AnalyticsRequest): Observable<PositionUpdates> => {
-    return HydraPlatform.requestStream$(
+export class AnalyticsService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  getAnalytics(input: AnalyticsRequest): Observable<PositionUpdates> {
+    return this.hydraPlatform.requestStream$(
       {
         serviceName: "AnalyticsService",
         serviceVersion: "ZPWRZEYxeuriphf5mM3F-3ajfVE=",
@@ -1541,11 +1550,21 @@ export const AnalyticsService = {
       allocators.responseAllocator(PositionUpdatesTypeDefinition),
       allocators.requestAllocator(input, AnalyticsRequestTypeDefinition),
     )
-  },
+  }
+
+  static getAnalytics(input: AnalyticsRequest): Observable<PositionUpdates> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.analyticsService.getAnalytics(input)),
+    )
+  }
 }
-export const BlotterService = {
-  getTradeStream: (): Observable<TradeUpdates> => {
-    return HydraPlatform.requestStream$(
+
+export class BlotterService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  getTradeStream(): Observable<TradeUpdates> {
+    return this.hydraPlatform.requestStream$(
       {
         serviceName: "BlotterService",
         serviceVersion: "71ZHSzqYkzeAMY8FHL-e1ZjDX9M=",
@@ -1572,11 +1591,21 @@ export const BlotterService = {
       },
       allocators.responseAllocator(TradeUpdatesTypeDefinition),
     )
-  },
+  }
+
+  static getTradeStream(): Observable<TradeUpdates> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.blotterService.getTradeStream()),
+    )
+  }
 }
-export const LoginService = {
-  login: (input: LoginRequest): Observable<void> => {
-    return HydraPlatform.requestResponse$(
+
+export class LoginService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  login(input: LoginRequest): Observable<void> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "LoginService",
         serviceVersion: "HobGg0oQiuBiKlSYrrxJ0N6uWJ8=",
@@ -1604,11 +1633,21 @@ export const LoginService = {
       undefined,
       allocators.requestAllocator(input, LoginRequestTypeDefinition),
     )
-  },
+  }
+
+  static login(input: LoginRequest): Observable<void> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.loginService.login(input)),
+    )
+  }
 }
-export const ExecutionService = {
-  executeTrade: (input: ExecuteTradeRequest): Observable<ExecutionResponse> => {
-    return HydraPlatform.requestResponse$(
+
+export class ExecutionService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  executeTrade(input: ExecuteTradeRequest): Observable<ExecutionResponse> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "ExecutionService",
         serviceVersion: "u9AuEKVxDfRiwjRAJX0iJJ9v5cw=",
@@ -1636,11 +1675,23 @@ export const ExecutionService = {
       allocators.responseAllocator(ExecutionResponseTypeDefinition),
       allocators.requestAllocator(input, ExecuteTradeRequestTypeDefinition),
     )
-  },
+  }
+
+  static executeTrade(
+    input: ExecuteTradeRequest,
+  ): Observable<ExecutionResponse> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.executionService.executeTrade(input)),
+    )
+  }
 }
-export const PricingService = {
-  getPriceUpdates: (input: PriceStreamRequest): Observable<PriceTick> => {
-    return HydraPlatform.requestStream$(
+
+export class PricingService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  getPriceUpdates(input: PriceStreamRequest): Observable<PriceTick> {
+    return this.hydraPlatform.requestStream$(
       {
         serviceName: "PricingService",
         serviceVersion: "lMGjEAXz4GnWgyQK2jJTCMe1h68=",
@@ -1668,11 +1719,17 @@ export const PricingService = {
       allocators.responseAllocator(PriceTickTypeDefinition),
       allocators.requestAllocator(input, PriceStreamRequestTypeDefinition),
     )
-  },
-  getPriceHistory: (
-    input: PriceStreamRequest,
-  ): Observable<PriceTickHistory> => {
-    return HydraPlatform.requestResponse$(
+  }
+
+  static getPriceUpdates(input: PriceStreamRequest): Observable<PriceTick> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.pricingService.getPriceUpdates(input)),
+    )
+  }
+
+  getPriceHistory(input: PriceStreamRequest): Observable<PriceTickHistory> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "PricingService",
         serviceVersion: "lMGjEAXz4GnWgyQK2jJTCMe1h68=",
@@ -1700,11 +1757,23 @@ export const PricingService = {
       allocators.responseAllocator(PriceTickHistoryTypeDefinition),
       allocators.requestAllocator(input, PriceStreamRequestTypeDefinition),
     )
-  },
+  }
+
+  static getPriceHistory(
+    input: PriceStreamRequest,
+  ): Observable<PriceTickHistory> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.pricingService.getPriceHistory(input)),
+    )
+  }
 }
-export const ReferenceDataService = {
-  getCcyPairs: (): Observable<CurrencyPairUpdates> => {
-    return HydraPlatform.requestStream$(
+
+export class ReferenceDataService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  getCcyPairs(): Observable<CurrencyPairUpdates> {
+    return this.hydraPlatform.requestStream$(
       {
         serviceName: "ReferenceDataService",
         serviceVersion: "OqWWP0EWma-LLq1gVKo89v7EEDU=",
@@ -1731,11 +1800,21 @@ export const ReferenceDataService = {
       },
       allocators.responseAllocator(CurrencyPairUpdatesTypeDefinition),
     )
-  },
+  }
+
+  static getCcyPairs(): Observable<CurrencyPairUpdates> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.referenceDataService.getCcyPairs()),
+    )
+  }
 }
-export const ThroughputAdminService = {
-  getThroughput: (): Observable<GetThroughputResponse> => {
-    return HydraPlatform.requestResponse$(
+
+export class ThroughputAdminService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  getThroughput(): Observable<GetThroughputResponse> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "ThroughputAdminService",
         serviceVersion: "hPl5jJ6kWETbXFuLnvWAwrfi5jc=",
@@ -1762,9 +1841,17 @@ export const ThroughputAdminService = {
       },
       allocators.responseAllocator(GetThroughputResponseTypeDefinition),
     )
-  },
-  setThroughput: (input: SetThroughputRequest): Observable<void> => {
-    return HydraPlatform.requestResponse$(
+  }
+
+  static getThroughput(): Observable<GetThroughputResponse> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.throughputAdminService.getThroughput()),
+    )
+  }
+
+  setThroughput(input: SetThroughputRequest): Observable<void> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "ThroughputAdminService",
         serviceVersion: "hPl5jJ6kWETbXFuLnvWAwrfi5jc=",
@@ -1792,11 +1879,23 @@ export const ThroughputAdminService = {
       undefined,
       allocators.requestAllocator(input, SetThroughputRequestTypeDefinition),
     )
-  },
+  }
+
+  static setThroughput(input: SetThroughputRequest): Observable<void> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) =>
+        services.throughputAdminService.setThroughput(input),
+      ),
+    )
+  }
 }
-export const EchoService = {
-  echo: (input: EchoRequest): Observable<EchoResponse> => {
-    return HydraPlatform.requestResponse$(
+
+export class EchoService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  echo(input: EchoRequest): Observable<EchoResponse> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "EchoService",
         serviceVersion: "3pvE2P7uCShir_5g26nbD2Q4pSI=",
@@ -1824,11 +1923,21 @@ export const EchoService = {
       allocators.responseAllocator(EchoResponseTypeDefinition),
       allocators.requestAllocator(input, EchoRequestTypeDefinition),
     )
-  },
+  }
+
+  static echo(input: EchoRequest): Observable<EchoResponse> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.echoService.echo(input)),
+    )
+  }
 }
-export const InstrumentService = {
-  subscribe: (): Observable<InstrumentUpdate> => {
-    return HydraPlatform.requestStream$(
+
+export class InstrumentService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  subscribe(): Observable<InstrumentUpdate> {
+    return this.hydraPlatform.requestStream$(
       {
         serviceName: "InstrumentService",
         serviceVersion: "F_OPT_bs_UpYBTnuGcirYfGLd08=",
@@ -1855,11 +1964,21 @@ export const InstrumentService = {
       },
       allocators.responseAllocator(InstrumentUpdateTypeDefinition),
     )
-  },
+  }
+
+  static subscribe(): Observable<InstrumentUpdate> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.instrumentService.subscribe()),
+    )
+  }
 }
-export const DealerService = {
-  subscribe: (): Observable<DealerUpdate> => {
-    return HydraPlatform.requestStream$(
+
+export class DealerService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  subscribe(): Observable<DealerUpdate> {
+    return this.hydraPlatform.requestStream$(
       {
         serviceName: "DealerService",
         serviceVersion: "H_zyq8pnacrwFlPwJjz2Fb1788M=",
@@ -1886,11 +2005,21 @@ export const DealerService = {
       },
       allocators.responseAllocator(DealerUpdateTypeDefinition),
     )
-  },
+  }
+
+  static subscribe(): Observable<DealerUpdate> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.dealerService.subscribe()),
+    )
+  }
 }
-export const WorkflowService = {
-  createRfq: (input: CreateRfqRequest): Observable<CreateRfqResponse> => {
-    return HydraPlatform.requestResponse$(
+
+export class WorkflowService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  createRfq(input: CreateRfqRequest): Observable<CreateRfqResponse> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "WorkflowService",
         serviceVersion: "pMWZC7BYrwInJjqMJtcfKgtCgtY=",
@@ -1918,9 +2047,17 @@ export const WorkflowService = {
       allocators.responseAllocator(CreateRfqResponseTypeDefinition),
       allocators.requestAllocator(input, CreateRfqRequestTypeDefinition),
     )
-  },
-  cancelRfq: (input: CancelRfqRequest): Observable<void> => {
-    return HydraPlatform.requestResponse$(
+  }
+
+  static createRfq(input: CreateRfqRequest): Observable<CreateRfqResponse> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.workflowService.createRfq(input)),
+    )
+  }
+
+  cancelRfq(input: CancelRfqRequest): Observable<void> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "WorkflowService",
         serviceVersion: "pMWZC7BYrwInJjqMJtcfKgtCgtY=",
@@ -1948,9 +2085,17 @@ export const WorkflowService = {
       undefined,
       allocators.requestAllocator(input, CancelRfqRequestTypeDefinition),
     )
-  },
-  quote: (input: QuoteRequest): Observable<QuoteResponse> => {
-    return HydraPlatform.requestResponse$(
+  }
+
+  static cancelRfq(input: CancelRfqRequest): Observable<void> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.workflowService.cancelRfq(input)),
+    )
+  }
+
+  quote(input: QuoteRequest): Observable<QuoteResponse> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "WorkflowService",
         serviceVersion: "pMWZC7BYrwInJjqMJtcfKgtCgtY=",
@@ -1978,9 +2123,17 @@ export const WorkflowService = {
       allocators.responseAllocator(QuoteResponseTypeDefinition),
       allocators.requestAllocator(input, QuoteRequestTypeDefinition),
     )
-  },
-  pass: (input: PassRequest): Observable<PassResponse> => {
-    return HydraPlatform.requestResponse$(
+  }
+
+  static quote(input: QuoteRequest): Observable<QuoteResponse> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.workflowService.quote(input)),
+    )
+  }
+
+  pass(input: PassRequest): Observable<PassResponse> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "WorkflowService",
         serviceVersion: "pMWZC7BYrwInJjqMJtcfKgtCgtY=",
@@ -2008,9 +2161,17 @@ export const WorkflowService = {
       allocators.responseAllocator(PassResponseTypeDefinition),
       allocators.requestAllocator(input, PassRequestTypeDefinition),
     )
-  },
-  accept: (input: AcceptQuoteRequest): Observable<AcceptQuoteResponse> => {
-    return HydraPlatform.requestResponse$(
+  }
+
+  static pass(input: PassRequest): Observable<PassResponse> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.workflowService.pass(input)),
+    )
+  }
+
+  accept(input: AcceptQuoteRequest): Observable<AcceptQuoteResponse> {
+    return this.hydraPlatform.requestResponse$(
       {
         serviceName: "WorkflowService",
         serviceVersion: "pMWZC7BYrwInJjqMJtcfKgtCgtY=",
@@ -2038,9 +2199,17 @@ export const WorkflowService = {
       allocators.responseAllocator(AcceptQuoteResponseTypeDefinition),
       allocators.requestAllocator(input, AcceptQuoteRequestTypeDefinition),
     )
-  },
-  subscribe: (): Observable<RfqUpdate> => {
-    return HydraPlatform.requestStream$(
+  }
+
+  static accept(input: AcceptQuoteRequest): Observable<AcceptQuoteResponse> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.workflowService.accept(input)),
+    )
+  }
+
+  subscribe(): Observable<RfqUpdate> {
+    return this.hydraPlatform.requestStream$(
       {
         serviceName: "WorkflowService",
         serviceVersion: "pMWZC7BYrwInJjqMJtcfKgtCgtY=",
@@ -2067,11 +2236,21 @@ export const WorkflowService = {
       },
       allocators.responseAllocator(RfqUpdateTypeDefinition),
     )
-  },
+  }
+
+  static subscribe(): Observable<RfqUpdate> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.workflowService.subscribe()),
+    )
+  }
 }
-export const TradeService = {
-  trades: (): Observable<Trade> => {
-    return HydraPlatform.listen$(
+
+export class TradeService {
+  constructor(private hydraPlatform: HydraPlatform) {}
+
+  trades(): Observable<Trade> {
+    return this.hydraPlatform.listen$(
       {
         serviceName: "TradeService",
         serviceVersion: "BcarX12WJm_5S2XhtDiTp6-tCxw=",
@@ -2098,9 +2277,17 @@ export const TradeService = {
       },
       allocators.responseAllocator(TradeTypeDefinition),
     )
-  },
-  getTrades: (): Observable<Trade> => {
-    return HydraPlatform.requestStream$(
+  }
+
+  static trades(): Observable<Trade> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.tradeService.trades()),
+    )
+  }
+
+  getTrades(): Observable<Trade> {
+    return this.hydraPlatform.requestStream$(
       {
         serviceName: "TradeService",
         serviceVersion: "BcarX12WJm_5S2XhtDiTp6-tCxw=",
@@ -2127,117 +2314,183 @@ export const TradeService = {
       },
       allocators.responseAllocator(TradeTypeDefinition),
     )
-  },
+  }
+
+  static getTrades(): Observable<Trade> {
+    return gatewayServices.pipe(
+      take(1),
+      mergeMap((services) => services.tradeService.getTrades()),
+    )
+  }
 }
 
-export function checkCompatibility(): Observable<HydraPlatform.VersionNegotiation.Compatibility> {
-  return HydraPlatform.VersionNegotiation.VersionNegotiationService.checkCompatibility(
-    {
-      methods: [
-        {
-          serviceName: "AnalyticsService",
-          methodName: "getAnalytics",
-          methodRouteKey: BigInt("398568636411697713"),
-        },
-        {
-          serviceName: "BlotterService",
-          methodName: "getTradeStream",
-          methodRouteKey: BigInt("324259965274197136"),
-        },
-        {
-          serviceName: "LoginService",
-          methodName: "login",
-          methodRouteKey: BigInt("335518861566832853"),
-        },
-        {
-          serviceName: "ExecutionService",
-          methodName: "executeTrade",
-          methodRouteKey: BigInt("340022560985478551"),
-        },
-        {
-          serviceName: "PricingService",
-          methodName: "getPriceUpdates",
-          methodRouteKey: BigInt("427842701337194174"),
-        },
-        {
-          serviceName: "PricingService",
-          methodName: "getPriceHistory",
-          methodRouteKey: BigInt("351281470395697564"),
-        },
-        {
-          serviceName: "ReferenceDataService",
-          methodName: "getCcyPairs",
-          methodRouteKey: BigInt("301742060701435334"),
-        },
-        {
-          serviceName: "ThroughputAdminService",
-          methodName: "getThroughput",
-          methodRouteKey: BigInt("351281540995897308"),
-        },
-        {
-          serviceName: "ThroughputAdminService",
-          methodName: "setThroughput",
-          methodRouteKey: BigInt("427843003423606206"),
-        },
-        {
-          serviceName: "EchoService",
-          methodName: "echo",
-          methodRouteKey: BigInt("337770967908295446"),
-        },
-        {
-          serviceName: "InstrumentService",
-          methodName: "subscribe",
-          methodRouteKey: BigInt("322008378500144143"),
-        },
-        {
-          serviceName: "DealerService",
-          methodName: "subscribe",
-          methodRouteKey: BigInt("337770542174953878"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "createRfq",
-          methodRouteKey: BigInt("317504155252739341"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "cancelRfq",
-          methodRouteKey: BigInt("376051112494117735"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "quote",
-          methodRouteKey: BigInt("403072499992824307"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "pass",
-          methodRouteKey: BigInt("353533475228521565"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "accept",
-          methodRouteKey: BigInt("400821014667493746"),
-        },
-        {
-          serviceName: "WorkflowService",
-          methodName: "subscribe",
-          methodRouteKey: BigInt("360288726900984608"),
-        },
-        {
-          serviceName: "TradeService",
-          methodName: "trades",
-          methodRouteKey: BigInt("396317801320277552"),
-        },
-        {
-          serviceName: "TradeService",
-          methodName: "getTrades",
-          methodRouteKey: BigInt("425590787772885885"),
-        },
-      ],
-      checkHandlersAreRegistered: true,
-      methodRouteKeyFormatVersion: 1,
-      clientSupportsOlderMessageFormats: false,
-    },
+export interface TradingGatewayServices {
+  analyticsService: AnalyticsService
+  blotterService: BlotterService
+  loginService: LoginService
+  executionService: ExecutionService
+  pricingService: PricingService
+  referenceDataService: ReferenceDataService
+  throughputAdminService: ThroughputAdminService
+  echoService: EchoService
+  instrumentService: InstrumentService
+  dealerService: DealerService
+  workflowService: WorkflowService
+  tradeService: TradeService
+  versionNegotiationService: VersionNegotiation.VersionNegotiationService
+}
+
+const gatewayServices = new ReplaySubject<TradingGatewayServices>(1)
+
+export function createTradingGatewayServices(
+  hydraPlatform: HydraPlatform,
+): TradingGatewayServices {
+  return {
+    analyticsService: new AnalyticsService(hydraPlatform),
+    blotterService: new BlotterService(hydraPlatform),
+    loginService: new LoginService(hydraPlatform),
+    executionService: new ExecutionService(hydraPlatform),
+    pricingService: new PricingService(hydraPlatform),
+    referenceDataService: new ReferenceDataService(hydraPlatform),
+    throughputAdminService: new ThroughputAdminService(hydraPlatform),
+    echoService: new EchoService(hydraPlatform),
+    instrumentService: new InstrumentService(hydraPlatform),
+    dealerService: new DealerService(hydraPlatform),
+    workflowService: new WorkflowService(hydraPlatform),
+    tradeService: new TradeService(hydraPlatform),
+    versionNegotiationService: new VersionNegotiation.VersionNegotiationService(
+      hydraPlatform,
+    ),
+  }
+}
+
+export function connectToTradingGateway(config: PlatformConfig) {
+  const connection = createGatewayConnection(config)
+  const hydraPlatform = createHydraPlatform(connection)
+  const services = createTradingGatewayServices(hydraPlatform)
+  gatewayServices.next(services)
+  return { connection, services }
+}
+
+export function checkCompatibility(
+  versionNegotiationService?: VersionNegotiation.VersionNegotiationService,
+): Observable<VersionNegotiation.Compatibility> {
+  return (
+    versionNegotiationService
+      ? of(versionNegotiationService)
+      : gatewayServices.pipe(
+          take(1),
+          map((services) => services.versionNegotiationService),
+        )
+  ).pipe(
+    mergeMap((service) =>
+      service.checkCompatibility({
+        methods: [
+          {
+            serviceName: "AnalyticsService",
+            methodName: "getAnalytics",
+            methodRouteKey: BigInt("398568636411697713"),
+          },
+          {
+            serviceName: "BlotterService",
+            methodName: "getTradeStream",
+            methodRouteKey: BigInt("324259965274197136"),
+          },
+          {
+            serviceName: "LoginService",
+            methodName: "login",
+            methodRouteKey: BigInt("335518861566832853"),
+          },
+          {
+            serviceName: "ExecutionService",
+            methodName: "executeTrade",
+            methodRouteKey: BigInt("340022560985478551"),
+          },
+          {
+            serviceName: "PricingService",
+            methodName: "getPriceUpdates",
+            methodRouteKey: BigInt("427842701337194174"),
+          },
+          {
+            serviceName: "PricingService",
+            methodName: "getPriceHistory",
+            methodRouteKey: BigInt("351281470395697564"),
+          },
+          {
+            serviceName: "ReferenceDataService",
+            methodName: "getCcyPairs",
+            methodRouteKey: BigInt("301742060701435334"),
+          },
+          {
+            serviceName: "ThroughputAdminService",
+            methodName: "getThroughput",
+            methodRouteKey: BigInt("351281540995897308"),
+          },
+          {
+            serviceName: "ThroughputAdminService",
+            methodName: "setThroughput",
+            methodRouteKey: BigInt("427843003423606206"),
+          },
+          {
+            serviceName: "EchoService",
+            methodName: "echo",
+            methodRouteKey: BigInt("337770967908295446"),
+          },
+          {
+            serviceName: "InstrumentService",
+            methodName: "subscribe",
+            methodRouteKey: BigInt("322008378500144143"),
+          },
+          {
+            serviceName: "DealerService",
+            methodName: "subscribe",
+            methodRouteKey: BigInt("337770542174953878"),
+          },
+          {
+            serviceName: "WorkflowService",
+            methodName: "createRfq",
+            methodRouteKey: BigInt("317504155252739341"),
+          },
+          {
+            serviceName: "WorkflowService",
+            methodName: "cancelRfq",
+            methodRouteKey: BigInt("376051112494117735"),
+          },
+          {
+            serviceName: "WorkflowService",
+            methodName: "quote",
+            methodRouteKey: BigInt("403072499992824307"),
+          },
+          {
+            serviceName: "WorkflowService",
+            methodName: "pass",
+            methodRouteKey: BigInt("353533475228521565"),
+          },
+          {
+            serviceName: "WorkflowService",
+            methodName: "accept",
+            methodRouteKey: BigInt("400821014667493746"),
+          },
+          {
+            serviceName: "WorkflowService",
+            methodName: "subscribe",
+            methodRouteKey: BigInt("360288726900984608"),
+          },
+          {
+            serviceName: "TradeService",
+            methodName: "trades",
+            methodRouteKey: BigInt("396317801320277552"),
+          },
+          {
+            serviceName: "TradeService",
+            methodName: "getTrades",
+            methodRouteKey: BigInt("425590787772885885"),
+          },
+        ],
+        checkHandlersAreRegistered: true,
+        methodRouteKeyFormatVersion: 1,
+        clientSupportsOlderMessageFormats: false,
+      }),
+    ),
   )
 }
