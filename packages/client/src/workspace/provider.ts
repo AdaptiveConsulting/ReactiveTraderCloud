@@ -58,7 +58,7 @@ async function init() {
 
   const simulatedDealersSubscription = registerSimulatedDealerResponses()
 
-  await initConnection()
+  initConnection()
 
   const providerWindow = fin.Window.getCurrentSync()
   providerWindow.once("close-requested", async () => {

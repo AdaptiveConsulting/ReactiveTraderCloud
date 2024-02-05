@@ -58,17 +58,17 @@
     "workspace:start:preview": "npm:openfin:build && concurrently \"npm:serve\" \"npm:workspace:run\"",
     "finsemble:dev": "cross-env TARGET=finsemble vite",
     "finsemble:build": "cross-env TARGET=finsemble vite build",
-    "generateCod": "hydra-web-codegen -i trading-gateway.hyer -o src/generated",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "cross-env STORYBOOK=true storybook build -o ./dist/storybook",
     "_e2e:openfin:run": "cross-env-shell of-automation $npm_config_manifest_url ./e2e/openfin.spec.js --chromeDriverOverride=122 --devToolsPort=9091 --closeRuntime=never",
     "e2e:openfin": "playwright test --project=openfin",
     "e2e:openfin:smoke": "playwright test --project=openfin --grep @smoke",
     "e2e:web": "playwright test --project=chrome",
-    "e2e:web:smoke": "playwright test --project=chrome --grep @smoke"
+    "e2e:web:smoke": "playwright test --project=chrome --grep @smoke",
+    "generateCod": "hydra-web-codegen -i ../../trading-gateway.hyer -o src/generated"
   },
   "dependencies": {
-    "@adaptive/hydra-platform": "4.12.0",
+    "@adaptive/hydra-platform": "4.57.0",
     "@finos/fdc3": "^1.2.0",
     "@openfin/core": "31.75.4",
     "@openfin/workspace": "13.0.7",
@@ -96,6 +96,7 @@
     "styled-components": "5.3.9"
   },
   "devDependencies": {
+    "@adaptive/hydra-web-codegen": "4.57.0",
     "@google-cloud/dialogflow": "^4.7.0",
     "@openfin/automation-cli": "1.2.0",
     "@playwright/test": "1.39.0",

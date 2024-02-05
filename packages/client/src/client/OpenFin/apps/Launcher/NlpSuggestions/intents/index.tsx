@@ -1,4 +1,4 @@
-import { BASE_URL, ROUTES_CONFIG } from "@/client/constants"
+import { ROUTES_CONFIG } from "@/client/constants"
 import { constructUrl } from "@/client/utils/constructUrl"
 import { openWindow } from "@/client/utils/window/openWindow"
 import { NlpIntent, NlpIntentType } from "@/services/nlp"
