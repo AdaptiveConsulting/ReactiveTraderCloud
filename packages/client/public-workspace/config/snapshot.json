@@ -653,7 +653,7 @@
                                 },
                                 "webAPIs": ["notifications", "audio", "video"]
                               },
-                              "url": "<RA_URL>",
+                              "url": "<RT_URL>/fx-analytics",
                               "componentName": "view",
                               "interop": {
                                 "currentContextGroup": "green"
@@ -752,7 +752,7 @@
                               },
                               "name": "internal-generated-view-4b33837c-1592-4258-8839-a984c4ea2a0e",
                               "uuid": "adaptive-workspace-provider",
-                              "initialUrl": "<RA_URL>",
+                              "initialUrl": "<RT_URL>/fx-analytics",
                               "processAffinity": "adaptive-workspace-provider",
                               "zoomLevel": 0
                             },
@@ -913,7 +913,7 @@
                   "content": [
                     {
                       "type": "column",
-                      "width": 55,
+                      "width": 75,
                       "isClosable": true,
                       "reorderEnabled": true,
                       "title": "",
@@ -1243,7 +1243,7 @@
                     },
                     {
                       "type": "column",
-                      "width": 45,
+                      "width": 25,
                       "isClosable": true,
                       "reorderEnabled": true,
                       "title": "",
@@ -1294,7 +1294,7 @@
                                         "video"
                                       ]
                                     },
-                                    "url": "<RA_URL>",
+                                    "url": "<RT_URL>/fx-analytics",
                                     "componentName": "view",
                                     "interop": {
                                       "currentContextGroup": "green"
@@ -1393,7 +1393,7 @@
                                     },
                                     "name": "internal-generated-view-4b33837c-1592-4258-8839-a984c4ea2a0e",
                                     "uuid": "adaptive-workspace-provider",
-                                    "initialUrl": "<RA_URL>",
+                                    "initialUrl": "<RT_URL>/fx-analytics",
                                     "processAffinity": "adaptive-workspace-provider",
                                     "zoomLevel": 0
                                   },

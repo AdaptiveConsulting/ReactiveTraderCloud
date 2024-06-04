@@ -27,11 +27,11 @@ import { createCreditRfq$, creditDealers$ } from "@/services/credit"
 import { execute$ } from "@/services/executions"
 import { getPages } from "@/workspace/browser"
 
-import { BASE_URL } from "../constants"
+import { WS_BASE_URL } from "../constants"
 import { getUserResult, getUserToSwitch, switchUser } from "../user"
 import { getAllMainApps } from "../utils"
 
-export const ADAPTIVE_LOGO = `${BASE_URL}/images/icons/adaptive.png`
+export const ADAPTIVE_LOGO = `${WS_BASE_URL}/images/icons/adaptive.png`
 export const HOME_ACTION_DELETE_PAGE = "Delete Page"
 export const HOME_ACTION_LAUNCH_PAGE = "Launch Page"
 
@@ -258,8 +258,8 @@ export const handleAppSelection = async (
 
       platform.createView({
         url: appEntry.manifest,
-        bounds: { width: 320, height: 180 },
-      } as any)
+        bounds: { top: 0, left: 0, width: 320, height: 180 },
+      })
 
       break
     }
