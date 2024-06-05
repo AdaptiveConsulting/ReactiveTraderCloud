@@ -5,7 +5,6 @@ import { constructUrl } from "@/client/utils/constructUrl"
 
 import {
   limitCheckerIcon,
-  reactiveAnalyticsIcon,
   reactiveTraderCreditIcon,
   reactiveTraderFxIcon,
 } from "./icons"
@@ -92,16 +91,6 @@ const baseAppConfigs: ApplicationConfig[] = [
     uuid: `reactive-trader-credit-${env}`,
     url: manifestUrls.reactiveCredit,
     icon: reactiveTraderCreditIcon,
-  },
-  {
-    ...baseConfig(),
-    name: `Reactive Analytics${envSuffix}`,
-    displayName: "RA",
-    tooltipName: `Launch Reactive Analytics${envSuffix}`,
-    uuid: `reactive-analytics-${env}`,
-    url: manifestUrls.reactiveAnalytics,
-    icon: reactiveAnalyticsIcon,
-    iconHoverBackgroundColor: "#AAABD1",
   },
   {
     ...baseConfig(),

@@ -13,20 +13,12 @@ import {
   getApps,
   getSnapshots,
   getViews,
-  limitChecker,
   limitCheckerView,
-  reactiveAnalytics,
-  reactiveAnalyticsView,
-  reactiveTraderCredit,
-  reactiveTraderFx,
-  reactiveTraderFxAnalyticsView,
-  reactiveTraderFxLiveRatesView,
   reactiveTraderFxTradesView,
-  reactiveWorkspace,
 } from "./apps"
-import { BASE_URL } from "./constants"
+import { WS_BASE_URL } from "./constants"
 import { getCurrentUser, USER_TRADER } from "./user"
-import { getAllMainApps, getSpotTileApps } from "./utils"
+import { getAllApps, getSpotTileApps } from "./utils"
 
 const PROVIDER_ID = "adaptive-store-provider"
 
@@ -63,12 +55,12 @@ async function getStoreProvider(): Promise<StorefrontProvider> {
 
   return {
     id: PROVIDER_ID,
-    title: "Adaptive Store",
-    icon: `${BASE_URL}/favicon.ico`,
+    title: "Adaptive",
+    icon: `${WS_BASE_URL}/favicon.ico`,
     getNavigation,
     getLandingPage,
     getFooter,
-    getApps: getAllMainApps,
+    getApps: getAllApps,
     launchApp: async (app: App) => {
       if (app.manifestType === "external") {
         fin.System.launchExternalProcess({
@@ -87,9 +79,8 @@ async function getStoreProvider(): Promise<StorefrontProvider> {
         const platform = getCurrentSync()
         platform.createView({
           url: app.manifest,
-          bounds: { width: 320, height: 180 },
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any)
+          bounds: { top: 0, left: 0, width: 320, height: 180 },
+        })
       } else {
         const platform = getCurrentSync()
         await platform.launchApp({ app })
@@ -99,16 +90,14 @@ async function getStoreProvider(): Promise<StorefrontProvider> {
 }
 
 async function getNavigation(): Promise<
-  [StorefrontNavigationSection?, StorefrontNavigationSection?]
+  [StorefrontNavigationSection, StorefrontNavigationSection?]
 > {
   console.log("Showing the store navigation.")
   const currentUser = getCurrentUser()
   const spotTileApps = await getSpotTileApps()
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const navigationSections: [
-    StorefrontNavigationSection?,
+    StorefrontNavigationSection,
     StorefrontNavigationSection?,
   ] = [
     {
@@ -131,39 +120,41 @@ async function getNavigation(): Promise<
             apps: getViews(),
           },
         },
+      ],
+    },
+  ]
+
+  if (currentUser === USER_TRADER) {
+    navigationSections[0].items.push({
+      id: "snapshot",
+      title: "Snapshots",
+      templateId: StorefrontTemplate.AppGrid,
+      templateData: {
+        apps: getSnapshots(),
+      },
+    })
+    navigationSections.push({
+      id: "fx",
+      title: "FX",
+      items: [
         {
-          id: "snapshot",
-          title: "Snapshots",
+          id: "spot-tiles",
+          title: "Spot Tiles",
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: getSnapshots(),
+            apps: spotTileApps,
           },
         },
       ],
-    },
-    currentUser === USER_TRADER
-      ? {
-          id: "fx",
-          title: "FX",
-          items: [
-            {
-              id: "spot-tiles",
-              title: "Spot Tiles",
-              templateId: StorefrontTemplate.AppGrid,
-              templateData: {
-                apps: spotTileApps,
-              },
-            },
-          ],
-        }
-      : undefined,
-  ].filter((i) => !!i)
+    })
+  }
 
   return navigationSections
 }
 
 async function getLandingPage(): Promise<StorefrontLandingPage> {
   console.log("Getting the store landing page.")
+  const currentUser = getCurrentUser()
 
   const landingPage: StorefrontLandingPage = {
     hero: {
@@ -175,79 +166,86 @@ async function getLandingPage(): Promise<StorefrontLandingPage> {
         title: "Explore",
         templateId: StorefrontTemplate.AppGrid,
         templateData: {
-          apps: [reactiveTraderFx, reactiveAnalytics, limitCheckerView],
+          apps: getApps(),
         },
       },
       image: {
-        src: `${BASE_URL}/images/previews/reactive-trader.PNG`,
+        src: `${WS_BASE_URL}/images/previews/reactive-trader.PNG`,
       },
     },
     topRow: {
       title: "Collections",
       items: [
         {
-          id: "top-row-item-1",
-          title: "Research",
-          description:
-            "Applications to research the current market data, trends etc...",
+          id: "collections-apps",
+          title: "Web Apps",
+          description: "A collection of web apps built using OpenFin.",
           image: {
-            src: `${BASE_URL}/images/coding-1-unsplash.jpg`,
+            src: `${WS_BASE_URL}/images/previews/reactive-trader.PNG`,
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [reactiveAnalytics],
+            apps: getApps(),
           },
         },
         {
-          id: "top-row-item-2",
-          title: "Tools",
-          description: "Tools to help day to day operations",
+          id: "collections-views",
+          title: "Views",
+          description:
+            "A collection of views made available through our catalog.",
           image: {
-            src: `${BASE_URL}/images/coding-2-unsplash.jpg`,
+            src: `${WS_BASE_URL}/images/previews/trades-view.PNG`,
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [limitCheckerView],
+            apps: getViews(),
           },
         },
       ],
     },
     middleRow: {
-      title:
-        "A collection of simple views that show how to share context using the Interop API.",
-      apps: [reactiveTraderFxTradesView, reactiveAnalyticsView],
+      title: "Interop Views",
+      apps:
+        currentUser === USER_TRADER
+          ? [
+              {
+                ...reactiveTraderFxTradesView,
+                description:
+                  "FX Trades view - combine with Limit Checker view (Operations user)",
+                icons: [
+                  {
+                    src: `${WS_BASE_URL}/images/previews/interop-with-views-color-linking.png`,
+                  },
+                ],
+              },
+            ]
+          : [
+              {
+                ...limitCheckerView,
+                description:
+                  "Limit Checker view - combine with FX Trades view (Trader user)",
+                icons: [
+                  {
+                    src: `${WS_BASE_URL}/images/previews/interop-with-views-color-linking.png`,
+                  },
+                ],
+              },
+            ],
     },
+
     bottomRow: {
       title: "Quick Access",
       items: [
         {
-          id: "bottom-row-item-2",
-          title: "Web Apps",
-          description: "A collection of web apps built using OpenFin.",
+          id: "quick-access",
+          title: "Apps & Views",
+          description: "A collection of apps and views built using OpenFin.",
           image: {
-            src: `${BASE_URL}/images/coding-5-unsplash.jpg`,
+            src: `${WS_BASE_URL}/images/previews/reactive-trader.PNG`,
           },
           templateId: StorefrontTemplate.AppGrid,
           templateData: {
-            apps: [reactiveTraderFx, reactiveAnalyticsView],
-          },
-        },
-        {
-          id: "bottom-row-item-1",
-          title: "Views",
-          description:
-            "A collection of views made available through our catalog.",
-          image: {
-            src: `${BASE_URL}/images/coding-4-unsplash.jpg`,
-          },
-          templateId: StorefrontTemplate.AppGrid,
-          templateData: {
-            apps: [
-              reactiveTraderFxLiveRatesView,
-              reactiveTraderFxTradesView,
-              reactiveTraderFxAnalyticsView,
-              reactiveAnalyticsView,
-            ],
+            apps: getApps().concat(getViews()),
           },
         },
       ],
@@ -260,7 +258,7 @@ async function getLandingPage(): Promise<StorefrontLandingPage> {
 async function getFooter(): Promise<StorefrontFooter> {
   console.log("Getting the store footer.")
   return {
-    logo: { src: `${BASE_URL}/favicon.ico`, size: "32" },
+    logo: { src: `${WS_BASE_URL}/favicon.ico`, size: "32" },
     text: "Powered by Adaptive",
     links: [
       {

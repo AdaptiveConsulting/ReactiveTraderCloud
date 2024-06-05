@@ -24,8 +24,6 @@ const showOpenFinProvider = !!process.env.OPENFIN_SHOW_PROVIDER
 const OPENFIN_RUNTIME = "29.108.73.14"
 const WORKSPACE_OPENFIN_RUNTIME = "31.112.75.4"
 
-const RA_DEPLOYMENT_SUFFIX = "reactive-analytics.adaptivecluster.com"
-
 function getBaseUrl(isLocal: boolean) {
   return isLocal
     ? `http://localhost:${localPort}`
@@ -180,8 +178,6 @@ const copyPlugin = (
     contents
       .replace(/<BASE_URL>/g, baseUrl)
       .replace(/<RT_URL>/g, process.env.VITE_RT_URL || baseUrl)
-      // Reactive Analytics URL from .env
-      .replace(/<RA_URL>/g, process.env.VITE_RA_URL || baseUrl)
       // We want the PWA banner to show on www.reactivetrader.com
       .replace(/web\.prod\./g, "www.")
       // for environment disambiguation, in OpenFin uuids
@@ -220,12 +216,12 @@ const copyPlugin = (
               transform,
             },
             {
-              src: "public-workspace/images/icons/*",
-              dest: "images/icons",
+              src: "public-workspace/images/*",
+              dest: "workspace/images",
             },
             {
-              src: "public-workspace/images/previews/*",
-              dest: "images/previews",
+              src: "public-workspace/*.ico",
+              dest: "workspace",
             },
             {
               src: "public-workspace/*.json",
@@ -355,14 +351,6 @@ const fontFacePreload = Unfonts({
   },
 })
 
-const generateRAUrl = (env: string) => {
-  if (env === "local") return "http://localhost:3005"
-
-  return `https://${
-    env === "prod" ? "demo" : env === "env" ? "dev" : env
-  }-${RA_DEPLOYMENT_SUFFIX}`
-}
-
 // Main Ref: https://vitejs.dev/config/
 const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   const externalEnv = {
@@ -372,8 +360,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   const env = externalEnv.ENVIRONMENT || "local"
 
   process.env = {
-    VITE_RA_URL: generateRAUrl(env),
-    // so we can directly override RA address if we ever want to
     ...externalEnv,
   }
 

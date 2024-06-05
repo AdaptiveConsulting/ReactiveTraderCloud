@@ -1,6 +1,6 @@
 import { Dock, DockProvider } from "@openfin/workspace"
 
-import { BASE_URL, manifestUrls } from "./constants"
+import { manifestUrls, WS_BASE_URL } from "./constants"
 import { ADAPTIVE_LOGO } from "./home/utils"
 
 const PROVIDER_ID = "adaptive-dock-provider"
@@ -24,23 +24,16 @@ export const registerDock = () => {
     buttons: [
       {
         tooltip: "Reactive Trader FX",
-        iconUrl: `${BASE_URL}/images/icons/reactive-trader-fx.png`,
+        iconUrl: `${WS_BASE_URL}/images/icons/reactive-trader-fx.png`,
         action: {
           id: DockAction.OpenReactiveTraderFx,
         },
       },
       {
         tooltip: "Reactive Trader Credit",
-        iconUrl: `${BASE_URL}/images/icons/reactive-trader-credit.png`,
+        iconUrl: `${WS_BASE_URL}/images/icons/reactive-trader-credit.png`,
         action: {
           id: DockAction.OpenReactiveTraderCredit,
-        },
-      },
-      {
-        tooltip: "Reactive Analytics",
-        iconUrl: `${BASE_URL}/images/icons/reactive-analytics-2.png`,
-        action: {
-          id: DockAction.OpenReactiveAnalytics,
         },
       },
     ],
@@ -60,8 +53,5 @@ export const dockCustomActions = {
   },
   [DockAction.OpenReactiveTraderCredit]: () => {
     fin.Application.startFromManifest(manifestUrls.reactiveCredit)
-  },
-  [DockAction.OpenReactiveAnalytics]: () => {
-    fin.Application.startFromManifest(manifestUrls.reactiveAnalytics)
   },
 }

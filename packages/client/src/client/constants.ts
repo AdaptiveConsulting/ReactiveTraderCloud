@@ -17,12 +17,9 @@ export const ENVIRONMENT: Environment =
   ) as Environment) || "local"
 
 // local/deployed diffs resolved in vite.config
-const RA_URL = import.meta.env.VITE_RA_URL
-
 export const manifestUrls = {
   reactiveTrader: `${BASE_URL}/config/rt-fx.json`,
   reactiveCredit: `${BASE_URL}/config/rt-credit.json`,
-  reactiveAnalytics: `${RA_URL}/openfin/app.json`,
   limitChecker: `${BASE_URL}/config/limit-checker.json`,
 }
 // NOTE: these routes are hard coded in the OpenFin manifest JSON files,
