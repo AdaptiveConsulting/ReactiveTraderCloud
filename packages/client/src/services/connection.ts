@@ -1,8 +1,4 @@
-import {
-  ConnectionStatus as HConnectionStatus,
-  connectionStatus$ as hConnectionStatus$,
-  connectToGateway,
-} from "@adaptive/hydra-platform"
+import * as HydraPlatform from "@adaptive/hydra-platform"
 import { bind } from "@react-rxjs/core"
 import {
   combineLatest,
@@ -21,8 +17,11 @@ import {
   mapTo,
   scan,
   startWith,
+  tap,
   withLatestFrom,
 } from "rxjs/operators"
+
+import { connectToTradingGateway } from "@/generated/TradingGateway"
 
 type Disposable = () => void
 
@@ -36,37 +35,39 @@ export enum ConnectionStatus {
   OFFLINE_DISCONNECTED = "OFFLINE_DISCONNECTED",
 }
 
-const connectionExists = (status: ConnectionStatus, dispose: Disposable) => {
-  return (
-    [ConnectionStatus.CONNECTING, ConnectionStatus.CONNECTED].includes(
-      status,
-    ) && !!dispose
+const isHydraConnectionActive = (status: ConnectionStatus) => {
+  return [ConnectionStatus.CONNECTING, ConnectionStatus.CONNECTED].includes(
+    status,
   )
 }
 
-// Connect to Hydra gateway and store the disposable
-export const initConnection = async () => {
-  const dispose = await connectToGateway({
-    url: `${window.location.origin}/ws`,
+// Connect to Hydra gateway and store the disconnect for idle timeout handling
+export const initConnection = () => {
+  const { connection } = connectToTradingGateway({
+    url: import.meta.env.VITE_HYDRA_URL,
     interceptor: noop,
     autoReconnect: true,
+    reconnectInterval: 10000,
     useJson: !!import.meta.env.DEV,
   })
-  connectionDisposable$.next(dispose)
+  connectionDisposable$.next(connection.disconnect)
 }
 
-const mapper: Record<HConnectionStatus, ConnectionStatus> = {
-  [HConnectionStatus.DISCONNECTED]: ConnectionStatus.DISCONNECTED,
-  [HConnectionStatus.CONNECTED]: ConnectionStatus.CONNECTED,
-  [HConnectionStatus.CONNECTING]: ConnectionStatus.CONNECTING,
-  [HConnectionStatus.RECONNECTING]: ConnectionStatus.CONNECTING,
-  [HConnectionStatus.ERROR]: ConnectionStatus.DISCONNECTED,
+const mapper: Record<HydraPlatform.ConnectionStatus, ConnectionStatus> = {
+  [HydraPlatform.ConnectionStatus.DISCONNECTED]: ConnectionStatus.DISCONNECTED,
+  [HydraPlatform.ConnectionStatus.CONNECTED]: ConnectionStatus.CONNECTED,
+  [HydraPlatform.ConnectionStatus.CONNECTING]: ConnectionStatus.CONNECTING,
+  [HydraPlatform.ConnectionStatus.RECONNECTING]: ConnectionStatus.CONNECTING,
+  [HydraPlatform.ConnectionStatus.ERROR]: ConnectionStatus.DISCONNECTED,
 }
-const connectionMapper = (input: HConnectionStatus): ConnectionStatus =>
-  mapper[input]
+const connectionMapper = (
+  input: HydraPlatform.ConnectionStatus,
+): ConnectionStatus => mapper[input]
 
 // Stream of mapped (Hydra - RT) connection status
-const mappedConnectionStatus$ = hConnectionStatus$().pipe(map(connectionMapper))
+const mappedConnectionStatus$ = HydraPlatform.connectionStatus$().pipe(
+  map(connectionMapper),
+)
 
 const IDLE_TIMEOUT_MINUTES = 15
 
@@ -80,10 +81,10 @@ const idleDisconnect$: Observable<ConnectionStatus> = combineLatest([
   connectionDisposable$,
 ]).pipe(
   withLatestFrom(mappedConnectionStatus$),
-  filter(([[, dispose], status]) =>
+  filter(([, status]) => {
     // Only when we are connecting/ed and there is a disposable
-    connectionExists(status, dispose),
-  ),
+    return isHydraConnectionActive(status)
+  }),
   debounceTime(IDLE_TIMEOUT_MINUTES * 60000),
   map(([[, dispose]]) => {
     console.log(
@@ -110,10 +111,8 @@ const online$: Observable<boolean> = merge(
 
 // Update connection status when use goes offline
 const offlineDisconnect$: Observable<ConnectionStatus> = online$.pipe(
-  withLatestFrom(connectionDisposable$, mappedConnectionStatus$),
-  filter(
-    ([online, dispose, status]) => !online && connectionExists(status, dispose),
-  ),
+  withLatestFrom(mappedConnectionStatus$),
+  filter(([online, status]) => !online && isHydraConnectionActive(status)),
   map(() => {
     console.log(`User went offline, setting status to disconnecting`)
     return ConnectionStatus.OFFLINE_DISCONNECTED

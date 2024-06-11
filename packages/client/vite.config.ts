@@ -351,15 +351,22 @@ const fontFacePreload = Unfonts({
   },
 })
 
+const generateHydraUrl = (env: string) => {
+  const hydraEnv = env === "prod" || env === "uat" ? env : "dev"
+  return `wss://trading-web-gateway-rt-${hydraEnv}.demo.hydra.weareadaptive.com`
+}
+
 // Main Ref: https://vitejs.dev/config/
 const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   const externalEnv = {
-    ...process.env,
     ...loadEnv(mode, process.cwd()),
+    ...process.env,
   }
   const env = externalEnv.ENVIRONMENT || "local"
 
   process.env = {
+    VITE_HYDRA_URL: generateHydraUrl(env),
+    // so we can directly override Hydra gateway address if we ever want to
     ...externalEnv,
   }
 
@@ -400,20 +407,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
 
   plugins.push(fontFacePreload)
 
-  const proxy = process.env.VITE_MOCKS
-    ? undefined
-    : {
-        "/ws": {
-          // To test local execution of nginx gateway in Docker,
-          // use e.g.target: "http://localhost:55000", (no need for changeOrigin in that case)
-          target:
-            process.env.VITE_HYDRA_URL ||
-            "wss://trading-web-gateway-rt-dev.demo.hydra.weareadaptive.com",
-          changeOrigin: true,
-          ws: true,
-        },
-      }
-
   const input = {
     main: resolve(__dirname, "index.html"),
   }
@@ -445,7 +438,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
       host: "127.0.0.1",
       port: localPort,
       strictPort: true, // due to substition, dynamic ports won't work - use PORT=1234 <cmd>
-      proxy, // also applies to preview mode, per https://vitejs.dev/config/preview-options.html#preview-proxy
     },
     resolve: {
       // see https://vitejs.dev/config/shared-options.html#resolve-alias
