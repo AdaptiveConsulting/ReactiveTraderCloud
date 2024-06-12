@@ -47,15 +47,6 @@ export function register(config?: Config) {
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
         checkValidServiceWorker(swUrl, config)
-
-        // Add some additional logging to localhost, pointing developers to the
-        // service worker/PWA documentation.
-        navigator.serviceWorker.ready.then(() => {
-          console.log(
-            "This web app is being served cache-first by a service " +
-              "worker. To learn more, visit https://cra.link/PWA",
-          )
-        })
       } else {
         // Is not localhost. Just register service worker
         registerServiceWorker(swUrl, config)
@@ -70,6 +61,8 @@ function addStateChangeHandler(
   registration: ServiceWorkerRegistration,
   registrationConfig: Config | undefined,
 ) {
+  const firstInstall = !navigator.serviceWorker.controller
+
   serviceWorkerInstance.onstatechange = () => {
     console.debug(
       "'installing' SW changed state to: ",
@@ -84,7 +77,7 @@ function addStateChangeHandler(
           "New content is available and will be used when all " +
             "tabs for this page are closed. See https://cra.link/PWA.",
         )
-        // Case 2 - the normal cycle where we catch the SW as it is "installing"
+        // Case 1 - the normal cycle where we catch the SW as it is "installing"
         // we do the "skip" as we want the new SW to take over ASAP - this means it becomes the
         // 'controller' once "activated" and will serve any new modules from the new cache entries
         // those will not be available until it has reached the "activated" state though - see below
@@ -104,7 +97,7 @@ function addStateChangeHandler(
       // for ALL cases, only trigger the update behaviour (the popup) when the SW update process
       // is fully completed - the "activated" state - at this point, if you check
       // `navigator.serviceWorker.controller`, you will see the latest SW instance
-      if (registrationConfig && registrationConfig.onUpdate) {
+      if (!firstInstall && registrationConfig && registrationConfig.onUpdate) {
         registrationConfig.onUpdate(registration)
       }
     }
