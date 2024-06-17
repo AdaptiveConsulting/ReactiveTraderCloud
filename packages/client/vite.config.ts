@@ -9,7 +9,6 @@ import {
   loadEnv,
   Plugin,
   PluginOption,
-  splitVendorChunkPlugin,
   UserConfigExport,
 } from "vite"
 import { createHtmlPlugin } from "vite-plugin-html"
@@ -52,68 +51,50 @@ function apiMockReplacerPlugin(): Plugin {
 }
 
 // Replace files with .<target> if they exist
-// Note - resolveId source and importer args are different between dev and build
-// Some more investigation and work should be done to improve this when possible
 function targetBuildPlugin(dev: boolean, target: string): Plugin {
   return {
     name: "targetBuildPlugin",
     enforce: "pre",
     resolveId: function (source, importer) {
-      if (dev) {
-        const extension = source.split(".")[1]
-        if (extension !== "ts" && extension !== "tsx") return null
+      if (
+        !importer ||
+        importer.includes("node_modules") ||
+        source === "./main"
+      ) {
+        return null
+      }
 
-        const file = path.parse(source)
-        const files = readdirSync("." + file.dir)
+      if (!source.startsWith(".") && !source.startsWith("/")) {
+        return null
+      }
 
-        // Only continue if we can find a .<target>.<extension> file
-        if (!files.includes(`${file.name}.${target}.${extension}`)) return null
+      const sourcePath = path.parse(source)
+      const importerPath = path.parse(importer.replace(/\\/g, "/"))
 
-        const mockPath = `${file.dir}/${file.name}.${target}.${extension}`
-        return this.resolve(mockPath, importer)
-      } else {
-        if (
-          !importer ||
-          importer.includes("node_modules") ||
-          source === "./main"
-        ) {
-          return null
-        }
+      // If imported file starts with /src we can not append it to importer dir
+      // so we need to strip the path by the rootPrefix first
+      const aliasedSourceRootPrefix = "/src"
+      const baseCandidatePath =
+        sourcePath.dir.startsWith(aliasedSourceRootPrefix) &&
+        importerPath.dir.includes(aliasedSourceRootPrefix)
+          ? `${importerPath.dir.split(aliasedSourceRootPrefix)[0]}/`
+          : importerPath.dir
+      const targetFileName = `${sourcePath.name}.${target.toLowerCase()}`
 
-        if (!source.startsWith(".") && !source.startsWith("/")) {
-          return null
-        }
+      const candidatePath = path.join(
+        baseCandidatePath,
+        sourcePath.dir,
+        targetFileName,
+      )
 
-        const sourcePath = path.parse(source)
-        const importerPath = path.parse(importer.replace(/\\/g, "/"))
-
-        // If imported file starts with /src we can not append it to importer dir
-        // so we need to strip the path by the rootPrefix first
-        const aliasedSourceRootPrefix = "/src"
-        const baseCandidatePath =
-          sourcePath.dir.startsWith(aliasedSourceRootPrefix) &&
-          importerPath.dir.includes(aliasedSourceRootPrefix)
-            ? `${importerPath.dir.split(aliasedSourceRootPrefix)[0]}/`
-            : importerPath.dir
-        const targetFileName = `${sourcePath.name}.${target.toLowerCase()}`
-
-        const candidatePath = path.join(
-          baseCandidatePath,
-          sourcePath.dir,
-          targetFileName,
-        )
-
-        // Source doesn't have file extension, so try all extensions
-        const candidateTs = `${candidatePath}.ts`
-        if (existsSync(candidateTs)) {
-          console.log(`candidate is ${candidateTs}\n`)
-          return candidateTs
-        }
-        const candidateTsx = `${candidatePath}.tsx`
-        if (existsSync(candidateTsx)) {
-          console.log(`candidate is ${candidateTsx}\n`)
-          return candidateTsx
-        }
+      // Source doesn't have file extension, so try all extensions
+      const candidateTs = `${candidatePath}.ts`
+      if (existsSync(candidateTs)) {
+        return candidateTs
+      }
+      const candidateTsx = `${candidatePath}.tsx`
+      if (existsSync(candidateTsx)) {
+        return candidateTsx
       }
     },
   }
@@ -190,7 +171,6 @@ const copyPlugin = (
       .replace('"<SHOW_PROVIDER_WINDOW>"', `${showOpenFinProvider}`)
 
   return viteStaticCopy({
-    flatten: true,
     targets:
       buildTarget === "openfin"
         ? [
@@ -247,7 +227,7 @@ const injectScriptIntoHtml = (
   buildTarget: BuildTarget,
   env: string,
 ) => {
-  // more specific type than one in "vite-plugin-html", which should be exported but .. is not :-/
+  // type from "vite-plugin-html", which should be exported but .. is not :-/
   interface PageOption {
     filename: string
     template: string
@@ -392,8 +372,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
   devPlugins.push(react())
 
   if (!isDev) {
-    // splitVendorChunkPlugin gives us main AND vendor in assets, vendor is still big tho
-    devPlugins.push(splitVendorChunkPlugin(), customPreloadPlugin())
+    devPlugins.push(customPreloadPlugin())
   }
 
   if (buildTarget === "web") {
@@ -428,16 +407,26 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
       chunkSizeWarningLimit: 750,
       rollupOptions: {
         input,
+        output: {
+          manualChunks: (id) => {
+            if (id.includes("@openfin/workspace")) {
+              return "openfin-ws"
+            }
+            if (id.includes("node_modules")) {
+              return "vendor"
+            }
+          },
+        },
       },
     },
     preview: {
       port: localPort,
-      strictPort: true, // due to substition, dynamic ports won't work - use PORT=1234 <cmd>
+      strictPort: true, // due to substitution, dynamic ports won't work - use PORT=1234 <cmd>
     },
     server: {
       host: "127.0.0.1",
       port: localPort,
-      strictPort: true, // due to substition, dynamic ports won't work - use PORT=1234 <cmd>
+      strictPort: true, // due to substitution, dynamic ports won't work - use PORT=1234 <cmd>
     },
     resolve: {
       // see https://vitejs.dev/config/shared-options.html#resolve-alias

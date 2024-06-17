@@ -6,7 +6,7 @@ export const ContactUs = () => (
   <ContactUsContentResolver>
     <span className="header">Contact us</span>
     <div>
-      <span>70 St. Mary Axe, London, EC3A 8BE</span>
+      <span>2nd floor, 1 Lackington St, London, EC2A 1AL</span>
       <span>+44 203 725 6000</span>
     </div>
     <div>
