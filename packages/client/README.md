@@ -26,7 +26,21 @@ The trading client GUI is a single page app (SPA) built using Typescript, React,
 
 Required:
 
-- [Node](https://nodejs.org) (v20+ see "engine" spec in package.json - anything between 16 and 20 is a disaster for OpenFin, due to problems with networking (DNS lookups) - suggest using `nvm`` to manage node instances)
+- [Node](https://nodejs.org) (v20+ see "engine" spec in package.json - suggest using `nvm` to manage node instances)
+
+VS Code / Plugins
+
+Suggest ESLint, Prettier extensions for immediate code quality management, with configuration such as:
+
+```
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.addMissingImports": "explicit"
+  },
+  "editor.formatOnSave": true,
+```
+
+Suggest [vitest](https://marketplace.visualstudio.com/items?itemName=vitest.explorer) for running tests in the IDE (currently requires Node path to be explicitly stated as `"vitest.nodeExecutable"` in VS Code settings)
 
 ### Testing and Quality Checks
 

@@ -27,20 +27,20 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set Node version
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: "Authenticate to Google Cloud"
-        uses: "google-github-actions/auth@v1"
+        uses: "google-github-actions/auth@v2"
         with:
           credentials_json: "${{ secrets.GCLOUD_SERVICE_ACCOUNT_JSON }}"
 
       - name: Set up GCloud
-        uses: google-github-actions/setup-gcloud@v1
+        uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ secrets.GOOGLE_PROJECT_ID }}
 
@@ -95,7 +95,7 @@ jobs:
             gs://$BUCKET_FINSEMBLE/pull/${{ github.event.number }}
 
       - name: Find comment
-        uses: peter-evans/find-comment@v2
+        uses: peter-evans/find-comment@v3
         id: comment
         with:
           issue-number: ${{ github.event.number }}
@@ -104,7 +104,7 @@ jobs:
 
       - name: Create comment (if not exists)
         if: ${{ steps.comment.outputs.comment-id == 0 }}
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.number }}
           body: |
@@ -137,10 +137,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set Node version
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -169,10 +169,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set Node version
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20.5.1
 
@@ -204,10 +204,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set Node version
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20.5.1
 

@@ -1,4 +1,4 @@
-import { HTMLAttributes, useRef } from "react"
+import { HTMLAttributes, InputHTMLAttributes, useRef } from "react"
 import styled from "styled-components"
 
 import { AccentName } from "@/client/theme/colors"
@@ -113,7 +113,7 @@ const Label = styled.label<LabelProps>`
 `
 
 export const Input = (
-  props: InputStyleProps & HTMLAttributes<HTMLInputElement>,
+  props: InputStyleProps & InputHTMLAttributes<HTMLInputElement>,
 ) => {
   const { label, disabled, className } = props
   const refInput = useRef<HTMLInputElement>(null)
