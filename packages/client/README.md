@@ -32,7 +32,7 @@ VS Code / Plugins
 
 Suggest ESLint, Prettier extensions for immediate code quality management, with configuration such as:
 
-```
+```json
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
     "source.addMissingImports": "explicit"
@@ -55,7 +55,7 @@ There are no additional packages to install other than Git and a recent build of
 
 You might want to [increase the limit](http://stackoverflow.com/questions/16748737/grunt-watch-error-waiting-fatal-error-watch-enospc) on the number of files Linux will watch. [Here's why](https://github.com/coryhouse/react-slingshot/issues/6).
 
-```
+```sh
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 ```
 
@@ -129,7 +129,7 @@ Vite will replace placeholders at build time.
 
 To debug OpenFin windows more easily (using Chromium devtools), check the relevant manifest for the appropriate port in e.g.
 
-```
+```json
     "arguments": "--remote-debugging-port=9092"
 ```
 
@@ -195,14 +195,17 @@ Vite will replace placeholders at build time.
 
 Workspace config for pages / snapshots is stored in IndexedDB - example below is retrieving a saved workspace snapshot
 
-```
-db = indexedDB.open('openfin-workspace-platform-workspaces-adaptive-workspace-provider-local', 1)
+```javascript
+db = indexedDB.open(
+  "openfin-workspace-platform-workspaces-adaptive-workspace-provider-local",
+  1,
+)
 db.onsuccess = () => {
-    console.log("Success")
-    dbResult = db.result
+  console.log("Success")
+  dbResult = db.result
 }
 db.onerror = () => {
-    console.error("BAH")
+  console.error("BAH")
 }
 
 // check what object stores you have under that DB (can also just look in devtools)
@@ -210,7 +213,10 @@ dbResult.objectStoreNames
 
 // open transaction, get the object store and grab the key for the saved workspace
 // annoyingly you have to do this even to just "look" at the data
-data = dbResult.transaction("workspaces").objectStore("workspaces").get("fc9cdd93-104c-4305-97fa-92ea5a560546")
+data = dbResult
+  .transaction("workspaces")
+  .objectStore("workspaces")
+  .get("fc9cdd93-104c-4305-97fa-92ea5a560546")
 
 console.log(data.result)
 ```
