@@ -756,7 +756,7 @@
                               "processAffinity": "adaptive-workspace-provider",
                               "zoomLevel": 0
                             },
-                            "title": "Reactive Analytics",
+                            "title": "Analytics",
                             "isClosable": true,
                             "reorderEnabled": true
                           }
@@ -1397,7 +1397,7 @@
                                     "processAffinity": "adaptive-workspace-provider",
                                     "zoomLevel": 0
                                   },
-                                  "title": "Reactive Analytics",
+                                  "title": "Analytics",
                                   "isClosable": true,
                                   "reorderEnabled": true
                                 }

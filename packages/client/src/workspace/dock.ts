@@ -8,8 +8,6 @@ const PROVIDER_ID = "adaptive-dock-provider"
 export enum DockAction {
   OpenReactiveTraderFx = "open-reactive-trader-fx",
   OpenReactiveTraderCredit = "open-reactive-trader-credit",
-  OpenReactiveAnalytics = "open-reactive-analytics",
-  OpenLimitChecker = "open-limit-checker",
 }
 
 export const registerDock = () => {

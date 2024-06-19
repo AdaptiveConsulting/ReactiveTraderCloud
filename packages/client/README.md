@@ -177,8 +177,6 @@ As a shortcut, to run the local dev server and client in one command, use
 npm run workspace:start
 ```
 
-Reactive Analytics will need to be running to open the RA app/view - see [RA repo, client folder](https://github.com/AdaptiveConsulting/ReactiveAnalytics/tree/master/client).
-
 #### Configs
 
 Config files are located in [./public-workspace/config](./public-workspace/config).
@@ -189,7 +187,7 @@ Vite will replace placeholders at build time.
 
 [snapshot.json](./public-workspace/config/snapshot.json) - A workspace window _layout_ or 'snapshot', saved from previous layout modifications - on launching this (from the Home UI) the Trading Workspace will be displayed.
 
-`analytics, live-rates, trades & reactive-analytics.json` - Basic .json files that contain the bare minimum to launch a view in the Openfin browser using `platform.launchApp`
+`analytics, live-rates, trades.json` - Basic .json files that contain the bare minimum to launch a view in the Openfin browser using `platform.launchApp`
 
 #### Working with Workspace Data
 
