@@ -1,7 +1,6 @@
 import OpenFin from "@openfin/core"
 
 import { ENVIRONMENT, manifestUrls } from "@/client/constants"
-import { constructUrl } from "@/client/utils/constructUrl"
 
 import {
   limitCheckerIcon,
@@ -10,29 +9,6 @@ import {
 } from "./icons"
 
 type PlatformName = "browser" | "openfin" | "finsemble"
-
-const defaultWindowOptions: Partial<OpenFin.WindowCreationOptions> = {
-  autoShow: true,
-  defaultWidth: 1280,
-  defaultHeight: 900,
-  minWidth: 800,
-  minHeight: 600,
-  resizable: true,
-  maximizable: true,
-  defaultCentered: true,
-  frame: false,
-  shadow: true,
-  icon: constructUrl(`/static/media/adaptive.ico`),
-  accelerator:
-    process.env.NODE_ENV !== "development"
-      ? {}
-      : {
-          devtools: true,
-          reload: true,
-          reloadIgnoringCache: true,
-          zoom: true,
-        },
-}
 
 type ApplicationType =
   | "window"

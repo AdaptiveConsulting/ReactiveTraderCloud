@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 
 export const Header = styled.h1`
   padding: 12px 0 12px 15px;

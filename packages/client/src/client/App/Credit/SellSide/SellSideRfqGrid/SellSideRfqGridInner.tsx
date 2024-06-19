@@ -15,7 +15,6 @@ import {
 } from "../sellSideState"
 import { getSellSideStatusColor } from "../utils"
 import { ColKey, rfqColDef, rfqColFields } from "./colConfig"
-import { RfqRow } from "./SellSideRfqGrid"
 import { TableHeadCellContainer } from "./TableHeadCell"
 
 export const QuoteDot = styled.div`

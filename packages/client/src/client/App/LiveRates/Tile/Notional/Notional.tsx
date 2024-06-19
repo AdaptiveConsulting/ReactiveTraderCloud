@@ -1,6 +1,6 @@
 import { createKeyedSignal } from "@react-rxjs/utils"
 import { FaRedo } from "react-icons/fa"
-import { concat, merge, Observable, OperatorFunction, pipe } from "rxjs"
+import { concat, merge, pipe } from "rxjs"
 import { filter, map, take } from "rxjs/operators"
 
 import { formatNotional } from "@/client/utils/formatNotional"
