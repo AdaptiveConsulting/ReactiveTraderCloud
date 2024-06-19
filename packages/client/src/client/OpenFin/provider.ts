@@ -17,23 +17,13 @@ function interopOverride(
   InteropBroker: OpenFin.Constructor<OpenFin.InteropBroker>,
 ): OpenFin.InteropBroker {
   class Override extends InteropBroker {
-    private analyticsUuid: string
-
     private limitCheckerUuid: string
-
-    private analyticsClients: ExternalClientMap
-
     private limitCheckerClients: ExternalClientMap
 
     constructor() {
       super()
-      this.analyticsUuid = `reactive-analytics-${ENVIRONMENT}`
       this.limitCheckerUuid = `reactive-trader-limit-checker-${ENVIRONMENT}`
-      this.analyticsClients = new Map()
       this.limitCheckerClients = new Map()
-      this.initializeBrokers(this.analyticsUuid, this.analyticsClients).catch(
-        (error) => console.error(error),
-      )
       this.initializeBrokers(
         this.limitCheckerUuid,
         this.limitCheckerClients,
@@ -48,12 +38,12 @@ function interopOverride(
         uuid: externalUuid,
       })
 
-      // If an external platform (i.e. RA/LC) is already running when the broker platform (i.e. RT) is launched
+      // If an external platform is already running when the broker platform (i.e. RT) is launched
       if (await platform.Application.isRunning()) {
         await this.setupContextGroups(externalUuid, externalClients)
       }
 
-      // If an external platform (i.e. RA/LC) has just been started when the broker platform (i.e. RT) is already running
+      // If an external platform has just been started when the broker platform (i.e. RT) is already running
       await platform.on("platform-api-ready", async () => {
         await this.setupContextGroups(externalUuid, externalClients)
       })
@@ -144,12 +134,6 @@ function interopOverride(
       // eslint-disable-next-line @typescript-eslint/dot-notation
       const state = this["getClientState"](clientIdentity)
       const ctxGroupId = state.contextGroupId as string
-      if (this.analyticsClients.has(ctxGroupId)) {
-        const colorClient = this.analyticsClients.get(
-          ctxGroupId,
-        ) as OpenFin.InteropClient
-        await colorClient.setContext(context)
-      }
       if (this.limitCheckerClients.has(ctxGroupId)) {
         const colorClient = this.limitCheckerClients.get(
           ctxGroupId,
