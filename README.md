@@ -1,4 +1,4 @@
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AdaptiveConsulting/ReactiveTraderCloud/CI)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/actions?query=workflow%3ACI)
+![example workflow](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/actions/workflows/branch.yml/badge.svg?branch=master)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/AdaptiveConsulting/ReactiveTraderCloud)](https://github.com/AdaptiveConsulting/ReactiveTraderCloud/releases/latest)
 [![GitHub](https://img.shields.io/github/license/AdaptiveConsulting/ReactiveTraderCloud)](https://opensource.org/licenses/Apache-2.0)
 
@@ -44,14 +44,14 @@ To run the web UI
 
 1. Open [hydra-reactive-trader](`https://github.com/AdaptiveConsulting/hydra-reactive-trader`) project in IntelliJ IDEA and run:
 
-   ```
+   ```sh
    ./gradlew
    ```
 
 2. Copy file `component/gateway/trading/api/build/generated-sources/codecs/main/resources/trading-gateway.hyer` to UI project `src/client/trading-gateway.hyer`
 
 3. Back in src/client, run:
-   ```
+   ```sh
    npm run generateCod
    ```
    This will regenerate TradingGateway.ts `(file://./src/client/src/generated/TradingGateway.ts)`
@@ -63,7 +63,7 @@ To run the web UI
 1. Follow instructions to start [Backend Services](`https://github.com/AdaptiveConsulting/hydra-reactive-trader#building-the-project`)
 
 2. Run:
-   ```
+   ```sh
    VITE_HYDRA_URL=ws://localhost:8929 npm start
    ```
    </details>
