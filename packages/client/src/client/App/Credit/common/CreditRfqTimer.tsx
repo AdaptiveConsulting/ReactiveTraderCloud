@@ -37,10 +37,9 @@ const progressAnimation = ({
   start: number
   end: number
   transitionTime: number
-}) =>
-  css`
-    ${changeWidth(start, end)} ${transitionTime}ms linear;
-  `
+}) => css`
+  ${changeWidth(start, end)} ${transitionTime}ms linear;
+`
 
 export const ProgressBar = memo(styled.div<{
   start: number

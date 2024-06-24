@@ -34,8 +34,8 @@ export const StyledButton = styled.button<{
       title === "Search ecosystem"
         ? "0"
         : title === "Launch Excel"
-        ? "2.5px"
-        : "6px"};
+          ? "2.5px"
+          : "6px"};
 
     svg {
       fill: ${({ iconHoverFill }) => iconHoverFill};

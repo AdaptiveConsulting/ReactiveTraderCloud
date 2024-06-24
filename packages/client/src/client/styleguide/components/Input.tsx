@@ -39,8 +39,8 @@ const StyledInput = styled.input<InputStyleProps>`
       status
         ? theme.accents[inputColors[status]].darker
         : theme.name === "light"
-        ? theme.primary[1]
-        : theme.primary[2]
+          ? theme.primary[1]
+          : theme.primary[2]
     }`};
   background: ${({ theme }) => theme.primary.base};
   color: ${({ theme }) => theme.secondary.base};
@@ -58,8 +58,8 @@ const StyledInput = styled.input<InputStyleProps>`
         status
           ? theme.accents[inputColors[status]].base
           : theme.name === "light"
-          ? "#beccdc"
-          : theme.colors.light.secondary[1]
+            ? "#beccdc"
+            : theme.colors.light.secondary[1]
       }`};
   }
   &:focus {
@@ -88,8 +88,8 @@ const StyledInput = styled.input<InputStyleProps>`
           ? theme.secondary[2]
           : theme.secondary[2]
         : disabled
-        ? theme.colors.light.secondary[1]
-        : theme.colors.light.secondary[2]};
+          ? theme.colors.light.secondary[1]
+          : theme.colors.light.secondary[2]};
     cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   }
   &::placeholder {
@@ -99,8 +99,8 @@ const StyledInput = styled.input<InputStyleProps>`
           ? theme.secondary[1]
           : theme.secondary[2]
         : disabled
-        ? theme.colors.light.secondary[1]
-        : theme.colors.light.secondary[2]};
+          ? theme.colors.light.secondary[1]
+          : theme.colors.light.secondary[2]};
   }
 `
 

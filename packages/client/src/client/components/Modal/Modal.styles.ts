@@ -40,7 +40,8 @@ export const ModalPanel = styled.div`
   background: ${({ theme }) => theme.core.lightBackground};
   color: ${({ theme }) => theme.core.textColor};
   border-radius: 0.25rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.05),
     0 1rem 3rem -1rem ${(props) => darken(0.1, props.theme.overlay.backgroundColor)};
 `
 

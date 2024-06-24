@@ -44,8 +44,8 @@ const StyledBase = styled.div<DropdownOptionStyleProps>`
     active
       ? theme.button.primary.backgroundColor
       : hover
-      ? theme.primary.base
-      : ""};
+        ? theme.primary.base
+        : ""};
   text-decoration: ${({ hover }) => (hover ? "underline" : "none")};
   color: ${({ theme }) => theme.core.textColor};
 `
@@ -61,7 +61,8 @@ const DropdownMenuContainer = styled.div`
   list-style: none;
   padding: 5px;
   border-radius: 3px;
-  box-shadow: 0 0.25rem 0.375rem rgba(50, 50, 93, 0.11),
+  box-shadow:
+    0 0.25rem 0.375rem rgba(50, 50, 93, 0.11),
     0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08);
   background-color: ${({ theme }) => theme.core.dividerColor};
 `

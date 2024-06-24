@@ -98,10 +98,9 @@ export const passCreditQuote$ = (passRequest: PassRequest) => {
   return WorkflowService.pass(passRequest)
 }
 
-export const [acceptedCreditRfq$, setAcceptedCreditRfq] =
-  createSignal<{
-    quoteId: number
-  }>()
+export const [acceptedCreditRfq$, setAcceptedCreditRfq] = createSignal<{
+  quoteId: number
+}>()
 
 export const acceptCreditQuote$ = (acceptRequest: AcceptQuoteRequest) => {
   return WorkflowService.accept(acceptRequest).pipe(

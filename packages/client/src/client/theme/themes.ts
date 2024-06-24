@@ -80,8 +80,8 @@ export const getThemeColor = (
   typeof color === "function"
     ? color(theme) || fallback
     : isColor(color)
-    ? color
-    : fallback
+      ? color
+      : fallback
 
 const createTheme = (
   name: ThemeName,

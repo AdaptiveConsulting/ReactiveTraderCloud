@@ -89,13 +89,16 @@ export const test = base.extend<IPlaywrightFixtures>({
   fxPagesRec: async ({ context }, use, workerInfo) => {
     const contextPages = context.pages()
     if (isOpenFin(workerInfo)) {
-      const pages = fxOpenfinUrlPaths.reduce((rec, urlPath) => {
-        const page = contextPages.find(
-          (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
-        )
-        if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
-        return { ...rec, [urlPathToFxPage(urlPath)]: page }
-      }, {} as Record<FXPage, Page>)
+      const pages = fxOpenfinUrlPaths.reduce(
+        (rec, urlPath) => {
+          const page = contextPages.find(
+            (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
+          )
+          if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
+          return { ...rec, [urlPathToFxPage(urlPath)]: page }
+        },
+        {} as Record<FXPage, Page>,
+      )
       use(pages)
     } else {
       const mainWindow =
@@ -111,13 +114,16 @@ export const test = base.extend<IPlaywrightFixtures>({
   creditPagesRec: async ({ context }, use, workerInfo) => {
     const contextPages = context.pages()
     if (isOpenFin(workerInfo)) {
-      const pages = creditOpenfinUrlPaths.reduce((rec, urlPath) => {
-        const page = contextPages.find(
-          (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
-        )
-        if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
-        return { ...rec, [urlPathToCreditPage(urlPath)]: page }
-      }, {} as Record<CreditPage, Page>)
+      const pages = creditOpenfinUrlPaths.reduce(
+        (rec, urlPath) => {
+          const page = contextPages.find(
+            (p) => p.url() === `${process.env.E2E_RTC_WEB_ROOT_URL}/${urlPath}`,
+          )
+          if (!page) throw Error(`Openfin page at ${urlPath} was not found`)
+          return { ...rec, [urlPathToCreditPage(urlPath)]: page }
+        },
+        {} as Record<CreditPage, Page>,
+      )
       use(pages)
     } else {
       const mainWindow =

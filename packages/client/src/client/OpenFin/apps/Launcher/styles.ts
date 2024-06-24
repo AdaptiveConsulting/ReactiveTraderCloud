@@ -147,7 +147,10 @@ export const SearchContainer = styled.div<{ visible?: boolean }>`
   justify-content: center;
   opacity: 0;
   z-index: 1;
-  transition: left 0.3s, right 0.3s, opacity 0.1s ease;
+  transition:
+    left 0.3s,
+    right 0.3s,
+    opacity 0.1s ease;
   will-change: opacity;
 
   ${({ visible }) =>

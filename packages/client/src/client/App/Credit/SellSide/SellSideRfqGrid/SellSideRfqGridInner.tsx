@@ -220,8 +220,8 @@ export const RfqGridInner = ({ caption }: RfqGridInner) => {
                 {filter == SellSideQuotesTab.All
                   ? ""
                   : filter === SellSideQuotesTab.Closed
-                  ? "closed "
-                  : "live "}
+                    ? "closed "
+                    : "live "}
                 RFQs in queue
               </TableBodyCell>
             </TableBodyRow>

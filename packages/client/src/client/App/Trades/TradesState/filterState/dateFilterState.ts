@@ -71,7 +71,7 @@ const getDateFilterDefaults = (colDef: ColDef) => {
  */
 const [colFilterDateSelects$, onColFilterDateSelect] = createSignal(
   (field: DateColField, value: DateFilterContent) =>
-    ({ field, value } as DateFilterSet),
+    ({ field, value }) as DateFilterSet,
 )
 
 export { onColFilterDateSelect }

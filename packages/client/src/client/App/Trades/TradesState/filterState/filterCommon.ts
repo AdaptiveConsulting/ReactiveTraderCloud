@@ -31,7 +31,7 @@ export interface FilterEvent {
  * the column or a selection from the TradesHeader.
  */
 export const [filterResets$, onFilterReset] = createSignal(
-  (field: FxColField | CreditColField) => ({ field } as FilterEvent),
+  (field: FxColField | CreditColField) => ({ field }) as FilterEvent,
 )
 
 /**

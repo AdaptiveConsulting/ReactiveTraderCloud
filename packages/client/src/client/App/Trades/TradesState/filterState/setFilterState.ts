@@ -55,7 +55,7 @@ interface SearchInput {
  */
 const [colFilterToggle$, onColFilterToggle] = createSignal(
   <T extends SetColField>(field: T, value: TradeType[T]) =>
-    ({ field, value } as ColFieldToggle<T>),
+    ({ field, value }) as ColFieldToggle<T>,
 )
 
 /**
@@ -66,7 +66,7 @@ const [colFilterToggle$, onColFilterToggle] = createSignal(
  */
 const [_si$, onSearchInput] = createSignal(
   <T extends SetColField>(field: T, value: string) =>
-    ({ field, value } as SearchInput),
+    ({ field, value }) as SearchInput,
 )
 
 /**
@@ -83,12 +83,15 @@ export { onColFilterToggle, onSearchInput, searchInputs$ }
  */
 export const setFieldValuesContainer = (colDef: ColDef) =>
   Object.freeze(
-    extractSetFields(colDef).reduce((valuesContainer, field) => {
-      return {
-        ...valuesContainer,
-        [field]: new Set<TradeType[typeof field]>(),
-      }
-    }, {} as Record<SetColField, Set<string> | Set<number>>),
+    extractSetFields(colDef).reduce(
+      (valuesContainer, field) => {
+        return {
+          ...valuesContainer,
+          [field]: new Set<TradeType[typeof field]>(),
+        }
+      },
+      {} as Record<SetColField, Set<string> | Set<number>>,
+    ),
   )
 
 /**

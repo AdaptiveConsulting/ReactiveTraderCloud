@@ -210,11 +210,15 @@ const StyledBase = styled.div<ButtonStyleProps>`
       position: relative;
       z-index: 1;
 
-      box-shadow: ${boxShadow}, 0 0 0 0.125rem currentColor inset;
+      box-shadow:
+        ${boxShadow},
+        0 0 0 0.125rem currentColor inset;
 
       *,
       & {
-        transition: background-color 80ms ease, color 180ms ease;
+        transition:
+          background-color 80ms ease,
+          color 180ms ease;
       }
     `};
 `
@@ -300,13 +304,16 @@ const StyledButtonGroup = styled(StyledBase)<ButtonStyleProps>`
   ${({ outline }) =>
     outline &&
     css`
-      box-shadow: ${boxShadow}, 0 0 0 0.125rem currentColor inset;
+      box-shadow:
+        ${boxShadow},
+        0 0 0 0.125rem currentColor inset;
 
       ${StyledButton} {
         box-shadow: -0.0625rem 0 0 currentColor inset;
       }
       ${StyledButton} + ${StyledButton} {
-        box-shadow: -0.0625rem 0 0 currentColor inset,
+        box-shadow:
+          -0.0625rem 0 0 currentColor inset,
           0.0625rem 0 0 currentColor inset;
       }
     `};

@@ -16,7 +16,8 @@ const Grid = styled.div`
   }
 
   input {
-    box-shadow: 0 0.25rem 0.375rem rgba(50, 50, 93, 0.11),
+    box-shadow:
+      0 0.25rem 0.375rem rgba(50, 50, 93, 0.11),
       0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08);
   }
 `

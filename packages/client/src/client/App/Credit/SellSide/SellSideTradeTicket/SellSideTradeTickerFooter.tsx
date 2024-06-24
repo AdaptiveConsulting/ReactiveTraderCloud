@@ -137,8 +137,8 @@ export const SellSideTradeTicketFooter = ({
           {passed
             ? "Passed"
             : state === RfqState.Cancelled
-            ? "Canceled"
-            : "Expired"}
+              ? "Canceled"
+              : "Expired"}
         </Terminated>
       )}
       {accepted && (

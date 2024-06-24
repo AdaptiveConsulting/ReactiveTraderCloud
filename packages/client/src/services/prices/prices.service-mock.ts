@@ -40,11 +40,14 @@ const [, getSymbolPrices$] = bind(
       let token: any = 0
 
       const scheduleNextPrice = () => {
-        token = setTimeout(() => {
-          prices = prices.slice(1).concat(priceGenerator.next().value)
-          observer.next(prices)
-          scheduleNextPrice()
-        }, Math.max(150, Math.random() * 1000))
+        token = setTimeout(
+          () => {
+            prices = prices.slice(1).concat(priceGenerator.next().value)
+            observer.next(prices)
+            scheduleNextPrice()
+          },
+          Math.max(150, Math.random() * 1000),
+        )
       }
 
       scheduleNextPrice()
@@ -70,8 +73,8 @@ export const [usePrice, getPrice$] = bind((symbol: string) =>
           acc === undefined
             ? PriceMovementType.NONE
             : price.mid > acc.mid
-            ? PriceMovementType.UP
-            : PriceMovementType.DOWN,
+              ? PriceMovementType.UP
+              : PriceMovementType.DOWN,
 
         spread: calculateSpread(
           price.ask,

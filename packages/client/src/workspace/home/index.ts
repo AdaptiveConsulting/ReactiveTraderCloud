@@ -25,11 +25,10 @@ import {
 
 const PROVIDER_ID = "adaptive-home-provider"
 
-const [requestResponse$, setRequestResponse] =
-  createSignal<{
-    request: CLISearchListenerRequest
-    response: CLISearchListenerResponse
-  }>()
+const [requestResponse$, setRequestResponse] = createSignal<{
+  request: CLISearchListenerRequest
+  response: CLISearchListenerResponse
+}>()
 
 nlpIntent$
   .pipe(withLatestFrom(requestResponse$))
