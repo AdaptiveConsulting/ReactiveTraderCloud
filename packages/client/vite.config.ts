@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react"
 import { existsSync, readdirSync, statSync } from "fs"
 import path, { resolve } from "path"
+import { InputOption } from "rollup"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 import Unfonts from "unplugin-fonts/vite"
@@ -121,7 +122,7 @@ function indexSwitchPlugin(target: string): Plugin {
       try {
         statSync(candidate)
         return candidate
-      } catch (e) {
+      } catch (_) {
         return null
       }
     },
@@ -337,7 +338,7 @@ const generateHydraUrl = (env: string) => {
 }
 
 // Main Ref: https://vitejs.dev/config/
-const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
+const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   const externalEnv = {
     ...loadEnv(mode, process.cwd()),
     ...process.env,
@@ -352,7 +353,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
 
   const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
   const isDev = mode === "development"
-  const isServe = command === "serve"
   // quick look-up (not using isServe atm, but expecting to optimise plugins later)
   // - vite ..         isDev: true   isServe: true (building with esbuild AND serving)
   // - vite preview .. isDev: false  isServe: true (just running static, so don't need any plugins etc.)
@@ -386,7 +386,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode, command }) => {
 
   plugins.push(fontFacePreload)
 
-  const input = {
+  const input: InputOption = {
     main: resolve(__dirname, "index.html"),
   }
   if (buildTarget === "openfin") {
