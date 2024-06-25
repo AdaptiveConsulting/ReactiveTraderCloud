@@ -38,7 +38,6 @@ interface BaseTheme {
   backgroundColor: Color
   textColor: Color
 }
-/* eslint-disable-next-line */
 type GeneratedTheme = ReturnType<typeof createTheme>
 export type Theme = BaseTheme & GeneratedTheme
 

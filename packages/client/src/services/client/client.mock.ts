@@ -6,9 +6,9 @@ import { mockPriceHistory } from "./mockData/priceHistory.mock"
 import { mockTrade } from "./mockData/trade.mock"
 
 export const getStream$ = <TResponse, TPayload = Record<string, unknown>>(
-  service: string,
+  _service: string,
   operationName: string,
-  payload: TPayload,
+  _payload: TPayload,
 ): Observable<TResponse> => {
   switch (operationName) {
     case "getTradesStream":
@@ -29,9 +29,9 @@ export const getStream$ = <TResponse, TPayload = Record<string, unknown>>(
 }
 
 export const getRemoteProcedureCall$ = <TResponse, TPayload>(
-  service: string,
+  _service: string,
   operationName: string,
-  payload: TPayload,
+  _payload: TPayload,
 ): Observable<TResponse> => {
   switch (operationName) {
     case "getPriceHistory":

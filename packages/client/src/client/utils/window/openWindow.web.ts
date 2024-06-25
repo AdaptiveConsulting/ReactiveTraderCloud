@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import { WindowConfig } from "./openWindow"
 
 let openPopoutWindows: Window[] = []
