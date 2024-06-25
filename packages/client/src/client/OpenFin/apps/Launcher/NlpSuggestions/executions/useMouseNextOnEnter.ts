@@ -12,5 +12,5 @@ export const useMoveNextOnEnter = (onNext: () => void) => {
     return () => {
       window.removeEventListener("keydown", onKeyDown)
     }
-  }, [])
+  }, [onNext])
 }

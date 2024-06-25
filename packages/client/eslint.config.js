@@ -1,5 +1,6 @@
 import js from "@eslint/js"
 import react from "eslint-plugin-react"
+import hooks from "eslint-plugin-react-hooks"
 import simpleImportSort from "eslint-plugin-simple-import-sort"
 import globals from "globals"
 import tseslint from "typescript-eslint"
@@ -15,10 +16,15 @@ export default [
   ...tseslint.configs.recommended,
   {
     plugins: {
+      // https://github.com/lydell/eslint-plugin-simple-import-sort
       "simple-import-sort": simpleImportSort,
+      // https://typescript-eslint.io/getting-started/
       "@typescript-eslint": tseslint.plugin,
-      // ref https://github.com/jsx-eslint/eslint-plugin-react
+      // https://github.com/jsx-eslint/eslint-plugin-react
       react,
+      // https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks
+      // compat with ESLint v9, see https://github.com/facebook/react/issues/28313
+      "react-hooks": hooks,
     },
     languageOptions: {
       parser: tseslint.parser,
@@ -69,6 +75,9 @@ export default [
       // ref https://github.com/lydell/eslint-plugin-simple-import-sort#usage
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
+
+      // as hooks plugin does not play well with Flat Config right now, do this
+      ...hooks.configs.recommended.rules,
     },
   },
   {

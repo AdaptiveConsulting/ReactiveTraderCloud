@@ -353,7 +353,8 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
 
   const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
   const isDev = mode === "development"
-  // quick look-up (not using isServe atm, but expecting to optimise plugins later)
+  // quick look-up (not using isServe = command === "serve" atm, command from 2nd arg of setConfig)
+  // but expecting to optimise plugins later)
   // - vite ..         isDev: true   isServe: true (building with esbuild AND serving)
   // - vite preview .. isDev: false  isServe: true (just running static, so don't need any plugins etc.)
   // - vitest ..       isDev: false  isServe: true (still need the plugins to e.g. switch in openfin code)

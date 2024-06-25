@@ -116,6 +116,7 @@ export const Tooltip = ({ svgRef }: { svgRef: RefObject<SVGSVGElement> }) => {
   const tooltipDivRef = useDivRef()
 
   const tooltipPositionRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
+
   useEffect(() => {
     if (!svgRef.current) return
     const svg = svgRef.current
@@ -139,7 +140,7 @@ export const Tooltip = ({ svgRef }: { svgRef: RefObject<SVGSVGElement> }) => {
       svg.removeEventListener("pointermove", onMove)
       svg.removeEventListener("pointerleave", onLeave)
     }
-  }, [svgRef])
+  }, [svgRef, tooltipDivRef])
 
   useLayoutEffect(() => {
     // We have to correct the position of the tooltip when it overflows
