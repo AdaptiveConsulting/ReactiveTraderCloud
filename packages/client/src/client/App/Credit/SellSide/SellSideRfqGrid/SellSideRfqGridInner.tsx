@@ -15,7 +15,6 @@ import {
 } from "../sellSideState"
 import { getSellSideStatusColor } from "../utils"
 import { ColKey, rfqColDef, rfqColFields } from "./colConfig"
-import { RfqRow } from "./SellSideRfqGrid"
 import { TableHeadCellContainer } from "./TableHeadCell"
 
 export const QuoteDot = styled.div`
@@ -220,8 +219,8 @@ export const RfqGridInner = ({ caption }: RfqGridInner) => {
                 {filter == SellSideQuotesTab.All
                   ? ""
                   : filter === SellSideQuotesTab.Closed
-                  ? "closed "
-                  : "live "}
+                    ? "closed "
+                    : "live "}
                 RFQs in queue
               </TableBodyCell>
             </TableBodyRow>

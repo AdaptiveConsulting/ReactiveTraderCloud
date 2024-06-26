@@ -13,8 +13,8 @@ export const FooterWrapper = styled.div<{ accepted: boolean; missed: boolean }>`
     accepted
       ? "rgba(1, 195, 141, 0.1)"
       : missed
-      ? "rgba(167, 39, 64, 0.15)"
-      : undefined};
+        ? "rgba(167, 39, 64, 0.15)"
+        : undefined};
 `
 
 export const TimerWrapper = styled.div`

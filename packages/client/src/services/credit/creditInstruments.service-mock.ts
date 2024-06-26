@@ -112,15 +112,18 @@ export const [useCreditInstrumentsByCusip, creditInstrumentsByCusip$] = bind<
   Record<string, InstrumentBody>
 >(
   creditInstruments$.pipe(
-    scan((acc, instruments) => {
-      instruments.forEach((instrument) => {
-        acc[instrument.cusip] = {
-          ...acc[instrument.cusip],
-          ...instrument,
-        }
-      })
-      return acc
-    }, {} as Record<string, InstrumentBody>),
+    scan(
+      (acc, instruments) => {
+        instruments.forEach((instrument) => {
+          acc[instrument.cusip] = {
+            ...acc[instrument.cusip],
+            ...instrument,
+          }
+        })
+        return acc
+      },
+      {} as Record<string, InstrumentBody>,
+    ),
   ),
   {},
 )

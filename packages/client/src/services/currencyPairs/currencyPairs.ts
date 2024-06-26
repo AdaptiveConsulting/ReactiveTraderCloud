@@ -9,24 +9,27 @@ import { CurrencyPair } from "./types"
 export const [useCurrencyPairs, currencyPairs$] = bind(
   ReferenceDataService.getCcyPairs().pipe(
     withConnection(),
-    scan((acc, data) => {
-      const { updates } = data
-      const result = { ...acc }
-      updates.forEach(({ type, payload }) => {
-        const { symbol } = payload
-        if (type === "removed") {
-          delete result[symbol]
-        } else {
-          result[symbol] = {
-            ...payload,
-            base: symbol.substring(0, 3), // TODO: talk with hydra team about this
-            terms: symbol.substring(3),
-            defaultNotional: symbol === "NZDUSD" ? 10_000_000 : 1_000_000, // TODO: talk with hydra team about this
+    scan(
+      (acc, data) => {
+        const { updates } = data
+        const result = { ...acc }
+        updates.forEach(({ type, payload }) => {
+          const { symbol } = payload
+          if (type === "removed") {
+            delete result[symbol]
+          } else {
+            result[symbol] = {
+              ...payload,
+              base: symbol.substring(0, 3), // TODO: talk with hydra team about this
+              terms: symbol.substring(3),
+              defaultNotional: symbol === "NZDUSD" ? 10_000_000 : 1_000_000, // TODO: talk with hydra team about this
+            }
           }
-        }
-      })
-      return result
-    }, {} as Record<string, CurrencyPair>),
+        })
+        return result
+      },
+      {} as Record<string, CurrencyPair>,
+    ),
   ),
 )
 

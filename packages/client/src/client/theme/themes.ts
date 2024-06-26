@@ -38,7 +38,6 @@ interface BaseTheme {
   backgroundColor: Color
   textColor: Color
 }
-/* eslint-disable-next-line */
 type GeneratedTheme = ReturnType<typeof createTheme>
 export type Theme = BaseTheme & GeneratedTheme
 
@@ -80,8 +79,8 @@ export const getThemeColor = (
   typeof color === "function"
     ? color(theme) || fallback
     : isColor(color)
-    ? color
-    : fallback
+      ? color
+      : fallback
 
 const createTheme = (
   name: ThemeName,

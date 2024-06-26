@@ -57,12 +57,15 @@ interface NumFilterSet {
 
 const getNumFilterDefaults = (colDef: ColDef) => {
   const numberFields = extractNumberFields(colDef)
-  return numberFields.reduce((valuesContainer, field) => {
-    return {
-      ...valuesContainer,
-      [field]: initialFilterContent,
-    }
-  }, {} as Record<typeof numberFields[number], NumFilterContent>)
+  return numberFields.reduce(
+    (valuesContainer, field) => {
+      return {
+        ...valuesContainer,
+        [field]: initialFilterContent,
+      }
+    },
+    {} as Record<(typeof numberFields)[number], NumFilterContent>,
+  )
 }
 
 /**
@@ -73,7 +76,7 @@ const getNumFilterDefaults = (colDef: ColDef) => {
  */
 const [colFilterNum$, onColFilterEnterNum] = createSignal(
   (field: NumColField, value: NumFilterContent) =>
-    ({ field, value } as NumFilterSet),
+    ({ field, value }) as NumFilterSet,
 )
 
 export { onColFilterEnterNum }

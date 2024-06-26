@@ -25,8 +25,8 @@ const Root = styled.div<{
     active
       ? theme.core.activeColor
       : hover
-      ? theme.primary.base
-      : theme.core.dividerColor};
+        ? theme.primary.base
+        : theme.core.dividerColor};
   width: 115px;
   border-radius: 3px;
   text-decoration: ${({ hover }) => (hover ? "underline" : "none")};
@@ -34,6 +34,7 @@ const Root = styled.div<{
   pointer-events: ${({ disabled }) => (disabled ? "none" : "inherit")};
   color: ${({ disabled }) => (disabled ? "rgb(107, 107, 107)" : "inherit")};
   cursor: ${({ disabled }) => (disabled ? "inherit" : "pointer")};
-  box-shadow: 0 0.25rem 0.375rem rgba(50, 50, 93, 0.11),
+  box-shadow:
+    0 0.25rem 0.375rem rgba(50, 50, 93, 0.11),
     0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.08);
 `

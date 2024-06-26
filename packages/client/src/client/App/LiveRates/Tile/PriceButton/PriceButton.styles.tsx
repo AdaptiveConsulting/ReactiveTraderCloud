@@ -44,10 +44,10 @@ const backgroundEffect = ({
   priceAnnounced && !isStatic
     ? getAnimationCSSProperty({ direction, theme })
     : isStatic
-    ? `
+      ? `
     background-color: ${theme.colors.spectrum.uniqueCollections[direction].base};
     color: white;`
-    : ""
+      : ""
 
 export const TradeButton = styled.button<TradeButtonProps>`
   background-color: ${({ theme }) => theme.core.lightBackground};

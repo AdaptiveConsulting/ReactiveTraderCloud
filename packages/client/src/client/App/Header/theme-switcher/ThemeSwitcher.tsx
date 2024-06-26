@@ -67,7 +67,7 @@ const ThemeStorageSwitch = ({
               />
             </IconContainer>
           }
-          handleDiameter={props.handleDiameter}
+          handleDiameter={props.handleDiameter || 15}
           offColor={theme.primary.base}
           offHandleColor={theme.accents.primary.base}
           onColor={theme.primary[1]}
@@ -81,10 +81,6 @@ const ThemeStorageSwitch = ({
       )}
     </SwitchContainer>
   )
-}
-
-ThemeStorageSwitch.defaultProps = {
-  handleDiameter: 15,
 }
 
 export default withTheme(ThemeStorageSwitch)

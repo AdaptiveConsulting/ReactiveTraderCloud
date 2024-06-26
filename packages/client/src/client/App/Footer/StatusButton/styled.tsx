@@ -35,8 +35,8 @@ export const StatusCircle = styled(StatusCircleCore)<{
       status === ConnectionStatus.CONNECTED
         ? theme.accents.positive.base
         : status === ConnectionStatus.CONNECTING
-        ? theme.accents.aware.base
-        : theme.accents.negative.base};
+          ? theme.accents.aware.base
+          : theme.accents.negative.base};
   }
 `
 

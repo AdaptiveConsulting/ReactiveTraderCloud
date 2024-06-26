@@ -21,9 +21,8 @@ export type {
 export { getThemeColor, ThemeName, themes } from "./themes"
 export { default as ThemeStorageSwitch } from "./ThemeStorageSwitch"
 
-// Make all styled-component functions (e.g. `styled`, `css`) typed with Theme
-// See https://github.com/styled-components/styled-components-website/issues/447
+// https://styled-components.com/docs/api#create-a-declarations-file
 declare module "styled-components" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface DefaultTheme extends Theme {}
 }

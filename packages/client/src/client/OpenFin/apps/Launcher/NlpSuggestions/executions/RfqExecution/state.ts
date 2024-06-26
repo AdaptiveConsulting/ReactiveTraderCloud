@@ -13,10 +13,7 @@ import {
 } from "rxjs"
 
 import { CREDIT_RFQ_EXPIRY_SECONDS } from "@/client/constants"
-import {
-  AckCreateRfqResponse,
-  InstrumentBody,
-} from "@/generated/TradingGateway"
+import { AckCreateRfqResponse } from "@/generated/TradingGateway"
 import {
   createCreditRfq$,
   creditDealers$,

@@ -1,5 +1,5 @@
 import { StrictMode } from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 
 import { GlobalScrollbarStyle, ThemeProvider } from "@/client/theme"
 import GlobalStyle from "@/client/theme/globals"
@@ -7,7 +7,9 @@ import GlobalStyle from "@/client/theme/globals"
 import { Modal } from "./components/Modal"
 
 export function browserUnsupported() {
-  ReactDOM.render(
+  const container = document.getElementById("root")
+  const root = createRoot(container!)
+  root.render(
     <StrictMode>
       <GlobalStyle />
       <ThemeProvider>
@@ -24,6 +26,5 @@ export function browserUnsupported() {
         </Modal>
       </ThemeProvider>
     </StrictMode>,
-    document.getElementById("root"),
   )
 }

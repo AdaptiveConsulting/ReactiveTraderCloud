@@ -7,7 +7,7 @@ import { ACCEPTED_QUOTE_STATE } from "@/generated/TradingGateway"
 import {
   cancelCreditRfq$,
   removeRfqs,
-  useCreditDealerById,
+  useDealerNameById,
 } from "@/services/credit"
 import { RfqDetails } from "@/services/credit/creditRfqs"
 
@@ -49,11 +49,7 @@ export const AcceptedFooterContent = ({
   rfqId: number
   acceptedDealerId?: number
 }) => {
-  const dealerName =
-    (acceptedDealerId !== undefined
-      ? useCreditDealerById(acceptedDealerId)
-      : undefined
-    )?.name ?? "Unknown Dealer"
+  const dealerName = useDealerNameById(acceptedDealerId)
 
   return (
     <>

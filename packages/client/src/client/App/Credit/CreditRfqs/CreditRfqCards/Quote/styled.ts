@@ -77,8 +77,8 @@ export const QuoteDot = styled.div<AnimatedRowProps>`
     highlight
       ? theme.textColor
       : passed
-      ? theme.primary[4]
-      : getBuySellHighlightTextColor(theme, direction)};
+        ? theme.primary[4]
+        : getBuySellHighlightTextColor(theme, direction)};
   animation: ${breathing} 1s linear infinite;
 `
 

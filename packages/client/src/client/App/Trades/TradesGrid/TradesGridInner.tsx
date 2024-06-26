@@ -193,7 +193,6 @@ export const TradesGridInner = <Row extends Trade>({
 }: TradesGridInnerProps<Row>) => {
   const rows$ = useTrades$()
   const colDef = useColDef()
-  const fields = useColFields()
   const trades = useTableTrades(rows$, colDef)
   return (
     <BlotterContext.Provider value={caption}>

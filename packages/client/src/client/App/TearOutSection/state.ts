@@ -24,10 +24,13 @@ export const [tearOutSectionEntry$, tearOutSection] = createSignal(
 )
 
 export function getTornOutSections<T extends Section>(sections: readonly T[]) {
-  const initialSectionsState = sections.reduce((acc, section) => {
-    acc[section] = false
-    return acc
-  }, {} as Record<T, boolean>)
+  const initialSectionsState = sections.reduce(
+    (acc, section) => {
+      acc[section] = false
+      return acc
+    },
+    {} as Record<T, boolean>,
+  )
 
   const [useTornOutSectionState] = bind(
     tearOutSectionEntry$.pipe(

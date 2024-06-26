@@ -18,8 +18,8 @@ export const DirectionContainer = styled.div<WithDirection & WithTerminated>`
     terminated
       ? theme.primary[2]
       : direction === Direction.Buy
-      ? "rgba(76, 118, 196, 0.15)"
-      : "rgba(167, 39, 64, 0.15)"};
+        ? "rgba(76, 118, 196, 0.15)"
+        : "rgba(167, 39, 64, 0.15)"};
 `
 
 // Not sure about the clipped path value here, atm they are eyeballed

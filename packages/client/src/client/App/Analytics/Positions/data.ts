@@ -78,26 +78,29 @@ export const nodes$: Observable<BubbleChartNode[]> = currentPositions$.pipe(
       },
     ] as const
   }),
-  scan((acc, [positionsData, scales]) => {
-    // start from scratch with a new object so deleted nodes are not silently included
-    const newAcc: Record<string, BubbleChartNode> = {}
-    positionsData.forEach((dataObj: CCYPosition) => {
-      const color =
-        dataObj.baseTradedAmount > 0
-          ? colors.accents.positive.base
-          : colors.accents.negative.base
+  scan(
+    (acc, [positionsData, scales]) => {
+      // start from scratch with a new object so deleted nodes are not silently included
+      const newAcc: Record<string, BubbleChartNode> = {}
+      positionsData.forEach((dataObj: CCYPosition) => {
+        const color =
+          dataObj.baseTradedAmount > 0
+            ? colors.accents.positive.base
+            : colors.accents.negative.base
 
-      newAcc[dataObj.symbol] = Object.assign(
-        acc[dataObj.symbol] || { id: dataObj.symbol },
-        {
-          color,
-          r: scales.r(Math.abs(dataObj.baseTradedAmount)),
-          text: formatAsWholeNumber(dataObj.baseTradedAmount),
-        },
-      )
-    })
-    return newAcc
-  }, {} as Record<string, BubbleChartNode>),
+        newAcc[dataObj.symbol] = Object.assign(
+          acc[dataObj.symbol] || { id: dataObj.symbol },
+          {
+            color,
+            r: scales.r(Math.abs(dataObj.baseTradedAmount)),
+            text: formatAsWholeNumber(dataObj.baseTradedAmount),
+          },
+        )
+      })
+      return newAcc
+    },
+    {} as Record<string, BubbleChartNode>,
+  ),
   map(Object.values),
   shareLatest(),
 )

@@ -101,8 +101,8 @@ export const [useTileState, getTileState$] = bind(
               trade.status === ExecutionStatus.Timeout
                 ? TIMEOUT
                 : trade.status === ExecutionStatus.CreditExceeded
-                ? CREDIT_EXCEEDED
-                : { status: TileStates.Finished as const, trade },
+                  ? CREDIT_EXCEEDED
+                  : { status: TileStates.Finished as const, trade },
             ),
             emitTooLongMessage(TAKING_TOO_LONG, TOO_LONG),
             startWith(STARTED),

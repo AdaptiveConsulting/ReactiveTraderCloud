@@ -1,7 +1,7 @@
 import { bind } from "@react-rxjs/core"
 import { createSignal } from "@react-rxjs/utils"
 import { combineLatest, merge } from "rxjs"
-import { delay, map, mergeMap, tap } from "rxjs/operators"
+import { delay, map, mergeMap } from "rxjs/operators"
 
 import { HIGHLIGHT_ROW_FLASH_TIME } from "@/client/constants"
 import { RfqState } from "@/generated/TradingGateway"

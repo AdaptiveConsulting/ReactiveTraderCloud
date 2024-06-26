@@ -38,8 +38,12 @@ const ComparatorSelectInner = styled.select`
   /* caret */
   background-image: linear-gradient(45deg, transparent 50%, ${textColor} 50%),
     linear-gradient(135deg, ${textColor} 50%, transparent 50%);
-  background-position: calc(100% - 5px) center, calc(100%) center;
-  background-size: 5px 5px, 5px 5px;
+  background-position:
+    calc(100% - 5px) center,
+    calc(100%) center;
+  background-size:
+    5px 5px,
+    5px 5px;
 
   option {
     background-color: ${({ theme }) => theme.core.lightBackground};

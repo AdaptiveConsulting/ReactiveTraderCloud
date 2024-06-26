@@ -24,27 +24,30 @@ export const TornOutTile = withSubscriber<{
   symbol: string
   view: TileView
   supportsTearOut?: boolean
-}>(({ symbol, view: initView, supportsTearOut }) => {
-  const [view] = useLocalStorage(SELECTED_VIEW_KEY, initView)
-  const tearOutEntry = useTearOutEntry()
+}>(
+  ({ symbol, view: initView, supportsTearOut }) => {
+    const [view] = useLocalStorage(SELECTED_VIEW_KEY, initView)
+    const tearOutEntry = useTearOutEntry()
 
-  useEffect(() => {
-    if (tearOutEntry) {
-      const [, tornOut] = tearOutEntry
-      if (!tornOut) {
-        closeWindow()
+    useEffect(() => {
+      if (tearOutEntry) {
+        const [, tornOut] = tearOutEntry
+        if (!tornOut) {
+          closeWindow()
+        }
       }
-    }
-  }, [tearOutEntry])
+    }, [tearOutEntry])
 
-  return (
-    <Wrapper>
-      <Tile
-        currencyPair={useCurrencyPair(symbol)}
-        isAnalytics={view === TileView.Analytics}
-        isTornOut
-        supportsTearOut={supportsTearOut}
-      />
-    </Wrapper>
-  )
-}, <Loader ariaLabel="Loading live FX exchange rates" />)
+    return (
+      <Wrapper>
+        <Tile
+          currencyPair={useCurrencyPair(symbol)}
+          isAnalytics={view === TileView.Analytics}
+          isTornOut
+          supportsTearOut={supportsTearOut}
+        />
+      </Wrapper>
+    )
+  },
+  <Loader ariaLabel="Loading live FX exchange rates" />,
+)

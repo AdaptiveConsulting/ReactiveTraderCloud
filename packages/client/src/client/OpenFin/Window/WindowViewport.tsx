@@ -58,37 +58,39 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         )
       }
 
-      const listenerViewDestroyed: EventHandler<WindowEvent, "view-destroyed"> =
-        (_) => {
-          //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
-          // ReactGA.event({ category: "RT - Tab", action: "destroyed", label })
-        }
+      const listenerViewDestroyed: EventHandler<
+        WindowEvent,
+        "view-destroyed"
+      > = (_) => {
+        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+        // ReactGA.event({ category: "RT - Tab", action: "destroyed", label })
+      }
 
-      const listenerViewHidden: EventHandler<ApplicationEvent, "view-hidden"> =
-        (_) => {
-          //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
-          // ReactGA.event({ category: "RT - Tab", action: "hidden", label })
-          const layoutItems: HTMLCollectionOf<Element> =
-            document.getElementsByClassName("lm_item")
+      const listenerViewHidden: EventHandler<
+        ApplicationEvent,
+        "view-hidden"
+      > = (_) => {
+        //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
+        // ReactGA.event({ category: "RT - Tab", action: "hidden", label })
+        const layoutItems: HTMLCollectionOf<Element> =
+          document.getElementsByClassName("lm_item")
 
-          for (const idx in layoutItems) {
-            const layoutItem = layoutItems[idx]
+        for (const idx in layoutItems) {
+          const layoutItem = layoutItems[idx]
 
-            if (layoutItem && layoutItem.querySelector) {
-              const placeholder = layoutItem.querySelector(".wrapper_title")
-              const tab = layoutItem.querySelector(
-                ".lm_tab.lm_active .lm_title",
+          if (layoutItem && layoutItem.querySelector) {
+            const placeholder = layoutItem.querySelector(".wrapper_title")
+            const tab = layoutItem.querySelector(".lm_tab.lm_active .lm_title")
+
+            if (placeholder && tab) {
+              placeholder.innerHTML = getEmptyContent(
+                tab.innerHTML as LayoutKey,
+                false,
               )
-
-              if (placeholder && tab) {
-                placeholder.innerHTML = getEmptyContent(
-                  tab.innerHTML as LayoutKey,
-                  false,
-                )
-              }
             }
           }
         }
+      }
 
       const listenerWindowCreated: EventHandler<
         ApplicationEvent,

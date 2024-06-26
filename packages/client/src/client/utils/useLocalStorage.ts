@@ -26,7 +26,7 @@ export const useLocalStorage = <T>(key: string, initialState: T) => {
   const value = useMemo(() => {
     try {
       return JSON.parse(state)
-    } catch (e) {
+    } catch (_) {
       return state
     }
   }, [state])

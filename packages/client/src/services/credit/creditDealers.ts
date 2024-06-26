@@ -32,11 +32,14 @@ export const [useCreditDealers, creditDealers$] = bind(
   ),
 )
 
-export const [useCreditDealerById, creditDealerById$] = bind(
-  (dealerId: number) =>
-    creditDealers$.pipe(
-      map((dealers) => dealers.find((dealer) => dealer.id === dealerId)),
+export const [useDealerNameById, _] = bind((dealerId: number | undefined) =>
+  creditDealers$.pipe(
+    map(
+      (dealers) =>
+        dealers.find((dealer) => dealer.id === dealerId)?.name ||
+        "Unknown Dealer",
     ),
+  ),
 )
 
 export const [useAdaptiveDealerId, adaptiveDealerId$] = bind(

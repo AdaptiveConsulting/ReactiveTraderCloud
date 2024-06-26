@@ -14,24 +14,22 @@ export const flexStyle = ({
   wrap,
   justifyContent,
   alignItems,
-}: FlexProperties) =>
-  css`
-    display: flex;
-    flex-direction: ${direction};
-    flex-wrap: ${wrap};
-    justify-content: ${justifyContent};
-    align-items: ${alignItems};
-  `
+}: FlexProperties) => css`
+  display: flex;
+  flex-direction: ${direction};
+  flex-wrap: ${wrap};
+  justify-content: ${justifyContent};
+  align-items: ${alignItems};
+`
 
 interface BoxDimentions {
   height?: string
   width?: string
 }
-export const boxStyle = ({ height, width }: BoxDimentions) =>
-  css`
-    height: ${height};
-    width: ${width};
-  `
+export const boxStyle = ({ height, width }: BoxDimentions) => css`
+  height: ${height};
+  width: ${width};
+`
 
 export const Box = styled("div")`
   ${boxStyle};
