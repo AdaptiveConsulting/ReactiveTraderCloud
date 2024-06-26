@@ -1,4 +1,10 @@
-import { act, fireEvent, render, screen } from "@testing-library/react"
+import {
+  act,
+  fireEvent,
+  render,
+  RenderResult,
+  screen,
+} from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import { ComparatorType } from "@/client/App/Trades/TradesState"
@@ -32,15 +38,23 @@ vi.mock("react-virtualized-auto-sizer", () => ({
     children: React.FunctionComponent<{ height: number; width: number }>
   }) => children({ height: 100, width: 100 }),
 }))
+vi.stubGlobal("Notification", {
+  permission: "granted",
+})
 
 const { mockTrades } = tradesTestData
 
-const renderComponent = () =>
-  render(
-    <TestThemeProvider>
-      <FxTrades />
-    </TestThemeProvider>,
-  )
+const renderComponent = async () => {
+  let component: RenderResult
+  await act(async () => {
+    component = render(
+      <TestThemeProvider>
+        <FxTrades />
+      </TestThemeProvider>,
+    )
+  })
+  return component!
+}
 
 describe("for notional column", () => {
   const notionalFilterIcon = '[aria-label="Open Notional field filter pop up"]'
@@ -55,14 +69,14 @@ describe("for notional column", () => {
     tradesMock.__setTrades(tradesSubj.asObservable())
   })
 
-  it("no filter icon or menu should be rendered", () => {
-    const { container } = renderComponent()
+  it("no filter icon or menu should be rendered", async () => {
+    const { container } = await renderComponent()
     expect(container.querySelector(notionalFilterIcon)).toBe(null)
     expect(container.querySelector(notionalFilterMenu)).toBe(null)
   })
 
   it("filter icon and menu should work correct", async () => {
-    const { container } = renderComponent()
+    const { container } = await renderComponent()
 
     act(() => {
       fireEvent.mouseOver(
@@ -122,14 +136,14 @@ describe("Set filter", () => {
       tradesMock.__setTrades(tradesSubj.asObservable())
     })
 
-    it("no filter icon or menu should be rendered", () => {
-      const { container } = renderComponent()
+    it("no filter icon or menu should be rendered", async () => {
+      const { container } = await renderComponent()
       expect(container.querySelector(statusFilterIcon)).toBe(null)
       expect(container.querySelector(statusFilterMenu)).toBe(null)
     })
 
     it("filter icon and menu should work correct", async () => {
-      const { container } = renderComponent()
+      const { container } = await renderComponent()
 
       act(() => {
         fireEvent.mouseOver(
@@ -185,14 +199,14 @@ describe("Date Filter", () => {
       tradesMock.__setTrades(tradesSubj.asObservable())
     })
 
-    it("no filter icon or menu should be rendered", () => {
-      const { container } = renderComponent()
+    it("no filter icon or menu should be rendered", async () => {
+      const { container } = await renderComponent()
       expect(container.querySelector(tradeDateFilterIcon)).toBe(null)
       expect(container.querySelector(tradeDateFilterMenu)).toBe(null)
     })
 
     it("filter icon and menu should work correct", async () => {
-      const { container } = renderComponent()
+      const { container } = await renderComponent()
 
       act(() => {
         fireEvent.mouseOver(

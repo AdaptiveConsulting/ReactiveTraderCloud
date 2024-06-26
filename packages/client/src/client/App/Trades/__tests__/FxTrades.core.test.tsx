@@ -39,14 +39,19 @@ vi.mock("react-virtualized-auto-sizer", () => ({
     children: React.FunctionComponent<{ height: number; width: number }>
   }) => children({ height: 100, width: 100 }),
 }))
+vi.stubGlobal("Notification", {
+  permission: "granted",
+})
 
 const { mockTrades, nextTrade } = tradesTestData
 
-const renderComponent = () =>
-  render(
-    <TestThemeProvider>
-      <FxTrades />
-    </TestThemeProvider>,
+const renderComponent = async () =>
+  await act(async () =>
+    render(
+      <TestThemeProvider>
+        <FxTrades />
+      </TestThemeProvider>,
+    ),
   )
 
 describe("Trades", () => {
@@ -58,7 +63,7 @@ describe("Trades", () => {
     const tradesSubj = new Subject<Trade[]>()
     tradesMock.__setTrades(tradesSubj)
 
-    renderComponent()
+    await renderComponent()
 
     expect(screen.queryByText("No trades to show")).not.toBeNull()
 
@@ -73,7 +78,7 @@ describe("Trades", () => {
     const tradesSubj = new BehaviorSubject<Trade[]>([])
     tradesMock.__setTrades(tradesSubj)
 
-    renderComponent()
+    await renderComponent()
 
     expect(
       within(screen.getByRole("grid")).queryByText("No trades to show"),
@@ -92,7 +97,7 @@ describe("Trades", () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
     tradesMock.__setTrades(tradesSubj)
 
-    const { container } = renderComponent()
+    const { container } = await renderComponent()
     const grid = container.querySelector('[role="grid"]')
 
     if (!grid) {
@@ -114,7 +119,7 @@ describe("Trades", () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
     tradesMock.__setTrades(tradesSubj)
 
-    renderComponent()
+    await renderComponent()
 
     expect(screen.queryByText("Displaying rows 3 of 3")).not.toBeNull()
   })
@@ -123,7 +128,7 @@ describe("Trades", () => {
     const tradesSubj = new BehaviorSubject<Trade[]>(mockTrades)
     tradesMock.__setTrades(tradesSubj)
 
-    renderComponent()
+    await renderComponent()
 
     expect(screen.queryByText("Displaying rows 3 of 3")).not.toBeNull()
 
