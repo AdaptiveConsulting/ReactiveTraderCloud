@@ -101,7 +101,7 @@
     "@eslint/js": "9.5.0",
     "@google-cloud/dialogflow": "^4.7.0",
     "@openfin/automation-cli": "1.2.0",
-    "@playwright/test": "1.39.0",
+    "@playwright/test": "1.45.2",
     "@storybook/addon-actions": "8.1.11",
     "@storybook/addon-essentials": "8.1.11",
     "@storybook/addon-links": "8.1.11",
@@ -123,6 +123,7 @@
     "@types/react-window": "^1.8.5",
     "@types/styled-components": "5.1.26",
     "@vitejs/plugin-react": "4.3.1",
+    "@vitest/browser": "2.0.3",
     "concurrently": "8.2.2",
     "cross-env": "^6.0.3",
     "csstype": "^3.0.2",
@@ -142,10 +143,10 @@
     "typescript": "5.0.4",
     "typescript-eslint": "rc-v8",
     "unplugin-fonts": "1.1.1",
-    "vite": "5.2.13",
+    "vite": "5.3.4",
     "vite-plugin-html": "3.2.2",
     "vite-plugin-static-copy": "1.0.5",
-    "vitest": "1.6.0",
+    "vitest": "2.0.3",
     "wait-on": "7.2.0"
   }
 }
