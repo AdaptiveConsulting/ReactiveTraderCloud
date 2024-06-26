@@ -153,7 +153,7 @@ jobs:
         run: npm run e2e:web
 
       - name: Artifact Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-report
@@ -188,7 +188,7 @@ jobs:
         run: npm run e2e:openfin fx-spot-tile.spec fx-blotter.spec fx-analytics.spec
 
       - name: Artifact Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-report
@@ -223,7 +223,7 @@ jobs:
         run: npm run e2e:openfin credit.spec
 
       - name: Artifact Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-report
