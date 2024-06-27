@@ -1,5 +1,7 @@
 import React from "react"
+import { useDarkMode } from "storybook-dark-mode"
 import styled, { ThemeProvider } from "styled-components"
+
 import { GlobalStyle, themes } from "../src/client/theme"
 
 export const parameters = {
@@ -10,26 +12,31 @@ export const parameters = {
       date: /Date$/,
     },
   },
-}
-
-export const globalTypes = {
-  theme: {
-    name: "Theme",
-    description: "Global theme for components",
-    defaultValue: "dark",
-    toolbar: {
-      icon: "circlehollow",
-      items: ["light", "dark"],
-      showName: true,
+  darkMode: {
+    // Override the default dark theme
+    dark: {
+      ...themes.dark,
+      barBg: "#232323",
+      appBg: "#232323",
+      appContentBg: "#232323",
+      appPreviewBg: "#232323",
+    },
+    // Override the default light theme
+    light: {
+      ...themes.light,
+      barBg: "#F6F9FC",
+      appBg: "#F6F9FC",
+      appContentBg: "#F6F9FC",
+      appPreviewBg: "#F6F9FC",
     },
   },
 }
 
 export const decorators = [
-  (Story, context) => (
+  (Story) => (
     <>
       <GlobalStyle />
-      <ThemeProvider theme={themes[context.globals.theme]}>
+      <ThemeProvider theme={useDarkMode() ? themes.dark : themes.light}>
         <StyledStory>
           <Content>
             <Story />
@@ -48,7 +55,8 @@ const StyledStory = styled.div`
   height: 100%;
   background-color: ${(p) => p.theme.core.darkBackground};
   color: ${(p) => p.theme.core.textColor};
-  transition: background-color ${(p) => p.theme.motion.duration}ms
+  transition:
+    background-color ${(p) => p.theme.motion.duration}ms
       ${(p) => p.theme.motion.easing},
     color ${(p) => p.theme.motion.duration}ms ${(p) => p.theme.motion.easing};
 `
