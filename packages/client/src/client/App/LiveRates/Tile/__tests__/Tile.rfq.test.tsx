@@ -42,17 +42,19 @@ const priceMock: Price = {
   movementType: PriceMovementType.NONE,
 }
 
-const renderComponent = (
+const renderComponent = async (
   currencyPair = currencyPairMock,
   isAnalytics = false,
 ) =>
-  render(
-    <TestThemeProvider>
-      <Subscribe source$={tile$(currencyPair.symbol)} fallback="No data">
-        <Tile currencyPair={currencyPairMock} isAnalytics={isAnalytics} />
-      </Subscribe>
-    </TestThemeProvider>,
-  )
+  await act(async () => {
+    render(
+      <TestThemeProvider>
+        <Subscribe source$={tile$(currencyPair.symbol)} fallback="No data">
+          <Tile currencyPair={currencyPairMock} isAnalytics={isAnalytics} />
+        </Subscribe>
+      </TestThemeProvider>,
+    )
+  })
 
 const rfqButtonTestId = "rfqButton"
 const rfqRejectTestId = "rfqReject"
@@ -72,7 +74,7 @@ const response$ = new Subject<ExecutionTrade | TimeoutExecution>()
 const executeFn = vi.fn(() => response$)
 
 describe("Tile/rfq", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.useFakeTimers()
 
     pricesMock.__resetMocks()
@@ -89,7 +91,7 @@ describe("Tile/rfq", () => {
     pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
     execMock.__setExecute$(executeFn)
-    renderComponent()
+    await renderComponent()
   })
 
   it("RFQ Button should only appear when notional above threshold", async () => {

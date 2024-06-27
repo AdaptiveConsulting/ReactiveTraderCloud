@@ -1,5 +1,12 @@
 import { Subscribe } from "@react-rxjs/core"
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
+import {
+  act,
+  fireEvent,
+  render,
+  RenderResult,
+  screen,
+  waitFor,
+} from "@testing-library/react"
 import { BehaviorSubject, Subject } from "rxjs"
 
 import { TestThemeProvider } from "@/client/utils/testUtils"
@@ -42,17 +49,22 @@ const priceMock: Price = {
   movementType: PriceMovementType.NONE,
 }
 
-const renderComponent = (
+const renderComponent = async (
   currencyPair = currencyPairMock,
   isAnalytics = false,
-) =>
-  render(
-    <TestThemeProvider>
-      <Subscribe source$={tile$(currencyPair.symbol)} fallback="No data">
-        <Tile currencyPair={currencyPairMock} isAnalytics={isAnalytics} />
-      </Subscribe>
-    </TestThemeProvider>,
-  )
+) => {
+  let component: RenderResult
+  await act(async () => {
+    component = render(
+      <TestThemeProvider>
+        <Subscribe source$={tile$(currencyPair.symbol)} fallback="No data">
+          <Tile currencyPair={currencyPairMock} isAnalytics={isAnalytics} />
+        </Subscribe>
+      </TestThemeProvider>,
+    )
+  })
+  return component!
+}
 
 describe("Tile", () => {
   beforeEach(() => {
@@ -73,7 +85,7 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
-    renderComponent()
+    await renderComponent()
 
     expect(screen.queryByText("No data")).not.toBeNull()
 
@@ -91,7 +103,7 @@ describe("Tile", () => {
     const hPriceMock$ = new Subject<HistoryPrice>()
     pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
-    renderComponent()
+    await renderComponent()
 
     expect(screen.getAllByRole("button")[1].textContent).toBe(
       `SELL${priceMock.bid}`,
@@ -125,7 +137,7 @@ describe("Tile", () => {
     const executeFn = vi.fn(() => response$)
     execMock.__setExecute$(executeFn)
 
-    renderComponent()
+    await renderComponent()
 
     expect(executeFn).not.toHaveBeenCalled()
     expect(screen.queryByText("Executing")).toBeNull()
@@ -200,7 +212,7 @@ describe("Tile", () => {
     const executeFn = vi.fn(() => response$)
     execMock.__setExecute$(executeFn)
 
-    renderComponent()
+    await renderComponent()
 
     expect(executeFn).not.toHaveBeenCalled()
     expect(screen.queryByText("Executing")).toBeNull()
@@ -271,7 +283,7 @@ describe("Tile", () => {
     const executeFn = vi.fn(() => response$)
     execMock.__setExecute$(executeFn)
 
-    renderComponent()
+    await renderComponent()
 
     expect(executeFn).not.toHaveBeenCalled()
     expect(screen.queryByText("Executing")).toBeNull()
@@ -333,7 +345,7 @@ describe("Tile", () => {
     const executeFn = vi.fn(() => response$)
     execMock.__setExecute$(executeFn)
 
-    renderComponent()
+    await renderComponent()
 
     expect(executeFn).not.toHaveBeenCalled()
     expect(screen.queryByText("Executing")).toBeNull()
@@ -389,7 +401,7 @@ describe("Tile", () => {
     )
   })
 
-  it("should not re-trigger executions after remounting", () => {
+  it("should not re-trigger executions after remounting", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
@@ -401,7 +413,7 @@ describe("Tile", () => {
     const executeFn = vi.fn(() => response$)
     execMock.__setExecute$(executeFn)
 
-    const renderedComponent = renderComponent()
+    const renderedComponent = await renderComponent()
 
     expect(executeFn).not.toHaveBeenCalled()
     expect(screen.queryByText("Executing")).toBeNull()
@@ -413,19 +425,20 @@ describe("Tile", () => {
     expect(executeFn.mock.calls.length).toBe(1)
 
     renderedComponent.unmount()
-    renderComponent()
+
+    await renderComponent()
 
     expect(executeFn.mock.calls.length).toBe(1)
   })
 
-  it("should not unformat the notional number when focused", () => {
+  it("should not unformat the notional number when focused", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
     pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
-    renderComponent()
+    await renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
     act(() => {
       fireEvent.change(input, { target: { value: "1000000" } })
@@ -438,14 +451,14 @@ describe("Tile", () => {
     expect(input.value).toBe("1,000,000")
   })
 
-  it("should automatically selected the text of the input when focused", () => {
+  it("should automatically selected the text of the input when focused", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
     pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
-    renderComponent()
+    await renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
     act(() => {
       fireEvent.focus(input)
@@ -455,14 +468,14 @@ describe("Tile", () => {
     expect(input.selectionEnd).toBe("1,000,000".length)
   })
 
-  it("should not allow letters in the notional input", () => {
+  it("should not allow letters in the notional input", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
     pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
-    renderComponent()
+    await renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
     expect(input.value).toBe("1,000,000")
     act(() => {
@@ -471,14 +484,14 @@ describe("Tile", () => {
     expect(input.value).toBe("1,000,000")
   })
 
-  it("should reformat the notional input after got new value", () => {
+  it("should reformat the notional input after got new value", async () => {
     const priceMock$ = new BehaviorSubject<Price>(priceMock)
     pricesMock.__setPriceMock(currencyPairMock.symbol, priceMock$)
 
     const hPriceMock$ = new Subject<HistoryPrice>()
     pricesMock.__setHistoricalPricesMock(hPriceMock$)
 
-    renderComponent()
+    await renderComponent()
     const input = screen.getAllByRole("textbox")[0] as HTMLInputElement
 
     expect(input.value).toBe("1,000,000")

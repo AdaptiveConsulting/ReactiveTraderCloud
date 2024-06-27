@@ -31,14 +31,16 @@ const currencyPairMock2: CurrencyPair = {
   defaultNotional: 1_000_000,
 }
 
-const renderComponent = () =>
-  render(
-    <TestThemeProvider>
-      <Subscribe source$={liveRates$} fallback="No data">
-        <MainHeader />
-        <Tiles />
-      </Subscribe>
-    </TestThemeProvider>,
+const renderComponent = async () =>
+  await act(async () =>
+    render(
+      <TestThemeProvider>
+        <Subscribe source$={liveRates$} fallback="No data">
+          <MainHeader />
+          <Tiles />
+        </Subscribe>
+      </TestThemeProvider>,
+    ),
   )
 
 describe("MainHeader", () => {
@@ -53,7 +55,7 @@ describe("MainHeader", () => {
   })
 
   it("should load all the currency buttons", async () => {
-    renderComponent()
+    await renderComponent()
 
     expect(screen.getByTestId("menuButton-ALL").textContent).toBe(`ALL`)
     expect(screen.getByTestId("menuButton-EUR").textContent).toBe(`EUR`)
@@ -61,7 +63,7 @@ describe("MainHeader", () => {
   })
 
   it("should filter the tiles based on selection", async () => {
-    renderComponent()
+    await renderComponent()
 
     expect(
       screen.getByRole("region", { name: "Lives Rates Tiles" }).children.length,
@@ -87,7 +89,7 @@ describe("MainHeader", () => {
   })
 
   it("should show the charts in tiles once click toggle view button", async () => {
-    renderComponent()
+    await renderComponent()
 
     expect(screen.getByTestId("tile-EURUSD").textContent).toBe(
       "IsAnalytics: true",

@@ -1,5 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react"
-import { act } from "react-dom/test-utils"
+import { act, fireEvent, render, screen, within } from "@testing-library/react"
 import { BehaviorSubject } from "rxjs"
 
 import { TestThemeProvider } from "@/client/utils/testUtils"
@@ -31,14 +30,19 @@ vi.mock("react-virtualized-auto-sizer", () => ({
     children: React.FunctionComponent<{ height: number; width: number }>
   }) => children({ height: 100, width: 100 }),
 }))
+vi.stubGlobal("Notification", {
+  permission: "granted",
+})
 
 const { mockTrades } = Trades.tradesTestData
 
-const renderComponent = () =>
-  render(
-    <TestThemeProvider>
-      <FxTrades />
-    </TestThemeProvider>,
+const renderComponent = async () =>
+  await act(async () =>
+    render(
+      <TestThemeProvider>
+        <FxTrades />
+      </TestThemeProvider>,
+    ),
   )
 
 describe("Trades quick filter", () => {
@@ -46,11 +50,11 @@ describe("Trades quick filter", () => {
     tradesMock.__resetMocks()
   })
 
-  it("should be empty on load", () => {
+  it("should be empty on load", async () => {
     const tradesSubj = new BehaviorSubject<Trades.Trade[]>(mockTrades)
     tradesMock.__setTrades(tradesSubj)
 
-    renderComponent()
+    await renderComponent()
 
     expect(
       within(
@@ -65,7 +69,7 @@ describe("Trades quick filter", () => {
     const tradesSubj = new BehaviorSubject<Trades.Trade[]>(mockTrades)
     tradesMock.__setTrades(tradesSubj)
 
-    renderComponent()
+    await renderComponent()
 
     let rows = await screen.findAllByTestId(/trades-grid-row/)
     expect(rows.length).toBe(3)

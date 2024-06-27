@@ -56,13 +56,15 @@ const historyMock3: HistoryEntry[] = [
   },
 ]
 
-const renderComponent = () =>
-  render(
-    <TestThemeProvider>
-      <Subscribe source$={lastPosition$} fallback="No data">
-        <LastPosition />
-      </Subscribe>
-    </TestThemeProvider>,
+const renderComponent = async () =>
+  await act(async () =>
+    render(
+      <TestThemeProvider>
+        <Subscribe source$={lastPosition$} fallback="No data">
+          <LastPosition />
+        </Subscribe>
+      </TestThemeProvider>,
+    ),
   )
 
 describe("LastPositions", () => {
@@ -70,22 +72,22 @@ describe("LastPositions", () => {
     analyticsMock.__resetMocks()
   })
 
-  it("should render the initial last position value", () => {
+  it("should render the initial last position value", async () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
     analyticsMock.__setHistoryMock(historyMock$)
 
-    renderComponent()
+    await renderComponent()
 
     expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
       `-2,713,309`,
     )
   })
 
-  it("should display the updated last position", () => {
+  it("should display the updated last position", async () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
     analyticsMock.__setHistoryMock(historyMock$)
 
-    renderComponent()
+    await renderComponent()
 
     expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
       `-2,713,309`,
@@ -98,11 +100,11 @@ describe("LastPositions", () => {
     )
   })
 
-  it("should display positive and negative number correctly", () => {
+  it("should display positive and negative number correctly", async () => {
     const historyMock$ = new BehaviorSubject<HistoryEntry[]>(historyMock1)
     analyticsMock.__setHistoryMock(historyMock$)
 
-    renderComponent()
+    await renderComponent()
 
     expect(screen.getAllByTestId("lastPosition")[0].textContent).toBe(
       `-2,713,309`,
