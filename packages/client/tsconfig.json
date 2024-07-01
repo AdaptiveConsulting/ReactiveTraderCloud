@@ -6,7 +6,13 @@
     },
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vite/client", "node", "vitest/globals", "./fin"],
+    "types": [
+      "vite/client",
+      "node",
+      "vitest/globals",
+      "@vitest/browser/providers/webdriverio",
+      "./fin"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
