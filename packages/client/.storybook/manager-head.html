@@ -1,5 +1,12 @@
 <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
-<script>
-  window["PREVIEW_URL"] = "./iframe.html"
-  document.title = "Reactive Trader® - Storybook"
-</script>
+<!--
+  Hack for storybook-dark-mode, almost perfect, with all the *Bg settings in preview,
+  but one fiddly button, for new story, staying dark :-/
+  Ref this issue comment, for a different issue, that suggested the fix:
+  https://github.com/storybookjs/storybook/issues/22029#issuecomment-1555317191
+-->
+<style>
+  .sidebar-container button {
+    background-color: transparent !important;
+  }
+</style>
