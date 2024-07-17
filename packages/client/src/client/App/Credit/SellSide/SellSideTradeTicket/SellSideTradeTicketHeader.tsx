@@ -1,8 +1,12 @@
 import { memo } from "react"
 import styled from "styled-components"
 
-import { Direction, QuoteState, RfqState } from "@/generated/TradingGateway"
-import { ACCEPTED_QUOTE_STATE } from "@/generated/TradingGateway"
+import {
+  ACCEPTED_QUOTE_STATE,
+  Direction,
+  QuoteState,
+  RfqState,
+} from "@/generated/TradingGateway"
 import { useCreditInstrumentById } from "@/services/credit"
 
 import {

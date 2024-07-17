@@ -18,17 +18,15 @@ import {
   truncatedDecimalNumberFormatter,
 } from "@/client/utils"
 import {
-  PASSED_QUOTE_STATE,
-  QuoteState,
-  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
-  RfqState,
-} from "@/generated/TradingGateway"
-import {
   ACCEPTED_QUOTE_STATE,
   DealerBody,
+  PASSED_QUOTE_STATE,
   PENDING_WITH_PRICE_QUOTE_STATE,
   PENDING_WITHOUT_PRICE_QUOTE_STATE,
+  QuoteState,
   REJECTED_WITH_PRICE_QUOTE_STATE,
+  REJECTED_WITHOUT_PRICE_QUOTE_STATE,
+  RfqState,
 } from "@/generated/TradingGateway"
 import {
   ADAPTIVE_BANK_NAME,

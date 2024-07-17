@@ -353,11 +353,10 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
 
   const buildTarget: BuildTarget = (process.env.TARGET as BuildTarget) || "web"
   const isDev = mode === "development"
-  // quick look-up (not using isServe = command === "serve" atm, command from 2nd arg of setConfig)
-  // but expecting to optimise plugins later)
-  // - vite ..         isDev: true   isServe: true (building with esbuild AND serving)
-  // - vite preview .. isDev: false  isServe: true (just running static, so don't need any plugins etc.)
-  // - vitest ..       isDev: false  isServe: true (still need the plugins to e.g. switch in openfin code)
+  // quick look-up (command from 2nd arg of setConfig) .. expecting to optimise plugins later
+  // vite ..         mode: development  command: serve  (building with esbuild AND serving)
+  // vite preview .. mode: production   command: serve  (just running static, so don't need any plugins etc.)
+  // vitest ..       mode: test         command: serve  (still need the plugins to e.g. switch in openfin code)
 
   const baseUrl = getBaseUrl(env === "local")
 
@@ -381,7 +380,11 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
   }
 
   devPlugins.push(copyPlugin(baseUrl, buildTarget, env))
-  devPlugins.push(injectScriptIntoHtml(isDev, buildTarget, env))
+
+  if (mode !== "test") {
+    // !! plays havoc with vitest browser mode !!
+    devPlugins.push(injectScriptIntoHtml(isDev, buildTarget, env))
+  }
 
   const plugins = process.env.STORYBOOK === "true" ? [] : devPlugins
 
@@ -428,6 +431,11 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
       host: "127.0.0.1",
       port: localPort,
       strictPort: true, // due to substitution, dynamic ports won't work - use PORT=1234 <cmd>
+      // would be nice if this was as .gitignore, per this:
+      // https://github.com/vitejs/vite/issues/15250
+      watch: {
+        ignored: ["**/coverage/**", "**/playwright-report/**"],
+      },
     },
     resolve: {
       // see https://vitejs.dev/config/shared-options.html#resolve-alias
@@ -444,6 +452,30 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
     test: {
       globals: true,
       environment: "jsdom",
+      // was .. environment: "jsdom",
+      //
+      browser: {
+        // enabled: true,
+        //
+        // MAIN FAIL - all cases, run all tests but then do not complete
+        //
+        // .. for default "preview" provider, just need chrome as the name
+        name: "chrome",
+        //
+        // .. "webdriverio" can fail on mac with missing chromedriver
+        // .. see https://github.com/puppeteer/puppeteer/issues/11691, remove offending folder
+        // provider: "webdriverio",
+        // name: "chrome",
+        //
+        // .. playwright also works as a browser controller (default: webdriverio)
+        // .. and runs up in incognito window, rather than current Chrome ..
+        // provider: "playwright",
+        // name: "chromium",
+        //
+        // headless only with playwright or webdriverio
+        // headless: true,
+        fileParallelism: false, // seems to make little difference
+      },
       include: ["**/*.test.{tsx,ts}", "**/__tests__/*"],
       setupFiles: "./src/client/setupTests.ts",
     },
