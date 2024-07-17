@@ -2,8 +2,7 @@ import { createSignal } from "@react-rxjs/utils"
 import { FaCheckCircle, FaTrash } from "react-icons/fa"
 import { exhaustMap } from "rxjs/operators"
 
-import { RfqState } from "@/generated/TradingGateway"
-import { ACCEPTED_QUOTE_STATE } from "@/generated/TradingGateway"
+import { ACCEPTED_QUOTE_STATE, RfqState } from "@/generated/TradingGateway"
 import {
   cancelCreditRfq$,
   removeRfqs,

@@ -11,8 +11,7 @@ import {
   QuoteBody,
   RfqState,
 } from "@/generated/TradingGateway"
-import { acceptCreditQuote$ } from "@/services/credit"
-import { useQuoteState } from "@/services/credit"
+import { acceptCreditQuote$, useQuoteState } from "@/services/credit"
 
 import { hasPrice } from "../../../common"
 import {
