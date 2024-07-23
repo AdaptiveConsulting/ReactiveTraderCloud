@@ -412,7 +412,7 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
       rollupOptions: {
         input,
         output: {
-          manualChunks: (id) => {
+          manualChunks: (id: string) => {
             if (id.includes("@openfin/workspace")) {
               return "openfin-ws"
             }
