@@ -71,9 +71,9 @@
   "dependencies": {
     "@adaptive/hydra-platform": "4.70.0",
     "@finos/fdc3": "^1.2.0",
-    "@openfin/core": "33.77.11",
-    "@openfin/workspace": "16.1.7",
-    "@openfin/workspace-platform": "16.1.7",
+    "@openfin/core": "36.80.11",
+    "@openfin/workspace": "18.0.10",
+    "@openfin/workspace-platform": "18.0.10",
     "@react-rxjs/core": "^0.10.3",
     "@react-rxjs/utils": "^0.9.5",
     "d3": "7.9.0",
