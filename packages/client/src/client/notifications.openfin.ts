@@ -1,5 +1,4 @@
-import { EntityType, Me } from "@openfin/core/src/OpenFin"
-import * as CSS from "csstype"
+import OpenFin from "@openfin/core"
 import {
   addEventListener as addOpenFinNotificationsEventListener,
   ContainerTemplateFragment,
@@ -7,10 +6,12 @@ import {
   CustomTemplateOptions,
   IndicatorColor,
   NotificationActionEvent,
+  register,
   TemplateCustom,
   TemplateFragment,
   TextTemplateFragment,
-} from "openfin-notifications"
+} from "@openfin/workspace/notifications"
+import * as CSS from "csstype"
 import { Subscription } from "rxjs"
 
 import {
@@ -36,6 +37,17 @@ import {
   processFxExecution,
 } from "./notificationsUtils"
 import { constructUrl } from "./utils/constructUrl"
+
+// OF Notification Service now requires explicit register()
+// otherwise bad things happen! (duplicate Notifications Service instances, alerts on shutdown)
+// on Mac at least ....
+//
+// Using simpler (deprecated) form of the register,
+// per guide:    https://developers.openfin.co/of-docs/docs/register-notifications#register-platform
+// and API Docs: https://developer.openfin.co/workspace/docs/api/latest/functions/notifications.register.html
+// and https://github.com/built-on-openfin/workspace-starter/blob/main/how-to/workspace-platform-starter/docs/how-to-use-notifications.md
+//
+register()
 
 const fxIconUrl = constructUrl("/static/media/reactive-trader-fx.svg")
 const creditIconUrl = constructUrl("/static/media/reactive-trader-credit.svg")
@@ -135,7 +147,6 @@ const sendFxTradeNotification = (trade: ExecutionTrade) => {
     buttons: [
       {
         title: "Highlight trade in blotter",
-        iconUrl: fxIconUrl,
         onClick: {
           task: TASK_HIGHLIGHT_FX_TRADE,
           payload: {
@@ -177,7 +188,6 @@ const sendCreditRfqCreatedNotification = (
     buttons: [
       {
         title: "View RFQ",
-        iconUrl: creditIconUrl,
         onClick: {
           task: TASK_HIGHLIGHT_CREDIT_RFQ,
           payload: {
@@ -212,7 +222,6 @@ const sendCreditQuoteReceivedNotification = (quote: PricedQuoteDetails) => {
     buttons: [
       {
         title: "View RFQ",
-        iconUrl: creditIconUrl,
         onClick: {
           task: TASK_HIGHLIGHT_CREDIT_RFQ,
           payload: {
@@ -250,7 +259,6 @@ const sendCreditQuoteAcceptedNotification = ({
     buttons: [
       {
         title: "Highlight trade in blotter",
-        iconUrl: creditIconUrl,
         onClick: {
           task: TASK_HIGHLIGHT_CREDIT_TRADE,
           payload: {
@@ -411,7 +419,7 @@ export const registerCreditQuoteReceivedNotifications = async (
   // we do not want to duplicate the subscription to the common quotes feed
   // as this will duplicate notifications
   // .. bit of TS type torture .. otherwise we cannot cleanly query the isView
-  const isView = (fin.View.me as Me<EntityType>).isView
+  const isView = (fin.View.me as OpenFin.Me<OpenFin.EntityType>).isView
   if (isView) {
     const allApps = await fin.System.getAllApplications()
     const parentLauncherPlatform = allApps.find(

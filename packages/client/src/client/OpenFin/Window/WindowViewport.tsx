@@ -1,6 +1,5 @@
 import { joinChannel } from "@finos/fdc3"
-import { EventHandler } from "@openfin/core/src/api/events/base"
-import { ApplicationEvent, WindowEvent } from "@openfin/core/src/OpenFin"
+import OpenFin from "@openfin/core"
 import { Subscribe } from "@react-rxjs/core"
 import { useEffect } from "react"
 
@@ -37,16 +36,18 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
     joinChannel("green")
 
     if (!fin.me.isView) {
-      const listenerViewAttached: EventHandler<WindowEvent, "view-attached"> = (
-        _,
-      ) => {
+      const listenerViewAttached: OpenFin.BaseEvents.EventHandler<
+        OpenFin.WindowEvent,
+        "view-attached"
+      > = (_) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "attach", label })
       }
 
-      const listenerViewDetached: EventHandler<WindowEvent, "view-detached"> = (
-        e,
-      ) => {
+      const listenerViewDetached: OpenFin.BaseEvents.EventHandler<
+        OpenFin.WindowEvent,
+        "view-detached"
+      > = (e) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "detach", label })
 
@@ -58,16 +59,16 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         )
       }
 
-      const listenerViewDestroyed: EventHandler<
-        WindowEvent,
+      const listenerViewDestroyed: OpenFin.BaseEvents.EventHandler<
+        OpenFin.WindowEvent,
         "view-destroyed"
       > = (_) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
         // ReactGA.event({ category: "RT - Tab", action: "destroyed", label })
       }
 
-      const listenerViewHidden: EventHandler<
-        ApplicationEvent,
+      const listenerViewHidden: OpenFin.BaseEvents.EventHandler<
+        OpenFin.ApplicationEvent,
         "view-hidden"
       > = (_) => {
         //const label: string = ((e || {}).viewIdentity || {}).name || "unknown"
@@ -92,8 +93,8 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         }
       }
 
-      const listenerWindowCreated: EventHandler<
-        ApplicationEvent,
+      const listenerWindowCreated: OpenFin.BaseEvents.EventHandler<
+        OpenFin.ApplicationEvent,
         "window-created"
       > = ({ uuid, name }) => {
         //const label: string = (e || {}).name || "unknown"
@@ -112,8 +113,8 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         })
       }
 
-      const listenerWindowClosed: EventHandler<
-        ApplicationEvent,
+      const listenerWindowClosed: OpenFin.BaseEvents.EventHandler<
+        OpenFin.ApplicationEvent,
         "window-closed"
       > = ({ name }) => {
         //const label: string = (e || {}).name || "unknown"
@@ -125,8 +126,8 @@ const WindowViewportComponent = ({ children }: WithChildren) => {
         })
       }
 
-      const listenerWindowClosing: EventHandler<
-        ApplicationEvent,
+      const listenerWindowClosing: OpenFin.BaseEvents.EventHandler<
+        OpenFin.ApplicationEvent,
         "window-closing"
       > = ({ name, uuid }) => {
         //const label: string = (e || {}).name || "unknown"

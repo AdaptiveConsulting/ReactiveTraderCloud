@@ -174,7 +174,7 @@ jobs:
       - name: Set Node version
         uses: actions/setup-node@v4
         with:
-          node-version: 20.5.1
+          node-version: 20
 
       - name: Install dependencies
         run: npm ci
@@ -209,7 +209,7 @@ jobs:
       - name: Set Node version
         uses: actions/setup-node@v4
         with:
-          node-version: 20.5.1
+          node-version: 20
 
       - name: Install dependencies
         run: npm ci

@@ -10,7 +10,7 @@ export enum DockAction {
   OpenReactiveTraderCredit = "open-reactive-trader-credit",
 }
 
-export const registerDock = () => {
+export const registerDock = async () => {
   const dockProvider: DockProvider = {
     title: "Adaptive Workspace",
     id: PROVIDER_ID,
@@ -37,7 +37,7 @@ export const registerDock = () => {
     ],
   }
 
-  Dock.register(dockProvider)
+  await Dock.register(dockProvider)
   return Dock.show()
 }
 
