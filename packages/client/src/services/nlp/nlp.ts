@@ -107,7 +107,7 @@ export const [useNlpIntent, nlpIntent$] = bind<NlpIntent | Loading | null>(
         : concat(
             timer(250).pipe(map(() => "loading" as Loading)),
             fromFetch(
-              `${import.meta.env.VITE_CLOUD_FUNCTION_HOST}/nlp?term=${request}`,
+              `${import.meta.env.VITE_CLOUD_FUNCTION_HOST}/nlp2?term=${request}`,
             ).pipe(
               switchMap((response) => response.json()),
               map<

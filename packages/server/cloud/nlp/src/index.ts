@@ -1,5 +1,5 @@
-import type {HttpFunction} from '@google-cloud/functions-framework/build/src/functions';
-import {v1 as uuid} from 'uuid';
+import type { HttpFunction } from '@google-cloud/functions-framework/build/src/functions';
+import { v1 as uuid } from 'uuid';
 import DialogFlow from '@google-cloud/dialogflow';
 
 const PROJECT_ID = 'adaptive-trader';
@@ -10,7 +10,7 @@ const createRequest = (text: string) => {
   const sessionId = uuid();
   const sessionPath = sessionClient.projectAgentSessionPath(
     PROJECT_ID,
-    sessionId
+    sessionId,
   );
 
   return {
@@ -25,7 +25,7 @@ const createRequest = (text: string) => {
 };
 
 export const nlp: HttpFunction = async (req, res) => {
-  const {term} = req.query;
+  const { term } = req.query;
 
   if (!term) {
     res.status(400).send(new Error("Missing 'term' parameter"));

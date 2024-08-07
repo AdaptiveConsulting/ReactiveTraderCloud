@@ -2,10 +2,9 @@ This package was created following this example [https://github.com/GoogleCloudP
 
 # Intro
 
-A Google Cloud Function to detect an intent on the `adaptive-trader` DialogFlow.
+A Google Cloud Function to detect an intent in [DialogFlow](https://dialogflow.cloud.google.com/).
 
-
-## Natural Language Process (NLP)
+## Natural Language Processing (NLP)
 
 NLP interprets and executes tasks based on natural language commands expressed by the user. It leverages the capabilities of NLP algorithms and models to understand the user's input, extract relevant information, and take the necessary actions on their behalf.
 
@@ -39,7 +38,7 @@ What were my last 5 JPY trades
 
 `npm run start`
 
-Will serve the function locally using the `functions-framework`
+Serve the function locally using the `functions-framework`
 
 **Note** - Requires solution to have been compiled into `/build`
 
@@ -47,16 +46,24 @@ Will serve the function locally using the `functions-framework`
 
 Will watch and compile the files whilst serving the function
 
-`npm run lint` & `npm run fix`
+`npm run lint`
 
-Runs lint from [gts](https://github.com/google/gts)
+Runs lint, using new ESLint "flat config" (enabled in VS Code folder settings with "eslint.useFlatConfig": true)
 
-`npm run compile`
+`npm run format:check`
 
-Runs lint, cleans the solution and then compiles using `tsc` into the `build` folder
+Runs prettier on codebase, independent from ESLint, which just focuses on code quality
+
+`npm run build`
+
+Builds using `tsc` into the `build` folder
 
 `npm run deploy`
 
-Compiles the solution and then deploys the function using gcloud.
+Deploys the function in `build` to GCP Cloud Functions using gcloud CLI.
 
-**Note** - You will need to have gcloud installed locally, logged in and appropriate permissions for the adaptive-trader project
+## GCloud Notes
+
+1. You will need to have gcloud installed locally, logged in and appropriate permissions for the RT project in GCP.
+
+2. Cloud Function Runtimes: using Node 20 currently .. for a list of available runtimes, run `gcloud functions runtimes list`

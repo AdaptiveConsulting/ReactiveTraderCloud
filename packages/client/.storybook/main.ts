@@ -1,10 +1,6 @@
 export default {
   stories: ["../src/**/*.stories.@(ts|tsx)"],
-  addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "storybook-dark-mode",
-  ],
+  addons: ["@storybook/addon-essentials", "storybook-dark-mode"],
   framework: {
     name: "@storybook/react-vite",
     options: {},
