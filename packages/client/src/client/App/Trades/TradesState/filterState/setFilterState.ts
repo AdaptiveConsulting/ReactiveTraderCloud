@@ -103,7 +103,7 @@ export const setFieldValuesContainer = (colDef: ColDef) =>
 const getFilterValuesContainer = (colDef: ColDef) =>
   mapObject(
     setFieldValuesContainer(colDef), // {field1: Set1, field2: Set2}
-    (_, field: SetColField) => new Set<TradeType[typeof field]>(),
+    (_, _field: SetColField) => new Set<TradeType[typeof _field]>(),
   )
 
 /**

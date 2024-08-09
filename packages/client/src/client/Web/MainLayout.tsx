@@ -1,4 +1,4 @@
-import { Outlet } from "react-router"
+import { Outlet } from "react-router-dom"
 import styled from "styled-components"
 
 import { Footer } from "@/client/App/Footer"

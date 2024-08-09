@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router"
+import { useLocation, useParams } from "react-router-dom"
 
 import { DisconnectionOverlay } from "@/client/components/DisconnectionOverlay"
 import { TearOutRouteWrapper } from "@/client/Web/Web.styles"

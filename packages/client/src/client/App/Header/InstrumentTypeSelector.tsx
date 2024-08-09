@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import { DropdownMenu } from "@/client/components/DropdownMenu"
 import { ROUTES_CONFIG } from "@/client/constants"
