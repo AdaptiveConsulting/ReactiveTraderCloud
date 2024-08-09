@@ -1,3 +1,4 @@
+import { fixupPluginRules } from "@eslint/compat"
 import js from "@eslint/js"
 import pluginImport from "eslint-plugin-import"
 import react from "eslint-plugin-react"
@@ -29,24 +30,21 @@ export default [
   //   see node_modules/typescript-eslint/dist/configs/base.js
   //   "base" contains the parser/plugin config, so we don't have to include that manually below
   ...tseslint.configs.recommended,
+  // https://github.com/jsx-eslint/eslint-plugin-react
+  // ESLint v9 - https://github.com/jsx-eslint/eslint-plugin-react/pull/3759
+  react.configs.flat.recommended,
+  react.configs.flat["jsx-runtime"],
   {
     plugins: {
-      // https://github.com/jsx-eslint/eslint-plugin-react
-      react,
       // https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks
       // compat with ESLint v9, see https://github.com/facebook/react/issues/28313
       "react-hooks": hooks,
       // https://github.com/import-js/eslint-plugin-import
-      import: pluginImport,
+      import: fixupPluginRules(pluginImport),
       // https://github.com/lydell/eslint-plugin-simple-import-sort
       "simple-import-sort": simpleImportSort,
     },
     languageOptions: {
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
       ecmaVersion: "latest",
       sourceType: "module",
       globals: {
@@ -96,6 +94,9 @@ export default [
       "import/first": "error",
       "import/newline-after-import": "error",
       "import/no-duplicates": "error",
+
+      // https://github.com/jsx-eslint/eslint-plugin-react/issues/3796
+      "react/prop-types": "off",
 
       // as hooks plugin does not play well with Flat Config right now, do this
       ...hooks.configs.recommended.rules,
