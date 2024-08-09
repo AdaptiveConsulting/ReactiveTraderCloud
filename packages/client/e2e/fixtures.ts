@@ -81,7 +81,7 @@ export const test = base.extend<IPlaywrightFixtures>({
         )
       }
       await use(contexts[0])
-    } catch (e) {
+    } catch (_e) {
       const context = await browser.newContext()
       use(context)
     }

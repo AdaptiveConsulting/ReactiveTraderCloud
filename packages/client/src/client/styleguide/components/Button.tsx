@@ -44,7 +44,6 @@ function getButtonColors({
   }
 
   if (invert) {
-    // eslint-disable-next-line no-extra-semi
     ;[fg, bg] = [bg, fg]
   }
 

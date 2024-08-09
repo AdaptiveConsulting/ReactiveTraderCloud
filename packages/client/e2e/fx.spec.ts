@@ -5,22 +5,15 @@ import { isOpenFin } from "./utils"
 
 test.describe("Fx App", () => {
   let mainWindow: Page
-  let tilePage: Page
-  let blotterPage: Page
 
   test.beforeAll(async ({ context, fxPagesRec }, workerInfo) => {
     if (isOpenFin(workerInfo)) {
       mainWindow = fxPagesRec["mainWindow"]
-      tilePage = fxPagesRec["fx-tiles"]
-      blotterPage = fxPagesRec["fx-blotter"]
     } else {
       const pages = context.pages()
       mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
 
       await mainWindow.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
-
-      tilePage = mainWindow
-      blotterPage = mainWindow
     }
     selectors.setTestIdAttribute("data-qa")
   })

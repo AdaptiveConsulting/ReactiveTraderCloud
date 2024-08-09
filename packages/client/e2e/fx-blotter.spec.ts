@@ -157,7 +157,7 @@ test.describe("Trade Blotter", () => {
         .readFileSync("e2e/test-data/blotter-data.csv", "utf8")
         .toString()
         .split("\n") as Array<string>
-    } catch (err) {
+    } catch (_err) {
       csvRows = "error"
     }
     expect(typeof csvRows).not.toBe("string")
@@ -196,7 +196,7 @@ test.describe("Trade Blotter", () => {
         .readFileSync("e2e/test-data/filtered-data.csv", "utf8")
         .toString()
         .split("\n") as Array<string>
-    } catch (err) {
+    } catch (_err) {
       filteredCSVRows = "error"
     }
 

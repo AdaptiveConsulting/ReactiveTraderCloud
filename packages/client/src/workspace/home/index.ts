@@ -93,12 +93,17 @@ export async function registerHome(): Promise<HomeRegistration> {
       }
     } else {
       const pageToLaunch = await getPage(result.data.pageId)
-      await launchPage(pageToLaunch)
+      if (pageToLaunch) {
+        await launchPage(pageToLaunch)
+      } else {
+        console.warn("No page found for ")
+      }
     }
   }
 
   const onSelection = async (result: CLIDispatchedSearchResult) => {
     if (result.data !== undefined) {
+      console.debug(`data: ${JSON.stringify(result.data)}`)
       if (result.data.pageId !== undefined) {
         await handlePageSelection(result)
       } else {
