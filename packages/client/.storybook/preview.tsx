@@ -1,4 +1,3 @@
-import React from "react"
 import { useDarkMode } from "storybook-dark-mode"
 import styled, { ThemeProvider } from "styled-components"
 
