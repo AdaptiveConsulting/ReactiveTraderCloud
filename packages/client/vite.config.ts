@@ -21,8 +21,8 @@ type BuildTarget = "web" | "openfin" | "finsemble"
 const localPort = Number(process.env.PORT) || 1917
 const showOpenFinProvider = !!process.env.OPENFIN_SHOW_PROVIDER
 
-const OPENFIN_RUNTIME = "33.116.77.11"
-const WORKSPACE_OPENFIN_RUNTIME = "33.116.77.11"
+const OPENFIN_RUNTIME = "38.126.82.64"
+const WORKSPACE_OPENFIN_RUNTIME = "38.126.82.64"
 
 function getBaseUrl(isLocal: boolean) {
   return isLocal
@@ -428,7 +428,6 @@ const setConfig: (env: ConfigEnv) => UserConfigExport = ({ mode }) => {
       strictPort: true, // due to substitution, dynamic ports won't work - use PORT=1234 <cmd>
     },
     server: {
-      host: "127.0.0.1",
       port: localPort,
       strictPort: true, // due to substitution, dynamic ports won't work - use PORT=1234 <cmd>
       // would be nice if this was as .gitignore, per this:
