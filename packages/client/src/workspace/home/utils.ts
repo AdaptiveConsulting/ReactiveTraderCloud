@@ -80,6 +80,11 @@ const mapAppEntriesToSearchEntries = (apps: App[]): CLISearchResult<Action>[] =>
     return entry
   })
 
+export type PageData = {
+  tags: string[]
+  pageId: string
+}
+
 const mapPageEntriesToSearchEntries = (
   pages: Page[],
 ): CLISearchResult<Action>[] =>
@@ -92,7 +97,7 @@ const mapPageEntriesToSearchEntries = (
         { name: HOME_ACTION_DELETE_PAGE, hotkey: "CmdOrCtrl+D" },
         { name: HOME_ACTION_LAUNCH_PAGE, hotkey: "Enter" },
       ],
-      data: { tags: ["page"], pageId: page.pageId },
+      data: { tags: ["page"], pageId: page.pageId } as PageData,
       icon: ADAPTIVE_LOGO,
       template: CLITemplate.Plain,
     }

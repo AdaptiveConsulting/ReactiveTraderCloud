@@ -62,7 +62,6 @@ const urlPathToCreditPage = (path: string): CreditPage => {
 }
 
 export const test = base.extend<IPlaywrightFixtures>({
-  // eslint-disable-next-line no-empty-pattern
   browser: async ({}, use, workerInfo) => {
     if (isOpenFin(workerInfo)) {
       const runtimeConnection = await chromium.connectOverCDP(RUNTIME_ADDRESS)
@@ -81,7 +80,7 @@ export const test = base.extend<IPlaywrightFixtures>({
         )
       }
       await use(contexts[0])
-    } catch (_e) {
+    } catch {
       const context = await browser.newContext()
       use(context)
     }

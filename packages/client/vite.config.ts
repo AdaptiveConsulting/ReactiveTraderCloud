@@ -122,7 +122,7 @@ function indexSwitchPlugin(target: string): Plugin {
       try {
         statSync(candidate)
         return candidate
-      } catch (_) {
+      } catch {
         return null
       }
     },

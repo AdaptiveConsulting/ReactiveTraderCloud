@@ -1,11 +1,13 @@
 import { fixupPluginRules } from "@eslint/compat"
 import js from "@eslint/js"
+import pluginVitest from "@vitest/eslint-plugin"
+import pluginImport from "eslint-plugin-import"
+import pluginPlaywright from "eslint-plugin-playwright"
+import pluginReact from "eslint-plugin-react"
+import pluginReactHooks from "eslint-plugin-react-hooks"
+import pluginSimpleImportSort from "eslint-plugin-simple-import-sort"
 import globals from "globals"
-import importPlugin from "eslint-plugin-import"
-import reactPlugin from "eslint-plugin-react"
-import hooksPlugin from "eslint-plugin-react-hooks"
-import simpleImportSortPlugin from "eslint-plugin-simple-import-sort"
-import tseslintPlugin from "typescript-eslint"
+import pluginTypescriptEslint from "typescript-eslint"
 
 // Use standard array of config blocks (rather than typescript-eslint wrapper)
 // Plugins should be a one-shot entry in this (per typescript-eslint, and most recent react)
@@ -32,22 +34,22 @@ export default [
   //   it is an array (base, recommended), so we have to spread it...
   //   see node_modules/typescript-eslint/dist/configs/base.js
   //   "base" contains the parser/plugin config, so we don't have to include that manually below
-  ...tseslintPlugin.configs.recommended,
+  ...pluginTypescriptEslint.configs.recommended,
   // https://github.com/jsx-eslint/eslint-plugin-react
   // ESLint v9 - https://github.com/jsx-eslint/eslint-plugin-react/pull/3759
-  reactPlugin.configs.flat.recommended,
-  reactPlugin.configs.flat["jsx-runtime"],
+  pluginReact.configs.flat.recommended,
+  pluginReact.configs.flat["jsx-runtime"],
   {
     plugins: {
       // https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks
       // compat with ESLint v9, see https://github.com/facebook/react/issues/28313
       // recent "compatibility" PR does not address flat config at all, so still on "hacked" eslint config
-      "react-hooks": hooksPlugin,
+      "react-hooks": pluginReactHooks,
       // https://github.com/import-js/eslint-plugin-import
       // compat with ESLint v9, see https://github.com/import-js/eslint-plugin-import/issues/2948#issuecomment-2148832701
-      import: fixupPluginRules(importPlugin),
+      import: fixupPluginRules(pluginImport),
       // https://github.com/lydell/eslint-plugin-simple-import-sort
-      "simple-import-sort": simpleImportSortPlugin,
+      "simple-import-sort": pluginSimpleImportSort,
     },
     languageOptions: {
       ecmaVersion: "latest",
@@ -104,21 +106,38 @@ export default [
       "react/prop-types": "off",
 
       // as hooks plugin does not play well with Flat Config right now, do this
-      ...hooksPlugin.configs.recommended.rules,
+      ...pluginReactHooks.configs.recommended.rules,
     },
   },
   {
     // special blanket rules for mocks/tests
-    files: [
-      "**/*.{service-mock,mock,test,spec}.{ts,tsx}",
-      "**/__mocks__/*",
-      "e2e/**/*",
-    ],
+    files: ["**/*.{service-mock,mock,test,spec}.{ts,tsx}", "**/__mocks__/*"],
+    plugins: {
+      // https://github.com/vitest-dev/eslint-plugin-vitest
+      vitest: pluginVitest,
+    },
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/no-var-requires": "off",
+    },
+  },
+  {
+    // special blanket rules for e2e
+    files: ["e2e/**"],
+    plugins: {
+      // https://github.com/playwright-community/eslint-plugin-playwright
+      playwright: pluginPlaywright,
+    },
+    rules: {
+      "no-console": "off",
+      // playwright rules - note: plugin docs config does not work:
+      // https://github.com/playwright-community/eslint-plugin-playwright?tab=readme-ov-file#with-playwright-test-runner
+      // but this does!
+      ...pluginPlaywright.configs.recommended.rules,
+
+      // clashes with "use()"
       "react-hooks/rules-of-hooks": "off",
     },
   },

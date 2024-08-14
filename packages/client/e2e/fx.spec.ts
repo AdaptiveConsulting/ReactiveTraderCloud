@@ -18,19 +18,19 @@ test.describe("Fx App", () => {
     selectors.setTestIdAttribute("data-qa")
   })
 
-  test.skip("Views should open new windows when popped out, and reattach to main window when closed", async ({
+  test("Views should open new windows when popped out, and reattach to main window when closed", async ({
     context,
   }, workerInfo) => {
     //TODO either adapt this test for web tear out or write a companion test
     //TODO Test is failing intermittently due to issue documented in RT-5538. Skipping the test until resolved
 
-    test.skip(!isOpenFin(workerInfo), "openfin only")
+    test.fixme(!isOpenFin(workerInfo), "openfin only")
 
     const popOutButtons = mainWindow.getByTitle("open in new window")
     const toggleLock = mainWindow.getByTitle("toggle layout lock")
 
     await expect(popOutButtons).toHaveCount(3)
-    await expect(popOutButtons.nth(0)).not.toBeVisible()
+    await expect(popOutButtons.nth(0)).toBeHidden()
 
     await toggleLock.hover()
     await toggleLock.click()
@@ -38,12 +38,16 @@ test.describe("Fx App", () => {
     const liveRatesPagePromise = context.waitForEvent("page")
     await popOutButtons.nth(0).click()
     const poppedOutLiveRatesPage = await liveRatesPagePromise
-    await poppedOutLiveRatesPage.waitForSelector("text=Live Rates")
+    await expect(
+      poppedOutLiveRatesPage.locator("div").getByText("Live Rates"),
+    ).toBeVisible()
 
     const blotterPagePromise = context.waitForEvent("page")
     await popOutButtons.nth(0).click()
     const poppedOutBlotterPage = await blotterPagePromise
-    await poppedOutBlotterPage.waitForSelector("text=Trades")
+    await expect(
+      poppedOutBlotterPage.locator("div").getByText("Trades"),
+    ).toBeVisible()
 
     await poppedOutLiveRatesPage
       .locator("[data-qa='openfin-chrome__close']")
@@ -65,6 +69,6 @@ test.describe("Fx App", () => {
     await toggleLock.click()
 
     await expect(popOutButtons).toHaveCount(3)
-    await expect(popOutButtons.nth(0)).not.toBeVisible()
+    await expect(popOutButtons.nth(0)).toBeHidden()
   })
 })

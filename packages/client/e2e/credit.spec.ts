@@ -92,9 +92,10 @@ test.describe("Credit", () => {
 
       await expect(async () => {
         await firstQuote.hover()
-        await acceptButton.click({ timeout: ElementTimeout.AGGRESSIVE })
+        await acceptButton.click()
       }, `Unable to retry clicking on accept button within ${retryTimeout} seconds`).toPass(
         {
+          intervals: [250],
           timeout: retryTimeout,
         },
       )
@@ -145,22 +146,20 @@ test.describe("Credit", () => {
         .click()
 
       const sellSidePage = await pagePromise
-
-      await sellSidePage.waitForSelector("text=New RFQ")
+      await expect(
+        sellSidePage.locator("div").getByText("New RFQ"),
+      ).toBeVisible({ timeout: ElementTimeout.NORMAL })
 
       await sellSidePage.getByTestId("price-input").pressSequentially("100")
 
       await sellSidePage.keyboard.press("Enter")
 
-      await expect(rfqsPage.getByTestId("quotes").first()).toContainText(
-        "$100",
-        { timeout: ElementTimeout.AGGRESSIVE },
-      )
+      await expect(rfqsPage.getByTestId("quotes").first()).toContainText("$100")
     })
   })
 
   test.describe("Respond to RFQ with Pass", () => {
-    test("Passing a newly created RFQ ", async ({ context }) => {
+    test("Passing a newly created RFQ", async ({ context }) => {
       await newRfqPage.getByPlaceholder(/Enter a CUSIP/).click()
       await newRfqPage.getByTestId("search-result-item").nth(5).click()
 
@@ -182,8 +181,9 @@ test.describe("Credit", () => {
         .click()
 
       const sellSidePage = await pagePromise
-
-      await sellSidePage.waitForSelector("text=New RFQ")
+      await expect(
+        sellSidePage.locator("div").getByText("New RFQ"),
+      ).toBeVisible({ timeout: ElementTimeout.NORMAL })
 
       await sellSidePage.getByRole("button", { name: "Pass" }).click()
 
