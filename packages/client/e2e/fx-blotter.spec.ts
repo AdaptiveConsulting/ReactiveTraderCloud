@@ -53,7 +53,6 @@ test.describe("Trade Blotter", () => {
     }
   })
 
-  // eslint-disable-next-line no-empty-pattern
   test.afterAll(async ({}, workerInfo) => {
     if (isOpenFin(workerInfo)) {
       await blotterPage.getByTestId("filter-button").click()
@@ -71,7 +70,7 @@ test.describe("Trade Blotter", () => {
     await expect(firstRow).not.toHaveCSS("background-color", color)
   })
 
-  test("when user buys a currency, the new row should flash briefly ", async () => {
+  test("when user buys a currency, the new row should flash briefly", async () => {
     await tilePage.locator("input[id='notional-input-EURUSD']").clear()
     await tilePage
       .locator("input[id='notional-input-EURUSD']")
@@ -92,9 +91,7 @@ test.describe("Trade Blotter", () => {
 
       const newRow = blotterPage.getByTestId(`trades-grid-row-${tradeID}`)
 
-      await expect(newRow).toHaveCSS("animation", /1s ease-in-out/, {
-        timeout: ElementTimeout.AGGRESSIVE,
-      })
+      await expect(newRow).toHaveCSS("animation", /1s ease-in-out/)
     }, `Unable to retry clicking on accept button within ${retryTimeout} seconds`).toPass(
       {
         timeout: retryTimeout,
@@ -157,7 +154,7 @@ test.describe("Trade Blotter", () => {
         .readFileSync("e2e/test-data/blotter-data.csv", "utf8")
         .toString()
         .split("\n") as Array<string>
-    } catch (err) {
+    } catch {
       csvRows = "error"
     }
     expect(typeof csvRows).not.toBe("string")
@@ -196,7 +193,7 @@ test.describe("Trade Blotter", () => {
         .readFileSync("e2e/test-data/filtered-data.csv", "utf8")
         .toString()
         .split("\n") as Array<string>
-    } catch (err) {
+    } catch {
       filteredCSVRows = "error"
     }
 

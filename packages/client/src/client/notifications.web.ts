@@ -121,7 +121,7 @@ export async function registerFxTradeNotifications() {
         console.error("FX notifications execution stream completed!?")
       },
     })
-  } catch (_) {
+  } catch {
     console.log("Notification permission was not granted.")
   }
 }

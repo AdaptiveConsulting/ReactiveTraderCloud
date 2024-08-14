@@ -4,10 +4,9 @@ export const isOpenFin = (workerInfo: WorkerInfo) =>
   workerInfo.project.name === "openfin"
 
 export enum ElementTimeout {
-  AGGRESSIVE = 5000,
   NORMAL = 15000,
   LONG = 30000,
-  RFQTIMEOUT = 10500,
+  SPOT_TILE_RFQ_TIMEOUT = 10500,
 }
 export enum TestTimeout {
   NORMAL = 60000,
@@ -41,5 +40,5 @@ export const assertGridCell = async (
   cellIndex: number,
   assertion: string,
 ) => {
-  expect(await row.nth(cellIndex).innerText()).toBe(assertion)
+  await expect(row.nth(cellIndex)).toHaveText(assertion)
 }

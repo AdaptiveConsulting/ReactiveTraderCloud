@@ -21,6 +21,7 @@ import {
   getAppsAndPages,
   handleAppSelection,
   HOME_ACTION_DELETE_PAGE,
+  PageData,
 } from "./utils"
 
 const PROVIDER_ID = "adaptive-home-provider"
@@ -85,7 +86,11 @@ export async function registerHome(): Promise<HomeRegistration> {
     return getAppsAndPages(query.length < queryMinLength ? undefined : query)
   }
 
-  const handlePageSelection = async (result: CLIDispatchedSearchResult) => {
+  type PageSearchResult = Omit<CLIDispatchedSearchResult, "data"> & {
+    data: PageData
+  }
+
+  const handlePageSelection = async (result: PageSearchResult) => {
     if (result.action.name === HOME_ACTION_DELETE_PAGE) {
       await deletePage(result.data.pageId)
       if (lastResponse !== undefined && lastResponse !== null) {
@@ -93,14 +98,22 @@ export async function registerHome(): Promise<HomeRegistration> {
       }
     } else {
       const pageToLaunch = await getPage(result.data.pageId)
-      await launchPage(pageToLaunch)
+      if (pageToLaunch) {
+        await launchPage(pageToLaunch)
+      } else {
+        console.warn(`No page found for ${result.data.pageId}`)
+      }
     }
   }
 
+  const isPageData = (
+    data: CLIDispatchedSearchResult["data"],
+  ): data is PageData => (data as PageData).pageId !== undefined
+
   const onSelection = async (result: CLIDispatchedSearchResult) => {
     if (result.data !== undefined) {
-      if (result.data.pageId !== undefined) {
-        await handlePageSelection(result)
+      if (isPageData(result.data)) {
+        await handlePageSelection(result as PageSearchResult)
       } else {
         await handleAppSelection(result.data, lastResponse)
       }

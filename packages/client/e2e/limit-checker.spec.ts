@@ -1,12 +1,8 @@
-import { Page } from "@playwright/test"
+/* eslint-disable playwright/expect-expect */
+import { expect, Page } from "@playwright/test"
 
 import { test } from "./fixtures"
-import {
-  assertGridCell,
-  assertGridRow,
-  ElementTimeout,
-  isOpenFin,
-} from "./utils"
+import { assertGridCell, assertGridRow, isOpenFin } from "./utils"
 
 test.describe("Limit Checker", () => {
   let tilePage: Page
@@ -14,17 +10,14 @@ test.describe("Limit Checker", () => {
   let limitCheckerPage: Page
 
   test.beforeAll(async ({ fxPagesRec, limitCheckerPageRec }, workerInfo) => {
-    if (isOpenFin(workerInfo)) {
-      tilePage = fxPagesRec["fx-tiles"]
-      blotterPage = fxPagesRec["fx-blotter"]
-      limitCheckerPage = limitCheckerPageRec
-    }
+    test.fixme(!isOpenFin(workerInfo), "Openfin Only")
+
+    tilePage = fxPagesRec["fx-tiles"]
+    blotterPage = fxPagesRec["fx-blotter"]
+    limitCheckerPage = limitCheckerPageRec
   })
 
-  // eslint-disable-next-line no-empty-pattern
-  test("Trade is checked and allowed if notional is under set limit", async ({}, workerInfo) => {
-    test.skip(!isOpenFin(workerInfo), "Openfin Only")
-
+  test("Trade is checked and allowed if notional is under set limit", async ({}) => {
     const limitTableFirstRowCells = limitCheckerPage
       .locator(`[role="grid"] > div`)
       .nth(1)
@@ -43,12 +36,10 @@ test.describe("Limit Checker", () => {
       .locator("input")
 
     const lastTradeIdString = await tradeBlotterFirstRowCells.nth(1).innerText()
-    const lastTradeId = isNaN(Number(lastTradeIdString))
-      ? 0
-      : Number(lastTradeIdString)
+    const lastTradeId = Number(lastTradeIdString)
 
     const limitIdString = await limitTableFirstRowCells.nth(1).innerText()
-    const limitId = isNaN(Number(limitIdString)) ? -1 : Number(limitIdString)
+    const limitId = Number(limitIdString)
 
     await limitCheckInput.fill("2000000")
 
@@ -57,15 +48,16 @@ test.describe("Limit Checker", () => {
 
     await tilePage.locator("[data-testid='Buy-EURUSD']").click()
 
-    await tradeBlotterFirstRowCells
-      .nth(1)
-      .getByText(lastTradeId + 1 + "")
-      .waitFor({ state: "visible", timeout: ElementTimeout.AGGRESSIVE })
+    await expect(
+      tradeBlotterFirstRowCells
+        .nth(1)
+        .getByText(String(isNaN(lastTradeId) ? 1 : lastTradeId + 1)),
+    ).toBeVisible()
 
     await assertGridRow({
       row: limitTableFirstRowCells,
       assertions: [
-        limitId + 1 + "",
+        String(isNaN(limitId) ? 0 : limitId + 1),
         "Success",
         "EURUSD",
         "1,999,999",
@@ -83,10 +75,7 @@ test.describe("Limit Checker", () => {
     })
   })
 
-  // eslint-disable-next-line no-empty-pattern
-  test("Trade is blocked if notional is above limit", async ({}, workerInfo) => {
-    test.skip(!isOpenFin(workerInfo), "Openfin Only")
-
+  test("Trade is blocked if notional is above limit", async ({}) => {
     const limitTableFirstRowCells = limitCheckerPage
       .locator(`[role="grid"] > div`)
       .nth(1)
@@ -109,7 +98,7 @@ test.describe("Limit Checker", () => {
     const tileInput = tilePage.getByLabel("EUR").nth(0)
 
     const limitIdString = await limitTableFirstRowCells.nth(1).innerText()
-    const limitId = !isNaN(Number(limitIdString)) ? Number(limitIdString) : -1
+    const limitId = Number(limitIdString)
 
     await limitCheckInput.fill("1000000")
 
@@ -120,7 +109,7 @@ test.describe("Limit Checker", () => {
     await assertGridRow({
       row: limitTableFirstRowCells,
       assertions: [
-        limitId + 1 + "",
+        String(isNaN(limitId) ? 0 : limitId + 1),
         "Failure",
         "EURUSD",
         "1,000,001",

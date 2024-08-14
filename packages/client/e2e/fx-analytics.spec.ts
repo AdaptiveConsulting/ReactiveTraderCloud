@@ -46,10 +46,9 @@ test.describe("Analytics panel", () => {
       const pnlLocator = analyticsPage.locator("[data-testid='lastPosition']")
       const initialPnlAmount = await pnlLocator.textContent()
 
-      if (initialPnlAmount)
-        await expect(pnlLocator).not.toContainText(initialPnlAmount, {
-          timeout: ElementTimeout.NORMAL,
-        })
+      await expect(pnlLocator).not.toContainText(initialPnlAmount ?? "", {
+        timeout: ElementTimeout.NORMAL,
+      })
     })
 
     test("Correct text color is displayed based on Profit & Loss amount", async () => {
@@ -63,9 +62,10 @@ test.describe("Analytics panel", () => {
 
       expect(pnlValue, "Profit & Loss value is not a number").not.toBeNaN()
 
-      if (pnlValue < 0) {
-        expect(await pnlLocator.getAttribute("color")).toEqual("negative")
-      } else expect(await pnlLocator.getAttribute("color")).toEqual("positive")
+      await expect(pnlLocator).toHaveAttribute(
+        "color",
+        pnlValue < 0 ? "negative" : "positive",
+      )
     })
   })
   test.describe("Positions section", () => {
@@ -80,9 +80,7 @@ test.describe("Analytics panel", () => {
           .first()
 
         await currencyCircle.hover()
-        await expect(currencyTooltip).toBeVisible({
-          timeout: ElementTimeout.AGGRESSIVE,
-        })
+        await expect(currencyTooltip).toBeVisible()
         const regexp = RegExp(`${currency} [-+,.0-9]`, "g")
         expect(
           await currencyTooltip.textContent(),

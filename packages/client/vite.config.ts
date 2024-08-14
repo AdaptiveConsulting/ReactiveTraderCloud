@@ -1,7 +1,7 @@
 import react from "@vitejs/plugin-react"
 import { existsSync, readdirSync, statSync } from "fs"
 import path, { resolve } from "path"
-import { InputOption } from "rollup"
+import type { InputOption } from "rollup"
 import modulepreload from "rollup-plugin-modulepreload"
 import { injectManifest } from "rollup-plugin-workbox"
 import Unfonts from "unplugin-fonts/vite"
@@ -122,7 +122,7 @@ function indexSwitchPlugin(target: string): Plugin {
       try {
         statSync(candidate)
         return candidate
-      } catch (_) {
+      } catch {
         return null
       }
     },

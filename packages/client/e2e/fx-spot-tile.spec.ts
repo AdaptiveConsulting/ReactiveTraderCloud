@@ -18,7 +18,6 @@ test.describe("Spot Tile", () => {
       const mainWindow = pages.length > 0 ? pages[0] : await context.newPage()
 
       await mainWindow.goto(`${process.env.E2E_RTC_WEB_ROOT_URL}`)
-
       tilePage = mainWindow
       blotterPage = mainWindow
     }
@@ -28,10 +27,11 @@ test.describe("Spot Tile", () => {
     test("When I sell EUR to USD then trade Id shown in tile should match trade Id shown in blotter @smoke", async () => {
       await tilePage.locator("[data-testid='menuButton-EUR']").click()
 
-      await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage
-        .locator("input[id='notional-input-EURUSD']")
-        .pressSequentially("1m")
+      const spotTileNotionalInput = tilePage.locator(
+        "input[id='notional-input-EURUSD']",
+      )
+      await spotTileNotionalInput.clear()
+      await spotTileNotionalInput.pressSequentially("1m")
 
       await tilePage.locator("[data-testid='Sell-EURUSD']").click()
 
@@ -39,12 +39,12 @@ test.describe("Spot Tile", () => {
         .locator("[data-testid='trade-id']")
         .innerText()
 
-      const blotterTradeID = await blotterPage
+      const blotterTradeID = blotterPage
         .locator(`[data-testid='trades-grid-row-${tradeId}'] > div`)
         .nth(1)
-        .textContent()
+      await expect(blotterTradeID).toHaveText(tradeId)
+
       await tilePage.locator("[data-testid='menuButton-ALL']").click()
-      expect(tradeId).toBe(blotterTradeID)
     })
 
     test("When I buy USD/JPY then a tile displays in green with confirmation message", async () => {
@@ -75,7 +75,7 @@ test.describe("Spot Tile", () => {
       const executingSpinner = tilePage.getByText(/Executing/)
       await expect(executingSpinner).toBeVisible()
 
-      const orangeConfirmation = await tilePage
+      const orangeConfirmation = tilePage
         .locator("div[role='dialog']")
         .getByText(/Trade execution taking longer than expected/)
       await expect(orangeConfirmation).toBeVisible()
@@ -87,70 +87,70 @@ test.describe("Spot Tile", () => {
       await tilePage.locator("[data-testid='rfqButton']").click()
 
       await expect(tilePage.getByTestId("rfqTimer")).toBeVisible()
-      await tilePage
-        .getByTestId("rfqTimer")
-        .waitFor({ state: "hidden", timeout: ElementTimeout.RFQTIMEOUT })
+      await tilePage.getByTestId("rfqTimer").waitFor({
+        state: "hidden",
+        timeout: ElementTimeout.SPOT_TILE_RFQ_TIMEOUT,
+      })
       const requoteBtn = tilePage.getByText(/Requote/)
       await expect(requoteBtn).toBeVisible({ timeout: 100 })
     })
   })
 
   test.describe("Notional value", () => {
-    test("When I type 1k as notional value to EUR/USD then notional value should be 1000", async () => {
-      await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage
-        .locator("input[id='notional-input-EURUSD']")
-        .pressSequentially("1k")
-      const notionalValue = await tilePage
-        .locator("input[id='notional-input-EURUSD']")
-        .inputValue()
-      expect(notionalValue).toEqual("1,000")
+    test("When I type 1k as notional value to EUR/USD then notional value should be 1 thousand", async () => {
+      const spotTileNotionalInput = tilePage.locator(
+        "input[id='notional-input-EURUSD']",
+      )
+      await spotTileNotionalInput.clear()
+      await spotTileNotionalInput.pressSequentially("1k")
+
+      await expect(spotTileNotionalInput).toHaveValue("1,000")
     })
 
-    test("When I type 1m as notional value to EUR/USD then notional value should be 1,000,000", async () => {
-      await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage
-        .locator("input[id='notional-input-EURUSD']")
-        .pressSequentially("1m")
-      const notionalValue = await tilePage
-        .locator("input[id='notional-input-EURUSD']")
-        .inputValue()
-      expect(notionalValue).toEqual("1,000,000")
+    test("When I type 1m as notional value to EUR/USD then notional value should be 1 million", async () => {
+      const spotTileNotionalInput = tilePage.locator(
+        "input[id='notional-input-EURUSD']",
+      )
+      await spotTileNotionalInput.clear()
+      await spotTileNotionalInput.pressSequentially("1m")
+
+      await expect(spotTileNotionalInput).toHaveValue("1,000,000")
     })
 
     test("When I enter a number too large (over 1,000,000,000) then an error will appear 'Max exceeded'", async () => {
-      await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage
-        .locator("input[id='notional-input-EURUSD']")
-        .pressSequentially("1200000000")
+      const spotTileNotionalInput = tilePage.locator(
+        "input[id='notional-input-EURUSD']",
+      )
+      await spotTileNotionalInput.clear()
+      await spotTileNotionalInput.pressSequentially("1200000000")
       await expect(tilePage.getByText(/Max exceeded/)).toBeVisible()
 
-      await tilePage.locator("input[id='notional-input-EURUSD']").clear()
-      await tilePage
-        .locator("input[id='notional-input-EURUSD']")
-        .pressSequentially("1m")
-      await expect(tilePage.getByText(/Max exceeded/)).not.toBeVisible()
+      await spotTileNotionalInput.selectText()
+      await spotTileNotionalInput.pressSequentially("1m")
+      await expect(tilePage.getByText(/Max exceeded/)).toBeHidden()
     })
   })
 
   test.describe("Toggle between prices and graph views", () => {
     test("When I click the graph icon on the Live Rates bar then I should toggle from graph to price views", async () => {
       const toggle = tilePage.locator("[data-testid='toggleButton']")
+
       // first click, goes into normal mode, should be no graphs
       await toggle.click()
       const tileState = await tilePage.evaluate(() =>
         window.localStorage.getItem("selectedView"),
       )
-      await expect(tileState).toBe("Normal")
+      expect(tileState).toBe("Normal")
       await expect(
         tilePage.locator("[data-testid='tile-graph']").nth(0),
       ).toBeHidden()
+
       // click toggleButton again, now expect there to be graphs
       await toggle.click()
       const tileState2 = await tilePage.evaluate(() =>
         window.localStorage.getItem("selectedView"),
       )
-      await expect(tileState2).toBe("Analytics")
+      expect(tileState2).toBe("Analytics")
       await expect(
         tilePage.locator("[data-testid='tile-graph']").nth(0),
       ).toBeVisible()
@@ -190,7 +190,6 @@ test.describe("Spot Tile", () => {
       const totalAUD = await tilePage
         .locator('div[aria-label="Lives Rates Tiles"] > div')
         .count()
-
       expect(totalAUD).toBe(2)
     })
 
