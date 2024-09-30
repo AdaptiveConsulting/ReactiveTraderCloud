@@ -96,7 +96,7 @@
   },
   "overrides": {
     "eslint": "9.9.0",
-    "next": "14.1.1"
+    "next": "14.2.13"
   },
   "devDependencies": {
     "@adaptive/hydra-web-codegen": "4.57.0",
@@ -105,9 +105,9 @@
     "@google-cloud/dialogflow": "6.7.0",
     "@openfin/automation-cli": "1.2.0",
     "@playwright/test": "1.45.2",
-    "@storybook/addon-essentials": "8.2.7",
-    "@storybook/react": "8.2.7",
-    "@storybook/react-vite": "8.2.7",
+    "@storybook/addon-essentials": "8.3.4",
+    "@storybook/react": "8.3.4",
+    "@storybook/react-vite": "8.3.4",
     "@testing-library/react": "16.0.0",
     "@testing-library/user-event": "14.5.2",
     "@types/d3": "7.4.3",
@@ -120,9 +120,9 @@
     "@types/react-virtualized-auto-sizer": "^1.0.1",
     "@types/react-window": "^1.8.5",
     "@types/styled-components": "5.1.26",
-    "@vitejs/plugin-react": "4.3.1",
-    "@vitest/browser": "2.0.3",
-    "@vitest/eslint-plugin": "1.0.1",
+    "@vitejs/plugin-react": "4.3.2",
+    "@vitest/browser": "2.1.1",
+    "@vitest/eslint-plugin": "1.1.4",
     "concurrently": "8.2.2",
     "cross-env": "^6.0.3",
     "csstype": "^3.0.2",
@@ -139,15 +139,15 @@
     "prettier": "3.3.2",
     "rollup-plugin-modulepreload": "2.0.0",
     "rollup-plugin-workbox": "^6.2.0",
-    "storybook": "8.2.7",
+    "storybook": "8.3.4",
     "storybook-dark-mode": "4.0.2",
     "typescript": "5.5.4",
     "typescript-eslint": "8.1.0",
     "unplugin-fonts": "1.1.1",
-    "vite": "5.3.4",
+    "vite": "5.4.8",
     "vite-plugin-html": "3.2.2",
     "vite-plugin-static-copy": "1.0.5",
-    "vitest": "2.0.3",
-    "wait-on": "7.2.0"
+    "vitest": "2.1.1",
+    "wait-on": "8.0.1"
   }
 }
